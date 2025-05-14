@@ -1315,7 +1315,7 @@ AttachEngine3D::_calculateAttachedPlacement(const std::vector<App::DocumentObjec
                                        "inertia tensor is trivial, principal axes are undefined.");
             }
             if (pr.HasSymmetryAxis()) {
-                Base::Console().Warning(
+                Base::Console().warning(
                     "AttachEngine3D::calculateAttachedPlacement:InertialCS: inertia tensor has "
                     "axis of symmetry. Second and third axes of inertia are undefined.\n");
                 // find defined axis, and use it as Z axis
@@ -1576,7 +1576,7 @@ AttachEngine3D::_calculateAttachedPlacement(const std::vector<App::DocumentObjec
                 catch (Standard_Failure& e) {
                     // ignore. This is probably due to insufficient continuity.
                     dd = gp_Vec(0., 0., 0.);
-                    Base::Console().Warning("AttachEngine3D::calculateAttachedPlacement: can't "
+                    Base::Console().warning("AttachEngine3D::calculateAttachedPlacement: can't "
                                             "calculate second derivative of curve. OCC error: %s\n",
                                             e.GetMessageString());
                 }
@@ -1590,7 +1590,7 @@ AttachEngine3D::_calculateAttachedPlacement(const std::vector<App::DocumentObjec
                     B = T.Crossed(N);
                 }
                 else {
-                    Base::Console().Warning(
+                    Base::Console().warning(
                         "AttachEngine3D::calculateAttachedPlacement: path curve second derivative "
                         "is below 1e-14, can't align x axis.\n");
                     N = gp_Vec(0., 0., 0.);
@@ -1912,7 +1912,7 @@ AttachEngine3D::_calculateAttachedPlacement(const std::vector<App::DocumentObjec
                 Base::Vector3d(dirs[2].X(), dirs[2].Y(), dirs[2].Z()),
                 orderString);
             if (this->mapReverse) {
-                rot = rot * Base::Rotation(Base::Vector3d(0, 1, 0), D_PI);
+                rot = rot * Base::Rotation(Base::Vector3d(0, 1, 0), std::numbers::pi);
             }
 
             Base::Placement plm = Base::Placement(
@@ -1934,17 +1934,17 @@ AttachEngine3D::_calculateAttachedPlacement(const std::vector<App::DocumentObjec
 
             switch (shape->shapeType()) {
                 case TopAbs_VERTEX: {
-                    if (auto point = dynamic_cast<GeomPoint*>(geom.get())) {
+                    if (auto point = freecad_cast<GeomPoint*>(geom.get())) {
                         placement.setPosition(point->getPoint());
                     }
                 }
                 break;
 
                 case TopAbs_EDGE: {
-                    if (auto conic = dynamic_cast<GeomConic*>(geom.get())) {
+                    if (auto conic = freecad_cast<GeomConic*>(geom.get())) {
                         placement.setPosition(conic->getLocation());
                         placement.setRotation(conic->getRotation().value_or(Base::Rotation {}));
-                    } else if (auto line = dynamic_cast<GeomCurve*>(geom.get())) {
+                    } else if (auto line = freecad_cast<GeomCurve*>(geom.get())) {
                         auto u1 = line->getFirstParameter();
                         auto u2 = line->getLastParameter();
 
@@ -1963,11 +1963,11 @@ AttachEngine3D::_calculateAttachedPlacement(const std::vector<App::DocumentObjec
                 break;
 
                 case TopAbs_FACE: {
-                    auto surface = dynamic_cast<GeomSurface*>(geom.get());
+                    auto surface = freecad_cast<GeomSurface*>(geom.get());
 
-                    if (auto sphere = dynamic_cast<GeomSphere*>(geom.get())) {
+                    if (auto sphere = freecad_cast<GeomSphere*>(geom.get())) {
                         placement.setPosition(sphere->getLocation());
-                    } else if (auto cone = dynamic_cast<GeomCone*>(geom.get())) {
+                    } else if (auto cone = freecad_cast<GeomCone*>(geom.get())) {
                         placement.setPosition(cone->getApex());
                     } else if (auto com = shape->centerOfGravity()) {
                         placement.setPosition(*com);
@@ -2447,7 +2447,7 @@ AttachEngineLine::_calculateAttachedPlacement(const std::vector<App::DocumentObj
                                            "proximity calculation failed.");
                 }
                 if (distancer.NbSolution() > 1) {
-                    Base::Console().Warning("AttachEngineLine::calculateAttachedPlacement: "
+                    Base::Console().warning("AttachEngineLine::calculateAttachedPlacement: "
                                             "proximity calculation gave %i solutions, ambiguous.\n",
                                             int(distancer.NbSolution()));
                 }
@@ -2751,7 +2751,7 @@ gp_Pnt AttachEnginePoint::getProximityPoint(eMapMode mmode, const TopoDS_Shape& 
             }
 
             if (points.size() > 1)
-                Base::Console().Warning("AttachEnginePoint::calculateAttachedPlacement: proximity calculation gave %d solutions, ambiguous.\n", int(points.size()));
+                Base::Console().warning("AttachEnginePoint::calculateAttachedPlacement: proximity calculation gave %d solutions, ambiguous.\n", int(points.size()));
 
             // if an intersection is found return the first hit
             // otherwise continue with BRepExtrema_DistShapeShape
@@ -2767,7 +2767,7 @@ gp_Pnt AttachEnginePoint::getProximityPoint(eMapMode mmode, const TopoDS_Shape& 
     if (!distancer.IsDone())
         throw Base::ValueError("AttachEnginePoint::calculateAttachedPlacement: proximity calculation failed.");
     if (distancer.NbSolution() > 1)
-        Base::Console().Warning("AttachEnginePoint::calculateAttachedPlacement: proximity calculation gave %i solutions, ambiguous.\n",int(distancer.NbSolution()));
+        Base::Console().warning("AttachEnginePoint::calculateAttachedPlacement: proximity calculation gave %i solutions, ambiguous.\n",int(distancer.NbSolution()));
 
     gp_Pnt p1 = distancer.PointOnShape1(1);
     gp_Pnt p2 = distancer.PointOnShape2(1);

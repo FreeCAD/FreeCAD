@@ -24,7 +24,7 @@
 #ifndef _PreComp_
 #include <QSignalBlocker>
 #include <algorithm>
-#include <boost_signals2.hpp>
+#include <boost/signals2.hpp>
 #endif
 
 #include <Base/Console.h>
@@ -64,7 +64,7 @@ public:
         bool hasElementColor = false;
         for (const auto& view : views) {
             if (auto* prop = dynamic_cast<App::PropertyColor*>(view->getPropertyByName(property))) {
-                App::Color color = prop->getValue();
+                Base::Color color = prop->getValue();
                 QSignalBlocker block(buttonColor);
                 buttonColor->setColor(color.asValue<QColor>());
                 hasElementColor = true;
@@ -83,7 +83,7 @@ public:
         for (const auto& view : views) {
             if (auto* prop =
                     dynamic_cast<App::PropertyMaterial*>(view->getPropertyByName(property))) {
-                App::Color color = prop->getDiffuseColor();
+                Base::Color color = prop->getDiffuseColor();
                 QSignalBlocker block(buttonColor);
                 buttonColor->setColor(color.asValue<QColor>());
                 hasElementColor = true;
@@ -199,16 +199,6 @@ void DlgDisplayPropertiesImp::setupFilters()
 
 void DlgDisplayPropertiesImp::setupConnections()
 {
-#if QT_VERSION < QT_VERSION_CHECK(5, 14, 0)
-    connect(d->ui.changeMode,
-            qOverload<const QString&>(&QComboBox::activated),
-            this,
-            &DlgDisplayPropertiesImp::onChangeModeActivated);
-    connect(d->ui.changePlot,
-            qOverload<const QString&>(&QComboBox::activated),
-            this,
-            &DlgDisplayPropertiesImp::onChangePlotActivated);
-#else
     connect(d->ui.changeMode,
             &QComboBox::textActivated,
             this,
@@ -217,7 +207,6 @@ void DlgDisplayPropertiesImp::setupConnections()
             &QComboBox::textActivated,
             this,
             &DlgDisplayPropertiesImp::onChangePlotActivated);
-#endif
     connect(d->ui.spinTransparency,
             qOverload<int>(&QSpinBox::valueChanged),
             this,
@@ -310,7 +299,7 @@ void DlgDisplayPropertiesImp::slotChangedObject(const Gui::ViewProvider& obj,
         }
         std::string prop_name = name;
         if (prop.is<App::PropertyColor>()) {
-            App::Color value = static_cast<const App::PropertyColor&>(prop).getValue();
+            Base::Color value = static_cast<const App::PropertyColor&>(prop).getValue();
             if (prop_name == "LineColor") {
                 bool blocked = d->ui.buttonLineColor->blockSignals(true);
                 d->ui.buttonLineColor->setColor(value.asValue<QColor>());
@@ -432,7 +421,7 @@ void DlgDisplayPropertiesImp::onChangeModeActivated(const QString& s)
 
 void DlgDisplayPropertiesImp::onChangePlotActivated(const QString& s)
 {
-    Base::Console().Log("Plot = %s\n", (const char*)s.toLatin1());
+    Base::Console().log("Plot = %s\n", (const char*)s.toLatin1());
 }
 
 /**
@@ -479,7 +468,7 @@ void DlgDisplayPropertiesImp::onButtonLineColorChanged()
 {
     std::vector<Gui::ViewProvider*> Provider = getSelection();
     QColor s = d->ui.buttonLineColor->color();
-    App::Color c {};
+    Base::Color c {};
     c.setValue<QColor>(s);
     for (auto it : Provider) {
         if (auto* prop = dynamic_cast<App::PropertyColor*>(it->getPropertyByName("LineColor"))) {
@@ -492,7 +481,7 @@ void DlgDisplayPropertiesImp::onButtonPointColorChanged()
 {
     std::vector<Gui::ViewProvider*> Provider = getSelection();
     QColor s = d->ui.buttonPointColor->color();
-    App::Color c {};
+    Base::Color c {};
     c.setValue<QColor>(s);
     for (auto it : Provider) {
         if (auto* prop = dynamic_cast<App::PropertyColor*>(it->getPropertyByName("PointColor"))) {

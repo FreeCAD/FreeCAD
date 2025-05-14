@@ -49,7 +49,7 @@ namespace TechDraw
 
 class TechDrawExport DrawViewDetail : public DrawViewPart
 {
-    PROPERTY_HEADER_WITH_OVERRIDE(Part::DrawViewDetail);
+    PROPERTY_HEADER_WITH_OVERRIDE(TechDraw::DrawViewDetail);
 
 public:
     /// Constructor
@@ -57,8 +57,8 @@ public:
     ~DrawViewDetail() override;
 
     App::PropertyLink   BaseView;
-    App::PropertyVector AnchorPoint;
-    App::PropertyFloat  Radius;
+    App::PropertyPosition AnchorPoint;
+    App::PropertyLength   Radius;
     App::PropertyString Reference;
 
     App::PropertyBool   ShowMatting;
@@ -71,6 +71,8 @@ public:
         return "TechDrawGui::ViewProviderViewPart";
     }
     void unsetupObject() override;
+    void handleChangedPropertyType(
+        Base::XMLReader &reader, const char * TypeName, App::Property * prop) override;
 
 
     void detailExec(TopoDS_Shape& s,

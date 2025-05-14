@@ -5,11 +5,6 @@ include_directories(
     ${CMAKE_CURRENT_BINARY_DIR}
     ${CMAKE_CURRENT_SOURCE_DIR}
     ${CMAKE_CURRENT_BINARY_DIR}
-    ${Boost_INCLUDE_DIRS}
-    ${OCC_INCLUDE_DIR}
-    ${ZLIB_INCLUDE_DIR}
-    ${PYTHON_INCLUDE_DIRS}
-    ${XercesC_INCLUDE_DIRS}
 )
 
 set(TechDrawLIBS
@@ -24,6 +19,7 @@ if (BUILD_IMPORT)
 endif ()
 
 include_directories(
+    SYSTEM
     ${QtConcurrent_INCLUDE_DIRS}
     ${QtCore_INCLUDE_DIR}
     ${QtGui_INCLUDE_DIR}
@@ -35,8 +31,6 @@ list(APPEND TechDrawLIBS
     ${QtCore_LIBRARIES}
     ${QtWidgets_LIBRARIES}
 )
-
-link_directories(${OCC_LIBRARY_DIR})
 
 generate_from_xml(DrawPagePy)
 generate_from_xml(DrawViewPy)
@@ -173,6 +167,8 @@ SET(TechDraw_SRCS
     MattingPropEnum.h
     Preferences.cpp
     Preferences.h
+    Tag.cpp
+    Tag.h
     TechDrawExport.cpp
     TechDrawExport.h
     ProjectionAlgos.cpp

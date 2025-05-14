@@ -103,7 +103,7 @@ private:
                 endpoint = centerPoint + length * Base::Vector2d(cos(endAngle), sin(endAngle));
 
                 double angle1 = endAngle - startAngle;
-                double angle2 = angle1 + (angle1 < 0. ? 2 : -2) * M_PI;
+                double angle2 = angle1 + (angle1 < 0. ? 2 : -2) * std::numbers::pi;
                 totalAngle = abs(angle1 - totalAngle) < abs(angle2 - totalAngle) ? angle1 : angle2;
 
                 CreateAndDrawShapeGeometry();
@@ -129,7 +129,7 @@ private:
             Gui::Command::commitCommand();
         }
         catch (const Base::Exception& e) {
-            e.ReportException();
+            e.reportException();
             Gui::NotifyError(sketchgui,
                              QT_TRANSLATE_NOOP("Notifications", "Error"),
                              QT_TRANSLATE_NOOP("Notifications", "Failed to rotate"));
@@ -155,7 +155,7 @@ private:
 
     QString getCrosshairCursorSVGName() const override
     {
-        return QString::fromLatin1("Sketcher_Pointer_Create_Rotate");
+        return QStringLiteral("Sketcher_Pointer_Create_Rotate");
     }
 
     std::unique_ptr<QWidget> createWidget() const override
@@ -225,7 +225,7 @@ private:
                                   stream.str().c_str());
         }
         catch (const Base::Exception& e) {
-            Base::Console().Error("%s\n", e.what());
+            Base::Console().error("%s\n", e.what());
         }
     }
 
@@ -408,10 +408,11 @@ private:
                             // the new geometry.
                             /*if (cstr->Type == DistanceX || cstr->Type == DistanceY) {
                                 //DistanceX/Y can be applied only if the rotation if 90 or 180.
-                                if (fabs(fmod(individualAngle, M_PI)) < Precision::Confusion()) {
+                                if (fabs(fmod(individualAngle, std::numbers::pi)) <
+                            Precision::Confusion()) {
                                     // ok and nothing to do actually
                                 }
-                                else if (fabs(fmod(individualAngle, M_PI * 0.5)) <
+                                else if (fabs(fmod(individualAngle, std::numbers::pi * 0.5)) <
                             Precision::Confusion()) { cstr->Type = cstr->Type == DistanceX ?
                             DistanceY : DistanceX;
                                 }
@@ -500,13 +501,13 @@ void DSHRotateController::configureToolWidget()
             QApplication::translate("TaskSketcherTool_c1_offset", "Apply equal constraints"));
         toolWidget->setCheckboxToolTip(
             WCheckbox::FirstBox,
-            QString::fromLatin1("<p>")
+            QStringLiteral("<p>")
                 + QApplication::translate("TaskSketcherTool_c1_offset",
                                           "If this option is selected dimensional constraints are "
                                           "excluded from the operation.\n"
                                           "Instead equal constraints are applied between the "
                                           "original objects and their copies.")
-                + QString::fromLatin1("</p>"));
+                + QStringLiteral("</p>"));
     }
 
     onViewParameters[OnViewParameter::First]->setLabelType(Gui::SoDatumLabel::DISTANCEX);
@@ -567,7 +568,7 @@ void DSHRotateControllerBase::doEnforceControlParameters(Base::Vector2d& onSketc
 
                 double arcAngle =
                     Base::toRadians(onViewParameters[OnViewParameter::Third]->getValue());
-                if (fmod(fabs(arcAngle), 2 * M_PI) < Precision::Confusion()) {
+                if (fmod(fabs(arcAngle), 2 * std::numbers::pi) < Precision::Confusion()) {
                     unsetOnViewParameter(onViewParameters[OnViewParameter::Third].get());
                     return;
                 }
@@ -580,7 +581,7 @@ void DSHRotateControllerBase::doEnforceControlParameters(Base::Vector2d& onSketc
 
                 double arcAngle =
                     Base::toRadians(onViewParameters[OnViewParameter::Fourth]->getValue());
-                if (fmod(fabs(arcAngle), 2 * M_PI) < Precision::Confusion()) {
+                if (fmod(fabs(arcAngle), 2 * std::numbers::pi) < Precision::Confusion()) {
                     unsetOnViewParameter(onViewParameters[OnViewParameter::Fourth].get());
                     return;
                 }

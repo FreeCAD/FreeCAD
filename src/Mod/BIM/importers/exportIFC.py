@@ -1,58 +1,64 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
+# *                                                                         *
 # *   Copyright (c) 2014 Yorik van Havre <yorik@uncreated.net>              *
 # *                                                                         *
-# *   This program is free software; you can redistribute it and/or modify  *
-# *   it under the terms of the GNU Lesser General Public License (LGPL)    *
-# *   as published by the Free Software Foundation; either version 2 of     *
-# *   the License, or (at your option) any later version.                   *
-# *   for detail see the LICENCE text file.                                 *
+# *   This file is part of FreeCAD.                                         *
 # *                                                                         *
-# *   This program is distributed in the hope that it will be useful,       *
-# *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-# *   GNU Library General Public License for more details.                  *
+# *   FreeCAD is free software: you can redistribute it and/or modify it    *
+# *   under the terms of the GNU Lesser General Public License as           *
+# *   published by the Free Software Foundation, either version 2.1 of the  *
+# *   License, or (at your option) any later version.                       *
 # *                                                                         *
-# *   You should have received a copy of the GNU Library General Public     *
-# *   License along with this program; if not, write to the Free Software   *
-# *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
-# *   USA                                                                   *
+# *   FreeCAD is distributed in the hope that it will be useful, but        *
+# *   WITHOUT ANY WARRANTY; without even the implied warranty of            *
+# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU      *
+# *   Lesser General Public License for more details.                       *
+# *                                                                         *
+# *   You should have received a copy of the GNU Lesser General Public      *
+# *   License along with FreeCAD. If not, see                               *
+# *   <https://www.gnu.org/licenses/>.                                      *
 # *                                                                         *
 # ***************************************************************************
-"""Provide the exporter for IFC files used above all in Arch and BIM.
 
-Internally it uses IfcOpenShell, which must be installed before using.
-"""
+__title__  = "FreeCAD IFC export"
+__author__ = ("Yorik van Havre", "Jonathan Wiedemann", "Bernd Hahnebach")
+__url__    = "https://www.freecad.org"
+
 ## @package exportIFC
 #  \ingroup ARCH
 #  \brief IFC file format exporter
 #
 #  This module provides tools to export IFC files.
 
+"""Provide the exporter for IFC files used above all in Arch and BIM.
+
+Internally it uses IfcOpenShell, which must be installed before using.
+"""
+
+import math
 import os
 import time
 import tempfile
-import math
 from builtins import open as pyopen
 
 import FreeCAD
-import Part
-import Draft
+import FreeCADGui
 import Arch
+import Draft
 import DraftVecUtils
+import Part
 import ArchIFCSchema
-from importers import exportIFCHelper
-from importers import exportIFCStructuralTools
 
 from DraftGeomUtils import vec
-from importers.importIFCHelper import dd2dms
 from draftutils import params
 from draftutils.messages import _msg, _err
 
-import FreeCADGui
+from importers import exportIFCHelper
+from importers import exportIFCStructuralTools
+from importers.importIFCHelper import dd2dms
 
-__title__  = "FreeCAD IFC export"
-__author__ = ("Yorik van Havre", "Jonathan Wiedemann", "Bernd Hahnebach")
-__url__    = "https://www.freecad.org"
 
 PARAMS = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/BIM")
 
@@ -2423,7 +2429,8 @@ def getUID(obj,preferences):
                 obj.IfcData = d
             if hasattr(obj, "GlobalId"):
                 obj.GlobalId = uid
-    uids.append(uid)
+    if "uids" in globals():
+        uids.append(uid)
     return uid
 
 
@@ -2499,6 +2506,11 @@ def create_annotation(anno, ifcfile, context, history, preferences):
     """Creates an annotation object"""
 
     global curvestyles, ifcbin
+    reps = []
+    repid = "Annotation"
+    reptype = "Annotation2D"
+    description = getattr(anno, "Description", None)
+    # uses global ifcbin, curvestyles
     objectType = None
     ovc = None
     zvc = None
@@ -2506,7 +2518,6 @@ def create_annotation(anno, ifcfile, context, history, preferences):
     reps = []
     repid = "Annotation"
     reptype = "Annotation2D"
-    description = getattr(anno, "Description", None)
     if anno.isDerivedFrom("Part::Feature"):
         if Draft.getType(anno) == "Hatch":
             objectType = "HATCH"
@@ -2525,15 +2536,8 @@ def create_annotation(anno, ifcfile, context, history, preferences):
                 axes.append(axis)
             if axes:
                 if len(axes) > 1:
-                    xvc =  ifcbin.createIfcDirection((1.0,0.0,0.0))
-                    zvc =  ifcbin.createIfcDirection((0.0,0.0,1.0))
-                    ovc =  ifcbin.createIfcCartesianPoint((0.0,0.0,0.0))
-                    gpl =  ifcbin.createIfcAxis2Placement3D(ovc,zvc,xvc)
-                    plac = ifcbin.createIfcLocalPlacement(gpl)
-                    grid = ifcfile.createIfcGrid(uid,history,name,description,None,plac,None,axes,None,None)
-                    return grid
-                else:
-                    return axes[0]
+                    print("DEBUG: exportIFC.create_annotation: Cannot create more than one axis",anno.Label)
+                return axes[0]
             else:
                 print("Unable to handle object",anno.Label)
                 return None

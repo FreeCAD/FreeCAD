@@ -22,7 +22,7 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-#include <cfloat>
+#include <limits>
 #endif
 
 #include <Base/QuantityPy.h>
@@ -37,7 +37,8 @@ using namespace Base;
 using namespace std;
 
 
-const PropertyQuantityConstraint::Constraints LengthStandard = {0.0, DBL_MAX, 1.0};
+const PropertyQuantityConstraint::Constraints LengthStandard = {
+    0.0, std::numeric_limits<double>::max(), 1.0};
 const PropertyQuantityConstraint::Constraints AngleStandard = {-360, 360, 1.0};
 
 //**************************************************************************
@@ -401,6 +402,17 @@ TYPESYSTEM_SOURCE(App::PropertySurfaceChargeDensity, App::PropertyQuantity)
 PropertySurfaceChargeDensity::PropertySurfaceChargeDensity()
 {
     setUnit(Base::Unit::SurfaceChargeDensity);
+}
+
+//**************************************************************************
+// PropertyVolumeChargeDensity
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+TYPESYSTEM_SOURCE(App::PropertyVolumeChargeDensity, App::PropertyQuantity)
+
+PropertyVolumeChargeDensity::PropertyVolumeChargeDensity()
+{
+    setUnit(Base::Unit::VolumeChargeDensity);
 }
 
 //**************************************************************************

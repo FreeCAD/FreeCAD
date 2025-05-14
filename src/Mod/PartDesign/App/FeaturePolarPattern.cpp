@@ -23,6 +23,7 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
+# include <limits>
 # include <TopoDS.hxx>
 # include <TopoDS_Face.hxx>
 # include <gp_Lin.hxx>
@@ -48,7 +49,8 @@ namespace PartDesign {
 
 PROPERTY_SOURCE(PartDesign::PolarPattern, PartDesign::Transformed)
 
-const App::PropertyIntegerConstraint::Constraints PolarPattern::intOccurrences = { 1, INT_MAX, 1 };
+const App::PropertyIntegerConstraint::Constraints PolarPattern::intOccurrences = {
+    1, std::numeric_limits<int>::max(), 1 };
 const App::PropertyAngle::Constraints PolarPattern::floatAngle = { Base::toDegrees<double>(Precision::Angular()), 360.0, 1.0 };
 
 const char* PolarPattern::ModeEnums[] = {"angle", "offset", nullptr};
@@ -129,6 +131,8 @@ const std::list<gp_Trsf> PolarPattern::getTransformations(const std::vector<App:
         axdir = gp_Dir(dir.x, dir.y, dir.z);
     } else if (refObject->isDerivedFrom<App::Line>()) {
         App::Line* line = static_cast<App::Line*>(refObject);
+        Base::Vector3d base = line->getBasePoint();
+        axbase = gp_Pnt(base.x, base.y, base.z);
         Base::Vector3d d = line->getDirection();
         axdir = gp_Dir(d.x, d.y, d.z);
     } else if (refObject->isDerivedFrom<Part::Feature>()) {

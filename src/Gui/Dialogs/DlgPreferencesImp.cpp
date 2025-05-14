@@ -317,8 +317,7 @@ void DlgPreferencesImp::createPageInGroup(PreferencesPageItem *groupItem, const 
         PreferencePage* page = createPreferencePage(pageName, groupItem->data(GroupNameRole).toString().toStdString());
 
         if (!page) {
-            Base::Console().Warning("%s is not a preference page\n", pageName.c_str());
-
+            Base::Console().warning("%s is not a preference page\n", pageName.c_str());
             return;
         }
 
@@ -344,11 +343,11 @@ void DlgPreferencesImp::createPageInGroup(PreferencesPageItem *groupItem, const 
         addSizeHint(page);
     }
     catch (const Base::Exception& e) {
-        Base::Console().Error("Base exception thrown for '%s'\n", pageName.c_str());
-        e.ReportException();
+        Base::Console().error("Base exception thrown for '%s'\n", pageName.c_str());
+        e.reportException();
     }
     catch (const std::exception& e) {
-        Base::Console().Error("C++ exception thrown for '%s' (%s)\n", pageName.c_str(), e.what());
+        Base::Console().error("C++ exception thrown for '%s' (%s)\n", pageName.c_str(), e.what());
     }
 }
 
@@ -759,7 +758,7 @@ void DlgPreferencesImp::applyChanges()
 void DlgPreferencesImp::restartIfRequired()
 {
     if (restartRequired) {
-        QMessageBox restartBox;
+        QMessageBox restartBox(parentWidget()); // current window likely already closed, cant parent to it
 
         restartBox.setIcon(QMessageBox::Warning);
         restartBox.setWindowTitle(tr("Restart required"));

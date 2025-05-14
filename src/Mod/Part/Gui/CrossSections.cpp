@@ -23,7 +23,7 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <cfloat>
+# include <limits>
 # include <QFuture>
 # include <QKeyEvent>
 
@@ -126,9 +126,10 @@ CrossSections::CrossSections(const Base::BoundBox3d& bb, QWidget* parent, Qt::Wi
     ui->setupUi(this);
     setupConnections();
 
-    ui->position->setRange(-DBL_MAX, DBL_MAX);
+    constexpr double max = std::numeric_limits<double>::max();
+    ui->position->setRange(-max, max);
     ui->position->setUnit(Base::Unit::Length);
-    ui->distance->setRange(0, DBL_MAX);
+    ui->distance->setRange(0, max);
     ui->distance->setUnit(Base::Unit::Length);
     vp = new ViewProviderCrossSections();
 
@@ -260,8 +261,7 @@ void CrossSections::apply()
         App::Document* doc = (*it)->getDocument();
         std::string s = (*it)->getNameInDocument();
         s += "_cs";
-        Part::Feature* section = static_cast<Part::Feature*>
-            (doc->addObject("Part::Feature",s.c_str()));
+        auto* section = doc->addObject<Part::Feature>(s.c_str());
         section->Shape.setValue(comp);
         section->purgeTouched();
     }
@@ -273,21 +273,21 @@ void CrossSections::apply()
         App::Document* doc = it->getDocument();
         std::string s = it->getNameInDocument();
         s += "_cs";
-        Gui::Command::runCommand(Gui::Command::App, QString::fromLatin1(
+        Gui::Command::runCommand(Gui::Command::App, QStringLiteral(
             "wires=list()\n"
             "shape=FreeCAD.getDocument(\"%1\").%2.Shape\n")
             .arg(QLatin1String(doc->getName()),
                  QLatin1String(it->getNameInDocument())).toLatin1());
 
         for (double jt : d) {
-            Gui::Command::runCommand(Gui::Command::App, QString::fromLatin1(
+            Gui::Command::runCommand(Gui::Command::App, QStringLiteral(
                 "for i in shape.slice(Base.Vector(%1,%2,%3),%4):\n"
                 "    wires.append(i)\n"
                 ).arg(a).arg(b).arg(c).arg(jt).toLatin1());
             seq.next();
         }
 
-        Gui::Command::runCommand(Gui::Command::App, QString::fromLatin1(
+        Gui::Command::runCommand(Gui::Command::App, QStringLiteral(
             "comp=Part.Compound(wires)\n"
             "slice=FreeCAD.getDocument(\"%1\").addObject(\"Part::Feature\",\"%2\")\n"
             "slice.Shape=comp\n"

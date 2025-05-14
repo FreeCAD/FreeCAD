@@ -40,6 +40,7 @@
 #include <Base/Console.h>
 #include <Base/Exception.h>
 #include <Base/Matrix.h>
+#include <Base/Tools.h>
 
 #include "Inventor/SoMouseWheelEvent.h"
 #include "Inventor/SoFCTransform.h"
@@ -92,6 +93,7 @@ PROPERTY_SOURCE_ABSTRACT(Gui::ViewProvider, App::TransactionalObject)
 
 ViewProvider::ViewProvider()
     : overrideMode("As Is")
+    , toggleVisibilityMode(ToggleVisibilityMode::CanToggleVisibility)
 {
     setStatus(UpdateData, true);
 
@@ -273,19 +275,19 @@ void ViewProvider::eventCallback(void * ud, SoEventCallback * node)
         }
     }
     catch (const Base::Exception& e) {
-        Base::Console().Error("Unhandled exception in ViewProvider::eventCallback: %s\n"
+        Base::Console().error("Unhandled exception in ViewProvider::eventCallback: %s\n"
                               "(Event type: %s, object type: %s)\n"
                               , e.what(), ev->getTypeId().getName().getString()
                               , self->getTypeId().getName());
     }
     catch (const std::exception& e) {
-        Base::Console().Error("Unhandled std exception in ViewProvider::eventCallback: %s\n"
+        Base::Console().error("Unhandled std exception in ViewProvider::eventCallback: %s\n"
                               "(Event type: %s, object type: %s)\n"
                               , e.what(), ev->getTypeId().getName().getString()
                               , self->getTypeId().getName());
     }
     catch (...) {
-        Base::Console().Error("Unhandled unknown C++ exception in ViewProvider::eventCallback"
+        Base::Console().error("Unhandled unknown C++ exception in ViewProvider::eventCallback"
                               " (Event type: %s, object type: %s)\n"
                               , ev->getTypeId().getName().getString()
                               , self->getTypeId().getName());
@@ -734,11 +736,11 @@ bool ViewProvider::canDropObject(App::DocumentObject* obj) const
 {
     auto vector = getExtensionsDerivedFromType<Gui::ViewProviderExtension>();
 #if FC_DEBUG
-    Base::Console().Log("Check extensions for drop\n");
+    Base::Console().log("Check extensions for drop\n");
 #endif
     for (Gui::ViewProviderExtension* ext : vector){
 #if FC_DEBUG
-        Base::Console().Log("Check extensions %s\n", ext->name().c_str());
+        Base::Console().log("Check extensions %s\n", ext->name().c_str());
 #endif
         if (ext->extensionCanDropObject(obj))
             return true;
@@ -1009,13 +1011,13 @@ Base::BoundBox3d ViewProvider::getBoundingBox(const char *subname, bool transfor
 
     if(!view)
         view  = Application::Instance->activeView();
-    auto iview = dynamic_cast<View3DInventor*>(view);
+    auto iview = qobject_cast<View3DInventor*>(view);
     if(!iview) {
         auto doc = Application::Instance->activeDocument();
         if(doc) {
             auto views = doc->getMDIViewsOfType(View3DInventor::getClassTypeId());
             if(!views.empty())
-                iview = dynamic_cast<View3DInventor*>(views.front());
+                iview = qobject_cast<View3DInventor*>(views.front());
         }
         if(!iview) {
             FC_ERR("no view");
@@ -1032,7 +1034,7 @@ Base::BoundBox3d ViewProvider::getBoundingBox(const char *subname, bool transfor
 
     SoTempPath path(20);
     path.ref();
-    if(subname && subname[0]) {
+    if(!Base::Tools::isNullOrEmpty(subname)) {
         SoDetail *det=nullptr;
         if(!getDetailPath(subname,&path,true,det)) {
             if(mode < 0)

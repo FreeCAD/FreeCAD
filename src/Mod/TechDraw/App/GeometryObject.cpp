@@ -99,16 +99,16 @@ const BaseGeomPtrVector GeometryObject::getVisibleFaceEdges(const bool smooth,
     for (auto& e : edgeGeom) {
         if (e->getHlrVisible()) {
             switch (e->getClassOfEdge()) {
-                case ecHARD:
-                case ecOUTLINE:
+                case EdgeClass::HARD:
+                case EdgeClass::OUTLINE:
                     result.push_back(e);
                     break;
-                case ecSMOOTH:
+                case EdgeClass::SMOOTH:
                     if (smoothOK) {
                         result.push_back(e);
                     }
                     break;
-                case ecSEAM:
+                case EdgeClass::SEAM:
                     if (seamOK) {
                         result.push_back(e);
                     }
@@ -162,7 +162,7 @@ void GeometryObject::projectShape(const TopoDS_Shape& inShape, const gp_Ax2& vie
         brep_hlr->Hide();
     }
     catch (const Standard_Failure& e) {
-        Base::Console().Error("GO::projectShape - OCC error - %s - while projecting shape\n",
+        Base::Console().error("GO::projectShape - OCC error - %s - while projecting shape\n",
                               e.GetMessageString());
         throw Base::RuntimeError("GeometryObject::projectShape - OCC error");
     }
@@ -250,10 +250,10 @@ void GeometryObject::projectShape(const TopoDS_Shape& inShape, const gp_Ax2& vie
 //convert the hlr output into TD Geometry
 void GeometryObject::makeTDGeometry()
 {
-//    Base::Console().Message("GO::makeTDGeometry()\n");
-    extractGeometry(TechDraw::ecHARD,                   //always show the hard&outline visible lines
+//    Base::Console().message("GO::makeTDGeometry()\n");
+    extractGeometry(EdgeClass::HARD,                   //always show the hard&outline visible lines
                         true);
-    extractGeometry(TechDraw::ecOUTLINE,
+    extractGeometry(EdgeClass::OUTLINE,
                         true);
 
     const DrawViewPart* dvp = static_cast<const DrawViewPart*>(m_parent);
@@ -262,26 +262,26 @@ void GeometryObject::makeTDGeometry()
     }
 
     if (dvp->SmoothVisible.getValue()) {
-        extractGeometry(TechDraw::ecSMOOTH, true);
+        extractGeometry(EdgeClass::SMOOTH, true);
     }
     if (dvp->SeamVisible.getValue()) {
-        extractGeometry(TechDraw::ecSEAM, true);
+        extractGeometry(EdgeClass::SEAM, true);
     }
     if ((dvp->IsoVisible.getValue()) && (dvp->IsoCount.getValue() > 0)) {
-        extractGeometry(TechDraw::ecUVISO, true);
+        extractGeometry(EdgeClass::UVISO, true);
     }
     if (dvp->HardHidden.getValue()) {
-        extractGeometry(TechDraw::ecHARD, false);
-        extractGeometry(TechDraw::ecOUTLINE, false);
+        extractGeometry(EdgeClass::HARD, false);
+        extractGeometry(EdgeClass::OUTLINE, false);
     }
     if (dvp->SmoothHidden.getValue()) {
-        extractGeometry(TechDraw::ecSMOOTH, false);
+        extractGeometry(EdgeClass::SMOOTH, false);
     }
     if (dvp->SeamHidden.getValue()) {
-        extractGeometry(TechDraw::ecSEAM, false);
+        extractGeometry(EdgeClass::SEAM, false);
     }
     if (dvp->IsoHidden.getValue() && (dvp->IsoCount.getValue() > 0)) {
-        extractGeometry(TechDraw::ecUVISO, false);
+        extractGeometry(EdgeClass::UVISO, false);
     }
 }
 
@@ -289,7 +289,7 @@ void GeometryObject::makeTDGeometry()
 //!set up a hidden line remover and project a shape with it
 void GeometryObject::projectShapeWithPolygonAlgo(const TopoDS_Shape& input, const gp_Ax2& viewAxis)
 {
-//    Base::Console().Message("GO::projectShapeWithPolygonAlgo()\n");
+//    Base::Console().message("GO::projectShapeWithPolygonAlgo()\n");
     // Clear previous Geometry
     clear();
 
@@ -329,7 +329,7 @@ void GeometryObject::projectShapeWithPolygonAlgo(const TopoDS_Shape& input, cons
         brep_hlrPoly->Update();
     }
     catch (const Standard_Failure& e) {
-        Base::Console().Error(
+        Base::Console().error(
             "GO::projectShapeWithPolygonAlgo - OCC error - %s - while projecting shape\n",
             e.GetMessageString());
         throw Base::RuntimeError("GeometryObject::projectShapeWithPolygonAlgo - OCC error");
@@ -377,7 +377,7 @@ void GeometryObject::projectShapeWithPolygonAlgo(const TopoDS_Shape& input, cons
         hidOutline =ShapeUtils::invertGeometry(hidOutline);
     }
     catch (const Standard_Failure& e) {
-        Base::Console().Error(
+        Base::Console().error(
             "GO::projectShapeWithPolygonAlgo - OCC error - %s - while extracting edges\n",
             e.GetMessageString());
         throw Base::RuntimeError("GeometryObject::projectShapeWithPolygonAlgo - OCC error occurred "
@@ -397,7 +397,7 @@ void GeometryObject::projectShapeWithPolygonAlgo(const TopoDS_Shape& input, cons
 //TODO: allow use of perspective projector
 TopoDS_Shape GeometryObject::projectSimpleShape(const TopoDS_Shape& shape, const gp_Ax2& CS)
 {
-    //    Base::Console().Message("GO::()\n");
+    //    Base::Console().message("GO::()\n");
     if (shape.IsNull()) {
         throw Base::ValueError("GO::projectSimpleShape - input shape is NULL");
     }
@@ -431,7 +431,7 @@ TopoDS_Shape GeometryObject::simpleProjection(const TopoDS_Shape& shape, const g
 
 TopoDS_Shape GeometryObject::projectFace(const TopoDS_Shape& face, const gp_Ax2& CS)
 {
-    //    Base::Console().Message("GO::projectFace()\n");
+    //    Base::Console().message("GO::projectFace()\n");
     if (face.IsNull()) {
         throw Base::ValueError("GO::projectFace - input Face is NULL");
     }
@@ -452,54 +452,54 @@ TopoDS_Shape GeometryObject::projectFace(const TopoDS_Shape& face, const gp_Ax2&
 }
 
 //!add edges meeting filter criteria for category, visibility
-void GeometryObject::extractGeometry(edgeClass category, bool hlrVisible)
+void GeometryObject::extractGeometry(EdgeClass category, bool hlrVisible)
 {
-    //    Base::Console().Message("GO::extractGeometry(%d, %d)\n", category, hlrVisible);
+    //    Base::Console().message("GO::extractGeometry(%d, %d)\n", category, hlrVisible);
     TopoDS_Shape filtEdges;
     if (hlrVisible) {
         switch (category) {
-            case ecHARD:
+            case EdgeClass::HARD:
                 filtEdges = visHard;
                 break;
-            case ecOUTLINE:
+            case EdgeClass::OUTLINE:
                 filtEdges = visOutline;
                 break;
-            case ecSMOOTH:
+            case EdgeClass::SMOOTH:
                 filtEdges = visSmooth;
                 break;
-            case ecSEAM:
+            case EdgeClass::SEAM:
                 filtEdges = visSeam;
                 break;
-            case ecUVISO:
+            case EdgeClass::UVISO:
                 filtEdges = visIso;
                 break;
             default:
-                Base::Console().Warning(
-                    "GeometryObject::ExtractGeometry - unsupported hlrVisible edgeClass: %d\n",
+                Base::Console().warning(
+                    "GeometryObject::ExtractGeometry - unsupported hlrVisible EdgeClass: %d\n",
                     static_cast<int>(category));
                 return;
         }
     }
     else {
         switch (category) {
-            case ecHARD:
+            case EdgeClass::HARD:
                 filtEdges = hidHard;
                 break;
-            case ecOUTLINE:
+            case EdgeClass::OUTLINE:
                 filtEdges = hidOutline;
                 break;
-            case ecSMOOTH:
+            case EdgeClass::SMOOTH:
                 filtEdges = hidSmooth;
                 break;
-            case ecSEAM:
+            case EdgeClass::SEAM:
                 filtEdges = hidSeam;
                 break;
-            case ecUVISO:
+            case EdgeClass::UVISO:
                 filtEdges = hidIso;
                 break;
             default:
-                Base::Console().Warning(
-                    "GeometryObject::ExtractGeometry - unsupported hidden edgeClass: %d\n",
+                Base::Console().warning(
+                    "GeometryObject::ExtractGeometry - unsupported hidden EdgeClass: %d\n",
                     static_cast<int>(category));
                 return;
         }
@@ -509,10 +509,10 @@ void GeometryObject::extractGeometry(edgeClass category, bool hlrVisible)
 }
 
 //! update edgeGeom and vertexGeom from Compound of edges
-void GeometryObject::addGeomFromCompound(TopoDS_Shape edgeCompound, edgeClass category,
+void GeometryObject::addGeomFromCompound(TopoDS_Shape edgeCompound, EdgeClass category,
                                          bool hlrVisible)
 {
-//    Base::Console().Message("GO::addGeomFromCompound(%d, %d)\n", category, hlrVisible);
+//    Base::Console().message("GO::addGeomFromCompound(%d, %d)\n", category, hlrVisible);
     if (edgeCompound.IsNull()) {
         return;    // There is no OpenCascade Geometry to be calculated
     }
@@ -552,7 +552,7 @@ void GeometryObject::addGeomFromCompound(TopoDS_Shape edgeCompound, edgeClass ca
             //            throw Base::ValueError("GeometryObject::addGeomFromCompound - baseFactory failed");
         }
 
-        base->source(0);//object geometry
+        base->source(SourceType::GEOMETRY);
         base->sourceIndex(i - 1);
         base->setClassOfEdge(category);
         base->setHlrVisible(hlrVisible);
@@ -669,7 +669,7 @@ int GeometryObject::addCosmeticVertex(Base::Vector3d pos, std::string tagString)
 // insertGeomForCE(ce)
 int GeometryObject::addCosmeticEdge(CosmeticEdge* ce)
 {
-    //    Base::Console().Message("GO::addCosmeticEdge(%X) 0\n", ce);
+    //    Base::Console().message("GO::addCosmeticEdge(%X) 0\n", ce);
     double scale = m_parent->getScale();
     TechDraw::BaseGeomPtr e = ce->scaledGeometry(scale);
     e->setCosmetic(true);
@@ -684,7 +684,7 @@ int GeometryObject::addCosmeticEdge(CosmeticEdge* ce)
 //this should be made obsolete and the variant with tag used instead
 int GeometryObject::addCosmeticEdge(Base::Vector3d start, Base::Vector3d end)
 {
-    //    Base::Console().Message("GO::addCosmeticEdge() 1 - deprec?\n");
+    //    Base::Console().message("GO::addCosmeticEdge() 1 - deprec?\n");
     gp_Pnt gp1(start.x, start.y, start.z);
     gp_Pnt gp2(end.x, end.y, end.z);
     TopoDS_Edge occEdge = BRepBuilderAPI_MakeEdge(gp1, gp2);
@@ -700,14 +700,14 @@ int GeometryObject::addCosmeticEdge(Base::Vector3d start, Base::Vector3d end)
 
 int GeometryObject::addCosmeticEdge(Base::Vector3d start, Base::Vector3d end, std::string tagString)
 {
-    //    Base::Console().Message("GO::addCosmeticEdge() 2\n");
+    //    Base::Console().message("GO::addCosmeticEdge() 2\n");
     gp_Pnt gp1(start.x, start.y, start.z);
     gp_Pnt gp2(end.x, end.y, end.z);
     TopoDS_Edge occEdge = BRepBuilderAPI_MakeEdge(gp1, gp2);
     TechDraw::BaseGeomPtr base = BaseGeom::baseFactory(occEdge);
     base->setCosmetic(true);
     base->setCosmeticTag(tagString);
-    base->source(1);//1-CosmeticEdge, 2-CenterLine
+    base->source(SourceType::COSMETICEDGE);
     base->setHlrVisible(true);
     int idx = edgeGeom.size();
     edgeGeom.push_back(base);
@@ -716,10 +716,10 @@ int GeometryObject::addCosmeticEdge(Base::Vector3d start, Base::Vector3d end, st
 
 int GeometryObject::addCosmeticEdge(TechDraw::BaseGeomPtr base, std::string tagString)
 {
-    //    Base::Console().Message("GO::addCosmeticEdge(%X, %s) 3\n", base, tagString.c_str());
+    //    Base::Console().message("GO::addCosmeticEdge(%X, %s) 3\n", base, tagString.c_str());
     base->setCosmetic(true);
     base->setHlrVisible(true);
-    base->source(1);//1-CosmeticEdge, 2-CenterLine
+    base->source(SourceType::COSMETICEDGE);
     base->setCosmeticTag(tagString);
     base->sourceIndex(-1);
     int idx = edgeGeom.size();
@@ -730,10 +730,10 @@ int GeometryObject::addCosmeticEdge(TechDraw::BaseGeomPtr base, std::string tagS
 int GeometryObject::addCenterLine(TechDraw::BaseGeomPtr base, std::string tag)
 //                                    int s, int si)
 {
-    //    Base::Console().Message("GO::addCenterLine()\n");
+    //    Base::Console().message("GO::addCenterLine()\n");
     base->setCosmetic(true);
     base->setCosmeticTag(tag);
-    base->source(2);
+    base->source(SourceType::CENTERLINE);
     //    base->sourceIndex(si);     //index into source;
     int idx = edgeGeom.size();
     edgeGeom.push_back(base);
@@ -759,24 +759,26 @@ TechDraw::DrawViewDetail* GeometryObject::isParentDetail()
 
 bool GeometryObject::isWithinArc(double theta, double first, double last, bool cw) const
 {
-    if (fabs(last - first) >= 2 * M_PI) {
+    using std::numbers::pi;
+
+    if (fabs(last - first) >= 2 * pi) {
         return true;
     }
 
     // Put params within [0, 2*pi) - not totally sure this is necessary
-    theta = fmod(theta, 2 * M_PI);
+    theta = fmod(theta, 2 * pi);
     if (theta < 0) {
-        theta += 2 * M_PI;
+        theta += 2 * pi;
     }
 
-    first = fmod(first, 2 * M_PI);
+    first = fmod(first, 2 * pi);
     if (first < 0) {
-        first += 2 * M_PI;
+        first += 2 * pi;
     }
 
-    last = fmod(last, 2 * M_PI);
+    last = fmod(last, 2 * pi);
     if (last < 0) {
-        last += 2 * M_PI;
+        last += 2 * pi;
     }
 
     if (cw) {
@@ -800,7 +802,7 @@ bool GeometryObject::isWithinArc(double theta, double first, double last, bool c
 //note bbx is scaled
 Base::BoundBox3d GeometryObject::calcBoundingBox() const
 {
-    //    Base::Console().Message("GO::calcBoundingBox() - edges: %d\n", edgeGeom.size());
+    //    Base::Console().message("GO::calcBoundingBox() - edges: %d\n", edgeGeom.size());
     Bnd_Box testBox;
     testBox.SetGap(0.0);
     if (!edgeGeom.empty()) {

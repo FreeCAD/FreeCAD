@@ -57,6 +57,7 @@
 #endif //_PreComp_
 
 #include <Base/Interpreter.h>
+#include <Base/TimeInfo.h>
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/Document.h>
@@ -384,7 +385,7 @@ TaskCheckGeometryResults::~TaskCheckGeometryResults()
     }
     catch (const Py::Exception&) {
         Base::PyException e; // extract the Python error text
-        e.ReportException();
+        e.reportException();
     }
 }
 
@@ -421,12 +422,7 @@ void TaskCheckGeometryResults::goCheck()
     reportViewStrings << QLatin1String("\n");
 
     std::string scopeName {tr("Boolean operation check...").toStdString()};
-#if OCC_VERSION_HEX < 0x070500
-    Handle(Message_ProgressIndicator) theProgress = new BOPProgressIndicator(tr("Check geometry"),
-                                                                             Gui::getMainWindow());
-    theProgress->NewScope(scopeName.c_str());
-    theProgress->Show();
-#else
+
     Handle(Message_ProgressIndicator) theProgress = new BOPProgressIndicator(tr("Check geometry"),
                                                                              Gui::getMainWindow());
     Message_ProgressRange theRange(theProgress->Start());
@@ -434,7 +430,6 @@ void TaskCheckGeometryResults::goCheck()
                                    TCollection_AsciiString(scopeName.c_str()),
                                    selection.size());
     theScope.Show();
-#endif // 0x070500
 
     for(const auto &sel :  selection) {
         selectedCount++;
@@ -515,14 +510,7 @@ void TaskCheckGeometryResults::goCheck()
             std::string label = tr("Checking").toStdString() + " ";
             label += sel.pObject->Label.getStrValue();
             label += "...";
-#if OCC_VERSION_HEX < 0x070500
-            theProgress->NewScope(label.c_str());
-            localInvalidShapeCount += goBOPSingleCheck(shape, theRoot, baseName, theProgress);
-            invalidShapes += localInvalidShapeCount;
-            theProgress->EndScope();
-            if (theProgress->UserBreak())
-              break;
-#else
+
             Message_ProgressScope theInnerScope(theScope.Next(), TCollection_AsciiString(label.c_str()), 1);
             theInnerScope.Show();
             localInvalidShapeCount += goBOPSingleCheck(shape, theRoot, baseName, theInnerScope);
@@ -530,7 +518,6 @@ void TaskCheckGeometryResults::goCheck()
             theInnerScope.Close();
             if (theScope.UserBreak())
               break;
-#endif
           }
         }
         // create an entry for shapes without errors
@@ -559,7 +546,7 @@ void TaskCheckGeometryResults::goCheck()
 void TaskCheckGeometryResults::generateReport()
 {
     QString reportString = reportViewStrings.join(QLatin1String("\n"));
-    Base::Console().Message(reportString.toStdString().c_str());
+    Base::Console().message(reportString.toStdString().c_str());
 }
 
 
@@ -690,7 +677,7 @@ void TaskCheckGeometryResults::buildShapeContent(App::DocumentObject *pObject, c
     }
     catch (Py::Exception&) {
         Base::PyException e;
-        e.ReportException();
+        e.reportException();
         stream << baseName.toLatin1().data() << std::endl;
         BRepTools_ShapeSet set;
         set.Add(shape);
@@ -704,13 +691,8 @@ QString TaskCheckGeometryResults::getShapeContentString()
   return QString::fromStdString(shapeContentString);
 }
 
-#if OCC_VERSION_HEX < 0x070500
-int TaskCheckGeometryResults::goBOPSingleCheck(const TopoDS_Shape& shapeIn, ResultEntry *theRoot, const QString &baseName,
-                                               const Handle(Message_ProgressIndicator)& theProgress)
-#else
 int TaskCheckGeometryResults::goBOPSingleCheck(const TopoDS_Shape& shapeIn, ResultEntry *theRoot, const QString &baseName,
                                                const Message_ProgressScope& theScope)
-#endif
 {
     ParameterGrp::handle group = App::GetApplication().GetUserParameter().
     GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod")->GetGroup("Part")->GetGroup("CheckGeometry");
@@ -739,13 +721,11 @@ int TaskCheckGeometryResults::goBOPSingleCheck(const TopoDS_Shape& shapeIn, Resu
   TopoDS_Shape BOPCopy = BRepBuilderAPI_Copy(shapeIn).Shape();
   BOPAlgo_ArgumentAnalyzer BOPCheck;
 
-#if OCC_VERSION_HEX < 0x070500
-  BOPCheck.SetProgressIndicator(theProgress);
-#elif OCC_VERSION_HEX < 0x070600
+#if OCC_VERSION_HEX < 0x070600
   BOPCheck.SetProgressIndicator(theScope);
 #else
   Q_UNUSED(theScope)
-#endif // 0x070500
+#endif // 0x070600
 
 
   BOPCheck.SetShape1(BOPCopy);
@@ -915,7 +895,7 @@ void TaskCheckGeometryResults::currentRowChanged (const QModelIndex &current, co
 
 bool TaskCheckGeometryResults::split(QString &input, QString &doc, QString &object, QString &sub)
 {
-    QStringList strings = input.split(QString::fromLatin1("."));
+    QStringList strings = input.split(QStringLiteral("."));
     if (strings.size() != 3)
         return false;
     doc = strings.at(0);
@@ -1440,28 +1420,6 @@ BOPProgressIndicator::~BOPProgressIndicator ()
     myProgress->close();
 }
 
-#if OCC_VERSION_HEX < 0x070500
-Standard_Boolean BOPProgressIndicator::Show (const Standard_Boolean theForce)
-{
-    if (theForce) {
-        steps = 0;
-        canceled = false;
-
-        time.start();
-        myProgress->show();
-
-        myProgress->setRange(0, 0);
-        myProgress->setValue(0);
-    }
-    else {
-        Handle(TCollection_HAsciiString) aName = GetScope(1).GetName(); //current step
-        if (!aName.IsNull())
-            myProgress->setLabelText (QString::fromUtf8(aName->ToCString()));
-    }
-
-    return Standard_True;
-}
-#else
 void BOPProgressIndicator::Show (const Message_ProgressScope& theScope,
                                  const Standard_Boolean isForce)
 {
@@ -1485,7 +1443,6 @@ void BOPProgressIndicator::Reset()
     myProgress->setRange(0, 0);
     myProgress->setValue(0);
 }
-#endif
 
 Standard_Boolean BOPProgressIndicator::UserBreak()
 {

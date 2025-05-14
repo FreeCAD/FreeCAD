@@ -1,24 +1,38 @@
-# -*- coding: utf8 -*-
-#***************************************************************************
-#*   Copyright (c) 2011 Yorik van Havre <yorik@uncreated.net>              *
-#*                                                                         *
-#*   This program is free software; you can redistribute it and/or modify  *
-#*   it under the terms of the GNU Lesser General Public License (LGPL)    *
-#*   as published by the Free Software Foundation; either version 2 of     *
-#*   the License, or (at your option) any later version.                   *
-#*   for detail see the LICENCE text file.                                 *
-#*                                                                         *
-#*   This program is distributed in the hope that it will be useful,       *
-#*   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-#*   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-#*   GNU Library General Public License for more details.                  *
-#*                                                                         *
-#*   You should have received a copy of the GNU Library General Public     *
-#*   License along with this program; if not, write to the Free Software   *
-#*   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
-#*   USA                                                                   *
-#*                                                                         *
-#***************************************************************************
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
+# ***************************************************************************
+# *                                                                         *
+# *   Copyright (c) 2011 Yorik van Havre <yorik@uncreated.net>              *
+# *                                                                         *
+# *   This file is part of FreeCAD.                                         *
+# *                                                                         *
+# *   FreeCAD is free software: you can redistribute it and/or modify it    *
+# *   under the terms of the GNU Lesser General Public License as           *
+# *   published by the Free Software Foundation, either version 2.1 of the  *
+# *   License, or (at your option) any later version.                       *
+# *                                                                         *
+# *   FreeCAD is distributed in the hope that it will be useful, but        *
+# *   WITHOUT ANY WARRANTY; without even the implied warranty of            *
+# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU      *
+# *   Lesser General Public License for more details.                       *
+# *                                                                         *
+# *   You should have received a copy of the GNU Lesser General Public      *
+# *   License along with FreeCAD. If not, see                               *
+# *   <https://www.gnu.org/licenses/>.                                      *
+# *                                                                         *
+# ***************************************************************************
+
+__title__  = "FreeCAD Arch Floor"
+__author__ = "Yorik van Havre"
+__url__    = "https://www.freecad.org"
+
+## @package ArchFloor
+#  \ingroup ARCH
+#  \brief The Floor object and tools
+#
+#  This module provides tools to build Floor objects.
+#  Floors are used to group different Arch objects situated
+#  at a same level
 
 """This module provides tools to build Floor objects. Floors are used to group
 different Arch objects situated at a same level.
@@ -33,12 +47,13 @@ import ArchCommands
 import ArchIFC
 import Draft
 import DraftVecUtils
+
 from draftutils import params
 
 if FreeCAD.GuiUp:
+    from PySide.QtCore import QT_TRANSLATE_NOOP
     import FreeCADGui
     from draftutils.translate import translate
-    from PySide.QtCore import QT_TRANSLATE_NOOP
 else:
     # \cond
     def translate(ctxt,txt):
@@ -47,17 +62,6 @@ else:
         return txt
     # \endcond
 
-## @package ArchFloor
-#  \ingroup ARCH
-#  \brief The Floor object and tools
-#
-#  This module provides tools to build Floor objects.
-#  Floors are used to group different Arch objects situated
-#  at a same level
-
-__title__  = "FreeCAD Arch Floor"
-__author__ = "Yorik van Havre"
-__url__    = "https://www.freecad.org"
 
 def makeFloor(objectslist=None,baseobj=None,name=None):
     """Obsolete, superseded by ArchBuildingPart.makeFloor.
@@ -206,12 +210,12 @@ class _Floor(ArchIFC.IfcProduct):
         ArchIFC.IfcProduct.setProperties(self, obj)
         pl = obj.PropertiesList
         if not "Height" in pl:
-            obj.addProperty("App::PropertyLength","Height","Floor",QT_TRANSLATE_NOOP("App::Property","The height of this object"))
+            obj.addProperty("App::PropertyLength","Height","Floor",QT_TRANSLATE_NOOP("App::Property","The height of this object"), locked=True)
         if not "Area" in pl:
-            obj.addProperty("App::PropertyArea","Area", "Floor",QT_TRANSLATE_NOOP("App::Property","The computed floor area of this floor"))
+            obj.addProperty("App::PropertyArea","Area", "Floor",QT_TRANSLATE_NOOP("App::Property","The computed floor area of this floor"), locked=True)
         if not hasattr(obj,"Placement"):
             # obj can be a Part Feature and already has a placement
-            obj.addProperty("App::PropertyPlacement","Placement","Base",QT_TRANSLATE_NOOP("App::Property","The placement of this object"))
+            obj.addProperty("App::PropertyPlacement","Placement","Base",QT_TRANSLATE_NOOP("App::Property","The placement of this object"), locked=True)
         self.Type = "Floor"
 
     def onDocumentRestored(self,obj):

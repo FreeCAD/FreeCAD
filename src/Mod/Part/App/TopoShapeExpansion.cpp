@@ -26,6 +26,7 @@
 #include "PreCompiled.h"
 #ifndef _PreComp_
 #include <cmath>
+#include <limits>
 
 #include <BRepAdaptor_Curve.hxx>
 #include <BRepAdaptor_CompCurve.hxx>
@@ -83,9 +84,7 @@
 
 #endif
 
-#if OCC_VERSION_HEX >= 0x070500
 #include <OSD_Parallel.hxx>
-#endif
 
 #include "modelRefine.h"
 #include "CrossSection.h"
@@ -861,7 +860,7 @@ void TopoShape::mapSubElementForShape(const TopoShape& other, const char* op)
     for (auto type : types) {
         auto& shapeMap = _cache->getAncestry(type);
         auto& otherMap = other._cache->getAncestry(type);
-        if ((shapeMap.count() == 0) || (otherMap.count() == 0)) {
+        if ((shapeMap.empty()) || (otherMap.empty())) {
             continue;
         }
 
@@ -1451,7 +1450,7 @@ TopoShape& TopoShape::makeShapeWithElementMap(const TopoDS_Shape& shape,
                 continue;
             }
             auto& otherMap = incomingShape._cache->getAncestry(info.type);
-            if (otherMap.count() == 0) {
+            if (otherMap.empty()) {
                 continue;
             }
             for (int i = 1; i <= otherMap.count(); i++) {
@@ -1613,6 +1612,7 @@ TopoShape& TopoShape::makeShapeWithElementMap(const TopoDS_Shape& shape,
     bool delayed = false;
 
     while (true) {
+        constexpr int intMin = std::numeric_limits<int>::min();
 
         // Construct the names for modification/generation info collected in
         // the previous step
@@ -1634,7 +1634,7 @@ TopoShape& TopoShape::makeShapeWithElementMap(const TopoDS_Shape& shape,
             const auto& first_key = names.begin()->first;
             auto& first_info = names.begin()->second;
 
-            if (!delayed && first_key.shapetype >= 3 && first_info.index > INT_MIN + 1) {
+            if (!delayed && first_key.shapetype >= 3 && first_info.index > intMin + 1) {
                 // This name is mapped from high level (shell, solid, etc.)
                 // Delay till next round.
                 //
@@ -1682,10 +1682,10 @@ TopoShape& TopoShape::makeShapeWithElementMap(const TopoDS_Shape& shape,
                         // 'K' marks the additional source shape of this
                         // generate (or modified) shape.
                         ss2 << elementMapPrefix() << 'K';
-                        if (other_info.index == INT_MIN) {
+                        if (other_info.index == intMin) {
                             ss2 << '0';
                         }
-                        else if (other_info.index == INT_MIN + 1) {
+                        else if (other_info.index == intMin + 1) {
                             ss2 << "00";
                         }
                         else {
@@ -1742,10 +1742,10 @@ TopoShape& TopoShape::makeShapeWithElementMap(const TopoDS_Shape& shape,
             else {
                 ss << modgenPostfix();
             }
-            if (first_info.index == INT_MIN) {
+            if (first_info.index == intMin) {
                 ss << '0';
             }
-            else if (first_info.index == INT_MIN + 1) {
+            else if (first_info.index == intMin + 1) {
                 ss << "00";
             }
             else if (abs(first_info.index) > 1) {
@@ -2055,6 +2055,27 @@ TopoShape TopoShape::getSubTopoShape(TopAbs_ShapeEnum type, int idx, bool silent
     }
 
     return shapeMap.getTopoShape(*this, idx);
+}
+
+static const std::string& _getElementMapVersion()
+{
+    static std::string _ver;
+    if (_ver.empty()) {
+        std::ostringstream ss;
+        // Stabilize the reported OCCT version: report 7.2.0 as the version so that we aren't
+        // constantly inadvertently reporting differing versions. This is retained for
+        // cross-compatibility with LinkStage3 (which retains supporting code for OCCT 6.x,
+        // removed here).
+        unsigned occ_ver {0x070200};
+        ss << OpCodes::Version << '.' << std::hex << occ_ver << '.';
+        _ver = ss.str();
+    }
+    return _ver;
+}
+
+std::string TopoShape::getElementMapVersion() const
+{
+    return _getElementMapVersion() + Data::ComplexGeoData::getElementMapVersion();
 }
 
 TopoShape& TopoShape::makeElementEvolve(const TopoShape& spine,
@@ -2640,9 +2661,7 @@ TopoShape& TopoShape::makeElementOffset2D(const TopoShape& shape,
     if (shape.isNull()) {
         FC_THROWM(Base::ValueError, "makeOffset2D: input shape is null!");
     }
-    if (allowOpenResult == OpenResult::allowOpenResult && OCC_VERSION_HEX < 0x060900) {
-        FC_THROWM(Base::AttributeError, "openResult argument is not supported on OCC < 6.9.0.");
-    }
+
 
     // OUTLINE OF MAKEOFFSET2D
     // * Prepare shapes to process
@@ -4187,7 +4206,7 @@ TopoShape& TopoShape::makeElementLoft(const std::vector<TopoShape>& shapes,
             - W1-W2-W3-V1     ==> W1-W2-W3-V1-W1     invalid closed
             - W1-W2-W3        ==> W1-W2-W3-W1        valid closed*/
         if (profiles.back().getShape().ShapeType() == TopAbs_VERTEX) {
-            Base::Console().Message("TopoShape::makeLoft: can't close Loft with Vertex as last "
+            Base::Console().message("TopoShape::makeLoft: can't close Loft with Vertex as last "
                                     "profile. 'Closed' ignored.\n");
         }
         else {
@@ -5721,17 +5740,8 @@ TopoShape& TopoShape::makeElementBoolean(const char* maker,
         }
     }
 
-#if OCC_VERSION_HEX >= 0x070500
-    // -1/22/2024 Removing the parameter.
-    // if (PartParams::getParallelRunThreshold() > 0) {
     mk->SetRunParallel(Standard_True);
     OSD_Parallel::SetUseOcctThreads(Standard_True);
-    // }
-#else
-    // 01/22/2024 This will be an extremely rare case, since we don't
-    // build against OCCT versions this old.  Removing the parameter.
-    mk->SetRunParallel(true);
-#endif
 
     mk->SetArguments(shapeArguments);
     mk->SetTools(shapeTools);

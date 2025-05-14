@@ -24,10 +24,8 @@
 
 #ifndef _PreComp_
 
-// to avoid compiler warnings of redefining contents of basic.h
-// later by #include <Gui/ViewProvider.h>
-# define _USE_MATH_DEFINES
 # include <cmath>
+# include <limits>
 
 # include <gp_Ax2.hxx>
 # include <gp_Circ.hxx>
@@ -40,7 +38,6 @@
 # include <TopoDS_Face.hxx>
 # include <TopExp_Explorer.hxx>
 
-# include <cfloat>
 # include <QMessageBox>
 # include <QRegularExpression>
 # include <QTreeWidget>
@@ -182,9 +179,10 @@ Mirroring::Mirroring(QWidget* parent)
   : QWidget(parent), ui(new Ui_Mirroring)
 {
     ui->setupUi(this);
-    ui->baseX->setRange(-DBL_MAX, DBL_MAX);
-    ui->baseY->setRange(-DBL_MAX, DBL_MAX);
-    ui->baseZ->setRange(-DBL_MAX, DBL_MAX);
+    constexpr double max = std::numeric_limits<double>::max();
+    ui->baseX->setRange(-max, max);
+    ui->baseY->setRange(-max, max);
+    ui->baseZ->setRange(-max, max);
     ui->baseX->setUnit(Base::Unit::Length);
     ui->baseY->setUnit(Base::Unit::Length);
     ui->baseZ->setUnit(Base::Unit::Length);
@@ -326,9 +324,9 @@ bool Mirroring::accept()
         int pos = label.indexOf(rx);
         if (pos > -1)
             label = label.left(pos);
-        label.append(QString::fromLatin1(" (Mirror #%1)").arg(++count));
+        label.append(QStringLiteral(" (Mirror #%1)").arg(++count));
 
-        QString code = QString::fromLatin1(
+        QString code = QStringLiteral(
             "__doc__=FreeCAD.getDocument(\"%1\")\n"
             "__doc__.addObject(\"Part::Mirroring\")\n"
             "__doc__.ActiveObject.Source=__doc__.getObject(\"%2\")\n"

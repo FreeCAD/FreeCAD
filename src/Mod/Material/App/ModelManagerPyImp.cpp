@@ -43,7 +43,7 @@ std::string ModelManagerPy::representation() const
 PyObject* ModelManagerPy::PyMake(struct _typeobject*, PyObject*, PyObject*)  // Python wrapper
 {
     // never create such objects with the constructor
-    return new ModelManagerPy(new ModelManager());
+    return new ModelManagerPy(&(ModelManager::getManager()));
 }
 
 // constructor method
@@ -64,16 +64,16 @@ PyObject* ModelManagerPy::getModel(PyObject* args)
         return new ModelPy(new Model(*model));
     }
     catch (ModelNotFound const&) {
-        QString error = QString::fromStdString("Model not found:\n");
+        QString error = QStringLiteral("Model not found:\n");
         auto _modelMap = getModelManagerPtr()->getModels();
-        error += QString::fromStdString("ModelMap:\n");
+        error += QStringLiteral("ModelMap:\n");
         for (auto itp = _modelMap->begin(); itp != _modelMap->end(); itp++) {
-            error += QString::fromStdString("\t_modelMap[") + itp->first
-                + QString::fromStdString("] = '") + itp->second->getName()
-                + QString::fromStdString("'\n");
+            error += QStringLiteral("\t_modelMap[") + itp->first
+                + QStringLiteral("] = '") + itp->second->getName()
+                + QStringLiteral("'\n");
         }
-        error += QString::fromStdString("\tuuid = '") + QString::fromStdString(uuid)
-            + QString::fromStdString("'\n");
+        error += QStringLiteral("\tuuid = '") + QString::fromStdString(uuid)
+            + QStringLiteral("'\n");
         PyErr_SetString(PyExc_LookupError, error.toStdString().c_str());
         return nullptr;
     }
@@ -116,7 +116,7 @@ PyObject* ModelManagerPy::getModelByPath(PyObject* args)
 
 Py::List ModelManagerPy::getModelLibraries() const
 {
-    auto libraries = getModelManagerPtr()->getModelLibraries();
+    auto libraries = getModelManagerPtr()->getLibraries();
     Py::List list;
 
     for (auto it = libraries->begin(); it != libraries->end(); it++) {
@@ -125,6 +125,26 @@ Py::List ModelManagerPy::getModelLibraries() const
         libTuple.setItem(0, Py::String(lib->getName().toStdString()));
         libTuple.setItem(1, Py::String(lib->getDirectoryPath().toStdString()));
         libTuple.setItem(2, Py::String(lib->getIconPath().toStdString()));
+        libTuple.setItem(3, Py::Boolean(lib->isReadOnly()));
+
+        list.append(libTuple);
+    }
+
+    return list;
+}
+
+Py::List ModelManagerPy::getLocalModelLibraries() const
+{
+    auto libraries = getModelManagerPtr()->getLocalLibraries();
+    Py::List list;
+
+    for (auto it = libraries->begin(); it != libraries->end(); it++) {
+        auto lib = *it;
+        Py::Tuple libTuple(3);
+        libTuple.setItem(0, Py::String(lib->getName().toStdString()));
+        libTuple.setItem(1, Py::String(lib->getDirectoryPath().toStdString()));
+        libTuple.setItem(2, Py::String(lib->getIconPath().toStdString()));
+        libTuple.setItem(3, Py::Boolean(lib->isReadOnly()));
 
         list.append(libTuple);
     }

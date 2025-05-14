@@ -141,7 +141,11 @@ bool Transaction::isEmpty() const
 
 bool Transaction::hasObject(const TransactionalObject* Obj) const
 {
+#if BOOST_VERSION < 107500
     return !!_Objects.get<1>().count(Obj);
+#else
+    return !!_Objects.get<1>().contains(Obj);
+#endif
 }
 
 void Transaction::addOrRemoveProperty(TransactionalObject* Obj, const Property* pcProp, bool add)
@@ -183,7 +187,7 @@ void Transaction::apply(Document& Doc, bool forward)
         }
     }
     catch (Base::Exception& e) {
-        e.ReportException();
+        e.reportException();
         errMsg = e.what();
     }
     catch (std::exception& e) {
@@ -364,7 +368,7 @@ void TransactionObject::applyChn(Document& /*Doc*/, TransactionalObject* pcObj, 
                 prop->Paste(*data.property);
             }
             catch (Base::Exception& e) {
-                e.ReportException();
+                e.reportException();
                 FC_ERR("exception while restoring " << prop->getFullName() << ": " << e.what());
             }
             catch (std::exception& e) {
@@ -464,7 +468,6 @@ void TransactionDocumentObject::applyDel(Document& Doc, TransactionalObject* pcO
     if (status == Del) {
         DocumentObject* obj = static_cast<DocumentObject*>(pcObj);
 
-#ifndef USE_OLD_DAG
         // Make sure the backlinks of all linked objects are updated. As the links of the removed
         // object are never set to [] they also do not remove the backlink. But as they are
         // not in the document anymore we need to remove them anyway to ensure a correct graph
@@ -472,7 +475,6 @@ void TransactionDocumentObject::applyDel(Document& Doc, TransactionalObject* pcO
         for (auto link : list) {
             link->_removeBackLink(obj);
         }
-#endif
 
         // simply filling in the saved object
         Doc._removeObject(obj);
@@ -485,13 +487,11 @@ void TransactionDocumentObject::applyNew(Document& Doc, TransactionalObject* pcO
         DocumentObject* obj = static_cast<DocumentObject*>(pcObj);
         Doc._addObject(obj, _NameInDocument.c_str());
 
-#ifndef USE_OLD_DAG
         // make sure the backlinks of all linked objects are updated
         auto list = obj->getOutList();
         for (auto link : list) {
             link->_addBackLink(obj);
         }
-#endif
     }
 }
 

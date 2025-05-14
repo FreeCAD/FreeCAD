@@ -25,35 +25,44 @@
 
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
-#include <DrawViewDimension.h>
+//#include <DrawViewDimension.h> Cyclic dependency issue!
 
 
 namespace TechDraw {
+class DrawViewDimension;
 
+//TODO: Why is this a class if it has no state???
 class TechDrawExport DimensionFormatter {
 public:
-    DimensionFormatter() {}
-    DimensionFormatter(DrawViewDimension* dim) { m_dimension = dim; }
+    enum class Format : int {
+        UNALTERED, // return the unaltered user string from the Units subsystem
+        FORMATTED, // return value formatted according to the format spec and
+                   // preferences for useAltDecimals and showUnits
+        UNIT       // return only the unit of measure
+    };
+
+    DimensionFormatter() = default;
+    explicit DimensionFormatter(DrawViewDimension* dim)
+        : m_dimension {dim}
+    {}
     ~DimensionFormatter() = default;
 
-    void setDimension(DrawViewDimension* dim) { m_dimension = dim; }
+    //void setDimension(DrawViewDimension* dim) { m_dimension = dim; }
     bool isMultiValueSchema() const;
-    std::string formatValue(const qreal value,
-                            const QString& qFormatSpec,
-                            const int partial,
-                            const bool isDim) const;
-    std::string getFormattedToleranceValue(const int partial) const;
-    std::pair<std::string, std::string> getFormattedToleranceValues(const int partial) const;
-    std::string getFormattedDimensionValue(const int partial) const;
+    std::string formatValue(qreal value, const QString& qFormatSpec, Format partial, bool isDim) const;
+    std::string getFormattedToleranceValue(Format partial) const;
+    std::pair<std::string, std::string> getFormattedToleranceValues(Format partial) const;
+    std::string getFormattedDimensionValue(Format partial) const;
     QStringList getPrefixSuffixSpec(const QString& fSpec) const;
     std::string getDefaultFormatSpec(bool isToleranceFormat) const;
-    bool isTooSmall(const double value, const QString& formatSpec) const;
-    QString formatValueToSpec(const double value, const QString& formatSpecifier) const;
-    bool isNumericFormat(const QString& formatSpecifier) const;
 
 private:
-    DrawViewDimension* m_dimension;
+    bool isTooSmall(double value, const QString& formatSpec) const;
+    QString formatValueToSpec(double value, QString formatSpecifier) const;
+    bool isNumericFormat(const QString& formatSpecifier) const;
+
+    DrawViewDimension* m_dimension {nullptr};
 };
 
-} //end namespace TechDraw
+}  // end namespace TechDraw
 #endif

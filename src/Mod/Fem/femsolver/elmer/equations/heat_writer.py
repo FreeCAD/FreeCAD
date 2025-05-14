@@ -81,12 +81,17 @@ class Heatwriter:
                 "Convection",
                 "Equation",
                 "Type of convection to be used",
+                locked=True,
             )
             equation.Convection = heat.CONVECTION_TYPE
             equation.Convection = "None"
         if not hasattr(equation, "PhaseChangeModel"):
             equation.addProperty(
-                "App::PropertyEnumeration", "PhaseChangeModel", "Equation", "Model for phase change"
+                "App::PropertyEnumeration",
+                "PhaseChangeModel",
+                "Equation",
+                "Model for phase change",
+                locked=True,
             )
             equation.PhaseChangeModel = heat.PHASE_CHANGE_MODEL
             equation.PhaseChangeModel = "None"

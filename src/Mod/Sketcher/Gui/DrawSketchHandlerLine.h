@@ -183,10 +183,10 @@ private:
     QString getCrosshairCursorSVGName() const override
     {
         if (constructionMethod() == ConstructionMethod::OnePointLengthAngle) {
-            return QString::fromLatin1("Sketcher_Pointer_Create_Line_Polar");
+            return QStringLiteral("Sketcher_Pointer_Create_Line_Polar");
         }
         else {
-            return QString::fromLatin1("Sketcher_Pointer_Create_Line.svg");
+            return QStringLiteral("Sketcher_Pointer_Create_Line.svg");
         }
     }
 
@@ -409,8 +409,9 @@ void DSHLineControllerBase::doEnforceControlParameters(Base::Vector2d& onSketchP
                 if (onViewParameters[OnViewParameter::Fourth]->isSet) {
                     double angle =
                         Base::toRadians(onViewParameters[OnViewParameter::Fourth]->getValue());
-                    onSketchPos.x = handler->startPoint.x + cos(angle) * length;
-                    onSketchPos.y = handler->startPoint.y + sin(angle) * length;
+                    Base::Vector2d ovpDir(cos(angle), sin(angle));
+                    onSketchPos.ProjectToLine(onSketchPos - handler->startPoint, ovpDir);
+                    onSketchPos += handler->startPoint;
                 }
             }
             else {
@@ -491,6 +492,15 @@ void DSHLineController::adaptParameters(Base::Vector2d onSketchPos)
                     setOnViewParameterValue(OnViewParameter::Fourth,
                                             Base::toDegrees(range),
                                             Base::Unit::Angle);
+                }
+                else if (vec.Length() > Precision::Confusion()) {
+                    double ovpRange =
+                        Base::toRadians(onViewParameters[OnViewParameter::Fourth]->getValue());
+                    if (fabs(range - ovpRange) > Precision::Confusion()) {
+                        setOnViewParameterValue(OnViewParameter::Fourth,
+                                                Base::toDegrees(range),
+                                                Base::Unit::Angle);
+                    }
                 }
 
                 onViewParameters[OnViewParameter::Third]->setPoints(start, end);
@@ -636,16 +646,17 @@ void DSHLineController::addConstraints()
     };
 
     auto constraintp4angle = [&]() {
+        using std::numbers::pi;
+
         double angle = Base::toRadians(p4);
-        if (fabs(angle - M_PI) < Precision::Confusion()
-            || fabs(angle + M_PI) < Precision::Confusion()
+        if (fabs(angle - pi) < Precision::Confusion() || fabs(angle + pi) < Precision::Confusion()
             || fabs(angle) < Precision::Confusion()) {
             Gui::cmdAppObjectArgs(obj,
                                   "addConstraint(Sketcher.Constraint('Horizontal',%d)) ",
                                   firstCurve);
         }
-        else if (fabs(angle - M_PI / 2) < Precision::Confusion()
-                 || fabs(angle + M_PI / 2) < Precision::Confusion()) {
+        else if (fabs(angle - pi / 2) < Precision::Confusion()
+                 || fabs(angle + pi / 2) < Precision::Confusion()) {
             Gui::cmdAppObjectArgs(obj,
                                   "addConstraint(Sketcher.Constraint('Vertical',%d)) ",
                                   firstCurve);

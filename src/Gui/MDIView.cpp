@@ -23,7 +23,7 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <boost_signals2.hpp>
+# include <boost/signals2.hpp>
 # include <boost/core/ignore_unused.hpp>
 # include <QApplication>
 # include <QEvent>
@@ -40,6 +40,7 @@
 #include <Base/Interpreter.h>
 #include <App/Document.h>
 #include <App/Application.h>
+#include <Gui/PreferencePages/DlgSettingsPDF.h>
 
 #include "MDIView.h"
 #include "MDIViewPy.h"
@@ -169,7 +170,7 @@ void MDIView::onRelabel(Gui::Document *pDoc)
         }
         else {
             cap = QString::fromUtf8(pDoc->getDocument()->Label.getValue());
-            cap = QString::fromLatin1("%1[*]").arg(cap);
+            cap = QStringLiteral("%1[*]").arg(cap);
             setWindowTitle(cap);
         }
     }
@@ -258,11 +259,13 @@ void MDIView::print()
 void MDIView::printPdf()
 {
     QString filename = FileDialog::getSaveFileName(this, tr("Export PDF"), QString(),
-        QString::fromLatin1("%1 (*.pdf)").arg(tr("PDF file")));
+        QStringLiteral("%1 (*.pdf)").arg(tr("PDF file")));
     if (!filename.isEmpty()) {
         QPrinter printer(QPrinter::ScreenResolution);
-        // setPdfVersion sets the printied PDF Version to comply with PDF/A-1b, more details under: https://www.kdab.com/creating-pdfa-documents-qt/
-        printer.setPdfVersion(QPagedPaintDevice::PdfVersion_A1b);
+        // setPdfVersion sets the printed PDF Version to what is chosen in
+        // Preferences/Import-Export/PDF more details under:
+        // https://www.kdab.com/creating-pdfa-documents-qt/
+        printer.setPdfVersion(Gui::Dialog::DlgSettingsPDF::evaluatePDFVersion());
         printer.setOutputFormat(QPrinter::PdfFormat);
         printer.setOutputFileName(filename);
         printer.setCreator(QString::fromStdString(App::Application::getNameWithVersion()));

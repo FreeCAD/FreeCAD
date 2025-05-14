@@ -72,11 +72,11 @@ Pipe::Pipe()
     ADD_PROPERTY_TYPE(Spine, (nullptr), "Sweep", App::Prop_None, "Path to sweep along");
     ADD_PROPERTY_TYPE(SpineTangent, (false), "Sweep", App::Prop_None,
         "Include tangent edges into path");
-    ADD_PROPERTY_TYPE(AuxillerySpine, (nullptr), "Sweep", App::Prop_None,
+    ADD_PROPERTY_TYPE(AuxiliarySpine, (nullptr), "Sweep", App::Prop_None,
         "Secondary path to orient sweep");
-    ADD_PROPERTY_TYPE(AuxillerySpineTangent, (false), "Sweep", App::Prop_None,
+    ADD_PROPERTY_TYPE(AuxiliarySpineTangent, (false), "Sweep", App::Prop_None,
         "Include tangent edges into secondary path");
-    ADD_PROPERTY_TYPE(AuxilleryCurvelinear, (true), "Sweep", App::Prop_None,
+    ADD_PROPERTY_TYPE(AuxiliaryCurvilinear, (true), "Sweep", App::Prop_None,
         "Calculate normal between equidistant points on both spines");
     ADD_PROPERTY_TYPE(Mode, (long(0)), "Sweep", App::Prop_None, "Profile mode");
     ADD_PROPERTY_TYPE(Binormal, (Base::Vector3d()), "Sweep", App::Prop_None,
@@ -104,11 +104,7 @@ short Pipe::mustExecute() const
 
 App::DocumentObjectExecReturn *Pipe::execute()
 {
-    if (onlyHasToRefine()){
-        TopoShape result = refineShapeIfActive(rawShape);
-        Shape.setValue(result);
-        return App::DocumentObject::StdReturn;
-    }
+    if (onlyHaveRefined()) { return App::DocumentObject::StdReturn; }
 
     auto getSectionShape = [](App::DocumentObject* feature,
                               const std::vector<std::string>& subs) -> TopoDS_Shape {
@@ -195,10 +191,10 @@ App::DocumentObjectExecReturn *Pipe::execute()
         // auxiliary
         TopoDS_Shape auxpath;
         if (Mode.getValue() == 3) {
-            App::DocumentObject* auxspine = AuxillerySpine.getValue();
+            App::DocumentObject* auxspine = AuxiliarySpine.getValue();
             if (!(auxspine && auxspine->isDerivedFrom<Part::Feature>()))
                 return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "No auxiliary spine linked."));
-            std::vector<std::string> auxsubedge = AuxillerySpine.getSubValues();
+            std::vector<std::string> auxsubedge = AuxiliarySpine.getSubValues();
 
             const Part::TopoShape& auxshape =
                 static_cast<Part::Feature*>(auxspine)->Shape.getValue();
@@ -483,8 +479,8 @@ void Pipe::setupAlgorithm(BRepOffsetAPI_MakePipeShell& mkPipeShell, const TopoDS
     }
 
     if (auxiliary) {
-        mkPipeShell.SetMode(TopoDS::Wire(auxshape), AuxilleryCurvelinear.getValue());
-        // mkPipeShell.SetMode(TopoDS::Wire(auxshape), AuxilleryCurvelinear.getValue(),
+        mkPipeShell.SetMode(TopoDS::Wire(auxshape), AuxiliaryCurvilinear.getValue());
+        // mkPipeShell.SetMode(TopoDS::Wire(auxshape), AuxiliaryCurvilinear.getValue(),
         // BRepFill_ContactOnBorder);
     }
 }
@@ -498,9 +494,9 @@ void Pipe::getContinuousEdges(Part::TopoShape /*TopShape*/, std::vector<std::str
     TopExp::MapShapesAndAncestors(TopShape.getShape(), TopAbs_EDGE, TopAbs_EDGE, mapEdgeEdge);
     TopExp::MapShapes(TopShape.getShape(), TopAbs_EDGE, mapOfEdges);
 
-    Base::Console().Message("Initial edges:\n");
+    Base::Console().message("Initial edges:\n");
     for (int i=0; i<SubNames.size(); ++i)
-        Base::Console().Message("Subname: %s\n", SubNames[i].c_str());
+        Base::Console().message("Subname: %s\n", SubNames[i].c_str());
 
     unsigned int i = 0;
     while(i < SubNames.size())
@@ -535,9 +531,9 @@ void Pipe::getContinuousEdges(Part::TopoShape /*TopShape*/, std::vector<std::str
         }
     }
 
-    Base::Console().Message("Final edges:\n");
+    Base::Console().message("Final edges:\n");
     for (int i=0; i<SubNames.size(); ++i)
-        Base::Console().Message("Subname: %s\n", SubNames[i].c_str());
+        Base::Console().message("Subname: %s\n", SubNames[i].c_str());
     */
 }
 
@@ -615,5 +611,31 @@ void Pipe::handleChangedPropertyType(Base::XMLReader& reader, const char* TypeNa
     }
     else {
         ProfileBased::handleChangedPropertyType(reader, TypeName, prop);
+    }
+}
+
+void Pipe::handleChangedPropertyName(Base::XMLReader& reader,
+                                     const char* TypeName,
+                                     const char* PropName)
+{
+    // The AuxiliarySpine property was AuxillerySpine in the past
+    std::string strAuxillerySpine("AuxillerySpine");
+    // The AuxiliarySpineTangent property was AuxillerySpineTangent in the past
+    std::string strAuxillerySpineTangent("AuxillerySpineTangent");
+    // The AuxiliaryCurvilinear property was AuxilleryCurvelinear in the past
+    std::string strAuxilleryCurvelinear("AuxilleryCurvelinear");
+    Base::Type type = Base::Type::fromName(TypeName);
+    if (AuxiliarySpine.getClassTypeId() == type && strAuxillerySpine == PropName) {
+        AuxiliarySpine.Restore(reader);
+    }
+    else if (AuxiliarySpineTangent.getClassTypeId() == type
+             && strAuxillerySpineTangent == PropName) {
+        AuxiliarySpineTangent.Restore(reader);
+    }
+    else if (AuxiliaryCurvilinear.getClassTypeId() == type && strAuxilleryCurvelinear == PropName) {
+        AuxiliaryCurvilinear.Restore(reader);
+    }
+    else {
+        ProfileBased::handleChangedPropertyName(reader, TypeName, PropName);
     }
 }

@@ -212,7 +212,7 @@ QString DocumentRecovery::createProjectFile(const QString& documentXml)
 {
     QString source = documentXml;
     QFileInfo fi(source);
-    QString dest = fi.dir().absoluteFilePath(QString::fromLatin1("fc_recovery_file.fcstd"));
+    QString dest = fi.dir().absoluteFilePath(QStringLiteral("fc_recovery_file.fcstd"));
 
     std::stringstream str;
     str << doctools << "\n";
@@ -412,16 +412,16 @@ DocumentRecoveryPrivate::Info DocumentRecoveryPrivate::getRecoveryInfo(const QFi
     if (doc_dir.exists(QLatin1String("fc_recovery_file.xml"))) {
         XmlConfig cfg = readXmlFile(info.xmlFile);
 
-        if (cfg.contains(QString::fromLatin1("Label"))) {
-            info.label = cfg[QString::fromLatin1("Label")];
+        if (cfg.contains(QStringLiteral("Label"))) {
+            info.label = cfg[QStringLiteral("Label")];
         }
 
-        if (cfg.contains(QString::fromLatin1("FileName"))) {
-            info.fileName = cfg[QString::fromLatin1("FileName")];
+        if (cfg.contains(QStringLiteral("FileName"))) {
+            info.fileName = cfg[QStringLiteral("FileName")];
         }
 
-        if (cfg.contains(QString::fromLatin1("Status"))) {
-            QString status = cfg[QString::fromLatin1("Status")];
+        if (cfg.contains(QStringLiteral("Status"))) {
+            QString status = cfg[QStringLiteral("Status")];
             if (status == QLatin1String("Deprecated"))
                 info.status = DocumentRecoveryPrivate::Overage;
             else if (status == QLatin1String("Success"))
@@ -474,17 +474,17 @@ DocumentRecoveryPrivate::XmlConfig DocumentRecoveryPrivate::readXmlFile(const QS
     file.close();
 
     QVector<QString> filter;
-    filter << QString::fromLatin1("Label");
-    filter << QString::fromLatin1("FileName");
-    filter << QString::fromLatin1("Status");
+    filter << QStringLiteral("Label");
+    filter << QStringLiteral("FileName");
+    filter << QStringLiteral("Status");
 
     QDomElement child;
     if (!root.isNull()) {
         child = root.firstChildElement();
         while (!child.isNull()) {
             QString name = child.localName();
-            QString value = child.text();
-            if (std::find(filter.begin(), filter.end(), name) != filter.end())
+            const QString value = child.text();
+            if (filter.contains(name))
                 cfg[name] = value;
             child = child.nextSiblingElement();
         }
@@ -590,7 +590,7 @@ void DocumentRecoveryFinder::checkDocumentDirs(QDir& tmp, const QList<QFileInfo>
     }
     else {
         int countDeletedDocs = 0;
-        QString recovery_files = QString::fromLatin1("fc_recovery_files");
+        QString recovery_files = QStringLiteral("fc_recovery_files");
         for (QList<QFileInfo>::const_iterator it = dirs.cbegin(); it != dirs.cend(); ++it) {
             QDir doc_dir(it->absoluteFilePath());
             doc_dir.setFilter(QDir::NoDotAndDotDot|QDir::AllEntries);
@@ -646,7 +646,7 @@ bool DocumentRecoveryFinder::showRecoveryDialogIfNeeded()
 void DocumentRecoveryHandler::checkForPreviousCrashes(const std::function<void(QDir&, const QList<QFileInfo>&, const QString&)> & callableFunc) const
 {
     QDir tmp = QString::fromUtf8(App::Application::getUserCachePath().c_str());
-    tmp.setNameFilters(QStringList() << QString::fromLatin1("*.lock"));
+    tmp.setNameFilters(QStringList() << QStringLiteral("*.lock"));
     tmp.setFilter(QDir::Files);
 
     QString exeName = QString::fromStdString(App::Application::getExecutableName());
@@ -677,7 +677,7 @@ void DocumentRecoveryHandler::checkForPreviousCrashes(const std::function<void(Q
                 callableFunc(tmp, dirs, it.fileName());
             }
             else {
-                Base::Console().Log("Failed to lock file %s\n", fn.toUtf8().constData());
+                Base::Console().log("Failed to lock file %s\n", fn.toUtf8().constData());
             }
         }
     }
@@ -713,17 +713,10 @@ void DocumentRecoveryCleaner::clearDirectory(const QFileInfo& dir)
 void DocumentRecoveryCleaner::subtractFiles(QStringList& files)
 {
     if (!ignoreFiles.isEmpty() && !files.isEmpty()) {
-#if QT_VERSION >= QT_VERSION_CHECK(5,14,0)
         auto set1 = QSet<QString>(files.begin(), files.end());
         auto set2 = QSet<QString>(ignoreFiles.begin(), ignoreFiles.end());
         set1.subtract(set2);
         files = QList<QString>(set1.begin(), set1.end());
-#else
-        QSet<QString> set1 = files.toSet();
-        QSet<QString> set2 = ignoreFiles.toSet();
-        set1.subtract(set2);
-        files = set1.toList();
-#endif
     }
 }
 

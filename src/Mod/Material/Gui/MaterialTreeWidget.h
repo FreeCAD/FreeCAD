@@ -48,7 +48,6 @@
 
 namespace MatGui
 {
-class CommandManager;
 class WidgetFactoryInst;
 class MaterialTreeWidgetPy;
 
@@ -145,7 +144,7 @@ public:
     }
     void setIncludeEmptyLibraries(bool value)
     {
-        Base::Console().Log("setIncludeEmptyLibraries(%s)\n", (value ? "true" : "false"));
+        Base::Console().log("setIncludeEmptyLibraries(%s)\n", (value ? "true" : "false"));
         _filterOptions.setIncludeEmptyLibraries(value);
     }
 
@@ -207,17 +206,13 @@ private:
     int _recentMax;
     MaterialTreeWidgetPy* pyTreeWidget {nullptr};
 
-    Materials::MaterialManager _materialManager;
-
     // friends
     friend class Gui::WidgetFactoryInst;
 
 protected:
-    //   bool m_Restored = false;
-
     Materials::MaterialManager& getMaterialManager()
     {
-        return _materialManager;
+        return Materials::MaterialManager::getManager();
     }
 
     void getFavorites();

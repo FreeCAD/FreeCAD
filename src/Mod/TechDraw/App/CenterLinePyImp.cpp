@@ -21,9 +21,6 @@
  ***************************************************************************/
 
 #include "PreCompiled.h"
-#ifndef _PreComp_
-# include <boost/uuid/uuid_io.hpp>
-#endif
 
 #include <Base/Console.h>
 #include <Base/PyWrapParseTupleAndKeywords.h>
@@ -56,7 +53,7 @@ int CenterLinePy::PyInit(PyObject* /*args*/, PyObject* /*kwd*/)
     return 0;
 }
 
-PyObject* CenterLinePy::clone(PyObject *args)
+PyObject* CenterLinePy::clone(PyObject *args) const
 {
     if (!PyArg_ParseTuple(args, ""))
         return nullptr;
@@ -66,7 +63,7 @@ PyObject* CenterLinePy::clone(PyObject *args)
     PyObject* cpy = nullptr;
     // let the type object decide
     if (type->tp_new)
-        cpy = type->tp_new(type, this, nullptr);
+        cpy = type->tp_new(type, const_cast<CenterLinePy*>(this), nullptr);
     if (!cpy) {
         PyErr_SetString(PyExc_RuntimeError, "failed to create clone of CenterLine");
         return nullptr;
@@ -83,7 +80,7 @@ PyObject* CenterLinePy::clone(PyObject *args)
     return cpy;
 }
 
-PyObject* CenterLinePy::copy(PyObject *args)
+PyObject* CenterLinePy::copy(PyObject *args) const
 {
     if (!PyArg_ParseTuple(args, ""))
         return nullptr;
@@ -93,7 +90,7 @@ PyObject* CenterLinePy::copy(PyObject *args)
     PyObject* cpy = nullptr;
     // let the type object decide
     if (type->tp_new)
-        cpy = type->tp_new(type, this, nullptr);
+        cpy = type->tp_new(type, const_cast<CenterLinePy*>(this), nullptr);
     if (!cpy) {
         PyErr_SetString(PyExc_RuntimeError, "failed to create copy of CenterLine");
         return nullptr;
@@ -146,27 +143,27 @@ void CenterLinePy::setFormat(Py::Dict arg)
 
 Py::String CenterLinePy::getTag() const
 {
-    std::string tmp = boost::uuids::to_string(getCenterLinePtr()->getTag());
+    std::string tmp = getCenterLinePtr()->getTagAsString();
     return Py::String(tmp);
 }
 
 
 Py::Long CenterLinePy::getType() const
 {
-    int tmp = getCenterLinePtr()->m_type;
-    return Py::Long(tmp);
+    CenterLine::Type tmp = getCenterLinePtr()->m_type;
+    return Py::Long(static_cast<int>(tmp));
 }
 
 Py::Long CenterLinePy::getMode() const
 {
-    int tmp = getCenterLinePtr()->m_mode;
-    return Py::Long(tmp);
+    CenterLine::Mode tmp = getCenterLinePtr()->m_mode;
+    return Py::Long(static_cast<int>(tmp));
 }
 
 void CenterLinePy::setMode(Py::Long arg)
 {
     int temp = static_cast<int>(arg);
-    getCenterLinePtr()->m_mode = temp;
+    getCenterLinePtr()->m_mode = static_cast<CenterLine::Mode>(temp);
 }
 
 Py::Float CenterLinePy::getHorizShift() const

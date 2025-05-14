@@ -21,10 +21,15 @@
  ****************************************************************************/
 
 #include "PreCompiled.h"
+
+#ifndef _PreComp_
+#include <limits>
+#endif
+
+#include <boost/algorithm/string/predicate.hpp>
+#include <boost/range.hpp>
 #include <boost/property_map/property_map.hpp>
 
-#include <boost/range.hpp>
-#include <boost/algorithm/string/predicate.hpp>
 #include <Base/Tools.h>
 #include <Base/Uuid.h>
 
@@ -281,7 +286,7 @@ void LinkBaseExtension::setProperty(int idx, Property* prop)
         }
         case PropLinkCopyOnChangeSource:
         case PropLinkCopyOnChangeGroup:
-            if (auto linkProp = Base::freecad_dynamic_cast<PropertyLinkBase>(prop)) {
+            if (auto linkProp = freecad_cast<PropertyLinkBase*>(prop)) {
                 linkProp->setScope(LinkScope::Global);
             }
             // fall through
@@ -351,14 +356,14 @@ App::DocumentObjectExecReturn* LinkBaseExtension::extensionExecute()
         if (!linked) {
             std::ostringstream ss;
             ss << "Link broken!";
-            auto xlink = Base::freecad_dynamic_cast<PropertyXLink>(getLinkedObjectProperty());
+            auto xlink = freecad_cast<PropertyXLink*>(getLinkedObjectProperty());
             if (xlink) {
                 const char* objname = xlink->getObjectName();
-                if (objname && objname[0]) {
+                if (!Base::Tools::isNullOrEmpty(objname)) {
                     ss << "\nObject: " << objname;
                 }
                 const char* filename = xlink->getFilePath();
-                if (filename && filename[0]) {
+                if (!Base::Tools::isNullOrEmpty(filename)) {
                     ss << "\nFile: " << filename;
                 }
             }
@@ -384,7 +389,7 @@ App::DocumentObjectExecReturn* LinkBaseExtension::extensionExecute()
                 || !container->getDocument()->getObjectByID(_LinkOwner.getValue()))) {
             // Check if this is an element link. Do not invoke appLinkExecute()
             // if so, because it will be called from the link array.
-            proxy = Base::freecad_dynamic_cast<PropertyPythonObject>(
+            proxy = freecad_cast<PropertyPythonObject*>(
                 linked->getPropertyByName("Proxy"));
         }
         if (proxy) {
@@ -409,7 +414,7 @@ App::DocumentObjectExecReturn* LinkBaseExtension::extensionExecute()
                         else {
                             const auto& elements = _getElementListValue();
                             for (int i = 0; i < _getElementCountValue(); ++i) {
-                                args.setItem(2, Py::Int(i));
+                                args.setItem(2, Py::Long(i));
                                 if (i < (int)elements.size()) {
                                     args.setItem(3, Py::asObject(elements[i]->getPyObject()));
                                 }
@@ -424,11 +429,11 @@ App::DocumentObjectExecReturn* LinkBaseExtension::extensionExecute()
             }
             catch (Py::Exception&) {
                 Base::PyException e;
-                e.ReportException();
+                e.reportException();
                 return new App::DocumentObjectExecReturn(errMsg);
             }
             catch (Base::Exception& e) {
-                e.ReportException();
+                e.reportException();
                 return new App::DocumentObjectExecReturn(errMsg);
             }
         }
@@ -446,7 +451,7 @@ App::DocumentObjectExecReturn* LinkBaseExtension::extensionExecute()
                         parent->removeDynamicProperty(prop->getName());
                     }
                     catch (Base::Exception& e) {
-                        e.ReportException();
+                        e.reportException();
                     }
                     catch (...) {
                     }
@@ -486,7 +491,7 @@ LinkBaseExtension::getOnChangeCopyObjects(std::vector<App::DocumentObject*>* exc
             continue;
         }
         auto prop =
-            Base::freecad_dynamic_cast<PropertyMap>(obj->getPropertyByName("_CopyOnChangeControl"));
+            freecad_cast<PropertyMap*>(obj->getPropertyByName("_CopyOnChangeControl"));
         static std::map<std::string, std::string> dummy;
         const auto& map = prop && prop->getContainer() == obj ? prop->getValues() : dummy;
         const char* v = "";
@@ -521,7 +526,7 @@ void LinkBaseExtension::setOnChangeCopyObject(App::DocumentObject* obj, OnChange
     bool exclude = flags.testFlag(OnChangeCopyOptions::Exclude);
     bool external = parent->getDocument() != obj->getDocument();
     auto prop =
-        Base::freecad_dynamic_cast<PropertyMap>(obj->getPropertyByName("_CopyOnChangeControl"));
+        freecad_cast<PropertyMap*>(obj->getPropertyByName("_CopyOnChangeControl"));
 
     if (external == exclude && !prop) {
         return;
@@ -533,7 +538,7 @@ void LinkBaseExtension::setOnChangeCopyObject(App::DocumentObject* obj, OnChange
                 obj->addDynamicProperty("App::PropertyMap", "_CopyOnChangeControl"));
         }
         catch (Base::Exception& e) {
-            e.ReportException();
+            e.reportException();
         }
         if (!prop) {
             FC_ERR("Failed to setup copy on change object " << obj->getFullName());
@@ -578,7 +583,7 @@ void LinkBaseExtension::syncCopyOnChange()
     // dependencies.
     LinkGroup* copyOnChangeGroup = nullptr;
     if (auto prop = getLinkCopyOnChangeGroupProperty()) {
-        copyOnChangeGroup = Base::freecad_dynamic_cast<LinkGroup>(prop->getValue());
+        copyOnChangeGroup = freecad_cast<LinkGroup*>(prop->getValue());
         if (!copyOnChangeGroup) {
             // Create the LinkGroup if not exist
             auto group = new LinkGroup;
@@ -596,7 +601,7 @@ void LinkBaseExtension::syncCopyOnChange()
                     continue;
                 }
                 auto prop =
-                    Base::freecad_dynamic_cast<PropertyUUID>(obj->getPropertyByName("_SourceUUID"));
+                    freecad_cast<PropertyUUID*>(obj->getPropertyByName("_SourceUUID"));
                 if (prop && prop->getContainer() == obj) {
                     oldObjs.emplace_back(prop);
                 }
@@ -660,7 +665,7 @@ void LinkBaseExtension::syncCopyOnChange()
 
     std::map<Base::Uuid, App::DocumentObjectT> newObjs;
     for (auto obj : copiedObjs) {
-        auto prop = Base::freecad_dynamic_cast<PropertyUUID>(obj->getPropertyByName("_SourceUUID"));
+        auto prop = freecad_cast<PropertyUUID*>(obj->getPropertyByName("_SourceUUID"));
         if (prop) {
             newObjs.insert(std::make_pair(prop->getValue(), obj));
         }
@@ -668,7 +673,7 @@ void LinkBaseExtension::syncCopyOnChange()
 
     std::vector<std::pair<App::DocumentObject*, App::DocumentObject*>> replacements;
     for (const auto& objT : oldObjs) {
-        auto prop = Base::freecad_dynamic_cast<PropertyUUID>(objT.getProperty());
+        auto prop = freecad_cast<PropertyUUID*>(objT.getProperty());
         if (!prop) {
             continue;
         }
@@ -702,7 +707,7 @@ void LinkBaseExtension::syncCopyOnChange()
                     if (prop->getContainer() != o) {
                         continue;
                     }
-                    auto linkProp = Base::freecad_dynamic_cast<App::PropertyLinkBase>(prop);
+                    auto linkProp = freecad_cast<App::PropertyLinkBase*>(prop);
                     if (!linkProp) {
                         continue;
                     }
@@ -875,7 +880,7 @@ bool LinkBaseExtension::setupCopyOnChange(
             if (!gname || !boost::starts_with(gname, _GroupPrefix)) {
                 continue;
             }
-            if (!newProps.count(prop)) {
+            if (!newProps.contains(prop)) {
                 parent->removeDynamicProperty(prop->getName());
             }
         }
@@ -1734,7 +1739,7 @@ void LinkBaseExtension::parseSubName() const
     bool hasSubElement = !mySubElements.empty();
     mySubElements.clear();
     mySubName.clear();
-    auto xlink = freecad_dynamic_cast<const PropertyXLink>(getLinkedObjectProperty());
+    auto xlink = freecad_cast<const PropertyXLink*>(getLinkedObjectProperty());
     if (!xlink || xlink->getSubValues().empty()) {
         if (hasSubElement) {
             mySubElements.emplace_back("");
@@ -1756,7 +1761,7 @@ void LinkBaseExtension::parseSubName() const
     for (std::size_t i = 1; i < subs.size(); ++i) {
         auto& sub = subs[i];
         element = Data::findElementName(sub.c_str());
-        if (element && element[0] && boost::starts_with(sub, mySubName)) {
+        if (!Base::Tools::isNullOrEmpty(element) && boost::starts_with(sub, mySubName)) {
             mySubElements.emplace_back(element);
         }
     }
@@ -1828,7 +1833,7 @@ void LinkBaseExtension::updateGroup()
         }
     }
     for (auto it = plainGroupConns.begin(); it != plainGroupConns.end();) {
-        if (!groupSet.count(it->first)) {
+        if (!groupSet.contains(it->first)) {
             it = plainGroupConns.erase(it);
         }
         else {
@@ -1891,7 +1896,7 @@ void LinkBaseExtension::update(App::DocumentObject* parent, const Property* prop
             std::vector<Base::Vector3d> scales;
             scales.reserve(objs.size());
             for (auto obj : objs) {
-                auto element = freecad_dynamic_cast<LinkElement>(obj);
+                auto element = freecad_cast<LinkElement*>(obj);
                 if (element) {
                     placements.push_back(element->Placement.getValue());
                     scales.push_back(element->getScaleVector());
@@ -1985,7 +1990,7 @@ void LinkBaseExtension::update(App::DocumentObject* parent, const Property* prop
                     // It is possible to have orphan LinkElement here due to,
                     // for example, undo and redo. So we try to re-claim the
                     // children element first.
-                    auto obj = freecad_dynamic_cast<LinkElement>(doc->getObject(name.c_str()));
+                    auto obj = freecad_cast<LinkElement*>(doc->getObject(name.c_str()));
                     if (obj
                         && (!obj->_LinkOwner.getValue() || obj->_LinkOwner.getValue() == ownerID)) {
                         obj->Visibility.setValue(false);
@@ -2029,7 +2034,7 @@ void LinkBaseExtension::update(App::DocumentObject* parent, const Property* prop
                 auto owner = getContainer();
                 long ownerID = owner ? owner->getID() : 0;
                 while (objs.size() > elementCount) {
-                    auto element = freecad_dynamic_cast<LinkElement>(objs.back());
+                    auto element = freecad_cast<LinkElement*>(objs.back());
                     if (element && element->_LinkOwner.getValue() == ownerID) {
                         tmpObjs.push_back(objs.back());
                     }
@@ -2196,13 +2201,13 @@ void LinkBaseExtension::syncElementList()
 {
     auto transform = getLinkTransformProperty();
     auto link = getLinkedObjectProperty();
-    auto xlink = freecad_dynamic_cast<const PropertyXLink>(link);
+    auto xlink = freecad_cast<const PropertyXLink*>(link);
 
     auto owner = getContainer();
     auto ownerID = owner ? owner->getID() : 0;
     auto elements = getElementListValue();
     for (auto i : elements) {
-        auto element = freecad_dynamic_cast<LinkElement>(i);
+        auto element = freecad_cast<LinkElement*>(i);
         if (!element
             || (element->_LinkOwner.getValue() && element->_LinkOwner.getValue() != ownerID)) {
             continue;
@@ -2246,7 +2251,7 @@ void LinkBaseExtension::onExtendedDocumentRestored()
         hasOldSubElement = false;
         // SubElements was stored as a PropertyStringList. It is now migrated to be
         // stored inside PropertyXLink.
-        auto xlink = freecad_dynamic_cast<PropertyXLink>(getLinkedObjectProperty());
+        auto xlink = freecad_cast<PropertyXLink*>(getLinkedObjectProperty());
         if (!xlink) {
             FC_ERR("Failed to restore SubElements for " << parent->getFullName());
         }
@@ -2265,7 +2270,7 @@ void LinkBaseExtension::onExtendedDocumentRestored()
             std::set<std::string> subset(mySubElements.begin(), mySubElements.end());
             auto sub = xlink->getSubValues().front();
             auto element = Data::findElementName(sub.c_str());
-            if (element && element[0]) {
+            if (!Base::Tools::isNullOrEmpty(element)) {
                 subset.insert(element);
                 sub.resize(element - sub.c_str());
             }
@@ -2374,7 +2379,7 @@ void LinkBaseExtension::setLink(int index,
             }
 
             int idx = -1;
-            if (getLinkModeValue() >= LinkModeAutoLink || (subname && subname[0])
+            if (getLinkModeValue() >= LinkModeAutoLink || !Base::Tools::isNullOrEmpty(subname)
                 || !subElements.empty() || obj->getDocument() != parent->getDocument()
                 || (getElementListProperty()->find(obj->getNameInDocument(), &idx)
                     && idx != index)) {
@@ -2388,7 +2393,7 @@ void LinkBaseExtension::setLink(int index,
                     link->Label.setValue(linked->Label.getValue());
                 }
                 auto pla =
-                    freecad_dynamic_cast<PropertyPlacement>(obj->getPropertyByName("Placement"));
+                    freecad_cast<PropertyPlacement*>(obj->getPropertyByName("Placement"));
                 if (pla) {
                     link->Placement.setValue(pla->getValue());
                 }
@@ -2419,7 +2424,7 @@ void LinkBaseExtension::setLink(int index,
 
     // Here means we are assigning a Link
 
-    auto xlink = freecad_dynamic_cast<PropertyXLink>(linkProp);
+    auto xlink = freecad_cast<PropertyXLink*>(linkProp);
     if (obj) {
         if (!obj->isAttachedToDocument()) {
             LINK_THROW(Base::ValueError, "Invalid document object");
@@ -2433,7 +2438,7 @@ void LinkBaseExtension::setLink(int index,
     }
 
     if (!xlink) {
-        if (!subElements.empty() || (subname && subname[0])) {
+        if (!subElements.empty() || !Base::Tools::isNullOrEmpty(subname)) {
             LINK_THROW(Base::RuntimeError, "SubName/SubElement link requires PropertyXLink");
         }
         linkProp->setValue(obj);
@@ -2448,7 +2453,7 @@ void LinkBaseExtension::setLink(int index,
             subs.back() += s;
         }
     }
-    else if (subname && subname[0]) {
+    else if (!Base::Tools::isNullOrEmpty(subname)) {
         subs.emplace_back(subname);
     }
     xlink->setValue(obj, std::move(subs));
@@ -2624,7 +2629,8 @@ Link::Link()
 {
     LINK_PROPS_ADD(LINK_PARAMS_LINK);
     LinkExtension::initExtension(this);
-    static const PropertyIntegerConstraint::Constraints s_constraints = {0, INT_MAX, 1};
+    static const PropertyIntegerConstraint::Constraints s_constraints = {
+        0, std::numeric_limits<int>::max(), 1};
     ElementCount.setConstraints(&s_constraints);
 }
 

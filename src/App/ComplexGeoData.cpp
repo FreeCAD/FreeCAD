@@ -28,6 +28,7 @@
 
 #ifndef _PreComp_
 #include <cstdlib>
+#include <limits>
 #endif
 
 #include <boost/regex.hpp>
@@ -479,7 +480,7 @@ void ComplexGeoData::Restore(Base::XMLReader& reader)
 
     reader.readElement("ElementMap");
     bool newTag = false;
-    if (reader.hasAttribute("new") && reader.getAttributeAsInteger("new") > 0) {
+    if (reader.hasAttribute("new") && reader.getAttribute<bool>("new")) {
         reader.readEndElement("ElementMap");
         reader.readElement("ElementMap2");
         newTag = true;
@@ -487,7 +488,7 @@ void ComplexGeoData::Restore(Base::XMLReader& reader)
 
     const char* file = "";
     if (reader.hasAttribute("file")) {
-        file = reader.getAttribute("file");
+        file = reader.getAttribute<const char*>("file");
     }
     if (*file != 0) {
         reader.addFile(file, this);
@@ -496,7 +497,7 @@ void ComplexGeoData::Restore(Base::XMLReader& reader)
 
     std::size_t count = 0;
     if (reader.hasAttribute("count")) {
-        count = reader.getAttributeAsUnsigned("count");
+        count = reader.getAttribute<unsigned long>("count");
     }
     if (count == 0) {
         return;
@@ -538,7 +539,7 @@ void ComplexGeoData::readElements(Base::XMLReader& reader, size_t count)
                 }
             }
             else {
-                const char* attr = reader.getAttribute("sid");
+                const char* attr = reader.getAttribute<const char*>("sid");
                 bio::stream<bio::array_source> iss(attr, std::strlen(attr));
                 long id {};
                 while ((iss >> id)) {
@@ -557,8 +558,8 @@ void ComplexGeoData::readElements(Base::XMLReader& reader, size_t count)
                 }
             }
         }
-        ensureElementMap()->setElementName(IndexedName(reader.getAttribute("value"), types),
-                                           MappedName(reader.getAttribute("key")),
+        ensureElementMap()->setElementName(IndexedName(reader.getAttribute<const char*>("value"), types),
+                                           MappedName(reader.getAttribute<const char*>("key")),
                                            Tag,
                                            &sids);
     }
@@ -585,6 +586,11 @@ void ComplexGeoData::restoreStream(std::istream& stream, std::size_t count)
             if (!(stream >> value >> key >> sCount)) {
                 // NOLINTNEXTLINE
                 FC_THROWM(Base::RuntimeError, "Failed to restore element map " << _persistenceName);
+            }
+            constexpr std::size_t oneGbOfInts {(1 << 30) / sizeof(int)};
+            if (sCount > oneGbOfInts) {
+                // NOLINTNEXTLINE
+                FC_THROWM(Base::RuntimeError, "Failed to restore element map (>1GB) " << _persistenceName);
             }
             sids.reserve(static_cast<int>(sCount));
             for (std::size_t j = 0; j < sCount; ++j) {
@@ -618,7 +624,7 @@ void ComplexGeoData::restoreStream(std::istream& stream, std::size_t count)
         }
     }
     catch (Base::Exception& e) {
-        e.ReportException();
+        e.reportException();
         _restoreFailed = true;
         _elementMap.reset();
     }
@@ -653,8 +659,11 @@ void ComplexGeoData::RestoreDocFile(Base::Reader& reader)
             return;
         }
     }
-    std::size_t count = atoi(marker.c_str());
-    restoreStream(reader, count);
+    auto count = atoll(marker.c_str());  // Try to prevent UB if the number is unreasonably large
+    if (count < 0 || count > std::numeric_limits<int>::max()) {
+        FC_THROWM(Base::RuntimeError, "Failed to restore element map " << _persistenceName);
+    }
+    restoreStream(reader, static_cast<std::size_t>(count));
 }
 
 unsigned int ComplexGeoData::getMemSize() const

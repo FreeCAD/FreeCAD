@@ -126,8 +126,7 @@ void CmdTechDrawHatch::activated(int iMsg)
             std::vector<std::string> hatchSubs = h->Source.getSubValues();
             for (auto& hs: hatchSubs) {        //all the Faces in this hatch object
                 int hatchFace = TechDraw::DrawUtil::getIndexFromName(hs);
-                std::vector<int>::iterator it = std::find(selFaces.begin(), selFaces.end(), hatchFace);
-                if (it != selFaces.end()) {
+                if (auto it = std::ranges::find(selFaces, hatchFace); it != selFaces.end()) {
                     std::pair< int, TechDraw::DrawHatch*> removeItem;
                     removeItem.first = hatchFace;
                     removeItem.second = h;
@@ -329,7 +328,7 @@ void CmdTechDrawToggleFrame::activated(int iMsg)
 
     Gui::Document* activeGui = Gui::Application::Instance->getDocument(page->getDocument());
     Gui::ViewProvider* vp = activeGui->getViewProvider(page);
-    ViewProviderPage* vpPage = dynamic_cast<ViewProviderPage*>(vp);
+    ViewProviderPage* vpPage = freecad_cast<ViewProviderPage*>(vp);
 
     if (!vpPage) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("No TechDraw Page"),
@@ -350,7 +349,7 @@ void CmdTechDrawToggleFrame::activated(int iMsg)
 // currently looking at that page
 bool CmdTechDrawToggleFrame::isActive()
 {
-    auto mvp = dynamic_cast<MDIViewPage*>(Gui::getMainWindow()->activeWindow());
+    auto mvp = qobject_cast<MDIViewPage*>(Gui::getMainWindow()->activeWindow());
     if (!mvp) {
         return false;
     }

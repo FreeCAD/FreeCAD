@@ -23,6 +23,7 @@
 #include "PreCompiled.h"
 #ifndef _PreComp_
 #include <QGroupBox>
+#include <QObject>
 #include <QLabel>
 #endif
 
@@ -65,27 +66,27 @@ public:
     {
         // NOLINTBEGIN
         labelPoints = new QLabel();
-        labelPoints->setText(tr("Number of points:"));
+        labelPoints->setText(QObject::tr("Number of points:"));
 
         labelFacets = new QLabel();
-        labelFacets->setText(tr("Number of facets:"));
+        labelFacets->setText(QObject::tr("Number of facets:"));
 
         numPoints = new QLabel();
         numFacets = new QLabel();
 
         labelMin = new QLabel();
-        labelMin->setText(tr("Minimum bound:"));
+        labelMin->setText(QObject::tr("Minimum bound:"));
 
         labelMax = new QLabel();
-        labelMax->setText(tr("Maximum bound:"));
+        labelMax->setText(QObject::tr("Maximum bound:"));
 
         numMin = new QLabel();
         numMax = new QLabel();
         // NOLINTEND
 
         QGroupBox* box = new QGroupBox();
-        box->setTitle(tr("Mesh info box"));
-        box->setWindowTitle(tr("Mesh info"));
+        box->setTitle(QObject::tr("Mesh info box"));
+        box->setWindowTitle(QObject::tr("Mesh info"));
         // box->setAutoFillBackground(true);
         QGridLayout* grid = new QGridLayout(box);
         grid->addWidget(labelPoints, 0, 0);
@@ -122,10 +123,10 @@ public:
             numMax->setText(tr("X: %1\tY: %2\tZ: %3").arg(bbox.MaxX).arg(bbox.MaxY).arg(bbox.MaxZ));
         }
         else {
-            numPoints->setText(QString::fromLatin1(""));
-            numFacets->setText(QString::fromLatin1(""));
-            numMin->setText(QString::fromLatin1(""));
-            numMax->setText(QString::fromLatin1(""));
+            numPoints->setText(QStringLiteral(""));
+            numFacets->setText(QStringLiteral(""));
+            numMin->setText(QStringLiteral(""));
+            numMax->setText(QStringLiteral(""));
         }
     }
 

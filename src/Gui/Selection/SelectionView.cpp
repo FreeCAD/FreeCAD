@@ -74,12 +74,12 @@ SelectionView::SelectionView(Gui::Document* pcDocument, QWidget* parent)
     QToolButton* clearButton = new QToolButton(this);
     clearButton->setFixedSize(18, 21);
     clearButton->setCursor(Qt::ArrowCursor);
-    clearButton->setStyleSheet(QString::fromUtf8("QToolButton {margin-bottom:1px}"));
+    clearButton->setStyleSheet(QStringLiteral("QToolButton {margin-bottom:1px}"));
     clearButton->setIcon(BitmapFactory().pixmap(":/icons/edit-cleartext.svg"));
     clearButton->setToolTip(tr("Clears the search field"));
     clearButton->setAutoRaise(true);
     countLabel = new QLabel(this);
-    countLabel->setText(QString::fromUtf8("0"));
+    countLabel->setText(QStringLiteral("0"));
     countLabel->setToolTip(tr("The number of selected items"));
     hLayout->addWidget(searchBox);
     hLayout->addWidget(clearButton, 0, Qt::AlignRight);
@@ -337,13 +337,13 @@ void SelectionView::select(QListWidgetItem* item)
         // Gui::Selection().clearSelection();
         Gui::Command::runCommand(Gui::Command::Gui, "Gui.Selection.clearSelection()");
         // Gui::Selection().addSelection(elements[0].toLatin1(),elements[1].toLatin1(),0);
-        QString cmd = QString::fromLatin1(
+        QString cmd = QStringLiteral(
                           R"(Gui.Selection.addSelection(App.getDocument("%1").getObject("%2")))")
                           .arg(elements[0], elements[1]);
         Gui::Command::runCommand(Gui::Command::Gui, cmd.toLatin1());
     }
     catch (Base::Exception& e) {
-        e.ReportException();
+        e.reportException();
     }
 }
 
@@ -359,14 +359,14 @@ void SelectionView::deselect()
     }
 
     // Gui::Selection().rmvSelection(elements[0].toLatin1(),elements[1].toLatin1(),0);
-    QString cmd = QString::fromLatin1(
+    QString cmd = QStringLiteral(
                       R"(Gui.Selection.removeSelection(App.getDocument("%1").getObject("%2")))")
                       .arg(elements[0], elements[1]);
     try {
         Gui::Command::runCommand(Gui::Command::Gui, cmd.toLatin1());
     }
     catch (Base::Exception& e) {
-        e.ReportException();
+        e.reportException();
     }
 }
 
@@ -398,14 +398,14 @@ void SelectionView::toggleSelect(QListWidgetItem* item)
     }
     QString cmd;
     if (Gui::Selection().isSelected(docname, objname, subname)) {
-        cmd = QString::fromLatin1("Gui.Selection.removeSelection("
+        cmd = QStringLiteral("Gui.Selection.removeSelection("
                                   "App.getDocument('%1').getObject('%2'),'%3')")
                   .arg(QString::fromLatin1(docname),
                        QString::fromLatin1(objname),
                        QString::fromLatin1(subname));
     }
     else {
-        cmd = QString::fromLatin1("Gui.Selection.addSelection("
+        cmd = QStringLiteral("Gui.Selection.addSelection("
                                   "App.getDocument('%1').getObject('%2'),'%3',%4,%5,%6)")
                   .arg(QString::fromLatin1(docname),
                        QString::fromLatin1(objname),
@@ -418,7 +418,7 @@ void SelectionView::toggleSelect(QListWidgetItem* item)
         Gui::Command::runCommand(Gui::Command::Gui, cmd.toLatin1());
     }
     catch (Base::Exception& e) {
-        e.ReportException();
+        e.reportException();
     }
 }
 
@@ -448,7 +448,7 @@ void SelectionView::preselect(QListWidgetItem* item)
             *end = 0;
         }
     }
-    QString cmd = QString::fromLatin1("Gui.Selection.setPreselection("
+    QString cmd = QStringLiteral("Gui.Selection.setPreselection("
                                       "App.getDocument('%1').getObject('%2'),'%3',tp=2)")
                       .arg(QString::fromLatin1(docname),
                            QString::fromLatin1(objname),
@@ -457,7 +457,7 @@ void SelectionView::preselect(QListWidgetItem* item)
         Gui::Command::runCommand(Gui::Command::Gui, cmd.toLatin1());
     }
     catch (Base::Exception& e) {
-        e.ReportException();
+        e.reportException();
     }
 }
 
@@ -468,7 +468,7 @@ void SelectionView::zoom()
         Gui::Command::runCommand(Gui::Command::Gui, "Gui.SendMsgToActiveView(\"ViewSelection\")");
     }
     catch (Base::Exception& e) {
-        e.ReportException();
+        e.reportException();
     }
 }
 
@@ -479,7 +479,7 @@ void SelectionView::treeSelect()
         Gui::Command::runCommand(Gui::Command::Gui, "Gui.runCommand(\"Std_TreeSelection\")");
     }
     catch (Base::Exception& e) {
-        e.ReportException();
+        e.reportException();
     }
 }
 
@@ -493,13 +493,13 @@ void SelectionView::touch()
     if (elements.size() < 2) {
         return;
     }
-    QString cmd = QString::fromLatin1(R"(App.getDocument("%1").getObject("%2").touch())")
+    QString cmd = QStringLiteral(R"(App.getDocument("%1").getObject("%2").touch())")
                       .arg(elements[0], elements[1]);
     try {
         Gui::Command::runCommand(Gui::Command::Doc, cmd.toLatin1());
     }
     catch (Base::Exception& e) {
-        e.ReportException();
+        e.reportException();
     }
 }
 
@@ -515,7 +515,7 @@ void SelectionView::toPython()
     }
 
     try {
-        QString cmd = QString::fromLatin1(R"(obj = App.getDocument("%1").getObject("%2"))")
+        QString cmd = QStringLiteral(R"(obj = App.getDocument("%1").getObject("%2"))")
                           .arg(elements[0], elements[1]);
         Gui::Command::runCommand(Gui::Command::Gui, cmd.toLatin1());
         if (elements.length() > 2) {
@@ -523,19 +523,19 @@ void SelectionView::toPython()
             App::DocumentObject* obj = doc->getObject(elements[1].toLatin1());
             QString property = getProperty(obj);
 
-            cmd = QString::fromLatin1(R"(shp = App.getDocument("%1").getObject("%2").%3)")
+            cmd = QStringLiteral(R"(shp = App.getDocument("%1").getObject("%2").%3)")
                       .arg(elements[0], elements[1], property);
             Gui::Command::runCommand(Gui::Command::Gui, cmd.toLatin1());
 
             if (supportPart(obj, elements[2])) {
-                cmd = QString::fromLatin1(R"(elt = App.getDocument("%1").getObject("%2").%3.%4)")
+                cmd = QStringLiteral(R"(elt = App.getDocument("%1").getObject("%2").%3.%4)")
                           .arg(elements[0], elements[1], property, elements[2]);
                 Gui::Command::runCommand(Gui::Command::Gui, cmd.toLatin1());
             }
         }
     }
     catch (const Base::Exception& e) {
-        e.ReportException();
+        e.reportException();
     }
 }
 
@@ -555,12 +555,12 @@ void SelectionView::showPart()
             try {
                 Gui::Command::addModule(Gui::Command::Gui, module.toLatin1());
                 QString cmd =
-                    QString::fromLatin1(R"(%1.show(App.getDocument("%2").getObject("%3").%4.%5))")
+                    QStringLiteral(R"(%1.show(App.getDocument("%2").getObject("%3").%4.%5))")
                         .arg(module, elements[0], elements[1], property, elements[2]);
                 Gui::Command::runCommand(Gui::Command::Gui, cmd.toLatin1());
             }
             catch (const Base::Exception& e) {
-                e.ReportException();
+                e.reportException();
             }
         }
     }
@@ -637,27 +637,27 @@ void SelectionView::onItemContextMenu(const QPoint& point)
     QAction* selectAction = menu.addAction(tr("Select only"), this, [&] {
         this->select(nullptr);
     });
-    selectAction->setIcon(QIcon::fromTheme(QString::fromLatin1("view-select")));
+    selectAction->setIcon(QIcon::fromTheme(QStringLiteral("view-select")));
     selectAction->setToolTip(tr("Selects only this object"));
 
     QAction* deselectAction = menu.addAction(tr("Deselect"), this, &SelectionView::deselect);
-    deselectAction->setIcon(QIcon::fromTheme(QString::fromLatin1("view-unselectable")));
+    deselectAction->setIcon(QIcon::fromTheme(QStringLiteral("view-unselectable")));
     deselectAction->setToolTip(tr("Deselects this object"));
 
     QAction* zoomAction = menu.addAction(tr("Zoom fit"), this, &SelectionView::zoom);
-    zoomAction->setIcon(QIcon::fromTheme(QString::fromLatin1("zoom-fit-best")));
+    zoomAction->setIcon(QIcon::fromTheme(QStringLiteral("zoom-fit-best")));
     zoomAction->setToolTip(tr("Selects and fits this object in the 3D window"));
 
     QAction* gotoAction = menu.addAction(tr("Go to selection"), this, &SelectionView::treeSelect);
     gotoAction->setToolTip(tr("Selects and locates this object in the tree view"));
 
     QAction* touchAction = menu.addAction(tr("Mark to recompute"), this, &SelectionView::touch);
-    touchAction->setIcon(QIcon::fromTheme(QString::fromLatin1("view-refresh")));
+    touchAction->setIcon(QIcon::fromTheme(QStringLiteral("view-refresh")));
     touchAction->setToolTip(tr("Mark this object to be recomputed"));
 
     QAction* toPythonAction =
         menu.addAction(tr("To Python console"), this, &SelectionView::toPython);
-    toPythonAction->setIcon(QIcon::fromTheme(QString::fromLatin1("applications-python")));
+    toPythonAction->setIcon(QIcon::fromTheme(QStringLiteral("applications-python")));
     toPythonAction->setToolTip(
         tr("Reveals this object and its subelements in the Python console."));
 
@@ -666,7 +666,7 @@ void SelectionView::onItemContextMenu(const QPoint& point)
         // subshape-specific entries
         QAction* showPart =
             menu.addAction(tr("Duplicate subshape"), this, &SelectionView::showPart);
-        showPart->setIcon(QIcon(QString::fromLatin1(":/icons/ClassBrowser/member.svg")));
+        showPart->setIcon(QIcon(QStringLiteral(":/icons/ClassBrowser/member.svg")));
         showPart->setToolTip(tr("Creates a standalone copy of this subshape in the document"));
     }
     menu.exec(selectionView->mapToGlobal(point));

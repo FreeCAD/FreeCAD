@@ -1,0 +1,4 @@
+[Thumbnailer Entry]
+TryExec=@CMAKE_INSTALL_BINDIR@/freecad-thumbnailer
+Exec=@CMAKE_INSTALL_BINDIR@/freecad-thumbnailer -s %s %i %o
+MimeType=application/x-extension-fcstd;

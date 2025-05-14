@@ -287,11 +287,11 @@ void SoFCColorBar::customize(SoFCColorBarBase* child)
         return child->customize(this);
     }
     catch (const Base::ValueError& e) {
-        e.ReportException();
+        e.reportException();
     }
 }
 
-App::Color SoFCColorBar::getColor( float fVal ) const
+Base::Color SoFCColorBar::getColor( float fVal ) const
 {
     return this->getActiveBar()->getColor( fVal );
 }

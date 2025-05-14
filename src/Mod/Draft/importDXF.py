@@ -859,7 +859,7 @@ def drawPolyline(polyline, forceShape=False, num=None):
     `dxfCreateDraft` or `dxfCreateSketch` are set, and `forceShape` is `False`
     it creates a straight `Draft Wire`.
 
-    If the polyline is closed, and the global variable `dxfFillMode`
+    If the polyline is closed, and the global variable `dxfMakeFaceMode`
     is set, it will return a `Part.Face`, otherwise it will return
     a `Part.Wire`.
 
@@ -940,7 +940,7 @@ def drawPolyline(polyline, forceShape=False, num=None):
                     ob.Placement = placementFromDXFOCS(polyline)
                     return ob
                 else:
-                    if polyline.closed and dxfFillMode:
+                    if polyline.closed and dxfMakeFaceMode:
                         w = Part.Wire(edges)
                         w.Placement = placementFromDXFOCS(polyline)
                         return Part.Face(w)
@@ -1116,11 +1116,7 @@ def drawEllipse(ellipse, forceShape=False):
 
 
 def drawFace(face):
-    """Return a Part face (filled) from a list of points.
-
-    It takes the points in a `face` and places them in a list,
-    then appends the first point again to the end.
-    Only in this way the shape returned appears filled.
+    """Return a Part face from a list of points.
 
     Parameters
     ----------
@@ -1282,7 +1278,7 @@ def drawSplineIterpolation(verts, closed=False, forceShape=False,
 
     closed : bool, optional
         It defaults to `False`. If it is `True` it will create a closed
-        Wire, closed BSpline, or a filled Face.
+        Wire, closed BSpline, or a Face.
 
     forceShape : bool, optional
         It defaults to `False`. If it is `True` it will try to produce
@@ -1307,7 +1303,7 @@ def drawSplineIterpolation(verts, closed=False, forceShape=False,
         Otherwise it tries producing a `Part.Edge`
         (`dxfDiscretizeCurves` or `alwaysDiscretize` are `True`)
         or `Part.Face`
-        if `closed` and the global variable `dxfFillMode` are `True`.
+        if `closed` and the global variable `dxfMakeFaceMode` are `True`.
 
     To do
     -----
@@ -1328,7 +1324,7 @@ def drawSplineIterpolation(verts, closed=False, forceShape=False,
             # print(knots)
             sp.interpolate(verts)
             sh = Part.Wire(sp.toShape())
-        if closed and dxfFillMode:
+        if closed and dxfMakeFaceMode:
             return Part.Face(sh)
         else:
             return sh
@@ -1738,7 +1734,7 @@ def drawInsert(insert, num=None, clone=False):
     Returns
     -------
     Part::TopoShape ('Compound') or
-    Part::Part2DObject or Part::PartFeature (`Draft Clone`)
+    Part::Part2DObject or Part::Feature (`Draft Clone`)
         The returned object is normally a copy of the `Part.Compound`
         extracted from `blockshapes` or created with `drawBlock()`.
 
@@ -2832,13 +2828,12 @@ def open(filename):
         doc = FreeCAD.newDocument(docname)
         doc.Label = docname
         FreeCAD.setActiveDocument(doc.Name)
-        try:
+        if gui:
             import ImportGui
-        except Exception:
+            ImportGui.readDXF(filename)
+        else:
             import Import
             Import.readDXF(filename)
-        else:
-            ImportGui.readDXF(filename)
         Draft.convert_draft_texts() # convert annotations to Draft texts
         doc.recompute()
 
@@ -2875,13 +2870,12 @@ def insert(filename, docname):
         else:
             errorDXFLib(gui)
     else:
-        try:
+        if gui:
             import ImportGui
-        except Exception:
+            ImportGui.readDXF(filename)
+        else:
             import Import
             Import.readDXF(filename)
-        else:
-            ImportGui.readDXF(filename)
         Draft.convert_draft_texts() # convert annotations to Draft texts
         doc.recompute()
 
@@ -3678,7 +3672,7 @@ def export(objectslist, filename, nospline=False, lwPoly=False):
                     dxf.layers.append(dxfLibrary.Layer(name=ob.Label,
                                                        color=getACI(ob),
                                                        lineType=ltype))
-
+            base_sketch_pla = None  # Placement of the 1st sketch.
             for ob in exportList:
                 obtype = Draft.getType(ob)
                 # print("processing " + str(ob.Name))
@@ -3792,10 +3786,16 @@ def export(objectslist, filename, nospline=False, lwPoly=False):
 
                 elif ob.isDerivedFrom("Part::Feature"):
                     tess = None
-                    if hasattr(ob, "Tessellation"):
-                        if ob.Tessellation:
-                            tess = [ob.Tessellation, ob.SegmentLength]
-                    if params.get_param("dxfmesh"):
+                    if getattr(ob, "Tessellation", False):
+                        tess = [ob.Tessellation, ob.SegmentLength]
+                    if ob.isDerivedFrom("Sketcher::SketchObject"):
+                        if base_sketch_pla is None:
+                            base_sketch_pla = ob.Placement
+                        sh = Part.Compound()
+                        sh.Placement = base_sketch_pla
+                        sh.add(ob.Shape.copy())
+                        sh.transformShape(base_sketch_pla.inverse().Matrix)
+                    elif params.get_param("dxfmesh"):
                         sh = None
                         if not ob.Shape.isNull():
                             writeMesh(ob, dxf)
@@ -3803,11 +3803,10 @@ def export(objectslist, filename, nospline=False, lwPoly=False):
                         _view = FreeCADGui.ActiveDocument.ActiveView
                         direction = _view.getViewDirection().multiply(-1)
                         sh = projectShape(ob.Shape, direction, tess)
+                    elif ob.Shape.Volume > 0:
+                        sh = projectShape(ob.Shape, Vector(0, 0, 1), tess)
                     else:
-                        if ob.Shape.Volume > 0:
-                            sh = projectShape(ob.Shape, Vector(0, 0, 1), tess)
-                        else:
-                            sh = ob.Shape
+                        sh = ob.Shape
                     if sh:
                         if not sh.isNull():
                             if sh.ShapeType == 'Compound':
@@ -4157,7 +4156,7 @@ def readPreferences():
     `dxfDiscretizeCurves`, `dxfStarBlocks`, `dxfMakeBlocks`, `dxfJoin`,
     `dxfRenderPolylineWidth`, `dxfImportTexts`, `dxfImportLayouts`,
     `dxfImportPoints`, `dxfImportHatches`, `dxfUseStandardSize`,
-    `dxfGetColors`, `dxfUseDraftVisGroups`, `dxfFillMode`,
+    `dxfGetColors`, `dxfUseDraftVisGroups`, `dxfMakeFaceMode`,
     `dxfBrightBackground`, `dxfDefaultColor`, `dxfUseLegacyImporter`,
     `dxfExportBlocks`, `dxfScaling`, `dxfUseLegacyExporter`
 
@@ -4176,7 +4175,7 @@ def readPreferences():
     global dxfImportTexts, dxfImportLayouts
     global dxfImportPoints, dxfImportHatches, dxfUseStandardSize
     global dxfGetColors, dxfUseDraftVisGroups
-    global dxfFillMode, dxfBrightBackground, dxfDefaultColor
+    global dxfMakeFaceMode, dxfBrightBackground, dxfDefaultColor
     global dxfUseLegacyImporter, dxfExportBlocks, dxfScaling
     global dxfUseLegacyExporter
     dxfCreatePart = params.get_param("dxfCreatePart")
@@ -4194,7 +4193,7 @@ def readPreferences():
     dxfUseStandardSize = params.get_param("dxfStdSize")
     dxfGetColors = params.get_param("dxfGetOriginalColors")
     dxfUseDraftVisGroups = params.get_param("dxfUseDraftVisGroups")
-    dxfFillMode = params.get_param("fillmode")
+    dxfMakeFaceMode = params.get_param("MakeFaceMode")
     dxfUseLegacyImporter = params.get_param("dxfUseLegacyImporter")
     dxfUseLegacyExporter = params.get_param("dxfUseLegacyExporter")
     dxfBrightBackground = isBrightBackground()

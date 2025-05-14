@@ -36,6 +36,7 @@ from PySide.QtCore import QT_TRANSLATE_NOOP
 import FreeCAD as App
 import FreeCADGui as Gui
 import DraftVecUtils
+from draftgeoutils import geometry
 from draftguitools import gui_base_original
 from draftguitools import gui_tool_utils
 from draftguitools import gui_trackers as trackers
@@ -81,6 +82,8 @@ class Rotate(gui_base_original.Modifier):
         Gui.doCommand("selection = FreeCADGui.Selection.getSelectionEx(\"\", 0)")
         self.step = 0
         self.center = None
+        self.point = None
+        self.firstangle = None
         self.ui.rotateSetCenterUi()
         self.arctrack = trackers.arcTracker()
         self.call = self.view.addEventCallback("SoEvent", self.action)
@@ -106,17 +109,35 @@ class Rotate(gui_base_original.Modifier):
               and arg["Button"] == "BUTTON1"):
             self.handle_mouse_click_event(arg)
 
+    def _get_angle(self):
+        if self.center is None:
+            return 0
+        if self.point is None:
+            return 0
+        if DraftVecUtils.dist(self.point, self.center) < 1e-7:
+            return 0
+        angle = DraftVecUtils.angle(self.wp.u, self.point.sub(self.center), self.wp.axis)
+        if self.firstangle is None:
+            return angle
+        if angle < self.firstangle:
+            return (2 * math.pi - self.firstangle) + angle
+        return angle - self.firstangle
+
     def handle_mouse_move_event(self, arg):
         """Handle the mouse when moving."""
         for ghost in self.ghosts:
             ghost.off()
         self.point, ctrlPoint, info = gui_tool_utils.getPoint(self, arg)
-        # this is to make sure radius is what you see on screen
-        if self.center and self.point and DraftVecUtils.dist(self.point, self.center):
-            viewdelta = DraftVecUtils.project(self.point.sub(self.center),
-                                              self.wp.axis)
-            if not DraftVecUtils.isNull(viewdelta):
-                self.point = self.point.add(viewdelta.negative())
+        if self.center is not None:
+            # Project self.point on a plane that is parallel to the wp and that
+            # passes through self.center.
+            self.point = geometry.project_point_on_plane(
+                self.point,
+                self.center,
+                self.wp.axis,
+                direction=None,
+                force_projection=True
+            )
         if self.extendedCopy:
             if not gui_tool_utils.hasMod(arg, gui_tool_utils.get_mod_alt_key()):
                 self.step = 3
@@ -124,35 +145,17 @@ class Rotate(gui_base_original.Modifier):
         if self.step == 0:
             pass
         elif self.step == 1:
-            angle = 0
-            if self.point:
-                currentrad = DraftVecUtils.dist(self.point, self.center)
-                if currentrad != 0:
-                    angle = DraftVecUtils.angle(self.wp.u,
-                                                self.point.sub(self.center),
-                                                self.wp.axis)
+            angle = self._get_angle()
             self.ui.setRadiusValue(math.degrees(angle), unit="Angle")
-            self.firstangle = angle
             self.ui.radiusValue.setFocus()
             self.ui.radiusValue.selectAll()
         elif self.step == 2:
-            angle = 0
-            if self.point:
-                currentrad = DraftVecUtils.dist(self.point, self.center)
-                if currentrad != 0:
-                    angle = DraftVecUtils.angle(self.wp.u,
-                                                self.point.sub(self.center),
-                                                self.wp.axis)
-            if angle < self.firstangle:
-                sweep = (2 * math.pi - self.firstangle) + angle
-            else:
-                sweep = angle - self.firstangle
-            self.arctrack.setApertureAngle(sweep)
+            angle = self._get_angle()
+            self.arctrack.setApertureAngle(angle)
             for ghost in self.ghosts:
-                if sweep:
-                    ghost.rotate(self.wp.axis, sweep)
+                ghost.rotate(self.wp.axis, angle)
                 ghost.on()
-            self.ui.setRadiusValue(math.degrees(sweep), 'Angle')
+            self.ui.setRadiusValue(math.degrees(angle), unit="Angle")
             self.ui.radiusValue.setFocus()
             self.ui.radiusValue.selectAll()
         gui_tool_utils.redraw3DView()
@@ -176,7 +179,7 @@ class Rotate(gui_base_original.Modifier):
         self.node = [self.point]
         self.ui.radiusUi()
         self.ui.radiusValue.setText(U.Quantity(0, U.Angle).UserString)
-        self.ui.hasFill.hide()
+        self.ui.makeFace.hide()
         self.ui.labelRadius.setText(translate("draft", "Base angle"))
         self.ui.radiusValue.setToolTip(translate("draft", "The base angle you wish to start the rotation from"))
         self.arctrack.setCenter(self.center)
@@ -189,9 +192,9 @@ class Rotate(gui_base_original.Modifier):
 
     def set_start_point(self):
         """Set the starting point of the rotation."""
+        self.firstangle = self._get_angle()
         self.ui.labelRadius.setText(translate("draft", "Rotation"))
         self.ui.radiusValue.setToolTip(translate("draft", "The amount of rotation you wish to perform.\nThe final angle will be the base angle plus this amount."))
-        self.rad = DraftVecUtils.dist(self.point, self.center)
         self.arctrack.on()
         self.arctrack.setStartPoint(self.point)
         for ghost in self.ghosts:
@@ -201,18 +204,10 @@ class Rotate(gui_base_original.Modifier):
 
     def set_rotation_angle(self, arg):
         """Set the rotation angle."""
-
-        # currentrad = DraftVecUtils.dist(self.point, self.center)
-        angle = self.point.sub(self.center).getAngle(self.wp.u)
-        _v = DraftVecUtils.project(self.point.sub(self.center), self.wp.v)
-        if _v.getAngle(self.wp.v) > 1:
-            angle = -angle
-        if angle < self.firstangle:
-            self.angle = (2 * math.pi - self.firstangle) + angle
-        else:
-            self.angle = angle - self.firstangle
-        self.rotate(self.ui.isCopy.isChecked()
-                    or gui_tool_utils.hasMod(arg, gui_tool_utils.get_mod_alt_key()))
+        self.angle = self._get_angle()
+        if self.angle != 0:
+            self.rotate(self.ui.isCopy.isChecked()
+                        or gui_tool_utils.hasMod(arg, gui_tool_utils.get_mod_alt_key()))
         if gui_tool_utils.hasMod(arg, gui_tool_utils.get_mod_alt_key()):
             self.extendedCopy = True
         else:
@@ -291,7 +286,7 @@ class Rotate(gui_base_original.Modifier):
         for ghost in self.ghosts:
             ghost.center(self.center)
         self.ui.radiusUi()
-        self.ui.hasFill.hide()
+        self.ui.makeFace.hide()
         self.ui.labelRadius.setText(translate("draft", "Base angle"))
         self.ui.radiusValue.setToolTip(translate("draft", "The base angle you wish to start the rotation from"))
         self.ui.radiusValue.setText(U.Quantity(0, U.Angle).UserString)

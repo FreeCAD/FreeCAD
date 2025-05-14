@@ -25,36 +25,11 @@
 
 // clang-format off
 // NOLINTBEGIN(cppcoreguidelines-macro-usage)
-// Std. configurations
-
-// (re-)defined in pyconfig.h
-#if defined (_POSIX_C_SOURCE)
-#   undef    _POSIX_C_SOURCE
-#endif
-#if defined (_XOPEN_SOURCE)
-#   undef    _XOPEN_SOURCE
-#endif
-
-// needed header
-#undef slots
-#include <Python.h>
-#ifdef FC_OS_MACOSX
-#undef toupper
-#undef tolower
-#undef isupper
-#undef islower
-#undef isspace
-#undef isalpha
-#undef isalnum
-#endif
-#define slots
 #include <bitset>
 #include <cstring>
-
-#include "Exception.h"
-
 #include <CXX/Objects.hxx>
 
+#include "Exception.h"
 
 /** Python static class macro for definition
  * sets up a static function entry in a class inheriting
@@ -153,7 +128,7 @@ inline bool asBoolean(PyObject *obj) {
 public:                                                     \
     static PyTypeObject   Type;                             \
     static PyMethodDef    Methods[];                        \
-    virtual PyTypeObject *GetType(void) {return &Type;}
+    virtual PyTypeObject *GetType(void) const {return &Type;}
 
 /*------------------------------
  * PyObjectBase
@@ -163,18 +138,18 @@ namespace Base
 {
 
 
-/** The PyObjectBase class, exports the class as a python type
+/** The PyObjectBase class, exports the class as a Python type
  *  PyObjectBase is the base class for all C++ classes which
- *  need to get exported into the python namespace. This class is
+ *  need to get exported into the Python namespace. This class is
  *  very important because nearly all important classes in FreeCAD
- *  are visible in python for macro recording and automation purpose.
- *  The class App::Document is a good expample for an exported class.
+ *  are visible in Python for macro recording and automation purpose.
+ *  The class App::Document is a good example for an exported class.
  *  There are some convenience macros to make it easier to inherit
- *  from this class and defining new methods exported to python.
+ *  from this class and defining new methods exported to Python.
  *  PYFUNCDEF_D defines a new exported method.
  *  PYFUNCIMP_D defines the implementation of the new exported method.
  *  In the implementation you can use Py_Return, Py_Error, Py_Try and Py_Assert.
- *  PYMETHODEDEF makes the entry in the python method table.
+ *  PYMETHODEDEF makes the entry in the Python method table.
  *  @see Document
  *  @see PYFUNCDEF_D
  *  @see PYFUNCIMP_D

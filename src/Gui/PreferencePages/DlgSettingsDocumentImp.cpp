@@ -22,6 +22,10 @@
 
 #include "PreCompiled.h"
 
+#ifndef _PreComp_
+#include <limits>
+#endif
+
 #include <zlib.h>
 #include <App/License.h>
 #include <Gui/AutoSaver.h>
@@ -38,8 +42,8 @@ using namespace Gui::Dialog;
  *  Constructs a DlgSettingsDocumentImp which is a child of 'parent', with the
  *  name 'name' and widget flags set to 'f'
  */
-DlgSettingsDocumentImp::DlgSettingsDocumentImp( QWidget* parent )
-    : PreferencePage( parent )
+DlgSettingsDocumentImp::DlgSettingsDocumentImp(QWidget* parent)
+    : PreferencePage(parent)
     , ui(new Ui_DlgSettingsDocument)
 {
     ui->setupUi(this);
@@ -48,13 +52,19 @@ DlgSettingsDocumentImp::DlgSettingsDocumentImp( QWidget* parent )
     ui->prefSaveTransaction->hide();
     ui->prefDiscardTransaction->hide();
 
-    QString tip = QString::fromLatin1("<html><head/><body><p>%1</p>"
+    QString tip = QStringLiteral("<html><head/><body><p>%1</p>"
                                       "<p>%2: %Y%m%d-%H%M%S</p>"
-                                      "<p>%3: <a href=\"http://www.cplusplus.com/reference/ctime/strftime/\">C++ strftime</a>"
-                                      "</p></body></html>").arg(tr("The format of the date to use."), tr("Default"), tr("Format"));
+                                      "</p></body></html>")
+                      .arg(tr("The format of the date to use."), tr("Default"));
+    QString link =
+        QString::fromLatin1("<html><head/><body>"
+                            "<a href=\"http://www.cplusplus.com/reference/ctime/strftime/\">%1</a>"
+                            "</body></html>")
+            .arg(tr("Show format documentation"));
     ui->prefSaveBackupDateFormat->setToolTip(tip);
+    ui->FormatTimeDocsLabel->setText(link);
 
-    ui->prefCountBackupFiles->setMaximum(INT_MAX);
+    ui->prefCountBackupFiles->setMaximum(std::numeric_limits<int>::max());
     ui->prefCompression->setMinimum(Z_NO_COMPRESSION);
     ui->prefCompression->setMaximum(Z_BEST_COMPRESSION);
     connect(ui->prefLicenseType, qOverload<int>(&QComboBox::currentIndexChanged),

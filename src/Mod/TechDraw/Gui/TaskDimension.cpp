@@ -23,10 +23,12 @@
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <cmath>
+# include <limits>
 # include <QMessageBox>
 #endif // #ifndef _PreComp_
 
 #include <App/Document.h>
+#include <Base/Tools.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/Command.h>
 #include <Gui/Document.h>
@@ -180,7 +182,7 @@ void TaskDimension::recomputeFeature()
     }
     App::DocumentObject* objVP = m_dimensionVP->getObject();
     assert(objVP);
-    objVP->getDocument()->recomputeFeature(objVP);
+    objVP->recomputeFeature();
 }
 
 void TaskDimension::onTheoreticallyExactChanged()
@@ -227,7 +229,7 @@ void TaskDimension::onEqualToleranceChanged()
         ui->leFormatSpecifierUnderTolerance->setDisabled(true);
     }
     else {
-        ui->qsbOvertolerance->setMinimum(-DBL_MAX);
+        ui->qsbOvertolerance->setMinimum(-std::numeric_limits<double>::max());
         if (!ui->cbTheoreticallyExact->isChecked()) {
             ui->qsbUndertolerance->setDisabled(false);
             ui->leFormatSpecifierUnderTolerance->setDisabled(false);
@@ -267,7 +269,7 @@ void TaskDimension::onArbitraryChanged()
 
 void TaskDimension::onFormatSpecifierOverToleranceChanged()
 {
-//    Base::Console().Message("TD::onFormatSpecifierOverToleranceChanged()\n");
+//    Base::Console().message("TD::onFormatSpecifierOverToleranceChanged()\n");
     // if (m_blockToleranceLoop) { return; }
     m_parent->getDimFeat()->FormatSpecOverTolerance.setValue(ui->leFormatSpecifierOverTolerance->text().toUtf8().constData());
     if (ui->cbArbitraryTolerances->isChecked() ) {
@@ -286,7 +288,7 @@ void TaskDimension::onFormatSpecifierOverToleranceChanged()
 
 void TaskDimension::onFormatSpecifierUnderToleranceChanged()
 {
-//    Base::Console().Message("TD::onFormatSpecifierUnderToleranceChanged()\n");
+//    Base::Console().message("TD::onFormatSpecifierUnderToleranceChanged()\n");
     m_parent->getDimFeat()->FormatSpecUnderTolerance.setValue(ui->leFormatSpecifierUnderTolerance->text().toUtf8().constData());
     if (ui->cbArbitraryTolerances->isChecked() ) {
         // Don't do anything else if tolerance is Arbitrary
@@ -322,7 +324,7 @@ void TaskDimension::onColorChanged()
     if (m_dimensionVP.expired()) {
         return;
     }
-    App::Color ac;
+    Base::Color ac;
     ac.setValue<QColor>(ui->dimensionColor->color());
     m_dimensionVP->Color.setValue(ac);
     recomputeFeature();
@@ -372,14 +374,14 @@ void TaskDimension::onDimUseDefaultClicked()
     Base::Vector2d first2(points.first().x, -points.first().y);
     Base::Vector2d second2(points.second().x, -points.second().y);
     double lineAngle = (second2 - first2).Angle();
-    ui->dsbDimAngle->setValue(lineAngle * 180.0 / M_PI);
+    ui->dsbDimAngle->setValue(Base::toDegrees(lineAngle));
 }
 
 void TaskDimension::onDimUseSelectionClicked()
 {
     std::pair<double, bool> result = getAngleFromSelection();
     if (result.second) {
-        ui->dsbDimAngle->setValue(result.first * 180.0 / M_PI);
+        ui->dsbDimAngle->setValue(Base::toDegrees(result.first));
     }
 }
 
@@ -392,13 +394,13 @@ void TaskDimension::onExtUseDefaultClicked()
     Base::Vector2d lineDirection = second2 - first2;
     Base::Vector2d extensionDirection(-lineDirection.y, lineDirection.x);
     double extensionAngle = extensionDirection.Angle();
-    ui->dsbExtAngle->setValue(extensionAngle * 180.0 / M_PI);
+    ui->dsbExtAngle->setValue(Base::toDegrees(extensionAngle));
 }
 void TaskDimension::onExtUseSelectionClicked()
 {
     std::pair<double, bool> result = getAngleFromSelection();
     if (result.second) {
-        ui->dsbExtAngle->setValue(result.first * 180.0 / M_PI);
+        ui->dsbExtAngle->setValue(Base::toDegrees(result.first));
     }
 }
 

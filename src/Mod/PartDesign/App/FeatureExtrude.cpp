@@ -24,6 +24,7 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
+# include <limits>
 # include <Mod/Part/App/FCBRepAlgoAPI_Fuse.h>
 # include <BRep_Builder.hxx>
 # include <BRepFeat_MakePrism.hxx>
@@ -50,7 +51,8 @@ using namespace PartDesign;
 
 PROPERTY_SOURCE(PartDesign::FeatureExtrude, PartDesign::ProfileBased)
 
-App::PropertyQuantityConstraint::Constraints FeatureExtrude::signedLengthConstraint = { -DBL_MAX, DBL_MAX, 1.0 };
+App::PropertyQuantityConstraint::Constraints FeatureExtrude::signedLengthConstraint = {
+    -std::numeric_limits<double>::max(), std::numeric_limits<double>::max(), 1.0 };
 double FeatureExtrude::maxAngle = 90 - Base::toDegrees<double>(Precision::Angular());
 App::PropertyAngle::Constraints FeatureExtrude::floatAngle = { -maxAngle, maxAngle, 1.0 };
 
@@ -468,11 +470,8 @@ void FeatureExtrude::setupObject()
 
 App::DocumentObjectExecReturn* FeatureExtrude::buildExtrusion(ExtrudeOptions options)
 {
-    if (onlyHasToRefine()){
-        TopoShape result = refineShapeIfActive(rawShape);
-        Shape.setValue(result);
-        return App::DocumentObject::StdReturn;
-    }
+    if (onlyHaveRefined()) { return App::DocumentObject::StdReturn; }
+
 
     bool makeface = options.testFlag(ExtrudeOption::MakeFace);
     bool fuse = options.testFlag(ExtrudeOption::MakeFuse);
@@ -717,11 +716,13 @@ App::DocumentObjectExecReturn* FeatureExtrude::buildExtrusion(ExtrudeOptions opt
             }
         }
         else {
+            using std::numbers::pi;
+
             Part::ExtrusionParameters params;
             params.dir = dir;
             params.solid = makeface;
-            params.taperAngleFwd = this->TaperAngle.getValue() * M_PI / 180.0;
-            params.taperAngleRev = this->TaperAngle2.getValue() * M_PI / 180.0;
+            params.taperAngleFwd = Base::toRadians(this->TaperAngle.getValue());
+            params.taperAngleRev = Base::toRadians(this->TaperAngle2.getValue());
             if (L2 == 0.0 && Midplane.getValue()) {
                 params.lengthFwd = L / 2;
                 params.lengthRev = L / 2;
@@ -735,8 +736,8 @@ App::DocumentObjectExecReturn* FeatureExtrude::buildExtrusion(ExtrudeOptions opt
             }
             if (std::fabs(params.taperAngleFwd) >= Precision::Angular()
                 || std::fabs(params.taperAngleRev) >= Precision::Angular()) {
-                if (fabs(params.taperAngleFwd) > M_PI * 0.5 - Precision::Angular()
-                    || fabs(params.taperAngleRev) > M_PI * 0.5 - Precision::Angular()) {
+                if (fabs(params.taperAngleFwd) > pi * 0.5 - Precision::Angular()
+                    || fabs(params.taperAngleRev) > pi * 0.5 - Precision::Angular()) {
                     return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP(
                         "Exception",
                         "Magnitude of taper angle matches or exceeds 90 degrees"));

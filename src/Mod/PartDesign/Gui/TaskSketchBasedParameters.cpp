@@ -77,7 +77,7 @@ const QString TaskSketchBasedParameters::onAddSelection(const Gui::SelectionChan
     }
     else if (subname.size() > 4) {
         int faceId = std::atoi(&subname[4]);
-        refStr = QString::fromLatin1(selObj->getNameInDocument()) + QString::fromLatin1(":") + QObject::tr("Face") + QString::number(faceId);
+        refStr = QString::fromLatin1(selObj->getNameInDocument()) + QStringLiteral(":") + QObject::tr("Face") + QString::number(faceId);
     }
 
     std::vector<std::string> upToFaces(1,subname);
@@ -226,7 +226,7 @@ QString TaskSketchBasedParameters::getFaceReference(const QString& obj, const QS
         return {};
     }
 
-    QString o = obj.left(obj.indexOf(QString::fromLatin1(":")));
+    QString o = obj.left(obj.indexOf(QStringLiteral(":")));
     if (o.isEmpty()) {
         return {};
     }
@@ -242,7 +242,7 @@ QString TaskSketchBasedParameters::make2DLabel(const App::DocumentObject* sectio
         return QString::fromUtf8(section->Label.getValue());
     }
     else if (subValues.empty()) {
-        Base::Console().Error("No valid subelement linked in %s\n", section->Label.getValue());
+        Base::Console().error("No valid subelement linked in %s\n", section->Label.getValue());
         return {};
     }
     else {

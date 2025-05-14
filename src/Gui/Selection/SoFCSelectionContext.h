@@ -23,7 +23,7 @@
 #ifndef GUI_SOFCSELECTIONCONTEXT_H
 #define GUI_SOFCSELECTIONCONTEXT_H
 
-#include <climits>
+#include <limits>
 #include <map>
 #include <memory>
 #include <set>
@@ -79,11 +79,11 @@ struct GuiExport SoFCSelectionContext : SoFCSelectionContextBase
     }
 
     bool isHighlightAll() const{
-        return highlightIndex==INT_MAX && (selectionIndex.empty() || isSelectAll());
+        return highlightIndex == std::numeric_limits<int>::max() && (selectionIndex.empty() || isSelectAll());
     }
 
     void highlightAll() {
-        highlightIndex = INT_MAX;
+        highlightIndex = std::numeric_limits<int>::max();
     }
 
     void removeHighlight() {
@@ -105,11 +105,11 @@ using SoFCSelectionContextExPtr = std::shared_ptr<SoFCSelectionContextEx>;
 
 struct GuiExport SoFCSelectionContextEx : SoFCSelectionContext
 {
-    std::map<int,App::Color> colors;
+    std::map<int,Base::Color> colors;
     float trans0 = 0.0;
 
-    bool setColors(const std::map<std::string,App::Color> &colors, const std::string &element);
-    uint32_t packColor(const App::Color &c, bool &hasTransparency);
+    bool setColors(const std::map<std::string,Base::Color> &colors, const std::string &element);
+    uint32_t packColor(const Base::Color &c, bool &hasTransparency);
     bool applyColor(int idx, std::vector<uint32_t> &packedColors, bool &hasTransparency);
     bool isSingleColor(uint32_t &color, bool &hasTransparency);
 

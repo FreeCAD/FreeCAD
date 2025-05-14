@@ -34,6 +34,7 @@
 
 
 using namespace TechDrawGui;
+using FillMode = QGIFace::FillMode;
 
 void QGIViewSection::draw()
 {
@@ -47,7 +48,7 @@ void QGIViewSection::draw()
 
 void QGIViewSection::drawSectionFace()
 {
-    // Base::Console().Message("QGIVS::drawSectionFace()\n");
+    // Base::Console().message("QGIVS::drawSectionFace()\n");
     auto section( dynamic_cast<TechDraw::DrawViewSection *>(getViewObject()) );
     if (!section) {
         return;
@@ -57,7 +58,7 @@ void QGIViewSection::drawSectionFace()
         return;
     }
 
-    ViewProviderViewSection* sectionVp = dynamic_cast<ViewProviderViewSection*>(QGIView::getViewProvider(section));
+    ViewProviderViewSection* sectionVp = freecad_cast<ViewProviderViewSection*>(QGIView::getViewProvider(section));
     if (!sectionVp) {
         return;
     }
@@ -91,10 +92,10 @@ void QGIViewSection::drawSectionFace()
             QColor faceColor = (sectionVp->CutSurfaceColor.getValue()).asValue<QColor>();
             faceColor.setAlpha((100 - sectionVp->CutSurfaceTransparency.getValue())*255/100);
             newFace->setFillColor(faceColor);
-            newFace->setFillMode(faceColor.alpha() ? QGIFace::PlainFill : QGIFace::NoFill);
+            newFace->setFillMode(faceColor.alpha() ? FillMode::PlainFill : FillMode::NoFill);
         } else if (section->CutSurfaceDisplay.isValue("SvgHatch")) {
             newFace->isHatched(true);
-            newFace->setFillMode(QGIFace::SvgFill);
+            newFace->setFillMode(FillMode::SvgFill);
             newFace->setHatchColor(sectionVp->HatchColor.getValue());
             newFace->setHatchScale(section->HatchScale.getValue());
             newFace->setHatchRotation(section->HatchRotation.getValue());
@@ -103,7 +104,7 @@ void QGIViewSection::drawSectionFace()
             newFace->setHatchFile(hatchSpec);
         } else if (section->CutSurfaceDisplay.isValue("PatHatch")) {
             newFace->isHatched(true);
-            newFace->setFillMode(QGIFace::GeomHatchFill);
+            newFace->setFillMode(FillMode::GeomHatchFill);
             newFace->setHatchColor(sectionVp->GeomHatchColor.getValue());
             newFace->setHatchScale(section->HatchScale.getValue());
             newFace->setHatchRotation(section->HatchRotation.getValue());
@@ -117,7 +118,7 @@ void QGIViewSection::drawSectionFace()
                 }
             }
         } else {
-            Base::Console().Warning("QGIVS::draw - unknown CutSurfaceDisplay: %d\n",
+            Base::Console().warning("QGIVS::draw - unknown CutSurfaceDisplay: %d\n",
                                     section->CutSurfaceDisplay.getValue());
         }
 

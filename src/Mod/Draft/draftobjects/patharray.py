@@ -216,7 +216,8 @@ class PathArray(DraftLink):
             obj.addProperty("App::PropertyLinkGlobal",
                             "Base",
                             "Objects",
-                            _tip)
+                            _tip,
+                            locked=True)
             obj.Base = None
 
         if "PathObject" not in properties:
@@ -224,7 +225,8 @@ class PathArray(DraftLink):
             obj.addProperty("App::PropertyLinkGlobal",
                             "PathObject",
                             "Objects",
-                            _tip)
+                            _tip,
+                            locked=True)
             obj.PathObject = None
 
         # TODO: the 'PathSubelements' property must be changed,
@@ -239,7 +241,8 @@ class PathArray(DraftLink):
             obj.addProperty("App::PropertyLinkSubListGlobal",
                             "PathSubelements",
                             "Objects",
-                            _tip)
+                            _tip,
+                            locked=True)
             obj.PathSubelements = []
 
         if "Fuse" not in properties:
@@ -250,7 +253,8 @@ class PathArray(DraftLink):
             obj.addProperty("App::PropertyBool",
                             "Fuse",
                             "Objects",
-                            _tip)
+                            _tip,
+                            locked=True)
             obj.Fuse = False
 
         if self.use_link and "ExpandArray" not in properties:
@@ -258,9 +262,21 @@ class PathArray(DraftLink):
             obj.addProperty("App::PropertyBool",
                             "ExpandArray",
                             "Objects",
-                            _tip)
+                            _tip,
+                            locked=True)
             obj.ExpandArray = False
             obj.setPropertyStatus('Shape', 'Transient')
+
+        if not self.use_link:
+            if "PlacementList" not in properties:
+                _tip = QT_TRANSLATE_NOOP("App::Property",
+                                         "The placement for each array element")
+                obj.addProperty("App::PropertyPlacementList",
+                                "PlacementList",
+                                "Objects",
+                                _tip,
+                                locked=True)
+                obj.PlacementList = []
 
     def set_align_properties(self, obj, properties):
         """Set general properties only if they don't exist."""
@@ -269,7 +285,8 @@ class PathArray(DraftLink):
             obj.addProperty("App::PropertyVectorDistance",
                             "ExtraTranslation",
                             "Alignment",
-                            _tip)
+                            _tip,
+                            locked=True)
             obj.ExtraTranslation = App.Vector(0, 0, 0)
 
         if "TangentVector" not in properties:
@@ -277,7 +294,8 @@ class PathArray(DraftLink):
             obj.addProperty("App::PropertyVector",
                             "TangentVector",
                             "Alignment",
-                            _tip)
+                            _tip,
+                            locked=True)
             obj.TangentVector = App.Vector(1, 0, 0)
 
         if "ForceVertical" not in properties:
@@ -285,7 +303,8 @@ class PathArray(DraftLink):
             obj.addProperty("App::PropertyBool",
                             "ForceVertical",
                             "Alignment",
-                            _tip)
+                            _tip,
+                            locked=True)
             obj.ForceVertical = False
 
         if "VerticalVector" not in properties:
@@ -293,7 +312,8 @@ class PathArray(DraftLink):
             obj.addProperty("App::PropertyVector",
                             "VerticalVector",
                             "Alignment",
-                            _tip)
+                            _tip,
+                            locked=True)
             obj.VerticalVector = App.Vector(0, 0, 1)
 
         if "AlignMode" not in properties:
@@ -301,7 +321,8 @@ class PathArray(DraftLink):
             obj.addProperty("App::PropertyEnumeration",
                             "AlignMode",
                             "Alignment",
-                            _tip)
+                            _tip,
+                            locked=True)
             obj.AlignMode = ["Original", "Frenet", "Tangent"]
             obj.AlignMode = "Original"
 
@@ -310,7 +331,8 @@ class PathArray(DraftLink):
             obj.addProperty("App::PropertyBool",
                             "ReversePath",
                             "Alignment",
-                            _tip)
+                            _tip,
+                            locked=True)
             obj.ReversePath = False
 
         # The Align property must be attached after other align properties
@@ -320,7 +342,8 @@ class PathArray(DraftLink):
             obj.addProperty("App::PropertyBool",
                             "Align",
                             "Alignment",
-                            _tip)
+                            _tip,
+                            locked=True)
             obj.Align = False
 
     def set_spacing_properties(self, obj, properties):
@@ -330,7 +353,8 @@ class PathArray(DraftLink):
             obj.addProperty("App::PropertyInteger",
                             "Count",
                             "Spacing",
-                            _tip)
+                            _tip,
+                            locked=True)
             obj.Count = 4
 
         if "SpacingMode" not in properties:
@@ -344,7 +368,8 @@ class PathArray(DraftLink):
             obj.addProperty("App::PropertyEnumeration",
                             "SpacingMode",
                             "Spacing",
-                            _tip)
+                            _tip,
+                            locked=True)
             obj.SpacingMode = ["Fixed count", "Fixed spacing", "Fixed count and spacing"]
             obj.SpacingMode = "Fixed count"
 
@@ -353,7 +378,8 @@ class PathArray(DraftLink):
             obj.addProperty("App::PropertyLength",
                             "SpacingUnit",
                             "Spacing",
-                            _tip)
+                            _tip,
+                            locked=True)
             obj.SpacingUnit = 20.0
             obj.setPropertyStatus("SpacingUnit", "Hidden")
 
@@ -362,7 +388,8 @@ class PathArray(DraftLink):
             obj.addProperty("App::PropertyBool",
                             "UseSpacingPattern",
                             "Spacing",
-                            _tip)
+                            _tip,
+                            locked=True)
             obj.UseSpacingPattern = False
 
         if "SpacingPattern" not in properties:
@@ -370,7 +397,8 @@ class PathArray(DraftLink):
             obj.addProperty("App::PropertyFloatList",
                             "SpacingPattern",
                             "Spacing",
-                            _tip)
+                            _tip,
+                            locked=True)
             obj.SpacingPattern = [1, 2]
             obj.setPropertyStatus("SpacingPattern", "Hidden")
 
@@ -379,7 +407,8 @@ class PathArray(DraftLink):
             obj.addProperty("App::PropertyLength",
                             "StartOffset",
                             "Spacing",
-                            _tip)
+                            _tip,
+                            locked=True)
             obj.StartOffset = 0.0
 
         if "EndOffset" not in properties:
@@ -387,7 +416,8 @@ class PathArray(DraftLink):
             obj.addProperty("App::PropertyLength",
                             "EndOffset",
                             "Spacing",
-                            _tip)
+                            _tip,
+                            locked=True)
             obj.EndOffset = 0.0
 
     def linkSetup(self, obj):
@@ -541,37 +571,39 @@ class PathArray(DraftLink):
 
     def onDocumentRestored(self, obj):
         super().onDocumentRestored(obj)
-        # Run updates in order:
-        self.ensure_updated(obj)
-
-    def ensure_updated(self, obj):
-        # ReversePath was added together with several Spacing properties in v1.1.
-        # V1.1 props should be OK if it is present.
-        if hasattr(obj, "ReversePath"):
+        # ReversePath was added together with several Spacing properties in v1.1,
+        # and PlacementList property was added for non-link arrays in v1.1,
+        # obj should be OK if both are present:
+        if hasattr(obj, "ReversePath") and hasattr(obj, "PlacementList"):
             return
 
-        # Fuse property was added in v1.0. Check if it is already present to
-        # correctly issue warning.
-        fuse_was_present = hasattr(obj, "Fuse")
-
-        self.set_properties(obj)
         if hasattr(obj, "PathObj"):
             _wrn("v0.19, " + obj.Label + ", " + translate("draft", "migrated 'PathObj' property to 'PathObject'"))
+        if hasattr(obj, "PathSubs"):
+            _wrn("v0.19, " + obj.Label + ", " + translate("draft", "migrated 'PathSubs' property to 'PathSubelements'"))
+        if hasattr(obj, "Xlate"):
+            _wrn("v0.19, " + obj.Label + ", " + translate("draft", "migrated 'Xlate' property to 'ExtraTranslation'"))
+        if not hasattr(obj, "Fuse"):
+            _wrn("v1.0, " + obj.Label + ", " + translate("draft", "added 'Fuse' property"))
+        if obj.getGroupOfProperty("Count") != "Spacing":
+            _wrn("v1.1, " + obj.Label + ", " + translate("draft", "moved 'Count' property to 'Spacing' subsection"))
+        if not hasattr(obj, "ReversePath"):
+            _wrn("v1.1, " + obj.Label + ", " + translate("draft", "added 'ReversePath', 'SpacingMode', 'SpacingUnit', 'UseSpacingPattern' and 'SpacingPattern' properties"))
+        if not hasattr(obj, "PlacementList"):
+            _wrn("v1.1, " + obj.Label + ", " + translate("draft", "added hidden property 'PlacementList'"))
+
+        self.set_properties(obj)
+        obj.setGroupOfProperty("Count", "Spacing")
+        if hasattr(obj, "PathObj"):
             obj.PathObject = obj.PathObj
             obj.removeProperty("PathObj")
         if hasattr(obj, "PathSubs"):
-            _wrn("v0.19, " + obj.Label + ", " + translate("draft", "migrated 'PathSubs' property to 'PathSubelements'"))
             obj.PathSubelements = obj.PathSubs
             obj.removeProperty("PathSubs")
         if hasattr(obj, "Xlate"):
-            _wrn("v0.19, " + obj.Label + ", " + translate("draft", "migrated 'Xlate' property to 'ExtraTranslation'"))
             obj.ExtraTranslation = obj.Xlate
             obj.removeProperty("Xlate")
-        if not fuse_was_present:
-            _wrn("v1.0, " + obj.Label + ", " + translate("draft", "added 'Fuse' property"))
-        obj.setGroupOfProperty("Count", "Spacing")
-        _wrn("v1.1, " + obj.Label + ", " + translate("draft", "moved 'Count' to 'Spacing' subsection"))
-        _wrn("v1.1, " + obj.Label + ", " + translate("draft", "added 'ReversePath', 'SpacingMode', 'SpacingUnit', 'UseSpacingPattern' and 'SpacingPattern' properties"))
+        self.execute(obj) # Required to update PlacementList.
 
 
 # Alias for compatibility with v0.18 and earlier
@@ -667,14 +699,14 @@ def placements_on_path(shapeRotation, pathwire, count, xlate, align,
         segCount = max(segCount, 1)
 
         if useSpacingPattern:
-            # Available lenth will be non-uniformly divided in proportions from SpacingPattern:
+            # Available length will be non-uniformly divided in proportions from SpacingPattern:
             fullSpacingPattern = [spacingPattern[i % len(spacingPattern)] for i in range(segCount)]
             sumWeights = sum(fullSpacingPattern)
             distPerWeightUnit = totalDist / sumWeights
-            steps = [distPerWeightUnit * weigth for weigth in fullSpacingPattern]
+            steps = [distPerWeightUnit * weight for weight in fullSpacingPattern]
 
         else:
-            # Available lenght will be evenly divided (the original spacing method):
+            # Available length will be evenly divided (the original spacing method):
             steps = [totalDist / segCount]
 
     if useFixedSpacing:

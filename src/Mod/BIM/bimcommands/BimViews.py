@@ -1,33 +1,37 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *                                                                         *
 # *   Copyright (c) 2018 Yorik van Havre <yorik@uncreated.net>              *
 # *                                                                         *
-# *   This program is free software; you can redistribute it and/or modify  *
-# *   it under the terms of the GNU Lesser General Public License (LGPL)    *
-# *   as published by the Free Software Foundation; either version 2 of     *
-# *   the License, or (at your option) any later version.                   *
-# *   for detail see the LICENCE text file.                                 *
+# *   This file is part of FreeCAD.                                         *
 # *                                                                         *
-# *   This program is distributed in the hope that it will be useful,       *
-# *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-# *   GNU Library General Public License for more details.                  *
+# *   FreeCAD is free software: you can redistribute it and/or modify it    *
+# *   under the terms of the GNU Lesser General Public License as           *
+# *   published by the Free Software Foundation, either version 2.1 of the  *
+# *   License, or (at your option) any later version.                       *
 # *                                                                         *
-# *   You should have received a copy of the GNU Library General Public     *
-# *   License along with this program; if not, write to the Free Software   *
-# *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
-# *   USA                                                                   *
+# *   FreeCAD is distributed in the hope that it will be useful, but        *
+# *   WITHOUT ANY WARRANTY; without even the implied warranty of            *
+# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU      *
+# *   Lesser General Public License for more details.                       *
+# *                                                                         *
+# *   You should have received a copy of the GNU Lesser General Public      *
+# *   License along with FreeCAD. If not, see                               *
+# *   <https://www.gnu.org/licenses/>.                                      *
 # *                                                                         *
 # ***************************************************************************
 
 """The BIM Views command"""
 
 import sys
+
 import FreeCAD
 import FreeCADGui
 
 QT_TRANSLATE_NOOP = FreeCAD.Qt.QT_TRANSLATE_NOOP
 translate = FreeCAD.Qt.translate
+
 UPDATEINTERVAL = 2000  # number of milliseconds between BIM Views window update
 PARAMS = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/BIM")
 
@@ -48,6 +52,7 @@ class BIM_Views:
         from PySide import QtCore, QtGui
 
         vm = findWidget()
+        self.allItemsInTree = []
         bimviewsbutton = None
         mw = FreeCADGui.getMainWindow()
         st = mw.statusBar()
@@ -87,7 +92,8 @@ class BIM_Views:
                             ("Toggle", translate("BIM","Toggle on/off")),
                             ("Isolate", translate("BIM","Isolate")),
                             ("SaveView", translate("BIM","Save view position")),
-                            ("Rename", translate("BIM","Rename"))]:
+                            ("Rename", translate("BIM","Rename")),
+                            ("Activate", translate("BIM","Activate"))]:
                 action = QtGui.QAction(button[1])
                 self.dialog.menu.addAction(action)
                 setattr(self.dialog,"button"+button[0], action)
@@ -102,6 +108,7 @@ class BIM_Views:
             self.dialog.buttonRename.setIcon(
                 QtGui.QIcon(":/icons/accessories-text-editor.svg")
             )
+            self.dialog.buttonActivate.setIcon(QtGui.QIcon(":/icons/edit_OK.svg"))
 
             # set tooltips
             self.dialog.buttonAddLevel.setToolTip(translate("BIM","Creates a new level"))
@@ -111,6 +118,7 @@ class BIM_Views:
             self.dialog.buttonIsolate.setToolTip(translate("BIM","Turns all items off except the selected ones"))
             self.dialog.buttonSaveView.setToolTip(translate("BIM","Saves the current camera position to the selected items"))
             self.dialog.buttonRename.setToolTip(translate("BIM","Renames the selected item"))
+            self.dialog.buttonActivate.setToolTip(translate("BIM","Activates the selected item"))
 
             # connect signals
             self.dialog.buttonAddLevel.triggered.connect(self.addLevel)
@@ -120,6 +128,7 @@ class BIM_Views:
             self.dialog.buttonIsolate.triggered.connect(self.isolate)
             self.dialog.buttonSaveView.triggered.connect(self.saveView)
             self.dialog.buttonRename.triggered.connect(self.rename)
+            self.dialog.buttonActivate.triggered.connect(self.activate)
             self.dialog.tree.itemClicked.connect(self.select)
             self.dialog.tree.itemDoubleClicked.connect(show)
             self.dialog.viewtree.itemDoubleClicked.connect(show)
@@ -185,6 +194,7 @@ class BIM_Views:
         if vm and FreeCAD.ActiveDocument:
             if vm.isVisible() and (vm.tree.state() != vm.tree.State.EditingState):
                 vm.tree.clear()
+                self.allItemsInTree.clear()
                 treeViewItems = []  # QTreeWidgetItem to Display in tree
                 lvHold = []
                 soloProxyHold = []
@@ -302,8 +312,13 @@ class BIM_Views:
                     objActive = FreeCADGui.ActiveDocument.ActiveView.getActiveObject("Arch")
                 tparam = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/TreeView")
                 activeColor = tparam.GetUnsigned("TreeActiveColor",0)
-                allItemsInTree = getAllItemsInTree(vm.tree) + getAllItemsInTree(vm.viewtree)
-                for item in allItemsInTree:
+
+                # We reuse the variable later on in "Isolate", to not traverse the tree once
+                # again
+                self.allItemsInTree = getAllItemsInTree(vm.tree)
+                allItemsInTrees = self.allItemsInTree + getAllItemsInTree(vm.viewtree)
+
+                for item in allItemsInTrees:
                     if item.text(0) in objNameSelected:
                         item.setSelected(True)
                     if objActive and item.toolTip(0) == objActive.Name:
@@ -353,9 +368,10 @@ class BIM_Views:
         "adds a WP proxy"
 
         import Draft
+        import WorkingPlane
 
         FreeCAD.ActiveDocument.openTransaction("Create WP Proxy")
-        obj = Draft.makeWorkingPlaneProxy(FreeCAD.DraftWorkingPlane.getPlacement())
+        obj = Draft.makeWorkingPlaneProxy(WorkingPlane.get_working_plane().get_placement())
         self.addToSelection(obj)
         FreeCAD.ActiveDocument.commitTransaction()
         FreeCAD.ActiveDocument.recompute()
@@ -407,6 +423,15 @@ class BIM_Views:
                 if vm.tree.selectedItems():
                     item = vm.tree.selectedItems()[-1]
                     vm.tree.editItem(item, 0)
+    
+    def activate(self, item):
+        vm = findWidget()
+        if vm:
+            if vm.tree.selectedItems():
+                if vm.tree.selectedItems():
+                    item = vm.tree.selectedItems()[-1]
+                    obj = FreeCAD.ActiveDocument.getObject(item.toolTip(0))
+                    obj.ViewObject.Proxy.setWorkingPlane()
 
     def editObject(self, item, column):
         "renames or edit height of the actual object"
@@ -429,19 +454,60 @@ class BIM_Views:
                     obj.ViewObject.Visibility = not (obj.ViewObject.Visibility)
             FreeCAD.ActiveDocument.recompute()
 
+    def _isAncestor(self, ancestor_item, child_item):
+        current = child_item.parent()
+        while current is not None:
+            if current == ancestor_item:
+                return True
+            current = current.parent()
+        return False
+
     def isolate(self):
-        "turns all items off except the selected ones"
+        import Draft
+        """
+        Isolate the currently selected items in the tree view.
+
+        This function first makes all items in the tree visible to ensure a clean slate.
+        Then, it hides all items that are not currently selected by the user in the GUI tree view.
+        As a result, only the selected items remain visible in the 3D view, effectively isolating them.
+
+        Assumes that `self.allItemsInTree` is a list of all QTreeWidgetItems in the tree.
+        """
+
+        # Iterate through all of the items and show them beforehand if they were hidden
+        # so we can "reset" the tree state before the real processing
+        for item in self.allItemsInTree:
+            toolTip = item.toolTip(0)
+            obj = FreeCAD.ActiveDocument.getObject(toolTip)
+            if obj:
+                # We switch visibility to be sure we will show childs of other childs
+                # beforehand, as the Visibility may not be propagated.
+                obj.ViewObject.Visibility = False
+                obj.ViewObject.Visibility = True
 
         vm = findWidget()
         if vm:
-            onnames = [item.toolTip(0) for item in vm.tree.selectedItems()]
-            for i in range(vm.tree.topLevelItemCount()):
-                item = vm.tree.topLevelItem(i)
-                if item.toolTip(0) not in onnames:
-                    obj = FreeCAD.ActiveDocument.getObject(item.toolTip(0))
-                    if obj:
+            selectedItems = vm.tree.selectedItems()
+            checkAncestors = False
+            # We can get a scenario where user has just selected only Building
+            # so we don't want to hide any of it's children, so just check if that's
+            # the case so we will know whether we should process items further or not
+            if len(selectedItems) == 1:
+                toolTip = selectedItems[0].toolTip(0)
+                obj = FreeCAD.ActiveDocument.getObject(toolTip)
+                t = Draft.getType(obj)
+                if obj and getattr(obj, "IfcType", "") == "Building":
+                    checkAncestors = True
+
+            for item in self.allItemsInTree:
+                toolTip = item.toolTip(0)
+                obj = FreeCAD.ActiveDocument.getObject(toolTip)
+                if obj:
+                    if item not in selectedItems and not (checkAncestors and self._isAncestor(selectedItems[0], item)):
                         obj.ViewObject.Visibility = False
-            FreeCAD.ActiveDocument.recompute()
+                    else:
+                        obj.ViewObject.Visibility = True
+
 
     def saveView(self):
         "save the current camera angle to the selected item"
@@ -615,7 +681,7 @@ def show(item, column=None):
                     for storey in storeys:
                         if storey != obj:
                             storey.ViewObject.Visibility = False
-            elif obj.IfcType == "IfcBuilding":
+            elif hasattr(obj, "IfcType") and obj.IfcType == "IfcBuilding":
                 # show all storeys
                 storeys = [o for o in obj.OutList if Draft.getType(o) == "IfcBuildingStorey"]
                 for storey in storeys:

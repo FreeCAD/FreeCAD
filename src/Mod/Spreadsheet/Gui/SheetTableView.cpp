@@ -23,6 +23,7 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+#include <limits>
 #include <QAction>
 #include <QApplication>
 #include <QClipboard>
@@ -55,7 +56,18 @@
 using namespace SpreadsheetGui;
 using namespace Spreadsheet;
 using namespace App;
-namespace sp = std::placeholders;
+
+void SheetViewHeader::mouseMoveEvent(QMouseEvent* e)
+{
+    // for some reason QWidget::setCursor() has no effect in QGraphicsView
+    // therefore we resort to override cursor
+    const QCursor currentCursor = this->cursor();
+    QHeaderView::mouseMoveEvent(e);
+    const QCursor newerCursor = this->cursor();
+    if (newerCursor != currentCursor) {
+        qApp->setOverrideCursor(newerCursor);
+    }
+}
 
 void SheetViewHeader::mouseReleaseEvent(QMouseEvent* event)
 {
@@ -698,9 +710,9 @@ void SheetTableView::copySelection()
 
 void SheetTableView::_copySelection(const std::vector<App::Range>& ranges, bool copy)
 {
-    int minRow = INT_MAX;
+    int minRow = std::numeric_limits<int>::max();
     int maxRow = 0;
-    int minCol = INT_MAX;
+    int minCol = std::numeric_limits<int>::max();
     int maxCol = 0;
     for (auto& range : ranges) {
         minRow = std::min(minRow, range.from().row());
@@ -714,6 +726,10 @@ void SheetTableView::_copySelection(const std::vector<App::Range>& ranges, bool 
         for (int j = minCol; j <= maxCol; j++) {
             QModelIndex index = model()->index(i, j);
             QString cell = index.data(Qt::EditRole).toString();
+            if (!cell.isEmpty() && cell.at(0) == QLatin1Char('\'')) {
+                cell.remove(0, 1);
+            }
+
             if (j < maxCol) {
                 cell.append(QChar::fromLatin1('\t'));
             }
@@ -801,7 +817,7 @@ void SheetTableView::pasteClipboard()
         GetApplication().getActiveDocument()->recompute();
     }
     catch (Base::Exception& e) {
-        e.ReportException();
+        e.reportException();
         QMessageBox::critical(Gui::getMainWindow(),
                               QObject::tr("Copy & Paste failed"),
                               QString::fromLatin1(e.what()));

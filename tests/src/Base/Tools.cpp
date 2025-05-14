@@ -1,47 +1,9 @@
 #include <gtest/gtest.h>
 #include <Base/Tools.h>
 #include <bitset>
+#include <vector>
 
 // NOLINTBEGIN(cppcoreguidelines-*,readability-*)
-TEST(BaseToolsSuite, TestUniqueName1)
-{
-    EXPECT_EQ(Base::Tools::getUniqueName("Body", {}), "Body");
-}
-
-TEST(BaseToolsSuite, TestUniqueName2)
-{
-    EXPECT_EQ(Base::Tools::getUniqueName("Body", {"Body"}, 1), "Body1");
-}
-
-TEST(BaseToolsSuite, TestUniqueName3)
-{
-    EXPECT_EQ(Base::Tools::getUniqueName("Body", {"Body"}, 3), "Body001");
-}
-
-TEST(BaseToolsSuite, TestUniqueName4)
-{
-    EXPECT_EQ(Base::Tools::getUniqueName("Body", {"Body001"}, 3), "Body002");
-}
-
-TEST(BaseToolsSuite, TestUniqueName5)
-{
-    EXPECT_EQ(Base::Tools::getUniqueName("Body", {"Body", "Body001"}, 3), "Body002");
-}
-
-TEST(BaseToolsSuite, TestUniqueName6)
-{
-    EXPECT_EQ(Base::Tools::getUniqueName("Body001", {"Body", "Body001"}, 3), "Body002");
-}
-
-TEST(BaseToolsSuite, TestUniqueName7)
-{
-    EXPECT_EQ(Base::Tools::getUniqueName("Body001", {"Body"}, 3), "Body002");
-}
-
-TEST(BaseToolsSuite, TestUniqueName8)
-{
-    EXPECT_EQ(Base::Tools::getUniqueName("Body12345", {"Body"}, 3), "Body12346");
-}
 
 TEST(Tools, TestIota)
 {
@@ -77,16 +39,16 @@ TEST(Tools, TestSignum)
 TEST(Tools, TestRadian)
 {
     EXPECT_EQ(Base::toRadians<int>(90), 1);
-    EXPECT_DOUBLE_EQ(Base::toRadians<double>(180), M_PI);
-    EXPECT_DOUBLE_EQ(Base::toRadians<double>(90.0), M_PI / 2.0);
+    EXPECT_DOUBLE_EQ(Base::toRadians<double>(180), std::numbers::pi);
+    EXPECT_DOUBLE_EQ(Base::toRadians<double>(90.0), std::numbers::pi / 2.0);
     EXPECT_DOUBLE_EQ(Base::toRadians<double>(0.0), 0.0);
 }
 
 TEST(Tools, TestDegree)
 {
     EXPECT_EQ(Base::toDegrees<int>(3), 171);
-    EXPECT_DOUBLE_EQ(Base::toDegrees<double>(M_PI), 180.0);
-    EXPECT_DOUBLE_EQ(Base::toDegrees<double>(M_PI / 2.0), 90.0);
+    EXPECT_DOUBLE_EQ(Base::toDegrees<double>(std::numbers::pi), 180.0);
+    EXPECT_DOUBLE_EQ(Base::toDegrees<double>(std::numbers::pi / 2.0), 90.0);
     EXPECT_DOUBLE_EQ(Base::toDegrees<double>(0.0), 0.0);
 }
 

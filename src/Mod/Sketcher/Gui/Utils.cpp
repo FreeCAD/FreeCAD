@@ -22,7 +22,6 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-#include <cfloat>
 
 #include <QCursor>
 #include <QLocale>
@@ -432,7 +431,7 @@ double SketcherGui::GetPointAngle(const Base::Vector2d& p1, const Base::Vector2d
 {
     double dX = p2.x - p1.x;
     double dY = p2.y - p1.y;
-    return dY >= 0 ? atan2(dY, dX) : atan2(dY, dX) + 2 * M_PI;
+    return dY >= 0 ? atan2(dY, dX) : atan2(dY, dX) + 2 * std::numbers::pi;
 }
 
 // Set the two points on circles at minimal distance
@@ -726,7 +725,7 @@ std::string SketcherGui::lengthToDisplayFormat(double value, int digits)
 
     // get the numeric part of the user string
     QRegularExpression rxNoUnits(
-        QString::fromUtf8("(.*) \\D*$"));  // text before space + any non digits at end of string
+        QStringLiteral("(.*) \\D*$"));  // text before space + any non digits at end of string
     QRegularExpressionMatch match = rxNoUnits.match(QString::fromStdString(userString));
     if (!match.hasMatch()) {
         // no units in userString?
@@ -776,10 +775,10 @@ std::string SketcherGui::angleToDisplayFormat(double value, int digits)
     if (Base::UnitsApi::isMultiUnitAngle()) {
         // just return the user string
         // Coin SbString doesn't handle utf8 well, so we convert to ascii
-        QString schemeMinute = QString::fromUtf8("\xE2\x80\xB2");  // prime symbol
-        QString schemeSecond = QString::fromUtf8("\xE2\x80\xB3");  // double prime symbol
-        QString escapeMinute = QString::fromLatin1("\'");          // substitute ascii single quote
-        QString escapeSecond = QString::fromLatin1("\"");          // substitute ascii double quote
+        QString schemeMinute = QStringLiteral("\xE2\x80\xB2");  // prime symbol
+        QString schemeSecond = QStringLiteral("\xE2\x80\xB3");  // double prime symbol
+        QString escapeMinute = QStringLiteral("\'");            // substitute ascii single quote
+        QString escapeSecond = QStringLiteral("\"");            // substitute ascii double quote
         QString displayString = qUserString.replace(schemeMinute, escapeMinute);
         displayString = displayString.replace(schemeSecond, escapeSecond);
         return displayString.toStdString();
@@ -791,7 +790,7 @@ std::string SketcherGui::angleToDisplayFormat(double value, int digits)
     auto decimalSep = QLocale().decimalPoint();
 
     // get the numeric part of the user string
-    QRegularExpression rxNoUnits(QString::fromUtf8("(\\d*\\%1?\\d*)(\\D*)$")
+    QRegularExpression rxNoUnits(QStringLiteral("(\\d*\\%1?\\d*)(\\D*)$")
                                      .arg(decimalSep));  // number + non digits at end of string
     QRegularExpressionMatch match = rxNoUnits.match(qUserString);
     if (!match.hasMatch()) {

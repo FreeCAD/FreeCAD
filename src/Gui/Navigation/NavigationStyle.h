@@ -103,7 +103,9 @@ public:
     enum OrbitStyle {
         Turntable,
         Trackball,
-        FreeTurntable
+        FreeTurntable,
+        TrackballClassic,
+        RoundedArcball
     };
 
     enum class RotationCenterMode {
@@ -150,8 +152,8 @@ public:
     SbVec3f getFocalPoint() const;
 
     SoCamera* getCamera() const;
-    void setCameraOrientation(const SbRotation& orientation, SbBool moveToCenter = false);
-    void translateCamera(const SbVec3f& translation);
+    std::shared_ptr<NavigationAnimation> setCameraOrientation(const SbRotation& orientation, SbBool moveToCenter = false) const;
+    std::shared_ptr<NavigationAnimation> translateCamera(const SbVec3f& translation) const;
 
 #if (COIN_MAJOR_VERSION * 100 + COIN_MINOR_VERSION * 10 + COIN_MICRO_VERSION < 403)
     void findBoundingSphere();
@@ -214,7 +216,7 @@ protected:
     void setupPanningPlane(const SoCamera* camera);
     int getDelta() const;
     void zoom(SoCamera * camera, float diffvalue);
-    void zoomByCursor(const SbVec2f & thispos, const SbVec2f & prevpos);
+    virtual void zoomByCursor(const SbVec2f & thispos, const SbVec2f & prevpos);
     void doZoom(SoCamera * camera, int wheeldelta, const SbVec2f& pos);
     void doZoom(SoCamera * camera, float logzoomfactor, const SbVec2f& pos);
     void doRotate(SoCamera * camera, float angle, const SbVec2f& pos);
@@ -384,6 +386,23 @@ private:
     SbBool lockButton1{false};
 };
 
+class GuiExport SolidWorksNavigationStyle : public UserNavigationStyle {
+    using inherited = UserNavigationStyle;
+
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
+
+public:
+SolidWorksNavigationStyle();
+    ~SolidWorksNavigationStyle() override;
+    const char* mouseButtons(ViewerMode) override;
+
+protected:
+    SbBool processSoEvent(const SoEvent * const ev) override;
+
+private:
+    SbBool lockButton1{false};
+};
+
 class GuiExport MayaGestureNavigationStyle : public UserNavigationStyle {
     using inherited = UserNavigationStyle;
 
@@ -395,6 +414,8 @@ public:
     const char* mouseButtons(ViewerMode) override;
 
 protected:
+    void zoomByCursor(const SbVec2f & thispos, const SbVec2f & prevpos) override;
+
     SbBool processSoEvent(const SoEvent * const ev) override;
 
     SbVec2s mousedownPos;//the position where some mouse button was pressed (local pixel coordinates).

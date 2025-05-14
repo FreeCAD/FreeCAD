@@ -1,23 +1,37 @@
-#***************************************************************************
-#*   Copyright (c) 2011 Yorik van Havre <yorik@uncreated.net>              *
-#*                                                                         *
-#*   This program is free software; you can redistribute it and/or modify  *
-#*   it under the terms of the GNU Lesser General Public License (LGPL)    *
-#*   as published by the Free Software Foundation; either version 2 of     *
-#*   the License, or (at your option) any later version.                   *
-#*   for detail see the LICENCE text file.                                 *
-#*                                                                         *
-#*   This program is distributed in the hope that it will be useful,       *
-#*   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-#*   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-#*   GNU Library General Public License for more details.                  *
-#*                                                                         *
-#*   You should have received a copy of the GNU Library General Public     *
-#*   License along with this program; if not, write to the Free Software   *
-#*   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
-#*   USA                                                                   *
-#*                                                                         *
-#***************************************************************************
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
+# ***************************************************************************
+# *                                                                         *
+# *   Copyright (c) 2011 Yorik van Havre <yorik@uncreated.net>              *
+# *                                                                         *
+# *   This file is part of FreeCAD.                                         *
+# *                                                                         *
+# *   FreeCAD is free software: you can redistribute it and/or modify it    *
+# *   under the terms of the GNU Lesser General Public License as           *
+# *   published by the Free Software Foundation, either version 2.1 of the  *
+# *   License, or (at your option) any later version.                       *
+# *                                                                         *
+# *   FreeCAD is distributed in the hope that it will be useful, but        *
+# *   WITHOUT ANY WARRANTY; without even the implied warranty of            *
+# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU      *
+# *   Lesser General Public License for more details.                       *
+# *                                                                         *
+# *   You should have received a copy of the GNU Lesser General Public      *
+# *   License along with FreeCAD. If not, see                               *
+# *   <https://www.gnu.org/licenses/>.                                      *
+# *                                                                         *
+# ***************************************************************************
+
+__title__  = "FreeCAD Arch Component"
+__author__ = "Yorik van Havre"
+__url__    = "https://www.freecad.org"
+
+## @package ArchComponent
+#  \ingroup ARCH
+#  \brief The base class of all Arch objects
+#
+#  This module provides the base Arch component class, that
+#  is shared by all of the Arch BIM objects
 
 """This module provides the base Arch component class, that is shared
 by all of the Arch BIM objects.
@@ -27,21 +41,18 @@ Examples
 TODO put examples here.
 """
 
-__title__  = "FreeCAD Arch Component"
-__author__ = "Yorik van Havre"
-__url__    = "https://www.freecad.org"
-
 import FreeCAD
 import ArchCommands
 import ArchIFC
 import Draft
+
 from draftutils import params
 
 if FreeCAD.GuiUp:
-    import FreeCADGui
     from PySide import QtGui,QtCore
-    from draftutils.translate import translate
     from PySide.QtCore import QT_TRANSLATE_NOOP
+    import FreeCADGui
+    from draftutils.translate import translate
 else:
     # \cond
     def translate(ctxt,txt):
@@ -50,12 +61,6 @@ else:
         return txt
     # \endcond
 
-## @package ArchComponent
-#  \ingroup ARCH
-#  \brief The base class of all Arch objects
-#
-#  This module provides the base Arch component class, that
-#  is shared by all of the Arch BIM objects
 
 def addToComponent(compobject,addobject,mod=None):
     """Add an object to a component's properties.
@@ -194,44 +199,44 @@ class Component(ArchIFC.IfcProduct):
 
         pl = obj.PropertiesList
         if not "Base" in pl:
-            obj.addProperty("App::PropertyLink","Base","Component",QT_TRANSLATE_NOOP("App::Property","The base object this component is built upon"))
+            obj.addProperty("App::PropertyLink","Base","Component",QT_TRANSLATE_NOOP("App::Property","The base object this component is built upon"), locked=True)
         if not "CloneOf" in pl:
-            obj.addProperty("App::PropertyLink","CloneOf","Component",QT_TRANSLATE_NOOP("App::Property","The object this component is cloning"))
+            obj.addProperty("App::PropertyLink","CloneOf","Component",QT_TRANSLATE_NOOP("App::Property","The object this component is cloning"), locked=True)
         if not "Additions" in pl:
-            obj.addProperty("App::PropertyLinkList","Additions","Component",QT_TRANSLATE_NOOP("App::Property","Other shapes that are appended to this object"))
+            obj.addProperty("App::PropertyLinkList","Additions","Component",QT_TRANSLATE_NOOP("App::Property","Other shapes that are appended to this object"), locked=True)
         if not "Subtractions" in pl:
-            obj.addProperty("App::PropertyLinkList","Subtractions","Component",QT_TRANSLATE_NOOP("App::Property","Other shapes that are subtracted from this object"))
+            obj.addProperty("App::PropertyLinkList","Subtractions","Component",QT_TRANSLATE_NOOP("App::Property","Other shapes that are subtracted from this object"), locked=True)
         if not "Description" in pl:
-            obj.addProperty("App::PropertyString","Description","Component",QT_TRANSLATE_NOOP("App::Property","An optional description for this component"))
+            obj.addProperty("App::PropertyString","Description","Component",QT_TRANSLATE_NOOP("App::Property","An optional description for this component"), locked=True)
         if not "Tag" in pl:
-            obj.addProperty("App::PropertyString","Tag","Component",QT_TRANSLATE_NOOP("App::Property","An optional tag for this component"))
+            obj.addProperty("App::PropertyString","Tag","Component",QT_TRANSLATE_NOOP("App::Property","An optional tag for this component"), locked=True)
         if not "StandardCode" in pl:
-            obj.addProperty("App::PropertyString","StandardCode","Component",QT_TRANSLATE_NOOP("App::Property","An optional standard (OmniClass, etc...) code for this component"))
+            obj.addProperty("App::PropertyString","StandardCode","Component",QT_TRANSLATE_NOOP("App::Property","An optional standard (OmniClass, etc...) code for this component"), locked=True)
         if not "Material" in pl:
-            obj.addProperty("App::PropertyLink","Material","Component",QT_TRANSLATE_NOOP("App::Property","A material for this object"))
+            obj.addProperty("App::PropertyLink","Material","Component",QT_TRANSLATE_NOOP("App::Property","A material for this object"), locked=True)
         if "BaseMaterial" in pl:
             obj.Material = obj.BaseMaterial
             obj.removeProperty("BaseMaterial")
             FreeCAD.Console.PrintMessage("Upgrading "+obj.Label+" BaseMaterial property to Material\n")
         if not "MoveBase" in pl:
-            obj.addProperty("App::PropertyBool","MoveBase","Component",QT_TRANSLATE_NOOP("App::Property","Specifies if moving this object moves its base instead"))
+            obj.addProperty("App::PropertyBool","MoveBase","Component",QT_TRANSLATE_NOOP("App::Property","Specifies if moving this object moves its base instead"), locked=True)
             obj.MoveBase = params.get_param_arch("MoveBase")
         if not "MoveWithHost" in pl:
-            obj.addProperty("App::PropertyBool","MoveWithHost","Component",QT_TRANSLATE_NOOP("App::Property","Specifies if this object must move together when its host is moved"))
+            obj.addProperty("App::PropertyBool","MoveWithHost","Component",QT_TRANSLATE_NOOP("App::Property","Specifies if this object must move together when its host is moved"), locked=True)
             obj.MoveWithHost = params.get_param_arch("MoveWithHost")
         if not "VerticalArea" in pl:
-            obj.addProperty("App::PropertyArea","VerticalArea","Component",QT_TRANSLATE_NOOP("App::Property","The area of all vertical faces of this object"))
+            obj.addProperty("App::PropertyArea","VerticalArea","Component",QT_TRANSLATE_NOOP("App::Property","The area of all vertical faces of this object"), locked=True)
             obj.setEditorMode("VerticalArea",1)
         if not "HorizontalArea" in pl:
-            obj.addProperty("App::PropertyArea","HorizontalArea","Component",QT_TRANSLATE_NOOP("App::Property","The area of the projection of this object onto the XY plane"))
+            obj.addProperty("App::PropertyArea","HorizontalArea","Component",QT_TRANSLATE_NOOP("App::Property","The area of the projection of this object onto the XY plane"), locked=True)
             obj.setEditorMode("HorizontalArea",1)
         if not "PerimeterLength" in pl:
-            obj.addProperty("App::PropertyLength","PerimeterLength","Component",QT_TRANSLATE_NOOP("App::Property","The perimeter length of the horizontal area"))
+            obj.addProperty("App::PropertyLength","PerimeterLength","Component",QT_TRANSLATE_NOOP("App::Property","The perimeter length of the horizontal area"), locked=True)
             obj.setEditorMode("PerimeterLength",1)
         if not "HiRes" in pl:
-            obj.addProperty("App::PropertyLink","HiRes","Component",QT_TRANSLATE_NOOP("App::Property","An optional higher-resolution mesh or shape for this object"))
+            obj.addProperty("App::PropertyLink","HiRes","Component",QT_TRANSLATE_NOOP("App::Property","An optional higher-resolution mesh or shape for this object"), locked=True)
         if not "Axis" in pl:
-            obj.addProperty("App::PropertyLink","Axis","Component",QT_TRANSLATE_NOOP("App::Property","An optional axis or axis system on which this object should be duplicated"))
+            obj.addProperty("App::PropertyLink","Axis","Component",QT_TRANSLATE_NOOP("App::Property","An optional axis or axis system on which this object should be duplicated"), locked=True)
 
         self.Subvolume = None
         #self.MoveWithHost = False
@@ -606,7 +611,8 @@ class Component(ArchIFC.IfcProduct):
             before being rotated.
         """
 
-        import DraftGeomUtils,math
+        import math
+        import DraftGeomUtils
 
         # Get the object's center.
         if not isinstance(shape,list):
@@ -761,12 +767,11 @@ class Component(ArchIFC.IfcProduct):
         # treat subtractions
         subs = obj.Subtractions
         for link in obj.InListRecursive:
-            if hasattr(link,"Hosts"):
-                if link.Hosts:
-                    if obj in link.Hosts:
-                        subs.append(link)
-            elif hasattr(link,"Host") and Draft.getType(link) != "Rebar":
-                if link.Host == obj:
+            if hasattr(link,"Host"):
+                if Draft.getType(link) != "Rebar" and link.Host == obj and not self._objectInInternalLinkgroup(link):
+                    subs.append(link)
+            elif hasattr(link,"Hosts"):
+                if obj in link.Hosts and not self._objectInInternalLinkgroup(link):
                     subs.append(link)
         for o in subs:
             if base:
@@ -778,7 +783,7 @@ class Component(ArchIFC.IfcProduct):
 
                 if (Draft.getType(o.getLinkedObject()) == "Window") or (Draft.isClone(o,"Window",True)):
                     # windows can be additions or subtractions, treated the same way
-                    subvolume = o.getLinkedObject().Proxy.getSubVolume(o)
+                    subvolume = o.getLinkedObject().Proxy.getSubVolume(o,host=obj)  # pass host obj (mostly Wall)
                 elif (Draft.getType(o) == "Roof") or (Draft.isClone(o,"Roof")):
                     # roofs define their own special subtraction volume
                     subvolume = o.Proxy.getSubVolume(o)
@@ -1022,7 +1027,7 @@ class Component(ArchIFC.IfcProduct):
             for f in fset:
                 try:
                     import TechDraw
-                    pf = Part.Face(DraftGeomUtils.findWires(TechDraw.project(f,FreeCAD.Vector(0,0,1))[0].Edges))
+                    pf = Part.makeFace(DraftGeomUtils.findWires(TechDraw.project(f,FreeCAD.Vector(0,0,1))[0].Edges), "Part::FaceMakerCheese")
                 except Part.OCCError:
                     # error in computing the areas. Better set them to zero than show a wrong value
                     if obj.HorizontalArea.Value != 0:
@@ -1031,9 +1036,9 @@ class Component(ArchIFC.IfcProduct):
                     if hasattr(obj,"PerimeterLength"):
                         if obj.PerimeterLength.Value != 0:
                             obj.PerimeterLength = 0
+                    return
                 else:
                     pset.append(pf)
-
 
             if pset:
                 self.flatarea = pset.pop()
@@ -1137,13 +1142,11 @@ class Component(ArchIFC.IfcProduct):
 
         for link in obj.InListRecursive:
             if hasattr(link,"Host"):
-                if link.Host:
-                    if link.Host == obj:
-                        hosts.append(link)
+                if link.Host == obj and not self._objectInInternalLinkgroup(link):
+                    hosts.append(link)
             elif hasattr(link,"Hosts"):
-                if link.Hosts:
-                    if obj in link.Hosts:
-                        hosts.append(link)
+                if obj in link.Hosts and not self._objectInInternalLinkgroup(link):
+                    hosts.append(link)
         return hosts
 
     def ensureBase(self, obj):
@@ -1163,6 +1166,27 @@ class Component(ArchIFC.IfcProduct):
                     t = translate("Arch","Wrong base type")
                     FreeCAD.Console.PrintError(obj.Label+": "+t+"\n")
                     return False
+
+    def _isInternalLinkgroup(self, obj):
+        """Returns True if obj is an internal LinkGroup. Such a group is used to
+        store hidden objects used for variant Links that should not be hosted."""
+
+        # based on code by bdm
+        # https://forum.freecad.org/viewtopic.php?p=820487#p820428
+        if obj.TypeId != "App::LinkGroup":
+            return False
+        for inObj in obj.InList:
+            if getattr(inObj, "LinkCopyOnChangeGroup", None) is obj:
+                return True
+        return False
+
+    def _objectInInternalLinkgroup(self, obj):
+        """Returns True if obj is a hidden object in an internal LinkGroup."""
+
+        for inObj in obj.InList:
+            if self._isInternalLinkgroup(inObj):
+                return True
+        return False
 
 
 class ViewProviderComponent:
@@ -1190,7 +1214,7 @@ class ViewProviderComponent:
         """
 
         if not "UseMaterialColor" in vobj.PropertiesList:
-            vobj.addProperty("App::PropertyBool","UseMaterialColor","Component",QT_TRANSLATE_NOOP("App::Property","Use the material color as this object's shape color, if available"))
+            vobj.addProperty("App::PropertyBool","UseMaterialColor","Component",QT_TRANSLATE_NOOP("App::Property","Use the material color as this object's shape color, if available"), locked=True)
             vobj.UseMaterialColor = params.get_param_arch("UseMaterialColor")
 
     def updateData(self,obj,prop):
@@ -1994,9 +2018,9 @@ class ComponentTaskPanel:
             return
         if not isinstance(self.obj.IfcProperties,dict):
             return
-        import Arch_rc
         import csv
         import os
+        import Arch_rc
         import ArchIFCSchema
 
         # get presets

@@ -86,9 +86,6 @@
 namespace Base
 {
 
-using std::string;
-using std::vector;
-
 
 class BaseExport PyException: public Exception
 {
@@ -107,7 +104,7 @@ public:
     /// this method determines if the original exception
     /// can be reconstructed or not, if yes throws the reconstructed version
     /// if not, throws a generic PyException.
-    static void ThrowException();
+    static void throwException();
 
     ///  this function returns the stack trace
     const std::string& getStackTrace() const
@@ -122,7 +119,7 @@ public:
     {
         return _exceptionType;
     }
-    void ReportException() const override;
+    void reportException() const override;
     /// Sets the Python error indicator and an error message
     void setPyException() const override;
 
@@ -288,6 +285,8 @@ public:
     bool loadModule(const char* psModName);
     /// Add an additional python path
     void addPythonPath(const char* Path);
+    /// Get the path (replaces the deprecated Py_GetPath method)
+    std::string getPythonPath();
     static void addType(PyTypeObject* Type, PyObject* Module, const char* Name);
     /// Add a module and return a PyObject to it
     PyObject* addModule(Py::ExtensionModuleBase*);
@@ -316,7 +315,7 @@ public:
      */
     //@{
     /// init the interpreter and returns the module search path
-    const char* init(int argc, char* argv[]);
+    std::string init(int argc, char* argv[]);
     int runCommandLine(const char* prompt);
     void replaceStdOutput();
     static InterpreterSingleton& Instance();

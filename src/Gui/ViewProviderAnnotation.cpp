@@ -116,7 +116,7 @@ ViewProviderAnnotation::~ViewProviderAnnotation()
 void ViewProviderAnnotation::onChanged(const App::Property* prop)
 {
     if (prop == &TextColor) {
-        const App::Color& c = TextColor.getValue();
+        const Base::Color& c = TextColor.getValue();
         pColor->rgb.setValue(c.r,c.g,c.b);
     }
     else if (prop == &Justification) {
@@ -155,7 +155,7 @@ void ViewProviderAnnotation::onChanged(const App::Property* prop)
         }
     }
     else if (prop == &Rotation) {
-        pRotationXYZ->angle = (Rotation.getValue()/360)*(2*M_PI);
+        pRotationXYZ->angle = (Rotation.getValue()/360)*(2*std::numbers::pi);
     }
     else {
         ViewProviderDocumentObject::onChanged(prop);
@@ -248,15 +248,8 @@ void ViewProviderAnnotation::updateData(const App::Property* prop)
             const char* cs = line.c_str();
             if (line.empty())
                 cs = " "; // empty lines make coin crash, we use a space instead
-#if (COIN_MAJOR_VERSION <= 3)
-            QByteArray latin1str;
-            latin1str = (QString::fromUtf8(cs)).toLatin1();
-            pLabel->string.set1Value(index, SbString(latin1str.constData()));
-            pLabel3d->string.set1Value(index, SbString(latin1str.constData()));
-#else
             pLabel->string.set1Value(index, SbString(cs));
             pLabel3d->string.set1Value(index, SbString(cs));
-#endif
             index++;
         }
     }
@@ -315,7 +308,7 @@ ViewProviderAnnotationLabel::~ViewProviderAnnotationLabel()
 void ViewProviderAnnotationLabel::onChanged(const App::Property* prop)
 {
     if (prop == &BackgroundColor) {
-        const App::Color& c = BackgroundColor.getValue();
+        const Base::Color& c = BackgroundColor.getValue();
         pColor->rgb.setValue(c.r,c.g,c.b);
     }
     if (prop == &TextColor || prop == &BackgroundColor ||
@@ -454,10 +447,10 @@ void ViewProviderAnnotationLabel::drawImage(const std::vector<std::string>& s)
     QFontMetrics fm(font);
     int w = 0;
     int h = fm.height() * s.size();
-    const App::Color& b = this->BackgroundColor.getValue();
+    const Base::Color& b = this->BackgroundColor.getValue();
     QColor brush;
     brush.setRgbF(b.r,b.g,b.b);
-    const App::Color& t = this->TextColor.getValue();
+    const Base::Color& t = this->TextColor.getValue();
     QColor front;
     front.setRgbF(t.r,t.g,t.b);
 

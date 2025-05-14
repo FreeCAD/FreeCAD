@@ -1,28 +1,29 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *                                                                         *
 # *   Copyright (c) 2017 Yorik van Havre <yorik@uncreated.net>              *
 # *                                                                         *
-# *   This program is free software; you can redistribute it and/or modify  *
-# *   it under the terms of the GNU Lesser General Public License (LGPL)    *
-# *   as published by the Free Software Foundation; either version 2 of     *
-# *   the License, or (at your option) any later version.                   *
-# *   for detail see the LICENCE text file.                                 *
+# *   This file is part of FreeCAD.                                         *
 # *                                                                         *
-# *   This program is distributed in the hope that it will be useful,       *
-# *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-# *   GNU Library General Public License for more details.                  *
+# *   FreeCAD is free software: you can redistribute it and/or modify it    *
+# *   under the terms of the GNU Lesser General Public License as           *
+# *   published by the Free Software Foundation, either version 2.1 of the  *
+# *   License, or (at your option) any later version.                       *
 # *                                                                         *
-# *   You should have received a copy of the GNU Library General Public     *
-# *   License along with this program; if not, write to the Free Software   *
-# *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
-# *   USA                                                                   *
+# *   FreeCAD is distributed in the hope that it will be useful, but        *
+# *   WITHOUT ANY WARRANTY; without even the implied warranty of            *
+# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU      *
+# *   Lesser General Public License for more details.                       *
+# *                                                                         *
+# *   You should have received a copy of the GNU Lesser General Public      *
+# *   License along with FreeCAD. If not, see                               *
+# *   <https://www.gnu.org/licenses/>.                                      *
 # *                                                                         *
 # ***************************************************************************
 
 """BIM nudge commands"""
 
-import os
 import FreeCAD
 import FreeCADGui
 
@@ -36,7 +37,8 @@ class BIM_Nudge:
     def getNudgeValue(self, mode):
         "mode can be dist, up, down, left, right. dist returns a float in mm, other modes return a 3D vector"
 
-        from PySide import QtCore, QtGui
+        from PySide import QtGui
+        import WorkingPlane
 
         mw = FreeCADGui.getMainWindow()
         if mw:
@@ -86,22 +88,15 @@ class BIM_Nudge:
                     return None
                 if mode == "dist":
                     return dist
-                elif mode == "up":
-                    return FreeCAD.Vector(FreeCAD.DraftWorkingPlane.v).multiply(dist)
-                elif mode == "down":
-                    return (
-                        FreeCAD.Vector(FreeCAD.DraftWorkingPlane.v)
-                        .negative()
-                        .multiply(dist)
-                    )
-                elif mode == "right":
-                    return FreeCAD.Vector(FreeCAD.DraftWorkingPlane.u).multiply(dist)
-                elif mode == "left":
-                    return (
-                        FreeCAD.Vector(FreeCAD.DraftWorkingPlane.u)
-                        .negative()
-                        .multiply(dist)
-                    )
+                wp = WorkingPlane.get_working_plane()
+                if mode == "up":
+                    return FreeCAD.Vector(wp.v).multiply(dist)
+                if mode == "down":
+                    return FreeCAD.Vector(wp.v).negative().multiply(dist)
+                if mode == "right":
+                    return FreeCAD.Vector(wp.u).multiply(dist)
+                if mode == "left":
+                    return FreeCAD.Vector(wp.u).negative().multiply(dist)
         return None
 
     def toStr(self, objs):
@@ -136,7 +131,7 @@ class BIM_Nudge_Switch(BIM_Nudge):
         }
 
     def Activated(self):
-        from PySide import QtCore, QtGui
+        from PySide import QtGui
 
         mw = FreeCADGui.getMainWindow()
         if mw:
@@ -290,6 +285,9 @@ class BIM_Nudge_RotateLeft(BIM_Nudge):
         }
 
     def Activated(self):
+
+        import WorkingPlane
+
         sel = FreeCADGui.Selection.getSelection()
         if sel:
             center = self.getCenter(sel)
@@ -301,7 +299,7 @@ class BIM_Nudge_RotateLeft(BIM_Nudge):
                     + ",45,FreeCAD."
                     + str(center)
                     + ",FreeCAD."
-                    + str(FreeCAD.DraftWorkingPlane.axis)
+                    + str(WorkingPlane.get_working_plane().axis)
                     + ")"
                 )
                 FreeCADGui.doCommand("FreeCAD.ActiveDocument.recompute()")
@@ -318,6 +316,9 @@ class BIM_Nudge_RotateRight(BIM_Nudge):
         }
 
     def Activated(self):
+
+        import WorkingPlane
+
         sel = FreeCADGui.Selection.getSelection()
         if sel:
             center = self.getCenter(sel)
@@ -329,7 +330,7 @@ class BIM_Nudge_RotateRight(BIM_Nudge):
                     + ",-45,FreeCAD."
                     + str(center)
                     + ",FreeCAD."
-                    + str(FreeCAD.DraftWorkingPlane.axis)
+                    + str(WorkingPlane.get_working_plane().axis)
                     + ")"
                 )
                 FreeCADGui.doCommand("FreeCAD.ActiveDocument.recompute()")

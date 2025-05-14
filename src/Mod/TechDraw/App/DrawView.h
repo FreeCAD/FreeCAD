@@ -23,7 +23,7 @@
 #ifndef DrawView_h_
 #define DrawView_h_
 
-#include <boost_signals2.hpp>
+#include <boost/signals2.hpp>
 #include <QCoreApplication>
 #include <QRectF>
 
@@ -87,6 +87,7 @@ public:
     virtual DrawPage* findParentPage() const;
     virtual std::vector<DrawPage*> findAllParentPages() const;
     virtual DrawView *claimParent() const;
+    std::vector<TechDraw::DrawView*> getUniqueChildren() const;
 
     virtual int countParentPages() const;
     virtual QRectF getRect() const;                      //must be overridden by derived class

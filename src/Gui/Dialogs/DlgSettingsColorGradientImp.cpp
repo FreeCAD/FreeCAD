@@ -69,7 +69,7 @@ DlgSettingsColorGradientImp::DlgSettingsColorGradientImp(const App::ColorGradien
     // assure that the LineEdit is as wide to contain numbers with 4 digits and 6 decimals
     QFontMetrics fm(ui->floatLineEditMax->font());
     ui->floatLineEditMax->setMinimumWidth(
-        QtTools::horizontalAdvance(fm, QString::fromLatin1("-8000.000000")));
+        QtTools::horizontalAdvance(fm, QStringLiteral("-8000.000000")));
 
     setColorModelNames(cg.getColorModelNames());
     setProfile(cg.getProfile());
@@ -88,13 +88,10 @@ void DlgSettingsColorGradientImp::setupConnections()
     group->setExclusive(true);
     group->addButton(ui->radioButtonFlow);
     group->addButton(ui->radioButtonZero);
-#if QT_VERSION >= QT_VERSION_CHECK(5,15,0)
+
     connect(group, &QButtonGroup::idClicked,
             this, &DlgSettingsColorGradientImp::colorModelChanged);
-#else
-    connect(group, qOverload<int>(&QButtonGroup::buttonClicked),
-            this, &DlgSettingsColorGradientImp::colorModelChanged);
-#endif
+
     connect(ui->comboBoxModel, qOverload<int>(&QComboBox::currentIndexChanged),
             this, &DlgSettingsColorGradientImp::colorModelChanged);
 

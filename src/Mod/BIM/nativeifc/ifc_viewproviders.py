@@ -1,27 +1,33 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *                                                                         *
 # *   Copyright (c) 2022 Yorik van Havre <yorik@uncreated.net>              *
 # *                                                                         *
-# *   This program is free software; you can redistribute it and/or modify  *
-# *   it under the terms of the GNU Library General Public License (LGPL)   *
-# *   as published by the Free Software Foundation; either version 2 of     *
-# *   the License, or (at your option) any later version.                   *
-# *   for detail see the LICENCE text file.                                 *
+# *   This file is part of FreeCAD.                                         *
 # *                                                                         *
-# *   This program is distributed in the hope that it will be useful,       *
-# *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-# *   GNU Library General Public License for more details.                  *
+# *   FreeCAD is free software: you can redistribute it and/or modify it    *
+# *   under the terms of the GNU Lesser General Public License as           *
+# *   published by the Free Software Foundation, either version 2.1 of the  *
+# *   License, or (at your option) any later version.                       *
 # *                                                                         *
-# *   You should have received a copy of the GNU Library General Public     *
-# *   License along with this program; if not, write to the Free Software   *
-# *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
-# *   USA                                                                   *
+# *   FreeCAD is distributed in the hope that it will be useful, but        *
+# *   WITHOUT ANY WARRANTY; without even the implied warranty of            *
+# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU      *
+# *   Lesser General Public License for more details.                       *
+# *                                                                         *
+# *   You should have received a copy of the GNU Lesser General Public      *
+# *   License along with FreeCAD. If not, see                               *
+# *   <https://www.gnu.org/licenses/>.                                      *
 # *                                                                         *
 # ***************************************************************************
 
 
+import FreeCAD
 import FreeCADGui
+import ArchBuildingPart
+
+translate = FreeCAD.Qt.translate
 
 
 class ifc_vp_object:
@@ -70,22 +76,7 @@ class ifc_vp_object:
                 obj.ViewObject.DiffuseColor = colors
 
     def getIcon(self):
-        from PySide import QtCore, QtGui  # lazy import
-
-        rclass = self.Object.IfcClass.replace("StandardCase","")
-        rclass = self.Object.IfcClass.replace("Type","")
-        ifcicon = ":/icons/IFC/" + rclass + ".svg"
-        if QtCore.QFile.exists(ifcicon):
-            if getattr(self, "ifcclass", "") != rclass:
-                self.ifcclass = rclass
-                self.ifcicon = overlay(ifcicon, ":/icons/IFC.svg")
-            return getattr(self, "ifcicon", overlay(ifcicon, ":/icons/IFC.svg"))
-        elif self.Object.IfcClass == "IfcGroup":
-            return QtGui.QIcon.fromTheme("folder", QtGui.QIcon(":/icons/folder.svg"))
-        elif self.Object.ShapeMode == "Shape":
-            return ":/icons/IFC_object.svg"
-        else:
-            return ":/icons/IFC_mesh.svg"
+        return get_icon(self)
 
     def claimChildren(self):
         if hasattr(self.Object, "Group"):
@@ -93,11 +84,11 @@ class ifc_vp_object:
         return []
 
     def setupContextMenu(self, vobj, menu):
-        from nativeifc import ifc_tools  # lazy import
-        from nativeifc import ifc_psets
-        from nativeifc import ifc_materials
-        from nativeifc import ifc_types
-        from PySide import QtCore, QtGui  # lazy import
+        from . import ifc_tools  # lazy import
+        from . import ifc_psets
+        from . import ifc_materials
+        from . import ifc_types
+        from PySide import QtGui  # lazy import
 
         if FreeCADGui.activeWorkbench().name() != 'BIMWorkbench':
             return
@@ -113,47 +104,48 @@ class ifc_vp_object:
                 FreeCADGui.ActiveDocument.ActiveView.getActiveObject("NativeIFC")
                 == vobj.Object
             ):
-                action_activate = QtGui.QAction(icon, "Deactivate container",menu)
+                t = translate("BIM", "Deactivate container")
             else:
-                action_activate = QtGui.QAction(icon, "Make active container",menu)
+                t = translate("BIM", "Make active container")
+            action_activate = QtGui.QAction(icon, t, menu)
             action_activate.triggered.connect(self.activate)
             menu.addAction(action_activate)
         if self.hasChildren(vobj.Object):
-            action_expand = QtGui.QAction(icon, "Expand children",menu)
+            action_expand = QtGui.QAction(icon, translate("BIM", "Expand children"), menu)
             action_expand.triggered.connect(self.expandChildren)
             actions.append(action_expand)
         if vobj.Object.Group:
-            action_shrink = QtGui.QAction(icon, "Collapse children",menu)
+            action_shrink = QtGui.QAction(icon, translate("BIM", "Collapse children"), menu)
             action_shrink.triggered.connect(self.collapseChildren)
             actions.append(action_shrink)
         if vobj.Object.ShapeMode == "Shape":
-            t = "Remove shape"
+            t = translate("BIM", "Remove shape")
         else:
-            t = "Load shape"
+            t = translate("BIM", "Load shape")
         action_shape = QtGui.QAction(icon, t, menu)
         action_shape.triggered.connect(self.switchShape)
         actions.append(action_shape)
         if vobj.Object.ShapeMode == "None":
-            action_coin = QtGui.QAction(icon, "Load representation",menu)
+            action_coin = QtGui.QAction(icon, translate("BIM", "Load representation"), menu)
             action_coin.triggered.connect(self.switchCoin)
             actions.append(action_coin)
         if element and ifc_tools.has_representation(element):
-            action_geom = QtGui.QAction(icon, "Add geometry properties",menu)
+            action_geom = QtGui.QAction(icon, translate("BIM", "Add geometry properties"), menu)
             action_geom.triggered.connect(self.addGeometryProperties)
             actions.append(action_geom)
-        action_tree = QtGui.QAction(icon, "Show geometry tree",menu)
+        action_tree = QtGui.QAction(icon, translate("BIM", "Show geometry tree"), menu)
         action_tree.triggered.connect(self.showTree)
         actions.append(action_tree)
         if ifc_psets.has_psets(self.Object):
-            action_props = QtGui.QAction(icon, "Expand property sets",menu)
+            action_props = QtGui.QAction(icon, translate("BIM", "Expand property sets"), menu)
             action_props.triggered.connect(self.showProps)
             actions.append(action_props)
         if ifc_materials.get_material(self.Object):
-            action_material = QtGui.QAction(icon, "Load material",menu)
+            action_material = QtGui.QAction(icon, translate("BIM", "Load material"), menu)
             action_material.triggered.connect(self.addMaterial)
             actions.append(action_material)
         if ifc_types.is_typable(self.Object):
-            action_type = QtGui.QAction(icon, "Convert to type", menu)
+            action_type = QtGui.QAction(icon, translate("BIM", "Convert to type"), menu)
             action_type.triggered.connect(self.convertToType)
             actions.append(action_type)
         if actions:
@@ -164,7 +156,7 @@ class ifc_vp_object:
 
         # generic actions
         ficon = QtGui.QIcon.fromTheme("folder", QtGui.QIcon(":/icons/folder.svg"))
-        action_group = QtGui.QAction(ficon, "Create group...",menu)
+        action_group = QtGui.QAction(ficon, translate("BIM", "Create group..."), menu)
         action_group.triggered.connect(self.createGroup)
         menu.addAction(action_group)
 
@@ -174,7 +166,7 @@ class ifc_vp_object:
     def hasChildren(self, obj):
         """Returns True if this IFC object can be decomposed"""
 
-        from nativeifc import ifc_tools  # lazy import
+        from . import ifc_tools  # lazy import
 
         ifcfile = ifc_tools.get_ifcfile(obj)
         if ifcfile:
@@ -184,7 +176,7 @@ class ifc_vp_object:
     def expandChildren(self, obj=None):
         """Creates children of this object"""
 
-        from nativeifc import ifc_tools  # lazy import
+        from . import ifc_tools  # lazy import
         from PySide import QtCore, QtGui
 
         if not obj:
@@ -270,14 +262,14 @@ class ifc_vp_object:
     def addGeometryProperties(self):
         """Adds geometry properties to this object"""
 
-        from nativeifc import ifc_geometry  # lazy loading
+        from . import ifc_geometry  # lazy loading
 
         ifc_geometry.add_geom_properties(self.Object)
 
     def addMaterial(self):
         """Adds a material to this object"""
 
-        from nativeifc import ifc_materials  # lazy loading
+        from . import ifc_materials  # lazy loading
 
         ifc_materials.show_material(self.Object)
         self.Object.Document.recompute()
@@ -285,8 +277,8 @@ class ifc_vp_object:
     def showTree(self):
         """Shows a dialog with a geometry tree for the object"""
 
-        from nativeifc import ifc_tools  # lazy loading
-        from nativeifc import ifc_tree  # lazy loading
+        from . import ifc_tools  # lazy loading
+        from . import ifc_tree  # lazy loading
 
         element = ifc_tools.get_ifc_element(self.Object)
         if element:
@@ -295,7 +287,7 @@ class ifc_vp_object:
     def showProps(self):
         """Expands property sets"""
 
-        from nativeifc import ifc_psets  # lazy loading
+        from . import ifc_psets  # lazy loading
 
         ifc_psets.show_psets(self.Object)
         self.Object.Document.recompute()
@@ -323,7 +315,7 @@ class ifc_vp_object:
     def dragObject(self, vobj, dragged_object):
         """Remove a child from the view provider by d&d"""
 
-        from nativeifc import ifc_tools  # lazy import
+        from . import ifc_tools  # lazy import
 
         parent = vobj.Object
         ifc_tools.deaggregate(dragged_object, parent)
@@ -339,7 +331,7 @@ class ifc_vp_object:
     def onDrop(self, incoming_object):
         """Delayed action to be taken when dropping an object"""
 
-        from nativeifc import ifc_tools  # lazy import
+        from . import ifc_tools  # lazy import
         ifc_tools.aggregate(incoming_object, self.Object)
         if self.hasChildren(self.Object):
             self.expandChildren(self.Object)
@@ -360,7 +352,7 @@ class ifc_vp_object:
     def createGroup(self):
         """Creates a group under this object"""
 
-        from nativeifc import ifc_tools  # lazy import
+        from . import ifc_tools  # lazy import
 
         group = self.Object.Document.addObject("App::DocumentObjectGroup", "Group")
         ifc_tools.aggregate(group, self.Object)
@@ -374,13 +366,13 @@ class ifc_vp_object:
     def expandProperties(self, vobj):
         """Expands everything that needs to be expanded"""
 
-        from nativeifc import ifc_geometry  # lazy import
-        from nativeifc import ifc_tools  # lazy import
-        from nativeifc import ifc_psets  # lazy import
-        from nativeifc import ifc_materials  # lazy import
-        from nativeifc import ifc_layers  # lazy import
-        from nativeifc import ifc_types  # lazy import
-        from nativeifc import ifc_classification  # lazy import
+        from . import ifc_geometry  # lazy import
+        from . import ifc_tools  # lazy import
+        from . import ifc_psets  # lazy import
+        from . import ifc_materials  # lazy import
+        from . import ifc_layers  # lazy import
+        from . import ifc_types  # lazy import
+        from . import ifc_classification  # lazy import
 
         # generic data loading
         ifc_geometry.add_geom_properties(vobj.Object)
@@ -409,7 +401,7 @@ class ifc_vp_object:
 
         if not hasattr(self, "Object"):
             return
-        from nativeifc import ifc_types
+        from . import ifc_types
         ifc_types.convert_to_type(self.Object)
         self.Object.Document.recompute()
 
@@ -429,7 +421,7 @@ class ifc_vp_document(ifc_vp_object):
 
     def setupContextMenu(self, vobj, menu):
 
-        from PySide import QtCore, QtGui  # lazy import
+        from PySide import QtGui  # lazy import
 
         if FreeCADGui.activeWorkbench().name() != 'BIMWorkbench':
             return
@@ -440,21 +432,21 @@ class ifc_vp_document(ifc_vp_object):
 
         icon = QtGui.QIcon(":/icons/IFC.svg")
         if vobj.Object.Modified:
-            action_diff = QtGui.QAction(icon, "View diff...", menu)
+            action_diff = QtGui.QAction(icon, translate("BIM", "View diff..."), menu)
             action_diff.triggered.connect(self.diff)
             ifc_menu.addAction(action_diff)
             if vobj.Object.IfcFilePath:
-                action_save = QtGui.QAction(icon, "Save IFC file", menu)
+                action_save = QtGui.QAction(icon, translate("BIM", "Save IFC file"), menu)
                 action_save.triggered.connect(self.save)
                 ifc_menu.addAction(action_save)
-        action_saveas = QtGui.QAction(icon, "Save IFC file as...", menu)
+        action_saveas = QtGui.QAction(icon, translate("BIM", "Save IFC file as..."), menu)
         action_saveas.triggered.connect(self.saveas)
         ifc_menu.addAction(action_saveas)
 
     def save(self):
         """Saves the associated IFC file"""
 
-        from nativeifc import ifc_tools  # lazy import
+        from . import ifc_tools  # lazy import
 
         ifc_tools.save(self.Object)
         self.Object.Document.recompute()
@@ -462,7 +454,7 @@ class ifc_vp_document(ifc_vp_object):
     def saveas(self):
         """Saves the associated IFC file to another file"""
 
-        from nativeifc import ifc_tools  # lazy import
+        from . import ifc_tools  # lazy import
 
         sf = get_filepath(self.Object)
         if sf:
@@ -473,7 +465,7 @@ class ifc_vp_document(ifc_vp_object):
     def replace_file(self, obj, newfile):
         """Asks the user if the attached file path needs to be replaced"""
 
-        from PySide import QtCore, QtGui  # lazy import
+        from PySide import QtGui  # lazy import
 
         msg = "Replace the stored IFC file path in object "
         msg += self.Object.Label + " with the new one: "
@@ -494,7 +486,7 @@ class ifc_vp_document(ifc_vp_object):
             return False
 
     def schema_warning(self):
-        from PySide import QtCore, QtGui  # lazy import
+        from PySide import QtGui  # lazy import
 
         msg = "Warning: This operation will change the whole IFC file contents "
         msg += "and will not give versionable results. It is best to not do "
@@ -513,7 +505,7 @@ class ifc_vp_document(ifc_vp_object):
             return False
 
     def diff(self):
-        from nativeifc import ifc_diff
+        from . import ifc_diff
 
         diff = ifc_diff.get_diff(self.Object)
         ifc_diff.show_diff(diff)
@@ -526,7 +518,7 @@ class ifc_vp_group:
         self.Object = vobj.Object
 
     def getIcon(self):
-        from PySide import QtCore, QtGui  # lazy loading
+        from PySide import QtGui  # lazy loading
         import Draft_rc
         import Arch_rc
 
@@ -610,26 +602,33 @@ class ifc_vp_material:
         return []
 
     def setupContextMenu(self, vobj, menu):
-        from nativeifc import ifc_tools  # lazy import
-        from nativeifc import ifc_psets
-        from PySide import QtCore, QtGui  # lazy import
+        from . import ifc_tools  # lazy import
+        from . import ifc_psets
+        from PySide import QtGui  # lazy import
 
         if FreeCADGui.activeWorkbench().name() != 'BIMWorkbench':
             return
 
         icon = QtGui.QIcon(":/icons/IFC.svg")
         if ifc_psets.has_psets(self.Object):
-            action_props = QtGui.QAction(icon, "Expand property sets", menu)
+            action_props = QtGui.QAction(icon, translate("BIM", "Expand property sets"), menu)
             action_props.triggered.connect(self.showProps)
             menu.addAction(action_props)
 
     def showProps(self):
         """Expands property sets"""
 
-        from nativeifc import ifc_psets  # lazy loading
+        from . import ifc_psets  # lazy loading
 
         ifc_psets.show_psets(self.Object)
         self.Object.Document.recompute()
+
+
+class ifc_vp_buildingpart(ifc_vp_object, ArchBuildingPart.ViewProviderBuildingPart):
+    """A vp that inherits the Arch BuildingPart vp, but keeps aggregating properties of ifc vp"""
+
+    def __init__(self, vobj):
+        ArchBuildingPart.ViewProviderBuildingPart.__init__(self,vobj)
 
 
 def overlay(icon1, icon2):
@@ -662,8 +661,8 @@ def overlay(icon1, icon2):
 def get_filepath(project):
     """Saves the associated IFC file to another file"""
 
-    from nativeifc import ifc_tools  # lazy import
-    from PySide import QtCore, QtGui  # lazy import
+    from . import ifc_tools  # lazy import
+    from PySide import QtGui  # lazy import
 
     sf = QtGui.QFileDialog.getSaveFileName(
         None,
@@ -678,3 +677,27 @@ def get_filepath(project):
         project.IfcFilePath = sf
         return sf
     return None
+
+
+def get_icon(vp):
+    """Returns an icon for a view provider"""
+
+    from PySide import QtCore, QtGui  # lazy import
+
+    if hasattr(vp, "Object"):
+        if hasattr(vp.Object, "IfcClass"):
+            rclass = vp.Object.IfcClass.replace("StandardCase","")
+            rclass = vp.Object.IfcClass.replace("Type","")
+            ifcicon = ":/icons/IFC/" + rclass + ".svg"
+            if QtCore.QFile.exists(ifcicon):
+                if getattr(vp, "ifcclass", "") != rclass:
+                    vp.ifcclass = rclass
+                    vp.ifcicon = overlay(ifcicon, ":/icons/IFC.svg")
+                return getattr(vp, "ifcicon", overlay(ifcicon, ":/icons/IFC.svg"))
+            elif vp.Object.IfcClass == "IfcGroup":
+                return QtGui.QIcon.fromTheme("folder", QtGui.QIcon(":/icons/folder.svg"))
+            elif vp.Object.ShapeMode == "Shape":
+                return ":/icons/IFC_object.svg"
+            else:
+                return ":/icons/IFC_mesh.svg"
+    return ":/icons/IFC_object.svg"

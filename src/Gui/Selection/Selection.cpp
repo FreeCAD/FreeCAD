@@ -25,6 +25,7 @@
 
 #ifndef _PreComp_
 # include <array>
+# include <set>
 # include <boost/algorithm/string/predicate.hpp>
 # include <QApplication>
 #endif
@@ -52,6 +53,7 @@
 #include "SelectionFilterPy.h"
 #include "SelectionObserverPython.h"
 #include "Tree.h"
+#include "ViewProvider.h"
 #include "ViewProviderDocumentObject.h"
 
 
@@ -152,7 +154,7 @@ void SelectionObserver::_onSelectionChanged(const SelectionChanges& msg) {
             return;
         onSelectionChanged(msg);
     } catch (Base::Exception &e) {
-        e.ReportException();
+        e.reportException();
         FC_ERR("Unhandled Base::Exception caught in selection observer: ");
     } catch (std::exception &e) {
         FC_ERR("Unhandled std::exception caught in selection observer: " << e.what());
@@ -309,6 +311,101 @@ std::vector<SelectionSingleton::SelObj> SelectionSingleton::getPickedList(const 
     return temp;
 }
 
+std::vector<Gui::SelectionObject> SelectionSingleton::getSelectionIn(App::DocumentObject* container,
+    Base::Type typeId, bool single) const
+{
+    if (!container) {
+        return getSelectionEx(nullptr, typeId, ResolveMode::NoResolve, single);
+    }
+
+    std::vector<SelectionObject> sels = getSelectionEx(nullptr, App::DocumentObject::getClassTypeId(), ResolveMode::NoResolve, single);
+
+    std::vector<SelectionObject> ret;
+    std::map<App::DocumentObject*, size_t> SortMap;
+
+    for (auto& sel : sels) {
+        auto* rootObj = sel.getObject();
+        App::Document* doc = rootObj->getDocument();
+        std::vector<std::string> subs = sel.getSubNames();
+        bool objPassed = false;
+
+        for (size_t i = 0; i < subs.size(); ++i) {
+            auto& sub = subs[i];
+            App::DocumentObject* newRootObj = nullptr;
+            std::string newSub = "";
+
+            std::vector<std::string> names = Base::Tools::splitSubName(sub);
+
+            if (container == rootObj) {
+                objPassed = true;
+            }
+
+            if (rootObj->isLink()) {
+                // Update doc in case its an external link.
+                doc = rootObj->getLinkedObject()->getDocument();
+            }
+
+            for (auto& name : names) {
+                App::DocumentObject* obj = doc->getObject(name.c_str());
+                if (!obj) { // We reached the element name (for example 'edge1')
+                    newSub += name;
+                    break;
+                }
+
+                if (objPassed) {
+                    if (!newRootObj) {
+                        // We are the first object after the container is passed.
+                        newRootObj = obj;
+                    }
+                    else {
+                        newSub += name + ".";
+                    }
+                }
+
+                if (obj == container) {
+                    objPassed = true;
+                }
+                if (obj->isLink()) {
+                    // Update doc in case its an external link.
+                    doc = obj->getLinkedObject()->getDocument();
+                }
+            }
+
+            if (newRootObj) {
+                // Make sure selected object is of correct type
+                auto* lastObj = newRootObj->resolve(newSub.c_str());
+                if (!lastObj || !lastObj->isDerivedFrom(typeId)) {
+                    continue;
+                }
+
+                auto it = SortMap.find(newRootObj);
+                if (it != SortMap.end()) {
+                    // only add sub-element
+                    if (newSub != "") {
+                        ret[it->second].SubNames.emplace_back(newSub);
+                        ret[it->second].SelPoses.emplace_back(sel.SelPoses[i]);
+                    }
+                }
+                else {
+                    if (single && !ret.empty()) {
+                        ret.clear();
+                        break;
+                    }
+                    // create a new entry
+                    ret.emplace_back(newRootObj);
+                    if (newSub != "") {
+                        ret.back().SubNames.emplace_back(newSub);
+                        ret.back().SelPoses.emplace_back(sel.SelPoses[i]);
+                    }
+                    SortMap.insert(std::make_pair(newRootObj, ret.size() - 1));
+                }
+            }
+        }
+    }
+
+    return ret;
+}
+
 std::vector<SelectionObject> SelectionSingleton::getSelectionEx(const char* pDocName, Base::Type typeId,
                                                                 ResolveMode resolve, bool single) const
 {
@@ -330,7 +427,7 @@ std::vector<SelectionObject> SelectionSingleton::getObjectList(const char* pDocN
     std::map<App::DocumentObject*,size_t> SortMap;
 
     // check the type
-    if (typeId == Base::Type::badType())
+    if (typeId.isBad())
         return temp;
 
     App::Document *pcDoc = nullptr;
@@ -391,6 +488,25 @@ void SelectionSingleton::enablePickedList(bool enable)
     }
 }
 
+static void notifyDocumentObjectViewProvider(const SelectionChanges& changes) {
+    const auto* doc = App::GetApplication().getDocument(changes.pDocName);
+    if (!doc) {
+        return;
+    }
+
+    const auto* obj = doc->getObject(changes.pObjectName);
+    if (!obj) {
+        return;
+    }
+
+    auto* vp = Application::Instance->getViewProvider(obj);
+    if (!vp) {
+        return;
+    }
+
+    vp->onSelectionChanged(changes);
+}
+
 void SelectionSingleton::notify(SelectionChanges &&Chng)
 {
     if(Notifying) {
@@ -401,7 +517,7 @@ void SelectionSingleton::notify(SelectionChanges &&Chng)
     NotificationQueue.push_back(std::move(Chng));
     while(!NotificationQueue.empty()) {
         const auto &msg = NotificationQueue.front();
-        bool notify;
+        bool notify = false;
         switch(msg.Type) {
         case SelectionChanges::AddSelection:
             notify = isSelected(msg.pDocName, msg.pObjectName, msg.pSubName, ResolveMode::NoResolve);
@@ -420,13 +536,16 @@ void SelectionSingleton::notify(SelectionChanges &&Chng)
             notify = true;
         }
         if(notify) {
+            // Notify the view provider of the object.
+            notifyDocumentObjectViewProvider(msg);
+
             Notify(msg);
             try {
                 signalSelectionChanged(msg);
             }
             catch (const boost::exception&) {
                 // reported by code analyzers
-                Base::Console().Warning("notify: Unexpected boost exception\n");
+                Base::Console().warning("notify: Unexpected boost exception\n");
             }
         }
         NotificationQueue.pop_front();
@@ -519,7 +638,7 @@ vector<App::DocumentObject*> SelectionSingleton::getObjectsOfType(const Base::Ty
 std::vector<App::DocumentObject*> SelectionSingleton::getObjectsOfType(const char* typeName, const char* pDocName, ResolveMode resolve) const
 {
     Base::Type typeId = Base::Type::fromName(typeName);
-    if (typeId == Base::Type::badType())
+    if (typeId.isBad())
         return {};
     return getObjectsOfType(typeId, pDocName, resolve);
 }
@@ -541,7 +660,7 @@ unsigned int SelectionSingleton::countObjectsOfType(const Base::Type& typeId, co
 unsigned int SelectionSingleton::countObjectsOfType(const char* typeName, const char* pDocName, ResolveMode resolve) const
 {
     Base::Type typeId = Base::Type::fromName(typeName);
-    if (typeId == Base::Type::badType())
+    if (typeId.isBad())
         return 0;
     return countObjectsOfType(typeId, pDocName, resolve);
 }
@@ -579,7 +698,7 @@ void SelectionSingleton::slotSelectionChanged(const SelectionChanges& msg)
         }
         catch (const boost::exception&) {
             // reported by code analyzers
-            Base::Console().Warning("slotSelectionChanged: Unexpected boost exception\n");
+            Base::Console().warning("slotSelectionChanged: Unexpected boost exception\n");
         }
     }
     else {
@@ -589,7 +708,7 @@ void SelectionSingleton::slotSelectionChanged(const SelectionChanges& msg)
         }
         catch (const boost::exception&) {
             // reported by code analyzers
-            Base::Console().Warning("slotSelectionChanged: Unexpected boost exception\n");
+            Base::Console().warning("slotSelectionChanged: Unexpected boost exception\n");
         }
     }
 }
@@ -637,7 +756,7 @@ int SelectionSingleton::setPreselect(const char* pDocName, const char* pObjectNa
             } else {
                 msg = QCoreApplication::translate("SelectionFilter","Not allowed:");
             }
-            msg.append(QString::fromLatin1(" %1.%2.%3 ")
+            msg.append(QStringLiteral(" %1.%2.%3 ")
                   .arg(QString::fromLatin1(pDocName),
                        QString::fromLatin1(pObjectName),
                        QString::fromLatin1(pSubName)));
@@ -722,7 +841,7 @@ QString getPreselectionInfo(const char* documentName,
 {
     auto pts = schemaTranslatePoint(x, y, z, precision);
 
-    int numberDecimals = std::min(6, Base::UnitsApi::getDecimals());
+    int numberDecimals = std::min(6, static_cast<int>(Base::UnitsApi::getDecimals()));
 
     QString message = QStringLiteral("Preselected: %1.%2.%3 (%4 %5, %6 %7, %8 %9)")
         .arg(QString::fromUtf8(documentName))
@@ -838,7 +957,7 @@ void SelectionSingleton::rmvSelectionGate()
 
 App::Document* SelectionSingleton::getDocument(const char* pDocName) const
 {
-    if (pDocName && pDocName[0])
+    if (!Base::Tools::isNullOrEmpty(pDocName))
         return App::GetApplication().getDocument(pDocName);
     else
         return App::GetApplication().getActiveDocument();
@@ -1453,6 +1572,21 @@ void SelectionSingleton::clearCompleteSelection(bool clearPreSelect)
         Application::Instance->macroManager()->addLine(MacroManager::Cmt,
                 clearPreSelect?"Gui.Selection.clearSelection()"
                               :"Gui.Selection.clearSelection(False)");
+
+    // Send the clear selection notification to all view providers associated with the
+    // objects being deselected.
+
+    std::set<ViewProvider*> viewProviders;
+    for (_SelObj& sel : _SelList) {
+        if (auto vp = Application::Instance->getViewProvider(sel.pObject)) {
+            viewProviders.insert(vp);
+        }
+    }
+
+    for (auto& vp : viewProviders) {
+        SelectionChanges Chng(SelectionChanges::ClrSelection);
+        vp->onSelectionChanged(Chng);
+    }
 
     _SelList.clear();
 

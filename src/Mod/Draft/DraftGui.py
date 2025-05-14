@@ -54,28 +54,6 @@ from draftutils.todo import todo
 from draftutils.translate import translate
 from draftutils.units import display_external
 
-translate("draft", "Relative")
-translate("draft", "Global")
-translate("draft", "Continue")
-translate("draft", "Close")
-translate("draft", "Copy")
-translate("draft", "Subelement mode")
-translate("draft", "Fill")
-translate("draft", "Exit")
-translate("draft", "Snap On/Off")
-translate("draft", "Increase snap radius")
-translate("draft", "Decrease snap radius")
-translate("draft", "Restrict X")
-translate("draft", "Restrict Y")
-translate("draft", "Restrict Z")
-translate("draft", "Select edge")
-translate("draft", "Add custom snap point")
-translate("draft", "Length mode")
-translate("draft", "Wipe")
-translate("draft", "Set Working Plane")
-translate("draft", "Cycle snap object")
-translate("draft", "Undo last segment")
-
 def _get_incmd_shortcut(itm):
     return params.get_param("inCommandShortcut" + itm).upper()
 
@@ -178,13 +156,14 @@ class DraftToolBar:
         self.paramconstr = utils.rgba_to_argb(params.get_param("constructioncolor"))
         self.constrMode = False
         self.continueMode = False
+        self.chainedMode = False
         self.relativeMode = True
         self.globalMode = False
         self.state = None
         self.textbuffer = []
         self.crossedViews = []
         self.isTaskOn = False
-        self.fillmode = True
+        self.makeFaceMode = True
         self.mask = None
         self.alock = False
         self.x = 0  # coord of the point as displayed in the task panel (global/local and relative/absolute)
@@ -411,8 +390,12 @@ class DraftToolBar:
         # update modes from parameters:
         self.relativeMode = params.get_param("RelativeMode")
         self.globalMode = params.get_param("GlobalMode")
-        self.fillmode = params.get_param("fillmode")
-        self.continueMode = params.get_param("ContinueMode")
+        self.makeFaceMode = params.get_param("MakeFaceMode")
+
+        feature_name = getattr(FreeCAD.activeDraftCommand, "featureName", None)
+        self.continueMode = params.get_param(feature_name, "Mod/Draft/ContinueMode", silent=True)
+
+        self.chainedMode = params.get_param("ChainedMode")
 
         # Note: The order of the calls to self._checkbox() below controls
         #       the position of the checkboxes in the task panel.
@@ -420,8 +403,12 @@ class DraftToolBar:
         # update checkboxes with parameters and internal modes:
         self.isRelative = self._checkbox("isRelative", self.layout, checked=self.relativeMode)
         self.isGlobal = self._checkbox("isGlobal", self.layout, checked=self.globalMode)
-        self.hasFill = self._checkbox("hasFill", self.layout, checked=self.fillmode)
-        self.continueCmd = self._checkbox("continueCmd", self.layout, checked=self.continueMode)
+        self.makeFace = self._checkbox("makeFace", self.layout, checked=self.makeFaceMode)
+        self.continueCmd = self._checkbox("continueCmd", self.layout, checked=bool(self.continueMode))
+        self.chainedModeCmd = self._checkbox("chainedModeCmd", self.layout, checked=self.chainedMode)
+
+        self.chainedModeCmd.setEnabled(not (hasattr(self.sourceCmd, "contMode") and self.continueMode))
+        self.continueCmd.setEnabled(not (hasattr(self.sourceCmd, "chain") and self.chainedMode))
 
         # update checkboxes without parameters and without internal modes:
         self.occOffset = self._checkbox("occOffset", self.layout, checked=False)
@@ -471,13 +458,14 @@ class DraftToolBar:
         QtCore.QObject.connect(self.undoButton,QtCore.SIGNAL("pressed()"),self.undoSegment)
         QtCore.QObject.connect(self.selectButton,QtCore.SIGNAL("pressed()"),self.selectEdge)
         QtCore.QObject.connect(self.continueCmd,QtCore.SIGNAL("stateChanged(int)"),self.setContinue)
+        QtCore.QObject.connect(self.chainedModeCmd,QtCore.SIGNAL("stateChanged(int)"),self.setChainedMode)
 
         QtCore.QObject.connect(self.isCopy,QtCore.SIGNAL("stateChanged(int)"),self.setCopymode)
         QtCore.QObject.connect(self.isSubelementMode, QtCore.SIGNAL("stateChanged(int)"), self.setSubelementMode)
 
         QtCore.QObject.connect(self.isRelative,QtCore.SIGNAL("stateChanged(int)"),self.setRelative)
         QtCore.QObject.connect(self.isGlobal,QtCore.SIGNAL("stateChanged(int)"),self.setGlobal)
-        QtCore.QObject.connect(self.hasFill,QtCore.SIGNAL("stateChanged(int)"),self.setFill)
+        QtCore.QObject.connect(self.makeFace,QtCore.SIGNAL("stateChanged(int)"),self.setMakeFace)
         QtCore.QObject.connect(self.baseWidget,QtCore.SIGNAL("resized()"),self.relocate)
         QtCore.QObject.connect(self.baseWidget,QtCore.SIGNAL("retranslate()"),self.retranslateUi)
 
@@ -557,26 +545,27 @@ class DraftToolBar:
         self.isGlobal.setToolTip(translate(
             "draft", "Coordinates relative to global coordinate system."
                      + "\nUncheck to use working plane coordinate system"))
-        self.hasFill.setText(translate(
-            "draft", "Filled") + " (" + _get_incmd_shortcut("Fill") + ")")
-        self.hasFill.setToolTip(translate(
-            "draft", "Check this if the object should appear as filled, "
-                     + "otherwise it will appear as wireframe.\nNot available if "
-                     + "Draft preference option 'Use Part Primitives' is enabled"))
+        self.makeFace.setText(translate(
+            "draft", "Make face") + " (" + _get_incmd_shortcut("MakeFace") + ")")
+        self.makeFace.setToolTip(translate(
+            "draft", "If checked, the object will be filled with a face."
+                     + "\nNot available if the 'Use Part Primitives' preference is enabled"))
         self.finishButton.setText(translate(
             "draft", "Finish") + " (" + _get_incmd_shortcut("Exit") + ")")
         self.finishButton.setToolTip(translate(
             "draft", "Finishes the current drawing or editing operation"))
+        self.continueCmd.setText(translate(
+            "draft", "Continue") + " (" + _get_incmd_shortcut("Continue") + ")")
         self.continueCmd.setToolTip(translate(
             "draft", "If checked, command will not finish until you press "
                      + "the command button again"))
-        self.continueCmd.setText(translate(
-            "draft", "Continue") + " (" + _get_incmd_shortcut("Continue") + ")")
+        self.chainedModeCmd.setText(translate("draft", "Chained mode"))
+        self.chainedModeCmd.setToolTip(translate("draft", "If checked, the next Dimension will be placed in a chain" \
+                                       " with the previously placed Dimension"))
+        self.occOffset.setText(translate("draft", "OCC-style offset"))
         self.occOffset.setToolTip(translate(
             "draft", "If checked, an OCC-style offset will be performed"
                      + " instead of the classic offset"))
-        self.occOffset.setText(translate("draft", "OCC-style offset"))
-
         self.undoButton.setText(translate("draft", "Undo") + " (" + _get_incmd_shortcut("Undo") + ")")
         self.undoButton.setToolTip(translate("draft", "Undo the last segment"))
         self.closeButton.setText(translate("draft", "Close") + " (" + _get_incmd_shortcut("Close") + ")")
@@ -710,10 +699,10 @@ class DraftToolBar:
         self.xValue.setEnabled(True)
         self.yValue.setEnabled(True)
         if params.get_param("UsePartPrimitives"):
-            self.hasFill.setEnabled(False)
+            self.makeFace.setEnabled(False)
         else:
-            self.hasFill.setEnabled(True)
-        self.hasFill.show()
+            self.makeFace.setEnabled(True)
+        self.makeFace.show()
         self.finishButton.show()
         self.closeButton.show()
         self.wipeButton.show()
@@ -863,10 +852,10 @@ class DraftToolBar:
 
     def extUi(self):
         if params.get_param("UsePartPrimitives"):
-            self.hasFill.setEnabled(False)
+            self.makeFace.setEnabled(False)
         else:
-            self.hasFill.setEnabled(True)
-        self.hasFill.show()
+            self.makeFace.setEnabled(True)
+        self.makeFace.show()
         self.continueCmd.show()
 
     def modUi(self):
@@ -943,8 +932,18 @@ class DraftToolBar:
 #---------------------------------------------------------------------------
 
     def setContinue(self, val):
-        params.set_param("ContinueMode", bool(val))
+        params.set_param(FreeCAD.activeDraftCommand.featureName, bool(val), "Mod/Draft/ContinueMode")
         self.continueMode = bool(val)
+        self.chainedModeCmd.setEnabled(not val)
+
+    def setChainedMode(self, val):
+        params.set_param("ChainedMode", bool(val))
+        self.chainedMode = bool(val)
+        self.continueCmd.setEnabled(not val)
+        if val == False:
+            # If user has deselected the checkbox, reactive the command
+            # which will result in closing it
+            FreeCAD.activeDraftCommand.Activated()
 
     # val=-1 is used to temporarily switch to relativeMode and disable the checkbox.
     # val=-2 is used to switch back.
@@ -981,9 +980,9 @@ class DraftToolBar:
         self.displayPoint(self.new_point, self.get_last_point())
         self.updateSnapper()
 
-    def setFill(self, val):
-        params.set_param("fillmode", bool(val))
-        self.fillmode = bool(val)
+    def setMakeFace(self, val):
+        params.set_param("MakeFaceMode", bool(val))
+        self.makeFaceMode = bool(val)
 
     def setCopymode(self, val):
         # special value for offset command
@@ -1154,9 +1153,9 @@ class DraftToolBar:
         elif txt == _get_incmd_shortcut("Snap"):
             self.togglesnap()
             spec = True
-        elif txt == _get_incmd_shortcut("Fill"):
-            if self.hasFill.isVisible():
-                self.hasFill.setChecked(not self.hasFill.isChecked())
+        elif txt == _get_incmd_shortcut("MakeFace"):
+            if self.makeFace.isVisible():
+                self.makeFace.setChecked(not self.makeFace.isChecked())
             spec = True
         elif txt == _get_incmd_shortcut("Continue"):
             if self.continueCmd.isVisible():
@@ -1269,18 +1268,19 @@ class DraftToolBar:
                 else:
                     delta = plane.get_local_coords(point)
 
+            length, _, phi = DraftVecUtils.get_spherical_coords(*delta)
+            phi = math.degrees(phi)
+
             self.x = delta.x
             self.y = delta.y
             self.z = delta.z
+            self.lvalue = length
+            self.avalue = phi
+
             self.xValue.setText(display_external(delta.x,None,'Length'))
             self.yValue.setText(display_external(delta.y,None,'Length'))
             self.zValue.setText(display_external(delta.z,None,'Length'))
-
-            length, theta, phi = DraftVecUtils.get_spherical_coords(*delta)
-            theta = math.degrees(theta)
-            phi = math.degrees(phi)
             self.lengthValue.setText(display_external(length,None,'Length'))
-            #if not self.angleLock.isChecked():
             self.angleValue.setText(display_external(phi,None,'Angle'))
 
         # set masks
@@ -1653,7 +1653,7 @@ class DraftToolBar:
     def Activated(self):
         self.setWatchers()
         if hasattr(self,"tray"):
-            self.tray.show()
+            todo.delay(self.tray.show, None)
 
     def Deactivated(self):
         if (FreeCAD.activeDraftCommand is not None):
@@ -1662,7 +1662,7 @@ class DraftToolBar:
         FreeCADGui.Control.clearTaskWatcher()
         #self.tray = None
         if hasattr(self,"tray"):
-            self.tray.hide()
+            todo.delay(self.tray.hide, None)
 
     def reset_ui_values(self):
         """Method to reset task panel values"""

@@ -159,7 +159,7 @@ void CmdMeshPartTrimByPlane::activated(int)
 
             copy.trimByPlane(plnBase, -plnNormal);
             App::Document* doc = it->getDocument();
-            Mesh::Feature* fea = static_cast<Mesh::Feature*>(doc->addObject("Mesh::Feature"));
+            Mesh::Feature* fea = doc->addObject<Mesh::Feature>();
             fea->Label.setValue(it->Label.getValue());
             Mesh::MeshObject* feamesh = fea->Mesh.startEditing();
             feamesh->swap(copy);

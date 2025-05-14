@@ -31,6 +31,7 @@
 #include <App/Document.h>
 #include <App/DocumentObject.h>
 #include <Base/Console.h>
+#include <Base/Tools.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/Command.h>
 #include <Gui/Control.h>
@@ -171,7 +172,7 @@ void TaskSectionView::setUiEdit()
         ui->sbScale->setEnabled(false);
     }
 
-    Base::Vector3d origin = m_section->SectionOrigin.getValue();
+    auto origin = m_section->SectionOrigin.getValue();
     setUiCommon(origin);
 
     // convert section normal to view angle
@@ -180,7 +181,7 @@ void TaskSectionView::setUiEdit()
     Base::Vector3d projectedViewDirection = m_base->projectPoint(sectionNormalVec, false);
     projectedViewDirection.Normalize();
     double viewAngle = atan2(-projectedViewDirection.y, -projectedViewDirection.x);
-    m_compass->setDialAngle(viewAngle * 180.0 / M_PI);
+    m_compass->setDialAngle(Base::toDegrees(viewAngle));
     m_viewDirectionWidget->setValueNoNotify(sectionNormalVec * -1.0);
 }
 
@@ -272,7 +273,7 @@ void TaskSectionView::slotViewDirectionChanged(Base::Vector3d newDirection)
     Base::Vector3d projectedViewDirection = m_base->projectPoint(newDirection, false);
     projectedViewDirection.Normalize();
     double viewAngle = atan2(projectedViewDirection.y, projectedViewDirection.x);
-    m_compass->setDialAngle(viewAngle * 180.0 / M_PI);
+    m_compass->setDialAngle(Base::toDegrees(viewAngle));
     checkAll(false);
     directionChanged(true);
     applyAligned();
@@ -281,7 +282,7 @@ void TaskSectionView::slotViewDirectionChanged(Base::Vector3d newDirection)
 //the CompassWidget reports that the view direction angle has changed
 void TaskSectionView::slotChangeAngle(double newAngle)
 {
-    double angleRadians = newAngle * M_PI / 180.0;
+    double angleRadians = Base::toRadians(newAngle);
     double unitX = cos(angleRadians);
     double unitY = sin(angleRadians);
     Base::Vector3d localUnit(unitX, unitY, 0.0);
@@ -407,7 +408,7 @@ void TaskSectionView::enableAll(bool enable)
     ui->cmbScaleType->setEnabled(enable);
     QString qScaleType = ui->cmbScaleType->currentText();
     //Allow or prevent scale changing initially
-    if (qScaleType == QString::fromUtf8("Custom")) {
+    if (qScaleType == QStringLiteral("Custom")) {
         ui->sbScale->setEnabled(true);
     }
     else {
@@ -436,7 +437,7 @@ bool TaskSectionView::apply(bool forceUpdate)
         //this should never happen
         std::string msg =
             tr("Nothing to apply. No section direction picked yet").toStdString();
-        Base::Console().Error((msg + "\n").c_str());
+        Base::Console().error((msg + "\n").c_str());
         return false;
     }
     if (!m_section) {

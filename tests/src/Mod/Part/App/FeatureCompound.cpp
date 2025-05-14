@@ -19,7 +19,7 @@ protected:
     void SetUp() override
     {
         createTestDoc();
-        _compound = dynamic_cast<Part::Compound*>(_doc->addObject("Part::Compound"));
+        _compound = _doc->addObject<Part::Compound>();
     }
 
     void TearDown() override

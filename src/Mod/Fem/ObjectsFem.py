@@ -132,6 +132,20 @@ def makeConstraintDisplacement(doc, name="ConstraintDisplacement"):
     return obj
 
 
+def makeConstraintElectricChargeDensity(doc, name="ElectricChargeDensity"):
+    """makeConstraintElectricChargeDensity(document, [name]):
+    makes a Fem ElectricChargeDensity object"""
+    obj = doc.addObject("Fem::ConstraintPython", name)
+    from femobjects import constraint_electricchargedensity
+
+    constraint_electricchargedensity.ConstraintElectricChargeDensity(obj)
+    if FreeCAD.GuiUp:
+        from femviewprovider import view_constraint_electricchargedensity
+
+        view_constraint_electricchargedensity.VPConstraintElectricChargeDensity(obj.ViewObject)
+    return obj
+
+
 def makeConstraintElectrostaticPotential(doc, name="ConstraintElectrostaticPotential"):
     """makeConstraintElectrostaticPotential(document, [name]):
     makes a Fem ElectrostaticPotential object"""
@@ -603,10 +617,7 @@ def makePostVtkFilterClipRegion(doc, base_vtk_result, name="VtkFilterClipRegion"
     """makePostVtkFilterClipRegion(document, base_vtk_result, [name]):
     creates a FEM post processing region clip filter object (vtk based)"""
     obj = doc.addObject("Fem::FemPostClipFilter", name)
-    tmp_filter_list = base_vtk_result.Filter
-    tmp_filter_list.append(obj)
-    base_vtk_result.Filter = tmp_filter_list
-    del tmp_filter_list
+    base_vtk_result.addObject(obj)
     return obj
 
 
@@ -614,10 +625,7 @@ def makePostVtkFilterClipScalar(doc, base_vtk_result, name="VtkFilterClipScalar"
     """makePostVtkFilterClipScalar(document, base_vtk_result, [name]):
     creates a FEM post processing scalar clip filter object (vtk based)"""
     obj = doc.addObject("Fem::FemPostScalarClipFilter", name)
-    tmp_filter_list = base_vtk_result.Filter
-    tmp_filter_list.append(obj)
-    base_vtk_result.Filter = tmp_filter_list
-    del tmp_filter_list
+    base_vtk_result.addObject(obj)
     return obj
 
 
@@ -625,10 +633,7 @@ def makePostVtkFilterCutFunction(doc, base_vtk_result, name="VtkFilterCutFunctio
     """makePostVtkFilterCutFunction(document, base_vtk_result, [name]):
     creates a FEM post processing cut function filter object (vtk based)"""
     obj = doc.addObject("Fem::FemPostClipFilter", name)
-    tmp_filter_list = base_vtk_result.Filter
-    tmp_filter_list.append(obj)
-    base_vtk_result.Filter = tmp_filter_list
-    del tmp_filter_list
+    base_vtk_result.addObject(obj)
     return obj
 
 
@@ -636,10 +641,7 @@ def makePostVtkFilterWarp(doc, base_vtk_result, name="VtkFilterWarp"):
     """makePostVtkFilterWarp(document, base_vtk_result, [name]):
     creates a FEM post processing warp filter object (vtk based)"""
     obj = doc.addObject("Fem::FemPostWarpVectorFilter", name)
-    tmp_filter_list = base_vtk_result.Filter
-    tmp_filter_list.append(obj)
-    base_vtk_result.Filter = tmp_filter_list
-    del tmp_filter_list
+    base_vtk_result.addObject(obj)
     return obj
 
 
@@ -647,19 +649,36 @@ def makePostVtkFilterContours(doc, base_vtk_result, name="VtkFilterContours"):
     """makePostVtkFilterContours(document, base_vtk_result, [name]):
     creates a FEM post processing contours filter object (vtk based)"""
     obj = doc.addObject("Fem::FemPostContoursFilter", name)
-    tmp_filter_list = base_vtk_result.Filter
-    tmp_filter_list.append(obj)
-    base_vtk_result.Filter = tmp_filter_list
-    del tmp_filter_list
+    base_vtk_result.addObject(obj)
     return obj
 
 
-def makePostVtkResult(doc, base_result, name="VtkResult"):
+def makePostFilterGlyph(doc, base_vtk_result, name="Glyph"):
+    """makePostVtkFilterGlyph(document, [name]):
+    creates a FEM post processing filter that visualizes vector fields with glyphs
+    """
+    obj = doc.addObject("Fem::PostFilterPython", name)
+    from femobjects import post_glyphfilter
+
+    post_glyphfilter.PostGlyphFilter(obj)
+    base_vtk_result.addObject(obj)
+    if FreeCAD.GuiUp:
+        from femviewprovider import view_post_glyphfilter
+
+        view_post_glyphfilter.VPPostGlyphFilter(obj.ViewObject)
+    return obj
+
+
+def makePostVtkResult(doc, result_data, name="VtkResult"):
     """makePostVtkResult(document, base_result, [name]):
-    creates a FEM post processing result object (vtk based) to hold FEM results"""
+    creates a FEM post processing result data (vtk based) to hold FEM results
+    Note: Result data get expanded, it can either be single result [result] or everything
+          needed for a multistep result: [results_list, value_list, unit, description]
+    """
+
     Pipeline_Name = "Pipeline_" + name
     obj = doc.addObject("Fem::FemPostPipeline", Pipeline_Name)
-    obj.load(base_result)
+    obj.load(*result_data)
     if FreeCAD.GuiUp:
         obj.ViewObject.SelectionStyle = "BoundBox"
         # to assure the user sees something, set the default to Surface
@@ -767,6 +786,17 @@ def makeEquationMagnetodynamic2D(doc, base_solver=None, name="Magnetodynamic2D")
     return obj
 
 
+def makeEquationStaticCurrent(doc, base_solver=None, name="StaticCurrent"):
+    """makeEquationStaticCurrent(document, [base_solver], [name]):
+    creates a FEM static current equation for a solver"""
+    from femsolver.elmer.equations import staticcurrent
+
+    obj = staticcurrent.create(doc, name)
+    if base_solver:
+        base_solver.addObject(obj)
+    return obj
+
+
 def makeSolverCalculiXCcxTools(doc, name="SolverCcxTools"):
     """makeSolverCalculiXCcxTools(document, [name]):
     makes a Calculix solver object for the ccx tools module"""
@@ -781,12 +811,17 @@ def makeSolverCalculiXCcxTools(doc, name="SolverCcxTools"):
     return obj
 
 
-def makeSolverCalculix(doc, name="SolverCalculix"):
-    """makeSolverCalculix(document, [name]):
+def makeSolverCalculiX(doc, name="SolverCalculiX"):
+    """makeSolverCalculiX(document, [name]):
     makes a Calculix solver object"""
-    import femsolver.calculix.solver
+    obj = doc.addObject("Fem::FemSolverObjectPython", name)
+    from femobjects import solver_calculix
 
-    obj = femsolver.calculix.solver.create(doc, name)
+    solver_calculix.SolverCalculiX(obj)
+    if FreeCAD.GuiUp:
+        from femviewprovider import view_solver_calculix
+
+        view_solver_calculix.VPSolverCalculiX(obj.ViewObject)
     return obj
 
 

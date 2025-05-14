@@ -183,178 +183,6 @@ def type_check(args_and_types, name="?"):
 typecheck = type_check
 
 
-def get_param_type(param):
-    """Return the type of the parameter entered.
-
-    Parameters
-    ----------
-    param : str
-        A string that indicates a parameter in the parameter database.
-
-    Returns
-    -------
-    str or None
-        The returned string could be `'int'`, `'string'`, `'float'`,
-        `'bool'`, `'unsigned'`, depending on the parameter.
-        It returns `None` for unhandled situations.
-    """
-    if param in ("dimsymbol", "dimPrecision",
-                 "precision", "defaultWP", "snapRange", "gridEvery",
-                 "linewidth", "modconstrain", "modsnap",
-                 "maxSnapEdges", "modalt", "HatchPatternResolution",
-                 "snapStyle", "DefaultAnnoDisplayMode", "DefaultAnnoLineWidth",
-                 "DefaultDrawStyle", "DefaultDisplayMode",
-                 "gridSize", "gridTransparency"):
-        return "int"
-    elif param in ("constructiongroupname", "textfont",
-                   "patternFile", "snapModes",
-                   "FontFile", "ClonePrefix", "overrideUnit",
-                   "labeltype", "gridSpacing") or "inCommandShortcut" in param:
-        return "string"
-    elif param in ("textheight", "arrowsize", "extlines", "dimspacing",
-                   "dimovershoot", "extovershoot", "HatchPatternSize",
-                   "LineSpacing", "DefaultAnnoScaleMultiplier"):
-        return "float"
-    elif param in ("selectBaseObjects", "alwaysSnap", "grid",
-                   "fillmode", "DimShowLine",
-                   "SvgLinesBlack", "dxfStdSize", "SnapBarShowOnlyDuringCommands",
-                   "alwaysShowGrid", "renderPolylineWidth",
-                   "showPlaneTracker", "UsePartPrimitives",
-                   "DiscretizeEllipses", "showUnit", "coloredGridAxes",
-                   "Draft_array_fuse", "Draft_array_Link", "gridBorder"):
-        return "bool"
-    elif param in ("color", "constructioncolor", "snapcolor",
-                   "gridColor", "DefaultTextColor", "DefaultAnnoLineColor"):
-        return "unsigned"
-    else:
-        return None
-
-
-getParamType = get_param_type
-
-
-def get_param(param, default=None):
-    """Return a parameter value from the current parameter database.
-
-    The parameter database is located in the tree
-    ::
-        'User parameter:BaseApp/Preferences/Mod/Draft'
-
-    In the case that `param` is `'linewidth'` or `'color'` it will get
-    the values from the View parameters
-    ::
-        'User parameter:BaseApp/Preferences/View/DefaultShapeLineWidth'
-        'User parameter:BaseApp/Preferences/View/DefaultShapeLineColor'
-
-    Parameters
-    ----------
-    param : str
-        A string that indicates a parameter in the parameter database.
-
-    default : optional
-        It indicates the default value of the given parameter.
-        It defaults to `None`, in which case it will use a specific
-        value depending on the type of parameter determined
-        with `get_param_type`.
-
-    Returns
-    -------
-    int, or str, or float, or bool
-        Depending on `param` and its type, by returning `ParameterGrp.GetInt`,
-        `ParameterGrp.GetString`, `ParameterGrp.GetFloat`,
-        `ParameterGrp.GetBool`, or `ParameterGrp.GetUnsinged`.
-    """
-    draft_params = "User parameter:BaseApp/Preferences/Mod/Draft"
-    view_params = "User parameter:BaseApp/Preferences/View"
-
-    p = App.ParamGet(draft_params)
-    v = App.ParamGet(view_params)
-    t = get_param_type(param)
-    # print("getting param ",param, " of type ",t, " default: ",str(default))
-    if t == "int":
-        if default is None:
-            default = 0
-        if param == "linewidth":
-            return v.GetInt("DefaultShapeLineWidth", default)
-        return p.GetInt(param, default)
-    elif t == "string":
-        if default is None:
-            default = ""
-        return p.GetString(param, default)
-    elif t == "float":
-        if default is None:
-            default = 0
-        return p.GetFloat(param, default)
-    elif t == "bool":
-        if default is None:
-            default = False
-        return p.GetBool(param, default)
-    elif t == "unsigned":
-        if default is None:
-            default = 0
-        if param == "color":
-            return v.GetUnsigned("DefaultShapeLineColor", default)
-        return p.GetUnsigned(param, default)
-    else:
-        return None
-
-
-getParam = get_param
-
-
-def set_param(param, value):
-    """Set a Draft parameter with the given value.
-
-    The parameter database is located in the tree
-    ::
-        'User parameter:BaseApp/Preferences/Mod/Draft'
-
-    In the case that `param` is `'linewidth'` or `'color'` it will set
-    the View parameters
-    ::
-        'User parameter:BaseApp/Preferences/View/DefaultShapeLineWidth'
-        'User parameter:BaseApp/Preferences/View/DefaultShapeLineColor'
-
-    Parameters
-    ----------
-    param : str
-        A string that indicates a parameter in the parameter database.
-
-    value : int, or str, or float, or bool
-        The appropriate value of the parameter.
-        Depending on `param` and its type, determined with `get_param_type`,
-        it sets the appropriate value by calling `ParameterGrp.SetInt`,
-        `ParameterGrp.SetString`, `ParameterGrp.SetFloat`,
-        `ParameterGrp.SetBool`, or `ParameterGrp.SetUnsinged`.
-    """
-    draft_params = "User parameter:BaseApp/Preferences/Mod/Draft"
-    view_params = "User parameter:BaseApp/Preferences/View"
-
-    p = App.ParamGet(draft_params)
-    v = App.ParamGet(view_params)
-    t = get_param_type(param)
-
-    if t == "int":
-        if param == "linewidth":
-            v.SetInt("DefaultShapeLineWidth", value)
-        else:
-            p.SetInt(param, value)
-    elif t == "string":
-        p.SetString(param, value)
-    elif t == "float":
-        p.SetFloat(param, value)
-    elif t == "bool":
-        p.SetBool(param, value)
-    elif t == "unsigned":
-        if param == "color":
-            v.SetUnsigned("DefaultShapeLineColor", value)
-        else:
-            p.SetUnsigned(param, value)
-
-
-setParam = set_param
-
-
 def precision():
     """Return the precision value from the parameter database.
 
@@ -378,6 +206,29 @@ def precision():
     return params.get_param("precision")
 
 
+def svg_precision():
+    """Return the precision value for SVG import from the parameter database.
+
+    It is the number of decimal places that a float will have.
+    Example
+    ::
+        precision=5, 0.12345
+        precision=4, 0.1234
+        precision=3, 0.123
+
+    Due to floating point operations there may be rounding errors.
+    Therefore, this precision number is used to round up values
+    so that all operations are consistent.
+    By default the precision is 3 decimal places.
+
+    Returns
+    -------
+    int
+        params.get_param("svgPrecision")
+    """
+    return params.get_param("svgPrecision")
+
+
 def tolerance():
     """Return a tolerance based on the precision() value
 
@@ -387,6 +238,14 @@ def tolerance():
         10 ** -precision()
     """
     return 10 ** -precision()
+
+
+def is_deleted(obj):
+    """Return `True` if obj is deleted."""
+    try:
+        return not obj.isAttachedToDocument()
+    except:
+        return True
 
 
 def get_real_name(name):
@@ -598,7 +457,7 @@ def get_clone_base(obj, strict=False, recursive=True):
 getCloneBase = get_clone_base
 
 
-def shapify(obj):
+def shapify(obj, delete=True):
     """Transform a parametric object into a static, non-parametric shape.
 
     Parameters
@@ -609,6 +468,10 @@ def shapify(obj):
         This object will be removed, and a non-parametric object
         with the same topological shape (`Part::TopoShape`)
         will be created.
+
+    delete: bool, optional
+        It defaults to `False`.
+        If it is `True`, the original object is deleted.
 
     Returns
     -------
@@ -647,7 +510,8 @@ def shapify(obj):
     else:
         name = getRealName(obj.Name)
 
-    App.ActiveDocument.removeObject(obj.Name)
+    if delete:
+        App.ActiveDocument.removeObject(obj.Name)
     newobj = App.ActiveDocument.addObject("Part::Feature", name)
     newobj.Shape = shape
 

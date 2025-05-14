@@ -33,9 +33,6 @@ using namespace Sketcher;
 
 //---------- Geometry Extension
 
-constexpr std::array<const char*, ExternalGeometryExtension::NumFlags>
-    ExternalGeometryExtension::flag2str;
-
 TYPESYSTEM_SOURCE(Sketcher::ExternalGeometryExtension, Part::GeometryMigrationPersistenceExtension)
 
 void ExternalGeometryExtension::copyAttributes(Part::GeometryExtension* cpy) const
@@ -51,9 +48,9 @@ void ExternalGeometryExtension::restoreAttributes(Base::XMLReader& reader)
 {
     Part::GeometryPersistenceExtension::restoreAttributes(reader);
 
-    Ref = reader.getAttribute("Ref", "");
-    RefIndex = reader.getAttributeAsInteger("RefIndex", "-1");
-    Flags = FlagType(reader.getAttributeAsUnsigned("Flags", "0"));
+    Ref = reader.getAttribute<const char*>("Ref", "");
+    RefIndex = reader.getAttribute<long>("RefIndex", -1);
+    Flags = FlagType(reader.getAttribute<unsigned long>("Flags", 0));
 }
 
 void ExternalGeometryExtension::saveAttributes(Base::Writer& writer) const
@@ -85,11 +82,7 @@ std::unique_ptr<Part::GeometryExtension> ExternalGeometryExtension::copy() const
 
     copyAttributes(cpy.get());
 
-#if defined(__GNUC__) && (__GNUC__ <= 4)
-    return std::move(cpy);
-#else
     return cpy;
-#endif
 }
 
 PyObject* ExternalGeometryExtension::getPyObject()

@@ -354,7 +354,7 @@ public:
     /// toggle the driving status of this constraint
     int toggleVirtualSpace(int ConstrId);
     /// move this point to a new location and solve
-    int moveGeometries(std::vector<GeoElementId> geoEltIds,
+    int moveGeometries(const std::vector<GeoElementId>& geoEltIds,
                        const Base::Vector3d& toPoint,
                        bool relative = false,
                        bool updateGeoBeforeMoving = false);
@@ -422,13 +422,13 @@ public:
     bool deriveConstraintsForPieces(const int oldId,
                                     const std::vector<int>& newIds,
                                     const Constraint* con,
-                                    std::vector<Constraint*>& newConstraints);
+                                    std::vector<Constraint*>& newConstraints) const;
     // Explicitly giving `newGeos` for cases where they are not yet added
     bool deriveConstraintsForPieces(const int oldId,
                                     const std::vector<int>& newIds,
                                     const std::vector<const Part::Geometry*>& newGeo,
                                     const Constraint* con,
-                                    std::vector<Constraint*>& newConstraints);
+                                    std::vector<Constraint*>& newConstraints) const;
 
     /// split a curve
     int split(int geoId, const Base::Vector3d& point);
@@ -841,13 +841,13 @@ public:
 public:
     // Analyser functions
     int autoConstraint(double precision = Precision::Confusion() * 1000,
-                       double angleprecision = M_PI / 20,
+                       double angleprecision = std::numbers::pi / 20,
                        bool includeconstruction = true);
 
     int detectMissingPointOnPointConstraints(double precision = Precision::Confusion() * 1000,
                                              bool includeconstruction = true);
-    void analyseMissingPointOnPointCoincident(double angleprecision = M_PI / 8);
-    int detectMissingVerticalHorizontalConstraints(double angleprecision = M_PI / 8);
+    void analyseMissingPointOnPointCoincident(double angleprecision = std::numbers::pi / 8);
+    int detectMissingVerticalHorizontalConstraints(double angleprecision = std::numbers::pi / 8);
     int detectMissingEqualityConstraints(double precision);
 
     std::vector<ConstraintIds>& getMissingPointOnPointConstraints();
@@ -917,6 +917,7 @@ protected:
 
     void onDocumentRestored() override;
     void restoreFinished() override;
+    void onSketchRestore();
 
     std::string validateExpression(const App::ObjectIdentifier& path,
                                    std::shared_ptr<const App::Expression> expr);

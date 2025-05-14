@@ -23,6 +23,7 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+# include <limits>
 # include <QAction>
 # include <QApplication>
 # include <QComboBox>
@@ -615,22 +616,12 @@ public:
         int delta = _bottom.tabWidget->getSizeDelta();
         h -= ofs.height();
 
-        auto getCubeSize = [naviCubeSize](OverlayInfo &info) -> int {
-            float scale = info.tabWidget->_imageScale;
-            if (scale == 0.0) {
-                scale = info.tabWidget->titleBar->grab().devicePixelRatio();
-                if (scale == 0.0)
-                    scale = 1.0;
-            }
-            return naviCubeSize/scale + 10;
-        };
-
-        int cubeSize = getCubeSize(_bottom);
+        const int paddedCubeSize = naviCubeSize + 10;
         if(naviCorner == 2)
-            ofs.setWidth(ofs.width()+cubeSize);
+            ofs.setWidth(ofs.width()+paddedCubeSize);
         int bw = w-10-ofs.width()-delta;
         if(naviCorner == 3)
-            bw -= cubeSize;
+            bw -= paddedCubeSize;
         if(bw < 10)
             bw = 10;
 
@@ -648,12 +639,11 @@ public:
         rect = _left.tabWidget->getRect();
 
         ofs = _left.tabWidget->getOffset();
-        cubeSize = getCubeSize(_left);
         if(naviCorner == 0)
-            ofs.setWidth(ofs.width()+cubeSize);
+            ofs.setWidth(ofs.width()+paddedCubeSize);
         delta = _left.tabWidget->getSizeDelta()+rectBottom.height();
-        if(naviCorner == 2 && cubeSize > rectBottom.height())
-            delta += cubeSize - rectBottom.height();
+        if(naviCorner == 2 && paddedCubeSize > rectBottom.height())
+            delta += paddedCubeSize - rectBottom.height();
         int lh = std::max(h-ofs.width()-delta, 10);
 
         _left.tabWidget->setRect(QRect(ofs.height(),ofs.width(),rect.width(),lh));
@@ -667,12 +657,11 @@ public:
         rect = _right.tabWidget->getRect();
 
         ofs = _right.tabWidget->getOffset();
-        cubeSize = getCubeSize(_right);
         if(naviCorner == 1)
-            ofs.setWidth(ofs.width()+cubeSize);
+            ofs.setWidth(ofs.width()+paddedCubeSize);
         delta = _right.tabWidget->getSizeDelta()+rectBottom.height();
-        if(naviCorner == 3 && cubeSize > rectBottom.height())
-            delta += cubeSize - rectBottom.height();
+        if(naviCorner == 3 && paddedCubeSize > rectBottom.height())
+            delta += paddedCubeSize - rectBottom.height();
         int rh = std::max(h-ofs.width()-delta, 10);
         w -= ofs.height();
 
@@ -686,12 +675,11 @@ public:
         rect = _top.tabWidget->getRect();
 
         ofs = _top.tabWidget->getOffset();
-        cubeSize = getCubeSize(_top);
         delta = _top.tabWidget->getSizeDelta();
         if(naviCorner == 0)
-            rectLeft.setWidth(std::max(rectLeft.width(), cubeSize));
+            rectLeft.setWidth(std::max(rectLeft.width(), paddedCubeSize));
         else if(naviCorner == 1)
-            rectRight.setWidth(std::max(rectRight.width(), cubeSize));
+            rectRight.setWidth(std::max(rectRight.width(), paddedCubeSize));
         int tw = w-rectLeft.width()-rectRight.width()-ofs.width()-delta;
 
         _top.tabWidget->setRect(QRect(rectLeft.width()-ofs.width(),ofs.height(),tw,rect.height()));
@@ -1191,7 +1179,7 @@ public:
                 if (dockWidget == dock
                         || !dockWidget->isVisible()
                         || dockWidget->isFloating()
-                        || _overlayMap.count(dockWidget))
+                        || _overlayMap.contains(dockWidget))
                     continue;
                 if (dockWidget->rect().contains(dockWidget->mapFromGlobal(pos))) {
                     dstDock = dockWidget;
@@ -1819,7 +1807,7 @@ bool OverlayManager::eventFilter(QObject *o, QEvent *ev)
         }
 
         if (hit <= 0) {
-            d->_lastPos.setX(INT_MAX);
+            d->_lastPos.setX(std::numeric_limits<int>::max());
             if (ev->type() == QEvent::Wheel) {
                 d->wheelDelay = QTime::currentTime().addMSecs(OverlayParams::getDockOverlayWheelDelay());
                 d->wheelPos = pos;
@@ -1914,11 +1902,7 @@ void OverlayManager::Private::interceptEvent(QWidget *widget, QEvent *ev)
     }
     case QEvent::Wheel: {
         auto we = static_cast<QWheelEvent*>(ev);
-#if QT_VERSION < QT_VERSION_CHECK(5,15,0)
-        QPoint globalPos = we->globalPos();
-#else
         QPoint globalPos = we->globalPosition().toPoint();
-#endif
         lastIntercept = getChildAt(widget, globalPos);
 
         // For some reason in case of 3D View we have to target it directly instead of targeting
@@ -1932,7 +1916,6 @@ void OverlayManager::Private::interceptEvent(QWidget *widget, QEvent *ev)
             }
         }
 
-#if QT_VERSION >= QT_VERSION_CHECK(5,12,0)
         QWheelEvent wheelEvent(lastIntercept->mapFromGlobal(globalPos),
                                globalPos,
                                we->pixelDelta(),
@@ -1942,19 +1925,6 @@ void OverlayManager::Private::interceptEvent(QWidget *widget, QEvent *ev)
                                we->phase(),
                                we->inverted(),
                                we->source());
-#else
-        QWheelEvent wheelEvent(lastIntercept->mapFromGlobal(globalPos),
-                               globalPos,
-                               we->pixelDelta(),
-                               we->angleDelta(),
-                               0,
-                               Qt::Vertical,
-                               we->buttons(),
-                               we->modifiers(),
-                               we->phase(),
-                               we->source(),
-                               we->inverted());
-#endif
         QApplication::sendEvent(lastIntercept, &wheelEvent);
         break;
     }

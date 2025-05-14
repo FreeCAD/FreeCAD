@@ -50,6 +50,7 @@
 #include <App/Document.h>
 #include <App/DocumentObject.h>
 #include <Base/UnitsApi.h>
+#include <Base/Tools.h>
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/Command.h>
@@ -88,7 +89,7 @@ QWidget *FilletRadiusDelegate::createEditor(QWidget *parent, const QStyleOptionV
     Gui::QuantitySpinBox *editor = new Gui::QuantitySpinBox(parent);
     editor->setUnit(Base::Unit::Length);
     editor->setMinimum(0.0);
-    editor->setMaximum(INT_MAX);
+    editor->setMaximum(std::numeric_limits<int>::max());
     editor->setSingleStep(0.1);
 
     return editor;
@@ -108,7 +109,7 @@ void FilletRadiusDelegate::setModelData(QWidget *editor, QAbstractItemModel *mod
     Gui::QuantitySpinBox *spinBox = static_cast<Gui::QuantitySpinBox*>(editor);
     spinBox->interpretText();
     //double value = spinBox->value();
-    //QString value = QString::fromLatin1("%1").arg(spinBox->value(),0,'f',2);
+    //QString value = QStringLiteral("%1").arg(spinBox->value(),0,'f',2);
     //QString value = QLocale().toString(spinBox->value().getValue(),'f',Base::UnitsApi::getDecimals());
     Base::Quantity value = spinBox->value();
 
@@ -186,7 +187,7 @@ namespace PartGui {
         {
             if (pObj != this->object)
                 return false;
-            if (!sSubName || sSubName[0] == '\0')
+            if (Base::Tools::isNullOrEmpty(sSubName))
                 return false;
             std::string element(sSubName);
             if (allowEdge)
@@ -233,11 +234,11 @@ DlgFilletEdges::DlgFilletEdges(FilletType type, Part::FilletBase* fillet, QWidge
     ui->setupUi(this);
     setupConnections();
 
-    ui->filletStartRadius->setMaximum(INT_MAX);
+    ui->filletStartRadius->setMaximum(std::numeric_limits<int>::max());
     ui->filletStartRadius->setMinimum(0);
     ui->filletStartRadius->setUnit(Base::Unit::Length);
 
-    ui->filletEndRadius->setMaximum(INT_MAX);
+    ui->filletEndRadius->setMaximum(std::numeric_limits<int>::max());
     ui->filletEndRadius->setMinimum(0);
     ui->filletEndRadius->setUnit(Base::Unit::Length);
 
@@ -437,7 +438,7 @@ void DlgFilletEdges::onSelectEdge(const QString& subelement, int type)
     QAbstractItemModel* model = ui->treeView->model();
     for (int i=0; i<model->rowCount(); ++i) {
         int id = model->data(model->index(i,0), Qt::UserRole).toInt();
-        QString name = QString::fromLatin1("Edge%1").arg(id);
+        QString name = QStringLiteral("Edge%1").arg(id);
         if (name == subelement) {
             // ok, check the selected sub-element
             Qt::CheckState checkState =
@@ -469,7 +470,7 @@ void DlgFilletEdges::onSelectEdgesOfFace(const QString& subelement, int type)
             for(int j = 1; j <= mapOfEdges.Extent(); ++j) {
                 TopoDS_Edge edge = TopoDS::Edge(mapOfEdges.FindKey(j));
                 int id = d->all_edges.FindIndex(edge);
-                QString name = QString::fromLatin1("Edge%1").arg(id);
+                QString name = QStringLiteral("Edge%1").arg(id);
                 onSelectEdge(name, type);
                 Gui::SelectionChanges::MsgType msgType = Gui::SelectionChanges::MsgType(type);
                 if (msgType == Gui::SelectionChanges::AddSelection) {
@@ -534,7 +535,7 @@ void DlgFilletEdges::toggleCheckState(const QModelIndex& index)
         return;
     QVariant check = index.data(Qt::CheckStateRole);
     int id = index.data(Qt::UserRole).toInt();
-    QString name = QString::fromLatin1("Edge%1").arg(id);
+    QString name = QStringLiteral("Edge%1").arg(id);
     Qt::CheckState checkState = static_cast<Qt::CheckState>(check.toInt());
 
     bool block = this->blockSelection(true);
@@ -604,10 +605,9 @@ void DlgFilletEdges::setupFillet(const std::vector<App::DocumentObject*>& objs)
     for(auto &sub : subs)
         subSet.insert(sub.newName.empty()?sub.oldName:sub.newName);
 
-    std::string tmp;
-    std::vector<App::DocumentObject*>::const_iterator it = std::find(objs.begin(), objs.end(), base);
-    if (it != objs.end()) {
+    if (auto it = std::ranges::find(objs, base); it != objs.end()) {
         // toggle visibility
+        std::string tmp;
         Gui::ViewProvider* vp;
         vp = Gui::Application::Instance->getViewProvider(d->fillet);
         if (vp) vp->hide();
@@ -661,9 +661,9 @@ void DlgFilletEdges::setupFillet(const std::vector<App::DocumentObject*>& objs)
         }
 
         for (const auto & et : e) {
-            std::vector<int>::iterator it = std::find(d->edge_ids.begin(), d->edge_ids.end(), et.edgeid);
-            if (it != d->edge_ids.end()) {
-                int index = it - d->edge_ids.begin();
+            auto it2 = std::ranges::find(d->edge_ids, et.edgeid);
+            if (it2 != d->edge_ids.end()) {
+                int index = it2 - d->edge_ids.begin();
                 model->setData(model->index(index, 0), Qt::Checked, Qt::CheckStateRole);
                 //model->setData(model->index(index, 1), QVariant(QLocale().toString(et->radius1,'f',Base::UnitsApi::getDecimals())));
                 //model->setData(model->index(index, 2), QVariant(QLocale().toString(et->radius2,'f',Base::UnitsApi::getDecimals())));
@@ -973,7 +973,7 @@ bool DlgFilletEdges::accept()
     std::string fillet = getFilletType();
     int index = ui->shapeObject->currentIndex();
     shape = ui->shapeObject->itemData(index).toString();
-    type = QString::fromLatin1("Part::%1").arg(QString::fromLatin1(fillet.c_str()));
+    type = QStringLiteral("Part::%1").arg(QString::fromLatin1(fillet.c_str()));
 
     if (d->fillet)
         name = QString::fromLatin1(d->fillet->getNameInDocument());
@@ -983,12 +983,12 @@ bool DlgFilletEdges::accept()
     activeDoc->openTransaction(fillet.c_str());
     QString code;
     if (!d->fillet) {
-        code = QString::fromLatin1(
+        code = QStringLiteral(
         "FreeCAD.ActiveDocument.addObject(\"%1\",\"%2\")\n"
         "FreeCAD.ActiveDocument.%2.Base = FreeCAD.ActiveDocument.%3\n")
         .arg(type, name, shape);
     }
-    code += QString::fromLatin1("__fillets__ = []\n");
+    code += QStringLiteral("__fillets__ = []\n");
     for (int i=0; i<model->rowCount(); ++i) {
         QVariant value = model->index(i,0).data(Qt::CheckStateRole);
         Qt::CheckState checkState = static_cast<Qt::CheckState>(value.toInt());
@@ -1001,7 +1001,7 @@ bool DlgFilletEdges::accept()
             Base::Quantity r2 = r1;
             if (end_radius)
                 r2 = model->index(i,2).data(Qt::EditRole).value<Base::Quantity>();
-            code += QString::fromLatin1(
+            code += QStringLiteral(
                 "__fillets__.append((%1,%2,%3))\n")
                 .arg(id)
                 .arg(r1.getValue(),0,'f',Base::UnitsApi::getDecimals())
@@ -1018,7 +1018,7 @@ bool DlgFilletEdges::accept()
     }
 
     Gui::WaitCursor wc;
-    code += QString::fromLatin1(
+    code += QStringLiteral(
         "FreeCAD.ActiveDocument.%1.Edges = __fillets__\n"
         "del __fillets__\n"
         "FreeCADGui.ActiveDocument.%2.Visibility = False\n")

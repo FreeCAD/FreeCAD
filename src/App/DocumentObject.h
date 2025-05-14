@@ -22,8 +22,8 @@
  ***************************************************************************/
 
 
-#ifndef APP_DOCUMENTOBJECT_H
-#define APP_DOCUMENTOBJECT_H
+#ifndef SRC_APP_DOCUMENTOBJECT_H_
+#define SRC_APP_DOCUMENTOBJECT_H_
 
 #include <App/TransactionalObject.h>
 #include <App/PropertyExpressionEngine.h>
@@ -33,6 +33,11 @@
 
 #include <bitset>
 #include <unordered_map>
+#include <memory>
+#include <map>
+#include <set>
+#include <string>
+#include <vector>
 
 namespace Base
 {
@@ -96,7 +101,10 @@ public:
 };
 
 
-/** Base class of all Classes handled in the Document
+/**
+ * @brief %Base class of all objects handled in the @ref App::Document "Document".
+ * @ingroup DocObject
+ * @details For a more high-level overview see topic @ref DocObject "Document Object".
  */
 class AppExport DocumentObject: public App::TransactionalObject
 {
@@ -288,12 +296,8 @@ public:
     void clearOutListCache() const;
     /// get all possible paths from this to another object following the OutList
     std::vector<std::list<App::DocumentObject*>> getPathsByOutList(App::DocumentObject* to) const;
-#ifdef USE_OLD_DAG
     /// get all objects link to this object
-    std::vector<App::DocumentObject*> getInList(void) const
-#else
     const std::vector<App::DocumentObject*>& getInList() const;
-#endif
         /// get all objects link directly or indirectly to this object
         std::vector<App::DocumentObject*> getInListRecursive() const;
     /** Get a set of all objects linking to this object, including possible external parent objects
@@ -513,7 +517,14 @@ public:
     {
         return false;
     }
-
+    /// Handle Label changes, including forcing unique label values,
+    /// signalling OnBeforeLabelChange, and arranging to update linked references,
+    /// on the assumption that after returning the label will indeed be changed to
+    /// the (altered) value of newLabel.
+    /// Returns a vector of referenging (linking) properties as produced by
+    /// PropertyLinkBase::updateLabelReferences which is needed for undo/redo purposes.
+    std::vector<std::pair<Property*, std::unique_ptr<Property>>>
+    onProposedLabelChange(std::string& newLabel);
     /*** Called to let object itself control relabeling
      *
      * @param newLabel: input as the new label, which can be modified by object itself
@@ -741,6 +752,8 @@ protected:
     void onEarlyChange(const Property* prop) override;
     /// get called after a document has been fully restored
     virtual void onDocumentRestored();
+    /// get called after an object finishes restoreContent.
+    void restoreFinished() override;
     /// get called after an undo/redo transaction is finished
     virtual void onUndoRedoFinished();
     /// get called after setting the document
@@ -765,10 +778,10 @@ protected:  // attributes
     /// Old label; used for renaming expressions
     std::string oldLabel;
 
+private:
     // pointer to the document name string (for performance)
     const std::string* pcNameInDocument {nullptr};
 
-private:
     // accessed by App::Document to record and restore the correct view provider type
     std::string _pcViewProviderName;
 
@@ -787,4 +800,4 @@ private:
 
 }  // namespace App
 
-#endif  // APP_DOCUMENTOBJECT_H
+#endif  // SRC_APP_DOCUMENTOBJECT_H_

@@ -26,9 +26,9 @@
 #define BOOST_GEOMETRY_DISABLE_DEPRECATED_03_WARNING
 
 #ifndef _PreComp_
-#include <cfloat>
+#include <limits>
 
-#include <boost_geometry.hpp>
+#include <boost/geometry.hpp>
 #include <boost/geometry/geometries/register/point.hpp>
 #include <boost/geometry/index/rtree.hpp>
 #include <boost/range/adaptor/transformed.hpp>
@@ -72,8 +72,10 @@
 #include <App/Application.h>
 #include <App/Document.h>
 #include <Base/Exception.h>
+#include <Base/Tools.h>
 #include <Mod/Part/App/CrossSection.h>
 #include <Mod/Part/App/FaceMakerBullseye.h>
+#include <Mod/Part/App/FuzzyHelper.h>
 #include <Mod/Part/App/PartFeature.h>
 #include <Mod/CAM/App/PathSegmentWalker.h>
 #include <Mod/CAM/libarea/Area.h>
@@ -451,7 +453,7 @@ void Area::addWire(CArea& area,
                 if (reversed) {
                     type = -type;
                 }
-                if (fabs(first - last) > M_PI) {
+                if (fabs(first - last) > std::numbers::pi) {
                     // Split arc(circle) larger than half circle. Because gcode
                     // can't handle full circle?
                     gp_Pnt mid = curve.Value((last - first) * 0.5 + first);
@@ -874,7 +876,7 @@ static inline void getEndPoints(const TopoDS_Wire& wire, gp_Pnt& p1, gp_Pnt& p2)
 }
 
 // Toponaming integration note: there's a new class called WireJoiner in Mod/Part/App/ that has been
-// imported from RT's fork. Is's an improved version of the following struct, therefor
+// imported from RT's fork. It's an improved version of the following struct, therefore
 // probably at some point this struct should be replaced with the new imported class.
 // See https://github.com/realthunder/FreeCAD/blob/LinkStable/src/Mod/Part/App/WireJoiner.h for the
 // original implementation of the class and https://github.com/FreeCAD/FreeCAD/pull/12535 for the
@@ -1220,7 +1222,8 @@ struct WireJoiner
                 info.iEnd[i] = info.iStart[i] = (int)adjacentList.size();
 
                 // populate adjacent list
-                for (auto vit = vmap.qbegin(bgi::nearest(pt[i], INT_MAX)); vit != vmap.qend();
+                constexpr int intMax = std::numeric_limits<int>::max();
+                for (auto vit = vmap.qbegin(bgi::nearest(pt[i], intMax)); vit != vmap.qend();
                      ++vit) {
                     ++rcount;
                     if (vit->pt().SquareDistance(pt[i]) > tol) {
@@ -1452,8 +1455,7 @@ void Area::showShape(const TopoDS_Shape& shape, const char* name, const char* fm
             va_end(args);
             name = buf;
         }
-        Part::Feature* pcFeature =
-            static_cast<Part::Feature*>(pcDoc->addObject("Part::Feature", name));
+        Part::Feature* pcFeature = pcDoc->addObject<Part::Feature>(name);
         pcFeature->Shape.setValue(shape);
     }
 }
@@ -1921,7 +1923,13 @@ std::vector<shared_ptr<Area>> Area::makeSections(PARAM_ARGS(PARAM_FARG, AREA_PAR
                     showShape(xp.Current(), nullptr, "section_%u_shape", i);
                     std::list<TopoDS_Wire> wires;
                     Part::CrossSection section(a, b, c, xp.Current());
-                    wires = section.slice(-d);
+                    Part::FuzzyHelper::withBooleanFuzzy(.0, [&]() {
+                        // Workaround for https://github.com/FreeCAD/FreeCAD/issues/17748
+                        // needed to make finish pass work.
+                        // This fix might be better to move into Part::CrossSection but it is kept
+                        // here for now to be on the safe side.
+                        wires = section.slice(-d);
+                    });
                     showShapes(wires, nullptr, "section_%u_wire", i);
                     if (wires.empty()) {
                         AREA_LOG("Section returns no wires");
@@ -2625,7 +2633,7 @@ TopoDS_Shape Area::makePocket(int index, PARAM_ARGS(PARAM_FARG, AREA_PARAMS_POCK
                 for (int j = 0; j < steps; ++j, offset += stepover) {
                     Point p1(-r, offset), p2(r, offset);
                     if (a > Precision::Confusion()) {
-                        double r = a * M_PI / 180.0;
+                        double r = Base::toRadians(a);
                         p1.Rotate(r);
                         p2.Rotate(r);
                     }
@@ -3697,7 +3705,7 @@ std::list<TopoDS_Shape> Area::sortWires(const std::list<TopoDS_Shape>& shapes,
     double max_dist = sort_mode == SortModeGreedy ? threshold * threshold : 0;
     while (!shape_list.empty()) {
         AREA_TRACE("sorting " << shape_list.size() << ' ' << AREA_XYZ(pstart));
-        double best_d = DBL_MAX;
+        double best_d = std::numeric_limits<double>::max();
         auto best_it = shape_list.begin();
         for (auto it = best_it; it != shape_list.end(); ++it) {
             double d;
@@ -4149,7 +4157,7 @@ void Area::toPath(Toolpath& path,
                             }
                         }
 
-                        if (fabs(first - last) > M_PI) {
+                        if (fabs(first - last) > std::numbers::pi) {
                             // Split arc(circle) larger than half circle.
                             gp_Pnt mid = curve.Value((last - first) * 0.5 + first);
                             addGArc(verbose,

@@ -95,7 +95,7 @@ void ViewProviderTextureExtension::setCoinAppearance(SoMaterial* pcShapeMaterial
 {
 #if 0
     if (!source.image.empty()) {
-        Base::Console().Log("setCoinAppearance(Texture)\n");
+        Base::Console().log("setCoinAppearance(Texture)\n");
         activateTexture2D();
 
         QByteArray by = QByteArray::fromBase64(QString::fromStdString(source.image).toUtf8());
@@ -105,7 +105,7 @@ void ViewProviderTextureExtension::setCoinAppearance(SoMaterial* pcShapeMaterial
         Gui::BitmapFactory().convert(image, texture);
         pcShapeTexture2D->image = texture;
     } else {
-        Base::Console().Log("setCoinAppearance(Material)\n");
+        Base::Console().log("setCoinAppearance(Material)\n");
         activateMaterial();
     }
 #endif

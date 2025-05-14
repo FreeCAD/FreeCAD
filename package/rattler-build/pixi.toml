@@ -1,0 +1,66 @@
+[workspace]
+channels = [
+    "https://prefix.dev/pixi-build-backends",
+    "https://prefix.dev/conda-forge",
+]
+platforms = ["linux-64", "linux-aarch64", "osx-64", "osx-arm64", "win-64"]
+preview = ["pixi-build"]
+
+[package]
+name = "freecad"
+version = "1.1.0dev"
+homepage = "https://freecad.org"
+repository = "https://github.com/FreeCAD/FreeCAD"
+description = "FreeCAD"
+
+[package.build]
+backend = { name = "pixi-build-rattler-build", version = "*" }
+
+[feature.freecad.dependencies]
+freecad = { path = "." }
+
+[feature.package.dependencies]
+python = ">=3.11,<3.12"
+
+## Linux (x86-64)
+[feature.package.target.linux-64.dependencies]
+coreutils = "*"
+
+[feature.package.target.linux-64.tasks]
+create_bundle = 'bash -c "cd linux && bash create_bundle.sh"'
+
+## Linux (aarch64)
+[feature.package.target.linux-aarch64.dependencies]
+coreutils = "*"
+
+[feature.package.target.linux-aarch64.tasks]
+create_bundle = 'bash -c "cd linux && bash create_bundle.sh"'
+
+## macOS (Intel)
+[feature.package.target.osx-64.dependencies]
+coreutils = "*"
+dmgbuild = "*"
+sed = "*"
+
+[feature.package.target.osx-64.tasks]
+create_bundle = 'bash -c "cd osx && bash create_bundle.sh"'
+
+## macOS (Apple Silicon)
+[feature.package.target.osx-arm64.dependencies]
+coreutils = "*"
+dmgbuild = "*"
+sed = "*"
+
+[feature.package.target.osx-arm64.tasks]
+create_bundle = 'bash -c "cd osx && bash create_bundle.sh"'
+
+## Windows dependencies (x86-64)
+[feature.package.target.win-64.dependencies]
+git = "*"
+
+[feature.package.target.win-64.tasks]
+create_bundle = 'bash -c "cd windows && bash create_bundle.sh"'
+
+[environments]
+default = ["freecad"]
+package = ["package"]

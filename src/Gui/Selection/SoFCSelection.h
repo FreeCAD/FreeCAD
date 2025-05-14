@@ -69,7 +69,7 @@ public:
     /// Load highlight settings from the configuration
     void applySettings ();
 
-    enum HighlightModes {
+    enum PreselectionModes {
         AUTO, ON, OFF
     };
 
@@ -91,7 +91,7 @@ public:
     SoSFColor colorSelection;
     SoSFEnum style;
     SoSFEnum selected;
-    SoSFEnum highlightMode;
+    SoSFEnum preselectionMode;
     SoSFEnum selectionMode;
 
     SoSFString documentName;

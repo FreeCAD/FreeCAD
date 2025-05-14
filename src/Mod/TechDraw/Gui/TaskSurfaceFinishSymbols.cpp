@@ -155,7 +155,7 @@ QColor TaskSurfaceFinishSymbols::getPenColor()
     return Qt::black;
 }
 
-QPixmap TaskSurfaceFinishSymbols::baseSymbol(symbolType type)
+QPixmap TaskSurfaceFinishSymbols::baseSymbol(SymbolType type)
 // return QPixmap showing a base symbol
 {
     QImage img (50, 64, QImage::Format_ARGB32_Premultiplied);
@@ -171,11 +171,13 @@ QPixmap TaskSurfaceFinishSymbols::baseSymbol(symbolType type)
                            QPainter::TextAntialiasing);
     painter.drawLine(QLine(0, 40, 12, 60));
     painter.drawLine(QLine(12, 60, 42, 10));
-    if (type == removeProhibit || type == removeProhibitAll)
+    if (type == SymbolType::RemoveProhibit || type == SymbolType::RemoveProhibitAll)
         painter.drawEllipse(QPoint(12, 42), 9,9);
-    if (type == removeRequired || type == removeRequiredAll)
+    if (type == SymbolType::RemoveRequired || type == SymbolType::RemoveRequiredAll)
         painter.drawLine(QLine(0, 40, 24, 40));
-    if (type > removeRequired)
+    if (type == SymbolType::AnyMethodAll ||
+        type == SymbolType::RemoveProhibitAll ||
+        type == SymbolType::RemoveRequiredAll)
         painter.drawEllipse(QPoint(42, 10), 6,6);
     painter.end();
     return QPixmap::fromImage(img);
@@ -188,11 +190,13 @@ std::string TaskSurfaceFinishSymbols::completeSymbol()
     symbol.addLine(0, 44, 12, 64);
     symbol.addLine(12, 64, 42, 14);
     int moveLeft(0), maxTextLength(0);
-    if (activeIcon == removeProhibit || activeIcon == removeProhibitAll)
+    if (activeIcon == SymbolType::RemoveProhibit || activeIcon == SymbolType::RemoveProhibitAll)
         symbol.addCircle(12, 46, 9);
-    if (activeIcon == removeRequired || activeIcon == removeRequiredAll)
+    if (activeIcon == SymbolType::RemoveRequired || activeIcon == SymbolType::RemoveRequiredAll)
         symbol.addLine(0, 44, 24, 44);
-    if (activeIcon > removeRequired)
+    if (activeIcon == SymbolType::AnyMethodAll ||
+        activeIcon == SymbolType::RemoveProhibitAll ||
+        activeIcon == SymbolType::RemoveRequiredAll)
     {
         symbol.addCircle(42, 14, 6);
         moveLeft = 5 ;
@@ -245,12 +249,12 @@ void TaskSurfaceFinishSymbols::setUiEdit()
 {
     setWindowTitle(tr("Surface Finish Symbols"));
     // create icon pixmaps of QPushButtons
-    ui->pbIcon01->setIcon(baseSymbol(anyMethod));
-    ui->pbIcon02->setIcon(baseSymbol(removeProhibit));
-    ui->pbIcon03->setIcon(baseSymbol(removeRequired));
-    ui->pbIcon04->setIcon(baseSymbol(anyMethodAll));
-    ui->pbIcon05->setIcon(baseSymbol(removeProhibitAll));
-    ui->pbIcon06->setIcon(baseSymbol(removeRequiredAll));
+    ui->pbIcon01->setIcon(baseSymbol(SymbolType::AnyMethod));
+    ui->pbIcon02->setIcon(baseSymbol(SymbolType::RemoveProhibit));
+    ui->pbIcon03->setIcon(baseSymbol(SymbolType::RemoveRequired));
+    ui->pbIcon04->setIcon(baseSymbol(SymbolType::AnyMethodAll));
+    ui->pbIcon05->setIcon(baseSymbol(SymbolType::RemoveProhibitAll));
+    ui->pbIcon06->setIcon(baseSymbol(SymbolType::RemoveRequiredAll));
 
     int w = ui->pbIcon01->width();
     int h = ui->pbIcon01->height();
@@ -262,7 +266,7 @@ void TaskSurfaceFinishSymbols::setUiEdit()
     ui->pbIcon06->setIconSize(QSize(w, h));
 
 
-    activeIcon = anyMethod ;
+    activeIcon = SymbolType::AnyMethod ;
     isISO = true;
 
     // Create scene and all items used in the scene
@@ -354,12 +358,12 @@ void TaskSurfaceFinishSymbols::onIconChanged()
         return;
     }
 
-    if (ui->pbIcon01 == pressedButton) activeIcon = anyMethod;
-    if (ui->pbIcon02 == pressedButton) activeIcon = removeProhibit;
-    if (ui->pbIcon03 == pressedButton) activeIcon = removeRequired;
-    if (ui->pbIcon04 == pressedButton) activeIcon = anyMethodAll;
-    if (ui->pbIcon05 == pressedButton) activeIcon = removeProhibitAll;
-    if (ui->pbIcon06 == pressedButton) activeIcon = removeRequiredAll;
+    if (ui->pbIcon01 == pressedButton) activeIcon = SymbolType::AnyMethod;
+    if (ui->pbIcon02 == pressedButton) activeIcon = SymbolType::RemoveProhibit;
+    if (ui->pbIcon03 == pressedButton) activeIcon = SymbolType::RemoveRequired;
+    if (ui->pbIcon04 == pressedButton) activeIcon = SymbolType::AnyMethodAll;
+    if (ui->pbIcon05 == pressedButton) activeIcon = SymbolType::RemoveProhibitAll;
+    if (ui->pbIcon06 == pressedButton) activeIcon = SymbolType::RemoveRequiredAll;
 
     QIcon symbolIcon = pressedButton->icon();
     if(currentIcon) {
@@ -397,8 +401,7 @@ bool TaskSurfaceFinishSymbols::accept()
 {
     Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Surface Finish Symbols"));
     App::Document *doc = Application::Instance->activeDocument()->getDocument();
-    App::DocumentObject *docObject = doc->addObject("TechDraw::DrawViewSymbol", "SurfaceSymbol");
-    TechDraw::DrawViewSymbol *surfaceSymbol = dynamic_cast<TechDraw::DrawViewSymbol*>(docObject);
+    auto* surfaceSymbol = doc->addObject<TechDraw::DrawViewSymbol>("SurfaceSymbol");
     surfaceSymbol->Symbol.setValue(completeSymbol());
     surfaceSymbol->Rotation.setValue(ui->leAngle->text().toDouble());
 

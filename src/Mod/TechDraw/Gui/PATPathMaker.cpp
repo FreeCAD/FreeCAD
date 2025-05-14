@@ -44,6 +44,7 @@ using namespace TechDraw;
 
 PATPathMaker::PATPathMaker(QGraphicsItem* parent, double lineWidth, double fillScale) :
     m_parent(parent),
+    m_pen(),
     m_fillScale(fillScale),
     m_lineWidth(lineWidth)
 {
@@ -57,40 +58,13 @@ void PATPathMaker::lineSetToFillItems(LineSet& ls)
     m_segCount = 0;
     QPen pen = getPen();
     for (auto& geom : ls.getGeoms()) {
-        //geom is a tdGeometry representation of 1 line in the pattern
-        if (ls.isDashed()) {
-            double offset = 0.0;
-            Base::Vector3d pStart = ls.getPatternStartPoint(geom, offset, m_fillScale);
-            offset = Rez::guiX(offset);
-            Base::Vector3d gStart(geom->getStartPoint().x,
-                                  geom->getStartPoint().y,
-                                  0.0);
-            Base::Vector3d gEnd(geom->getEndPoint().x,
-                                geom->getEndPoint().y,
-                                0.0);
-            if (DrawUtil::fpCompare(offset, 0.0, 0.00001)) {                              //no offset
-                QGraphicsPathItem* item1 = lineFromPoints(pStart, gEnd, ls.getDashSpec());
-                item1->setPen(pen);
-                m_fillItems.push_back(item1);
-                if (!pStart.IsEqual(gStart, 0.00001)) {
-                    QGraphicsPathItem* item2 = lineFromPoints(pStart, gStart, ls.getDashSpec().reversed());
-                    item2->setPen(pen);
-                    m_fillItems.push_back(item2);
-                }
-            } else {                                                                  //offset - pattern start not in g
-                double remain = dashRemain(decodeDashSpec(ls.getDashSpec()), offset);
-                QGraphicsPathItem* shortItem = geomToStubbyLine(geom, remain, ls);
-                shortItem->setPen(pen);
-                m_fillItems.push_back(shortItem);
-            }
-        } else {                                                //not dashed
-            QGraphicsPathItem* fillItem = geomToLine(geom, ls);
-            fillItem->setPen(pen);
-            m_fillItems.push_back(fillItem);
-        }
+        //geom is a tdGeometry representation of 1 line in the pattern                                             //not dashed
+        QGraphicsPathItem* fillItem = simpleLine(geom);
+        fillItem->setPen(pen);
+        m_fillItems.push_back(fillItem);
 
         if (m_segCount > m_maxSeg) {
-            Base::Console().Warning("PAT segment count exceeded: %ld\n", m_segCount);
+            Base::Console().warning("PAT segment count exceeded: %ld\n", m_segCount);
             break;
         }
     }
@@ -124,34 +98,19 @@ QGraphicsPathItem*  PATPathMaker::geomToLine(TechDraw::BaseGeomPtr base, LineSet
     return fillItem;
 }
 
-
-//! make a fragment (length = remain) of a dashed line, with pattern starting at +offset
-QGraphicsPathItem*  PATPathMaker::geomToStubbyLine(TechDraw::BaseGeomPtr base, double remain, LineSet& ls)
+/// create a simple line from geometry
+QGraphicsPathItem*  PATPathMaker::simpleLine(TechDraw::BaseGeomPtr base)
 {
     QGraphicsPathItem* fillItem = new QGraphicsPathItem(m_parent);
     Base::Vector3d start(base->getStartPoint().x,
-                         base->getStartPoint().y,
-                         0.0);
+                            base->getStartPoint().y,
+                            0.0);
     Base::Vector3d end(base->getEndPoint().x,
-                       base->getEndPoint().y,
-                       0.0);
-    double origLen = (end - start).Length();
-
-    double appRemain = Rez::appX(remain);
-    Base::Vector3d newEnd = start + (ls.getUnitDir() * appRemain);
-
-    double newLen = (newEnd - start).Length();
-
-    if (newLen > origLen) {
-        newEnd = end;
-    }
-
-    double offset = Rez::guiX(m_fillScale * ls.getDashSpec().length()) - remain;
-
-    fillItem->setPath(dashedPPath(offsetDash(decodeDashSpec(ls.getDashSpec()), offset),
+                            base->getEndPoint().y,
+                            0.0);
+    fillItem->setPath(dashedPPath(std::vector<double>(),
                                   Rez::guiX(start),
-                                  Rez::guiX(newEnd)));
-    m_fillItems.push_back(fillItem);
+                                  Rez::guiX(end)));
     return fillItem;
 }
 
@@ -196,7 +155,7 @@ QPainterPath PATPathMaker::dashedPPath(const std::vector<double> dashPattern, co
          while (travel < lineLength) {
              bool stop = false;
             if (m_segCount > 10000) {
-                Base::Console().Warning("PAT segment count exceeded: %ld\n", m_segCount);
+                Base::Console().warning("PAT segment count exceeded: %ld\n", m_segCount);
                 break;
             }
 
@@ -223,6 +182,11 @@ QPainterPath PATPathMaker::dashedPPath(const std::vector<double> dashPattern, co
       return result;
 }
 
+void PATPathMaker::setLineWidth(double width)
+{
+    m_lineWidth = width;
+    m_pen.setWidthF(width);
+}
 
 //! convert a dash pattern to an offset dash pattern  (ie offset -> end)
 // dashPattern & offset are already scaled.
@@ -261,19 +225,4 @@ std::vector<double> PATPathMaker::offsetDash(const std::vector<double> dashPatte
 
     return result;
 }
-
-
-//! find remaining length of a dash pattern after offset
-double PATPathMaker::dashRemain(const std::vector<double> dashPattern, const double offset)
-{
-    double length = 0.0;
-    for (auto& d: dashPattern) {
-        length += fabs(d);
-    }
-    if (offset > length) {
-        return 0.0;
-    }
-    return length - offset;
-}
-
 

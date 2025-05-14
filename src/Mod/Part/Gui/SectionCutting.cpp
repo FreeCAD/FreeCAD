@@ -23,11 +23,8 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-
-// to avoid compiler warnings of redefining contents of basic.h
-// later by #include <Gui/ViewProviderGeometryObject.h>
-# define _USE_MATH_DEFINES  // NOLINT
 # include <cmath>
+# include <limits>
 
 # include <Inventor/actions/SoGetBoundingBoxAction.h>
 # include <Inventor/nodes/SoCamera.h>
@@ -136,16 +133,17 @@ SectionCut::SectionCut(QWidget* parent)
 
 void SectionCut::initSpinBoxes()
 {
-    ui->cutX->setRange(-INT_MAX, INT_MAX);
-    ui->cutY->setRange(-INT_MAX, INT_MAX);
-    ui->cutZ->setRange(-INT_MAX, INT_MAX);
+    constexpr int max = std::numeric_limits<int>::max();
+    ui->cutX->setRange(-max, max);
+    ui->cutY->setRange(-max, max);
+    ui->cutZ->setRange(-max, max);
 }
 
 void SectionCut::initControls(const Base::BoundBox3d& BoundCompound)
 {
     // lambda function to set color and transparency
     auto setColorTransparency = [&](Part::Box* pcBox) {
-        App::Color cutColor;
+        Base::Color cutColor;
         long cutTransparency{};
         auto vpBox = dynamic_cast<Gui::ViewProviderGeometryObject*>(
             Gui::Application::Instance->getViewProvider(pcBox));
@@ -155,7 +153,7 @@ void SectionCut::initControls(const Base::BoundBox3d& BoundCompound)
             ui->CutColor->setColor(cutColor.asValue<QColor>());
             ui->CutTransparencyHS->setValue(int(cutTransparency));
             ui->CutTransparencyHS->setToolTip(QString::number(cutTransparency)
-                                            + QString::fromLatin1(" %"));
+                                            + QStringLiteral(" %"));
         }
     };
 
@@ -297,12 +295,12 @@ void SectionCut::initBooleanFragmentControls(Gui::ViewProviderGeometryObject* co
     ui->groupBoxIntersecting->setChecked(true);
 
     if (compoundBF) {
-        App::Color compoundColor = compoundBF->ShapeAppearance.getDiffuseColor();
+        Base::Color compoundColor = compoundBF->ShapeAppearance.getDiffuseColor();
         ui->BFragColor->setColor(compoundColor.asValue<QColor>());
         long compoundTransparency = compoundBF->Transparency.getValue();
         ui->BFragTransparencyHS->setValue(int(compoundTransparency));
         ui->BFragTransparencyHS->setToolTip(QString::number(compoundTransparency)
-                                            + QString::fromLatin1(" %"));
+                                            + QStringLiteral(" %"));
         // Part::Cut ignores the cutbox transparency when it is set
         // to zero and the BooleanFragments transparency is not zero
         // therefore limit the cutbox transparency to 1 in this case
@@ -467,14 +465,14 @@ void SectionCut::setAutoTransparency(int value)
         ui->CutTransparencyHS->blockSignals(true);
         ui->CutTransparencyHS->setValue(value);
         ui->CutTransparencyHS->setToolTip(QString::number(value)
-                                          + QString::fromLatin1(" %"));
+                                          + QStringLiteral(" %"));
         ui->CutTransparencyHS->blockSignals(false);
     }
     if (ui->autoBFColorCB->isChecked()) {
         ui->BFragTransparencyHS->blockSignals(true);
         ui->BFragTransparencyHS->setValue(value);
         ui->BFragTransparencyHS->setToolTip(QString::number(value)
-                                          + QString::fromLatin1(" %"));
+                                          + QStringLiteral(" %"));
         ui->BFragTransparencyHS->blockSignals(false);
     }
 }
@@ -551,7 +549,7 @@ void SectionCut::deleteCompound()
             // check for BooleanFragments
             pcCompoundDelBF = Gui::Application::Instance->getViewProvider(compoundObject);
             if (!pcCompoundDelBF) {
-                Base::Console().Error(
+                Base::Console().error(
                     "SectionCut error: compound is incorrectly named, cannot proceed\n");
                 return;
             }
@@ -606,7 +604,7 @@ void SectionCut::restoreVisibility()
 Part::Box* SectionCut::createBox(const char* name, const Base::Vector3f& size)  // NOLINT
 {
     // create a box
-    auto pcBox = dynamic_cast<Part::Box*>(doc->addObject("Part::Box", name));
+    auto pcBox = doc->addObject<Part::Box>(name);
     if (!pcBox) {
         throw Base::RuntimeError(std::string("SectionCut error: ")
             + std::string(name) + std::string(" could not be added\n"));
@@ -627,7 +625,7 @@ Part::Box* SectionCut::tryCreateXBox(const Base::Vector3f& pos, const Base::Vect
         return createXBox(pos, size);
     }
     catch (const Base::Exception& e) {
-        e.ReportException();
+        e.reportException();
         return nullptr;
     }
 }
@@ -701,7 +699,7 @@ Part::Box* SectionCut::tryCreateYBox(const Base::Vector3f& pos, const Base::Vect
         return createYBox(pos, size);
     }
     catch (const Base::Exception& e) {
-        e.ReportException();
+        e.reportException();
         return nullptr;
     }
 }
@@ -745,7 +743,7 @@ Part::Box* SectionCut::tryCreateZBox(const Base::Vector3f& pos, const Base::Vect
         return createZBox(pos, size);
     }
     catch (const Base::Exception& e) {
-        e.ReportException();
+        e.reportException();
         return nullptr;
     }
 }
@@ -785,7 +783,7 @@ Part::Box* SectionCut::createZBox(const Base::Vector3f& pos, const Base::Vector3
 
 Part::Cut* SectionCut::createCut(const char* name)
 {
-    auto pcCut = dynamic_cast<Part::Cut*>(doc->addObject("Part::Cut", name));
+    auto pcCut = doc->addObject<Part::Cut>(name);
     if (!pcCut) {
         throw Base::RuntimeError(std::string("SectionCut error: ")
             + std::string(name) + std::string(" could not be added\n"));
@@ -800,7 +798,7 @@ Part::Cut* SectionCut::tryCreateCut(const char* name)
         return createCut(name);
     }
     catch (const Base::Exception& e) {
-        e.ReportException();
+        e.reportException();
         return nullptr;
     }
 }
@@ -831,7 +829,7 @@ void SectionCut::startCutting(bool isInitial)
         startObjectCutting(isInitial);
     }
     catch (const Base::Exception& e) {
-        e.ReportException();
+        e.reportException();
     }
 }
 
@@ -932,9 +930,9 @@ bool SectionCut::isCuttingEnabled() const
 }
 
 namespace {
-App::Color getFirstColor(const std::vector<App::DocumentObject*>& objects)
+Base::Color getFirstColor(const std::vector<App::DocumentObject*>& objects)
 {
-    App::Color cutColor;
+    Base::Color cutColor;
     auto vpFirstObject = dynamic_cast<Gui::ViewProviderGeometryObject*>(
         Gui::Application::Instance->getViewProvider(objects.front()));
     if (vpFirstObject) {
@@ -954,7 +952,7 @@ long getFirstTransparency(const std::vector<App::DocumentObject*>& objects)
     return cutTransparency;
 }
 
-bool isAutoColor(const App::Color& color, const std::vector<App::DocumentObject*>& objects)
+bool isAutoColor(const Base::Color& color, const std::vector<App::DocumentObject*>& objects)
 {
     bool autoColor = true;
     for (auto itCuts : objects) {
@@ -1004,7 +1002,7 @@ std::vector<App::DocumentObject*> createLinks(App::Document* doc, const std::vec
         }
         newName += "_CutLink";
 
-        auto pcLink = dynamic_cast<App::Link*>(doc->addObject("App::Link", newName.c_str()));
+        auto pcLink = doc->addObject<App::Link>(newName.c_str());
         if (!pcLink) {
             throw Base::RuntimeError("'App::Link' could not be added");
         }
@@ -1019,13 +1017,10 @@ std::vector<App::DocumentObject*> createLinks(App::Document* doc, const std::vec
 
         // if the object is part of an App::Part container,
         // the link needs to get the container placement
-        auto parents = itCuts->getInList();
-        if (!parents.empty()) {
+        if (auto parents = itCuts->getInList(); !parents.empty()) {
             for (auto parent : parents) {
                 if (auto pcPartParent = dynamic_cast<App::Part*>(parent)) {
-                    auto placement = Base::freecad_dynamic_cast<App::PropertyPlacement>(
-                                      pcPartParent->getPropertyByName("Placement"));
-                    if (placement) {
+                    if (auto placement = pcPartParent->getPropertyByName<App::PropertyPlacement>("Placement")) {
                         pcLink->Placement.setValue(placement->getValue());
                     }
                 }
@@ -1281,7 +1276,7 @@ void SectionCut::processZBoxAndCut(const Args& args)
 void SectionCut::createAllObjects(const std::vector<App::DocumentObject*>& ObjectsListCut)
 {
     // store color and transparency of first object
-    App::Color cutColor = getFirstColor(ObjectsListCut);
+    Base::Color cutColor = getFirstColor(ObjectsListCut);
     long cutTransparency = getFirstTransparency(ObjectsListCut);
     bool autoColor = true;
     bool autoTransparency = true;
@@ -1328,7 +1323,7 @@ void SectionCut::createAllObjects(const std::vector<App::DocumentObject*>& Objec
     }
 
     // read cutface color for the cut box
-    App::Color boxColor;
+    Base::Color boxColor;
     boxColor.setValue<QColor>(ui->CutColor->color());
     int boxTransparency = ui->CutTransparencyHS->value();
 
@@ -1572,7 +1567,7 @@ void SectionCut::onCutXvalueChanged(double val)
     }
     auto pcBox = dynamic_cast<Part::Box*>(CutBox);
     if (!pcBox) {
-        Base::Console().Error((std::string("SectionCut error: ") + std::string(BoxXName)
+        Base::Console().error((std::string("SectionCut error: ") + std::string(BoxXName)
             + std::string(" is no Part::Box object. Cannot proceed.\n")).c_str());
         return;
     }
@@ -1649,7 +1644,7 @@ void SectionCut::onCutXvalueChanged(double val)
         // recompute the cut
         auto pcCut = dynamic_cast<Part::Cut*>(CutObject);
         if (!pcCut) {
-            Base::Console().Error((std::string("SectionCut error: ") + std::string(CutZName)
+            Base::Console().error((std::string("SectionCut error: ") + std::string(CutZName)
                 + std::string(" is no Part::Cut object. Cannot proceed.\n")).c_str());
             return;
         }
@@ -1693,7 +1688,7 @@ void SectionCut::onCutYvalueChanged(double val)
     }
     auto pcBox = dynamic_cast<Part::Box*>(CutBox);
     if (!pcBox) {
-        Base::Console().Error((std::string("SectionCut error: ") + std::string(BoxYName)
+        Base::Console().error((std::string("SectionCut error: ") + std::string(BoxYName)
             + std::string(" is no Part::Box object. Cannot proceed.\n")).c_str());
         return;
     }
@@ -1715,7 +1710,7 @@ void SectionCut::onCutYvalueChanged(double val)
     if (hasBoxZ) {
         auto CutFeatureZ = findObject(CutZName);
         if (!CutFeatureZ) {
-            Base::Console().Error((std::string("SectionCut error: there is no ")
+            Base::Console().error((std::string("SectionCut error: there is no ")
                 + std::string(CutZName) + std::string("\n")).c_str());
             return;
         }
@@ -1751,7 +1746,7 @@ void SectionCut::onCutYvalueChanged(double val)
         // recompute the cut
         auto pcCut = dynamic_cast<Part::Cut*>(CutObject);
         if (!pcCut) {
-            Base::Console().Error((std::string("SectionCut error: ") + std::string(CutZName)
+            Base::Console().error((std::string("SectionCut error: ") + std::string(CutZName)
                 + std::string(" is no Part::Cut object. Cannot proceed.\n")).c_str());
             return;
         }
@@ -1815,7 +1810,7 @@ void SectionCut::onCutZvalueChanged(double val)
     }
     auto pcBox = dynamic_cast<Part::Box*>(CutBox);
     if (!pcBox) {
-        Base::Console().Error((std::string("SectionCut error: ") + std::string(BoxZName)
+        Base::Console().error((std::string("SectionCut error: ") + std::string(BoxZName)
             + std::string(" is no Part::Box object. Cannot proceed.\n")).c_str());
         return;
     }
@@ -1832,7 +1827,7 @@ void SectionCut::onCutZvalueChanged(double val)
     }
     auto pcCut = dynamic_cast<Part::Cut*>(CutObject);
     if (!pcCut) {
-        Base::Console().Error((std::string("SectionCut error: ") + std::string(CutZName)
+        Base::Console().error((std::string("SectionCut error: ") + std::string(CutZName)
             + std::string(" is no Part::Cut object. Cannot proceed.\n")).c_str());
         return;
     }
@@ -1921,7 +1916,7 @@ void SectionCut::FlipClickedHelper(const char* BoxName)
     }
     auto pcBox = dynamic_cast<Part::Box*>(CutBox);
     if (!pcBox) {
-        Base::Console().Error((std::string("SectionCut error: ") + std::string(BoxName)
+        Base::Console().error((std::string("SectionCut error: ") + std::string(BoxName)
             + std::string(" is no Part::Box object. Cannot proceed.\n")).c_str());
         return;
     }
@@ -2030,7 +2025,7 @@ App::DocumentObject* SectionCut::findOrCreateObject(const char* objName)
 {
     auto object = findObject(objName);
     if (!object) {
-        Base::Console().Warning((std::string("SectionCut warning: there is no ")
+        Base::Console().warning((std::string("SectionCut warning: there is no ")
             + std::string(objName) + std::string(", trying to recreate it\n")).c_str());
         startCutting();
         return nullptr;
@@ -2055,7 +2050,7 @@ void SectionCut::changeCutBoxColors()
         auto boxVP = Gui::Application::Instance->getViewProvider(boxObject);
         auto boxVPGO = dynamic_cast<Gui::ViewProviderGeometryObject*>(boxVP);
         if (boxVPGO) {
-            App::Color boxColor;
+            Base::Color boxColor;
             boxColor.setValue<QColor>(ui->CutColor->color());
             boxVPGO->ShapeAppearance.setDiffuseColor(boxColor);
             int boxTransparency = ui->CutTransparencyHS->value();
@@ -2097,9 +2092,9 @@ void SectionCut::changeCutBoxColors()
 
 void SectionCut::onTransparencyHSMoved(int val)
 {
-    ui->CutTransparencyHS->setToolTip(QString::number(val) + QString::fromLatin1(" %"));
+    ui->CutTransparencyHS->setToolTip(QString::number(val) + QStringLiteral(" %"));
     // highlight the tooltip
-    QToolTip::showText(QCursor::pos(), QString::number(val) + QString::fromLatin1(" %"), nullptr);
+    QToolTip::showText(QCursor::pos(), QString::number(val) + QStringLiteral(" %"), nullptr);
     if (ui->groupBoxX->isChecked() || ui->groupBoxY->isChecked() || ui->groupBoxZ->isChecked()) {
         changeCutBoxColors();
     }
@@ -2149,7 +2144,7 @@ void SectionCut::setBooleanFragmentsColor()
         compoundObject = doc->getObject(CompoundName);
     }
     else {
-        Base::Console().Error("SectionCut error: compound is incorrectly named, cannot proceed\n");
+        Base::Console().error("SectionCut error: compound is incorrectly named, cannot proceed\n");
         return;
     }
     // assure it is not a Part::Compound
@@ -2158,12 +2153,12 @@ void SectionCut::setBooleanFragmentsColor()
         // check for valid BooleanFragments by accessing its ViewProvider
         auto CompoundBFVP = Gui::Application::Instance->getViewProvider(compoundObject);
         if (!CompoundBFVP) {
-            Base::Console().Error("SectionCut error: cannot access ViewProvider of cut compound\n");
+            Base::Console().error("SectionCut error: cannot access ViewProvider of cut compound\n");
             return;
         }
         auto CutCompoundBFGeom = dynamic_cast<Gui::ViewProviderGeometryObject*>(CompoundBFVP);
         if (CutCompoundBFGeom) {
-            App::Color BFColor;
+            Base::Color BFColor;
             BFColor.setValue<QColor>(ui->BFragColor->color());
             CutCompoundBFGeom->ShapeAppearance.setDiffuseColor(BFColor);
             int BFTransparency = ui->BFragTransparencyHS->value();
@@ -2179,7 +2174,7 @@ void SectionCut::onBFragTransparencyHSMoved(int val)
     auto setTransparency = [&](App::DocumentObject* cutObject) {
         Gui::ViewProvider* CutVP = Gui::Application::Instance->getViewProvider(cutObject);
         if (!CutVP) {
-            Base::Console().Error(
+            Base::Console().error(
                 "SectionCut error: cannot access ViewProvider of cut object\n");
             return;
         }
@@ -2201,9 +2196,9 @@ void SectionCut::onBFragTransparencyHSMoved(int val)
         ui->CutTransparencyHS->setMinimum(0);
     }
 
-    ui->BFragTransparencyHS->setToolTip(QString::number(val) + QString::fromLatin1(" %"));
+    ui->BFragTransparencyHS->setToolTip(QString::number(val) + QStringLiteral(" %"));
     // highlight the tooltip
-    QToolTip::showText(QCursor::pos(), QString::number(val) + QString::fromLatin1(" %"), nullptr);
+    QToolTip::showText(QCursor::pos(), QString::number(val) + QStringLiteral(" %"), nullptr);
 
     // when there is no cut yet, there is nothing else to do
     if (ui->groupBoxX->isChecked() || ui->groupBoxY->isChecked() || ui->groupBoxZ->isChecked()) {
@@ -2232,14 +2227,14 @@ void SectionCut::onRefreshCutPBclicked()
     // get document
     auto docGui = Gui::Application::Instance->activeDocument();
     if (!docGui) {
-        Base::Console().Error("SectionCut error: there is no document\n");
+        Base::Console().error("SectionCut error: there is no document\n");
         return;
     }
     doc = docGui->getDocument();
     // get all objects in the document
     std::vector<App::DocumentObject*> ObjectsList = doc->getObjects();
     if (ObjectsList.empty()) {
-        Base::Console().Error("SectionCut error: there are no objects in the document\n");
+        Base::Console().error("SectionCut error: there are no objects in the document\n");
         return;
     }
     // empty the ObjectsListVisible
@@ -2286,12 +2281,12 @@ SbBox3f SectionCut::getViewBoundingBox()
     SbBox3f Box;
     auto docGui = Gui::Application::Instance->activeDocument();
     if (!docGui) {
-        Base::Console().Error("SectionCut error: there is no active document\n");
+        Base::Console().error("SectionCut error: there is no active document\n");
         return Box; // return an empty box
     }
     auto view = dynamic_cast<Gui::View3DInventor*>(docGui->getActiveView());
     if (!view) {
-        Base::Console().Error("SectionCut error: could not get the active view\n");
+        Base::Console().error("SectionCut error: could not get the active view\n");
         return Box; // return an empty box
     }
     Gui::View3DInventorViewer* viewer = view->getViewer();
@@ -2381,7 +2376,7 @@ App::DocumentObject* SectionCut::CreateBooleanFragments(App::Document* doc)
     // check for success
     App::DocumentObject* object = doc->getObject(CompoundName);
     if (!object) {
-        Base::Console().Error((std::string("SectionCut error: ") + std::string(CompoundName)
+        Base::Console().error((std::string("SectionCut error: ") + std::string(CompoundName)
                                + std::string(" could not be added\n")).c_str());
         return nullptr;
     }
@@ -2421,7 +2416,7 @@ App::DocumentObject* SectionCut::createBooleanFragments(
 Part::Compound* SectionCut::createCompound(const std::vector<App::DocumentObject*>& links,
                                            int transparency)
 {
-    auto CutCompoundPart = dynamic_cast<Part::Compound*>(doc->addObject("Part::Compound", CompoundName));
+    auto CutCompoundPart = doc->addObject<Part::Compound>(CompoundName);
     if (!CutCompoundPart) {
         throw Base::RuntimeError((std::string("SectionCut error: ") + std::string(CompoundName)
             + std::string(" could not be added\n")).c_str());

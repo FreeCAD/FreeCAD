@@ -33,14 +33,14 @@ ZoomableView::ZoomableView(Ui::Sheet* ui)
     , stv {ui->cells}
 {
     if (!stv) {
-        Base::Console().DeveloperWarning("ZoomableView", "Failed to find a SheetTableView object");
+        Base::Console().developerWarning("ZoomableView", "Failed to find a SheetTableView object");
         deleteLater();
         return;
     }
     else {
         QLayoutItem* li_stv = stv->parentWidget()->layout()->replaceWidget(stv, this);
         if (li_stv == nullptr) {
-            Base::Console().DeveloperWarning("ZoomableView",
+            Base::Console().developerWarning("ZoomableView",
                                              "Failed to replace the SheetTableView object");
             deleteLater();
             return;
@@ -67,7 +67,7 @@ ZoomableView::ZoomableView(Ui::Sheet* ui)
         dummySB_v {stv->verticalScrollBar()}, realSB_h {ui->realSB_h}, realSB_v {ui->realSB_v};
 
     if (!dummySB_h || !dummySB_v || !realSB_h || !realSB_v) {
-        Base::Console().DeveloperWarning("ZoomableView", "Failed to identify the scrollbars");
+        Base::Console().developerWarning("ZoomableView", "Failed to identify the scrollbars");
         deleteLater();
         return;
     }
@@ -185,6 +185,11 @@ void ZoomableView::updateView(void)
     setSceneRect(new_geometry);
     scale(scale_factor, scale_factor);
     centerOn(new_geometry.center());
+}
+
+void ZoomableView::focusOutEvent(QFocusEvent* event)
+{
+    Q_UNUSED(event);
 }
 
 void ZoomableView::keyPressEvent(QKeyEvent* event)

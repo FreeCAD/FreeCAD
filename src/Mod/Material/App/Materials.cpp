@@ -65,11 +65,11 @@ void MaterialProperty::copyValuePtr(const std::shared_ptr<MaterialValue>& value)
 {
     if (value->getType() == MaterialValue::Array2D) {
         _valuePtr =
-            std::make_shared<Material2DArray>(*(std::static_pointer_cast<Material2DArray>(value)));
+            std::make_shared<Array2D>(*(std::static_pointer_cast<Array2D>(value)));
     }
     else if (value->getType() == MaterialValue::Array3D) {
         _valuePtr =
-            std::make_shared<Material3DArray>(*(std::static_pointer_cast<Material3DArray>(value)));
+            std::make_shared<Array3D>(*(std::static_pointer_cast<Array3D>(value)));
     }
     else {
         _valuePtr = std::make_shared<MaterialValue>(*value);
@@ -132,7 +132,7 @@ QString MaterialProperty::getString() const
         if (value.isNull()) {
             return {};
         }
-        return QString(QLatin1String("%L1")).arg(value.toFloat(), 0, 'g', MaterialValue::PRECISION);
+        return QString(QStringLiteral("%L1")).arg(value.toFloat(), 0, 'g', MaterialValue::PRECISION);
     }
     return getValue().toString();
 }
@@ -142,7 +142,7 @@ QString MaterialProperty::getYAMLString() const
     return _valuePtr->getYAMLString();
 }
 
-App::Color MaterialProperty::getColor() const
+Base::Color MaterialProperty::getColor() const
 {
     auto colorString = getValue().toString();
     std::stringstream stream(colorString.toStdString());
@@ -163,7 +163,7 @@ App::Color MaterialProperty::getColor() const
         stream >> alpha;
     }
 
-    App::Color color(red, green, blue, alpha);
+    Base::Color color(red, green, blue, alpha);
     return color;
 }
 
@@ -177,7 +177,7 @@ QString MaterialProperty::getDictionaryString() const
     }
     if (getType() == MaterialValue::Quantity) {
         auto quantity = getValue().value<Base::Quantity>();
-        auto string = QString(QLatin1String("%1 %2"))
+        auto string = QString(QStringLiteral("%1 %2"))
                           .arg(quantity.getValue(), 0, 'g', MaterialValue::PRECISION)
                           .arg(QString::fromStdString(quantity.getUnit().getString()));
         return string;
@@ -187,7 +187,7 @@ QString MaterialProperty::getDictionaryString() const
         if (value.isNull()) {
             return {};
         }
-        return QString(QLatin1String("%1")).arg(value.toFloat(), 0, 'g', MaterialValue::PRECISION);
+        return QString(QStringLiteral("%1")).arg(value.toFloat(), 0, 'g', MaterialValue::PRECISION);
     }
     return getValue().toString();
 }
@@ -205,12 +205,12 @@ void MaterialProperty::setType(const QString& type)
         throw UnknownValueType();
     }
     if (mappedType == MaterialValue::Array2D) {
-        auto arrayPtr = std::make_shared<Material2DArray>();
+        auto arrayPtr = std::make_shared<Array2D>();
         arrayPtr->setColumns(columns());
         _valuePtr = arrayPtr;
     }
     else if (mappedType == MaterialValue::Array3D) {
-        auto arrayPtr = std::make_shared<Material3DArray>();
+        auto arrayPtr = std::make_shared<Array3D>();
         // First column is third dimension
         arrayPtr->setColumns(columns() - 1);
         _valuePtr = arrayPtr;
@@ -283,7 +283,20 @@ QVariant MaterialProperty::getColumnNull(int column) const
 
 void MaterialProperty::setValue(const QVariant& value)
 {
-    _valuePtr->setValue(value);
+    if (_valuePtr->getType() == MaterialValue::Quantity && value.canConvert<Base::Quantity>()) {
+        // Ensure the units are set correctly
+        auto quantity = value.value<Base::Quantity>();
+        if (quantity.isValid()) {
+            setQuantity(quantity);
+        }
+        else {
+            // Set a default value with default units
+            setValue(QStringLiteral("0"));
+        }
+    }
+    else {
+        _valuePtr->setValue(value);
+    }
 }
 
 void MaterialProperty::setValue(const QString& value)
@@ -309,7 +322,7 @@ void MaterialProperty::setValue(const QString& value)
             setQuantity(Base::Quantity::parse(value.toStdString()));
         }
         catch (const Base::ParserError& e) {
-            Base::Console().Log("MaterialProperty::setValue Error '%s' - '%s'\n",
+            Base::Console().log("MaterialProperty::setValue Error '%s' - '%s'\n",
                                 e.what(),
                                 value.toStdString().c_str());
             // Save as a string
@@ -386,6 +399,20 @@ void MaterialProperty::setFloat(const QString& value)
 void MaterialProperty::setQuantity(const Base::Quantity& value)
 {
     auto quantity = value;
+    if (quantity.isDimensionless()) {
+        // Assign the default units when none are provided.
+        //
+        // This needs to be parsed rather than just setting units. Otherwise we get mm->m conversion
+        // errors, etc
+        quantity = Base::Quantity::parse(quantity.getUserString() + getUnits().toStdString());
+    }
+    else {
+        auto propertyUnit = Base::Quantity::parse(getUnits().toStdString()).getUnit();
+        auto units = quantity.getUnit();
+        if (propertyUnit != units) {
+            throw Base::ValueError("Incompatible material units");
+        }
+    }
     quantity.setFormat(MaterialValue::getQuantityFormat());
     _valuePtr->setValue(QVariant(QVariant::fromValue(quantity)));
 }
@@ -410,7 +437,7 @@ void MaterialProperty::setURL(const QString& value)
     _valuePtr->setValue(QVariant(value));
 }
 
-void MaterialProperty::setColor(const App::Color& value)
+void MaterialProperty::setColor(const Base::Color& value)
 {
     std::stringstream ss;
     ss << "(" << value.r << ", " << value.g << ", " << value.b << ", " << value.a << ")";
@@ -448,6 +475,17 @@ bool MaterialProperty::operator==(const MaterialProperty& other) const
     return false;
 }
 
+void MaterialProperty::validate(const MaterialProperty& other) const {
+    _valuePtr->validate(*other._valuePtr);
+
+    if (_columns.size() != other._columns.size()) {
+        throw InvalidProperty("Model property column counts don't match");
+    }
+    for (size_t i = 0; i < _columns.size(); i++) {
+        _columns[i].validate(other._columns[i]);
+    }
+}
+
 TYPESYSTEM_SOURCE(Materials::Material, Base::BaseClass)
 
 Material::Material()
@@ -476,6 +514,7 @@ Material::Material(const std::shared_ptr<MaterialLibrary>& library,
 Material::Material(const Material& other)
     : _library(other._library)
     , _directory(other._directory)
+    , _filename(other._filename)
     , _uuid(other._uuid)
     , _name(other._name)
     , _author(other._author)
@@ -513,6 +552,31 @@ Material::Material(const Material& other)
     }
 }
 
+QString Material::getDirectory() const
+{
+    return _directory;
+}
+
+void Material::setDirectory(const QString& directory)
+{
+    _directory = directory;
+}
+
+QString Material::getFilename() const
+{
+    return _filename;
+}
+
+void Material::setFilename(const QString& filename)
+{
+    _filename = filename;
+}
+
+QString Material::getFilePath() const
+{
+    return QDir(_directory + QStringLiteral("/") + _filename).absolutePath();
+}
+
 QString Material::getAuthorAndLicense() const
 {
     QString authorAndLicense;
@@ -521,7 +585,7 @@ QString Material::getAuthorAndLicense() const
     if (!_author.isNull()) {
         authorAndLicense = _author;
         if (!_license.isNull()) {
-            authorAndLicense += QLatin1String(" ") + _license;
+            authorAndLicense += QStringLiteral(" ") + _license;
         }
     }
     else if (!_license.isNull()) {
@@ -541,7 +605,7 @@ void Material::addModel(const QString& uuid)
 
     _allUuids << uuid;
 
-    ModelManager manager;
+    auto manager = ModelManager::getManager();
 
     try {
         auto model = manager.getModel(uuid);
@@ -641,7 +705,7 @@ void Material::addPhysical(const QString& uuid)
         return;
     }
 
-    ModelManager manager;
+    auto manager = ModelManager::getManager();
 
     try {
         auto model = manager.getModel(uuid);
@@ -666,7 +730,7 @@ void Material::addPhysical(const QString& uuid)
                     _physical[propertyName] = std::make_shared<MaterialProperty>(property, uuid);
                 }
                 catch (const UnknownValueType&) {
-                    Base::Console().Error("Property '%s' has unknown type '%s'. Ignoring\n",
+                    Base::Console().error("Property '%s' has unknown type '%s'. Ignoring\n",
                                           property.getName().toStdString().c_str(),
                                           property.getPropertyType().toStdString().c_str());
                 }
@@ -688,7 +752,7 @@ void Material::removePhysical(const QString& uuid)
         return;
     }
 
-    ModelManager manager;
+    auto manager = ModelManager::getManager();
 
     try {
         auto model = manager.getModel(uuid);
@@ -708,7 +772,7 @@ void Material::removePhysical(const QString& uuid)
         setEditStateAlter();
     }
     catch (ModelNotFound const&) {
-        Base::Console().Log("Physical model not found '%s'\n", uuid.toStdString().c_str());
+        Base::Console().log("Physical model not found '%s'\n", uuid.toStdString().c_str());
     }
 }
 
@@ -718,7 +782,7 @@ void Material::addAppearance(const QString& uuid)
         return;
     }
 
-    ModelManager manager;
+    auto manager = ModelManager::getManager();
 
     try {
         auto model = manager.getModel(uuid);
@@ -744,7 +808,7 @@ void Material::addAppearance(const QString& uuid)
         }
     }
     catch (ModelNotFound const&) {
-        Base::Console().Log("Appearance model not found '%s'\n", uuid.toStdString().c_str());
+        Base::Console().log("Appearance model not found '%s'\n", uuid.toStdString().c_str());
     }
 }
 
@@ -759,7 +823,7 @@ void Material::removeAppearance(const QString& uuid)
         return;
     }
 
-    ModelManager manager;
+    auto manager = ModelManager::getManager();
 
     try {
         auto model = manager.getModel(uuid);
@@ -938,6 +1002,22 @@ void Material::setValue(const QString& name, const QVariant& value)
     if (hasPhysicalProperty(name)) {
         setPhysicalValue(name, value);
     }
+    else if (hasAppearanceProperty(name)) {
+        setAppearanceValue(name, value);
+    }
+    else {
+        throw PropertyNotFound();
+    }
+}
+
+void Material::setValue(const QString& name, const std::shared_ptr<MaterialValue>& value)
+{
+    if (hasPhysicalProperty(name)) {
+        setPhysicalValue(name, value);
+    }
+    else if (hasAppearanceProperty(name)) {
+        setAppearanceValue(name, value);
+    }
     else {
         throw PropertyNotFound();
     }
@@ -1045,7 +1125,7 @@ Material::getValueString(const std::map<QString, std::shared_ptr<MaterialPropert
             if (value.isNull()) {
                 return {};
             }
-            return QString(QLatin1String("%L1"))
+            return QString(QStringLiteral("%L1"))
                 .arg(value.toFloat(), 0, 'g', MaterialValue::PRECISION);
         }
         return property->getValue().toString();
@@ -1141,7 +1221,7 @@ bool Material::hasPhysicalModel(const QString& uuid) const
         return false;
     }
 
-    ModelManager manager;
+    auto manager = ModelManager::getManager();
 
     try {
         auto model = manager.getModel(uuid);
@@ -1161,7 +1241,7 @@ bool Material::hasAppearanceModel(const QString& uuid) const
         return false;
     }
 
-    ModelManager manager;
+    auto manager = ModelManager::getManager();
 
     try {
         auto model = manager.getModel(uuid);
@@ -1181,7 +1261,7 @@ bool Material::isPhysicalModelComplete(const QString& uuid) const
         return false;
     }
 
-    ModelManager manager;
+    auto manager = ModelManager::getManager();
 
     try {
         auto model = manager.getModel(uuid);
@@ -1207,7 +1287,7 @@ bool Material::isAppearanceModelComplete(const QString& uuid) const
         return false;
     }
 
-    ModelManager manager;
+    auto manager = ModelManager::getManager();
 
     try {
         auto model = manager.getModel(uuid);
@@ -1252,10 +1332,8 @@ void Material::saveGeneral(QTextStream& stream) const
 void Material::saveInherits(QTextStream& stream) const
 {
     if (!_parentUuid.isEmpty()) {
-        MaterialManager manager;
-
         try {
-            auto material = manager.getMaterial(_parentUuid);
+            auto material = MaterialManager::getManager().getMaterial(_parentUuid);
 
             stream << "Inherits:\n";
             stream << "  " << material->getName() << ":\n";
@@ -1314,8 +1392,8 @@ void Material::saveModels(QTextStream& stream, bool saveInherited) const
         return;
     }
 
-    ModelManager modelManager;
-    MaterialManager materialManager;
+    auto modelManager = ModelManager::getManager();
+    auto materialManager = MaterialManager::getManager();
 
     bool inherited = saveInherited && (_parentUuid.size() > 0);
     std::shared_ptr<Material> parent;
@@ -1348,7 +1426,7 @@ void Material::saveModels(QTextStream& stream, bool saveInherited) const
                     }
                 }
                 catch (const PropertyNotFound&) {
-                    Base::Console().Log("Material::saveModels Property not found '%s'\n",
+                    Base::Console().log("Material::saveModels Property not found '%s'\n",
                                         propertyName.toStdString().c_str());
                 }
 
@@ -1368,8 +1446,8 @@ void Material::saveAppearanceModels(QTextStream& stream, bool saveInherited) con
         return;
     }
 
-    ModelManager modelManager;
-    MaterialManager materialManager;
+    auto modelManager = ModelManager::getManager();
+    auto materialManager = MaterialManager::getManager();
 
     bool inherited = saveInherited && (_parentUuid.size() > 0);
     std::shared_ptr<Material> parent;
@@ -1421,7 +1499,7 @@ void Material::newUuid()
 
 QString Material::getModelByName(const QString& name) const
 {
-    ModelManager manager;
+    auto manager = ModelManager::getManager();
 
     for (auto& it : _allUuids) {
         try {
@@ -1442,8 +1520,7 @@ void Material::save(QTextStream& stream, bool overwrite, bool saveAsCopy, bool s
     if (saveInherited && !saveAsCopy) {
         // Check to see if we're an original or if we're already in the list of
         // models
-        MaterialManager materialManager;
-        if (materialManager.exists(_uuid) && !overwrite) {
+        if (MaterialManager::getManager().exists(_uuid) && !overwrite) {
             // Make a new version based on the current
             setParentUUID(_uuid);
         }
@@ -1494,6 +1571,7 @@ Material& Material::operator=(const Material& other)
 
     _library = other._library;
     _directory = other._directory;
+    _filename = other._filename;
     _uuid = other._uuid;
     _name = other._name;
     _author = other._author;
@@ -1548,20 +1626,20 @@ Material& Material::operator=(const App::Material& other)
         addAppearance(ModelUUIDs::ModelUUID_Rendering_Basic);
     }
 
-    getAppearanceProperty(QLatin1String("AmbientColor"))->setColor(other.ambientColor);
-    getAppearanceProperty(QLatin1String("DiffuseColor"))->setColor(other.diffuseColor);
-    getAppearanceProperty(QLatin1String("SpecularColor"))->setColor(other.specularColor);
-    getAppearanceProperty(QLatin1String("EmissiveColor"))->setColor(other.emissiveColor);
-    getAppearanceProperty(QLatin1String("Shininess"))->setFloat(other.shininess);
-    getAppearanceProperty(QLatin1String("Transparency"))->setFloat(other.transparency);
+    getAppearanceProperty(QStringLiteral("AmbientColor"))->setColor(other.ambientColor);
+    getAppearanceProperty(QStringLiteral("DiffuseColor"))->setColor(other.diffuseColor);
+    getAppearanceProperty(QStringLiteral("SpecularColor"))->setColor(other.specularColor);
+    getAppearanceProperty(QStringLiteral("EmissiveColor"))->setColor(other.emissiveColor);
+    getAppearanceProperty(QStringLiteral("Shininess"))->setFloat(other.shininess);
+    getAppearanceProperty(QStringLiteral("Transparency"))->setFloat(other.transparency);
 
     if (!other.image.empty() || !other.imagePath.empty()) {
         if (!hasAppearanceModel(ModelUUIDs::ModelUUID_Rendering_Texture)) {
             addAppearance(ModelUUIDs::ModelUUID_Rendering_Texture);
         }
 
-        getAppearanceProperty(QLatin1String("TextureImage"))->setString(other.image);
-        getAppearanceProperty(QLatin1String("TexturePath"))->setString(other.imagePath);
+        getAppearanceProperty(QStringLiteral("TextureImage"))->setString(other.image);
+        getAppearanceProperty(QStringLiteral("TexturePath"))->setString(other.imagePath);
     }
 
     return *this;
@@ -1574,7 +1652,7 @@ QStringList Material::normalizeModels(const QStringList& models)
 {
     QStringList normalized;
 
-    ModelManager manager;
+    auto manager = ModelManager::getManager();
 
     for (auto& uuid : models) {
         auto model = manager.getModel(uuid);
@@ -1652,43 +1730,43 @@ App::Material Material::getMaterialAppearance() const
     App::Material material(App::Material::DEFAULT);
 
     bool custom = false;
-    if (hasAppearanceProperty(QLatin1String("AmbientColor"))) {
-        material.ambientColor = getAppearanceProperty(QLatin1String("AmbientColor"))->getColor();
+    if (hasAppearanceProperty(QStringLiteral("AmbientColor"))) {
+        material.ambientColor = getAppearanceProperty(QStringLiteral("AmbientColor"))->getColor();
         custom = true;
     }
-    if (hasAppearanceProperty(QLatin1String("DiffuseColor"))) {
-        material.diffuseColor = getAppearanceProperty(QLatin1String("DiffuseColor"))->getColor();
+    if (hasAppearanceProperty(QStringLiteral("DiffuseColor"))) {
+        material.diffuseColor = getAppearanceProperty(QStringLiteral("DiffuseColor"))->getColor();
         custom = true;
     }
-    if (hasAppearanceProperty(QLatin1String("SpecularColor"))) {
-        material.specularColor = getAppearanceProperty(QLatin1String("SpecularColor"))->getColor();
+    if (hasAppearanceProperty(QStringLiteral("SpecularColor"))) {
+        material.specularColor = getAppearanceProperty(QStringLiteral("SpecularColor"))->getColor();
         custom = true;
     }
-    if (hasAppearanceProperty(QLatin1String("EmissiveColor"))) {
-        material.emissiveColor = getAppearanceProperty(QLatin1String("EmissiveColor"))->getColor();
+    if (hasAppearanceProperty(QStringLiteral("EmissiveColor"))) {
+        material.emissiveColor = getAppearanceProperty(QStringLiteral("EmissiveColor"))->getColor();
         custom = true;
     }
-    if (hasAppearanceProperty(QLatin1String("Shininess"))) {
-        material.shininess = getAppearanceProperty(QLatin1String("Shininess"))->getFloat();
+    if (hasAppearanceProperty(QStringLiteral("Shininess"))) {
+        material.shininess = getAppearanceProperty(QStringLiteral("Shininess"))->getFloat();
         custom = true;
     }
-    if (hasAppearanceProperty(QLatin1String("Transparency"))) {
-        material.transparency = getAppearanceProperty(QLatin1String("Transparency"))->getFloat();
+    if (hasAppearanceProperty(QStringLiteral("Transparency"))) {
+        material.transparency = getAppearanceProperty(QStringLiteral("Transparency"))->getFloat();
         custom = true;
     }
-    if (hasAppearanceProperty(QLatin1String("TextureImage"))) {
-        auto property = getAppearanceProperty(QLatin1String("TextureImage"));
+    if (hasAppearanceProperty(QStringLiteral("TextureImage"))) {
+        auto property = getAppearanceProperty(QStringLiteral("TextureImage"));
         if (!property->isNull()) {
-            Base::Console().Log("Has 'TextureImage'\n");
+            Base::Console().log("Has 'TextureImage'\n");
             material.image = property->getString().toStdString();
         }
 
         custom = true;
     }
-    else if (hasAppearanceProperty(QLatin1String("TexturePath"))) {
-        auto property = getAppearanceProperty(QLatin1String("TexturePath"));
+    else if (hasAppearanceProperty(QStringLiteral("TexturePath"))) {
+        auto property = getAppearanceProperty(QStringLiteral("TexturePath"));
         if (!property->isNull()) {
-            Base::Console().Log("Has 'TexturePath'\n");
+            Base::Console().log("Has 'TexturePath'\n");
             material.imagePath = property->getString().toStdString();
         }
 
@@ -1701,4 +1779,99 @@ App::Material Material::getMaterialAppearance() const
     }
 
     return material;
+}
+
+void Material::validate(const std::shared_ptr<Material>& other) const
+{
+
+    try {
+        _library->validate(*(other->_library));
+    }
+    catch (const InvalidLibrary& e) {
+        throw InvalidMaterial(e.what());
+    }
+
+    if (_directory != other->_directory) {
+        throw InvalidMaterial("Model directories don't match");
+    }
+    if (!other->_filename.isEmpty()) {
+        throw InvalidMaterial("Remote filename is not empty");
+    }
+    if (_uuid != other->_uuid) {
+        throw InvalidMaterial("Model UUIDs don't match");
+    }
+    if (_name != other->_name) {
+        throw InvalidMaterial("Model names don't match");
+    }
+    if (_author != other->_author) {
+        throw InvalidMaterial("Model authors don't match");
+    }
+    if (_license != other->_license) {
+        throw InvalidMaterial("Model licenses don't match");
+    }
+    if (_parentUuid != other->_parentUuid) {
+        throw InvalidMaterial("Model parents don't match");
+    }
+    if (_description != other->_description) {
+        throw InvalidMaterial("Model descriptions don't match");
+    }
+    if (_url != other->_url) {
+        throw InvalidMaterial("Model URLs don't match");
+    }
+    if (_reference != other->_reference) {
+        throw InvalidMaterial("Model references don't match");
+    }
+
+    if (_tags.size() != other->_tags.size()) {
+        Base::Console().log("Local tags count %d\n", _tags.size());
+        Base::Console().log("Remote tags count %d\n", other->_tags.size());
+        throw InvalidMaterial("Material tags counts don't match");
+    }
+    if (!other->_tags.contains(_tags)) {
+        throw InvalidMaterial("Material tags don't match");
+    }
+
+    if (_physicalUuids.size() != other->_physicalUuids.size()) {
+        Base::Console().log("Local physical model count %d\n", _physicalUuids.size());
+        Base::Console().log("Remote physical model count %d\n", other->_physicalUuids.size());
+        throw InvalidMaterial("Material physical model counts don't match");
+    }
+    if (!other->_physicalUuids.contains(_physicalUuids)) {
+        throw InvalidMaterial("Material physical models don't match");
+    }
+
+    if (_physicalUuids.size() != other->_physicalUuids.size()) {
+        Base::Console().log("Local appearance model count %d\n", _physicalUuids.size());
+        Base::Console().log("Remote appearance model count %d\n", other->_physicalUuids.size());
+        throw InvalidMaterial("Material appearance model counts don't match");
+    }
+    if (!other->_physicalUuids.contains(_physicalUuids)) {
+        throw InvalidMaterial("Material appearance models don't match");
+    }
+
+    if (_allUuids.size() != other->_allUuids.size()) {
+        Base::Console().log("Local model count %d\n", _allUuids.size());
+        Base::Console().log("Remote model count %d\n", other->_allUuids.size());
+        throw InvalidMaterial("Material model counts don't match");
+    }
+    if (!other->_allUuids.contains(_allUuids)) {
+        throw InvalidMaterial("Material models don't match");
+    }
+
+    // Need to compare properties
+    if (_physical.size() != other->_physical.size()) {
+        throw InvalidMaterial("Material physical property counts don't match");
+    }
+    for (auto& property : _physical) {
+        auto& remote = other->_physical[property.first];
+        property.second->validate(*remote);
+    }
+
+    if (_appearance.size() != other->_appearance.size()) {
+        throw InvalidMaterial("Material appearance property counts don't match");
+    }
+    for (auto& property : _appearance) {
+        auto& remote = other->_appearance[property.first];
+        property.second->validate(*remote);
+    }
 }

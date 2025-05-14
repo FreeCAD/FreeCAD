@@ -23,9 +23,6 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-// to avoid compiler warnings of redefining contents of basic.h
-// later by #include "ViewProvider.h"
-# define _USE_MATH_DEFINES
 # include <cmath>
 
 # include <Inventor/nodes/SoGroup.h>
@@ -122,13 +119,13 @@ void ViewProviderPartReference::onChanged(const App::Property* /*prop*/)
     //    pcPointStyle->pointSize = PointSize.getValue();
     //}
     //else if (prop == &LineColor) {
-    //    const App::Color& c = LineColor.getValue();
+    //    const Base::Color& c = LineColor.getValue();
     //    pcLineMaterial->diffuseColor.setValue(c.r,c.g,c.b);
     //    if (c != LineMaterial.getValue().diffuseColor)
     //    LineMaterial.setDiffuseColor(c);
     //}
     //else if (prop == &PointColor) {
-    //    const App::Color& c = PointColor.getValue();
+    //    const Base::Color& c = PointColor.getValue();
     //    pcPointMaterial->diffuseColor.setValue(c.r,c.g,c.b);
     //    if (c != PointMaterial.getValue().diffuseColor)
     //    PointMaterial.setDiffuseColor(c);

@@ -22,12 +22,14 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
+# include <limits>
 # include <QMessageBox>
 #endif
 
 #include <App/Application.h>
 #include <App/Document.h>
 #include <App/DocumentObject.h>
+#include <Base/Tools.h>
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/Command.h>
@@ -65,7 +67,7 @@ public:
         {
             if (pObj != this->object)
                 return false;
-            if (!sSubName || sSubName[0] == '\0')
+            if (Base::Tools::isNullOrEmpty(sSubName))
                 return false;
             std::string element(sSubName);
             return element.substr(0,4) == "Face";
@@ -90,7 +92,8 @@ ThicknessWidget::ThicknessWidget(Part::Thickness* thickness, QWidget* parent)
     d->ui.fillOffset->hide();
 
     QSignalBlocker blockOffset(d->ui.spinOffset);
-    d->ui.spinOffset->setRange(-INT_MAX, INT_MAX);
+    d->ui.spinOffset->setRange(-std::numeric_limits<int>::max(),
+                                std::numeric_limits<int>::max());
     d->ui.spinOffset->setSingleStep(0.1);
     d->ui.spinOffset->setValue(d->thickness->Value.getValue());
 

@@ -66,7 +66,11 @@ class _BaseSolverCalculix:
     def add_attributes(self, obj):
         if not hasattr(obj, "AnalysisType"):
             obj.addProperty(
-                "App::PropertyEnumeration", "AnalysisType", "Fem", "Type of the analysis"
+                "App::PropertyEnumeration",
+                "AnalysisType",
+                "Fem",
+                "Type of the analysis",
+                locked=True,
             )
             obj.AnalysisType = ANALYSIS_TYPES
             obj.AnalysisType = ANALYSIS_TYPES[0]
@@ -78,6 +82,7 @@ class _BaseSolverCalculix:
                 "GeometricalNonlinearity",
                 "Fem",
                 "Set geometrical nonlinearity",
+                locked=True,
             )
             obj.GeometricalNonlinearity = choices_geom_nonlinear
             obj.GeometricalNonlinearity = choices_geom_nonlinear[0]
@@ -89,6 +94,7 @@ class _BaseSolverCalculix:
                 "MaterialNonlinearity",
                 "Fem",
                 "Set material nonlinearity",
+                locked=True,
             )
             obj.MaterialNonlinearity = choices_material_nonlinear
             obj.MaterialNonlinearity = choices_material_nonlinear[0]
@@ -99,26 +105,47 @@ class _BaseSolverCalculix:
                 "EigenmodesCount",
                 "Fem",
                 "Number of modes for frequency calculations",
+                locked=True,
             )
             obj.EigenmodesCount = (10, 1, 100, 1)
 
+        low_limit = 0.0
+        if (
+            hasattr(obj, "EigenmodeLowLimit")
+            and obj.getTypeIdOfProperty("EigenmodeLowLimit") == "App::PropertyFloatConstraint"
+        ):
+            low_limit = obj.EigenmodeLowLimit
+            obj.setPropertyStatus("EigenmodeLowLimit", "-LockDynamic")
+            obj.removeProperty("EigenmodeLowLimit")
+
         if not hasattr(obj, "EigenmodeLowLimit"):
             obj.addProperty(
-                "App::PropertyFloatConstraint",
+                "App::PropertyFrequency",
                 "EigenmodeLowLimit",
                 "Fem",
                 "Low frequency limit for eigenmode calculations",
+                locked=True,
             )
-            obj.EigenmodeLowLimit = (0.0, 0.0, 1000000.0, 10000.0)
+            obj.EigenmodeLowLimit = low_limit
+
+        high_limit = 1000000.0
+        if (
+            hasattr(obj, "EigenmodeHighLimit")
+            and obj.getTypeIdOfProperty("EigenmodeHighLimit") == "App::PropertyFloatConstraint"
+        ):
+            high_limit = obj.EigenmodeHighLimit
+            obj.setPropertyStatus("EigenmodeHighLimit", "-LockDynamic")
+            obj.removeProperty("EigenmodeHighLimit")
 
         if not hasattr(obj, "EigenmodeHighLimit"):
             obj.addProperty(
-                "App::PropertyFloatConstraint",
+                "App::PropertyFrequency",
                 "EigenmodeHighLimit",
                 "Fem",
                 "High frequency limit for eigenmode calculations",
+                locked=True,
             )
-            obj.EigenmodeHighLimit = (1000000.0, 0.0, 1000000.0, 10000.0)
+            obj.EigenmodeHighLimit = high_limit
 
         if not hasattr(obj, "IterationsMaximum"):
             help_string_IterationsMaximum = (
@@ -129,6 +156,7 @@ class _BaseSolverCalculix:
                 "IterationsMaximum",
                 "Fem",
                 help_string_IterationsMaximum,
+                locked=True,
             )
             obj.IterationsMaximum = 2000
 
@@ -142,30 +170,79 @@ class _BaseSolverCalculix:
                 "BucklingFactors",
                 "Fem",
                 "Calculates the lowest buckling modes to the corresponding buckling factors",
+                locked=True,
             )
             obj.BucklingFactors = 1
 
+        time_initial_step = 0.01
+        if (
+            hasattr(obj, "TimeInitialStep")
+            and obj.getTypeIdOfProperty("TimeInitialStep") == "App::PropertyFloatConstraint"
+        ):
+            time_initial_step = obj.TimeInitialStep
+            obj.setPropertyStatus("TimeInitialStep", "-LockDynamic")
+            obj.removeProperty("TimeInitialStep")
+
         if not hasattr(obj, "TimeInitialStep"):
             obj.addProperty(
-                "App::PropertyFloatConstraint", "TimeInitialStep", "Fem", "Initial time steps"
+                "App::PropertyTime",
+                "TimeInitialStep",
+                "Fem",
+                "Initial time steps",
+                locked=True,
             )
-            obj.TimeInitialStep = 0.01
+            obj.TimeInitialStep = time_initial_step
+
+        time_end = 1.0
+        if (
+            hasattr(obj, "TimeEnd")
+            and obj.getTypeIdOfProperty("TimeEnd") == "App::PropertyFloatConstraint"
+        ):
+            time_end = obj.TimeEnd
+            obj.setPropertyStatus("TimeEnd", "-LockDynamic")
+            obj.removeProperty("TimeEnd")
 
         if not hasattr(obj, "TimeEnd"):
-            obj.addProperty("App::PropertyFloatConstraint", "TimeEnd", "Fem", "End time analysis")
-            obj.TimeEnd = 1.0
+            obj.addProperty("App::PropertyTime", "TimeEnd", "Fem", "End time analysis", locked=True)
+            obj.TimeEnd = time_end
+
+        time_minimum_step = 0.00001
+        if (
+            hasattr(obj, "TimeMinimumStep")
+            and obj.getTypeIdOfProperty("TimeMinimumStep") == "App::PropertyFloatConstraint"
+        ):
+            time_minimum_step = obj.TimeMinimumStep
+            obj.setPropertyStatus("TimeMinimumStep", "-LockDynamic")
+            obj.removeProperty("TimeMinimumStep")
 
         if not hasattr(obj, "TimeMinimumStep"):
             obj.addProperty(
-                "App::PropertyFloatConstraint", "TimeMinimumStep", "Fem", "Minimum time step"
+                "App::PropertyTime",
+                "TimeMinimumStep",
+                "Fem",
+                "Minimum time step",
+                locked=True,
             )
-            obj.TimeMinimumStep = 0.00001
+            obj.TimeMinimumStep = time_minimum_step
+
+        time_maximum_step = 1.0
+        if (
+            hasattr(obj, "TimeMaximumStep")
+            and obj.getTypeIdOfProperty("TimeMaximumStep") == "App::PropertyFloatConstraint"
+        ):
+            time_maximum_step = obj.TimeMaximumStep
+            obj.setPropertyStatus("TimeMaximumStep", "-LockDynamic")
+            obj.removeProperty("TimeMaximumStep")
 
         if not hasattr(obj, "TimeMaximumStep"):
             obj.addProperty(
-                "App::PropertyFloatConstraint", "TimeMaximumStep", "Fem", "Maximum time step"
+                "App::PropertyTime",
+                "TimeMaximumStep",
+                "Fem",
+                "Maximum time step",
+                locked=True,
             )
-            obj.TimeMaximumStep = 1.0
+            obj.TimeMaximumStep = time_maximum_step
 
         if not hasattr(obj, "ThermoMechSteadyState"):
             obj.addProperty(
@@ -173,6 +250,7 @@ class _BaseSolverCalculix:
                 "ThermoMechSteadyState",
                 "Fem",
                 "Choose between steady state thermo mech or transient thermo mech analysis",
+                locked=True,
             )
             obj.ThermoMechSteadyState = True
 
@@ -182,12 +260,17 @@ class _BaseSolverCalculix:
                 "IterationsControlParameterTimeUse",
                 "Fem",
                 "Use the user defined time incrementation control parameter",
+                locked=True,
             )
             obj.IterationsControlParameterTimeUse = False
 
         if not hasattr(obj, "SplitInputWriter"):
             obj.addProperty(
-                "App::PropertyBool", "SplitInputWriter", "Fem", "Split writing of ccx input file"
+                "App::PropertyBool",
+                "SplitInputWriter",
+                "Fem",
+                "Split writing of ccx input file",
+                locked=True,
             )
             obj.SplitInputWriter = False
 
@@ -211,6 +294,7 @@ class _BaseSolverCalculix:
                 "IterationsControlParameterIter",
                 "Fem",
                 "User defined time incrementation iterations control parameter",
+                locked=True,
             )
             obj.IterationsControlParameterIter = control_parameter_iterations
 
@@ -230,6 +314,7 @@ class _BaseSolverCalculix:
                 "IterationsControlParameterCutb",
                 "Fem",
                 "User defined time incrementation cutbacks control parameter",
+                locked=True,
             )
             obj.IterationsControlParameterCutb = control_parameter_cutback
 
@@ -243,6 +328,7 @@ class _BaseSolverCalculix:
                 "IterationsUserDefinedIncrementations",
                 "Fem",
                 stringIterationsUserDefinedIncrementations,
+                locked=True,
             )
             obj.IterationsUserDefinedIncrementations = False
 
@@ -256,6 +342,7 @@ class _BaseSolverCalculix:
                 "IterationsUserDefinedTimeStepLength",
                 "Fem",
                 help_string_IterationsUserDefinedTimeStepLength,
+                locked=True,
             )
             obj.IterationsUserDefinedTimeStepLength = False
 
@@ -269,7 +356,11 @@ class _BaseSolverCalculix:
                 "iterativecholesky",
             ]
             obj.addProperty(
-                "App::PropertyEnumeration", "MatrixSolverType", "Fem", "Type of solver to use"
+                "App::PropertyEnumeration",
+                "MatrixSolverType",
+                "Fem",
+                "Type of solver to use",
+                locked=True,
             )
             obj.MatrixSolverType = known_ccx_solver_types
             obj.MatrixSolverType = known_ccx_solver_types[0]
@@ -280,6 +371,7 @@ class _BaseSolverCalculix:
                 "BeamShellResultOutput3D",
                 "Fem",
                 "Output 3D results for 1D and 2D analysis ",
+                locked=True,
             )
             obj.BeamShellResultOutput3D = True
 
@@ -289,6 +381,7 @@ class _BaseSolverCalculix:
                 "BeamReducedIntegration",
                 "Fem",
                 "Set to True to use beam elements with reduced integration",
+                locked=True,
             )
             obj.BeamReducedIntegration = True
 
@@ -298,12 +391,15 @@ class _BaseSolverCalculix:
                 "OutputFrequency",
                 "Fem",
                 "Set the output frequency in increments",
+                locked=True,
             )
             obj.OutputFrequency = 1
 
         if not hasattr(obj, "ModelSpace"):
             model_space_types = ["3D", "plane stress", "plane strain", "axisymmetric"]
-            obj.addProperty("App::PropertyEnumeration", "ModelSpace", "Fem", "Type of model space")
+            obj.addProperty(
+                "App::PropertyEnumeration", "ModelSpace", "Fem", "Type of model space", locked=True
+            )
             obj.ModelSpace = model_space_types
 
         if not hasattr(obj, "ThermoMechType"):
@@ -313,6 +409,7 @@ class _BaseSolverCalculix:
                 "ThermoMechType",
                 "Fem",
                 "Type of thermomechanical analysis",
+                locked=True,
             )
             obj.ThermoMechType = thermomech_types
 
@@ -322,6 +419,7 @@ class _BaseSolverCalculix:
                 "BucklingAccuracy",
                 "Fem",
                 "Accuracy for buckling analysis",
+                locked=True,
             )
             obj.BucklingAccuracy = 0.01
 

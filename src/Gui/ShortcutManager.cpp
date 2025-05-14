@@ -22,6 +22,7 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
+# include <limits>
 # include <QShortcutEvent>
 # include <QApplication>
 #endif
@@ -122,7 +123,7 @@ void ShortcutManager::OnChange(Base::Subject<const char*> &src, const char *reas
 
 void ShortcutManager::reset(const char *cmd)
 {
-    if (cmd && cmd[0]) {
+    if (!Base::Tools::isNullOrEmpty(cmd)) {
         QKeySequence oldShortcut = getShortcut(cmd);
         hShortcuts->RemoveASCII(cmd);
         if (oldShortcut != getShortcut(cmd))
@@ -172,7 +173,7 @@ QString ShortcutManager::getShortcut(const char *cmdName, const char *accel)
 
 void ShortcutManager::setShortcut(const char *cmdName, const char *accel)
 {
-    if (cmdName && cmdName[0]) {
+    if (!Base::Tools::isNullOrEmpty(cmdName)) {
         setTopPriority(cmdName);
         if (!accel)
             accel = "";
@@ -409,7 +410,7 @@ void ShortcutManager::onTimer()
     timer.stop();
 
     QAction *found = nullptr;
-    int priority = -INT_MAX;
+    int priority = -std::numeric_limits<int>::max();
     int seq_length = 0;
     for (const auto &info : pendingActions) {
         if (info.action) {

@@ -1,28 +1,31 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *                                                                         *
 # *   Copyright (c) 2017 Yorik van Havre <yorik@uncreated.net>              *
 # *                                                                         *
-# *   This program is free software; you can redistribute it and/or modify  *
-# *   it under the terms of the GNU Lesser General Public License (LGPL)    *
-# *   as published by the Free Software Foundation; either version 2 of     *
-# *   the License, or (at your option) any later version.                   *
-# *   for detail see the LICENCE text file.                                 *
+# *   This file is part of FreeCAD.                                         *
 # *                                                                         *
-# *   This program is distributed in the hope that it will be useful,       *
-# *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-# *   GNU Library General Public License for more details.                  *
+# *   FreeCAD is free software: you can redistribute it and/or modify it    *
+# *   under the terms of the GNU Lesser General Public License as           *
+# *   published by the Free Software Foundation, either version 2.1 of the  *
+# *   License, or (at your option) any later version.                       *
 # *                                                                         *
-# *   You should have received a copy of the GNU Library General Public     *
-# *   License along with this program; if not, write to the Free Software   *
-# *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
-# *   USA                                                                   *
+# *   FreeCAD is distributed in the hope that it will be useful, but        *
+# *   WITHOUT ANY WARRANTY; without even the implied warranty of            *
+# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU      *
+# *   Lesser General Public License for more details.                       *
+# *                                                                         *
+# *   You should have received a copy of the GNU Lesser General Public      *
+# *   License along with FreeCAD. If not, see                               *
+# *   <https://www.gnu.org/licenses/>.                                      *
 # *                                                                         *
 # ***************************************************************************
 
 """The BIM workbench"""
 
 import os
+
 import FreeCAD
 import FreeCADGui
 import Arch_rc
@@ -100,11 +103,14 @@ class BIMWorkbench(Workbench):
             "Arch_AxisSystem",
             "Arch_Grid",
             "Arch_SectionPlane",
-            "BIM_DrawingView",
-            "BIM_Shape2DView",
-            "BIM_Shape2DCut",
             "BIM_TDPage",
             "BIM_TDView",
+        ]
+
+        self.create_2dviews = [
+             "BIM_DrawingView",
+             "BIM_Shape2DView",
+             "BIM_Shape2DCut",
         ]
 
         self.bimtools = [
@@ -246,13 +252,13 @@ class BIMWorkbench(Workbench):
         from draftutils import init_tools
         self.snapbar = init_tools.get_draft_snap_commands()
         self.snapmenu = self.snapbar + [
-            "BIM_SetWPTop",
             "BIM_SetWPFront",
+            "BIM_SetWPTop",
             "BIM_SetWPSide",
+            "Draft_SelectPlane",
         ]
 
         # create generic tools command
-
         class BIM_GenericTools:
             def __init__(self, tools):
                 self.tools = tools
@@ -267,6 +273,22 @@ class BIMWorkbench(Workbench):
         FreeCADGui.addCommand("BIM_GenericTools", BIM_GenericTools(self.generictools))
         self.bimtools.append("BIM_GenericTools")
 
+        # create create 2D views command
+        class BIM_Create2DViews:
+            def __init__(self, tools):
+                self.tools = tools
+            def GetCommands(self):
+                return self.tools
+            def GetResources(self):
+                t = QT_TRANSLATE_NOOP("BIM_Create2DViews", "Create 2D views")
+                return { "MenuText": t, "ToolTip": t, "Icon": "BIM_DrawingView"}
+            def IsActive(self):
+                v = hasattr(FreeCADGui.getMainWindow().getActiveWindow(), "getSceneGraph")
+                return v
+        FreeCADGui.addCommand("BIM_Create2DViews", BIM_Create2DViews(self.create_2dviews))
+        insert_at_index = self.annotationtools.index("BIM_TDPage")
+        self.annotationtools.insert(insert_at_index, "BIM_Create2DViews")
+        
         # load rebar tools (Reinforcement addon)
 
         try:
@@ -315,7 +337,9 @@ class BIMWorkbench(Workbench):
         # load webtools
 
         try:
-            import BIMServer, Git, Sketchfab
+            import BIMServer
+            import Git
+            import Sketchfab
         except ImportError:
             pass
         else:
@@ -330,7 +354,9 @@ class BIMWorkbench(Workbench):
         # load flamingo
 
         try:
-            import CommandsPolar, CommandsFrame, CommandsPipe
+            import CommandsPolar
+            import CommandsFrame
+            import CommandsPipe
         except ImportError:
             flamingo = None
         else:
@@ -369,7 +395,8 @@ class BIMWorkbench(Workbench):
         # load fasteners
 
         try:
-            import FastenerBase, FastenersCmd
+            import FastenerBase
+            import FastenersCmd
         except ImportError:
             fasteners = None
         else:
@@ -480,6 +507,7 @@ class BIMWorkbench(Workbench):
         import BimStatus
         from nativeifc import ifc_observer
         from draftutils import grid_observer
+        from draftutils import doc_observer
 
         PARAMS = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/BIM")
 
@@ -489,6 +517,7 @@ class BIMWorkbench(Workbench):
             FreeCADGui.Snapper.show()
         WorkingPlane._view_observer_start()
         grid_observer._view_observer_setup()
+        doc_observer._doc_observer_start()
 
         if PARAMS.GetBool("FirstTime", True) and (not hasattr(FreeCAD, "TestEnvironment")):
             todo.ToDo.delay(FreeCADGui.runCommand, "BIM_Welcome")
@@ -551,7 +580,6 @@ class BIMWorkbench(Workbench):
 
         Log("BIM workbench activated\n")
 
-
     def Deactivated(self):
 
         from draftutils import todo
@@ -560,6 +588,7 @@ class BIMWorkbench(Workbench):
         import WorkingPlane
         from nativeifc import ifc_observer
         from draftutils import grid_observer
+        from draftutils import doc_observer
 
         PARAMS = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/BIM")
 
@@ -573,6 +602,7 @@ class BIMWorkbench(Workbench):
             FreeCADGui.Snapper.hide()
         WorkingPlane._view_observer_stop()
         grid_observer._view_observer_setup()
+        doc_observer._doc_observer_stop()
 
         # print("Deactivating status icon")
         todo.ToDo.delay(BimStatus.setStatusIcons, False)
@@ -680,6 +710,6 @@ FreeCADGui.addPreferencePage(":/ui/preferences-dae.ui", t)
 FreeCADGui.addPreferencePage(":/ui/preferences-sh3d-import.ui", t)
 
 # Add unit tests
-FreeCAD.__unit_test__ += ["TestArch"]
+FreeCAD.__unit_test__ += ["TestArchGui"]
 # The NativeIFC tests require internet connection and file download
 # FreeCAD.__unit_test__ += ["nativeifc.ifc_selftest"]

@@ -33,6 +33,7 @@
 
 #include <App/Document.h>
 #include <Base/Console.h>
+#include <Base/Tools.h>
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/Command.h>
@@ -43,6 +44,7 @@
 #include <Mod/Part/Gui/ViewProvider.h>
 
 #include "TaskGeomFillSurface.h"
+
 #include "ui_TaskGeomFillSurface.h"
 
 
@@ -119,7 +121,7 @@ void ViewProviderGeomFillSurface::highlightReferences(bool on)
                 Gui::Application::Instance->getViewProvider(base));
             if (svp) {
                 if (on) {
-                    std::vector<App::Color> colors;
+                    std::vector<Base::Color> colors;
                     TopTools_IndexedMapOfShape eMap;
                     TopExp::MapShapes(base->Shape.getValue(), TopAbs_EDGE, eMap);
                     colors.resize(eMap.Extent(), svp->LineColor.getValue());
@@ -127,7 +129,7 @@ void ViewProviderGeomFillSurface::highlightReferences(bool on)
                     for (const auto& jt : it.second) {
                         std::size_t idx = static_cast<std::size_t>(std::stoi(jt.substr(4)) - 1);
                         assert(idx < colors.size());
-                        colors[idx] = App::Color(1.0, 0.0, 1.0);  // magenta
+                        colors[idx] = Base::Color(1.0, 0.0, 1.0);  // magenta
                     }
 
                     svp->setHighlightedEdges(colors);
@@ -172,7 +174,7 @@ bool GeomFillSurface::EdgeSelection::allow(App::Document*,
         return false;
     }
 
-    if (!sSubName || sSubName[0] == '\0') {
+    if (Base::Tools::isNullOrEmpty(sSubName)) {
         return false;
     }
 
@@ -216,7 +218,7 @@ GeomFillSurface::GeomFillSurface(ViewProviderGeomFillSurface* vp, Surface::GeomF
 
     // Create context menu
     QAction* remove = new QAction(tr("Remove"), this);
-    remove->setShortcut(QString::fromLatin1("Del"));
+    remove->setShortcut(QStringLiteral("Del"));
     ui->listWidget->addAction(remove);
     connect(remove, &QAction::triggered, this, &GeomFillSurface::onDeleteEdge);
 
@@ -307,8 +309,8 @@ void GeomFillSurface::setEditedObject(Surface::GeomFillSurface* obj)
         }
         ui->listWidget->addItem(item);
 
-        QString text = QString::fromLatin1("%1.%2").arg(QString::fromUtf8((*it)->Label.getValue()),
-                                                        QString::fromStdString(*jt));
+        QString text = QStringLiteral("%1.%2").arg(QString::fromUtf8((*it)->Label.getValue()),
+                                                   QString::fromStdString(*jt));
         item->setText(text);
 
         QList<QVariant> data;
@@ -336,6 +338,11 @@ void GeomFillSurface::open()
     checkOpenCommand();
     this->vp->highlightReferences(true);
     Gui::Selection().clearSelection();
+
+    // if the surface is not yet created then automatically start "AppendEdge" mode
+    if (editedObject->Shape.getShape().isNull()) {
+        ui->buttonEdgeAdd->setChecked(true);
+    }
 }
 
 void GeomFillSurface::clearSelection()
@@ -445,7 +452,7 @@ void GeomFillSurface::changeFillType(GeomFill_FillingStyle fillType)
         editedObject->FillType.setValue(static_cast<long>(fillType));
         editedObject->recomputeFeature();
         if (!editedObject->isValid()) {
-            Base::Console().Error("Surface filling: %s", editedObject->getStatusString());
+            Base::Console().error("Surface filling: %s", editedObject->getStatusString());
         }
     }
 }
@@ -486,9 +493,9 @@ void GeomFillSurface::onSelectionChanged(const Gui::SelectionChanges& msg)
             ui->listWidget->addItem(item);
 
             Gui::SelectionObject sel(msg);
-            QString text = QString::fromLatin1("%1.%2").arg(
-                QString::fromUtf8(sel.getObject()->Label.getValue()),
-                QString::fromLatin1(msg.pSubName));
+            QString text =
+                QStringLiteral("%1.%2").arg(QString::fromUtf8(sel.getObject()->Label.getValue()),
+                                            QString::fromLatin1(msg.pSubName));
             item->setText(text);
 
             QList<QVariant> data;

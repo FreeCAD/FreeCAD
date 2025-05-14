@@ -32,6 +32,7 @@
 #endif
 
 #include <App/Document.h>
+#include <Base/Tools.h>
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/Command.h>
@@ -41,6 +42,7 @@
 #include <Mod/Part/Gui/ViewProvider.h>
 
 #include "TaskSections.h"
+
 #include "ui_TaskSections.h"
 
 
@@ -115,7 +117,7 @@ void ViewProviderSections::highlightReferences(ShapeType type, const References&
                 switch (type) {
                     case ViewProviderSections::Vertex:
                         if (on) {
-                            std::vector<App::Color> colors;
+                            std::vector<Base::Color> colors;
                             TopTools_IndexedMapOfShape vMap;
                             TopExp::MapShapes(base->Shape.getValue(), TopAbs_VERTEX, vMap);
                             colors.resize(vMap.Extent(), svp->PointColor.getValue());
@@ -126,7 +128,7 @@ void ViewProviderSections::highlightReferences(ShapeType type, const References&
                                 std::size_t idx =
                                     static_cast<std::size_t>(std::stoi(jt.substr(6)) - 1);
                                 if (idx < colors.size()) {
-                                    colors[idx] = App::Color(1.0, 0.0, 1.0);  // magenta
+                                    colors[idx] = Base::Color(1.0, 0.0, 1.0);  // magenta
                                 }
                             }
 
@@ -138,7 +140,7 @@ void ViewProviderSections::highlightReferences(ShapeType type, const References&
                         break;
                     case ViewProviderSections::Edge:
                         if (on) {
-                            std::vector<App::Color> colors;
+                            std::vector<Base::Color> colors;
                             TopTools_IndexedMapOfShape eMap;
                             TopExp::MapShapes(base->Shape.getValue(), TopAbs_EDGE, eMap);
                             colors.resize(eMap.Extent(), svp->LineColor.getValue());
@@ -149,7 +151,7 @@ void ViewProviderSections::highlightReferences(ShapeType type, const References&
                                 // check again that the index is in range because it's possible that
                                 // the sub-names are invalid
                                 if (idx < colors.size()) {
-                                    colors[idx] = App::Color(1.0, 0.0, 1.0);  // magenta
+                                    colors[idx] = Base::Color(1.0, 0.0, 1.0);  // magenta
                                 }
                             }
 
@@ -173,7 +175,7 @@ void ViewProviderSections::highlightReferences(ShapeType type, const References&
                                 // the sub-names are invalid
                                 if (idx < materials.size()) {
                                     // magenta
-                                    materials[idx].diffuseColor = App::Color(1.0, 0.0, 1.0);
+                                    materials[idx].diffuseColor = Base::Color(1.0, 0.0, 1.0);
                                 }
                             }
 
@@ -216,7 +218,7 @@ public:
             return false;
         }
 
-        if (!sSubName || sSubName[0] == '\0') {
+        if (Base::Tools::isNullOrEmpty(sSubName)) {
             return false;
         }
 
@@ -326,8 +328,8 @@ void SectionsPanel::setEditedObject(Surface::Sections* fea)
         QListWidgetItem* item = new QListWidgetItem(ui->listSections);
         ui->listSections->addItem(item);
 
-        QString text = QString::fromLatin1("%1.%2").arg(QString::fromUtf8(obj->Label.getValue()),
-                                                        QString::fromStdString(edge));
+        QString text = QStringLiteral("%1.%2").arg(QString::fromUtf8(obj->Label.getValue()),
+                                                   QString::fromStdString(edge));
         item->setText(text);
 
         // The user data field of a list widget item
@@ -366,6 +368,11 @@ void SectionsPanel::open()
                                   true);
 
     Gui::Selection().clearSelection();
+
+    // if the surface is not yet created then automatically start "AppendEdge" mode
+    if (editedObject->Shape.getShape().isNull()) {
+        ui->buttonEdgeAdd->setChecked(true);
+    }
 }
 
 void SectionsPanel::clearSelection()
@@ -475,9 +482,9 @@ void SectionsPanel::onSelectionChanged(const Gui::SelectionChanges& msg)
             ui->listSections->addItem(item);
 
             Gui::SelectionObject sel(msg);
-            QString text = QString::fromLatin1("%1.%2").arg(
-                QString::fromUtf8(sel.getObject()->Label.getValue()),
-                QString::fromLatin1(msg.pSubName));
+            QString text =
+                QStringLiteral("%1.%2").arg(QString::fromUtf8(sel.getObject()->Label.getValue()),
+                                            QString::fromLatin1(msg.pSubName));
             item->setText(text);
 
             QList<QVariant> data;

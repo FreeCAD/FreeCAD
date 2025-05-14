@@ -126,7 +126,7 @@
    <item>
     <widget class="QCheckBox" name="checkLoadMaterials">
      <property name="toolTip">
-      <string>Preload all materials fo the file. It is advised to leave this unchecked and load materials later, only when needed</string>
+      <string>Preload all materials of the file. It is advised to leave this unchecked and load materials later, only when needed</string>
      </property>
      <property name="text">
       <string>Preload materials</string>

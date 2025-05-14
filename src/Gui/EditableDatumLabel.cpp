@@ -23,6 +23,7 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
+# include <limits>
 # include <Inventor/sensors/SoNodeSensor.h>
 # include <Inventor/nodes/SoAnnotation.h>
 # include <Inventor/nodes/SoOrthographicCamera.h>
@@ -152,11 +153,13 @@ void EditableDatumLabel::startEdit(double val, QObject* eventFilteringObj, bool 
 
     spinBox = new QuantitySpinBox(mdi);
     spinBox->setUnit(Base::Unit::Length);
-    spinBox->setMinimum(-INT_MAX);
-    spinBox->setMaximum(INT_MAX);
+    spinBox->setMinimum(-std::numeric_limits<int>::max());
+    spinBox->setMaximum(std::numeric_limits<int>::max());
     spinBox->setButtonSymbols(QAbstractSpinBox::NoButtons);
-    spinBox->setKeyboardTracking(false);
     spinBox->setFocusPolicy(Qt::ClickFocus); // prevent passing focus with tab.
+    spinBox->setAutoNormalize(false);
+    spinBox->setKeyboardTracking(false);
+
     if (eventFilteringObj) {
         spinBox->installEventFilter(eventFilteringObj);
     }
@@ -171,12 +174,20 @@ void EditableDatumLabel::startEdit(double val, QObject* eventFilteringObj, bool 
     spinBox->adjustSize();
     setFocusToSpinbox();
 
-    connect(spinBox, qOverload<double>(&QuantitySpinBox::valueChanged),
-        this, [this](double value) {
-        this->isSet = true;
-        this->value = value;
+    const auto validateAndFinish = [this]() {
+        // this event can be fired after spinBox was already disposed
+        // in such case we need to skip processing that event
+        if (!spinBox) {
+            return;
+        }
+
+        isSet = true;
+        value = spinBox->rawValue();
+
         Q_EMIT this->valueChanged(value);
-    });
+    };
+
+    connect(spinBox, qOverload<double>(&QuantitySpinBox::valueChanged), this, validateAndFinish);
 }
 
 void EditableDatumLabel::stopEdit()
@@ -216,7 +227,7 @@ double EditableDatumLabel::getValue() const
 void EditableDatumLabel::setSpinboxValue(double val, const Base::Unit& unit)
 {
     if (!spinBox) {
-        Base::Console().DeveloperWarning("EditableDatumLabel::setSpinboxValue", "Spinbox doesn't exist in");
+        Base::Console().developerWarning("EditableDatumLabel::setSpinboxValue", "Spinbox doesn't exist in");
         return;
     }
 
@@ -233,7 +244,7 @@ void EditableDatumLabel::setSpinboxValue(double val, const Base::Unit& unit)
 void EditableDatumLabel::setFocusToSpinbox()
 {
     if (!spinBox) {
-        Base::Console().DeveloperWarning("EditableDatumLabel::setFocusToSpinbox", "Spinbox doesn't exist in");
+        Base::Console().developerWarning("EditableDatumLabel::setFocusToSpinbox", "Spinbox doesn't exist in");
         return;
     }
     if (!spinBox->hasFocus()) {

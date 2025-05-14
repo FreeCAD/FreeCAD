@@ -104,7 +104,7 @@ DrawViewDetail::~DrawViewDetail()
 {
     //don't delete this object while it still has dependent tasks running
     if (m_detailFuture.isRunning()) {
-        Base::Console().Message("%s is waiting for detail cut to finish\n", Label.getValue());
+        Base::Console().message("%s is waiting for detail cut to finish\n", Label.getValue());
         m_detailFuture.waitForFinished();
     }
 }
@@ -139,7 +139,6 @@ void DrawViewDetail::onChanged(const App::Property* prop)
 
 App::DocumentObjectExecReturn* DrawViewDetail::execute()
 {
-    //    Base::Console().Message("DVD::execute() - %s\n", getNameInDocument());
     if (!keepUpdated()) {
         return DrawView::execute();
     }
@@ -187,6 +186,12 @@ void DrawViewDetail::detailExec(TopoDS_Shape& shape, DrawViewPart* dvp, DrawView
 {
     if (waitingForHlr() || waitingForDetail()) {
         return;
+    }
+
+    if (!DU::isGuiUp()) {
+        makeDetailShape(shape, dvp, dvs);
+        onMakeDetailFinished();
+        waitingForDetail(false);
     }
 
     //note that &m_detailWatcher in the third parameter is not strictly required, but using the
@@ -254,6 +259,7 @@ void DrawViewDetail::makeDetailShape(const TopoDS_Shape& shape3d, DrawViewPart* 
 
     TopoDS_Face extrusionFace;
     Base::Vector3d extrudeVec = dirDetail * extrudeLength;
+
     gp_Vec extrudeDir(extrudeVec.x, extrudeVec.y, extrudeVec.z);
     TopoDS_Shape tool;
     if (Preferences::mattingStyle()) {
@@ -262,13 +268,13 @@ void DrawViewDetail::makeDetailShape(const TopoDS_Shape& shape3d, DrawViewPart* 
         BRepBuilderAPI_MakeFace mkFace(gpln, -radius, radius, -radius, radius);
         extrusionFace = mkFace.Face();
         if (extrusionFace.IsNull()) {
-            Base::Console().Warning("DVD::makeDetailShape - %s - failed to create tool base face\n",
+            Base::Console().warning("DVD::makeDetailShape - %s - failed to create tool base face\n",
                                     getNameInDocument());
             return;
         }
         tool = BRepPrimAPI_MakePrism(extrusionFace, extrudeDir, false, true).Shape();
         if (tool.IsNull()) {
-            Base::Console().Warning("DVD::makeDetailShape - %s - failed to create tool (prism)\n",
+            Base::Console().warning("DVD::makeDetailShape - %s - failed to create tool (prism)\n",
                                     getNameInDocument());
             return;
         }
@@ -279,7 +285,7 @@ void DrawViewDetail::makeDetailShape(const TopoDS_Shape& shape3d, DrawViewPart* 
         BRepPrimAPI_MakeCylinder mkTool(cs, radius, extrudeLength);
         tool = mkTool.Shape();
         if (tool.IsNull()) {
-            Base::Console().Warning("DVD::detailExec - %s - failed to create tool (cylinder)\n",
+            Base::Console().warning("DVD::detailExec - %s - failed to create tool (cylinder)\n",
                                     getNameInDocument());
             return;
         }
@@ -381,7 +387,6 @@ void DrawViewDetail::makeDetailShape(const TopoDS_Shape& shape3d, DrawViewPart* 
 
 void DrawViewDetail::postHlrTasks(void)
 {
-    //    Base::Console().Message("DVD::postHlrTasks()\n");
     DrawViewPart::postHlrTasks();
 
     geometryObject->pruneVertexGeom(Base::Vector3d(0.0, 0.0, 0.0),
@@ -404,8 +409,10 @@ void DrawViewDetail::onMakeDetailFinished(void)
     waitingForDetail(false);
     QObject::disconnect(connectDetailWatcher);
 
-    //ancestor's buildGeometryObject will run HLR and face finding in a separate thread
     m_tempGeometryObject = buildGeometryObject(m_scaledShape, m_viewAxis);
+    if (!DU::isGuiUp()) {
+        onHlrFinished();
+    }
 }
 
 bool DrawViewDetail::waitingForResult() const
@@ -441,7 +448,7 @@ TopoDS_Shape DrawViewDetail::projectEdgesOntoFace(TopoDS_Shape& edgeShape, TopoD
 Base::Vector3d DrawViewDetail::mapPoint3dToDetail(const Base::Vector3d& inPoint) const
 {
     auto baseObj = BaseView.getValue();
-    auto baseDvp = dynamic_cast<DrawViewPart*>(baseObj);
+    auto baseDvp = freecad_cast<DrawViewPart*>(baseObj);
     if (!baseDvp) {
         throw Base::RuntimeError("Detail has no BaseView");
     }
@@ -465,11 +472,37 @@ bool DrawViewDetail::debugDetail() const
     return Preferences::getPreferenceGroup("debug")->GetBool("debugDetail", false);
 }
 
+void DrawViewDetail::handleChangedPropertyType(Base::XMLReader &reader, const char * TypeName, App::Property * prop)
+{
+    if (prop == &AnchorPoint) {
+        // AnchorPoint was PropertyVector but is now PropertyPosition
+        App::PropertyVector tmp;
+        if (strcmp(tmp.getTypeId().getName(), TypeName)==0) {
+            tmp.setContainer(this);
+            tmp.Restore(reader);
+            auto tmpValue = tmp.getValue();
+            AnchorPoint.setValue(tmpValue);
+        }
+        return;
+    }
+
+    if (prop == &Radius) {
+        // Radius was PropertyFloat but is now PropertyLength
+        App::PropertyLength tmp;
+        if (strcmp(tmp.getTypeId().getName(), TypeName)==0) {
+            tmp.setContainer(this);
+            tmp.Restore(reader);
+            auto tmpValue = tmp.getValue();
+            Radius.setValue(tmpValue);
+        }
+        return;
+    }
+}
+
 void DrawViewDetail::unsetupObject()
 {
-    //    Base::Console().Message("DVD::unsetupObject()\n");
     App::DocumentObject* baseObj = BaseView.getValue();
-    DrawView* base = dynamic_cast<DrawView*>(baseObj);
+    DrawView* base = freecad_cast<DrawView*>(baseObj);
     if (base) {
         base->requestPaint();
     }

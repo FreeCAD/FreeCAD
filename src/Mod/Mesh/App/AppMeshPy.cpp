@@ -303,8 +303,7 @@ private:
             pcDoc = App::GetApplication().newDocument();
         }
         MeshPy* pMesh = static_cast<MeshPy*>(pcObj);
-        Mesh::Feature* pcFeature =
-            static_cast<Mesh::Feature*>(pcDoc->addObject("Mesh::Feature", name));
+        Mesh::Feature* pcFeature = pcDoc->addObject<Mesh::Feature>(name);
         Mesh::MeshObject* mo = pMesh->getMeshObjectPtr();
         if (!mo) {
             throw Py::Exception(PyExc_ReferenceError, "object doesn't reference a valid mesh");

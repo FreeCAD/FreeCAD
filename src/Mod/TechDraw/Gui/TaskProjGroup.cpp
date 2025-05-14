@@ -112,13 +112,9 @@ void TaskProjGroup::connectWidgets()
     connect(ui->sbScaleDen,   qOverload<int>(&QSpinBox::valueChanged), this, &TaskProjGroup::scaleManuallyChanged);
 
     // Slot for Projection Type (layout)
-#if QT_VERSION < QT_VERSION_CHECK(5,15,0)
-    connect(ui->projection, qOverload<const QString&>(&QComboBox::currentIndexChanged), this, &TaskProjGroup::projectionTypeChanged);
-#else
     connect(ui->projection, qOverload<int>(&QComboBox::currentIndexChanged), this, [this](int index) {
         projectionTypeChanged(ui->projection->itemText(index));
     });
-#endif
 
     // Spacing
     connect(ui->cbAutoDistribute, &QPushButton::clicked, this, &TaskProjGroup::AutoDistributeClicked);
@@ -369,12 +365,13 @@ void TaskProjGroup::turnProjGroupToView()
 
     Gui::Command::doCommand(Gui::Command::Gui, "App.activeDocument().removeObject('%s')", multiView->getNameInDocument());
 
-    Gui::Document* activeGui = Gui::Application::Instance->getDocument(m_page->getDocument());
-    auto* vp = static_cast<ViewProviderProjGroupItem*>(activeGui->getViewProvider(viewPart));
-    if (vp) {
-        vp->updateIcon();
-    }
     viewPart->recomputeFeature();
+    Gui::Document* activeGui = Gui::Application::Instance->getDocument(m_page->getDocument());
+    auto* vpView = static_cast<ViewProviderProjGroupItem*>(activeGui->getViewProvider(viewPart));
+    if (vpView) {
+        vpView->updateIcon();
+        vpView->fixSceneDependencies();
+    }
 
     view = viewPart;
     multiView = nullptr;
@@ -444,12 +441,12 @@ void TaskProjGroup::rotateButtonClicked()
 
         if (multiView) {
             //change Front View Dir by 90
-            if (clicked == ui->butTopRotate) multiView->rotate("Up");
-            else if (clicked == ui->butDownRotate) multiView->rotate("Down");
-            else if (clicked == ui->butRightRotate) multiView->rotate("Right");
-            else if (clicked == ui->butLeftRotate) multiView->rotate("Left");
-            else if (clicked == ui->butCWRotate) multiView->spin("CW");
-            else if (clicked == ui->butCCWRotate) multiView->spin("CCW");
+            if (clicked == ui->butTopRotate) multiView->rotate(RotationMotion::Up);
+            else if (clicked == ui->butDownRotate) multiView->rotate(RotationMotion::Down);
+            else if (clicked == ui->butRightRotate) multiView->rotate(RotationMotion::Right);
+            else if (clicked == ui->butLeftRotate) multiView->rotate(RotationMotion::Left);
+            else if (clicked == ui->butCWRotate) multiView->spin(SpinDirection::CW);
+            else if (clicked == ui->butCCWRotate) multiView->spin(SpinDirection::CCW);
             else if (clicked == ui->butFront) {
                 multiView->getAnchor()->Direction.setValue(Base::Vector3d(0.0, -1.0, 0.0));
                 multiView->getAnchor()->RotationVector.setValue(Base::Vector3d(1.0, 0.0, 0.0));
@@ -466,12 +463,12 @@ void TaskProjGroup::rotateButtonClicked()
         }
         else {
             auto* viewPart = static_cast<TechDraw::DrawViewPart*>(view);
-            if (clicked == ui->butTopRotate) viewPart->rotate("Up");
-            else if (clicked == ui->butDownRotate) viewPart->rotate("Down");
-            else if (clicked == ui->butRightRotate) viewPart->rotate("Right");
-            else if (clicked == ui->butLeftRotate) viewPart->rotate("Left");
-            else if (clicked == ui->butCWRotate) viewPart->spin("CW");
-            else if (clicked == ui->butCCWRotate) viewPart->spin("CCW");
+            if (clicked == ui->butTopRotate) viewPart->rotate(RotationMotion::Up);
+            else if (clicked == ui->butDownRotate) viewPart->rotate(RotationMotion::Down);
+            else if (clicked == ui->butRightRotate) viewPart->rotate(RotationMotion::Right);
+            else if (clicked == ui->butLeftRotate) viewPart->rotate(RotationMotion::Left);
+            else if (clicked == ui->butCWRotate) viewPart->spin(SpinDirection::CW);
+            else if (clicked == ui->butCCWRotate) viewPart->spin(SpinDirection::CCW);
             else if (clicked == ui->butFront) {
                 viewPart->Direction.setValue(Base::Vector3d(0.0,-1.0,0.0));
                 viewPart->XDirection.setValue(Base::Vector3d(1.0, 0.0, 0.0));
@@ -497,7 +494,7 @@ void TaskProjGroup::projectionTypeChanged(QString qText)
         return;
     }
 
-    if (qText == QString::fromUtf8("Page")) {
+    if (qText == QStringLiteral("Page")) {
         multiView->ProjectionType.setValue("Default");
     }
     else {
@@ -769,7 +766,7 @@ void TaskProjGroup::setUiPrimary()
 
 QString TaskProjGroup::formatVector(Base::Vector3d vec)
 {
-    QString data = QString::fromLatin1("[%1 %2 %3]")
+    QString data = QStringLiteral("[%1 %2 %3]")
         .arg(QLocale().toString(vec.x, 'f', 2),
              QLocale().toString(vec.y, 'f', 2),
              QLocale().toString(vec.z, 'f', 2));

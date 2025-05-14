@@ -269,7 +269,7 @@ ViewProviderMesh::ViewProviderMesh()
         Gui::WindowParameter::getDefaultParameter()->GetGroup("Mod/Mesh");
 
     // Mesh color
-    App::Color color = ShapeAppearance.getDiffuseColor();
+    Base::Color color = ShapeAppearance.getDiffuseColor();
     unsigned long current = color.getPackedValue();
     unsigned long setting = hGrp->GetUnsigned("MeshColor", current);
     if (current != setting) {
@@ -329,7 +329,7 @@ void ViewProviderMesh::onChanged(const App::Property* prop)
         pcMatBinding->value = SoMaterialBinding::OVERALL;
     }
     if (prop == &LineTransparency) {
-        float trans = LineTransparency.getValue() / 100.0F;
+        float trans = Base::fromPercent(LineTransparency.getValue());
         pLineColor->transparency = trans;
     }
     else if (prop == &LineWidth) {
@@ -353,7 +353,7 @@ void ViewProviderMesh::onChanged(const App::Property* prop)
         }
     }
     else if (prop == &LineColor) {
-        const App::Color& c = LineColor.getValue();
+        const Base::Color& c = LineColor.getValue();
         pLineColor->diffuseColor.setValue(c.r, c.g, c.b);
     }
     else if (prop == &Coloring) {
@@ -373,7 +373,7 @@ void ViewProviderMesh::onChanged(const App::Property* prop)
     ViewProviderGeometryObject::onChanged(prop);
 }
 
-void ViewProviderMesh::setOpenEdgeColorFrom(const App::Color& c)
+void ViewProviderMesh::setOpenEdgeColorFrom(const Base::Color& c)
 {
     float r = 1.0F - c.r;
     r = r < 0.5F ? 0.0F : 1.0F;
@@ -386,12 +386,12 @@ void ViewProviderMesh::setOpenEdgeColorFrom(const App::Color& c)
 
 const Mesh::PropertyMeshKernel& ViewProviderMesh::getMeshProperty() const
 {
-    return Base::freecad_dynamic_cast<Mesh::Feature>(getObject())->Mesh;
+    return freecad_cast<Mesh::Feature*>(getObject())->Mesh;
 }
 
 Mesh::PropertyMeshKernel& ViewProviderMesh::getMeshProperty()
 {
-    return Base::freecad_dynamic_cast<Mesh::Feature>(getObject())->Mesh;
+    return freecad_cast<Mesh::Feature*>(getObject())->Mesh;
 }
 
 const Mesh::MeshObject& ViewProviderMesh::getMeshObject() const
@@ -588,9 +588,9 @@ void ViewProviderMesh::tryColorPerVertexOrFace(bool on)
     }
     else {
         pcMatBinding->value = SoMaterialBinding::OVERALL;
-        const App::Color& c = ShapeAppearance.getDiffuseColor();
+        const Base::Color& c = ShapeAppearance.getDiffuseColor();
         pcShapeMaterial->diffuseColor.setValue(c.r, c.g, c.b);
-        pcShapeMaterial->transparency.setValue(Transparency.getValue() / 100.0F);
+        pcShapeMaterial->transparency.setValue(Base::fromPercent(Transparency.getValue()));
     }
 }
 
@@ -606,7 +606,7 @@ void ViewProviderMesh::setColorPerFace(const App::PropertyColorList* prop)
     setDiffuseColor(prop->getValues());
 }
 
-void ViewProviderMesh::setColorField(const std::vector<App::Color>& val, SoMFColor& field)
+void ViewProviderMesh::setColorField(const std::vector<Base::Color>& val, SoMFColor& field)
 {
     field.setNum(val.size());
     SbColor* col = field.startEditing();
@@ -619,22 +619,22 @@ void ViewProviderMesh::setColorField(const std::vector<App::Color>& val, SoMFCol
     field.finishEditing();
 }
 
-void ViewProviderMesh::setAmbientColor(const std::vector<App::Color>& val)
+void ViewProviderMesh::setAmbientColor(const std::vector<Base::Color>& val)
 {
     setColorField(val, pcShapeMaterial->ambientColor);
 }
 
-void ViewProviderMesh::setDiffuseColor(const std::vector<App::Color>& val)
+void ViewProviderMesh::setDiffuseColor(const std::vector<Base::Color>& val)
 {
     setColorField(val, pcShapeMaterial->diffuseColor);
 }
 
-void ViewProviderMesh::setSpecularColor(const std::vector<App::Color>& val)
+void ViewProviderMesh::setSpecularColor(const std::vector<Base::Color>& val)
 {
     setColorField(val, pcShapeMaterial->specularColor);
 }
 
-void ViewProviderMesh::setEmissiveColor(const std::vector<App::Color>& val)
+void ViewProviderMesh::setEmissiveColor(const std::vector<Base::Color>& val)
 {
     setColorField(val, pcShapeMaterial->emissiveColor);
 }
@@ -975,7 +975,7 @@ public:
         Gui::Document* gui = mesh->getDocument();
         App::Document* doc = gui->getDocument();
 
-        auto cpy = static_cast<Mesh::Feature*>(doc->addObject("Mesh::Feature"));
+        auto cpy = doc->addObject<Mesh::Feature>();
         auto org = mesh->getObject<Mesh::Feature>();
         cpy->Label.setValue(org->Label.getValue());
         cpy->Mesh.setValue(org->Mesh.getValue());
@@ -1159,7 +1159,7 @@ void ViewProviderMesh::partMeshCallback(void* ud, SoEventCallback* cb)
     // create a tool shape from these points
     std::vector<MeshCore::MeshGeomFacet> aFaces;
     if (!ViewProviderMesh::createToolMesh(clPoly, vol, cNormal, aFaces)) {
-        Base::Console().Message("The picked polygon seems to have self-overlappings. This could "
+        Base::Console().message("The picked polygon seems to have self-overlappings. This could "
                                 "lead to strange results.");
     }
 
@@ -1232,7 +1232,7 @@ void ViewProviderMesh::segmMeshCallback(void* ud, SoEventCallback* cb)
     // create a tool shape from these points
     std::vector<MeshCore::MeshGeomFacet> aFaces;
     if (!ViewProviderMesh::createToolMesh(clPoly, vol, cNormal, aFaces)) {
-        Base::Console().Message("The picked polygon seems to have self-overlappings. This could "
+        Base::Console().message("The picked polygon seems to have self-overlappings. This could "
                                 "lead to strange results.");
     }
 
@@ -1366,7 +1366,7 @@ void ViewProviderMesh::getFacetsFromPolygon(const std::vector<SbVec2f>& picked,
     }
 
     if (!ok) {  // note: the mouse grabbing needs to be released
-        Base::Console().Message("The picked polygon seems to have self-overlappings. This could "
+        Base::Console().message("The picked polygon seems to have self-overlappings. This could "
                                 "lead to strange results.");
     }
 }
@@ -1630,7 +1630,7 @@ void ViewProviderMesh::splitMesh(const MeshCore::MeshKernel& toolMesh,
     removeFacets(indices);
     auto doc = App::GetApplication().getActiveDocument();
     const char* name = pcObject->getNameInDocument();
-    auto splitMesh = dynamic_cast<Mesh::Feature*>(doc->addObject("Mesh::Feature", name));
+    auto splitMesh = doc->addObject<Mesh::Feature>(name);
     // Note: deletes also kernel
     splitMesh->Mesh.setValuePtr(kernel);
     getObject()->purgeTouched();
@@ -1701,7 +1701,7 @@ void ViewProviderMesh::faceInfoCallback(void* ud, SoEventCallback* cb)
              && mbe->getState() == SoButtonEvent::DOWN) {
         const SoPickedPoint* point = cb->getPickedPoint();
         if (!point) {
-            Base::Console().Message("No facet picked.\n");
+            Base::Console().message("No facet picked.\n");
             return;
         }
 
@@ -1746,8 +1746,8 @@ void ViewProviderMesh::faceInfoCallback(void* ud, SoEventCallback* cb)
                 static_cast<const SoPointDetail*>(faceDetail->getPoint(2))->getCoordinateIndex();
             auto flag = new Gui::Flag;
             flag->setText(QObject::tr("Index: %1").arg(uFacet));
-            QString toolTip = QString::fromLatin1("Facet index: %1\n"
-                                                  "Points: <%2, %3, %4>")
+            QString toolTip = QStringLiteral("Facet index: %1\n"
+                                             "Points: <%2, %3, %4>")
                                   .arg(uFacet)
                                   .arg(point1)
                                   .arg(point2)
@@ -1784,7 +1784,7 @@ void ViewProviderMesh::fillHoleCallback(void* ud, SoEventCallback* cb)
              && mbe->getState() == SoButtonEvent::DOWN) {
         const SoPickedPoint* point = cb->getPickedPoint();
         if (!point) {
-            Base::Console().Message("No facet picked.\n");
+            Base::Console().message("No facet picked.\n");
             return;
         }
 
@@ -1793,7 +1793,7 @@ void ViewProviderMesh::fillHoleCallback(void* ud, SoEventCallback* cb)
         // By specifying the indexed mesh node 'pcFaceSet' we make sure that the picked point is
         // really from the mesh we render and not from any other geometry
         Gui::ViewProvider* vp = view->getViewProviderByPathFromTail(point->getPath());
-        if (auto that = dynamic_cast<ViewProviderMesh*>(vp)) {
+        if (auto that = freecad_cast<ViewProviderMesh*>(vp)) {
             const SoDetail* detail = point->getDetail(that->getShapeNode());
             if (detail && detail->getTypeId() == SoFaceDetail::getClassTypeId()) {
                 // get the boundary to the picked facet
@@ -1859,7 +1859,7 @@ void ViewProviderMesh::markPartCallback(void* ud, SoEventCallback* cb)
                  && mbe->getState() == SoButtonEvent::DOWN) {
             const SoPickedPoint* point = cb->getPickedPoint();
             if (!point) {
-                Base::Console().Message("No facet picked.\n");
+                Base::Console().message("No facet picked.\n");
                 return;
             }
 
@@ -1868,7 +1868,7 @@ void ViewProviderMesh::markPartCallback(void* ud, SoEventCallback* cb)
             // By specifying the indexed mesh node 'pcFaceSet' we make sure that the picked point is
             // really from the mesh we render and not from any other geometry
             Gui::ViewProvider* vp = view->getViewProviderByPathFromTail(point->getPath());
-            if (auto that = dynamic_cast<ViewProviderMesh*>(vp)) {
+            if (auto that = freecad_cast<ViewProviderMesh*>(vp)) {
                 const SoDetail* detail = point->getDetail(that->getShapeNode());
                 if (detail && detail->getTypeId() == SoFaceDetail::getClassTypeId()) {
                     // get the boundary to the picked facet
@@ -1888,7 +1888,7 @@ void ViewProviderMesh::faceInfo(Mesh::FacetIndex uFacet)
     if (uFacet < facets.size()) {
         MeshCore::MeshFacet face = facets[uFacet];
         MeshCore::MeshGeomFacet tria = rKernel.GetFacet(face);
-        Base::Console().Message(
+        Base::Console().message(
             "Mesh: %s Facet %lu: Points: <%lu, %lu, %lu>, Neighbours: <%lu, %lu, %lu>\n"
             "Triangle: <[%.6f, %.6f, %.6f], [%.6f, %.6f, %.6f], [%.6f, %.6f, %.6f]>\n",
             getObject()->getNameInDocument(),
@@ -1982,7 +1982,7 @@ void ViewProviderMesh::fillHole(Mesh::FacetIndex uFacet)
 void ViewProviderMesh::setFacetTransparency(const std::vector<float>& facetTransparency)
 {
     if (pcShapeMaterial->diffuseColor.getNum() != int(facetTransparency.size())) {
-        App::Color c = ShapeAppearance.getDiffuseColor();
+        Base::Color c = ShapeAppearance.getDiffuseColor();
         pcShapeMaterial->diffuseColor.setNum(facetTransparency.size());
         SbColor* cols = pcShapeMaterial->diffuseColor.startEditing();
         for (std::size_t index = 0; index < facetTransparency.size(); ++index) {
@@ -2004,7 +2004,7 @@ void ViewProviderMesh::setFacetTransparency(const std::vector<float>& facetTrans
 void ViewProviderMesh::resetFacetTransparency()
 {
     pcMatBinding->value = SoMaterialBinding::OVERALL;
-    App::Color c = ShapeAppearance.getDiffuseColor();
+    Base::Color c = ShapeAppearance.getDiffuseColor();
     pcShapeMaterial->diffuseColor.setValue(c.r, c.g, c.b);
     pcShapeMaterial->transparency.setValue(0);
 }
@@ -2032,8 +2032,8 @@ void ViewProviderMesh::removeFacets(const std::vector<Mesh::FacetIndex>& facets)
             // switch off coloring mode
             Coloring.setValue(false);
 
-            const std::vector<App::Color>& colors = prop->getValues();
-            std::vector<App::Color> valid_colors;
+            const std::vector<Base::Color>& colors = prop->getValues();
+            std::vector<Base::Color> valid_colors;
             valid_colors.reserve(kernel->countPoints() - invalid);
             std::size_t numPoints = pointDegree.size();
             for (std::size_t index = 0; index < numPoints; index++) {
@@ -2054,8 +2054,8 @@ void ViewProviderMesh::removeFacets(const std::vector<Mesh::FacetIndex>& facets)
             validFacets[it] = false;
         }
 
-        const std::vector<App::Color>& colors = prop->getValues();
-        std::vector<App::Color> valid_colors;
+        const std::vector<Base::Color>& colors = prop->getValues();
+        std::vector<Base::Color> valid_colors;
         valid_colors.reserve(colors.size());
         std::size_t numColors = colors.size();
         for (std::size_t index = 0; index < numColors; index++) {
@@ -2112,7 +2112,7 @@ void ViewProviderMesh::deselectFacet(Mesh::FacetIndex facet)
             highlightSelection();
         }
         else {
-            App::Color c = ShapeAppearance.getDiffuseColor();
+            Base::Color c = ShapeAppearance.getDiffuseColor();
             pcShapeMaterial->diffuseColor.set1Value(facet, c.r, c.g, c.b);
         }
     }
@@ -2280,7 +2280,7 @@ void ViewProviderMesh::highlightSelection()
 
     // Colorize the selection
     pcMatBinding->value = SoMaterialBinding::PER_FACE;
-    App::Color c = ShapeAppearance.getDiffuseColor();
+    Base::Color c = ShapeAppearance.getDiffuseColor();
     int uCtFacets = (int)rMesh.countFacets();
     pcShapeMaterial->diffuseColor.setNum(uCtFacets);
 
@@ -2296,7 +2296,7 @@ void ViewProviderMesh::highlightSelection()
 
 void ViewProviderMesh::unhighlightSelection()
 {
-    App::Color c = ShapeAppearance.getDiffuseColor();
+    Base::Color c = ShapeAppearance.getDiffuseColor();
     pcMatBinding->value = SoMaterialBinding::OVERALL;
     pcShapeMaterial->diffuseColor.setNum(1);
     pcShapeMaterial->diffuseColor.setValue(c.r, c.g, c.b);
@@ -2358,13 +2358,13 @@ void ViewProviderMesh::setHighlightedSegments(bool on)
 
 void ViewProviderMesh::highlightSegments()
 {
-    std::vector<App::Color> colors;
+    std::vector<Base::Color> colors;
     const Mesh::MeshObject& rMesh = getMeshObject();
     unsigned long numSegm = rMesh.countSegments();
     colors.resize(numSegm, this->ShapeAppearance.getDiffuseColor());
 
     for (unsigned long i = 0; i < numSegm; i++) {
-        App::Color col;
+        Base::Color col;
         if (col.fromHexString(rMesh.getSegment(i).getColor())) {
             colors[i] = col;
         }
@@ -2373,7 +2373,7 @@ void ViewProviderMesh::highlightSegments()
     highlightSegments(colors);
 }
 
-void ViewProviderMesh::highlightSegments(const std::vector<App::Color>& colors)
+void ViewProviderMesh::highlightSegments(const std::vector<Base::Color>& colors)
 {
     const Mesh::MeshObject& rMesh = getMeshObject();
     unsigned long numSegm = rMesh.countSegments();
@@ -2420,15 +2420,15 @@ void ViewProviderMesh::highlightColors()
 {
     const Mesh::MeshObject& rMesh = getMeshObject();
     {
-        auto prop = Base::freecad_dynamic_cast<App::PropertyColorList>(
-            pcObject->getPropertyByName("FaceColors"));
+        auto prop =
+            freecad_cast<App::PropertyColorList*>(pcObject->getPropertyByName("FaceColors"));
         if (prop && prop->getSize() == int(rMesh.countFacets())) {
             setColorPerFace(prop);
         }
     }
     {
-        auto prop = Base::freecad_dynamic_cast<App::PropertyColorList>(
-            pcObject->getPropertyByName("VertexColors"));
+        auto prop =
+            freecad_cast<App::PropertyColorList*>(pcObject->getPropertyByName("VertexColors"));
         if (prop && prop->getSize() == int(rMesh.countPoints())) {
             setColorPerVertex(prop);
         }
@@ -2439,15 +2439,15 @@ bool ViewProviderMesh::canHighlightColors() const
 {
     const Mesh::MeshObject& rMesh = getMeshObject();
     {
-        auto prop = Base::freecad_dynamic_cast<App::PropertyColorList>(
-            pcObject->getPropertyByName("FaceColors"));
+        auto prop =
+            freecad_cast<App::PropertyColorList*>(pcObject->getPropertyByName("FaceColors"));
         if (prop && prop->getSize() == int(rMesh.countFacets())) {
             return true;
         }
     }
     {
-        auto prop = Base::freecad_dynamic_cast<App::PropertyColorList>(
-            pcObject->getPropertyByName("VertexColors"));
+        auto prop =
+            freecad_cast<App::PropertyColorList*>(pcObject->getPropertyByName("VertexColors"));
         if (prop && prop->getSize() == int(rMesh.countPoints())) {
             return true;
         }

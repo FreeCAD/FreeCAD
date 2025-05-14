@@ -43,16 +43,15 @@
               </widget>
             </item>
             <item>
-              <widget class="Gui::PrefCheckBox" name="checkBox_2">
+              <widget class="Gui::PrefCheckBox" name="checkBox_debugGeometry">
                 <property name="toolTip">
-                  <string>Shows verbose debug messages during import of SH3D files in the Report
-                    view panel. Log level message must be allowed for this setting to have an effect.</string>
+                  <string>DEBUG: keep the construction geometries in the ActiveDocument. Useful when debugging a failed import</string>
                 </property>
                 <property name="text">
-                  <string>Show debug messages</string>
+                  <string>Debug Geometry</string>
                 </property>
                 <property name="prefEntry" stdset="0">
-                  <cstring>sh3dDebug</cstring>
+                  <cstring>sh3dDebugGeometry</cstring>
                 </property>
                 <property name="prefPath" stdset="0">
                   <cstring>Mod/Arch</cstring>
@@ -230,9 +229,9 @@
                     </property>
                     <property name="color" stdset="0">
                       <color>
-                        <red>150</red>
-                        <green>169</green>
-                        <blue>186</blue>
+                        <red>168</red>
+                        <green>168</green>
+                        <blue>168</blue>
                       </color>
                     </property>
                     <property name="prefEntry" stdset="0">
@@ -345,9 +344,9 @@
                     </property>
                     <property name="color" stdset="0">
                       <color>
-                        <red>168</red>
-                        <green>168</green>
-                        <blue>168</blue>
+                        <red>230</red>
+                        <green>230</green>
+                        <blue>230</blue>
                       </color>
                     </property>
                     <property name="prefEntry" stdset="0">
@@ -418,6 +417,46 @@
                   <bool>true</bool>
                 </property>
               </widget>
+            </item>
+            <item>
+              <layout class="QGridLayout" columnstretch="2,1,0">
+                <item row="0" column="0">
+                  <widget class="QLabel" name="label1">
+                    <property name="text">
+                      <string>Default furniture Color</string>
+                    </property>
+                    <property name="buddy">
+                      <cstring>sh3dDefaultFurnitureColor</cstring>
+                    </property>
+                  </widget>
+                </item>
+                <item row="0" column="1">
+                  <widget class="Gui::PrefColorButton" name="ArchSH3DDefaultFurnitureColor">
+                    <property name="sizePolicy">
+                      <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
+                        <horstretch>0</horstretch>
+                        <verstretch>0</verstretch>
+                      </sizepolicy>
+                    </property>
+                    <property name="toolTip">
+                      <string>This color is used when a furniture does not define its own color.</string>
+                    </property>
+                    <property name="color" stdset="0">
+                      <color>
+                        <red>168</red>
+                        <green>150</green>
+                        <blue>26</blue>
+                      </color>
+                    </property>
+                    <property name="prefEntry" stdset="0">
+                      <cstring>sh3dDefaultFurnitureColor</cstring>
+                    </property>
+                    <property name="prefPath" stdset="0">
+                      <cstring>Mod/Arch</cstring>
+                    </property>
+                  </widget>
+                </item>
+              </layout>
             </item>
             <item>
               <widget class="Gui::PrefCheckBox" name="checkBox_11">

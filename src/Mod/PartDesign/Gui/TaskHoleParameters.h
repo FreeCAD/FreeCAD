@@ -79,6 +79,7 @@ public:
     bool getModelThread() const;
     long getThreadDepthType() const;
     double getThreadDepth() const;
+    int getBaseProfileType() const;
 
 private Q_SLOTS:
     void threadedChanged();
@@ -108,6 +109,8 @@ private Q_SLOTS:
     void updateViewChanged(bool isChecked);
     void threadDepthTypeChanged(int index);
     void threadDepthChanged(double value);
+    void baseProfileTypeChanged(int index);
+    void setCutDiagram();
 
 private:
     class Observer : public App::DocumentObserver {
@@ -125,6 +128,7 @@ protected:
 
 private:
     void onSelectionChanged(const Gui::SelectionChanges &msg) override;
+    void updateHoleCutLimits(PartDesign::Hole* hole);
 
 private:
 

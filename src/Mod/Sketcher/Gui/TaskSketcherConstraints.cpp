@@ -33,6 +33,7 @@
 #include <QWidgetAction>
 #include <boost/core/ignore_unused.hpp>
 #include <cmath>
+#include <limits>
 #endif
 
 #include <App/Application.h>
@@ -157,7 +158,7 @@ public:
                 case Sketcher::Weight:
                 case Sketcher::Diameter:
                 case Sketcher::Angle:
-                    name = QString::fromLatin1("%1 (%2)").arg(
+                    name = QStringLiteral("%1 (%2)").arg(
                         name,
                         QString::fromStdString(constraint->getPresentationValue().getUserString()));
                     break;
@@ -171,7 +172,7 @@ public:
                     else {
                         n1 = 1 / v;
                     }
-                    name = QString::fromLatin1("%1 (%2/%3)").arg(name).arg(n2).arg(n1);
+                    name = QStringLiteral("%1 (%2/%3)").arg(name).arg(n2).arg(n1);
                     break;
                 }
                 case Sketcher::InternalAlignment:
@@ -186,13 +187,13 @@ public:
 
             if (extended) {
                 if (constraint->Second == Sketcher::GeoEnum::GeoUndef) {
-                    name = QString::fromLatin1("%1 [(%2,%3)]")
+                    name = QStringLiteral("%1 [(%2,%3)]")
                                .arg(name)
                                .arg(constraint->First)
                                .arg(static_cast<int>(constraint->FirstPos));
                 }
                 else if (constraint->Third == Sketcher::GeoEnum::GeoUndef) {
-                    name = QString::fromLatin1("%1 [(%2,%3),(%4,%5)]")
+                    name = QStringLiteral("%1 [(%2,%3),(%4,%5)]")
                                .arg(name)
                                .arg(constraint->First)
                                .arg(static_cast<int>(constraint->FirstPos))
@@ -200,7 +201,7 @@ public:
                                .arg(static_cast<int>(constraint->SecondPos));
                 }
                 else {
-                    name = QString::fromLatin1("%1 [(%2,%3),(%4,%5),(%6,%7)]")
+                    name = QStringLiteral("%1 [(%2,%3),(%4,%5),(%6,%7)]")
                                .arg(name)
                                .arg(constraint->First)
                                .arg(static_cast<int>(constraint->FirstPos))
@@ -447,7 +448,7 @@ public:
 protected:
     QPixmap getIcon(const char* name, const QSize& size) const
     {
-        QString key = QString::fromLatin1("%1_%2x%3")
+        QString key = QStringLiteral("%1_%2x%3")
                           .arg(QString::fromLatin1(name))
                           .arg(size.width())
                           .arg(size.height());
@@ -720,8 +721,9 @@ ConstraintFilterList::ConstraintFilterList(QWidget* parent)
 {
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/Mod/Sketcher/General");
-    int filterState = hGrp->GetInt("ConstraintFilterState",
-                                   INT_MAX);// INT_MAX = 1111111111111111111111111111111 in binary.
+    int filterState = hGrp->GetInt(
+        "ConstraintFilterState",
+        std::numeric_limits<int>::max()); // INT_MAX = 01111111111111111111111111111111 in binary.
 
     normalFilterCount = filterItems.size() - 2;// All filter but selected and associated
     selectedFilterIndex = normalFilterCount;
@@ -955,7 +957,7 @@ TaskSketcherConstraints::TaskSketcherConstraints(ViewProviderSketch* sketchView)
 
     multiFilterStatus = filterList->getMultiFilter();
 
-    ui->listWidgetConstraints->setStyleSheet(QString::fromLatin1("margin-top: 0px"));
+    ui->listWidgetConstraints->setStyleSheet(QStringLiteral("margin-top: 0px"));
 
     //NOLINTBEGIN
     Gui::Application* app = Gui::Application::Instance;
@@ -1103,7 +1105,7 @@ void TaskSketcherConstraints::changeFilteredVisibility(bool show, ActionTarget t
             processItem = !item->isHidden();
         }
         else if (target == ActionTarget::Selected) {
-            if (std::find(selecteditems.begin(), selecteditems.end(), item) != selecteditems.end())
+            if (selecteditems.contains(item))
                 processItem = true;
         }
 
@@ -1222,12 +1224,14 @@ void TaskSketcherConstraints::onListWidgetConstraintsItemChanged(QListWidgetItem
     // otherwise a checkbox change will trigger a rename on the first execution, bloating the
     // constraint icons with the default constraint name "constraint1, constraint2"
     if (newName != currConstraintName && !basename.empty()) {
-        std::string escapedstr = Base::Tools::escapedUnicodeFromUtf8(newName.c_str());
+        if (!SketcherGui::checkConstraintName(sketch, newName)) {
+            newName = currConstraintName;
+        }
 
         Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Rename sketch constraint"));
         try {
             Gui::cmdAppObjectArgs(
-                sketch, "renameConstraint(%d, u'%s')", it->ConstraintNbr, escapedstr.c_str());
+                sketch, "renameConstraint(%d, u'%s')", it->ConstraintNbr, newName.c_str());
             Gui::Command::commitCommand();
         }
         catch (const Base::Exception& e) {
@@ -1355,7 +1359,7 @@ void TaskSketcherConstraints::onSelectionChanged(const Gui::SelectionChanges& ms
         if (strcmp(msg.pDocName, sketchView->getSketchObject()->getDocument()->getName()) == 0
             && strcmp(msg.pObjectName, sketchView->getSketchObject()->getNameInDocument()) == 0) {
             if (msg.pSubName) {
-                QRegularExpression rx(QString::fromLatin1("^Constraint(\\d+)$"));
+                QRegularExpression rx(QStringLiteral("^Constraint(\\d+)$"));
                 QRegularExpressionMatch match;
                 QString expr = QString::fromLatin1(msg.pSubName);
                 boost::ignore_unused(expr.indexOf(rx, 0, &match));
@@ -1371,10 +1375,7 @@ void TaskSketcherConstraints::onSelectionChanged(const Gui::SelectionChanges& ms
                                 auto tmpBlock = ui->listWidgetConstraints->blockSignals(true);
                                 item->setSelected(select);
                                 ui->listWidgetConstraints->blockSignals(tmpBlock);
-                                if (select && ui->listWidgetConstraints->model()) { // scrollTo only on select, not de-select
-                                    QModelIndex index = ui->listWidgetConstraints->model()->index(i, 0);
-                                    ui->listWidgetConstraints->scrollTo(index, QAbstractItemView::PositionAtCenter);
-                                }
+                                SketcherGui::scrollTo(ui->listWidgetConstraints, i, select);
                                 break;
                             }
                         }
@@ -1438,7 +1439,7 @@ void TaskSketcherConstraints::OnChange(Base::Subject<const char*>& rCaller, cons
 void TaskSketcherConstraints::getSelectionGeoId(QString expr, int& geoid,
                                                 Sketcher::PointPos& pointpos)
 {
-    QRegularExpression rxEdge(QString::fromLatin1("^Edge(\\d+)$"));
+    QRegularExpression rxEdge(QStringLiteral("^Edge(\\d+)$"));
     QRegularExpressionMatch match;
     boost::ignore_unused(expr.indexOf(rxEdge, 0, &match));
     geoid = Sketcher::GeoEnum::GeoUndef;
@@ -1452,7 +1453,7 @@ void TaskSketcherConstraints::getSelectionGeoId(QString expr, int& geoid,
         }
     }
     else {
-        QRegularExpression rxVertex(QString::fromLatin1("^Vertex(\\d+)$"));
+        QRegularExpression rxVertex(QStringLiteral("^Vertex(\\d+)$"));
         boost::ignore_unused(expr.indexOf(rxVertex, 0, &match));
 
         if (match.hasMatch()) {
@@ -1649,15 +1650,14 @@ bool TaskSketcherConstraints::isConstraintFiltered(QListWidgetItem* item)
                 break;
         }
 
+        visible |= !constraint->Name.empty() && checkFilterBitset(multiFilterStatus, FilterValue::Named);
+
         // Then we re-filter based on selected/associated if such mode selected.
         if (visible && specialFilterMode == SpecialFilterType::Selected) {
-            visible = (std::find(selectionFilter.begin(), selectionFilter.end(), it->ConstraintNbr)
-                       != selectionFilter.end());
+            visible = (std::ranges::find(selectionFilter, it->ConstraintNbr) != selectionFilter.end());
         }
         else if (visible && specialFilterMode == SpecialFilterType::Associated) {
-            visible = (std::find(associatedConstraintsFilter.begin(),
-                                 associatedConstraintsFilter.end(),
-                                 it->ConstraintNbr)
+            visible = (std::ranges::find(associatedConstraintsFilter, it->ConstraintNbr)
                        != associatedConstraintsFilter.end());
         }
     }

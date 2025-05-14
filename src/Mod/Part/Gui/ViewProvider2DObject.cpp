@@ -23,8 +23,8 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <cfloat>
 
+# include <limits>
 
 # include <Inventor/nodes/SoAnnotation.h>
 # include <Inventor/nodes/SoBaseColor.h>
@@ -57,7 +57,8 @@ using namespace std;
 // Construction/Destruction
 
 const char* ViewProvider2DObjectGrid::GridStyleEnums[]= {"Dashed","Light",nullptr};
-App::PropertyQuantityConstraint::Constraints ViewProvider2DObjectGrid::GridSizeRange = {0.001,DBL_MAX,1.0};
+App::PropertyQuantityConstraint::Constraints ViewProvider2DObjectGrid::GridSizeRange = {
+    0.001, std::numeric_limits<double>::max(), 1.0};
 
 PROPERTY_SOURCE(PartGui::ViewProvider2DObjectGrid, PartGui::ViewProvider2DObject)
 
@@ -106,10 +107,11 @@ SoSeparator* ViewProvider2DObjectGrid::createGrid()
     else {
         // make sure that nine of the numbers are exactly zero because log(0)
         // is not defined
-        float xMin = std::abs(MinX) < FLT_EPSILON ? 0.01f : MinX;
-        float xMax = std::abs(MaxX) < FLT_EPSILON ? 0.01f : MaxX;
-        float yMin = std::abs(MinY) < FLT_EPSILON ? 0.01f : MinY;
-        float yMax = std::abs(MaxY) < FLT_EPSILON ? 0.01f : MaxY;
+        constexpr float floatEpsilon = std::numeric_limits<float>::epsilon();
+        float xMin = std::abs(MinX) < floatEpsilon ? 0.01f : MinX;
+        float xMax = std::abs(MaxX) < floatEpsilon ? 0.01f : MaxX;
+        float yMin = std::abs(MinY) < floatEpsilon ? 0.01f : MinY;
+        float yMax = std::abs(MaxY) < floatEpsilon ? 0.01f : MaxY;
         MiX = -exp(ceil(log(std::abs(xMin))));
         MiX = std::min<float>(MiX,(float)-exp(ceil(log(std::abs(0.1f*xMax)))));
         MaX = exp(ceil(log(std::abs(xMax))));
@@ -170,7 +172,7 @@ SoSeparator* ViewProvider2DObjectGrid::createGrid()
     int lines = vlines + hlines;
 
     if (lines > maxNumberOfLines.getValue()) {
-        Base::Console().Warning("Grid Disabled: Requested number of lines %d is larger than the maximum configured of %d\n."
+        Base::Console().warning("Grid Disabled: Requested number of lines %d is larger than the maximum configured of %d\n."
                                 "Either increase the 'GridSize' property to a more reasonable value (recommended) or increase the 'maxNumberOfLines' property.\n", lines, maxNumberOfLines.getValue());
         parent->addChild(vts);
         parent->addChild(grid);
@@ -395,6 +397,12 @@ void ViewProvider2DObject::updatePlane()
     Base::Placement place = shapeProperty->getComplexData()->getPlacement();
     Base::ViewOrthoProjMatrix proj(place.inverse().toMatrix());
     Base::BoundBox2d bb = bbox.ProjectBox(&proj);
+
+    // when projection of invalid it often results in infinite shapes
+    // if that happens we simply use some small bounding box to mark plane
+    if (bb.IsInfinite() || !bb.IsValid()) {
+        bb = Base::BoundBox2d(-1, -1, 1, 1);
+    }
 
     SbVec3f verts[4] = {
         SbVec3f(bb.MinX - horizontalPlanePadding, bb.MinY - verticalPlanePadding, 0),

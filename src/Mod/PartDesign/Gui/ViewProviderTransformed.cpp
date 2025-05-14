@@ -48,6 +48,7 @@
 
 #include <App/Document.h>
 #include <Base/Console.h>
+#include <Base/Tools.h>
 #include <Gui/Application.h>
 #include <Mod/Part/App/Tools.h>
 #include <Mod/PartDesign/App/FeatureMultiTransform.h>
@@ -158,12 +159,7 @@ bool ViewProviderTransformed::onDelete(const std::vector<std::string> &s)
     return ViewProvider::onDelete(s);
 }
 
-void ViewProviderTransformed::recomputeFeature(bool recompute)
-{
-    PartDesign::Transformed* pcTransformed = getObject<PartDesign::Transformed>();
-    if(recompute || (pcTransformed->isError() || pcTransformed->mustExecute()))
-        pcTransformed->recomputeFeature(true);
-
+void ViewProviderTransformed::handleTranformedResult(PartDesign::Transformed* pcTransformed) {
     unsigned rejected = 0;
     TopoDS_Shape cShape = pcTransformed->rejected;
     TopExp_Explorer xp;
@@ -172,9 +168,9 @@ void ViewProviderTransformed::recomputeFeature(bool recompute)
         rejected++;
     }
 
-    QString msg = QString::fromLatin1("%1");
+    QString msg = QStringLiteral("%1");
     if (rejected > 0) {
-        msg = QString::fromLatin1("<font color='orange'>%1<br/></font>\r\n%2");
+        msg = QStringLiteral("<font color='orange'>%1<br/></font>\r\n%2");
         if (rejected == 1)
             msg = msg.arg(QObject::tr("One transformed shape does not intersect the support"));
         else {
@@ -184,10 +180,10 @@ void ViewProviderTransformed::recomputeFeature(bool recompute)
     }
     auto error = pcTransformed->getDocument()->getErrorDescription(pcTransformed);
     if (error) {
-        msg = msg.arg(QString::fromLatin1("<font color='red'>%1<br/></font>"));
+        msg = msg.arg(QStringLiteral("<font color='red'>%1<br/></font>"));
         msg = msg.arg(QString::fromUtf8(error));
     } else {
-        msg = msg.arg(QString::fromLatin1("<font color='green'>%1<br/></font>"));
+        msg = msg.arg(QStringLiteral("<font color='green'>%1<br/></font>"));
         msg = msg.arg(QObject::tr("Transformation succeeded"));
     }
     diagMessage = msg;
@@ -209,6 +205,15 @@ void ViewProviderTransformed::recomputeFeature(bool recompute)
     }
 }
 
+void ViewProviderTransformed::recomputeFeature(bool recompute)
+{
+    PartDesign::Transformed* pcTransformed = getObject<PartDesign::Transformed>();
+    if(recompute || (pcTransformed->isError() || pcTransformed->mustExecute()))
+        pcTransformed->recomputeFeature(true);
+
+    handleTranformedResult(pcTransformed);
+}
+
 void ViewProviderTransformed::showRejectedShape(TopoDS_Shape shape)
 {
     try {
@@ -224,7 +229,7 @@ void ViewProviderTransformed::showRejectedShape(TopoDS_Shape shape)
 
         // create or use the mesh on the data structure
         // Note: This DOES have an effect on shape
-        Standard_Real AngDeflectionRads = AngularDeflection.getValue() / 180.0 * M_PI;
+        Standard_Real AngDeflectionRads = Base::toRadians(AngularDeflection.getValue());
         BRepMesh_IncrementalMesh(shape, deflection, Standard_False, AngDeflectionRads, Standard_True);
 
         // We must reset the location here because the transformation data
@@ -325,7 +330,7 @@ void ViewProviderTransformed::showRejectedShape(TopoDS_Shape shape)
         }
     }
     catch (...) {
-        Base::Console().Error("Cannot compute Inventor representation for the rejected transformations of shape of %s.\n",
+        Base::Console().error("Cannot compute Inventor representation for the rejected transformations of shape of %s.\n",
                               getObject()->getNameInDocument());
     }
 }

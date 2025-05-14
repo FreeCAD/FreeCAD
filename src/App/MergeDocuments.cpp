@@ -26,6 +26,8 @@
 #endif
 
 #include <QCoreApplication>
+#include <zipios++/zipinputstream.h>
+
 #include <App/Document.h>
 #include <Base/Reader.h>
 #include <Base/Writer.h>

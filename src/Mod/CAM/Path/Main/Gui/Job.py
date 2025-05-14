@@ -127,48 +127,21 @@ class ViewProvider:
 
         # Setup the axis display at the origin
         self.switch = coin.SoSwitch()
-        self.sep = coin.SoSeparator()
-        self.axs = coin.SoType.fromName("SoAxisCrossKit").createInstance()
+        self.sep = coin.SoType.fromName("So3DAnnotation").createInstance()
 
-        # Adjust the axis heads if needed, the scale here is just for the head
-        self.axs.set("xHead.transform", "scaleFactor 1.5 1.5 1")
-        self.axs.set("yHead.transform", "scaleFactor 1.5 1.5 1")
-        self.axs.set("zHead.transform", "scaleFactor 1.5 1.5 1")
+        self.axs = coin.SoType.fromName("SoFCPlacementIndicatorKit").createInstance()
+        self.axs.axisLength.setValue(1.2)
 
-        # Adjust the axis heads if needed, the scale here is just for the head
-        self.axs.set("xHead.transform", "translation 50 0 0")
-        self.axs.set("yHead.transform", "translation 0 50 0")
-        self.axs.set("zHead.transform", "translation 0 0 50")
+        # enum values for SoFCPlacementIndicatorKit
+        AXES = 1
+        LABELS = 4
+        ARROWHEADS = 8
 
-        # Adjust the axis line width if needed
-        self.axs.set("xAxis.transform", "scaleFactor 0.5 0.5 1")
-        self.axs.set("xAxis.appearance.drawStyle", "lineWidth 9")
-        self.axs.set("yAxis.transform", "scaleFactor 0.5 0.5 1")
-        self.axs.set("yAxis.appearance.drawStyle", "lineWidth 9")
-        self.axs.set("zAxis.transform", "scaleFactor 0.5 0.5 1")
-        self.axs.set("zAxis.appearance.drawStyle", "lineWidth 9")
+        self.axs.parts.setValue(AXES | LABELS | ARROWHEADS)
 
-        self.sca = coin.SoType.fromName("SoShapeScale").createInstance()
-        self.sca.setPart("shape", self.axs)
-        self.sca.scaleFactor.setValue(2)  # Keep or adjust if needed
-
-        self.mat = coin.SoMaterial()
-        # Set sphere color to bright yellow
-        self.mat.diffuseColor = coin.SbColor(1, 1, 0)
-        self.mat.transparency = 0.35  # Keep or adjust if needed
-
-        self.sph = coin.SoSphere()
-        self.scs = coin.SoType.fromName("SoShapeScale").createInstance()
-        self.scs.setPart("shape", self.sph)
-        # Increase the scaleFactor to make the sphere larger
-        self.scs.scaleFactor.setValue(20)  # Adjust this value as needed
-
-        self.sep.addChild(self.sca)
-        self.sep.addChild(self.mat)
-        self.sep.addChild(self.scs)
+        self.sep.addChild(self.axs)
         self.switch.addChild(self.sep)
 
-        self.switch.addChild(self.sep)
         vobj.RootNode.addChild(self.switch)
         self.showOriginAxis(True)
 
@@ -345,8 +318,11 @@ class ViewProvider:
         for action in menu.actions():
             menu.removeAction(action)
         action = QtGui.QAction(translate("CAM_Job", "Edit"), menu)
-        action.triggered.connect(self.setEdit)
+        action.triggered.connect(self._editInContextMenuTriggered)
         menu.addAction(action)
+
+    def _editInContextMenuTriggered(self, checked):
+        self.setEdit()
 
 
 class MaterialDialog(QtWidgets.QDialog):
@@ -667,16 +643,22 @@ class StockFromExistingEdit(StockEdit):
         return sorted(solids, key=lambda c: c.Label)
 
     def setFields(self, obj):
-        self.form.stockExisting.clear()
-        stockName = obj.Stock.Label if obj.Stock else None
-        index = -1
-        for i, solid in enumerate(self.candidates(obj)):
-            self.form.stockExisting.addItem(solid.Label, solid)
-            label = "{}-{}".format(self.StockLabelPrefix, solid.Label)
+        # Block signal propagation during stock dropdown population. This prevents
+        # the `currentIndexChanged` signal from being emitted while populating the
+        # dropdown list. This is important because the `currentIndexChanged` signal
+        # will in the end result in the stock object being recreated in `getFields`
+        # method, discarding any changes made (like position in respect to origin).
+        with QtCore.QSignalBlocker(self.form.stockExisting):
+            self.form.stockExisting.clear()
+            stockName = obj.Stock.Label if obj.Stock else None
+            index = -1
+            for i, solid in enumerate(self.candidates(obj)):
+                self.form.stockExisting.addItem(solid.Label, solid)
+                label = "{}-{}".format(self.StockLabelPrefix, solid.Label)
 
-            if label == stockName:
-                index = i
-        self.form.stockExisting.setCurrentIndex(index if index != -1 else 0)
+                if label == stockName:
+                    index = i
+            self.form.stockExisting.setCurrentIndex(index if index != -1 else 0)
 
         if not self.IsStock(obj):
             self.getFields(obj)

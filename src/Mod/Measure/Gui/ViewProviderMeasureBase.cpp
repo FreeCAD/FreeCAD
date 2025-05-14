@@ -237,16 +237,16 @@ void ViewProviderMeasureBase::finishRestoring()
 void ViewProviderMeasureBase::onChanged(const App::Property* prop)
 {
     if (prop == &TextColor) {
-        const App::Color& color = TextColor.getValue();
+        const Base::Color& color = TextColor.getValue();
         pLabel->textColor.setValue(color.r, color.g, color.b);
         updateIcon();
     }
     else if (prop == &TextBackgroundColor) {
-        const App::Color& color = TextBackgroundColor.getValue();
+        const Base::Color& color = TextBackgroundColor.getValue();
         pLabel->backgroundColor.setValue(color.r, color.g, color.b);
     }
     else if (prop == &LineColor) {
-        const App::Color& color = LineColor.getValue();
+        const Base::Color& color = LineColor.getValue();
         pColor->rgb.setValue(color.r, color.g, color.b);
     }
     else if (prop == &FontSize) {
@@ -268,7 +268,7 @@ void ViewProviderMeasureBase::setLabelValue(const Base::Quantity& value)
 
 void ViewProviderMeasureBase::setLabelValue(const QString& value)
 {
-    auto lines = value.split(QString::fromLatin1("\n"));
+    auto lines = value.split(QStringLiteral("\n"));
 
     int i = 0;
     for (auto& it : lines) {
@@ -351,8 +351,7 @@ void ViewProviderMeasureBase::updateData(const App::Property* prop)
 
     // Check if one of the input properties has been changed
     auto inputProps = obj->getInputProps();
-    if (std::find(inputProps.begin(), inputProps.end(), std::string(prop->getName()))
-        != inputProps.end()) {
+    if (std::ranges::find(inputProps, std::string(prop->getName())) != inputProps.end()) {
         doUpdate = true;
 
         // Add connections to be notified when the measured objects are changed
@@ -381,7 +380,7 @@ void ViewProviderMeasureBase::updateData(const App::Property* prop)
 // TODO: should this be pure virtual?
 void ViewProviderMeasureBase::redrawAnnotation()
 {
-    // Base::Console().Message("VPMB::redrawAnnotation()\n");
+    // Base::Console().message("VPMB::redrawAnnotation()\n");
 }
 
 //! connect to the subject to receive visibility updates
@@ -450,7 +449,7 @@ Base::Vector3d ViewProviderMeasureBase::getTextDirection(Base::Vector3d elementD
         view = dynamic_cast<Gui::View3DInventor*>(this->getActiveView());
     }
     catch (const Base::RuntimeError&) {
-        Base::Console().Log(
+        Base::Console().log(
             "ViewProviderMeasureBase::getTextDirection: Could not get active view\n");
     }
 
@@ -486,7 +485,7 @@ bool ViewProviderMeasureBase::isSubjectVisible()
         guiDoc = this->getDocument();
     }
     catch (const Base::RuntimeError&) {
-        Base::Console().Log("ViewProviderMeasureBase::isSubjectVisible: Could not get document\n");
+        Base::Console().log("ViewProviderMeasureBase::isSubjectVisible: Could not get document\n");
         return false;
     }
 
@@ -542,7 +541,7 @@ float ViewProviderMeasureBase::getViewScale()
 
     Gui::View3DInventor* view = dynamic_cast<Gui::View3DInventor*>(this->getActiveView());
     if (!view) {
-        Base::Console().Log("ViewProviderMeasureBase::getViewScale: Could not get active view\n");
+        Base::Console().log("ViewProviderMeasureBase::getViewScale: Could not get active view\n");
         return scale;
     }
     Gui::View3DInventorViewer* viewer = view->getViewer();
@@ -610,7 +609,7 @@ ViewProviderMeasure::ViewProviderMeasure()
         view = dynamic_cast<Gui::View3DInventor*>(this->getActiveView());
     }
     catch (const Base::RuntimeError&) {
-        Base::Console().Log(
+        Base::Console().log(
             "ViewProviderMeasure::ViewProviderMeasure: Could not get active view\n");
     }
 
@@ -642,7 +641,7 @@ void ViewProviderMeasure::positionAnno(const Measure::MeasureBase* measureObject
         view = dynamic_cast<Gui::View3DInventor*>(this->getActiveView());
     }
     catch (const Base::RuntimeError&) {
-        Base::Console().Log("ViewProviderMeasure::positionAnno: Could not get active view\n");
+        Base::Console().log("ViewProviderMeasure::positionAnno: Could not get active view\n");
     }
 
     if (!view) {
@@ -698,7 +697,7 @@ Base::Vector3d ViewProviderMeasure::getTextPosition()
 
     Gui::View3DInventor* view = dynamic_cast<Gui::View3DInventor*>(this->getActiveView());
     if (!view) {
-        Base::Console().Log(
+        Base::Console().log(
             "ViewProviderMeasureBase::getTextPosition: Could not get active view\n");
         return Base::Vector3d();
     }

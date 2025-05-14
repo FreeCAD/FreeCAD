@@ -5,8 +5,6 @@
 
 #include "PreCompiled.h"
 
-// required by windows for M_PI definition
-#define _USE_MATH_DEFINES
 #include <cmath>
 #include <fstream>
 #include <iomanip>
@@ -15,7 +13,7 @@
 
 #include "dxf.h"
 #include <App/Application.h>
-#include <App/Color.h>
+#include <Base/Color.h>
 #include <Base/Console.h>
 #include <Base/FileInfo.h>
 #include <Base/Interpreter.h>
@@ -436,7 +434,7 @@ std::string CDxfWrite::getPlateFile(std::string fileSpec)
     std::stringstream outString;
     Base::FileInfo fi(fileSpec);
     if (!fi.isReadable()) {
-        Base::Console().Message("dxf unable to open %s!\n", fileSpec.c_str());
+        Base::Console().message("dxf unable to open %s!\n", fileSpec.c_str());
     }
     else {
         string line;
@@ -1584,10 +1582,10 @@ void CDxfWrite::writeAngularDimBlock(const double* textMidPoint,
     double span = fabs(endAngle - startAngle);
     double offset = span * 0.10;
     if (startAngle < 0) {
-        startAngle += 2 * M_PI;
+        startAngle += 2 * std::numbers::pi;
     }
     if (endAngle < 0) {
-        endAngle += 2 * M_PI;
+        endAngle += 2 * std::numbers::pi;
     }
     Base::Vector3d startOff(cos(startAngle + offset), sin(startAngle + offset), 0.0);
     Base::Vector3d endOff(cos(endAngle - offset), sin(endAngle - offset), 0.0);
@@ -2130,7 +2128,7 @@ bool CDxfRead::ReadEllipse()
     Base::Vector3d majorAxisEnd;  //  relative to centre
     double eccentricity = 0;
     double startAngleRadians = 0;
-    double endAngleRadians = 2 * M_PI;
+    double endAngleRadians = 2 * std::numbers::pi;
 
     Setup3DVectorAttribute(ePrimaryPoint, centre);
     Setup3DVectorAttribute(ePoint2, majorAxisEnd);
@@ -2691,7 +2689,7 @@ bool CDxfRead::ReadSection()
 }
 void CDxfRead::ProcessLayerReference(CDxfRead* object, void* target)
 {
-    if (object->Layers.count(object->m_record_data) == 0) {
+    if (!object->Layers.contains(object->m_record_data)) {
         object->ImportError("First reference to missing Layer '%s'", object->m_record_data);
         // Synthesize the Layer so we don't get the same error again.
         // We need to take copies of the string arguments because MakeLayer uses them as move
@@ -2914,7 +2912,7 @@ bool CDxfRead::ReadEntitiesSection()
                 }
             }
             catch (const Base::Exception& e) {
-                e.ReportException();
+                e.reportException();
             }
             catch (...) {
                 ImportError("CDxfRead::ReadEntity raised unknown exception\n");
@@ -2951,9 +2949,6 @@ bool CDxfRead::ReadLayer()
         // Frozen layers are implicitly hidden which we don't do yet.
         // TODO: Should have an import option to omit frozen layers.
         UnsupportedFeature("Frozen layers");
-    }
-    if (layerColor < 0) {
-        UnsupportedFeature("Hidden layers");
     }
     Layers[layername] = MakeLayer(layername, layerColor, std::move(lineTypeName));
     return true;
@@ -3027,13 +3022,13 @@ inline static double level(int distance, double blackLevel)
     // 8 and beyond yield the black level
     return blackLevel;
 }
-inline static App::Color wheel(int hue, double blackLevel, double multiplier = 1.0)
+inline static Base::Color wheel(int hue, double blackLevel, double multiplier = 1.0)
 {
-    return App::Color((float)(level(hue - 0, blackLevel) * multiplier),
-                      (float)(level(hue - 8, blackLevel) * multiplier),
-                      (float)(level(hue - 16, blackLevel) * multiplier));
+    return Base::Color((float)(level(hue - 0, blackLevel) * multiplier),
+                       (float)(level(hue - 8, blackLevel) * multiplier),
+                       (float)(level(hue - 16, blackLevel) * multiplier));
 }
-App::Color CDxfRead::ObjectColor(ColorIndex_t index)
+Base::Color CDxfRead::ObjectColor(ColorIndex_t index)
 {
     // TODO: If it is ColorByBlock we need to use the color of the INSERT entity.
     // This is tricky because a block can itself contain INSERT entities and we don't currently
@@ -3050,28 +3045,28 @@ App::Color CDxfRead::ObjectColor(ColorIndex_t index)
     // The AA fades as AA 7E 56 45 35 which is almost the exact same percentages.
     // For hue, (index-10)/10 : 0 is ff0000, and each step linearly adds green until 4 is pure
     // yellow ffff00, then red starts to fade... until but not including 24 which is back to ff0000.
-    App::Color result = App::Color();
+    Base::Color result = Base::Color();
     if (index == 0) {
         // Technically, 0 is BYBLOCK and not a real color, but all that means is that an object in a
         // block cannot specifically ask to be black. These colors are all contrasted to the
         // background so there is no objective black colour, through 255 is an objective white.
-        result = App::Color();
+        result = Base::Color();
     }
     else if (index < 7) {
         result = wheel((index - 1) * 4, 0x00);
     }
     else if (index == 7) {
-        result = App::Color(1, 1, 1);
+        result = Base::Color(1, 1, 1);
     }
     else if (index == 8) {
-        result = App::Color(0.5, 0.5, 0.5);
+        result = Base::Color(0.5, 0.5, 0.5);
     }
     else if (index == 9) {
-        result = App::Color(0.75, 0.75, 0.75);
+        result = Base::Color(0.75, 0.75, 0.75);
     }
     else if (index >= 250) {
         auto brightness = (float)((index - 250 + (255 - index) * 0.2) / 5);
-        result = App::Color(brightness, brightness, brightness);
+        result = Base::Color(brightness, brightness, brightness);
     }
     else {
         static const std::array<float, 5> fades = {1.00F, 0.74F, 0.50F, 0.40F, 0.30F};

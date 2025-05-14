@@ -22,7 +22,6 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-#include <cfloat>
 #include <memory>
 
 #include <QApplication>
@@ -112,14 +111,14 @@ std::vector<int> getListOfSelectedGeoIds(bool forceInternalSelection)
     }
 
     if (forceInternalSelection) {
-        size_t loopSize = listOfGeoIds.size();
+        const size_t loopSize = listOfGeoIds.size();
         for (size_t i = 0; i < loopSize; i++) {
             const Part::Geometry* geo = Obj->getGeometry(listOfGeoIds[i]);
             if (isEllipse(*geo) || isArcOfEllipse(*geo) || isArcOfHyperbola(*geo) || isArcOfParabola(*geo) || isBSplineCurve(*geo)) {
                 const std::vector<Sketcher::Constraint*>& constraints = Obj->Constraints.getValues();
-                for (auto constr : constraints) {
+                for (const auto constr : constraints) {
                     if (constr->Type == InternalAlignment && constr->Second == listOfGeoIds[i]) {
-                        if (std::find(listOfGeoIds.begin(), listOfGeoIds.end(), constr->First) == listOfGeoIds.end()) {
+                        if (std::ranges::find(listOfGeoIds, constr->First) == listOfGeoIds.end()) {
                             // If the value is not found, add it to the vector
                             listOfGeoIds.push_back(constr->First);
                         }
@@ -171,7 +170,7 @@ bool copySelectionToClipboard(Sketcher::SketchObject* obj) {
     for (auto constr : obj->Constraints.getValues()) {
 
         auto isSelectedGeoOrAxis = [](const std::vector<int>& vec, int value) {
-            return (std::find(vec.begin(), vec.end(), value) != vec.end())
+            return (std::ranges::find(vec, value) != vec.end())
                 || value == GeoEnum::GeoUndef || value == GeoEnum::RtPnt
                 || value == GeoEnum::VAxis || value == GeoEnum::HAxis;
         };
@@ -1205,6 +1204,8 @@ public:
 
     void mouseMove(Base::Vector2d onSketchPos) override
     {
+        using std::numbers::pi;
+
         if (Mode == STATUS_SEEK_First) {
 
             if (QApplication::keyboardModifiers() == Qt::ControlModifier)
@@ -1218,14 +1219,14 @@ public:
             Base::Vector2d endpoint = onSketchPos;
 
             if (snapMode == SnapMode::Snap5Degree) {
-                angle = round(angle / (M_PI / 36)) * M_PI / 36;
+                angle = round(angle / (pi / 36)) * pi / 36;
                 endpoint = EditCurve[0] + length * Base::Vector2d(cos(angle), sin(angle));
             }
 
             if (showCursorCoords()) {
                 SbString text;
                 std::string lengthString = lengthToDisplayFormat(length, 1);
-                std::string angleString = angleToDisplayFormat(angle * 180.0 / M_PI, 1);
+                std::string angleString = angleToDisplayFormat(angle * 180.0 / pi, 1);
                 text.sprintf(" (%s, %s)", lengthString.c_str(), angleString.c_str());
                 setPositionText(endpoint, text);
             }
@@ -1635,7 +1636,7 @@ void CmdSketcherCompCopy::activated(int iMsg)
     else if (iMsg == 2) {
         CmdSketcherMove sc;
         sc.activate();
-        pcAction->setShortcut(QString::fromLatin1(""));
+        pcAction->setShortcut(QStringLiteral(""));
     }
 }
 
@@ -1781,6 +1782,8 @@ public:
 
     void mouseMove(Base::Vector2d onSketchPos) override
     {
+        using std::numbers::pi;
+
         if (Mode == STATUS_SEEK_First) {
 
             if (QApplication::keyboardModifiers() == Qt::ControlModifier)
@@ -1794,14 +1797,14 @@ public:
             Base::Vector2d endpoint = onSketchPos;
 
             if (snapMode == SnapMode::Snap5Degree) {
-                angle = round(angle / (M_PI / 36)) * M_PI / 36;
+                angle = round(angle / (pi / 36)) * pi / 36;
                 endpoint = EditCurve[0] + length * Base::Vector2d(cos(angle), sin(angle));
             }
 
             if (showCursorCoords()) {
                 SbString text;
                 std::string lengthString = lengthToDisplayFormat(length, 1);
-                std::string angleString = angleToDisplayFormat(angle * 180.0 / M_PI, 1);
+                std::string angleString = angleToDisplayFormat(angle * 180.0 / pi, 1);
                 text.sprintf(" (%s, %s)", lengthString.c_str(), angleString.c_str());
                 setPositionText(endpoint, text);
             }

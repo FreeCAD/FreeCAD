@@ -133,12 +133,12 @@ PyMOD_INIT_FUNC(PartGui)
 
     PyObject* partGuiModule = PartGui::initModule();
 
-    Base::Console().Log("Loading GUI of Part module... done\n");
+    Base::Console().log("Loading GUI of Part module... done\n");
 
-    Gui::BitmapFactory().addPath(QString::fromLatin1(":/icons/booleans"));
-    Gui::BitmapFactory().addPath(QString::fromLatin1(":/icons/create"));
-    Gui::BitmapFactory().addPath(QString::fromLatin1(":/icons/parametric"));
-    Gui::BitmapFactory().addPath(QString::fromLatin1(":/icons/tools"));
+    Gui::BitmapFactory().addPath(QStringLiteral(":/icons/booleans"));
+    Gui::BitmapFactory().addPath(QStringLiteral(":/icons/create"));
+    Gui::BitmapFactory().addPath(QStringLiteral(":/icons/parametric"));
+    Gui::BitmapFactory().addPath(QStringLiteral(":/icons/tools"));
 
     // clang-format off
     static struct PyModuleDef pAttachEngineTextsModuleDef = {
@@ -236,7 +236,7 @@ PyMOD_INIT_FUNC(PartGui)
         Py::Module(partGuiModule).setAttr(std::string("AttachmentEditor"), ae);
     }
     catch (Base::PyException& err) {
-        err.ReportException();
+        err.reportException();
     }
 
     // register preferences pages

@@ -118,7 +118,7 @@ void GeometryFacadePy::setBlocked(Py::Boolean arg)
     getGeometryFacadePtr()->setBlocked(arg);
 }
 
-PyObject* GeometryFacadePy::testGeometryMode(PyObject* args)
+PyObject* GeometryFacadePy::testGeometryMode(PyObject* args) const
 {
     char* flag;
     if (PyArg_ParseTuple(args, "s", &flag)) {
@@ -271,14 +271,14 @@ PyObject* GeometryFacadePy::setExtension(PyObject* args)
     return nullptr;
 }
 
-PyObject* GeometryFacadePy::getExtensionOfType(PyObject* args)
+PyObject* GeometryFacadePy::getExtensionOfType(PyObject* args) const
 {
     char* o;
     if (PyArg_ParseTuple(args, "s", &o)) {
 
         Base::Type type = Base::Type::fromName(o);
 
-        if (type != Base::Type::badType()) {
+        if (!type.isBad()) {
             try {
                 std::shared_ptr<const Part::GeometryExtension> ext(
                     this->getGeometryFacadePtr()->getExtension(type));
@@ -314,7 +314,7 @@ PyObject* GeometryFacadePy::getExtensionOfType(PyObject* args)
     return nullptr;
 }
 
-PyObject* GeometryFacadePy::getExtensionOfName(PyObject* args)
+PyObject* GeometryFacadePy::getExtensionOfName(PyObject* args) const
 {
     char* o;
     if (PyArg_ParseTuple(args, "s", &o)) {
@@ -348,14 +348,14 @@ PyObject* GeometryFacadePy::getExtensionOfName(PyObject* args)
     return nullptr;
 }
 
-PyObject* GeometryFacadePy::hasExtensionOfType(PyObject* args)
+PyObject* GeometryFacadePy::hasExtensionOfType(PyObject* args) const
 {
     char* o;
     if (PyArg_ParseTuple(args, "s", &o)) {
 
         Base::Type type = Base::Type::fromName(o);
 
-        if (type != Base::Type::badType()) {
+        if (!type.isBad()) {
             try {
                 return Py::new_reference_to(
                     Py::Boolean(this->getGeometryFacadePtr()->hasExtension(type)));
@@ -376,7 +376,7 @@ PyObject* GeometryFacadePy::hasExtensionOfType(PyObject* args)
     return nullptr;
 }
 
-PyObject* GeometryFacadePy::hasExtensionOfName(PyObject* args)
+PyObject* GeometryFacadePy::hasExtensionOfName(PyObject* args) const
 {
     char* o;
     if (PyArg_ParseTuple(args, "s", &o)) {
@@ -403,7 +403,7 @@ PyObject* GeometryFacadePy::deleteExtensionOfType(PyObject* args)
 
         Base::Type type = Base::Type::fromName(o);
 
-        if (type != Base::Type::badType()) {
+        if (!type.isBad()) {
             try {
                 this->getGeometryFacadePtr()->deleteExtension(type);
                 Py_Return;
@@ -443,7 +443,7 @@ PyObject* GeometryFacadePy::deleteExtensionOfName(PyObject* args)
     return nullptr;
 }
 
-PyObject* GeometryFacadePy::getExtensions(PyObject* args)
+PyObject* GeometryFacadePy::getExtensions(PyObject* args) const
 {
     if (!PyArg_ParseTuple(args, "")) {
         PyErr_SetString(Part::PartExceptionOCCError, "No arguments were expected");

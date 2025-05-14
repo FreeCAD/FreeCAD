@@ -34,6 +34,7 @@
 #include <Inventor/nodes/SoSeparator.h>
 #endif
 
+#include <Base/Tools.h>
 #include <App/Document.h>
 #include <App/VRMLObject.h>
 #include <Gui/Application.h>
@@ -53,13 +54,13 @@ ViewProviderRobotObject::ViewProviderRobotObject()
     ADD_PROPERTY(Manipulator, (0));
 
     pcRobotRoot = new Gui::SoFCSelection();
-    pcRobotRoot->highlightMode = Gui::SoFCSelection::OFF;
+    pcRobotRoot->preselectionMode = Gui::SoFCSelection::OFF;
     // pcRobotRoot->selectionMode = Gui::SoFCSelection::SEL_OFF;
     // pcRobotRoot->style = Gui::SoFCSelection::BOX;
     pcRobotRoot->ref();
 
     pcSimpleRoot = new Gui::SoFCSelection();
-    pcSimpleRoot->highlightMode = Gui::SoFCSelection::OFF;
+    pcSimpleRoot->preselectionMode = Gui::SoFCSelection::OFF;
     // pcSimpleRoot->selectionMode = Gui::SoFCSelection::SEL_OFF;
     pcSimpleRoot->ref();
 
@@ -269,33 +270,33 @@ void ViewProviderRobotObject::updateData(const App::Property* prop)
         }
         if (Axis1Node) {
             Axis1Node->rotation.setValue(SbVec3f(0.0, 1.0, 0.0),
-                                         robObj->Axis1.getValue() * (M_PI / 180));
+                                         Base::toRadians(robObj->Axis1.getValue()));
         }
         if (Axis2Node) {
             Axis2Node->rotation.setValue(SbVec3f(0.0, 1.0, 0.0),
-                                         robObj->Axis2.getValue() * (M_PI / 180));
+                                         Base::toRadians(robObj->Axis2.getValue()));
         }
         if (Axis3Node) {
             Axis3Node->rotation.setValue(SbVec3f(0.0, 1.0, 0.0),
-                                         robObj->Axis3.getValue() * (M_PI / 180));
+                                         Base::toRadians(robObj->Axis3.getValue()));
         }
         if (Axis4Node) {
             Axis4Node->rotation.setValue(SbVec3f(0.0, 1.0, 0.0),
-                                         robObj->Axis4.getValue() * (M_PI / 180));
+                                         Base::toRadians(robObj->Axis4.getValue()));
         }
         if (Axis5Node) {
             Axis5Node->rotation.setValue(SbVec3f(0.0, 1.0, 0.0),
-                                         robObj->Axis5.getValue() * (M_PI / 180));
+                                         Base::toRadians(robObj->Axis5.getValue()));
         }
         if (Axis6Node) {
             Axis6Node->rotation.setValue(SbVec3f(0.0, 1.0, 0.0),
-                                         robObj->Axis6.getValue() * (M_PI / 180));
+                                         Base::toRadians(robObj->Axis6.getValue()));
         }
     }
     else if (prop == &robObj->Axis1) {
         if (Axis1Node) {
             Axis1Node->rotation.setValue(SbVec3f(0.0, 1.0, 0.0),
-                                         robObj->Axis1.getValue() * (M_PI / 180));
+                                         Base::toRadians(robObj->Axis1.getValue()));
             if (toolShape) {
                 toolShape->setTransformation(
                     (robObj->Tcp.getValue() * (robObj->ToolBase.getValue().inverse())).toMatrix());
@@ -305,7 +306,7 @@ void ViewProviderRobotObject::updateData(const App::Property* prop)
     else if (prop == &robObj->Axis2) {
         if (Axis2Node) {
             Axis2Node->rotation.setValue(SbVec3f(0.0, 1.0, 0.0),
-                                         robObj->Axis2.getValue() * (M_PI / 180));
+                                         Base::toRadians(robObj->Axis2.getValue()));
             if (toolShape) {
                 toolShape->setTransformation(
                     (robObj->Tcp.getValue() * (robObj->ToolBase.getValue().inverse())).toMatrix());
@@ -315,7 +316,7 @@ void ViewProviderRobotObject::updateData(const App::Property* prop)
     else if (prop == &robObj->Axis3) {
         if (Axis3Node) {
             Axis3Node->rotation.setValue(SbVec3f(0.0, 1.0, 0.0),
-                                         robObj->Axis3.getValue() * (M_PI / 180));
+                                         Base::toRadians(robObj->Axis3.getValue()));
             if (toolShape) {
                 toolShape->setTransformation(
                     (robObj->Tcp.getValue() * (robObj->ToolBase.getValue().inverse())).toMatrix());
@@ -325,7 +326,7 @@ void ViewProviderRobotObject::updateData(const App::Property* prop)
     else if (prop == &robObj->Axis4) {
         if (Axis4Node) {
             Axis4Node->rotation.setValue(SbVec3f(0.0, 1.0, 0.0),
-                                         robObj->Axis4.getValue() * (M_PI / 180));
+                                         Base::toRadians(robObj->Axis4.getValue()));
             if (toolShape) {
                 toolShape->setTransformation(
                     (robObj->Tcp.getValue() * (robObj->ToolBase.getValue().inverse())).toMatrix());
@@ -335,7 +336,7 @@ void ViewProviderRobotObject::updateData(const App::Property* prop)
     else if (prop == &robObj->Axis5) {
         if (Axis5Node) {
             Axis5Node->rotation.setValue(SbVec3f(0.0, 1.0, 0.0),
-                                         robObj->Axis5.getValue() * (M_PI / 180));
+                                         Base::toRadians(robObj->Axis5.getValue()));
             if (toolShape) {
                 toolShape->setTransformation(
                     (robObj->Tcp.getValue() * (robObj->ToolBase.getValue().inverse())).toMatrix());
@@ -345,7 +346,7 @@ void ViewProviderRobotObject::updateData(const App::Property* prop)
     else if (prop == &robObj->Axis6) {
         if (Axis6Node) {
             Axis6Node->rotation.setValue(SbVec3f(0.0, 1.0, 0.0),
-                                         robObj->Axis6.getValue() * (M_PI / 180));
+                                         Base::toRadians(robObj->Axis6.getValue()));
             if (toolShape) {
                 toolShape->setTransformation(
                     (robObj->Tcp.getValue() * (robObj->ToolBase.getValue().inverse())).toMatrix());
@@ -395,27 +396,29 @@ void ViewProviderRobotObject::setAxisTo(float A1,
                                         float A6,
                                         const Base::Placement& Tcp)
 {
+    using std::numbers::pi;
+
     Robot::RobotObject* robObj = static_cast<Robot::RobotObject*>(pcObject);
 
     if (Axis1Node) {
         // FIXME Ugly hack for the wrong transformation of the Kuka 500 robot VRML the minus sign on
         // Axis 1
-        Axis1Node->rotation.setValue(SbVec3f(0.0, 1.0, 0.0), A1 * (M_PI / 180));
+        Axis1Node->rotation.setValue(SbVec3f(0.0, 1.0, 0.0), Base::toRadians(A1));
     }
     if (Axis2Node) {
-        Axis2Node->rotation.setValue(SbVec3f(0.0, 1.0, 0.0), A2 * (M_PI / 180));
+        Axis2Node->rotation.setValue(SbVec3f(0.0, 1.0, 0.0), Base::toRadians(A2));
     }
     if (Axis3Node) {
-        Axis3Node->rotation.setValue(SbVec3f(0.0, 1.0, 0.0), A3 * (M_PI / 180));
+        Axis3Node->rotation.setValue(SbVec3f(0.0, 1.0, 0.0), Base::toRadians(A3));
     }
     if (Axis4Node) {
-        Axis4Node->rotation.setValue(SbVec3f(0.0, 1.0, 0.0), A4 * (M_PI / 180));
+        Axis4Node->rotation.setValue(SbVec3f(0.0, 1.0, 0.0), Base::toRadians(A4));
     }
     if (Axis5Node) {
-        Axis5Node->rotation.setValue(SbVec3f(0.0, 1.0, 0.0), A5 * (M_PI / 180));
+        Axis5Node->rotation.setValue(SbVec3f(0.0, 1.0, 0.0), Base::toRadians(A5));
     }
     if (Axis6Node) {
-        Axis6Node->rotation.setValue(SbVec3f(0.0, 1.0, 0.0), A6 * (M_PI / 180));
+        Axis6Node->rotation.setValue(SbVec3f(0.0, 1.0, 0.0), Base::toRadians(A6));
     }
     // update tool position
     if (toolShape) {
@@ -442,7 +445,7 @@ void ViewProviderRobotObject::DraggerMotionCallback(SoDragger* dragger)
     SbVec3f center(Tcp.getPosition().x, Tcp.getPosition().y, Tcp.getPosition().z);
     M.getTransform(translation, rotation, scaleFactor, scaleOrientation);
     rotation.getValue(q0, q1, q2, q3);
-    // Base::Console().Message("M %f %f %f\n", M[3][0], M[3][1], M[3][2]);
+    // Base::Console().message("M %f %f %f\n", M[3][0], M[3][1], M[3][2]);
     Base::Rotation rot(q0, q1, q2, q3);
     Base::Vector3d pos(translation[0], translation[1], translation[2]);
     robObj->Tcp.setValue(Base::Placement(pos, rot));

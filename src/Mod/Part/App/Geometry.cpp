@@ -105,6 +105,7 @@
 # include <boost/random.hpp>
 # include <cmath>
 # include <ctime>
+# include <limits>
 #endif //_PreComp_
 
 #include <Base/Console.h>
@@ -214,9 +215,9 @@ bool Geometry::hasSameExtensions(const Geometry& other) const
     size_t index = 0;
     for (const auto& ext : extensions) {
         if (auto persistExt =
-                Base::freecad_dynamic_cast<const GeometryPersistenceExtension>(ext.get())) {
+                freecad_cast<const GeometryPersistenceExtension*>(ext.get())) {
             for (; index < other.extensions.size(); ++index) {
-                if (auto extOther = Base::freecad_dynamic_cast<const GeometryPersistenceExtension>(
+                if (auto extOther = freecad_cast<const GeometryPersistenceExtension*>(
                         other.extensions[index].get())) {
                     if (!persistExt->isSame(*extOther)) {
                         return false;
@@ -231,7 +232,7 @@ bool Geometry::hasSameExtensions(const Geometry& other) const
         }
     }
     for (; index < other.extensions.size(); ++index) {
-        if (Base::freecad_dynamic_cast<const GeometryPersistenceExtension>(
+        if (freecad_cast<const GeometryPersistenceExtension*>(
                 other.extensions[index].get())) {
             return false;
         }
@@ -312,11 +313,11 @@ void Geometry::Restore(Base::XMLReader &reader)
 
     if(strcmp(reader.localName(),"GeoExtensions") == 0) { // new format
 
-        long count = reader.getAttributeAsInteger("count");
+        long count = reader.getAttribute<long>("count");
 
         for (long index = 0; index < count; index++) {
             reader.readElement("GeoExtension");
-            const char* TypeName = reader.getAttribute("type");
+            const char* TypeName = reader.getAttribute<const char*>("type");
             Base::Type type = Base::Type::fromName(TypeName);
             auto *newExtension = static_cast<GeometryPersistenceExtension *>(type.createInstance());
             if (newExtension) {
@@ -325,7 +326,7 @@ void Geometry::Restore(Base::XMLReader &reader)
                 extensions.push_back(std::shared_ptr<GeometryExtension>(newExtension));
             }
             else {
-                Base::Console().Warning("Cannot restore geometry extension of type: %s\n", TypeName);
+                Base::Console().warning("Cannot restore geometry extension of type: %s\n", TypeName);
             }
         }
 
@@ -333,7 +334,7 @@ void Geometry::Restore(Base::XMLReader &reader)
     }
     else if(strcmp(reader.localName(),"Construction") == 0) { // legacy
 
-        bool construction = (int)reader.getAttributeAsInteger("value") != 0;
+        bool construction = (int)reader.getAttribute<long>("value") != 0;
 
         // prepare migration
         if(!this->hasExtension(GeometryMigrationExtension::getClassTypeId()))
@@ -469,7 +470,7 @@ void Geometry::createNewTag()
     boost::lock_guard<boost::mutex> guard(random_number_mutex);
 
     if (!seeded) {
-        ran.seed(static_cast<unsigned int>(std::time(nullptr)));
+        ran.seed(static_cast<std::uint64_t>(std::time(nullptr)));
         seeded = true;
     }
     static boost::uuids::basic_random_generator<boost::mt19937> gen(&ran);
@@ -635,9 +636,9 @@ void GeomPoint::Restore(Base::XMLReader &reader)
     // read my Element
     reader.readElement("GeomPoint");
     // get the value of my Attribute
-    X = reader.getAttributeAsFloat("X");
-    Y = reader.getAttributeAsFloat("Y");
-    Z = reader.getAttributeAsFloat("Z");
+    X = reader.getAttribute<double>("X");
+    Y = reader.getAttribute<double>("Y");
+    Z = reader.getAttribute<double>("Z");
 
     // set the read geometry
     setPoint(Base::Vector3d(X,Y,Z) );
@@ -765,8 +766,8 @@ GeomLineSegment* GeomCurve::toLineSegment(KeepTag clone) const
 
     Base::Vector3d start, end;
     if (isDerivedFrom<GeomBoundedCurve>()) {
-        start = dynamic_cast<const GeomBoundedCurve*>(this)->getStartPoint();
-        end = dynamic_cast<const GeomBoundedCurve*>(this)->getEndPoint();
+        start = static_cast<const GeomBoundedCurve*>(this)->getStartPoint();
+        end = static_cast<const GeomBoundedCurve*>(this)->getEndPoint();
     } else {
         start = pointAtParameter(getFirstParameter());
         end = pointAtParameter(getLastParameter());
@@ -1251,17 +1252,17 @@ void GeomBezierCurve::Restore(Base::XMLReader& reader)
 
     reader.readElement("BezierCurve");
     // get the value of my attribute
-    int polescount = reader.getAttributeAsInteger("PolesCount");
+    int polescount = reader.getAttribute<long>("PolesCount");
 
     TColgp_Array1OfPnt poleArray(1,polescount);
     TColStd_Array1OfReal weightArray(1,polescount);
 
     for (int index = 1; index <= polescount; index++) {
         reader.readElement("Pole");
-        double X = reader.getAttributeAsFloat("X");
-        double Y = reader.getAttributeAsFloat("Y");
-        double Z = reader.getAttributeAsFloat("Z");
-        double W = reader.getAttributeAsFloat("Weight");
+        double X = reader.getAttribute<double>("X");
+        double Y = reader.getAttribute<double>("Y");
+        double Z = reader.getAttribute<double>("Z");
+        double W = reader.getAttribute<double>("Weight");
         poleArray.SetValue(index, gp_Pnt(X,Y,Z));
         weightArray.SetValue(index, W);
     }
@@ -1284,7 +1285,7 @@ void GeomBezierCurve::Restore(Base::XMLReader& reader)
 
 PyObject *GeomBezierCurve::getPyObject()
 {
-    return new BezierCurvePy(dynamic_cast<GeomBezierCurve*>(this->clone()));
+    return new BezierCurvePy(freecad_cast<GeomBezierCurve*>(this->clone()));
 }
 
 bool GeomBezierCurve::isSame(const Geometry &_other, double tol, double) const
@@ -2005,10 +2006,10 @@ void GeomBSplineCurve::Restore(Base::XMLReader& reader)
 
     reader.readElement("BSplineCurve");
     // get the value of my attribute
-    int polescount = reader.getAttributeAsInteger("PolesCount");
-    int knotscount = reader.getAttributeAsInteger("KnotsCount");
-    int degree = reader.getAttributeAsInteger("Degree");
-    bool isperiodic = (bool) reader.getAttributeAsInteger("IsPeriodic");
+    int polescount = reader.getAttribute<long>("PolesCount");
+    int knotscount = reader.getAttribute<long>("KnotsCount");
+    int degree = reader.getAttribute<long>("Degree");
+    bool isperiodic = reader.getAttribute<bool>("IsPeriodic");
 
     // Handle(Geom_BSplineCurve) spline = new
     // Geom_BSplineCurve(occpoles,occweights,occknots,occmults,degree,
@@ -2022,18 +2023,18 @@ void GeomBSplineCurve::Restore(Base::XMLReader& reader)
 
     for (int i = 1; i <= polescount; i++) {
         reader.readElement("Pole");
-        double X = reader.getAttributeAsFloat("X");
-        double Y = reader.getAttributeAsFloat("Y");
-        double Z = reader.getAttributeAsFloat("Z");
-        double W = reader.getAttributeAsFloat("Weight");
+        double X = reader.getAttribute<double>("X");
+        double Y = reader.getAttribute<double>("Y");
+        double Z = reader.getAttribute<double>("Z");
+        double W = reader.getAttribute<double>("Weight");
         p.SetValue(i, gp_Pnt(X,Y,Z));
         w.SetValue(i, W);
     }
 
     for (int i = 1; i <= knotscount; i++) {
         reader.readElement("Knot");
-        double val = reader.getAttributeAsFloat("Value");
-        Standard_Integer mult = reader.getAttributeAsInteger("Mult");
+        double val = reader.getAttribute<double>("Value");
+        Standard_Integer mult = reader.getAttribute<long>("Mult");
         k.SetValue(i, val);
         m.SetValue(i, mult);
     }
@@ -2058,7 +2059,7 @@ void GeomBSplineCurve::Restore(Base::XMLReader& reader)
 
 PyObject *GeomBSplineCurve::getPyObject()
 {
-    return new BSplineCurvePy(dynamic_cast<GeomBSplineCurve*>(this->clone()));
+    return new BSplineCurvePy(freecad_cast<GeomBSplineCurve*>(this->clone()));
 }
 
 bool GeomBSplineCurve::isSame(const Geometry &_other, double tol, double atol) const
@@ -2640,7 +2641,7 @@ GeomCurve* GeomCircle::createArc(double first, double last) const
 GeomBSplineCurve* GeomCircle::toNurbs(double first, double last) const
 {
     // for an arc of circle use the generic method
-    if (first != 0 || last != 2*M_PI) {
+    if (first != 0 || last != 2 * std::numbers::pi) {
         return GeomConic::toNurbs(first, last);
     }
 
@@ -2674,8 +2675,8 @@ GeomBSplineCurve* GeomCircle::toNurbs(double first, double last) const
 
     TColStd_Array1OfReal knots(1, 3);
     knots(1) = 0;
-    knots(2) = M_PI;
-    knots(3) = 2*M_PI;
+    knots(2) = std::numbers::pi;
+    knots(3) = 2 * std::numbers::pi;
 
     Handle(Geom_BSplineCurve) spline = new Geom_BSplineCurve(poles, weights,knots, mults, 3,
         Standard_False, Standard_True);
@@ -2745,15 +2746,15 @@ void GeomCircle::Restore(Base::XMLReader& reader)
     // read my Element
     reader.readElement("Circle");
     // get the value of my Attribute
-    CenterX = reader.getAttributeAsFloat("CenterX");
-    CenterY = reader.getAttributeAsFloat("CenterY");
-    CenterZ = reader.getAttributeAsFloat("CenterZ");
-    NormalX = reader.getAttributeAsFloat("NormalX");
-    NormalY = reader.getAttributeAsFloat("NormalY");
-    NormalZ = reader.getAttributeAsFloat("NormalZ");
+    CenterX = reader.getAttribute<double>("CenterX");
+    CenterY = reader.getAttribute<double>("CenterY");
+    CenterZ = reader.getAttribute<double>("CenterZ");
+    NormalX = reader.getAttribute<double>("NormalX");
+    NormalY = reader.getAttribute<double>("NormalY");
+    NormalZ = reader.getAttribute<double>("NormalZ");
     if (reader.hasAttribute("AngleXU"))
-        AngleXU = reader.getAttributeAsFloat("AngleXU");
-    Radius = reader.getAttributeAsFloat("Radius");
+        AngleXU = reader.getAttribute<double>("AngleXU");
+    Radius = reader.getAttribute<double>("Radius");
 
     // set the read geometry
     gp_Pnt p1(CenterX,CenterY,CenterZ);
@@ -2906,9 +2907,9 @@ void GeomArcOfCircle::getRange(double& u, double& v, bool emulateCCWXY) const
         }
 
         if (v < u)
-            v += 2*M_PI;
-        if (v-u > 2*M_PI)
-            v -= 2*M_PI;
+            v += 2 * std::numbers::pi;
+        if (v-u > 2 * std::numbers::pi)
+            v -= 2 * std::numbers::pi;
     }
 }
 
@@ -2995,17 +2996,17 @@ void GeomArcOfCircle::Restore(Base::XMLReader &reader)
     // read my Element
     reader.readElement("ArcOfCircle");
     // get the value of my Attribute
-    CenterX = reader.getAttributeAsFloat("CenterX");
-    CenterY = reader.getAttributeAsFloat("CenterY");
-    CenterZ = reader.getAttributeAsFloat("CenterZ");
-    NormalX = reader.getAttributeAsFloat("NormalX");
-    NormalY = reader.getAttributeAsFloat("NormalY");
-    NormalZ = reader.getAttributeAsFloat("NormalZ");
+    CenterX = reader.getAttribute<double>("CenterX");
+    CenterY = reader.getAttribute<double>("CenterY");
+    CenterZ = reader.getAttribute<double>("CenterZ");
+    NormalX = reader.getAttribute<double>("NormalX");
+    NormalY = reader.getAttribute<double>("NormalY");
+    NormalZ = reader.getAttribute<double>("NormalZ");
     if (reader.hasAttribute("AngleXU"))
-        AngleXU = reader.getAttributeAsFloat("AngleXU");
-    Radius = reader.getAttributeAsFloat("Radius");
-    StartAngle = reader.getAttributeAsFloat("StartAngle");
-    EndAngle = reader.getAttributeAsFloat("EndAngle");
+        AngleXU = reader.getAttribute<double>("AngleXU");
+    Radius = reader.getAttribute<double>("Radius");
+    StartAngle = reader.getAttribute<double>("StartAngle");
+    EndAngle = reader.getAttribute<double>("EndAngle");
 
     // set the read geometry
     gp_Pnt p1(CenterX,CenterY,CenterZ);
@@ -3086,7 +3087,7 @@ GeomCurve* GeomEllipse::createArc(double first, double last) const
 GeomBSplineCurve* GeomEllipse::toNurbs(double first, double last) const
 {
     // for an arc of ellipse use the generic method
-    if (first != 0 || last != 2*M_PI) {
+    if (first != 0 || last != 2 * std::numbers::pi) {
         return GeomConic::toNurbs(first, last);
     }
 
@@ -3256,18 +3257,18 @@ void GeomEllipse::Restore(Base::XMLReader& reader)
     // read my Element
     reader.readElement("Ellipse");
     // get the value of my Attribute
-    CenterX = reader.getAttributeAsFloat("CenterX");
-    CenterY = reader.getAttributeAsFloat("CenterY");
-    CenterZ = reader.getAttributeAsFloat("CenterZ");
-    NormalX = reader.getAttributeAsFloat("NormalX");
-    NormalY = reader.getAttributeAsFloat("NormalY");
-    NormalZ = reader.getAttributeAsFloat("NormalZ");
-    MajorRadius = reader.getAttributeAsFloat("MajorRadius");
-    MinorRadius = reader.getAttributeAsFloat("MinorRadius");
+    CenterX = reader.getAttribute<double>("CenterX");
+    CenterY = reader.getAttribute<double>("CenterY");
+    CenterZ = reader.getAttribute<double>("CenterZ");
+    NormalX = reader.getAttribute<double>("NormalX");
+    NormalY = reader.getAttribute<double>("NormalY");
+    NormalZ = reader.getAttribute<double>("NormalZ");
+    MajorRadius = reader.getAttribute<double>("MajorRadius");
+    MinorRadius = reader.getAttribute<double>("MinorRadius");
 
     // This is for backwards compatibility
     if(reader.hasAttribute("AngleXU"))
-        AngleXU = reader.getAttributeAsFloat("AngleXU");
+        AngleXU = reader.getAttribute<double>("AngleXU");
     else
         AngleXU = 0;
 
@@ -3465,9 +3466,9 @@ void GeomArcOfEllipse::getRange(double& u, double& v, bool emulateCCWXY) const
             std::swap(u,v);
             u = -u; v = -v;
             if (v < u)
-                v += 2*M_PI;
-            if (v-u > 2*M_PI)
-                v -= 2*M_PI;
+                v += 2 * std::numbers::pi;
+            if (v-u > 2 * std::numbers::pi)
+                v -= 2 * std::numbers::pi;
         }
     }
 }
@@ -3544,17 +3545,17 @@ void GeomArcOfEllipse::Restore(Base::XMLReader &reader)
     // read my Element
     reader.readElement("ArcOfEllipse");
     // get the value of my Attribute
-    CenterX = reader.getAttributeAsFloat("CenterX");
-    CenterY = reader.getAttributeAsFloat("CenterY");
-    CenterZ = reader.getAttributeAsFloat("CenterZ");
-    NormalX = reader.getAttributeAsFloat("NormalX");
-    NormalY = reader.getAttributeAsFloat("NormalY");
-    NormalZ = reader.getAttributeAsFloat("NormalZ");
-    MajorRadius = reader.getAttributeAsFloat("MajorRadius");
-    MinorRadius = reader.getAttributeAsFloat("MinorRadius");
-    AngleXU = reader.getAttributeAsFloat("AngleXU");
-    StartAngle = reader.getAttributeAsFloat("StartAngle");
-    EndAngle = reader.getAttributeAsFloat("EndAngle");
+    CenterX = reader.getAttribute<double>("CenterX");
+    CenterY = reader.getAttribute<double>("CenterY");
+    CenterZ = reader.getAttribute<double>("CenterZ");
+    NormalX = reader.getAttribute<double>("NormalX");
+    NormalY = reader.getAttribute<double>("NormalY");
+    NormalZ = reader.getAttribute<double>("NormalZ");
+    MajorRadius = reader.getAttribute<double>("MajorRadius");
+    MinorRadius = reader.getAttribute<double>("MinorRadius");
+    AngleXU = reader.getAttribute<double>("AngleXU");
+    StartAngle = reader.getAttribute<double>("StartAngle");
+    EndAngle = reader.getAttribute<double>("EndAngle");
 
 
     // set the read geometry
@@ -3723,15 +3724,15 @@ void GeomHyperbola::Restore(Base::XMLReader& reader)
     // read my Element
     reader.readElement("Hyperbola");
     // get the value of my Attribute
-    CenterX = reader.getAttributeAsFloat("CenterX");
-    CenterY = reader.getAttributeAsFloat("CenterY");
-    CenterZ = reader.getAttributeAsFloat("CenterZ");
-    NormalX = reader.getAttributeAsFloat("NormalX");
-    NormalY = reader.getAttributeAsFloat("NormalY");
-    NormalZ = reader.getAttributeAsFloat("NormalZ");
-    MajorRadius = reader.getAttributeAsFloat("MajorRadius");
-    MinorRadius = reader.getAttributeAsFloat("MinorRadius");
-    AngleXU = reader.getAttributeAsFloat("AngleXU");
+    CenterX = reader.getAttribute<double>("CenterX");
+    CenterY = reader.getAttribute<double>("CenterY");
+    CenterZ = reader.getAttribute<double>("CenterZ");
+    NormalX = reader.getAttribute<double>("NormalX");
+    NormalY = reader.getAttribute<double>("NormalY");
+    NormalZ = reader.getAttribute<double>("NormalZ");
+    MajorRadius = reader.getAttribute<double>("MajorRadius");
+    MinorRadius = reader.getAttribute<double>("MinorRadius");
+    AngleXU = reader.getAttribute<double>("AngleXU");
 
     // set the read geometry
     gp_Pnt p1(CenterX,CenterY,CenterZ);
@@ -3999,17 +4000,17 @@ void GeomArcOfHyperbola::Restore(Base::XMLReader &reader)
     // read my Element
     reader.readElement("ArcOfHyperbola");
     // get the value of my Attribute
-    CenterX = reader.getAttributeAsFloat("CenterX");
-    CenterY = reader.getAttributeAsFloat("CenterY");
-    CenterZ = reader.getAttributeAsFloat("CenterZ");
-    NormalX = reader.getAttributeAsFloat("NormalX");
-    NormalY = reader.getAttributeAsFloat("NormalY");
-    NormalZ = reader.getAttributeAsFloat("NormalZ");
-    MajorRadius = reader.getAttributeAsFloat("MajorRadius");
-    MinorRadius = reader.getAttributeAsFloat("MinorRadius");
-    AngleXU = reader.getAttributeAsFloat("AngleXU");
-    StartAngle = reader.getAttributeAsFloat("StartAngle");
-    EndAngle = reader.getAttributeAsFloat("EndAngle");
+    CenterX = reader.getAttribute<double>("CenterX");
+    CenterY = reader.getAttribute<double>("CenterY");
+    CenterZ = reader.getAttribute<double>("CenterZ");
+    NormalX = reader.getAttribute<double>("NormalX");
+    NormalY = reader.getAttribute<double>("NormalY");
+    NormalZ = reader.getAttribute<double>("NormalZ");
+    MajorRadius = reader.getAttribute<double>("MajorRadius");
+    MinorRadius = reader.getAttribute<double>("MinorRadius");
+    AngleXU = reader.getAttribute<double>("AngleXU");
+    StartAngle = reader.getAttribute<double>("StartAngle");
+    EndAngle = reader.getAttribute<double>("EndAngle");
 
 
     // set the read geometry
@@ -4158,14 +4159,14 @@ void GeomParabola::Restore(Base::XMLReader& reader)
     // read my Element
     reader.readElement("Parabola");
     // get the value of my Attribute
-    CenterX = reader.getAttributeAsFloat("CenterX");
-    CenterY = reader.getAttributeAsFloat("CenterY");
-    CenterZ = reader.getAttributeAsFloat("CenterZ");
-    NormalX = reader.getAttributeAsFloat("NormalX");
-    NormalY = reader.getAttributeAsFloat("NormalY");
-    NormalZ = reader.getAttributeAsFloat("NormalZ");
-    Focal = reader.getAttributeAsFloat("Focal");
-    AngleXU = reader.getAttributeAsFloat("AngleXU");
+    CenterX = reader.getAttribute<double>("CenterX");
+    CenterY = reader.getAttribute<double>("CenterY");
+    CenterZ = reader.getAttribute<double>("CenterZ");
+    NormalX = reader.getAttribute<double>("NormalX");
+    NormalY = reader.getAttribute<double>("NormalY");
+    NormalZ = reader.getAttribute<double>("NormalZ");
+    Focal = reader.getAttribute<double>("Focal");
+    AngleXU = reader.getAttribute<double>("AngleXU");
 
     // set the read geometry
     gp_Pnt p1(CenterX,CenterY,CenterZ);
@@ -4365,16 +4366,16 @@ void GeomArcOfParabola::Restore(Base::XMLReader &reader)
     // read my Element
     reader.readElement("ArcOfParabola");
     // get the value of my Attribute
-    CenterX = reader.getAttributeAsFloat("CenterX");
-    CenterY = reader.getAttributeAsFloat("CenterY");
-    CenterZ = reader.getAttributeAsFloat("CenterZ");
-    NormalX = reader.getAttributeAsFloat("NormalX");
-    NormalY = reader.getAttributeAsFloat("NormalY");
-    NormalZ = reader.getAttributeAsFloat("NormalZ");
-    Focal = reader.getAttributeAsFloat("Focal");
-    AngleXU = reader.getAttributeAsFloat("AngleXU");
-    StartAngle = reader.getAttributeAsFloat("StartAngle");
-    EndAngle = reader.getAttributeAsFloat("EndAngle");
+    CenterX = reader.getAttribute<double>("CenterX");
+    CenterY = reader.getAttribute<double>("CenterY");
+    CenterZ = reader.getAttribute<double>("CenterZ");
+    NormalX = reader.getAttribute<double>("NormalX");
+    NormalY = reader.getAttribute<double>("NormalY");
+    NormalZ = reader.getAttribute<double>("NormalZ");
+    Focal = reader.getAttribute<double>("Focal");
+    AngleXU = reader.getAttribute<double>("AngleXU");
+    StartAngle = reader.getAttribute<double>("StartAngle");
+    EndAngle = reader.getAttribute<double>("EndAngle");
 
 
     // set the read geometry
@@ -4507,12 +4508,12 @@ void GeomLine::Restore(Base::XMLReader &reader)
     // read my Element
     reader.readElement("GeomLine");
     // get the value of my Attribute
-    PosX = reader.getAttributeAsFloat("PosX");
-    PosY = reader.getAttributeAsFloat("PosY");
-    PosZ = reader.getAttributeAsFloat("PosZ");
-    DirX = reader.getAttributeAsFloat("DirX");
-    DirY = reader.getAttributeAsFloat("DirY");
-    DirZ = reader.getAttributeAsFloat("DirZ");
+    PosX = reader.getAttribute<double>("PosX");
+    PosY = reader.getAttribute<double>("PosY");
+    PosZ = reader.getAttribute<double>("PosZ");
+    DirX = reader.getAttribute<double>("DirX");
+    DirY = reader.getAttribute<double>("DirY");
+    DirZ = reader.getAttribute<double>("DirZ");
 
     // set the read geometry
     setLine(Base::Vector3d(PosX,PosY,PosZ),Base::Vector3d(DirX,DirY,DirZ) );
@@ -4527,7 +4528,7 @@ bool GeomLine::isSame(const Geometry &_other, double tol, double atol) const
 {
     if(_other.getTypeId() != getTypeId()) {
         if (_other.isDerivedFrom<GeomCurve>()) {
-            std::unique_ptr<Geometry> geo(dynamic_cast<const GeomCurve&>(_other).toLine());
+            std::unique_ptr<Geometry> geo(static_cast<const GeomCurve&>(_other).toLine());
             if (geo)
                 return isSame(*geo, tol, atol);
         }
@@ -4664,12 +4665,12 @@ void GeomLineSegment::Restore    (Base::XMLReader &reader)
     // read my Element
     reader.readElement("LineSegment");
     // get the value of my Attribute
-    StartX = reader.getAttributeAsFloat("StartX");
-    StartY = reader.getAttributeAsFloat("StartY");
-    StartZ = reader.getAttributeAsFloat("StartZ");
-    EndX   = reader.getAttributeAsFloat("EndX");
-    EndY   = reader.getAttributeAsFloat("EndY");
-    EndZ   = reader.getAttributeAsFloat("EndZ");
+    StartX = reader.getAttribute<double>("StartX");
+    StartY = reader.getAttribute<double>("StartY");
+    StartZ = reader.getAttribute<double>("StartZ");
+    EndX   = reader.getAttribute<double>("EndX");
+    EndY   = reader.getAttribute<double>("EndY");
+    EndZ   = reader.getAttribute<double>("EndZ");
 
     Base::Vector3d start(StartX,StartY,StartZ);
     Base::Vector3d end(EndX,EndY,EndZ);
@@ -4683,11 +4684,12 @@ void GeomLineSegment::Restore    (Base::XMLReader &reader)
         // for other objects, the best effort may be just to leave default values.
         reader.setPartialRestore(true);
 
+        constexpr double increment{std::numeric_limits<double>::epsilon()};
         if(start.x == 0) {
-            end = start + Base::Vector3d(DBL_EPSILON,0,0);
+            end = start + Base::Vector3d(increment, 0, 0);
         }
         else {
-            end = start + Base::Vector3d(start.x*DBL_EPSILON,0,0);
+            end = start + Base::Vector3d(start.x * increment, 0, 0);
         }
 
         setPoints(start, end);
@@ -4696,7 +4698,7 @@ void GeomLineSegment::Restore    (Base::XMLReader &reader)
 
 PyObject *GeomLineSegment::getPyObject()
 {
-    return new LineSegmentPy(dynamic_cast<GeomLineSegment*>(this->clone()));
+    return new LineSegmentPy(freecad_cast<GeomLineSegment*>(this->clone()));
 }
 
 // -------------------------------------------------
@@ -4767,7 +4769,7 @@ void GeomOffsetCurve::Restore(Base::XMLReader &/*reader*/)
 
 PyObject *GeomOffsetCurve::getPyObject()
 {
-    return new OffsetCurvePy(dynamic_cast<GeomOffsetCurve*>(this->clone()));
+    return new OffsetCurvePy(freecad_cast<GeomOffsetCurve*>(this->clone()));
 }
 
 bool GeomOffsetCurve::isSame(const Geometry &_other, double tol, double atol) const
@@ -4818,10 +4820,10 @@ GeomPlane* GeomSurface::toPlane(bool clone, double tol) const
 {
     if (isDerivedFrom<GeomPlane>()) {
         if (clone) {
-            return dynamic_cast<GeomPlane*>(this->clone());
+            return static_cast<GeomPlane*>(this->clone());
         }
         else {
-            return dynamic_cast<GeomPlane*>(this->copy());
+            return static_cast<GeomPlane*>(this->copy());
         }
     }
 
@@ -5409,7 +5411,7 @@ gp_Vec GeomCone::getDN(double u, double v, int Nu, int Nv) const
     {
        gp_XYZ Xdir = Pos.XDirection().XYZ();
        gp_XYZ Ydir = Pos.YDirection().XYZ();
-       Standard_Real Um = U + Nu * M_PI_2;  // M_PI * 0.5
+       Standard_Real Um = U + Nu * std::numbers::pi/2;
        Xdir.Multiply(cos(Um));
        Ydir.Multiply(sin(Um));
        Xdir.Add(Ydir);
@@ -6202,13 +6204,13 @@ double suggestFilletRadius(const GeomLineSegment *lineSeg1, const GeomLineSegmen
     return r1 < r2 ? r1 : r2;
 }
 
-GeomArcOfCircle *createFilletGeometry(const GeomLineSegment *lineSeg1, const GeomLineSegment *lineSeg2,
+GeomArcOfCircle* create2LinesFilletGeometry(const GeomLineSegment *lineSeg1, const GeomLineSegment *lineSeg2,
                                       const Base::Vector3d &center, double radius)
 {
     Base::Vector3d corner;
-    if (!Part::find2DLinesIntersection(lineSeg1, lineSeg2, corner))
-        // Parallel Lines so return null pointer
-        return nullptr;
+    if (!Part::find2DLinesIntersection(lineSeg1, lineSeg2, corner)) {
+        return nullptr;  // Parallel Lines
+    }
 
     Base::Vector3d dir1 = lineSeg1->getEndPoint() - lineSeg1->getStartPoint();
     Base::Vector3d dir2 = lineSeg2->getEndPoint() - lineSeg2->getStartPoint();
@@ -6228,11 +6230,11 @@ GeomArcOfCircle *createFilletGeometry(const GeomLineSegment *lineSeg1, const Geo
     if (endAngle < startAngle)
         std::swap(startAngle, endAngle);
 
-    if (endAngle > 2*M_PI )
-        endAngle -= 2*M_PI;
+    if (endAngle > 2 * std::numbers::pi)
+        endAngle -= 2 * std::numbers::pi;
 
-    if (startAngle < 0 )
-        endAngle += 2*M_PI;
+    if (startAngle < 0)
+        endAngle += 2 * std::numbers::pi;
 
     // Create Arc Segment
     GeomArcOfCircle *arc = new GeomArcOfCircle();
@@ -6241,6 +6243,415 @@ GeomArcOfCircle *createFilletGeometry(const GeomLineSegment *lineSeg1, const Geo
     arc->setRange(startAngle, endAngle, /*emulateCCWXY=*/true);
 
     return arc;
+}
+
+GeomArcOfCircle* createFilletGeometry(const Geometry* geo1, const Geometry* geo2, const Base::Vector3d& refPnt1,
+    const Base::Vector3d& refPnt2, double radius, int& pos1, int& pos2, bool& reverse)
+{
+    if (geo1->is<GeomLineSegment>() && geo2->is<GeomLineSegment>()) {
+        auto* line1 = static_cast<const GeomLineSegment*>(geo1);
+        auto* line2 = static_cast<const GeomLineSegment*>(geo2);
+
+        Base::Vector3d filletCenter;
+        if (!findFilletCenter(line1, line2, radius, refPnt1, refPnt2, filletCenter)) {
+            return nullptr;
+        }
+        auto arc = create2LinesFilletGeometry(line1, line2, filletCenter, radius);
+
+        // Before returning arc, we find pos and reverse. Note PointPos is in sketcher only so we use int.
+        Base::Vector3d intersection, dist1, dist2;
+        find2DLinesIntersection(line1, line2, intersection);
+
+        Base::Vector3d p1 = arc->getStartPoint(true);
+
+        Base::Vector3d dir1 = line1->getEndPoint() - line1->getStartPoint();
+        Base::Vector3d dir2 = line2->getEndPoint() - line2->getStartPoint();
+        dist1.ProjectToLine(p1 - intersection, dir1);
+        dist2.ProjectToLine(p1 - intersection, dir2);
+
+        pos1 = (filletCenter - intersection) * dir1 > 0 ? 1 : 2;
+        pos2 = (filletCenter - intersection) * dir2 > 0 ? 1 : 2;
+        reverse = dist1.Length() < dist2.Length();
+
+        return arc;
+    }
+    else if (geo1->isDerivedFrom<GeomBoundedCurve>() && geo2->isDerivedFrom<GeomBoundedCurve>()) {
+
+        auto distanceToRefPoints =
+            [](Base::Vector3d ip1, Base::Vector3d ip2, Base::Vector3d ref1, Base::Vector3d ref2) {
+                return (ip1 - ref1).Length() + (ip2 - ref2).Length();
+            };
+
+        auto selectIntersection =
+            [&distanceToRefPoints](std::vector<std::pair<Base::Vector3d, Base::Vector3d>>& points,
+                                   std::pair<Base::Vector3d, Base::Vector3d>& interpoints,
+                                   const Base::Vector3d& refPnt1,
+                                   const Base::Vector3d& refPnt2) {
+                if (points.empty()) {
+                    return -1;
+                }
+
+                double dist = distanceToRefPoints(points[0].first, points[0].second, refPnt1, refPnt2);
+                int i = 0, si = 0;
+
+                for (auto ipoints : points) {
+                    double d =  distanceToRefPoints(ipoints.first, ipoints.second, refPnt1, refPnt2);
+
+                    if (d < dist) {
+                        si = i;
+                        dist = d;
+                    }
+
+                    i++;
+                }
+
+                interpoints = points[si];
+
+                return 0;
+            };
+
+        // NOTE: While it is not a requirement that the endpoints of the corner to trim are
+        // coincident
+        //       for GeomTrimmedCurves, it is for GeomBoundedCurves. The reason is that there is no
+        //       basiscurve that can be extended to find an intersection.
+        //
+        //       However, GeomTrimmedCurves sometimes run into problems when trying to calculate the
+        //       intersection of basis curves, for example in the case of hyperbola sometimes the
+        //       cosh goes out of range while calculating this intersection of basis curves.
+        //
+        //        Consequently:
+        //        i. for GeomBoundedCurves, other than GeomTrimmedCurves, a coincident endpoint is
+        //        mandatory. ii. for GeomTrimmedCurves, if there is a coincident endpoint, it is
+        //        used for the fillet, iii. for GeomTrimmedCurves, if there is not a coincident
+        //        endpoint, an intersection of basis curves
+        //             is attempted.
+
+        auto* curve1 = static_cast<const GeomBoundedCurve*>(geo1);
+        auto* curve2 = static_cast<const GeomBoundedCurve*>(geo2);
+
+        double refparam1;
+        double refparam2;
+
+        try {
+            if (!curve1->closestParameter(refPnt1, refparam1)) {
+                return nullptr;
+            }
+        }
+        catch (Base::CADKernelError& e) {
+            e.reportException();
+            THROWM(Base::CADKernelError,
+                   "Unable to determine the parameter of the first selected curve at the reference "
+                   "point.")
+        }
+
+        try {
+            if (!curve2->closestParameter(refPnt2, refparam2)) {
+                return nullptr;
+            }
+        }
+        catch (Base::CADKernelError& e) {
+            e.reportException();
+            THROWM(Base::CADKernelError,
+                   "Unable to determine the parameter of the second selected curve at the "
+                   "reference point.")
+        }
+
+        std::pair<Base::Vector3d, Base::Vector3d> interpoints;
+        std::vector<std::pair<Base::Vector3d, Base::Vector3d>> points;
+
+        // look for coincident constraints between curves, take the coincident closest to the
+        // refpoints
+        double dist = INFINITY;
+
+        if ((curve1->getStartPoint() - curve2->getStartPoint()).Length() < Precision::Confusion()) {
+            Base::Vector3d tmpp1 = curve1->getStartPoint();
+            Base::Vector3d tmpp2 = curve2->getStartPoint();
+            double tmpdist = distanceToRefPoints(tmpp1, tmpp2, refPnt1, refPnt2);
+            if (tmpdist < dist) {
+                dist = tmpdist;
+                interpoints = std::make_pair(tmpp1, tmpp2);
+                pos1 = 1;
+                pos2 = 1;
+            }
+        }
+        else if ((curve1->getEndPoint() - curve2->getStartPoint()).Length() < Precision::Confusion()) {
+            Base::Vector3d tmpp1 = curve1->getEndPoint();
+            Base::Vector3d tmpp2 = curve2->getStartPoint();
+            double tmpdist = distanceToRefPoints(tmpp1, tmpp2, refPnt1, refPnt2);
+            if (tmpdist < dist) {
+                dist = tmpdist;
+                interpoints = std::make_pair(tmpp1, tmpp2);
+                pos1 = 2;
+                pos2 = 1;
+            }
+        }
+        else if ((curve1->getStartPoint() - curve2->getEndPoint()).Length() < Precision::Confusion()) {
+            Base::Vector3d tmpp1 = curve1->getStartPoint();
+            Base::Vector3d tmpp2 = curve2->getEndPoint();
+            double tmpdist = distanceToRefPoints(tmpp1, tmpp2, refPnt1, refPnt2);
+            if (tmpdist < dist) {
+                dist = tmpdist;
+                interpoints = std::make_pair(tmpp1, tmpp2);
+                pos1 = 1;
+                pos2 = 2;
+            }
+        }
+        else if ((curve1->getEndPoint() - curve2->getEndPoint()).Length() < Precision::Confusion()) {
+            Base::Vector3d tmpp1 = curve1->getEndPoint();
+            Base::Vector3d tmpp2 = curve2->getEndPoint();
+            double tmpdist = distanceToRefPoints(tmpp1, tmpp2, refPnt1, refPnt2);
+            if (tmpdist < dist) {
+                dist = tmpdist;
+                interpoints = std::make_pair(tmpp1, tmpp2);
+                pos1 = 2;
+                pos2 = 2;
+            }
+        }
+
+        if (dist == INFINITY) {
+            // no coincident was found, try basis curve intersection if GeomTrimmedCurve
+            if (!geo1->isDerivedFrom<GeomTrimmedCurve>() || !geo2->isDerivedFrom<GeomTrimmedCurve>()) {
+                return nullptr;// not a GeomTrimmedCurve and no coincident point.
+            }
+        
+            auto* tcurve1 = static_cast<const GeomTrimmedCurve*>(geo1);
+            auto* tcurve2 = static_cast<const GeomTrimmedCurve*>(geo2);
+        
+            try {
+                if (!tcurve1->intersectBasisCurves(tcurve2, points)) {
+                    return nullptr;
+                }
+            }
+            catch (Base::CADKernelError& e) {
+                e.reportException();
+                THROWMT(Base::CADKernelError,
+                    QT_TRANSLATE_NOOP("Exceptions",
+                        "Unable to guess intersection of curves. Try adding "
+                        "a coincident constraint between the vertices of the "
+                        "curves you are intending to fillet."))
+            }
+        
+            int res = selectIntersection(points, interpoints, refPnt1, refPnt2);
+        
+            if (res != 0) {
+                return nullptr;
+            }
+        }
+
+        // Now that we know where the curves intersect, get the parameters in the curves of those
+        // points
+        double intparam1;
+        double intparam2;
+
+        try {
+            if (!curve1->closestParameter(interpoints.first, intparam1)) {
+                return nullptr;
+            }
+        }
+        catch (Base::CADKernelError& e) {
+            e.reportException();
+            THROWM(Base::CADKernelError,
+                   "Unable to determine the parameter of the first selected curve at the "
+                   "intersection of the curves.")
+        }
+
+        try {
+            if (!curve2->closestParameter(interpoints.second, intparam2)) {
+                return nullptr;
+            }
+        }
+        catch (Base::CADKernelError& e) {
+            e.reportException();
+            THROWM(Base::CADKernelError,
+                   "Unable to determine the parameter of the second selected curve at the "
+                   "intersection of the curves.")
+        }
+
+        // get the starting parameters of each curve
+        double spc1 = curve1->getFirstParameter();
+        double spc2 = curve2->getFirstParameter();
+
+        // get a fillet radius if zero was given
+        Base::Vector3d ref21 = refPnt2 - refPnt1;
+
+        if (radius == .0f) {
+            // guess a radius
+            // https://forum.freecad.org/viewtopic.php?f=3&t=31594&start=50#p266658
+            //
+            // We do not know the actual tangency points until we intersect the offset curves, but
+            // we do not have offset curves before with decide on a radius.
+            //
+            // This estimation guesses a radius as the average of the distances from the reference
+            // points with respect to the intersection of the normals at those reference points.
+
+            try {
+                Base::Vector3d tdir1;
+                Base::Vector3d tdir2;
+
+                // We want normals, but OCCT normals require curves to be 2 times derivable, and
+                // lines are not tangency calculation requires 1 time derivable.
+
+                if (!curve1->tangent(refparam1, tdir1) || !curve2->tangent(refparam2, tdir2)) {
+                    return nullptr;
+                }
+
+                Base::Vector3d dir1(tdir1.y, -tdir1.x, 0);
+                Base::Vector3d dir2(tdir2.y, -tdir2.x, 0);
+
+                double det = -dir1.x * dir2.y + dir2.x * dir1.y;
+
+                if (std::abs(det) < Precision::Confusion()) {
+                    throw Base::RuntimeError("No intersection of normals");
+                }
+
+                Base::Vector3d refp1 = curve1->pointAtParameter(refparam1);
+                Base::Vector3d refp2 = curve2->pointAtParameter(refparam2);
+
+                Base::Vector3d normalintersect(
+                    (-dir1.x * dir2.x * refp1.y + dir1.x * dir2.x * refp2.y
+                     - dir1.x * dir2.y * refp2.x + dir2.x * dir1.y * refp1.x)
+                        / det,
+                    (-dir1.x * dir2.y * refp1.y + dir2.x * dir1.y * refp2.y
+                     + dir1.y * dir2.y * refp1.x - dir1.y * dir2.y * refp2.x)
+                        / det,
+                    0);
+
+                radius = ((refp1 - normalintersect).Length() + (refp2 - normalintersect).Length()) / 2;
+            }
+            catch (const Base::Exception&) {
+                radius = ref21.Length();// fall-back to simplest estimation.
+            }
+        }
+
+        // We create Offset curves at the suggested radius, the direction of offset is estimated
+        // from the tangency vector
+        Base::Vector3d tdir1 = curve1->firstDerivativeAtParameter(refparam1);
+        Base::Vector3d tdir2 = curve2->firstDerivativeAtParameter(refparam2);
+
+        Base::Vector3d vn(0, 0, 1);
+
+        double sdir1 = tdir1.Cross(ref21).Dot(vn);
+        double sdir2 = tdir2.Cross(-ref21).Dot(vn);
+
+        auto* ocurve1 = new GeomOffsetCurve(
+            Handle(Geom_Curve)::DownCast(curve1->handle()), (sdir1 < 0) ? radius : -radius, vn);
+
+        auto* ocurve2 = new GeomOffsetCurve(
+            Handle(Geom_Curve)::DownCast(curve2->handle()), (sdir2 < 0) ? radius : -radius, vn);
+
+        // Next we calculate the intersection of offset curves to get the center of the fillet
+        std::pair<Base::Vector3d, Base::Vector3d> filletcenterpoint;
+        std::vector<std::pair<Base::Vector3d, Base::Vector3d>> offsetintersectionpoints;
+
+        try {
+            if (!ocurve1->intersect(ocurve2, offsetintersectionpoints)) {
+                return nullptr;
+            }
+        }
+        catch (Base::CADKernelError& e) {
+            e.reportException();
+            THROWM(Base::CADKernelError, "Unable to find intersection between offset curves.")
+        }
+
+        int res = selectIntersection(offsetintersectionpoints, filletcenterpoint, refPnt1, refPnt2);
+
+        if (res != 0) {
+            return nullptr;
+        }
+
+        double refoparam1;
+        double refoparam2;
+
+        try {
+            if (!curve1->closestParameter(filletcenterpoint.first, refoparam1)) {
+                return nullptr;
+            }
+        }
+        catch (Base::CADKernelError& e) {
+            e.reportException();
+            THROWM(Base::CADKernelError, "Unable to determine the starting point of the arc.")
+        }
+
+        try {
+            if (!curve2->closestParameter(filletcenterpoint.second, refoparam2)) {
+                return nullptr;
+            }
+        }
+        catch (Base::CADKernelError& e) {
+            e.reportException();
+            THROWM(Base::CADKernelError, "Unable to determine the end point of the arc.")
+        }
+
+        // Next we calculate the closest points to the fillet center, so the points where tangency
+        // is to be applied
+        Base::Vector3d refp1 = curve1->pointAtParameter(refoparam1);
+        Base::Vector3d refp2 = curve2->pointAtParameter(refoparam2);
+
+        // Now we create arc for the fillet
+        double startAngle, endAngle, range;
+
+        Base::Vector3d radDir1 = refp1 - filletcenterpoint.first;
+        Base::Vector3d radDir2 = refp2 - filletcenterpoint.first;
+
+        startAngle = atan2(radDir1.y, radDir1.x);
+
+        range = atan2(-radDir1.y * radDir2.x + radDir1.x * radDir2.y,
+                      radDir1.x * radDir2.x + radDir1.y * radDir2.y);
+
+        if (fmod(fabs(range), 2 * std::numbers::pi) < Precision::Approximation()) {
+            return nullptr;
+        }
+
+        endAngle = startAngle + range;
+
+        if (endAngle < startAngle) {
+            std::swap(startAngle, endAngle);
+        }
+
+        if (endAngle > 2 * std::numbers::pi) {
+            endAngle -= 2 * std::numbers::pi;
+        }
+
+        if (startAngle < 0) {
+            endAngle += 2 * std::numbers::pi;
+        }
+
+        // Create Arc Segment
+        auto* arc = new GeomArcOfCircle();
+        arc->setRadius(radDir1.Length());
+        arc->setCenter(filletcenterpoint.first);
+        arc->setRange(startAngle, endAngle, /*emulateCCWXY=*/true);
+
+        delete ocurve1;
+        delete ocurve2;
+
+        // Before returning arc, we find pos and reverse. Note PointPos is in sketcher only so we use int.
+        auto selectend = [](double intparam, double refparam, double startparam) {
+            if ((intparam > refparam && startparam >= refparam)
+                || (intparam < refparam && startparam <= refparam)) {
+                return 1;
+            }
+            else {
+                return 2;
+            }
+        };
+
+        if (pos1 == 0) {
+            pos1 = selectend(intparam1, refoparam1, spc1);
+            pos2 = selectend(intparam2, refoparam2, spc2);
+        }
+
+        Base::Vector3d p1 = arc->getStartPoint(true);
+        Base::Vector3d p2 = arc->getEndPoint(true);
+
+        double dist1 = (refp1 - p1).Length();
+        double dist2 = (refp1 - p2).Length();
+        reverse = dist1 < dist2;
+
+        return arc;
+    }
+
+    return nullptr;
 }
 
 std::unique_ptr<GeomSurface> makeFromSurface(const Handle(Geom_Surface)& s, bool silent)

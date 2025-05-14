@@ -158,7 +158,7 @@ App::DocumentObjectExecReturn* OriginGroupExtension::extensionExecute()
 
 App::DocumentObject* OriginGroupExtension::getLocalizedOrigin(App::Document* doc)
 {
-    App::DocumentObject* originObject = doc->addObject("App::Origin", "Origin");
+    auto* originObject = doc->addObject<App::Origin>("Origin");
     QByteArray byteArray = tr("Origin").toUtf8();
     originObject->Label.setValue(byteArray.constData());
     return originObject;

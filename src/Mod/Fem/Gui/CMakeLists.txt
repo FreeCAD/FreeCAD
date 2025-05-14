@@ -17,16 +17,14 @@ include_directories(
     ${CMAKE_BINARY_DIR}
     ${CMAKE_SOURCE_DIR}/src
     ${CMAKE_CURRENT_BINARY_DIR}
-    ${Boost_INCLUDE_DIRS}
-    ${COIN3D_INCLUDE_DIRS}
-    ${ZLIB_INCLUDE_DIR}
-    ${OCC_INCLUDE_DIR}
-    ${PYTHON_INCLUDE_DIRS}
+)
+
+include_directories(
+    SYSTEM
     ${SMESH_INCLUDE_DIR}
     ${VTK_INCLUDE_DIRS}
 )
 
-link_directories(${OCC_LIBRARY_DIR})
 link_directories(${SMESH_LIB_PATH})
 
 set(FemGui_LIBS
@@ -38,15 +36,24 @@ set(FemGui_LIBS
 generate_from_xml(ViewProviderFemConstraintPy)
 generate_from_xml(ViewProviderFemMeshPy)
 generate_from_xml(ViewProviderFemPostPipelinePy)
+generate_from_xml(ViewProviderFemPostFilterPy)
 
 SET(Python_SRCS
     ViewProviderFemConstraintPy.xml
     ViewProviderFemConstraintPyImp.cpp
     ViewProviderFemMeshPy.xml
     ViewProviderFemMeshPyImp.cpp
-    ViewProviderFemPostPipelinePy.xml
-    ViewProviderFemPostPipelinePyImp.cpp
 )
+if(BUILD_FEM_VTK)
+    set(Python_SRCS
+        ${Python_SRCS}
+        ViewProviderFemPostPipelinePy.xml
+        ViewProviderFemPostPipelinePyImp.cpp
+        ViewProviderFemPostFilterPy.xml
+        ViewProviderFemPostFilterPyImp.cpp
+    )
+endif(BUILD_FEM_VTK)
+
 SOURCE_GROUP("Python" FILES ${Python_SRCS})
 
 
@@ -89,6 +96,7 @@ if(BUILD_FEM_VTK)
         CylinderWidget.ui
         PlaneWidget.ui
         SphereWidget.ui
+        TaskPostCalculator.ui
         TaskPostClip.ui
         TaskPostContours.ui
         TaskPostCut.ui
@@ -97,6 +105,8 @@ if(BUILD_FEM_VTK)
         TaskPostDisplay.ui
         TaskPostScalarClip.ui
         TaskPostWarpVector.ui
+        TaskPostFrames.ui
+        TaskPostBranch.ui
     )
 endif(BUILD_FEM_VTK)
 
@@ -281,6 +291,7 @@ if(BUILD_FEM_VTK)
         SphereWidget.ui
         TaskPostBoxes.h
         TaskPostBoxes.cpp
+        TaskPostCalculator.ui
         TaskPostClip.ui
         TaskPostContours.ui
         TaskPostCut.ui
@@ -335,6 +346,8 @@ if(BUILD_FEM_VTK)
         ViewProviderFemPostObject.cpp
         ViewProviderFemPostPipeline.h
         ViewProviderFemPostPipeline.cpp
+        ViewProviderFemPostBranchFilter.h
+        ViewProviderFemPostBranchFilter.cpp
         ViewProviderFemPostFunction.h
         ViewProviderFemPostFunction.cpp
         ViewProviderFemPostFilter.h
@@ -367,7 +380,9 @@ SET(FemGuiIcon_SVG
 SET(FemGuiSymbol_IV
     Resources/symbols/ConstraintContact.iv
     Resources/symbols/ConstraintDisplacement.iv
+    Resources/symbols/ConstraintElectricChargeDensity.iv
     Resources/symbols/ConstraintElectrostaticPotential.iv
+    Resources/symbols/ConstraintCurrentDensity.iv
     Resources/symbols/ConstraintFixed.iv
     Resources/symbols/ConstraintForce.iv
     Resources/symbols/ConstraintHeatFlux.iv
@@ -402,6 +417,7 @@ SET(FemGuiPythonUI_SRCS
     Resources/ui/ConstraintSectionPrint.ui
     Resources/ui/CurrentDensity.ui
     Resources/ui/DlgSettingsNetgen.ui
+    Resources/ui/ElectricChargeDensity.ui
     Resources/ui/ElectrostaticPotential.ui
     Resources/ui/ElementFluid1D.ui
     Resources/ui/ElementGeometry1D.ui
@@ -421,7 +437,9 @@ SET(FemGuiPythonUI_SRCS
     Resources/ui/MeshRegion.ui
     Resources/ui/ResultHints.ui
     Resources/ui/ResultShow.ui
-    Resources/ui/SolverCalculix.ui
+    Resources/ui/SolverCalculiX.ui
+    Resources/ui/SolverCcxTools.ui
+    Resources/ui/TaskPostGlyph.ui
 )
 
 ADD_CUSTOM_TARGET(FemPythonUi ALL

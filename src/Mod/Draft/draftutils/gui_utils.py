@@ -373,16 +373,16 @@ def get_diffuse_color(objs):
                 if obj.ColoredElements is None:
                     return cols
                 face_num = len(base.Shape.Faces)
-                for elm, overide in zip(obj.ColoredElements[1], obj.ViewObject.OverrideColorList):
+                for elm, override in zip(obj.ColoredElements[1], obj.ViewObject.OverrideColorList):
                     if "Face" in elm: # Examples: "Face3" and "1.Face6". Int before "." is zero-based, other int is 1-based.
                         if "." in elm:
                             elm0, elm1 = elm.split(".")
                             i = (int(elm0) * face_num) + int(elm1[4:]) - 1
-                            cols[i] = overide
+                            cols[i] = override
                         else:
                             i = int(elm[4:]) - 1
                             for j in range(count):
-                                cols[(j * face_num) + i] = overide
+                                cols[(j * face_num) + i] = override
                 return cols
             elif hasattr(obj, "ElementList"):
                 # LinkGroup
@@ -392,10 +392,10 @@ def get_diffuse_color(objs):
                     if obj.ColoredElements is None:
                         cols += sub_cols
                     else:
-                        for elm, overide in zip(obj.ColoredElements[1], obj.ViewObject.OverrideColorList):
+                        for elm, override in zip(obj.ColoredElements[1], obj.ViewObject.OverrideColorList):
                             if sub.Name + ".Face" in elm:
                                 i = int(elm[(len(sub.Name) + 5):]) - 1
-                                sub_cols[i] = overide
+                                sub_cols[i] = override
                         cols += sub_cols
                 return cols
             else:
@@ -499,7 +499,7 @@ def restore_view_object(obj, vp_module, vp_class, format=True, format_ref=None):
             format_object(obj, format_ref)
 
 
-def format_object(target, origin=None):
+def format_object(target, origin=None, ignore_construction=False):
     """Apply visual properties to an object.
 
     This function only works if the graphical interface is available.
@@ -521,6 +521,10 @@ def format_object(target, origin=None):
         If construction mode is not active, its visual properties are assigned
         to `target`, with the exception of `BoundingBox`, `Proxy`, `RootNode`
         and `Visibility`.
+
+    ignore_construction: bool, optional
+        Defaults to `False`.
+        Set to `True` to ignore construction mode.
     """
     if not target:
         return
@@ -528,30 +532,38 @@ def format_object(target, origin=None):
         return
     if not hasattr(Gui, "draftToolBar"):
         return
-    if not hasattr(target, 'ViewObject'):
+    if not hasattr(target, "ViewObject"):
         return
+    if hasattr(target, "Shape") and target.Shape.Faces:
+        len_faces = len(target.Shape.Faces)
+    else:
+        len_faces = 1
     obrep = target.ViewObject
     obprops = obrep.PropertiesList
-    if origin and hasattr(origin, 'ViewObject'):
+    if origin and hasattr(origin, "ViewObject"):
         matchrep = origin.ViewObject
         for p in matchrep.PropertiesList:
-            if p not in ("DisplayMode", "BoundingBox",
-                         "Proxy", "RootNode", "Visibility"):
-                if p in obprops:
-                    if not obrep.getEditorMode(p):
-                        if hasattr(getattr(matchrep, p), "Value"):
-                            val = getattr(matchrep, p).Value
-                        else:
-                            val = getattr(matchrep, p)
-                        try:
-                            setattr(obrep, p, val)
-                        except Exception:
-                            pass
+            if p in ("DisplayMode", "BoundingBox", "Proxy", "RootNode", "Visibility"):
+                continue
+            if p not in obprops:
+                continue
+            if obrep.getEditorMode(p):
+                continue
+            val = getattr(matchrep, p)
+            if isinstance(val, tuple):
+                if len(val) != len_faces:
+                    val = (val[0], )
+            elif hasattr(val, "Value"):
+                val = val.Value
+            try:
+                setattr(obrep, p, val)
+            except Exception:
+                pass
         if matchrep.DisplayMode in obrep.listDisplayModes():
             obrep.DisplayMode = matchrep.DisplayMode
         if hasattr(obrep, "DiffuseColor"):
             difcol = get_diffuse_color(origin)
-            if difcol:
+            if difcol and len(difcol) == len_faces:
                 obrep.DiffuseColor = difcol
     elif "FontName" not in obprops:
         # Apply 2 Draft style preferences, other style preferences are applied by Core.
@@ -561,6 +573,8 @@ def format_object(target, origin=None):
             dm = utils.DISPLAY_MODES[params.get_param("DefaultDisplayMode")]
             if dm in obrep.listDisplayModes():
                 obrep.DisplayMode = dm
+    if ignore_construction:
+        return
     if Gui.draftToolBar.isConstructionMode():
         doc = App.ActiveDocument
         col = params.get_param("constructioncolor") | 0x000000FF
@@ -696,12 +710,16 @@ def select(objs=None, gui=App.GuiUp):
                 if not obj:
                     continue
                 if isinstance(obj, tuple):
-                    Gui.Selection.addSelection(*obj)
+                    # Example of tuple (Rectangle in Part):
+                    #   ("", "Part", "Rectangle.")
+                    # See:
+                    #   utils._modifiers_process_selection()
+                    #   utils._modifiers_process_subselection()
+                    parent = App.ActiveDocument.getObject(obj[1])
+                    if parent and parent.getSubObject(obj[2]):
+                        Gui.Selection.addSelection(*obj)
                     continue
-                try:
-                    if not obj.isAttachedToDocument():
-                        continue
-                except:
+                if utils.is_deleted(obj):
                     continue
                 Gui.Selection.addSelection(obj)
 

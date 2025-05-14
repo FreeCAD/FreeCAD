@@ -26,7 +26,7 @@
 
 #include <App/GeoFeatureGroupExtension.h>
 #include <App/PropertyStandard.h>
-#include "Feature.h"
+#include "FeatureRefine.h"
 
 
 namespace PartDesign
@@ -36,7 +36,7 @@ namespace PartDesign
  * Abstract superclass of all features that are created by transformation of another feature
  * Transformations are translation, rotation and mirroring
  */
-class PartDesignExport Boolean : public PartDesign::Feature, public App::GeoFeatureGroupExtension
+class PartDesignExport Boolean : public PartDesign::FeatureRefine, public App::GeoFeatureGroupExtension
 {
     PROPERTY_HEADER_WITH_EXTENSIONS(PartDesign::Boolean);
 
@@ -46,7 +46,6 @@ public:
     /// The type of the boolean operation
     App::PropertyEnumeration    Type;
 
-    App::PropertyBool Refine;
     App::PropertyBool UsePlacement;
 
    /** @name methods override feature */
@@ -63,7 +62,6 @@ public:
 
 protected:
     void handleChangedPropertyName(Base::XMLReader &reader, const char * TypeName, const char *PropName) override;
-    TopoShape refineShapeIfActive(const TopoShape&) const;
 
 
 private:

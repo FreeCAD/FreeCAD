@@ -1,6 +1,8 @@
+import FreeCAD
 from FreeCAD import Vector, Base, newDocument, closeDocument
 import Part
-import Sketcher
+if "BUILD_SKETCHER" in FreeCAD.__cmake__:
+    import Sketcher
 
 import unittest
 
@@ -34,67 +36,68 @@ class RegressionTests(unittest.TestCase):
         The following test is a simplified version of the issue, but the outcome is the same
         """
 
-        # Arrange
-        ArcSketch = self.Doc.addObject("Sketcher::SketchObject", "ArcSketch")
-        ArcSketch.Placement = Base.Placement(
-            Base.Vector(0.000000, 0.000000, 0.000000),
-            Base.Rotation(0.500000, 0.500000, 0.500000, 0.500000),
-        )
-        ArcSketch.MapMode = "Deactivated"
-
-        geoList = []
-        geoList.append(
-            Part.ArcOfCircle(
-                Part.Circle(
-                    Base.Vector(0.000000, 0.000000, 0.000000),
-                    Base.Vector(0.000000, 0.000000, 1.000000),
-                    10.000000,
-                ),
-                3.141593,
-                6.283185,
+        if "BUILD_SKETCHER" in FreeCAD.__cmake__:
+            # Arrange
+            ArcSketch = self.Doc.addObject("Sketcher::SketchObject", "ArcSketch")
+            ArcSketch.Placement = Base.Placement(
+                Base.Vector(0.000000, 0.000000, 0.000000),
+                Base.Rotation(0.500000, 0.500000, 0.500000, 0.500000),
             )
-        )
-        ArcSketch.addGeometry(geoList, False)
-        del geoList
+            ArcSketch.MapMode = "Deactivated"
 
-        constraintList = []
-        ArcSketch.addConstraint(Sketcher.Constraint("Radius", 0, 10.000000))
-        constraintList.append(Sketcher.Constraint("Coincident", 0, 3, -1, 1))
-        constraintList.append(Sketcher.Constraint("PointOnObject", 0, 2, -1))
-        constraintList.append(Sketcher.Constraint("PointOnObject", 0, 1, -1))
-        ArcSketch.addConstraint(constraintList)
-        del constraintList
+            geoList = []
+            geoList.append(
+                Part.ArcOfCircle(
+                    Part.Circle(
+                        Base.Vector(0.000000, 0.000000, 0.000000),
+                        Base.Vector(0.000000, 0.000000, 1.000000),
+                        10.000000,
+                    ),
+                    3.141593,
+                    6.283185,
+                )
+            )
+            ArcSketch.addGeometry(geoList, False)
+            del geoList
 
-        self.Doc.recompute()
+            constraintList = []
+            ArcSketch.addConstraint(Sketcher.Constraint("Radius", 0, 10.000000))
+            constraintList.append(Sketcher.Constraint("Coincident", 0, 3, -1, 1))
+            constraintList.append(Sketcher.Constraint("PointOnObject", 0, 2, -1))
+            constraintList.append(Sketcher.Constraint("PointOnObject", 0, 1, -1))
+            ArcSketch.addConstraint(constraintList)
+            del constraintList
 
-        PointSketch = self.Doc.addObject("Sketcher::SketchObject", "PointSketch")
-        PointSketch.Placement = Base.Placement(
-            Base.Vector(-10.000000, 0.000000, 0.000000),
-            Base.Rotation(0.500000, 0.500000, 0.500000, 0.500000),
-        )
-        PointSketch.MapMode = "Deactivated"
+            self.Doc.recompute()
 
-        PointSketch.addGeometry(Part.Point(Base.Vector(0.000000, 0.000000, 0)))
+            PointSketch = self.Doc.addObject("Sketcher::SketchObject", "PointSketch")
+            PointSketch.Placement = Base.Placement(
+                Base.Vector(-10.000000, 0.000000, 0.000000),
+                Base.Rotation(0.500000, 0.500000, 0.500000, 0.500000),
+            )
+            PointSketch.MapMode = "Deactivated"
 
-        PointSketch.addConstraint(Sketcher.Constraint("Coincident", 0, 1, -1, 1))
+            PointSketch.addGeometry(Part.Point(Base.Vector(0.000000, 0.000000, 0)))
 
-        self.Doc.recompute()
+            PointSketch.addConstraint(Sketcher.Constraint("Coincident", 0, 1, -1, 1))
 
-        Loft = self.Doc.addObject("Part::Loft", "Loft")
-        Loft.Sections = [
-            ArcSketch,
-            PointSketch,
-        ]
-        Loft.Solid = False
-        Loft.Ruled = False
-        Loft.Closed = False
+            self.Doc.recompute()
 
-        # Act
-        self.Doc.recompute()
+            Loft = self.Doc.addObject("Part::Loft", "Loft")
+            Loft.Sections = [
+                ArcSketch,
+                PointSketch,
+            ]
+            Loft.Solid = False
+            Loft.Ruled = False
+            Loft.Closed = False
 
-        # Assert
-        self.assertTrue(Loft.isValid())
-        self.KeepTestDoc = not Loft.isValid()
+            # Act
+            self.Doc.recompute()
+
+            # Assert
+            self.assertTrue(Loft.isValid())
+            self.KeepTestDoc = not Loft.isValid()
 
     def test_OptimalBox(self):
         box = Part.makeBox(1, 1, 1)

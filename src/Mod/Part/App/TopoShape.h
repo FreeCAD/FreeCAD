@@ -49,7 +49,7 @@ class gp_Ax2;
 class gp_Pln;
 class gp_Vec;
 
-namespace App
+namespace Base
 {
 class Color;
 }
@@ -316,6 +316,8 @@ public:
     Base::Matrix4D getTransform() const override;
     /// Bound box from the CasCade shape
     Base::BoundBox3d getBoundBox() const override;
+    /// More precise bound box from the CasCade shape
+    Base::BoundBox3d getBoundBoxOptimal() const;
     bool getCenterOfGravity(Base::Vector3d& center) const override;
     static void convertTogpTrsf(const Base::Matrix4D& mtrx, gp_Trsf& trsf);
     static void convertToMatrix(const gp_Trsf& trsf, Base::Matrix4D& mtrx);
@@ -477,7 +479,7 @@ public:
     void exportBrep(std::ostream&) const;
     void exportBinary(std::ostream&) const;
     void exportStl(const char* FileName, double deflection) const;
-    void exportFaceSet(double, double, const std::vector<App::Color>&, std::ostream&) const;
+    void exportFaceSet(double, double, const std::vector<Base::Color>&, std::ostream&) const;
     void exportLineSet(std::ostream&) const;
     //@}
 
@@ -1501,6 +1503,8 @@ public:
     void mapSubElement(const std::vector<TopoShape> &shapes, const char *op=nullptr);
     void mapSubElementsTo(std::vector<TopoShape>& shapes, const char* op = nullptr) const;
     bool hasPendingElementMap() const;
+
+    std::string getElementMapVersion() const override;
 
     void flushElementMap() const override;
 

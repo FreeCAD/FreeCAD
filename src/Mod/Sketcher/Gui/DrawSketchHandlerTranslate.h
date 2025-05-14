@@ -26,6 +26,8 @@
 
 #include <QApplication>
 
+#include <Base/Tools.h>
+
 #include <Gui/BitmapFactory.h>
 #include <Gui/Notifications.h>
 #include <Gui/Command.h>
@@ -124,7 +126,7 @@ private:
             Gui::Command::commitCommand();
         }
         catch (const Base::Exception& e) {
-            e.ReportException();
+            e.reportException();
             Gui::NotifyError(sketchgui,
                              QT_TRANSLATE_NOOP("Notifications", "Error"),
                              QT_TRANSLATE_NOOP("Notifications", "Failed to translate"));
@@ -150,7 +152,7 @@ private:
 
     QString getCrosshairCursorSVGName() const override
     {
-        return QString::fromLatin1("Sketcher_Pointer_Create_Translate");
+        return QStringLiteral("Sketcher_Pointer_Create_Translate");
     }
 
     std::unique_ptr<QWidget> createWidget() const override
@@ -238,7 +240,7 @@ private:
                                   stream.str().c_str());
         }
         catch (const Base::Exception& e) {
-            Base::Console().Error("%s\n", e.what());
+            Base::Console().error("%s\n", e.what());
         }
     }
 
@@ -584,7 +586,8 @@ void DSHTranslateControllerBase::doEnforceControlParameters(Base::Vector2d& onSk
             }
 
             if (onViewParameters[OnViewParameter::Fourth]->isSet) {
-                double angle = onViewParameters[OnViewParameter::Fourth]->getValue() * M_PI / 180;
+                double angle =
+                    Base::toRadians(onViewParameters[OnViewParameter::Fourth]->getValue());
                 onSketchPos.x = handler->referencePoint.x + cos(angle) * length;
                 onSketchPos.y = handler->referencePoint.y + sin(angle) * length;
             }
@@ -607,7 +610,8 @@ void DSHTranslateControllerBase::doEnforceControlParameters(Base::Vector2d& onSk
             }
 
             if (onViewParameters[OnViewParameter::Sixth]->isSet) {
-                double angle = onViewParameters[OnViewParameter::Sixth]->getValue() * M_PI / 180;
+                double angle =
+                    Base::toRadians(onViewParameters[OnViewParameter::Sixth]->getValue());
                 onSketchPos.x = handler->referencePoint.x + cos(angle) * length;
                 onSketchPos.y = handler->referencePoint.y + sin(angle) * length;
             }
@@ -647,7 +651,7 @@ void DSHTranslateController::adaptParameters(Base::Vector2d onSketchPos)
             Base::Vector2d vec2d = Base::Vector2d(handler->firstTranslationVector.x,
                                                   handler->firstTranslationVector.y);
             double angle = vec2d.Angle();
-            double range = angle * 180 / M_PI;
+            double range = angle * 180 / std::numbers::pi;
 
             if (!onViewParameters[OnViewParameter::Fourth]->isSet) {
                 setOnViewParameterValue(OnViewParameter::Fourth, range, Base::Unit::Angle);
@@ -669,7 +673,7 @@ void DSHTranslateController::adaptParameters(Base::Vector2d onSketchPos)
             Base::Vector2d vec2d = Base::Vector2d(handler->secondTranslationVector.x,
                                                   handler->secondTranslationVector.y);
             double angle = vec2d.Angle();
-            double range = angle * 180 / M_PI;
+            double range = angle * 180 / std::numbers::pi;
 
             if (!onViewParameters[OnViewParameter::Sixth]->isSet) {
                 setOnViewParameterValue(OnViewParameter::Sixth, range, Base::Unit::Angle);

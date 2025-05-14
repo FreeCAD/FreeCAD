@@ -58,6 +58,8 @@
 #include <Base/Console.h>
 #include <Base/Interpreter.h>
 
+#include <Gui/PreferencePages/DlgSettingsPDF.h>
+
 #include "View3DInventor.h"
 #include "View3DSettings.h"
 #include "Application.h"
@@ -93,7 +95,7 @@ void GLOverlayWidget::paintEvent(QPaintEvent*)
 TYPESYSTEM_SOURCE_ABSTRACT(Gui::View3DInventor,Gui::MDIView)
 
 View3DInventor::View3DInventor(Gui::Document* pcDocument, QWidget* parent,
-                               const QtGLWidget* sharewidget, Qt::WindowFlags wflags)
+                               const QOpenGLWidget* sharewidget, Qt::WindowFlags wflags)
     : MDIView(pcDocument, parent, wflags), _viewerPy(nullptr)
 {
     stack = new QStackedWidget(this);
@@ -106,7 +108,7 @@ View3DInventor::View3DInventor(Gui::Document* pcDocument, QWidget* parent,
     bool smoothing = false;
     bool glformat = false;
     int samples = View3DInventorViewer::getNumSamples();
-    QtGLFormat f;
+    QSurfaceFormat f;
 
     if (samples > 1) {
         glformat = true;
@@ -217,7 +219,7 @@ void View3DInventor::onRename(Gui::Document *pDoc)
 void View3DInventor::onUpdate()
 {
 #ifdef FC_LOGUPDATECHAIN
-    Base::Console().Log("Acti: Gui::View3DInventor::onUpdate()");
+    Base::Console().log("Acti: Gui::View3DInventor::onUpdate()");
 #endif
     update();
     _viewer->redraw();
@@ -250,12 +252,13 @@ void View3DInventor::print()
 void View3DInventor::printPdf()
 {
     QString filename = FileDialog::getSaveFileName(this, tr("Export PDF"), QString(),
-        QString::fromLatin1("%1 (*.pdf)").arg(tr("PDF file")));
+        QStringLiteral("%1 (*.pdf)").arg(tr("PDF file")));
     if (!filename.isEmpty()) {
         Gui::WaitCursor wc;
         QPrinter printer(QPrinter::ScreenResolution);
-        // setPdfVersion sets the printied PDF Version to comply with PDF/A-1b, more details under: https://www.kdab.com/creating-pdfa-documents-qt/
-        printer.setPdfVersion(QPagedPaintDevice::PdfVersion_A1b);
+        // setPdfVersion sets the printed PDF Version to what is chosen in Preferences/Import-Export/PDF
+        // more details under: https://www.kdab.com/creating-pdfa-documents-qt/
+        printer.setPdfVersion(Gui::Dialog::DlgSettingsPDF::evaluatePDFVersion());
         printer.setOutputFormat(QPrinter::PdfFormat);
         printer.setPageOrientation(QPageLayout::Landscape);
         printer.setOutputFileName(filename);
@@ -791,7 +794,7 @@ RayPickInfo View3DInventor::getObjInfoRay(Base::Vector3d* startvec, Base::Vector
     vdy = dirvec->y;
     vdz = dirvec->z;
     // near plane clipping is required to avoid false intersections
-    float nearClippingPlane = 0.1;
+    float nearClippingPlane = 0.1F;
 
     RayPickInfo ret = {false,
                        Base::Vector3d(),

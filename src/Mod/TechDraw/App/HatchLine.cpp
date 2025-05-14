@@ -35,6 +35,7 @@
 
 #include <Base/Console.h>
 #include <Base/Stream.h>
+#include <Base/Tools.h>
 #include <Base/Vector3D.h>
 
 #include "HatchLine.h"
@@ -110,21 +111,8 @@ Base::Vector3d LineSet::getUnitDir()
 
 Base::Vector3d LineSet::getUnitOrtho()
 {
-    Base::Vector3d result;
     Base::Vector3d unit = getUnitDir();
-    Base::Vector3d X(1.0, 0.0, 0.0);
-    Base::Vector3d Y(0.0, 1.0, 0.0);
-    if (unit.IsEqual(X, 0.000001)) {
-        result = Y;
-    } else if (unit.IsEqual(Y, 0.000001)) {
-        result = X;
-    } else {
-        double unitX = unit.x;
-        double unitY = unit.y;
-        result = Base::Vector3d(unitY, -unitX, 0.0);  //perpendicular
-    }
-    result.Normalize();   //probably redundant
-    return result;
+    return Base::Vector3d(-unit.y, unit.x, 0.0);
 }
 
 
@@ -242,7 +230,7 @@ void PATLineSpec::load(std::string& lineSpec)
 {
     std::vector<double> values = split(lineSpec);
     if (values.size() < 5) {
-        Base::Console().Message( "PATLineSpec::load(%s) invalid entry in pattern\n", lineSpec.c_str() );
+        Base::Console().message( "PATLineSpec::load(%s) invalid entry in pattern\n", lineSpec.c_str() );
         return;
     }
     m_angle    = values[0];
@@ -268,7 +256,7 @@ std::vector<double> PATLineSpec::split(std::string line)
             result.push_back(std::stod(cell));
         }
         catch (const std::invalid_argument& ia) {
-            Base::Console().Warning("Invalid number in cell: %s (%s) \n", cell.c_str(), ia.what());
+            Base::Console().warning("Invalid number in cell: %s (%s) \n", cell.c_str(), ia.what());
             result.push_back(0.0);
         }
     }
@@ -277,17 +265,17 @@ std::vector<double> PATLineSpec::split(std::string line)
 
 void PATLineSpec::dump(const char* title)
 {
-    Base::Console().Message( "DUMP: %s\n", title);
-    Base::Console().Message( "Angle: %.3f\n", m_angle);
-    Base::Console().Message( "Origin: %s\n", DrawUtil::formatVector(m_origin).c_str());
-    Base::Console().Message( "Offset: %.3f\n", m_offset);
-    Base::Console().Message( "Interval: %.3f\n", m_interval);
+    Base::Console().message( "DUMP: %s\n", title);
+    Base::Console().message( "Angle: %.3f\n", m_angle);
+    Base::Console().message( "Origin: %s\n", DrawUtil::formatVector(m_origin).c_str());
+    Base::Console().message( "Offset: %.3f\n", m_offset);
+    Base::Console().message( "Interval: %.3f\n", m_interval);
 //    std::stringstream ss;
 //    for (auto& d: m_dashParms) {
 //        ss << d << ", ";
 //    }
 //    ss << "end";
-//    Base::Console().Message( "DashSpec: %s\n", ss.str().c_str());
+//    Base::Console().message( "DashSpec: %s\n", ss.str().c_str());
     m_dashParms.dump("dashspec");
 }
 
@@ -299,7 +287,7 @@ std::vector<PATLineSpec> PATLineSpec::getSpecsForPattern(std::string& parmFile, 
     Base::ifstream inFile;
     inFile.open(fi, std::ifstream::in);
     if(!inFile.is_open()) {
-        Base::Console().Message("Cannot open input file.\n");
+        Base::Console().message("Cannot open input file.\n");
         return std::vector<PATLineSpec>();
     }
 
@@ -321,7 +309,7 @@ std::vector<PATLineSpec> PATLineSpec::getSpecsForPattern(std::string& parmFile, 
 
 bool  PATLineSpec::findPatternStart(std::ifstream& inFile, std::string& parmName)
 {
-//    Base::Console().Message("HL::findPatternStart() - parmName: %s\n", parmName.c_str());
+//    Base::Console().message("HL::findPatternStart() - parmName: %s\n", parmName.c_str());
     while (inFile.good() ){
          std::string line;
          std::getline(inFile, line);
@@ -376,7 +364,7 @@ std::vector<std::string> PATLineSpec::getPatternList(std::string& parmFile)
     Base::ifstream inFile;
     inFile.open (fi, std::ifstream::in);
     if(!inFile.is_open()) {
-        Base::Console().Message( "Cannot open input file.\n");
+        Base::Console().message( "Cannot open input file.\n");
         return result;
     }
 
@@ -409,7 +397,7 @@ double PATLineSpec::getSlope()
     } else if (angle < -90.0) {
         angle = (180 + angle);
     }
-    return tan(angle * M_PI/180.0);
+    return tan(Base::toRadians(angle));
 }
 
 bool PATLineSpec::isDashed()
@@ -426,7 +414,7 @@ double PATLineSpec::getIntervalX()
         return getInterval();
     } else {
         double perpAngle = fabs(getAngle() - 90.0);
-        return fabs(getInterval() / cos(perpAngle * M_PI/180.0));
+        return fabs(getInterval() / cos(Base::toRadians(perpAngle)));
     }
 }
 
@@ -439,7 +427,7 @@ double PATLineSpec::getIntervalY()
         return 0.0;
     } else {
         double perpAngle = fabs(getAngle() - 90.0);
-        return fabs(getInterval() * tan(perpAngle * M_PI/180.0));
+        return fabs(getInterval() * tan(Base::toRadians(perpAngle)));
     }
 }
 
@@ -469,7 +457,7 @@ void DashSpec::dump(const char* title)
     for (auto& p: m_parms) {
         ss << p << ", ";
     }
-    Base::Console().Message("DUMP - DashSpec - %s\n", ss.str().c_str());
+    Base::Console().message("DUMP - DashSpec - %s\n", ss.str().c_str());
 }
 
 

@@ -22,17 +22,20 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-#define _USE_MATH_DEFINES
-#include <cmath>
 #include <array>
+#include <cmath>
+#include <limits>
+#include <numbers>
+#include <string>
 #endif
 
 #include <fmt/format.h>
-#include <Base/Tools.h>
 
 #include "Exception.h"
 #include "Quantity.h"
+#include "Tools.h"
 #include "UnitsApi.h"
+#include "UnitsSchema.h"
 
 /** \defgroup Units Units system
     \ingroup BASE
@@ -49,7 +52,9 @@
 #pragma warning(disable : 4335)  // disable MAC file format warning on VC
 #endif
 
-using namespace Base;
+using Base::Quantity;
+using Base::QuantityFormat;
+using Base::UnitsSchema;
 
 // ====== Static attributes =========================
 // NOLINTNEXTLINE
@@ -59,7 +64,7 @@ int QuantityFormat::defaultDenominator = 8;  // for 1/8"
 QuantityFormat::QuantityFormat()
     : option(OmitGroupSeparator | RejectGroupSeparator)
     , format(Fixed)
-    , precision(UnitsApi::getDecimals())
+    , precision(static_cast<int>(UnitsApi::getDecimals()))
     , denominator(defaultDenominator)
 {}
 
@@ -236,6 +241,13 @@ Quantity Quantity::operator-() const
     return Quantity(-(this->myValue), this->myUnit);
 }
 
+std::string Quantity::getUserString() const
+{
+    double dummy1 {};  // to satisfy GCC
+    std::string dummy2 {};
+    return getUserString(dummy1, dummy2);
+}
+
 std::string Quantity::getUserString(double& factor, std::string& unitString) const
 {
     return Base::UnitsApi::schemaTranslate(*this, factor, unitString);
@@ -244,20 +256,18 @@ std::string Quantity::getUserString(double& factor, std::string& unitString) con
 std::string
 Quantity::getUserString(UnitsSchema* schema, double& factor, std::string& unitString) const
 {
-    return schema->schemaTranslate(*this, factor, unitString);
+    return schema->translate(*this, factor, unitString);
 }
 
 std::string Quantity::getSafeUserString() const
 {
-    auto ret = getUserString();
-    if (this->myValue) {
-        auto feedbackQty = parse(ret);
-        auto feedbackVal = feedbackQty.getValue();
-        if (feedbackVal == 0) {
-            ret = fmt::format("{} {}", this->myValue, this->getUnit().getString());
-        }
+    auto userStr = getUserString();
+    if (myValue != 0.0 && parse(userStr).getValue() == 0) {
+        auto unitStr = getUnit().getString();
+        userStr = fmt::format("{}{}{}", myValue, unitStr.empty() ? "" : " ", unitStr);
     }
-    return Base::Tools::escapeQuotesFromString(ret);
+
+    return Tools::escapeQuotesFromString(userStr);
 }
 
 /// true if it has a number without a unit
@@ -443,8 +453,8 @@ const Quantity Quantity::AngSecond(1.0 / 3600.0, Unit(0, 0, 0, 0, 0, 0, 0, 1)); 
 const Quantity
     Quantity::Degree(1.0,
                      Unit(0, 0, 0, 0, 0, 0, 0, 1));  // degree         (internal standard angle)
-const Quantity Quantity::Radian(180 / M_PI, Unit(0, 0, 0, 0, 0, 0, 0, 1));  // radian
-const Quantity Quantity::Gon(360.0 / 400.0, Unit(0, 0, 0, 0, 0, 0, 0, 1));  // gon
+const Quantity Quantity::Radian(180 / std::numbers::pi, Unit(0, 0, 0, 0, 0, 0, 0, 1));  // radian
+const Quantity Quantity::Gon(360.0 / 400.0, Unit(0, 0, 0, 0, 0, 0, 0, 1));              // gon
 
 
 // === Parser & Scanner stuff ===============================================
@@ -522,14 +532,14 @@ namespace QuantityParser
 #define yylex QuantityLexer
 int QuantityLexer();
 
-// Parser, defined in QuantityParser.y
+// Parser, defined in Quantity.y
 // NOLINTNEXTLINE
-#include "QuantityParser.c"
+#include "Quantity.tab.c"
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
-// Scanner, defined in QuantityParser.l
+// Scanner, defined in Quantity.l
 // NOLINTNEXTLINE
-#include "QuantityLexer.c"
+#include "Quantity.lex.c"
 #endif  // DOXYGEN_SHOULD_SKIP_THIS
 
 class StringBufferCleaner
@@ -568,7 +578,7 @@ Quantity Quantity::parse(const std::string& string)
         QuantityParser::yy_scan_string(string.c_str());
     QuantityParser::StringBufferCleaner cleaner(my_string_buffer);
     // set the global return variables
-    QuantResult = Quantity(DOUBLE_MIN);
+    QuantResult = Quantity(std::numeric_limits<double>::min());
     // run the parser
     QuantityParser::yyparse();
 

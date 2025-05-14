@@ -311,7 +311,7 @@ TextSet getUIStrings(Base::Type attacherType, eMapMode mmode)
         }
     }
 
-    Base::Console().Warning("No user-friendly string defined for this attachment mode and attacher type: %s %s \n",AttachEngine::getModeName(mmode).c_str(), attacherType.getName());
+    Base::Console().warning("No user-friendly string defined for this attachment mode and attacher type: %s %s \n",AttachEngine::getModeName(mmode).c_str(), attacherType.getName());
     return TwoStrings(QString::fromStdString(AttachEngine::getModeName(mmode)), QString());
 }
 
@@ -369,7 +369,7 @@ QStringList getRefListForMode(AttachEngine &attacher, eMapMode mmode)
         for(eRefType rt : rts){
             buf.append(getShapeTypeText(rt));
         }
-        strlist.append(buf.join(QString::fromLatin1(", ")));
+        strlist.append(buf.join(QStringLiteral(", ")));
     }
     return strlist;
 }

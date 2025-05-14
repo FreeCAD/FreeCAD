@@ -212,7 +212,7 @@ CmdTechDrawCosmeticVertexGroup::CmdTechDrawCosmeticVertexGroup()
 
 void CmdTechDrawCosmeticVertexGroup::activated(int iMsg)
 {
-//    Base::Console().Message("CMD::CosmeticVertexGroup - activated(%d)\n", iMsg);
+//    Base::Console().message("CMD::CosmeticVertexGroup - activated(%d)\n", iMsg);
     Gui::TaskView::TaskDialog *dlg = Gui::Control().activeDialog();
     if (dlg) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Task In Progress"),
@@ -233,7 +233,7 @@ void CmdTechDrawCosmeticVertexGroup::activated(int iMsg)
             execQuadrants(this);
             break;
         default:
-            Base::Console().Message("CMD::CVGrp - invalid iMsg: %d\n", iMsg);
+            Base::Console().message("CMD::CVGrp - invalid iMsg: %d\n", iMsg);
     };
     updateActive();
     Gui::Selection().clearSelection();
@@ -247,16 +247,16 @@ Gui::Action * CmdTechDrawCosmeticVertexGroup::createAction()
 
     QAction* p1 = pcAction->addAction(QString());
     p1->setIcon(Gui::BitmapFactory().iconFromTheme("actions/TechDraw_CosmeticVertex"));
-    p1->setObjectName(QString::fromLatin1("TechDraw_CosmeticVertex"));
-    p1->setWhatsThis(QString::fromLatin1("TechDraw_CosmeticVertex"));
+    p1->setObjectName(QStringLiteral("TechDraw_CosmeticVertex"));
+    p1->setWhatsThis(QStringLiteral("TechDraw_CosmeticVertex"));
     QAction* p2 = pcAction->addAction(QString());
     p2->setIcon(Gui::BitmapFactory().iconFromTheme("actions/TechDraw_Midpoints"));
-    p2->setObjectName(QString::fromLatin1("TechDraw_Midpoints"));
-    p2->setWhatsThis(QString::fromLatin1("TechDraw_Midpoints"));
+    p2->setObjectName(QStringLiteral("TechDraw_Midpoints"));
+    p2->setWhatsThis(QStringLiteral("TechDraw_Midpoints"));
     QAction* p3 = pcAction->addAction(QString());
     p3->setIcon(Gui::BitmapFactory().iconFromTheme("actions/TechDraw_Quadrants"));
-    p3->setObjectName(QString::fromLatin1("TechDraw_Quadrants"));
-    p3->setWhatsThis(QString::fromLatin1("TechDraw_Quadrants"));
+    p3->setObjectName(QStringLiteral("TechDraw_Quadrants"));
+    p3->setWhatsThis(QStringLiteral("TechDraw_Quadrants"));
 
     _pcAction = pcAction;
     languageChange();
@@ -305,7 +305,7 @@ bool CmdTechDrawCosmeticVertexGroup::isActive()
 
 void execCosmeticVertex(Gui::Command* cmd)
 {
-//    Base::Console().Message("execCosmeticVertex()\n");
+//    Base::Console().message("execCosmeticVertex()\n");
     TechDraw::DrawPage* page = DrawGuiUtil::findPage(cmd);
     if (!page) {
         return;
@@ -329,7 +329,7 @@ void execCosmeticVertex(Gui::Command* cmd)
 
 void execMidpoints(Gui::Command* cmd)
 {
-//    Base::Console().Message("execMidpoints()\n");
+//    Base::Console().message("execMidpoints()\n");
     TechDraw::DrawViewPart * dvp = nullptr;
     std::vector<std::string> selectedEdges = CommandHelpers::getSelectedSubElements(cmd, dvp, "Edge");
 
@@ -356,7 +356,7 @@ void execMidpoints(Gui::Command* cmd)
 
 void execQuadrants(Gui::Command* cmd)
 {
-//    Base::Console().Message("execQuadrants()\n");
+//    Base::Console().message("execQuadrants()\n");
     TechDraw::DrawViewPart* dvp = nullptr;
     std::vector<std::string> selectedEdges = CommandHelpers::getSelectedSubElements(cmd, dvp, "Edge");
 
@@ -423,7 +423,7 @@ void CmdTechDrawCosmeticVertex::activated(int iMsg)
     TechDraw::DrawViewPart* baseFeat = nullptr;
     baseFeat =  dynamic_cast<TechDraw::DrawViewPart*>((*shapes.begin()));
     if (!baseFeat) {
-        Base::Console().Message("CMD::CosmeticVertex - 1st shape is not DVP.  WTF?\n");
+        Base::Console().message("CMD::CosmeticVertex - 1st shape is not DVP.  WTF?\n");
         return;
     }
 
@@ -588,7 +588,7 @@ CmdTechDrawCenterLineGroup::CmdTechDrawCenterLineGroup()
 
 void CmdTechDrawCenterLineGroup::activated(int iMsg)
 {
-//    Base::Console().Message("CMD::CenterLineGroup - activated(%d)\n", iMsg);
+//    Base::Console().message("CMD::CenterLineGroup - activated(%d)\n", iMsg);
     Gui::TaskView::TaskDialog *dlg = Gui::Control().activeDialog();
     if (dlg) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Task In Progress"),
@@ -609,7 +609,7 @@ void CmdTechDrawCenterLineGroup::activated(int iMsg)
             exec2PointCenterLine(this);
             break;
         default:
-            Base::Console().Message("CMD::CVGrp - invalid iMsg: %d\n", iMsg);
+            Base::Console().message("CMD::CVGrp - invalid iMsg: %d\n", iMsg);
     };
 }
 
@@ -621,16 +621,16 @@ Gui::Action * CmdTechDrawCenterLineGroup::createAction()
 
     QAction* p1 = pcAction->addAction(QString());
     p1->setIcon(Gui::BitmapFactory().iconFromTheme("actions/TechDraw_FaceCenterLine"));
-    p1->setObjectName(QString::fromLatin1("TechDraw_FaceCenterLine"));
-    p1->setWhatsThis(QString::fromLatin1("TechDraw_FaceCenterLine"));
+    p1->setObjectName(QStringLiteral("TechDraw_FaceCenterLine"));
+    p1->setWhatsThis(QStringLiteral("TechDraw_FaceCenterLine"));
     QAction* p2 = pcAction->addAction(QString());
     p2->setIcon(Gui::BitmapFactory().iconFromTheme("actions/TechDraw_2LineCenterline"));
-    p2->setObjectName(QString::fromLatin1("TechDraw_2LineCenterLine"));
-    p2->setWhatsThis(QString::fromLatin1("TechDraw_2LineCenterLine"));
+    p2->setObjectName(QStringLiteral("TechDraw_2LineCenterLine"));
+    p2->setWhatsThis(QStringLiteral("TechDraw_2LineCenterLine"));
     QAction* p3 = pcAction->addAction(QString());
     p3->setIcon(Gui::BitmapFactory().iconFromTheme("actions/TechDraw_2PointCenterline"));
-    p3->setObjectName(QString::fromLatin1("TechDraw_2PointCenterLine"));
-    p3->setWhatsThis(QString::fromLatin1("TechDraw_2PointCenterLine"));
+    p3->setObjectName(QStringLiteral("TechDraw_2PointCenterLine"));
+    p3->setWhatsThis(QStringLiteral("TechDraw_2PointCenterLine"));
 
     _pcAction = pcAction;
     languageChange();
@@ -1074,7 +1074,7 @@ void execLine2Points(Gui::Command* cmd)
     //check if editing existing edge
     if (!edgeNames.empty() && (edgeNames.size() == 1)) {
         TechDraw::CosmeticEdge* ce = baseFeat->getCosmeticEdgeBySelection(edgeNames.front());
-        if (!ce || ce->m_geometry->getGeomType() != TechDraw::GeomType::GENERIC) {
+        if (!ce || ce->m_geometry->getGeomType() != GeomType::GENERIC) {
             QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong Selection"),
                              QObject::tr("Selection is not a Cosmetic Line."));
             return;
@@ -1218,8 +1218,8 @@ void execCosmeticCircle(Gui::Command* cmd)
     if (!edgeNames.empty() && (edgeNames.size() == 1)) {
         TechDraw::CosmeticEdge* ce = baseFeat->getCosmeticEdgeBySelection(edgeNames.front());
         if (!ce
-            || !(ce->m_geometry->getGeomType() == TechDraw::GeomType::CIRCLE
-                || ce->m_geometry->getGeomType() == TechDraw::GeomType::ARCOFCIRCLE)) {
+            || !(ce->m_geometry->getGeomType() == GeomType::CIRCLE
+                || ce->m_geometry->getGeomType() == GeomType::ARCOFCIRCLE)) {
             QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong Selection"),
                              QObject::tr("Selection is not a Cosmetic Circle or a Cosmetic Arc of Circle."));
             return;
@@ -1274,10 +1274,6 @@ void execCosmeticCircle(Gui::Command* cmd)
 //===========================================================================
 // TechDraw_CosmeticEraser
 //===========================================================================
-
-#define GEOMETRYEDGE 0
-#define COSMETICEDGE 1
-#define CENTERLINE 2
 
 DEF_STD_CMD_A(CmdTechDrawCosmeticEraser)
 
@@ -1345,25 +1341,25 @@ void CmdTechDrawCosmeticEraser::activated(int iMsg)
             if (geomType == "Edge") {
                 TechDraw::BaseGeomPtr bg = objFeat->getGeomByIndex(idx);
                 if (bg && bg->getCosmetic()) {
-                    int source = bg->source();
+                    SourceType source = bg->source();
                     std::string tag = bg->getCosmeticTag();
-                    if (source == COSMETICEDGE) {
+                    if (source == SourceType::COSMETICEDGE) {
                         ce2Delete.push_back(tag);
-                    } else if (source == CENTERLINE) {
+                    } else if (source == SourceType::CENTERLINE) {
                         cl2Delete.push_back(tag);
                     } else {
-                        Base::Console().Message(
-                            "CMD::CosmeticEraser - edge: %d is confused - source: %d\n", idx, source);
+                        Base::Console().message(
+                            "CMD::CosmeticEraser - edge: %d is confused - source: %d\n", idx, static_cast<int>(source));
                     }
                 }
             } else if (geomType == "Vertex") {
                 TechDraw::VertexPtr tdv = objFeat->getProjVertexByIndex(idx);
                 if (!tdv)
-                    Base::Console().Message("CMD::eraser - geom: %d not found!\n", idx);
+                    Base::Console().message("CMD::eraser - geom: %d not found!\n", idx);
 
                 std::string delTag = tdv->getCosmeticTag();
                 if (delTag.empty())
-                    Base::Console().Warning("Vertex%d is not cosmetic! Can not erase.\n", idx);
+                    Base::Console().warning("Vertex%d is not cosmetic! Can not erase.\n", idx);
                 cv2Delete.push_back(delTag);
             } else {
                 QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
@@ -1521,7 +1517,7 @@ void CmdTechDrawShowAll::activated(int iMsg)
     }
 
     Gui::ViewProvider* vp = QGIView::getViewProvider(baseFeat);
-    auto partVP = dynamic_cast<ViewProviderViewPart*>(vp);
+    auto partVP = freecad_cast<ViewProviderViewPart*>(vp);
     if (partVP) {
         bool state = partVP->ShowAllEdges.getValue();
         state = !state;

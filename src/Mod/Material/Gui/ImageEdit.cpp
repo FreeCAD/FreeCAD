@@ -111,7 +111,7 @@ ImageEdit::ImageEdit(const QString& propertyName,
     : QDialog(parent)
     , ui(new Ui_ImageEdit)
     , _material(material)
-    , _pixmap(QString::fromStdString(":/images/default_image.png"))
+    , _pixmap(QStringLiteral(":/images/default_image.png"))
 {
     ui->setupUi(this);
 
@@ -122,7 +122,7 @@ ImageEdit::ImageEdit(const QString& propertyName,
         _property = material->getAppearanceProperty(propertyName);
     }
     else {
-        Base::Console().Log("Property '%s' not found\n", propertyName.toStdString().c_str());
+        Base::Console().log("Property '%s' not found\n", propertyName.toStdString().c_str());
         _property = nullptr;
     }
     if (_property) {
@@ -141,7 +141,7 @@ ImageEdit::ImageEdit(const QString& propertyName,
         }
     }
     else {
-        Base::Console().Log("No value loaded\n");
+        Base::Console().log("No value loaded\n");
         showPixmap();
     }
 

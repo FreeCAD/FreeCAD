@@ -69,7 +69,7 @@ protected:
     {
         static_assert(std::is_base_of<PartDesignGui::ViewProvider, T>::value,
                 "Wrong template argument");
-        return dynamic_cast<T*>(vp);
+        return freecad_cast<T*>(vp);
     }
 
     template<typename T = App::DocumentObject> T* getObject() const
@@ -128,7 +128,7 @@ public:
     {
         static_assert(std::is_base_of<PartDesignGui::ViewProvider, T>::value,
                 "Wrong template argument");
-        return dynamic_cast<T*>(vp);
+        return freecad_cast<T*>(vp);
     }
 
     template<typename T = App::DocumentObject> T* getObject() const

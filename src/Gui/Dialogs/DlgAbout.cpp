@@ -47,8 +47,9 @@
 #include <Base/Console.h>
 #include <Base/Interpreter.h>
 #include <CXX/WrapPython.h>
+#include <Gui/Application.h>
 
-#include <boost/filesystem.hpp>
+#include <filesystem>
 #include <LibraryVersions.h>
 #include <zlib.h>
 
@@ -60,60 +61,7 @@
 
 using namespace Gui;
 using namespace Gui::Dialog;
-namespace fs = boost::filesystem;
-
-static QString prettyProductInfoWrapper()
-{
-    auto productName = QSysInfo::prettyProductName();
-#if QT_VERSION < QT_VERSION_CHECK(6, 5, 0)
-#ifdef FC_OS_MACOSX
-    auto macosVersionFile =
-        QString::fromUtf8("/System/Library/CoreServices/.SystemVersionPlatform.plist");
-    auto fi = QFileInfo(macosVersionFile);
-    if (fi.exists() && fi.isReadable()) {
-        auto plistFile = QFile(macosVersionFile);
-        plistFile.open(QIODevice::ReadOnly);
-        while (!plistFile.atEnd()) {
-            auto line = plistFile.readLine();
-            if (line.contains("ProductUserVisibleVersion")) {
-                auto nextLine = plistFile.readLine();
-                if (nextLine.contains("<string>")) {
-                    QRegularExpression re(QString::fromUtf8("\\s*<string>(.*)</string>"));
-                    auto matches = re.match(QString::fromUtf8(nextLine));
-                    if (matches.hasMatch()) {
-                        productName = QString::fromUtf8("macOS ") + matches.captured(1);
-                        break;
-                    }
-                }
-            }
-        }
-    }
-#endif
-#endif
-#ifdef FC_OS_WIN64
-    QSettings regKey {
-        QString::fromUtf8("HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion"),
-        QSettings::NativeFormat};
-    if (regKey.contains(QString::fromUtf8("CurrentBuildNumber"))) {
-        auto buildNumber = regKey.value(QString::fromUtf8("CurrentBuildNumber")).toInt();
-        if (buildNumber > 0) {
-            if (buildNumber < 9200) {
-                productName = QString::fromUtf8("Windows 7 build %1").arg(buildNumber);
-            }
-            else if (buildNumber < 10240) {
-                productName = QString::fromUtf8("Windows 8 build %1").arg(buildNumber);
-            }
-            else if (buildNumber < 22000) {
-                productName = QString::fromUtf8("Windows 10 build %1").arg(buildNumber);
-            }
-            else {
-                productName = QString::fromUtf8("Windows 11 build %1").arg(buildNumber);
-            }
-        }
-    }
-#endif
-    return productName;
-}
+namespace fs = std::filesystem;
 
 // ------------------------------------------------------------------------------
 
@@ -211,7 +159,7 @@ QPixmap AboutDialog::aboutImage() const
 {
     // See if we have a custom About screen image set
     QPixmap about_image;
-    QFileInfo fi(QString::fromLatin1("images:about_image.png"));
+    QFileInfo fi(QStringLiteral("images:about_image.png"));
     if (fi.isFile() && fi.exists()) {
         about_image.load(fi.filePath(), "PNG");
     }
@@ -251,7 +199,7 @@ void AboutDialog::setupLabels()
 #endif
     // avoid overriding user set style sheet
     if (qApp->styleSheet().isEmpty()) {
-        setStyleSheet(QString::fromLatin1("Gui--Dialog--AboutDialog QLabel {font-size: %1pt;}")
+        setStyleSheet(QStringLiteral("Gui--Dialog--AboutDialog QLabel {font-size: %1pt;}")
                           .arg(fontSize));
     }
 
@@ -272,41 +220,41 @@ void AboutDialog::setupLabels()
     // gets replaced to "<b>FreeCAD</b>", for example
 
     QString author = ui->labelAuthor->text();
-    author.replace(QString::fromLatin1("Unknown Application"), exeName);
-    author.replace(QString::fromLatin1("(c) Unknown Author"), banner);
+    author.replace(QStringLiteral("Unknown Application"), exeName);
+    author.replace(QStringLiteral("(c) Unknown Author"), banner);
     ui->labelAuthor->setText(author);
     ui->labelAuthor->setUrl(mturl);
 
     if (qApp->styleSheet().isEmpty()) {
-        ui->labelAuthor->setStyleSheet(QString::fromLatin1(
+        ui->labelAuthor->setStyleSheet(QStringLiteral(
             "Gui--UrlLabel {color: #0000FF;text-decoration: underline;font-weight: 600;}"));
     }
 
     QString version = ui->labelBuildVersion->text();
-    version.replace(QString::fromLatin1("Unknown"),
-                    QString::fromLatin1("%1.%2.%3%4").arg(major, minor, point, suffix));
+    version.replace(QStringLiteral("Unknown"),
+                    QStringLiteral("%1.%2.%3%4").arg(major, minor, point, suffix));
     ui->labelBuildVersion->setText(version);
 
     QString revision = ui->labelBuildRevision->text();
-    revision.replace(QString::fromLatin1("Unknown"), build);
+    revision.replace(QStringLiteral("Unknown"), build);
     ui->labelBuildRevision->setText(revision);
 
     QString date = ui->labelBuildDate->text();
-    date.replace(QString::fromLatin1("Unknown"), disda);
+    date.replace(QStringLiteral("Unknown"), disda);
     ui->labelBuildDate->setText(date);
 
     QString os = ui->labelBuildOS->text();
-    os.replace(QString::fromLatin1("Unknown"), prettyProductInfoWrapper());
+    os.replace(QStringLiteral("Unknown"), App::Application::prettyProductInfoWrapper());
     ui->labelBuildOS->setText(os);
 
     QString architecture = ui->labelBuildRunArchitecture->text();
     if (QSysInfo::buildCpuArchitecture() == QSysInfo::currentCpuArchitecture()) {
-        architecture.replace(QString::fromLatin1("Unknown"), QSysInfo::buildCpuArchitecture());
+        architecture.replace(QStringLiteral("Unknown"), QSysInfo::buildCpuArchitecture());
     }
     else {
         architecture.replace(
-            QString::fromLatin1("Unknown"),
-            QString::fromLatin1("%1 (running on: %2)")
+            QStringLiteral("Unknown"),
+            QStringLiteral("%1 (running on: %2)")
                 .arg(QSysInfo::buildCpuArchitecture(), QSysInfo::currentCpuArchitecture()));
     }
     ui->labelBuildRunArchitecture->setText(architecture);
@@ -315,7 +263,7 @@ void AboutDialog::setupLabels()
     it = config.find("BuildRevisionBranch");
     if (it != config.end()) {
         QString branch = ui->labelBuildBranch->text();
-        branch.replace(QString::fromLatin1("Unknown"), QString::fromStdString(it->second));
+        branch.replace(QStringLiteral("Unknown"), QString::fromStdString(it->second));
         ui->labelBuildBranch->setText(branch);
     }
     else {
@@ -328,7 +276,7 @@ void AboutDialog::setupLabels()
     if (it != config.end()) {
         QString hash = ui->labelBuildHash->text();
         hash.replace(
-            QString::fromLatin1("Unknown"),
+            QStringLiteral("Unknown"),
             QString::fromStdString(it->second).left(7));  // Use the 7-char abbreviated hash
         ui->labelBuildHash->setText(hash);
         if (auto url_itr = config.find("BuildRepositoryURL"); url_itr != config.end()) {
@@ -338,15 +286,15 @@ void AboutDialog::setupLabels()
                 url = url.left(space);  // Strip off the branch information to get just the repo
             }
 
-            if (url == QString::fromUtf8("Unknown")) {
-                url = QString::fromUtf8("https://github.com/FreeCAD/FreeCAD");  // Just take a guess
+            if (url == QStringLiteral("Unknown")) {
+                url = QStringLiteral("https://github.com/FreeCAD/FreeCAD");  // Just take a guess
             }
 
             // This may only create valid URLs for Github, but some other hosts use the same format
             // so give it a shot...
-            auto https = url.replace(QString::fromUtf8("git://"), QString::fromUtf8("https://"));
-            https.replace(QString::fromUtf8(".git"), QString::fromUtf8(""));
-            ui->labelBuildHash->setUrl(https + QString::fromUtf8("/commit/")
+            auto https = url.replace(QStringLiteral("git://"), QStringLiteral("https://"));
+            https.replace(QStringLiteral(".git"), QStringLiteral(""));
+            ui->labelBuildHash->setUrl(https + QStringLiteral("/commit/")
                                        + QString::fromStdString(it->second));
         }
     }
@@ -366,26 +314,26 @@ void AboutDialog::showCredits()
     }
 
     auto tab_credits = new QWidget();
-    tab_credits->setObjectName(QString::fromLatin1("tab_credits"));
+    tab_credits->setObjectName(QStringLiteral("tab_credits"));
     ui->tabWidget->addTab(tab_credits, tr("Credits"));
     auto hlayout = new QVBoxLayout(tab_credits);
     auto textField = new QTextBrowser(tab_credits);
-    textField->setOpenExternalLinks(true);
+    textField->setOpenLinks(false);
     hlayout->addWidget(textField);
 
-    QString creditsHTML = QString::fromLatin1("<html><body><p>");
+    QString creditsHTML = QStringLiteral("<html><body><p>");
     //: Header for bgbsww
     creditsHTML +=
         tr("This version of FreeCAD is dedicated to the memory of Brad McLean, aka bgbsww.");
     //: Header for the Credits tab of the About screen
-    creditsHTML += QString::fromLatin1("</p><h1>");
+    creditsHTML += QStringLiteral("</p><h1>");
     creditsHTML += tr("Credits");
-    creditsHTML += QString::fromLatin1("</h1><p>");
+    creditsHTML += QStringLiteral("</h1><p>");
     creditsHTML += tr("FreeCAD would not be possible without the contributions of");
-    creditsHTML += QString::fromLatin1(":</p><h2>");
+    creditsHTML += QStringLiteral(":</p><h2>");
     //: Header for the list of individual people in the Credits list.
     creditsHTML += tr("Individuals");
-    creditsHTML += QString::fromLatin1("</h2><ul>");
+    creditsHTML += QStringLiteral("</h2><ul>");
 
     QTextStream stream(&creditsFile);
 #if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
@@ -394,42 +342,41 @@ void AboutDialog::showCredits()
     QString line;
     while (stream.readLineInto(&line)) {
         if (!line.isEmpty()) {
-            if (line == QString::fromLatin1("Firms")) {
-                creditsHTML += QString::fromLatin1("</ul><h2>");
+            if (line == QStringLiteral("Firms")) {
+                creditsHTML += QStringLiteral("</ul><h2>");
                 //: Header for the list of companies/organizations in the Credits list.
                 creditsHTML += tr("Organizations");
-                creditsHTML += QString::fromLatin1("</h2><ul>");
+                creditsHTML += QStringLiteral("</h2><ul>");
             }
             else {
-                creditsHTML += QString::fromLatin1("<li>") + line + QString::fromLatin1("</li>");
+                creditsHTML += QStringLiteral("<li>") + line + QStringLiteral("</li>");
             }
         }
     }
-    creditsHTML += QString::fromLatin1("</ul></body></html>");
+    creditsHTML += QStringLiteral("</ul></body></html>");
     textField->setHtml(creditsHTML);
 }
 
 void AboutDialog::showLicenseInformation()
 {
-    QString licenseFileURL = QString::fromLatin1("%1/LICENSE.html")
+    QString licenseFileURL = QStringLiteral("%1/LICENSE.html")
                                  .arg(QString::fromStdString(App::Application::getHelpDir()));
     QFile licenseFile(licenseFileURL);
 
     if (licenseFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
         QString licenseHTML = QString::fromUtf8(licenseFile.readAll());
         const auto placeholder =
-            QString::fromUtf8("<!--PLACEHOLDER_FOR_ADDITIONAL_LICENSE_INFORMATION-->");
+            QStringLiteral("<!--PLACEHOLDER_FOR_ADDITIONAL_LICENSE_INFORMATION-->");
         licenseHTML.replace(placeholder, getAdditionalLicenseInformation());
 
         ui->tabWidget->removeTab(1);  // Hide the license placeholder widget
 
         auto tab_license = new QWidget();
-        tab_license->setObjectName(QString::fromLatin1("tab_license"));
+        tab_license->setObjectName(QStringLiteral("tab_license"));
         ui->tabWidget->addTab(tab_license, tr("License"));
         auto hlayout = new QVBoxLayout(tab_license);
         auto textField = new QTextBrowser(tab_license);
         textField->setOpenExternalLinks(true);
-        textField->setOpenLinks(true);
         hlayout->addWidget(textField);
 
         textField->setHtml(licenseHTML);
@@ -438,7 +385,7 @@ void AboutDialog::showLicenseInformation()
         QString info(QLatin1String("SUCH DAMAGES.<hr/>"));
         info += getAdditionalLicenseInformation();
         QString lictext = ui->textBrowserLicense->toHtml();
-        lictext.replace(QString::fromLatin1("SUCH DAMAGES.<hr/>"), info);
+        lictext.replace(QStringLiteral("SUCH DAMAGES.<hr/>"), info);
         ui->textBrowserLicense->setHtml(lictext);
     }
 }
@@ -450,7 +397,7 @@ QString AboutDialog::getAdditionalLicenseInformation() const
     // and add an <hr/> tag at the end to nicely separate license blocks
     QString info;
 #ifdef _USE_3DCONNEXION_SDK
-    info += QString::fromUtf8(
+    info += QStringLiteral(
         "<h2>3D Mouse Support</h2>"
         "<p>Development tools and related technology provided under license from 3Dconnexion.<br/>"
         "Copyright &#169; 1992&ndash;2012 3Dconnexion. All rights reserved.</p>"
@@ -462,15 +409,14 @@ QString AboutDialog::getAdditionalLicenseInformation() const
 void AboutDialog::showLibraryInformation()
 {
     auto tab_library = new QWidget();
-    tab_library->setObjectName(QString::fromLatin1("tab_library"));
+    tab_library->setObjectName(QStringLiteral("tab_library"));
     ui->tabWidget->addTab(tab_library, tr("Libraries"));
     auto hlayout = new QVBoxLayout(tab_library);
     auto textField = new QTextBrowser(tab_library);
-    textField->setOpenExternalLinks(false);
-    textField->setOpenLinks(false);
+    textField->setOpenExternalLinks(true);
     hlayout->addWidget(textField);
 
-    QString baseurl = QString::fromLatin1("file:///%1/ThirdPartyLibraries.html")
+    QString baseurl = QStringLiteral("file:///%1/ThirdPartyLibraries.html")
                           .arg(QString::fromStdString(App::Application::getHelpDir()));
 
     textField->setSource(QUrl(baseurl));
@@ -485,7 +431,7 @@ void AboutDialog::showCollectionInformation()
     }
 
     auto tab_collection = new QWidget();
-    tab_collection->setObjectName(QString::fromLatin1("tab_collection"));
+    tab_collection->setObjectName(QStringLiteral("tab_collection"));
     ui->tabWidget->addTab(tab_collection, tr("Collection"));
     auto hlayout = new QVBoxLayout(tab_collection);
     auto textField = new QTextBrowser(tab_collection);
@@ -504,19 +450,13 @@ void AboutDialog::showPrivacyPolicy()
     }
     auto text = QString::fromUtf8(policyFile.readAll());
     auto tabPrivacyPolicy = new QWidget();
-    tabPrivacyPolicy->setObjectName(QString::fromLatin1("tabPrivacyPolicy"));
+    tabPrivacyPolicy->setObjectName(QStringLiteral("tabPrivacyPolicy"));
     ui->tabWidget->addTab(tabPrivacyPolicy, tr("Privacy Policy"));
     auto hLayout = new QVBoxLayout(tabPrivacyPolicy);
     auto textField = new QTextBrowser(tabPrivacyPolicy);
     textField->setOpenExternalLinks(true);
     hLayout->addWidget(textField);
-
-#if QT_VERSION < QT_VERSION_CHECK(5, 15, 0)
-    // We can't actually render the markdown, so just display it as text
-    textField->setText(text);
-#else
     textField->setMarkdown(text);
-#endif
 }
 
 void AboutDialog::linkActivated(const QUrl& link)
@@ -528,45 +468,11 @@ void AboutDialog::linkActivated(const QUrl& link)
     QString fragment = link.fragment();
     if (fragment.startsWith(QLatin1String("_Toc"))) {
         QString prefix = fragment.mid(4);
-        title = QString::fromLatin1("%1 %2").arg(prefix, title);
+        title = QStringLiteral("%1 %2").arg(prefix, title);
     }
     licenseView->setWindowTitle(title);
     getMainWindow()->addWindow(licenseView);
     licenseView->setSource(link);
-}
-
-void AboutDialog::addModuleInfo(QTextStream& str, const QString& modPath, bool& firstMod)
-{
-    QFileInfo mod(modPath);
-    if (mod.isHidden()) {  // Ignore hidden directories
-        return;
-    }
-    if (firstMod) {
-        firstMod = false;
-        str << "Installed mods: \n";
-    }
-    str << "  * " << (mod.isDir() ? QDir(modPath).dirName() : mod.fileName());
-    try {
-        auto metadataFile =
-            boost::filesystem::path(mod.absoluteFilePath().toStdString()) / "package.xml";
-        if (boost::filesystem::exists(metadataFile)) {
-            App::Metadata metadata(metadataFile);
-            if (metadata.version() != App::Meta::Version()) {
-                str << QLatin1String(" ") + QString::fromStdString(metadata.version().str());
-            }
-        }
-    }
-    catch (const Base::Exception& e) {
-        auto what = QString::fromUtf8(e.what()).trimmed().replace(QChar::fromLatin1('\n'),
-                                                                  QChar::fromLatin1(' '));
-        str << " (Malformed metadata: " << what << ")";
-    }
-    QFileInfo disablingFile(mod.absoluteFilePath(), QString::fromLatin1("ADDON_DISABLED"));
-    if (disablingFile.exists()) {
-        str << " (Disabled)";
-    }
-
-    str << "\n";
 }
 
 void AboutDialog::copyToClipboard()
@@ -574,188 +480,9 @@ void AboutDialog::copyToClipboard()
     QString data;
     QTextStream str(&data);
     std::map<std::string, std::string>& config = App::Application::Config();
-    std::map<std::string, std::string>::iterator it;
-    QString exe = QString::fromStdString(App::Application::getExecutableName());
-
-    QString major = QString::fromStdString(config["BuildVersionMajor"]);
-    QString minor = QString::fromStdString(config["BuildVersionMinor"]);
-    QString point = QString::fromStdString(config["BuildVersionPoint"]);
-    QString suffix = QString::fromStdString(config["BuildVersionSuffix"]);
-    QString build = QString::fromStdString(config["BuildRevision"]);
-
-    QString deskEnv =
-        QProcessEnvironment::systemEnvironment().value(QStringLiteral("XDG_CURRENT_DESKTOP"),
-                                                       QString());
-    QString deskSess =
-        QProcessEnvironment::systemEnvironment().value(QStringLiteral("DESKTOP_SESSION"),
-                                                       QString());
-    QStringList deskInfoList;
-    QString deskInfo;
-
-    if (!deskEnv.isEmpty()) {
-        deskInfoList.append(deskEnv);
-    }
-    if (!deskSess.isEmpty()) {
-        deskInfoList.append(deskSess);
-    }
-    if (qGuiApp->platformName() != QLatin1String("windows")
-        && qGuiApp->platformName() != QLatin1String("cocoa")) {
-        deskInfoList.append(qGuiApp->platformName());
-    }
-    if (!deskInfoList.isEmpty()) {
-        deskInfo = QLatin1String(" (") + deskInfoList.join(QLatin1String("/")) + QLatin1String(")");
-    }
-
-    str << "OS: " << prettyProductInfoWrapper() << deskInfo << '\n';
-    if (QSysInfo::buildCpuArchitecture() == QSysInfo::currentCpuArchitecture()) {
-        str << "Architecture: " << QSysInfo::buildCpuArchitecture() << "\n";
-    }
-    else {
-        str << "Architecture: " << QSysInfo::buildCpuArchitecture()
-            << "(running on: " << QSysInfo::currentCpuArchitecture() << ")\n";
-    }
-    str << "Version: " << major << "." << minor << "." << point << suffix << "." << build;
-#ifdef FC_CONDA
-    str << " Conda";
-#endif
-#ifdef FC_FLATPAK
-    str << " Flatpak";
-#endif
-    char* appimage = getenv("APPIMAGE");
-    if (appimage) {
-        str << " AppImage";
-    }
-    char* snap = getenv("SNAP_REVISION");
-    if (snap) {
-        str << " Snap " << snap;
-    }
-    str << '\n';
-
-#if defined(_DEBUG) || defined(DEBUG)
-    str << "Build type: Debug\n";
-#elif defined(NDEBUG)
-    str << "Build type: Release\n";
-#elif defined(CMAKE_BUILD_TYPE)
-    str << "Build type: " << CMAKE_BUILD_TYPE << '\n';
-#else
-    str << "Build type: Unknown\n";
-#endif
-    it = config.find("BuildRevisionBranch");
-    if (it != config.end()) {
-        str << "Branch: " << QString::fromStdString(it->second) << '\n';
-    }
-    it = config.find("BuildRevisionHash");
-    if (it != config.end()) {
-        str << "Hash: " << QString::fromStdString(it->second) << '\n';
-    }
-    // report also the version numbers of the most important libraries in FreeCAD
-    str << "Python " << PY_VERSION << ", ";
-    str << "Qt " << QT_VERSION_STR << ", ";
-    str << "Coin " << COIN_VERSION << ", ";
-    str << "Vtk " << fcVtkVersion << ", ";
-
-    const char* cmd = "import ifcopenshell\n"
-                      "version = ifcopenshell.version";
-    PyObject * ifcopenshellVer = nullptr;
-
-    try {
-        ifcopenshellVer = Base::Interpreter().getValue(cmd, "version");
-    }
-    catch (const Base::Exception& e) {
-        Base::Console().Log("%s (safe to ignore, unless using the BIM workbench and IFC).\n", e.what());
-    }
-
-    if (ifcopenshellVer) {
-        const char* ifcopenshellVerAsStr = PyUnicode_AsUTF8(ifcopenshellVer);
-
-        if (ifcopenshellVerAsStr) {
-            str << "IfcOpenShell " << ifcopenshellVerAsStr << ", ";
-            Py_DECREF(ifcopenshellVerAsStr);
-        }
-        Py_DECREF(ifcopenshellVer);
-    }
-
-#if defined(HAVE_OCC_VERSION)
-    str << "OCC " << OCC_VERSION_MAJOR << "." << OCC_VERSION_MINOR << "." << OCC_VERSION_MAINTENANCE
-#ifdef OCC_VERSION_DEVELOPMENT
-        << "." OCC_VERSION_DEVELOPMENT
-#endif
-        << '\n';
-#endif
-    QLocale loc;
-    str << "Locale: " << QLocale::languageToString(loc.language()) << "/"
-#if QT_VERSION < QT_VERSION_CHECK(6, 6, 0)
-        << QLocale::countryToString(loc.country())
-#else
-        << QLocale::territoryToString(loc.territory())
-#endif
-        << " (" << loc.name() << ")";
-    if (loc != QLocale::system()) {
-        loc = QLocale::system();
-        str << " [ OS: " << QLocale::languageToString(loc.language()) << "/"
-#if QT_VERSION < QT_VERSION_CHECK(6, 6, 0)
-            << QLocale::countryToString(loc.country())
-#else
-            << QLocale::territoryToString(loc.territory())
-#endif
-            << " (" << loc.name() << ") ]";
-    }
-    str << "\n";
-
-    // Add Stylesheet/Theme/Qtstyle information
-    std::string styleSheet =
-        App::GetApplication()
-            .GetParameterGroupByPath("User parameter:BaseApp/Preferences/MainWindow")
-            ->GetASCII("StyleSheet");
-    std::string theme =
-        App::GetApplication()
-            .GetParameterGroupByPath("User parameter:BaseApp/Preferences/MainWindow")
-            ->GetASCII("Theme");
-#if QT_VERSION >= QT_VERSION_CHECK(6, 1, 0)
-    std::string style = qApp->style()->name().toStdString();
-#else
-    std::string style =
-        App::GetApplication()
-            .GetParameterGroupByPath("User parameter:BaseApp/Preferences/MainWindow")
-            ->GetASCII("QtStyle");
-    if (style.empty()) {
-        style = "Qt default";
-    }
-#endif
-    if (styleSheet.empty()) {
-        styleSheet = "unset";
-    }
-    if (theme.empty()) {
-        theme = "unset";
-    }
-
-    str << "Stylesheet/Theme/QtStyle: " << QString::fromStdString(styleSheet) << "/"
-        << QString::fromStdString(theme) << "/" << QString::fromStdString(style) << "\n";
-
-    // Add DPI information
-    str << "Logical/physical DPI: "
-        << QApplication::primaryScreen()->logicalDotsPerInch()
-        << "/"
-        << QApplication::primaryScreen()->physicalDotsPerInch()
-        << "\n";
-
-    // Add installed module information:
-    auto modDir = fs::path(App::Application::getUserAppDataDir()) / "Mod";
-    bool firstMod = true;
-    if (fs::exists(modDir) && fs::is_directory(modDir)) {
-        for (const auto& mod : fs::directory_iterator(modDir)) {
-            auto dirName = mod.path().string();
-            addModuleInfo(str, QString::fromStdString(dirName), firstMod);
-        }
-    }
-    auto additionalModules = config.find("AdditionalModulePaths");
-
-    if (additionalModules != config.end()) {
-        auto mods = QString::fromStdString(additionalModules->second).split(QChar::fromLatin1(';'));
-        for (const auto& mod : mods) {
-            addModuleInfo(str, mod, firstMod);
-        }
-    }
+    App::Application::getVerboseCommonInfo(str, config);
+    Gui::Application::getVerboseDPIStyleInfo(str);
+    App::Application::getVerboseAddOnsInfo(str, config);
 
     QClipboard* cb = QApplication::clipboard();
     cb->setText(data);

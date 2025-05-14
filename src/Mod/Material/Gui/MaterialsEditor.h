@@ -82,11 +82,7 @@ public:
 
     Materials::MaterialManager& getMaterialManager()
     {
-        return _materialManager;
-    }
-    Materials::ModelManager& getModelManager()
-    {
-        return _modelManager;
+        return Materials::MaterialManager::getManager();
     }
 
     static QString libraryPath(const std::shared_ptr<Materials::Material>& material);
@@ -114,8 +110,6 @@ protected:
 
 private:
     std::unique_ptr<Ui_MaterialsEditor> ui;
-    Materials::MaterialManager _materialManager;
-    Materials::ModelManager _modelManager;
     std::shared_ptr<Materials::Material> _material;
     AppearancePreview* _rendered;
     bool _materialSelected;
@@ -224,7 +218,7 @@ private:
     }
     void setIncludeEmptyLibraries(bool value)
     {
-        Base::Console().Log("setIncludeEmptyLibraries(%s)\n", (value ? "true" : "false"));
+        Base::Console().log("setIncludeEmptyLibraries(%s)\n", (value ? "true" : "false"));
         _filterOptions.setIncludeEmptyLibraries(value);
     }
 

@@ -74,13 +74,13 @@ PythonEditor::PythonEditor(QWidget* parent)
 
     // set accelerators
     auto comment = new QShortcut(this);
-    comment->setKey(QKeySequence(QString::fromLatin1("ALT+C")));
+    comment->setKey(QKeySequence(QStringLiteral("ALT+C")));
 
     auto uncomment = new QShortcut(this);
-    uncomment->setKey(QKeySequence(QString::fromLatin1("ALT+U")));
+    uncomment->setKey(QKeySequence(QStringLiteral("ALT+U")));
 
     auto execInConsole = new QShortcut(this);
-    execInConsole->setKey(QKeySequence(QString::fromLatin1("ALT+SHIFT+P")));
+    execInConsole->setKey(QKeySequence(QStringLiteral("ALT+SHIFT+P")));
 
     connect(comment, &QShortcut::activated, this, &PythonEditor::onComment);
     connect(uncomment, &QShortcut::activated, this, &PythonEditor::onUncomment);
@@ -175,12 +175,12 @@ void PythonEditor::contextMenuEvent ( QContextMenuEvent * e )
     if (!isReadOnly()) {
         menu->addSeparator();
         QAction* comment = menu->addAction( tr("Comment"), this, &PythonEditor::onComment);
-        comment->setShortcut(QKeySequence(QString::fromLatin1("ALT+C")));
+        comment->setShortcut(QKeySequence(QStringLiteral("ALT+C")));
         QAction* uncomment = menu->addAction( tr("Uncomment"), this, &PythonEditor::onUncomment);
-        uncomment->setShortcut(QKeySequence(QString::fromLatin1("ALT+U")));
+        uncomment->setShortcut(QKeySequence(QStringLiteral("ALT+U")));
         QAction* execInConsole = menu->addAction( tr("Execute in console"),
                                                   this, &PythonEditor::onExecuteInConsole);
-        execInConsole->setShortcut(QKeySequence(QString::fromLatin1("ALT+Shift+P")));
+        execInConsole->setShortcut(QKeySequence(QStringLiteral("ALT+Shift+P")));
     }
 
     menu->exec(e->globalPos());
@@ -199,8 +199,8 @@ void PythonEditor::keyPressEvent(QKeyEvent* e)
         ParameterGrp::handle hPrefGrp = getWindowParameter();
         int indent = hPrefGrp->GetInt( "IndentSize", 4 );
         bool space = hPrefGrp->GetBool( "Spaces", true );
-        QString ch = space ? QString::fromLatin1(" ")
-                           : QString::fromLatin1("\t");
+        QString ch = space ? QStringLiteral(" ")
+                           : QStringLiteral("\t");
 
         QTextCursor cursor = textCursor();
         QString currentLineText = cursor.block().text();
@@ -238,25 +238,7 @@ void PythonEditor::keyPressEvent(QKeyEvent* e)
 
 void PythonEditor::onComment()
 {
-    QTextCursor cursor = textCursor();
-    int selStart = cursor.selectionStart();
-    int selEnd = cursor.selectionEnd();
-    QTextBlock block;
-    cursor.beginEditBlock();
-    for (block = document()->begin(); block.isValid(); block = block.next()) {
-        int pos = block.position();
-        int off = block.length()-1;
-        // at least one char of the block is part of the selection
-        if ( pos >= selStart || pos+off >= selStart) {
-            if ( pos+1 > selEnd )
-                break; // end of selection reached
-            cursor.setPosition(block.position());
-            cursor.insertText(QLatin1String("#"));
-                selEnd++;
-        }
-    }
-
-    cursor.endEditBlock();
+    prepend(QStringLiteral("#"));
 }
 
 void PythonEditor::onUncomment()
@@ -340,9 +322,9 @@ void PythonEditor::onExecuteInConsole()
                 Gui::Command::doCommand(Gui::Command::Doc, dedentedCode.toStdString().c_str());
             } catch (const Base::Exception& e) {
                 QString errorMessage = QString::fromStdString(e.what());
-                Base::Console().Error("Error executing Python code:\n%s\n", errorMessage.toUtf8().constData());
+                Base::Console().error("Error executing Python code:\n%s\n", errorMessage.toUtf8().constData());
             } catch (...) {
-                Base::Console().Error("An unknown error occurred while executing Python code.\n");
+                Base::Console().error("An unknown error occurred while executing Python code.\n");
             }
         }
     }

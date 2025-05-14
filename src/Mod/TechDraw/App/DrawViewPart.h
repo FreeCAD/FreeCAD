@@ -77,8 +77,33 @@ class GeomFormat;
 
 namespace TechDraw
 {
-
 class DrawViewSection;
+
+
+enum class ProjDirection {
+    Front,
+    Left,
+    Right,
+    Rear,
+    Top,
+    Bottom,
+    FrontTopLeft,
+    FrontTopRight,
+    FrontBottomLeft,
+    FrontBottomRight
+};
+
+enum class RotationMotion {
+    Left,
+    Right,
+    Up,
+    Down
+};
+
+enum class SpinDirection {
+    CW,
+    CCW
+};
 
 class TechDrawExport DrawViewPart: public DrawView, public CosmeticExtension
 {
@@ -90,9 +115,8 @@ public:
 
     App::PropertyLinkList Source;
     App::PropertyXLinkList XSource;
-    App::PropertyVector
-        Direction;//TODO: Rename to YAxisDirection or whatever this actually is  (ProjectionDirection)
-    App::PropertyVector XDirection;
+    App::PropertyDirection Direction;  // the projection direction
+    App::PropertyDirection XDirection;
     App::PropertyBool Perspective;
     App::PropertyDistance Focus;
 
@@ -115,6 +139,8 @@ public:
     App::DocumentObjectExecReturn* execute() override;
     const char* getViewProviderName() const override { return "TechDrawGui::ViewProviderViewPart"; }
     PyObject* getPyObject() override;
+    void handleChangedPropertyType(
+        Base::XMLReader &reader, const char * TypeName, App::Property * prop) override;
 
     static TopoDS_Shape centerScaleRotate(const DrawViewPart* dvp, TopoDS_Shape& inOutShape,
                                           Base::Vector3d centroid);
@@ -172,10 +198,10 @@ public:
     virtual Base::Vector3d getLegacyX(const Base::Vector3d& pt, const Base::Vector3d& axis,
                                       const bool flip = true) const;
 
-    void rotate(const std::string& rotationdirection);
-    void spin(const std::string& spindirection);
+    void rotate(const RotationMotion& motion);
+    void spin(const SpinDirection& spindirection);
     void spin(double val);
-    std::pair<Base::Vector3d, Base::Vector3d> getDirsFromFront(std::string viewType);
+    std::pair<Base::Vector3d, Base::Vector3d> getDirsFromFront(ProjDirection viewType);
     Base::Vector3d dir2vec(gp_Dir d);
 
     gp_Ax2 localVectorToCS(const Base::Vector3d localUnit) const;
@@ -186,7 +212,7 @@ public:
     bool newFaceFinder();
     bool isUnsetting() { return nowUnsetting; }
 
-    virtual TopoDS_Shape getSourceShape(bool fuse = false) const;
+    virtual TopoDS_Shape getSourceShape(bool fuse = false, bool allow2d = true) const;
     virtual TopoDS_Shape getShapeForDetail() const;
     std::vector<App::DocumentObject*> getAllSources() const;
 
@@ -212,6 +238,10 @@ public:
     void waitingForHlr(bool s) { m_waitingForHlr = s; }
     virtual bool waitingForResult() const;
     void progressValueChanged(int v);
+
+    bool isCosmeticVertex(const std::string& element);
+    bool isCosmeticEdge(const std::string& element);
+    bool isCenterLine(const std::string& element);
 
 public Q_SLOTS:
     void onHlrFinished(void);

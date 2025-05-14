@@ -44,6 +44,7 @@
 #endif
 
 #include <App/Document.h>
+#include <Base/Tools.h>
 #include <Gui/Application.h>
 #include <Gui/Control.h>
 #include <Gui/Dialogs/DlgMaterialPropertiesImp.h>
@@ -79,7 +80,7 @@ namespace PartGui {
         {
             if (pObj != this->object)
                 return false;
-            if (!sSubName || sSubName[0] == '\0')
+            if (Base::Tools::isNullOrEmpty(sSubName))
                 return false;
             std::string element(sSubName);
             return element.substr(0, 4) == "Face";
@@ -368,9 +369,9 @@ void FaceAppearances::onSelectionChanged(const Gui::SelectionChanges& msg)
         if (docname == msg.pDocName && objname == msg.pObjectName) {
             int index = std::atoi(msg.pSubName + 4) - 1;
             d->index.insert(index);
-            const App::Color& faceColor = d->perface[index].diffuseColor;
+            const Base::Color& faceColor = d->perface[index].diffuseColor;
             QColor color;
-            // alpha of App::Color is contrary to the one of QColor
+            // alpha of Base::Color is contrary to the one of QColor
             color.setRgbF(faceColor.r, faceColor.g, faceColor.b, (1.0 - faceColor.a));
             selection_changed = true;
         }
@@ -397,14 +398,14 @@ void FaceAppearances::onSelectionChanged(const Gui::SelectionChanges& msg)
 
 void FaceAppearances::updatePanel()
 {
-    QString faces = QString::fromLatin1("[");
+    QString faces = QStringLiteral("[");
     int size = d->index.size();
     for (int it : d->index) {
         faces += QString::number(it + 1);
         if (--size > 0)
-            faces += QString::fromLatin1(",");
+            faces += QStringLiteral(",");
     }
-    faces += QString::fromLatin1("]");
+    faces += QStringLiteral("]");
 
     int maxWidth = d->ui->labelElement->width();
     QFontMetrics fm(d->ui->labelElement->font());

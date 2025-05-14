@@ -20,17 +20,16 @@ include_directories(
     ${CMAKE_SOURCE_DIR}/src
     ${CMAKE_BINARY_DIR}/src
     ${CMAKE_CURRENT_BINARY_DIR}
-    ${Boost_INCLUDE_DIRS}
-    ${OCC_INCLUDE_DIR}
-    ${PYTHON_INCLUDE_DIRS}
-    ${ZLIB_INCLUDE_DIR}
+)
+
+include_directories(
+    SYSTEM
     ${SMESH_INCLUDE_DIR}
     ${NETGEN_INCLUDE_DIRS}
     ${VTK_INCLUDE_DIRS}
 )
 
 
-link_directories(${OCC_LIBRARY_DIR})
 link_directories(${SMESH_LIB_PATH})
 
 
@@ -68,9 +67,15 @@ if(BUILD_FEM_VTK)
         FemPostObjectPyImp.cpp
         FemPostPipelinePy.xml
         FemPostPipelinePyImp.cpp
+        FemPostFilterPy.xml
+        FemPostFilterPyImp.cpp
+        FemPostBranchFilterPy.xml
+        FemPostBranchFilterPyImp.cpp
     )
     generate_from_xml(FemPostObjectPy)
     generate_from_xml(FemPostPipelinePy)
+    generate_from_xml(FemPostFilterPy)
+    generate_from_xml(FemPostBranchFilterPy)
 endif(BUILD_FEM_VTK)
 SOURCE_GROUP("Python" FILES ${Python_SRCS})
 
@@ -81,8 +86,12 @@ if(BUILD_FEM_VTK)
         PropertyPostDataObject.cpp
         FemPostObject.h
         FemPostObject.cpp
+        FemPostGroupExtension.h
+        FemPostGroupExtension.cpp
         FemPostPipeline.h
         FemPostPipeline.cpp
+        FemPostBranchFilter.h
+        FemPostBranchFilter.cpp
         FemPostFilter.h
         FemPostFilter.cpp
         FemPostFunction.h

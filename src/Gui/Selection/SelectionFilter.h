@@ -24,6 +24,7 @@
 #ifndef GUI_SelectionFilter_H
 #define GUI_SelectionFilter_H
 
+#include <limits>
 #include <memory>
 #include <string>
 #include <CXX/Extensions.hxx>
@@ -52,8 +53,8 @@ class GuiExport SelectionFilter
 
 public:
     /** Constructs a SelectionFilter object. */
-    explicit SelectionFilter(const char* filter);
-    explicit SelectionFilter(const std::string& filter);
+    explicit SelectionFilter(const char* filter, App::DocumentObject* container = nullptr);
+    explicit SelectionFilter(const std::string& filter, App::DocumentObject* container = nullptr);
     virtual ~SelectionFilter();
 
     /// Set a new filter string
@@ -87,6 +88,7 @@ protected:
     std::string Filter;
     std::string Errors;
     bool parse();
+    App::DocumentObject* container;
 
     std::shared_ptr<Node_Block> Ast;
 };
@@ -113,9 +115,6 @@ protected:
         return nullptr;
     }
 
-    static const char* nullString() {
-        return nullptr;
-    }
     SelectionFilterGate();
 
 protected:
@@ -172,8 +171,9 @@ private:
 
 struct Node_Slice
 {
-    explicit Node_Slice(int min=1,int max=INT_MAX):Min(min),Max(max){}
-    int Min,Max;
+    explicit Node_Slice(int min = 1, int max = std::numeric_limits<int>::max())
+        : Min(min), Max(max) {}
+    int Min, Max;
 
 };
 

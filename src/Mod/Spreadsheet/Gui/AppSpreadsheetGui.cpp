@@ -69,8 +69,8 @@ private:
     {
         try {
             Base::FileInfo file(Name);
-            Spreadsheet::Sheet* pcSheet = static_cast<Spreadsheet::Sheet*>(
-                pcDoc->addObject("Spreadsheet::Sheet", file.fileNamePure().c_str()));
+            auto filename = file.fileNamePure();
+            auto* pcSheet = pcDoc->addObject<Spreadsheet::Sheet>(filename.c_str());
 
             pcSheet->importFromFile(Name, '\t', '"', '\\');
             pcSheet->execute();
@@ -152,6 +152,6 @@ PyMOD_INIT_FUNC(SpreadsheetGui)
     loadSpreadsheetResource();
 
     PyObject* mod = SpreadsheetGui::initModule();
-    Base::Console().Log("Loading GUI of Spreadsheet module... done\n");
+    Base::Console().log("Loading GUI of Spreadsheet module... done\n");
     PyMOD_Return(mod);
 }

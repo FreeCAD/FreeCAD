@@ -4,15 +4,14 @@
 # See https://pre-commit.com/hooks.html for more hooks
 files: |
     (?x)^(
+        .github|
         src/Base|
         src/Main|
         src/Tools|
         tests/src|
-        src/Mod/AddonManager|
         src/Mod/Assembly|
         src/Mod/CAM|
         src/Mod/Cloud|
-        src/Mod/Drawing|
         src/Mod/Fem|
         src/Mod/Help|
         src/Mod/Import|
@@ -67,6 +66,6 @@ repos:
         -   id: black
             args: ['--line-length', '100']
 -   repo: https://github.com/pre-commit/mirrors-clang-format
-    rev: f9a52e87b6cdcb01b0a62b8611d9ba9f2dad0067  # frozen: v19.1.7
+    rev: 7ec07eeb4135dc6ecf410d24ac4ead986a5d413d  # frozen: v20.1.3
     hooks:
         -   id: clang-format

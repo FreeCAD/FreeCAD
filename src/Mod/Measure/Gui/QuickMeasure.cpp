@@ -40,6 +40,7 @@
 
 #include <Mod/Part/App/PartFeature.h>
 #include <Mod/Part/App/TopoShape.h>
+#include <Mod/Part/App/DatumFeature.h>
 
 #include <Mod/Measure/App/Measurement.h>
 
@@ -91,7 +92,7 @@ void QuickMeasure::processSelection()
             // sub-element e.g. when selecting a constraint in sketcher
         }
         catch (const Base::Exception& e) {
-            e.ReportException();
+            e.reportException();
         }
         catch (const Standard_Failure& e) {
             FC_ERR(e);
@@ -133,8 +134,8 @@ bool QuickMeasure::shouldMeasure(const Gui::SelectionChanges& msg) const
 
 bool QuickMeasure::isObjAcceptable(App::DocumentObject* obj)
 {
-    // only measure shapes
-    if (obj && obj->isDerivedFrom<Part::Feature>()) {
+    // only measure shapes. Exclude datums that derive from Part::Feature
+    if (obj && obj->isDerivedFrom<Part::Feature>() && !obj->isDerivedFrom<Part::Datum>()) {
         return true;
     }
 
@@ -245,7 +246,7 @@ void QuickMeasure::printResult()
         print(tr("Minimum distance: %1").arg(lengthStr(measurement->length())));
     }
     else {
-        print(QString::fromLatin1(""));
+        print(QStringLiteral(""));
     }
 }
 

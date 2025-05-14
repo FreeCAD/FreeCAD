@@ -944,11 +944,14 @@ double ProfileBased::getThroughAllLength() const
 {
     TopoShape profileshape;
     TopoShape base;
-    profileshape = getTopoShapeVerifiedFace();
+    profileshape = getTopoShapeVerifiedFace(true);
     base = getBaseTopoShape();
     Bnd_Box box;
     BRepBndLib::Add(base.getShape(), box);
-    BRepBndLib::Add(profileshape.getShape(), box);
+
+    if (!profileshape.isNull()) {
+        BRepBndLib::Add(profileshape.getShape(), box);
+    }
     box.SetGap(0.0);
     // The diagonal of the bounding box, plus 1%  extra to eliminate risk of
     // co-planar issues, gives a length that is guaranteed to go through all.
@@ -1449,7 +1452,7 @@ Base::Vector3d ProfileBased::getProfileNormal() const {
 
     // If the shape is a line, then return an arbitrary direction that is perpendicular to the line
     auto geom = Part::Geometry::fromShape(shape.getSubShape(TopAbs_EDGE, 1), true);
-    auto geomLine = Base::freecad_dynamic_cast<Part::GeomLine>(geom.get());
+    auto geomLine = freecad_cast<Part::GeomLine*>(geom.get());
     if (geomLine) {
         Base::Vector3d dir = geomLine->getDir();
         double x = std::fabs(dir.x);
@@ -1495,7 +1498,7 @@ void ProfileBased::handleChangedPropertyName(Base::XMLReader & reader, const cha
         // read my element
         reader.readElement("Link");
         // get the value of my attribute
-        std::string name = reader.getAttribute("value");
+        std::string name = reader.getAttribute<const char*>("value");
 
         if (!name.empty()) {
             App::Document* document = getDocument();

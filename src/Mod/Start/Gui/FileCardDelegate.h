@@ -26,10 +26,10 @@
 
 #include <Base/Parameter.h>
 #include <QImage>
+#include <QPushButton>
+#include <QStyledItemDelegate>
 
-#include <QAbstractItemDelegate>
-
-class FileCardDelegate: public QAbstractItemDelegate
+class FileCardDelegate: public QStyledItemDelegate
 {
 
 public:
@@ -45,13 +45,10 @@ protected:
     QPixmap generateThumbnail(const QString& path) const;
 
 private:
-    QColor getBorderColor() const;
-    QColor getBackgroundColor() const;
-    QColor getSelectionColor() const;
-
-private:
     Base::Reference<ParameterGrp> _parameterGroup;
-    std::unique_ptr<QWidget> _widget;
+    const int margin = 11;
+    const int textspacing = 2;
+    QPushButton styleButton;
 };
 
 

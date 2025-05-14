@@ -58,7 +58,7 @@ private:
         std::string EncodedName = std::string(Name);
         PyMem_Free(Name);
 
-        // Base::Console().Log("Open in Part with %s",Name);
+        // Base::Console().log("Open in Part with %s",Name);
         Base::FileInfo file(EncodedName.c_str());
 
         // extract extension
@@ -81,7 +81,7 @@ private:
         PyMem_Free(Name);
 
         try {
-            // Base::Console().Log("Insert in Part with %s",Name);
+            // Base::Console().log("Insert in Part with %s",Name);
             Base::FileInfo file(EncodedName.c_str());
 
             // extract extension
@@ -95,8 +95,8 @@ private:
             }
 
             if (file.hasExtension("skf")) {
-                Sketcher::SketchObjectSF* pcFeature = static_cast<Sketcher::SketchObjectSF*>(
-                    pcDoc->addObject("Sketcher::SketchObjectSF", file.fileNamePure().c_str()));
+                auto filename = file.fileNamePure();
+                auto* pcFeature = pcDoc->addObject<Sketcher::SketchObjectSF>(filename.c_str());
                 pcFeature->SketchFlatFile.setValue(EncodedName.c_str());
 
                 pcDoc->recompute();

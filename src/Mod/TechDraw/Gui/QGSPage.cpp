@@ -105,7 +105,6 @@ QGSPage::QGSPage(ViewProviderPage* vpPage, QWidget* parent)
     assert(vpPage);
     m_vpPage = vpPage;
     setItemIndexMethod(QGraphicsScene::BspTreeIndex);//the default
-    //    setItemIndexMethod(QGraphicsScene::NoIndex);    //sometimes faster
 }
 
 
@@ -200,20 +199,18 @@ void QGSPage::addChildrenToPage()
         matchSceneRectToTemplate();
     }
 
-    //    viewAll();
 }
 
 //********** template related routines *********
 
 void QGSPage::attachTemplate(TechDraw::DrawTemplate* obj)
 {
-    //    Base::Console().Message("QGSP::attachTemplate()\n");
+    //    Base::Console().message("QGSP::attachTemplate()\n");
     setPageTemplate(obj);
 }
 
 void QGSPage::updateTemplate(bool forceUpdate)
 {
-    //    Base::Console().Message("QGSP::updateTemplate()\n");
     App::DocumentObject* templObj = m_vpPage->getDrawPage()->Template.getValue();
     // TODO: what if template has been deleted? templObj will be NULL. segfault?
     if (!templObj) {
@@ -253,7 +250,6 @@ QPointF QGSPage::getTemplateCenter()
 
 void QGSPage::matchSceneRectToTemplate()
 {
-    //    Base::Console().Message("QGSP::matchSceneRectToTemplate()\n");
     App::DocumentObject* obj = m_vpPage->getDrawPage()->Template.getValue();
     auto pageTemplate(dynamic_cast<TechDraw::DrawTemplate*>(obj));
     if (pageTemplate) {
@@ -266,7 +262,6 @@ void QGSPage::matchSceneRectToTemplate()
 
 void QGSPage::setPageTemplate(TechDraw::DrawTemplate* templateFeat)
 {
-    //    Base::Console().Message("QGSP::setPageTemplate()\n");
     removeTemplate();
 
     if (templateFeat->isDerivedFrom<TechDraw::DrawParametricTemplate>()) {
@@ -329,7 +324,7 @@ int QGSPage::addQView(QGIView* view)
 
         view->updateView(true);
     } else {
-        Base::Console().Message("QGSP::addQView - qview already exists\n");
+        Base::Console().message("QGSP::addQView - qview already exists\n");
     }
     return 0;
 }
@@ -389,58 +384,55 @@ bool QGSPage::addView(const App::DocumentObject* obj)
 
 bool QGSPage::attachView(App::DocumentObject* obj)
 {
-    //    Base::Console().Message("QGSP::attachView(%s)\n", obj->getNameInDocument());
     if (findQViewForDocObj(obj)) {
         return true;
     }
 
     QGIView* qview(nullptr);
 
-    using Base::freecad_dynamic_cast;
-
-    if (auto o = freecad_dynamic_cast<TechDraw::DrawViewSection>(obj)) {
+    if (auto o = freecad_cast<TechDraw::DrawViewSection*>(obj)) {
         qview = addViewSection(o);
     }
-    else if (auto o = freecad_dynamic_cast<TechDraw::DrawViewPart>(obj)) {
+    else if (auto o = freecad_cast<TechDraw::DrawViewPart*>(obj)) {
         qview = addViewPart(o);
     }
-    else if (auto o = freecad_dynamic_cast<TechDraw::DrawProjGroup>(obj)) {
+    else if (auto o = freecad_cast<TechDraw::DrawProjGroup*>(obj)) {
         qview = addProjectionGroup(o);
     }
-    else if (auto o = freecad_dynamic_cast<TechDraw::DrawViewCollection>(obj)) {
+    else if (auto o = freecad_cast<TechDraw::DrawViewCollection*>(obj)) {
         qview = addDrawView(o);
     }
-    else if (auto o = freecad_dynamic_cast<TechDraw::DrawViewDimension>(obj)) {
+    else if (auto o = freecad_cast<TechDraw::DrawViewDimension*>(obj)) {
         qview = addViewDimension(o);
     }
-    else if (auto o = freecad_dynamic_cast<TechDraw::DrawViewBalloon>(obj)) {
+    else if (auto o = freecad_cast<TechDraw::DrawViewBalloon*>(obj)) {
         qview = addViewBalloon(o);
     }
-    else if (auto o = freecad_dynamic_cast<TechDraw::DrawViewAnnotation>(obj)) {
+    else if (auto o = freecad_cast<TechDraw::DrawViewAnnotation*>(obj)) {
         qview = addAnnotation(o);
     }
-    else if (auto o = freecad_dynamic_cast<TechDraw::DrawViewSymbol>(obj)) {
+    else if (auto o = freecad_cast<TechDraw::DrawViewSymbol*>(obj)) {
         qview = addDrawViewSymbol(o);
     }
-    else if (auto o = freecad_dynamic_cast<TechDraw::DrawViewClip>(obj)) {
+    else if (auto o = freecad_cast<TechDraw::DrawViewClip*>(obj)) {
         qview = addDrawViewClip(o);
     }
-    else if (auto o = freecad_dynamic_cast<TechDraw::DrawViewSpreadsheet>(obj)) {
+    else if (auto o = freecad_cast<TechDraw::DrawViewSpreadsheet*>(obj)) {
         qview = addDrawViewSpreadsheet(o);
     }
-    else if (auto o = freecad_dynamic_cast<TechDraw::DrawViewImage>(obj)) {
+    else if (auto o = freecad_cast<TechDraw::DrawViewImage*>(obj)) {
         qview = addDrawViewImage(o);
     }
-    else if (auto o = freecad_dynamic_cast<TechDraw::DrawLeaderLine>(obj)) {
+    else if (auto o = freecad_cast<TechDraw::DrawLeaderLine*>(obj)) {
         qview = addViewLeader(o);
     }
-    else if (auto o = freecad_dynamic_cast<TechDraw::DrawRichAnno>(obj)) {
+    else if (auto o = freecad_cast<TechDraw::DrawRichAnno*>(obj)) {
         qview = addRichAnno(o);
     }
-    else if (auto o = freecad_dynamic_cast<TechDraw::DrawWeldSymbol>(obj)) {
+    else if (auto o = freecad_cast<TechDraw::DrawWeldSymbol*>(obj)) {
         qview = addWeldSymbol(o);
     }
-    else if (auto o = freecad_dynamic_cast<TechDraw::DrawHatch>(obj)) {
+    else if (freecad_cast<TechDraw::DrawHatch*>(obj)) {
         //Hatch is not attached like other Views (since it isn't really a View)
         return true;
     }
@@ -675,7 +667,7 @@ QGIView* QGSPage::addViewDimension(TechDraw::DrawViewDimension* dimFeat)
 
 void QGSPage::addDimToParent(QGIViewDimension* dim, QGIView* parent)
 {
-    //    Base::Console().Message("QGSP::addDimToParent()\n");
+    //    Base::Console().message("QGSP::addDimToParent()\n");
     assert(dim);
     assert(parent);//blow up if we don't have Dimension or Parent
     QPointF posRef(0., 0.);
@@ -697,7 +689,6 @@ QGIView* QGSPage::addViewLeader(TechDraw::DrawLeaderLine* leaderFeat)
 // TODO: can this be generalized?  addViewToParent(childItem, parentItem, positionInParent)?
 void QGSPage::addLeaderToParent(QGILeaderLine* leader, QGIView* parent)
 {
-    // Base::Console().Message("QGSP::addLeaderToParent()\n");
     assert(leader);
     assert(parent);//blow up if we don't have Dimension or Parent
     QPointF posRef(0., 0.);
@@ -780,7 +771,6 @@ void QGSPage::setViewParents()
 //! find the graphic for a DocumentObject
 QGIView* QGSPage::findQViewForDocObj(App::DocumentObject* obj) const
 {
-    //    Base::Console().Message("QGSP::findQViewForDocObj(%s)\n", obj->getNameInDocument());
     if (obj) {
         const std::vector<QGIView*> qviews = getViews();
         for (std::vector<QGIView*>::const_iterator it = qviews.begin(); it != qviews.end(); ++it) {
@@ -874,12 +864,11 @@ bool QGSPage::hasQView(App::DocumentObject* obj)
 
 void QGSPage::refreshViews()
 {
-    //    Base::Console().Message("QGSP::refreshViews()\n");
     QList<QGraphicsItem*> list = items();
     QList<QGraphicsItem*> qgiv;
     //find only QGIV's
     for (auto q : list) {
-        QString viewFamily = QString::fromUtf8("QGIV");
+        QString viewFamily = QStringLiteral("QGIV");
         if (viewFamily == q->data(0).toString()) {
             qgiv.push_back(q);
         }
@@ -902,7 +891,7 @@ void QGSPage::findMissingViews(const std::vector<App::DocumentObject*>& list,
 
         if (obj->isDerivedFrom<TechDraw::DrawViewCollection>()) {
             std::vector<App::DocumentObject*> missingChildViews;
-            auto* collection = dynamic_cast<TechDraw::DrawViewCollection*>(obj);
+            auto* collection = static_cast<TechDraw::DrawViewCollection*>(obj);
             // Find Child Views recursively
             findMissingViews(collection->getViews(), missingChildViews);
 
@@ -1009,7 +998,7 @@ bool QGSPage::orphanExists(const char* viewName, const std::vector<App::Document
 
         //Check child objects too recursively
         if (obj->isDerivedFrom<TechDraw::DrawViewCollection>()) {
-            auto* collection = dynamic_cast<TechDraw::DrawViewCollection*>(obj);
+            auto* collection = static_cast<TechDraw::DrawViewCollection*>(obj);
             if (orphanExists(viewName, collection->getViews()))
                 return true;
         }
@@ -1025,7 +1014,6 @@ bool QGSPage::orphanExists(const char* viewName, const std::vector<App::Document
 //NOTE: this doesn't add missing views.  see fixOrphans()
 void QGSPage::redrawAllViews()
 {
-    //    Base::Console().Message("QGSP::redrawAllViews() - views: %d\n", getViews().size());
     const std::vector<QGIView*>& upviews = getViews();
     for (std::vector<QGIView*>::const_iterator it = upviews.begin(); it != upviews.end(); ++it) {
         (*it)->updateView(true);
@@ -1068,8 +1056,8 @@ void QGSPage::saveSvg(QString filename)
 
     const QString docName(QString::fromUtf8(page->getDocument()->getName()));
     const QString pageName(QString::fromUtf8(page->getNameInDocument()));
-    QString svgDescription = QString::fromUtf8("Drawing page: ") + pageName
-        + QString::fromUtf8(" exported from FreeCAD document: ") + docName;
+    QString svgDescription = QStringLiteral("Drawing page: ") + pageName
+        + QStringLiteral(" exported from FreeCAD document: ") + docName;
 
     QSvgGenerator svgGen;
     QTemporaryFile temporaryFile;
@@ -1087,7 +1075,7 @@ void QGSPage::saveSvg(QString filename)
     // the width and height attributes of the <svg> element."  >> but Inkscape won't read it without size info??
     svgGen.setViewBox(QRect(0, 0, pixelWidth, pixelHeight));
 
-    svgGen.setTitle(QString::fromUtf8("FreeCAD SVG Export"));
+    svgGen.setTitle(QStringLiteral("FreeCAD SVG Export"));
     svgGen.setDescription(svgDescription);
 
     Gui::Selection().clearSelection();
@@ -1150,14 +1138,14 @@ static void removeEmptyGroups(QDomElement e)
 
 void QGSPage::postProcessXml(QTemporaryFile& temporaryFile, QString fileName, QString pageName)
 {
-    QDomDocument exportDoc(QString::fromUtf8("SvgDoc"));
+    QDomDocument exportDoc(QStringLiteral("SvgDoc"));
     QFile file(temporaryFile.fileName());
     if (!file.open(QIODevice::ReadOnly)) {
-        Base::Console().Error("QGSPage::ppsvg - tempfile open error\n");
+        Base::Console().error("QGSPage::ppsvg - tempfile open error\n");
         return;
     }
     if (!exportDoc.setContent(&file)) {
-        Base::Console().Error("QGSPage::ppsvg - xml error\n");
+        Base::Console().error("QGSPage::ppsvg - xml error\n");
         file.close();
         return;
     }
@@ -1166,23 +1154,23 @@ void QGSPage::postProcessXml(QTemporaryFile& temporaryFile, QString fileName, QS
     QDomElement exportDocElem = exportDoc.documentElement();//root <svg>
 
     // Insert Freecad SVG namespace into namespace declarations
-    exportDocElem.setAttribute(QString::fromUtf8("xmlns:freecad"),
+    exportDocElem.setAttribute(QStringLiteral("xmlns:freecad"),
                                QString::fromUtf8(FREECAD_SVG_NS_URI));
     // Insert all namespaces used by TechDraw's page template SVGs
-    exportDocElem.setAttribute(QString::fromUtf8("xmlns:svg"), QString::fromUtf8(SVG_NS_URI));
-    exportDocElem.setAttribute(QString::fromUtf8("xmlns:cc"), QString::fromUtf8(CC_NS_URI));
-    exportDocElem.setAttribute(QString::fromUtf8("xmlns:dc"), QString::fromUtf8(DC_NS_URI));
-    exportDocElem.setAttribute(QString::fromUtf8("xmlns:rdf"), QString::fromUtf8(RDF_NS_URI));
-    exportDocElem.setAttribute(QString::fromUtf8("xmlns:inkscape"),
+    exportDocElem.setAttribute(QStringLiteral("xmlns:svg"), QString::fromUtf8(SVG_NS_URI));
+    exportDocElem.setAttribute(QStringLiteral("xmlns:cc"), QString::fromUtf8(CC_NS_URI));
+    exportDocElem.setAttribute(QStringLiteral("xmlns:dc"), QString::fromUtf8(DC_NS_URI));
+    exportDocElem.setAttribute(QStringLiteral("xmlns:rdf"), QString::fromUtf8(RDF_NS_URI));
+    exportDocElem.setAttribute(QStringLiteral("xmlns:inkscape"),
                                QString::fromUtf8(INKSCAPE_NS_URI));
-    exportDocElem.setAttribute(QString::fromUtf8("xmlns:sodipodi"),
+    exportDocElem.setAttribute(QStringLiteral("xmlns:sodipodi"),
                                QString::fromUtf8(SODIPODI_NS_URI));
 
     // Create the root group which will host the drawing group and the template group
-    QDomElement rootGroup = exportDoc.createElement(QString::fromUtf8("g"));
-    rootGroup.setAttribute(QString::fromUtf8("id"), pageName);
-    rootGroup.setAttribute(QString::fromUtf8("inkscape:groupmode"), QString::fromUtf8("layer"));
-    rootGroup.setAttribute(QString::fromUtf8("inkscape:label"), QString::fromUtf8("TechDraw"));
+    QDomElement rootGroup = exportDoc.createElement(QStringLiteral("g"));
+    rootGroup.setAttribute(QStringLiteral("id"), pageName);
+    rootGroup.setAttribute(QStringLiteral("inkscape:groupmode"), QStringLiteral("layer"));
+    rootGroup.setAttribute(QStringLiteral("inkscape:label"), QStringLiteral("TechDraw"));
 
     // Now insert our template
     QGISVGTemplate* svgTemplate = dynamic_cast<QGISVGTemplate*>(pageTemplate);
@@ -1190,29 +1178,23 @@ void QGSPage::postProcessXml(QTemporaryFile& temporaryFile, QString fileName, QS
         DrawSVGTemplate* drawTemplate = svgTemplate->getSVGTemplate();
         if (drawTemplate) {
             QString templateSvg = drawTemplate->processTemplate();
-            QDomDocument templateResultDoc(QString::fromUtf8("SvgDoc"));
+            QDomDocument templateResultDoc(QStringLiteral("SvgDoc"));
             if (templateResultDoc.setContent(templateSvg)) {
                 QDomElement templateDocElem = templateResultDoc.documentElement();
 
                 // Insert the template into a new group with id set to template name
-                QDomElement templateGroup = exportDoc.createElement(QString::fromUtf8("g"));
+                QDomElement templateGroup = exportDoc.createElement(QStringLiteral("g"));
                 Base::FileInfo fi(drawTemplate->PageResult.getValue());
-                templateGroup.setAttribute(QString::fromUtf8("id"),
+                templateGroup.setAttribute(QStringLiteral("id"),
                                            QString::fromUtf8(fi.fileName().c_str()));
-                templateGroup.setAttribute(QString::fromUtf8("style"),
-                                           QString::fromUtf8("stroke: none;"));
+                templateGroup.setAttribute(QStringLiteral("style"),
+                                           QStringLiteral("stroke: none;"));
 
                 // Scale the template group correctly
-#if QT_VERSION < QT_VERSION_CHECK(5, 14, 0)
-                templateGroup.setAttribute(
-                    QString::fromUtf8("transform"),
-                    QString().sprintf("scale(%f, %f)", Rez::guiX(1.0), Rez::guiX(1.0)));
-#else
-                templateGroup.setAttribute(QString::fromUtf8("transform"),
-                                           QString::fromLatin1("scale(%1, %2)")
+                templateGroup.setAttribute(QStringLiteral("transform"),
+                                           QStringLiteral("scale(%1, %2)")
                                                .arg(Rez::guiX(1.0), 0, 'f')
                                                .arg(Rez::guiX(1.0), 0, 'f'));
-#endif
 
                 // Finally, transfer all template document child nodes under the template group
                 while (!templateDocElem.firstChild().isNull()) {
@@ -1227,7 +1209,7 @@ void QGSPage::postProcessXml(QTemporaryFile& temporaryFile, QString fileName, QS
     // Obtain the drawing group element, move it under root node and set its id to "DrawingContent"
     QDomElement drawingGroup = exportDocElem.firstChildElement(QLatin1String("g"));
     if (!drawingGroup.isNull()) {
-        drawingGroup.setAttribute(QString::fromUtf8("id"), QString::fromUtf8("DrawingContent"));
+        drawingGroup.setAttribute(QStringLiteral("id"), QStringLiteral("DrawingContent"));
         rootGroup.appendChild(drawingGroup);
     }
     exportDocElem.appendChild(rootGroup);
@@ -1238,7 +1220,7 @@ void QGSPage::postProcessXml(QTemporaryFile& temporaryFile, QString fileName, QS
     // Time to save our product
     QFile outFile(fileName);
     if (!outFile.open(QIODevice::WriteOnly | QIODevice::Text)) {
-        Base::Console().Error("QGSP::ppxml - failed to open file for writing: %s\n",
+        Base::Console().error("QGSP::ppxml - failed to open file for writing: %s\n",
                               qPrintable(fileName));
     }
 
@@ -1256,7 +1238,7 @@ TechDraw::DrawPage* QGSPage::getDrawPage() { return m_vpPage->getDrawPage(); }
 
 QColor QGSPage::getBackgroundColor()
 {
-    App::Color fcColor;
+    Base::Color fcColor;
     fcColor.setPackedValue(Preferences::getPreferenceGroup("Colors")->GetUnsigned("Background", 0x70707000));
     return fcColor.asValue<QColor>();
 }

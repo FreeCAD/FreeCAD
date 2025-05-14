@@ -93,7 +93,7 @@ void CmdTechDrawStackGroup::activated(int iMsg)
             execStackDown(this);
             break;
         default:
-            Base::Console().Message("CMD::StackGrp - invalid iMsg: %d\n",iMsg);
+            Base::Console().message("CMD::StackGrp - invalid iMsg: %d\n",iMsg);
     };
 }
 
@@ -105,20 +105,20 @@ Gui::Action * CmdTechDrawStackGroup::createAction(void)
 
     QAction* p1 = pcAction->addAction(QString());
     p1->setIcon(Gui::BitmapFactory().iconFromTheme("actions/TechDraw_StackTop"));
-    p1->setObjectName(QString::fromLatin1("TechDraw_StackTop"));
-    p1->setWhatsThis(QString::fromLatin1("TechDraw_StackTop"));
+    p1->setObjectName(QStringLiteral("TechDraw_StackTop"));
+    p1->setWhatsThis(QStringLiteral("TechDraw_StackTop"));
     QAction* p2 = pcAction->addAction(QString());
     p2->setIcon(Gui::BitmapFactory().iconFromTheme("actions/TechDraw_StackBottom"));
-    p2->setObjectName(QString::fromLatin1("TechDraw_StackBottom"));
-    p2->setWhatsThis(QString::fromLatin1("TechDraw_StackBottom"));
+    p2->setObjectName(QStringLiteral("TechDraw_StackBottom"));
+    p2->setWhatsThis(QStringLiteral("TechDraw_StackBottom"));
     QAction* p3 = pcAction->addAction(QString());
     p3->setIcon(Gui::BitmapFactory().iconFromTheme("actions/TechDraw_StackUp"));
-    p3->setObjectName(QString::fromLatin1("TechDraw_StackUp"));
-    p3->setWhatsThis(QString::fromLatin1("TechDraw_StackUp"));
+    p3->setObjectName(QStringLiteral("TechDraw_StackUp"));
+    p3->setWhatsThis(QStringLiteral("TechDraw_StackUp"));
     QAction* p4 = pcAction->addAction(QString());
     p4->setIcon(Gui::BitmapFactory().iconFromTheme("actions/TechDraw_StackDown"));
-    p4->setObjectName(QString::fromLatin1("TechDraw_StackDown"));
-    p4->setWhatsThis(QString::fromLatin1("TechDraw_StackDown"));
+    p4->setObjectName(QStringLiteral("TechDraw_StackDown"));
+    p4->setWhatsThis(QStringLiteral("TechDraw_StackDown"));
 
     _pcAction = pcAction;
     languageChange();

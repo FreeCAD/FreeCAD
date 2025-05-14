@@ -122,6 +122,7 @@ class CAMWorkbench(Workbench):
         drillingcmdlist = ["CAM_Drilling", "CAM_Tapping"]
         modcmdlist = ["CAM_OperationCopy", "CAM_Array", "CAM_SimpleCopy"]
         dressupcmdlist = [
+            "CAM_DressupArray",
             "CAM_DressupAxisMap",
             "CAM_DressupPathBoundary",
             "CAM_DressupDogbone",
@@ -151,6 +152,14 @@ class CAMWorkbench(Workbench):
             PathCommandGroup(
                 drillingcmdlist,
                 QT_TRANSLATE_NOOP("CAM_DrillingTools", "Drilling Operations"),
+            ),
+        )
+        dressupcmdgroup = ["CAM_DressupTools"]
+        FreeCADGui.addCommand(
+            "CAM_DressupTools",
+            PathCommandGroup(
+                dressupcmdlist,
+                QT_TRANSLATE_NOOP("CAM_DressupTools", "Dressup Operations"),
             ),
         )
         threedcmdgroup = threedopcmdlist
@@ -205,7 +214,9 @@ class CAMWorkbench(Workbench):
             QT_TRANSLATE_NOOP("Workbench", "New Operations"),
             twodopcmdlist + drillingcmdgroup + engravecmdgroup + threedcmdgroup,
         )
-        self.appendToolbar(QT_TRANSLATE_NOOP("Workbench", "Path Modification"), modcmdlist)
+        self.appendToolbar(
+            QT_TRANSLATE_NOOP("Workbench", "Path Modification"), modcmdlist + dressupcmdgroup
+        )
         if extracmdlist:
             self.appendToolbar(QT_TRANSLATE_NOOP("Workbench", "Helpful Tools"), extracmdlist)
 
@@ -309,6 +320,8 @@ class CAMWorkbench(Workbench):
                 menuAppended = True
             if isinstance(obj.Proxy, Path.Op.Base.ObjectOp):
                 self.appendContextMenu("", ["CAM_OperationCopy", "CAM_OpActiveToggle"])
+                if hasattr(obj, "StartPoint"):
+                    self.appendContextMenu("", ["CAM_SetStartPoint"])
                 menuAppended = True
             if obj.isDerivedFrom("Path::Feature"):
                 if (

@@ -180,7 +180,6 @@
 #include "Interface.h"
 #include "modelRefine.h"
 #include "PartPyCXX.h"
-#include "ProgressIndicator.h"
 #include "Tools.h"
 #include "TopoShapeCompoundPy.h"
 #include "TopoShapeCompSolidPy.h"
@@ -721,21 +720,11 @@ void TopoShape::importIges(const char *FileName)
         if (aReader.ReadFile(encodeFilename(FileName).c_str()) != IFSelect_RetDone)
             throw Base::FileException("Error in reading IGES");
 
-#if OCC_VERSION_HEX < 0x070500
-        Handle(Message_ProgressIndicator) pi = new ProgressIndicator(100);
-        pi->NewScope(100, "Reading IGES file...");
-        pi->Show();
-        aReader.WS()->MapReader()->SetProgress(pi);
-#endif
-
         // make brep
         aReader.ClearShapes();
         aReader.TransferRoots();
         // one shape that contains all subshapes
         this->_Shape = aReader.OneShape();
-#if OCC_VERSION_HEX < 0x070500
-        pi->EndScope();
-#endif
     }
     catch (Standard_Failure& e) {
         throw Base::CADKernelError(e.GetMessageString());
@@ -749,20 +738,10 @@ void TopoShape::importStep(const char *FileName)
         if (aReader.ReadFile(encodeFilename(FileName).c_str()) != IFSelect_RetDone)
             throw Base::FileException("Error in reading STEP");
 
-#if OCC_VERSION_HEX < 0x070500
-        Handle(Message_ProgressIndicator) pi = new ProgressIndicator(100);
-        aReader.WS()->MapReader()->SetProgress(pi);
-        pi->NewScope(100, "Reading STEP file...");
-        pi->Show();
-#endif
-
         // Root transfers
         aReader.TransferRoots();
         // one shape that contains all subshapes
         this->_Shape = aReader.OneShape();
-#if OCC_VERSION_HEX < 0x070500
-        pi->EndScope();
-#endif
     }
     catch (Standard_Failure& e) {
         throw Base::CADKernelError(e.GetMessageString());
@@ -775,15 +754,7 @@ void TopoShape::importBrep(const char *FileName)
         // read brep-file
         BRep_Builder aBuilder;
         TopoDS_Shape aShape;
-#if OCC_VERSION_HEX < 0x070500
-        Handle(Message_ProgressIndicator) pi = new ProgressIndicator(100);
-        pi->NewScope(100, "Reading BREP file...");
-        pi->Show();
-        BRepTools::Read(aShape,encodeFilename(FileName).c_str(),aBuilder,pi);
-        pi->EndScope();
-#else
         BRepTools::Read(aShape,static_cast<Standard_CString>(FileName),aBuilder);
-#endif
         this->_Shape = aShape;
     }
     catch (Standard_Failure& e) {
@@ -797,21 +768,8 @@ void TopoShape::importBrep(std::istream& str, int indicator)
         // read brep-file
         BRep_Builder aBuilder;
         TopoDS_Shape aShape;
-#if OCC_VERSION_HEX < 0x070500
-        if (indicator) {
-            Handle(Message_ProgressIndicator) pi = new ProgressIndicator(100);
-            pi->NewScope(100, "Reading BREP file...");
-            pi->Show();
-            BRepTools::Read(aShape,str,aBuilder,pi);
-            pi->EndScope();
-        }
-        else {
-            BRepTools::Read(aShape,str,aBuilder);
-        }
-#else
         (void)indicator;
         BRepTools::Read(aShape,str,aBuilder);
-#endif
         this->_Shape = aShape;
     }
     catch (Standard_Failure& e) {
@@ -903,13 +861,6 @@ void TopoShape::exportStep(const char *filename) const
         const Handle(XSControl_TransferWriter)& hTransferWriter = aWriter.WS()->TransferWriter();
         Handle(Transfer_FinderProcess) hFinder = hTransferWriter->FinderProcess();
 
-#if OCC_VERSION_HEX < 0x070500
-        Handle(Message_ProgressIndicator) pi = new ProgressIndicator(100);
-        hFinder->SetProgress(pi);
-        pi->NewScope(100, "Writing STEP file...");
-        pi->Show();
-#endif
-
         if (aWriter.Transfer(this->_Shape, STEPControl_AsIs) != IFSelect_RetDone)
             throw Base::FileException("Error in transferring STEP");
 
@@ -923,9 +874,6 @@ void TopoShape::exportStep(const char *filename) const
 
         if (aWriter.Write(encodeFilename(filename).c_str()) != IFSelect_RetDone)
             throw Base::FileException("Writing of STEP failed");
-#if OCC_VERSION_HEX < 0x070500
-        pi->EndScope();
-#endif
     }
     catch (Standard_Failure& e) {
         throw Base::CADKernelError(e.GetMessageString());
@@ -1007,7 +955,7 @@ void TopoShape::exportStl(const char *filename, double deflection) const
 }
 
 void TopoShape::exportFaceSet(double dev, double ca,
-                              const std::vector<App::Color>& colors,
+                              const std::vector<Base::Color>& colors,
                               std::ostream& str) const
 {
     Base::InventorBuilder builder(str);
@@ -1056,7 +1004,7 @@ void TopoShape::exportFaceSet(double dev, double ca,
         Base::ShapeHintsItem shapeHints{static_cast<float>(ca)};
         builder.addNode(shapeHints);
         if (supportFaceColors) {
-            App::Color c = colors[index];
+            Base::Color c = colors[index];
             Base::MaterialItem material;
             material.setDiffuseColor({Base::ColorRGB{c.r, c.g, c.b}});
             material.setTransparency({c.a});
@@ -1119,6 +1067,30 @@ Base::BoundBox3d TopoShape::getBoundBox() const
         // If the shape is empty an exception may be thrown
         Bnd_Box bounds;
         BRepBndLib::Add(_Shape, bounds);
+        bounds.SetGap(0.0);
+        Standard_Real xMin, yMin, zMin, xMax, yMax, zMax;
+        bounds.Get(xMin, yMin, zMin, xMax, yMax, zMax);
+
+        box.MinX = xMin;
+        box.MaxX = xMax;
+        box.MinY = yMin;
+        box.MaxY = yMax;
+        box.MinZ = zMin;
+        box.MaxZ = zMax;
+    }
+    catch (Standard_Failure&) {
+    }
+
+    return box;
+}
+
+Base::BoundBox3d TopoShape::getBoundBoxOptimal() const
+{
+    Base::BoundBox3d box;
+    try {
+        // If the shape is empty an exception may be thrown
+        Bnd_Box bounds;
+        BRepBndLib::AddOptimal(_Shape, bounds, false, false);
         bounds.SetGap(0.0);
         Standard_Real xMin, yMin, zMin, xMax, yMax, zMax;
         bounds.Get(xMin, yMin, zMin, xMax, yMax, zMax);
@@ -2032,7 +2004,7 @@ TopoDS_Shape TopoShape::makeTube(double radius, double tol, int cont, int maxdeg
 
     //circular profile
     Handle(Geom_Circle) aCirc = new Geom_Circle (gp::XOY(), theRadius);
-    aCirc->Rotate (gp::OZ(), M_PI/2.);
+    aCirc->Rotate (gp::OZ(), std::numbers::pi/2.);
 
     //perpendicular section
     Handle(Law_Function) myEvol = ::CreateBsFunction (myPath->FirstParameter(), myPath->LastParameter(), theRadius);
@@ -2144,6 +2116,8 @@ TopoDS_Shape TopoShape::makeHelix(Standard_Real pitch, Standard_Real height,
                                   Standard_Boolean leftHanded,
                                   Standard_Boolean newStyle) const
 {
+    using std::numbers::pi;
+
     if (fabs(pitch) < Precision::Confusion())
         Standard_Failure::Raise("Pitch of helix too small");
 
@@ -2168,24 +2142,24 @@ TopoDS_Shape TopoShape::makeHelix(Standard_Real pitch, Standard_Real height,
     }
 
     gp_Pnt2d aPnt(0, 0);
-    gp_Dir2d aDir(2. * M_PI, pitch);
+    gp_Dir2d aDir(2. * pi, pitch);
     Standard_Real coneDir = 1.0;
     if (leftHanded) {
-        aDir.SetCoord(-2. * M_PI, pitch);
+        aDir.SetCoord(-2. * pi, pitch);
         coneDir = -1.0;
     }
     gp_Ax2d aAx2d(aPnt, aDir);
 
     Handle(Geom2d_Line) line = new Geom2d_Line(aAx2d);
     gp_Pnt2d beg = line->Value(0);
-    gp_Pnt2d end = line->Value(sqrt(4.0*M_PI*M_PI+pitch*pitch)*(height/pitch));
+    gp_Pnt2d end = line->Value(sqrt(4.0*pi*pi+pitch*pitch)*(height/pitch));
 
     if (newStyle) {
         // See discussion at 0001247: Part Conical Helix Height/Pitch Incorrect
         if (angle >= Precision::Confusion()) {
             // calculate end point for conical helix
             Standard_Real v = height / cos(angle);
-            Standard_Real u = coneDir * (height/pitch) * 2.0 * M_PI;
+            Standard_Real u = coneDir * (height/pitch) * 2.0 * pi;
             gp_Pnt2d cend(u, v);
             end = cend;
         }
@@ -2207,6 +2181,8 @@ TopoDS_Shape TopoShape::makeLongHelix(Standard_Real pitch, Standard_Real height,
                                       Standard_Real radius, Standard_Real angle,
                                       Standard_Boolean leftHanded) const
 {
+    using std::numbers::pi;
+
     if (pitch < Precision::Confusion())
         Standard_Failure::Raise("Pitch of helix too small");
 
@@ -2234,10 +2210,10 @@ TopoDS_Shape TopoShape::makeLongHelix(Standard_Real pitch, Standard_Real height,
     Standard_Real partTurn = turns - wholeTurns;
 
     gp_Pnt2d aPnt(0, 0);
-    gp_Dir2d aDir(2. * M_PI, pitch);
+    gp_Dir2d aDir(2. * pi, pitch);
     Standard_Real coneDir = 1.0;
     if (leftHanded) {
-        aDir.SetCoord(-2. * M_PI, pitch);
+        aDir.SetCoord(-2. * pi, pitch);
         coneDir = -1.0;
     }
     gp_Ax2d aAx2d(aPnt, aDir);
@@ -2251,10 +2227,10 @@ TopoDS_Shape TopoShape::makeLongHelix(Standard_Real pitch, Standard_Real height,
 
     for (unsigned long i = 0; i < wholeTurns; i++) {
         if (isCylinder) {
-            end = line->Value(sqrt(4.0*M_PI*M_PI+pitch*pitch)*(i+1));
+            end = line->Value(sqrt(4.0*pi*pi+pitch*pitch)*(i+1));
         }
         else {
-            u = coneDir * (i+1) * 2.0 * M_PI;
+            u = coneDir * (i+1) * 2.0 * pi;
             v = ((i+1) * pitch) / cos(angle);
             end = gp_Pnt2d(u, v);
         }
@@ -2266,10 +2242,10 @@ TopoDS_Shape TopoShape::makeLongHelix(Standard_Real pitch, Standard_Real height,
 
     if (partTurn > Precision::Confusion()) {
         if (isCylinder) {
-            end = line->Value(sqrt(4.0*M_PI*M_PI+pitch*pitch)*turns);
+            end = line->Value(sqrt(4.0*pi*pi+pitch*pitch)*turns);
         }
         else {
-            u = coneDir * turns * 2.0 * M_PI;
+            u = coneDir * turns * 2.0 * pi;
             v = height / cos(angle);
             end = gp_Pnt2d(u, v);
         }
@@ -2311,9 +2287,9 @@ TopoDS_Shape TopoShape::makeSpiralHelix(Standard_Real radiusbottom, Standard_Rea
 
     gp_Pnt2d beg(0, 0);
     gp_Pnt2d end(0, 0);
-    gp_Vec2d dir(breakperiod * 2.0 * M_PI, 1 / nbPeriods);
+    gp_Vec2d dir(breakperiod * 2.0 * std::numbers::pi, 1 / nbPeriods);
     if (leftHanded == Standard_True)
-        dir = gp_Vec2d(-breakperiod * 2.0 * M_PI, 1 / nbPeriods);
+        dir = gp_Vec2d(-breakperiod * 2.0 * std::numbers::pi, 1 / nbPeriods);
     Handle(Geom2d_TrimmedCurve) segm;
     TopoDS_Edge edgeOnSurf;
     BRepBuilderAPI_MakeWire mkWire;
@@ -2342,6 +2318,7 @@ TopoDS_Shape TopoShape::makeThread(Standard_Real pitch,
                                    Standard_Real height,
                                    Standard_Real radius) const
 {
+    using std::numbers::pi;
     if (pitch < Precision::Confusion())
         Standard_Failure::Raise("Pitch of thread too small");
 
@@ -2360,21 +2337,21 @@ TopoDS_Shape TopoShape::makeThread(Standard_Real pitch,
     Handle(Geom_CylindricalSurface) aCyl2 = new Geom_CylindricalSurface(cylAx2 , radius+depth);
 
     //Threading : Define 2D Curves
-    gp_Pnt2d aPnt(2. * M_PI , height / 2.);
-    gp_Dir2d aDir(2. * M_PI , height / 4.);
+    gp_Pnt2d aPnt(2. * pi , height / 2.);
+    gp_Dir2d aDir(2. * pi , height / 4.);
     gp_Ax2d aAx2d(aPnt , aDir);
 
-    Standard_Real aMajor = 2. * M_PI;
+    Standard_Real aMajor = 2. * pi;
     Standard_Real aMinor = pitch;
 
     Handle(Geom2d_Ellipse) anEllipse1 = new Geom2d_Ellipse(aAx2d , aMajor , aMinor);
     Handle(Geom2d_Ellipse) anEllipse2 = new Geom2d_Ellipse(aAx2d , aMajor , aMinor / 4);
 
-    Handle(Geom2d_TrimmedCurve) aArc1 = new Geom2d_TrimmedCurve(anEllipse1 , 0 , M_PI);
-    Handle(Geom2d_TrimmedCurve) aArc2 = new Geom2d_TrimmedCurve(anEllipse2 , 0 , M_PI);
+    Handle(Geom2d_TrimmedCurve) aArc1 = new Geom2d_TrimmedCurve(anEllipse1 , 0 , pi);
+    Handle(Geom2d_TrimmedCurve) aArc2 = new Geom2d_TrimmedCurve(anEllipse2 , 0 , pi);
 
     gp_Pnt2d anEllipsePnt1 = anEllipse1->Value(0);
-    gp_Pnt2d anEllipsePnt2 = anEllipse1->Value(M_PI);
+    gp_Pnt2d anEllipsePnt2 = anEllipse1->Value(pi);
 
     Handle(Geom2d_TrimmedCurve) aSegment = GCE2d_MakeSegment(anEllipsePnt1 , anEllipsePnt2);
 
@@ -2440,7 +2417,7 @@ TopoDS_Shape TopoShape::makeLoft(const TopTools_ListOfShape& profiles,
             - W1-W2-W3-V1     ==> W1-W2-W3-V1-W1     invalid closed
             - W1-W2-W3        ==> W1-W2-W3-W1        valid closed*/
             if (profiles.Last().ShapeType() == TopAbs_VERTEX) {
-                Base::Console().Message("TopoShape::makeLoft: can't close Loft with Vertex as last profile. 'Closed' ignored.\n");
+                Base::Console().message("TopoShape::makeLoft: can't close Loft with Vertex as last profile. 'Closed' ignored.\n");
             }
             else {
                 // repeat Add logic above for first profile
@@ -2467,7 +2444,7 @@ TopoDS_Shape TopoShape::makeLoft(const TopTools_ListOfShape& profiles,
     if (!aGenerator.IsDone())
         Standard_Failure::Raise("Failed to create loft face");
 
-    //Base::Console().Message("DEBUG: TopoShape::makeLoft returns.\n");
+    //Base::Console().message("DEBUG: TopoShape::makeLoft returns.\n");
     return aGenerator.Shape();
 }
 
@@ -2510,7 +2487,7 @@ TopoDS_Shape TopoShape::revolve(const gp_Ax1& axis, double d, Standard_Boolean i
     }
 
     if (convertFailed) {
-        Base::Console().Message("TopoShape::revolve could not make Solid from Wire/Edge.\n");}
+        Base::Console().message("TopoShape::revolve could not make Solid from Wire/Edge.\n");}
 
     BRepPrimAPI_MakeRevol mkRevol(base, axis,d);
     return mkRevol.Shape();
@@ -3448,20 +3425,10 @@ void TopoShape::setFaces(const std::vector<Base::Vector3d> &Points,
     aSewingTool.Init(tolerance, performSewing);
     aSewingTool.Load(aComp);
 
-#if OCC_VERSION_HEX < 0x070500
-    Handle(Message_ProgressIndicator) pi = new ProgressIndicator(100);
-    pi->NewScope(100, "Create shape from mesh...");
-    pi->Show();
-
-    aSewingTool.Perform(pi);
-#else
     aSewingTool.Perform();
-#endif
 
     _Shape = aSewingTool.SewedShape();
-#if OCC_VERSION_HEX < 0x070500
-    pi->EndScope();
-#endif
+
     if (_Shape.IsNull())
         _Shape = aComp;
 }
@@ -4121,7 +4088,7 @@ bool TopoShape::_makeTransform(const TopoShape &shape,
             }
         }
         catch (const Standard_Failure& e) {
-            Base::Console().Warning("TopoShape::makeGTransform failed: %s\n", e.GetMessageString());
+            Base::Console().warning("TopoShape::makeGTransform failed: %s\n", e.GetMessageString());
         }
     }
     makeTransform(shape,convert(rclTrf),op,copy);

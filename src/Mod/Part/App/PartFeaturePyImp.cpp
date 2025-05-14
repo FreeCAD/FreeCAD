@@ -36,10 +36,11 @@ using namespace Part;
 // returns a string which represent the object e.g. when printed in python
 std::string PartFeaturePy::representation() const
 {
-    return {"<Part::PartFeature>"};
+    return {"<Part::Feature>"};
 }
 
-PyObject *PartFeaturePy::getElementHistory(PyObject *args, PyObject *kwds) {
+PyObject* PartFeaturePy::getElementHistory(PyObject* args, PyObject* kwds) const
+{
     const char *name;
     PyObject *recursive = Py_True;
     PyObject *sameType = Py_False;
@@ -65,7 +66,7 @@ PyObject *PartFeaturePy::getElementHistory(PyObject *args, PyObject *kwds) {
                 } else
                     ret.setItem(0, Py::Object(history.obj->getPyObject(), true));
             } else
-                ret.setItem(0, Py::Int(history.tag));
+                ret.setItem(0, Py::Long(history.tag));
             tmp.clear();
             ret.setItem(1, Py::String(history.element.appendToBuffer(tmp)));
             Py::List intermedates;

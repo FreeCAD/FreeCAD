@@ -132,7 +132,7 @@ private:
                 if (constructionMethod() == ConstructionMethod::Center) {
                     secondPoint = onSketchPos;
                     double angle1 = (onSketchPos - centerPoint).Angle() - startAngle;
-                    double angle2 = angle1 + (angle1 < 0. ? 2 : -2) * M_PI;
+                    double angle2 = angle1 + (angle1 < 0. ? 2 : -2) * std::numbers::pi;
                     arcAngle = abs(angle1 - arcAngle) < abs(angle2 - arcAngle) ? angle1 : angle2;
 
                     if (arcAngle > 0) {
@@ -183,7 +183,7 @@ private:
                         }
                         startAngle = std::max(angle1, angle2);
                         endAngle = std::min(angle1, angle2);
-                        arcAngle = 2 * M_PI - (startAngle - endAngle);
+                        arcAngle = 2 * std::numbers::pi - (startAngle - endAngle);
                     }
                 }
 
@@ -191,9 +191,6 @@ private:
 
                 if (constructionMethod() == ConstructionMethod::Center) {
                     startAngle = startAngleBackup;
-                }
-
-                if (constructionMethod() == ConstructionMethod::Center) {
                     toolWidgetManager.drawDoubleAtCursor(onSketchPos, arcAngle, Base::Unit::Angle);
                     seekAndRenderAutoConstraint(sugConstraints[2],
                                                 onSketchPos,
@@ -310,10 +307,10 @@ private:
     QString getCrosshairCursorSVGName() const override
     {
         if (constructionMethod() == DrawSketchHandlerArc::ConstructionMethod::Center) {
-            return QString::fromLatin1("Sketcher_Pointer_Create_Arc");
+            return QStringLiteral("Sketcher_Pointer_Create_Arc");
         }
         else {  // constructionMethod == DrawSketchHandlerArc::ConstructionMethod::ThreeRim
-            return QString::fromLatin1("Sketcher_Pointer_Create_3PointArc");
+            return QStringLiteral("Sketcher_Pointer_Create_3PointArc");
         }
 
         return QStringLiteral("None");
@@ -565,7 +562,7 @@ void DSHArcControllerBase::doEnforceControlParameters(Base::Vector2d& onSketchPo
                 if (onViewParameters[OnViewParameter::Fifth]->isSet) {
                     double arcAngle =
                         Base::toRadians(onViewParameters[OnViewParameter::Fifth]->getValue());
-                    if (fmod(fabs(arcAngle), 2 * M_PI) < Precision::Confusion()) {
+                    if (fmod(fabs(arcAngle), 2 * std::numbers::pi) < Precision::Confusion()) {
                         unsetOnViewParameter(onViewParameters[OnViewParameter::Fifth].get());
                         return;
                     }

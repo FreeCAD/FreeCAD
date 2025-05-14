@@ -351,7 +351,7 @@ PyObject* DrawViewPartPy::makeCosmeticLine(PyObject *args)
     PyObject* pPnt2 = nullptr;
     int style = LineFormat::getDefEdgeStyle();
     double weight = LineFormat::getDefEdgeWidth();
-    App::Color defCol = LineFormat::getDefEdgeColor();
+    Base::Color defCol = LineFormat::getDefEdgeColor();
     PyObject* pColor = nullptr;
 
     if (!PyArg_ParseTuple(args, "O!O!|idO!", &(Base::VectorPy::Type), &pPnt1,
@@ -389,7 +389,7 @@ PyObject* DrawViewPartPy::makeCosmeticLine3D(PyObject *args)
     PyObject* pPnt2 = nullptr;
     int style = LineFormat::getDefEdgeStyle();
     double weight = LineFormat::getDefEdgeWidth();
-    App::Color defCol = LineFormat::getDefEdgeColor();
+    Base::Color defCol = LineFormat::getDefEdgeColor();
     PyObject* pColor = nullptr;
 
     if (!PyArg_ParseTuple(args, "O!O!|idO!", &(Base::VectorPy::Type), &pPnt1,
@@ -434,7 +434,7 @@ PyObject* DrawViewPartPy::makeCosmeticCircle(PyObject *args)
     double radius = 5.0;
     int style = LineFormat::getDefEdgeStyle();
     double weight = LineFormat::getDefEdgeWidth();
-    App::Color defCol = LineFormat::getDefEdgeColor();
+    Base::Color defCol = LineFormat::getDefEdgeColor();
     PyObject* pColor = nullptr;
 
     if (!PyArg_ParseTuple(args, "O!d|idO!", &(Base::VectorPy::Type), &pPnt1,
@@ -474,7 +474,7 @@ PyObject* DrawViewPartPy::makeCosmeticCircleArc(PyObject *args)
     double angle2 = 360.0;
     int style = LineFormat::getDefEdgeStyle();
     double weight = LineFormat::getDefEdgeWidth();
-    App::Color defCol = LineFormat::getDefEdgeColor();
+    Base::Color defCol = LineFormat::getDefEdgeColor();
     PyObject* pColor = nullptr;
 
     if (!PyArg_ParseTuple(args, "O!ddd|idO!", &(Base::VectorPy::Type), &pPnt1,
@@ -516,7 +516,7 @@ PyObject* DrawViewPartPy::makeCosmeticCircle3d(PyObject *args)
     double radius = 5.0;
     int style = LineFormat::getDefEdgeStyle();
     double weight = LineFormat::getDefEdgeWidth();
-    App::Color defCol = LineFormat::getDefEdgeColor();
+    Base::Color defCol = LineFormat::getDefEdgeColor();
     PyObject* pColor = nullptr;
 
     if (!PyArg_ParseTuple(args, "O!d|idO!", &(Base::VectorPy::Type), &pPnt1,
@@ -559,7 +559,7 @@ PyObject* DrawViewPartPy::makeCosmeticCircleArc3d(PyObject *args)
     double angle2 = 360.0;
     int style = LineFormat::getDefEdgeStyle();
     double weight = LineFormat::getDefEdgeWidth();
-    App::Color defCol = LineFormat::getDefEdgeColor();
+    Base::Color defCol = LineFormat::getDefEdgeColor();
     PyObject* pColor = nullptr;
 
     if (!PyArg_ParseTuple(args, "O!ddd|idO!", &(Base::VectorPy::Type), &pPnt1,
@@ -620,7 +620,7 @@ PyObject* DrawViewPartPy::getCosmeticEdge(PyObject *args)
 
 PyObject* DrawViewPartPy::getCosmeticEdgeBySelection(PyObject *args)
 {
-//    Base::Console().Message("DVPPI::getCosmeticEdgeBySelection()\n");
+//    Base::Console().message("DVPPI::getCosmeticEdgeBySelection()\n");
     char* name;
     if (!PyArg_ParseTuple(args, "s", &name)) {
         return nullptr;
@@ -640,7 +640,7 @@ PyObject* DrawViewPartPy::getCosmeticEdgeBySelection(PyObject *args)
 
 PyObject* DrawViewPartPy::removeCosmeticEdge(PyObject *args)
 {
-//    Base::Console().Message("DVPPI::removeCosmeticEdge()\n");
+//    Base::Console().message("DVPPI::removeCosmeticEdge()\n");
     char* tag;
     if (!PyArg_ParseTuple(args, "s", &tag)) {
         return nullptr;
@@ -656,9 +656,9 @@ PyObject* DrawViewPartPy::removeCosmeticEdge(PyObject *args)
 
 PyObject* DrawViewPartPy::makeCenterLine(PyObject *args)
 {
-//    Base::Console().Message("DVPPI::makeCenterLine()\n");
+//    Base::Console().message("DVPPI::makeCenterLine()\n");
     PyObject* pSubs;
-    int mode = 0;
+    CenterLine::Mode mode = CenterLine::Mode::VERTICAL;
     std::vector<std::string> subs;
 
     if (!PyArg_ParseTuple(args, "O!i", &PyList_Type, &pSubs, &mode)) {
@@ -719,7 +719,7 @@ PyObject* DrawViewPartPy::getCenterLine(PyObject *args)
 
 PyObject* DrawViewPartPy::getCenterLineBySelection(PyObject *args)
 {
-//    Base::Console().Message("DVPPI::getCenterLineBySelection()\n");
+//    Base::Console().message("DVPPI::getCenterLineBySelection()\n");
     char* tag;
     if (!PyArg_ParseTuple(args, "s", &tag)) {
         return nullptr;
@@ -738,7 +738,7 @@ PyObject* DrawViewPartPy::getCenterLineBySelection(PyObject *args)
 
 PyObject* DrawViewPartPy::removeCenterLine(PyObject *args)
 {
-//    Base::Console().Message("DVPPI::removeCenterLine()\n");
+//    Base::Console().message("DVPPI::removeCenterLine()\n");
     char* tag;
     if (!PyArg_ParseTuple(args, "s", &tag)) {
         return nullptr;
@@ -754,10 +754,10 @@ PyObject* DrawViewPartPy::removeCenterLine(PyObject *args)
 
 PyObject* DrawViewPartPy::formatGeometricEdge(PyObject *args)
 {
-//    Base::Console().Message("DVPPI::formatGeometricEdge()\n");
+//    Base::Console().message("DVPPI::formatGeometricEdge()\n");
     int idx = -1;
     int style = Qt::SolidLine;
-    App::Color color = LineFormat::getDefEdgeColor();
+    Base::Color color = LineFormat::getDefEdgeColor();
     double weight = 0.5;
     int visible = 1;
     PyObject* pColor;

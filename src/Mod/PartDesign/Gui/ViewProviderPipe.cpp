@@ -62,7 +62,7 @@ std::vector<App::DocumentObject*> ViewProviderPipe::claimChildren()const
     if (spine && spine->isDerivedFrom<Part::Part2DObject>())
         temp.push_back(spine);
 
-    App::DocumentObject* auxspine = pcPipe->AuxillerySpine.getValue();
+    App::DocumentObject* auxspine = pcPipe->AuxiliarySpine.getValue();
     if (auxspine && auxspine->isDerivedFrom<Part::Part2DObject>())
         temp.push_back(auxspine);
 
@@ -120,8 +120,8 @@ void ViewProviderPipe::highlightReferences(ViewProviderPipe::Reference mode, boo
                             pcPipe->Spine.getSubValuesStartsWith("Edge"), on);
         break;
     case AuxiliarySpine:
-        highlightReferences(dynamic_cast<Part::Feature*>(pcPipe->AuxillerySpine.getValue()),
-                            pcPipe->AuxillerySpine.getSubValuesStartsWith("Edge"), on);
+        highlightReferences(dynamic_cast<Part::Feature*>(pcPipe->AuxiliarySpine.getValue()),
+                            pcPipe->AuxiliarySpine.getSubValuesStartsWith("Edge"), on);
         break;
     case Profile:
         highlightReferences(dynamic_cast<Part::Feature*>(pcPipe->Profile.getValue()),
@@ -151,12 +151,12 @@ void ViewProviderPipe::highlightReferences(Part::Feature* base, const std::vecto
     if (!svp)
         return;
 
-    std::vector<App::Color>& edgeColors = originalLineColors[base->getID()];
+    std::vector<Base::Color>& edgeColors = originalLineColors[base->getID()];
 
     if (on) {
         if (edgeColors.empty()) {
             edgeColors = svp->LineColorArray.getValues();
-            std::vector<App::Color> colors = edgeColors;
+            std::vector<Base::Color> colors = edgeColors;
 
             PartGui::ReferenceHighlighter highlighter(base->Shape.getValue(), svp->LineColor.getValue());
             highlighter.getEdgeColors(edges, colors);
@@ -171,14 +171,14 @@ void ViewProviderPipe::highlightReferences(Part::Feature* base, const std::vecto
 }
 
 QIcon ViewProviderPipe::getIcon() const {
-    QString str = QString::fromLatin1("PartDesign_");
+    QString str = QStringLiteral("PartDesign_");
     auto* prim = getObject<PartDesign::Pipe>();
     if(prim->getAddSubType() == PartDesign::FeatureAddSub::Additive)
-        str += QString::fromLatin1("Additive");
+        str += QStringLiteral("Additive");
     else
-        str += QString::fromLatin1("Subtractive");
+        str += QStringLiteral("Subtractive");
 
-    str += QString::fromLatin1("Pipe.svg");
+    str += QStringLiteral("Pipe.svg");
     return PartDesignGui::ViewProvider::mergeGreyableOverlayIcons(Gui::BitmapFactory().pixmap(str.toStdString().c_str()));
 }
 

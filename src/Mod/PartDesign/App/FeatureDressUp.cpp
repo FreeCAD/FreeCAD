@@ -158,7 +158,7 @@ void DressUp::getContinuousEdges(Part::TopoShape TopShape, std::vector< std::str
                 buf << "Edge";
                 buf << id;
 
-                if(std::find(SubNames.begin(),SubNames.end(),buf.str()) == SubNames.end())
+                if (std::ranges::find(SubNames, buf.str()) == SubNames.end())
                 {
                     SubNames.push_back(buf.str());
                 }
@@ -310,7 +310,7 @@ void DressUp::getAddSubShape(Part::TopoShape &addShape, Part::TopoShape &subShap
                 // feature (which must be of type FeatureAddSub), and skipping
                 // any consecutive DressUp in-between.
                 for(Feature *current=this; ;current=static_cast<DressUp*>(base)) {
-                    base = Base::freecad_dynamic_cast<FeatureAddSub>(current->getBaseObject(true));
+                    base = freecad_cast<FeatureAddSub*>(current->getBaseObject(true));
                     if(!base)
                         FC_THROWM(Base::CADKernelError,
                                 "Cannot find additive or subtractive support for " << getFullName());

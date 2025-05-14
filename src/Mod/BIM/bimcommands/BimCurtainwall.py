@@ -1,34 +1,35 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *                                                                         *
 # *   Copyright (c) 2024 Yorik van Havre <yorik@uncreated.net>              *
 # *                                                                         *
-# *   This program is free software; you can redistribute it and/or modify  *
-# *   it under the terms of the GNU Lesser General Public License (LGPL)    *
-# *   as published by the Free Software Foundation; either version 2 of     *
-# *   the License, or (at your option) any later version.                   *
-# *   for detail see the LICENCE text file.                                 *
+# *   This file is part of FreeCAD.                                         *
 # *                                                                         *
-# *   This program is distributed in the hope that it will be useful,       *
-# *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-# *   GNU Library General Public License for more details.                  *
+# *   FreeCAD is free software: you can redistribute it and/or modify it    *
+# *   under the terms of the GNU Lesser General Public License as           *
+# *   published by the Free Software Foundation, either version 2.1 of the  *
+# *   License, or (at your option) any later version.                       *
 # *                                                                         *
-# *   You should have received a copy of the GNU Library General Public     *
-# *   License along with this program; if not, write to the Free Software   *
-# *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
-# *   USA                                                                   *
+# *   FreeCAD is distributed in the hope that it will be useful, but        *
+# *   WITHOUT ANY WARRANTY; without even the implied warranty of            *
+# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU      *
+# *   Lesser General Public License for more details.                       *
+# *                                                                         *
+# *   You should have received a copy of the GNU Lesser General Public      *
+# *   License along with FreeCAD. If not, see                               *
+# *   <https://www.gnu.org/licenses/>.                                      *
 # *                                                                         *
 # ***************************************************************************
 
 """Misc Arch util commands"""
 
-
-import os
 import FreeCAD
 import FreeCADGui
 
 QT_TRANSLATE_NOOP = FreeCAD.Qt.QT_TRANSLATE_NOOP
 translate = FreeCAD.Qt.translate
+
 PARAMS = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/BIM")
 
 
@@ -51,21 +52,23 @@ class Arch_CurtainWall:
 
     def Activated(self):
 
+        self.doc = FreeCAD.ActiveDocument
         sel = FreeCADGui.Selection.getSelection()
         if len(sel) > 1:
             FreeCAD.Console.PrintError(translate("Arch","Please select only one base object or none")+"\n")
         elif len(sel) == 1:
             # build on selection
             FreeCADGui.Control.closeDialog()
-            FreeCAD.ActiveDocument.openTransaction(translate("Arch","Create Curtain Wall"))
+            self.doc.openTransaction(translate("Arch","Create Curtain Wall"))
             FreeCADGui.addModule("Draft")
             FreeCADGui.addModule("Arch")
             FreeCADGui.doCommand("obj = Arch.makeCurtainWall(FreeCAD.ActiveDocument."+FreeCADGui.Selection.getSelection()[0].Name+")")
             FreeCADGui.doCommand("Draft.autogroup(obj)")
-            FreeCAD.ActiveDocument.commitTransaction()
-            FreeCAD.ActiveDocument.recompute()
+            self.doc.commitTransaction()
+            self.doc.recompute()
         else:
             # interactive line drawing
+            FreeCAD.activeDraftCommand = self  # register as a Draft command for auto grid on/off
             self.points = []
             import WorkingPlane
             WorkingPlane.get_working_plane()
@@ -78,20 +81,24 @@ class Arch_CurtainWall:
 
         if point is None:
             # cancelled
+            FreeCAD.activeDraftCommand = None
+            FreeCADGui.Snapper.off()
             return
         self.points.append(point)
         if len(self.points) == 1:
             FreeCADGui.Snapper.getPoint(last=self.points[0],callback=self.getPoint)
         elif len(self.points) == 2:
+            FreeCAD.activeDraftCommand = None
+            FreeCADGui.Snapper.off()
             FreeCADGui.Control.closeDialog()
-            FreeCAD.ActiveDocument.openTransaction(translate("Arch","Create Curtain Wall"))
+            self.doc.openTransaction(translate("Arch","Create Curtain Wall"))
             FreeCADGui.addModule("Draft")
             FreeCADGui.addModule("Arch")
             FreeCADGui.doCommand("base = Draft.makeLine(FreeCAD."+str(self.points[0])+",FreeCAD."+str(self.points[1])+")")
             FreeCADGui.doCommand("obj = Arch.makeCurtainWall(base)")
             FreeCADGui.doCommand("Draft.autogroup(obj)")
-            FreeCAD.ActiveDocument.commitTransaction()
-            FreeCAD.ActiveDocument.recompute()
+            self.doc.commitTransaction()
+            self.doc.recompute()
 
 
 

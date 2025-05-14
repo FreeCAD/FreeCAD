@@ -22,9 +22,9 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
+#include <limits>
 #include <Precision.hxx>
 #include <QPainter>
-#include <cfloat>
 #endif
 
 #include <boost/range/adaptor/reversed.hpp>
@@ -113,11 +113,11 @@ void finishDatumConstraint(Gui::Command* cmd,
     float labelPositionRandomness = 0.0;
 
     if (lastConstraintType == Radius || lastConstraintType == Diameter) {
-        labelPosition = hGrp->GetFloat("RadiusDiameterConstraintDisplayBaseAngle", 15.0)
-            * (M_PI / 180);// Get radius/diameter constraint display angle
+        // Get radius/diameter constraint display angle
+        labelPosition = Base::toRadians(hGrp->GetFloat("RadiusDiameterConstraintDisplayBaseAngle", 15.0));
+        // Get randomness
         labelPositionRandomness =
-            hGrp->GetFloat("RadiusDiameterConstraintDisplayAngleRandomness", 0.0)
-            * (M_PI / 180);// Get randomness
+            Base::toRadians(hGrp->GetFloat("RadiusDiameterConstraintDisplayAngleRandomness", 0.0));
 
         // Adds a random value around the base angle, so that possibly overlapping labels get likely
         // a different position.
@@ -320,7 +320,7 @@ bool SketcherGui::calculateAngle(Sketcher::SketchObject* Obj, int& GeoId1, int& 
     }
     else {
         // if all points are collinear
-        double length = DBL_MAX;
+        double length = std::numeric_limits<double>::max();
         for (int i = 0; i <= 1; i++) {
             for (int j = 0; j <= 1; j++) {
                 double tmp = Base::DistanceP2(p2[j], p1[i]);
@@ -924,7 +924,7 @@ public:
         if (pObj != this->object) {
             return false;
         }
-        if (!sSubName || sSubName[0] == '\0') {
+        if (Base::Tools::isNullOrEmpty(sSubName)) {
             return false;
         }
         std::string element(sSubName);
@@ -1129,8 +1129,8 @@ private:
         auto colorMapping = std::map<unsigned long, unsigned long>();
         colorMapping[defaultCrosshairColor] = color;
 
-        qreal fullIconWidth = 32 * pixelRatio;
-        qreal iconWidth = 16 * pixelRatio;
+        constexpr qreal fullIconWidth = 32;
+        constexpr qreal iconWidth = 16;
         QPixmap cursorPixmap =
                     Gui::BitmapFactory().pixmapFromSvg("Sketcher_Crosshair",
                                                        QSizeF(fullIconWidth, fullIconWidth),
@@ -1143,7 +1143,6 @@ private:
         cursorPainter.end();
         int hotX = 8;
         int hotY = 8;
-        cursorPixmap.setDevicePixelRatio(pixelRatio);
         // only X11 needs hot point coordinates to be scaled
         if (qGuiApp->platformName() == QLatin1String("xcb")) {
             hotX *= pixelRatio;
@@ -1422,17 +1421,16 @@ public:
         auto colorMapping = std::map<unsigned long, unsigned long>();
         colorMapping[defaultCrosshairColor] = color;
 
-        qreal fullIconWidth = 32 * pixelRatio;
-        qreal iconWidth = 16 * pixelRatio;
-        QPixmap cursorPixmap = Gui::BitmapFactory().pixmapFromSvg("Sketcher_Crosshair", QSizeF(fullIconWidth, fullIconWidth), colorMapping),
-            icon = Gui::BitmapFactory().pixmapFromSvg("Constraint_Dimension", QSizeF(iconWidth, iconWidth));
+        constexpr qreal fullIconWidth = 32;
+        constexpr qreal iconWidth = 16;
+        QPixmap cursorPixmap = Gui::BitmapFactory().pixmapFromSvg("Sketcher_Crosshair", QSizeF(fullIconWidth, fullIconWidth), colorMapping);
+        QPixmap icon = Gui::BitmapFactory().pixmapFromSvg("Constraint_Dimension", QSizeF(iconWidth, iconWidth));
         QPainter cursorPainter;
         cursorPainter.begin(&cursorPixmap);
         cursorPainter.drawPixmap(16 * pixelRatio, 16 * pixelRatio, icon);
         cursorPainter.end();
         int hotX = 8;
         int hotY = 8;
-        cursorPixmap.setDevicePixelRatio(pixelRatio);
         // only X11 needs hot point coordinates to be scaled
         if (qGuiApp->platformName() == QLatin1String("xcb")) {
             hotX *= pixelRatio;
@@ -1526,7 +1524,7 @@ public:
         selIdPair.GeoId = GeoEnum::GeoUndef;
         selIdPair.PosId = Sketcher::PointPos::none;
         std::stringstream ss;
-        Base::Type newselGeoType = Base::Type::badType();
+        Base::Type newselGeoType = Base::Type::BadType;
 
         int VtId = getPreselectPoint();
         int CrvId = getPreselectCurve();
@@ -1662,7 +1660,7 @@ protected:
             SelIdPair selIdPair;
             getIdsFromName(selElement, Obj, selIdPair.GeoId, selIdPair.PosId);
 
-            Base::Type newselGeoType = Base::Type::badType();
+            Base::Type newselGeoType = Base::Type::BadType;
             if (isEdge(selIdPair.GeoId, selIdPair.PosId)) {
                 const Part::Geometry* geo = Obj->getGeometry(selIdPair.GeoId);
                 newselGeoType = geo->getTypeId();
@@ -5860,7 +5858,7 @@ void CmdSketcherConstrainPerpendicular::activated(int iMsg)
                             /*disambig.:*/ "perpendicular constraint");
             QString strError =
                 QObject::tr("Select some geometry from the sketch.", "perpendicular constraint");
-            strError.append(QString::fromLatin1("\n\n"));
+            strError.append(QStringLiteral("\n\n"));
             strError.append(strBasicHelp);
             Gui::TranslatedUserWarning(getActiveGuiDocument(),
                                        QObject::tr("Wrong selection"),
@@ -6696,7 +6694,7 @@ void CmdSketcherConstrainTangent::activated(int iMsg)
                             /*disambig.:*/ "tangent constraint");
             QString strError =
                 QObject::tr("Select some geometry from the sketch.", "tangent constraint");
-            strError.append(QString::fromLatin1("\n\n"));
+            strError.append(QStringLiteral("\n\n"));
             strError.append(strBasicHelp);
             Gui::TranslatedUserWarning(getActiveGuiDocument(),
                                        QObject::tr("Wrong selection"),

@@ -40,12 +40,10 @@ QT_END_NAMESPACE
 #include <Base/Vector3D.h>
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
+#include "Enums.h"
+
 namespace TechDrawGui
 {
-
-#define DECORNODRAG 0
-#define DECORDRAGSTARTED 1
-#define DECORDRAGGING 2
 
 class TechDrawGuiExport QGIDecoration : public QGraphicsItemGroup
 {
@@ -69,11 +67,10 @@ public:
     virtual void onDragFinished();
 
     void setWidth(double w);
-    double getWidth() { return m_width; }
+    double getWidth() { return m_pen.widthF(); }
     void setStyle(Qt::PenStyle s);
     void setColor(QColor c);
     QColor getColor() { return m_colNormal; }
-    void setFill(Qt::BrushStyle bs) { m_brushCurrent = bs; }
     void makeMark(double x, double y);
     void makeMark(Base::Vector3d v);
 
@@ -86,13 +83,9 @@ protected:
     virtual QColor prefSelectColor();
     QPen m_pen;
     QBrush m_brush;
-    QColor m_colCurrent;
     QColor m_colNormal;
-    double m_width;
-    Qt::PenStyle m_styleCurrent;
-    Qt::BrushStyle m_brushCurrent;
 
-    int m_dragState;
+    DragState m_dragState;
 
 private:
 };

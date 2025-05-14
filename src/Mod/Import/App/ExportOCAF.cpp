@@ -36,7 +36,6 @@
 #include <TopTools_IndexedMapOfShape.hxx>
 #include <XCAFDoc_DocumentTool.hxx>
 #include <XCAFDoc_Location.hxx>
-#include <climits>
 #include <gp_Ax1.hxx>
 #include <gp_Dir.hxx>
 #include <gp_Pln.hxx>  // for Precision::Confusion()
@@ -100,8 +99,7 @@ std::vector<App::DocumentObject*> ExportOCAF::filterPart(App::Part* part) const
             std::vector<App::DocumentObject*> inList = it->getInList();
             bool accept = true;
             for (auto jt : inList) {
-                auto kt = std::find(filterType.begin(), filterType.end(), jt);
-                if (kt != filterType.end()) {
+                if (auto kt = std::ranges::find(filterType, jt); kt != filterType.end()) {
                     accept = false;
                     break;
                 }
@@ -133,7 +131,7 @@ void ExportOCAF::exportObjects(std::vector<App::DocumentObject*>& objs)
     std::vector<int> part_id;
     getFreeLabels(hierarchical_label, FreeLabels, part_id);
 
-    std::vector<std::vector<App::Color>> Colors;
+    std::vector<std::vector<Base::Color>> Colors;
     getPartColors(hierarchical_part, FreeLabels, part_id, Colors);
     reallocateFreeShape(hierarchical_part, FreeLabels, part_id, Colors);
 
@@ -179,7 +177,7 @@ int ExportOCAF::exportObject(App::DocumentObject* obj,
 
     if (obj->isDerivedFrom<Part::Feature>()) {
         Part::Feature* part = static_cast<Part::Feature*>(obj);
-        std::vector<App::Color> colors;
+        std::vector<Base::Color> colors;
         findColors(part, colors);
 
         return_label =
@@ -221,7 +219,7 @@ void ExportOCAF::createNode(App::Part* part,
 }
 
 int ExportOCAF::saveShape(Part::Feature* part,
-                          const std::vector<App::Color>& colors,
+                          const std::vector<Base::Color>& colors,
                           std::vector<TDF_Label>& hierarchical_label,
                           std::vector<TopLoc_Location>& hierarchical_loc,
                           std::vector<App::DocumentObject*>& hierarchical_part)
@@ -301,7 +299,7 @@ int ExportOCAF::saveShape(Part::Feature* part,
                 }
 
                 if (!faceLabel.IsNull()) {
-                    const App::Color& color = colors[index - 1];
+                    const Base::Color& color = colors[index - 1];
                     col = Tools::convertColor(color);
                     aColorTool->SetColor(faceLabel, col, XCAFDoc_ColorSurf);
                 }
@@ -310,7 +308,7 @@ int ExportOCAF::saveShape(Part::Feature* part,
         }
     }
     else if (!colors.empty()) {
-        App::Color color = colors.front();
+        Base::Color color = colors.front();
         col = Tools::convertColor(color);
         aColorTool->SetColor(shapeLabel, col, XCAFDoc_ColorGen);
     }
@@ -347,12 +345,12 @@ void ExportOCAF::getFreeLabels(std::vector<TDF_Label>& hierarchical_label,
 void ExportOCAF::getPartColors(std::vector<App::DocumentObject*> hierarchical_part,
                                std::vector<TDF_Label> FreeLabels,
                                std::vector<int> part_id,
-                               std::vector<std::vector<App::Color>>& Colors) const
+                               std::vector<std::vector<Base::Color>>& Colors) const
 {
     // I am seeking for the colors of each parts
     std::size_t n = FreeLabels.size();
     for (std::size_t i = 0; i < n; i++) {
-        std::vector<App::Color> colors;
+        std::vector<Base::Color> colors;
         Part::Feature* part = static_cast<Part::Feature*>(hierarchical_part.at(part_id.at(i)));
         findColors(part, colors);
         Colors.push_back(colors);
@@ -362,7 +360,7 @@ void ExportOCAF::getPartColors(std::vector<App::DocumentObject*> hierarchical_pa
 void ExportOCAF::reallocateFreeShape(std::vector<App::DocumentObject*> hierarchical_part,
                                      std::vector<TDF_Label> FreeLabels,
                                      std::vector<int> part_id,
-                                     std::vector<std::vector<App::Color>>& Colors)
+                                     std::vector<std::vector<Base::Color>>& Colors)
 {
     std::size_t n = FreeLabels.size();
     for (std::size_t i = 0; i < n; i++) {
@@ -372,7 +370,7 @@ void ExportOCAF::reallocateFreeShape(std::vector<App::DocumentObject*> hierarchi
             Part::Feature* part = static_cast<Part::Feature*>(hierarchical_part.at(part_id.at(i)));
             aShapeTool->SetShape(label, part->Shape.getValue());
             // Add color information
-            std::vector<App::Color> colors;
+            std::vector<Base::Color> colors;
             colors = Colors.at(i);
             TopoDS_Shape baseShape = part->Shape.getValue();
 
@@ -409,7 +407,7 @@ void ExportOCAF::reallocateFreeShape(std::vector<App::DocumentObject*> hierarchi
                         }
 
                         if (!faceLabel.IsNull()) {
-                            const App::Color& color = colors[index - 1];
+                            const Base::Color& color = colors[index - 1];
                             col = Tools::convertColor(color);
                             aColorTool->SetColor(faceLabel, col, XCAFDoc_ColorSurf);
                         }
@@ -419,7 +417,7 @@ void ExportOCAF::reallocateFreeShape(std::vector<App::DocumentObject*> hierarchi
                 }
             }
             else if (!colors.empty()) {
-                App::Color color = colors.front();
+                Base::Color color = colors.front();
                 col = Tools::convertColor(color);
                 aColorTool->SetColor(label, col, XCAFDoc_ColorGen);
             }
@@ -463,9 +461,9 @@ ExportOCAFCmd::ExportOCAFCmd(Handle(TDocStd_Document) h, bool explicitPlacement)
     : ExportOCAF(h, explicitPlacement)
 {}
 
-void ExportOCAFCmd::findColors(Part::Feature* part, std::vector<App::Color>& colors) const
+void ExportOCAFCmd::findColors(Part::Feature* part, std::vector<Base::Color>& colors) const
 {
-    std::map<Part::Feature*, std::vector<App::Color>>::const_iterator it = partColors.find(part);
+    std::map<Part::Feature*, std::vector<Base::Color>>::const_iterator it = partColors.find(part);
     if (it != partColors.end()) {
         colors = it->second;
     }

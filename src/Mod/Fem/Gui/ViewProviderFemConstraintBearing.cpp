@@ -70,7 +70,7 @@ void ViewProviderFemConstraintBearing::updateData(const App::Property* prop)
     Fem::ConstraintBearing* pcConstraint = this->getObject<Fem::ConstraintBearing>();
 
     if (prop == &pcConstraint->References) {
-        Base::Console().Error("\n");  // enable a breakpoint here
+        Base::Console().error("\n");  // enable a breakpoint here
     }
 
     if (prop == &pcConstraint->BasePoint) {

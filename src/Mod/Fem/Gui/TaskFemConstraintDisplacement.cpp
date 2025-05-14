@@ -28,6 +28,7 @@
 #ifndef _PreComp_
 #include <QAction>
 #include <QMessageBox>
+#include <limits>
 #include <sstream>
 #endif
 
@@ -74,18 +75,19 @@ TaskFemConstraintDisplacement::TaskFemConstraintDisplacement(
     this->groupLayout()->addWidget(proxy);
 
     // setup ranges
-    ui->spinxDisplacement->setMinimum(-FLOAT_MAX);
-    ui->spinxDisplacement->setMaximum(FLOAT_MAX);
-    ui->spinyDisplacement->setMinimum(-FLOAT_MAX);
-    ui->spinyDisplacement->setMaximum(FLOAT_MAX);
-    ui->spinzDisplacement->setMinimum(-FLOAT_MAX);
-    ui->spinzDisplacement->setMaximum(FLOAT_MAX);
-    ui->spinxRotation->setMinimum(-FLOAT_MAX);
-    ui->spinxRotation->setMaximum(FLOAT_MAX);
-    ui->spinyRotation->setMinimum(-FLOAT_MAX);
-    ui->spinyRotation->setMaximum(FLOAT_MAX);
-    ui->spinzRotation->setMinimum(-FLOAT_MAX);
-    ui->spinzRotation->setMaximum(FLOAT_MAX);
+    constexpr float max = std::numeric_limits<float>::max();
+    ui->spinxDisplacement->setMinimum(-max);
+    ui->spinxDisplacement->setMaximum(max);
+    ui->spinyDisplacement->setMinimum(-max);
+    ui->spinyDisplacement->setMaximum(max);
+    ui->spinzDisplacement->setMinimum(-max);
+    ui->spinzDisplacement->setMaximum(max);
+    ui->spinxRotation->setMinimum(-max);
+    ui->spinxRotation->setMaximum(max);
+    ui->spinyRotation->setMinimum(-max);
+    ui->spinyRotation->setMaximum(max);
+    ui->spinzRotation->setMinimum(-max);
+    ui->spinzRotation->setMaximum(max);
 
     // Get the feature data
     Fem::ConstraintDisplacement* pcConstraint =
@@ -254,8 +256,7 @@ void TaskFemConstraintDisplacement::addToSelection()
         App::DocumentObject* obj = it.getObject();
         for (const auto& subName : subNames) {  // for every selected sub element
             bool addMe = true;
-            for (std::vector<std::string>::iterator itr =
-                     std::find(SubElements.begin(), SubElements.end(), subName);
+            for (auto itr = std::ranges::find(SubElements.begin(), SubElements.end(), subName);
                  itr != SubElements.end();
                  itr = std::find(++itr,
                                  SubElements.end(),
@@ -325,9 +326,7 @@ void TaskFemConstraintDisplacement::removeFromSelection()
         const App::DocumentObject* obj = it.getObject();
 
         for (const auto& subName : subNames) {  // for every selected sub element
-            for (std::vector<std::string>::iterator itr =
-                     std::find(SubElements.begin(), SubElements.end(), subName);
-                 itr != SubElements.end();
+            for (auto itr = std::ranges::find(SubElements, subName); itr != SubElements.end();
                  itr = std::find(++itr,
                                  SubElements.end(),
                                  subName)) {  // for every sub element in selection that
@@ -409,21 +408,21 @@ std::string TaskFemConstraintDisplacement::get_spinzRotation() const
 std::string TaskFemConstraintDisplacement::get_xFormula() const
 {
     QString xFormula = ui->DisplacementXFormulaLE->text();
-    xFormula.replace(QString::fromLatin1("\""), QString::fromLatin1("\\\""));
+    xFormula.replace(QStringLiteral("\""), QStringLiteral("\\\""));
     return xFormula.toStdString();
 }
 
 std::string TaskFemConstraintDisplacement::get_yFormula() const
 {
     QString yFormula = ui->DisplacementYFormulaLE->text();
-    yFormula.replace(QString::fromLatin1("\""), QString::fromLatin1("\\\""));
+    yFormula.replace(QStringLiteral("\""), QStringLiteral("\\\""));
     return yFormula.toStdString();
 }
 
 std::string TaskFemConstraintDisplacement::get_zFormula() const
 {
     QString zFormula = ui->DisplacementZFormulaLE->text();
-    zFormula.replace(QString::fromLatin1("\""), QString::fromLatin1("\\\""));
+    zFormula.replace(QStringLiteral("\""), QStringLiteral("\\\""));
     return zFormula.toStdString();
 }
 

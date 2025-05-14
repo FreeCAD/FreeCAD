@@ -83,7 +83,9 @@ void AutoSaver::renameFile(QString dirName, QString file, QString tmpFile)
             << " -> " << file.toUtf8().constData());
     QDir dir(dirName);
     dir.remove(file);
-    dir.rename(tmpFile,file);
+    if (!dir.rename(tmpFile,file)) {
+        FC_ERR("Failed to rename autosave file " << tmpFile.toStdString() << " to " << file.toStdString() << "\n");
+    }
 }
 
 void AutoSaver::setTimeout(int ms)
@@ -146,7 +148,7 @@ void AutoSaver::saveDocument(const std::string& name, AutoSaveProperty& saver)
         saver.dirName = dirName;
 
         // Write recovery meta file
-        QFile file(QString::fromLatin1("%1/fc_recovery_file.xml")
+        QFile file(QStringLiteral("%1/fc_recovery_file.xml")
             .arg(QString::fromUtf8(doc->TransientDir.getValue())));
         if (file.open(QFile::WriteOnly)) {
             QTextStream str(&file);
@@ -220,7 +222,7 @@ void AutoSaver::saveDocument(const std::string& name, AutoSaveProperty& saver)
             }
         }
 
-        Base::Console().Log("Save AutoRecovery file in %fs\n", Base::TimeElapsed::diffTimeF(startTime,Base::TimeElapsed()));
+        Base::Console().log("Save AutoRecovery file in %fs\n", Base::TimeElapsed::diffTimeF(startTime,Base::TimeElapsed()));
         hGrp->SetBool("SaveThumbnail",save);
     }
 }
@@ -236,7 +238,7 @@ void AutoSaver::timerEvent(QTimerEvent * event)
                 break;
             }
             catch (...) {
-                Base::Console().Error("Failed to auto-save document '%s'\n", it.first.c_str());
+                Base::Console().error("Failed to auto-save document '%s'\n", it.first.c_str());
             }
         }
     }
@@ -333,7 +335,7 @@ public:
 
         dirName = QString::fromUtf8(dir);
         fileName = QString::fromUtf8(file);
-        tmpName = QString::fromLatin1("%1.tmp%2").arg(fileName).arg(rand());
+        tmpName = QStringLiteral("%1.tmp%2").arg(fileName).arg(rand());
         writer.putNextEntry(tmpName.toUtf8().constData());
     }
     ~RecoveryRunnable() override

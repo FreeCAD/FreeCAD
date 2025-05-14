@@ -58,7 +58,7 @@ int BezierSurfacePy::PyInit(PyObject* /*args*/, PyObject* /*kwd*/)
     return 0;
 }
 
-PyObject* BezierSurfacePy::bounds(PyObject *args)
+PyObject* BezierSurfacePy::bounds(PyObject *args) const
 {
     if (!PyArg_ParseTuple(args, ""))
         return nullptr;
@@ -75,7 +75,7 @@ PyObject* BezierSurfacePy::bounds(PyObject *args)
     return Py::new_reference_to(bound);
 }
 
-PyObject* BezierSurfacePy::isURational(PyObject *args)
+PyObject* BezierSurfacePy::isURational(PyObject *args) const
 {
     if (!PyArg_ParseTuple(args, ""))
         return nullptr;
@@ -86,7 +86,7 @@ PyObject* BezierSurfacePy::isURational(PyObject *args)
     return PyBool_FromLong(val ? 1 : 0);
 }
 
-PyObject* BezierSurfacePy::isVRational(PyObject *args)
+PyObject* BezierSurfacePy::isVRational(PyObject *args) const
 {
     if (!PyArg_ParseTuple(args, ""))
         return nullptr;
@@ -97,7 +97,7 @@ PyObject* BezierSurfacePy::isVRational(PyObject *args)
     return PyBool_FromLong(val ? 1 : 0);
 }
 
-PyObject* BezierSurfacePy::isUPeriodic(PyObject *args)
+PyObject* BezierSurfacePy::isUPeriodic(PyObject *args) const
 {
     if (!PyArg_ParseTuple(args, ""))
         return nullptr;
@@ -108,7 +108,7 @@ PyObject* BezierSurfacePy::isUPeriodic(PyObject *args)
     return PyBool_FromLong(val ? 1 : 0);
 }
 
-PyObject* BezierSurfacePy::isVPeriodic(PyObject *args)
+PyObject* BezierSurfacePy::isVPeriodic(PyObject *args) const
 {
     if (!PyArg_ParseTuple(args, ""))
         return nullptr;
@@ -119,7 +119,7 @@ PyObject* BezierSurfacePy::isVPeriodic(PyObject *args)
     return PyBool_FromLong(val ? 1 : 0);
 }
 
-PyObject* BezierSurfacePy::isUClosed(PyObject *args)
+PyObject* BezierSurfacePy::isUClosed(PyObject *args) const
 {
     if (!PyArg_ParseTuple(args, ""))
         return nullptr;
@@ -130,7 +130,7 @@ PyObject* BezierSurfacePy::isUClosed(PyObject *args)
     return PyBool_FromLong(val ? 1 : 0);
 }
 
-PyObject* BezierSurfacePy::isVClosed(PyObject *args)
+PyObject* BezierSurfacePy::isVClosed(PyObject *args) const
 {
     if (!PyArg_ParseTuple(args, ""))
         return nullptr;
@@ -473,7 +473,7 @@ PyObject* BezierSurfacePy::setPoleRow(PyObject *args)
     }
 }
 
-PyObject* BezierSurfacePy::getPole(PyObject *args)
+PyObject* BezierSurfacePy::getPole(PyObject *args) const
 {
     int uindex,vindex;
     if (!PyArg_ParseTuple(args, "ii",&uindex,&vindex))
@@ -493,7 +493,7 @@ PyObject* BezierSurfacePy::getPole(PyObject *args)
     }
 }
 
-PyObject* BezierSurfacePy::getPoles(PyObject *args)
+PyObject* BezierSurfacePy::getPoles(PyObject *args) const
 {
     if (!PyArg_ParseTuple(args, ""))
         return nullptr;
@@ -588,7 +588,7 @@ PyObject* BezierSurfacePy::setWeightRow(PyObject *args)
     }
 }
 
-PyObject* BezierSurfacePy::getWeight(PyObject *args)
+PyObject* BezierSurfacePy::getWeight(PyObject *args) const
 {
     int uindex,vindex;
     if (!PyArg_ParseTuple(args, "ii",&uindex,&vindex))
@@ -608,7 +608,7 @@ PyObject* BezierSurfacePy::getWeight(PyObject *args)
     }
 }
 
-PyObject* BezierSurfacePy::getWeights(PyObject *args)
+PyObject* BezierSurfacePy::getWeights(PyObject *args) const
 {
     if (!PyArg_ParseTuple(args, ""))
         return nullptr;
@@ -633,7 +633,7 @@ PyObject* BezierSurfacePy::getWeights(PyObject *args)
     }
 }
 
-PyObject* BezierSurfacePy::getResolution(PyObject *args)
+PyObject* BezierSurfacePy::getResolution(PyObject *args) const
 {
     double tol;
     if (!PyArg_ParseTuple(args, "d", &tol))

@@ -28,7 +28,7 @@
             <UserDocu>
               Return the assembly dragger coin object.
 
-              getDragger() -> SoFCCSysDragger
+              getDragger() -> SoTransformDragger
 
               Returns: dragger coin object of the assembly
             </UserDocu>

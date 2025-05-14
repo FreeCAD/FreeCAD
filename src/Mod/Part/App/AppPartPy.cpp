@@ -658,7 +658,7 @@ private:
             str += " ";
             if (msg) {str += msg;}
             else     {str += "No OCCT Exception Message";}
-            Base::Console().Error("%s\n", str.c_str());
+            Base::Console().error("%s\n", str.c_str());
             throw Py::Exception(Part::PartExceptionOCCError, str);
         }
         catch (const Base::Exception &e) {
@@ -666,7 +666,7 @@ private:
             str += "FreeCAD exception thrown (";
             str += e.what();
             str += ")";
-            e.ReportException();
+            e.reportException();
             throw Py::RuntimeError(str);
         }
         catch (const std::exception &e) {
@@ -674,7 +674,7 @@ private:
             str += "C++ exception thrown (";
             str += e.what();
             str += ")";
-            Base::Console().Error("%s\n", str.c_str());
+            Base::Console().error("%s\n", str.c_str());
             throw Py::RuntimeError(str);
         }
     }
@@ -691,7 +691,7 @@ private:
             str += " ";
             if (msg) {str += msg;}
             else     {str += "No OCCT Exception Message";}
-            Base::Console().Error("%s\n", str.c_str());
+            Base::Console().error("%s\n", str.c_str());
             throw Py::Exception(Part::PartExceptionOCCError, str);
         }
         catch (const Base::Exception &e) {
@@ -699,7 +699,7 @@ private:
             str += "FreeCAD exception thrown (";
             str += e.what();
             str += ")";
-            e.ReportException();
+            e.reportException();
             throw Py::RuntimeError(str);
         }
         catch (const std::exception &e) {
@@ -707,7 +707,7 @@ private:
             str += "C++ exception thrown (";
             str += e.what();
             str += ")";
-            Base::Console().Error("%s\n", str.c_str());
+            Base::Console().error("%s\n", str.c_str());
             throw Py::RuntimeError(str);
         }
     }
@@ -720,7 +720,6 @@ private:
         std::string EncodedName = std::string(Name);
         PyMem_Free(Name);
 
-        //Base::Console().Log("Open in Part with %s",Name);
         Base::FileInfo file(EncodedName.c_str());
 
         // extract ending
@@ -763,7 +762,7 @@ private:
         std::string EncodedName = std::string(Name);
         PyMem_Free(Name);
 
-        //Base::Console().Log("Insert in Part with %s",Name);
+        //Base::Console().log("Insert in Part with %s",Name);
         Base::FileInfo file(EncodedName.c_str());
 
         // extract ending
@@ -822,7 +821,7 @@ private:
                         builder.Add(comp, shape);
                 }
                 else {
-                    Base::Console().Message("'%s' is not a shape, export will be ignored.\n", obj->Label.getValue());
+                    Base::Console().message("'%s' is not a shape, export will be ignored.\n", obj->Label.getValue());
                 }
             }
         }
@@ -866,7 +865,7 @@ private:
         } else {
             throw Py::TypeError("Expects argument of type DocumentObject, Shape, or Geometry");
         }
-        Part::Feature *pcFeature = static_cast<Part::Feature*>(pcDoc->addObject("Part::Feature", name));
+        Part::Feature *pcFeature = pcDoc->addObject<Part::Feature>(name);
         // copy the data
         pcFeature->Shape.setValue(shape);
         pcFeature->purgeTouched();
@@ -1054,7 +1053,7 @@ private:
                           if (!PyLong_Check(value)) {
                               throw Py::ValueError(err);
                           }
-                          int order = Py::Int(value);
+                          int order = Py::Long(value);
                           params.orders[s] = static_cast<TopoShape::Continuity>(order);
                           return;
                       });
@@ -1131,7 +1130,7 @@ private:
                           if (!PyLong_Check(value)) {
                               throw Py::ValueError(err);
                           }
-                          int order = Py::Int(value);
+                          int order = Py::Long(value);
                           params.orders[s] = static_cast<TopoShape::Continuity>(order);
                           return;
                       });
@@ -1623,7 +1622,8 @@ private:
     }
     Py::Object makeRevolution(const Py::Tuple& args)
     {
-        double vmin = DBL_MAX, vmax=-DBL_MAX;
+        constexpr double doubleMax = std::numeric_limits<double>::max();
+        double vmin = doubleMax, vmax=-doubleMax;
         double angle=360;
         PyObject *pPnt=nullptr, *pDir=nullptr, *pCrv;
         Handle(Geom_Curve) curve;
@@ -1642,10 +1642,10 @@ private:
                 if (curve.IsNull()) {
                     throw Py::Exception(PyExc_TypeError, "geometry is not a curve");
                 }
-                if (vmin == DBL_MAX)
+                if (vmin == doubleMax)
                     vmin = curve->FirstParameter();
 
-                if (vmax == -DBL_MAX)
+                if (vmax == -doubleMax)
                     vmax = curve->LastParameter();
                 break;
             }
@@ -1676,9 +1676,9 @@ private:
                     throw Py::Exception(PartExceptionOCCError, "invalid curve in edge");
                 }
 
-                if (vmin == DBL_MAX)
+                if (vmin == doubleMax)
                     vmin = adapt.FirstParameter();
-                if (vmax == -DBL_MAX)
+                if (vmax == -doubleMax)
                     vmax = adapt.LastParameter();
                 break;
             }
@@ -1982,7 +1982,7 @@ private:
         double height;
         double track = 0;
 
-        Py_UNICODE *unichars = nullptr;
+        Py_UCS4 *unichars = nullptr;
         Py_ssize_t pysize;
 
         PyObject *CharList;
@@ -2015,34 +2015,11 @@ private:
             }
 
             pysize = PyUnicode_GetLength(p);
-#if PY_VERSION_HEX < 0x03090000
-            unichars = PyUnicode_AS_UNICODE(p);
-#else
-#ifdef FC_OS_WIN32
-            //PyUNICODE is only 16 bits on Windows (wchar_t), so passing 32 bit UCS4
-            //will result in unknown glyph in even positions, and wrong characters in
-            //odd positions.
-            unichars = (Py_UNICODE*)PyUnicode_AsWideCharString(p, &pysize);
-#else
-            unichars = (Py_UNICODE *)PyUnicode_AsUCS4Copy(p);
-#endif
-#endif
+            unichars = PyUnicode_AsUCS4Copy(p);
         }
         else if (PyUnicode_Check(intext)) {
             pysize = PyUnicode_GetLength(intext);
-
-#if PY_VERSION_HEX < 0x03090000
-            unichars = PyUnicode_AS_UNICODE(intext);
-#else
-#ifdef FC_OS_WIN32
-            //PyUNICODE is only 16 bits on Windows (wchar_t), so passing 32 bit UCS4
-            //will result in unknown glyph in even positions, and wrong characters in
-            //odd positions.
-            unichars = (Py_UNICODE*)PyUnicode_AsWideCharString(intext, &pysize);
-#else
-            unichars = (Py_UNICODE *)PyUnicode_AsUCS4Copy(intext);
-#endif
-#endif
+            unichars = PyUnicode_AsUCS4Copy(intext);
         }
         else {
             throw Py::TypeError("** makeWireString bad text parameter");
@@ -2055,11 +2032,9 @@ private:
             else {
                 CharList = FT2FC(unichars,pysize,dir,fontfile,height,track);
             }
-#if PY_VERSION_HEX >= 0x03090000
             if (unichars) {
                 PyMem_Free(unichars);
             }
-#endif
         }
         catch (Standard_DomainError&) {                                      // Standard_DomainError is OCC error.
             throw Py::Exception(PartExceptionOCCDomainError, "makeWireString failed - Standard_DomainError");
@@ -2368,12 +2343,12 @@ private:
         std::string subname(sub);
         if (!subname.empty() && subname[subname.size()-1]!='.')
             subname += '.';
-        if (mapped && mapped[0]) {
+        if (!Base::Tools::isNullOrEmpty(mapped)) {
             if (!Data::isMappedElement(mapped))
                 subname += Data::ELEMENT_MAP_PREFIX;
             subname += mapped;
         }
-        if (element && element[0]) {
+        if (!Base::Tools::isNullOrEmpty(element)) {
             if (!subname.empty() && subname[subname.size()-1]!='.')
                 subname += '.';
             subname += element;

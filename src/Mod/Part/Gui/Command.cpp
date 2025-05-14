@@ -940,11 +940,11 @@ void CmdPartImport::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     QStringList filter;
-    filter << QString::fromLatin1("STEP (*.stp *.step)");
-    filter << QString::fromLatin1("STEP with colors (*.stp *.step)");
-    filter << QString::fromLatin1("IGES (*.igs *.iges)");
-    filter << QString::fromLatin1("IGES with colors (*.igs *.iges)");
-    filter << QString::fromLatin1("BREP (*.brp *.brep)");
+    filter << QStringLiteral("STEP (*.stp *.step)");
+    filter << QStringLiteral("STEP with colors (*.stp *.step)");
+    filter << QStringLiteral("IGES (*.igs *.iges)");
+    filter << QStringLiteral("IGES with colors (*.igs *.iges)");
+    filter << QStringLiteral("BREP (*.brp *.brep)");
 
     QString select;
     QString fn = Gui::FileDialog::getOpenFileName(Gui::getMainWindow(), QString(), QString(), filter.join(QLatin1String(";;")), &select);
@@ -1003,11 +1003,11 @@ void CmdPartExport::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     QStringList filter;
-    filter << QString::fromLatin1("STEP (*.stp *.step)");
-    filter << QString::fromLatin1("STEP with colors (*.stp *.step)");
-    filter << QString::fromLatin1("IGES (*.igs *.iges)");
-    filter << QString::fromLatin1("IGES with colors (*.igs *.iges)");
-    filter << QString::fromLatin1("BREP (*.brp *.brep)");
+    filter << QStringLiteral("STEP (*.stp *.step)");
+    filter << QStringLiteral("STEP with colors (*.stp *.step)");
+    filter << QStringLiteral("IGES (*.igs *.iges)");
+    filter << QStringLiteral("IGES with colors (*.igs *.iges)");
+    filter << QStringLiteral("BREP (*.brp *.brep)");
 
     QString select;
     QString fn = Gui::FileDialog::getSaveFileName(Gui::getMainWindow(), QString(), QString(), filter.join(QLatin1String(";;")), &select);
@@ -1051,12 +1051,12 @@ void CmdPartImportCurveNet::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     QStringList filter;
-    filter << QString::fromLatin1("%1 (*.stp *.step *.igs *.iges *.brp *.brep)")
+    filter << QStringLiteral("%1 (*.stp *.step *.igs *.iges *.brp *.brep)")
                  .arg(QObject::tr("All CAD Files"));
-    filter << QString::fromLatin1("STEP (*.stp *.step)");
-    filter << QString::fromLatin1("IGES (*.igs *.iges)");
-    filter << QString::fromLatin1("BREP (*.brp *.brep)");
-    filter << QString::fromLatin1("%1 (*.*)")
+    filter << QStringLiteral("STEP (*.stp *.step)");
+    filter << QStringLiteral("IGES (*.igs *.iges)");
+    filter << QStringLiteral("BREP (*.brp *.brep)");
+    filter << QStringLiteral("%1 (*.*)")
                  .arg(QObject::tr("All Files"));
 
     QString fn = Gui::FileDialog::getOpenFileName(Gui::getMainWindow(), QString(), QString(), filter.join(QLatin1String(";;")));
@@ -1107,11 +1107,11 @@ void CmdPartMakeSolid::activated(int iMsg)
             TopAbs_ShapeEnum type = shape.ShapeType();
             QString str;
             if (type == TopAbs_SOLID) {
-                Base::Console().Message("%s is ignored because it is already a solid.\n",
+                Base::Console().message("%s is ignored because it is already a solid.\n",
                     it->Label.getValue());
             }
             else if (type == TopAbs_COMPOUND || type == TopAbs_COMPSOLID) {
-                str = QString::fromLatin1(
+                str = QStringLiteral(
                     "__s__=App.ActiveDocument.%1.Shape.Faces\n"
                     "__s__=Part.Solid(Part.Shell(__s__))\n"
                     "__o__=App.ActiveDocument.addObject(\"Part::Feature\",\"%1_solid\")\n"
@@ -1123,7 +1123,7 @@ void CmdPartMakeSolid::activated(int iMsg)
                          QLatin1String(it->Label.getValue()));
             }
             else if (type == TopAbs_SHELL) {
-                str = QString::fromLatin1(
+                str = QStringLiteral(
                     "__s__=App.ActiveDocument.%1.Shape\n"
                     "__s__=Part.Solid(__s__)\n"
                     "__o__=App.ActiveDocument.addObject(\"Part::Feature\",\"%1_solid\")\n"
@@ -1135,7 +1135,7 @@ void CmdPartMakeSolid::activated(int iMsg)
                          QLatin1String(it->Label.getValue()));
             }
             else {
-                Base::Console().Message("%s is ignored because it is neither a shell nor a compound.\n",
+                Base::Console().message("%s is ignored because it is neither a shell nor a compound.\n",
                     it->Label.getValue());
             }
 
@@ -1144,7 +1144,7 @@ void CmdPartMakeSolid::activated(int iMsg)
                     runCommand(Doc, str.toLatin1());
             }
             catch (const Base::Exception& e) {
-                Base::Console().Error("Cannot convert %s because %s.\n",
+                Base::Console().error("Cannot convert %s because %s.\n",
                     it->Label.getValue(), e.what());
             }
         }
@@ -1186,7 +1186,7 @@ void CmdPartReverseShape::activated(int iMsg)
             name += "_rev";
             name = getUniqueObjectName(name.c_str());
 
-            QString str = QString::fromLatin1(
+            QString str = QStringLiteral(
                 "__o__=App.ActiveDocument.addObject(\"Part::Reverse\",\"%1\")\n"
                 "__o__.Source=App.ActiveDocument.%2\n"
                 "__o__.Label=\"%3 (Rev)\"\n"
@@ -1203,7 +1203,7 @@ void CmdPartReverseShape::activated(int iMsg)
                 copyVisual(name.c_str(), "PointColor", it->getNameInDocument());
             }
             catch (const Base::Exception& e) {
-                Base::Console().Error("Cannot convert %s because %s.\n",
+                Base::Console().error("Cannot convert %s because %s.\n",
                     it->Label.getValue(), e.what());
             }
         }
@@ -2222,10 +2222,10 @@ namespace {
 
         if (activeObj) {
             QString activeName = QString::fromLatin1(activeObj->getNameInDocument());
-            return QString::fromLatin1("App.ActiveDocument.getObject('%1\').addObject(obj)\n").arg(activeName);
+            return QStringLiteral("App.ActiveDocument.getObject('%1\').addObject(obj)\n").arg(activeName);
         }
 
-        return QString::fromLatin1("# Object created at document root.");
+        return QStringLiteral("# Object created at document root.");
     }
 }
 

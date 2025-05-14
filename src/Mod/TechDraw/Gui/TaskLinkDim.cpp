@@ -90,12 +90,12 @@ void TaskLinkDim::loadAvailDims()
         return;
 
     std::string result;
-    int selRefType = TechDraw::DrawViewDimension::getRefTypeSubElements(m_subs);
+    TechDraw::DrawViewDimension::RefType selRefType = TechDraw::DrawViewDimension::getRefTypeSubElements(m_subs);
     //int found = 0;
     for (auto* view : m_page->getViews()) {
         if (view->isDerivedFrom<TechDraw::DrawViewDimension>()) {
             auto* dim = static_cast<TechDraw::DrawViewDimension*>(view);
-            int dimRefType = dim->getRefType();
+            TechDraw::DrawViewDimension::RefType dimRefType = dim->getRefType();
             if (dimRefType == selRefType) {                                     //potential matches
     //            found++;
                 if (dim->has3DReferences()) {
@@ -119,7 +119,7 @@ void TaskLinkDim::loadToTree(const TechDraw::DrawViewDimension* dim, const bool 
 {
     QString label = QString::fromUtf8(dim->Label.getValue());
     QString name = QString::fromUtf8(dim->getNameInDocument());
-    QString tooltip = label + QString::fromUtf8(" / ") + name;
+    QString tooltip = label + QStringLiteral(" / ") + name;
 
     QTreeWidgetItem* child = new QTreeWidgetItem();
     child->setText(0, label);
@@ -215,23 +215,23 @@ void TaskLinkDim::onCurrentItemChanged(QTreeWidgetItem* current, QTreeWidgetItem
     Q_UNUSED(current);
     Q_UNUSED(previous);
 //    if (previous) {
-//        Base::Console().Message("TRACE - TLD::onCurrent - text: %s data: %s is previous\n",
+//        Base::Console().message("TRACE - TLD::onCurrent - text: %s data: %s is previous\n",
 //                                qPrintable(previous->text(0)), qPrintable(previous->data(0, Qt::UserRole).toString()));
 //        if (previous->treeWidget() == ui->selector->selectedTreeWidget()) {
-//            Base::Console().Message("TRACE - TLD::onCurrent - previous belongs to selected\n");
+//            Base::Console().message("TRACE - TLD::onCurrent - previous belongs to selected\n");
 //        }
 //        if (previous->treeWidget() == ui->selector->availableTreeWidget()) {
-//            Base::Console().Message("TRACE - TLD::onCurrent - previous belongs to available\n");
+//            Base::Console().message("TRACE - TLD::onCurrent - previous belongs to available\n");
 //        }
 //    }
 //    if (current) {
-//        Base::Console().Message("TRACE - TLD::onCurrent - text: %s data: %s is current\n",
+//        Base::Console().message("TRACE - TLD::onCurrent - text: %s data: %s is current\n",
 //                                 qPrintable(current->text(0)), qPrintable(current->data(0, Qt::UserRole).toString()));
 //        if (current->treeWidget() == ui->selector->selectedTreeWidget()) {
-//            Base::Console().Message("TRACE - TLD::onCurrent - current belongs to selected\n");
+//            Base::Console().message("TRACE - TLD::onCurrent - current belongs to selected\n");
 //        }
 //        if (current->treeWidget() == ui->selector->availableTreeWidget()) {
-//            Base::Console().Message("TRACE - TLD::onCurrent - current belongs to available\n");
+//            Base::Console().message("TRACE - TLD::onCurrent - current belongs to available\n");
 //        }
 //    }
 }

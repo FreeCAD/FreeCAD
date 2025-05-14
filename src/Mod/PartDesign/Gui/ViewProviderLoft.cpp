@@ -153,11 +153,11 @@ void ViewProviderLoft::highlightReferences(Part::Feature* base, const std::vecto
     if (!svp)
         return;
 
-    std::vector<App::Color>& edgeColors = originalLineColors[base->getID()];
+    std::vector<Base::Color>& edgeColors = originalLineColors[base->getID()];
 
     if (on) {
         edgeColors = svp->LineColorArray.getValues();
-        std::vector<App::Color> colors = edgeColors;
+        std::vector<Base::Color> colors = edgeColors;
 
         PartGui::ReferenceHighlighter highlighter(base->Shape.getValue(), svp->LineColor.getValue());
         highlighter.getEdgeColors(elements, colors);
@@ -170,14 +170,14 @@ void ViewProviderLoft::highlightReferences(Part::Feature* base, const std::vecto
 }
 
 QIcon ViewProviderLoft::getIcon() const {
-    QString str = QString::fromLatin1("PartDesign_");
+    QString str = QStringLiteral("PartDesign_");
     auto* prim = getObject<PartDesign::Loft>();
     if(prim->getAddSubType() == PartDesign::FeatureAddSub::Additive)
-        str += QString::fromLatin1("Additive");
+        str += QStringLiteral("Additive");
     else
-        str += QString::fromLatin1("Subtractive");
+        str += QStringLiteral("Subtractive");
 
-    str += QString::fromLatin1("Loft.svg");
+    str += QStringLiteral("Loft.svg");
     return PartDesignGui::ViewProvider::mergeGreyableOverlayIcons(Gui::BitmapFactory().pixmap(str.toStdString().c_str()));
 }
 

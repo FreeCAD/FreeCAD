@@ -73,7 +73,7 @@ ViewProviderRichAnno::ViewProviderRichAnno()
 
 bool ViewProviderRichAnno::doubleClicked()
 {
-//    Base::Console().Message("VPRA::doubleClicked()\n");
+//    Base::Console().message("VPRA::doubleClicked()\n");
     setEdit(ViewProvider::Default);
     return true;
 }
@@ -121,7 +121,7 @@ TechDraw::DrawRichAnno* ViewProviderRichAnno::getFeature() const
     return dynamic_cast<TechDraw::DrawRichAnno*>(pcObject);
 }
 
-App::Color ViewProviderRichAnno::getDefLineColor()
+Base::Color ViewProviderRichAnno::getDefLineColor()
 {
     return PreferencesGui::leaderColor();
 }

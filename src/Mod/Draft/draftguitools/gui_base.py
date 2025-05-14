@@ -31,7 +31,9 @@
 # @{
 import FreeCAD as App
 import FreeCADGui as Gui
+from draftguitools import gui_trackers as trackers
 from draftutils import gui_utils
+from draftutils import params
 from draftutils import todo
 from draftutils.messages import _toolmsg, _log
 
@@ -60,30 +62,20 @@ class GuiCommandSimplest:
         for example, `'Heal'`, `'Flip dimensions'`,
         `'Line'`, `'Circle'`, etc.
 
-    doc: App::Document, optional
-        It defaults to the value of `App.activeDocument()`.
-        The document object itself, which indicates where the actions
-        of the command will be executed.
-
     Attributes
     ----------
-    command_name: str
+    featureName: str
         This is the command name, which is assigned by `name`.
 
     doc: App::Document
-        This is the document object itself, which is assigned by `doc`.
-
         This attribute should be used by functions to make sure
         that the operations are performed in the correct document
         and not in other documents.
-        To set the active document we can use
-
-        >>> App.setActiveDocument(self.doc.Name)
     """
 
-    def __init__(self, name="None", doc=App.activeDocument()):
-        self.command_name = name
-        self.doc = doc
+    def __init__(self, name="None"):
+        self.doc = None
+        self.featureName = name
 
     def IsActive(self):
         """Return True when this command should be available."""
@@ -96,10 +88,8 @@ class GuiCommandSimplest:
         Also update the `doc` attribute.
         """
         self.doc = App.activeDocument()
-        _log("Document: {}".format(self.doc.Label))
-        _log("GuiCommand: {}".format(self.command_name))
         _toolmsg("{}".format(16*"-"))
-        _toolmsg("GuiCommand: {}".format(self.command_name))
+        _toolmsg("GuiCommand: {}".format(self.featureName))
 
 
 class GuiCommandNeedsSelection(GuiCommandSimplest):
@@ -153,17 +143,33 @@ class GuiCommandBase:
             >>> Draft.autogroup(obj)
     """
 
-    def __init__(self):
+    def __init__(self, name="None"):
+        App.activeDraftCommand = None
         self.call = None
         self.commit_list = []
         self.doc = None
-        App.activeDraftCommand = None
-        self.view = None
+        self.featureName = name
         self.planetrack = None
+        self.view = None
 
     def IsActive(self):
         """Return True when this command should be available."""
         return bool(gui_utils.get_3d_view())
+
+    def Activated(self):
+        self.doc = App.ActiveDocument
+        if not self.doc:
+            self.finish()
+            return
+
+        App.activeDraftCommand = self
+        self.view = gui_utils.get_3d_view()
+
+        if params.get_param("showPlaneTracker"):
+            self.planetrack = trackers.PlaneTracker()
+
+        _toolmsg("{}".format(16*"-"))
+        _toolmsg("GuiCommand: {}".format(self.featureName))
 
     def finish(self):
         """Terminate the active command by committing the list of commands.
@@ -174,6 +180,7 @@ class GuiCommandBase:
         App.activeDraftCommand = None
         if self.planetrack:
             self.planetrack.finalize()
+        self.planetrack = None
         if hasattr(Gui, "Snapper"):
             Gui.Snapper.off()
         if self.call:
@@ -182,7 +189,7 @@ class GuiCommandBase:
             except RuntimeError:
                 # the view has been deleted already
                 pass
-            self.call = None
+        self.call = None
         if self.commit_list:
             todo.ToDo.delayCommit(self.commit_list)
         self.commit_list = []

@@ -44,7 +44,7 @@ runs:
         id: assembly
         uses: ./.github/workflows/actions/runCPPTests/runSingleTest
         with:
-          testCommand: ${{ inputs.builddir }}/tests/Tests_run --gtest_output=json:${{ inputs.reportdir }}assembly_gtest_results.json
+          testCommand: ${{ inputs.builddir }}/tests/Assembly_tests_run --gtest_output=json:${{ inputs.reportdir }}assembly_gtest_results.json
           testLogFile: ${{ inputs.reportdir }}assembly_gtest_test_log.txt
           testName: Assembly
       - name: C++ core tests
@@ -117,6 +117,13 @@ runs:
           testCommand: ${{ inputs.builddir }}/tests/Sketcher_tests_run --gtest_output=json:${{ inputs.reportdir }}spreadsheet_gtest_results.json
           testLogFile: ${{ inputs.reportdir }}spreadsheet_gtest_test_log.txt
           testName: Spreadsheet
+      - name: C++ Start tests
+        id: start
+        uses: ./.github/workflows/actions/runCPPTests/runSingleTest
+        with:
+          testCommand: ${{ inputs.builddir }}/tests/Start_tests_run --gtest_output=json:${{ inputs.reportdir }}start_gtest_results.json
+          testLogFile: ${{ inputs.reportdir }}start_gtest_test_log.txt
+          testName: Start
       - name: Compose summary report based on test results
         if: always()
         shell: bash -l {0}

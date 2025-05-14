@@ -34,7 +34,7 @@
 
 using namespace Gui;
 using namespace Gui::Dialog;
-namespace fs = boost::filesystem;
+namespace fs = std::filesystem;
 
 /* TRANSLATOR Gui::Dialog::DlgRevertToBackupConfigImp */
 
@@ -71,12 +71,22 @@ void DlgRevertToBackupConfigImp::changeEvent(QEvent *e)
     }
 }
 
+// FIXME: Replace with more accurate C++20 solution once its usable: https://stackoverflow.com/a/68593141
+template <typename TP>
+static std::time_t to_time_t(TP tp)
+{
+    using namespace std::chrono;
+    auto sctp = time_point_cast<system_clock::duration>(tp - TP::clock::now()
+              + system_clock::now());
+    return system_clock::to_time_t(sctp);
+}
+
 void DlgRevertToBackupConfigImp::showEvent(QShowEvent* event)
 {
     ui->listWidget->clear();
     const auto& backups = Application::Instance->prefPackManager()->configBackups();
     for (const auto& backup : backups) {
-        auto modification_date = QDateTime::fromSecsSinceEpoch(fs::last_write_time(backup));
+        auto modification_date = QDateTime::fromSecsSinceEpoch(to_time_t(fs::last_write_time(backup)));
         auto item = new QListWidgetItem(QLocale().toString(modification_date));
         item->setData(Qt::UserRole, QString::fromStdString(backup.string()));
         ui->listWidget->addItem(item);
@@ -89,7 +99,7 @@ void DlgRevertToBackupConfigImp::accept()
 {
     auto items = ui->listWidget->selectedItems();
     if (items.count() != 1) {
-        Base::Console().Error(tr("No selection in dialog, cannot load backup file").toStdString().c_str());
+        Base::Console().error(tr("No selection in dialog, cannot load backup file").toStdString().c_str());
         return;
     }
     auto item = items[0];
@@ -101,7 +111,7 @@ void DlgRevertToBackupConfigImp::accept()
         newParameters->GetGroup("BaseApp")->copyTo(baseAppGroup);
     }
     else {
-        Base::Console().Error("Preference Pack Internal Error: Invalid backup file location");
+        Base::Console().error("Preference Pack Internal Error: Invalid backup file location");
     }
 
     QDialog::accept();

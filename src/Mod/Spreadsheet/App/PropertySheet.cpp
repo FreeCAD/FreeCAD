@@ -378,7 +378,7 @@ void PropertySheet::Paste(const Property& from)
 
     if (!spanChanges.empty()) {
         mergedCells = froms.mergedCells;
-        if (auto sheet = Base::freecad_dynamic_cast<Sheet>(getContainer())) {
+        if (auto sheet = freecad_cast<Sheet*>(getContainer())) {
             for (const auto& addr : spanChanges) {
                 sheet->cellSpanChanged(addr);
             }
@@ -423,9 +423,9 @@ void PropertySheet::Restore(Base::XMLReader& reader)
     AtomicPropertyChange signaller(*this);
 
     reader.readElement("Cells");
-    Cnt = reader.getAttributeAsInteger("Count");
+    Cnt = reader.getAttribute<long>("Count");
 
-    if (reader.hasAttribute("xlink") && reader.getAttributeAsInteger("xlink")) {
+    if (reader.hasAttribute("xlink") && reader.getAttribute<bool>("xlink")) {
         PropertyExpressionContainer::Restore(reader);
     }
 
@@ -433,7 +433,7 @@ void PropertySheet::Restore(Base::XMLReader& reader)
         reader.readElement("Cell");
 
         const char* strAddress =
-            reader.hasAttribute("address") ? reader.getAttribute("address") : "";
+            reader.hasAttribute("address") ? reader.getAttribute<const char*>("address") : "";
 
         try {
             CellAddress address(strAddress);
@@ -490,7 +490,7 @@ void PropertySheet::copyCells(Base::Writer& writer, const std::vector<Range>& ra
 void PropertySheet::pasteCells(XMLReader& reader, Range dstRange)
 {
     reader.readElement("Cells");
-    int rangeCount = reader.getAttributeAsInteger("count");
+    int rangeCount = reader.getAttribute<long>("count");
     if (rangeCount <= 0) {
         return;
     }
@@ -504,9 +504,9 @@ void PropertySheet::pasteCells(XMLReader& reader, Range dstRange)
     AtomicPropertyChange signaller(*this);
     for (int ri = 0; ri < rangeCount; ++ri) {
         reader.readElement("Range");
-        CellAddress from(reader.getAttribute("from"));
-        CellAddress to(reader.getAttribute("to"));
-        int cellCount = reader.getAttributeAsInteger("count");
+        CellAddress from(reader.getAttribute<const char*>("from"));
+        CellAddress to(reader.getAttribute<const char*>("to"));
+        int cellCount = reader.getAttribute<long>("count");
 
         Range range(from, to);
 
@@ -533,7 +533,7 @@ void PropertySheet::pasteCells(XMLReader& reader, Range dstRange)
         }
         for (int ci = 0; ci < cellCount; ++ci) {
             reader.readElement("Cell");
-            CellAddress src(reader.getAttribute("address"));
+            CellAddress src(reader.getAttribute<const char*>("address"));
 
             if (ci) {
                 range.next();
@@ -720,14 +720,14 @@ void PropertySheet::setStyle(CellAddress address, const std::set<std::string>& _
     cell->setStyle(_style);
 }
 
-void PropertySheet::setForeground(CellAddress address, const App::Color& color)
+void PropertySheet::setForeground(CellAddress address, const Base::Color& color)
 {
     Cell* cell = nonNullCellAt(address);
     assert(cell);
     cell->setForeground(color);
 }
 
-void PropertySheet::setBackground(CellAddress address, const App::Color& color)
+void PropertySheet::setBackground(CellAddress address, const Base::Color& color)
 {
     Cell* cell = nonNullCellAt(address);
     assert(cell);
@@ -787,7 +787,7 @@ void PropertySheet::setAlias(CellAddress address, const std::string& alias)
         App::ObjectIdentifier key(owner, oldAlias);
         App::ObjectIdentifier value(owner, alias.empty() ? address.toString() : alias);
 
-        m[key] = value;
+        m[key] = std::move(value);
 
         owner->getDocument()->renameObjectIdentifiers(m);
     }
@@ -1397,7 +1397,7 @@ void PropertySheet::addDependencies(CellAddress key)
 
                         // Insert into maps
                         propertyNameToCellMap[propName].insert(key);
-                        cellToPropertyNameMap[key].insert(propName);
+                        cellToPropertyNameMap[key].insert(std::move(propName));
                     }
                 }
             }
@@ -1476,7 +1476,7 @@ void PropertySheet::recomputeDependants(const App::DocumentObject* owner, const 
         // Check for hidden reference. Because a hidden reference is not
         // protected by cyclic dependency checking, we need to take special
         // care to prevent it from misbehave.
-        Sheet* sheet = Base::freecad_dynamic_cast<Sheet>(getContainer());
+        Sheet* sheet = freecad_cast<Sheet*>(getContainer());
         if (!sheet || sheet->testStatus(App::ObjectStatus::Recompute2) || !owner
             || owner->testStatus(App::ObjectStatus::Recompute2)) {
             return;
@@ -2078,8 +2078,7 @@ PropertySheet::BindingType PropertySheet::getBinding(const Range& range,
 
             if (expr->getFunction() == FunctionExpression::TUPLE && expr->getArgs().size() == 3) {
                 if (pTarget) {
-                    if (auto e =
-                            Base::freecad_dynamic_cast<VariableExpression>(expr->getArgs()[0])) {
+                    if (auto e = freecad_cast<VariableExpression*>(expr->getArgs()[0])) {
                         *pTarget = e->getPath();
                     }
                 }
@@ -2118,8 +2117,7 @@ void PropertySheet::setPathValue(const ObjectIdentifier& path, const boost::any&
             && Py::Object(seq[1].ptr()).isString() && Py::Object(seq[2].ptr()).isString()) {
             AtomicPropertyChange signaller(*this, false);
             auto other = static_cast<PropertySheetPy*>(seq[0].ptr())->getPropertySheetPtr();
-            auto otherOwner =
-                Base::freecad_dynamic_cast<App::DocumentObject>(other->getContainer());
+            auto otherOwner = freecad_cast<App::DocumentObject*>(other->getContainer());
             if (!otherOwner) {
                 FC_THROWM(Base::RuntimeError,
                           "Invalid binding of '" << other->getFullName() << " in "
@@ -2289,7 +2287,7 @@ void PropertySheet::getLinksTo(std::vector<App::ObjectIdentifier>& identifiers,
     auto subObject = objT.getSubObject();
     auto subElement = objT.getOldElementName();
 
-    auto owner = Base::freecad_dynamic_cast<App::DocumentObject>(getContainer());
+    auto owner = freecad_cast<App::DocumentObject*>(getContainer());
     for (const auto& [cellName, cellExpression] : data) {
         if (auto expr = cellExpression->getExpression()) {
             const auto& deps = expr->getDeps(option);
@@ -2300,7 +2298,7 @@ void PropertySheet::getLinksTo(std::vector<App::ObjectIdentifier>& identifiers,
             const auto [docObj, depsList] = *it;
             for (auto& [depName, paths] : depsList) {
                 if (!subname) {
-                    identifiers.emplace_back(owner, cellName.toString().c_str());
+                    identifiers.emplace_back(owner, cellName.toString());
                     break;
                 }
                 if (std::any_of(paths.begin(),
@@ -2314,7 +2312,7 @@ void PropertySheet::getLinksTo(std::vector<App::ObjectIdentifier>& identifiers,
                                     return (sobjT.getSubObject() == subObject
                                             && sobjT.getOldElementName() == subElement);
                                 })) {
-                    identifiers.emplace_back(owner, cellName.toString().c_str());
+                    identifiers.emplace_back(owner, cellName.toString());
                 }
             }
         }

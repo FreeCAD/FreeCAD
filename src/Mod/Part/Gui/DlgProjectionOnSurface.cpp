@@ -22,6 +22,7 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
+#include <limits>
 #include <BRep_Tool.hxx>
 #include <BRepBuilderAPI_MakeEdge.hxx>
 #include <BRepBuilderAPI_MakeFace.hxx>
@@ -161,14 +162,13 @@ DlgProjectionOnSurface::DlgProjectionOnSurface(QWidget* parent)
 
     m_partDocument = App::GetApplication().getActiveDocument();
     if (!m_partDocument) {
-        throw Base::ValueError(QString(tr("Have no active document!!!")).toUtf8());
+        throw Base::ValueError(tr("Have no active document!!!").toStdString());
     }
     this->attachDocument(m_partDocument);
     m_partDocument->openTransaction("Project on surface");
-    m_projectionObject = dynamic_cast<Part::Feature*>(
-        m_partDocument->addObject("Part::Feature", "Projection Object"));
+    m_projectionObject = m_partDocument->addObject<Part::Feature>("Projection Object");
     if (!m_projectionObject) {
-        throw Base::ValueError(QString(tr("Can not create a projection object!!!")).toUtf8());
+        throw Base::ValueError(tr("Can not create a projection object!!!").toStdString());
     }
     m_projectionObject->Label.setValue(std::string(m_projectionObjectName.toUtf8()).c_str());
     onRadioButtonShowAllClicked();
@@ -183,7 +183,7 @@ DlgProjectionOnSurface::~DlgProjectionOnSurface()
             higlight_object(it.partFeature, it.partName, false, 0);
         }
         catch (Standard_NoSuchObject& e) {
-            Base::Console().Warning("DlgProjectionOnSurface::~DlgProjectionOnSurface: %s",
+            Base::Console().warning("DlgProjectionOnSurface::~DlgProjectionOnSurface: %s",
                                     e.GetMessageString());
         }
         auto vp = dynamic_cast<PartGui::ViewProviderPartExt*>(
@@ -198,7 +198,7 @@ DlgProjectionOnSurface::~DlgProjectionOnSurface()
             higlight_object(it.partFeature, it.partName, false, 0);
         }
         catch (Standard_NoSuchObject& e) {
-            Base::Console().Warning("DlgProjectionOnSurface::~DlgProjectionOnSurface: %s",
+            Base::Console().warning("DlgProjectionOnSurface::~DlgProjectionOnSurface: %s",
                                     e.GetMessageString());
         }
     }
@@ -657,7 +657,7 @@ void PartGui::DlgProjectionOnSurface::show_projected_shapes(
     if (vp) {
         const unsigned int color = 0x8ae23400;
         vp->LineColor.setValue(color);
-        vp->ShapeAppearance.setDiffuseColor(App::Color(color));
+        vp->ShapeAppearance.setDiffuseColor(Base::Color(color));
         vp->PointColor.setValue(color);
         vp->Transparency.setValue(0);
     }
@@ -722,8 +722,8 @@ void PartGui::DlgProjectionOnSurface::higlight_object(Part::Feature* iCurrentObj
     auto vp = dynamic_cast<PartGui::ViewProviderPartExt*>(
         Gui::Application::Instance->getViewProvider(iCurrentObject));
     if (vp) {
-        std::vector<App::Color> colors;
-        App::Color defaultColor;
+        std::vector<Base::Color> colors;
+        Base::Color defaultColor;
         if (currentShapeType == TopAbs_FACE) {
             colors = vp->ShapeAppearance.getDiffuseColors();
             defaultColor = colors.front();
@@ -738,7 +738,7 @@ void PartGui::DlgProjectionOnSurface::higlight_object(Part::Feature* iCurrentObj
         }
 
         if (iHighlight) {
-            App::Color aColor;
+            Base::Color aColor;
             aColor.setPackedValue(iColor);
             colors.at(index - 1) = aColor;
         }
@@ -1557,8 +1557,7 @@ TaskProjectOnSurface::TaskProjectOnSurface(App::Document* doc)
 {
     setDocumentName(doc->getName());
     doc->openTransaction(QT_TRANSLATE_NOOP("Command", "Project on surface"));
-    auto obj = doc->addObject("Part::ProjectOnSurface", "Projection");
-    auto feature = dynamic_cast<Part::ProjectOnSurface*>(obj);
+    auto feature = doc->addObject<Part::ProjectOnSurface>("Projection");
     widget = new DlgProjectOnSurface(feature);
     taskbox = new Gui::TaskView::TaskBox(Gui::BitmapFactory().pixmap("Part_ProjectionOnSurface"),
                                          widget->windowTitle(), true, nullptr);

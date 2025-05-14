@@ -120,15 +120,19 @@ def bind(w1, w2, per_segment=False):
     """
 
     def create_face(w1, w2):
+
         try:
             w3 = Part.LineSegment(w1.Vertexes[0].Point,
                                   w2.Vertexes[0].Point).toShape()
             w4 = Part.LineSegment(w1.Vertexes[-1].Point,
                                   w2.Vertexes[-1].Point).toShape()
-            return Part.Face(Part.Wire(w1.Edges + [w3] + w2.Edges + [w4]))
         except Part.OCCError:
             print("DraftGeomUtils: unable to bind wires")
             return None
+        if w3.section(w4).Vertexes:
+            print("DraftGeomUtils: Problem, a segment is self-intersecting, please check!")
+        f = Part.Face(Part.Wire(w1.Edges + [w3] + w2.Edges + [w4]))
+        return f
 
     if not w1 or not w2:
         print("DraftGeomUtils: unable to bind wires")
@@ -164,6 +168,7 @@ def bind(w1, w2, per_segment=False):
                 if face is None:
                     return None
                 faces.append(face)
+
         # Usually there is last series of face after above 'for' routine,
         # EXCEPT when the last edge pair touch, faces had been appended
         # to faces_list, and reset faces =[]
@@ -178,21 +183,54 @@ def bind(w1, w2, per_segment=False):
             #
             if w1.isClosed() and w2.isClosed() \
             and len(faces_list) > 1 and faces_list[0]:
-                faces_list[0].extend(faces)
+                faces_list[0].extend(faces)  # TODO: To be reviewed, 'afterthought' on 2025.3.29, seems by 'extend', faces in 1st and last faces are not in sequential order
             else:
                 faces_list.append(faces)  # Break into separate list
+        from collections import Counter
         if faces_list:
             faces_fused_list = []
             for faces in faces_list:
+                dir = []
+                countDir = None
+                for f in faces:
+                    dir.append(f.normalAt(0,0).z)
+                countDir = Counter(dir)
+                l = len(faces)
+                m = max(countDir.values())  # max(countDir, key=countDir.get)
+                if m != l:
+                    print("DraftGeomUtils: Problem, the direction of " + str(l-m) + " out of " + str(l) + " segment is reversed, please check!")
                 if len(faces) > 1 :
-                    faces_fused = faces[0].fuse(faces[1:]).removeSplitter().Faces[0]
-                    faces_fused_list.append(faces_fused)
+                    # Below not good if a face is self-intersecting or reversed
+                    #faces_fused = faces[0].fuse(faces[1:]).removeSplitter().Faces[0]
+                    rf = faces[0]
+                    for f in faces[1:]:
+                        rf = rf.fuse(f).removeSplitter().Faces[0]
+                        #rf = rf.fuse(f)  # Not working
+                    #rf = rf.removeSplitter().Faces[0]  # Not working
+                    faces_fused_list.append(rf)
                 # faces might be empty list [], see above; skip if empty
                 elif faces:
                     faces_fused_list.append(faces[0])  # Only 1 face
+
             return Part.Compound(faces_fused_list)
         else:
-            return faces[0].fuse(faces[1:]).removeSplitter().Faces[0]
+            dir = []
+            countDir = None
+            for f in faces:
+                dir.append(f.normalAt(0,0).z)
+            countDir = Counter(dir)
+            l = len(faces)
+            m = max(countDir.values())  # max(countDir, key=countDir.get)
+            if m != l:
+                print("DraftGeomUtils: Problem, the direction of " + str(l-m) + " out of " + str(l) + " segment is reversed, please check!")
+            # Below not good if a face is self-intersecting or reversed
+            #return faces[0].fuse(faces[1:]).removeSplitter().Faces[0]
+            rf = faces[0]
+            for f in faces[1:]:
+                rf = rf.fuse(f).removeSplitter().Faces[0]
+                #rf = rf.fuse(f)  # Not working
+            #rf = rf.removeSplitter().Faces[0]  # Not working
+            return rf
 
     elif w1.isClosed() and w2.isClosed():
         d1 = w1.BoundBox.DiagonalLength

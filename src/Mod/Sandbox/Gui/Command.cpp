@@ -102,7 +102,7 @@ void CmdSandboxDocumentThread::activated(int)
     App::GetApplication().newDocument("Thread");
     for (int i=0; i<5; i++) {
         Sandbox::DocumentThread* dt = new Sandbox::DocumentThread();
-        dt->setObjectName(QString::fromLatin1("MyMesh_%1").arg(i));
+        dt->setObjectName(QStringLiteral("MyMesh_%1").arg(i));
         QObject::connect(dt, SIGNAL(finished()), dt, SLOT(deleteLater()));
         dt->start();
     }
@@ -180,7 +180,7 @@ void CmdSandboxDocThreadWithSeq::activated(int)
 {
     App::GetApplication().newDocument("Thread");
     Sandbox::DocumentThread* dt = new Sandbox::DocumentThread();
-    dt->setObjectName(QString::fromLatin1("MyMesh"));
+    dt->setObjectName(QStringLiteral("MyMesh"));
     QObject::connect(dt, SIGNAL(finished()), dt, SLOT(deleteLater()));
     dt->start();
 #ifdef FC_DEBUG
@@ -219,7 +219,7 @@ void CmdSandboxDocThreadBusy::activated(int)
 {
     App::GetApplication().newDocument("Thread");
     Sandbox::DocumentThread* dt = new Sandbox::DocumentThread();
-    dt->setObjectName(QString::fromLatin1("MyMesh"));
+    dt->setObjectName(QStringLiteral("MyMesh"));
     QObject::connect(dt, SIGNAL(finished()), dt, SLOT(deleteLater()));
     dt->start();
 #ifdef FC_DEBUG
@@ -412,7 +412,7 @@ void CmdSandboxPythonThread::activated(int)
     App::GetApplication().newDocument("Thread");
     for (int i=0; i<5; i++) {
         Sandbox::PythonThread* pt = new Sandbox::PythonThread();
-        pt->setObjectName(QString::fromLatin1("MyMesh_%1").arg(i));
+        pt->setObjectName(QStringLiteral("MyMesh_%1").arg(i));
         QObject::connect(pt, SIGNAL(finished()), pt, SLOT(deleteLater()));
         pt->start();
     }
@@ -464,7 +464,7 @@ void CmdSandboxDocThreadWithDialog::activated(int)
 {
     App::GetApplication().newDocument("Thread");
     Sandbox::DocumentThread* dt = new Sandbox::DocumentThread();
-    dt->setObjectName(QString::fromLatin1("MyMesh"));
+    dt->setObjectName(QStringLiteral("MyMesh"));
     QObject::connect(dt, SIGNAL(finished()), dt, SLOT(deleteLater()));
     dt->start();
     //QFileDialog::getOpenFileName();
@@ -491,7 +491,7 @@ void CmdSandboxDocThreadWithFileDlg::activated(int)
 {
     App::GetApplication().newDocument("Thread");
     Sandbox::DocumentThread* dt = new Sandbox::DocumentThread();
-    dt->setObjectName(QString::fromLatin1("MyMesh"));
+    dt->setObjectName(QStringLiteral("MyMesh"));
     QObject::connect(dt, SIGNAL(finished()), dt, SLOT(deleteLater()));
     dt->start();
     QFileDialog::getOpenFileName();
@@ -533,7 +533,7 @@ void CmdSandboxEventLoop::activated(int)
 
     timer.start(5000); // 5s timeout
     loop.exec();
-    Base::Console().Message("CmdSandboxEventLoop: timeout\n");
+    Base::Console().message("CmdSandboxEventLoop: timeout\n");
 }
 
 bool CmdSandboxEventLoop::isActive(void)
@@ -593,7 +593,7 @@ void CmdSandboxMeshLoader::activated(int)
 
     Base::Reference<Mesh::MeshObject> data = thread.getMesh();
     App::Document* doc = App::GetApplication().getActiveDocument();
-    Mesh::Feature* mesh = static_cast<Mesh::Feature*>(doc->addObject("Mesh::Feature","Mesh"));
+    Mesh::Feature* mesh = doc->addObject<Mesh::Feature>("Mesh");
     mesh->Mesh.setValuePtr((Mesh::MeshObject*)data);
     mesh->purgeTouched();
 }
@@ -650,7 +650,7 @@ void CmdSandboxMeshLoaderBoost::activated(int)
     fi.wait(); // wait for it to be finished
 
     App::Document* doc = App::GetApplication().getActiveDocument();
-    Mesh::Feature* mesh = static_cast<Mesh::Feature*>(doc->addObject("Mesh::Feature","Mesh"));
+    Mesh::Feature* mesh = doc->addObject<Mesh::Feature>("Mesh");
     mesh->Mesh.setValuePtr((Mesh::MeshObject*)fi.get());
     mesh->purgeTouched();
 }
@@ -704,7 +704,7 @@ void CmdSandboxMeshLoaderFuture::activated(int)
 
     App::Document* doc = App::GetApplication().getActiveDocument();
     for (QFuture< Base::Reference<Mesh::MeshObject> >::const_iterator it = future.begin(); it != future.end(); ++it) {
-        Mesh::Feature* mesh = static_cast<Mesh::Feature*>(doc->addObject("Mesh::Feature","Mesh"));
+        Mesh::Feature* mesh = doc->addObject<Mesh::Feature>("Mesh");
         mesh->Mesh.setValuePtr((Mesh::MeshObject*)(*it));
         mesh->purgeTouched();
     }
@@ -758,7 +758,7 @@ public:
             kernel = myMesh->getKernel();
             for (std::vector<Mesh::MeshObjectConstRef>::iterator it = meshes.begin(); it != meshes.end(); ++it) {
                 if (*it != myMesh) {
-                    Base::Console().Message("MeshTestJob::run() in thread: %p\n", QThread::currentThreadId());
+                    Base::Console().message("MeshTestJob::run() in thread: %p\n", QThread::currentThreadId());
                 }
             }
 
@@ -822,7 +822,7 @@ void CmdSandboxMeshTestJob::activated(int)
         }
 
         // run the actual multi-threaded mesh test
-        Base::Console().Message("Mesh test (step %d)...\n",iteration++);
+        Base::Console().message("Mesh test (step %d)...\n",iteration++);
         MeshTestJob meshJob;
         QFuture<Mesh::MeshObject*> mesh_future = QtConcurrent::mapped
             (mesh_groups, boost::bind(&MeshTestJob::run, &meshJob, bp::_1));
@@ -840,7 +840,7 @@ void CmdSandboxMeshTestJob::activated(int)
     }
 
     if (meshes.empty()) {
-        Base::Console().Error("The mesh test failed to create a valid mesh.\n");
+        Base::Console().error("The mesh test failed to create a valid mesh.\n");
         return;
     }
 }
@@ -905,9 +905,9 @@ void CmdSandboxMeshTestRef::activated(int)
 
     Mesh::MeshObject* ptr = (Mesh::MeshObject*)mesh;
     if (!ptr)
-        Base::Console().Error("Object deleted\n");
+        Base::Console().error("Object deleted\n");
     if (num != mesh.getRefCount())
-        Base::Console().Error("Reference count is %d\n",mesh.getRefCount());
+        Base::Console().error("Reference count is %d\n",mesh.getRefCount());
 }
 
 bool CmdSandboxMeshTestRef::isActive(void)
@@ -1010,7 +1010,7 @@ public:
         painter.drawPath(path);
         painter.setPen(Qt::white);
         painter.drawText(25, 40, 70, 20, Qt::AlignHCenter|Qt::AlignVCenter,
-            QString::fromLatin1("Distance: 2.784mm"));
+            QStringLiteral("Distance: 2.784mm"));
     }
 };
 
@@ -1053,7 +1053,7 @@ CmdTestImageNode::CmdTestImageNode()
 
 void CmdTestImageNode::activated(int)
 {
-    QString text = QString::fromLatin1("Distance: 2.7jgiorjgor84mm");
+    QString text = QStringLiteral("Distance: 2.7jgiorjgor84mm");
     QFont font;
     QFontMetrics fm(font);
     int w = Gui::QtTools::horizontalAdvance(fm, text);
@@ -1144,7 +1144,7 @@ CmdTestRedirectPaint::CmdTestRedirectPaint()
 void CmdTestRedirectPaint::activated(int)
 {
     QCalendarWidget* cal = new QCalendarWidget();
-    cal->setWindowTitle(QString::fromLatin1("QCalendarWidget"));
+    cal->setWindowTitle(QStringLiteral("QCalendarWidget"));
     cal->show();
     QPixmap img(cal->size());
     cal->render(&img);
@@ -1152,7 +1152,7 @@ void CmdTestRedirectPaint::activated(int)
     QLabel* label = new QLabel();
     label->setPixmap(img);
     label->show();
-    label->setWindowTitle(QString::fromLatin1("QLabel"));
+    label->setWindowTitle(QStringLiteral("QLabel"));
 }
 
 //===========================================================================
@@ -1334,14 +1334,14 @@ void CmdMengerSponge::activated(int)
 {
     bool ok;
     int level = QInputDialog::getInt(Gui::getMainWindow(),
-        QString::fromLatin1("Menger sponge"),
-        QString::fromLatin1("Recursion depth:"),
+        QStringLiteral("Menger sponge"),
+        QStringLiteral("Recursion depth:"),
         3, 1, 5, 1, &ok);
     if (!ok)
         return;
     int ret = QMessageBox::question(Gui::getMainWindow(),
-        QString::fromLatin1("Parallel"),
-        QString::fromLatin1("Do you want to run this in a thread pool?"),
+        QStringLiteral("Parallel"),
+        QStringLiteral("Do you want to run this in a thread pool?"),
         QMessageBox::Yes|QMessageBox::No);
     bool parallel=(ret == QMessageBox::Yes);
     float x0=0,y0=0,z0=0;
@@ -1368,7 +1368,7 @@ void CmdMengerSponge::activated(int)
     kernel.RebuildNeighbours();
 
     App::Document* doc = App::GetApplication().newDocument();
-    Mesh::Feature* feature = static_cast<Mesh::Feature*>(doc->addObject("Mesh::Feature","MengerSponge"));
+    Mesh::Feature* feature = doc->addObject<Mesh::Feature>("MengerSponge");
     feature->Mesh.setValue(*mesh);
     feature->purgeTouched();
 }
@@ -1387,7 +1387,7 @@ CmdTestGraphicsView::CmdTestGraphicsView()
 void CmdTestGraphicsView::activated(int)
 {
     Gui::GraphicsView3D* view3D = new Gui::GraphicsView3D(getActiveGuiDocument(), Gui::getMainWindow());
-    view3D->setWindowTitle(QString::fromLatin1("Graphics scene"));
+    view3D->setWindowTitle(QStringLiteral("Graphics scene"));
     view3D->setWindowIcon(QApplication::windowIcon());
     view3D->resize(400, 300);
     Gui::getMainWindow()->addWindow(view3D);

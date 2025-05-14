@@ -25,6 +25,11 @@
 #include "PreCompiled.h"
 #ifndef _PreComp_
 #include <stack>
+#include <memory>
+#include <map>
+#include <set>
+#include <vector>
+#include <string>
 #endif
 
 #include <App/DocumentObjectPy.h>
@@ -50,10 +55,6 @@ FC_LOG_LEVEL_INIT("App", true, true)
 
 using namespace App;
 
-/** \defgroup DocObject Document Object
-    \ingroup APP
-    \brief Base class of all objects handled in the Document
-*/
 
 PROPERTY_SOURCE(App::DocumentObject, App::TransactionalObject)
 
@@ -139,7 +140,7 @@ void DocumentObject::printInvalidLinks() const
             scopenames.pop_back();
         }
 
-        Base::Console().Warning("%s: Link(s) to object(s) '%s' go out of the allowed scope '%s'. "
+        Base::Console().warning("%s: Link(s) to object(s) '%s' go out of the allowed scope '%s'. "
                                 "Instead, the linked object(s) reside within '%s'.\n",
                                 getTypeId().getName(),
                                 objnames.c_str(),
@@ -147,7 +148,7 @@ void DocumentObject::printInvalidLinks() const
                                 scopenames.c_str());
     }
     catch (const Base::Exception& e) {
-        e.ReportException();
+        e.reportException();
     }
 }
 
@@ -427,7 +428,7 @@ void DocumentObject::getOutList(int options, std::vector<DocumentObject*>& res) 
     bool noHidden = !!(options & OutListNoHidden);
     std::size_t size = res.size();
     for (auto prop : props) {
-        auto link = dynamic_cast<PropertyLinkBase*>(prop);
+        auto link = freecad_cast<PropertyLinkBase*>(prop);
         if (link) {
             link->getLinks(res, noHidden);
         }
@@ -456,33 +457,17 @@ std::vector<App::DocumentObject*> DocumentObject::getOutListOfProperty(App::Prop
         return ret;
     }
 
-    auto link = dynamic_cast<PropertyLinkBase*>(prop);
+    auto link = freecad_cast<PropertyLinkBase*>(prop);
     if (link) {
         link->getLinks(ret);
     }
     return ret;
 }
 
-#ifdef USE_OLD_DAG
-std::vector<App::DocumentObject*> DocumentObject::getInList(void) const
-{
-    if (_pDoc) {
-        return _pDoc->getInList(this);
-    }
-    else {
-        return std::vector<App::DocumentObject*>();
-    }
-}
-
-#else  // ifndef USE_OLD_DAG
-
 const std::vector<App::DocumentObject*>& DocumentObject::getInList() const
 {
     return _inList;
 }
-
-#endif  // if USE_OLD_DAG
-
 
 // The original algorithm is highly inefficient in some special case.
 // Considering an object is linked by every other objects. After excluding this
@@ -508,41 +493,6 @@ void DocumentObject::getInListEx(std::set<App::DocumentObject*>& inSet,
                                  bool recursive,
                                  std::vector<App::DocumentObject*>* inList) const
 {
-#ifdef USE_OLD_DAG
-    std::map<DocumentObject*, std::set<App::DocumentObject*>> outLists;
-
-    // Old DAG does not have pre-built InList, and must calculate The InList by
-    // going through all objects' OutLists. So we collect all objects and their
-    // outLists first here.
-    for (auto doc : GetApplication().getDocuments()) {
-        for (auto obj : doc->getObjects()) {
-            if (!obj || !obj->isAttachedToDocument() || obj == this) {
-                continue;
-            }
-            const auto& outList = obj->getOutList();
-            outLists[obj].insert(outList.begin(), outList.end());
-        }
-    }
-
-    std::stack<DocumentObject*> pendings;
-    pendings.push(const_cast<DocumentObject*>(this));
-    while (pendings.size()) {
-        auto obj = pendings.top();
-        pendings.pop();
-        for (auto& v : outLists) {
-            if (v.first == obj) {
-                continue;
-            }
-            auto& outList = v.second;
-            // Check the outList to see if the object is there, and pend the
-            // object for recursive check if it's not already in the inList
-            if (outList.find(obj) != outList.end() && inSet.insert(v.first).second && recursive) {
-                pendings.push(v.first);
-            }
-        }
-    }
-#else  // USE_OLD_DAG
-
     if (!recursive) {
         inSet.insert(_inList.begin(), _inList.end());
         if (inList) {
@@ -565,8 +515,6 @@ void DocumentObject::getInListEx(std::set<App::DocumentObject*>& inSet,
             }
         }
     }
-
-#endif
 }
 
 std::set<App::DocumentObject*> DocumentObject::getInListEx(bool recursive) const
@@ -613,7 +561,6 @@ std::vector<App::DocumentObject*> DocumentObject::getOutListRecursive() const
 // helper for isInInListRecursive()
 bool _isInInListRecursive(const DocumentObject* act, const DocumentObject* checkObj, int depth)
 {
-#ifndef USE_OLD_DAG
     for (auto obj : act->getInList()) {
         if (obj == checkObj) {
             return true;
@@ -628,39 +575,28 @@ bool _isInInListRecursive(const DocumentObject* act, const DocumentObject* check
             return true;
         }
     }
-#else
-    (void)act;
-    (void)checkObj;
-    (void)depth;
-#endif
 
     return false;
 }
 
 bool DocumentObject::isInInListRecursive(DocumentObject* linkTo) const
 {
-    return this == linkTo || getInListEx(true).count(linkTo);
+    return this == linkTo || getInListEx(true).contains(linkTo);
 }
 
 bool DocumentObject::isInInList(DocumentObject* linkTo) const
 {
-#ifndef USE_OLD_DAG
-    if (std::find(_inList.begin(), _inList.end(), linkTo) != _inList.end()) {
+    if (std::ranges::find(_inList, linkTo) != _inList.end()) {
         return true;
     }
     else {
         return false;
     }
-#else
-    (void)linkTo;
-    return false;
-#endif
 }
 
 // helper for isInOutListRecursive()
 bool _isInOutListRecursive(const DocumentObject* act, const DocumentObject* checkObj, int depth)
 {
-#ifndef USE_OLD_DAG
     for (auto obj : act->getOutList()) {
         if (obj == checkObj) {
             return true;
@@ -675,11 +611,6 @@ bool _isInOutListRecursive(const DocumentObject* act, const DocumentObject* chec
             return true;
         }
     }
-#else
-    (void)act;
-    (void)checkObj;
-    (void)depth;
-#endif
 
     return false;
 }
@@ -698,7 +629,7 @@ DocumentObject::getPathsByOutList(App::DocumentObject* to) const
 
 DocumentObjectGroup* DocumentObject::getGroup() const
 {
-    return dynamic_cast<DocumentObjectGroup*>(GroupExtension::getGroupOfObject(this));
+    return freecad_cast<DocumentObjectGroup*>(GroupExtension::getGroupOfObject(this));
 }
 
 bool DocumentObject::testIfLinkDAGCompatible(DocumentObject* linkTo) const
@@ -713,7 +644,7 @@ bool DocumentObject::testIfLinkDAGCompatible(const std::vector<DocumentObject*>&
     auto inLists = getInListEx(true);
     inLists.emplace(const_cast<DocumentObject*>(this));
     for (auto obj : linksTo) {
-        if (inLists.count(obj)) {
+        if (inLists.contains(obj)) {
             return false;
         }
     }
@@ -814,6 +745,69 @@ void DocumentObject::onBeforeChange(const Property* prop)
     signalBeforeChange(*this, *prop);
 }
 
+std::vector<std::pair<Property*, std::unique_ptr<Property>>>
+DocumentObject::onProposedLabelChange(std::string& newLabel)
+{
+    // Note that this work can't be done in onBeforeChangeLabel because FeaturePython overrides this
+    // method and does not initially base-call it.
+
+    // We re only called if the new label differs from the old one, and our code to check duplicates
+    // may not work if this is not the case.
+    std::string oldLabel = Label.getStrValue();
+    assert(newLabel != oldLabel);
+    if (!isAttachedToDocument()) {
+        return {};
+    }
+    App::Document* doc = getDocument();
+    if (doc->isPerformingTransaction()
+        || (doc->testStatus(App::Document::Restoring)
+            && !doc->testStatus(App::Document::Importing))) {
+        return {};
+    }
+    static ParameterGrp::handle _hPGrp;
+    if (!_hPGrp) {
+        _hPGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Document");
+    }
+    if (doc && !newLabel.empty() && !_hPGrp->GetBool("DuplicateLabels") && !allowDuplicateLabel()
+        && doc->containsLabel(newLabel)) {
+        // We must ensure the Label is unique in the document (well, sort of...).
+        std::string objName = getNameInDocument();
+        if (doc->haveSameBaseName(objName, newLabel)) {
+            // The base name of the proposed label equals the base name of the object Name, so we
+            // use the object Name, which could actually be identical to another object's Label, but
+            // probably isn't.
+            newLabel = objName;
+        }
+        else {
+            // Otherwise we generate a unique Label using newLabel as a prototype name. In doing so,
+            // we must also act as if the current value of the property is not an existing Label
+            // entry.
+            // We deregister the old label so it does not interfere with making the new label,
+            // and re-register it after. This is probably a bit less efficient that having a special
+            // make-unique-label-as-if-this-one-did-not-exist method, but such a method would be a real
+            // ugly wart.
+            doc->unregisterLabel(oldLabel);
+            newLabel = doc->makeUniqueLabel(newLabel);
+            doc->registerLabel(oldLabel);
+        }
+    }
+
+    // Despite our efforts to make a unique label, onBeforeLabelChange can change it.
+    onBeforeChangeLabel(newLabel);
+
+    if (oldLabel == newLabel || getDocument()->testStatus(App::Document::Restoring)) {
+        // Don't update label reference if we are restoring or if the label is unchanged.
+        // When importing (which also counts as restoring), it is possible the
+        // new object changes its label. However, we cannot update label
+        // references here, because object being restored is not based on
+        // dependency order. It can only be done in afterRestore().
+        //
+        // See PropertyLinkBase::restoreLabelReference() for more details.
+        return {};
+    }
+    return PropertyLinkBase::updateLabelReferences(this, newLabel.c_str());
+}
+
 void DocumentObject::onEarlyChange(const Property* prop)
 {
     if (GetApplication().isClosingAll()) {
@@ -836,6 +830,11 @@ void DocumentObject::onEarlyChange(const Property* prop)
 /// get called by the container when a Property was changed
 void DocumentObject::onChanged(const Property* prop)
 {
+    if (prop == &Label && _pDoc && _pDoc->containsObject(this) && oldLabel != Label.getStrValue()) {
+        _pDoc->unregisterLabel(oldLabel);
+        _pDoc->registerLabel(Label.getStrValue());
+    }
+
     if (isFreezed() && prop != &Visibility) {
         return;
     }
@@ -950,7 +949,7 @@ DocumentObject* DocumentObject::getSubObject(const char* subname,
     // objects (think of the claimed children of a Fusion). But I do think we
     // should change that.
     if (transform && mat) {
-        auto pla = Base::freecad_dynamic_cast<PropertyPlacement>(getPropertyByName("Placement"));
+        auto pla = freecad_cast<PropertyPlacement*>(getPropertyByName("Placement"));
         if (pla) {
             *mat *= pla->getValue().toMatrix();
         }
@@ -1131,7 +1130,7 @@ DocumentObject* DocumentObject::getLinkedObject(bool recursive,
         }
     }
     if (transform && mat) {
-        auto pla = dynamic_cast<PropertyPlacement*>(getPropertyByName("Placement"));
+        auto pla = freecad_cast<PropertyPlacement*>(getPropertyByName("Placement"));
         if (pla) {
             *mat *= pla->getValue().toMatrix();
         }
@@ -1159,7 +1158,7 @@ void DocumentObject::Save(Base::Writer& writer) const
 
 void DocumentObject::setExpression(const ObjectIdentifier& path, std::shared_ptr<Expression> expr)
 {
-    ExpressionEngine.setValue(path, expr);
+    ExpressionEngine.setValue(path, std::move(expr));
 }
 
 /**
@@ -1216,6 +1215,20 @@ void DocumentObject::onDocumentRestored()
     }
 }
 
+void DocumentObject::restoreFinished()
+{
+    // some link type property cannot restore link information until other
+    // objects has been restored. For example, PropertyExpressionEngine and
+    // PropertySheet with expression containing label reference.
+    // So on document load they are handled in Document::afterRestore, but if the user
+    // use dumpContent and restoreContent then they need to be handled here.
+    std::vector<App::Property*> props;
+    getPropertyList(props);
+    for (auto prop : props) {
+        prop->afterRestore();
+    }
+}
+
 void DocumentObject::onUndoRedoFinished()
 {}
 
@@ -1248,29 +1261,21 @@ void DocumentObject::unsetupObject()
 
 void App::DocumentObject::_removeBackLink(DocumentObject* rmvObj)
 {
-#ifndef USE_OLD_DAG
     // do not use erase-remove idom, as this erases ALL entries that match. we only want to remove a
     // single one.
-    auto it = std::find(_inList.begin(), _inList.end(), rmvObj);
+    auto it = std::ranges::find(_inList, rmvObj);
     if (it != _inList.end()) {
         _inList.erase(it);
     }
-#else
-    (void)rmvObj;
-#endif
 }
 
 void App::DocumentObject::_addBackLink(DocumentObject* newObj)
 {
-#ifndef USE_OLD_DAG
     // we need to add all links, even if they are available multiple times. The reason for this is
     // the removal: If a link loses this object it removes the backlink. If we would have added it
     // only once this removal would clear the object from the inlist, even though there may be other
     // link properties from this object that link to us.
     _inList.push_back(newObj);
-#else
-    (void)newObj;
-#endif  // USE_OLD_DAG
 }
 
 int DocumentObject::setElementVisible(const char* element, bool visible)
@@ -1485,7 +1490,7 @@ bool DocumentObject::adjustRelativeLinks(const std::set<App::DocumentObject*>& i
     std::vector<Property*> props;
     getPropertyList(props);
     for (auto prop : props) {
-        auto linkProp = Base::freecad_dynamic_cast<PropertyLinkBase>(prop);
+        auto linkProp = freecad_cast<PropertyLinkBase*>(prop);
         if (linkProp && linkProp->adjustLink(inList)) {
             touched = true;
         }
@@ -1504,7 +1509,7 @@ bool DocumentObject::adjustRelativeLinks(const std::set<App::DocumentObject*>& i
 
 std::string DocumentObject::getElementMapVersion(const App::Property* _prop, bool restored) const
 {
-    auto prop = Base::freecad_dynamic_cast<const PropertyComplexGeoData>(_prop);
+    auto prop = freecad_cast<const PropertyComplexGeoData*>(_prop);
     if (!prop) {
         return std::string();
     }
@@ -1513,7 +1518,7 @@ std::string DocumentObject::getElementMapVersion(const App::Property* _prop, boo
 
 bool DocumentObject::checkElementMapVersion(const App::Property* _prop, const char* ver) const
 {
-    auto prop = Base::freecad_dynamic_cast<const PropertyComplexGeoData>(_prop);
+    auto prop = freecad_cast<const PropertyComplexGeoData*>(_prop);
     if (!prop) {
         return false;
     }

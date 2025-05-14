@@ -25,7 +25,7 @@
 #include <Base/Matrix.h>
 #include <Base/Vector3D.h>
 #include <Base/Console.h>
-#include <App/Color.h>
+#include <Base/Color.h>
 #include <Mod/Import/ImportGlobal.h>
 
 // For some reason Cpplint complains about some of the categories used by Clang-tidy
@@ -689,12 +689,12 @@ protected:
     template<typename... args>
     static void ImportError(const char* format, args&&... argValues)
     {
-        Base::ConsoleSingleton::Instance().Warning(format, std::forward<args>(argValues)...);
+        Base::ConsoleSingleton::instance().warning(format, std::forward<args>(argValues)...);
     }
     template<typename... args>
     static void ImportObservation(const char* format, args&&... argValues)
     {
-        Base::ConsoleSingleton::Instance().Message(format, std::forward<args>(argValues)...);
+        Base::ConsoleSingleton::instance().message(format, std::forward<args>(argValues)...);
     }
     template<typename... args>
     void UnsupportedFeature(const char* format, args&&... argValues);
@@ -923,7 +923,7 @@ public:
     {
         return m_entityAttributes.m_LineType[0] == 'h' || m_entityAttributes.m_LineType[0] == 'H';
     }
-    static App::Color ObjectColor(ColorIndex_t colorIndex);  // as rgba value
+    static Base::Color ObjectColor(ColorIndex_t colorIndex);  // as rgba value
 
 #ifdef DEBUG
 protected:

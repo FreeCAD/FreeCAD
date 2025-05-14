@@ -81,7 +81,7 @@ void CmdPointsImport::activated(int iMsg)
         Gui::getMainWindow(),
         QString(),
         QString(),
-        QString::fromLatin1("%1 (*.asc *.pcd *.ply);;%2 (*.*)")
+        QStringLiteral("%1 (*.asc *.pcd *.ply);;%2 (*.*)")
             .arg(QObject::tr("Point formats"), QObject::tr("All Files")));
     if (fn.isEmpty()) {
         return;
@@ -112,7 +112,7 @@ void CmdPointsImport::activated(int iMsg)
             auto center = bbox.GetCenter();
 
             if (!bbox.IsInBox(Base::Vector3d(0, 0, 0))) {
-                QMessageBox msgBox;
+                QMessageBox msgBox(Gui::getMainWindow());
                 msgBox.setIcon(QMessageBox::Question);
                 msgBox.setWindowTitle(QObject::tr("Points not at Origin"));
                 msgBox.setText(QObject::tr(
@@ -170,7 +170,7 @@ void CmdPointsExport::activated(int iMsg)
             Gui::getMainWindow(),
             QString(),
             QString(),
-            QString::fromLatin1("%1 (*.asc *.pcd *.ply);;%2 (*.*)")
+            QStringLiteral("%1 (*.asc *.pcd *.ply);;%2 (*.*)")
                 .arg(QObject::tr("Point formats"), QObject::tr("All Files")));
         if (fn.isEmpty()) {
             break;
@@ -309,7 +309,7 @@ void CmdPointsConvert::activated(int iMsg)
     catch (const Py::Exception&) {
         abortCommand();
         Base::PyException e;
-        e.ReportException();
+        e.reportException();
     }
 }
 
@@ -386,8 +386,7 @@ void CmdPointsMerge::activated(int iMsg)
 
     App::Document* doc = App::GetApplication().getActiveDocument();
     doc->openTransaction("Merge point clouds");
-    Points::Feature* pts =
-        static_cast<Points::Feature*>(doc->addObject("Points::Feature", "Merged Points"));
+    Points::Feature* pts = doc->addObject<Points::Feature>("Merged Points");
     Points::PointKernel* kernel = pts->Points.startEditing();
 
     std::vector<App::DocumentObject*> docObj =
@@ -455,8 +454,7 @@ void CmdPointsStructure::activated(int iMsg)
     for (auto it : docObj) {
         std::string name = it->Label.getValue();
         name += " (Structured)";
-        Points::Structured* output =
-            static_cast<Points::Structured*>(doc->addObject("Points::Structured", name.c_str()));
+        Points::Structured* output = doc->addObject<Points::Structured>(name.c_str());
         output->Label.setValue(name);
 
         // Already sorted, so just make a copy

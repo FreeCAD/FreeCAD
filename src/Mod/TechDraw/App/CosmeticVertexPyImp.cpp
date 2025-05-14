@@ -22,10 +22,6 @@
 
 #include "PreCompiled.h"
 
-#ifndef _PreComp_
-# include <boost/uuid/uuid_io.hpp>
-#endif
-
 #include <Base/Console.h>
 #include <Base/GeometryPyCXX.h>
 #include <Base/Vector3D.h>
@@ -60,7 +56,7 @@ int CosmeticVertexPy::PyInit(PyObject* /*args*/, PyObject* /*kwd*/)
     return 0;
 }
 
-PyObject* CosmeticVertexPy::clone(PyObject *args)
+PyObject* CosmeticVertexPy::clone(PyObject *args) const
 {
     if (!PyArg_ParseTuple(args, ""))
         return nullptr;
@@ -71,7 +67,7 @@ PyObject* CosmeticVertexPy::clone(PyObject *args)
     PyObject* cpy = nullptr;
     // let the type object decide
     if (type->tp_new)
-        cpy = type->tp_new(type, this, nullptr);
+        cpy = type->tp_new(type, const_cast<CosmeticVertexPy*>(this), nullptr);
     if (!cpy) {
         PyErr_SetString(PyExc_TypeError, "failed to create clone of CosmeticVertex");
         return nullptr;
@@ -88,7 +84,7 @@ PyObject* CosmeticVertexPy::clone(PyObject *args)
     return cpy;
 }
 
-PyObject* CosmeticVertexPy::copy(PyObject *args)
+PyObject* CosmeticVertexPy::copy(PyObject *args) const
 {
     if (!PyArg_ParseTuple(args, ""))
         return nullptr;
@@ -99,7 +95,7 @@ PyObject* CosmeticVertexPy::copy(PyObject *args)
     PyObject* cpy = nullptr;
     // let the type object decide
     if (type->tp_new)
-        cpy = type->tp_new(type, this, nullptr);
+        cpy = type->tp_new(type, const_cast<CosmeticVertexPy*>(this), nullptr);
     if (!cpy) {
         PyErr_SetString(PyExc_TypeError, "failed to create copy of CosmeticVertex");
         return nullptr;
@@ -118,7 +114,7 @@ PyObject* CosmeticVertexPy::copy(PyObject *args)
 
 Py::String CosmeticVertexPy::getTag() const
 {
-    std::string tmp = boost::uuids::to_string(getCosmeticVertexPtr()->getTag());
+    std::string tmp = getCosmeticVertexPtr()->getTagAsString();
     return Py::String(tmp);
 }
 
@@ -169,7 +165,7 @@ void CosmeticVertexPy::setShow(Py::Boolean arg)
 
 Py::Object CosmeticVertexPy::getColor() const
 {
-    App::Color color = getCosmeticVertexPtr()->color;
+    Base::Color color = getCosmeticVertexPtr()->color;
     PyObject* pyColor = DrawUtil::colorToPyTuple(color);
     return Py::asObject(pyColor);
 }
@@ -178,13 +174,13 @@ void CosmeticVertexPy::setColor(Py::Object arg)
 {
     PyObject* pTuple = arg.ptr();
     double red = 0.0, green = 0.0, blue = 0.0, alpha = 0.0;
-    App::Color c(red, green, blue, alpha);
+    Base::Color c(red, green, blue, alpha);
     if (PyTuple_Check(pTuple)) {
         c = DrawUtil::pyTupleToColor(pTuple);
         CosmeticVertex* cv = getCosmeticVertexPtr();
         cv->color = c;
     } else {
-        Base::Console().Error("CEPI::setColor - not a tuple!\n");
+        Base::Console().error("CEPI::setColor - not a tuple!\n");
         std::string error = std::string("type must be 'tuple', not ");
         error += pTuple->ob_type->tp_name;
         throw Py::TypeError(error);

@@ -141,25 +141,6 @@ Requires to re-enter edit mode to take effect.</string>
        </widget>
       </item>
       <item>
-       <widget class="Gui::PrefCheckBox" name="checkBoxDisableShading">
-        <property name="toolTip">
-         <string>Disables the shaded view when entering the sketch edit mode.</string>
-        </property>
-        <property name="text">
-         <string>Disable shading in edit mode</string>
-        </property>
-        <property name="checked">
-         <bool>true</bool>
-        </property>
-        <property name="prefEntry" stdset="1">
-         <cstring>DisableShadedView</cstring>
-        </property>
-        <property name="prefPath" stdset="1">
-         <cstring>Mod/Sketcher/General</cstring>
-        </property>
-       </widget>
-      </item>
-      <item>
        <widget class="Gui::PrefCheckBox" name="checkBoxNotifyConstraintSubstitutions">
         <property name="toolTip">
          <string>Notifies about automatic constraint substitutions</string>
@@ -213,6 +194,25 @@ Requires to re-enter edit mode to take effect.</string>
         </property>
         <property name="prefPath" stdset="0">
          <cstring>Mod/Sketcher/Constraints</cstring>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="Gui::PrefCheckBox" name="checkBoxLineGroup">
+        <property name="toolTip">
+         <string>If checked, show a command group button that contains both the polyline and line commands. Otherwise, each command has its own separate button.</string>
+        </property>
+        <property name="text">
+         <string>Group the polyline and line commands</string>
+        </property>
+        <property name="checked">
+         <bool>false</bool>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>UnifiedLineCommands</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Sketcher/Commands</cstring>
         </property>
        </widget>
       </item>

@@ -1,34 +1,34 @@
-# -*- coding: utf8 -*-
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *                                                                         *
 # *   Copyright (c) 2024 Yorik van Havre <yorik@uncreated.net>              *
 # *                                                                         *
-# *   This program is free software; you can redistribute it and/or modify  *
-# *   it under the terms of the GNU Lesser General Public License (LGPL)    *
-# *   as published by the Free Software Foundation; either version 2 of     *
-# *   the License, or (at your option) any later version.                   *
-# *   for detail see the LICENCE text file.                                 *
+# *   This file is part of FreeCAD.                                         *
 # *                                                                         *
-# *   This program is distributed in the hope that it will be useful,       *
-# *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-# *   GNU Library General Public License for more details.                  *
+# *   FreeCAD is free software: you can redistribute it and/or modify it    *
+# *   under the terms of the GNU Lesser General Public License as           *
+# *   published by the Free Software Foundation, either version 2.1 of the  *
+# *   License, or (at your option) any later version.                       *
 # *                                                                         *
-#*   You should have received a copy of the GNU Library General Public     *
-#*   License along with this program; if not, write to the Free Software   *
-#*   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
-#*   USA                                                                   *
+# *   FreeCAD is distributed in the hope that it will be useful, but        *
+# *   WITHOUT ANY WARRANTY; without even the implied warranty of            *
+# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU      *
+# *   Lesser General Public License for more details.                       *
+# *                                                                         *
+# *   You should have received a copy of the GNU Lesser General Public      *
+# *   License along with FreeCAD. If not, see                               *
+# *   <https://www.gnu.org/licenses/>.                                      *
 # *                                                                         *
 # ***************************************************************************
 
 """This contains nativeifc status widgets and functionality"""
 
-
-import os
 import csv
+import os
+
 import FreeCAD
 import FreeCADGui
-
 
 translate = FreeCAD.Qt.translate
 params = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/NativeIFC")
@@ -100,8 +100,8 @@ def on_add_property():
     sel = FreeCADGui.Selection.getSelection()
     if not sel:
         return
-    from PySide import QtCore, QtGui  # lazy loading
-    from nativeifc import ifc_psets
+    from PySide import QtGui  # lazy loading
+    from . import ifc_psets
     obj = sel[0]
     psets = list(set([obj.getGroupOfProperty(p) for p in obj.PropertiesList]))
     psets = [p for p in psets if p]
@@ -179,8 +179,7 @@ def on_add_pset():
     sel = FreeCADGui.Selection.getSelection()
     if not sel:
         return
-    from PySide import QtCore, QtGui  # lazy loading
-    from nativeifc import ifc_psets
+    from . import ifc_psets
     obj = sel[0]
     mw = FreeCADGui.getMainWindow()
     # read standard psets
@@ -273,7 +272,7 @@ def on_new():
 def set_menu(locked=False):
     """Sets the File menu items"""
 
-    from PySide import QtCore, QtGui  # lazy loading
+    from PySide import QtGui  # lazy loading
 
     # switch Std_Save and IFC_Save
     mw = FreeCADGui.getMainWindow()
@@ -328,7 +327,7 @@ def set_button(checked=False, setchecked=False):
 def unlock_document():
     """Unlocks the active document"""
 
-    from nativeifc import ifc_tools  # lazy loading
+    from . import ifc_tools  # lazy loading
 
     doc = FreeCAD.ActiveDocument
     if not doc:
@@ -356,10 +355,10 @@ def unlock_document():
 def lock_document():
     """Locks the active document"""
 
-    from nativeifc import ifc_tools  # lazy loading
+    from . import ifc_tools  # lazy loading
     from importers import exportIFC
-    from nativeifc import ifc_geometry
-    from nativeifc import ifc_export
+    from . import ifc_geometry
+    from . import ifc_export
     from PySide import QtCore
 
     doc = FreeCAD.ActiveDocument
@@ -452,7 +451,6 @@ def lock_document():
 def find_toplevel(objs):
     """Finds the top-level objects from the list"""
 
-    import Draft
     # filter out any object that depend on another from the list
     nobjs = []
     for obj in objs:
@@ -473,6 +471,8 @@ def find_toplevel(objs):
 
 def filter_out(objs):
     """Filter out objects that should not be converted to IFC"""
+
+    import Draft
 
     nobjs = []
     for obj in objs:

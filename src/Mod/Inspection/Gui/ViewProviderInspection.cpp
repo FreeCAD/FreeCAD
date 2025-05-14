@@ -111,13 +111,26 @@ ViewProviderInspection::ViewProviderInspection()
 
 ViewProviderInspection::~ViewProviderInspection()
 {
-    pcColorRoot->unref();
-    pcCoords->unref();
-    pcMatBinding->unref();
-    pcColorMat->unref();
-    deleteColorBar();
-    pcLinkRoot->unref();
-    pcPointStyle->unref();
+    try {
+        pcColorRoot->unref();
+        pcCoords->unref();
+        pcMatBinding->unref();
+        pcColorMat->unref();
+        pcLinkRoot->unref();
+        pcPointStyle->unref();
+        deleteColorBar();
+    }
+    catch (Base::Exception& e) {
+        Base::Console().destructorError(
+            "ViewProviderInspection",
+            "ViewProviderInspection::deleteColorBar() threw an exception: %s\n",
+            e.what());
+    }
+    catch (...) {
+        Base::Console().destructorError(
+            "ViewProviderInspection",
+            "ViewProviderInspection destructor threw an unknown exception");
+    }
 }
 
 void ViewProviderInspection::onChanged(const App::Property* prop)
@@ -413,7 +426,7 @@ void ViewProviderInspection::setDistances()
 
     unsigned long j = 0;
     for (std::vector<float>::const_iterator jt = fValues.begin(); jt != fValues.end(); ++jt, j++) {
-        App::Color col = pcColorBar->getColor(*jt);
+        Base::Color col = pcColorBar->getColor(*jt);
         cols[j] = SbColor(col.r, col.g, col.b);
         if (pcColorBar->isVisible(*jt)) {
             tran[j] = 0.0f;
@@ -570,7 +583,7 @@ void ViewProviderInspection::inspectCallback(void* ud, SoEventCallback* n)
                  && mbe->getState() == SoButtonEvent::UP) {
             const SoPickedPoint* point = n->getPickedPoint();
             if (!point) {
-                Base::Console().Message("No point picked.\n");
+                Base::Console().message("No point picked.\n");
                 return;
             }
 

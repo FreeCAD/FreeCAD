@@ -201,7 +201,7 @@ void Cell::setExpression(App::ExpressionPtr&& expr)
                 restore(reader, true);
             }
             catch (Base::Exception& e) {
-                e.ReportException();
+                e.reportException();
                 FC_ERR("Failed to restore style of cell " << owner->sheet()->getFullName() << '.'
                                                           << address.toString() << ": "
                                                           << e.what());
@@ -250,14 +250,14 @@ bool Cell::getStringContent(std::string& s, bool persistent) const
         if (expression->hasComponent()) {
             s = "=" + expression->toString(persistent);
         }
-        else if (freecad_dynamic_cast<App::StringExpression>(expression.get())) {
+        else if (freecad_cast<App::StringExpression*>(expression.get())) {
             s = static_cast<App::StringExpression*>(expression.get())->getText();
             s = "'" + s;
         }
-        else if (freecad_dynamic_cast<App::ConstantExpression>(expression.get())) {
+        else if (freecad_cast<App::ConstantExpression*>(expression.get())) {
             s = "=" + expression->toString();
         }
-        else if (freecad_dynamic_cast<App::NumberExpression>(expression.get())) {
+        else if (freecad_cast<App::NumberExpression*>(expression.get())) {
             s = expression->toString();
         }
         else {
@@ -274,7 +274,7 @@ bool Cell::getStringContent(std::string& s, bool persistent) const
 
 void Cell::afterRestore()
 {
-    auto expr = freecad_dynamic_cast<StringExpression>(expression.get());
+    auto expr = freecad_cast<StringExpression*>(expression.get());
     if (expr) {
         setContent(expr->getText().c_str());
     }
@@ -331,13 +331,10 @@ void Cell::setContent(const char* value)
                 try {
                     ExpressionPtr parsedExpr(App::ExpressionParser::parse(owner->sheet(), value));
 
-                    if (const auto fraction =
-                            freecad_dynamic_cast<OperatorExpression>(parsedExpr.get())) {
+                    if (const auto fraction = freecad_cast<OperatorExpression*>(parsedExpr.get())) {
                         if (fraction->getOperator() == OperatorExpression::UNIT) {
-                            const auto left =
-                                freecad_dynamic_cast<NumberExpression>(fraction->getLeft());
-                            const auto right =
-                                freecad_dynamic_cast<UnitExpression>(fraction->getRight());
+                            const auto left = freecad_cast<NumberExpression*>(fraction->getLeft());
+                            const auto right = freecad_cast<UnitExpression*>(fraction->getRight());
                             if (left && right) {
                                 newExpr = std::move(parsedExpr);
                             }
@@ -348,23 +345,22 @@ void Cell::setContent(const char* value)
 
                             // check for numbers in (de)nominator
                             const bool isNumberNom =
-                                freecad_dynamic_cast<NumberExpression>(fraction->getLeft());
+                                freecad_cast<NumberExpression*>(fraction->getLeft());
                             const bool isNumberDenom =
-                                freecad_dynamic_cast<NumberExpression>(fraction->getRight());
+                                freecad_cast<NumberExpression*>(fraction->getRight());
 
                             // check for numbers with units in (de)nominator
                             const auto opNom =
-                                freecad_dynamic_cast<OperatorExpression>(fraction->getLeft());
+                                freecad_cast<OperatorExpression*>(fraction->getLeft());
                             const auto opDenom =
-                                freecad_dynamic_cast<OperatorExpression>(fraction->getRight());
+                                freecad_cast<OperatorExpression*>(fraction->getRight());
                             const bool isQuantityNom =
                                 opNom && opNom->getOperator() == OperatorExpression::UNIT;
                             const bool isQuantityDenom =
                                 opDenom && opDenom->getOperator() == OperatorExpression::UNIT;
 
                             // check for units in denomainator
-                            const auto uDenom =
-                                freecad_dynamic_cast<UnitExpression>(fraction->getRight());
+                            const auto uDenom = freecad_cast<UnitExpression*>(fraction->getRight());
                             const bool isUnitDenom = uDenom && uDenom->is<UnitExpression>();
 
                             const bool isNomValid = isNumberNom || isQuantityNom;
@@ -376,7 +372,7 @@ void Cell::setContent(const char* value)
                         }
                     }
                     else if (const auto number =
-                                 freecad_dynamic_cast<NumberExpression>(parsedExpr.get())) {
+                                 freecad_cast<NumberExpression*>(parsedExpr.get())) {
                         // NumbersExpressions can accept more than can be parsed with strtod.
                         //   Example: 12.34 and 12,34 are both valid NumberExpressions
                         newExpr = std::move(parsedExpr);
@@ -467,13 +463,13 @@ bool Cell::getStyle(std::set<std::string>& _style) const
  *
  */
 
-void Cell::setForeground(const App::Color& color)
+void Cell::setForeground(const Base::Color& color)
 {
     if (color != foregroundColor) {
         PropertySheet::AtomicPropertyChange signaller(*owner);
 
         foregroundColor = color;
-        setUsed(FOREGROUND_COLOR_SET, foregroundColor != App::Color(0, 0, 0, 1));
+        setUsed(FOREGROUND_COLOR_SET, foregroundColor != Base::Color(0, 0, 0, 1));
         setDirty();
 
         signaller.tryInvoke();
@@ -485,7 +481,7 @@ void Cell::setForeground(const App::Color& color)
  *
  */
 
-bool Cell::getForeground(App::Color& color) const
+bool Cell::getForeground(Base::Color& color) const
 {
     color = foregroundColor;
     return isUsed(FOREGROUND_COLOR_SET);
@@ -496,13 +492,13 @@ bool Cell::getForeground(App::Color& color) const
  *
  */
 
-void Cell::setBackground(const App::Color& color)
+void Cell::setBackground(const Base::Color& color)
 {
     if (color != backgroundColor) {
         PropertySheet::AtomicPropertyChange signaller(*owner);
 
         backgroundColor = color;
-        setUsed(BACKGROUND_COLOR_SET, backgroundColor != App::Color(1, 1, 1, 0));
+        setUsed(BACKGROUND_COLOR_SET, backgroundColor != Base::Color(1, 1, 1, 0));
         setDirty();
 
         signaller.tryInvoke();
@@ -516,7 +512,7 @@ void Cell::setBackground(const App::Color& color)
  *
  */
 
-bool Cell::getBackground(App::Color& color) const
+bool Cell::getBackground(Base::Color& color) const
 {
     color = backgroundColor;
     return isUsed(BACKGROUND_COLOR_SET);
@@ -543,7 +539,7 @@ void Cell::setDisplayUnit(const std::string& unit)
     if (newDisplayUnit != displayUnit) {
         PropertySheet::AtomicPropertyChange signaller(*owner);
 
-        displayUnit = newDisplayUnit;
+        displayUnit = std::move(newDisplayUnit);
         setUsed(DISPLAY_UNIT_SET, !displayUnit.isEmpty());
         setDirty();
 
@@ -732,19 +728,27 @@ void Cell::moveAbsolute(CellAddress newAddress)
 
 void Cell::restore(Base::XMLReader& reader, bool checkAlias)
 {
-    const char* style = reader.hasAttribute("style") ? reader.getAttribute("style") : nullptr;
+    const char* style =
+        reader.hasAttribute("style") ? reader.getAttribute<const char*>("style") : nullptr;
     const char* alignment =
-        reader.hasAttribute("alignment") ? reader.getAttribute("alignment") : nullptr;
-    const char* content = reader.hasAttribute("content") ? reader.getAttribute("content") : "";
-    const char* foregroundColor =
-        reader.hasAttribute("foregroundColor") ? reader.getAttribute("foregroundColor") : nullptr;
-    const char* backgroundColor =
-        reader.hasAttribute("backgroundColor") ? reader.getAttribute("backgroundColor") : nullptr;
-    const char* displayUnit =
-        reader.hasAttribute("displayUnit") ? reader.getAttribute("displayUnit") : nullptr;
-    const char* alias = reader.hasAttribute("alias") ? reader.getAttribute("alias") : nullptr;
-    const char* rowSpan = reader.hasAttribute("rowSpan") ? reader.getAttribute("rowSpan") : nullptr;
-    const char* colSpan = reader.hasAttribute("colSpan") ? reader.getAttribute("colSpan") : nullptr;
+        reader.hasAttribute("alignment") ? reader.getAttribute<const char*>("alignment") : nullptr;
+    const char* content =
+        reader.hasAttribute("content") ? reader.getAttribute<const char*>("content") : "";
+    const char* foregroundColor = reader.hasAttribute("foregroundColor")
+        ? reader.getAttribute<const char*>("foregroundColor")
+        : nullptr;
+    const char* backgroundColor = reader.hasAttribute("backgroundColor")
+        ? reader.getAttribute<const char*>("backgroundColor")
+        : nullptr;
+    const char* displayUnit = reader.hasAttribute("displayUnit")
+        ? reader.getAttribute<const char*>("displayUnit")
+        : nullptr;
+    const char* alias =
+        reader.hasAttribute("alias") ? reader.getAttribute<const char*>("alias") : nullptr;
+    const char* rowSpan =
+        reader.hasAttribute("rowSpan") ? reader.getAttribute<const char*>("rowSpan") : nullptr;
+    const char* colSpan =
+        reader.hasAttribute("colSpan") ? reader.getAttribute<const char*>("colSpan") : nullptr;
 
     // Don't trigger multiple updates below; wait until everything is loaded by calling unfreeze()
     // below.
@@ -783,12 +787,12 @@ void Cell::restore(Base::XMLReader& reader, bool checkAlias)
         setAlignment(alignmentCode);
     }
     if (foregroundColor) {
-        App::Color color = decodeColor(foregroundColor, App::Color(0, 0, 0, 1));
+        Base::Color color = decodeColor(foregroundColor, Base::Color(0, 0, 0, 1));
 
         setForeground(color);
     }
     if (backgroundColor) {
-        App::Color color = decodeColor(backgroundColor, App::Color(1, 1, 1, 1));
+        Base::Color color = decodeColor(backgroundColor, Base::Color(1, 1, 1, 1));
 
         setBackground(color);
     }
@@ -1016,7 +1020,7 @@ std::string Cell::encodeAlignment(int alignment)
  *
  */
 
-std::string Cell::encodeColor(const App::Color& color)
+std::string Cell::encodeColor(const Base::Color& color)
 {
     std::stringstream tmp;
 
@@ -1064,10 +1068,10 @@ std::string Cell::encodeStyle(const std::set<std::string>& style)
  *
  */
 
-App::Color Cell::decodeColor(const std::string& color, const App::Color& defaultColor)
+Base::Color Cell::decodeColor(const std::string& color, const Base::Color& defaultColor)
 {
     if (color.size() == 7 || color.size() == 9) {
-        App::Color c;
+        Base::Color c;
 
         if (color[0] != '#') {
             return defaultColor;

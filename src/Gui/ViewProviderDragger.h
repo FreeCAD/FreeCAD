@@ -25,7 +25,6 @@
 #define GUI_VIEWPROVIDER_DRAGGER_H
 
 #include "ViewProviderDocumentObject.h"
-#include "SoFCCSysDragger.h"
 #include <Base/Placement.h>
 #include <App/PropertyGeo.h>
 
@@ -38,6 +37,7 @@ namespace TaskView {
     class TaskDialog;
 }
 
+class SoTransformDragger;
 class View3DInventorViewer;
 
 /**
@@ -60,6 +60,8 @@ public:
     /// Dragger is normally placed at the transform origin, unless explicitly overridden via
     /// ViewProviderDragger#setDraggerPlacement() method.
     App::PropertyPlacement TransformOrigin;
+
+    void attach(App::DocumentObject* pcObject) override;
 
     /// Convenience method to obtain the transform origin
     Base::Placement getTransformOrigin() const { return TransformOrigin.getValue(); }
@@ -111,9 +113,10 @@ protected:
      */
     virtual TaskView::TaskDialog* getTransformDialog();
 
-    CoinPtr<SoFCCSysDragger> csysDragger = nullptr;
+    CoinPtr<SoTransformDragger> transformDragger;
     ViewProvider *forwardedViewProvider = nullptr;
 
+    CoinPtr<SoSwitch> pcPlacement;
 private:
     static void dragStartCallback(void *data, SoDragger *d);
     static void dragFinishCallback(void *data, SoDragger *d);

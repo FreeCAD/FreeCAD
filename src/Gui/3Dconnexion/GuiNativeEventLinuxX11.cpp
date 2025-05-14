@@ -58,21 +58,21 @@ Gui::GuiNativeEvent::GuiNativeEvent(Gui::GUIApplicationNativeEventAware *app)
 Gui::GuiNativeEvent::~GuiNativeEvent()
 {
     if (spnav_close())
-        Base::Console().Log("Couldn't disconnect from spacenav daemon\n");
+        Base::Console().log("Couldn't disconnect from spacenav daemon\n");
     else
-        Base::Console().Log("Disconnected from spacenav daemon\n");
+        Base::Console().log("Disconnected from spacenav daemon\n");
 }
 
 void Gui::GuiNativeEvent::initSpaceball(QMainWindow *window)
 {
     if (!QX11Info::isPlatformX11()) {
-        Base::Console().Log("Application is not running on X11\n");
+        Base::Console().log("Application is not running on X11\n");
         return;
     }
     if (spnav_x11_open(QX11Info::display(), window->winId()) == -1) {
-        Base::Console().Log("Couldn't connect to spacenav daemon on X11. Please ignore if you don't have a spacemouse.\n");
+        Base::Console().log("Couldn't connect to spacenav daemon on X11. Please ignore if you don't have a spacemouse.\n");
     } else {
-        Base::Console().Log("Connected to spacenav daemon on X11\n");
+        Base::Console().log("Connected to spacenav daemon on X11\n");
         mainApp->setSpaceballPresent(true);
         mainApp->installNativeEventFilter(new Gui::RawInputEventFilter(&xcbEventFilter));
     }
@@ -138,7 +138,7 @@ bool Gui::GuiNativeEvent::xcbEventFilter(void *xcb_void, long* result)
             return true;
         }
         default:
-            Base::Console().Log("Unknown spaceball event\n");
+            Base::Console().log("Unknown spaceball event\n");
             return true;
     } // end switch (navEvent.type) {
 }

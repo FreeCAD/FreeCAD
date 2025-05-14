@@ -71,7 +71,7 @@ QGIWeldSymbol::QGIWeldSymbol() :
     setZValue(ZVALUE::DIMENSION);
 
     m_tailText->setPlainText(
-                QString::fromUtf8(" "));
+                QStringLiteral(" "));
     addToGroup(m_tailText);
     m_tailText->hide();
     m_tailText->setPos(0.0, 0.0);         //avoid bRect issues
@@ -123,7 +123,7 @@ void QGIWeldSymbol::updateView(bool update)
 
     TechDraw::DrawWeldSymbol *feature = getFeature();
     if (!feature) {
-        Base::Console().Warning("QGIWS::updateView - no feature!\n");
+        Base::Console().warning("QGIWS::updateView - no feature!\n");
         return;
     }
 
@@ -161,7 +161,7 @@ void QGIWeldSymbol::draw()
 void QGIWeldSymbol::drawTile(TechDraw::DrawTileWeld* tileFeat)
 {
     if (!tileFeat) {
-        Base::Console().Message("QGIWS::drawTile - tile is null\n");
+        Base::Console().message("QGIWS::drawTile - tile is null\n");
         return;
     }
 
@@ -549,7 +549,7 @@ std::pair<Base::Vector3d, Base::Vector3d> QGIWeldSymbol::getLocalAxes()
 {
     auto localX = getLeader()->lastSegmentDirection();
     auto localY = DU::invertY(localX);
-    localY.RotateZ(M_PI_2);
+    localY.RotateZ(std::numbers::pi/2);
     localY.Normalize();
     localY = DU::invertY(localY);
     return {localX, localY};

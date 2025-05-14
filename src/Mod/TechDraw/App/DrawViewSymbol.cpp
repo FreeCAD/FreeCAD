@@ -123,7 +123,7 @@ std::vector<std::string> DrawViewSymbol::getEditableFields()
 
         // XPath query to select all <tspan> nodes whose <text> parent
         // has "freecad:editable" attribute
-        query.processItems(QString::fromUtf8("declare default element namespace \"" SVG_NS_URI "\"; "
+        query.processItems(QStringLiteral("declare default element namespace \"" SVG_NS_URI "\"; "
                                              "declare namespace freecad=\"" FREECAD_SVG_NS_URI "\"; "
                                              "//text[@" FREECAD_ATTR_EDITABLE "]/tspan"),
                            [&editables](QDomElement& tspan) -> bool {
@@ -152,7 +152,7 @@ void DrawViewSymbol::updateFieldsInSymbol()
 
         // XPath query to select all <tspan> nodes whose <text> parent
         // has "freecad:editable" attribute
-        query.processItems(QString::fromUtf8("declare default element namespace \"" SVG_NS_URI "\"; "
+        query.processItems(QStringLiteral("declare default element namespace \"" SVG_NS_URI "\"; "
                                              "declare namespace freecad=\"" FREECAD_SVG_NS_URI "\"; "
                                              "//text[@" FREECAD_ATTR_EDITABLE "]/tspan"),
                            [&symbolDocument, &editText, &count](QDomElement& tspanElement) -> bool {
@@ -161,8 +161,8 @@ void DrawViewSymbol::updateFieldsInSymbol()
                 return false;
             }
             // Keep all spaces in the text node
-            tspanElement.setAttribute(QString::fromUtf8("xml:space"),
-                                      QString::fromUtf8("preserve"));
+            tspanElement.setAttribute(QStringLiteral("xml:space"),
+                                      QStringLiteral("preserve"));
 
             // Remove all child nodes (if any)
             while (!tspanElement.lastChild().isNull()) {
@@ -196,9 +196,9 @@ bool DrawViewSymbol::loadQDomDocument(QDomDocument& symbolDocument)
     bool rc = symbolDocument.setContent(qba, nsProcess, &errorMsg, &errorLine, &errorCol);
     if (!rc) {
         //invalid SVG message
-        Base::Console().Warning("DrawViewSymbol - %s - SVG for Symbol is not valid. See log.\n",
+        Base::Console().warning("DrawViewSymbol - %s - SVG for Symbol is not valid. See log.\n",
                                 getNameInDocument());
-        Base::Console().Log("DrawViewSymbol - %s - len: %d rc: %d error: %s line: %d col: %d\n",
+        Base::Console().log("DrawViewSymbol - %s - len: %d rc: %d error: %s line: %d col: %d\n",
                             getNameInDocument(), strlen(symbol), rc, qPrintable(errorMsg),
                             errorLine, errorCol);
     }
@@ -207,9 +207,9 @@ bool DrawViewSymbol::loadQDomDocument(QDomDocument& symbolDocument)
     QDomDocument::ParseResult rc = symbolDocument.setContent(qba); // Use the default ParseOptions
     if (!rc) {
         //invalid SVG message
-        Base::Console().Warning("DrawViewSymbol - %s - SVG for Symbol is not valid. See log.\n",
+        Base::Console().warning("DrawViewSymbol - %s - SVG for Symbol is not valid. See log.\n",
                                 getNameInDocument());
-        Base::Console().Log("DrawViewSymbol - %s - len: %d error: %s line: %d col: %d\n",
+        Base::Console().log("DrawViewSymbol - %s - len: %d error: %s line: %d col: %d\n",
                             getNameInDocument(), strlen(symbol), qPrintable(rc.errorMessage),
                             rc.errorLine, rc.errorColumn);
     }

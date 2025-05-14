@@ -47,7 +47,7 @@
 
 #include <Gui/QSint/actionpanel/taskgroup_p.h>
 #include <Gui/QSint/actionpanel/taskheader_p.h>
-#include <Gui/QSint/actionpanel/freecadscheme.h>
+#include <Gui/QSint/actionpanel/actionpanelscheme.h>
 
 
 using namespace Gui::TaskView;
@@ -270,16 +270,13 @@ QSize TaskPanel::minimumSizeHint() const
 TaskView::TaskView(QWidget *parent)
     : QScrollArea(parent),ActiveDialog(nullptr),ActiveCtrl(nullptr)
 {
-    //addWidget(new TaskEditControl(this));
-    //addWidget(new TaskAppearance(this));
-    //addStretch();
     taskPanel = new TaskPanel(this);
     QSizePolicy sizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
     sizePolicy.setHorizontalStretch(0);
     sizePolicy.setVerticalStretch(0);
     sizePolicy.setHeightForWidth(taskPanel->sizePolicy().hasHeightForWidth());
     taskPanel->setSizePolicy(sizePolicy);
-    taskPanel->setScheme(QSint::FreeCADPanelScheme::defaultScheme());
+    taskPanel->setScheme(QSint::ActionPanelScheme::defaultScheme());
 
     this->setWidget(taskPanel);
     setWidgetResizable(true);
@@ -292,16 +289,16 @@ TaskView::TaskView(QWidget *parent)
     connectApplicationActiveDocument =
     App::GetApplication().signalActiveDocument.connect
         (std::bind(&Gui::TaskView::TaskView::slotActiveDocument, this, sp::_1));
-    connectApplicationDeleteDocument = 
+    connectApplicationDeleteDocument =
     App::GetApplication().signalDeleteDocument.connect
         (std::bind(&Gui::TaskView::TaskView::slotDeletedDocument, this, sp::_1));
     connectApplicationClosedView =
     Gui::Application::Instance->signalCloseView.connect
         (std::bind(&Gui::TaskView::TaskView::slotViewClosed, this, sp::_1));
-    connectApplicationUndoDocument = 
+    connectApplicationUndoDocument =
     App::GetApplication().signalUndoDocument.connect
         (std::bind(&Gui::TaskView::TaskView::slotUndoDocument, this, sp::_1));
-    connectApplicationRedoDocument = 
+    connectApplicationRedoDocument =
     App::GetApplication().signalRedoDocument.connect
         (std::bind(&Gui::TaskView::TaskView::slotRedoDocument, this, sp::_1));
     //NOLINTEND
@@ -456,7 +453,7 @@ QSize TaskView::minimumSizeHint() const
 
 void TaskView::slotActiveDocument(const App::Document& doc)
 {
-    Q_UNUSED(doc); 
+    Q_UNUSED(doc);
     if (!ActiveDialog)
         updateWatcher();
 }
@@ -467,7 +464,7 @@ void TaskView::slotDeletedDocument(const App::Document& doc)
         if (ActiveDialog->isAutoCloseOnDeletedDocument()) {
             std::string name = ActiveDialog->getDocumentName();
             if (name.empty()) {
-                Base::Console().Warning(std::string("TaskView::slotDeletedDocument"),
+                Base::Console().warning(std::string("TaskView::slotDeletedDocument"),
                                         "No document name set\n");
             }
 
@@ -490,7 +487,7 @@ void TaskView::slotViewClosed(const Gui::MDIView* view)
         if (ActiveDialog->isAutoCloseOnClosedView()) {
             const Gui::MDIView* associatedView = ActiveDialog->getAssociatedView();
             if (!associatedView) {
-                Base::Console().Warning(std::string("TaskView::slotViewClosed"),
+                Base::Console().warning(std::string("TaskView::slotViewClosed"),
                     "No view associated\n");
             }
 
@@ -512,7 +509,7 @@ void TaskView::transactionChangeOnDocument(const App::Document& doc)
         if (ActiveDialog->isAutoCloseOnTransactionChange()) {
             std::string name = ActiveDialog->getDocumentName();
             if (name.empty()) {
-                Base::Console().Warning(std::string("TaskView::transactionChangeOnDocument"),
+                Base::Console().warning(std::string("TaskView::transactionChangeOnDocument"),
                                         "No document name set\n");
             }
 
@@ -542,11 +539,11 @@ void TaskView::slotRedoDocument(const App::Document& doc)
 void TaskView::OnChange(Gui::SelectionSingleton::SubjectType &rCaller,
                         Gui::SelectionSingleton::MessageType Reason)
 {
-    Q_UNUSED(rCaller); 
+    Q_UNUSED(rCaller);
     std::string temp;
 
     if (Reason.Type == SelectionChanges::AddSelection ||
-        Reason.Type == SelectionChanges::ClrSelection || 
+        Reason.Type == SelectionChanges::ClrSelection ||
         Reason.Type == SelectionChanges::SetSelection ||
         Reason.Type == SelectionChanges::RmvSelection) {
 
@@ -603,7 +600,7 @@ void TaskView::showDialog(TaskDialog *dlg)
         taskPanel->addWidget(ActiveCtrl);
     }
 
-    taskPanel->setScheme(QSint::FreeCADPanelScheme::defaultScheme());
+    taskPanel->setScheme(QSint::ActionPanelScheme::defaultScheme());
 
     if (!dlg->needsFullSpace())
         taskPanel->addStretch();
@@ -651,7 +648,7 @@ void TaskView::removeDialog()
 
     // put the watcher back in control
     addTaskWatcher();
-    
+
     if (remove) {
         remove->closed();
         remove->emitDestructionSignal();
@@ -751,7 +748,6 @@ void TaskView::addTaskWatcher()
         taskPanel->addStretch();
     updateWatcher();
 
-#if QT_VERSION >= QT_VERSION_CHECK(5, 12, 0)
     // Workaround to avoid a crash in Qt. See also
     // https://forum.freecad.org/viewtopic.php?f=8&t=39187
     //
@@ -762,9 +758,8 @@ void TaskView::addTaskWatcher()
         QEvent event(QEvent::StyleChange);
         QApplication::sendEvent(box, &event);
     }
-#endif
 
-    taskPanel->setScheme(QSint::FreeCADPanelScheme::defaultScheme());
+    taskPanel->setScheme(QSint::ActionPanelScheme::defaultScheme());
 }
 
 void TaskView::saveCurrentWidth()
@@ -828,7 +823,7 @@ void TaskView::removeTaskWatcher()
 void TaskView::accept()
 {
     if (!ActiveDialog) { // Protect against segfaults due to out-of-order deletions
-        Base::Console().Warning("ActiveDialog was null in call to TaskView::accept()\n");
+        Base::Console().warning("ActiveDialog was null in call to TaskView::accept()\n");
         return;
     }
 
@@ -844,7 +839,7 @@ void TaskView::accept()
 void TaskView::reject()
 {
     if (!ActiveDialog) { // Protect against segfaults due to out-of-order deletions
-        Base::Console().Warning("ActiveDialog was null in call to TaskView::reject()\n");
+        Base::Console().warning("ActiveDialog was null in call to TaskView::reject()\n");
         return;
     }
 
@@ -870,14 +865,14 @@ void TaskView::clicked (QAbstractButton * button)
 
 void TaskView::clearActionStyle()
 {
-    static_cast<QSint::FreeCADPanelScheme*>(QSint::FreeCADPanelScheme::defaultScheme())->clearActionStyle();
-    taskPanel->setScheme(QSint::FreeCADPanelScheme::defaultScheme());
+    static_cast<QSint::ActionPanelScheme*>(QSint::ActionPanelScheme::defaultScheme())->clearActionStyle();
+    taskPanel->setScheme(QSint::ActionPanelScheme::defaultScheme());
 }
 
 void TaskView::restoreActionStyle()
 {
-    static_cast<QSint::FreeCADPanelScheme*>(QSint::FreeCADPanelScheme::defaultScheme())->restoreActionStyle();
-    taskPanel->setScheme(QSint::FreeCADPanelScheme::defaultScheme());
+    static_cast<QSint::ActionPanelScheme*>(QSint::ActionPanelScheme::defaultScheme())->restoreActionStyle();
+    taskPanel->setScheme(QSint::ActionPanelScheme::defaultScheme());
 }
 
 

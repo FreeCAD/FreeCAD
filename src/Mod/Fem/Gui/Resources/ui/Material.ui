@@ -198,7 +198,7 @@
         <item row="0" column="0">
          <widget class="QLabel" name="label_16">
           <property name="text">
-           <string>Kinematic viscosity:</string>
+           <string>Kinematic Viscosity:</string>
           </property>
          </widget>
         </item>
@@ -340,7 +340,10 @@
         <item row="2" column="0">
          <widget class="QLabel" name="label_expansion_reference_temperature">
           <property name="text">
-           <string>Expansion Reference Temperature:</string>
+           <string>Reference Temperature:</string>
+          </property>
+          <property name="toolTip">
+           <string>Reference temperature for thermal expansion</string>
           </property>
          </widget>
         </item>

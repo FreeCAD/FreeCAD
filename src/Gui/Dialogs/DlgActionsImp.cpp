@@ -73,7 +73,7 @@ DlgCustomActionsImp::DlgCustomActionsImp(QWidget* parent)
     }
 
     QString systemMacroDirStr =
-        QString::fromStdString(App::Application::getHomePath()) + QString::fromLatin1("Macro");
+        QString::fromStdString(App::Application::getHomePath()) + QStringLiteral("Macro");
     d = QDir(systemMacroDirStr, QLatin1String("*.FCMacro *.py"));
     if (d.exists()) {
         for (unsigned int i = 0; i < d.count(); i++) {
@@ -257,13 +257,7 @@ void DlgCustomActionsImp::onButtonAddActionClicked()
     item->setData(1, Qt::UserRole, actionName);
     item->setText(1, ui->actionMenu->text());
     item->setSizeHint(0, QSize(32, 32));
-#if QT_VERSION >= QT_VERSION_CHECK(5, 15, 0)
     item->setIcon(0, ui->pixmapLabel->pixmap(Qt::ReturnByValue));
-#else
-    if (ui->pixmapLabel->pixmap()) {
-        item->setIcon(0, *ui->pixmapLabel->pixmap());
-    }
-#endif
 
     // Convert input text into utf8
     if (!ui->actionWhatsThis->text().isEmpty()) {
@@ -483,7 +477,7 @@ void IconDialog::onAddIconPath()
                 QStringList filters;
                 QList<QByteArray> formats = QImageReader::supportedImageFormats();
                 for (const auto& format : formats) {
-                    filters << QString::fromLatin1("*.%1").arg(
+                    filters << QStringLiteral("*.%1").arg(
                         QString::fromLatin1(format).toLower());
                 }
                 QDir d(path);

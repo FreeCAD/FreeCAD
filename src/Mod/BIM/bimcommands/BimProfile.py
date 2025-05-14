@@ -1,34 +1,35 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *                                                                         *
 # *   Copyright (c) 2024 Yorik van Havre <yorik@uncreated.net>              *
 # *                                                                         *
-# *   This program is free software; you can redistribute it and/or modify  *
-# *   it under the terms of the GNU Lesser General Public License (LGPL)    *
-# *   as published by the Free Software Foundation; either version 2 of     *
-# *   the License, or (at your option) any later version.                   *
-# *   for detail see the LICENCE text file.                                 *
+# *   This file is part of FreeCAD.                                         *
 # *                                                                         *
-# *   This program is distributed in the hope that it will be useful,       *
-# *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-# *   GNU Library General Public License for more details.                  *
+# *   FreeCAD is free software: you can redistribute it and/or modify it    *
+# *   under the terms of the GNU Lesser General Public License as           *
+# *   published by the Free Software Foundation, either version 2.1 of the  *
+# *   License, or (at your option) any later version.                       *
 # *                                                                         *
-# *   You should have received a copy of the GNU Library General Public     *
-# *   License along with this program; if not, write to the Free Software   *
-# *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
-# *   USA                                                                   *
+# *   FreeCAD is distributed in the hope that it will be useful, but        *
+# *   WITHOUT ANY WARRANTY; without even the implied warranty of            *
+# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU      *
+# *   Lesser General Public License for more details.                       *
+# *                                                                         *
+# *   You should have received a copy of the GNU Lesser General Public      *
+# *   License along with FreeCAD. If not, see                               *
+# *   <https://www.gnu.org/licenses/>.                                      *
 # *                                                                         *
 # ***************************************************************************
 
 """BIM Panel-related Arch_"""
 
-
-import os
 import FreeCAD
 import FreeCADGui
 
 QT_TRANSLATE_NOOP = FreeCAD.Qt.QT_TRANSLATE_NOOP
 translate = FreeCAD.Qt.translate
+
 PARAMS = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/BIM")
 
 
@@ -51,6 +52,9 @@ class Arch_Profile:
     def Activated(self):
 
         import ArchProfile
+
+        FreeCAD.activeDraftCommand = self  # register as a Draft command for auto grid on/off
+        self.doc = FreeCAD.ActiveDocument
         self.Profile = None
         self.Categories = []
         self.Presets = ArchProfile.readPresets()
@@ -108,12 +112,14 @@ class Arch_Profile:
 
         "this function is called by the snapper when it has a 3D point"
 
+        FreeCAD.activeDraftCommand = None
+        FreeCADGui.Snapper.off()
         if not point:
             return
         if not self.Profile:
             return
         pt = "FreeCAD.Vector("+str(point.x)+","+str(point.y)+","+str(point.z)+")"
-        FreeCAD.ActiveDocument.openTransaction(translate("Arch","Create Profile"))
+        self.doc.openTransaction(translate("Arch","Create Profile"))
         FreeCADGui.addModule("Arch")
         FreeCADGui.doCommand('p = Arch.makeProfile('+str(self.Profile)+')')
         FreeCADGui.addModule('WorkingPlane')
@@ -121,8 +127,8 @@ class Arch_Profile:
         FreeCADGui.doCommand('p.Placement.Base = ' + pt)
         FreeCADGui.addModule("Draft")
         FreeCADGui.doCommand("Draft.autogroup(p)")
-        FreeCAD.ActiveDocument.commitTransaction()
-        FreeCAD.ActiveDocument.recompute()
+        self.doc.commitTransaction()
+        self.doc.recompute()
 
     def setCategory(self,i):
 

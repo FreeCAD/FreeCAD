@@ -45,6 +45,7 @@
 #include <Gui/Application.h>
 #include <Gui/Command.h>
 #include <Gui/Control.h>
+#include <Gui/MainWindow.h>
 #include <Gui/View3DInventor.h>
 #include <Gui/View3DInventorViewer.h>
 #include <Gui/ViewProviderCoordinateSystem.h>
@@ -83,7 +84,7 @@ ViewProviderDatum::ViewProviderDatum()
             "User parameter:BaseApp/Preferences/Mod/PartDesign");
     unsigned long shcol = hGrp->GetUnsigned ( "DefaultDatumColor", 0xFFD70099 );
 
-    App::Color col ( (uint32_t) shcol );
+    Base::Color col ( (uint32_t) shcol );
     ShapeAppearance.setDiffuseColor(col);
 
     Transparency.setValue (col.a * 100);
@@ -109,22 +110,22 @@ void ViewProviderDatum::attach(App::DocumentObject *obj)
     // TODO remove this field (2015-09-08, Fat-Zer)
     App::DocumentObject* o = getObject();
     if (o->is<PartDesign::Plane>()) {
-        datumType = QString::fromLatin1("Plane");
+        datumType = QStringLiteral("Plane");
         datumText = QObject::tr("Plane");
         datumMenuText = tr("Datum Plane parameters");
     }
     else if (o->is<PartDesign::Line>()) {
-        datumType = QString::fromLatin1("Line");
+        datumType = QStringLiteral("Line");
         datumText = QObject::tr("Line");
         datumMenuText = tr("Datum Line parameters");
     }
     else if (o->is<PartDesign::Point>()) {
-        datumType = QString::fromLatin1("Point");
+        datumType = QStringLiteral("Point");
         datumText = QObject::tr("Point");
         datumMenuText = tr("Datum Point parameters");
     }
     else if (o->is<PartDesign::CoordinateSystem>()) {
-        datumType = QString::fromLatin1("CoordinateSystem");
+        datumType = QStringLiteral("CoordinateSystem");
         datumText = QObject::tr("Coordinate System");
         datumMenuText = tr("Local Coordinate System parameters");
     }
@@ -245,7 +246,7 @@ bool ViewProviderDatum::setEdit(int ModNum)
         if (datumDlg && datumDlg->getViewProvider() != this)
             datumDlg = nullptr; // another datum feature left open its task panel
         if (dlg && !datumDlg) {
-            QMessageBox msgBox;
+            QMessageBox msgBox(Gui::getMainWindow());
             msgBox.setText(QObject::tr("A dialog is already open in the task panel"));
             msgBox.setInformativeText(QObject::tr("Do you want to close this dialog?"));
             msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);

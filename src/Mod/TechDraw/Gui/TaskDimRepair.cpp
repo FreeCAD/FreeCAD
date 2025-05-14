@@ -128,21 +128,21 @@ void TaskDimRepair::slotUseSelection()
 
     StringVector acceptableGeometry({ "Edge", "Vertex", "Face" });
     std::vector<int> minimumCounts({1, 1, 1});
-    std::vector<DimensionGeometryType> acceptableDimensionGeometrys;//accept anything
-    DimensionGeometryType geometryRefs2d = validateDimSelection(
+    std::vector<DimensionGeometry> acceptableDimensionGeometrys;//accept anything
+    DimensionGeometry geometryRefs2d = validateDimSelection(
         references2d, acceptableGeometry, minimumCounts, acceptableDimensionGeometrys);
-    if (geometryRefs2d == isInvalid) {
+    if (geometryRefs2d == DimensionGeometry::isInvalid) {
         QMessageBox::warning(Gui::getMainWindow(),
                              QObject::tr("Incorrect Selection"),
                              QObject::tr("Can not make dimension from selection"));
         return;
     }
     //what 3d geometry configuration did we receive?
-    DimensionGeometryType geometryRefs3d(isInvalid);
-    if (geometryRefs2d == TechDraw::isViewReference && !references3d.empty()) {
+    DimensionGeometry geometryRefs3d(DimensionGeometry::isInvalid);
+    if (geometryRefs2d == DimensionGeometry::isViewReference && !references3d.empty()) {
         geometryRefs3d = validateDimSelection3d(
             dvp, references3d, acceptableGeometry, minimumCounts, acceptableDimensionGeometrys);
-        if (geometryRefs3d == isInvalid) {
+        if (geometryRefs3d == DimensionGeometry::isInvalid) {
             QMessageBox::warning(Gui::getMainWindow(),
                                  QObject::tr("Incorrect Selection"),
                                  QObject::tr("Can not make dimension from selection"));
@@ -210,7 +210,7 @@ void TaskDimRepair::fillList(QListWidget* lwItems, std::vector<std::string> labe
     for (; i < labelCount; i++) {
         qLabel = QString::fromStdString(labels[i]);
         qName = QString::fromStdString(names[i]);
-        qText = QString::fromUtf8("%1 %2").arg(qName, qLabel);
+        qText = QStringLiteral("%1 %2").arg(qName, qLabel);
         item = new QListWidgetItem(qText, lwItems);
         item->setTextAlignment(Qt::AlignRight | Qt::AlignVCenter);
         item->setData(Qt::UserRole, qName);

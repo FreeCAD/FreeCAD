@@ -344,7 +344,7 @@ CmdPartDesignSubShapeBinder::CmdPartDesignSubShapeBinder()
     sAppModule      = "PartDesign";
     sGroup          = QT_TR_NOOP("PartDesign");
     sMenuText       = QT_TR_NOOP("Create a sub-object(s) shape binder");
-    sToolTipText    = QT_TR_NOOP("Create a sub-object(s) shape binder");
+    sToolTipText    = QT_TR_NOOP("Create a reference to geometry from one or more objects, allowing it to be used inside or outside a PartDesign Body. It tracks relative placements, supports multiple geometry types (solids, faces, edges, vertices), and can work with objects in the same or external documents.");
     sWhatsThis      = "PartDesign_SubShapeBinder";
     sStatusTip      = sToolTipText;
     sPixmap         = "PartDesign_SubShapeBinder";
@@ -405,7 +405,7 @@ void CmdPartDesignSubShapeBinder::activated(int iMsg)
         updateActive();
         commitCommand();
     } catch (Base::Exception &e) {
-        e.ReportException();
+        e.reportException();
         QMessageBox::critical(Gui::getMainWindow(),
                 QObject::tr("Sub-Shape Binder"), QApplication::translate("Exception", e.what()));
         abortCommand();
@@ -428,7 +428,7 @@ CmdPartDesignClone::CmdPartDesignClone()
     sAppModule      = "PartDesign";
     sGroup          = QT_TR_NOOP("PartDesign");
     sMenuText       = QT_TR_NOOP("Create a clone");
-    sToolTipText    = QT_TR_NOOP("Create a new clone");
+    sToolTipText    = QT_TR_NOOP("Create a parametric copy of a solid object as the base feature of a new body");
     sWhatsThis      = "PartDesign_Clone";
     sStatusTip      = sToolTipText;
     sPixmap         = "PartDesign_Clone";
@@ -528,17 +528,18 @@ bool CmdPartDesignNewSketch::isActive()
 // Common utility functions for all features creating solids
 //===========================================================================
 
-void finishFeature(const Gui::Command* cmd, App::DocumentObject *Feat,
+static void finishFeature(const Gui::Command* cmd, App::DocumentObject *feature,
                    App::DocumentObject* prevSolidFeature = nullptr,
                    const bool hidePrevSolid = true,
                    const bool updateDocument = true)
 {
-    PartDesign::Body *pcActiveBody;
+    PartDesign::Body *activeBody;
 
     if (prevSolidFeature) {
-        pcActiveBody = PartDesignGui::getBodyFor(prevSolidFeature, /*messageIfNot = */false);
-    } else { // insert into the same body as the given previous one
-        pcActiveBody = PartDesignGui::getBody(/*messageIfNot = */false);
+        // insert into the same body as the given previous one
+        activeBody = PartDesignGui::getBodyFor(prevSolidFeature, /*messageIfNot = */false);
+    } else {
+        activeBody = PartDesignGui::getBody(/*messageIfNot = */false);
     }
 
     if (hidePrevSolid && prevSolidFeature)
@@ -547,27 +548,24 @@ void finishFeature(const Gui::Command* cmd, App::DocumentObject *Feat,
     if (updateDocument)
         cmd->updateActive();
 
-    auto base = dynamic_cast<PartDesign::Feature*>(Feat);
+    auto base = dynamic_cast<PartDesign::Feature*>(feature);
     if (base)
         base = dynamic_cast<PartDesign::Feature*>(base->getBaseObject(true));
     App::DocumentObject *obj = base;
     if (!obj)
-        obj = pcActiveBody;
+        obj = activeBody;
 
     // Do this before calling setEdit to avoid to override the 'Shape preview' mode (#0003621)
     if (obj) {
-        cmd->copyVisual(Feat, "ShapeAppearance", obj);
-        cmd->copyVisual(Feat, "LineColor", obj);
-        cmd->copyVisual(Feat, "PointColor", obj);
-        cmd->copyVisual(Feat, "Transparency", obj);
-        cmd->copyVisual(Feat, "DisplayMode", obj);
+        cmd->copyVisual(feature, "ShapeAppearance", obj);
+        cmd->copyVisual(feature, "LineColor", obj);
+        cmd->copyVisual(feature, "PointColor", obj);
+        cmd->copyVisual(feature, "Transparency", obj);
+        cmd->copyVisual(feature, "DisplayMode", obj);
     }
 
-    // #0001721: use '0' as edit value to avoid switching off selection in
-    // ViewProviderGeometryObject::setEditViewer
-    PartDesignGui::setEdit(Feat,pcActiveBody);
+    PartDesignGui::setEdit(feature, activeBody);
     cmd->doCommand(cmd->Gui,"Gui.Selection.clearSelection()");
-    //cmd->doCommand(cmd->Gui,"Gui.Selection.addSelection(App.ActiveDocument.ActiveObject)");
 }
 
 //===========================================================================
@@ -611,13 +609,13 @@ unsigned validateSketches(std::vector<App::DocumentObject*>& sketches,
             continue;
         }
 
-        //Base::Console().Error("Checking sketch %s\n", (*s)->getNameInDocument());
+        //Base::Console().error("Checking sketch %s\n", (*s)->getNameInDocument());
         // Check whether this sketch is already being used by another feature
         // Body features don't count...
         std::vector<App::DocumentObject*> inList = (*s)->getInList();
         std::vector<App::DocumentObject*>::iterator o = inList.begin();
         while (o != inList.end()) {
-            //Base::Console().Error("Inlist: %s\n", (*o)->getNameInDocument());
+            //Base::Console().error("Inlist: %s\n", (*o)->getNameInDocument());
             if ((*o)->isDerivedFrom<PartDesign::Body>())
                 o = inList.erase(o); //ignore bodies
             else if (!(  (*o)->isDerivedFrom<PartDesign::Feature>()  ))
@@ -679,7 +677,7 @@ bool importExternalElements(App::PropertyLinkSub& prop, std::vector<App::SubObje
     if (!prop.getName() || !prop.getName()[0]) {
         FC_THROWM(Base::RuntimeError, "Invalid property");
     }
-    auto editObj = Base::freecad_dynamic_cast<App::DocumentObject>(prop.getContainer());
+    auto editObj = freecad_cast<App::DocumentObject*>(prop.getContainer());
     if (!editObj) {
         FC_THROWM(Base::RuntimeError, "Editing object not found");
     }
@@ -786,7 +784,7 @@ void prepareProfileBased(PartDesign::Body *pcActiveBody, Gui::Command* cmd, cons
 
         // Populate the subs parameter by checking for external elements before
         // we construct our command.
-        auto ProfileFeature = Base::freecad_dynamic_cast<PartDesign::ProfileBased>(Feat);
+        auto ProfileFeature = freecad_cast<PartDesign::ProfileBased*>(Feat);
 
         std::vector<std::string>& cmdSubs = const_cast<vector<std::string>&>(subs);
         if (subs.size() == 0) {
@@ -892,7 +890,7 @@ void prepareProfileBased(PartDesign::Body *pcActiveBody, Gui::Command* cmd, cons
         (which.compare("Pocket") == 0)) {
 
         if (!pcActiveBody->isSolid()) {
-            QMessageBox msgBox;
+            QMessageBox msgBox(Gui::getMainWindow());
             msgBox.setText(QObject::tr("Cannot use this command as there is no solid to subtract from."));
             msgBox.setInformativeText(QObject::tr("Ensure that the body contains a feature before attempting a subtractive command."));
             msgBox.setStandardButtons(QMessageBox::Ok);
@@ -914,7 +912,7 @@ void prepareProfileBased(PartDesign::Body *pcActiveBody, Gui::Command* cmd, cons
             }
         }
         if (!onlyAllowed) {
-            QMessageBox msgBox;
+            QMessageBox msgBox(Gui::getMainWindow());
             msgBox.setText(QObject::tr("Cannot use selected object. Selected object must belong to the active body"));
             msgBox.setInformativeText(QObject::tr("Consider using a ShapeBinder or a BaseFeature to reference external geometry in a body."));
             msgBox.setStandardButtons(QMessageBox::Ok);
@@ -1012,7 +1010,7 @@ void prepareProfileBased(PartDesign::Body *pcActiveBody, Gui::Command* cmd, cons
         Gui::TaskView::TaskDialog *dlg = Gui::Control().activeDialog();
         PartDesignGui::TaskDlgFeaturePick *pickDlg = qobject_cast<PartDesignGui::TaskDlgFeaturePick *>(dlg);
         if (dlg && !pickDlg) {
-            QMessageBox msgBox;
+            QMessageBox msgBox(Gui::getMainWindow());
             msgBox.setText(QObject::tr("A dialog is already open in the task panel"));
             msgBox.setInformativeText(QObject::tr("Do you want to close this dialog?"));
             msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
@@ -1290,7 +1288,7 @@ void CmdPartDesignGroove::activated(int iMsg)
                 FCMD_OBJ_CMD(Feat,"Reversed = 1");
         }
         catch (const Base::Exception& e) {
-            e.ReportException();
+            e.reportException();
         }
 
         finishProfileBased(cmd, sketch, Feat);

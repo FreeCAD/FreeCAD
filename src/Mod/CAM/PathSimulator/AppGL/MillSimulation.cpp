@@ -79,6 +79,9 @@ void MillSimulation::SimNext()
 
     if (mCurStep < mNTotalSteps) {
         mCurStep += mSimSpeed;
+        if (mCurStep > mNTotalSteps) {
+            mCurStep = mNTotalSteps;
+        }
         CalcSegmentPositions();
         simDisplay.updateDisplay = true;
     }
@@ -129,16 +132,17 @@ EndMill* MillSimulation::GetTool(int toolId)
     return nullptr;
 }
 
-void MillSimulation::RemoveTool(int toolId)
+void MillSimulation::RemoveTool(const int toolId)
 {
-    EndMill* tool;
-    if ((tool = GetTool(toolId)) != nullptr) {
-        auto it = std::find(mToolTable.begin(), mToolTable.end(), tool);
-        if (it != mToolTable.end()) {
-            mToolTable.erase(it);
-        }
-        delete tool;
+    EndMill* tool = GetTool(toolId);
+    if (tool == nullptr) {
+        return;
     }
+
+    if (const auto it = std::ranges::find(mToolTable, tool); it != mToolTable.end()) {
+        mToolTable.erase(it);
+    }
+    delete tool;
 }
 
 
@@ -463,15 +467,34 @@ void MillSimulation::HandleGuiAction(eGuiItems actionItem, bool checked)
             mSingleStep = true;
             break;
 
-        case eGuiItemFaster:
-            if (mSimSpeed == 1) {
+        case eGuiItemSlower:
+            if (mSimSpeed == 50) {
+                mSimSpeed = 25;
+            }
+            else if (mSimSpeed == 25) {
                 mSimSpeed = 10;
             }
             else if (mSimSpeed == 10) {
-                mSimSpeed = 40;
+                mSimSpeed = 5;
             }
             else {
                 mSimSpeed = 1;
+            }
+            guiDisplay.UpdateSimSpeed(mSimSpeed);
+            break;
+
+        case eGuiItemFaster:
+            if (mSimSpeed == 1) {
+                mSimSpeed = 5;
+            }
+            else if (mSimSpeed == 5) {
+                mSimSpeed = 10;
+            }
+            else if (mSimSpeed == 10) {
+                mSimSpeed = 25;
+            }
+            else {
+                mSimSpeed = 50;
             }
             guiDisplay.UpdateSimSpeed(mSimSpeed);
             break;

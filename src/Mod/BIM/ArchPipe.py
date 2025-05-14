@@ -1,41 +1,30 @@
-# -*- coding: utf-8 -*-
-#***************************************************************************
-#*   Copyright (c) 2016 Yorik van Havre <yorik@uncreated.net>              *
-#*                                                                         *
-#*   This program is free software; you can redistribute it and/or modify  *
-#*   it under the terms of the GNU Lesser General Public License (LGPL)    *
-#*   as published by the Free Software Foundation; either version 2 of     *
-#*   the License, or (at your option) any later version.                   *
-#*   for detail see the LICENCE text file.                                 *
-#*                                                                         *
-#*   This program is distributed in the hope that it will be useful,       *
-#*   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-#*   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-#*   GNU Library General Public License for more details.                  *
-#*                                                                         *
-#*   You should have received a copy of the GNU Library General Public     *
-#*   License along with this program; if not, write to the Free Software   *
-#*   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
-#*   USA                                                                   *
-#*                                                                         *
-#***************************************************************************
+# SPDX-License-Identifier: LGPL-2.1-or-later
 
-import FreeCAD
-import ArchComponent
-from draftutils import params
+# ***************************************************************************
+# *                                                                         *
+# *   Copyright (c) 2016 Yorik van Havre <yorik@uncreated.net>              *
+# *                                                                         *
+# *   This file is part of FreeCAD.                                         *
+# *                                                                         *
+# *   FreeCAD is free software: you can redistribute it and/or modify it    *
+# *   under the terms of the GNU Lesser General Public License as           *
+# *   published by the Free Software Foundation, either version 2.1 of the  *
+# *   License, or (at your option) any later version.                       *
+# *                                                                         *
+# *   FreeCAD is distributed in the hope that it will be useful, but        *
+# *   WITHOUT ANY WARRANTY; without even the implied warranty of            *
+# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU      *
+# *   Lesser General Public License for more details.                       *
+# *                                                                         *
+# *   You should have received a copy of the GNU Lesser General Public      *
+# *   License along with FreeCAD. If not, see                               *
+# *   <https://www.gnu.org/licenses/>.                                      *
+# *                                                                         *
+# ***************************************************************************
 
-if FreeCAD.GuiUp:
-    import FreeCADGui
-    import Arch_rc
-    from draftutils.translate import translate
-    from PySide.QtCore import QT_TRANSLATE_NOOP
-else:
-    # \cond
-    def translate(ctxt,txt):
-        return txt
-    def QT_TRANSLATE_NOOP(ctxt,txt):
-        return txt
-    # \endcond
+__title__  = "Arch Pipe tools"
+__author__ = "Yorik van Havre"
+__url__    = "https://www.freecad.org"
 
 ## @package ArchPipe
 #  \ingroup ARCH
@@ -44,10 +33,23 @@ else:
 #  This module provides tools to build Pipe and Pipe connector objects.
 #  Pipes are tubular objects extruded along a base line.
 
-__title__  = "Arch Pipe tools"
-__author__ = "Yorik van Havre"
-__url__    = "https://www.freecad.org"
+import FreeCAD
+import ArchComponent
 
+from draftutils import params
+
+if FreeCAD.GuiUp:
+    from PySide.QtCore import QT_TRANSLATE_NOOP
+    import FreeCADGui
+    import Arch_rc
+    from draftutils.translate import translate
+else:
+    # \cond
+    def translate(ctxt,txt):
+        return txt
+    def QT_TRANSLATE_NOOP(ctxt,txt):
+        return txt
+    # \endcond
 
 
 class _ArchPipe(ArchComponent.Component):
@@ -71,25 +73,25 @@ class _ArchPipe(ArchComponent.Component):
 
         pl = obj.PropertiesList
         if not "Diameter" in pl:
-            obj.addProperty("App::PropertyLength", "Diameter",     "Pipe", QT_TRANSLATE_NOOP("App::Property","The diameter of this pipe, if not based on a profile"))
+            obj.addProperty("App::PropertyLength", "Diameter",     "Pipe", QT_TRANSLATE_NOOP("App::Property","The diameter of this pipe, if not based on a profile"), locked=True)
         if not "Width" in pl:
-            obj.addProperty("App::PropertyLength", "Width",        "Pipe", QT_TRANSLATE_NOOP("App::Property","The width of this pipe, if not based on a profile"))
+            obj.addProperty("App::PropertyLength", "Width",        "Pipe", QT_TRANSLATE_NOOP("App::Property","The width of this pipe, if not based on a profile"), locked=True)
             obj.setPropertyStatus("Width", "Hidden")
         if not "Height" in pl:
-            obj.addProperty("App::PropertyLength", "Height",        "Pipe", QT_TRANSLATE_NOOP("App::Property","The height of this pipe, if not based on a profile"))
+            obj.addProperty("App::PropertyLength", "Height",        "Pipe", QT_TRANSLATE_NOOP("App::Property","The height of this pipe, if not based on a profile"), locked=True)
             obj.setPropertyStatus("Height", "Hidden")
         if not "Length" in pl:
-            obj.addProperty("App::PropertyLength", "Length",       "Pipe", QT_TRANSLATE_NOOP("App::Property","The length of this pipe, if not based on an edge"))
+            obj.addProperty("App::PropertyLength", "Length",       "Pipe", QT_TRANSLATE_NOOP("App::Property","The length of this pipe, if not based on an edge"), locked=True)
         if not "Profile" in pl:
-            obj.addProperty("App::PropertyLink",   "Profile",      "Pipe", QT_TRANSLATE_NOOP("App::Property","An optional closed profile to base this pipe on"))
+            obj.addProperty("App::PropertyLink",   "Profile",      "Pipe", QT_TRANSLATE_NOOP("App::Property","An optional closed profile to base this pipe on"), locked=True)
         if not "OffsetStart" in pl:
-            obj.addProperty("App::PropertyLength", "OffsetStart",  "Pipe", QT_TRANSLATE_NOOP("App::Property","Offset from the start point"))
+            obj.addProperty("App::PropertyLength", "OffsetStart",  "Pipe", QT_TRANSLATE_NOOP("App::Property","Offset from the start point"), locked=True)
         if not "OffsetEnd" in pl:
-            obj.addProperty("App::PropertyLength", "OffsetEnd",    "Pipe", QT_TRANSLATE_NOOP("App::Property","Offset from the end point"))
+            obj.addProperty("App::PropertyLength", "OffsetEnd",    "Pipe", QT_TRANSLATE_NOOP("App::Property","Offset from the end point"), locked=True)
         if not "WallThickness" in pl:
-            obj.addProperty("App::PropertyLength", "WallThickness","Pipe", QT_TRANSLATE_NOOP("App::Property","The wall thickness of this pipe, if not based on a profile"))
+            obj.addProperty("App::PropertyLength", "WallThickness","Pipe", QT_TRANSLATE_NOOP("App::Property","The wall thickness of this pipe, if not based on a profile"), locked=True)
         if not "ProfileType" in pl:
-            obj.addProperty("App::PropertyEnumeration", "ProfileType", "Pipe", QT_TRANSLATE_NOOP("App::Property","If not based on a profile, this controls the profile of this pipe"))
+            obj.addProperty("App::PropertyEnumeration", "ProfileType", "Pipe", QT_TRANSLATE_NOOP("App::Property","If not based on a profile, this controls the profile of this pipe"), locked=True)
             obj.ProfileType = ["Circle", "Square", "Rectangle"]
         self.Type = "Pipe"
 
@@ -119,8 +121,6 @@ class _ArchPipe(ArchComponent.Component):
         import Part
         import DraftGeomUtils
         if self.clone(obj):
-            return
-        if not self.ensureBase(obj):
             return
         pl = obj.Placement
         w = self.getWire(obj)
@@ -285,11 +285,11 @@ class _ArchPipeConnector(ArchComponent.Component):
 
         pl = obj.PropertiesList
         if not "Radius" in pl:
-            obj.addProperty("App::PropertyLength",      "Radius",        "PipeConnector", QT_TRANSLATE_NOOP("App::Property","The curvature radius of this connector"))
+            obj.addProperty("App::PropertyLength",      "Radius",        "PipeConnector", QT_TRANSLATE_NOOP("App::Property","The curvature radius of this connector"), locked=True)
         if not "Pipes" in pl:
-            obj.addProperty("App::PropertyLinkList",    "Pipes",         "PipeConnector", QT_TRANSLATE_NOOP("App::Property","The pipes linked by this connector"))
+            obj.addProperty("App::PropertyLinkList",    "Pipes",         "PipeConnector", QT_TRANSLATE_NOOP("App::Property","The pipes linked by this connector"), locked=True)
         if not "ConnectorType" in pl:
-            obj.addProperty("App::PropertyEnumeration", "ConnectorType", "PipeConnector", QT_TRANSLATE_NOOP("App::Property","The type of this connector"))
+            obj.addProperty("App::PropertyEnumeration", "ConnectorType", "PipeConnector", QT_TRANSLATE_NOOP("App::Property","The type of this connector"), locked=True)
             obj.ConnectorType = ["Corner","Tee"]
             obj.setEditorMode("ConnectorType",1)
         self.Type = "PipeConnector"
@@ -451,5 +451,3 @@ class _ArchPipeConnector(ArchComponent.Component):
             if pipe.OffsetEnd != offset:
                 pipe.OffsetEnd = offset
                 pipe.Proxy.execute(pipe)
-
-

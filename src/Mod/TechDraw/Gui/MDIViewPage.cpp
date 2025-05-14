@@ -37,7 +37,7 @@
 #include <QPrintDialog>
 #include <QPrintPreviewDialog>
 #include <QPrinter>
-#include <boost_signals2.hpp>
+#include <boost/signals2.hpp>
 #include <cmath>
 #endif
 
@@ -62,6 +62,7 @@
 #include <Mod/TechDraw/App/Preferences.h>
 
 #include "MDIViewPage.h"
+#include "QGIDatumLabel.h"
 #include "QGIEdge.h"
 #include "QGIFace.h"
 #include "QGIVertex.h"
@@ -108,7 +109,7 @@ MDIViewPage::MDIViewPage(ViewProviderPage* pageVp, Gui::Document* doc, QWidget* 
     isContextualMenuEnabled = true;
 
     QString tabText = QString::fromUtf8(pageVp->getDrawPage()->getNameInDocument());
-    tabText += QString::fromUtf8("[*]");
+    tabText += QStringLiteral("[*]");
     setWindowTitle(tabText);
 
     //NOLINTBEGIN
@@ -142,7 +143,7 @@ void MDIViewPage::setDocumentName(const std::string& name) { m_documentName = na
 
 void MDIViewPage::closeEvent(QCloseEvent* event)
 {
-    //    Base::Console().Message("MDIVP::closeEvent()\n");
+    //    Base::Console().message("MDIVP::closeEvent()\n");
     MDIView::closeEvent(event);
     if (!event->isAccepted()) {
         return;
@@ -283,7 +284,7 @@ void MDIViewPage::zoomOut()
 void MDIViewPage::setTabText(std::string tabText)
 {
     if (!isPassive() && !tabText.empty()) {
-        QString cap = QString::fromLatin1("%1 [*]").arg(QString::fromUtf8(tabText.c_str()));
+        QString cap = QStringLiteral("%1 [*]").arg(QString::fromUtf8(tabText.c_str()));
         setWindowTitle(cap);
     }
 }
@@ -431,7 +432,7 @@ PyObject* MDIViewPage::getPyObject()
 
 void MDIViewPage::contextMenuEvent(QContextMenuEvent* event)
 {
-    //    Base::Console().Message("MDIVP::contextMenuEvent() - reason: %d\n", event->reason());
+    //    Base::Console().message("MDIVP::contextMenuEvent() - reason: %d\n", event->reason());
     if (isContextualMenuEnabled) {
         QMenu menu;
         menu.addAction(m_toggleFrameAction);
@@ -1075,7 +1076,7 @@ bool MDIViewPage::compareSelections(std::vector<Gui::SelectionObject> treeSel,
 
 void MDIViewPage::showStatusMsg(const char* string1, const char* string2, const char* string3) const
 {
-    QString msg = QString::fromLatin1("%1 %2.%3.%4 ")
+    QString msg = QStringLiteral("%1 %2.%3.%4 ")
                       .arg(tr("Selected:"), QString::fromUtf8(string1), QString::fromUtf8(string2),
                            QString::fromUtf8(string3));
     if (Gui::getMainWindow()) {

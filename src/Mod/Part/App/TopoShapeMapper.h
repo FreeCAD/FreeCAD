@@ -21,6 +21,7 @@
  *                                                                          *
  ***************************************************************************/
 
+#include <limits>
 #include <map>
 #include <unordered_set>
 #include <vector>
@@ -46,7 +47,7 @@ struct ShapeHasher
 #if OCC_VERSION_HEX >= 0x070800
         return std::hash<TopoDS_Shape> {}(s.getShape());
 #else
-        return s.getShape().HashCode(INT_MAX);
+        return s.getShape().HashCode(std::numeric_limits<int>::max());
 #endif
     }
     inline size_t operator()(const TopoDS_Shape& s) const
@@ -54,7 +55,7 @@ struct ShapeHasher
 #if OCC_VERSION_HEX >= 0x070800
         return std::hash<TopoDS_Shape> {}(s);
 #else
-        return s.HashCode(INT_MAX);
+        return s.HashCode(std::numeric_limits<int>::max());
 #endif
     }
     inline bool operator()(const TopoShape& a, const TopoShape& b) const
@@ -78,8 +79,8 @@ struct ShapeHasher
         size_t res = std::hash<TopoDS_Shape> {}(s.first.getShape());
         hash_combine(res, std::hash<TopoDS_Shape> {}(s.second.getShape()));
 #else
-        size_t res = s.first.getShape().HashCode(INT_MAX);
-        hash_combine(res, s.second.getShape().HashCode(INT_MAX));
+        size_t res = s.first.getShape().HashCode(std::numeric_limits<int>::max());
+        hash_combine(res, s.second.getShape().HashCode(std::numeric_limits<int>::max()));
 #endif
         return res;
     }
@@ -89,8 +90,8 @@ struct ShapeHasher
         size_t res = std::hash<TopoDS_Shape> {}(s.first);
         hash_combine(res, std::hash<TopoDS_Shape> {}(s.second));
 #else
-        size_t res = s.first.HashCode(INT_MAX);
-        hash_combine(res, s.second.HashCode(INT_MAX));
+        size_t res = s.first.HashCode(std::numeric_limits<int>::max());
+        hash_combine(res, s.second.HashCode(std::numeric_limits<int>::max()));
 #endif
         return res;
     }

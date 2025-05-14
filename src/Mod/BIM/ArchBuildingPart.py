@@ -1,38 +1,54 @@
-# -*- coding: utf8 -*-
-#***************************************************************************
-#*   Copyright (c) 2018 Yorik van Havre <yorik@uncreated.net>              *
-#*                                                                         *
-#*   This program is free software; you can redistribute it and/or modify  *
-#*   it under the terms of the GNU Lesser General Public License (LGPL)    *
-#*   as published by the Free Software Foundation; either version 2 of     *
-#*   the License, or (at your option) any later version.                   *
-#*   for detail see the LICENCE text file.                                 *
-#*                                                                         *
-#*   This program is distributed in the hope that it will be useful,       *
-#*   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-#*   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-#*   GNU Library General Public License for more details.                  *
-#*                                                                         *
-#*   You should have received a copy of the GNU Library General Public     *
-#*   License along with this program; if not, write to the Free Software   *
-#*   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
-#*   USA                                                                   *
-#*                                                                         *
-#***************************************************************************
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
+# ***************************************************************************
+# *                                                                         *
+# *   Copyright (c) 2018 Yorik van Havre <yorik@uncreated.net>              *
+# *                                                                         *
+# *   This file is part of FreeCAD.                                         *
+# *                                                                         *
+# *   FreeCAD is free software: you can redistribute it and/or modify it    *
+# *   under the terms of the GNU Lesser General Public License as           *
+# *   published by the Free Software Foundation, either version 2.1 of the  *
+# *   License, or (at your option) any later version.                       *
+# *                                                                         *
+# *   FreeCAD is distributed in the hope that it will be useful, but        *
+# *   WITHOUT ANY WARRANTY; without even the implied warranty of            *
+# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU      *
+# *   Lesser General Public License for more details.                       *
+# *                                                                         *
+# *   You should have received a copy of the GNU Lesser General Public      *
+# *   License along with FreeCAD. If not, see                               *
+# *   <https://www.gnu.org/licenses/>.                                      *
+# *                                                                         *
+# ***************************************************************************
+
+__title__  = "FreeCAD Arch BuildingPart"
+__author__ = "Yorik van Havre"
+__url__    = "https://www.freecad.org"
+
+## @package ArchBuildingPart
+#  \ingroup ARCH
+#  \brief The BuildingPart object and tools
+#
+#  This module provides tools to build BuildingPart objects.
+#  BuildingParts are used to group different Arch objects
+
+import os
+import tempfile
 
 import FreeCAD
-import Draft
+import Arch
 import ArchCommands
-import DraftVecUtils
 import ArchIFC
-import tempfile
-import os
+import Draft
+import DraftVecUtils
+
 from draftutils import params
 
 if FreeCAD.GuiUp:
+    from PySide.QtCore import QT_TRANSLATE_NOOP
     import FreeCADGui
     from draftutils.translate import translate
-    from PySide.QtCore import QT_TRANSLATE_NOOP
     import draftutils.units as units
 else:
     # \cond
@@ -42,17 +58,6 @@ else:
         return txt
     # \endcond
 unicode = str
-
-## @package ArchBuildingPart
-#  \ingroup ARCH
-#  \brief The BuildingPart object and tools
-#
-#  This module provides tools to build BuildingPart objects.
-#  BuildingParts are used to group different Arch objects
-
-__title__  = "FreeCAD Arch BuildingPart"
-__author__ = "Yorik van Havre"
-__url__    = "https://www.freecad.org"
 
 
 BuildingTypes = ['Undefined',
@@ -214,28 +219,28 @@ class BuildingPart(ArchIFC.IfcProduct):
 
         pl = obj.PropertiesList
         if not "Height" in pl:
-            obj.addProperty("App::PropertyLength","Height","BuildingPart",QT_TRANSLATE_NOOP("App::Property","The height of this object"))
+            obj.addProperty("App::PropertyLength","Height","BuildingPart",QT_TRANSLATE_NOOP("App::Property","The height of this object"), locked=True)
         if not "HeightPropagate" in pl:
-            obj.addProperty("App::PropertyBool","HeightPropagate","Children",QT_TRANSLATE_NOOP("App::Property","If true, the height value propagates to contained objects if the height of those objects is set to 0"))
+            obj.addProperty("App::PropertyBool","HeightPropagate","Children",QT_TRANSLATE_NOOP("App::Property","If true, the height value propagates to contained objects if the height of those objects is set to 0"), locked=True)
             obj.HeightPropagate = True
         if not "LevelOffset" in pl:
-            obj.addProperty("App::PropertyDistance","LevelOffset","BuildingPart",QT_TRANSLATE_NOOP("App::Property","The level of the (0,0,0) point of this level"))
+            obj.addProperty("App::PropertyDistance","LevelOffset","BuildingPart",QT_TRANSLATE_NOOP("App::Property","The level of the (0,0,0) point of this level"), locked=True)
         if not "Area" in pl:
-            obj.addProperty("App::PropertyArea","Area", "BuildingPart",QT_TRANSLATE_NOOP("App::Property","The computed floor area of this floor"))
+            obj.addProperty("App::PropertyArea","Area", "BuildingPart",QT_TRANSLATE_NOOP("App::Property","The computed floor area of this floor"), locked=True)
         if not "Description" in pl:
-            obj.addProperty("App::PropertyString","Description","Component",QT_TRANSLATE_NOOP("App::Property","An optional description for this component"))
+            obj.addProperty("App::PropertyString","Description","Component",QT_TRANSLATE_NOOP("App::Property","An optional description for this component"), locked=True)
         if not "Tag" in pl:
-            obj.addProperty("App::PropertyString","Tag","Component",QT_TRANSLATE_NOOP("App::Property","An optional tag for this component"))
+            obj.addProperty("App::PropertyString","Tag","Component",QT_TRANSLATE_NOOP("App::Property","An optional tag for this component"), locked=True)
         if not "Shape" in pl:
-            obj.addProperty("Part::PropertyPartShape","Shape","BuildingPart",QT_TRANSLATE_NOOP("App::Property","The shape of this object"))
+            obj.addProperty("Part::PropertyPartShape","Shape","BuildingPart",QT_TRANSLATE_NOOP("App::Property","The shape of this object"), locked=True)
         if not "SavedInventor" in pl:
-            obj.addProperty("App::PropertyFileIncluded","SavedInventor","BuildingPart",QT_TRANSLATE_NOOP("App::Property","This property stores an OpenInventor representation for this object"))
+            obj.addProperty("App::PropertyFileIncluded","SavedInventor","BuildingPart",QT_TRANSLATE_NOOP("App::Property","This property stores an OpenInventor representation for this object"), locked=True)
             obj.setEditorMode("SavedInventor",2)
         if not "OnlySolids" in pl:
-            obj.addProperty("App::PropertyBool","OnlySolids","BuildingPart",QT_TRANSLATE_NOOP("App::Property","If true, only solids will be collected by this object when referenced from other files"))
+            obj.addProperty("App::PropertyBool","OnlySolids","BuildingPart",QT_TRANSLATE_NOOP("App::Property","If true, only solids will be collected by this object when referenced from other files"), locked=True)
             obj.OnlySolids = True
         if not "MaterialsTable" in pl:
-            obj.addProperty("App::PropertyMap","MaterialsTable","BuildingPart",QT_TRANSLATE_NOOP("App::Property","A MaterialName:SolidIndexesList map that relates material names with solid indexes to be used when referencing this object from other files"))
+            obj.addProperty("App::PropertyMap","MaterialsTable","BuildingPart",QT_TRANSLATE_NOOP("App::Property","A MaterialName:SolidIndexesList map that relates material names with solid indexes to be used when referencing this object from other files"), locked=True)
 
         self.Type = "BuildingPart"
 
@@ -427,96 +432,99 @@ class ViewProviderBuildingPart:
 
     def __init__(self,vobj):
 
-        vobj.addExtension("Gui::ViewProviderGroupExtensionPython")
-        vobj.Proxy = self
-        self.setProperties(vobj)
-        vobj.ShapeColor = ArchCommands.getDefaultColor("Helpers")
+        if vobj:
+            vobj.addExtension("Gui::ViewProviderGroupExtensionPython")
+            vobj.Proxy = self
+            self.setProperties(vobj)
+            vobj.ShapeColor = ArchCommands.getDefaultColor("Helpers")
+            self.Object = vobj.Object
 
     def setProperties(self,vobj):
 
         pl = vobj.PropertiesList
         if not "LineWidth" in pl:
-            vobj.addProperty("App::PropertyFloat","LineWidth","BuildingPart",QT_TRANSLATE_NOOP("App::Property","The line width of this object"))
+            vobj.addProperty("App::PropertyFloat","LineWidth","BuildingPart",QT_TRANSLATE_NOOP("App::Property","The line width of this object"), locked=True)
             vobj.LineWidth = 1
         if not "OverrideUnit" in pl:
-            vobj.addProperty("App::PropertyString","OverrideUnit","BuildingPart",QT_TRANSLATE_NOOP("App::Property","An optional unit to express levels"))
+            vobj.addProperty("App::PropertyString","OverrideUnit","BuildingPart",QT_TRANSLATE_NOOP("App::Property","An optional unit to express levels"), locked=True)
         if not "DisplayOffset" in pl:
-            vobj.addProperty("App::PropertyPlacement","DisplayOffset","BuildingPart",QT_TRANSLATE_NOOP("App::Property","A transformation to apply to the level mark"))
+            vobj.addProperty("App::PropertyPlacement","DisplayOffset","BuildingPart",QT_TRANSLATE_NOOP("App::Property","A transformation to apply to the level mark"), locked=True)
             vobj.DisplayOffset = FreeCAD.Placement(FreeCAD.Vector(0,0,0),FreeCAD.Rotation(FreeCAD.Vector(1,0,0),90))
         if not "ShowLevel" in pl:
-            vobj.addProperty("App::PropertyBool","ShowLevel","BuildingPart",QT_TRANSLATE_NOOP("App::Property","If true, show the level"))
+            vobj.addProperty("App::PropertyBool","ShowLevel","BuildingPart",QT_TRANSLATE_NOOP("App::Property","If true, show the level"), locked=True)
             vobj.ShowLevel = True
         if not "ShowUnit" in pl:
-            vobj.addProperty("App::PropertyBool","ShowUnit","BuildingPart",QT_TRANSLATE_NOOP("App::Property","If true, show the unit on the level tag"))
+            vobj.addProperty("App::PropertyBool","ShowUnit","BuildingPart",QT_TRANSLATE_NOOP("App::Property","If true, show the unit on the level tag"), locked=True)
         if not "OriginOffset" in pl:
-            vobj.addProperty("App::PropertyBool","OriginOffset","BuildingPart",QT_TRANSLATE_NOOP("App::Property","If true, display offset will affect the origin mark too"))
+            vobj.addProperty("App::PropertyBool","OriginOffset","BuildingPart",QT_TRANSLATE_NOOP("App::Property","If true, display offset will affect the origin mark too"), locked=True)
         if not "ShowLabel" in pl:
-            vobj.addProperty("App::PropertyBool","ShowLabel","BuildingPart",QT_TRANSLATE_NOOP("App::Property","If true, the object's label is displayed"))
+            vobj.addProperty("App::PropertyBool","ShowLabel","BuildingPart",QT_TRANSLATE_NOOP("App::Property","If true, the object's label is displayed"), locked=True)
             vobj.ShowLabel = True
         if not "FontName" in pl:
-            vobj.addProperty("App::PropertyFont","FontName","BuildingPart",QT_TRANSLATE_NOOP("App::Property","The font to be used for texts"))
+            vobj.addProperty("App::PropertyFont","FontName","BuildingPart",QT_TRANSLATE_NOOP("App::Property","The font to be used for texts"), locked=True)
             vobj.FontName = params.get_param("textfont")
         if not "FontSize" in pl:
-            vobj.addProperty("App::PropertyLength","FontSize","BuildingPart",QT_TRANSLATE_NOOP("App::Property","The font size of texts"))
+            vobj.addProperty("App::PropertyLength","FontSize","BuildingPart",QT_TRANSLATE_NOOP("App::Property","The font size of texts"), locked=True)
             vobj.FontSize = params.get_param("textheight") * params.get_param("DefaultAnnoScaleMultiplier")
         if not "DiffuseColor" in pl:
-            vobj.addProperty("App::PropertyColorList","DiffuseColor","BuildingPart",QT_TRANSLATE_NOOP("App::Property","The individual face colors"))
+            vobj.addProperty("App::PropertyColorList","DiffuseColor","BuildingPart",QT_TRANSLATE_NOOP("App::Property","The individual face colors"), locked=True)
 
         # Interaction properties
         if not "SetWorkingPlane" in pl:
-            vobj.addProperty("App::PropertyBool","SetWorkingPlane","Interaction",QT_TRANSLATE_NOOP("App::Property","If true, when activated, the working plane will automatically adapt to this level"))
+            vobj.addProperty("App::PropertyBool","SetWorkingPlane","Interaction",QT_TRANSLATE_NOOP("App::Property","If true, when activated, the working plane will automatically adapt to this level"), locked=True)
             vobj.SetWorkingPlane = True
         if not "AutoWorkingPlane" in pl:
-            vobj.addProperty("App::PropertyBool","AutoWorkingPlane","Interaction",QT_TRANSLATE_NOOP("App::Property","If set to True, the working plane will be kept on Auto mode"))
+            vobj.addProperty("App::PropertyBool","AutoWorkingPlane","Interaction",QT_TRANSLATE_NOOP("App::Property","If set to True, the working plane will be kept on Auto mode"), locked=True)
         if not "ViewData" in pl:
-            vobj.addProperty("App::PropertyFloatList","ViewData","Interaction",QT_TRANSLATE_NOOP("App::Property","Camera position data associated with this object"))
+            vobj.addProperty("App::PropertyFloatList","ViewData","Interaction",QT_TRANSLATE_NOOP("App::Property","Camera position data associated with this object"), locked=True)
             vobj.setEditorMode("ViewData",2)
         if not "RestoreView" in pl:
-            vobj.addProperty("App::PropertyBool","RestoreView","Interaction",QT_TRANSLATE_NOOP("App::Property","If set, the view stored in this object will be restored on double-click"))
+            vobj.addProperty("App::PropertyBool","RestoreView","Interaction",QT_TRANSLATE_NOOP("App::Property","If set, the view stored in this object will be restored on double-click"), locked=True)
         if not "DoubleClickActivates" in pl:
-            vobj.addProperty("App::PropertyBool","DoubleClickActivates","Interaction",QT_TRANSLATE_NOOP("App::Property","If True, double-clicking this object in the tree activates it"))
+            vobj.addProperty("App::PropertyBool","DoubleClickActivates","Interaction",QT_TRANSLATE_NOOP("App::Property","If True, double-clicking this object in the tree activates it"), locked=True)
+            vobj.DoubleClickActivates = True
 
         # inventor saving
         if not "SaveInventor" in pl:
-            vobj.addProperty("App::PropertyBool","SaveInventor","Interaction",QT_TRANSLATE_NOOP("App::Property","If this is enabled, the OpenInventor representation of this object will be saved in the FreeCAD file, allowing to reference it in other files in lightweight mode."))
+            vobj.addProperty("App::PropertyBool","SaveInventor","Interaction",QT_TRANSLATE_NOOP("App::Property","If this is enabled, the OpenInventor representation of this object will be saved in the FreeCAD file, allowing to reference it in other files in lightweight mode."), locked=True)
         if not "SavedInventor" in pl:
-            vobj.addProperty("App::PropertyFileIncluded","SavedInventor","Interaction",QT_TRANSLATE_NOOP("App::Property","A slot to save the OpenInventor representation of this object, if enabled"))
+            vobj.addProperty("App::PropertyFileIncluded","SavedInventor","Interaction",QT_TRANSLATE_NOOP("App::Property","A slot to save the OpenInventor representation of this object, if enabled"), locked=True)
             vobj.setEditorMode("SavedInventor",2)
 
         # children properties
         if not "ChildrenOverride" in pl:
-            vobj.addProperty("App::PropertyBool","ChildrenOverride","Children",QT_TRANSLATE_NOOP("App::Property","If true, show the objects contained in this Building Part will adopt these line, color and transparency settings"))
+            vobj.addProperty("App::PropertyBool","ChildrenOverride","Children",QT_TRANSLATE_NOOP("App::Property","If true, show the objects contained in this Building Part will adopt these line, color and transparency settings"), locked=True)
         if not "ChildrenLineWidth" in pl:
-            vobj.addProperty("App::PropertyFloat","ChildrenLineWidth","Children",QT_TRANSLATE_NOOP("App::Property","The line width of child objects"))
+            vobj.addProperty("App::PropertyFloat","ChildrenLineWidth","Children",QT_TRANSLATE_NOOP("App::Property","The line width of child objects"), locked=True)
             vobj.ChildrenLineWidth = params.get_param_view("DefaultShapeLineWidth")
         if not "ChildrenLineColor" in pl:
-            vobj.addProperty("App::PropertyColor","ChildrenLineColor","Children",QT_TRANSLATE_NOOP("App::Property","The line color of child objects"))
+            vobj.addProperty("App::PropertyColor","ChildrenLineColor","Children",QT_TRANSLATE_NOOP("App::Property","The line color of child objects"), locked=True)
             vobj.ChildrenLineColor = params.get_param_view("DefaultShapeLineColor") & 0xFFFFFF00
         if not "ChildrenShapeColor" in pl:
-            vobj.addProperty("App::PropertyMaterial","ChildrenShapeColor","Children",QT_TRANSLATE_NOOP("App::Property","The shape appearance of child objects"))
+            vobj.addProperty("App::PropertyMaterial","ChildrenShapeColor","Children",QT_TRANSLATE_NOOP("App::Property","The shape appearance of child objects"), locked=True)
             vobj.ChildrenShapeColor = params.get_param_view("DefaultShapeColor") & 0xFFFFFF00
         if not "ChildrenTransparency" in pl:
-            vobj.addProperty("App::PropertyPercent","ChildrenTransparency","Children",QT_TRANSLATE_NOOP("App::Property","The transparency of child objects"))
+            vobj.addProperty("App::PropertyPercent","ChildrenTransparency","Children",QT_TRANSLATE_NOOP("App::Property","The transparency of child objects"), locked=True)
             vobj.ChildrenTransparency = params.get_param_view("DefaultShapeTransparency")
 
         # clip properties
         if not "CutView" in pl:
-            vobj.addProperty("App::PropertyBool","CutView","Clip",QT_TRANSLATE_NOOP("App::Property","Cut the view above this level"))
+            vobj.addProperty("App::PropertyBool","CutView","Clip",QT_TRANSLATE_NOOP("App::Property","Cut the view above this level"), locked=True)
         if not "CutMargin" in pl:
-            vobj.addProperty("App::PropertyLength","CutMargin","Clip",QT_TRANSLATE_NOOP("App::Property","The distance between the level plane and the cut line"))
+            vobj.addProperty("App::PropertyLength","CutMargin","Clip",QT_TRANSLATE_NOOP("App::Property","The distance between the level plane and the cut line"), locked=True)
             vobj.CutMargin = 1600
         if not "AutoCutView" in pl:
-            vobj.addProperty("App::PropertyBool","AutoCutView","Clip",QT_TRANSLATE_NOOP("App::Property","Turn cutting on when activating this level"))
+            vobj.addProperty("App::PropertyBool","AutoCutView","Clip",QT_TRANSLATE_NOOP("App::Property","Turn cutting on when activating this level"), locked=True)
 
         # autogroup properties
         if not "AutogroupSize" in pl:
-            vobj.addProperty("App::PropertyIntegerList","AutogroupSize","AutoGroup",QT_TRANSLATE_NOOP("App::Property","The capture box for newly created objects expressed as [XMin,YMin,ZMin,XMax,YMax,ZMax]"))
+            vobj.addProperty("App::PropertyIntegerList","AutogroupSize","AutoGroup",QT_TRANSLATE_NOOP("App::Property","The capture box for newly created objects expressed as [XMin,YMin,ZMin,XMax,YMax,ZMax]"), locked=True)
         if not "AutogroupBox" in pl:
-            vobj.addProperty("App::PropertyBool","AutogroupBox","AutoGroup",QT_TRANSLATE_NOOP("App::Property","Turns auto group box on/off"))
+            vobj.addProperty("App::PropertyBool","AutogroupBox","AutoGroup",QT_TRANSLATE_NOOP("App::Property","Turns auto group box on/off"), locked=True)
         if not "AutogroupAutosize" in pl:
-            vobj.addProperty("App::PropertyBool","AutogroupAutosize","AutoGroup",QT_TRANSLATE_NOOP("App::Property","Automatically set size from contents"))
+            vobj.addProperty("App::PropertyBool","AutogroupAutosize","AutoGroup",QT_TRANSLATE_NOOP("App::Property","Automatically set size from contents"), locked=True)
         if not "AutogroupMargin" in pl:
-            vobj.addProperty("App::PropertyLength","AutogroupMargin","AutoGroup",QT_TRANSLATE_NOOP("App::Property","A margin to use when autosize is turned on"))
+            vobj.addProperty("App::PropertyLength","AutogroupMargin","AutoGroup",QT_TRANSLATE_NOOP("App::Property","A margin to use when autosize is turned on"), locked=True)
 
     def onDocumentRestored(self,vobj):
 
@@ -532,6 +540,9 @@ class ViewProviderBuildingPart:
                 return ":/icons/Arch_Building_Tree.svg"
             elif self.Object.IfcType == "Annotation":
                 return ":/icons/BIM_ArchView.svg"
+            elif hasattr(self.Object,"IfcClass"):
+                from nativeifc import ifc_viewproviders
+                return ifc_viewproviders.get_icon(self)
         return ":/icons/Arch_BuildingPart_Tree.svg"
 
     def attach(self,vobj):
@@ -661,7 +672,10 @@ class ViewProviderBuildingPart:
                         self.lco.point.setValues([[-fs,0,0],[fs,0,0],[0,-fs,0],[0,fs,0],[0,0,-fs],[0,0,fs]])
         elif prop in ["OverrideUnit","ShowUnit","ShowLevel","ShowLabel"]:
             if hasattr(vobj,"OverrideUnit") and hasattr(vobj,"ShowUnit") and hasattr(vobj,"ShowLevel") and hasattr(vobj,"ShowLabel") and hasattr(self,"txt"):
-                z = vobj.Object.Placement.Base.z + vobj.Object.LevelOffset.Value
+                offset = getattr(vobj.Object, "LevelOffset", 0)
+                if hasattr(offset, "Value"):
+                    offset = offset.Value
+                z = vobj.Object.Placement.Base.z + offset
                 q = FreeCAD.Units.Quantity(z,FreeCAD.Units.Length)
                 txt = ""
                 if vobj.ShowLabel:
@@ -729,7 +743,7 @@ class ViewProviderBuildingPart:
                     self.clip.plane.setValue(plane)
                     sg.insertChild(self.clip,0)
                 else:
-                    if self.clip:
+                    if getattr(self,"clip",None):
                         sg.removeChild(self.clip)
                         self.clip = None
                     for o in Draft.get_group_contents(vobj.Object.Group,
@@ -925,7 +939,7 @@ class ViewProviderBuildingPart:
                     no = Draft.clone(o)
                     Draft.move(no,FreeCAD.Vector(0,0,height))
                     ng.append(no)
-            nobj = makeBuildingPart()
+            nobj = Arch.makeBuildingPart()
             Draft.formatObject(nobj,self.Object)
             nobj.Placement = self.Object.Placement
             nobj.Placement.move(FreeCAD.Vector(0,0,height))

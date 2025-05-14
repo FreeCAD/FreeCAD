@@ -247,7 +247,7 @@ PyObject* PropertyContainerPy::setPropertyStatus(PyObject* args)
         return nullptr;
     }
 
-    auto linkProp = Base::freecad_dynamic_cast<App::PropertyLinkBase>(prop);
+    auto linkProp = freecad_cast<App::PropertyLinkBase*>(prop);
     std::bitset<32> status(prop->getStatus());
 
     std::vector<Py::Object> items;
@@ -284,7 +284,7 @@ PyObject* PropertyContainerPy::setPropertyStatus(PyObject* args)
             status.set(it->second, value);
         }
         else if (item.isNumeric()) {
-            int v = Py::Int(item);
+            int v = Py::Long(item);
             if (v < 0) {
                 value = false;
                 v = -v;
@@ -326,7 +326,7 @@ PyObject* PropertyContainerPy::getPropertyStatus(PyObject* args)
             return nullptr;
         }
 
-        auto linkProp = Base::freecad_dynamic_cast<App::PropertyLinkBase>(prop);
+        auto linkProp = freecad_cast<App::PropertyLinkBase*>(prop);
         if (linkProp && linkProp->testFlag(App::PropertyLinkBase::LinkAllowPartial)) {
             ret.append(Py::String("AllowPartial"));
         }
@@ -345,7 +345,7 @@ PyObject* PropertyContainerPy::getPropertyStatus(PyObject* args)
                 }
             }
             if (!found) {
-                ret.append(Py::Int(static_cast<long>(i)));
+                ret.append(Py::Long(static_cast<long>(i)));
             }
         }
     }
@@ -482,7 +482,7 @@ PyObject* PropertyContainerPy::getEnumerationsOfProperty(PyObject* args)
         return nullptr;
     }
 
-    PropertyEnumeration* enumProp = dynamic_cast<PropertyEnumeration*>(prop);
+    PropertyEnumeration* enumProp = freecad_cast<PropertyEnumeration*>(prop);
     if (!enumProp) {
         Py_Return;
     }
@@ -510,7 +510,7 @@ Py::List PropertyContainerPy::getPropertiesList() const
 }
 
 
-PyObject* PropertyContainerPy::dumpPropertyContent(PyObject* args, PyObject* kwds)
+PyObject* PropertyContainerPy::dumpPropertyContent(PyObject* args, PyObject* kwds) const
 {
     int compression = 3;
     const char* property {};

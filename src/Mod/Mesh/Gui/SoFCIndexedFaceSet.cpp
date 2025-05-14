@@ -30,7 +30,7 @@
 
 #ifndef _PreComp_
 #include <algorithm>
-#include <climits>
+#include <limits>
 #ifdef FC_OS_MACOSX
 #include <OpenGL/gl.h>
 #include <OpenGL/glext.h>
@@ -411,10 +411,9 @@ bool MeshRenderer::matchMaterial(SoState* state) const
     return p->pcolors == pcolors;
 }
 
-bool MeshRenderer::shouldRenderDirectly(bool direct)
+bool MeshRenderer::shouldRenderDirectly([[maybe_unused]] bool direct)
 {
 #ifdef RENDER_GL_VAO
-    Q_UNUSED(direct);
     return false;
 #else
     return direct;
@@ -460,7 +459,7 @@ void SoFCIndexedFaceSet::initClass()
 }
 
 SoFCIndexedFaceSet::SoFCIndexedFaceSet()
-    : renderTriangleLimit(UINT_MAX)
+    : renderTriangleLimit(std::numeric_limits<unsigned>::max())
 {
     SO_NODE_CONSTRUCTOR(SoFCIndexedFaceSet);
     SO_NODE_ADD_FIELD(updateGLArray, (false));
@@ -754,7 +753,7 @@ void SoFCIndexedFaceSet::generateGLArrays(SoGLRenderAction* action)
         numcolors = gl->getNumDiffuse();
         transp = gl->getTransparencyPointer();
         numtransp = gl->getNumTransparencies();
-        Q_UNUSED(numtransp);
+        (void)numtransp;
     }
 
     std::vector<float> face_vertices;

@@ -51,7 +51,7 @@ QGIEdge::QGIEdge(int index) :
     setFlag(QGraphicsItem::ItemIsFocusable, true);      // to get key press events
     setFlag(QGraphicsItem::ItemIsSelectable, true);
 
-    m_width = 1.0;
+    setWidth(1.0);
     setCosmetic(isCosmetic);
     setFill(Qt::NoBrush);
 }
@@ -60,7 +60,6 @@ QGIEdge::QGIEdge(int index) :
 // not FreeCAD cosmetic lines
 void QGIEdge::setCosmetic(bool state)
 {
-//    Base::Console().Message("QGIE::setCosmetic(%d)\n", state);
     isCosmetic = state;
     if (state) {
         setWidth(0.0);
@@ -69,37 +68,22 @@ void QGIEdge::setCosmetic(bool state)
 
 void QGIEdge::setHiddenEdge(bool b) {
     isHiddenEdge = b;
-    if (b) {
-        m_styleCurrent = getHiddenStyle();
-    } else {
-        m_styleCurrent = Qt::SolidLine;
-    }
 }
 
 void QGIEdge::setPrettyNormal() {
-//    Base::Console().Message("QGIE::setPrettyNormal()\n");
     if (isHiddenEdge) {
-        m_colCurrent = getHiddenColor();
-    } else {
-        m_colCurrent = getNormalColor();
+        m_pen.setColor(getHiddenColor());
+        return;
     }
-    //should call QGIPP::setPrettyNormal()?
+    QGIPrimPath::setPrettyNormal();
 }
 
 QColor QGIEdge::getHiddenColor()
 {
-    App::Color fcColor = App::Color((uint32_t) Preferences::getPreferenceGroup("Colors")->GetUnsigned("HiddenColor", 0x000000FF));
+    Base::Color fcColor = Base::Color((uint32_t) Preferences::getPreferenceGroup("Colors")->GetUnsigned("HiddenColor", 0x000000FF));
     return PreferencesGui::getAccessibleQColor(fcColor.asValue<QColor>());
 }
 
-Qt::PenStyle QGIEdge::getHiddenStyle()
-{
-    //Qt::PenStyle - NoPen, Solid, Dashed, ...
-    //Preferences::General - Solid, Dashed
-    // Dashed lines should use ISO Line #2 instead of Qt::DashedLine
-    Qt::PenStyle hidStyle = static_cast<Qt::PenStyle> (Preferences::getPreferenceGroup("General")->GetInt("HiddenLine", 0) + 1);
-    return hidStyle;
-}
 
  double QGIEdge::getEdgeFuzz() const
 {
@@ -124,22 +108,17 @@ QPainterPath QGIEdge::shape() const
 void QGIEdge::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
 {
     Q_UNUSED(event)
-    QGIView *parent = dynamic_cast<QGIView *>(parentItem());
+    auto* parent = dynamic_cast<QGIView *>(parentItem());
     if (parent && parent->getViewObject() && parent->getViewObject()->isDerivedFrom<TechDraw::DrawViewPart>()) {
-        TechDraw::DrawViewPart *baseFeat = static_cast<TechDraw::DrawViewPart *>(parent->getViewObject());
+        auto* baseFeat = static_cast<TechDraw::DrawViewPart *>(parent->getViewObject());
         std::vector<std::string> edgeName(1, DrawUtil::makeGeomName("Edge", getProjIndex()));
 
         Gui::Control().showDialog(new TaskDlgLineDecor(baseFeat, edgeName));
     }
 }
 
-void QGIEdge::setLinePen(QPen linePen)
+void QGIEdge::setLinePen(const QPen& linePen)
 {
     m_pen = linePen;
 }
 
-void QGIEdge::setCurrentPen()
-{
-    m_pen.setWidthF(m_width);
-    m_pen.setColor(m_colCurrent);
-}

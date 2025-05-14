@@ -23,7 +23,8 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <cfloat>
+
+# include <limits>
 
 # include <Inventor/nodes/SoDepthBuffer.h>
 # include <Inventor/nodes/SoDrawStyle.h>
@@ -60,7 +61,8 @@ using namespace std;
 
 EXTENSION_PROPERTY_SOURCE(PartGui::ViewProviderGridExtension, Gui::ViewProviderExtension)
 
-App::PropertyQuantityConstraint::Constraints ViewProviderGridExtension::GridSizeRange = { 0.001,DBL_MAX,1.0 };
+App::PropertyQuantityConstraint::Constraints ViewProviderGridExtension::GridSizeRange = {
+    0.001, std::numeric_limits<double>::max(), 1.0 };
 
 namespace PartGui {
 
@@ -165,7 +167,7 @@ void GridExtensionP::getClosestGridPoint(double &x, double &y) const
     closestdim(x, computedGridValue);
     closestdim(y, computedGridValue);
 
-    //Base::Console().Log("gridvalue=%f, (x,y)=(%f,%f)", computedGridValue, x, y);
+    //Base::Console().log("gridvalue=%f, (x,y)=(%f,%f)", computedGridValue, x, y);
 }
 
 bool GridExtensionP::checkCameraZoomChange(const Gui::View3DInventorViewer* viewer)
@@ -298,7 +300,7 @@ void GridExtensionP::createGridPart(int numberSubdiv, bool subDivLines, bool div
 
     if (nlines > 2000) {
         if(!isTooManySegmentsNotified) {
-            Base::Console().Warning("The grid is too dense, so it is being disabled. Consider zooming in or changing the grid configuration\n");
+            Base::Console().warning("The grid is too dense, so it is being disabled. Consider zooming in or changing the grid configuration\n");
             isTooManySegmentsNotified = true;
         }
 
@@ -523,13 +525,13 @@ void ViewProviderGridExtension::setGridDivLineWidth(int width)
     drawGrid(false);
 }
 
-void ViewProviderGridExtension::setGridLineColor(const App::Color & color)
+void ViewProviderGridExtension::setGridLineColor(const Base::Color & color)
 {
     pImpl->GridLineColor = color.getPackedValue();
     drawGrid(false);
 }
 
-void ViewProviderGridExtension::setGridDivLineColor(const App::Color & color)
+void ViewProviderGridExtension::setGridDivLineColor(const Base::Color & color)
 {
     pImpl->GridDivLineColor = color.getPackedValue();
     drawGrid(false);

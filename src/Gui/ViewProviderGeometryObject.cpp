@@ -49,20 +49,9 @@
 #include "ViewProviderGeometryObject.h"
 #include "ViewProviderGeometryObjectPy.h"
 
+#include <Base/Tools.h>
+
 using namespace Gui;
-
-// Helper functions to consistently convert between float and long
-namespace {
-float fromPercent(long value)
-{
-    return std::roundf(value) / 100.0F;
-}
-
-long toPercent(float value)
-{
-    return std::lround(100.0 * value);
-}
-}
 
 PROPERTY_SOURCE(Gui::ViewProviderGeometryObject, Gui::ViewProviderDragger)
 
@@ -71,7 +60,8 @@ const App::PropertyIntegerConstraint::Constraints intPercent = {0, 100, 5};
 ViewProviderGeometryObject::ViewProviderGeometryObject()
 {
     App::Material mat = App::Material::getDefaultAppearance();
-    long initialTransparency = toPercent(mat.transparency);
+
+    long initialTransparency = Base::toPercent(mat.transparency);
 
     static const char* dogroup = "Display Options";
     static const char* sgroup = "Selection";
@@ -140,8 +130,8 @@ void ViewProviderGeometryObject::onChanged(const App::Property* prop)
         setSelectable(Sel);
     }
     else if (prop == &Transparency) {
-        long value = toPercent(ShapeAppearance.getTransparency());
-        float trans = fromPercent(Transparency.getValue());
+        long value = Base::toPercent(ShapeAppearance.getTransparency());
+        float trans = Base::fromPercent(Transparency.getValue());
         if (value != Transparency.getValue()) {
             ShapeAppearance.setTransparency(trans);
         }
@@ -152,7 +142,7 @@ void ViewProviderGeometryObject::onChanged(const App::Property* prop)
         if (getObject() && getObject()->testStatus(App::ObjectStatus::TouchOnColorChange)) {
             getObject()->touch(true);
         }
-        long value = toPercent(ShapeAppearance.getTransparency());
+        long value = Base::toPercent(ShapeAppearance.getTransparency());
         if (value != Transparency.getValue()) {
             Transparency.setValue(value);
         }
@@ -347,13 +337,13 @@ void ViewProviderGeometryObject::setSelectable(bool selectable)
         if (selectable) {
             if (selNode) {
                 selNode->selectionMode = SoFCSelection::SEL_ON;
-                selNode->highlightMode = SoFCSelection::AUTO;
+                selNode->preselectionMode = SoFCSelection::AUTO;
             }
         }
         else {
             if (selNode) {
                 selNode->selectionMode = SoFCSelection::SEL_OFF;
-                selNode->highlightMode = SoFCSelection::OFF;
+                selNode->preselectionMode = SoFCSelection::OFF;
                 selNode->selected = SoFCSelection::NOTSELECTED;
             }
         }

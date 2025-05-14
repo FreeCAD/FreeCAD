@@ -59,6 +59,7 @@ SET(PathPythonBaseGui_SRCS
 SET(PathPythonDressup_SRCS
     Path/Dressup/__init__.py
     Path/Dressup/Utils.py
+    Path/Dressup/Array.py
     Path/Dressup/Boundary.py
     Path/Dressup/DogboneII.py
     Path/Dressup/Tags.py
@@ -66,6 +67,7 @@ SET(PathPythonDressup_SRCS
 
 SET(PathPythonDressupGui_SRCS
     Path/Dressup/Gui/__init__.py
+    Path/Dressup/Gui/Array.py
     Path/Dressup/Gui/AxisMap.py
     Path/Dressup/Gui/Dogbone.py
     Path/Dressup/Gui/DogboneII.py
@@ -171,6 +173,7 @@ SET(PathPythonPostScripts_SRCS
     Path/Post/scripts/rrf_post.py
     Path/Post/scripts/slic3r_pre.py
     Path/Post/scripts/smoothie_post.py
+    Path/Post/scripts/snapmaker_post.py
     Path/Post/scripts/uccnc_post.py
     Path/Post/scripts/wedm_post.py
 )
@@ -315,6 +318,7 @@ SET(Tests_SRCS
     CAMTests/TestPathAdaptive.py
     CAMTests/TestPathCore.py
     CAMTests/TestPathDepthParams.py
+    CAMTests/TestPathDressupArray.py
     CAMTests/TestPathDressupDogbone.py
     CAMTests/TestPathDressupDogboneII.py
     CAMTests/TestPathDressupHoldingTags.py
@@ -353,6 +357,7 @@ SET(Tests_SRCS
     CAMTests/TestRefactoredTestPost.py
     CAMTests/TestRefactoredTestPostGCodes.py
     CAMTests/TestRefactoredTestPostMCodes.py
+    CAMTests/TestSnapmakerPost.py
     CAMTests/Tools/Bit/test-path-tool-bit-bit-00.fctb
     CAMTests/Tools/Library/test-path-tool-bit-library-00.fctl
     CAMTests/Tools/Shape/test-path-tool-bit-shape-00.fcstd

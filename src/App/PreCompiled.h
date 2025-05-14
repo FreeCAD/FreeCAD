@@ -50,7 +50,6 @@
 #include <csignal>
 #include <cstdio>
 #include <ctime>
-#include <cfloat>
 
 #ifdef FC_OS_WIN32
 #include <crtdbg.h>
@@ -74,6 +73,7 @@
 #include <exception>
 #include <functional>
 #include <iterator>
+#include <limits>
 #include <list>
 #include <map>
 #include <memory>
@@ -89,7 +89,7 @@
 
 // Boost
 #include <boost_graph_adjacency_list.hpp>
-#include <boost_signals2.hpp>
+#include <boost/signals2.hpp>
 
 #include <boost/program_options.hpp>
 #include <boost/regex.hpp>

@@ -100,7 +100,8 @@ class DraftLink(DraftObject):
             obj.addProperty("App::PropertyBool",
                             "AlwaysSyncPlacement",
                             "Draft",
-                            _tip)
+                            _tip,
+                            locked=True)
 
         if hasattr(obj, 'ShowElement'):
             # Rename 'ShowElement' property to 'ExpandArray' to avoid conflict
@@ -113,7 +114,8 @@ class DraftLink(DraftObject):
             obj.addProperty("App::PropertyBool",
                             "ExpandArray",
                             "Draft",
-                            _tip)
+                            _tip,
+                            locked=True)
 
             obj.ExpandArray = showElement
             obj.configLinkProperty(ShowElement='ExpandArray')
@@ -129,16 +131,18 @@ class DraftLink(DraftObject):
         if not hasattr(obj, 'LinkTransform'):
             obj.addProperty('App::PropertyBool',
                             'LinkTransform',
-                            ' Link')
+                            ' Link',
+                            locked=True)
 
         if not hasattr(obj, 'ColoredElements'):
             obj.addProperty('App::PropertyLinkSubHidden',
                             'ColoredElements',
-                            ' Link')
+                            ' Link',
+                            locked=True)
             obj.setPropertyStatus('ColoredElements', 'Hidden')
 
         if not hasattr(obj,'LinkCopyOnChange'):
-            obj.addProperty("App::PropertyEnumeration","LinkCopyOnChange"," Link")
+            obj.addProperty("App::PropertyEnumeration","LinkCopyOnChange"," Link",locked=True)
 
         obj.configLinkProperty('LinkCopyOnChange','LinkTransform','ColoredElements')
 
@@ -204,8 +208,10 @@ class DraftLink(DraftObject):
                     and getattr(obj, 'AlwaysSyncPlacement', False):
                 for pla,child in zip(pls,obj.ElementList):
                     child.Placement = pla
-        elif obj.Count != len(pls):
-            obj.Count = len(pls)
+        else:
+            obj.PlacementList = pls
+            if obj.Count != len(pls):
+                obj.Count = len(pls)
 
         if obj.Base:
             shape = getattr(obj.Base, 'Shape', None)

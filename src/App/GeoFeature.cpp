@@ -48,6 +48,11 @@ PROPERTY_SOURCE(App::GeoFeature, App::DocumentObject)
 GeoFeature::GeoFeature()
 {
     ADD_PROPERTY_TYPE(Placement, (Base::Placement()), nullptr, Prop_NoRecompute, nullptr);
+    ADD_PROPERTY_TYPE(_ElementMapVersion,
+                    (""),
+                    "Base",
+                    (App::PropertyType)(Prop_Output | Prop_Hidden | Prop_Transient),
+                    "");
 }
 
 GeoFeature::~GeoFeature() = default;
@@ -155,11 +160,11 @@ DocumentObject* GeoFeature::resolveElement(const DocumentObject* obj,
         return nullptr;
     }
     auto linked = sobj->getLinkedObject(true);
-    auto geo = Base::freecad_dynamic_cast<GeoFeature>(linked);
+    auto geo = freecad_cast<GeoFeature*>(linked);
     if (!geo && linked) {
         auto ext = linked->getExtensionByType<LinkBaseExtension>(true);
         if (ext) {
-            geo = Base::freecad_dynamic_cast<GeoFeature>(ext->getTrueLinkedObject(true));
+            geo = freecad_cast<GeoFeature*>(ext->getTrueLinkedObject(true));
         }
     }
     if (geoFeature) {
@@ -208,24 +213,17 @@ void GeoFeature::setMaterialAppearance(const App::Material& material)
     Q_UNUSED(material)
 }
 
-bool GeoFeature::getCameraAlignmentDirection(Base::Vector3d& direction, const char* subname) const
+bool GeoFeature::getCameraAlignmentDirection(Base::Vector3d& directionZ, Base::Vector3d& directionX, const char* subname) const
 {
     Q_UNUSED(subname)
-    Q_UNUSED(direction)
+    Q_UNUSED(directionZ)
+    Q_UNUSED(directionX)
     return false;
 }
 
 bool GeoFeature::hasMissingElement(const char* subname)
 {
     return Data::hasMissingElement(subname);
-    if (!subname) {
-        return false;
-    }
-    auto dot = strrchr(subname, '.');
-    if (!dot) {
-        return subname[0] == '?';
-    }
-    return dot[1] == '?';
 }
 
 void GeoFeature::updateElementReference()
@@ -239,6 +237,16 @@ void GeoFeature::updateElementReference()
         return;
     }
     bool reset = false;
+
+    auto version = getElementMapVersion(prop);
+    if (_ElementMapVersion.getStrValue().empty()) {
+        _ElementMapVersion.setValue(version);
+    }
+    else if (_ElementMapVersion.getStrValue() != version) {
+        reset = true;
+        _ElementMapVersion.setValue(version);
+    }
+
     PropertyLinkBase::updateElementReferences(this, reset);
 }
 
@@ -251,6 +259,14 @@ void GeoFeature::onChanged(const Property* prop)
         }
     }
     DocumentObject::onChanged(prop);
+}
+
+void GeoFeature::onDocumentRestored()
+{
+    if (!getDocument()->testStatus(Document::Status::Importing)) {
+        _ElementMapVersion.setValue(getElementMapVersion(getPropertyOfGeometry(), true));
+    }
+    DocumentObject::onDocumentRestored();
 }
 
 const std::vector<std::string>& GeoFeature::searchElementCache(const std::string& element,

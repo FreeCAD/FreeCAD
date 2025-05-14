@@ -57,11 +57,7 @@ std::unique_ptr<Part::GeometryExtension> ViewProviderSketchGeometryExtension::co
 
     copyAttributes(cpy.get());
 
-#if defined(__GNUC__) && (__GNUC__ <= 4)
-    return std::move(cpy);
-#else
     return cpy;
-#endif
 }
 
 void ViewProviderSketchGeometryExtension::restoreAttributes(Base::XMLReader& reader)
@@ -69,7 +65,7 @@ void ViewProviderSketchGeometryExtension::restoreAttributes(Base::XMLReader& rea
     Part::GeometryPersistenceExtension::restoreAttributes(reader);
 
     if (reader.hasAttribute("visualLayerId")) {
-        VisualLayerId = reader.getAttributeAsInteger("visualLayerId");
+        VisualLayerId = reader.getAttribute<long>("visualLayerId");
     }
 }
 

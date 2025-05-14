@@ -77,10 +77,8 @@ TaskLoftParameters::TaskLoftParameters(ViewProviderLoft* LoftView, bool /*newObj
         auto shortcut = rcCmdMgr.getCommandByName("Std_Delete")->getShortcut();
         remove->setShortcut(QKeySequence(shortcut));
     }
-#if QT_VERSION >= QT_VERSION_CHECK(5, 10, 0)
     // display shortcut behind the context menu entry
     remove->setShortcutVisibleInContextMenu(true);
-#endif
     ui->listWidgetReferences->addAction(remove);
     ui->listWidgetReferences->setContextMenuPolicy(Qt::ActionsContextMenu);
     connect(remove, &QAction::triggered, this, &TaskLoftParameters::onDeleteSection);
@@ -214,11 +212,11 @@ bool TaskLoftParameters::referenceSelected(const Gui::SelectionChanges& msg) con
             loft->Profile.setValue(obj, {msg.pSubName});
             return true;
         }
-        else if (selectionMode == refAdd || selectionMode == refRemove) {
+
+        if (selectionMode == refAdd || selectionMode == refRemove) {
             // now check the sections
             std::vector<App::DocumentObject*> refs = loft->Sections.getValues();
-            std::vector<App::DocumentObject*>::iterator f =
-                std::find(refs.begin(), refs.end(), obj);
+            const auto f = std::ranges::find(refs, obj);
 
             if (selectionMode == refAdd) {
                 if (f != refs.end()) {
@@ -266,12 +264,10 @@ void TaskLoftParameters::onDeleteSection()
         delete item;
 
         // search inside the list of sections
-        if (auto loft = getObject<PartDesign::Loft>()) {
+        if (const auto loft = getObject<PartDesign::Loft>()) {
             std::vector<App::DocumentObject*> refs = loft->Sections.getValues();
             App::DocumentObject* obj = loft->getDocument()->getObject(data.constData());
-            std::vector<App::DocumentObject*>::iterator f =
-                std::find(refs.begin(), refs.end(), obj);
-            if (f != refs.end()) {
+            if (const auto f = std::ranges::find(refs, obj); f != refs.end()) {
                 loft->Sections.removeValue(obj);
 
                 recomputeFeature();

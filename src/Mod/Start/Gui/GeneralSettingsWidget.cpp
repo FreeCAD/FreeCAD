@@ -33,6 +33,7 @@
 #include <QWidget>
 #endif
 
+#include <algorithm>
 #include "GeneralSettingsWidget.h"
 #include <gsl/pointers>
 #include <App/Application.h>
@@ -102,7 +103,7 @@ gsl::owner<QComboBox*> GeneralSettingsWidget::createLanguageComboBox()
     auto langToStr = Gui::Translator::instance()->activeLanguage();
     QByteArray language = hGrp->GetASCII("Language", langToStr.c_str()).c_str();
     auto comboBox = gsl::owner<QComboBox*>(new QComboBox);
-    comboBox->addItem(QString::fromLatin1("English"), QByteArray("English"));
+    comboBox->addItem(QStringLiteral("English"), QByteArray("English"));
     Gui::TStringMap list = Gui::Translator::instance()->supportedLocales();
     int index {1};
     for (auto it = list.begin(); it != list.end(); ++it, ++index) {
@@ -182,7 +183,7 @@ void GeneralSettingsWidget::onUnitSystemChanged(int index)
     if (index < 0) {
         return;  // happens when clearing the combo box in retranslateUi()
     }
-    Base::UnitsApi::setSchema(static_cast<Base::UnitSystem>(index));
+    Base::UnitsApi::setSchema(index);
     ParameterGrp::handle hGrp =
         App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Units");
     hGrp->SetInt("UserSchema", index);
@@ -213,15 +214,16 @@ void GeneralSettingsWidget::retranslateUi()
     _unitSystemLabel->setText(createLabelText(tr("Unit System")));
 
     _unitSystemComboBox->clear();
-    ParameterGrp::handle hGrpUnits =
+
+    auto addItem = [&, index {0}](const std::string& item) mutable {
+        _unitSystemComboBox->addItem(QString::fromStdString(item), index++);
+    };
+    auto descriptions = Base::UnitsApi::getDescriptions();
+    std::for_each(descriptions.begin(), descriptions.end(), addItem);
+
+    const ParameterGrp::handle hGrpUnits =
         App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Units");
-    auto userSchema = hGrpUnits->GetInt("UserSchema", 0);
-    int num = static_cast<int>(Base::UnitSystem::NumUnitSystemTypes);
-    for (int i = 0; i < num; i++) {
-        QString item = Base::UnitsApi::getDescription(static_cast<Base::UnitSystem>(i));
-        _unitSystemComboBox->addItem(item, i);
-    }
-    _unitSystemComboBox->setCurrentIndex(userSchema);
+    _unitSystemComboBox->setCurrentIndex(static_cast<int>(hGrpUnits->GetInt("UserSchema", 0)));
 
     _navigationStyleLabel->setText(createLabelText(tr("Navigation Style")));
     _navigationStyleComboBox->clear();

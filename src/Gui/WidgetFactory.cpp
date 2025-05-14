@@ -77,24 +77,24 @@ QWidget* WidgetFactoryInst::createWidget (const char* sName, QWidget* parent) co
     // this widget class is not registered
     if (!w) {
 #ifdef FC_DEBUG
-        Base::Console().Warning("\"%s\" is not registered\n", sName);
+        Base::Console().warning("\"%s\" is not registered\n", sName);
 #else
-        Base::Console().Log("\"%s\" is not registered\n", sName);
+        Base::Console().log("\"%s\" is not registered\n", sName);
 #endif
         return nullptr;
     }
 
     try {
 #ifdef FC_DEBUG
-        const char* cName = dynamic_cast<QWidget*>(w)->metaObject()->className();
-        Base::Console().Log("Widget of type '%s' created.\n", cName);
+        const char* cName = qobject_cast<QWidget*>(w)->metaObject()->className();
+        Base::Console().log("Widget of type '%s' created.\n", cName);
 #endif
     }
     catch (...) {
 #ifdef FC_DEBUG
-        Base::Console().Error("%s does not inherit from \"QWidget\"\n", sName);
+        Base::Console().error("%s does not inherit from \"QWidget\"\n", sName);
 #else
-        Base::Console().Log("%s does not inherit from \"QWidget\"\n", sName);
+        Base::Console().log("%s does not inherit from \"QWidget\"\n", sName);
 #endif
         delete w;
         return nullptr;
@@ -119,21 +119,21 @@ Gui::Dialog::PreferencePage* WidgetFactoryInst::createPreferencePage (const char
     // this widget class is not registered
     if (!w) {
 #ifdef FC_DEBUG
-        Base::Console().Warning("Cannot create an instance of \"%s\"\n", sName);
+        Base::Console().warning("Cannot create an instance of \"%s\"\n", sName);
 #else
-        Base::Console().Log("Cannot create an instance of \"%s\"\n", sName);
+        Base::Console().log("Cannot create an instance of \"%s\"\n", sName);
 #endif
         return nullptr;
     }
 
     if (qobject_cast<Gui::Dialog::PreferencePage*>(w)) {
 #ifdef FC_DEBUG
-        Base::Console().Log("Preference page of type '%s' created.\n", w->metaObject()->className());
+        Base::Console().log("Preference page of type '%s' created.\n", w->metaObject()->className());
 #endif
     }
     else {
 #ifdef FC_DEBUG
-        Base::Console().Error("%s does not inherit from 'Gui::Dialog::PreferencePage'\n", sName);
+        Base::Console().error("%s does not inherit from 'Gui::Dialog::PreferencePage'\n", sName);
 #endif
         delete w;
         return nullptr;
@@ -172,7 +172,7 @@ QWidget* WidgetFactoryInst::createPrefWidget(const char* sName, QWidget* parent,
     }
     catch (...) {
 #ifdef FC_DEBUG
-        Base::Console().Error("%s does not inherit from \"PrefWidget\"\n", w->metaObject()->className());
+        Base::Console().error("%s does not inherit from \"PrefWidget\"\n", w->metaObject()->className());
 #endif
         delete w;
         return nullptr;
@@ -314,7 +314,7 @@ void PreferencePagePython::loadSettings()
     }
     catch (Py::Exception&) {
         Base::PyException e; // extract the Python error text
-        e.ReportException();
+        e.reportException();
     }
 }
 
@@ -330,7 +330,7 @@ void PreferencePagePython::saveSettings()
     }
     catch (Py::Exception&) {
         Base::PyException e; // extract the Python error text
-        e.ReportException();
+        e.reportException();
     }
 }
 
@@ -493,7 +493,7 @@ bool PyResource::connect(const char* sender, const char* signal, PyObject* cb)
     QList<QWidget*> list = myDlg->findChildren<QWidget*>();
     QList<QWidget*>::const_iterator it = list.cbegin();
     QObject *obj;
-    QString sigStr = QString::fromLatin1("2%1").arg(QString::fromLatin1(signal));
+    QString sigStr = QStringLiteral("2%1").arg(QString::fromLatin1(signal));
 
     while ( it != list.cend() ) {
         obj = *it;
@@ -584,7 +584,7 @@ Py::Object PyResource::value(const Py::Tuple& args)
         item = Py::Long(static_cast<unsigned long>(v.toUInt()));
         break;
     case QMetaType::Int:
-        item = Py::Int(v.toInt());
+        item = Py::Long(v.toInt());
         break;
     default:
         item = Py::String("");
@@ -739,11 +739,7 @@ void SignalConnect::onExecute()
 
     /* Time to call the callback */
     arglist = Py_BuildValue("(O)", myResource);
-#if PY_VERSION_HEX < 0x03090000
-    result = PyEval_CallObject(myCallback, arglist);
-#else
     result = PyObject_CallObject(myCallback, arglist);
-#endif
     Py_XDECREF(result);
     Py_DECREF(arglist);
 }

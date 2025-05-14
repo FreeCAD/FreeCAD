@@ -1,5 +1,6 @@
 /***************************************************************************
  *   Copyright (c) 2016 WandererFan <wandererfan@gmail.com>                *
+ *   Copyright (c) 2024 Benjamin Bræstrup Sayoc <benj5378@outlook.com>     *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -48,6 +49,7 @@
 #include <Base/Exception.h>
 #include <Base/Parameter.h>
 #include <Base/Tools.h>
+#include <Base/Tools2D.h>
 #include <Base/Type.h>
 #include <Gui/Application.h>
 #include <Gui/Command.h>
@@ -74,6 +76,9 @@
 #include "DlgPageChooser.h"
 #include "DrawGuiUtil.h"
 #include "MDIViewPage.h"
+#include "QGIEdge.h"
+#include "QGIVertex.h"
+#include "QGIViewPart.h"
 #include "QGSPage.h"
 #include "ViewProviderPage.h"
 #include "Rez.h"
@@ -214,7 +219,7 @@ void DrawGuiUtil::loadLineGroupChoices(QComboBox* combo)
 QIcon DrawGuiUtil::iconForLine(size_t lineNumber,
                                TechDraw::LineGenerator* generator)
 {
-    //    Base::Console().Message("DGU::iconForLine(lineNumber: %d)\n", lineNumber);
+    //    Base::Console().message("DGU::iconForLine(lineNumber: %d)\n", lineNumber);
     constexpr int iconSize {64};
     constexpr int borderSize {4};
     constexpr double iconLineWeight {1.0};
@@ -282,7 +287,6 @@ QIcon DrawGuiUtil::iconForLine(size_t lineNumber,
 // find a page in Selection, Document or CurrentWindow.
 TechDraw::DrawPage* DrawGuiUtil::findPage(Gui::Command* cmd, bool findAny)
 {
-    //    Base::Console().Message("DGU::findPage()\n");
     std::vector<std::string> names;
     std::vector<std::string> labels;
     auto docs = App::GetApplication().getDocuments();
@@ -307,7 +311,8 @@ TechDraw::DrawPage* DrawGuiUtil::findPage(Gui::Command* cmd, bool findAny)
                                  QObject::tr("No Drawing Pages available."));
             return nullptr;
         }
-        else if (foundPageObjects.size() > 1) {
+
+        if (foundPageObjects.size() > 1) {
             // multiple pages available, ask for help
             for (auto obj : foundPageObjects) {
                 std::string name = obj->getNameInDocument();
@@ -318,6 +323,10 @@ TechDraw::DrawPage* DrawGuiUtil::findPage(Gui::Command* cmd, bool findAny)
             DlgPageChooser dlg(labels, names, Gui::getMainWindow());
             if (dlg.exec() == QDialog::Accepted) {
                 std::string selName = dlg.getSelection();
+                if (selName.empty()) {
+                    showNoPageMessage();
+                    return nullptr;
+                }
                 App::Document* doc = cmd->getDocument();
                 return static_cast<TechDraw::DrawPage*>(doc->getObject(selName.c_str()));
             }
@@ -330,49 +339,51 @@ TechDraw::DrawPage* DrawGuiUtil::findPage(Gui::Command* cmd, bool findAny)
 
     // check Selection for a page
     std::vector<App::DocumentObject*> selPages =
-        cmd->getSelection().getObjectsOfType(TechDraw::DrawPage::getClassTypeId());
+        Gui::Command::getSelection().getObjectsOfType(TechDraw::DrawPage::getClassTypeId());
     if (selPages.empty()) {
         // no page in selection, try this document
         auto docPages = cmd->getDocument()->getObjectsOfType(TechDraw::DrawPage::getClassTypeId());
         if (docPages.empty()) {
             // we are only to look in this document, and there is no page in this document
-            QMessageBox::warning(Gui::getMainWindow(),
-                                 QObject::tr("No page found"),
-                                 QObject::tr("No Drawing Pages in document."));
+            showNoPageMessage();
             return nullptr;
         }
-        else if (docPages.size() > 1) {
+
+        if (docPages.size() > 1) {
             // multiple pages in document, use active page if there is one
-            Gui::MainWindow* w = Gui::getMainWindow();
-            Gui::MDIView* mv = w->activeWindow();
-            MDIViewPage* mvp = dynamic_cast<MDIViewPage*>(mv);
+            auto* w = Gui::getMainWindow();
+            auto* mv = w->activeWindow();
+            auto* mvp = qobject_cast<MDIViewPage*>(mv);
             if (mvp) {
                 QGSPage* qp = mvp->getViewProviderPage()->getQGSPage();
                 return qp->getDrawPage();
             }
-            else {
-                // none of pages in document is active, ask for help
-                for (auto obj : docPages) {
-                    std::string name = obj->getNameInDocument();
-                    names.push_back(name);
-                    std::string label = obj->Label.getValue();
-                    labels.push_back(label);
-                }
-                DlgPageChooser dlg(labels, names, Gui::getMainWindow());
-                if (dlg.exec() == QDialog::Accepted) {
-                    std::string selName = dlg.getSelection();
-                    App::Document* doc = cmd->getDocument();
-                    return static_cast<TechDraw::DrawPage*>(doc->getObject(selName.c_str()));
-                }
-                return nullptr;
+
+            // none of pages in document is active, ask for help
+            for (auto obj : docPages) {
+                std::string name = obj->getNameInDocument();
+                names.push_back(name);
+                std::string label = obj->Label.getValue();
+                labels.push_back(label);
             }
+            DlgPageChooser dlg(labels, names, Gui::getMainWindow());
+            if (dlg.exec() == QDialog::Accepted) {
+                std::string selName = dlg.getSelection();
+                if (selName.empty()) {
+                    showNoPageMessage();
+                    return nullptr;
+            }
+                App::Document* doc = cmd->getDocument();
+                return static_cast<TechDraw::DrawPage*>(doc->getObject(selName.c_str()));
+            }
+            return nullptr;
         }
-        else {
-            // only 1 page in document - use it
-            return static_cast<TechDraw::DrawPage*>(docPages.front());
-        }
+
+        // only 1 page in document - use it
+        return static_cast<TechDraw::DrawPage*>(docPages.front());
     }
-    else if (selPages.size() > 1) {
+
+    if (selPages.size() > 1) {
         // multiple pages in selection
         for (auto obj : selPages) {
             std::string name = obj->getNameInDocument();
@@ -383,6 +394,10 @@ TechDraw::DrawPage* DrawGuiUtil::findPage(Gui::Command* cmd, bool findAny)
         DlgPageChooser dlg(labels, names, Gui::getMainWindow());
         if (dlg.exec() == QDialog::Accepted) {
             std::string selName = dlg.getSelection();
+            if (selName.empty()) {
+                showNoPageMessage();
+                return nullptr;
+            }
             App::Document* doc = cmd->getDocument();
             return static_cast<TechDraw::DrawPage*>(doc->getObject(selName.c_str()));
         }
@@ -392,8 +407,14 @@ TechDraw::DrawPage* DrawGuiUtil::findPage(Gui::Command* cmd, bool findAny)
         return static_cast<TechDraw::DrawPage*>(selPages.front());
     }
 
-    // we can not actually reach this point.
     return nullptr;
+}
+
+void DrawGuiUtil::showNoPageMessage()
+{
+    QMessageBox::warning(Gui::getMainWindow(),
+                    QObject::tr("No page selected"),
+                    QObject::tr("This function needs a page."));
 }
 
 bool DrawGuiUtil::isDraftObject(App::DocumentObject* obj)
@@ -422,7 +443,7 @@ bool DrawGuiUtil::isDraftObject(App::DocumentObject* obj)
         }
         catch (Py::Exception&) {
             Base::PyException e;  // extract the Python error text
-            e.ReportException();
+            e.reportException();
             result = false;
         }
     }
@@ -453,7 +474,7 @@ bool DrawGuiUtil::isArchObject(App::DocumentObject* obj)
         }
         catch (Py::Exception&) {
             Base::PyException e;  // extract the Python error text
-            e.ReportException();
+            e.reportException();
             result = false;
         }
     }
@@ -484,7 +505,7 @@ bool DrawGuiUtil::isArchSection(App::DocumentObject* obj)
         }
         catch (Py::Exception&) {
             Base::PyException e;  // extract the Python error text
-            e.ReportException();
+            e.reportException();
             result = false;
         }
     }
@@ -544,24 +565,24 @@ bool DrawGuiUtil::needView(Gui::Command* cmd, bool partOnly)
 
 void DrawGuiUtil::dumpRectF(const char* text, const QRectF& r)
 {
-    Base::Console().Message("DUMP - dumpRectF - %s\n", text);
+    Base::Console().message("DUMP - dumpRectF - %s\n", text);
     double left = r.left();
     double right = r.right();
     double top = r.top();
     double bottom = r.bottom();
-    Base::Console().Message("Extents: L: %.3f, R: %.3f, T: %.3f, B: %.3f\n",
+    Base::Console().message("Extents: L: %.3f, R: %.3f, T: %.3f, B: %.3f\n",
                             left,
                             right,
                             top,
                             bottom);
-    Base::Console().Message("Size: W: %.3f H: %.3f\n", r.width(), r.height());
-    Base::Console().Message("Centre: (%.3f, %.3f)\n", r.center().x(), r.center().y());
+    Base::Console().message("Size: W: %.3f H: %.3f\n", r.width(), r.height());
+    Base::Console().message("Centre: (%.3f, %.3f)\n", r.center().x(), r.center().y());
 }
 
 void DrawGuiUtil::dumpPointF(const char* text, const QPointF& p)
 {
-    Base::Console().Message("DUMP - dumpPointF - %s\n", text);
-    Base::Console().Message("Point: (%.3f, %.3f)\n", p.x(), p.y());
+    Base::Console().message("DUMP - dumpPointF - %s\n", text);
+    Base::Console().message("Point: (%.3f, %.3f)\n", p.x(), p.y());
 }
 
 std::pair<Base::Vector3d, Base::Vector3d> DrawGuiUtil::get3DDirAndRot()
@@ -626,7 +647,7 @@ std::pair<Base::Vector3d, Base::Vector3d> DrawGuiUtil::getProjDirFromFace(App::D
 
     auto ts = Part::Feature::getShape(obj, faceName.c_str(), true);
     if (ts.IsNull() || ts.ShapeType() != TopAbs_FACE) {
-        Base::Console().Warning("getProjDirFromFace(%s) is not a Face\n", faceName.c_str());
+        Base::Console().warning("getProjDirFromFace(%s) is not a Face\n", faceName.c_str());
         return dirs;
     }
 
@@ -776,3 +797,53 @@ QIcon DrawGuiUtil::maskBlackPixels(QIcon itemIcon, QSize iconSize, QColor textCo
     return filler;
 }
 
+void DrawGuiUtil::rotateToAlign(const QGIEdge* edge, const Base::Vector2d& direction)
+{
+    QGIViewPart* view = static_cast<QGIViewPart*>(edge->parentItem());
+    DrawViewPart* dvp = static_cast<DrawViewPart*>(view->getViewObject());
+    BaseGeomPtr bg = dvp->getEdgeGeometry().at(edge->getProjIndex());
+    std::vector<Base::Vector3d> endPoints = bg->findEndPoints();
+    Base::Vector3d oldDirection3d = endPoints.at(0) - endPoints.at(1);
+    Base::Vector2d oldDirection2d(oldDirection3d.x, oldDirection3d.y);
+    rotateToAlign(dvp, oldDirection2d, direction);
+}
+
+//! The view of p1 and p2 will be rotated to make p1 and p2 aligned with direction (for instance horizontalle aligned)
+void DrawGuiUtil::rotateToAlign(const QGIVertex* p1, const QGIVertex* p2, const Base::Vector2d& direction)
+{
+    QGIViewPart* view = static_cast<QGIViewPart*>(p1->parentItem());
+    if(view != static_cast<QGIViewPart*>(p2->parentItem())) {
+        Base::Console().error("Vertexes have to be from the same view!");
+    }
+
+    Base::Vector2d oldDirection = p2->vector2dBetweenPoints(p1);
+    DrawViewPart* dvp = static_cast<DrawViewPart*>(view->getViewObject());
+    rotateToAlign(dvp, oldDirection, direction);
+}
+
+void DrawGuiUtil::rotateToAlign(DrawViewPart* view, const Base::Vector2d& oldDirection, const Base::Vector2d& newDirection)
+{
+    // If pointing counterclockwise, we need to rotate clockwise
+    // If pointing clockwise, we need to rotate counter clockwise
+    int cw = 1;
+    if(newDirection.Angle() > oldDirection.Angle()) {
+        cw = -1;
+    }
+
+    double toRotate = newDirection.GetAngle(oldDirection);
+    // Radians to degrees
+    toRotate = Base::toDegrees(toRotate);
+
+    // Rotate least amount possible
+    if(toRotate > 90) {
+        // Instead of rotating 145 degrees to match direction
+        // we only rotate -35 degrees
+        toRotate = toRotate - 180;
+    }
+    else if(toRotate < -90) {
+        toRotate = toRotate + 180;
+    }
+
+    double oldRotation = view->Rotation.getValue();
+    view->Rotation.setValue(oldRotation + toRotate * cw);
+}

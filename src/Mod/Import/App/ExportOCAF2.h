@@ -51,7 +51,7 @@ namespace Import
 struct ImportExport ExportOCAFOptions
 {
     ExportOCAFOptions();
-    App::Color defaultColor;
+    Base::Color defaultColor;
     bool exportHidden = true;
     bool keepPlacement = false;
 };
@@ -60,7 +60,7 @@ class ImportExport ExportOCAF2
 {
 public:
     using GetShapeColorsFunc =
-        std::function<std::map<std::string, App::Color>(App::DocumentObject*, const char*)>;
+        std::function<std::map<std::string, Base::Color>(App::DocumentObject*, const char*)>;
     explicit ExportOCAF2(Handle(TDocStd_Document) hDoc,
                          GetShapeColorsFunc func = GetShapeColorsFunc());
 

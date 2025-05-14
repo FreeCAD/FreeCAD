@@ -834,6 +834,7 @@ class TestTopologicalNamingProblem(unittest.TestCase):
         body = self.Doc.addObject("PartDesign::Body", "Body")
         box = self.Doc.addObject("PartDesign::AdditiveBox", "Box")
         body.addObject(box)
+        self.Doc.recompute()
         sketch = self.Doc.addObject("Sketcher::SketchObject", "Sketch")
         sketch.AttachmentSupport = (box, "Face6")
         sketch.MapMode = "FlatFace"
@@ -852,10 +853,9 @@ class TestTopologicalNamingProblem(unittest.TestCase):
         self.assertEqual(body.Shape.childShapes()[0].ElementMapSize, 32)
         self.assertEqual(body.Shape.ElementMapSize, 32)
         self.assertEqual(sketch.Shape.ElementMapSize, 2)
-        self.assertEqual(hole.Shape.ElementMapSize, 32)
-        # self.assertNotEqual(hole.Shape.ElementReverseMap['Vertex1'],"Vertex1")   # NewName, not OldName
+        self.assertNotEqual(body.Shape.ElementReverseMap['Vertex1'],"Vertex1")   # NewName, not OldName
         self.assertEqual(
-            self.countFacesEdgesVertexes(hole.Shape.ElementReverseMap), (7, 15, 10)
+            self.countFacesEdgesVertexes(body.Shape.ElementReverseMap), (7, 15, 10)
         )
         volume = 1000 - 10 * math.pi * 3 * 3
         self.assertAlmostEqual(hole.Shape.Volume, volume)

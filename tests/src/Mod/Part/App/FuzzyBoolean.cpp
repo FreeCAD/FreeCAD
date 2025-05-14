@@ -22,10 +22,10 @@ protected:
     {
         createTestDoc();
         std::string testPath = App::Application::getHomePath() + "/tests/brepfiles/";
-        _fuse = dynamic_cast<Part::Fuse*>(_doc->addObject("Part::Fuse"));
-        _cylinder1 = dynamic_cast<Part::ImportBrep*>(_doc->addObject("Part::ImportBrep"));
+        _fuse = _doc->addObject<Part::Fuse>();
+        _cylinder1 = _doc->addObject<Part::ImportBrep>();
         _cylinder1->FileName.setValue(testPath + "cylinder1.brep");
-        _helix1 = dynamic_cast<Part::ImportBrep*>(_doc->addObject("Part::ImportBrep"));
+        _helix1 = _doc->addObject<Part::ImportBrep>();
         _helix1->FileName.setValue(testPath + "helix1.brep");
 
         // Load
@@ -114,7 +114,7 @@ TEST_F(FuzzyBooleanTest, testFailsTooSmallFuzzy)
     double oldFuzzy = Part::FuzzyHelper::getBooleanFuzzy();
     Part::FuzzyHelper::setBooleanFuzzy(0.01);
     _fuse->execute();
-    EXPECT_FLOAT_EQ(Part::FuzzyHelper::getBooleanFuzzy(), 0.01);
+    EXPECT_DOUBLE_EQ(Part::FuzzyHelper::getBooleanFuzzy(), 0.01);
     Part::FuzzyHelper::setBooleanFuzzy(oldFuzzy);
 
     // Verify

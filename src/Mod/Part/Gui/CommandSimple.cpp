@@ -154,12 +154,12 @@ void CmdPartPointsFromMesh::activated(int iMsg)
 
     double distance{1.0};
     auto found = std::find_if(geoms.begin(), geoms.end(), [](App::DocumentObject* obj) {
-        return Base::freecad_dynamic_cast<Part::Feature>(obj);
+        return freecad_cast<Part::Feature*>(obj);
     });
 
     if (found != geoms.end()) {
 
-        double defaultDistance = getDefaultDistance(Base::freecad_dynamic_cast<Part::Feature>(*found));
+        double defaultDistance = getDefaultDistance(freecad_cast<Part::Feature*>(*found));
 
         double STD_OCC_TOLERANCE = 1e-6;
 
@@ -196,7 +196,7 @@ void CmdPartPointsFromMesh::activated(int iMsg)
     }
     catch (Py::Exception&) {
         Base::PyException e;
-        e.ReportException();
+        e.reportException();
     }
 
     commitCommand();
@@ -382,7 +382,7 @@ void CmdPartRefineShape::activated(int iMsg)
                 Gui::copyVisualT(newObj->getNameInDocument(), "PointColor", obj->getNameInDocument());
             }
             catch (const Base::Exception& e) {
-                Base::Console().Warning("%s: %s\n", obj->Label.getValue(), e.what());
+                Base::Console().warning("%s: %s\n", obj->Label.getValue(), e.what());
             }
         });
         commitCommand();
@@ -452,7 +452,7 @@ void CmdPartDefeaturing::activated(int iMsg)
                           it->getFeatName());
         }
         catch (const Base::Exception& e) {
-            Base::Console().Warning("%s: %s\n", it->getFeatName(), e.what());
+            Base::Console().warning("%s: %s\n", it->getFeatName(), e.what());
         }
     }
     commitCommand();

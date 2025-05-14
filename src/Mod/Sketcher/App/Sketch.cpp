@@ -227,31 +227,31 @@ int Sketch::setUpSketch(const std::vector<Part::Geometry*>& GeoList,
 
 #ifdef DEBUG_BLOCK_CONSTRAINT
     if (doesBlockAffectOtherConstraints) {
-        Base::Console().Log("\n  Block interferes with other constraints: Post-analysis required");
+        Base::Console().log("\n  Block interferes with other constraints: Post-analysis required");
     }
 
-    Base::Console().Log("\nOnlyBlocked GeoIds:");
+    Base::Console().log("\nOnlyBlocked GeoIds:");
     size_t i = 0;
     bool found = false;
     for (; i < onlyBlockedGeometry.size(); i++) {
         if (onlyBlockedGeometry[i]) {
-            Base::Console().Log("\n  GeoId=%d", i);
+            Base::Console().log("\n  GeoId=%d", i);
             found = true;
         }
     }
     if (found) {
-        Base::Console().Log("\n  None");
+        Base::Console().log("\n  None");
     }
 
-    Base::Console().Log("\nNotOnlyBlocked GeoIds:");
+    Base::Console().log("\nNotOnlyBlocked GeoIds:");
     i = 0;
     for (; i < blockedGeoIds.size(); i++) {
-        Base::Console().Log("\n  GeoId=%d", blockedGeoIds[i]);
+        Base::Console().log("\n  GeoId=%d", blockedGeoIds[i]);
     }
     if (i == 0) {
-        Base::Console().Log("\n  None");
+        Base::Console().log("\n  None");
     }
-    Base::Console().Log("\n");
+    Base::Console().log("\n");
 #endif  // DEBUG_BLOCK_CONSTRAINT
 
     buildInternalAlignmentGeometryMap(ConstraintList);
@@ -301,7 +301,7 @@ int Sketch::setUpSketch(const std::vector<Part::Geometry*>& GeoList,
                 analyseBlockedConstraintDependentParameters(blockedGeoIds, params_to_block);
 
             if (debugMode == GCS::IterationLevel) {
-                Base::Console().Log("Sketcher::setUpSketch()-BlockConstraint-PostAnalysis:%d\n",
+                Base::Console().log("Sketcher::setUpSketch()-BlockConstraint-PostAnalysis:%d\n",
                                     index);
             }
             index++;
@@ -317,9 +317,9 @@ int Sketch::setUpSketch(const std::vector<Part::Geometry*>& GeoList,
 
             // Debug code block
             for (size_t i = 0; i < groups.size(); i++) {
-                Base::Console().Log("\nDepParams: Group %d:", i);
+                Base::Console().log("\nDepParams: Group %d:", i);
                 for (size_t j = 0; j < groups[i].size(); j++) {
-                    Base::Console().Log(
+                    Base::Console().log(
                         "\n  Param=%x ,GeoId=%d, GeoPos=%d",
                         param2geoelement.find(*std::next(groups[i].begin(), j))->first,
                         param2geoelement.find(*std::next(groups[i].begin(), j))->second.first,
@@ -341,7 +341,7 @@ int Sketch::setUpSketch(const std::vector<Part::Geometry*>& GeoList,
     if (debugMode == GCS::Minimal || debugMode == GCS::IterationLevel) {
         Base::TimeElapsed end_time;
 
-        Base::Console().Log("Sketcher::setUpSketch()-T:%s\n",
+        Base::Console().log("Sketcher::setUpSketch()-T:%s\n",
                             Base::TimeElapsed::diffTime(start_time, end_time).c_str());
     }
 
@@ -361,9 +361,7 @@ void Sketch::fixParametersAndDiagnose(std::vector<double*>& params_to_block)
 {
     if (!params_to_block.empty()) {  // only there are parameters to fix
         for (auto p : params_to_block) {
-            auto findparam = std::find(Parameters.begin(), Parameters.end(), p);
-
-            if (findparam != Parameters.end()) {
+            if (auto findparam = std::ranges::find(Parameters, p); findparam != Parameters.end()) {
                 FixParameters.push_back(*findparam);
                 Parameters.erase(findparam);
             }
@@ -403,9 +401,9 @@ bool Sketch::analyseBlockedConstraintDependentParameters(
 
 #ifdef DEBUG_BLOCK_CONSTRAINT
     for (size_t i = 0; i < groups.size(); i++) {
-        Base::Console().Log("\nDepParams: Group %d:", i);
+        Base::Console().log("\nDepParams: Group %d:", i);
         for (size_t j = 0; j < groups[i].size(); j++) {
-            Base::Console().Log(
+            Base::Console().log(
                 "\n  Param=%x ,GeoId=%d, GeoPos=%d",
                 param2geoelement.find(*std::next(groups[i].begin(), j))->first,
                 param2geoelement.find(*std::next(groups[i].begin(), j))->second.first,
@@ -419,15 +417,11 @@ bool Sketch::analyseBlockedConstraintDependentParameters(
 
             double* thisparam = *std::next(groups[i].begin(), j);
 
-            auto element = param2geoelement.find(thisparam);
+            if (auto element = param2geoelement.find(thisparam);
+                element != param2geoelement.end()) {
 
-            if (element != param2geoelement.end()) {
-
-                auto blockable = std::find(blockedGeoIds.begin(),
-                                           blockedGeoIds.end(),
-                                           std::get<0>(element->second));
-
-                if (blockable != blockedGeoIds.end()) {
+                if (auto blockable = std::ranges::find(blockedGeoIds, std::get<0>(element->second));
+                    blockable != blockedGeoIds.end()) {
                     // This dependent parameter group contains at least one parameter that should be
                     // blocked, so added to the blockable list.
                     prop_groups[i].blockable_params_in_group.push_back(thisparam);
@@ -442,13 +436,13 @@ bool Sketch::analyseBlockedConstraintDependentParameters(
         for (size_t j = prop_groups[i].blockable_params_in_group.size(); j-- > 0;) {
             // check if parameter is already satisfying one group
             double* thisparam = prop_groups[i].blockable_params_in_group[j];
-            auto pos = std::find(params_to_block.begin(), params_to_block.end(), thisparam);
+            auto pos = std::ranges::find(params_to_block, thisparam);
 
             if (pos == params_to_block.end()) {  // not found, so add
                 params_to_block.push_back(thisparam);
                 prop_groups[i].blocking_param_in_group = thisparam;
 #ifdef DEBUG_BLOCK_CONSTRAINT
-                Base::Console().Log("\nTentatively blocking group %d, with param=%x", i, thisparam);
+                Base::Console().log("\nTentatively blocking group %d, with param=%x", i, thisparam);
 #endif  // DEBUG_BLOCK_CONSTRAINT
                 break;
             }
@@ -2394,7 +2388,7 @@ int Sketch::addConstraints(const std::vector<Constraint*>& ConstraintList)
 
         if (rtn == -1) {
             int humanconstraintid = cid + 1;
-            Base::Console().Error("Sketcher constraint number %d is malformed!\n",
+            Base::Console().error("Sketcher constraint number %d is malformed!\n",
                                   humanconstraintid);
             MalformedConstraints.push_back(humanconstraintid);
         }
@@ -2417,7 +2411,7 @@ int Sketch::addConstraints(const std::vector<Constraint*>& ConstraintList,
 
             if (rtn == -1) {
                 int humanconstraintid = cid + 1;
-                Base::Console().Error("Sketcher constraint number %d is malformed!\n",
+                Base::Console().error("Sketcher constraint number %d is malformed!\n",
                                       humanconstraintid);
                 MalformedConstraints.push_back(humanconstraintid);
             }
@@ -2809,7 +2803,7 @@ int Sketch::addPerpendicularConstraint(int geoId1, int geoId2)
         }
     }
 
-    Base::Console().Warning("Perpendicular constraints between %s and %s are not supported.\n",
+    Base::Console().warning("Perpendicular constraints between %s and %s are not supported.\n",
                             nameByType(Geoms[geoId1].type),
                             nameByType(Geoms[geoId2].type));
     return -1;
@@ -2869,7 +2863,7 @@ int Sketch::addTangentConstraint(int geoId1, int geoId2)
             return ConstraintsCounter;
         }
         else if (Geoms[geoId2].type == BSpline) {
-            Base::Console().Error("Direct tangency constraint between line and B-spline is not "
+            Base::Console().error("Direct tangency constraint between line and B-spline is not "
                                   "supported. Use tangent-via-point instead.");
             return -1;
         }
@@ -2883,7 +2877,7 @@ int Sketch::addTangentConstraint(int geoId1, int geoId2)
             return ConstraintsCounter;
         }
         else if (Geoms[geoId2].type == Ellipse) {
-            Base::Console().Error("Direct tangency constraint between circle and ellipse is not "
+            Base::Console().error("Direct tangency constraint between circle and ellipse is not "
                                   "supported. Use tangent-via-point instead.");
             return -1;
         }
@@ -2894,24 +2888,24 @@ int Sketch::addTangentConstraint(int geoId1, int geoId2)
             return ConstraintsCounter;
         }
         else if (Geoms[geoId2].type == BSpline) {
-            Base::Console().Error("Direct tangency constraint between circle and B-spline is not "
+            Base::Console().error("Direct tangency constraint between circle and B-spline is not "
                                   "supported. Use tangent-via-point instead.");
             return -1;
         }
     }
     else if (Geoms[geoId1].type == Ellipse) {
         if (Geoms[geoId2].type == Circle) {
-            Base::Console().Error("Direct tangency constraint between circle and ellipse is not "
+            Base::Console().error("Direct tangency constraint between circle and ellipse is not "
                                   "supported. Use tangent-via-point instead.");
             return -1;
         }
         else if (Geoms[geoId2].type == Arc) {
-            Base::Console().Error("Direct tangency constraint between arc and ellipse is not "
+            Base::Console().error("Direct tangency constraint between arc and ellipse is not "
                                   "supported. Use tangent-via-point instead.");
             return -1;
         }
         else if (Geoms[geoId2].type == BSpline) {
-            Base::Console().Error("Direct tangency constraint between ellipse and B-spline is not "
+            Base::Console().error("Direct tangency constraint between ellipse and B-spline is not "
                                   "supported. Use tangent-via-point instead.");
             return -1;
         }
@@ -2925,7 +2919,7 @@ int Sketch::addTangentConstraint(int geoId1, int geoId2)
             return ConstraintsCounter;
         }
         else if (Geoms[geoId2].type == Ellipse) {
-            Base::Console().Error("Direct tangency constraint between arc and ellipse is not "
+            Base::Console().error("Direct tangency constraint between arc and ellipse is not "
                                   "supported. Use tangent-via-point instead.");
             return -1;
         }
@@ -2936,13 +2930,13 @@ int Sketch::addTangentConstraint(int geoId1, int geoId2)
             return ConstraintsCounter;
         }
         else if (Geoms[geoId2].type == BSpline) {
-            Base::Console().Error("Direct tangency constraint between arc and B-spline is not "
+            Base::Console().error("Direct tangency constraint between arc and B-spline is not "
                                   "supported. Use tangent-via-point instead.");
             return -1;
         }
     }
     else if (Geoms[geoId1].type == BSpline) {
-        Base::Console().Error("Direct tangency constraint including B-splines is not "
+        Base::Console().error("Direct tangency constraint including B-splines is not "
                               "supported. Use tangent-via-point instead.");
         return -1;
     }
@@ -2959,18 +2953,18 @@ int Sketch::addTangentLineAtBSplineKnotConstraint(int checkedlinegeoId,
 
     size_t knotindex = b.knots.size();
 
-    auto knotIt = std::find(b.knotpointGeoids.begin(), b.knotpointGeoids.end(), checkedknotgeoid);
+    const auto knotIt = std::ranges::find(b.knotpointGeoids, checkedknotgeoid);
 
     knotindex = std::distance(b.knotpointGeoids.begin(), knotIt);
 
     if (knotindex >= b.knots.size()) {
-        Base::Console().Error("addConstraint: Knot index out-of-range!\n");
+        Base::Console().error("addConstraint: Knot index out-of-range!\n");
         return -1;
     }
 
     if (b.mult[knotindex] >= b.degree) {
         if (b.periodic || (knotindex > 0 && knotindex < (b.knots.size() - 1))) {
-            Base::Console().Error("addTangentLineAtBSplineKnotConstraint: cannot set constraint "
+            Base::Console().error("addTangentLineAtBSplineKnotConstraint: cannot set constraint "
                                   "when B-spline slope is discontinuous at knot!\n");
             return -1;
         }
@@ -2983,7 +2977,7 @@ int Sketch::addTangentLineAtBSplineKnotConstraint(int checkedlinegeoId,
             //     nullptr, Tangent, true);
 
             // For now we just throw an error.
-            Base::Console().Error(
+            Base::Console().error(
                 "addTangentLineAtBSplineKnotConstraint: This method cannot set tangent constraint "
                 "at end knots of a B-spline. Please constrain the start/end points instead.\n");
             return -1;
@@ -3012,18 +3006,18 @@ int Sketch::addTangentLineEndpointAtBSplineKnotConstraint(int checkedlinegeoId,
 
     size_t knotindex = b.knots.size();
 
-    auto knotIt = std::find(b.knotpointGeoids.begin(), b.knotpointGeoids.end(), checkedknotgeoid);
+    auto knotIt = std::ranges::find(b.knotpointGeoids, checkedknotgeoid);
 
     knotindex = std::distance(b.knotpointGeoids.begin(), knotIt);
 
     if (knotindex >= b.knots.size()) {
-        Base::Console().Error("addConstraint: Knot index out-of-range!\n");
+        Base::Console().error("addConstraint: Knot index out-of-range!\n");
         return -1;
     }
 
     if (b.mult[knotindex] >= b.degree) {
         if (b.periodic || (knotindex > 0 && knotindex < (b.knots.size() - 1))) {
-            Base::Console().Error("addTangentLineEndpointAtBSplineKnotConstraint: cannot set "
+            Base::Console().error("addTangentLineEndpointAtBSplineKnotConstraint: cannot set "
                                   "constraint when B-spline slope is discontinuous at knot!\n");
             return -1;
         }
@@ -3036,7 +3030,7 @@ int Sketch::addTangentLineEndpointAtBSplineKnotConstraint(int checkedlinegeoId,
             //     nullptr, Tangent, true);
 
             // For now we just throw an error.
-            Base::Console().Error("addTangentLineEndpointAtBSplineKnotConstraint: This method "
+            Base::Console().error("addTangentLineEndpointAtBSplineKnotConstraint: This method "
                                   "cannot set tangent constraint at end knots of a B-spline. "
                                   "Please constrain the start/end points instead.\n");
             return -1;
@@ -3066,6 +3060,7 @@ int Sketch::addAngleAtPointConstraint(int geoId1,
                                       ConstraintType cTyp,
                                       bool driving)
 {
+    using std::numbers::pi;
     if (!(cTyp == Angle || cTyp == Tangent || cTyp == Perpendicular)) {
         // assert(0);//none of the three types. Why are we here??
         return -1;
@@ -3087,14 +3082,14 @@ int Sketch::addAngleAtPointConstraint(int geoId1,
     }
 
     if (Geoms[geoId1].type == Point || Geoms[geoId2].type == Point) {
-        Base::Console().Error("addAngleAtPointConstraint: one of the curves is a point!\n");
+        Base::Console().error("addAngleAtPointConstraint: one of the curves is a point!\n");
         return -1;
     }
 
     GCS::Curve* crv1 = getGCSCurveByGeoId(geoId1);
     GCS::Curve* crv2 = getGCSCurveByGeoId(geoId2);
     if (!crv1 || !crv2) {
-        Base::Console().Error("addAngleAtPointConstraint: getGCSCurveByGeoId returned NULL!\n");
+        Base::Console().error("addAngleAtPointConstraint: getGCSCurveByGeoId returned NULL!\n");
         return -1;
     }
 
@@ -3107,7 +3102,7 @@ int Sketch::addAngleAtPointConstraint(int geoId1,
     }
 
     if (pointId < 0 || pointId >= int(Points.size())) {
-        Base::Console().Error("addAngleAtPointConstraint: point index out of range.\n");
+        Base::Console().error("addAngleAtPointConstraint: point index out of range.\n");
         return -1;
     }
     GCS::Point& p = Points[pointId];
@@ -3115,7 +3110,7 @@ int Sketch::addAngleAtPointConstraint(int geoId1,
     if (e2e) {  // we need second point
         int pointId = getPointId(geoId2, pos2);
         if (pointId < 0 || pointId >= int(Points.size())) {
-            Base::Console().Error("addAngleAtPointConstraint: point index out of range.\n");
+            Base::Console().error("addAngleAtPointConstraint: point index out of range.\n");
             return -1;
         }
         p2 = &(Points[pointId]);
@@ -3138,28 +3133,28 @@ int Sketch::addAngleAtPointConstraint(int geoId1,
         // the desired angle value (and we are to decide if 180* should be added to it)
         double angleDesire = 0.0;
         if (cTyp == Tangent) {
-            angleOffset = -M_PI / 2;
+            angleOffset = -pi / 2;
             angleDesire = 0.0;
         }
         if (cTyp == Perpendicular) {
             angleOffset = 0;
-            angleDesire = M_PI / 2;
+            angleDesire = pi / 2;
         }
 
         if (*value
             == 0.0) {  // autodetect tangency internal/external (and same for perpendicularity)
             double angleErr = GCSsys.calculateAngleViaPoint(*crv1, *crv2, p) - angleDesire;
             // bring angleErr to -pi..pi
-            if (angleErr > M_PI) {
-                angleErr -= M_PI * 2;
+            if (angleErr > pi) {
+                angleErr -= pi * 2;
             }
-            if (angleErr < -M_PI) {
-                angleErr += M_PI * 2;
+            if (angleErr < -pi) {
+                angleErr += pi * 2;
             }
 
             // the autodetector
-            if (fabs(angleErr) > M_PI / 2) {
-                angleDesire += M_PI;
+            if (fabs(angleErr) > pi / 2) {
+                angleDesire += pi;
             }
 
             *angle = angleDesire;
@@ -3643,7 +3638,7 @@ int Sketch::addEqualConstraint(int geoId1, int geoId2)
         }
     }
 
-    Base::Console().Warning("Equality constraints between %s and %s are not supported.\n",
+    Base::Console().warning("Equality constraints between %s and %s are not supported.\n",
                             nameByType(Geoms[geoId1].type),
                             nameByType(Geoms[geoId2].type));
     return -1;
@@ -3803,7 +3798,7 @@ int Sketch::addSnellsLawConstraint(int geoIdRay1,
     geoIdBnd = checkGeoId(geoIdBnd);
 
     if (Geoms[geoIdRay1].type == Point || Geoms[geoIdRay2].type == Point) {
-        Base::Console().Error("addSnellsLawConstraint: point is not a curve. Not applicable!\n");
+        Base::Console().error("addSnellsLawConstraint: point is not a curve. Not applicable!\n");
         return -1;
     }
 
@@ -3811,7 +3806,7 @@ int Sketch::addSnellsLawConstraint(int geoIdRay1,
     GCS::Curve* ray2 = getGCSCurveByGeoId(geoIdRay2);
     GCS::Curve* boundary = getGCSCurveByGeoId(geoIdBnd);
     if (!ray1 || !ray2 || !boundary) {
-        Base::Console().Error("addSnellsLawConstraint: getGCSCurveByGeoId returned NULL!\n");
+        Base::Console().error("addSnellsLawConstraint: getGCSCurveByGeoId returned NULL!\n");
         return -1;
     }
 
@@ -3819,7 +3814,7 @@ int Sketch::addSnellsLawConstraint(int geoIdRay1,
     int pointId2 = getPointId(geoIdRay2, posRay2);
     if (pointId1 < 0 || pointId1 >= int(Points.size()) || pointId2 < 0
         || pointId2 >= int(Points.size())) {
-        Base::Console().Error("addSnellsLawConstraint: point index out of range.\n");
+        Base::Console().error("addSnellsLawConstraint: point index out of range.\n");
         return -1;
     }
     GCS::Point& p1 = Points[pointId1];
@@ -4321,7 +4316,7 @@ bool Sketch::updateGeometry()
             ++i;
         }
         catch (Base::Exception& e) {
-            Base::Console().Error("Updating geometry: Error build geometry(%d): %s\n", i, e.what());
+            Base::Console().error("Updating geometry: Error build geometry(%d): %s\n", i, e.what());
             return false;
         }
     }
@@ -4548,7 +4543,7 @@ bool Sketch::updateNonDrivingConstraints()
             }
             else if ((*it).constr->Type == Angle) {
 
-                (*it).constr->setValue(std::fmod(*((*it).value), 2.0 * M_PI));
+                (*it).constr->setValue(std::fmod(*((*it).value), 2.0 * std::numbers::pi));
             }
             else if ((*it).constr->Type == Diameter && (*it).constr->First >= 0) {
 
@@ -4570,9 +4565,7 @@ bool Sketch::updateNonDrivingConstraints()
                     rad = a.rad;
                 }
 
-                auto pos = std::find(FixParameters.begin(), FixParameters.end(), rad);
-
-                if (pos != FixParameters.end()) {
+                if (auto pos = std::ranges::find(FixParameters, rad); pos != FixParameters.end()) {
                     (*it).constr->setValue(*((*it).value));
                 }
                 else {
@@ -4601,7 +4594,7 @@ int Sketch::solve()
 
     if (debugMode == GCS::Minimal || debugMode == GCS::IterationLevel) {
 
-        Base::Console().Log("Sketcher::Solve()-%s-T:%s\n",
+        Base::Console().log("Sketcher::Solve()-%s-T:%s\n",
                             solvername.c_str(),
                             Base::TimeElapsed::diffTime(start_time, end_time).c_str());
     }
@@ -4653,7 +4646,7 @@ int Sketch::internalSolve(std::string& solvername, int level)
         if (!valid_solution) {
             GCSsys.undoSolution();
             updateGeometry();
-            Base::Console().Warning("Invalid solution from %s solver.\n", solvername.c_str());
+            Base::Console().warning("Invalid solution from %s solver.\n", solvername.c_str());
         }
         else {
             updateNonDrivingConstraints();
@@ -4663,7 +4656,7 @@ int Sketch::internalSolve(std::string& solvername, int level)
         valid_solution = false;
         if (debugMode == GCS::Minimal || debugMode == GCS::IterationLevel) {
 
-            Base::Console().Log("Sketcher::Solve()-%s- Failed!! Falling back...\n",
+            Base::Console().log("Sketcher::Solve()-%s- Failed!! Falling back...\n",
                                 solvername.c_str());
         }
     }
@@ -4713,7 +4706,7 @@ int Sketch::internalSolve(std::string& solvername, int level)
                 if (!valid_solution) {
                     GCSsys.undoSolution();
                     updateGeometry();
-                    Base::Console().Warning("Invalid solution from %s solver.\n",
+                    Base::Console().warning("Invalid solution from %s solver.\n",
                                             solvername.c_str());
                     ret = GCS::SuccessfulSolutionInvalid;
                 }
@@ -4725,7 +4718,7 @@ int Sketch::internalSolve(std::string& solvername, int level)
                 valid_solution = false;
                 if (debugMode == GCS::Minimal || debugMode == GCS::IterationLevel) {
 
-                    Base::Console().Log("Sketcher::Solve()-%s- Failed!! Falling back...\n",
+                    Base::Console().log("Sketcher::Solve()-%s- Failed!! Falling back...\n",
                                         solvername.c_str());
                 }
             }
@@ -4736,19 +4729,19 @@ int Sketch::internalSolve(std::string& solvername, int level)
 
             if (valid_solution) {
                 if (soltype == 1) {
-                    Base::Console().Log("Important: the LevenbergMarquardt solver succeeded where "
+                    Base::Console().log("Important: the LevenbergMarquardt solver succeeded where "
                                         "the DogLeg solver had failed.\n");
                 }
                 else if (soltype == 2) {
-                    Base::Console().Log("Important: the BFGS solver succeeded where the DogLeg and "
+                    Base::Console().log("Important: the BFGS solver succeeded where the DogLeg and "
                                         "LevenbergMarquardt solvers have failed.\n");
                 }
                 else if (soltype == 3) {
-                    Base::Console().Log("Important: the SQP solver succeeded where all single "
+                    Base::Console().log("Important: the SQP solver succeeded where all single "
                                         "subsystem solvers have failed.\n");
                 }
                 else if (soltype > 0) {
-                    Base::Console().Log("All solvers failed.\n");
+                    Base::Console().log("All solvers failed.\n");
                 }
 
                 break;

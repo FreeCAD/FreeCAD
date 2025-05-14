@@ -79,6 +79,10 @@ public:
     App::Document *reopen(App::Document *doc);
     /// Prompt about recomputing if needed
     static void checkForRecomputes();
+    /// Prompt about PartialRestore
+    void checkPartialRestore(App::Document* doc);
+    /// Prompt for Errors on open
+    void checkRestoreError(App::Document* doc);
     //@}
 
 
@@ -247,6 +251,9 @@ public:
     static void runApplication();
     void tryClose( QCloseEvent * e );
     //@}
+
+    /// get verbose DPI and style info
+    static void getVerboseDPIStyleInfo(QTextStream& str);
 
     /// whenever GUI is about to start with the main window hidden
     static bool hiddenMainWindow();

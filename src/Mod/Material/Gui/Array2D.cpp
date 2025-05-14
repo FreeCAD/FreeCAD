@@ -58,12 +58,12 @@ Array2D::Array2D(const QString& propertyName,
         _property = material->getAppearanceProperty(propertyName);
     }
     else {
-        Base::Console().Log("Property '%s' not found\n", propertyName.toStdString().c_str());
+        Base::Console().log("Property '%s' not found\n", propertyName.toStdString().c_str());
         _property = nullptr;
     }
     if (_property) {
         _value =
-            std::static_pointer_cast<Materials::Material2DArray>(_property->getMaterialValue());
+            std::static_pointer_cast<Materials::Array2D>(_property->getMaterialValue());
         setWindowTitle(_property->getDisplayName());
     }
     else {

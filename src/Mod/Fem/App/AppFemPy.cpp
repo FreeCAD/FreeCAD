@@ -40,6 +40,11 @@
 #ifdef FC_USE_VTK
 #include "FemPostPipeline.h"
 #include "FemVTKTools.h"
+#include <LibraryVersions.h>
+#endif
+
+#ifdef FC_USE_VTK_PYTHON
+#include <vtkPythonUtil.h>
 #endif
 
 
@@ -66,6 +71,7 @@ public:
                            &Module::read,
                            "Read a mesh from a file and returns a Mesh object.");
 #ifdef FC_USE_VTK
+        add_varargs_method("frdToVTK", &Module::frdToVTK, "Convert a .frd result file to VTK file");
         add_varargs_method("readResult",
                            &Module::readResult,
                            "Read a CFD or Mechanical result (auto detect) from a file (file format "
@@ -74,6 +80,15 @@ public:
                            &Module::writeResult,
                            "write a CFD or FEM result (auto detect) to a file (file format "
                            "detected from file suffix)");
+        add_varargs_method("getVtkVersion",
+                           &Module::getVtkVersion,
+                           "Returns the VTK version FreeCAD is linked against");
+#ifdef FC_USE_VTK_PYTHON
+        add_varargs_method(
+            "isVtkCompatible",
+            &Module::isVtkCompatible,
+            "Checks if the passed vtkObject is compatible with the c++ VTK version FreeCAD uses");
+#endif
 #endif
         add_varargs_method("show",
                            &Module::show,
@@ -123,8 +138,7 @@ private:
         Base::FileInfo file(EncodedName.c_str());
         // create new document and add Import feature
         App::Document* pcDoc = App::GetApplication().newDocument();
-        FemMeshObject* pcFeature = static_cast<FemMeshObject*>(
-            pcDoc->addObject("Fem::FemMeshObject", file.fileNamePure().c_str()));
+        FemMeshObject* pcFeature = pcDoc->addObject<FemMeshObject>(file.fileNamePure().c_str());
         pcFeature->Label.setValue(file.fileNamePure().c_str());
         pcFeature->FemMesh.setValuePtr(mesh.release());
         pcFeature->purgeTouched();
@@ -160,8 +174,7 @@ private:
             std::unique_ptr<FemMesh> mesh(new FemMesh);
             mesh->read(EncodedName.c_str());
 
-            FemMeshObject* pcFeature = static_cast<FemMeshObject*>(
-                pcDoc->addObject("Fem::FemMeshObject", file.fileNamePure().c_str()));
+            FemMeshObject* pcFeature = pcDoc->addObject<FemMeshObject>(file.fileNamePure().c_str());
             pcFeature->Label.setValue(file.fileNamePure().c_str());
             pcFeature->FemMesh.setValuePtr(mesh.release());
             pcFeature->purgeTouched();
@@ -170,8 +183,7 @@ private:
 #ifdef FC_USE_VTK
             if (FemPostPipeline::canRead(file)) {
 
-                FemPostPipeline* pcFeature = static_cast<FemPostPipeline*>(
-                    pcDoc->addObject("Fem::FemPostPipeline", file.fileNamePure().c_str()));
+                auto* pcFeature = pcDoc->addObject<FemPostPipeline>(file.fileNamePure().c_str());
 
                 pcFeature->Label.setValue(file.fileNamePure().c_str());
                 pcFeature->read(file);
@@ -251,6 +263,21 @@ private:
     }
 
 #ifdef FC_USE_VTK
+    Py::Object frdToVTK(const Py::Tuple& args)
+    {
+        char* filename = nullptr;
+        PyObject* binary = Py_True;
+        if (!PyArg_ParseTuple(args.ptr(), "et|O!", "utf-8", &filename, &PyBool_Type, &binary)) {
+            throw Py::Exception();
+        }
+        std::string encodedName = std::string(filename);
+        PyMem_Free(filename);
+
+        FemVTKTools::frdToVTK(encodedName.c_str(), Base::asBoolean(binary));
+
+        return Py::None();
+    }
+
     Py::Object readResult(const Py::Tuple& args)
     {
         char* fileName = nullptr;
@@ -305,6 +332,34 @@ private:
 
         return Py::None();
     }
+
+    Py::Object getVtkVersion(const Py::Tuple& args)
+    {
+        if (!PyArg_ParseTuple(args.ptr(), "")) {
+            throw Py::Exception();
+        }
+
+        return Py::String(fcVtkVersion);
+    }
+
+#ifdef FC_USE_VTK_PYTHON
+    Py::Object isVtkCompatible(const Py::Tuple& args)
+    {
+        PyObject* pcObj = nullptr;
+        if (!PyArg_ParseTuple(args.ptr(), "O", &pcObj)) {
+            throw Py::Exception();
+        }
+
+        // if non is returned the VTK object was created by annother VTK library, and the
+        // python api used to create it cannot be used with FreeCAD
+        vtkObjectBase* obj = vtkPythonUtil::GetPointerFromObject(pcObj, "vtkObject");
+        if (!obj) {
+            PyErr_Clear();
+            return Py::False();
+        }
+        return Py::True();
+    }
+#endif
 #endif
 
     Py::Object show(const Py::Tuple& args)
@@ -321,8 +376,7 @@ private:
         }
 
         FemMeshPy* pShape = static_cast<FemMeshPy*>(pcObj);
-        Fem::FemMeshObject* pcFeature =
-            static_cast<Fem::FemMeshObject*>(pcDoc->addObject("Fem::FemMeshObject", name));
+        Fem::FemMeshObject* pcFeature = pcDoc->addObject<Fem::FemMeshObject>(name);
         // copy the data
         pcFeature->FemMesh.setValue(*(pShape->getFemMeshPtr()));
         pcDoc->recompute();

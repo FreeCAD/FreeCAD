@@ -96,26 +96,6 @@ StdCmdOpen::StdCmdOpen()
 
 void StdCmdOpen::activated(int iMsg)
 {
-    // clang-format off
-    auto checkPartialRestore = [](App::Document* doc) {
-        if (doc && doc->testStatus(App::Document::PartialRestore)) {
-            QMessageBox::critical(getMainWindow(), QObject::tr("Error"),
-            QObject::tr("There were errors while loading the file. Some data might have been "
-                        "modified or not recovered at all. Look in the report view for more "
-                        "specific information about the objects involved."));
-        }
-    };
-
-    auto checkRestoreError = [](App::Document* doc) {
-        if (doc && doc->testStatus(App::Document::RestoreError)) {
-            QMessageBox::critical(getMainWindow(), QObject::tr("Error"),
-            QObject::tr("There were serious errors while loading the file. Some data might have "
-                        "been modified or not recovered at all. Saving the project will most "
-                        "likely result in loss of data."));
-        }
-    };
-    // clang-format on
-
     Q_UNUSED(iMsg);
 
     // fill the list of registered endings
@@ -126,9 +106,8 @@ void StdCmdOpen::activated(int iMsg)
     formatList += QLatin1String(" (");
 
     std::vector<std::string> filetypes = App::GetApplication().getImportTypes();
-    std::vector<std::string>::iterator it;
     // Make sure FCStd is the very first fileformat
-    it = std::find(filetypes.begin(), filetypes.end(), "FCStd");
+    auto it = std::ranges::find(filetypes, "FCStd");
     if (it != filetypes.end()) {
         filetypes.erase(it);
         filetypes.insert(filetypes.begin(), "FCStd");
@@ -183,8 +162,8 @@ void StdCmdOpen::activated(int iMsg)
 
             App::Document *doc = App::GetApplication().getActiveDocument();
 
-            checkPartialRestore(doc);
-            checkRestoreError(doc);
+            getGuiApplication()->checkPartialRestore(doc);
+            getGuiApplication()->checkRestoreError(doc);
         }
     }
 }
@@ -518,7 +497,7 @@ void StdCmdExport::activated(int iMsg)
             lastExportUsedGeneratedFilename = true;
         else
             lastExportUsedGeneratedFilename = false;
-            
+
         lastExportFullPath = fileName;
         lastActiveDocument = getActiveGuiDocument();
         lastExportedObject = selection.front();
@@ -638,7 +617,7 @@ void StdCmdExportDependencyGraph::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     App::Document* doc = App::GetApplication().getActiveDocument();
-    QString format = QString::fromLatin1("%1 (*.gv)").arg(Gui::GraphvizView::tr("Graphviz format"));
+    QString format = QStringLiteral("%1 (*.gv)").arg(Gui::GraphvizView::tr("Graphviz format"));
     QString fn = Gui::FileDialog::getSaveFileName(Gui::getMainWindow(), Gui::GraphvizView::tr("Export graph"), QString(), format);
     if (!fn.isEmpty()) {
         QFile file(fn);
@@ -679,7 +658,7 @@ void StdCmdNew::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     QString cmd;
-    cmd = QString::fromLatin1("App.newDocument()");
+    cmd = QStringLiteral("App.newDocument()");
     runCommand(Command::Doc,cmd.toUtf8());
     doCommand(Command::Gui,"Gui.activeDocument().activeView().viewDefaultOrientation()");
 
@@ -1367,7 +1346,7 @@ void StdCmdDelete::activated(int iMsg)
         auto editDoc = Application::Instance->editDocument();
         ViewProviderDocumentObject *vpedit = nullptr;
         if(editDoc)
-            vpedit = dynamic_cast<ViewProviderDocumentObject*>(editDoc->getInEdit());
+            vpedit = freecad_cast<ViewProviderDocumentObject*>(editDoc->getInEdit());
         if(vpedit && !vpedit->acceptDeletionsInEdit()) {
             for(auto &sel : Selection().getSelectionEx(editDoc->getDocument()->getName())) {
                 if(sel.getObject() == vpedit->getObject()) {
@@ -1386,7 +1365,7 @@ void StdCmdDelete::activated(int iMsg)
             for(auto &sel : sels) {
                 auto obj = sel.getObject();
                 if (obj == nullptr){
-                    Base::Console().DeveloperWarning("StdCmdDelete::activated",
+                    Base::Console().developerWarning("StdCmdDelete::activated",
                                                      "App::DocumentObject pointer is nullptr\n");
                     continue;
                 }
@@ -1401,7 +1380,7 @@ void StdCmdDelete::activated(int iMsg)
                             else
                                 label = QLatin1String(parent->getNameInDocument());
                             if(parent->Label.getStrValue() != parent->getNameInDocument())
-                                label += QString::fromLatin1(" (%1)").arg(
+                                label += QStringLiteral(" (%1)").arg(
                                         QString::fromUtf8(parent->Label.getValue()));
                             affectedLabels.insert(label);
                             if(affectedLabels.size()>=10) {
@@ -1464,10 +1443,10 @@ void StdCmdDelete::activated(int iMsg)
     } catch (const Base::Exception& e) {
         QMessageBox::critical(getMainWindow(), QObject::tr("Delete failed"),
                 QString::fromLatin1(e.what()));
-        e.ReportException();
+        e.reportException();
     } catch (...) {
         QMessageBox::critical(getMainWindow(), QObject::tr("Delete failed"),
-                QString::fromLatin1("Unknown error"));
+                QStringLiteral("Unknown error"));
     }
     commitCommand();
     Gui::getMainWindow()->setUpdatesEnabled(true);
@@ -1507,24 +1486,25 @@ StdCmdRefresh::StdCmdRefresh()
         eType = eType | NoTransaction;
 }
 
-void StdCmdRefresh::activated(int iMsg)
+void StdCmdRefresh::activated([[maybe_unused]] int iMsg)
 {
-    Q_UNUSED(iMsg);
-    if (getActiveGuiDocument()) {
-        App::AutoTransaction trans((eType & NoTransaction) ? nullptr : "Recompute");
-        try {
-            doCommand(Doc,"App.activeDocument().recompute(None,True,True)");
-        }
-        catch (Base::Exception& /*e*/) {
-            auto ret = QMessageBox::warning(getMainWindow(), QObject::tr("Dependency error"),
-                qApp->translate("Std_Refresh", "The document contains dependency cycles.\n"
-                            "Please check the Report View for more details.\n\n"
-                            "Do you still want to proceed?"),
-                    QMessageBox::Yes, QMessageBox::No);
-            if(ret == QMessageBox::No)
-                return;
-            doCommand(Doc,"App.activeDocument().recompute(None,True)");
-        }
+    if (!getActiveGuiDocument()) {
+        return;
+    }
+
+    App::AutoTransaction trans((eType & NoTransaction) ? nullptr : "Recompute");
+    try {
+        doCommand(Doc,"App.activeDocument().recompute(None,True,True)");
+    }
+    catch (Base::Exception& /*e*/) {
+        auto ret = QMessageBox::warning(getMainWindow(), QObject::tr("Dependency error"),
+            qApp->translate("Std_Refresh", "The document contains dependency cycles.\n"
+                        "Please check the Report View for more details.\n\n"
+                        "Do you still want to proceed?"),
+                QMessageBox::Yes, QMessageBox::No);
+        if(ret == QMessageBox::No)
+            return;
+        doCommand(Doc,"App.activeDocument().recompute(None,True)");
     }
 }
 
@@ -1974,7 +1954,7 @@ protected:
             abortCommand();
             QMessageBox::critical(getMainWindow(), QObject::tr("Failed to paste expressions"),
                 QString::fromLatin1(e.what()));
-            e.ReportException();
+            e.reportException();
         }
     }
 

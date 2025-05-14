@@ -57,6 +57,8 @@
 #include <Base/Interpreter.h>
 #include <Base/Parameter.h>
 
+#include <Gui/PreferencePages/DlgSettingsPDF.h>
+
 
 using namespace Gui;
 namespace Gui
@@ -139,14 +141,15 @@ EditorView::EditorView(TextEdit* editor, QWidget* parent)
 
     d->activityTimer = new QTimer(this);
     // clang-format off
+    connectionList <<
     connect(d->activityTimer, &QTimer::timeout,
-            this, &EditorView::checkTimestamp);
+            this, &EditorView::checkTimestamp) <<
     connect(d->textEdit->document(), &QTextDocument::modificationChanged,
-            this, &EditorView::setWindowModified);
+            this, &EditorView::setWindowModified) <<
     connect(d->textEdit->document(), &QTextDocument::undoAvailable,
-            this, &EditorView::undoAvailable);
+            this, &EditorView::undoAvailable) <<
     connect(d->textEdit->document(), &QTextDocument::redoAvailable,
-            this, &EditorView::redoAvailable);
+            this, &EditorView::redoAvailable) <<
     connect(d->textEdit->document(), &QTextDocument::contentsChange,
             this, &EditorView::contentsChange);
     // clang-format on
@@ -156,6 +159,10 @@ EditorView::EditorView(TextEdit* editor, QWidget* parent)
 EditorView::~EditorView()
 {
     d->activityTimer->stop();
+    // to avoid the assert introduced a debug version of Qt >6.3. See QTBUG-105473
+    for (auto conn : connectionList) { // NOLINT(performance-for-range-copy)
+        disconnect(conn);
+    }
     delete d->activityTimer;
     delete d;
     getWindowParameter()->Detach(this);
@@ -370,7 +377,7 @@ bool EditorView::saveAs()
         this,
         QObject::tr("Save Macro"),
         QString(),
-        QString::fromLatin1("%1 (*.FCMacro);;Python (*.py)").arg(tr("FreeCAD macro")));
+        QStringLiteral("%1 (*.FCMacro);;Python (*.py)").arg(tr("FreeCAD macro")));
     if (fn.isEmpty()) {
         return false;
     }
@@ -503,12 +510,13 @@ void EditorView::printPdf()
         FileDialog::getSaveFileName(this,
                                     tr("Export PDF"),
                                     QString(),
-                                    QString::fromLatin1("%1 (*.pdf)").arg(tr("PDF file")));
+                                    QStringLiteral("%1 (*.pdf)").arg(tr("PDF file")));
     if (!filename.isEmpty()) {
         QPrinter printer(QPrinter::ScreenResolution);
-        // setPdfVersion sets the printied PDF Version to comply with PDF/A-1b, more details under:
+        // setPdfVersion sets the printed PDF Version to what is chosen in
+        // Preferences/Import-Export/PDF more details under:
         // https://www.kdab.com/creating-pdfa-documents-qt/
-        printer.setPdfVersion(QPagedPaintDevice::PdfVersion_A1b);
+        printer.setPdfVersion(Gui::Dialog::DlgSettingsPDF::evaluatePDFVersion());
         printer.setOutputFormat(QPrinter::PdfFormat);
         printer.setOutputFileName(filename);
         printer.setCreator(QString::fromStdString(App::Application::getNameWithVersion()));
@@ -541,7 +549,7 @@ void EditorView::setCurrentFileName(const QString& fileName)
         shownName = tr("untitled[*]");
     }
     else {
-        shownName = QString::fromLatin1("%1[*]").arg(name);
+        shownName = QStringLiteral("%1[*]").arg(name);
     }
     shownName += tr(" - Editor");
     setWindowTitle(shownName);
@@ -710,7 +718,7 @@ void PythonEditorView::executeScript()
         // handle SystemExit exceptions
         Base::PyGILStateLocker locker;
         Base::PyException e;
-        e.ReportException();
+        e.reportException();
         getMainWindow()->unsetCursor();
     }
 }
@@ -894,7 +902,7 @@ void SearchBar::findText(bool skip, bool next, const QString& str)
 
     QString styleSheet;
     if (!found) {
-        styleSheet = QString::fromLatin1(" QLineEdit {\n"
+        styleSheet = QStringLiteral(" QLineEdit {\n"
                                          "     background-color: rgb(221,144,161);\n"
                                          " }\n");
     }

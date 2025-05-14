@@ -264,7 +264,7 @@ void PlacementHandler::applyPlacement(const Base::Placement& p, bool incremental
         }
     }
     else {
-        Base::Console().Warning("No object selected.\n");
+        Base::Console().warning("No object selected.\n");
     }
 }
 
@@ -315,7 +315,7 @@ void PlacementHandler::applyPlacement(const QString& data, bool incremental)
             tryRecompute(document);
         }
         else {
-            Base::Console().Warning("No object selected.\n");
+            Base::Console().warning("No object selected.\n");
         }
     }
 }
@@ -338,7 +338,7 @@ void PlacementHandler::applyPlacement(const App::DocumentObject* obj, const QStr
 
 QString PlacementHandler::getIncrementalPlacement(const App::DocumentObject* obj, const QString& data) const
 {
-    return QString::fromLatin1(
+    return QStringLiteral(
         R"(App.getDocument("%1").%2.%3=%4.multiply(App.getDocument("%1").%2.%3))")
         .arg(QString::fromLatin1(obj->getDocument()->getName()),
              QString::fromLatin1(obj->getNameInDocument()),
@@ -348,7 +348,7 @@ QString PlacementHandler::getIncrementalPlacement(const App::DocumentObject* obj
 
 QString PlacementHandler::getSimplePlacement(const App::DocumentObject* obj, const QString& data) const
 {
-    return QString::fromLatin1(
+    return QStringLiteral(
         "App.getDocument(\"%1\").%2.%3=%4")
         .arg(QString::fromLatin1(obj->getDocument()->getName()),
              QString::fromLatin1(obj->getNameInDocument()),
@@ -530,13 +530,8 @@ void Placement::setupSignalMapper()
         signalMapper->setMapping(it, id++);
     }
 
-#if QT_VERSION < QT_VERSION_CHECK(5,15,0)
-    connect(signalMapper, qOverload<int>(&QSignalMapper::mapped),
-            this, &Placement::onPlacementChanged);
-#else
     connect(signalMapper, &QSignalMapper::mappedInt,
             this, &Placement::onPlacementChanged);
-#endif
 }
 
 void Placement::setupRotationMethod()
@@ -635,13 +630,13 @@ void Placement::onSelectedVertexClicked()
             axis = Base::Vector3d(picked[0] - picked[1]);
         }
         double length = axis.Length();
-        Base::Console().Message("Distance: %.8f\n",length);
+        Base::Console().message("Distance: %.8f\n",length);
         if (QApplication::keyboardModifiers() == Qt::ShiftModifier){ //copy to clipboard on Shift+click
             QLocale loc;
             QApplication::clipboard()->setText(loc.toString(length,'g',8));
         }
         else {
-            Base::Console().Message("(Shift + click Selected points button to copy distance to clipboard)\n");
+            Base::Console().message("(Shift + click Selected points button to copy distance to clipboard)\n");
         }
         axis.Normalize();
         rot.setValue(axis, angle);
@@ -683,20 +678,20 @@ void Placement::onSelectedVertexClicked()
         double angle;
         rot.getRawValue(tmp, angle);
         double length = (a-c).Length();
-        Base::Console().Message("Distance: %.8f\n",length);
+        Base::Console().message("Distance: %.8f\n",length);
         Base::Vector3d v1(a-b);
         Base::Vector3d v2(c-b);
         v1.Normalize();
         v2.Normalize();
         double targetAngle = Base::toDegrees(v2.GetAngle(v1));
-        Base::Console().Message("Target angle: %.8f degrees, complementary: %.8f degrees\n",targetAngle, 90.0-targetAngle);
+        Base::Console().message("Target angle: %.8f degrees, complementary: %.8f degrees\n",targetAngle, 90.0-targetAngle);
         if (QApplication::keyboardModifiers() == Qt::ShiftModifier){ //copy to clipboard on Shift+click
             QLocale loc;
             QApplication::clipboard()->setText(loc.toString(targetAngle,'g',8));
-            Base::Console().Message("(Angle copied to clipboard, but you might need to use a negative (-) angle sometimes.)\n");
+            Base::Console().message("(Angle copied to clipboard, but you might need to use a negative (-) angle sometimes.)\n");
         }
         else {
-            Base::Console().Message("(Shift + click Selected points button to copy angle to clipboard)\n");
+            Base::Console().message("(Shift + click Selected points button to copy angle to clipboard)\n");
         }
         rot.setValue(norm, angle);
         plm.setRotation(rot);
@@ -712,8 +707,8 @@ void Placement::onSelectedVertexClicked()
     ui->zCnt->setValue(center.z);
 
     if (!success) {
-        Base::Console().Warning("Placement selection error.  Select either 1 or 2 points.\n");
-        QMessageBox msgBox;
+        Base::Console().warning("Placement selection error.  Select either 1 or 2 points.\n");
+        QMessageBox msgBox(this);
         msgBox.setText(tr("Please select 1, 2, or 3 points before clicking this button.  A point may be on a vertex, \
 face, or edge.  If on a face or edge the point used will be the point at the mouse position along \
 face or edge.  If 1 point is selected it will be used as the center of rotation.  If 2 points are \
@@ -1036,7 +1031,7 @@ QString Placement::getPlacementFromEulerAngles() const
     Base::Vector3d pos = getPositionData();
     Base::Vector3d ypr = getAnglesData();
     Base::Vector3d cnt = getCenterData();
-    return QString::fromLatin1(
+    return QStringLiteral(
         "App.Placement(App.Vector(%1,%2,%3), App.Rotation(%4,%5,%6), App.Vector(%7,%8,%9))")
         .arg(pos.x)
         .arg(pos.y)
@@ -1055,7 +1050,7 @@ QString Placement::getPlacementFromAxisWithAngle() const
     Base::Vector3d cnt = getCenterData();
     Base::Vector3d dir = getDirection();
     double angle = ui->angle->value().getValue();
-    return QString::fromLatin1(
+    return QStringLiteral(
         "App.Placement(App.Vector(%1,%2,%3), App.Rotation(App.Vector(%4,%5,%6),%7), App.Vector(%8,%9,%10))")
         .arg(pos.x)
         .arg(pos.y)

@@ -204,7 +204,7 @@ private:
 
     QString getCrosshairCursorSVGName() const override
     {
-        return QString::fromLatin1("Sketcher_Pointer_Slot");
+        return QStringLiteral("Sketcher_Pointer_Slot");
     }
 
     std::unique_ptr<QWidget> createWidget() const override
@@ -241,6 +241,8 @@ private:
 
     void createShape(bool onlyeditoutline) override
     {
+        using std::numbers::pi;
+
         ShapeGeometry.clear();
 
         if (length < Precision::Confusion() || radius < Precision::Confusion()) {
@@ -248,14 +250,14 @@ private:
         }
 
         Part::GeomArcOfCircle* arc1 = addArcToShapeGeometry(toVector3d(startPoint),
-                                                            M_PI / 2 + angle,
-                                                            1.5 * M_PI + angle,
+                                                            pi / 2 + angle,
+                                                            1.5 * pi + angle,
                                                             radius,
                                                             isConstructionMode());
 
         Part::GeomArcOfCircle* arc2 = addArcToShapeGeometry(toVector3d(secondPoint),
-                                                            1.5 * M_PI + angle,
-                                                            M_PI / 2 + angle,
+                                                            1.5 * pi + angle,
+                                                            pi / 2 + angle,
                                                             radius,
                                                             isConstructionMode());
 
@@ -323,13 +325,15 @@ private:
 
     void checkHorizontalVertical()
     {
+        using std::numbers::pi;
+
         isHorizontal = false;
         isVertical = false;
 
-        if (fmod(fabs(angle), M_PI) < Precision::Confusion()) {
+        if (fmod(fabs(angle), pi) < Precision::Confusion()) {
             isHorizontal = true;
         }
-        else if (fmod(fabs(angle + M_PI / 2), M_PI) < Precision::Confusion()) {
+        else if (fmod(fabs(angle + pi / 2), pi) < Precision::Confusion()) {
             isVertical = true;
         }
     }
@@ -410,8 +414,9 @@ void DSHSlotControllerBase::doEnforceControlParameters(Base::Vector2d& onSketchP
             if (onViewParameters[OnViewParameter::Fourth]->isSet) {
                 double angle =
                     Base::toRadians(onViewParameters[OnViewParameter::Fourth]->getValue());
-                onSketchPos.x = handler->startPoint.x + cos(angle) * length;
-                onSketchPos.y = handler->startPoint.y + sin(angle) * length;
+                Base::Vector2d ovpDir(cos(angle), sin(angle));
+                onSketchPos.ProjectToLine(onSketchPos - handler->startPoint, ovpDir);
+                onSketchPos += handler->startPoint;
             }
         } break;
         case SelectMode::SeekThird: {
@@ -467,6 +472,16 @@ void DSHSlotController::adaptParameters(Base::Vector2d onSketchPos)
                 setOnViewParameterValue(OnViewParameter::Fourth,
                                         Base::toDegrees(range),
                                         Base::Unit::Angle);
+            }
+            else if (vec.Length() > Precision::Confusion()) {
+                double ovpRange =
+                    Base::toRadians(onViewParameters[OnViewParameter::Fourth]->getValue());
+
+                if (fabs(range - ovpRange) > Precision::Confusion()) {
+                    setOnViewParameterValue(OnViewParameter::Fourth,
+                                            Base::toDegrees(range),
+                                            Base::Unit::Angle);
+                }
             }
 
             onViewParameters[OnViewParameter::Third]->setPoints(start, end);

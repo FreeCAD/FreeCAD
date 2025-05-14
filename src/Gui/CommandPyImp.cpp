@@ -37,7 +37,7 @@
 #include "Window.h"
 #include "PythonWrapper.h"
 
-// inclusion of the generated files (generated out of CommandPy.xml)
+// inclusion of the generated files (generated out of CommandPy.pyi)
 #include "CommandPy.h"
 #include "CommandPy.cpp"
 #include "ShortcutManager.h"
@@ -100,7 +100,7 @@ PyObject* CommandPy::listByShortcut(PyObject *args)
     for (Command* c : cmds) {
         Action* action = c->getAction();
         if (action) {
-            QString spc = QString::fromLatin1(" ");
+            QString spc = QStringLiteral(" ");
             if (Base::asBoolean(bIsRegularExp)) {
                QRegularExpression re(QString::fromLatin1(shortcut_to_find), QRegularExpression::CaseInsensitiveOption);
                if (!re.isValid()) {
@@ -149,7 +149,7 @@ PyObject* CommandPy::run(PyObject *args)
     }
 }
 
-PyObject* CommandPy::isActive(PyObject *args)
+PyObject* CommandPy::isActive(PyObject *args) const
 {
     if (!PyArg_ParseTuple(args, ""))
         return nullptr;
@@ -386,4 +386,3 @@ int CommandPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
 {
     return 0;
 }
-

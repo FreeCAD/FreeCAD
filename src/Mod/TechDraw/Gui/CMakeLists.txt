@@ -16,19 +16,11 @@ include_directories(
     ${CMAKE_SOURCE_DIR}/src
     ${CMAKE_CURRENT_BINARY_DIR}
     ${CMAKE_CURRENT_SOURCE_DIR}
-    ${Boost_INCLUDE_DIRS}
-    ${COIN3D_INCLUDE_DIRS}
-    ${PYTHON_INCLUDE_DIRS}
-    ${OCC_INCLUDE_DIR}
-    ${ZLIB_INCLUDE_DIR}
-    ${XercesC_INCLUDE_DIRS}
 )
 
 # The XML files
 set(TechDrawGui_XML_SRCS
 )
-
-link_directories(${OCC_LIBRARY_DIR})
 
 set(TechDrawGui_LIBS
     TechDraw
@@ -42,7 +34,6 @@ qt_create_resource_file(${TechDraw_TR_QRC} ${QM_SRCS})
 qt_add_resources(TechDrawGui_SRCS Resources/TechDraw.qrc ${TechDraw_TR_QRC})
 
 set(TechDrawGui_UIC_SRCS
-    DlgStringListEditor.ui
     DlgPageChooser.ui
     DlgPrefsTechDrawAdvanced.ui
     DlgPrefsTechDrawAnnotation.ui
@@ -101,6 +92,7 @@ SET(TechDrawGui_SRCS
     CommandCreateDims.cpp
     CommandDecorate.cpp
     CommandAnnotate.cpp
+    CommandAlign.cpp
     CommandExtensionDims.cpp
     CommandExtensionDims.h
     CommandExtensionPack.cpp
@@ -117,9 +109,6 @@ SET(TechDrawGui_SRCS
     TaskProjGroup.ui
     TaskProjGroup.cpp
     TaskProjGroup.h
-    DlgStringListEditor.ui
-    DlgStringListEditor.cpp
-    DlgStringListEditor.h
     DlgPageChooser.ui
     DlgPageChooser.cpp
     DlgPageChooser.h
@@ -269,6 +258,8 @@ SET(TechDrawGuiView_SRCS
     QGIView.h
     QGIArrow.cpp
     QGIArrow.h
+    QGIDatumLabel.cpp
+    QGIDatumLabel.h
     QGIEdge.cpp
     QGIEdge.h
     QGIFace.cpp
@@ -363,6 +354,8 @@ SET(TechDrawGuiNav_SRCS
     QGVNavStyleOpenSCAD.h
     QGVNavStyleRevit.cpp
     QGVNavStyleRevit.h
+    QGVNavStyleSolidWorks.cpp
+    QGVNavStyleSolidWorks.h
     QGVNavStyleTinkerCAD.cpp
     QGVNavStyleTinkerCAD.h
     QGVNavStyleTouchpad.cpp

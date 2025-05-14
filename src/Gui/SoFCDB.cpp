@@ -50,6 +50,7 @@
 #include "SoFCDB.h"
 #include "Camera.h"
 #include "Flag.h"
+#include "Inventor/Draggers/SoTransformDragger.h"
 #include "Navigation/GestureNavigationStyle.h"
 #include "Navigation/NavigationStyle.h"
 #include "SelectionObject.h"
@@ -57,7 +58,6 @@
 #include "SoFCColorBar.h"
 #include "SoFCColorGradient.h"
 #include "SoFCColorLegend.h"
-#include "SoFCCSysDragger.h"
 #include "SoFCInteractiveElement.h"
 #include "SoFCSelection.h"
 #include "SoFCSelectionAction.h"
@@ -78,6 +78,8 @@
 #include "Inventor/SoFCTransform.h"
 #include "propertyeditor/PropertyItem.h"
 #include "ArcEngine.h"
+
+#include <Inventor/SoFCPlacementIndicatorKit.h>
 
 
 using namespace Gui;
@@ -107,13 +109,13 @@ void Gui::SoFCDB::init()
     SoFCBoundingBox                 ::initClass();
     SoFCSelection                   ::initClass();
     SoFCUnifiedSelection            ::initClass();
-    SoFCHighlightAction             ::initClass();
+    SoFCPreselectionAction          ::initClass();
     SoFCSelectionAction             ::initClass();
     SoFCDocumentAction              ::initClass();
     SoGLWidgetNode                  ::initClass();
     SoGLVBOActivatedElement         ::initClass();
     SoFCEnableSelectionAction       ::initClass();
-    SoFCEnableHighlightAction       ::initClass();
+    SoFCEnablePreselectionAction    ::initClass();
     SoFCSelectionColorAction        ::initClass();
     SoFCHighlightColorAction        ::initClass();
     SoFCDocumentObjectAction        ::initClass();
@@ -140,7 +142,7 @@ void Gui::SoFCDB::init()
     SoFCTransform                   ::initClass();
     SoAutoZoomTranslation           ::initClass();
     MarkerBitmaps                   ::initClass();
-    SoFCCSysDragger                 ::initClass();
+    SoTransformDragger                 ::initClass();
     SmSwitchboard                   ::initClass();
     SoFCSeparator                   ::initClass();
     SoFCSelectionRoot               ::initClass();
@@ -148,6 +150,7 @@ void Gui::SoFCDB::init()
     SoMouseWheelEvent               ::initClass();
     So3DAnnotation                  ::initClass();
     SoDelayedAnnotationsElement     ::initClass();
+    SoFCPlacementIndicatorKit       ::initClass();
 
     PropertyItem                    ::init();
     PropertySeparatorItem           ::init();
@@ -189,6 +192,7 @@ void Gui::SoFCDB::init()
     CADNavigationStyle              ::init();
     RevitNavigationStyle            ::init();
     BlenderNavigationStyle          ::init();
+    SolidWorksNavigationStyle       ::init();
     MayaGestureNavigationStyle      ::init();
     TouchpadNavigationStyle         ::init();
     GestureNavigationStyle          ::init();
@@ -226,12 +230,12 @@ void Gui::SoFCDB::finish()
     SoFCBackgroundGradient          ::finish();
     SoFCBoundingBox                 ::finish();
     SoFCSelection                   ::finish();
-    SoFCHighlightAction             ::finish();
+    SoFCPreselectionAction          ::finish();
     SoFCSelectionAction             ::finish();
     SoFCDocumentAction              ::finish();
     SoFCDocumentObjectAction        ::finish();
     SoFCEnableSelectionAction       ::finish();
-    SoFCEnableHighlightAction       ::finish();
+    SoFCEnablePreselectionAction    ::finish();
     SoFCSelectionColorAction        ::finish();
     SoUpdateVBOAction               ::finish();
     SoFCHighlightColorAction        ::finish();

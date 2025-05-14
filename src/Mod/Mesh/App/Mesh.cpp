@@ -526,19 +526,19 @@ void MeshObject::load(std::istream& in)
     try {
         MeshCore::MeshEvalNeighbourhood nb(_kernel);
         if (!nb.Evaluate()) {
-            Base::Console().Warning("Errors in neighbourhood of mesh found...");
+            Base::Console().warning("Errors in neighbourhood of mesh found...");
             _kernel.RebuildNeighbours();
-            Base::Console().Warning("fixed\n");
+            Base::Console().warning("fixed\n");
         }
 
         MeshCore::MeshEvalTopology eval(_kernel);
         if (!eval.Evaluate()) {
-            Base::Console().Warning("The mesh data structure has some defects\n");
+            Base::Console().warning("The mesh data structure has some defects\n");
         }
     }
     catch (const Base::MemoryException&) {
         // ignore memory exceptions and continue
-        Base::Console().Log("Check for defects in mesh data structure failed\n");
+        Base::Console().log("Check for defects in mesh data structure failed\n");
     }
 #endif
 }
@@ -952,7 +952,7 @@ void MeshObject::offsetSpecial2(float fSize)
     Base::Builder3D builder;
     std::vector<Base::Vector3f> PointNormals = _kernel.CalcVertexNormals();
     std::vector<Base::Vector3f> FaceNormals;
-    std::set<FacetIndex> fliped;
+    std::set<FacetIndex> flipped;
 
     MeshCore::MeshFacetIterator it(_kernel);
     for (it.Init(); it.More(); it.Next()) {
@@ -988,20 +988,20 @@ void MeshObject::offsetSpecial2(float fSize)
                                       drawStyle,
                                       Base::ColorRGB {1.0F, 0.0F, 0.0F}};
                 builder.addNode(item);
-                fliped.insert(it.Position());
+                flipped.insert(it.Position());
             }
         }
 
         // if there are no flipped triangles -> stop
-        // int f =fliped.size();
-        if (fliped.empty()) {
+        // int f =flipped.size();
+        if (flipped.empty()) {
             break;
         }
 
-        for (FacetIndex It : fliped) {
+        for (FacetIndex It : flipped) {
             alg.CollapseFacet(It);
         }
-        fliped.clear();
+        flipped.clear();
     }
 
     alg.Cleanup();

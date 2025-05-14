@@ -194,7 +194,7 @@ bool Body::isSolidFeature(const App::DocumentObject *obj)
             // Datum objects are not solid
             return false;
         }
-        if (auto transFeature = Base::freecad_dynamic_cast<PartDesign::Transformed>(obj)) {
+        if (auto transFeature = freecad_cast<PartDesign::Transformed*>(obj)) {
             // Transformed Features inside a MultiTransform are not solid features
             return !transFeature->isMultiTransformChild();
         }
@@ -353,7 +353,7 @@ std::vector<App::DocumentObject*> Body::removeObject(App::DocumentObject* featur
     }
 
     std::vector<App::DocumentObject*> model = Group.getValues();
-    std::vector<App::DocumentObject*>::iterator it = std::find(model.begin(), model.end(), feature);
+    const auto it = std::ranges::find(model, feature);
 
     // Adjust Tip feature if it is pointing to the deleted object
     if (Tip.getValue()== feature) {
@@ -378,19 +378,19 @@ App::DocumentObjectExecReturn *Body::execute()
 {
     Part::BodyBase::execute();
     /*
-    Base::Console().Error("Body '%s':\n", getNameInDocument());
+    Base::Console().error("Body '%s':\n", getNameInDocument());
     App::DocumentObject* tip = Tip.getValue();
-    Base::Console().Error("   Tip: %s\n", (tip == NULL) ? "None" : tip->getNameInDocument());
+    Base::Console().error("   Tip: %s\n", (tip == NULL) ? "None" : tip->getNameInDocument());
     std::vector<App::DocumentObject*> model = Group.getValues();
-    Base::Console().Error("   Group:\n");
+    Base::Console().error("   Group:\n");
     for (std::vector<App::DocumentObject*>::const_iterator m = model.begin(); m != model.end(); m++) {
         if (*m == NULL) continue;
-        Base::Console().Error("      %s", (*m)->getNameInDocument());
+        Base::Console().error("      %s", (*m)->getNameInDocument());
         if (Body::isSolidFeature(*m)) {
             App::DocumentObject* baseFeature = static_cast<PartDesign::Feature*>(*m)->BaseFeature.getValue();
-            Base::Console().Error(", Base: %s\n", baseFeature == NULL ? "None" : baseFeature->getNameInDocument());
+            Base::Console().error(", Base: %s\n", baseFeature == NULL ? "None" : baseFeature->getNameInDocument());
         } else {
-            Base::Console().Error("\n");
+            Base::Console().error("\n");
         }
     }
     */
@@ -442,7 +442,7 @@ void Body::onChanged(const App::Property* prop) {
             if (BaseFeature.getValue()) {
                 //setup the FeatureBase if needed
                 if (!first || !first->isDerivedFrom<FeatureBase>()) {
-                    bf = static_cast<FeatureBase*>(getDocument()->addObject("PartDesign::FeatureBase", "BaseFeature"));
+                    bf = getDocument()->addObject<FeatureBase>("BaseFeature");
                     insertObject(bf, first, false);
 
                     if (!Tip.getValue())

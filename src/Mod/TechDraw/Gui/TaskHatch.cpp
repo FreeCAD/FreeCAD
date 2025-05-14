@@ -72,7 +72,7 @@ TaskHatch::TaskHatch(TechDrawGui::ViewProviderHatch* inVp) :
     ui(new Ui_TaskHatch),
     m_vp(inVp)
 {
-//    Base::Console().Message("TH::TH() - edit\n");
+//    Base::Console().message("TH::TH() - edit\n");
     ui->setupUi(this);
     m_hatch = m_vp->getViewObject();
     App::DocumentObject* obj = m_hatch->Source.getValue();
@@ -96,7 +96,7 @@ void TaskHatch::setUiPrimary()
 {
     setWindowTitle(QObject::tr("Create Face Hatch"));
     ui->fcFile->setFileName(QString::fromStdString(DrawHatch::prefSvgHatch()));
-    ui->fcFile->setFilter(QString::fromUtf8(
+    ui->fcFile->setFilter(QStringLiteral(
             "SVG files (*.svg *.SVG);;Bitmap files(*.jpg *.jpeg *.png *.bmp);;All files (*)"));
     ui->sbScale->setValue(1.0);
     ui->sbScale->setSingleStep(0.1);
@@ -108,7 +108,7 @@ void TaskHatch::setUiEdit()
 {
     setWindowTitle(QObject::tr("Edit Face Hatch"));
     ui->fcFile->setFileName(QString::fromStdString(m_saveFile));
-    ui->fcFile->setFilter(QString::fromUtf8(
+    ui->fcFile->setFilter(QStringLiteral(
             "SVG files (*.svg *.SVG);;Bitmap files(*.jpg *.jpeg *.png *.bmp);;All files (*)"));
     ui->sbScale->setValue(m_saveScale);
     ui->sbScale->setSingleStep(0.1);
@@ -131,7 +131,7 @@ void TaskHatch::saveHatchState()
 //restore the start conditions
 void TaskHatch::restoreHatchState()
 {
-//    Base::Console().Message("TH::restoreHatchState()\n");
+//    Base::Console().message("TH::restoreHatchState()\n");
     if (m_hatch) {
         m_hatch->HatchPattern.setValue(m_saveFile);
         m_vp->HatchScale.setValue(m_saveScale);
@@ -175,7 +175,7 @@ void TaskHatch::onOffsetChanged()
 void TaskHatch::apply(bool forceUpdate)
 {
     Q_UNUSED(forceUpdate)
-//    Base::Console().Message("TH::apply() - m_hatch: %X\n", m_hatch);
+//    Base::Console().message("TH::apply() - m_hatch: %X\n", m_hatch);
     if (!m_hatch) {
         createHatch();
     }
@@ -192,7 +192,7 @@ void TaskHatch::apply(bool forceUpdate)
 
 void TaskHatch::createHatch()
 {
-//    Base::Console().Message("TH::createHatch()\n");
+//    Base::Console().message("TH::createHatch()\n");
     App::Document* doc = m_dvp->getDocument();
 
     // TODO: the structured label for Hatch (and GeomHatch) should be retired.
@@ -218,7 +218,7 @@ void TaskHatch::createHatch()
     Gui::ViewProvider* vp = Gui::Application::Instance->getDocument(doc)->getViewProvider(m_hatch);
     m_vp = dynamic_cast<TechDrawGui::ViewProviderHatch*>(vp);
     if (m_vp) {
-        App::Color ac;
+        Base::Color ac;
         ac.setValue<QColor>(ui->ccColor->color());
         m_vp->HatchColor.setValue(ac);
         m_vp->HatchScale.setValue(ui->sbScale->value().getValue());
@@ -226,14 +226,14 @@ void TaskHatch::createHatch()
         Base::Vector3d offset(ui->dsbOffsetX->value(), ui->dsbOffsetY->value(), 0.0);
         m_vp->HatchOffset.setValue(offset);
     } else {
-        Base::Console().Error("TaskHatch - Hatch has no ViewProvider\n");
+        Base::Console().error("TaskHatch - Hatch has no ViewProvider\n");
     }
     Command::commitCommand();
 }
 
 void TaskHatch::updateHatch()
 {
-//    Base::Console().Message("TH::updateHatch()\n");
+//    Base::Console().message("TH::updateHatch()\n");
     std::string FeatName = m_hatch->getNameInDocument();
 
     Command::openCommand(QT_TRANSLATE_NOOP("Command", "Update Hatch"));
@@ -244,7 +244,7 @@ void TaskHatch::updateHatch()
                        FeatName.c_str(),
                        filespec.c_str());
 
-    App::Color ac;
+    Base::Color ac;
     ac.setValue<QColor>(ui->ccColor->color());
     m_vp->HatchColor.setValue(ac);
     m_vp->HatchScale.setValue(ui->sbScale->value().getValue());
@@ -256,7 +256,7 @@ void TaskHatch::updateHatch()
 
 bool TaskHatch::accept()
 {
-//    Base::Console().Message("TH::accept()\n");
+//    Base::Console().message("TH::accept()\n");
     apply(true);
 
     Gui::Command::doCommand(Gui::Command::Gui, "Gui.ActiveDocument.resetEdit()");
@@ -266,7 +266,7 @@ bool TaskHatch::accept()
 
 bool TaskHatch::reject()
 {
-//    Base::Console().Message("TH::reject()\n");
+//    Base::Console().message("TH::reject()\n");
     restoreHatchState();
     Gui::Command::doCommand(Gui::Command::Gui, "Gui.ActiveDocument.resetEdit()");
     return false;

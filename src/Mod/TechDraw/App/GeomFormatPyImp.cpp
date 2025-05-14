@@ -21,9 +21,6 @@
  ***************************************************************************/
 
 #include "PreCompiled.h"
-#ifndef _PreComp_
-# include <boost/uuid/uuid_io.hpp>
-#endif
 
 #include "GeomFormatPy.h"
 #include "GeomFormatPy.cpp"
@@ -51,7 +48,7 @@ int GeomFormatPy::PyInit(PyObject* /*args*/, PyObject* /*kwd*/)
     return 0;
 }
 
-PyObject* GeomFormatPy::clone(PyObject *args)
+PyObject* GeomFormatPy::clone(PyObject *args) const
 {
     if (!PyArg_ParseTuple(args, ""))
         return nullptr;
@@ -61,7 +58,7 @@ PyObject* GeomFormatPy::clone(PyObject *args)
     PyObject* cpy = nullptr;
     // let the type object decide
     if (type->tp_new)
-        cpy = type->tp_new(type, this, nullptr);
+        cpy = type->tp_new(type, const_cast<GeomFormatPy*>(this), nullptr);
     if (!cpy) {
         PyErr_SetString(PyExc_RuntimeError, "failed to create clone of GeomFormat");
         return nullptr;
@@ -78,7 +75,7 @@ PyObject* GeomFormatPy::clone(PyObject *args)
     return cpy;
 }
 
-PyObject* GeomFormatPy::copy(PyObject *args)
+PyObject* GeomFormatPy::copy(PyObject *args) const
 {
     if (!PyArg_ParseTuple(args, ""))
         return nullptr;
@@ -88,7 +85,7 @@ PyObject* GeomFormatPy::copy(PyObject *args)
     PyObject* cpy = nullptr;
     // let the type object decide
     if (type->tp_new)
-        cpy = type->tp_new(type, this, nullptr);
+        cpy = type->tp_new(type, const_cast<GeomFormatPy*>(this), nullptr);
     if (!cpy) {
         PyErr_SetString(PyExc_RuntimeError, "failed to create copy of GeomFormat");
         return nullptr;
@@ -107,7 +104,7 @@ PyObject* GeomFormatPy::copy(PyObject *args)
 
 Py::String GeomFormatPy::getTag(void) const
 {
-    std::string tmp = boost::uuids::to_string(getGeomFormatPtr()->getTag());
+    std::string tmp = getGeomFormatPtr()->getTagAsString();
     return Py::String(tmp);
 }
 

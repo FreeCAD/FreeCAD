@@ -186,7 +186,7 @@ void ButtonModel::load3DConnexionButtons(const char *RequiredDeviceName)
    catch (const std::exception& e)
    {
       // We don't mind not finding the file to be opened
-      Base::Console().Warning("%s\n", e.what());
+      Base::Console().warning("%s\n", e.what());
    }
 }
 
@@ -201,7 +201,7 @@ QVariant ButtonModel::data (const QModelIndex &index, int role) const
     GroupVector groupVector = spaceballButtonGroup()->GetGroups();
     if (index.row() >= (int)groupVector.size())
     {
-        Base::Console().Log("index error in ButtonModel::data\n");
+        Base::Console().log("index error in ButtonModel::data\n");
         return {};
     }
     if (role == Qt::DisplayRole)
@@ -210,7 +210,7 @@ QVariant ButtonModel::data (const QModelIndex &index, int role) const
     {
         static QPixmap icon(BitmapFactory().pixmap("spaceball_button").scaled
                             (32, 32, Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
-        return {icon};
+        return QVariant(QIcon(icon));  // Cannot make a QPixmap into a QVariant, so convert to a QIcon first
     }
     if (role == Qt::UserRole)
         return {QString::fromStdString(groupVector.at(index.row())->GetASCII("Command"))};
@@ -282,7 +282,7 @@ QString ButtonModel::getLabel(const int &number) const
                                               GetGroup(numberString.toLatin1())->
                                               GetASCII("Description",""));
         if (desc.length())
-            desc = QString::fromUtf8(" \"") + desc + QString::fromUtf8("\"");
+            desc = QStringLiteral(" \"") + desc + QStringLiteral("\"");
         return tr("Button %1").arg(number + 1) + desc;
     } else
         return tr("Out Of Range");
@@ -492,7 +492,7 @@ CommandNode* CommandModel::nodeFromIndex(const QModelIndex &index) const
 
 void CommandModel::goAddMacro(const QByteArray &macroName)
 {
-    QModelIndexList indexList(this->match(this->index(0,0), Qt::UserRole, QVariant(QString::fromLatin1("Macros")),
+    QModelIndexList indexList(this->match(this->index(0,0), Qt::UserRole, QVariant(QStringLiteral("Macros")),
                                           1, Qt::MatchWrap | Qt::MatchRecursive));
     QModelIndex macrosIndex;
     if (indexList.empty())
@@ -500,7 +500,7 @@ void CommandModel::goAddMacro(const QByteArray &macroName)
         //this is the first macro and we have to add the Macros item.
         //figure out where to insert it. Should be in the command groups now.
         QStringList groups = orderedGroups();
-        int location(groups.indexOf(QString::fromLatin1("Macros")));
+        int location(groups.indexOf(QStringLiteral("Macros")));
         if (location == -1)
             location = groups.size();
         //add row
@@ -913,7 +913,7 @@ QStringList DlgCustomizeSpaceball::getModels()
     catch (const std::exception& e)
     {
        // We don't mind not finding the file to be opened
-       Base::Console().Warning("%s\n", e.what());
+       Base::Console().warning("%s\n", e.what());
     }
 
     return modelList;

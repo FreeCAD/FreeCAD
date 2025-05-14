@@ -319,9 +319,9 @@ void PropertyEditor::openEditor(const QModelIndex& index)
     }
     auto prop = items[0];
     auto parent = prop->getContainer();
-    auto obj = Base::freecad_dynamic_cast<App::DocumentObject>(parent);
+    auto obj = freecad_cast<App::DocumentObject*>(parent);
     if (!obj) {
-        auto view = Base::freecad_dynamic_cast<ViewProviderDocumentObject>(parent);
+        auto view = freecad_cast<ViewProviderDocumentObject*>(parent);
         if (view) {
             obj = view->getObject();
         }
@@ -377,16 +377,16 @@ void PropertyEditor::recomputeDocument(App::Document* doc)
     }
     // do not re-throw
     catch (const Base::Exception& e) {
-        e.ReportException();
+        e.reportException();
     }
     catch (const std::exception& e) {
-        Base::Console().Error(
+        Base::Console().error(
             "Unhandled std::exception caught in PropertyEditor::recomputeDocument.\n"
             "The error message is: %s\n",
             e.what());
     }
     catch (...) {
-        Base::Console().Error(
+        Base::Console().error(
             "Unhandled unknown exception caught in PropertyEditor::recomputeDocument.\n");
     }
 }
@@ -612,7 +612,7 @@ void PropertyEditor::buildUp(PropertyModel::PropertyList&& props, bool _checkDoc
     checkDocument = _checkDocument;
 
     if (committing) {
-        Base::Console().Warning(
+        Base::Console().warning(
             "While committing the data to the property the selection has changed.\n");
         delaybuild = true;
         return;
@@ -680,7 +680,7 @@ void PropertyEditor::removeProperty(const App::Property& prop)
     for (PropertyModel::PropertyList::iterator it = propList.begin(); it != propList.end(); ++it) {
         // find the given property in the list and remove it if it's there
         std::vector<App::Property*>::iterator pos =
-            std::find(it->second.begin(), it->second.end(), &prop);
+            std::ranges::find(it->second, &prop);
         if (pos != it->second.end()) {
             it->second.erase(pos);
             // if the last property of this name is removed then also remove the whole group
@@ -794,7 +794,7 @@ void PropertyEditor::contextMenuEvent(QContextMenuEvent*)
         menu.addSeparator();
 
         // the subMenu is allocated on the heap but managed by menu.
-        auto subMenu = new QMenu(QString::fromLatin1("Status"), &menu);
+        auto subMenu = new QMenu(QStringLiteral("Status"), &menu);
 
         QAction* action;
         QString text;
@@ -811,7 +811,7 @@ void PropertyEditor::contextMenuEvent(QContextMenuEvent*)
     do {                                                                                           \
         _ACTION_SETUP(_name);                                                                      \
         if (propType & App::Prop_##_name) {                                                        \
-            action->setText(text + QString::fromLatin1(" *"));                                     \
+            action->setText(text + QStringLiteral(" *"));                                          \
             action->setChecked(true);                                                              \
         }                                                                                          \
     } while (0)
@@ -919,7 +919,7 @@ void PropertyEditor::contextMenuEvent(QContextMenuEvent*)
                     prop->getContainer()->removeDynamicProperty(prop->getName());
                 }
                 catch (Base::Exception& e) {
-                    e.ReportException();
+                    e.reportException();
                 }
             }
             break;

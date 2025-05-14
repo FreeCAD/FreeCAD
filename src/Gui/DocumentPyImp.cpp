@@ -36,7 +36,7 @@
 #include "MDIView.h"
 #include "ViewProviderExtern.h"
 
-// inclusion of the generated files (generated out of DocumentPy.xml)
+// inclusion of the generated files (generated out of DocumentPy.pyi)
 #include "DocumentPy.h"
 #include "DocumentPy.cpp"
 #include <App/DocumentObjectPy.h>
@@ -277,7 +277,7 @@ PyObject* DocumentPy::createView(PyObject *args)
     PY_CATCH;
 }
 
-PyObject* DocumentPy::mdiViewsOfType(PyObject *args)
+PyObject* DocumentPy::mdiViewsOfType(PyObject *args) const
 {
     char* sType;
     if (!PyArg_ParseTuple(args, "s", &sType))
@@ -494,7 +494,7 @@ Py::Object DocumentPy::getInEditInfo() const {
         return Py::None();
 
     return Py::TupleN(Py::Object(vp->getObject()->getPyObject(),true),
-            Py::String(subname),Py::String(subelement),Py::Int(mode));
+            Py::String(subname),Py::String(subelement),Py::Long(mode));
 }
 
 void DocumentPy::setInEditInfo(Py::Object arg)
@@ -509,12 +509,12 @@ void DocumentPy::setInEditInfo(Py::Object arg)
                 pyobj)->getViewProviderDocumentObjectPtr(),subname);
 }
 
-Py::Int DocumentPy::getEditMode() const
+Py::Long DocumentPy::getEditMode() const
 {
     int mode = -1;
     getDocumentPtr()->getInEdit(nullptr,nullptr,&mode);
 
-    return Py::Int(mode);
+    return Py::Long(mode);
 }
 
 Py::Boolean DocumentPy::getTransacting() const

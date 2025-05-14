@@ -1,5 +1,8 @@
 #include <gtest/gtest.h>
+
 #include <Base/Axis.h>
+#include <Base/Placement.h>
+#include <Base/Rotation.h>
 
 TEST(Axis, TestDefault)
 {

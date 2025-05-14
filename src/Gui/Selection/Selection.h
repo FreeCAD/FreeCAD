@@ -49,9 +49,13 @@ namespace Gui
 {
 
 enum class ResolveMode {
+    /// No resolve
     NoResolve,
+    /// Sub-object with old style element name
     OldStyleElement,
+    /// Sub-object with new style element name
     NewStyleElement,
+    /// Resolve sub-object and follow link
     FollowLink
 };
 
@@ -201,9 +205,6 @@ public:
      *
      * @param attach: whether to attach this observer on construction
      * @param resolve: sub-object resolving mode.
-     *                 0 no resolve,
-     *                 1 resolve sub-object with old style element name
-     *                 2 resolve sub-object with new style element name
      */
     explicit SelectionObserver(bool attach = true, ResolveMode resolve = ResolveMode::OldStyleElement);
     /** Constructor
@@ -211,9 +212,6 @@ public:
      * @param vp: filtering view object.
      * @param attach: whether to attach this observer on construction
      * @param resolve: sub-object resolving mode.
-     *                 0 no resolve,
-     *                 1 resolve sub-object with old style element name
-     *                 2 resolve sub-object with new style element name
      *
      * Constructs an selection observer that receives only selection event of
      * objects within the same document as the input view object.
@@ -426,9 +424,6 @@ public:
      * empty vector is returned. If document name is "*", then all document is
      * considered.
      * @param resolve: sub-object resolving mode
-     *                 0 no resolve,
-     *                 1 resolve sub-object with old style element name
-     *                 2 resolve sub-object with new style element name
      * @param single: if set to true, then it will return an empty vector if
      * there is more than one selections.
      *
@@ -443,9 +438,6 @@ public:
      * considered.
      * @param typeId: specify the type of object to be returned.
      * @param resolve: sub-object resolving mode.
-     *                 0 no resolve,
-     *                 1 resolve sub-object with old style element name
-     *                 2 resolve sub-object with new style element name
      * @param single: if set to true, then it will return an empty vector if
      * there is more than one selection.
      *
@@ -453,6 +445,26 @@ public:
      */
     std::vector<Gui::SelectionObject> getSelectionEx(const char* pDocName=nullptr,
             Base::Type typeId=App::DocumentObject::getClassTypeId(), ResolveMode resolve = ResolveMode::OldStyleElement, bool single=false) const;
+    /** Returns a vector of selection objects children of an object
+     *
+     * @param obj: Object within which you want to find a selection.
+     * The selection objects returned will be direct children of Obj. The rest of the subname will be unresolved.
+     * So this is equivalent to ResolveMode::NoResolve, but starting from obj.
+     * For instance if you have : Assembly.Part.Body.LCS.PlaneXY
+     * - If obj = Assembly : SelectionObject = Part, subname = "Body.LCS.PlaneXY."
+     * - If obj = Part : SelectionObject = Body, subname = "LCS.PlaneXY."
+     * - If obj = Body : SelectionObject = LCS, subname = "PlaneXY."
+     * The docname used is the document of obj.
+     * if obj is nullptr, this acts as getSelectionEx with empty docName
+     *
+     * @param typeId: specify the type of object to be returned.
+     * @param single: if set to true, then it will return an empty vector if
+     * there is more than one selection.
+     *
+     * @return The returned vector reflects the sequence of selection.
+     */
+    std::vector<Gui::SelectionObject> getSelectionIn(App::DocumentObject* obj=nullptr,
+            Base::Type typeId=App::DocumentObject::getClassTypeId(), bool single=false) const;
 
     /**
      * @brief getAsPropertyLinkSubList fills PropertyLinkSubList with current selection.
@@ -492,7 +504,7 @@ public:
      */
     bool hasSubSelection(const char *doc=nullptr, bool subElement=false) const;
 
-    /// Check if there is any pre-selection
+    /// Check if there is any preselection
     bool hasPreselection() const;
 
     /// Size of selected entities for all documents
@@ -523,9 +535,6 @@ public:
      * @param pDocName: optional filtering document, NULL for current active
      *                  document
      * @param resolve: sub-object resolving mode.
-     *                 0 no resolve,
-     *                 1 resolve sub-object with old style element name
-     *                 2 resolve sub-object with new style element name
      * @param index: optional position in the stack
      */
     std::vector<Gui::SelectionObject> selStackGet(const char* pDocName=nullptr, ResolveMode resolve = ResolveMode::OldStyleElement, int index=0) const;

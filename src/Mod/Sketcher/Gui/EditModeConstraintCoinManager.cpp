@@ -24,6 +24,7 @@
 #ifndef _PreComp_
 #include <QPainter>
 #include <QRegularExpression>
+#include <limits>
 #include <memory>
 
 #include <Inventor/SbImage.h>
@@ -114,6 +115,8 @@ void EditModeConstraintCoinManager::updateVirtualSpace()
 
 void EditModeConstraintCoinManager::processConstraints(const GeoListFacade& geolistfacade)
 {
+    using std::numbers::pi;
+
     const auto& constrlist = ViewProviderSketchCoinAttorney::getConstraints(viewProvider);
 
     auto zConstrH = ViewProviderSketchCoinAttorney::getViewOrientationFactor(viewProvider)
@@ -262,7 +265,7 @@ Restart:
                                 const Part::GeomCircle* circle =
                                     static_cast<const Part::GeomCircle*>(geo);
                                 ra = circle->getRadius();
-                                angle = M_PI / 4;
+                                angle = pi / 4;
                                 midpos = circle->getCenter();
                             }
                             else if (geo->is<Part::GeomArcOfCircle>()) {
@@ -281,7 +284,7 @@ Restart:
                                 rb = ellipse->getMinorRadius();
                                 Base::Vector3d majdir = ellipse->getMajorAxisDir();
                                 angle = atan2(majdir.y, majdir.x);
-                                angleplus = M_PI / 4;
+                                angleplus = pi / 4;
                                 midpos = ellipse->getCenter();
                             }
                             else if (geo->is<Part::GeomArcOfEllipse>()) {
@@ -460,7 +463,7 @@ Restart:
 
                         norm1.Normalize();
                         dir1 = norm1;
-                        dir1.RotateZ(-M_PI / 2.0);
+                        dir1.RotateZ(-pi / 2.0);
                     }
                     else if (Constr->FirstPos == Sketcher::PointPos::none) {
 
@@ -485,7 +488,7 @@ Restart:
                         else if (geo1->is<Part::GeomCircle>()) {
                             const Part::GeomCircle* circle =
                                 static_cast<const Part::GeomCircle*>(geo1);
-                            norm1 = Base::Vector3d(cos(M_PI / 4), sin(M_PI / 4), 0);
+                            norm1 = Base::Vector3d(cos(pi / 4), sin(pi / 4), 0);
                             dir1 = Base::Vector3d(-norm1.y, norm1.x, 0);
                             midpos1 = circle->getCenter() + circle->getRadius() * norm1;
                         }
@@ -514,7 +517,7 @@ Restart:
                         else if (geo2->is<Part::GeomCircle>()) {
                             const Part::GeomCircle* circle =
                                 static_cast<const Part::GeomCircle*>(geo2);
-                            norm2 = Base::Vector3d(cos(M_PI / 4), sin(M_PI / 4), 0);
+                            norm2 = Base::Vector3d(cos(pi / 4), sin(pi / 4), 0);
                             dir2 = Base::Vector3d(-norm2.y, norm2.x, 0);
                             midpos2 = circle->getCenter() + circle->getRadius() * norm2;
                         }
@@ -576,7 +579,7 @@ Restart:
                                 const Part::GeomCircle* circle =
                                     static_cast<const Part::GeomCircle*>(geo1);
                                 r1a = circle->getRadius();
-                                angle1 = M_PI / 4;
+                                angle1 = pi / 4;
                                 midpos1 = circle->getCenter();
                             }
                             else if (geo1->is<Part::GeomArcOfCircle>()) {
@@ -595,7 +598,7 @@ Restart:
                                 r1b = ellipse->getMinorRadius();
                                 Base::Vector3d majdir = ellipse->getMajorAxisDir();
                                 angle1 = atan2(majdir.y, majdir.x);
-                                angle1plus = M_PI / 4;
+                                angle1plus = pi / 4;
                                 midpos1 = ellipse->getCenter();
                             }
                             else if (geo1->is<Part::GeomArcOfEllipse>()) {
@@ -641,7 +644,7 @@ Restart:
                                 const Part::GeomCircle* circle =
                                     static_cast<const Part::GeomCircle*>(geo2);
                                 r2a = circle->getRadius();
-                                angle2 = M_PI / 4;
+                                angle2 = pi / 4;
                                 midpos2 = circle->getCenter();
                             }
                             else if (geo2->is<Part::GeomArcOfCircle>()) {
@@ -660,7 +663,7 @@ Restart:
                                 r2b = ellipse->getMinorRadius();
                                 Base::Vector3d majdir = ellipse->getMajorAxisDir();
                                 angle2 = atan2(majdir.y, majdir.x);
-                                angle2plus = M_PI / 4;
+                                angle2plus = pi / 4;
                                 midpos2 = ellipse->getCenter();
                             }
                             else if (geo2->is<Part::GeomArcOfEllipse>()) {
@@ -968,7 +971,7 @@ Restart:
                                 // otherwise We still use findHelperAngles before to find if helper
                                 // is needed.
                                 helperStartAngle1 = endAngle;
-                                helperRange1 = 2 * M_PI - (endAngle - startAngle);
+                                helperRange1 = 2 * pi - (endAngle - startAngle);
 
                                 numPoints++;
                             }
@@ -991,7 +994,7 @@ Restart:
 
                             if (helperRange2 != 0.) {
                                 helperStartAngle2 = endAngle;
-                                helperRange2 = 2 * M_PI - (endAngle - startAngle);
+                                helperRange2 = 2 * pi - (endAngle - startAngle);
 
                                 numPoints++;
                             }
@@ -1089,7 +1092,7 @@ Restart:
                         // getSolvedSketch().calculateNormalAtPoint(Constr->Second, pos.x, pos.y);
                         norm.Normalize();
                         Base::Vector3d dir = norm;
-                        dir.RotateZ(-M_PI / 2.0);
+                        dir.RotateZ(-pi / 2.0);
 
                         relPos = seekConstraintPosition(
                             pos,
@@ -1340,7 +1343,7 @@ Restart:
                                     p1[1] = line1->getEndPoint();
                                     p2[0] = line2->getStartPoint();
                                     p2[1] = line2->getEndPoint();
-                                    double length = DBL_MAX;
+                                    double length = std::numeric_limits<double>::max();
                                     for (int i = 0; i <= 1; i++) {
                                         for (int j = 0; j <= 1; j++) {
                                             double tmp = (p2[j] - p1[i]).Length();
@@ -1385,12 +1388,12 @@ Restart:
                             // TODO: Check
                             // dir1 = getSolvedSketch().calculateNormalAtPoint(Constr->First,
                             // p.x, p.y);
-                            dir1.RotateZ(-M_PI / 2);  // convert to vector of tangency by rotating
+                            dir1.RotateZ(-pi / 2);  // convert to vector of tangency by rotating
                             dir2 = getNormal(geolistfacade, Constr->Second, p);
                             // TODO: Check
                             // dir2 = getSolvedSketch().calculateNormalAtPoint(Constr->Second,
                             // p.x, p.y);
-                            dir2.RotateZ(-M_PI / 2);
+                            dir2.RotateZ(-pi / 2);
 
                             startangle = atan2(dir1.y, dir1.x);
                             range = atan2(dir1.x * dir2.y - dir1.y * dir2.x,
@@ -1614,13 +1617,13 @@ Restart:
             }
         }
         catch (Base::Exception& e) {
-            Base::Console().DeveloperError("EditModeConstraintCoinManager",
+            Base::Console().developerError("EditModeConstraintCoinManager",
                                            "Exception during draw: %s\n",
                                            e.what());
-            e.ReportException();
+            e.reportException();
         }
         catch (...) {
-            Base::Console().DeveloperError("EditModeConstraintCoinManager",
+            Base::Console().developerError("EditModeConstraintCoinManager",
                                            "Exception during draw: unknown\n");
         }
     }
@@ -1632,26 +1635,28 @@ void EditModeConstraintCoinManager::findHelperAngles(double& helperStartAngle,
                                                      double startAngle,
                                                      double endAngle)
 {
+    using std::numbers::pi;
+
     double margin = 0.2;  // about 10deg
     if (angle < 0) {
-        angle = angle + 2 * M_PI;
+        angle = angle + 2 * pi;
     }
     // endAngle can be more than 2*pi as its startAngle + arcAngle
-    if (endAngle > 2 * M_PI && angle < endAngle - 2 * M_PI) {
-        angle = angle + 2 * M_PI;
+    if (endAngle > 2 * pi && angle < endAngle - 2 * pi) {
+        angle = angle + 2 * pi;
     }
     if (!(angle > startAngle && angle < endAngle)) {
-        if ((angle < startAngle && startAngle - angle < angle + 2 * M_PI - endAngle)
-            || (angle > endAngle && startAngle + 2 * M_PI - angle < angle - endAngle)) {
+        if ((angle < startAngle && startAngle - angle < angle + 2 * pi - endAngle)
+            || (angle > endAngle && startAngle + 2 * pi - angle < angle - endAngle)) {
             if (angle > startAngle) {
-                angle -= 2 * M_PI;
+                angle -= 2 * pi;
             }
             helperStartAngle = angle - margin;
             helperRange = startAngle - angle + margin;
         }
         else {
             if (angle < endAngle) {
-                angle += 2 * M_PI;
+                angle += 2 * pi;
             }
             helperStartAngle = endAngle;
             helperRange = angle - endAngle + margin;
@@ -2044,7 +2049,7 @@ void EditModeConstraintCoinManager::rebuildConstraintNodes(
                     const Part::Geometry* geo1 = geolistfacade.getGeometryFromGeoId((*it)->First);
                     const Part::Geometry* geo2 = geolistfacade.getGeometryFromGeoId((*it)->Second);
                     if (!geo1 || !geo2) {
-                        Base::Console().DeveloperWarning(
+                        Base::Console().developerWarning(
                             "EditModeConstraintCoinManager",
                             "Tangent constraint references non-existing geometry\n");
                     }
@@ -2095,101 +2100,77 @@ void EditModeConstraintCoinManager::rebuildConstraintNodes(
 
 QString EditModeConstraintCoinManager::getPresentationString(const Constraint* constraint)
 {
-    std::string nameStr;       // name parameter string
-    QString valueStr;          // dimensional value string
-    std::string unitStr;       // the actual unit string
-    std::string baseUnitStr;   // the expected base unit string
-    double factor;             // unit scaling factor, currently not used
-    Base::UnitSystem unitSys;  // current unit system
-
     if (!constraint->isActive) {
-        return QString::fromLatin1(" ");
-    }
-
-    // Get the current name parameter string of the constraint
-    nameStr = constraint->Name;
-
-    // Get the current value string including units
-    valueStr =
-        QString::fromStdString(constraint->getPresentationValue().getUserString(factor, unitStr));
-
-    // Hide units if user has requested it, is being displayed in the base
-    // units, and the schema being used has a clear base unit in the first
-    // place. Otherwise, display units.
-    if (constraintParameters.bHideUnits && constraint->Type != Sketcher::Angle) {
-        // Only hide the default length unit. Right now there is not an easy way
-        // to get that from the Unit system so we have to manually add it here.
-        // Hopefully this can be added in the future so this code won't have to
-        // be updated if a new units schema is added.
-        unitSys = Base::UnitsApi::getSchema();
-
-        // If this is a supported unit system then define what the base unit is.
-        switch (unitSys) {
-            case Base::UnitSystem::SI1:
-            case Base::UnitSystem::MmMin:
-                baseUnitStr = "mm";
-                break;
-
-            case Base::UnitSystem::SI2:
-                baseUnitStr = "m";
-                break;
-
-            case Base::UnitSystem::ImperialDecimal:
-                baseUnitStr = "in";
-                break;
-
-            case Base::UnitSystem::Centimeters:
-                baseUnitStr = "cm";
-                break;
-
-            default:
-                // Nothing to do
-                break;
-        }
-
-        if (!baseUnitStr.empty()) {
-            // expected unit string matches actual unit string. remove.
-            if (baseUnitStr.compare(unitStr) == 0) {
-                // Example code from: Mod/TechDraw/App/DrawViewDimension.cpp:372
-                QRegularExpression rxUnits(
-                    QString::fromUtf8(" \\D*$"));  // space + any non digits at end of string
-                valueStr.remove(rxUnits);          // getUserString(defaultDecimals) without units
-            }
-        }
-    }
-
-    if (constraint->Type == Sketcher::Diameter) {
-        valueStr.prepend(QChar(216));  // Diameter sign
-    }
-    else if (constraint->Type == Sketcher::Radius) {
-        valueStr.prepend(QChar(82));  // Capital letter R
+        return QStringLiteral(" ");
     }
 
     /**
-    Create the representation string from the user defined format string
-    Format options are:
-    %N - the constraint name parameter
-    %V - the value of the dimensional constraint, including any unit characters
-    */
-    if (constraintParameters.bShowDimensionalName && !nameStr.empty()) {
-        QString presentationStr;
-        if (constraintParameters.sDimensionalStringFormat.contains(QLatin1String("%V"))
-            || constraintParameters.sDimensionalStringFormat.contains(QLatin1String("%N"))) {
-            presentationStr = constraintParameters.sDimensionalStringFormat;
-            presentationStr.replace(QLatin1String("%N"), QString::fromStdString(nameStr));
-            presentationStr.replace(QLatin1String("%V"), valueStr);
-        }
-        else {
-            // user defined format string does not contain any valid parameter, using default format
-            // "%N = %V"
-            presentationStr =
-                QString::fromStdString(nameStr) + QString::fromLatin1(" = ") + valueStr;
+     * Hide units if
+     *  - user has requested it,
+     *  - is being displayed in the base units, -and-
+     *  - the schema being used has a clear base unit in the first place.
+     *
+     * Remove unit string if expected unit string matches actual unit string
+     * Example code from: Mod/TechDraw/App/DrawViewDimension.cpp:372
+     *
+     * Hide the default length unit
+     */
+    auto fixValueStr = [&](const QString& valueStr, const auto& unitStr) -> std::optional<QString> {
+        if (!constraintParameters.bHideUnits || constraint->Type == Sketcher::Angle) {
+            return std::nullopt;
         }
 
-        return presentationStr;
+        const auto baseUnitStr {Base::UnitsApi::getBasicLengthUnit()};
+        if (baseUnitStr.empty() || baseUnitStr != unitStr) {
+            return std::nullopt;
+        }
+
+        // trailing space or non-dig
+        const QRegularExpression rxUnits {QString::fromUtf8(" \\D*$")};
+        auto vStr = valueStr;
+        vStr.remove(rxUnits);
+        return {vStr};
+    };
+
+    // Get the current value string including units
+    double factor {};
+    std::string unitStr;  // the actual unit string
+    const auto constrPresValue {constraint->getPresentationValue().getUserString(factor, unitStr)};
+    auto valueStr = QString::fromStdString(constrPresValue);
+
+    auto fixedValueStr = fixValueStr(valueStr, unitStr).value_or(valueStr);
+    switch (constraint->Type) {
+        case Sketcher::Diameter:
+            fixedValueStr.prepend(QChar(0x2300));
+            break;
+        case Sketcher::Radius:
+            fixedValueStr.prepend(QLatin1Char('R'));
+            break;
+        default:
+            break;
     }
 
-    return valueStr;
+    if (!constraintParameters.bShowDimensionalName || constraint->Name.empty()) {
+        return fixedValueStr;
+    }
+
+    /**
+     * Create the representation string from the user defined format string
+     * Format options are:
+     * %N - the constraint name parameter
+     * %V - the value of the dimensional constraint, including any unit characters
+     */
+    auto sDimFmt {constraintParameters.sDimensionalStringFormat};
+    if (!sDimFmt.contains(QLatin1String("%V"))
+        && !sDimFmt.contains(QLatin1String("%N"))) {  // using default format "%N = %V"
+
+        return QString::fromStdString(constraint->Name) + QString::fromLatin1(" = ") + valueStr;
+    }
+
+    sDimFmt.replace(QLatin1String("%N"), QString::fromStdString(constraint->Name));
+    sDimFmt.replace(QLatin1String("%V"), fixedValueStr);
+
+    return sDimFmt;
 }
 
 std::set<int> EditModeConstraintCoinManager::detectPreselectionConstr(const SoPickedPoint* Point,
@@ -2273,7 +2254,7 @@ std::set<int> EditModeConstraintCoinManager::detectPreselectionConstr(const SoPi
                         if (tail
                             != sep->getChild(
                                 static_cast<int>(ConstraintNodePosition::FirstIconIndex))) {
-                            Base::Console().Log("SecondIcon\n");
+                            Base::Console().log("SecondIcon\n");
 
                             auto translation2 = static_cast<SoZoomTranslation*>(
                                 static_cast<SoSeparator*>(tailFather)
@@ -2314,7 +2295,7 @@ std::set<int> EditModeConstraintCoinManager::detectPreselectionConstr(const SoPi
                             // Useful code to debug coordinates and bounding boxes that does
                             // not need to be compiled in for any debug operations.
 
-                            /*Base::Console().Log("Abs(%f,%f),Trans(%f,%f),Coords(%d,%d),iCoords(%f,%f),icon(%d,%d),isize(%d,%d),boundingbox([%d,%d],[%d,%d])\n",
+                            /*Base::Console().log("Abs(%f,%f),Trans(%f,%f),Coords(%d,%d),iCoords(%f,%f),icon(%d,%d),isize(%d,%d),boundingbox([%d,%d],[%d,%d])\n",
                              * absPos[0],absPos[1],trans[0], trans[1], cursorPos[0],
                              * cursorPos[1], iconCoords[0], iconCoords[1], iconX, iconY,
                              * iconSize[0], iconSize[1],
@@ -2333,7 +2314,7 @@ std::set<int> EditModeConstraintCoinManager::detectPreselectionConstr(const SoPi
                     }
                     else {
                         // It's a constraint icon, not a combined one
-                        QStringList constrIdStrings = constrIdsStr.split(QString::fromLatin1(","));
+                        QStringList constrIdStrings = constrIdsStr.split(QStringLiteral(","));
                         while (!constrIdStrings.empty()) {
                             auto constraintid = constrIdStrings.takeAt(0).toInt();
                             constrIndices.insert(constraintid);
@@ -2436,7 +2417,7 @@ void EditModeConstraintCoinManager::drawConstraintIcons(const GeoListFacade& geo
 
         // Double-check that we can safely access the Inventor nodes
         if (constrId >= editModeScenegraphNodes.constrGroup->getNumChildren()) {
-            Base::Console().DeveloperWarning(
+            Base::Console().developerWarning(
                 "EditModeConstraintManager",
                 "Can't update constraint icons because view is not in sync with sketch\n");
             break;
@@ -2552,7 +2533,7 @@ void EditModeConstraintCoinManager::combineConstraintIcons(IconQueue iconQueue)
 
         // we group only icons not being Symmetry icons, because we want those on the line
         // and only icons that are visible
-        if (init.type != QString::fromLatin1("Constraint_Symmetric") && init.visible) {
+        if (init.type != QStringLiteral("Constraint_Symmetric") && init.visible) {
 
             IconQueue::iterator i = iconQueue.begin();
 
@@ -2565,7 +2546,7 @@ void EditModeConstraintCoinManager::combineConstraintIcons(IconQueue iconQueue)
                         float distSquared = pow(i->position[0] - j->position[0], 2)
                             + pow(i->position[1] - j->position[1], 2);
                         if (distSquared <= maxDistSquared
-                            && (*i).type != QString::fromLatin1("Constraint_Symmetric")) {
+                            && (*i).type != QStringLiteral("Constraint_Symmetric")) {
                             // Found an icon in iconQueue that's close enough to
                             // a member of thisGroup, so move it into thisGroup
                             thisGroup.push_back(*i);
@@ -2646,7 +2627,7 @@ void EditModeConstraintCoinManager::drawMergedConstraintIcons(IconQueue iconQueu
         maxColorPriority = constrColorPriority(i->constraintId);
 
         if (idString.length()) {
-            idString.append(QString::fromLatin1(","));
+            idString.append(QStringLiteral(","));
         }
         idString.append(QString::number(i->constraintId));
 
@@ -2666,7 +2647,7 @@ void EditModeConstraintCoinManager::drawMergedConstraintIcons(IconQueue iconQueu
                 iconColor = constrColor(i->constraintId);
             }
 
-            idString.append(QString::fromLatin1(",") + QString::number(i->constraintId));
+            idString.append(QStringLiteral(",") + QString::number(i->constraintId));
 
             i = iconQueue.erase(i);
         }
@@ -2758,7 +2739,7 @@ QImage EditModeConstraintCoinManager::renderConstrIcon(const QString& type,
                                                        int* vPad)
 {
     // Constants to help create constraint icons
-    QString joinStr = QString::fromLatin1(", ");
+    QString joinStr = QStringLiteral(", ");
 
     QPixmap pxMap;
     std::stringstream constraintName;
@@ -2871,25 +2852,25 @@ QString EditModeConstraintCoinManager::iconTypeFromConstraint(Constraint* constr
 
     switch (constraint->Type) {
         case Horizontal:
-            return QString::fromLatin1("Constraint_Horizontal");
+            return QStringLiteral("Constraint_Horizontal");
         case Vertical:
-            return QString::fromLatin1("Constraint_Vertical");
+            return QStringLiteral("Constraint_Vertical");
         case PointOnObject:
-            return QString::fromLatin1("Constraint_PointOnObject");
+            return QStringLiteral("Constraint_PointOnObject");
         case Tangent:
-            return QString::fromLatin1("Constraint_Tangent");
+            return QStringLiteral("Constraint_Tangent");
         case Parallel:
-            return QString::fromLatin1("Constraint_Parallel");
+            return QStringLiteral("Constraint_Parallel");
         case Perpendicular:
-            return QString::fromLatin1("Constraint_Perpendicular");
+            return QStringLiteral("Constraint_Perpendicular");
         case Equal:
-            return QString::fromLatin1("Constraint_EqualLength");
+            return QStringLiteral("Constraint_EqualLength");
         case Symmetric:
-            return QString::fromLatin1("Constraint_Symmetric");
+            return QStringLiteral("Constraint_Symmetric");
         case SnellsLaw:
-            return QString::fromLatin1("Constraint_SnellsLaw");
+            return QStringLiteral("Constraint_SnellsLaw");
         case Block:
-            return QString::fromLatin1("Constraint_Block");
+            return QStringLiteral("Constraint_Block");
         default:
             return QString();
     }

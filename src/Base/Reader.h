@@ -20,20 +20,19 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef BASE_READER_H
-#define BASE_READER_H
+#ifndef SRC_BASE_READER_H_
+#define SRC_BASE_READER_H_
 
 #include <bitset>
 #include <map>
 #include <memory>
-#include <sstream>
 #include <string>
+#include <vector>
 
 #include <xercesc/framework/XMLPScanToken.hpp>
-#include <xercesc/sax2/Attributes.hpp>
 #include <xercesc/sax2/DefaultHandler.hpp>
 
-#include <boost/iostreams/concepts.hpp>
+#include <boost/iostreams/categories.hpp>
 
 #include "FileInfo.h"
 
@@ -44,14 +43,15 @@ class ZipInputStream;
 }
 #ifndef XERCES_CPP_NAMESPACE_BEGIN
 #define XERCES_CPP_NAMESPACE_QUALIFIER
-using namespace XERCES_CPP_NAMESPACE;
 namespace XERCES_CPP_NAMESPACE
 {
+class Attributes;
 class DefaultHandler;
 class SAX2XMLReader;
 }  // namespace XERCES_CPP_NAMESPACE
 #else
 XERCES_CPP_NAMESPACE_BEGIN
+class Attributes;
 class DefaultHandler;
 class SAX2XMLReader;
 XERCES_CPP_NAMESPACE_END
@@ -82,7 +82,7 @@ void PropertyString::Restore(Base::Reader &reader)
     // read my Element
     reader.readElement("String");
     // get the value of my Attribute
-    _cValue = reader.getAttribute("value");
+    _cValue = reader.getAttribute<const char*>("value");
 }
 
  *  \endcode
@@ -108,12 +108,12 @@ endl;
 void PropertyContainer::Restore(Base::Reader &reader)
 {
     reader.readElement("Properties");
-    int Cnt = reader.getAttributeAsInteger("Count");
+    int Cnt = reader.getAttribute<long>("Count");
 
     for(int i=0 ;i<Cnt ;i++)
     {
         reader.readElement("Property");
-        string PropName = reader.getAttribute("name");
+        string PropName = reader.getAttribute<const char*>("name");
         Property* prop = getPropertyByName(PropName.c_str());
         if(prop)
             prop->Restore(reader);
@@ -227,23 +227,57 @@ public:
     /// check if the read element has a special attribute
     bool hasAttribute(const char* AttrName) const;
 
-    /// return the named attribute as an integer (does type checking); if missing return
-    /// defaultValue
-    long getAttributeAsInteger(const char* AttrName, const char* defaultValue = nullptr) const;
+private:
+    // all explicit template instatiations - this is for getting
+    // a compile error, rather than linker error.
+    template<typename T>
+    static constexpr bool instantiated =
+        std::is_same_v<T, bool> || std::is_same_v<T, const char*> || std::is_same_v<T, double>
+        || std::is_same_v<T, int> || std::is_same_v<T, long> || std::is_same_v<T, unsigned long>;
 
-    /// return the named attribute as unsigned integer (does type checking); if missing return
-    /// defaultValue
-    unsigned long getAttributeAsUnsigned(const char* AttrName,
-                                         const char* defaultValue = nullptr) const;
+public:
+    /// return the named attribute as T (does type checking); if missing return defaultValue.
+    /// If defaultValue is not set, it will default to the default initilization of the
+    /// corresponding type; bool: false, int: 0, ... as if one had used defaultValue=bool{}
+    /// or defaultValue=int{}
+    // General template, mark delete as it's not implemented, and should not be used!
+    template<typename T>
+        requires Base::XMLReader::instantiated<T>
+    T getAttribute(const char* AttrName, T defaultValue) const;
 
-    /// return the named attribute as a double floating point (does type checking); if missing
-    /// return defaultValue
-    double getAttributeAsFloat(const char* AttrName, const char* defaultValue = nullptr) const;
+    /// No default? Will throw exception if not found!
+    template<typename T>
+        requires Base::XMLReader::instantiated<T>
+    T getAttribute(const char* AttrName) const;
 
-    /// return the named attribute as a double floating point (does type checking); if missing
-    /// return defaultValue
-    const char* getAttribute(const char* AttrName, const char* defaultValue = nullptr) const;
-    //@}
+    /// E.g. std::string, QString
+    template<typename T>
+    T getAttribute(const char* AttrName) const
+    {
+        return T(getAttribute<const char*>(AttrName));
+    }
+    /// E.g. std::string, QString
+    template<typename T>
+    T getAttribute(const char* AttrName, T defaultValue) const
+    {
+        return T(getAttribute<const char*>(AttrName, defaultValue));
+    }
+
+    /// Enum classes
+    template<typename T>
+        requires std::is_enum_v<T>
+    T getAttribute(const char* AttrName, T defaultValue) const
+    {
+        return static_cast<T>(
+            getAttribute<unsigned long>(AttrName, static_cast<unsigned long>(defaultValue)));
+    }
+    /// Enum classes
+    template<typename T>
+        requires std::is_enum_v<T>
+    T getAttribute(const char* AttrName) const
+    {
+        return static_cast<T>(getAttribute<unsigned long>(AttrName));
+    }
 
     /** @name additional file reading */
     //@{
@@ -251,8 +285,8 @@ public:
     const char* addFile(const char* Name, Base::Persistence* Object);
     /// process the requested file writes
     void readFiles(zipios::ZipInputStream& zipstream) const;
-    /// get all registered file names
-    const std::vector<std::string>& getFilenames() const;
+    /// Returns whether reader has any registered filenames
+    bool hasFilenames() const;
     /// returns true if reading the file \a filename has failed
     bool hasReadFailed(const std::string& filename) const;
     bool isRegistered(Base::Persistence* Object) const;
@@ -364,7 +398,6 @@ public:
     std::vector<FileEntry> FileList;
 
 private:
-    std::vector<std::string> FileNames;
     mutable std::vector<std::string> FailedFiles;
 
     std::bitset<32> StatusBits;
@@ -392,4 +425,4 @@ private:
 }  // namespace Base
 
 
-#endif
+#endif  // SRC_BASE_READER_H_

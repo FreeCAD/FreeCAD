@@ -24,6 +24,7 @@
 
 #ifndef _PreComp_
 # include <iomanip>
+# include <limits>
 # include <sstream>
 
 #include <Bnd_Box.hxx>
@@ -49,8 +50,10 @@
 #include <App/Application.h>
 #include <App/Document.h>
 #include <Base/Console.h>
+#include <Base/Converter.h>
 #include <Base/FileInfo.h>
 #include <Base/Parameter.h>
+#include <Base/Tools.h>
 
 #include "DrawGeomHatch.h"
 #include "DrawGeomHatchPy.h" // generated from DrawGeomHatchPy.xml
@@ -123,7 +126,7 @@ void DrawGeomHatch::onChanged(const App::Property* prop)
 
 App::DocumentObjectExecReturn *DrawGeomHatch::execute()
 {
-//    Base::Console().Message("DGH::execute()\n");
+//    Base::Console().message("DGH::execute()\n");
     //does execute even need to exist? Its all about the property value changes
     DrawViewPart* parent = getSourceView();
     if (parent) {
@@ -142,7 +145,7 @@ void DrawGeomHatch::onDocumentRestored()
 
 void DrawGeomHatch::replacePatIncluded(std::string newHatchFileName)
 {
-//    Base::Console().Message("DGH::replaceFileIncluded(%s)\n", newHatchFileName.c_str());
+//    Base::Console().message("DGH::replaceFileIncluded(%s)\n", newHatchFileName.c_str());
     if (newHatchFileName.empty()) {
         return;
     }
@@ -157,15 +160,15 @@ void DrawGeomHatch::replacePatIncluded(std::string newHatchFileName)
 
 void DrawGeomHatch::setupObject()
 {
-//    Base::Console().Message("DGH::setupObject()\n");
+//    Base::Console().message("DGH::setupObject()\n");
     replacePatIncluded(FilePattern.getValue());
 }
 
 void DrawGeomHatch::unsetupObject()
 {
-//    Base::Console().Message("DGH::unsetupObject() - status: %lu  removing: %d \n", getStatus(), isRemoving());
+//    Base::Console().message("DGH::unsetupObject() - status: %lu  removing: %d \n", getStatus(), isRemoving());
     App::DocumentObject* source = Source.getValue();
-    DrawView* dv = dynamic_cast<DrawView*>(source);
+    DrawView* dv = freecad_cast<DrawView*>(source);
     if (dv) {
         dv->requestPaint();
     }
@@ -176,7 +179,7 @@ void DrawGeomHatch::unsetupObject()
 
 void DrawGeomHatch::makeLineSets()
 {
-//    Base::Console().Message("DGH::makeLineSets()\n");
+//    Base::Console().message("DGH::makeLineSets()\n");
     if (!PatIncluded.isEmpty() &&
         !NamePattern.isEmpty()) {
         m_lineSets.clear();
@@ -208,7 +211,7 @@ std::vector<LineSet> DrawGeomHatch::makeLineSets(std::string fileSpec, std::stri
 DrawViewPart* DrawGeomHatch::getSourceView() const
 {
     App::DocumentObject* obj = Source.getValue();
-    DrawViewPart* result = dynamic_cast<DrawViewPart*>(obj);
+    DrawViewPart* result = freecad_cast<DrawViewPart*>(obj);
     return result;
 }
 
@@ -226,7 +229,7 @@ std::vector<PATLineSpec> DrawGeomHatch::getDecodedSpecsFromFile(std::string file
 {
     Base::FileInfo fi(fileSpec);
     if (!fi.isReadable()) {
-        Base::Console().Error("DrawGeomHatch::getDecodedSpecsFromFile not able to open %s!\n", fileSpec.c_str());
+        Base::Console().error("DrawGeomHatch::getDecodedSpecsFromFile not able to open %s!\n", fileSpec.c_str());
         return std::vector<PATLineSpec>();
     }
     return PATLineSpec::getSpecsForPattern(fileSpec, myPattern);
@@ -304,7 +307,7 @@ std::vector<LineSet> DrawGeomHatch::getTrimmedLines(DrawViewPart* source,
                                                     double hatchRotation,
                                                     Base::Vector3d hatchOffset)
 {
-//    Base::Console().Message("DGH::getTrimmedLines() - rotation: %.3f hatchOffset: %s\n", hatchRotation, DrawUtil::formatVector(hatchOffset).c_str());
+//    Base::Console().message("DGH::getTrimmedLines() - rotation: %.3f hatchOffset: %s\n", hatchRotation, DrawUtil::formatVector(hatchOffset).c_str());
     (void)source;
     std::vector<LineSet> result;
 
@@ -317,10 +320,14 @@ std::vector<LineSet> DrawGeomHatch::getTrimmedLines(DrawViewPart* source,
     Bnd_Box bBox;
     BRepBndLib::AddOptimal(face, bBox);
     bBox.SetGap(0.0);
+    gp_Vec translateVector(hatchOffset.x, hatchOffset.y, 0.);
+    auto cornerMin = bBox.CornerMin().Translated(-translateVector);
+    auto cornerMax = bBox.CornerMax().Translated(-translateVector);
+    bBox = Bnd_Box(cornerMin, cornerMax);
 
     for (auto& ls: lineSets) {
         PATLineSpec hl = ls.getPATLineSpec();
-        std::vector<TopoDS_Edge> candidates = DrawGeomHatch::makeEdgeOverlay(hl, bBox, scale);   //completely cover face bbox with lines
+        std::vector<TopoDS_Edge> candidates = DrawGeomHatch::makeEdgeOverlay(hl, bBox, scale, hatchRotation);   //completely cover face bbox with lines
 
         //make Compound for this linespec
         BRep_Builder builder;
@@ -331,16 +338,8 @@ std::vector<LineSet> DrawGeomHatch::getTrimmedLines(DrawViewPart* source,
         }
 
         TopoDS_Shape grid = gridComp;
-        if (hatchRotation != 0.0) {
-            double hatchRotationRad = hatchRotation * M_PI / 180.0;
-            gp_Ax1 gridAxis(gp_Pnt(0.0, 0.0, 0.0), gp_Vec(gp::OZ().Direction()));
-            gp_Trsf xGridRotate;
-            xGridRotate.SetRotation(gridAxis, hatchRotationRad);
-            BRepBuilderAPI_Transform mkTransRotate(grid, xGridRotate, true);
-            grid = mkTransRotate.Shape();
-        }
         gp_Trsf xGridTranslate;
-        xGridTranslate.SetTranslation(DrawUtil::togp_Vec(hatchOffset));
+        xGridTranslate.SetTranslation(Base::convertTo<gp_Vec>(hatchOffset));
         BRepBuilderAPI_Transform mkTransTranslate(grid, xGridTranslate, true);
         grid = mkTransTranslate.Shape();
 
@@ -386,114 +385,107 @@ std::vector<LineSet> DrawGeomHatch::getTrimmedLines(DrawViewPart* source,
 }
 
 /* static */
-std::vector<TopoDS_Edge> DrawGeomHatch::makeEdgeOverlay(PATLineSpec hatchLine, Bnd_Box bBox, double scale)
+std::vector<TopoDS_Edge> DrawGeomHatch::makeEdgeOverlay(PATLineSpec hatchLine, Bnd_Box bBox, double scale, double rotation)
 {
-    constexpr double RightAngleDegrees{90.0};
-    constexpr double HalfCircleDegrees{180.0};
-    std::vector<TopoDS_Edge> result;
+    using std::numbers::pi;
 
+    const size_t MaxNumberOfEdges = Preferences::getPreferenceGroup("PAT")->GetInt("MaxSeg", 10000l);
+
+    std::vector<TopoDS_Edge> result;
     double minX, maxX, minY, maxY, minZ, maxZ;
     bBox.Get(minX, minY, minZ, maxX, maxY, maxZ);
-    //make the overlay bigger to cover rotations. might need to be bigger than 2x.
-    double widthX = maxX - minX;
-    double widthY = maxY - minY;
-    double width = std::max(widthX, widthY);
+    Base::Vector3d topLeft(minX, maxY, 0.);
+    Base::Vector3d topRight(maxX, maxY, 0.);
+    Base::Vector3d bottomLeft(minX, minY, 0.);
+    Base::Vector3d bottomRight(maxX, minY, 0.);
 
-    double centerX = (minX + maxX) / 2;
-    minX = centerX - width;
-    maxX = centerX + width;
-    double centerY = (minY + maxY) / 2;
-    minY = centerY - width;
-    maxY = centerY + width;
+    Base::Vector3d origin = hatchLine.getOrigin() * scale;
+    double interval = hatchLine.getInterval() * scale;
+    double offset = hatchLine.getOffset() * scale;
+    double angle = hatchLine.getAngle() + rotation;
+    origin.RotateZ(Base::toRadians(rotation));
 
-    Base::Vector3d origin = hatchLine.getOrigin();
-    double interval = hatchLine.getIntervalX() * scale;
-    double angle = hatchLine.getAngle();
+    if (scale == 0. || interval == 0.)
+        return {};
 
-    //only dealing with angles -180:180 for now
-    if (angle > RightAngleDegrees) {
-         angle = -(HalfCircleDegrees - angle);
-    } else if (angle < -RightAngleDegrees) {
-        angle = (HalfCircleDegrees + angle);
+    const double hatchAngle = Base::toRadians(angle);
+    Base::Vector3d hatchDirection(cos(hatchAngle), sin(hatchAngle), 0.);
+    Base::Vector3d hatchPerpendicular(-hatchDirection.y, hatchDirection.x, 0.);
+    Base::Vector3d hatchIntervalAndOffset = offset * hatchDirection + interval * hatchPerpendicular;
+
+    std::array<double, 4> orthogonalProjections = {
+        (topLeft - origin).Dot(hatchPerpendicular / interval),
+        (topRight - origin).Dot(hatchPerpendicular / interval),
+        (bottomLeft - origin).Dot(hatchPerpendicular / interval),
+        (bottomRight - origin).Dot(hatchPerpendicular / interval)
+    };
+    auto minMaxIterators = std::minmax_element(orthogonalProjections.begin(), orthogonalProjections.end());
+    int firstRepeatIndex = ceil(*minMaxIterators.first);
+    int lastRepeatIndex = floor(*minMaxIterators.second);
+
+    std::vector<double> dashParams = hatchLine.getDashParms().get();
+    double globalDashStep = 0.;
+    if (dashParams.empty()) {
+        // we define a single dash with length equal to twice the diagonal of the bounding box
+        double diagonalLength = (topRight - bottomLeft).Length();
+        dashParams.push_back(2. * diagonalLength);
+        globalDashStep = diagonalLength;
     }
-    double slope = hatchLine.getSlope();
-
-    if (angle == 0.0) {         //odd case 1: horizontal lines
-        interval = hatchLine.getInterval() * scale;
-        double atomY  = origin.y;
-        int repeatUp = (int) fabs((maxY - atomY)/interval);
-        int repeatDown  = (int) fabs(((atomY - minY)/interval));
-        int repeatTotal = repeatUp + repeatDown + 1;
-        double yStart = atomY - repeatDown * interval;
-
-        // make repeats
-        for (int i = 0; i < repeatTotal; i++) {
-            Base::Vector3d newStart(minX, yStart + float(i)*interval, 0);
-            Base::Vector3d newEnd(maxX, yStart + float(i)*interval, 0);
-            TopoDS_Edge newLine = makeLine(newStart, newEnd);
-            result.push_back(newLine);
+    else {
+        for (auto& x : dashParams) {
+            x *= scale;
+            globalDashStep += std::abs(x);
         }
-    } else if (angle == RightAngleDegrees ||
-               angle == -RightAngleDegrees) {         //odd case 2: vertical lines
-        interval = hatchLine.getInterval() * scale;
-        double atomX  = origin.x;
-        int repeatRight = (int) fabs((maxX - atomX)/interval);
-        int repeatLeft  = (int) fabs((atomX - minX)/interval);
-        int repeatTotal = repeatRight + repeatLeft + 1;
-        double xStart = atomX - repeatLeft * interval;
+    }
+    if (globalDashStep == 0.) {
+        return {};
+    }
 
-        // make repeats
-        for (int i = 0; i < repeatTotal; i++) {
-            Base::Vector3d newStart(xStart + float(i)*interval, minY, 0);
-            Base::Vector3d newEnd(xStart + float(i)*interval, maxY, 0);
-            TopoDS_Edge newLine = makeLine(newStart, newEnd);
-            result.push_back(newLine);
+    // we handle hatch as a set of parallel lines made of dashes, here we loop on each line
+    for (int i = firstRepeatIndex ; i <= lastRepeatIndex ; ++i) {
+        Base::Vector3d currentOrigin = origin + static_cast<double>(i) * hatchIntervalAndOffset;
+
+        int firstDashIndex, lastDashIndex;
+        if (std::abs(hatchDirection.x) > std::abs(hatchDirection.y)) {  // we compute intersections with minX and maxX
+            firstDashIndex = (hatchDirection.x > 0.)
+                    ? std::floor((minX - currentOrigin.x) / (globalDashStep * hatchDirection.x))
+                    : std::floor((maxX - currentOrigin.x) / (globalDashStep * hatchDirection.x));
+            lastDashIndex = (hatchDirection.x > 0.)
+                    ? std::ceil((maxX - currentOrigin.x) / (globalDashStep * hatchDirection.x))
+                    : std::ceil((minX - currentOrigin.x) / (globalDashStep * hatchDirection.x));
         }
-//TODO: check if this makes 2-3 extra lines.  might be some "left" lines on "right" side of vv
-    } else if (angle > 0) {      //oblique  (bottom left -> top right)
-        //ex: 60, 0,0, 0,4.0, 25, -25
-//        Base::Console().Message("TRACE - DGH-makeEdgeOverlay - making angle > 0\n");
-        double xLeftAtom = origin.x + (minY - origin.y)/slope;                  //the "atom" is the fill line that passes through the
-                                                                                //pattern-origin (not necc. R2 origin)
-        double xRightAtom = origin.x + (maxY - origin.y)/slope;
-        int repeatRight = (int) fabs((maxX - xLeftAtom)/interval);
-        int repeatLeft  = (int) fabs((xRightAtom - minX)/interval);
-
-        double leftStartX = xLeftAtom - (repeatLeft * interval);
-        double leftEndX   = xRightAtom - (repeatLeft * interval);
-        int repeatTotal = repeatRight + repeatLeft + 1;
-
-        //make repeats
-        for (int i = 0; i < repeatTotal; i++) {
-            Base::Vector3d newStart(leftStartX + (float(i) *  interval), minY, 0);
-            Base::Vector3d newEnd (leftEndX + (float(i) * interval), maxY, 0);
-            TopoDS_Edge newLine = makeLine(newStart, newEnd);
-            result.push_back(newLine);
+        else {  // we compute intersections with minY and maxY
+            firstDashIndex = (hatchDirection.y > 0.)
+                    ? std::floor((minY - currentOrigin.y) / (globalDashStep * hatchDirection.y))
+                    : std::floor((maxY - currentOrigin.y) / (globalDashStep * hatchDirection.y));
+            lastDashIndex = (hatchDirection.y > 0.)
+                    ? std::ceil((maxY - currentOrigin.y) / (globalDashStep * hatchDirection.y))
+                    : std::ceil((minY - currentOrigin.y) / (globalDashStep * hatchDirection.y));
         }
-    } else {    //oblique (bottom right -> top left)
-        // ex: -60, 0,0, 0,4.0, 25.0, -12.5, 12.5, -6
-//        Base::Console().Message("TRACE - DGH-makeEdgeOverlay - making angle < 0\n");
-        double xRightAtom = origin.x + ((minY - origin.y)/slope);         //x-coord of left end of Atom line
-        double xLeftAtom = origin.x + ((maxY - origin.y)/slope);          //x-coord of right end of Atom line
-        int repeatRight = (int) fabs((maxX - xLeftAtom)/interval);        //number of lines to Right of Atom
-        int repeatLeft  = (int) fabs((xRightAtom - minX)/interval);       //number of lines to Left of Atom
-        double leftEndX = xLeftAtom - (repeatLeft * interval);
-        double leftStartX   = xRightAtom - (repeatLeft * interval);
-        int repeatTotal = repeatRight + repeatLeft + 1;
 
-        // make repeats
-        for (int i = 0; i < repeatTotal; i++) {
-            Base::Vector3d newStart(leftStartX + float(i)*interval, minY, 0);
-            Base::Vector3d newEnd(leftEndX + float(i)*interval, maxY, 0);
-            TopoDS_Edge newLine = makeLine(newStart, newEnd);
-            result.push_back(newLine);
+        for (int j = firstDashIndex ; j < lastDashIndex ; ++j) {
+            Base::Vector3d current = currentOrigin + static_cast<double>(j) * globalDashStep * hatchDirection;
+            for (auto dashParamsIterator = dashParams.begin() ; dashParamsIterator != dashParams.end() ; ++dashParamsIterator) {
+                double len = *dashParamsIterator;
+                Base::Vector3d next = current + std::abs(len) * hatchDirection;
+                if (len > 0. && (current.x >= minX || next.x >= minX) && (current.x <= maxX || next.x <= maxX)
+                        && (current.y >= minY || next.y >= minY) && (current.y <= maxY || next.y <= maxY)) {
+                    TopoDS_Edge newLine = makeLine(current, next);
+                    result.push_back(newLine);
+                }
+                std::swap(current, next);
+            }
+        }
+
+        if (result.size() > MaxNumberOfEdges) {
+            return {};
         }
     }
 
     return result;
 }
 
-TopoDS_Edge DrawGeomHatch::makeLine(Base::Vector3d s, Base::Vector3d e)
+TopoDS_Edge DrawGeomHatch::makeLine(const Base::Vector3d& s, const Base::Vector3d& e)
 {
     gp_Pnt start(s.x, s.y, 0.0);
     gp_Pnt end(e.x, e.y, 0.0);
@@ -507,7 +499,7 @@ TopoDS_Edge DrawGeomHatch::makeLine(Base::Vector3d s, Base::Vector3d e)
 //! these will be clipped to shape on the gui side
 std::vector<LineSet> DrawGeomHatch::getFaceOverlay(int iFace)
 {
-//    Base::Console().Message("TRACE - DGH::getFaceOverlay(%d)\n", iFace);
+//    Base::Console().message("TRACE - DGH::getFaceOverlay(%d)\n", iFace);
     std::vector<LineSet> result;
     DrawViewPart* source = getSourceView();
     if (!source ||
@@ -527,7 +519,7 @@ std::vector<LineSet> DrawGeomHatch::getFaceOverlay(int iFace)
 
     for (auto& ls: m_lineSets) {
         PATLineSpec hl = ls.getPATLineSpec();
-        std::vector<TopoDS_Edge> candidates = DrawGeomHatch::makeEdgeOverlay(hl, bBox, ScalePattern.getValue());
+        std::vector<TopoDS_Edge> candidates = DrawGeomHatch::makeEdgeOverlay(hl, bBox, ScalePattern.getValue(), PatternRotation.getValue());
         std::vector<TechDraw::BaseGeomPtr> resultGeoms;
         for (auto& e: candidates) {
             TechDraw::BaseGeomPtr base = BaseGeom::baseFactory(e);
@@ -612,9 +604,9 @@ std::string DrawGeomHatch::prefGeomHatchName()
     return result;
 }
 
-App::Color DrawGeomHatch::prefGeomHatchColor()
+Base::Color DrawGeomHatch::prefGeomHatchColor()
 {
-    App::Color fcColor;
+    Base::Color fcColor;
     fcColor.setPackedValue(Preferences::getPreferenceGroup("Colors")->GetUnsigned("GeomHatch", 0x00FF0000));
     return fcColor;
 }

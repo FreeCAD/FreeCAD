@@ -317,8 +317,7 @@ void ShapeBinder::slotChangedObject(const App::DocumentObject& Obj, const App::P
             list = obj->getInListRecursive();
             chain.insert(chain.end(), list.begin(), list.end());
 
-            auto it = std::find(chain.begin(), chain.end(), &Obj);
-            if (it != chain.end()) {
+            if (const auto it = std::ranges::find(chain, &Obj); it != chain.end()) {
                 if (hasPlacementChanged()) {
                     enforceRecompute();
                 }
@@ -390,15 +389,13 @@ SubShapeBinder::~SubShapeBinder() {
         clearCopiedObjects();
     }
     catch (const Base::ValueError& e) {
-        e.ReportException();
+        e.reportException();
     }
 }
 
 void SubShapeBinder::setupObject() {
     _Version.setValue(2);
     checkPropertyStatus();
-
-    this->Refine.setValue(getPDRefineModelParameter());
 }
 
 App::DocumentObject* SubShapeBinder::getSubObject(const char* subname, PyObject** pyObj,
@@ -455,7 +452,7 @@ void SubShapeBinder::setupCopyOnChange() {
                         removeDynamicProperty(prop->getName());
                     }
                     catch (Base::Exception& e) {
-                        e.ReportException();
+                        e.reportException();
                     }
                     catch (...) {
                     }
@@ -597,11 +594,11 @@ void SubShapeBinder::update(SubShapeBinder::UpdateOption options) {
                 recomputeCopy = true;
                 clearCopiedObjects();
 
-                App::DocumentCreateFlags createFlags;
-                createFlags.createView = false;
-                createFlags.temporary = true;
-
-                auto tmpDoc = App::GetApplication().newDocument("_tmp_binder", nullptr, createFlags);
+                App::DocumentInitFlags initFlags {
+                    .createView = false,
+                    .temporary = true
+                };
+                auto tmpDoc = App::GetApplication().newDocument("_tmp_binder", nullptr, initFlags);
                 tmpDoc->setUndoMode(0);
                 auto objs = tmpDoc->copyObject({ obj }, true, true);
                 if (!objs.empty()) {
@@ -681,7 +678,7 @@ void SubShapeBinder::update(SubShapeBinder::UpdateOption options) {
                 }
             }
             catch (Base::Exception& e) {
-                e.ReportException();
+                e.reportException();
                 FC_ERR(getFullName() << " failed to obtain shape from "
                     << obj->getFullName() << '.' << sub);
                 if (errMsg.empty()) {
@@ -721,7 +718,7 @@ void SubShapeBinder::update(SubShapeBinder::UpdateOption options) {
         if (!forced) {
             bool hit = true;
             for (auto& v : mats) {
-                auto prop = Base::freecad_dynamic_cast<App::PropertyMatrix>(
+                auto prop = freecad_cast<App::PropertyMatrix*>(
                     getDynamicPropertyByName(cacheName(v.first)));
                 if (!prop || prop->getValue() != v.second) {
                     hit = false;
@@ -820,7 +817,7 @@ void SubShapeBinder::update(SubShapeBinder::UpdateOption options) {
             catch (...) {
                 std::ostringstream msg;
                 msg << Label.getValue() << ": failed to make 2D offset" << std::endl;
-                Base::Console().Error(msg.str().c_str());
+                Base::Console().error(msg.str().c_str());
             }
         }
 
@@ -867,7 +864,7 @@ void SubShapeBinder::slotRecomputedObject(const App::DocumentObject& Obj) {
             update();
         }
         catch (Base::Exception& e) {
-            e.ReportException();
+            e.reportException();
         }
     }
 }

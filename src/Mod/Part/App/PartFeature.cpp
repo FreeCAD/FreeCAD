@@ -166,7 +166,7 @@ App::ElementNamePair Feature::getElementName(const char* name,
     // This function is overridden to provide higher level shape topo names that
     // are generated on demand, e.g. Wire, Shell, Solid, etc.
 
-    auto prop = Base::freecad_dynamic_cast<PropertyPartShape>(getPropertyOfGeometry());
+    auto prop = freecad_cast<PropertyPartShape*>(getPropertyOfGeometry());
     if (!prop) {
         return App::GeoFeature::getElementName(name, type);
     }
@@ -252,7 +252,7 @@ App::ElementNamePair Feature::getExportElementName(TopoShape shape,
                         }
                         else if (size > 1) {
                             for (auto it = ancestors.begin(); it != ancestors.end();) {
-                                if (std::find(v.second.begin(), v.second.end(), *it)
+                                if (std::ranges::find(v.second, *it)
                                     == v.second.end()) {
                                     it = ancestors.erase(it);
                                     if (ancestors.size() == 1) {
@@ -283,13 +283,12 @@ App::ElementNamePair Feature::getExportElementName(TopoShape shape,
                         // The current chosen elements are not enough to
                         // identify the higher element, generate an index for
                         // disambiguation.
-                        auto it = std::find(ancestors.begin(), ancestors.end(), res.second);
+                        auto it = std::ranges::find(ancestors, res.second);
                         if (it == ancestors.end()) {
                             assert(0 && "ancestor not found");  // this shouldn't happen
                         }
-                        else {
-                            op = Data::POSTFIX_INDEX + std::to_string(it - ancestors.begin());
-                        }
+
+                        op = Data::POSTFIX_INDEX + std::to_string(it - ancestors.begin());
                     }
 
                     // Note: setting names to shape will change its underlying
@@ -367,7 +366,7 @@ App::ElementNamePair Feature::getExportElementName(TopoShape shape,
                     }
                     else {
                         for (auto it = ancestors.begin(); it != ancestors.end();) {
-                            if (std::find(current.begin(), current.end(), *it) == current.end()) {
+                            if (std::ranges::find(current, *it) == current.end()) {
                                 it = ancestors.erase(it);
                             }
                             else {
@@ -878,7 +877,7 @@ void Feature::setMaterialAppearance(const App::Material& material)
         ShapeMaterial.setValue(material);
     }
     catch (const Base::Exception& e) {
-        e.ReportException();
+        e.reportException();
     }
 }
 
@@ -1575,10 +1574,16 @@ Feature* Feature::create(const TopoShape& shape, const char* name, App::Document
             document = App::GetApplication().newDocument();
         }
     }
-    auto res = static_cast<Part::Feature*>(document->addObject("Part::Feature", name));
+    auto res = document->addObject<Part::Feature>(name);
     res->Shape.setValue(shape);
     res->purgeTouched();
     return res;
+}
+
+void Feature::onDocumentRestored()
+{
+    // expandShapeContents();
+    App::GeoFeature::onDocumentRestored();
 }
 
 ShapeHistory Feature::buildHistory(BRepBuilderAPI_MakeShape& mkShape, TopAbs_ShapeEnum type,
@@ -1681,7 +1686,7 @@ bool Feature::isElementMappingDisabled(App::PropertyContainer* container)
 //    if (prop && prop->getValue()) {
 //        return true;
 //    }
-//    if (auto obj = Base::freecad_dynamic_cast<App::DocumentObject>(container)) {
+//    if (auto obj = freecad_cast<App::DocumentObject*>(container)) {
 //        if (auto doc = obj->getDocument()) {
 //            if (auto prop = propDisableMapping(doc, /*forced*/ false)) {
 //                return prop->getValue();
@@ -1691,7 +1696,7 @@ bool Feature::isElementMappingDisabled(App::PropertyContainer* container)
 //    return false;
 }
 
-bool Feature::getCameraAlignmentDirection(Base::Vector3d& direction, const char* subname) const
+bool Feature::getCameraAlignmentDirection(Base::Vector3d& directionZ, Base::Vector3d &directionX, const char* subname) const
 {
     const auto topoShape = getTopoShape(this, subname, true);
 
@@ -1706,7 +1711,36 @@ bool Feature::getCameraAlignmentDirection(Base::Vector3d& direction, const char*
             gp_Pnt point;
             gp_Vec vector;
             BRepGProp_Face(face).Normal(0, 0, point, vector);
-            direction = Base::Vector3d(vector.X(), vector.Y(), vector.Z()).Normalize();
+            directionZ = Base::Vector3d(vector.X(), vector.Y(), vector.Z()).Normalize();
+            
+            // Try to find a second alignment direction
+            // Use the longest straight edge for horizontal or vertical alignment
+            std::optional<std::tuple<TopoDS_Shape, Standard_Real>> longestEdge; // Tuple of (shape, length of edge)
+            for (TopExp_Explorer Ex (face, TopAbs_EDGE); Ex.More(); Ex.Next()) {
+                const auto edge = TopoDS::Edge(Ex.Current());
+                const auto edgeTopoShape = TopoShape(edge);
+                if (!edgeTopoShape.isLinearEdge()) {
+                    continue;
+                }
+
+                GProp_GProps props;
+                BRepGProp::LinearProperties(edge, props);
+                const auto length = props.Mass();
+
+                // Check if this edge is the longest
+                if (!longestEdge.has_value() || length > get<1>(longestEdge.value())) {
+                    longestEdge = std::tuple(edge, length);
+                }
+            }
+
+            if (longestEdge.has_value()) {
+                if (const std::unique_ptr<Geometry> geometry = Geometry::fromShape(get<0>(longestEdge.value()), true)) {
+                    if (const std::unique_ptr<GeomLine> geomLine(static_cast<GeomCurve*>(geometry.get())->toLine()); geomLine) {
+                        directionX = geomLine->getDir().Normalize();
+                    }
+                }
+            }
+            
             return true;
         }
         catch (Standard_TypeMismatch&) {
@@ -1720,13 +1754,13 @@ bool Feature::getCameraAlignmentDirection(Base::Vector3d& direction, const char*
         if (const std::unique_ptr<Geometry> geometry = Geometry::fromShape(topoShape.getSubShape(TopAbs_EDGE, 1), true)) {
             const std::unique_ptr<GeomLine> geomLine(static_cast<GeomCurve*>(geometry.get())->toLine());
             if (geomLine) {
-                direction = geomLine->getDir().Normalize();
+                directionZ = geomLine->getDir().Normalize();
                 return true;
             }
         }
     }
 
-    return GeoFeature::getCameraAlignmentDirection(direction, subname);
+    return GeoFeature::getCameraAlignmentDirection(directionZ, directionX, subname);
 }
 
 void Feature::guessNewLink(std::string &replacementName, DocumentObject *base, const char *oldLink) {

@@ -189,7 +189,7 @@ bool ImpExpDxfRead::OnReadBlock(const std::string& name, int flags)
         // and don't want to be complaining about unhandled entity types.
         // Note that if it *is* for a hatch we could actually import it and use it to draw a hatch.
     }
-    else if (Blocks.count(name) > 0) {
+    else if (Blocks.contains(name)) {
         ImportError("Duplicate block name '%s'\n", name);
     }
     else {
@@ -241,7 +241,7 @@ void ImpExpDxfRead::OnReadArc(const Base::Vector3d& start,
         Collector->AddObject(BRepBuilderAPI_MakeEdge(circle, p0, p1).Edge(), "Arc");
     }
     else {
-        Base::Console().Warning("ImpExpDxf - ignore degenerate arc of circle\n");
+        Base::Console().warning("ImpExpDxf - ignore degenerate arc of circle\n");
     }
 }
 
@@ -262,7 +262,7 @@ void ImpExpDxfRead::OnReadCircle(const Base::Vector3d& start,
         Collector->AddObject(BRepBuilderAPI_MakeEdge(circle).Edge(), "Circle");
     }
     else {
-        Base::Console().Warning("ImpExpDxf - ignore degenerate circle\n");
+        Base::Console().warning("ImpExpDxf - ignore degenerate circle\n");
     }
 }
 
@@ -379,7 +379,7 @@ void ImpExpDxfRead::OnReadSpline(struct SplineData& sd)
         Collector->AddObject(BRepBuilderAPI_MakeEdge(geom).Edge(), "Spline");
     }
     catch (const Standard_Failure&) {
-        Base::Console().Warning("ImpExpDxf - failed to create bspline\n");
+        Base::Console().warning("ImpExpDxf - failed to create bspline\n");
     }
 }
 
@@ -404,7 +404,7 @@ void ImpExpDxfRead::OnReadEllipse(const Base::Vector3d& center,
         Collector->AddObject(BRepBuilderAPI_MakeEdge(ellipse).Edge(), "Ellipse");
     }
     else {
-        Base::Console().Warning("ImpExpDxf - ignore degenerate ellipse\n");
+        Base::Console().warning("ImpExpDxf - ignore degenerate ellipse\n");
     }
 }
 
@@ -462,7 +462,7 @@ void ImpExpDxfRead::ExpandInsert(const std::string& name,
                                  double rotation,
                                  const Base::Vector3d& scale)
 {
-    if (Blocks.count(name) == 0) {
+    if (!Blocks.contains(name)) {
         ImportError("Reference to undefined or external block '%s'\n", name);
         return;
     }
@@ -607,15 +607,14 @@ ImpExpDxfRead::Layer::Layer(const std::string& name,
                             std::string&& lineType,
                             PyObject* drawingLayer)
     : CDxfRead::Layer(name, color, std::move(lineType))
-    , DraftLayerView(drawingLayer == nullptr ? nullptr
+    , DraftLayerView(drawingLayer == nullptr ? Py_None
                                              : PyObject_GetAttrString(drawingLayer, "ViewObject"))
-    , GroupContents(
-          drawingLayer == nullptr
-              ? nullptr
-              : (App::PropertyLinkListHidden*)(((App::FeaturePythonPyT<App::DocumentObjectPy>*)
-                                                    drawingLayer)
-                                                   ->getPropertyContainerPtr())
-                    ->getDynamicPropertyByName("Group"))
+    , GroupContents(drawingLayer == nullptr
+                        ? nullptr
+                        : dynamic_cast<App::PropertyLinkListHidden*>(
+                              (((App::FeaturePythonPyT<App::DocumentObjectPy>*)drawingLayer)
+                                   ->getPropertyContainerPtr())
+                                  ->getDynamicPropertyByName("Group")))
 {}
 ImpExpDxfRead::Layer::~Layer()
 {
@@ -631,7 +630,7 @@ void ImpExpDxfRead::Layer::FinishLayer() const
         // App::FeaturePython, and its Proxy is a draftobjects.layer.Layer
         GroupContents->setValue(Contents);
     }
-    if (DraftLayerView != nullptr && Hidden) {
+    if (DraftLayerView != Py_None && Hidden) {
         // Hide the Hidden layers if possible (if GUI exists)
         // We do this now rather than when the layer is created so all objects
         // within the layers also become hidden.
@@ -644,7 +643,7 @@ ImpExpDxfRead::MakeLayer(const std::string& name, ColorIndex_t color, std::strin
 {
     if (m_preserveLayers) {
         // Hidden layers are implemented in the wrapup code after the entire file has been read.
-        App::Color appColor = ObjectColor(color);
+        Base::Color appColor = ObjectColor(color);
         PyObject* draftModule = nullptr;
         PyObject* layer = nullptr;
         draftModule = getDraftModule();
@@ -672,7 +671,7 @@ ImpExpDxfRead::MakeLayer(const std::string& name, ColorIndex_t color, std::strin
                                                          "Solid");
         }
         auto result = new Layer(name, color, std::move(lineType), layer);
-        if (result->DraftLayerView != nullptr) {
+        if (result->DraftLayerView != Py_None) {
             PyObject_SetAttrString(result->DraftLayerView, "OverrideLineColorChildren", Py_False);
             PyObject_SetAttrString(result->DraftLayerView,
                                    "OverrideShapeAppearanceChildren",
@@ -736,8 +735,7 @@ std::string ImpExpDxfRead::Deformat(const char* text)
 void ImpExpDxfRead::DrawingEntityCollector::AddObject(const TopoDS_Shape& shape,
                                                       const char* nameBase)
 {
-    auto pcFeature =
-        dynamic_cast<Part::Feature*>(Reader.document->addObject("Part::Feature", nameBase));
+    auto pcFeature = Reader.document->addObject<Part::Feature>(nameBase);
     pcFeature->Shape.setValue(shape);
     Reader.MoveToLayer(pcFeature);
     Reader.ApplyGuiStyles(pcFeature);
@@ -898,7 +896,7 @@ void ImpExpDxfWrite::exportShape(const TopoDS_Shape input)
             exportLine(adapt);
         }
         else {
-            Base::Console().Warning("ImpExpDxf - unknown curve type: %d\n",
+            Base::Console().warning("ImpExpDxf - unknown curve type: %d\n",
                                     static_cast<int>(adapt.GetType()));
         }
     }
@@ -978,8 +976,8 @@ void ImpExpDxfWrite::exportEllipse(BRepAdaptor_Curve& c)
     // rotation appears to be the clockwise(?) angle between major & +Y??
     double rotation = xaxis.AngleWithRef(gp_Dir(0, 1, 0), gp_Dir(0, 0, 1));
 
-    // 2*M_PI = 6.28319 is invalid(doesn't display in LibreCAD), but 2PI = 6.28318 is valid!
-    // writeEllipse(center, major, minor, rotation, 0.0, 2 * M_PI, true );
+    // 2*pi = 6.28319 is invalid(doesn't display in LibreCAD), but 2PI = 6.28318 is valid!
+    // writeEllipse(center, major, minor, rotation, 0.0, 2 * std::numbers::pi, true );
     writeEllipse(center, major, minor, rotation, 0.0, 6.28318, true);
 }
 
@@ -1037,8 +1035,8 @@ void ImpExpDxfWrite::exportEllipseArc(BRepAdaptor_Curve& c)
                                      // a > 0 ==> v2 is CCW from v1 (righthanded)?
                                      // a < 0 ==> v2 is CW from v1 (lefthanded)?
 
-    double startAngle = fmod(f, 2.0 * M_PI);  // revolutions
-    double endAngle = fmod(l, 2.0 * M_PI);
+    double startAngle = fmod(f, 2.0 * std::numbers::pi);  // revolutions
+    double endAngle = fmod(l, 2.0 * std::numbers::pi);
     bool endIsCW = (a < 0) ? true : false;  // if !endIsCW swap(start,end)
     // not sure if this is a hack or not. seems to make valid arcs.
     if (!endIsCW) {
@@ -1066,14 +1064,14 @@ void ImpExpDxfWrite::exportBSpline(BRepAdaptor_Curve& c)
     else {
         if (approx.HasResult()) {  // result, but not within tolerance
             spline = approx.Curve();
-            Base::Console().Message("DxfWrite::exportBSpline - result not within tolerance\n");
+            Base::Console().message("DxfWrite::exportBSpline - result not within tolerance\n");
         }
         else {
             f = c.FirstParameter();
             l = c.LastParameter();
             s = c.Value(f);
             ePt = c.Value(l);
-            Base::Console().Message(
+            Base::Console().message(
                 "DxfWrite::exportBSpline - no result- from:(%.3f,%.3f) to:(%.3f,%.3f)\n",
                 s.X(),
                 s.Y(),
@@ -1134,7 +1132,7 @@ void ImpExpDxfWrite::exportBSpline(BRepAdaptor_Curve& c)
 void ImpExpDxfWrite::exportBCurve(BRepAdaptor_Curve& c)
 {
     (void)c;
-    Base::Console().Message("BCurve dxf export not yet supported\n");
+    Base::Console().message("BCurve dxf export not yet supported\n");
 }
 
 void ImpExpDxfWrite::exportLine(BRepAdaptor_Curve& c)

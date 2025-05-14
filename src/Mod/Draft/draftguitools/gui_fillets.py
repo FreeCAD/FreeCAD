@@ -74,7 +74,6 @@ class Fillet(gui_base_original.Creator):
         super().Activated(name=name)
 
         if self.ui:
-            self.rad = params.get_param("FilletRadius")
             self.chamfer = params.get_param("FilletChamferMode")
             self.delete = params.get_param("FilletDeleteMode")
             label = translate("draft", "Fillet radius")
@@ -86,7 +85,8 @@ class Fillet(gui_base_original.Creator):
             self.ui.sourceCmd = self
             self.ui.labelRadius.setText(label)
             self.ui.radiusValue.setToolTip(tooltip)
-            self.ui.setRadiusValue(self.rad, "Length")
+            self.ui.radius = params.get_param("FilletRadius")
+            self.ui.setRadiusValue(self.ui.radius, "Length")
             self.ui.check_delete = self.ui._checkbox("isdelete",
                                                      self.ui.layout,
                                                      checked=self.delete)
@@ -136,13 +136,10 @@ class Fillet(gui_base_original.Creator):
         params.set_param("FilletChamferMode", self.chamfer)
 
     def numericRadius(self, rad):
-        """Validate the entry radius in the user interface.
-
-        This function is called by the toolbar or taskpanel interface
-        when a valid radius has been entered in the input field.
+        """This function is called by the taskpanel interface
+        when a radius has been entered in the input field.
         """
-        self.rad = rad
-        params.set_param("FilletRadius", self.rad)
+        params.set_param("FilletRadius", rad)
         self.draw_arc(rad, self.chamfer, self.delete)
 
     def draw_arc(self, rad, chamfer, delete):

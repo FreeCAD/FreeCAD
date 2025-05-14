@@ -22,6 +22,7 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
+#include <limits>
 #include <GC_MakeArcOfCircle.hxx>
 #include <Geom_Circle.hxx>
 #include <Geom_TrimmedCurve.hxx>
@@ -67,11 +68,11 @@ namespace PartGui {
         App::Part* activePart = Gui::Application::Instance->activeView()->getActiveObject<App::Part*>("part");
         if (activePart) {
             QString activeObjectName = QString::fromLatin1(activePart->getNameInDocument());
-            return QString::fromLatin1("App.ActiveDocument.getObject('%1\')."
+            return QStringLiteral("App.ActiveDocument.getObject('%1\')."
                 "addObject(App.ActiveDocument.getObject('%2\'))\n")
                 .arg(activeObjectName, objectName);
         }
-        return QString::fromLatin1("# Object %1 created at document root").arg(objectName);
+        return QStringLiteral("# Object %1 created at document root").arg(objectName);
     }
 
 const char* gce_ErrorStatusText(gce_ErrorType et)
@@ -151,7 +152,7 @@ QString Picker::toPlacement(const gp_Ax2& axis) const
     Base::Rotation rot(Base::convertTo<Base::Vector3d>(theAxis), theAngle);
     gp_Pnt loc = axis.Location();
 
-    return QString::fromLatin1("Base.Placement(Base.Vector(%1,%2,%3),Base.Rotation(%4,%5,%6,%7))")
+    return QStringLiteral("Base.Placement(Base.Vector(%1,%2,%3),Base.Rotation(%4,%5,%6,%7))")
         .arg(loc.X(),0,'g',Base::UnitsApi::getDecimals())
         .arg(loc.Y(),0,'g',Base::UnitsApi::getDecimals())
         .arg(loc.Z(),0,'g',Base::UnitsApi::getDecimals())
@@ -182,7 +183,7 @@ public:
         Handle(Geom_Circle) circle = Handle(Geom_Circle)::DownCast(trim->BasisCurve());
 
         QString name = QString::fromLatin1(doc->getUniqueObjectName("Circle").c_str());
-        return QString::fromLatin1(
+        return QStringLiteral(
             "App.ActiveDocument.addObject(\"Part::Circle\",\"%1\")\n"
             "App.ActiveDocument.%1.Radius=%2\n"
             "App.ActiveDocument.%1.Angle1=%3\n"
@@ -215,11 +216,7 @@ bool AbstractPrimitive::hasValidPrimitive() const
 
 void AbstractPrimitive::connectSignalMapper(QSignalMapper* mapper)
 {
-#if QT_VERSION < QT_VERSION_CHECK(5,15,0)
-        connect(mapper, qOverload<QObject*>(&QSignalMapper::mapped), this, &AbstractPrimitive::changeValue);
-#else
         connect(mapper, &QSignalMapper::mappedObject, this, &AbstractPrimitive::changeValue);
-#endif
 }
 
 namespace PartGui {
@@ -243,8 +240,8 @@ PlanePrimitive::PlanePrimitive(std::shared_ptr<Ui_DlgPrimitives> ui, Part::Plane
     : AbstractPrimitive(feature)
     , ui(ui)
 {
-    ui->planeLength->setRange(0, INT_MAX);
-    ui->planeWidth->setRange(0, INT_MAX);
+    ui->planeLength->setRange(0, std::numeric_limits<int>::max());
+    ui->planeWidth->setRange(0, std::numeric_limits<int>::max());
 
     if (feature) {
         ui->planeLength->setValue(feature->Length.getQuantityValue());
@@ -266,7 +263,7 @@ const char* PlanePrimitive::getDefaultName() const
 
 QString PlanePrimitive::create(const QString& objectName, const QString& placement) const
 {
-    return QString::fromLatin1(
+    return QStringLiteral(
         "App.ActiveDocument.addObject(\"Part::Plane\",\"%1\")\n"
         "App.ActiveDocument.%1.Length='%2'\n"
         "App.ActiveDocument.%1.Width='%3'\n"
@@ -281,7 +278,7 @@ QString PlanePrimitive::create(const QString& objectName, const QString& placeme
 
 QString PlanePrimitive::change(const QString& objectName, const QString& placement) const
 {
-    return QString::fromLatin1(
+    return QStringLiteral(
         "%1.Length='%2'\n"
         "%1.Width='%3'\n"
         "%1.Placement=%4\n")
@@ -312,9 +309,9 @@ BoxPrimitive::BoxPrimitive(std::shared_ptr<Ui_DlgPrimitives> ui, Part::Box* feat
     : AbstractPrimitive(feature)
     , ui(ui)
 {
-    ui->boxLength->setRange(0, INT_MAX);
-    ui->boxWidth->setRange(0, INT_MAX);
-    ui->boxHeight->setRange(0, INT_MAX);
+    ui->boxLength->setRange(0, std::numeric_limits<int>::max());
+    ui->boxWidth->setRange(0, std::numeric_limits<int>::max());
+    ui->boxHeight->setRange(0, std::numeric_limits<int>::max());
 
     if (feature) {
         ui->boxLength->setValue(feature->Length.getQuantityValue());
@@ -339,7 +336,7 @@ const char* BoxPrimitive::getDefaultName() const
 
 QString BoxPrimitive::create(const QString& objectName, const QString& placement) const
 {
-    return QString::fromLatin1(
+    return QStringLiteral(
         "App.ActiveDocument.addObject(\"Part::Box\",\"%1\")\n"
         "App.ActiveDocument.%1.Length='%2'\n"
         "App.ActiveDocument.%1.Width='%3'\n"
@@ -356,7 +353,7 @@ QString BoxPrimitive::create(const QString& objectName, const QString& placement
 
 QString BoxPrimitive::change(const QString& objectName, const QString& placement) const
 {
-    return QString::fromLatin1(
+    return QStringLiteral(
         "%1.Length='%2'\n"
         "%1.Width='%3'\n"
         "%1.Height='%4'\n"
@@ -392,8 +389,8 @@ CylinderPrimitive::CylinderPrimitive(std::shared_ptr<Ui_DlgPrimitives> ui, Part:
     : AbstractPrimitive(feature)
     , ui(ui)
 {
-    ui->cylinderRadius->setRange(0, INT_MAX);
-    ui->cylinderHeight->setRange(0, INT_MAX);
+    ui->cylinderRadius->setRange(0, std::numeric_limits<int>::max());
+    ui->cylinderHeight->setRange(0, std::numeric_limits<int>::max());
     ui->cylinderAngle->setRange(0, 360);
 
     if (feature) {
@@ -425,7 +422,7 @@ const char* CylinderPrimitive::getDefaultName() const
 
 QString CylinderPrimitive::create(const QString& objectName, const QString& placement) const
 {
-    return QString::fromLatin1(
+    return QStringLiteral(
         "App.ActiveDocument.addObject(\"Part::Cylinder\",\"%1\")\n"
         "App.ActiveDocument.%1.Radius='%2'\n"
         "App.ActiveDocument.%1.Height='%3'\n"
@@ -446,7 +443,7 @@ QString CylinderPrimitive::create(const QString& objectName, const QString& plac
 
 QString CylinderPrimitive::change(const QString& objectName, const QString& placement) const
 {
-    return QString::fromLatin1(
+    return QStringLiteral(
         "%1.Radius='%2'\n"
         "%1.Height='%3'\n"
         "%1.Angle='%4'\n"
@@ -492,9 +489,9 @@ ConePrimitive::ConePrimitive(std::shared_ptr<Ui_DlgPrimitives> ui, Part::Cone* f
     : AbstractPrimitive(feature)
     , ui(ui)
 {
-    ui->coneRadius1->setRange(0, INT_MAX);
-    ui->coneRadius2->setRange(0, INT_MAX);
-    ui->coneHeight->setRange(0, INT_MAX);
+    ui->coneRadius1->setRange(0, std::numeric_limits<int>::max());
+    ui->coneRadius2->setRange(0, std::numeric_limits<int>::max());
+    ui->coneHeight->setRange(0, std::numeric_limits<int>::max());
     ui->coneAngle->setRange(0, 360);
 
     if (feature) {
@@ -523,7 +520,7 @@ const char* ConePrimitive::getDefaultName() const
 
 QString ConePrimitive::create(const QString& objectName, const QString& placement) const
 {
-    return QString::fromLatin1(
+    return QStringLiteral(
         "App.ActiveDocument.addObject(\"Part::Cone\",\"%1\")\n"
         "App.ActiveDocument.%1.Radius1='%2'\n"
         "App.ActiveDocument.%1.Radius2='%3'\n"
@@ -542,7 +539,7 @@ QString ConePrimitive::create(const QString& objectName, const QString& placemen
 
 QString ConePrimitive::change(const QString& objectName, const QString& placement) const
 {
-    return QString::fromLatin1(
+    return QStringLiteral(
         "%1.Radius1='%2'\n"
         "%1.Radius2='%3'\n"
         "%1.Height='%4'\n"
@@ -583,7 +580,7 @@ SpherePrimitive::SpherePrimitive(std::shared_ptr<Ui_DlgPrimitives> ui, Part::Sph
     : AbstractPrimitive(feature)
     , ui(ui)
 {
-    ui->sphereRadius->setRange(0, INT_MAX);
+    ui->sphereRadius->setRange(0, std::numeric_limits<int>::max());
     ui->sphereAngle1->setRange(-90, 90);
     ui->sphereAngle2->setRange(-90, 90);
     ui->sphereAngle3->setRange(0, 360);
@@ -614,7 +611,7 @@ const char* SpherePrimitive::getDefaultName() const
 
 QString SpherePrimitive::create(const QString& objectName, const QString& placement) const
 {
-    return QString::fromLatin1(
+    return QStringLiteral(
         "App.ActiveDocument.addObject(\"Part::Sphere\",\"%1\")\n"
         "App.ActiveDocument.%1.Radius='%2'\n"
         "App.ActiveDocument.%1.Angle1='%3'\n"
@@ -633,7 +630,7 @@ QString SpherePrimitive::create(const QString& objectName, const QString& placem
 
 QString SpherePrimitive::change(const QString& objectName, const QString& placement) const
 {
-    return QString::fromLatin1(
+    return QStringLiteral(
         "%1.Radius='%2'\n"
         "%1.Angle1='%3'\n"
         "%1.Angle2='%4'\n"
@@ -674,9 +671,9 @@ EllipsoidPrimitive::EllipsoidPrimitive(std::shared_ptr<Ui_DlgPrimitives> ui, Par
     : AbstractPrimitive(feature)
     , ui(ui)
 {
-    ui->ellipsoidRadius1->setRange(0, INT_MAX);
-    ui->ellipsoidRadius2->setRange(0, INT_MAX);
-    ui->ellipsoidRadius3->setRange(0, INT_MAX);
+    ui->ellipsoidRadius1->setRange(0, std::numeric_limits<int>::max());
+    ui->ellipsoidRadius2->setRange(0, std::numeric_limits<int>::max());
+    ui->ellipsoidRadius3->setRange(0, std::numeric_limits<int>::max());
     ui->ellipsoidAngle1->setRange(-90, 90);
     ui->ellipsoidAngle2->setRange(-90, 90);
     ui->ellipsoidAngle3->setRange(0, 360);
@@ -714,7 +711,7 @@ const char* EllipsoidPrimitive::getDefaultName() const
 
 QString EllipsoidPrimitive::create(const QString& objectName, const QString& placement) const
 {
-    return QString::fromLatin1(
+    return QStringLiteral(
         "App.ActiveDocument.addObject(\"Part::Ellipsoid\",\"%1\")\n"
         "App.ActiveDocument.%1.Radius1='%2'\n"
         "App.ActiveDocument.%1.Radius2='%3'\n"
@@ -737,7 +734,7 @@ QString EllipsoidPrimitive::create(const QString& objectName, const QString& pla
 
 QString EllipsoidPrimitive::change(const QString& objectName, const QString& placement) const
 {
-    return QString::fromLatin1(
+    return QStringLiteral(
         "%1.Radius1='%2'\n"
         "%1.Radius2='%3'\n"
         "%1.Radius3='%4'\n"
@@ -788,8 +785,8 @@ TorusPrimitive::TorusPrimitive(std::shared_ptr<Ui_DlgPrimitives> ui, Part::Torus
     : AbstractPrimitive(feature)
     , ui(ui)
 {
-    ui->torusRadius1->setRange(0, INT_MAX);
-    ui->torusRadius2->setRange(0, INT_MAX);
+    ui->torusRadius1->setRange(0, std::numeric_limits<int>::max());
+    ui->torusRadius2->setRange(0, std::numeric_limits<int>::max());
     ui->torusAngle1->setRange(-180, 180);
     ui->torusAngle2->setRange(-180, 180);
     ui->torusAngle3->setRange(0, 360);
@@ -823,7 +820,7 @@ const char* TorusPrimitive::getDefaultName() const
 
 QString TorusPrimitive::create(const QString& objectName, const QString& placement) const
 {
-    return QString::fromLatin1(
+    return QStringLiteral(
         "App.ActiveDocument.addObject(\"Part::Torus\",\"%1\")\n"
         "App.ActiveDocument.%1.Radius1='%2'\n"
         "App.ActiveDocument.%1.Radius2='%3'\n"
@@ -844,7 +841,7 @@ QString TorusPrimitive::create(const QString& objectName, const QString& placeme
 
 QString TorusPrimitive::change(const QString& objectName, const QString& placement) const
 {
-    return QString::fromLatin1(
+    return QStringLiteral(
         "%1.Radius1='%2'\n"
         "%1.Radius2='%3'\n"
         "%1.Angle1='%4'\n"
@@ -890,8 +887,8 @@ PrismPrimitive::PrismPrimitive(std::shared_ptr<Ui_DlgPrimitives> ui, Part::Prism
     : AbstractPrimitive(feature)
     , ui(ui)
 {
-    ui->prismCircumradius->setRange(0, INT_MAX);
-    ui->prismHeight->setRange(0, INT_MAX);
+    ui->prismCircumradius->setRange(0, std::numeric_limits<int>::max());
+    ui->prismHeight->setRange(0, std::numeric_limits<int>::max());
 
     if (feature) {
         ui->prismPolygon->setValue(feature->Polygon.getValue());
@@ -921,7 +918,7 @@ const char* PrismPrimitive::getDefaultName() const
 
 QString PrismPrimitive::create(const QString& objectName, const QString& placement) const
 {
-    return QString::fromLatin1(
+    return QStringLiteral(
         "App.ActiveDocument.addObject(\"Part::Prism\",\"%1\")\n"
         "App.ActiveDocument.%1.Polygon=%2\n"
         "App.ActiveDocument.%1.Circumradius='%3'\n"
@@ -942,7 +939,7 @@ QString PrismPrimitive::create(const QString& objectName, const QString& placeme
 
 QString PrismPrimitive::change(const QString& objectName, const QString& placement) const
 {
-    return QString::fromLatin1(
+    return QStringLiteral(
         "%1.Polygon=%2\n"
         "%1.Circumradius='%3'\n"
         "%1.Height='%4'\n"
@@ -988,26 +985,28 @@ WedgePrimitive::WedgePrimitive(std::shared_ptr<Ui_DlgPrimitives> ui, Part::Wedge
     : AbstractPrimitive(feature)
     , ui(ui)
 {
-    ui->wedgeXmin->setMinimum(INT_MIN);
-    ui->wedgeXmin->setMaximum(INT_MAX);
-    ui->wedgeYmin->setMinimum(INT_MIN);
-    ui->wedgeYmin->setMaximum(INT_MAX);
-    ui->wedgeZmin->setMinimum(INT_MIN);
-    ui->wedgeZmin->setMaximum(INT_MAX);
-    ui->wedgeX2min->setMinimum(INT_MIN);
-    ui->wedgeX2min->setMaximum(INT_MAX);
-    ui->wedgeZ2min->setMinimum(INT_MIN);
-    ui->wedgeZ2min->setMaximum(INT_MAX);
-    ui->wedgeXmax->setMinimum(INT_MIN);
-    ui->wedgeXmax->setMaximum(INT_MAX);
-    ui->wedgeYmax->setMinimum(INT_MIN);
-    ui->wedgeYmax->setMaximum(INT_MAX);
-    ui->wedgeZmax->setMinimum(INT_MIN);
-    ui->wedgeZmax->setMaximum(INT_MAX);
-    ui->wedgeX2max->setMinimum(INT_MIN);
-    ui->wedgeX2max->setMaximum(INT_MAX);
-    ui->wedgeZ2max->setMinimum(INT_MIN);
-    ui->wedgeZ2max->setMaximum(INT_MAX);
+    constexpr int min = std::numeric_limits<int>::min();
+    constexpr int max = std::numeric_limits<int>::max();
+    ui->wedgeXmin->setMinimum(min);
+    ui->wedgeXmin->setMaximum(max);
+    ui->wedgeYmin->setMinimum(min);
+    ui->wedgeYmin->setMaximum(max);
+    ui->wedgeZmin->setMinimum(min);
+    ui->wedgeZmin->setMaximum(max);
+    ui->wedgeX2min->setMinimum(min);
+    ui->wedgeX2min->setMaximum(max);
+    ui->wedgeZ2min->setMinimum(min);
+    ui->wedgeZ2min->setMaximum(max);
+    ui->wedgeXmax->setMinimum(min);
+    ui->wedgeXmax->setMaximum(max);
+    ui->wedgeYmax->setMinimum(min);
+    ui->wedgeYmax->setMaximum(max);
+    ui->wedgeZmax->setMinimum(min);
+    ui->wedgeZmax->setMaximum(max);
+    ui->wedgeX2max->setMinimum(min);
+    ui->wedgeX2max->setMaximum(max);
+    ui->wedgeZ2max->setMinimum(min);
+    ui->wedgeZ2max->setMaximum(max);
 
     if (feature) {
         ui->wedgeXmin->setValue(feature->Xmin.getQuantityValue());
@@ -1053,7 +1052,7 @@ const char* WedgePrimitive::getDefaultName() const
 
 QString WedgePrimitive::create(const QString& objectName, const QString& placement) const
 {
-    return QString::fromLatin1(
+    return QStringLiteral(
         "App.ActiveDocument.addObject(\"Part::Wedge\",\"%1\")\n"
         "App.ActiveDocument.%1.Xmin='%2'\n"
         "App.ActiveDocument.%1.Ymin='%3'\n"
@@ -1084,7 +1083,7 @@ QString WedgePrimitive::create(const QString& objectName, const QString& placeme
 
 QString WedgePrimitive::change(const QString& objectName, const QString& placement) const
 {
-    return QString::fromLatin1(
+    return QStringLiteral(
         "%1.Xmin='%2'\n"
         "%1.Ymin='%3'\n"
         "%1.Zmin='%4'\n"
@@ -1155,9 +1154,9 @@ HelixPrimitive::HelixPrimitive(std::shared_ptr<Ui_DlgPrimitives> ui, Part::Helix
     : AbstractPrimitive(feature)
     , ui(ui)
 {
-    ui->helixPitch->setRange(0, INT_MAX);
-    ui->helixHeight->setRange(0, INT_MAX);
-    ui->helixRadius->setRange(0, INT_MAX);
+    ui->helixPitch->setRange(0, std::numeric_limits<int>::max());
+    ui->helixHeight->setRange(0, std::numeric_limits<int>::max());
+    ui->helixRadius->setRange(0, std::numeric_limits<int>::max());
     ui->helixAngle->setRange(-89.9, 89.9);
 
     if (feature) {
@@ -1188,7 +1187,7 @@ const char* HelixPrimitive::getDefaultName() const
 
 QString HelixPrimitive::create(const QString& objectName, const QString& placement) const
 {
-    return QString::fromLatin1(
+    return QStringLiteral(
         "App.ActiveDocument.addObject(\"Part::Helix\",\"%1\")\n"
         "App.ActiveDocument.%1.Pitch='%2'\n"
         "App.ActiveDocument.%1.Height='%3'\n"
@@ -1210,7 +1209,7 @@ QString HelixPrimitive::create(const QString& objectName, const QString& placeme
 
 QString HelixPrimitive::change(const QString& objectName, const QString& placement) const
 {
-    return QString::fromLatin1(
+    return QStringLiteral(
         "%1.Pitch='%2'\n"
         "%1.Height='%3'\n"
         "%1.Radius='%4'\n"
@@ -1256,9 +1255,9 @@ SpiralPrimitive::SpiralPrimitive(std::shared_ptr<Ui_DlgPrimitives> ui, Part::Spi
     : AbstractPrimitive(feature)
     , ui(ui)
 {
-    ui->spiralGrowth->setRange(0, INT_MAX);
-    ui->spiralRotation->setRange(0, INT_MAX);
-    ui->spiralRadius->setRange(0, INT_MAX);
+    ui->spiralGrowth->setRange(0, std::numeric_limits<int>::max());
+    ui->spiralRotation->setRange(0, std::numeric_limits<int>::max());
+    ui->spiralRadius->setRange(0, std::numeric_limits<int>::max());
 
     if (feature) {
         ui->spiralGrowth->setValue(feature->Growth.getQuantityValue());
@@ -1282,7 +1281,7 @@ const char* SpiralPrimitive::getDefaultName() const
 
 QString SpiralPrimitive::create(const QString& objectName, const QString& placement) const
 {
-    return QString::fromLatin1(
+    return QStringLiteral(
         "App.ActiveDocument.addObject(\"Part::Spiral\",\"%1\")\n"
         "App.ActiveDocument.%1.Growth='%2'\n"
         "App.ActiveDocument.%1.Rotations=%3\n"
@@ -1299,7 +1298,7 @@ QString SpiralPrimitive::create(const QString& objectName, const QString& placem
 
 QString SpiralPrimitive::change(const QString& objectName, const QString& placement) const
 {
-    return QString::fromLatin1(
+    return QStringLiteral(
         "%1.Growth='%2'\n"
         "%1.Rotations=%3\n"
         "%1.Radius='%4'\n"
@@ -1335,7 +1334,7 @@ CirclePrimitive::CirclePrimitive(std::shared_ptr<Ui_DlgPrimitives> ui, Part::Cir
     : AbstractPrimitive(feature)
     , ui(ui)
 {
-    ui->circleRadius->setRange(0, INT_MAX);
+    ui->circleRadius->setRange(0, std::numeric_limits<int>::max());
     ui->circleAngle1->setRange(0, 360);
     ui->circleAngle2->setRange(0, 360);
 
@@ -1362,7 +1361,7 @@ const char* CirclePrimitive::getDefaultName() const
 
 QString CirclePrimitive::create(const QString& objectName, const QString& placement) const
 {
-    return QString::fromLatin1(
+    return QStringLiteral(
         "App.ActiveDocument.addObject(\"Part::Circle\",\"%1\")\n"
         "App.ActiveDocument.%1.Radius='%2'\n"
         "App.ActiveDocument.%1.Angle1='%3'\n"
@@ -1379,7 +1378,7 @@ QString CirclePrimitive::create(const QString& objectName, const QString& placem
 
 QString CirclePrimitive::change(const QString& objectName, const QString& placement) const
 {
-    return QString::fromLatin1(
+    return QStringLiteral(
         "%1.Radius='%2'\n"
         "%1.Angle1='%3'\n"
         "%1.Angle2='%4'\n"
@@ -1415,8 +1414,8 @@ EllipsePrimitive::EllipsePrimitive(std::shared_ptr<Ui_DlgPrimitives> ui, Part::E
     : AbstractPrimitive(feature)
     , ui(ui)
 {
-    ui->ellipseMajorRadius->setRange(0, INT_MAX);
-    ui->ellipseMinorRadius->setRange(0, INT_MAX);
+    ui->ellipseMajorRadius->setRange(0, std::numeric_limits<int>::max());
+    ui->ellipseMinorRadius->setRange(0, std::numeric_limits<int>::max());
     ui->ellipseAngle1->setRange(0, 360);
     ui->ellipseAngle2->setRange(0, 360);
 
@@ -1446,7 +1445,7 @@ const char* EllipsePrimitive::getDefaultName() const
 
 QString EllipsePrimitive::create(const QString& objectName, const QString& placement) const
 {
-    return QString::fromLatin1(
+    return QStringLiteral(
         "App.ActiveDocument.addObject(\"Part::Ellipse\",\"%1\")\n"
         "App.ActiveDocument.%1.MajorRadius='%2'\n"
         "App.ActiveDocument.%1.MinorRadius='%3'\n"
@@ -1465,7 +1464,7 @@ QString EllipsePrimitive::create(const QString& objectName, const QString& place
 
 QString EllipsePrimitive::change(const QString& objectName, const QString& placement) const
 {
-    return QString::fromLatin1(
+    return QStringLiteral(
         "%1.MajorRadius='%2'\n"
         "%1.MinorRadius='%3'\n"
         "%1.Angle1='%4'\n"
@@ -1506,7 +1505,7 @@ PolygonPrimitive::PolygonPrimitive(std::shared_ptr<Ui_DlgPrimitives> ui, Part::R
     : AbstractPrimitive(feature)
     , ui(ui)
 {
-    ui->regularPolygonCircumradius->setRange(0, INT_MAX);
+    ui->regularPolygonCircumradius->setRange(0, std::numeric_limits<int>::max());
 
     if (feature) {
         ui->regularPolygonPolygon->setValue(feature->Polygon.getValue());
@@ -1527,7 +1526,7 @@ const char* PolygonPrimitive::getDefaultName() const
 
 QString PolygonPrimitive::create(const QString& objectName, const QString& placement) const
 {
-    return QString::fromLatin1(
+    return QStringLiteral(
         "App.ActiveDocument.addObject(\"Part::RegularPolygon\",\"%1\")\n"
         "App.ActiveDocument.%1.Polygon=%2\n"
         "App.ActiveDocument.%1.Circumradius='%3'\n"
@@ -1542,7 +1541,7 @@ QString PolygonPrimitive::create(const QString& objectName, const QString& place
 
 QString PolygonPrimitive::change(const QString& objectName, const QString& placement) const
 {
-    return QString::fromLatin1(
+    return QStringLiteral(
         "%1.Polygon=%2\n"
         "%1.Circumradius='%3'\n"
         "%1.Placement=%4\n")
@@ -1573,18 +1572,20 @@ LinePrimitive::LinePrimitive(std::shared_ptr<Ui_DlgPrimitives> ui, Part::Line* f
     : AbstractPrimitive(feature)
     , ui(ui)
 {
-    ui->edgeX1->setMaximum(INT_MAX);
-    ui->edgeX1->setMinimum(INT_MIN);
-    ui->edgeY1->setMaximum(INT_MAX);
-    ui->edgeY1->setMinimum(INT_MIN);
-    ui->edgeZ1->setMaximum(INT_MAX);
-    ui->edgeZ1->setMinimum(INT_MIN);
-    ui->edgeX2->setMaximum(INT_MAX);
-    ui->edgeX2->setMinimum(INT_MIN);
-    ui->edgeY2->setMaximum(INT_MAX);
-    ui->edgeY2->setMinimum(INT_MIN);
-    ui->edgeZ2->setMaximum(INT_MAX);
-    ui->edgeZ2->setMinimum(INT_MIN);
+    constexpr int min = std::numeric_limits<int>::min();
+    constexpr int max = std::numeric_limits<int>::max();
+    ui->edgeX1->setMaximum(max);
+    ui->edgeX1->setMinimum(min);
+    ui->edgeY1->setMaximum(max);
+    ui->edgeY1->setMinimum(min);
+    ui->edgeZ1->setMaximum(max);
+    ui->edgeZ1->setMinimum(min);
+    ui->edgeX2->setMaximum(max);
+    ui->edgeX2->setMinimum(min);
+    ui->edgeY2->setMaximum(max);
+    ui->edgeY2->setMinimum(min);
+    ui->edgeZ2->setMaximum(max);
+    ui->edgeZ2->setMinimum(min);
 
     if (feature) {
         ui->edgeX1->setValue(feature->X1.getQuantityValue());
@@ -1618,7 +1619,7 @@ const char* LinePrimitive::getDefaultName() const
 
 QString LinePrimitive::create(const QString& objectName, const QString& placement) const
 {
-    return QString::fromLatin1(
+    return QStringLiteral(
         "App.ActiveDocument.addObject(\"Part::Line\",\"%1\")\n"
         "App.ActiveDocument.%1.X1='%2'\n"
         "App.ActiveDocument.%1.Y1='%3'\n"
@@ -1641,7 +1642,7 @@ QString LinePrimitive::create(const QString& objectName, const QString& placemen
 
 QString LinePrimitive::change(const QString& objectName, const QString& placement) const
 {
-    return QString::fromLatin1(
+    return QStringLiteral(
         "%1.X1='%2'\n"
         "%1.Y1='%3'\n"
         "%1.Z1='%4'\n"
@@ -1692,12 +1693,14 @@ VertexPrimitive::VertexPrimitive(std::shared_ptr<Ui_DlgPrimitives> ui, Part::Ver
     : AbstractPrimitive(feature)
     , ui(ui)
 {
-    ui->vertexX->setMaximum(INT_MAX);
-    ui->vertexY->setMaximum(INT_MAX);
-    ui->vertexZ->setMaximum(INT_MAX);
-    ui->vertexX->setMinimum(INT_MIN);
-    ui->vertexY->setMinimum(INT_MIN);
-    ui->vertexZ->setMinimum(INT_MIN);
+    constexpr int min = std::numeric_limits<int>::min();
+    constexpr int max = std::numeric_limits<int>::max();
+    ui->vertexX->setMaximum(max);
+    ui->vertexY->setMaximum(max);
+    ui->vertexZ->setMaximum(max);
+    ui->vertexX->setMinimum(min);
+    ui->vertexY->setMinimum(min);
+    ui->vertexZ->setMinimum(min);
 
     if (feature) {
         ui->vertexX->setValue(feature->X.getQuantityValue());
@@ -1722,7 +1725,7 @@ const char* VertexPrimitive::getDefaultName() const
 
 QString VertexPrimitive::create(const QString& objectName, const QString& placement) const
 {
-    return QString::fromLatin1(
+    return QStringLiteral(
         "App.ActiveDocument.addObject(\"Part::Vertex\",\"%1\")\n"
         "App.ActiveDocument.%1.X='%2'\n"
         "App.ActiveDocument.%1.Y='%3'\n"
@@ -1739,7 +1742,7 @@ QString VertexPrimitive::create(const QString& objectName, const QString& placem
 
 QString VertexPrimitive::change(const QString& objectName, const QString& placement) const
 {
-    return QString::fromLatin1(
+    return QStringLiteral(
         "%1.X='%2'\n"
         "%1.Y='%3'\n"
         "%1.Z='%4'\n"
@@ -1949,7 +1952,7 @@ void DlgPrimitives::createPrimitive(const QString& placement)
 void DlgPrimitives::acceptChanges(const QString& placement)
 {
     App::Document* doc = featurePtr->getDocument();
-    QString objectName = QString::fromLatin1("App.getDocument(\"%1\").%2")
+    QString objectName = QStringLiteral("App.getDocument(\"%1\").%2")
                          .arg(QString::fromLatin1(doc->getName()),
                               QString::fromLatin1(featurePtr->getNameInDocument()));
 
@@ -2174,7 +2177,7 @@ QString Location::toPlacement() const
     loc.y = ui->YPositionQSB->rawValue();
     loc.z = ui->ZPositionQSB->rawValue();
 
-    return QString::fromLatin1("App.Placement(App.Vector(%1,%2,%3),App.Rotation(App.Vector(%4,%5,%6),%7))")
+    return QStringLiteral("App.Placement(App.Vector(%1,%2,%3),App.Rotation(App.Vector(%4,%5,%6),%7))")
         .arg(loc.x, 0, 'f', Base::UnitsApi::getDecimals())
         .arg(loc.y, 0, 'f', Base::UnitsApi::getDecimals())
         .arg(loc.z, 0, 'f', Base::UnitsApi::getDecimals())

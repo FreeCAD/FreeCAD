@@ -26,6 +26,7 @@
 #include <windows.h>
 #endif
 #include <map>
+#include <limits>
 
 #include <QApplication>
 #include <QPointer>
@@ -35,9 +36,7 @@
 #include <qstringlist.h>
 #endif
 
-#ifndef __InventorAll__
 #include <Gui/InventorAll.h>
-#endif
 
 #include <App/DocumentObject.h>
 #include <App/DocumentObjectGroup.h>
@@ -332,17 +331,17 @@ void CmdMeshImport::activated(int)
 {
     // use current path as default
     QStringList filter;
-    filter << QString::fromLatin1("%1 (*.stl *.ast *.bms *.obj *.off *.iv *.ply *.nas *.bdf)")
+    filter << QStringLiteral("%1 (*.stl *.ast *.bms *.obj *.off *.iv *.ply *.nas *.bdf)")
                   .arg(QObject::tr("All Mesh Files"));
-    filter << QString::fromLatin1("%1 (*.stl)").arg(QObject::tr("Binary STL"));
-    filter << QString::fromLatin1("%1 (*.ast)").arg(QObject::tr("ASCII STL"));
-    filter << QString::fromLatin1("%1 (*.bms)").arg(QObject::tr("Binary Mesh"));
-    filter << QString::fromLatin1("%1 (*.obj)").arg(QObject::tr("Alias Mesh"));
-    filter << QString::fromLatin1("%1 (*.off)").arg(QObject::tr("Object File Format"));
-    filter << QString::fromLatin1("%1 (*.iv)").arg(QObject::tr("Inventor V2.1 ASCII"));
-    filter << QString::fromLatin1("%1 (*.ply)").arg(QObject::tr("Stanford Polygon"));
-    filter << QString::fromLatin1("%1 (*.nas *.bdf)").arg(QObject::tr("NASTRAN"));
-    filter << QString::fromLatin1("%1 (*.*)").arg(QObject::tr("All Files"));
+    filter << QStringLiteral("%1 (*.stl)").arg(QObject::tr("Binary STL"));
+    filter << QStringLiteral("%1 (*.ast)").arg(QObject::tr("ASCII STL"));
+    filter << QStringLiteral("%1 (*.bms)").arg(QObject::tr("Binary Mesh"));
+    filter << QStringLiteral("%1 (*.obj)").arg(QObject::tr("Alias Mesh"));
+    filter << QStringLiteral("%1 (*.off)").arg(QObject::tr("Object File Format"));
+    filter << QStringLiteral("%1 (*.iv)").arg(QObject::tr("Inventor V2.1 ASCII"));
+    filter << QStringLiteral("%1 (*.ply)").arg(QObject::tr("Stanford Polygon"));
+    filter << QStringLiteral("%1 (*.nas *.bdf)").arg(QObject::tr("NASTRAN"));
+    filter << QStringLiteral("%1 (*.*)").arg(QObject::tr("All Files"));
 
     // Allow multi selection
     QStringList fn = Gui::FileDialog::getOpenFileNames(Gui::getMainWindow(),
@@ -394,25 +393,25 @@ void CmdMeshExport::activated(int)
     // clang-format off
     QString dir = QString::fromUtf8(docObj->Label.getValue());
     QList<QPair<QString, QByteArray> > ext;
-    ext << qMakePair<QString, QByteArray>(QString::fromLatin1("%1 (*.stl)").arg(QObject::tr("Binary STL")), "STL");
-    ext << qMakePair<QString, QByteArray>(QString::fromLatin1("%1 (*.stl)").arg(QObject::tr("ASCII STL")), "AST");
-    ext << qMakePair<QString, QByteArray>(QString::fromLatin1("%1 (*.ast)").arg(QObject::tr("ASCII STL")), "AST");
-    ext << qMakePair<QString, QByteArray>(QString::fromLatin1("%1 (*.bms)").arg(QObject::tr("Binary Mesh")), "BMS");
-    ext << qMakePair<QString, QByteArray>(QString::fromLatin1("%1 (*.obj)").arg(QObject::tr("Alias Mesh")), "OBJ");
-    ext << qMakePair<QString, QByteArray>(QString::fromLatin1("%1 (*.smf)").arg(QObject::tr("Simple Model Format")), "SMF");
-    ext << qMakePair<QString, QByteArray>(QString::fromLatin1("%1 (*.off)").arg(QObject::tr("Object File Format")), "OFF");
-    ext << qMakePair<QString, QByteArray>(QString::fromLatin1("%1 (*.iv)").arg(QObject::tr("Inventor V2.1 ascii")), "IV");
-    ext << qMakePair<QString, QByteArray>(QString::fromLatin1("%1 (*.x3d)").arg(QObject::tr("X3D Extensible 3D")), "X3D");
-    ext << qMakePair<QString, QByteArray>(QString::fromLatin1("%1 (*.x3dz)").arg(QObject::tr("Compressed X3D")), "X3DZ");
-    ext << qMakePair<QString, QByteArray>(QString::fromLatin1("%1 (*.xhtml)").arg(QObject::tr("WebGL/X3D")), "X3DOM");
-    ext << qMakePair<QString, QByteArray>(QString::fromLatin1("%1 (*.ply)").arg(QObject::tr("Stanford Polygon")), "PLY");
-    ext << qMakePair<QString, QByteArray>(QString::fromLatin1("%1 (*.wrl *.vrml)").arg(QObject::tr("VRML V2.0")), "VRML");
-    ext << qMakePair<QString, QByteArray>(QString::fromLatin1("%1 (*.wrz)").arg(QObject::tr("Compressed VRML 2.0")), "WRZ");
-    ext << qMakePair<QString, QByteArray>(QString::fromLatin1("%1 (*.nas *.bdf)").arg(QObject::tr("Nastran")), "NAS");
-    ext << qMakePair<QString, QByteArray>(QString::fromLatin1("%1 (*.py)").arg(QObject::tr("Python module def")), "PY");
-    ext << qMakePair<QString, QByteArray>(QString::fromLatin1("%1 (*.asy)").arg(QObject::tr("Asymptote Format")), "ASY");
-    ext << qMakePair<QString, QByteArray>(QString::fromLatin1("%1 (*.3mf)").arg(QObject::tr("3D Manufacturing Format")), "3MF");
-    ext << qMakePair<QString, QByteArray>(QString::fromLatin1("%1 (*.*)").arg(QObject::tr("All Files")), ""); // Undefined
+    ext << qMakePair<QString, QByteArray>(QStringLiteral("%1 (*.stl)").arg(QObject::tr("Binary STL")), "STL");
+    ext << qMakePair<QString, QByteArray>(QStringLiteral("%1 (*.stl)").arg(QObject::tr("ASCII STL")), "AST");
+    ext << qMakePair<QString, QByteArray>(QStringLiteral("%1 (*.ast)").arg(QObject::tr("ASCII STL")), "AST");
+    ext << qMakePair<QString, QByteArray>(QStringLiteral("%1 (*.bms)").arg(QObject::tr("Binary Mesh")), "BMS");
+    ext << qMakePair<QString, QByteArray>(QStringLiteral("%1 (*.obj)").arg(QObject::tr("Alias Mesh")), "OBJ");
+    ext << qMakePair<QString, QByteArray>(QStringLiteral("%1 (*.smf)").arg(QObject::tr("Simple Model Format")), "SMF");
+    ext << qMakePair<QString, QByteArray>(QStringLiteral("%1 (*.off)").arg(QObject::tr("Object File Format")), "OFF");
+    ext << qMakePair<QString, QByteArray>(QStringLiteral("%1 (*.iv)").arg(QObject::tr("Inventor V2.1 ascii")), "IV");
+    ext << qMakePair<QString, QByteArray>(QStringLiteral("%1 (*.x3d)").arg(QObject::tr("X3D Extensible 3D")), "X3D");
+    ext << qMakePair<QString, QByteArray>(QStringLiteral("%1 (*.x3dz)").arg(QObject::tr("Compressed X3D")), "X3DZ");
+    ext << qMakePair<QString, QByteArray>(QStringLiteral("%1 (*.xhtml)").arg(QObject::tr("WebGL/X3D")), "X3DOM");
+    ext << qMakePair<QString, QByteArray>(QStringLiteral("%1 (*.ply)").arg(QObject::tr("Stanford Polygon")), "PLY");
+    ext << qMakePair<QString, QByteArray>(QStringLiteral("%1 (*.wrl *.vrml)").arg(QObject::tr("VRML V2.0")), "VRML");
+    ext << qMakePair<QString, QByteArray>(QStringLiteral("%1 (*.wrz)").arg(QObject::tr("Compressed VRML 2.0")), "WRZ");
+    ext << qMakePair<QString, QByteArray>(QStringLiteral("%1 (*.nas *.bdf)").arg(QObject::tr("Nastran")), "NAS");
+    ext << qMakePair<QString, QByteArray>(QStringLiteral("%1 (*.py)").arg(QObject::tr("Python module def")), "PY");
+    ext << qMakePair<QString, QByteArray>(QStringLiteral("%1 (*.asy)").arg(QObject::tr("Asymptote Format")), "ASY");
+    ext << qMakePair<QString, QByteArray>(QStringLiteral("%1 (*.3mf)").arg(QObject::tr("3D Manufacturing Format")), "3MF");
+    ext << qMakePair<QString, QByteArray>(QStringLiteral("%1 (*.*)").arg(QObject::tr("All Files")), ""); // Undefined
     // clang-format on
     QStringList filter;
     for (const auto& it : ext) {
@@ -503,8 +502,7 @@ void CmdMeshFromGeometry::activated(int)
             }
 
             // create a mesh feature and assign the mesh
-            Mesh::Feature* mf =
-                static_cast<Mesh::Feature*>(doc->addObject("Mesh::Feature", "Mesh"));
+            Mesh::Feature* mf = doc->addObject<Mesh::Feature>("Mesh");
             mf->Mesh.setValue(mesh.getKernel());
         }
     }
@@ -1449,7 +1447,7 @@ void CmdMeshBoundingBox::activated(int)
         const MeshCore::MeshKernel& rMesh = ((Mesh::Feature*)it)->Mesh.getValue().getKernel();
         const Base::BoundBox3f& box = rMesh.GetBoundBox();
 
-        Base::Console().Message("Boundings: Min=<%f,%f,%f>, Max=<%f,%f,%f>\n",
+        Base::Console().message("Boundings: Min=<%f,%f,%f>, Max=<%f,%f,%f>\n",
                                 box.MinX,
                                 box.MinY,
                                 box.MinZ,
@@ -1459,7 +1457,7 @@ void CmdMeshBoundingBox::activated(int)
 
         QString bound = qApp->translate("Mesh_BoundingBox", "Boundings of %1:")
                             .arg(QString::fromUtf8(it->Label.getValue()));
-        bound += QString::fromLatin1("\n\nMin=<%1,%2,%3>\n\nMax=<%4,%5,%6>")
+        bound += QStringLiteral("\n\nMin=<%1,%2,%3>\n\nMax=<%4,%5,%6>")
                      .arg(box.MinX)
                      .arg(box.MinY)
                      .arg(box.MinZ)
@@ -1703,8 +1701,7 @@ void CmdMeshMerge::activated(int)
     }
 
     openCommand(QT_TRANSLATE_NOOP("Command", "Mesh merge"));
-    Mesh::Feature* pcFeature =
-        static_cast<Mesh::Feature*>(pcDoc->addObject("Mesh::Feature", "Mesh"));
+    Mesh::Feature* pcFeature = pcDoc->addObject<Mesh::Feature>("Mesh");
     Mesh::MeshObject* newMesh = pcFeature->Mesh.startEditing();
     std::vector<App::DocumentObject*> objs =
         Gui::Selection().getObjectsOfType(Mesh::Feature::getClassTypeId());
@@ -1759,8 +1756,7 @@ void CmdMeshSplitComponents::activated(int)
             std::unique_ptr<MeshObject> kernel(mesh.meshFromSegment(comp));
             kernel->setTransform(mesh.getTransform());
 
-            Mesh::Feature* feature =
-                static_cast<Mesh::Feature*>(pcDoc->addObject("Mesh::Feature", "Component"));
+            Mesh::Feature* feature = pcDoc->addObject<Mesh::Feature>("Component");
             feature->Mesh.setValuePtr(kernel.release());
         }
     }
@@ -1803,7 +1799,7 @@ void CmdMeshScale::activated(int)
                                             QObject::tr("Enter scaling factor:"),
                                             1,
                                             0,
-                                            DBL_MAX,
+                                            std::numeric_limits<double>::max(),
                                             5,
                                             &ok,
                                             Qt::MSWindowsFixedSizeDialogHint);

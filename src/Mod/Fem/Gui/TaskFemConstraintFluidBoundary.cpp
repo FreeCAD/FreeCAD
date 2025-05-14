@@ -29,6 +29,7 @@
 #include <QMessageBox>
 #include <TopoDS.hxx>
 #include <TopoDS_Shape.hxx>
+#include <limits>
 #include <sstream>
 #endif
 
@@ -145,18 +146,19 @@ TaskFemConstraintFluidBoundary::TaskFemConstraintFluidBoundary(
             &TaskFemConstraintFluidBoundary::onReferenceDeleted);
 
     // setup ranges
-    ui->spinBoundaryValue->setMinimum(-FLOAT_MAX);
-    ui->spinBoundaryValue->setMaximum(FLOAT_MAX);
+    constexpr float max = std::numeric_limits<float>::max();
+    ui->spinBoundaryValue->setMinimum(-max);
+    ui->spinBoundaryValue->setMaximum(max);
     ui->spinTurbulentIntensityValue->setMinimum(0.0);
-    ui->spinTurbulentIntensityValue->setMaximum(FLOAT_MAX);
+    ui->spinTurbulentIntensityValue->setMaximum(max);
     ui->spinTurbulentLengthValue->setMinimum(0.0);
-    ui->spinTurbulentLengthValue->setMaximum(FLOAT_MAX);
+    ui->spinTurbulentLengthValue->setMaximum(max);
     ui->spinTemperatureValue->setMinimum(-273.15);
-    ui->spinTemperatureValue->setMaximum(FLOAT_MAX);
+    ui->spinTemperatureValue->setMaximum(max);
     ui->spinHeatFluxValue->setMinimum(0.0);
-    ui->spinHeatFluxValue->setMaximum(FLOAT_MAX);
+    ui->spinHeatFluxValue->setMaximum(max);
     ui->spinHTCoeffValue->setMinimum(0.0);
-    ui->spinHTCoeffValue->setMaximum(FLOAT_MAX);
+    ui->spinHTCoeffValue->setMaximum(max);
 
     connect(ui->comboBoundaryType,
             qOverload<int>(&QComboBox::currentIndexChanged),
@@ -233,7 +235,7 @@ TaskFemConstraintFluidBoundary::TaskFemConstraintFluidBoundary(
         }
     }
     else {
-        Base::Console().Log("FemAnalysis object is not activated or no FemAnalysis in the active "
+        Base::Console().log("FemAnalysis object is not activated or no FemAnalysis in the active "
                             "document, mesh dimension is unknown\n");
         dimension = -1;  // unknown dimension of mesh
     }
@@ -294,7 +296,7 @@ TaskFemConstraintFluidBoundary::TaskFemConstraintFluidBoundary(
             }
             else {
                 ui->tabThermalBoundary->setEnabled(false);  // could be hidden
-                // Base::Console().Message("retrieve solver property HeatTransferring as false\n");
+                // Base::Console().message("retrieve solver property HeatTransferring as false\n");
             }
         }
         else {
@@ -325,7 +327,7 @@ TaskFemConstraintFluidBoundary::TaskFemConstraintFluidBoundary(
         }
     }
     else {
-        Base::Console().Warning(
+        Base::Console().warning(
             "No solver object inside FemAnalysis object, default to non-thermal, non-turbulence\n");
     }
     ui->tabWidget->setTabText(0, tr("Basic"));
@@ -352,8 +354,8 @@ TaskFemConstraintFluidBoundary::TaskFemConstraintFluidBoundary(
 
     // Fill data into dialog elements
     double f = pcConstraint->BoundaryValue.getValue();
-    ui->spinBoundaryValue->setMinimum(FLOAT_MIN);  // previous set the min to ZERO is not flexible
-    ui->spinBoundaryValue->setMaximum(FLOAT_MAX);
+    ui->spinBoundaryValue->setMinimum(std::numeric_limits<float>::min());  // ZERO is not flexible
+    ui->spinBoundaryValue->setMaximum(std::numeric_limits<float>::max());
     ui->spinBoundaryValue->setValue(f);
     ui->listReferences->clear();
     for (std::size_t i = 0; i < Objects.size(); i++) {
@@ -387,35 +389,35 @@ void TaskFemConstraintFluidBoundary::updateBoundaryTypeUI()
 
     // Update subtypes, any change here should be written back to FemConstraintFluidBoundary.cpp
     if (boundaryType == "wall") {
-        ui->labelBoundaryValue->setText(QString::fromUtf8("velocity (m/s)"));
+        ui->labelBoundaryValue->setText(QStringLiteral("velocity (m/s)"));
         ui->tabBasicBoundary->setEnabled(false);
         pcConstraint->Subtype.setEnums(WallSubtypes);
     }
     else if (boundaryType == "interface") {
-        ui->labelBoundaryValue->setText(QString::fromUtf8("value not needed"));
+        ui->labelBoundaryValue->setText(QStringLiteral("value not needed"));
         ui->tabBasicBoundary->setEnabled(false);
         pcConstraint->Subtype.setEnums(InterfaceSubtypes);
     }
     else if (boundaryType == "freestream") {
         ui->tabBasicBoundary->setEnabled(false);
-        ui->labelBoundaryValue->setText(QString::fromUtf8("value not needed"));
+        ui->labelBoundaryValue->setText(QStringLiteral("value not needed"));
         ui->tabBasicBoundary->setEnabled(false);
         pcConstraint->Subtype.setEnums(FreestreamSubtypes);
     }
     else if (boundaryType == "inlet") {
         ui->tabBasicBoundary->setEnabled(true);
         pcConstraint->Subtype.setEnums(InletSubtypes);
-        ui->labelBoundaryValue->setText(QString::fromUtf8("Pressure [Pa]"));  // default to pressure
+        ui->labelBoundaryValue->setText(QStringLiteral("Pressure [Pa]"));  // default to pressure
         pcConstraint->Reversed.setValue(true);  // inlet must point into volume
     }
     else if (boundaryType == "outlet") {
         ui->tabBasicBoundary->setEnabled(true);
         pcConstraint->Subtype.setEnums(OutletSubtypes);
-        ui->labelBoundaryValue->setText(QString::fromUtf8("Pressure [Pa]"));
+        ui->labelBoundaryValue->setText(QStringLiteral("Pressure [Pa]"));
         pcConstraint->Reversed.setValue(false);  // outlet must point outward
     }
     else {
-        Base::Console().Error("Error: Fluid boundary type `%s` is not defined\n",
+        Base::Console().error("Error: Fluid boundary type `%s` is not defined\n",
                               boundaryType.c_str());
     }
     // std::string subtypeLabel = boundaryType + std::string(" type");
@@ -437,49 +439,49 @@ void TaskFemConstraintFluidBoundary::updateSubtypeUI()
     if (boundaryType == "inlet" || boundaryType == "outlet") {
         ui->tabBasicBoundary->setEnabled(true);
         if (subtype == "totalPressure" || subtype == "staticPressure") {
-            ui->labelBoundaryValue->setText(QString::fromUtf8("pressure [Pa]"));
+            ui->labelBoundaryValue->setText(QStringLiteral("pressure [Pa]"));
             ui->buttonDirection->setEnabled(false);
             ui->lineDirection->setEnabled(false);
         }
         else if (subtype == "uniformVelocity") {
-            ui->labelBoundaryValue->setText(QString::fromUtf8("velocity [m/s]"));
+            ui->labelBoundaryValue->setText(QStringLiteral("velocity [m/s]"));
             ui->buttonDirection->setEnabled(true);
             ui->lineDirection->setEnabled(true);
         }
         else if (subtype == "massFlowrate") {
-            ui->labelBoundaryValue->setText(QString::fromUtf8("flowrate [kg/s]"));
+            ui->labelBoundaryValue->setText(QStringLiteral("flowrate [kg/s]"));
             ui->buttonDirection->setEnabled(false);
             ui->lineDirection->setEnabled(false);
         }
         else if (subtype == "volumetricFlowRate") {
-            ui->labelBoundaryValue->setText(QString::fromUtf8("flowrate [m3/s]"));
+            ui->labelBoundaryValue->setText(QStringLiteral("flowrate [m3/s]"));
             ui->buttonDirection->setEnabled(false);
             ui->lineDirection->setEnabled(false);
         }
         else {
-            ui->labelBoundaryValue->setText(QString::fromUtf8("unspecific"));
+            ui->labelBoundaryValue->setText(QStringLiteral("unspecific"));
             ui->tabBasicBoundary->setEnabled(false);
         }
     }
     else if (boundaryType == "wall") {
         if (subtype == "moving") {
-            ui->labelBoundaryValue->setText(QString::fromUtf8("moving speed (m/s)"));
+            ui->labelBoundaryValue->setText(QStringLiteral("moving speed (m/s)"));
             ui->tabBasicBoundary->setEnabled(true);
             ui->buttonDirection->setEnabled(false);  // moving speed must be parallel to wall
             ui->lineDirection->setEnabled(false);
         }
         else if (subtype == "slip") {
-            ui->labelBoundaryValue->setText(QString::fromUtf8("not needed"));
+            ui->labelBoundaryValue->setText(QStringLiteral("not needed"));
             ui->tabBasicBoundary->setEnabled(false);
         }
         else if (subtype == "partialSlip") {
-            ui->labelBoundaryValue->setText(QString::fromUtf8("slip ratio(0~1)"));
+            ui->labelBoundaryValue->setText(QStringLiteral("slip ratio(0~1)"));
             ui->tabBasicBoundary->setEnabled(true);
             ui->buttonDirection->setEnabled(false);
             ui->lineDirection->setEnabled(false);
         }
         else {
-            ui->labelBoundaryValue->setText(QString::fromUtf8("unspecific"));
+            ui->labelBoundaryValue->setText(QStringLiteral("unspecific"));
             ui->tabBasicBoundary->setEnabled(false);
         }
     }
@@ -493,7 +495,7 @@ void TaskFemConstraintFluidBoundary::updateSubtypeUI()
         ui->tabBasicBoundary->setEnabled(true);
     }
     else {
-        Base::Console().Error("Fluid boundary type `%s` is not defined\n", boundaryType.c_str());
+        Base::Console().error("Fluid boundary type `%s` is not defined\n", boundaryType.c_str());
     }
 }
 
@@ -517,7 +519,7 @@ void TaskFemConstraintFluidBoundary::updateTurbulenceUI()
         ui->labelTurbulentLengthValue->setText(tr("Hydraulic Diameter [m]"));
     }
     else {
-        Base::Console().Error("turbulence Spec type `%s` is not defined\n", turbulenceSpec.c_str());
+        Base::Console().error("turbulence Spec type `%s` is not defined\n", turbulenceSpec.c_str());
     }
 }
 
@@ -558,7 +560,7 @@ void TaskFemConstraintFluidBoundary::updateThermalBoundaryUI()
         ui->spinTemperatureValue->setEnabled(true);
     }
     else {
-        Base::Console().Error("Thermal boundary type `%s` is not defined\n",
+        Base::Console().error("Thermal boundary type `%s` is not defined\n",
                               thermalBoundaryType.c_str());
     }
 }
@@ -579,7 +581,7 @@ void TaskFemConstraintFluidBoundary::onBoundaryTypeChanged()
     bool ret = pcConstraint->recomputeFeature();
     if (!ret) {
         std::string boundaryType = ui->comboBoundaryType->currentText().toStdString();
-        Base::Console().Error("Fluid boundary recomputationg failed for boundaryType `%s` \n",
+        Base::Console().error("Fluid boundary recomputationg failed for boundaryType `%s` \n",
                               boundaryType.c_str());
     }
 }
@@ -833,9 +835,7 @@ void TaskFemConstraintFluidBoundary::addToSelection()
         App::DocumentObject* obj = it.getObject();
         for (const auto& subName : subNames) {  // for every selected sub element
             bool addMe = true;
-            for (std::vector<std::string>::iterator itr =
-                     std::find(SubElements.begin(), SubElements.end(), subName);
-                 itr != SubElements.end();
+            for (auto itr = std::ranges::find(SubElements, subName); itr != SubElements.end();
                  itr = std::find(++itr,
                                  SubElements.end(),
                                  subName)) {  // for every sub element in selection that
@@ -905,9 +905,7 @@ void TaskFemConstraintFluidBoundary::removeFromSelection()
         const App::DocumentObject* obj = it.getObject();
 
         for (const auto& subName : subNames) {  // for every selected sub element
-            for (std::vector<std::string>::iterator itr =
-                     std::find(SubElements.begin(), SubElements.end(), subName);
-                 itr != SubElements.end();
+            for (auto itr = std::ranges::find(SubElements, subName); itr != SubElements.end();
                  itr = std::find(++itr,
                                  SubElements.end(),
                                  subName)) {  // for every sub element in selection that
@@ -1016,7 +1014,7 @@ bool TaskDlgFemConstraintFluidBoundary::accept()
         std::string dirobj = boundary->getDirectionObject().data();
 
         if (!dirname.empty()) {
-            QString buf = QString::fromUtf8("(App.ActiveDocument.%1,[\"%2\"])");
+            QString buf = QStringLiteral("(App.ActiveDocument.%1,[\"%2\"])");
             buf = buf.arg(QString::fromStdString(dirname));
             buf = buf.arg(QString::fromStdString(dirobj));
             Gui::Command::doCommand(Gui::Command::Doc,
@@ -1082,7 +1080,7 @@ bool TaskDlgFemConstraintFluidBoundary::accept()
             }
         }
         else {
-            Base::Console().Warning("FemSolverObject is not found in the FemAnalysis object, "
+            Base::Console().warning("FemSolverObject is not found in the FemAnalysis object, "
                                     "thermal and turbulence setting is not accepted\n");
         }
     }

@@ -26,6 +26,7 @@
 # include <QStyleOptionGraphicsItem>
 #endif
 
+#include <Base/Tools.h>
 #include <Mod/TechDraw/App/DrawUtil.h>
 
 #include "QGIHighlight.h"
@@ -65,7 +66,7 @@ QGIHighlight::~QGIHighlight()
 
 void QGIHighlight::onDragFinished()
 {
-//    Base::Console().Message("QGIH::onDragFinished - pos: %s\n",
+//    Base::Console().message("QGIH::onDragFinished - pos: %s\n",
 //                            DrawUtil::formatVector(pos()).c_str());
     QGraphicsItem* parent = parentItem();
     auto qgivp = dynamic_cast<QGIViewPart*>(parent);
@@ -125,7 +126,7 @@ void QGIHighlight::makeReference()
     QRectF r(m_start, m_end);
     double radius = r.width() / 2.0;
     QPointF center = r.center();
-    double angleRad = m_referenceAngle * M_PI / 180.0;
+    double angleRad = Base::toRadians(m_referenceAngle);
     double posX = center.x() + cos(angleRad) * radius + horizOffset;
     double posY = center.y() - sin(angleRad) * radius - vertOffset;
     m_reference->setPos(posX, posY);
@@ -188,16 +189,10 @@ void QGIHighlight::paint ( QPainter * painter, const QStyleOptionGraphicsItem * 
 
 void QGIHighlight::setTools()
 {
-    m_pen.setWidthF(m_width);
-    m_pen.setColor(m_colCurrent);
-
-    m_brush.setStyle(m_brushCurrent);
-    m_brush.setColor(m_colCurrent);
-
     m_circle->setPen(m_pen);
     m_rect->setPen(m_pen);
 
-    m_reference->setDefaultTextColor(m_colCurrent);
+    m_reference->setDefaultTextColor(m_pen.color());
 }
 
 void QGIHighlight::setLinePen(QPen isoPen)

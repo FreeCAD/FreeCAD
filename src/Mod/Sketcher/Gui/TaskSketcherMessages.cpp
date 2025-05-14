@@ -62,28 +62,28 @@ TaskSketcherMessages::TaskSketcherMessages(ViewProviderSketch* sketchView)
     // Set up the possible state values for the status label
     ui->labelConstrainStatus->setParameterGroup(
         "User parameter:BaseApp/Preferences/Mod/Sketcher/General");
-    ui->labelConstrainStatus->registerState(QString::fromUtf8("empty_sketch"),
+    ui->labelConstrainStatus->registerState(QStringLiteral("empty_sketch"),
                                             palette().windowText().color(),
                                             std::string("EmptySketchMessageColor"));
-    ui->labelConstrainStatus->registerState(QString::fromUtf8("under_constrained"),
+    ui->labelConstrainStatus->registerState(QStringLiteral("under_constrained"),
                                             palette().windowText().color(),
                                             std::string("UnderconstrainedMessageColor"));
-    ui->labelConstrainStatus->registerState(QString::fromUtf8("malformed_constraints"),
+    ui->labelConstrainStatus->registerState(QStringLiteral("malformed_constraints"),
                                             QColor("red"),
                                             std::string("MalformedConstraintMessageColor"));
-    ui->labelConstrainStatus->registerState(QString::fromUtf8("conflicting_constraints"),
+    ui->labelConstrainStatus->registerState(QStringLiteral("conflicting_constraints"),
                                             QColor("orangered"),
                                             std::string("ConflictingConstraintMessageColor"));
-    ui->labelConstrainStatus->registerState(QString::fromUtf8("redundant_constraints"),
+    ui->labelConstrainStatus->registerState(QStringLiteral("redundant_constraints"),
                                             QColor("red"),
                                             std::string("RedundantConstraintMessageColor"));
     ui->labelConstrainStatus->registerState(
-        QString::fromUtf8("partially_redundant_constraints"),
+        QStringLiteral("partially_redundant_constraints"),
         QColor("royalblue"),
         std::string("PartiallyRedundantConstraintMessageColor"));
     ui->labelConstrainStatus->registerState(
-        QString::fromUtf8("solver_failed"), QColor("red"), std::string("SolverFailedMessageColor"));
-    ui->labelConstrainStatus->registerState(QString::fromUtf8("fully_constrained"),
+        QStringLiteral("solver_failed"), QColor("red"), std::string("SolverFailedMessageColor"));
+    ui->labelConstrainStatus->registerState(QStringLiteral("fully_constrained"),
                                             QColor("green"),
                                             std::string("FullyConstrainedMessageColor"));
 
@@ -137,18 +137,18 @@ void TaskSketcherMessages::slotSetUp(const QString& state, const QString& msg, c
 
 void TaskSketcherMessages::updateToolTip(const QString& link)
 {
-    if (link == QString::fromLatin1("#conflicting"))
+    if (link == QStringLiteral("#conflicting"))
         ui->labelConstrainStatusLink->setToolTip(
             tr("Click to select these conflicting constraints."));
-    else if (link == QString::fromLatin1("#redundant"))
+    else if (link == QStringLiteral("#redundant"))
         ui->labelConstrainStatusLink->setToolTip(tr("Click to select these redundant constraints."));
-    else if (link == QString::fromLatin1("#dofs"))
+    else if (link == QStringLiteral("#dofs"))
         ui->labelConstrainStatusLink->setToolTip(
             tr("The sketch has unconstrained elements giving rise to those Degrees Of Freedom. "
                "Click to select these unconstrained elements."));
-    else if (link == QString::fromLatin1("#malformed"))
+    else if (link == QStringLiteral("#malformed"))
         ui->labelConstrainStatusLink->setToolTip(tr("Click to select these malformed constraints."));
-    else if (link == QString::fromLatin1("#partiallyredundant"))
+    else if (link == QStringLiteral("#partiallyredundant"))
         ui->labelConstrainStatusLink->setToolTip(
             tr("Some constraints in combination are partially redundant. Click to select these "
                "partially redundant constraints."));
@@ -156,19 +156,19 @@ void TaskSketcherMessages::updateToolTip(const QString& link)
 
 void TaskSketcherMessages::onLabelConstrainStatusLinkClicked(const QString& str)
 {
-    if (str == QString::fromLatin1("#conflicting"))
+    if (str == QStringLiteral("#conflicting"))
         Gui::Application::Instance->commandManager().runCommandByName(
             "Sketcher_SelectConflictingConstraints");
-    else if (str == QString::fromLatin1("#redundant"))
+    else if (str == QStringLiteral("#redundant"))
         Gui::Application::Instance->commandManager().runCommandByName(
             "Sketcher_SelectRedundantConstraints");
-    else if (str == QString::fromLatin1("#dofs"))
+    else if (str == QStringLiteral("#dofs"))
         Gui::Application::Instance->commandManager().runCommandByName(
             "Sketcher_SelectElementsWithDoFs");
-    else if (str == QString::fromLatin1("#malformed"))
+    else if (str == QStringLiteral("#malformed"))
         Gui::Application::Instance->commandManager().runCommandByName(
             "Sketcher_SelectMalformedConstraints");
-    else if (str == QString::fromLatin1("#partiallyredundant"))
+    else if (str == QStringLiteral("#partiallyredundant"))
         Gui::Application::Instance->commandManager().runCommandByName(
             "Sketcher_SelectPartiallyRedundantConstraints");
 }

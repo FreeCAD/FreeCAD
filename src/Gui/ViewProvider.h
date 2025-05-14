@@ -28,7 +28,7 @@
 #include <string>
 #include <vector>
 #include <QIcon>
-#include <boost_signals2.hpp>
+#include <boost/signals2.hpp>
 #include <boost/intrusive_ptr.hpp>
 
 #include <App/Material.h>
@@ -58,8 +58,6 @@ class QObject;
 
 namespace Base {
   class Matrix4D;
-}
-namespace App {
   class Color;
 }
 
@@ -74,6 +72,7 @@ class View3DInventorViewer;
 class ViewProviderPy;
 class ObjectItem;
 class MDIView;
+class SelectionChanges;
 
 enum ViewStatus {
     UpdateData = 0,
@@ -122,6 +121,11 @@ class GuiExport ViewProvider : public App::TransactionalObject
     PROPERTY_HEADER_WITH_OVERRIDE(Gui::ViewProvider);
 
 public:
+    enum class ToggleVisibilityMode : bool {
+        CanToggleVisibility = true,
+        NoToggleVisibility = false
+    };
+
     /// constructor.
     ViewProvider();
 
@@ -164,6 +168,8 @@ public:
     /// indicates if the ViewProvider use the new Selection model
     virtual bool useNewSelectionModel() const;
     virtual bool isSelectable() const {return true;}
+    /// called when the selection changes for the view provider
+    virtual void onSelectionChanged(const SelectionChanges&) {}
     /// return a hit element given the picked point which contains the full node path
     virtual bool getElementPicked(const SoPickedPoint *, std::string &subname) const;
     /// return a hit element to the selection path or 0
@@ -245,6 +251,22 @@ public:
     //@{
     /// deliver the icon shown in the tree view
     virtual QIcon getIcon() const;
+
+    /**
+     * @brief Whether the viewprovider should allow to toggle the visibility.
+     *
+     * Some document objects are not rendered and for those document objects,
+     * it makes no sense to be able to toggle the visibility.  Examples are
+     * VarSet and Spreadsheet.
+     *
+     * Note that "rendered" should be seen broadly here.  Objects such as
+     * TechDraw pages, templates, views, and dimensions are not rendered by
+     * Coin but are "rendered" on the TechDraw page and hence this function can
+     * return true for those items.
+     */
+    bool canToggleVisibility() const {
+        return toggleVisibilityMode == ToggleVisibilityMode::CanToggleVisibility;
+    }
 
      /** @name Methods used by the Tree
      * If you want to take control over the
@@ -418,11 +440,11 @@ public:
     /** @name Color management methods
      */
     //@{
-    virtual std::map<std::string, App::Color> getElementColors(const char *element=nullptr) const {
+    virtual std::map<std::string, Base::Color> getElementColors(const char *element=nullptr) const {
         (void)element;
         return {};
     }
-    virtual void setElementColors(const std::map<std::string, App::Color> &colors) {
+    virtual void setElementColors(const std::map<std::string, Base::Color> &colors) {
         (void)colors;
     }
     static const std::string &hiddenMarker();
@@ -570,6 +592,8 @@ protected:
     /// Turn on mode switch
     virtual void setModeSwitch();
 
+    void setToggleVisibility(ToggleVisibilityMode mode) { toggleVisibilityMode = mode; }
+
 protected:
     /// The root Separator of the ViewProvider
     SoSeparator *pcRoot;
@@ -583,6 +607,10 @@ protected:
     ViewProviderPy* pyViewObject{nullptr};
     std::string overrideMode;
     std::bitset<32> StatusBits;
+    /// whether visibility can toggled
+    ToggleVisibilityMode toggleVisibilityMode;
+
+    friend class ViewProviderPy;
 
 private:
     int _iActualMode{-1};
