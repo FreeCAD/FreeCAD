@@ -21,6 +21,7 @@
 
 #include <gtest/gtest.h>
 #include "Base/Exception.h"
+#include "Base/Tools.h"
 #include "Base/Unit.h"
 #include "Base/Quantity.h"
 #include "Base/UnitsApi.h"
@@ -33,6 +34,7 @@
 using Base::Quantity;
 using Base::QuantityFormat;
 using Base::RuntimeError;
+using Base::Tools;
 using Base::Unit;
 using Base::UnitsApi;
 using Base::UnitsSchema;
@@ -263,7 +265,7 @@ TEST_F(SchemaTest, imperial_safe_user_str_same)
 {
     constexpr auto val {304.8};
     const auto result = set("Imperial", Unit::Length, val);
-    const auto expect {"1.00′"};
+    const auto expect = Tools::escapeQuotesFromString("1.00'");
 
     EXPECT_EQ(result, expect);
 }
@@ -272,7 +274,7 @@ TEST_F(SchemaTest, imperial_safe_user_str_more)
 {
     constexpr auto val {310.0};
     const auto result = set("Imperial", Unit::Length, val);
-    const auto expect {"1.02′"};
+    const auto expect = Tools::escapeQuotesFromString("1.02'");
 
     EXPECT_EQ(result, expect);
 }
@@ -281,7 +283,7 @@ TEST_F(SchemaTest, imperial_safe_user_str_less)
 {
     constexpr auto val {300.0};
     const auto result = set("Imperial", Unit::Length, val);
-    const auto expect {"11.81″"};
+    const auto expect = Tools::escapeQuotesFromString("11.81\"");
 
     EXPECT_EQ(result, expect);
 }
@@ -290,7 +292,7 @@ TEST_F(SchemaTest, imperial_safe_user_str_one_inch)
 {
     constexpr auto val {25.4};
     const auto result = set("Imperial", Unit::Length, val);
-    const auto expect {"1.00″"};
+    const auto expect = Tools::escapeQuotesFromString("1.00\"");
 
     EXPECT_EQ(result, expect);
 }
@@ -299,7 +301,7 @@ TEST_F(SchemaTest, imperial_building_special_function_length_inch)
 {
     constexpr auto val {25.4};
     const auto result = set("ImperialBuilding", Unit::Length, val);
-    const auto expect {"1″"};
+    const auto expect = Tools::escapeQuotesFromString("1\"");
 
     EXPECT_EQ(result, expect);
 }
@@ -308,7 +310,7 @@ TEST_F(SchemaTest, imperial_building_special_function_length_foot)
 {
     constexpr auto val {25.4 * 12};
     const auto result = set("ImperialBuilding", Unit::Length, val);
-    const auto expect {"1′"};
+    const auto expect = Tools::escapeQuotesFromString("1'");
 
     EXPECT_EQ(result, expect);
 }
@@ -317,7 +319,7 @@ TEST_F(SchemaTest, imperial_building_special_function_length)
 {
     constexpr auto val {360.6};
     const auto result = set("ImperialBuilding", Unit::Length, val);
-    const auto expect {"1′2-1/4″"};
+    const auto expect = Tools::escapeQuotesFromString("1'2-1/4\"");
 
     EXPECT_EQ(result, expect);
 }
@@ -326,7 +328,7 @@ TEST_F(SchemaTest, imperial_building_special_function_length_neg)
 {
     constexpr auto val {-360.6};
     const auto result = set("ImperialBuilding", Unit::Length, val);
-    const auto expect {"-1′2-1/4″"};
+    const auto expect = Tools::escapeQuotesFromString("-1'2-1/4\"");
 
     EXPECT_EQ(result, expect);
 }
