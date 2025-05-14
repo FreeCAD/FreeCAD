@@ -1,6 +1,6 @@
 import FreeCAD
 import Path
-from typing import Any, Dict, List, Optional, Tuple
+from typing import Any, Dict, List, Optional
 
 
 class DetachedDocumentObject:
@@ -99,6 +99,10 @@ class DetachedDocumentObject:
     def setEditorMode(self, name: str, mode: int) -> None:
         """Stores editor mode settings in detached state."""
         self._editor_modes[name] = mode
+
+    def getEditorMode(self, name: str) -> int:
+        """Stores editor mode settings in detached state."""
+        return self._editor_modes.get(name, 0) or 0
 
     def getGroupOfProperty(self, name: str) -> Optional[str]:
         """Returns the stored group for a property in detached state."""

@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # ***************************************************************************
 # *   Copyright (c) 2014 Yorik van Havre <yorik@uncreated.net>              *
 # *                                                                         *
@@ -20,6 +21,10 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
+import FreeCAD
+
+
+FreeCAD.__unit_test__ += ["TestCAMGui"]
 
 
 class PathCommandGroup:

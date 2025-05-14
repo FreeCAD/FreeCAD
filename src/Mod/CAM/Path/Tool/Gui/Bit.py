@@ -21,13 +21,12 @@
 # ***************************************************************************
 
 from PySide import QtGui
-from PySide.QtCore import QT_TRANSLATE_NOOP
 import FreeCAD
 import FreeCADGui
 import Path
 import Path.Base.Gui.IconViewProvider as PathIconViewProvider
-import Path.Tool.Gui.BitEdit as PathToolBitEdit
 from Path.Tool.toolbit import ToolBit
+from Path.Tool.toolbit.ui import ToolBitEditorPanel
 
 
 __title__ = "Tool Bit UI"
@@ -124,8 +123,7 @@ class TaskPanel:
         Path.Log.track(vobj.Object.Label)
         self.vobj = vobj
         self.obj = vobj.Object
-        self.editor = PathToolBitEdit.ToolBitEditor(self.obj)
-        self.form = self.editor.form
+        self.editor = ToolBitEditorPanel(self.obj, self.editor.form)
         self.deleteOnReject = deleteOnReject
         FreeCAD.ActiveDocument.openTransaction("Edit ToolBit")
 

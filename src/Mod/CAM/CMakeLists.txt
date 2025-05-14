@@ -10,6 +10,7 @@ set(Path_Scripts
     Init.py
     PathCommands.py
     TestCAMApp.py
+    TestCAMGui.py
 )
 
 if(BUILD_GUI)
@@ -138,11 +139,16 @@ SET(PathPythonToolsGui_SRCS
     Path/Tool/Gui/__init__.py
     Path/Tool/Gui/Bit.py
     Path/Tool/Gui/BitCmd.py
-    Path/Tool/Gui/BitEdit.py
     Path/Tool/Gui/BitLibraryCmd.py
     Path/Tool/Gui/BitLibrary.py
     Path/Tool/Gui/Controller.py
     Path/Tool/Gui/Preferences.py
+)
+
+SET(PathPythonToolsUi_SRCS
+    Path/Tool/ui/__init__.py
+    Path/Tool/ui/docobject.py
+    Path/Tool/ui/property.py
 )
 
 SET(PathPythonToolsToolBit_SRCS
@@ -183,6 +189,7 @@ SET(PathPythonToolsToolBitSerializers_SRCS
 SET(PathPythonToolsToolBitUi_SRCS
     Path/Tool/toolbit/ui/__init__.py
     Path/Tool/toolbit/ui/dialog.py
+    Path/Tool/toolbit/ui/editor.py
 )
 
 SET(PathPythonToolsLibrary_SRCS
@@ -482,6 +489,9 @@ SET(Tests_SRCS
     CAMTests/TestPathToolAssetManager.py
     CAMTests/TestPathToolBit.py
     CAMTests/TestPathToolBitSerializer.py
+    CAMTests/TestPathToolBitEditorWidget.py
+    CAMTests/TestPathToolBitPropertyEditorWidget.py
+    CAMTests/TestPathToolDocumentObjectEditorWidget.py
     CAMTests/TestPathToolShapeClasses.py
     CAMTests/TestPathToolShapeDoc.py
     CAMTests/TestPathToolShapeIcon.py
@@ -558,6 +568,7 @@ SET(all_files
     ${PathPythonToolsAssets_SRCS}
     ${PathPythonToolsAssetsStore_SRCS}
     ${PathPythonToolsGui_SRCS}
+    ${PathPythonToolsUi_SRCS}
     ${PathPythonToolsShape_SRCS}
     ${PathPythonToolsShapeModels_SRCS}
     ${PathPythonToolsShapeUi_SRCS}
@@ -718,6 +729,13 @@ INSTALL(
         ${PathPythonToolsGui_SRCS}
     DESTINATION
         Mod/CAM/Path/Tool/Gui
+)
+
+INSTALL(
+    FILES
+        ${PathPythonToolsUi_SRCS}
+    DESTINATION
+        Mod/CAM/Path/Tool/ui
 )
 
 INSTALL(

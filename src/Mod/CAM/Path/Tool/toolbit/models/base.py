@@ -28,7 +28,7 @@ import uuid
 import pathlib
 from abc import ABC
 from lazy_loader.lazy_loader import LazyLoader
-from typing import List, Optional, Tuple, Type, Union, Mapping
+from typing import Any, List, Optional, Tuple, Type, Union, Mapping
 from PySide.QtCore import QT_TRANSLATE_NOOP
 from Path.Base.Generator import toolchange
 from ...assets import Asset
@@ -513,7 +513,7 @@ class ToolBit(Asset, ABC):
 
     def onDelete(self, obj, arg2=None):
         Path.Log.track(obj.Label)
-        self.unloadBitBody()
+        self._removeBitBody()
         obj.Document.removeObject(obj.Name)
 
     def _updateShapeFile(self, properties=None):
@@ -550,9 +550,6 @@ class ToolBit(Asset, ABC):
             self.obj.Document.removeObject(self.obj.BitBody.Name)
             self.obj.BitBody = None
 
-    def unloadBitBody(self):
-        self._removeBitBody()
-
     def _setupProperty(self, prop, orig):
         # extract property parameters and values so it can be copied
         val = orig.getPropertyByName(prop)
@@ -583,16 +580,14 @@ class ToolBit(Asset, ABC):
                 props_in_group.append(prop)
         return props_in_group
 
-    def toolGroupsAndProperties(self, includeShape=True):
-        category = {}
+    def get_property(self, name: str):
+        return self.obj.getPropertyByName(name)
 
-        for prop in self._get_props():
-            group = self.obj.getGroupOfProperty(prop)
-            if includeShape or group != "Shape":
-                properties = category.get(group, [])
-                properties.append(prop)
-                category[group] = properties
-        return category
+    def set_property(self, name: str, value: Any):
+        return self.obj.setPropertyByName(name, value)
+
+    def get_property_label_from_name(self, name: str):
+        return self.obj.getPropertyByName
 
     def get_icon(self) -> Optional[ToolBitShapeIcon]:
         """

@@ -25,7 +25,6 @@
 import FreeCAD
 import FreeCADGui
 import Path
-import Path.Tool.Gui.BitEdit as PathToolBitEdit
 import Path.Tool.Gui.Controller as PathToolControllerGui
 import PathScripts.PathUtilsGui as PathUtilsGui
 import PySide
@@ -34,12 +33,13 @@ from PySide.QtCore import Qt
 import os
 import uuid as UUID
 from functools import partial
-from typing import List, Tuple
+from typing import List, Tuple, cast
 from ..assets import AssetUri
 from ..camassets import cam_assets, ensure_assets_initialized
 from ..shape.ui.shapeselector import ShapeSelector
 from ..toolbit import ToolBit
 from ..toolbit.ui.dialog import ToolBitOpenDialog
+from ..toolbit.ui.editor import ToolBitEditor
 from ..library import Library
 
 
@@ -149,7 +149,7 @@ class ModelFactory:
             # Fetch library assets themselves, not their deep dependencies (toolbits).
             # depth=0 means "fetch this asset, but not its dependencies"
             # The 'fetch' method returns actual Asset objects.
-            libraries = cam_assets.fetch(asset_type="toolbitlibrary", depth=0)
+            libraries = cast(List[Library], cam_assets.fetch(asset_type="toolbitlibrary", depth=0))
         except Exception as e:
             Path.Log.error(f"Failed to fetch toolbit libraries: {e}")
             return model # Return empty model on error
@@ -453,15 +453,19 @@ class ToolBitLibrary(object):
         Path.Log.track()
         ensure_assets_initialized(cam_assets)
         self.factory = ModelFactory()
-        self.editing_toolbit = None # Store the ToolBit asset being edited
         self.toolModel = PySide.QtGui.QStandardItemModel(0, len(self.columnNames()))
         self.listModel = PySide.QtGui.QStandardItemModel()
         self.form = FreeCADGui.PySideUic.loadUi(":/panels/ToolBitLibraryEdit.ui")
         self.toolTableView = _TableView(self.form.toolTableGroup)
         self.form.toolTableGroup.layout().replaceWidget(self.form.toolTable, self.toolTableView)
         self.form.toolTable.hide()
+
         self.setupUI()
         self.title = self.form.windowTitle()
+
+        # Connect signals for tool editing
+        self.toolTableView.doubleClicked.connect(self.toolEdit)
+
 
     def toolBitNew(self):
         """Create a new toolbit asset and add it to the current library"""
@@ -523,6 +527,7 @@ class ToolBitLibrary(object):
                 translate("CAM_ToolBit", "Error Creating Toolbit"),
                 str(e),
             )
+            raise
 
     def toolBitExisting(self):
         """Add an existing toolbit asset to the current library"""
@@ -570,6 +575,7 @@ class ToolBitLibrary(object):
                 translate("CAM_ToolBit", "Error Adding Imported Toolbit"),
                 str(e),
             )
+            raise
 
     def toolDelete(self):
         """Delete a tool"""
@@ -613,78 +619,10 @@ class ToolBitLibrary(object):
         Path.Log.track()
         return self.form.exec_()
 
-    def cleanupDocument(self):
-        """Clean up the tool editing state"""
-        Path.Log.track()
-        # Remove the editor from the dialog
-        widget = self.form.toolTableGroup.children()[-1]
-        widget.setParent(None)
-        self.editor = None
-        self.editing_toolbit = None
-        self.lockoff()
-
-    def accept(self):
-        """Handle accept signal for tool editing"""
-        Path.Log.track()
-        if not self.editor or not self.editing_toolbit:
-            self.cleanupDocument()
-            return
-
-        try:
-            # Assuming editor.accept() updates the editing_toolbit
-            self.editor.accept()
-            # Save the modified toolbit asset
-            cam_assets.add(self.editing_toolbit)
-            Path.Log.info(f"Toolbit {self.editing_toolbit.get_id()} saved.")
-        except Exception as e:
-            Path.Log.error(f"Failed to save toolbit {self.editing_toolbit.get_id()}: {e}")
-            PySide.QtGui.QMessageBox.critical(
-                self.form,
-                translate("CAM_ToolBit", "Error Saving Toolbit"),
-                str(e),
-            )
-            raise
-
-        # Refresh the display and save the library (which contains the updated toolbit reference)
-        self._loadSelectedLibraryTools(self.current_library.get_uri() if self.current_library else None)
-        self.librarySave()
-        self.cleanupDocument()
-
-    def reject(self):
-        """Handle reject signal"""
-        self.cleanupDocument()
-
-    def lockon(self):
-        """Set the state of the form widgets: inactive"""
-        self.toolTableView.setEnabled(False)
-        self.form.toolCreate.setEnabled(False)
-        self.form.toolDelete.setEnabled(False)
-        self.form.toolAdd.setEnabled(False)
-        self.form.TableList.setEnabled(False)
-        self.form.libraryExport.setEnabled(False)
-        self.form.addToolTable.setEnabled(False)
-        self.form.librarySave.setEnabled(False)
-
-    def lockoff(self):
-        """Set the state of the form widgets: active"""
-        self.toolTableView.setEnabled(True)
-        self.form.toolCreate.setEnabled(True)
-        self.form.toolDelete.setEnabled(True)
-        self.form.toolAdd.setEnabled(True)
-        self.form.toolTable.setEnabled(True)
-        self.form.TableList.setEnabled(True)
-        self.form.libraryExport.setEnabled(True)
-        self.form.addToolTable.setEnabled(True)
-        self.form.librarySave.setEnabled(True)
-
     def toolEdit(self, selected):
         """Edit the selected tool bit asset"""
         Path.Log.track()
         item = self.toolModel.item(selected.row(), 0)
-
-        if self.editing_toolbit is not None:
-            Path.Log.warning("Already editing a toolbit. Please finish or cancel the current edit.")
-            return # Prevent multiple editors
 
         if selected.column() == 0:
             return  # Assuming tool number editing is handled directly in the table model
@@ -697,13 +635,20 @@ class ToolBitLibrary(object):
 
         # Load the toolbit asset for editing
         try:
-            self.editing_toolbit = cam_assets.get(toolbit_uri)
+            bit = cam_assets.get(toolbit_uri)
+            editor_dialog = ToolBitEditor(bit, self.form) # Create dialog instance
+            result = editor_dialog.show() # Show as modal dialog
 
-            # Initialize the editor with the toolbit asset
-            # Assuming PathToolBitEdit.ToolBitEditor can accept a ToolBit asset instance
-            self.editor = PathToolBitEdit.ToolBitEditor(
-                self.editing_toolbit, self.form.toolTableGroup, loadBitBody=False
-            )
+            if result == PySide.QtGui.QDialog.Accepted:
+                # The editor updates the toolbit directly, so we just need to save
+                cam_assets.add(bit)
+                Path.Log.info(f"Toolbit {bit.get_id()} saved.")
+                # Refresh the display and save the library
+                self._loadSelectedLibraryTools(
+                    self.current_library.get_uri() if self.current_library else None
+                )
+                self.librarySave()
+
         except Exception as e:
             Path.Log.error(f"Failed to load or edit toolbit asset {toolbit_uri_string}: {e}")
             PySide.QtGui.QMessageBox.critical(
@@ -711,18 +656,7 @@ class ToolBitLibrary(object):
                 translate("CAM_ToolBit", "Error Editing Toolbit"),
                 str(e),
             )
-            self.cleanupDocument() # Clean up if editor initialization fails
             raise
-
-        QBtn = PySide.QtGui.QDialogButtonBox.Ok | PySide.QtGui.QDialogButtonBox.Cancel
-        buttonBox = PySide.QtGui.QDialogButtonBox(QBtn)
-        buttonBox.accepted.connect(self.accept)
-        buttonBox.rejected.connect(self.reject)
-
-        layout = self.editor.form.layout()
-        layout.addWidget(buttonBox)
-        self.lockon()
-        self.editor.setupUI()
 
     def libraryNew(self):
         """Create a new tool library asset"""
@@ -806,7 +740,7 @@ class ToolBitLibrary(object):
             Path.Log.error(f"Failed to load library asset {library_uri}: {e}")
             self.form.setWindowTitle("Tool Library Editor - Error")
             return
-
+        
         # Success! Add the tools to the toolModel.
         self.toolTableView.setUpdatesEnabled(False)
         self.form.setWindowTitle(
@@ -848,7 +782,7 @@ class ToolBitLibrary(object):
                 index = i
                 break
 
-        # Select it. 
+        # Select it.
         if index <= self.listModel.rowCount():
             item = self.listModel.item(index)
             if item:  # Should always be true, but...
@@ -863,7 +797,6 @@ class ToolBitLibrary(object):
 
         self.toolTableView.resizeColumnsToContents()
         self.toolTableView.selectionModel().selectionChanged.connect(self.toolSelect)
-        self.toolTableView.doubleClicked.connect(self.toolEdit)
 
         self.form.TableList.clicked.connect(self.tableSelected)
 
