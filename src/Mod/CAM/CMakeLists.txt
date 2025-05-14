@@ -209,6 +209,11 @@ SET(PathPythonToolsLibrarySerializers_SRCS
     Path/Tool/library/serializers/linuxcnc.py
 )
 
+SET(PathPythonToolsLibraryUi_SRCS
+    Path/Tool/library/ui/__init__.py
+    Path/Tool/library/ui/dialog.py
+)
+
 SET(PathPythonToolsMachine_SRCS
     Path/Tool/machine/__init__.py
 )
@@ -580,6 +585,7 @@ SET(all_files
     ${PathPythonToolsLibrary_SRCS}
     ${PathPythonToolsLibraryModels_SRCS}
     ${PathPythonToolsLibrarySerializers_SRCS}
+    ${PathPythonToolsLibraryUi_SRCS}
     ${PathPythonToolsMachine_SRCS}
     ${PathPythonToolsMachineModels_SRCS}
     ${PathPythonGui_SRCS}
@@ -813,6 +819,13 @@ INSTALL(
         ${PathPythonToolsLibrarySerializers_SRCS}
     DESTINATION
         Mod/CAM/Path/Tool/library/serializers
+)
+
+INSTALL(
+    FILES
+        ${PathPythonToolsLibraryUi_SRCS}
+    DESTINATION
+        Mod/CAM/Path/Tool/library/ui
 )
 
 INSTALL(

@@ -30,6 +30,8 @@ class CamoticsToolBitSerializer(AssetSerializer):
     for_class = ToolBit
     extensions = tuple()  # Camotics does not have tool files; tools are rows in tool tables
     mime_type = "application/json"
+    can_import = False
+    can_export = False
 
     @classmethod
     def get_label(cls) -> str:

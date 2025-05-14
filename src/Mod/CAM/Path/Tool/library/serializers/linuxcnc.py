@@ -9,6 +9,7 @@ class LinuxCNCSerializer(AssetSerializer):
     for_class: Type[Asset] = Library
     extensions: tuple[str] = (".tbl",)
     mime_type: str = "text/plain"
+    can_import = False
 
     @classmethod
     def get_label(cls) -> str:

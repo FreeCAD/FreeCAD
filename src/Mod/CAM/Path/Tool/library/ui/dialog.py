@@ -5,17 +5,17 @@ from typing import Optional, Tuple, cast
 from PySide.QtWidgets import QFileDialog
 from ...assets.serializer import make_file_selector_filters, AssetSerializer
 from ..serializers import all_serializers
-from .. import ToolBit
+from .. import Library
 
 
-class ToolBitOpenDialog(QFileDialog):
+class LibraryOpenDialog(QFileDialog):
     def __init__(self, parent=None):
         super().__init__(parent)
-        self.setWindowTitle("Open a Tool Bit")
+        self.setWindowTitle("Open a Tool Library")
 
     def _deserialize_selected_file(
         self, file_path: pathlib.Path
-    ) -> Optional[ToolBit]:
+    ) -> Optional[Library]:
         """Reads and deserializes the selected file."""
         try:
             raw_data = file_path.read_bytes()
@@ -34,18 +34,18 @@ class ToolBitOpenDialog(QFileDialog):
                     f"extension '{file_extension}'"
                 )
 
-            toolbit = serializer_class.deep_deserialize(raw_data)
-            return cast(ToolBit, toolbit)
+            library = serializer_class.deep_deserialize(raw_data)
+            return cast(Library, library)
 
         except Exception as e:
             FreeCADGui.QMessageBox.critical(
                 self,
-                FreeCAD.Qt.translate("CAM_ToolBit", "Error Importing Toolbit"),
+                FreeCAD.Qt.translate("CAM_Library", "Error Importing Tool Library"),
                 str(e),
             )
             return None
 
-    def exec(self) -> Optional[Tuple[pathlib.Path, ToolBit]]:
+    def exec(self) -> Optional[Tuple[pathlib.Path, Library]]:
         self.setFileMode(QFileDialog.ExistingFile)
 
         # Use the generic helper function for filters
@@ -60,8 +60,8 @@ class ToolBitOpenDialog(QFileDialog):
             filenames = self.selectedFiles()
             if filenames:
                 file_path = pathlib.Path(filenames[0])
-                toolbit = self._deserialize_selected_file(file_path)
-                if toolbit:
-                    return file_path, toolbit
+                library = self._deserialize_selected_file(file_path)
+                if library:
+                    return file_path, library
 
         return None # Return None if dialog is canceled or no file selected
