@@ -38,8 +38,10 @@ Group:          Applications/Engineering
 
 License:        LGPLv2+
 URL:            https://www.freecad.org/
-Source0:        https://github.com/%{github_name}/FreeCAD/archive/%{branch}.tar.gz
-
+Source0:        {{{ git_repo_pack }}}
+#add all submodule as source
+Source1:        {{{ git_pack path=$GIT_ROOT/src/3rdParty/OndselSolver/  dir_name="OndselSolver" }}}
+Source2:        {{{ git_pack path=$GIT_ROOT/src/3rdParty/GSL/ dir_name="GSL" }}}
 
 # Utilities
 BuildRequires:  cmake gcc-c++ gettext
@@ -162,7 +164,13 @@ Data files for FreeCAD
 
 
 %prep
-%autosetup -p1 -n FreeCAD-%{branch}
+rm -rf %{github_name}
+# extract submodule archive and move in correct path
+%setup -T -a 1 -c -q -D -n %{github_name}/src/3rdParty/ #OndselSolver
+%setup -T -a 2 -c -q -D -n %{github_name}/src/3rdParty/ #GSL
+
+%setup -T -b 0 -q -D -n %{github_name}
+
 # Remove bundled pycxx if we're not using it
 %if ! %{bundled_pycxx}
 rm -rf src/CXX
