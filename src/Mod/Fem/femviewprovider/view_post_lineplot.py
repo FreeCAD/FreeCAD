@@ -102,6 +102,7 @@ class EditViewWidget(QtGui.QWidget):
 
         action = QtGui.QWidgetAction(button)
         diag = QtGui.QColorDialog(barColor, parent=button)
+        diag.setOption(QtGui.QColorDialog.DontUseNativeDialog, True)
         diag.accepted.connect(action.trigger)
         diag.rejected.connect(action.trigger)
         diag.colorSelected.connect(callback)

@@ -40,6 +40,7 @@ from PySide.QtCore import QT_TRANSLATE_NOOP
 import io
 import numpy as np
 import matplotlib as mpl
+from packaging.version import Version
 
 from vtkmodules.numpy_interface.dataset_adapter import VTKArray
 
@@ -104,6 +105,7 @@ class EditViewWidget(QtGui.QWidget):
 
         action = QtGui.QWidgetAction(button)
         diag = QtGui.QColorDialog(barColor, parent=button)
+        diag.setOption(QtGui.QColorDialog.DontUseNativeDialog, True)
         diag.accepted.connect(action.trigger)
         diag.rejected.connect(action.trigger)
         diag.colorSelected.connect(callback)
@@ -512,7 +514,7 @@ class VPPostHistogram(view_base_fempostvisualization.VPPostVisualization):
 
         # we do not iterate the table, but iterate the children. This makes it possible
         # to attribute the correct styles
-        full_args = {}
+        full_args = []
         full_data = []
         labels = []
         for child in self.Object.Group:
@@ -526,15 +528,14 @@ class VPPostHistogram(view_base_fempostvisualization.VPPostVisualization):
             for i in range(table.GetNumberOfColumns()):
 
                 # add the kw args, with some slide change over color for multiple frames
+                args = kwargs.copy()
                 for key in kwargs:
-                    if not (key in full_args):
-                        full_args[key] = []
 
                     if "color" in key:
                         value = np.array(kwargs[key])*color_factor[i]
-                        full_args[key].append(mpl.colors.to_hex(value))
-                    else:
-                        full_args[key].append(kwargs[key])
+                        args[key] = mpl.colors.to_hex(value)
+
+                full_args.append(args)
 
                 data = VTKArray(table.GetColumn(i))
                 full_data.append(data)
@@ -552,15 +553,26 @@ class VPPostHistogram(view_base_fempostvisualization.VPPostVisualization):
                         legend_prefix = child.Source.Label + ": "
                     labels.append(legend_prefix + table.GetColumnName(i))
 
+        args = {}
+        args["rwidth"] = self.ViewObject.BarWidth
+        args["cumulative"] = self.ViewObject.Cumulative
+        args["histtype"] = self.ViewObject.Type
+        args["label"] = labels
+        if Version(mpl.__version__) >= Version("3.10.0"):
+            args["hatch_linewidth"] = self.ViewObject.HatchLineWidth
 
-        full_args["hatch_linewidth"] = self.ViewObject.HatchLineWidth
-        full_args["rwidth"] = self.ViewObject.BarWidth
-        full_args["cumulative"] = self.ViewObject.Cumulative
-        full_args["histtype"] = self.ViewObject.Type
-        full_args["label"] = labels
+        n, b, patches = self._plot.axes.hist(full_data, bins, **args)
 
-        self._plot.axes.hist(full_data, bins, **full_args)
+        # set the patches view properties.
+        if len(full_args) == 1:
+            for patch in patches:
+                patch.set(**full_args[0])
+        elif len(full_args) > 1:
+            for i, args in enumerate(full_args):
+                for patch in patches[i]:
+                    patch.set(**full_args[i])
 
+        # axes decoration
         if self.ViewObject.Title:
             self._plot.axes.set_title(self.ViewObject.Title)
         if self.ViewObject.XLabel:
