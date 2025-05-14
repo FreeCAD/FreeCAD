@@ -121,7 +121,7 @@ class _Window(ArchComponent.Component):
         except:
             pass
 
-    def setProperties(self,obj):
+    def setProperties(self,obj,mode=None):
 
         lp = obj.PropertiesList
         if not "Hosts" in lp:
@@ -142,7 +142,10 @@ class _Window(ArchComponent.Component):
         # Automatic Normal Reverse
         if not "AutoNormalReversed" in lp:
             obj.addProperty("App::PropertyBool","AutoNormalReversed","Window",QT_TRANSLATE_NOOP("App::Property","When normal direction is in auto mode (0,0,0), use reversed normal direction of the Base Sketch, i.e. -z."), locked=True)
-            obj.AutoNormalReversed = True  # To maintain extrusion behaviour before introduction of this flag, this is set False in onDocumentRestored()
+            if mode == 'ODR':
+                obj.AutoNormalReversed = False  # To maintain auto extrusion behaviour before introduction of this flag, this remains False if this is called by onDocumentRestored()
+            elif mode == None:
+                obj.AutoNormalReversed = True  # To enable new extrusion behaviour which is consistent with Window intuitive creation tool after introduction of this flag, this is set True.
         if not "Preset" in lp:
             obj.addProperty("App::PropertyInteger","Preset","Window",QT_TRANSLATE_NOOP("App::Property","The preset number this window is based on"), locked=True)
             obj.setEditorMode("Preset",2)
@@ -172,11 +175,7 @@ class _Window(ArchComponent.Component):
     def onDocumentRestored(self,obj):
 
         ArchComponent.Component.onDocumentRestored(self,obj)
-        # Automatic Normal Reverse
-        if not "AutoNormalReversed" in obj.PropertiesList:
-            obj.addProperty("App::PropertyBool","AutoNormalReversed","Window",QT_TRANSLATE_NOOP("App::Property","When normal direction is in auto mode (0,0,0), use reversed normal direction of the Base Sketch, i.e. -z."), locked=True)
-            obj.AutoNormalReversed = False  # To maintain extrusion behaviour before introduction of this flag, this is set False in onDocumentRestored()
-        self.setProperties(obj)
+        self.setProperties(obj,mode='ODR')
 
         # Add features in the SketchArch External Add-on
         self.addSketchArchFeatures(obj, mode='ODR')
