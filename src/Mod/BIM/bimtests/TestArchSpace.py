@@ -85,8 +85,8 @@ class TestArchSpace(TestArchBase.TestArchBase):
             length=4000.0, height=4000.0, placement=pl, face=True, support=None)
         App.ActiveDocument.recompute()
         extr = rectangleBase.Shape.extrude(App.Vector(0,0,2000))
-        Part.show(extr, 'Extrusion')
-        space = Arch.makeSpace(App.activeDocument().getObject('Extrusion'))
+        Part.show(extr, "Extrusion")
+        space = Arch.makeSpace(App.activeDocument().getObject("Extrusion"))
         App.ActiveDocument.recompute()  # To calculate area
 
         # Create the wall

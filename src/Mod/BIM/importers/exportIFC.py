@@ -244,8 +244,8 @@ def export(exportList, filename, colors=None, preferences=None):
         template = ifctemplate.replace("$version",
                                        version[0] + "."
                                        + version[1] + " build " + version[2])
-        if preferences["DEBUG"]: print("Exporting an", preferences['SCHEMA'], "file...")
-        template = template.replace("$ifcschema", preferences['SCHEMA'])
+        if preferences["DEBUG"]: print("Exporting an", preferences["SCHEMA"], "file...")
+        template = template.replace("$ifcschema", preferences["SCHEMA"])
         template = template.replace("$owner", owner)
         template = template.replace("$company", FreeCAD.ActiveDocument.Company)
         template = template.replace("$email", email)
@@ -2149,7 +2149,7 @@ def getRepresentation(
                             except TypeError:
                                 # IfcOpenShell v0.6.0
                                 # Serialization.cpp:IfcUtil::IfcBaseClass* IfcGeom::serialise(const std::string& schema_name, const TopoDS_Shape& shape, bool advanced)
-                                p = geom.serialise(preferences['SCHEMA'], brep_data)
+                                p = geom.serialise(preferences["SCHEMA"], brep_data)
                             if p:
                                 productdef = ifcfile.add(p)
                                 for rep in productdef.Representations:
@@ -2393,7 +2393,7 @@ def createProduct(ifcfile,obj,ifctype,uid,history,name,description,placement,rep
             "SiteAddress":buildAddress(obj,ifcfile),
             "CompositionType": "ELEMENT"
         })
-    if preferences['SCHEMA'] == "IFC2X3":
+    if preferences["SCHEMA"] == "IFC2X3":
         kwargs = exportIFC2X3Attributes(obj, kwargs, preferences["SCALE_FACTOR"])
     else:
         kwargs = exportIfcAttributes(obj, kwargs, preferences["SCALE_FACTOR"])

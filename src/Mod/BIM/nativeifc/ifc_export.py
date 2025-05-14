@@ -44,7 +44,7 @@ def get_export_preferences(ifcfile, preferred_context=None, create=None):
     """returns a preferences dict for exportIFC.
     Preferred context can either indicate a ContextType like "Model" or "Plan",
     or a [ContextIdentifier,ContextType,TargetView] list or tuple, for ex.
-    ('Annotation',"Plan") or ("Body","Model",'MODEL_VIEW'). This function
+    ("Annotation","Plan") or ("Body","Model","MODEL_VIEW"). This function
     will do its best to find the most appropriate context. If create is True,
     if the exact context is not found, a new one is created"""
 

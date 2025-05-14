@@ -1129,7 +1129,7 @@ class BIM_Preflight_TaskPanel:
                     "\n"
                     + translate(
                         "BIM",
-                        'An additional object, called "TinyLinesResult" has been added to this model, and selected. It contains all the tiny lines found, so you can inspect them and fix the needed objects. Be sure to delete the TinyLinesResult object when you are done!',
+                        "An additional object, called 'TinyLinesResult' has been added to this model, and selected. It contains all the tiny lines found, so you can inspect them and fix the needed objects. Be sure to delete the TinyLinesResult object when you are done!",
                     )
                     + "\n\n"
                 )

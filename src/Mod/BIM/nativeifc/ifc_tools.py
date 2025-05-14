@@ -519,16 +519,16 @@ def can_expand(obj, ifcfile=None):
 def add_object(document, otype=None, oname="IfcObject"):
     """adds a new object to a FreeCAD document.
     otype can be:
-    'project',
-    'group',
-    'material',
-    'layer',
-    'text',
-    'dimension',
-    'sectionplane',
-    'axis',
-    'schedule'
-    'buildingpart'
+    "project",
+    "group",
+    "material",
+    "layer",
+    "text",
+    "dimension",
+    "sectionplane",
+    "axis",
+    "schedule"
+    "buildingpart"
     or anything else for a standard IFC object"""
 
     if not document:
@@ -1183,7 +1183,7 @@ def save(obj, filepath=None):
 
 def aggregate(obj, parent, mode=None):
     """Takes any FreeCAD object and aggregates it to an existing IFC object.
-    Mode can be 'opening' to force-create a subtraction"""
+    Mode can be "opening" to force-create a subtraction"""
 
     proj = get_project(parent)
     if not proj:

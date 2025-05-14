@@ -365,7 +365,7 @@ class Arch_IfcSpreadsheet:
     "the Arch Schedule command definition"
 
     def GetResources(self):
-        return {"Pixmap": "Arch_Schedule',
+        return {"Pixmap": "Arch_Schedule",
                 "MenuText": QT_TRANSLATE_NOOP("Arch_IfcSpreadsheet","Create IFC spreadsheet..."),
                 "Accel": "I, P",
                 "ToolTip": QT_TRANSLATE_NOOP("Arch_IfcSpreadsheet","Creates a spreadsheet to store IFC properties of an object.")}

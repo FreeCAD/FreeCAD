@@ -91,29 +91,29 @@ def getPreferences():
 
     preferences = {
         "DEBUG": params.get_param_arch("ifcDebug"),
-        'PREFIX_NUMBERS': params.get_param_arch("ifcPrefixNumbers"),
-        'SKIP': params.get_param_arch("ifcSkip").split(","),
-        'SEPARATE_OPENINGS': params.get_param_arch("ifcSeparateOpenings"),
-        'ROOT_ELEMENT': params.get_param_arch("ifcRootElement"),
-        'GET_EXTRUSIONS': params.get_param_arch("ifcGetExtrusions"),
-        'MERGE_MATERIALS': params.get_param_arch("ifcMergeMaterials"),
-        'MERGE_MODE_ARCH': params.get_param_arch("ifcImportModeArch"),
-        'MERGE_MODE_STRUCT': params.get_param_arch("ifcImportModeStruct"),
+        "PREFIX_NUMBERS": params.get_param_arch("ifcPrefixNumbers"),
+        "SKIP": params.get_param_arch("ifcSkip").split(","),
+        "SEPARATE_OPENINGS": params.get_param_arch("ifcSeparateOpenings"),
+        "ROOT_ELEMENT": params.get_param_arch("ifcRootElement"),
+        "GET_EXTRUSIONS": params.get_param_arch("ifcGetExtrusions"),
+        "MERGE_MATERIALS": params.get_param_arch("ifcMergeMaterials"),
+        "MERGE_MODE_ARCH": params.get_param_arch("ifcImportModeArch"),
+        "MERGE_MODE_STRUCT": params.get_param_arch("ifcImportModeStruct"),
         "CREATE_CLONES": params.get_param_arch("ifcCreateClones"),
-        'IMPORT_PROPERTIES': params.get_param_arch("ifcImportProperties"),
-        'SPLIT_LAYERS': params.get_param_arch("ifcSplitLayers"),  # wall layer, not layer for visual props
-        'FITVIEW_ONIMPORT': params.get_param_arch("ifcFitViewOnImport"),
-        'ALLOW_INVALID': params.get_param_arch("ifcAllowInvalid"),
-        'REPLACE_PROJECT': params.get_param_arch("ifcReplaceProject"),
-        'MULTICORE': params.get_param_arch("ifcMulticore"),
-        'IMPORT_LAYER': params.get_param_arch("ifcImportLayer")
+        "IMPORT_PROPERTIES": params.get_param_arch("ifcImportProperties"),
+        "SPLIT_LAYERS": params.get_param_arch("ifcSplitLayers"),  # wall layer, not layer for visual props
+        "FITVIEW_ONIMPORT": params.get_param_arch("ifcFitViewOnImport"),
+        "ALLOW_INVALID": params.get_param_arch("ifcAllowInvalid"),
+        "REPLACE_PROJECT": params.get_param_arch("ifcReplaceProject"),
+        "MULTICORE": params.get_param_arch("ifcMulticore"),
+        "IMPORT_LAYER": params.get_param_arch("ifcImportLayer")
     }
 
-    if preferences['MERGE_MODE_ARCH'] > 0:
-        preferences['SEPARATE_OPENINGS'] = False
-        preferences['GET_EXTRUSIONS'] = False
-    if not preferences['SEPARATE_OPENINGS']:
-        preferences['SKIP'].append("IfcOpeningElement")
+    if preferences["MERGE_MODE_ARCH"] > 0:
+        preferences["SEPARATE_OPENINGS"] = False
+        preferences["GET_EXTRUSIONS"] = False
+    if not preferences["SEPARATE_OPENINGS"]:
+        preferences["SKIP"].append("IfcOpeningElement")
 
     return preferences
 
@@ -1119,7 +1119,7 @@ def createAnnotation(annotation,doc,ifcscale,preferences):
             if annotation.ObjectPlacement:
                 # https://forum.freecad.org/viewtopic.php?f=39&t=40027
                 grid_placement = getPlacement(annotation.ObjectPlacement,scaling=1)
-            if preferences['PREFIX_NUMBERS']:
+            if preferences["PREFIX_NUMBERS"]:
                 name = "ID" + str(aid) + " " + name
             anno = Arch.makeAxisSystem(axes,name)
             if grid_placement:
@@ -1131,7 +1131,7 @@ def createAnnotation(annotation,doc,ifcscale,preferences):
             name = annotation.Name
         if "annotation" not in name.lower():
             name = "Annotation " + name
-        if preferences['PREFIX_NUMBERS']: name = "ID" + str(aid) + " " + name
+        if preferences["PREFIX_NUMBERS"]: name = "ID" + str(aid) + " " + name
         shapes2d = []
         for rep in annotation.Representation.Representations:
             if rep.RepresentationIdentifier in ["Annotation","FootPrint","Axis"]:

@@ -276,7 +276,7 @@ def getSVG(source,
         visible or not.
 
     renderMode
-        Can be `"Wireframe"` (default) or `'Solid'` to use the Arch solid
+        Can be `"Wireframe"` (default) or `"Solid"` to use the Arch solid
         renderer.
 
     showHidden
@@ -341,10 +341,10 @@ def getSVG(source,
     svgSymbolLineWidth = str(linewidth * yt)
     hiddenPattern = params.get_param_arch("archHiddenPattern")
     svgHiddenPattern = hiddenPattern.replace(" ","")
-    #fillpattern = '<pattern id="sectionfill" patternUnits="userSpaceOnUse" patternTransform="matrix(5,0,0,5,0,0)"'
-    #fillpattern += ' x="0" y="0" width="10" height="10">'
-    #fillpattern += '<g>'
-    #fillpattern += '<rect width="10" height="10" style="stroke:none; fill:#ffffff" /><path style="stroke:#000000; stroke-width:1" d="M0,0 l10,10" /></g></pattern>'
+    #fillpattern = "<pattern id=\"sectionfill\" patternUnits=\"userSpaceOnUse\" patternTransform=\"matrix(5,0,0,5,0,0)\""
+    #fillpattern += " x=\"0\" y=\"0\" width=\"10\" height=\"10\">"
+    #fillpattern += "<g>""
+    #fillpattern += "<rect width=\"10\" height=\"10\" style=\"stroke:none; fill:#ffffff\" /><path style=\"stroke:#000000; stroke-width:1\" d=\"M0,0 l10,10\" /></g></pattern>"
     svgLineColor = Draft.getrgb(lineColor)
     svg = ""
     # reading cached version
@@ -386,19 +386,19 @@ def getSVG(source,
                 render.cut(cutplane,showHidden)
             else:
                 render.cut(cutplane)
-            g = '<g transform="scale(1,-1)">\n'
+            g = "<g transform=\"scale(1,-1)\">\n"
             if hasattr(source.ViewObject,"RotateSolidRender"):
                 if (source.ViewObject.RotateSolidRender.Value != 0):
-                    g = '<g transform="scale(1,-1) rotate('
+                    g = "<g transform=\"scale(1,-1) rotate("
                     g += str(source.ViewObject.RotateSolidRender.Value)
-                    g += ')">\n'
+                    g += ")\">\n"
             svgcache += g
             svgcache += render.getViewSVG(linewidth="SVGLINEWIDTH")
             #svgcache += fillpattern
             svgcache += render.getSectionSVG(linewidth="SVGCUTLINEWIDTH",fillpattern="#ffffff")
             if showHidden:
                 svgcache += render.getHiddenSVG(linewidth="SVGLINEWIDTH")
-            svgcache += '</g>\n'
+            svgcache += "</g>\n"
             # print(render.info())
     else:
         # Wireframe (0) mode
@@ -426,17 +426,17 @@ def getSVG(source,
             import Part
             if vshapes:
                 baseshape = Part.makeCompound(vshapes)
-                style = {'stroke':       "SVGLINECOLOR",
-                         'stroke-width': "SVGLINEWIDTH"}
+                style = {"stroke":       "SVGLINECOLOR",
+                         "stroke-width": "SVGLINEWIDTH"}
                 svgcache += TechDraw.projectToSVG(
                     baseshape, direction,
                     hStyle=style, h0Style=style, h1Style=style,
                     vStyle=style, v0Style=style, v1Style=style)
             if hshapes:
                 hshapes = Part.makeCompound(hshapes)
-                style = {'stroke':           "SVGLINECOLOR",
-                         'stroke-width':     "SVGLINEWIDTH",
-                         'stroke-dasharray': "SVGHIDDENPATTERN"}
+                style = {"stroke":           "SVGLINECOLOR",
+                         "stroke-width":     "SVGLINEWIDTH",
+                         "stroke-dasharray": "SVGHIDDENPATTERN"}
                 svgcache += TechDraw.projectToSVG(
                     hshapes, direction,
                     hStyle=style, h0Style=style, h1Style=style,
@@ -444,7 +444,7 @@ def getSVG(source,
             if sshapes:
                 if showFill:
                     #svgcache += fillpattern
-                    svgcache += '<g transform="rotate(180)">\n'
+                    svgcache += "<g transform=\"rotate(180)\">\n"
                     for o, shapes in objectSshapes:
                         for s in shapes:
                             if s.Edges:
@@ -462,8 +462,8 @@ def getSVG(source,
                                                           color=lineColor)
                     svgcache += "</g>\n"
                 sshapes = Part.makeCompound(sshapes)
-                style = {'stroke':       "SVGLINECOLOR",
-                         'stroke-width': "SVGCUTLINEWIDTH"}
+                style = {"stroke":       "SVGLINECOLOR",
+                         "stroke-width": "SVGCUTLINEWIDTH"}
                 svgcache += TechDraw.projectToSVG(
                     sshapes, direction,
                     hStyle=style, h0Style=style, h1Style=style,
@@ -480,7 +480,7 @@ def getSVG(source,
 
     if drafts:
         if not techdraw:
-            svg += '<g transform="scale(1,-1)">'
+            svg += "<g transform=\"scale(1,-1)\">"
         for d in drafts:
             svg += Draft.get_svg(d,
                                  scale=scale,
@@ -493,7 +493,7 @@ def getSVG(source,
                                  rotation=rotation,
                                  override=False)
         if not techdraw:
-            svg += '</g>'
+            svg += "</g>"
 
     if not cutface:
         # if we didn't calculate anything better, use the cutplane...
@@ -504,7 +504,7 @@ def getSVG(source,
         spaces = [s for s in spaces if s.Shape.BoundBox.intersect(cutface.BoundBox)]
     if spaces:
         if not techdraw:
-            svg += '<g transform="scale(1,-1)">'
+            svg += "<g transform=\"scale(1,-1)\">"
         for s in spaces:
             svg += Draft.get_svg(s,
                                  scale=scale,
@@ -517,7 +517,7 @@ def getSVG(source,
                                  rotation=rotation,
                                  fillspaces=fillSpaces)
         if not techdraw:
-            svg += '</g>'
+            svg += "</g>"
 
     # add additional edge symbols from windows
     cutwindows = []
@@ -539,7 +539,7 @@ def getSVG(source,
                         sh.append(c)
         if sh:
             if not techdraw:
-                svg += '<g transform="scale(1,-1)">'
+                svg += "<g transform=\"scale(1,-1)\">"
             for s in sh:
                 svg += Draft.get_svg(s,
                                      scale=scale,
@@ -552,7 +552,7 @@ def getSVG(source,
                                      techdraw=techdraw,
                                      rotation=rotation)
             if not techdraw:
-                svg += '</g>'
+                svg += "</g>"
 
     return svg
 
@@ -1252,7 +1252,7 @@ class SectionPlaneTaskPanel:
         return QtGui.QIcon(":/icons/Part_3D_object.svg")
 
     def update(self):
-        'fills the treewidget'
+        """fills the treewidget"""
         self.tree.clear()
         if self.obj:
             for o in self.obj.Objects:

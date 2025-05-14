@@ -232,7 +232,7 @@ class ContextCreator:
     def getProjectObjectData(self):
         if not self.project_object:
             return {}
-        return json.loads(self.project_object.IfcData['complex_attributes'])["RepresentationContexts"]
+        return json.loads(self.project_object.IfcData["complex_attributes"])["RepresentationContexts"]
 
 
 class recycler:
