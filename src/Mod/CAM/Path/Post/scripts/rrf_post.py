@@ -355,7 +355,7 @@ def export(objectslist, filename, argstring):
             return
 
         # Skip inactive operations:
-        if PathUtil.opProperty(obj, "Active") is False:
+        if not PathUtil.activeForOp(obj):
             continue
 
         # Do the pre_op:
@@ -369,12 +369,7 @@ def export(objectslist, filename, argstring):
             gcode += linenumber() + line
 
         # Get coolant mode:
-        coolantMode = "None"  # None is the word returned from the operation
-        if hasattr(obj, "CoolantMode") or hasattr(obj, "Base") and hasattr(obj.Base, "CoolantMode"):
-            if hasattr(obj, "CoolantMode"):
-                coolantMode = obj.CoolantMode
-            else:
-                coolantMode = obj.Base.CoolantMode
+        coolantMode = PathUtil.coolantModeForOp(obj)
 
         # Turn coolant on if required:
         if OUTPUT_COMMENTS:
