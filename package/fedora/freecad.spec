@@ -10,10 +10,12 @@
 %global plugins AssemblyApp AssemblyGui CAMSimulator DraftUtils Fem FreeCAD Import Inspection MatGui Materials Measure Mesh MeshPart Part PartDesignGui Path PathApp PathSimulator Points QtUnitGui ReverseEngineering Robot Sketcher Spreadsheet Start Surface TechDraw Web _PartDesign area flatmesh libDriver libDriverDAT libDriverSTL libDriverUNV libE57Format libMEFISTO2 libOndselSolver libSMDS libSMESH libSMESHDS libStdMeshers libarea-native
 
 # Some configuration options for other environments
-# rpmbuild --with=bundled_zipios:  use bundled version of zipios++
-%global bundled_zipios %{?_with_bundled_zipios: 1} %{?!_with_bundled_zipios: 1}
-# rpmbuild --with=bundled_pycxx:  use bundled version of pycxx
-%global bundled_pycxx %{?_with_bundled_pycxx: 1} %{?!_with_bundled_pycxx: 0}
+# rpmbuild --with=pcl_enabled:  build with pcl support
+%global pcl_enabled %{?_with_pcl_enabled: 1} %{?!_with_pcl_enabled: 0}
+# rpmbuild --without=bundled_pycxx:  use bundled version of pycxx
+%global bundled_pycxx %{?_without_bundled_pycxx: 0} %{?!_without_bundled_pycxx: 1}
+# rpmbuild --without=bundled_zipios:  use bundled version of zipios++
+%global bundled_zipios %{?_without_bundled_zipios: 0} %{?!_without_bundled_zipios: 1}
 # rpmbuild --without=bundled_smesh:  don't use bundled version of Salome's Mesh
 %global bundled_smesh %{?_without_bundled_smesh: 0} %{?!_without_bundled_smesh: 1}
 
@@ -95,7 +97,9 @@ BuildRequires:  openmpi-devel
 BuildRequires:  med-devel
 BuildRequires:  libkdtree++-devel
 
+%if ! %{pcl_enabled}
 BuildRequires:  pcl-devel
+%endif
 BuildRequires:  python3
 BuildRequires:  libglvnd-devel
 BuildRequires:  yaml-cpp-devel
@@ -201,7 +205,6 @@ LDFLAGS='-Wl,--as-needed -Wl,--no-undefined'; export LDFLAGS
        -DRESOURCEDIR=%{_datadir}/%{name} \
        -DFREECAD_USE_EXTERNAL_PIVY=TRUE \
        -DFREECAD_USE_EXTERNAL_FMT=TRUE \
-       -DFREECAD_USE_PCL:BOOL=OFF \
        -DFREECAD_QT_VERSION:STRING=6 \
        -DSHIBOKEN_INCLUDE_DIR=%{_includedir}/shiboken6 \
        -DSHIBOKEN_LIBRARY=-lshiboken6.%{py_suffix} \
@@ -214,6 +217,11 @@ LDFLAGS='-Wl,--as-needed -Wl,--no-undefined'; export LDFLAGS
        -DCOIN3D_INCLUDE_DIR=%{_includedir}/Coin4 \
        -DCOIN3D_DOC_PATH=%{_datadir}/Coin4/Coin \
        -DUSE_OCC=TRUE \
+%if ! %{pcl_enabled}
+       -DFREECAD_USE_PCL:BOOL=ON \
+%else
+       -DFREECAD_USE_PCL:BOOL=OFF \
+%endif
 %if ! %{bundled_smesh}
        -DFREECAD_USE_EXTERNAL_SMESH=TRUE \
        -DSMESH_FOUND=TRUE \
