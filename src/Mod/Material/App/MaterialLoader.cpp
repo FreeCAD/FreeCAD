@@ -250,7 +250,7 @@ void MaterialYamlEntry::addToTree(
                                 finalModel->setPhysicalValue(QString::fromStdString(propertyName),
                                                             propertyValue);
                             }
-                            catch (const Base::ValueError& e) {
+                            catch (const Base::ValueError&) {
                                 // Units mismatch
                                 Base::Console().log("Units mismatch in material '%s':'%s' = '%s', "
                                                     "setting to default property units '%s'\n",
