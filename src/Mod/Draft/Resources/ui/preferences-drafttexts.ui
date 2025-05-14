@@ -644,7 +644,6 @@ used for linear dimensions.</string>
   </layout>
  </widget>
  <layoutdefault spacing="6" margin="30"/>
- <pixmapfunction>qPixmapFromMimeSource</pixmapfunction>
  <customwidgets>
   <customwidget>
    <class>Gui::PrefCheckBox</class>

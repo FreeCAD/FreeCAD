@@ -321,7 +321,6 @@ The gradient of the local mesh size h(x) is bound by |Δh(x)| ≤ 1/value.</stri
   </layout>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
- <pixmapfunction>qPixmapFromMimeSource</pixmapfunction>
  <customwidgets>
   <customwidget>
    <class>Gui::PrefSpinBox</class>
