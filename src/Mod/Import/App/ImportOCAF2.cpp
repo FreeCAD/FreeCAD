@@ -557,7 +557,9 @@ App::DocumentObject* ImportOCAF2::loadShapes()
         ret->recomputeFeature(true);
     }
     if (options.merge && ret && !ret->isDerivedFrom<Part::Feature>()) {
-        auto shape = Part::Feature::getTopoShape(ret, Part::Feature::GetShapeOption::ResolveLink | Part::Feature::GetShapeOption::Transform);
+        auto shape = Part::Feature::getTopoShape(ret,
+                                                 Part::Feature::GetShapeOption::ResolveLink
+                                                     | Part::Feature::GetShapeOption::Transform);
         auto feature = pDocument->addObject<Part::Feature>("Feature");
         auto name = Tools::labelName(pDoc->Main());
         feature->Label.setValue(name.empty() ? default_name.c_str() : name.c_str());
