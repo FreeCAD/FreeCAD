@@ -49,6 +49,7 @@ import Part
 import Draft
 import DraftVecUtils
 import DraftGeomUtils
+import WorkingPlane
 from draftguitools import gui_trackers as trackers
 from draftutils import gui_utils
 from draftutils import params
@@ -159,7 +160,7 @@ class Snapper:
 
 
     def _get_wp(self):
-        return App.DraftWorkingPlane
+        return WorkingPlane.get_working_plane()
 
 
     def init_active_snaps(self):
@@ -1648,5 +1649,14 @@ class Snapper:
                 self.holdTracker.setColor()
                 self.holdTracker.on()
             self.holdPoints.append(self.spoint)
+
+    def recenter_workingplane(self):
+        """Recenters the working plane on the current snap position"""
+        if self.spoint:
+            self._get_wp().position = self.toWP(self.spoint)
+            if self.grid:
+                self._get_wp()
+                self.grid.set()
+
 
 ## @}
