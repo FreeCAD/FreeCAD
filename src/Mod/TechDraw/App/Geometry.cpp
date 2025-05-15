@@ -1330,12 +1330,7 @@ void Vertex::Save(Base::Writer &writer) const
     writer.Stream() << writer.ind() << "<Cosmetic value=\"" <<  c2 << "\"/>" << endl;
     writer.Stream() << writer.ind() << "<CosmeticLink value=\"" <<  cosmeticLink << "\"/>" << endl;
     writer.Stream() << writer.ind() << "<CosmeticTag value=\"" <<  cosmeticTag << "\"/>" << endl;
-
-    //do we need to save this?  always recreated by program.
-//    const char r = reference?'1':'0';
-//    writer.Stream() << writer.ind() << "<Reference value=\"" <<  r << "\"/>" << endl;
-
-    Tag::Save(writer);
+    writer.Stream() << writer.ind() << "<VertexTag value=\"" <<  getTagAsString() << "\"/>" << endl;
 }
 
 void Vertex::Restore(Base::XMLReader &reader)
@@ -1359,15 +1354,28 @@ void Vertex::Restore(Base::XMLReader &reader)
     cosmeticLink = reader.getAttribute<long>("value");
     reader.readElement("CosmeticTag");
     cosmeticTag = reader.getAttribute<const char*>("value");
-
-    //will restore read to eof looking for "Reference" in old docs??  YES!!
-//    reader.readElement("Reference");
-//    m_reference = reader.getAttribute<bool>("value");
-
-    Tag::Restore(reader, "VertexTag");
+    // restore tag from VertexTag if it exists
+    restoreVertexTag(reader);
 
     BRepBuilderAPI_MakeVertex mkVert(gp_Pnt(pnt.x, pnt.y, pnt.z));
     occVertex = mkVert.Vertex();
+}
+
+//! look at the next element in the file.  If it is a VertexTag, set the tag.
+//! readNextElement will stop searching when it encounters an end element (ex: </CosmeticVertex>) or
+//! end of document.
+void Vertex::restoreVertexTag(Base::XMLReader& reader)
+{
+    if (!reader.readNextElement()) {
+        return;
+    }
+
+    if(strcmp(reader.localName(),"VertexTag") == 0) {
+        std::string temp = reader.getAttribute<const char*>("value");
+        setTag(Tag::fromString(temp));
+    }
+    // else we can not set the tag here.  if this is a CosmeticVertex, the tag will be set later.
+    // the tag is not used for geometry vertices.
 }
 
 void Vertex::dump(const char* title)
