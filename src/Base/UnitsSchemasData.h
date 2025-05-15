@@ -649,7 +649,7 @@ inline std::size_t greatestCommonDenominator(const std::size_t a, const std::siz
 }
 
 /**
- * double -> [feet'][inches[-fraction]"], e.g.: 3'4-1/4"
+ * double -> [feet'] [inches" [+ fraction]"], e.g.: 3' 4" + 3/8"
  */
 inline std::string toFractional(const double value)
 {
@@ -664,7 +664,8 @@ inline std::string toFractional(const double value)
 
     const auto feet =
         static_cast<std::size_t>(std::floor(numFractUnits / (inchPerFoot * defDenominator)));
-    numFractUnits = numFractUnits - (inchPerFoot * defDenominator * feet);
+    numFractUnits -= inchPerFoot * defDenominator * feet;
+
     const auto inches = static_cast<std::size_t>(std::floor(numFractUnits / defDenominator));
     const std::size_t fractNumerator = numFractUnits - (defDenominator * inches);
 
@@ -672,24 +673,32 @@ inline std::string toFractional(const double value)
     const std::size_t numerator = fractNumerator / common_denom;
     const std::size_t denominator = defDenominator / common_denom;
 
-    std::vector<std::string> resultParts {};
-    if (inches > 0) {
-        resultParts.push_back(fmt::format("{}", inches));
-        if (numerator == 0) {
-            resultParts.emplace_back("\"");
-        }
-    }
-    if (numerator > 0) {
-        if (inches > 0) {
-            resultParts.emplace_back("-");
-        }
-        resultParts.push_back(fmt::format("{}/{}\"", numerator, denominator));
+    bool addSpace {false};
+    std::string result;
+
+    if (value < 0) {
+        result += "-";
     }
 
-    return fmt::format("{}{}{}",
-                       value < 0 ? "-" : "",
-                       feet > 0 ? fmt::format("{}'", feet) : "",
-                       fmt::join(resultParts, ""));
+    if (feet > 0) {
+        result += fmt::format("{}'", feet);
+        addSpace = true;
+    }
+
+    if (inches > 0) {
+        result += fmt::format("{}{}\"", addSpace ? " " : "", inches);
+        addSpace = false;
+    }
+
+    if (numerator > 0) {
+        if (inches > 0) {
+            result += fmt::format(" {} ", value < 0 ? "-" : "+");
+            addSpace = false;
+        }
+        result += fmt::format("{}{}/{}\"", addSpace ? " " : "", numerator, denominator);
+    }
+
+    return result;
 }
 
 /**
