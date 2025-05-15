@@ -381,15 +381,15 @@ class recycler:
                 self.rgbs[key] = c
             return c
 
-    def createIfcSurfaceStyleRendering(self,col,trans=1):
-        key = (col.Red,col.Green,col.Blue,trans)
+    def createIfcSurfaceStyleRendering(self,col,alpha=1):
+        key = (col.Red,col.Green,col.Blue,alpha)
         if self.compress and key in self.ssrenderings:
             self.spared += 1
             return self.ssrenderings[key]
         else:
-            if trans == 1:
-                trans = None
-            c = self.ifcfile.createIfcSurfaceStyleRendering(col,trans,None,None,None,None,None,None,"FLAT")
+            if alpha == 1:
+                alpha = None
+            c = self.ifcfile.createIfcSurfaceStyleRendering(col,alpha,None,None,None,None,None,None,"FLAT")
             if self.compress:
                 self.ssrenderings[key] = c
             return c
