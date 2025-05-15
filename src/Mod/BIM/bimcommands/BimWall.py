@@ -72,6 +72,7 @@ class Arch_Wall:
         from draftutils import params
         import draftguitools.gui_trackers as DraftTrackers
 
+        self.doc = FreeCAD.ActiveDocument
         self.Align = ["Center","Left","Right"][params.get_param_arch("WallAlignment")]
         self.MultiMat = None
         self.Length = None
@@ -88,7 +89,7 @@ class Arch_Wall:
         if sel:
             # automatic mode
             if Draft.getType(sel[0].Object) != "Wall":
-                FreeCAD.ActiveDocument.openTransaction(translate("Arch","Create Wall"))
+                self.doc.openTransaction(translate("Arch","Create Wall"))
                 FreeCADGui.addModule("Arch")
                 for selobj in sel:
                     if Draft.getType(selobj.Object) == "Space" \
@@ -100,8 +101,8 @@ class Arch_Wall:
                         FreeCADGui.doCommand("obj = Arch.makeWall(FreeCAD.ActiveDocument."+selobj.Object.Name+")")
                 FreeCADGui.addModule("Draft")
                 FreeCADGui.doCommand("Draft.autogroup(obj)")
-                FreeCAD.ActiveDocument.commitTransaction()
-                FreeCAD.ActiveDocument.recompute()
+                self.doc.commitTransaction()
+                self.doc.recompute()
                 return
 
         # interactive mode
@@ -160,7 +161,7 @@ class Arch_Wall:
             self.tracker.off()
             l = Part.LineSegment(self.wp.get_local_coords(self.points[0]),
                                  self.wp.get_local_coords(self.points[1]))
-            FreeCAD.ActiveDocument.openTransaction(translate("Arch","Create Wall"))
+            self.doc.openTransaction(translate("Arch","Create Wall"))
             FreeCADGui.addModule("Arch")
             FreeCADGui.doCommand('import Part')
             FreeCADGui.doCommand('trace=Part.LineSegment(FreeCAD.'+str(l.StartPoint)+',FreeCAD.'+str(l.EndPoint)+')')
@@ -178,16 +179,16 @@ class Arch_Wall:
                             # if not possible, add new wall as addition to the existing one
                             self.addDefault()
                             if self.AUTOJOIN:
-                                FreeCADGui.doCommand('Arch.addComponents(FreeCAD.ActiveDocument.'+FreeCAD.ActiveDocument.Objects[-1].Name+',FreeCAD.ActiveDocument.'+w.Name+')')
+                                FreeCADGui.doCommand('Arch.addComponents(FreeCAD.ActiveDocument.'+self.doc.Objects[-1].Name+',FreeCAD.ActiveDocument.'+w.Name+')')
                     else:
                         self.addDefault()
                 else:
                     # add new wall as addition to the first existing one
                     self.addDefault()
                     if self.AUTOJOIN:
-                        FreeCADGui.doCommand('Arch.addComponents(FreeCAD.ActiveDocument.'+FreeCAD.ActiveDocument.Objects[-1].Name+',FreeCAD.ActiveDocument.'+self.existing[0].Name+')')
-            FreeCAD.ActiveDocument.commitTransaction()
-            FreeCAD.ActiveDocument.recompute()
+                        FreeCADGui.doCommand('Arch.addComponents(FreeCAD.ActiveDocument.'+self.doc.Objects[-1].Name+',FreeCAD.ActiveDocument.'+self.existing[0].Name+')')
+            self.doc.commitTransaction()
+            self.doc.recompute()
             # gui_utils.end_all_events()  # Causes a crash on Linux.
             self.tracker.finalize()
             if FreeCADGui.draftToolBar.continueCmd.isChecked():
@@ -278,7 +279,7 @@ class Arch_Wall:
         matCombo.setToolTip(translate("Arch","This list shows all the MultiMaterials objects of this document. Create some to define wall types."))
         self.multimats = []
         self.MultiMat = None
-        for o in FreeCAD.ActiveDocument.Objects:
+        for o in self.doc.Objects:
             if Draft.getType(o) == "MultiMaterial":
                 self.multimats.append(o)
                 matCombo.addItem(o.Label)
@@ -391,13 +392,13 @@ class Arch_Wall:
     def createFromGUI(self):
         """Callback to create wall by using the _CommandWall.taskbox()"""
 
-        FreeCAD.ActiveDocument.openTransaction(translate("Arch","Create Wall"))
+        self.doc.openTransaction(translate("Arch","Create Wall"))
         FreeCADGui.addModule("Arch")
         FreeCADGui.doCommand('wall = Arch.makeWall(length='+str(self.lengthValue)+',width='+str(self.Width)+',height='+str(self.Height)+',align="'+str(self.Align)+'")')
         if self.MultiMat:
             FreeCADGui.doCommand("wall.Material = FreeCAD.ActiveDocument."+self.MultiMat.Name)
-        FreeCAD.ActiveDocument.commitTransaction()
-        FreeCAD.ActiveDocument.recompute()
+        self.doc.commitTransaction()
+        self.doc.recompute()
         if hasattr(FreeCADGui,"draftToolBar"):
             FreeCADGui.draftToolBar.escape()
 

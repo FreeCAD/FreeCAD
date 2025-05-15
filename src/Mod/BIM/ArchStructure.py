@@ -287,6 +287,7 @@ class _CommandStructure:
 
     def Activated(self):
 
+        self.doc = FreeCAD.ActiveDocument
         self.Width = params.get_param_arch("StructureWidth")
         if self.beammode:
             self.Height = params.get_param_arch("StructureLength")
@@ -307,14 +308,14 @@ class _CommandStructure:
                 FreeCADGui.runCommand("Arch_StructuralSystem")
                 return
             elif not(ax) and not(st):
-                FreeCAD.ActiveDocument.openTransaction(translate("Arch","Create Structure"))
+                self.doc.openTransaction(translate("Arch","Create Structure"))
                 FreeCADGui.addModule("Arch")
                 for obj in sel:
                     FreeCADGui.doCommand("obj = Arch.makeStructure(FreeCAD.ActiveDocument." + obj.Name + ")")
                     FreeCADGui.addModule("Draft")
                     FreeCADGui.doCommand("Draft.autogroup(obj)")
-                FreeCAD.ActiveDocument.commitTransaction()
-                FreeCAD.ActiveDocument.recompute()
+                self.doc.commitTransaction()
+                self.doc.recompute()
                 return
 
         # interactive mode
@@ -357,7 +358,7 @@ class _CommandStructure:
         FreeCADGui.Snapper.off()
         self.tracker.off()
         horiz = True # determines the type of rotation to apply to the final object
-        FreeCAD.ActiveDocument.openTransaction(translate("Arch","Create Structure"))
+        self.doc.openTransaction(translate("Arch","Create Structure"))
         FreeCADGui.addModule("Arch")
         FreeCADGui.addModule("WorkingPlane")
         if self.bmode:
@@ -419,8 +420,8 @@ class _CommandStructure:
 
         FreeCADGui.addModule("Draft")
         FreeCADGui.doCommand("Draft.autogroup(s)")
-        FreeCAD.ActiveDocument.commitTransaction()
-        FreeCAD.ActiveDocument.recompute()
+        self.doc.commitTransaction()
+        self.doc.recompute()
         # gui_utils.end_all_events()  # Causes a crash on Linux.
         self.tracker.finalize()
         if FreeCADGui.draftToolBar.continueCmd.isChecked():
@@ -770,6 +771,8 @@ class _Structure(ArchComponent.Component):
             if hasattr(obj,"ArchSketchPropertySet"):
                 obj.setEditorMode("ArchSketchPropertySet", ["ReadOnly"])
 
+        # set a flag to indicate onDocumentRestored() is run
+
 
     def execute(self,obj):
 
@@ -1083,7 +1086,7 @@ class _Structure(ArchComponent.Component):
     def onChanged(self,obj,prop):
 
         # check the flag indicating if we are currently in the process of
-        # restoring document; if not, no further code is run as getExtrusionData()
+        # restoring document; if not, no further code is run as getExtrusionData() 
         # below return error when some properties are not added by onDocumentRestored()
         if FreeCAD.ActiveDocument.Restoring:
             return

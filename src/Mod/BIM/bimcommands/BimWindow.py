@@ -63,6 +63,7 @@ class Arch_Window:
         import WorkingPlane
         import draftguitools.gui_trackers as DraftTrackers
 
+        self.doc = FreeCAD.ActiveDocument
         self.sel = FreeCADGui.Selection.getSelection()
         self.W1 = params.get_param_arch("WindowW1")  # thickness of the fixed frame
         if self.doormode:
@@ -101,7 +102,7 @@ class Arch_Window:
                         if obj.Objects[0].Inlist:
                             host = obj.Objects[0].Inlist[0]
 
-                    FreeCAD.ActiveDocument.openTransaction(translate("Arch","Create Window"))
+                    self.doc.openTransaction(translate("Arch","Create Window"))
                     FreeCADGui.addModule("Arch")
                     FreeCADGui.doCommand("win = Arch.makeWindow(FreeCAD.ActiveDocument."+obj.Name+")")
                     if host and self.Include:
@@ -112,19 +113,19 @@ class Arch_Window:
                             if not sibling in sibs:
                                 sibs.append(sibling)
                                 FreeCADGui.doCommand("win.Hosts = win.Hosts+[FreeCAD.ActiveDocument."+sibling.Name+"]")
-                    FreeCAD.ActiveDocument.commitTransaction()
-                    FreeCAD.ActiveDocument.recompute()
+                    self.doc.commitTransaction()
+                    self.doc.recompute()
                     return
 
                 # Try to detect an object to use as a window type - TODO we must make this safer
 
                 elif obj.Shape.Solids and (Draft.getType(obj) not in ["Wall","Structure","Roof"]):
                     # we consider the selected object as a type
-                    FreeCAD.ActiveDocument.openTransaction(translate("Arch","Create Window"))
+                    self.doc.openTransaction(translate("Arch","Create Window"))
                     FreeCADGui.addModule("Arch")
                     FreeCADGui.doCommand("Arch.makeWindow(FreeCAD.ActiveDocument."+obj.Name+")")
-                    FreeCAD.ActiveDocument.commitTransaction()
-                    FreeCAD.ActiveDocument.recompute()
+                    self.doc.commitTransaction()
+                    self.doc.recompute()
                     return
 
         # interactive mode
@@ -172,7 +173,7 @@ class Arch_Window:
         if self.sel:
             obj = self.sel[0]
         point = point.add(FreeCAD.Vector(0,0,self.Sill))
-        FreeCAD.ActiveDocument.openTransaction(translate("Arch","Create Window"))
+        self.doc.openTransaction(translate("Arch","Create Window"))
 
         FreeCADGui.doCommand("import FreeCAD, Arch, DraftGeomUtils, WorkingPlane")
         FreeCADGui.doCommand("wp = WorkingPlane.get_working_plane()")
@@ -196,11 +197,11 @@ class Arch_Window:
         if self.Preset >= len(WindowPresets):
             preset = False
             # library object
-            col = FreeCAD.ActiveDocument.Objects
+            col = self.doc.Objects
             path = self.librarypresets[self.Preset - len(WindowPresets)][1]
             FreeCADGui.doCommand("FreeCADGui.ActiveDocument.mergeProject('" + path + "')")
             # find the latest added window
-            nol = FreeCAD.ActiveDocument.Objects
+            nol = self.doc.Objects
             for o in nol[len(col):]:
                 if Draft.getType(o) == "Window":
                     if Draft.getType(o.Base) != "Sketcher::SketchObject":
@@ -229,8 +230,8 @@ class Arch_Window:
             import ArchSketchObject
 
             if (host and Draft.getType(host.Base) == "ArchSketch" and
-                hasattr(ArchSketchObject, 'attachToHost') and
-                hasattr(FreeCAD, 'ArchSketchLock') and
+                hasattr(ArchSketchObject, 'attachToHost') and 
+                hasattr(FreeCAD, 'ArchSketchLock') and 
                 FreeCAD.ArchSketchLock):
                 # Window sketch's stay at orgin is good if addon exists
                 FreeCADGui.doCommand("win = Arch.makeWindowPreset('" + WindowPresets[self.Preset] + "' " + wp + ")")
@@ -252,8 +253,8 @@ class Arch_Window:
                 if SketchArch:
                     ArchSketchObject.attachToHost(w, target=host, pl=wPl)
 
-        FreeCAD.ActiveDocument.commitTransaction()
-        FreeCAD.ActiveDocument.recompute()
+        self.doc.commitTransaction()
+        self.doc.recompute()
         # gui_utils.end_all_events()  # Causes a crash on Linux.
         self.tracker.finalize()
         return
@@ -271,7 +272,7 @@ class Arch_Window:
         if info:
             if "Face" in info['Component']:
                 import DraftGeomUtils
-                o = FreeCAD.ActiveDocument.getObject(info['Object'])
+                o = self.doc.getObject(info['Object'])
                 self.baseFace = [o,int(info['Component'][4:])-1]
                 #print("switching to ",o.Label," face ",self.baseFace[1])
                 f = o.Shape.Faces[self.baseFace[1]]
