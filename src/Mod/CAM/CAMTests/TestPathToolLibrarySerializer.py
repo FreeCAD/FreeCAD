@@ -5,7 +5,7 @@ from CAMTests.PathTestUtils import PathTestWithAssets
 from Path.Tool.library import Library
 from Path.Tool.toolbit import ToolBitEndmill
 from Path.Tool.shape import ToolBitShapeEndmill
-from Path.Tool.library.serializers import CamoticsSerializer, LinuxCNCSerializer
+from Path.Tool.library.serializers import CamoticsLibrarySerializer, LinuxCNCSerializer
 
 
 class TestPathToolLibrarySerializerBase(PathTestWithAssets):
@@ -40,7 +40,7 @@ class TestCamoticsLibrarySerializer(TestPathToolLibrarySerializerBase):
     """Tests for the CamoticsLibrarySerializer."""
 
     def test_camotics_serialize(self):
-        serializer = CamoticsSerializer
+        serializer = CamoticsLibrarySerializer
         serialized_data = serializer.serialize(self.test_library)
         self.assertIsInstance(serialized_data, bytes)
 
@@ -60,7 +60,7 @@ class TestCamoticsLibrarySerializer(TestPathToolLibrarySerializerBase):
         )
 
     def test_camotics_deserialize(self):
-        serializer = CamoticsSerializer
+        serializer = CamoticsLibrarySerializer
         # Create a dummy serialized data matching the expected format
         dummy_data = {
             "10": {

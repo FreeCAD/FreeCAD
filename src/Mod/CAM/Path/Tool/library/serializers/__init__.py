@@ -1,9 +1,13 @@
+from .camotics import CamoticsLibrarySerializer
 from .fctl import FCTLSerializer
-from .camotics import CamoticsSerializer
 from .linuxcnc import LinuxCNCSerializer
 
+
+all_serializers = CamoticsLibrarySerializer, FCTLSerializer, LinuxCNCSerializer
+
+
 __all__ = [
-    "CamoticsSerializer",
+    "CamoticsLibrarySerializer",
     "FCTLSerializer",
     "LinuxCNCSerializer",
 ]

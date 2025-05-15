@@ -135,6 +135,12 @@ SET(PathPythonToolsAssetsStore_SRCS
     Path/Tool/assets/store/filestore.py
 )
 
+SET(PathPythonToolsAssetsUi_SRCS
+    Path/Tool/assets/ui/__init__.py
+    Path/Tool/assets/ui/filedialog.py
+    Path/Tool/assets/ui/util.py
+)
+
 SET(PathPythonToolsGui_SRCS
     Path/Tool/Gui/__init__.py
     Path/Tool/Gui/Bit.py
@@ -188,7 +194,6 @@ SET(PathPythonToolsToolBitSerializers_SRCS
 
 SET(PathPythonToolsToolBitUi_SRCS
     Path/Tool/toolbit/ui/__init__.py
-    Path/Tool/toolbit/ui/dialog.py
     Path/Tool/toolbit/ui/editor.py
 )
 
@@ -572,6 +577,7 @@ SET(all_files
     ${PathPythonTools_SRCS}
     ${PathPythonToolsAssets_SRCS}
     ${PathPythonToolsAssetsStore_SRCS}
+    ${PathPythonToolsAssetsUi_SRCS}
     ${PathPythonToolsGui_SRCS}
     ${PathPythonToolsUi_SRCS}
     ${PathPythonToolsShape_SRCS}
@@ -728,6 +734,13 @@ INSTALL(
         ${PathPythonToolsAssetsStore_SRCS}
     DESTINATION
         Mod/CAM/Path/Tool/assets/store
+)
+
+INSTALL(
+    FILES
+        ${PathPythonToolsAssetsUi_SRCS}
+    DESTINATION
+        Mod/CAM/Path/Tool/assets/ui
 )
 
 INSTALL(

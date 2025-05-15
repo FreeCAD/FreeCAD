@@ -35,10 +35,11 @@ import uuid as UUID
 from functools import partial
 from typing import List, Tuple, cast
 from ..assets import AssetUri
+from ..assets.ui.filedialog import AssetOpenDialog
 from ..camassets import cam_assets, ensure_assets_initialized
 from ..shape.ui.shapeselector import ShapeSelector
 from ..toolbit import ToolBit
-from ..toolbit.ui.dialog import ToolBitOpenDialog
+from ..toolbit.serializers import all_serializers as toolbit_serializers
 from ..toolbit.ui.editor import ToolBitEditor
 from ..library import Library
 
@@ -542,7 +543,7 @@ class ToolBitLibrary(object):
             return
 
         # Open the file dialog
-        dialog = ToolBitOpenDialog(self.form)
+        dialog = AssetOpenDialog(ToolBit, toolbit_serializers, self.form)
         dialog_result = dialog.exec()
         if not dialog_result:
             return  # User canceled or error
