@@ -37,8 +37,12 @@ class Writer;
 }
 
 namespace TechDraw {
+
+
+//NOLINTNEXTLINE    (default destructor but no copy)
 class TechDrawExport Tag {
 public:
+    virtual ~Tag() = default;
     //Uniqueness
     boost::uuids::uuid getTag() const;
     virtual std::string getTagAsString() const;
@@ -55,7 +59,7 @@ protected:
 
 private:
     void createNewTag();
-    boost::uuids::uuid tag;
+    boost::uuids::uuid tag{};
 };
 }
 
