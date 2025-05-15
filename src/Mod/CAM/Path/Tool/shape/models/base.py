@@ -175,7 +175,7 @@ class ToolBitShape(Asset):
         return None
 
     @classmethod
-    def extract_dependencies(cls, data: bytes, serializer: AssetSerializer) -> List[AssetUri]:
+    def extract_dependencies(cls, data: bytes, serializer: Type[AssetSerializer]) -> List[AssetUri]:
         """
         Extracts URIs of dependencies from the raw bytes of an FCStd file.
         For ToolBitShape, this is the associated ToolBitShapeIcon, identified
@@ -219,7 +219,7 @@ class ToolBitShape(Asset):
         data: bytes,
         id: str,
         dependencies: Optional[Mapping[AssetUri, Asset]],
-        serializer: AssetSerializer
+        serializer: Type[AssetSerializer]
     ) -> "ToolBitShape":
         """
         Create a ToolBitShape instance from the raw bytes of an FCStd file.
@@ -309,7 +309,7 @@ class ToolBitShape(Asset):
 
             return instance
 
-    def to_bytes(self, serializer: AssetSerializer) -> bytes:
+    def to_bytes(self, serializer: Type[AssetSerializer]) -> bytes:
         """
         Serializes a ToolBitShape object to bytes (e.g., an fcstd file).
         This is required by the Asset interface.
@@ -384,7 +384,7 @@ class ToolBitShape(Asset):
 
     @classmethod
     def get_subclass_by_name(
-        cls, name: str, default: Type["ToolBitShape"] = None
+        cls, name: str, default: Type["ToolBitShape"] | None = None
     ) -> Optional[Type["ToolBitShape"]]:
         """
         Retrieves a ToolBitShape class by its name or alias.

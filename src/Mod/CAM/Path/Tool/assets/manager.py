@@ -30,7 +30,7 @@ class _AssetConstructionData:
 class AssetManager:
     def __init__(self, cache_max_size_bytes: int = 100 * 1024 * 1024):
         self.stores: Dict[str, AssetStore] = {}
-        self._serializers: List[Tuple[AssetSerializer, Asset]] = []
+        self._serializers: List[Tuple[Type[AssetSerializer], Type[Asset]]] = []
         self._asset_classes: Dict[str, Type[Asset]] = {}
         self.asset_cache = AssetCache(max_size_bytes=cache_max_size_bytes)
         self._cacheable_stores: Set[str] = set()
@@ -53,7 +53,7 @@ class AssetManager:
                 return serializer
         raise ValueError(f"No serializer found for class {asset_class}")
 
-    def register_asset(self, asset_class: Type[Asset], serializer: AssetSerializer):
+    def register_asset(self, asset_class: Type[Asset], serializer: Type[AssetSerializer]):
         """Registers an Asset class with the manager."""
         if not issubclass(asset_class, Asset):
             raise TypeError(f"Item '{asset_class.__name__}' must be a subclass of Asset.")

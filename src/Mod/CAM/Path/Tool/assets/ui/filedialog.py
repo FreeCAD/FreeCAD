@@ -1,6 +1,6 @@
 import pathlib
 import FreeCAD
-from typing import Optional, Tuple, List, Type
+from typing import Optional, Tuple, Type, Iterable
 from PySide.QtWidgets import QFileDialog, QMessageBox
 from ..serializer import AssetSerializer, Asset
 from .util import (
@@ -11,7 +11,12 @@ from .util import (
 
 
 class AssetOpenDialog(QFileDialog):
-    def __init__(self, asset_type: Type[Asset], serializers: List[AssetSerializer], parent=None):
+    def __init__(
+        self,
+        asset_type: Type[Asset],
+        serializers: Iterable[Type[AssetSerializer]],
+        parent=None,
+    ):
         super().__init__(parent)
         self.asset_type = asset_type
         self.serializers = serializers
@@ -38,16 +43,18 @@ class AssetOpenDialog(QFileDialog):
 
             asset = serializer_class.deep_deserialize(raw_data)
             if not isinstance(asset, self.asset_type):
-                 raise TypeError(
+                raise TypeError(
                     f"Deserialized asset is not of expected type "
                     f"{self.asset_type.__name__}"
-                 )
+                )
             return asset
 
         except Exception as e:
             QMessageBox.critical(
                 self,
-                FreeCAD.Qt.translate("CAM_Asset", f"Error Importing {self.asset_type.__name__}"),
+                FreeCAD.Qt.translate(
+                    "CAM_Asset", f"Error Importing {self.asset_type.__name__}"
+                ),
                 str(e),
             )
             return None
@@ -61,7 +68,7 @@ class AssetOpenDialog(QFileDialog):
 
         # Select the "All Supported Files" filter by default if it exists
         if filters:
-             self.selectNameFilter(filters[0])
+            self.selectNameFilter(filters[0])
 
         if super().exec_():
             filenames = self.selectedFiles()
@@ -71,17 +78,25 @@ class AssetOpenDialog(QFileDialog):
                 if asset:
                     return file_path, asset
 
-        return None # Return None if dialog is canceled or no file selected
+        return None  # Return None if dialog is canceled or no file selected
 
 
 class AssetSaveDialog(QFileDialog):
-    def __init__(self, asset_type: Type[Asset], serializers: List[AssetSerializer], parent=None):
+    def __init__(
+        self,
+        asset_type: Type[Asset],
+        serializers: Iterable[Type[AssetSerializer]],
+        parent=None,
+    ):
         super().__init__(parent)
         self.asset_type = asset_type
         self.serializers = serializers
 
     def _serialize_selected_file(
-        self, file_path: pathlib.Path, asset: Asset, serializer_class: AssetSerializer
+        self,
+        file_path: pathlib.Path,
+        asset: Asset,
+        serializer_class: Type[AssetSerializer],
     ) -> bool:
         """Serializes and writes the selected file."""
         try:
@@ -92,12 +107,16 @@ class AssetSaveDialog(QFileDialog):
         except Exception as e:
             QMessageBox.critical(
                 self,
-                FreeCAD.Qt.translate("CAM_Asset", f"Error Exporting {self.asset_type.__name__}"),
+                FreeCAD.Qt.translate(
+                    "CAM_Asset", f"Error Exporting {self.asset_type.__name__}"
+                ),
                 str(e),
             )
             return False
 
-    def exec(self, asset: Asset) -> Optional[Tuple[pathlib.Path, AssetSerializer]]:
+    def exec(
+        self, asset: Asset
+    ) -> Optional[Tuple[pathlib.Path, Type[AssetSerializer]]]:
         self.setFileMode(QFileDialog.AnyFile)
         self.setAcceptMode(QFileDialog.AcceptSave)
         self.setWindowTitle(f"Save {asset.label}")
@@ -108,7 +127,7 @@ class AssetSaveDialog(QFileDialog):
 
         # Select the "All Supported Files" filter by default if it exists
         if filters:
-             self.selectNameFilter(filters[0])
+            self.selectNameFilter(filters[0])
 
         if not super().exec_():
             return None
@@ -133,10 +152,13 @@ class AssetSaveDialog(QFileDialog):
 
         # Ensure the file has the correct extension for the selected
         # serializer if it doesn't already
-        if serializer_class.extensions and file_path.suffix.lower() not in serializer_class.extensions:
-            file_path = file_path.with_suffix(f".{serializer_class.extensions[0]}")
+        if serializer_class.extensions \
+           and file_path.suffix.lower() not in serializer_class.extensions:
+            file_path = file_path.with_suffix(
+                f".{serializer_class.extensions[0]}"
+            )
 
         if self._serialize_selected_file(file_path, asset, serializer_class):
             return file_path, serializer_class
 
-        return None # Return None if save failed
+        return None  # Return None if save failed

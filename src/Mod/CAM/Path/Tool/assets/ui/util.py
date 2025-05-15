@@ -1,9 +1,9 @@
-from typing import List, Optional
+from typing import List, Optional, Iterable, Type
 from ..serializer import AssetSerializer
 
 
 def make_file_selector_filters(
-    serializers: List[AssetSerializer], for_import: bool = True
+    serializers: Iterable[Type[AssetSerializer]], for_import: bool = True
 ) -> List[str]:
     """
     Generates file dialog filters for a QFileDialog from a list of serializers.
@@ -46,8 +46,8 @@ def make_file_selector_filters(
 
 
 def get_serializer_from_filter_string(
-    serializers: List[AssetSerializer], filter_string: str
-) -> Optional[AssetSerializer]:
+    serializers: Iterable[Type[AssetSerializer]], filter_string: str
+) -> Optional[Type[AssetSerializer]]:
     """
     Finds a serializer class based on the selected filter string from a QFileDialog.
 
@@ -68,8 +68,8 @@ def get_serializer_from_filter_string(
 
 
 def get_serializer_from_extension(
-    serializers: List[AssetSerializer], file_extension: str, for_import: bool | None = None
-) -> Optional[AssetSerializer]:
+    serializers: Iterable[Type[AssetSerializer]], file_extension: str, for_import: bool | None = None
+) -> Optional[Type[AssetSerializer]]:
     """
     Finds a serializer class based on the file extension and import capability.
 
