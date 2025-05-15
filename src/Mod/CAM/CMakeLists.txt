@@ -216,7 +216,6 @@ SET(PathPythonToolsLibrarySerializers_SRCS
 
 SET(PathPythonToolsLibraryUi_SRCS
     Path/Tool/library/ui/__init__.py
-    Path/Tool/library/ui/dialog.py
 )
 
 SET(PathPythonToolsMachine_SRCS
