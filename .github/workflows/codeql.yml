@@ -1,0 +1,203 @@
+# For most projects, this workflow file will not need changing; you simply need
+# to commit it to your repository.
+#
+# You may wish to alter this file to override the set of languages analyzed,
+# or to provide custom queries or build logic.
+#
+# ******** NOTE ********
+# We have attempted to detect the languages in your repository. Please check
+# the `language` matrix defined below to confirm you have the correct set of
+# supported CodeQL languages.
+#
+name: "CodeQL Advanced"
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+  schedule:
+    - cron: '28 12 * * 6'
+
+env:
+  CODEQL_EXTRACTOR_CPP_AUTOINSTALL_DEPENDENCIES: false
+
+permissions:
+  contents: read
+
+jobs:
+  analyze:
+    name: Analyze (${{ matrix.language }})
+    # Runner size impacts CodeQL analysis time. To learn more, please see:
+    #   - https://gh.io/recommended-hardware-resources-for-running-codeql
+    #   - https://gh.io/supported-runners-and-hardware-resources
+    #   - https://gh.io/using-larger-runners (GitHub.com only)
+    # Consider using larger runners or machines with greater resources for possible analysis time improvements.
+    runs-on: ${{ (matrix.language == 'swift' && 'macos-latest') || 'ubuntu-latest' }}
+    permissions:
+      # required for all workflows
+      security-events: write
+
+      # required to fetch internal or private CodeQL packs
+      packages: read
+
+      # only required for workflows in private repositories
+      actions: read
+      contents: read
+
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+        # - language: actions
+        #   build-mode: none
+        # - language: c-cpp
+        #   build-mode: autobuild
+        # - language: javascript-typescript
+        #   build-mode: none
+        - language: python
+          build-mode: none
+        # CodeQL supports the following values keywords for 'language': 'actions', 'c-cpp', 'csharp', 'go', 'java-kotlin', 'javascript-typescript', 'python', 'ruby', 'swift'
+        # Use `c-cpp` to analyze code written in C, C++ or both
+        # Use 'java-kotlin' to analyze code written in Java, Kotlin or both
+        # Use 'javascript-typescript' to analyze code written in JavaScript, TypeScript or both
+        # To learn more about changing the languages that are analyzed or customizing the build mode for your analysis,
+        # see https://docs.github.com/en/code-security/code-scanning/creating-an-advanced-setup-for-code-scanning/customizing-your-advanced-setup-for-code-scanning.
+        # If you are analyzing a compiled language, you can modify the 'build-mode' for that language to customize how
+        # your codebase is analyzed, see https://docs.github.com/en/code-security/code-scanning/creating-an-advanced-setup-for-code-scanning/codeql-code-scanning-for-compiled-languages
+    steps:
+    - name: Harden the runner (Audit all outbound calls)
+      uses: step-security/harden-runner@4d991eb9b905ef189e4c376166672c3f2f230481 # v2.11.0
+      with:
+        egress-policy: audit
+
+    - name: Checkout repository
+      uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      with:
+        fetch-depth: 2
+        submodules: recursive
+
+    # prevent running out of disk space on Ubuntu runners.
+    - name: Maximize build space
+      if: ${{ matrix.language == 'c-cpp' }}
+      uses: AdityaGarg8/remove-unwanted-software@90e01b21170618765a73370fcc3abbd1684a7793 # v5
+      with:
+        verbose: 'true'
+        remove-android: 'true'      # (frees ~9 GB)
+        remove-cached-tools: 'true' # (frees ~8.3 GB)
+
+    # Install FreeCAD dependencies (cpp)
+    - name: Setup build environment
+      if: ${{ matrix.language == 'c-cpp' }}
+      run: |
+        sudo apt-get update -qq
+        sudo apt-get install -y --no-install-recommends               \
+                          doxygen                                     \
+                          graphviz                                    \
+                          imagemagick                                 \
+                          libboost-date-time-dev                      \
+                          libboost-dev                                \
+                          libboost-filesystem-dev                     \
+                          libboost-graph-dev                          \
+                          libboost-iostreams-dev                      \
+                          libboost-program-options-dev                \
+                          libboost-python-dev                         \
+                          libboost-regex-dev                          \
+                          libboost-serialization-dev                  \
+                          libboost-thread-dev                         \
+                          libcoin-dev                                 \
+                          libeigen3-dev                               \
+                          libfmt-dev                                  \
+                          libgts-bin                                  \
+                          libgts-dev                                  \
+                          libkdtree++-dev                             \
+                          libmedc-dev                                 \
+                          libmetis-dev                                \
+                          libocct-data-exchange-dev                   \
+                          libocct-ocaf-dev                            \
+                          libocct-visualization-dev                   \
+                          libopencv-dev                               \
+                          libproj-dev                                 \
+                          libpcl-dev                                  \
+                          libpyside2-dev                              \
+                          libqt5opengl5-dev                           \
+                          libqt5svg5-dev                              \
+                          libqt5x11extras5-dev                        \
+                          libshiboken2-dev                            \
+                          libspnav-dev                                \
+                          libvtk9-dev                                 \
+                          libx11-dev                                  \
+                          libxerces-c-dev                             \
+                          libyaml-cpp-dev                             \
+                          libzipios++-dev                             \
+                          netgen                                      \
+                          netgen-headers                              \
+                          occt-draw                                   \
+                          pybind11-dev                                \
+                          pyqt5-dev-tools                             \
+                          pyside2-tools                               \
+                          python3-dev                                 \
+                          python3-git                                 \
+                          python3-markdown                            \
+                          python3-matplotlib                          \
+                          python3-netgen                              \
+                          python3-packaging                           \
+                          python3-pivy                                \
+                          python3-ply                                 \
+                          python3-pyside2.qtcore                      \
+                          python3-pyside2.qtgui                       \
+                          python3-pyside2.qtnetwork                   \
+                          python3-pyside2.qtsvg                       \
+                          python3-pyside2.qtwidgets                   \
+                          qtbase5-dev                                 \
+                          qttools5-dev                                \
+                          shiboken2                                   \
+                          swig                                        \
+                          xvfb                                        \
+                          jq
+
+    # Add any setup steps before running the `github/codeql-action/init` action.
+    # This includes steps like installing compilers or runtimes (`actions/setup-node`
+    # or others). This is typically only required for manual builds.
+    # - name: Setup runtime (example)
+    #   uses: actions/setup-example@v1
+
+    # Initializes the CodeQL tools for scanning.
+    - name: Initialize CodeQL
+      uses: github/codeql-action/init@28deaeda66b76a05916b6923827895f2b14ab387 # v3.28.16
+      with:
+        languages: ${{ matrix.language }}
+        build-mode: ${{ matrix.build-mode }}
+        # If you wish to specify custom queries, you can do so here or in a config file.
+        # By default, queries listed here will override any specified in a config file.
+        # Prefix the list here with "+" to use these queries and those in the config file.
+
+        # For more details on CodeQL's query packs, refer to: https://docs.github.com/en/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/configuring-code-scanning#using-queries-in-ql-packs
+        # queries: security-extended
+        # queries: security-and-quality
+        # tools: https://github.com/github/codeql-action/releases/download/codeql-bundle-v2.20.7/codeql-bundle-linux64.tar.gz
+        config: |
+          query-filters:
+          - exclude:
+              id: py/file-not-closed
+
+    # If the analyze step fails for one of the languages you are analyzing with
+    # "We were unable to automatically build your code", modify the matrix above
+    # to set the build mode to "manual" for that language. Then modify this step
+    # to build your code.
+    # ℹ️ Command-line programs to run using the OS shell.
+    # 📚 See https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#jobsjob_idstepsrun
+    - if: matrix.build-mode == 'manual'
+      shell: bash
+      run: |
+        echo 'If you are using a "manual" build mode for one or more of the' \
+          'languages you are analyzing, replace this with the commands to build' \
+          'your code, for example:'
+        echo '  make bootstrap'
+        echo '  make release'
+        exit 1
+
+    - name: Perform CodeQL Analysis
+      uses: github/codeql-action/analyze@28deaeda66b76a05916b6923827895f2b14ab387 # v3.28.16
+      with:
+        category: "/language:${{matrix.language}}"
