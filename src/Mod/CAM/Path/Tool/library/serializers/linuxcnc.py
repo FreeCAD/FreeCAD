@@ -1,7 +1,10 @@
 import io
 from typing import Mapping, List, Optional, Type
 import FreeCAD
+import Path
 from ...assets import Asset, AssetUri, AssetSerializer
+from ...toolbit import ToolBit
+from ...toolbit.mixins import RotaryToolBitMixin
 from ..models.library import Library
 
 
@@ -26,11 +29,15 @@ class LinuxCNCSerializer(AssetSerializer):
 
         output = io.BytesIO()
         for bit_no, bit in sorted(asset._bit_nos.items()):
-            diameter = bit.get_diameter() or 2
+            assert isinstance(bit, ToolBit)
+            if not isinstance(bit, RotaryToolBitMixin):
+                Path.Log.warning(f"Skipping too {bit.label} (bit.id) because it is not a rotary tool")
+                continue
+            diameter = bit.get_diameter()
             pocket = "P"  # TODO: is there a better way?
             # Format diameter to one decimal place and remove units
             diameter_value = diameter.Value if hasattr(diameter, 'Value') else diameter
-            line = f"T{bit_no} {pocket} D{diameter_value:.1f} ;{bit.get_label()}\n"
+            line = f"T{bit_no} {pocket} D{diameter_value:.1f} ;{bit.label}\n"
             output.write(line.encode("ascii", "ignore"))
 
         return output.getvalue()

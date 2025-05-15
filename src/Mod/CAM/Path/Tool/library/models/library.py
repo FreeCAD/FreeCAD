@@ -13,10 +13,14 @@ class Library(Asset):
 
     def __init__(self, label, id=None):
         self.id = id if id is not None else str(uuid.uuid4())
-        self.label = label
+        self._label = label
         self._bits: List[ToolBit] = []
         self._bit_nos: Dict[int, ToolBit] = {}
         self._bit_urls: Dict[AssetUri, ToolBit] = {}
+
+    @property
+    def label(self) -> str:
+        return self._label
 
     def get_id(self) -> str:
         """Returns the unique identifier for the Library instance."""
@@ -157,5 +161,5 @@ class Library(Asset):
         print(title)
         print("-"*len(title))
         for bit in self._bits:
-            print(f"- {bit.get_label()} ({bit.get_id()})")
+            print(f"- {bit.label} ({bit.get_id()})")
         print()

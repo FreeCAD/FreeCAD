@@ -24,13 +24,13 @@ class TestPathToolLibrarySerializerBase(PathTestWithAssets):
         shape1.set_parameter("Diameter", FreeCAD.Units.Quantity("6.0 mm"))
         shape1.set_parameter("Length", FreeCAD.Units.Quantity("20.0 mm"))
         tool1 = ToolBitEndmill(shape1, id="tool_1")
-        tool1.set_label("Endmill 6mm")
+        tool1.label = "Endmill 6mm"
 
         shape2 = ToolBitShapeEndmill("endmill_2")
         shape2.set_parameter("Diameter", FreeCAD.Units.Quantity("3.0 mm"))
         shape2.set_parameter("Length", FreeCAD.Units.Quantity("15.0 mm"))
         tool2 = ToolBitEndmill(shape2, id="tool_2")
-        tool2.set_label("Endmill 3mm")
+        tool2.label = "Endmill 3mm"
 
         self.test_library.add_bit(tool1, 1)
         self.test_library.add_bit(tool2, 2)
@@ -50,7 +50,7 @@ class TestCamoticsLibrarySerializer(TestPathToolLibrarySerializerBase):
         self.assertIn("2", data_dict)
         self.assertEqual(
             data_dict["1"]["description"],
-            self.test_library._bit_nos[1].get_label()
+            self.test_library._bit_nos[1].label
         )
         self.assertEqual(
             data_dict["2"]["diameter"],
@@ -91,7 +91,7 @@ class TestCamoticsLibrarySerializer(TestPathToolLibrarySerializerBase):
 
         tool_10 = deserialized_library._bit_nos.get(10)
         assert tool_10 is not None, "tool not in the library"
-        self.assertEqual(tool_10.get_label(), "Ballnose 8mm")
+        self.assertEqual(tool_10.label, "Ballnose 8mm")
         self.assertEqual(tool_10._tool_bit_shape.name, "Ballend")
         self.assertEqual(
             tool_10._tool_bit_shape.get_parameter("Diameter"),
@@ -104,7 +104,7 @@ class TestCamoticsLibrarySerializer(TestPathToolLibrarySerializerBase):
 
         tool_20 = deserialized_library._bit_nos.get(20)
         assert tool_20 is not None, "tool not in the library"
-        self.assertEqual(tool_20.get_label(), "Endmill 10mm")
+        self.assertEqual(tool_20.label, "Endmill 10mm")
         self.assertEqual(tool_20._tool_bit_shape.name, "Endmill")
         self.assertEqual(
             tool_20._tool_bit_shape.get_parameter("Diameter"),

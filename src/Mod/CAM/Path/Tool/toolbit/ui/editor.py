@@ -266,7 +266,7 @@ class ToolBitEditor(QtGui.QWidget):
 
     def _update(self):
         title = self.default_title
-        tool_name = self.toolbit.get_label()
+        tool_name = self.toolbit.label
         if tool_name:
             title = '{} - {}'.format(tool_name, title)
         self.form.setWindowTitle(title)

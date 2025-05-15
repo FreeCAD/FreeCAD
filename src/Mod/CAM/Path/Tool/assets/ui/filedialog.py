@@ -79,7 +79,6 @@ class AssetSaveDialog(QFileDialog):
         super().__init__(parent)
         self.asset_type = asset_type
         self.serializers = serializers
-        self.setWindowTitle(f"Save a {asset_type.__name__}")
 
     def _serialize_selected_file(
         self, file_path: pathlib.Path, asset: Asset, serializer_class: AssetSerializer
@@ -101,6 +100,7 @@ class AssetSaveDialog(QFileDialog):
     def exec(self, asset: Asset) -> Optional[Tuple[pathlib.Path, AssetSerializer]]:
         self.setFileMode(QFileDialog.AnyFile)
         self.setAcceptMode(QFileDialog.AcceptSave)
+        self.setWindowTitle(f"Save {asset.label}")
 
         # Use the generic helper function for filters
         filters = make_file_selector_filters(self.serializers, for_import=False)

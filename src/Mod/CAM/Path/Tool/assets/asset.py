@@ -1,7 +1,7 @@
 from __future__ import annotations
 import abc
 from abc import ABC
-from typing import Mapping, List, Optional, TYPE_CHECKING
+from typing import Mapping, List, Optional, Type, TYPE_CHECKING
 from .uri import AssetUri
 
 if TYPE_CHECKING:
@@ -14,6 +14,10 @@ class Asset(ABC):
     def __init__(self, *args, **kwargs):
         if not hasattr(self, 'asset_type'):
             raise ValueError("Asset subclasses must define 'asset_type'.")
+
+    @property
+    def label(self) -> str:
+        return self.__class__.__name__
 
     @abc.abstractmethod
     def get_id(self) -> str:
@@ -47,7 +51,7 @@ class Asset(ABC):
 
     @classmethod
     def extract_dependencies(
-        cls, data: bytes, serializer: "AssetSerializer"
+        cls, data: bytes, serializer: Type[AssetSerializer]
     ) -> List[AssetUri]:
         """Extracts URIs of dependencies from serialized data."""
         return serializer.extract_dependencies(data)
@@ -58,7 +62,7 @@ class Asset(ABC):
         data: bytes,
         id: str,
         dependencies: Optional[Mapping[AssetUri, Asset]],
-        serializer: AssetSerializer,
+        serializer: Type[AssetSerializer],
     ) -> Asset:
         """
         Creates an object from serialized data and resolved dependencies.
@@ -66,6 +70,6 @@ class Asset(ABC):
         """
         return serializer.deserialize(data, id, dependencies)
 
-    def to_bytes(self, serializer: AssetSerializer) -> bytes:
+    def to_bytes(self, serializer: Type[AssetSerializer]) -> bytes:
         """Serializes an object into bytes."""
         return serializer.serialize(self)

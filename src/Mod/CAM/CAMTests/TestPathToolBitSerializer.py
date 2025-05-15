@@ -1,8 +1,8 @@
 import json
-from typing import Type
+from typing import Type, cast
 import FreeCAD
 from CAMTests.PathTestUtils import PathTestWithAssets
-from Path.Tool.toolbit import ToolBit
+from Path.Tool.toolbit import ToolBit, ToolBitEndmill
 from Path.Tool.toolbit.serializers import (
     FCTBSerializer,
     CamoticsToolBitSerializer,
@@ -31,8 +31,8 @@ class _BaseToolBitSerializerTestCase(PathTestWithAssets):
                 "Subclasses must define a valid serializer_class"
             )
 
-        self.test_tool_bit = self.assets.get("toolbit://5mm_Endmill")
-        self.test_tool_bit.set_label("Test Tool")
+        self.test_tool_bit = cast(ToolBitEndmill, self.assets.get("toolbit://5mm_Endmill"))
+        self.test_tool_bit.label = "Test Tool"
         self.test_tool_bit.set_diameter(FreeCAD.Units.Quantity("4.12 mm"))
         self.test_tool_bit.set_length(FreeCAD.Units.Quantity("15.0 mm"))
 
@@ -76,12 +76,12 @@ class TestCamoticsToolBitSerializer(_BaseToolBitSerializerTestCase):
             b'{"units": "metric", "shape": "Cylindrical", "length": 15, '
             b'"diameter": 4.12, "description": "Test Tool"}'
         )
-        deserialized_bit = self.serializer_class.deserialize(
+        deserialized_bit = cast(ToolBitEndmill, self.serializer_class.deserialize(
             camotics_data, id="test_id", dependencies=None
-        )
+        ))
 
         self.assertIsInstance(deserialized_bit, ToolBit)
-        self.assertEqual(deserialized_bit.get_label(), "Test Tool")
+        self.assertEqual(deserialized_bit.label, "Test Tool")
         self.assertEqual(str(deserialized_bit.get_diameter()), "4.12 mm")
         self.assertEqual(str(deserialized_bit.get_length()), "15.0 mm")
         self.assertEqual(deserialized_bit.get_shape_name(), "Endmill")
@@ -126,12 +126,12 @@ class TestFCTBSerializer(_BaseToolBitSerializerTestCase):
         }
 
         # Provide dummy id and dependencies for deserialization test
-        deserialized_bit = self.serializer_class.deserialize(
+        deserialized_bit = cast(ToolBitEndmill, self.serializer_class.deserialize(
             fctb_data, id="test_id", dependencies=dependencies
-        )
+        ))
 
         self.assertIsInstance(deserialized_bit, ToolBit)
-        self.assertEqual(deserialized_bit.get_label(), "Test Tool")
+        self.assertEqual(deserialized_bit.label, "Test Tool")
         self.assertEqual(deserialized_bit.get_shape_name(), "Endmill")
         self.assertEqual(str(deserialized_bit.get_diameter()), "4.12 mm")
         self.assertEqual(str(deserialized_bit.get_length()), "15.0 mm")

@@ -130,7 +130,7 @@ class ToolBit(Asset, ABC):
         toolbit = selected_toolbit_subclass(
             tool_bit_shape, id=attrs.get("id")
         )
-        toolbit.set_label(attrs.get("name") or tool_bit_shape.label)
+        toolbit.label = attrs.get("name") or tool_bit_shape.label
 
         # Update parameters and attributes
         for param_name, param_value in params.items():
@@ -175,12 +175,12 @@ class ToolBit(Asset, ABC):
             attrs_map = json.load(fp)
         return cls.from_dict(attrs_map)
 
-    def get_label(self) -> str:
-        """Returns the label of the tool bit."""
+    @property
+    def label(self) -> str:
         return self.obj.Label
 
-    def set_label(self, label: str):
-        """Sets the label of the tool bit."""
+    @label.setter
+    def label(self, label: str):
         self.obj.Label = label
 
     def get_shape_name(self) -> str:
@@ -446,7 +446,7 @@ class ToolBit(Asset, ABC):
         Creates a new FreeCAD DocumentObject in the given document and attaches
         this ToolBit instance to it.
         """
-        label = label or self.get_label() or self._tool_bit_shape.label
+        label = label or self.label or self._tool_bit_shape.label
         tool_doc_obj = doc.addObject("Part::FeaturePython", label)
         self.attach_to_obj(tool_doc_obj, label=label)
         return tool_doc_obj
@@ -479,7 +479,7 @@ class ToolBit(Asset, ABC):
         temp_obj.copy_to(self.obj)
 
         # Ensure label is set
-        self.obj.Label = label or self.get_label() or self._tool_bit_shape.label
+        self.obj.Label = label or self.label or self._tool_bit_shape.label
 
         # Update the visual representation now that it's attached
         self._update_tool_properties()

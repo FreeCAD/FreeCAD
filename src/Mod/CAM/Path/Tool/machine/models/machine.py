@@ -55,7 +55,7 @@ class Machine(Asset):
             id: The unique identifier of the machine.
         """
         self.id = id or str(uuid.uuid1())
-        self.label = label
+        self._label = label
 
         # Initialize max_power (W)
         if isinstance(max_power, FreeCAD.Units.Quantity):
@@ -292,10 +292,6 @@ class Machine(Asset):
                 else float("inf")
             )
         return min(max_torque_nm, torque_at_current_rpm)
-
-    def set_label(self, label: str) -> None:
-        """Sets the label of the machine."""
-        self._label = label
 
     def set_max_power(
         self, power: Union[int, float], unit: Optional[str] = None

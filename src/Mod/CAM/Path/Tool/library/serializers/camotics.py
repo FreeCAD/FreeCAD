@@ -4,6 +4,7 @@ from typing import Mapping, List, Optional, Type
 import FreeCAD
 from ...assets import Asset, AssetUri, AssetSerializer
 from ...toolbit import ToolBit
+from ...toolbit.mixins import RotaryToolBitMixin
 from ...shape import ToolBitShape, ToolBitShapeEndmill
 from ..models.library import Library
 
@@ -44,8 +45,9 @@ class CamoticsLibrarySerializer(AssetSerializer):
 
         toollist = {}
         for tool_no, tool in asset._bit_nos.items():
+            assert isinstance(tool, RotaryToolBitMixin)
             toolitem = tooltemplate.copy()
-            
+
             diameter_value = tool.get_diameter()
             # Ensure diameter is a float, handle Quantity and other types
             diameter_serializable = 2.0 # Default value as float
@@ -64,7 +66,7 @@ class CamoticsLibrarySerializer(AssetSerializer):
 
             toolitem["diameter"] = diameter_serializable
 
-            toolitem["description"] = tool.get_label()
+            toolitem["description"] = tool.label
 
             length_value = tool.get_length()
             # Ensure length is a float, handle Quantity and other types
@@ -138,8 +140,7 @@ class CamoticsLibrarySerializer(AssetSerializer):
 
             # Create the toolbit
             tool = ToolBit(tool_bit_shape, id=f"camotics_tool_{tool_no_str}")
-            tool_label = toolitem.get("description", "")
-            tool.set_label(tool_label)
+            tool.label = toolitem.get("description", "")
 
             library.add_bit(tool, tool_no)
 

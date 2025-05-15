@@ -422,7 +422,7 @@ class ToolBitSelector(object):
         selected_tools = self.selectedOrAllTools()
 
         for toolNr, toolbit in selected_tools:
-            tc = PathToolControllerGui.Create(f"TC: {toolbit.get_label()}", toolbit.obj, toolNr)
+            tc = PathToolControllerGui.Create(f"TC: {toolbit.label}", toolbit.obj, toolNr)
             job.Proxy.addToolController(tc)
             FreeCAD.ActiveDocument.recompute()
 

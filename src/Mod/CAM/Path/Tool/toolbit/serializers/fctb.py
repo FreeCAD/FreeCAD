@@ -80,7 +80,7 @@ class FCTBSerializer(AssetSerializer):
         toolbit = selected_toolbit_subclass(shape, id=id)
 
         # Populate properties from the data dictionary
-        toolbit.set_label(attrs.get("name") or shape.label)
+        toolbit.label = attrs.get("name") or shape.label
 
         for param_name, param_value in attrs.get("parameter", {}).items():
             if hasattr(toolbit.obj, param_name):

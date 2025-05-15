@@ -43,15 +43,17 @@ class CamoticsToolBitSerializer(AssetSerializer):
 
     @classmethod
     def serialize(cls, asset: Asset) -> bytes:
+        assert isinstance(asset, ToolBit)
         if not isinstance(asset, RotaryToolBitMixin):
-            lbl = asset.get_label()
+            lbl = asset.label
             name = asset.get_shape_name()
             Path.Log.info(
                 f"Skipping export of toolbit {lbl} ({name}) because it is not a rotary tool."
             )
+            return b"{}"
         toolitem = tooltemplate.copy()
         toolitem["diameter"] = asset.get_diameter().Value or 2
-        toolitem["description"] = asset.get_label()
+        toolitem["description"] = asset.label
         toolitem["length"] = asset.get_length().Value or 10
         toolitem["shape"] = SHAPEMAP.get(asset.get_shape_name(), "Cylindrical")
         return json.dumps(toolitem).encode("ascii", "ignore")
@@ -64,12 +66,18 @@ class CamoticsToolBitSerializer(AssetSerializer):
         dependencies: Optional[Mapping[AssetUri, Asset]],
     ) -> ToolBit:
         # Create an instance of the ToolBitShape class
-        data = json.loads(data.decode("ascii", "ignore"))
+        attrs: dict = json.loads(data.decode("ascii", "ignore"))
         shape = cam_assets.get("toolbitshape://endmill")
 
         # Create an instance of the ToolBit class
         bit = ToolBit.from_shape_id(shape.get_id())
-        bit.set_label(data["description"])
-        bit.set_diameter(FreeCAD.Units.Quantity(float(data["diameter"]), "mm"))
-        bit.set_length(FreeCAD.Units.Quantity(float(data["length"]), "mm"))
+        bit.label = attrs["description"]
+
+        if not isinstance(bit, RotaryToolBitMixin):
+            raise NotImplementedError(
+                f"Only export of rotary tools is supported ({bit.label} ({bit.id})"
+            )
+
+        bit.set_diameter(FreeCAD.Units.Quantity(float(attrs["diameter"]), "mm"))
+        bit.set_length(FreeCAD.Units.Quantity(float(attrs["length"]), "mm"))
         return bit

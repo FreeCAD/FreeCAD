@@ -79,7 +79,7 @@ class TestPathToolMachine(unittest.TestCase):
             self.fail(f"Validation failed unexpectedly: {e}")
 
     def test_validate_missing_label(self):
-        self.default_machine.set_label("")
+        self.default_machine.label = ""
         with self.assertRaisesRegex(
             AttributeError, "Machine name is required"
         ):
@@ -140,7 +140,7 @@ class TestPathToolMachine(unittest.TestCase):
         self.assertAlmostEqual(torque_above_peak, expected_torque_above_peak)
 
     def test_set_label(self):
-        self.default_machine.set_label("New Label")
+        self.default_machine.label = "New Label"
         self.assertEqual(self.default_machine.label, "New Label")
 
     def test_set_max_power(self):
