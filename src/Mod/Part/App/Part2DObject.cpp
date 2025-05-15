@@ -60,7 +60,9 @@ PROPERTY_SOURCE_WITH_EXTENSIONS(Part::Part2DObject, Part::Feature)
 Part2DObject::Part2DObject()
 {
     AttachExtension::initExtension(this);
-    this->setAttacher(new Attacher::AttachEnginePlane);
+    auto engine = new Attacher::AttachEnginePlane;
+    engine->precision = Attacher::AttachEnginePlane::planarPrecision();
+    this->setAttacher(engine);
 }
 
 
