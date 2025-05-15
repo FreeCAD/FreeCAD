@@ -319,7 +319,7 @@ public:
             in = int_limits::max();
         } else if ( v == 0 ) {
             in = int_limits::min();
-        } else if ( v > int_limits::max() ) {
+        } else if ( v > static_cast<unsigned int>(int_limits::max()) ) {
             v += int_limits::min();
             in = static_cast<int>(v);
         } else {

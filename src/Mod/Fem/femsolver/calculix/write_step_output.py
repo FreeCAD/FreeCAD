@@ -47,6 +47,8 @@ def write_step_output(f, ccxwriter):
             f.write("U, NT\n")
         else:
             f.write("MF, PS\n")
+    elif ccxwriter.analysis_type == "electromagnetic":
+        f.write("NT\n")
     else:
         f.write("U\n")
     if not ccxwriter.member.geos_fluidsection:
@@ -56,6 +58,8 @@ def write_step_output(f, ccxwriter):
             variables += ", HFL"
         if ccxwriter.solver_obj.MaterialNonlinearity == "nonlinear":
             variables += ", PEEQ"
+        if ccxwriter.analysis_type == "electromagnetic":
+            variables = "HFL"
 
         f.write(variables + "\n")
 

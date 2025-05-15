@@ -103,12 +103,13 @@ UnitsSchema::toLocale(const Quantity& quant, const double factor, const std::str
     std::string valueString =
         Lc.toString((quant.getValue() / factor), format.toFormat(), format.precision).toStdString();
 
-    return fmt::format(
-        "{}{}{}",
-        valueString,
-        unitString.empty() || unitString == "°" || unitString == "″" || unitString == "′" ? ""
-                                                                                          : " ",
-        unitString);
+    return fmt::format("{}{}{}",
+                       valueString,
+                       unitString.empty() || unitString == "°" || unitString == "″"
+                               || unitString == "′" || unitString == "\"" || unitString == "'"
+                           ? ""
+                           : " ",
+                       unitString);
 }
 
 bool UnitsSchema::isMultiUnitLength() const

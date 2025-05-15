@@ -148,7 +148,7 @@ void MaterialDelegate::setValue(QAbstractItemModel* model,
         try {
             property->setValue(value);
         }
-        catch (const Base::ValueError& e) {
+        catch (const Base::ValueError&) {
             // Units mismatch
             auto quantity = value.value<Base::Quantity>();
             Base::Console().log("Units mismatch '%s' = '%s', "
