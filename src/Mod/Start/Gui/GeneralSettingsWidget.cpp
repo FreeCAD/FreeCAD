@@ -67,6 +67,7 @@ void GeneralSettingsWidget::setupUi()
     _languageLabel = gsl::owner<QLabel*>(new QLabel);
     _navigationStyleLabel = gsl::owner<QLabel*>(new QLabel);
     _unitSystemLabel = gsl::owner<QLabel*>(new QLabel);
+    retranslateRunOnce = false;
     createLanguageComboBox();
     createUnitSystemComboBox();
     createNavigationStyleComboBox();
@@ -183,10 +184,16 @@ void GeneralSettingsWidget::onUnitSystemChanged(int index)
     if (index < 0) {
         return;  // happens when clearing the combo box in retranslateUi()
     }
-    Base::UnitsApi::setSchema(index);
     ParameterGrp::handle hGrp =
         App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Units");
-    hGrp->SetInt("UserSchema", index);
+    if (!retranslateRunOnce) {
+        index = hGrp->GetInt("UserSchema", 0);
+        Base::UnitsApi::setSchema(index);
+    }
+    else {
+        Base::UnitsApi::setSchema(index);
+        hGrp->SetInt("UserSchema", index);
+    }
 }
 
 void GeneralSettingsWidget::onNavigationStyleChanged(int index)
@@ -240,4 +247,5 @@ void GeneralSettingsWidget::retranslateUi()
             _navigationStyleComboBox->setCurrentIndex(_navigationStyleComboBox->count() - 1);
         }
     }
+    retranslateRunOnce = true;
 }
