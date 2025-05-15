@@ -1463,7 +1463,7 @@ CmdTechDrawExtensionLockUnlockView::CmdTechDrawExtensionLockUnlockView()
     sGroup = QT_TR_NOOP("TechDraw");
     sMenuText = QT_TR_NOOP("Lock/Unlock View");
     sToolTipText = QT_TR_NOOP("Lock or unlock the position of a view:<br>\
-- Select a single view<br>\
+- Select view(s)<br>\
 - Click this tool");
     sWhatsThis = "TechDraw_ExtensionLockUnlockView";
     sStatusTip = sMenuText;
@@ -1472,18 +1472,22 @@ CmdTechDrawExtensionLockUnlockView::CmdTechDrawExtensionLockUnlockView()
 
 void CmdTechDrawExtensionLockUnlockView::activated(int iMsg)
 {
-    // lock/unlock a selected view
     Q_UNUSED(iMsg);
-    std::vector<Gui::SelectionObject> selection;
-    TechDraw::DrawViewPart* objFeat{nullptr};
-    if (!_checkSel(this, selection, objFeat, QT_TRANSLATE_NOOP("Command","TechDraw Lock/Unlock View")))  {
+    std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx();
+
+    if (selection.empty()) {
         return;
     }
+
     Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Lock/Unlock View"));
-    if (objFeat->isDerivedFrom<TechDraw::DrawViewPart>()) {
-        bool lockPosition = objFeat->LockPosition.getValue();
-        lockPosition = !lockPosition;
-        objFeat->LockPosition.setValue(lockPosition);
+    for (auto& sel : selection) {
+        auto* obj = static_cast<TechDraw::DrawViewPart*>(sel.getObject());
+
+        if (obj->isDerivedFrom<TechDraw::DrawViewPart>()) {
+            bool lockPosition = obj->LockPosition.getValue();
+            lockPosition = !lockPosition;
+            obj->LockPosition.setValue(lockPosition);
+        }
     }
     Gui::Command::commitCommand();
 }
