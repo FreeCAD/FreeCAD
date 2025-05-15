@@ -1252,48 +1252,49 @@ BezierSegment::BezierSegment(const TopoDS_Edge &e)
 }
 
 //**** Vertex
-Vertex::Vertex()
+Vertex::Vertex() :
+    extractType(ExtractionType::Plain),    // obsolete?
+    hlrVisible(false),
+    ref3D(-1),                              // obsolete
+    m_center(false),
+    cosmetic(false),
+    cosmeticLink(-1),
+    m_reference(false)
+
 {
     pnt = Base::Vector3d(0.0, 0.0, 0.0);
-    extractType = ExtractionType::Plain;       //obs?
-    hlrVisible = false;
-    ref3D = -1;                        //obs. never used.
-    m_center = false;
     BRepBuilderAPI_MakeVertex mkVert(gp_Pnt(0.0, 0.0, 0.0));
     occVertex = mkVert.Vertex();
-    cosmetic = false;
-    cosmeticLink = -1;
     cosmeticTag = std::string();
-    m_reference = false;
 }
 
-Vertex::Vertex(const Vertex* v)
+Vertex::Vertex(const Vertex* v) :
+    extractType(v->extractType),    // obsolete?
+    hlrVisible(v->hlrVisible),
+    ref3D(v->ref3D),                              // obsolete
+    m_center(v->m_center),
+    occVertex(v->occVertex),
+    cosmetic(v->cosmetic),
+    cosmeticLink(v->cosmeticLink),
+    cosmeticTag(v->cosmeticTag),
+    m_reference(v->m_reference)
 {
     pnt = v->point();
-    extractType = v->extractType;       //obs?
-    hlrVisible = v->hlrVisible;
-    ref3D = v->ref3D;                  //obs. never used.
-    m_center = v->m_center;
-    occVertex = v->occVertex;
-    cosmetic = v->cosmetic;
-    cosmeticLink = v->cosmeticLink;
-    cosmeticTag = v->cosmeticTag;
-    m_reference = false;
 }
 
-Vertex::Vertex(double x, double y)
+Vertex::Vertex(double x, double y) :
+    extractType(ExtractionType::Plain),    // obsolete?
+    hlrVisible(false),
+    ref3D(-1),                              // obsolete
+    m_center(false),
+    cosmetic(false),
+    cosmeticLink(-1),
+    m_reference(false)
 {
     pnt = Base::Vector3d(x, y, 0.0);
-    extractType = ExtractionType::Plain;       //obs?
-    hlrVisible = false;
-    ref3D = -1;                        //obs. never used.
-    m_center = false;
     BRepBuilderAPI_MakeVertex mkVert(gp_Pnt(x, y, 0.0));
     occVertex = mkVert.Vertex();
-    cosmetic = false;
-    cosmeticLink = -1;
     cosmeticTag = std::string();
-    m_reference = false;
 }
 
 Vertex::Vertex(Base::Vector3d v) : Vertex(v.x, v.y)
@@ -1306,10 +1307,7 @@ Vertex::Vertex(Base::Vector3d v) : Vertex(v.x, v.y)
 bool Vertex::isEqual(const Vertex& v, double tol)
 {
     double dist = (pnt - (v.pnt)).Length();
-    if (dist <= tol) {
-        return true;
-    }
-    return false;
+    return (dist <= tol);
 }
 
 void Vertex::Save(Base::Writer &writer) const
@@ -1342,18 +1340,17 @@ void Vertex::Restore(Base::XMLReader &reader)
 
     reader.readElement("Extract");
     extractType = reader.getAttribute<ExtractionType>("value");
-//    reader.readElement("Visible");
-//    hlrVisible = reader.getAttribute<bool>("value");
     reader.readElement("Ref3D");
-    ref3D = reader.getAttribute<long>("value");
+    ref3D = (int)reader.getAttribute<long>("value");
     reader.readElement("IsCenter");
     hlrVisible = reader.getAttribute<bool>("value");
     reader.readElement("Cosmetic");
     cosmetic = reader.getAttribute<bool>("value");
     reader.readElement("CosmeticLink");
-    cosmeticLink = reader.getAttribute<long>("value");
+    cosmeticLink = (int)reader.getAttribute<long>("value");
     reader.readElement("CosmeticTag");
     cosmeticTag = reader.getAttribute<const char*>("value");
+
     // restore tag from VertexTag if it exists
     restoreVertexTag(reader);
 
@@ -1390,7 +1387,7 @@ TopoShape Vertex::asTopoShape(double scale)
     Base::Vector3d point = Base::convertTo<Base::Vector3d>(BRep_Tool::Pnt(getOCCVertex()));
     point = point / scale;
     BRepBuilderAPI_MakeVertex mkVert(Base::convertTo<gp_Pnt>(point));
-    return TopoShape(mkVert.Vertex());
+    return {mkVert.Vertex()};
 }
 
 

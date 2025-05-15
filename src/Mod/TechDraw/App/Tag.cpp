@@ -37,7 +37,9 @@
 
 using namespace TechDraw;
 
-Tag::Tag()
+// lint complains if tag is not initialized here.
+Tag::Tag() :
+    tag(boost::uuids::uuid())
 {
     createNewTag();
 }
