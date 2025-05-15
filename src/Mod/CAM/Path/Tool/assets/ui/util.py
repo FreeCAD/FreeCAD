@@ -1,77 +1,68 @@
-from typing import List, Optional, Iterable, Type
+from typing import List, Dict, Optional, Iterable, Type
 from ..serializer import AssetSerializer
 
-
-def make_file_selector_filters(
-    serializers: Iterable[Type[AssetSerializer]], for_import: bool = True
+def make_import_filters(
+    serializers: Iterable[Type[AssetSerializer]]
 ) -> List[str]:
     """
-    Generates file dialog filters for a QFileDialog from a list of serializers.
+    Generates file dialog filters for importing assets.
 
     Args:
         serializers: A list of AssetSerializer classes.
-        for_import: If True, filters for importable assets; otherwise,
-                    filters for exportable assets.
 
     Returns:
-        A list of filter strings for use in QFileDialog.
+        A list of filter strings, starting with "All supported files".
     """
     all_extensions = []
     filters = []
 
     for serializer_class in serializers:
-        if for_import and not serializer_class.can_import:
+        if not serializer_class.can_import or not serializer_class.extensions:
             continue
-        if not for_import and not serializer_class.can_export:
-            continue
-        if not serializer_class.extensions:
-            continue
-
-        # Collect extensions for the combined filter
         all_extensions.extend(serializer_class.extensions)
-
-        # Add individual serializer filter
         label = serializer_class.get_label()
         extensions = " ".join([f"*{ext}" for ext in serializer_class.extensions])
         filters.append(f"{label} ({extensions})")
 
-    # Create the "All Supported Files" filter
-    combined_extensions = " ".join([f"*{ext}" for ext in sorted(list(set(all_extensions)))])
-    all_supported_filter = f"All Supported Files ({combined_extensions})"
-
-    # Insert the combined filter at the beginning
-    filters.insert(0, all_supported_filter)
+    # Add "All supported files" filter if there are any extensions
+    if all_extensions:
+        combined_extensions = " ".join([f"*{ext}" for ext in sorted(list(set(all_extensions)))])
+        filters.insert(0, f"All supported files ({combined_extensions})")
 
     return filters
 
-
-def get_serializer_from_filter_string(
-    serializers: Iterable[Type[AssetSerializer]], filter_string: str
-) -> Optional[Type[AssetSerializer]]:
+def make_export_filters(
+    serializers: Iterable[Type[AssetSerializer]]
+) -> tuple[List[str], Dict[str, Type[AssetSerializer]]]:
     """
-    Finds a serializer class based on the selected filter string from a QFileDialog.
+    Generates file dialog filters for exporting assets and a serializer map.
 
     Args:
         serializers: A list of AssetSerializer classes.
-        filter_string: The selected filter string from QFileDialog.
 
     Returns:
-        The matching AssetSerializer class, or None if not found.
+        A tuple of (filters, serializer_map) where filters is a list of filter strings
+        starting with "Automatic", and serializer_map maps filter strings to serializers.
     """
-    for ser in serializers:
-        label = ser.get_label()
-        extensions = " ".join([f"*{ext}" for ext in ser.extensions])
-        expected_filter_string = f"{label} ({extensions})"
-        if expected_filter_string == filter_string:
-            return ser
-    return None
+    filters = ["Automatic (*)"]
+    serializer_map = {}
 
+    for serializer_class in serializers:
+        if not serializer_class.can_export or not serializer_class.extensions:
+            continue
+        label = serializer_class.get_label()
+        extensions = " ".join([f"*{ext}" for ext in serializer_class.extensions])
+        filter_str = f"{label} ({extensions})"
+        filters.append(filter_str)
+        serializer_map[filter_str] = serializer_class
+
+    return filters, serializer_map
 
 def get_serializer_from_extension(
     serializers: Iterable[Type[AssetSerializer]], file_extension: str, for_import: bool | None = None
 ) -> Optional[Type[AssetSerializer]]:
     """
-    Finds a serializer class based on the file extension and import capability.
+    Finds a serializer class based on the file extension and import/export capability.
 
     Args:
         serializers: A list of AssetSerializer classes.

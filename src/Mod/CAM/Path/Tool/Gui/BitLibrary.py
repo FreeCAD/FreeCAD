@@ -35,13 +35,14 @@ import uuid as UUID
 from functools import partial
 from typing import List, Tuple, cast
 from ..assets import AssetUri
-from ..assets.ui.filedialog import AssetOpenDialog
+from ..assets.ui.filedialog import AssetOpenDialog, AssetSaveDialog
 from ..camassets import cam_assets, ensure_assets_initialized
 from ..shape.ui.shapeselector import ShapeSelector
 from ..toolbit import ToolBit
 from ..toolbit.serializers import all_serializers as toolbit_serializers
 from ..toolbit.ui.editor import ToolBitEditor
 from ..library import Library
+from ..library.serializers import all_serializers as library_serializers
 
 
 if False:
@@ -518,8 +519,7 @@ class ToolBitLibrary(object):
             self.toolModel.appendRow(new_row_items)
             
             # 4. Save the library (which now references the saved toolbit)
-            self.librarySave()
-            Path.Log.info(f"toolBitNew: Library saved. Tool ID: {toolbit.get_id()}")
+            self._saveCurrentLibrary()
 
         except Exception as e:
             Path.Log.error(f"Failed to create or add new toolbit: {e}")
@@ -548,6 +548,7 @@ class ToolBitLibrary(object):
         if not dialog_result:
             return  # User canceled or error
         file_path, toolbit = dialog_result
+        toolbit = cast(ToolBit, toolbit)
 
         try:
             # Add the existing toolbit to the current library's model
@@ -564,7 +565,8 @@ class ToolBitLibrary(object):
             self.toolModel.appendRow(new_row_items)
 
             # Save the library (which now references the added toolbit)
-            self.librarySave()
+            # Use cam_assets.add directly for internal save on existing toolbit
+            self._saveCurrentLibrary()
 
         except Exception as e:
             Path.Log.error(
@@ -603,7 +605,8 @@ class ToolBitLibrary(object):
 
         Path.Log.info(f"toolDelete: Removed {len(selected_rows)} rows from UI model.")
 
-        self.librarySave()
+        # Save the library after deleting a tool
+        self._saveCurrentLibrary()
 
     def toolSelect(self, selected, deselected):
         sel = len(self.toolTableView.selectedIndexes()) > 0
@@ -648,7 +651,8 @@ class ToolBitLibrary(object):
                 self._loadSelectedLibraryTools(
                     self.current_library.get_uri() if self.current_library else None
                 )
-                self.librarySave()
+                # Save the library after editing a toolbit
+                self._saveCurrentLibrary()
 
         except Exception as e:
             Path.Log.error(f"Failed to load or edit toolbit asset {toolbit_uri_string}: {e}")
@@ -697,22 +701,55 @@ class ToolBitLibrary(object):
         self.factory.find_libraries(self.listModel)
         self.listModel.setHorizontalHeaderLabels(["Library"])
 
-    def librarySave(self):
-        """Save the current tool library asset"""
+    def _saveCurrentLibrary(self):
+        """Internal method to save the current tool library asset"""
         Path.Log.track()
         if not self.current_library:
-            Path.Log.warning("No library asset loaded to save.")
+            Path.Log.warning("_saveCurrentLibrary: No library asset loaded to save.")
             return
-        
+
         try:
             cam_assets.add(self.current_library)
+            Path.Log.info(
+                f"_saveCurrentLibrary: Library "
+                f"{self.current_library.get_uri()} saved."
+            )
         except Exception as e:
-            Path.Log.error(f"Failed to save library {self.current_library.get_uri()}: {e}")
+            Path.Log.error(
+                f"_saveCurrentLibrary: Failed to save library "
+                f"{self.current_library.get_uri()}: {e}"
+            )
+            PySide.QtGui.QMessageBox.critical(
+                self.form,
+                translate("CAM_ToolBit", "Error Saving Library"),
+                str(e),
+            )
             raise
 
-    def libraryOk(self):
-        self.librarySave()
-        self.form.close()
+    def exportLibrary(self):
+        """Export the current tool library asset to a file"""
+        Path.Log.track()
+        if not self.current_library:
+            PySide.QtGui.QMessageBox.warning(
+                self.form,
+                translate("CAM_ToolBit", "No Library Loaded"),
+                translate("CAM_ToolBit", "Load or create a tool library first."),
+            )
+            return
+
+        dialog = AssetSaveDialog(
+            self.current_library, library_serializers, self.form
+        )
+        dialog_result = dialog.exec(self.current_library)
+        if not dialog_result:
+            return  # User canceled or error
+
+        file_path, serializer_class = dialog_result
+
+        Path.Log.info(
+            f"Exported library {self.current_library.label} "
+            f"to {file_path} using serializer {serializer_class.__name__}"
+        )
 
     def columnNames(self):
         return [
@@ -792,9 +829,6 @@ class ToolBitLibrary(object):
 
                 # Load tools for the selected library.
                 self._loadSelectedLibraryTools(library_uri_str)
-        # No libraries in list, or something went wrong. Load with None.
-        #Path.Log.debug("setupUI: No libraries in list or no initial selection. Loading empty tool model.")
-        #self._loadSelectedLibraryTools(None)
 
         self.toolTableView.resizeColumnsToContents()
         self.toolTableView.selectionModel().selectionChanged.connect(self.toolSelect)
@@ -805,8 +839,9 @@ class ToolBitLibrary(object):
         self.form.toolDelete.clicked.connect(self.toolDelete)
         self.form.toolCreate.clicked.connect(self.toolBitNew)
 
-        self.form.addToolTable.clicked.connect(self.libraryNew)
+        self.form.addLibrary.clicked.connect(self.libraryNew)
+        self.form.exportLibrary.clicked.connect(self.exportLibrary)
 
-        self.form.librarySave.clicked.connect(self.libraryOk)
-
+        self.form.okButton.clicked.connect(self.form.close)
+ 
         self.toolSelect([], [])

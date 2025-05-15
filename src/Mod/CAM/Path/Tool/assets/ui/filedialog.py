@@ -1,12 +1,13 @@
 import pathlib
 import FreeCAD
+import Path
 from typing import Optional, Tuple, Type, Iterable
 from PySide.QtWidgets import QFileDialog, QMessageBox
 from ..serializer import AssetSerializer, Asset
 from .util import (
+    make_import_filters,
+    make_export_filters,
     get_serializer_from_extension,
-    make_file_selector_filters,
-    get_serializer_from_filter_string,
 )
 
 
@@ -19,57 +20,44 @@ class AssetOpenDialog(QFileDialog):
     ):
         super().__init__(parent)
         self.asset_type = asset_type
-        self.serializers = serializers
-        self.setWindowTitle(f"Open a {asset_type.__name__}")
+        self.serializers = list(serializers)
+        self.setWindowTitle("Open an asset")
+        self.setFileMode(QFileDialog.ExistingFile)
+        filters = make_import_filters(self.serializers)
+        self.setNameFilters(filters)
+        if filters:
+            self.selectNameFilter(
+                filters[0]
+            )  # Default to "All supported files"
 
     def _deserialize_selected_file(
         self, file_path: pathlib.Path
     ) -> Optional[Asset]:
-        """Reads and deserializes the selected file."""
+        """Deserialize the selected file using the appropriate serializer."""
+        file_extension = file_path.suffix.lower()
+        serializer_class = get_serializer_from_extension(
+            self.serializers, file_extension, for_import=True
+        )
+        if not serializer_class:
+            QMessageBox.critical(
+                self,
+                "Error",
+                f"No supported serializer found for file extension '{file_extension}'",
+            )
+            return None
         try:
             raw_data = file_path.read_bytes()
-            file_extension = file_path.suffix.lower()
-
-            # Find the correct serializer based on extension and import capability
-            serializer_class = get_serializer_from_extension(
-                self.serializers, file_extension, for_import=True
-            )
-
-            if not serializer_class:
-                raise ValueError(
-                    f"BUG: No supported serializer found for file "
-                    f"extension '{file_extension}'"
-                )
-
             asset = serializer_class.deep_deserialize(raw_data)
             if not isinstance(asset, self.asset_type):
                 raise TypeError(
-                    f"Deserialized asset is not of expected type "
-                    f"{self.asset_type.__name__}"
+                    f"Deserialized asset is not of type {self.asset_type.asset_type}"
                 )
             return asset
-
         except Exception as e:
-            QMessageBox.critical(
-                self,
-                FreeCAD.Qt.translate(
-                    "CAM_Asset", f"Error Importing {self.asset_type.__name__}"
-                ),
-                str(e),
-            )
+            QMessageBox.critical(self, "Error", f"Failed to import asset: {e}")
             return None
 
     def exec(self) -> Optional[Tuple[pathlib.Path, Asset]]:
-        self.setFileMode(QFileDialog.ExistingFile)
-
-        # Use the generic helper function for filters
-        filters = make_file_selector_filters(self.serializers, for_import=True)
-        self.setNameFilters(filters)
-
-        # Select the "All Supported Files" filter by default if it exists
-        if filters:
-            self.selectNameFilter(filters[0])
-
         if super().exec_():
             filenames = self.selectedFiles()
             if filenames:
@@ -77,8 +65,7 @@ class AssetOpenDialog(QFileDialog):
                 asset = self._deserialize_selected_file(file_path)
                 if asset:
                     return file_path, asset
-
-        return None  # Return None if dialog is canceled or no file selected
+        return None
 
 
 class AssetSaveDialog(QFileDialog):
@@ -90,7 +77,25 @@ class AssetSaveDialog(QFileDialog):
     ):
         super().__init__(parent)
         self.asset_type = asset_type
-        self.serializers = serializers
+        self.serializers = list(serializers)
+        self.setFileMode(QFileDialog.AnyFile)
+        self.setAcceptMode(QFileDialog.AcceptSave)
+        self.filters, self.serializer_map = make_export_filters(
+            self.serializers
+        )
+        self.setNameFilters(self.filters)
+        if self.filters:
+            self.selectNameFilter(self.filters[0])  # Default to "Automatic"
+        self.filterSelected.connect(self.update_default_suffix)
+
+    def update_default_suffix(self, filter_str: str):
+        """Update the default suffix based on the selected filter."""
+        if filter_str == "Automatic (*)":
+            self.setDefaultSuffix("")  # No default for Automatic
+        else:
+            serializer = self.serializer_map.get(filter_str)
+            if serializer and serializer.extensions:
+                self.setDefaultSuffix(serializer.extensions[0])
 
     def _serialize_selected_file(
         self,
@@ -98,67 +103,49 @@ class AssetSaveDialog(QFileDialog):
         asset: Asset,
         serializer_class: Type[AssetSerializer],
     ) -> bool:
-        """Serializes and writes the selected file."""
+        """Serialize and save the asset."""
         try:
             raw_data = serializer_class.serialize(asset)
             file_path.write_bytes(raw_data)
             return True
-
         except Exception as e:
-            QMessageBox.critical(
-                self,
-                FreeCAD.Qt.translate(
-                    "CAM_Asset", f"Error Exporting {self.asset_type.__name__}"
-                ),
-                str(e),
-            )
+            QMessageBox.critical(self, "Error", f"Failed to export asset: {e}")
             return False
 
     def exec(
         self, asset: Asset
     ) -> Optional[Tuple[pathlib.Path, Type[AssetSerializer]]]:
-        self.setFileMode(QFileDialog.AnyFile)
-        self.setAcceptMode(QFileDialog.AcceptSave)
         self.setWindowTitle(f"Save {asset.label}")
-
-        # Use the generic helper function for filters
-        filters = make_file_selector_filters(self.serializers, for_import=False)
-        self.setNameFilters(filters)
-
-        # Select the "All Supported Files" filter by default if it exists
-        if filters:
-            self.selectNameFilter(filters[0])
-
-        if not super().exec_():
-            return None
-        filenames = self.selectedFiles()
-        if not filenames:
-            return None
-
-        file_path = pathlib.Path(filenames[0])
-        selected_filter = self.selectedNameFilter()
-
-        # Find the serializer based on the selected filter
-        serializer_class = get_serializer_from_filter_string(
-            self.serializers, selected_filter
-        )
-
-        if not serializer_class:
-            # This should not happen if filters are generated correctly
-            raise ValueError(
-                f"BUG: No supported serializer found for filter "
-                f"'{selected_filter}'"
-            )
-
-        # Ensure the file has the correct extension for the selected
-        # serializer if it doesn't already
-        if serializer_class.extensions \
-           and file_path.suffix.lower() not in serializer_class.extensions:
-            file_path = file_path.with_suffix(
-                f".{serializer_class.extensions[0]}"
-            )
-
-        if self._serialize_selected_file(file_path, asset, serializer_class):
-            return file_path, serializer_class
-
-        return None  # Return None if save failed
+        if super().exec_():
+            selected_filter = self.selectedNameFilter()
+            file_path = pathlib.Path(self.selectedFiles()[0])
+            if selected_filter == "Automatic (*)":
+                if not file_path.suffix:
+                    QMessageBox.critical(
+                        self,
+                        "Error",
+                        "Please specify a file extension for automatic serializer selection.",
+                    )
+                    return None
+                file_extension = file_path.suffix.lower()
+                serializer_class = get_serializer_from_extension(
+                    self.serializers, file_extension, for_import=False
+                )
+                if not serializer_class:
+                    QMessageBox.critical(
+                        self,
+                        "Error",
+                        f"No serializer found for extension '{file_extension}'",
+                    )
+                    return None
+            else:
+                serializer_class = self.serializer_map.get(selected_filter)
+                if not serializer_class:
+                    raise ValueError(
+                        f"No serializer found for filter '{selected_filter}'"
+                    )
+            if self._serialize_selected_file(
+                file_path, asset, serializer_class
+            ):
+                return file_path, serializer_class
+        return None
