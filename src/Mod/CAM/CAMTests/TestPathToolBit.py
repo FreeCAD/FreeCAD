@@ -63,3 +63,18 @@ class TestPathToolBit(PathTestWithAssets):
         # Parameters should be loaded from the shape file and set on the tool bit's object
         self.assertEqual(bullnose_bit.obj.Diameter, FreeCAD.Units.Quantity("5.0 mm"))
         self.assertEqual(bullnose_bit.obj.FlatRadius, FreeCAD.Units.Quantity("1.5 mm"))
+
+    def testToolBitPickle(self):
+        """Test if ToolBit is picklable"""
+        import pickle
+        shape = self.assets.get("toolbitshape://bullnose")
+        shape = cast(ToolBitShapeBullnose, shape)
+        bullnose_bit = ToolBitBullnose(shape, id="mybullnose")
+        try:
+            pickled_bit = pickle.dumps(bullnose_bit)
+            unpickled_bit = pickle.loads(pickled_bit)
+            self.assertIsInstance(unpickled_bit, ToolBitBullnose)
+            self.assertEqual(unpickled_bit.get_id(), "mybullnose")
+            # Add more assertions here to check if other attributes are preserved
+        except Exception as e:
+            self.fail(f"ToolBit is not picklable: {e}")

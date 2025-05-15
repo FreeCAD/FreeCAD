@@ -62,7 +62,10 @@ class ViewProvider(object):
         self.obj = vobj.Object
 
     def getIcon(self):
-        png_data = self.obj.Proxy.get_thumbnail()
+        try:
+            png_data = self.obj.Proxy.get_thumbnail()
+        except AttributeError:  # Proxy not initialized
+            png_data = None
         if png_data:
             pixmap = QtGui.QPixmap()
             pixmap.loadFromData(png_data, "PNG")

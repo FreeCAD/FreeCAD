@@ -27,6 +27,7 @@ import json
 import uuid
 import pathlib
 from abc import ABC
+from itertools import chain
 from lazy_loader.lazy_loader import LazyLoader
 from typing import Any, List, Optional, Tuple, Type, Union, Mapping
 from PySide.QtCore import QT_TRANSLATE_NOOP
@@ -389,6 +390,9 @@ class ToolBit(Asset, ABC):
         # Assign self.obj to the restored object
         self.obj = obj
         self.obj.Proxy = self
+        if not hasattr(self, 'id'):
+            self.id = str(uuid.uuid4())
+            Path.Log.debug(f"Assigned new id {self.id} for ToolBit {obj.Label} during document restore")
 
         # Our constructor previously created the base properties in the
         # DetachedDocumentObject, which was now replaced.
@@ -726,32 +730,73 @@ class ToolBit(Asset, ABC):
     def to_dict(self):
         """
         Returns a dictionary representation of the tool bit.
+
+        Returns:
+            A dictionary with tool bit properties, JSON-serializable.
         """
         Path.Log.track(self.obj.Label)
         attrs = {}
         attrs["version"] = 2
         attrs["name"] = self.obj.Label
-
-        if self._tool_bit_shape:
-            attrs["shape"] = self._tool_bit_shape.get_id() + ".fcstd"
-            attrs["shape-type"] = self._tool_bit_shape.name
-            attrs["parameter"] = {
-                name: to_json(getattr(self.obj, name))
-                for name in self._tool_bit_shape.get_parameters()
-            }
-        else:
-            attrs["shape"] = ""
-            attrs["parameter"] = {}
-
-        attrs["parameter"].update(
-            {
-                name: to_json(getattr(self.obj, name))
-                for name in self._get_props("Attributes")
-            }
-        )
-
+        attrs["shape"] = self._tool_bit_shape.get_id() + ".fcstd"
+        attrs["shape-type"] = self._tool_bit_shape.name
+        attrs["parameter"] = {}
         attrs["attribute"] = {}
+
+        # Store all shape parameter names and attribute names
+        param_names = self._tool_bit_shape.get_parameters()
+        attr_props = self._get_props("Attributes")
+        property_names = list(chain(param_names, attr_props))
+        for name in property_names:
+            value = getattr(self.obj, name, None)
+            if value is None or isinstance(value, FreeCAD.DocumentObject):
+                Path.Log.warning(
+                    f"Excluding property '{name}' from serialization "
+                    f"(type {type(value).__name__ if value is not None else 'None'}, value {value})"
+                )
+            try:
+                serialized_value = to_json(value)
+                attrs["parameter"][name] = serialized_value
+            except (TypeError, ValueError) as e:
+                Path.Log.warning(
+                    f"Excluding property '{name}' from serialization "
+                    f"(type {type(value).__name__}, value {value}): {e}"
+                )
+
+        Path.Log.debug(f"to_dict output for {self.obj.Label}: {attrs}")
         return attrs
+
+    def __getstate__(self):
+        """
+        Prepare the ToolBit for pickling by excluding non-picklable attributes.
+
+        Returns:
+            A dictionary with picklable and JSON-serializable state.
+        """
+        Path.Log.track("ToolBit.__getstate__")
+        state = {
+            "id": getattr(self, "id", str(uuid.uuid4())),  # Fallback to new UUID
+            "_in_update": getattr(self, "_in_update", False),  # Fallback to False
+            "_obj_data": self.to_dict(),
+        }
+
+        if not getattr(self, "_tool_bit_shape", None):
+            return state
+
+        # Store minimal shape data to reconstruct _tool_bit_shape
+        state["_shape_data"] = {
+            "id": self._tool_bit_shape.get_id(),
+            "name": self._tool_bit_shape.name,
+            "parameters": {
+                name: to_json(getattr(self.obj, name, None))
+                for name in self._tool_bit_shape.get_parameters()
+                if not isinstance(
+                    value := getattr(self.obj, name, None), FreeCAD.DocumentObject
+                )
+            },
+        }
+
+        return state
 
     def get_spindle_direction(self) -> toolchange.SpindleDirection:
         # To be safe, never allow non-rotatable shapes (such as probes) to rotate.
