@@ -402,6 +402,8 @@ class TechDrawExport Vertex : public TechDraw::Tag
 
         Part::TopoShape asTopoShape(double scale = 1.0);
 
+        void restoreVertexTag(Base::XMLReader& reader);
+
     protected:
         Base::Vector3d pnt;
         ExtractionType extractType;       //obs?

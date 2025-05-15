@@ -24,6 +24,9 @@
 #ifndef TECHDRAW_TAG_H
 #define TECHDRAW_TAG_H
 
+#include <string>
+#include <string_view>
+
 #include <boost/uuid/uuid.hpp>
 
 #include <Mod/TechDraw/TechDrawGlobal.h>
@@ -39,6 +42,9 @@ public:
     //Uniqueness
     boost::uuids::uuid getTag() const;
     virtual std::string getTagAsString() const;
+
+    static boost::uuids::uuid fromString(const std::string& tagString);
+
 
 protected:
     Tag();

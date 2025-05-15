@@ -52,6 +52,14 @@ std::string Tag::getTagAsString() const
     return boost::uuids::to_string(getTag());
 }
 
+boost::uuids::uuid Tag::fromString(const std::string& tagString)
+{
+    boost::uuids::string_generator gen;
+    boost::uuids::uuid u1 = gen(tagString);
+    return u1;
+
+}
+
 void Tag::setTag(const boost::uuids::uuid& newTag)
 {
     tag = newTag;
@@ -87,7 +95,7 @@ void Tag::Restore(Base::XMLReader& reader, std::string_view elementName)
     // Setting elementName is only for backwards compatibility!
     reader.readElement(elementName.data());
     std::string temp = reader.getAttribute<const char*>("value");
-    boost::uuids::string_generator gen;
-    boost::uuids::uuid u1 = gen(temp);
-    tag = u1;
+    tag = fromString(temp);
 }
+
+
