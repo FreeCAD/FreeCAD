@@ -47,7 +47,7 @@ class TestArchSpace(TestArchBase.TestArchBase):
         self.printTestMessage(operation)
 
         sb = Part.makeBox(1,1,1)
-        b = App.ActiveDocument.addObject("Part::Feature","Box")
+        b = App.ActiveDocument.addObject('Part::Feature','Box')
         b.Shape = sb
         s = Arch.makeSpace([b])
         self.assertTrue(s,"Arch Space failed")
@@ -85,8 +85,8 @@ class TestArchSpace(TestArchBase.TestArchBase):
             length=4000.0, height=4000.0, placement=pl, face=True, support=None)
         App.ActiveDocument.recompute()
         extr = rectangleBase.Shape.extrude(App.Vector(0,0,2000))
-        Part.show(extr, "Extrusion")
-        space = Arch.makeSpace(App.activeDocument().getObject("Extrusion"))
+        Part.show(extr, 'Extrusion')
+        space = Arch.makeSpace(App.activeDocument().getObject('Extrusion'))
         App.ActiveDocument.recompute()  # To calculate area
 
         # Create the wall
@@ -147,7 +147,7 @@ class TestArchSpace(TestArchBase.TestArchBase):
             space = Arch.makeSpace(FreeCADGui.Selection.getSelectionEx())
             # Alternative, but test takes longer to run (~10x)
             # FreeCADGui.activateWorkbench("BIMWorkbench")
-            # FreeCADGui.runCommand("Arch_Space', 0)
+            # FreeCADGui.runCommand('Arch_Space', 0)
             # space = App.ActiveDocument.Space
         else:
             # Also tests the alternative way of specifying the boundaries

@@ -34,7 +34,7 @@ __url__    = "https://www.freecad.org"
 #  such as convenience tools to build walls, windows or structures, and
 #  IFC import/export capabilities.
 
-"""The Arch module provides tools specialized in BIM modeling."""
+'''The Arch module provides tools specialized in BIM modeling.'''
 
 import FreeCAD
 
@@ -397,7 +397,7 @@ def makeFence(section, post, path):
         The created fence object.
     """
     import ArchFence
-    obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython", "Fence")
+    obj = FreeCAD.ActiveDocument.addObject('Part::FeaturePython', 'Fence')
     ArchFence._Fence(obj)
     obj.Section = section
     obj.Post = post
@@ -758,14 +758,14 @@ def makePipeConnector(pipes, radius=0, name=None):
     return obj
 
 
-def makeProfile(profile=[0, "REC", "REC100x100", "R", 100, 100]):
+def makeProfile(profile=[0, 'REC', 'REC100x100', 'R', 100, 100]):
     """
     Creates a profile object based on the given profile data.
 
     Parameters
     ----------
     profile : list, optional
-        A list defining the profile data. Defaults to [0, "REC", "REC100x100", "R", 100, 100].
+        A list defining the profile data. Defaults to [0, 'REC', 'REC100x100', 'R', 100, 100].
 
     Returns
     -------
@@ -1527,7 +1527,7 @@ def makeWall(baseobj=None, height=None, length=None, width=None, align=None, fac
     if FreeCAD.GuiUp:
         ArchWall._ViewProviderWall(obj.ViewObject)
     if baseobj:
-        if hasattr(baseobj,"Shape") or baseobj.isDerivedFrom("Mesh::Feature"):
+        if hasattr(baseobj, 'Shape') or baseobj.isDerivedFrom("Mesh::Feature"):
             obj.Base = baseobj
         else:
             FreeCAD.Console.PrintWarning(str(translate("Arch", "Walls can only be based on Part or Mesh objects")))
@@ -1681,7 +1681,7 @@ def makeWindow(baseobj=None, width=None, height=None, parts=None, name=None):
                     if len(baseobj.Shape.Wires) == 1:
                         tp = "Solid panel"
                     i = 0
-                    ws = ""
+                    ws = ''
                     for w in baseobj.Shape.Wires:
                         if w.isClosed():
                             if ws: ws += ","
