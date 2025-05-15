@@ -39,11 +39,15 @@
 #include <Gui/View3DInventorViewer.h>
 #include <Mod/Sketcher/App/GeometryFacade.h>
 #include <Mod/Sketcher/App/SketchObject.h>
+#include <App/Datums.h>
 
 #include "EditDatumDialog.h"
+#include "CommandSketcherTools.h"
 #include "Utils.h"
 #include "ViewProviderSketch.h"
 #include "ui_InsertDatum.h"
+
+#include <numeric>
 
 
 using namespace SketcherGui;
@@ -222,6 +226,9 @@ void EditDatumDialog::accepted()
                 else {
                     auto unitString = newQuant.getUnit().getString();
                     unitString = Base::Tools::escapeQuotesFromString(unitString);
+
+                    performAutoScale(newDatum);
+
                     Gui::cmdAppObjectArgs(sketch,
                                           "setDatum(%i,App.Units.Quantity('%f %s'))",
                                           ConstrNbr,
@@ -315,6 +322,89 @@ void EditDatumDialog::formEditorOpened(bool state)
 {
     if (state) {
         ui_ins_datum->cbDriving->setChecked(false);
+    }
+}
+
+bool isVisible(Gui::Document* doc, App::DocumentObject* obj)
+{
+    while (obj) {
+        auto parentviewprovider = doc->getViewProvider(obj);
+
+        if (!parentviewprovider->isVisible()) {
+            return false;
+        }
+        obj = obj->getFirstParent();
+    }
+    return true;
+}
+bool visualScaleFeaturePresent(App::DocumentObject* obj)
+{
+    // Try to find geometric objects in the viewport that would create a sense of
+    // scale which the designer would presumably use to draw their sketch
+
+
+    Gui::Document* doc = Gui::Application::Instance->activeDocument();
+    Gui::Document* objectDoc = nullptr;
+    std::vector<App::DocumentObject*> allObjects = doc->getDocument()->getObjects();
+
+    // Iterate over all objects of the document and filter out invalid objects (annotations, datums,
+    // )
+    for (auto object : allObjects) {
+        objectDoc = doc;
+
+        // Parts and such don't need to be evaluated for visibility, since their children will
+        if (object == obj
+            || object->hasExtension(App::GeoFeatureGroupExtension::getExtensionClassTypeId())) {
+            continue;
+        }
+
+        // Evaluate visibility flag recursively
+        bool visible = isVisible(objectDoc, object);
+        if (!visible) {
+            continue;
+        }
+
+        // If an object is linked (such as a body in an assembly), evaluate it instead of
+        // the link. No need to skip GeoFeatureGroupExtension here, because it's children
+        // wond be included
+        App::DocumentObject* linkedObject = object->getLinkedObject();
+        if (linkedObject) {
+            object = linkedObject;
+            objectDoc = Gui::Application::Instance->getDocument(object->getDocument());
+        }
+
+        // Avoid counting annotations
+        if (!object->isDerivedFrom<App::GeoFeature>()) {
+            continue;
+        }
+
+        // Check if there are geometries on screen
+        if (objectDoc->getViewProvider(object)->getBoundingBox().IsValid()) {
+            return true;
+        }
+    }
+    return false;
+}
+void EditDatumDialog::performAutoScale(double newDatum)
+{
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/Mod/Sketcher/dimensioning");
+    long autoScaleMode = hGrp->GetInt("AutoScaleMode", 0);
+
+    // There is a single constraint in the sketch so it can
+    // be used as a reference to scale the geometries around the origin
+    // if there are external geometries, it is safe to assume that the sketch
+    // was drawn with these geometries as scale references (use <= 2 because
+    // the sketch axis are considered as external geometries)
+    if ((autoScaleMode == 0 || (autoScaleMode == 2 && !visualScaleFeaturePresent(sketch)))
+        && sketch->getExternalGeometryCount() <= 2 && sketch->hasSingleScaleDefiningConstraint()) {
+        double oldDatum = sketch->getDatum(ConstrNbr);
+        double scale_factor = newDatum / oldDatum;
+        float initLabelDistance = sketch->Constraints[ConstrNbr]->LabelDistance;
+        float initLabelPosition = sketch->Constraints[ConstrNbr]->LabelPosition;
+        centerScale(sketch, scale_factor);
+        sketch->setLabelDistance(ConstrNbr, initLabelDistance * scale_factor);
+        sketch->setLabelPosition(ConstrNbr, initLabelPosition * scale_factor);
     }
 }
 
