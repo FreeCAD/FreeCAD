@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>TechDrawGui::TaskHatchFace</class>
+ <widget class="QWidget" name="TechDrawGui::TaskHatchFace">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>380</width>
+    <height>200</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Apply Hatch to Face</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <layout class="QGridLayout" name="gridLayout">
+     <item row="0" column="0">
+      <widget class="QLabel" name="labelPattern">
+       <property name="text">
+        <string>Pattern</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <widget class="QComboBox" name="patternComboBox">
+       <property name="toolTip">
+        <string>Select a pattern type and specific pattern</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="0">
+      <widget class="QToolButton" name="openPatternsFolder">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="toolTip">
+        <string>Open the folder containing all available SVG patterns. Note that PAT files are in a sibling folder called PAT.</string>
+       </property>
+       <property name="icon">
+        <iconset resource="Resources/resource.qrc">
+        <normaloff>:/icons/folder.svg</normaloff>:/icons/folder.svg</iconset>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="1">
+      <widget class="QPushButton" name="addCustomPatternButton">
+       <property name="text">
+        <string>Add Custom Pattern...</string>
+       </property>
+       <property name="toolTip">
+        <string>Load a custom SVG or PAT pattern file. It will be added to the list of available patterns.</string>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="0">
+      <widget class="QLabel" name="labelScale">
+       <property name="text">
+        <string>Scale</string>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="1">
+      <widget class="Gui::QuantitySpinBox" name="scaleSpinBox">
+       <property name="toolTip">
+        <string>Pattern scale factor</string>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="0">
+      <widget class="QLabel" name="labelColor">
+       <property name="text">
+        <string>Line Color</string>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="1">
+      <widget class="Gui::ColorButton" name="colorButton">
+       <property name="toolTip">
+        <string>Color of the hatch lines</string>
+       </property>
+      </widget>
+     </item>
+     <item row="4" column="0">
+      <widget class="QLabel" name="labelLineWidth">
+       <property name="text">
+        <string>Line Width</string>
+       </property>
+      </widget>
+     </item>
+     <item row="4" column="1">
+      <widget class="Gui::QuantitySpinBox" name="lineWidthSpinBox">
+       <property name="toolTip">
+        <string>Line width (for PAT patterns only)</string>
+       </property>
+      </widget>
+     </item>
+     <item row="5" column="0">
+      <widget class="QLabel" name="labelRotation">
+       <property name="text">
+        <string>Rotation</string>
+       </property>
+      </widget>
+     </item>
+     <item row="5" column="1">
+      <widget class="QDoubleSpinBox" name="rotationSpinBox">
+       <property name="toolTip">
+        <string>Pattern rotation in degrees</string>
+       </property>
+       <property name="minimum">
+        <double>-360</double>
+       </property>
+       <property name="maximum">
+        <double>360</double>
+       </property>
+       <property name="wrapping">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item row="6" column="0">
+      <widget class="QLabel" name="labelOffsetX">
+       <property name="text">
+        <string>Offset X</string>
+       </property>
+      </widget>
+     </item>
+     <item row="6" column="1">
+      <widget class="QDoubleSpinBox" name="offsetXSpinBox">
+       <property name="toolTip">
+        <string>Pattern X offset</string>
+       </property>
+       <property name="decimals">
+        <number>3</number>
+       </property>
+        <property name="minimum">
+         <double>-1000</double>
+       </property>
+       <property name="maximum">
+        <double>1000</double>
+       </property>
+      </widget>
+     </item>
+     <item row="7" column="0">
+      <widget class="QLabel" name="labelOffsetY">
+       <property name="text">
+        <string>Offset Y</string>
+       </property>
+      </widget>
+     </item>
+     <item row="7" column="1">
+      <widget class="QDoubleSpinBox" name="offsetYSpinBox">
+       <property name="toolTip">
+        <string>Pattern Y offset</string>
+       </property>
+       <property name="decimals">
+        <number>3</number>
+       </property>
+       <property name="minimum">
+        <double>-1000</double>
+       </property>
+       <property name="maximum">
+        <double>1000</double>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <spacer name="verticalSpacer">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>20</width>
+       <height>40</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+  </layout>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>Gui::QuantitySpinBox</class>
+   <extends>QWidget</extends>
+   <header>Gui/QuantitySpinBox.h</header>
+  </customwidget>
+  <customwidget>
+   <class>Gui::ColorButton</class>
+   <extends>QPushButton</extends>
+   <header>Gui/Widgets.h</header>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
+</ui>

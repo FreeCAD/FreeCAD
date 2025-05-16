@@ -433,36 +433,33 @@ for ProjectionGroups</string>
           </property>
          </spacer>
         </item>
-        <item row="5" column="0">
-         <widget class="QLabel" name="label_9">
-          <property name="font">
-           <font>
-            <italic>true</italic>
-           </font>
-          </property>
-          <property name="text">
-           <string>PAT file</string>
-          </property>
-         </widget>
-        </item>
         <item row="2" column="2">
-         <widget class="Gui::PrefFileChooser" name="pfc_HatchFile" native="true">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
-            <horstretch>1</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="toolTip">
-           <string>Preferred SVG or bitmap file for hatching. This value will also control the initial directory for choosing hatch patterns. You can use this to get hatch files from a local directory.</string>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>FileHatch</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>/Mod/TechDraw/Files</cstring>
-          </property>
-         </widget>
+         <layout class="QHBoxLayout" name="hboxlayout">
+          <item>
+           <widget class="QComboBox" name="patternComboBox">
+            <property name="toolTip">
+             <string>Select a default pattern. If 'Last used' is selected, the pattern you last used will be used.</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QToolButton" name="openPatternsFolder">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="toolTip">
+             <string>Open the folder containing all available SVG patterns and where you can add your custom svg files. Note: PAT files are in a sibling folder called PAT. If you add a custom file you will need to close and re-open the preference dialog.</string>
+            </property>
+            <property name="icon">
+             <iconset resource="Resources/resource.qrc">
+             <normaloff>:/icons/folder.svg</normaloff>:/icons/folder.svg</iconset>
+            </property>
+           </widget>
+          </item>
+         </layout>
         </item>
         <item row="3" column="2">
          <widget class="Gui::PrefFileChooser" name="pfc_LineGroup" native="true">
@@ -511,25 +508,6 @@ for ProjectionGroups</string>
           </property>
           <property name="text">
            <string>Welding directory</string>
-          </property>
-         </widget>
-        </item>
-        <item row="5" column="2">
-         <widget class="Gui::PrefFileChooser" name="pfc_FilePattern" native="true">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
-            <horstretch>1</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="toolTip">
-           <string>Default PAT pattern definition file for geometric hatching</string>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>FilePattern</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>/Mod/TechDraw/PAT</cstring>
           </property>
          </widget>
         </item>
@@ -628,31 +606,6 @@ for ProjectionGroups</string>
           </property>
          </widget>
         </item>
-        <item row="6" column="2">
-         <widget class="Gui::PrefLineEdit" name="le_NamePattern">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
-            <horstretch>1</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="toolTip">
-           <string>Name of the default PAT pattern</string>
-          </property>
-          <property name="text">
-           <string>Diamond</string>
-          </property>
-          <property name="alignment">
-           <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>NamePattern</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>/Mod/TechDraw/PAT</cstring>
-          </property>
-         </widget>
-        </item>
         <item row="3" column="0">
          <widget class="QLabel" name="label_10">
           <property name="font">
@@ -662,18 +615,6 @@ for ProjectionGroups</string>
           </property>
           <property name="text">
            <string>Line group file</string>
-          </property>
-         </widget>
-        </item>
-        <item row="6" column="0">
-         <widget class="QLabel" name="label_8">
-          <property name="font">
-           <font>
-            <italic>true</italic>
-           </font>
-          </property>
-          <property name="text">
-           <string>Pattern name</string>
           </property>
          </widget>
         </item>
