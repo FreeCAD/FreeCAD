@@ -39,10 +39,10 @@ class Arch_Stairs:
 
     def GetResources(self):
 
-        return {'Pixmap'  : 'Arch_Stairs',
-                'MenuText': QT_TRANSLATE_NOOP("Arch_Stairs","Stairs"),
-                'Accel': "S, R",
-                'ToolTip': QT_TRANSLATE_NOOP("Arch_Stairs","Creates a flight of stairs")}
+        return {"Pixmap": "Arch_Stairs",
+                "MenuText": QT_TRANSLATE_NOOP("Arch_Stairs","Stairs"),
+                "Accel": "S, R",
+                "ToolTip": QT_TRANSLATE_NOOP("Arch_Stairs","Creates a flight of stairs")}
 
     def IsActive(self):
 
@@ -66,7 +66,7 @@ class Arch_Stairs:
             #'obj' in GUI not the same as obj in script,
             # make it 'stairs' to distinguish one from another
             #Create Stairs object with steps numbers in user preference
-            FreeCADGui.doCommand("stairs = Arch.makeStairs(baseobj=["+nStr+"],steps="+str(params.get_param_arch("StairsSteps"))+")")
+            FreeCADGui.doCommand("stairs = Arch.makeStairs(baseobj=[" + nStr + "],steps=" + str(params.get_param_arch("StairsSteps")) + ")")
             FreeCADGui.Selection.clearSelection()
             FreeCADGui.doCommand("FreeCADGui.Selection.addSelection(stairs)")
 
@@ -87,7 +87,7 @@ class Arch_Stairs:
                     pass
 
         else:
-            FreeCADGui.doCommand("stairs = Arch.makeStairs(steps="+str(params.get_param_arch("StairsSteps"))+")")
+            FreeCADGui.doCommand("stairs = Arch.makeStairs(steps=" + str(params.get_param_arch("StairsSteps")) + ")")
         FreeCADGui.addModule("Draft")
 
         #FreeCADGui.doCommand("Draft.autogroup(obj)")
@@ -98,4 +98,4 @@ class Arch_Stairs:
         print(" ActiveDocument.recompute, done ")
 
 
-FreeCADGui.addCommand('Arch_Stairs', Arch_Stairs())
+FreeCADGui.addCommand("Arch_Stairs", Arch_Stairs())

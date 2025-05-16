@@ -40,10 +40,10 @@ class Arch_Equipment:
 
     def GetResources(self):
 
-        return {'Pixmap'  : 'Arch_Equipment',
-                'MenuText': QT_TRANSLATE_NOOP("Arch_Equipment","Equipment"),
-                'Accel': "E, Q",
-                'ToolTip': QT_TRANSLATE_NOOP("Arch_Equipment","Creates an equipment from a selected object (Part or Mesh)")}
+        return {"Pixmap": "Arch_Equipment",
+                "MenuText": QT_TRANSLATE_NOOP("Arch_Equipment","Equipment"),
+                "Accel": "E, Q",
+                "ToolTip": QT_TRANSLATE_NOOP("Arch_Equipment","Creates an equipment from a selected object (Part or Mesh)")}
 
     def IsActive(self):
 
@@ -59,18 +59,18 @@ class Arch_Equipment:
             base = ""
             mesh = ""
             if len(s) == 2:
-                if hasattr(s[0],'Shape'):
+                if hasattr(s[0],"Shape"):
                     base = s[0].Name
                 elif s[0].isDerivedFrom("Mesh::Feature"):
                     mesh = s[0].Name
-                if hasattr(s[1],'Shape'):
+                if hasattr(s[1],"Shape"):
                     if mesh:
                         base = s[1].Name
                 elif s[1].isDerivedFrom("Mesh::Feature"):
                     if base:
                         mesh = s[1].Name
             else:
-                if hasattr(s[0],'Shape'):
+                if hasattr(s[0],"Shape"):
                     base = s[0].Name
                 elif s[0].isDerivedFrom("Mesh::Feature"):
                     mesh = s[0].Name
@@ -91,4 +91,4 @@ class Arch_Equipment:
         return
 
 
-FreeCADGui.addCommand('Arch_Equipment',Arch_Equipment())
+FreeCADGui.addCommand("Arch_Equipment",Arch_Equipment())

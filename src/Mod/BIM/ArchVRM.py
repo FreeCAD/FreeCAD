@@ -588,16 +588,16 @@ class Renderer:
             return str(round(val,DraftVecUtils.precision()))
         edges = Part.__sortEdges__(w.Edges)
         v = edges[0].Vertexes[0].Point
-        svg = 'M '+ tostr(v.x) +' '+ tostr(v.y) + ' '
+        svg = 'M '+ tostr(v.x) +" "+ tostr(v.y) + " "
         for e in edges:
             if (DraftGeomUtils.geomType(e) == "Line") or (DraftGeomUtils.geomType(e) == "BSplineCurve"):
                 v = e.Vertexes[-1].Point
-                svg += 'L '+ tostr(v.x) +' '+ tostr(v.y) + ' '
+                svg += 'L '+ tostr(v.x) +" "+ tostr(v.y) + " "
             elif DraftGeomUtils.geomType(e) == "Circle":
                 r = e.Curve.Radius
                 v = e.Vertexes[-1].Point
-                svg += 'A '+ tostr(r) + ' '+ tostr(r) +' 0 0 1 '+ tostr(v.x) +' '
-                svg += tostr(v.y) + ' '
+                svg += 'A '+ tostr(r) + " "+ tostr(r) +' 0 0 1 '+ tostr(v.x) +" "
+                svg += tostr(v.y) + " "
         if len(edges) > 1:
             svg += 'Z '
         return svg
@@ -635,7 +635,7 @@ class Renderer:
                     else:
                         fill="url(#"+fillpattern+")" # pattern name
                 else:
-                    fill = 'none' # none
+                    fill = "none" # none
                 svg +='<path '
                 svg += 'd="'
                 for w in f[0].Wires:

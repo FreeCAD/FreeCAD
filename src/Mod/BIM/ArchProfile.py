@@ -93,7 +93,7 @@ def readPresets():
 
 class _Profile(Draft._DraftObject):
 
-    '''Superclass for Profile classes'''
+    """Superclass for Profile classes"""
 
     def __init__(self,obj, profile):
         self.Profile = profile
@@ -110,7 +110,7 @@ class _Profile(Draft._DraftObject):
 
     def cleanProperties(self, obj):
 
-        '''Remove all Profile properties'''
+        """Remove all Profile properties"""
 
         obj.removeProperty("Width")
         obj.removeProperty("Height")
@@ -122,7 +122,7 @@ class _Profile(Draft._DraftObject):
 
 class _ProfileC(_Profile):
 
-    '''A parametric circular tubeprofile. Profile data: [Outside diameter, Wall thickness]'''
+    """A parametric circular tubeprofile. Profile data: [Outside diameter, Wall thickness]"""
 
     def __init__(self,obj, profile):
         self.cleanProperties(obj)
@@ -147,7 +147,7 @@ class _ProfileC(_Profile):
 
 class _ProfileH(_Profile):
 
-    '''A parametric H or I beam profile. Profile data: [width, height, web thickness, flange thickness] (see http://en.wikipedia.org/wiki/I-beam for reference)'''
+    """A parametric H or I beam profile. Profile data: [width, height, web thickness, flange thickness] (see http://en.wikipedia.org/wiki/I-beam for reference)"""
 
     def __init__(self,obj, profile):
         self.cleanProperties(obj)
@@ -181,7 +181,7 @@ class _ProfileH(_Profile):
 
 class _ProfileR(_Profile):
 
-    '''A parametric rectangular beam profile based on [Width, Height]'''
+    """A parametric rectangular beam profile based on [Width, Height]"""
 
     def __init__(self,obj, profile):
         self.cleanProperties(obj)
@@ -205,7 +205,7 @@ class _ProfileR(_Profile):
 
 class _ProfileRH(_Profile):
 
-    '''A parametric Rectangular hollow beam profile. Profile data: [width, height, thickness]'''
+    """A parametric Rectangular hollow beam profile. Profile data: [width, height, thickness]"""
 
     def __init__(self,obj, profile):
         self.cleanProperties(obj)
@@ -238,7 +238,7 @@ class _ProfileRH(_Profile):
 
 class _ProfileU(_Profile):
 
-    '''A parametric U profile. Profile data: [width, height, web thickness, flange thickness] (see  https://en.wikipedia.org/wiki/Structural_channel for reference)'''
+    """A parametric U profile. Profile data: [width, height, web thickness, flange thickness] (see  https://en.wikipedia.org/wiki/Structural_channel for reference)"""
 
     def __init__(self,obj, profile):
         self.cleanProperties(obj)
@@ -268,7 +268,7 @@ class _ProfileU(_Profile):
 
 class _ProfileL(_Profile):
 
-    '''A parametric L profile. Profile data: [width, height, thickness]'''
+    """A parametric L profile. Profile data: [width, height, thickness]"""
 
     def __init__(self, obj, profile):
         self.cleanProperties(obj)
@@ -295,7 +295,7 @@ class _ProfileL(_Profile):
 
 class _ProfileT(_Profile):
 
-    '''A parametric T profile. Profile data: [width, height, web thickness, flange thickness]'''
+    """A parametric T profile. Profile data: [width, height, web thickness, flange thickness]"""
 
     def __init__(self, obj, profile):
         self.cleanProperties(obj)
@@ -325,7 +325,7 @@ class _ProfileT(_Profile):
 
 class ViewProviderProfile(Draft._ViewProviderDraft):
 
-    '''General view provider for Profile classes'''
+    """General view provider for Profile classes"""
 
     def __init__(self,vobj):
 
@@ -354,7 +354,7 @@ class ViewProviderProfile(Draft._ViewProviderDraft):
 
 class ProfileTaskPanel:
 
-    '''The editmode TaskPanel for Profile objects'''
+    """The editmode TaskPanel for Profile objects"""
 
     def __init__(self,obj):
 
