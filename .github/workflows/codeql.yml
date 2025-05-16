@@ -114,7 +114,7 @@ jobs:
         # Change the CodeQL Bundle version
         # tools: https://github.com/github/codeql-action/releases/download/codeql-bundle-v2.20.7/codeql-bundle-linux64.tar.gz
 
-        # Add exclusions 
+        # Add exclusions
         config: |
           query-filters:
           - exclude:
