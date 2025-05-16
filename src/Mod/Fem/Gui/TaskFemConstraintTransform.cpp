@@ -60,7 +60,7 @@ TaskFemConstraintTransform::TaskFemConstraintTransform(
     QMetaObject::connectSlotsByName(this);
 
     // create a context menu for the listview of the references
-    createDeleteAction(ui->lw_Rect);
+    createActions(ui->lw_Rect);
     connect(deleteAction,
             &QAction::triggered,
             this,
