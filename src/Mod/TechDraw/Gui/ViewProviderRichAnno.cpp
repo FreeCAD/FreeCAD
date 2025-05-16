@@ -57,7 +57,7 @@ const char* ViewProviderRichAnno::LineStyleEnums[] = { "NoLine",
 
 ViewProviderRichAnno::ViewProviderRichAnno()
 {
-    sPixmap = "actions/TechDraw_RichTextAnnotation";
+    sPixmap = "actions/TechDraw_Annotation";
 
     static const char *group = "Frame Format";
 
@@ -69,6 +69,21 @@ ViewProviderRichAnno::ViewProviderRichAnno()
     StackOrder.setValue(ZVALUE::DIMENSION);
 }
 
+
+bool ViewProviderRichAnno::setEdit(int ModNum)
+{
+    if (ModNum != Gui::ViewProvider::Default) {
+        return Gui::ViewProviderDocumentObject::setEdit(ModNum);
+    }
+    if (Gui::Control().activeDialog()) {
+        return false;  // TaskPanel already open!
+    }
+
+    // clear the selection (convenience)
+    Gui::Selection().clearSelection();
+    Gui::Control().showDialog(new TaskDlgRichAnno(this));
+    return true;
+}
 
 bool ViewProviderRichAnno::doubleClicked()
 {
