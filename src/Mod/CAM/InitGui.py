@@ -63,7 +63,7 @@ class CAMWorkbench(Workbench):
 
         # Add preferences pages - before loading PathGui to properly order pages of Path group
         import Path.Dressup.Gui.Preferences as PathPreferencesPathDressup
-        import Path.Tool.Gui.Preferences as PathPreferencesTools
+        import Path.Tool.assets.ui.preferences as AssetPreferences
         import Path.Main.Gui.PreferencesJob as PathPreferencesPathJob
 
         translate = FreeCAD.Qt.translate
@@ -94,7 +94,7 @@ class CAMWorkbench(Workbench):
             QT_TRANSLATE_NOOP("QObject", "CAM"),
         )
         FreeCADGui.addPreferencePage(
-            PathPreferencesTools.AssetPreferencesPage,
+            AssetPreferences.AssetPreferencesPage,
             QT_TRANSLATE_NOOP("QObject", "CAM"),
         )
         FreeCADGui.addPreferencePage(

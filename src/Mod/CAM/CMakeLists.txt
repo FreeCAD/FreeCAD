@@ -138,6 +138,7 @@ SET(PathPythonToolsAssetsStore_SRCS
 SET(PathPythonToolsAssetsUi_SRCS
     Path/Tool/assets/ui/__init__.py
     Path/Tool/assets/ui/filedialog.py
+    Path/Tool/assets/ui/preferences.py
     Path/Tool/assets/ui/util.py
 )
 
@@ -147,7 +148,6 @@ SET(PathPythonToolsGui_SRCS
     Path/Tool/Gui/BitLibraryCmd.py
     Path/Tool/Gui/BitLibrary.py
     Path/Tool/Gui/Controller.py
-    Path/Tool/Gui/Preferences.py
 )
 
 SET(PathPythonToolsUi_SRCS
