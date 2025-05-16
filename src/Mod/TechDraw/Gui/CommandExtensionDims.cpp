@@ -130,9 +130,9 @@ void execInsertPrefixChar(Gui::Command* cmd, std::string prefixFormat, const QAc
             return;
         }
 
-        char prefixData[(MAX_PREFIX_LENGTH + 1)*4];
-        snprintf(prefixData, sizeof(prefixData), prefixFormat.c_str(), ui.getFieldContent().toUtf8().constData());
-        prefixText = prefixData;
+        QString numberFromDialog = ui.getFieldContent();
+        QString qPrefixText = QStringLiteral("%1× ").arg(numberFromDialog);
+        prefixText = qPrefixText.toStdString();
     }
 
     Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Insert Prefix"));
