@@ -26,9 +26,8 @@
 #include <Gui/TaskView/TaskDialog.h>
 #include <Gui/TaskView/TaskView.h>
 #include <Mod/TechDraw/TechDrawGlobal.h>
-
-
-class MRichTextEdit;
+#include "mrichtextedit.h"
+#include "MDIViewPage.h"
 
 class Ui_TaskRichAnno;
 
@@ -43,9 +42,9 @@ namespace TechDrawGui
 {
 class QGIView;
 class QGIPrimPath;
+class QGIRichAnno;
 class MDIViewPage;
 class QGMText;
-class QGIRichAnno;
 class ViewProviderRichAnno;
 class ViewProviderPage;
 
@@ -54,45 +53,60 @@ class TaskRichAnno : public QWidget
     Q_OBJECT
 
 public:
-    TaskRichAnno(TechDraw::DrawView* baseFeat,
-                 TechDraw::DrawPage* page);
+    TaskRichAnno(TechDraw::DrawView* baseFeat, TechDraw::DrawPage* page);
     explicit TaskRichAnno(TechDrawGui::ViewProviderRichAnno* annoVP);
-    ~TaskRichAnno() override = default;
+    ~TaskRichAnno() override;
+
+    void finishSetup();
 
     virtual bool accept();
     virtual bool reject();
     virtual void setCreateMode(bool mode) { m_createMode = mode; }
     virtual bool getCreateMode() { return m_createMode; }
     void updateTask();
-    void saveButtons(QPushButton* btnOK,
-                     QPushButton* btnCancel);
+    void saveButtons(QPushButton* btnOK, QPushButton* btnCancel);
     void enableTaskButtons(bool enable);
 
-public Q_SLOTS:
-    void onEditorClicked(bool clicked);
+    ViewProviderRichAnno* getAnnoVP() const
+    {
+        return m_annoVP;
+    }
 
 protected:
-    void changeEvent(QEvent *event) override;
+    void changeEvent(QEvent* event) override;
+    void focusOutEvent(QFocusEvent* event) override;
+    bool eventFilter(QObject* watched, QEvent* event) override;
 
-    void createAnnoFeature();
-    void updateAnnoFeature();
+    void createAnnoFeature(const QPointF* scenePos = nullptr);
     void commonFeatureUpdate();
-    void removeFeature();
 
     QPointF calcTextStartPos(double scale);
 
     void setUiPrimary();
     void setUiEdit();
     void enableTextUi(bool enable);
-    void enableVPUi(bool enable);
     double prefWeight() const;
     Base::Color prefLineColor();
 
 protected Q_SLOTS:
-    void onSaveAndExit(QString);
-    void onEditorExit();
+    void onMaxWidthChanged(double value);
+    void onViewWidthChanged();
+    void onShowFrameToggled(bool checked);
+    void onFrameColorChanged();
+    void onFrameWidthChanged(double value);
+    void onFrameStyleChanged(int index);
+    void onViewTransformed();
+    void refocusAnnotation();
+
+    void onViewSelectionChanged();
+    void onViewPositionChanged(const QPointF& scenePos);
 
 private:
+    void removeViewFilter();
+    void enterPlacementMode();
+    void createAndSetupAnnotation(const QPointF* scenePos = nullptr);
+    void createAnnoIfNotAlready();
+
     std::unique_ptr<Ui_TaskRichAnno> ui;
 
     ViewProviderPage* m_vpp;
@@ -103,18 +117,22 @@ private:
     QGIView* m_qgParent;
     std::string m_qgParentName;
 
-    Base::Vector3d m_attachPoint;
-
     bool m_createMode;
+    bool m_placementMode;
 
     bool m_inProgressLock;
 
     QPushButton* m_btnOK;
     QPushButton* m_btnCancel;
 
-    QDialog* m_textDialog;
-    MRichTextEdit* m_rte;
     QString m_title;
+
+    QGIRichAnno* m_qgiAnno;
+    bool m_syncLock;
+    MDIViewPage* m_view;
+
+    QPointer<MRichTextEdit> m_toolbar {nullptr};
+    QPointer<QWidget> m_viewport {nullptr};
 };
 
 class TaskDlgRichAnno : public Gui::TaskView::TaskDialog
@@ -122,28 +140,28 @@ class TaskDlgRichAnno : public Gui::TaskView::TaskDialog
     Q_OBJECT
 
 public:
-    TaskDlgRichAnno(TechDraw::DrawView* baseFeat,
-                    TechDraw::DrawPage* page);
+    TaskDlgRichAnno(TechDraw::DrawView* baseFeat, TechDraw::DrawPage* page);
     explicit TaskDlgRichAnno(TechDrawGui::ViewProviderRichAnno* annoVP);
     ~TaskDlgRichAnno() override;
 
 public:
-    /// is called the TaskView when the dialog is opened
-    void open() override;
-    /// is called by the framework if an button is clicked which has no accept or reject role
-    void clicked(int) override;
     /// is called by the framework if the dialog is accepted (Ok)
     bool accept() override;
     /// is called by the framework if the dialog is rejected (Cancel)
     bool reject() override;
+    void autoClosedOnTransactionChange() override;
     /// is called by the framework if the user presses the help button
     bool isAllowedAlterDocument() const override
-                        { return false; }
-    void update();
+    {
+        return false;
+    }
 
     void modifyStandardButtons(QDialogButtonBox* box) override;
 
-protected:
+    bool isFor(ViewProviderRichAnno* vp) const
+    {
+        return (widget->getAnnoVP() == vp);
+    }
 
 private:
     TaskRichAnno * widget;

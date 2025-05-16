@@ -19,7 +19,6 @@
  *   Suite 330, Boston, MA  02111-1307, USA                                *
  *                                                                         *
  ***************************************************************************/
-
 #pragma once
 
 #include <Mod/TechDraw/TechDrawGlobal.h>
@@ -33,10 +32,11 @@
 #include "QGIUserTypes.h"
 
 
-namespace TechDraw {
+namespace TechDraw
+{
 class DrawRichAnno;
 class DrawLeaderLine;
-}
+}  // namespace TechDraw
 
 namespace TechDrawGui
 {
@@ -50,23 +50,33 @@ class QGCustomRect;
 
 //*******************************************************************
 
-class TechDrawGuiExport QGIRichAnno : public QGIView
+class TechDrawGuiExport QGIRichAnno: public QGIView
 {
     Q_OBJECT
 
 public:
     enum {Type = UserType::QGIRichAnno};
 
+    enum class ResizeHandle
+    {
+        NoHandle,
+        LeftHandle,
+        RightHandle
+        // Future: TopHandle, BottomHandle, CornerHandles
+    };
+
     explicit QGIRichAnno();
     ~QGIRichAnno() override = default;
 
-    int type() const override { return Type;}
-    void paint( QPainter * painter,
-                const QStyleOptionGraphicsItem * option,
-                QWidget * widget = nullptr ) override;
+    int type() const override
+    {
+        return Type;
+    }
+    void paint(QPainter* painter,
+               const QStyleOptionGraphicsItem* option,
+               QWidget* widget = nullptr) override;
     QRectF boundingRect() const override;
 
-    void drawBorder() override;
     void updateView(bool update = false) override;
 
     void setTextItem();
@@ -74,26 +84,74 @@ public:
     virtual TechDraw::DrawRichAnno* getFeature();
     QPen rectPen() const;
 
-    void setExportingPdf(bool b) { m_isExportingPdf = b; }
-    bool getExportingPdf() const { return m_isExportingPdf; }
-    void setExportingSvg(bool b) { m_isExportingSvg = b; }
-    bool getExportingSvg() const { return m_isExportingSvg; }
+    void setExportingPdf(bool b)
+    {
+        m_isExportingPdf = b;
+    }
+    bool getExportingPdf() const
+    {
+        return m_isExportingPdf;
+    }
+    void setExportingSvg(bool b)
+    {
+        m_isExportingSvg = b;
+    }
+    bool getExportingSvg() const
+    {
+        return m_isExportingSvg;
+    }
+
+    void setEditMode(bool enable);
+    QTextDocument* document() const;
+    QTextCursor textCursor() const;
+    void setTextCursor(const QTextCursor& cursor);
+    void updateLayout();
+
+    void refocusAnnotation();
+
+    Q_SIGNALS:
+    void widthChanged();
+    void textChanged();
+    void selectionChanged();
+    void positionChanged(const QPointF& scenePos);
 
 protected:
     void draw() override;
+    void hoverMoveEvent(QGraphicsSceneHoverEvent* event) override;
+    void mousePressEvent(QGraphicsSceneMouseEvent* event) override;
+    void mouseMoveEvent(QGraphicsSceneMouseEvent* event) override;
+    void mouseReleaseEvent(QGraphicsSceneMouseEvent* event) override;
+
     void setLineSpacing(int lineSpacing);
     QFont prefFont(void);
 
-    void mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event) override;
+    void mouseDoubleClickEvent(QGraphicsSceneMouseEvent* event) override;
 
-    QString convertTextSizes(const QString& inHtml)  const;
+    QVariant itemChange(GraphicsItemChange change, const QVariant& value) override;
 
     bool m_isExportingPdf;
     bool m_isExportingSvg;
     QGCustomText* m_text;
-    bool m_hasHover;
     QGCustomRect* m_rect;
 
+    // For resizing
+    ResizeHandle m_currentResizeHandle;
+    bool m_isResizing;
+    bool m_isDraggingMidResize;  // True if mouse has moved significantly after press during resize
+    bool m_transactionOpen;      // True if a Gui::Command transaction is open
+    QPointF m_dragStartMouseScenePos;
+    QPointF m_initialItemScenePos;   // Scene pos of QGIRichAnno item (center)
+    double m_initialTextWidthScene;  // Scene units, from MaxWidth property
+
+    static const double HandleInteractionMargin;  // Margin for grabbing handles (scene units)
+    static const double MinTextWidthDocument;     // Minimum resizable width (document units)
+
+    bool m_isEditing;
+    double m_textScaleFactor;
+    double m_lastGoodWidthScene;
+
+private Q_SLOTS:
+    void onContentsChanged();
 };
 
 }
