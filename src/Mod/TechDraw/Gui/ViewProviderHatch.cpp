@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
 
 /***************************************************************************
- *   Copyright (c) 2004 Jürgen Riegel <juergen.riegel@web.de>              *
+ *   Copyright (c) 2004 JÃ¼rgen Riegel <juergen.riegel@web.de>              *
  *   Copyright (c) 2015 WandererFan <wandererfan@gmail.com>                *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
@@ -32,11 +32,12 @@
 #include <Base/UnitsApi.h>
 #include <Gui/Application.h>
 #include <Gui/Control.h>
+#include <Gui/Selection/Selection.h>
 
 #include <Mod/TechDraw/App/DrawHatch.h>
 #include <Mod/TechDraw/App/DrawViewPart.h>
 
-#include "TaskHatch.h"
+#include "TaskHatchFace.h"
 #include "ViewProviderHatch.h"
 
 using namespace TechDrawGui;
@@ -84,7 +85,7 @@ bool ViewProviderHatch::setEdit(int ModNum)
 
     // clear the selection (convenience)
     Gui::Selection().clearSelection();
-    Gui::Control().showDialog(new TaskDlgHatch(this));
+    Gui::Control().showDialog(new TaskDlgHatchFace(getObject()));
     return true;
 }
 
