@@ -36,11 +36,11 @@
 #include <Mod/TechDraw/App/DrawRichAnno.h>
 #include <Mod/TechDraw/App/LineGroup.h>
 
-#include "ui_TaskRichAnno.h"
+#include "ui_TaskRichAnno.h" //This will include mrichtextedit.h if the .ui file uses MRichTextEdit
 #include "TaskRichAnno.h"
-#include "mrichtextedit.h"
 #include "PreferencesGui.h"
 #include "QGIView.h"
+#include "QGIRichAnno.h"
 #include "QGMText.h"
 #include "QGSPage.h"
 #include "Rez.h"
@@ -61,11 +61,9 @@ TaskRichAnno::TaskRichAnno(TechDrawGui::ViewProviderRichAnno* annoVP) :
     m_annoFeat(nullptr),
     m_qgParent(nullptr),
     m_createMode(false),
-    m_inProgressLock(false),
+    m_inProgressLock(true), // Lock during setup
     m_btnOK(nullptr),
-    m_btnCancel(nullptr),
-    m_textDialog(nullptr),
-    m_rte(nullptr)
+    m_btnCancel(nullptr)
 {
     //existence of annoVP is guaranteed by caller being ViewProviderRichAnno.setEdit
 
@@ -74,6 +72,7 @@ TaskRichAnno::TaskRichAnno(TechDrawGui::ViewProviderRichAnno* annoVP) :
     m_basePage = m_annoFeat->findParentPage();
     if (!m_basePage) {
         Base::Console().error("TaskRichAnno - bad parameters (2).  Cannot proceed.\n");
+        m_inProgressLock = false;
         return;
     }
 
@@ -94,6 +93,8 @@ TaskRichAnno::TaskRichAnno(TechDrawGui::ViewProviderRichAnno* annoVP) :
         m_qgParent = m_vpp->getQGSPage()->findQViewForDocObj(m_baseFeat);
     }
 
+    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Edit Annotation"));
+
     ui->setupUi(this);
 
     m_title = QObject::tr("Rich Text Editor");
@@ -103,8 +104,7 @@ TaskRichAnno::TaskRichAnno(TechDrawGui::ViewProviderRichAnno* annoVP) :
                                             -m_annoFeat->Y.getValue(),
                                              0.0));
 
-    connect(ui->pbEditor, &QPushButton::clicked,
-            this, &TaskRichAnno::onEditorClicked);
+    finishSetup();
 }
 
 //ctor for creation
@@ -117,11 +117,9 @@ TaskRichAnno::TaskRichAnno(TechDraw::DrawView* baseFeat,
     m_annoFeat(nullptr),
     m_qgParent(nullptr),
     m_createMode(true),
-    m_inProgressLock(false),
+    m_inProgressLock(true), // Lock during setup
     m_btnOK(nullptr),
-    m_btnCancel(nullptr),
-    m_textDialog(nullptr),
-    m_rte(nullptr)
+    m_btnCancel(nullptr)
 {
     //existence of baseFeat and page guaranteed by CmdTechDrawRichTextAnnotation (CommandAnnotate.cpp)
     Gui::Document* activeGui = Gui::Application::Instance->getDocument(m_basePage->getDocument());
@@ -133,19 +131,42 @@ TaskRichAnno::TaskRichAnno(TechDraw::DrawView* baseFeat,
         m_qgParent = m_vpp->getQGSPage()->findQViewForDocObj(baseFeat);
     }
 
+    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Create Annotation"));
+
     ui->setupUi(this);
     m_title = QObject::tr("Rich Text Creator");
 
-    setUiPrimary();
+    setUiPrimary(); // Sets initial UI values, might trigger signals if connected
 
-    connect(ui->pbEditor, &QPushButton::clicked,
-            this, &TaskRichAnno::onEditorClicked);
+    createAnnoFeature(); // Create the feature immediately. m_annoFeat and m_annoVP are set inside.
+    
+    if (!m_annoFeat) { // Safety check if creation failed
+        Base::Console().error("TaskRichAnno - Failed to create annotation feature.\n");
+        m_inProgressLock = false;
+        return;
+    }
+    
+    finishSetup();
+}
+
+void TaskRichAnno::finishSetup()
+{
+    // Connect signals for live updates
+    connect(ui->richTextEditor->document(), &QTextDocument::contentsChanged, this, &TaskRichAnno::onRichTextChanged);
+    connect(ui->dsbMaxWidth, qOverload<double>(&Gui::QuantitySpinBox::valueChanged), this, &TaskRichAnno::onMaxWidthChanged);
+    connect(ui->gbFrame, &QGroupBox::toggled, this, &TaskRichAnno::onShowFrameToggled);
+    connect(ui->cpFrameColor, &Gui::ColorButton::changed, this, &TaskRichAnno::onFrameColorChanged);
+    connect(ui->dsbWidth, qOverload<double>(&Gui::QuantitySpinBox::valueChanged), this, &TaskRichAnno::onFrameWidthChanged);
+    connect(ui->cFrameStyle, qOverload<int>(&QComboBox::currentIndexChanged), this, &TaskRichAnno::onFrameStyleChanged);
+
+    ui->richTextEditor->setMinimalMode(true);
+
+    m_inProgressLock = false; // Unlock after setup
 }
 
 void TaskRichAnno::updateTask()
 {
-//    blockUpdate = true;
-
+//    blockUpdate = true; // Original comment, m_inProgressLock serves a similar purpose
 //    blockUpdate = false;
 }
 
@@ -153,51 +174,46 @@ void TaskRichAnno::changeEvent(QEvent *event)
 {
     if (event->type() == QEvent::LanguageChange) {
         ui->retranslateUi(this);
+        // Update titles if they are translatable and set directly
+        if (m_createMode) {
+            m_title = QObject::tr("Rich text creator");
+        } else {
+            m_title = QObject::tr("Rich text editor");
+        }
+        if (m_annoFeat || m_createMode) { // Only set window title if UI is relevant
+             setWindowTitle(m_title);
+        }
     }
+    QWidget::changeEvent(event);
 }
 
 void TaskRichAnno::setUiPrimary()
 {
-//    Base::Console().message("TRA::setUiPrimary()\n");
-    enableVPUi(false);
     setWindowTitle(m_title);
 
     if (m_baseFeat) {
         std::string baseName = m_baseFeat->getNameInDocument();
         ui->leBaseView->setText(QString::fromStdString(baseName));
     }
+    ui->dsbMaxWidth->setUnit(Base::Unit::Length);
+    ui->dsbMaxWidth->setValue(-1.0);
+
     ui->dsbWidth->setUnit(Base::Unit::Length);
     ui->dsbWidth->setMinimum(0);
     ui->dsbWidth->setValue(prefWeight());
 
+
     ui->cpFrameColor->setColor(prefLineColor().asValue<QColor>());
-    // set a default font size, use for this the preferences setting
-    MRichTextEdit mre;
-    ui->teAnnoText->setFontPointSize(mre.getDefFontSizeNum());
-    // set a placeholder text to inform the user
-    ui->teAnnoText->setPlaceholderText(tr("Input the annotation text directly or start the rich text editor"));
+    ui->gbFrame->setChecked(false);
 }
 
 void TaskRichAnno::enableTextUi(bool enable)
 {
-    ui->pbEditor->setEnabled(enable);
-    ui->teAnnoText->setEnabled(enable);
-}
-
-//switch widgets related to ViewProvider on/off
-//there is no ViewProvider until some time after feature is created.
-void TaskRichAnno::enableVPUi(bool enable)
-{
-    Q_UNUSED(enable);
-//    ui->cpLineColor->setEnabled(b);
-//    ui->dsbWeight->setEnabled(b);
-//    ui->cboxStyle->setEnabled(b);
+    ui->richTextEditor->setEnabled(enable);
 }
 
 void TaskRichAnno::setUiEdit()
 {
-//    Base::Console().message("TRA::setUiEdit());
-    enableVPUi(true);
     setWindowTitle(m_title);
     enableTextUi(true);
 
@@ -208,9 +224,9 @@ void TaskRichAnno::setUiEdit()
             baseName = docObj->getNameInDocument();
         }
         ui->leBaseView->setText(QString::fromStdString(baseName));
-        ui->teAnnoText->setHtml(QString::fromUtf8(m_annoFeat->AnnoText.getValue()));
+        ui->richTextEditor->setText(QString::fromUtf8(m_annoFeat->AnnoText.getValue()));
         ui->dsbMaxWidth->setValue(m_annoFeat->MaxWidth.getValue());
-        ui->cbShowFrame->setChecked(m_annoFeat->ShowFrame.getValue());
+        ui->gbFrame->setChecked(m_annoFeat->ShowFrame.getValue());
     }
 
     if (m_annoVP) {
@@ -220,46 +236,59 @@ void TaskRichAnno::setUiEdit()
     }
 }
 
-void TaskRichAnno::onEditorClicked(bool clicked)
+
+// Slots for live updates
+void TaskRichAnno::onRichTextChanged() {
+    if (m_inProgressLock || !m_annoFeat) return;
+    m_annoFeat->AnnoText.setValue(ui->richTextEditor->toHtml().toUtf8());
+    m_annoFeat->requestPaint();
+}
+
+void TaskRichAnno::onMaxWidthChanged(double value)
 {
-//    Base::Console().message("TL::onEditorClicked(%d)\n", b);
-    Q_UNUSED(clicked);
-    m_textDialog = new QDialog(nullptr);
-    QString leadText = ui->teAnnoText->toHtml();
-    QString plainText = ui->teAnnoText->toPlainText();
-    if (plainText.isEmpty()) {
-        m_rte = new MRichTextEdit(m_textDialog);
-    } else {
-        m_rte = new MRichTextEdit(m_textDialog, leadText);
+    if (m_inProgressLock || !m_annoFeat) return;
+    m_annoFeat->MaxWidth.setValue(value);
+    m_annoFeat->requestPaint();
+}
+
+void TaskRichAnno::onViewWidthChanged()
+{
+    ui->dsbMaxWidth->blockSignals(true);
+    ui->dsbMaxWidth->setValue(m_annoFeat->MaxWidth.getValue());
+    ui->dsbMaxWidth->blockSignals(false);
+}
+
+void TaskRichAnno::onShowFrameToggled(bool checked) {
+    if (m_inProgressLock || !m_annoFeat) return;
+    m_annoFeat->ShowFrame.setValue(checked);
+    // Update VP editable status based on ShowFrame
+    if (m_annoVP) {
+        bool editable = checked;
+        m_annoVP->LineWidth.setStatus(App::Property::ReadOnly, !editable);
+        m_annoVP->LineStyle.setStatus(App::Property::ReadOnly, !editable);
+        m_annoVP->LineColor.setStatus(App::Property::ReadOnly, !editable);
     }
-    QGridLayout* gl = new QGridLayout(m_textDialog);
-    gl->addWidget(m_rte, 0,0, 1,1);
-    m_textDialog->setWindowTitle(QObject::tr("Rich text editor"));
-    m_textDialog->setMinimumWidth (400);
-    m_textDialog->setMinimumHeight(400);
-
-    connect(m_rte, &MRichTextEdit::saveText,
-            this, &TaskRichAnno::onSaveAndExit);
-    connect(m_rte, &MRichTextEdit::editorFinished,
-            this, &TaskRichAnno::onEditorExit);
-
-    m_textDialog->show();
+    m_annoFeat->requestPaint();
 }
 
-void TaskRichAnno::onSaveAndExit(QString qs)
-{
-    ui->teAnnoText->setHtml(qs);
-    //dialog clean up should be handled by accept() call in dialog
-    m_textDialog->accept();
-    m_textDialog = nullptr;
-    m_rte = nullptr;
+void TaskRichAnno::onFrameColorChanged() {
+    if (m_inProgressLock || !m_annoVP) return;
+    Base::Color ac;
+    ac.setValue<QColor>(ui->cpFrameColor->color());
+    m_annoVP->LineColor.setValue(ac);
+    if (m_annoFeat) m_annoFeat->requestPaint();
 }
 
-void TaskRichAnno::onEditorExit()
-{
-    m_textDialog->reject();
-    m_textDialog = nullptr;
-    m_rte = nullptr;
+void TaskRichAnno::onFrameWidthChanged(double value) {
+    if (m_inProgressLock || !m_annoVP) return;
+    m_annoVP->LineWidth.setValue(value);
+     if (m_annoFeat) m_annoFeat->requestPaint();
+}
+
+void TaskRichAnno::onFrameStyleChanged(int index) {
+    if (m_inProgressLock || !m_annoVP) return;
+    m_annoVP->LineStyle.setValue(index);
+    if (m_annoFeat) m_annoFeat->requestPaint();
 }
 
 double TaskRichAnno::prefWeight() const
@@ -284,7 +313,6 @@ void TaskRichAnno::createAnnoFeature()
 
     std::string PageName = m_basePage->getNameInDocument();
 
-    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Create Anno"));
     Command::doCommand(Command::Doc, "App.activeDocument().addObject('%s', '%s')",
                        annoType.c_str(), annoName.c_str());
     Command::doCommand(Command::Doc, "App.activeDocument().%s.addView(App.activeDocument().%s)",
@@ -296,11 +324,12 @@ void TaskRichAnno::createAnnoFeature()
     }
     App::DocumentObject* obj = m_basePage->getDocument()->getObject(annoName.c_str());
     if (!obj) {
+        Gui::Command::abortCommand();
         throw Base::RuntimeError("TaskRichAnno - new RichAnno object not found");
     }
     if (obj->isDerivedFrom<TechDraw::DrawRichAnno>()) {
         m_annoFeat = static_cast<TechDraw::DrawRichAnno*>(obj);
-        commonFeatureUpdate();
+        commonFeatureUpdate(); // Set text, MaxWidth, ShowFrame from UI
         if (m_baseFeat) {
             QPointF qTemp = calcTextStartPos(m_annoFeat->getScale());
             Base::Vector3d vTemp(qTemp.x(), qTemp.y());
@@ -315,21 +344,31 @@ void TaskRichAnno::createAnnoFeature()
 
     if (m_annoFeat) {
         Gui::ViewProvider* vp = QGIView::getViewProvider(m_annoFeat);
-        auto annoVP = freecad_cast<ViewProviderRichAnno*>(vp);
-        if (annoVP) {
+        m_annoVP = freecad_cast<ViewProviderRichAnno*>(vp); // Store m_annoVP
+        if (m_annoVP) {
             Base::Color ac;
             ac.setValue<QColor>(ui->cpFrameColor->color());
-            annoVP->LineColor.setValue(ac);
-            annoVP->LineWidth.setValue(ui->dsbWidth->rawValue());
-            annoVP->LineStyle.setValue(ui->cFrameStyle->currentIndex());
+            m_annoVP->LineColor.setValue(ac);
+            m_annoVP->LineWidth.setValue(ui->dsbWidth->rawValue());
+            m_annoVP->LineStyle.setValue(ui->cFrameStyle->currentIndex());
+
+            // Set initial VP property readonly state based on ShowFrame
+            bool editable = m_annoFeat->ShowFrame.getValue();
+            m_annoVP->LineWidth.setStatus(App::Property::ReadOnly, !editable);
+            m_annoVP->LineStyle.setStatus(App::Property::ReadOnly, !editable);
+            m_annoVP->LineColor.setStatus(App::Property::ReadOnly, !editable);
+
+            auto qgiRichAnno = static_cast<QGIRichAnno*>(m_annoVP->getQView());
+
+            connect(qgiRichAnno,
+                    &QGIRichAnno::widthChanged,
+                    this,
+                    &TaskRichAnno::onViewWidthChanged);
         }
     }
 
     std::string translatedObjectName{tr(objectName.c_str()).toStdString()};
     obj->Label.setValue(translatedObjectName + generatedSuffix);
-
-    Gui::Command::commitCommand();
-    Gui::Command::updateActive();
 
     //trigger claimChildren in tree
     if (m_baseFeat) {
@@ -343,55 +382,14 @@ void TaskRichAnno::createAnnoFeature()
     }
 }
 
-void TaskRichAnno::updateAnnoFeature()
-{
-//    Base::Console().message("TRA::updateAnnoFeature()\n");
-    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Edit Anno"));
-    commonFeatureUpdate();
-    Base::Color ac;
-    ac.setValue<QColor>(ui->cpFrameColor->color());
-    m_annoVP->LineColor.setValue(ac);
-    m_annoVP->LineWidth.setValue(ui->dsbWidth->rawValue());
-    m_annoVP->LineStyle.setValue(ui->cFrameStyle->currentIndex());
-
-    Gui::Command::commitCommand();
-    Gui::Command::updateActive();
-}
-
 void TaskRichAnno::commonFeatureUpdate()
 {
 //    Base::Console().message("TRA::commonFeatureUpdate()\n");
-    m_annoFeat->setPosition(Rez::appX(m_attachPoint.x), Rez::appX(- m_attachPoint.y), true);
-    m_annoFeat->AnnoText.setValue(ui->teAnnoText->toHtml().toUtf8());
+    if (!m_annoFeat) return;
+
+    m_annoFeat->AnnoText.setValue(ui->richTextEditor->toHtml().toUtf8());
     m_annoFeat->MaxWidth.setValue(ui->dsbMaxWidth->value().getValue());
-    m_annoFeat->ShowFrame.setValue(ui->cbShowFrame->isChecked());
-}
-
-void TaskRichAnno::removeFeature()
-{
-//    Base::Console().message("TRA::removeFeature()\n");
-    if (!m_annoFeat)
-        return;
-
-    if (m_createMode) {
-        try {
-            // this doesn't remove the QGMText item??
-            std::string PageName = m_basePage->getNameInDocument();
-            Gui::Command::doCommand(Gui::Command::Gui, "App.activeDocument().%s.removeView(App.activeDocument().%s)",
-                                    PageName.c_str(), m_annoFeat->getNameInDocument());
-            Gui::Command::doCommand(Gui::Command::Gui, "App.activeDocument().removeObject('%s')",
-                                        m_annoFeat->getNameInDocument());
-        }
-        catch (...) {
-            Base::Console().warning("TRA::removeFeature - failed to delete feature\n");
-            return;
-        }
-    } else {
-        if (Gui::Command::hasPendingCommand()) {
-            std::vector<std::string> undos = Gui::Application::Instance->activeDocument()->getUndoVector();
-            Gui::Application::Instance->activeDocument()->undo(1);
-        }
-    }
+    m_annoFeat->ShowFrame.setValue(ui->gbFrame->isChecked());
 }
 
 //we don't know the bounding rect of the text, so we have to calculate a reasonable
@@ -400,51 +398,63 @@ QPointF TaskRichAnno::calcTextStartPos(double scale)
 {
     Q_UNUSED(scale)
 //    Base::Console().message("TRA::calcTextStartPos(%.3f)\n", scale);
-    double textWidth = 100.0;
-    double textHeight = 20.0;
-    double horizGap(20.0);
-    double tPosX(0.0);
-    double tPosY(0.0);
+    double textWidth = 100.0; // Default guess for text width in document units
+    double textHeight = 20.0; // Default guess for text height
+    double horizGap(Rez::appX(5.0)); // 5mm gap from leader end point in document units
 
-    double width = m_annoFeat->MaxWidth.getValue();
-    if (width > 0 ) {
-        textWidth = width;
+    double annoMaxWidth = ui->dsbMaxWidth->value().getValue(); // MaxWidth from UI
+    if (annoMaxWidth > 0 ) {
+        textWidth = annoMaxWidth; // Use user-defined MaxWidth if available
     }
+    // Note: textHeight is harder to guess accurately without rendering.
 
-    std::vector<Base::Vector3d> points;
     if (m_baseFeat) {
         if (m_baseFeat->isDerivedFrom<TechDraw::DrawLeaderLine>()) {
             TechDraw::DrawLeaderLine* dll = static_cast<TechDraw::DrawLeaderLine*>(m_baseFeat);
-            points = dll->WayPoints.getValues();
-        } else {
-//            Base::Console().message("TRA::calcTextPos - m_baseFeat is not Leader\n");
-            return QPointF(0.0, 0.0);
+            const auto& wayPoints = dll->WayPoints.getValues();
+            if (!wayPoints.empty()) {
+                Base::Vector3d leaderEndDoc = wayPoints.back(); // Last point of leader in document units
+                Base::Vector3d leaderPrevDoc = (wayPoints.size() > 1) ? wayPoints[wayPoints.size()-2] : leaderEndDoc;
+
+                // Position relative to leader end point (these are document units)
+                double tPosX_doc, tPosY_doc;
+
+                // Heuristic: place annotation to the right or left of the leader's last segment
+                // Anchor point of RichAnno is its center. We want text block (top-left) relative to leader.
+                // This calculation is for the *center* of the RichAnno.
+                if (leaderEndDoc.x < leaderPrevDoc.x) { // Leader pointing left-ish
+                    tPosX_doc = leaderEndDoc.x - horizGap - (textWidth / 2.0);
+                } else { // Leader pointing right-ish or vertical
+                    tPosX_doc = leaderEndDoc.x + horizGap + (textWidth / 2.0);
+                }
+                // Vertically, align center of text block slightly below leader end for now
+                tPosY_doc = leaderEndDoc.y - (textHeight / 2.0) ;
+
+                return QPointF(Rez::guiX(tPosX_doc), Rez::guiX(tPosY_doc)); // Convert to GUI coords for return
+            }
         }
-    } else {
-//        Base::Console().message("TRA::calcStartPos - no m_baseFeat\n");
-        if (m_basePage) {
-            double w = Rez::guiX(m_basePage->getPageWidth() / 2.0);
-            double h = Rez::guiX(m_basePage->getPageHeight() / 2.0);
-            return QPointF(w, h);
-        } else {
-            Base::Console().message("TRA::calcStartPos - no m_basePage\n"); //shouldn't happen. caught elsewhere
-        }
+        // If baseFeat is not a leader or has no points, fall through to page center or view center.
+        // For a generic DrawView, position near its center.
+        double baseX_doc = m_baseFeat->X.getValue();
+        double baseY_doc = m_baseFeat->Y.getValue();
+
+        // Position annotation center to the right of baseX,
+        // and vertically such that top of annotation is near baseY.
+        double tPosX_doc = baseX_doc + (textWidth / 2.0) + horizGap;
+        // RichAnno Y is its center. baseY_doc is top of view.
+        // So, center of anno = baseY_doc (top of view) + half of anno's estimated height.
+        double tPosY_doc = baseY_doc + (textHeight / 2.0);
+        return QPointF(Rez::guiX(tPosX_doc), Rez::guiX(tPosY_doc));  // Convert to GUI coords for 
     }
 
-    if (!points.empty()) {
-        QPointF lastPoint(points.back().x, points.back().y);
-        QPointF firstPoint(points.front().x, points.front().y);
-        QPointF lastOffset = lastPoint - firstPoint;
-
-        if (lastPoint.x() < firstPoint.x()) {                 //last is left of first
-            tPosX = lastOffset.x() - horizGap - textWidth;    //left of last
-            tPosY = lastOffset.y() - textHeight;
-        } else {                                             //last is right of first
-            tPosX = lastOffset.x() + horizGap;               //right of last
-            tPosY = lastOffset.y() - textHeight;
-        }
+    // Default to page center if no baseFeat
+    if (m_basePage) {
+        double w_doc = m_basePage->getPageWidth() / 2.0;
+        double h_doc = m_basePage->getPageHeight() / 2.0;
+        return QPointF(Rez::guiX(w_doc), Rez::guiX(h_doc));
     }
-    return QPointF(tPosX, -tPosY);
+
+    return QPointF(0.0, 0.0); // Absolute fallback
 }
 
 void TaskRichAnno::saveButtons(QPushButton* btnOK,
@@ -456,61 +466,38 @@ void TaskRichAnno::saveButtons(QPushButton* btnOK,
 
 void TaskRichAnno::enableTaskButtons(bool enable)
 {
-    m_btnOK->setEnabled(enable);
-    m_btnCancel->setEnabled(enable);
+    if (m_btnOK) m_btnOK->setEnabled(enable);
+    if (m_btnCancel) m_btnCancel->setEnabled(enable);
 }
 
 //******************************************************************************
 
 bool TaskRichAnno::accept()
 {
-//    Base::Console().message("TRA::accept()\n");
-    if (m_inProgressLock) {
-//        Base::Console().message("TRA::accept - edit in progress!!\n");
-        //TODO: kill MRTE dialog?
-        return true;
-    }
-
-    Gui::Document* doc = Gui::Application::Instance->getDocument(m_basePage->getDocument());
-    if (!doc)
+    if (m_inProgressLock || !m_annoFeat) {  // Should not happen if UI is responsive
         return false;
-
-    if (getCreateMode())  {
-        createAnnoFeature();
-    } else {
-        updateAnnoFeature();
     }
 
-    m_annoFeat->requestPaint();
-
+    Gui::Command::commitCommand();
     Gui::Command::doCommand(Gui::Command::Gui, "Gui.ActiveDocument.resetEdit()");
+
+    m_annoFeat->getDocument()->recompute();
 
     return true;
 }
 
 bool TaskRichAnno::reject()
 {
-//    Base::Console().message("TRA::reject()\n");
     if (m_inProgressLock) {
-//        Base::Console().message("TRA::reject - edit in progress!!\n");
         return false;
     }
 
-    if (m_basePage) {
-        Gui::Document* doc = Gui::Application::Instance->getDocument(m_basePage->getDocument());
-        if (!doc) {
-            return false;
-        }
-        if (getCreateMode() && m_annoFeat)  {
-            removeFeature();
-        }
-    }
-
-    //make sure any dangling objects are cleaned up
-    Gui::Command::doCommand(Gui::Command::Gui, "App.activeDocument().recompute()");
+    Gui::Command::abortCommand();
     Gui::Command::doCommand(Gui::Command::Gui, "Gui.ActiveDocument.resetEdit()");
 
-    return false;
+    m_annoFeat->recomputeFeature();
+
+    return true;
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -519,7 +506,7 @@ TaskDlgRichAnno::TaskDlgRichAnno(TechDraw::DrawView* baseFeat,
     : TaskDialog()
 {
     widget  = new TaskRichAnno(baseFeat, page);
-    taskbox = new Gui::TaskView::TaskBox(Gui::BitmapFactory().pixmap("actions/TechDraw_RichTextAnnotation"),
+    taskbox = new Gui::TaskView::TaskBox(Gui::BitmapFactory().pixmap("actions/TechDraw_Annotation"),
                                               widget->windowTitle(), true, nullptr);
     taskbox->groupLayout()->addWidget(widget);
     Content.push_back(taskbox);
@@ -529,7 +516,7 @@ TaskDlgRichAnno::TaskDlgRichAnno(TechDrawGui::ViewProviderRichAnno* annoVP)
     : TaskDialog()
 {
     widget  = new TaskRichAnno(annoVP);
-    taskbox = new Gui::TaskView::TaskBox(Gui::BitmapFactory().pixmap("actions/TechDraw_RichTextAnnotation"),
+    taskbox = new Gui::TaskView::TaskBox(Gui::BitmapFactory().pixmap("actions/TechDraw_Annotation"),
                                          widget->windowTitle(), true, nullptr);
     taskbox->groupLayout()->addWidget(widget);
     Content.push_back(taskbox);
@@ -537,11 +524,6 @@ TaskDlgRichAnno::TaskDlgRichAnno(TechDrawGui::ViewProviderRichAnno* annoVP)
 
 TaskDlgRichAnno::~TaskDlgRichAnno()
 {
-}
-
-void TaskDlgRichAnno::update()
-{
-//    widget->updateTask();
 }
 
 void TaskDlgRichAnno::modifyStandardButtons(QDialogButtonBox* box)
@@ -552,24 +534,15 @@ void TaskDlgRichAnno::modifyStandardButtons(QDialogButtonBox* box)
 }
 
 //==== calls from the TaskView ===============================================================
-void TaskDlgRichAnno::open()
-{
-}
-
-void TaskDlgRichAnno::clicked(int)
-{
-}
 
 bool TaskDlgRichAnno::accept()
 {
-    widget->accept();
-    return true;
+    return widget->accept(); // Delegate to the widget's accept logic
 }
 
 bool TaskDlgRichAnno::reject()
 {
-    widget->reject();
-    return true;
+    return widget->reject(); // Delegate to the widget's reject logic
 }
 
 #include <Mod/TechDraw/Gui/moc_TaskRichAnno.cpp>

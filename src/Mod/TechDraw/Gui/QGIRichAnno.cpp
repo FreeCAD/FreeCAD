@@ -27,12 +27,17 @@
 # include <QGraphicsSceneMouseEvent>
 # include <QPainter>
 # include <QRegularExpression>
+# include <QApplication>
+# include <QCursor>
 # include <QRegularExpressionMatch>
 # include <QTextBlock>
 # include <QTextCursor>
 # include <QTextDocumentFragment>
 
 #include <App/Application.h>
+#include <Gui/Command.h>
+#include <Gui/Control.h>
+
 #include <Mod/TechDraw/App/DrawRichAnno.h>
 #include <Mod/TechDraw/App/DrawUtil.h>
 
@@ -51,13 +56,24 @@ using namespace TechDraw;
 using namespace TechDrawGui;
 using DU = DrawUtil;
 
+const double QGIRichAnno::HandleInteractionMargin = 30.0;  // Scene units for hover/click
+const double QGIRichAnno::MinTextWidthDocument = 5.0;    // Min width in document units
 
 //**************************************************************
 QGIRichAnno::QGIRichAnno() :
-    m_isExportingPdf(false), m_isExportingSvg(false), m_hasHover(false)
+    m_isExportingPdf(false),
+    m_isExportingSvg(false),
+    m_currentResizeHandle(ResizeHandle::NoHandle),
+    m_isResizing(false),
+    m_isDraggingMidResize(false),
+    m_transactionOpen(false),
+    m_dragStartMouseScenePos(),
+    m_initialItemScenePos(),
+    m_initialTextWidthScene(0.0), 
+    m_frameWasHiddenOnHoverEnter(false)
 {
     setHandlesChildEvents(false);
-    setAcceptHoverEvents(false);
+    setAcceptHoverEvents(true); // Enable hover events for cursor changes
     setFlag(QGraphicsItem::ItemIsSelectable, true);
     setFlag(QGraphicsItem::ItemIsMovable, true);
     setFlag(QGraphicsItem::ItemSendsScenePositionChanges, true);
@@ -181,7 +197,7 @@ void QGIRichAnno::setTextItem()
         m_rect->setPos(m_text->pos().x() - frameMargin, m_text->pos().y() - frameMargin);
     }
 
-    if (annoFeat->ShowFrame.getValue()) {
+    if (annoFeat->ShowFrame.getValue() || m_isResizing) {
         m_rect->show();
     } else {
         m_rect->hide();
@@ -327,35 +343,251 @@ QFont QGIRichAnno::prefFont()
     return PreferencesGui::labelFontQFont();
 }
 
-void QGIRichAnno::mouseDoubleClickEvent(QGraphicsSceneMouseEvent* event) {
-    Q_UNUSED(event);
-
-    TechDraw::DrawRichAnno *annotation = dynamic_cast<TechDraw::DrawRichAnno *>(getViewObject());
-    if (!annotation)
+void QGIRichAnno::hoverEnterEvent(QGraphicsSceneHoverEvent* event)
+{
+    TechDraw::DrawRichAnno* annoFeat = getFeature();
+    if (!annoFeat) {
+        QGIView::hoverEnterEvent(event);
         return;
+    }
 
-    QString text = QString::fromUtf8(annotation->AnnoText.getValue());
-
-    QDialog dialog(nullptr);
-    dialog.setWindowTitle(QObject::tr("Rich text editor"));
-    dialog.setMinimumWidth(400);
-    dialog.setMinimumHeight(400);
-
-    MRichTextEdit richEdit(&dialog, text);
-    QGridLayout gridLayout(&dialog);
-    gridLayout.addWidget(&richEdit, 0, 0, 1, 1);
-
-    connect(&richEdit, &MRichTextEdit::saveText, &dialog, &QDialog::accept);
-    connect(&richEdit, &MRichTextEdit::editorFinished, &dialog, &QDialog::reject);
-
-    if (dialog.exec()) {
-        QString newText = richEdit.toHtml();
-        if (newText != text) {
-            App::GetApplication().setActiveTransaction("Set Rich Annotation Text");
-            annotation->AnnoText.setValue(newText.toStdString());
-            App::GetApplication().closeActiveTransaction();
+    // Store original state and show frame if it's currently hidden
+    m_frameWasHiddenOnHoverEnter = !annoFeat->ShowFrame.getValue();
+    if (m_frameWasHiddenOnHoverEnter) {
+        if (m_rect) {
+            m_rect->show();
+            // Potentially update related UI elements or trigger a mini-repaint if needed,
+            // though m_rect->show() might be enough if it forces a repaint of itself.
+            // Forcing a repaint of the item might be safer:
+            update();  // This QGraphicsItem::update() schedules a repaint for the item's bounding
+                       // rect
         }
     }
+    QGIView::hoverEnterEvent(event);
+}
+
+void QGIRichAnno::hoverLeaveEvent(QGraphicsSceneHoverEvent* event)
+{
+    TechDraw::DrawRichAnno* annoFeat = getFeature();
+    if (!annoFeat || m_isResizing) {
+        QGIView::hoverLeaveEvent(event);
+        return;
+    }
+
+    // If the frame was originally hidden and we showed it on hover, hide it again
+    if (m_frameWasHiddenOnHoverEnter) {
+        if (m_rect) {
+            m_rect->hide();
+            update();  // Schedule a repaint
+        }
+    }
+    // Reset the flag
+    m_frameWasHiddenOnHoverEnter = false;
+
+    // Also, ensure the cursor is reset if the mouse leaves while it was a resize cursor
+    // This is important if the mouse leaves the item entirely while a resize handle was active.
+    setCursor(Qt::ArrowCursor);
+
+    QGIView::hoverLeaveEvent(event);
+}
+
+void QGIRichAnno::hoverMoveEvent(QGraphicsSceneHoverEvent* event)
+{
+    TechDraw::DrawRichAnno* annoFeat = getFeature();
+    if (!annoFeat || annoFeat->isLocked()) {
+        setCursor(Qt::ArrowCursor);
+        QGIView::hoverMoveEvent(event);
+        return;
+    }
+    // Mouse position in QGIRichAnno's local coordinates
+    QPointF localPos = mapFromScene(event->scenePos());  
+
+    // Calculate visual edges of m_rect in QGIRichAnno's local coordinates
+    double visualRectLeftEdgeX = m_rect->x() + m_rect->rect().left();
+    double visualRectRightEdgeX = m_rect->x() + m_rect->rect().right();
+
+    bool onLeftEdge = qAbs(localPos.x() - visualRectLeftEdgeX) < HandleInteractionMargin;
+    bool onRightEdge = qAbs(localPos.x() - visualRectRightEdgeX) < HandleInteractionMargin;
+
+    if (onLeftEdge || onRightEdge) {
+        setCursor(Qt::SizeHorCursor);
+    }
+    else {
+        setCursor(Qt::ArrowCursor);
+    }
+    QGIView::hoverMoveEvent(event);
+}
+
+void QGIRichAnno::mousePressEvent(QGraphicsSceneMouseEvent* event)
+{
+    TechDraw::DrawRichAnno* annoFeat = getFeature();
+    // Allow resizing even if MaxWidth is initially -1 or 0, as long as frame is shown
+    if (event->button() != Qt::LeftButton || !annoFeat || annoFeat->isLocked()) {
+        QGIView::mousePressEvent(event);
+        return;
+    }
+
+    // Mouse position in QGIRichAnno's local coordinates
+    QPointF localPos = mapFromScene(event->scenePos());
+    m_currentResizeHandle = ResizeHandle::NoHandle;
+
+    // Calculate visual edges of m_rect in QGIRichAnno's local coordinates
+    // m_rect's geometry should be up-to-date from the last draw/updateView
+    double visualRectLeftEdgeX = m_rect->x() + m_rect->rect().left();
+    double visualRectRightEdgeX = m_rect->x() + m_rect->rect().right();
+
+    if (qAbs(localPos.x() - visualRectLeftEdgeX) < HandleInteractionMargin) {
+        m_currentResizeHandle = ResizeHandle::LeftHandle;
+    }
+    else if (qAbs(localPos.x() - visualRectRightEdgeX) < HandleInteractionMargin) {
+        m_currentResizeHandle = ResizeHandle::RightHandle;
+    }
+
+    if (m_currentResizeHandle != ResizeHandle::NoHandle) {
+        m_isResizing = true;
+        m_isDraggingMidResize = false;
+        m_transactionOpen = false;
+        m_dragStartMouseScenePos = event->scenePos();
+        m_initialItemScenePos = this->scenePos();
+
+        // Determine initial text width for resizing
+        if (annoFeat->MaxWidth.getValue() > 0.0) {
+            m_initialTextWidthScene = Rez::guiX(annoFeat->MaxWidth.getValue());
+        }
+        else {
+            if (m_text) {
+                m_initialTextWidthScene = m_rect->rect().width() - (2 * Rez::guiX(1.0));
+                m_initialTextWidthScene = m_text->boundingRect().width();
+            }
+            else {
+                // Fallback, should not happen
+                m_initialTextWidthScene = Rez::guiX(MinTextWidthDocument * 2);
+            }
+        }
+        event->accept();
+    }
+    else {
+        m_isResizing = false;
+        QGIView::mousePressEvent(event);
+    }
+}
+
+void QGIRichAnno::mouseMoveEvent(QGraphicsSceneMouseEvent* event)
+{
+    if (m_isResizing && m_currentResizeHandle != ResizeHandle::NoHandle) {
+        TechDraw::DrawRichAnno* annoFeat = getFeature();
+        if (!annoFeat) {
+            return;
+        }
+
+        if (!m_isDraggingMidResize) {  // First actual move during this resize op
+            // Open a transaction for the entire resize operation
+            if (!Gui::Control().activeDialog()) {
+                Gui::Command::openCommand(
+                    QObject::tr("Resize Rich Annotation").toStdString().c_str());
+            }
+            m_transactionOpen = true;
+            m_isDraggingMidResize = true;
+        }
+
+        QPointF currentMouseScenePos = event->scenePos();
+        double mouseDeltaSceneX = currentMouseScenePos.x() - m_dragStartMouseScenePos.x();
+
+        double newTextWidthScene = 0;
+        double newItemScenePosX = 0;  // New center X of the item in scene coords
+
+        if (m_currentResizeHandle == ResizeHandle::RightHandle) {
+            newTextWidthScene = m_initialTextWidthScene + mouseDeltaSceneX;
+            newItemScenePosX = m_initialItemScenePos.x() + mouseDeltaSceneX / 2.0;
+        }
+        else {  // LeftHandle
+            newTextWidthScene = m_initialTextWidthScene - mouseDeltaSceneX;
+            newItemScenePosX = m_initialItemScenePos.x() + mouseDeltaSceneX / 2.0;
+        }
+
+        // Apply minimum width constraint
+        double newTextWidthDoc = Rez::appX(newTextWidthScene);
+        if (newTextWidthDoc < MinTextWidthDocument) {
+            newTextWidthDoc = MinTextWidthDocument;
+            newTextWidthScene = Rez::guiX(newTextWidthDoc);  // Recalculate scene width
+
+            // Adjust mouseDeltaSceneX based on the clamped width to correctly position the center
+            if (m_currentResizeHandle == ResizeHandle::RightHandle) {
+                mouseDeltaSceneX = newTextWidthScene - m_initialTextWidthScene;
+            }
+            else {  // LeftHandle
+                mouseDeltaSceneX = -(newTextWidthScene - m_initialTextWidthScene);
+            }
+            newItemScenePosX = m_initialItemScenePos.x() + mouseDeltaSceneX / 2.0;
+        }
+
+        annoFeat->MaxWidth.setValue(newTextWidthDoc);
+        annoFeat->X.setValue(Rez::appX(newItemScenePosX));
+        // Y position is not changed by horizontal resize.
+        // The property changes will trigger QGIRichAnno::updateView via onChanged/requestPaint,
+        // and the item's scene position (this->pos()) will be updated by QGIView::itemChange
+        // reacting to the X property change.
+
+        event->accept();
+    }
+    else {
+        QGIView::mouseMoveEvent(event);
+    }
+}
+
+void QGIRichAnno::mouseReleaseEvent(QGraphicsSceneMouseEvent* event)
+{
+    if (m_isResizing) {
+        if (m_transactionOpen) {
+            // Only commit if actual dragging (and thus property changes) occurred.
+            // m_isDraggingMidResize flag indicates if mouseMoveEvent was processed.
+            if (!Gui::Control().activeDialog()) {
+                Gui::Command::commitCommand();
+            }
+            m_transactionOpen = false;
+            widthChanged();
+        }
+        m_isResizing = false;
+        m_isDraggingMidResize = false;
+        m_currentResizeHandle = ResizeHandle::NoHandle;
+        setCursor(Qt::ArrowCursor);  // Reset cursor
+
+        if (!isUnderMouse()) {
+            QGraphicsSceneHoverEvent leaveEvent(QEvent::GraphicsSceneHoverLeave);
+            hoverLeaveEvent(&leaveEvent);  // Manually trigger leave event
+        }
+
+        event->accept();
+    }
+    else {
+        QGIView::mouseReleaseEvent(event);
+    }
+}
+
+void QGIRichAnno::mouseDoubleClickEvent(QGraphicsSceneMouseEvent* event) {
+    Q_UNUSED(event);
+    
+    // If resizing was in progress, cancel it to avoid conflict with dialog
+    if (m_isResizing) {
+        if (m_transactionOpen) {
+            // To avoid partial changes, might need to revert or just abort.
+            // For simplicity, we commit if open. A better way would be to store original values and revert.
+            if (!Gui::Control().activeDialog()) {
+                Gui::Command::commitCommand();
+            }
+            m_transactionOpen = false;
+        }
+        m_isResizing = false;
+        m_isDraggingMidResize = false;
+        m_currentResizeHandle = ResizeHandle::NoHandle;
+        setCursor(Qt::ArrowCursor);
+    }
+
+    auto vp = static_cast<ViewProviderRichAnno*>(getViewProvider(getViewObject()));
+    if (!vp) {
+        return;
+    }
+    vp->doubleClicked();
 }
 
 #include <Mod/TechDraw/Gui/moc_QGIRichAnno.cpp>
