@@ -23,7 +23,7 @@
  ***************************************************************************/
 
 # include <QMessageBox>
-# include <sstream>
+#include <algorithm>
 
 
 #include <App/Document.h>
@@ -48,9 +48,7 @@
 #include <Mod/TechDraw/App/Preferences.h>
 
 #include "DrawGuiUtil.h"
-#include "TaskGeomHatch.h"
-#include "TaskHatch.h"
-#include "ViewProviderGeomHatch.h"
+#include "TaskHatchFace.h"
 #include "ViewProviderPage.h"
 #include "MDIViewPage.h"
 #include "CommandHelpers.h"
@@ -60,9 +58,6 @@
 using namespace TechDrawGui;
 using namespace TechDraw;
 using DU = DrawUtil;
-
-//internal functions
-bool _checkSelectionHatch(Gui::Command* cmd);
 
 //===========================================================================
 // TechDraw_ToggleFrame
@@ -164,169 +159,117 @@ bool CmdTechDrawToggleGrid::isActive()
 }
 
 //===========================================================================
-// TechDraw_Hatch
+// TechDraw_HatchFace
 //===========================================================================
-
-DEF_STD_CMD_A(CmdTechDrawHatch)
-
-CmdTechDrawHatch::CmdTechDrawHatch()
-  : Command("TechDraw_Hatch")
+class CmdTechDrawHatchFace: public Gui::Command
 {
-    sAppModule      = "TechDraw";
-    sGroup          = QT_TR_NOOP("TechDraw");
-    sMenuText       = QT_TR_NOOP("Image Hatch");
-    sToolTipText    = QT_TR_NOOP("Applies a hatch pattern to the selected faces using an image file");
-    sWhatsThis      = "TechDraw_Hatch";
-    sStatusTip      = sToolTipText;
-    sPixmap         = "actions/TechDraw_Hatch";
+public:
+    explicit CmdTechDrawHatchFace(const char* name = "TechDraw_HatchFace");
+    const char* className() const override
+    {
+        return "CmdTechDrawHatchFace";
+    }
+
+protected:
+    void activated(int) override;
+    bool isActive() override;
+};
+
+namespace
+{
+bool isHatch(const App::DocumentObject* object)
+{
+    return object
+        && (object->isDerivedFrom<TechDraw::DrawHatch>()
+            || object->isDerivedFrom<TechDraw::DrawGeomHatch>());
 }
 
-void CmdTechDrawHatch::activated(int iMsg)
+TechDraw::DrawViewPart* selectedHatchView(std::vector<Gui::SelectionObject>& selection)
 {
-    Q_UNUSED(iMsg);
-    if (!_checkSelectionHatch(this)) {
-        return;
+    if (selection.size() != 1) {
+        return nullptr;
     }
-
-    std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx();
-    auto partFeat( dynamic_cast<TechDraw::DrawViewPart *>(selection[0].getObject()) );
-    if (!partFeat) {
-        return;
+    auto view = dynamic_cast<TechDraw::DrawViewPart*>(selection.front().getObject());
+    const auto& faces = selection.front().getSubNames();
+    if (!view || !view->findParentPage() || faces.empty()) {
+        return nullptr;
     }
-    const std::vector<std::string> &subNames = selection[0].getSubNames();
-    TechDraw::DrawPage* page = partFeat->findParentPage();
-    std::string PageName = page->getNameInDocument();
-    std::vector<int> selFaces;
-    for (auto& s: subNames) {
-        int f = TechDraw::DrawUtil::getIndexFromName(s);
-        selFaces.push_back(f);
-    }
-
-    bool removeOld = false;
-    std::vector<TechDraw::DrawHatch*> hatchObjs = partFeat->getHatches();
-    for (auto& s: subNames) {                             //all the faces selected in DVP
-        int face = TechDraw::DrawUtil::getIndexFromName(s);
-        if (TechDraw::DrawHatch::faceIsHatched(face, hatchObjs)) {
-            QMessageBox::StandardButton rc =
-                    QMessageBox::question(Gui::getMainWindow(), QObject::tr("Replace hatch?"),
-                            QObject::tr("Some faces in the selection are already hatched. Replace?"));
-            if (rc == QMessageBox::StandardButton::NoButton) {
-                return;
-            }
-
-            removeOld = true;
-            break;
-        }
-    }
-
-    if (removeOld) {
-        openCommand(QT_TRANSLATE_NOOP("Command", "Remove old hatch"));
-        std::vector<std::pair< int, TechDraw::DrawHatch*> > toRemove;
-        for (auto& h: hatchObjs) {             //all the hatch objects for selected DVP
-            std::vector<std::string> hatchSubs = h->Source.getSubValues();
-            for (auto& hs: hatchSubs) {        //all the Faces in this hatch object
-                int hatchFace = TechDraw::DrawUtil::getIndexFromName(hs);
-                if (auto it = std::ranges::find(selFaces, hatchFace); it != selFaces.end()) {
-                    std::pair< int, TechDraw::DrawHatch*> removeItem;
-                    removeItem.first = hatchFace;
-                    removeItem.second = h;
-                    toRemove.push_back(removeItem);
-                }
-            }
-        }
-        for (auto& r: toRemove) {
-            r.second->removeSub(r.first);
-            if (r.second->empty()) {
-                doCommand(Doc, "App.activeDocument().removeObject('%s')", r.second->getNameInDocument());
-            }
-        }
-        commitCommand();
-    }
-
-    // dialog to fill in hatch values
-    Gui::Control().showDialog(new TaskDlgHatch(partFeat, subNames));
-
-    // Touch the parent feature so the hatching in tree view appears as a child
-    partFeat->touch();
-    getDocument()->recompute();
+    const bool onlyFaces = std::ranges::all_of(faces, [](const auto& face) {
+        return TechDraw::DrawUtil::getGeomTypeFromName(face) == "Face"
+            && TechDraw::DrawUtil::getIndexFromName(face) >= 0;
+    });
+    return onlyFaces ? view : nullptr;
 }
 
-bool CmdTechDrawHatch::isActive()
+bool selectedHatch(const std::vector<Gui::SelectionObject>& selection)
 {
-    bool havePage = DrawGuiUtil::needPage(this);
-    bool haveView = DrawGuiUtil::needView(this);
-    return (havePage && haveView);
+    return selection.size() == 1 && selection.front().getSubNames().empty()
+        && isHatch(selection.front().getObject());
 }
 
-//===========================================================================
-// TechDraw_GeometricHatch
-//===========================================================================
-
-DEF_STD_CMD_A(CmdTechDrawGeometricHatch)
-
-CmdTechDrawGeometricHatch::CmdTechDrawGeometricHatch()
-  : Command("TechDraw_GeometricHatch")
+bool hasHatchedFaces(TechDraw::DrawViewPart* view, const std::vector<std::string>& faces)
 {
-    sAppModule      = "TechDraw";
-    sGroup          = QT_TR_NOOP("TechDraw");
-    sMenuText       = QT_TR_NOOP("Geometric Hatch");
-    sToolTipText    = QT_TR_NOOP("Applies a geometric hatch pattern to the selected faces");
-    sWhatsThis      = "TechDraw_GeometricHatch";
-    sStatusTip      = sToolTipText;
-    sPixmap         = "actions/TechDraw_GeometricHatch";
+    const auto overlaps = [&faces](const auto* hatch) {
+        return std::ranges::any_of(hatch->Source.getSubValues(), [&faces](const auto& face) {
+            return std::ranges::find(faces, face) != faces.end();
+        });
+    };
+    return std::ranges::any_of(view->getHatches(), overlaps)
+        || std::ranges::any_of(view->getGeomHatches(), overlaps);
+}
+}  // namespace
+
+CmdTechDrawHatchFace::CmdTechDrawHatchFace(const char* name)
+    : Gui::Command(name)
+{
+    sAppModule = "TechDraw";
+    sGroup = QT_TR_NOOP("TechDraw");
+    sMenuText = QT_TR_NOOP("Hatch Face");
+    sToolTipText = QT_TR_NOOP("Applies an SVG or PAT hatch pattern to the selected faces");
+    sWhatsThis = "TechDraw_HatchFace";
+    sStatusTip = sToolTipText;
+    sPixmap = "actions/TechDraw_Hatch";
 }
 
-void CmdTechDrawGeometricHatch::activated(int iMsg)
+void CmdTechDrawHatchFace::activated(int)
 {
-    Q_UNUSED(iMsg);
-    if (!_checkSelectionHatch(this)) {                 //same requirements as hatch - page, DrawViewXXX, face
+    if (Gui::Control().activeDialog()) {
         return;
     }
-
-    std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx();
-    auto objFeat( dynamic_cast<TechDraw::DrawViewPart *>(selection[0].getObject()) );
-    if (!objFeat) {
+    auto selection = getSelection().getSelectionEx();
+    if (selectedHatch(selection)) {
+        Gui::Control().showDialog(new TaskDlgHatchFace(selection.front().getObject()));
         return;
     }
-    const std::vector<std::string> &subNames = selection[0].getSubNames();
-    TechDraw::DrawPage* page = objFeat->findParentPage();
-    std::string PageName = page->getNameInDocument();
-
-    std::string FeatName = getUniqueObjectName("GeomHatch");
-
-    // TODO: the structured label for GeomHatch (and Hatch) should be retired.
-//    std::stringstream featLabel;
-//    featLabel << FeatName << "FX" << TechDraw::DrawUtil::getIndexFromName(subNames.at(0));
-
-    openCommand(QT_TRANSLATE_NOOP("Command", "Create GeomHatch"));
-    doCommand(Doc, "App.activeDocument().addObject('TechDraw::DrawGeomHatch', '%s')", FeatName.c_str());
-//    doCommand(Doc, "App.activeDocument().%s.Label = '%s'", FeatName.c_str(), featLabel.str().c_str());
-    doCommand(Doc, "App.activeDocument().%s.translateLabel('DrawGeomHatch', 'GeomHatch', '%s')",
-              FeatName.c_str(), FeatName.c_str());
-
-    auto geomhatch( static_cast<TechDraw::DrawGeomHatch *>(getDocument()->getObject(FeatName.c_str())) );
-    geomhatch->Source.setValue(objFeat, subNames);
-    Gui::ViewProvider* vp = Gui::Application::Instance->getDocument(getDocument())->getViewProvider(geomhatch);
-    TechDrawGui::ViewProviderGeomHatch* hvp = dynamic_cast<TechDrawGui::ViewProviderGeomHatch*>(vp);
-    if (!hvp) {
+    auto view = selectedHatchView(selection);
+    if (!view) {
+        QMessageBox::information(
+            Gui::getMainWindow(),
+            QObject::tr("Incorrect Selection"),
+            QObject::tr("The selection must contain only faces from one TechDraw view.")
+        );
         return;
     }
-
-    // dialog to fill in hatch values
-    Gui::Control().showDialog(new TaskDlgGeomHatch(geomhatch, hvp, true));
-
-    commitCommand();
-
-    // Touch the parent feature so the hatching in tree view appears as a child
-    objFeat->touch();
-    getDocument()->recompute();
+    const auto& faces = selection.front().getSubNames();
+    if (hasHatchedFaces(view, faces)
+        && QMessageBox::question(
+               Gui::getMainWindow(),
+               QObject::tr("Replace Hatch?"),
+               QObject::tr("Some faces in the selection are already hatched. Replace existing hatches?"),
+               QMessageBox::Yes | QMessageBox::No
+           ) != QMessageBox::Yes) {
+        return;
+    }
+    Gui::Control().showDialog(new TaskDlgHatchFace(view, faces));
 }
 
-bool CmdTechDrawGeometricHatch::isActive()
+bool CmdTechDrawHatchFace::isActive()
 {
-    bool havePage = DrawGuiUtil::needPage(this);
-    bool haveView = DrawGuiUtil::needView(this);
-    return (havePage && haveView);
+    if (Gui::Control().activeDialog()) {
+        return false;
+    }
+    auto selection = getSelection().getSelectionEx();
+    return selectedHatch(selection) || selectedHatchView(selection);
 }
 
 //===========================================================================
@@ -400,54 +343,14 @@ void CreateTechDrawCommandsDecorate()
 {
     Gui::CommandManager &rcCmdMgr = Gui::Application::Instance->commandManager();
 
-    rcCmdMgr.addCommand(new CmdTechDrawHatch());
-    rcCmdMgr.addCommand(new CmdTechDrawGeometricHatch());
+    rcCmdMgr.addCommand(new CmdTechDrawHatchFace());
+    // Keep saved shortcuts and macros working through the unified implementation.
+    rcCmdMgr.addCommand(new CmdTechDrawHatchFace("TechDraw_Hatch"));
+    rcCmdMgr.addCommand(new CmdTechDrawHatchFace("TechDraw_GeometricHatch"));
     rcCmdMgr.addCommand(new CmdTechDrawImage());
     rcCmdMgr.addCommand(new CmdTechDrawToggleFrame());
     rcCmdMgr.addCommand(new CmdTechDrawToggleGrid());
 
 //    rcCmdMgr.addCommand(new CmdTechDrawLeaderLine());
 //    rcCmdMgr.addCommand(new CmdTechDrawRichTextAnnotation());
-}
-
-//===========================================================================
-// Selection Validation Helpers
-//===========================================================================
-
-bool _checkSelectionHatch(Gui::Command* cmd) {
-    std::vector<Gui::SelectionObject> selection = cmd->getSelection().getSelectionEx();
-    if (selection.empty()) {
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Incorrect Selection"),
-                             QObject::tr("Select a face first"));
-        return false;
-    }
-
-    TechDraw::DrawViewPart * objFeat = dynamic_cast<TechDraw::DrawViewPart *>(selection[0].getObject());
-    if(!objFeat) {
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Incorrect Selection"),
-                             QObject::tr("No TechDraw object in selection"));
-        return false;
-    }
-
-    std::vector<App::DocumentObject*> pages = cmd->getDocument()->getObjectsOfType(TechDraw::DrawPage::getClassTypeId());
-    if (pages.empty()){
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Incorrect Selection"),
-            QObject::tr("Create a page to insert"));
-        return false;
-    }
-
-    const std::vector<std::string> &SubNames = selection[0].getSubNames();
-    if (SubNames.empty()) {
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Incorrect Selection"),
-        QObject::tr("No faces to hatch in this selection"));
-        return false;
-    }
-    std::string gType = TechDraw::DrawUtil::getGeomTypeFromName(SubNames.at(0));
-    if (!(gType == "Face")) {
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Incorrect Selection"),
-        QObject::tr("No faces to hatch in this selection"));
-        return false;
-    }
-
-    return true;
 }
