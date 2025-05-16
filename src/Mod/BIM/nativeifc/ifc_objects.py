@@ -66,7 +66,7 @@ class ifc_object:
         elif prop == "Schema":
             self.edit_schema(obj, obj.Schema)
         elif prop == "Type":
-            self.Classification(obj)
+            self.assign_classification(obj)
         elif prop == "Classification":
             self.edit_classification(obj)
         elif prop == "Group":
@@ -117,7 +117,7 @@ class ifc_object:
             QtCore.QTimer.singleShot(100, obj.Document.recompute)
             QtCore.QTimer.singleShot(100, self.fit_all)
 
-    def Classification(self, obj):
+    def assign_classification(self, obj):
         """
         Assigns Classification to an IFC object in two cases:
 
