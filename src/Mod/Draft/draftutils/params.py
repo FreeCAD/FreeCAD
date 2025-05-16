@@ -636,7 +636,6 @@ def _get_param_dictionary():
             text = QtCore.QTextStream(fd).readAll()
             fd.close()
         else:
-            print("Preferences file " + fnm + " not found")
             continue
 
         # https://docs.python.org/3/library/xml.etree.elementtree.html
