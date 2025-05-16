@@ -80,7 +80,7 @@ class CAMWorkbench(Workbench):
 
         from Path.Main.Gui import JobCmd as PathJobCmd
         from Path.Main.Gui import SanityCmd as SanityCmd
-        from Path.Tool.Gui import BitCmd as PathToolBitCmd
+        from Path.Tool.toolbit.ui import cmd as PathToolBitCmd
         from Path.Tool.Gui import BitLibraryCmd as PathToolBitLibraryCmd
 
         from PySide.QtCore import QT_TRANSLATE_NOOP

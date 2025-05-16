@@ -27,6 +27,8 @@ import Path.Tool
 import os
 from PySide.QtCore import QT_TRANSLATE_NOOP
 from Path.Tool.toolbit import ToolBit
+from Path.Tool.assets.ui import AssetSaveDialog
+from Path.Tool.toolbit.serializers import all_serializers as toolbit_serializers
 
 if False:
     Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
@@ -96,32 +98,15 @@ class CommandToolBitSave:
         return False
 
     def Activated(self):
-        from PySide import QtGui
+        tool_obj = self.selectedTool()
+        if not tool_obj:
+            return
+        toolbit = tool_obj.Proxy
 
-        tool = self.selectedTool()
-        if tool:
-            path = None
-            if not tool.File or self.saveAs:
-                if tool.File:
-                    fname = tool.File
-                else:
-                    fname = os.path.join(
-                        Path.Preferences.getToolBitPath(),
-                        tool.Label + ".fctb",
-                    )
-                foo = QtGui.QFileDialog.getSaveFileName(
-                    QtGui.QApplication.activeWindow(), "Tool", fname, "*.fctb"
-                )
-                if foo:
-                    path = foo[0]
-            else:
-                path = tool.File
-
-            if path:
-                if not path.endswith(".fctb"):
-                    path += ".fctb"
-                tool.Proxy.saveToFile(path)
-
+        dialog = AssetSaveDialog(ToolBit, toolbit_serializers, FreeCADGui.getMainWindow())
+        dialog_result = dialog.exec(toolbit)
+        if not dialog_result:
+            return
 
 class CommandToolBitLoad:
     """
@@ -166,5 +151,3 @@ CommandList = [
     "CAM_ToolBitSave",
     "CAM_ToolBitSaveAs",
 ]
-
-FreeCAD.Console.PrintLog("Loading PathToolBitCmd... done\n")
