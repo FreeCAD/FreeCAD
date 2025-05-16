@@ -128,7 +128,7 @@ class ifc_object:
            Classification from the original object to the new Type object.
         """
         
-        if (not hasattr(obj, "Type") or not obj.Type) and not obj.Proxy.generated_type:
+        if not getattr(obj, "Type", None) and not obj.Proxy.generated_type:
             return
 
         # This means we are currently converting the IFC object to a type
@@ -141,7 +141,7 @@ class ifc_object:
             obj.Proxy.generated_type = None
         else:
             type_obj = obj.Type
-            if hasattr(type_obj, "Classification") and type_obj.Classification:
+            if getattr(type_obj, "Classification", None):
                 obj.addProperty("App::PropertyString", "Classification", "IFC")
                 obj.Classification = type_obj.Classification
                 obj.recompute()
