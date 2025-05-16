@@ -618,18 +618,6 @@ class ToolBit(Asset, ABC):
             return icon.get_png()
         return None
 
-    def saveToFile(self, path, setFile=True):
-        Path.Log.track(path)
-        try:
-            with open(str(path), "w") as fp:
-                json.dump(self.to_dict(), fp, indent="  ")
-            if setFile:
-                self.obj.File = str(path)
-            return True
-        except (OSError, IOError) as e:
-            Path.Log.error("Could not save tool {} to {} ({})".format(self.obj.Label, path, e))
-            raise
-
     def _remove_properties(self, group, prop_names):
         for name in prop_names:
             if hasattr(self.obj, name):
