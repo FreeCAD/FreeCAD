@@ -186,8 +186,14 @@ class PostGlyphFilter(base_fempythonobject.BaseFemPythonObject):
         self._algorithms = {}
 
         # create all vtkalgorithm combinations and set them as filter pipeline
-        sources = {"Arrow": vtkSources.vtkArrowSource, "Cone": vtkSources.vtkConeSource, "Cube": vtkSources.vtkCubeSource, 
-                   "Cylinder": vtkSources.vtkCylinderSource, "Line": vtkSources.vtkLineSource, "Sphere": vtkSources.vtkSphereSource}
+        sources = {
+            "Arrow": vtkSources.vtkArrowSource,
+            "Cone": vtkSources.vtkConeSource,
+            "Cube": vtkSources.vtkCubeSource,
+            "Cylinder": vtkSources.vtkCylinderSource,
+            "Line": vtkSources.vtkLineSource,
+            "Sphere": vtkSources.vtkSphereSource,
+        }
 
         for source_name in sources:
 
