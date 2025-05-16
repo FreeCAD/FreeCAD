@@ -295,6 +295,10 @@ void StartupPostProcess::setQtStyle()
 {
     ParameterGrp::handle hGrp = WindowParameter::getDefaultParameter()->GetGroup("MainWindow");
     auto qtStyle = hGrp->GetASCII("QtStyle");
+    if (qtStyle.empty()) {
+        qtStyle = "Fusion";
+        hGrp->SetASCII("QtStyle", qtStyle);
+    }
     QApplication::setStyle(QString::fromStdString(qtStyle));
 }
 
