@@ -157,31 +157,31 @@ classDiagram
     class AssetManager["AssetManager
     <small>Creates, assembles or deletes assets from URIs</small>"] {
         stores: Mapping[str, AssetStore]   // maps protocol to store
-        register_store(store: AssetStore)
-        register_asset(asset: Asset)
-        register_serializer(serializer: AssetSerializer)
-        get(uri: AssetUri, store: str, depth: Optional[int]) Asset | None
-        get_raw(uri: AssetUri | str, store: str) bytes | None
-        add(obj: Any, store: str) AssetUri // Returns URI of created asset
-        add_raw(asset_type: str, asset_id: str, data: bytes, store: str) AssetUri
-        delete(uri: AssetUri, store: str)
-        is_empty(store: str | None, asset_type: str | None) bool
-        list_assets(asset_type: str | None, limit: int | None, offset: int | None, store: str) List[AssetUri]
-        list_versions(uri: AssetUri | str, store: str) List[AssetUri]
-        get_bulk(uris: List[AssetUri | str], store: str, depth: Optional[int]) Dict[AssetUri, Any]
-        fetch(asset_type: str | None, limit: int | None, offset: int | None, store: str, depth: Optional[int]) List[Asset]
+        register_store(store: AssetStore, cacheable: bool = False)
+        register_asset(asset_class: Type[Asset], serializer: Type[AssetSerializer])
+        get(uri: AssetUri | str, store: str = "local", depth: Optional[int] = None) Any
+        get_raw(uri: AssetUri | str, store: str = "local") bytes
+        add(obj: Asset, store: str = "local") AssetUri
+        add_raw(asset_type: str, asset_id: str, data: bytes, store: str = "local") AssetUri
+        delete(uri: AssetUri | str, store: str = "local")
+        is_empty(asset_type: str | None = None, store: str = "local") bool
+        list_assets(asset_type: str | None = None, limit: int | None = None, offset: int | None = None, store: str = "local") List[AssetUri]
+        list_versions(uri: AssetUri | str, store: str = "local") List[AssetUri]
+        get_bulk(uris: Sequence[AssetUri | str], store: str = "local", depth: Optional[int] = None) List[Any]
+        fetch(asset_type: str | None = None, limit: int | None = None, offset: int | None = None, store: str = "local", depth: Optional[int] = None) List[Asset]
     }
 
     class AssetStore["AssetStore
     <small>Stores/Retrieves assets as raw bytes</small>"] {
         <<abstract>>
         async get(uri: AssetUri) bytes
+        async count_assets(asset_type: str | None = None) int
         async delete(uri: AssetUri)
         async create(asset_type: str, asset_id: str, data: bytes) AssetUri
         async update(uri: AssetUri, data: bytes) AssetUri
         async list_assets(asset_type: str | None, limit: int | None, offset: int | None) List[AssetUri]
         async list_versions(uri: AssetUri) List[AssetUri]
-        async is_empty(asset_type: str | None) bool
+        async is_empty(asset_type: str | None = None) bool
     }
     AssetStore *-- AssetManager: has many
 
@@ -196,7 +196,7 @@ classDiagram
         async update(uri: AssetUri, data: bytes) AssetUri
         async list_assets(asset_type: str | None, limit: int | None, offset: int | None) List[AssetUri]
         async list_versions(uri: AssetUri) List[AssetUri]
-        async is_empty(asset_type: str | None) bool
+        async is_empty(asset_type: str | None = None) bool
     }
     FileStore <|-- AssetStore: is
 
@@ -221,7 +221,7 @@ classDiagram
         mime_type: str
         extract_dependencies(data: bytes) List[AssetUri]
         serialize(asset: Asset) bytes
-        deserialize(data: bytes, id: str, dependencies: Mapping[AssetUri, Asset]) Asset
+        deserialize(data: bytes, id: str, dependencies: Optional[Mapping[AssetUri, Asset]]) Asset
     }
     AssetSerializer *-- AssetManager: has many
     Asset --> AssetSerializer: uses
@@ -232,8 +232,8 @@ classDiagram
         
         get_id() str  // Returns a unique ID of the asset
         to_bytes(serializer: AssetSerializer) bytes
-        from_bytes(data: bytes, id: str, dependencies: Mapping[AssetUri, Asset], serializer: AssetSerializer) Asset
-        extract_dependencies(data: bytes, serializer: AssetSerializer) List[AssetUri]  // Extracts dependency URIs from bytes
+        from_bytes(data: bytes, id: str, dependencies: Optional[Mapping[AssetUri, Asset]], serializer: Type[AssetSerializer]) Asset
+        extract_dependencies(data: bytes, serializer: Type[AssetSerializer]) List[AssetUri]  // Extracts dependency URIs from bytes
     }
     Asset *-- AssetManager: creates
 
@@ -292,6 +292,16 @@ classDiagram
         class Material
     }
 ```
+
+# UI Helpers
+
+The `ui` directory contains helper modules for the asset manager's user interface.
+
+- [`filedialog.py`](src/Mod/CAM/Path/Tool/assets/ui/filedialog.py):
+  Provides file dialogs for importing and exporting assets.
+
+- [`util.py`](src/Mod/CAM/Path/Tool/assets/ui/util.py): Contains general utility
+  functions used within the asset manager UI.
 
 # What's next
 
