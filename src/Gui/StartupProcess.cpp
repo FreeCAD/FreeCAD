@@ -298,8 +298,12 @@ void StartupPostProcess::setQtStyle()
     if (qtStyle.empty()) {
         qtStyle = "Fusion";
         hGrp->SetASCII("QtStyle", qtStyle);
+    } else if (qtStyle == "System") {
+        // Special value to not set a QtStyle explicitly
+        return;
     }
     QApplication::setStyle(QString::fromStdString(qtStyle));
+
 }
 
 void StartupPostProcess::checkOpenGL()
