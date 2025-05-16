@@ -161,50 +161,6 @@ class TaskPanel:
         self.editor.setupUI()
 
 
-def setup_toolbit_gui(tool_document_object: FreeCAD.DocumentObject):
-    """
-    Encapsulates GUI-specific setup logic for a ToolBit document object.
-    Attaches the ViewProvider if the object has a ViewObject.
-    """
-    if hasattr(tool_document_object, "ViewObject") and tool_document_object.ViewObject:
-        PathIconViewProvider.Attach(
-            tool_document_object.ViewObject, tool_document_object.Label
-        )
-    else:
-        FreeCAD.Console.PrintWarning(
-            f"WARNING: ViewObject not available for tool {tool_document_object.Label}. "
-            "ViewProvider not attached.\n"
-        )
-
-
-def isValidFileName(filename):
-    print(filename)
-    try:
-        with open(filename, "w"):
-            return True
-    except Exception:
-        return False
-
-
-def GetNewToolFile(parent=None):
-    if parent is None:
-        parent = QtGui.QApplication.activeWindow()
-
-    bitdir = Path.Preferences.getToolBitPath()
-    bitfile = QtGui.QFileDialog.getSaveFileName(
-        parent, translate("CAM_Toolbit", "Tool"), str(bitdir), "*.fctb"
-    )
-    if bitfile and bitfile[0]:
-        if not isValidFileName(bitfile[0]):
-            msgBox = QtGui.QMessageBox()
-            msg = translate("CAM_Toolbit", "Failed to open file for writing")
-            msgBox.setText(msg)
-            msgBox.exec_()
-        else:
-            return bitfile[0]
-    return None
-
-
 def GetToolFile(parent=None):
     if parent is None:
         parent = QtGui.QApplication.activeWindow()
