@@ -33,18 +33,22 @@ namespace e57
    class ScaledIntegerNodeImpl : public NodeImpl
    {
    public:
-      ScaledIntegerNodeImpl( ImageFileImplWeakPtr destImageFile, int64_t value = 0, int64_t minimum = 0,
-                             int64_t maximum = 0, double scale = 1.0, double offset = 0.0 );
+      ScaledIntegerNodeImpl( ImageFileImplWeakPtr destImageFile, int64_t value, int64_t minimum,
+                             int64_t maximum, double scale, double offset );
 
-      ScaledIntegerNodeImpl( ImageFileImplWeakPtr destImageFile, double scaledValue = 0., double scaledMinimum = 0.,
-                             double scaledMaximum = 0., double scale = 1.0, double offset = 0.0 );
+      ScaledIntegerNodeImpl( ImageFileImplWeakPtr destImageFile, double scaledValue,
+                             double scaledMinimum, double scaledMaximum, double scale,
+                             double offset );
 
       ~ScaledIntegerNodeImpl() override = default;
 
       NodeType type() const override
       {
-         return E57_SCALED_INTEGER;
+         return TypeScaledInteger;
       }
+
+      void validateValue() const;
+
       bool isTypeEquivalent( NodeImplSharedPtr ni ) override;
       bool isDefined( const ustring &pathName ) override;
 
@@ -62,7 +66,7 @@ namespace e57
       void writeXml( ImageFileImplSharedPtr imf, CheckedFile &cf, int indent,
                      const char *forcedFieldName = nullptr ) override;
 
-#ifdef E57_DEBUG
+#ifdef E57_ENABLE_DIAGNOSTIC_OUTPUT
       void dump( int indent = 0, std::ostream &os = std::cout ) const override;
 #endif
 
