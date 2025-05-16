@@ -26,6 +26,7 @@
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
 #include "QGIView.h"
+#include "QGIUserTypes.h"
 
 QT_BEGIN_NAMESPACE
 class QGraphicsScene;
@@ -41,7 +42,7 @@ public:
     QGIViewCollection();
     ~QGIViewCollection() override = default;
 
-    enum {Type = QGraphicsItem::UserType + 110};
+    enum {Type = UserType::QGIViewCollection};
     int type() const override { return Type;}
 };
 

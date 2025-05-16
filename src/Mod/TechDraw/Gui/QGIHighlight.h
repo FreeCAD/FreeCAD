@@ -34,6 +34,7 @@
 #include "QGCustomText.h"
 #include "QGCustomRect.h"
 #include "QGIDecoration.h"
+#include "QGIUserTypes.h"
 
 
 namespace TechDrawGui
@@ -45,7 +46,7 @@ public:
     explicit QGIHighlight();
     ~QGIHighlight() override;
 
-    enum {Type = QGraphicsItem::UserType + 176};
+    enum {Type = UserType::QGIHighlight};
     int type() const override { return Type;}
 
     void paint(QPainter * painter,

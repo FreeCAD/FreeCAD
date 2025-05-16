@@ -29,6 +29,8 @@
 #include <QPointF>
 #include <QRectF>
 
+#include "QGIUserTypes.h"
+
 QT_BEGIN_NAMESPACE
 class QPainter;
 class QStyleOptionGraphicsItem;
@@ -43,7 +45,7 @@ public:
     explicit QGDisplayArea();
     ~QGDisplayArea() override {}
 
-    enum {Type = QGraphicsItem::UserType + 137};
+    enum {Type = UserType::QGDisplayArea};
     int type() const override { return Type;}
     QRectF boundingRect() const override;
 
