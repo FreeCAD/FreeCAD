@@ -43,6 +43,7 @@
 #include <Mod/TechDraw/App/XMLQuery.h>
 
 #include "QGISVGTemplate.h"
+#include "QGIUserTypes.h"
 #include "PreferencesGui.h"
 #include "QGSPage.h"
 #include "Rez.h"
@@ -206,13 +207,12 @@ void QGISVGTemplate::updateView(bool update)
 
 std::vector<TemplateTextField*> QGISVGTemplate::getTextFields()
 {
-    constexpr int TemplateTextFieldType {QGraphicsItem::UserType + 160};
     std::vector<TemplateTextField*> result;
     result.reserve(childItems().size());
 
     QList<QGraphicsItem*> templateChildren = childItems();
     for (auto& child : templateChildren) {
-        if (child->type() == TemplateTextFieldType) {
+        if (child->type() == UserType::TemplateTextField) {
             result.push_back(static_cast<TemplateTextField*>(child));
         }
     }

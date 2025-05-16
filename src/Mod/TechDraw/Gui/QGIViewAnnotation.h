@@ -27,6 +27,7 @@
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
 #include "QGIView.h"
+#include "QGIUserTypes.h"
 
 namespace TechDraw {
 class DrawViewAnnotation;
@@ -45,7 +46,7 @@ public:
     /// m_textItem belongs to this group and will be deleted by Qt
     ~QGIViewAnnotation() override = default;
 
-    enum {Type = QGraphicsItem::UserType + 120};
+    enum {Type = UserType::QGIViewAnnotation};
     int type() const override { return Type;}
 
     void updateView(bool update = false) override;
