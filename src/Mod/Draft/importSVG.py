@@ -702,8 +702,21 @@ class svgHandler(xml.sax.ContentHandler):
             else:
                 self.transform = m
         else:
-            if name == "g" or name == "freecad:used":
+            if name == "g":
                 self.grouptransform.append(FreeCAD.Matrix())
+            elif name == "freecad:used":
+            #use tag acts as g tag but has x,y attribute
+                if "x" in data:
+                    x=data['x']
+                else:
+                    x=0
+                if "y" in data:
+                    y=data['y']
+                else:
+                    y=0
+                xy = FreeCAD.Matrix()
+                xy.move(Vector(x, -y, 0))
+                self.grouptransform.append(xy)    
 
         if self.style == 0:
             if self.fill is not None:
@@ -1405,7 +1418,11 @@ def replace_use_with_reference(file_path):
             # create parent map
             parent_map = {child: parent for parent in tree.iter() for child in parent}
             for use in uses:
-                href = use.attrib.get("{http://www.w3.org/1999/xlink}href", "")
+                parent = parent_map[use]
+                href = use.attrib.get("href", "")
+                # if href is empty, try to get xlink:href.
+                if not href:
+                    href = use.attrib.get("{http://www.w3.org/1999/xlink}href", "")
                 if href.startswith("#"):
                     ref_id = href[1:]
                     ref_element = id_map.get(ref_id)
@@ -1417,7 +1434,7 @@ def replace_use_with_reference(file_path):
                         new_element = ET.Element("freecad:used")
                         for attr in use.attrib:
                             # copy attribute to new one except href attribute
-                            if attr != "{http://www.w3.org/1999/xlink}href" and attr not in new_element.attrib:
+                            if attr != ("href" or "{http://www.w3.org/1999/xlink}href") and attr not in new_element.attrib:
                                 new_element.set(attr, use.attrib[attr])
                         ref_element=deepcopy(ref_element)
                         # change referenced symbol tag to g tag, because symbol tag will be ignored when importing.
@@ -1431,10 +1448,10 @@ def replace_use_with_reference(file_path):
                             if "id" in child.attrib:
                                 del child.attrib["id"]
                         new_element.append(ref_element)
-                        parent = parent_map[use]
                         # replace use tag by freecad:used tag. 
-                        parent.remove(use)
                         parent.append(new_element)
+                #remove use when referenced element is not found.
+                parent.remove(use)
         #now all use tag processd
         #remove symbol and defs tag from tree.
         parent_map = {child: parent for parent in tree.iter() for child in parent}
