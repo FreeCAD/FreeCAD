@@ -218,7 +218,7 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
 #ifdef FC_USE_VTK_PYTHON
              << "FEM_PostVisualization"
 #endif
-             ;
+        ;
 #endif
 
     Gui::ToolBarItem* utils = new Gui::ToolBarItem(root);
@@ -374,7 +374,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
 #ifdef FC_USE_VTK_PYTHON
              << "FEM_PostVisualization"
 #endif
-             ;
+        ;
 #endif
 
     Gui::MenuItem* utils = new Gui::MenuItem;

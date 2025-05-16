@@ -213,7 +213,11 @@ TaskPostWidget::TaskPostWidget(Gui::ViewProviderDocumentObject* view,
     setWindowIcon(icon);
     m_icon = icon;
 
-    m_connection = m_object->signalChanged.connect(boost::bind(&TaskPostWidget::handlePropertyChange, this, boost::placeholders::_1, boost::placeholders::_2));
+    m_connection =
+        m_object->signalChanged.connect(boost::bind(&TaskPostWidget::handlePropertyChange,
+                                                    this,
+                                                    boost::placeholders::_1,
+                                                    boost::placeholders::_2));
 }
 
 TaskPostWidget::~TaskPostWidget()
@@ -404,15 +408,16 @@ void TaskDlgPost::modifyStandardButtons(QDialogButtonBox* box)
     }
 }
 
-void TaskDlgPost::processCollapsedWidgets() {
+void TaskDlgPost::processCollapsedWidgets()
+{
 
     for (auto& widget : Content) {
-        if(auto task_box = dynamic_cast<Gui::TaskView::TaskBox*>(widget)) {
+        if (auto task_box = dynamic_cast<Gui::TaskView::TaskBox*>(widget)) {
             // get the task widget and check if it is a post widget
             auto widget = task_box->groupLayout()->itemAt(0)->widget();
-            if(auto post_widget = dynamic_cast<TaskPostWidget*>(widget)) {
-                if(post_widget->initiallyCollapsed()) {
-                    post_widget->setGeometry(QRect(QPoint(0,0), post_widget->sizeHint()));
+            if (auto post_widget = dynamic_cast<TaskPostWidget*>(widget)) {
+                if (post_widget->initiallyCollapsed()) {
+                    post_widget->setGeometry(QRect(QPoint(0, 0), post_widget->sizeHint()));
                     task_box->hideGroupBox();
                 }
             }
@@ -582,7 +587,8 @@ void TaskPostFrames::applyPythonCode()
     // we apply the views widgets python code
 }
 
-bool TaskPostFrames::initiallyCollapsed() {
+bool TaskPostFrames::initiallyCollapsed()
+{
 
     return (ui->FrameTable->rowCount() == 0);
 }

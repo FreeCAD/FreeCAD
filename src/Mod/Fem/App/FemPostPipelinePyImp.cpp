@@ -35,8 +35,8 @@
 // clang-format on
 
 #ifdef FC_USE_VTK_PYTHON
-    #include <vtkPythonUtil.h>
-#endif //BUILD_FEM_VTK
+#include <vtkPythonUtil.h>
+#endif  // BUILD_FEM_VTK
 
 
 using namespace Fem;
@@ -329,7 +329,7 @@ PyObject* FemPostPipelinePy::getOutputAlgorithm(PyObject* args)
     auto algorithm = getFemPostPipelinePtr()->getOutputAlgorithm();
     PyObject* py_algorithm = vtkPythonUtil::GetObjectFromPointer(algorithm);
 
-    return  Py::new_reference_to(py_algorithm);
+    return Py::new_reference_to(py_algorithm);
 #else
     PyErr_SetString(PyExc_NotImplementedError, "VTK python wrapper not available");
     Py_Return;

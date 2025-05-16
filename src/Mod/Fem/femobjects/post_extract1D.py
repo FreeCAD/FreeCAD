@@ -33,6 +33,7 @@ import FreeCAD
 
 from . import base_fempostextractors
 from . import base_fempythonobject
+
 _PropHelper = base_fempythonobject._PropHelper
 
 from vtkmodules.vtkCommonCore import vtkDoubleArray
@@ -53,11 +54,14 @@ class PostFieldData1D(base_fempostextractors.Extractor1D):
         super().__init__(obj)
 
     def _get_properties(self):
-        prop =[ _PropHelper(
+        prop = [
+            _PropHelper(
                 type="App::PropertyBool",
                 name="ExtractFrames",
                 group="Multiframe",
-                doc=QT_TRANSLATE_NOOP("FEM", "Specify if the field shall be extracted for every available frame"),
+                doc=QT_TRANSLATE_NOOP(
+                    "FEM", "Specify if the field shall be extracted for every available frame"
+                ),
                 value=False,
             ),
         ]
@@ -85,7 +89,9 @@ class PostFieldData1D(base_fempostextractors.Extractor1D):
                 timesteps = info.Get(vtkStreamingDemandDrivenPipeline.TIME_STEPS())
                 frames = True
             else:
-                FreeCAD.Console.PrintWarning("No frames available in data, ignoring \"ExtractFrames\" property")
+                FreeCAD.Console.PrintWarning(
+                    'No frames available in data, ignoring "ExtractFrames" property'
+                )
 
         if not frames:
             # get the dataset and extract the correct array
@@ -125,11 +131,14 @@ class PostIndexOverFrames1D(base_fempostextractors.Extractor1D):
         super().__init__(obj)
 
     def _get_properties(self):
-        prop =[_PropHelper(
+        prop = [
+            _PropHelper(
                 type="App::PropertyInteger",
                 name="Index",
                 group="X Data",
-                doc=QT_TRANSLATE_NOOP("FEM", "Specify for which index the data should be extracted"),
+                doc=QT_TRANSLATE_NOOP(
+                    "FEM", "Specify for which index the data should be extracted"
+                ),
                 value=0,
             ),
         ]
@@ -158,7 +167,9 @@ class PostIndexOverFrames1D(base_fempostextractors.Extractor1D):
                 abort = False
 
         if abort:
-            FreeCAD.Console.PrintWarning("Not sufficient frames available in data, cannot extract data")
+            FreeCAD.Console.PrintWarning(
+                "Not sufficient frames available in data, cannot extract data"
+            )
             obj.Table = table
             return
 

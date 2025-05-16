@@ -55,7 +55,9 @@ class _BasePostTaskPanel(base_femtaskpanel._BaseTaskPanel):
     # ##########################
 
     def getStandardButtons(self):
-        return QtGui.QDialogButtonBox.Apply | QtGui.QDialogButtonBox.Ok | QtGui.QDialogButtonBox.Cancel
+        return (
+            QtGui.QDialogButtonBox.Apply | QtGui.QDialogButtonBox.Ok | QtGui.QDialogButtonBox.Cancel
+        )
 
     def clicked(self, button):
         # apply button hit?
@@ -65,8 +67,9 @@ class _BasePostTaskPanel(base_femtaskpanel._BaseTaskPanel):
     def open(self):
         # open a new transaction if non is open
         if not FreeCAD.getActiveTransaction():
-            FreeCAD.ActiveDocument.openTransaction(translate("FEM", "Edit {}").format(self.obj.Label))
-
+            FreeCAD.ActiveDocument.openTransaction(
+                translate("FEM", "Edit {}").format(self.obj.Label)
+            )
 
     # Helper functions
     # ################
@@ -85,6 +88,3 @@ class _BasePostTaskPanel(base_femtaskpanel._BaseTaskPanel):
 
         cbox.setCurrentText(getattr(obj, prop))
         cbox.blockSignals(False)
-
-
-

@@ -40,6 +40,7 @@ from femguiutils import vtk_table_view
 
 translate = FreeCAD.Qt.translate
 
+
 class _TaskPanel(base_fempostpanel._BasePostTaskPanel):
     """
     The TaskPanel for editing properties of glyph filter
@@ -69,7 +70,6 @@ class _TaskPanel(base_fempostpanel._BasePostTaskPanel):
         # form made from param and selection widget
         self.form = [self.data_widget]
 
-
     # Setup functions
     # ###############
 
@@ -81,8 +81,6 @@ class _TaskPanel(base_fempostpanel._BasePostTaskPanel):
         # set current values to view widget
         viewObj = self.obj.ViewObject
 
-
     @QtCore.Slot()
     def showTable(self):
         self.obj.ViewObject.Proxy.show_visualization()
-
