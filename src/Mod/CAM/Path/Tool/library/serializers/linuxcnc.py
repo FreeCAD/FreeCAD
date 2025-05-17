@@ -16,7 +16,7 @@ class LinuxCNCSerializer(AssetSerializer):
 
     @classmethod
     def get_label(cls) -> str:
-        return FreeCAD.Qt.translate("CAM", "Camotics Tool Table")
+        return FreeCAD.Qt.translate("CAM", "LinuxCNC Tool Table")
 
     @classmethod
     def extract_dependencies(cls, data: bytes) -> List[AssetUri]:
