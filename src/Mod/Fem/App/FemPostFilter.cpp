@@ -1488,14 +1488,28 @@ void FemPostCalculatorFilter::updateAvailableFields()
 
 const std::vector<std::string> FemPostCalculatorFilter::getScalarVariables()
 {
+#if (VTK_MAJOR_VERSION >= 9) && (VTK_MINOR_VERSION > 0)
     std::vector<std::string> scalars = m_calculator->GetScalarVariableNames();
+#else
+    std::vector<std::string> scalars(m_calculator->GetScalarVariableNames(),
+                                     m_calculator->GetScalarVariableNames()
+                                         + m_calculator->GetNumberOfScalarArrays());
+#endif
+
     scalars.insert(scalars.begin(), {"coordsX", "coordsY", "coordsZ"});
     return scalars;
 }
 
 const std::vector<std::string> FemPostCalculatorFilter::getVectorVariables()
 {
+#if (VTK_MAJOR_VERSION >= 9) && (VTK_MINOR_VERSION > 0)
     std::vector<std::string> vectors = m_calculator->GetVectorVariableNames();
+#else
+    std::vector<std::string> vectors(m_calculator->GetVectorVariableNames(),
+                                     m_calculator->GetVectorVariableNames()
+                                         + m_calculator->GetNumberOfVectorArrays());
+#endif
+
     vectors.insert(vectors.begin(), "coords");
     return vectors;
 }
