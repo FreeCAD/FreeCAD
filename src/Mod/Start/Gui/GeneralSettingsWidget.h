@@ -43,7 +43,7 @@ public:
 
 private:
     void retranslateUi();
-
+    bool retranslateRunOnce;
     void setupUi();
     void createHorizontalUi();
 

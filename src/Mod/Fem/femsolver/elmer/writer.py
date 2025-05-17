@@ -138,7 +138,7 @@ class Writer:
         # the units are consistent
         # TODO retrieve the seven base units from FreeCAD unit schema
         # instead of hard coding them here for a second once
-        self.unit_schema = Units.Scheme.SI1
+        self.unit_schema = Units.Scheme.Internal
         self.unit_system = {  # standard FreeCAD Base units = unit schema 0
             "L": "m",
             "M": "kg",
@@ -149,13 +149,13 @@ class Writer:
             "J": "cd",
         }
         param = ParamGet("User parameter:BaseApp/Preferences/Units")
-        self.unit_schema = param.GetInt("UserSchema", Units.Scheme.SI1)
-        if self.unit_schema == Units.Scheme.SI1:
+        self.unit_schema = param.GetInt("UserSchema", Units.Scheme.Internal)
+        if self.unit_schema == Units.Scheme.Internal:
             Console.PrintMessage(
                 "The FreeCAD standard unit schema mm/kg/s is used. "
                 "Elmer sif-file writing is however done in SI units.\n"
             )
-        elif self.unit_schema == Units.Scheme.SI2:
+        elif self.unit_schema == Units.Scheme.MKS:
             Console.PrintMessage(
                 "The SI unit schema m/kg/s is used. "
                 "Elmer sif-file writing is done in SI-units.\n"
@@ -169,7 +169,7 @@ class Writer:
                 "N": "mol",
                 "J": "cd",
             }
-        elif self.unit_schema == Units.Scheme.FemMilliMeterNewton:
+        elif self.unit_schema == Units.Scheme.FEM:
             # see also unit comment in calculix writer
             Console.PrintMessage(
                 "The FEM unit schema mm/N/s is used. "
@@ -184,10 +184,7 @@ class Writer:
                 "N": "mol",
                 "J": "cd",
             }
-        elif (
-            self.unit_schema > Units.Scheme.SI2
-            and self.unit_schema != Units.Scheme.FemMilliMeterNewton
-        ):
+        elif self.unit_schema > Units.Scheme.MKS and self.unit_schema != Units.Scheme.FEM:
             Console.PrintMessage(
                 "Unit schema: {} not supported by Elmer writer. "
                 "The FreeCAD standard unit schema mm/kg/s is used. "
@@ -829,7 +826,7 @@ class Writer:
         s["Binary Output"] = self.solver.BinaryOutput
         s["Save Geometry Ids"] = self.solver.SaveGeometryIndex
         s["Vtu Time Collection"] = True
-        if self.unit_schema == Units.Scheme.SI2:
+        if self.unit_schema == Units.Scheme.MKS:
             s["Coordinate Scaling Revert"] = True
             Console.PrintMessage(
                 "'Coordinate Scaling Revert = Logical True' was "
