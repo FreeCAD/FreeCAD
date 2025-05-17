@@ -245,7 +245,7 @@ class AssetManager:
         uri: Union[AssetUri, str],
         store: str = "local",
         depth: Optional[int] = None,
-    ) -> Any:
+    ) -> Asset:
         """
         Retrieves an asset by its URI (synchronous wrapper), to a specified depth.
         IMPORTANT: Assumes this method is CALLED ONLY from the main UI thread
@@ -316,6 +316,21 @@ class AssetManager:
             f"Get: Synchronous asset tree build for '{asset_uri_obj}' completed."
         )
         return final_asset
+
+    def get_or_none(
+        self,
+        uri: Union[AssetUri, str],
+        store: str = "local",
+        depth: Optional[int] = None,
+    ) -> Asset | None:
+        """
+        Convenience wrapper for get() that does not raise FileNotFoundError; returns
+        None instead
+        """
+        try:
+            return self.get(uri, store, depth)
+        except FileNotFoundError:
+            return None
 
     async def get_async(
         self,

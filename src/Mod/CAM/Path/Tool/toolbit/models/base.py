@@ -31,6 +31,7 @@ from itertools import chain
 from lazy_loader.lazy_loader import LazyLoader
 from typing import Any, List, Optional, Tuple, Type, Union, Mapping
 from PySide.QtCore import QT_TRANSLATE_NOOP
+import Part
 from Path.Base.Generator import toolchange
 from ...assets import Asset
 from ...camassets import cam_assets
@@ -38,8 +39,9 @@ from ...shape import ToolBitShape, ToolBitShapeEndmill, ToolBitShapeIcon
 from ..docobject import DetachedDocumentObject
 from ..util import to_json
 
-Part = LazyLoader("Part", globals(), "Part")
-GuiBit = LazyLoader("Path.Tool.Gui.Bit", globals(), "Path.Tool.Gui.Bit")
+
+ToolBitView = LazyLoader("Path.Tool.toolbit.ui.view", globals(), "Path.Tool.toolbit.ui.view")
+
 
 PropertyGroupShape = "Shape"
 
@@ -93,7 +95,7 @@ class ToolBit(Asset, ABC):
         Creates and populates a ToolBit instance from a dictionary.
         """
         # Find the shape ID.
-        shape_id = attrs.get("shape")
+        shape_id = pathlib.Path(attrs.get("shape")).stem  # backward compatibility. used to be a filename
         if not shape_id:
             raise ValueError("ToolBit dictionary is missing 'shape' key")
 
@@ -101,8 +103,7 @@ class ToolBit(Asset, ABC):
         shape_type = attrs.get("shape-type")
         shape_class = None
         if shape_type is None:
-            shape_name = pathlib.Path(shape_id).stem
-            shape_class = ToolBitShape.get_subclass_by_name(shape_name)
+            shape_class = ToolBitShape.get_subclass_by_name(shape_id)
             if not shape_class:
                 Path.Log.error(f'failed to infer shape type from {shape_id}; using "endmill"')
                 shape_class = ToolBitShapeEndmill
@@ -117,7 +118,7 @@ class ToolBit(Asset, ABC):
             except FileNotFoundError:
                 pass  # Rely on the fallback below
 
-        # Create a new instance from scratch.
+        # If it does not exist, create a new instance from scratch.
         params = attrs.get("parameter", {})
         if tool_bit_shape is None:
             if not shape_class:
@@ -191,6 +192,17 @@ class ToolBit(Asset, ABC):
     def set_shape_name(self, name: str):
         """Sets the shape name of the tool bit."""
         self._tool_bit_shape.name = name
+
+    @property
+    def summary(self) -> str:
+        """
+        To be overridden by subclasses to provide a better summary
+        including parameter values. Used as "subtitle" for the tool
+        in the UI.
+        
+        Example: "3.2 mm 4-flute endmill, 8 mm cutting edge length"
+        """
+        return self.get_shape_name()
 
     def _create_base_properties(self):
         # Create the properties in the Base group.
@@ -435,10 +447,10 @@ class ToolBit(Asset, ABC):
         # providers.
         if hasattr(self.obj, "ViewObject") and self.obj.ViewObject:
             if hasattr(self.obj.ViewObject, "Proxy") and not isinstance(
-                self.obj.ViewObject.Proxy, GuiBit.ViewProvider
+                self.obj.ViewObject.Proxy, ToolBitView.ViewProvider
             ):
                 Path.Log.debug(f"onDocumentRestored: Attaching ViewProvider for {self.obj.Label}")
-                GuiBit.ViewProvider(self.obj.ViewObject, "ToolBit")
+                ToolBitView.ViewProvider(self.obj.ViewObject, "ToolBit")
 
         # Ensure property state is correct after restore.
         self._update_tool_properties()

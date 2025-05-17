@@ -11,6 +11,7 @@ import xml.etree.ElementTree as ET
 import io
 import tempfile
 from ...assets import Asset, AssetUri, AssetSerializer, DummyAssetSerializer
+from ...camassets import cam_assets
 from ..doc import (
     find_shape_object,
     get_object_properties,
@@ -199,11 +200,11 @@ class ToolBitShape(Asset):
             # Construct the URI for the corresponding icon asset
             svg_uri = AssetUri.build(
                 asset_type="toolbitshapesvg",
-                asset_id=shape_id,
+                asset_id=shape_id+".svg",
             )
             png_uri = AssetUri.build(
                 asset_type="toolbitshapepng",
-                asset_id=shape_id,
+                asset_id=shape_id+".png",
             )
             return [svg_uri, png_uri]
 
@@ -290,16 +291,16 @@ class ToolBitShape(Asset):
             instance._defaults = loaded_params
 
             # Assign resolved dependencies (like the icon) to the instance
-            # The icon has the same ID as the shape
+            # The icon has the same ID as the shape, with .png or .svg appended.
             icon_uri = AssetUri.build(
                 asset_type="toolbitshapesvg",
-                asset_id=id,
+                asset_id=id+".svg",
             )
             instance.icon = cast(ToolBitShapeIcon, dependencies.get(icon_uri))
             if not instance.icon:
                 icon_uri = AssetUri.build(
                     asset_type="toolbitshapepng",
-                    asset_id=id,
+                    asset_id=id+".png",
                 )
                 instance.icon = cast(ToolBitShapeIcon, dependencies.get(icon_uri))
 
@@ -503,7 +504,7 @@ class ToolBitShape(Asset):
                 f"Shape '{self.name}' was given an invalid parameter '{name}'. Has {self._params}\n"
             )
             # Log to confirm this path is taken when an invalid parameter is given
-            Path.Log.debug(f"DEBUG: Invalid parameter '{name}' for shape "
+            Path.Log.debug(f"Invalid parameter '{name}' for shape "
                            f"'{self.name}', returning without raising KeyError.")
             return
 
@@ -568,12 +569,31 @@ class ToolBitShape(Asset):
 
     def get_icon(self) -> Optional[ToolBitShapeIcon]:
         """
-        Get the associated ToolBitShapeIcon instance.
+        Get the associated ToolBitShapeIcon instance. Tries to load one from
+        the asset manager if none was assigned.
 
         Returns:
-            Optional[ToolBitShapeIcon]: The icon instance, or None if not loaded.
+            Optional[ToolBitShapeIcon]: The icon instance, or None if none found.
         """
-        return self.icon
+        if self.icon:
+            return self.icon
+        
+        # Try to get a matching SVG from the asset manager.
+        self.icon = cam_assets.get_or_none(f"toolbitshapesvg://{self.id}.svg")
+        if self.icon:
+            return self.icon
+        self.icon = cam_assets.get_or_none(f"toolbitshapesvg://{self.name.lower()}.svg")
+        if self.icon:
+            return self.icon
+
+        # Try to get a matching PNG from the asset manager.
+        self.icon = cam_assets.get_or_none(f"toolbitshapepng://{self.id}.png")
+        if self.icon:
+            return self.icon
+        self.icon = cam_assets.get_or_none(f"toolbitshapepng://{self.name.lower()}.png")
+        if self.icon:
+            return self.icon
+        return None
 
     def get_thumbnail(self) -> Optional[bytes]:
         """

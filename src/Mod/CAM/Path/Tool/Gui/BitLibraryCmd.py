@@ -24,6 +24,8 @@ from PySide.QtCore import QT_TRANSLATE_NOOP
 import FreeCAD
 import FreeCADGui
 import Path
+from Path.Tool.library.ui.dock import ToolBitLibraryDock
+
 
 if False:
     Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
@@ -34,9 +36,9 @@ else:
 translate = FreeCAD.Qt.translate
 
 
-class CommandToolBitSelectorOpen:
+class CommandToolBitLibraryDockOpen:
     """
-    Command to toggle the ToolBitSelector Dock
+    Command to toggle the ToolBitLibraryDock
     """
 
     def __init__(self):
@@ -55,9 +57,7 @@ class CommandToolBitSelectorOpen:
         return FreeCAD.ActiveDocument is not None
 
     def Activated(self):
-        import Path.Tool.Gui.BitLibrary as PathToolBitLibraryGui
-
-        dock = PathToolBitLibraryGui.ToolBitSelector()
+        dock = ToolBitLibraryDock()
         dock.open()
 
 
@@ -92,7 +92,7 @@ class CommandToolBitLibraryOpen:
 
 if FreeCAD.GuiUp:
     FreeCADGui.addCommand("CAM_ToolBitLibraryOpen", CommandToolBitLibraryOpen())
-    FreeCADGui.addCommand("CAM_ToolBitDock", CommandToolBitSelectorOpen())
+    FreeCADGui.addCommand("CAM_ToolBitDock", CommandToolBitLibraryDockOpen())
 
 BarList = ["CAM_ToolBitDock"]
 MenuList = ["CAM_ToolBitLibraryOpen", "CAM_ToolBitDock"]

@@ -144,7 +144,6 @@ SET(PathPythonToolsAssetsUi_SRCS
 
 SET(PathPythonToolsGui_SRCS
     Path/Tool/Gui/__init__.py
-    Path/Tool/Gui/Bit.py
     Path/Tool/Gui/BitLibraryCmd.py
     Path/Tool/Gui/BitLibrary.py
     Path/Tool/Gui/Controller.py
@@ -195,6 +194,13 @@ SET(PathPythonToolsToolBitUi_SRCS
     Path/Tool/toolbit/ui/__init__.py
     Path/Tool/toolbit/ui/editor.py
     Path/Tool/toolbit/ui/cmd.py
+    Path/Tool/toolbit/ui/browser.py
+    Path/Tool/toolbit/ui/file.py
+    Path/Tool/toolbit/ui/panel.py
+    Path/Tool/toolbit/ui/selector.py
+    Path/Tool/toolbit/ui/tablecell.py
+    Path/Tool/toolbit/ui/toollist.py
+    Path/Tool/toolbit/ui/view.py
 )
 
 SET(PathPythonToolsLibrary_SRCS
@@ -216,6 +222,7 @@ SET(PathPythonToolsLibrarySerializers_SRCS
 
 SET(PathPythonToolsLibraryUi_SRCS
     Path/Tool/library/ui/__init__.py
+    Path/Tool/library/ui/dock.py
 )
 
 SET(PathPythonToolsMachine_SRCS
@@ -498,7 +505,9 @@ SET(Tests_SRCS
     CAMTests/TestPathToolAssetManager.py
     CAMTests/TestPathToolBit.py
     CAMTests/TestPathToolBitSerializer.py
+    CAMTests/TestPathToolBitBrowserWidget.py
     CAMTests/TestPathToolBitEditorWidget.py
+    CAMTests/TestPathToolBitListWidget.py
     CAMTests/TestPathToolBitPropertyEditorWidget.py
     CAMTests/TestPathToolDocumentObjectEditorWidget.py
     CAMTests/TestPathToolShapeClasses.py

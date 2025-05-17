@@ -24,11 +24,11 @@ import FreeCAD
 import FreeCADGui
 import Path
 import Path.Tool
-import os
 from PySide.QtCore import QT_TRANSLATE_NOOP
-from Path.Tool.toolbit import ToolBit
-from Path.Tool.assets.ui import AssetSaveDialog
-from Path.Tool.toolbit.serializers import all_serializers as toolbit_serializers
+from ...toolbit import ToolBit
+from ...assets.ui import AssetSaveDialog
+from ..serializers import all_serializers as toolbit_serializers
+from .file import ToolBitOpenDialog
 
 if False:
     Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
@@ -135,7 +135,11 @@ class CommandToolBitLoad:
         return FreeCAD.ActiveDocument is not None
 
     def Activated(self):
-        if Path.Tool.Gui.Bit.LoadTools():
+        dialog = ToolBitOpenDialog(toolbit_serializers, FreeCADGui.getMainWindow())
+        toolbits = dialog.exec()
+        for toolbit in toolbits:
+            toolbit.attach_to_doc(FreeCAD.ActiveDocument)
+        if toolbits:
             FreeCAD.ActiveDocument.recompute()
 
 

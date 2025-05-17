@@ -21,32 +21,18 @@
 # ***************************************************************************
 
 from PySide import QtGui
-import FreeCAD
 import FreeCADGui
 import Path
-import Path.Base.Gui.IconViewProvider as PathIconViewProvider
-from Path.Tool.toolbit import ToolBit
-from Path.Tool.toolbit.ui import ToolBitEditorPanel
-
-
-__title__ = "Tool Bit UI"
-__author__ = "sliptonic (Brad Collette)"
-__url__ = "https://www.freecad.org"
-__doc__ = "Task panel editor for a ToolBit"
-
-
-if False:
-    Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
-    Path.Log.trackModule(Path.Log.thisModule())
-else:
-    Path.Log.setLevel(Path.Log.Level.INFO, Path.Log.thisModule())
-
-translate = FreeCAD.Qt.translate
+from Path.Base.Gui import IconViewProvider
+from Path.Tool.toolbit.ui.panel import TaskPanel
 
 
 class ViewProvider(object):
-    """ViewProvider for a ToolBit.
-    It's sole job is to provide an icon and invoke the TaskPanel on edit."""
+    """
+    ViewProvider for a ToolBit DocumentObject.
+    It's sole job is to provide an icon and invoke the TaskPanel
+    on edit.
+    """
 
     def __init__(self, vobj, name):
         Path.Log.track(name, vobj.Object)
@@ -119,88 +105,4 @@ class ViewProvider(object):
         pass  # TODO: call setEdit here once we have a new editor panel
 
 
-class TaskPanel:
-    """TaskPanel for the SetupSheet - if it is being edited directly."""
-
-    def __init__(self, vobj, deleteOnReject):
-        Path.Log.track(vobj.Object.Label)
-        self.vobj = vobj
-        self.obj = vobj.Object
-        self.editor = ToolBitEditorPanel(self.obj, self.editor.form)
-        self.deleteOnReject = deleteOnReject
-        FreeCAD.ActiveDocument.openTransaction("Edit ToolBit")
-
-    def reject(self):
-        FreeCAD.ActiveDocument.abortTransaction()
-        self.editor.reject()
-        FreeCADGui.Control.closeDialog()
-        if self.deleteOnReject:
-            FreeCAD.ActiveDocument.openTransaction("Uncreate ToolBit")
-            self.editor.reject()
-            FreeCAD.ActiveDocument.removeObject(self.obj.Name)
-            FreeCAD.ActiveDocument.commitTransaction()
-        FreeCAD.ActiveDocument.recompute()
-
-    def accept(self):
-        self.editor.accept()
-
-        FreeCAD.ActiveDocument.commitTransaction()
-        FreeCADGui.ActiveDocument.resetEdit()
-        FreeCADGui.Control.closeDialog()
-        FreeCAD.ActiveDocument.recompute()
-
-    def updateUI(self):
-        Path.Log.track()
-        self.editor.updateUI()
-
-    def updateModel(self):
-        self.editor.updateTool()
-        FreeCAD.ActiveDocument.recompute()
-
-    def setupUi(self):
-        self.editor.setupUI()
-
-
-def GetToolFile(parent=None):
-    if parent is None:
-        parent = QtGui.QApplication.activeWindow()
-
-    bitdir = Path.Preferences.getToolBitPath()
-    bitfile = QtGui.QFileDialog.getOpenFileName(parent, "Tool", str(bitdir), "*.fctb")
-    if bitfile and bitfile[0]:
-        return bitfile[0]
-    return None
-
-
-def GetToolFiles(parent=None):
-    if parent is None:
-        parent = QtGui.QApplication.activeWindow()
-    bitdir = Path.Preferences.getToolBitPath()
-    foo = QtGui.QFileDialog.getOpenFileNames(parent, "Tool", str(bitdir), "*.fctb")
-    if foo and foo[0]:
-        return foo[0]
-    return []
-
-
-def LoadTool(parent=None):
-    """
-    LoadTool(parent=None) ... Open a file dialog to load a tool from a file.
-    """
-    foo = GetToolFile(parent)
-    if foo:
-        toolbit = ToolBit.from_file(foo)
-        return toolbit.attach_to_doc(doc=FreeCAD.ActiveDocument)
-    return None
-
-
-def LoadTools(parent=None):
-    """
-    LoadTool(parent=None) ... Open a file dialog to load a tool from a file.
-    """
-    return [
-        ToolBit.from_file(foo).attach_to_doc(doc=FreeCAD.ActiveDocument)
-        for foo in GetToolFiles(parent)
-    ]
-
-
-PathIconViewProvider.RegisterViewProvider("ToolBit", ViewProvider)
+IconViewProvider.RegisterViewProvider("ToolBit", ViewProvider)

@@ -50,11 +50,11 @@ def ensure_toolbitshape_assets_initialized(
 
     if asset_manager.is_empty("toolbitshapesvg", store=store_name):
         for path in builtin_shape_path.glob("*.svg"):
-            asset_manager.add_file("toolbitshapesvg", path)
+            asset_manager.add_file("toolbitshapesvg", path, asset_id=path.stem+".svg")
 
     if asset_manager.is_empty("toolbitshapepng", store=store_name):
         for path in builtin_shape_path.glob("*.png"):
-            asset_manager.add_file("toolbitshapepng", path)
+            asset_manager.add_file("toolbitshapepng", path, asset_id=path.stem+".png")
 
 
 def ensure_assets_initialized(asset_manager: AssetManager, store = "local"):
@@ -80,8 +80,8 @@ cam_asset_store = FileStore(
         "toolbitlibrary": "Library/{asset_id}.fctl",
         "toolbit": "Bit/{asset_id}.fctb",
         "toolbitshape": "Shape/{asset_id}.fcstd",
-        "toolbitshapesvg": "Shape/{asset_id}.svg",
-        "toolbitshapepng": "Shape/{asset_id}.png",
+        "toolbitshapesvg": "Shape/{asset_id}",  # Asset ID has ".svg" included
+        "toolbitshapepng": "Shape/{asset_id}",  # Asset ID has ".png" included
         "machine": "Machine/{asset_id}.fcm",
     },
 )

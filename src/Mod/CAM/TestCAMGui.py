@@ -29,4 +29,6 @@ from CAMTests.TestPathToolBitPropertyEditorWidget import (
     TestQuantityPropertyEditorWidget,
 )
 from CAMTests.TestPathToolDocumentObjectEditorWidget import TestDocumentObjectEditorWidget
+from CAMTests.TestPathToolBitBrowserWidget import TestToolBitBrowserWidget
 from CAMTests.TestPathToolBitEditorWidget import TestToolBitPropertiesWidget
+from CAMTests.TestPathToolBitListWidget import TestToolBitListWidget

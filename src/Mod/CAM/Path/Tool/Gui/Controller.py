@@ -20,6 +20,7 @@
 # *                                                                         *
 # ***************************************************************************
 
+from lazy_loader.lazy_loader import LazyLoader
 from PySide import QtCore, QtGui
 from PySide.QtCore import QT_TRANSLATE_NOOP
 import FreeCAD
@@ -28,11 +29,7 @@ import Path
 import Path.Base.Gui.Util as PathGuiUtil
 import Path.Base.Util as PathUtil
 import Path.Tool.Controller as PathToolController
-import Path.Tool.Gui.Bit as PathToolBitGui
-import PathGui
-
-# lazily loaded modules
-from lazy_loader.lazy_loader import LazyLoader
+from Path.Tool.toolbit.ui.selector import ToolBitSelector
 
 Part = LazyLoader("Part", globals(), "Part")
 
@@ -162,19 +159,30 @@ class CommandPathToolController(object):
     def Activated(self):
         Path.Log.track()
         job = self.selectedJob()
-        if job:
-            tool = PathToolBitGui.ToolBitSelector().getTool()
-            if tool:
-                toolNr = None
-                for tc in job.Tools.Group:
-                    if tc.Tool == tool:
-                        toolNr = tc.ToolNumber
-                        break
-                if not toolNr:
-                    toolNr = max([tc.ToolNumber for tc in job.Tools.Group]) + 1
-                tc = Create("TC: {}".format(tool.Label), tool, toolNr)
-                job.Proxy.addToolController(tc)
-                FreeCAD.ActiveDocument.recompute()
+        if not job:
+            return
+        
+        # Let the user select a toolbit
+        selector = ToolBitSelector()
+        if not selector.exec_():
+            return
+        tool = selector.get_selected_tool()
+        if not tool:
+            return
+
+        # Find a tool number
+        toolNr = None
+        for tc in job.Tools.Group:
+            if tc.Tool == tool:
+                toolNr = tc.ToolNumber
+                break
+        if not toolNr:
+            toolNr = max([tc.ToolNumber for tc in job.Tools.Group]) + 1
+
+        # Create the new tool controller with the tool.
+        tc = Create("TC: {}".format(tool.Label), tool, toolNr)
+        job.Proxy.addToolController(tc)
+        FreeCAD.ActiveDocument.recompute()
 
 
 class ToolControllerEditor(object):

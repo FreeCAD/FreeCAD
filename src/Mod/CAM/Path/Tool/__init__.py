@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 import sys
+from lazy_loader.lazy_loader import LazyLoader
+from . import toolbit
 from .assets import DummyAssetSerializer
 from .camassets import cam_assets
 from .library import Library
@@ -20,9 +22,10 @@ cam_assets.register_asset(Machine, DummyAssetSerializer)
 # For backward compatibility with files saved before the toolbit rename
 # This makes the Path.Tool.toolbit.base module available as Path.Tool.Bit.
 # Since C++ does not use the standard Python import mechanism and instead
-# looks for Path.Tool.Bit in sys.modules, we need to update sys.modules here.
-from .toolbit.models import base as Bit
-sys.modules[__name__ + ".Bit"] = Bit
+# unpickles existing objects after looking them up in sys.modules, we
+# need to update sys.modules here.
+sys.modules[__name__ + ".Bit"] = toolbit.models.base
+sys.modules[__name__ + ".Gui.Bit"] = LazyLoader("Path.Tool.toolbit.ui.view", globals(), "Path.Tool.toolbit.ui.view")
 
 # Define __all__ for explicit public interface
 __all__ = [
