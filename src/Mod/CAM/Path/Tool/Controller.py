@@ -25,7 +25,7 @@
 from PySide.QtCore import QT_TRANSLATE_NOOP
 import FreeCAD
 import Path
-import Path.Tool.Bit as PathToolBit
+from Path.Tool.toolbit import ToolBit
 import Path.Base.Generator.toolchange as toolchange
 
 
@@ -113,7 +113,7 @@ class ToolController:
             self.ensureToolBit(obj)
 
     @classmethod
-    def propertyEnumerations(self, dataType="data"):
+    def propertyEnumerations(cls, dataType="data"):
         """helixOpPropertyEnumerations(dataType="data")... return property enumeration lists of specified dataType.
         Args:
             dataType = 'data', 'raw', 'translated'
@@ -182,13 +182,11 @@ class ToolController:
                     obj.ToolNumber = int(template.get(ToolControllerTemplate.ToolNumber))
                 if template.get(ToolControllerTemplate.Tool):
                     self.ensureToolBit(obj)
-                    toolVersion = template.get(ToolControllerTemplate.Tool).get(
-                        ToolControllerTemplate.Version
-                    )
+                    tool_data = template.get(ToolControllerTemplate.Tool)
+                    toolVersion = tool_data.get(ToolControllerTemplate.Version)
                     if toolVersion == 2:
-                        obj.Tool = PathToolBit.Factory.CreateFromAttrs(
-                            template.get(ToolControllerTemplate.Tool)
-                        )
+                        toolbit_instance = ToolBit.from_dict(tool_data)
+                        obj.Tool = toolbit_instance.attach_to_doc(doc=obj.Document)
                     else:
                         obj.Tool = None
                         if toolVersion == 1:
@@ -230,7 +228,7 @@ class ToolController:
         attrs[ToolControllerTemplate.HorizRapid] = "%s" % (obj.HorizRapid)
         attrs[ToolControllerTemplate.SpindleSpeed] = obj.SpindleSpeed
         attrs[ToolControllerTemplate.SpindleDir] = obj.SpindleDir
-        attrs[ToolControllerTemplate.Tool] = obj.Tool.Proxy.templateAttrs(obj.Tool)
+        attrs[ToolControllerTemplate.Tool] = obj.Tool.Proxy.to_dict()
         expressions = []
         for expr in obj.ExpressionEngine:
             Path.Log.debug("%s: %s" % (expr[0], expr[1]))
@@ -251,25 +249,8 @@ class ToolController:
             "toolnumber": obj.ToolNumber,
             "toollabel": obj.Label,
             "spindlespeed": obj.SpindleSpeed,
-            "spindledirection": toolchange.SpindleDirection.OFF,
+            "spindledirection": obj.Tool.Proxy.get_spindle_direction(),
         }
-
-        if hasattr(obj.Tool, "SpindlePower"):
-            if not obj.Tool.SpindlePower:
-                args["spindledirection"] = toolchange.SpindleDirection.OFF
-            else:
-                if obj.SpindleDir == "Forward":
-                    args["spindledirection"] = toolchange.SpindleDirection.CW
-                else:
-                    args["spindledirection"] = toolchange.SpindleDirection.CCW
-
-        elif obj.SpindleDir == "None":
-            args["spindledirection"] = toolchange.SpindleDirection.OFF
-        else:
-            if obj.SpindleDir == "Forward":
-                args["spindledirection"] = toolchange.SpindleDirection.CW
-            else:
-                args["spindledirection"] = toolchange.SpindleDirection.CCW
 
         commands = toolchange.generate(**args)
 
@@ -314,7 +295,10 @@ def Create(
 
     if assignTool:
         if not tool:
-            tool = PathToolBit.Factory.Create()
+            # Create a default endmill tool bit and attach it to a new DocumentObject
+            toolbit = ToolBit.from_shape_id("endmill.fcstd")
+            Path.Log.info(f"Controller.Create: Created toolbit with ID: {toolbit.id}")
+            tool = toolbit.attach_to_doc(doc=FreeCAD.ActiveDocument)
             if tool.ViewObject:
                 tool.ViewObject.Visibility = False
         obj.Tool = tool
