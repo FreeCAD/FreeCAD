@@ -143,22 +143,22 @@ class TechDrawExport BaseGeom : public std::enable_shared_from_this<BaseGeom>, p
         void setGeomType(GeomType type) { geomType = type; }
         EdgeClass getClassOfEdge() { return classOfEdge; }
         void setClassOfEdge(EdgeClass newClass) { classOfEdge = newClass; }
-        bool getHlrVisible() { return hlrVisible; }
+        bool getHlrVisible() const { return hlrVisible; }
         void setHlrVisible(bool state) { hlrVisible = state; }
-        bool getReversed()  { return reversed; }
+        bool getReversed() const  { return reversed; }
         void setReversed(bool state) { reversed = state; }
-        int getRef3d()  { return ref3D; }
+        int getRef3d() const { return ref3D; }
         void setRef3d(int ref)  { ref3D = ref; }
         TopoDS_Edge getOCCEdge()  { return occEdge; }
-        void setOCCEdge(TopoDS_Edge newEdge)  { occEdge = newEdge; }
-        bool getCosmetic()  { return cosmetic; }
+        void setOCCEdge(const TopoDS_Edge& newEdge)  { occEdge = newEdge; }
+        bool getCosmetic() const  { return cosmetic; }
         void setCosmetic (bool state)  { cosmetic = state; }
         SourceType source() { return m_source; }
         void source(SourceType s) { m_source = s; }
-        int sourceIndex() { return m_sourceIndex; }
+        int sourceIndex() const { return m_sourceIndex; }
         void sourceIndex(int si) { m_sourceIndex = si; }
-        std::string getCosmeticTag() { return cosmeticTag; }
-        void setCosmeticTag(std::string t) { cosmeticTag = t; }
+        std::string getCosmeticTag() const { return cosmeticTag; }
+        void setCosmeticTag(const std::string& t) { cosmeticTag = t; }
         Part::TopoShape asTopoShape(double scale = 1.0);
 
         virtual double getStartAngle() { return 0.0; }
@@ -167,6 +167,8 @@ class TechDrawExport BaseGeom : public std::enable_shared_from_this<BaseGeom>, p
         virtual void clockwiseAngle(bool direction) { (void) direction; }
 
 protected:
+// TODO: change direct access to these data members by setters/getters
+//NOLINTBEGIN (misc-non-private-member-variables-in-classes)
         GeomType geomType;
         ExtractionType extractType;     //obs
         EdgeClass classOfEdge;
@@ -179,7 +181,7 @@ protected:
         SourceType m_source;
         int m_sourceIndex;
         std::string cosmeticTag;
-
+//NOLINTEND (misc-non-private-member-variables-in-classes)
 };
 using BaseGeomPtrVector = std::vector<BaseGeomPtr>;    //new style
 
@@ -364,6 +366,7 @@ class TechDrawExport Face
 };
 using FacePtr = std::shared_ptr<Face>;
 
+//NOLINTNEXTLINE  (no copy, move, etc)
 class TechDrawExport Vertex : public TechDraw::Tag
 {
     public:
@@ -371,7 +374,7 @@ class TechDrawExport Vertex : public TechDraw::Tag
         explicit Vertex(const Vertex* v);
         Vertex(double x, double y);
         explicit Vertex(Base::Vector3d v);
-        virtual ~Vertex()  = default;
+        ~Vertex() override = default;
 
         virtual void Save(Base::Writer &/*writer*/) const;
         virtual void Restore(Base::XMLReader &/*reader*/);
@@ -402,7 +405,11 @@ class TechDrawExport Vertex : public TechDraw::Tag
 
         Part::TopoShape asTopoShape(double scale = 1.0);
 
+        void restoreVertexTag(Base::XMLReader& reader);
+
     protected:
+// TODO: change direct access to these data members by setters/getters
+//NOLINTBEGIN (misc-non-private-member-variables-in-classes)
         Base::Vector3d pnt;
         ExtractionType extractType;       //obs?
         bool hlrVisible;                 //visible according to HLR
@@ -413,6 +420,7 @@ class TechDrawExport Vertex : public TechDraw::Tag
         int cosmeticLink;                 //deprec. use cosmeticTag
         std::string cosmeticTag;
         bool m_reference;                   //reference vertex (ex robust dimension)
+//NOLINTEND (misc-non-private-member-variables-in-classes)
 };
 using VertexPtr = std::shared_ptr<Vertex>;
 
