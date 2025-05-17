@@ -306,15 +306,15 @@ G90
 G21
 (Begin operation)
 G54
-(Finish operation: Fixture)
+(Finish operation)
 (Begin operation)
 (TC: Default Tool)
 (Begin toolchange)
 (M6 T1)
-(Finish operation: TC: Default Tool)
+(Finish operation)
 (Begin operation)
 (comment with spaces)
-(Finish operation: Profile)
+(Finish operation)
 (Begin postamble)
 """,
             "--command_space=' ' --comments",
@@ -326,15 +326,15 @@ G90
 G21
 (Begin operation)
 G54
-(Finish operation: Fixture)
+(Finish operation)
 (Begin operation)
 (TC: Default Tool)
 (Begin toolchange)
 (M6T1)
-(Finish operation: TC: Default Tool)
+(Finish operation)
 (Begin operation)
 (comment with spaces)
-(Finish operation: Profile)
+(Finish operation)
 (Begin postamble)
 """,
             "--command_space='' --comments",
@@ -352,15 +352,15 @@ G90
 G21
 (Begin operation)
 G54
-(Finish operation: Fixture)
+(Finish operation)
 (Begin operation)
 (TC: Default Tool)
 (Begin toolchange)
 (M6 T1)
-(Finish operation: TC: Default Tool)
+(Finish operation)
 (Begin operation)
 (comment with spaces)
-(Finish operation: Profile)
+(Finish operation)
 (Begin postamble)
 """,
             "--comments",
@@ -372,15 +372,15 @@ G90
 G21
 ;Begin operation
 G54
-;Finish operation: Fixture
+;Finish operation
 ;Begin operation
 ;TC: Default Tool
 ;Begin toolchange
 ;M6 T1
-;Finish operation: TC: Default Tool
+;Finish operation
 ;Begin operation
 ;comment with spaces
-;Finish operation: Profile
+;Finish operation
 ;Begin postamble
 """,
             "--comment_symbol=';' --comments",
@@ -392,15 +392,15 @@ G90
 G21
 !Begin operation
 G54
-!Finish operation: Fixture
+!Finish operation
 !Begin operation
 !TC: Default Tool
 !Begin toolchange
 !M6 T1
-!Finish operation: TC: Default Tool
+!Finish operation
 !Begin operation
 !comment with spaces
-!Finish operation: Profile
+!Finish operation
 !Begin postamble
 """,
             "--comment_symbol='!' --comments",
@@ -471,14 +471,14 @@ G54
         self.assertEqual(split_gcode[6], "G21")
         self.assertEqual(split_gcode[7], "(Begin operation)")
         self.assertEqual(split_gcode[8], "G54")
-        self.assertEqual(split_gcode[9], "(Finish operation: Fixture)")
+        self.assertEqual(split_gcode[9], "(Finish operation)")
         self.assertEqual(split_gcode[10], "(Begin operation)")
         self.assertEqual(split_gcode[11], "(TC: Default Tool)")
         self.assertEqual(split_gcode[12], "(Begin toolchange)")
         self.assertEqual(split_gcode[13], "(M6 T1)")
-        self.assertEqual(split_gcode[14], "(Finish operation: TC: Default Tool)")
+        self.assertEqual(split_gcode[14], "(Finish operation)")
         self.assertEqual(split_gcode[15], "(Begin operation)")
-        self.assertEqual(split_gcode[16], "(Finish operation: Profile)")
+        self.assertEqual(split_gcode[16], "(Finish operation)")
         self.assertEqual(split_gcode[17], "(Begin postamble)")
 
         # Test with comments without header.
@@ -487,14 +487,14 @@ G90
 G21
 (Begin operation)
 G54
-(Finish operation: Fixture)
+(Finish operation)
 (Begin operation)
 (TC: Default Tool)
 (Begin toolchange)
 (M6 T1)
-(Finish operation: TC: Default Tool)
+(Finish operation)
 (Begin operation)
-(Finish operation: Profile)
+(Finish operation)
 (Begin postamble)
 """
         self.job.PostProcessorArgs = "--comments --no-header"

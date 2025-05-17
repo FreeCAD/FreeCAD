@@ -31,6 +31,7 @@ from typing import Any, List, Tuple
 
 import FreeCAD
 import Path
+import Path.Base.Util as PathUtil
 import Path.Post.Processor
 import Path.Post.UtilsArguments
 import Path.Post.UtilsExport
@@ -773,11 +774,9 @@ class Snapmaker(Path.Post.Processor.PostProcessor):
 
         for obj in objects:
             # Skip inactive operations
-            if hasattr(obj, "Active") and not obj.Active:
+            if not PathUtil.activeForOp(obj):
                 continue
-            if hasattr(obj, "Base") and hasattr(obj.Base, "Active") and not obj.Base.Active:
-                continue
-            coolant_mode = Path.Post.UtilsExport.determine_coolant_mode(obj)
+            coolant_mode = PathUtil.coolantModeForOp(obj)
             Path.Post.UtilsExport.output_start_bcnc(self.values, gcode, obj)
             Path.Post.UtilsExport.output_preop(self.values, gcode, obj)
             Path.Post.UtilsExport.output_coolant_on(self.values, gcode, coolant_mode)
