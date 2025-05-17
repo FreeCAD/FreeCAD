@@ -475,8 +475,7 @@ class BIM_Views:
 
     def onDockLocationChanged(self, area):
         """Saves dock widget size and location"""
-
-        PARAMS.SetInt("BimViewArea", int(area))
+        PARAMS.SetInt("BimViewArea", area.value)
         mw = FreeCADGui.getMainWindow()
         vm = findWidget()
         if vm:
