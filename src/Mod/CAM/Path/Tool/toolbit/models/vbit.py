@@ -15,8 +15,8 @@ class ToolBitVBit(ToolBit, ChiploadMixin, RotaryToolBitMixin):
 
     @property
     def summary(self) -> str:
-        diameter = self.get_property("Diameter").UserString
-        cutting_edge_angle = self.get_property("CuttingEdgeAngle").UserString
+        diameter = self.get_property_str("Diameter", "?")
+        cutting_edge_angle = self.get_property_str("CuttingEdgeAngle", "?")
         flutes = self.get_property("Flutes")
 
         return FreeCAD.Qt.translate(

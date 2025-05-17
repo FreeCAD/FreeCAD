@@ -37,7 +37,7 @@ from ...assets import Asset
 from ...camassets import cam_assets
 from ...shape import ToolBitShape, ToolBitShapeEndmill, ToolBitShapeIcon
 from ..docobject import DetachedDocumentObject
-from ..util import to_json
+from ..util import to_json, format_value
 
 
 ToolBitView = LazyLoader("Path.Tool.toolbit.ui.view", globals(), "Path.Tool.toolbit.ui.view")
@@ -438,7 +438,7 @@ class ToolBit(Asset, ABC):
         # Only re-initialize properties from shape if not restoring from file
         if self.obj.BitBody and self.obj.BitBody.Document != self.obj.Document:
             Path.Log.debug(
-                f"onDocumentRestored: Re-initializing BitBody for {self.obj.Label} after copy"
+                f"onDocumeformat_valuentRestored: Re-initializing BitBody for {self.obj.Label} after copy"
             )
             self._update_visual_representation()
 
@@ -598,6 +598,10 @@ class ToolBit(Asset, ABC):
 
     def get_property(self, name: str):
         return self.obj.getPropertyByName(name)
+
+    def get_property_str(self, name: str, default: str|None = None) -> str|None:
+        value = self.get_property(name)
+        return format_value(value) if value else default
 
     def set_property(self, name: str, value: Any):
         return self.obj.setPropertyByName(name, value)

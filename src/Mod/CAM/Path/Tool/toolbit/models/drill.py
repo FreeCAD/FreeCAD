@@ -15,8 +15,8 @@ class ToolBitDrill(ToolBit, ChiploadMixin, RotaryToolBitMixin):
 
     @property
     def summary(self) -> str:
-        diameter = self.get_property("Diameter").UserString
-        tip_angle = self.get_property("TipAngle").UserString
+        diameter = self.get_property_str("Diameter", "?")
+        tip_angle = self.get_property_str("TipAngle", "?")
         flutes = self.get_property("Flutes")
 
         return FreeCAD.Qt.translate(

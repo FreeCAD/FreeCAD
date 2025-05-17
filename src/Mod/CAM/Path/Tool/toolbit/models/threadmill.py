@@ -17,9 +17,9 @@ class ToolBitThreadMill(ToolBit, ChiploadMixin, RotaryToolBitMixin):
 
     @property
     def summary(self) -> str:
-        diameter = self.get_property("Diameter").UserString
+        diameter = self.get_property_str("Diameter", "?")
         flutes = self.get_property("Flutes")
-        cutting_angle = self.get_property("cuttingAngle").UserString
+        cutting_angle = self.get_property_str("cuttingAngle", "?")
 
         return FreeCAD.Qt.translate(
             "CAM",

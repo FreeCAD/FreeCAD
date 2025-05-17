@@ -15,8 +15,8 @@ class ToolBitReamer(ToolBit, ChiploadMixin, RotaryToolBitMixin):
 
     @property
     def summary(self) -> str:
-        diameter = self.get_property("Diameter").UserString
-        cutting_edge_height = self.get_property("CuttingEdgeHeight").UserString
+        diameter = self.get_property_str("Diameter", "?")
+        cutting_edge_height = self.get_property_str("CuttingEdgeHeight", "?")
 
         return FreeCAD.Qt.translate(
             "CAM",

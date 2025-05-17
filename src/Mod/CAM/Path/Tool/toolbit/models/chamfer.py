@@ -15,9 +15,9 @@ class ToolBitChamfer(ToolBit, ChiploadMixin, RotaryToolBitMixin):
 
     @property
     def summary(self) -> str:
-        diameter = self.get_property("Diameter").UserString
+        diameter = self.get_property_str("Diameter", "?")
         flutes = self.get_property("Flutes")
-        cutting_edge_angle = self.get_property("CuttingEdgeAngle").UserString
+        cutting_edge_angle = self.get_property_str("CuttingEdgeAngle", "?")
 
         return FreeCAD.Qt.translate(
             "CAM",
