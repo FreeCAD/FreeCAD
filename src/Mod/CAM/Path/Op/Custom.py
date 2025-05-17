@@ -166,8 +166,11 @@ class ObjectCustom(PathOp.ObjectOp):
 
         if obj.Source == "Text" and obj.Gcode:
             for l in obj.Gcode:
+                if str(l).strip() == "":
+                    continue
                 newcommand = Path.Command(str(l))
                 self.commandlist.append(newcommand)
+
         elif obj.Source == "File" and len(obj.GcodeFile) > 0:
             gcode_file = self.findGcodeFile(obj.GcodeFile)
 
@@ -179,6 +182,8 @@ class ObjectCustom(PathOp.ObjectOp):
 
             with open(gcode_file) as fd:
                 for l in fd.readlines():
+                    if str(l).strip() == "":
+                        continue
                     try:
                         newcommand = Path.Command(str(l))
                         self.commandlist.append(newcommand)
