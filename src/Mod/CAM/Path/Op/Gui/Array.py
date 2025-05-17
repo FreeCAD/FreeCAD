@@ -31,6 +31,7 @@ from PySide import QtGui
 
 import math
 import random
+import time
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
 __doc__ = """CAM Array object and FreeCAD command"""
@@ -139,7 +140,14 @@ class ObjectArray:
             "Path",
             QT_TRANSLATE_NOOP("PathOp", "Make False, to prevent operation from generating code"),
         )
+        obj.addProperty(
+            "App::PropertyString",
+            "CycleTime",
+            "Path",
+            QT_TRANSLATE_NOOP("App::Property", "Operations Cycle Time Estimation"),
+        )
 
+        obj.setEditorMode("CycleTime", 1)  # read-only
         obj.Active = True
         obj.Type = ["Linear1D", "Linear2D", "Polar"]
 
@@ -204,6 +212,15 @@ class ObjectArray:
             )
             obj.Active = True
 
+        if not hasattr(obj, "CycleTime"):
+            obj.addProperty(
+                "App::PropertyString",
+                "CycleTime",
+                "Path",
+                QT_TRANSLATE_NOOP("App::Property", "Operations Cycle Time Estimation"),
+            )
+            obj.CycleTime = self.getCycleTimeEstimate(obj)
+
         self.setEditorModes(obj)
 
         self.FirstRun = True
@@ -261,6 +278,50 @@ class ObjectArray:
         )
 
         obj.Path = pa.getPath()
+        obj.CycleTime = self.getCycleTimeEstimate(obj)
+
+    def getCycleTimeEstimate(self, obj):
+
+        tc = obj.ToolController
+
+        if tc is None or tc.ToolNumber == 0:
+            Path.Log.error(translate("CAM", "No Tool Controller selected."))
+            return translate("CAM", "Tool Error")
+
+        hFeedrate = tc.HorizFeed.Value
+        vFeedrate = tc.VertFeed.Value
+        hRapidrate = tc.HorizRapid.Value
+        vRapidrate = tc.VertRapid.Value
+
+        if (hFeedrate == 0 or vFeedrate == 0) and not Path.Preferences.suppressAllSpeedsWarning():
+            Path.Log.warning(
+                translate(
+                    "CAM",
+                    "Tool Controller feedrates required to calculate the cycle time.",
+                )
+            )
+            return translate("CAM", "Feedrate Error")
+
+        if (
+            hRapidrate == 0 or vRapidrate == 0
+        ) and not Path.Preferences.suppressRapidSpeedsWarning():
+            Path.Log.warning(
+                translate(
+                    "CAM",
+                    "Add Tool Controller Rapid Speeds on the SetupSheet for more accurate cycle times.",
+                )
+            )
+
+        # Get the cycle time in seconds
+        seconds = obj.Path.getCycleTime(hFeedrate, vFeedrate, hRapidrate, vRapidrate)
+
+        if math.isnan(seconds):
+            return translate("CAM", "Cycletime Error")
+
+        # Convert the cycle time to a HH:MM:SS format
+        cycleTime = time.strftime("%H:%M:%S", time.gmtime(seconds))
+
+        return cycleTime
 
 
 class PathArray:
