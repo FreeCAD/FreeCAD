@@ -55,7 +55,7 @@ class CommandToolBitLibraryDockOpen:
         }
 
     def IsActive(self):
-        return FreeCAD.ActiveDocument is not None
+        return True
 
     def Activated(self):
         dock = ToolBitLibraryDock()
@@ -81,7 +81,7 @@ class CommandLibraryEditorOpen:
         }
 
     def IsActive(self):
-        return FreeCAD.ActiveDocument is not None
+        return True
 
     def Activated(self):
         library = LibraryEditor()

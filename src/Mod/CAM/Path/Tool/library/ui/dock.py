@@ -351,7 +351,7 @@ class ToolBitLibraryDock(object):
         # Set buttons inactive
         self.form.addToolController.setEnabled(False)
         selected = len(self.form.tools.selectedIndexes()) >= 1
-        if selected:
+        if selected and FreeCAD.ActiveDocument:
             jobs = len([1 for j in FreeCAD.ActiveDocument.Objects if j.Name[:3] == "Job"]) >= 1
             self.form.addToolController.setEnabled(selected and jobs)
 
