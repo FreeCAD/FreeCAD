@@ -57,11 +57,11 @@ inline const UnitsSchemaSpec s1
 { 9, "MeterDecimal", "m", false, false, QT_TRANSLATE_NOOP("UnitsApi", "Meter decimal (m, m², m³)"), false,
     {
         { "Length",             {{ 0 , "m"    , 1e3 }}},
-        { "Area",               {{ 0 , "m²"   , 1e6 }}},
-        { "Volume",             {{ 0 , "m³"   , 1e9 }}},
+        { "Area",               {{ 0 , "m^2"  , 1e6 }}},
+        { "Volume",             {{ 0 , "m^3"  , 1e9 }}},
         { "Power",              {{ 0 , "W"    , 1e6 }}},
         { "ElectricPotential",  {{ 0 , "V"    , 1e6 }}},
-        { "HeatFlux",           {{ 0 , "W/m²" , 1.0 }}},
+        { "HeatFlux",           {{ 0 , "W/m^2", 1.0 }}},
         { "Velocity",           {{ 0 , "m/s"  , 1e3 }}}
     }
 };
@@ -71,13 +71,13 @@ inline const UnitsSchemaSpec s2
     {
         { "Length",       {{ 0 , "in"      , 25.4              }}},
         { "Angle",        {{ 0 , "°"       , 1.0               }}},
-        { "Area",         {{ 0 , "in²"     , 645.16            }}},
-        { "Volume",       {{ 0 , "in³"     , 16387.064         }}},
+        { "Area",         {{ 0 , "in^2"    , 645.16            }}},
+        { "Volume",       {{ 0 , "in^3"    , 16387.064         }}},
         { "Mass",         {{ 0 , "lb"      , 0.45359237        }}},
         { "Pressure",     {{ 0 , "psi"     , 6.894744825494    }}},
         { "Stiffness",    {{ 0 , "lbf/in"  , 4.448222 / 0.0254 }}},
         { "Velocity",     {{ 0 , "in/min"  , 25.4 / 60         }}},
-        { "Acceleration", {{ 0 , "in/min²" , 25.4 / 3600       }}}
+        { "Acceleration", {{ 0 , "in/min^2", 25.4 / 3600       }}}
     }
 };
 
@@ -87,56 +87,56 @@ inline const UnitsSchemaSpec s3
         { "Length", {
             { 1e-6            , "mm"         , 1.0             },
             { 1e-3            , "nm"         , 1e-6            },
-            { 1e-1            , "μm"         , 1e-3            },
+            { 1e-1            , "\xC2\xB5m"  , 1e-3            },
             { 1e4             , "mm"         , 1.0             },
             { 1e7             , "m"          , 1e3             },
-            { 1e10            , "mm"         , 1e6             },
+            { 1e10            , "km"         , 1e6             },
             { 0               , "m"          , 1.0             }}
         },
         { "Area", {
-            { 1e2             , "mm²"        , 1.0             },
-            { 1e6             , "cm²"        , 1e2             },
-            { 1e12            , "m²"         , 1e6             },
-            { 0               , "km²"        , 1e12            }}
+            { 1e2             , "mm^2"       , 1.0             },
+            { 1e6             , "cm^2"       , 1e2             },
+            { 1e12            , "m^2"        , 1e6             },
+            { 0               , "km^2"       , 1e12            }}
         },
         { "Volume", {
-            { 1e3             , "mm³"        , 1.0             },
+            { 1e3             , "mm^3"       , 1.0             },
             { 1e6             , "ml"         , 1e3             },
             { 1e9             , "l"          , 1e6             },
-            { 0               , "m³"         , 1e9             }}
+            { 0               , "m^3"        , 1e9             }}
         },
         { "Angle", {
             { 0               , "°"          , 1.0             }}
         },
         { "Mass", {
-            { 1e-6            , "μg"         , 1.0             },
+            { 1e-6            , "\xC2\xB5g"  , 1.0             },
             { 1e-3            , "mg"         , 1e-6            },
             { 1.0             , "g"          , 1e-3            },
             { 1e3             , "kg"         , 1.0             },
             { 0               , "t"          , 1e3             }}
         },
         { "Density", {
-            { 1e-4            , "kg/m³"      , 1e-9            },
-            { 1.0             , "kg/cm³"     , 1e-3            },
-            { 0               , "kg/mm³"     , 1.0             }}
+            { 1e-4            , "kg/m^3"     , 1e-9            },
+            { 1.0             , "kg/cm^3"    , 1e-3            },
+            { 0               , "kg/mm^3"    , 1.0             }}
         },
         { "ThermalConductivity", {
             { 1e6             , "W/m/K"      , 1e6             },
             { 0               , "W/mm/K"     , 1e3             }}
         },
         { "ThermalExpansionCoefficient", {
-            { 1e-3            , "μm/m/K"     , 1e-6            },
+            { 1e-3            , "\xC2\xB5m/m/K" , 1e-6         },
             { 0               , "mm/mm/K"    , 1.0             }}
         },
         { "VolumetricThermalExpansionCoefficient", {
-            { 1e-3            , "mm³/m³/K"   , 1e-9            },
-            { 0               , "m³/m³/K"    , 1.0             }}
+            { 1e-3            , "mm^3/m^3/K" , 1e-9            },
+            { 0               , "m^3/m^3/K"  , 1.0             }}
         },
         { "SpecificHeat", {
             { 0               , "J/kg/K"     , 1e6             }}
         },
         { "ThermalTransferCoefficient", {
-            { 0               , "W/m²/K"     , 1.0             }}
+            { 0               , "W/m^2/K"    , 1.0             }}
         },
         { "Pressure", {
             { 10.0            , "Pa"         , 1e-3            },
@@ -192,28 +192,28 @@ inline const UnitsSchemaSpec s3
             { 0               , "J"          , 1e6             }}
         },
         { "SpecificEnergy", {
-            { 0               , "m²/s²"      , 1e6             }}
+            { 0               , "m^2/s^2"    , 1e6             }}
         },
         { "HeatFlux", {
-            { 0               , "W/m²"       , 1.0             }}
+            { 0               , "W/m^2"      , 1.0             }}
         },
         { "ElectricCharge", {
             { 0               , "C"          , 1.0             }}
         },
         { "SurfaceChargeDensity", {
-            { 1e-4            , "C/m²"       , 1e-6            },
-            { 1e-2            , "C/cm²"      , 1e-2            },
-            { 0               , "C/mm²"      , 1.0             }}
+            { 1e-4            , "C/m^2"      , 1e-6            },
+            { 1e-2            , "C/cm^2"     , 1e-2            },
+            { 0               , "C/mm^2"     , 1.0             }}
         },
         { "VolumeChargeDensity", {
-            { 1e-4            , "C/m³"       , 1e-9            },
-            { 1e-2            , "C/cm³"      , 1e-3            },
-            { 0               , "C/mm³"      , 1.0             }}
+            { 1e-4            , "C/m^3"      , 1e-9            },
+            { 1e-2            , "C/cm^3"     , 1e-3            },
+            { 0               , "C/mm^3"     , 1.0             }}
         },
         { "CurrentDensity", {
-            { 1e-4            , "A/m²"       , 1e-6            },
-            { 1e-2            , "A/cm²"      , 1e-2            },
-            { 0               , "A/mm²"      , 1               }}
+            { 1e-4            , "A/m^2"      , 1e-6            },
+            { 1e-2            , "A/cm^2"     , 1e-2            },
+            { 0               , "A/mm^2"     , 1               }}
         },
         { "MagneticFluxDensity", {
             { 1e-3            , "G"          , 1e-4            },
@@ -229,7 +229,7 @@ inline const UnitsSchemaSpec s3
             { 0               , "A/m"        , 1e-3            }}
         },
         { "ElectricalConductance", {
-            { 1e-9            , "μS"         , 1e-12           },
+            { 1e-9            , "\xC2\xB5S"  , 1e-12           },
             { 1e-6            , "mS"         , 1e-9            },
             { 0               , "S"          , 1e-6            }}
         },
@@ -247,13 +247,13 @@ inline const UnitsSchemaSpec s3
         { "ElectricalCapacitance", {
             { 1e-15           , "pF"         , 1e-18           },
             { 1e-12           , "nF"         , 1e-15           },
-            { 1e-9            , "μF"         , 1e-12           },
+            { 1e-9            , "\xC2\xB5""F", 1e-12           },
             { 1e-6            , "mF"         , 1e-9            },
             { 0               , "F"          , 1e-6            }}
         },
         { "ElectricalInductance", {
             { 1.0             , "nH"         , 1e-3            },
-            { 1e3             , "μH"         , 1.0             },
+            { 1e3             , "\xC2\xB5H"  , 1.0             },
             { 1e6             , "mH"         , 1e3             },
             { 0               , "H"          , 1e6             }}
         },
@@ -274,14 +274,14 @@ inline const UnitsSchemaSpec s3
             { 0               , "Pa*s"       , 1e-3            }}
         },
         { "KinematicViscosity", {
-            { 1e3             , "mm²/s"      , 1.0             },
-            { 0               , "m²/s"       , 1e6             }}
+            { 1e3             , "mm^2/s"     , 1.0             },
+            { 0               , "m^2/s"      , 1e6             }}
         },
         { "VolumeFlowRate", {
-            { 1e3             , "mm³/s"      , 1.0             },
+            { 1e3             , "mm^3/s"     , 1.0             },
             { 1e6             , "ml/s"       , 1e3             },
             { 1e9             , "l/s"        , 1e6             },
-            { 0               , "m³/s"       , 1e9             }}
+            { 0               , "m^3/s"      , 1e9             }}
         },
         { "DissipationRate", {
             { 0               , "W/kg"       , 1e6             }}
@@ -291,22 +291,22 @@ inline const UnitsSchemaSpec s3
             { 1e-3            , "1/km"       , 1e-6            },
             { 1.0             , "1/m"        , 1e-3            },
             { 1e3             , "1/mm"       , 1.0             },
-            { 1e6             , "1/μm"       , 1e3             },
+            { 1e6             , "1/\xC2\xB5m", 1e3             },
             { 1e9             , "1/nm"       , 1e6             },
             { 0               , "1/m"        , 1e-3            }}
         },
         { "InverseArea", {
-            { 1e-12           , "1/m²"       , 1e-6            },
-            { 1e-6            , "1/km²"      , 1e-12           },
-            { 1.0             , "1/m²"       , 1e-6            },
-            { 1e2             , "1/cm²"      , 1e-2            },
-            { 0               , "1/mm²"      , 1.0             }}
+            { 1e-12           , "1/m^2"      , 1e-6            },
+            { 1e-6            , "1/km^2"     , 1e-12           },
+            { 1.0             , "1/m^2"      , 1e-6            },
+            { 1e2             , "1/cm^2"     , 1e-2            },
+            { 0               , "1/mm^2"     , 1.0             }}
         },
         { "InverseVolume", {
-            { 1e-6            , "1/m³"       , 1e-9            },
+            { 1e-6            , "1/m^3"      , 1e-9            },
             { 1e-3            , "1/l"        , 1e-6            },
             { 1.0             , "1/ml"       , 1e-3            },
-            { 0               , "1/mm³"      , 1.0             }}
+            { 0               , "1/mm^3"     , 1.0             }}
         }
     }
 };
@@ -317,38 +317,38 @@ inline const UnitsSchemaSpec s4
         { "Length", {
             { 1e-6            , "mm"         , 1.0             },
             { 1e-3            , "nm"         , 1e-6            },
-            { 0.1             , "μm"         , 1e-3            },
+            { 0.1             , "\xC2\xB5m"  , 1e-3            },
             { 1e4             , "mm"         , 1.0             },
             { 1e7             , "m"          , 1e3             },
             { 1e10            , "km"         , 1e6             },
             { 0               , "m"          , 1e3             }}
         },
         { "Area", {
-            { 100             , "mm²"        , 1.0             },
-            { 1e6             , "cm²"        , 100             },
-            { 1e12            , "m²"         , 1e6             },
-            { 0               , "km²"        , 1e12            }}
+            { 100             , "mm^2"       , 1.0             },
+            { 1e6             , "cm^2"       , 100             },
+            { 1e12            , "m^2"        , 1e6             },
+            { 0               , "km^2"       , 1e12            }}
         },
         { "Volume", {
-            { 1e3             , "mm³"        , 1.0             },
+            { 1e3             , "mm^3"       , 1.0             },
             { 1e6             , "ml"         , 1e3             },
             { 1e9             , "l"          , 1e6             },
-            { 0               , "m³"         , 1e9             }}
+            { 0               , "m^3"        , 1e9             }}
         },
         { "Mass", {
-            { 1e-6            , "μg"         , 1e-9            },
+            { 1e-6            , "\xC2\xB5g"  , 1e-9            },
             { 1e-3            , "mg"         , 1e-6            },
             { 1.0             , "g"          , 1e-3            },
             { 1e3             , "kg"         , 1.0             },
             { 0               , "t"          , 1e3             }}
         },
         { "Density", {
-            { 0.0001          , "kg/m³"      , 0.000000001     },
-            { 1.0             , "kg/cm³"     , 0.001           },
-            { 0               , "kg/mm³"     , 1.0             }}
+            { 0.0001          , "kg/m^3"     , 0.000000001     },
+            { 1.0             , "kg/cm^3"    , 0.001           },
+            { 0               , "kg/mm^3"    , 1.0             }}
         },
         { "Acceleration", {
-            { 0               , "m/s²"       , 1000.0          }}
+            { 0               , "m/s^2"      , 1000.0          }}
         },
         { "Pressure", {
             { 10.0             , "Pa"        , 0.001           },
@@ -381,18 +381,18 @@ inline const UnitsSchemaSpec s4
             { 0               , "W/m/K"      , 1'000.0         }}
         },
         { "ThermalExpansionCoefficient", {
-            { 0.001           , "μm/m/K"     , 0.000001        },
+            { 0.001           , "\xC2\xB5m/m/K" , 0.000001     },
             { 0               , "m/m/K"      , 1.0             }}
         },
         { "VolumetricThermalExpansionCoefficient", {
-            { 0.001           , "mm³/m³/K"   , 1e-9            },
-            { 0               , "m³/m³/K"    , 1.0             }}
+            { 0.001           , "mm^3/m^3/K" , 1e-9            },
+            { 0               , "m^3/m^3/K"  , 1.0             }}
         },
         { "SpecificHeat", {
             { 0               , "J/kg/K"     , 1'000'000.0     }}
         },
         { "ThermalTransferCoefficient", {
-            { 0               , "W/m²/K"     , 1.0             }}
+            { 0               , "W/m^2/K"    , 1.0             }}
         },
         { "Force", {
             { 1e3             , "mN"         , 1.0             },
@@ -415,14 +415,14 @@ inline const UnitsSchemaSpec s4
             { 0               , "C"          , 1.0             }}
         },
         { "SurfaceChargeDensity", {
-            { 0               , "C/m²"       , 1e-6            }}
+            { 0               , "C/m^2"      , 1e-6            }}
         },
         { "VolumeChargeDensity", {
-            { 0               , "C/m³"       , 1e-9            }}
+            { 0               , "C/m^3"      , 1e-9            }}
         },
         { "CurrentDensity", {
-            { 1e3             , "A/m²"       , 1e-6            },
-            { 0               , "A/mm²"      , 1.0             }}
+            { 1e3             , "A/m^2"      , 1e-6            },
+            { 0               , "A/mm^2"     , 1.0             }}
         },
         { "MagneticFluxDensity", {
             { 1e-3            , "G"          , 1e-4            },
@@ -438,7 +438,7 @@ inline const UnitsSchemaSpec s4
             { 0               , "A/m"        , 1e-3            }}
         },
         { "ElectricalConductance", {
-            { 1e-9            , "μS"         , 1e-12           },
+            { 1e-9            , "\xC2\xB5S"  , 1e-12           },
             { 1e-6            , "mS"         , 1e-9            },
             { 0               , "S"          , 1e-6            }}
         },
@@ -456,13 +456,13 @@ inline const UnitsSchemaSpec s4
         { "ElectricalCapacitance", {
             { 1e-15           , "pF"         , 1e-18           },
             { 1e-12           , "nF"         , 1e-15           },
-            { 1e-9            , "μ" "F"      , 1e-12           },
+            { 1e-9            , "\xC2\xB5""F", 1e-12           },
             { 1e-6            , "mF"         , 1e-9            },
             { 0               , "F"          , 1e-6            }}
         },
         { "ElectricalInductance", {
             { 1e-6            , "nH"         , 1e-3            },
-            { 1e-3            , "μH"         , 1.0             },
+            { 1e-3            , "\xC2\xB5H"  , 1.0             },
             { 1.0             , "mH"         , 1e3             },
             { 0               , "H"          , 1e6             }}
         },
@@ -480,10 +480,10 @@ inline const UnitsSchemaSpec s4
             { 0               , "J"          , 1e6             }}
         },
         { "SpecificEnergy", {
-            { 0               , "m²/s²"      , 1000000         }}
+            { 0               , "m^2/s^2"    , 1000000         }}
         },
         { "HeatFlux", {
-            { 0               , "W/m²"       , 1.0             }}
+            { 0               , "W/m^2"      , 1.0             }}
         },
         { "Frequency", {
             { 1e3             , "Hz"         , 1.0             },
@@ -499,14 +499,14 @@ inline const UnitsSchemaSpec s4
             { 0               , "Pa*s"       , 0.001           }}
         },
         { "KinematicViscosity", {
-            { 0               , "m²/s"       , 1e6             }}
+            { 0               , "m^2/s"      , 1e6             }}
         },
         { "VolumeFlowRate", {
-            { 1e-3            , "m³/s"       , 1e9             },
-            { 1e3             , "mm³/s"      , 1.0             },
+            { 1e-3            , "m^3/s"      , 1e9             },
+            { 1e3             , "mm^3/s"     , 1.0             },
             { 1e6             , "ml/s"       , 1e3             },
             { 1e9             , "l/s"        , 1e6             },
-            { 0               , "m³/s"       , 1e9             }}
+            { 0               , "m^3/s"      , 1e9             }}
         },
         { "DissipationRate", {
             { 0               , "W/kg"       , 1e6             }}
@@ -516,22 +516,22 @@ inline const UnitsSchemaSpec s4
             { 1e-3            , "1/km"       , 1e-6             },
             { 1.0             , "1/m"        , 1e-3             },
             { 1e3             , "1/mm"       , 1.0              },
-            { 1e6             , "1/μm"       , 1e3              },
+            { 1e6             , "1/\xC2\xB5m", 1e3              },
             { 1e9             , "1/nm"       , 1e6              },
             { 0               , "1/m"        , 1e-3             }}
         },
         { "InverseArea", {
-            { 1e-12           , "1/m²"       , 1e-6             },
-            { 1e-6            , "1/km²"      , 1e-12            },
-            { 1.0             , "1/m²"       , 1e-6             },
-            { 1e2             , "1/cm²"      , 1e-2             },
-            { 0               , "1/mm²"      , 1.0              }}
+            { 1e-12           , "1/m^2"      , 1e-6             },
+            { 1e-6            , "1/km^2"     , 1e-12            },
+            { 1.0             , "1/m^2"      , 1e-6             },
+            { 1e2             , "1/cm^2"     , 1e-2             },
+            { 0               , "1/mm^2"     , 1.0              }}
         },
         { "InverseVolume", {
-            { 1e-6            , "1/m³"       , 1e-9             },
+            { 1e-6            , "1/m^3"      , 1e-9             },
             { 1e-3            , "1/l"        , 1e-6             },
             { 1.0             , "1/ml"       , 1e-3             },
-            { 0               , "1/mm³"      , 1.0              }}
+            { 0               , "1/mm^3"     , 1.0              }}
         }
     }
 };
@@ -543,10 +543,10 @@ inline const UnitsSchemaSpec s5
             { 0              , "cm"          , 10.0             }}
         },
         { "Area", {
-            { 0              , "m²"          , 1e6              }}
+            { 0              , "m^2"         , 1e6              }}
         },
         { "Volume", {
-            { 0              , "m³"          , 1e9              }}
+            { 0              , "m^3"         , 1e9              }}
         },
         { "Power", {
             { 0              , "W"           , 1e6              }}
@@ -555,7 +555,7 @@ inline const UnitsSchemaSpec s5
             { 0              , "V"           , 1e6              }}
         },
         { "HeatFlux", {
-            { 0              , "W/m²"        , 1.0              }}
+            { 0              , "W/m^2"       , 1.0              }}
         },
         { "Velocity", {
             { 0              , "mm/min"      , 1.0 / 60         }}
@@ -591,10 +591,10 @@ inline const UnitsSchemaSpec s7
             { 0               , "°"        , 1.0               }}
         },
         { "Area", {
-            { 0               , "in²"      , 645.16            }}
+            { 0               , "in^2"     , 645.16            }}
         },
         { "Volume", {
-            { 0               , "in³"      , 16'387.064        }}
+            { 0               , "in^3"     , 16'387.064        }}
         },
         { "Mass", {
             { 0               , "lb"       , 0.45359237        }}
@@ -649,7 +649,7 @@ inline std::size_t greatestCommonDenominator(const std::size_t a, const std::siz
 }
 
 /**
- * double -> [feet'][inches[-fraction]"], e.g.: 3'4-1/4"
+ * double -> [feet'] [inches" [+ fraction]"], e.g.: 3' 4" + 3/8"
  */
 inline std::string toFractional(const double value)
 {
@@ -664,7 +664,8 @@ inline std::string toFractional(const double value)
 
     const auto feet =
         static_cast<std::size_t>(std::floor(numFractUnits / (inchPerFoot * defDenominator)));
-    numFractUnits = numFractUnits - (inchPerFoot * defDenominator * feet);
+    numFractUnits -= inchPerFoot * defDenominator * feet;
+
     const auto inches = static_cast<std::size_t>(std::floor(numFractUnits / defDenominator));
     const std::size_t fractNumerator = numFractUnits - (defDenominator * inches);
 
@@ -672,24 +673,32 @@ inline std::string toFractional(const double value)
     const std::size_t numerator = fractNumerator / common_denom;
     const std::size_t denominator = defDenominator / common_denom;
 
-    std::vector<std::string> resultParts {};
-    if (inches > 0) {
-        resultParts.push_back(fmt::format("{}", inches));
-        if (numerator == 0) {
-            resultParts.emplace_back("\"");
-        }
-    }
-    if (numerator > 0) {
-        if (inches > 0) {
-            resultParts.emplace_back("-");
-        }
-        resultParts.push_back(fmt::format("{}/{}\"", numerator, denominator));
+    bool addSpace {false};
+    std::string result;
+
+    if (value < 0) {
+        result += "-";
     }
 
-    return fmt::format("{}{}{}",
-                       value < 0 ? "-" : "",
-                       feet > 0 ? fmt::format("{}'", feet) : "",
-                       fmt::join(resultParts, ""));
+    if (feet > 0) {
+        result += fmt::format("{}'", feet);
+        addSpace = true;
+    }
+
+    if (inches > 0) {
+        result += fmt::format("{}{}\"", addSpace ? " " : "", inches);
+        addSpace = false;
+    }
+
+    if (numerator > 0) {
+        if (inches > 0) {
+            result += fmt::format(" {} ", value < 0 ? "-" : "+");
+            addSpace = false;
+        }
+        result += fmt::format("{}{}/{}\"", addSpace ? " " : "", numerator, denominator);
+    }
+
+    return result;
 }
 
 /**
