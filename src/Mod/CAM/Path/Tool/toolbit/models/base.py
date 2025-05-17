@@ -200,7 +200,7 @@ class ToolBit(Asset, ABC):
         including parameter values. Used as "subtitle" for the tool
         in the UI.
         
-        Example: "3.2 mm 4-flute endmill, 8 mm cutting edge length"
+        Example: "3.2 mm endmill, 4-flute, 8 mm cutting edge"
         """
         return self.get_shape_name()
 

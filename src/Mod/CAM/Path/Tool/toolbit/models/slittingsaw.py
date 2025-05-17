@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import FreeCAD
 import Path
 from ...shape import ToolBitShapeSlittingSaw
 from ..mixins import RotaryToolBitMixin, ChiploadMixin
@@ -13,3 +14,14 @@ class ToolBitSlittingSaw(ToolBit, ChiploadMixin, RotaryToolBitMixin):
             f"ToolBitSlittingSaw __init__ called with shape: {shape}, id: {id}"
         )
         super().__init__(shape, id=id)
+
+    @property
+    def summary(self) -> str:
+        diameter = self.get_property("Diameter").UserString
+        blade_thickness = self.get_property("BladeThickness").UserString
+        flutes = self.get_property("Flutes")
+
+        return FreeCAD.Qt.translate(
+            "CAM",
+            f"{diameter} slitting saw, {blade_thickness} blade, {flutes}-flute"
+        )

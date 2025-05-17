@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import FreeCAD
 import Path
 from ...shape import ToolBitShapeDovetail
 from ..mixins import RotaryToolBitMixin, ChiploadMixin
@@ -11,3 +12,14 @@ class ToolBitDovetail(ToolBit, ChiploadMixin, RotaryToolBitMixin):
     def __init__(self, shape: ToolBitShapeDovetail, id: str | None = None):
         Path.Log.track(f"ToolBitDovetail __init__ called with shape: {shape}, id: {id}")
         super().__init__(shape, id=id)
+
+    @property
+    def summary(self) -> str:
+        diameter = self.get_property("Diameter").UserString
+        cutting_edge_angle = self.get_property("CuttingEdgeAngle").UserString
+        flutes = self.get_property("Flutes")
+
+        return FreeCAD.Qt.translate(
+            "CAM",
+            f"{diameter} {cutting_edge_angle} dovetail bit, {flutes}-flute"
+        )

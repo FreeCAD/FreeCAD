@@ -33,4 +33,4 @@ class ToolBitShapeDrill(ToolBitShape):
 
     @property
     def label(self) -> str:
-        return FreeCAD.Qt.translate("ToolBitShape", "Drill")
+        return FreeCAD.Qt.translate("CAM", "Drill")

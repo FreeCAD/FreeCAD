@@ -153,10 +153,8 @@ class CompactToolBitListWidget(ToolBitListWidget):
         # Populate the cell widget
         cell.set_tool_no(final_tool_no)
         cell.set_upper_text(toolbit.label)
-        lower_text = ""
-        if toolbit._tool_bit_shape:
-            lower_text = toolbit._tool_bit_shape.name # TODO: better relevant tool info
-            cell.set_icon_from_shape(toolbit._tool_bit_shape)
+        lower_text = toolbit.summary
+        cell.set_icon_from_shape(toolbit._tool_bit_shape)
         cell.set_lower_text(lower_text)
 
         # Set the custom widget for the list item

@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import FreeCAD
 import Path
 from ...shape import ToolBitShapeProbe
 from .base import ToolBit
@@ -12,6 +13,17 @@ class ToolBitProbe(ToolBit):
         super().__init__(shape, id=id)
         self.obj.SpindleDirection = "None"
         self.obj.setEditorMode("SpindleDirection", 2)  # Read-only
+
+    @property
+    def summary(self) -> str:
+        diameter = self.get_property("Diameter").UserString
+        length = self.get_property("Length").UserString
+        shaft_diameter = self.get_property("ShaftDiameter").UserString
+
+        return FreeCAD.Qt.translate(
+            "CAM",
+            f"{diameter} probe, {length} length, {shaft_diameter} shaft"
+        )
 
     def can_rotate(self) -> bool:
         return False
