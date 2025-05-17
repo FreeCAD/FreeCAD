@@ -460,7 +460,7 @@ def openBrowserHTML(html, baseurl, title, icon, dialog=False):
 
     # save dock widget size and location
     def onDockLocationChanged(area):
-        PREFS.SetInt("dockWidgetArea", int(area))
+        PREFS.SetInt("dockWidgetArea", int(area.value))
         mw = FreeCADGui.getMainWindow()
         dock = mw.findChild(QtWidgets.QDockWidget, "HelpWidget")
         if dock:
