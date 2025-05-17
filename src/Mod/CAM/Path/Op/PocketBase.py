@@ -101,6 +101,8 @@ class ObjectPocket(PathAreaOp.ObjectOp):
         pass
 
     def opExecute(self, obj):
+        if obj.KeepToolDown and obj.StepOver == 100:
+            obj.StepOver = 99
         if len(obj.Base) == 0:
             return
         super().opExecute(obj)
