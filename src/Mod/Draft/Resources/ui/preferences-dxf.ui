@@ -7,73 +7,76 @@
     <x>0</x>
     <y>0</y>
     <width>649</width>
-    <height>773</height>
+    <height>800</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>DXF</string>
   </property>
-  <layout class="QVBoxLayout">
-   <property name="spacing">
-    <number>6</number>
-   </property>
-   <property name="margin">
-    <number>9</number>
-   </property>
+  <layout class="QVBoxLayout" name="verticalLayout_3">
    <item>
-    <widget class="Gui::PrefCheckBox" name="checkBox_dxfShowDialog">
-     <property name="toolTip">
-      <string>This preferences dialog will be shown when importing/ exporting DXF files</string>
+    <widget class="QGroupBox" name="groupBox">
+     <property name="title">
+      <string>General options</string>
      </property>
-     <property name="text">
-      <string>Show this dialog when importing and exporting</string>
-     </property>
-     <property name="checked">
-      <bool>true</bool>
-     </property>
-     <property name="prefEntry" stdset="0">
-      <cstring>dxfShowDialog</cstring>
-     </property>
-     <property name="prefPath" stdset="0">
-      <cstring>Mod/Draft</cstring>
-     </property>
-    </widget>
-   </item>
-   <item>
-    <widget class="Gui::PrefCheckBox" name="checkBox_dxfUseLegacyImporter">
-     <property name="toolTip">
-      <string>Python importer is used, otherwise the newer C++ is used.
+     <layout class="QVBoxLayout" name="verticalLayout">
+      <item>
+       <widget class="Gui::PrefCheckBox" name="checkBox_dxfShowDialog">
+        <property name="toolTip">
+         <string>This preferences dialog will be shown when importing/ exporting DXF files</string>
+        </property>
+        <property name="text">
+         <string>Show this dialog when importing and exporting</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>dxfShowDialog</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Draft</cstring>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="Gui::PrefCheckBox" name="checkBox_dxfUseLegacyImporter">
+        <property name="toolTip">
+         <string>Python importer is used, otherwise the newer C++ is used.
 Note: C++ importer is faster, but is not as featureful yet</string>
-     </property>
-     <property name="text">
-      <string>Use legacy Python importer</string>
-     </property>
-     <property name="checked">
-      <bool>false</bool>
-     </property>
-     <property name="prefEntry" stdset="0">
-      <cstring>dxfUseLegacyImporter</cstring>
-     </property>
-     <property name="prefPath" stdset="0">
-      <cstring>Mod/Draft</cstring>
-     </property>
-    </widget>
-   </item>
-   <item>
-    <widget class="Gui::PrefCheckBox" name="checkBox_dxfUseLegacyExporter">
-     <property name="toolTip">
-      <string>Python exporter is used, otherwise the newer C++ is used.
+        </property>
+        <property name="text">
+         <string>Use legacy Python importer</string>
+        </property>
+        <property name="checked">
+         <bool>false</bool>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>dxfUseLegacyImporter</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Draft</cstring>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="Gui::PrefCheckBox" name="checkBox_dxfUseLegacyExporter">
+        <property name="toolTip">
+         <string>Python exporter is used, otherwise the newer C++ is used.
 Note: C++ exporter is faster, but is not as featureful yet</string>
-     </property>
-     <property name="text">
-      <string>Use legacy Python exporter</string>
-     </property>
-     <property name="prefEntry" stdset="0">
-      <cstring>dxfUseLegacyExporter</cstring>
-     </property>
-     <property name="prefPath" stdset="0">
-      <cstring>Mod/Draft</cstring>
-     </property>
+        </property>
+        <property name="text">
+         <string>Use legacy Python exporter</string>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>dxfUseLegacyExporter</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Draft</cstring>
+        </property>
+       </widget>
+      </item>
+     </layout>
     </widget>
    </item>
    <item>
@@ -685,11 +688,6 @@ This might fail for post DXF R12 templates.</string>
  <layoutdefault spacing="6" margin="11"/>
  <customwidgets>
   <customwidget>
-   <class>Gui::PrefRadioButton</class>
-   <extends>QRadioButton</extends>
-   <header>Gui/PrefWidgets.h</header>
-  </customwidget>
-  <customwidget>
    <class>Gui::PrefCheckBox</class>
    <extends>QCheckBox</extends>
    <header>Gui/PrefWidgets.h</header>
@@ -699,69 +697,173 @@ This might fail for post DXF R12 templates.</string>
    <extends>QDoubleSpinBox</extends>
    <header>Gui/PrefWidgets.h</header>
   </customwidget>
+  <customwidget>
+   <class>Gui::PrefRadioButton</class>
+   <extends>QRadioButton</extends>
+   <header>Gui/PrefWidgets.h</header>
+  </customwidget>
  </customwidgets>
  <resources/>
  <connections>
-
-   <connection>
+  <connection>
    <sender>checkBox_dxfUseLegacyImporter</sender>
    <signal>toggled(bool)</signal>
    <receiver>label_Create</receiver>
    <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
   </connection>
   <connection>
    <sender>checkBox_dxfUseLegacyImporter</sender>
    <signal>toggled(bool)</signal>
    <receiver>radioButton_dxfCreatePart</receiver>
    <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
   </connection>
   <connection>
    <sender>checkBox_dxfUseLegacyImporter</sender>
    <signal>toggled(bool)</signal>
    <receiver>radioButton_dxfCreateDraft</receiver>
    <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
   </connection>
   <connection>
    <sender>checkBox_dxfUseLegacyImporter</sender>
    <signal>toggled(bool)</signal>
    <receiver>radioButton_dxfCreateSketch</receiver>
    <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
   </connection>
   <connection>
    <sender>checkBox_dxfUseLegacyImporter</sender>
    <signal>toggled(bool)</signal>
    <receiver>checkBox_joingeometry</receiver>
    <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
   </connection>
   <connection>
    <sender>checkBox_dxfUseLegacyImporter</sender>
    <signal>toggled(bool)</signal>
    <receiver>checkBox_dxfStdSize</receiver>
    <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
   </connection>
   <connection>
    <sender>checkBox_dxfUseLegacyImporter</sender>
    <signal>toggled(bool)</signal>
    <receiver>checkBox_importDxfHatches</receiver>
    <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
   </connection>
   <connection>
    <sender>checkBox_dxfUseLegacyImporter</sender>
    <signal>toggled(bool)</signal>
    <receiver>checkBox_renderPolylineWidth</receiver>
    <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
   </connection>
   <connection>
    <sender>checkBox_dxfUseLegacyExporter</sender>
    <signal>toggled(bool)</signal>
    <receiver>checkBox_dxfmesh</receiver>
    <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
   </connection>
   <connection>
    <sender>checkBox_dxfUseLegacyExporter</sender>
    <signal>toggled(bool)</signal>
    <receiver>checkBox_dxfproject</receiver>
    <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
   </connection>
  </connections>
 </ui>
