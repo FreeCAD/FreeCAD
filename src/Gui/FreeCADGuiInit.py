@@ -20,6 +20,8 @@
 #*   USA                                                                   *
 #*                                                                         *
 #***************************************************************************/
+from dataclasses import dataclass
+from typing import Union
 
 # FreeCAD gui init module
 #
@@ -128,6 +130,63 @@ class NoneWorkbench ( Workbench ):
     def GetClassName(self):
         """Return the name of the associated C++ class."""
         return "Gui::NoneWorkbench"
+
+
+@dataclass
+class InputHint:
+    """
+    Represents one Input Hint - i.e. shortcut suggestion.
+
+    The message is Qt formatting string with placeholders like %1, %2, ...
+    The placeholders are replaced with input representations - be it keys, mouse buttons etc.
+    Each placeholder corresponds to one input sequence. Sequence can either be:
+     - one input from Gui.UserInput enum
+     - tuple of mentioned enum values representing input sequence
+
+    >>> InputHint("%1 change mode", Gui.UserInput.KeyM)
+    will result in hint displaying `[M] change mode`
+
+    >>> InputHint("%1 new line", (Gui.UserInput.KeyControl, Gui.UserInput.KeyEnter))
+    will result in hint displaying `[ctrl][enter] new line`
+
+    >>> InputHint("%1/%2 increase/decrease ...", Gui.UserInput.KeyU, Gui.UserInput.KeyJ)
+    will result in hint displaying `[U]/[J] increase / decrease ...`
+    """
+
+    InputSequence = Gui.UserInput | tuple[Gui.UserInput, ...]
+
+    message: str
+    sequences: list[InputSequence]
+
+    def __init__(self, message: str, *sequences: InputSequence):
+        self.message = message
+        self.sequences = list(sequences)
+
+
+class HintManager:
+    """
+    This is convenience class for managing input hints (shortcut suggestions) displayed for the user.
+    It is here mostly to provide well-defined and easy to reach API from python without developers needing
+    to call low-level functions on main window directly.
+    """
+
+    def show(self, *hints: InputHint):
+        """
+        Changes input hints that are displayed for the user.
+
+        :param hints: List of hints to show.
+        """
+        Gui.getMainWindow().showHint(*hints)
+
+    def hide(self):
+        """
+        Hides input hints from the display.
+        """
+        Gui.getMainWindow().hideHint()
+
+
+Gui.InputHint = InputHint
+Gui.HintManager = HintManager()
 
 def InitApplications():
     import sys,os,traceback
