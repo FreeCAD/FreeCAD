@@ -123,13 +123,22 @@ class ifc_object:
         so we move copy the Type's property to our actual object.
         """
         
-        if not getattr(obj, "Type", None) and not obj.Proxy.generated_type:
+        if not getattr(obj, "Type", None):
             return
 
         type_obj = obj.Type
         if getattr(type_obj, "Classification", None):
-            obj.addProperty("App::PropertyString", "Classification", "IFC")
+            # Check if there is Classification already, since user can just change
+            # the IFC type, but there could be one previously assigned which had
+            # Classification
+            if getattr(obj, "Classification", None) is None:
+                obj.addProperty("App::PropertyString", "Classification", "IFC")
             obj.Classification = type_obj.Classification
+            obj.recompute()
+        elif getattr(obj, "Classification", None):
+            # This means user has assigned type that has no classification, so clear
+            # the one that they have currently selected
+            obj.Classification = ""
             obj.recompute()
 
     def fit_all(self):
