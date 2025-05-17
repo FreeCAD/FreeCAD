@@ -52,6 +52,9 @@ class GuiExport Translator : public QObject
     Q_OBJECT
 
 public:
+    class ParameterObserver;
+    static constexpr std::array<std::string_view, 3> formattingOptions{"Operating system", "Selected language", "C/POSIX"};
+
     /** @name singleton stuff */
     //@{
     /// Creates an instance
@@ -92,6 +95,7 @@ private:
     void updateLocaleChange() const;
 
 private:
+    ParameterObserver* observer;
     static Translator* _pcSingleton;
     TranslatorP* d;
     std::unique_ptr<Translator, std::function<void(Translator*)>> decimalPointConverter;
