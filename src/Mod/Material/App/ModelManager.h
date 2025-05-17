@@ -100,6 +100,9 @@ public:
 
 private:
     ModelManager();
+
+    FC_DISABLE_COPY_MOVE(ModelManager);
+
     static void initManagers();
 
     static ModelManager* _manager;
