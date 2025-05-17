@@ -35,31 +35,26 @@ class Library(Asset):
         """
         if isinstance(identifier, AssetUri):
             return identifier
-        
+
         if isinstance(identifier, str) and AssetUri.is_uri(identifier):
             return AssetUri(identifier)
 
-        if isinstance(identifier, pathlib.Path): # Handle direct Path objects (legacy filenames)
-            identifier = identifier.stem # Use the filename stem as potential ID
+        if isinstance(identifier, pathlib.Path):  # Handle direct Path objects (legacy filenames)
+            identifier = identifier.stem  # Use the filename stem as potential ID
 
         if not isinstance(identifier, str):
             raise ValueError("Failed to resolve {identifier} to a Uri")
-            
+
         return AssetUri.build(asset_type=Library.asset_type, asset_id=identifier)
 
     def to_dict(self) -> dict:
         """Returns a dictionary representation of the Library in the specified format."""
         tools_list = []
         for tool_no, tool in self._bit_nos.items():
-            tools_list.append({
-                "nr": tool_no,
-                "path": f"{tool.get_id()}.fctb"  # Tool ID with .fctb extension
-            })
-        return {
-            "label": self.label,
-            "tools": tools_list,
-            "version": self.API_VERSION
-        }
+            tools_list.append(
+                {"nr": tool_no, "path": f"{tool.get_id()}.fctb"}  # Tool ID with .fctb extension
+            )
+        return {"label": self.label, "tools": tools_list, "version": self.API_VERSION}
 
     @classmethod
     def from_dict(
@@ -75,7 +70,9 @@ class Library(Asset):
         library = cls(data_dict.get("label", id or "Unnamed Library"), id=id)
 
         if dependencies is None:
-            Path.Log.debug(f"Library.from_dict: Shallow load for library '{library.label}' (id: {id}). Tools not populated.")
+            Path.Log.debug(
+                f"Library.from_dict: Shallow load for library '{library.label}' (id: {id}). Tools not populated."
+            )
             return library  # Only process tools if dependencies were resolved
 
         tools_list = data_dict.get("tools", [])
@@ -101,7 +98,7 @@ class Library(Asset):
 
     def get_next_bit_no(self):
         bit_nolist = sorted(self._bit_nos, reverse=True)
-        return bit_nolist[0]+1 if bit_nolist else 1
+        return bit_nolist[0] + 1 if bit_nolist else 1
 
     def get_bit_no_from_bit(self, bit: ToolBit) -> Optional[int]:
         for bit_no, thebit in self._bit_nos.items():
@@ -157,9 +154,9 @@ class Library(Asset):
 
     def dump(self, summarize: bool = False):
         title = 'Library "{}" ({}) (instance {})'.format(self.label, self.id, id(self))
-        print("-"*len(title))
+        print("-" * len(title))
         print(title)
-        print("-"*len(title))
+        print("-" * len(title))
         for bit in self._bits:
             print(f"- {bit.label} ({bit.get_id()})")
         print()

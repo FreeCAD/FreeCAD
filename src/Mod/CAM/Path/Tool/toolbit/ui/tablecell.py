@@ -5,8 +5,8 @@ from ...shape import ToolBitShape
 
 
 def isub(text, old, repl_pattern):
-    pattern = '|'.join(re.escape(o) for o in old)
-    return re.sub('('+pattern+')', repl_pattern, text, flags=re.I)
+    pattern = "|".join(re.escape(o) for o in old)
+    return re.sub("(" + pattern + ")", repl_pattern, text, flags=re.I)
 
 
 def interpolate_colors(start_color, end_color, ratio):
@@ -18,13 +18,13 @@ def interpolate_colors(start_color, end_color, ratio):
 
 
 class TwoLineTableCell(QtGui.QWidget):
-    def __init__ (self, parent=None):
+    def __init__(self, parent=None):
         super(TwoLineTableCell, self).__init__(parent)
-        self.tool_no = ''
-        self.pocket = ''
-        self.upper_text = ''
-        self.lower_text = ''
-        self.search_highlight = ''
+        self.tool_no = ""
+        self.pocket = ""
+        self.upper_text = ""
+        self.lower_text = ""
+        self.search_highlight = ""
 
         palette = self.palette()
         bg_role = self.backgroundRole()
@@ -36,7 +36,7 @@ class TwoLineTableCell(QtGui.QWidget):
         self.label_upper = QtGui.QLabel()
         self.label_upper.setStyleSheet("margin-top: 8px")
 
-        color = interpolate_colors(bg_color, fg_color, .8)
+        color = interpolate_colors(bg_color, fg_color, 0.8)
         style = "margin-bottom: 8px; color: {};".format(color.name())
         self.label_lower = QtGui.QLabel()
         self.label_lower.setStyleSheet(style)
@@ -47,11 +47,11 @@ class TwoLineTableCell(QtGui.QWidget):
         self.label_left = QtGui.QLabel()
         self.label_left.setMinimumWidth(40)
         self.label_left.setTextFormat(QtCore.Qt.RichText)
-        self.label_left.setAlignment(QtCore.Qt.AlignCenter|QtCore.Qt.AlignVCenter)
+        self.label_left.setAlignment(QtCore.Qt.AlignCenter | QtCore.Qt.AlignVCenter)
         self.label_left.setStyleSheet(style)
 
         ratio = self.devicePixelRatioF()
-        self.icon_size = QtCore.QSize(50*ratio, 60*ratio)
+        self.icon_size = QtCore.QSize(50 * ratio, 60 * ratio)
         self.icon_widget = QtGui.QLabel()
 
         style = "color: {}".format(fg_color.name())
@@ -73,11 +73,11 @@ class TwoLineTableCell(QtGui.QWidget):
         if not self.search_highlight:
             return text
         highlight_fmt = r'<font style="background: yellow; color: black">\1</font>'
-        return isub(text, self.search_highlight.split(' '), highlight_fmt)
+        return isub(text, self.search_highlight.split(" "), highlight_fmt)
 
     def _update(self):
         # Handle tool number display
-        if self.tool_no is not None and self.tool_no != '':
+        if self.tool_no is not None and self.tool_no != "":
             text = self._highlight(str(self.tool_no))
             self.label_left.setText(f"<b>{text}</b>")
             self.label_left.setVisible(True)
@@ -85,23 +85,23 @@ class TwoLineTableCell(QtGui.QWidget):
             self.label_left.setVisible(False)
 
         text = self._highlight(self.pocket)
-        lbl = FreeCAD.Qt.translate('CAM_Toolbit', 'Pocket')
-        text = f"{lbl}\n<h3>{text}</h3>" if text else ''
+        lbl = FreeCAD.Qt.translate("CAM_Toolbit", "Pocket")
+        text = f"{lbl}\n<h3>{text}</h3>" if text else ""
         self.label_right.setText(text)
 
         text = self._highlight(self.upper_text)
-        self.label_upper.setText(f'<big><b>{text}</b></big>')
+        self.label_upper.setText(f"<big><b>{text}</b></big>")
 
         text = self._highlight(self.lower_text)
         self.label_lower.setText(text)
-        self.label_lower.setText(f'{text}')
+        self.label_lower.setText(f"{text}")
 
     def set_tool_no(self, no):
         self.tool_no = no
         self._update()
 
     def set_pocket(self, pocket):
-        self.pocket = str(pocket) if pocket else ''
+        self.pocket = str(pocket) if pocket else ""
         self._update()
 
     def set_upper_text(self, text):
@@ -127,12 +127,14 @@ class TwoLineTableCell(QtGui.QWidget):
             self.set_icon(pixmap)
 
     def contains_text(self, text):
-        for term in text.lower().split(' '):
+        for term in text.lower().split(" "):
             tool_no_str = str(self.tool_no) if self.tool_no is not None else ""
             # Check against the raw text content, not the HTML-formatted text
-            if term not in tool_no_str.lower() \
-                and term not in self.upper_text.lower() \
-                and term not in self.lower_text.lower():
+            if (
+                term not in tool_no_str.lower()
+                and term not in self.upper_text.lower()
+                and term not in self.lower_text.lower()
+            ):
                 return False
         return True
 
@@ -147,7 +149,7 @@ class CompactTwoLineTableCell(TwoLineTableCell):
 
         # Reduce icon size
         ratio = self.devicePixelRatioF()
-        self.icon_size = QtCore.QSize(32*ratio, 32*ratio)
+        self.icon_size = QtCore.QSize(32 * ratio, 32 * ratio)
 
         # Reduce margins
         self.label_upper.setStyleSheet("margin: 2px 0px 0px 0px; font-size: .8em;")

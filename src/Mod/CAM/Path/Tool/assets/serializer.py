@@ -64,6 +64,7 @@ class DummyAssetSerializer(AssetSerializer):
     extract_dependencies(), to_bytes() and from_bytes() methods that ignore
     the given serializer.
     """
+
     @classmethod
     def extract_dependencies(cls, data: bytes) -> List[AssetUri]:
         return []

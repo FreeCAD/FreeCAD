@@ -35,7 +35,7 @@ class TestToolBitBrowserWidget(PathTestWithAssets):
     """Tests for ToolBitBrowserWidget using real assets and widgets."""
 
     def setUp(self):
-        super().setUp() # Call the base class setUp to initialize assets
+        super().setUp()  # Call the base class setUp to initialize assets
         # The browser widget uses the global cam_assets, which is set up
         # by PathTestWithAssets.
         self.widget = ToolBitBrowserWidget(self.assets)
@@ -73,8 +73,9 @@ class TestToolBitBrowserWidget(PathTestWithAssets):
         expected_visible_uris = set()
         for asset in all_assets:
             tb = cast(ToolBit, asset)
-            is_expected = search_term.lower() in tb.label.lower() \
-                or search_term.lower() in tb.summary.lower()
+            is_expected = (
+                search_term.lower() in tb.label.lower() or search_term.lower() in tb.summary.lower()
+            )
             if is_expected:
                 expected_visible_uris.add(str(tb.get_uri()))
 
@@ -93,7 +94,6 @@ class TestToolBitBrowserWidget(PathTestWithAssets):
 
         self.assertEqual(actual_visible_uris, expected_visible_uris)
 
-
     def test_lazy_loading_on_scroll(self):
         # This test requires more than self._batch_size toolbits to be effective.
         # The default test assets might not have enough.
@@ -101,7 +101,7 @@ class TestToolBitBrowserWidget(PathTestWithAssets):
 
         initial_count = self.widget._tool_list_widget.count()
         if initial_count < self.widget._batch_size:
-             self.skipTest("Not enough toolbits for lazy loading test.")
+            self.skipTest("Not enough toolbits for lazy loading test.")
 
         # Simulate scrolling to the bottom by emitting the signal
         scrollbar = self.widget._tool_list_widget.verticalScrollBar()
@@ -112,7 +112,9 @@ class TestToolBitBrowserWidget(PathTestWithAssets):
         new_count = self.widget._tool_list_widget.count()
         self.assertGreater(new_count, initial_count)
         # Verify that the number of new items is approximately the batch size
-        self.assertAlmostEqual(new_count - initial_count, self.widget._batch_size, delta=5) # Allow small delta
+        self.assertAlmostEqual(
+            new_count - initial_count, self.widget._batch_size, delta=5
+        )  # Allow small delta
 
     def test_tool_selected_signal(self):
         mock_slot = MagicMock()

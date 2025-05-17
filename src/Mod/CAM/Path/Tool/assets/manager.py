@@ -20,6 +20,7 @@ logger = logging.getLogger(__name__)
 @dataclass
 class _AssetConstructionData:
     """Holds raw data and type info needed to construct an asset instance."""
+
     uri: AssetUri
     raw_data: bytes
     asset_class: Type[Asset]
@@ -34,15 +35,11 @@ class AssetManager:
         self._asset_classes: Dict[str, Type[Asset]] = {}
         self.asset_cache = AssetCache(max_size_bytes=cache_max_size_bytes)
         self._cacheable_stores: Set[str] = set()
-        logger.debug(
-            f"AssetManager initialized (Thread: {threading.current_thread().name})"
-        )
+        logger.debug(f"AssetManager initialized (Thread: {threading.current_thread().name})")
 
     def register_store(self, store: AssetStore, cacheable: bool = False):
         """Registers an AssetStore with the manager."""
-        logger.debug(
-            f"Registering store: {store.name}, cacheable: {cacheable}"
-        )
+        logger.debug(f"Registering store: {store.name}, cacheable: {cacheable}")
         self.stores[store.name] = store
         if cacheable:
             self._cacheable_stores.add(store.name)
@@ -62,16 +59,12 @@ class AssetManager:
         self._serializers.append((serializer, asset_class))
 
         asset_type_name = getattr(asset_class, "asset_type", None)
-        if (
-            not isinstance(asset_type_name, str) or not asset_type_name
-        ):  # Ensure not empty
+        if not isinstance(asset_type_name, str) or not asset_type_name:  # Ensure not empty
             raise TypeError(
                 f"Asset class '{asset_class.__name__}' must have a non-empty string 'asset_type' attribute."
             )
 
-        logger.debug(
-            f"Registering asset type: '{asset_type_name}' -> {asset_class.__name__}"
-        )
+        logger.debug(f"Registering asset type: '{asset_type_name}' -> {asset_class.__name__}")
         self._asset_classes[asset_type_name] = asset_class
 
     async def _fetch_asset_construction_data_recursive_async(
@@ -81,12 +74,14 @@ class AssetManager:
         visited_uris: Set[AssetUri],
         depth: Optional[int] = None,
     ) -> Optional[_AssetConstructionData]:
-        logger.debug(f"_fetch_asset_construction_data_recursive_async called {store_name} {uri} {depth}")
+        logger.debug(
+            f"_fetch_asset_construction_data_recursive_async called {store_name} {uri} {depth}"
+        )
 
         if uri in visited_uris:
             logger.error(f"Cyclic dependency detected for URI: {uri}")
             raise RuntimeError(f"Cyclic dependency encountered for URI: {uri}")
-    
+
         # Check arguments
         store = self.stores.get(store_name)
         if not store:
@@ -99,8 +94,10 @@ class AssetManager:
         try:
             raw_data = await store.get(uri)
         except FileNotFoundError:
-            logger.debug(f"_fetch_asset_construction_data_recursive_async: Asset not found for {uri}")
-            return None # Primary asset not found
+            logger.debug(
+                f"_fetch_asset_construction_data_recursive_async: Asset not found for {uri}"
+            )
+            return None  # Primary asset not found
 
         if depth == 0:
             return _AssetConstructionData(
@@ -125,19 +122,21 @@ class AssetManager:
                     dep_uri,
                     store_name,
                     visited_uris,
-                    None if depth is None else depth-1,
+                    None if depth is None else depth - 1,
                 )
             finally:
                 visited_uris.remove(uri)
             deps_construction_data[dep_uri] = dep_data
 
-        logger.debug(f"ToolBitShape '{uri.asset_id}' dependencies_data: {deps_construction_data is None}")
+        logger.debug(
+            f"ToolBitShape '{uri.asset_id}' dependencies_data: {deps_construction_data is None}"
+        )
 
         return _AssetConstructionData(
             uri=uri,
             raw_data=raw_data,
             asset_class=asset_class,
-            dependencies_data=deps_construction_data, # Can be None or Dict
+            dependencies_data=deps_construction_data,  # Can be None or Dict
         )
 
     def _calculate_cache_key_from_construction_data(
@@ -152,15 +151,10 @@ class AssetManager:
             deps_signature_tuple: Tuple = ("shallow_children",)
         else:
             deps_signature_tuple = tuple(
-                sorted(
-                    str(uri)
-                    for uri in construction_data.dependencies_data.keys()
-                )
+                sorted(str(uri) for uri in construction_data.dependencies_data.keys())
             )
 
-        raw_data_hash = int(
-            hashlib.sha256(construction_data.raw_data).hexdigest(), 16
-        )
+        raw_data_hash = int(hashlib.sha256(construction_data.raw_data).hexdigest(), 16)
 
         return CacheKey(
             store_name=store_name_for_cache,
@@ -208,10 +202,8 @@ class AssetManager:
                 # different store and that store has different cacheability,
                 # this would need more complex store_name propagation.
                 # For now, use the parent's store_name_for_cache.
-                resolved_dependencies[dep_uri] = (
-                    self._build_asset_tree_from_data_sync(
-                        dep_data_node, store_name_for_cache
-                    )
+                resolved_dependencies[dep_uri] = self._build_asset_tree_from_data_sync(
+                    dep_data_node, store_name_for_cache
                 )
 
         asset_class = construction_data.asset_class
@@ -228,8 +220,7 @@ class AssetManager:
             direct_deps_uris_strs: Set[str] = set()
             if construction_data.dependencies_data is not None:
                 direct_deps_uris_strs = {
-                    str(uri)
-                    for uri in construction_data.dependencies_data.keys()
+                    str(uri) for uri in construction_data.dependencies_data.keys()
                 }
             raw_data_size = len(construction_data.raw_data)
             self.asset_cache.put(
@@ -289,9 +280,7 @@ class AssetManager:
 
         if all_construction_data is None:
             # This means the top-level asset itself was not found by _fetch_...
-            raise FileNotFoundError(
-                f"Asset '{asset_uri_obj}' not found in store '{store}'."
-            )
+            raise FileNotFoundError(f"Asset '{asset_uri_obj}' not found in store '{store}'.")
 
         # Step 2: Synchronously build the asset tree (and call from_bytes)
         # This happens in the current thread (which is assumed to be the main UI thread)
@@ -312,9 +301,7 @@ class AssetManager:
         final_asset = self._build_asset_tree_from_data_sync(
             all_construction_data, store_name_for_cache=store
         )
-        logger.debug(
-            f"Get: Synchronous asset tree build for '{asset_uri_obj}' completed."
-        )
+        logger.debug(f"Get: Synchronous asset tree build for '{asset_uri_obj}' completed.")
         return final_asset
 
     def get_or_none(
@@ -351,10 +338,8 @@ class AssetManager:
 
         asset_uri_obj = AssetUri(uri) if isinstance(uri, str) else uri
 
-        all_construction_data = (
-            await self._fetch_asset_construction_data_recursive_async(
-                asset_uri_obj, store, set(), depth
-            )
+        all_construction_data = await self._fetch_asset_construction_data_recursive_async(
+            asset_uri_obj, store, set(), depth
         )
 
         if all_construction_data is None:
@@ -373,9 +358,7 @@ class AssetManager:
             all_construction_data, store_name_for_cache=store
         )
 
-    def get_raw(
-        self, uri: Union[AssetUri, str], store: str = "local"
-    ) -> bytes:
+    def get_raw(self, uri: Union[AssetUri, str], store: str = "local") -> bytes:
         """Retrieves raw asset data by its URI (synchronous wrapper)."""
         logger.debug(
             f"AssetManager.get_raw(uri='{uri}', store='{store}') from T:{threading.current_thread().name}"
@@ -401,9 +384,7 @@ class AssetManager:
             )
             raise
 
-    async def get_raw_async(
-        self, uri: Union[AssetUri, str], store: str = "local"
-    ) -> bytes:
+    async def get_raw_async(self, uri: Union[AssetUri, str], store: str = "local") -> bytes:
         """Retrieves raw asset data by its URI (asynchronous)."""
         logger.debug(
             f"AssetManager.get_raw_async(uri='{uri}', store='{store}') from T:{threading.current_thread().name}"
@@ -439,13 +420,9 @@ class AssetManager:
 
         try:
             logger.debug("GetBulk: Starting bulk data fetching")
-            all_construction_data_list = asyncio.run(
-                _fetch_all_construction_data_bulk_async()
-            )
+            all_construction_data_list = asyncio.run(_fetch_all_construction_data_bulk_async())
             logger.debug("GetBulk: bulk data fetching completed")
-        except (
-            Exception
-        ) as e:  # Should ideally not happen if gather returns exceptions
+        except Exception as e:  # Should ideally not happen if gather returns exceptions
             logger.error(
                 f"GetBulk: Unexpected error during asyncio.run for bulk data: {e}",
                 exc_info=False,
@@ -465,13 +442,9 @@ class AssetManager:
             elif isinstance(data_or_exc, _AssetConstructionData):
                 # Build asset instance synchronously. Exceptions during build should propagate.
                 assets.append(
-                    self._build_asset_tree_from_data_sync(
-                        data_or_exc, store_name_for_cache=store
-                    )
+                    self._build_asset_tree_from_data_sync(data_or_exc, store_name_for_cache=store)
                 )
-            elif (
-                data_or_exc is None
-            ):  # From _fetch_... returning None for not found
+            elif data_or_exc is None:  # From _fetch_... returning None for not found
                 logger.debug(f"GetBulk: Asset '{original_uri_input}' not found")
                 assets.append(None)
             else:  # Should not happen
@@ -500,22 +473,15 @@ class AssetManager:
             )
             for u in uris
         ]
-        all_construction_data_list = await asyncio.gather(
-            *tasks, return_exceptions=True
-        )
+        all_construction_data_list = await asyncio.gather(*tasks, return_exceptions=True)
 
         assets = []
         for i, data_or_exc in enumerate(all_construction_data_list):
             if isinstance(data_or_exc, _AssetConstructionData):
                 assets.append(
-                    self._build_asset_tree_from_data_sync(
-                        data_or_exc, store_name_for_cache=store
-                    )
+                    self._build_asset_tree_from_data_sync(data_or_exc, store_name_for_cache=store)
                 )
-            elif (
-                isinstance(data_or_exc, FileNotFoundError)
-                or data_or_exc is None
-            ):
+            elif isinstance(data_or_exc, FileNotFoundError) or data_or_exc is None:
                 assets.append(None)
             elif isinstance(data_or_exc, Exception):
                 assets.append(data_or_exc)  # Caller must check
@@ -531,8 +497,10 @@ class AssetManager:
     ) -> List[Asset]:
         """Fetches asset instances based on type, limit, and offset (synchronous), to a specified depth."""
         logger.debug(f"Fetch(type='{asset_type}', store='{store}', depth='{depth}')")
-        asset_uris = self.list_assets(asset_type, limit, offset, store) # list_assets doesn't need depth
-        results = self.get_bulk(asset_uris, store, depth) # Pass depth to get_bulk
+        asset_uris = self.list_assets(
+            asset_type, limit, offset, store
+        )  # list_assets doesn't need depth
+        results = self.get_bulk(asset_uris, store, depth)  # Pass depth to get_bulk
         # Filter out non-Asset objects (e.g., None for not found, or exceptions if collected)
         return [asset for asset in results if isinstance(asset, Asset)]
 
@@ -547,9 +515,11 @@ class AssetManager:
         """Fetches asset instances based on type, limit, and offset (asynchronous), to a specified depth."""
         logger.debug(f"FetchAsync(type='{asset_type}', store='{store}', depth='{depth}')")
         asset_uris = await self.list_assets_async(
-            asset_type, limit, offset, store # list_assets_async doesn't need depth
+            asset_type, limit, offset, store  # list_assets_async doesn't need depth
         )
-        results = await self.get_bulk_async(asset_uris, store, depth) # Pass depth to get_bulk_async
+        results = await self.get_bulk_async(
+            asset_uris, store, depth
+        )  # Pass depth to get_bulk_async
         return [asset for asset in results if isinstance(asset, Asset)]
 
     def list_assets(
@@ -560,9 +530,7 @@ class AssetManager:
         store: str = "local",
     ) -> List[AssetUri]:
         logger.debug(f"ListAssets(type='{asset_type}', store='{store}')")
-        return asyncio.run(
-            self.list_assets_async(asset_type, limit, offset, store)
-        )
+        return asyncio.run(self.list_assets_async(asset_type, limit, offset, store))
 
     async def list_assets_async(
         self,
@@ -571,9 +539,7 @@ class AssetManager:
         offset: Optional[int] = None,
         store: str = "local",
     ) -> List[AssetUri]:
-        logger.debug(
-            f"ListAssetsAsync executing for type='{asset_type}', store='{store}'"
-        )
+        logger.debug(f"ListAssetsAsync executing for type='{asset_type}', store='{store}'")
         logger.debug(
             f"ListAssetsAsync: Looking up store '{store}'. Available stores: {list(self.stores.keys())}"
         )
@@ -589,18 +555,14 @@ class AssetManager:
         store: str = "local",
     ) -> int:
         logger.debug(f"CountAssets(type='{asset_type}', store='{store}')")
-        return asyncio.run(
-            self.count_assets_async(asset_type, store)
-        )
+        return asyncio.run(self.count_assets_async(asset_type, store))
 
     async def count_assets_async(
         self,
         asset_type: Optional[str] = None,
         store: str = "local",
     ) -> int:
-        logger.debug(
-            f"CountAssetsAsync executing for type='{asset_type}', store='{store}'"
-        )
+        logger.debug(f"CountAssetsAsync executing for type='{asset_type}', store='{store}'")
         logger.debug(
             f"CountAssetsAsync: Looking up store '{store}'. Available stores: {list(self.stores.keys())}"
         )
@@ -633,10 +595,14 @@ class AssetManager:
 
     def add(self, obj: Asset, store: str = "local") -> AssetUri:
         """Synchronous wrapper for adding an asset to the store."""
-        logger.debug(f"Add: Adding {type(obj).__name__} to store '{store}' from T:{threading.current_thread().name}")
+        logger.debug(
+            f"Add: Adding {type(obj).__name__} to store '{store}' from T:{threading.current_thread().name}"
+        )
         return asyncio.run(self.add_async(obj, store))
 
-    async def add_raw_async(self, asset_type: str, asset_id: str, data: bytes, store: str = "local") -> AssetUri:
+    async def add_raw_async(
+        self, asset_type: str, asset_id: str, data: bytes, store: str = "local"
+    ) -> AssetUri:
         """
         Adds raw asset data to the store, either creating a new asset or updating an existing one.
         """
@@ -653,20 +619,28 @@ class AssetManager:
             uri = await selected_store.update(uri, data)
             logger.debug(f"AddRawAsync: Updated existing asset at {uri}")
         except FileNotFoundError:
-            logger.debug(f"AddRawAsync: Asset not found, creating new asset with {asset_type} and {asset_id}")
+            logger.debug(
+                f"AddRawAsync: Asset not found, creating new asset with {asset_type} and {asset_id}"
+            )
             uri = await selected_store.create(asset_type, asset_id, data)
 
         if store in self._cacheable_stores:
-            self.asset_cache.invalidate_for_uri(str(uri)) # Invalidate after add/update
+            self.asset_cache.invalidate_for_uri(str(uri))  # Invalidate after add/update
         return uri
 
-    def add_raw(self, asset_type: str, asset_id: str, data: bytes, store: str = "local") -> AssetUri:
+    def add_raw(
+        self, asset_type: str, asset_id: str, data: bytes, store: str = "local"
+    ) -> AssetUri:
         """Synchronous wrapper for adding raw asset data to the store."""
-        logger.debug(f"AddRaw: type='{asset_type}', id='{asset_id}', store='{store}' from T:{threading.current_thread().name}")
+        logger.debug(
+            f"AddRaw: type='{asset_type}', id='{asset_id}', store='{store}' from T:{threading.current_thread().name}"
+        )
         try:
             return asyncio.run(self.add_raw_async(asset_type, asset_id, data, store))
         except Exception as e:
-            logger.error(f"AddRaw: Error for type='{asset_type}', id='{asset_id}': {e}", exc_info=False)
+            logger.error(
+                f"AddRaw: Error for type='{asset_type}', id='{asset_id}': {e}", exc_info=False
+            )
             raise
 
     def add_file(
@@ -680,10 +654,7 @@ class AssetManager:
         Convenience wrapper around add_raw().
         If asset_id is None, the path.stem is used as the id.
         """
-        return self.add_raw(asset_type,
-                            asset_id or path.stem,
-                            path.read_bytes(),
-                            store=store)
+        return self.add_raw(asset_type, asset_id or path.stem, path.read_bytes(), store=store)
 
     def delete(self, uri: Union[AssetUri, str], store: str = "local") -> None:
         logger.debug(f"Delete URI '{uri}' from store '{store}'")
@@ -697,9 +668,7 @@ class AssetManager:
 
         asyncio.run(_do_delete_async())
 
-    async def delete_async(
-        self, uri: Union[AssetUri, str], store: str = "local"
-    ) -> None:
+    async def delete_async(self, uri: Union[AssetUri, str], store: str = "local") -> None:
         logger.debug(f"DeleteAsync URI '{uri}' from store '{store}'")
         asset_uri_obj = AssetUri(uri) if isinstance(uri, str) else uri
         selected_store = self.stores[store]
@@ -707,9 +676,7 @@ class AssetManager:
         if store in self._cacheable_stores:
             self.asset_cache.invalidate_for_uri(str(asset_uri_obj))
 
-    async def is_empty_async(
-        self, asset_type: Optional[str] = None, store: str = "local"
-    ) -> bool:
+    async def is_empty_async(self, asset_type: Optional[str] = None, store: str = "local") -> bool:
         """Checks if the asset store has any assets of a given type (asynchronous)."""
         logger.debug(f"IsEmptyAsync: type='{asset_type}', store='{store}'")
         logger.debug(
@@ -720,9 +687,7 @@ class AssetManager:
             raise ValueError(f"No store registered for name: {store}")
         return await selected_store.is_empty(asset_type)
 
-    def is_empty(
-        self, asset_type: Optional[str] = None, store: str = "local"
-    ) -> bool:
+    def is_empty(self, asset_type: Optional[str] = None, store: str = "local") -> bool:
         """Checks if the asset store has any assets of a given type (synchronous wrapper)."""
         logger.debug(
             f"IsEmpty: type='{asset_type}', store='{store}' from T:{threading.current_thread().name}"
@@ -751,9 +716,7 @@ class AssetManager:
             raise ValueError(f"No store registered for name: {store}")
         return await selected_store.list_versions(asset_uri_obj)
 
-    def list_versions(
-        self, uri: Union[AssetUri, str], store: str = "local"
-    ) -> List[AssetUri]:
+    def list_versions(self, uri: Union[AssetUri, str], store: str = "local") -> List[AssetUri]:
         """Lists available versions for a given asset URI (synchronous wrapper)."""
         logger.debug(
             f"ListVersions: uri='{uri}', store='{store}' from T:{threading.current_thread().name}"

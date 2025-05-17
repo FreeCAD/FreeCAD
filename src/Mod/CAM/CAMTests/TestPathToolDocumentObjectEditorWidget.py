@@ -58,9 +58,7 @@ class TestDocumentObjectEditorWidget(unittest.TestCase):
         property_suffixes = {"Prop1": "Suffix1", "Prop3": "Len"}
 
         widget = DocumentObjectEditorWidget(
-            obj=obj,
-            properties_to_show=properties_to_show,
-            property_suffixes=property_suffixes
+            obj=obj, properties_to_show=properties_to_show, property_suffixes=property_suffixes
         )
 
         # Verify the layout contains the correct number of rows (excluding non-existent)
@@ -80,22 +78,26 @@ class TestDocumentObjectEditorWidget(unittest.TestCase):
             field_widget = field_item.widget()
 
             self.assertIsInstance(label_widget, QtGui.QLabel)
-            self.assertIsInstance(field_widget, BasePropertyEditorWidget) # Check against base class
+            self.assertIsInstance(
+                field_widget, BasePropertyEditorWidget
+            )  # Check against base class
 
             # Determine the property name from the label text (reverse of _get_label_text)
             # This is a bit fragile, but necessary without storing prop_name in the label widget
             label_text = label_widget.text()
             prop_name = None
             for original_prop_name in properties_to_show:
-                 expected_label = _get_label_text(original_prop_name)
-                 suffix = property_suffixes.get(original_prop_name)
-                 if suffix:
-                     expected_label = f"{expected_label} ({suffix})"
-                 if label_text == expected_label:
-                     prop_name = original_prop_name
-                     break
+                expected_label = _get_label_text(original_prop_name)
+                suffix = property_suffixes.get(original_prop_name)
+                if suffix:
+                    expected_label = f"{expected_label} ({suffix})"
+                if label_text == expected_label:
+                    prop_name = original_prop_name
+                    break
 
-            self.assertIsNotNone(prop_name, f"Could not determine property name for label: {label_text}")
+            self.assertIsNotNone(
+                prop_name, f"Could not determine property name for label: {label_text}"
+            )
             prop_names_in_layout.append(prop_name)
 
             # Verify widget type based on property type
@@ -115,13 +117,11 @@ class TestDocumentObjectEditorWidget(unittest.TestCase):
                 self.assertIsInstance(field_widget, EnumPropertyEditorWidget)
                 self.assertEqual(label_widget.text(), "Prop5")
 
-
         # Verify property editors are stored
         self.assertEqual(len(widget._property_editors), expected_row_count)
         for prop_name in prop_names_in_layout:
-             self.assertIn(prop_name, widget._property_editors)
-             self.assertIsInstance(widget._property_editors[prop_name], BasePropertyEditorWidget)
-
+            self.assertIn(prop_name, widget._property_editors)
+            self.assertIsInstance(widget._property_editors[prop_name], BasePropertyEditorWidget)
 
     def test_set_object(self):
         obj1 = DetachedDocumentObject()
@@ -133,10 +133,7 @@ class TestDocumentObjectEditorWidget(unittest.TestCase):
         obj2.PropA = "ValueB"
 
         properties_to_show = ["PropA"]
-        widget = DocumentObjectEditorWidget(
-            obj=obj1,
-            properties_to_show=properties_to_show
-        )
+        widget = DocumentObjectEditorWidget(obj=obj1, properties_to_show=properties_to_show)
 
         # Get the initial editor widget instance
         initial_editor = widget._property_editors["PropA"]
@@ -164,7 +161,6 @@ class TestDocumentObjectEditorWidget(unittest.TestCase):
         # which might be fragile. A better approach is to trust the unit tests
         # for the individual PropertyEditorWidgets and focus on the
         # DocumentObjectEditorWidget's logic of calling attachTo and updateUI.
-
 
     def test_set_properties_to_show(self):
         obj = DetachedDocumentObject()
@@ -204,20 +200,23 @@ class TestDocumentObjectEditorWidget(unittest.TestCase):
 
             prop_name = None
             for original_prop_name in new_properties_to_show:
-                 expected_label = _get_label_text(original_prop_name)
-                 suffix = new_suffixes.get(original_prop_name)
-                 if suffix:
-                     expected_label = f"{expected_label} ({suffix})"
-                 if label_text == expected_label:
-                     prop_name = original_prop_name
-                     break
+                expected_label = _get_label_text(original_prop_name)
+                suffix = new_suffixes.get(original_prop_name)
+                if suffix:
+                    expected_label = f"{expected_label} ({suffix})"
+                if label_text == expected_label:
+                    prop_name = original_prop_name
+                    break
             prop_names_in_layout.append(prop_name)
 
         self.assertIn("Prop1", prop_names_in_layout)
         self.assertIn("Prop2", prop_names_in_layout)
-        self.assertEqual(widget._layout.itemAt(0, QtGui.QFormLayout.LabelRole).widget().text(), "Prop1")
-        self.assertEqual(widget._layout.itemAt(1, QtGui.QFormLayout.LabelRole).widget().text(), "Prop2 (Suffix2)")
-
+        self.assertEqual(
+            widget._layout.itemAt(0, QtGui.QFormLayout.LabelRole).widget().text(), "Prop1"
+        )
+        self.assertEqual(
+            widget._layout.itemAt(1, QtGui.QFormLayout.LabelRole).widget().text(), "Prop2 (Suffix2)"
+        )
 
     def test_property_changed_signal(self):
         obj = DetachedDocumentObject()
@@ -248,10 +247,7 @@ class TestDocumentObjectEditorWidget(unittest.TestCase):
         obj.Prop2 = 123
 
         properties_to_show = ["Prop1", "Prop2"]
-        widget = DocumentObjectEditorWidget(
-            obj=obj,
-            properties_to_show=properties_to_show
-        )
+        widget = DocumentObjectEditorWidget(obj=obj, properties_to_show=properties_to_show)
 
         # Get the real child editor widgets
         editor1 = widget._property_editors["Prop1"]
@@ -276,10 +272,7 @@ class TestDocumentObjectEditorWidget(unittest.TestCase):
         obj.Prop2 = 123
 
         properties_to_show = ["Prop1", "Prop2"]
-        widget = DocumentObjectEditorWidget(
-            obj=obj,
-            properties_to_show=properties_to_show
-        )
+        widget = DocumentObjectEditorWidget(obj=obj, properties_to_show=properties_to_show)
 
         # Get the real child editor widgets
         editor1 = widget._property_editors["Prop1"]

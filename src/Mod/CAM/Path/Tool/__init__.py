@@ -25,7 +25,9 @@ cam_assets.register_asset(Machine, DummyAssetSerializer)
 # unpickles existing objects after looking them up in sys.modules, we
 # need to update sys.modules here.
 sys.modules[__name__ + ".Bit"] = toolbit.models.base
-sys.modules[__name__ + ".Gui.Bit"] = LazyLoader("Path.Tool.toolbit.ui.view", globals(), "Path.Tool.toolbit.ui.view")
+sys.modules[__name__ + ".Gui.Bit"] = LazyLoader(
+    "Path.Tool.toolbit.ui.view", globals(), "Path.Tool.toolbit.ui.view"
+)
 
 # Define __all__ for explicit public interface
 __all__ = [

@@ -161,7 +161,7 @@ class CommandPathToolController(object):
         job = self.selectedJob()
         if not job:
             return
-        
+
         # Let the user select a toolbit
         selector = ToolBitSelector()
         if not selector.exec_():

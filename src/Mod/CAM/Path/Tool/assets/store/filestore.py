@@ -42,14 +42,10 @@ class FileStore(AssetStore):
     ):
         super().__init__(name)
         self._base_dir = base_dir.resolve()
-        self._mapping = (
-            mapping if mapping is not None else self.DEFAULT_MAPPING.copy()
-        )
+        self._mapping = mapping if mapping is not None else self.DEFAULT_MAPPING.copy()
         self._validate_patterns_on_init()
         # For _path_to_uri: iterate specific keys before '*' to ensure correct pattern matching
-        self._sorted_mapping_keys = sorted(
-            self._mapping.keys(), key=lambda k: (k == "*", k)
-        )
+        self._sorted_mapping_keys = sorted(self._mapping.keys(), key=lambda k: (k == "*", k))
 
     def _validate_patterns_on_init(self):
         if not self._mapping:
@@ -57,49 +53,35 @@ class FileStore(AssetStore):
 
         for asset_type_key, path_format in self._mapping.items():
             if not isinstance(path_format, str):
-                raise TypeError(
-                    f"Path format for key '{asset_type_key}' must be a string."
-                )
+                raise TypeError(f"Path format for key '{asset_type_key}' must be a string.")
 
-            placeholders_in_format = set(
-                re.findall(r"\{([^}]+)\}", path_format)
-            )
+            placeholders_in_format = set(re.findall(r"\{([^}]+)\}", path_format))
             for ph_name in placeholders_in_format:
                 if ph_name not in self.KNOWN_PLACEHOLDERS:
                     raise ValueError(
                         f"Unknown placeholder {{{ph_name}}} in pattern: '{path_format}'. Allowed: {self.KNOWN_PLACEHOLDERS}"
                     )
 
-            has_asset_id_ph = (
-                "asset_id" in placeholders_in_format
-                or "id" in placeholders_in_format
-            )
+            has_asset_id_ph = "asset_id" in placeholders_in_format or "id" in placeholders_in_format
             if not has_asset_id_ph:
                 raise ValueError(
                     f"Pattern '{path_format}' for key '{asset_type_key}' must include {{asset_id}} or {{id}}."
                 )
 
             # CORRECTED LINE: Check for the placeholder name "asset_type" not "{asset_type}"
-            if (
-                asset_type_key == "*"
-                and "asset_type" not in placeholders_in_format
-            ):
+            if asset_type_key == "*" and "asset_type" not in placeholders_in_format:
                 raise ValueError(
                     f"Pattern '{path_format}' for wildcard key '*' must include {{asset_type}}."
                 )
 
     @staticmethod
-    def _match_path_to_format_string(
-        format_str: str, path_str_posix: str
-    ) -> Dict[str, str]:
+    def _match_path_to_format_string(format_str: str, path_str_posix: str) -> Dict[str, str]:
         """Matches a POSIX-style path string against a format string."""
         tokens = re.split(r"\{(.*?)\}", format_str)  # format_str uses /
         if len(tokens) == 1:  # No placeholders
             if format_str == path_str_posix:
                 return {}
-            raise ValueError(
-                f"Path '{path_str_posix}' does not match pattern '{format_str}'"
-            )
+            raise ValueError(f"Path '{path_str_posix}' does not match pattern '{format_str}'")
 
         keywords = tokens[1::2]
         regex_parts = []
@@ -226,18 +208,12 @@ class FileStore(AssetStore):
             )
             versions = await self.list_versions(query_uri)
             if not versions:
-                raise FileNotFoundError(
-                    f"No versions found for {uri.asset_type}://{uri.asset_id}"
-                )
-            latest_version_uri = versions[
-                -1
-            ]  # list_versions now returns AssetUri with params
+                raise FileNotFoundError(f"No versions found for {uri.asset_type}://{uri.asset_id}")
+            latest_version_uri = versions[-1]  # list_versions now returns AssetUri with params
             path_to_read = self._uri_to_path(latest_version_uri)
         else:
             request_uri = uri
-            path_format_str = self._get_path_format_for_uri_type(
-                uri.asset_type
-            )
+            path_format_str = self._get_path_format_for_uri_type(uri.asset_type)
             is_versioned_pattern = "{version}" in path_format_str
 
             if not is_versioned_pattern:
@@ -246,9 +222,7 @@ class FileStore(AssetStore):
                         f"Asset type '{uri.asset_type}' is unversioned. "
                         f"Version '{uri.version}' invalid for URI {uri}. Use '1' or no version."
                     )
-                if (
-                    uri.version is None
-                ):  # Conceptual "type://id" -> "type://id/1"
+                if uri.version is None:  # Conceptual "type://id" -> "type://id/1"
                     request_uri = AssetUri.build(
                         asset_type=uri.asset_type,
                         asset_id=uri.asset_id,
@@ -267,13 +241,9 @@ class FileStore(AssetStore):
             with open(path_to_read, mode="rb") as f:
                 return f.read()
         except FileNotFoundError:
-            raise FileNotFoundError(
-                f"Asset for URI {uri} not found at path {path_to_read}"
-            )
+            raise FileNotFoundError(f"Asset for URI {uri} not found at path {path_to_read}")
         except IsADirectoryError:
-            raise FileNotFoundError(
-                f"Asset URI {uri} resolved to a directory: {path_to_read}"
-            )
+            raise FileNotFoundError(f"Asset URI {uri} resolved to a directory: {path_to_read}")
 
     async def delete(self, uri: AssetUri) -> None:
         """Delete the asset at the given URI."""
@@ -283,9 +253,7 @@ class FileStore(AssetStore):
         path_format_str = self._get_path_format_for_uri_type(uri.asset_type)
         is_versioned_pattern = "{version}" in path_format_str
 
-        if (
-            uri.version is None
-        ):  # Delete all versions or the single unversioned file
+        if uri.version is None:  # Delete all versions or the single unversioned file
             for path_obj in self._base_dir.rglob("*"):
                 parsed_uri = self._path_to_uri(path_obj)
                 if (
@@ -338,29 +306,19 @@ class FileStore(AssetStore):
                 except OSError:
                     break
 
-    async def create(
-        self, asset_type: str, asset_id: str, data: bytes
-    ) -> AssetUri:
+    async def create(self, asset_type: str, asset_id: str, data: bytes) -> AssetUri:
         """Create a new asset in the store with the given data."""
         # New assets are conceptually version "1"
-        uri_to_create = AssetUri.build(
-            asset_type=asset_type, asset_id=asset_id, version="1"
-        )
+        uri_to_create = AssetUri.build(asset_type=asset_type, asset_id=asset_id, version="1")
         asset_path = self._uri_to_path(uri_to_create)
 
         if asset_path.exists():
             # More specific error messages based on what exists
             if asset_path.is_file():
-                raise FileExistsError(
-                    f"Asset file already exists at {asset_path}"
-                )
+                raise FileExistsError(f"Asset file already exists at {asset_path}")
             if asset_path.is_dir():
-                raise IsADirectoryError(
-                    f"A directory exists at target path {asset_path}"
-                )
-            raise FileExistsError(
-                f"Path {asset_path} already exists (unknown type)."
-            )
+                raise IsADirectoryError(f"A directory exists at target path {asset_path}")
+            raise FileExistsError(f"Path {asset_path} already exists (unknown type).")
 
         asset_path.parent.mkdir(parents=True, exist_ok=True)
         with open(asset_path, mode="wb") as f:
@@ -396,9 +354,7 @@ class FileStore(AssetStore):
         path_format_str = self._get_path_format_for_uri_type(uri.asset_type)
         is_versioned_pattern = "{version}" in path_format_str
         if asset_path.exists() and is_versioned_pattern:
-            raise FileExistsError(
-                f"Asset path for new version {asset_path} already exists."
-            )
+            raise FileExistsError(f"Asset path for new version {asset_path} already exists.")
 
         # Done. Write to disk.
         asset_path.parent.mkdir(parents=True, exist_ok=True)
@@ -422,20 +378,15 @@ class FileStore(AssetStore):
         for path_obj in self._base_dir.rglob("*"):
             parsed_uri = self._path_to_uri(path_obj)
             if parsed_uri:
-                if (
-                    asset_type is not None
-                    and parsed_uri.asset_type != asset_type
-                ):
+                if asset_type is not None and parsed_uri.asset_type != asset_type:
                     continue
 
                 key = (parsed_uri.asset_type, parsed_uri.asset_id)
-                current_version_str = cast(
-                    str, parsed_uri.version
-                )  # Is "1" or numeric string
+                current_version_str = cast(str, parsed_uri.version)  # Is "1" or numeric string
 
-                if key not in latest_asset_versions or int(
-                    current_version_str
-                ) > int(latest_asset_versions[key]):
+                if key not in latest_asset_versions or int(current_version_str) > int(
+                    latest_asset_versions[key]
+                ):
                     latest_asset_versions[key] = current_version_str
 
         result_uris: List[AssetUri] = [
@@ -444,9 +395,7 @@ class FileStore(AssetStore):
             )  # Params not included in list_assets results
             for (atype, aid), vstr in latest_asset_versions.items()
         ]
-        result_uris.sort(
-            key=lambda u: (u.asset_type, u.asset_id, int(cast(str, u.version)))
-        )
+        result_uris.sort(key=lambda u: (u.asset_type, u.asset_id, int(cast(str, u.version))))
 
         start = offset if offset is not None else 0
         end = start + limit if limit is not None else len(result_uris)
@@ -461,10 +410,7 @@ class FileStore(AssetStore):
         for path_obj in self._base_dir.rglob("*"):
             parsed_uri = self._path_to_uri(path_obj)
             if parsed_uri:
-                if (
-                    asset_type is not None
-                    and parsed_uri.asset_type != asset_type
-                ):
+                if asset_type is not None and parsed_uri.asset_type != asset_type:
                     continue
                 unique_assets.add((parsed_uri.asset_type, parsed_uri.asset_id))
 
@@ -479,9 +425,7 @@ class FileStore(AssetStore):
             A list of AssetUri objects, sorted by version in ascending order.
         """
         if uri.asset_id is None:
-            raise ValueError(
-                f"Asset ID must be specified for listing versions: {uri}"
-            )
+            raise ValueError(f"Asset ID must be specified for listing versions: {uri}")
 
         path_format_str = self._get_path_format_for_uri_type(uri.asset_type)
         is_versioned_pattern = "{version}" in path_format_str
@@ -497,16 +441,12 @@ class FileStore(AssetStore):
             )
             path_to_asset = self._uri_to_path(path_check_uri)
             if path_to_asset.is_file():
-                return [
-                    path_check_uri
-                ]  # Returns URI with version "1" and original params
+                return [path_check_uri]  # Returns URI with version "1" and original params
             return []
 
         found_versions_strs: List[str] = []
         for path_obj in self._base_dir.rglob("*"):
-            parsed_uri = self._path_to_uri(
-                path_obj
-            )  # This parsed_uri does not have params
+            parsed_uri = self._path_to_uri(path_obj)  # This parsed_uri does not have params
             if (
                 parsed_uri
                 and parsed_uri.asset_type == uri.asset_type
@@ -517,9 +457,7 @@ class FileStore(AssetStore):
 
         if not found_versions_strs:
             return []
-        sorted_unique_versions = sorted(
-            list(set(found_versions_strs)), key=int
-        )
+        sorted_unique_versions = sorted(list(set(found_versions_strs)), key=int)
 
         return [
             AssetUri.build(

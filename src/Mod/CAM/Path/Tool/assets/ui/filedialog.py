@@ -26,13 +26,9 @@ class AssetOpenDialog(QFileDialog):
         filters = make_import_filters(self.serializers)
         self.setNameFilters(filters)
         if filters:
-            self.selectNameFilter(
-                filters[0]
-            )  # Default to "All supported files"
+            self.selectNameFilter(filters[0])  # Default to "All supported files"
 
-    def _deserialize_selected_file(
-        self, file_path: pathlib.Path
-    ) -> Optional[Asset]:
+    def _deserialize_selected_file(self, file_path: pathlib.Path) -> Optional[Asset]:
         """Deserialize the selected file using the appropriate serializer."""
         file_extension = file_path.suffix.lower()
         serializer_class = get_serializer_from_extension(
@@ -49,9 +45,7 @@ class AssetOpenDialog(QFileDialog):
             raw_data = file_path.read_bytes()
             asset = serializer_class.deep_deserialize(raw_data)
             if not isinstance(asset, self.asset_type):
-                raise TypeError(
-                    f"Deserialized asset is not of type {self.asset_type.asset_type}"
-                )
+                raise TypeError(f"Deserialized asset is not of type {self.asset_type.asset_type}")
             return asset
         except Exception as e:
             QMessageBox.critical(self, "Error", f"Failed to import asset: {e}")
@@ -80,9 +74,7 @@ class AssetSaveDialog(QFileDialog):
         self.serializers = list(serializers)
         self.setFileMode(QFileDialog.AnyFile)
         self.setAcceptMode(QFileDialog.AcceptSave)
-        self.filters, self.serializer_map = make_export_filters(
-            self.serializers
-        )
+        self.filters, self.serializer_map = make_export_filters(self.serializers)
         self.setNameFilters(self.filters)
         if self.filters:
             self.selectNameFilter(self.filters[0])  # Default to "Automatic"
@@ -112,9 +104,7 @@ class AssetSaveDialog(QFileDialog):
             QMessageBox.critical(self, "Error", f"Failed to export asset: {e}")
             return False
 
-    def exec(
-        self, asset: Asset
-    ) -> Optional[Tuple[pathlib.Path, Type[AssetSerializer]]]:
+    def exec(self, asset: Asset) -> Optional[Tuple[pathlib.Path, Type[AssetSerializer]]]:
         self.setWindowTitle(f"Save {asset.label}")
         if super().exec_():
             selected_filter = self.selectedNameFilter()
@@ -141,11 +131,7 @@ class AssetSaveDialog(QFileDialog):
             else:
                 serializer_class = self.serializer_map.get(selected_filter)
                 if not serializer_class:
-                    raise ValueError(
-                        f"No serializer found for filter '{selected_filter}'"
-                    )
-            if self._serialize_selected_file(
-                file_path, asset, serializer_class
-            ):
+                    raise ValueError(f"No serializer found for filter '{selected_filter}'")
+            if self._serialize_selected_file(file_path, asset, serializer_class):
                 return file_path, serializer_class
         return None

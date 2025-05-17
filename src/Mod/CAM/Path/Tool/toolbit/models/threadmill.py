@@ -10,9 +10,7 @@ class ToolBitThreadMill(ToolBit, ChiploadMixin, RotaryToolBitMixin):
     SHAPE_CLASS = ToolBitShapeThreadMill
 
     def __init__(self, shape: ToolBitShapeThreadMill, id: str | None = None):
-        Path.Log.track(
-            f"ToolBitThreadMill __init__ called with shape: {shape}, id: {id}"
-        )
+        Path.Log.track(f"ToolBitThreadMill __init__ called with shape: {shape}, id: {id}")
         super().__init__(shape, id=id)
 
     @property
@@ -22,6 +20,5 @@ class ToolBitThreadMill(ToolBit, ChiploadMixin, RotaryToolBitMixin):
         cutting_angle = self.get_property_str("cuttingAngle", "?")
 
         return FreeCAD.Qt.translate(
-            "CAM",
-            f"{diameter} thread mill, {flutes}-flute, {cutting_angle} cutting angle"
+            "CAM", f"{diameter} thread mill, {flutes}-flute, {cutting_angle} cutting angle"
         )

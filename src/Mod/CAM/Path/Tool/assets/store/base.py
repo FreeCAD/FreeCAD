@@ -2,6 +2,7 @@ import abc
 from typing import List
 from ..uri import AssetUri
 
+
 class AssetStore(abc.ABC):
     """
     Abstract base class for storing and retrieving asset data as raw bytes.
@@ -84,10 +85,9 @@ class AssetStore(abc.ABC):
         raise NotImplementedError
 
     @abc.abstractmethod
-    async def list_assets(self,
-                          asset_type: str | None = None,
-                          limit: int | None = None,
-                          offset: int | None = None) -> List[AssetUri]:
+    async def list_assets(
+        self, asset_type: str | None = None, limit: int | None = None, offset: int | None = None
+    ) -> List[AssetUri]:
         """
         List assets in the store, optionally filtered by asset type and
         with pagination. For versioned stores, this lists the latest

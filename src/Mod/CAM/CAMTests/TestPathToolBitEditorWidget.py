@@ -35,7 +35,7 @@ class TestToolBitPropertiesWidget(PathTestWithAssets):
     """Tests for ToolBitEditorWidget using real assets and widgets."""
 
     def setUp(self):
-        super().setUp() # Call the base class setUp to initialize assets
+        super().setUp()  # Call the base class setUp to initialize assets
         self.widget = ToolBitPropertiesWidget()
 
     def test_load_toolbit(self):

@@ -20,6 +20,5 @@ class ToolBitTap(ToolBit, ChiploadMixin, RotaryToolBitMixin):
         cutting_edge_length = self.get_property_str("CuttingEdgeLength", "?")
 
         return FreeCAD.Qt.translate(
-            "CAM",
-            f"{diameter} tap, {flutes}-flute, {cutting_edge_length} cutting edge"
+            "CAM", f"{diameter} tap, {flutes}-flute, {cutting_edge_length} cutting edge"
         )

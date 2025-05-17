@@ -46,20 +46,18 @@ class BasePropertyEditorWidget(QtGui.QWidget):
         self._prop_name = prop_name
         self._layout = QtGui.QHBoxLayout(self)
         self._layout.setContentsMargins(0, 0, 0, 0)
-        self._editor_widget: QtGui.QWidget = None # The actual input widget (SpinBox, ComboBox)
-        self._editor_mode: int = 0 # Default to editable
+        self._editor_widget: QtGui.QWidget = None  # The actual input widget (SpinBox, ComboBox)
+        self._editor_mode: int = 0  # Default to editable
         self._is_read_only: bool = False
         self._update_editor_mode()
-        self.setSizePolicy(
-            QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Expanding
-        )
+        self.setSizePolicy(QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Expanding)
 
     def attachTo(self, obj: FreeCAD.DocumentObject, prop_name: Optional[str] = None):
         """Attach the editor to a (potentially different) object/property."""
         self._obj = obj
         self._prop_name = prop_name if prop_name else self._prop_name
         self._update_editor_mode()
-        self.updateWidget() # Ensure widget reflects new state
+        self.updateWidget()  # Ensure widget reflects new state
 
     def _update_editor_mode(self):
         """Fetch and store the current editor mode for the property."""
@@ -82,7 +80,9 @@ class BasePropertyEditorWidget(QtGui.QWidget):
         raise NotImplementedError
 
     @classmethod
-    def for_property(cls, obj: FreeCAD.DocumentObject, prop_name: str, parent: QtGui.QWidget = None) -> 'BasePropertyEditorWidget':
+    def for_property(
+        cls, obj: FreeCAD.DocumentObject, prop_name: str, parent: QtGui.QWidget = None
+    ) -> "BasePropertyEditorWidget":
         """
         Factory method to create the appropriate editor widget subclass.
         """
@@ -107,12 +107,13 @@ class BasePropertyEditorWidget(QtGui.QWidget):
 
 class QuantityPropertyEditorWidget(BasePropertyEditorWidget):
     """Editor widget for Quantity properties."""
+
     def __init__(self, obj: FreeCAD.DocumentObject, prop_name: str, parent: QtGui.QWidget = None):
         super().__init__(obj, prop_name, parent)
         ui = FreeCADGui.UiLoader()
         self._editor_widget: FreeCADGui.QuantitySpinBox = ui.createWidget("Gui::QuantitySpinBox")
         self._layout.addWidget(self._editor_widget)
-        self.updateWidget() # Set initial value
+        self.updateWidget()  # Set initial value
         # Connect signal after setting initial value to avoid premature update
         self._editor_widget.editingFinished.connect(self.updateProperty)
 
@@ -135,6 +136,7 @@ class QuantityPropertyEditorWidget(BasePropertyEditorWidget):
 
 class BoolPropertyEditorWidget(BasePropertyEditorWidget):
     """Editor widget for Boolean properties."""
+
     def __init__(self, obj: FreeCAD.DocumentObject, prop_name: str, parent: QtGui.QWidget = None):
         super().__init__(obj, prop_name, parent)
         self._editor_widget: QtGui.QComboBox = QtGui.QComboBox()
@@ -167,6 +169,7 @@ class BoolPropertyEditorWidget(BasePropertyEditorWidget):
 
 class IntPropertyEditorWidget(BasePropertyEditorWidget):
     """Editor widget for Integer properties."""
+
     def __init__(self, obj: FreeCAD.DocumentObject, prop_name: str, parent: QtGui.QWidget = None):
         super().__init__(obj, prop_name, parent)
         self._editor_widget: QtGui.QSpinBox = QtGui.QSpinBox()
@@ -193,6 +196,7 @@ class IntPropertyEditorWidget(BasePropertyEditorWidget):
 
 class EnumPropertyEditorWidget(BasePropertyEditorWidget):
     """Editor widget for Enumeration properties."""
+
     def __init__(self, obj: FreeCAD.DocumentObject, prop_name: str, parent: QtGui.QWidget = None):
         super().__init__(obj, prop_name, parent)
         self._editor_widget: QtGui.QComboBox = QtGui.QComboBox()
@@ -209,7 +213,7 @@ class EnumPropertyEditorWidget(BasePropertyEditorWidget):
     def attachTo(self, obj: FreeCAD.DocumentObject, prop_name: Optional[str] = None):
         """Override attachTo to repopulate enums if object changes."""
         super().attachTo(obj, prop_name)
-        self._populate_enum() # Repopulate in case enums are different
+        self._populate_enum()  # Repopulate in case enums are different
 
     def updateWidget(self):
         value: str = self._obj.getPropertyByName(self._prop_name)
@@ -236,6 +240,7 @@ class EnumPropertyEditorWidget(BasePropertyEditorWidget):
 
 class LabelPropertyEditorWidget(BasePropertyEditorWidget):
     """Read-only label for unsupported or invalid property types."""
+
     def __init__(self, obj: FreeCAD.DocumentObject, prop_name: str, parent: QtGui.QWidget = None):
         super().__init__(obj, prop_name, parent)
         self._editor_widget: QtGui.QLabel = QtGui.QLabel("N/A")

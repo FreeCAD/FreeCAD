@@ -1,6 +1,7 @@
 import FreeCAD
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
+
 class ChiploadMixin:
     """
     This is a interface class to indicate that the ToolBit can chip, i.e.
@@ -13,15 +14,13 @@ class ChiploadMixin:
             "App::PropertyLength",
             "Chipload",
             "Base",
-            QT_TRANSLATE_NOOP(
-                "App::Property", "Chipload per tooth"
-            ),
+            QT_TRANSLATE_NOOP("App::Property", "Chipload per tooth"),
         )
         obj.Chipload = FreeCAD.Units.Quantity("0.0 mm")
 
     def get_chipload(self) -> FreeCAD.Units.Quantity:
         return self.obj.Chipload
-    
+
     def set_chipload(self, value: FreeCAD.Units.Quantity):
         if not isinstance(value, FreeCAD.Units.Quantity):
             raise ValueError("Chipload must be a FreeCAD Units.Quantity")

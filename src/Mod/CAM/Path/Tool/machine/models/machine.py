@@ -9,7 +9,7 @@ from ...assets import Asset, AssetUri, AssetSerializer
 
 class Machine(Asset):
     """Represents a machine with various operational parameters."""
-    
+
     asset_type: str = "machine"
     API_VERSION = 1
 
@@ -30,9 +30,7 @@ class Machine(Asset):
         min_rpm: Union[int, float, FreeCAD.Units.Quantity] = 3000,
         max_rpm: Union[int, float, FreeCAD.Units.Quantity] = 60000,
         max_torque: Optional[Union[int, float, FreeCAD.Units.Quantity]] = None,
-        peak_torque_rpm: Optional[
-            Union[int, float, FreeCAD.Units.Quantity]
-        ] = None,
+        peak_torque_rpm: Optional[Union[int, float, FreeCAD.Units.Quantity]] = None,
         min_feed: Union[int, float, FreeCAD.Units.Quantity] = 1,
         max_feed: Union[int, float, FreeCAD.Units.Quantity] = 2000,
         id: Optional[str] = None,
@@ -108,13 +106,9 @@ class Machine(Asset):
             try:
                 self._peak_torque_rpm = peak_torque_rpm.getValueAs("1/s").Value
             except (Base.ParserError, ValueError):
-                self._peak_torque_rpm = (
-                    peak_torque_rpm.Value * self.UNIT_CONVERSIONS["rpm"]
-                )
+                self._peak_torque_rpm = peak_torque_rpm.Value * self.UNIT_CONVERSIONS["rpm"]
         elif isinstance(peak_torque_rpm, (int, float)):
-            self._peak_torque_rpm = (
-                peak_torque_rpm * self.UNIT_CONVERSIONS["rpm"]
-            )
+            self._peak_torque_rpm = peak_torque_rpm * self.UNIT_CONVERSIONS["rpm"]
         else:
             self._peak_torque_rpm = self._max_rpm / 3
 
@@ -127,9 +121,7 @@ class Machine(Asset):
             # Convert 1/s to rpm
             peak_rpm_for_calc = self._peak_torque_rpm * 60
             self._max_torque = (
-                self._max_power * 9.5488 / peak_rpm_for_calc
-                if peak_rpm_for_calc
-                else float("inf")
+                self._max_power * 9.5488 / peak_rpm_for_calc if peak_rpm_for_calc else float("inf")
             )
 
     def get_id(self) -> str:
@@ -143,22 +135,22 @@ class Machine(Asset):
             "id": self.id,
             "label": self.label,
             "max_power": self._max_power,  # W
-            "min_rpm": self._min_rpm,      # 1/s
-            "max_rpm": self._max_rpm,      # 1/s
+            "min_rpm": self._min_rpm,  # 1/s
+            "max_rpm": self._max_rpm,  # 1/s
             "max_torque": self._max_torque,  # Nm
             "peak_torque_rpm": self._peak_torque_rpm,  # 1/s
-            "min_feed": self._min_feed,    # mm/min
-            "max_feed": self._max_feed     # mm/min
+            "min_feed": self._min_feed,  # mm/min
+            "max_feed": self._max_feed,  # mm/min
         }
 
     def to_bytes(self, serializer: AssetSerializer) -> bytes:
         """Serializes the Machine object to bytes using to_dict."""
         data_dict = self.to_dict()
         json_str = json.dumps(data_dict)
-        return json_str.encode('utf-8')
+        return json_str.encode("utf-8")
 
     @classmethod
-    def from_dict(cls, data_dict: dict, id: str) -> 'Machine':
+    def from_dict(cls, data_dict: dict, id: str) -> "Machine":
         """Creates a Machine instance from a dictionary."""
         machine = cls(
             label=data_dict.get("label", "Machine"),
@@ -169,7 +161,7 @@ class Machine(Asset):
             peak_torque_rpm=data_dict.get("peak_torque_rpm", None),  # 1/s
             min_feed=data_dict.get("min_feed", 1.0),  # mm/min
             max_feed=data_dict.get("max_feed", 2000.0),  # mm/min
-            id=id
+            id=id,
         )
         return machine
 
@@ -184,7 +176,7 @@ class Machine(Asset):
         Deserializes bytes into a Machine instance using from_dict.
         """
         # If dependencies is None, it's fine as Machine doesn't use it.
-        data_dict = json.loads(data.decode('utf-8'))
+        data_dict = json.loads(data.decode("utf-8"))
         return cls.from_dict(data_dict, id)
 
     @classmethod
@@ -245,10 +237,7 @@ class Machine(Asset):
         if not self.label:
             raise AttributeError("Machine name is required")
         if self._peak_torque_rpm > self._max_rpm:
-            err = (
-                "Peak Torque RPM {ptrpm:.2f} must be less than max RPM "
-                "{max_rpm:.2f}"
-            ).format(
+            err = ("Peak Torque RPM {ptrpm:.2f} must be less than max RPM " "{max_rpm:.2f}").format(
                 ptrpm=self._peak_torque_rpm * 60, max_rpm=self._max_rpm * 60
             )
             raise AttributeError(err)
@@ -257,9 +246,7 @@ class Machine(Asset):
         if self._max_feed <= self._min_feed:
             raise AttributeError("Max feed must be larger than min feed")
 
-    def get_torque_at_rpm(
-        self, rpm: Union[int, float, FreeCAD.Units.Quantity]
-    ) -> float:
+    def get_torque_at_rpm(self, rpm: Union[int, float, FreeCAD.Units.Quantity]) -> float:
         """
         Calculates the torque at a given RPM.
 
@@ -281,9 +268,7 @@ class Machine(Asset):
         peak_rpm_for_calc = peak_torque_rpm_hz * 60
         rpm_for_calc = rpm_hz * 60
         torque_at_current_rpm = (
-            self._max_power * 9.5488 / rpm_for_calc
-            if rpm_for_calc
-            else float("inf")
+            self._max_power * 9.5488 / rpm_for_calc if rpm_for_calc else float("inf")
         )
         if rpm_for_calc <= peak_rpm_for_calc:
             torque_at_current_rpm = (
@@ -293,24 +278,18 @@ class Machine(Asset):
             )
         return min(max_torque_nm, torque_at_current_rpm)
 
-    def set_max_power(
-        self, power: Union[int, float], unit: Optional[str] = None
-    ) -> None:
+    def set_max_power(self, power: Union[int, float], unit: Optional[str] = None) -> None:
         """Sets the maximum power of the machine."""
         unit = unit or "kW"
         if unit in self.UNIT_CONVERSIONS:
             power_value = power * self.UNIT_CONVERSIONS[unit]
         else:
-            power_value = (
-                FreeCAD.Units.Quantity(power, unit).getValueAs("W").Value
-            )
+            power_value = FreeCAD.Units.Quantity(power, unit).getValueAs("W").Value
         self._max_power = power_value
         if self._max_power <= 0:
             raise AttributeError("Max power must be positive")
 
-    def set_min_rpm(
-        self, min_rpm: Union[int, float, FreeCAD.Units.Quantity]
-    ) -> None:
+    def set_min_rpm(self, min_rpm: Union[int, float, FreeCAD.Units.Quantity]) -> None:
         """Sets the minimum RPM of the machine."""
         if isinstance(min_rpm, FreeCAD.Units.Quantity):
             try:
@@ -325,9 +304,7 @@ class Machine(Asset):
         if self._min_rpm >= self._max_rpm:
             self._max_rpm = min_rpm_value + 1.0 / 60.0
 
-    def set_max_rpm(
-        self, max_rpm: Union[int, float, FreeCAD.Units.Quantity]
-    ) -> None:
+    def set_max_rpm(self, max_rpm: Union[int, float, FreeCAD.Units.Quantity]) -> None:
         """Sets the maximum RPM of the machine."""
         if isinstance(max_rpm, FreeCAD.Units.Quantity):
             try:
@@ -352,11 +329,7 @@ class Machine(Asset):
         if unit in self.UNIT_CONVERSIONS:
             min_feed_value = min_feed * self.UNIT_CONVERSIONS[unit]
         else:
-            min_feed_value = (
-                FreeCAD.Units.Quantity(min_feed, unit)
-                .getValueAs("mm/min")
-                .Value
-            )
+            min_feed_value = FreeCAD.Units.Quantity(min_feed, unit).getValueAs("mm/min").Value
         self._min_feed = min_feed_value
         if self._min_feed < 0:
             raise AttributeError("Min feed cannot be negative")
@@ -373,11 +346,7 @@ class Machine(Asset):
         if unit in self.UNIT_CONVERSIONS:
             max_feed_value = max_feed * self.UNIT_CONVERSIONS[unit]
         else:
-            max_feed_value = (
-                FreeCAD.Units.Quantity(max_feed, unit)
-                .getValueAs("mm/min")
-                .Value
-            )
+            max_feed_value = FreeCAD.Units.Quantity(max_feed, unit).getValueAs("mm/min").Value
         self._max_feed = max_feed_value
         if self._max_feed <= 0:
             raise AttributeError("Max feed must be positive")
@@ -392,13 +361,9 @@ class Machine(Asset):
             try:
                 peak_torque_rpm_value = peak_torque_rpm.getValueAs("1/s").Value
             except (Base.ParserError, ValueError):
-                peak_torque_rpm_value = (
-                    peak_torque_rpm.Value * self.UNIT_CONVERSIONS["rpm"]
-                )
+                peak_torque_rpm_value = peak_torque_rpm.Value * self.UNIT_CONVERSIONS["rpm"]
         else:
-            peak_torque_rpm_value = (
-                peak_torque_rpm * self.UNIT_CONVERSIONS["rpm"]
-            )
+            peak_torque_rpm_value = peak_torque_rpm * self.UNIT_CONVERSIONS["rpm"]
         self._peak_torque_rpm = peak_torque_rpm_value
         if self._peak_torque_rpm < 0:
             raise AttributeError("Peak torque RPM cannot be negative")
@@ -413,9 +378,7 @@ class Machine(Asset):
         if unit in self.UNIT_CONVERSIONS:
             max_torque_value = max_torque * self.UNIT_CONVERSIONS[unit]
         else:
-            max_torque_value = (
-                FreeCAD.Units.Quantity(max_torque, unit).getValueAs("Nm").Value
-            )
+            max_torque_value = FreeCAD.Units.Quantity(max_torque, unit).getValueAs("Nm").Value
         self._max_torque = max_torque_value
         if self._max_torque <= 0:
             raise AttributeError("Max torque must be positive")
@@ -440,13 +403,9 @@ class Machine(Asset):
         output += f"Machine {self.label}:\n"
         output += f"  Max power: {self._max_power:.2f} W\n"
         output += f"  RPM: {min_rpm_value:.2f} RPM - {max_rpm_value:.2f} RPM\n"
+        output += f"  Feed: {self.min_feed.UserString} - " f"{self.max_feed.UserString}\n"
         output += (
-            f"  Feed: {self.min_feed.UserString} - "
-            f"{self.max_feed.UserString}\n"
-        )
-        output += (
-            f"  Peak torque: {self._max_torque:.2f} Nm at "
-            f"{peak_torque_rpm_value:.2f} RPM\n"
+            f"  Peak torque: {self._max_torque:.2f} Nm at " f"{peak_torque_rpm_value:.2f} RPM\n"
         )
         output += f"  Max_torque: {self._max_torque} Nm\n"
 

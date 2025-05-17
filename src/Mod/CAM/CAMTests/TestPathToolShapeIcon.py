@@ -15,6 +15,7 @@ from Path.Tool.shape.models.icon import (
 
 class TestToolBitShapeIconBase(PathTestWithAssets):
     """Base class for ToolBitShapeIcon tests."""
+
     ICON_CLASS = ToolBitShapeIcon
 
     def setUp(self):
@@ -55,7 +56,7 @@ class TestToolBitShapeIconBase(PathTestWithAssets):
         icon_no_data = ToolBitShapeIcon("no_data.dat", b"")
         self.assertEqual(icon_no_data.get_size_in_bytes(), 0)
 
-    @unittest.mock.patch('Path.Tool.shape.util.create_thumbnail_from_data')
+    @unittest.mock.patch("Path.Tool.shape.util.create_thumbnail_from_data")
     def test_from_shape_data_success(self, mock_create_thumbnail):
         # Test creating instance from shape data - success case
         shape_id = "test_shape"
@@ -70,7 +71,7 @@ class TestToolBitShapeIconBase(PathTestWithAssets):
         self.assertEqual(icon.data, thumbnail_data)
         self.assertEqual(icon.abbreviations, {})
 
-    @unittest.mock.patch('Path.Tool.shape.util.create_thumbnail_from_data')
+    @unittest.mock.patch("Path.Tool.shape.util.create_thumbnail_from_data")
     def test_from_shape_data_failure(self, mock_create_thumbnail):
         # Test creating instance from shape data - failure case
         shape_id = "test_shape"
@@ -107,6 +108,7 @@ class TestToolBitShapeIconBase(PathTestWithAssets):
 
 class TestToolBitShapeSvgIcon(TestToolBitShapeIconBase):
     """Tests specifically for ToolBitShapeSvgIcon."""
+
     ICON_CLASS = ToolBitShapeSvgIcon
 
     def setUp(self):
@@ -157,13 +159,15 @@ class TestToolBitShapeSvgIcon(TestToolBitShapeIconBase):
         icon_svg = ToolBitShapeSvgIcon("cached_abbr.svg", self.test_svg.data)
 
         # Accessing the property should call the static method
-        with unittest.mock.patch.object(ToolBitShapeSvgIcon, 'get_abbreviations_from_svg') as mock_get_abbr:
-            mock_get_abbr.return_value = {'param1': 'A1'}
+        with unittest.mock.patch.object(
+            ToolBitShapeSvgIcon, "get_abbreviations_from_svg"
+        ) as mock_get_abbr:
+            mock_get_abbr.return_value = {"param1": "A1"}
             abbr1 = icon_svg.abbreviations
             abbr2 = icon_svg.abbreviations
             mock_get_abbr.assert_called_once_with(self.test_svg.data)
-            self.assertEqual(abbr1, {'param1': 'A1'})
-            self.assertEqual(abbr2, {'param1': 'A1'})
+            self.assertEqual(abbr1, {"param1": "A1"})
+            self.assertEqual(abbr2, {"param1": "A1"})
 
     def test_get_abbr_svg(self):
         # Test getting abbreviations for SVG
@@ -179,11 +183,11 @@ class TestToolBitShapeSvgIcon(TestToolBitShapeIconBase):
         svg_content = self.test_svg.data
         abbr = ToolBitShapeSvgIcon.get_abbreviations_from_svg(svg_content)
         # Assuming the test_svg data has 'diameter' and 'length' ids
-        self.assertIn('diameter', abbr)
-        self.assertIn('length', abbr)
+        self.assertIn("diameter", abbr)
+        self.assertIn("length", abbr)
 
         # Test with invalid SVG
-        invalid_svg = b"<svg><text id='param1'>A1</text>" # Missing closing tag
+        invalid_svg = b"<svg><text id='param1'>A1</text>"  # Missing closing tag
         abbr_invalid = ToolBitShapeSvgIcon.get_abbreviations_from_svg(invalid_svg)
         self.assertEqual(abbr_invalid, {})
 
@@ -195,11 +199,12 @@ class TestToolBitShapeSvgIcon(TestToolBitShapeIconBase):
 
 class TestToolBitShapePngIcon(TestToolBitShapeIconBase):
     """Tests specifically for ToolBitShapePngIcon."""
+
     ICON_CLASS = ToolBitShapePngIcon
 
     def setUp(self):
         super().setUp()
-        self.png_data = b"\x89PNG\r\n\x1a\n" # Basic PNG signature
+        self.png_data = b"\x89PNG\r\n\x1a\n"  # Basic PNG signature
         self.icon = ToolBitShapePngIcon("test_icon_png", self.png_data)
 
     def test_from_bytes_png(self):
@@ -209,9 +214,7 @@ class TestToolBitShapePngIcon(TestToolBitShapeIconBase):
         )
         self.assertEqual(icon_png.get_id(), "test_from_bytes.png")
         self.assertEqual(icon_png.data, self.png_data)
-        self.assertEqual(
-            icon_png.abbreviations, {}
-        )  # No abbreviations for PNG
+        self.assertEqual(icon_png.abbreviations, {})  # No abbreviations for PNG
 
     def test_round_trip_serialization_png(self):
         # Test serialization and deserialization round trip for PNG
@@ -253,5 +256,6 @@ class TestToolBitShapePngIcon(TestToolBitShapeIconBase):
     def test_get_qpixmap(self):
         self.skipTest("Skipping test, have no test data")
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     unittest.main()

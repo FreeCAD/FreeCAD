@@ -5,10 +5,7 @@ from Path.Preferences import addToolPreferenceObserver
 from .assets import AssetManager, FileStore
 
 
-def ensure_library_assets_initialized(
-    asset_manager: AssetManager,
-    store_name: str = "local"
-):
+def ensure_library_assets_initialized(asset_manager: AssetManager, store_name: str = "local"):
     """
     Ensures the given store is initialized with built-in library
     if it is currently empty.
@@ -19,10 +16,8 @@ def ensure_library_assets_initialized(
         for path in builtin_library_path.glob("*.fctl"):
             asset_manager.add_file("toolbitlibrary", path)
 
-def ensure_toolbit_assets_initialized(
-    asset_manager: AssetManager,
-    store_name: str = "local"
-):
+
+def ensure_toolbit_assets_initialized(asset_manager: AssetManager, store_name: str = "local"):
     """
     Ensures the given store is initialized with built-in bits
     if it is currently empty.
@@ -34,10 +29,7 @@ def ensure_toolbit_assets_initialized(
             asset_manager.add_file("toolbit", path)
 
 
-def ensure_toolbitshape_assets_initialized(
-    asset_manager: AssetManager,
-    store_name: str = "local"
-):
+def ensure_toolbitshape_assets_initialized(asset_manager: AssetManager, store_name: str = "local"):
     """
     Ensures the given store is initialized with built-in shapes
     if it is currently empty.
@@ -50,14 +42,14 @@ def ensure_toolbitshape_assets_initialized(
 
     if asset_manager.is_empty("toolbitshapesvg", store=store_name):
         for path in builtin_shape_path.glob("*.svg"):
-            asset_manager.add_file("toolbitshapesvg", path, asset_id=path.stem+".svg")
+            asset_manager.add_file("toolbitshapesvg", path, asset_id=path.stem + ".svg")
 
     if asset_manager.is_empty("toolbitshapepng", store=store_name):
         for path in builtin_shape_path.glob("*.png"):
-            asset_manager.add_file("toolbitshapepng", path, asset_id=path.stem+".png")
+            asset_manager.add_file("toolbitshapepng", path, asset_id=path.stem + ".png")
 
 
-def ensure_assets_initialized(asset_manager: AssetManager, store = "local"):
+def ensure_assets_initialized(asset_manager: AssetManager, store="local"):
     """
     Ensures the given store is initialized with built-in assets.
     """

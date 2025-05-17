@@ -31,12 +31,14 @@ class LinuxCNCSerializer(AssetSerializer):
         for bit_no, bit in sorted(asset._bit_nos.items()):
             assert isinstance(bit, ToolBit)
             if not isinstance(bit, RotaryToolBitMixin):
-                Path.Log.warning(f"Skipping too {bit.label} (bit.id) because it is not a rotary tool")
+                Path.Log.warning(
+                    f"Skipping too {bit.label} (bit.id) because it is not a rotary tool"
+                )
                 continue
             diameter = bit.get_diameter()
             pocket = "P"  # TODO: is there a better way?
             # Format diameter to one decimal place and remove units
-            diameter_value = diameter.Value if hasattr(diameter, 'Value') else diameter
+            diameter_value = diameter.Value if hasattr(diameter, "Value") else diameter
             line = f"T{bit_no} {pocket} D{diameter_value:.1f} ;{bit.label}\n"
             output.write(line.encode("ascii", "ignore"))
 
@@ -52,6 +54,4 @@ class LinuxCNCSerializer(AssetSerializer):
         # LinuxCNC .tbl files do not contain enough information to fully
         # reconstruct a Library and its ToolBits.
         # Therefore, deserialization is not supported.
-        raise NotImplementedError(
-            "Deserialization is not supported for LinuxCNC .tbl files."
-        )
+        raise NotImplementedError("Deserialization is not supported for LinuxCNC .tbl files.")

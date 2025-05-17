@@ -19,7 +19,4 @@ class ToolBitVBit(ToolBit, ChiploadMixin, RotaryToolBitMixin):
         cutting_edge_angle = self.get_property_str("CuttingEdgeAngle", "?")
         flutes = self.get_property("Flutes")
 
-        return FreeCAD.Qt.translate(
-            "CAM",
-            f"{diameter} {cutting_edge_angle} v-bit, {flutes}-flute"
-        )
+        return FreeCAD.Qt.translate("CAM", f"{diameter} {cutting_edge_angle} v-bit, {flutes}-flute")

@@ -52,14 +52,10 @@ class AssetCache:
                 self._remove_key_from_dependency_maps(oldest_key)
 
     def _remove_key_from_dependency_maps(self, cache_key_to_remove: CacheKey):
-        direct_deps_of_removed = self._cache_dependencies_map.pop(
-            cache_key_to_remove, set()
-        )
+        direct_deps_of_removed = self._cache_dependencies_map.pop(cache_key_to_remove, set())
         for dep_uri_str in direct_deps_of_removed:
             if dep_uri_str in self._cache_dependents_map:
-                self._cache_dependents_map[dep_uri_str].discard(
-                    cache_key_to_remove
-                )
+                self._cache_dependents_map[dep_uri_str].discard(cache_key_to_remove)
                 if not self._cache_dependents_map[dep_uri_str]:
                     del self._cache_dependents_map[dep_uri_str]
 
@@ -92,9 +88,7 @@ class AssetCache:
             return
 
         self.current_size_bytes += raw_data_size_bytes
-        entry = CachedAssetEntry(
-            asset=asset, size_bytes=raw_data_size_bytes, timestamp=time.time()
-        )
+        entry = CachedAssetEntry(asset=asset, size_bytes=raw_data_size_bytes, timestamp=time.time())
         self._cache[key] = entry
         self._lru_order[key] = None
         self._lru_order.move_to_end(key)

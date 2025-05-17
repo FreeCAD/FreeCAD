@@ -25,7 +25,7 @@
 from typing import Callable
 from PySide import QtGui, QtCore
 from .tablecell import TwoLineTableCell, CompactTwoLineTableCell
-from ..models.base import ToolBit # For type hinting
+from ..models.base import ToolBit  # For type hinting
 
 # Role for storing the ToolBit URI string
 ToolBitUriRole = QtCore.Qt.UserRole + 1
@@ -36,11 +36,12 @@ class ToolBitListWidget(QtGui.QListWidget):
     A QListWidget specialized for displaying ToolBit items using
     TwoLineTableCell widgets.
     """
+
     def __init__(self, parent=None, tool_no_factory: Callable | None = None):
         super().__init__(parent)
         self._tool_no_factory = tool_no_factory
         # Optimize view for custom widgets
-        self.setUniformItemSizes(False) # Allow different heights if needed
+        self.setUniformItemSizes(False)  # Allow different heights if needed
         self.setAutoScroll(True)
         # Consider setting view mode if needed, default is ListMode
         # self.setViewMode(QtGui.QListView.ListMode)
@@ -63,7 +64,7 @@ class ToolBitListWidget(QtGui.QListWidget):
             final_tool_no = tool_no
 
         # Add item to this widget
-        item = QtGui.QListWidgetItem(self) 
+        item = QtGui.QListWidgetItem(self)
         cell = TwoLineTableCell(self)
 
         # Populate the cell widget
@@ -95,13 +96,13 @@ class ToolBitListWidget(QtGui.QListWidget):
             cell = self.itemWidget(item)
 
             if isinstance(cell, TwoLineTableCell):
-                cell.highlight(search_text) # Apply highlighting
+                cell.highlight(search_text)  # Apply highlighting
                 # Determine visibility based on content
                 contains = cell.contains_text(search_text_lower)
                 item.setHidden(not contains)
             else:
                 # Fallback for items without the expected widget (shouldn't happen)
-                item_text = item.text().lower() # Basic text search
+                item_text = item.text().lower()  # Basic text search
                 item.setHidden(search_text_lower not in item_text)
 
     def count_visible_items(self) -> int:
@@ -131,6 +132,7 @@ class CompactToolBitListWidget(ToolBitListWidget):
     A QListWidget specialized for displaying ToolBit items using
     CompactTwoLineTableCell widgets.
     """
+
     def add_toolbit(self, toolbit: ToolBit, tool_no: int | None = None):
         """
         Adds a ToolBit to the list using CompactTwoLineTableCell.
@@ -147,8 +149,8 @@ class CompactToolBitListWidget(ToolBitListWidget):
         elif tool_no is not None:
             final_tool_no = tool_no
 
-        item = QtGui.QListWidgetItem(self) # Add item to this widget
-        cell = CompactTwoLineTableCell(self) # Parent the cell to this widget
+        item = QtGui.QListWidgetItem(self)  # Add item to this widget
+        cell = CompactTwoLineTableCell(self)  # Parent the cell to this widget
 
         # Populate the cell widget
         cell.set_tool_no(final_tool_no)

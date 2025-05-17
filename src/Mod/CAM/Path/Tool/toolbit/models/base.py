@@ -56,11 +56,7 @@ class ToolBit(Asset, ABC):
     asset_type: str = "toolbit"
     SHAPE_CLASS: Type[ToolBitShape]  # Abstract class attribute
 
-    def __init__(
-        self,
-        tool_bit_shape: ToolBitShape,
-        id: str | None = None
-    ):
+    def __init__(self, tool_bit_shape: ToolBitShape, id: str | None = None):
         Path.Log.track("ToolBit __init__ called")
         self.id = id if id is not None else str(uuid.uuid4())
         self.obj = DetachedDocumentObject()
@@ -85,17 +81,17 @@ class ToolBit(Asset, ABC):
         for subclass in ToolBit.__subclasses__():
             if isinstance(shape, subclass.SHAPE_CLASS):
                 return subclass
-        raise ValueError(
-            f"No ToolBit subclass found for shape {type(shape).__name__}"
-        )
+        raise ValueError(f"No ToolBit subclass found for shape {type(shape).__name__}")
 
     @classmethod
-    def from_dict(cls, attrs: Mapping, shallow: bool = False) -> 'ToolBit':
+    def from_dict(cls, attrs: Mapping, shallow: bool = False) -> "ToolBit":
         """
         Creates and populates a ToolBit instance from a dictionary.
         """
         # Find the shape ID.
-        shape_id = pathlib.Path(attrs.get("shape")).stem  # backward compatibility. used to be a filename
+        shape_id = pathlib.Path(
+            attrs.get("shape")
+        ).stem  # backward compatibility. used to be a filename
         if not shape_id:
             raise ValueError("ToolBit dictionary is missing 'shape' key")
 
@@ -124,22 +120,18 @@ class ToolBit(Asset, ABC):
             if not shape_class:
                 shape_class = ToolBitShape.get_subclass_by_name(shape_type)
             if not shape_class:
-                raise ValueError(f'failed to get shape class from {shape_id}')
+                raise ValueError(f"failed to get shape class from {shape_id}")
             tool_bit_shape = shape_class(shape_id, **params)
 
         # Now that we have a shape, create the toolbit instance.
         selected_toolbit_subclass = cls._find_subclass_for_shape(tool_bit_shape)
-        toolbit = selected_toolbit_subclass(
-            tool_bit_shape, id=attrs.get("id")
-        )
+        toolbit = selected_toolbit_subclass(tool_bit_shape, id=attrs.get("id"))
         toolbit.label = attrs.get("name") or tool_bit_shape.label
 
         # Update parameters and attributes
         for param_name, param_value in params.items():
             if hasattr(toolbit.obj, param_name):
-                PathUtil.setProperty(
-                    toolbit.obj, param_name, param_value
-                )
+                PathUtil.setProperty(toolbit.obj, param_name, param_value)
             else:
                 Path.Log.warning(
                     f"Parameter '{param_name}' not found on tool bit "
@@ -147,11 +139,9 @@ class ToolBit(Asset, ABC):
                 )
 
         for attr_name, attr_value in attrs.get("attribute", {}).items():
-             if hasattr(toolbit.obj, attr_name):
-                PathUtil.setProperty(
-                    toolbit.obj, attr_name, attr_value
-                )
-             else:
+            if hasattr(toolbit.obj, attr_name):
+                PathUtil.setProperty(toolbit.obj, attr_name, attr_value)
+            else:
                 Path.Log.warning(
                     f"Attribute '{attr_name}' not found on tool bit "
                     f"'{toolbit.obj.Label}'. Skipping."
@@ -160,7 +150,7 @@ class ToolBit(Asset, ABC):
         return toolbit
 
     @classmethod
-    def from_shape_id(cls, shape_id: str, label: Optional[str] = None) -> 'ToolBit':
+    def from_shape_id(cls, shape_id: str, label: Optional[str] = None) -> "ToolBit":
         """
         Creates and populates a ToolBit instance from a shape ID.
         """
@@ -168,7 +158,7 @@ class ToolBit(Asset, ABC):
         return cls.from_dict(attrs)
 
     @classmethod
-    def from_file(cls, path: Union[str, pathlib.Path]) -> 'ToolBit':
+    def from_file(cls, path: Union[str, pathlib.Path]) -> "ToolBit":
         """
         Creates and populates a ToolBit instance from a .fctb file.
         """
@@ -199,7 +189,7 @@ class ToolBit(Asset, ABC):
         To be overridden by subclasses to provide a better summary
         including parameter values. Used as "subtitle" for the tool
         in the UI.
-        
+
         Example: "3.2 mm endmill, 4-flute, 8 mm cutting edge"
         """
         return self.get_shape_name()
@@ -244,10 +234,7 @@ class ToolBit(Asset, ABC):
                 "App::PropertyString",
                 "ToolBitID",
                 "Base",
-                QT_TRANSLATE_NOOP(
-                    "App::Property",
-                    "The unique ID of the toolbit"
-                ),
+                QT_TRANSLATE_NOOP("App::Property", "The unique ID of the toolbit"),
             )
 
         # 0 = read/write, 1 = read only, 2 = hide
@@ -402,9 +389,11 @@ class ToolBit(Asset, ABC):
         # Assign self.obj to the restored object
         self.obj = obj
         self.obj.Proxy = self
-        if not hasattr(self, 'id'):
+        if not hasattr(self, "id"):
             self.id = str(uuid.uuid4())
-            Path.Log.debug(f"Assigned new id {self.id} for ToolBit {obj.Label} during document restore")
+            Path.Log.debug(
+                f"Assigned new id {self.id} for ToolBit {obj.Label} during document restore"
+            )
 
         # Our constructor previously created the base properties in the
         # DetachedDocumentObject, which was now replaced.
@@ -467,9 +456,7 @@ class ToolBit(Asset, ABC):
         self.attach_to_obj(tool_doc_obj, label=label)
         return tool_doc_obj
 
-    def attach_to_obj(
-        self, tool_doc_obj: FreeCAD.DocumentObject, label: Optional[str] = None
-    ):
+    def attach_to_obj(self, tool_doc_obj: FreeCAD.DocumentObject, label: Optional[str] = None):
         """
         Attaches the ToolBit instance to an existing FreeCAD DocumentObject.
 
@@ -599,7 +586,7 @@ class ToolBit(Asset, ABC):
     def get_property(self, name: str):
         return self.obj.getPropertyByName(name)
 
-    def get_property_str(self, name: str, default: str|None = None) -> str|None:
+    def get_property_str(self, name: str, default: str | None = None) -> str | None:
         value = self.get_property(name)
         return format_value(value) if value else default
 
@@ -794,9 +781,7 @@ class ToolBit(Asset, ABC):
             "parameters": {
                 name: to_json(getattr(self.obj, name, None))
                 for name in self._tool_bit_shape.get_parameters()
-                if not isinstance(
-                    value := getattr(self.obj, name, None), FreeCAD.DocumentObject
-                )
+                if not isinstance(value := getattr(self.obj, name, None), FreeCAD.DocumentObject)
             },
         }
 

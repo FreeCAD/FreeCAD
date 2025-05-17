@@ -130,9 +130,7 @@ class TestPathToolLibrary(unittest.TestCase):
             Flutes=2,
             TipDiameter=1.0,
         )
-        self.assertIsNone(
-            library.get_bit_no_from_bit(ToolBitVBit(shape_cutter))
-        )
+        self.assertIsNone(library.get_bit_no_from_bit(ToolBitVBit(shape_cutter)))
 
     def test_assign_new_bit_no(self):
         library = Library("Test Library")
@@ -295,7 +293,7 @@ class TestPathToolLibrary(unittest.TestCase):
         self.assertFalse(library.has_bit(bit2))
         # Create a new ToolBit with the same properties but different instance
         shape1_copy = ToolBitShapeEndmill(
-            id="dummy_endmill_5_copy", # Use a different ID for the copy
+            id="dummy_endmill_5_copy",  # Use a different ID for the copy
             CuttingEdgeHeight=10.0,
             Diameter=10.0,
             Flutes=2,

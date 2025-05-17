@@ -81,9 +81,9 @@ class ToolBitShapeIcon(Asset):
             raise FileNotFoundError(f"Icon file not found: {filepath}")
 
         data = filepath.read_bytes()
-        if filepath.suffix.lower() == '.png':
+        if filepath.suffix.lower() == ".png":
             return ToolBitShapePngIcon(id, data)
-        elif filepath.suffix.lower() == '.svg':
+        elif filepath.suffix.lower() == ".svg":
             return ToolBitShapeSvgIcon(id, data)
         else:
             raise NotImplementedError(f"unsupported icon file: {filepath}")

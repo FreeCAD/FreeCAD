@@ -20,6 +20,5 @@ class ToolBitChamfer(ToolBit, ChiploadMixin, RotaryToolBitMixin):
         cutting_edge_angle = self.get_property_str("CuttingEdgeAngle", "?")
 
         return FreeCAD.Qt.translate(
-            "CAM",
-            f"{diameter} {cutting_edge_angle} chamfer bit, {flutes}-flute"
+            "CAM", f"{diameter} {cutting_edge_angle} chamfer bit, {flutes}-flute"
         )

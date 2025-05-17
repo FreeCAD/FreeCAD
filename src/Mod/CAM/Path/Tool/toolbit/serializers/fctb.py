@@ -11,7 +11,7 @@ from Path.Base import Util as PathUtil
 class FCTBSerializer(AssetSerializer):
     for_class = ToolBit
     mime_type = "application/x-freecad-toolbit"
-    extensions = ('.fctb',)
+    extensions = (".fctb",)
 
     @classmethod
     def get_label(cls) -> str:
@@ -21,7 +21,7 @@ class FCTBSerializer(AssetSerializer):
     def extract_dependencies(cls, data: bytes) -> List[AssetUri]:
         """Extracts URIs of dependencies from serialized data."""
         Path.Log.info(f"FCTBSerializer.extract_dependencies: raw data = {data!r}")
-        data_dict = json.loads(data.decode('utf-8'))
+        data_dict = json.loads(data.decode("utf-8"))
         shape = data_dict["shape"]
         return [ToolBitShape.resolve_name(shape)]
 
@@ -45,7 +45,7 @@ class FCTBSerializer(AssetSerializer):
         dependencies.
         """
         attrs = json.loads(data.decode("utf-8", "ignore"))
-        attrs['id'] = id # Ensure id is available for from_dict
+        attrs["id"] = id  # Ensure id is available for from_dict
 
         if dependencies is None:
             # Shallow load: dependencies are not resolved.
@@ -57,15 +57,14 @@ class FCTBSerializer(AssetSerializer):
         shape_id = attrs.get("shape")
         if not shape_id:
             Path.Log.warning("ToolBit data is missing 'shape' key, defaulting to 'endmill'")
-            shape_id = 'endmill'
+            shape_id = "endmill"
 
         shape_uri = ToolBitShape.resolve_name(shape_id)
         shape = dependencies.get(shape_uri)
 
         if shape is None:
             raise ValueError(
-                f"Dependency for shape '{shape_id}' not found by uri {shape_uri}"
-                f" {dependencies}"
+                f"Dependency for shape '{shape_id}' not found by uri {shape_uri}" f" {dependencies}"
             )
         elif not isinstance(shape, ToolBitShape):
             raise ValueError(

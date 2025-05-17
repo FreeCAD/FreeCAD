@@ -15,9 +15,7 @@ class TestPathToolLibrarySerializerBase(PathTestWithAssets):
         super().setUp()
         self.test_library_id = "test_library"
         self.test_library_label = "Test Library"
-        self.test_library = Library(
-            self.test_library_label, id=self.test_library_id
-        )
+        self.test_library = Library(self.test_library_label, id=self.test_library_id)
 
         # Create some dummy tool bits
         shape1 = ToolBitShapeEndmill("endmill_1")
@@ -48,15 +46,10 @@ class TestCamoticsLibrarySerializer(TestPathToolLibrarySerializerBase):
         data_dict = json.loads(serialized_data.decode("utf-8"))
         self.assertIn("1", data_dict)
         self.assertIn("2", data_dict)
-        self.assertEqual(
-            data_dict["1"]["description"],
-            self.test_library._bit_nos[1].label
-        )
+        self.assertEqual(data_dict["1"]["description"], self.test_library._bit_nos[1].label)
         self.assertEqual(
             data_dict["2"]["diameter"],
-            self.test_library._bit_nos[2]._tool_bit_shape.get_parameter(
-                "Diameter"
-            )
+            self.test_library._bit_nos[2]._tool_bit_shape.get_parameter("Diameter"),
         )
 
     def test_camotics_deserialize(self):
@@ -81,9 +74,7 @@ class TestCamoticsLibrarySerializer(TestPathToolLibrarySerializerBase):
         dummy_bytes = json.dumps(dummy_data, indent=2).encode("utf-8")
 
         # Deserialize the data
-        deserialized_library = serializer.deserialize(
-            dummy_bytes, "deserialized_lib", {}
-        )
+        deserialized_library = serializer.deserialize(dummy_bytes, "deserialized_lib", {})
 
         self.assertIsInstance(deserialized_library, Library)
         self.assertEqual(deserialized_library.get_id(), "deserialized_lib")
@@ -94,12 +85,10 @@ class TestCamoticsLibrarySerializer(TestPathToolLibrarySerializerBase):
         self.assertEqual(tool_10.label, "Ballnose 8mm")
         self.assertEqual(tool_10._tool_bit_shape.name, "Ballend")
         self.assertEqual(
-            tool_10._tool_bit_shape.get_parameter("Diameter"),
-            FreeCAD.Units.Quantity("8 mm")
+            tool_10._tool_bit_shape.get_parameter("Diameter"), FreeCAD.Units.Quantity("8 mm")
         )
         self.assertEqual(
-            tool_10._tool_bit_shape.get_parameter("Length"),
-            FreeCAD.Units.Quantity("25 mm")
+            tool_10._tool_bit_shape.get_parameter("Length"), FreeCAD.Units.Quantity("25 mm")
         )
 
         tool_20 = deserialized_library._bit_nos.get(20)
@@ -107,12 +96,10 @@ class TestCamoticsLibrarySerializer(TestPathToolLibrarySerializerBase):
         self.assertEqual(tool_20.label, "Endmill 10mm")
         self.assertEqual(tool_20._tool_bit_shape.name, "Endmill")
         self.assertEqual(
-            tool_20._tool_bit_shape.get_parameter("Diameter"),
-            FreeCAD.Units.Quantity("10 mm")
+            tool_20._tool_bit_shape.get_parameter("Diameter"), FreeCAD.Units.Quantity("10 mm")
         )
         self.assertEqual(
-            tool_20._tool_bit_shape.get_parameter("Length"),
-            FreeCAD.Units.Quantity("30 mm")
+            tool_20._tool_bit_shape.get_parameter("Length"), FreeCAD.Units.Quantity("30 mm")
         )
 
 
@@ -137,5 +124,5 @@ class TestLinuxCNCLibrarySerializer(TestPathToolLibrarySerializerBase):
             serializer.deserialize(dummy_data, "dummy_id", {})
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()

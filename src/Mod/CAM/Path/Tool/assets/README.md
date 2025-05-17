@@ -229,7 +229,7 @@ classDiagram
     class Asset["Asset<br/><small>Common interface for all asset types</small>"] {
         <<abstract>>
         asset_type: str  // type of the asset type, e.g., toolbit
-        
+
         get_id() str  // Returns a unique ID of the asset
         to_bytes(serializer: AssetSerializer) bytes
         from_bytes(data: bytes, id: str, dependencies: Optional[Mapping[AssetUri, Asset]], serializer: Type[AssetSerializer]) Asset

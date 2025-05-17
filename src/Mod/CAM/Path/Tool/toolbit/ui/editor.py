@@ -35,6 +35,7 @@ class ToolBitPropertiesWidget(QtGui.QWidget):
     """
     A composite widget for editing the properties and shape of a ToolBit.
     """
+
     # Signal emitted when the toolbit data has been modified
     toolBitChanged = QtCore.Signal()
 
@@ -45,19 +46,17 @@ class ToolBitPropertiesWidget(QtGui.QWidget):
 
         # UI Elements
         self._label_edit = QtGui.QLineEdit()
-        self._id_label = QtGui.QLabel() # Read-only ID
+        self._id_label = QtGui.QLabel()  # Read-only ID
         self._id_label.setTextInteractionFlags(QtCore.Qt.TextSelectableByMouse)
 
         self._property_editor = DocumentObjectEditorWidget()
         self._property_editor.setSizePolicy(
             QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Expanding
         )
-        self._shape_widget = None # Will be created in load_toolbit
+        self._shape_widget = None  # Will be created in load_toolbit
 
         # Layout
-        toolbit_group_box = QtGui.QGroupBox(
-            FreeCAD.Qt.translate("CAM", "Tool Bit")
-        )
+        toolbit_group_box = QtGui.QGroupBox(FreeCAD.Qt.translate("CAM", "Tool Bit"))
         form_layout = QtGui.QFormLayout(toolbit_group_box)
         form_layout.addRow("Label:", self._label_edit)
         form_layout.addRow("ID:", self._id_label)
@@ -65,26 +64,20 @@ class ToolBitPropertiesWidget(QtGui.QWidget):
         main_layout = QtGui.QVBoxLayout(self)
         main_layout.addWidget(toolbit_group_box)
 
-        properties_group_box = QtGui.QGroupBox(
-            FreeCAD.Qt.translate("CAM", "Properties")
-        )
-        properties_group_box.setSizePolicy(
-            QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Expanding
-        )
+        properties_group_box = QtGui.QGroupBox(FreeCAD.Qt.translate("CAM", "Properties"))
+        properties_group_box.setSizePolicy(QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Expanding)
         properties_layout = QtGui.QVBoxLayout(properties_group_box)
         properties_layout.setSpacing(5)
         properties_layout.addWidget(self._property_editor)
-        
+
         # Ensure the layout expands horizontally
-        properties_layout.setAlignment(
-            QtCore.Qt.AlignLeft | QtCore.Qt.AlignTop
-        )
+        properties_layout.setAlignment(QtCore.Qt.AlignLeft | QtCore.Qt.AlignTop)
 
         # Set stretch factor to make property editor expand
         properties_layout.setStretchFactor(self._property_editor, 1)
-        
+
         main_layout.addWidget(properties_group_box)
-    
+
         # Add stretch before shape widget to push it towards the bottom
         main_layout.addStretch(1)
 
@@ -147,9 +140,7 @@ class ToolBitPropertiesWidget(QtGui.QWidget):
             self._shape_widget = None
 
         if self._show_shape and self._toolbit._tool_bit_shape:
-            self._shape_widget = ShapeWidget(
-                shape=self._toolbit._tool_bit_shape, parent=self
-            )
+            self._shape_widget = ShapeWidget(shape=self._toolbit._tool_bit_shape, parent=self)
             self._shape_widget.setMinimumSize(200, 150)
             # Insert into the middle slot of the HBox layout
             self._shape_display_layout.insertWidget(1, self._shape_widget)
@@ -172,10 +163,11 @@ class ToolBitEditorPanel(QtGui.QWidget):
     A widget for editing a ToolBit object, wrapping ToolBitEditorWidget
     and providing standard dialog buttons.
     """
+
     # Signals
     accepted = QtCore.Signal(ToolBit)
     rejected = QtCore.Signal()
-    toolBitChanged = QtCore.Signal() # Re-emit signal from inner widget
+    toolBitChanged = QtCore.Signal()  # Re-emit signal from inner widget
 
     def __init__(self, toolbit: ToolBit | None = None, parent=None):
         super().__init__(parent)
@@ -216,15 +208,16 @@ class ToolBitEditor(QtGui.QWidget):
     A widget for editing a ToolBit object, wrapping ToolBitEditorWidget
     and providing standard dialog buttons.
     """
+
     # Signals
-    toolBitChanged = QtCore.Signal() # Re-emit signal from inner widget
+    toolBitChanged = QtCore.Signal()  # Re-emit signal from inner widget
 
     def __init__(self, toolbit: ToolBit, parent=None):
         super().__init__(parent)
         self.form = FreeCADGui.PySideUic.loadUi(":/panels/ToolBitEditor.ui")
 
         self.toolbit = toolbit
-        #self.tool_no = tool_no
+        # self.tool_no = tool_no
         self.default_title = self.form.windowTitle()
 
         # Get first tab from the form, add the shape widget at the top.
@@ -235,7 +228,7 @@ class ToolBitEditor(QtGui.QWidget):
         # Add tool properties editor to the same tab.
         props = ToolBitPropertiesWidget(toolbit, self, icon=False)
         props.toolBitChanged.connect(self._update)
-        #props.toolNoChanged.connect(self._on_tool_no_changed)
+        # props.toolNoChanged.connect(self._on_tool_no_changed)
         tool_tab_layout.addWidget(props)
 
         self.form.tabWidget.setCurrentIndex(0)
@@ -268,7 +261,7 @@ class ToolBitEditor(QtGui.QWidget):
         title = self.default_title
         tool_name = self.toolbit.label
         if tool_name:
-            title = '{} - {}'.format(tool_name, title)
+            title = "{} - {}".format(tool_name, title)
         self.form.setWindowTitle(title)
 
     def _on_tab_switched(self, index):

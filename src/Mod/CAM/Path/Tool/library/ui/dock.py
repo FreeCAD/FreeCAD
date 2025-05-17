@@ -151,18 +151,18 @@ class ModelFactory:
             libraries = cast(List[Library], cam_assets.fetch(asset_type="toolbitlibrary", depth=0))
         except Exception as e:
             Path.Log.error(f"Failed to fetch toolbit libraries: {e}")
-            return model # Return empty model on error
+            return model  # Return empty model on error
 
         # Sort by label for consistent ordering, falling back to asset_id if label is missing
         def get_sort_key(library):
-            label = getattr(library, 'label', None)
+            label = getattr(library, "label", None)
             return label if label else library.get_id()
 
         for library in sorted(libraries, key=get_sort_key):
             lib_uri_str = str(library.get_uri())
             libItem = QStandardItem(library.label or library.get_id())
             libItem.setToolTip(f"ID: {library.get_id()}\nURI: {lib_uri_str}")
-            libItem.setData(lib_uri_str, _LibraryRole) # Store the URI string
+            libItem.setData(lib_uri_str, _LibraryRole)  # Store the URI string
             libItem.setIcon(QPixmap(":/icons/CAM_ToolTable.svg"))
             model.appendRow(libItem)
 
@@ -187,11 +187,7 @@ class ModelFactory:
         # Iterate over the loaded ToolBit asset instances
         for tool_no, tool_bit in sorted(loaded_library._bit_nos.items()):
             data_model.appendRow(
-                ModelFactory._tool_add(
-                    tool_no,
-                    tool_bit.to_dict(),
-                    str(tool_bit.get_uri())
-                )
+                ModelFactory._tool_add(tool_no, tool_bit.to_dict(), str(tool_bit.get_uri()))
             )
 
     @staticmethod
@@ -371,12 +367,12 @@ class ToolBitLibraryDock(object):
             item = index.model().itemFromIndex(index)
 
             if item.hasChildren():
-                for i in range(item.rowCount()): # Iterate through all children
-                    child_item = item.child(i, 0) # Assuming tool number is in column 0
+                for i in range(item.rowCount()):  # Iterate through all children
+                    child_item = item.child(i, 0)  # Assuming tool number is in column 0
                     if child_item:
-                         itemsToProcess.append(child_item)
+                        itemsToProcess.append(child_item)
 
-            elif item.column() == 0: # Ensure it's the tool number column
+            elif item.column() == 0:  # Ensure it's the tool number column
                 itemsToProcess.append(item)
 
         tools = []

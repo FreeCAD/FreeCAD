@@ -21,8 +21,7 @@ class ToolBitProbe(ToolBit):
         shaft_diameter = self.get_property_str("ShaftDiameter", "?")
 
         return FreeCAD.Qt.translate(
-            "CAM",
-            f"{diameter} probe, {length} length, {shaft_diameter} shaft"
+            "CAM", f"{diameter} probe, {length} length, {shaft_diameter} shaft"
         )
 
     def can_rotate(self) -> bool:

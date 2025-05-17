@@ -29,7 +29,13 @@ class MockAsset(Asset):
         return []
 
     @classmethod
-    def from_bytes(cls, data: bytes, id: str, dependencies: Mapping[AssetUri, Asset] | None, serializer: AssetSerializer) -> "MockAsset":
+    def from_bytes(
+        cls,
+        data: bytes,
+        id: str,
+        dependencies: Mapping[AssetUri, Asset] | None,
+        serializer: AssetSerializer,
+    ) -> "MockAsset":
         # Create instance with provided id
         return cls(data, id)
 
@@ -76,7 +82,11 @@ class TestPathToolAssetManager(unittest.TestCase):
 
             @classmethod
             def from_bytes(
-                cls, data: bytes, id: str, dependencies: Mapping[AssetUri, Asset] | None, serializer: AssetSerializer
+                cls,
+                data: bytes,
+                id: str,
+                dependencies: Mapping[AssetUri, Asset] | None,
+                serializer: AssetSerializer,
             ) -> "AnotherMockAsset":
                 return cls()
 
@@ -90,13 +100,17 @@ class TestPathToolAssetManager(unittest.TestCase):
         self.assertEqual(manager._asset_classes[AnotherMockAsset.asset_type], AnotherMockAsset)
 
         # Test overwriting
-        manager.register_asset(MockAsset, DummyAssetSerializer) # Registering again should overwrite
+        manager.register_asset(
+            MockAsset, DummyAssetSerializer
+        )  # Registering again should overwrite
         self.assertEqual(manager._asset_classes[MockAsset.asset_type], MockAsset)
 
         # Test registering non-Asset class
         with self.assertRaises(TypeError):
-            class NotAnAsset(Asset): # Inherit from Asset
+
+            class NotAnAsset(Asset):  # Inherit from Asset
                 pass
+
             manager.register_asset(NotAnAsset, DummyAssetSerializer)
 
     def test_get(self):
@@ -112,10 +126,12 @@ class TestPathToolAssetManager(unittest.TestCase):
 
             # Create a test asset file via AssetManager
             test_data = b"test asset data"
-            test_uri = manager.add_raw(asset_type=MockAsset.asset_type,
-                                       asset_id="dummy_id_get",
-                                       data=test_data,
-                                       store="local")
+            test_uri = manager.add_raw(
+                asset_type=MockAsset.asset_type,
+                asset_id="dummy_id_get",
+                data=test_data,
+                store="local",
+            )
 
             # Call AssetManager.get
             retrieved_object = manager.get(test_uri)
@@ -126,22 +142,17 @@ class TestPathToolAssetManager(unittest.TestCase):
             self.assertEqual(retrieved_object._data, test_data)
 
             # Test error handling for non-existent URI
-            non_existent_uri = AssetUri.build(
-                MockAsset.asset_type, "non_existent", "1"
-            )
+            non_existent_uri = AssetUri.build(MockAsset.asset_type, "non_existent", "1")
             with self.assertRaises(FileNotFoundError):
                 manager.get(non_existent_uri)
 
             # Test error handling for no asset class registered
-            non_registered_uri = AssetUri.build(
-                "non_existent_type", "dummy_id", "1"
-            )
+            non_registered_uri = AssetUri.build("non_existent_type", "dummy_id", "1")
             # Need to create a dummy file for the store to find
             dummy_data = b"dummy"
-            manager.add_raw(asset_type="non_existent_type",
-                            asset_id="dummy_id",
-                            data=dummy_data,
-                            store="local")
+            manager.add_raw(
+                asset_type="non_existent_type", asset_id="dummy_id", data=dummy_data, store="local"
+            )
 
             with self.assertRaises(ValueError) as cm:
                 manager.get(non_registered_uri)
@@ -157,16 +168,10 @@ class TestPathToolAssetManager(unittest.TestCase):
 
             # Create a test asset file
             test_data = b"test asset data to delete"
-            test_uri = manager.add_raw(asset_type="temp_asset",
-                                       asset_id="dummy_id_delete",
-                                       data=test_data,
-                                       store="local")
-            test_path = (
-                base_dir
-                / "temp_asset"
-                / str(test_uri.asset_id)
-                / str(test_uri.version)
+            test_uri = manager.add_raw(
+                asset_type="temp_asset", asset_id="dummy_id_delete", data=test_data, store="local"
             )
+            test_path = base_dir / "temp_asset" / str(test_uri.asset_id) / str(test_uri.version)
             self.assertTrue(test_path.exists())
 
             # Call AssetManager.delete
@@ -178,7 +183,7 @@ class TestPathToolAssetManager(unittest.TestCase):
             # Test error handling for non-existent URI (should not raise error
             # as LocalStore.delete handles this)
             non_existent_uri = AssetUri.build(
-                "temp_asset", "non_existent", "1" # Keep original for logging
+                "temp_asset", "non_existent", "1"  # Keep original for logging
             )
             manager.delete(non_existent_uri)  # Should not raise
 
@@ -210,9 +215,7 @@ class TestPathToolAssetManager(unittest.TestCase):
             # Test error handling (store not found)
             with self.assertRaises(ValueError) as cm:
                 manager.add(test_obj, store="non_existent_store")
-            self.assertIn(
-                "No store registered for name:", str(cm.exception)
-            )
+            self.assertIn("No store registered for name:", str(cm.exception))
 
         with tempfile.TemporaryDirectory() as tmpdir:
             local_store = MemoryStore("local")
@@ -248,9 +251,8 @@ class TestPathToolAssetManager(unittest.TestCase):
             # Test error handling (store not found)
             with self.assertRaises(ValueError) as cm:
                 manager.add(test_obj, store="non_existent_store")
-            self.assertIn(
-                "No store registered for name:", str(cm.exception)
-            )
+            self.assertIn("No store registered for name:", str(cm.exception))
+
     def test_create_raw(self):
         # Setup AssetManager with a real MemoryStore
         memory_store = MemoryStore("memory_raw")
@@ -284,9 +286,7 @@ class TestPathToolAssetManager(unittest.TestCase):
             manager.add_raw(
                 asset_type=asset_type, asset_id=asset_id, data=data, store="non_existent_store"
             )
-        self.assertIn(
-            "No store registered for name:", str(cm.exception)
-        )
+        self.assertIn("No store registered for name:", str(cm.exception))
 
     def test_get_raw(self):
         # Setup AssetManager with a real MemoryStore
@@ -311,9 +311,7 @@ class TestPathToolAssetManager(unittest.TestCase):
         non_existent_uri = AssetUri("type://id/1")
         with self.assertRaises(ValueError) as cm:
             manager.get_raw(non_existent_uri, store="non_existent_store")
-        self.assertIn(
-            "No store registered for name:", str(cm.exception)
-        )
+        self.assertIn("No store registered for name:", str(cm.exception))
 
     def test_is_empty(self):
         # Setup AssetManager with a real MemoryStore
@@ -335,9 +333,7 @@ class TestPathToolAssetManager(unittest.TestCase):
         # Test error handling (store not found)
         with self.assertRaises(ValueError) as cm:
             manager.is_empty(store="non_existent_store")
-        self.assertIn(
-            "No store registered for name:", str(cm.exception)
-        )
+        self.assertIn("No store registered for name:", str(cm.exception))
 
     def test_count_assets(self):
         # Setup AssetManager with a real MemoryStore
@@ -364,9 +360,7 @@ class TestPathToolAssetManager(unittest.TestCase):
         # Test error handling (store not found)
         with self.assertRaises(ValueError) as cm:
             manager.count_assets(store="non_existent_store")
-        self.assertIn(
-            "No store registered for name:", str(cm.exception)
-        )
+        self.assertIn("No store registered for name:", str(cm.exception))
 
     def test_get_bulk(self):
         # Setup AssetManager with a real MemoryStore and MockAsset class
@@ -408,9 +402,7 @@ class TestPathToolAssetManager(unittest.TestCase):
         # Test error handling (store not found)
         with self.assertRaises(ValueError) as cm:
             manager.get_bulk(uris, store="non_existent_store")
-        self.assertIn(
-            "No store registered for name:", str(cm.exception)
-        )
+        self.assertIn("No store registered for name:", str(cm.exception))
 
     def test_fetch(self):
         # Setup AssetManager with a real MemoryStore and MockAsset class
@@ -469,9 +461,7 @@ class TestPathToolAssetManager(unittest.TestCase):
         # Test error handling (store not found)
         with self.assertRaises(ValueError) as cm:
             manager.fetch(store="non_existent_store")
-        self.assertIn(
-            "No store registered for name:", str(cm.exception)
-        )
+        self.assertIn("No store registered for name:", str(cm.exception))
 
 
 if __name__ == "__main__":

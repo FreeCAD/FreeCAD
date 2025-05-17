@@ -1,9 +1,8 @@
 from typing import List, Dict, Optional, Iterable, Type
 from ..serializer import AssetSerializer
 
-def make_import_filters(
-    serializers: Iterable[Type[AssetSerializer]]
-) -> List[str]:
+
+def make_import_filters(serializers: Iterable[Type[AssetSerializer]]) -> List[str]:
     """
     Generates file dialog filters for importing assets.
 
@@ -31,8 +30,9 @@ def make_import_filters(
 
     return filters
 
+
 def make_export_filters(
-    serializers: Iterable[Type[AssetSerializer]]
+    serializers: Iterable[Type[AssetSerializer]],
 ) -> tuple[List[str], Dict[str, Type[AssetSerializer]]]:
     """
     Generates file dialog filters for exporting assets and a serializer map.
@@ -58,8 +58,11 @@ def make_export_filters(
 
     return filters, serializer_map
 
+
 def get_serializer_from_extension(
-    serializers: Iterable[Type[AssetSerializer]], file_extension: str, for_import: bool | None = None
+    serializers: Iterable[Type[AssetSerializer]],
+    file_extension: str,
+    for_import: bool | None = None,
 ) -> Optional[Type[AssetSerializer]]:
     """
     Finds a serializer class based on the file extension and import/export capability.

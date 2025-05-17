@@ -23,6 +23,7 @@ from .icon import ToolBitShapeIcon
 
 class ToolBitShape(Asset):
     """Abstract base class for tool bit shapes."""
+
     asset_type: str = "toolbitshape"
 
     # The name is used...
@@ -100,7 +101,7 @@ class ToolBitShape(Asset):
         return shape_class
 
     @classmethod
-    def get_shape_class_from_bytes(cls, data: bytes) -> Type['ToolBitShape']:
+    def get_shape_class_from_bytes(cls, data: bytes) -> Type["ToolBitShape"]:
         """
         Identifies the ToolBitShape subclass from the raw bytes of an FCStd file
         by parsing the XML content to find the Body label.
@@ -134,7 +135,9 @@ class ToolBitShape(Asset):
                 body_label = body_label_elem.get("value")
 
             if not body_label:
-                 raise ValueError("No 'Label' property found for 'PartDesign::Body' object using XPath")
+                raise ValueError(
+                    "No 'Label' property found for 'PartDesign::Body' object using XPath"
+                )
 
             # Find the correct subclass based on the body label
             shape_class = cls.get_subclass_by_name(body_label)
@@ -183,8 +186,9 @@ class ToolBitShape(Asset):
         by the same ID as the shape asset.
         """
         Path.Log.debug(f"ToolBitShape.extract_dependencies called for {cls.__name__}")
-        assert serializer == DummyAssetSerializer, \
-               f"ToolBitShape supports only native import, not {serializer}"
+        assert (
+            serializer == DummyAssetSerializer
+        ), f"ToolBitShape supports only native import, not {serializer}"
 
         # A ToolBitShape asset depends on a ToolBitShapeIcon asset with the same ID.
         # We need to extract the shape ID from the FCStd data.
@@ -195,16 +199,16 @@ class ToolBitShape(Asset):
             # For now, let's assume the ID is implicitly the asset name derived
             # from the Body label.
             shape_class = cls.get_shape_class_from_bytes(data)
-            shape_id = shape_class.name.lower() # Assuming ID is lowercase name
+            shape_id = shape_class.name.lower()  # Assuming ID is lowercase name
 
             # Construct the URI for the corresponding icon asset
             svg_uri = AssetUri.build(
                 asset_type="toolbitshapesvg",
-                asset_id=shape_id+".svg",
+                asset_id=shape_id + ".svg",
             )
             png_uri = AssetUri.build(
                 asset_type="toolbitshapepng",
-                asset_id=shape_id+".png",
+                asset_id=shape_id + ".png",
             )
             return [svg_uri, png_uri]
 
@@ -220,7 +224,7 @@ class ToolBitShape(Asset):
         data: bytes,
         id: str,
         dependencies: Optional[Mapping[AssetUri, Asset]],
-        serializer: Type[AssetSerializer]
+        serializer: Type[AssetSerializer],
     ) -> "ToolBitShape":
         """
         Create a ToolBitShape instance from the raw bytes of an FCStd file.
@@ -294,13 +298,13 @@ class ToolBitShape(Asset):
             # The icon has the same ID as the shape, with .png or .svg appended.
             icon_uri = AssetUri.build(
                 asset_type="toolbitshapesvg",
-                asset_id=id+".svg",
+                asset_id=id + ".svg",
             )
             instance.icon = cast(ToolBitShapeIcon, dependencies.get(icon_uri))
             if not instance.icon:
                 icon_uri = AssetUri.build(
                     asset_type="toolbitshapepng",
-                    asset_id=id+".png",
+                    asset_id=id + ".png",
                 )
                 instance.icon = cast(ToolBitShapeIcon, dependencies.get(icon_uri))
 
@@ -376,7 +380,7 @@ class ToolBitShape(Asset):
             instance = cls.from_bytes(data, shape_id, {}, DummyAssetSerializer)
             # Apply kwargs parameters after loading from bytes
             if kwargs:
-                 instance.set_parameters(**kwargs)
+                instance.set_parameters(**kwargs)
             return instance
         except (FileNotFoundError, ValueError) as e:
             raise e
@@ -392,9 +396,11 @@ class ToolBitShape(Asset):
         """
         name = name.lower()
         for thecls in cls.__subclasses__():
-            if thecls.name.lower() == name \
-                or thecls.__name__.lower() == name \
-                or name in thecls.aliases:
+            if (
+                thecls.name.lower() == name
+                or thecls.__name__.lower() == name
+                or name in thecls.aliases
+            ):
                 return thecls
         return default
 
@@ -504,8 +510,10 @@ class ToolBitShape(Asset):
                 f"Shape '{self.name}' was given an invalid parameter '{name}'. Has {self._params}\n"
             )
             # Log to confirm this path is taken when an invalid parameter is given
-            Path.Log.debug(f"Invalid parameter '{name}' for shape "
-                           f"'{self.name}', returning without raising KeyError.")
+            Path.Log.debug(
+                f"Invalid parameter '{name}' for shape "
+                f"'{self.name}', returning without raising KeyError."
+            )
             return
 
         self._params[name] = value
@@ -577,7 +585,7 @@ class ToolBitShape(Asset):
         """
         if self.icon:
             return self.icon
-        
+
         # Try to get a matching SVG from the asset manager.
         self.icon = cam_assets.get_or_none(f"toolbitshapesvg://{self.id}.svg")
         if self.icon:

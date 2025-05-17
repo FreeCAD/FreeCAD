@@ -50,7 +50,7 @@ class CamoticsLibrarySerializer(AssetSerializer):
 
             diameter_value = tool.get_diameter()
             # Ensure diameter is a float, handle Quantity and other types
-            diameter_serializable = 2.0 # Default value as float
+            diameter_serializable = 2.0  # Default value as float
             if isinstance(diameter_value, FreeCAD.Units.Quantity):
                 try:
                     val_mm = diameter_value.getValueAs("mm")
@@ -58,11 +58,11 @@ class CamoticsLibrarySerializer(AssetSerializer):
                         diameter_serializable = float(val_mm)
                 except ValueError:
                     # Fallback to raw value if unit conversion fails
-                    raw_val = diameter_value.Value if hasattr(diameter_value, 'Value') else None
+                    raw_val = diameter_value.Value if hasattr(diameter_value, "Value") else None
                     if isinstance(raw_val, (int, float)):
-                         diameter_serializable = float(raw_val)
+                        diameter_serializable = float(raw_val)
             elif isinstance(diameter_value, (int, float)):
-                 diameter_serializable = float(diameter_value) if diameter_value is not None else 2.0
+                diameter_serializable = float(diameter_value) if diameter_value is not None else 2.0
 
             toolitem["diameter"] = diameter_serializable
 
@@ -70,17 +70,17 @@ class CamoticsLibrarySerializer(AssetSerializer):
 
             length_value = tool.get_length()
             # Ensure length is a float, handle Quantity and other types
-            length_serializable = 10.0 # Default value as float
+            length_serializable = 10.0  # Default value as float
             if isinstance(length_value, FreeCAD.Units.Quantity):
                 try:
                     val_mm = length_value.getValueAs("mm")
                     if val_mm is not None:
                         length_serializable = float(val_mm)
                 except ValueError:
-                     # Fallback to raw value if unit conversion fails
-                    raw_val = length_value.Value if hasattr(length_value, 'Value') else None
+                    # Fallback to raw value if unit conversion fails
+                    raw_val = length_value.Value if hasattr(length_value, "Value") else None
                     if isinstance(raw_val, (int, float)):
-                         length_serializable = float(raw_val)
+                        length_serializable = float(raw_val)
             elif isinstance(length_value, (int, float)):
                 length_serializable = float(length_value) if length_value is not None else 10.0
 
@@ -112,13 +112,11 @@ class CamoticsLibrarySerializer(AssetSerializer):
                 continue
 
             # Find the shape class to use
-            shape_name_str = SHAPEMAP_REVERSE.get(
-                toolitem.get("shape", "Cylindrical"), "endmill"
-            )
+            shape_name_str = SHAPEMAP_REVERSE.get(toolitem.get("shape", "Cylindrical"), "endmill")
             shape_class = ToolBitShape.get_subclass_by_name(shape_name_str)
             if not shape_class:
-                 print(f"Warning: Unknown shape name '{shape_name_str}', defaulting to endmill")
-                 shape_class = ToolBitShapeEndmill
+                print(f"Warning: Unknown shape name '{shape_name_str}', defaulting to endmill")
+                shape_class = ToolBitShapeEndmill
 
             # Translate parameters to FreeCAD types
             params = {}
@@ -132,7 +130,7 @@ class CamoticsLibrarySerializer(AssetSerializer):
                 length = float(toolitem.get("length", 10))
                 params["Length"] = FreeCAD.Units.Quantity(f"{length} mm")
             except (ValueError, TypeError):
-                 print(f"Warning: Invalid length for tool {tool_no_str}, skipping.")
+                print(f"Warning: Invalid length for tool {tool_no_str}, skipping.")
 
             # Create the shape
             shape_id = shape_name_str.lower()
@@ -149,8 +147,4 @@ class CamoticsLibrarySerializer(AssetSerializer):
     @classmethod
     def deep_deserialize(cls, data: bytes) -> Library:
         # TODO: Build tools here
-        return cls.deserialize(
-            data,
-            str(uuid.uuid4()),
-            {}
-        )
+        return cls.deserialize(data, str(uuid.uuid4()), {})

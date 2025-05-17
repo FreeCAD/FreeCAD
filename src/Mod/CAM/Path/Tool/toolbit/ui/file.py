@@ -25,9 +25,7 @@ class ToolBitOpenDialog(QFileDialog):
         if filters:
             self.selectNameFilter(filters[0])
 
-    def _deserialize_selected_file(
-        self, file_path: pathlib.Path
-    ) -> Optional[ToolBit]:
+    def _deserialize_selected_file(self, file_path: pathlib.Path) -> Optional[ToolBit]:
         """Deserialize the selected file using the appropriate serializer."""
         file_extension = file_path.suffix.lower()
         serializer_class = get_serializer_from_extension(
@@ -44,9 +42,7 @@ class ToolBitOpenDialog(QFileDialog):
             raw_data = file_path.read_bytes()
             toolbit = serializer_class.deep_deserialize(raw_data)
             if not isinstance(toolbit, ToolBit):
-                raise TypeError(
-                    "Deserialized asset is not of type ToolBit"
-                )
+                raise TypeError("Deserialized asset is not of type ToolBit")
             return toolbit
         except Exception as e:
             QMessageBox.critical(self, "Error", f"Failed to import toolbit: {e}")

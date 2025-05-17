@@ -43,21 +43,20 @@ class TestPropertyEditorFactory(unittest.TestCase):
         self.obj = DetachedDocumentObject()
         # Add properties using the DetachedDocumentObject API with correct signature
         self.obj.addProperty("App::PropertyLength", "Length", "Base", "Length property")
-        self.obj.Length = FreeCAD.Units.Quantity(10.0) # Set value separately
+        self.obj.Length = FreeCAD.Units.Quantity(10.0)  # Set value separately
 
         self.obj.addProperty("App::PropertyBool", "IsEnabled", "Base", "Boolean property")
-        self.obj.IsEnabled = True # Set value separately
+        self.obj.IsEnabled = True  # Set value separately
 
         self.obj.addProperty("App::PropertyInt", "Count", "Base", "Integer property")
-        self.obj.Count = 5 # Set value separately
+        self.obj.Count = 5  # Set value separately
 
         self.obj.addProperty("App::PropertyEnumeration", "Mode", "Base", "Enumeration property")
         # Set enums and initial value separately
         self.obj.Mode = ["Auto", "Manual"]
 
         self.obj.addProperty("App::PropertyString", "Comment", "Base", "String property")
-        self.obj.Comment = "Test" # Set value separately
-
+        self.obj.Comment = "Test"  # Set value separately
 
     def test_quantity_creation(self):
         widget = BasePropertyEditorWidget.for_property(self.obj, "Length")
@@ -86,6 +85,7 @@ class TestPropertyEditorFactory(unittest.TestCase):
 
 class TestQuantityPropertyEditorWidget(unittest.TestCase):
     """Tests for QuantityPropertyEditorWidget."""
+
     def setUp(self):
         self.obj = DetachedDocumentObject()
         self.obj.addProperty("App::PropertyLength", "Length", "Base", "Length property")
@@ -117,6 +117,7 @@ class TestQuantityPropertyEditorWidget(unittest.TestCase):
 
 class TestBoolPropertyEditorWidget(unittest.TestCase):
     """Tests for BoolPropertyEditorWidget."""
+
     def setUp(self):
         self.obj = DetachedDocumentObject()
         self.obj.addProperty("App::PropertyBool", "IsEnabled", "Base", "Boolean property")
@@ -128,26 +129,26 @@ class TestBoolPropertyEditorWidget(unittest.TestCase):
     def test_update_widget(self):
         self.widget.updateWidget()
         # Check if the real widget's value is updated
-        self.assertEqual(self.editor.currentIndex(), 1) # True is index 1
+        self.assertEqual(self.editor.currentIndex(), 1)  # True is index 1
 
         self.obj.setPropertyByName("IsEnabled", False)
         self.widget.updateWidget()
-        self.assertEqual(self.editor.currentIndex(), 0) # False is index 0
-
+        self.assertEqual(self.editor.currentIndex(), 0)  # False is index 0
 
     def test_update_property(self):
         # Simulate user changing value in the combobox
-        self.editor.setCurrentIndex(0) # Select False
+        self.editor.setCurrentIndex(0)  # Select False
         self.widget._on_index_changed(0)
         self.assertEqual(self.obj.getPropertyByName("IsEnabled"), False)
 
-        self.editor.setCurrentIndex(1) # Select True
+        self.editor.setCurrentIndex(1)  # Select True
         self.widget._on_index_changed(1)
         self.assertEqual(self.obj.getPropertyByName("IsEnabled"), True)
 
 
 class TestIntPropertyEditorWidget(unittest.TestCase):
     """Tests for IntPropertyEditorWidget."""
+
     def setUp(self):
         self.obj = DetachedDocumentObject()
         self.obj.addProperty("App::PropertyInt", "Count", "Base", "Integer property")
@@ -174,10 +175,11 @@ class TestIntPropertyEditorWidget(unittest.TestCase):
 
 class TestEnumPropertyEditorWidget(unittest.TestCase):
     """Tests for EnumPropertyEditorWidget."""
+
     def setUp(self):
         self.obj = DetachedDocumentObject()
         self.obj.addProperty("App::PropertyEnumeration", "Mode", "Base", "Enumeration property")
-        self.obj.Mode = ["Auto", "Manual", "Semi"] # Set enums and initial value
+        self.obj.Mode = ["Auto", "Manual", "Semi"]  # Set enums and initial value
         self.widget = EnumPropertyEditorWidget(self.obj, "Mode")
         # Access the real editor widget
         self.editor = self.widget._editor_widget
@@ -200,17 +202,18 @@ class TestEnumPropertyEditorWidget(unittest.TestCase):
 
     def test_update_property(self):
         # Simulate user changing value in the combobox
-        self.editor.setCurrentIndex(1) # Select Manual
+        self.editor.setCurrentIndex(1)  # Select Manual
         self.widget._on_index_changed(1)
         self.assertEqual(self.obj.getPropertyByName("Mode"), "Manual")
 
-        self.editor.setCurrentIndex(2) # Select Semi
+        self.editor.setCurrentIndex(2)  # Select Semi
         self.widget._on_index_changed(2)
         self.assertEqual(self.obj.getPropertyByName("Mode"), "Semi")
 
 
 class TestLabelPropertyEditorWidget(unittest.TestCase):
     """Tests for LabelPropertyEditorWidget."""
+
     def setUp(self):
         self.obj = DetachedDocumentObject()
         self.obj.addProperty("App::PropertyString", "Comment", "Base", "String property")

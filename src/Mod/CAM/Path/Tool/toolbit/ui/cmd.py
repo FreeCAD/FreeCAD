@@ -108,6 +108,7 @@ class CommandToolBitSave:
         if not dialog_result:
             return
 
+
 class CommandToolBitLoad:
     """
     Command used to load an existing Tool from a file into the current document.

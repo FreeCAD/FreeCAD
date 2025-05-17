@@ -105,7 +105,7 @@ class TestPathToolShapeClasses(PathTestWithAssets):
         shape = DummyShape(
             id="dummy_shape_4",
             filepath=Path("/fake/dummy.fcstd"),
-            Param1=FreeCAD.Units.Quantity("12 mm")
+            Param1=FreeCAD.Units.Quantity("12 mm"),
         )
         # Create mock quantity instances using the configured mock class
         expected_param1 = FreeCAD.Units.Quantity("12.0 mm")
@@ -183,15 +183,13 @@ class TestPathToolShapeClasses(PathTestWithAssets):
     def test_get_shape_class(self):
         """Test the get_shape_class function."""
         uri = ToolBitShape.resolve_name("ballend")
-        self.assets.get(uri) # Ensure it's loadable
+        self.assets.get(uri)  # Ensure it's loadable
 
         self.assertEqual(ToolBitShape.get_subclass_by_name("ballend"), ToolBitShapeBallend)
         self.assertEqual(ToolBitShape.get_subclass_by_name("v-bit"), ToolBitShapeVBit)
         self.assertEqual(ToolBitShape.get_subclass_by_name("VBit"), ToolBitShapeVBit)
         self.assertEqual(ToolBitShape.get_subclass_by_name("torus"), ToolBitShapeBullnose)
-        self.assertEqual(
-            ToolBitShape.get_subclass_by_name("slitting-saw"), ToolBitShapeSlittingSaw
-        )
+        self.assertEqual(ToolBitShape.get_subclass_by_name("slitting-saw"), ToolBitShapeSlittingSaw)
         self.assertIsNone(ToolBitShape.get_subclass_by_name("nonexistent"))
 
     # The following tests for default parameters and labels
@@ -368,7 +366,9 @@ class TestPathToolShapeClasses(PathTestWithAssets):
         using the Asset interface methods.
         """
         # Load a shape instance from a fixture file
-        fixture_path = Path(__file__).parent / "Tools" / "Shape" / "test-path-tool-bit-shape-00.fcstd"
+        fixture_path = (
+            Path(__file__).parent / "Tools" / "Shape" / "test-path-tool-bit-shape-00.fcstd"
+        )
         original_shape = ToolBitShape.from_file(fixture_path)
 
         # Serialize the shape using the to_bytes method
@@ -387,8 +387,5 @@ class TestPathToolShapeClasses(PathTestWithAssets):
         # Assert that the deserialized object is a ToolBitShape instance
         self.assertIsInstance(deserialized_shape, ToolBitShape)
         # Assert that the deserialized shape has the same parameters as the original
-        self.assertEqual(
-            original_shape.get_parameters(),
-            deserialized_shape.get_parameters()
-        )
+        self.assertEqual(original_shape.get_parameters(), deserialized_shape.get_parameters())
         self.assertEqual(original_shape.name, deserialized_shape.name)

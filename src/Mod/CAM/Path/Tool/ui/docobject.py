@@ -48,9 +48,7 @@ class DocumentObjectEditorWidget(QtGui.QWidget):
     # Signal emitted when any underlying property value might have changed
     propertyChanged = QtCore.Signal()
 
-    def __init__(
-        self, obj=None, properties_to_show=None, property_suffixes=None, parent=None
-    ):
+    def __init__(self, obj=None, properties_to_show=None, property_suffixes=None, parent=None):
         """
         Initialize the editor widget.
 
@@ -71,9 +69,7 @@ class DocumentObjectEditorWidget(QtGui.QWidget):
 
         self._layout = QtGui.QFormLayout(self)
         self._layout.setContentsMargins(0, 0, 0, 0)
-        self._layout.setFieldGrowthPolicy(
-            QtGui.QFormLayout.FieldGrowthPolicy.ExpandingFieldsGrow
-        )
+        self._layout.setFieldGrowthPolicy(QtGui.QFormLayout.FieldGrowthPolicy.ExpandingFieldsGrow)
 
         self._populate_form()
 
@@ -94,9 +90,7 @@ class DocumentObjectEditorWidget(QtGui.QWidget):
             if not hasattr(self._obj, prop_name):
                 continue
 
-            editor_widget = BasePropertyEditorWidget.for_property(
-                self._obj, prop_name, self
-            )
+            editor_widget = BasePropertyEditorWidget.for_property(self._obj, prop_name, self)
             label_text = _get_label_text(prop_name)
             suffix = self._property_suffixes.get(prop_name)
             if suffix:
@@ -108,7 +102,6 @@ class DocumentObjectEditorWidget(QtGui.QWidget):
 
             # Connect the editor's signal to our own signal
             editor_widget.propertyChanged.connect(self.propertyChanged)
-
 
     def setObject(self, obj):
         """Set or change the DocumentObject being edited."""
@@ -124,7 +117,7 @@ class DocumentObjectEditorWidget(QtGui.QWidget):
         """Set or change the list of properties to display."""
         self._properties_to_show = properties_to_show if properties_to_show else []
         self._property_suffixes = property_suffixes if property_suffixes else {}
-        self._populate_form() # Rebuild the form completely
+        self._populate_form()  # Rebuild the form completely
 
     def updateUI(self):
         """Update all child editor widgets from the object's properties."""

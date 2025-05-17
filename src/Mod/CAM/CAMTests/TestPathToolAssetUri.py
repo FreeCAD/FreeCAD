@@ -8,8 +8,7 @@ class TestPathToolAssetUri(unittest.TestCase):
     """
 
     def test_uri_parsing_full(self):
-        uri_string = ("remote://asset_id/version?"
-                      "param1=value1&param2=value2")
+        uri_string = "remote://asset_id/version?" "param1=value1&param2=value2"
         uri = AssetUri(uri_string)
         self.assertEqual(uri.asset_type, "remote")
         self.assertEqual(uri.asset_id, "asset_id")
@@ -62,13 +61,14 @@ class TestPathToolAssetUri(unittest.TestCase):
 
     def test_uri_build_full(self):
         expected_uri_string = "local://asset_id/version?param1=value1"
-        uri = AssetUri.build(asset_type="local", asset_id="asset_id",
-                         version="version", params={"param1": "value1"})
+        uri = AssetUri.build(
+            asset_type="local", asset_id="asset_id", version="version", params={"param1": "value1"}
+        )
         self.assertEqual(str(uri), expected_uri_string)
         self.assertEqual(uri.asset_type, "local")
         self.assertEqual(uri.asset_id, "asset_id")
         self.assertEqual(uri.version, "version")
-        self.assertEqual(uri.params, {"param1": ["value1"]}) # parse_qs always returns list
+        self.assertEqual(uri.params, {"param1": ["value1"]})  # parse_qs always returns list
 
     def test_uri_build_latest_version_no_params(self):
         expected_uri_string = "remote://id/latest"
@@ -96,5 +96,6 @@ class TestPathToolAssetUri(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "Invalid URI path structure:"):
             AssetUri(uri_string)
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     unittest.main()

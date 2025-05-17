@@ -25,14 +25,14 @@
 import unittest
 from Path.Tool.toolbit.ui.toollist import ToolBitListWidget, ToolBitUriRole
 from Path.Tool.toolbit.ui.tablecell import TwoLineTableCell
-from .PathTestUtils import PathTestWithAssets # Import the base test class
+from .PathTestUtils import PathTestWithAssets  # Import the base test class
 
 
 class TestToolBitListWidget(PathTestWithAssets):
     """Tests for ToolBitListWidget using real assets."""
 
     def setUp(self):
-        super().setUp() # Call the base class setUp to initialize assets
+        super().setUp()  # Call the base class setUp to initialize assets
         self.widget = ToolBitListWidget()
 
     def test_add_toolbit(self):
@@ -47,7 +47,7 @@ class TestToolBitListWidget(PathTestWithAssets):
         self.assertIsNotNone(item)
 
         cell_widget = self.widget.itemWidget(item)
-        self.assertIsInstance(cell_widget, TwoLineTableCell) # Check against real class
+        self.assertIsInstance(cell_widget, TwoLineTableCell)  # Check against real class
 
         # Verify cell widget properties are set correctly
         self.assertEqual(cell_widget.tool_no, str(tool_no))
@@ -86,36 +86,35 @@ class TestToolBitListWidget(PathTestWithAssets):
         # Test filter "Endmill"
         self.widget.apply_filter("Endmill")
 
-        self.assertFalse(items[0].isHidden()) # 5mm Endmill
+        self.assertFalse(items[0].isHidden())  # 5mm Endmill
         self.assertTrue(items[1].isHidden())  # slittingsaw
         self.assertTrue(items[2].isHidden())  # probe
 
         # Verify highlight was called on all cells
         for cell in cells:
-             self.assertEqual(cell.search_highlight, "Endmill")
+            self.assertEqual(cell.search_highlight, "Endmill")
 
         # Test filter "Ballnose"
         self.widget.apply_filter("Ballnose")
 
-        self.assertTrue(items[0].isHidden()) # 5mm Endmill
-        self.assertTrue(items[1].isHidden()) # slittingsaw
+        self.assertTrue(items[0].isHidden())  # 5mm Endmill
+        self.assertTrue(items[1].isHidden())  # slittingsaw
         self.assertTrue(items[2].isHidden())  # probe
 
         # Verify highlight was called again
         for cell in cells:
-             self.assertEqual(cell.search_highlight, "Ballnose")
+            self.assertEqual(cell.search_highlight, "Ballnose")
 
         # Test filter "3mm"
         self.widget.apply_filter("3mm")
 
-        self.assertTrue(items[0].isHidden()) # 5mm Endmill
-        self.assertTrue(items[1].isHidden()) # slittingsaw
+        self.assertTrue(items[0].isHidden())  # 5mm Endmill
+        self.assertTrue(items[1].isHidden())  # slittingsaw
         self.assertTrue(items[2].isHidden())  # probe
 
         # Verify highlight was called again
         for cell in cells:
-             self.assertEqual(cell.search_highlight, "3mm")
-
+            self.assertEqual(cell.search_highlight, "3mm")
 
     def test_get_selected_toolbit_uri(self):
         toolbit1 = self.assets.get("toolbit://5mm_Endmill")

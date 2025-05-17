@@ -22,5 +22,5 @@ class ToolBitBullnose(ToolBit, ChiploadMixin, RotaryToolBitMixin):
 
         return FreeCAD.Qt.translate(
             "CAM",
-            f"{diameter} {flutes}-flute bullnose, {cutting_edge_height} cutting edge, {flat_radius} flat radius"
+            f"{diameter} {flutes}-flute bullnose, {cutting_edge_height} cutting edge, {flat_radius} flat radius",
         )

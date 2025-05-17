@@ -12,7 +12,7 @@ class Asset(ABC):
     asset_type: str
 
     def __init__(self, *args, **kwargs):
-        if not hasattr(self, 'asset_type'):
+        if not hasattr(self, "asset_type"):
             raise ValueError("Asset subclasses must define 'asset_type'.")
 
     @property
@@ -25,10 +25,7 @@ class Asset(ABC):
         pass
 
     def get_uri(self) -> AssetUri:
-        return AssetUri.build(
-            asset_type=self.asset_type,
-            asset_id=self.get_id()
-        )
+        return AssetUri.build(asset_type=self.asset_type, asset_id=self.get_id())
 
     @classmethod
     def resolve_name(cls, identifier: str) -> AssetUri:
@@ -50,9 +47,7 @@ class Asset(ABC):
         return AssetUri.build(cls.asset_type, asset_id=asset_id)
 
     @classmethod
-    def extract_dependencies(
-        cls, data: bytes, serializer: Type[AssetSerializer]
-    ) -> List[AssetUri]:
+    def extract_dependencies(cls, data: bytes, serializer: Type[AssetSerializer]) -> List[AssetUri]:
         """Extracts URIs of dependencies from serialized data."""
         return serializer.extract_dependencies(data)
 

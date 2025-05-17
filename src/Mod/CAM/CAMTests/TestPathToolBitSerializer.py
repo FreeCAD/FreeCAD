@@ -16,6 +16,7 @@ from typing import Mapping
 
 class _BaseToolBitSerializerTestCase(PathTestWithAssets):
     """Base test case for ToolBit Serializers."""
+
     __test__ = False
 
     serializer_class: Type[AssetSerializer]
@@ -24,12 +25,8 @@ class _BaseToolBitSerializerTestCase(PathTestWithAssets):
     def setUp(self):
         """Create a tool bit for each test."""
         super().setUp()
-        if self.serializer_class is None or not issubclass(
-            self.serializer_class, AssetSerializer
-        ):
-            raise NotImplementedError(
-                "Subclasses must define a valid serializer_class"
-            )
+        if self.serializer_class is None or not issubclass(self.serializer_class, AssetSerializer):
+            raise NotImplementedError("Subclasses must define a valid serializer_class")
 
         self.test_tool_bit = cast(ToolBitEndmill, self.assets.get("toolbit://5mm_Endmill"))
         self.test_tool_bit.label = "Test Tool"
@@ -76,9 +73,10 @@ class TestCamoticsToolBitSerializer(_BaseToolBitSerializerTestCase):
             b'{"units": "metric", "shape": "Cylindrical", "length": 15, '
             b'"diameter": 4.12, "description": "Test Tool"}'
         )
-        deserialized_bit = cast(ToolBitEndmill, self.serializer_class.deserialize(
-            camotics_data, id="test_id", dependencies=None
-        ))
+        deserialized_bit = cast(
+            ToolBitEndmill,
+            self.serializer_class.deserialize(camotics_data, id="test_id", dependencies=None),
+        )
 
         self.assertIsInstance(deserialized_bit, ToolBit)
         self.assertEqual(deserialized_bit.label, "Test Tool")
@@ -121,14 +119,13 @@ class TestFCTBSerializer(_BaseToolBitSerializerTestCase):
         shape = ToolBitShapeEndmill("endmill")
 
         # Create the dependencies dictionary with the shape instance
-        dependencies: Mapping[AssetUri, Asset] = {
-            AssetUri.build("toolbitshape", "endmill"): shape
-        }
+        dependencies: Mapping[AssetUri, Asset] = {AssetUri.build("toolbitshape", "endmill"): shape}
 
         # Provide dummy id and dependencies for deserialization test
-        deserialized_bit = cast(ToolBitEndmill, self.serializer_class.deserialize(
-            fctb_data, id="test_id", dependencies=dependencies
-        ))
+        deserialized_bit = cast(
+            ToolBitEndmill,
+            self.serializer_class.deserialize(fctb_data, id="test_id", dependencies=dependencies),
+        )
 
         self.assertIsInstance(deserialized_bit, ToolBit)
         self.assertEqual(deserialized_bit.label, "Test Tool")

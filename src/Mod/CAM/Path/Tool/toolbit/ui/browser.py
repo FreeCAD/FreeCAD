@@ -34,6 +34,7 @@ class ToolBitBrowserWidget(QtGui.QWidget):
     A widget to browse, filter, and select ToolBit assets from the
     AssetManager, with sorting and batch insertion.
     """
+
     # Signal emitted when a tool is selected in the list
     toolSelected = QtCore.Signal(str)  # Emits ToolBit URI string
     # Signal emitted when a tool is requested for editing (e.g., double-click)
@@ -81,13 +82,9 @@ class ToolBitBrowserWidget(QtGui.QWidget):
         top_layout.addWidget(self._sort_combo, 1)
 
         if self._compact_mode:
-            self._tool_list_widget = CompactToolBitListWidget(
-                tool_no_factory=self._tool_no_factory
-            )
+            self._tool_list_widget = CompactToolBitListWidget(tool_no_factory=self._tool_no_factory)
         else:
-            self._tool_list_widget = ToolBitListWidget(
-                tool_no_factory=self._tool_no_factory
-            )
+            self._tool_list_widget = ToolBitListWidget(tool_no_factory=self._tool_no_factory)
 
         # Main layout
         layout = QtGui.QVBoxLayout(self)
@@ -102,15 +99,9 @@ class ToolBitBrowserWidget(QtGui.QWidget):
         self._search_edit.textChanged.connect(self._search_timer.start)
         self._sort_combo.currentIndexChanged.connect(self._on_sort_changed)
 
-        self._tool_list_widget.verticalScrollBar().valueChanged.connect(
-            self._on_scroll
-        )
-        self._tool_list_widget.itemDoubleClicked.connect(
-            self._on_item_double_clicked
-        )
-        self._tool_list_widget.currentItemChanged.connect(
-            self._on_item_selection_changed
-        )
+        self._tool_list_widget.verticalScrollBar().valueChanged.connect(self._on_scroll)
+        self._tool_list_widget.itemDoubleClicked.connect(self._on_item_double_clicked)
+        self._tool_list_widget.currentItemChanged.connect(self._on_item_selection_changed)
 
         # Initial Load with delay to ensure UI readiness
         self._fetch_all_assets()
@@ -151,7 +142,8 @@ class ToolBitBrowserWidget(QtGui.QWidget):
     def _fetch_batch(self, offset):
         """Inserts a batch of filtered assets into the list widget."""
         filtered_assets = [
-            asset for asset in self._all_assets
+            asset
+            for asset in self._all_assets
             if not self._current_search or self._matches_search(asset, self._current_search)
         ]
         end_idx = min(offset + self._batch_size, len(filtered_assets))
@@ -162,8 +154,7 @@ class ToolBitBrowserWidget(QtGui.QWidget):
     def _matches_search(self, toolbit, search_term):
         """Checks if a ToolBit matches the search term."""
         search_term = search_term.lower()
-        return (search_term in toolbit.label.lower() or 
-                search_term in toolbit.summary.lower())
+        return search_term in toolbit.label.lower() or search_term in toolbit.summary.lower()
 
     def _fetch_data(self):
         """Inserts filtered and sorted ToolBit assets into the list widget."""
@@ -208,9 +199,11 @@ class ToolBitBrowserWidget(QtGui.QWidget):
         """Handles scroll events for lazy batch insertion."""
         scrollbar = self._tool_list_widget.verticalScrollBar()
         is_near_bottom = value >= scrollbar.maximum() - scrollbar.singleStep()
-        filtered_count = sum(1 for asset in self._all_assets
-                             if not self._current_search or \
-                                self._matches_search(asset, self._current_search))
+        filtered_count = sum(
+            1
+            for asset in self._all_assets
+            if not self._current_search or self._matches_search(asset, self._current_search)
+        )
         more_might_exist = self._tool_list_widget.count() < filtered_count
 
         if is_near_bottom and more_might_exist and not self._is_fetching:

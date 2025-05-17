@@ -24,30 +24,27 @@ class AssetUri:
         path_parts = path_and_query[0].split("/")
 
         if not path_parts or not path_parts[0]:
-             raise ValueError(f"Invalid URI structure: {uri_string}")
+            raise ValueError(f"Invalid URI structure: {uri_string}")
 
         self.asset_id = path_parts[0]
         self.version = path_parts[1] if len(path_parts) > 1 else None
 
         if len(path_parts) > 2:
-             raise ValueError(f"Invalid URI path structure: {uri_string}")
+            raise ValueError(f"Invalid URI path structure: {uri_string}")
 
         self.params: Dict[str, list[str]] = {}
         if len(path_and_query) > 1:
             self.params = urllib.parse.parse_qs(path_and_query[1])
 
         if not self.asset_type or not self.asset_id:
-             raise ValueError(f"Invalid URI structure: {uri_string}")
-
+            raise ValueError(f"Invalid URI structure: {uri_string}")
 
     def __str__(self) -> str:
         path = f"/{self.version}" if self.version else ""
 
         query = urllib.parse.urlencode(self.params, doseq=True) if self.params else ""
 
-        uri_string = urllib.parse.urlunparse(
-            (self.asset_type, self.asset_id, path, "", query, "")
-        )
+        uri_string = urllib.parse.urlunparse((self.asset_type, self.asset_id, path, "", query, ""))
         return uri_string
 
     def __repr__(self) -> str:
@@ -56,15 +53,16 @@ class AssetUri:
     def __eq__(self, other: Any) -> bool:
         if not isinstance(other, AssetUri):
             return NotImplemented
-        return (self.asset_type == other.asset_type and
-                self.asset_id == other.asset_id and
-                self.version == other.version and
-                self.params == other.params)
+        return (
+            self.asset_type == other.asset_type
+            and self.asset_id == other.asset_id
+            and self.version == other.version
+            and self.params == other.params
+        )
 
     def __hash__(self) -> int:
         """Returns a hash value for the AssetUri."""
-        return hash((self.asset_type, self.asset_id, self.version,
-                     frozenset(self.params.items())))
+        return hash((self.asset_type, self.asset_id, self.version, frozenset(self.params.items())))
 
     @classmethod
     def is_uri(cls, uri: AssetUri | str) -> bool:
@@ -79,12 +77,14 @@ class AssetUri:
         return True
 
     @staticmethod
-    def build(asset_type: str,
-               asset_id: str,
-               version: str | None = None,
-               params: Mapping[str, str | list[str]] | None = None) -> AssetUri:
+    def build(
+        asset_type: str,
+        asset_id: str,
+        version: str | None = None,
+        params: Mapping[str, str | list[str]] | None = None,
+    ) -> AssetUri:
         """Builds a Uri object from components."""
-        uri = AssetUri.__new__(AssetUri) # Create a new instance without calling __init__
+        uri = AssetUri.__new__(AssetUri)  # Create a new instance without calling __init__
         uri.asset_type = asset_type
         uri.asset_id = asset_id
         uri.version = version

@@ -226,7 +226,7 @@ class QuantitySpinBox(QtCore.QObject):
 
 class PropertyComboBox(QtCore.QObject):
     """Base controller class for properties represented as QComboBox."""
-    
+
     def __init__(self, widget, obj, prop, onBeforeChange=None):
         super().__init__()
         Path.Log.track(widget)
@@ -265,7 +265,11 @@ class PropertyComboBox(QtCore.QObject):
         if self.valid:
             if value is None:
                 value = PathUtil.getProperty(self.obj, self.prop)
-            index = self.widget.findData(value) if hasattr(self.widget, 'findData') else self.widget.findText(str(value))
+            index = (
+                self.widget.findData(value)
+                if hasattr(self.widget, "findData")
+                else self.widget.findText(str(value))
+            )
             if index >= 0:
                 self.widget.setCurrentIndex(index)
 
@@ -275,15 +279,19 @@ class PropertyComboBox(QtCore.QObject):
         if self.valid and self.prop:
             if self.onBeforeChange:
                 self.onBeforeChange()
-            
+
             current_value = PathUtil.getProperty(self.obj, self.prop)
-            new_value = self.widget.currentData() if hasattr(self.widget, 'currentData') else self.widget.currentText()
-            
+            new_value = (
+                self.widget.currentData()
+                if hasattr(self.widget, "currentData")
+                else self.widget.currentText()
+            )
+
             if str(new_value) != str(current_value):
                 setattr(self.obj, self.prop, new_value)
                 return True
         return False
-    
+
 
 class IntegerSpinBox(QtCore.QObject):
     """Controller class for integer properties represented as QSpinBox.
@@ -301,11 +309,11 @@ class IntegerSpinBox(QtCore.QObject):
         self.prop = None
         self.obj = obj
         self.valid = False
-        
+
         # Configure spin box defaults
         self.widget.setMinimum(-2147483647)  # Qt's minimum for spin boxes
-        self.widget.setMaximum(2147483647)   # Qt's maximum for spin boxes
-        
+        self.widget.setMaximum(2147483647)  # Qt's maximum for spin boxes
+
         self.attachTo(obj, prop)
         self.widget.valueChanged.connect(self.updateProperty)
 
@@ -334,11 +342,11 @@ class IntegerSpinBox(QtCore.QObject):
             try:
                 if value is None:
                     value = PathUtil.getProperty(self.obj, self.prop)
-                
+
                 # Handle both direct values and Quantity objects
-                if hasattr(value, 'Value'):  # For Quantity properties
+                if hasattr(value, "Value"):  # For Quantity properties
                     value = int(value.Value)
-                
+
                 self.widget.setValue(int(value))
             except Exception as e:
                 Path.Log.error(f"Error updating spin box: {str(e)}")
@@ -348,12 +356,12 @@ class IntegerSpinBox(QtCore.QObject):
         if self.valid and self.prop:
             if self.onBeforeChange:
                 self.onBeforeChange()
-            
+
             new_value = self.widget.value()
             current_value = PathUtil.getProperty(self.obj, self.prop)
-            
+
             # Handle Quantity properties
-            if hasattr(current_value, 'Value'):
+            if hasattr(current_value, "Value"):
                 if new_value != current_value.Value:
                     current_value.Value = new_value
                     return True
@@ -374,7 +382,7 @@ class IntegerSpinBox(QtCore.QObject):
 
 class BooleanComboBox(PropertyComboBox):
     """Controller class for boolean properties represented as QComboBox."""
-    
+
     def _populateComboBox(self):
         self.widget.clear()
         self.widget.addItem("True", True)
@@ -383,7 +391,7 @@ class BooleanComboBox(PropertyComboBox):
 
 class EnumerationComboBox(PropertyComboBox):
     """Controller class for enumeration properties represented as QComboBox."""
-    
+
     def _populateComboBox(self):
         self.widget.clear()
         enums = self.obj.getEnumerationsOfProperty(self.prop)
@@ -393,7 +401,7 @@ class EnumerationComboBox(PropertyComboBox):
 
 class PropertyLabel(QtCore.QObject):
     """Controller class for read-only property display as QLabel."""
-    
+
     def __init__(self, widget, obj, prop, onBeforeChange=None):
         super().__init__()
         self.widget = widget
@@ -401,7 +409,7 @@ class PropertyLabel(QtCore.QObject):
         self.prop = prop
         self.valid = False
         self.attachTo(obj, prop)
-        
+
     def attachTo(self, obj, prop=None):
         """bind to the given object and property"""
         self.obj = obj
@@ -416,7 +424,7 @@ class PropertyLabel(QtCore.QObject):
                 self.valid = False
         else:
             self.valid = False
-    
+
     def updateWidget(self, value=None):
         """update the label text"""
         if self.valid:

@@ -67,6 +67,7 @@ class TestPathToolBit(PathTestWithAssets):
     def testToolBitPickle(self):
         """Test if ToolBit is picklable"""
         import pickle
+
         shape = self.assets.get("toolbitshape://bullnose")
         shape = cast(ToolBitShapeBullnose, shape)
         bullnose_bit = ToolBitBullnose(shape, id="mybullnose")

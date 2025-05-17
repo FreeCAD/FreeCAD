@@ -11,7 +11,7 @@ class TestAsset(Asset):
         return []
 
     @classmethod
-    def from_bytes(cls, data: bytes, id:str, dependencies: Mapping[AssetUri, Any]) -> Any:
+    def from_bytes(cls, data: bytes, id: str, dependencies: Mapping[AssetUri, Any]) -> Any:
         return "dummy_object"
 
     def to_bytes(self) -> bytes:
@@ -25,7 +25,7 @@ class TestAsset(Asset):
 class TestPathToolAsset(unittest.TestCase):
     def test_asset_cannot_be_instantiated(self):
         with self.assertRaises(TypeError):
-            Asset() # type: ignore
+            Asset()  # type: ignore
 
     def test_asset_can_be_instantiated_and_has_members(self):
         asset = TestAsset()
@@ -37,5 +37,5 @@ class TestPathToolAsset(unittest.TestCase):
         self.assertEqual(asset.get_id(), "dummy_id")
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()

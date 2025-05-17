@@ -151,18 +151,18 @@ class ModelFactory:
             libraries = cast(List[Library], cam_assets.fetch(asset_type="toolbitlibrary", depth=0))
         except Exception as e:
             Path.Log.error(f"Failed to fetch toolbit libraries: {e}")
-            return model # Return empty model on error
+            return model  # Return empty model on error
 
         # Sort by label for consistent ordering, falling back to asset_id if label is missing
         def get_sort_key(library):
-            label = getattr(library, 'label', None)
+            label = getattr(library, "label", None)
             return label if label else library.get_id()
 
         for library in sorted(libraries, key=get_sort_key):
             lib_uri_str = str(library.get_uri())
             libItem = QStandardItem(library.label or library.get_id())
             libItem.setToolTip(f"ID: {library.get_id()}\nURI: {lib_uri_str}")
-            libItem.setData(lib_uri_str, _LibraryRole) # Store the URI string
+            libItem.setData(lib_uri_str, _LibraryRole)  # Store the URI string
             libItem.setIcon(QPixmap(":/icons/CAM_ToolTable.svg"))
             model.appendRow(libItem)
 
@@ -187,11 +187,7 @@ class ModelFactory:
         # Iterate over the loaded ToolBit asset instances
         for tool_no, tool_bit in sorted(loaded_library._bit_nos.items()):
             data_model.appendRow(
-                ModelFactory._tool_add(
-                    tool_no,
-                    tool_bit.to_dict(),
-                    str(tool_bit.get_uri())
-                )
+                ModelFactory._tool_add(tool_no, tool_bit.to_dict(), str(tool_bit.get_uri()))
             )
 
     @staticmethod
@@ -278,7 +274,6 @@ class LibraryEditor(object):
         # Connect signals for tool editing
         self.toolTableView.doubleClicked.connect(self.toolEdit)
 
-
     def toolBitNew(self):
         """Create a new toolbit asset and add it to the current library"""
         Path.Log.track()
@@ -322,12 +317,10 @@ class LibraryEditor(object):
 
             # 3. Add the new tool directly to the UI model
             new_row_items = ModelFactory._tool_add(
-                tool_no,
-                toolbit.to_dict(),
-                str(toolbit.get_uri()) # URI of the persisted toolbit
+                tool_no, toolbit.to_dict(), str(toolbit.get_uri())  # URI of the persisted toolbit
             )
             self.toolModel.appendRow(new_row_items)
-            
+
             # 4. Save the library (which now references the saved toolbit)
             self._saveCurrentLibrary()
 
@@ -368,9 +361,7 @@ class LibraryEditor(object):
 
             # Add the new tool directly to the UI model
             new_row_items = ModelFactory._tool_add(
-                tool_no,
-                toolbit.to_dict(),
-                str(toolbit.get_uri()) # URI of the persisted toolbit
+                tool_no, toolbit.to_dict(), str(toolbit.get_uri())  # URI of the persisted toolbit
             )
             self.toolModel.appendRow(new_row_items)
 
@@ -406,7 +397,7 @@ class LibraryEditor(object):
 
         # Remove the rows from the library model.
         for row in selected_rows:
-            item_tool_nr_or_uri = self.toolModel.item(row, 0) # Column 0 stores _PathRole
+            item_tool_nr_or_uri = self.toolModel.item(row, 0)  # Column 0 stores _PathRole
             tool_uri_string = item_tool_nr_or_uri.data(_PathRole)
             tool_uri = AssetUri(tool_uri_string)
             bit = self.current_library.get_tool_by_uri(tool_uri)
@@ -450,8 +441,8 @@ class LibraryEditor(object):
         # Load the toolbit asset for editing
         try:
             bit = cam_assets.get(toolbit_uri)
-            editor_dialog = ToolBitEditor(bit, self.form) # Create dialog instance
-            result = editor_dialog.show() # Show as modal dialog
+            editor_dialog = ToolBitEditor(bit, self.form)  # Create dialog instance
+            result = editor_dialog.show()  # Show as modal dialog
 
             if result == PySide.QtGui.QDialog.Accepted:
                 # The editor updates the toolbit directly, so we just need to save
@@ -521,8 +512,7 @@ class LibraryEditor(object):
         try:
             cam_assets.add(self.current_library)
             Path.Log.info(
-                f"_saveCurrentLibrary: Library "
-                f"{self.current_library.get_uri()} saved."
+                f"_saveCurrentLibrary: Library " f"{self.current_library.get_uri()} saved."
             )
         except Exception as e:
             Path.Log.error(
@@ -547,9 +537,7 @@ class LibraryEditor(object):
             )
             return
 
-        dialog = AssetSaveDialog(
-            self.current_library, library_serializers, self.form
-        )
+        dialog = AssetSaveDialog(self.current_library, library_serializers, self.form)
         dialog_result = dialog.exec(self.current_library)
         if not dialog_result:
             return  # User canceled or error
@@ -575,7 +563,7 @@ class LibraryEditor(object):
         # library_uri is now expected to be a string URI or None when called from setupUI/tableSelected.
         # AssetUri object conversion is handled by cam_assets.get() if needed.
 
-        self.current_library = None # Reset current_library before loading
+        self.current_library = None  # Reset current_library before loading
 
         if not library_uri:
             self.form.setWindowTitle("Tool Library Editor - No Library Selected")
@@ -588,19 +576,13 @@ class LibraryEditor(object):
             Path.Log.error(f"Failed to load library asset {library_uri}: {e}")
             self.form.setWindowTitle("Tool Library Editor - Error")
             return
-        
+
         # Success! Add the tools to the toolModel.
         self.toolTableView.setUpdatesEnabled(False)
-        self.form.setWindowTitle(
-            f"Tool Library Editor - {self.current_library.label}"
-        )
+        self.form.setWindowTitle(f"Tool Library Editor - {self.current_library.label}")
         for tool_no, tool_bit in sorted(self.current_library._bit_nos.items()):
             self.toolModel.appendRow(
-                ModelFactory._tool_add(
-                    tool_no,
-                    tool_bit.to_dict(),
-                    str(tool_bit.get_uri())
-                )
+                ModelFactory._tool_add(tool_no, tool_bit.to_dict(), str(tool_bit.get_uri()))
             )
 
         self.toolModel.setHorizontalHeaderLabels(self.columnNames())
@@ -617,7 +599,9 @@ class LibraryEditor(object):
 
         # Find the last used library.
         last_used_lib_identifier = Path.Preferences.getLastToolLibrary()
-        Path.Log.debug(f"setupUI: Last used library identifier from prefs: '{last_used_lib_identifier}'")
+        Path.Log.debug(
+            f"setupUI: Last used library identifier from prefs: '{last_used_lib_identifier}'"
+        )
         last_used_lib_uri = None
         if last_used_lib_identifier:
             last_used_lib_uri = Library.resolve_name(last_used_lib_identifier)
@@ -653,5 +637,5 @@ class LibraryEditor(object):
         self.form.exportLibrary.clicked.connect(self.exportLibrary)
 
         self.form.okButton.clicked.connect(self.form.close)
- 
+
         self.toolSelect([], [])

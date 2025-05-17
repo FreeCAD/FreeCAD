@@ -63,8 +63,7 @@ class DetachedDocumentObject:
 
         # Handle assignment of enumeration choices (list/tuple)
         prop_type = self._property_types.get(name)
-        if prop_type == "App::PropertyEnumeration" and \
-           isinstance(value, (list, tuple)):
+        if prop_type == "App::PropertyEnumeration" and isinstance(value, (list, tuple)):
             self._property_enums[name] = list(value)
             assert len(value) > 0, f"Enum property '{name}' must have at least one entry"
             self._properties.setdefault(name, value[0])
@@ -92,9 +91,7 @@ class DetachedDocumentObject:
         if name in self._properties:
             return self._properties[name]
         # Default behaviour: raise AttributeError
-        raise AttributeError(
-            f"'{type(self).__name__}' object has no attribute '{name}'"
-        )
+        raise AttributeError(f"'{type(self).__name__}' object has no attribute '{name}'")
 
     def setEditorMode(self, name: str, mode: int) -> None:
         """Stores editor mode settings in detached state."""

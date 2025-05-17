@@ -116,9 +116,7 @@ class AssetPreferencesPage:
                 QtGui.QMessageBox.warning(
                     self.form,
                     translate("CAM_PreferencesAssets", "Warning"),
-                    translate(
-                        "CAM_PreferencesAssets", "The selected asset path is not writable."
-                    ),
+                    translate("CAM_PreferencesAssets", "The selected asset path is not writable."),
                 )
                 return False
         Path.Preferences.setAssetPath(asset_path)

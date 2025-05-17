@@ -216,6 +216,7 @@ class PathTestWithAssets(PathTestBase):
         toolbit = self.asset.get("toolbit://ballend")
         toolbit = self.asset.get("toolbitshape://chamfer")
     """
+
     __tool_dir = pathlib.Path(os.path.realpath(__file__)).parent.parent / "Tools"
 
     def setUp(self):

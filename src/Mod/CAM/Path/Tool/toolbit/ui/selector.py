@@ -33,8 +33,10 @@ class ToolBitSelector(QtWidgets.QDialog):
     """
     A dialog for selecting ToolBits using the ToolBitBrowserWidget.
     """
-    def __init__(self, parent=None, compact=False,
-                 button_label=FreeCAD.Qt.translate("CAM", "Add Tool")):
+
+    def __init__(
+        self, parent=None, compact=False, button_label=FreeCAD.Qt.translate("CAM", "Add Tool")
+    ):
         super().__init__(parent)
 
         self.setMinimumSize(600, 400)

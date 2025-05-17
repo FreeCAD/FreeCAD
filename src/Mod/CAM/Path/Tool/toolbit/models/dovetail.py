@@ -20,6 +20,5 @@ class ToolBitDovetail(ToolBit, ChiploadMixin, RotaryToolBitMixin):
         flutes = self.get_property("Flutes")
 
         return FreeCAD.Qt.translate(
-            "CAM",
-            f"{diameter} {cutting_edge_angle} dovetail bit, {flutes}-flute"
+            "CAM", f"{diameter} {cutting_edge_angle} dovetail bit, {flutes}-flute"
         )
