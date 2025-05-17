@@ -35,6 +35,7 @@
 
 #include "QGCustomText.h"
 #include "QGIDecoration.h"
+#include "QGIUserTypes.h"
 
 using BreakType = TechDraw::DrawBrokenView::BreakType;
 
@@ -47,7 +48,7 @@ public:
     explicit QGIBreakLine();
     ~QGIBreakLine() override = default;
 
-    enum {Type = QGraphicsItem::UserType + 250};
+    enum {Type = UserType::QGIBreakLine};
     int type() const override { return Type;}
 
     void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = nullptr ) override;

@@ -25,7 +25,8 @@
 
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
-# include "QGIVertex.h"
+#include "QGIUserTypes.h"
+#include "QGIVertex.h"
 
 namespace TechDrawGui
 {
@@ -36,7 +37,7 @@ public:
     explicit QGICMark(int index);
     ~QGICMark() override {}
 
-    enum {Type = QGraphicsItem::UserType + 171};
+    enum {Type = UserType::QGICMark};
     int type() const override { return Type;}
     void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = nullptr ) override;
 
