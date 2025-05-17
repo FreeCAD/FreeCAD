@@ -27,12 +27,16 @@
 #include <map>
 #include <vector>
 #include <iostream>
+#include <locale>
 #include <string>
 #include <xercesc/sax2/XMLReaderFactory.hpp>
 #include <xercesc/sax2/Attributes.hpp>
+#ifdef _MSC_VER
+#include <zipios++/zipios-config.h>
 #endif
-
-#include <locale>
+#include <zipios++/zipinputstream.h>
+#include <boost/iostreams/filtering_stream.hpp>
+#endif
 
 #include "Reader.h"
 #include "Base64.h"
@@ -44,12 +48,6 @@
 #include "Sequencer.h"
 #include "Stream.h"
 #include "XMLTools.h"
-
-#ifdef _MSC_VER
-#include <zipios++/zipios-config.h>
-#endif
-#include <zipios++/zipinputstream.h>
-#include <boost/iostreams/filtering_stream.hpp>
 
 #ifndef XERCES_CPP_NAMESPACE_BEGIN
 #define XERCES_CPP_NAMESPACE_QUALIFIER

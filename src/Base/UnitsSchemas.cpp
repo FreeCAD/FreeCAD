@@ -19,12 +19,15 @@
  *                                                                      *
  ************************************************************************/
 
+#include "PreCompiled.h"
+#ifndef _PreComp_
 #include <algorithm>
 #include <memory>
 #include <string>
 #include <vector>
 
 #include <QCoreApplication>
+#endif
 
 #include "UnitsSchemas.h"
 #include "Exception.h"

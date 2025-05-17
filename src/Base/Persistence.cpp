@@ -24,10 +24,9 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+#include <zipios++/zipinputstream.h>
 #include <cassert>
 #endif
-
-#include <zipios++/zipinputstream.h>
 
 #include "Exception.h"
 #include "Reader.h"

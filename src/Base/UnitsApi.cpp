@@ -24,10 +24,8 @@
 #ifndef _PreComp_
 #include <iomanip>
 #include <sstream>
-#endif
-
-#include <CXX/WrapPython.h>
 #include <fmt/format.h>
+#endif
 
 #include "Exception.h"
 #include "UnitsApi.h"
