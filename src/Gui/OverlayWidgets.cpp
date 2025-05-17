@@ -1273,7 +1273,6 @@ void OverlayTabWidget::setOverlayMode(QWidget *widget, OverlayOption option)
                         && !qobject_cast<Dialog::Clipping*>(widget))
                || qobject_cast<TaskView::TaskBox*>(widget))
         return;
-
     if(widget != tabBar()) {
         if(OverlayParams::getDockOverlayAutoMouseThrough()
                 && option == OverlayOption::ShowTab) {

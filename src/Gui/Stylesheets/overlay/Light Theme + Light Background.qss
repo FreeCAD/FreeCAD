@@ -1,4 +1,5 @@
-QFrame {
+Gui--DockWnd--ReportOutput,
+Gui--TaskView--TaskView {
   border: none;
 }
 
