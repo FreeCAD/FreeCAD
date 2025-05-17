@@ -27,7 +27,6 @@
 import FreeCAD
 
 from . import ifc_tools
-from . import ifc_objects
 
 translate = FreeCAD.Qt.translate
 
@@ -96,10 +95,6 @@ def convert_to_type(obj, keep_object=False):
     if keep_object:
         obj.Type = type_obj
     else:
-        # *SHORTLY* before deletion we hold a reference to the type we are replacing the
-        # original object with, to correctly assign Classification
-        obj.Proxy.generated_type = type_obj
-
         ifc_tools.remove_ifc_element(obj, delete_obj=True)
     ifc_tools.get_group(project, "IfcTypesGroup").addObject(type_obj)
 
