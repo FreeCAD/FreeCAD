@@ -83,8 +83,6 @@ private:
     void slotRedoDocument(const App::Document& Doc);
     /** Called when a given object is recomputed */
     void slotRecomputedObject(const App::DocumentObject& Obj);
-    /** Called before an observed document is recomputed */
-    void slotBeforeRecomputeDocument(const App::Document& Doc);
     /** Called when an observed document is recomputed */
     void slotRecomputedDocument(const App::Document& Doc);
     /** Called when an observed document opens a transaction */
@@ -144,7 +142,6 @@ private:
     Connection pyBeforeChangeObject;
     Connection pyChangedObject;
     Connection pyRecomputedObject;
-    Connection pyBeforeRecomputeDocument;
     Connection pyRecomputedDocument;
     Connection pyOpenTransaction;
     Connection pyCommitTransaction;

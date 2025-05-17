@@ -98,6 +98,9 @@ struct DocumentP
 
     StringHasherRef Hasher {new StringHasher};
 
+    /// Queue for asynchronous recomputed object signals.
+    std::vector<DocumentObject*> pendingRecomputedObjects;
+
     DocumentP();
 
     void addRecomputeLog(const char* why, App::DocumentObject* obj)
