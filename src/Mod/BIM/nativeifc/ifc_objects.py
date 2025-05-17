@@ -65,7 +65,7 @@ class ifc_object:
         elif prop == "Schema":
             self.edit_schema(obj, obj.Schema)
         elif prop == "Type":
-            self.Classification(obj)
+            self.assign_classification(obj)
         elif prop == "Classification":
             self.edit_classification(obj)
         elif prop == "Group":
@@ -115,6 +115,31 @@ class ifc_object:
                 QtCore.QTimer.singleShot(100, obj.touch)
             QtCore.QTimer.singleShot(100, obj.Document.recompute)
             QtCore.QTimer.singleShot(100, self.fit_all)
+
+    def assign_classification(self, obj):
+        """
+        Assigns Classification to an IFC object in a case where
+        the object references a Type that has a Classification property,
+        so we move copy the Type's property to our actual object.
+        """
+        
+        if not getattr(obj, "Type", None):
+            return
+
+        type_obj = obj.Type
+        if getattr(type_obj, "Classification", None):
+            # Check if there is Classification already, since user can just change
+            # the IFC type, but there could be one previously assigned which had
+            # Classification
+            if getattr(obj, "Classification", None) is None:
+                obj.addProperty("App::PropertyString", "Classification", "IFC")
+            obj.Classification = type_obj.Classification
+            obj.recompute()
+        elif getattr(obj, "Classification", None):
+            # This means user has assigned type that has no classification, so clear
+            # the one that they have currently selected
+            obj.Classification = ""
+            obj.recompute()
 
     def fit_all(self):
         """Fits the view"""
