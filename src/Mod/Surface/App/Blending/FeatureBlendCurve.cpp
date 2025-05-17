@@ -136,12 +136,16 @@ BlendPoint FeatureBlendCurve::GetBlendPoint(App::PropertyLinkSub& link,
 
     TopoDS_Shape axEdge;
     if (link.getSubValues().size() > 0 && link.getSubValues()[0].length() > 0) {
-        axEdge =
-            Feature::getTopoShape(linked, link.getSubValues()[0].c_str(), true /*need element*/)
-                .getShape();
+        axEdge = Part::Feature::getShape(linked,
+                                         Part::Feature::GetShapeOption::NeedSubElement
+                                             | Part::Feature::GetShapeOption::ResolveLink
+                                             | Part::Feature::GetShapeOption::Transform,
+                                         link.getSubValues()[0].c_str());
     }
     else {
-        axEdge = Feature::getShape(linked);
+        axEdge = Feature::getShape(linked,
+                                   Feature::GetShapeOption::ResolveLink
+                                       | Feature::GetShapeOption::Transform);
     }
 
     if (axEdge.IsNull()) {

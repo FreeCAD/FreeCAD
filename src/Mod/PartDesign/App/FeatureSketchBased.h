@@ -131,7 +131,11 @@ public:
 
     virtual Base::Vector3d getProfileNormal() const;
 
-    TopoShape getProfileShape() const;
+    // Use Part::Feature::GetShapeOptions enum to pass flags
+    TopoShape getProfileShape(Part::Feature::GetShapeOptions subShapeOptions = 
+                                                      Part::Feature::GetShapeOption::NeedSubElement 
+                                                    | Part::Feature::GetShapeOption::ResolveLink 
+                                                    | Part::Feature::GetShapeOption::Transform) const;
 
     /// retrieves the number of axes in the linked sketch (defined as construction lines)
     int getSketchAxisCount() const;

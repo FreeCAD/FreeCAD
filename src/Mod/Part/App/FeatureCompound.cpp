@@ -63,7 +63,7 @@ App::DocumentObjectExecReturn *Compound::execute()
             if (!tempLinks.insert(obj).second) {
                 continue;
             }
-            auto sh = Feature::getTopoShape(obj);
+            auto sh = Feature::getTopoShape(obj, Feature::GetShapeOption::ResolveLink | Feature::GetShapeOption::Transform);
             if (!sh.isNull()) {
                 shapes.push_back(sh);
             }

@@ -69,7 +69,7 @@ App::DocumentObjectExecReturn* FeatureBase::execute()
             QT_TRANSLATE_NOOP("Exception", "BaseFeature must be a Part::Feature"));
     }
 
-    auto shape = Part::Feature::getTopoShape(BaseFeature.getValue());
+    auto shape = Part::Feature::getTopoShape(BaseFeature.getValue(), Feature::GetShapeOption::ResolveLink | Feature::GetShapeOption::Transform);
     if (!shape.countSubShapes(TopAbs_SOLID)) {
         shape = shape.makeElementSolid();
     }

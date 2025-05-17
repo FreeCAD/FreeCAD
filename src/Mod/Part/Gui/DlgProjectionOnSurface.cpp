@@ -1436,7 +1436,7 @@ void DlgProjectOnSurface::addWire(const Gui::SelectionChanges& msg)
         return;
     }
 
-    Part::TopoShape part = Part::Feature::getTopoShape(selObj.getObject());
+    Part::TopoShape part = Part::Feature::getTopoShape(selObj.getObject(), Part::Feature::GetShapeOption::ResolveLink | Part::Feature::GetShapeOption::Transform);
     if (part.isNull()) {
         return;
     }

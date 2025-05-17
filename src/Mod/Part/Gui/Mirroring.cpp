@@ -100,7 +100,12 @@ public:
             bool isEdge = false; //will be true if user selected edge subobject or if object only has 1 edge
             TopoDS_Shape shape;
             if (subString.length() > 0){
-                shape = Part::Feature::getTopoShape(pObj, subString.c_str(), true).getShape();
+                shape = Part::Feature::getTopoShape(pObj,
+                                                      Part::Feature::GetShapeOption::NeedSubElement
+                                                    | Part::Feature::GetShapeOption::ResolveLink
+                                                    | Part::Feature::GetShapeOption::Transform,
+                                                    sSubName).getShape();                            
+
                 if (strstr(subString.c_str(), "Face")){
                     isFace = true; //was face subobject, e.g. Face3
                 } else {
@@ -109,7 +114,8 @@ public:
                     }
                 }
             } else {
-                shape = Part::Feature::getShape(pObj); //no subobjects were selected, so this is entire shape of feature
+                //no subobjects were selected, so this is entire shape of feature
+                shape = Part::Feature::getShape(pObj, Part::Feature::GetShapeOption::ResolveLink | Part::Feature::GetShapeOption::Transform);
             }
 
             // if there is only 1 face or 1 edge, then we don't need to force the user to select that face or edge
@@ -250,7 +256,7 @@ void Mirroring::findShapes()
     std::vector<App::DocumentObject*> objs = activeDoc->getObjectsOfType<App::DocumentObject>();
 
     for (auto obj : objs) {
-        Part::TopoShape shape = Part::Feature::getTopoShape(obj);
+        Part::TopoShape shape = Part::Feature::getTopoShape(obj, Part::Feature::GetShapeOption::ResolveLink | Part::Feature::GetShapeOption::Transform);
         if (!shape.isNull()) {
             QString label = QString::fromUtf8(obj->Label.getValue());
             QString name = QString::fromLatin1(obj->getNameInDocument());

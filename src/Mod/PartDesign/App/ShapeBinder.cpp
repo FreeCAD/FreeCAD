@@ -670,7 +670,11 @@ void SubShapeBinder::update(SubShapeBinder::UpdateOption options) {
         for (const auto& sub : subs) {
             ++subidx;
             try {
-                auto shape = Part::Feature::getTopoShape(obj, sub.c_str(), true);
+                auto shape = Part::Feature::getTopoShape(obj,
+                                                            Part::Feature::GetShapeOption::NeedSubElement
+                                                          | Part::Feature::GetShapeOption::ResolveLink
+                                                          | Part::Feature::GetShapeOption::Transform,
+                                                         sub.c_str());
                 if (!shape.isNull()) {
                     shapes.push_back(shape);
                     shapeOwners.emplace_back(sidx, subidx);
