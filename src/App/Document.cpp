@@ -1184,7 +1184,7 @@ void Document::exportObjects(const std::vector<DocumentObject*>& obj, std::ostre
                 FC_LOG("exporting " << o->getFullName());
                 if (!o->getPropertyByName("_ObjectUUID")) {
                     auto prop = static_cast<PropertyUUID*>(
-                        o->addDynamicProperty("PropertyUUID",
+                        o->addDynamicProperty("App::PropertyUUID",
                                               "_ObjectUUID",
                                               nullptr,
                                               nullptr,
