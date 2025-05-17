@@ -90,7 +90,7 @@ inline const UnitsSchemaSpec s3
             { 1e-1            , "\xC2\xB5m"  , 1e-3            },
             { 1e4             , "mm"         , 1.0             },
             { 1e7             , "m"          , 1e3             },
-            { 1e10            , "mm"         , 1e6             },
+            { 1e10            , "km"         , 1e6             },
             { 0               , "m"          , 1.0             }}
         },
         { "Area", {
