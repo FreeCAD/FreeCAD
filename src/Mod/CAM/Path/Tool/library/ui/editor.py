@@ -31,15 +31,15 @@ from PySide.QtCore import Qt
 import os
 import uuid as UUID
 from typing import List, cast
-from ..assets import AssetUri
-from ..assets.ui.filedialog import AssetOpenDialog, AssetSaveDialog
-from ..camassets import cam_assets, ensure_assets_initialized
-from ..shape.ui.shapeselector import ShapeSelector
-from ..toolbit import ToolBit
-from ..toolbit.serializers import all_serializers as toolbit_serializers
-from ..toolbit.ui.editor import ToolBitEditor
-from ..library import Library
-from ..library.serializers import all_serializers as library_serializers
+from ...assets import AssetUri
+from ...assets.ui import AssetOpenDialog, AssetSaveDialog
+from ...camassets import cam_assets, ensure_assets_initialized
+from ...shape.ui.shapeselector import ShapeSelector
+from ...toolbit import ToolBit
+from ...toolbit.serializers import all_serializers as toolbit_serializers
+from ...toolbit.ui import ToolBitEditor
+from ...library import Library
+from ...library.serializers import all_serializers as library_serializers
 
 
 if False:
@@ -257,8 +257,8 @@ class ModelFactory:
         return model
 
 
-class ToolBitLibrary(object):
-    """ToolBitLibrary is the controller for
+class LibraryEditor(object):
+    """LibraryEditor is the controller for
     displaying/selecting/creating/editing a collection of ToolBits."""
 
     def __init__(self):

@@ -25,6 +25,7 @@ import FreeCAD
 import FreeCADGui
 import Path
 from Path.Tool.library.ui.dock import ToolBitLibraryDock
+from Path.Tool.library.ui.editor import LibraryEditor
 
 
 if False:
@@ -61,7 +62,7 @@ class CommandToolBitLibraryDockOpen:
         dock.open()
 
 
-class CommandToolBitLibraryOpen:
+class CommandLibraryEditorOpen:
     """
     Command to open ToolBitLibrary editor.
     """
@@ -83,15 +84,12 @@ class CommandToolBitLibraryOpen:
         return FreeCAD.ActiveDocument is not None
 
     def Activated(self):
-        import Path.Tool.Gui.BitLibrary as PathToolBitLibraryGui
-
-        library = PathToolBitLibraryGui.ToolBitLibrary()
-
+        library = LibraryEditor()
         library.open()
 
 
 if FreeCAD.GuiUp:
-    FreeCADGui.addCommand("CAM_ToolBitLibraryOpen", CommandToolBitLibraryOpen())
+    FreeCADGui.addCommand("CAM_ToolBitLibraryOpen", CommandLibraryEditorOpen())
     FreeCADGui.addCommand("CAM_ToolBitDock", CommandToolBitLibraryDockOpen())
 
 BarList = ["CAM_ToolBitDock"]

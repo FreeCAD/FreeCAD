@@ -144,8 +144,6 @@ SET(PathPythonToolsAssetsUi_SRCS
 
 SET(PathPythonToolsGui_SRCS
     Path/Tool/Gui/__init__.py
-    Path/Tool/Gui/BitLibraryCmd.py
-    Path/Tool/Gui/BitLibrary.py
     Path/Tool/Gui/Controller.py
 )
 
@@ -222,7 +220,9 @@ SET(PathPythonToolsLibrarySerializers_SRCS
 
 SET(PathPythonToolsLibraryUi_SRCS
     Path/Tool/library/ui/__init__.py
+    Path/Tool/library/ui/cmd.py
     Path/Tool/library/ui/dock.py
+    Path/Tool/library/ui/editor.py
 )
 
 SET(PathPythonToolsMachine_SRCS

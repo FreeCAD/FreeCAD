@@ -37,8 +37,8 @@ from functools import partial
 from typing import List, Tuple, cast
 from ...assets import AssetUri
 from ...camassets import cam_assets, ensure_assets_initialized
-from ...Gui.BitLibrary import ToolBitLibrary
 from ...toolbit import ToolBit
+from .editor import LibraryEditor
 from ..models.library import Library
 
 
@@ -356,7 +356,7 @@ class ToolBitLibraryDock(object):
             self.form.addToolController.setEnabled(selected and jobs)
 
     def libraryEditorOpen(self):
-        library = ToolBitLibrary()
+        library = LibraryEditor()
         library.open()
         self.loadToolLibraries()
 
