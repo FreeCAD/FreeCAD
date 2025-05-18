@@ -31,6 +31,9 @@
 # include <Inventor/nodes/SoSwitch.h>
 #endif // _PreComp_
 
+#include <QEvent>
+#include <QKeyEvent>
+
 #include <Gui/Application.h>
 #include <Gui/View3DInventor.h>
 #include <Gui/View3DInventorViewer.h>
