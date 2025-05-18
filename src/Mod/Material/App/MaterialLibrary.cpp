@@ -196,7 +196,7 @@ void MaterialLibraryLocal::deleteRecursive(const QString& path)
     }
 
     QString filePath = getLocalPath(path);
-    auto manager = MaterialManager::getManager();
+    auto& manager = MaterialManager::getManager();
 
     QFileInfo info(filePath);
     if (info.isDir()) {

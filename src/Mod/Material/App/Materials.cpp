@@ -1393,7 +1393,7 @@ void Material::saveModels(QTextStream& stream, bool saveInherited) const
     }
 
     auto& modelManager = ModelManager::getManager();
-    auto materialManager = MaterialManager::getManager();
+    auto& materialManager = MaterialManager::getManager();
 
     bool inherited = saveInherited && (_parentUuid.size() > 0);
     std::shared_ptr<Material> parent;
@@ -1447,7 +1447,7 @@ void Material::saveAppearanceModels(QTextStream& stream, bool saveInherited) con
     }
 
     auto& modelManager = ModelManager::getManager();
-    auto materialManager = MaterialManager::getManager();
+    auto& materialManager = MaterialManager::getManager();
 
     bool inherited = saveInherited && (_parentUuid.size() > 0);
     std::shared_ptr<Material> parent;
