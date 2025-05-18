@@ -52,6 +52,7 @@ EditableDatumLabel::EditableDatumLabel(View3DInventorViewer* view,
                                        bool autoDistance,
                                        bool avoidMouseCursor)
     : isSet(false)
+    , hasFinishedEditing(false)
     , autoDistance(autoDistance)
     , autoDistanceReverse(false)
     , avoidMouseCursor(avoidMouseCursor)
@@ -158,7 +159,8 @@ void EditableDatumLabel::startEdit(double val, QObject* eventFilteringObj, bool 
     spinBox->setButtonSymbols(QAbstractSpinBox::NoButtons);
     spinBox->setFocusPolicy(Qt::ClickFocus); // prevent passing focus with tab.
     spinBox->setAutoNormalize(false);
-    spinBox->setKeyboardTracking(false);
+    spinBox->setKeyboardTracking(true);
+    spinBox->installEventFilter(this);
 
     if (eventFilteringObj) {
         spinBox->installEventFilter(eventFilteringObj);
@@ -188,6 +190,25 @@ void EditableDatumLabel::startEdit(double val, QObject* eventFilteringObj, bool 
     };
 
     connect(spinBox, qOverload<double>(&QuantitySpinBox::valueChanged), this, validateAndFinish);
+}
+
+bool EditableDatumLabel::eventFilter(QObject* watched, QEvent* event)
+{
+    if (event->type() == QEvent::KeyPress) {
+        QKeyEvent* keyEvent = static_cast<QKeyEvent*>(event);
+        if (keyEvent->key() == Qt::Key_Return || keyEvent->key() == Qt::Key_Enter
+            || keyEvent->key() == Qt::Key_Tab) {
+            auto* spinBox = qobject_cast<QAbstractSpinBox*>(watched);
+
+            if (spinBox) {
+                this->hasFinishedEditing = true;
+                Q_EMIT this->valueChanged(this->value);
+                return false;
+            }
+        }
+    }
+
+    return QObject::eventFilter(watched, event);
 }
 
 void EditableDatumLabel::stopEdit()
