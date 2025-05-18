@@ -291,6 +291,36 @@ class Arc(gui_base_original.Creator):
                         self.step = 4
                         self.drawArc()
 
+        self.updateHints()
+
+    def getHints(self):
+        hint_global = Gui.InputHint(translate("draft", "%1 toggle global"), Gui.UserInput.KeyG)
+        hint_continue = Gui.InputHint(translate("draft", "%1 toggle continue"), Gui.UserInput.KeyN)
+
+        if self.step == 0:
+            return [
+                Gui.InputHint(translate("draft", "%1 pick center"), Gui.UserInput.MouseLeft),
+                hint_global,
+                hint_continue,
+            ]
+        elif self.step == 1:
+            return [
+                Gui.InputHint(translate("draft", "%1 pick radius"), Gui.UserInput.MouseLeft),
+                hint_continue,
+            ]
+        elif self.step == 2:
+            return [
+                Gui.InputHint(translate("draft", "%1 pick staring angle"), Gui.UserInput.MouseLeft),
+                hint_continue,
+            ]
+        elif self.step == 3:
+            return [
+                Gui.InputHint(translate("draft", "%1 pick aperture"), Gui.UserInput.MouseLeft),
+                hint_continue,
+            ]
+        else:
+            return []
+
     def drawArc(self):
         """Actually draw the arc object."""
         rot, sup, pts, fil = self.getStrings()
