@@ -1,0 +1,74 @@
+specfile_path: package/fedora/freecad.spec
+files_to_sync:
+    - .packit.yaml
+actions:
+  post-upstream-clone:
+    - curl -O --location --retry 3 https://raw.githubusercontent.com/FreeCAD/FreeCAD-Bundle/refs/heads/main/make_version_file.py
+    - bash -c '/usr/bin/python3 make_version_file.py freecad_version.txt'
+  changelog-entry:
+    - bash -c 'git log --no-merges --pretty="format:- %s (%an)" $(git describe --tags --abbrev=0 )..HEAD -- |sed 's/%/%%/g''
+  create-archive:
+    - git submodule update --init
+    - bash -c 'git ls-files --recurse-submodules | tar  -caf freecad-sources.tar.gz -T-'
+    - echo -n 'freecad-sources.tar.gz'
+downstream_package_name: freecad
+additional_packages:
+    - python3
+
+jobs:
+- job: copr_build
+  identifier: pull_request
+  trigger: pull_request
+  manual_trigger: true
+  notifications:
+    pull_request:
+      successful_build: True
+  #replace branch with main before merging
+  branch: only-packit
+  targets:
+    fedora-41:
+      without_opts:
+      - debug_info
+    fedora-42:
+      without_opts:
+      - debug_info
+
+- job: tests
+  identifier: pull_request
+  trigger: pull_request
+  manual_trigger: true
+  #replace branc/packit testh with main before merging
+  branch: only-packit
+  targets:
+  - fedora-42
+  fmf_path: package/fedora/tests
+  notifications:
+    failure_comment:
+      message: "One of the tests failed for {commit_sha}. @admin check logs {logs_url}, packit dashboard {packit_dashboard_url} and external service dashboard {external_dashboard_url}"
+
+- job: copr_build
+  identifier: main
+  trigger: commit
+  #replace branch with main before merging
+  branch: only-packit
+  #replace owner with @freecad and the desired project before merging
+  owner: filippor
+  project: packit
+
+- job: copr_build
+  identifier: release
+  trigger: release
+  #replace owner with @freecad and the desired project before merging
+  owner: filippor
+  project: freecad
+  targets:
+    fedora-all:
+      without_opts:
+      - tests
+
+
+
+
+
+
+
