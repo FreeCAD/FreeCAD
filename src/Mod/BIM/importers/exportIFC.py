@@ -690,42 +690,42 @@ def export(exportList, filename, colors=None, preferences=None):
         print(f"Continuing to process {obj.Label}")
 
         # Verify subtractions
-        if hasattr(obj, "Subtractions"):
+        if hasattr(obj, "Subtractions") and (shapetype in ["extrusion", "no shape"]):
             print(f"Subtractions: {[sub.Label for sub in obj.Subtractions]}")
 
-        # Combine subtractions and guests
-        all_subtractions = obj.Subtractions + guests if hasattr(obj, "Subtractions") else guests
-        print(f"All Subtractions: {[sub.Label for sub in all_subtractions]}")
+            # Combine subtractions and guests
+            all_subtractions = obj.Subtractions + guests
+            print(f"All Subtractions: {[sub.Label for sub in all_subtractions]}")
 
-        # Process subtractions
-        for o in all_subtractions:
-            print(f"Processing subtraction: {o.Label}")
-            try:
-                r2, p2, c2 = getRepresentation(ifcfile, context, o, subtraction=True, colors=colors, preferences=preferences)
-                print(f"Representation created for: {o.Label}")
-                prod2 = ifcfile.createIfcOpeningElement(
-                    ifcopenshell.guid.new(),
-                    history,
-                    o.Label,
-                    None,
-                    None,
-                    p2,
-                    r2,
-                    None
-                )
-                print(f"IfcOpeningElement created for: {o.Label}")
-                subproducts[o.Name] = prod2
-                ifcfile.createIfcRelVoidsElement(
-                    ifcopenshell.guid.new(),
-                    history,
-                    'Subtraction',
-                    '',
-                    product,
-                    prod2
-                )
-                print(f"IfcRelVoidsElement created for: {o.Label}")
-            except Exception as e:
-                print(f"Error processing subtraction {o.Label}: {e}")
+            # Process subtractions
+            for o in all_subtractions:
+                print(f"Processing subtraction: {o.Label}")
+                try:
+                    r2, p2, c2 = getRepresentation(ifcfile, context, o, subtraction=True, colors=colors, preferences=preferences)
+                    print(f"Representation created for: {o.Label}")
+                    prod2 = ifcfile.createIfcOpeningElement(
+                        ifcopenshell.guid.new(),
+                        history,
+                        o.Label,
+                        None,
+                        None,
+                        p2,
+                        r2,
+                        None
+                    )
+                    print(f"IfcOpeningElement created for: {o.Label}")
+                    subproducts[o.Name] = prod2
+                    ifcfile.createIfcRelVoidsElement(
+                        ifcopenshell.guid.new(),
+                        history,
+                        'Subtraction',
+                        '',
+                        product,
+                        prod2
+                    )
+                    print(f"IfcRelVoidsElement created for: {o.Label}")
+                except Exception as e:
+                    print(f"Error processing subtraction {o.Label}: {e}")
 
         # properties
 
