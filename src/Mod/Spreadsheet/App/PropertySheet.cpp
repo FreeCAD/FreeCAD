@@ -1372,8 +1372,6 @@ void PropertySheet::addDependencies(CellAddress key)
 
             std::string docObjName = docObj->getFullName();
 
-            owner->observeDocument(doc);
-
             documentObjectToCellMap[docObjName].insert(key);
             cellToDocumentObjectMap[key].insert(docObjName);
             ++updateCount;
@@ -1447,7 +1445,6 @@ void PropertySheet::removeDependencies(CellAddress key)
             std::map<std::string, std::set<CellAddress>>::iterator k =
                 documentObjectToCellMap.find(*j);
 
-            // assert(k != documentObjectToCellMap.end());
             if (k != documentObjectToCellMap.end()) {
                 k->second.erase(key);
 
