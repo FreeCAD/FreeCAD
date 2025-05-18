@@ -688,7 +688,6 @@ double SurfaceFit::PolynomFit()
     Base::Vector3d bs = Base::convertTo<Base::Vector3d>(this->_vBase);
     Base::Vector3d ex = Base::convertTo<Base::Vector3d>(this->_vDirU);
     Base::Vector3d ey = Base::convertTo<Base::Vector3d>(this->_vDirV);
-    // Base::Vector3d ez = Base::convertTo<Base::Vector3d>(this->_vDirW);
 
     // A*x = b
     // See also www.cs.jhu.edu/~misha/Fall05/10.23.05.pdf
@@ -820,7 +819,6 @@ double SurfaceFit::PolynomFit()
     _fCoeff[8] = 0.0;
     _fCoeff[9] = 0.0;
 
-    // Get S(P) = sum[(P*Vi)^2 - 2*(P*Vi)*zi + zi^2]
     double sigma = 0;
     FunctionContainer clFuncCont(_fCoeff);
     for (const auto& it : transform) {
@@ -1095,39 +1093,6 @@ CylinderFit::CylinderFit()
 
 Base::Vector3f CylinderFit::GetInitialAxisFromNormals(const std::vector<Base::Vector3f>& n) const
 {
-#if 0
-    int nc = 0;
-    double x = 0.0;
-    double y = 0.0;
-    double z = 0.0;
-    for (int i = 0; i < (int)n.size()-1; ++i) {
-        for (int j = i+1; j < (int)n.size(); ++j) {
-            Base::Vector3f cross = n[i] % n[j];
-            if (cross.Sqr() > 1.0e-6) {
-                cross.Normalize();
-                x += cross.x;
-                y += cross.y;
-                z += cross.z;
-                ++nc;
-            }
-        }
-    }
-
-    if (nc > 0) {
-        x /= (double)nc;
-        y /= (double)nc;
-        z /= (double)nc;
-        Base::Vector3f axis(x,y,z);
-        axis.Normalize();
-        return axis;
-    }
-
-    PlaneFit planeFit;
-    planeFit.AddPoints(n);
-    planeFit.Fit();
-    return planeFit.GetNormal();
-#endif
-
     // Like a plane fit where the base is at (0,0,0)
     double sxx {0.0};
     double sxy {0.0};
@@ -1177,7 +1142,6 @@ float CylinderFit::Fit()
     }
     _bIsFitted = true;
 
-#if 1
     // Do the cylinder fit
     MeshCoreFit::CylinderFit cylFit;
     cylFit.AddPoints(_vPoints);
@@ -1214,9 +1178,6 @@ float CylinderFit::Fit()
         _fRadius = (float)cylFit.GetRadius();
         _fLastResult = result;
     }
-#else
-    int m = static_cast<int>(_vPoints.size());
-    int n = 7;
 
     Eigen::MatrixXd measuredValues(m, 3);
     int index = 0;
