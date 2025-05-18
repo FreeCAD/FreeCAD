@@ -210,6 +210,8 @@ public:
 
     bool changeDynamicProperty(const Property* prop, const char* group, const char* doc);
 
+    bool renameDynamicProperty(Property* prop, const char* newName);
+
 private:
     std::string getUniquePropertyName(const PropertyContainer& pc, const char* Name) const;
 
