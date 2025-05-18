@@ -149,6 +149,9 @@ public:
 
 private:
     MaterialManager();
+
+    FC_DISABLE_COPY_MOVE(MaterialManager);
+
     static void initManagers();
 
     static MaterialManager* _manager;
