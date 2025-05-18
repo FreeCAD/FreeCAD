@@ -641,30 +641,79 @@ def export(exportList, filename, colors=None, preferences=None):
                     [prod2]
                 )
 
-        # subtractions
+        # Substractions
 
+        # Doors and windows are not in the Subtractions list, but in the
+        # InList of the host object. We need to check if they are hosted
+        # by the current object, and if so, add them to the subtractions list
+        # later on and create the IfcRelVoidsElement relation
         guests = []
-        for o in obj.InList:
-            if hasattr(o,"Hosts"):
-                for co in o.Hosts:
-                    if co == obj:
-                        if o not in guests:
-                            guests.append(o)
-        if hasattr(obj,"Subtractions") and (shapetype in ["extrusion","no shape"]):
-            for o in obj.Subtractions + guests:
-                r2,p2,c2 = getRepresentation(ifcfile,context,o,subtraction=True,colors=colors,preferences=preferences)
-                if preferences['DEBUG']: print("      subtracting ",c2," : ",o.Label)
-                l = o.Label
+
+        # Set to track processed objects
+        processed_objects = set()
+
+        def process_object(obj):
+            # Skip objects that have already been processed
+            if obj in processed_objects:
+                return
+            processed_objects.add(obj)
+
+            # Check if obj is a group based on its TypeId
+            if obj.TypeId == "App::DocumentObjectGroup":
+                print(f"Processing group: {obj.Label}")
+                iterable = obj.Group
+                iterable_desc = "child"
+            else:
+                print(f"Processing non-group object: {obj.Label}")
+                iterable = obj.InList
+                iterable_desc = "parent"
+
+            # Iterate over the children
+            for o in iterable:
+                print(f"  Checking {iterable_desc}: {o.Label}")
+                if hasattr(o, "Hosts"):
+                    for co in o.Hosts:
+                        print(f"    Checking host: {co.Label} for {o.Label}")
+                        if co == obj:
+                            print(f"    {o.Label} is hosted by {obj.Label}")
+                            if o not in guests:
+                                guests.append(o)
+
+                # Recursively process the child as if it were a top-level object
+                process_object(o)
+
+        # Start processing from the top-level object
+        process_object(obj)
+
+        # Verify guests
+        print(f"Guests: {[guest.Label for guest in guests]}")
+        print(f"Continuing to process {obj.Label}")
+
+        # Verify subtractions
+        if hasattr(obj, "Subtractions"):
+            print(f"Subtractions: {[sub.Label for sub in obj.Subtractions]}")
+
+        # Combine subtractions and guests
+        all_subtractions = obj.Subtractions + guests if hasattr(obj, "Subtractions") else guests
+        print(f"All Subtractions: {[sub.Label for sub in all_subtractions]}")
+
+        # Process subtractions
+        for o in all_subtractions:
+            print(f"Processing subtraction: {o.Label}")
+            try:
+                r2, p2, c2 = getRepresentation(ifcfile, context, o, subtraction=True, colors=colors, preferences=preferences)
+                print(f"Representation created for: {o.Label}")
                 prod2 = ifcfile.createIfcOpeningElement(
                     ifcopenshell.guid.new(),
                     history,
-                    l,
+                    o.Label,
                     None,
                     None,
                     p2,
                     r2,
                     None
                 )
+                print(f"IfcOpeningElement created for: {o.Label}")
                 subproducts[o.Name] = prod2
                 ifcfile.createIfcRelVoidsElement(
                     ifcopenshell.guid.new(),
@@ -674,6 +723,9 @@ def export(exportList, filename, colors=None, preferences=None):
                     product,
                     prod2
                 )
+                print(f"IfcRelVoidsElement created for: {o.Label}")
+            except Exception as e:
+                print(f"Error processing subtraction {o.Label}: {e}")
 
         # properties
 
