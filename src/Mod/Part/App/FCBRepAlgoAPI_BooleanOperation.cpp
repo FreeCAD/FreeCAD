@@ -82,7 +82,14 @@ void FCBRepAlgoAPIHelper::setAutoFuzzy(BRepAlgoAPI_BuilderAlgo* op) {
 }
 
 void FCBRepAlgoAPI_BooleanOperation::Build() {
+    Message_ProgressRange progressRange;
+    Build(progressRange);
+}
 
+void FCBRepAlgoAPI_BooleanOperation::Build(const Message_ProgressRange& progressRange) {
+    if (progressRange.UserBreak()) {
+        Standard_ConstructionError::Raise("User aborted");
+    }
     if (myOperation == BOPAlgo_CUT && myArguments.Size() == 1 && myTools.Size() == 1 && myTools.First().ShapeType() == TopAbs_COMPOUND) {
         // cut argument and compound tool
         TopTools_ListOfShape myOriginalArguments = myArguments;
@@ -98,7 +105,14 @@ void FCBRepAlgoAPI_BooleanOperation::Build() {
         myArguments = myOriginalArguments;
         
     } else {
+#if OCC_VERSION_HEX >= 0x070600
+        BRepAlgoAPI_BooleanOperation::Build(progressRange);
+#else
         BRepAlgoAPI_BooleanOperation::Build();
+#endif
+    }
+    if (progressRange.UserBreak()) {
+        Standard_ConstructionError::Raise("User aborted");
     }
 }
 
