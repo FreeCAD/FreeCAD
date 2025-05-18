@@ -32,7 +32,11 @@
 #include <Inventor/fields/SoSFString.h>
 #include <Inventor/projectors/SbLineProjector.h>
 #include <Inventor/projectors/SbPlaneProjector.h>
-#include <Inventor/nodes/SoBaseColor.h>
+
+class SoSwitch;
+class SoBaseColor;
+class SoRotation;
+class SoCalculator;
 
 namespace Gui
 {
@@ -47,18 +51,14 @@ namespace Gui
 class SoLinearDragger : public SoDragger
 {
     SO_KIT_HEADER(SoLinearDragger);
-    SO_KIT_CATALOG_ENTRY_HEADER(activeSwitch);
-    SO_KIT_CATALOG_ENTRY_HEADER(activeColor);
     SO_KIT_CATALOG_ENTRY_HEADER(translator);
+    SO_KIT_CATALOG_ENTRY_HEADER(activeSwitch);
+    SO_KIT_CATALOG_ENTRY_HEADER(secondaryColor);
     SO_KIT_CATALOG_ENTRY_HEADER(cylinderSeparator);
     SO_KIT_CATALOG_ENTRY_HEADER(coneSeparator);
+    SO_KIT_CATALOG_ENTRY_HEADER(labelSwitch);
     SO_KIT_CATALOG_ENTRY_HEADER(labelSeparator);
 
-    static constexpr float coneBottomRadius { 0.8f };
-    static constexpr float coneHeight { 2.5f };
-
-    static constexpr float cylinderHeight { 10.0f };
-    static constexpr float cylinderRadius { 0.1f };
 public:
     static void initClass();
     SoLinearDragger();
@@ -68,6 +68,14 @@ public:
     SoSFDouble translationIncrement; //!< set from outside and used for rounding.
     SoSFInt32 translationIncrementCount; //!< number of steps. used from outside.
     SoSFFloat autoScaleResult; //!< set from parent dragger.
+    SoSFFloat coneBottomRadius;
+    SoSFFloat coneHeight;
+    SoSFFloat cylinderHeight;
+    SoSFFloat cylinderRadius;
+    SoSFColor activeColor;
+
+    void setLabelVisibility(bool visible);
+    bool isLabelVisible();
 
 protected:
     ~SoLinearDragger() override;
@@ -87,14 +95,42 @@ protected:
     SbLineProjector projector;
 
 private:
-    void buildFirstInstance();
-    SbVec3f roundTranslation(const SbVec3f &vecIn, float incrementIn);
-    SoGroup* buildGeometry();
+    SoCalculator* calculator;
 
-    SoSeparator* buildCylinderGeometry() const;
-    SoSeparator* buildConeGeometry() const;
+    SbVec3f roundTranslation(const SbVec3f &vecIn, float incrementIn);
+
+    SoSeparator* buildCylinderGeometry();
+    SoSeparator* buildConeGeometry();
     SoSeparator* buildLabelGeometry();
     SoBaseColor* buildActiveColor();
+    void setupGeometryCalculator();
+
+    using inherited = SoDragger;
+};
+
+class SoTranslationDragger: public SoDragger
+{
+    SO_KIT_HEADER(SoTranslationDragger);
+    SO_KIT_CATALOG_ENTRY_HEADER(draggerSwitch);
+    SO_KIT_CATALOG_ENTRY_HEADER(baseColor);
+    SO_KIT_CATALOG_ENTRY_HEADER(localRotation);
+    SO_KIT_CATALOG_ENTRY_HEADER(dragger);
+
+public:
+    static void initClass();
+    SoTranslationDragger();
+
+    SoSFRotation rotation;
+    SoSFColor color;
+
+    void setVisibility(bool visible);
+    bool isVisible();
+
+    SoLinearDragger* getDragger();
+
+private:
+    SoRotation* buildRotation();
+    SoBaseColor* buildColor();
 
     using inherited = SoDragger;
 };
