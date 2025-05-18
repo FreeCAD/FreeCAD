@@ -26,6 +26,7 @@
 #include <QDomDocument>
 #include <QFile>
 #include <QGraphicsSceneEvent>
+#include <QKeyEvent>
 #include <QPainter>
 #include <QSvgGenerator>
 #include <QTemporaryFile>
@@ -63,11 +64,14 @@
 #include <Mod/TechDraw/App/Preferences.h>
 
 #include "QGIDrawingTemplate.h"
+#include "QGIEdge.h"
+#include "QGIFace.h"
 #include "QGILeaderLine.h"
 #include "QGIProjGroup.h"
 #include "QGIRichAnno.h"
 #include "QGISVGTemplate.h"
 #include "QGITemplate.h"
+#include "QGIVertex.h"
 #include "QGIViewAnnotation.h"
 #include "QGIViewBalloon.h"
 #include "QGIViewClip.h"
@@ -1243,5 +1247,59 @@ QColor QGSPage::getBackgroundColor()
     return fcColor.asValue<QColor>();
 }
 
+void QGSPage::handleRubberBandSelection()
+{
+    if(!isVKeyPressed && !isFKeyPressed && !isEKeyPressed) {
+        return;  // No filtering keys active
+    }
+
+    QList<QGraphicsItem*> items = selectedItems();
+    QList<QGraphicsItem*>::iterator i;
+    for (i = items.begin(); i != items.end(); ++i) {
+        if(isVKeyPressed && dynamic_cast<QGIVertex*>(*i)) {
+            continue;
+        }
+        else if(isFKeyPressed && dynamic_cast<QGIFace*>(*i)) {
+            continue;
+        }
+        else if(isEKeyPressed && dynamic_cast<QGIEdge*>(*i)) {
+            continue;
+        }
+        (*i)->setSelected(false);
+    }
+}
+
+void QGSPage::keyPressEvent(QKeyEvent* keyEvent) {
+    if(keyEvent->isAutoRepeat()) {
+        return;
+    }
+    if(keyEvent->key() == Qt::Key_E) {
+        isEKeyPressed = true;
+    }
+    if(keyEvent->key() == Qt::Key_F) {
+        isFKeyPressed = true;
+    }
+    if(keyEvent->key() == Qt::Key_V) {
+        isVKeyPressed = true;
+    }
+    QGraphicsScene::keyPressEvent(keyEvent);
+}
+
+
+void QGSPage::keyReleaseEvent(QKeyEvent* keyEvent) {
+    if(keyEvent->isAutoRepeat()) {
+        return;
+    }
+    if(keyEvent->key() == Qt::Key_E) {
+        isEKeyPressed = false;
+    }
+    if(keyEvent->key() == Qt::Key_F) {
+        isFKeyPressed = false;
+    }
+    if(keyEvent->key() == Qt::Key_V) {
+        isVKeyPressed = false;
+    }
+    QGraphicsScene::keyReleaseEvent(keyEvent);
+}
 
 #include <Mod/TechDraw/Gui/moc_QGSPage.cpp>
