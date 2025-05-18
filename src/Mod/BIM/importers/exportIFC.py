@@ -615,31 +615,46 @@ def export(exportList, filename, colors=None, preferences=None):
 
         # additions
 
-        if hasattr(obj,"Additions") and (shapetype in ["extrusion","no shape"]):
-            for o in obj.Additions:
-                r2,p2,c2 = getRepresentation(ifcfile,context,o,colors=colors,preferences=preferences)
-                if preferences['DEBUG']: print("      adding ",c2," : ",o.Label)
-                l = o.Label
-                prod2 = ifcfile.createIfcBuildingElementProxy(
-                    ifcopenshell.guid.new(),
-                    history,
-                    l,
-                    None,
-                    None,
-                    p2,
-                    r2,
-                    None,
-                    "ELEMENT"
-                )
-                subproducts[o.Name] = prod2
-                ifcfile.createIfcRelAggregates(
-                    ifcopenshell.guid.new(),
-                    history,
-                    'Addition',
-                    '',
-                    product,
-                    [prod2]
-                )
+        # Process additions only if the object has the Additions attribute and the shapetype is valid
+        if hasattr(obj, "Additions") and (shapetype in ["extrusion", "no shape"]):
+            print(f"Processing additions for {obj.Label}: {[o.Label for o in obj.Additions]}")
+            additions = obj.Additions
+        elif obj.TypeId == "App::DocumentObjectGroup":
+            # If obj is a group, collect additions from its children
+            additions = []
+            for child in obj.Group:
+                if hasattr(child, "Additions") and (shapetype in ["extrusion", "no shape"]):
+                    print(f"Processing additions for {child.Label}: {[o.Label for o in child.Additions]}")
+                    additions.extend(child.Additions)
+        else:
+            additions = []
+
+        # Process additions
+        for o in additions:
+            r2, p2, c2 = getRepresentation(ifcfile, context, o, colors=colors, preferences=preferences)
+            if preferences['DEBUG']:
+                print("      adding ", c2, " : ", o.Label)
+            l = o.Label
+            prod2 = ifcfile.createIfcBuildingElementProxy(
+                ifcopenshell.guid.new(),
+                history,
+                l,
+                None,
+                None,
+                p2,
+                r2,
+                None,
+                "ELEMENT"
+            )
+            subproducts[o.Name] = prod2
+            ifcfile.createIfcRelAggregates(
+                ifcopenshell.guid.new(),
+                history,
+                'Addition',
+                '',
+                product,
+                [prod2]
+            )
 
         # Substractions
 
