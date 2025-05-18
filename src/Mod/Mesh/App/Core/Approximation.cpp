@@ -208,9 +208,6 @@ float PlaneFit::Fit()
         return std::numeric_limits<float>::max();
     }
 
-    // We know the Eigenvalues are ordered
-    // rkDiag(0,0) <= rkDiag(1,1) <= rkDiag(2,2)
-    //
     // points describe a line or even are identical
     if (rkDiag(1, 1) <= 0) {
         return std::numeric_limits<float>::max();
@@ -677,7 +674,6 @@ double SurfaceFit::PolynomFit()
     Base::Vector3d bs = Base::convertTo<Base::Vector3d>(this->_vBase);
     Base::Vector3d ex = Base::convertTo<Base::Vector3d>(this->_vDirU);
     Base::Vector3d ey = Base::convertTo<Base::Vector3d>(this->_vDirV);
-    // Base::Vector3d ez = Base::convertTo<Base::Vector3d>(this->_vDirW);
 
     // A*x = b
     // See also www.cs.jhu.edu/~misha/Fall05/10.23.05.pdf
@@ -776,28 +772,6 @@ double SurfaceFit::PolynomFit()
     Eigen::HouseholderQR<Eigen::Matrix<double, 6, 6>> qr(A);
     x = qr.solve(b);
 
-    // FunctionContainer gets an implicit function F(x,y,z) = 0 of this form
-    // _fCoeff[0] +
-    // _fCoeff[1]*x   + _fCoeff[2]*y   + _fCoeff[3]*z   +
-    // _fCoeff[4]*x^2 + _fCoeff[5]*y^2 + _fCoeff[6]*z^2 +
-    // _fCoeff[7]*x*y + _fCoeff[8]*x*z + _fCoeff[9]*y*z
-    //
-    // The bivariate polynomial surface we get here is of the form
-    // z = f(x,y) = a*x^2 + b*y^2 + c*x*y + d*x + e*y + f
-    // Writing it as implicit surface F(x,y,z) = 0 gives this form
-    // F(x,y,z) = f(x,y) - z = a*x^2 + b*y^2 + c*x*y + d*x + e*y - z + f
-    // Thus:
-    // _fCoeff[0] = f
-    // _fCoeff[1] = d
-    // _fCoeff[2] = e
-    // _fCoeff[3] = -1
-    // _fCoeff[4] = a
-    // _fCoeff[5] = b
-    // _fCoeff[6] = 0
-    // _fCoeff[7] = c
-    // _fCoeff[8] = 0
-    // _fCoeff[9] = 0
-
     _fCoeff[0] = x(5);
     _fCoeff[1] = x(3);
     _fCoeff[2] = x(4);
@@ -809,7 +783,6 @@ double SurfaceFit::PolynomFit()
     _fCoeff[8] = 0.0;
     _fCoeff[9] = 0.0;
 
-    // Get S(P) = sum[(P*Vi)^2 - 2*(P*Vi)*zi + zi^2]
     double sigma = 0;
     FunctionContainer clFuncCont(_fCoeff);
     for (const auto& it : transform) {
@@ -1086,39 +1059,6 @@ CylinderFit::CylinderFit()
 
 Base::Vector3f CylinderFit::GetInitialAxisFromNormals(const std::vector<Base::Vector3f>& n) const
 {
-#if 0
-    int nc = 0;
-    double x = 0.0;
-    double y = 0.0;
-    double z = 0.0;
-    for (int i = 0; i < (int)n.size()-1; ++i) {
-        for (int j = i+1; j < (int)n.size(); ++j) {
-            Base::Vector3f cross = n[i] % n[j];
-            if (cross.Sqr() > 1.0e-6) {
-                cross.Normalize();
-                x += cross.x;
-                y += cross.y;
-                z += cross.z;
-                ++nc;
-            }
-        }
-    }
-
-    if (nc > 0) {
-        x /= (double)nc;
-        y /= (double)nc;
-        z /= (double)nc;
-        Base::Vector3f axis(x,y,z);
-        axis.Normalize();
-        return axis;
-    }
-
-    PlaneFit planeFit;
-    planeFit.AddPoints(n);
-    planeFit.Fit();
-    return planeFit.GetNormal();
-#endif
-
     // Like a plane fit where the base is at (0,0,0)
     double sxx {0.0};
     double sxy {0.0};
@@ -1168,7 +1108,6 @@ float CylinderFit::Fit()
     }
     _bIsFitted = true;
 
-#if 1
     // Do the cylinder fit
     MeshCoreFit::CylinderFit cylFit;
     cylFit.AddPoints(_vPoints);
@@ -1202,58 +1141,6 @@ float CylinderFit::Fit()
         _fRadius = (float)cylFit.GetRadius();
         _fLastResult = result;
     }
-#else
-    int m = static_cast<int>(_vPoints.size());
-    int n = 7;
-
-    Eigen::MatrixXd measuredValues(m, 3);
-    int index = 0;
-    for (const auto& it : _vPoints) {
-        measuredValues(index, 0) = it.x;
-        measuredValues(index, 1) = it.y;
-        measuredValues(index, 2) = it.z;
-        index++;
-    }
-
-    Eigen::VectorXd x(n);
-    x(0) = 1.0;  // initial value for dir_x
-    x(1) = 1.0;  // initial value for dir_y
-    x(2) = 1.0;  // initial value for dir_z
-    x(3) = 0.0;  // initial value for cnt_x
-    x(4) = 0.0;  // initial value for cnt_y
-    x(5) = 0.0;  // initial value for cnt_z
-    x(6) = 0.0;  // initial value for radius
-
-    //
-    // Run the LM optimization
-    // Create a LevenbergMarquardt object and pass it the functor.
-    //
-
-    LMCylinderFunctor functor;
-    functor.measuredValues = measuredValues;
-    functor.m = m;
-    functor.n = n;
-
-    Eigen::LevenbergMarquardt<LMCylinderFunctor, double> lm(functor);
-    int status = lm.minimize(x);
-    Base::Console().log("Cylinder fit: %d, iterations: %d, gradient norm: %f\n",
-                        status,
-                        lm.iter,
-                        lm.gnorm);
-
-    _vAxis.x = x(0);
-    _vAxis.y = x(1);
-    _vAxis.z = x(2);
-    _vAxis.Normalize();
-
-    _vBase.x = x(3);
-    _vBase.y = x(4);
-    _vBase.z = x(5);
-
-    _fRadius = x(6);
-
-    _fLastResult = lm.gnorm;
-#endif
 
     return _fLastResult;
 }
