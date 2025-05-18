@@ -509,7 +509,6 @@ public:
     TopoDS_Shape common(const std::vector<TopoDS_Shape>&, Standard_Real tolerance = -1.0) const;
     TopoDS_Shape fuse(TopoDS_Shape) const;
     TopoDS_Shape fuse(const std::vector<TopoDS_Shape>&, Standard_Real tolerance = -1.0) const;
-    TopoDS_Shape oldFuse(TopoDS_Shape) const;
     TopoDS_Shape section(TopoDS_Shape, Standard_Boolean approximate = Standard_False) const;
     TopoDS_Shape section(const std::vector<TopoDS_Shape>&,
                          Standard_Real tolerance = -1.0,
@@ -2455,20 +2454,7 @@ public:
                               const BRepFillingParams &params,
                               const char *op=nullptr);
 
-    /** Make a solid using shells or CompSolid
-     *
-     * @param shapes: input shapes of either shells or CompSolid.
-     * @param op: optional string to be encoded into topo naming for indicating
-     *            the operation
-     *
-     * @return The function produces a solid. The original content of this
-     *         TopoShape is discarded and replaced with the new shape. The
-     *         function returns the TopoShape itself as a self reference so
-     *         that multiple operations can be carried out for the same shape
-     *         in the same line of code.
-     */
-     // TODO: This does not appear to be called, and the implementation seems impossible
-//    TopoShape &makeElementSolid(const std::vector<TopoShape> &shapes, const char *op=nullptr);
+
     /** Make a solid using shells or CompSolid
      *
      * @param shape: input shape of either a shell, a compound of shells, or a
