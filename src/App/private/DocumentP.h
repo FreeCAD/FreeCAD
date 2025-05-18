@@ -98,6 +98,8 @@ struct DocumentP
 
     StringHasherRef Hasher {new StringHasher};
 
+    Document::PreRecomputeHook _preRecomputeHook;
+
     DocumentP();
 
     void addRecomputeLog(const char* why, App::DocumentObject* obj)
