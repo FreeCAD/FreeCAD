@@ -511,7 +511,7 @@ void SimDisplay::MoveEye(float x, float z)
     const float arg1 = 124.938F;
     const float arg2 = 578.754F;
     const float arg3 = -20.7993F;
-    float maxValueX = arg1 + arg2 * std::expf(arg3 * mEyeDistFactor);
+    float maxValueX = arg1 + arg2 * exp(arg3 * mEyeDistFactor);
     float maxValueZ = maxValueX * 0.4F;
 
     mEyeX += x;
