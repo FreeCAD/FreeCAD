@@ -1379,31 +1379,40 @@ double Hole::getThreadProfileAngle()
 
 void Hole::findClosestDesignation()
 {
-    // Intended for thread type changes
-    // finds the closest diameter of the new thread type
     int threadType = ThreadType.getValue();
-    if (threadType == -1) {
+    const int numTypes = static_cast<int>(std::size(threadDescription)); 
+
+    if (threadType < 0 || threadType >= numTypes) {
         throw Base::IndexError(QT_TRANSLATE_NOOP("Exception", "Thread type is invalid"));
     }
-    int closestSize = 0;
-    double diameter = ThreadDiameter.getValue();
-    if (diameter == 0)
-        diameter = Diameter.getValue();
-    double closestDifference = std::numeric_limits<double>::infinity();
-    double difference;
 
-    for (size_t i = 0; i < threadDescription[threadType].size(); i++) {
-        difference = threadDescription[threadType][i].diameter - diameter;
-        if (difference == 0) {
-            closestSize = i;
-            break;
-        }
-        if (std::abs(difference) < closestDifference) {
-            closestSize = i;
-            closestDifference = std::abs(difference);
+    double diameter = ThreadDiameter.getValue();
+    if (diameter == 0.0) {
+        diameter = Diameter.getValue();
+    }
+
+    int oldSizeIndex = ThreadSize.getValue();
+    const auto &options = threadDescription[threadType];
+    double targetPitch = 0.0;
+    if (oldSizeIndex >= 0 && oldSizeIndex < static_cast<int>(options.size())) {
+        targetPitch = options[oldSizeIndex].pitch;
+    }
+
+    // Scan all entries to find the minimal (Δdiameter, Δpitch) Euclidean distance
+    size_t bestIndex = 0;
+    double bestMetric = std::numeric_limits<double>::infinity();
+
+    for (size_t i = 0; i < options.size(); ++i) {
+        double dDiff = options[i].diameter - diameter;
+        double pDiff = options[i].pitch - targetPitch;
+        double metric = std::hypot(dDiff, pDiff);
+        if (metric < bestMetric) {
+            bestMetric = metric;
+            bestIndex = i;
         }
     }
-    ThreadSize.setValue(closestSize);
+
+    ThreadSize.setValue(static_cast<int>(bestIndex));
 }
 
 void Hole::onChanged(const App::Property* prop)
@@ -1818,8 +1827,8 @@ static gp_Pnt toPnt(gp_Vec dir)
 }
 
 App::DocumentObjectExecReturn* Hole::execute()
-{ 
-    TopoShape profileshape = getProfileShape(/*needSubElement*/ false);
+{
+    TopoShape profileshape = getProfileShape();
 
     // Find the base shape
     TopoShape base;
@@ -2089,7 +2098,7 @@ App::DocumentObjectExecReturn* Hole::execute()
                     msg += std::to_string(i);
                     return new App::DocumentObjectExecReturn(msg.c_str());
                 } catch (Base::Exception &e) {
-                    e.ReportException();
+                    e.reportException();
                     std::string msg(QT_TRANSLATE_NOOP("Exception", "Boolean operation failed on profile Edge"));
                     msg += std::to_string(i);
                     return new App::DocumentObjectExecReturn(msg.c_str());
@@ -2628,7 +2637,7 @@ int Hole::baseProfileOption_idxToBitmask(int index)
      if (index == 2) {
         return PartDesign::Hole::BaseProfileTypeOptions::OnPoints;
     } 
-    Base::Console().Error("Unexpected hole base profile combobox index: %i", index);
+    Base::Console().error("Unexpected hole base profile combobox index: %i", index);
     return 0;
 }
 int Hole::baseProfileOption_bitmaskToIdx(int bitmask)
@@ -2643,7 +2652,7 @@ int Hole::baseProfileOption_bitmaskToIdx(int bitmask)
         return 2;
     }
 
-    Base::Console().Error("Unexpected hole base profile bitmask: %i", bitmask);
+    Base::Console().error("Unexpected hole base profile bitmask: %i", bitmask);
     return -1;
 }
 

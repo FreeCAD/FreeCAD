@@ -2675,11 +2675,11 @@ void CmdFemPostPipelineFromResult::activated(int)
     /*
     Gui::SelectionFilter ResultFilter("SELECT Fem::FemResultObject COUNT 1");
     if (ResultFilter.match()) {
-        Base::Console().Message("Debug: `SELECT Fem::FemResultObject COUNT 1` has matched obj");
+        Base::Console().message("Debug: `SELECT Fem::FemResultObject COUNT 1` has matched obj");
         Fem::FemResultObject* result =
          static_cast<Fem::FemResultObject*>(ResultFilter.Result[0][0].getObject());
         //static_cast failed here
-        Base::Console().Message("Debug: FemResultObject pointer = %p", result );
+        Base::Console().message("Debug: FemResultObject pointer = %p", result );
 
     */
 

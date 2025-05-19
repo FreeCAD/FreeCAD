@@ -75,7 +75,7 @@ TaskCreateNodeSet::TaskCreateNodeSet(Fem::FemSetNodesObject* pcObject, QWidget* 
     // check if the Link to the FemMesh is defined
     assert(pcObject->FemMesh.getValue<Fem::FemMeshObject*>());
     MeshViewProvider =
-        dynamic_cast<ViewProviderFemMesh*>(Gui::Application::Instance->getViewProvider(
+        freecad_cast<ViewProviderFemMesh*>(Gui::Application::Instance->getViewProvider(
             pcObject->FemMesh.getValue<Fem::FemMeshObject*>()));
     assert(MeshViewProvider);
 
@@ -203,7 +203,7 @@ void TaskCreateNodeSet::onSelectionChanged(const Gui::SelectionChanges& msg)
 
         tempSet.clear();
 
-        Base::Console().Message("Picked Element:%i Face:%i\n", elem, face);
+        Base::Console().message("Picked Element:%i Face:%i\n", elem, face);
 
 
         if (!ui->checkBox_Add->isChecked()) {

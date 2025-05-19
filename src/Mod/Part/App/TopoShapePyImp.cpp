@@ -699,28 +699,6 @@ PyObject*  TopoShapePy::multiFuse(PyObject *args) const
     return makeShape(Part::OpCodes::Fuse, *getTopoShapePtr(), args);
 }
 
-PyObject*  TopoShapePy::oldFuse(PyObject *args) const
-{
-    PyObject *pcObj;
-    if (!PyArg_ParseTuple(args, "O!", &(TopoShapePy::Type), &pcObj))
-        return nullptr;
-
-    TopoDS_Shape shape = static_cast<TopoShapePy*>(pcObj)->getTopoShapePtr()->getShape();
-    try {
-        // Let's call algorithm computing a fuse operation:
-        TopoDS_Shape fusShape = this->getTopoShapePtr()->oldFuse(shape);
-        return new TopoShapePy(new TopoShape(fusShape));
-    }
-    catch (Standard_Failure& e) {
-        PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
-        return nullptr;
-    }
-    catch (const std::exception& e) {
-        PyErr_SetString(PartExceptionOCCError, e.what());
-        return nullptr;
-    }
-}
-
 PyObject*  TopoShapePy::common(PyObject *args) const
 {
     return makeShape(Part::OpCodes::Common, *getTopoShapePtr(), args);
@@ -2215,7 +2193,7 @@ PyObject* TopoShapePy::distToShape(PyObject *args) const
                     }
                     break;
                 default:
-                    Base::Console().Message("distToShape: supportType1 is unknown: %d \n",
+                    Base::Console().message("distToShape: supportType1 is unknown: %d \n",
                                             static_cast<int>(supportType1));
                     suppType1 = Py::String("Unknown");
                     suppIndex1 = -1;
@@ -2250,7 +2228,7 @@ PyObject* TopoShapePy::distToShape(PyObject *args) const
                     }
                     break;
                 default:
-                    Base::Console().Message("distToShape: supportType2 is unknown: %d \n",
+                    Base::Console().message("distToShape: supportType2 is unknown: %d \n",
                                             static_cast<int>(supportType2));
                     suppType2 = Py::String("Unknown");
                     suppIndex2 = -1;

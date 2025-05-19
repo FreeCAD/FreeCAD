@@ -31,8 +31,7 @@ from draftutils.translate import translate
 WindowPresets =  ["Fixed", "Open 1-pane", "Open 2-pane", "Sash 2-pane", "Sliding 2-pane",
                   "Simple door", "Glass door", "Sliding 4-pane", "Awning", "Opening only"]
 
-def makeWindowPreset(windowtype,width,height,h1,h2,h3,w1,w2,o1,o2,placement=None):
-
+def makeWindowPreset(windowtype,width,height,h1,h2,h3,w1,w2,o1,o2,placement=None,window_sill=None):
     """makeWindowPreset(windowtype,width,height,h1,h2,h3,w1,w2,o1,o2,[placement]): makes a
     window object based on the given data. windowtype must be one of the names
     defined in Arch.WindowPresets"""
@@ -516,6 +515,7 @@ def makeWindowPreset(windowtype,width,height,h1,h2,h3,w1,w2,o1,o2,placement=None
             obj.Frame = w2
             obj.Offset = o1
             obj.Placement = FreeCAD.Placement() # unable to find where this bug comes from...
+            obj.Sill = window_sill if window_sill is not None else 0
             if "door" in windowtype.lower():
                 obj.IfcType = "Door"
                 obj.Label = translate("Arch","Door")

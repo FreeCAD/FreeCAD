@@ -683,7 +683,6 @@ This might fail for post DXF R12 templates.</string>
   </layout>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
- <pixmapfunction>qPixmapFromMimeSource</pixmapfunction>
  <customwidgets>
   <customwidget>
    <class>Gui::PrefRadioButton</class>

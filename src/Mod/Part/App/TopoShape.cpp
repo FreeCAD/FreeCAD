@@ -1781,15 +1781,6 @@ TopoDS_Shape TopoShape::fuse(const std::vector<TopoDS_Shape>& shapes, Standard_R
     return makeShell(resShape);
 }
 
-TopoDS_Shape TopoShape::oldFuse(TopoDS_Shape shape) const
-{
-    if (this->_Shape.IsNull())
-        Standard_Failure::Raise("Base shape is null");
-    if (shape.IsNull())
-        Standard_Failure::Raise("Tool shape is null");
-
-    throw Standard_Failure("BRepAlgo_Fuse is deprecated since OCCT 7.3");
-}
 
 TopoDS_Shape TopoShape::section(TopoDS_Shape shape, Standard_Boolean approximate) const
 {
@@ -2417,7 +2408,7 @@ TopoDS_Shape TopoShape::makeLoft(const TopTools_ListOfShape& profiles,
             - W1-W2-W3-V1     ==> W1-W2-W3-V1-W1     invalid closed
             - W1-W2-W3        ==> W1-W2-W3-W1        valid closed*/
             if (profiles.Last().ShapeType() == TopAbs_VERTEX) {
-                Base::Console().Message("TopoShape::makeLoft: can't close Loft with Vertex as last profile. 'Closed' ignored.\n");
+                Base::Console().message("TopoShape::makeLoft: can't close Loft with Vertex as last profile. 'Closed' ignored.\n");
             }
             else {
                 // repeat Add logic above for first profile
@@ -2444,7 +2435,7 @@ TopoDS_Shape TopoShape::makeLoft(const TopTools_ListOfShape& profiles,
     if (!aGenerator.IsDone())
         Standard_Failure::Raise("Failed to create loft face");
 
-    //Base::Console().Message("DEBUG: TopoShape::makeLoft returns.\n");
+    //Base::Console().message("DEBUG: TopoShape::makeLoft returns.\n");
     return aGenerator.Shape();
 }
 
@@ -2487,7 +2478,7 @@ TopoDS_Shape TopoShape::revolve(const gp_Ax1& axis, double d, Standard_Boolean i
     }
 
     if (convertFailed) {
-        Base::Console().Message("TopoShape::revolve could not make Solid from Wire/Edge.\n");}
+        Base::Console().message("TopoShape::revolve could not make Solid from Wire/Edge.\n");}
 
     BRepPrimAPI_MakeRevol mkRevol(base, axis,d);
     return mkRevol.Shape();
@@ -4088,7 +4079,7 @@ bool TopoShape::_makeTransform(const TopoShape &shape,
             }
         }
         catch (const Standard_Failure& e) {
-            Base::Console().Warning("TopoShape::makeGTransform failed: %s\n", e.GetMessageString());
+            Base::Console().warning("TopoShape::makeGTransform failed: %s\n", e.GetMessageString());
         }
     }
     makeTransform(shape,convert(rclTrf),op,copy);

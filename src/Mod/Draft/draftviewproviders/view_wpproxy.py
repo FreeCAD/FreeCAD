@@ -72,7 +72,7 @@ class ViewProviderWorkingPlaneProxy:
         vobj.ArrowSize = 5
         vobj.Transparency = 70
         vobj.LineWidth = 1
-        vobj.LineColor = params.get_param_arch("ColorHelpers") | 0x000000FF
+        vobj.LineColor = params.get_param("gridColor") | 0x000000FF
 
         vobj.Proxy = self
         vobj.RestoreView = True

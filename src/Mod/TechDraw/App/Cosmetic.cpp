@@ -76,7 +76,7 @@ CosmeticEdge::CosmeticEdge(const TopoDS_Edge& e) :
 
 CosmeticEdge::CosmeticEdge(const TechDraw::BaseGeomPtr g)
 {
-//    Base::Console().Message("CE::CE(bg)\n");
+//    Base::Console().message("CE::CE(bg)\n");
     m_geometry = g;
     //we assume input edge is already in Yinverted coordinates
     permaStart = m_geometry->getStartPoint();
@@ -192,8 +192,8 @@ std::string CosmeticEdge::toString() const
 
 void CosmeticEdge::dump(const char* title) const
 {
-    Base::Console().Message("CE::dump - %s \n", title);
-    Base::Console().Message("CE::dump - %s \n", toString().c_str());
+    Base::Console().message("CE::dump - %s \n", title);
+    Base::Console().message("CE::dump - %s \n", toString().c_str());
 }
 
 // Persistence implementers
@@ -223,7 +223,7 @@ void CosmeticEdge::Save(Base::Writer &writer) const
         TechDraw::AOCPtr aoc = std::static_pointer_cast<TechDraw::AOC>(m_geometry);
         aoc->inverted()->Save(writer);
     } else {
-        Base::Console().Warning("CE::Save - unimplemented geomType: %d\n", static_cast<int>(m_geometry->getGeomType()));
+        Base::Console().warning("CE::Save - unimplemented geomType: %d\n", static_cast<int>(m_geometry->getGeomType()));
     }
 
     writer.Stream() << writer.ind() << "<LineNumber value=\"" <<  m_format.getLineNumber() << "\"/>" << endl;
@@ -235,21 +235,21 @@ void CosmeticEdge::Restore(Base::XMLReader &reader)
     if (!CosmeticVertex::restoreCosmetic()) {
         return;
     }
-//    Base::Console().Message("CE::Restore - reading elements\n");
+//    Base::Console().message("CE::Restore - reading elements\n");
     reader.readElement("Style");
-    m_format.setStyle(reader.getAttributeAsInteger("value"));
+    m_format.setStyle(reader.getAttribute<long>("value"));
     reader.readElement("Weight");
-    m_format.setWidth(reader.getAttributeAsFloat("value"));
+    m_format.setWidth(reader.getAttribute<double>("value"));
     reader.readElement("Color");
-    std::string tempHex = reader.getAttribute("value");
+    std::string tempHex = reader.getAttribute<const char*>("value");
     Base::Color tempColor;
     tempColor.fromHexString(tempHex);
     m_format.setColor(tempColor);
     reader.readElement("Visible");
-    m_format.setVisible(reader.getAttributeAsInteger("value") != 0);
+    m_format.setVisible(reader.getAttribute<long>("value") != 0);
 
     reader.readElement("GeometryType");
-    GeomType gType = static_cast<GeomType>(reader.getAttributeAsInteger("value"));
+    GeomType gType = reader.getAttribute<GeomType>("value");
 
     if (gType == GeomType::GENERIC) {
         TechDraw::GenericPtr gen = std::make_shared<TechDraw::Generic> ();
@@ -275,7 +275,7 @@ void CosmeticEdge::Restore(Base::XMLReader &reader)
         permaEnd   = aoc->center;
         permaRadius = aoc->radius;
     } else {
-        Base::Console().Warning("CE::Restore - unimplemented geomType: %d\n", static_cast<int>(gType));
+        Base::Console().warning("CE::Restore - unimplemented geomType: %d\n", static_cast<int>(gType));
     }
     // older documents may not have the LineNumber element, so we need to check the
     // next entry.  if it is a start element, then we check if it is a start element
@@ -283,7 +283,7 @@ void CosmeticEdge::Restore(Base::XMLReader &reader)
     if (reader.readNextElement()) {
         if(strcmp(reader.localName(),"LineNumber") == 0 ) {
             // this CosmeticEdge has an LineNumber attribute
-            m_format.setLineNumber(reader.getAttributeAsInteger("value"));
+            m_format.setLineNumber(reader.getAttribute<long>("value"));
         } else {
             // LineNumber not found.
             // TODO: line number should be set to DashedLineGenerator.fromQtStyle(m_format.m_style)
@@ -294,7 +294,7 @@ void CosmeticEdge::Restore(Base::XMLReader &reader)
 
 CosmeticEdge* CosmeticEdge::clone() const
 {
-    Base::Console().Message("CE::clone()\n");
+    Base::Console().message("CE::clone()\n");
     CosmeticEdge* cpy = new CosmeticEdge();
     cpy->m_geometry = m_geometry->copy();
     cpy->m_format = m_format;
@@ -352,8 +352,8 @@ GeomFormat::~GeomFormat()
 
 void GeomFormat::dump(const char* title) const
 {
-    Base::Console().Message("GF::dump - %s \n", title);
-    Base::Console().Message("GF::dump - %s \n", toString().c_str());
+    Base::Console().message("GF::dump - %s \n", title);
+    Base::Console().message("GF::dump - %s \n", toString().c_str());
 }
 
 std::string GeomFormat::toString() const
@@ -391,21 +391,21 @@ void GeomFormat::Restore(Base::XMLReader &reader)
     // read my Element
     reader.readElement("GeomIndex");
     // get the value of my Attribute
-    m_geomIndex = reader.getAttributeAsInteger("value");
+    m_geomIndex = reader.getAttribute<long>("value");
 
     // style is deprecated in favour of line number, but we still save and restore it
     // to avoid problems with old documents.
     reader.readElement("Style");
-    m_format.setStyle(reader.getAttributeAsInteger("value"));
+    m_format.setStyle(reader.getAttribute<long>("value"));
     reader.readElement("Weight");
-    m_format.setWidth(reader.getAttributeAsFloat("value"));
+    m_format.setWidth(reader.getAttribute<double>("value"));
     reader.readElement("Color");
-    std::string tempHex = reader.getAttribute("value");
+    std::string tempHex = reader.getAttribute<const char*>("value");
     Base::Color tempColor;
     tempColor.fromHexString(tempHex);
     m_format.setColor(tempColor);
     reader.readElement("Visible");
-    m_format.setVisible((int)reader.getAttributeAsInteger("value") == 0 ? false : true);
+    m_format.setVisible(reader.getAttribute<bool>("value"));
     // older documents may not have the LineNumber element, so we need to check the
     // next entry.  if it is a start element, then we check if it is a start element
     // for LineNumber.
@@ -414,7 +414,7 @@ void GeomFormat::Restore(Base::XMLReader &reader)
     if (reader.readNextElement()) {
         if(strcmp(reader.localName(),"LineNumber") == 0 ||
            strcmp(reader.localName(),"ISOLineNumber") == 0 ) {            // this GeomFormat has an LineNumber attribute
-            m_format.setLineNumber(reader.getAttributeAsInteger("value"));
+            m_format.setLineNumber(reader.getAttribute<long>("value"));
         } else {
             // LineNumber not found.
             // TODO: line number should be set to DashedLineGenerator.fromQtStyle(m_format.m_style),

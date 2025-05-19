@@ -1306,12 +1306,18 @@ class CommandSetStartPoint:
         return obj and hasattr(obj, "StartPoint")
 
     def setpoint(self, point, o):
-        obj = FreeCADGui.Selection.getSelection()[0]
+        FreeCADGui.Snapper.grid.off()
+        obj = self.obj
         obj.StartPoint.x = point.x
         obj.StartPoint.y = point.y
         obj.StartPoint.z = obj.ClearanceHeight.Value
+        obj.UseStartPoint = True
+        obj.recompute()
+        textPoint = f"{obj.StartPoint.x:.2f}, {obj.StartPoint.y:.2f}, {obj.StartPoint.z:.2f}"
+        print(f"Set start point for operation {obj.Label} >>> {textPoint}")
 
     def Activated(self):
+        self.obj = FreeCADGui.Selection.getSelection()[0]
         if not hasattr(FreeCADGui, "Snapper"):
             import DraftTools
         FreeCADGui.Snapper.getPoint(callback=self.setpoint)

@@ -877,7 +877,7 @@ void Feature::setMaterialAppearance(const App::Material& material)
         ShapeMaterial.setValue(material);
     }
     catch (const Base::Exception& e) {
-        e.ReportException();
+        e.reportException();
     }
 }
 

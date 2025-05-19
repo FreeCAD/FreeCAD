@@ -195,7 +195,7 @@ class PostProcessor:
                 # Now generate the gcode
                 for obj in self._job.Operations.Group:
                     tc = PathUtil.toolControllerForOp(obj)
-                    if tc is not None and PathUtil.opProperty(obj, "Active"):
+                    if tc is not None and PathUtil.activeForOp(obj):
                         if tc.ToolNumber != currTool:
                             sublist.append(tc)
                             Path.Log.debug(f"Appending TC: {tc.Name}")
@@ -227,7 +227,7 @@ class PostProcessor:
                 Path.Log.track(obj.Label)
 
                 # check if the operation is active
-                if not getattr(obj, "Active", True):
+                if not PathUtil.activeForOp(obj):
                     Path.Log.track()
                     continue
 
@@ -276,7 +276,7 @@ class PostProcessor:
             for obj in self._job.Operations.Group:
 
                 # check if the operation is active
-                if not getattr(obj, "Active", True):
+                if not PathUtil.activeForOp(obj):
                     continue
 
                 sublist = []

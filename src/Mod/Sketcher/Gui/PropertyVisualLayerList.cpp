@@ -75,7 +75,7 @@ void PropertyVisualLayerList::Restore(Base::XMLReader& reader)
 {
     reader.readElement("VisualLayerList");
     // get the value of my attribute
-    int count = reader.getAttributeAsInteger("count");
+    int count = reader.getAttribute<long>("count");
 
     std::vector<VisualLayer> layers;
     layers.reserve(count);

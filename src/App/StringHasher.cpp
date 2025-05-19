@@ -317,7 +317,7 @@ StringIDRef StringHasher::getID(const Data::MappedName& name, const QVector<Stri
             QByteArray::fromRawData(indexed.getType(), static_cast<int>(strlen(indexed.getType())));
     }
     else {
-        // Store the entire name in _data, but temporarily re-use the existing memory
+        // Store the entire name in _data, but temporarily reuse the existing memory
         tempID._data = name.dataBytes();
     }
 
@@ -790,30 +790,30 @@ void StringHasher::Restore(Base::XMLReader& reader)
 {
     clear();
     reader.readElement("StringHasher");
-    _hashes->SaveAll = reader.getAttributeAsInteger("saveall") != 0L;
-    _hashes->Threshold = static_cast<int>(reader.getAttributeAsInteger("threshold"));
+    _hashes->SaveAll = reader.getAttribute<long>("saveall") != 0L;
+    _hashes->Threshold = reader.getAttribute<int>("threshold");
 
     bool newTag = false;
-    if (reader.hasAttribute("new") && reader.getAttributeAsInteger("new") > 0) {
+    if (reader.hasAttribute("new") && reader.getAttribute<bool>("new")) {
         reader.readElement("StringHasher2");
         newTag = true;
     }
 
     if (reader.hasAttribute("file")) {
-        const char* file = reader.getAttribute("file");
+        const char* file = reader.getAttribute<const char*>("file");
         if (*file != '\0') {
             reader.addFile(file, this);
         }
         return;
     }
 
-    std::size_t count = reader.getAttributeAsUnsigned("count");
+    std::size_t count = reader.getAttribute<unsigned long>("count");
     if (newTag) {
         try {
             restoreStreamNew(reader.beginCharStream(), count);
         }
         catch (const Base::Exception& e) {
-            e.ReportException();
+            e.reportException();
             FC_ERR("Failed to restore string table: full-document recompute strongly recommended.");
         }
         reader.readEndElement("StringHasher2");
@@ -826,15 +826,15 @@ void StringHasher::Restore(Base::XMLReader& reader)
         for (std::size_t i = 0; i < count; ++i) {
             reader.readElement("Item");
             StringIDRef sid;
-            long id = reader.getAttributeAsInteger("id");
+            long id = reader.getAttribute<long>("id");
             bool hashed = reader.hasAttribute("hash");
             if (hashed || reader.hasAttribute("data")) {
                 const char* value =
-                    hashed ? reader.getAttribute("hash") : reader.getAttribute("data");
+                    hashed ? reader.getAttribute<const char*>("hash") : reader.getAttribute<const char*>("data");
                 sid = new StringID(id, QByteArray::fromBase64(value), StringID::Flag::Hashed);
             }
             else {
-                sid = new StringID(id, QByteArray(reader.getAttribute("text")));
+                sid = new StringID(id, QByteArray(reader.getAttribute<const char*>("text")));
             }
             insert(sid);
         }

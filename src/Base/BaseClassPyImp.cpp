@@ -20,10 +20,11 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
-// inclusion of the generated files (generated out of BaseClassPy.pyi)
+#include "Type.h"
+
+// generated out of BaseClass.pyi
 #include "BaseClassPy.h"
 #include "BaseClassPy.cpp"
 
@@ -35,7 +36,6 @@ std::string BaseClassPy::representation() const
     return {"<binding object>"};
 }
 
-
 PyObject* BaseClassPy::isDerivedFrom(PyObject* args) const
 {
     char* name {};
@@ -43,7 +43,7 @@ PyObject* BaseClassPy::isDerivedFrom(PyObject* args) const
         return nullptr;
     }
 
-    Base::Type type = Base::Type::fromName(name);
+    auto type = Type::fromName(name);
     bool valid = (!type.isBad() && getBaseClassPtr()->isDerivedFrom(type));
     return PyBool_FromLong(valid ? 1 : 0);
 }
@@ -55,7 +55,7 @@ PyObject* BaseClassPy::getAllDerivedFrom(PyObject* args) const
     }
 
     std::vector<Base::Type> ary;
-    Base::Type::getAllDerivedFrom(getBaseClassPtr()->getTypeId(), ary);
+    Type::getAllDerivedFrom(getBaseClassPtr()->getTypeId(), ary);
     Py::List res;
     for (const auto& it : ary) {
         res.append(Py::String(it.getName()));

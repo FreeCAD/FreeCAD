@@ -984,19 +984,19 @@ PyObject* Application::sSetLogLevel(PyObject* /*self*/, PyObject* args)
         if (strcmp(tag, "Default") == 0) {
 #ifndef FC_DEBUG
             if (l >= 0) {
-                Base::Console().SetDefaultLogLevel(l);
+                Base::Console().setDefaultLogLevel(l);
             }
 #endif
         }
         else if (strcmp(tag, "DebugDefault") == 0) {
 #ifdef FC_DEBUG
             if (l >= 0) {
-                Base::Console().SetDefaultLogLevel(l);
+                Base::Console().setDefaultLogLevel(l);
             }
 #endif
         }
         else {
-            *Base::Console().GetLogLevel(tag) = l;
+            *Base::Console().getLogLevel(tag) = l;
         }
         Py_INCREF(Py_None);
         return Py_None;
@@ -1025,11 +1025,11 @@ PyObject* Application::sGetLogLevel(PyObject* /*self*/, PyObject* args)
 #endif
         }
         else {
-            int* pl = Base::Console().GetLogLevel(tag, false);
+            int* pl = Base::Console().getLogLevel(tag, false);
             l = pl ? *pl : -1;
         }
         // For performance reason, we only output integer value
-        return Py_BuildValue("i", Base::Console().LogLevel(l));
+        return Py_BuildValue("i", Base::Console().logLevel(l));
     }
     PY_CATCH;
 }

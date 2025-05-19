@@ -197,7 +197,7 @@ void CurveProjectorShape::projectCurve(const TopoDS_Edge& aEdge,
                 }
                 else if (Alg.NbPoints() > 1) {
                     PointOnEdge[i] = Base::Vector3f(std::numeric_limits<float>::max(), 0, 0);
-                    Base::Console().Log("MeshAlgos::projectCurve(): More then one intersection in "
+                    Base::Console().log("MeshAlgos::projectCurve(): More then one intersection in "
                                         "Facet %lu, Edge %d\n",
                                         uCurFacetIdx,
                                         i);
@@ -218,7 +218,7 @@ void CurveProjectorShape::projectCurve(const TopoDS_Edge& aEdge,
             GoOn = true;
         }
         else {
-            Base::Console().Log("MeshAlgos::projectCurve(): Possible reentry in Facet %lu\n",
+            Base::Console().log("MeshAlgos::projectCurve(): Possible reentry in Facet %lu\n",
                                 uCurFacetIdx);
         }
 
@@ -340,7 +340,7 @@ void CurveProjectorSimple::projectCurve(const TopoDS_Edge& aEdge,
                 FaceProjctMap[It.Position()].push_back(TempResultPoint);
                 str << TempResultPoint.x << " " << TempResultPoint.y << " " << TempResultPoint.z
                     << std::endl;
-                Base::Console().Log("IDX %d\n", It.Position());
+                Base::Console().log("IDX %d\n", It.Position());
 
                 if (bFirst) {
                     bFirst = false;
@@ -352,7 +352,7 @@ void CurveProjectorSimple::projectCurve(const TopoDS_Edge& aEdge,
     }
 
     str.close();
-    Base::Console().Log("Projection map [%d facets with %d points]\n",
+    Base::Console().log("Projection map [%d facets with %d points]\n",
                         FaceProjctMap.size(),
                         PointCount);
 }
@@ -460,7 +460,7 @@ void CurveProjectorWithToolMesh::makeToolMesh(const TopoDS_Edge& aEdge,
         LineSegs.push_back(s);
     }
 
-    Base::Console().Log("Projection map [%d facets with %d points]\n",
+    Base::Console().log("Projection map [%d facets with %d points]\n",
                         FaceProjctMap.size(),
                         PointCount);
 
@@ -989,7 +989,7 @@ void MeshProjection::projectEdgeToEdge(const TopoDS_Edge& aEdge,
                     rParamSplitEdges[fSol] = splitEdge;
                 }
                 else if (nCntSol > 1) {
-                    Base::Console().Log("More than one possible intersection points\n");
+                    Base::Console().log("More than one possible intersection points\n");
                 }
             }
         }

@@ -205,7 +205,7 @@ void AssemblyLink::synchronizeComponents()
         for (auto* obj2 : assemblyLinkGroup) {
             App::DocumentObject* linkedObj;
 
-            auto* subAsmLink = dynamic_cast<AssemblyLink*>(obj2);
+            auto* subAsmLink = freecad_cast<AssemblyLink*>(obj2);
             auto* link2 = dynamic_cast<App::Link*>(obj2);
             if (subAsmLink) {
                 linkedObj = subAsmLink->getLinkedObject2(false);  // not recursive
@@ -279,8 +279,8 @@ void copyPropertyIfDifferent(App::DocumentObject* source,
                              App::DocumentObject* target,
                              const char* propertyName)
 {
-    auto sourceProp = dynamic_cast<T*>(source->getPropertyByName(propertyName));
-    auto targetProp = dynamic_cast<T*>(target->getPropertyByName(propertyName));
+    auto sourceProp = freecad_cast<T*>(source->getPropertyByName(propertyName));
+    auto targetProp = freecad_cast<T*>(target->getPropertyByName(propertyName));
     if (sourceProp && targetProp && sourceProp->getValue() != targetProp->getValue()) {
         targetProp->setValue(sourceProp->getValue());
     }
@@ -501,12 +501,12 @@ JointGroup* AssemblyLink::ensureJointGroup()
 App::DocumentObject* AssemblyLink::getLinkedObject2(bool recursive) const
 {
     auto* obj = LinkedObject.getValue();
-    auto* assembly = dynamic_cast<AssemblyObject*>(obj);
+    auto* assembly = freecad_cast<AssemblyObject*>(obj);
     if (assembly) {
         return assembly;
     }
     else {
-        auto* assemblyLink = dynamic_cast<AssemblyLink*>(obj);
+        auto* assemblyLink = freecad_cast<AssemblyLink*>(obj);
         if (assemblyLink) {
             if (recursive) {
                 return assemblyLink->getLinkedObject2(recursive);
@@ -522,14 +522,14 @@ App::DocumentObject* AssemblyLink::getLinkedObject2(bool recursive) const
 
 AssemblyObject* AssemblyLink::getLinkedAssembly() const
 {
-    return dynamic_cast<AssemblyObject*>(getLinkedObject2());
+    return freecad_cast<AssemblyObject*>(getLinkedObject2());
 }
 
 AssemblyObject* AssemblyLink::getParentAssembly() const
 {
     std::vector<App::DocumentObject*> inList = getInList();
     for (auto* obj : inList) {
-        auto* assembly = dynamic_cast<AssemblyObject*>(obj);
+        auto* assembly = freecad_cast<AssemblyObject*>(obj);
         if (assembly) {
             return assembly;
         }

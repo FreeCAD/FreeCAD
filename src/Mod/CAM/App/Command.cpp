@@ -91,7 +91,7 @@ bool Command::has(const std::string& attr) const
 {
     std::string a(attr);
     boost::to_upper(a);
-    return Parameters.count(a) > 0;
+    return Parameters.contains(a);
 }
 
 std::string Command::toGCode(int precision, bool padzero) const
@@ -351,6 +351,6 @@ void Command::Save(Writer& writer) const
 void Command::Restore(XMLReader& reader)
 {
     reader.readElement("Command");
-    std::string gcode = reader.getAttribute("gcode");
+    std::string gcode = reader.getAttribute<const char*>("gcode");
     setFromGCode(gcode);
 }

@@ -75,14 +75,17 @@ private:
 
 using ChangePointVector = std::vector<ChangePoint>;
 
+//NOLINTBEGIN
 class TechDrawExport DrawViewSection: public DrawViewPart
 {
     PROPERTY_HEADER_WITH_OVERRIDE(TechDraw::DrawViewSection);
+//NOLINTEND
 
 public:
     DrawViewSection();
     ~DrawViewSection() override;
 
+//NOLINTBEGIN
     App::PropertyLink BaseView;
     App::PropertyDirection SectionNormal;
     App::PropertyPosition SectionOrigin;
@@ -105,10 +108,10 @@ public:
     App::PropertyBool UsePreviousCut;   // new v022
 
     App::PropertyFloatConstraint SectionLineStretch;  // new v022
+//NOLINTEND
 
-
-    bool isReallyInBox(const Base::Vector3d v, const Base::BoundBox3d bb) const;
-    bool isReallyInBox(const gp_Pnt p, const Bnd_Box& bb) const;
+    bool isReallyInBox(const Base::Vector3d& vec, const Base::BoundBox3d& bb) const;
+    bool isReallyInBox(const gp_Pnt& point, const Bnd_Box& bb) const;
 
     App::DocumentObjectExecReturn* execute() override;
     void onChanged(const App::Property* prop) override;
@@ -123,10 +126,10 @@ public:
 
     void sectionExec(TopoDS_Shape& s);
     virtual void makeSectionCut(const TopoDS_Shape& baseShape);
-    void postHlrTasks(void) override;
+    void postHlrTasks() override;
     virtual void postSectionCutTasks();
     void waitingForCut(bool s) { m_waitingForCut = s; }
-    bool waitingForCut(void) const { return m_waitingForCut; }
+    bool waitingForCut() const { return m_waitingForCut; }
     bool waitingForResult() const override;
 
     virtual TopoDS_Shape makeCuttingTool(double shapeSize);
@@ -136,10 +139,10 @@ public:
     virtual TopoDS_Shape getShapeToPrepare() const { return m_cutPieces; }
 
     //CS related methods
-    void setCSFromBase(const std::string sectionName);
-    void setCSFromBase(Base::Vector3d localUnit);
-    void setCSFromLocalUnit(const Base::Vector3d localUnit);
-    virtual gp_Ax2 getCSFromBase(const std::string sectionName) const;
+    void setCSFromBase(const std::string& sectionName);
+    void setCSFromBase(const Base::Vector3d& localUnit);
+    void setCSFromLocalUnit(const Base::Vector3d& localUnit);
+    virtual gp_Ax2 getCSFromBase(const std::string& sectionName) const;
     gp_Ax2 getSectionCS() const;
     Base::Vector3d getXDirection() const override;//don't use XDirection.getValue()
 
@@ -148,12 +151,12 @@ public:
     //section face related methods
     std::vector<TechDraw::FacePtr> getTDFaceGeometry() { return m_tdSectionFaces; }
     TopoDS_Face getSectionTopoDSFace(int i);
-    virtual TopoDS_Compound alignSectionFaces(TopoDS_Shape faceIntersections);
-    TopoDS_Compound mapToPage(TopoDS_Shape& shapeToAlign);
-    virtual std::vector<TechDraw::FacePtr> makeTDSectionFaces(TopoDS_Compound topoDSFaces);
+    virtual TopoDS_Compound alignSectionFaces(const TopoDS_Shape& faceIntersections);
+    TopoDS_Compound mapToPage(const TopoDS_Shape& shapeToAlign);
+    virtual std::vector<TechDraw::FacePtr> makeTDSectionFaces(const TopoDS_Compound& topoDSFaces);
     virtual TopoDS_Shape getShapeToIntersect() { return m_cutPieces; }
 
-    void makeLineSets(void);
+    void makeLineSets();
     std::vector<LineSet> getDrawableLines(int i = 0);
     std::vector<PATLineSpec> getDecodedSpecsFromFile(std::string fileSpec, std::string myPattern);
 
@@ -169,14 +172,15 @@ public:
     Base::Vector3d getSectionDirectionOnBaseView();
     virtual ChangePointVector getChangePointsFromSectionLine();
 
-    bool showSectionEdges(void);
+    bool showSectionEdges();
 
     TopoDS_Shape makeFaceFromWires(std::vector<TopoDS_Wire> &inWires);
 
     Base::Vector3d getCutCentroid() const;
+    bool checkSectionCS() const;
 
 public Q_SLOTS:
-    virtual void onSectionCutFinished(void);
+    virtual void onSectionCutFinished();
 
 protected:
     TopoDS_Compound m_sectionTopoDSFaces;//needed for hatching
@@ -196,8 +200,8 @@ protected:
 
     void onDocumentRestored() override;
     void setupObject() override;
-    void replaceSvgIncluded(std::string newSvgFile);
-    void replacePatIncluded(std::string newPatFile);
+    void replaceSvgIncluded(const std::string& newSvgFile);
+    void replacePatIncluded(const std::string& newPatFile);
 
     TopoDS_Shape m_cutPieces;//the shape after cutting, but before centering & scaling
     gp_Ax2 m_projectionCS;

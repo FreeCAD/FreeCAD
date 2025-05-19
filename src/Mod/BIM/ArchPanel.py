@@ -312,7 +312,7 @@ class _Panel(ArchComponent.Component):
                             downsegment = Part.Wire([e3,e4])
                         else:
                             r = e2.Curve.Radius+obj.Thickness.Value
-                            z = math.sqrt(r^2 - obj.WaveLength.Value^2)
+                            z = math.sqrt(r**2 - obj.WaveLength.Value**2)
                             p6 = e2.Curve.Center.add(Vector(-obj.WaveLength,0,-z))
                             p7 = e2.Curve.Center.add(Vector(0,0,-r))
                             p8 = e2.Curve.Center.add(Vector(obj.WaveLength,0,-z))

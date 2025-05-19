@@ -209,12 +209,12 @@ public:
             &Module::new_DocumentObjectProtector,
             "DocumentObjectProtector(DocumentObject)");
         initialize("This module is the Sandbox module"); // register with Python
-        
+
         Py::Dict d( moduleDictionary() );
         Py::Object x( Sandbox::PythonBaseClass::type() );
         d["PythonBaseClass"] = x;
     }
-    
+
     virtual ~Module() {}
 
 private:
@@ -253,6 +253,6 @@ PyMOD_INIT_FUNC(Sandbox)
     // the following constructor call registers our extension module
     // with the Python runtime system
     PyObject* mod = Sandbox::initModule();
-    Base::Console().Log("Loading Sandbox module... done\n");
+    Base::Console().log("Loading Sandbox module... done\n");
     PyMOD_Return(mod);
 }

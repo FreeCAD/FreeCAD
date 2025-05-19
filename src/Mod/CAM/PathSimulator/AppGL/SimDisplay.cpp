@@ -31,7 +31,7 @@
 #include "SimDisplay.h"
 #include "linmath.h"
 #include "OpenGlWrapper.h"
-
+#include <cmath>
 
 namespace MillSim
 {
@@ -506,21 +506,39 @@ void SimDisplay::RotateEye(float rotStep)
 
 void SimDisplay::MoveEye(float x, float z)
 {
+    // Exponential calculate maxValue
+    // https://forum.freecad.org/viewtopic.php?t=96939
+    const float arg1 = 124.938;
+    const float arg2 = 578.754;
+    const float arg3 = -20.7993;
+    float maxValueX = arg1 + arg2 * exp(arg3 * mEyeDistFactor);
+    float maxValueZ = maxValueX * 0.4;
+
     mEyeX += x;
-    if (mEyeX > 300) {
-        mEyeX = 300;
+    if (mEyeX > maxValueX) {
+        mEyeX = maxValueX;
     }
-    else if (mEyeX < -300) {
-        mEyeX = -300;
+    else if (mEyeX < -maxValueX) {
+        mEyeX = -maxValueX;
     }
     mEyeZ += z;
-    if (mEyeZ > 300) {
-        mEyeZ = 300;
+
+    if (mEyeZ > maxValueZ) {
+        mEyeZ = maxValueZ;
     }
-    else if (mEyeZ < -300) {
-        mEyeZ = -300;
+    else if (mEyeZ < -maxValueZ) {
+        mEyeZ = -maxValueZ;
     }
     updateDisplay = true;
+}
+
+void SimDisplay::MoveEyeCenter()
+{
+    mEyeRoration = 0;
+    mEyeInclination = PI / 6;
+    mEyeX = 0;
+    mEyeZ = 0;
+    UpdateEyeFactor(0.1f);
 }
 
 void SimDisplay::UpdateEyeFactor(float factor)

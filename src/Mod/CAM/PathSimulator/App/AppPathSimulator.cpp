@@ -71,7 +71,7 @@ PyMOD_INIT_FUNC(PathSimulator)
 
     //
     PyObject* mod = PathSimulator::initModule();
-    Base::Console().Log("Loading PathSimulator module.... done\n");
+    Base::Console().log("Loading PathSimulator module.... done\n");
 
     // Add Types to module
     Base::Interpreter().addType(&PathSimulator::PathSimPy::Type, mod, "PathSim");

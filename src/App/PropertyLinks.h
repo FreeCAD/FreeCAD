@@ -583,7 +583,7 @@ public:
      */
     static std::string updateLabelReference(const App::DocumentObject* linked,
                                             const char* subname,
-                                            App::DocumentObject* obj,
+                                            const App::DocumentObject* obj,
                                             const std::string& ref,
                                             const char* newLabel);
     //@}

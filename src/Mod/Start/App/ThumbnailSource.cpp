@@ -70,22 +70,22 @@ void ThumbnailSource::run()
         args << QLatin1String("--output=") + _thumbnailPath << _file;
 
         QProcess process;
-        Base::Console().Log("Creating thumbnail for %s...\n", _file.toStdString());
+        Base::Console().log("Creating thumbnail for %s...\n", _file.toStdString());
         process.start(f3d, args);
         if (!process.waitForFinished()) {
             process.kill();
-            Base::Console().Log("Creating thumbnail for %s timed out\n", _file.toStdString());
+            Base::Console().log("Creating thumbnail for %s timed out\n", _file.toStdString());
             return;
         }
         if (process.exitStatus() == QProcess::CrashExit) {
-            Base::Console().Log("Creating thumbnail for %s crashed\n", _file.toStdString());
+            Base::Console().log("Creating thumbnail for %s crashed\n", _file.toStdString());
             return;
         }
         if (process.exitCode() != 0) {
-            Base::Console().Log("Creating thumbnail for %s failed\n", _file.toStdString());
+            Base::Console().log("Creating thumbnail for %s failed\n", _file.toStdString());
             return;
         }
-        Base::Console().Log("Creating thumbnail for %s succeeded, wrote to %s\n",
+        Base::Console().log("Creating thumbnail for %s succeeded, wrote to %s\n",
                             _file.toStdString(),
                             _thumbnailPath.toStdString());
     }
@@ -110,7 +110,7 @@ std::tuple<int, int, int> extractF3DVersion(const QString& stdoutString)
                     patch = split[2].toInt();
                 }
                 catch (...) {
-                    Base::Console().Log(
+                    Base::Console().log(
                         "Could not determine F3D version, disabling thumbnail generation\n");
                 }
             }
@@ -188,5 +188,5 @@ void ThumbnailSource::setupF3D()
     if (_f3d.major >= 2) {
         _f3d.baseArgs = getF3DOptions(f3d);
     }
-    Base::Console().Log("Running f3d version %d.%d\n", _f3d.major, _f3d.minor);
+    Base::Console().log("Running f3d version %d.%d\n", _f3d.major, _f3d.minor);
 }

@@ -98,7 +98,7 @@ void StdCmdRandomColor::activated(int iMsg)
         // NOLINTEND
         auto objColor = Base::Color(fRed, fGrn, fBlu);
 
-        auto vpLink = dynamic_cast<ViewProviderLink*>(view);
+        auto vpLink = freecad_cast<ViewProviderLink*>(view);
         if (vpLink) {
             if (!vpLink->OverrideMaterial.getValue()) {
                 vpLink->OverrideMaterial.setValue(true);
@@ -186,14 +186,8 @@ void StdCmdToggleFreeze::activated(int iMsg)
             obj->unfreeze();
             for (auto child : obj->getInListRecursive())
                 child->unfreeze();
-            if (obj->isDerivedFrom(Base::Type::fromName("PartDesign::Body"))) {
-                for (auto child : obj->getOutListRecursive())
-                    child->unfreeze();
-            }
-            else {
-                for (auto child : obj->getOutList())
-                    child->unfreeze();
-            }
+            for (auto child : obj->getOutListRecursive())
+                child->unfreeze();
         } else {
             obj->freeze();
             for (auto parent : obj->getOutListRecursive())
@@ -299,7 +293,7 @@ void StdCmdSendToPythonConsole::activated(int iMsg)
         }
     }
     catch (const Base::Exception& e) {
-        e.ReportException();
+        e.reportException();
     }
 
 }

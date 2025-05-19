@@ -42,6 +42,7 @@ import DraftGeomUtils
 import DraftVecUtils
 import Part
 
+from FreeCAD import Units
 from FreeCAD import Vector
 
 if FreeCAD.GuiUp:
@@ -885,11 +886,11 @@ class _RoofTaskPanel:
         self.tree.setRootIsDecorated(False) # remove 1st column's extra left margin
         self.tree.setColumnCount(7)
         self.tree.header().resizeSection(0, 37) # 37px seems to be the minimum size
-        self.tree.header().resizeSection(1, 70)
-        self.tree.header().resizeSection(2, 62)
+        self.tree.header().resizeSection(1, 60)
+        self.tree.header().resizeSection(2, 70)
         self.tree.header().resizeSection(3, 37)
-        self.tree.header().resizeSection(4, 60)
-        self.tree.header().resizeSection(5, 60)
+        self.tree.header().resizeSection(4, 70)
+        self.tree.header().resizeSection(5, 70)
         self.tree.header().resizeSection(6, 70)
 
         QtCore.QObject.connect(self.tree, QtCore.SIGNAL("itemChanged(QTreeWidgetItem *, int)"), self.edit)
@@ -915,41 +916,48 @@ class _RoofTaskPanel:
             for i in range(len(self.obj.Angles)):
                 item = root.child(i)
                 item.setText(0, str(i))
-                item.setText(1, str(self.obj.Angles[i]))
-                item.setText(2, str(self.obj.Runs[i]))
+                item.setText(1, Units.Quantity(self.obj.Angles[i], Units.Angle).UserString)
+                item.setText(2, Units.Quantity(self.obj.Runs[i], Units.Length).UserString)
                 item.setText(3, str(self.obj.IdRel[i]))
-                item.setText(4, str(self.obj.Thickness[i]))
-                item.setText(5, str(self.obj.Overhang[i]))
-                item.setText(6, str(self.obj.Heights[i]))
+                item.setText(4, Units.Quantity(self.obj.Thickness[i], Units.Length).UserString)
+                item.setText(5, Units.Quantity(self.obj.Overhang[i], Units.Length).UserString)
+                item.setText(6, Units.Quantity(self.obj.Heights[i], Units.Length).UserString)
                 item.setFlags(item.flags() | QtCore.Qt.ItemIsEditable)
             # treeHgt = 1 + 23 + (len(self.obj.Angles) * 17) + 1 # 1px borders, 23px header, 17px rows
             # self.tree.setMinimumSize(QtCore.QSize(445, treeHgt))
         self.retranslateUi(self.form)
         self.updating = False
 
-    def edit(self, item, column):
-        if not self.updating:
-            self.resetObject()
+    def _update_value(self, row, prop, str_val):
+        # Workaround for Building US unit system bug (Version 1.1, 2025):
+        str_val = str_val.replace("+", "--")
+        val_list = getattr(self.obj, prop)
+        val_list[row] = Units.Quantity(str_val).Value
+        setattr(self.obj, prop, val_list)
 
-    def resetObject(self, remove=None):
-        '''transfers the values from the widget to the object'''
-        ang = []
-        run = []
-        rel = []
-        thick = []
-        over = []
-        root = self.tree.invisibleRootItem()
-        for it in root.takeChildren():
-            ang.append(float(it.text(1)))
-            run.append(float(it.text(2)))
-            rel.append(int(it.text(3)))
-            thick.append(float(it.text(4)))
-            over.append(float(it.text(5)))
-        self.obj.Runs = run
-        self.obj.Angles = ang
-        self.obj.IdRel = rel
-        self.obj.Thickness = thick
-        self.obj.Overhang = over
+    def edit(self, item, column):
+        '''transfers an edited value from the widget to the object'''
+        if self.updating:
+            return
+        row = int(item.text(0))
+        if not (0 <= row < len(self.obj.Angles)):
+            # Users should not change the Id (index) column, but you never know:
+            return
+        match column:
+            case 1:
+                self._update_value(row, "Angles", item.text(1))
+            case 2:
+                self._update_value(row, "Runs", item.text(2))
+            case 3:
+                val_list = self.obj.IdRel
+                val_list[row] = int(item.text(3))
+                self.obj.IdRel = val_list
+            case 4:
+                self._update_value(row, "Thickness", item.text(4))
+            case 5:
+                self._update_value(row, "Overhang", item.text(5))
+            case _:
+                return
         self.obj.touch()
         FreeCAD.ActiveDocument.recompute()
         self.update()
@@ -963,9 +971,9 @@ class _RoofTaskPanel:
         TaskPanel.setWindowTitle(QtGui.QApplication.translate("Arch", "Roof", None))
         self.title.setText(QtGui.QApplication.translate("Arch", "Parameters of the roof profiles :\n* Angle : slope in degrees relative to the horizontal.\n* Run : horizontal distance between the wall and the ridge.\n* Thickness : thickness of the roof.\n* Overhang : horizontal distance between the eave and the wall.\n* Height : height of the ridge above the base (calculated automatically).\n* IdRel : Id of the relative profile used for automatic calculations.\n---\nIf Angle = 0 and Run = 0 then the profile is identical to the relative profile.\nIf Angle = 0 then the angle is calculated so that the height is the same as the relative profile.\nIf Run = 0 then the run is calculated so that the height is the same as the relative profile.", None))
         self.tree.setHeaderLabels([QtGui.QApplication.translate("Arch", "Id", None),
-                                   QtGui.QApplication.translate("Arch", "Angle (deg)", None),
-                                   QtGui.QApplication.translate("Arch", "Run (mm)", None),
+                                   QtGui.QApplication.translate("Arch", "Angle", None),
+                                   QtGui.QApplication.translate("Arch", "Run", None),
                                    QtGui.QApplication.translate("Arch", "IdRel", None),
-                                   QtGui.QApplication.translate("Arch", "Thickness (mm)", None),
-                                   QtGui.QApplication.translate("Arch", "Overhang (mm)", None),
-                                   QtGui.QApplication.translate("Arch", "Height (mm)", None)])
+                                   QtGui.QApplication.translate("Arch", "Thickness", None),
+                                   QtGui.QApplication.translate("Arch", "Overhang", None),
+                                   QtGui.QApplication.translate("Arch", "Height", None)])

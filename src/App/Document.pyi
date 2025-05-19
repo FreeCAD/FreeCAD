@@ -314,6 +314,18 @@ class Document(PropertyContainer):
         """
         ...
 
+    def setAutoCreated(self, autoCreated: bool) -> None:
+        """
+        Set a flag that indicates if a document is autoCreated
+        """
+        ...
+
+    def isAutoCreated(self) -> bool:
+        """
+        Check if the document is autoCreated. The default value is False
+        """
+        ...
+
     def recompute(self, objs: Sequence[DocumentObject] = None) -> int:
         """
         recompute(objs=None): Recompute the document and returns the amount of recomputed features

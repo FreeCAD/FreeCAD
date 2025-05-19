@@ -260,25 +260,25 @@ void BaseGeom::Save(Base::Writer &writer) const
 void BaseGeom::Restore(Base::XMLReader &reader)
 {
     reader.readElement("GeomType");
-    geomType = static_cast<GeomType>(reader.getAttributeAsInteger("value"));
+    geomType = reader.getAttribute<GeomType>("value");
     reader.readElement("ExtractType");
-    extractType = static_cast<ExtractionType>(reader.getAttributeAsInteger("value"));
+    extractType = reader.getAttribute<ExtractionType>("value");
     reader.readElement("EdgeClass");
-    classOfEdge = static_cast<EdgeClass>(reader.getAttributeAsInteger("value"));
+    classOfEdge = reader.getAttribute<EdgeClass>("value");
     reader.readElement("HLRVisible");
-    hlrVisible = reader.getAttributeAsInteger("value") != 0;
+    hlrVisible = reader.getAttribute<bool>("value");
     reader.readElement("Reversed");
-    reversed = reader.getAttributeAsInteger("value") != 0;
+    reversed = reader.getAttribute<bool>("value");
     reader.readElement("Ref3D");
-    ref3D = reader.getAttributeAsInteger("value");
+    ref3D = reader.getAttribute<long>("value");
     reader.readElement("Cosmetic");
-    cosmetic = reader.getAttributeAsInteger("value") != 0;
+    cosmetic = reader.getAttribute<bool>("value");
     reader.readElement("Source");
-    m_source = static_cast<SourceType>(reader.getAttributeAsInteger("value"));
+    m_source = reader.getAttribute<SourceType>("value");
     reader.readElement("SourceIndex");
-    m_sourceIndex = reader.getAttributeAsInteger("value");
+    m_sourceIndex = reader.getAttribute<long>("value");
     reader.readElement("CosmeticTag");
-    cosmeticTag = reader.getAttribute("value");
+    cosmeticTag = reader.getAttribute<const char*>("value");
 }
 
 std::vector<Base::Vector3d> BaseGeom::findEndPoints()
@@ -292,7 +292,7 @@ std::vector<Base::Vector3d> BaseGeom::findEndPoints()
         result.emplace_back(p.X(), p.Y(), p.Z());
     } else {
         //TODO: this should throw something
-        Base::Console().Message("Geometry::findEndPoints - OCC edge not found\n");
+        Base::Console().message("Geometry::findEndPoints - OCC edge not found\n");
         throw Base::RuntimeError("no OCC edge in Geometry::findEndPoints");
     }
     return result;
@@ -306,7 +306,7 @@ Base::Vector3d BaseGeom::getStartPoint()
         return verts[0];
     } else {
         //TODO: this should throw something
-        Base::Console().Message("Geometry::getStartPoint - start point not found!\n");
+        Base::Console().message("Geometry::getStartPoint - start point not found!\n");
         Base::Vector3d badResult(0.0, 0.0, 0.0);
         return badResult;
     }
@@ -319,7 +319,7 @@ Base::Vector3d BaseGeom::getEndPoint()
 
     if (verts.size() != 2) {
         //TODO: this should throw something
-        Base::Console().Message("Geometry::getEndPoint - end point not found!\n");
+        Base::Console().message("Geometry::getEndPoint - end point not found!\n");
         Base::Vector3d badResult(0.0, 0.0, 0.0);
         return badResult;
     }
@@ -433,7 +433,7 @@ bool BaseGeom::closed()
 // return a BaseGeom similar to this, but inverted with respect to Y axis
 BaseGeomPtr BaseGeom::inverted()
 {
-//    Base::Console().Message("BG::inverted()\n");
+//    Base::Console().message("BG::inverted()\n");
     TopoDS_Shape invertedShape = ShapeUtils::invertGeometry(occEdge);
     TopoDS_Edge invertedEdge = TopoDS::Edge(invertedShape);
     return baseFactory(invertedEdge);
@@ -462,7 +462,7 @@ std::string BaseGeom::geomTypeName()
 BaseGeomPtr BaseGeom::baseFactory(TopoDS_Edge edge, bool isCosmetic)
 {
     if (edge.IsNull()) {
-        Base::Console().Message("BG::baseFactory - input edge is NULL \n");
+        Base::Console().message("BG::baseFactory - input edge is NULL \n");
     }
     //weed out rubbish edges before making geometry
     if (!isCosmetic && !validateEdge(edge)) {
@@ -529,18 +529,18 @@ BaseGeomPtr BaseGeom::baseFactory(TopoDS_Edge edge, bool isCosmetic)
                     }
                  }
             } else {
-//              Base::Console().Message("Geom::baseFactory - circEdge is Null\n");
+//              Base::Console().message("Geom::baseFactory - circEdge is Null\n");
                 result = bspline;
             }
             break;
         }
         catch (const Standard_Failure& e) {
-            Base::Console().Log("Geom::baseFactory - OCC error - %s - while making spline\n",
+            Base::Console().log("Geom::baseFactory - OCC error - %s - while making spline\n",
                               e.GetMessageString());
             break;
         }
         catch (...) {
-            Base::Console().Log("Geom::baseFactory - unknown error occurred while making spline\n");
+            Base::Console().log("Geom::baseFactory - unknown error occurred while making spline\n");
             break;
         } break;
       } // end bspline case
@@ -577,7 +577,7 @@ TopoDS_Edge BaseGeom::completeEdge(const TopoDS_Edge &edge) {
         }
     }
     catch (Standard_Failure &e) {
-        Base::Console().Error("BaseGeom::completeEdge OCC error: %s\n", e.GetMessageString());
+        Base::Console().error("BaseGeom::completeEdge OCC error: %s\n", e.GetMessageString());
     }
 
     return TopoDS_Edge();
@@ -621,7 +621,7 @@ std::vector<Base::Vector3d> BaseGeom::intersection(TechDraw::BaseGeomPtr geom2)
 
 TopoShape BaseGeom::asTopoShape(double scale)
 {
-//    Base::Console().Message("BG::asTopoShape(%.3f) - dump: %s\n", scale, dump().c_str());
+//    Base::Console().message("BG::asTopoShape(%.3f) - dump: %s\n", scale, dump().c_str());
     TopoDS_Shape unscaledShape = ShapeUtils::scaleShape(getOCCEdge(), 1.0 / scale);
     TopoDS_Edge unscaledEdge = TopoDS::Edge(unscaledShape);
     return unscaledEdge;
@@ -655,7 +655,7 @@ Ellipse::Ellipse(Base::Vector3d c, double mnr, double mjr)
     GC_MakeEllipse me(gp_Ax2(gp_Pnt(c.x, c.y, c.z), gp_Dir(0.0, 0.0, 1.0)),
                       major, minor);
     if (!me.IsDone()) {
-        Base::Console().Message("G:Ellipse - failed to make Ellipse\n");
+        Base::Console().message("G:Ellipse - failed to make Ellipse\n");
     }
     const Handle(Geom_Ellipse) gEllipse = me.Value();
     BRepBuilderAPI_MakeEdge mkEdge(gEllipse, 0.0, 2 * std::numbers::pi);
@@ -683,7 +683,7 @@ AOE::AOE(const TopoDS_Edge &e) : Ellipse(e)
         a = v3.DotCross(v1, v2);
     }
     catch (const Standard_Failure& e) {
-        Base::Console().Error("Geom::AOE::AOE - OCC error - %s - while making AOE in ctor\n",
+        Base::Console().error("Geom::AOE::AOE - OCC error - %s - while making AOE in ctor\n",
                               e.GetMessageString());
     }
 
@@ -768,12 +768,12 @@ void Circle::Restore(Base::XMLReader &reader)
     // read my Element
     reader.readElement("Center");
     // get the value of my Attribute
-    center.x = reader.getAttributeAsFloat("X");
-    center.y = reader.getAttributeAsFloat("Y");
-    center.z = reader.getAttributeAsFloat("Z");
+    center.x = reader.getAttribute<double>("X");
+    center.y = reader.getAttribute<double>("Y");
+    center.z = reader.getAttribute<double>("Z");
 
     reader.readElement("Radius");
-    radius = reader.getAttributeAsFloat("value");
+    radius = reader.getAttribute<double>("value");
 }
 
 AOC::AOC(const TopoDS_Edge &e) : Circle(e)
@@ -979,26 +979,26 @@ void AOC::Restore(Base::XMLReader &reader)
 {
     Circle::Restore(reader);
     reader.readElement("Start");
-    startPnt.x = reader.getAttributeAsFloat("X");
-    startPnt.y = reader.getAttributeAsFloat("Y");
-    startPnt.z = reader.getAttributeAsFloat("Z");
+    startPnt.x = reader.getAttribute<double>("X");
+    startPnt.y = reader.getAttribute<double>("Y");
+    startPnt.z = reader.getAttribute<double>("Z");
     reader.readElement("End");
-    endPnt.x = reader.getAttributeAsFloat("X");
-    endPnt.y = reader.getAttributeAsFloat("Y");
-    endPnt.z = reader.getAttributeAsFloat("Z");
+    endPnt.x = reader.getAttribute<double>("X");
+    endPnt.y = reader.getAttribute<double>("Y");
+    endPnt.z = reader.getAttribute<double>("Z");
     reader.readElement("Middle");
-    midPnt.x = reader.getAttributeAsFloat("X");
-    midPnt.y = reader.getAttributeAsFloat("Y");
-    midPnt.z = reader.getAttributeAsFloat("Z");
+    midPnt.x = reader.getAttribute<double>("X");
+    midPnt.y = reader.getAttribute<double>("Y");
+    midPnt.z = reader.getAttribute<double>("Z");
 
     reader.readElement("StartAngle");
-    startAngle = reader.getAttributeAsFloat("value");
+    startAngle = reader.getAttribute<double>("value");
     reader.readElement("EndAngle");
-    endAngle = reader.getAttributeAsFloat("value");
+    endAngle = reader.getAttribute<double>("value");
     reader.readElement("Clockwise");
-    cw = (int)reader.getAttributeAsInteger("value")==0?false:true;
+    cw = reader.getAttribute<bool>("value");
     reader.readElement("Large");
-    largeArc = (int)reader.getAttributeAsInteger("value")==0?false:true;
+    largeArc = reader.getAttribute<bool>("value");
 }
 
 //! Generic is a multiline
@@ -1072,14 +1072,14 @@ void Generic::Restore(Base::XMLReader &reader)
 {
     BaseGeom::Restore(reader);
     reader.readElement("Points");
-    int stop = reader.getAttributeAsInteger("PointsCount");
+    int stop = reader.getAttribute<long>("PointsCount");
     int i = 0;
     for ( ; i < stop; i++) {
         reader.readElement("Point");
         Base::Vector3d p;
-        p.x = reader.getAttributeAsFloat("X");
-        p.y = reader.getAttributeAsFloat("Y");
-        p.z = reader.getAttributeAsFloat("Z");
+        p.x = reader.getAttribute<double>("X");
+        p.y = reader.getAttribute<double>("Y");
+        p.z = reader.getAttribute<double>("Z");
         points.push_back(p);
     }
     reader.readEndElement("Points");
@@ -1298,7 +1298,7 @@ Vertex::Vertex(double x, double y)
 
 Vertex::Vertex(Base::Vector3d v) : Vertex(v.x, v.y)
 {
-//    Base::Console().Message("V::V(%s)\n",
+//    Base::Console().message("V::V(%s)\n",
 //                            DrawUtil::formatVector(v).c_str());
 }
 
@@ -1341,28 +1341,28 @@ void Vertex::Save(Base::Writer &writer) const
 void Vertex::Restore(Base::XMLReader &reader)
 {
     reader.readElement("Point");
-    pnt.x = reader.getAttributeAsFloat("X");
-    pnt.y = reader.getAttributeAsFloat("Y");
-    pnt.z = reader.getAttributeAsFloat("Z");
+    pnt.x = reader.getAttribute<double>("X");
+    pnt.y = reader.getAttribute<double>("Y");
+    pnt.z = reader.getAttribute<double>("Z");
 
     reader.readElement("Extract");
-    extractType = static_cast<ExtractionType>(reader.getAttributeAsInteger("value"));
+    extractType = reader.getAttribute<ExtractionType>("value");
 //    reader.readElement("Visible");
-//    hlrVisible = (bool)reader.getAttributeAsInteger("value")==0?false:true;
+//    hlrVisible = reader.getAttribute<bool>("value");
     reader.readElement("Ref3D");
-    ref3D = reader.getAttributeAsInteger("value");
+    ref3D = reader.getAttribute<long>("value");
     reader.readElement("IsCenter");
-    hlrVisible = reader.getAttributeAsInteger("value") != 0;
+    hlrVisible = reader.getAttribute<bool>("value");
     reader.readElement("Cosmetic");
-    cosmetic = reader.getAttributeAsInteger("value") != 0;
+    cosmetic = reader.getAttribute<bool>("value");
     reader.readElement("CosmeticLink");
-    cosmeticLink = reader.getAttributeAsInteger("value");
+    cosmeticLink = reader.getAttribute<long>("value");
     reader.readElement("CosmeticTag");
-    cosmeticTag = reader.getAttribute("value");
+    cosmeticTag = reader.getAttribute<const char*>("value");
 
     //will restore read to eof looking for "Reference" in old docs??  YES!!
 //    reader.readElement("Reference");
-//    m_reference = (bool)reader.getAttributeAsInteger("value")==0?false:true;
+//    m_reference = reader.getAttribute<bool>("value");
 
     Tag::Restore(reader, "VertexTag");
 
@@ -1372,7 +1372,7 @@ void Vertex::Restore(Base::XMLReader &reader)
 
 void Vertex::dump(const char* title)
 {
-    Base::Console().Message("TD::Vertex - %s - point: %s vis: %d cosmetic: %d  cosLink: %d cosTag: %s\n",
+    Base::Console().message("TD::Vertex - %s - point: %s vis: %d cosmetic: %d  cosLink: %d cosTag: %s\n",
                             title, DrawUtil::formatVector(pnt).c_str(), hlrVisible, cosmetic, cosmeticLink,
                             cosmeticTag.c_str());
 }
@@ -1452,7 +1452,7 @@ BaseGeomPtrVector GeometryUtils::chainGeoms(BaseGeomPtrVector geoms)
 
 TopoDS_Edge GeometryUtils::edgeFromGeneric(TechDraw::GenericPtr g)
 {
-//    Base::Console().Message("GU::edgeFromGeneric()\n");
+//    Base::Console().message("GU::edgeFromGeneric()\n");
     //TODO: note that this isn't quite right as g can be a polyline!
     //sb points.first, points.last
     //and intermediates should be added to Point
@@ -1570,8 +1570,8 @@ bool GeometryUtils::getCircleParms(const TopoDS_Edge& occEdge, double& radius, B
         center = Base::convertTo<Base::Vector3d>(circleFromParms->Circ().Location());
         return true;
     }
-    catch (Standard_Failure& err) {
-        Base::Console().Message("Geo::getCircleParms - failed to make a circle\n");
+    catch (Standard_Failure&) {
+        Base::Console().message("Geo::getCircleParms - failed to make a circle\n");
     }
 
     return false;
@@ -1756,7 +1756,7 @@ TopoDS_Face GeometryUtils::makePerforatedFace(FacePtr bigCheese,  const std::vec
         faceShape = Part::FaceMakerCheese::makeFace(cheeseIngredients);
     }
     catch (const Standard_Failure&) {
-        Base::Console().Warning("Area - could not make holes in face\n");
+        Base::Console().warning("Area - could not make holes in face\n");
         return flippedFace;
     }
 

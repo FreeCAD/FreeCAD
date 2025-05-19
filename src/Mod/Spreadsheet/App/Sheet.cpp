@@ -116,7 +116,7 @@ Sheet::~Sheet()
     }
     catch (...) {
         // Don't let an exception propagate out of a destructor (calls terminate())
-        Base::Console().Error(
+        Base::Console().error(
             "clearAll() resulted in an exception when deleting the spreadsheet : %s\n",
             getNameInDocument());
     }
@@ -943,7 +943,7 @@ void Sheet::recomputeCell(CellAddress p)
             cell->setException(e.what());
         }
         else {
-            e.ReportException();
+            e.reportException();
         }
 
         // Mark as erroneous
@@ -1159,7 +1159,7 @@ DocumentObjectExecReturn* Sheet::execute()
             }
             catch (std::exception&) {  // TODO: evaluate using a more specific exception (not_a_dag)
                 // Cycle detected; flag all with errors
-                Base::Console().Error("Cyclic dependency detected in spreadsheet : %s\n",
+                Base::Console().error("Cyclic dependency detected in spreadsheet : %s\n",
                                       getNameInDocument());
                 std::ostringstream ss;
                 ss << "Cyclic dependency";
@@ -1659,33 +1659,6 @@ void Sheet::onDocumentRestored()
         FC_ERR("Failed to restore " << getFullName() << ": " << ret->Why);
         delete ret;
     }
-}
-
-/**
- * @brief Create a document observer for this sheet. Used to track changes.
- * @param document document to observer.
- */
-
-void Sheet::observeDocument(Document* document)
-{
-    // observer is no longer required as PropertySheet is now derived from
-    // PropertyLinkBase and will handle all the link related behavior
-#if 1
-    (void)document;
-#else
-    ObserverMap::const_iterator it = observers.find(document->getName());
-
-    if (it != observers.end()) {
-        // An observer already exists, increase reference counter for it
-        it->second->ref();
-    }
-    else {
-        // Create a new observer
-        SheetObserver* observer = new SheetObserver(document, &cells);
-
-        observers[document->getName()] = observer;
-    }
-#endif
 }
 
 void Sheet::renameObjectIdentifiers(const std::map<ObjectIdentifier, ObjectIdentifier>& paths)

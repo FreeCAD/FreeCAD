@@ -334,7 +334,7 @@ void ViewProviderMeasureAngle::redrawAnnotation()
         pcTransform->setMatrix(matrix);
     }
     catch (const Base::Exception& e) {
-        Base::Console().Error("Error in ViewProviderMeasureAngle::redrawAnnotation: %s\n",
+        Base::Console().error("Error in ViewProviderMeasureAngle::redrawAnnotation: %s\n",
                               e.what());
         return;
     }

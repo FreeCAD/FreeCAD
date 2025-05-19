@@ -222,7 +222,7 @@ void AutoSaver::saveDocument(const std::string& name, AutoSaveProperty& saver)
             }
         }
 
-        Base::Console().Log("Save AutoRecovery file in %fs\n", Base::TimeElapsed::diffTimeF(startTime,Base::TimeElapsed()));
+        Base::Console().log("Save AutoRecovery file in %fs\n", Base::TimeElapsed::diffTimeF(startTime,Base::TimeElapsed()));
         hGrp->SetBool("SaveThumbnail",save);
     }
 }
@@ -238,7 +238,7 @@ void AutoSaver::timerEvent(QTimerEvent * event)
                 break;
             }
             catch (...) {
-                Base::Console().Error("Failed to auto-save document '%s'\n", it.first.c_str());
+                Base::Console().error("Failed to auto-save document '%s'\n", it.first.c_str());
             }
         }
     }

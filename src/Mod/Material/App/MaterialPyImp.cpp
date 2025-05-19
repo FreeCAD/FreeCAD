@@ -551,6 +551,7 @@ PyObject* MaterialPy::setAppearanceValue(PyObject* args)
     Py_INCREF(Py_None);
     return Py_None;
 }
+
 PyObject* MaterialPy::setValue(PyObject* args)
 {
     char* name;
@@ -595,7 +596,8 @@ PyObject* MaterialPy::setValue(PyObject* args)
         Py_Return;
     }
 
-    PyErr_SetString(PyExc_TypeError, "Either a string, a list, or an array are expected");
+    PyErr_SetString(PyExc_TypeError,
+                    "Either a string, a list, or an array are expected");
     return nullptr;
 }
 

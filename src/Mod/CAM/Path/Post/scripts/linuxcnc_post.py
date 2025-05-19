@@ -27,6 +27,7 @@ import Path
 import argparse
 import datetime
 import shlex
+import Path.Base.Util as PathUtil
 import Path.Post.Utils as PostUtils
 import PathScripts.PathUtils as PathUtils
 from builtins import open as pyopen
@@ -203,12 +204,8 @@ def export(objectslist, filename, argstring):
     for obj in objectslist:
 
         # Skip inactive operations
-        if hasattr(obj, "Active"):
-            if not obj.Active:
-                continue
-        if hasattr(obj, "Base") and hasattr(obj.Base, "Active"):
-            if not obj.Base.Active:
-                continue
+        if not PathUtil.activeForOp(obj):
+            continue
 
         # do the pre_op
         if OUTPUT_COMMENTS:
@@ -218,12 +215,7 @@ def export(objectslist, filename, argstring):
             gcode += linenumber() + line
 
         # get coolant mode
-        coolantMode = "None"
-        if hasattr(obj, "CoolantMode") or hasattr(obj, "Base") and hasattr(obj.Base, "CoolantMode"):
-            if hasattr(obj, "CoolantMode"):
-                coolantMode = obj.CoolantMode
-            else:
-                coolantMode = obj.Base.CoolantMode
+        coolantMode = PathUtil.coolantModeForOp(obj)
 
         # turn coolant on if required
         if OUTPUT_COMMENTS:

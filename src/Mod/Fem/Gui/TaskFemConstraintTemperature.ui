@@ -10,6 +10,18 @@
     <height>190</height>
    </rect>
   </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
+  </property>
+  <property name="baseSize">
+   <size>
+    <width>400</width>
+    <height>800</height>
+   </size>
+  </property>
   <property name="windowTitle">
    <string notr="true">Form</string>
   </property>
@@ -25,6 +37,12 @@
     <layout class="QHBoxLayout" name="hLayout1">
      <item>
       <widget class="QToolButton" name="btnAdd">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
        <property name="text">
         <string>Add</string>
        </property>
@@ -35,6 +53,12 @@
      </item>
      <item>
       <widget class="QToolButton" name="btnRemove">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
        <property name="text">
         <string>Remove</string>
        </property>

@@ -646,7 +646,7 @@ void PropertyDistanceList::Save(Base::Writer& writer) const
 void PropertyDistanceList::Restore(Base::XMLReader& reader)
 {
     reader.readElement("FloatList");
-    std::string file(reader.getAttribute("file"));
+    std::string file(reader.getAttribute<const char*>("file"));
 
     if (!file.empty()) {
         // initiate a file read
@@ -896,7 +896,7 @@ App::DocumentObjectExecReturn* Feature::execute()
         fRMS = sqrt(fRMS);
     }
 
-    Base::Console().Message("RMS value for '%s' with search radius [%.4f,%.4f] is: %.4f\n",
+    Base::Console().message("RMS value for '%s' with search radius [%.4f,%.4f] is: %.4f\n",
         this->Label.getValue(), -this->SearchRadius.getValue(), this->SearchRadius.getValue(), fRMS);
 #else
     unsigned long count = actual->countPoints();
@@ -966,7 +966,7 @@ App::DocumentObjectExecReturn* Feature::execute()
         }
     }
 
-    Base::Console().Message("RMS value for '%s' with search radius [%.4f,%.4f] is: %.4f\n",
+    Base::Console().message("RMS value for '%s' with search radius [%.4f,%.4f] is: %.4f\n",
                             this->Label.getValue(),
                             -this->SearchRadius.getValue(),
                             this->SearchRadius.getValue(),

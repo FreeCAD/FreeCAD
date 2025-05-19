@@ -63,7 +63,7 @@ PyMOD_INIT_FUNC(PathApp)
     }
 
     PyObject* pathModule = PathApp::initModule();
-    Base::Console().Log("Loading Path module... done\n");
+    Base::Console().log("Loading Path module... done\n");
 
     Py::Object module(pathModule);
 

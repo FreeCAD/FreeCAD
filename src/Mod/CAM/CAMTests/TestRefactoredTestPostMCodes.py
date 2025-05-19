@@ -103,8 +103,8 @@ class TestRefactoredTestPostMCodes(PathTestUtils.PathTestBase):
         gcode = self.post.export()[0][1]
         if debug:
             print(f"--------{nl}{gcode}--------{nl}")
-        # there are 4 lines of "other stuff" before the line we are interested in
-        self.assertEqual(gcode.splitlines()[4], expected)
+        # there are 3 lines of "other stuff" before the line we are interested in
+        self.assertEqual(gcode.splitlines()[3], expected)
 
     #############################################################################
     #
@@ -162,8 +162,26 @@ class TestRefactoredTestPostMCodes(PathTestUtils.PathTestBase):
 
     def test20060(self):
         """Test M6 command Generation."""
-        self.single_compare("M6", "M6", "")
-        self.single_compare("M06", "M06", "")
+
+        c = Path.Command("M6 T2")
+
+        self.profile_op.Path = Path.Path([c])
+
+        self.job.PostProcessorArgs = "--tool_change"
+        gcode = self.post.export()[0][1]
+        split_gcode = gcode.splitlines()
+        # print(f"--------{nl}{gcode}--------{nl}")
+        self.assertEqual(split_gcode[4], "M6 T2")
+
+        c = Path.Command("M06 T02")
+
+        self.profile_op.Path = Path.Path([c])
+
+        self.job.PostProcessorArgs = "--tool_change"
+        gcode = self.post.export()[0][1]
+        split_gcode = gcode.splitlines()
+        # print(f"--------{nl}{gcode}--------{nl}")
+        self.assertEqual(split_gcode[4], "M06 T2")
 
     #############################################################################
 

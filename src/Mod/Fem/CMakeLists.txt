@@ -1,6 +1,12 @@
 
 if(BUILD_FEM_VTK)
     add_definitions(-DFC_USE_VTK)
+
+    # we may use VTK but do not have the python wrappers available
+    if(BUILD_FEM_VTK_PYTHON)
+        add_definitions(-DFC_USE_VTK_PYTHON)
+    endif(BUILD_FEM_VTK_PYTHON)
+
 endif(BUILD_FEM_VTK)
 
 
@@ -207,6 +213,13 @@ SET(FemObjects_SRCS
     femobjects/solver_ccxtools.py
 )
 
+if(BUILD_FEM_VTK_PYTHON)
+    SET(FemObjects_SRCS
+        ${FemObjects_SRCS}
+        femobjects/post_glyphfilter.py
+    )
+endif(BUILD_FEM_VTK_PYTHON)
+
 SET(FemResult_SRCS
     femresult/__init__.py
     femresult/resulttools.py
@@ -235,6 +248,8 @@ SET(FemSolverCalculix_SRCS
     femsolver/calculix/write_constraint_centrif.py
     femsolver/calculix/write_constraint_contact.py
     femsolver/calculix/write_constraint_displacement.py
+    femsolver/calculix/write_constraint_electricchargedensity.py
+    femsolver/calculix/write_constraint_electrostatic.py
     femsolver/calculix/write_constraint_fixed.py
     femsolver/calculix/write_constraint_fluidsection.py
     femsolver/calculix/write_constraint_force.py
@@ -609,6 +624,13 @@ SET(FemGuiTaskPanels_SRCS
     femtaskpanels/task_solver_ccxtools.py
 )
 
+if(BUILD_FEM_VTK_PYTHON)
+    SET(FemGuiTaskPanels_SRCS
+        ${FemGuiTaskPanels_SRCS}
+        femtaskpanels/task_post_glyphfilter.py
+    )
+endif(BUILD_FEM_VTK_PYTHON)
+
 SET(FemGuiTests_SRCS
     femtest/gui/__init__.py
     femtest/gui/test_open.py
@@ -619,6 +641,7 @@ SET(FemGuiUtils_SRCS
     femguiutils/disambiguate_solid_selection.py
     femguiutils/migrate_gui.py
     femguiutils/selection_widgets.py
+    femguiutils/vtk_module_handling.py
 )
 
 SET(FemGuiViewProvider_SRCS
@@ -658,6 +681,13 @@ SET(FemGuiViewProvider_SRCS
     femviewprovider/view_solver_calculix.py
     femviewprovider/view_solver_ccxtools.py
 )
+
+if(BUILD_FEM_VTK_PYTHON)
+    SET(FemGuiViewProvider_SRCS
+        ${FemGuiViewProvider_SRCS}
+        femviewprovider/view_post_glyphfilter.py
+    )
+endif(BUILD_FEM_VTK_PYTHON)
 
 SET(FemGuiPreferencePages_SRCS
     fempreferencepages/__init__.py

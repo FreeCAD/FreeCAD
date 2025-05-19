@@ -274,7 +274,7 @@ void MaterialTreeWidget::updateMaterial(const QString& uuid)
         material = std::make_shared<Materials::Material>(*getMaterialManager().getMaterial(uuid));
     }
     catch (Materials::MaterialNotFound const&) {
-        Base::Console().Log("*** Unable to load material '%s'\n", uuid.toStdString().c_str());
+        Base::Console().log("*** Unable to load material '%s'\n", uuid.toStdString().c_str());
     }
 
     m_materialDisplay = material->getName();
@@ -305,7 +305,7 @@ bool MaterialTreeWidget::findInTree(const QStandardItem& node,
 
 QModelIndex MaterialTreeWidget::findInTree(const QString& uuid)
 {
-    auto model = dynamic_cast<QStandardItemModel*>(m_materialTree->model());
+    auto model = qobject_cast<QStandardItemModel*>(m_materialTree->model());
     auto root = model->invisibleRootItem();
 
     QModelIndex index;
@@ -409,7 +409,7 @@ void MaterialTreeWidget::updateMaterialTree()
     _favorites.clear();
     _recents.clear();
 
-    auto model = dynamic_cast<QStandardItemModel*>(m_materialTree->model());
+    auto model = qobject_cast<QStandardItemModel*>(m_materialTree->model());
     model->clear();
 
     getFavorites();
@@ -539,7 +539,7 @@ void MaterialTreeWidget::fillMaterialTree()
     auto param = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/Mod/Material/TreeWidget/MaterialTree");
 
-    auto model = dynamic_cast<QStandardItemModel*>(m_materialTree->model());
+    auto model = qobject_cast<QStandardItemModel*>(m_materialTree->model());
 
     if (_filterOptions.includeFavorites()) {
         auto lib = new QStandardItem(tr("Favorites"));
@@ -689,7 +689,7 @@ void MaterialTreeWidget::onSelectMaterial(const QItemSelection& selected,
 
     // Get the UUID before changing the underlying data model
     QString uuid;
-    auto model = dynamic_cast<QStandardItemModel*>(m_materialTree->model());
+    auto model = qobject_cast<QStandardItemModel*>(m_materialTree->model());
     QModelIndexList indexes = selected.indexes();
     for (auto it = indexes.begin(); it != indexes.end(); it++) {
         QStandardItem* item = model->itemFromIndex(*it);
@@ -711,7 +711,7 @@ void MaterialTreeWidget::onSelectMaterial(const QItemSelection& selected,
 
 void MaterialTreeWidget::onDoubleClick(const QModelIndex& index)
 {
-    auto model = dynamic_cast<QStandardItemModel*>(m_materialTree->model());
+    auto model = qobject_cast<QStandardItemModel*>(m_materialTree->model());
     auto item = model->itemFromIndex(index);
 
     if (item) {
@@ -739,7 +739,7 @@ void MaterialTreeWidget::saveMaterialTree()
     param->Clear();
 
     auto tree = m_materialTree;
-    auto model = dynamic_cast<QStandardItemModel*>(tree->model());
+    auto model = qobject_cast<QStandardItemModel*>(tree->model());
 
     auto root = model->invisibleRootItem();
     for (int i = 0; i < root->rowCount(); i++) {

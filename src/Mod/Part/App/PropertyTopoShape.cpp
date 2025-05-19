@@ -327,26 +327,26 @@ void PropertyPartShape::Restore(Base::XMLReader &reader)
     _Ver = "?";
     bool has_ver = reader.hasAttribute("ElementMap");
     if (has_ver)
-        _Ver = reader.getAttribute("ElementMap");
+        _Ver = reader.getAttribute<const char*>("ElementMap");
 
-    int hasher_idx = static_cast<int>(reader.getAttributeAsInteger("HasherIndex", "-1"));
-    int save_hasher = static_cast<int>(reader.getAttributeAsInteger("SaveHasher", "0"));
+    int hasher_idx = reader.getAttribute<int>("HasherIndex", -1);
+    int save_hasher = reader.getAttribute<int>("SaveHasher", 0);
 
     TopoShape shape;
 
     if (reader.hasAttribute("file")) {
-        std::string file = reader.getAttribute("file");
+        std::string file = reader.getAttribute<const char*>("file");
         if (!file.empty()) {
             // initiate a file read
             reader.addFile(file.c_str(), this);
         }
     }
-    else if (reader.hasAttribute(("binary")) && reader.getAttributeAsInteger("binary")) {
+    else if (reader.hasAttribute(("binary")) && reader.getAttribute<long>("binary")) {
         TopoShape shape;
         shape.importBinary(reader.beginCharStream());
         shape = shape.getShape();
     }
-    else if (reader.hasAttribute("brep") && reader.getAttributeAsInteger("brep")) {
+    else if (reader.hasAttribute("brep") && reader.getAttribute<long>("brep")) {
         shape.importBrep(reader.beginCharStream(Base::CharStreamFormat::Raw));
     }
 
@@ -481,11 +481,11 @@ void PropertyPartShape::saveToFile(Base::Writer &writer) const
         App::PropertyContainer* father = this->getContainer();
         if (father && father->isDerivedFrom<App::DocumentObject>()) {
             App::DocumentObject* obj = static_cast<App::DocumentObject*>(father);
-            Base::Console().Error("Shape of '%s' cannot be written to BRep file '%s'\n",
+            Base::Console().error("Shape of '%s' cannot be written to BRep file '%s'\n",
                 obj->Label.getValue(),fi.filePath().c_str());
         }
         else {
-            Base::Console().Error("Cannot save BRep file '%s'\n", fi.filePath().c_str());
+            Base::Console().error("Cannot save BRep file '%s'\n", fi.filePath().c_str());
         }
 
         std::stringstream ss;
@@ -533,11 +533,11 @@ void PropertyPartShape::loadFromFile(Base::Reader &reader)
             App::PropertyContainer* father = this->getContainer();
             if (father && father->isDerivedFrom<App::DocumentObject>()) {
                 App::DocumentObject* obj = static_cast<App::DocumentObject*>(father);
-                Base::Console().Error("BRep file '%s' with shape of '%s' seems to be empty\n",
+                Base::Console().error("BRep file '%s' with shape of '%s' seems to be empty\n",
                     fi.filePath().c_str(),obj->Label.getValue());
             }
             else {
-                Base::Console().Warning("Loaded BRep file '%s' seems to be empty\n", fi.filePath().c_str());
+                Base::Console().warning("Loaded BRep file '%s' seems to be empty\n", fi.filePath().c_str());
             }
         }
     }
@@ -558,7 +558,7 @@ void PropertyPartShape::loadFromStream(Base::Reader &reader)
     }
     catch (const std::exception&) {
         if (!reader.eof())
-            Base::Console().Warning("Failed to load BRep file %s\n", reader.getFileName().c_str());
+            Base::Console().warning("Failed to load BRep file %s\n", reader.getFileName().c_str());
     }
 }
 
@@ -843,7 +843,7 @@ void PropertyFilletEdges::Save (Base::Writer &writer) const
 void PropertyFilletEdges::Restore(Base::XMLReader &reader)
 {
     reader.readElement("FilletEdges");
-    std::string file (reader.getAttribute("file") );
+    std::string file (reader.getAttribute<const char*>("file") );
 
     if (!file.empty()) {
         // initiate a file read

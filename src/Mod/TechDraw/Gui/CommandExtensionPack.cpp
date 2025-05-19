@@ -183,7 +183,7 @@ void CmdTechDrawExtensionHoleCircle::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     execHoleCircle(this);
-    //Base::Console().Message("HoleCircle started\n");
+    //Base::Console().message("HoleCircle started\n");
 }
 
 bool CmdTechDrawExtensionHoleCircle::isActive()
@@ -307,7 +307,7 @@ void CmdTechDrawExtensionCircleCenterLinesGroup::activated(int iMsg)
             execHoleCircle(this);
             break;
         default:
-            Base::Console().Message("CMD::CVGrp - invalid iMsg: %d\n", iMsg);
+            Base::Console().message("CMD::CVGrp - invalid iMsg: %d\n", iMsg);
     };
 }
 
@@ -612,7 +612,7 @@ CmdTechDrawExtensionThreadsGroup::CmdTechDrawExtensionThreadsGroup()
 
 void CmdTechDrawExtensionThreadsGroup::activated(int iMsg)
 {
-    //    Base::Console().Message("CMD::TechDrawExtensionThreadsGroup - activated(%d)\n", iMsg);
+    //    Base::Console().message("CMD::TechDrawExtensionThreadsGroup - activated(%d)\n", iMsg);
     Gui::TaskView::TaskDialog* dlg = Gui::Control().activeDialog();
     if (dlg) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Task In Progress"),
@@ -636,7 +636,7 @@ void CmdTechDrawExtensionThreadsGroup::activated(int iMsg)
             execThreadBoltBottom(this);
             break;
         default:
-            Base::Console().Message("CMD::CVGrp - invalid iMsg: %d\n", iMsg);
+            Base::Console().message("CMD::CVGrp - invalid iMsg: %d\n", iMsg);
     };
 }
 
@@ -851,7 +851,7 @@ CmdTechDrawExtensionVertexAtIntersection::CmdTechDrawExtensionVertexAtIntersecti
 void CmdTechDrawExtensionVertexAtIntersection::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    //Base::Console().Message("VertexAtIntersection started\n");
+    //Base::Console().message("VertexAtIntersection started\n");
     std::vector<Gui::SelectionObject> selection;
     TechDraw::DrawViewPart* objFeat{nullptr};
     if (!_checkSel(this, selection, objFeat, QT_TRANSLATE_NOOP("Command","TechDraw Cosmetic Intersection Vertex(es)")))  {
@@ -953,7 +953,7 @@ CmdTechDrawExtensionDrawCosmArc::CmdTechDrawExtensionDrawCosmArc()
 void CmdTechDrawExtensionDrawCosmArc::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    //Base::Console().Message("Cosmetic Arc started\n");
+    //Base::Console().message("Cosmetic Arc started\n");
     execDrawCosmArc(this);
 }
 
@@ -1016,7 +1016,7 @@ CmdTechDrawExtensionDrawCosmCircle::CmdTechDrawExtensionDrawCosmCircle()
 void CmdTechDrawExtensionDrawCosmCircle::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    //Base::Console().Message("Cosmetic Circle started\n");
+    //Base::Console().message("Cosmetic Circle started\n");
     execDrawCosmCircle(this);
 }
 
@@ -1081,7 +1081,7 @@ CmdTechDrawExtensionDrawCosmCircle3Points::CmdTechDrawExtensionDrawCosmCircle3Po
 void CmdTechDrawExtensionDrawCosmCircle3Points::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    //Base::Console().Message("Cosmetic Circle 3 Points started\n");
+    //Base::Console().message("Cosmetic Circle 3 Points started\n");
     execDrawCosmCircle3Points(this);
 }
 
@@ -1115,7 +1115,7 @@ CmdTechDrawExtensionDrawCirclesGroup::CmdTechDrawExtensionDrawCirclesGroup()
 
 void CmdTechDrawExtensionDrawCirclesGroup::activated(int iMsg)
 {
-    //    Base::Console().Message("CMD::ExtensionDrawCirclesGroup - activated(%d)\n", iMsg);
+    //    Base::Console().message("CMD::ExtensionDrawCirclesGroup - activated(%d)\n", iMsg);
     Gui::TaskView::TaskDialog* dlg = Gui::Control().activeDialog();
     if (dlg) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Task In Progress"),
@@ -1136,7 +1136,7 @@ void CmdTechDrawExtensionDrawCirclesGroup::activated(int iMsg)
             execDrawCosmCircle3Points(this);
             break;
         default:
-            Base::Console().Message("CMD::CVGrp - invalid iMsg: %d\n", iMsg);
+            Base::Console().message("CMD::CVGrp - invalid iMsg: %d\n", iMsg);
     };
 }
 
@@ -1364,7 +1364,7 @@ CmdTechDrawExtensionLinePPGroup::CmdTechDrawExtensionLinePPGroup()
 
 void CmdTechDrawExtensionLinePPGroup::activated(int iMsg)
 {
-    //    Base::Console().Message("CMD::ExtensionLinePPGroup - activated(%d)\n", iMsg);
+    //    Base::Console().message("CMD::ExtensionLinePPGroup - activated(%d)\n", iMsg);
     Gui::TaskView::TaskDialog* dlg = Gui::Control().activeDialog();
     if (dlg) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Task In Progress"),
@@ -1382,7 +1382,7 @@ void CmdTechDrawExtensionLinePPGroup::activated(int iMsg)
             execLineParallelPerpendicular(this, false);
             break;
         default:
-            Base::Console().Message("CMD::CVGrp - invalid iMsg: %d\n", iMsg);
+            Base::Console().message("CMD::CVGrp - invalid iMsg: %d\n", iMsg);
     };
 }
 
@@ -1463,7 +1463,7 @@ CmdTechDrawExtensionLockUnlockView::CmdTechDrawExtensionLockUnlockView()
     sGroup = QT_TR_NOOP("TechDraw");
     sMenuText = QT_TR_NOOP("Lock/Unlock View");
     sToolTipText = QT_TR_NOOP("Lock or unlock the position of a view:<br>\
-- Select a single view<br>\
+- Select view(s)<br>\
 - Click this tool");
     sWhatsThis = "TechDraw_ExtensionLockUnlockView";
     sStatusTip = sMenuText;
@@ -1472,18 +1472,22 @@ CmdTechDrawExtensionLockUnlockView::CmdTechDrawExtensionLockUnlockView()
 
 void CmdTechDrawExtensionLockUnlockView::activated(int iMsg)
 {
-    // lock/unlock a selected view
     Q_UNUSED(iMsg);
-    std::vector<Gui::SelectionObject> selection;
-    TechDraw::DrawViewPart* objFeat{nullptr};
-    if (!_checkSel(this, selection, objFeat, QT_TRANSLATE_NOOP("Command","TechDraw Lock/Unlock View")))  {
+    std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx();
+
+    if (selection.empty()) {
         return;
     }
+
     Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Lock/Unlock View"));
-    if (objFeat->isDerivedFrom<TechDraw::DrawViewPart>()) {
-        bool lockPosition = objFeat->LockPosition.getValue();
-        lockPosition = !lockPosition;
-        objFeat->LockPosition.setValue(lockPosition);
+    for (auto& sel : selection) {
+        auto* obj = static_cast<TechDraw::DrawViewPart*>(sel.getObject());
+
+        if (obj->isDerivedFrom<TechDraw::DrawViewPart>()) {
+            bool lockPosition = obj->LockPosition.getValue();
+            lockPosition = !lockPosition;
+            obj->LockPosition.setValue(lockPosition);
+        }
     }
     Gui::Command::commitCommand();
 }
@@ -1603,7 +1607,7 @@ void CmdTechDrawExtensionExtendLine::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     execExtendShortenLine(this, true);
-    ///Base::Console().Message("ExtendLine started\n");
+    ///Base::Console().message("ExtendLine started\n");
 }
 
 bool CmdTechDrawExtensionExtendLine::isActive()
@@ -1638,7 +1642,7 @@ void CmdTechDrawExtensionShortenLine::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     execExtendShortenLine(this, false);
-    ///Base::Console().Message("ShortenLine started\n");
+    ///Base::Console().message("ShortenLine started\n");
 }
 
 bool CmdTechDrawExtensionShortenLine::isActive()
@@ -1670,7 +1674,7 @@ CmdTechDrawExtendShortenLineGroup::CmdTechDrawExtendShortenLineGroup()
 
 void CmdTechDrawExtendShortenLineGroup::activated(int iMsg)
 {
-    // Base::Console().Message("CMD::ExtendShortenLineGroup - activated(%d)\n", iMsg);
+    // Base::Console().message("CMD::ExtendShortenLineGroup - activated(%d)\n", iMsg);
     Gui::TaskView::TaskDialog* dlg = Gui::Control().activeDialog();
     if (dlg) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Task In Progress"),
@@ -1688,7 +1692,7 @@ void CmdTechDrawExtendShortenLineGroup::activated(int iMsg)
             execExtendShortenLine(this, false);
             break;
         default:
-            Base::Console().Message("CMD::CVGrp - invalid iMsg: %d\n", iMsg);
+            Base::Console().message("CMD::CVGrp - invalid iMsg: %d\n", iMsg);
     };
 }
 
@@ -2038,7 +2042,7 @@ std::string _createBalloon(Gui::Command* cmd, TechDraw::DrawViewPart* objFeat)
     std::string featName;
     TechDraw::DrawPage* page = objFeat->findParentPage();
     Gui::Document* guiDoc = Gui::Application::Instance->getDocument(page->getDocument());
-    auto pageVP = dynamic_cast<ViewProviderPage*>(guiDoc->getViewProvider(page));
+    auto pageVP = freecad_cast<ViewProviderPage*>(guiDoc->getViewProvider(page));
     if (pageVP) {
         QGSPage* scenePage = pageVP->getQGSPage();
         featName = scenePage->getDrawPage()->getDocument()->getUniqueObjectName("Balloon");

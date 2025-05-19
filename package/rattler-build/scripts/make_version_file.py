@@ -11,13 +11,16 @@ import SubWCRev
 
 gitInfo = SubWCRev.GitControl()
 gitInfo.extractInfo("","")
+gitDescription = os.environ['BUILD_TAG']
+
 i = open("src/Build/Version.h.cmake")
 content = []
 for line in i.readlines():
-    line = line.replace("${PACKAGE_WCREF}",gitInfo.rev)
-    line = line.replace("${PACKAGE_WCDATE}",gitInfo.date)
-    line = line.replace("${PACKAGE_WCURL}",gitInfo.url)
-    content.append(line)
+	line = line.replace("-${PACKAGE_VERSION_SUFFIX}",gitDescription)
+	line = line.replace("${PACKAGE_WCREF}",gitInfo.rev)
+	line = line.replace("${PACKAGE_WCDATE}",gitInfo.date)
+	line = line.replace("${PACKAGE_WCURL}",gitInfo.url)
+	content.append(line)
 
 with open("src/Build/Version.h.cmake", "w") as o:
 	content.append('// Git relevant stuff\n')
@@ -36,6 +39,6 @@ p = subprocess.Popen(["git", "-c", "user.name='github-actions[bot]'", "-c", "use
 		       "commit", "-a", "-m", "add git information"], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 
 out, err = p.communicate()
-		     		       
+
 print(out.decode())
 print(err.decode())

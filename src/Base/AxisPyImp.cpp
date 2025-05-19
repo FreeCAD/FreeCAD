@@ -24,12 +24,12 @@
 
 #include "GeometryPyCXX.h"
 
-// inclusion of the generated files (generated out of AxisPy.pyi)
+// generated out of Axis.pyi
 #include "AxisPy.h"
 #include "AxisPy.cpp"
 
-#include "VectorPy.h"
 #include "PlacementPy.h"
+#include "VectorPy.h"
 
 using namespace Base;
 
@@ -62,18 +62,18 @@ int AxisPy::PyInit(PyObject* args, PyObject* /*kwd*/)
     }
 
     PyErr_Clear();
-    if (PyArg_ParseTuple(args, "O!", &(Base::AxisPy::Type), &o)) {
-        Base::Axis* a = static_cast<Base::AxisPy*>(o)->getAxisPtr();
+    if (PyArg_ParseTuple(args, "O!", &(AxisPy::Type), &o)) {
+        auto a = static_cast<AxisPy*>(o)->getAxisPtr();
         *(getAxisPtr()) = *a;
         return 0;
     }
 
     PyErr_Clear();
     PyObject* d {};
-    if (PyArg_ParseTuple(args, "O!O!", &(Base::VectorPy::Type), &o, &(Base::VectorPy::Type), &d)) {
+    if (PyArg_ParseTuple(args, "O!O!", &(VectorPy::Type), &o, &(VectorPy::Type), &d)) {
         // NOTE: The first parameter defines the base (origin) and the second the direction.
-        *getAxisPtr() = Base::Axis(static_cast<Base::VectorPy*>(o)->value(),
-                                   static_cast<Base::VectorPy*>(d)->value());
+        *getAxisPtr() =
+            Axis(static_cast<VectorPy*>(o)->value(), static_cast<VectorPy*>(d)->value());
         return 0;
     }
 
@@ -114,8 +114,7 @@ PyObject* AxisPy::reversed(PyObject* args)
     if (!PyArg_ParseTuple(args, "")) {
         return nullptr;
     }
-    Base::Axis a = getAxisPtr()->reversed();
-    return new AxisPy(new Axis(a));
+    return new AxisPy(new Axis(getAxisPtr()->reversed()));
 }
 
 Py::Object AxisPy::getBase() const

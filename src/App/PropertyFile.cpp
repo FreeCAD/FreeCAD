@@ -398,7 +398,7 @@ void PropertyFileIncluded::Restore(Base::XMLReader& reader)
 {
     reader.readElement("FileIncluded");
     if (reader.hasAttribute("file")) {
-        string file(reader.getAttribute("file"));
+        string file(reader.getAttribute<const char*>("file"));
         if (!file.empty()) {
             // initiate a file read
             reader.addFile(file.c_str(), this);
@@ -411,7 +411,7 @@ void PropertyFileIncluded::Restore(Base::XMLReader& reader)
     }
     // section is XML stream
     else if (reader.hasAttribute("data")) {
-        string file(reader.getAttribute("data"));
+        string file(reader.getAttribute<const char*>("data"));
         if (!file.empty()) {
             // is in the document transient path
             aboutToSetValue();
@@ -509,7 +509,7 @@ Property* PropertyFileIncluded::Copy() const
         }
 
         // remember the new name for the Undo
-        Base::Console().Log("Copy '%s' to '%s'\n", _cValue.c_str(), newName.filePath().c_str());
+        Base::Console().log("Copy '%s' to '%s'\n", _cValue.c_str(), newName.filePath().c_str());
         prop->_cValue = newName.filePath().c_str();
 
         // make backup files writable to avoid copying them again on undo/redo

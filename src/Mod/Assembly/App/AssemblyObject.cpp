@@ -197,7 +197,7 @@ int AssemblyObject::generateSimulation(App::DocumentObject* sim)
         mbdAssembly->runKINEMATIC();
     }
     catch (...) {
-        Base::Console().Error("Generation of simulation failed\n");
+        Base::Console().error("Generation of simulation failed\n");
         motions.clear();
         return -1;
     }
@@ -367,7 +367,7 @@ bool AssemblyObject::validateNewPlacements()
                 }
 
                 if (!oldPlc.isSame(newPlacement)) {
-                    Base::Console().Warning(
+                    Base::Console().warning(
                         "Assembly : Ignoring bad solve, a grounded object (%s) moved.\n",
                         obj->getFullLabel());
                     return false;
@@ -600,7 +600,7 @@ T* AssemblyObject::getGroup()
     }
     for (auto group : groups) {
         if (hasObject(group)) {
-            return dynamic_cast<T*>(group);
+            return freecad_cast<T*>(group);
         }
     }
     return nullptr;
@@ -621,7 +621,7 @@ ViewGroup* AssemblyObject::getExplodedViewGroup() const
     }
     for (auto viewGroup : viewGroups) {
         if (hasObject(viewGroup)) {
-            return dynamic_cast<ViewGroup*>(viewGroup);
+            return freecad_cast<ViewGroup*>(viewGroup);
         }
     }
     return nullptr;
@@ -940,7 +940,7 @@ void AssemblyObject::removeUnconnectedJoints(std::vector<App::DocumentObject*>& 
                 App::DocumentObject* obj2 = getMovingPartFromRef(this, joint, "Reference2");
                 if (!isObjInSetOfObjRefs(obj1, connectedParts)
                     || !isObjInSetOfObjRefs(obj2, connectedParts)) {
-                    Base::Console().Warning(
+                    Base::Console().warning(
                         "%s is unconnected to a grounded part so it is ignored.\n",
                         joint->getFullName());
                     return true;  // Remove joint if any connected object is not in connectedParts
@@ -1550,7 +1550,7 @@ std::string AssemblyObject::handleOneSideOfJoint(App::DocumentObject* joint,
     App::DocumentObject* obj = getObjFromRef(joint, propRefName);
 
     if (!part || !obj) {
-        Base::Console().Warning("The property %s of Joint %s is bad.",
+        Base::Console().warning("The property %s of Joint %s is bad.",
                                 propRefName,
                                 joint->getFullName());
         return "";
@@ -1614,7 +1614,7 @@ void AssemblyObject::getRackPinionMarkers(App::DocumentObject* joint,
     Base::Placement plc2 = getPlacementFromProp(joint, "Placement2");
 
     if (!part1 || !obj1) {
-        Base::Console().Warning("Reference1 of Joint %s is bad.", joint->getFullName());
+        Base::Console().warning("Reference1 of Joint %s is bad.", joint->getFullName());
         return;
     }
 
@@ -1935,7 +1935,7 @@ std::vector<AssemblyLink*> AssemblyObject::getSubAssemblies()
         doc->getObjectsOfType(Assembly::AssemblyLink::getClassTypeId());
     for (auto assembly : assemblies) {
         if (hasObject(assembly)) {
-            subAssemblies.push_back(dynamic_cast<AssemblyLink*>(assembly));
+            subAssemblies.push_back(freecad_cast<AssemblyLink*>(assembly));
         }
     }
 

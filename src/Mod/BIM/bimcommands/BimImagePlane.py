@@ -49,6 +49,7 @@ class BIM_ImagePlane:
         from PySide import QtGui
         import draftguitools.gui_trackers as DraftTrackers
 
+        self.doc = FreeCAD.ActiveDocument
         self.tracker = DraftTrackers.rectangleTracker()
         self.basepoint = None
         self.opposite = None
@@ -86,6 +87,7 @@ class BIM_ImagePlane:
     def PointCallback(self, point, snapinfo):
         import os
         import DraftVecUtils
+        import WorkingPlane
 
         if not point:
             # cancelled
@@ -109,21 +111,20 @@ class BIM_ImagePlane:
             midpoint = self.basepoint.add(
                 self.opposite.sub(self.basepoint).multiply(0.5)
             )
-            rotation = FreeCAD.DraftWorkingPlane.getRotation().Rotation
+            wp = WorkingPlane.get_working_plane()
+            rotation = wp.get_placement().Rotation
             diagonal = self.opposite.sub(self.basepoint)
-            length = DraftVecUtils.project(diagonal, FreeCAD.DraftWorkingPlane.u).Length
-            height = DraftVecUtils.project(diagonal, FreeCAD.DraftWorkingPlane.v).Length
-            FreeCAD.ActiveDocument.openTransaction("Create image plane")
-            image = FreeCAD.ActiveDocument.addObject(
-                "Image::ImagePlane", "ImagePlane"
-            )
+            length = DraftVecUtils.project(diagonal, wp.u).Length
+            height = DraftVecUtils.project(diagonal, wp.v).Length
+            self.doc.openTransaction("Create image plane")
+            image = self.doc.addObject("Image::ImagePlane", "ImagePlane")
             image.Label = os.path.splitext(os.path.basename(self.filename))[0]
             image.ImageFile = self.filename
             image.Placement = FreeCAD.Placement(midpoint, rotation)
             image.XSize = length
             image.YSize = height
-            FreeCAD.ActiveDocument.commitTransaction()
-            FreeCAD.ActiveDocument.recompute()
+            self.doc.commitTransaction()
+            self.doc.recompute()
 
 
 FreeCADGui.addCommand("BIM_ImagePlane", BIM_ImagePlane())

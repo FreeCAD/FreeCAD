@@ -149,7 +149,7 @@ void QGIBalloonLabel::mouseDoubleClickEvent(QGraphicsSceneMouseEvent* event)
         return;
     }
 
-    auto ViewProvider = dynamic_cast<ViewProviderBalloon*>(
+    auto ViewProvider = freecad_cast<ViewProviderBalloon*>(
         qgivBalloon->getViewProvider(qgivBalloon->getViewObject()));
     if (!ViewProvider) {
         qWarning() << "QGIBalloonLabel::mouseDoubleClickEvent: No valid view provider";
@@ -331,7 +331,7 @@ bool QGIViewBalloon::getGroupSelection()
 //Set selection state for this and its children
 void QGIViewBalloon::setGroupSelection(bool isSelected)
 {
-    //    Base::Console().Message("QGIVB::setGroupSelection(%d)\n", b);
+    //    Base::Console().message("QGIVB::setGroupSelection(%d)\n", b);
     setSelected(isSelected);
     balloonLabel->setSelected(isSelected);
     balloonLines->setSelected(isSelected);
@@ -341,7 +341,7 @@ void QGIViewBalloon::setGroupSelection(bool isSelected)
 
 void QGIViewBalloon::select(bool state)
 {
-    //    Base::Console().Message("QGIVBall::select(%d)\n", state);
+    //    Base::Console().message("QGIVBall::select(%d)\n", state);
     setSelected(state);
     draw();
 }
@@ -354,7 +354,7 @@ void QGIViewBalloon::hover(bool state)
 
 void QGIViewBalloon::setViewPartFeature(TechDraw::DrawViewBalloon* balloonFeat)
 {
-    //    Base::Console().Message("QGIVB::setViewPartFeature()\n");
+    //    Base::Console().message("QGIVB::setViewPartFeature()\n");
     if (!balloonFeat) {
         return;
     }
@@ -366,7 +366,7 @@ void QGIViewBalloon::setViewPartFeature(TechDraw::DrawViewBalloon* balloonFeat)
     double scale = 1.0;
     App::DocumentObject* docObj = balloonFeat->SourceView.getValue();
     if (docObj) {
-        balloonParent = dynamic_cast<DrawView*>(docObj);
+        balloonParent = freecad_cast<DrawView*>(docObj);
         if (balloonParent) {
             scale = balloonParent->getScale();
         }
@@ -540,14 +540,14 @@ void QGIViewBalloon::balloonLabelDragFinished()
 //from QGVP::mouseReleaseEvent - pos = eventPos in scene coords?
 void QGIViewBalloon::placeBalloon(QPointF pos)
 {
-    //    Base::Console().Message("QGIVB::placeBalloon(%s)\n",
+    //    Base::Console().message("QGIVB::placeBalloon(%s)\n",
     //                            DrawUtil::formatVector(pos).c_str());
     auto balloon(dynamic_cast<TechDraw::DrawViewBalloon*>(getViewObject()));
     if (!balloon) {
         return;
     }
 
-    DrawView* balloonParent = dynamic_cast<DrawView*>(balloon->SourceView.getValue());
+    DrawView* balloonParent = freecad_cast<DrawView*>(balloon->SourceView.getValue());
     if (!balloonParent) {
         return;
     }
@@ -565,7 +565,7 @@ void QGIViewBalloon::placeBalloon(QPointF pos)
     QGIView* qgivParent = nullptr;
     QPointF viewPos;
     Gui::ViewProvider* objVp = QGIView::getViewProvider(balloonParent);
-    auto partVP = dynamic_cast<ViewProviderViewPart*>(objVp);
+    auto partVP = freecad_cast<ViewProviderViewPart*>(objVp);
     if (partVP) {
         qgivParent = partVP->getQView();
         if (qgivParent) {
@@ -870,7 +870,7 @@ void QGIViewBalloon::setPrettyPre(void)
 
 void QGIViewBalloon::setPrettySel(void)
 {
-    //    Base::Console().Message("QGIVBal::setPrettySel()\n");
+    //    Base::Console().message("QGIVBal::setPrettySel()\n");
     arrow->setPrettySel();
     //    balloonShape->setFill(Qt::white, Qt::NoBrush);
     balloonShape->setPrettySel();
@@ -889,7 +889,7 @@ void QGIViewBalloon::setPrettyNormal(void)
 void QGIViewBalloon::drawBorder(void)
 {
     //Dimensions have no border!
-    //    Base::Console().Message("TRACE - QGIViewDimension::drawBorder - doing nothing!\n");
+    //    Base::Console().message("TRACE - QGIViewDimension::drawBorder - doing nothing!\n");
 }
 
 void QGIViewBalloon::paint(QPainter* painter, const QStyleOptionGraphicsItem* option,
@@ -944,7 +944,7 @@ QColor QGIViewBalloon::prefNormalColor()
     ViewProviderBalloon* vpBalloon = nullptr;
     Gui::ViewProvider* vp = getViewProvider(getBalloonFeat());
     if (vp) {
-        vpBalloon = dynamic_cast<ViewProviderBalloon*>(vp);
+        vpBalloon = freecad_cast<ViewProviderBalloon*>(vp);
         if (vpBalloon) {
             Base::Color fcColor = Preferences::getAccessibleColor(vpBalloon->Color.getValue());
             setNormalColor(fcColor.asValue<QColor>());
@@ -968,9 +968,9 @@ DrawView* QGIViewBalloon::getSourceView() const
 {
     DrawView* balloonParent = nullptr;
     App::DocumentObject* docObj = getViewObject();
-    DrawViewBalloon* dvb = dynamic_cast<DrawViewBalloon*>(docObj);
+    DrawViewBalloon* dvb = freecad_cast<DrawViewBalloon*>(docObj);
     if (dvb) {
-        balloonParent = dynamic_cast<DrawView*>(dvb->SourceView.getValue());
+        balloonParent = freecad_cast<DrawView*>(dvb->SourceView.getValue());
     }
     return balloonParent;
 }

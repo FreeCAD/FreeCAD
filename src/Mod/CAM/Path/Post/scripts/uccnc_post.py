@@ -33,6 +33,7 @@
 import FreeCAD
 from FreeCAD import Units
 import Path
+import Path.Base.Util as PathUtil
 import PathScripts.PathUtils as PathUtils
 import argparse
 import datetime
@@ -451,6 +452,10 @@ def export(objectslist, filename, argstring):
     # write the code body
     for obj in objectslist:
 
+        # Skip inactive operations
+        if not PathUtil.activeForOp(obj):
+            continue
+
         # pre_op
         if OUTPUT_COMMENTS:
             gcode += append("(operation initialise: %s)\n" % obj.Label)
@@ -458,18 +463,17 @@ def export(objectslist, filename, argstring):
             gcode += append(line)
 
         # turn coolant on if required
-        if hasattr(obj, "CoolantMode"):
-            coolantMode = obj.CoolantMode
-            if coolantMode == "Mist":
-                if OUTPUT_COMMENTS:
-                    gcode += append("M7 (coolant: mist on)\n")
-                else:
-                    gcode += append("M7\n")
-            if coolantMode == "Flood":
-                if OUTPUT_COMMENTS:
-                    gcode += append("M8 (coolant: flood on)\n")
-                else:
-                    gcode += append("M8\n")
+        coolantMode = PathUtil.coolantModeForOp(obj)
+        if coolantMode == "Mist":
+            if OUTPUT_COMMENTS:
+                gcode += append("M7 (coolant: mist on)\n")
+            else:
+                gcode += append("M7\n")
+        if coolantMode == "Flood":
+            if OUTPUT_COMMENTS:
+                gcode += append("M8 (coolant: flood on)\n")
+            else:
+                gcode += append("M8\n")
 
         # process the operation gcode
         if OUTPUT_COMMENTS:
@@ -483,13 +487,12 @@ def export(objectslist, filename, argstring):
             gcode += append(line)
 
         # turn coolant off if required
-        if hasattr(obj, "CoolantMode"):
-            coolantMode = obj.CoolantMode
-            if not coolantMode == "None":
-                if OUTPUT_COMMENTS:
-                    gcode += append("M9 (coolant: off)\n")
-                else:
-                    gcode += append("M9\n")
+        if not coolantMode == "None":
+            if OUTPUT_COMMENTS:
+                gcode += append("M9 (coolant: off)\n")
+            else:
+                gcode += append("M9\n")
+
         if OUTPUT_COMMENTS:
             gcode += append("(operation finalised: %s)\n" % obj.Label)
 

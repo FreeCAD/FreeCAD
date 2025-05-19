@@ -116,7 +116,7 @@ void ExternalManager::instantiate()
 
         Py::Callable managerClass(mod.getAttr(_className));
         _managerObject = managerClass.apply();
-        if (_managerObject.hasAttr("APIVersion")) {
+        if (!_managerObject.isNull() && _managerObject.hasAttr("APIVersion")) {
             _instantiated = true;
         }
 
@@ -188,7 +188,6 @@ ExternalManager::libraryFromObject(const Py::Object& entry)
     if (!pyName.isNone()) {
         libraryName = QString::fromStdString(pyName.as_string());
     }
-
     QString icon;
     if (!pyIcon.isNone()) {
         icon = QString::fromStdString(pyIcon.as_string());

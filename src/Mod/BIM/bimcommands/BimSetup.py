@@ -52,9 +52,10 @@ class BIM_Setup:
             0.16  # How many times TechDraw dim arrows are smaller than Draft
         )
 
-        # load dialog
         from PySide import QtGui
+        import WorkingPlane
 
+        # load dialog
         self.form = FreeCADGui.PySideUic.loadUi(":/ui/dialogSetup.ui")
 
         # center the dialog over FreeCAD window
@@ -315,26 +316,15 @@ class BIM_Setup:
         )
 
         # set the working plane
-        if hasattr(FreeCAD, "DraftWorkingPlane") and hasattr(
-            FreeCADGui, "draftToolBar"
-        ):
-            if wp == 1:
-                FreeCAD.DraftWorkingPlane.alignToPointAndAxis(
-                    FreeCAD.Vector(0, 0, 0), FreeCAD.Vector(0, 0, 1), 0
-                )
-                FreeCADGui.draftToolBar.wplabel.setText("Top(XY)")
-            elif wp == 2:
-                FreeCAD.DraftWorkingPlane.alignToPointAndAxis(
-                    FreeCAD.Vector(0, 0, 0), FreeCAD.Vector(0, 1, 0), 0
-                )
-                FreeCADGui.draftToolBar.wplabel.setText("Front(XZ)")
-            elif wp == 3:
-                FreeCAD.DraftWorkingPlane.alignToPointAndAxis(
-                    FreeCAD.Vector(0, 0, 0), FreeCAD.Vector(1, 0, 0), 0
-                )
-                FreeCADGui.draftToolBar.wplabel.setText("Side(YZ)")
-            else:
-                FreeCADGui.draftToolBar.wplabel.setText("Auto")
+        wplane = WorkingPlane.get_working_plane()
+        if wp == 1:
+            wplane.set_to_top()
+        elif wp == 2:
+            wplane.set_to_front()
+        elif wp == 3:
+            wplane.set_to_side()
+        else:
+            wplane.set_to_auto()
 
         # set Draft toolbar
         if hasattr(FreeCADGui, "draftToolBar"):

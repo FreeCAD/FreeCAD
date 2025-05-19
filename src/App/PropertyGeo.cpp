@@ -160,9 +160,9 @@ void PropertyVector::Restore(Base::XMLReader& reader)
     reader.readElement("PropertyVector");
     // get the value of my Attribute
     aboutToSetValue();
-    _cVec.x = reader.getAttributeAsFloat("valueX");
-    _cVec.y = reader.getAttributeAsFloat("valueY");
-    _cVec.z = reader.getAttributeAsFloat("valueZ");
+    _cVec.x = reader.getAttribute<double>("valueX");
+    _cVec.y = reader.getAttribute<double>("valueY");
+    _cVec.z = reader.getAttribute<double>("valueZ");
     hasSetValue();
 }
 
@@ -320,7 +320,7 @@ void PropertyVectorList::Save(Base::Writer& writer) const
 void PropertyVectorList::Restore(Base::XMLReader& reader)
 {
     reader.readElement("VectorList");
-    std::string file(reader.getAttribute("file"));
+    std::string file(reader.getAttribute<const char*>("file"));
 
     if (!file.empty()) {
         // initiate a file read
@@ -478,25 +478,25 @@ void PropertyMatrix::Restore(Base::XMLReader& reader)
     reader.readElement("PropertyMatrix");
     // get the value of my Attribute
     aboutToSetValue();
-    _cMat[0][0] = reader.getAttributeAsFloat("a11");
-    _cMat[0][1] = reader.getAttributeAsFloat("a12");
-    _cMat[0][2] = reader.getAttributeAsFloat("a13");
-    _cMat[0][3] = reader.getAttributeAsFloat("a14");
+    _cMat[0][0] = reader.getAttribute<double>("a11");
+    _cMat[0][1] = reader.getAttribute<double>("a12");
+    _cMat[0][2] = reader.getAttribute<double>("a13");
+    _cMat[0][3] = reader.getAttribute<double>("a14");
 
-    _cMat[1][0] = reader.getAttributeAsFloat("a21");
-    _cMat[1][1] = reader.getAttributeAsFloat("a22");
-    _cMat[1][2] = reader.getAttributeAsFloat("a23");
-    _cMat[1][3] = reader.getAttributeAsFloat("a24");
+    _cMat[1][0] = reader.getAttribute<double>("a21");
+    _cMat[1][1] = reader.getAttribute<double>("a22");
+    _cMat[1][2] = reader.getAttribute<double>("a23");
+    _cMat[1][3] = reader.getAttribute<double>("a24");
 
-    _cMat[2][0] = reader.getAttributeAsFloat("a31");
-    _cMat[2][1] = reader.getAttributeAsFloat("a32");
-    _cMat[2][2] = reader.getAttributeAsFloat("a33");
-    _cMat[2][3] = reader.getAttributeAsFloat("a34");
+    _cMat[2][0] = reader.getAttribute<double>("a31");
+    _cMat[2][1] = reader.getAttribute<double>("a32");
+    _cMat[2][2] = reader.getAttribute<double>("a33");
+    _cMat[2][3] = reader.getAttribute<double>("a34");
 
-    _cMat[3][0] = reader.getAttributeAsFloat("a41");
-    _cMat[3][1] = reader.getAttributeAsFloat("a42");
-    _cMat[3][2] = reader.getAttributeAsFloat("a43");
-    _cMat[3][3] = reader.getAttributeAsFloat("a44");
+    _cMat[3][0] = reader.getAttribute<double>("a41");
+    _cMat[3][1] = reader.getAttribute<double>("a42");
+    _cMat[3][2] = reader.getAttribute<double>("a43");
+    _cMat[3][3] = reader.getAttribute<double>("a44");
     hasSetValue();
 }
 
@@ -865,22 +865,22 @@ void PropertyPlacement::Restore(Base::XMLReader& reader)
     aboutToSetValue();
 
     if (reader.hasAttribute("A")) {
-        _cPos = Base::Placement(Vector3d(reader.getAttributeAsFloat("Px"),
-                                         reader.getAttributeAsFloat("Py"),
-                                         reader.getAttributeAsFloat("Pz")),
-                                Rotation(Vector3d(reader.getAttributeAsFloat("Ox"),
-                                                  reader.getAttributeAsFloat("Oy"),
-                                                  reader.getAttributeAsFloat("Oz")),
-                                         reader.getAttributeAsFloat("A")));
+        _cPos = Base::Placement(Vector3d(reader.getAttribute<double>("Px"),
+                                         reader.getAttribute<double>("Py"),
+                                         reader.getAttribute<double>("Pz")),
+                                Rotation(Vector3d(reader.getAttribute<double>("Ox"),
+                                                  reader.getAttribute<double>("Oy"),
+                                                  reader.getAttribute<double>("Oz")),
+                                         reader.getAttribute<double>("A")));
     }
     else {
-        _cPos = Base::Placement(Vector3d(reader.getAttributeAsFloat("Px"),
-                                         reader.getAttributeAsFloat("Py"),
-                                         reader.getAttributeAsFloat("Pz")),
-                                Rotation(reader.getAttributeAsFloat("Q0"),
-                                         reader.getAttributeAsFloat("Q1"),
-                                         reader.getAttributeAsFloat("Q2"),
-                                         reader.getAttributeAsFloat("Q3")));
+        _cPos = Base::Placement(Vector3d(reader.getAttribute<double>("Px"),
+                                         reader.getAttribute<double>("Py"),
+                                         reader.getAttribute<double>("Pz")),
+                                Rotation(reader.getAttribute<double>("Q0"),
+                                         reader.getAttribute<double>("Q1"),
+                                         reader.getAttribute<double>("Q2"),
+                                         reader.getAttribute<double>("Q3")));
     }
 
     hasSetValue();
@@ -947,7 +947,7 @@ void PropertyPlacementList::Save(Base::Writer& writer) const
 void PropertyPlacementList::Restore(Base::XMLReader& reader)
 {
     reader.readElement("PlacementList");
-    std::string file(reader.getAttribute("file"));
+    std::string file(reader.getAttribute<const char*>("file"));
 
     if (!file.empty()) {
         // initiate a file read
@@ -1258,10 +1258,10 @@ void PropertyRotation::Restore(Base::XMLReader& reader)
     reader.readElement("PropertyRotation");
     aboutToSetValue();
 
-    _rot = Rotation(Vector3d(reader.getAttributeAsFloat("Ox"),
-                             reader.getAttributeAsFloat("Oy"),
-                             reader.getAttributeAsFloat("Oz")),
-                    reader.getAttributeAsFloat("A"));
+    _rot = Rotation(Vector3d(reader.getAttribute<double>("Ox"),
+                             reader.getAttribute<double>("Oy"),
+                             reader.getAttribute<double>("Oz")),
+                    reader.getAttribute<double>("A"));
     hasSetValue();
 }
 

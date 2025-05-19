@@ -303,7 +303,7 @@ bool TaskWatcherPython::shouldShow()
     }
     catch (Py::Exception&) {
         Base::PyException e; // extract the Python error text
-        e.ReportException();
+        e.reportException();
     }
 
     if (!this->Filter.empty())
@@ -582,7 +582,7 @@ bool TaskDialogPython::tryLoadUiFile()
             appendForm(form, QPixmap(icon));
         }
         else {
-            Base::Console().Error("Failed to load UI file from '%s'\n",
+            Base::Console().error("Failed to load UI file from '%s'\n",
                 (const char*)fn.toUtf8());
         }
 
@@ -660,7 +660,7 @@ void TaskDialogPython::open()
     }
     catch (Py::Exception&) {
         Base::PyException e; // extract the Python error text
-        e.ReportException();
+        e.reportException();
     }
 }
 
@@ -678,7 +678,7 @@ void TaskDialogPython::clicked(int i)
     }
     catch (Py::Exception&) {
         Base::PyException e; // extract the Python error text
-        e.ReportException();
+        e.reportException();
     }
 }
 
@@ -695,7 +695,7 @@ bool TaskDialogPython::accept()
     }
     catch (Py::Exception&) {
         Base::PyException e; // extract the Python error text
-        e.ReportException();
+        e.reportException();
     }
 
     return TaskDialog::accept();
@@ -714,7 +714,7 @@ bool TaskDialogPython::reject()
     }
     catch (Py::Exception&) {
         Base::PyException e; // extract the Python error text
-        e.ReportException();
+        e.reportException();
     }
 
     return TaskDialog::reject();
@@ -732,7 +732,7 @@ void TaskDialogPython::helpRequested()
     }
     catch (Py::Exception&) {
         Base::PyException e; // extract the Python error text
-        e.ReportException();
+        e.reportException();
     }
 }
 
@@ -750,7 +750,7 @@ bool TaskDialogPython::eventFilter(QObject *watched, QEvent *event)
         }
         catch (Py::Exception&) {
             Base::PyException e; // extract the Python error text
-            e.ReportException();
+            e.reportException();
         }
     }
 
@@ -772,7 +772,7 @@ QDialogButtonBox::StandardButtons TaskDialogPython::getStandardButtons() const
     }
     catch (Py::Exception&) {
         Base::PyException e; // extract the Python error text
-        e.ReportException();
+        e.reportException();
     }
 
     return TaskDialog::getStandardButtons();
@@ -794,7 +794,7 @@ void TaskDialogPython::modifyStandardButtons(QDialogButtonBox *buttonBox)
     }
     catch (Py::Exception&) {
         Base::PyException e; // extract the Python error text
-        e.ReportException();
+        e.reportException();
     }
 }
 
@@ -811,7 +811,7 @@ bool TaskDialogPython::isAllowedAlterDocument() const
     }
     catch (Py::Exception&) {
         Base::PyException e; // extract the Python error text
-        e.ReportException();
+        e.reportException();
     }
 
     return TaskDialog::isAllowedAlterDocument();
@@ -830,7 +830,7 @@ bool TaskDialogPython::isAllowedAlterView() const
     }
     catch (Py::Exception&) {
         Base::PyException e; // extract the Python error text
-        e.ReportException();
+        e.reportException();
     }
 
     return TaskDialog::isAllowedAlterView();
@@ -849,7 +849,7 @@ bool TaskDialogPython::isAllowedAlterSelection() const
     }
     catch (Py::Exception&) {
         Base::PyException e; // extract the Python error text
-        e.ReportException();
+        e.reportException();
     }
 
     return TaskDialog::isAllowedAlterSelection();
@@ -868,7 +868,7 @@ bool TaskDialogPython::needsFullSpace() const
     }
     catch (Py::Exception&) {
         Base::PyException e; // extract the Python error text
-        e.ReportException();
+        e.reportException();
     }
 
     return TaskDialog::needsFullSpace();
@@ -886,7 +886,7 @@ void TaskDialogPython::autoClosedOnTransactionChange()
     }
     catch (Py::Exception&) {
         Base::PyException e; // extract the Python error text
-        e.ReportException();
+        e.reportException();
     }
 }
 
@@ -902,6 +902,6 @@ void TaskDialogPython::autoClosedOnDeletedDocument()
     }
     catch (Py::Exception&) {
         Base::PyException e; // extract the Python error text
-        e.ReportException();
+        e.reportException();
     }
 }

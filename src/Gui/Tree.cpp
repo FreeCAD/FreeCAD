@@ -75,11 +75,11 @@ FC_LOG_LEVEL_INIT("Tree", false, true, true)
 
 #define _TREE_PRINT(_level,_func,_msg) \
     _FC_PRINT(FC_LOG_INSTANCE,_level,_func, '['<<getTreeName()<<"] " << _msg)
-#define TREE_MSG(_msg) _TREE_PRINT(FC_LOGLEVEL_MSG,Notify<Base::LogStyle::Message>,_msg)
-#define TREE_WARN(_msg) _TREE_PRINT(FC_LOGLEVEL_WARN,Notify<Base::LogStyle::Warning>,_msg)
-#define TREE_ERR(_msg) _TREE_PRINT(FC_LOGLEVEL_ERR,Notify<Base::LogStyle::Error>,_msg)
-#define TREE_LOG(_msg) _TREE_PRINT(FC_LOGLEVEL_LOG,Notify<Base::LogStyle::Log>,_msg)
-#define TREE_TRACE(_msg) _TREE_PRINT(FC_LOGLEVEL_TRACE,Notify<Base::LogStyle::Log>,_msg)
+#define TREE_MSG(_msg) _TREE_PRINT(FC_LOGLEVEL_MSG,notify<Base::LogStyle::Message>,_msg)
+#define TREE_WARN(_msg) _TREE_PRINT(FC_LOGLEVEL_WARN,notify<Base::LogStyle::Warning>,_msg)
+#define TREE_ERR(_msg) _TREE_PRINT(FC_LOGLEVEL_ERR,notify<Base::LogStyle::Error>,_msg)
+#define TREE_LOG(_msg) _TREE_PRINT(FC_LOGLEVEL_LOG,notify<Base::LogStyle::Log>,_msg)
+#define TREE_TRACE(_msg) _TREE_PRINT(FC_LOGLEVEL_TRACE,notify<Base::LogStyle::Log>,_msg)
 
 using namespace Gui;
 namespace sp = std::placeholders;
@@ -387,10 +387,10 @@ class DocumentItem::ExpandInfo :
 public:
     void restore(Base::XMLReader& reader) {
         int level = reader.level();
-        int count = reader.getAttributeAsInteger("count");
+        int count = reader.getAttribute<long>("count");
         for (int i = 0; i < count; ++i) {
             reader.readElement("Expand");
-            auto& entry = (*this)[reader.getAttribute("name")];
+            auto& entry = (*this)[reader.getAttribute<const char*>("name")];
             if (!reader.hasAttribute("count"))
                 continue;
             entry.reset(new ExpandInfo);
@@ -1177,12 +1177,12 @@ void TreeWidget::contextMenuEvent(QContextMenuEvent* e)
         header()->setVisible(action->isChecked()||internalNameAction->isChecked());
     });
 
-    if (contextMenu.actions().count() > 0) {
+    if (!contextMenu.actions().isEmpty()) {
         try {
             contextMenu.exec(QCursor::pos());
         }
         catch (Base::Exception& e) {
-            e.ReportException();
+            e.reportException();
         }
         catch (std::exception& e) {
             FC_ERR("C++ exception: " << e.what());
@@ -1582,7 +1582,7 @@ void TreeWidget::selectAllLinks(App::DocumentObject* obj) {
             TREE_ERR("invalid linked object");
             continue;
         }
-        auto vp = dynamic_cast<ViewProviderDocumentObject*>(
+        auto vp = freecad_cast<ViewProviderDocumentObject*>(
             Application::Instance->getViewProvider(link));
         if (!vp) {
             TREE_ERR("invalid view provider of the linked object");
@@ -1808,7 +1808,7 @@ void TreeWidget::mouseDoubleClickEvent(QMouseEvent* event)
         }
     }
     catch (Base::Exception& e) {
-        e.ReportException();
+        e.reportException();
     }
     catch (std::exception& e) {
         FC_ERR("C++ exception: " << e.what());
@@ -2071,7 +2071,7 @@ void TreeWidget::dragMoveEvent(QDragMoveEvent* event)
             }
         }
         catch (Base::Exception& e) {
-            e.ReportException();
+            e.reportException();
             event->ignore();
         }
         catch (std::exception& e) {
@@ -2198,7 +2198,7 @@ bool TreeWidget::dropInDocument(QDropEvent* event, TargetItemInfo& targetInfo,
             auto doc = App::GetApplication().getDocument(info.doc.c_str());
             if (!doc) continue;
             auto obj = doc->getObject(info.obj.c_str());
-            auto vpc = dynamic_cast<ViewProviderDocumentObject*>(Application::Instance->getViewProvider(obj));
+            auto vpc = freecad_cast<ViewProviderDocumentObject*>(Application::Instance->getViewProvider(obj));
             if (!vpc) {
                 FC_WARN("Cannot find dragging object " << info.obj);
                 continue;
@@ -2247,7 +2247,7 @@ bool TreeWidget::dropInDocument(QDropEvent* event, TargetItemInfo& targetInfo,
                     continue;
                 }
                 auto parent = parentDoc->getObject(info.parent.c_str());
-                auto vpp = dynamic_cast<ViewProviderDocumentObject*>(Application::Instance->getViewProvider(parent));
+                auto vpp = freecad_cast<ViewProviderDocumentObject*>(Application::Instance->getViewProvider(parent));
                 if (!vpp) {
                     FC_WARN("Cannot find dragging object's parent " << info.parent);
                     continue;
@@ -2320,7 +2320,7 @@ bool TreeWidget::dropInDocument(QDropEvent* event, TargetItemInfo& targetInfo,
         }
     }
     catch (const Base::Exception& e) {
-        e.ReportException();
+        e.reportException();
         errMsg = e.what();
     }
     catch (std::exception& e) {
@@ -2496,7 +2496,7 @@ bool TreeWidget::dropInObject(QDropEvent* event, TargetItemInfo& targetInfo,
                 continue;
             }
             auto obj = doc->getObject(info.obj.c_str());
-            auto vpc = dynamic_cast<ViewProviderDocumentObject*>(Application::Instance->getViewProvider(obj));
+            auto vpc = freecad_cast<ViewProviderDocumentObject*>(Application::Instance->getViewProvider(obj));
             if (!vpc) {
                 FC_WARN("Cannot find dragging object " << info.obj);
                 continue;
@@ -2507,7 +2507,7 @@ bool TreeWidget::dropInObject(QDropEvent* event, TargetItemInfo& targetInfo,
                 auto parentDoc = App::GetApplication().getDocument(info.parentDoc.c_str());
                 if (parentDoc) {
                     auto parent = parentDoc->getObject(info.parent.c_str());
-                    vpp = dynamic_cast<ViewProviderDocumentObject*>(Application::Instance->getViewProvider(parent));
+                    vpp = freecad_cast<ViewProviderDocumentObject*>(Application::Instance->getViewProvider(parent));
                 }
                 if (!vpp) {
                     FC_WARN("Cannot find dragging object's parent " << info.parent);
@@ -2573,7 +2573,7 @@ bool TreeWidget::dropInObject(QDropEvent* event, TargetItemInfo& targetInfo,
                 }
             }
 
-            if (inList.count(obj)) {
+            if (inList.contains(obj)) {
                 FC_THROWM(Base::RuntimeError, "Dependency loop detected for " << obj->getFullName());
             }
 
@@ -2682,7 +2682,7 @@ bool TreeWidget::dropInObject(QDropEvent* event, TargetItemInfo& targetInfo,
         }
     }
     catch (const Base::Exception& e) {
-        e.ReportException();
+        e.reportException();
         errMsg = e.what();
     }
     catch (std::exception& e) {
@@ -2819,7 +2819,7 @@ void TreeWidget::sortDroppedObjects(TargetItemInfo& targetInfo, std::vector<App:
 
         // Then we set the tree rank
         for (size_t i = 0; i < sortedObjList.size(); ++i) {
-            auto vp = dynamic_cast<ViewProviderDocumentObject*>(Application::Instance->getViewProvider(sortedObjList[i]));
+            auto vp = freecad_cast<ViewProviderDocumentObject*>(Application::Instance->getViewProvider(sortedObjList[i]));
             vp->setTreeRank(i);
         }
 
@@ -2874,7 +2874,7 @@ void TreeWidget::onCloseDoc()
             Command::doCommand(Command::Doc, "App.closeDocument(\"%s\")", doc->getName());
     }
     catch (const Base::Exception& e) {
-        e.ReportException();
+        e.reportException();
     }
     catch (std::exception& e) {
         FC_ERR("C++ exception: " << e.what());
@@ -3059,7 +3059,7 @@ void TreeWidget::onUpdateStatus()
                 continue;
             if (obj->isError())
                 errors.push_back(obj);
-            if (docItem->ObjectMap.count(obj))
+            if (docItem->ObjectMap.contains(obj))
                 continue;
             auto vpd = freecad_cast<ViewProviderDocumentObject*>(gdoc->getViewProvider(obj));
             if (vpd)
@@ -3871,7 +3871,7 @@ void DocumentItem::slotInEdit(const Gui::ViewProviderDocumentObject& v)
         std::string subname;
         auto vp = doc->getInEdit(&parentVp, &subname);
         if (!parentVp)
-            parentVp = dynamic_cast<ViewProviderDocumentObject*>(vp);
+            parentVp = freecad_cast<ViewProviderDocumentObject*>(vp);
         if (parentVp)
             getTree()->editingItem = findItemByObject(true, parentVp->getObject(), subname.c_str());
     }
@@ -3931,7 +3931,7 @@ bool DocumentItem::createNewItem(const Gui::ViewProviderDocumentObject& obj,
             entry.insert(pdata);
         }
         else if (pdata->rootItem && !parent) {
-            Base::Console().Warning("DocumentItem::slotNewObject: Cannot add view provider twice.\n");
+            Base::Console().warning("DocumentItem::slotNewObject: Cannot add view provider twice.\n");
             return false;
         }
         data = pdata;
@@ -4260,7 +4260,7 @@ int DocumentItem::findRootIndex(App::DocumentObject* childObj) {
         return vp->getTreeRank();
     };
 
-    auto vpc = dynamic_cast<ViewProviderDocumentObject*>(Application::Instance->getViewProvider(childObj));
+    auto vpc = freecad_cast<ViewProviderDocumentObject*>(Application::Instance->getViewProvider(childObj));
     int childTreeRank = getTreeRank(vpc);
 
     // find the last item
@@ -4447,7 +4447,7 @@ void TreeWidget::updateChildren(App::DocumentObject* obj,
         // and thus, its property change will not be propagated through
         // recomputation. So we have to manually check for each links here.
         for (auto link : App::GetApplication().getLinksTo(obj, App::GetLinkRecursive)) {
-            if (ChangedObjects.count(link))
+            if (ChangedObjects.contains(link))
                 continue;
             std::vector<App::DocumentObject*> linkedChildren;
             DocumentObjectDataPtr found;
@@ -4475,7 +4475,7 @@ void TreeWidget::updateChildren(App::DocumentObject* obj,
         //if the item is in a GeoFeatureGroup we may need to update that too, as the claim children
         //of the geofeaturegroup depends on what the childs claim
         auto grp = App::GeoFeatureGroupExtension::getGroupOfObject(obj);
-        if (grp && !ChangedObjects.count(grp)) {
+        if (grp && !ChangedObjects.contains(grp)) {
             auto iter = ObjectTable.find(grp);
             if (iter != ObjectTable.end())
                 updateChildren(grp, iter->second, true, false);

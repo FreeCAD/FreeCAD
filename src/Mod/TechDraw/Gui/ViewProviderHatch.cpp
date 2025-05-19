@@ -46,7 +46,7 @@ using namespace TechDrawGui;
 //App::PropertyFloatConstraint::Constraints ViewProviderHatch::scaleRange = {Precision::Confusion(),
 //                                                                  std::numeric_limits<double>::max(),
 //                                                                  pow(10, - Base::UnitsApi::getDecimals())};
-App::PropertyFloatConstraint::Constraints ViewProviderHatch::scaleRange = {pow(10, - Base::UnitsApi::getDecimals()),
+App::PropertyFloatConstraint::Constraints ViewProviderHatch::scaleRange = {pow(10, - static_cast<int>(Base::UnitsApi::getDecimals())),
                                                                   1000.0,
                                                                   0.1};
 

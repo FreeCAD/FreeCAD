@@ -69,7 +69,7 @@ short DrawTile::mustExecute() const
 
 App::DocumentObjectExecReturn *DrawTile::execute()
 {
-//    Base::Console().Message("DT::execute()\n");
+//    Base::Console().message("DT::execute()\n");
     return DocumentObject::execute();
 }
 
@@ -87,8 +87,8 @@ void DrawTile::handleChangedPropertyType(Base::XMLReader &reader, const char *Ty
 
 DrawView* DrawTile::getParent() const
 {
-//    Base::Console().Message("DT::getParent() - %s\n", getNameInDocument());
-    return dynamic_cast<DrawView*>(TileParent.getValue());
+//    Base::Console().message("DT::getParent() - %s\n", getNameInDocument());
+    return freecad_cast<DrawView*>(TileParent.getValue());
 }
 
 PyObject *DrawTile::getPyObject()

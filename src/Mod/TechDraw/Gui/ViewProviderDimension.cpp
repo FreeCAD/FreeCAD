@@ -306,7 +306,7 @@ bool ViewProviderDimension::onDelete(const std::vector<std::string> & parms)
 {
     Q_UNUSED(parms)
     auto dlg = Gui::Control().activeDialog();
-    auto ourDlg = dynamic_cast<TaskDlgDimension*>(dlg);
+    auto ourDlg = qobject_cast<TaskDlgDimension*>(dlg);
     if (ourDlg)  {
         QString bodyMessage;
         QTextStream bodyMessageStream(&bodyMessage);

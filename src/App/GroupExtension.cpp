@@ -236,7 +236,7 @@ bool GroupExtension::hasObject(const DocumentObject* obj, bool recursive) const
         return false;
     }
     catch (const Base::RuntimeError& e) {
-        e.ReportException();
+        e.reportException();
         return false;
     }
 }

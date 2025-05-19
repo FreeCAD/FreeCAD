@@ -302,7 +302,7 @@ SolverReportingManager& SolverReportingManager::Manager()
 
 void SolverReportingManager::LogToConsole(const std::string& str)
 {
-    Base::Console().Log(str.c_str());
+    Base::Console().log(str.c_str());
 }
 
 void SolverReportingManager::LogToFile(const std::string& str)
@@ -540,16 +540,13 @@ void System::invalidatedDiagnosis()
 void System::clearByTag(int tagId)
 {
     std::vector<Constraint*> constrvec;
-    for (std::vector<Constraint*>::const_iterator constr = clist.begin(); constr != clist.end();
-         ++constr) {
-        if ((*constr)->getTag() == tagId) {
-            constrvec.push_back(*constr);
+    for (const auto& constr : clist) {
+        if (constr->getTag() == tagId) {
+            constrvec.push_back(constr);
         }
     }
-    for (std::vector<Constraint*>::const_iterator constr = constrvec.begin();
-         constr != constrvec.end();
-         ++constr) {
-        removeConstraint(*constr);
+    for (const auto& constr : constrvec) {
+        removeConstraint(constr);
     }
 }
 
@@ -562,11 +559,10 @@ int System::addConstraint(Constraint* constr)
 
     clist.push_back(constr);
     VEC_pD constr_params = constr->params();
-    for (VEC_pD::const_iterator param = constr_params.begin(); param != constr_params.end();
-         ++param) {
-        //        jacobi.set(constr, *param, 0.);
-        c2p[constr].push_back(*param);
-        p2c[*param].push_back(constr);
+    for (const auto& param : constr_params) {
+        // jacobi.set(constr, *param, 0.);
+        c2p[constr].push_back(param);
+        p2c[param].push_back(constr);
     }
     return clist.size() - 1;
 }
@@ -585,12 +581,8 @@ void System::removeConstraint(Constraint* constr)
     }
     clearSubSystems();
 
-    VEC_pD constr_params = c2p[constr];
-    for (VEC_pD::const_iterator param = constr_params.begin(); param != constr_params.end();
-         ++param) {
-        std::vector<Constraint*>& constraints = p2c[*param];
-        it = std::ranges::find(constraints, constr);
-        constraints.erase(it);
+    for (const auto& param : c2p[constr]) {
+        p2c[param].erase(std::ranges::find(p2c[param], constr));
     }
     c2p.erase(constr);
 
@@ -1766,10 +1758,9 @@ double System::calculateConstraintErrorByTag(int tagId)
     double sqErr = 0.0;  // accumulator of squared errors
     double err = 0.0;    // last computed signed error value
 
-    for (std::vector<Constraint*>::const_iterator constr = clist.begin(); constr != clist.end();
-         ++constr) {
-        if ((*constr)->getTag() == tagId) {
-            err = (*constr)->error();
+    for (const auto& constr : clist) {
+        if (constr->getTag() == tagId) {
+            err = constr->error();
             sqErr += err * err;
             cnt++;
         };
@@ -1844,7 +1835,7 @@ void System::initSolution(Algorithm alg)
 
     std::vector<Constraint*> clistR;
     if (!redundant.empty()) {
-        std::copy_if(clist.begin(), clist.end(), std::back_inserter(clistR), [this](auto constr) {
+        std::ranges::copy_if(clist, std::back_inserter(clistR), [this](auto constr) {
             return this->redundant.count(constr) == 0;
         });
     }
@@ -1895,7 +1886,7 @@ void System::initSolution(Algorithm alg)
             reducedConstrs.insert(constr);
             double* p_kept = reducedParams[it1->second];
             double* p_replaced = reducedParams[it2->second];
-            std::replace(reducedParams.begin(), reducedParams.end(), p_replaced, p_kept);
+            std::ranges::replace(reducedParams, p_replaced, p_kept);
         }
         for (size_t i = 0; i < plist.size(); ++i) {
             if (plist[i] != reducedParams[i]) {
@@ -1932,13 +1923,12 @@ void System::initSolution(Algorithm alg)
     subSystemsAux.resize(clists.size(), nullptr);
     for (std::size_t cid = 0; cid < clists.size(); ++cid) {
         std::vector<Constraint*> clist0, clist1;
-        std::partition_copy(clists[cid].begin(),
-                            clists[cid].end(),
-                            std::back_inserter(clist0),
-                            std::back_inserter(clist1),
-                            [](auto constr) {
-                                return constr->getTag() >= 0;
-                            });
+        std::ranges::partition_copy(clists[cid],
+                                    std::back_inserter(clist0),
+                                    std::back_inserter(clist1),
+                                    [](auto constr) {
+                                        return constr->getTag() >= 0;
+                                    });
 
         if (!clist0.empty()) {
             subSystems[cid] = new SubSystem(clist0, plists[cid], reductionmaps[cid]);
@@ -1955,8 +1945,8 @@ void System::setReference()
 {
     reference.clear();
     reference.reserve(plist.size());
-    for (VEC_pD::const_iterator param = plist.begin(); param != plist.end(); ++param) {
-        reference.push_back(**param);
+    for (const auto& param : plist) {
+        reference.push_back(*param);
     }
 }
 
@@ -2086,7 +2076,7 @@ int System::solve_BFGS(SubSystem* subsys, bool /*isFine*/, bool isRedundantsolvi
                << ", maxIter: " << maxIterNumber << "\n";
 
         const std::string tmp = stream.str();
-        Base::Console().Log(tmp.c_str());
+        Base::Console().log(tmp.c_str());
     }
 
     double divergingLim = 1e6 * err + 1e12;
@@ -2101,7 +2091,7 @@ int System::solve_BFGS(SubSystem* subsys, bool /*isFine*/, bool isRedundantsolvi
                        << ", err: " << err << ", h_norm: " << h_norm << "\n";
 
                 const std::string tmp = stream.str();
-                Base::Console().Log(tmp.c_str());
+                Base::Console().log(tmp.c_str());
             }
             break;
         }
@@ -2113,7 +2103,7 @@ int System::solve_BFGS(SubSystem* subsys, bool /*isFine*/, bool isRedundantsolvi
                        << ", err: " << err << ", divergingLim: " << divergingLim << "\n";
 
                 const std::string tmp = stream.str();
-                Base::Console().Log(tmp.c_str());
+                Base::Console().log(tmp.c_str());
             }
             break;
         }
@@ -2150,7 +2140,7 @@ int System::solve_BFGS(SubSystem* subsys, bool /*isFine*/, bool isRedundantsolvi
                    << "\n";
 
             const std::string tmp = stream.str();
-            Base::Console().Log(tmp.c_str());
+            Base::Console().log(tmp.c_str());
         }
     }
 
@@ -2213,7 +2203,7 @@ int System::solve_LM(SubSystem* subsys, bool isRedundantsolving)
                << ", xsize: " << xsize << ", maxIter: " << maxIterNumber << "\n";
 
         const std::string tmp = stream.str();
-        Base::Console().Log(tmp.c_str());
+        Base::Console().log(tmp.c_str());
     }
 
     double nu = 2, mu = 0;
@@ -2332,7 +2322,7 @@ int System::solve_LM(SubSystem* subsys, bool isRedundantsolving)
                    << ", g_inf(eps1): " << g_inf << ", h_norm: " << h_norm << "\n";
 
             const std::string tmp = stream.str();
-            Base::Console().Log(tmp.c_str());
+            Base::Console().log(tmp.c_str());
         }
     }
 
@@ -2385,7 +2375,7 @@ int System::solve_DL(SubSystem* subsys, bool isRedundantsolving)
                << "\n";
 
         const std::string tmp = stream.str();
-        Base::Console().Log(tmp.c_str());
+        Base::Console().log(tmp.c_str());
     }
 
     Eigen::VectorXd x(xsize), x_new(xsize);
@@ -2542,7 +2532,7 @@ int System::solve_DL(SubSystem* subsys, bool isRedundantsolving)
                    << ", err(divergingLim): " << err << "\n";
 
             const std::string tmp = stream.str();
-            Base::Console().Log(tmp.c_str());
+            Base::Console().log(tmp.c_str());
         }
 
         // count this iteration and start again
@@ -2556,7 +2546,7 @@ int System::solve_DL(SubSystem* subsys, bool isRedundantsolving)
         stream << "DL: stopcode: " << stop << ((stop == 1) ? ", Success" : ", Failed") << "\n";
 
         const std::string tmp = stream.str();
-        Base::Console().Log(tmp.c_str());
+        Base::Console().log(tmp.c_str());
     }
 
     return (stop == 1) ? Success : Failed;
@@ -4815,7 +4805,7 @@ void System::makeReducedJacobian(Eigen::MatrixXd& J,
 {
     // construct specific parameter list for diagonose ignoring driven constraint parameters
     for (int j = 0; j < int(plist.size()); j++) {
-        auto result1 = std::find(std::begin(pdrivenlist), std::end(pdrivenlist), plist[j]);
+        auto result1 = std::ranges::find(pdrivenlist, plist[j]);
 
         if (result1 == std::end(pdrivenlist)) {
             pdiagnoselist.push_back(plist[j]);
@@ -4827,22 +4817,21 @@ void System::makeReducedJacobian(Eigen::MatrixXd& J,
 
     int jacobianconstraintcount = 0;
     int allcount = 0;
-    for (std::vector<Constraint*>::iterator constr = clist.begin(); constr != clist.end();
-         ++constr) {
-        (*constr)->revertParams();
+    for (auto& constr : clist) {
+        constr->revertParams();
         ++allcount;
-        if ((*constr)->getTag() >= 0 && (*constr)->isDriving()) {
+        if (constr->getTag() >= 0 && constr->isDriving()) {
             jacobianconstraintcount++;
             for (int j = 0; j < int(pdiagnoselist.size()); j++) {
-                J(jacobianconstraintcount - 1, j) = (*constr)->grad(pdiagnoselist[j]);
+                J(jacobianconstraintcount - 1, j) = constr->grad(pdiagnoselist[j]);
             }
 
             // parallel processing: create tag multiplicity map
-            if (tagmultiplicity.find((*constr)->getTag()) == tagmultiplicity.end()) {
-                tagmultiplicity[(*constr)->getTag()] = 0;
+            if (tagmultiplicity.find(constr->getTag()) == tagmultiplicity.end()) {
+                tagmultiplicity[constr->getTag()] = 0;
             }
             else {
-                tagmultiplicity[(*constr)->getTag()]++;
+                tagmultiplicity[constr->getTag()]++;
             }
 
             jacobianconstraintmap[jacobianconstraintcount - 1] = allcount - 1;
@@ -4975,7 +4964,7 @@ int System::diagnose(Algorithm alg)
 
 #ifndef EIGEN_SPARSEQR_COMPATIBLE
     if (qrAlgorithm == EigenSparseQR) {
-        Base::Console().Warning("SparseQR not supported by you current version of Eigen. It "
+        Base::Console().warning("SparseQR not supported by you current version of Eigen. It "
                                 "requires Eigen 3.2.2 or higher. Falling back to Dense QR\n");
         qrAlgorithm = EigenDenseQR;
     }
@@ -5053,7 +5042,7 @@ int System::diagnose(Algorithm alg)
 
         auto SolveTime = Base::TimeElapsed::diffTimeF(DenseQR_start_time, DenseQR_end_time);
 
-        Base::Console().Log("\nDenseQR - Lapsed Time: %f seconds\n", SolveTime);
+        Base::Console().log("\nDenseQR - Lapsed Time: %f seconds\n", SolveTime);
 #endif
     }
 
@@ -5128,7 +5117,7 @@ int System::diagnose(Algorithm alg)
 
         auto SolveTime = Base::TimeElapsed::diffTimeF(SparseQR_start_time, SparseQR_end_time);
 
-        Base::Console().Log("\nSparseQR - Lapsed Time: %f seconds\n", SolveTime);
+        Base::Console().log("\nSparseQR - Lapsed Time: %f seconds\n", SolveTime);
 #endif
     }
 #endif
@@ -5621,9 +5610,7 @@ void System::identifyConflictingRedundantConstraints(
             }
 
             skipped.insert(constr);
-            std::copy(conflSet.begin(),
-                      conflSet.end(),
-                      std::inserter(satisfiedGroups, satisfiedGroups.begin()));
+            std::ranges::copy(conflSet, std::inserter(satisfiedGroups, satisfiedGroups.begin()));
         }
     }
 
@@ -5634,12 +5621,9 @@ void System::identifyConflictingRedundantConstraints(
 
     std::vector<Constraint*> clistTmp;
     clistTmp.reserve(clist.size());
-    std::copy_if(clist.begin(),
-                 clist.end(),
-                 std::back_inserter(clistTmp),
-                 [&skipped](const auto& constr) {
-                     return (constr->isDriving() && skipped.count(constr) == 0);
-                 });
+    std::ranges::copy_if(clist, std::back_inserter(clistTmp), [&skipped](const auto& constr) {
+        return (constr->isDriving() && skipped.count(constr) == 0);
+    });
 
     SubSystem* subSysTmp = new SubSystem(clistTmp, pdiagnoselist);
     int res = solve(subSysTmp, true, alg, true);
@@ -5658,33 +5642,31 @@ void System::identifyConflictingRedundantConstraints(
                 break;
         }
 
-        Base::Console().Log("Sketcher::RedundantSolving-%s-\n", solvername.c_str());
+        Base::Console().log("Sketcher::RedundantSolving-%s-\n", solvername.c_str());
     }
 
     if (res == Success) {
         subSysTmp->applySolution();
-        std::copy_if(skipped.begin(),
-                     skipped.end(),
-                     std::inserter(redundant, redundant.begin()),
-                     [this](const auto& constr) {
-                         double err = constr->error();
-                         return (err * err < this->convergenceRedundant);
-                     });
+        std::ranges::copy_if(skipped,
+                             std::inserter(redundant, redundant.begin()),
+                             [this](const auto& constr) {
+                                 double err = constr->error();
+                                 return (err * err < this->convergenceRedundant);
+                             });
         resetToReference();
 
         if (debugMode == Minimal || debugMode == IterationLevel) {
-            Base::Console().Log("Sketcher Redundant solving: %d redundants\n", redundant.size());
+            Base::Console().log("Sketcher Redundant solving: %d redundants\n", redundant.size());
         }
 
         // TODO: Figure out why we need to iterate in reverse order and add explanation here.
         std::vector<std::vector<Constraint*>> conflictGroupsOrig = conflictGroups;
         conflictGroups.clear();
         for (int i = conflictGroupsOrig.size() - 1; i >= 0; i--) {
-            auto iterRedundantEntry = std::find_if(conflictGroupsOrig[i].begin(),
-                                                   conflictGroupsOrig[i].end(),
-                                                   [this](const auto item) {
-                                                       return (this->redundant.count(item) > 0);
-                                                   });
+            auto iterRedundantEntry =
+                std::ranges::find_if(conflictGroupsOrig[i], [this](const auto item) {
+                    return (this->redundant.count(item) > 0);
+                });
             bool hasRedundant = (iterRedundantEntry != conflictGroupsOrig[i].end());
             if (!hasRedundant) {
                 conflictGroups.push_back(conflictGroupsOrig[i]);
@@ -5692,7 +5674,7 @@ void System::identifyConflictingRedundantConstraints(
             }
 
             if (debugMode == IterationLevel) {
-                Base::Console().Log("(Partially) Redundant, Group %d, index %d, Tag: %d\n",
+                Base::Console().log("(Partially) Redundant, Group %d, index %d, Tag: %d\n",
                                     i,
                                     iterRedundantEntry - conflictGroupsOrig[i].begin(),
                                     (*iterRedundantEntry)->getTag());
@@ -5707,21 +5689,21 @@ void System::identifyConflictingRedundantConstraints(
     SET_I conflictingTagsSet;
     for (const auto& cGroup : conflictGroups) {
         // exclude internal alignment
-        std::transform(cGroup.begin(),
-                       cGroup.end(),
-                       std::inserter(conflictingTagsSet, conflictingTagsSet.begin()),
-                       [](const auto& constr) {
-                           bool isinternalalignment = (constr->isInternalAlignment()
-                                                       == Constraint::Alignment::InternalAlignment);
-                           return (isinternalalignment ? 0 : constr->getTag());
-                       });
+        std::ranges::transform(cGroup,
+                               std::inserter(conflictingTagsSet, conflictingTagsSet.begin()),
+                               [](const auto& constr) {
+                                   bool isinternalalignment =
+                                       (constr->isInternalAlignment()
+                                        == Constraint::Alignment::InternalAlignment);
+                                   return (isinternalalignment ? 0 : constr->getTag());
+                               });
     }
 
     // exclude constraints tagged with zero
     conflictingTagsSet.erase(0);
 
     conflictingTags.resize(conflictingTagsSet.size());
-    std::copy(conflictingTagsSet.begin(), conflictingTagsSet.end(), conflictingTags.begin());
+    std::ranges::copy(conflictingTagsSet, conflictingTags.begin());
 
     // output of redundant tags
     SET_I redundantTagsSet, partiallyRedundantTagsSet;
@@ -5738,16 +5720,14 @@ void System::identifyConflictingRedundantConstraints(
     }
 
     redundantTags.resize(redundantTagsSet.size());
-    std::copy(redundantTagsSet.begin(), redundantTagsSet.end(), redundantTags.begin());
+    std::ranges::copy(redundantTagsSet, redundantTags.begin());
 
     for (auto r : redundantTagsSet) {
         partiallyRedundantTagsSet.erase(r);
     }
 
     partiallyRedundantTags.resize(partiallyRedundantTagsSet.size());
-    std::copy(partiallyRedundantTagsSet.begin(),
-              partiallyRedundantTagsSet.end(),
-              partiallyRedundantTags.begin());
+    std::ranges::copy(partiallyRedundantTagsSet, partiallyRedundantTags.begin());
 
     nonredundantconstrNum = constrNum;
 }

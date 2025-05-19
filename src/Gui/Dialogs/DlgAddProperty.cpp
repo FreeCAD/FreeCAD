@@ -138,12 +138,12 @@ void DlgAddProperty::accept()
             (*it)->addDynamicProperty(type.c_str(),name.c_str(),
                     group.c_str(),ui->edtDoc->toPlainText().toUtf8().constData());
         } catch(Base::Exception &e) {
-            e.ReportException();
+            e.reportException();
             for(auto it2=containers.begin();it2!=it;++it2) {
                 try {
                     (*it2)->removeDynamicProperty(name.c_str());
                 } catch(Base::Exception &e) {
-                    e.ReportException();
+                    e.reportException();
                 }
             }
             QMessageBox::critical(getMainWindow(),

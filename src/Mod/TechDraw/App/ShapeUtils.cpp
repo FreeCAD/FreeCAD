@@ -83,7 +83,7 @@ using DU = DrawUtil;
 gp_Ax2 ShapeUtils::getViewAxis(const Base::Vector3d origin, const Base::Vector3d& direction,
                              const bool flip)
 {
-    //    Base::Console().Message("GO::getViewAxis() - 1 - use only with getLegacyX\n");
+    //    Base::Console().message("GO::getViewAxis() - 1 - use only with getLegacyX\n");
     (void)flip;
     gp_Ax2 viewAxis;
     gp_Pnt inputCenter(origin.x, origin.y, origin.z);
@@ -113,7 +113,7 @@ gp_Ax2 ShapeUtils::getViewAxis(const Base::Vector3d origin, const Base::Vector3d
 gp_Ax2 ShapeUtils::getViewAxis(const Base::Vector3d origin, const Base::Vector3d& direction,
                              const Base::Vector3d& xAxis, const bool flip)
 {
-    //    Base::Console().Message("GO::getViewAxis() - 2\n");
+    //    Base::Console().message("GO::getViewAxis() - 2\n");
     (void)flip;
     gp_Pnt inputCenter(origin.x, origin.y, origin.z);
     return gp_Ax2(inputCenter,
@@ -126,7 +126,7 @@ gp_Ax2 ShapeUtils::getViewAxis(const Base::Vector3d origin, const Base::Vector3d
 gp_Ax2 ShapeUtils::legacyViewAxis1(const Base::Vector3d origin, const Base::Vector3d& direction,
                                  const bool flip)
 {
-    //    Base::Console().Message("GO::legacyViewAxis1()\n");
+    //    Base::Console().message("GO::legacyViewAxis1()\n");
     gp_Pnt inputCenter(origin.x, origin.y, origin.z);
     Base::Vector3d stdZ(0.0, 0.0, 1.0);
     Base::Vector3d stdOrg(0.0, 0.0, 0.0);
@@ -180,7 +180,7 @@ gp_Pnt ShapeUtils::findCentroid(const TopoDS_Shape& shape)
 //! Returns the centroid of shape, as viewed according to direction
 gp_Pnt ShapeUtils::findCentroid(const TopoDS_Shape& shape, const Base::Vector3d& direction)
 {
-    //    Base::Console().Message("GO::findCentroid() - 1\n");
+    //    Base::Console().message("GO::findCentroid() - 1\n");
     Base::Vector3d origin(0.0, 0.0, 0.0);
     gp_Ax2 viewAxis = getViewAxis(origin, direction);
     return findCentroid(shape, viewAxis);
@@ -189,7 +189,7 @@ gp_Pnt ShapeUtils::findCentroid(const TopoDS_Shape& shape, const Base::Vector3d&
 //! Returns the centroid of shape, as viewed according to direction
 gp_Pnt ShapeUtils::findCentroid(const TopoDS_Shape& shape, const gp_Ax2& viewAxis)
 {
-    //    Base::Console().Message("GO::findCentroid() - 2\n");
+    //    Base::Console().message("GO::findCentroid() - 2\n");
 
     gp_Trsf tempTransform;
     tempTransform.SetTransformation(viewAxis);
@@ -212,14 +212,14 @@ gp_Pnt ShapeUtils::findCentroid(const TopoDS_Shape& shape, const gp_Ax2& viewAxi
 
 Base::Vector3d ShapeUtils::findCentroidVec(const TopoDS_Shape& shape, const Base::Vector3d& direction)
 {
-    //    Base::Console().Message("GO::findCentroidVec() - 1\n");
+    //    Base::Console().message("GO::findCentroidVec() - 1\n");
     gp_Pnt p = ShapeUtils::findCentroid(shape, direction);
     return Base::Vector3d(p.X(), p.Y(), p.Z());
 }
 
 Base::Vector3d ShapeUtils::findCentroidVec(const TopoDS_Shape& shape, const gp_Ax2& cs)
 {
-    //    Base::Console().Message("GO::findCentroidVec() - 2\n");
+    //    Base::Console().message("GO::findCentroidVec() - 2\n");
     gp_Pnt p = ShapeUtils::findCentroid(shape, cs);
     return Base::Vector3d(p.X(), p.Y(), p.Z());
 }

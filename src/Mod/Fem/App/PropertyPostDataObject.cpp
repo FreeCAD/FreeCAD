@@ -42,6 +42,12 @@
 #include <vtkXMLUnstructuredGridReader.h>
 #endif
 
+#ifdef FC_USE_VTK_PYTHON
+#include <vtkPythonUtil.h>
+#else
+#include <Base/PyObjectBase.h>
+#endif
+
 #include <App/Application.h>
 #include <App/DocumentObject.h>
 #include <Base/Console.h>
@@ -162,12 +168,39 @@ int PropertyPostDataObject::getDataType()
 
 PyObject* PropertyPostDataObject::getPyObject()
 {
-    // TODO: fetch the vtk python object from the data set and return it
-    return Py::new_reference_to(Py::None());
+#ifdef FC_USE_VTK_PYTHON
+    // create a copy first
+    auto copy = static_cast<PropertyPostDataObject*>(Copy());
+
+    // get the data python wrapper
+    PyObject* py_dataset = vtkPythonUtil::GetObjectFromPointer(copy->getValue());
+    auto result = Py::new_reference_to(py_dataset);
+    delete copy;
+
+    return result;
+#else
+    PyErr_SetString(PyExc_NotImplementedError, "VTK python wrapper not available");
+    Py_Return;
+#endif
 }
 
-void PropertyPostDataObject::setPyObject(PyObject* /*value*/)
-{}
+void PropertyPostDataObject::setPyObject(PyObject* value)
+{
+#ifdef FC_USE_VTK_PYTHON
+    vtkObjectBase* obj = vtkPythonUtil::GetPointerFromObject(value, "vtkDataObject");
+    if (!obj) {
+        throw Base::TypeError("Can only set vtkDataObject");
+    }
+    auto dobj = static_cast<vtkDataObject*>(obj);
+    createDataObjectByExternalType(dobj);
+
+    aboutToSetValue();
+    m_dataObject->DeepCopy(dobj);
+    hasSetValue();
+#else
+    throw Base::NotImplementedError();
+#endif
+}
 
 App::Property* PropertyPostDataObject::Copy() const
 {
@@ -211,7 +244,7 @@ void PropertyPostDataObject::createDataObjectByExternalType(vtkSmartPointer<vtkD
             m_dataObject = vtkSmartPointer<vtkMultiPieceDataSet>::New();
             break;
         default:
-            break;
+            throw Base::TypeError("Unsupported VTK data type");
     };
 }
 
@@ -298,7 +331,7 @@ void PropertyPostDataObject::Restore(Base::XMLReader& reader)
         return;
     }
 
-    std::string file(reader.getAttribute("file"));
+    std::string file(reader.getAttribute<const char*>("file"));
     if (!file.empty()) {
         // initiate a file read
         reader.addFile(file.c_str(), this);
@@ -375,12 +408,12 @@ void PropertyPostDataObject::SaveDocFile(Base::Writer& writer) const
         App::PropertyContainer* father = this->getContainer();
         if (father && father->isDerivedFrom<App::DocumentObject>()) {
             App::DocumentObject* obj = static_cast<App::DocumentObject*>(father);
-            Base::Console().Error("Dataset of '%s' cannot be written to vtk file '%s'\n",
+            Base::Console().error("Dataset of '%s' cannot be written to vtk file '%s'\n",
                                   obj->Label.getValue(),
                                   fi.filePath().c_str());
         }
         else {
-            Base::Console().Error("Cannot save vtk file '%s'\n", fi.filePath().c_str());
+            Base::Console().error("Cannot save vtk file '%s'\n", fi.filePath().c_str());
         }
 
         std::stringstream ss;
@@ -432,7 +465,7 @@ void PropertyPostDataObject::RestoreDocFile(Base::Reader& reader)
 
         // TODO: read in of composite data structures need to be coded,
         // including replace of "GetOutputAsDataSet()"
-        vtkSmartPointer<vtkXMLReader> xmlReader;
+        vtkSmartPointer<vtkXMLReader> xmlReader = nullptr;
         if (extension == "vtp") {
             xmlReader = vtkSmartPointer<vtkXMLPolyDataReader>::New();
         }
@@ -489,31 +522,39 @@ void PropertyPostDataObject::RestoreDocFile(Base::Reader& reader)
             xmlReader = vtkSmartPointer<vtkXMLMultiBlockDataReader>::New();
         }
 
-        xmlReader->SetFileName(fi.filePath().c_str());
-        xmlReader->Update();
+        if (xmlReader) {
+            xmlReader->SetFileName(fi.filePath().c_str());
+            xmlReader->Update();
 
-        if (!xmlReader->GetOutputDataObject(0)) {
-            // Note: Do NOT throw an exception here because if the tmp. created file could
-            // not be read it's NOT an indication for an invalid input stream 'reader'.
-            // We only print an error message but continue reading the next files from the
-            // stream...
-            App::PropertyContainer* father = this->getContainer();
-            if (father && father->isDerivedFrom<App::DocumentObject>()) {
-                App::DocumentObject* obj = static_cast<App::DocumentObject*>(father);
-                Base::Console().Error("Dataset file '%s' with data of '%s' seems to be empty\n",
-                                      fi.filePath().c_str(),
-                                      obj->Label.getValue());
+            if (!xmlReader->GetOutputDataObject(0)) {
+                // Note: Do NOT throw an exception here because if the tmp. created file could
+                // not be read it's NOT an indication for an invalid input stream 'reader'.
+                // We only print an error message but continue reading the next files from the
+                // stream...
+                App::PropertyContainer* father = this->getContainer();
+                if (father && father->isDerivedFrom<App::DocumentObject>()) {
+                    App::DocumentObject* obj = static_cast<App::DocumentObject*>(father);
+                    Base::Console().error("Dataset file '%s' with data of '%s' seems to be empty\n",
+                                          fi.filePath().c_str(),
+                                          obj->Label.getValue());
+                }
+                else {
+                    Base::Console().warning("Loaded Dataset file '%s' seems to be empty\n",
+                                            fi.filePath().c_str());
+                }
             }
             else {
-                Base::Console().Warning("Loaded Dataset file '%s' seems to be empty\n",
-                                        fi.filePath().c_str());
+                aboutToSetValue();
+                createDataObjectByExternalType(xmlReader->GetOutputDataObject(0));
+                m_dataObject->DeepCopy(xmlReader->GetOutputDataObject(0));
+                hasSetValue();
             }
         }
         else {
-            aboutToSetValue();
-            createDataObjectByExternalType(xmlReader->GetOutputDataObject(0));
-            m_dataObject->DeepCopy(xmlReader->GetOutputDataObject(0));
-            hasSetValue();
+            Base::Console().error(
+                "Dataset file '%s' is of unsupported type: %s. Data not loaded.\n",
+                fi.filePath().c_str(),
+                extension);
         }
     }
 
