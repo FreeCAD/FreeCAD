@@ -441,7 +441,7 @@ class LibraryEditor(object):
 
         # Load the toolbit asset for editing
         try:
-            bit = cam_assets.get(toolbit_uri)
+            bit = cast(ToolBit, cam_assets.get(toolbit_uri))
             editor_dialog = ToolBitEditor(bit, self.form)  # Create dialog instance
             result = editor_dialog.show()  # Show as modal dialog
 
@@ -512,7 +512,7 @@ class LibraryEditor(object):
 
         try:
             cam_assets.add(self.current_library)
-            Path.Log.info(
+            Path.Log.debug(
                 f"_saveCurrentLibrary: Library " f"{self.current_library.get_uri()} saved."
             )
         except Exception as e:
@@ -538,7 +538,7 @@ class LibraryEditor(object):
             )
             return
 
-        dialog = AssetSaveDialog(self.current_library, library_serializers, self.form)
+        dialog = AssetSaveDialog(Library, library_serializers, self.form)
         dialog_result = dialog.exec(self.current_library)
         if not dialog_result:
             return  # User canceled or error

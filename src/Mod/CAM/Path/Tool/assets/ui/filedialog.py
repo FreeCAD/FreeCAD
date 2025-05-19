@@ -35,14 +35,14 @@ from .util import (
 class AssetOpenDialog(QFileDialog):
     def __init__(
         self,
-        asset_type: Type[Asset],
+        asset_class: Type[Asset],
         serializers: Iterable[Type[AssetSerializer]],
         parent=None,
     ):
         super().__init__(parent)
-        self.asset_type = asset_type
+        self.asset_class = asset_class
         self.serializers = list(serializers)
-        self.setWindowTitle("Open an asset")
+        self.setWindowTitle("Open an {asset_class.asset_type} file")
         self.setFileMode(QFileDialog.ExistingFile)
         filters = make_import_filters(self.serializers)
         self.setNameFilters(filters)
@@ -65,8 +65,8 @@ class AssetOpenDialog(QFileDialog):
         try:
             raw_data = file_path.read_bytes()
             asset = serializer_class.deep_deserialize(raw_data)
-            if not isinstance(asset, self.asset_type):
-                raise TypeError(f"Deserialized asset is not of type {self.asset_type.asset_type}")
+            if not isinstance(asset, self.asset_class):
+                raise TypeError(f"Deserialized asset is not of type {self.asset_class.__name__}")
             return asset
         except Exception as e:
             QMessageBox.critical(self, "Error", f"Failed to import asset: {e}")
@@ -86,12 +86,12 @@ class AssetOpenDialog(QFileDialog):
 class AssetSaveDialog(QFileDialog):
     def __init__(
         self,
-        asset_type: Type[Asset],
+        asset_class: Type[Asset],
         serializers: Iterable[Type[AssetSerializer]],
         parent=None,
     ):
         super().__init__(parent)
-        self.asset_type = asset_type
+        self.asset_class = asset_class
         self.serializers = list(serializers)
         self.setFileMode(QFileDialog.AnyFile)
         self.setAcceptMode(QFileDialog.AcceptSave)
@@ -126,7 +126,7 @@ class AssetSaveDialog(QFileDialog):
             return False
 
     def exec(self, asset: Asset) -> Optional[Tuple[pathlib.Path, Type[AssetSerializer]]]:
-        self.setWindowTitle(f"Save {asset.label}")
+        self.setWindowTitle(f"Save {asset.label or self.asset_class.asset_type}")
         if super().exec_():
             selected_filter = self.selectedNameFilter()
             file_path = pathlib.Path(self.selectedFiles()[0])
