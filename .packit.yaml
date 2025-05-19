@@ -3,8 +3,7 @@ files_to_sync:
     - .packit.yaml
 actions:
   post-upstream-clone:
-    - curl -O --location --retry 3 https://raw.githubusercontent.com/FreeCAD/FreeCAD-Bundle/refs/heads/main/make_version_file.py
-    - bash -c '/usr/bin/python3 make_version_file.py freecad_version.txt'
+    - bash -c 'BUILD_TAG=dev /usr/bin/python3 package/rattler-build/scripts/make_version_file.py'
   changelog-entry:
     - bash -c 'git log --no-merges --pretty="format:- %s (%an)" $(git describe --tags --abbrev=0 )..HEAD -- |sed 's/%/%%/g''
   create-archive:
@@ -26,10 +25,7 @@ jobs:
   #replace branch with main before merging
   branch: only-packit
   targets:
-    fedora-41:
-      without_opts:
-      - debug_info
-    fedora-42:
+    fedora-stable:
       without_opts:
       - debug_info
 
@@ -40,15 +36,15 @@ jobs:
   #replace branc/packit testh with main before merging
   branch: only-packit
   targets:
-  - fedora-42
+    fedora-latest-stable:
+      without_opts:
+      - debug_info
   fmf_path: package/fedora/tests
-  notifications:
-    failure_comment:
-      message: "One of the tests failed for {commit_sha}. @admin check logs {logs_url}, packit dashboard {packit_dashboard_url} and external service dashboard {external_dashboard_url}"
 
 - job: copr_build
   identifier: main
   trigger: commit
+  manual_trigger: true
   #replace branch with main before merging
   branch: only-packit
   #replace owner with @freecad and the desired project before merging
