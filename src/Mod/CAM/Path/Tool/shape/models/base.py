@@ -275,8 +275,27 @@ class ToolBitShape(Asset):
                 # but keeping for clarity.
                 raise ValueError("Failed to open shape document from bytes")
 
-            # Determine the specific subclass of ToolBitShape using the new method
-            shape_class = ToolBitShape.get_shape_class_from_bytes(data)
+            # Determine the specific subclass of ToolBitShape.
+            try:
+                shape_class = ToolBitShape.get_shape_class_from_bytes(data)
+            except Exception as e:
+                Path.Log.warning(f"{id}: Failed to determine shape class from bytes: {e}")
+                shape_types = [c.name for c in ToolBitShape.__subclasses__()]
+                shape_class = ToolBitShape.guess_subclass_from_name(id)
+                if shape_class:
+                    Path.Log.warning(
+                        f'{id}: failed to infer shape type from bytes,'
+                        f' guessing "{shape_class.name}". To fix, name'
+                        f' the body in the shape file to one of: {shape_types}'
+                    )
+                else:
+                    Path.Log.warning(
+                        f'{id}: failed to infer shape type from bytes,'
+                        f' using "endmill". To fix, name'
+                        f' the body in the shape file to one of: {shape_types}'
+                    )
+                    from .endmill import ToolBitShapeEndmill
+                    shape_class = ToolBitShapeEndmill
 
             # Load properties from the temporary document
             props_obj = ToolBitShape._find_property_object(temp_doc)
@@ -293,10 +312,16 @@ class ToolBitShape(Asset):
                 if name not in loaded_params or loaded_params[name] is None
             ]
 
+            # For now, we log missing parameters, but do not raise an error.
+            # This allows for more flexible shape files that may not have all
+            # parameters set, while still warning the user.
+            # In the future, we may want to raise an error if critical parameters
+            # are missing.
             if missing_params:
-                raise ValueError(
-                    f"Validation error: Object '{props_obj.Label}' in document bytes "
-                    + f"is missing parameters for {shape_class.__name__}: {', '.join(missing_params)}"
+                Path.Log.error(
+                    f"Validation error: Object '{props_obj.Label}' in document {id} "
+                    f"is missing parameters for {shape_class.__name__}: {', '.join(missing_params)}."
+                    f" In future releases, these shapes will not load!"
                 )
 
             # Instantiate the specific subclass with the provided ID
@@ -413,6 +438,25 @@ class ToolBitShape(Asset):
                 or name in thecls.aliases
             ):
                 return thecls
+        return default
+
+    @classmethod
+    def guess_subclass_from_name(
+        cls, name: str, default: Type["ToolBitShape"] | None = None
+    ) -> Optional[Type["ToolBitShape"]]:
+        """
+        Retrieves a ToolBitShape class by its name or alias.
+        """
+        name = name.lower()
+        for thecls in cls.__subclasses__():
+            if (
+                thecls.name.lower() in name
+                or thecls.__name__.lower() in name
+            ):
+                return thecls
+            for alias in thecls.aliases:
+                if alias.lower() in name:
+                    return thecls
         return default
 
     @classmethod

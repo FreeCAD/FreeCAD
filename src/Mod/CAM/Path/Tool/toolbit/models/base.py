@@ -32,7 +32,6 @@ from itertools import chain
 from lazy_loader.lazy_loader import LazyLoader
 from typing import Any, List, Optional, Tuple, Type, Union, Mapping, cast
 from PySide.QtCore import QT_TRANSLATE_NOOP
-import Part
 from Path.Base.Generator import toolchange
 from ...assets import Asset
 from ...camassets import cam_assets
@@ -103,13 +102,26 @@ class ToolBit(Asset, ABC):
             raise ValueError("ToolBit dictionary is missing 'shape' key")
 
         # Find the shape type.
+        shape_types = [c.name for c in ToolBitShape.__subclasses__()]
         shape_type = attrs.get("shape-type")
         shape_class = None
         if shape_type is None:
             shape_class = ToolBitShape.get_subclass_by_name(shape_id)
             if not shape_class:
-                Path.Log.error(f'failed to infer shape type from {shape_id}; using "endmill"')
-                shape_class = ToolBitShapeEndmill
+                shape_class = ToolBitShape.guess_subclass_from_name(shape_id)
+                if shape_class:
+                    Path.Log.warning(
+                        f'failed to infer shape type from {shape_id},'
+                        f' guessing "{shape_class.name}". To fix, name'
+                        f' the body in the shape file to one of: {shape_types}'
+                    )
+                else:
+                    Path.Log.warning(
+                        f'failed to infer shape type from {shape_id},'
+                        f' using "endmill". To fix, name'
+                        f' the body in the shape file to one of: {shape_types}'
+                    )
+                    shape_class = ToolBitShapeEndmill
             shape_type = shape_class.name
 
         # Try to load the shape, if the asset exists.
@@ -120,6 +132,7 @@ class ToolBit(Asset, ABC):
                 tool_bit_shape = cast(ToolBitShape, cam_assets.get(shape_asset_uri))
             except FileNotFoundError:
                 pass  # Rely on the fallback below
+                Path.Log.debug(f"ToolBit.from_dict: Shape asset {shape_asset_uri} not found.")
 
         # If it does not exist, create a new instance from scratch.
         params = attrs.get("parameter", {})
@@ -129,6 +142,10 @@ class ToolBit(Asset, ABC):
             if not shape_class:
                 raise ValueError(f"failed to get shape class from {shape_id}")
             tool_bit_shape = shape_class(shape_id, **params)
+            Path.Log.debug(
+                f"ToolBit.from_dict: created shape instance {tool_bit_shape.name}"
+                f" from {shape_id}. Uri: {tool_bit_shape.get_uri()}"
+            )
 
         # Now that we have a shape, create the toolbit instance.
         return cls.from_shape(tool_bit_shape, attrs, id=attrs.get("id"))
@@ -148,7 +165,7 @@ class ToolBit(Asset, ABC):
             if hasattr(toolbit.obj, param_name):
                 PathUtil.setProperty(toolbit.obj, param_name, param_value)
             else:
-                Path.Log.warning(
+                Path.Log.debug(
                     f" ToolBit {id} Parameter '{param_name}' not found on"
                     f" {selected_toolbit_subclass.__name__} ({tool_bit_shape})"
                     f" '{toolbit.obj.Label}'. Skipping."
@@ -159,7 +176,7 @@ class ToolBit(Asset, ABC):
             if hasattr(toolbit.obj, attr_name):
                 PathUtil.setProperty(toolbit.obj, attr_name, attr_value)
             else:
-                Path.Log.warning(
+                Path.Log.debug(
                     f"ToolBit {id} Attribute '{attr_name}' not found on"
                     f" {selected_toolbit_subclass.__name__} ({tool_bit_shape})"
                     f" '{toolbit.obj.Label}'. Skipping."
@@ -667,7 +684,7 @@ class ToolBit(Asset, ABC):
 
             # Conditional to avoid unnecessary migration warning when called
             # from onDocumentRestored.
-            if getattr(self.obj, name) != value:
+            if value is not None and getattr(self.obj, name) != value:
                 setattr(self.obj, name, value)
 
         # 2. Remove obsolete shape properties
@@ -676,7 +693,12 @@ class ToolBit(Asset, ABC):
         current_shape_prop_names = set(self._get_props("Shape"))
         new_shape_param_names = self._tool_bit_shape.schema().keys()
         obsolete = current_shape_prop_names - new_shape_param_names
-        self._remove_properties("Shape", obsolete)
+        Path.Log.debug(
+            f"Removing obsolete shape properties: {obsolete} from {self.obj.Label}"
+        )
+        # Gracefully skipping the deletion for now;
+        # in future releases we may handle schema violations more strictly
+        # self._remove_properties("Shape", obsolete)
 
     def _update_visual_representation(self):
         """

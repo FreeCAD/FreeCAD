@@ -58,6 +58,15 @@ class DetachedDocumentObject:
             self._property_groups[name] = group
             self._property_types[name] = thetype
             self._property_docs[name] = doc
+            if thetype in [
+                "App::PropertyQuantity",
+                "App::PropertyLength",
+                "App::PropertyArea",
+                "App::PropertyVolume",
+                "App::PropertyAngle",
+            ]:
+                # Initialize Quantity properties with a default value
+                self._properties[name] = FreeCAD.Units.Quantity(0.0)
 
     def getPropertyByName(self, name: str) -> Any:
         """Mimics FreeCAD DocumentObject.getPropertyByName."""
