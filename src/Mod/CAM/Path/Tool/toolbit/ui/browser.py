@@ -133,9 +133,9 @@ class ToolBitBrowserWidget(QtGui.QWidget):
                 ),
             )
             self._sort_assets()
-            self._trigger_fetch()
         finally:
             self._is_fetching = False
+        self._trigger_fetch()
 
     def _sort_assets(self):
         """Sorts the in-memory assets based on the current sort key."""

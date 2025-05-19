@@ -41,6 +41,9 @@ class TestToolBitBrowserWidget(PathTestWithAssets):
         self.widget = ToolBitBrowserWidget(self.assets)
 
     def test_initial_fetch(self):
+        # Simulate expose to trigger initial fetch
+        self.widget.showEvent(None)
+
         # Verify that the list widget is populated after initialization
         # The default test assets include some toolbits.
         self.assertGreater(self.widget._tool_list_widget.count(), 0)
@@ -78,6 +81,9 @@ class TestToolBitBrowserWidget(PathTestWithAssets):
             )
             if is_expected:
                 expected_visible_uris.add(str(tb.get_uri()))
+
+        # Simulate expose to trigger initial fetch
+        self.widget.showEvent(None)
 
         actual_visible_uris = set()
         for i in range(self.widget._tool_list_widget.count()):
