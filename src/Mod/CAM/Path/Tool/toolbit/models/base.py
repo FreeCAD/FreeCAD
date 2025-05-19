@@ -462,8 +462,8 @@ class ToolBit(Asset, ABC):
         # Copy properties from the restored object to the ToolBitShape.
         for name, item in self._tool_bit_shape.schema().items():
             if name in self.obj.PropertiesList:
-               value = self.obj.getPropertyByName(name)
-               self._tool_bit_shape.set_parameter(name, value)
+                value = self.obj.getPropertyByName(name)
+                self._tool_bit_shape.set_parameter(name, value)
 
         # Ensure property state is correct after restore.
         self._update_tool_properties()

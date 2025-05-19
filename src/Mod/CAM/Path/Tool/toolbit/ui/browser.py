@@ -187,10 +187,10 @@ class ToolBitBrowserWidget(QtGui.QWidget):
             offset = self._tool_list_widget.count()
             more_items = True
             while more_items:
-                 more_items = self._fetch_batch(offset)
-                 offset += self._batch_size
-                 if scrollbar.maximum() != 0:
-                     break
+                more_items = self._fetch_batch(offset)
+                offset += self._batch_size
+                if scrollbar.maximum() != 0:
+                    break
 
             # Apply filter to ensure UI consistency
             self._tool_list_widget.apply_filter(self._current_search)
