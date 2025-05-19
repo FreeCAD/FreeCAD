@@ -100,12 +100,12 @@ Recommends:     python3-pysolar IfcOpenShell-python3
 
 
 %description
-    FreeCAD is a general purpose Open Source 3D CAD/MCAD/CAx/CAE/PLM modeler, aimed
-    directly at mechanical engineering and product design but also fits a wider
-    range of uses in engineering, such as architecture or other engineering
-    specialities. It is a feature-based parametric modeler with a modular software
-    architecture which makes it easy to provide additional functionality without
-    modifying the core system.
+FreeCAD is a general purpose Open Source 3D CAD/MCAD/CAx/CAE/PLM modeler, aimed
+directly at mechanical engineering and product design but also fits a wider
+range of uses in engineering, such as architecture or other engineering
+specialities. It is a feature-based parametric modeler with a modular software
+architecture which makes it easy to provide additional functionality without
+modifying the core system.
 
 
 %package data
@@ -114,7 +114,7 @@ BuildArch:      noarch
 Requires:       %{name} = %{epoch}:%{version}-%{release}
 
 %description data
-    Data files for FreeCAD
+Data files for FreeCAD
 
 %package libondselsolver-devel
 Summary:        Development file for OndselSolver
@@ -122,7 +122,7 @@ BuildArch:      noarch
 Requires:       %{name} = %{epoch}:%{version}-%{release}
 
 %description libondselsolver-devel
-    Development file for OndselSolver
+Development file for OndselSolver
 
 
 #path that contain main FreeCAD sources for cmake
