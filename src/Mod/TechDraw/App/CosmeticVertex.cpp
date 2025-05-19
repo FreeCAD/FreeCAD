@@ -144,14 +144,14 @@ void CosmeticVertex::Restore(Base::XMLReader &reader)
     permaPoint.y = reader.getAttribute<double>("Y");
     permaPoint.z = reader.getAttribute<double>("Z");
     reader.readElement("LinkGeom");
-    linkGeom = (int)reader.getAttribute<long>("value");
+    linkGeom = reader.getAttribute<int>("value");
     reader.readElement("Color");
     std::string temp = reader.getAttribute<const char*>("value");
     color.fromHexString(temp);
     reader.readElement("Size");
     size = reader.getAttribute<double>("value");
     reader.readElement("Style");
-    style = (int)reader.getAttribute<long>("value");
+    style = reader.getAttribute<int>("value");
     reader.readElement("Visible");
     visible = reader.getAttribute<bool>("value");
 

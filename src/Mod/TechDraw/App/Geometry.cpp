@@ -1341,13 +1341,13 @@ void Vertex::Restore(Base::XMLReader &reader)
     reader.readElement("Extract");
     extractType = reader.getAttribute<ExtractionType>("value");
     reader.readElement("Ref3D");
-    ref3D = (int)reader.getAttribute<long>("value");
+    ref3D = reader.getAttribute<int>("value");
     reader.readElement("IsCenter");
     hlrVisible = reader.getAttribute<bool>("value");
     reader.readElement("Cosmetic");
     cosmetic = reader.getAttribute<bool>("value");
     reader.readElement("CosmeticLink");
-    cosmeticLink = (int)reader.getAttribute<long>("value");
+    cosmeticLink = reader.getAttribute<int>("value");
     reader.readElement("CosmeticTag");
     cosmeticTag = reader.getAttribute<const char*>("value");
 
