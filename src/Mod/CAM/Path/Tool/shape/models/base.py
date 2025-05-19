@@ -79,8 +79,6 @@ class ToolBitShape(Asset):
 
         self.id: str = id
 
-        self.is_builtin: bool = True
-
         self.icon: Optional[ToolBitShapeIcon] = None
 
         # Assign parameters
@@ -102,6 +100,16 @@ class ToolBitShape(Asset):
             str: The ID of the shape.
         """
         return self.id
+
+    @property
+    def is_builtin(self) -> bool:
+        """
+        Check if this shape is a built-in shape.
+
+        Returns:
+            bool: True if the shape is built-in, False otherwise.
+        """
+        return self.name.lower() == self.id
 
     @classmethod
     def _get_shape_class_from_doc(cls, doc: "FreeCAD.Document") -> Type["ToolBitShape"]:
