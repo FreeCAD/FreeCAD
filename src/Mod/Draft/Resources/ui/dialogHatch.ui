@@ -84,6 +84,11 @@
    </item>
    <item row="4" column="1">
     <widget class="QCheckBox" name="Translate">
+     <property name="toolTip">
+      <string>If checked, the pattern aligns with the base object.
+      If unchecked, the pattern aligns with the global coordinate system.
+This setting modifies the Translate variable.</string>
+     </property>
      <property name="text">
       <string/>
      </property>
