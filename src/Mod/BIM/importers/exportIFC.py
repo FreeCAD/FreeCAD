@@ -371,6 +371,7 @@ def export(exportList, filename, colors=None, preferences=None):
 
         if obj.Name in products:
             # never export same product twice
+            print(f"Warning! Object '{obj.Label}' is already exported. Skipping it.")
             continue
 
         # structural analysis object
@@ -617,44 +618,71 @@ def export(exportList, filename, colors=None, preferences=None):
 
         # Process additions only if the object has the Additions attribute and the shapetype is valid
         if hasattr(obj, "Additions") and (shapetype in ["extrusion", "no shape"]):
-            print(f"Processing additions for {obj.Label}: {[o.Label for o in obj.Additions]}")
             additions = obj.Additions
+            relating_object = product  # For non-groups, the relating object is the product itself
         elif obj.TypeId == "App::DocumentObjectGroup":
             # If obj is a group, collect additions from its children
             additions = []
             for child in obj.Group:
-                if hasattr(child, "Additions") and (shapetype in ["extrusion", "no shape"]):
-                    print(f"Processing additions for {child.Label}: {[o.Label for o in child.Additions]}")
+                if hasattr(child, "Additions"):
                     additions.extend(child.Additions)
+                    # Use the child as the relating object without adding it to products
+                    relating_object = child  # Track the child directly
+                    for o in child.Additions:
+                        r2, p2, c2 = getRepresentation(ifcfile, context, o, colors=colors, preferences=preferences)
+                        if preferences['DEBUG']:
+                            print("      adding ", c2, " : ", o.Label)
+                        l = o.Label
+                        prod2 = ifcfile.createIfcBuildingElementProxy(
+                            ifcopenshell.guid.new(),
+                            history,
+                            l,
+                            None,
+                            None,
+                            p2,
+                            r2,
+                            None,
+                            "ELEMENT"
+                        )
+                        subproducts[o.Name] = prod2
+                        ifcfile.createIfcRelAggregates(
+                            ifcopenshell.guid.new(),
+                            history,
+                            'Addition',
+                            '',
+                            relating_object,
+                            [prod2]
+                        )
         else:
             additions = []
 
-        # Process additions
-        for o in additions:
-            r2, p2, c2 = getRepresentation(ifcfile, context, o, colors=colors, preferences=preferences)
-            if preferences['DEBUG']:
-                print("      adding ", c2, " : ", o.Label)
-            l = o.Label
-            prod2 = ifcfile.createIfcBuildingElementProxy(
-                ifcopenshell.guid.new(),
-                history,
-                l,
-                None,
-                None,
-                p2,
-                r2,
-                None,
-                "ELEMENT"
-            )
-            subproducts[o.Name] = prod2
-            ifcfile.createIfcRelAggregates(
-                ifcopenshell.guid.new(),
-                history,
-                'Addition',
-                '',
-                product,
-                [prod2]
-            )
+        # Process additions for non-groups
+        if additions and not obj.TypeId == "App::DocumentObjectGroup":
+            for o in additions:
+                r2, p2, c2 = getRepresentation(ifcfile, context, o, colors=colors, preferences=preferences)
+                if preferences['DEBUG']:
+                    print("      adding ", c2, " : ", o.Label)
+                l = o.Label
+                prod2 = ifcfile.createIfcBuildingElementProxy(
+                    ifcopenshell.guid.new(),
+                    history,
+                    l,
+                    None,
+                    None,
+                    p2,
+                    r2,
+                    None,
+                    "ELEMENT"
+                )
+                subproducts[o.Name] = prod2
+                ifcfile.createIfcRelAggregates(
+                    ifcopenshell.guid.new(),
+                    history,
+                    'Addition',
+                    '',
+                    product,
+                    [prod2]
+                )
 
         # Substractions
 
@@ -685,7 +713,7 @@ def export(exportList, filename, colors=None, preferences=None):
 
             # Iterate over the children
             for o in iterable:
-                print(f"  Checking {iterable_desc}: {o.Label}")
+                print(f"  Checking {iterable_desc} of {obj.Label}: {o.Label}")
                 if hasattr(o, "Hosts"):
                     for co in o.Hosts:
                         print(f"    Checking host: {co.Label} for {o.Label}")
@@ -705,7 +733,8 @@ def export(exportList, filename, colors=None, preferences=None):
         print(f"Continuing to process {obj.Label}")
 
         # Verify subtractions
-        if hasattr(obj, "Subtractions") and (shapetype in ["extrusion", "no shape"]):
+        print(f"Verifying subtractions for: {obj.Label}")
+        if hasattr(obj, "Subtractions"): # and (shapetype in ["extrusion", "no shape"]):
             print(f"Subtractions: {[sub.Label for sub in obj.Subtractions]}")
 
             # Combine subtractions and guests
