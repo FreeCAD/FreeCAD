@@ -324,7 +324,7 @@ bool isVisibleUpTo(App::DocumentObject* obj, Gui::Document* doc, App::DocumentOb
 bool hasVisualFeature(App::DocumentObject* obj, App::DocumentObject* rootObj, Gui::Document* doc)
 {
     auto docObjects = doc->getDocument()->getObjects();
-    for(auto object : docObjects) {
+    for (auto object : docObjects) {
 
         // Presumably, the sketch that is being edited has visual features, but
         // that's not interesting
@@ -383,7 +383,9 @@ void EditDatumDialog::performAutoScale(double newDatum)
     // if there are external geometries, it is safe to assume that the sketch
     // was drawn with these geometries as scale references (use <= 2 because
     // the sketch axis are considered as external geometries)
-    if ((autoScaleMode == 0 || (autoScaleMode == 2 && !hasVisualFeature(sketch, nullptr, Gui::Application::Instance->activeDocument())))
+    if ((autoScaleMode == 0
+         || (autoScaleMode == 2
+             && !hasVisualFeature(sketch, nullptr, Gui::Application::Instance->activeDocument())))
         && sketch->getExternalGeometryCount() <= 2 && sketch->hasSingleScaleDefiningConstraint()) {
         double oldDatum = sketch->getDatum(ConstrNbr);
         double scale_factor = newDatum / oldDatum;
