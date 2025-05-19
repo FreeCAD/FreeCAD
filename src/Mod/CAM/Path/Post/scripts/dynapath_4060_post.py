@@ -31,6 +31,7 @@ import Path
 import argparse
 import datetime
 import shlex
+import Path.Base.Util as PathUtil
 import Path.Post.Utils as PostUtils
 import PathScripts.PathUtils as PathUtils
 from builtins import open as pyopen
@@ -171,7 +172,7 @@ def processArguments(argstring):
             SHOW_EDITOR = False
             print("Show editor = %r" % (SHOW_EDITOR))
         if args.precision is not None:
-            PRECISION = args.precision
+            PRECISION = int(args.precision)
         if args.preamble is not None:
             PREAMBLE = args.preamble.replace("\\n", "\n")
         if args.postamble is not None:
@@ -232,12 +233,9 @@ def export(objectslist, filename, argstring):
     for obj in objectslist:
 
         # Skip inactive operations
-        if hasattr(obj, "Active"):
-            if not obj.Active:
-                continue
-        if hasattr(obj, "Base") and hasattr(obj.Base, "Active"):
-            if not obj.Base.Active:
-                continue
+        if not PathUtil.activeForOp(obj):
+            continue
+
         if hasattr(obj, "ClearanceHeight"):
             clearanceHeight = obj.ClearanceHeight.Value
 
@@ -257,12 +255,7 @@ def export(objectslist, filename, argstring):
             )
 
         # get coolant mode
-        coolantMode = "None"
-        if hasattr(obj, "CoolantMode") or hasattr(obj, "Base") and hasattr(obj.Base, "CoolantMode"):
-            if hasattr(obj, "CoolantMode"):
-                coolantMode = obj.CoolantMode
-            else:
-                coolantMode = obj.Base.CoolantMode
+        coolantMode = PathUtil.coolantModeForOp(obj)
 
         # turn coolant on if required
         if OUTPUT_COMMENTS:

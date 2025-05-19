@@ -768,12 +768,12 @@ G90
 G21
 (Begin operation)
 G54
-(Finish operation: Fixture)
+(Finish operation)
 (Begin operation)
 (TC: Default Tool)
 (Begin toolchange)
 (M6 T1)
-(Finish operation: TC: Default Tool)
+(Finish operation)
 (Begin operation)
 G0 X1.000 Y2.000
 G0 Z8.000
@@ -795,7 +795,7 @@ G1 Z0.000 F7380.000
 G0 Z5.000
 (G80)
 G90
-(Finish operation: Profile)
+(Finish operation)
 (Begin postamble)
 """,
             "--comments --translate_drill",
@@ -865,12 +865,12 @@ G90
 G21
 (Begin operation)
 G54
-(Finish operation: Fixture)
+(Finish operation)
 (Begin operation)
 (TC: Default Tool)
 (Begin toolchange)
 (M6 T1)
-(Finish operation: TC: Default Tool)
+(Finish operation)
 (Begin operation)
 G0 X1.000 Y2.000
 G0 Z8.000
@@ -894,7 +894,7 @@ G0 Z13.000
 G91
 (G80)
 G90
-(Finish operation: Profile)
+(Finish operation)
 (Begin postamble)
 """,
             "--comments --translate_drill",
@@ -951,12 +951,12 @@ G90
 G21
 (Begin operation)
 G54
-(Finish operation: Fixture)
+(Finish operation)
 (Begin operation)
 (TC: Default Tool)
 (Begin toolchange)
 (M6 T1)
-(Finish operation: TC: Default Tool)
+(Finish operation)
 (Begin operation)
 G0 X1.000 Y2.000
 G0 Z8.000
@@ -969,7 +969,7 @@ G1 Z0.000 F7380.000
 G0 Z5.000
 (G80)
 G90
-(Finish operation: Profile)
+(Finish operation)
 (Begin postamble)
 """,
             "--comments --translate_drill",
@@ -1030,12 +1030,12 @@ G90
 G21
 (Begin operation)
 G54
-(Finish operation: Fixture)
+(Finish operation)
 (Begin operation)
 (TC: Default Tool)
 (Begin toolchange)
 (M6 T1)
-(Finish operation: TC: Default Tool)
+(Finish operation)
 (Begin operation)
 G0 X1.000 Y2.000
 G0 Z8.000
@@ -1050,7 +1050,7 @@ G0 Z13.000
 G91
 (G80)
 G90
-(Finish operation: Profile)
+(Finish operation)
 (Begin postamble)
 """,
             "--comments --translate_drill",
@@ -1108,12 +1108,12 @@ G90
 G21
 (Begin operation)
 G54
-(Finish operation: Fixture)
+(Finish operation)
 (Begin operation)
 (TC: Default Tool)
 (Begin toolchange)
 (M6 T1)
-(Finish operation: TC: Default Tool)
+(Finish operation)
 (Begin operation)
 G0 X1.000 Y2.000
 G0 Z8.000
@@ -1127,7 +1127,7 @@ G4 P1.23456
 G0 Z5.000
 (G80)
 G90
-(Finish operation: Profile)
+(Finish operation)
 (Begin postamble)
 """,
             "--comments --translate_drill",
@@ -1189,12 +1189,12 @@ G90
 G21
 (Begin operation)
 G54
-(Finish operation: Fixture)
+(Finish operation)
 (Begin operation)
 (TC: Default Tool)
 (Begin toolchange)
 (M6 T1)
-(Finish operation: TC: Default Tool)
+(Finish operation)
 (Begin operation)
 G0 X1.000 Y2.000
 G0 Z8.000
@@ -1210,7 +1210,7 @@ G0 Z13.000
 G91
 (G80)
 G90
-(Finish operation: Profile)
+(Finish operation)
 (Begin postamble)
 """,
             "--comments --translate_drill",
@@ -1276,12 +1276,12 @@ G90
 G21
 (Begin operation)
 G54
-(Finish operation: Fixture)
+(Finish operation)
 (Begin operation)
 (TC: Default Tool)
 (Begin toolchange)
 (M6 T1)
-(Finish operation: TC: Default Tool)
+(Finish operation)
 (Begin operation)
 G0 X1.000 Y2.000
 G0 Z8.000
@@ -1303,7 +1303,7 @@ G1 Z0.000 F7380.000
 G0 Z5.000
 (G80)
 G90
-(Finish operation: Profile)
+(Finish operation)
 (Begin postamble)
 """,
             "--comments --translate_drill",
@@ -1373,12 +1373,12 @@ G90
 G21
 (Begin operation)
 G54
-(Finish operation: Fixture)
+(Finish operation)
 (Begin operation)
 (TC: Default Tool)
 (Begin toolchange)
 (M6 T1)
-(Finish operation: TC: Default Tool)
+(Finish operation)
 (Begin operation)
 G0 X1.000 Y2.000
 G0 Z8.000
@@ -1402,7 +1402,7 @@ G0 Z13.000
 G91
 (G80)
 G90
-(Finish operation: Profile)
+(Finish operation)
 (Begin postamble)
 """,
             "--comments --translate_drill",
