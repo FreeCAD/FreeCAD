@@ -532,6 +532,15 @@ void SimDisplay::MoveEye(float x, float z)
     updateDisplay = true;
 }
 
+void SimDisplay::MoveEyeCenter()
+{
+    mEyeRoration = 0;
+    mEyeInclination = PI / 6;
+    mEyeX = 0;
+    mEyeZ = 0;
+    UpdateEyeFactor(0.1f);
+}
+
 void SimDisplay::UpdateEyeFactor(float factor)
 {
     if (mEyeDistFactor == factor) {

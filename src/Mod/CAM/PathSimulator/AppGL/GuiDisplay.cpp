@@ -32,23 +32,24 @@
 using namespace MillSim;
 
 GuiItem guiItems[] = {
-    {eGuiItemSlider, 0, 0, 40, -80, 0},
+    {eGuiItemSlider, 0, 0, 28, -80, 0},
     {eGuiItemThumb, 0, 0, 328, -94, 1},
-    {eGuiItemPause, 0, 0, 40, -50, 'P', true},
-    {eGuiItemPlay, 0, 0, 40, -50, 'S', false},
-    {eGuiItemSingleStep, 0, 0, 80, -50, 'T'},
-    {eGuiItemSlower, 0, 0, 125, -50, ' '},
-    {eGuiItemFaster, 0, 0, 170, -50, 'F'},
-    {eGuiItemX, 0, 0, 220, -45, 0, false, 0},
-    {eGuiItem1, 0, 0, 242, -50, 0, false, 0},
-    {eGuiItem5, 0, 0, 242, -50, 0, true, 0},
-    {eGuiItem10, 0, 0, 242, -50, 0, true, 0},
-    {eGuiItem25, 0, 0, 242, -50, 0, true, 0},
-    {eGuiItem50, 0, 0, 242, -50, 0, true, 0},
+    {eGuiItemPause, 0, 0, 28, -50, 'P', true},
+    {eGuiItemPlay, 0, 0, 28, -50, 'S', false},
+    {eGuiItemSingleStep, 0, 0, 68, -50, 'T'},
+    {eGuiItemSlower, 0, 0, 113, -50, ' '},
+    {eGuiItemFaster, 0, 0, 158, -50, 'F'},
+    {eGuiItemX, 0, 0, 208, -45, 0, false, 0},
+    {eGuiItem1, 0, 0, 230, -50, 0, false, 0},
+    {eGuiItem5, 0, 0, 230, -50, 0, true, 0},
+    {eGuiItem10, 0, 0, 230, -50, 0, true, 0},
+    {eGuiItem25, 0, 0, 230, -50, 0, true, 0},
+    {eGuiItem50, 0, 0, 230, -50, 0, true, 0},
     {eGuiItemRotate, 0, 0, -140, -50, ' ', false, GUIITEM_CHECKABLE},
     {eGuiItemPath, 0, 0, -100, -50, 'L', false, GUIITEM_CHECKABLE},
     {eGuiItemAmbientOclusion, 0, 0, -60, -50, 'A', false, GUIITEM_CHECKABLE},
     {eGuiItemView, 0, 0, -180, -50, 'V', false},
+    {eGuiItemHome, 0, 0, -220, -50, 'H'},
 };
 
 #define NUM_GUI_ITEMS (sizeof(guiItems) / sizeof(GuiItem))
@@ -70,7 +71,8 @@ std::vector<std::string> guiFileNames = {"Slider.png",
                                          "Rotate.png",
                                          "Path.png",
                                          "AmbientOclusion.png",
-                                         "View.png"};
+                                         "View.png",
+                                         "Home.png"};
 
 void GuiDisplay::UpdateProjection()
 {
@@ -284,6 +286,8 @@ void MillSim::GuiDisplay::SetupTooltips()
     guiItems[eGuiItemView].toolTip = QCoreApplication::translate("CAM:Simulator:Tooltips",
                                                                  "Toggle view simulation/model",
                                                                  nullptr);
+    guiItems[eGuiItemHome].toolTip =
+        QCoreApplication::translate("CAM:Simulator:Tooltips", "Reset camera", nullptr);
 }
 
 void GuiDisplay::MouseCursorPos(int x, int y)

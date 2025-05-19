@@ -516,6 +516,10 @@ void MillSimulation::HandleGuiAction(eGuiItems actionItem, bool checked)
             simDisplay.updateDisplay = true;
             break;
 
+        case eGuiItemHome:
+            simDisplay.MoveEyeCenter();
+            break;
+
         default:
             break;
     }
