@@ -266,6 +266,17 @@ class FileStore(AssetStore):
         except IsADirectoryError:
             raise FileNotFoundError(f"Asset URI {uri} resolved to a directory: {path_to_read}")
 
+    async def exists(self, uri: AssetUri) -> bool:
+        """Check if the asset exists at the given URI."""
+        try:
+            await self.get(uri)
+            return True
+        except FileNotFoundError:
+            return False
+        except IsADirectoryError:
+            # If the path is a directory, it means the asset exists but is not a file.
+            return False
+
     async def delete(self, uri: AssetUri) -> None:
         """Delete the asset at the given URI."""
         paths_to_delete: List[pathlib.Path] = []

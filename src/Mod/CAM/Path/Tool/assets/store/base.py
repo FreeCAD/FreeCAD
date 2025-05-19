@@ -53,6 +53,22 @@ class AssetStore(abc.ABC):
         """
         raise NotImplementedError
 
+    async def exists(self, uri: AssetUri) -> bool:
+        """
+        Check if the asset exists at the given URI.
+
+        Args:
+            uri: The unique identifier for the asset.
+
+        Returns:
+            True if the asset exists, False otherwise.
+        """
+        try:
+            await self.get(uri)
+            return True
+        except FileNotFoundError:
+            return False
+
     @abc.abstractmethod
     async def delete(self, uri: AssetUri) -> None:
         """

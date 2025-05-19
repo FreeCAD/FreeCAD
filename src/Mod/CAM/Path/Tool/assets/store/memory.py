@@ -52,6 +52,17 @@ class MemoryStore(AssetStore):
 
         return self._data[asset_type][asset_id][version]
 
+    async def exists(self, uri: AssetUri) -> bool:
+        asset_type = uri.asset_type
+        asset_id = uri.asset_id
+        version = uri.version or self._get_latest_version(asset_type, asset_id)
+
+        return (
+            asset_type in self._data
+            and asset_id in self._data[asset_type]
+            and version in self._data[asset_type][asset_id]
+        )
+
     async def delete(self, uri: AssetUri) -> None:
         asset_type = uri.asset_type
         asset_id = uri.asset_id

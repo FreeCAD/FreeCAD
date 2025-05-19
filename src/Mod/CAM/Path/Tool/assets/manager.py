@@ -528,10 +528,25 @@ class AssetManager:
         """
         Returns True if the asset exists, False otherwise.
         """
+        async def _exists_async():
+            asset_uri_obj = AssetUri(uri) if isinstance(uri, str) else uri
+            logger.debug(
+                f"ExistsAsync (internal): Looking up store '{store}'. Available stores: {list(self.stores.keys())}"
+            )
+            try:
+                selected_store = self.stores[store]
+            except KeyError:
+                raise ValueError(f"No store registered for name: {store}")
+            return await selected_store.exists(asset_uri_obj)
+
         try:
-            return self.get_raw(uri, store) is not None
-        except FileNotFoundError:
-            return False
+            return asyncio.run(_exists_async())
+        except Exception as e:
+            logger.error(
+                f"AssetManager.exists: Error during asyncio.run for '{uri}': {e}",
+                exc_info=False,
+            )
+            raise
 
     def fetch(
         self,
