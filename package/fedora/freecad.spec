@@ -24,7 +24,7 @@ Group:          Applications/Engineering
 License:        LGPL-2.0-or-later
 URL:            https://www.freecad.org/
 
-Source0:        https://github.com/FreeCAD/FreeCAD-Bundle/releases/download/weekly-builds/freecad_source.tar.gz
+Source0:        freecad-sources.tar.gz
 
 
 # Maintainers:  keep this list of plugins up to date
