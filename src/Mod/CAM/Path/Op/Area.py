@@ -287,7 +287,7 @@ class ObjectOp(PathOp.ObjectOp):
             pathParams["sort_mode"] = 0
 
         if not self.areaOpRetractTool(obj):
-            pathParams["threshold"] = 2.001 * self.radius
+            pathParams["threshold"] = 2.010 * self.radius
 
         if self.endVector is not None:
             pathParams["start"] = self.endVector
