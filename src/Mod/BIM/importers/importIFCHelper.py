@@ -90,30 +90,30 @@ def getPreferences():
         Gui.showPreferencesByName("Import-Export", ":/ui/preferences-ifc.ui")
 
     preferences = {
-        'DEBUG': params.get_param_arch("ifcDebug"),
-        'PREFIX_NUMBERS': params.get_param_arch("ifcPrefixNumbers"),
-        'SKIP': params.get_param_arch("ifcSkip").split(","),
-        'SEPARATE_OPENINGS': params.get_param_arch("ifcSeparateOpenings"),
-        'ROOT_ELEMENT': params.get_param_arch("ifcRootElement"),
-        'GET_EXTRUSIONS': params.get_param_arch("ifcGetExtrusions"),
-        'MERGE_MATERIALS': params.get_param_arch("ifcMergeMaterials"),
-        'MERGE_MODE_ARCH': params.get_param_arch("ifcImportModeArch"),
-        'MERGE_MODE_STRUCT': params.get_param_arch("ifcImportModeStruct"),
-        'CREATE_CLONES': params.get_param_arch("ifcCreateClones"),
-        'IMPORT_PROPERTIES': params.get_param_arch("ifcImportProperties"),
-        'SPLIT_LAYERS': params.get_param_arch("ifcSplitLayers"),  # wall layer, not layer for visual props
-        'FITVIEW_ONIMPORT': params.get_param_arch("ifcFitViewOnImport"),
-        'ALLOW_INVALID': params.get_param_arch("ifcAllowInvalid"),
-        'REPLACE_PROJECT': params.get_param_arch("ifcReplaceProject"),
-        'MULTICORE': params.get_param_arch("ifcMulticore"),
-        'IMPORT_LAYER': params.get_param_arch("ifcImportLayer")
+        "DEBUG": params.get_param_arch("ifcDebug"),
+        "PREFIX_NUMBERS": params.get_param_arch("ifcPrefixNumbers"),
+        "SKIP": params.get_param_arch("ifcSkip").split(","),
+        "SEPARATE_OPENINGS": params.get_param_arch("ifcSeparateOpenings"),
+        "ROOT_ELEMENT": params.get_param_arch("ifcRootElement"),
+        "GET_EXTRUSIONS": params.get_param_arch("ifcGetExtrusions"),
+        "MERGE_MATERIALS": params.get_param_arch("ifcMergeMaterials"),
+        "MERGE_MODE_ARCH": params.get_param_arch("ifcImportModeArch"),
+        "MERGE_MODE_STRUCT": params.get_param_arch("ifcImportModeStruct"),
+        "CREATE_CLONES": params.get_param_arch("ifcCreateClones"),
+        "IMPORT_PROPERTIES": params.get_param_arch("ifcImportProperties"),
+        "SPLIT_LAYERS": params.get_param_arch("ifcSplitLayers"),  # wall layer, not layer for visual props
+        "FITVIEW_ONIMPORT": params.get_param_arch("ifcFitViewOnImport"),
+        "ALLOW_INVALID": params.get_param_arch("ifcAllowInvalid"),
+        "REPLACE_PROJECT": params.get_param_arch("ifcReplaceProject"),
+        "MULTICORE": params.get_param_arch("ifcMulticore"),
+        "IMPORT_LAYER": params.get_param_arch("ifcImportLayer")
     }
 
-    if preferences['MERGE_MODE_ARCH'] > 0:
-        preferences['SEPARATE_OPENINGS'] = False
-        preferences['GET_EXTRUSIONS'] = False
-    if not preferences['SEPARATE_OPENINGS']:
-        preferences['SKIP'].append("IfcOpeningElement")
+    if preferences["MERGE_MODE_ARCH"] > 0:
+        preferences["SEPARATE_OPENINGS"] = False
+        preferences["GET_EXTRUSIONS"] = False
+    if not preferences["SEPARATE_OPENINGS"]:
+        preferences["SKIP"].append("IfcOpeningElement")
 
     return preferences
 
@@ -195,7 +195,7 @@ class ProjectImporter:
         return round(math.degrees(math.atan2(y, x)) - 90, 6)
 
 
-def buildRelProductsAnnotations(ifcfile, root_element='IfcProduct'):
+def buildRelProductsAnnotations(ifcfile, root_element="IfcProduct"):
     """Build the products and annotations relation table."""
     products = ifcfile.by_type(root_element)
 
@@ -330,7 +330,7 @@ def buildRelColors(ifcfile, prodrepr):
         # FIXME: style_entity_id = { style_entity_id: product_id } not material_id ???
         # see https://forum.freecad.org/viewtopic.php?f=39&t=37940&start=10#p329491
         # last code change in these color code https://github.com/FreeCAD/FreeCAD/commit/2d1f6ab1
-        '''
+        """
         if r.Item:
             # print(r.id())
             # print(r.Item)  # IfcRepresentationItem or IfcShapeRepresentation
@@ -339,7 +339,7 @@ def buildRelColors(ifcfile, prodrepr):
                     style_material_id[r.id()] = p
                     # print(p)
                     # print(ifcfile[p])  # product
-        '''
+        """
 
     # A much faster version for Nova style_material_id with product_ids
     # no material colors, Nova ifc files often do not have materials at all
@@ -517,7 +517,7 @@ def getColorFromStyledItem(styled_item):
         # see https://forum.freecad.org/viewtopic.php?f=39&t=33560&p=437056#p437056
 
         # Get the `IfcPresentationStyleAssignment`, there should only be one,
-        if styled_item.Styles[0].is_a('IfcPresentationStyleAssignment'):
+        if styled_item.Styles[0].is_a("IfcPresentationStyleAssignment"):
             assign_style = styled_item.Styles[0]
         else:
             # `IfcPresentationStyleAssignment` is deprecated in IFC4,
@@ -535,8 +535,8 @@ def getColorFromStyledItem(styled_item):
             # `IfcColourRgb`
             rgb_color = _style.Styles[0].SurfaceColour
             # print(rgb_color)
-            if (_style.Styles[0].is_a('IfcSurfaceStyleShading')
-                    and hasattr(_style.Styles[0], 'Transparency')
+            if (_style.Styles[0].is_a("IfcSurfaceStyleShading")
+                    and hasattr(_style.Styles[0], "Transparency")
                     and _style.Styles[0].Transparency):
                 transparency = _style.Styles[0].Transparency * 100
         elif assign_style.Styles[0].is_a("IfcCurveStyle"):
@@ -556,7 +556,7 @@ def getColorFromStyledItem(styled_item):
                 rgb_color = assign_style.Styles[0].CurveColour
 
     if rgb_color:
-        if rgb_color.is_a('IfcDraughtingPreDefinedColour'):
+        if rgb_color.is_a("IfcDraughtingPreDefinedColour"):
             if DEBUG_prod_colors:
                 _msg("  '{}'= ".format(rgb_color.Name))
 
@@ -629,7 +629,7 @@ def getIfcPropertySets(ifcfile, pid):
     for rel in ifcfile[pid].IsDefinedBy:
         # the following if condition is needed in IFC2x3 only
         # https://forum.freecad.org/viewtopic.php?f=39&t=37892#p322884
-        if rel.is_a('IfcRelDefinesByProperties'):
+        if rel.is_a("IfcRelDefinesByProperties"):
             props = []
             if rel.RelatingPropertyDefinition.is_a("IfcPropertySet"):
                 props.extend([prop.id() for prop in rel.RelatingPropertyDefinition.HasProperties])
@@ -649,11 +649,11 @@ def getIfcProperties(ifcfile, pid, psets, d):
             if e.is_a("IfcPropertySingleValue"):
                 if e.NominalValue:
                     ptype = e.NominalValue.is_a()
-                    if ptype in ['IfcLabel','IfcText','IfcIdentifier','IfcDescriptiveMeasure']:
+                    if ptype in ['IfcLabel","IfcText","IfcIdentifier","IfcDescriptiveMeasure']:
                         pvalue = e.NominalValue.wrappedValue
                     else:
                         pvalue = str(e.NominalValue.wrappedValue)
-                    if hasattr(e.NominalValue,'Unit'):
+                    if hasattr(e.NominalValue,"Unit"):
                         if e.NominalValue.Unit:
                             pvalue += e.NominalValue.Unit
                     d[pname+";;"+psetname] = ptype+";;"+pvalue
@@ -662,7 +662,7 @@ def getIfcProperties(ifcfile, pid, psets, d):
 
 
 def getIfcPsetProperties(ifcfile, pid):
-    """ directly build the property table from pid and ifcfile for FreeCAD"""
+    """directly build the property table from pid and ifcfile for FreeCAD"""
 
     return getIfcProperties(ifcfile, pid, getIfcPropertySets(ifcfile, pid), {})
 
@@ -1119,7 +1119,7 @@ def createAnnotation(annotation,doc,ifcscale,preferences):
             if annotation.ObjectPlacement:
                 # https://forum.freecad.org/viewtopic.php?f=39&t=40027
                 grid_placement = getPlacement(annotation.ObjectPlacement,scaling=1)
-            if preferences['PREFIX_NUMBERS']:
+            if preferences["PREFIX_NUMBERS"]:
                 name = "ID" + str(aid) + " " + name
             anno = Arch.makeAxisSystem(axes,name)
             if grid_placement:
@@ -1131,7 +1131,7 @@ def createAnnotation(annotation,doc,ifcscale,preferences):
             name = annotation.Name
         if "annotation" not in name.lower():
             name = "Annotation " + name
-        if preferences['PREFIX_NUMBERS']: name = "ID" + str(aid) + " " + name
+        if preferences["PREFIX_NUMBERS"]: name = "ID" + str(aid) + " " + name
         shapes2d = []
         for rep in annotation.Representation.Representations:
             if rep.RepresentationIdentifier in ["Annotation","FootPrint","Axis"]:
@@ -1144,13 +1144,13 @@ def createAnnotation(annotation,doc,ifcscale,preferences):
         if shapes2d:
             import Part
             sh = Part.makeCompound(shapes2d)
-            #if preferences['DEBUG']: print(" shape")
+            #if preferences["DEBUG"]: print(" shape")
             anno = doc.addObject("Part::Feature",name)
             anno.Shape = sh
             p = getPlacement(annotation.ObjectPlacement,ifcscale)
             if p:  # and annotation.is_a("IfcAnnotation"):
                 anno.Placement = p
         #else:
-            #if preferences['DEBUG']: print(" no shape")
+            #if preferences["DEBUG"]: print(" no shape")
 
     return anno

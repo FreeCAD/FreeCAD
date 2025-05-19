@@ -405,7 +405,7 @@ def getHTMLTemplate():
                 // ---- Wires ----
                 const wiretypes = { Normal: 'Normal', Dashed: 'Dashed', None: 'None' };
 
-                const wireFolder = gui.addFolder('Wire');
+                const wireFolder = gui.addFolder("Wire");
                 wireFolder.add(guiparams, 'wiretype', wiretypes).name('Wire Display').onChange(wireChange);
                 wireFolder.add(guiparams, 'wirewidth').min(1).max(5).step(1).name('Wire Width').onChange(wireChange);
                 wireFolder.addColor(guiparams, 'wirecolor').name('Wire Color').onChange(wireChange);

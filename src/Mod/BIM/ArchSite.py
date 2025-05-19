@@ -590,14 +590,14 @@ class _Site(ArchIFC.IfcProduct):
         Shape.
         """
 
-        if not hasattr(obj,'Shape'): # old-style Site
+        if not hasattr(obj,"Shape"): # old-style Site
             return
 
         import Part
         pl = FreeCAD.Placement(obj.Placement)
         shape = None
         if obj.Terrain is not None \
-                and hasattr(obj.Terrain,'Shape') \
+                and hasattr(obj.Terrain,"Shape") \
                 and not obj.Terrain.Shape.isNull() \
                 and obj.Terrain.Shape.isValid():
             shape = Part.Shape(obj.Terrain.Shape)
@@ -609,23 +609,23 @@ class _Site(ArchIFC.IfcProduct):
 
             if shape.Solids:
                 for sub in obj.Additions:
-                    if hasattr(sub,'Shape') and sub.Shape and sub.Shape.Solids:
+                    if hasattr(sub,"Shape") and sub.Shape and sub.Shape.Solids:
                         for sol in sub.Shape.Solids:
                             shape = shape.fuse(sol)
                 for sub in obj.Subtractions:
-                    if hasattr(sub,'Shape') and sub.Shape and sub.Shape.Solids:
+                    if hasattr(sub,"Shape") and sub.Shape and sub.Shape.Solids:
                         for sol in sub.Shape.Solids:
                             shape = shape.cut(sol)
             elif shape.Faces:
                 shells = []
                 for sub in obj.Additions:
-                    if hasattr(sub,'Shape') and sub.Shape and sub.Shape.Solids:
+                    if hasattr(sub,"Shape") and sub.Shape and sub.Shape.Solids:
                         for sol in sub.Shape.Solids:
                             rest = shape.cut(sol)
                             shells.append(sol.Shells[0].cut(shape.extrude(obj.ExtrusionVector)))
                             shape = rest
                 for sub in obj.Subtractions:
-                    if hasattr(sub,'Shape') and sub.Shape and sub.Shape.Solids:
+                    if hasattr(sub,"Shape") and sub.Shape and sub.Shape.Solids:
                         for sol in sub.Shape.Solids:
                             rest = shape.cut(sol)
                             shells.append(sol.Shells[0].common(shape.extrude(obj.ExtrusionVector)))
@@ -859,7 +859,7 @@ class _ViewProviderSite:
 
     def setupContextMenu(self, vobj, menu):
 
-        if FreeCADGui.activeWorkbench().name() != 'BIMWorkbench':
+        if FreeCADGui.activeWorkbench().name() != "BIMWorkbench":
             return
 
         actionEdit = QtGui.QAction(translate("Arch", "Edit"),
@@ -1067,12 +1067,12 @@ class _ViewProviderSite:
                                 del self.windrosenode
                 else:
                     self.windroseswitch.whichChild = -1
-        elif prop == 'Visibility':
+        elif prop == "Visibility":
             if vobj.Visibility:
                 self.updateCompassVisibility(vobj)
             else:
                 self.compass.hide()
-        elif prop == 'Orientation':
+        elif prop == "Orientation":
             if vobj.Orientation == 'True North':
                 self.addTrueNorthRotation()
             else:
@@ -1094,7 +1094,7 @@ class _ViewProviderSite:
         within the document, and the rotation of the site compass.
         """
 
-        if not hasattr(vobj, 'UpdateDeclination') or not vobj.UpdateDeclination:
+        if not hasattr(vobj, "UpdateDeclination") or not vobj.UpdateDeclination:
             return
         compassRotation = vobj.CompassRotation.Value
         siteRotation = math.degrees(vobj.Object.Placement.Rotation.Angle) # This assumes Rotation.axis = (0,0,1)
@@ -1102,11 +1102,11 @@ class _ViewProviderSite:
 
     def addTrueNorthRotation(self):
 
-        if hasattr(self, 'trueNorthRotation') and self.trueNorthRotation is not None:
+        if hasattr(self, "trueNorthRotation") and self.trueNorthRotation is not None:
             return
         if not FreeCADGui.ActiveDocument.ActiveView:
             return
-        if not hasattr(FreeCADGui.ActiveDocument.ActiveView, 'getSceneGraph'):
+        if not hasattr(FreeCADGui.ActiveDocument.ActiveView, "getSceneGraph"):
             return
 
         from pivy import coin
@@ -1117,13 +1117,13 @@ class _ViewProviderSite:
 
     def removeTrueNorthRotation(self):
 
-        if not hasattr(self, 'trueNorthRotation'):
+        if not hasattr(self, "trueNorthRotation"):
             return
         if self.trueNorthRotation is None:
             return
         if not FreeCADGui.ActiveDocument.ActiveView:
             return
-        if not hasattr(FreeCADGui.ActiveDocument.ActiveView, 'getSceneGraph'):
+        if not hasattr(FreeCADGui.ActiveDocument.ActiveView, "getSceneGraph"):
             return
 
         sg = FreeCADGui.ActiveDocument.ActiveView.getSceneGraph()
@@ -1132,16 +1132,16 @@ class _ViewProviderSite:
 
     def updateTrueNorthRotation(self):
 
-        if hasattr(self, 'trueNorthRotation') and self.trueNorthRotation is not None:
+        if hasattr(self, "trueNorthRotation") and self.trueNorthRotation is not None:
             from pivy import coin
             angle = self.Object.Declination.Value
             self.trueNorthRotation.rotation.setValue(coin.SbVec3f(0, 0, 1), math.radians(-angle))
 
     def updateCompassVisibility(self, vobj):
 
-        if not hasattr(self, 'compass'):
+        if not hasattr(self, "compass"):
             return
-        show = hasattr(vobj, 'Compass') and vobj.Compass
+        show = hasattr(vobj, "Compass") and vobj.Compass
         if show:
             self.compass.show()
         else:
@@ -1149,14 +1149,14 @@ class _ViewProviderSite:
 
     def rotateCompass(self, vobj):
 
-        if not hasattr(self, 'compass'):
+        if not hasattr(self, "compass"):
             return
-        if hasattr(vobj, 'CompassRotation'):
+        if hasattr(vobj, "CompassRotation"):
             self.compass.rotate(vobj.CompassRotation.Value)
 
     def updateCompassLocation(self, vobj):
 
-        if not hasattr(self, 'compass'):
+        if not hasattr(self, "compass"):
             return
         if not vobj.Object.Shape:
             return
@@ -1172,7 +1172,7 @@ class _ViewProviderSite:
 
     def updateCompassScale(self, vobj):
 
-        if not hasattr(self, 'compass'):
+        if not hasattr(self, "compass"):
             return
         self.compass.scale(vobj.Object.ProjectedArea)
 

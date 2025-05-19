@@ -62,7 +62,7 @@ def edit_classification(obj):
                     # this is weird and shouldn't exist...
                     rel = ifcfile.createIfcRelAssociatesClassification(
                         ifc_tools.ifcopenshell.guid.new(),
-                        history,'FreeCADClassificationRel',
+                        history,"FreeCADClassificationRel",
                         None,
                         [element],
                         ref

@@ -60,145 +60,145 @@ else:
 unicode = str
 
 
-BuildingTypes = ['Undefined',
-'Agricultural - Barn',
-'Agricultural - Chicken coop or chickenhouse',
-'Agricultural - Cow-shed',
-'Agricultural - Farmhouse',
-'Agricultural - Granary',
-'Agricultural - Greenhouse',
-'Agricultural - Hayloft',
-'Agricultural - Pigpen or sty',
-'Agricultural - Root cellar',
-'Agricultural - Shed',
-'Agricultural - Silo',
-'Agricultural - Stable',
-'Agricultural - Storm cellar',
-'Agricultural - Well house',
-'Agricultural - Underground pit',
+BuildingTypes = ["Undefined",
+"Agricultural - Barn",
+"Agricultural - Chicken coop or chickenhouse",
+"Agricultural - Cow-shed",
+"Agricultural - Farmhouse",
+"Agricultural - Granary",
+"Agricultural - Greenhouse",
+"Agricultural - Hayloft",
+"Agricultural - Pigpen or sty",
+"Agricultural - Root cellar",
+"Agricultural - Shed",
+"Agricultural - Silo",
+"Agricultural - Stable",
+"Agricultural - Storm cellar",
+"Agricultural - Well house",
+"Agricultural - Underground pit",
 
-'Commercial - Automobile repair shop',
-'Commercial - Bank',
-'Commercial - Car wash',
-'Commercial - Convention center',
-'Commercial - Forum',
-'Commercial - Gas station',
-'Commercial - Hotel',
-'Commercial - Market',
-'Commercial - Market house',
-'Commercial - Skyscraper',
-'Commercial - Shop',
-'Commercial - Shopping mall',
-'Commercial - Supermarket',
-'Commercial - Warehouse',
-'Commercial - Restaurant',
+"Commercial - Automobile repair shop",
+"Commercial - Bank",
+"Commercial - Car wash",
+"Commercial - Convention center",
+"Commercial - Forum",
+"Commercial - Gas station",
+"Commercial - Hotel",
+"Commercial - Market",
+"Commercial - Market house",
+"Commercial - Skyscraper",
+"Commercial - Shop",
+"Commercial - Shopping mall",
+"Commercial - Supermarket",
+"Commercial - Warehouse",
+"Commercial - Restaurant",
 
-'Residential - Apartment block',
-'Residential - Asylum',
-'Residential - Condominium',
-'Residential - Dormitory',
-'Residential - Duplex',
-'Residential - House',
-'Residential - Nursing home',
-'Residential - Townhouse',
-'Residential - Villa',
-'Residential - Bungalow',
+"Residential - Apartment block",
+"Residential - Asylum",
+"Residential - Condominium",
+"Residential - Dormitory",
+"Residential - Duplex",
+"Residential - House",
+"Residential - Nursing home",
+"Residential - Townhouse",
+"Residential - Villa",
+"Residential - Bungalow",
 
-'Educational - Archive',
-'Educational - College classroom building',
-'Educational - College gymnasium',
-'Educational - College students union',
-'Educational - School',
-'Educational - Library',
-'Educational - Museum',
-'Educational - Art gallery',
-'Educational - Theater',
-'Educational - Amphitheater',
-'Educational - Concert hall',
-'Educational - Cinema',
-'Educational - Opera house',
-'Educational - Boarding school',
+"Educational - Archive",
+"Educational - College classroom building",
+"Educational - College gymnasium",
+"Educational - College students union",
+"Educational - School",
+"Educational - Library",
+"Educational - Museum",
+"Educational - Art gallery",
+"Educational - Theater",
+"Educational - Amphitheater",
+"Educational - Concert hall",
+"Educational - Cinema",
+"Educational - Opera house",
+"Educational - Boarding school",
 
-'Government - Capitol',
-'Government - City hall',
-'Government - Consulate',
-'Government - Courthouse',
-'Government - Embassy',
-'Government - Fire station',
-'Government - Meeting house',
-'Government - Moot hall',
-'Government - Palace',
-'Government - Parliament',
-'Government - Police station',
-'Government - Post office',
-'Government - Prison',
+"Government - Capitol",
+"Government - City hall",
+"Government - Consulate",
+"Government - Courthouse",
+"Government - Embassy",
+"Government - Fire station",
+"Government - Meeting house",
+"Government - Moot hall",
+"Government - Palace",
+"Government - Parliament",
+"Government - Police station",
+"Government - Post office",
+"Government - Prison",
 
-'Industrial - Brewery',
-'Industrial - Factory',
-'Industrial - Foundry',
-'Industrial - Power plant',
-'Industrial - Mill',
+"Industrial - Brewery",
+"Industrial - Factory",
+"Industrial - Foundry",
+"Industrial - Power plant",
+"Industrial - Mill",
 
-'Military - Arsenal',
-'Military -Barracks',
+"Military - Arsenal",
+"Military -Barracks",
 
-'Parking - Boathouse',
-'Parking - Garage',
-'Parking - Hangar',
+"Parking - Boathouse",
+"Parking - Garage",
+"Parking - Hangar",
 
-'Storage - Silo',
-'Storage - Hangar',
+"Storage - Silo",
+"Storage - Hangar",
 
-'Religious - Church',
-'Religious - Basilica',
-'Religious - Cathedral',
-'Religious - Chapel',
-'Religious - Oratory',
-'Religious - Martyrium',
-'Religious - Mosque',
-'Religious - Mihrab',
-'Religious - Surau',
-'Religious - Imambargah',
-'Religious - Monastery',
-'Religious - Mithraeum',
-'Religious - Fire temple',
-'Religious - Shrine',
-'Religious - Synagogue',
-'Religious - Temple',
-'Religious - Pagoda',
-'Religious - Gurdwara',
-'Religious - Hindu temple',
+"Religious - Church",
+"Religious - Basilica",
+"Religious - Cathedral",
+"Religious - Chapel",
+"Religious - Oratory",
+"Religious - Martyrium",
+"Religious - Mosque",
+"Religious - Mihrab",
+"Religious - Surau",
+"Religious - Imambargah",
+"Religious - Monastery",
+"Religious - Mithraeum",
+"Religious - Fire temple",
+"Religious - Shrine",
+"Religious - Synagogue",
+"Religious - Temple",
+"Religious - Pagoda",
+"Religious - Gurdwara",
+"Religious - Hindu temple",
 
-'Transport - Airport terminal',
-'Transport - Bus station',
-'Transport - Metro station',
-'Transport - Taxi station',
-'Transport - Railway station',
-'Transport - Signal box',
-'Transport - Lighthouse',
+"Transport - Airport terminal",
+"Transport - Bus station",
+"Transport - Metro station",
+"Transport - Taxi station",
+"Transport - Railway station",
+"Transport - Signal box",
+"Transport - Lighthouse",
 
-'Infrastructure - Data centre',
+"Infrastructure - Data centre",
 
-'Power station - Fossil-fuel power station',
-'Power station - Nuclear power plant',
-'Power station - Geothermal power',
-'Power station - Biomass-fuelled power plant',
-'Power station - Waste heat power plant',
-'Power station - Renewable energy power station',
-'Power station - Atomic energy plant',
+"Power station - Fossil-fuel power station",
+"Power station - Nuclear power plant",
+"Power station - Geothermal power",
+"Power station - Biomass-fuelled power plant",
+"Power station - Waste heat power plant",
+"Power station - Renewable energy power station",
+"Power station - Atomic energy plant",
 
-'Other - Apartment',
-'Other - Clinic',
-'Other - Community hall',
-'Other - Eatery',
-'Other - Folly',
-'Other - Food court',
-'Other - Hospice',
-'Other - Hospital',
-'Other - Hut',
-'Other - Bathhouse',
-'Other - Workshop',
-'Other - World trade centre'
+"Other - Apartment",
+"Other - Clinic",
+"Other - Community hall",
+"Other - Eatery",
+"Other - Folly",
+"Other - Food court",
+"Other - Hospice",
+"Other - Hospital",
+"Other - Hut",
+"Other - Bathhouse",
+"Other - Workshop",
+"Other - World trade centre"
 ]
 
 
@@ -350,7 +350,7 @@ class BuildingPart(ArchIFC.IfcProduct):
         materialstable = {}
         for child in Draft.get_group_contents(obj, walls=True):
             if not Draft.get_type(child) in ["Space"]:
-                if hasattr(child,'Shape') and child.Shape:
+                if hasattr(child,"Shape") and child.Shape:
                     shapes.append(child.Shape)
                     for solid in child.Shape.Solids:
                         matname = "Undefined"
@@ -633,7 +633,7 @@ class ViewProviderBuildingPart:
         colors = []
         for child in Draft.get_group_contents(obj, walls=True):
             if not Draft.get_type(child) in ["Space"]:
-                if hasattr(child,'Shape') and (hasattr(child.ViewObject,"DiffuseColor") or hasattr(child.ViewObject,"ShapeColor")):
+                if hasattr(child,"Shape") and (hasattr(child.ViewObject,"DiffuseColor") or hasattr(child.ViewObject,"ShapeColor")):
                     if hasattr(child.ViewObject,"DiffuseColor") and len(child.ViewObject.DiffuseColor) == len(child.Shape.Faces):
                         colors.extend(child.ViewObject.DiffuseColor)
                     else:
@@ -690,7 +690,7 @@ class ViewProviderBuildingPart:
                     else:
                         u = q.getUserPreferred()[2]
                     try:
-                        txt += units.display_external(float(q),None,'Length',vobj.ShowUnit,u)
+                        txt += units.display_external(float(q),None,"Length",vobj.ShowUnit,u)
                     except Exception:
                         q = q.getValueAs(q.getUserPreferred()[2])
                         d = params.get_param("Decimals",path="Units")
@@ -808,7 +808,7 @@ class ViewProviderBuildingPart:
     def setupContextMenu(self, vobj, menu):
         from PySide import QtCore, QtGui
         import Draft_rc
-        if FreeCADGui.activeWorkbench().name() != 'BIMWorkbench':
+        if FreeCADGui.activeWorkbench().name() != "BIMWorkbench":
             return
         if (not hasattr(vobj,"DoubleClickActivates")) or vobj.DoubleClickActivates:
             if FreeCADGui.ActiveDocument.ActiveView.getActiveObject("Arch") == self.Object:
@@ -914,7 +914,7 @@ class ViewProviderBuildingPart:
     def createGroup(self):
 
         if hasattr(self,"Object"):
-            s = "FreeCAD.ActiveDocument.getObject(\"%s\").newObject(\"App::DocumentObjectGroup\",\"Group\")" % self.Object.Name
+            s = "FreeCAD.ActiveDocument.getObject(\'%s\').newObject(\'App::DocumentObjectGroup\',\'Group\')" % self.Object.Name
             FreeCADGui.doCommand(s)
 
     def reorder(self):

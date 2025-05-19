@@ -238,13 +238,13 @@ class CurtainWall(ArchComponent.Component):
             ext = FreeCAD.Vector(obj.VerticalDirection)
             ext.normalize()
             ext = ext.multiply(obj.Height.Value)
-            if hasattr(obj.Base, 'Proxy'):
-                if hasattr(obj.Base.Proxy, 'getCurtainWallBaseShapeEdgesInfo'):
+            if hasattr(obj.Base, "Proxy"):
+                if hasattr(obj.Base.Proxy, "getCurtainWallBaseShapeEdgesInfo"):
                     curtainWallBaseShapeEdges = obj.Base.Proxy.getCurtainWallBaseShapeEdgesInfo(obj.Base)
                     # returned a {dict}
             # get curtain wall edges (not wires); use original edges if getCurtainWallBaseShapeEdges() provided none
             if curtainWallBaseShapeEdges:  # would be false (none) if SketchArch Add-on is not installed, or base ArchSketch does not have the edges stored / input by user
-                curtainWallEdges = curtainWallBaseShapeEdges.get('curtainWallEdges')
+                curtainWallEdges = curtainWallBaseShapeEdges.get("curtainWallEdges")
             elif obj.Base.isDerivedFrom("Sketcher::SketchObject"):
                 skGeom = obj.Base.GeometryFacadeList
                 skGeomEdges = []
@@ -543,18 +543,18 @@ class ViewProviderCurtainWall(ArchComponent.ViewProviderComponent):
             if obj.Material.Names:
                 if "Frame" in obj.Material.Names:
                     mat = obj.Material.Materials[obj.Material.Names.index("Frame")]
-                    if ('DiffuseColor' in mat.Material) and ("(" in mat.Material['DiffuseColor']):
-                        basecolor = tuple([float(f) for f in mat.Material['DiffuseColor'].strip("()").split(",")])
+                    if ("DiffuseColor" in mat.Material) and ("(" in mat.Material["DiffuseColor"]):
+                        basecolor = tuple([float(f) for f in mat.Material["DiffuseColor"].strip("()").split(",")])
                 if "Glass panel" in obj.Material.Names:
                     mat = obj.Material.Materials[obj.Material.Names.index("Glass panel")]
-                    if ('DiffuseColor' in mat.Material) and ("(" in mat.Material['DiffuseColor']):
-                        panelcolor = tuple([float(f) for f in mat.Material['DiffuseColor'].strip("()").split(",")])
-                    if ('Transparency' in mat.Material):
-                        paneltransparency = float(mat.Material['Transparency'])/100.0
+                    if ("DiffuseColor" in mat.Material) and ("(" in mat.Material["DiffuseColor"]):
+                        panelcolor = tuple([float(f) for f in mat.Material["DiffuseColor"].strip("()").split(",")])
+                    if ("Transparency" in mat.Material):
+                        paneltransparency = float(mat.Material["Transparency"])/100.0
                 elif "Solid panel" in obj.Material.Names:
                     mat = obj.Material.Materials[obj.Material.Names.index("Solid panel")]
-                    if ('DiffuseColor' in mat.Material) and ("(" in mat.Material['DiffuseColor']):
-                        panelcolor = tuple([float(f) for f in mat.Material['DiffuseColor'].strip("()").split(",")])
+                    if ("DiffuseColor" in mat.Material) and ("(" in mat.Material["DiffuseColor"]):
+                        panelcolor = tuple([float(f) for f in mat.Material["DiffuseColor"].strip("()").split(",")])
                     paneltransparency = 0
         basecolor = basecolor[:3]+(1.0 - basetransparency,)
         panelcolor = panelcolor[:3]+(1.0 - paneltransparency,)
