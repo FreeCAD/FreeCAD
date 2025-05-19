@@ -528,6 +528,7 @@ class AssetManager:
         """
         Returns True if the asset exists, False otherwise.
         """
+
         async def _exists_async():
             asset_uri_obj = AssetUri(uri) if isinstance(uri, str) else uri
             logger.debug(

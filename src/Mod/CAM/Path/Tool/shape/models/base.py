@@ -292,17 +292,18 @@ class ToolBitShape(Asset):
                 shape_class = ToolBitShape.guess_subclass_from_name(id)
                 if shape_class:
                     Path.Log.warning(
-                        f'{id}: failed to infer shape type from bytes,'
+                        f"{id}: failed to infer shape type from bytes,"
                         f' guessing "{shape_class.name}". To fix, name'
-                        f' the body in the shape file to one of: {shape_types}'
+                        f" the body in the shape file to one of: {shape_types}"
                     )
                 else:
                     Path.Log.warning(
-                        f'{id}: failed to infer shape type from bytes,'
+                        f"{id}: failed to infer shape type from bytes,"
                         f' using "endmill". To fix, name'
-                        f' the body in the shape file to one of: {shape_types}'
+                        f" the body in the shape file to one of: {shape_types}"
                     )
                     from .endmill import ToolBitShapeEndmill
+
                     shape_class = ToolBitShapeEndmill
 
             # Load properties from the temporary document
@@ -457,10 +458,7 @@ class ToolBitShape(Asset):
         """
         name = name.lower()
         for thecls in cls.__subclasses__():
-            if (
-                thecls.name.lower() in name
-                or thecls.__name__.lower() in name
-            ):
+            if thecls.name.lower() in name or thecls.__name__.lower() in name:
                 return thecls
             for alias in thecls.aliases:
                 if alias.lower() in name:

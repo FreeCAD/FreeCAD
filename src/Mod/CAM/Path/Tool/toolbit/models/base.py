@@ -111,15 +111,15 @@ class ToolBit(Asset, ABC):
                 shape_class = ToolBitShape.guess_subclass_from_name(shape_id)
                 if shape_class:
                     Path.Log.warning(
-                        f'failed to infer shape type from {shape_id},'
+                        f"failed to infer shape type from {shape_id},"
                         f' guessing "{shape_class.name}". To fix, name'
-                        f' the body in the shape file to one of: {shape_types}'
+                        f" the body in the shape file to one of: {shape_types}"
                     )
                 else:
                     Path.Log.warning(
-                        f'failed to infer shape type from {shape_id},'
+                        f"failed to infer shape type from {shape_id},"
                         f' using "endmill". To fix, name'
-                        f' the body in the shape file to one of: {shape_types}'
+                        f" the body in the shape file to one of: {shape_types}"
                     )
                     shape_class = ToolBitShapeEndmill
             shape_type = shape_class.name
@@ -693,9 +693,7 @@ class ToolBit(Asset, ABC):
         current_shape_prop_names = set(self._get_props("Shape"))
         new_shape_param_names = self._tool_bit_shape.schema().keys()
         obsolete = current_shape_prop_names - new_shape_param_names
-        Path.Log.debug(
-            f"Removing obsolete shape properties: {obsolete} from {self.obj.Label}"
-        )
+        Path.Log.debug(f"Removing obsolete shape properties: {obsolete} from {self.obj.Label}")
         # Gracefully skipping the deletion for now;
         # in future releases we may handle schema violations more strictly
         # self._remove_properties("Shape", obsolete)

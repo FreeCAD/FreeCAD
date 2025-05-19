@@ -32,7 +32,9 @@ class ShapeButton(QtGui.QToolButton):
         # self.setText(f"{shape.label}\n{shape.id}")
 
         self.vbox = QtGui.QVBoxLayout(self)
-        self.vbox.setAlignment(QtCore.Qt.AlignHCenter | QtCore.Qt.AlignVCenter) # Align all items centrally
+        self.vbox.setAlignment(
+            QtCore.Qt.AlignHCenter | QtCore.Qt.AlignVCenter
+        )  # Align all items centrally
         self.vbox.setContentsMargins(0, 0, 0, 0)
         self.vbox.setSpacing(0)
 
@@ -46,7 +48,7 @@ class ShapeButton(QtGui.QToolButton):
         self.id_widget.setAlignment(QtCore.Qt.AlignHCenter | QtCore.Qt.AlignVCenter)
         self.id_widget.setContentsMargins(0, 0, 0, 0)
         font = self.id_widget.font()
-        font.setPointSize(font.pointSize()*0.9)
+        font.setPointSize(font.pointSize() * 0.9)
         self.id_widget.setFont(font)
 
         # Add widgets to the new layout
@@ -76,4 +78,4 @@ class ShapeButton(QtGui.QToolButton):
             pixmap = icon.get_qpixmap(self.icon_size)
             self.icon_widget.setPixmap(pixmap)
         else:
-            self.icon_widget.clear() # Clear pixmap if no icon
+            self.icon_widget.clear()  # Clear pixmap if no icon
