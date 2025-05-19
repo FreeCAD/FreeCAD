@@ -22,7 +22,7 @@
 import Path
 from Path import Preferences
 from Path.Preferences import addToolPreferenceObserver
-from .assets import AssetManager, FileStore
+from .assets import AssetManager, AssetUri, FileStore
 
 
 def ensure_library_assets_initialized(asset_manager: AssetManager, store_name: str = "local"):
@@ -56,16 +56,28 @@ def ensure_toolbitshape_assets_initialized(asset_manager: AssetManager, store_na
     """
     builtin_shape_path = Preferences.getBuiltinShapePath()
 
-    if asset_manager.is_empty("toolbitshape", store=store_name):
-        for path in builtin_shape_path.glob("*.fcstd"):
+    for path in builtin_shape_path.glob("*.fcstd"):
+        uri = AssetUri.build(
+            asset_type="toolbitshape",
+            asset_id=path.stem,
+        )
+        if not asset_manager.exists(uri, store=store_name):
             asset_manager.add_file("toolbitshape", path)
 
-    if asset_manager.is_empty("toolbitshapesvg", store=store_name):
-        for path in builtin_shape_path.glob("*.svg"):
+    for path in builtin_shape_path.glob("*.svg"):
+        uri = AssetUri.build(
+            asset_type="toolbitshapesvg",
+            asset_id=path.stem + ".svg",
+        )
+        if not asset_manager.exists(uri, store=store_name):
             asset_manager.add_file("toolbitshapesvg", path, asset_id=path.stem + ".svg")
 
-    if asset_manager.is_empty("toolbitshapepng", store=store_name):
-        for path in builtin_shape_path.glob("*.png"):
+    for path in builtin_shape_path.glob("*.png"):
+        uri = AssetUri.build(
+            asset_type="toolbitshapepng",
+            asset_id=path.stem + ".png",
+        )
+        if not asset_manager.exists(uri, store=store_name):
             asset_manager.add_file("toolbitshapepng", path, asset_id=path.stem + ".png")
 
 

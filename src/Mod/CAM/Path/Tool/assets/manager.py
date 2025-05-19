@@ -520,6 +520,19 @@ class AssetManager:
                 assets.append(data_or_exc)  # Caller must check
         return assets
 
+    def exists(
+        self,
+        uri: Union[AssetUri, str],
+        store: str = "local",
+    ) -> bool:
+        """
+        Returns True if the asset exists, False otherwise.
+        """
+        try:
+            return self.get_raw(uri, store) is not None
+        except FileNotFoundError:
+            return False
+
     def fetch(
         self,
         asset_type: Optional[str] = None,
