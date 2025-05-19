@@ -176,7 +176,6 @@ public:
     boost::signals2::signal<void(const Document&, const std::string&)> signalStartSave;
     // signal finishing a save action to a file
     boost::signals2::signal<void(const Document&, const std::string&)> signalFinishSave;
-    boost::signals2::signal<void(const Document&)> signalBeforeRecompute;
     boost::signals2::signal<void(const Document&, const std::vector<DocumentObject*>&)> signalRecomputed;
     boost::signals2::signal<void(const DocumentObject&)> signalRecomputedObject;
     // signal a new opened transaction
@@ -193,6 +192,10 @@ public:
     //@}
     // NOLINTEND
 
+    /// Queue a document object for an asynchronous recomputed signal.
+    void queueRecomputedObject(DocumentObject* obj);
+    /// Process all pending recomputed signals.
+    void processPendingSignals();
 
     void clearDocument();
 
