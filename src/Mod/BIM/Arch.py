@@ -1473,7 +1473,7 @@ def makeTruss(baseobj=None, name=None):
     return obj
 
 
-def makeWall(baseobj=None, height=None, length=None, width=None, align=None, face=None, name=None):
+def makeWall(baseobj=None,height=None,length=None,width=None,align=None,offset=None,face=None,name=None):
     """Create a wall based on a given object, and returns the generated wall.
 
     TODO: It is unclear what defines which units this function uses.
@@ -1543,6 +1543,10 @@ def makeWall(baseobj=None, height=None, length=None, width=None, align=None, fac
         obj.Height = height
     else:
         obj.Height = params.get_param_arch("WallHeight")
+    if offset:
+        obj.Offset = offset
+    else:
+        obj.Offset = params.get_param_arch("WallOffset")
     if align:
         obj.Align = align
     else:
