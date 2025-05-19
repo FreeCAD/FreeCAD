@@ -50,8 +50,6 @@ SET(MeasureGui_SRCS
     ViewProviderMeasureAngle.h
     ViewProviderMeasureDistance.cpp
     ViewProviderMeasureDistance.h
-    WorkbenchManipulator.cpp
-    WorkbenchManipulator.h
     DlgPrefsMeasureAppearanceImp.ui
     DlgPrefsMeasureAppearanceImp.cpp
     DlgPrefsMeasureAppearanceImp.h
