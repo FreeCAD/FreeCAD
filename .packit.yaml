@@ -3,7 +3,7 @@ files_to_sync:
     - .packit.yaml
 actions:
   post-upstream-clone:
-    - bash -c 'BUILD_TAG=dev /usr/bin/python3 package/rattler-build/scripts/make_version_file.py'
+    - bash -c 'BUILD_TAG=dev /usr/bin/python3 package/rattler-build/scripts/make_version_file.py freecad_version.txt'
   changelog-entry:
     - bash -c 'git log --no-merges --pretty="format:- %s (%an)" $(git describe --tags --abbrev=0 )..HEAD -- |sed 's/%/%%/g''
   create-archive:
@@ -22,8 +22,7 @@ jobs:
   notifications:
     pull_request:
       successful_build: True
-  #replace branch with main before merging
-  branch: only-packit
+  branch: main
   targets:
     fedora-stable:
       without_opts:
@@ -33,8 +32,7 @@ jobs:
   identifier: pull_request
   trigger: pull_request
   manual_trigger: true
-  #replace branc/packit testh with main before merging
-  branch: only-packit
+  branch: main
   targets:
     fedora-latest-stable:
       without_opts:
@@ -45,17 +43,14 @@ jobs:
   identifier: main
   trigger: commit
   manual_trigger: true
-  #replace branch with main before merging
-  branch: only-packit
-  #replace owner with @freecad and the desired project before merging
-  owner: filippor
-  project: packit
+  branch: main
+  owner: @freecad
+  project: nightly
 
 - job: copr_build
   identifier: release
   trigger: release
-  #replace owner with @freecad and the desired project before merging
-  owner: filippor
+  owner: @freecad
   project: freecad
   targets:
     fedora-all:
