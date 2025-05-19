@@ -166,8 +166,35 @@ class DressupArray:
         if prop == "Type":
             self.setEditorModes(obj)
 
-    def dresupOnDocumentRestored(self, obj):
+    def onDocumentRestored(self, obj):
         """onDocumentRestored(obj) ... Called automatically when document is restored."""
+
+        # Before commit 24c32c9 array dressups did have their own CoolantMode
+        # and ToolController which they copied from the base operation. We need
+        # to remove those properties when loading a file that was created before
+        # that commit. Otherwise the wrong or no CoolantMode/ToolController will
+        # be used.
+
+        if hasattr(obj, "CoolantMode"):
+            obj.removeProperty("CoolantMode")
+            FreeCAD.Console.PrintWarning(
+                translate(
+                    "DressupArray",
+                    "Removing CoolantMode property from {} as base operation's CoolantMode is now used.",
+                ).format(obj.Name)
+                + "\n"
+            )
+
+        if hasattr(obj, "ToolController"):
+            obj.removeProperty("ToolController")
+            FreeCAD.Console.PrintWarning(
+                translate(
+                    "DressupArray",
+                    "Removing ToolController property from {} as base operation's ToolController is now used.",
+                ).format(obj.Name)
+                + "\n"
+            )
+
         self.obj = obj
         self.setEditorModes(obj)
 
