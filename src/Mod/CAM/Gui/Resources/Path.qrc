@@ -47,6 +47,7 @@
         <file>icons/CAM_SelectLoop.svg</file>
         <file>icons/CAM_SetupSheet.svg</file>
         <file>icons/CAM_Shape.svg</file>
+        <file>icons/CAM_ShapeTC.svg</file>
         <file>icons/CAM_SimpleCopy.svg</file>
         <file>icons/CAM_Simulator.svg</file>
         <file>icons/CAM_SimulatorGL.svg</file>
