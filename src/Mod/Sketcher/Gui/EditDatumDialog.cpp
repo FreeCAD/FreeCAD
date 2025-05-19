@@ -37,6 +37,7 @@
 #include <Gui/Notifications.h>
 #include <Gui/View3DInventor.h>
 #include <Gui/View3DInventorViewer.h>
+#include <Gui/Document.h>
 #include <Mod/Sketcher/App/GeometryFacade.h>
 #include <Mod/Sketcher/App/SketchObject.h>
 #include <App/Datums.h>
@@ -305,66 +306,72 @@ void EditDatumDialog::formEditorOpened(bool state)
     }
 }
 
-bool isVisible(Gui::Document* doc, App::DocumentObject* obj)
+
+// This function checks an object's visible flag recursively in a Gui::Document
+// assuming that lastParent (if provided) is visible
+bool isVisibleUpTo(App::DocumentObject* obj, Gui::Document* doc, App::DocumentObject* lastParent)
 {
-    while (obj) {
+    while (obj && obj != lastParent) {
         auto parentviewprovider = doc->getViewProvider(obj);
 
-        if (!parentviewprovider->isVisible()) {
+        if (!parentviewprovider || !parentviewprovider->isVisible()) {
             return false;
         }
         obj = obj->getFirstParent();
     }
     return true;
 }
-bool visualScaleFeaturePresent(App::DocumentObject* obj)
+bool hasVisualFeature(App::DocumentObject* obj, App::DocumentObject* rootObj, Gui::Document* doc)
 {
-    // Try to find geometric objects in the viewport that would create a sense of
-    // scale which the designer would presumably use to draw their sketch
+    auto docObjects = doc->getDocument()->getObjects();
+    for(auto object : docObjects) {
 
-
-    Gui::Document* doc = Gui::Application::Instance->activeDocument();
-    Gui::Document* objectDoc = nullptr;
-    std::vector<App::DocumentObject*> allObjects = doc->getDocument()->getObjects();
-
-    // Iterate over all objects of the document and filter out invalid objects (annotations, datums,
-    // )
-    for (auto object : allObjects) {
-        objectDoc = doc;
-
-        // Parts and such don't need to be evaluated for visibility, since their children will
-        if (object == obj
-            || object->hasExtension(App::GeoFeatureGroupExtension::getExtensionClassTypeId())) {
+        // Presumably, the sketch that is being edited has visual features, but
+        // that's not interesting
+        if (object == obj) {
             continue;
         }
 
-        // Evaluate visibility flag recursively
-        bool visible = isVisible(objectDoc, object);
+        // No need to continue analysis if the object's visible flag is down
+        bool visible = isVisibleUpTo(object, doc, rootObj);
         if (!visible) {
             continue;
         }
 
-        // If an object is linked (such as a body in an assembly), evaluate it instead of
-        // the link. No need to skip GeoFeatureGroupExtension here, because it's children
-        // wond be included
-        App::DocumentObject* linkedObject = object->getLinkedObject();
-        if (linkedObject) {
-            object = linkedObject;
-            objectDoc = Gui::Application::Instance->getDocument(object->getDocument());
+        App::DocumentObject* link = object->getLinkedObject();
+        if (link->getDocument() != doc->getDocument()) {
+            Gui::Document* linkDoc = Gui::Application::Instance->getDocument(link->getDocument());
+            if (linkDoc && hasVisualFeature(link, link, linkDoc)) {
+                return true;
+            }
+            continue;
         }
 
-        // Avoid counting annotations
+        // Skip objects that are not of geometric nature
         if (!object->isDerivedFrom<App::GeoFeature>()) {
             continue;
         }
 
-        // Check if there are geometries on screen
-        if (objectDoc->getViewProvider(object)->getBoundingBox().IsValid()) {
+        // Skip datum objects
+        if (object->isDerivedFrom<App::DatumElement>()) {
+            continue;
+        }
+
+        // Skip container objects because getting their bounging box might
+        // return a valid bounding box around annotations or datums
+        if (object->hasExtension(App::GeoFeatureGroupExtension::getExtensionClassTypeId())) {
+            continue;
+        }
+
+        // Get the bounding box of the object
+        auto viewProvider = doc->getViewProvider(object);
+        if (viewProvider && viewProvider->getBoundingBox().IsValid()) {
             return true;
         }
     }
     return false;
 }
+
 void EditDatumDialog::performAutoScale(double newDatum)
 {
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
@@ -376,7 +383,7 @@ void EditDatumDialog::performAutoScale(double newDatum)
     // if there are external geometries, it is safe to assume that the sketch
     // was drawn with these geometries as scale references (use <= 2 because
     // the sketch axis are considered as external geometries)
-    if ((autoScaleMode == 0 || (autoScaleMode == 2 && !visualScaleFeaturePresent(sketch)))
+    if ((autoScaleMode == 0 || (autoScaleMode == 2 && !hasVisualFeature(sketch, nullptr, Gui::Application::Instance->activeDocument())))
         && sketch->getExternalGeometryCount() <= 2 && sketch->hasSingleScaleDefiningConstraint()) {
         double oldDatum = sketch->getDatum(ConstrNbr);
         double scale_factor = newDatum / oldDatum;
