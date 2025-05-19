@@ -720,11 +720,12 @@ def parse_a_path(values: Values, gcode: Gcode, pathobj) -> None:
         command_line = []
 
         # Modify the command name if necessary
-        if command[0] == "(":
+        if command.startswith("("):
             if not values["OUTPUT_COMMENTS"]:
                 continue
             if values["COMMENT_SYMBOL"] != "(" and len(command) > 2:
                 command = create_comment(values, command[1:-1])
+
         cmd = check_for_an_adaptive_op(values, command, command_line, adaptive_op_variables)
         if cmd:
             command = cmd
