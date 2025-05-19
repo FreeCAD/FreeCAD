@@ -57,10 +57,7 @@ void DlgSettingsUI::saveSettings()
     // Theme
     ui->ThemeAccentColor1->onSave();
     ui->ThemeAccentColor2->onSave();
-    ui->ThemeBackground->onSave();
-    ui->ThemeMenuColor->onSave();
-    ui->ThemeGradientColor1->onSave();
-    ui->ThemeGradientColor2->onSave();
+    ui->ThemeAccentColor3->onSave();
     ui->StyleSheets->onSave();
     ui->OverlayStyleSheets->onSave();
 
@@ -88,10 +85,8 @@ void DlgSettingsUI::loadSettings()
     // Theme
     ui->ThemeAccentColor1->onRestore();
     ui->ThemeAccentColor2->onRestore();
-    ui->ThemeBackground->onRestore();
-    ui->ThemeMenuColor->onRestore();
-    ui->ThemeGradientColor1->onRestore();
-    ui->ThemeGradientColor2->onRestore();
+    ui->ThemeAccentColor3->onRestore();
+
     // Tree View
     ui->iconSizeSpinBox->onRestore();
     ui->rowSpacingSpinBox->onRestore();
@@ -210,12 +205,7 @@ void DlgSettingsUI::attachObserver()
                                {"StyleSheet", "TiledBackground"},
                                applyStyleSheet);
     handlers.addHandler("BaseApp/Preferences/Themes",
-                        {"ThemeAccentColor1",
-                         "ThemeAccentColor2",
-                         "ThemeBackground"
-                         "ThemeMenuColor",
-                         "ThemeGradientColor1",
-                         "ThemeGradientColor2"},
+                        {"ThemeAccentColor1", "ThemeAccentColor2", "ThemeAccentColor2"},
                         handler);
 }
 
