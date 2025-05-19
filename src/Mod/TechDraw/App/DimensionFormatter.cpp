@@ -24,6 +24,7 @@
 #ifndef _PreComp_
 # include <QLocale>
 # include <QRegularExpression>
+# include <QString>
 #endif
 
 #include <Base/Console.h>

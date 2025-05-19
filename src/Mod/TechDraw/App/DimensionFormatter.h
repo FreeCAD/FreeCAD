@@ -29,6 +29,7 @@
 
 //#include <DrawViewDimension.h> Cyclic dependency issue!
 
+class QString;
 
 namespace TechDraw {
 class DrawViewDimension;
