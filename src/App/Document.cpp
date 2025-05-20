@@ -3368,8 +3368,8 @@ DocumentObject* Document::addObject(const char* sType,
 
     _addObject(pcObject,
                pObjectName,
-               AddObjectOption::isNewStatus
-                   | (isPartial ? AddObjectOption::isPartialStatus : AddObjectOption::None)
+               AddObjectOption::setNewStatus
+                   | (isPartial ? AddObjectOption::setPartialStatus : AddObjectOption::unsetPartialStatus)
                    | (isNew ? AddObjectOption::doSetup : AddObjectOption::None)
                    | AddObjectOption::activateObject, 
                viewType);
@@ -3409,7 +3409,7 @@ Document::addObjects(const char* sType, const std::vector<std::string>& objectNa
         bool isLast = index == (objects.size() - 1);
         _addObject(pcObject,
                    objectNames[index].c_str(),
-                   AddObjectOption::isNewStatus
+                   AddObjectOption::setNewStatus
                        | (isNew ? AddObjectOption::doSetup : AddObjectOption::None)
                        | (isLast ? AddObjectOption::activateObject : AddObjectOption::None));
     }
@@ -3425,7 +3425,7 @@ void Document::addObject(DocumentObject* pcObject, const char* pObjectName)
 
     pcObject->setDocument(this);
 
-    _addObject(pcObject, pObjectName, AddObjectOption::isNewStatus | AddObjectOption::activateObject);
+    _addObject(pcObject, pObjectName, AddObjectOption::setNewStatus | AddObjectOption::activateObject);
 }
 
 void Document::_addObject(DocumentObject* pcObject, const char* pObjectName, AddObjectOptions options, const char* viewType)
@@ -3445,15 +3445,14 @@ void Document::_addObject(DocumentObject* pcObject, const char* pObjectName, Add
     // cache the pointer to the name string in the Object (for performance of
     // DocumentObject::getNameInDocument())
     pcObject->pcNameInDocument = &(d->objectMap.find(ObjectName)->first);
-    // Register the current Label even though it is about to change
+    // Register the current Label even though it might be about to change
     registerLabel(pcObject->Label.getStrValue());
 
-    // generate object id and add to id map;
+    // generate object id and add to id map + object array
     if (pcObject->_Id == 0) {
         pcObject->_Id = ++d->lastObjectId;
     }
     d->objectIdMap[pcObject->_Id] = pcObject;
-    // insert in the vector
     d->objectArray.push_back(pcObject);
      
      // do no transactions if we do a rollback!
@@ -3466,7 +3465,7 @@ void Document::_addObject(DocumentObject* pcObject, const char* pObjectName, Add
      }
     // If we are restoring, don't set the Label object now; it will be restored later. This is to
     // avoid potential duplicate label conflicts later.
-    if (options.testFlag(AddObjectOption::isNewStatus) && !d->StatusBits.test(Restoring)) {
+    if (options.testFlag(AddObjectOption::setNewStatus) && !d->StatusBits.test(Restoring)) {
         pcObject->Label.setValue(ObjectName);
     }
 
@@ -3475,16 +3474,19 @@ void Document::_addObject(DocumentObject* pcObject, const char* pObjectName, Add
         pcObject->setupObject();
     }
  
-    if (options.testFlag(AddObjectOption::isNewStatus)) {
-        
+    if (options.testFlag(AddObjectOption::setNewStatus)) {
+        // Mark the object as new (i.e. set status bit 2)
         pcObject->setStatus(ObjectStatus::New, true);    
     }
-    pcObject->setStatus(ObjectStatus::PartialObject, options.testFlag(AddObjectOption::isPartialStatus));
+    if (options.testFlag(AddObjectOption::setPartialStatus) || options.testFlag(AddObjectOption::unsetPartialStatus)) {
+        // Set the partial bit (status bit 10)
+        pcObject->setStatus(ObjectStatus::PartialObject, options.testFlag(AddObjectOption::setPartialStatus));
+    }
 
     if (Base::Tools::isNullOrEmpty(viewType)) {
         viewType = pcObject->getViewProviderNameOverride();
     }
-    pcObject->_pcViewProviderName = viewType;
+    pcObject->_pcViewProviderName = viewType ? viewType : "";
 
     signalNewObject(*pcObject);
  

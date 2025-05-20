@@ -60,10 +60,11 @@ using StringHasherRef = Base::Reference<StringHasher>;
 enum class AddObjectOption
 {
     None = 0,
-    isNewStatus = 1,
-    isPartialStatus = 2,
-    doSetup = 4,
-    activateObject = 8
+    setNewStatus = 1,
+    setPartialStatus = 2,
+    unsetPartialStatus = 4,
+    doSetup = 8,
+    activateObject = 16
 };
 using AddObjectOptions = Base::Flags<AddObjectOption>;
 
@@ -640,7 +641,6 @@ protected:
     explicit Document(const char* documentName = "");
 
     void _removeObject(DocumentObject* pcObject);
-
     void _addObject(DocumentObject* pcObject, const char* pObjectName, AddObjectOptions options = AddObjectOption::activateObject, const char* viewType = nullptr);
     /// checks if a valid transaction is open
     void _checkTransaction(DocumentObject* pcDelObj, const Property* What, int line);
