@@ -719,6 +719,11 @@ def parse_a_path(values: Values, gcode: Gcode, pathobj) -> None:
         command = c.Name
         command_line = []
 
+        # Skip blank lines if requested
+        if not command:
+            if not values["OUTPUT_BLANK_LINES"]:
+                continue
+
         # Modify the command name if necessary
         if command.startswith("("):
             if not values["OUTPUT_COMMENTS"]:
