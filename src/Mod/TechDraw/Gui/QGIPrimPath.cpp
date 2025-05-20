@@ -175,7 +175,6 @@ QColor QGIPrimPath::getSelectColor()
 
 void QGIPrimPath::setWidth(double w)
 {
-//    Base::Console().message("QGIPP::setWidth(%.3f)\n", w);
     m_pen.setWidthF(w);
 }
 

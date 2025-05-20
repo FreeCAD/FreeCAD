@@ -68,7 +68,6 @@
 
 // use a different name to CreateCommand()
 void CreateTechDrawCommands();
-void CreateTechDrawCommandsDims();
 void CreateTechDrawCommandsDecorate();
 void CreateTechDrawCommandsAnnotate();
 void CreateTechDrawCommandsExtensionDims();
@@ -129,7 +128,6 @@ PyMOD_INIT_FUNC(TechDrawGui)
     CreateTechDrawCommandsAnnotate();
     CreateTechDrawCommandsExtensionDims();
     CreateTechDrawCommandsExtensions();
-    CreateTechDrawCommandsDims();
     CreateTechDrawCommandsStack();
     CreateTechDrawCommandsAlign();
 
@@ -162,7 +160,6 @@ PyMOD_INIT_FUNC(TechDrawGui)
     TechDrawGui::ViewProviderWeld::init();
 
     TechDrawGui::ViewProviderPageExtension ::init();
-    //    TechDrawGui::ViewProviderPageExtensionPython::init();
     TechDrawGui::ViewProviderDrawingViewExtension::init();
     TechDrawGui::ViewProviderTemplateExtension::init();
 
