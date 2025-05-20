@@ -412,7 +412,7 @@ def export(objectslist, filename, argstring):
                 command = command.replace("G0", "G")  # normalize: G01 -> G1
 
             if command != UNITS or UNITS_INCLUDED:
-                if command[0] == "(":
+                if command.startswith("("):
                     command = PostUtils.fcoms(command, COMMENT)
                 # the mapping is done for output only! For internal things we
                 # still use the old value.

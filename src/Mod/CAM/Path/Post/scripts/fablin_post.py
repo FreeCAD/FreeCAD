@@ -251,7 +251,7 @@ def parse(pathobj):
             command = c.Name
 
             # fablin does not support parenthesis syntax, so removing that (pocket) in the agnostic gcode
-            if command[0] == "(":
+            if command.startswith("("):
                 if not OUTPUT_COMMENTS:
                     pass
             else:
