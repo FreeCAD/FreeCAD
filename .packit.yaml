@@ -42,7 +42,6 @@ jobs:
 - job: copr_build
   identifier: main
   trigger: commit
-  manual_trigger: true
   branch: main
   owner: freecad
   project: nightly
