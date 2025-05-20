@@ -315,18 +315,51 @@ TEST_F(SchemaTest, imperial_building_special_function_length_foot)
     EXPECT_EQ(result, expect);
 }
 
-/*
- * QuantityParser::yyparse() is crashing on the >>1' 2" + 1/4"<< input,
- * so disable this test
+TEST_F(SchemaTest, imperial_building_special_function_zero_length)
+{
+    const auto result = set("ImperialBuilding", Unit::Length, 0.0);
+    const auto expect = Tools::escapeQuotesFromString("0");
+
+    EXPECT_EQ(result, expect);
+}
+
+TEST_F(SchemaTest, imperial_building_special_function_length_negative_fraction_only)
+{
+    constexpr auto val {(-1.0 / 8.0) * 25.4};  // -1/8 inch in mm
+    const auto result = set("ImperialBuilding", Unit::Length, val);
+    const auto expect = Tools::escapeQuotesFromString("-1/8\"");
+
+    EXPECT_EQ(result, expect);
+}
+
+TEST_F(SchemaTest, imperial_building_special_function_negative_inches_and_fraction)
+{
+    constexpr auto val {-2.5 * 25.4};  // -2.5 inches in mm
+    const auto result = set("ImperialBuilding", Unit::Length, val);
+    const auto expect = Tools::escapeQuotesFromString("-2\" - 1/2\"");
+
+    EXPECT_EQ(result, expect);
+}
+
+TEST_F(SchemaTest, imperial_building_special_function_high_precision_rounding)
+{
+    constexpr auto val {25.396};  // Very close to exactly 1 inch
+    const auto result = set("ImperialBuilding", Unit::Length, val);
+    const auto expect = Tools::escapeQuotesFromString("1\"");
+
+    EXPECT_EQ(result, expect);
+}
+
 TEST_F(SchemaTest, imperial_building_special_function_length)
 {
+    GTEST_SKIP() << "QuantityParser::yyparse() is crashing on the >>1' 2\" + 1/4\"<< input, "
+                    "so disable this test";
     constexpr auto val {360.6};
     const auto result = set("ImperialBuilding", Unit::Length, val);
     const auto expect = Tools::escapeQuotesFromString("1' 2\" + 1/4\"");
 
     EXPECT_EQ(result, expect);
 }
-*/
 
 TEST_F(SchemaTest, imperial_building_special_function_length_neg)
 {
