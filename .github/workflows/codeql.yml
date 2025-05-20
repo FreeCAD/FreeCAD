@@ -17,7 +17,7 @@ on:
   pull_request:
     branches: [ "main" ]
   schedule:
-    - cron: '28 12 * * 0'
+    - cron: '28 12 * * 6'
 
 env:
   CODEQL_EXTRACTOR_CPP_AUTOINSTALL_DEPENDENCIES: false
@@ -50,7 +50,7 @@ jobs:
       matrix:
         include:
         # - language: actions
-        #  build-mode: none
+        #   build-mode: none
         # - language: c-cpp
         #   build-mode: autobuild
         # - language: javascript-typescript
@@ -129,7 +129,7 @@ jobs:
 
   analyze-cpp:
     name: Analyze (${{ matrix.language }})
-    if: github.event_name == 'schedule'
+    if: ${{ (github.event_name == 'schedule' || 'pull_request') }}
     # Runner size impacts CodeQL analysis time. To learn more, please see:
     #   - https://gh.io/recommended-hardware-resources-for-running-codeql
     #   - https://gh.io/supported-runners-and-hardware-resources
