@@ -3366,67 +3366,13 @@ DocumentObject* Document::addObject(const char* sType,
     auto* pcObject = static_cast<DocumentObject*>(typeInstance);
     pcObject->setDocument(this);
 
-    // do no transactions if we do a rollback!
-    if (!d->rollback) {
-        // Undo stuff
-        _checkTransaction(nullptr, nullptr, __LINE__);
-        if (d->activeUndoTransaction) {
-            d->activeUndoTransaction->addObjectDel(pcObject);
-        }
-    }
-
-    // get Unique name
-    const bool hasName = !Base::Tools::isNullOrEmpty(pObjectName);
-    const string ObjectName = getUniqueObjectName(hasName ? pObjectName : type.getName());
-
-    d->activeObject = pcObject;
-
-    // insert in the name map
-    d->objectMap[ObjectName] = pcObject;
-    d->objectNameManager.addExactName(ObjectName);
-    // generate object id and add to id map;
-    pcObject->_Id = ++d->lastObjectId;
-    d->objectIdMap[pcObject->_Id] = pcObject;
-    // cache the pointer to the name string in the Object (for performance of
-    // DocumentObject::getNameInDocument())
-    pcObject->pcNameInDocument = &(d->objectMap.find(ObjectName)->first);
-    // insert in the vector
-    d->objectArray.push_back(pcObject);
-    // Register the current Label even though it is (probably) about to change
-    registerLabel(pcObject->Label.getStrValue());
-
-    // If we are restoring, don't set the Label object now; it will be restored later. This is to
-    // avoid potential duplicate label conflicts later.
-    if (!d->StatusBits.test(Restoring)) {
-        pcObject->Label.setValue(ObjectName);
-    }
-
-    // Call the object-specific initialization
-    if (!d->undoing && !d->rollback && isNew) {
-        pcObject->setupObject();
-    }
-
-    // mark the object as new (i.e. set status bit 2) and send the signal
-    pcObject->setStatus(ObjectStatus::New, true);
-
-    pcObject->setStatus(ObjectStatus::PartialObject, isPartial);
-
-    if (Base::Tools::isNullOrEmpty(viewType)) {
-        viewType = pcObject->getViewProviderNameOverride();
-    }
-
-    if (!Base::Tools::isNullOrEmpty(viewType)) {
-        pcObject->_pcViewProviderName = viewType;
-    }
-
-    signalNewObject(*pcObject);
-
-    // do no transactions if we do a rollback!
-    if (!d->rollback && d->activeUndoTransaction) {
-        signalTransactionAppend(*pcObject, d->activeUndoTransaction);
-    }
-
-    signalActivatedObject(*pcObject);
+    _addObject(pcObject,
+               pObjectName,
+               AddObjectOption::isNewStatus
+                   | (isPartial ? AddObjectOption::isPartialStatus : AddObjectOption::None)
+                   | (isNew ? AddObjectOption::doSetup : AddObjectOption::None)
+                   | AddObjectOption::activateObject, 
+               viewType);
 
     // return the Object
     return pcObject;
@@ -3455,67 +3401,17 @@ Document::addObjects(const char* sType, const std::vector<std::string>& objectNa
     }
 
     for (auto it = objects.begin(); it != objects.end(); ++it) {
-        auto index = std::distance(objects.begin(), it);
+        size_t index = std::distance(objects.begin(), it);
         DocumentObject* pcObject = *it;
         pcObject->setDocument(this);
 
-        // do no transactions if we do a rollback!
-        if (!d->rollback) {
-            // Undo stuff
-            _checkTransaction(nullptr, nullptr, __LINE__);
-            if (d->activeUndoTransaction) {
-                d->activeUndoTransaction->addObjectDel(pcObject);
-            }
-        }
-
-        // get unique name. We don't use getUniqueObjectName because it takes a char* not a std::string
-        std::string ObjectName = objectNames[index];
-        if (ObjectName.empty()) {
-            ObjectName = sType;
-        }
-        ObjectName = Base::Tools::getIdentifier(ObjectName);
-        if (d->objectNameManager.containsName(ObjectName)) {
-            ObjectName = d->objectNameManager.makeUniqueName(ObjectName, 3);
-        }
-
-        // insert in the name map
-        d->objectMap[ObjectName] = pcObject;
-        d->objectNameManager.addExactName(ObjectName);
-        // generate object id and add to id map;
-        pcObject->_Id = ++d->lastObjectId;
-        d->objectIdMap[pcObject->_Id] = pcObject;
-        // cache the pointer to the name string in the Object (for performance of
-        // DocumentObject::getNameInDocument())
-        pcObject->pcNameInDocument = &(d->objectMap.find(ObjectName)->first);
-        // insert in the vector
-        d->objectArray.push_back(pcObject);
-        // Register the current Label even though it is about to change
-        registerLabel(pcObject->Label.getStrValue());
-
-        pcObject->Label.setValue(ObjectName);
-
-        // Call the object-specific initialization
-        if (!d->undoing && !d->rollback && isNew) {
-            pcObject->setupObject();
-        }
-
-        // mark the object as new (i.e. set status bit 2) and send the signal
-        pcObject->setStatus(ObjectStatus::New, true);
-
-        const char* viewType = pcObject->getViewProviderNameOverride();
-        pcObject->_pcViewProviderName = viewType ? viewType : "";
-
-        signalNewObject(*pcObject);
-
-        // do no transactions if we do a rollback!
-        if (!d->rollback && d->activeUndoTransaction) {
-            signalTransactionAppend(*pcObject, d->activeUndoTransaction);
-        }
-    }
-
-    if (!objects.empty()) {
-        d->activeObject = objects.back();
-        signalActivatedObject(*objects.back());
+        // Add the object but only activate the last one
+        bool isLast = index == (objects.size() - 1);
+        _addObject(pcObject,
+                   objectNames[index].c_str(),
+                   AddObjectOption::isNewStatus
+                       | (isNew ? AddObjectOption::doSetup : AddObjectOption::None)
+                       | (isLast ? AddObjectOption::activateObject : AddObjectOption::None));
     }
 
     return objects;
@@ -3529,15 +3425,11 @@ void Document::addObject(DocumentObject* pcObject, const char* pObjectName)
 
     pcObject->setDocument(this);
 
-    // do no transactions if we do a rollback!
-    if (!d->rollback) {
-        // Undo stuff
-        _checkTransaction(nullptr, nullptr, __LINE__);
-        if (d->activeUndoTransaction) {
-            d->activeUndoTransaction->addObjectDel(pcObject);
-        }
-    }
+    _addObject(pcObject, pObjectName, AddObjectOption::isNewStatus | AddObjectOption::activateObject);
+}
 
+void Document::_addObject(DocumentObject* pcObject, const char* pObjectName, AddObjectOptions options, const char* viewType)
+{
     // get unique name
     string ObjectName;
     if (!Base::Tools::isNullOrEmpty(pObjectName)) {
@@ -3546,81 +3438,65 @@ void Document::addObject(DocumentObject* pcObject, const char* pObjectName)
     else {
         ObjectName = getUniqueObjectName(pcObject->getTypeId().getName());
     }
-
-    d->activeObject = pcObject;
-
+ 
     // insert in the name map
     d->objectMap[ObjectName] = pcObject;
     d->objectNameManager.addExactName(ObjectName);
-    // generate object id and add to id map;
-    if (pcObject->_Id == 0) {
-        pcObject->_Id = ++d->lastObjectId;
-    }
-    d->objectIdMap[pcObject->_Id] = pcObject;
     // cache the pointer to the name string in the Object (for performance of
     // DocumentObject::getNameInDocument())
     pcObject->pcNameInDocument = &(d->objectMap.find(ObjectName)->first);
-    // insert in the vector
-    d->objectArray.push_back(pcObject);
     // Register the current Label even though it is about to change
     registerLabel(pcObject->Label.getStrValue());
 
-    pcObject->Label.setValue(ObjectName);
-
-    // mark the object as new (i.e. set status bit 2) and send the signal
-    pcObject->setStatus(ObjectStatus::New, true);
-
-    const char* viewType = pcObject->getViewProviderNameOverride();
-    pcObject->_pcViewProviderName = viewType ? viewType : "";
-
-    signalNewObject(*pcObject);
-
-    // do no transactions if we do a rollback!
-    if (!d->rollback && d->activeUndoTransaction) {
-        signalTransactionAppend(*pcObject, d->activeUndoTransaction);
-    }
-
-    signalActivatedObject(*pcObject);
-}
-
-void Document::_addObject(DocumentObject* pcObject, const char* pObjectName)
-{
-    const std::string ObjectName = getUniqueObjectName(pObjectName);
-    d->objectMap[ObjectName] = pcObject;
-    d->objectNameManager.addExactName(ObjectName);
     // generate object id and add to id map;
     if (pcObject->_Id == 0) {
         pcObject->_Id = ++d->lastObjectId;
     }
     d->objectIdMap[pcObject->_Id] = pcObject;
+    // insert in the vector
     d->objectArray.push_back(pcObject);
-    registerLabel(pcObject->Label.getStrValue());
-    // cache the pointer to the name string in the Object (for performance of
-    // DocumentObject::getNameInDocument())
-    pcObject->pcNameInDocument = &(d->objectMap.find(ObjectName)->first);
-
-    // do no transactions if we do a rollback!
+     
+     // do no transactions if we do a rollback!
     if (!d->rollback) {
-        // Undo stuff
+         // Undo stuff
         _checkTransaction(nullptr, nullptr, __LINE__);
         if (d->activeUndoTransaction) {
             d->activeUndoTransaction->addObjectDel(pcObject);
         }
+     }
+    // If we are restoring, don't set the Label object now; it will be restored later. This is to
+    // avoid potential duplicate label conflicts later.
+    if (options.testFlag(AddObjectOption::isNewStatus) && !d->StatusBits.test(Restoring)) {
+        pcObject->Label.setValue(ObjectName);
     }
 
-    const char* viewType = pcObject->getViewProviderNameOverride();
-    pcObject->_pcViewProviderName = viewType ? viewType : "";
+    // Call the object-specific initialization
+    if (!d->undoing && !d->rollback && options.testFlag(AddObjectOption::doSetup)) {
+        pcObject->setupObject();
+    }
+ 
+    if (options.testFlag(AddObjectOption::isNewStatus)) {
+        
+        pcObject->setStatus(ObjectStatus::New, true);    
+    }
+    pcObject->setStatus(ObjectStatus::PartialObject, options.testFlag(AddObjectOption::isPartialStatus));
 
-    // send the signal
+    if (Base::Tools::isNullOrEmpty(viewType)) {
+        viewType = pcObject->getViewProviderNameOverride();
+    }
+    pcObject->_pcViewProviderName = viewType;
+
     signalNewObject(*pcObject);
-
+ 
     // do no transactions if we do a rollback!
     if (!d->rollback && d->activeUndoTransaction) {
         signalTransactionAppend(*pcObject, d->activeUndoTransaction);
     }
-
-    d->activeObject = pcObject;
-    signalActivatedObject(*pcObject);
+ 
+    if (options.testFlag(AddObjectOption::activateObject)) {
+        d->activeObject = pcObject;
+        signalActivatedObject(*pcObject);    
+    }
 }
 
 bool Document::containsObject(const DocumentObject* pcObject) const

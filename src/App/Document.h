@@ -28,6 +28,7 @@
 #include <Base/Persistence.h>
 #include <Base/Type.h>
 #include <Base/Handle.h>
+#include <Base/Bitmask.h>
 
 #include "PropertyContainer.h"
 #include "PropertyLinks.h"
@@ -55,6 +56,17 @@ class Application;
 class Transaction;
 class StringHasher;
 using StringHasherRef = Base::Reference<StringHasher>;
+
+enum class AddObjectOption
+{
+    None = 0,
+    isNewStatus = 1,
+    isPartialStatus = 2,
+    doSetup = 4,
+    activateObject = 8
+};
+using AddObjectOptions = Base::Flags<AddObjectOption>;
+
 
 /**
  * @brief The document class
@@ -628,7 +640,8 @@ protected:
     explicit Document(const char* documentName = "");
 
     void _removeObject(DocumentObject* pcObject);
-    void _addObject(DocumentObject* pcObject, const char* pObjectName);
+
+    void _addObject(DocumentObject* pcObject, const char* pObjectName, AddObjectOptions options = AddObjectOption::activateObject, const char* viewType = nullptr);
     /// checks if a valid transaction is open
     void _checkTransaction(DocumentObject* pcDelObj, const Property* What, int line);
     void breakDependency(DocumentObject* pcObject, bool clear);
@@ -714,5 +727,7 @@ T* Document::addObject(const char* pObjectName, bool isNew, const char* viewType
 }
 
 }  // namespace App
+
+ENABLE_BITMASK_OPERATORS(App::AddObjectOption)
 
 #endif  // SRC_APP_DOCUMENT_H_
