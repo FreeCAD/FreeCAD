@@ -195,7 +195,6 @@ ViewProviderMeasureBase::ViewProviderMeasureBase()
     FontSize.touch();
     LineColor.touch();
     fieldFontSize.setValue(FontSize.getValue());
-
 }
 
 ViewProviderMeasureBase::~ViewProviderMeasureBase()
