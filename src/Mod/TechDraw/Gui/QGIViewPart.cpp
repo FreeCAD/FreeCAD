@@ -25,6 +25,7 @@
 
 #include <QPainterPath>
 #include <QKeyEvent>
+#include <cstdio>
 #include <qmath.h>
 #include <cstdio>
 #endif// #ifndef _PreComp_
