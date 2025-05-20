@@ -25,10 +25,12 @@
 #ifndef SRC_APP_DOCUMENTOBJECT_H_
 #define SRC_APP_DOCUMENTOBJECT_H_
 
+#include "App/Document.h"
 #include <App/TransactionalObject.h>
 #include <App/PropertyExpressionEngine.h>
 #include <App/PropertyLinks.h>
 #include <App/PropertyStandard.h>
+#include <Base/SharedRecursiveMutex.h>
 #include <Base/SmartPtrPy.h>
 
 #include <bitset>
@@ -100,6 +102,12 @@ public:
     DocumentObject* Which;
 };
 
+using DocObjReadGuard = Base::SharedReadGuard<DocumentObject>;
+using DocObjWriteGuard = Base::SharedWriteGuard<DocumentObject>;
+
+// RAII lock‐guard macros
+#define DOC_OBJ_READ_GUARD  DocObjReadGuard  _docObjReadGuard##__LINE__;
+#define DOC_OBJ_WRITE_GUARD DocObjWriteGuard _docObjWriteLock##__LINE__;
 
 /**
  * @brief %Base class of all objects handled in the @ref App::Document "Document".
@@ -143,6 +151,7 @@ public:
      */
     virtual const char* getViewProviderNameOverride() const
     {
+        DOC_OBJ_READ_GUARD;
         return getViewProviderName();
     }
 
@@ -157,6 +166,7 @@ public:
     /// Return the object ID that is unique within its owner document
     long getID() const
     {
+        DOC_OBJ_READ_GUARD;
         return _Id;
     }
     /// returns the name that is safe to be exported to other document
@@ -184,6 +194,7 @@ public:
     /// reset this document object touched
     void purgeTouched()
     {
+        DOC_OBJ_WRITE_GUARD;
         StatusBits.reset(ObjectStatus::Touch);
         StatusBits.reset(ObjectStatus::Enforce);
         setPropertyStatus(0, false);
@@ -191,30 +202,36 @@ public:
     /// set this feature to error
     bool isError() const
     {
+        DOC_OBJ_READ_GUARD;
         return StatusBits.test(ObjectStatus::Error);
     }
     bool isValid() const
     {
+        DOC_OBJ_READ_GUARD;
         return !StatusBits.test(ObjectStatus::Error);
     }
     /// remove the error from the object
     void purgeError()
     {
+        DOC_OBJ_WRITE_GUARD;
         StatusBits.reset(ObjectStatus::Error);
     }
     /// returns true if this objects is currently recomputing
     bool isRecomputing() const
     {
+        DOC_OBJ_READ_GUARD;
         return StatusBits.test(ObjectStatus::Recompute);
     }
     /// returns true if this objects is currently restoring from file
     bool isRestoring() const
     {
+        DOC_OBJ_READ_GUARD;
         return StatusBits.test(ObjectStatus::Restore);
     }
     /// returns true if this objects is currently removed from the document
     bool isRemoving() const
     {
+        DOC_OBJ_READ_GUARD;
         return StatusBits.test(ObjectStatus::Remove);
     }
     /// set this document object freezed (prevent recomputation)
@@ -224,19 +241,23 @@ public:
     /// returns true if this objects is currently freezed
     bool isFreezed() const
     {
+        DOC_OBJ_READ_GUARD;
         return StatusBits.test(ObjectStatus::Freeze);
     }
     /// return the status bits
     unsigned long getStatus() const
     {
+        DOC_OBJ_READ_GUARD;
         return StatusBits.to_ulong();
     }
     bool testStatus(ObjectStatus pos) const
     {
+        DOC_OBJ_READ_GUARD;
         return StatusBits.test(size_t(pos));
     }
     void setStatus(ObjectStatus pos, bool on)
     {
+        DOC_OBJ_WRITE_GUARD;
         StatusBits.set(size_t(pos), on);
     }
     //@}
@@ -558,6 +579,7 @@ public:
 
     const std::string& getOldLabel() const
     {
+        DOC_OBJ_READ_GUARD;
         return oldLabel;
     }
 
@@ -736,10 +758,12 @@ protected:
 
     void setError()
     {
+        DOC_OBJ_WRITE_GUARD;
         StatusBits.set(ObjectStatus::Error);
     }
     void resetError()
     {
+        DOC_OBJ_WRITE_GUARD;
         StatusBits.reset(ObjectStatus::Error);
     }
     void setDocument(App::Document* doc);
