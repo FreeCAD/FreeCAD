@@ -182,13 +182,40 @@ public:
     /** Set the property touched -> changed, cause recomputation in Update()
      */
     //@{
-    /// set this document object touched (cause recomputation on dependent features)
+
+    /**
+     * @brief Set this document object touched.
+     *
+     * Touching a document object does not mean to recompute it, it only means
+     * that other document objects that link to it (i.e. its InList) will be
+     * recomputed.  If it should be forced to recompute a document object then
+     * use \ref enforceRecompute() instead.
+     */
     void touch(bool noRecompute = false);
-    /// test if this document object is touched
+
+    /**
+     * @brief Check whether the document object is touched or not.
+     *
+     * @return true if document object is touched, false if not.
+     */
+
     bool isTouched() const;
-    /// Enforce this document object to be recomputed
+    /**
+     * @brief Enforce this document object to be recomputed.
+     *
+     * This can be useful to recompute the feature without
+     * having to change one of its input properties.
+     */
     void enforceRecompute();
-    /// Test if this document object must be recomputed
+
+    /**
+     * @brief Check whether the document object must be recomputed.
+     *
+     * This means that the 'Enforce' flag is set or that \ref mustExecute()
+     * returns a value > 0.
+     *
+     * @return true if document object must be recomputed, false if not.
+     */
     bool mustRecompute() const;
     /// reset this document object touched
     void purgeTouched()
@@ -226,9 +253,25 @@ public:
     {
         return StatusBits.test(ObjectStatus::Remove);
     }
-    /// set this document object freezed (prevent recomputation)
+
+    /**
+     * @brief Set this document object freezed.
+     *
+     * A freezed document object is excluded from recomputation.
+     */
     void freeze();
-    /// set this document object unfreezed (and touch it)
+
+    /**
+     * @brief Set this document object unfreezed.
+     *
+     * A freezed document object is excluded from recomputation.  This function
+     * enables recomputation and touches the object.
+     *
+     * @param[in] noRecompute: if true, the object will not be recomputed when
+     * touched.
+     *
+     * @see touch()
+     */
     void unfreeze(bool noRecompute = false);
     /// returns true if this objects is currently freezed
     bool isFreezed() const
@@ -555,13 +598,33 @@ public:
 
     /* Expression support */
 
+    /**
+     * @brief Associate the expression \expr with the object identifier \a path in this document object.
+     * @param path Target object identifier for the result of the expression
+     * @param expr Expression tree
+     */
     virtual void setExpression(const ObjectIdentifier& path, std::shared_ptr<App::Expression> expr);
 
+    /**
+     * @brief Clear the expression of the object identifier \a path in this document object.
+     * @param path Target object identifier
+     */
     void clearExpression(const ObjectIdentifier& path);
 
+    /**
+     * @brief Get expression information associated with \a path.
+     * @param path Object identifier
+     * @return Expression info, containing expression and optional comment.
+     */
     virtual const PropertyExpressionEngine::ExpressionInfo
     getExpression(const ObjectIdentifier& path) const;
 
+    /**
+     * @brief Invoke ExpressionEngine's renameObjectIdentifier, to possibly rewrite expressions using
+     * the \a paths map with current and new identifiers.
+     *
+     * @param paths
+     */
     virtual void
     renameObjectIdentifiers(const std::map<App::ObjectIdentifier, App::ObjectIdentifier>& paths);
 
