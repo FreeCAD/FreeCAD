@@ -674,20 +674,22 @@ class Snapmaker(Path.Post.Processor.PostProcessor):
     def output_header(self, gcode: List[str]):
         """custom method derived from Path.Post.UtilsExport.output_header"""
         cam_file: str
+        comment: str
 
         if not self.values["OUTPUT_HEADER"]:
             return
 
         def add_comment(text):
             com = Path.Post.UtilsParse.create_comment(self.values, text)
-            gcode.append(
-                f'{Path.Post.UtilsParse.linenumber(self.values)}{com}{self.values["END_OF_LINE_CHARACTERS"]}'
-            )
+            gcode.append(f"{Path.Post.UtilsParse.linenumber(self.values)}{com}")
 
         add_comment("Header Start")
         add_comment("header_type: cnc")
         add_comment(f'machine: {self.values["MACHINE_NAME"]}')
-        add_comment(f'Post Processor: {self.values["POSTPROCESSOR_FILE_NAME"]}')
+        comment = Path.Post.UtilsParse.create_comment(
+            self.values, f'Post Processor: {self.values["POSTPROCESSOR_FILE_NAME"]}'
+        )
+        gcode.append(f"{Path.Post.UtilsParse.linenumber(self.values)}{comment}")
         if FreeCAD.ActiveDocument:
             cam_file = os.path.basename(FreeCAD.ActiveDocument.FileName)
         else:
@@ -803,20 +805,28 @@ class Snapmaker(Path.Post.Processor.PostProcessor):
         if self.values["BOUNDARIES_CHECK"]:
             self.check_boundaries(gcode)
 
-        final = "".join(gcode)
+        # add the appropriate end-of-line characters to the gcode, including after the last line
+        gcode.append("")
+        final = self.values["END_OF_LINE_CHARACTERS"].join(gcode)
 
         if FreeCAD.GuiUp and self.values["SHOW_EDITOR"]:
             # size limit removed as irrelevant on my computer - see if issues occur
-            dia = Path.Post.Utils.GCodeEditorDialog()
-            dia.editor.setText(final)
-            result = dia.exec_()
-            if result:
-                final = dia.editor.toPlainText()
+            dia = PostUtils.GCodeEditorDialog()
+            # the editor expects lines to end in "\n", and returns lines ending in "\n"
+            if self.values["END_OF_LINE_CHARACTERS"] == "\n":
+                dia.editor.setText(final)
+                if dia.exec_():
+                    final = dia.editor.toPlainText()
+            else:
+                final_for_editor = "\n".join(gcode)
+                dia.editor.setText(final_for_editor)
+                if dia.exec_():
+                    final_for_editor = dia.editor.toPlainText()
+                    # convert all "\n" to the appropriate end-of-line characters
+                    final = final_for_editor.replace("\n", self.values["END_OF_LINE_CHARACTERS"])
 
         if not filename == "-":
-            with open(
-                filename, "w", encoding="utf-8", newline=self.values["END_OF_LINE_CHARACTERS"]
-            ) as gfile:
+            with open(filename, "w", encoding="utf-8", newline="") as gfile:
                 gfile.write(final)
 
         return final

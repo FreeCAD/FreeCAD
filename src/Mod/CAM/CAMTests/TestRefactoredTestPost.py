@@ -20,13 +20,19 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
+from os import linesep, path, remove
+import tempfile
+from unittest.mock import mock_open, patch
 
 import FreeCAD
 
 import Path
 import CAMTests.PathTestUtils as PathTestUtils
+from Path.Post.Command import CommandPathPost
 from Path.Post.Processor import PostProcessorFactory
+from Path.Post.Utils import FilenameGenerator
 
+from PySide.QtCore import QT_TRANSLATE_NOOP  # type: ignore
 
 Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
 Path.Log.trackModule(Path.Log.thisModule())
@@ -109,6 +115,7 @@ class TestRefactoredTestPost(PathTestUtils.PathTestBase):
     def multi_compare(self, path, expected, args, debug=False):
         """Perform a test with multiple lines of gcode comparison."""
         nl = "\n"
+
         self.job.PostProcessorArgs = args
         # replace the original path (that came with the job and operation) with our path
         self.profile_op.Path = Path.Path(path)
@@ -422,6 +429,436 @@ G54
 
     #############################################################################
 
+    def test00135(self) -> None:
+        """Test enabling and disabling coolant."""
+        args: str
+        expected: str
+        gcode: str
+        nl = "\n"
+        save_CoolantMode = self.profile_op.CoolantMode
+
+        c = Path.Command("G0 X10 Y20 Z30")
+        self.profile_op.Path = Path.Path([c])
+
+        # Test Flood coolant enabled
+        self.profile_op.CoolantMode = "Flood"
+        expected = """(Begin preamble)
+G90
+G21
+(Begin operation)
+G54
+(Finish operation)
+(Begin operation)
+(TC: Default Tool)
+(Begin toolchange)
+(M6 T1)
+(Finish operation)
+(Begin operation)
+(Coolant On: Flood)
+M8
+G0 X10.000 Y20.000 Z30.000
+(Finish operation)
+(Coolant Off: Flood)
+M9
+(Begin postamble)
+"""
+        self.job.PostProcessorArgs = "--enable_coolant --comments"
+        gcode = self.post.export()[0][1]
+        # print("--------\n" + gcode + "--------\n")
+        self.assertEqual(gcode, expected)
+
+        # Test Mist coolant enabled
+        self.profile_op.CoolantMode = "Mist"
+        expected = """(Begin preamble)
+G90
+G21
+(Begin operation)
+G54
+(Finish operation)
+(Begin operation)
+(TC: Default Tool)
+(Begin toolchange)
+(M6 T1)
+(Finish operation)
+(Begin operation)
+(Coolant On: Mist)
+M7
+G0 X10.000 Y20.000 Z30.000
+(Finish operation)
+(Coolant Off: Mist)
+M9
+(Begin postamble)
+"""
+        self.job.PostProcessorArgs = "--enable_coolant --comments"
+        gcode = self.post.export()[0][1]
+        # print("--------\n" + gcode + "--------\n")
+        self.assertEqual(gcode, expected)
+
+        # Test None coolant enabled with CoolantMode property
+        self.profile_op.CoolantMode = "None"
+        expected = """(Begin preamble)
+G90
+G21
+(Begin operation)
+G54
+(Finish operation)
+(Begin operation)
+(TC: Default Tool)
+(Begin toolchange)
+(M6 T1)
+(Finish operation)
+(Begin operation)
+G0 X10.000 Y20.000 Z30.000
+(Finish operation)
+(Begin postamble)
+"""
+        self.job.PostProcessorArgs = "--enable_coolant --comments"
+        gcode = self.post.export()[0][1]
+        # print("--------\n" + gcode + "--------\n")
+        self.assertEqual(gcode, expected)
+
+        # Test Flood coolant disabled
+        self.profile_op.CoolantMode = "Flood"
+        expected = """(Begin preamble)
+G90
+G21
+(Begin operation)
+G54
+(Finish operation)
+(Begin operation)
+(TC: Default Tool)
+(Begin toolchange)
+(M6 T1)
+(Finish operation)
+(Begin operation)
+G0 X10.000 Y20.000 Z30.000
+(Finish operation)
+(Begin postamble)
+"""
+        self.job.PostProcessorArgs = "--disable_coolant --comments"
+        gcode = self.post.export()[0][1]
+        # print("--------\n" + gcode + "--------\n")
+        self.assertEqual(gcode, expected)
+
+        # Test Mist coolant disabled
+        self.profile_op.CoolantMode = "Mist"
+        expected = """(Begin preamble)
+G90
+G21
+(Begin operation)
+G54
+(Finish operation)
+(Begin operation)
+(TC: Default Tool)
+(Begin toolchange)
+(M6 T1)
+(Finish operation)
+(Begin operation)
+G0 X10.000 Y20.000 Z30.000
+(Finish operation)
+(Begin postamble)
+"""
+        self.job.PostProcessorArgs = "--disable_coolant --comments"
+        gcode = self.post.export()[0][1]
+        # print("--------\n" + gcode + "--------\n")
+        self.assertEqual(gcode, expected)
+
+        # Test None coolant disabled with CoolantMode property
+        self.profile_op.CoolantMode = "None"
+        expected = """(Begin preamble)
+G90
+G21
+(Begin operation)
+G54
+(Finish operation)
+(Begin operation)
+(TC: Default Tool)
+(Begin toolchange)
+(M6 T1)
+(Finish operation)
+(Begin operation)
+G0 X10.000 Y20.000 Z30.000
+(Finish operation)
+(Begin postamble)
+"""
+        self.job.PostProcessorArgs = "--disable_coolant --comments"
+        gcode = self.post.export()[0][1]
+        # print("--------\n" + gcode + "--------\n")
+        self.assertEqual(gcode, expected)
+
+        # Test Flood coolant configured but no coolant argument (default)
+        self.profile_op.CoolantMode = "Flood"
+        expected = """(Begin preamble)
+G90
+G21
+(Begin operation)
+G54
+(Finish operation)
+(Begin operation)
+(TC: Default Tool)
+(Begin toolchange)
+(M6 T1)
+(Finish operation)
+(Begin operation)
+G0 X10.000 Y20.000 Z30.000
+(Finish operation)
+(Begin postamble)
+"""
+        self.job.PostProcessorArgs = "--comments"
+        gcode = self.post.export()[0][1]
+        # print("--------\n" + gcode + "--------\n")
+        self.assertEqual(gcode, expected)
+
+        # Test coolant enabled without a CoolantMode property
+
+        self.profile_op.removeProperty("CoolantMode")
+
+        expected = """(Begin preamble)
+G90
+G21
+(Begin operation)
+G54
+(Finish operation)
+(Begin operation)
+(TC: Default Tool)
+(Begin toolchange)
+(M6 T1)
+(Finish operation)
+(Begin operation)
+G0 X10.000 Y20.000 Z30.000
+(Finish operation)
+(Begin postamble)
+"""
+        self.job.PostProcessorArgs = "--enable_coolant --comments"
+        gcode = self.post.export()[0][1]
+        # print("--------\n" + gcode + "--------\n")
+        self.assertEqual(gcode, expected)
+
+        # Test coolant disabled without a CoolantMode property
+        expected = """(Begin preamble)
+G90
+G21
+(Begin operation)
+G54
+(Finish operation)
+(Begin operation)
+(TC: Default Tool)
+(Begin toolchange)
+(M6 T1)
+(Finish operation)
+(Begin operation)
+G0 X10.000 Y20.000 Z30.000
+(Finish operation)
+(Begin postamble)
+"""
+        self.job.PostProcessorArgs = "--disable_coolant --comments"
+        gcode = self.post.export()[0][1]
+        # print("--------\n" + gcode + "--------\n")
+        self.assertEqual(gcode, expected)
+
+        # re-create the original CoolantMode property
+        self.profile_op.addProperty(
+            "App::PropertyEnumeration",
+            "CoolantMode",
+            "Path",
+            QT_TRANSLATE_NOOP("App::Property", "Coolant option for this operation"),
+        )
+        self.profile_op.CoolantMode = ["None", "Flood", "Mist"]
+        self.profile_op.CoolantMode = save_CoolantMode
+
+    #############################################################################
+
+    def test00137(self) -> None:
+        """Test enabling/disabling machine specific commands."""
+
+        # test with machine specific commands enabled
+        self.multi_compare(
+            "(MC_RUN_COMMAND: blah)",
+            """(Begin preamble)
+G90
+G21
+(Begin operation)
+G54
+(Finish operation)
+(Begin operation)
+(TC: Default Tool)
+(Begin toolchange)
+(M6 T1)
+(Finish operation)
+(Begin operation)
+(MC_RUN_COMMAND: blah)
+blah
+(Finish operation)
+(Begin postamble)
+""",
+            "--enable_machine_specific_commands --comments",
+        )
+        # test with machine specific commands disabled
+        self.multi_compare(
+            "(MC_RUN_COMMAND: blah)",
+            """(Begin preamble)
+G90
+G21
+(Begin operation)
+G54
+(Finish operation)
+(Begin operation)
+(TC: Default Tool)
+(Begin toolchange)
+(M6 T1)
+(Finish operation)
+(Begin operation)
+(MC_RUN_COMMAND: blah)
+(Finish operation)
+(Begin postamble)
+""",
+            "--disable_machine_specific_commands --comments",
+        )
+        # test with machine specific commands default
+        self.multi_compare(
+            "(MC_RUN_COMMAND: blah)",
+            """(Begin preamble)
+G90
+G21
+(Begin operation)
+G54
+(Finish operation)
+(Begin operation)
+(TC: Default Tool)
+(Begin toolchange)
+(M6 T1)
+(Finish operation)
+(Begin operation)
+(MC_RUN_COMMAND: blah)
+(Finish operation)
+(Begin postamble)
+""",
+            "--comments",
+        )
+        # test with odd characters and spaces in the machine specific command
+        self.multi_compare(
+            "(MC_RUN_COMMAND: These are odd characters:!@#$%^&*?/)",
+            """(Begin preamble)
+G90
+G21
+(Begin operation)
+G54
+(Finish operation)
+(Begin operation)
+(TC: Default Tool)
+(Begin toolchange)
+(M6 T1)
+(Finish operation)
+(Begin operation)
+(MC_RUN_COMMAND: These are odd characters:!@#$%^&*?/)
+These are odd characters:!@#$%^&*?/
+(Finish operation)
+(Begin postamble)
+""",
+            "--enable_machine_specific_commands --comments",
+        )
+
+    #############################################################################
+
+    def test00138(self) -> None:
+        """Test end of line characters."""
+
+        class MockWriter:
+            def __init__(self):
+                self.contents = ""
+
+            def write(self, data):
+                self.contents = data
+
+        writer = MockWriter()
+        opener = mock_open()
+        opener.return_value.write = writer.write
+
+        output_file_pattern = path.join(tempfile.gettempdir(), "test_postprocessor_write.nc")
+        self.job.PostProcessorOutputFile = output_file_pattern
+        Path.Preferences.setOutputFileDefaults(output_file_pattern, "Append Unique ID on conflict")
+        policy = Path.Preferences.defaultOutputPolicy()
+        generator = FilenameGenerator(job=self.job)
+        generated_filename = generator.generate_filenames()
+        generator.set_subpartname("")
+        fname = next(generated_filename)
+
+        self.profile_op.Path = Path.Path([])
+
+        # Test with whatever end-of-line characters the system running the test happens to use
+        expected = """G90
+G21
+G54
+"""
+        self.job.PostProcessorArgs = ""
+        gcode = self.post.export()[0][1]
+        self.assertEqual(gcode, expected)
+        # also test what is written to a mock file
+        with patch("builtins.open", opener) as m:
+            CommandPathPost._write_file(self, fname, gcode, policy)
+        if m.call_args.kwargs["newline"] is None:
+            mocked_output = writer.contents.replace("\n", linesep)
+        else:
+            mocked_output = writer.contents
+        expected = expected.replace("\n", linesep)
+        self.assertEqual(expected, mocked_output)
+
+        # Test with a new line
+        expected = "\n\nG90\nG21\nG54\n"
+        self.job.PostProcessorArgs = "--end_of_line_characters='\n'"
+        gcode = self.post.export()[0][1]
+        self.assertEqual(gcode, expected)
+        # also test what is written to a mock file
+        with patch("builtins.open", opener) as m:
+            CommandPathPost._write_file(self, fname, gcode, policy)
+        if m.call_args.kwargs["newline"] is None:
+            mocked_output = writer.contents.replace("\n", linesep)
+        else:
+            mocked_output = writer.contents
+        expected = expected[2:]
+        self.assertEqual(expected, mocked_output)
+
+        # Test with a carriage return followed by a new line
+        expected = "G90\r\nG21\r\nG54\r\n"
+        self.job.PostProcessorArgs = "--end_of_line_characters='\r\n'"
+        gcode = self.post.export()[0][1]
+        self.assertEqual(gcode, expected)
+        # also test what is written to a mock file
+        with patch("builtins.open", opener) as m:
+            CommandPathPost._write_file(self, fname, gcode, policy)
+        if m.call_args.kwargs["newline"] is None:
+            mocked_output = writer.contents.replace("\n", linesep)
+        else:
+            mocked_output = writer.contents
+        self.assertEqual(expected, mocked_output)
+
+        # Test with a carriage return
+        expected = "G90\rG21\rG54\r"
+        self.job.PostProcessorArgs = "--end_of_line_characters='\r'"
+        gcode = self.post.export()[0][1]
+        self.assertEqual(gcode, expected)
+        # also test what is written to a mock file
+        with patch("builtins.open", opener) as m:
+            CommandPathPost._write_file(self, fname, gcode, policy)
+        if m.call_args.kwargs["newline"] is None:
+            mocked_output = writer.contents.replace("\n", linesep)
+        else:
+            mocked_output = writer.contents
+        self.assertEqual(expected, mocked_output)
+
+        # Test writing a mock file with a zero-length string for gcode
+        expected = ""
+        gcode = ""
+        with patch("builtins.open", opener) as m:
+            CommandPathPost._write_file(self, fname, gcode, policy)
+        if m.call_args.kwargs["newline"] is None:
+            mocked_output = writer.contents.replace("\n", linesep)
+        else:
+            mocked_output = writer.contents
+        self.assertEqual(expected, mocked_output)
+
+    #############################################################################
+
     def test00140(self):
         """Test feed-precision."""
         nl = "\n"
@@ -606,6 +1043,17 @@ G54
   --no-comments         Suppress comment output
   --comment_symbol COMMENT_SYMBOL
                         The character used to start a comment, default is "("
+  --enable_coolant      Enable coolant
+  --disable_coolant     Disable coolant (default)
+  --enable_machine_specific_commands
+                        Enable machine specific commands of the form
+                        (MC_RUN_COMMAND: blah)
+  --disable_machine_specific_commands
+                        Disable machine specific commands (default)
+  --end_of_line_characters END_OF_LINE_CHARACTERS
+                        The character(s) to use at the end of each line in the
+                        output file, default is whatever the system uses, may
+                        also use '\\n', '\\r', or '\\r\\n'
   --feed-precision FEED_PRECISION
                         Number of digits of precision for feed rate, default
                         is 3
