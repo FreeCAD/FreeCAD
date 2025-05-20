@@ -1,10 +1,10 @@
 /*******************************************************************************
  *                                                                              *
  * Author    :  Angus Johnson                                                   *
- * Version   :  6.2.0                                                           *
- * Date      :  2 October 2014                                                  *
+ * Version   :  6.4.2                                                           *
+ * Date      :  27 February 2017                                                *
  * Website   :  http://www.angusj.com                                           *
- * Copyright :  Angus Johnson 2010-2014                                         *
+ * Copyright :  Angus Johnson 2010-2017                                         *
  *                                                                              *
  * License:                                                                     *
  * Use, modification & distribution is subject to Boost Software License Ver 1. *
@@ -34,13 +34,13 @@
 #ifndef clipper_hpp
 #define clipper_hpp
 
-#define CLIPPER_VERSION "6.2.0"
+#define CLIPPER_VERSION "6.4.2"
 
 // use_int32: When enabled 32bit ints are used instead of 64bit ints. This
 // improve performance but coordinate values are limited to the range +/- 46340
 // #define use_int32
 
-// use_xyz: adds a Z member to IntPoint. Adds a minor cost to performance.
+// use_xyz: adds a Z member to IntPoint. Adds a minor cost to perfomance.
 // #define use_xyz
 
 // use_lines: Enables line clipping. Adds a very minor cost to performance.
@@ -50,6 +50,7 @@
 // #define use_deprecated
 
 #include <vector>
+#include <list>
 #include <set>
 #include <stdexcept>
 #include <cstring>
@@ -204,6 +205,7 @@ public:
     int ChildCount() const;
 
 private:
+    // PolyNode& operator =(PolyNode& other);
     unsigned Index;  // node index in Parent.Childs
     bool m_IsOpen;
     JoinType m_jointype;
@@ -226,6 +228,7 @@ public:
     int Total() const;
 
 private:
+    // PolyTree& operator =(PolyTree& other);
     PolyNodes AllNodes;
     friend class Clipper;  // to access AllNodes
 };
@@ -273,7 +276,6 @@ enum EdgeSide
 struct TEdge;
 struct IntersectNode;
 struct LocalMinimum;
-struct Scanbeam;
 struct OutPt;
 struct OutRec;
 struct Join;
@@ -293,7 +295,7 @@ class ClipperBase
 public:
     ClipperBase();
     virtual ~ClipperBase();
-    bool AddPath(const Path& pg, PolyType PolyTyp, bool Closed);
+    virtual bool AddPath(const Path& pg, PolyType PolyTyp, bool Closed);
     bool AddPaths(const Paths& ppg, PolyType PolyTyp, bool Closed);
     virtual void Clear();
     IntRect GetBounds();
@@ -309,12 +311,18 @@ public:
 protected:
     void DisposeLocalMinimaList();
     TEdge* AddBoundsToLML(TEdge* e, bool IsClosed);
-    void PopLocalMinima();
     virtual void Reset();
     TEdge* ProcessBound(TEdge* E, bool IsClockwise);
-    void DoMinimaLML(TEdge* E1, TEdge* E2, bool IsClosed);
-    TEdge* DescendToMin(TEdge*& E);
-    void AscendToMax(TEdge*& E, bool Appending, bool IsClosed);
+    void InsertScanbeam(const cInt Y);
+    bool PopScanbeam(cInt& Y);
+    bool LocalMinimaPending();
+    bool PopLocalMinima(cInt Y, const LocalMinimum*& locMin);
+    OutRec* CreateOutRec();
+    void DisposeAllOutRecs();
+    void DisposeOutRec(PolyOutList::size_type index);
+    void SwapPositionsInAEL(TEdge* edge1, TEdge* edge2);
+    void DeleteFromAEL(TEdge* e);
+    void UpdateEdgeIntoAEL(TEdge*& e);
 
     typedef std::vector<LocalMinimum> MinimaList;
     MinimaList::iterator m_CurrentLM;
@@ -324,6 +332,11 @@ protected:
     EdgeList m_edges;
     bool m_PreserveCollinear;
     bool m_HasOpenPaths;
+    PolyOutList m_PolyOuts;
+    TEdge* m_ActiveEdges;
+
+    typedef std::priority_queue<cInt> ScanbeamList;
+    ScanbeamList m_Scanbeam;
 };
 //------------------------------------------------------------------------------
 
@@ -331,15 +344,16 @@ class Clipper: public virtual ClipperBase
 {
 public:
     Clipper(int initOptions = 0);
-    ~Clipper();
+    bool Execute(ClipType clipType, Paths& solution, PolyFillType fillType = pftEvenOdd);
     bool Execute(ClipType clipType,
                  Paths& solution,
-                 PolyFillType subjFillType = pftEvenOdd,
-                 PolyFillType clipFillType = pftEvenOdd);
+                 PolyFillType subjFillType,
+                 PolyFillType clipFillType);
+    bool Execute(ClipType clipType, PolyTree& polytree, PolyFillType fillType = pftEvenOdd);
     bool Execute(ClipType clipType,
                  PolyTree& polytree,
-                 PolyFillType subjFillType = pftEvenOdd,
-                 PolyFillType clipFillType = pftEvenOdd);
+                 PolyFillType subjFillType,
+                 PolyFillType clipFillType);
     bool ReverseSolution()
     {
         return m_ReverseOutput;
@@ -361,18 +375,15 @@ public:
     void ZFillFunction(ZFillCallback zFillFunc);
 #endif
 protected:
-    void Reset();
     virtual bool ExecuteInternal();
 
 private:
-    PolyOutList m_PolyOuts;
     JoinList m_Joins;
     JoinList m_GhostJoins;
     IntersectList m_IntersectList;
     ClipType m_ClipType;
-    typedef std::priority_queue<cInt> ScanbeamList;
-    ScanbeamList m_Scanbeam;
-    TEdge* m_ActiveEdges;
+    typedef std::list<cInt> MaximaList;
+    MaximaList m_Maxima;
     TEdge* m_SortedEdges;
     bool m_ExecuteLocked;
     PolyFillType m_ClipFillType;
@@ -386,31 +397,25 @@ private:
     void SetWindingCount(TEdge& edge);
     bool IsEvenOddFillType(const TEdge& edge) const;
     bool IsEvenOddAltFillType(const TEdge& edge) const;
-    void InsertScanbeam(const cInt Y);
-    cInt PopScanbeam();
     void InsertLocalMinimaIntoAEL(const cInt botY);
     void InsertEdgeIntoAEL(TEdge* edge, TEdge* startEdge);
     void AddEdgeToSEL(TEdge* edge);
+    bool PopEdgeFromSEL(TEdge*& edge);
     void CopyAELToSEL();
     void DeleteFromSEL(TEdge* e);
-    void DeleteFromAEL(TEdge* e);
-    void UpdateEdgeIntoAEL(TEdge*& e);
     void SwapPositionsInSEL(TEdge* edge1, TEdge* edge2);
     bool IsContributing(const TEdge& edge) const;
     bool IsTopHorz(const cInt XPos);
-    void SwapPositionsInAEL(TEdge* edge1, TEdge* edge2);
     void DoMaxima(TEdge* e);
-    void ProcessHorizontals(bool IsTopOfScanbeam);
-    void ProcessHorizontal(TEdge* horzEdge, bool isTopOfScanbeam);
+    void ProcessHorizontals();
+    void ProcessHorizontal(TEdge* horzEdge);
     void AddLocalMaxPoly(TEdge* e1, TEdge* e2, const IntPoint& pt);
     OutPt* AddLocalMinPoly(TEdge* e1, TEdge* e2, const IntPoint& pt);
     OutRec* GetOutRec(int idx);
     void AppendPolygon(TEdge* e1, TEdge* e2);
     void IntersectEdges(TEdge* e1, TEdge* e2, IntPoint& pt);
-    OutRec* CreateOutRec();
     OutPt* AddOutPt(TEdge* e, const IntPoint& pt);
-    void DisposeAllOutRecs();
-    void DisposeOutRec(PolyOutList::size_type index);
+    OutPt* GetLastOutPt(TEdge* e);
     bool ProcessIntersections(const cInt topY);
     void BuildIntersectList(const cInt topY);
     void ProcessIntersectList();
@@ -421,6 +426,7 @@ private:
     void DisposeIntersectNodes();
     bool FixupIntersectionOrder();
     void FixupOutPolygon(OutRec& outrec);
+    void FixupOutPolyline(OutRec& outrec);
     bool IsHole(TEdge* e);
     bool FindOwnerFromSplitRecs(OutRec& outRec, OutRec*& currOrfl);
     void FixHoleLinkage(OutRec& outrec);
@@ -432,7 +438,8 @@ private:
     void JoinCommonEdges();
     void DoSimplePolygons();
     void FixupFirstLefts1(OutRec* OldOutRec, OutRec* NewOutRec);
-    void FixupFirstLefts2(OutRec* OldOutRec, OutRec* NewOutRec);
+    void FixupFirstLefts2(OutRec* InnerOutRec, OutRec* OuterOutRec);
+    void FixupFirstLefts3(OutRec* OldOutRec, OutRec* NewOutRec);
 #ifdef use_xyz
     void SetZ(IntPoint& pt, TEdge& e1, TEdge& e2);
 #endif
