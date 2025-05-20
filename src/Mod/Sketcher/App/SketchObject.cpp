@@ -9772,14 +9772,15 @@ void SketchObject::onUpdateElementReference(const App::Property *prop)
     }
 }
 
+// clang-format on
 void SketchObject::updateGeometryRefs()
 {
-    const auto &objs = ExternalGeometry.getValues();
-    const auto &subs = ExternalGeometry.getSubValues();
-    const auto &shadows = ExternalGeometry.getShadowSubs();
+    const auto& objs = ExternalGeometry.getValues();
+    const auto& subs = ExternalGeometry.getSubValues();
+    const auto& shadows = ExternalGeometry.getShadowSubs();
     assert(subs.size() == shadows.size());
     std::vector<std::string> originalRefs;
-    std::map<std::string,std::string> refMap;
+    std::map<std::string, std::string> refMap;
     if (updateGeoRef) {
         assert(externalGeoRef.size() == objs.size());
         updateGeoRef = false;
@@ -9787,11 +9788,11 @@ void SketchObject::updateGeometryRefs()
     }
     externalGeoRef.clear();
     std::unordered_map<std::string, int> legacyMap;
-    for (int i=0;i<(int)objs.size();++i) {
+    for (int i = 0; i < (int)objs.size(); ++i) {
         auto obj = objs[i];
         const std::string& sub = shadows[i].newName.empty() ? subs[i] : shadows[i].newName;
         externalGeoRef.emplace_back(obj->getNameInDocument());
-        auto &key = externalGeoRef.back();
+        auto& key = externalGeoRef.back();
         key += '.';
 
         legacyMap[key + Data::oldElementName(sub.c_str())] = i;
@@ -9806,23 +9807,24 @@ void SketchObject::updateGeometryRefs()
     bool touched = false;
     auto geos = ExternalGeo.getValues();
     if (!refMap.empty()) {
-        for(auto &v : refMap) {
+        for (auto& v : refMap) {
             auto it = externalGeoRefMap.find(v.first);
             if (it == externalGeoRefMap.end()) {
                 continue;
             }
             for (long id : it->second) {
                 auto iter = externalGeoMap.find(id);
-                if (iter != externalGeoMap.end()) {
-                    auto &geo = geos[iter->second];
-                    geo = geo->clone();
-                    auto egf = ExternalGeometryFacade::getFacade(geo);
-                    // NOLINTNEXTLINE
-                    FC_LOG(getFullName() << " ref change on ExternalEdge" << iter->second - 1 << ' '
-                           << egf->getRef() << " -> " << v.second);
-                    egf->setRef(v.second);
-                    touched = true;
+                if (iter == externalGeoMap.end()) {
+                    continue;
                 }
+                auto& geo = geos[iter->second];
+                geo = geo->clone();
+                auto egf = ExternalGeometryFacade::getFacade(geo);
+                // NOLINTNEXTLINE
+                FC_LOG(getFullName() << " ref change on ExternalEdge" << iter->second - 1 << ' '
+                                     << egf->getRef() << " -> " << v.second);
+                egf->setRef(v.second);
+                touched = true;
             }
         }
 
@@ -9849,7 +9851,7 @@ void SketchObject::updateGeometryRefs()
         if (egf->getId() < 0 && !egf->getRef().empty()) {
             // NOLINTNEXTLINE
             FC_ERR("External geometry reference corrupted in " << getFullName()
-                   << " Please check.");
+                                                               << " Please check.");
             // This could happen if someone saved the sketch containing
             // external geometries using some rogue releases during the
             // migration period. As a remedy, We re-initiate the
@@ -9872,15 +9874,15 @@ void SketchObject::updateGeometryRefs()
             // only if not undo/redo.
             //
             // NOLINTNEXTLINE
-            FC_WARN("Update legacy external reference "
-                    << egf->getRef() << " -> " << externalGeoRef[it->second] << " in "
-                    << getFullName());
+            FC_WARN("Update legacy external reference " << egf->getRef() << " -> "
+                                                        << externalGeoRef[it->second] << " in "
+                                                        << getFullName());
         }
         else {
             // NOLINTNEXTLINE
-            FC_LOG("Update undo/redo external reference "
-                   << egf->getRef() << " -> " << externalGeoRef[it->second] << " in "
-                   << getFullName());
+            FC_LOG("Update undo/redo external reference " << egf->getRef() << " -> "
+                                                          << externalGeoRef[it->second] << " in "
+                                                          << getFullName());
         }
         touched = true;
         egf->setRef(externalGeoRef[it->second]);
@@ -9890,6 +9892,7 @@ void SketchObject::updateGeometryRefs()
         ExternalGeo.setValues(std::move(geos));
     }
 }
+// clang-format off
 
 void SketchObject::onUndoRedoFinished()
 {
