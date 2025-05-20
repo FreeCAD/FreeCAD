@@ -659,9 +659,9 @@ def export(exportList, filename, colors=None, preferences=None):
         # Process additions for non-groups
         if additions and not obj.TypeId == "App::DocumentObjectGroup":
             for o in additions:
-                r2, p2, c2 = getRepresentation(ifcfile, context, o, colors=colors, preferences=preferences)
+                representation, placement, shape_type = getRepresentation(ifcfile, context, o, colors=colors, preferences=preferences)
                 if preferences['DEBUG']:
-                    print("      adding ", c2, " : ", o.Label)
+                    print("      adding ", shape_type, " : ", o.Label)
                 l = o.Label
                 prod2 = ifcfile.createIfcBuildingElementProxy(
                     ifcopenshell.guid.new(),
@@ -690,8 +690,8 @@ def export(exportList, filename, colors=None, preferences=None):
         #
         # 1. Substractions: those listed in the object's Subtractions list (e.g. a roof)
         #    which are not dependent on the object.
-        # 2. Guests: those that are dependent on the object (e.g. doors and windows).
-        #    These are not in the Subtractions list, but in the object's InList and their
+        # 2. Guests: those that are dependent on the object (e.g. doors and windows are dependent on
+        #    walls). These are not in the Subtractions list, but in the object's InList and their
         #    Hosts list contains the current object.
 
         guests = []
@@ -713,7 +713,7 @@ def export(exportList, filename, colors=None, preferences=None):
                 return
             processed_objects.add(obj)
 
-            if obj.IfcType == "IfcGroup":
+            if obj.TypeId == "App::DocumentObjectGroup":
                 print(f"Processing group: {obj.Label}")
                 children_or_dependent_objs = obj.Group
                 iterable_desc = "child"
