@@ -232,10 +232,10 @@ class ToolControllerEditor(object):
         tc = self.obj
         self.form.tcName.setText(tc.Label)
         self.form.tcNumber.setValue(tc.ToolNumber)
-        self.horizFeed.updateSpinBox()
-        self.horizRapid.updateSpinBox()
-        self.vertFeed.updateSpinBox()
-        self.vertRapid.updateSpinBox()
+        self.horizFeed.updateWidget()
+        self.horizRapid.updateWidget()
+        self.vertFeed.updateWidget()
+        self.vertRapid.updateWidget()
         self.form.spindleSpeed.setValue(tc.SpindleSpeed)
 
         self.selectInComboBox(tc.SpindleDir, self.form.spindleDirection)

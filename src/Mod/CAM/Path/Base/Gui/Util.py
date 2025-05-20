@@ -134,7 +134,7 @@ class QuantitySpinBox(QtCore.QObject):
 
     def eventFilter(self, obj, event):
         if event.type() == QtCore.QEvent.Type.FocusIn:
-            self.updateSpinBox()
+            self.updateWidget()
         return False
 
     def onWidgetValueChanged(self):
