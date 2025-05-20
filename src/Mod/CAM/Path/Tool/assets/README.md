@@ -34,42 +34,16 @@ Specifically in the context of CAM, assets are:
 and a ToolBit requires a ToolBitShape (which is a FreeCAD model).
 
 
-## Challenges
+## Functionality
 
-In the current codebase, CAM objects are monoliths that handle everything:
-in-memory data, serialization, deserialization, storage. They are tightly
-coupled to files, and make assumptions about how other objects are stored.
+The generic AssetManager:
 
-Examples:
+- **Manages storage** while existing FreeCAD tool library file structures retained
+- **Manages dependencies** including detection of cyclic dependencies, deep vs. shallow fetching
+- **Manages threading** for asynchronous storage, while FreeCAD objects are assembled in the main UI thread
+- **Defining a generic asset interface** that classes can implement to become "storable"
+- **Defines a generic serializer protocol** A unified serialization protocol allows for generic import/export mechanisms for all assets
 
-- Tool bits have "File" attributes that they use to collect dependencies
-  such as ToolBit files and shape files.
-- It also writes directly to the disk.
-- GuiToolBit performs serialization directly in UI functions.
-- ToolBits could not be created without an active document.
-
-As the code base grows, separation of concerns becomes more important.
-Managing dependencies between asset becomes a hassle if every object tries
-to resolve them in their own way.
-
-
-# Solution
-
-The main effort went into two key areas:
-
-1. **The generic AssetManager:**
-    - **Manages storage** while existing FreeCAD tool library file structures retained
-    - **Manages dependencies** including detection of cyclic dependencies, deep vs. shallow fetching
-    - **Manages threading** for asynchronous storage, while FreeCAD objects are assembled in the main UI thread
-    - **Defining a generic asset interface** that classes can implement to become "storable"
-
-2. **Refactoring existing CAM objects for clear separation of concerns:**
-    - **View**: Should handle user interface only. Existing file system access methods were removed.
-    - **Object Model**: In-memory representation of an object, for example a ToolBit, Icon, or a ToolBitShape. By giving all classes `from_bytes()` and `to_bytes()` methods; the objects no longer need to handle storage themselves.
-    - **Storage**: Persisting an object to a file system, database system, or API. This is now handled by the AssetManager
-    - **Serialization** A serialization protocol needs to be defined. This will allow for better import/export mechanisms in the future
-
-FreeCAD is now fully usable with the changes in place. Work remains to be done on the serializers.
 
 ## Asset Manager API usage example
 
@@ -118,27 +92,23 @@ The serializer protocol defines how assets are converted to and from bytes and h
 dependencies are identified. This separation of concerns allows assets to be stored and
 retrieved independently of their specific serialization format.
 
-The core components of the protocol are the [`Asset`](src/Mod/CAM/Path/Tool/assets/asset.py:11)
-and [`AssetSerializer`](src/Mod/CAM/Path/Tool/assets/serializer.py:8) classes.
+The core components of the protocol are the [`Asset`](asset.py)
+and [`AssetSerializer`](serializer.py) classes.
 
-- The [`Asset`](src/Mod/CAM/Path/Tool/assets/asset.py:11) class represents an asset object in
-  memory. It provides methods like [`to_bytes()`](src/Mod/CAM/Path/Tool/assets/asset.py:69)
-  and [`from_bytes()`](src/Mod/CAM/Path/Tool/assets/asset.py:56) which delegate the actual
-  serialization and deserialization to an [`AssetSerializer`](src/Mod/CAM/Path/Tool/assets/serializer.py:8)
-  instance. It also has an [`extract_dependencies()`](src/Mod/CAM/Path/Tool/assets/asset.py:49)
-  method that uses the serializer to find dependencies within the raw asset data.
+- The [`Asset`](asset.py) class represents an asset object in
+  memory. It provides methods like `to_bytes()` and `from_bytes()` which delegate the actual
+  serialization and deserialization to an [`AssetSerializer`](serializer.py).
+  It also has an `extract_dependencies()` method that uses the serializer to find
+  dependencies within the raw asset data.
 
-- The [`AssetSerializer`](src/Mod/CAM/Path/Tool/assets/serializer.py:8) is an abstract base
+- The [`AssetSerializer`](serializer.py) is an abstract base
   class that defines the interface for serializers. Concrete implementations of
-  [`AssetSerializer`](src/Mod/CAM/Path/Tool/assets/serializer.py:8) are responsible for the
-  specific logic of converting an asset object to bytes ([`serialize()`](src/Mod/CAM/Path/Tool/assets/serializer.py:21)),
-  converting bytes back to an asset object ([`deserialize()`](src/Mod/CAM/Path/Tool/assets/serializer.py:27)),
-  and extracting dependency URIs from the raw byte data
-  ([`extract_dependencies()`](src/Mod/CAM/Path/Tool/assets/serializer.py:15)).
+  `AssetSerializer` are responsible for the specific logic of converting an asset object
+  to bytes, converting it back to an asset object, and extracting dependency URIs from the
+  raw byte data (`extract_dependencies()`).
 
 This design allows the AssetManager to work with various asset types and serialization formats
-by simply registering the appropriate [`AssetSerializer`](src/Mod/CAM/Path/Tool/assets/serializer.py:8)
-for each asset type.
+by simply registering the appropriate `AssetSerializer` for each asset type.
 
 ## Class diagram
 
@@ -293,26 +263,18 @@ classDiagram
     }
 ```
 
-# UI Helpers
+## UI Helpers
 
 The `ui` directory contains helper modules for the asset manager's user interface.
 
-- [`filedialog.py`](src/Mod/CAM/Path/Tool/assets/ui/filedialog.py):
+- [`filedialog.py`](ui/filedialog.py):
   Provides file dialogs for importing and exporting assets.
 
-- [`util.py`](src/Mod/CAM/Path/Tool/assets/ui/util.py): Contains general utility
+- [`util.py`](ui/util.py): Contains general utility
   functions used within the asset manager UI.
 
-# What's next
 
-## Shorter term
-
-- Improving the integration of serializers. Ideally the asset manager could help here too:
-  We can define a common serializer protocol for **all** assets. It could then become the
-  central point for imports and exports.
-
-
-## Potential future extensions (longer term)
+## Potential future extensions
 
 - Adding a AssetManager UI, to allow for browsing and searching stores for all kinds of
   assets (Machines, Fixtures, Libraries, Tools, Shapes, Post Processors, ...)
