@@ -1673,29 +1673,6 @@ const App::PropertyComplexGeoData* Feature::getPropertyOfGeometry() const
     return &Shape;
 }
 
-bool Feature::isElementMappingDisabled(App::PropertyContainer* container)
-{
-    (void)container;
-    return false;
-
-    // TODO:  March 2024 consider if any of this RT branch logic makes sense:
-//    if (!container) {
-//        return false;
-//    }
-//    auto prop = propDisableMapping(container, /*forced*/ false);
-//    if (prop && prop->getValue()) {
-//        return true;
-//    }
-//    if (auto obj = freecad_cast<App::DocumentObject*>(container)) {
-//        if (auto doc = obj->getDocument()) {
-//            if (auto prop = propDisableMapping(doc, /*forced*/ false)) {
-//                return prop->getValue();
-//            }
-//        }
-//    }
-//    return false;
-}
-
 bool Feature::getCameraAlignmentDirection(Base::Vector3d& directionZ, Base::Vector3d &directionX, const char* subname) const
 {
     const auto topoShape = getTopoShape(this, subname, true);

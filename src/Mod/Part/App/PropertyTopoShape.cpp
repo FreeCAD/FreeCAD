@@ -103,11 +103,7 @@ const TopoDS_Shape& PropertyPartShape::getValue() const
 const TopoShape& PropertyPartShape::getShape() const
 {
     _Shape.initCache(-1);
-    // March, 2024 Toponaming project:  There was originally an unused feature to disable
-    // elementMapping that has not been kept:
-    //    if (Feature::isElementMappingDisabled(getContainer()))
-    //        res.Tag = -1;
-    //    else if (!res.Tag) {
+
     if (!_Shape.Tag) {
         if (auto parent = freecad_cast<App::DocumentObject*>(getContainer())) {
             _Shape.Tag = parent->getID();
@@ -204,14 +200,6 @@ void PropertyPartShape::setPyObject(PyObject *value)
 App::Property *PropertyPartShape::Copy() const
 {
     PropertyPartShape *prop = new PropertyPartShape();
-
-    // March, 2024 Toponaming project:  There was originally a feature to enable making an element
-    // copy ( new geometry and map ) that has not been kept:
-//    if (PartParams::getShapePropertyCopy()) {
-//        // makeElementCopy() consume too much memory for complex geometry.
-//        prop->_Shape = this->_Shape.makeElementCopy();
-//    } else
-//        prop->_Shape = this->_Shape;
     prop->_Shape = this->_Shape;
     prop->_Ver = this->_Ver;
     return prop;
@@ -392,11 +380,6 @@ void PropertyPartShape::Restore(Base::XMLReader &reader)
             }
         }
     } else if(owner && !owner->getDocument()->testStatus(App::Document::PartialDoc)) {
-        // Toponaming 09/2024:  Original code has an infrastructure for document parameters we aren't bringing in:
-        // if(App::DocumentParams::getWarnRecomputeOnRestore()) {
-        // However, this warning appeared on all files without element maps, and is now superseded by a user dialog
-        // after loading that is triggered by any call to addRecomputeObject()
-        // FC_WARN("Pending recompute for generating element map: " << owner->getFullName());
         owner->getDocument()->addRecomputeObject(owner);
     }
 
@@ -970,10 +953,6 @@ PropertyShapeCache *PropertyShapeCache::get(const App::DocumentObject *obj, bool
  * @return True if the name was found
  */
 bool PropertyShapeCache::getShape(const App::DocumentObject *obj, TopoShape &shape, const char *subname) {
-// March, 2024 Toponaming project:  There was originally a feature to disable shape cache
-// that has not been kept:
-//    if (PartParams::getDisableShapeCache())
-//        return false;
     auto prop = get(obj,false);
     if(!prop)
         return false;
