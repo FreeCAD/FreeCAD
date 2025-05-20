@@ -50,12 +50,6 @@
  */
 
 /**
- * @defgroup ExpressionFramework Expressions framework
- * @ingroup APP
- * @brief The expression system allows users to write expressions and formulas that produce values
- */
-
-/**
  * @defgroup PropertyFramework Property framework
  * @ingroup APP
  * @brief System to access object properties.
@@ -204,6 +198,11 @@
  * @endcode
  */
 
+/**
+ * @defgroup ExpressionFramework Expressions framework
+ * @ingroup APP
+ * @brief The expression system allows users to write expressions and formulas that produce values
+ */
 
 /**
  * @namespace App
