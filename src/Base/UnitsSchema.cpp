@@ -94,20 +94,17 @@ UnitsSchema::toLocale(const Quantity& quant, const double factor, const std::str
     QLocale Lc;
     const QuantityFormat& format = quant.getFormat();
     if (format.option != QuantityFormat::None) {
-        int opt = format.option;
-        Lc.setNumberOptions(static_cast<QLocale::NumberOptions>(opt));
+        Lc.setNumberOptions(static_cast<QLocale::NumberOptions>(format.option));
     }
 
-    std::string valueString =
-        Lc.toString((quant.getValue() / factor), format.toFormat(), format.precision).toStdString();
+    auto valueString =
+        Lc.toString(quant.getValue() / factor, format.toFormat(), format.precision).toStdString();
 
-    return fmt::format("{}{}{}",
-                       valueString,
-                       unitString.empty() || unitString == "°" || unitString == "″"
-                               || unitString == "′" || unitString == "\"" || unitString == "'"
-                           ? ""
-                           : " ",
-                       unitString);
+    auto notUnit = [](auto s) {
+        return s.empty() || s == "°" || s == "″" || s == "′" || s == "\"" || s == "'";
+    };
+
+    return fmt::format("{}{}{}", valueString, notUnit(unitString) ? "" : " ", unitString);
 }
 
 bool UnitsSchema::isMultiUnitLength() const
