@@ -840,6 +840,188 @@ class AssetManager:
             )
             raise
 
+    async def copy_async(
+        self,
+        src: AssetUri,
+        dest_store: str,
+        store: str = "local",
+        dest: AssetUri | None = None,
+    ) -> AssetUri:
+        """
+        Copies an asset from one location to another asynchronously.
+
+        Performs a shallow copy by wrapping get_raw_async and add_raw_async.
+        If dest is None, it defaults to the uri given in src.
+        An assertion is raised if src and store are the same as dest and
+        dest_store.
+        If the destination already exists it should be silently overwritten.
+        """
+        if dest is None:
+            dest = src
+
+        if src == dest and store == dest_store:
+            raise ValueError(
+                "Source and destination cannot be the same asset in the same store."
+            )
+
+        raw_data = await self.get_raw_async(src, store)
+        return await self.add_raw_async(dest.asset_type, dest.asset_id, raw_data, dest_store)
+
+    def copy(
+        self,
+        src: AssetUri,
+        dest_store: str,
+        store: str = "local",
+        dest: AssetUri | None = None,
+    ) -> AssetUri:
+        """
+        Copies an asset from one location to another synchronously.
+
+        Performs a shallow copy by wrapping get_raw and add_raw.
+        If dest is None, it defaults to the uri given in src.
+        An assertion is raised if src and store are the same as dest and
+        dest_store.
+        If the destination already exists it should be silently overwritten.
+        """
+        return asyncio.run(self.copy_async(src, dest_store, store, dest))
+
+    async def deepcopy_async(
+        self,
+        src: AssetUri,
+        dest_store: str,
+        store: str = "local",
+        dest: AssetUri | None = None,
+    ) -> AssetUri:
+        """
+        Asynchronously deep copies an asset and its dependencies from a source store
+        to a destination store.
+
+        Args:
+            src: The AssetUri of the source asset.
+            dest_store: The name of the destination store.
+            store: The name of the source store (defaults to "local").
+            dest: Optional. The new AssetUri for the top-level asset in the
+                  destination store. If None, the original URI is used.
+
+        Returns:
+            The AssetUri of the copied top-level asset in the destination store.
+
+        Raises:
+            ValueError: If the source or destination store is not registered.
+            FileNotFoundError: If the source asset is not found.
+            RuntimeError: If a cyclic dependency is detected.
+        """
+        logger.debug(
+            f"DeepcopyAsync URI '{src}' from store '{store}' to '{dest_store}'"
+            f" with dest '{dest}'"
+        )
+        if dest is None:
+            dest = src
+
+        if store not in self.stores:
+            raise ValueError(f"Source store '{store}' not registered.")
+        if dest_store not in self.stores:
+            raise ValueError(f"Destination store '{dest_store}' not registered.")
+        if store == dest_store and src == dest:
+            raise ValueError(f"File '{src}' cannot be copied to itself.")
+
+        # Fetch the source asset and its dependencies recursively
+        # Use a new set for visited_uris for this deepcopy operation
+        construction_data = await self._fetch_asset_construction_data_recursive_async(
+            src, store, set(), depth=None
+        )
+        if construction_data is None:
+            raise FileNotFoundError(f"Source asset '{src}' not found in store '{store}'.")
+
+        # Collect all assets (including dependencies) in a flat list,
+        # ensuring dependencies are processed before the assets that depend on them.
+        assets_to_copy: List[_AssetConstructionData] = []
+        def collect_assets(data: _AssetConstructionData):
+            if data.dependencies_data is not None:
+                for dep_data in data.dependencies_data.values():
+                    if dep_data: # Only collect if dependency data was successfully fetched
+                        collect_assets(dep_data)
+            assets_to_copy.append(data)
+        collect_assets(construction_data)
+
+        # Process assets in the collected order (dependencies first)
+        dest_store: AssetStore = self.stores[dest_store]
+        copied_uris: Set[AssetUri] = set()
+        for asset_data in assets_to_copy:
+            # Prevent duplicate processing of the same asset
+            asset_uri = dest if asset_data.uri == src else asset_data.uri
+            if asset_uri in copied_uris:
+                logger.debug(
+                    f"Dependency '{asset_uri}' already added to '{dest_store}',"
+                    " skipping copy."
+                )
+                continue
+            copied_uris.add(asset_uri)
+
+            # Check if the dependency already exists in the destination store
+            # Dependencies should be skipped if they exist, top-level should be overwritten.
+            exists_in_dest = await dest_store.exists(asset_uri)
+            if exists_in_dest and asset_uri != src:
+                logger.debug(
+                    f"Dependency '{asset_uri}' already exists in '{dest_store}',"
+                    " skipping copy."
+                )
+                continue
+
+            # Put the asset (or dependency) into the destination store
+            # Pass the dependency_uri_map to the store's put method.
+            if exists_in_dest:
+                # If it was not skipped above, this is the top-level asset. Update it.
+                logger.debug(f"Updating asset '{asset_uri}' in '{dest_store}'")
+                dest = await dest_store.update(
+                    asset_uri,
+                    asset_data.raw_data,
+                )
+            else:
+                # If it doesn't exist, or if it's a dependency that doesn't exist, create it
+                logger.debug(f"Creating asset '{asset_uri}' in '{dest_store}'")
+                logger.debug(f"Raw data before writing: {asset_data.raw_data}") # Added log
+                new_uri = await dest_store.create(
+                    asset_uri.asset_type,
+                    asset_uri.asset_id,
+                    asset_data.raw_data,
+                )
+
+        logger.debug(f"DeepcopyAsync completed for '{src}' to '{dest}'")
+        return dest
+
+    def deepcopy(
+        self,
+        src: AssetUri,
+        dest_store: str,
+        store: str = "local",
+        dest: AssetUri | None = None,
+    ) -> AssetUri:
+        """
+        Synchronously deep copies an asset and its dependencies from a source store
+        to a destination store.
+
+        Args:
+            src: The AssetUri of the source asset.
+            dest_store: The name of the destination store.
+            store: The name of the source store (defaults to "local").
+            dest: Optional. The new AssetUri for the top-level asset in the
+                  destination store. If None, the original URI is used.
+
+        Returns:
+            The AssetUri of the copied top-level asset in the destination store.
+
+        Raises:
+            ValueError: If the source or destination store is not registered.
+            FileNotFoundError: If the source asset is not found.
+            RuntimeError: If a cyclic dependency is detected.
+        """
+        logger.debug(
+            f"Deepcopy URI '{src}' from store '{store}' to '{dest_store}'"
+            f" with dest '{dest}'"
+        )
+        return asyncio.run(self.deepcopy_async(src, dest_store, store, dest))
+
     def add_file(
         self,
         asset_type: str,
