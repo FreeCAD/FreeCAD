@@ -149,7 +149,9 @@ class _Window(ArchComponent.Component):
             obj.addProperty("App::PropertyInteger","Preset","Window",QT_TRANSLATE_NOOP("App::Property","The preset number this window is based on"), locked=True)
             obj.setEditorMode("Preset",2)
         if not "Frame" in lp:
-            obj.addProperty("App::PropertyLength","Frame","Window",QT_TRANSLATE_NOOP("App::Property","The frame size of this window"), locked=True)
+            obj.addProperty("App::PropertyLength","Frame","Window",QT_TRANSLATE_NOOP("App::Property",
+                                                                                     "The frame depth of this window. Measured from front face to back face horizontally (i.e. perpendicular to the window elevation plane)."),
+                                                                                     locked=True)
         if not "Offset" in lp:
             obj.addProperty("App::PropertyLength","Offset","Window",QT_TRANSLATE_NOOP("App::Property","The offset size of this window"), locked=True)
         if not "Area" in lp:
