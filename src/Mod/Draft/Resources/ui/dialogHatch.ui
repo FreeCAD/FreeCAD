@@ -78,7 +78,7 @@
    <item row="4" column="0">
     <widget class="QLabel" name="label_5">
      <property name="text">
-      <string>Translate:</string>
+      <string>Align to face:</string>
      </property>
     </widget>
    </item>
@@ -86,7 +86,7 @@
     <widget class="QCheckBox" name="Translate">
      <property name="toolTip">
       <string>If checked, the pattern aligns with the base object.
-      If unchecked, the pattern aligns with the global coordinate system.
+If unchecked, the pattern aligns with the global coordinate system.
 This setting modifies the Translate variable.</string>
      </property>
      <property name="text">
