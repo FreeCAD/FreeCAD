@@ -387,7 +387,6 @@ void SketchObject::buildShape()
                       convertSubName(indexedName, false));
         }
         else {
-            shapes.push_back(getEdge(geo, convertSubName(indexedName, false).c_str()));
             addEdge(geo, indexedName);
         }
     }
