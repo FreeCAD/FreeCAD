@@ -62,6 +62,8 @@
         <file>icons/CAM_ToolDuplicate.svg</file>
         <file>icons/CAM_Toolpath.svg</file>
         <file>icons/CAM_ToolTable.svg</file>
+        <file>icons/CAM_ToolTableAdd.svg</file>
+        <file>icons/CAM_ToolTableRemove.svg</file>
         <file>icons/CAM_Vcarve.svg</file>
         <file>icons/CAM_Waterline.svg</file>
         <file>icons/arrow-ccw.svg</file>
@@ -93,6 +95,7 @@
         <file>panels/DragKnifeEdit.ui</file>
         <file>panels/DressUpLeadInOutEdit.ui</file>
         <file>panels/HoldingTagsEdit.ui</file>
+        <file>panels/LibraryProperties.ui</file>
         <file>panels/PageBaseGeometryEdit.ui</file>
         <file>panels/PageBaseHoleGeometryEdit.ui</file>
         <file>panels/PageBaseLocationEdit.ui</file>

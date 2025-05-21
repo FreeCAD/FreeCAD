@@ -34,7 +34,7 @@ from typing import List, Tuple
 from ...camassets import cam_assets, ensure_assets_initialized
 from ...toolbit import ToolBit
 from .editor import LibraryEditor
-from .browser import LibraryBrowserWidget
+from .browser import LibraryBrowserWithCombo
 
 
 if False:
@@ -80,7 +80,8 @@ class ToolBitLibraryDock(object):
         main_layout.setContentsMargins(4, 4, 4, 4)
         main_layout.setSpacing(4)
 
-        # Add the browser widget to the layout
+        # Create the browser widget
+        self.browser_widget = LibraryBrowserWithCombo(asset_manager=cam_assets)
         main_layout.addWidget(self.browser_widget)
 
         # Create buttons
@@ -101,26 +102,31 @@ class ToolBitLibraryDock(object):
         self.form.layout().addWidget(main_widget)
 
         # Connect signals from the browser widget and buttons
-        self.browser_widget.toolSelected.connect(self._update_state)
-        self.browser_widget.itemDoubleClicked.connect(partial(self._add_tool_controller_to_doc))
+        self.browser_widget.toolSelected.connect(lambda x: self._update_state())
+        self.browser_widget.itemDoubleClicked.connect(self._on_doubleclick)
         self.libraryEditorOpenButton.clicked.connect(self._open_editor)
-        self.addToolControllerButton.clicked.connect(partial(self._add_tool_controller_to_doc))
+        self.addToolControllerButton.clicked.connect(self._add_tool_controller_to_doc)
 
-        # Initial state of buttons
+        # Update the initial state of the UI
         self._update_state()
+
+    def _count_jobs(self):
+        if not FreeCAD.ActiveDocument:
+            return 0
+        return len([1 for j in FreeCAD.ActiveDocument.Objects if j.Name[:3] == "Job"]) >= 1
 
     def _update_state(self):
         """Enable button to add tool controller when a tool is selected"""
-        # Set buttons inactive
-        self.addToolControllerButton.setEnabled(False)
-        # Check if any tool is selected in the browser widget
-        selected = self.browser_widget._tool_list_widget.selectedItems()
-        if selected and FreeCAD.ActiveDocument:
-            jobs = len([1 for j in FreeCAD.ActiveDocument.Objects if j.Name[:3] == "Job"]) >= 1
-            self.addToolControllerButton.setEnabled(len(selected) >= 1 and jobs)
+        selected = bool(self.browser_widget.get_selected_bit_uris())
+        has_job = selected and self._count_jobs() > 0
+        self.addToolControllerButton.setEnabled(selected and has_job)
+
+    def _on_doubleclick(self, toolbit: ToolBit):
+        """Opens the ToolBitEditor for the selected toolbit."""
+        self._add_tool_controller_to_doc()
 
     def _open_editor(self):
-        library = LibraryEditor()
+        library = LibraryEditor(parent=FreeCADGui.getMainWindow())
         library.open()
         # After editing, we might need to refresh the libraries in the browser widget
         # Assuming _populate_libraries is the correct method to call
@@ -148,7 +154,7 @@ class ToolBitLibraryDock(object):
 
         return tools
 
-    def _add_tool_controller_to_doc(self, index=None):
+    def _add_tool_controller_to_doc(self):
         """
         if no jobs, don't do anything, otherwise all TCs for all
         selected toolbit assets
