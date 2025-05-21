@@ -1305,6 +1305,8 @@ SET(FreeCADGui_CPP_SRCS
     GuiApplication.cpp
     GuiApplicationNativeEventAware.cpp
     GuiConsole.cpp
+    InputHintWidget.cpp
+    InputHintPy.cpp
     Macro.cpp
     MergeDocuments.cpp
     ModuleIO.cpp
@@ -1340,6 +1342,9 @@ SET(FreeCADGui_SRCS
     3Dconnexion/GuiAbstractNativeEvent.h
     GuiConsole.h
     InventorAll.h
+    InputHint.h
+    InputHintPy.h
+    InputHintWidget.h
     Macro.h
     MergeDocuments.h
     MetaTypes.h
