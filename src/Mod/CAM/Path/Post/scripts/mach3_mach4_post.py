@@ -315,7 +315,8 @@ def parse(pathobj):
     firstmove = Path.Command("G0", {"X": -1, "Y": -1, "Z": -1, "F": 0.0})
     currLocation.update(firstmove.Parameters)  # set First location Parameters
 
-    if hasattr(pathobj, "Group"):  # We have a compound or project.
+    if hasattr(pathobj, "Group") and not pathobj.Name.startswith("PathCompound"):
+        # We have a compound or project.
         # if OUTPUT_COMMENTS:
         #     out += linenumber() + "(compound: " + pathobj.Label + ")\n"
         for p in pathobj.Group:
