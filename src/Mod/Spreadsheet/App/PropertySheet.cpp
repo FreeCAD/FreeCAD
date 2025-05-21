@@ -1368,7 +1368,6 @@ void PropertySheet::addDependencies(CellAddress key)
     for (auto& var : expression->getIdentifiers()) {
         for (auto& dep : var.first.getDep(true)) {
             App::DocumentObject* docObj = dep.first;
-            App::Document* doc = docObj->getDocument();
 
             std::string docObjName = docObj->getFullName();
 
