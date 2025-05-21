@@ -29,9 +29,14 @@ def to_json(value):
     return value
 
 
-def format_value(value: FreeCAD.Units.Quantity | int | float | None):
+def format_value(value: FreeCAD.Units.Quantity | int | float | None, precision: int | None = None):
     if value is None:
         return None
     elif isinstance(value, FreeCAD.Units.Quantity):
+        if precision is not None:
+            # Format the value with the specified number of precision and strip trailing zeros
+            formatted_value = f"{value.Value:.{precision}f}".rstrip("0").rstrip(".")
+            unit = value.getUserPreferred()[2]
+            return f"{formatted_value} {unit}"
         return value.UserString
     return str(value)
