@@ -109,6 +109,7 @@ class CAMWorkbench(Workbench):
             "CAM_Stop",
             "CAM_Custom",
             "CAM_Probe",
+            "CAM_PathCompoundTC",
         ]
         twodopcmdlist = [
             "CAM_Profile",
