@@ -14,7 +14,6 @@ namespace QSint
 
 const QString ActionPanelScheme::minimumStyle = QStringLiteral(
     "QSint--ActionGroup QFrame[class='header'] {"
-        "border: none;"
     "}"
 
     "QSint--ActionGroup QToolButton[class='header'] {"
@@ -25,8 +24,8 @@ const QString ActionPanelScheme::minimumStyle = QStringLiteral(
     "}"
 
     "QSint--ActionGroup QToolButton[class='action'] {"
-        "border: none;"
         "background: none;"
+        "border: none;"
     "}"
 
     "QSint--ActionGroup QToolButton[class='action']:hover {"
@@ -34,7 +33,7 @@ const QString ActionPanelScheme::minimumStyle = QStringLiteral(
     "}"
 
     "QSint--ActionGroup QFrame[class='content'][header='true'] {"
-        "border: none;"
+    "background: rgba(255, 255, 255, 0.1);"
     "}"
 
 );
@@ -42,7 +41,7 @@ const QString ActionPanelScheme::minimumStyle = QStringLiteral(
 QString ActionPanelScheme::systemStyle(const QPalette& p)
 {
     const QColor& highlightColor = p.color(QPalette::Highlight);
-    QColor headerBackground = highlightColor.darker(150);
+    QColor headerBackground = highlightColor;
     const QColor& groupBackground = p.color(QPalette::Button);
 
     QHash<QString, QString> replacements;
