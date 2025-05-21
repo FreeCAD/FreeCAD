@@ -687,14 +687,8 @@ class svgHandler(xml.sax.ContentHandler):
                 self.grouptransform.append(m)
             elif name == "freecad:used":
             #use tag acts as g tag but has x,y attribute
-                if "x" in data:
-                    x=data['x']
-                else:
-                    x=0
-                if "y" in data:
-                    y=data['y']
-                else:
-                    y=0
+                x = data.get("x", 0)
+                y = data.get("y", 0)
                 xy = FreeCAD.Matrix()
                 xy.move(Vector(x, -y, 0))
                 m=m.multiply(xy)
@@ -706,14 +700,8 @@ class svgHandler(xml.sax.ContentHandler):
                 self.grouptransform.append(FreeCAD.Matrix())
             elif name == "freecad:used":
             #use tag acts as g tag but has x,y attribute
-                if "x" in data:
-                    x=data['x']
-                else:
-                    x=0
-                if "y" in data:
-                    y=data['y']
-                else:
-                    y=0
+                x = data.get("x", 0)
+                y = data.get("y", 0)
                 xy = FreeCAD.Matrix()
                 xy.move(Vector(x, -y, 0))
                 self.grouptransform.append(xy)    
