@@ -19,27 +19,14 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-import FreeCAD
-import Path
-from ...shape import ToolBitShapeFillet
-from ..mixins import RotaryToolBitMixin, CuttingToolMixin
-from .base import ToolBit
+import re
 
 
-class ToolBitFillet(ToolBit, CuttingToolMixin, RotaryToolBitMixin):
-    SHAPE_CLASS = ToolBitShapeFillet
+def natural_sort_key(s, _nsre=re.compile(r"(\d+[\.,]?\d*)")):
+    def try_convert(text):
+        try:
+            return float(text.replace(",", "."))
+        except ValueError:
+            return text.lower()
 
-    def __init__(self, shape: ToolBitShapeFillet, id: str | None = None):
-        Path.Log.track(f"ToolBitFillet __init__ called with shape: {shape}, id: {id}")
-        super().__init__(shape, id=id)
-        CuttingToolMixin.__init__(self, self.obj)
-
-    @property
-    def summary(self) -> str:
-        radius = self.get_property_str("FilletRadius", "?", precision=3)
-        flutes = self.get_property("Flutes")
-        diameter = self.get_property_str("ShankDiameter", "?", precision=3)
-
-        return FreeCAD.Qt.translate(
-            "CAM", f"R{radius} fillet bit, {diameter} shank, {flutes}-flute"
-        )
+    return [try_convert(text) for text in _nsre.split(s)]
