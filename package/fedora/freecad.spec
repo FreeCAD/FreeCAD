@@ -24,7 +24,7 @@ Group:          Applications/Engineering
 License:        LGPL-2.0-or-later
 URL:            https://www.freecad.org/
 
-Source0:        https://github.com/FreeCAD/FreeCAD-Bundle/releases/download/weekly-builds/freecad_source.tar.gz
+Source0:        freecad-sources.tar.gz
 
 
 # Maintainers:  keep this list of plugins up to date
@@ -32,10 +32,6 @@ Source0:        https://github.com/FreeCAD/FreeCAD-Bundle/releases/download/week
 %global plugins AssemblyApp AssemblyGui CAMSimulator DraftUtils Fem FreeCAD Import Inspection MatGui Materials Measure Mesh MeshPart Part PartDesignGui Path PathApp PathSimulator Points QtUnitGui ReverseEngineering Robot Sketcher Spreadsheet Start Surface TechDraw Web _PartDesign area flatmesh libDriver libDriverDAT libDriverSTL libDriverUNV libE57Format libMEFISTO2 libSMDS libSMESH libSMESHDS libStdMeshers libarea-native
 
 %global exported_libs libOndselSolver
-
-%if %{with bundled_gtest}
- %global plugins %{plugins} libgmock libgmock_main  libgtest libgtest_main
-%endif
 
 
 # See FreeCAD-main/src/3rdParty/salomesmesh/CMakeLists.txt to find this out.
@@ -139,19 +135,12 @@ Development file for OndselSolver
 
 %prep
     %setup -T -a 0 -q -c -n FreeCAD
-    
-%if %{without bundled_gtest}
-    rm -rf tests/lib/googletest
-    rm -rf tests/lib/googlemock
-%endif
 
 %build
      # Deal with cmake projects that tend to link excessively.
     LDFLAGS='-Wl,--as-needed -Wl,--no-undefined'; export LDFLAGS
 
     %cmake \
-     %if %{with debug_info}
-     %endif
         -DCMAKE_INSTALL_PREFIX=%{_libdir}/%{name} \
         -DCMAKE_INSTALL_DATADIR=%{_datadir}/%{name} \
         -DCMAKE_INSTALL_DOCDIR=%{_docdir}/%{name} \
@@ -229,7 +218,6 @@ Development file for OndselSolver
         touch %{buildroot}%tests_resultdir/ctest.failed
         cat %{buildroot}%tests_resultdir/ctest.result
     fi
-
 %endif
 
     # Bug maintainers to keep %%{plugins} macro up to date.
