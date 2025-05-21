@@ -3470,7 +3470,7 @@ void Document::_addObject(DocumentObject* pcObject, const char* pObjectName, Add
     }
 
     // Call the object-specific initialization
-    if (!d->undoing && !d->rollback && options.testFlag(AddObjectOption::doSetup)) {
+    if (!isPerformingTransaction() && options.testFlag(AddObjectOption::doSetup)) {
         pcObject->setupObject();
     }
  
