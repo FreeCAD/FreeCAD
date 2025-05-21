@@ -36,9 +36,9 @@ class ToolBitTap(ToolBit, CuttingToolMixin, RotaryToolBitMixin):
 
     @property
     def summary(self) -> str:
-        diameter = self.get_property_str("Diameter", "?")
+        diameter = self.get_property_str("Diameter", "?", precision=3)
         flutes = self.get_property("Flutes")
-        cutting_edge_length = self.get_property_str("CuttingEdgeLength", "?")
+        cutting_edge_length = self.get_property_str("CuttingEdgeLength", "?", precision=3)
 
         return FreeCAD.Qt.translate(
             "CAM", f"{diameter} tap, {flutes}-flute, {cutting_edge_length} cutting edge"

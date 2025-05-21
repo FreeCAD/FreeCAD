@@ -36,8 +36,8 @@ class ToolBitSlittingSaw(ToolBit, CuttingToolMixin, RotaryToolBitMixin):
 
     @property
     def summary(self) -> str:
-        diameter = self.get_property_str("Diameter", "?")
-        blade_thickness = self.get_property_str("BladeThickness", "?")
+        diameter = self.get_property_str("Diameter", "?", precision=3)
+        blade_thickness = self.get_property_str("BladeThickness", "?", precision=3)
         flutes = self.get_property("Flutes")
 
         return FreeCAD.Qt.translate(
