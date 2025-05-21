@@ -105,7 +105,7 @@ public:
     /**
      * @brief Set the style of the widgets
      */
-    void setScheme(ActionPanelScheme *pointer);
+    void setScheme(ActionPanelScheme *scheme);
 
     /**
      * @brief Checks if the group is expandable.
