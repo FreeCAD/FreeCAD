@@ -32,13 +32,22 @@ class MaterialLibraryType:
     name: str
     icon: bytes
     readOnly: bool
-    timestamp: str
 
 @dataclass
 class MaterialLibraryObjectType:
     UUID: str
     path: str
     name: str
+
+@dataclass
+class ModelObjectType:
+    libraryName: str
+    model: Materials.Model
+
+@dataclass
+class MaterialObjectType:
+    libraryName: str
+    material: Materials.Material
 
 class MaterialManagerExternal(ABC):
     """Abstract base class for all external material managers
@@ -63,8 +72,7 @@ class MaterialManagerExternal(ABC):
 
         The list contains a series of tuples describing all libraries managed by
         this module. Each tuple contains the library name, icon, a boolean to indicate
-        if it is a read only library, and a timestamp that indicates when it was last
-        modified."""
+        if it is a read only library."""
         pass
 
     @abstractmethod
@@ -73,8 +81,7 @@ class MaterialManagerExternal(ABC):
 
         The list contains a series of tuples describing all libraries managed by
         this module. Each tuple contains the library name, icon, and a boolean to indicate
-        if it is a read only library, and a timestamp that indicates when it was last
-        modified.
+        if it is a read only library.
 
         This differs from the libraries() function in that it only returns libraries
         containing model objects."""
@@ -86,25 +93,24 @@ class MaterialManagerExternal(ABC):
 
         The list contains a series of tuples describing all libraries managed by
         this module. Each tuple contains the library name, icon, and a boolean to indicate
-        if it is a read only library, and a timestamp that indicates when it was last
-        modified.
+        if it is a read only library.
 
         This differs from the libraries() function in that it only returns libraries
         containing material objects."""
         pass
 
     @abstractmethod
-    def getLibrary(self, name: str) -> tuple:
+    def getLibrary(self, libraryName: str) -> MaterialLibraryType:
         """Get the library
 
         Retrieve the library with the given name"""
         pass
 
     @abstractmethod
-    def createLibrary(self, name: str, icon: bytes, readOnly: bool) -> None:
+    def createLibrary(self, libraryName: str, icon: bytes, readOnly: bool) -> None:
         """Create a new library
 
-        Create a new library with the given name"""
+        Create a new library with the given name."""
         pass
 
     @abstractmethod
@@ -115,28 +121,28 @@ class MaterialManagerExternal(ABC):
         pass
 
     @abstractmethod
-    def changeIcon(self, name: str, icon: bytes) -> None:
+    def changeIcon(self, libraryName: str, icon: bytes) -> None:
         """Change the library icon
 
         Change the library icon"""
         pass
 
     @abstractmethod
-    def removeLibrary(self, library: str) -> None:
+    def removeLibrary(self, libraryName: str) -> None:
         """Delete a library and its contents
 
         Deletes the library and any models or materials it contains"""
         pass
 
     @abstractmethod
-    def libraryModels(self, library: str) -> list[MaterialLibraryObjectType]:
+    def libraryModels(self, libraryName: str) -> list[MaterialLibraryObjectType]:
         """Returns a list of models managed by this library
 
         Each list entry is a tuple containing the UUID, path, and name of the model"""
         pass
 
     @abstractmethod
-    def libraryMaterials(self, library: str,
+    def libraryMaterials(self, libraryName: str,
                          filter: Materials.MaterialFilter = None,
                          options: Materials.MaterialFilterOptions = None) -> list[MaterialLibraryObjectType]:
         """Returns a list of materials managed by this library
@@ -144,46 +150,73 @@ class MaterialManagerExternal(ABC):
         Each list entry is a tuple containing the UUID, path, and name of the material"""
         pass
 
+    @abstractmethod
+    def libraryFolders(self, libraryName: str) -> list[str]:
+        """Returns a list of folders managed by this library
+
+        This will return a list of all folders in the library including empty folders"""
+        pass
+
+    #
+    # Folder methods
+    #
+
+    @abstractmethod
+    def createFolder(self, libraryName: str, path: str) -> None:
+        """Create a new folder in the given library"""
+        pass
+
+    @abstractmethod
+    def renameFolder(self, libraryName: str, oldPath: str, newPath: str) -> None:
+        """Rename the folder"""
+        pass
+
+    @abstractmethod
+    def deleteRecursive(self, libraryName: str, path: str) -> None:
+        """Delete the folder and all of its contents"""
+        pass
+
     #
     # Model methods
     #
 
     @abstractmethod
-    def getModel(self, uuid: str) -> Materials.Model:
+    def getModel(self, uuid: str) -> ModelObjectType:
         """Retrieve a model given its UUID"""
         pass
 
     @abstractmethod
-    def addModel(self, library: str, path: str, model: Materials.Model) -> None:
-        """Add a model to a library in the given folder.
+    def addModel(self, libraryName: str, path: str, model: Materials.Model) -> None:
+        """Add a model to a library in the given folder. The folder path is relative to
+        the library and will be created if it doesn't already exist.
 
         This will throw a DatabaseModelExistsError exception if the model already exists."""
         pass
 
     @abstractmethod
-    def migrateModel(self, library: str, path: str, model: Materials.Model) -> None:
+    def migrateModel(self, libraryName: str, path: str, model: Materials.Model) -> None:
         """Add the model to the library.
 
         If the model already exists, then no action is performed."""
         pass
 
     @abstractmethod
-    def updateModel(self, library: str, path: str, model: Materials.Model) -> None:
+    def updateModel(self, libraryName: str, path: str, model: Materials.Model) -> None:
         """Update the given model"""
         pass
 
     @abstractmethod
-    def setModelPath(self, library: str, path: str, model: Materials.Model) -> None:
+    def setModelPath(self, libraryName: str, path: str, uuid: str) -> None:
         """Change the model path within the library"""
         pass
 
     @abstractmethod
-    def renameModel(self, library: str, name: str, model: Materials.Model) -> None:
+    def renameModel(self, libraryName: str, name: str, uuid: str) -> None:
         """Change the model name"""
         pass
 
     @abstractmethod
-    def moveModel(self, library: str, path: str, model: Materials.Model) -> None:
+    def moveModel(self, libraryName: str, path: str, uuid: str) -> None:
         """Move a model across libraries
 
         Move the model to the desired path in a different library. This should also
@@ -192,7 +225,7 @@ class MaterialManagerExternal(ABC):
         pass
 
     @abstractmethod
-    def removeModel(self, model: Materials.Model) -> None:
+    def removeModel(self, uuid: str) -> None:
         """Remove the model from the library"""
         pass
 
@@ -201,41 +234,43 @@ class MaterialManagerExternal(ABC):
     #
 
     @abstractmethod
-    def getMaterial(self, uuid: str) -> Materials.Material:
+    def getMaterial(self, uuid: str) -> MaterialObjectType:
         """ Retrieve a material given its UUID """
         pass
 
     @abstractmethod
-    def addMaterial(self, library: str, path: str, material: Materials.Material) -> None:
-        """Add a material to a library in the given folder.
+    def addMaterial(self, libraryName: str, path: str, material: Materials.Material) -> None:
+        """Add a material to a library in the given folder. The folder path is relative to
+        the library and will be created if it doesn't already exist.
 
         This will throw a DatabaseMaterialExistsError exception if the model already exists."""
         pass
 
     @abstractmethod
-    def migrateMaterial(self, library: str, path: str, material: Materials.Material) -> None:
-        """Add the material to the library in the given folder.
+    def migrateMaterial(self, libraryName: str, path: str, material: Materials.Material) -> None:
+        """Add the material to the library in the given folder. The folder path is relative to
+        the library and will be created if it doesn't already exist.
 
         If the material already exists, then no action is performed."""
         pass
 
     @abstractmethod
-    def updateMaterial(self, library: str, path: str, material: Materials.Material) -> None:
+    def updateMaterial(self, libraryName: str, path: str, material: Materials.Material) -> None:
         """Update the given material"""
         pass
 
     @abstractmethod
-    def setMaterialPath(self, library: str, path: str, material: Materials.Material) -> None:
+    def setMaterialPath(self, libraryName: str, path: str, uuid: str) -> None:
         """Change the material path within the library"""
         pass
 
     @abstractmethod
-    def renameMaterial(self, library: str, name: str, material: Materials.Material) -> None:
+    def renameMaterial(self, libraryName: str, name: str, uuid: str) -> None:
         """Change the material name"""
         pass
 
     @abstractmethod
-    def moveMaterial(self, library: str, path: str, material: Materials.Material) -> None:
+    def moveMaterial(self, libraryName: str, path: str, uuid: str) -> None:
         """Move a material across libraries
 
         Move the material to the desired path in a different library. This should also
@@ -244,6 +279,6 @@ class MaterialManagerExternal(ABC):
         pass
 
     @abstractmethod
-    def removeMaterial(self, material: Materials.Material) -> None:
+    def removeMaterial(self, uuid: str) -> None:
         """Remove the material from the library"""
         pass

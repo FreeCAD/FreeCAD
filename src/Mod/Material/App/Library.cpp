@@ -34,28 +34,60 @@ using namespace Materials;
 
 TYPESYSTEM_SOURCE(Materials::Library, Base::BaseClass)
 
-Library::Library(const QString& libraryName, const QString& icon, bool readOnly)
+Library::Library(const QString& libraryName, const QString& iconPath, bool readOnly)
     : _name(libraryName)
-    , _iconPath(icon)
     , _readOnly(readOnly)
+    , _local(false)
+{
+    setIcon(iconPath);
+}
+
+Library::Library(const QString& libraryName, const QByteArray& icon, bool readOnly)
+    : _name(libraryName)
+    , _icon(icon)
+    , _readOnly(readOnly)
+    , _local(false)
 {}
 
 Library::Library(const QString& libraryName,
-                 const QString& icon,
-                 bool readOnly,
-                 const QString& timestamp)
-    : _name(libraryName)
-    , _iconPath(icon)
-    , _readOnly(readOnly)
-    , _timestamp(timestamp)
-{}
-
-Library::Library(const QString& libraryName, const QString& dir, const QString& icon, bool readOnly)
+                 const QString& dir,
+                 const QString& iconPath,
+                 bool readOnly)
     : _name(libraryName)
     , _directory(QDir::cleanPath(dir))
-    , _iconPath(icon)
     , _readOnly(readOnly)
-{}
+    , _local(false)
+{
+    setIcon(iconPath);
+}
+
+QByteArray Library::getIcon(const QString& iconPath)
+{
+    QFile file(iconPath);
+    if (!file.open(QIODevice::ReadOnly)) {
+        Base::Console().log("Failed to open icon file '%s'\n", iconPath.toStdString().c_str());
+        return QByteArray();  // Return an empty QByteArray if file opening fails
+    }
+
+    QByteArray data = file.readAll();
+    file.close();
+    return data;
+}
+
+void Library::setIcon(const QString& iconPath)
+{
+    _icon = getIcon(iconPath);
+}
+
+bool Library::isLocal() const
+{
+    return _local;
+}
+
+void Library::setLocal(bool local)
+{
+    _local = local;
+}
 
 bool Library::operator==(const Library& library) const
 {
@@ -67,10 +99,8 @@ void Library::validate(const Library& remote) const
     if (getName() != remote.getName()) {
         throw InvalidLibrary("Library names don't match");
     }
-    if (getIconPath() != remote.getIconPath()) {
-        Base::Console().log("Icon path 1 '%s'\n", getIconPath().toStdString().c_str());
-        Base::Console().log("Icon path 2 '%s'\n", remote.getIconPath().toStdString().c_str());
-        throw InvalidLibrary("Library icon paths don't match");
+    if (getIcon() != remote.getIcon()) {
+        throw InvalidLibrary("Library icons don't match");
     }
 
     // Local and remote paths will differ
