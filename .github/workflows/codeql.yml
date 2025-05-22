@@ -49,8 +49,8 @@ jobs:
       fail-fast: false
       matrix:
         include:
-        # - language: actions
-        #   build-mode: none
+        - language: actions
+          build-mode: none
         # - language: c-cpp
         #   build-mode: autobuild
         # - language: javascript-typescript
@@ -129,7 +129,7 @@ jobs:
 
   analyze-cpp:
     name: Analyze (${{ matrix.language }})
-    if: ${{ (github.event_name == 'schedule' || 'pull_request') }}
+    if: github.event_name == 'schedule'
     # Runner size impacts CodeQL analysis time. To learn more, please see:
     #   - https://gh.io/recommended-hardware-resources-for-running-codeql
     #   - https://gh.io/supported-runners-and-hardware-resources
