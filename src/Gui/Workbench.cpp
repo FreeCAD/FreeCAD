@@ -732,10 +732,11 @@ MenuItem* StdWorkbench::setupMenuBar() const
     // Macro
     auto macro = new MenuItem( menuBar );
     macro->setCommand("&Macro");
-    *macro << "Std_DlgMacroRecord"
-           << "Std_DlgMacroExecute"
+    *macro << "Std_DlgMacroExecute"
            << "Std_RecentMacros"
+           << "Std_OpenMacrosFolder"
            << "Separator"
+           << "Std_DlgMacroRecord"
            << "Std_DlgMacroExecuteDirect"
            << "Std_MacroAttachDebugger"
            << "Std_MacroStartDebug"
