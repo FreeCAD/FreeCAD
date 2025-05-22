@@ -131,5 +131,3 @@ App::DocumentObjectExecReturn* FemMeshShapeNetgenObject::execute()
         this);
 #endif
 }
-
-
