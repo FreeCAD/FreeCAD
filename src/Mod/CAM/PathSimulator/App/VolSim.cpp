@@ -33,7 +33,7 @@
 #include "VolSim.h"
 
 using std::numbers::pi;
-    
+
 //************************************************************************************************************
 // stock
 //************************************************************************************************************
@@ -560,7 +560,7 @@ void cStock::ApplyLinearTool(Point3D& p1, Point3D& p2, cSimTool& tool)
     // end cup
     for (float r = 0.5f; r <= rad; r += (float)SIM_WALK_RES) {
         Point3D cupCirc(perpDirX * r, perpDirY * r, pi2.z);
-        float rotang = 180 * SIM_WALK_RES / (pi* r);
+        float rotang = 180 * SIM_WALK_RES / (pi * r);
         cupCirc.SetRotationAngle(-rotang);
         float z = pi2.z + tool.GetToolProfileAt(r / rad);
         for (float a = 0; a < cupAngle; a += rotang) {
