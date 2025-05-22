@@ -482,8 +482,16 @@ class ObjectVcarve(PathEngraveBase.ObjectOp):
                     )
                 )
 
-            hSpeed = obj.ToolController.HorizFeed.Value
-            vSpeed = obj.ToolController.VertFeed.Value
+            hSpeed = (
+                obj.HorizFeed.Value
+                if hasattr(obj, "HorizFeed") and obj.HorizFeed.Value
+                else obj.ToolController.HorizFeed.Value
+            )
+            vSpeed = (
+                obj.VertFeed.Value
+                if hasattr(obj, "VertFeed") and obj.VertFeed.Value
+                else obj.ToolController.VertFeed.Value
+            )
             path.append(
                 Path.Command(
                     "G1 X{} Y{} Z{} F{}".format(newPosition.x, newPosition.y, newPosition.z, vSpeed)

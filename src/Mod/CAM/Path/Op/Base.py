@@ -211,6 +211,24 @@ class ObjectOp(object):
                 ),
             )
             self.addOpValues(obj, ["tooldia"])
+            obj.addProperty(
+                "App::PropertySpeed",
+                "HorizFeed",
+                "Feed",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "Feed rate for horizontal moves\nIf not 0, will overwrite value from Tool Controller.",
+                ),
+            )
+            obj.addProperty(
+                "App::PropertySpeed",
+                "VertFeed",
+                "Feed",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "Feed rate for vertical moves\nIf not 0, will overwrite value from Tool Controller.",
+                ),
+            )
 
         if FeatureCoolant & features:
             obj.addProperty(
@@ -758,8 +776,16 @@ class ObjectOp(object):
                 )
                 return
             else:
-                self.vertFeed = tc.VertFeed.Value
-                self.horizFeed = tc.HorizFeed.Value
+                self.vertFeed = (
+                    obj.VertFeed.Value
+                    if hasattr(obj, "VertFeed") and obj.VertFeed.Value
+                    else tc.VertFeed.Value
+                )
+                self.horizFeed = (
+                    obj.HorizFeed.Value
+                    if hasattr(obj, "HorizFeed") and obj.HorizFeed.Value
+                    else tc.HorizFeed.Value
+                )
                 self.vertRapid = tc.VertRapid.Value
                 self.horizRapid = tc.HorizRapid.Value
                 tool = tc.Proxy.getTool(tc)
