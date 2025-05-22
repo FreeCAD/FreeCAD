@@ -34,7 +34,7 @@
 namespace MillSim
 {
 
-    using std::numbers::pi;
+using std::numbers::pi;
 
 struct Point3D
 {

@@ -36,7 +36,7 @@
 namespace MillSim
 {
 
-    using std::numbers::pi;
+using std::numbers::pi;
 
 void SimDisplay::InitShaders()
 {
@@ -121,16 +121,16 @@ void SimDisplay::UniformHemisphere(vec3& randVec)
     float x1 = distr01(generator);
     float x2 = distr01(generator);
     float s = sqrt(1.0f - x1 * x1);
-    randVec[0] = cosf(pi*2 * x2) * s;
-    randVec[1] = sinf(pi*2 * x2) * s;
+    randVec[0] = cosf(pi * 2 * x2) * s;
+    randVec[1] = sinf(pi * 2 * x2) * s;
     randVec[2] = x1;
 }
 
 void SimDisplay::UniformCircle(vec3& randVec)
 {
     float x = distr01(generator);
-    randVec[0] = cosf(pi*2 * x);
-    randVec[1] = sinf(pi*2 * x);
+    randVec[0] = cosf(pi * 2 * x);
+    randVec[1] = sinf(pi * 2 * x);
     randVec[2] = 0;
 }
 
@@ -497,11 +497,11 @@ void SimDisplay::TiltEye(float tiltStep)
 void SimDisplay::RotateEye(float rotStep)
 {
     mEyeRoration += rotStep;
-    if (mEyeRoration > pi*2) {
-        mEyeRoration -= pi*2;
+    if (mEyeRoration > pi * 2) {
+        mEyeRoration -= pi * 2;
     }
     else if (mEyeRoration < 0) {
-        mEyeRoration += pi*2;
+        mEyeRoration += pi * 2;
     }
     updateDisplay = true;
 }

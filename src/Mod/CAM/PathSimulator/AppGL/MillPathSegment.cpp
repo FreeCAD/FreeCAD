@@ -30,7 +30,7 @@
 using std::numbers::pi;
 
 #define N_MILL_SLICES 8
-#define MAX_SEG_DEG (pi/ 2.0f)   // 90 deg
+#define MAX_SEG_DEG (pi / 2.0f)   // 90 deg
 #define NIN_SEG_DEG (pi / 90.0f)  // 2 deg
 #define SWEEP_ARC_PAD 1.05f
 #define PX 0
