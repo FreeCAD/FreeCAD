@@ -74,7 +74,7 @@ ViewProviderGeometryObject::ViewProviderGeometryObject()
                       "Set object transparency");
     Transparency.setConstraints(&intPercent);
 
-    ADD_PROPERTY_TYPE(ShapeAppearance, (mat), osgroup, App::Prop_None, "Shape appearrance");
+    ADD_PROPERTY_TYPE(ShapeAppearance, (mat), osgroup, App::Prop_None, "Shape appearance");
     ADD_PROPERTY_TYPE(BoundingBox, (false), dogroup, App::Prop_None, "Display object bounding box");
     ADD_PROPERTY_TYPE(Selectable,
                       (true),
