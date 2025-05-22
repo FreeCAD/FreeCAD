@@ -325,16 +325,18 @@ def insert(filename,docname):
         colortable = {}
         content_array = []
         for line in infile:
+            line = line.strip()
+            while line.endswith('\\'):
+                next_line = next(infile).strip()
+                line = line.rstrip()[:-1] + ' ' + next_line
             content_array.append(line)
     activeobjectExists = False
     for line in content_array:
-        line = line.strip()
         if line[:2] == "o ":
             activeobjectExists = True
     if not activeobjectExists:
         activeobject = meshName
     for index, line in enumerate(content_array):
-        line = line.strip()
         if line[:7] == "mtllib ":
             matlib = os.path.join(os.path.dirname(filename),line[7:])
             if os.path.exists(matlib):
