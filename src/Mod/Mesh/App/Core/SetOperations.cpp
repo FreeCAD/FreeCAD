@@ -458,7 +458,7 @@ bool SetOperations::CollectFacetVisitor::AllowVisit(const MeshFacet& rclFacet,
                     it->second
                         .facets[1 - _side][0];  // triangulated facet from same edge and other mesh
                 Vector3f normalOther = facetOther.GetNormal();
-               
+
                 Vector3f edgeDir = it->first.pt1 - it->first.pt2;
                 Vector3f ocDir = (edgeDir % (facet.GetGravityPoint() - it->first.pt1)) % edgeDir;
                 ocDir.Normalize();
@@ -468,7 +468,7 @@ bool SetOperations::CollectFacetVisitor::AllowVisit(const MeshFacet& rclFacet,
 
                 bool match = ((ocDir * normalOther) * _mult) < 0.0F;
 
-               
+
                 if (match) {
                     _addFacets = 0;
                 }
