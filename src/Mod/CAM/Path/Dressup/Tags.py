@@ -1048,8 +1048,16 @@ class ObjectTagDressup:
         mapper = None
 
         tc = PathDressup.toolController(obj.Base)
-        horizFeed = tc.HorizFeed.Value
-        vertFeed = tc.VertFeed.Value
+        horizFeed = (
+            obj.Base.HorizFeed.Value
+            if hasattr(obj.Base, "HorizFeed") and obj.Base.HorizFeed.Value
+            else tc.HorizFeed.Value
+        )
+        vertFeed = (
+            obj.Base.VertFeed.Value
+            if hasattr(obj.Base, "VertFeed") and obj.Base.VertFeed.Value
+            else tc.VertFeed.Value
+        )
         horizRapid = tc.HorizRapid.Value
         vertRapid = tc.VertRapid.Value
 

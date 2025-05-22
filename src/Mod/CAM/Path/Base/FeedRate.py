@@ -41,12 +41,17 @@ else:
     Path.Log.setLevel(Path.Log.Level.INFO, Path.Log.thisModule())
 
 
-def setFeedRate(commandlist, ToolController):
+def setFeedRate(commandlist, ToolController, horizFeed=0, vertFeed=0):
     """Set the appropriate feed rate for a list of Path commands using the information from a Tool Controller
 
     Every motion command in the list will have a feed rate parameter added or overwritten based
     on the information stored in the tool controller. If a motion is a plunge (vertical) motion, the
     VertFeed value will be used, otherwise the HorizFeed value will be used instead."""
+
+    HorizFeed = horizFeed.Value if horizFeed else ToolController.HorizFeed.Value
+    VertFeed = vertFeed.Value if vertFeed else ToolController.VertFeed.Value
+    HorizRapid = ToolController.HorizRapid.Value
+    VertRapid = ToolController.VertRapid.Value
 
     def _isVertical(currentposition, command):
         x = command.Parameters["X"] if "X" in command.Parameters else currentposition.x
@@ -64,17 +69,9 @@ def setFeedRate(commandlist, ToolController):
             continue
 
         if _isVertical(machine.getPosition(), command):
-            rate = (
-                ToolController.VertRapid.Value
-                if command.Name in Path.Geom.CmdMoveRapid
-                else ToolController.VertFeed.Value
-            )
+            rate = VertRapid if command.Name in Path.Geom.CmdMoveRapid else VertFeed
         else:
-            rate = (
-                ToolController.HorizRapid.Value
-                if command.Name in Path.Geom.CmdMoveRapid
-                else ToolController.HorizFeed.Value
-            )
+            rate = HorizRapid if command.Name in Path.Geom.CmdMoveRapid else HorizFeed
 
         params = command.Parameters
         params["F"] = rate

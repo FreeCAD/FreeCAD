@@ -282,7 +282,12 @@ class ObjectHelix(PathCircularHoleBase.ObjectOp):
             for command in results:
                 self.commandlist.append(command)
 
-        PathFeedRate.setFeedRate(self.commandlist, obj.ToolController)
+        if hasattr(obj, "HorizFeed") and hasattr(obj, "VertFeed"):
+            PathFeedRate.setFeedRate(
+                self.commandlist, obj.ToolController, obj.HorizFeed, obj.VertFeed
+            )
+        else:
+            PathFeedRate.setFeedRate(self.commandlist, obj.ToolController)
 
 
 def SetupProperties():
