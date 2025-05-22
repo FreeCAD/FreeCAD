@@ -92,7 +92,7 @@ class ToolBitLibraryDock(object):
 
         # Connect signals from the browser widget and buttons
         self.browser_widget.toolSelected.connect(self._update_state)
-        self.browser_widget.itemDoubleClicked.connect(partial(self._add_tool_controller_to_doc))
+        self.browser_widget.itemDoubleClicked.connect(partial(self._on_doubleclick))
         self.libraryEditorOpenButton.clicked.connect(self._open_editor)
         self.addToolControllerButton.clicked.connect(partial(self._add_tool_controller_to_doc))
 
@@ -108,6 +108,10 @@ class ToolBitLibraryDock(object):
         if selected and FreeCAD.ActiveDocument:
             jobs = len([1 for j in FreeCAD.ActiveDocument.Objects if j.Name[:3] == "Job"]) >= 1
             self.addToolControllerButton.setEnabled(len(selected) >= 1 and jobs)
+
+    def _on_doubleclick(self, toolbit: ToolBit):
+        """Opens the ToolBitEditor for the selected toolbit."""
+        self.browser_widget._on_edit_requested()
 
     def _open_editor(self):
         library = LibraryEditor()

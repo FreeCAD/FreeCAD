@@ -188,6 +188,7 @@ SET(PathPythonToolsToolBitSerializers_SRCS
     Path/Tool/toolbit/serializers/__init__.py
     Path/Tool/toolbit/serializers/camotics.py
     Path/Tool/toolbit/serializers/fctb.py
+    Path/Tool/toolbit/serializers/yaml.py
 )
 
 SET(PathPythonToolsToolBitUi_SRCS

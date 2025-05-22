@@ -288,6 +288,9 @@ class ToolBit(Asset, ABC):
         """Returns the unique ID of the tool bit."""
         return self.id
 
+    def set_id(self, id: str = None):
+        self.id = id if id is not None else str(uuid.uuid4())
+
     def _promote_toolbit(self):
         """
         Updates the toolbit properties for backward compatibility.
