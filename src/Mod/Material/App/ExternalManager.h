@@ -29,6 +29,7 @@
 
 class QMutex;
 class QString;
+class QByteArray;
 
 namespace Materials
 {
