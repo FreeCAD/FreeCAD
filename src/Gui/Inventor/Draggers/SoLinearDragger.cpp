@@ -202,6 +202,10 @@ SoSeparator* SoLinearDragger::buildLabelGeometry()
     labelTranslation->translation.setValue(0.0, cylinderHeight + coneHeight * 1.5, 0.0);
     labelSeparator->addChild(labelTranslation);
 
+    auto labelSwitch = new SoSwitch; 
+    labelSwitch->setName("labelSwitch");
+    labelSeparator->addChild(labelSwitch);
+
     auto label = new SoFrameLabel();
     label->string.connectFrom(&this->label);
     label->textColor.setValue(1.0, 1.0, 1.0);
@@ -209,7 +213,7 @@ SoSeparator* SoLinearDragger::buildLabelGeometry()
     label->vertAlignment = SoImage::HALF;
     label->border = false;
     label->backgroundUseBaseColor = true;
-    labelSeparator->addChild(label);
+    labelSwitch->addChild(label);
 
     return labelSeparator;
 }

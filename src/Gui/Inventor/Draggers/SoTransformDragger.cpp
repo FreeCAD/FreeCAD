@@ -887,3 +887,9 @@ bool SoTransformDragger::isHiddenRotationZ()
     SoSwitch* sw = SO_GET_ANY_PART(this, "zRotatorSwitch", SoSwitch);
     return (sw->whichChild.getValue() == SO_SWITCH_NONE);
 }
+
+void SoTransformDragger::hideAxisLabels()
+{
+    SoSwitch* sw = SO_GET_ANY_PART(this, "labelSwitch", SoSwitch);
+    SoInteractionKit::setSwitchValue(sw, SO_SWITCH_NONE);
+}
