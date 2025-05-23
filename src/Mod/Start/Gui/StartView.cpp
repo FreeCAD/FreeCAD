@@ -504,6 +504,11 @@ void StartView::setListViewUpdatesEnabled(bool enabled)
     }
 }
 
+void StartView::recentFileAdded(const QString& filename)
+{
+    _recentFilesModel.recentFileAdded(filename);
+}
+
 void StartView::retranslateUi()
 {
     QString title = QCoreApplication::translate("Workbench", "Start");
