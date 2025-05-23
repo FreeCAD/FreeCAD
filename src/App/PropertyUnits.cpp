@@ -105,13 +105,12 @@ void PropertyQuantity::setPyObject(PyObject* value)
     else {
         Base::Quantity quant = createQuantityFromPy(value);
 
-        Unit unit = quant.getUnit();
-        if (unit.isEmpty()) {
+        if (quant.isDimensionless()) {
             PropertyFloat::setValue(quant.getValue());
             return;
         }
 
-        if (unit != _Unit) {
+        if (_Unit != quant.getUnit()) {
             throw Base::UnitsMismatchError("Not matching Unit!");
         }
 
@@ -123,7 +122,7 @@ void PropertyQuantity::setPathValue(const ObjectIdentifier& /*path*/, const boos
 {
     auto q = App::anyToQuantity(value);
     aboutToSetValue();
-    if (!q.getUnit().isEmpty()) {
+    if (!q.isDimensionless()) {
         _Unit = q.getUnit();
     }
     _dValue = q.getValue();
@@ -187,7 +186,6 @@ void PropertyQuantityConstraint::setPyObject(PyObject* value)
 {
     Base::Quantity quant = createQuantityFromPy(value);
 
-    Unit unit = quant.getUnit();
     double temp = quant.getValue();
     if (_ConstStruct) {
         if (temp > _ConstStruct->UpperBound) {
@@ -199,12 +197,12 @@ void PropertyQuantityConstraint::setPyObject(PyObject* value)
     }
     quant.setValue(temp);
 
-    if (unit.isEmpty()) {
+    if (quant.isDimensionless()) {
         PropertyFloat::setValue(quant.getValue());  // clazy:exclude=skipped-base-method
         return;
     }
 
-    if (unit != _Unit) {
+    if (_Unit != quant.getUnit()) {
         throw Base::UnitsMismatchError("Not matching Unit!");
     }
 
