@@ -78,7 +78,9 @@ std::stack<FunctionExpression::Function> functions;                /**< Function
 %%
 
 
-input:     exp                                  { ScanResult = $1; valueExpression = true;                                        }
+input:     '=' exp                              { ScanResult = $1; valueExpression = true;                                        }
+     |     '=' unit_exp                         { ScanResult = $1; unitExpression = true;                                         }
+     |     exp                                  { ScanResult = $1; valueExpression = true;                                        }
      |     unit_exp                             { ScanResult = $1; unitExpression = true;                                         }
      ;
 
