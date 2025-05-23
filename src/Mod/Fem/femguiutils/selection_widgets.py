@@ -349,7 +349,9 @@ class GeometryElementsSelection(QtGui.QWidget):
             self.references_list_right_clicked,
         )
         QtCore.QObject.connect(self.pushButton_Add, QtCore.SIGNAL("clicked()"), self.add_references)
-        QtCore.QObject.connect(self.pushButton_Remove, QtCore.SIGNAL("clicked()"), self.remove_selected_reference)
+        QtCore.QObject.connect(
+            self.pushButton_Remove, QtCore.SIGNAL("clicked()"), self.remove_selected_reference
+        )
         QtCore.QObject.connect(
             self.rb_standard, QtCore.SIGNAL("toggled(bool)"), self.choose_selection_mode_standard
         )
