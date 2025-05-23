@@ -52,6 +52,7 @@ __author__ = "Yorik van Havre"
 __url__    = "https://www.freecad.org"
 
 import FreeCAD
+from typing import Optional
 
 if FreeCAD.GuiUp:
     import FreeCADGui
@@ -1675,7 +1676,13 @@ def joinWalls(walls, delete=False):
     return base
 
 
-def makeWindow(baseobj=None, width=None, height=None, parts=None, name=None):
+def makeWindow(
+    baseobj: Optional[FreeCAD.DocumentObject] = None,
+    width: Optional[float] = None,
+    height: Optional[float] = None,
+    parts: Optional[list[str]] = None,
+    name: Optional[str] = None,
+) -> FreeCAD.DocumentObject:
     """
     Creates a window object based on the given base object.
 
