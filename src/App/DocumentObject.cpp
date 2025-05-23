@@ -85,6 +85,7 @@ DocumentObject::DocumentObject()
 
 DocumentObject::~DocumentObject()
 {
+    DOC_OBJ_WRITE_GUARD;
     if (!PythonObject.is(Py::_None())) {
         Base::PyGILStateLocker lock;
         // Remark: The API of Py::Object has been changed to set whether the wrapper owns the passed
@@ -100,6 +101,7 @@ DocumentObject::~DocumentObject()
 
 void DocumentObject::printInvalidLinks() const
 {
+    DOC_OBJ_READ_GUARD;
     try {
         // Get objects that have invalid link scope, and print their names.
         // Truncate the invalid object list name strings for readability, if they happen to be very
@@ -154,6 +156,7 @@ void DocumentObject::printInvalidLinks() const
 
 App::DocumentObjectExecReturn* DocumentObject::recompute()
 {
+    DOC_OBJ_WRITE_GUARD;
     // check if the links are valid before making the recompute
     if (!GeoFeatureGroupExtension::areLinksValid(this)) {
         printInvalidLinks();
@@ -179,11 +182,13 @@ App::DocumentObjectExecReturn* DocumentObject::recompute()
 
 DocumentObjectExecReturn* DocumentObject::execute()
 {
+    DOC_OBJ_WRITE_GUARD;
     return executeExtensions();
 }
 
 App::DocumentObjectExecReturn* DocumentObject::executeExtensions()
 {
+    DOC_OBJ_WRITE_GUARD;
     // execute extensions but stop on error
     this->setStatus(App::RecomputeExtension, false);  // reset the flag
     auto vector = getExtensionsDerivedFromType<App::DocumentObjectExtension>();
@@ -199,6 +204,7 @@ App::DocumentObjectExecReturn* DocumentObject::executeExtensions()
 
 bool DocumentObject::recomputeFeature(bool recursive)
 {
+    DOC_OBJ_WRITE_GUARD;
     Document* doc = this->getDocument();
     if (doc) {
         return doc->recomputeFeature(this, recursive);
@@ -215,6 +221,7 @@ bool DocumentObject::recomputeFeature(bool recursive)
  */
 void DocumentObject::touch(bool noRecompute)
 {
+    DOC_OBJ_WRITE_GUARD;
     if (!noRecompute) {
         StatusBits.set(ObjectStatus::Enforce);
     }
@@ -230,6 +237,7 @@ void DocumentObject::touch(bool noRecompute)
  */
 void DocumentObject::freeze()
 {
+    DOC_OBJ_WRITE_GUARD;
     StatusBits.set(ObjectStatus::Freeze);
     // use the signalTouchedObject to refresh the Gui
     if (_pDoc) {
@@ -243,6 +251,7 @@ void DocumentObject::freeze()
  */
 void DocumentObject::unfreeze(bool noRecompute)
 {
+    DOC_OBJ_WRITE_GUARD;
     StatusBits.reset(ObjectStatus::Freeze);
     touch(noRecompute);
 }
@@ -253,6 +262,7 @@ void DocumentObject::unfreeze(bool noRecompute)
  */
 bool DocumentObject::isTouched() const
 {
+    DOC_OBJ_READ_GUARD;
     return ExpressionEngine.isTouched() || StatusBits.test(ObjectStatus::Touch);
 }
 
@@ -263,6 +273,7 @@ bool DocumentObject::isTouched() const
  */
 void DocumentObject::enforceRecompute()
 {
+    DOC_OBJ_WRITE_GUARD;
     touch(false);
 }
 
@@ -274,6 +285,7 @@ void DocumentObject::enforceRecompute()
  */
 bool DocumentObject::mustRecompute() const
 {
+    DOC_OBJ_READ_GUARD;
     if (StatusBits.test(ObjectStatus::Freeze)) {
         return false;
     }
@@ -287,6 +299,7 @@ bool DocumentObject::mustRecompute() const
 
 short DocumentObject::mustExecute() const
 {
+    DOC_OBJ_READ_GUARD;
     if (ExpressionEngine.isTouched()) {
         return 1;
     }
@@ -304,6 +317,7 @@ short DocumentObject::mustExecute() const
 
 const char* DocumentObject::getStatusString() const
 {
+    DOC_OBJ_READ_GUARD;
     if (isError()) {
         const char* text = getDocument()->getErrorDescription(this);
         return text ? text : "Error";
@@ -321,6 +335,7 @@ const char* DocumentObject::getStatusString() const
 
 std::string DocumentObject::getFullName() const
 {
+    DOC_OBJ_READ_GUARD;
     if (!getDocument() || !isAttachedToDocument()) {
         return "?";
     }
@@ -332,6 +347,7 @@ std::string DocumentObject::getFullName() const
 
 std::string DocumentObject::getFullLabel() const
 {
+    DOC_OBJ_READ_GUARD;
     if (!getDocument()) {
         return "?";
     }
@@ -344,6 +360,7 @@ std::string DocumentObject::getFullLabel() const
 
 const char* DocumentObject::getDagKey() const
 {
+    DOC_OBJ_READ_GUARD;
     if (!pcNameInDocument) {
         return nullptr;
     }
@@ -352,6 +369,7 @@ const char* DocumentObject::getDagKey() const
 
 const char* DocumentObject::getNameInDocument() const
 {
+    DOC_OBJ_READ_GUARD;
     // Note: It can happen that we query the internal name of an object even if it is not
     // part of a document (anymore). This is the case e.g. if we have a reference in Python
     // to an object that has been removed from the document. In this case we should rather
@@ -365,6 +383,7 @@ const char* DocumentObject::getNameInDocument() const
 
 int DocumentObject::isExporting() const
 {
+    DOC_OBJ_READ_GUARD;
     if (!getDocument() || !isAttachedToDocument()) {
         return 0;
     }
@@ -373,6 +392,7 @@ int DocumentObject::isExporting() const
 
 std::string DocumentObject::getExportName(bool forced) const
 {
+    DOC_OBJ_READ_GUARD;
     if (!isAttachedToDocument()) {
         return {};
     }
@@ -390,11 +410,13 @@ std::string DocumentObject::getExportName(bool forced) const
 
 bool DocumentObject::isAttachedToDocument() const
 {
+    DOC_OBJ_READ_GUARD;
     return (pcNameInDocument != nullptr);
 }
 
 const char* DocumentObject::detachFromDocument()
 {
+    DOC_OBJ_WRITE_GUARD;
     const std::string* name = pcNameInDocument;
     pcNameInDocument = nullptr;
     return name ? name->c_str() : nullptr;
@@ -402,6 +424,7 @@ const char* DocumentObject::detachFromDocument()
 
 const std::vector<DocumentObject*>& DocumentObject::getOutList() const
 {
+    DOC_OBJ_READ_GUARD;
     if (!_outListCached) {
         _outList.clear();
         getOutList(0, _outList);
@@ -412,6 +435,7 @@ const std::vector<DocumentObject*>& DocumentObject::getOutList() const
 
 std::vector<DocumentObject*> DocumentObject::getOutList(int options) const
 {
+    DOC_OBJ_READ_GUARD;
     std::vector<DocumentObject*> res;
     getOutList(options, res);
     return res;
@@ -419,6 +443,7 @@ std::vector<DocumentObject*> DocumentObject::getOutList(int options) const
 
 void DocumentObject::getOutList(int options, std::vector<DocumentObject*>& res) const
 {
+    DOC_OBJ_READ_GUARD;
     if (_outListCached && !options) {
         res.insert(res.end(), _outList.begin(), _outList.end());
         return;
@@ -452,6 +477,7 @@ void DocumentObject::getOutList(int options, std::vector<DocumentObject*>& res) 
 
 std::vector<App::DocumentObject*> DocumentObject::getOutListOfProperty(App::Property* prop) const
 {
+    DOC_OBJ_READ_GUARD;
     std::vector<DocumentObject*> ret;
     if (!prop || prop->getContainer() != this) {
         return ret;
@@ -466,6 +492,7 @@ std::vector<App::DocumentObject*> DocumentObject::getOutListOfProperty(App::Prop
 
 const std::vector<App::DocumentObject*>& DocumentObject::getInList() const
 {
+    DOC_OBJ_READ_GUARD;
     return _inList;
 }
 
@@ -479,6 +506,7 @@ const std::vector<App::DocumentObject*>& DocumentObject::getInList() const
 
 std::vector<App::DocumentObject*> DocumentObject::getInListRecursive() const
 {
+    DOC_OBJ_READ_GUARD;
     std::set<App::DocumentObject*> inSet;
     std::vector<App::DocumentObject*> res;
     getInListEx(inSet, true, &res);
@@ -493,6 +521,7 @@ void DocumentObject::getInListEx(std::set<App::DocumentObject*>& inSet,
                                  bool recursive,
                                  std::vector<App::DocumentObject*>* inList) const
 {
+    DOC_OBJ_READ_GUARD;
     if (!recursive) {
         inSet.insert(_inList.begin(), _inList.end());
         if (inList) {
@@ -519,12 +548,13 @@ void DocumentObject::getInListEx(std::set<App::DocumentObject*>& inSet,
 
 std::set<App::DocumentObject*> DocumentObject::getInListEx(bool recursive) const
 {
+    DOC_OBJ_READ_GUARD;
     std::set<App::DocumentObject*> ret;
     getInListEx(ret, recursive);
     return ret;
 }
 
-void _getOutListRecursive(std::set<DocumentObject*>& objSet,
+static void _getOutListRecursive(std::set<DocumentObject*>& objSet,
                           const DocumentObject* obj,
                           const DocumentObject* checkObj,
                           int depth)
@@ -546,6 +576,7 @@ void _getOutListRecursive(std::set<DocumentObject*>& objSet,
 
 std::vector<App::DocumentObject*> DocumentObject::getOutListRecursive() const
 {
+    DOC_OBJ_READ_GUARD;
     // number of objects in document is a good estimate in result size
     int maxDepth = GetApplication().checkLinkDepth(0);
     std::set<App::DocumentObject*> result;
@@ -559,7 +590,7 @@ std::vector<App::DocumentObject*> DocumentObject::getOutListRecursive() const
 }
 
 // helper for isInInListRecursive()
-bool _isInInListRecursive(const DocumentObject* act, const DocumentObject* checkObj, int depth)
+static bool _isInInListRecursive(const DocumentObject* act, const DocumentObject* checkObj, int depth)
 {
     for (auto obj : act->getInList()) {
         if (obj == checkObj) {
@@ -581,11 +612,13 @@ bool _isInInListRecursive(const DocumentObject* act, const DocumentObject* check
 
 bool DocumentObject::isInInListRecursive(DocumentObject* linkTo) const
 {
+    DOC_OBJ_READ_GUARD;
     return this == linkTo || getInListEx(true).contains(linkTo);
 }
 
 bool DocumentObject::isInInList(DocumentObject* linkTo) const
 {
+    DOC_OBJ_READ_GUARD;
     if (std::ranges::find(_inList, linkTo) != _inList.end()) {
         return true;
     }
@@ -595,7 +628,7 @@ bool DocumentObject::isInInList(DocumentObject* linkTo) const
 }
 
 // helper for isInOutListRecursive()
-bool _isInOutListRecursive(const DocumentObject* act, const DocumentObject* checkObj, int depth)
+static bool _isInOutListRecursive(const DocumentObject* act, const DocumentObject* checkObj, int depth)
 {
     for (auto obj : act->getOutList()) {
         if (obj == checkObj) {
@@ -617,6 +650,7 @@ bool _isInOutListRecursive(const DocumentObject* act, const DocumentObject* chec
 
 bool DocumentObject::isInOutListRecursive(DocumentObject* linkTo) const
 {
+    DOC_OBJ_READ_GUARD;
     int maxDepth = getDocument()->countObjects() + 2;
     return _isInOutListRecursive(this, linkTo, maxDepth);
 }
@@ -624,16 +658,19 @@ bool DocumentObject::isInOutListRecursive(DocumentObject* linkTo) const
 std::vector<std::list<App::DocumentObject*>>
 DocumentObject::getPathsByOutList(App::DocumentObject* to) const
 {
+    DOC_OBJ_READ_GUARD;
     return _pDoc->getPathsByOutList(this, to);
 }
 
 DocumentObjectGroup* DocumentObject::getGroup() const
 {
+    DOC_OBJ_READ_GUARD;
     return freecad_cast<DocumentObjectGroup*>(GroupExtension::getGroupOfObject(this));
 }
 
 bool DocumentObject::testIfLinkDAGCompatible(DocumentObject* linkTo) const
 {
+    DOC_OBJ_READ_GUARD;
     std::vector<App::DocumentObject*> linkTo_in_vector;
     linkTo_in_vector.push_back(linkTo);
     return this->testIfLinkDAGCompatible(linkTo_in_vector);
@@ -641,6 +678,7 @@ bool DocumentObject::testIfLinkDAGCompatible(DocumentObject* linkTo) const
 
 bool DocumentObject::testIfLinkDAGCompatible(const std::vector<DocumentObject*>& linksTo) const
 {
+    DOC_OBJ_READ_GUARD;
     auto inLists = getInListEx(true);
     inLists.emplace(const_cast<DocumentObject*>(this));
     for (auto obj : linksTo) {
@@ -653,12 +691,14 @@ bool DocumentObject::testIfLinkDAGCompatible(const std::vector<DocumentObject*>&
 
 bool DocumentObject::testIfLinkDAGCompatible(PropertyLinkSubList& linksTo) const
 {
+    DOC_OBJ_READ_GUARD;
     const std::vector<App::DocumentObject*>& linksTo_in_vector = linksTo.getValues();
     return this->testIfLinkDAGCompatible(linksTo_in_vector);
 }
 
 bool DocumentObject::testIfLinkDAGCompatible(PropertyLinkSub& linkTo) const
 {
+    DOC_OBJ_READ_GUARD;
     std::vector<App::DocumentObject*> linkTo_in_vector;
     linkTo_in_vector.reserve(1);
     linkTo_in_vector.push_back(linkTo.getValue());
@@ -667,20 +707,24 @@ bool DocumentObject::testIfLinkDAGCompatible(PropertyLinkSub& linkTo) const
 
 void DocumentObject::onLostLinkToObject(DocumentObject*)
 {}
+    DOC_OBJ_WRITE_GUARD;
 
 App::Document* DocumentObject::getDocument() const
 {
+    DOC_OBJ_READ_GUARD;
     return _pDoc;
 }
 
 void DocumentObject::setDocument(App::Document* doc)
 {
+    DOC_OBJ_WRITE_GUARD;
     _pDoc = doc;
     onSettingDocument();
 }
 
 bool DocumentObject::removeDynamicProperty(const char* name)
 {
+    DOC_OBJ_WRITE_GUARD;
     if (!_pDoc || testStatus(ObjectStatus::Destroy)) {
         return false;
     }
@@ -720,6 +764,7 @@ App::Property* DocumentObject::addDynamicProperty(const char* type,
                                                   bool ro,
                                                   bool hidden)
 {
+    DOC_OBJ_WRITE_GUARD;
     auto prop = TransactionalObject::addDynamicProperty(type, name, group, doc, attr, ro, hidden);
     if (prop && _pDoc) {
         _pDoc->addOrRemovePropertyOfObject(this, prop, true);
@@ -729,6 +774,7 @@ App::Property* DocumentObject::addDynamicProperty(const char* type,
 
 void DocumentObject::onBeforeChange(const Property* prop)
 {
+    DOC_OBJ_WRITE_GUARD;
     if (isFreezed() && prop != &Visibility) {
         return;
     }
@@ -748,6 +794,7 @@ void DocumentObject::onBeforeChange(const Property* prop)
 std::vector<std::pair<Property*, std::unique_ptr<Property>>>
 DocumentObject::onProposedLabelChange(std::string& newLabel)
 {
+    DOC_OBJ_WRITE_GUARD;
     // Note that this work can't be done in onBeforeChangeLabel because FeaturePython overrides this
     // method and does not initially base-call it.
 
@@ -810,6 +857,7 @@ DocumentObject::onProposedLabelChange(std::string& newLabel)
 
 void DocumentObject::onEarlyChange(const Property* prop)
 {
+    DOC_OBJ_WRITE_GUARD;
     if (GetApplication().isClosingAll()) {
         return;
     }
@@ -830,6 +878,7 @@ void DocumentObject::onEarlyChange(const Property* prop)
 /// get called by the container when a Property was changed
 void DocumentObject::onChanged(const Property* prop)
 {
+    DOC_OBJ_WRITE_GUARD;
     if (prop == &Label && _pDoc && _pDoc->containsObject(this) && oldLabel != Label.getStrValue()) {
         _pDoc->unregisterLabel(oldLabel);
         _pDoc->registerLabel(Label.getStrValue());
@@ -888,6 +937,7 @@ void DocumentObject::onChanged(const Property* prop)
 
 void DocumentObject::clearOutListCache() const
 {
+    DOC_OBJ_READ_GUARD;
     _outList.clear();
     _outListMap.clear();
     _outListCached = false;
@@ -895,6 +945,7 @@ void DocumentObject::clearOutListCache() const
 
 PyObject* DocumentObject::getPyObject()
 {
+    DOC_OBJ_WRITE_GUARD;
     if (PythonObject.is(Py::_None())) {
         // ref counter is set to 1
         PythonObject = Py::Object(new DocumentObjectPy(this), true);
@@ -908,6 +959,7 @@ DocumentObject* DocumentObject::getSubObject(const char* subname,
                                              bool transform,
                                              int depth) const
 {
+    DOC_OBJ_READ_GUARD;
     DocumentObject* ret = nullptr;
     auto exts = getExtensionsDerivedFromType<App::DocumentObjectExtension>();
     for (auto ext : exts) {
@@ -1009,6 +1061,7 @@ std::vector<DocumentObject*> DocumentObject::getSubObjectList(const char* subnam
                                                               std::vector<int>* const subsizes,
                                                               bool flatten) const
 {
+    DOC_OBJ_READ_GUARD;
     std::vector<DocumentObject*> res;
     res.push_back(const_cast<DocumentObject*>(this));
     if (subsizes) {
@@ -1054,6 +1107,7 @@ std::vector<DocumentObject*> DocumentObject::getSubObjectList(const char* subnam
 
 std::vector<std::string> DocumentObject::getSubObjects(int reason) const
 {
+    DOC_OBJ_READ_GUARD;
     std::vector<std::string> ret;
     auto exts = getExtensionsDerivedFromType<App::DocumentObjectExtension>();
     for (auto ext : exts) {
@@ -1067,6 +1121,7 @@ std::vector<std::string> DocumentObject::getSubObjects(int reason) const
 std::vector<std::pair<App::DocumentObject*, std::string>>
 DocumentObject::getParents(int depth) const
 {
+    DOC_OBJ_READ_GUARD;
     std::vector<std::pair<App::DocumentObject*, std::string>> ret;
     if (!isAttachedToDocument() || !GetApplication().checkLinkDepth(depth, MessageOption::Throw)) {
         return ret;
@@ -1108,6 +1163,7 @@ DocumentObject::getParents(int depth) const
 
 App::DocumentObject* DocumentObject::getFirstParent() const
 {
+    DOC_OBJ_READ_GUARD;
     for (auto obj : getInList()) {
         if (obj->hasExtension(App::GroupExtension::getExtensionClassTypeId(), true)) {
             return obj;
@@ -1122,6 +1178,7 @@ DocumentObject* DocumentObject::getLinkedObject(bool recursive,
                                                 bool transform,
                                                 int depth) const
 {
+    DOC_OBJ_READ_GUARD;
     DocumentObject* ret = nullptr;
     auto exts = getExtensionsDerivedFromType<App::DocumentObjectExtension>();
     for (auto ext : exts) {
@@ -1140,6 +1197,7 @@ DocumentObject* DocumentObject::getLinkedObject(bool recursive,
 
 void DocumentObject::Save(Base::Writer& writer) const
 {
+    DOC_OBJ_READ_GUARD;
     if (this->isFreezed()) {
         throw Base::AbortException("At least one object is frozen, unable to save.");
     }
@@ -1158,6 +1216,7 @@ void DocumentObject::Save(Base::Writer& writer) const
 
 void DocumentObject::setExpression(const ObjectIdentifier& path, std::shared_ptr<Expression> expr)
 {
+    DOC_OBJ_WRITE_GUARD;
     ExpressionEngine.setValue(path, std::move(expr));
 }
 
@@ -1168,6 +1227,7 @@ void DocumentObject::setExpression(const ObjectIdentifier& path, std::shared_ptr
 
 void DocumentObject::clearExpression(const ObjectIdentifier& path)
 {
+    DOC_OBJ_WRITE_GUARD;
     setExpression(path, std::shared_ptr<Expression>());
 }
 
@@ -1180,6 +1240,7 @@ void DocumentObject::clearExpression(const ObjectIdentifier& path)
 const PropertyExpressionEngine::ExpressionInfo
 DocumentObject::getExpression(const ObjectIdentifier& path) const
 {
+    DOC_OBJ_READ_GUARD;
     boost::any value = ExpressionEngine.getPathValue(path);
 
     if (value.type() == typeid(PropertyExpressionEngine::ExpressionInfo)) {
@@ -1200,11 +1261,13 @@ DocumentObject::getExpression(const ObjectIdentifier& path) const
 void DocumentObject::renameObjectIdentifiers(
     const std::map<ObjectIdentifier, ObjectIdentifier>& paths)
 {
+    DOC_OBJ_WRITE_GUARD;
     ExpressionEngine.renameObjectIdentifiers(paths);
 }
 
 void DocumentObject::onDocumentRestored()
 {
+    DOC_OBJ_WRITE_GUARD;
     // call all extensions
     auto vector = getExtensionsDerivedFromType<App::DocumentObjectExtension>();
     for (auto ext : vector) {
@@ -1217,6 +1280,7 @@ void DocumentObject::onDocumentRestored()
 
 void DocumentObject::restoreFinished()
 {
+    DOC_OBJ_WRITE_GUARD;
     // some link type property cannot restore link information until other
     // objects has been restored. For example, PropertyExpressionEngine and
     // PropertySheet with expression containing label reference.
@@ -1234,6 +1298,7 @@ void DocumentObject::onUndoRedoFinished()
 
 void DocumentObject::onSettingDocument()
 {
+    DOC_OBJ_WRITE_GUARD;
     // call all extensions
     auto vector = getExtensionsDerivedFromType<App::DocumentObjectExtension>();
     for (auto ext : vector) {
@@ -1243,6 +1308,7 @@ void DocumentObject::onSettingDocument()
 
 void DocumentObject::setupObject()
 {
+    DOC_OBJ_WRITE_GUARD;
     // call all extensions
     auto vector = getExtensionsDerivedFromType<App::DocumentObjectExtension>();
     for (auto ext : vector) {
@@ -1252,6 +1318,7 @@ void DocumentObject::setupObject()
 
 void DocumentObject::unsetupObject()
 {
+    DOC_OBJ_WRITE_GUARD;
     // call all extensions
     auto vector = getExtensionsDerivedFromType<App::DocumentObjectExtension>();
     for (auto ext : vector) {
@@ -1261,6 +1328,7 @@ void DocumentObject::unsetupObject()
 
 void App::DocumentObject::_removeBackLink(DocumentObject* rmvObj)
 {
+    DOC_OBJ_WRITE_GUARD;
     // do not use erase-remove idom, as this erases ALL entries that match. we only want to remove a
     // single one.
     auto it = std::ranges::find(_inList, rmvObj);
@@ -1271,6 +1339,7 @@ void App::DocumentObject::_removeBackLink(DocumentObject* rmvObj)
 
 void App::DocumentObject::_addBackLink(DocumentObject* newObj)
 {
+    DOC_OBJ_WRITE_GUARD;
     // we need to add all links, even if they are available multiple times. The reason for this is
     // the removal: If a link loses this object it removes the backlink. If we would have added it
     // only once this removal would clear the object from the inlist, even though there may be other
@@ -1280,6 +1349,7 @@ void App::DocumentObject::_addBackLink(DocumentObject* newObj)
 
 int DocumentObject::setElementVisible(const char* element, bool visible)
 {
+    DOC_OBJ_WRITE_GUARD;
     for (auto ext : getExtensionsDerivedFromType<DocumentObjectExtension>()) {
         int ret = ext->extensionSetElementVisible(element, visible);
         if (ret >= 0) {
@@ -1292,6 +1362,7 @@ int DocumentObject::setElementVisible(const char* element, bool visible)
 
 int DocumentObject::isElementVisible(const char* element) const
 {
+    DOC_OBJ_READ_GUARD;
     for (auto ext : getExtensionsDerivedFromType<DocumentObjectExtension>()) {
         int ret = ext->extensionIsElementVisible(element);
         if (ret >= 0) {
@@ -1304,6 +1375,7 @@ int DocumentObject::isElementVisible(const char* element) const
 
 bool DocumentObject::hasChildElement() const
 {
+    DOC_OBJ_READ_GUARD;
     for (auto ext : getExtensionsDerivedFromType<DocumentObjectExtension>()) {
         if (ext->extensionHasChildElement()) {
             return true;
@@ -1321,6 +1393,7 @@ DocumentObject* DocumentObject::resolve(const char* subname,
                                         bool transform,
                                         int depth) const
 {
+    DOC_OBJ_READ_GUARD;
     auto self = const_cast<DocumentObject*>(this);
     if (parent) {
         *parent = nullptr;
@@ -1420,6 +1493,7 @@ DocumentObject* DocumentObject::resolveRelativeLink(std::string& subname,
                                                     DocumentObject*& link,
                                                     std::string& linkSub) const
 {
+    DOC_OBJ_READ_GUARD;
     if (!link || !link->isAttachedToDocument() || !isAttachedToDocument()) {
         return nullptr;
     }
@@ -1482,6 +1556,7 @@ DocumentObject* DocumentObject::resolveRelativeLink(std::string& subname,
 bool DocumentObject::adjustRelativeLinks(const std::set<App::DocumentObject*>& inList,
                                          std::set<App::DocumentObject*>* visited)
 {
+    DOC_OBJ_WRITE_GUARD;
     if (visited) {
         visited->insert(this);
     }
@@ -1509,6 +1584,7 @@ bool DocumentObject::adjustRelativeLinks(const std::set<App::DocumentObject*>& i
 
 std::string DocumentObject::getElementMapVersion(const App::Property* _prop, bool restored) const
 {
+    DOC_OBJ_READ_GUARD;
     auto prop = freecad_cast<const PropertyComplexGeoData*>(_prop);
     if (!prop) {
         return std::string();
@@ -1518,6 +1594,7 @@ std::string DocumentObject::getElementMapVersion(const App::Property* _prop, boo
 
 bool DocumentObject::checkElementMapVersion(const App::Property* _prop, const char* ver) const
 {
+    DOC_OBJ_READ_GUARD;
     auto prop = freecad_cast<const PropertyComplexGeoData*>(_prop);
     if (!prop) {
         return false;
@@ -1527,12 +1604,14 @@ bool DocumentObject::checkElementMapVersion(const App::Property* _prop, const ch
 
 const std::string& DocumentObject::hiddenMarker()
 {
+    DOC_OBJ_READ_GUARD;
     static std::string marker("!hide");
     return marker;
 }
 
 const char* DocumentObject::hasHiddenMarker(const char* subname)
 {
+    DOC_OBJ_READ_GUARD;
     if (!subname) {
         return nullptr;
     }
@@ -1548,11 +1627,13 @@ const char* DocumentObject::hasHiddenMarker(const char* subname)
 
 bool DocumentObject::redirectSubName(std::ostringstream&, DocumentObject*, DocumentObject*) const
 {
+    DOC_OBJ_READ_GUARD;
     return false;
 }
 
 void DocumentObject::onPropertyStatusChanged(const Property& prop, unsigned long oldStatus)
 {
+    DOC_OBJ_WRITE_GUARD;
     (void)oldStatus;
     if (!Document::isAnyRestoring() && isAttachedToDocument() && getDocument()) {
         getDocument()->signalChangePropertyEditor(*getDocument(), prop);
