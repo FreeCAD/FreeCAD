@@ -386,7 +386,8 @@ SbVec3f SoLinearDragger::roundTranslation(const SbVec3f& vecIn, float incrementI
 
 void SoLinearDragger::setLabelVisibility(bool visible)
 {
-    FC_SET_SWITCH("labelSwitch", visible? SO_SWITCH_ALL : SO_SWITCH_NONE);
+    SoSwitch* sw = SO_GET_ANY_PART(this, "labelSwitch", SoSwitch);
+    sw->whichChild = visible? SO_SWITCH_ALL : SO_SWITCH_NONE;
 }
 
 bool SoLinearDragger::isLabelVisible() {
@@ -412,7 +413,7 @@ SoTranslationDragger::SoTranslationDragger()
 
     FC_ADD_CATALOG_ENTRY(draggerSwitch, SoSwitch, geomSeparator);
     FC_ADD_CATALOG_ENTRY(baseColor, SoBaseColor, draggerSwitch);
-    FC_ADD_CATALOG_ENTRY(localRotation, SoRotation, draggerSwitch);
+    FC_ADD_CATALOG_ENTRY(transform, SoTransform, draggerSwitch);
     FC_ADD_CATALOG_ENTRY(dragger, SoLinearDragger, draggerSwitch);
 
     SO_KIT_ADD_FIELD(rotation, (0, 0, 0, 0));
@@ -420,26 +421,26 @@ SoTranslationDragger::SoTranslationDragger()
 
     SO_KIT_INIT_INSTANCE();
 
-    SoBaseKit::setPart("baseColor", buildColor());
-    SoBaseKit::setPart("localRotation", buildRotation());
+    SoInteractionKit::setPart("baseColor", buildColor());
+    SoInteractionKit::setPart("transform", buildTransform());
 
     setVisibility(true);
 }
 
-SoRotation* SoTranslationDragger::buildRotation()
-{
-    auto rotationNode = new SoRotation;
-    rotationNode->rotation.connectFrom(&rotation);
-
-    return rotationNode;
-}
-
 SoBaseColor* SoTranslationDragger::buildColor()
 {
-    auto _color = new SoBaseColor;
-    _color->rgb.connectFrom(&color);
+    auto color = new SoBaseColor;
+    color->rgb.connectFrom(&this->color);
 
-    return _color;
+    return color;
+}
+
+SoTransform* SoTranslationDragger::buildTransform() {
+    auto transform = new SoTransform;
+    transform->translation.connectFrom(&this->translation);
+    transform->rotation.connectFrom(&this->rotation);
+
+    return transform;
 }
 
 void SoTranslationDragger::setVisibility(bool visible)
@@ -455,4 +456,15 @@ bool SoTranslationDragger::isVisible() {
 SoLinearDragger* SoTranslationDragger::getDragger()
 {
     return SO_GET_PART(this, "dragger", SoLinearDragger);
+}
+
+void Gui::SoTranslationDragger::setPointerDirection(const Base::Vector3d& dir)
+{
+    // This is the direction along which the SoLinearDragger points in it local space
+    Base::Vector3d draggerDir{0, 1, 0};
+    Base::Vector3d axis = draggerDir.Cross(dir).Normalize();
+    double ang = draggerDir.GetAngleOriented(dir, axis);
+
+    SbRotation rot{Base::convertTo<SbVec3f>(axis), static_cast<float>(ang)};
+    rotation.setValue(rot);
 }

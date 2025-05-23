@@ -48,6 +48,7 @@
 #include <Gui/Utilities.h>
 #include <Gui/View3DInventorViewer.h>
 #include <Gui/EditableDatumLabel.h>
+#include <Gui/Inventor/Draggers/SoLinearDragger.h>
 
 using namespace PartDesignGui;
 
@@ -77,23 +78,22 @@ TaskDlgFeatureParameters *ViewProviderPad::getEditDialog()
 bool ViewProviderPad::setEdit([[maybe_unused]] int ModNum)
 {
     assert(!dragger);
-    dragger = new Gui::SoTransformDragger();
-    dragger->setAxisColors(0x00000000, 0x00000000, 0xFF0000FF);
-    dragger->draggerSize.setValue(Gui::ViewParams::instance()->getDraggerScale());
+    dragger = new Gui::SoTranslationDragger();
+    dragger->color.setValue(1, 0, 0);
 
-    dragger->addStartCallback(dragStartCallback, this);
-    dragger->addFinishCallback(dragFinishCallback, this);
-    dragger->addMotionCallback(dragMotionCallback, this);
+    dragger->getDragger()->addStartCallback(dragStartCallback, this);
+    dragger->getDragger()->addFinishCallback(dragFinishCallback, this);
+    dragger->getDragger()->addMotionCallback(dragMotionCallback, this);
+    dragger->getDragger()->setLabelVisibility(false);
+    Base::Console().message("%d", dragger->getDragger()->isLabelVisible());
+    dragger->getDragger()->cylinderRadius = 1.0f;
+    dragger->getDragger()->cylinderHeight = 25.0f;
 
     dialog = new TaskDlgPadParameters(this);
     Gui::Control().showDialog(dialog);
 
     createOVP(dialog->getPadLength());
-    
-    setDraggerLabel();
     updatePosition(dialog->getPadLength());
-    hideUnWantedAxes();
-    dragger->hideAxisLabels();
 
     return true;
 }
@@ -113,7 +113,7 @@ void ViewProviderPad::setEditViewer(Gui::View3DInventorViewer* viewer, int ModNu
     Q_UNUSED(ModNum);
 
     if (dragger && viewer) {
-        dragger->setUpAutoScale(viewer->getSoRenderManager()->getCamera());
+        // dragger->getDragger()->autoScaleResult->setUpAutoScale(viewer->getSoRenderManager()->getCamera());
         updateOVPPosition();
 
         auto originPlacement = App::GeoFeature::getGlobalPlacement(getObject()) * getObjectPlacement().inverse();
@@ -132,52 +132,27 @@ void ViewProviderPad::updatePosition(double padLength)
     Base::Vector3d center;
     shape.getCenterOfGravity(center);
 
-    center += extrude->getProfileNormal() * padLength;
-    dragger->translation.setValue(Base::convertTo<SbVec3f>(center));
+    dragger->translation = Base::convertTo<SbVec3f>(center);
+    dragger->getDragger()->translation.setValue({0, static_cast<float>(padLength), 0});
 
-    auto rotation = Base::Rotation::fromNormalVector(extrude->getProfileNormal());
-    dragger->rotation.setValue(Base::convertTo<SbRotation>(rotation));
+    dragger->setPointerDirection(extrude->getProfileNormal());
 
-    dragger->clearIncrementCounts();
+    dragger->getDragger()->translationIncrementCount.setValue(0);
 
     updateOVPPosition();
 }
 
 Base::Placement ViewProviderPad::getDraggerPlacement()
 {
-    return {Base::convertTo<Base::Vector3d>(dragger->translation.getValue()),
+    return {Base::convertTo<Base::Vector3d>(dragger->getDragger()->translation.getValue()),
             Base::convertTo<Base::Rotation>(dragger->rotation.getValue())};
 }
 
 
 double PartDesignGui::ViewProviderPad::getPadLengthFromDragger()
 {
-    auto extrude = getObject<PartDesign::FeatureExtrude>();
-    auto shape = extrude->getProfileShape();
-
-    Base::Vector3d center;
-    shape.getCenterOfGravity(center);
-
-    auto placement = getDraggerPlacement();
-
-    auto diff = (placement.getPosition() - center);
-    if (diff.Dot(extrude->getProfileNormal()) >=0) {
-        return diff.Length();
-    }
-
-    return 0.001; // hack value
-}
-
-void ViewProviderPad::hideUnWantedAxes()
-{
-    dragger->hideRotationX();
-    dragger->hideRotationY();
-    dragger->hideRotationZ();
-    dragger->hideTranslationX();
-    dragger->hideTranslationY();
-    dragger->hidePlanarTranslationXY();
-    dragger->hidePlanarTranslationYZ();
-    dragger->hidePlanarTranslationZX();
+    double padLength = dragger->getDragger()->translationIncrementCount.getValue();
+    return std::min(padLength, 0.0); // hack value
 }
 
 void ViewProviderPad::createOVP(double padLength) {
@@ -190,6 +165,7 @@ void ViewProviderPad::createOVP(double padLength) {
     ovp->setValue(padLength);
     ovp->show();
     ovp->setReadOnly(true);
+    ovp->setVisible(false);
 
     auto ret = Gui::QuantitySpinBox::connect(
         ovp,
@@ -212,7 +188,7 @@ void ViewProviderPad::updateOVPPosition() {
     auto placement = getDraggerPlacement();
     auto extrude = getObject<PartDesign::FeatureExtrude>();
     auto base_pos = placement.getPosition();
-    base_pos += extrude->getProfileNormal() * (10.0f + 2.5f) * (dragger->autoScaleResult.getValue());
+    base_pos += extrude->getProfileNormal() * (10.0f + 2.5f) * (dragger->getDragger()->autoScaleResult.getValue());
 
     QPoint pos = viewer->toQPoint(viewer->getPointOnViewport(Base::convertTo<SbVec3f>(base_pos)));
     QSize ovpSize = ovp->size();
@@ -233,7 +209,7 @@ Gui::View3DInventorViewer* ViewProviderPad::getViewer() {
 
 void ViewProviderPad::dragStartCallback(void *data, [[maybe_unused]] SoDragger *d)
 {
-    Base::Console().Message("Started dragging\n");
+    Base::Console().message("Started dragging\n");
 
     auto vp = static_cast<ViewProviderPad*>(data);
     vp->ovp->setDisabled(true);
@@ -241,7 +217,7 @@ void ViewProviderPad::dragStartCallback(void *data, [[maybe_unused]] SoDragger *
 
 void ViewProviderPad::dragFinishCallback(void *data, [[maybe_unused]] SoDragger *d)
 {
-    Base::Console().Message("Finished dragging\n");
+    Base::Console().message("Finished dragging\n");
 
     auto vp = static_cast<ViewProviderPad*>(data);
     vp->ovp->setDisabled(false);
@@ -252,28 +228,17 @@ void ViewProviderPad::dragMotionCallback(void *data, [[maybe_unused]] SoDragger 
 {
     auto vp = static_cast<ViewProviderPad*>(data);
 
-    constexpr float hack_num = 0.001;
-    auto padLength = std::max<double>(vp->getPadLengthFromDragger(), hack_num);
+    auto padLength = vp->getPadLengthFromDragger();
     vp->dialog->setPadLength(padLength);
     vp->ovp->setValue(padLength);
-    // This is hack used due to pad of 0 length giving arbitrary size in the model
-    if (std::abs(padLength - hack_num) <= hack_num) {
-        vp->updatePosition(padLength);
-        vp->setDraggerLabel();
-    }
+    // vp->updatePosition(padLength);
 
-    Base::Console().Message("Continuing dragging, Pad Length: %lf\n", padLength);
+    Base::Console().message("Continuing dragging, Pad Length: %lf\n", padLength);
 }
 
 void PartDesignGui::ViewProviderPad::setDraggerPosFromUI(double value)
 {
     updatePosition(value);
-    setDraggerLabel();
     dialog->setPadLength(value);
     ovp->setValue(value);
-}
-
-void PartDesignGui::ViewProviderPad::setDraggerLabel()
-{
-    dragger->zAxisLabel.setValue(fmt::format("Length: {}", dialog->getPadLength()).c_str());
 }

@@ -29,7 +29,7 @@
 #include <Gui/EditableDatumLabel.h>
 
 namespace Gui {
-class SoTransformDragger;
+class SoTranslationDragger;
 }
 
 namespace PartDesignGui {
@@ -60,8 +60,6 @@ public:
     void updatePosition(double padLength);
     Base::Placement getDraggerPlacement();
     double getPadLengthFromDragger();
-    void hideUnWantedAxes();
-    void setDraggerLabel();
 
     void setDraggerPosFromUI(double value);
 
@@ -70,7 +68,7 @@ public:
     Gui::View3DInventorViewer* getViewer();
 
 private:
-    Gui::CoinPtr<Gui::SoTransformDragger> dragger;
+    Gui::CoinPtr<Gui::SoTranslationDragger> dragger;
     Gui::QuantitySpinBox *ovp = nullptr;
     TaskDlgPadParameters *dialog = nullptr;
     SoNodeSensor *cameraSensor;

@@ -30,12 +30,15 @@
 #include <Inventor/fields/SoSFInt32.h>
 #include <Inventor/fields/SoSFRotation.h>
 #include <Inventor/fields/SoSFString.h>
+#include <Inventor/fields/SoSFVec3f.h>
 #include <Inventor/projectors/SbLineProjector.h>
 #include <Inventor/projectors/SbPlaneProjector.h>
+#include <Base/Vector3D.h>
 
+class SoCamera;
 class SoSwitch;
 class SoBaseColor;
-class SoRotation;
+class SoTransform;
 class SoCalculator;
 
 namespace Gui
@@ -113,7 +116,7 @@ class SoTranslationDragger: public SoDragger
     SO_KIT_HEADER(SoTranslationDragger);
     SO_KIT_CATALOG_ENTRY_HEADER(draggerSwitch);
     SO_KIT_CATALOG_ENTRY_HEADER(baseColor);
-    SO_KIT_CATALOG_ENTRY_HEADER(localRotation);
+    SO_KIT_CATALOG_ENTRY_HEADER(transform);
     SO_KIT_CATALOG_ENTRY_HEADER(dragger);
 
 public:
@@ -122,15 +125,17 @@ public:
 
     SoSFRotation rotation;
     SoSFColor color;
+    SoSFVec3f translation;
 
     void setVisibility(bool visible);
     bool isVisible();
+    void setPointerDirection(const Base::Vector3d& dir);
 
     SoLinearDragger* getDragger();
 
 private:
-    SoRotation* buildRotation();
     SoBaseColor* buildColor();
+    SoTransform* buildTransform();
 
     using inherited = SoDragger;
 };
