@@ -70,7 +70,6 @@ SET(Draft_tests
 
 SET(Draft_utilities
     draftutils/__init__.py
-    draftutils/doc_observer.py
     draftutils/grid_observer.py
     draftutils/groups.py
     draftutils/gui_utils.py

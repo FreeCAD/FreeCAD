@@ -46,7 +46,9 @@ class Draft_Hatch(gui_base.GuiCommandNeedsSelection):
         import FreeCADGui
 
         if FreeCADGui.Selection.getSelection():
-            FreeCADGui.Control.showDialog(Draft_Hatch_TaskPanel(FreeCADGui.Selection.getSelection()[0]))
+            task = FreeCADGui.Control.showDialog(Draft_Hatch_TaskPanel(FreeCADGui.Selection.getSelection()[0]))
+            task.setDocumentName(FreeCADGui.ActiveDocument.Document.Name)
+            task.setAutoCloseOnDeletedDocument(True)
         else:
             FreeCAD.Console.PrintError(translate("Draft", "You must choose a base object before using this command") + "\n")
 
