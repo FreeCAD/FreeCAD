@@ -704,3 +704,25 @@ int PropertyContainerPy::setCustomAttributes(const char* attr, PyObject* obj)
 
     return 0;
 }
+
+PyObject* PropertyContainerPy::renameProperty(PyObject* args) const
+{
+    char* oldName {};
+    char* newName {};
+    if (PyArg_ParseTuple(args, "ss", &oldName, &newName) == 0) {
+        return nullptr;
+    }
+
+    Property* prop = getPropertyContainerPtr()->getDynamicPropertyByName(oldName);
+    if (!prop) {
+        PyErr_Format(PyExc_AttributeError, "Property container has no dynamic property '%s'", oldName);
+        return nullptr;
+    }
+
+    PY_TRY
+    {
+        prop->getContainer()->renameDynamicProperty(prop, newName);
+        Py_Return;
+    }
+    PY_CATCH
+}

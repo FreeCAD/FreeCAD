@@ -59,9 +59,11 @@ public:
 
 protected:
     virtual void onRelabeledDocument(const App::Document& doc) = 0;
+    virtual void onRenameDynamicProperty(const App::Property& prop, const char* oldName) = 0;
 
 private:
     static void slotRelabelDocument(const App::Document& doc);
+    static void slotRenameDynamicProperty(const App::Property& prop, const char* oldName);
 };
 
 class AppExport PropertyExpressionEngine
@@ -117,6 +119,7 @@ public:
     std::map<App::ObjectIdentifier, const App::Expression*> getExpressions() const override;
     void setExpressions(std::map<App::ObjectIdentifier, App::ExpressionPtr>&& exprs) override;
     void onRelabeledDocument(const App::Document& doc) override;
+    void onRenameDynamicProperty(const App::Property& prop, const char* oldName) override;
 
     void setValue()
     {}  // Dummy
