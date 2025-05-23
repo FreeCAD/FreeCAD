@@ -288,7 +288,7 @@ class BIMWorkbench(Workbench):
         FreeCADGui.addCommand("BIM_Create2DViews", BIM_Create2DViews(self.create_2dviews))
         insert_at_index = self.annotationtools.index("BIM_TDPage")
         self.annotationtools.insert(insert_at_index, "BIM_Create2DViews")
-        
+
         # load rebar tools (Reinforcement addon)
 
         try:
@@ -507,7 +507,6 @@ class BIMWorkbench(Workbench):
         import BimStatus
         from nativeifc import ifc_observer
         from draftutils import grid_observer
-        from draftutils import doc_observer
 
         PARAMS = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/BIM")
 
@@ -517,7 +516,6 @@ class BIMWorkbench(Workbench):
             FreeCADGui.Snapper.show()
         WorkingPlane._view_observer_start()
         grid_observer._view_observer_setup()
-        doc_observer._doc_observer_start()
 
         if PARAMS.GetBool("FirstTime", True) and (not hasattr(FreeCAD, "TestEnvironment")):
             todo.ToDo.delay(FreeCADGui.runCommand, "BIM_Welcome")
@@ -588,7 +586,6 @@ class BIMWorkbench(Workbench):
         import WorkingPlane
         from nativeifc import ifc_observer
         from draftutils import grid_observer
-        from draftutils import doc_observer
 
         PARAMS = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/BIM")
 
@@ -602,7 +599,6 @@ class BIMWorkbench(Workbench):
             FreeCADGui.Snapper.hide()
         WorkingPlane._view_observer_stop()
         grid_observer._view_observer_setup()
-        doc_observer._doc_observer_stop()
 
         # print("Deactivating status icon")
         todo.ToDo.delay(BimStatus.setStatusIcons, False)
