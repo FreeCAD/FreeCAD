@@ -70,6 +70,7 @@ class Draft_Hatch_TaskPanel:
             self.form.Pattern.setCurrentText(pat)
         self.form.Scale.setValue(params.get_param("HatchPatternScale"))
         self.form.Rotation.setValue(params.get_param("HatchPatternRotation"))
+        self.form.Translate.setChecked(params.get_param("HatchPatternTranslate"))
         todo.delay(self.form.setFocus, None)  # Make sure using Esc works.
 
     def accept(self):
@@ -80,6 +81,7 @@ class Draft_Hatch_TaskPanel:
         params.set_param("HatchPatternName", self.form.Pattern.currentText())
         params.set_param("HatchPatternScale", self.form.Scale.value())
         params.set_param("HatchPatternRotation", self.form.Rotation.value())
+        params.set_param("HatchPatternTranslate", self.form.Translate.isChecked())
         if hasattr(self.baseobj,"File") and hasattr(self.baseobj,"Pattern"):
             # modify existing hatch object
             o = "FreeCAD.ActiveDocument.getObject(\""+self.baseobj.Name+"\")"
@@ -87,6 +89,7 @@ class Draft_Hatch_TaskPanel:
             FreeCADGui.doCommand(o+".Pattern=\""+self.form.Pattern.currentText()+"\"")
             FreeCADGui.doCommand(o+".Scale="+str(self.form.Scale.value()))
             FreeCADGui.doCommand(o+".Rotation="+str(self.form.Rotation.value()))
+            FreeCADGui.doCommand(o+".Translate="+str(self.form.Translate.isChecked()))
         else:
             # create new hatch object
             FreeCAD.ActiveDocument.openTransaction("Create Hatch")
@@ -96,7 +99,8 @@ class Draft_Hatch_TaskPanel:
             cmd += "\"),filename=\""+self.form.File.property("fileName")
             cmd += "\",pattern=\""+self.form.Pattern.currentText()
             cmd += "\",scale="+str(self.form.Scale.value())
-            cmd += ",rotation="+str(self.form.Rotation.value())+")"
+            cmd += ",rotation="+str(self.form.Rotation.value())
+            cmd += ",translate="+str(self.form.Translate.isChecked())+")"
             FreeCADGui.doCommand(cmd)
             FreeCAD.ActiveDocument.commitTransaction()
         FreeCADGui.doCommand("FreeCAD.ActiveDocument.recompute()")
