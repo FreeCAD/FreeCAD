@@ -371,6 +371,7 @@ def export(exportList, filename, colors=None, preferences=None):
 
         if obj.Name in products:
             # never export same product twice
+            print(f"Warning! Object '{obj.Label}' is already exported. Skipping it.")
             continue
 
         # structural analysis object
@@ -615,10 +616,52 @@ def export(exportList, filename, colors=None, preferences=None):
 
         # additions
 
-        if hasattr(obj,"Additions") and (shapetype in ["extrusion","no shape"]):
-            for o in obj.Additions:
-                r2,p2,c2 = getRepresentation(ifcfile,context,o,colors=colors,preferences=preferences)
-                if preferences['DEBUG']: print("      adding ",c2," : ",o.Label)
+        # Process additions only if the object has the Additions attribute and the shapetype is valid
+        if hasattr(obj, "Additions") and (shapetype in ["extrusion", "no shape"]):
+            additions = obj.Additions
+            relating_object = product  # For non-groups, the relating object is the product itself
+        elif obj.TypeId == "App::DocumentObjectGroup":
+            # If obj is a group, collect additions from its children
+            additions = []
+            for child in obj.Group:
+                if hasattr(child, "Additions"):
+                    additions.extend(child.Additions)
+                    # Use the child as the relating object without adding it to products
+                    relating_object = child  # Track the child directly
+                    for o in child.Additions:
+                        r2, p2, c2 = getRepresentation(ifcfile, context, o, colors=colors, preferences=preferences)
+                        if preferences['DEBUG']:
+                            print("      adding ", c2, " : ", o.Label)
+                        l = o.Label
+                        prod2 = ifcfile.createIfcBuildingElementProxy(
+                            ifcopenshell.guid.new(),
+                            history,
+                            l,
+                            None,
+                            None,
+                            p2,
+                            r2,
+                            None,
+                            "ELEMENT"
+                        )
+                        subproducts[o.Name] = prod2
+                        ifcfile.createIfcRelAggregates(
+                            ifcopenshell.guid.new(),
+                            history,
+                            'Addition',
+                            '',
+                            relating_object,
+                            [prod2]
+                        )
+        else:
+            additions = []
+
+        # Process additions for non-groups
+        if additions and not obj.TypeId == "App::DocumentObjectGroup":
+            for o in additions:
+                representation, placement, shape_type = getRepresentation(ifcfile, context, o, colors=colors, preferences=preferences)
+                if preferences['DEBUG']:
+                    print("      adding ", shape_type, " : ", o.Label)
                 l = o.Label
                 prod2 = ifcfile.createIfcBuildingElementProxy(
                     ifcopenshell.guid.new(),
@@ -641,39 +684,104 @@ def export(exportList, filename, colors=None, preferences=None):
                     [prod2]
                 )
 
-        # subtractions
+        # Substractions
+
+        # There are two types of substracted objects:
+        #
+        # 1. Substractions: those listed in the object's Subtractions list (e.g. a roof)
+        #    which are not dependent on the object.
+        # 2. Guests: those that are dependent on the object (e.g. doors and windows are dependent on
+        #    walls). These are not in the Subtractions list, but in the object's InList and their
+        #    Hosts list contains the current object.
 
         guests = []
-        for o in obj.InList:
-            if hasattr(o,"Hosts"):
-                for co in o.Hosts:
-                    if co == obj:
-                        if o not in guests:
-                            guests.append(o)
-        if hasattr(obj,"Subtractions") and (shapetype in ["extrusion","no shape"]):
-            for o in obj.Subtractions + guests:
-                r2,p2,c2 = getRepresentation(ifcfile,context,o,subtraction=True,colors=colors,preferences=preferences)
-                if preferences['DEBUG']: print("      subtracting ",c2," : ",o.Label)
-                l = o.Label
-                prod2 = ifcfile.createIfcOpeningElement(
-                    ifcopenshell.guid.new(),
-                    history,
-                    l,
-                    None,
-                    None,
-                    p2,
-                    r2,
-                    None
-                )
-                subproducts[o.Name] = prod2
-                ifcfile.createIfcRelVoidsElement(
-                    ifcopenshell.guid.new(),
-                    history,
-                    'Subtraction',
-                    '',
-                    product,
-                    prod2
-                )
+
+        # Set to track processed objects
+        processed_objects = set()
+
+        def collect_related_objects(obj):
+            """Recursively collects related objects (children or dependent objects) contained within or 
+            hosted by the given object.
+
+            Parameters
+            ----------
+            obj : object
+                The object to process.
+            """
+            # Skip objects that have already been processed to avoid infinite recursion
+            if obj in processed_objects:
+                return
+            processed_objects.add(obj)
+
+            if obj.TypeId == "App::DocumentObjectGroup":
+                print(f"Processing group: {obj.Label}")
+                children_or_dependent_objs = obj.Group
+                iterable_desc = "child"
+            else:
+                print(f"Processing non-group object: {obj.Label}")
+                children_or_dependent_objs = obj.InList
+                iterable_desc = "dependent object"
+
+            # Iterate over the related objects
+            for related_obj in children_or_dependent_objs:
+                print(f"  Checking {iterable_desc} of {obj.Label}: {related_obj.Label}")
+                if hasattr(related_obj, "Hosts"):
+                    for host in related_obj.Hosts:
+                        print(f"    Checking host: {host.Label} for {related_obj.Label}")
+                        if host == obj:
+                            print(f"    {related_obj.Label} is hosted by {obj.Label}")
+                            if related_obj not in guests:
+                                guests.append(related_obj)
+
+                # Recursively process the related object as if it were a top-level object
+                collect_related_objects(related_obj)
+
+        # Start processing from the top-level object
+        collect_related_objects(obj)
+
+        # Verify guests
+        print(f"Guests: {[guest.Label for guest in guests]}")
+        print(f"Continuing to process {obj.Label}")
+
+        # Verify subtractions
+        print(f"Verifying subtractions for: {obj.Label}")
+        if hasattr(obj, "Subtractions") and (shapetype in ["extrusion", "no shape"]):
+            print(f"Subtractions: {[sub.Label for sub in obj.Subtractions]}")
+
+            # Combine subtractions and guests
+            substracted_objs = obj.Subtractions + guests
+            print(f"All Subtractions: {[sub.Label for sub in substracted_objs]}")
+
+            # Process subtractions
+            for substracted_obj in substracted_objs:
+                print(f"Processing subtraction: {o.Label}")
+                try:
+                    representation, placement, _ = getRepresentation(ifcfile, context, substracted_obj, subtraction=True, colors=colors, preferences=preferences)
+
+                    opening_product = ifcfile.createIfcOpeningElement(
+                        ifcopenshell.guid.new(),
+                        history,
+                        substracted_obj.Label,
+                        None,
+                        None,
+                        placement,
+                        representation,
+                        None
+                    )
+                    print(f"IfcOpeningElement created for: {o.Label}")
+                    subproducts[substracted_obj.Name] = opening_product
+
+                    ifcfile.createIfcRelVoidsElement(
+                        ifcopenshell.guid.new(),
+                        history,
+                        'Subtraction',
+                        '',
+                        product,
+                        opening_product
+                    )
+                    print(f"IfcRelVoidsElement created for: {o.Label}")
+                except Exception as e:
+                    print(f"Error processing subtraction {o.Label}: {e}")
 
         # properties
 
