@@ -3370,7 +3370,7 @@ DocumentObject* Document::addObject(const char* sType,
                pObjectName,
                AddObjectOption::setNewStatus
                    | (isPartial ? AddObjectOption::setPartialStatus : AddObjectOption::unsetPartialStatus)
-                   | (isNew ? AddObjectOption::doSetup : AddObjectOption::None)
+                   | (isNew ? AddObjectOption::doSetup : AddObjectOption::none)
                    | AddObjectOption::activateObject, 
                viewType);
 
@@ -3410,8 +3410,8 @@ Document::addObjects(const char* sType, const std::vector<std::string>& objectNa
         _addObject(pcObject,
                    objectNames[index].c_str(),
                    AddObjectOption::setNewStatus
-                       | (isNew ? AddObjectOption::doSetup : AddObjectOption::None)
-                       | (isLast ? AddObjectOption::activateObject : AddObjectOption::None));
+                       | (isNew ? AddObjectOption::doSetup : AddObjectOption::none)
+                       | (isLast ? AddObjectOption::activateObject : AddObjectOption::none));
     }
 
     return objects;
@@ -3475,11 +3475,9 @@ void Document::_addObject(DocumentObject* pcObject, const char* pObjectName, Add
     }
  
     if (options.testFlag(AddObjectOption::setNewStatus)) {
-        // Mark the object as new (i.e. set status bit 2)
         pcObject->setStatus(ObjectStatus::New, true);    
     }
     if (options.testFlag(AddObjectOption::setPartialStatus) || options.testFlag(AddObjectOption::unsetPartialStatus)) {
-        // Set the partial bit (status bit 10)
         pcObject->setStatus(ObjectStatus::PartialObject, options.testFlag(AddObjectOption::setPartialStatus));
     }
 

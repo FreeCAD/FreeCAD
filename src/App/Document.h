@@ -59,7 +59,7 @@ using StringHasherRef = Base::Reference<StringHasher>;
 
 enum class AddObjectOption
 {
-    None = 0,
+    none = 0,
     setNewStatus = 1,
     setPartialStatus = 2,
     unsetPartialStatus = 4,
