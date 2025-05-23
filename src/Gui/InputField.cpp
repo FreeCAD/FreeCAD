@@ -195,7 +195,7 @@ void InputField::resizeEvent(QResizeEvent * /*event*/)
 
 void InputField::updateIconLabel(const QString& text)
 {
-    iconLabel->setVisible(!text.isEmpty());
+    iconLabel->setVisible(text.isEmpty());
 }
 
 void InputField::contextMenuEvent(QContextMenuEvent *event)
