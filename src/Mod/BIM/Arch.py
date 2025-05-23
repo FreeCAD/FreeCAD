@@ -1814,7 +1814,13 @@ def joinWalls(walls, delete=False, deletebase=False):
     return base
 
 
-def makeWindow(baseobj=None, width=None, height=None, parts=None, name=None):
+def makeWindow(
+    baseobj: Optional[FreeCAD.DocumentObject] = None,
+    width: Optional[float] = None,
+    height: Optional[float] = None,
+    parts: Optional[list[str]] = None,
+    name: Optional[str] = None,
+) -> FreeCAD.DocumentObject:
     """
     Creates a window object based on the given base object.
 
