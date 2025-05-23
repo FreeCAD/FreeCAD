@@ -547,20 +547,16 @@ class _Wall(ArchComponent.Component):
                     obj.CountBroken = 0
 
         # set the length property
-        if obj.Base:
-            if hasattr(obj.Base,'Shape'):
-                if obj.Base.Shape.Edges:
-                    if not obj.Base.Shape.Faces:
-                        if hasattr(obj.Base.Shape,"Length"):
-                            l = float(0)
-                            for e in self.connectEdges:
-                                l += e.Length
-                            l = l / 2
-                            if self.layersNum:
-                                l = l / self.layersNum
-                            if obj.Length.Value != l:
-                                obj.Length = l
-                                self.oldLength = None # delete the stored value to prevent triggering base change below
+        if self.connectEdges:
+            l = float(0)
+            for e in self.connectEdges:
+                l += e.Length
+            l = l / 2
+            if self.layersNum:
+                l = l / self.layersNum
+            if obj.Length.Value != l:
+                obj.Length = l
+                self.oldLength = None # delete the stored value to prevent triggering base change below
 
         # set the Area property
         obj.Area = obj.Length.Value * obj.Height.Value
