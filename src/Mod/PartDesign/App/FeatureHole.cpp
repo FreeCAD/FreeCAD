@@ -891,8 +891,15 @@ void Hole::updateHoleCutParams()
             if (HoleCutCountersinkAngle.getValue() == 0.0) {
                 HoleCutCountersinkAngle.setValue(counter.angle);
             }
-            if (HoleCutDepth.getValue() == 0.0 && holeCutTypeStr == "Counterdrill") {
-                HoleCutDepth.setValue(1.0);
+            if (HoleCutDepth.getValue() == 0.0) {
+                if (holeCutTypeStr == "Counterdrill") {
+                    HoleCutDepth.setValue(1.0);
+                } else {
+                    HoleCutDepth.setValue(
+                        (HoleCutDiameter.getValue() / 2)
+                        / std::tan(HoleCutCountersinkAngle.getValue() / 2)
+                    );
+                }
             }
             HoleCutDiameter.setReadOnly(false);
             HoleCutDepth.setReadOnly(false);
@@ -1037,8 +1044,15 @@ void Hole::updateHoleCutParams()
             if (HoleCutCountersinkAngle.getValue() == 0.0) {
                 HoleCutCountersinkAngle.setValue(getCountersinkAngle());
             }
-            if (HoleCutDepth.getValue() == 0.0 && holeCutTypeStr == "Counterdrill") {
-                HoleCutDepth.setValue(1.0);
+            if (HoleCutDepth.getValue() == 0.0) {
+                if (holeCutTypeStr == "Counterdrill") {
+                    HoleCutDepth.setValue(1.0);
+                } else {
+                    HoleCutDepth.setValue(
+                        (HoleCutDiameter.getValue() / 2)
+                        / std::tan(HoleCutCountersinkAngle.getValue() / 2)
+                    );
+                }
             }
             HoleCutDiameter.setReadOnly(false);
             HoleCutDepth.setReadOnly(false);
@@ -1627,18 +1641,30 @@ void Hole::onChanged(const App::Property* prop)
         }
     }
     else if (prop == &HoleCutType) {
+        // the read-only states are set in updateHoleCutParams()
+        updateHoleCutParams();
         ProfileBased::onChanged(&HoleCutDiameter);
         ProfileBased::onChanged(&HoleCutDepth);
         ProfileBased::onChanged(&HoleCutCountersinkAngle);
-
-        // the read-only states are set in updateHoleCutParams()
-        updateHoleCutParams();
     }
     else if (prop == &HoleCutCustomValues) {
         // when going back to standardized values, we must recalculate
         // also to find out if HoleCutCountersinkAngle can be ReadOnly
         // both an also the read-only states is done in updateHoleCutParams()
         updateHoleCutParams();
+    }
+    else if (prop == &HoleCutDiameter || prop == &HoleCutCountersinkAngle) {
+        // Recalculate depth if Countersink
+        const std::string holeCutTypeString = HoleCutType.getValueAsString();
+        const std::string threadTypeString = ThreadType.getValueAsString();
+        if (!(holeCutTypeString == "Countersink"
+            || isDynamicCountersink(threadTypeString, holeCutTypeString))) {
+            return;
+        }
+        auto angle = HoleCutCountersinkAngle.getValue();
+        auto diameter = HoleCutDiameter.getValue();
+        HoleCutDepth.setValue((diameter / 2) * std::tan(Base::toRadians(angle) / 2));
+        ProfileBased::onChanged(&HoleCutDepth);
     }
     else if (prop == &DepthType) {
         std::string DepthMode(DepthType.getValueAsString());
