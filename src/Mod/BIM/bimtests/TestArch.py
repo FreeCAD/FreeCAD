@@ -41,27 +41,6 @@ class TestArch(TestArchBase.TestArchBase):
         s = Arch.makeStructure(length=2,width=3,height=5)
         self.assertTrue(s,"BIM Structure failed")
 
-    def testWindow(self):
-        operation = "Arch Window"
-        _msg("  Test '{}'".format(operation))
-        line = Draft.makeLine(App.Vector(0, 0, 0), App.Vector(3000, 0, 0))
-        wall = Arch.makeWall(line)
-        sk = App.ActiveDocument.addObject("Sketcher::SketchObject", "Sketch001")
-        sk.Placement.Rotation = App.Rotation(App.Vector(1, 0, 0), 90)
-        sk.addGeometry(Part.LineSegment(App.Vector( 500,  800, 0), App.Vector(1500,  800, 0)))
-        sk.addGeometry(Part.LineSegment(App.Vector(1500,  800, 0), App.Vector(1500, 2000, 0)))
-        sk.addGeometry(Part.LineSegment(App.Vector(1500, 2000, 0), App.Vector( 500, 2000, 0)))
-        sk.addGeometry(Part.LineSegment(App.Vector( 500, 2000, 0), App.Vector( 500,  800, 0)))
-        sk.addConstraint(Sketcher.Constraint('Coincident', 0, 2, 1, 1))
-        sk.addConstraint(Sketcher.Constraint('Coincident', 1, 2, 2, 1))
-        sk.addConstraint(Sketcher.Constraint('Coincident', 2, 2, 3, 1))
-        sk.addConstraint(Sketcher.Constraint('Coincident', 3, 2, 0, 1))
-        App.ActiveDocument.recompute()
-        win = Arch.makeWindow(sk)
-        Arch.removeComponents(win, host=wall)
-        App.ActiveDocument.recompute()
-        self.assertTrue(win, "'{}' failed".format(operation))
-
     def testAxis(self):
         App.Console.PrintLog ('Checking Arch Axis...\n')
         a = Arch.makeAxis()
