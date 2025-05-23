@@ -89,6 +89,7 @@ BlendCurvePanel::BlendCurvePanel(ViewProviderBlendCurve* vp)
 
     initControls();
     setupConnections();
+    bindProperties();
 }
 
 BlendCurvePanel::~BlendCurvePanel() = default;
@@ -186,6 +187,16 @@ void BlendCurvePanel::initSize()
     ui->sizeSecondEdge->setSingleStep(stepsSize);
     ui->sizeFirstEdge->setValue(fea->StartSize.getValue());
     ui->sizeSecondEdge->setValue(fea->EndSize.getValue());
+}
+
+void BlendCurvePanel::bindProperties()
+{
+    auto fea = vp->getObject<Surface::FeatureBlendCurve>();
+
+    ui->paramFirstEdge->bind(fea->StartParameter);
+    ui->sizeFirstEdge->bind(fea->StartSize);
+    ui->paramSecondEdge->bind(fea->EndParameter);
+    ui->sizeSecondEdge->bind(fea->EndSize);
 }
 
 void BlendCurvePanel::onFirstEdgeButton(bool checked)
@@ -401,8 +412,9 @@ bool BlendCurvePanel::accept()
 
 bool BlendCurvePanel::reject()
 {
-    Gui::cmdGuiDocument(vp->getObject(), "resetEdit()");
     Gui::Command::abortCommand();
+    Gui::cmdGuiDocument(vp->getObject(), "resetEdit()");
+    Gui::Command::updateActive();
     return true;
 }
 

@@ -71,6 +71,7 @@ private:
     void initContinuity();
     void initParameter();
     void initSize();
+    void bindProperties();
     void onFirstEdgeButton(bool checked);
     void onSecondEdgeButton(bool checked);
     void onUncheckFirstEdgeButton();
