@@ -156,7 +156,9 @@ class _Window(ArchComponent.Component):
             obj.addProperty("App::PropertyInteger","Preset","Window",QT_TRANSLATE_NOOP("App::Property","The preset number this window is based on"), locked=True)
             obj.setEditorMode("Preset",2)
         if not "Frame" in lp:
-            obj.addProperty("App::PropertyLength","Frame","Window",QT_TRANSLATE_NOOP("App::Property","The frame size of this window"), locked=True)
+            obj.addProperty("App::PropertyLength","Frame","Window",QT_TRANSLATE_NOOP("App::Property",
+                                                                                     "The frame depth of this window. Measured from front face to back face horizontally (i.e. perpendicular to the window elevation plane)."),
+                                                                                     locked=True)
         if not "Offset" in lp:
             obj.addProperty("App::PropertyLength","Offset","Window",QT_TRANSLATE_NOOP("App::Property","The offset size of this window"), locked=True)
         if not "Area" in lp:
@@ -1420,14 +1422,14 @@ class _ArchWindowTaskPanel:
         self.new1.setText(QtGui.QApplication.translate("Arch", "Name", None))
         self.new2.setText(QtGui.QApplication.translate("Arch", "Type", None))
         self.new3.setText(QtGui.QApplication.translate("Arch", "Wires", None))
-        self.new4.setText(QtGui.QApplication.translate("Arch", "Thickness", None))
+        self.new4.setText(QtGui.QApplication.translate("Arch", "Frame depth", None))
         self.new5.setText(QtGui.QApplication.translate("Arch", "Offset", None))
         self.new6.setText(QtGui.QApplication.translate("Arch", "Hinge", None))
         self.new7.setText(QtGui.QApplication.translate("Arch", "Opening mode", None))
-        self.addp4.setText(QtGui.QApplication.translate("Arch", "+ default", None))
-        self.addp4.setToolTip(QtGui.QApplication.translate("Arch", "If this is checked, the default Frame value of this window will be added to the value entered here", None))
-        self.addp5.setText(QtGui.QApplication.translate("Arch", "+ default", None))
-        self.addp5.setToolTip(QtGui.QApplication.translate("Arch", "If this is checked, the default Offset value of this window will be added to the value entered here", None))
+        self.addp4.setText(QtGui.QApplication.translate("Arch", "+ Frame prop.", None))
+        self.addp4.setToolTip(QtGui.QApplication.translate("Arch", "If this is checked, the window's Frame property value will be added to the value entered here", None))
+        self.addp5.setText(QtGui.QApplication.translate("Arch", "+ Offset prop.", None))
+        self.addp5.setToolTip(QtGui.QApplication.translate("Arch", "If this is checked, the window's Offset property value will be added to the value entered here", None))
         self.field6.setText(QtGui.QApplication.translate("Arch", "Get selected edge", None))
         self.field6.setToolTip(QtGui.QApplication.translate("Arch", "Press to retrieve the selected edge", None))
         self.invertOpeningButton.setText(QtGui.QApplication.translate("Arch", "Invert opening direction", None))
