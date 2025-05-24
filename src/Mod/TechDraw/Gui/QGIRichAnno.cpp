@@ -68,6 +68,7 @@ QGIRichAnno::QGIRichAnno() :
 
     m_text = new QGCustomText();
     m_text->setTextInteractionFlags(Qt::NoTextInteraction);
+    m_text->setDefaultTextColor(PreferencesGui::normalQColor());
     addToGroup(m_text);
     m_text->setZValue(ZVALUE::DIMENSION);
     m_text->centerAt(0.0, 0.0);
