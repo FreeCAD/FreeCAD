@@ -134,11 +134,12 @@ class QuantitySpinBox(QtCore.QObject):
 
     def eventFilter(self, obj, event):
         if event.type() == QtCore.QEvent.Type.FocusIn:
-            self.updateSpinBox()
+            self.updateWidget()
         return False
 
     def onWidgetValueChanged(self):
-        """onWidgetValueChanged()... Slot method for determining if a change
+        """
+        Slot method for determining if a change
         in widget value is a result of an expression edit, or a simple spinbox change.
         If the former, emit a manual `editingFinished` signal because the Expression editor
         window returned a value to the base widget, leaving it in read-only mode,
@@ -150,7 +151,7 @@ class QuantitySpinBox(QtCore.QObject):
             self.widget.editingFinished.emit()
 
     def attachTo(self, obj, prop=None):
-        """attachTo(obj, prop=None) ... use an existing editor for the given object and property"""
+        """use an existing editor for the given object and property"""
         Path.Log.track(self.prop, prop)
         self.obj = obj
         self.prop = prop
@@ -168,21 +169,22 @@ class QuantitySpinBox(QtCore.QObject):
             self.valid = False
 
     def expression(self):
-        """expression() ... returns the expression if one is bound to the property"""
+        """returns the expression if one is bound to the property"""
         Path.Log.track(self.prop, self.valid)
         if self.valid:
             return self.widget.property("expression")
         return ""
 
     def setMinimum(self, quantity):
-        """setMinimum(quantity) ... set the minimum"""
+        """set the minimum"""
         Path.Log.track(self.prop, self.valid)
         if self.valid:
             value = quantity.Value if hasattr(quantity, "Value") else quantity
             self.widget.setProperty("setMinimum", value)
 
-    def updateSpinBox(self, quantity=None):
-        """updateSpinBox(quantity=None) ... update the display value of the spin box.
+    def updateWidget(self, quantity=None):
+        """
+        update the display value of the spin box.
         If no value is provided the value of the bound property is used.
         quantity can be of type Quantity or Float."""
         Path.Log.track(self.prop, self.valid, quantity)
@@ -220,6 +222,215 @@ class QuantitySpinBox(QtCore.QObject):
             if prop == self.prop:
                 return exp
         return None
+
+
+class PropertyComboBox(QtCore.QObject):
+    """Base controller class for properties represented as QComboBox."""
+
+    def __init__(self, widget, obj, prop, onBeforeChange=None):
+        super().__init__()
+        Path.Log.track(widget)
+        self.widget = widget
+        self.onBeforeChange = onBeforeChange
+        self.prop = None
+        self.obj = obj
+        self.valid = False
+        self.attachTo(obj, prop)
+        self.widget.currentIndexChanged.connect(self.updateProperty)
+
+    def attachTo(self, obj, prop=None):
+        """use an existing editor for the given object and property"""
+        Path.Log.track(self.prop, prop)
+        self.obj = obj
+        self.prop = prop
+        if obj and prop:
+            attr = PathUtil.getProperty(obj, prop)
+            if attr is not None:
+                self.valid = True
+                self._populateComboBox()
+                self.updateWidget()
+            else:
+                Path.Log.warning("Cannot find property {} of {}".format(prop, obj.Label))
+                self.valid = False
+        else:
+            self.valid = False
+
+    def _populateComboBox(self):
+        """To be implemented by subclasses"""
+        raise NotImplementedError
+
+    def updateWidget(self, value=None):
+        """update the display value of the combo box."""
+        Path.Log.track(self.prop, self.valid, value)
+        if self.valid:
+            if value is None:
+                value = PathUtil.getProperty(self.obj, self.prop)
+            index = (
+                self.widget.findData(value)
+                if hasattr(self.widget, "findData")
+                else self.widget.findText(str(value))
+            )
+            if index >= 0:
+                self.widget.setCurrentIndex(index)
+
+    def updateProperty(self):
+        """update the bound property with the value from the combo box"""
+        Path.Log.track(self.prop, self.valid)
+        if self.valid and self.prop:
+            if self.onBeforeChange:
+                self.onBeforeChange()
+
+            current_value = PathUtil.getProperty(self.obj, self.prop)
+            new_value = (
+                self.widget.currentData()
+                if hasattr(self.widget, "currentData")
+                else self.widget.currentText()
+            )
+
+            if str(new_value) != str(current_value):
+                setattr(self.obj, self.prop, new_value)
+                return True
+        return False
+
+
+class IntegerSpinBox(QtCore.QObject):
+    """Controller class for integer properties represented as QSpinBox.
+    IntegerSpinBox(widget, obj, prop, onBeforeChange=None)
+            widget ... expected to be reference to a QSpinBox
+            obj    ... document object
+            prop   ... canonical name of the (sub-) property
+            onBeforeChange ... optional callback before property change
+    """
+
+    def __init__(self, widget, obj, prop, onBeforeChange=None):
+        super().__init__()
+        self.widget = widget
+        self.onBeforeChange = onBeforeChange
+        self.prop = None
+        self.obj = obj
+        self.valid = False
+
+        # Configure spin box defaults
+        self.widget.setMinimum(-2147483647)  # Qt's minimum for spin boxes
+        self.widget.setMaximum(2147483647)  # Qt's maximum for spin boxes
+
+        self.attachTo(obj, prop)
+        self.widget.valueChanged.connect(self.updateProperty)
+
+    def attachTo(self, obj, prop=None):
+        """bind to the given object and property"""
+        self.obj = obj
+        self.prop = prop
+        if obj and prop:
+            try:
+                prop_value = PathUtil.getProperty(obj, prop)
+                if prop_value is not None:
+                    self.valid = True
+                    self.updateWidget()
+                else:
+                    Path.Log.warning(f"Cannot get value for property {prop} of {obj.Label}")
+                    self.valid = False
+            except Exception as e:
+                Path.Log.error(f"Error attaching to property {prop}: {str(e)}")
+                self.valid = False
+        else:
+            self.valid = False
+
+    def updateWidget(self, value=None):
+        """update the spin box value"""
+        if self.valid:
+            try:
+                if value is None:
+                    value = PathUtil.getProperty(self.obj, self.prop)
+
+                # Handle both direct values and Quantity objects
+                if hasattr(value, "Value"):  # For Quantity properties
+                    value = int(value.Value)
+
+                self.widget.setValue(int(value))
+            except Exception as e:
+                Path.Log.error(f"Error updating spin box: {str(e)}")
+
+    def updateProperty(self):
+        """update the bound property with the spin box value"""
+        if self.valid and self.prop:
+            if self.onBeforeChange:
+                self.onBeforeChange()
+
+            new_value = self.widget.value()
+            current_value = PathUtil.getProperty(self.obj, self.prop)
+
+            # Handle Quantity properties
+            if hasattr(current_value, "Value"):
+                if new_value != current_value.Value:
+                    current_value.Value = new_value
+                    return True
+            elif new_value != current_value:
+                setattr(self.obj, self.prop, new_value)
+                return True
+        return False
+
+    def setRange(self, min_val, max_val):
+        """set minimum and maximum values"""
+        self.widget.setMinimum(min_val)
+        self.widget.setMaximum(max_val)
+
+    def setSingleStep(self, step):
+        """setSingleStep(step) ... set the step size"""
+        self.widget.setSingleStep(step)
+
+
+class BooleanComboBox(PropertyComboBox):
+    """Controller class for boolean properties represented as QComboBox."""
+
+    def _populateComboBox(self):
+        self.widget.clear()
+        self.widget.addItem("True", True)
+        self.widget.addItem("False", False)
+
+
+class EnumerationComboBox(PropertyComboBox):
+    """Controller class for enumeration properties represented as QComboBox."""
+
+    def _populateComboBox(self):
+        self.widget.clear()
+        enums = self.obj.getEnumerationsOfProperty(self.prop)
+        for item in enums:
+            self.widget.addItem(item, item)
+
+
+class PropertyLabel(QtCore.QObject):
+    """Controller class for read-only property display as QLabel."""
+
+    def __init__(self, widget, obj, prop, onBeforeChange=None):
+        super().__init__()
+        self.widget = widget
+        self.obj = obj
+        self.prop = prop
+        self.valid = False
+        self.attachTo(obj, prop)
+
+    def attachTo(self, obj, prop=None):
+        """bind to the given object and property"""
+        self.obj = obj
+        self.prop = prop
+        if obj and prop:
+            attr = PathUtil.getProperty(obj, prop)
+            if attr is not None:
+                self.valid = True
+                self.updateWidget()
+            else:
+                Path.Log.warning(f"Cannot find property {prop} of {obj.Label}")
+                self.valid = False
+        else:
+            self.valid = False
+
+    def updateWidget(self, value=None):
+        """update the label text"""
+        if self.valid:
+            if value is None:
+                value = PathUtil.getProperty(self.obj, self.prop)
+            self.widget.setText(str(value))
 
 
 def getDocNode():

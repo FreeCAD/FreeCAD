@@ -187,7 +187,7 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         self.form.finishingPassEnabled.setChecked(obj.FinishingPass)
         self.form.optimizeMovementsEnabled.setChecked(obj.OptimizeMovements)
 
-        self.finishingPassZOffsetSpinBox.updateSpinBox()
+        self.finishingPassZOffsetSpinBox.updateWidget()
 
         self.setupToolController(obj, self.form.toolController)
         self.setupCoolant(obj, self.form.coolantController)

@@ -107,9 +107,9 @@ class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
         return form
 
     def updateQuantitySpinBoxes(self, index=None):
-        self.peckDepthSpinBox.updateSpinBox()
-        self.peckRetractSpinBox.updateSpinBox()
-        self.dwellTimeSpinBox.updateSpinBox()
+        self.peckDepthSpinBox.updateWidget()
+        self.peckRetractSpinBox.updateWidget()
+        self.dwellTimeSpinBox.updateWidget()
 
     def getFields(self, obj):
         """setFields(obj) ... update obj's properties with values from the UI"""

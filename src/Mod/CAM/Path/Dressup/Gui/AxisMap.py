@@ -179,7 +179,7 @@ class TaskPanel:
         self.obj.Proxy.execute(self.obj)
 
     def updateUI(self):
-        self.radius.updateSpinBox()
+        self.radius.updateWidget()
         self.form.axisMapInput.setCurrentText(self.obj.AxisMap)
         self.updateModel()
 
