@@ -94,17 +94,17 @@ private:
         switch (state()) {
             case SelectMode::SeekFirst:
                 hints.push_back(
-                    InputHint(QCoreApplication::translate("Sketcher", "%1 Pick arc center"),
+                    InputHint(QCoreApplication::translate("Sketcher", "%1 pick arc center"),
                               {Gui::InputHint::UserInput::MouseLeft}));
                 break;
             case SelectMode::SeekSecond:
                 hints.push_back(
-                    InputHint(QCoreApplication::translate("Sketcher", "%1 Pick arc start point"),
+                    InputHint(QCoreApplication::translate("Sketcher", "%1 pick arc start point"),
                               {Gui::InputHint::UserInput::MouseLeft}));
                 break;
             case SelectMode::SeekThird:
                 hints.push_back(
-                    InputHint(QCoreApplication::translate("Sketcher", "%1 Pick arc end point"),
+                    InputHint(QCoreApplication::translate("Sketcher", "%1 pick arc end point"),
                               {Gui::InputHint::UserInput::MouseLeft}));
                 break;
             default:
