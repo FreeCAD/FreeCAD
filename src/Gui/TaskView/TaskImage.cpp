@@ -209,21 +209,27 @@ void TaskImage::scaleImage(double factor)
 
 void TaskImage::showToolHints() const
 {
-    using enum Gui::InputHint::UserInput;
     InteractiveScaleState state = scale->getState();
 
-    InputHint snap = {tr("%1 snap angle"), {ModifierCtrl}};
-    InputHint toggleCenter = {tr("%1 toggle centering"), {KeyC}};
-    InputHint toggleRotation = {tr("%1 toggle rotating to line"), {KeyR}};
-    InputHint acceptDistance = {tr("%1 accept distance"), {KeyEnter}};
+    InputHint snap = {tr("%1 snap angle"), {{Qt::ControlModifier}}};
+    InputHint toggleCenter = {tr("%1 toggle centering"), {{Qt::Key_C}}};
+    InputHint toggleRotation = {tr("%1 toggle rotating to line"), {{Qt::Key_R}}};
+    InputHint acceptDistance = {tr("%1 accept distance"), {{Qt::Key_Enter}}};
 
     std::list<Gui::InputHint> hints = Gui::lookupHints<InteractiveScaleState>(
         state,
         {
             {.state = InteractiveScaleState::PickingFirst,
-             .hints = {{tr("%1 pick first point"), {MouseLeft}}, toggleCenter, toggleRotation}},
+             .hints
+             = {{tr("%1 pick first point"), {{Gui::MouseInput::MouseLeft}}},
+                toggleCenter,
+                toggleRotation}},
             {.state = InteractiveScaleState::PickingSecond,
-             .hints = {snap, {tr("%1 pick second point"), {MouseLeft}}, toggleCenter, toggleRotation}},
+             .hints
+             = {snap,
+                {tr("%1 pick second point"), {{Gui::MouseInput::MouseLeft}}},
+                toggleCenter,
+                toggleRotation}},
             {.state = InteractiveScaleState::Pending, .hints = {acceptDistance}},
         }
     );
