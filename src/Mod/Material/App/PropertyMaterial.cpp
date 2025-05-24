@@ -91,7 +91,7 @@ void PropertyMaterial::Restore(Base::XMLReader& reader)
     // read my Element
     reader.readElement("PropertyMaterial");
     // get the value of my Attribute
-    auto uuid = reader.getAttribute("uuid");
+    auto uuid = reader.getAttribute<const char*>("uuid");
 
     setValue(*MaterialManager::getManager().getMaterial(QString::fromLatin1(uuid)));
 }

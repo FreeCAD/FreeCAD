@@ -29,8 +29,6 @@
 
 namespace Gui {
 
-const int CheckboxSpacing = 18;
-
 ElideCheckBox::ElideCheckBox(QWidget *parent)
     : QCheckBox(parent) {
 }
@@ -39,18 +37,20 @@ void ElideCheckBox::paintEvent(QPaintEvent *event) {
     Q_UNUSED(event);
     QStyleOptionButton option;
     option.initFrom(this);
+
     option.state = (isChecked() ? QStyle::State_On : QStyle::State_Off) |
-                   (isEnabled() ? QStyle::State_Enabled : QStyle::State_ReadOnly);
+                   (isEnabled() ? QStyle::State_Enabled : QStyle::State_ReadOnly) |
+                   (underMouse() ? QStyle::State_MouseOver : QStyle::State_None) |
+                   (hasFocus() ? QStyle::State_HasFocus : QStyle::State_None);
 
     QPainter painter(this);
+
     style()->drawControl(QStyle::CE_CheckBox, &option, &painter, this);
 
-    QRect textRect = option.rect;
-    textRect.setX(textRect.x() + CheckboxSpacing);
+    QRect textRect = style()->subElementRect(QStyle::SE_CheckBoxContents, &option, this);
 
-    constexpr int padding = 4;
     QFontMetrics fm(font());
-    QString elidedText = fm.elidedText(text(), Qt::ElideRight, textRect.width() - padding);
+    QString elidedText = fm.elidedText(text(), Qt::ElideRight, textRect.width());
 
     painter.setPen(palette().color(QPalette::WindowText));
     painter.drawText(textRect, Qt::AlignLeft | Qt::AlignVCenter, elidedText);
@@ -58,7 +58,10 @@ void ElideCheckBox::paintEvent(QPaintEvent *event) {
 
 QSize ElideCheckBox::sizeHint() const {
     QFontMetrics fm(font());
-    int width = fm.horizontalAdvance(this->text()) + CheckboxSpacing;
+    int width =
+        fm.horizontalAdvance(this->text())
+        + style()->pixelMetric(QStyle::PM_IndicatorWidth, nullptr, this)
+        + style()->pixelMetric(QStyle::PM_CheckBoxLabelSpacing, nullptr, this);
     int height = fm.height();
     return {width, height};
 }
@@ -66,7 +69,10 @@ QSize ElideCheckBox::sizeHint() const {
 QSize ElideCheckBox::minimumSizeHint() const {
     QFontMetrics fm(font());
     QString minimumText = QStringLiteral("A...");
-    int width = fm.horizontalAdvance(minimumText) + CheckboxSpacing;
+    int width =
+        fm.horizontalAdvance(minimumText)
+        + style()->pixelMetric(QStyle::PM_IndicatorWidth, nullptr, this)
+        + style()->pixelMetric(QStyle::PM_CheckBoxLabelSpacing, nullptr, this);
     int height = fm.height();
     return {width, height};
 }

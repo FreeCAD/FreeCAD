@@ -344,12 +344,6 @@ public:
     //@{
     /// sets the file name which should be debugged
     void dbgObserveFile(const char* sFileName = "");
-    /// sets a break point to a special line number in the current file
-    void dbgSetBreakPoint(unsigned int uiLineNumber);
-    /// unsets a break point to a special line number in the current file
-    void dbgUnsetBreakPoint(unsigned int uiLineNumber);
-    /// One step further
-    void dbgStep();
     //@}
 
 

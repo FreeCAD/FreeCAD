@@ -692,7 +692,6 @@ Should multiple tools or tool shapes with the same name exist in different direc
   </layout>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
- <pixmapfunction>qPixmapFromMimeSource</pixmapfunction>
  <customwidgets>
   <customwidget>
    <class>Gui::InputField</class>

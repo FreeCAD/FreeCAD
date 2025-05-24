@@ -71,7 +71,7 @@ class PostGlyphFilter(base_fempythonobject.BaseFemPythonObject):
                 name="Glyph",
                 group="Glyph",
                 doc="The form of the glyph",
-                value=["Arrow", "Cube"],
+                value=["Arrow", "Cone", "Cube", "Cylinder", "Line", "Sphere"],
             ),
             _PropHelper(
                 type="App::PropertyEnumeration",
@@ -91,7 +91,7 @@ class PostGlyphFilter(base_fempythonobject.BaseFemPythonObject):
                 type="App::PropertyEnumeration",
                 name="VectorScaleMode",
                 group="Scale",
-                doc="If the scale data is a vector this property decides if the glyph is scaled by vector magnitude or by the individual components",
+                doc="If the scale data is a vector, this property decides if the glyph is scaled by vector magnitude or by the individual components",
                 value=["Not a vector"],
             ),
             _PropHelper(
@@ -106,7 +106,7 @@ class PostGlyphFilter(base_fempythonobject.BaseFemPythonObject):
                 name="MaskMode",
                 group="Masking",
                 doc="Which vertices are used as glyph locations",
-                value=["Use All", "Every Nth", "Uniform Samping"],
+                value=["Use All", "Every Nth", "Uniform Sampling"],
             ),
             _PropHelper(
                 type="App::PropertyIntegerConstraint",
@@ -119,7 +119,7 @@ class PostGlyphFilter(base_fempythonobject.BaseFemPythonObject):
                 type="App::PropertyIntegerConstraint",
                 name="MaxNumber",
                 group="Masking",
-                doc='Defines the maximal number of vertices used for "Uniform Sampling" masking mode',
+                doc='Defines the maximum number of vertices used for "Uniform Sampling" masking mode',
                 value=(1000, 1, 999999999, 1),
             ),
         ]
@@ -186,7 +186,14 @@ class PostGlyphFilter(base_fempythonobject.BaseFemPythonObject):
         self._algorithms = {}
 
         # create all vtkalgorithm combinations and set them as filter pipeline
-        sources = {"Arrow": vtkSources.vtkArrowSource, "Cube": vtkSources.vtkCubeSource}
+        sources = {
+            "Arrow": vtkSources.vtkArrowSource,
+            "Cone": vtkSources.vtkConeSource,
+            "Cube": vtkSources.vtkCubeSource,
+            "Cylinder": vtkSources.vtkCylinderSource,
+            "Line": vtkSources.vtkLineSource,
+            "Sphere": vtkSources.vtkSphereSource,
+        }
 
         for source_name in sources:
 

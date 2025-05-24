@@ -921,60 +921,60 @@ void CenterLine::Restore(Base::XMLReader &reader)
     // read my Element
     reader.readElement("Start");
     // get the value of my Attribute
-    m_start.x = reader.getAttributeAsFloat("X");
-    m_start.y = reader.getAttributeAsFloat("Y");
-    m_start.z = reader.getAttributeAsFloat("Z");
+    m_start.x = reader.getAttribute<double>("X");
+    m_start.y = reader.getAttribute<double>("Y");
+    m_start.z = reader.getAttribute<double>("Z");
 
     reader.readElement("End");
-    m_end.x = reader.getAttributeAsFloat("X");
-    m_end.y = reader.getAttributeAsFloat("Y");
-    m_end.z = reader.getAttributeAsFloat("Z");
+    m_end.x = reader.getAttribute<double>("X");
+    m_end.y = reader.getAttribute<double>("Y");
+    m_end.z = reader.getAttribute<double>("Z");
 
     reader.readElement("Mode");
-    m_mode = static_cast<Mode>(reader.getAttributeAsInteger("value"));
+    m_mode = reader.getAttribute<Mode>("value");
 
     reader.readElement("HShift");
-    m_hShift = reader.getAttributeAsFloat("value");
+    m_hShift = reader.getAttribute<double>("value");
     reader.readElement("VShift");
-    m_vShift = reader.getAttributeAsFloat("value");
+    m_vShift = reader.getAttribute<double>("value");
     reader.readElement("Rotate");
-    m_rotate = reader.getAttributeAsFloat("value");
+    m_rotate = reader.getAttribute<double>("value");
     reader.readElement("Extend");
-    m_extendBy = reader.getAttributeAsFloat("value");
+    m_extendBy = reader.getAttribute<double>("value");
     reader.readElement("Type");
-    m_type = static_cast<Type>(reader.getAttributeAsInteger("value"));
+    m_type = reader.getAttribute<Type>("value");
     reader.readElement("Flip");
-    m_flip2Line = (bool)reader.getAttributeAsInteger("value")==0?false:true;
+    m_flip2Line = reader.getAttribute<bool>("value") == 0;
 
     reader.readElement("Faces");
-    int count = reader.getAttributeAsInteger("FaceCount");
+    int count = reader.getAttribute<long>("FaceCount");
 
     int i = 0;
     for ( ; i < count; i++) {
         reader.readElement("Face");
-        std::string f = reader.getAttribute("value");
+        std::string f = reader.getAttribute<const char*>("value");
         m_faces.push_back(f);
     }
     reader.readEndElement("Faces");
 
     reader.readElement("Edges");
-    count = reader.getAttributeAsInteger("EdgeCount");
+    count = reader.getAttribute<long>("EdgeCount");
 
     i = 0;
     for ( ; i < count; i++) {
         reader.readElement("Edge");
-        std::string e = reader.getAttribute("value");
+        std::string e = reader.getAttribute<const char*>("value");
         m_edges.push_back(e);
     }
     reader.readEndElement("Edges");
 
     reader.readElement("CLPoints");
-    count = reader.getAttributeAsInteger("CLPointCount");
+    count = reader.getAttribute<long>("CLPointCount");
 
     i = 0;
     for ( ; i < count; i++) {
         reader.readElement("CLPoint");
-        std::string p = reader.getAttribute("value");
+        std::string p = reader.getAttribute<const char*>("value");
         m_verts.push_back(p);
     }
     reader.readEndElement("CLPoints");
@@ -982,20 +982,20 @@ void CenterLine::Restore(Base::XMLReader &reader)
     // style is deprecated in favour of line number, but we still save and restore it
     // to avoid problems with old documents.
     reader.readElement("Style");
-    m_format.setStyle(reader.getAttributeAsInteger("value"));
+    m_format.setStyle(reader.getAttribute<long>("value"));
     reader.readElement("Weight");
-    m_format.setWidth(reader.getAttributeAsFloat("value"));
+    m_format.setWidth(reader.getAttribute<double>("value"));
     reader.readElement("Color");
-    std::string tempHex = reader.getAttribute("value");
+    std::string tempHex = reader.getAttribute<const char*>("value");
     Base::Color tempColor;
     tempColor.fromHexString(tempHex);
     m_format.setColor(tempColor);
     reader.readElement("Visible");
-    m_format.setVisible( (int)reader.getAttributeAsInteger("value")==0 ? false : true);
+    m_format.setVisible(reader.getAttribute<bool>("value"));
 
 //stored geometry
     reader.readElement("GeometryType");
-    GeomType gType = static_cast<GeomType>(reader.getAttributeAsInteger("value"));
+    GeomType gType = reader.getAttribute<GeomType>("value");
     if (gType == GeomType::GENERIC) {
         TechDraw::GenericPtr gen = std::make_shared<TechDraw::Generic> ();
         gen->Restore(reader);
@@ -1024,7 +1024,7 @@ void CenterLine::Restore(Base::XMLReader &reader)
         if(strcmp(reader.localName(),"LineNumber") == 0 ||
            strcmp(reader.localName(),"ISOLineNumber") == 0 ) {
             // this centerline has an LineNumber attribute
-            m_format.setLineNumber(reader.getAttributeAsInteger("value"));
+            m_format.setLineNumber(reader.getAttribute<long>("value"));
         } else {
             // LineNumber not found.
             m_format.setLineNumber(LineFormat::InvalidLine);

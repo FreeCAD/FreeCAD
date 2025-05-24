@@ -346,7 +346,7 @@ void DrawComplexSection::makeAlignedPieces(const TopoDS_Shape& rawShape)
     uRotateAxis.Normalize();
 
 
-    // the reversers control left to right vs right to left (or top to bottom vs botttom to top)
+    // the reversers control left to right vs right to left (or top to bottom vs bottom to top)
     // arrangement of the cut pieces.
     double horizReverser{1.0};
     double verticalReverser{1.0};

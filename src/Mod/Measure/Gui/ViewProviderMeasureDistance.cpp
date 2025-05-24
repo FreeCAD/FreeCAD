@@ -212,16 +212,13 @@ void MeasureGui::DimensionLinear::setupDimension()
     textTransform->translation.connectFrom(&textVecCalc->oA);
     textSep->addChild(textTransform);
 
-    SoFont* fontNode = new SoFont();
-    fontNode->name.setValue("Helvetica : Bold");
-    fontNode->size.connectFrom(&fontSize);
-    textSep->addChild(fontNode);
-
     auto textNode = new SoFrameLabel();
     textNode->justification = SoText2::CENTER;
     textNode->string.connectFrom(&text);
     textNode->textColor.connectFrom(&dColor);
     textNode->backgroundColor.connectFrom(&backgroundColor);
+    textNode->size.connectFrom(&fontSize);
+    textNode->name.setValue("Helvetica");
     textSep->addChild(textNode);
 
     // this prevents the 2d text from screwing up the bounding box for a viewall
@@ -416,18 +413,21 @@ ViewProviderMeasureDistance::ViewProviderMeasureDistance()
     dimDeltaX->point2.connectFrom(&composeVecDelta1->vector);
     dimDeltaX->setupDimension();
     dimDeltaX->dColor.setValue(colorX);
+    dimDeltaX->fontSize.connectFrom(&fieldFontSize);
 
     auto dimDeltaY = new MeasureGui::DimensionLinear();
     dimDeltaY->point1.connectFrom(&composeVecDelta1->vector);
     dimDeltaY->point2.connectFrom(&composeVecDelta2->vector);
     dimDeltaY->setupDimension();
     dimDeltaY->dColor.setValue(colorY);
+    dimDeltaY->fontSize.connectFrom(&fieldFontSize);
 
     auto dimDeltaZ = new MeasureGui::DimensionLinear();
     dimDeltaZ->point2.connectFrom(&composeVecDelta2->vector);
     dimDeltaZ->point1.connectFrom(&fieldPosition2);
     dimDeltaZ->setupDimension();
     dimDeltaZ->dColor.setValue(colorZ);
+    dimDeltaZ->fontSize.connectFrom(&fieldFontSize);
 
     pDeltaDimensionSwitch = new SoSwitch();
     pDeltaDimensionSwitch->ref();
@@ -506,14 +506,6 @@ void ViewProviderMeasureDistance::onChanged(const App::Property* prop)
     if (prop == &ShowDelta) {
         pDeltaDimensionSwitch->whichChild.setValue(ShowDelta.getValue() ? SO_SWITCH_ALL
                                                                         : SO_SWITCH_NONE);
-    }
-    else if (prop == &FontSize) {
-        static_cast<DimensionLinear*>(pDeltaDimensionSwitch->getChild(0))
-            ->fontSize.setValue(FontSize.getValue());
-        static_cast<DimensionLinear*>(pDeltaDimensionSwitch->getChild(1))
-            ->fontSize.setValue(FontSize.getValue());
-        static_cast<DimensionLinear*>(pDeltaDimensionSwitch->getChild(2))
-            ->fontSize.setValue(FontSize.getValue());
     }
     else if (prop == &TextBackgroundColor) {
         auto bColor = TextBackgroundColor.getValue();

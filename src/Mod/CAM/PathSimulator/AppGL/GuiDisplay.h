@@ -40,16 +40,20 @@ enum eGuiItems
     eGuiItemPause,
     eGuiItemPlay,
     eGuiItemSingleStep,
+    eGuiItemSlower,
     eGuiItemFaster,
+    eGuiItemX,
+    eGuiItem1,
+    eGuiItem5,
+    eGuiItem10,
+    eGuiItem25,
+    eGuiItem50,
     eGuiItemRotate,
-    eGuiItemCharXImg,
-    eGuiItemChar0Img,
-    eGuiItemChar1Img,
-    eGuiItemChar4Img,
     eGuiItemPath,
     eGuiItemAmbientOclusion,
     eGuiItemView,
-    eGuiItemMax
+    eGuiItemHome,
+    eGuiItemMax  // this element must be the last item always
 };
 
 struct GuiItem

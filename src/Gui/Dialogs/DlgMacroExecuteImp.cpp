@@ -22,6 +22,7 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
+#include <QDesktopServices>
 #include <QInputDialog>
 #include <QLabel>
 #include <QMessageBox>
@@ -152,6 +153,8 @@ void DlgMacroExecuteImp::setupConnections()
             this, &DlgMacroExecuteImp::onToolbarButtonClicked);
     connect(ui->addonsButton, &QPushButton::clicked,
             this, &DlgMacroExecuteImp::onAddonsButtonClicked);
+    connect(ui->folderButton, &QPushButton::clicked,
+            this, &DlgMacroExecuteImp::onFolderButtonClicked);
     connect(ui->userMacroListBox, &QTreeWidget::currentItemChanged,
             this, &DlgMacroExecuteImp::onUserMacroListBoxCurrentItemChanged);
     connect(ui->systemMacroListBox, &QTreeWidget::currentItemChanged,
@@ -1064,4 +1067,14 @@ void DlgMacroExecuteImp::onAddonsButtonClicked()
     this->fillUpList();
 }
 
+/**
+ * convenience link button to open folder with macros
+ * from within macro dialog
+ */
+void DlgMacroExecuteImp::onFolderButtonClicked()
+{
+    QString path = QString::fromStdString(App::Application::getUserMacroDir());
+    QUrl url = QUrl::fromLocalFile(path);
+    QDesktopServices::openUrl(url);
+}
 #include "moc_DlgMacroExecuteImp.cpp"

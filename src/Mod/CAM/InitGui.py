@@ -164,7 +164,7 @@ class CAMWorkbench(Workbench):
         )
         threedcmdgroup = threedopcmdlist
         if Path.Preferences.experimentalFeaturesEnabled():
-            prepcmdlist.append("CAM_Shape")
+            prepcmdlist.append("CAM_PathShapeTC")
             extracmdlist.extend(["CAM_Area", "CAM_Area_Workplane"])
             specialcmdlist.append("CAM_ThreadMilling")
             twodopcmdlist.append("CAM_Slot")
@@ -320,6 +320,8 @@ class CAMWorkbench(Workbench):
                 menuAppended = True
             if isinstance(obj.Proxy, Path.Op.Base.ObjectOp):
                 self.appendContextMenu("", ["CAM_OperationCopy", "CAM_OpActiveToggle"])
+                if hasattr(obj, "StartPoint"):
+                    self.appendContextMenu("", ["CAM_SetStartPoint"])
                 menuAppended = True
             if obj.isDerivedFrom("Path::Feature"):
                 if (
