@@ -310,7 +310,7 @@ class Arc(gui_base_original.Creator):
             ]
         elif self.step == 2:
             return [
-                Gui.InputHint(translate("draft", "%1 pick staring angle"), Gui.UserInput.MouseLeft),
+                Gui.InputHint(translate("draft", "%1 pick starting angle"), Gui.UserInput.MouseLeft),
                 hint_continue,
             ]
         elif self.step == 3:
