@@ -145,6 +145,7 @@ public:
     virtual ~DrawSketchHandler();
 
     void activate(ViewProviderSketch*);
+    void setSketchGui(ViewProviderSketch* vp);
     void deactivate() override;
 
     virtual void mouseMove(Base::Vector2d pos) = 0;
