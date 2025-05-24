@@ -507,15 +507,13 @@ private:
 public:
     std::list<Gui::InputHint> getToolHints() const override
     {
-        using enum Gui::InputHint::UserInput;
-
         const Gui::InputHint elementsHint {
             tr("%1/%2 increase/decrease number of elements", "Sketcher Translate: hint"),
-            {KeyU, KeyJ}
+            {{Qt::Key_U}, {Qt::Key_J}}
         };
         const Gui::InputHint rowsHint {
             tr("%1/%2 increase/decrease number of rows", "Sketcher Translate: hint"),
-            {KeyR, KeyF}
+            {{Qt::Key_R}, {Qt::Key_F}}
         };
 
         return Gui::lookupHints<SelectMode>(
@@ -524,19 +522,22 @@ public:
                 {.state = SelectMode::SeekFirst,
                  .hints =
                      {
-                         {tr("%1 pick reference point", "Sketcher Translate: hint"), {MouseLeft}},
+                         {tr("%1 pick reference point", "Sketcher Translate: hint"),
+                          {{Gui::MouseInput::MouseLeft}}},
                      }},
                 {.state = SelectMode::SeekSecond,
                  .hints =
                      {
-                         {tr("%1 set translation vector", "Sketcher Translate: hint"), {MouseLeft}},
+                         {tr("%1 set translation vector", "Sketcher Translate: hint"),
+                          {{Gui::MouseInput::MouseLeft}}},
                          elementsHint,
                          rowsHint,
                      }},
                 {.state = SelectMode::SeekThird,
                  .hints =
                      {
-                         {tr("%1 set second translation vector", "Sketcher Translate: hint"), {MouseLeft}},
+                         {tr("%1 set second translation vector", "Sketcher Translate: hint"),
+                          {{Gui::MouseInput::MouseLeft}}},
                          elementsHint,
                          rowsHint,
                      }},

@@ -168,20 +168,18 @@ public:
 
     std::list<Gui::InputHint> getToolHints() const override
     {
-        using enum Gui::InputHint::UserInput;
-
         return Gui::lookupHints<SelectMode>(
             state(),
             {
                 {.state = SelectMode::SeekFirst,
                  .hints =
                      {
-                         {tr("%1 pick reference point"), {MouseLeft}},
+                         {tr("%1 pick reference point"), {{Gui::MouseInput::MouseLeft}}},
                      }},
                 {.state = SelectMode::SeekSecond,
                  .hints =
                      {
-                         {tr("%1 set scale factor"), {MouseLeft}},
+                         {tr("%1 set scale factor"), {{Gui::MouseInput::MouseLeft}}},
                      }},
             });
     }

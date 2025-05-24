@@ -429,12 +429,13 @@ private:
 public:
     std::list<Gui::InputHint> getToolHints() const override
     {
-        using enum Gui::InputHint::UserInput;
-
-        const Gui::InputHint switchModeHint {.message = tr("%1 switch mode"), .sequences = {KeyM}};
+        const Gui::InputHint switchModeHint {
+            .message = tr("%1 switch mode"),
+            .sequences = {{Qt::Key_M}}
+        };
         const Gui::InputHint preserveCornerHint {
             .message = tr("%1 toggle preserve corner"),
-            .sequences = {KeyU}
+            .sequences = {{Qt::Key_U}}
         };
 
         return Gui::lookupHints<SelectMode>(
@@ -442,14 +443,19 @@ public:
             {
                 {.state = SelectMode::SeekFirst,
                  .hints
-                 = {{tr("%1 pick first edge or point"), {MouseLeft}},
+                 = {{tr("%1 pick first edge or point"), {{Gui::MouseInput::MouseLeft}}},
                     switchModeHint,
                     preserveCornerHint}},
                 {.state = SelectMode::SeekSecond,
                  .hints
-                 = {{tr("%1 pick second edge"), {MouseLeft}}, switchModeHint, preserveCornerHint}},
+                 = {{tr("%1 pick second edge"), {{Gui::MouseInput::MouseLeft}}},
+                    switchModeHint,
+                    preserveCornerHint}},
                 {.state = SelectMode::End,
-                 .hints = {{tr("%1 create fillet"), {MouseLeft}}, switchModeHint, preserveCornerHint}},
+                 .hints
+                 = {{tr("%1 create fillet"), {{Gui::MouseInput::MouseLeft}}},
+                    switchModeHint,
+                    preserveCornerHint}},
             }
         );
     }
