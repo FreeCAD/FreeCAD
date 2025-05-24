@@ -23,7 +23,10 @@
 
 #include <algorithm>
 #include <array>
+#include <optional>
+#include <ranges>
 #include <tuple>
+#include <utility>
 
 #include <QBuffer>
 #include <QPainter>
@@ -39,114 +42,122 @@ namespace
 {
 constexpr int iconSize = 22;
 constexpr int iconMargin = 2;
-}  // namespace
 
-using Hint = Gui::InputHint::UserInput;
-
-// clang-format off
-static constexpr auto mouseIconPaths = std::to_array<std::tuple<Hint, const char*>>({
-    {Hint::Mouse, ":/icons/user-input/mouse.svg"},
-    {Hint::MouseLeft, ":/icons/user-input/mouse-left.svg"},
-    {Hint::MouseRight, ":/icons/user-input/mouse-right.svg"},
-    {Hint::MouseMove, ":/icons/user-input/mouse-move.svg"},
-    {Hint::MouseMoveLeft, ":/icons/user-input/mouse-move-left.svg"},
-    {Hint::MouseMoveMiddle, ":/icons/user-input/mouse-move-middle.svg"},
-    {Hint::MouseMoveRight, ":/icons/user-input/mouse-move-right.svg"},
-    {Hint::MouseDoubleLeft, ":/icons/user-input/mouse-double-left.svg"},
-    {Hint::MouseMiddle, ":/icons/user-input/mouse-middle.svg"},
-    {Hint::MouseScroll, ":/icons/user-input/mouse-scroll.svg"},
-    {Hint::MouseScrollDown, ":/icons/user-input/mouse-scroll-down.svg"},
-    {Hint::MouseScrollUp, ":/icons/user-input/mouse-scroll-up.svg"},
+constexpr auto modifierKeys = std::to_array<std::pair<Qt::KeyboardModifier, Qt::Key>>({
+    {Qt::ShiftModifier, Qt::Key_Shift},
+    {Qt::ControlModifier, Qt::Key_Control},
+    {Qt::AltModifier, Qt::Key_Alt},
+    {Qt::MetaModifier, Qt::Key_Meta},
 });
 
-static constexpr auto userInputStr = std::to_array<std::tuple<Hint, const char*>>({
-    // Keyboard Keys
-    {Hint::KeySpace, "  ␣  "},
-    {Hint::KeyNumberSign, "-/+"},
+// Returns the second element of the first table entry whose first element equals key
+template<typename Table, typename Key>
+constexpr auto lookup(const Table& table, const Key& key)
+    -> std::optional<std::tuple_element_t<1, std::ranges::range_value_t<Table>>>
+{
+    const auto it = std::ranges::find_if(table, [&key](const auto& entry) {
+        return std::get<0>(entry) == key;
+    });
+    if (it != std::ranges::end(table)) {
+        return std::get<1>(*it);
+    }
+    return std::nullopt;
+}
+}  // namespace
 
-    // misc keys
-    //: Keyboard key for Escape
-    {Hint::KeyEscape, QT_TRANSLATE_NOOP("Gui::InputHintWidget", "Esc")},
-    //: Keyboard key for Tab
-    {Hint::KeyTab, QT_TRANSLATE_NOOP("Gui::InputHintWidget", "Tab ⭾")},
-    //: Keyboard key for Backtab
-    {Hint::KeyBacktab, QT_TRANSLATE_NOOP("Gui::InputHintWidget", "Backtab")},
-    {Hint::KeyBackspace, "⌫"},
-    {Hint::KeyReturn, "↵"},
-    //: Keyboard key for numpad Enter
-    {Hint::KeyEnter, QT_TRANSLATE_NOOP("Gui::InputHintWidget", "Enter")},
-    //: Keyboard key for Insert
-    {Hint::KeyInsert, QT_TRANSLATE_NOOP("Gui::InputHintWidget", "Insert")},
-    //: Keyboard key for Delete
-    {Hint::KeyDelete, QT_TRANSLATE_NOOP("Gui::InputHintWidget", "Del")},
-    //: Keyboard key for Pause
-    {Hint::KeyPause, QT_TRANSLATE_NOOP("Gui::InputHintWidget", "Pause")},
-    //: Keyboard key for Print
-    {Hint::KeyPrintScr, QT_TRANSLATE_NOOP("Gui::InputHintWidget", "Print")},
-    //: Keyboard key for SysReq
-    {Hint::KeySysReq, QT_TRANSLATE_NOOP("Gui::InputHintWidget", "SysReq")},
-    //: Keyboard key for Clear
-    {Hint::KeyClear, QT_TRANSLATE_NOOP("Gui::InputHintWidget", "Clear")},
+using namespace Gui;
+using Input = InputHint::UserInput;
 
-    // cursor movement
-    //: Keyboard key for Home
-    {Hint::KeyHome, QT_TRANSLATE_NOOP("Gui::InputHintWidget", "Home")},
-    //: Keyboard key for End
-    {Hint::KeyEnd, QT_TRANSLATE_NOOP("Gui::InputHintWidget", "End")},
-    {Hint::KeyLeft, "←"},
-    {Hint::KeyUp, "↑"},
-    {Hint::KeyRight, "→"},
-    {Hint::KeyDown, "↓"},
-    //: Keyboard key for Page Up
-    {Hint::KeyPageUp, QT_TRANSLATE_NOOP("Gui::InputHintWidget", "PgUp")},
-    //: Keyboard key for Page Down
-    {Hint::KeyPageDown, QT_TRANSLATE_NOOP("Gui::InputHintWidget", "PgDown")},
+// clang-format off
+static constexpr auto mouseIconPaths = std::to_array<std::tuple<Input, const char*>>({
+    {MouseInput::Mouse, ":/icons/user-input/mouse.svg"},
+    {MouseInput::MouseLeft, ":/icons/user-input/mouse-left.svg"},
+    {MouseInput::MouseRight, ":/icons/user-input/mouse-right.svg"},
+    {MouseInput::MouseMove, ":/icons/user-input/mouse-move.svg"},
+    {MouseInput::MouseMoveLeft, ":/icons/user-input/mouse-move-left.svg"},
+    {MouseInput::MouseMoveMiddle, ":/icons/user-input/mouse-move-middle.svg"},
+    {MouseInput::MouseMoveRight, ":/icons/user-input/mouse-move-right.svg"},
+    {MouseInput::MouseDoubleLeft, ":/icons/user-input/mouse-double-left.svg"},
+    {MouseInput::MouseMiddle, ":/icons/user-input/mouse-middle.svg"},
+    {MouseInput::MouseScroll, ":/icons/user-input/mouse-scroll.svg"},
+    {MouseInput::MouseScrollDown, ":/icons/user-input/mouse-scroll-down.svg"},
+    {MouseInput::MouseScrollUp, ":/icons/user-input/mouse-scroll-up.svg"},
+});
+
+// Symbols shown as they are, without translation
+static constexpr auto keySymbols = std::to_array<std::tuple<Input, const char*>>({
+    {Qt::Key_Space, "  ␣  "},
+    {Qt::Key_NumberSign, "-/+"},
+    {Qt::Key_Backspace, "⌫"},
+    {Qt::Key_Return, "↵"},
+    {Qt::Key_Left, "←"},
+    {Qt::Key_Up, "↑"},
+    {Qt::Key_Right, "→"},
+    {Qt::Key_Down, "↓"},
 
     // modifiers
 #if defined (FC_OS_MACOSX)
-    {Hint::KeyShift, "⇧"},
-    {Hint::KeyControl, "⌘"},
-    {Hint::KeyMeta, "⌃"},
-    {Hint::KeyAlt, "⌥"},
+    {Qt::Key_Shift, "⇧"},
+    {Qt::Key_Control, "⌘"},
+    {Qt::Key_Meta, "⌃"},
+    {Qt::Key_Alt, "⌥"},
+#elif defined(FC_OS_WIN32)
+    {Qt::Key_Meta, "⊞ Win"},
 #else
-    //: Keyboard key for Shift on Windows & Linux
-    {Hint::KeyShift, QT_TRANSLATE_NOOP("Gui::InputHintWidget", "⇧ Shift")},
-    //: Keyboard key for Control on Windows & Linux
-    {Hint::KeyControl, QT_TRANSLATE_NOOP("Gui::InputHintWidget", "Ctrl")},
-#if defined(FC_OS_WIN32)
-    {Hint::KeyMeta, "⊞ Win"},
-#else
-    {Hint::KeyMeta, "❖ Meta"},
+    {Qt::Key_Meta, "❖ Meta"},
 #endif
-    //: Keyboard key for Alt on Windows & Linux
-    {Hint::KeyAlt, QT_TRANSLATE_NOOP("Gui::InputHintWidget", "Alt")},
-#endif
-    //: Keyboard key for Caps Lock
-    {Hint::KeyCapsLock, QT_TRANSLATE_NOOP("Gui::InputHintWidget", "Caps Lock")},
-    //: Keyboard key for Num Lock
-    {Hint::KeyNumLock, QT_TRANSLATE_NOOP("Gui::InputHintWidget", "Num Lock")},
-    //: Keyboard key for Scroll Lock
-    {Hint::KeyScrollLock, QT_TRANSLATE_NOOP("Gui::InputHintWidget", "Scroll Lock")},
 });
 
-static constexpr std::array excludeHints {
-    Hint::ModifierShift,
-    Hint::ModifierCtrl,
-    Hint::ModifierAlt,
-    Hint::ModifierMeta,
-    Hint::Mouse,
-    Hint::MouseMove,
-    Hint::MouseMoveLeft,
-    Hint::MouseMoveMiddle,
-    Hint::MouseMoveRight,
-    Hint::MouseDoubleLeft,
-    Hint::MouseLeft,
-    Hint::MouseRight,
-    Hint::MouseMiddle,
-    Hint::MouseScroll,
-    Hint::MouseScrollUp,
-    Hint::MouseScrollDown,
-};
+// Labels translated in the Gui::InputHintWidget context
+static constexpr auto keyLabels = std::to_array<std::tuple<Input, const char*>>({
+    // misc keys
+    //: Keyboard key for Escape
+    {Qt::Key_Escape, QT_TRANSLATE_NOOP("Gui::InputHintWidget", "Esc")},
+    //: Keyboard key for Tab
+    {Qt::Key_Tab, QT_TRANSLATE_NOOP("Gui::InputHintWidget", "Tab ⭾")},
+    //: Keyboard key for Backtab
+    {Qt::Key_Backtab, QT_TRANSLATE_NOOP("Gui::InputHintWidget", "Backtab")},
+    //: Keyboard key for numpad Enter
+    {Qt::Key_Enter, QT_TRANSLATE_NOOP("Gui::InputHintWidget", "Enter")},
+    //: Keyboard key for Insert
+    {Qt::Key_Insert, QT_TRANSLATE_NOOP("Gui::InputHintWidget", "Insert")},
+    //: Keyboard key for Delete
+    {Qt::Key_Delete, QT_TRANSLATE_NOOP("Gui::InputHintWidget", "Del")},
+    //: Keyboard key for Pause
+    {Qt::Key_Pause, QT_TRANSLATE_NOOP("Gui::InputHintWidget", "Pause")},
+    //: Keyboard key for Print
+    {Qt::Key_Print, QT_TRANSLATE_NOOP("Gui::InputHintWidget", "Print")},
+    //: Keyboard key for SysReq
+    {Qt::Key_SysReq, QT_TRANSLATE_NOOP("Gui::InputHintWidget", "SysReq")},
+    //: Keyboard key for Clear
+    {Qt::Key_Clear, QT_TRANSLATE_NOOP("Gui::InputHintWidget", "Clear")},
+
+    // cursor movement
+    //: Keyboard key for Home
+    {Qt::Key_Home, QT_TRANSLATE_NOOP("Gui::InputHintWidget", "Home")},
+    //: Keyboard key for End
+    {Qt::Key_End, QT_TRANSLATE_NOOP("Gui::InputHintWidget", "End")},
+    //: Keyboard key for Page Up
+    {Qt::Key_PageUp, QT_TRANSLATE_NOOP("Gui::InputHintWidget", "PgUp")},
+    //: Keyboard key for Page Down
+    {Qt::Key_PageDown, QT_TRANSLATE_NOOP("Gui::InputHintWidget", "PgDown")},
+
+    // modifiers
+#if !defined(FC_OS_MACOSX)
+    //: Keyboard key for Shift on Windows & Linux
+    {Qt::Key_Shift, QT_TRANSLATE_NOOP("Gui::InputHintWidget", "⇧ Shift")},
+    //: Keyboard key for Control on Windows & Linux
+    {Qt::Key_Control, QT_TRANSLATE_NOOP("Gui::InputHintWidget", "Ctrl")},
+    //: Keyboard key for Alt on Windows & Linux
+    {Qt::Key_Alt, QT_TRANSLATE_NOOP("Gui::InputHintWidget", "Alt")},
+#endif
+    //: Keyboard key for Caps Lock
+    {Qt::Key_CapsLock, QT_TRANSLATE_NOOP("Gui::InputHintWidget", "Caps Lock")},
+    //: Keyboard key for Num Lock
+    {Qt::Key_NumLock, QT_TRANSLATE_NOOP("Gui::InputHintWidget", "Num Lock")},
+    //: Keyboard key for Scroll Lock
+    {Qt::Key_ScrollLock, QT_TRANSLATE_NOOP("Gui::InputHintWidget", "Scroll Lock")},
+});
 // clang-format on
 
 Gui::InputHintWidget::InputHintWidget(QWidget* parent)
@@ -226,13 +237,7 @@ void Gui::InputHintWidget::clearHints()
 
 std::optional<const char*> Gui::InputHintWidget::getCustomIconPath(const InputHint::UserInput key)
 {
-    auto it = std::ranges::find_if(mouseIconPaths, [key](const auto& input) {
-        return std::get<0>(input) == key;
-    });
-    if (it != mouseIconPaths.end()) {
-        return std::get<1>(*it);
-    }
-    return std::nullopt;
+    return lookup(mouseIconPaths, key);
 }
 
 QPixmap Gui::InputHintWidget::generateKeyIcon(const InputHint::UserInput key, const QColor color, int height)
@@ -269,25 +274,29 @@ QPixmap Gui::InputHintWidget::generateKeyIcon(const InputHint::UserInput key, co
     return pixmap;
 }
 
-QString Gui::InputHintWidget::inputRepresentation(const InputHint::UserInput key)
+QString Gui::InputHintWidget::inputRepresentation(InputHint::UserInput key)
 {
+    // A modifier is shown the same way as its key, so only the key is listed in the tables
+    if (auto modifier = std::get_if<Qt::KeyboardModifier>(&key)) {
+        if (auto modifierKey = lookup(modifierKeys, *modifier)) {
+            key = *modifierKey;
+        }
+    }
+
     // Custom string representation
-    auto it = std::ranges::find_if(userInputStr, [key](const auto& input) {
-        return std::get<0>(input) == key;
-    });
-    if (it != userInputStr.end()) {
-        return tr(std::get<1>(*it));
+    if (auto symbol = lookup(keySymbols, key)) {
+        return QString::fromUtf8(*symbol);
+    }
+    if (auto label = lookup(keyLabels, key)) {
+        return tr(*label);
     }
 
-    // Disallowed user input
-    auto jt = std::find_if(excludeHints.begin(), excludeHints.end(), [key](const auto& hint) {
-        return hint == key;
-    });
-    if (jt != excludeHints.end()) {
-        return QStringLiteral("???");
+    if (auto qtkey = std::get_if<Qt::Key>(&key)) {
+        // Generic key
+        QKeySequence ks(static_cast<int>(*qtkey));
+        return ks.toString(QKeySequence::NativeText);
     }
 
-    // Generic user input
-    QKeySequence ks(static_cast<int>(key));
-    return ks.toString(QKeySequence::NativeText);
+    // Mouse inputs have icons, supported modifiers were mapped to keys above
+    return QStringLiteral("???");
 }

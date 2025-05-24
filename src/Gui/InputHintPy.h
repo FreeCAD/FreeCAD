@@ -23,9 +23,14 @@
 
 #pragma once
 
+#include <optional>
+
 #include <Base/PyObjectBase.h>
+
+#include "InputHint.h"
 
 namespace Gui
 {
 void registerUserInputEnumInPython(PyObject* module);
+std::optional<InputHint::UserInput> userInputFromValue(long value);
 }  // Namespace Gui

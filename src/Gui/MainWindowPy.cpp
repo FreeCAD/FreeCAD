@@ -27,6 +27,7 @@
 #include <Base/TypePy.h>
 
 #include "DocumentPy.h"
+#include "InputHintPy.h"
 #include "MainWindowPy.h"
 #include "MainWindow.h"
 #include "MDIView.h"
@@ -246,7 +247,10 @@ Py::Object MainWindowPy::showHint(const Py::Tuple& args)
     static auto userInputFromPyObject = [](const Py::Object& object) -> InputHint::UserInput {
         Py::Long value(object.getAttr("value"));
 
-        return static_cast<InputHint::UserInput>(value.as_long());
+        if (auto input = userInputFromValue(value.as_long())) {
+            return *input;
+        }
+        throw Py::ValueError("Unsupported user input: " + object.repr().as_std_string());
     };
 
     static auto inputSequenceFromPyObject = [](const Py::Object& sequence) -> InputHint::InputSequence {
