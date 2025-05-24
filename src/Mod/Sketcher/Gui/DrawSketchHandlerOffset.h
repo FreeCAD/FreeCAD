@@ -1198,7 +1198,7 @@ void DSHOffsetController::doChangeDrawSketchHandlerMode()
 {
     switch (handler->state()) {
         case SelectMode::SeekFirst: {
-            if (onViewParameters[OnViewParameter::First]->isSet) {
+            if (onViewParameters[OnViewParameter::First]->hasFinishedEditing) {
                 handler->setState(SelectMode::End);
             }
         } break;
