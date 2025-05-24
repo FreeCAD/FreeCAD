@@ -186,3 +186,46 @@ class TestArchComponent(TestArchBase.TestArchBase):
             msg=f"Vertical area > 0.1% | Exp: {theoreticalVerticalArea:.3f} | "
                 f"Got: {actualVerticalArea:.3f}"
         )
+
+    def test_remove_single_window_from_wall_host_is_none(self):
+        """
+        Tests that a window is removed from its wall's host list when
+        Arch.removeComponents is called with host=None (single window selection scenario).
+
+        See https://github.com/FreeCAD/FreeCAD/issues/21551
+        """
+
+        # Create a basic wall
+        wall_base = Draft.makeLine(App.Vector(0,0,0), App.Vector(3000,0,0))
+        wall = Arch.makeWall(wall_base, width=200, height=2500)
+
+        # Create a window to be added to the wall
+        window_width = 1000.0
+        window_height = 1200.0
+
+        # Create a Draft Rectangle for the window's Base. Arch.makeWindow can work with
+        # either a Wire or a Face.
+        window_base = Draft.makeRectangle(length=window_width, height=window_height)
+
+        window = Arch.makeWindow(baseobj=window_base)
+        window.Width = window_width   # Manually set as makeWindow(base) doesn't
+        window.Height = window_height # Manually set
+
+        self.document.recompute()
+
+        # Add the window to the wall.
+        Arch.addComponents(window, wall)
+        self.document.recompute()
+
+        # Pre-condition check: ensure the wall is indeed a host for the window.
+        self.assertIn(wall, window.Hosts, "Wall should be in window.Hosts before removal.")
+        self.assertEqual(len(window.Hosts), 1, "Window should have 1 host before removal.")
+
+        # Simulate the Arch_Remove command with the scenario where only the window
+        # is selected and "Remove" is used.
+        Arch.removeComponents([window], host=None)
+        self.document.recompute() # Important for Arch objects to update their state.
+
+        # Assert: the wall should no longer be in the window's Hosts list.
+        self.assertNotIn(wall, window.Hosts, "Wall should not be in window.Hosts after removal.")
+        self.assertEqual(len(window.Hosts), 0, "Window.Hosts list should be empty after removal.")
