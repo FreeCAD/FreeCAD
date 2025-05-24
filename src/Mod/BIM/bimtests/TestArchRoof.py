@@ -25,7 +25,6 @@
 # Unit tests for the Arch wall module
 
 import os
-import unittest
 import Arch
 import Draft
 import Part
@@ -147,3 +146,12 @@ class TestArchRoof(TestArchBase.TestArchBase):
         roof.recompute()
         self.assertFalse(roof.Shape.isNull(), "'{}' failed".format(operation))
         self.assertTrue(roof.Shape.isValid(), "'{}' failed".format(operation))
+
+    def test_makeRoof(self):
+        """Test the makeRoof function."""
+        operation = "Testing makeRoof function"
+        self.printTestMessage(operation)
+
+        roof = Arch.makeRoof(name="TestRoof")
+        self.assertIsNotNone(roof, "makeRoof failed to create a roof object.")
+        self.assertEqual(roof.Label, "TestRoof", "Roof label is incorrect.")
