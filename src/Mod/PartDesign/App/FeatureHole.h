@@ -239,6 +239,8 @@ private:
 
     void addCutType(const CutDimensionSet& dimensions);
     void updateHoleCutParams();
+    void calculateAndSetCounterbore();
+    void calculateAndSetCountersink();
     std::optional<double> determineDiameter() const;
     void updateDiameterParam();
     void updateThreadDepthParam();
