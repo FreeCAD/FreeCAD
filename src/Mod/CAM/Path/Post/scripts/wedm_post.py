@@ -448,7 +448,7 @@ def parse(pathobj):
                 if command == lastcommand:
                     outstring.pop(0)
 
-            if command[0] == "(":  # command is a comment
+            if command.startswith("("):  # command is a comment
                 if OUTPUT_COMMENTS:  # Edit comment  with COMMENT_CHAR
                     outstring.insert(0, COMMENT_CHAR)
                 else:

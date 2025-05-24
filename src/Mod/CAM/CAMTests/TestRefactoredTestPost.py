@@ -1115,6 +1115,42 @@ G54
 
     #############################################################################
 
+    def test00191(self):
+        """Make sure postprocessor doesn't crash on blank lines"""
+
+        path = [
+            Path.Command("G0 X1"),
+            Path.Command(""),
+            Path.Command("G0 X2"),
+        ]
+
+        self.post.values["OUTPUT_BLANK_LINES"] = True
+        self.multi_compare(
+            path,
+            """G90
+G21
+G54
+G0 X1.000
+
+G0 X2.000
+""",
+            "",
+        )
+
+        self.post.values["OUTPUT_BLANK_LINES"] = False
+        self.multi_compare(
+            path,
+            """G90
+G21
+G54
+G0 X1.000
+G0 X2.000
+""",
+            "",
+        )
+
+    #############################################################################
+
     def test00200(self):
         """Test Outputting visible arguments.
 

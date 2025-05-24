@@ -496,7 +496,7 @@ def parse(pathobj):
             if command == "G80" and lastcommand == nextcommand:
                 continue
 
-            if c.Name[0] == "(" and not OUTPUT_COMMENTS:  # command is a comment
+            if c.Name.startswith("(") and not OUTPUT_COMMENTS:  # command is a comment
                 continue
 
             # Now add the remaining parameters in order

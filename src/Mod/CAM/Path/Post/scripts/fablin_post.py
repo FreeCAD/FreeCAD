@@ -199,9 +199,12 @@ def export(objectslist, filename, argstring):
 
     print("done postprocessing.")
 
-    gfile = pyopen(filename, "w")
-    gfile.write(final)
-    gfile.close()
+    if not filename == "-":
+        gfile = pyopen(filename, "w")
+        gfile.write(final)
+        gfile.close()
+
+    return final
 
 
 def linenumber():
@@ -251,7 +254,7 @@ def parse(pathobj):
             command = c.Name
 
             # fablin does not support parenthesis syntax, so removing that (pocket) in the agnostic gcode
-            if command[0] == "(":
+            if command.startswith("("):
                 if not OUTPUT_COMMENTS:
                     pass
             else:

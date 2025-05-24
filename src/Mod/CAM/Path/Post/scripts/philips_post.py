@@ -352,6 +352,7 @@ def linenumberify(GCodeString):
 
 
 def export(objectslist, filename, argstring):
+    processArguments(argstring)
     global UNITS
     global linenr
 
@@ -412,7 +413,7 @@ def export(objectslist, filename, argstring):
                 command = command.replace("G0", "G")  # normalize: G01 -> G1
 
             if command != UNITS or UNITS_INCLUDED:
-                if command[0] == "(":
+                if command.startswith("("):
                     command = PostUtils.fcoms(command, COMMENT)
                 # the mapping is done for output only! For internal things we
                 # still use the old value.
@@ -584,8 +585,16 @@ def export(objectslist, filename, argstring):
                 lastcommand = c.Name
     gcode = gcode.replace("_", "-")
     gcode += linenumberify(GCODE_FOOTER)
-    if SHOW_EDITOR:
-        PostUtils.editor(gcode)
-    gfile = pyopen(filename, "w")
-    gfile.write(gcode)
-    gfile.close()
+
+    # show the gCode result dialog
+    if FreeCAD.GuiUp and SHOW_EDITOR:
+        final = PostUtils.editor(gcode)
+    else:
+        final = gcode
+
+    if not filename == "-":
+        gfile = pyopen(filename, "w")
+        gfile.write(final)
+        gfile.close()
+
+    return final
