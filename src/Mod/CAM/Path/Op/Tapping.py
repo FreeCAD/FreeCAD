@@ -177,8 +177,6 @@ class ObjectTapping(PathCircularHoleBase.ObjectOp):
         # http://linuxcnc.org/docs/html/gcode/g-code.html#gcode:g98-g99
         self.commandlist.append(Path.Command(obj.ReturnLevel))
 
-        holes = PathUtils.sort_locations(holes, ["x", "y"])
-
         # This section is technical debt. The computation of the
         # target shapes should be factored out for reuse.
         # This will likely mean refactoring upstream CircularHoleBase to pass
