@@ -893,10 +893,7 @@ void Hole::updateHoleCutParams()
                 if (holeCutTypeStr == "Counterdrill") {
                     HoleCutDepth.setValue(1.0);
                 } else {
-                    HoleCutDepth.setValue(
-                        (HoleCutDiameter.getValue() / 2)
-                        / std::tan(HoleCutCountersinkAngle.getValue() / 2)
-                    );
+                    ProfileBased::onChanged(&HoleCutDiameter);
                 }
             }
             HoleCutDiameter.setReadOnly(false);
@@ -1043,10 +1040,7 @@ void Hole::updateHoleCutParams()
                 if (holeCutTypeStr == "Counterdrill") {
                     HoleCutDepth.setValue(1.0);
                 } else {
-                    HoleCutDepth.setValue(
-                        (HoleCutDiameter.getValue() / 2)
-                        / std::tan(HoleCutCountersinkAngle.getValue() / 2)
-                    );
+                    ProfileBased::onChanged(&HoleCutDiameter);
                 }
             }
             HoleCutDiameter.setReadOnly(false);
@@ -1656,9 +1650,21 @@ void Hole::onChanged(const App::Property* prop)
             || isDynamicCountersink(threadTypeString, holeCutTypeString))) {
             return;
         }
-        auto angle = HoleCutCountersinkAngle.getValue();
-        auto diameter = HoleCutDiameter.getValue();
-        HoleCutDepth.setValue((diameter / 2) * std::tan(Base::toRadians(angle) / 2));
+        auto angle = Base::toRadians(HoleCutCountersinkAngle.getValue());
+        constexpr double fallback = 2.0;
+        constexpr double EPSILON = 1e-6;
+        if (angle <= 0.0 || angle >= std::numbers::pi) {
+            HoleCutDepth.setValue(fallback);
+        } else {
+            double tanHalfAngle = std::tan(angle / 2.0);
+            if (std::abs(tanHalfAngle) < EPSILON) {
+                // Avoid near-zero division
+                HoleCutDepth.setValue(fallback);
+            } else {
+                double diameter = HoleCutDiameter.getValue();
+                HoleCutDepth.setValue((diameter / 2.0) / tanHalfAngle);
+            }
+        }
         ProfileBased::onChanged(&HoleCutDepth);
     }
     else if (prop == &DepthType) {
@@ -2536,10 +2542,9 @@ void Hole::calculateAndSetCountersink()
     // estimate a reasonable value since it's not on the standard
     double threadDiameter = Diameter.getValue();
     double dk = 2.24 * threadDiameter;
-    double k = 0.62 * threadDiameter;
 
     HoleCutDiameter.setValue(dk);
-    HoleCutDepth.setValue(k);
+    ProfileBased::onChanged(&HoleCutDiameter);
 }
 
 
