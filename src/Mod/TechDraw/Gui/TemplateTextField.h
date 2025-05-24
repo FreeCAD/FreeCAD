@@ -29,6 +29,8 @@
 #include <QGraphicsRectItem>
 #include <QGraphicsPathItem>
 
+#include "QGIUserTypes.h"
+
 namespace TechDraw {
 class DrawTemplate;
 }
@@ -49,7 +51,7 @@ class TechDrawGuiExport TemplateTextField : public QGraphicsItemGroup
 
         ~TemplateTextField() override = default;
 
-        enum {Type = QGraphicsItem::UserType + 160};
+        enum {Type = UserType::TemplateTextField};
         int type() const override { return Type;}
 
         /// Returns the field name that this TemplateTextField represents

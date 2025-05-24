@@ -31,6 +31,7 @@
 #include <QPointF>
 
 #include "QGIDecoration.h"
+#include "QGIUserTypes.h"
 
 namespace TechDraw {
 class DrawTile;
@@ -49,7 +50,7 @@ public:
     explicit QGITile(TechDraw::DrawTileWeld*);
     ~QGITile() override = default;
 
-    enum {Type = QGraphicsItem::UserType + 325};
+    enum {Type = UserType::QGITile};
     int type() const override { return Type;}
 
     QRectF boundingRect() const override;

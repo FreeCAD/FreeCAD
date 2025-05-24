@@ -27,6 +27,7 @@
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
 #include "QGIPrimPath.h"
+#include "QGIUserTypes.h"
 
 namespace TechDrawGui
 {
@@ -37,7 +38,7 @@ public:
     explicit QGIEdge(int index);
     ~QGIEdge() override = default;
 
-    enum {Type = QGraphicsItem::UserType + 103};
+    enum {Type = UserType::QGIEdge};
 
     int type() const override { return Type;}
     QRectF boundingRect() const override;

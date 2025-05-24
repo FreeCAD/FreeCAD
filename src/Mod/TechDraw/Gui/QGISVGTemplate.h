@@ -32,6 +32,7 @@ class QFile;
 class QString;
 
 #include "QGITemplate.h"
+#include "QGIUserTypes.h"
 
 namespace TechDraw
 {
@@ -50,10 +51,7 @@ public:
     explicit QGISVGTemplate(QGSPage* scene);
     ~QGISVGTemplate() override;
 
-    enum
-    {
-        Type = QGraphicsItem::UserType + 153
-    };
+    enum {Type = UserType::QGISVGTemplate};
     int type() const override { return Type; }
 
     void draw() override;

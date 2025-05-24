@@ -27,6 +27,7 @@
 
 #include "Enums.h"
 #include "QGCustomText.h"
+#include "QGIUserTypes.h"
 #include "QGIViewDimension.h"
 
 
@@ -40,7 +41,7 @@ public:
     QGIDatumLabel();
     ~QGIDatumLabel() override = default;
 
-    enum {Type = QGraphicsItem::UserType + 107};
+    enum {Type = UserType::QGIDatumLabel};
     int type() const override { return Type;}
 
     QRectF boundingRect() const override;

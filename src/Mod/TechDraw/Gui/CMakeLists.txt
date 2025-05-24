@@ -324,6 +324,7 @@ SET(TechDrawGuiView_SRCS
     QGIWeldSymbol.cpp
     QGITile.h
     QGITile.cpp
+    QGIUserTypes.h
     TemplateTextField.cpp
     TemplateTextField.h
     ZVALUE.h
