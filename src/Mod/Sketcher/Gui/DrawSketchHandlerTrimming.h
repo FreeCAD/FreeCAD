@@ -261,14 +261,13 @@ private:
 public:
     std::list<Gui::InputHint> getToolHints() const override
     {
-        using enum Gui::InputHint::UserInput;
-
         return Gui::lookupHints<SelectMode>(
             state(),
             {{.state = SelectMode::SeekFirst,
               .hints
-              = {{tr("%1 pick edge to trim", "Sketcher Trimming: hint"), {MouseLeft}},
-                 {tr("%1 toggle include axes as trim boundaries"), {KeyU}}}}}
+              = {{tr("%1 pick edge to trim", "Sketcher Trimming: hint"),
+                  {{Gui::MouseInput::MouseLeft}}},
+                 {tr("%1 toggle include axes as trim boundaries"), {{Qt::Key_U}}}}}}
         );
     }
 };

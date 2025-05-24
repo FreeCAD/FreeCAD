@@ -201,10 +201,9 @@ private:
 public:
     std::list<Gui::InputHint> getToolHints() const override
     {
-        using enum Gui::InputHint::UserInput;
-
         return {
-            {tr("%1 set offset direction and distance", "Sketcher Offset: hint"), {MouseLeft}},
+            {tr("%1 set offset direction and distance", "Sketcher Offset: hint"),
+             {{Gui::MouseInput::MouseLeft}}},
         };
     }
 
