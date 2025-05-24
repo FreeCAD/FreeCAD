@@ -5,7 +5,6 @@
 #include "Gui/InputHint.h"
 
 using namespace Gui;
-using enum InputHint::UserInput;
 
 class InputHintTest: public ::testing::Test
 {
@@ -34,12 +33,12 @@ protected:
 };
 
 // Define the constants
-const InputHint InputHintTest::firstHint = {QString("First hint"), {{KeySpace}}};
-const InputHint InputHintTest::secondHint = {QString("Second hint"), {{KeyEnter}}};
-const InputHint InputHintTest::firstMethodHint = {QString("First method hint"), {{KeyA}}};
-const InputHint InputHintTest::secondMethodHint = {QString("Second method hint"), {{KeyB}}};
-const InputHint InputHintTest::thirdMethodHint = {QString("Third method hint"), {{KeyC}}};
-const InputHint InputHintTest::fourthMethodHint = {QString("Fourth method hint"), {{KeyD}}};
+const InputHint InputHintTest::firstHint = {QString("First hint"), {{Qt::Key_Space}}};
+const InputHint InputHintTest::secondHint = {QString("Second hint"), {{Qt::Key_Enter}}};
+const InputHint InputHintTest::firstMethodHint = {QString("First method hint"), {{Qt::Key_A}}};
+const InputHint InputHintTest::secondMethodHint = {QString("Second method hint"), {{Qt::Key_B}}};
+const InputHint InputHintTest::thirdMethodHint = {QString("Third method hint"), {{Qt::Key_C}}};
+const InputHint InputHintTest::fourthMethodHint = {QString("Fourth method hint"), {{Qt::Key_D}}};
 
 TEST_F(InputHintTest, LookupHintsSimpleState)
 {
