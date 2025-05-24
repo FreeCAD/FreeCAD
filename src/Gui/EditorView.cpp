@@ -671,7 +671,6 @@ void EditorView::updateInputHints()
         return;
     }
 
-    using enum Gui::InputHint::UserInput;
 
     std::list<Gui::InputHint> hints;
 
@@ -685,28 +684,30 @@ void EditorView::updateInputHints()
 
     if (editorFocus) {
 
-        hints.push_back({.message = tr("%1 search"), .sequences = {{ModifierCtrl, KeyF}}});
+        hints.push_back({.message = tr("%1 search"), .sequences = {{Qt::ControlModifier, Qt::Key_F}}});
 
-        hints.push_back({.message = tr("%1 toggle breakpoint"), .sequences = {{KeyF9}}});
+        hints.push_back({.message = tr("%1 toggle breakpoint"), .sequences = {{Qt::Key_F9}}});
 
         hints.push_back(
-            {.message = tr("(%1) %2 (un)indent"), .sequences = {{ModifierShift}, {KeyTab}}}
+            {.message = tr("(%1) %2 (un)indent"), .sequences = {{Qt::ShiftModifier}, {Qt::Key_Tab}}}
         );
 
         if (hasSelection) {
             hints.push_back(
-                {.message = tr("%1 / %2 (un)comment"), .sequences = {{ModifierAlt, KeyC}, {KeyU}}}
+                {.message = tr("%1 / %2 (un)comment"),
+                 .sequences = {{Qt::AltModifier, Qt::Key_C}, {Qt::Key_U}}}
             );
 
             hints.push_back(
                 {.message = tr("%1 execute selection"),
-                 .sequences = {{ModifierAlt, ModifierShift, KeyP}}}
+                 .sequences = {{Qt::AltModifier, Qt::ShiftModifier, Qt::Key_P}}}
             );
         }
 
         if (d->textEdit->hasCompletion()) {
             hints.push_back(
-                {.message = tr("%1 auto-complete"), .sequences = {{ModifierCtrl, KeySpace}}}
+                {.message = tr("%1 auto-complete"),
+                 .sequences = {{Qt::ControlModifier, Qt::Key_Space}}}
             );
         }
     }
@@ -716,10 +717,10 @@ void EditorView::updateInputHints()
         bool hasText = !d->searchBar->getSearchText().isEmpty();
 
         if (hasText) {
-            hints.push_back({.message = tr("%1 next result"), .sequences = {{KeyReturn}}});
+            hints.push_back({.message = tr("%1 next result"), .sequences = {{Qt::Key_Return}}});
         }
 
-        hints.push_back({.message = tr("%1 close search"), .sequences = {{KeyEscape}}});
+        hints.push_back({.message = tr("%1 close search"), .sequences = {{Qt::Key_Escape}}});
     }
 
     else {
