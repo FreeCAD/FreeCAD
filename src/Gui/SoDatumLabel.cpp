@@ -187,7 +187,7 @@ void SoDatumLabel::drawImage()
     QColor front;
     front.setRgbF(t[0],t[1], t[2]);
 
-    QImage image(w, h,QImage::Format_ARGB32_Premultiplied);
+    QImage image(w, h, QImage::Format_ARGB32);
     image.fill(0x00000000);
 
     QPainter painter(&image);
@@ -1686,7 +1686,7 @@ void SoDatumLabel::drawText(SoState *state, int srcw, int srch, float angle, con
     else {
         glTexImage2D(GL_TEXTURE_2D, 0, nc, srcw, srch, 0, GL_RGBA, GL_UNSIGNED_BYTE,(const GLvoid*)  dataptr);
     }
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
 
     glMatrixMode(GL_MODELVIEW);
     glPushMatrix();
