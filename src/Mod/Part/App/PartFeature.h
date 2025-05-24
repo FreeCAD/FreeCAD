@@ -151,8 +151,6 @@ public:
     static Feature*
     create(const TopoShape& shape, const char* name = nullptr, App::Document* document = nullptr);
 
-    static bool isElementMappingDisabled(App::PropertyContainer *container);
-
     bool getCameraAlignmentDirection(Base::Vector3d &directionZ, Base::Vector3d &directionX, const char *subname) const override;
 
     static void guessNewLink(std::string &replacementName, DocumentObject *base, const char *oldLink);
