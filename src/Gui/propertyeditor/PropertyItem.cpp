@@ -29,6 +29,7 @@
 #include <limits>
 #include <QApplication>
 #include <QComboBox>
+#include <QCheckBox>
 #include <QFontDatabase>
 #include <QLocale>
 #include <QMessageBox>
@@ -1383,27 +1384,30 @@ void PropertyBoolItem::setValue(const QVariant& value)
 
 QWidget* PropertyBoolItem::createEditor(QWidget* parent,
                                         const std::function<void()>& method,
-                                        FrameOption frameOption) const
+                                        FrameOption /*frameOption*/) const
 {
-    auto cb = new QComboBox(parent);
-    cb->setFrame(static_cast<bool>(frameOption));
-    cb->addItem(QLatin1String("false"));
-    cb->addItem(QLatin1String("true"));
-    cb->setDisabled(isReadOnly());
-    QObject::connect(cb, qOverload<int>(&QComboBox::activated), method);
-    return cb;
+    auto checkbox = new QCheckBox(parent);
+    checkbox->setEnabled(!isReadOnly());
+    QObject::connect(checkbox, &QCheckBox::toggled, [method, checkbox]() {
+        method();
+        checkbox->clearFocus();
+    });
+    return checkbox;
 }
 
 void PropertyBoolItem::setEditorData(QWidget* editor, const QVariant& data) const
 {
-    auto cb = qobject_cast<QComboBox*>(editor);
-    cb->setCurrentIndex(cb->findText(data.toString()));
+    if (auto checkbox = qobject_cast<QCheckBox*>(editor)) {
+        checkbox->setChecked(data.toBool());
+    }
 }
 
 QVariant PropertyBoolItem::editorData(QWidget* editor) const
 {
-    auto cb = qobject_cast<QComboBox*>(editor);
-    return {cb->currentText()};
+    if (auto checkbox = qobject_cast<QCheckBox*>(editor)) {
+        return checkbox->isChecked();
+    }
+    return false;
 }
 
 // ---------------------------------------------------------------
