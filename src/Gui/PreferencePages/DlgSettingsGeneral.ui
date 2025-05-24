@@ -161,21 +161,6 @@
          <property name="prefPath" stdset="0">
           <cstring>General</cstring>
          </property>
-         <item>
-          <property name="text">
-           <string>Operating system</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>Selected language</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>C/POSIX</string>
-          </property>
-         </item>
         </widget>
        </item>
        <item row="4" column="2">
