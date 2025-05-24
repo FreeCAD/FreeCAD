@@ -27,9 +27,11 @@
 #include "GlUtils.h"
 #include <iostream>
 
+using std::numbers::pi;
+
 #define N_MILL_SLICES 8
-#define MAX_SEG_DEG (PI / 2.0f)   // 90 deg
-#define NIN_SEG_DEG (PI / 90.0f)  // 2 deg
+#define MAX_SEG_DEG (pi / 2.0f)   // 90 deg
+#define NIN_SEG_DEG (pi / 90.0f)  // 2 deg
 #define SWEEP_ARC_PAD 1.05f
 #define PX 0
 #define PY 1
@@ -53,7 +55,7 @@ bool IsArcMotion(MillMotion* m)
 }
 
 float MillPathSegment::mResolution = 1;
-float MillPathSegment::mSmallRadStep = (PI / 8);
+float MillPathSegment::mSmallRadStep = (pi / 8);
 
 MillPathSegment::MillPathSegment(EndMill* _endmill, MillMotion* from, MillMotion* to)
 {
@@ -93,7 +95,7 @@ MillPathSegment::MillPathSegment(EndMill* _endmill, MillMotion* from, MillMotion
         float endAng = atan2f(mCenter[PX] - to->x, to->y - mCenter[PY]);
         mSweepAng = (mStartAngRad - endAng) * mArcDir;
         if (mSweepAng < EPSILON) {
-            mSweepAng += PI * 2;
+            mSweepAng += pi * 2;
         }
         numSimSteps = (int)(mSweepAng / mStepAngRad) + 1;
         mStepAngRad = mArcDir * mSweepAng / numSimSteps;
@@ -240,12 +242,12 @@ float MillPathSegment::SetQuality(float quality, float maxStockDimension)
     if (mResolution < 0.5) {
         mResolution = 0.5;
     }
-    mSmallRadStep = PI / 8;
+    mSmallRadStep = pi / 8;
     if (quality < 4) {
-        mSmallRadStep = PI / 2;
+        mSmallRadStep = pi / 2;
     }
     else if (quality < 8) {
-        mSmallRadStep = PI / 4;
+        mSmallRadStep = pi / 4;
     }
     return mResolution;
 }

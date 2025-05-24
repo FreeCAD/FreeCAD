@@ -32,6 +32,7 @@
 
 #include "VolSim.h"
 
+using std::numbers::pi;
 
 //************************************************************************************************************
 // stock
@@ -559,7 +560,7 @@ void cStock::ApplyLinearTool(Point3D& p1, Point3D& p2, cSimTool& tool)
     // end cup
     for (float r = 0.5f; r <= rad; r += (float)SIM_WALK_RES) {
         Point3D cupCirc(perpDirX * r, perpDirY * r, pi2.z);
-        float rotang = 180 * SIM_WALK_RES / (3.1415926535 * r);
+        float rotang = 180 * SIM_WALK_RES / (pi * r);
         cupCirc.SetRotationAngle(-rotang);
         float z = pi2.z + tool.GetToolProfileAt(r / rad);
         for (float a = 0; a < cupAngle; a += rotang) {
@@ -588,9 +589,6 @@ void cStock::ApplyCircularTool(Point3D& p1, Point3D& p2, Point3D& cent, cSimTool
 
     Point3D xynorm = unit(Point3D(-cpx, -cpy, 0));
     float crad = sqrt(cpx * cpx + cpy * cpy);
-    // bool shortRad = (crad - rad) < 0.0001;
-    // if (shortRad)
-    //	rad = crad;
     float crad1 = std::max((float)0.5, crad - rad);
     float crad2 = crad + rad;
 
@@ -602,10 +600,10 @@ void cStock::ApplyCircularTool(Point3D& p1, Point3D& p2, Point3D& cent, cSimTool
 
     double ang = eang - sang;
     if (!isCCW && ang > 0) {
-        ang -= 2 * 3.1415926;
+        ang -= 2 * pi;
     }
     if (isCCW && ang < 0) {
-        ang += 2 * 3.1415926;
+        ang += 2 * pi;
     }
     ang = fabs(ang);
 
@@ -644,7 +642,7 @@ void cStock::ApplyCircularTool(Point3D& p1, Point3D& p2, Point3D& cent, cSimTool
     for (float r = 0.5f; r <= rad; r += (float)SIM_WALK_RES) {
         Point3D cupCirc(xynorm.x * r, xynorm.y * r, 0);
         float rotang = (float)SIM_WALK_RES / r;
-        int ndivs = (int)(3.1415926535 / rotang) + 1;
+        int ndivs = (int)(pi / rotang) + 1;
         if (!isCCW) {
             rotang = -rotang;
         }
@@ -699,7 +697,7 @@ void Point3D::SetRotationAngleRad(float angle)
 
 void Point3D::SetRotationAngle(float angle)
 {
-    SetRotationAngleRad(angle * 2 * 3.1415926535 / 360);
+    SetRotationAngleRad(angle * 2 * pi / 360);
 }
 
 void Point3D::UpdateCmd(Path::Command& cmd)
