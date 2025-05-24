@@ -6427,14 +6427,24 @@ Aborting op creation</source>
       <translation>Файл</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Custom.py" line="177"/>
-      <source>Custom file %s could not be found.</source>
-      <translation>Пользовательский файл %s не найден.</translation>
+    <location filename="../../../Path/Op/Custom.py" line="181"/>
+    <source>Total invalid lines in Custom Text G-code: %s</source>
+    <translation>Всего некорректных строк в тексте: %s</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Custom.py" line="186"/>
-      <source>Invalid G-code line: %s</source>
-      <translation>Недопустимая строка G-code: %s</translation>
+      <location filename="../../../Path/Op/Custom.py" line="190"/>
+      <source>Custom file %s could not be found.</source>
+      <translation>Не найден файл %s</translation>
+    </message>
+    <message>
+    <location filename="../../../Path/Op/Custom.py" line="205"/>
+    <source>Total invalid lines in Custom File G-code: %s</source>
+    <translation>Всего некорректных строк в файле: %s</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Custom.py" line="206"/>
+      <source>Please check lines: %s</source>
+      <translation>Пожалуйста проверьте строки: %s</translation>
     </message>
   </context>
   <context>
