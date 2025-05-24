@@ -28,7 +28,8 @@
 #include <Gui/BitmapFactory.h>
 #include <Gui/Notifications.h>
 #include <Gui/CommandT.h>
-
+#include <Gui/MainWindow.h>
+#include <Gui/InputHint.h>
 #include <Mod/Part/App/Geometry2d.h>
 
 #include <Mod/Sketcher/App/SketchObject.h>
@@ -84,8 +85,42 @@ public:
     ~DrawSketchHandlerArc() override = default;
 
 private:
+    void updateHints() const
+    {
+        using Gui::InputHint;
+
+        std::list<InputHint> hints;
+
+        switch (state()) {
+        case SelectMode::SeekFirst:
+            hints.push_back(InputHint(
+                QCoreApplication::translate("Sketcher", "%1 Pick arc center"),
+                { Gui::InputHint::UserInput::MouseLeft }
+            ));
+            break;
+        case SelectMode::SeekSecond:
+            hints.push_back(InputHint(
+                QCoreApplication::translate("Sketcher", "%1 Pick arc start point"),
+                { Gui::InputHint::UserInput::MouseLeft }
+            ));
+            break;
+        case SelectMode::SeekThird:
+            hints.push_back(InputHint(
+                QCoreApplication::translate("Sketcher", "%1 Pick arc end point"),
+                { Gui::InputHint::UserInput::MouseLeft }
+            ));
+            break;
+        default:
+            break;
+        }
+
+        Gui::getMainWindow()->showHints(hints);
+    }
+    
     void updateDataAndDrawToPosition(Base::Vector2d onSketchPos) override
     {
+        updateHints();
+
         switch (state()) {
             case SelectMode::SeekFirst: {
                 toolWidgetManager.drawPositionAtCursor(onSketchPos);
