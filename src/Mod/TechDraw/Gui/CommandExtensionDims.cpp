@@ -105,43 +105,36 @@ namespace TechDrawGui {
 //===========================================================================
 // TechDraw_ExtensionInsertDiameter
 //===========================================================================
-
-void execInsertPrefixChar(Gui::Command* cmd, std::string prefixFormat, const QAction *action = nullptr) {
+void execInsertPrefixChar(Gui::Command* cmd, const std::string& prefixFormat) {
     // insert a prefix character into the format specifier
     std::vector<Gui::SelectionObject> selection;
-    if (!_checkSelection(cmd, selection, QT_TRANSLATE_NOOP("Command","TechDraw Insert Prefix"))) {
+    if (!_checkSelection(cmd, selection, QObject::tr("TechDraw Insert Prefix").toStdString())) {
         return;
     }
 
     std::string prefixText(prefixFormat);
     if (prefixFormat.find("%s") != std::string::npos) {
         DlgTemplateField ui(Gui::getMainWindow());
-        const int MAX_PREFIX_LENGTH = 31;
-
-        if (action) {
-            if (action->objectName() == QStringLiteral("TechDraw_ExtensionInsertRepetition")) {
-                ui.setFieldName(QT_TR_NOOP("Repeat Count"));
-            }
-        }
-
-        ui.setFieldLength(MAX_PREFIX_LENGTH);
-        ui.setFieldContent("");
+        ui.setFieldName(QObject::tr("Repeat Count").toStdString());
+        ui.setFieldContent("1");
         if (ui.exec() != QDialog::Accepted) {
             return;
         }
 
-        char prefixData[(MAX_PREFIX_LENGTH + 1)*4];
-        snprintf(prefixData, sizeof(prefixData), prefixFormat.c_str(), ui.getFieldContent().toUtf8().constData());
-        prefixText = prefixData;
+        QString numberFromDialog = ui.getFieldContent();
+        QString qPrefixText = QStringLiteral("%1× ").arg(numberFromDialog);
+        prefixText = qPrefixText.toStdString();
     }
+    size_t prefixSize = prefixText.capacity();
 
-    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Insert Prefix"));
+    Gui::Command::openCommand(QObject::tr("Insert Prefix").toStdString().c_str());
     for (auto selected : selection) {
         auto object = selected.getObject();
         if (object->isDerivedFrom<TechDraw::DrawViewDimension>()) {
             auto dim = static_cast<TechDraw::DrawViewDimension*>(selected.getObject());
             std::string formatSpec = dim->FormatSpec.getStrValue();
-            formatSpec = prefixText + formatSpec;
+            formatSpec.reserve(formatSpec.capacity() + prefixSize);
+            formatSpec.insert(0, prefixText);
             dim->FormatSpec.setValue(formatSpec);
         }
     }
@@ -234,7 +227,7 @@ void CmdTechDrawExtensionInsertRepetition::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
 
-    execInsertPrefixChar(this, "%s× ", this->getAction()->action()); //× Multiplication sign U+00D7
+    execInsertPrefixChar(this, "%s× "); //× Multiplication sign U+00D7
 }
 
 bool CmdTechDrawExtensionInsertRepetition::isActive()
@@ -341,7 +334,7 @@ void CmdTechDrawExtensionInsertPrefixGroup::activated(int iMsg)
         execInsertPrefixChar(this, "□");
         break;
     case 2:                 //insert "n×" as prefix
-        execInsertPrefixChar(this, "%s× ", pcAction->actions().at(iMsg));
+        execInsertPrefixChar(this, "%s× ");
         break;
     case 3:                 //remove prefix characters
         execRemovePrefixChar(this);
