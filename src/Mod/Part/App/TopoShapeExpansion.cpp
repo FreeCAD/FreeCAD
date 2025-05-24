@@ -5689,10 +5689,6 @@ TopoShape& TopoShape::makeElementBoolean(const char* maker,
         }
     }
 
-    if (tolerance != 0.0 && _shapes.empty()) {
-        _shapes = shapes;
-    }
-
     const auto& inputs = _shapes.size() ? _shapes : shapes;
     if (inputs.empty()) {
         FC_THROWM(NullShapeException, "Null input shape");
@@ -5745,11 +5741,7 @@ TopoShape& TopoShape::makeElementBoolean(const char* maker,
 
     mk->SetArguments(shapeArguments);
     mk->SetTools(shapeTools);
-    if (tolerance > 0.0) {
-        mk->SetFuzzyValue(tolerance);
-    } else if (tolerance < 0.0) {
-        FCBRepAlgoAPIHelper::setAutoFuzzy(mk.get());
-    }
+    mk->SetFuzzyValue(tolerance);
     mk->Build();
     makeElementShape(*mk, inputs, op);
 
