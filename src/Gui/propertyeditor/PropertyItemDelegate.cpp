@@ -147,18 +147,15 @@ QWidget * PropertyItemDelegate::createEditor (QWidget * parent, const QStyleOpti
         return nullptr;
 
     auto childItem = static_cast<PropertyItem*>(index.internalPointer());
-    if (!childItem)
+    if (!childItem || childItem->isSeparator() || childItem->isReadOnly()) {
         return nullptr;
+    }
 
     auto parentEditor = qobject_cast<PropertyEditor*>(this->parent());
     if(parentEditor)
         parentEditor->closeEditor();
 
-    if (childItem->isSeparator())
-        return nullptr;
-
     FC_LOG("create editor " << index.row() << "," << index.column());
-
     QWidget* editor = nullptr;
     expressionEditor = nullptr;
     userEditor = nullptr;
