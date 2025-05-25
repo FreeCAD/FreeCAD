@@ -25,6 +25,7 @@
 
 #ifndef _PreComp_
 # include <QApplication>
+# include <QComboBox>
 # include <QModelIndex>
 # include <QPainter>
 #endif
@@ -127,7 +128,16 @@ bool PropertyItemDelegate::editorEvent (QEvent * event, QAbstractItemModel* mode
 
 bool PropertyItemDelegate::eventFilter(QObject *o, QEvent *ev)
 {
-    if (ev->type() == QEvent::FocusOut) {
+    if (ev->type() == QEvent::FocusIn) {
+        auto *comboBox = qobject_cast<QComboBox*>(o);
+        if (comboBox) {
+            auto parentEditor = qobject_cast<PropertyEditor*>(this->parent());
+            if (parentEditor && parentEditor->activeEditor == comboBox) {
+                comboBox->showPopup();
+            }
+        }
+    }
+    else if (ev->type() == QEvent::FocusOut) {
         auto parentEditor = qobject_cast<PropertyEditor*>(this->parent());
         auto widget = qobject_cast<QWidget*>(o);
         if (widget && parentEditor && parentEditor->activeEditor
@@ -218,6 +228,10 @@ void PropertyItemDelegate::valueChanged()
     if (propertyEditor) {
         Base::FlagToggler<> flag(changed);
         Q_EMIT commitData(propertyEditor);
+        auto *comboBox = qobject_cast<QComboBox*>(propertyEditor);
+        if (comboBox) {
+            Q_EMIT closeEditor(propertyEditor);
+        }
     }
 }
 
