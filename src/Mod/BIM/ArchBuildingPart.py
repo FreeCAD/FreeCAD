@@ -811,15 +811,14 @@ class ViewProviderBuildingPart:
         if FreeCADGui.activeWorkbench().name() != 'BIMWorkbench':
             return
         if (not hasattr(vobj,"DoubleClickActivates")) or vobj.DoubleClickActivates:
+            menuTxt = translate("Arch", "Activate")
+            actionActivate = QtGui.QAction(menuTxt, menu)
+            actionActivate.setCheckable(True)
             if FreeCADGui.ActiveDocument.ActiveView.getActiveObject("Arch") == self.Object:
-                menuTxt = translate("Arch", "Deactivate")
+                actionActivate.setChecked(True)
             else:
-                menuTxt = translate("Arch", "Activate")
-            actionActivate = QtGui.QAction(menuTxt,
-                                           menu)
-            QtCore.QObject.connect(actionActivate,
-                                   QtCore.SIGNAL("triggered()"),
-                                   self.activate)
+                actionActivate.setChecked(False)
+            actionActivate.triggered.connect(lambda _: self.activate(actionActivate))
             menu.addAction(actionActivate)
 
         actionSetWorkingPlane = QtGui.QAction(QtGui.QIcon(":/icons/Draft_SelectPlane.svg"),
@@ -859,17 +858,20 @@ class ViewProviderBuildingPart:
                                self.cloneUp)
         menu.addAction(actionCloneUp)
 
-    def activate(self):
+    def activate(self, action=None):
         vobj = self.Object.ViewObject
-
         if FreeCADGui.ActiveDocument.ActiveView.getActiveObject("Arch") == self.Object:
             FreeCADGui.ActiveDocument.ActiveView.setActiveObject("Arch", None)
             if vobj.SetWorkingPlane:
                 self.setWorkingPlane(restore=True)
+                if action:
+                    action.setChecked(False)
         elif (not hasattr(vobj,"DoubleClickActivates")) or vobj.DoubleClickActivates:
             FreeCADGui.ActiveDocument.ActiveView.setActiveObject("Arch", self.Object)
             if vobj.SetWorkingPlane:
                 self.setWorkingPlane()
+                if action:
+                    action.setChecked(True)
 
         FreeCADGui.Selection.clearSelection()
 
@@ -883,7 +885,9 @@ class ViewProviderBuildingPart:
             autoclip = vobj.AutoCutView
         if restore:
             if wp.label.rstrip("*") == self.Object.Label:
-                wp._previous()
+                prev = wp._previous()
+                print("prev: ", prev)
+
             if autoclip:
                 vobj.CutView = False
         else:
