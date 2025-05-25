@@ -814,7 +814,6 @@ class ViewProviderBuildingPart:
             menuTxt = translate("Arch", "Activate")
             actionActivate = QtGui.QAction(menuTxt, menu)
             actionActivate.setCheckable(True)
-            print("FreeCADGui.ActiveDocument.ActiveView.getActiveObject", FreeCADGui.ActiveDocument.ActiveView.getActiveObject("Arch"))
             if FreeCADGui.ActiveDocument.ActiveView.getActiveObject("Arch") == self.Object:
                 actionActivate.setChecked(True)
             else:
@@ -860,19 +859,14 @@ class ViewProviderBuildingPart:
         menu.addAction(actionCloneUp)
 
     def activate(self, action=None):
+        from draftutils.utils import toggle_working_plane
         vobj = self.Object.ViewObject
-        if FreeCADGui.ActiveDocument.ActiveView.getActiveObject("Arch") == self.Object:
-            FreeCADGui.ActiveDocument.ActiveView.setActiveObject("Arch", None)
-            if vobj.SetWorkingPlane:
-                self.setWorkingPlane(restore=True)
-                if action:
-                    action.setChecked(False)
-        elif (not hasattr(vobj,"DoubleClickActivates")) or vobj.DoubleClickActivates:
-            FreeCADGui.ActiveDocument.ActiveView.setActiveObject("Arch", self.Object)
-            if vobj.SetWorkingPlane:
-                self.setWorkingPlane()
-                if action:
-                    action.setChecked(True)
+        
+        if (not hasattr(vobj,"DoubleClickActivates")) or vobj.DoubleClickActivates:
+            if toggle_working_plane(self.Object, action, restore=True):
+                print("Setting active working plane to: ", self.Object.Label)
+            else:
+                print("Deactivating working plane from: ", self.Object.Label)
 
         FreeCADGui.Selection.clearSelection()
 

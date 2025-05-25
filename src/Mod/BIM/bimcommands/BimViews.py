@@ -101,6 +101,7 @@ class BIM_Views:
                     font = action.font()
                     font.setBold(True)
                     action.setFont(font)
+                    action.setCheckable(True)
 
                 self.dialog.menu.addAction(action)
                 setattr(self.dialog,"button"+button[0], action)
@@ -115,7 +116,6 @@ class BIM_Views:
             self.dialog.buttonRename.setIcon(
                 QtGui.QIcon(":/icons/accessories-text-editor.svg")
             )
-            self.dialog.buttonActivate.setIcon(QtGui.QIcon(":/icons/edit_OK.svg"))
 
             # set tooltips
             self.dialog.buttonAddLevel.setToolTip(translate("BIM","Creates a new level"))
@@ -135,7 +135,7 @@ class BIM_Views:
             self.dialog.buttonIsolate.triggered.connect(self.isolate)
             self.dialog.buttonSaveView.triggered.connect(self.saveView)
             self.dialog.buttonRename.triggered.connect(self.rename)
-            self.dialog.buttonActivate.triggered.connect(self.activate)
+            self.dialog.buttonActivate.triggered.connect(lambda: BIM_Views.activate(self.dialog))
             self.dialog.tree.itemClicked.connect(self.select)
             self.dialog.tree.itemDoubleClicked.connect(show)
             self.dialog.viewtree.itemDoubleClicked.connect(show)
@@ -431,14 +431,16 @@ class BIM_Views:
                     item = vm.tree.selectedItems()[-1]
                     vm.tree.editItem(item, 0)
     @staticmethod
-    def activate():
+    def activate(dialog=None):
+        from draftutils.utils import toggle_working_plane
         vm = findWidget()
         if vm:
             if vm.tree.selectedItems():
-                if vm.tree.selectedItems():
-                    item = vm.tree.selectedItems()[-1]
-                    obj = FreeCAD.ActiveDocument.getObject(item.toolTip(0))
-                    obj.ViewObject.Proxy.setWorkingPlane()
+                item = vm.tree.selectedItems()[-1]
+                obj = FreeCAD.ActiveDocument.getObject(item.toolTip(0))
+                if obj:
+                    toggle_working_plane(obj, None, restore=True, dialog=dialog)
+                    FreeCADGui.Selection.clearSelection()
 
     def editObject(self, item, column):
         "renames or edit height of the actual object"
@@ -564,6 +566,10 @@ class BIM_Views:
             if selobj:
                 if Draft.getType(selobj).startswith("Ifc"):
                     self.dialog.buttonAddProxy.setEnabled(False)
+                if FreeCADGui.ActiveDocument.ActiveView.getActiveObject("Arch") == selobj:
+                    self.dialog.buttonActivate.setChecked(True)
+                else:
+                    self.dialog.buttonActivate.setChecked(False)
         self.dialog.menu.exec_(self.dialog.tree.mapToGlobal(pos))
 
     def getViews(self):

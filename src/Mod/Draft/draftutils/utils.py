@@ -1068,4 +1068,57 @@ def pyopen(file, mode='r', buffering=-1, encoding=None, errors=None, newline=Non
         encoding = 'utf-8'
     return open(file, mode, buffering, encoding, errors, newline, closefd, opener)
 
+def toggle_working_plane(obj, action=None, restore=False, dialog=None):
+    """Toggle the active state of a working plane object.
+
+    This function handles the common logic for activating and deactivating
+    working plane objects like BuildingParts and WorkingPlaneProxies.
+    It can be used by different modules that need to implement similar
+    working plane activation behavior.
+
+    Parameters
+    ----------
+    obj : App::DocumentObject
+        The object to activate or deactivate as a working plane.
+    action : QAction, optional
+        The action button that triggered this function, to update its checked state.
+    restore : bool, optional
+        If True, will restore the previous working plane when deactivating.
+        Defaults to False.
+    dialog : QDialog, optional
+        If provided, will update the checked state of the activate button in the dialog.
+
+    Returns
+    -------
+    bool
+        True if the object was activated, False if it was deactivated.
+    """
+    import FreeCADGui
+    
+    # Check if the object is already active
+    is_active = (FreeCADGui.ActiveDocument.ActiveView.getActiveObject("Arch") == obj)
+    
+    if is_active:
+        # Deactivate the object
+        FreeCADGui.ActiveDocument.ActiveView.setActiveObject("Arch", None)
+        if hasattr(obj, "ViewObject") and hasattr(obj.ViewObject, "Proxy") and \
+           hasattr(obj.ViewObject.Proxy, "setWorkingPlane"):
+            obj.ViewObject.Proxy.setWorkingPlane(restore=True)
+        if action:
+            action.setChecked(False)
+        if dialog and hasattr(dialog, "buttonActivate"):
+            dialog.buttonActivate.setChecked(False)
+        return False
+    else:
+        # Activate the object
+        FreeCADGui.ActiveDocument.ActiveView.setActiveObject("Arch", obj)
+        if hasattr(obj, "ViewObject") and hasattr(obj.ViewObject, "Proxy") and \
+           hasattr(obj.ViewObject.Proxy, "setWorkingPlane"):
+            obj.ViewObject.Proxy.setWorkingPlane()
+        if action:
+            action.setChecked(True)
+        if dialog and hasattr(dialog, "buttonActivate"):
+            dialog.buttonActivate.setChecked(True)
+        return True
+
 ## @}
