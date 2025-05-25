@@ -665,17 +665,6 @@ def show(item, column=None):
             if type == "BuildingPart" or type == "IfcBuildingStorey":
                 BIM_Views.activate()
 
-        # perform stored interactions
-        if getattr(obj.ViewObject, "SetWorkingPlane", False):
-            obj.ViewObject.Proxy.setWorkingPlane()
-        if getattr(obj.ViewObject, "DoubleClickActivates", True):
-            if Draft.getType(obj) == "BuildingPart":
-                FreeCADGui.ActiveDocument.ActiveView.setActiveObject("Arch", obj)
-            elif Draft.getType(obj) == "IfcBuildingStorey":
-                FreeCADGui.ActiveDocument.ActiveView.setActiveObject("NativeIFC", obj)
-            else:
-                FreeCADGui.ActiveDocument.ActiveView.setActiveObject("Arch", None)
-                FreeCADGui.ActiveDocument.ActiveView.setActiveObject("NativeIFC", None)
     if vm:
         # store the last double-clicked item for the BIM WPView command
         if isinstance(item, str) or (
