@@ -25,15 +25,15 @@
 
 #ifndef _PreComp_
 #include <sstream>
+
+#include <boost/iostreams/device/array.hpp>
+#include <boost/iostreams/stream.hpp>
 #endif
 
 #include "PropertyContainer.h"
 #include "Property.h"
 #include "DocumentObject.h"
 #include <Base/PyWrapParseTupleAndKeywords.h>
-
-#include <boost/iostreams/device/array.hpp>
-#include <boost/iostreams/stream.hpp>
 
 // inclusion of the generated files (generated out of PropertyContainerPy.xml)
 #include "PropertyContainerPy.h"
