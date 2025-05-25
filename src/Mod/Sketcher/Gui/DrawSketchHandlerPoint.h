@@ -27,6 +27,7 @@
 #include <Gui/Notifications.h>
 #include <Gui/Command.h>
 #include <Gui/CommandT.h>
+#include <Gui/InputHint.h>
 
 #include <Mod/Sketcher/App/SketchObject.h>
 
@@ -59,8 +60,28 @@ public:
     ~DrawSketchHandlerPoint() override = default;
 
 private:
+    void updateHints() const
+    {
+        using Gui::InputHint;
+
+        std::list<InputHint> hints;
+
+        switch (state()) {
+            case SelectMode::SeekFirst:
+                hints.push_back(
+                    InputHint(QCoreApplication::translate("Sketcher", "%1 click to place a point"),
+                              {Gui::InputHint::UserInput::MouseLeft}));
+                break;
+            default:
+                break;
+        }
+
+        Gui::getMainWindow()->showHints(hints);
+    }
     void updateDataAndDrawToPosition(Base::Vector2d onSketchPos) override
     {
+        updateHints();
+
         switch (state()) {
             case SelectMode::SeekFirst: {
                 toolWidgetManager.drawPositionAtCursor(onSketchPos);
