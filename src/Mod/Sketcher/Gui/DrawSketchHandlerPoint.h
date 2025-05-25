@@ -63,6 +63,7 @@ private:
     void updateHints() const
     {
         using Gui::InputHint;
+        using UserInput = Gui::InputHint::UserInput;
 
         std::list<InputHint> hints;
 
@@ -70,7 +71,7 @@ private:
             case SelectMode::SeekFirst:
                 hints.push_back(
                     InputHint(QCoreApplication::translate("Sketcher", "%1 click to place a point"),
-                              {Gui::InputHint::UserInput::MouseLeft}));
+                              {UserInput::MouseLeft}));
                 break;
             default:
                 break;
