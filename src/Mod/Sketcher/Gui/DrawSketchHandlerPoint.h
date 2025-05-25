@@ -72,6 +72,9 @@ private:
                 hints.push_back(
                     InputHint(QCoreApplication::translate("Sketcher", "%1 click to place a point"),
                               {UserInput::MouseLeft}));
+
+                hints.push_back(InputHint(QCoreApplication::translate("Sketcher", "%1 cancel"),
+                                          {UserInput::KeyEscape}));
                 break;
             default:
                 break;
