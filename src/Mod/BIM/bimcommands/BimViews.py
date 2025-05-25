@@ -661,7 +661,9 @@ def show(item, column=None):
                 vparam.SetBool("RadialGradient", False)
         else:
             # case 3: This is maybe a BuildingPart. Place the WP on it")
-            BIM_Views.activate()
+            type = Draft.getType(obj)
+            if type == "BuildingPart" or type == "IfcBuildingStorey":
+                BIM_Views.activate()
 
         # perform stored interactions
         if getattr(obj.ViewObject, "SetWorkingPlane", False):

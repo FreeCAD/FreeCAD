@@ -890,9 +890,13 @@ class ViewProviderBuildingPart:
                             break
 
                     if prev_obj:
-                        import FreeCADGui
-                        FreeCADGui.ActiveDocument.ActiveView.setActiveObject("Arch", prev_obj)
-                        print("Set active object to:", prev_obj.Label)
+                        # check in which context we need to set the active object
+                        context = "Arch"
+                        obj_type = Draft.getType(prev_obj)
+                        if obj_type == "IfcBuildingStorey":
+                            context = "NativeIFC"
+                        FreeCADGui.ActiveDocument.ActiveView.setActiveObject(context, prev_obj)
+                        print(f"Set active object to: {prev_obj.Label} (context: {context})")
 
             if autoclip:
                 vobj.CutView = False

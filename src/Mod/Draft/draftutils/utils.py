@@ -1094,13 +1094,25 @@ def toggle_working_plane(obj, action=None, restore=False, dialog=None):
         True if the object was activated, False if it was deactivated.
     """
     import FreeCADGui
+    import Draft
     
-    # Check if the object is already active
-    is_active = (FreeCADGui.ActiveDocument.ActiveView.getActiveObject("Arch") == obj)
+    # Determine the appropriate context based on object type
+    context = "Arch"
+    obj_type = get_type(obj)
+    if obj_type == "IfcBuildingStorey":
+        context = "NativeIFC"
     
+    # Check if the object is already active in its context
+    is_active_arch = (FreeCADGui.ActiveDocument.ActiveView.getActiveObject("Arch") == obj)
+    is_active_ifc = (FreeCADGui.ActiveDocument.ActiveView.getActiveObject("NativeIFC") == obj)
+    is_active = is_active_arch or is_active_ifc
     if is_active:
         # Deactivate the object
-        FreeCADGui.ActiveDocument.ActiveView.setActiveObject("Arch", None)
+        if is_active_arch:
+            FreeCADGui.ActiveDocument.ActiveView.setActiveObject("Arch", None)
+        if is_active_ifc:
+            FreeCADGui.ActiveDocument.ActiveView.setActiveObject("NativeIFC", None)
+
         if hasattr(obj, "ViewObject") and hasattr(obj.ViewObject, "Proxy") and \
            hasattr(obj.ViewObject.Proxy, "setWorkingPlane"):
             obj.ViewObject.Proxy.setWorkingPlane(restore=True)
@@ -1111,7 +1123,7 @@ def toggle_working_plane(obj, action=None, restore=False, dialog=None):
         return False
     else:
         # Activate the object
-        FreeCADGui.ActiveDocument.ActiveView.setActiveObject("Arch", obj)
+        FreeCADGui.ActiveDocument.ActiveView.setActiveObject(context, obj)
         if hasattr(obj, "ViewObject") and hasattr(obj.ViewObject, "Proxy") and \
            hasattr(obj.ViewObject.Proxy, "setWorkingPlane"):
             obj.ViewObject.Proxy.setWorkingPlane()
