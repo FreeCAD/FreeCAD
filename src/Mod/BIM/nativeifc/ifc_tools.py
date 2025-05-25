@@ -66,6 +66,7 @@ from . import ifc_layers
 from . import ifc_status
 from . import ifc_export
 from . import ifc_psets
+from . import ifc_tools
 
 SCALE = 1000.0  # IfcOpenShell works in meters, FreeCAD works in mm
 SHORT = False  # If True, only Step ID attribute is created
@@ -349,6 +350,25 @@ def create_children(
                 ]
                 for window in windows:
                     subresult.extend(create_child(child, window))
+
+            # Here we are checking if the currently checked element is typed by something
+            # i.e., IfcWall -> IfcWallType, if it is, then we are creating an additional
+            # object for it, and putting it in a relation with the main object, so it references
+            # the type
+            for rel in getattr(element, "IsTypedBy", []):
+                if rel.is_a().endswith("Type"):
+                    group = ifc_tools.get_group(ifc_tools.get_project(child), "IfcTypesGroup")
+                    rel_type_step_id = rel.RelatingType.id()
+                    # Preliminary check to be sure we are not adding the object multiple times, as multiple IfcTypes
+                    # can refer to the same IfcType
+                    if not any(group_object.StepId == rel_type_step_id for group_object in group.Group):
+                        obj_type = create_object(rel.RelatingType, doc, ifcfile, mode)
+                        group.addObject(obj_type)
+                    else:
+                        # It means IfcType already exist, so extract it from the group and assign as a reference
+                        obj_type = next(group_object for group_object in group.Group if group_object.StepId == rel_type_step_id)
+                    child.Type = obj_type
+
             if recursive:
                 subresult.extend(
                     create_children(
