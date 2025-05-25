@@ -74,6 +74,9 @@ private:
                               {UserInput::MouseLeft}));
 
                 hints.push_back(InputHint(QCoreApplication::translate("Sketcher", "%1 cancel"),
+                                          {UserInput::MouseRight}));
+
+                hints.push_back(InputHint(QCoreApplication::translate("Sketcher", "%1 cancel"),
                                           {UserInput::KeyEscape}));
                 break;
             default:
