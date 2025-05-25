@@ -31,6 +31,7 @@
 #include <Gui/Notifications.h>
 #include <Gui/Command.h>
 #include <Gui/CommandT.h>
+#include <Gui/InputHint.h>
 
 #include <Mod/Sketcher/App/SketchObject.h>
 
@@ -201,6 +202,8 @@ public:
     {
         using std::numbers::pi;
 
+        updateHints();
+
         suppressTransition = false;
         if (Mode == STATUS_SEEK_First) {
             setPositionText(onSketchPos);
@@ -341,6 +344,8 @@ public:
 
     bool pressButton(Base::Vector2d onSketchPos) override
     {
+        updateHints();
+
         if (Mode == STATUS_SEEK_First) {
 
             EditCurve[0] = onSketchPos;  // this may be overwritten if previousCurve is found
@@ -452,6 +457,8 @@ public:
 
     bool releaseButton(Base::Vector2d onSketchPos) override
     {
+        updateHints();
+
         if (Mode == STATUS_Do || Mode == STATUS_Close) {
             bool addedGeometry = true;
             if (SegmentMode == SEGMENT_MODE_Line) {
@@ -765,6 +772,32 @@ private:
     QString getCrosshairCursorSVGName() const override
     {
         return QStringLiteral("Sketcher_Pointer_Create_Lineset");
+    }
+
+    void updateHints() const
+    {
+        using Gui::InputHint;
+        std::list<InputHint> hints;
+
+        switch (Mode) {
+            case STATUS_SEEK_First:
+                hints.push_back(
+                    InputHint(QCoreApplication::translate("Sketcher", "%1 pick first point"),
+                              {Gui::InputHint::UserInput::MouseLeft}));
+                break;
+            case STATUS_SEEK_Second:
+                hints.push_back(
+                    InputHint(QCoreApplication::translate("Sketcher", "%1 pick next point"),
+                              {Gui::InputHint::UserInput::MouseLeft}));
+                hints.push_back(
+                    InputHint(QCoreApplication::translate("Sketcher", "%1 right-click to finish"),
+                              {Gui::InputHint::UserInput::MouseRight}));
+                break;
+            default:
+                break;
+        }
+
+        Gui::getMainWindow()->showHints(hints);
     }
 
 protected:
