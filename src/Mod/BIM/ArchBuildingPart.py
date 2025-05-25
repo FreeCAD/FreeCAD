@@ -814,6 +814,7 @@ class ViewProviderBuildingPart:
             menuTxt = translate("Arch", "Activate")
             actionActivate = QtGui.QAction(menuTxt, menu)
             actionActivate.setCheckable(True)
+            print("FreeCADGui.ActiveDocument.ActiveView.getActiveObject", FreeCADGui.ActiveDocument.ActiveView.getActiveObject("Arch"))
             if FreeCADGui.ActiveDocument.ActiveView.getActiveObject("Arch") == self.Object:
                 actionActivate.setChecked(True)
             else:
@@ -885,8 +886,19 @@ class ViewProviderBuildingPart:
             autoclip = vobj.AutoCutView
         if restore:
             if wp.label.rstrip("*") == self.Object.Label:
-                prev = wp._previous()
-                print("prev: ", prev)
+                prev_data = wp._previous()
+                if prev_data:
+                    prev_label = prev_data.get("label", "").rstrip("*")
+                    prev_obj = None
+                    for obj in FreeCAD.ActiveDocument.Objects:
+                        if hasattr(obj, "Label") and obj.Label == prev_label:
+                            prev_obj = obj
+                            break
+
+                    if prev_obj:
+                        import FreeCADGui
+                        FreeCADGui.ActiveDocument.ActiveView.setActiveObject("Arch", prev_obj)
+                        print("Set active object to:", prev_obj.Label)
 
             if autoclip:
                 vobj.CutView = False
