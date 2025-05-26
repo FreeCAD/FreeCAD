@@ -313,8 +313,9 @@ class TestPathToolAssetManager(unittest.TestCase):
         non_existent_uri = AssetUri("type://id/1")
         with self.assertRaises(FileNotFoundError) as cm:
             manager.get_raw(non_existent_uri, store="non_existent_store")
-        self.assertIn("Asset 'type://id/1' not found in stores '['non_existent_store']'.",
-                      str(cm.exception))
+        self.assertIn(
+            "Asset 'type://id/1' not found in stores '['non_existent_store']'.", str(cm.exception)
+        )
 
     def test_is_empty(self):
         # Setup AssetManager with a real MemoryStore

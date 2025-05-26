@@ -513,7 +513,9 @@ class LibraryEditor(object):
         # Create a new dictionary to hold the updated tool numbers and bits
         for row in range(self.toolModel.rowCount()):
             tool_nr_item = self.toolModel.item(row, 0)
-            tool_uri_item = self.toolModel.item(row, 0) # Tool URI is stored in column 0 with _PathRole
+            tool_uri_item = self.toolModel.item(
+                row, 0
+            )  # Tool URI is stored in column 0 with _PathRole
 
             tool_nr = tool_nr_item.data(Qt.EditRole)
             tool_uri_string = tool_uri_item.data(_PathRole)
@@ -530,25 +532,26 @@ class LibraryEditor(object):
                         self.current_library.assign_new_bit_no(found_bit, int(tool_nr))
                         Path.Log.debug(f"Assigned tool number {tool_nr} to {tool_uri_string}")
                     else:
-                        Path.Log.warning(f"Toolbit with URI {tool_uri_string} not found in current library.")
+                        Path.Log.warning(
+                            f"Toolbit with URI {tool_uri_string} not found in current library."
+                        )
                 except Exception as e:
-                    Path.Log.error(f"Error processing row {row} (tool_nr: {tool_nr}, uri: {tool_uri_string}): {e}")
+                    Path.Log.error(
+                        f"Error processing row {row} (tool_nr: {tool_nr}, uri: {tool_uri_string}): {e}"
+                    )
                     # Continue processing other rows even if one fails
                     continue
             else:
-                 Path.Log.warning(f"Skipping row {row}: Invalid tool number or URI.")
+                Path.Log.warning(f"Skipping row {row}: Invalid tool number or URI.")
 
         # The current_library object has been modified in the loop by assign_new_bit_no
         # Now save the modified library asset
         try:
             cam_assets.add(self.current_library)
-            Path.Log.debug(
-                f"saveLibrary: Library " f"{self.current_library.get_uri()} saved."
-            )
+            Path.Log.debug(f"saveLibrary: Library " f"{self.current_library.get_uri()} saved.")
         except Exception as e:
             Path.Log.error(
-                f"saveLibrary: Failed to save library "
-                f"{self.current_library.get_uri()}: {e}"
+                f"saveLibrary: Failed to save library " f"{self.current_library.get_uri()}: {e}"
             )
             PySide.QtGui.QMessageBox.critical(
                 self.form,

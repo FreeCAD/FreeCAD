@@ -122,12 +122,14 @@ builtin_asset_store = FileStore(
     mapping=asset_mapping,
 )
 
+
 class CamAssetManager(AssetManager):
     """
     Custom CAM Asset Manager that extends the base AssetManager, such
     that the get methods return fallbacks: if the asset is not present
     in the "local" store, then it falls back to the builtin-asset store.
     """
+
     def __init__(self):
         super().__init__()
         self.register_store(user_asset_store)
