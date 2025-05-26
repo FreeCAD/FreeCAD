@@ -171,7 +171,7 @@ private:
 
     QString getToolWidgetText() const override
     {
-        return QString(QObject::tr("Scale parameters"));
+        return QObject::tr("Scale parameters");
     }
 
     void activated() override

@@ -266,7 +266,7 @@ private:
 
     QString getToolWidgetText() const override
     {
-        return QString(QObject::tr("Arc Slot parameters"));
+        return QObject::tr("Arc Slot parameters");
     }
 
     bool canGoToNextMode() override
