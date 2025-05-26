@@ -516,7 +516,8 @@ class ToolBit(Asset, ABC):
         temp_obj = self.obj
         self.obj = tool_doc_obj
         self.obj.Proxy = self
-        ToolBitView.ViewProvider(self.obj.ViewObject, "ToolBit")
+        if FreeCAD.GuiUp:
+            ToolBitView.ViewProvider(self.obj.ViewObject, "ToolBit")
 
         self._create_base_properties()
 
