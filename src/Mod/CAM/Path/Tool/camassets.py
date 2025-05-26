@@ -19,10 +19,11 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
+from typing import Optional, Union, Sequence
 import Path
 from Path import Preferences
 from Path.Preferences import addToolPreferenceObserver
-from .assets import AssetManager, AssetUri, FileStore
+from .assets import AssetManager, AssetUri, Asset, FileStore
 
 
 def ensure_library_assets_initialized(asset_manager: AssetManager, store_name: str = "local"):
@@ -56,29 +57,32 @@ def ensure_toolbitshape_assets_initialized(asset_manager: AssetManager, store_na
     """
     builtin_shape_path = Preferences.getBuiltinShapePath()
 
-    for path in builtin_shape_path.glob("*.fcstd"):
-        uri = AssetUri.build(
-            asset_type="toolbitshape",
-            asset_id=path.stem,
-        )
-        if not asset_manager.exists(uri, store=store_name):
-            asset_manager.add_file("toolbitshape", path)
+    if asset_manager.is_empty("toolbitshape", store=store_name):
+        for path in builtin_shape_path.glob("*.fcstd"):
+            uri = AssetUri.build(
+                asset_type="toolbitshape",
+                asset_id=path.stem,
+            )
+            if not asset_manager.exists(uri, store=store_name):
+                asset_manager.add_file("toolbitshape", path)
 
-    for path in builtin_shape_path.glob("*.svg"):
-        uri = AssetUri.build(
-            asset_type="toolbitshapesvg",
-            asset_id=path.stem + ".svg",
-        )
-        if not asset_manager.exists(uri, store=store_name):
-            asset_manager.add_file("toolbitshapesvg", path, asset_id=path.stem + ".svg")
+    if asset_manager.is_empty("toolbitshapesvg", store=store_name):
+        for path in builtin_shape_path.glob("*.svg"):
+            uri = AssetUri.build(
+                asset_type="toolbitshapesvg",
+                asset_id=path.stem + ".svg",
+            )
+            if not asset_manager.exists(uri, store=store_name):
+                asset_manager.add_file("toolbitshapesvg", path, asset_id=path.stem + ".svg")
 
-    for path in builtin_shape_path.glob("*.png"):
-        uri = AssetUri.build(
-            asset_type="toolbitshapepng",
-            asset_id=path.stem + ".png",
-        )
-        if not asset_manager.exists(uri, store=store_name):
-            asset_manager.add_file("toolbitshapepng", path, asset_id=path.stem + ".png")
+    if asset_manager.is_empty("toolbitshapepng", store=store_name):
+        for path in builtin_shape_path.glob("*.png"):
+            uri = AssetUri.build(
+                asset_type="toolbitshapepng",
+                asset_id=path.stem + ".png",
+            )
+            if not asset_manager.exists(uri, store=store_name):
+                asset_manager.add_file("toolbitshapepng", path, asset_id=path.stem + ".png")
 
 
 def ensure_assets_initialized(asset_manager: AssetManager, store="local"):
@@ -92,32 +96,63 @@ def ensure_assets_initialized(asset_manager: AssetManager, store="local"):
 
 def _on_asset_path_changed(group, key, value):
     Path.Log.info(f"CAM asset directory changed in preferences: {group} {key} {value}")
-    cam_asset_store.set_dir(Preferences.getAssetPath())
+    user_asset_store.set_dir(Preferences.getAssetPath())
     ensure_assets_initialized(cam_assets)
 
 
 # Set up the local CAM asset storage.
-cam_asset_store = FileStore(
+asset_mapping = {
+    "toolbitlibrary": "Library/{asset_id}.fctl",
+    "toolbit": "Bit/{asset_id}.fctb",
+    "toolbitshape": "Shape/{asset_id}.fcstd",
+    "toolbitshapesvg": "Shape/{asset_id}",  # Asset ID has ".svg" included
+    "toolbitshapepng": "Shape/{asset_id}",  # Asset ID has ".png" included
+    "machine": "Machine/{asset_id}.fcm",
+}
+
+user_asset_store = FileStore(
     name="local",
     base_dir=Preferences.getAssetPath(),
-    mapping={
-        "toolbitlibrary": "Library/{asset_id}.fctl",
-        "toolbit": "Bit/{asset_id}.fctb",
-        "toolbitshape": "Shape/{asset_id}.fcstd",
-        "toolbitshapesvg": "Shape/{asset_id}",  # Asset ID has ".svg" included
-        "toolbitshapepng": "Shape/{asset_id}",  # Asset ID has ".png" included
-        "machine": "Machine/{asset_id}.fcm",
-    },
+    mapping=asset_mapping,
 )
+
+builtin_asset_store = FileStore(
+    name="builtin",
+    base_dir=Preferences.getBuiltinAssetPath(),
+    mapping=asset_mapping,
+)
+
+class CamAssetManager(AssetManager):
+    """
+    Custom CAM Asset Manager that extends the base AssetManager, such
+    that the get methods return fallbacks: if the asset is not present
+    in the "local" store, then it falls back to the builtin-asset store.
+    """
+    def __init__(self):
+        super().__init__()
+        self.register_store(user_asset_store)
+        self.register_store(builtin_asset_store)
+
+    def get(
+        self,
+        uri: Union[AssetUri, str],
+        store: Union[str, Sequence[str]] = ("local", "builtin"),
+        depth: Optional[int] = None,
+    ) -> Asset:
+        """
+        Gets an asset from the "local" store, falling back to the "builtin"
+        store if not found locally.
+        """
+        return super().get(uri, store=store, depth=depth)
+
 
 # Set up the CAM asset manager.
 Path.Log.setLevel(Path.Log.Level.INFO, Path.Log.thisModule())
-cam_assets = AssetManager()
-cam_assets.register_store(cam_asset_store)
+cam_assets = CamAssetManager()
 try:
     ensure_assets_initialized(cam_assets)
 except Exception as e:
-    Path.Log.error(f"Failed to initialize CAM assets in {cam_asset_store._base_dir}: {e}")
+    Path.Log.error(f"Failed to initialize CAM assets in {user_asset_store._base_dir}: {e}")
 else:
-    Path.Log.debug(f"Using CAM assets in {cam_asset_store._base_dir}")
+    Path.Log.debug(f"Using CAM assets in {user_asset_store._base_dir}")
 addToolPreferenceObserver(_on_asset_path_changed)
