@@ -572,7 +572,7 @@ void MaterialTreeWidget::fillMaterialTree()
             lib->setFlags(Qt::ItemIsEnabled);
             addExpanded(model, lib, param);
 
-            QIcon icon(library->getIconPath());
+            auto icon = MaterialsEditor::getIcon(library);
             QIcon folderIcon(QStringLiteral(":/icons/folder.svg"));
 
             addMaterials(*lib, materialTree, folderIcon, icon, param);
@@ -619,7 +619,7 @@ void MaterialTreeWidget::addRecents(QStandardItem* parent)
     for (auto& uuid : _recents) {
         try {
             auto material = getMaterialManager().getMaterial(uuid);
-            QIcon icon(material->getLibrary()->getIconPath());
+            auto icon = MaterialsEditor::getIcon(material->getLibrary());
             auto card = new QStandardItem(icon, material->getName());
             card->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled);
             card->setData(QVariant(uuid), Qt::UserRole);
@@ -636,7 +636,7 @@ void MaterialTreeWidget::addFavorites(QStandardItem* parent)
     for (auto& uuid : _favorites) {
         try {
             auto material = getMaterialManager().getMaterial(uuid);
-            QIcon icon(material->getLibrary()->getIconPath());
+            auto icon = MaterialsEditor::getIcon(material->getLibrary());
             auto card = new QStandardItem(icon, material->getName());
             card->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled);
             card->setData(QVariant(uuid), Qt::UserRole);

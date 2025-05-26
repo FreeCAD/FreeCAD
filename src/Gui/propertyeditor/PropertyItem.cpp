@@ -846,7 +846,6 @@ QWidget* PropertyStringItem::createEditor(QWidget* parent,
 {
     auto le = new ExpLineEdit(parent);
     le->setFrame(static_cast<bool>(frameOption));
-    le->setReadOnly(isReadOnly());
     QObject::connect(le, &ExpLineEdit::textChanged, method);
     if (isBound()) {
         le->bind(getPath());
@@ -895,7 +894,6 @@ QWidget* PropertyFontItem::createEditor(QWidget* parent,
 {
     auto cb = new QComboBox(parent);
     cb->setFrame(static_cast<bool>(frameOption));
-    cb->setDisabled(isReadOnly());
     QObject::connect(cb, &QComboBox::textActivated, method);
     return cb;
 }
@@ -962,7 +960,6 @@ QWidget* PropertyIntegerItem::createEditor(QWidget* parent,
 {
     auto sb = new Gui::IntSpinBox(parent);
     sb->setFrame(static_cast<bool>(frameOption));
-    sb->setReadOnly(isReadOnly());
     QObject::connect(sb, qOverload<int>(&Gui::IntSpinBox::valueChanged), method);
 
     if (isBound()) {
@@ -1029,7 +1026,6 @@ QWidget* PropertyIntegerConstraintItem::createEditor(QWidget* parent,
 {
     auto sb = new Gui::IntSpinBox(parent);
     sb->setFrame(static_cast<bool>(frameOption));
-    sb->setReadOnly(isReadOnly());
     QObject::connect(sb, qOverload<int>(&Gui::IntSpinBox::valueChanged), method);
 
     if (isBound()) {
@@ -1126,7 +1122,6 @@ QWidget* PropertyFloatItem::createEditor(QWidget* parent,
     auto sb = new Gui::DoubleSpinBox(parent);
     sb->setFrame(static_cast<bool>(frameOption));
     sb->setDecimals(decimals());
-    sb->setReadOnly(isReadOnly());
     QObject::connect(sb, qOverload<double>(&Gui::DoubleSpinBox::valueChanged), method);
 
     if (isBound()) {
@@ -1194,7 +1189,6 @@ QWidget* PropertyUnitItem::createEditor(QWidget* parent,
     auto infield = new Gui::QuantitySpinBox(parent);
     infield->setFrame(static_cast<bool>(frameOption));
     infield->setMinimumHeight(0);
-    infield->setReadOnly(isReadOnly());
 
     // if we are bound to an expression we need to bind it to the input field
     if (isBound()) {
@@ -1293,7 +1287,6 @@ QWidget* PropertyFloatConstraintItem::createEditor(QWidget* parent,
     auto sb = new Gui::DoubleSpinBox(parent);
     sb->setDecimals(decimals());
     sb->setFrame(static_cast<bool>(frameOption));
-    sb->setReadOnly(isReadOnly());
     QObject::connect(sb, qOverload<double>(&Gui::DoubleSpinBox::valueChanged), method);
 
     if (isBound()) {
@@ -1389,7 +1382,6 @@ QWidget* PropertyBoolItem::createEditor(QWidget* parent,
     cb->setFrame(static_cast<bool>(frameOption));
     cb->addItem(QLatin1String("false"));
     cb->addItem(QLatin1String("true"));
-    cb->setDisabled(isReadOnly());
     QObject::connect(cb, qOverload<int>(&QComboBox::activated), method);
     return cb;
 }
@@ -1730,7 +1722,6 @@ QWidget* PropertyVectorListItem::createEditor(QWidget* parent,
 {
     auto pe = new VectorListWidget(decimals(), parent);
     QObject::connect(pe, &VectorListWidget::valueChanged, method);
-    pe->setDisabled(isReadOnly());
     return pe;
 }
 
@@ -3132,7 +3123,6 @@ QWidget* PropertyEnumItem::createEditor(QWidget* parent,
     if (!enumItems) {
         auto cb = new QComboBox(parent);
         cb->setFrame(static_cast<bool>(frameOption));
-        cb->setDisabled(isReadOnly());
         cb->addItems(commonModes);
         QObject::connect(cb, qOverload<int>(&QComboBox::activated), method);
         return cb;
@@ -3190,7 +3180,6 @@ QWidget* PropertyStringListItem::createEditor(QWidget* parent,
 {
     auto le = new Gui::LabelEditor(parent);
     le->setAutoFillBackground(true);
-    le->setDisabled(isReadOnly());
     QObject::connect(le, &Gui::LabelEditor::textChanged, method);
     return le;
 }
@@ -3266,7 +3255,6 @@ QWidget* PropertyFloatListItem::createEditor(QWidget* parent,
     auto le = new Gui::LabelEditor(parent);
     le->setAutoFillBackground(true);
     le->setInputType(Gui::LabelEditor::Float);
-    le->setDisabled(isReadOnly());
     QObject::connect(le, &Gui::LabelEditor::textChanged, method);
     return le;
 }
@@ -3344,7 +3332,6 @@ QWidget* PropertyIntegerListItem::createEditor(QWidget* parent,
     auto le = new Gui::LabelEditor(parent);
     le->setAutoFillBackground(true);
     le->setInputType(Gui::LabelEditor::Integer);
-    le->setDisabled(isReadOnly());
     QObject::connect(le, &Gui::LabelEditor::textChanged, method);
     return le;
 }
@@ -3459,7 +3446,6 @@ QWidget* PropertyColorItem::createEditor(QWidget* parent,
                                          FrameOption /*frameOption*/) const
 {
     auto cb = new Gui::ColorButton(parent);
-    cb->setDisabled(isReadOnly());
     QObject::connect(cb, &Gui::ColorButton::changed, method);
     return cb;
 }
@@ -3806,7 +3792,6 @@ QWidget* PropertyMaterialItem::createEditor(QWidget* parent,
                                             FrameOption /*frameOption*/) const
 {
     auto cb = new Gui::ColorButton(parent);
-    cb->setDisabled(isReadOnly());
     QObject::connect(cb, &Gui::ColorButton::changed, method);
     return cb;
 }
@@ -4314,7 +4299,6 @@ QWidget* PropertyMaterialListItem::createEditor(QWidget* parent,
                                                 FrameOption /*frameOption*/) const
 {
     auto cb = new Gui::ColorButton(parent);
-    cb->setDisabled(isReadOnly());
     QObject::connect(cb, &Gui::ColorButton::changed, method);
     return cb;
 }
@@ -4399,7 +4383,6 @@ QWidget* PropertyFileItem::createEditor(QWidget* parent,
 {
     auto fc = new Gui::FileChooser(parent);
     fc->setAutoFillBackground(true);
-    fc->setDisabled(isReadOnly());
     QObject::connect(fc, &Gui::FileChooser::fileNameSelected, method);
     return fc;
 }
@@ -4456,7 +4439,6 @@ QWidget* PropertyPathItem::createEditor(QWidget* parent,
     auto fc = new Gui::FileChooser(parent);
     fc->setMode(FileChooser::Directory);
     fc->setAutoFillBackground(true);
-    fc->setDisabled(isReadOnly());
     QObject::connect(fc, &Gui::FileChooser::fileNameSelected, method);
     return fc;
 }
@@ -4505,7 +4487,6 @@ QWidget* PropertyTransientFileItem::createEditor(QWidget* parent,
 {
     auto fc = new Gui::FileChooser(parent);
     fc->setAutoFillBackground(true);
-    fc->setDisabled(isReadOnly());
     QObject::connect(fc, &Gui::FileChooser::fileNameSelected, method);
     return fc;
 }
@@ -4738,7 +4719,6 @@ QWidget* PropertyLinkItem::createEditor(QWidget* parent,
     }
     auto ll = new LinkLabel(parent, propertyItems.front());
     ll->setAutoFillBackground(true);
-    ll->setDisabled(isReadOnly());
     QObject::connect(ll, &LinkLabel::linkChanged, method);
     return ll;
 }

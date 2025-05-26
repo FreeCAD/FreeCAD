@@ -35,6 +35,7 @@ __url__    = "https://www.freecad.org"
 
 import FreeCAD
 import ArchComponent
+import ArchIFC
 
 from draftutils import params
 
@@ -101,7 +102,11 @@ class _ArchPipe(ArchComponent.Component):
         self.setProperties(obj)
 
     def onChanged(self, obj, prop):
-        if prop == "ProfileType":
+        if prop == "IfcType":
+            root = ArchIFC.IfcProduct()
+            root.setupIfcAttributes(obj)
+            root.setupIfcComplexAttributes(obj)
+        elif prop == "ProfileType":
             if obj.ProfileType == "Square":
                 obj.setPropertyStatus("Height", "Hidden")
                 obj.setPropertyStatus("Diameter", "Hidden")

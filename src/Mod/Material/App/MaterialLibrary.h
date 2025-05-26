@@ -55,14 +55,11 @@ public:
     MaterialLibrary(const QString& libraryName, const QString& icon, bool readOnly = true);
     MaterialLibrary(const QString& libraryName,
                     const QString& dir,
-                    const QString& icon,
+                    const QString& iconPath,
                     bool readOnly = true);
     MaterialLibrary(const Library& library);
     MaterialLibrary(const MaterialLibrary&) = delete;
     ~MaterialLibrary() override = default;
-
-    bool isLocal() const;
-    void setLocal(bool local);
 
     virtual std::shared_ptr<std::map<QString, std::shared_ptr<MaterialTreeNode>>>
     getMaterialTree(const std::shared_ptr<Materials::MaterialFilter>& filter,
@@ -73,9 +70,6 @@ public:
     {
         return shared_from_this();
     }
-
-protected:
-    bool _local;
 };
 
 class MaterialsExport MaterialLibraryLocal: public MaterialLibrary
@@ -86,7 +80,7 @@ public:
     MaterialLibraryLocal() = default;
     MaterialLibraryLocal(const QString& libraryName,
                          const QString& dir,
-                         const QString& icon,
+                         const QString& iconPath,
                          bool readOnly = true);
     ~MaterialLibraryLocal() override = default;
 

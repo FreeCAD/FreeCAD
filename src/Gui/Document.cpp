@@ -39,6 +39,7 @@
 # include <QOpenGLWidget>
 # include <QTextStream>
 # include <QTimer>
+# include <QThread>
 # include <QStatusBar>
 # include <Inventor/actions/SoSearchAction.h>
 # include <Inventor/nodes/SoSeparator.h>
@@ -504,6 +505,8 @@ Document::Document(App::Document* pcDocument,Application * app)
     d->connectTransactionRemove = pcDocument->signalTransactionRemove.connect
         (std::bind(&Gui::Document::slotTransactionRemove, this, sp::_1, sp::_2));
     //NOLINTEND
+
+    pcDocument->setPreRecomputeHook([this] { callSignalBeforeRecompute(); });
 
     // pointer to the python class
     // NOTE: As this Python object doesn't get returned to the interpreter we
@@ -1190,6 +1193,25 @@ void Document::slotTouchedObject(const App::DocumentObject &Obj)
     if(!isModified()) {
         FC_LOG(Obj.getFullName() << " touched");
         setModified(true);
+    }
+}
+
+// helper that guarantees signalBeforeRecompute call is executed in the GUI thread and
+// that the worker waits until it finishes
+void Document::callSignalBeforeRecompute()
+{
+    auto invokeSignalBeforeRecompute = [this]{
+        // this runs in the GUI thread
+        this->getDocument()->signalBeforeRecompute(*this->getDocument());
+    };
+
+    if (QThread::currentThread() == qApp->thread()) {
+        // already on GUI thread – no hop, just call it
+        invokeSignalBeforeRecompute();
+    } else {
+        // hop to GUI and *block* until it returns
+        QMetaObject::invokeMethod(qApp, std::move(invokeSignalBeforeRecompute),
+                                  Qt::BlockingQueuedConnection);
     }
 }
 

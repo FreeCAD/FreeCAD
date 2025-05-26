@@ -300,6 +300,36 @@ public:
     ~ReplacementError() noexcept override = default;
 };
 
+class UpdateError: public Base::Exception
+{
+public:
+    UpdateError()
+        : Base::Exception("Unable to update object")
+    {}
+    explicit UpdateError(const char* msg)
+        : Base::Exception(msg)
+    {}
+    explicit UpdateError(const QString& msg)
+        : Base::Exception(msg.toStdString().c_str())
+    {}
+    ~UpdateError() noexcept override = default;
+};
+
+class MoveError: public Base::Exception
+{
+public:
+    MoveError()
+        : Base::Exception("Unable to move object")
+    {}
+    explicit MoveError(const char* msg)
+        : Base::Exception(msg)
+    {}
+    explicit MoveError(const QString& msg)
+        : Base::Exception(msg.toStdString().c_str())
+    {}
+    ~MoveError() noexcept override = default;
+};
+
 class ConnectionError: public Base::Exception
 {
 public:

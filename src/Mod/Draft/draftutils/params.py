@@ -454,6 +454,7 @@ def _get_param_dictionary():
         "HatchPatternResolution":      ("int",       128),  # used for SVG patterns
         "HatchPatternRotation":        ("float",     0.0),
         "HatchPatternScale":           ("float",     100.0),
+        "HatchPatternTranslate":       ("bool",      True),
         "labeltype":                   ("string",    "Custom"),
         "LayersManagerHeight":         ("int",       320),
         "LayersManagerWidth":          ("int",       640),
@@ -560,6 +561,7 @@ def _get_param_dictionary():
         "WallAlignment":               ("int",       0),
         "WallHeight":                  ("float",     3000.0),
         "WallWidth":                   ("float",     200.0),
+        "WallOffset":                  ("float",     0.0),
         "WindowH1":                    ("float",     50.0),
         "WindowH2":                    ("float",     50.0),
         "WindowH3":                    ("float",     50.0),

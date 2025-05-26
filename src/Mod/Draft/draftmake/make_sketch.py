@@ -76,6 +76,7 @@ def make_sketch(objects_list, autoconstraints=False, addTo=None,
         return
 
     import Part
+    from Sketcher import Constraint
 
     if App.GuiUp:
         v_dir = gui_utils.get_3d_view().getViewDirection()
@@ -174,7 +175,6 @@ def make_sketch(objects_list, autoconstraints=False, addTo=None,
         else:
             return edge
 
-
     axis = App.Vector(0, 0, 1).cross(normal)
     if axis.Length > 1e-6:
         axis.normalize()
@@ -238,9 +238,21 @@ def make_sketch(objects_list, autoconstraints=False, addTo=None,
     nobj.addConstraint(constraints)
     if autoconstraints:
         nobj.detectMissingPointOnPointConstraints(utils.tolerance())
-        nobj.makeMissingPointOnPointCoincident(True)
+        nobj.makeMissingPointOnPointCoincident(False)
         nobj.detectMissingVerticalHorizontalConstraints(utils.tolerance())
-        nobj.makeMissingVerticalHorizontal(True)
+        nobj.makeMissingVerticalHorizontal(False)
+        # The MissingVerticalHorizontal functions do not work properly.
+        # If elements are added to an existing sketch redundant constraints are created.
+        # This can happen if DXF files are imported with the legacy importer.
+        # https://forum.freecad.org/viewtopic.php?t=97072
+        # https://github.com/FreeCAD/FreeCAD/issues/21396
+        # To address this we check for redundant constraints. This can be necessary even
+        # the functions were to work properly. For example with this scenario:
+        # https://github.com/FreeCAD/FreeCAD/issues/19978
+        nobj.solve()
+        for idx in nobj.RedundantConstraints[::-1]:
+            # Output of RedundantConstraints is one-based.
+            nobj.delConstraint(idx - 1)
 
     return nobj
 

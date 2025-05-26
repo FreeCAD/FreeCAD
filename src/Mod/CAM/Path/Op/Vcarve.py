@@ -164,7 +164,7 @@ class _Geometry(object):
 
     def incrementStepDownDepth(self, maximumUsableDepth):
         """
-        Increase stepDown depth before staring new carving pass.
+        Increase stepDown depth before starting new carving pass.
         :returns: True if successful, False if maximum depth achieved
         """
 

@@ -38,6 +38,7 @@ __url__    = "https://www.freecad.org"
 
 import FreeCAD
 import ArchCommands
+import ArchIFC
 import ArchComponent
 import Draft
 import DraftVecUtils
@@ -210,8 +211,11 @@ class _Rebar(ArchComponent.Component):
         return [wires,obj.Diameter.Value/2]
 
     def onChanged(self,obj,prop):
-
-        if prop == "Host":
+        if prop == "IfcType":
+            root = ArchIFC.IfcProduct()
+            root.setupIfcAttributes(obj)
+            root.setupIfcComplexAttributes(obj)
+        elif prop == "Host":
             if hasattr(obj,"Host"):
                 if obj.Host:
                     # mark host to recompute so it can detect this object

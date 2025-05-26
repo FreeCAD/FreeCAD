@@ -1184,7 +1184,7 @@ void Document::exportObjects(const std::vector<DocumentObject*>& obj, std::ostre
                 FC_LOG("exporting " << o->getFullName());
                 if (!o->getPropertyByName("_ObjectUUID")) {
                     auto prop = static_cast<PropertyUUID*>(
-                        o->addDynamicProperty("PropertyUUID",
+                        o->addDynamicProperty("App::PropertyUUID",
                                               "_ObjectUUID",
                                               nullptr,
                                               nullptr,
@@ -2878,6 +2878,11 @@ void Document::renameObjectIdentifiers(
     }
 }
 
+void Document::setPreRecomputeHook(const PreRecomputeHook& hook)
+{
+     d->_preRecomputeHook = hook;
+}
+
 int Document::recompute(const std::vector<DocumentObject*>& objs,
                         bool force,
                         bool* hasError,
@@ -2918,7 +2923,13 @@ int Document::recompute(const std::vector<DocumentObject*>& objs,
     FC_TIME_INIT(t);
 
     Base::ObjectStatusLocker<Document::Status, Document> exe(Document::Recomputing, this);
-    signalBeforeRecompute(*this);
+
+    // This will hop into the main thread, fire signalBeforeRecompute(),
+    // and *block* the worker until the main thread is done, avoiding races
+    // between any running Python code and the rest of the recompute call.
+    if (d->_preRecomputeHook) {
+        d->_preRecomputeHook();
+    }
 
     //////////////////////////////////////////////////////////////////////////
     // FIXME Comment by Realthunder:

@@ -88,6 +88,9 @@ public:
     App::PropertyInteger FontSize;
     // NOLINTEND
 
+    // Fields
+    SoSFFloat fieldFontSize;
+
     /**
      * Attaches the document object to this view provider.
      */

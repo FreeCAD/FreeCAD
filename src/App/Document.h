@@ -193,6 +193,8 @@ public:
     //@}
     // NOLINTEND
 
+    using PreRecomputeHook = std::function<void()>;
+    void setPreRecomputeHook(const PreRecomputeHook& hook);
 
     void clearDocument();
 

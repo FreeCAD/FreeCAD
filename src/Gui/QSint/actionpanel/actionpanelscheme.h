@@ -15,7 +15,6 @@
 #include <QPainter>
 #include <QPalette>
 #include <QPixmap>
-#include <QHash>
 #include <QSize>
 #include <QString>
 #include <QStyle>
@@ -121,18 +120,6 @@ public:
      */
     void restoreActionStyle();
 
-    /**
-     * @brief Minimal CSS style.
-     */
-    static const QString minimumStyle;
-
-    /**
-     * @brief Generates a custom system style based on the palette.
-     * @param p The palette to use for generating the style.
-     * @return The generated style.
-     */
-    QString systemStyle(const QPalette& p);
-
 protected:
     /**
      * @brief Draws a fold/unfold icon.
@@ -151,7 +138,6 @@ private:
     QPixmap builtinFoldOver;
     QPixmap builtinUnfold;
     QPixmap builtinUnfoldOver;
-    QString builtinScheme;
 };
 
 } // namespace QSint

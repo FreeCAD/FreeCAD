@@ -615,18 +615,23 @@ class DraftToolBar:
 # Interface modes
 #---------------------------------------------------------------------------
 
-    def taskUi(self,title="Draft",extra=None,icon="Draft_Draft"):
+    def _show_dialog(self, panel):
+        task = FreeCADGui.Control.showDialog(panel)
+        task.setDocumentName(FreeCADGui.ActiveDocument.Document.Name)
+        task.setAutoCloseOnDeletedDocument(True)
+
+    def taskUi(self,title="Draft", extra=None, icon="Draft_Draft"):
         # reset InputField values
         self.reset_ui_values()
         self.isTaskOn = True
-        todo.delay(FreeCADGui.Control.closeDialog,None)
+        todo.delay(FreeCADGui.Control.closeDialog, None)
         self.baseWidget = DraftBaseWidget()
         self.layout = QtWidgets.QVBoxLayout(self.baseWidget)
         self.setupToolBar(task=True)
         self.retranslateUi(self.baseWidget)
-        self.panel = DraftTaskPanel(self.baseWidget,extra)
-        todo.delay(FreeCADGui.Control.showDialog,self.panel)
-        self.setTitle(title,icon)
+        self.panel = DraftTaskPanel(self.baseWidget, extra)
+        todo.delay(self._show_dialog, self.panel)
+        self.setTitle(title, icon)
 
     def redraw(self):
         """utility function that is performed after each clicked point"""
@@ -922,9 +927,9 @@ class DraftToolBar:
                 if self.callback:
                     self.callback()
                 return True
-        todo.delay(FreeCADGui.Control.closeDialog,None)
+        todo.delay(FreeCADGui.Control.closeDialog, None)
         panel = TaskPanel(extra, on_close_call)
-        todo.delay(FreeCADGui.Control.showDialog,panel)
+        todo.delay(self._show_dialog, panel)
 
 
 #---------------------------------------------------------------------------

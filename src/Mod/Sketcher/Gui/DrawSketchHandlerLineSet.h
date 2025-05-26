@@ -96,6 +96,17 @@ public:
         SNAP_MODE_45Degree
     };
 
+    std::list<Gui::InputHint> getToolHints() const override
+    {
+        using UserInput = Gui::InputHint::UserInput;
+
+        return {
+            {QWidget::tr("%1 change mode"), {UserInput::KeyM}},
+            {QWidget::tr("%1 start drawing"), {UserInput::MouseLeft}},
+            {QWidget::tr("%1 stop drawing"), {UserInput::MouseRight}},
+        };
+    }
+
     void registerPressedKey(bool pressed, int key) override
     {
         if (Mode == STATUS_SEEK_Second && key == SoKeyboardEvent::M && pressed

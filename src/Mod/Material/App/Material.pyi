@@ -19,22 +19,22 @@ class Material(BaseClass):
     """
 
     LibraryName: Final[str] = ...
-    """Model library name."""
+    """Material library name."""
 
     LibraryRoot: Final[str] = ...
-    """Model library path."""
+    """Material library path."""
 
-    LibraryIcon: Final[str] = ...
-    """Model icon path."""
+    LibraryIcon: Final[bytes] = ...
+    """Material icon."""
 
     Name: str = ...
-    """Model name."""
+    """Material name."""
 
     Directory: str = ...
-    """Model directory relative to the library root."""
+    """Material directory relative to the library root."""
 
     UUID: Final[str] = ...
-    """Unique model identifier. This is only valid after the material is saved."""
+    """Unique material identifier. This is only valid after the material is saved."""
 
     Description: str = ...
     """Description of the material."""

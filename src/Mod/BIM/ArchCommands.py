@@ -232,6 +232,8 @@ def removeComponents(objectsList,host=None):
                     if o in a:
                         a.remove(o)
                         h.Objects = a
+            if hasattr(o, "Hosts") and Draft.getType(o) == "Window":
+                o.Hosts = []
 
 def makeComponent(baseobj=None,name=None,delete=False):
     '''makeComponent([baseobj],[name],[delete]): creates an undefined, non-parametric BIM
@@ -762,7 +764,7 @@ def pruneIncluded(objectslist,strict=False,silent=False):
     for obj in objectslist:
         toplevel = True
         if obj.isDerivedFrom("Part::Feature"):
-            if Draft.getType(obj) not in ["Window","Clone","Pipe","Rebar"]:
+            if Draft.getType(obj) not in ["Window","Clone","Pipe","Rebar","Roof"]:
                 for parent in obj.InList:
                     if not parent.isDerivedFrom("Part::Feature"):
                         pass

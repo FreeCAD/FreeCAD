@@ -43,6 +43,7 @@ class Material;
 namespace Materials
 {
 
+class LibraryObject;
 class MaterialLibrary;
 class MaterialLibraryLocal;
 class MaterialFilter;
@@ -65,14 +66,14 @@ public:
     std::shared_ptr<MaterialLibrary> getLibrary(const QString& name) const;
     void createLibrary(const QString& libraryName,
                        const QString& directory,
-                       const QString& icon,
+                       const QString& iconPath,
                        bool readOnly = true);
     void renameLibrary(const QString& libraryName, const QString& newName);
-    void changeIcon(const QString& libraryName, const QString& icon);
+    void changeIcon(const QString& libraryName, const QByteArray& icon);
     void removeLibrary(const QString& libraryName);
-    std::shared_ptr<std::vector<std::tuple<QString, QString, QString>>>
+    std::shared_ptr<std::vector<LibraryObject>>
     libraryMaterials(const QString& libraryName);
-    std::shared_ptr<std::vector<std::tuple<QString, QString, QString>>>
+    std::shared_ptr<std::vector<LibraryObject>>
     libraryMaterials(const QString& libraryName,
                      const std::shared_ptr<MaterialFilter>& filter,
                      const MaterialFilterOptions& options);

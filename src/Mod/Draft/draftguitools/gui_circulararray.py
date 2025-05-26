@@ -34,9 +34,6 @@ import FreeCAD as App
 import FreeCADGui as Gui
 from draftguitools import gui_base
 from draftutils import gui_utils
-from draftutils import todo
-from draftutils.messages import _log
-from draftutils.translate import translate
 from drafttaskpanels import task_circulararray
 
 
@@ -77,8 +74,9 @@ class CircularArray(gui_base.GuiCommandBase):
         # The calling class (this one) is saved in the object
         # of the interface, to be able to call a function from within it.
         self.ui.source_command = self
-        # Gui.Control.showDialog(self.ui)
-        todo.ToDo.delay(Gui.Control.showDialog, self.ui)
+        task = Gui.Control.showDialog(self.ui)
+        task.setDocumentName(Gui.ActiveDocument.Document.Name)
+        task.setAutoCloseOnDeletedDocument(True)
 
     def move(self, event_cb):
         """Execute as a callback when the pointer moves in the 3D view.

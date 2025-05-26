@@ -124,22 +124,40 @@ std::shared_ptr<MaterialLibrary> MaterialManagerExternal::getLibrary(const QStri
     catch (const ConnectionError& e) {
         throw LibraryNotFound(e.what());
     }
+    catch (...) {
+        throw LibraryNotFound("Unknown exception");
+    }
 }
 
 void MaterialManagerExternal::createLibrary(const QString& libraryName,
-                                            const QString& icon,
+                                            const QByteArray& icon,
                                             bool readOnly)
 {
     ExternalManager::getManager()->createLibrary(libraryName, icon, readOnly);
 }
 
-std::shared_ptr<std::vector<std::tuple<QString, QString, QString>>>
+void MaterialManagerExternal::renameLibrary(const QString& libraryName, const QString& newName)
+{
+    ExternalManager::getManager()->renameLibrary(libraryName, newName);
+}
+
+void MaterialManagerExternal::changeIcon(const QString& libraryName, const QByteArray& icon)
+{
+    ExternalManager::getManager()->changeIcon(libraryName, icon);
+}
+
+void MaterialManagerExternal::removeLibrary(const QString& libraryName)
+{
+    ExternalManager::getManager()->removeLibrary(libraryName);
+}
+
+std::shared_ptr<std::vector<LibraryObject>>
 MaterialManagerExternal::libraryMaterials(const QString& libraryName)
 {
     return ExternalManager::getManager()->libraryMaterials(libraryName);
 }
 
-std::shared_ptr<std::vector<std::tuple<QString, QString, QString>>>
+std::shared_ptr<std::vector<LibraryObject>>
 MaterialManagerExternal::libraryMaterials(const QString& libraryName,
                                           const std::shared_ptr<MaterialFilter>& filter,
                                           const MaterialFilterOptions& options)
@@ -149,9 +167,41 @@ MaterialManagerExternal::libraryMaterials(const QString& libraryName,
 
 //=====
 //
+// Folder management
+//
+//=====
+
+void MaterialManagerExternal::createFolder(const std::shared_ptr<MaterialLibrary>& library,
+                                           const QString& path)
+{
+    ExternalManager::getManager()->createFolder(library->getName(), path);
+}
+
+void MaterialManagerExternal::renameFolder(const std::shared_ptr<MaterialLibrary>& library,
+                                           const QString& oldPath,
+                                           const QString& newPath)
+{
+    ExternalManager::getManager()->renameFolder(library->getName(), oldPath, newPath);
+}
+
+void MaterialManagerExternal::deleteRecursive(const std::shared_ptr<MaterialLibrary>& library,
+                                              const QString& path)
+{
+    ExternalManager::getManager()->deleteRecursive(library->getName(), path);
+}
+
+//=====
+//
 // Material management
 //
 //=====
+
+std::shared_ptr<Material> MaterialManagerExternal::materialNotFound(const QString& uuid) const
+{
+    // Setting the cache value to nullptr prevents repeated lookups
+    _cache.emplace(uuid.toStdString(), nullptr);
+    return nullptr;
+}
 
 std::shared_ptr<Material> MaterialManagerExternal::getMaterial(const QString& uuid) const
 {
@@ -164,12 +214,13 @@ std::shared_ptr<Material> MaterialManagerExternal::getMaterial(const QString& uu
         return material;
     }
     catch (const MaterialNotFound& e) {
-        _cache.emplace(uuid.toStdString(), nullptr);
-        return nullptr;
+        return materialNotFound(uuid);
     }
     catch (const ConnectionError& e) {
-        _cache.emplace(uuid.toStdString(), nullptr);
-        return nullptr;
+        return materialNotFound(uuid);
+    }
+    catch (...) {
+        return materialNotFound(uuid);
     }
 }
 

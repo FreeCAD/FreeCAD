@@ -162,8 +162,13 @@ class ShapeString(DraftObject):
                 if not shapes:
                     fill = False
                 else:
-                    fill = sum([shape.Area for shape in shapes]) > 0.03\
-                            and math.isclose(Part.Compound(char).BoundBox.DiagonalLength,
+                    # Depending on the font the size of char can be very small.
+                    # For the area check to make sense we need to use a scale factor.
+                    # https://github.com/FreeCAD/FreeCAD/issues/21501
+                    char_comp = Part.Compound(char)
+                    factor = 1 / char_comp.BoundBox.YLength
+                    fill = sum([shape.Area for shape in shapes]) > (0.03 / factor ** 2) \
+                            and math.isclose(char_comp.BoundBox.DiagonalLength,
                                              Part.Compound(shapes).BoundBox.DiagonalLength,
                                              rel_tol=1e-7)
 

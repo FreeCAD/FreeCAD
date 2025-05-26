@@ -93,6 +93,7 @@
 #include "DockWindowManager.h"
 #include "DownloadManager.h"
 #include "FileDialog.h"
+#include "InputHintWidget.h"
 #include "MenuManager.h"
 #include "ModuleIO.h"
 #include "NotificationArea.h"
@@ -117,6 +118,7 @@
 #include "View3DInventor.h"
 #include "View3DInventorViewer.h"
 #include "Dialogs/DlgObjectSelection.h"
+
 #include <Base/Color.h>
 
 FC_LOG_LEVEL_INIT("MainWindow",false,true,true)
@@ -280,6 +282,7 @@ struct MainWindowP
 {
     DimensionWidget* sizeLabel;
     QLabel* actionLabel;
+    InputHintWidget* hintLabel;
     QLabel* rightSideLabel;
     QTimer* actionTimer;
     QTimer* statusTimer;
@@ -396,6 +399,11 @@ MainWindow::MainWindow(QWidget * parent, Qt::WindowFlags f)
     statusBar()->addPermanentWidget(progressBar, 0);
     statusBar()->addPermanentWidget(d->sizeLabel, 0);
 
+    // hint label
+    d->hintLabel = new InputHintWidget(statusBar());
+    statusBar()->addWidget(d->hintLabel);
+
+    // right side label
     d->rightSideLabel = new QLabel(statusBar());
     d->rightSideLabel->setTextInteractionFlags(Qt::TextSelectableByMouse);
     statusBar()->addPermanentWidget(d->rightSideLabel);
@@ -2255,6 +2263,15 @@ void MainWindow::showStatus(int type, const QString& message)
     statusBar()->showMessage(msg.simplified(), timeout);
 }
 
+void MainWindow::showHints(const std::list<InputHint>& hints)
+{
+    d->hintLabel->showHints(hints);
+}
+
+void MainWindow::hideHints()
+{
+    d->hintLabel->clearHints();
+}
 
 // set text to the pane
 void MainWindow::setPaneText(int i, QString text)

@@ -136,6 +136,17 @@ class DraftTool:
         _toolmsg("{}".format(16*"-"))
         _toolmsg("GuiCommand: {}".format(self.featureName))
 
+        # update hints after the tool is fully initialized
+        QtCore.QTimer.singleShot(0, self.updateHints)
+
+    def updateHints(self):
+        Gui.HintManager.show(*self.getHints())
+
+    def getHints(self):
+        return [
+            Gui.InputHint("%1 constrain", Gui.UserInput.KeyShift)
+        ]
+
     def end_callbacks(self, call):
         try:
             self.view.removeEventCallback("SoEvent", call)
@@ -183,6 +194,8 @@ class DraftTool:
             else:
                 todo.ToDo.delayCommit(self.commitList)
         self.commitList = []
+
+        Gui.HintManager.hide()
 
     def commit(self, name, func):
         """Store actions in the commit list to be run later.

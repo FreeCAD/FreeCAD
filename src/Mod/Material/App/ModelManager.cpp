@@ -158,10 +158,12 @@ std::shared_ptr<std::list<std::shared_ptr<ModelLibrary>>> ModelManager::getLocal
     return _localManager->getLibraries();
 }
 
-void ModelManager::createLibrary([[maybe_unused]] const QString& libraryName, [[maybe_unused]] const QString& icon,
-    [[maybe_unused]] bool readOnly)
+void ModelManager::createLibrary([[maybe_unused]] const QString& libraryName,
+                                 [[maybe_unused]] const QString& iconPath,
+                                 [[maybe_unused]] bool readOnly)
 {
 #if defined(BUILD_MATERIAL_EXTERNAL)
+    auto icon = Materials::Library::getIcon(iconPath);
     _externalManager->createLibrary(libraryName, icon, readOnly);
 #endif
 }
@@ -202,7 +204,7 @@ void ModelManager::removeLibrary(const QString& libraryName)
     _localManager->removeLibrary(libraryName);
 }
 
-std::shared_ptr<std::vector<std::tuple<QString, QString, QString>>>
+std::shared_ptr<std::vector<LibraryObject>>
 ModelManager::libraryModels(const QString& libraryName)
 {
 #if defined(BUILD_MATERIAL_EXTERNAL)
@@ -319,16 +321,22 @@ bool ModelManager::passFilter(ModelFilter filter, Model::ModelType modelType)
 #if defined(BUILD_MATERIAL_EXTERNAL)
 void ModelManager::migrateToExternal(const std::shared_ptr<Materials::ModelLibrary>& library)
 {
-    _externalManager->createLibrary(library->getName(),
-                                    library->getIconPath(),
-                                    library->isReadOnly());
+    try {
+        _externalManager->createLibrary(library->getName(),
+                                        library->getIcon(),
+                                        library->isReadOnly());
+    }
+    catch (const CreationError&) {
+    }
+    catch (const ConnectionError&) {
+    }
 
     auto models = _localManager->libraryModels(library->getName());
-    for (auto& tuple : *models) {
-        auto uuid = std::get<0>(tuple);
-        auto path = std::get<1>(tuple);
-        auto name = std::get<2>(tuple);
-        Base::Console().Log("\t('%s', '%s', '%s')\n",
+    for (auto& it : *models) {
+        auto uuid = it.getUUID();
+        auto path = it.getPath();
+        auto name = it.getName();
+        Base::Console().log("\t('%s', '%s', '%s')\n",
                             uuid.toStdString().c_str(),
                             path.toStdString().c_str(),
                             name.toStdString().c_str());
@@ -341,11 +349,11 @@ void ModelManager::migrateToExternal(const std::shared_ptr<Materials::ModelLibra
 void ModelManager::validateMigration(const std::shared_ptr<Materials::ModelLibrary>& library)
 {
     auto models = _localManager->libraryModels(library->getName());
-    for (auto& tuple : *models) {
-        auto uuid = std::get<0>(tuple);
-        auto path = std::get<1>(tuple);
-        auto name = std::get<2>(tuple);
-        Base::Console().Log("\t('%s', '%s', '%s')\n",
+    for (auto& it : *models) {
+        auto uuid = it.getUUID();
+        auto path = it.getPath();
+        auto name = it.getName();
+        Base::Console().log("\t('%s', '%s', '%s')\n",
                             uuid.toStdString().c_str(),
                             path.toStdString().c_str(),
                             name.toStdString().c_str());

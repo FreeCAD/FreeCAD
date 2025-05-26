@@ -49,13 +49,10 @@ public:
     ModelLibrary(const Library& library);
     ModelLibrary(const QString& libraryName,
                  const QString& dir,
-                 const QString& icon,
+                 const QString& iconPath,
                  bool readOnly = true);
     ModelLibrary(const ModelLibrary& other) = delete;
     ~ModelLibrary() override = default;
-
-    bool isLocal() const;
-    void setLocal(bool local);
 
     std::shared_ptr<std::map<QString, std::shared_ptr<ModelTreeNode>>>
     getModelTree(ModelFilter filter) const;
@@ -65,9 +62,6 @@ public:
     {
         return shared_from_this();
     }
-
-private:
-    bool _local;
 };
 
 class MaterialsExport ModelLibraryLocal: public ModelLibrary
@@ -78,9 +72,9 @@ public:
     ModelLibraryLocal();
     ModelLibraryLocal(const Library& other);
     ModelLibraryLocal(const QString& libraryName,
-                 const QString& dir,
-                 const QString& icon,
-                 bool readOnly = true);
+                      const QString& dir,
+                      const QString& iconPath,
+                      bool readOnly = true);
     ModelLibraryLocal(const ModelLibraryLocal& other) = delete;
     ~ModelLibraryLocal() override = default;
 

@@ -86,15 +86,22 @@ class BIM_Views:
 
             # set button
             self.dialog.menu = QtGui.QMenu()
-            for button in [("AddLevel", translate("BIM","Add level")),
+            for button in [("Activate", translate("BIM","Activate (default)")),
+                            ("AddLevel", translate("BIM","Add level")),
                             ("AddProxy", translate("BIM","Add proxy")),
                             ("Delete", translate("BIM","Delete")),
                             ("Toggle", translate("BIM","Toggle on/off")),
                             ("Isolate", translate("BIM","Isolate")),
                             ("SaveView", translate("BIM","Save view position")),
-                            ("Rename", translate("BIM","Rename")),
-                            ("Activate", translate("BIM","Activate"))]:
+                            ("Rename", translate("BIM","Rename"))]:
                 action = QtGui.QAction(button[1])
+
+                # Make the "Activate" button bold, as this is the default one
+                if button[0] == "Activate":
+                    font = action.font()
+                    font.setBold(True)
+                    action.setFont(font)
+
                 self.dialog.menu.addAction(action)
                 setattr(self.dialog,"button"+button[0], action)
 
@@ -423,8 +430,8 @@ class BIM_Views:
                 if vm.tree.selectedItems():
                     item = vm.tree.selectedItems()[-1]
                     vm.tree.editItem(item, 0)
-    
-    def activate(self, item):
+    @staticmethod
+    def activate():
         vm = findWidget()
         if vm:
             if vm.tree.selectedItems():
@@ -523,8 +530,7 @@ class BIM_Views:
 
     def onDockLocationChanged(self, area):
         """Saves dock widget size and location"""
-
-        PARAMS.SetInt("BimViewArea", int(area))
+        PARAMS.SetInt("BimViewArea", area.value)
         mw = FreeCADGui.getMainWindow()
         vm = findWidget()
         if vm:
@@ -596,7 +602,6 @@ def findWidget():
 
 def show(item, column=None):
     "item has been double-clicked"
-
     import Draft
 
     obj = None
@@ -649,43 +654,8 @@ def show(item, column=None):
                 vparam.SetBool("Gradient", False)
                 vparam.SetBool("RadialGradient", False)
         else:
-
-            # case 3: This is maybe a BuildingPart. Place the WP on it
-            FreeCADGui.runCommand("Draft_SelectPlane")
-            if PARAMS.GetBool("BimViewsSwitchBackground", False):
-                vparam.SetBool("Simple", False)
-                vparam.SetBool("Gradient", False)
-                vparam.SetBool("RadialGradient", True)
-            if Draft.getType(obj) == "BuildingPart":
-                if obj.IfcType == "Building Storey":
-                    # hide all other storeys
-                    obj.ViewObject.Visibility = True
-                    bldgs = [o for o in obj.InList if Draft.getType(o) == "BuildingPart" and o.IfcType == "Building"]
-                    if len(bldgs) == 1:
-                        bldg = bldgs[0]
-                        storeys = [o for o in bldg.OutList if Draft.getType(o) == "BuildingPart" and o.IfcType == "Building Storey"]
-                        for storey in storeys:
-                            if storey != obj:
-                                storey.ViewObject.Visibility = False
-                elif obj.IfcType == "Building":
-                    # show all storeys
-                    storeys = [o for o in obj.OutList if Draft.getType(o) == "BuildingPart" and o.IfcType == "Building Storey"]
-                    for storey in storeys:
-                        storey.ViewObject.Visibility = True
-            elif Draft.getType(obj) == "IfcBuildingStorey":
-                obj.ViewObject.Visibility = True
-                bldgs = [o for o in obj.InList if Draft.getType(o) == "IfcBuilding"]
-                if len(bldgs) == 1:
-                    bldg = bldgs[0]
-                    storeys = [o for o in bldg.OutList if Draft.getType(o) == "IfcBuildingStorey"]
-                    for storey in storeys:
-                        if storey != obj:
-                            storey.ViewObject.Visibility = False
-            elif hasattr(obj, "IfcType") and obj.IfcType == "IfcBuilding":
-                # show all storeys
-                storeys = [o for o in obj.OutList if Draft.getType(o) == "IfcBuildingStorey"]
-                for storey in storeys:
-                    storey.ViewObject.Visibility = True
+            # case 3: This is maybe a BuildingPart. Place the WP on it")
+            BIM_Views.activate()
 
         # perform stored interactions
         if getattr(obj.ViewObject, "SetWorkingPlane", False):

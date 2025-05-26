@@ -42,7 +42,6 @@ from PySide.QtCore import QT_TRANSLATE_NOOP
 import FreeCADGui as Gui
 from draftguitools import gui_base
 from draftutils import gui_utils
-from draftutils import todo
 from draftutils.messages import _toolmsg
 from draftutils.translate import translate
 from drafttaskpanels import task_shapestring
@@ -67,7 +66,9 @@ class ShapeString(gui_base.GuiCommandBase):
         self.ui = task_shapestring.ShapeStringTaskPanelCmd(self)
         self.call = self.view.addEventCallback("SoEvent", self.ui.action)
         _toolmsg(translate("draft", "Pick ShapeString location point"))
-        todo.ToDo.delay(Gui.Control.showDialog, self.ui)
+        task = Gui.Control.showDialog(self.ui)
+        task.setDocumentName(Gui.ActiveDocument.Document.Name)
+        task.setAutoCloseOnDeletedDocument(True)
 
     def finish(self):
         try:

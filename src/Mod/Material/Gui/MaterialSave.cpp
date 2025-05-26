@@ -32,6 +32,7 @@
 
 #include <Mod/Material/App/MaterialLibrary.h>
 
+#include "MaterialsEditor.h"
 #include "MaterialSave.h"
 #include "ui_MaterialSave.h"
 
@@ -360,7 +361,7 @@ void MaterialSave::showSelectedTree()
     if (ui->comboLibrary->count() > 0) {
         auto variant = ui->comboLibrary->currentData();
         auto library = variant.value<std::shared_ptr<Materials::MaterialLibrary>>();
-        QIcon icon(library->getIconPath());
+        auto icon = MaterialsEditor::getIcon(library);
         QIcon folderIcon(QStringLiteral(":/icons/folder.svg"));
         _libraryName = library->getName();
         _selectedPath = QStringLiteral("/") + _libraryName;

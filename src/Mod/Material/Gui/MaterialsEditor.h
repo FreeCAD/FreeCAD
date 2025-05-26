@@ -87,6 +87,10 @@ public:
 
     static QString libraryPath(const std::shared_ptr<Materials::Material>& material);
 
+    static QIcon getIcon(const std::shared_ptr<Materials::MaterialLibrary>& library);
+    static QIcon getIcon(const std::shared_ptr<Materials::ModelLibrary>& library);
+    static QIcon getIcon(const std::shared_ptr<Materials::Library>& library);
+
     void updateMaterialAppearance();
     void updateMaterialProperties();
     void updateMaterialGeneral();

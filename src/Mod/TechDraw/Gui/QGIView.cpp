@@ -60,6 +60,7 @@
 #include "QGIEdge.h"
 #include "QGIVertex.h"
 #include "QGIViewClip.h"
+#include "QGIUserTypes.h"
 #include "QGSPage.h"
 #include "QGVPage.h"
 #include "Rez.h"
@@ -720,31 +721,21 @@ QRectF QGIView::customChildrenBoundingRect() const
 {
     QList<QGraphicsItem*> children = childItems();
     // exceptions not to be included in determining the frame rectangle
-    int dimItemType = QGraphicsItem::UserType + 106;  // TODO: Get magic number from include by name
-    int borderItemType = QGraphicsItem::UserType + 136;  // TODO: Magic number warning
-    int labelItemType = QGraphicsItem::UserType + 135;  // TODO: Magic number warning
-    int captionItemType = QGraphicsItem::UserType + 180;  // TODO: Magic number warning
-    int leaderItemType = QGraphicsItem::UserType + 232;  // TODO: Magic number warning
-    int textLeaderItemType = QGraphicsItem::UserType + 233;  // TODO: Magic number warning
-    int editablePathItemType = QGraphicsItem::UserType + 301;  // TODO: Magic number warning
-    int movableTextItemType = QGraphicsItem::UserType + 300;
-    int weldingSymbolItemType = QGraphicsItem::UserType + 340;
-    int centerMarkItemType = QGraphicsItem::UserType + 171;
     QRectF result;
     for (auto& child : children) {
         if (!child->isVisible()) {
             continue;
         }
-        if ( (child->type() != dimItemType) &&
-            (child->type() != leaderItemType) &&
-            (child->type() != textLeaderItemType) &&
-            (child->type() != editablePathItemType) &&
-            (child->type() != movableTextItemType) &&
-            (child->type() != borderItemType) &&
-            (child->type() != labelItemType)  &&
-            (child->type() != weldingSymbolItemType)  &&
-            (child->type() != captionItemType)  &&
-            (child->type() != centerMarkItemType)) {
+        if (child->type() != UserType::QGIViewDimension &&
+            child->type() != UserType::QGILeaderLine &&
+            child->type() != UserType::QGIRichAnno &&
+            child->type() != UserType::QGEPath &&
+            child->type() != UserType::QGMText &&
+            child->type() != UserType::QGCustomBorder &&
+            child->type() != UserType::QGCustomLabel &&
+            child->type() != UserType::QGIWeldSymbol &&
+            child->type() != UserType::QGICaption &&
+            child->type() != UserType::QGICMark) {
             QRectF childRect = mapFromItem(child, child->boundingRect()).boundingRect();
             result = result.united(childRect);
         }

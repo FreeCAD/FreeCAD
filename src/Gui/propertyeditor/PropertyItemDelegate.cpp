@@ -82,6 +82,9 @@ void PropertyItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
     }
     else if (index.column() == 1) {
         option.state &= ~QStyle::State_Selected;
+        if (property && property->isReadOnly()) {
+            option.state &= ~QStyle::State_Enabled;
+        }
     }
 
     option.state &= ~QStyle::State_HasFocus;
@@ -147,18 +150,15 @@ QWidget * PropertyItemDelegate::createEditor (QWidget * parent, const QStyleOpti
         return nullptr;
 
     auto childItem = static_cast<PropertyItem*>(index.internalPointer());
-    if (!childItem)
+    if (!childItem || childItem->isSeparator() || childItem->isReadOnly()) {
         return nullptr;
+    }
 
     auto parentEditor = qobject_cast<PropertyEditor*>(this->parent());
     if(parentEditor)
         parentEditor->closeEditor();
 
-    if (childItem->isSeparator())
-        return nullptr;
-
     FC_LOG("create editor " << index.row() << "," << index.column());
-
     QWidget* editor = nullptr;
     expressionEditor = nullptr;
     userEditor = nullptr;

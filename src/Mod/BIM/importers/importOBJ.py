@@ -287,6 +287,13 @@ def export(exportList,filename,colors=None):
         FreeCAD.Console.PrintMessage(translate("Arch","Successfully written") + ' ' + filenamemtl + "\n")
 
 
+# return entry after given index from an array or None on array end
+def peek(index, array):
+    if index < len(array) - 1:
+        return array[index+1].strip()
+    else:
+        return None
+
 def open(filename):
     "called when freecad wants to open a file"
     docname = os.path.splitext(os.path.basename(filename))[0]
@@ -310,22 +317,26 @@ def insert(filename,docname):
 
     with pyopen(filename,"r",encoding="utf8") as infile:
         verts = []
+        medges = []
+        edges = []
         facets = []
         activeobject = None
         material = None
         colortable = {}
         content_array = []
         for line in infile:
+            line = line.strip()
+            while line.endswith('\\'):
+                next_line = next(infile).strip()
+                line = line.rstrip()[:-1] + ' ' + next_line
             content_array.append(line)
     activeobjectExists = False
     for line in content_array:
-        line = line.strip()
         if line[:2] == "o ":
             activeobjectExists = True
     if not activeobjectExists:
         activeobject = meshName
-    for line in content_array:
-        line = line.strip()
+    for index, line in enumerate(content_array):
         if line[:7] == "mtllib ":
             matlib = os.path.join(os.path.dirname(filename),line[7:])
             if os.path.exists(matlib):
@@ -349,8 +360,9 @@ def insert(filename,docname):
                         colortable[mname] = [color,trans]
         elif line[:2] == "o ":
             if activeobject:
-                makeMesh(doc,activeobject,verts,facets,material,colortable)
+                makeMesh(doc,activeobject,verts,medges,facets,material,colortable)
             material = None
+            medges = []
             facets = []
             activeobject = line[2:]
         elif line[:2] == "v ":
@@ -362,14 +374,26 @@ def insert(filename,docname):
                     i = i.split("/")[0]
                 fa.append(int(i))
             facets.append(fa)
+        elif line[:2] == "l ":
+            edge = []
+            for i in line[2:].split():
+                if "/" in i:
+                    i = i.split("/")[0]
+                edge.append(int(i))
+            edges.append(edge)
+            # combine lines into medges
+            l = peek(index, content_array)
+            if l == None or l[:2] != "l ":
+                medges = edges
+                edges = []
         elif line[:7] == "usemtl ":
             material = line[7:]
     if activeobject:
-        makeMesh(doc,activeobject,verts,facets,material,colortable)
+        makeMesh(doc,activeobject,verts,medges,facets,material,colortable)
     FreeCAD.Console.PrintMessage(translate("Arch","Successfully imported") + ' ' + filename + "\n")
     return doc
 
-def makeMesh(doc,activeobject,verts,facets,material,colortable):
+def makeMesh(doc,activeobject,verts,edges,facets,material,colortable):
     mfacets = []
     if facets:
         for facet in facets:
@@ -391,8 +415,49 @@ def makeMesh(doc,activeobject,verts,facets,material,colortable):
         mobj = doc.addObject("Mesh::Feature",activeobject)
         mobj.Label = activeobject
         mobj.Mesh = Mesh.Mesh(mfacets)
-        if material and FreeCAD.GuiUp:
-            if material in colortable:
-                mobj.ViewObject.ShapeColor = colortable[material][0]
+        if FreeCAD.GuiUp and material and material in colortable:
+            mobj.ViewObject.ShapeColor = colortable[material][0]
+            if colortable[material][1] is not None:
+                mobj.ViewObject.Transparency = colortable[material][1]
+
+    # make polylines from edges
+    medges = []
+    if edges:
+        polyline = []
+        for edge in edges:
+            # single line
+            if len(edge) == 2:
+                i1 = edge[0]
+                i2 = edge[1]
+                if i1 == i2:
+                    continue
+                if len(polyline) > 0:
+                    if polyline[-1] == i1:
+                        polyline.append(i2)
+                    else:
+                        medges.append(polyline)
+                        polyline = []
+                        polyline.append(i1)
+                        polyline.append(i2)
+                else:
+                    polyline.append(i1)
+                    polyline.append(i2)
+            else:
+                medges.append(edge)
+        if len(polyline) > 0:
+            medges.append(polyline)
+    if medges:
+        part = doc.addObject("App::Part", activeobject)
+        part.Label = activeobject
+        features = []
+        for strip in medges:
+            points = [FreeCAD.Vector(*verts[i-1]) for i in strip]
+            wire = Draft.make_wire(points)
+            if FreeCAD.GuiUp and material and material in colortable:
+                wire.ViewObject.ShapeColor = colortable[material][0]
                 if colortable[material][1] is not None:
-                    mobj.ViewObject.Transparency = colortable[material][1]
+                    wire.ViewObject.Transparency = colortable[material][1]
+            features.append(wire)
+        part.addObjects(features)
+
+    doc.recompute()

@@ -102,7 +102,7 @@ requirements:
     - matplotlib-base
     - noqt5
     - numpy
-    - occt
+    - occt>=7.8,<7.9
     - pcl
     - pivy
     - ply
@@ -151,7 +151,7 @@ requirements:
     - nine
     - noqt5
     - numpy
-    - occt
+    - occt>=7.8,<7.9
     - olefile
     - opencamlib
     - opencv

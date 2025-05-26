@@ -540,6 +540,19 @@ public:
   }
 
   /**
+   * @brief Rename the dynamic property.
+   *
+   * @param[in] prop The property to rename.
+   * @param[in] name The new name for the property.
+   *
+   * @return `true` if the property was renamed; `false` otherwise.
+   * @throw Base::NameError If the new name is invalid or already exists.
+   */
+  bool renameDynamicProperty(Property *prop, const char *name) {
+      return dynamicProps.renameDynamicProperty(prop,name);
+  }
+
+  /**
    * @brief Remove a dynamic property.
    *
    * @param[in] name The name of the property to remove.

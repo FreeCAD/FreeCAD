@@ -2346,6 +2346,7 @@ def getRepresentation(
                     if hasattr(obj,"Material"):
                         if obj.Material:
                             m = obj.Material.Label
+                            rgbt[i] = (rgbt[i][0], rgbt[i][1], rgbt[i][2], obj.Material.Transparency/100.0)
                     psa = ifcbin.createIfcPresentationStyleAssignment(m,rgbt[i][0],rgbt[i][1],rgbt[i][2],rgbt[i][3])
                     surfstyles[key] = psa
                 isi = ifcfile.createIfcStyledItem(shape,[psa],None)

@@ -103,6 +103,11 @@ public:
     QBoxLayout* groupLayout();
 
     /**
+     * @brief Set the style of the widgets
+     */
+    void setScheme(ActionPanelScheme *scheme);
+
+    /**
      * @brief Checks if the group is expandable.
      * @return `true` if the group is expandable, `false` otherwise.
      */
@@ -192,6 +197,9 @@ protected:
     TaskGroup *myGroup = nullptr;          ///< The container for actions/widgets.
     QWidget *myDummy = nullptr;            ///< Dummy widget for animation.
     ActionPanelScheme *myScheme = nullptr; ///< The color scheme.
+
+private:
+    const int separatorHeight = 1;
 };
 } // namespace QSint
 

@@ -3,6 +3,7 @@
 # ***************************************************************************
 # *                                                                         *
 # *   Copyright (c) 2013 Yorik van Havre <yorik@uncreated.net>              *
+# *   Copyright (c) 2025 Furgo                                              *
 # *                                                                         *
 # *   This file is part of FreeCAD.                                         *
 # *                                                                         *
@@ -25,7 +26,6 @@
 # Unit tests for the Arch space module
 
 import os
-import unittest
 import Arch
 import Draft
 import Part

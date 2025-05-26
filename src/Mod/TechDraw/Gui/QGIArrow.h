@@ -28,7 +28,8 @@
 
 #include <Base/Vector3D.h>
 
-# include "QGIPrimPath.h"
+#include "QGIPrimPath.h"
+#include "QGIUserTypes.h"
 
 QT_BEGIN_NAMESPACE
 class QPainter;
@@ -44,7 +45,7 @@ public:
     explicit QGIArrow();
     ~QGIArrow() override {}
 
-    enum {Type = QGraphicsItem::UserType + 109};
+    enum {Type = UserType::QGIArrow};
     int type() const override { return Type;}
 
 public:

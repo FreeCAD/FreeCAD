@@ -801,6 +801,33 @@ void MaterialsEditor::createAppearanceTree()
     connect(delegate, &MaterialDelegate::propertyChange, this, &MaterialsEditor::propertyChange);
 }
 
+QIcon MaterialsEditor::getIcon(const std::shared_ptr<Materials::Library>& library)
+{
+    // Load from the QByteArray if available
+    QIcon icon;
+    if (library->hasIcon()) {
+        QImage image;
+        if (!image.loadFromData(library->getIcon())) {
+            Base::Console().log("Unable to load icon image for library '%s'\n",
+                                library->getName().toStdString().c_str());
+            return QIcon();
+        }
+        icon = QIcon(QPixmap::fromImage(image));
+    }
+
+    return icon;
+}
+
+QIcon MaterialsEditor::getIcon(const std::shared_ptr<Materials::ModelLibrary>& library)
+{
+    return getIcon(std::static_pointer_cast<Materials::Library>(library));
+}
+
+QIcon MaterialsEditor::getIcon(const std::shared_ptr<Materials::MaterialLibrary>& library)
+{
+    return getIcon(std::static_pointer_cast<Materials::Library>(library));
+}
+
 void MaterialsEditor::addRecents(QStandardItem* parent)
 {
     auto tree = ui->treeMaterials;
@@ -808,13 +835,13 @@ void MaterialsEditor::addRecents(QStandardItem* parent)
         try {
             auto material = getMaterialManager().getMaterial(uuid);
             // if (material->getLibrary()->isLocal()) {
-                QIcon icon = QIcon(material->getLibrary()->getIconPath());
-                auto card = new QStandardItem(icon, libraryPath(material));
-                card->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled | Qt::ItemIsDragEnabled
-                               | Qt::ItemIsDropEnabled);
-                card->setData(QVariant(uuid), Qt::UserRole);
+            QIcon icon = getIcon(material->getLibrary());
+            auto card = new QStandardItem(icon, libraryPath(material));
+            card->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled | Qt::ItemIsDragEnabled
+                           | Qt::ItemIsDropEnabled);
+            card->setData(QVariant(uuid), Qt::UserRole);
 
-                addExpanded(tree, parent, card);
+            addExpanded(tree, parent, card);
             // }
         }
         catch (const Materials::MaterialNotFound&) {
@@ -828,7 +855,7 @@ void MaterialsEditor::addFavorites(QStandardItem* parent)
     for (auto& uuid : _favorites) {
         try {
             auto material = getMaterialManager().getMaterial(uuid);
-            QIcon icon = QIcon(material->getLibrary()->getIconPath());
+            QIcon icon = getIcon(material->getLibrary());
             auto card = new QStandardItem(icon, libraryPath(material));
             card->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled | Qt::ItemIsDragEnabled
                             | Qt::ItemIsDropEnabled);
@@ -877,7 +904,7 @@ void MaterialsEditor::fillMaterialTree()
             lib->setFlags(Qt::ItemIsEnabled | Qt::ItemIsDragEnabled | Qt::ItemIsDropEnabled);
             addExpanded(tree, model, lib, param);
 
-            QIcon icon(library->getIconPath());
+            QIcon icon = getIcon(library);
             QIcon folderIcon(QStringLiteral(":/icons/folder.svg"));
 
             addMaterials(*lib, materialTree, folderIcon, icon, param);
