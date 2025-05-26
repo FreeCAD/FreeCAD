@@ -26,6 +26,7 @@
 #include <Gui/Notifications.h>
 #include <Gui/Command.h>
 #include <Gui/CommandT.h>
+#include <Gui/InputHint.h>
 
 #include <Mod/Sketcher/App/SketchObject.h>
 
@@ -69,6 +70,8 @@ public:
     void mouseMove(Base::Vector2d onSketchPos) override
     {
         using std::numbers::pi;
+
+        updateHints();
 
         if (Mode == STATUS_SEEK_First) {
             setPositionText(onSketchPos);
@@ -218,6 +221,9 @@ public:
             setAngleSnapping(false);
             Mode = STATUS_Close;
         }
+
+        updateHints();
+
         return true;
     }
 
@@ -397,6 +403,41 @@ protected:
     Base::Vector2d centerPoint, axisPoint, startingPoint, endPoint;
     double rx, ry, startAngle, endAngle, arcAngle, arcAngle_t;
     std::vector<AutoConstraint> sugConstr1, sugConstr2, sugConstr3, sugConstr4;
+
+private:
+    void updateHints() const
+    {
+        using Gui::InputHint;
+        using UserInput = Gui::InputHint::UserInput;
+        std::list<InputHint> hints;
+
+        switch (Mode) {
+            case STATUS_SEEK_First:
+                hints.push_back(
+                    InputHint(QCoreApplication::translate("Sketcher", "%1 pick ellipse center"),
+                              {UserInput::MouseLeft}));
+                break;
+            case STATUS_SEEK_Second:
+                hints.push_back(
+                    InputHint(QCoreApplication::translate("Sketcher", "%1 pick axis point"),
+                              {UserInput::MouseLeft}));
+                break;
+            case STATUS_SEEK_Third:
+                hints.push_back(
+                    InputHint(QCoreApplication::translate("Sketcher", "%1 pick arc start point"),
+                              {UserInput::MouseLeft}));
+                break;
+            case STATUS_SEEK_Fourth:
+                hints.push_back(
+                    InputHint(QCoreApplication::translate("Sketcher", "%1 pick arc end point"),
+                              {UserInput::MouseLeft}));
+                break;
+            default:
+                break;
+        }
+
+        Gui::getMainWindow()->showHints(hints);
+    }
 };
 
 }  // namespace SketcherGui
