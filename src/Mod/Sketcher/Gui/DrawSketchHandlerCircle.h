@@ -28,6 +28,7 @@
 #include <Gui/Notifications.h>
 #include <Gui/Command.h>
 #include <Gui/CommandT.h>
+#include <Gui/InputHint.h>
 
 #include <Mod/Part/App/Geometry2d.h>
 
@@ -79,6 +80,8 @@ public:
 private:
     void updateDataAndDrawToPosition(Base::Vector2d onSketchPos) override
     {
+        updateHints();
+
         switch (state()) {
             case SelectMode::SeekFirst: {
                 toolWidgetManager.drawPositionAtCursor(onSketchPos);
@@ -305,6 +308,50 @@ private:
     Base::Vector2d centerPoint, firstPoint, secondPoint;
     double radius;
     bool isDiameter;
+
+    void updateHints() const
+    {
+        using Gui::InputHint;
+        using UserInput = Gui::InputHint::UserInput;
+
+        std::list<InputHint> hints;
+
+        switch (state()) {
+            case SelectMode::SeekFirst:
+                if (constructionMethod() == ConstructionMethod::Center) {
+                    hints.push_back(
+                        InputHint(QCoreApplication::translate("Sketcher", "%1 pick center point"),
+                                  {UserInput::MouseLeft}));
+                }
+                else {
+                    hints.push_back(InputHint(
+                        QCoreApplication::translate("Sketcher", "%1 pick first rim point"),
+                        {UserInput::MouseLeft}));
+                }
+                break;
+            case SelectMode::SeekSecond:
+                if (constructionMethod() == ConstructionMethod::Center) {
+                    hints.push_back(
+                        InputHint(QCoreApplication::translate("Sketcher", "%1 pick rim point"),
+                                  {UserInput::MouseLeft}));
+                }
+                else {
+                    hints.push_back(InputHint(
+                        QCoreApplication::translate("Sketcher", "%1 pick second rim point"),
+                        {UserInput::MouseLeft}));
+                }
+                break;
+            case SelectMode::SeekThird:
+                hints.push_back(
+                    InputHint(QCoreApplication::translate("Sketcher", "%1 pick third rim point"),
+                              {UserInput::MouseLeft}));
+                break;
+            default:
+                break;
+        }
+
+        Gui::getMainWindow()->showHints(hints);
+    }
 };
 
 template<>
