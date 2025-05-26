@@ -124,9 +124,35 @@
           </property>
           <property name="icon">
            <iconset resource="../../../../../Gui/Icons/resource.qrc">
-            <normaloff>:/icons/document-save.svg</normaloff>:/icons/document-save.svg</iconset>
+            <normaloff>:/icons/Std_Export.svg</normaloff>:/icons/Std_Export.svg</iconset>
           </property>
          </widget>
+        </item>
+        <item>
+          <widget class="QPushButton" name="saveLibrary">
+          <property name="sizePolicy">
+            <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+            </sizepolicy>
+          </property>
+          <property name="maximumSize">
+            <size>
+            <width>16777215</width>
+            <height>16777215</height>
+            </size>
+          </property>
+          <property name="toolTip">
+            <string>Save the current Library</string>
+          </property>
+          <property name="text">
+           <string/>
+          </property>
+          <property name="icon">
+            <iconset resource="../../../../../Gui/Icons/resource.qrc">
+            <normaloff>:/icons/document-save.svg</normaloff>:/icons/document-save.svg</iconset>
+          </property>
+          </widget>
         </item>
         <item>
          <spacer name="verticalSpacer">
