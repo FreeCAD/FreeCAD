@@ -97,21 +97,21 @@ def pathPostSourcePath():
     return os.path.join(FreeCAD.getHomePath(), "Mod/CAM/Path/Post/")
 
 
-def getBuiltinToolPath() -> pathlib.Path:
+def getBuiltinAssetPath() -> pathlib.Path:
     home = pathlib.Path(FreeCAD.getHomePath())
     return home / "Mod" / "CAM" / "Tools"
 
 
 def getBuiltinLibraryPath() -> pathlib.Path:
-    return getBuiltinToolPath() / "Library"
+    return getBuiltinAssetPath() / "Library"
 
 
 def getBuiltinShapePath() -> pathlib.Path:
-    return getBuiltinToolPath() / "Shape"
+    return getBuiltinAssetPath() / "Shape"
 
 
 def getBuiltinToolBitPath() -> pathlib.Path:
-    return getBuiltinToolPath() / "Bit"
+    return getBuiltinAssetPath() / "Bit"
 
 
 def getDefaultAssetPath():

@@ -57,9 +57,9 @@ class TestPathPreferences(PathTestUtils.PathTestBase):
             str(Path.Preferences.getDefaultAssetPath()),
         )
         self.assertEqual(
-            Path.Preferences.getBuiltinToolPath().parts[-2:],
+            Path.Preferences.getBuiltinAssetPath().parts[-2:],
             ("CAM", "Tools"),
-            str(Path.Preferences.getBuiltinToolPath()),
+            str(Path.Preferences.getBuiltinAssetPath()),
         )
         self.assertEqual(
             Path.Preferences.getBuiltinShapePath().parts[-3:],
