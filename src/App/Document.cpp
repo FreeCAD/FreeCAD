@@ -48,6 +48,9 @@
 #include <unordered_map>
 #include <unordered_set>
 
+#include <thread>
+#include <chrono>
+
 #include <QCryptographicHash>
 #include <QCoreApplication>
 
@@ -2889,6 +2892,8 @@ int Document::recompute(const std::vector<DocumentObject*>& objs,
                         int options)
 {
     ZoneScoped;
+
+    Base::PyGILStateLocker locker;
 
     if (d->undoing || d->rollback) {
         if (FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG)) {
