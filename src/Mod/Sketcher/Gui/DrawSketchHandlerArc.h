@@ -112,13 +112,6 @@ private:
                 break;
         }
 
-        // Add Mouse Right and Escape key hint for all states
-        hints.push_back(InputHint(QCoreApplication::translate("Sketcher", "%1 cancel"),
-                                  {UserInput::MouseRight}));
-
-        hints.push_back(InputHint(QCoreApplication::translate("Sketcher", "%1 cancel"),
-                                  {UserInput::KeyEscape}));
-
         Gui::getMainWindow()->showHints(hints);
     }
 
