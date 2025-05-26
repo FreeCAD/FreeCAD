@@ -49,7 +49,7 @@ tooltemplate = {
 
 class CamoticsLibrarySerializer(AssetSerializer):
     for_class: Type[Asset] = Library
-    extensions: tuple[str] = (".ctbl",)
+    extensions: tuple[str] = (".json",)
     mime_type: str = "application/json"
 
     @classmethod
