@@ -115,7 +115,6 @@ private:
                     InputHint(QCoreApplication::translate("Sketcher", "%1 finish B-spline"),
                               {UserInput::MouseRight}));
                 break;
-            // Add more cases as needed for your state machine
             default:
                 break;
         }
