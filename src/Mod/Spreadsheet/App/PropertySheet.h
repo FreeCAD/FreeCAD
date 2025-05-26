@@ -51,6 +51,7 @@ public:
     std::map<App::ObjectIdentifier, const App::Expression*> getExpressions() const override;
     void setExpressions(std::map<App::ObjectIdentifier, App::ExpressionPtr>&& exprs) override;
     void onRelabeledDocument(const App::Document& doc) override;
+    void onRenameDynamicProperty(const App::Property& prop, const char* oldName) override;
 
     void updateElementReference(App::DocumentObject* feature,
                                 bool reverse = false,

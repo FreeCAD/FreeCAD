@@ -198,11 +198,31 @@ SET(nativeifc_SRCS
 )
 
 SET(bimtests_SRCS
+    bimtests/TestArch.py
+    bimtests/TestArchAxis.py
     bimtests/TestArchBase.py
     bimtests/TestArchComponent.py
+    bimtests/TestArchBuildingPart.py
     bimtests/TestArchRoof.py
     bimtests/TestArchSpace.py
     bimtests/TestArchWall.py
+    bimtests/TestArchMaterial.py
+    bimtests/TestArchPanel.py
+    bimtests/TestArchWindow.py
+    bimtests/TestArchStairs.py
+    bimtests/TestArchPipe.py
+    bimtests/TestArchCurtainWall.py
+    bimtests/TestArchProfile.py
+    bimtests/TestArchProject.py
+    bimtests/TestArchSectionPlane.py
+    bimtests/TestArchRebar.py
+    bimtests/TestArchGrid.py
+    bimtests/TestArchFence.py
+    bimtests/TestArchEquipment.py
+    bimtests/TestArchFrame.py
+    bimtests/TestArchReference.py
+    bimtests/TestArchSchedule.py
+    bimtests/TestArchTruss.py
 )
 
 SOURCE_GROUP("" FILES ${Arch_SRCS})

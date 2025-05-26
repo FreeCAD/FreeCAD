@@ -29,6 +29,7 @@
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
 #include "QGCustomText.h"
+#include "QGIUserTypes.h"
 
 
 QT_BEGIN_NAMESPACE
@@ -48,7 +49,7 @@ public:
     explicit QGMText(void);
     ~QGMText() override = default;
 
-    enum {Type = QGraphicsItem::UserType + 300};
+    enum {Type = UserType::QGMText};
     int type() const override { return Type;}
     void paint( QPainter * painter,
                 const QStyleOptionGraphicsItem * option,

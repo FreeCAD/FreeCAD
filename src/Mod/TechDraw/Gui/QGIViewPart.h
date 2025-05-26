@@ -32,6 +32,7 @@
 #include <QStyleOptionGraphicsItem>
 
 #include "QGIView.h"
+#include "QGIUserTypes.h"
 
 class QColor;
 
@@ -63,7 +64,7 @@ public:
     explicit QGIViewPart();
     ~QGIViewPart() override;
 
-    enum {Type = QGraphicsItem::UserType + 102};
+    enum {Type = UserType::QGIViewPart};
     int type() const override { return Type;}
     void paint( QPainter * painter,
                         const QStyleOptionGraphicsItem * option,

@@ -608,7 +608,7 @@ bool DrawViewDimension::isMultiValueSchema() const
 }
 
 std::string
-DrawViewDimension::formatValue(qreal value, QString qFormatSpec, DimensionFormatter::Format partial, bool isDim)
+DrawViewDimension::formatValue(qreal value, const QString& qFormatSpec, DimensionFormatter::Format partial, bool isDim)
 {
     return m_formatter->formatValue(value, qFormatSpec, partial, isDim);
 }
@@ -617,12 +617,9 @@ bool DrawViewDimension::haveTolerance()
 {
     // if a numeric tolerance is specified AND
     // tolerances are NOT arbitrary
-    if ((!DrawUtil::fpCompare(OverTolerance.getValue(), 0.0)
-         || !DrawUtil::fpCompare(UnderTolerance.getValue(), 0.0))
-        && !ArbitraryTolerances.getValue()) {
-        return true;
-    }
-    return false;
+    return (!DrawUtil::fpCompare(OverTolerance.getValue(), 0.0) ||
+            !DrawUtil::fpCompare(UnderTolerance.getValue(), 0.0)) &&
+            !ArbitraryTolerances.getValue();
 }
 
 std::string DrawViewDimension::getFormattedToleranceValue(DimensionFormatter::Format partial)
@@ -763,7 +760,7 @@ double DrawViewDimension::getProjectedDimValue() const
     }
     else if (Type.isValue("Diameter")) {
         arcPoints pts = m_arcPoints;
-        result = (pts.radius * 2.0) / scale; // Projected BaseGeom is scaled for drawing
+        result = (pts.radius * 2) / scale; // Projected BaseGeom is scaled for drawing
     }
     else if (Type.isValue("Angle") || Type.isValue("Angle3Pt")) {  // same as case "Angle"?
         anglePoints pts = m_anglePoints;
@@ -1004,7 +1001,7 @@ arcPoints DrawViewDimension::getArcParameters(ReferenceVector references)
     return pts;
 }
 
-arcPoints DrawViewDimension::arcPointsFromBaseGeom(TechDraw::BaseGeomPtr base)
+arcPoints DrawViewDimension::arcPointsFromBaseGeom(const TechDraw::BaseGeomPtr& base)
 {
     TechDraw::CirclePtr circle;
     arcPoints pts;
@@ -1107,7 +1104,7 @@ arcPoints DrawViewDimension::arcPointsFromBaseGeom(TechDraw::BaseGeomPtr base)
     return pts;
 }
 
-arcPoints DrawViewDimension::arcPointsFromEdge(TopoDS_Edge occEdge)
+arcPoints DrawViewDimension::arcPointsFromEdge(const TopoDS_Edge& occEdge)
 {
     arcPoints pts;
     pts.isArc = !BRep_Tool::IsClosed(occEdge);
@@ -1134,8 +1131,8 @@ arcPoints DrawViewDimension::arcPointsFromEdge(TopoDS_Edge occEdge)
         if (pts.isArc) {
             // part of circle
             gp_Ax1 axis = circle.Axis();
-            gp_Vec startVec = Base::convertTo<gp_Vec>(pts.arcEnds.first() - pts.center);
-            gp_Vec endVec = Base::convertTo<gp_Vec>(pts.arcEnds.second() - pts.center);
+            auto startVec = Base::convertTo<gp_Vec>(pts.arcEnds.first() - pts.center);
+            auto endVec = Base::convertTo<gp_Vec>(pts.arcEnds.second() - pts.center);
             double angle = startVec.AngleWithRef(endVec, axis.Direction().XYZ());
             pts.arcCW = (angle < 0.0);
         }
@@ -1150,12 +1147,12 @@ arcPoints DrawViewDimension::arcPointsFromEdge(TopoDS_Edge occEdge)
     else if (adapt.GetType() == GeomAbs_Ellipse) {
         gp_Elips ellipse = adapt.Ellipse();
         pts.center = Base::convertTo<Base::Vector3d>(ellipse.Location());
-        pts.radius = (ellipse.MajorRadius() + ellipse.MinorRadius()) / 2.0;
+        pts.radius = (ellipse.MajorRadius() + ellipse.MinorRadius()) / 2;
         if (pts.isArc) {
             // part of ellipse
             gp_Ax1 axis = ellipse.Axis();
-            gp_Vec startVec = Base::convertTo<gp_Vec>(pts.arcEnds.first() - pts.center);
-            gp_Vec endVec = Base::convertTo<gp_Vec>(pts.arcEnds.second() - pts.center);
+            auto startVec = Base::convertTo<gp_Vec>(pts.arcEnds.first() - pts.center);
+            auto endVec = Base::convertTo<gp_Vec>(pts.arcEnds.second() - pts.center);
             double angle = startVec.AngleWithRef(endVec, axis.Direction().XYZ());
             pts.arcCW = (angle < 0.0);
         }
@@ -1183,8 +1180,8 @@ arcPoints DrawViewDimension::arcPointsFromEdge(TopoDS_Edge occEdge)
             if (pts.isArc) {
                 // part of circle
                 gp_Ax1 axis = circle.Axis();
-                gp_Vec startVec = Base::convertTo<gp_Vec>(pts.arcEnds.first() - pts.center);
-                gp_Vec endVec = Base::convertTo<gp_Vec>(pts.arcEnds.second() - pts.center);
+                auto startVec = Base::convertTo<gp_Vec>(pts.arcEnds.first() - pts.center);
+                auto endVec = Base::convertTo<gp_Vec>(pts.arcEnds.second() - pts.center);
                 double angle = startVec.AngleWithRef(endVec, axis.Direction().XYZ());
                 pts.arcCW = (angle < 0.0);
             }
@@ -1234,58 +1231,40 @@ anglePoints DrawViewDimension::getAnglePointsTwoEdges(ReferenceVector references
                       << geom0->geomTypeName();
             throw Base::RuntimeError(ssMessage.str());
         }
-        TechDraw::GenericPtr generic0 = std::static_pointer_cast<TechDraw::Generic>(geom0);
-        TechDraw::GenericPtr generic1 = std::static_pointer_cast<TechDraw::Generic>(geom1);
+        auto generic0 = std::static_pointer_cast<TechDraw::Generic>(geom0);
+        auto generic1 = std::static_pointer_cast<TechDraw::Generic>(geom1);
         Base::Vector3d apex = generic0->apparentInter(generic1);
-        Base::Vector3d farPoint0;
-        Base::Vector3d farPoint1;
-        // pick the end of generic0 farthest from the apex
+
+        Base::Vector3d farPoint0{generic0->getEndPoint()};
         if ((generic0->getStartPoint() - apex).Length()
             > (generic0->getEndPoint() - apex).Length()) {
             farPoint0 = generic0->getStartPoint();
         }
-        else {
-            farPoint0 = generic0->getEndPoint();
-        }
+
+
         // pick the end of generic1 farthest from the apex
+        Base::Vector3d farPoint1{generic1->getEndPoint()};
         if ((generic1->getStartPoint() - apex).Length()
             > (generic1->getEndPoint() - apex).Length()) {
-            farPoint1 = generic1->getStartPoint();
+            farPoint1 = (generic1->getStartPoint());
         }
-        else {
-            farPoint1 = generic1->getEndPoint();
-        }
-        Base::Vector3d leg0Dir = (generic0->getStartPoint() - generic0->getEndPoint()).Normalize();
-        Base::Vector3d leg1Dir = (generic1->getStartPoint() - generic1->getEndPoint()).Normalize();
-        if (DrawUtil::fpCompare(fabs(leg0Dir.Dot(leg1Dir)), 1.0)) {
-            // legs of the angle are parallel.
-            throw Base::RuntimeError("Can not make angle from parallel edges");
-        }
+
+        Base::Vector3d leg0Dir = (farPoint0 - apex).Normalize();
+        Base::Vector3d leg1Dir = (farPoint1 - apex).Normalize();
         Base::Vector3d extenPoint0 = farPoint0;  // extension line points
         Base::Vector3d extenPoint1 = farPoint1;
-        if (DrawUtil::fpCompare(fabs(leg0Dir.Dot(leg1Dir)), 0.0)) {
-            // legs of angle are perpendicular farPoints will do
-        }
-        else {
-            // legs of the angle are skew
-            // project farthest points onto opposite edge
-            Base::Vector3d projFar0OnLeg1 = farPoint0.Perpendicular(apex, leg1Dir);
-            Base::Vector3d projFar1OnLeg0 = farPoint1.Perpendicular(apex, leg0Dir);
-            if (DrawUtil::isBetween(projFar0OnLeg1,
-                                    generic1->getStartPoint(),
-                                    generic1->getEndPoint())) {
-                extenPoint1 = projFar0OnLeg1;
-            }
-            else if (DrawUtil::isBetween(projFar1OnLeg0,
-                                         generic0->getStartPoint(),
-                                         generic0->getEndPoint())) {
-                extenPoint0 = projFar1OnLeg0;
-            }
+
+
+        double extenRadius = std::min(extenPoint0.Length(),
+                                      extenPoint1.Length());
+        if (extenRadius == 0) {
+            // one of the legs has 0 length??
+            throw Base::RuntimeError("No extension point radius!!");
         }
 
         anglePoints pts;
-        pts.first(extenPoint0);
-        pts.second(extenPoint1);
+        pts.first(apex + leg0Dir * extenRadius);
+        pts.second(apex + leg1Dir * extenRadius);
         pts.vertex(apex);
         return pts;
     }
@@ -1320,7 +1299,7 @@ anglePoints DrawViewDimension::getAnglePointsTwoEdges(ReferenceVector references
     if (!haveIntersection) {
         throw Base::RuntimeError("Geometry for 3d angle dimension does not intersect");
     }
-    gp_Pnt gApex = Base::convertTo<gp_Pnt>(vApex);
+    auto gApex = Base::convertTo<gp_Pnt>(vApex);
 
     gp_Pnt gFar0 = gEnd0;
     if (gStart0.Distance(gApex) > gEnd0.Distance(gApex)) {
@@ -1487,8 +1466,8 @@ ReferenceVector DrawViewDimension::getEffectiveReferences() const
     // is deleted.
     if (objects3d.empty()) {
         // use 2d references
-        int refCount = objects.size();
-        for (int i = 0; i < refCount; i++) {
+        size_t refCount = objects.size();
+        for (size_t i = 0; i < refCount; i++) {
             if (subElements.empty()) {
                 // the 3d references have likely been nulled out by an object
                 // deletion.
@@ -1504,8 +1483,8 @@ ReferenceVector DrawViewDimension::getEffectiveReferences() const
     }
     else {
         // use 3d references
-        int refCount = objects3d.size();
-        for (int i = 0; i < refCount; i++) {
+        size_t refCount = objects3d.size();
+        for (size_t i = 0; i < refCount; i++) {
             ReferenceEntry ref(objects3d.at(i), std::string(subElements3d.at(i)));
             effectiveRefs.push_back(ref);
         }
@@ -1662,11 +1641,11 @@ void DrawViewDimension::updateSavedGeometry()
             continue;
         }
         if (entry.hasGeometry()) {
-            newGeometry.push_back(entry.asCanonicalTopoShape());
+            newGeometry.emplace_back(entry.asCanonicalTopoShape());
         }
         else {
             // have to put something in the vector so SavedGeometry and references stay in sync.
-                newGeometry.push_back(Part::TopoShape());
+                newGeometry.emplace_back(Part::TopoShape());
         }
     }
     if (!newGeometry.empty()) {
@@ -1689,7 +1668,7 @@ std::vector<TopoShape> DrawViewDimension::getEdges(const TopoShape& inShape)
 
     for (Standard_Integer k = 1; k <= shapeMap.Extent(); k++) {
         const TopoDS_Shape& shape = shapeMap(k);
-        ret.push_back(TopoShape(shape));
+        ret.emplace_back(TopoShape(shape));
     }
 
     return ret;
@@ -1708,7 +1687,7 @@ std::vector<TopoShape> DrawViewDimension::getVertexes(const TopoShape& inShape)
 
     for (Standard_Integer k = 1; k <= shapeMap.Extent(); k++) {
         const TopoDS_Shape& shape = shapeMap(k);
-        ret.push_back(TopoShape(shape));
+        ret.emplace_back(TopoShape(shape));
     }
 
     return ret;
@@ -1721,14 +1700,14 @@ double DrawViewDimension::getArcAngle(Base::Vector3d center, Base::Vector3d star
     auto leg1 = endPoint - startPoint;
     auto referenceDirection = leg0.Cross(leg1);
     gp_Ax1 axis{Base::convertTo<gp_Pnt>(center), Base::convertTo<gp_Vec>(referenceDirection)};
-    gp_Vec startVec = Base::convertTo<gp_Vec>(leg0);
-    gp_Vec endVec = Base::convertTo<gp_Vec>(leg1);
+    auto startVec = Base::convertTo<gp_Vec>(leg0);
+    auto endVec = Base::convertTo<gp_Vec>(leg1);
     double angle = startVec.AngleWithRef(endVec, axis.Direction().XYZ());
     return angle;
 }
 
 
-pointPair DrawViewDimension::closestPoints(TopoDS_Shape s1, TopoDS_Shape s2) const
+pointPair DrawViewDimension::closestPoints(const TopoDS_Shape& s1, const TopoDS_Shape& s2) const
 {
     pointPair result;
     BRepExtrema_DistShapeShape extss(s1, s2);
@@ -1804,8 +1783,8 @@ void DrawViewDimension::setAll3DMeasurement()
     measurement->clear();
     const std::vector<App::DocumentObject*>& Objs = References3D.getValues();
     const std::vector<std::string>& Subs = References3D.getSubValues();
-    int end = Objs.size();
-    int iObject = 0;
+    size_t end = Objs.size();
+    size_t iObject = 0;
     for (; iObject < end; iObject++) {
         static_cast<void>(measurement->addReference3D(Objs.at(iObject), Subs.at(iObject)));
         // cache the referenced object
@@ -1909,10 +1888,7 @@ bool DrawViewDimension::validateReferenceForm() const
             return false;
         }
         std::string subGeom = DrawUtil::getGeomTypeFromName(references.front().getSubName());
-        if (subGeom != "Face") {
-            return false;
-        }
-        return true;
+        return (subGeom == "Face");
     }
 
     return false;
@@ -2017,8 +1993,8 @@ ReferenceVector DrawViewDimension::getReferences2d() const
     const std::vector<App::DocumentObject*>& objects = References2D.getValues();
     const std::vector<std::string>& subElements = References2D.getSubValues();
     ReferenceVector refs2d;
-    int refCount = objects.size();
-    for (int i = 0; i < refCount; i++) {
+    size_t refCount = objects.size();
+    for (size_t i = 0; i < refCount; i++) {
         ReferenceEntry ref(objects.at(i), subElements.at(i));
         refs2d.push_back(ref);
     }
@@ -2031,8 +2007,8 @@ ReferenceVector DrawViewDimension::getReferences3d() const
     const std::vector<App::DocumentObject*>& objects3d = References3D.getValues();
     const std::vector<std::string>& subElements3d = References3D.getSubValues();
     ReferenceVector refs3d;
-    int refCount = objects3d.size();
-    for (int i = 0; i < refCount; i++) {
+    size_t refCount = objects3d.size();
+    for (size_t i = 0; i < refCount; i++) {
         ReferenceEntry ref(objects3d.at(i), subElements3d.at(i));
         refs3d.push_back(ref);
     }
@@ -2136,7 +2112,7 @@ void DrawViewDimension::saveFeatureBox()
     BoxCorners.setValues(bbxCorners);
 }
 
-Base::BoundBox3d DrawViewDimension::getSavedBox()
+Base::BoundBox3d DrawViewDimension::getSavedBox() const
 {
     std::vector<Base::Vector3d> bbxCorners = BoxCorners.getValues();
     if (bbxCorners.empty()) {
@@ -2153,7 +2129,7 @@ Base::BoundBox3d DrawViewDimension::getSavedBox()
                             bbxCorners.back().z);
 }
 
-Base::BoundBox3d DrawViewDimension::getFeatureBox()
+Base::BoundBox3d DrawViewDimension::getFeatureBox() const
 {
     if (getViewPart() && getViewPart()->getBoundingBox().IsValid()) {
         return getViewPart()->getBoundingBox();
