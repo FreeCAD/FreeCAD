@@ -777,21 +777,22 @@ private:
     void updateHints() const
     {
         using Gui::InputHint;
+        using UserInput = Gui::InputHint::UserInput;
         std::list<InputHint> hints;
 
         switch (Mode) {
             case STATUS_SEEK_First:
                 hints.push_back(
                     InputHint(QCoreApplication::translate("Sketcher", "%1 pick first point"),
-                              {Gui::InputHint::UserInput::MouseLeft}));
+                              {UserInput::MouseLeft}));
                 break;
             case STATUS_SEEK_Second:
                 hints.push_back(
                     InputHint(QCoreApplication::translate("Sketcher", "%1 pick next point"),
-                              {Gui::InputHint::UserInput::MouseLeft}));
+                              {UserInput::MouseLeft}));
                 hints.push_back(
                     InputHint(QCoreApplication::translate("Sketcher", "%1 right-click to finish"),
-                              {Gui::InputHint::UserInput::MouseRight}));
+                              {UserInput::MouseRight}));
                 break;
             default:
                 break;
