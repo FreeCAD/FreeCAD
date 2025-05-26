@@ -3159,7 +3159,6 @@ void TreeWidget::onUpdateStatus()
 
 void TreeWidget::onItemEntered(QTreeWidgetItem* item)
 {
-    // object item selected
     if (item && item->type() == TreeWidget::ObjectType) {
         auto objItem = static_cast<DocumentObjectItem*>(item);
         objItem->displayStatusInfo();
@@ -3416,6 +3415,11 @@ void TreeWidget::onItemSelectionChanged()
 
     // block tmp. the connection to avoid to notify us ourself
     bool lock = this->blockSelection(true);
+
+    if (preselectTimer->isActive()) {
+        // block preselect after selecting
+        preselectTimer->stop();
+    }
 
     if (selectTimer->isActive())
         onSelectTimer();
