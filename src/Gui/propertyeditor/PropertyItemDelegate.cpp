@@ -82,6 +82,9 @@ void PropertyItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
     }
     else if (index.column() == 1) {
         option.state &= ~QStyle::State_Selected;
+        if (property && property->isReadOnly()) {
+            option.state &= ~QStyle::State_Enabled;
+        }
     }
 
     option.state &= ~QStyle::State_HasFocus;
