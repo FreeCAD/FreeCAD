@@ -9376,7 +9376,9 @@ CmdSketcherConstrainSymmetric::CmdSketcherConstrainSymmetric()
                            {SelVertex, SelVertex, SelEdgeOrAxis},
                            {SelVertex, SelVertexOrRoot, SelVertex},
                            {SelVertex, SelVertex, SelVertexOrRoot},
-                           {SelVertexOrRoot, SelVertex, SelVertex}};
+                           {SelVertexOrRoot, SelVertex, SelVertex},
+                           {SelRoot, SelVertex, SelVertex}
+                        };
 }
 
 void CmdSketcherConstrainSymmetric::activated(int iMsg)
@@ -9668,6 +9670,22 @@ void CmdSketcherConstrainSymmetric::applyConstraint(std::vector<SelIdPair>& selS
             PosId1 = selSeq.at(0).PosId;
             PosId2 = selSeq.at(1).PosId;
             PosId3 = selSeq.at(2).PosId;
+
+            if (areAllPointsOrSegmentsFixed(Obj, GeoId1, GeoId2, GeoId3)) {
+                showNoConstraintBetweenFixedGeometry(Obj);
+                return;
+            }
+            break;
+        }
+        case 15:// {SelRoot, SelVertex, SelVertex}
+        {
+            // Always make the Origin the "mid" point (GeoId3)
+            GeoId1 = selSeq.at(1).GeoId;
+            PosId1 = selSeq.at(1).PosId;
+            GeoId2 = selSeq.at(2).GeoId;
+            PosId2 = selSeq.at(2).PosId;
+            GeoId3 = selSeq.at(0).GeoId; // Origin is always "mid" point
+            PosId3 = selSeq.at(0).PosId;
 
             if (areAllPointsOrSegmentsFixed(Obj, GeoId1, GeoId2, GeoId3)) {
                 showNoConstraintBetweenFixedGeometry(Obj);
