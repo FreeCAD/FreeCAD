@@ -369,7 +369,7 @@ TaskBoxPrimitives::TaskBoxPrimitives(ViewProviderPrimitive* vp, QWidget* parent)
             this, &TaskBoxPrimitives::onWedgeZ2maxChanged);
     connect(ui->wedgeZ2min, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
             this, &TaskBoxPrimitives::onWedgeZ2minChanged);
-    bool outside = enableOutside(vp);
+    bool outside = enableOutside();
     ui->checkBoxOutside->setEnabled(outside);
     ui->checkBoxOutside->setVisible(outside);
 

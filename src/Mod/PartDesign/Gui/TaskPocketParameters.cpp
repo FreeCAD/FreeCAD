@@ -61,7 +61,7 @@ TaskPocketParameters::TaskPocketParameters(ViewProviderPocket *PocketView,QWidge
     if (newObj) {
         readValuesFromHistory();
     }
-    PartDesign::Pocket* pcPocket = static_cast<PartDesign::Pocket*>(vp->getObject());
+    PartDesign::Pocket* pcPocket = getObject<PartDesign::Pocket>();
     ui->checkBoxOutside->setChecked(pcPocket->Outside.getValue());
 }
 

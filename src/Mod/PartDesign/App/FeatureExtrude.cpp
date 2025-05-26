@@ -49,6 +49,7 @@
 #include <Mod/Part/App/PartFeature.h>
 
 #include "FeatureExtrude.h"
+#include "FeatureAddSub.h"
 
 FC_LOG_LEVEL_INIT("PartDesign", true, true)
 
@@ -99,13 +100,10 @@ Base::Vector3d FeatureExtrude::computeDirection(const Base::Vector3d& sketchVect
             Base::Vector3d base;
             Base::Vector3d dir;
             getAxis(pcReferenceAxis, subReferenceAxis, base, dir, ForbiddenAxis::NotPerpendicularWithNormal);
-            switch (addSubType) {
-                case Type::Additive:
-                    extrudeDirection = dir;
-                    break;
-                case Type::Subtractive:
-                    extrudeDirection = -dir;
-                    break;
+            if (isAdditive()) {
+                extrudeDirection = dir;
+            } else {
+                extrudeDirection = -dir;
             }
         }
     }
@@ -717,7 +715,7 @@ App::DocumentObjectExecReturn* FeatureExtrude::buildExtrusion(ExtrudeOptions opt
             }
             try {
                 TopoShape _base;
-                if (addSubType!=FeatureAddSub::Subtractive) {
+                if (! isAdditive()) {
                     _base=base; // avoid issue #16690
                 }
                 prism.makeElementPrismUntil(_base,

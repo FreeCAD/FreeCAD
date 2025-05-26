@@ -263,7 +263,7 @@ App::DocumentObjectExecReturn* Helix::execute()
 
         if (base.isNull()) {
 
-            if (isSubtractive())
+            if (isSubtractive()) {
                 return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Error: There is nothing to subtract"));
             }
 

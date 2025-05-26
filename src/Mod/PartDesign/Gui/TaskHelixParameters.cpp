@@ -309,13 +309,14 @@ void TaskHelixParameters::adaptVisibilityToMode()
     bool isPitchVisible = false;
     bool isHeightVisible = false;
     bool isTurnsVisible = false;
-    bool isOutsideVisible = enableOutside(vp);
+    bool isOutsideVisible = enableOutside();
     bool isAngleVisible = false;
     bool isGrowthVisible = false;
 
     auto helix = getObject<PartDesign::Helix>();
-    if (helix->getAddSubType() == PartDesign::FeatureAddSub::Subtractive) {
+    if (helix->isSubtractive()) {
         isOutsideVisible = true;
+    }
 
     HelixMode mode = static_cast<HelixMode>(propMode->getValue());
     if (mode == HelixMode::pitch_height_angle) {

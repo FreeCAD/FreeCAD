@@ -51,7 +51,7 @@ public:
 // protected:
 // protected Q_SLOTS:
     void onOutsideChanged(bool);
-    bool enableOutside(PartDesignGui::ViewProvider* vp);
+    bool enableOutside() const;
 
 protected:
     void onSelectionChanged(const Gui::SelectionChanges& msg) override;

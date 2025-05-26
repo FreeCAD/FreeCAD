@@ -147,7 +147,7 @@ TaskPipeParameters::TaskPipeParameters(ViewProviderPipe* PipeView, bool /*newObj
 
     ui->comboBoxTransition->setCurrentIndex(pipe->Transition.getValue());
 
-    bool outside = enableOutside(vp);
+    bool outside = enableOutside();
     ui->checkBoxOutside->setEnabled(outside);
     ui->checkBoxOutside->setVisible(outside);
     ui->checkBoxOutside->setChecked(pipe->Outside.getValue());

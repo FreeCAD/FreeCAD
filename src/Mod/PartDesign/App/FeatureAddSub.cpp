@@ -33,6 +33,7 @@
 # include <BRepAlgoAPI_Fuse.hxx>
 
 #include <Mod/Part/App/modelRefine.h>
+#include <Mod/Part/App/TopoShapeOpCode.h>
 
 #include "FeatureAddSub.h"
 #include "FeaturePy.h"
@@ -98,7 +99,7 @@ TopoDS_Shape FeatureAddSub::subtractiveOp(const TopoDS_Shape &baseShape, const T
 
 App::DocumentObjectExecReturn* FeatureAddSub::addSubOp(const TopoDS_Shape &baseShape, const TopoDS_Shape &opShape)
 {
-    AddSubShape.setValue(primitiveShape);
+    AddSubShape.setValue(baseShape);
 
     TopoShape boolOp(0);
     TopoShape workingShape = opShape;

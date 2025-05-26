@@ -2060,18 +2060,18 @@ App::DocumentObjectExecReturn* Hole::execute()
             Shape.setValue(compound);
             return App::DocumentObject::StdReturn;
         }
-        TopoDS_Shape result = mkBool.Shape();
 
         // First try cutting with compound which will be faster as it is done in
         // parallel
         bool retry = true;
         const char *maker;
-        switch (getAddSubType()) {
-            case Additive:
-                maker = Part::OpCodes::Fuse;
-                break;
-            default:
-                maker = Part::OpCodes::Cut;
+        if (isAdditive())
+        {
+            maker = Part::OpCodes::Fuse;
+        }
+        else
+        {
+            maker = Part::OpCodes::Cut;
         }
         try {
             if (base.isNull())

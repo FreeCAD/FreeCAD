@@ -47,13 +47,13 @@ TaskAddSubParameters::TaskAddSubParameters(PartDesignGui::ViewProvider *vp, QWid
 
 void TaskAddSubParameters::onOutsideChanged(bool on)
 {
-    PartDesign::FeatureAddSub* feature = static_cast<PartDesign::FeatureAddSub*>(vp->getObject());
+    auto feature = getObject<PartDesign::FeatureAddSub>();
     feature->Outside.setValue(on);
     recomputeFeature();
 }
 
-bool TaskAddSubParameters::enableOutside(PartDesignGui::ViewProvider* vp)  {
-    PartDesign::FeatureAddSub* addsub = static_cast<PartDesign::FeatureAddSub*>(vp->getObject());
+bool TaskAddSubParameters::enableOutside() const  {
+    auto addsub = getObject<PartDesign::FeatureAddSub>();
     return addsub->isSubtractive();
 }
 

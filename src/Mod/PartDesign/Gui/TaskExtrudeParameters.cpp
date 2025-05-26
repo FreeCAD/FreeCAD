@@ -689,7 +689,7 @@ void TaskExtrudeParameters::setCheckboxes(Mode mode, Type type)
     bool isShapeEditVisible = false;
     bool isTaperEditVisible = false;
     bool isTaperEdit2Visible = false;
-    bool outside = enableOutside(vp);
+    bool outside = enableOutside();
 
     if (mode == Mode::Dimension) {
         isLengthEditVisible = true;

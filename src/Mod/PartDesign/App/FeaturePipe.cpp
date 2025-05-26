@@ -48,9 +48,8 @@
 #include <Mod/Part/App/FaceMakerCheese.h>
 
 #include "FeaturePipe.h"
-#include "Mod/Part/App/TopoShapeOpCode.h"
+#include "FeatureAddSub.h"
 #include "Mod/Part/App/TopoShapeMapper.h"
-#include "FeatureLoft.h"
 
 FC_LOG_LEVEL_INIT("PartDesign",true,true);
 

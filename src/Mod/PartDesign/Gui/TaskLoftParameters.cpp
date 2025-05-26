@@ -129,7 +129,7 @@ TaskLoftParameters::TaskLoftParameters(ViewProviderLoft* LoftView, bool /*newObj
         child->blockSignals(false);
     }
 
-    bool outside = enableOutside(vp);
+    bool outside = enableOutside();
     ui->checkBoxOutside->setEnabled(outside);
     ui->checkBoxOutside->setVisible(outside);
     ui->checkBoxOutside->setChecked(loft->Outside.getValue());
