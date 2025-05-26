@@ -143,6 +143,22 @@ class TaskPanelOrthoArray:
         self.form.checkbox_link.setChecked(self.use_link)
         # -------------------------------------------------------------------
 
+        # Initialize 1-Axis mode variables
+        self.one_axis_mode = False
+        self.active_axis = "X"  # Default to X axis when in 1-Axis mode
+
+        # Check if the UI elements exist before trying to access them
+        self.has_axis_ui = hasattr(self.form, 'button_one_axis_mode') and \
+                          hasattr(self.form, 'checkbox_x_axis') and \
+                          hasattr(self.form, 'checkbox_y_axis') and \
+                          hasattr(self.form, 'checkbox_z_axis')
+
+        # Hide the axis checkboxes initially (they're only visible in 1-Axis mode)
+        if self.has_axis_ui:
+            print("DO WE TOGGLE THIS?")
+            self.toggle_axis_checkboxes(False)
+        # -------------------------------------------------------------------
+
         # Some objects need to be selected before we can execute the function.
         self.selection = None
 
@@ -165,6 +181,13 @@ class TaskPanelOrthoArray:
         # When the checkbox changes, change the internal value
         self.form.checkbox_fuse.stateChanged.connect(self.set_fuse)
         self.form.checkbox_link.stateChanged.connect(self.set_link)
+
+        # 1-Axis mode callbacks - only set up if the UI elements exist
+        if self.has_axis_ui:
+            self.form.button_one_axis_mode.clicked.connect(self.toggle_one_axis_mode)
+            self.form.checkbox_x_axis.stateChanged.connect(lambda: self.set_active_axis("X"))
+            self.form.checkbox_y_axis.stateChanged.connect(lambda: self.set_active_axis("Y"))
+            self.form.checkbox_z_axis.stateChanged.connect(lambda: self.set_active_axis("Z"))
 
 
     def accept(self):
@@ -211,6 +234,14 @@ class TaskPanelOrthoArray:
             _err(translate("draft","Object:") + " {0} ({1})".format(obj.Label, obj.TypeId))
             return False
 
+        # we should not ever do this but maybe a sanity check here?
+        if self.one_axis_mode and self.has_axis_ui:
+            if not (self.form.checkbox_x_axis.isChecked() or 
+                    self.form.checkbox_y_axis.isChecked() or 
+                    self.form.checkbox_z_axis.isChecked()):
+                _err(translate("draft","In 1-Axis mode, at least one axis must be selected."))
+                return False
+
         # The other arguments are not tested but they should be present.
         if v_x and v_y and v_z:
             pass
@@ -233,6 +264,19 @@ class TaskPanelOrthoArray:
             # For example, it could take the shapes of all objects,
             # make a compound and then use it as input for the array function.
             sel_obj = self.selection[0]
+
+        # clear this stuff out to be sure we don't preserve something
+        # from 3-axis mode
+        if self.one_axis_mode and self.has_axis_ui:
+            if not self.form.checkbox_x_axis.isChecked():
+                self.n_x = 1
+                self.v_x = App.Vector(0, 0, 0)
+            if not self.form.checkbox_y_axis.isChecked():
+                self.n_y = 1
+                self.v_y = App.Vector(0, 0, 0)
+            if not self.form.checkbox_z_axis.isChecked():
+                self.n_z = 1
+                self.v_z = App.Vector(0, 0, 0)
 
         # This creates the object immediately
         # obj = Draft.make_ortho_array(sel_obj,
@@ -357,6 +401,10 @@ class TaskPanelOrthoArray:
             # make a compound and then use it as input for the array function.
             sel_obj = self.selection[0]
         _msg(translate("draft","Object:") + " {}".format(sel_obj.Label))
+
+        if self.one_axis_mode and self.has_axis_ui:
+            _msg(translate("draft","Using 1-Axis mode"))
+
         _msg(translate("draft","Number of X elements:") + " {}".format(self.n_x))
         _msg(translate("draft","Interval X:")
              + " ({0}, {1}, {2})".format(self.v_x.x,
@@ -378,6 +426,108 @@ class TaskPanelOrthoArray:
     def reject(self):
         """Execute when clicking the Cancel button or pressing Escape."""
         self.finish()
+
+    def toggle_one_axis_mode(self):
+        """Toggle between 1-Axis mode and 3-Axis mode."""
+        self.one_axis_mode = self.form.button_one_axis_mode.isChecked()
+        self.toggle_axis_checkboxes(self.one_axis_mode)
+
+        if self.one_axis_mode:
+            _msg(translate("draft","Switched to 1-Axis mode"))
+            print(translate("draft","Orthogonal array (1-axis mode)"))
+            self.form.setWindowTitle(translate("draft","Orthogonal array (1-axis mode)"))
+            self.update_axis_ui()
+            self.update_interval_visibility()
+        else:
+            # toggle everything back on
+            self.form.setWindowTitle(translate("draft","Orthogonal array"))
+            _msg(translate("draft","Switched to 3-Axis mode"))
+            self.reset_axis_ui()
+            self.show_all_intervals()
+
+    def toggle_axis_checkboxes(self, show):
+        """Show or hide the axis checkboxes."""
+        if self.has_axis_ui:
+            for checkbox in [self.form.checkbox_x_axis,
+                            self.form.checkbox_y_axis,
+                            self.form.checkbox_z_axis]:
+                checkbox.setVisible(show)
+
+    def set_active_axis(self, axis):
+        """Set the active axis when a checkbox is changed."""
+        if self.one_axis_mode and self.has_axis_ui:
+            # get current checkbox that was supposed to have state changed
+            checkbox = getattr(self.form, f"checkbox_{axis.lower()}_axis")
+
+            # if we have checked the checkbox, go through other checkboxes
+            # and deselect them
+            if checkbox.isChecked():
+                self.active_axis = axis
+                for other_axis in ["X", "Y", "Z"]:
+                    if other_axis != axis:
+                        other_checkbox = getattr(self.form, f"checkbox_{other_axis.lower()}_axis")
+                        other_checkbox.blockSignals(True)
+                        other_checkbox.setChecked(False)
+                        other_checkbox.blockSignals(False)
+
+                # update visibility of intervals based on axis
+                self.update_interval_visibility()
+            else:
+                # haha!!! you wanted to deselect all of the checkboxes? hell no, we are selecting it back because we
+                # do not allow having no axis selected hue hue
+                checkbox.setChecked(True)
+
+    def update_axis_ui(self):
+        """Update the UI to reflect the current axis selection."""
+        # Make sure only one axis is selected
+        if self.has_axis_ui:
+            self.form.checkbox_x_axis.setChecked(self.active_axis == "X")
+            self.form.checkbox_y_axis.setChecked(self.active_axis == "Y")
+            self.form.checkbox_z_axis.setChecked(self.active_axis == "Z")
+
+    def reset_axis_ui(self):
+        """Reset the UI to 3-Axis mode."""
+        # Hide the axis checkboxes
+        if self.has_axis_ui:
+            self.toggle_axis_checkboxes(False)
+
+    def update_interval_visibility(self):
+        """Show only the interval inputs for the selected axis in 1-Axis mode."""
+        if self.one_axis_mode and hasattr(self.form, 'group_X') and hasattr(self.form, 'group_Y') and hasattr(self.form, 'group_Z'):
+            self.form.group_X.setVisible(self.active_axis == "X")
+            self.form.group_Y.setVisible(self.active_axis == "Y")
+            self.form.group_Z.setVisible(self.active_axis == "Z")
+
+            if hasattr(self.form, 'label_n_X') and hasattr(self.form, 'spinbox_n_X'):
+                self.form.label_n_X.setVisible(self.active_axis == "X")
+                self.form.spinbox_n_X.setVisible(self.active_axis == "X")
+
+            if hasattr(self.form, 'label_n_Y') and hasattr(self.form, 'spinbox_n_Y'):
+                self.form.label_n_Y.setVisible(self.active_axis == "Y")
+                self.form.spinbox_n_Y.setVisible(self.active_axis == "Y")
+
+            if hasattr(self.form, 'label_n_Z') and hasattr(self.form, 'spinbox_n_Z'):
+                self.form.label_n_Z.setVisible(self.active_axis == "Z")
+                self.form.spinbox_n_Z.setVisible(self.active_axis == "Z")
+
+    def show_all_intervals(self):
+        """Show all interval inputs for 3-Axis mode."""
+        if hasattr(self.form, 'group_X') and hasattr(self.form, 'group_Y') and hasattr(self.form, 'group_Z'):
+            self.form.group_X.setVisible(True)
+            self.form.group_Y.setVisible(True)
+            self.form.group_Z.setVisible(True)
+
+            if hasattr(self.form, 'label_n_X') and hasattr(self.form, 'spinbox_n_X'):
+                self.form.label_n_X.setVisible(True)
+                self.form.spinbox_n_X.setVisible(True)
+
+            if hasattr(self.form, 'label_n_Y') and hasattr(self.form, 'spinbox_n_Y'):
+                self.form.label_n_Y.setVisible(True)
+                self.form.spinbox_n_Y.setVisible(True)
+
+            if hasattr(self.form, 'label_n_Z') and hasattr(self.form, 'spinbox_n_Z'):
+                self.form.label_n_Z.setVisible(True)
+                self.form.spinbox_n_Z.setVisible(True)
 
     def finish(self):
         """Finish the command, after accept or reject.

@@ -22,8 +22,11 @@
     <height>0</height>
    </size>
   </property>
-  <property name="windowTitle">
+  <property name="windowTitleStandardOrtho">
    <string>Orthogonal array</string>
+  </property>
+  <property name="windowTitle1AxisMode">
+   <string>Orthogonal array (1-axis mode)</string>
   </property>
   <layout class="QGridLayout" name="gridLayout_3">
    <item row="1" column="0">
@@ -46,6 +49,62 @@
        </widget>
       </item>
       <item row="1" column="0">
+       <widget class="QGroupBox" name="group_axis_mode">
+        <property name="toolTip">
+         <string>Toggle between 3-axis mode and 1-axis mode. In 1-axis mode, you can select which axes to use.</string>
+        </property>
+        <property name="title">
+         <string>Axis Mode</string>
+        </property>
+        <layout class="QGridLayout" name="gridLayout_axis_mode">
+         <item row="0" column="0">
+          <widget class="QPushButton" name="button_one_axis_mode">
+           <property name="text">
+            <string>1-Axis Mode</string>
+           </property>
+           <property name="checkable">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="0">
+          <layout class="QGridLayout" name="grid_axis_select">
+           <item row="0" column="0">
+            <widget class="QCheckBox" name="checkbox_x_axis">
+             <property name="text">
+              <string>X Axis</string>
+             </property>
+             <property name="checked">
+              <bool>true</bool>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="0">
+            <widget class="QCheckBox" name="checkbox_y_axis">
+             <property name="text">
+              <string>Y Axis</string>
+             </property>
+             <property name="checked">
+              <bool>false</bool>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="0">
+            <widget class="QCheckBox" name="checkbox_z_axis">
+             <property name="text">
+              <string>Z Axis</string>
+             </property>
+             <property name="checked">
+              <bool>false</bool>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+        </layout>
+       </widget>
+      </item>
+      <item row="2" column="0">
        <widget class="QGroupBox" name="group_copies">
         <property name="toolTip">
          <string>Number of elements in the array in the specified direction, including a copy of the original object.
