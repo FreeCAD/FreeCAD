@@ -28,6 +28,7 @@
 #include <Gui/Notifications.h>
 #include <Gui/Command.h>
 #include <Gui/CommandT.h>
+#include <Gui/InputHint.h>
 
 #include <Mod/Sketcher/App/SketchObject.h>
 
@@ -88,6 +89,8 @@ public:
 private:
     void updateDataAndDrawToPosition(Base::Vector2d onSketchPos) override
     {
+        updateHints();
+
         switch (state()) {
             case SelectMode::SeekFirst: {
                 toolWidgetManager.drawPositionAtCursor(onSketchPos);
@@ -250,6 +253,31 @@ private:
                                    toVector3d(endPoint),
                                    isConstructionMode());
         }
+    }
+
+    void updateHints() const
+    {
+        using Gui::InputHint;
+        using UserInput = Gui::InputHint::UserInput;
+
+        std::list<InputHint> hints;
+
+        switch (state()) {
+            case SelectMode::SeekFirst:
+                hints.push_back(
+                    InputHint(QCoreApplication::translate("Sketcher", "%1 pick first point"),
+                              {UserInput::MouseLeft}));
+                break;
+            case SelectMode::SeekSecond:
+                hints.push_back(
+                    InputHint(QCoreApplication::translate("Sketcher", "%1 pick second point"),
+                              {UserInput::MouseLeft}));
+                break;
+            default:
+                break;
+        }
+
+        Gui::getMainWindow()->showHints(hints);
     }
 };
 
