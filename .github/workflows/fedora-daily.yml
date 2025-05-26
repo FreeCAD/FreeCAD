@@ -1,4 +1,7 @@
 name: Fedora Daily Build
+permissions:
+  contents: read
+
 on:
   schedule:
    - cron: "00 00 * * *"
