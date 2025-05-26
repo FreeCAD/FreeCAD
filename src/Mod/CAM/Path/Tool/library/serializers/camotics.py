@@ -33,6 +33,7 @@ SHAPEMAP = {
     "ballend": "Ballnose",
     "endmill": "Cylindrical",
     "v-bit": "Conical",
+    "vbit": "Conical",
     "chamfer": "Snubnose",
 }
 SHAPEMAP_REVERSE = dict((v, k) for k, v in SHAPEMAP.items())
@@ -107,7 +108,7 @@ class CamoticsLibrarySerializer(AssetSerializer):
 
             toolitem["length"] = length_serializable
 
-            toolitem["shape"] = SHAPEMAP.get(tool._tool_bit_shape.name, "Cylindrical")
+            toolitem["shape"] = SHAPEMAP.get(tool._tool_bit_shape.name.lower(), "Cylindrical")
             toollist[str(tool_no)] = toolitem
 
         return json.dumps(toollist, indent=2).encode("utf-8")
