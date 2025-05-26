@@ -383,7 +383,7 @@ TDF_Label ExportOCAF2::exportObject(App::DocumentObject* parentObj,
     App::DocumentObject* obj;
     auto shape = Part::Feature::getTopoShape(
         parentObj,
-        (sub ? Part::Feature::GetShapeOption::NoFlag : Part::Feature::GetShapeOption::Transform),
+        (sub ? Part::ShapeOption::NoFlag : Part::ShapeOption::Transform),
         sub,
         nullptr,
         &obj);
@@ -421,8 +421,8 @@ TDF_Label ExportOCAF2::exportObject(App::DocumentObject* parentObj,
     auto linkedShape = shape;
     while (true) {
         auto s = Part::Feature::getTopoShape(linked,
-                                             Part::Feature::GetShapeOption::ResolveLink
-                                                 | Part::Feature::GetShapeOption::Transform);
+                                             Part::ShapeOption::ResolveLink
+                                                 | Part::ShapeOption::Transform);
         if (s.isNull() || !s.getShape().IsPartner(shape.getShape())) {
             break;
         }

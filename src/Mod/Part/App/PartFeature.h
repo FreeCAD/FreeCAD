@@ -45,6 +45,18 @@ struct HistoryItem;
 namespace Part
 {
 
+enum class ShapeOption
+{
+    NoFlag = 0,
+    NeedSubElement = 1,
+    ResolveLink = 2,
+    Transform = 4,
+    NoElementMap = 8,
+    DontSimplifyCompound = 16
+};
+using ShapeOptions = Base::Flags<ShapeOption>;
+
+
 class PartFeaturePy;
 
 /** Base class of all shape feature classes in FreeCAD
@@ -52,18 +64,6 @@ class PartFeaturePy;
 class PartExport Feature : public App::GeoFeature
 {
     PROPERTY_HEADER_WITH_OVERRIDE(Part::Feature);
-
-public:
-    enum class GetShapeOption
-    {
-        NoFlag = 0,
-        NeedSubElement = 1,
-        ResolveLink = 2,
-        Transform = 4,
-        NoElementMap = 8,
-        DontSimplifyCompound = 16
-    };
-    using GetShapeOptions = Base::Flags<GetShapeOption>;
 
 public:
     /// Constructor
@@ -143,11 +143,11 @@ public:
      * @param transform: if true, apply obj's transformation. Set to false
      * if pmat already include obj's transformation matrix.
      */
-     static TopoDS_Shape getShape(const App::DocumentObject *obj, GetShapeOptions options,
+    static TopoDS_Shape getShape(const App::DocumentObject *obj, ShapeOptions options,
             const char *subname=nullptr, Base::Matrix4D *pmat=nullptr,
             App::DocumentObject **owner=nullptr);
 
-    static TopoShape getTopoShape(const App::DocumentObject* obj, GetShapeOptions options,
+    static TopoShape getTopoShape(const App::DocumentObject* obj, ShapeOptions options,
                                     const char* subname=nullptr, Base::Matrix4D* pmat=nullptr, 
                                     App::DocumentObject**owner=nullptr);
 
@@ -295,7 +295,7 @@ bool checkIntersection(const TopoDS_Shape& first, const TopoDS_Shape& second,
 
 } //namespace Part
 
-ENABLE_BITMASK_OPERATORS(Part::Feature::GetShapeOption)
+ENABLE_BITMASK_OPERATORS(Part::ShapeOption)
 
 #endif // PART_FEATURE_H
 

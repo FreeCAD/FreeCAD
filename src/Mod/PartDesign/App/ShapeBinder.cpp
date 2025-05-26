@@ -671,9 +671,9 @@ void SubShapeBinder::update(SubShapeBinder::UpdateOption options) {
             ++subidx;
             try {
                 auto shape = Part::Feature::getTopoShape(obj,
-                                                            Part::Feature::GetShapeOption::NeedSubElement
-                                                          | Part::Feature::GetShapeOption::ResolveLink
-                                                          | Part::Feature::GetShapeOption::Transform,
+                                                            Part::ShapeOption::NeedSubElement
+                                                          | Part::ShapeOption::ResolveLink
+                                                          | Part::ShapeOption::Transform,
                                                          sub.c_str());
                 if (!shape.isNull()) {
                     shapes.push_back(shape);

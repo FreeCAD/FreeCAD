@@ -515,9 +515,9 @@ App::DocumentObjectExecReturn* FeatureExtrude::buildExtrusion(ExtrudeOptions opt
                     continue;
                 }
                 TopoShape shape = Part::Feature::getTopoShape(obj,
-                                                                 Part::Feature::GetShapeOption::NeedSubElement
-                                                               | Part::Feature::GetShapeOption::ResolveLink
-                                                               | Part::Feature::GetShapeOption::Transform,
+                                                                 Part::ShapeOption::NeedSubElement
+                                                               | Part::ShapeOption::ResolveLink
+                                                               | Part::ShapeOption::Transform,
                                                               sub.c_str());
 
                 if (shape.isNull()) {

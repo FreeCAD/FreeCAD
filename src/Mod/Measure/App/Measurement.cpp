@@ -126,9 +126,9 @@ MeasureType Measurement::findType()
         TopoDS_Shape refSubShape;
         try {
             refSubShape = Part::Feature::getShape(*obj,
-                                                  Part::Feature::GetShapeOption::NeedSubElement
-                                                      | Part::Feature::GetShapeOption::ResolveLink
-                                                      | Part::Feature::GetShapeOption::Transform,
+                                                  Part::ShapeOption::NeedSubElement
+                                                      | Part::ShapeOption::ResolveLink
+                                                      | Part::ShapeOption::Transform,
                                                   (*subEl).c_str());
 
             if (refSubShape.IsNull()) {
@@ -757,9 +757,9 @@ bool Measurement::planesAreParallel() const
         TopoDS_Shape refSubShape;
         try {
             refSubShape = Part::Feature::getShape(objects[i],
-                                                  Part::Feature::GetShapeOption::NeedSubElement
-                                                      | Part::Feature::GetShapeOption::ResolveLink
-                                                      | Part::Feature::GetShapeOption::Transform,
+                                                  Part::ShapeOption::NeedSubElement
+                                                      | Part::ShapeOption::ResolveLink
+                                                      | Part::ShapeOption::Transform,
                                                   subElements[i].c_str());
 
             if (refSubShape.IsNull()) {

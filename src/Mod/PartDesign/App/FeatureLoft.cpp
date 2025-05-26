@@ -77,16 +77,16 @@ Loft::getSectionShape(const char *name,
     auto subName = subs.empty() ? "" : subs.front();
     auto useEntireSketch = obj->isDerivedFrom<Part::Part2DObject>() &&  subName.find("Vertex") != 0;
     if (subs.empty() || std::ranges::find(subs, std::string()) != subs.end() || useEntireSketch ) {
-        shapes.push_back(Part::Feature::getTopoShape(obj, Part::Feature::GetShapeOption::ResolveLink | Part::Feature::GetShapeOption::Transform));
+        shapes.push_back(Part::Feature::getTopoShape(obj, Part::ShapeOption::ResolveLink | Part::ShapeOption::Transform));
         if (shapes.back().isNull())
             FC_THROWM(Part::NullShapeException, "Failed to get shape of "
                           << name << " " << App::SubObjectT(obj, "").getSubObjectFullName(obj->getDocument()->getName()));
     } else {
         for (const auto &sub : subs) {
             shapes.push_back(Part::Feature::getTopoShape(obj,
-                                                            Part::Feature::GetShapeOption::NeedSubElement
-                                                          | Part::Feature::GetShapeOption::ResolveLink
-                                                          | Part::Feature::GetShapeOption::Transform,
+                                                            Part::ShapeOption::NeedSubElement
+                                                          | Part::ShapeOption::ResolveLink
+                                                          | Part::ShapeOption::Transform,
                                                          sub.c_str()));
             if (shapes.back().isNull())
                 FC_THROWM(Part::NullShapeException, "Failed to get shape of " << name << " "

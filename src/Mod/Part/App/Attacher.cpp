@@ -882,9 +882,9 @@ TopoShape AttachEngine::extractSubShape(App::DocumentObject* obj, const std::str
         // getTopoShape support fully qualified subnames and should return shape with correct
         // global placement.
         shape = Feature::getTopoShape(obj,
-                                        Feature::GetShapeOption::NeedSubElement
-                                      | Feature::GetShapeOption::ResolveLink
-                                      | Feature::GetShapeOption::Transform,
+                                        ShapeOption::NeedSubElement
+                                      | ShapeOption::ResolveLink
+                                      | ShapeOption::Transform,
                                       subname.c_str());
 
         for (;;) {

@@ -861,7 +861,7 @@ private:
             shape = static_cast<GeometryPy *>(pcObj)->getGeometryPtr()->toShape();
         else if (PyObject_TypeCheck(pcObj, &App::DocumentObjectPy::Type)) {
             auto obj = static_cast<App::DocumentObjectPy *>(pcObj)->getDocumentObjectPtr();
-            shape = Feature::getTopoShape(obj, Feature::GetShapeOption::ResolveLink | Feature::GetShapeOption::Transform);
+            shape = Feature::getTopoShape(obj, ShapeOption::ResolveLink | ShapeOption::Transform);
         } else {
             throw Py::TypeError("Expects argument of type DocumentObject, Shape, or Geometry");
         }
@@ -2291,10 +2291,10 @@ private:
 
         bool resolveLink = (retType == 2);
         auto shape = Feature::getTopoShape(obj,
-                                             (resolveLink ? Feature::GetShapeOption::ResolveLink : Feature::GetShapeOption::NoFlag)
-                                           | (Base::asBoolean(needSubElement) ? Feature::GetShapeOption::NeedSubElement : Feature::GetShapeOption::NoFlag)
-                                           | (Base::asBoolean(transform) ? Feature::GetShapeOption::Transform : Feature::GetShapeOption::NoFlag)
-                                           | (Base::asBoolean(noElementMap) ? Feature::GetShapeOption::NoElementMap : Feature::GetShapeOption::NoFlag),
+                                             (resolveLink ? ShapeOption::ResolveLink : ShapeOption::NoFlag)
+                                           | (Base::asBoolean(needSubElement) ? ShapeOption::NeedSubElement : ShapeOption::NoFlag)
+                                           | (Base::asBoolean(transform) ? ShapeOption::Transform : ShapeOption::NoFlag)
+                                           | (Base::asBoolean(noElementMap) ? ShapeOption::NoElementMap : ShapeOption::NoFlag),
                                            subname,
                                            &mat,
                                            &subObj);

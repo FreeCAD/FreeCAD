@@ -115,8 +115,8 @@ TopoDS_Shape ShapeFinder::getLocatedShape(const App::DocumentObject& rootObject,
     }
 
     TopoDS_Shape shape = Part::Feature::getShape(target,
-                                                 Part::Feature::GetShapeOption::ResolveLink
-                                                     | Part::Feature::GetShapeOption::Transform);
+                                                 Part::ShapeOption::ResolveLink
+                                                     | Part::ShapeOption::Transform);
     if (isShapeReallyNull(shape)) {
         return {};
     }

@@ -100,8 +100,8 @@ TopoDS_Shape getLocatedShape(const App::SubObjectT& subject, Base::Matrix4D* mat
 
     Part::TopoShape shape = Part::Feature::getTopoShape(
         obj,
-          Part::Feature::GetShapeOption::ResolveLink 
-        | Part::Feature::GetShapeOption::Transform,
+          Part::ShapeOption::ResolveLink 
+        | Part::ShapeOption::Transform,
         subject.getElementName(),
         mat);
 
@@ -128,9 +128,9 @@ TopoDS_Shape getLocatedShape(const App::SubObjectT& subject, Base::Matrix4D* mat
 App::MeasureElementType PartMeasureTypeCb(App::DocumentObject* ob, const char* subName)
 {
     TopoDS_Shape shape = Part::Feature::getShape(ob,
-                                                    Part::Feature::GetShapeOption::NeedSubElement
-                                                  | Part::Feature::GetShapeOption::ResolveLink
-                                                  | Part::Feature::GetShapeOption::Transform,
+                                                    Part::ShapeOption::NeedSubElement
+                                                  | Part::ShapeOption::ResolveLink
+                                                  | Part::ShapeOption::Transform,
                                                  subName);
 
     if (shape.IsNull()) {
@@ -188,9 +188,9 @@ bool getShapeFromStrings(TopoDS_Shape &shapeOut, const App::SubObjectT& subject,
         return {};
      }
      shapeOut = Part::Feature::getShape(obj,
-                                            Part::Feature::GetShapeOption::NeedSubElement
-                                          | Part::Feature::GetShapeOption::ResolveLink
-                                          | Part::Feature::GetShapeOption::Transform,
+                                            Part::ShapeOption::NeedSubElement
+                                          | Part::ShapeOption::ResolveLink
+                                          | Part::ShapeOption::Transform,
                                         subject.getElementName(),
                                         mat);
      return !shapeOut.IsNull();

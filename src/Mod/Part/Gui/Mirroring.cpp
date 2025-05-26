@@ -101,9 +101,9 @@ public:
             TopoDS_Shape shape;
             if (subString.length() > 0){
                 shape = Part::Feature::getTopoShape(pObj,
-                                                      Part::Feature::GetShapeOption::NeedSubElement
-                                                    | Part::Feature::GetShapeOption::ResolveLink
-                                                    | Part::Feature::GetShapeOption::Transform,
+                                                      Part::ShapeOption::NeedSubElement
+                                                    | Part::ShapeOption::ResolveLink
+                                                    | Part::ShapeOption::Transform,
                                                     sSubName).getShape();                            
 
                 if (strstr(subString.c_str(), "Face")){
@@ -115,7 +115,7 @@ public:
                 }
             } else {
                 //no subobjects were selected, so this is entire shape of feature
-                shape = Part::Feature::getShape(pObj, Part::Feature::GetShapeOption::ResolveLink | Part::Feature::GetShapeOption::Transform);
+                shape = Part::Feature::getShape(pObj, Part::ShapeOption::ResolveLink | Part::ShapeOption::Transform);
             }
 
             // if there is only 1 face or 1 edge, then we don't need to force the user to select that face or edge
@@ -256,7 +256,7 @@ void Mirroring::findShapes()
     std::vector<App::DocumentObject*> objs = activeDoc->getObjectsOfType<App::DocumentObject>();
 
     for (auto obj : objs) {
-        Part::TopoShape shape = Part::Feature::getTopoShape(obj, Part::Feature::GetShapeOption::ResolveLink | Part::Feature::GetShapeOption::Transform);
+        Part::TopoShape shape = Part::Feature::getTopoShape(obj, Part::ShapeOption::ResolveLink | Part::ShapeOption::Transform);
         if (!shape.isNull()) {
             QString label = QString::fromUtf8(obj->Label.getValue());
             QString name = QString::fromLatin1(obj->getNameInDocument());

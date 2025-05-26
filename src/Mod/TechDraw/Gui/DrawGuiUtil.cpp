@@ -646,9 +646,9 @@ std::pair<Base::Vector3d, Base::Vector3d> DrawGuiUtil::getProjDirFromFace(App::D
     rotVec = d3Dirs.second;
 
     auto ts = Part::Feature::getShape(obj,
-                                        Part::Feature::GetShapeOption::NeedSubElement
-                                      | Part::Feature::GetShapeOption::ResolveLink
-                                      | Part::Feature::GetShapeOption::Transform,
+                                        Part::ShapeOption::NeedSubElement
+                                      | Part::ShapeOption::ResolveLink
+                                      | Part::ShapeOption::Transform,
                                       faceName.c_str());
                                           
     if (ts.IsNull() || ts.ShapeType() != TopAbs_FACE) {
