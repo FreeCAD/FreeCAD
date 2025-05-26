@@ -105,7 +105,7 @@ class CommandToolBitSave:
         toolbit = tool_obj.Proxy
 
         dialog = AssetSaveDialog(ToolBit, toolbit_serializers, FreeCADGui.getMainWindow())
-        dialog_result = dialog.exec(toolbit)
+        dialog_result = dialog.exec_(toolbit)
         if not dialog_result:
             return
 

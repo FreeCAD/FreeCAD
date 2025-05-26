@@ -42,7 +42,6 @@ class AssetOpenDialog(QFileDialog):
         super().__init__(parent)
         self.asset_class = asset_class
         self.serializers = list(serializers)
-        self.setWindowTitle("Open an {asset_class.asset_type} file")
         self.setFileMode(QFileDialog.ExistingFile)
         filters = make_import_filters(self.serializers)
         self.setNameFilters(filters)
@@ -72,7 +71,7 @@ class AssetOpenDialog(QFileDialog):
             QMessageBox.critical(self, "Error", f"Failed to import asset: {e}")
             return None
 
-    def exec(self) -> Optional[Tuple[pathlib.Path, Asset]]:
+    def exec_(self) -> Optional[Tuple[pathlib.Path, Asset]]:
         if super().exec_():
             filenames = self.selectedFiles()
             if filenames:
@@ -125,7 +124,7 @@ class AssetSaveDialog(QFileDialog):
             QMessageBox.critical(self, "Error", f"Failed to export asset: {e}")
             return False
 
-    def exec(self, asset: Asset) -> Optional[Tuple[pathlib.Path, Type[AssetSerializer]]]:
+    def exec_(self, asset: Asset) -> Optional[Tuple[pathlib.Path, Type[AssetSerializer]]]:
         self.setWindowTitle(f"Save {asset.label or self.asset_class.asset_type}")
         if super().exec_():
             selected_filter = self.selectedNameFilter()

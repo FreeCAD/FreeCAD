@@ -348,7 +348,7 @@ class LibraryEditor(object):
 
         # Open the file dialog
         dialog = AssetOpenDialog(ToolBit, toolbit_serializers, self.form)
-        dialog_result = dialog.exec()
+        dialog_result = dialog.exec_()
         if not dialog_result:
             return  # User canceled or error
         file_path, toolbit = dialog_result
@@ -569,7 +569,7 @@ class LibraryEditor(object):
             return
 
         dialog = AssetSaveDialog(Library, library_serializers, self.form)
-        dialog_result = dialog.exec(self.current_library)
+        dialog_result = dialog.exec_(self.current_library)
         if not dialog_result:
             return  # User canceled or error
 
