@@ -1653,10 +1653,7 @@ class Snapper:
     def recenter_workingplane(self):
         """Recenters the working plane on the current snap position"""
         if self.spoint:
-            self._get_wp().position = self.toWP(self.spoint)
-            if self.grid:
-                self._get_wp()
-                self.grid.set()
+            self._get_wp().set_to_position(self.toWP(self.spoint))
 
 
 ## @}
