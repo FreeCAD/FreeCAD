@@ -53,7 +53,6 @@ import ArchIFCSchema
 
 from DraftGeomUtils import vec
 from draftutils import params
-from draftutils.groups import is_group
 from draftutils.messages import _msg, _err
 
 from importers import exportIFCHelper
@@ -134,117 +133,33 @@ def _prepare_export_list_skipping_std_groups(initial_export_list, preferences_di
     The net effect is that the children appear directly contained within the IFC representation of
     the skipped group's parent container.
     """
+    all_potential_objects = Arch.get_architectural_contents(
+        initial_export_list,
+        recursive=True,
+        discover_hosted_elements=True,
+        include_components_from_additions=True,
+        include_initial_objects_in_result=True
+    )
+
     final_objects_for_processing = []
-    # Queue for a depth-first-like traversal of the FreeCAD .Group hierarchy
-    queue = list(initial_export_list)
-    # Set to keep track of objects already added to the queue or processed to prevent duplicates and
-    # cycles
-    queued_or_processed_names = set()
 
-    while queue:
-        obj = queue.pop(0)
-
-        if obj.Name in queued_or_processed_names:
-            continue
-        queued_or_processed_names.add(obj.Name)
-
+    for obj in all_potential_objects:
         is_std_group_to_skip = False
         # Determine if the current object is a standard FreeCAD group that should be skipped
         if obj.isDerivedFrom("App::DocumentObjectGroup"):
             # Check its potential IFC type; only skip if it would become a generic IfcGroup
-            potential_ifc_type = getIfcTypeFromObj(obj) 
+            potential_ifc_type = getIfcTypeFromObj(obj)
             if potential_ifc_type == "IfcGroup":
                 is_std_group_to_skip = True
-        
-        current_obj_children_to_queue = []
 
-        if is_std_group_to_skip:
-            if preferences_dict['DEBUG']: 
-                print(f"DEBUG: IFC Exporter: Skipping StdGroup '{obj.Label}' ({obj.Name}) "
-                      "and processing its children.")
-            # If the group is skipped, process its direct children from the .Group property
-            if hasattr(obj, "Group") and obj.Group:
-                for child in obj.Group:
-                    if child.Name not in queued_or_processed_names:
-                        current_obj_children_to_queue.append(child)
-        else: # Object is NOT a standard group to be skipped
-            # Add the object itself to the list of objects to be exported
-            if obj not in final_objects_for_processing: 
+        if not is_std_group_to_skip:
+            if obj not in final_objects_for_processing: # Ensure uniqueness
                 final_objects_for_processing.append(obj)
-            
-            # If this non-skipped object is itself a group-like entity (e.g., ArchSite,
-            # ArchBuildingPart), add its direct .Group children to the queue for further processing.
-            if is_group(obj) and hasattr(obj, "Group") and obj.Group: 
-                for child in obj.Group:
-                    if child.Name not in queued_or_processed_names:
-                         current_obj_children_to_queue.append(child)
+        elif preferences_dict['DEBUG']:
+            print(f"DEBUG: IFC Exporter: StdGroup '{obj.Label}' ({obj.Name}) "
+                  "was identified by get_architectural_contents but is now being filtered out.")
 
-            # Discover and queue architecturally hosted elements (e.g., Windows in a Wall).
-            # This is needed if a Wall (child of a skipped group) hosts windows,
-            # ensuring those windows are also processed for export.
-            hosted_elements = _get_hosted_elements_for_queue(
-                obj, queued_or_processed_names, preferences_dict)
-            current_obj_children_to_queue.extend(hosted_elements)
-        
-        if current_obj_children_to_queue:
-            # Add all newly found children (hierarchical and hosted) to the front of the main queue.
-            # Reversing them first means children from .Group (or .InList) will be processed
-            # effectively in reverse of their original list order when popped from the queue.
-            queue = current_obj_children_to_queue[::-1] + queue
-    
     return final_objects_for_processing
-
-def _get_hosted_elements_for_queue(host_obj, queued_or_processed_names, preferences_dict):
-    """
-    Identifies elements architecturally hosted by host_obj (e.g., Windows in a Wall)
-    and returns a list of those elements that are not yet queued or processed.
-    This is used to ensure hosted elements are included in the export list when their
-    host is processed, especially if an intermediate group was skipped.
-    """
-    hosted_elements_to_queue = []
-    # Define common FreeCAD types that can act as hosts for architectural elements
-    host_types = ["Wall", "Structure", "CurtainWall", "Precast", "Panel", "Roof"]
-    if Draft.getType(host_obj) not in host_types:
-        return hosted_elements_to_queue # Not a known host type
-
-    # Iterate through objects that depend on the host_obj (found in its InList).
-    # Hosted elements like Windows often cause the host Wall's shape to depend on them (for
-    # openings), placing the Window in the Wall's InList.
-    # The .Hosts property of the Window then confirms the architectural hosting relationship.
-    for potential_hosted_element in host_obj.InList:
-        element_to_check = potential_hosted_element
-        # Resolve App::Link objects to get the actual element, as InList might contain the Link
-        if hasattr(potential_hosted_element, "getLinkedObject"):
-            linked = potential_hosted_element.getLinkedObject()
-            if linked: # Ensure the link is not broken and points to a valid object
-                element_to_check = linked
-        
-        if element_to_check.Name in queued_or_processed_names:
-            continue # Already queued or processed
-
-        # Determine the IFC type the element would be exported as
-        element_ifc_target_type = getIfcTypeFromObj(element_to_check)
-
-        is_confirmed_hosted = False
-        # Check for Window or Door types and verify the .Hosts property
-        if element_ifc_target_type in ["IfcWindow", "IfcDoor"]:
-            if hasattr(element_to_check, "Hosts") and host_obj in element_to_check.Hosts:
-                is_confirmed_hosted = True
-        # Check for ReinforcingBar type and verify the .Host property
-        elif element_ifc_target_type == "IfcReinforcingBar": 
-            if hasattr(element_to_check, "Host") and host_obj == element_to_check.Host:
-                is_confirmed_hosted = True
-        # TODO: Add checks for other hosted types if necessary (e.g., IfcSanitaryTerminal,
-        # IfcDistributionElement) based on how their hosting relationship is defined in FreeCAD
-        # (e.g., specific properties).
-
-        if is_confirmed_hosted:
-            hosted_elements_to_queue.append(element_to_check)
-            if preferences_dict['DEBUG']:
-                print(f"DEBUG _get_hosted_elements: Found hosted {element_to_check.Label} "
-                      f"(IFC Type: {element_ifc_target_type}) in {host_obj.Label}")
-            
-    return hosted_elements_to_queue
 
 def getPreferences():
     """Retrieve the IFC preferences available in import and export."""
