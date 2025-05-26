@@ -4,7 +4,7 @@ import FreeCAD
 from CAMTests.PathTestUtils import PathTestWithAssets
 from Path.Tool.library import Library
 from Path.Tool.toolbit import ToolBitEndmill
-from Path.Tool.shape import ToolBitShapeEndmill
+from Path.Tool.shape import ToolBitShapeEndmill, ToolBitShapeBallend
 from Path.Tool.library.serializers import CamoticsLibrarySerializer, LinuxCNCSerializer
 
 
@@ -30,8 +30,15 @@ class TestPathToolLibrarySerializerBase(PathTestWithAssets):
         tool2 = ToolBitEndmill(shape2, id="tool_2")
         tool2.label = "Endmill 3mm"
 
+        shape3 = ToolBitShapeBallend("ballend_1")
+        shape3.set_parameter("Diameter", FreeCAD.Units.Quantity("5.0 mm"))
+        shape3.set_parameter("Length", FreeCAD.Units.Quantity("18.0 mm"))
+        tool3 = ToolBitEndmill(shape3, id="tool_3")
+        tool3.label = "Ballend 5mm"
+
         self.test_library.add_bit(tool1, 1)
         self.test_library.add_bit(tool2, 2)
+        self.test_library.add_bit(tool3, 3)
 
 
 class TestCamoticsLibrarySerializer(TestPathToolLibrarySerializerBase):
@@ -44,12 +51,35 @@ class TestCamoticsLibrarySerializer(TestPathToolLibrarySerializerBase):
 
         # Verify the content structure (basic check)
         data_dict = json.loads(serialized_data.decode("utf-8"))
-        self.assertIn("1", data_dict)
-        self.assertIn("2", data_dict)
-        self.assertEqual(data_dict["1"]["description"], self.test_library._bit_nos[1].label)
         self.assertEqual(
-            data_dict["2"]["diameter"],
-            self.test_library._bit_nos[2]._tool_bit_shape.get_parameter("Diameter"),
+            data_dict["1"],
+            {
+                "description": "Endmill 6mm",
+                "diameter": 6.0,
+                "length": 20.0,
+                "shape": "Cylindrical",
+                "units": "metric",
+            },
+        )
+        self.assertEqual(
+            data_dict["2"],
+            {
+                "description": "Endmill 3mm",
+                "diameter": 3.0,
+                "length": 15.0,
+                "shape": "Cylindrical",
+                "units": "metric",
+            },
+        )
+        self.assertEqual(
+            data_dict["3"],
+            {
+                "description": "Ballend 5mm",
+                "diameter": 5.0,
+                "length": 18.0,
+                "shape": "Ballnose",
+                "units": "metric",
+            },
         )
 
     def test_camotics_deserialize(self):
@@ -113,9 +143,10 @@ class TestLinuxCNCLibrarySerializer(TestPathToolLibrarySerializerBase):
 
         # Verify the content format (basic check)
         lines = serialized_data.decode("ascii", "ignore").strip().split("\n")
-        self.assertEqual(len(lines), 2)
-        self.assertTrue(lines[0].startswith("T1 P D6.0 ;Endmill 6mm"))
-        self.assertTrue(lines[1].startswith("T2 P D3.0 ;Endmill 3mm"))
+        self.assertEqual(len(lines), 3)
+        self.assertEqual(lines[0], "T1 P0 D6.000 ;Endmill 6mm")
+        self.assertEqual(lines[1], "T2 P0 D3.000 ;Endmill 3mm")
+        self.assertEqual(lines[2], "T3 P0 D5.000 ;Ballend 5mm")
 
     def test_linuxcnc_deserialize_not_implemented(self):
         serializer = LinuxCNCSerializer
