@@ -66,7 +66,6 @@ def ensure_toolbitshape_assets_initialized(asset_manager: AssetManager, store_na
             if not asset_manager.exists(uri, store=store_name):
                 asset_manager.add_file("toolbitshape", path)
 
-    if asset_manager.is_empty("toolbitshapesvg", store=store_name):
         for path in builtin_shape_path.glob("*.svg"):
             uri = AssetUri.build(
                 asset_type="toolbitshapesvg",
@@ -75,7 +74,6 @@ def ensure_toolbitshape_assets_initialized(asset_manager: AssetManager, store_na
             if not asset_manager.exists(uri, store=store_name):
                 asset_manager.add_file("toolbitshapesvg", path, asset_id=path.stem + ".svg")
 
-    if asset_manager.is_empty("toolbitshapepng", store=store_name):
         for path in builtin_shape_path.glob("*.png"):
             uri = AssetUri.build(
                 asset_type="toolbitshapepng",
@@ -146,6 +144,18 @@ class CamAssetManager(AssetManager):
         store if not found locally.
         """
         return super().get(uri, store=store, depth=depth)
+
+    def get_or_none(
+        self,
+        uri: Union[AssetUri, str],
+        store: Union[str, Sequence[str]] = ("local", "builtin"),
+        depth: Optional[int] = None,
+    ) -> Optional[Asset]:
+        """
+        Gets an asset from the "local" store, falling back to the "builtin"
+        store if not found locally.
+        """
+        return super().get_or_none(uri, store=store, depth=depth)
 
 
 # Set up the CAM asset manager.
