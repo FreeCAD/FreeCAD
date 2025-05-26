@@ -29,6 +29,7 @@
 #include <QPointF>
 
 #include "QGIDecoration.h"
+#include "QGIUserTypes.h"
 
 namespace TechDrawGui
 {
@@ -39,7 +40,7 @@ public:
     explicit QGICenterLine();
     ~QGICenterLine() override = default;
 
-    enum {Type = QGraphicsItem::UserType + 174};
+    enum {Type = UserType::QGICenterLine};
     int type() const override { return Type;}
 
     void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = nullptr ) override;

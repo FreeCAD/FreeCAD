@@ -31,6 +31,8 @@
 
 #include <Base/Parameter.h>
 
+#include "QGIUserTypes.h"
+
 QT_BEGIN_NAMESPACE
 class QPainter;
 class QStyleOptionGraphicsItem;
@@ -45,7 +47,7 @@ public:
     explicit QGIPrimPath();
     ~QGIPrimPath() override = default;
 
-    enum {Type = QGraphicsItem::UserType + 170};
+    enum {Type = UserType::QGIPrimPath};
 
     int type() const override { return Type;}
     void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = nullptr ) override;

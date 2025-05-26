@@ -3703,7 +3703,7 @@ int SketchObject::split(int GeoId, const Base::Vector3d& point)
     // FIXME: we should be able to transfer these to new curves smoothly
     deleteUnusedInternalGeometryAndUpdateGeoId(GeoId);
     const auto* geoAsCurve = getGeometry<Part::GeomCurve>(GeoId);
-    bool isOriginalCurveConstruction = GeometryFacade::getConstruction(geoAsCurve);
+
     bool isOriginalCurvePeriodic = isClosedCurve(geoAsCurve);
     std::vector<int> newIds;
     std::vector<Part::Geometry*> newGeos;
