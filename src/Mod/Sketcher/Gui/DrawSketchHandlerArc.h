@@ -92,24 +92,47 @@ private:
 
         std::list<InputHint> hints;
 
-        switch (state()) {
-            case SelectMode::SeekFirst:
-                hints.push_back(
-                    InputHint(QCoreApplication::translate("Sketcher", "%1 pick arc center"),
-                              {UserInput::MouseLeft}));
-                break;
-            case SelectMode::SeekSecond:
-                hints.push_back(
-                    InputHint(QCoreApplication::translate("Sketcher", "%1 pick arc start point"),
-                              {UserInput::MouseLeft}));
-                break;
-            case SelectMode::SeekThird:
-                hints.push_back(
-                    InputHint(QCoreApplication::translate("Sketcher", "%1 pick arc end point"),
-                              {UserInput::MouseLeft}));
-                break;
-            default:
-                break;
+        if (constructionMethod() == ConstructionMethod::Center) {
+            switch (state()) {
+                case SelectMode::SeekFirst:
+                    hints.push_back(
+                        InputHint(QCoreApplication::translate("Sketcher", "%1 pick arc center"),
+                                  {UserInput::MouseLeft}));
+                    break;
+                case SelectMode::SeekSecond:
+                    hints.push_back(InputHint(
+                        QCoreApplication::translate("Sketcher", "%1 pick arc start point"),
+                        {UserInput::MouseLeft}));
+                    break;
+                case SelectMode::SeekThird:
+                    hints.push_back(
+                        InputHint(QCoreApplication::translate("Sketcher", "%1 pick arc end point"),
+                                  {UserInput::MouseLeft}));
+                    break;
+                default:
+                    break;
+            }
+        }
+        else if (constructionMethod() == ConstructionMethod::ThreeRim) {
+            switch (state()) {
+                case SelectMode::SeekFirst:
+                    hints.push_back(InputHint(
+                        QCoreApplication::translate("Sketcher", "%1 pick first arc point"),
+                        {UserInput::MouseLeft}));
+                    break;
+                case SelectMode::SeekSecond:
+                    hints.push_back(InputHint(
+                        QCoreApplication::translate("Sketcher", "%1 pick second arc point"),
+                        {UserInput::MouseLeft}));
+                    break;
+                case SelectMode::SeekThird:
+                    hints.push_back(InputHint(
+                        QCoreApplication::translate("Sketcher", "%1 pick third arc point"),
+                        {UserInput::MouseLeft}));
+                    break;
+                default:
+                    break;
+            }
         }
 
         Gui::getMainWindow()->showHints(hints);
