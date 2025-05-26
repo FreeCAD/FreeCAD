@@ -25,7 +25,8 @@
 
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
-# include "QGIPrimPath.h"
+#include "QGIPrimPath.h"
+#include "QGIUserTypes.h"
 
 QT_BEGIN_NAMESPACE
 class QPainter;
@@ -41,7 +42,7 @@ public:
     explicit QGIDimLines();
     ~QGIDimLines() override = default;
 
-    enum {Type = QGraphicsItem::UserType + 175};
+    enum {Type = UserType::QGIDimLines};
     int type() const override { return Type;}
     QRectF boundingRect() const override;
     QPainterPath shape() const override;

@@ -211,9 +211,9 @@ DimensionGeometry TechDraw::validateDimSelection3d(
 
     return DimensionGeometry::isInvalid;
 }
-bool TechDraw::validateSubnameList(const StringVector& subNames, GeometrySet acceptableGeometrySet)
+bool TechDraw::validateSubnameList(const StringVector& subNames, const GeometrySet& acceptableGeometrySet)
 {
-    for (auto& sub : subNames) {
+    for (auto& sub : subNames) {    // NOLINT (std::ranges::all_of())
         std::string geometryType = DrawUtil::getGeomTypeFromName(ShapeFinder::getLastTerm(sub));
         if (!acceptableGeometrySet.contains(geometryType)) {
             //this geometry type is not allowed
@@ -394,17 +394,24 @@ DimensionGeometry TechDraw::isValidSingleEdge(const ReferenceEntry& ref)
             return DimensionGeometry::isHorizontal;
         }
         return DimensionGeometry::isDiagonal;
-    } else if (geom->getGeomType() == GeomType::CIRCLE || geom->getGeomType() == GeomType::ARCOFCIRCLE) {
+    }
+
+    if (geom->getGeomType() == GeomType::CIRCLE || geom->getGeomType() == GeomType::ARCOFCIRCLE) {
         return DimensionGeometry::isCircle;
-    } else if (geom->getGeomType() == GeomType::ELLIPSE || geom->getGeomType() == GeomType::ARCOFELLIPSE) {
+    }
+
+    if (geom->getGeomType() == GeomType::ELLIPSE || geom->getGeomType() == GeomType::ARCOFELLIPSE) {
         return DimensionGeometry::isEllipse;
-    } else if (geom->getGeomType() == GeomType::BSPLINE) {
+    }
+
+    if (geom->getGeomType() == GeomType::BSPLINE) {
         TechDraw::BSplinePtr spline = std::static_pointer_cast<TechDraw::BSpline>(geom);
         if (spline->isCircle()) {
             return DimensionGeometry::isBSplineCircle;
         }
         return DimensionGeometry::isBSpline;
     }
+
     return DimensionGeometry::isInvalid;
 }
 
@@ -426,28 +433,35 @@ DimensionGeometry TechDraw::isValidSingleEdge3d(DrawViewPart* dvp, const Referen
     TopoDS_Edge occEdge = TopoDS::Edge(refShape);
     BRepAdaptor_Curve adapt(occEdge);
     if (adapt.GetType() == GeomAbs_Line) {
-        Base::Vector3d point0 = Base::convertTo<Base::Vector3d>(BRep_Tool::Pnt(TopExp::FirstVertex(occEdge)));
+        auto point0 = Base::convertTo<Base::Vector3d>(BRep_Tool::Pnt(TopExp::FirstVertex(occEdge)));
         point0 = dvp->projectPoint(point0);
-        Base::Vector3d point1 = Base::convertTo<Base::Vector3d>(BRep_Tool::Pnt(TopExp::LastVertex(occEdge)));
+        auto point1 = Base::convertTo<Base::Vector3d>(BRep_Tool::Pnt(TopExp::LastVertex(occEdge)));
         point1 = dvp->projectPoint(point1);
         Base::Vector3d line = point1 - point0;
         if (fabs(line.y) < std::numeric_limits<float>::epsilon()) {
             return DimensionGeometry::isVertical;
         }
+
         if (fabs(line.x) < std::numeric_limits<float>::epsilon()) {
             return DimensionGeometry::isHorizontal;
         }
+
+        // we don't support Z direction dimensions
         //        else if (fabs(line.z) < std::numeric_limits<float>::epsilon()) {
         //            return TechDraw::isZLimited;
         //        }
-        else {
-            return DimensionGeometry::isDiagonal;
-        }
-    } else if (adapt.GetType() == GeomAbs_Circle) {
+
+        return DimensionGeometry::isDiagonal;
+    }
+
+    if (adapt.GetType() == GeomAbs_Circle) {
         return DimensionGeometry::isCircle;
-    } else if (adapt.GetType() == GeomAbs_Ellipse) {
+    }
+
+    if (adapt.GetType() == GeomAbs_Ellipse) {
         return DimensionGeometry::isEllipse;
-    } else if (adapt.GetType() == GeomAbs_BSplineCurve) {
+    }
+     else if (adapt.GetType() == GeomAbs_BSplineCurve) {
         if (GeometryUtils::isCircle(occEdge)) {
             return DimensionGeometry::isBSplineCircle;
         }
@@ -540,8 +554,10 @@ DimensionGeometry TechDraw::isValidMultiEdge(const ReferenceVector& refs)
         line0.Normalize();
         Base::Vector3d line1 = gen1->points.at(1) - gen1->points.at(0);
         line1.Normalize();
-        double dot = fabs(line0.Dot(line1));
-        if (DU::fpCompare(dot, 1.0, EWTOLERANCE)) {
+        auto lineDot{line0.Dot(line1)};
+        if (lineDot >= 1 ||
+            lineDot <= -1) {
+            // the edges are parallel
             return DimensionGeometry::isDiagonal;    //distance || line
         }
         return DimensionGeometry::isAngle;       //angle or distance
@@ -594,16 +610,17 @@ DimensionGeometry TechDraw::isValidMultiEdge3d(DrawViewPart* dvp, const Referenc
     }
 
     if (edgesAll.size() == 2) {
-        Base::Vector3d first0 = Base::convertTo<Base::Vector3d>(BRep_Tool::Pnt(TopExp::FirstVertex(edgesAll.at(0))));
-        Base::Vector3d last0 = Base::convertTo<Base::Vector3d>(BRep_Tool::Pnt(TopExp::LastVertex(edgesAll.at(1))));
+        auto first0 = Base::convertTo<Base::Vector3d>(BRep_Tool::Pnt(TopExp::FirstVertex(edgesAll.at(0))));
+        auto last0 = Base::convertTo<Base::Vector3d>(BRep_Tool::Pnt(TopExp::LastVertex(edgesAll.at(1))));
         Base::Vector3d line0 = last0 - first0;
-        Base::Vector3d first1 = Base::convertTo<Base::Vector3d>(BRep_Tool::Pnt(TopExp::FirstVertex(edgesAll.at(0))));
-        Base::Vector3d last1 = Base::convertTo<Base::Vector3d>(BRep_Tool::Pnt(TopExp::LastVertex(edgesAll.at(1))));
+        auto first1 = Base::convertTo<Base::Vector3d>(BRep_Tool::Pnt(TopExp::FirstVertex(edgesAll.at(0))));
+        auto last1 = Base::convertTo<Base::Vector3d>(BRep_Tool::Pnt(TopExp::LastVertex(edgesAll.at(1))));
         Base::Vector3d line1 = last1 - first1;
         line0.Normalize();
         line1.Normalize();
-        auto dot = fabs(line0.Dot(line1));
-        if (DU::fpCompare(dot, 1.0, EWTOLERANCE)) {
+        auto lineDot{std::fabs(line0.Dot(line1))};
+        double localTolerance{std::numeric_limits<float>::epsilon()};  // this is as close as we can reliably measure
+        if (DU::fpCompare(lineDot, 1, localTolerance)) {
             //lines are parallel, must be distance dim
             return DimensionGeometry::isDiagonal;
         }
@@ -620,7 +637,7 @@ DimensionGeometry TechDraw::isValidVertexes(const ReferenceVector& refs)
     auto* dvp(dynamic_cast<TechDraw::DrawViewPart*>(refs.front().getObject()));
     if (!dvp) {
         //probably redundant
-        throw Base::RuntimeError("Logic error in isValidMultiEdge");
+        throw Base::RuntimeError("Logic error in isValidVertexes");
     }
 
     const std::string matchToken{"Vertex"};
@@ -635,11 +652,13 @@ DimensionGeometry TechDraw::isValidVertexes(const ReferenceVector& refs)
         Base::Vector3d line = v1->point() - v0->point();
         if (fabs(line.y) < std::numeric_limits<float>::epsilon()) {
             return DimensionGeometry::isHorizontal;
-        } else if (fabs(line.x) < std::numeric_limits<float>::epsilon()) {
-            return DimensionGeometry::isHorizontal;
-        } else {
-            return DimensionGeometry::isDiagonal;
         }
+
+        if (fabs(line.x) < std::numeric_limits<float>::epsilon()) {
+            return DimensionGeometry::isVertical;
+        }
+        return DimensionGeometry::isDiagonal;
+
     } else if (refs.size() == 3) {
         //three vertices make an angle dimension
         return DimensionGeometry::isAngle3Pt;
@@ -666,9 +685,9 @@ DimensionGeometry TechDraw::isValidVertexes3d(DrawViewPart* dvp, const Reference
             || geometry1.ShapeType() != TopAbs_VERTEX) {
             return DimensionGeometry::isInvalid;
         }
-        Base::Vector3d point0 = Base::convertTo<Base::Vector3d>(BRep_Tool::Pnt(TopoDS::Vertex(geometry0)));
+        auto point0 = Base::convertTo<Base::Vector3d>(BRep_Tool::Pnt(TopoDS::Vertex(geometry0)));
         point0 = dvp->projectPoint(point0);
-        Base::Vector3d point1 = Base::convertTo<Base::Vector3d>(BRep_Tool::Pnt(TopoDS::Vertex(geometry1)));
+        auto point1 = Base::convertTo<Base::Vector3d>(BRep_Tool::Pnt(TopoDS::Vertex(geometry1)));
         point1 = dvp->projectPoint(point1);
         Base::Vector3d line = point1 - point0;
         if (fabs(line.y) < std::numeric_limits<float>::epsilon()) {
@@ -678,9 +697,9 @@ DimensionGeometry TechDraw::isValidVertexes3d(DrawViewPart* dvp, const Reference
             return DimensionGeometry::isHorizontal;
             //        } else if(fabs(line.z) < std::numeric_limits<float>::epsilon()) {
             //            return isZLimited;
-        } else {
-            return DimensionGeometry::isDiagonal;
         }
+        return DimensionGeometry::isDiagonal;
+
     } else if (refs.size() == 3) {
         //three vertices make an angle dimension
         //we could check here that all the geometries are Vertex
@@ -774,6 +793,7 @@ long int TechDraw::mapGeometryTypeToDimType(long int dimType, DimensionGeometry 
 //! type token.
 bool  TechDraw::refsMatchToken(const ReferenceVector& refs, const std::string& matchToken)
 {
+    //NOLINTNEXTLINE
     for (auto& entry : refs) {
         std::string entryToken = DU::getGeomTypeFromName(entry.getSubName(false));
         if (entryToken != matchToken) {

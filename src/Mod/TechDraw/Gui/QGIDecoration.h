@@ -41,6 +41,7 @@ QT_END_NAMESPACE
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
 #include "Enums.h"
+#include "QGIUserTypes.h"
 
 namespace TechDrawGui
 {
@@ -50,7 +51,7 @@ class TechDrawGuiExport QGIDecoration : public QGraphicsItemGroup
 public:
     explicit QGIDecoration();
     ~QGIDecoration() override = default;
-    enum {Type = QGraphicsItem::UserType + 173};
+    enum {Type = UserType::QGIDecoration};
     int type() const override { return Type;}
 
     QRectF boundingRect() const override;
