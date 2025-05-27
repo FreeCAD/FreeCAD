@@ -439,7 +439,7 @@ class ToolBit(Asset, ABC):
         # Only re-initialize properties from shape if not restoring from file
         if self.obj.BitBody and self.obj.BitBody.Document != self.obj.Document:
             Path.Log.debug(
-                f"onDocumeformat_valuentRestored: Re-initializing BitBody for {self.obj.Label} after copy"
+                f"onDocumentRestored: Re-initializing BitBody for {self.obj.Label} after copy"
             )
             self._update_visual_representation()
 

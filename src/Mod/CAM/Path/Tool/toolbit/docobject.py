@@ -179,8 +179,7 @@ class DetachedDocumentObject:
                 if prop_type == "App::PropertyEnumeration":
                     first_choice = self._property_enums[prop_name][0]
                     setattr(obj, prop_name, first_choice)
-                else:
-                    setattr(obj, prop_name, prop_value)
+                setattr(obj, prop_name, prop_value)
 
             except Exception as e:
                 Path.Log.error(
