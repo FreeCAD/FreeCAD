@@ -58,17 +58,14 @@ Gui--PropertyEditor--PropertyEditor QLineEdit:read-only,
 Gui--PropertyEditor--PropertyEditor QLineEdit:disabled,
 Gui--PropertyEditor--PropertyEditor QAbstractSpinBox:read-only,
 Gui--PropertyEditor--PropertyEditor QAbstractSpinBox:disabled {
-    color: transparent;
     border-color: transparent;
     background-color: #ababab;
-    selection-color: transparent;
     selection-background-color: transparent;
     border-radius: 2px;
 }
 
 Gui--PropertyEditor--PropertyEditor > QWidget > QWidget > QLabel,
 Gui--PropertyEditor--PropertyEditor > QWidget > QWidget > QLabel:disabled {
-    color: transparent;
     background-color: transparent;
     border: none;
     border-radius: 2px;
@@ -94,8 +91,8 @@ Gui--PropertyEditor--PropertyEditor > QWidget > QFrame:focus {
 
 /* hack to hide weird redundant information inside cells with links and no editable data (but editable via "..." button) */
 Gui--PropertyEditor--PropertyEditor > QWidget > QWidget > QLabel {
-	color: #000000;
-	background-color: #ACC8E5; /* same as focused background color */
+  color: #000000;
+  background-color: #ACC8E5; /* same as focused background color */
   border-radius: 2px;
 }
 
