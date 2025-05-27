@@ -122,13 +122,15 @@ void CosmeticVertex::Save(Base::Writer &writer) const
                 << "X=\"" <<  permaPoint.x <<
                 "\" Y=\"" <<  permaPoint.y <<
                 "\" Z=\"" <<  permaPoint.z <<
-                 "\"/>" << endl;
-    writer.Stream() << writer.ind() << "<LinkGeom value=\"" <<  linkGeom << "\"/>" << endl;
-    writer.Stream() << writer.ind() << "<Color value=\"" <<  color.asHexString() << "\"/>" << endl;
-    writer.Stream() << writer.ind() << "<Size value=\"" <<  size << "\"/>" << endl;
-    writer.Stream() << writer.ind() << "<Style value=\"" <<  style << "\"/>" << endl;
+                 "\"/>" << '\n';
+    writer.Stream() << writer.ind() << "<LinkGeom value=\"" <<  linkGeom << "\"/>" << '\n';
+    writer.Stream() << writer.ind() << "<Color value=\"" <<  color.asHexString() << "\"/>" << '\n';
+    writer.Stream() << writer.ind() << "<Size value=\"" <<  size << "\"/>" << '\n';
+    writer.Stream() << writer.ind() << "<Style value=\"" <<  style << "\"/>" << '\n';
     const char v = visible?'1':'0';
-    writer.Stream() << writer.ind() << "<Visible value=\"" <<  v << "\"/>" << endl;
+    writer.Stream() << writer.ind() << "<Visible value=\"" <<  v << "\"/>" << '\n';
+
+    //NOLINTNEXTLINE
     Tag::Save(writer);      // as "Tag"
 }
 
@@ -139,7 +141,10 @@ void CosmeticVertex::Restore(Base::XMLReader &reader)
     }
     TechDraw::Vertex::Restore(reader);
 
-    reader.readElement("PermaPoint");
+    // Vertex::Restore call to readNextElement may leave us already positioned on the PermaPoint element.
+    if(strcmp(reader.localName(),"PermaPoint") != 0) {
+        reader.readElement("PermaPoint");
+    }
     permaPoint.x = reader.getAttribute<double>("X");
     permaPoint.y = reader.getAttribute<double>("Y");
     permaPoint.z = reader.getAttribute<double>("Z");

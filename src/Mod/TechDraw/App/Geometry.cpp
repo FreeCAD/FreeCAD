@@ -1299,8 +1299,7 @@ Vertex::Vertex(double x, double y) :
 
 Vertex::Vertex(Base::Vector3d v) : Vertex(v.x, v.y)
 {
-//    Base::Console().message("V::V(%s)\n",
-//                            DrawUtil::formatVector(v).c_str());
+
 }
 
 
@@ -1316,19 +1315,18 @@ void Vertex::Save(Base::Writer &writer) const
                 << "X=\"" <<  pnt.x <<
                 "\" Y=\"" <<  pnt.y <<
                 "\" Z=\"" <<  pnt.z <<
-                 "\"/>" << endl;
+                 "\"/>" << '\n';
 
-    writer.Stream() << writer.ind() << "<Extract value=\"" <<  extractType << "\"/>" << endl;
+    writer.Stream() << writer.ind() << "<Extract value=\"" <<  extractType << "\"/>" << '\n';
     const char v = hlrVisible ? '1':'0';
-    writer.Stream() << writer.ind() << "<HLRVisible value=\"" <<  v << "\"/>" << endl;
-    writer.Stream() << writer.ind() << "<Ref3D value=\"" <<  ref3D << "\"/>" << endl;
+    writer.Stream() << writer.ind() << "<HLRVisible value=\"" <<  v << "\"/>" << '\n';
+    writer.Stream() << writer.ind() << "<Ref3D value=\"" <<  ref3D << "\"/>" << '\n';
     const char c = m_center ?'1':'0';
-    writer.Stream() << writer.ind() << "<IsCenter value=\"" <<  c << "\"/>" << endl;
+    writer.Stream() << writer.ind() << "<IsCenter value=\"" <<  c << "\"/>" << '\n';
     const char c2 = cosmetic?'1':'0';
-    writer.Stream() << writer.ind() << "<Cosmetic value=\"" <<  c2 << "\"/>" << endl;
-    writer.Stream() << writer.ind() << "<CosmeticLink value=\"" <<  cosmeticLink << "\"/>" << endl;
-    writer.Stream() << writer.ind() << "<CosmeticTag value=\"" <<  cosmeticTag << "\"/>" << endl;
-    writer.Stream() << writer.ind() << "<VertexTag value=\"" <<  getTagAsString() << "\"/>" << endl;
+    writer.Stream() << writer.ind() << "<Cosmetic value=\"" <<  c2 << "\"/>" << '\n';
+    writer.Stream() << writer.ind() << "<CosmeticLink value=\"" <<  cosmeticLink << "\"/>" << '\n';
+    writer.Stream() << writer.ind() << "<CosmeticTag value=\"" <<  cosmeticTag << "\"/>" << '\n';
 }
 
 void Vertex::Restore(Base::XMLReader &reader)
