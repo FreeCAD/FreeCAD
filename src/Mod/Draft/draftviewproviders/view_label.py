@@ -246,12 +246,16 @@ class ViewProviderLabel(ViewProviderDraftAnnotation):
                                                range(n_points))
                 self.onChanged(obj.ViewObject, "ArrowType")
 
-            if obj.StraightDistance > 0:
+            if obj.StraightDistance > 0.0 and obj.StraightDirection == "Horizontal":
                 self.text_wld.justification = coin.SoAsciiText.RIGHT
                 self.text_scr.justification = coin.SoText2.RIGHT
-            else:
+                if obj.ViewObject.Justification != "Right":
+                    obj.ViewObject.Justification = "Right"
+            elif obj.StraightDistance < 0.0 and obj.StraightDirection == "Horizontal":
                 self.text_wld.justification = coin.SoAsciiText.LEFT
                 self.text_scr.justification = coin.SoText2.LEFT
+                if obj.ViewObject.Justification != "Left":
+                    obj.ViewObject.Justification = "Left"
 
             self.onChanged(obj.ViewObject, "DisplayMode") # Property to trigger update_label and update_frame.
                                                           # We could have used a different property.
@@ -265,6 +269,10 @@ class ViewProviderLabel(ViewProviderDraftAnnotation):
             self.text_wld.string.setValues(_list)
             self.text_scr.string.setValues(_list)
             self.onChanged(obj.ViewObject, "DisplayMode")
+
+        elif prop == "StraightDistance":
+            if hasattr(self, "straight_distance") and obj.StraightDistance != 0.0:
+                del self.straight_distance # User changed the straight distance manually, we can delete the saved value.
 
     def onChanged(self, vobj, prop):
         """Execute when a view property is changed."""
@@ -337,12 +345,37 @@ class ViewProviderLabel(ViewProviderDraftAnnotation):
             if vobj.Justification == "Left":
                 self.text_wld.justification = coin.SoAsciiText.LEFT
                 self.text_scr.justification = coin.SoText2.LEFT
+                if obj.StraightDistance == 0.0 and hasattr(self, "straight_distance") and self.straight_distance != 0.0:
+                    obj.StraightDistance = self.straight_distance # Restore the saved StraightDistance value.
+                    obj.recompute()
+                    obj.purgeTouched()
+                if obj.StraightDistance > 0.0 and obj.StraightDirection == "Horizontal":
+                    obj.StraightDistance = -obj.StraightDistance
+                    obj.recompute()
+                    obj.purgeTouched()
             elif vobj.Justification == "Right":
                 self.text_wld.justification = coin.SoAsciiText.RIGHT
                 self.text_scr.justification = coin.SoText2.RIGHT
+                if obj.StraightDistance == 0.0 and hasattr(self, "straight_distance") and self.straight_distance != 0.0:
+                    obj.StraightDistance = self.straight_distance # Restore the saved StraightDistance value.
+                    obj.recompute()
+                    obj.purgeTouched()
+                if obj.StraightDistance < 0.0 and obj.StraightDirection == "Horizontal":
+                    obj.StraightDistance = -obj.StraightDistance
+                    obj.recompute()
+                    obj.purgeTouched()
             else:
                 self.text_wld.justification = coin.SoAsciiText.CENTER
                 self.text_scr.justification = coin.SoText2.CENTER
+                if obj.StraightDistance != 0.0 and obj.StraightDirection == "Horizontal":
+                    self.straight_distance = obj.StraightDistance # Save the StraightDistance value before zeroing it.
+                    obj.StraightDistance = 0.0
+                    obj.recompute()
+                    obj.purgeTouched()
+            if can_update_label:
+                self.update_label(obj, vobj)
+            if can_update_frame:
+                self.update_frame(obj, vobj)
 
         elif prop == "LineSpacing" and "LineSpacing" in properties:
             self.text_wld.spacing = max(1, vobj.LineSpacing)
@@ -390,9 +423,12 @@ class ViewProviderLabel(ViewProviderDraftAnnotation):
             total_height = box[1] + (2 * margin)
 
         # Space between endpoint of line and text:
-        v = App.Vector(margin, 0, 0)
-        if obj.StraightDistance > 0:
-            v = v.negative()
+        if vobj.Justification == "Left":
+            v = App.Vector(margin, 0, 0)
+        elif vobj.Justification == "Right":
+            v = App.Vector(-margin, 0, 0)
+        else:
+            v = App.Vector(0, 0, 0)
 
         if vobj.TextAlignment == "Top":
             v = v + App.Vector(0, -first_line_height, 0)
@@ -455,10 +491,12 @@ class ViewProviderLabel(ViewProviderDraftAnnotation):
         total_height = box[1] + (2 * margin)
 
         # Space between frame and text:
-        v = App.Vector(-margin, 0, 0)
-        if obj.StraightDistance > 0:
-            v = v.negative()
-            total_width = -total_width
+        if vobj.Justification == "Left":
+            first_frame_point = App.Vector(-margin, first_line_height, 0)
+        elif vobj.Justification == "Right":
+            first_frame_point = App.Vector(margin - total_width, first_line_height, 0)
+        else:
+            first_frame_point = App.Vector(-total_width / 2, first_line_height, 0)
 
         # Shape of the rectangle
         # (p5)p1 --------- p2
@@ -468,7 +506,7 @@ class ViewProviderLabel(ViewProviderDraftAnnotation):
         #     p4 --------- p3
         #
         pts = []
-        pts.append(v + App.Vector(0, first_line_height, 0))
+        pts.append(first_frame_point)
         pts.append(pts[-1] + App.Vector(total_width, 0, 0))
         pts.append(pts[-1] + App.Vector(0, -total_height, 0))
         pts.append(pts[-1] + App.Vector(-total_width, 0, 0))
