@@ -254,17 +254,17 @@ class PlaneBase:
         ----------
 
         face: Part.Face
-            The given face
+            Face.
         edge: Part.Edge
-            A border of the face
+            Edge, need not be an edge of the face.
         offset: float, optional
-            Defaults to zero
-            Offset along the WP `axis`
+            Defaults to zero.
+            Offset along the WP `axis`.
 
         Returns
         -------
         `True`/`False`
-            `True` if successful
+            `True` if successful.
         """
         if face.Surface.isPlanar() is False:
             return False
