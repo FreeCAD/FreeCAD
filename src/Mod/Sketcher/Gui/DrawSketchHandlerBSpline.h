@@ -1065,7 +1065,7 @@ void DSHBSplineController::doChangeDrawSketchHandlerMode()
         } break;
         case SelectMode::SeekSecond: {
             if (onViewParameters[OnViewParameter::Third]->hasFinishedEditing
-                && onViewParameters[OnViewParameter::Fourth]->hasFinishedEditing) {
+                || onViewParameters[OnViewParameter::Fourth]->hasFinishedEditing) {
                 handler->canGoToNextMode();  // its not going to next mode
 
                 unsetOnViewParameter(onViewParameters[OnViewParameter::Third].get());

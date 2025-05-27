@@ -519,7 +519,7 @@ void DSHSlotController::doChangeDrawSketchHandlerMode()
         } break;
         case SelectMode::SeekSecond: {
             if (onViewParameters[OnViewParameter::Third]->hasFinishedEditing
-                && onViewParameters[OnViewParameter::Fourth]->hasFinishedEditing) {
+                || onViewParameters[OnViewParameter::Fourth]->hasFinishedEditing) {
 
                 handler->setState(SelectMode::SeekThird);
             }

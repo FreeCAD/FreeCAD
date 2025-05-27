@@ -677,7 +677,7 @@ void DSHEllipseController::doChangeDrawSketchHandlerMode()
         } break;
         case SelectMode::SeekSecond: {
             if (onViewParameters[OnViewParameter::Third]->hasFinishedEditing
-                && onViewParameters[OnViewParameter::Fourth]->hasFinishedEditing) {
+                || onViewParameters[OnViewParameter::Fourth]->hasFinishedEditing) {
 
                 handler->setState(SelectMode::SeekThird);
             }
@@ -692,7 +692,7 @@ void DSHEllipseController::doChangeDrawSketchHandlerMode()
             }
             else {
                 if (onViewParameters[OnViewParameter::Fifth]->hasFinishedEditing
-                    && onViewParameters[OnViewParameter::Sixth]->hasFinishedEditing) {
+                    || onViewParameters[OnViewParameter::Sixth]->hasFinishedEditing) {
 
                     handler->setState(SelectMode::End);
                 }

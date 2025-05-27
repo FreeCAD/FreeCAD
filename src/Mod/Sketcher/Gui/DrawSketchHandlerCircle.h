@@ -595,7 +595,7 @@ void DSHCircleController::doChangeDrawSketchHandlerMode()
         } break;
         case SelectMode::SeekThird: {
             if (onViewParameters[OnViewParameter::Fifth]->hasFinishedEditing
-                && onViewParameters[OnViewParameter::Sixth]->hasFinishedEditing) {
+                || onViewParameters[OnViewParameter::Sixth]->hasFinishedEditing) {
 
                 handler->setState(SelectMode::End);
             }
