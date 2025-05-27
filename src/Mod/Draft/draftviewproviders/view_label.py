@@ -247,14 +247,10 @@ class ViewProviderLabel(ViewProviderDraftAnnotation):
                 self.onChanged(obj.ViewObject, "ArrowType")
 
             if obj.StraightDistance > 0.0 and obj.StraightDirection == "Horizontal":
-                self.text_wld.justification = coin.SoAsciiText.RIGHT
-                self.text_scr.justification = coin.SoText2.RIGHT
-                if obj.ViewObject.Justification != "Right":
+                if obj.ViewObject.Justification == "Left":
                     obj.ViewObject.Justification = "Right"
             elif obj.StraightDistance < 0.0 and obj.StraightDirection == "Horizontal":
-                self.text_wld.justification = coin.SoAsciiText.LEFT
-                self.text_scr.justification = coin.SoText2.LEFT
-                if obj.ViewObject.Justification != "Left":
+                if obj.ViewObject.Justification == "Right":
                     obj.ViewObject.Justification = "Left"
 
             self.onChanged(obj.ViewObject, "DisplayMode") # Property to trigger update_label and update_frame.
@@ -270,10 +266,6 @@ class ViewProviderLabel(ViewProviderDraftAnnotation):
             self.text_scr.string.setValues(_list)
             self.onChanged(obj.ViewObject, "DisplayMode")
 
-        elif prop == "StraightDistance":
-            if hasattr(self, "straight_distance") and obj.StraightDistance != 0.0:
-                del self.straight_distance # User changed the straight distance manually, we can delete the saved value.
-
     def onChanged(self, vobj, prop):
         """Execute when a view property is changed."""
         super().onChanged(vobj, prop)
@@ -286,7 +278,8 @@ class ViewProviderLabel(ViewProviderDraftAnnotation):
                             and "ScaleMultiplier" in properties
                             and "TextAlignment" in properties # Top, Middle or Bottom.
                             and "FontName" in properties
-                            and "FontSize" in properties)
+                            and "FontSize" in properties
+                            and "Justification" in properties)
         can_update_frame = (can_update_label
                             and "Frame" in properties)
 
@@ -318,7 +311,7 @@ class ViewProviderLabel(ViewProviderDraftAnnotation):
             if can_update_frame:
                 self.update_frame(obj, vobj)
 
-        elif prop in ["DisplayMode", "Frame", "TextAlignment", "FontSize"]:
+        elif prop in ["DisplayMode", "Frame", "TextAlignment", "FontSize", "Justification"]:
             if can_update_label:
                 self.update_label(obj, vobj)
             if can_update_frame:
@@ -340,42 +333,6 @@ class ViewProviderLabel(ViewProviderDraftAnnotation):
             s = vobj.ArrowSize.Value * vobj.ScaleMultiplier
             if s:
                 self.arrowpos.scaleFactor.setValue((s, s, s))
-
-        elif prop == "Justification" and "Justification" in properties:
-            if vobj.Justification == "Left":
-                self.text_wld.justification = coin.SoAsciiText.LEFT
-                self.text_scr.justification = coin.SoText2.LEFT
-                if obj.StraightDistance == 0.0 and hasattr(self, "straight_distance") and self.straight_distance != 0.0:
-                    obj.StraightDistance = self.straight_distance # Restore the saved StraightDistance value.
-                    obj.recompute()
-                    obj.purgeTouched()
-                if obj.StraightDistance > 0.0 and obj.StraightDirection == "Horizontal":
-                    obj.StraightDistance = -obj.StraightDistance
-                    obj.recompute()
-                    obj.purgeTouched()
-            elif vobj.Justification == "Right":
-                self.text_wld.justification = coin.SoAsciiText.RIGHT
-                self.text_scr.justification = coin.SoText2.RIGHT
-                if obj.StraightDistance == 0.0 and hasattr(self, "straight_distance") and self.straight_distance != 0.0:
-                    obj.StraightDistance = self.straight_distance # Restore the saved StraightDistance value.
-                    obj.recompute()
-                    obj.purgeTouched()
-                if obj.StraightDistance < 0.0 and obj.StraightDirection == "Horizontal":
-                    obj.StraightDistance = -obj.StraightDistance
-                    obj.recompute()
-                    obj.purgeTouched()
-            else:
-                self.text_wld.justification = coin.SoAsciiText.CENTER
-                self.text_scr.justification = coin.SoText2.CENTER
-                if obj.StraightDistance != 0.0 and obj.StraightDirection == "Horizontal":
-                    self.straight_distance = obj.StraightDistance # Save the StraightDistance value before zeroing it.
-                    obj.StraightDistance = 0.0
-                    obj.recompute()
-                    obj.purgeTouched()
-            if can_update_label:
-                self.update_label(obj, vobj)
-            if can_update_frame:
-                self.update_frame(obj, vobj)
 
         elif prop == "LineSpacing" and "LineSpacing" in properties:
             self.text_wld.spacing = max(1, vobj.LineSpacing)
@@ -402,6 +359,24 @@ class ViewProviderLabel(ViewProviderDraftAnnotation):
         """Update the label including text size and multiplier."""
         size = vobj.FontSize.Value * vobj.ScaleMultiplier
         self.font.size = size
+
+        if vobj.Justification == "Left":
+            self.text_wld.justification = coin.SoAsciiText.LEFT
+            self.text_scr.justification = coin.SoText2.LEFT
+            if obj.StraightDistance > 0.0 and obj.StraightDirection == "Horizontal":
+                obj.StraightDistance = -obj.StraightDistance
+                obj.recompute()
+                obj.purgeTouched()
+        elif vobj.Justification == "Right":
+            self.text_wld.justification = coin.SoAsciiText.RIGHT
+            self.text_scr.justification = coin.SoText2.RIGHT
+            if obj.StraightDistance < 0.0 and obj.StraightDirection == "Horizontal":
+                obj.StraightDistance = -obj.StraightDistance
+                obj.recompute()
+                obj.purgeTouched()
+        else:
+            self.text_wld.justification = coin.SoAsciiText.CENTER
+            self.text_scr.justification = coin.SoText2.CENTER
 
         if vobj.DisplayMode == "Screen":
             self.textpos.translation.setValue(obj.Placement.Base)
@@ -507,10 +482,10 @@ class ViewProviderLabel(ViewProviderDraftAnnotation):
         #
         pts = []
         pts.append(first_frame_point)
-        pts.append(pts[-1] + App.Vector(total_width, 0, 0))
+        pts.append(first_frame_point + App.Vector(total_width, 0, 0))
         pts.append(pts[-1] + App.Vector(0, -total_height, 0))
         pts.append(pts[-1] + App.Vector(-total_width, 0, 0))
-        pts.append(pts[0])
+        pts.append(first_frame_point)
 
         self.fcoords.point.setValues(pts)
         self.frame.coordIndex.setValues(0,
