@@ -163,7 +163,12 @@
          PocketExtraOffset,                                                                        \
          0.0,                                                                                      \
          "Extra offset for pocketing",                                                             \
-         App::PropertyDistance))(                                                                  \
+         App::PropertyDistance))((double,                                                          \
+                                  extra_offsetzz,                                                  \
+                                  PocketExtraOffsetzz,                                             \
+                                  0.0,                                                             \
+                                  "Extra offset for ZigZag path in pocketing",                     \
+                                  App::PropertyDistance))(                                         \
         (double,                                                                                   \
          stepover,                                                                                 \
          PocketStepover,                                                                           \

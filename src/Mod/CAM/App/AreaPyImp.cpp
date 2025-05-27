@@ -49,7 +49,7 @@ static PyObject* areaAbort(PyObject*, PyObject* args, PyObject* kwd)
 static PyObject* areaSetParams(PyObject*, PyObject* args, PyObject* kwd)
 {
 
-    static const std::array<const char*, 43> kwlist {
+    static const std::array<const char*, 44> kwlist {
         PARAM_FIELD_STRINGS(NAME, AREA_PARAMS_STATIC_CONF),
         nullptr};
 
@@ -428,7 +428,7 @@ PyObject* AreaPy::makeOffset(PyObject* args, PyObject* keywds)
 
 PyObject* AreaPy::makePocket(PyObject* args, PyObject* keywds)
 {
-    static const std::array<const char*, 11> kwlist {"index",
+    static const std::array<const char*, 12> kwlist {"index",
                                                      PARAM_FIELD_STRINGS(ARG, AREA_PARAMS_POCKET),
                                                      nullptr};
     short index = -1;
@@ -590,7 +590,7 @@ PyObject* AreaPy::setDefaultParams(PyObject*, PyObject*)
 
 PyObject* AreaPy::setParams(PyObject* args, PyObject* keywds)
 {
-    static const std::array<const char*, 43> kwlist {PARAM_FIELD_STRINGS(NAME, AREA_PARAMS_CONF),
+    static const std::array<const char*, 44> kwlist {PARAM_FIELD_STRINGS(NAME, AREA_PARAMS_CONF),
                                                      nullptr};
 
     // Declare variables defined in the NAME field of the CONF parameter list
