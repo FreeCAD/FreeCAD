@@ -95,16 +95,16 @@ using ExtensionPython = ExtensionPythonT<App::Extension>;
     Py::Tuple args;                                                                                \
     EXTENSION_PROXY_SECOND(function)                                                               \
     Py::Tuple args(1);                                                                             \
-    args.setItem(0, Py::Object(this->getExtensionPyObject(), true));                               \
+    args.setItem(0, Py::Object(this->getExtendedContainer()->getPyObject(), true));                \
     EXTENSION_PROXY_THIRD()
 
 #define EXTENSION_PROXY_ONEARG(function, arg)                                                      \
     EXTENSION_PROXY_FIRST(function)                                                                \
-    Py::Tuple args;                                                                                \
+    Py::Tuple args(1);                                                                             \
     args.setItem(0, arg);                                                                          \
     EXTENSION_PROXY_SECOND(function)                                                               \
     Py::Tuple args(2);                                                                             \
-    args.setItem(0, Py::Object(this->getExtensionPyObject(), true));                               \
+    args.setItem(0, Py::Object(this->getExtendedContainer()->getPyObject(), true));                \
     args.setItem(1, arg);                                                                          \
     EXTENSION_PROXY_THIRD()
 
