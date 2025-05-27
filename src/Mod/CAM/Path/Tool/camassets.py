@@ -85,10 +85,17 @@ def ensure_toolbit_assets_initialized(asset_manager: AssetManager, store_name: s
     ensure_toolbits_have_shape_type(asset_manager, store_name)
 
 
-def ensure_toolbitshape_assets_initialized(asset_manager: AssetManager, store_name: str = "local"):
+def ensure_toolbitshape_assets_present(asset_manager: AssetManager, store_name: str = "local"):
     """
     Ensures the given store is initialized with built-in shapes
-    if it is currently empty.
+    if it is currently empty. This copies all built-in shapes,
+    which is generally not recommended, but is useful for
+    testing.
+
+    In practice, the built-in tools don't need to be copied,
+    because the CamAssetManager will automatically fall back to
+    fetching them from the builtin store if they are not
+    present in the local store (=the user's Shape directory).
     """
     builtin_shape_path = Preferences.getBuiltinShapePath()
 
@@ -116,6 +123,17 @@ def ensure_toolbitshape_assets_initialized(asset_manager: AssetManager, store_na
             )
             if not asset_manager.exists(uri, store=store_name):
                 asset_manager.add_file("toolbitshapepng", path, asset_id=path.stem + ".png")
+
+
+def ensure_toolbitshape_assets_initialized(asset_manager: AssetManager, store_name: str = "local"):
+    """
+    Copies an example shape to the given store if it is currently empty.
+    """
+    builtin_shape_path = Preferences.getBuiltinShapePath()
+
+    if asset_manager.is_empty("toolbitshape", store=store_name):
+        path = builtin_shape_path / "endmill.fcstd"
+        asset_manager.add_file("toolbitshape", path, store=store_name, asset_id="example")
 
 
 def ensure_assets_initialized(asset_manager: AssetManager, store="local"):

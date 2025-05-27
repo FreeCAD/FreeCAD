@@ -30,7 +30,7 @@ import unittest
 from Path.Tool.assets import AssetManager, MemoryStore, DummyAssetSerializer
 from Path.Tool.library.serializers import FCTLSerializer
 from Path.Tool.toolbit.serializers import FCTBSerializer
-from Path.Tool.camassets import ensure_assets_initialized
+from Path.Tool.camassets import ensure_assets_initialized, ensure_toolbitshape_assets_present
 from Path.Tool.library import Library
 from Path.Tool.toolbit import ToolBit
 from Path.Tool.shape import ToolBitShape
@@ -235,6 +235,7 @@ class PathTestWithAssets(PathTestBase):
         # Include the built-in assets from src/Mod/CAM/Tools.
         # These functions only copy if there are no assets, so this
         # must be done BEFORE adding the additional test assets below.
+        ensure_toolbitshape_assets_present(self.assets, self.asset_store.name)
         ensure_assets_initialized(self.assets, self.asset_store.name)
 
         # Additional test assets.
