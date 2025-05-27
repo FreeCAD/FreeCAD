@@ -3513,11 +3513,6 @@ void Document::removeObject(const char* sName)
 {
     auto pos = d->objectMap.find(sName);
 
-    // name not found?
-    if (pos == d->objectMap.end()) {
-        return;
-    }
-
     if (pos->second->testStatus(ObjectStatus::PendingRecompute)) {
         // TODO: shall we allow removal if there is active undo transaction?
         FC_MSG("pending remove of " << sName << " after recomputing document " << getName());
@@ -3525,91 +3520,17 @@ void Document::removeObject(const char* sName)
         return;
     }
 
-    TransactionLocker tlock;
-
-    _checkTransaction(pos->second, nullptr, __LINE__);
-
-    if (d->activeObject == pos->second) {
-        d->activeObject = nullptr;
-    }
-
-    // Mark the object as about to be deleted
-    pos->second->setStatus(ObjectStatus::Remove, true);
-    if (!d->undoing && !d->rollback) {
-        pos->second->unsetupObject();
-    }
-
-    signalDeletedObject(*(pos->second));
-
-    // do no transactions if we do a rollback!
-    if (!d->rollback && d->activeUndoTransaction) {
-        // in this case transaction delete or save the object
-        signalTransactionRemove(*pos->second, d->activeUndoTransaction);
-    }
-    else {
-        // if not saved in undo -> delete object
-        signalTransactionRemove(*pos->second, nullptr);
-    }
-
-    // Before deleting we must nullify all dependent objects
-    breakDependency(pos->second, true);
-
-    // and remove the tip if needed
-    if (Tip.getValue() && strcmp(Tip.getValue()->getNameInDocument(), sName) == 0) {
-        Tip.setValue(nullptr);
-        TipName.setValue("");
-    }
-
-    // remove the ID before possibly deleting the object
-    d->objectIdMap.erase(pos->second->_Id);
-    // Unset the bit to be on the safe side
-    pos->second->setStatus(ObjectStatus::Remove, false);
-    unregisterLabel(pos->second->Label.getStrValue());
-
-    // do no transactions if we do a rollback!
-    std::unique_ptr<DocumentObject> tobedestroyed;
-    if (!d->rollback) {
-        // Undo stuff
-        if (d->activeUndoTransaction) {
-            // in this case transaction delete or save the object
-            d->activeUndoTransaction->addObjectNew(pos->second);
-        }
-        else {
-            // if not saved in undo -> delete object later
-            std::unique_ptr<DocumentObject> delobj(pos->second);
-            tobedestroyed.swap(delobj);
-            tobedestroyed->setStatus(ObjectStatus::Destroy, true);
-        }
-    }
-
-    for (auto obj = d->objectArray.begin();
-         obj != d->objectArray.end();
-         ++obj) {
-        if (*obj == pos->second) {
-            d->objectArray.erase(obj);
-            break;
-        }
-    }
-
-    // In case the object gets deleted the pointer must be nullified
-    if (tobedestroyed) {
-        tobedestroyed->pcNameInDocument = nullptr;
-    }
-    d->objectNameManager.removeExactName(pos->first);
-    d->objectMap.erase(pos);
+    _removeObject(pos->second, RemoveObjectOption::mayRemoveWhileRecomputing | RemoveObjectOption::mayDestroyOutOfTransaction);
 }
-
-/// Remove an object out of the document (internal)
-void Document::_removeObject(DocumentObject* pcObject)
+void Document::_removeObject(DocumentObject* pcObject, RemoveObjectOptions options)
 {
-    if (testStatus(Document::Recomputing)) {
+    if (!options.testFlag(RemoveObjectOption::mayRemoveWhileRecomputing) && testStatus(Document::Recomputing)) {
         FC_ERR("Cannot delete " << pcObject->getFullName() << " while recomputing");
         return;
     }
-
+    
     TransactionLocker tlock;
 
-    // TODO Refactoring: share code with Document::removeObject() (2015-09-01, Fat-Zer)
     _checkTransaction(pcObject, nullptr, __LINE__);
 
     auto pos = d->objectMap.find(pcObject->getNameInDocument());
@@ -3617,17 +3538,23 @@ void Document::_removeObject(DocumentObject* pcObject)
         FC_ERR("Internal error, could not find " << pcObject->getFullName() << " to remove");
     }
 
-    if (!d->rollback && d->activeUndoTransaction && pos->second->hasChildElement()) {
-        // Preserve link group children global visibility. See comments in
-        // removeObject() for more details.
-        for (auto& sub : pos->second->getSubObjects()) {
+    if (options.testFlag(RemoveObjectOption::preserveChildrenVisibility) 
+        && !d->rollback && d->activeUndoTransaction && pcObject->hasChildElement()) {
+        // Preserve link group sub object global visibilities. Normally those
+        // claimed object should be hidden in global coordinate space. However,
+        // when the group is deleted, the user will naturally try to show the
+        // children, which may now in the global space. When the parent is
+        // undeleted, having its children shown in both the local and global
+        // coordinate space is very confusing. Hence, we preserve the visibility
+        // here        
+        for (auto& sub : pcObject->getSubObjects()) {
             if (sub.empty()) {
                 continue;
             }
             if (sub[sub.size() - 1] != '.') {
                 sub += '.';
             }
-            const auto sobj = pos->second->getSubObject(sub.c_str());
+            auto sobj = pcObject->getSubObject(sub.c_str());
             if (sobj && sobj->getDocument() == this && !sobj->Visibility.getValue()) {
                 d->activeUndoTransaction->addObjectChange(sobj, &sobj->Visibility);
             }
@@ -3644,13 +3571,19 @@ void Document::_removeObject(DocumentObject* pcObject)
         pcObject->unsetupObject();
     }
     signalDeletedObject(*pcObject);
-    // TODO Check me if it's needed (2015-09-01, Fat-Zer)
 
+    // TODO Check me if it's needed (2015-09-01, Fat-Zer)
     // remove the tip if needed
     if (Tip.getValue() == pcObject) {
         Tip.setValue(nullptr);
         TipName.setValue("");
     }
+
+    // remove from map
+    pcObject->setStatus(ObjectStatus::Remove, false);  // Unset the bit to be on the safe side
+    d->objectIdMap.erase(pcObject->_Id);
+    d->objectNameManager.removeExactName(pos->first);
+    unregisterLabel(pcObject->Label.getStrValue());
 
     // do no transactions if we do a rollback!
     if (!d->rollback && d->activeUndoTransaction) {
@@ -3661,21 +3594,18 @@ void Document::_removeObject(DocumentObject* pcObject)
     }
     else {
         // for a rollback delete the object
-        signalTransactionRemove(*pcObject, nullptr);
+        signalTransactionRemove(*pcObject, 0);
         breakDependency(pcObject, true);
     }
-    // TODO: Transaction::addObjectName could potentially have freed (deleted) pcObject so some of the following
-    // code may be dereferencing a pointer to a deleted object which is not legal. if (d->rollback) this does not occur
-    // and instead pcObject is deleted at the end of this function.
-    // This either should be fixed, perhaps by moving the following lines up in the code,
-    // or there should be a comment explaining why the object will never be deleted because of the logic that got us here.
 
-    // remove from map
-    pcObject->setStatus(ObjectStatus::Remove, false);  // Unset the bit to be on the safe side
-    d->objectIdMap.erase(pcObject->_Id);
-    d->objectNameManager.removeExactName(pos->first);
-    unregisterLabel(pos->second->Label.getStrValue());
-    d->objectMap.erase(pos);
+    std::unique_ptr<DocumentObject> tobedestroyed;
+    if ((options.testFlag(RemoveObjectOption::mayDestroyOutOfTransaction) && !d->rollback && !d->activeUndoTransaction) 
+        || (options.testFlag(RemoveObjectOption::destroyOnRollback) && d->rollback)) {
+        // if not saved in undo -> delete object later
+        std::unique_ptr<DocumentObject> delobj(pos->second);
+        tobedestroyed.swap(delobj);
+        tobedestroyed->setStatus(ObjectStatus::Destroy, true);
+    }
 
     for (auto it = d->objectArray.begin();
          it != d->objectArray.end();
@@ -3685,12 +3615,15 @@ void Document::_removeObject(DocumentObject* pcObject)
             break;
         }
     }
-
-    // for a rollback delete the object
-    if (d->rollback) {
-        pcObject->setStatus(ObjectStatus::Destroy, true);
-        delete pcObject;
+    
+    // In case the object gets deleted the pointer must be nullified
+    if (tobedestroyed) {
+        tobedestroyed->pcNameInDocument = nullptr;
     }
+
+    // Erase last to avoid invalidating pcObject->pcNameInDocument 
+    // when it is still needed in Transaction::addObjectNew
+    d->objectMap.erase(pos);
 }
 
 void Document::breakDependency(DocumentObject* pcObject, const bool clear) // NOLINT

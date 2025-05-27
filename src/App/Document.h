@@ -45,18 +45,8 @@ namespace Base
 class Writer;
 }
 
-namespace App
+namespace App 
 {
-class TransactionalObject;
-class DocumentObject;
-class DocumentObjectExecReturn;
-class Document;
-class DocumentPy;
-class Application;
-class Transaction;
-class StringHasher;
-using StringHasherRef = Base::Reference<StringHasher>;
-
 enum class AddObjectOption
 {
     none = 0,
@@ -68,6 +58,31 @@ enum class AddObjectOption
 };
 using AddObjectOptions = Base::Flags<AddObjectOption>;
 
+enum class RemoveObjectOption
+{
+    none = 0,
+    mayRemoveWhileRecomputing = 1, 
+    mayDestroyOutOfTransaction = 2,
+    destroyOnRollback = 4, 
+    preserveChildrenVisibility = 8
+};
+using RemoveObjectOptions = Base::Flags<RemoveObjectOption>;
+
+}
+ENABLE_BITMASK_OPERATORS(App::AddObjectOption)
+ENABLE_BITMASK_OPERATORS(App::RemoveObjectOption)
+
+namespace App
+{
+class TransactionalObject;
+class DocumentObject;
+class DocumentObjectExecReturn;
+class Document;
+class DocumentPy;
+class Application;
+class Transaction;
+class StringHasher;
+using StringHasherRef = Base::Reference<StringHasher>;
 
 /**
  * @brief The document class
@@ -640,7 +655,7 @@ protected:
     /// Construction
     explicit Document(const char* documentName = "");
 
-    void _removeObject(DocumentObject* pcObject);
+    void _removeObject(DocumentObject* pcObject, RemoveObjectOptions options = RemoveObjectOption::destroyOnRollback | RemoveObjectOption::preserveChildrenVisibility);
     void _addObject(DocumentObject* pcObject, const char* pObjectName, AddObjectOptions options = AddObjectOption::activateObject, const char* viewType = nullptr);
     /// checks if a valid transaction is open
     void _checkTransaction(DocumentObject* pcDelObj, const Property* What, int line);
@@ -727,7 +742,5 @@ T* Document::addObject(const char* pObjectName, bool isNew, const char* viewType
 }
 
 }  // namespace App
-
-ENABLE_BITMASK_OPERATORS(App::AddObjectOption)
 
 #endif  // SRC_APP_DOCUMENT_H_
