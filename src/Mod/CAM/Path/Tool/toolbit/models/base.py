@@ -90,6 +90,49 @@ class ToolBit(Asset, ABC):
         raise ValueError(f"No ToolBit subclass found for shape {type(shape).__name__}")
 
     @classmethod
+    def _get_shape_type(cls, shape_id: str, shape_type: str | None) -> Type[ToolBitShape]:
+        """
+        Extracts the shape class from the attributes dictionary.
+        """
+        # Best method: if the shape-type is specified, use that.
+        if shape_type:
+            return ToolBitShape.get_subclass_by_name(shape_type)
+
+        # If no shape type is specified, try to find the shape class from the ID.
+        shape_class = ToolBitShape.get_subclass_by_name(shape_id)
+        if shape_class:
+            return shape_class
+
+        # If that also fails, try to load the shape to get the class.
+        Path.Log.debug(
+            f'Failed to infer shape type from "{shape_id}", trying to load'
+            f' the shape "{shape_id}" to determine the class. This may'
+            " negatively impact performance."
+        )
+        shape_asset_uri = ToolBitShape.resolve_name(shape_id)
+        shape = cam_assets.get(shape_asset_uri, depth=0)
+        if shape:
+            return shape.__class__
+
+        # If all else fails, try to guess the shape class from the ID.
+        shape_types = [c.name for c in ToolBitShape.__subclasses__()]
+        shape_class = ToolBitShape.guess_subclass_from_name(shape_id)
+        if shape_class:
+            Path.Log.warning(
+                f'Failed to infer shape type from "{shape_id}",'
+                f' guessing "{shape_class.name}".'
+                f" To fix, name the body in the shape file to one of: {shape_types}"
+            )
+            return shape_class
+
+        # Default to endmill if nothing else works
+        Path.Log.warning(
+            f'Failed to infer shape type from {shape_id}, using "endmill".'
+            f" To fix, name the body in the shape file to one of: {shape_types}"
+        )
+        return ToolBitShapeEndmill
+
+    @classmethod
     def from_dict(cls, attrs: Mapping, shallow: bool = False) -> "ToolBit":
         """
         Creates and populates a ToolBit instance from a dictionary.
@@ -101,51 +144,28 @@ class ToolBit(Asset, ABC):
         if not shape_id:
             raise ValueError("ToolBit dictionary is missing 'shape' key")
 
-        # Find the shape type.
-        shape_types = [c.name for c in ToolBitShape.__subclasses__()]
-        shape_type = attrs.get("shape-type")
-        shape_class = None
-        if shape_type is None:
-            shape_class = ToolBitShape.get_subclass_by_name(shape_id)
-            if not shape_class:
-                shape_class = ToolBitShape.guess_subclass_from_name(shape_id)
-                if shape_class:
-                    Path.Log.warning(
-                        f"failed to infer shape type from {shape_id},"
-                        f' guessing "{shape_class.name}". To fix, name'
-                        f" the body in the shape file to one of: {shape_types}"
-                    )
-                else:
-                    Path.Log.warning(
-                        f"failed to infer shape type from {shape_id},"
-                        f' using "endmill". To fix, name'
-                        f" the body in the shape file to one of: {shape_types}"
-                    )
-                    shape_class = ToolBitShapeEndmill
-            shape_type = shape_class.name
+        shape_class = cls._get_shape_type(shape_id, attrs.get("shape-type"))
 
-        # Try to load the shape, if the asset exists.
-        tool_bit_shape = None
+        # Create a ToolBitShape instance.
         if not shallow:  # Shallow means: skip loading of child assets
             shape_asset_uri = ToolBitShape.resolve_name(shape_id)
             try:
                 tool_bit_shape = cast(ToolBitShape, cam_assets.get(shape_asset_uri))
             except FileNotFoundError:
-                pass  # Rely on the fallback below
                 Path.Log.debug(f"ToolBit.from_dict: Shape asset {shape_asset_uri} not found.")
+                # Rely on the fallback below
+            else:
+                return cls.from_shape(tool_bit_shape, attrs, id=attrs.get("id"))
 
-        # If it does not exist, create a new instance from scratch.
+        # Ending up here means we either could not load the shape asset,
+        # or we are in shallow mode and do not want to load it.
+        # Create a shape instance from scratch as a "placeholder".
         params = attrs.get("parameter", {})
-        if tool_bit_shape is None:
-            if not shape_class:
-                shape_class = ToolBitShape.get_subclass_by_name(shape_type)
-            if not shape_class:
-                raise ValueError(f"failed to get shape class from {shape_id}")
-            tool_bit_shape = shape_class(shape_id, **params)
-            Path.Log.debug(
-                f"ToolBit.from_dict: created shape instance {tool_bit_shape.name}"
-                f" from {shape_id}. Uri: {tool_bit_shape.get_uri()}"
-            )
+        tool_bit_shape = shape_class(shape_id, **params)
+        Path.Log.debug(
+            f"ToolBit.from_dict: created shape instance {tool_bit_shape.name}"
+            f" from {shape_id}. Uri: {tool_bit_shape.get_uri()}"
+        )
 
         # Now that we have a shape, create the toolbit instance.
         return cls.from_shape(tool_bit_shape, attrs, id=attrs.get("id"))

@@ -287,7 +287,7 @@ class ToolBitShape(Asset):
             try:
                 shape_class = ToolBitShape.get_shape_class_from_bytes(data)
             except Exception as e:
-                Path.Log.warning(f"{id}: Failed to determine shape class from bytes: {e}")
+                Path.Log.debug(f"{id}: Failed to determine shape class from bytes: {e}")
                 shape_types = [c.name for c in ToolBitShape.__subclasses__()]
                 shape_class = ToolBitShape.guess_subclass_from_name(id)
                 if shape_class:

@@ -21,6 +21,7 @@
 # ***************************************************************************
 
 import FreeCAD
+import Path
 import Path.Base.Util as PathUtil
 from typing import Dict, List, Any, Optional
 import tempfile
@@ -76,9 +77,9 @@ def get_object_properties(
             properties[name] = getattr(obj, name)
         else:
             # Log a warning if a parameter expected by the shape class is missing
-            FreeCAD.Console.PrintWarning(
+            Path.Log.debug(
                 f"Parameter '{name}' not found on object '{obj.Label}' "
-                f"({obj.Name}). Default value will be used by the shape class.\n"
+                f"({obj.Name}). Default value will be used by the shape class."
             )
             properties[name] = None  # Indicate missing value
     return properties
@@ -99,13 +100,13 @@ def update_shape_object_properties(
             try:
                 PathUtil.setProperty(obj, name, value)
             except Exception as e:
-                FreeCAD.Console.PrintWarning(
+                Path.Log.warning(
                     f"Failed to set property '{name}' on object '{obj.Label}'"
-                    f" ({obj.Name}) with value '{value}': {e}\n"
+                    f" ({obj.Name}) with value '{value}': {e}"
                 )
         else:
-            FreeCAD.Console.PrintWarning(
-                f"Property '{name}' not found on object '{obj.Label}'" f" ({obj.Name}). Skipping.\n"
+            Path.Log.warning(
+                f"Property '{name}' not found on object '{obj.Label}' ({obj.Name}). Skipping."
             )
 
 
@@ -184,6 +185,4 @@ class ShapeDocFromBytes:
             try:
                 os.remove(self._temp_file)
             except Exception as e:
-                FreeCAD.Console.PrintWarning(
-                    f"Failed to remove temporary file {self._temp_file}: {e}\n"
-                )
+                Path.Log.warning(f"Failed to remove temporary file {self._temp_file}: {e}")
