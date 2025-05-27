@@ -66,7 +66,6 @@ class ShapeSelector:
     def update_shapes(self):
         # Retrieve each shape asset
         builtin = cam_assets.fetch(asset_type="toolbitshape", store="builtin")
-        print(cam_assets.list_assets(asset_type="toolbitshape", store="builtin"))
         builtin = {c.id: c for c in builtin}
         custom = cam_assets.fetch(asset_type="toolbitshape", store="local")
         for shape in custom:
