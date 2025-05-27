@@ -236,6 +236,7 @@ class ViewProviderLabel(ViewProviderDraftAnnotation):
 
     def updateData(self, obj, prop):
         """Execute when a property from the Proxy class is changed."""
+        vobj = obj.ViewObject
         if prop == "Points":
             n_points = len(obj.Points)
             if n_points >= 2:
@@ -246,12 +247,23 @@ class ViewProviderLabel(ViewProviderDraftAnnotation):
                                                range(n_points))
                 self.onChanged(obj.ViewObject, "ArrowType")
 
-            if obj.StraightDistance > 0.0 and obj.StraightDirection == "Horizontal":
-                if obj.ViewObject.Justification == "Left":
-                    obj.ViewObject.Justification = "Right"
+            # When initially called (on doc open) properties of vobj are not yet available.
+            # This function is however triggered again from update_label.
+            if getattr(vobj, "Justification", "") == "Center" and obj.StraightDistance != 0.0 and obj.StraightDirection != "Custom":
+                if obj.StraightDirection != "Vertical":
+                    obj.StraightDirection = "Vertical"
+                if not hasattr(vobj, "TextAlignment"):
+                    pass
+                elif obj.StraightDistance > 0.0 and vobj.TextAlignment != "Top":
+                    vobj.TextAlignment = "Top"
+                elif obj.StraightDistance < 0.0 and vobj.TextAlignment != "Bottom":
+                    vobj.TextAlignment = "Bottom"
+            elif obj.StraightDistance > 0.0 and obj.StraightDirection == "Horizontal":
+                if vobj.Justification == "Left":
+                    vobj.Justification = "Right"
             elif obj.StraightDistance < 0.0 and obj.StraightDirection == "Horizontal":
-                if obj.ViewObject.Justification == "Right":
-                    obj.ViewObject.Justification = "Left"
+                if vobj.Justification == "Right":
+                    vobj.Justification = "Left"
 
             self.onChanged(obj.ViewObject, "DisplayMode") # Property to trigger update_label and update_frame.
                                                           # We could have used a different property.
@@ -377,6 +389,14 @@ class ViewProviderLabel(ViewProviderDraftAnnotation):
         else:
             self.text_wld.justification = coin.SoAsciiText.CENTER
             self.text_scr.justification = coin.SoText2.CENTER
+            if obj.StraightDistance != 0.0 and obj.StraightDirection != "Custom":
+                if obj.StraightDirection != "Vertical":
+                    obj.StraightDirection = "Vertical"
+                if (obj.StraightDistance < 0.0 and vobj.TextAlignment == "Top") \
+                        or (obj.StraightDistance > 0.0 and vobj.TextAlignment == "Bottom"):
+                    obj.StraightDistance = -obj.StraightDistance
+                obj.recompute()
+                obj.purgeTouched()
 
         if vobj.DisplayMode == "Screen":
             self.textpos.translation.setValue(obj.Placement.Base)
@@ -402,6 +422,9 @@ class ViewProviderLabel(ViewProviderDraftAnnotation):
             v = App.Vector(margin, 0, 0)
         elif vobj.Justification == "Right":
             v = App.Vector(-margin, 0, 0)
+        elif vobj.TextAlignment == "Bottom" and vobj.Frame == "None":
+            # Justification is "Center"
+            v = App.Vector(0, margin, 0)
         else:
             v = App.Vector(0, 0, 0)
 
