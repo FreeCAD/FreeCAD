@@ -811,7 +811,7 @@ class ViewProviderBuildingPart:
         if FreeCADGui.activeWorkbench().name() != 'BIMWorkbench':
             return
         if (not hasattr(vobj,"DoubleClickActivates")) or vobj.DoubleClickActivates:
-            menuTxt = translate("Arch", "Activate")
+            menuTxt = translate("Arch", "Active")
             actionActivate = QtGui.QAction(menuTxt, menu)
             actionActivate.setCheckable(True)
             if FreeCADGui.ActiveDocument.ActiveView.getActiveObject("Arch") == self.Object:

@@ -1118,8 +1118,8 @@ def toggle_working_plane(obj, action=None, restore=False, dialog=None):
             obj.ViewObject.Proxy.setWorkingPlane(restore=True)
         if action:
             action.setChecked(False)
-        if dialog and hasattr(dialog, "buttonActivate"):
-            dialog.buttonActivate.setChecked(False)
+        if dialog and hasattr(dialog, "buttonActive"):
+            dialog.buttonActive.setChecked(False)
         return False
     else:
         # Activate the object
@@ -1129,8 +1129,8 @@ def toggle_working_plane(obj, action=None, restore=False, dialog=None):
             obj.ViewObject.Proxy.setWorkingPlane()
         if action:
             action.setChecked(True)
-        if dialog and hasattr(dialog, "buttonActivate"):
-            dialog.buttonActivate.setChecked(True)
+        if dialog and hasattr(dialog, "buttonActive"):
+            dialog.buttonActive.setChecked(True)
         return True
 
 ## @}

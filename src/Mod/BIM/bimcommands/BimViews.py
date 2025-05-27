@@ -86,7 +86,7 @@ class BIM_Views:
 
             # set button
             self.dialog.menu = QtGui.QMenu()
-            for button in [("Activate", translate("BIM","Activate (default)")),
+            for button in [("Active", translate("BIM","Active (default)")),
                             ("AddLevel", translate("BIM","Add level")),
                             ("AddProxy", translate("BIM","Add proxy")),
                             ("Delete", translate("BIM","Delete")),
@@ -97,7 +97,7 @@ class BIM_Views:
                 action = QtGui.QAction(button[1])
 
                 # Make the "Activate" button bold, as this is the default one
-                if button[0] == "Activate":
+                if button[0] == "Active":
                     font = action.font()
                     font.setBold(True)
                     action.setFont(font)
@@ -125,7 +125,7 @@ class BIM_Views:
             self.dialog.buttonIsolate.setToolTip(translate("BIM","Turns all items off except the selected ones"))
             self.dialog.buttonSaveView.setToolTip(translate("BIM","Saves the current camera position to the selected items"))
             self.dialog.buttonRename.setToolTip(translate("BIM","Renames the selected item"))
-            self.dialog.buttonActivate.setToolTip(translate("BIM","Activates the selected item"))
+            self.dialog.buttonActive.setToolTip(translate("BIM","Activates the selected item"))
 
             # connect signals
             self.dialog.buttonAddLevel.triggered.connect(self.addLevel)
@@ -135,7 +135,7 @@ class BIM_Views:
             self.dialog.buttonIsolate.triggered.connect(self.isolate)
             self.dialog.buttonSaveView.triggered.connect(self.saveView)
             self.dialog.buttonRename.triggered.connect(self.rename)
-            self.dialog.buttonActivate.triggered.connect(lambda: BIM_Views.activate(self.dialog))
+            self.dialog.buttonActive.triggered.connect(lambda: BIM_Views.activate(self.dialog))
             self.dialog.tree.itemClicked.connect(self.select)
             self.dialog.tree.itemDoubleClicked.connect(show)
             self.dialog.viewtree.itemDoubleClicked.connect(show)
@@ -567,9 +567,9 @@ class BIM_Views:
                 if Draft.getType(selobj).startswith("Ifc"):
                     self.dialog.buttonAddProxy.setEnabled(False)
                 if FreeCADGui.ActiveDocument.ActiveView.getActiveObject("Arch") == selobj:
-                    self.dialog.buttonActivate.setChecked(True)
+                    self.dialog.buttonActive.setChecked(True)
                 else:
-                    self.dialog.buttonActivate.setChecked(False)
+                    self.dialog.buttonActive.setChecked(False)
         self.dialog.menu.exec_(self.dialog.tree.mapToGlobal(pos))
 
     def getViews(self):
