@@ -793,6 +793,9 @@ private:
                 hints.push_back(
                     InputHint(QCoreApplication::translate("Sketcher", "%1 right-click to finish"),
                               {UserInput::MouseRight}));
+
+                hints.push_back(InputHint(QCoreApplication::translate("Sketcher", "%1 change mode"),
+                                          {UserInput::KeyM}));
                 break;
             default:
                 break;
