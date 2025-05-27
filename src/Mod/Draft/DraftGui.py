@@ -1155,6 +1155,10 @@ class DraftToolBar:
             if hasattr(FreeCADGui,"Snapper"):
                 FreeCADGui.Snapper.addHoldPoint()
             spec = True
+        elif txt == _get_incmd_shortcut("Recenter"):
+            if hasattr(FreeCADGui,"Snapper"):
+                FreeCADGui.Snapper.recenter_workingplane()
+            spec = True
         elif txt == _get_incmd_shortcut("Snap"):
             self.togglesnap()
             spec = True
