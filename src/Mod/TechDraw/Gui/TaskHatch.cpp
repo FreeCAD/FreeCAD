@@ -186,7 +186,8 @@ void TaskHatch::apply(bool forceUpdate)
     if (m_dvp) {
         //only need requestPaint to hatch the face
         //need a recompute in order to claimChildren in tree
-        m_dvp->recomputeFeature();
+        m_dvp->touch();
+        m_dvp->getDocument()->recompute();
     }
 }
 

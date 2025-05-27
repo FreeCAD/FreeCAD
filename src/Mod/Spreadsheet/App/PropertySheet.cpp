@@ -1368,11 +1368,8 @@ void PropertySheet::addDependencies(CellAddress key)
     for (auto& var : expression->getIdentifiers()) {
         for (auto& dep : var.first.getDep(true)) {
             App::DocumentObject* docObj = dep.first;
-            App::Document* doc = docObj->getDocument();
 
             std::string docObjName = docObj->getFullName();
-
-            owner->observeDocument(doc);
 
             documentObjectToCellMap[docObjName].insert(key);
             cellToDocumentObjectMap[key].insert(docObjName);
@@ -1447,7 +1444,6 @@ void PropertySheet::removeDependencies(CellAddress key)
             std::map<std::string, std::set<CellAddress>>::iterator k =
                 documentObjectToCellMap.find(*j);
 
-            // assert(k != documentObjectToCellMap.end());
             if (k != documentObjectToCellMap.end()) {
                 k->second.erase(key);
 
@@ -1579,6 +1575,17 @@ void PropertySheet::onRelabeledDocument(const App::Document& doc)
     for (auto& c : data) {
         c.second->visit(v);
     }
+}
+
+void PropertySheet::onRenameDynamicProperty(const App::Property& prop, const char* oldName)
+{
+    ObjectIdentifier oldNameId = ObjectIdentifier(prop.getContainer(), std::string(oldName));
+    ObjectIdentifier newNameId = ObjectIdentifier(prop);
+    const std::map<ObjectIdentifier, ObjectIdentifier> paths = {
+        {oldNameId, newNameId},
+    };
+
+    renameObjectIdentifiers(paths);
 }
 
 void PropertySheet::renameObjectIdentifiers(

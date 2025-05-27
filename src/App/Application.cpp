@@ -3771,6 +3771,18 @@ void Application::getVerboseCommonInfo(QTextStream& str, const std::map<std::str
             << " (" << loc.name() << ") ]";
     }
     str << "\n";
+
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
+
+    const QString navStyle = QString::fromStdString(hGrp->GetASCII("NavigationStyle", "Gui::CADNavigationStyle")).remove(0, 5).chopped(15);
+    const QString orbitStyle = QStringLiteral("Turntable,Trackball,Free Turntable,Trackball Classic,Rounded Arcball")
+                               .split(QLatin1Char(','))
+                               .at(hGrp->GetInt("OrbitStyle", 4));
+    const QString rotMode = QStringLiteral("Window center,Drag at cursor,Object center")
+                            .split(QLatin1Char(','))
+                            .at(hGrp->GetInt("RotationMode", 0));
+
+    str << QStringLiteral("Navigation Style/Orbit Style/Rotation Mode: %1/%2/%3\n").arg(navStyle, orbitStyle, rotMode);
 }
 
 void Application::getVerboseAddOnsInfo(QTextStream& str, const std::map<std::string,std::string>& mConfig) {

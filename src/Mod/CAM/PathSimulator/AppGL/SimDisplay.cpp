@@ -508,11 +508,11 @@ void SimDisplay::MoveEye(float x, float z)
 {
     // Exponential calculate maxValue
     // https://forum.freecad.org/viewtopic.php?t=96939
-    const float arg1 = 124.938;
-    const float arg2 = 578.754;
-    const float arg3 = -20.7993;
+    const float arg1 = 124.938F;
+    const float arg2 = 578.754F;
+    const float arg3 = -20.7993F;
     float maxValueX = arg1 + arg2 * exp(arg3 * mEyeDistFactor);
-    float maxValueZ = maxValueX * 0.4;
+    float maxValueZ = maxValueX * 0.4F;
 
     mEyeX += x;
     if (mEyeX > maxValueX) {
@@ -530,6 +530,15 @@ void SimDisplay::MoveEye(float x, float z)
         mEyeZ = -maxValueZ;
     }
     updateDisplay = true;
+}
+
+void SimDisplay::MoveEyeCenter()
+{
+    mEyeRoration = 0;
+    mEyeInclination = PI / 6;
+    mEyeX = 0;
+    mEyeZ = 0;
+    UpdateEyeFactor(0.1f);
 }
 
 void SimDisplay::UpdateEyeFactor(float factor)

@@ -381,15 +381,15 @@ class recycler:
                 self.rgbs[key] = c
             return c
 
-    def createIfcSurfaceStyleRendering(self,col,trans=0):
-        key = (col.Red,col.Green,col.Blue,trans)
+    def createIfcSurfaceStyleRendering(self,col,alpha=1):
+        key = (col.Red,col.Green,col.Blue,alpha)
         if self.compress and key in self.ssrenderings:
             self.spared += 1
             return self.ssrenderings[key]
         else:
-            if trans == 0:
-                trans = None
-            c = self.ifcfile.createIfcSurfaceStyleRendering(col,trans,None,None,None,None,None,None,"FLAT")
+            if alpha == 1:
+                alpha = None
+            c = self.ifcfile.createIfcSurfaceStyleRendering(col,alpha,None,None,None,None,None,None,"FLAT")
             if self.compress:
                 self.ssrenderings[key] = c
             return c
@@ -405,7 +405,7 @@ class recycler:
                 self.transformationoperators[key] = c
             return c
 
-    def createIfcSurfaceStyle(self,name,r,g,b,t=0):
+    def createIfcSurfaceStyle(self,name,r,g,b,a=1):
         if name:
             key = name + str((r,g,b))
         else:
@@ -415,22 +415,22 @@ class recycler:
             return self.sstyles[key]
         else:
             col = self.createIfcColourRgb(r,g,b)
-            ssr = self.createIfcSurfaceStyleRendering(col,t)
+            ssr = self.createIfcSurfaceStyleRendering(col,a)
             c = self.ifcfile.createIfcSurfaceStyle(name,"BOTH",[ssr])
             if self.compress:
                 self.sstyles[key] = c
             return c
 
-    def createIfcPresentationStyleAssignment(self,name,r,g,b,t=0,ifc4=False):
+    def createIfcPresentationStyleAssignment(self,name,r,g,b,a=1,ifc4=False):
         if name:
-            key = name+str((r,g,b,t))
+            key = name+str((r,g,b,a))
         else:
-            key = str((r,g,b,t))
+            key = str((r,g,b,a))
         if self.compress and key in self.psas:
             self.spared += 1
             return self.psas[key]
         else:
-            iss = self.createIfcSurfaceStyle(name,r,g,b,t)
+            iss = self.createIfcSurfaceStyle(name,r,g,b,a)
             if ifc4:
                 c = iss
             else:

@@ -108,7 +108,7 @@ def _find_compatible_module():
             # use a single folder as path and try to load vtk
             sys.path = [folder]
             if vtk_module_compatible():
-                # we do still unload, to let the user descide if he wants to use it
+                # we do still unload, to let the user decide if they want to use it
                 _unload_vtk_modules()
                 sys.path = path
                 return folder

@@ -273,14 +273,6 @@ class TopoShape(ComplexGeoData):
         ...
 
     @constmethod
-    def oldFuse(self, tool: TopoShape) -> TopoShape:
-        """
-        Union of this and a given topo shape (old algorithm).
-        oldFuse(tool) -> Shape
-        """
-        ...
-
-    @constmethod
     def common(self, tools: Tuple[TopoShape, ...], tolerance: float = 0.0) -> TopoShape:
         """
         Intersection of this and a given (list of) topo shape.

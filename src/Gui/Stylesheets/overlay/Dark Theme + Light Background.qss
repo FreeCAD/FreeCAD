@@ -1,6 +1,8 @@
-QFrame {
+Gui--DockWnd--ReportOutput,
+Gui--TaskView--TaskView {
   border: none;
 }
+
  QTabWidget::pane{
   background-color: transparent;
    border: transparent;

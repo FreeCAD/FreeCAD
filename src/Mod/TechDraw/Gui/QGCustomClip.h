@@ -31,6 +31,8 @@
 
 #include <Base/Vector3D.h>
 
+#include "QGIUserTypes.h"
+
 QT_BEGIN_NAMESPACE
 class QPainter;
 class QStyleOptionGraphicsItem;
@@ -45,7 +47,7 @@ public:
     explicit QGCustomClip();
     ~QGCustomClip() override {}
 
-    enum {Type = QGraphicsItem::UserType + 132};
+    enum {Type = UserType::QGCustomClip};
     int type() const override { return Type;}
     QRectF boundingRect() const override;
 

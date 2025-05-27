@@ -31,6 +31,8 @@
 #include <QBrush>
 #include <QPen>
 
+#include "QGIUserTypes.h"
+
 
 QT_BEGIN_NAMESPACE
 class QPainter;
@@ -47,7 +49,7 @@ public:
     explicit QGIMatting();
     ~QGIMatting() override {}
 
-    enum {Type = QGraphicsItem::UserType + 205};
+    enum {Type = UserType::QGIMatting};
     int type() const override { return Type;}
 
     void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = nullptr ) override;

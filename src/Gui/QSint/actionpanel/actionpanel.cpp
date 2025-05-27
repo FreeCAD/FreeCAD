@@ -29,11 +29,18 @@ ActionPanel::ActionPanel(QWidget *parent) :
 
 void ActionPanel::setScheme(ActionPanelScheme *scheme)
 {
-    if (!scheme) return;
-
+    if (!scheme) {
+        return;
+    }
     myScheme = scheme;
-    setStyleSheet(myScheme->actionStyle);
-
+    // set scheme for children
+    QObjectList list(children());
+    Q_FOREACH(QObject *obj, list) {
+      if (dynamic_cast<ActionGroup*>(obj)) {
+        ((ActionGroup*)obj)->setScheme(scheme);
+        continue;
+      }
+    }
     update();
 }
 

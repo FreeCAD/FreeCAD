@@ -71,7 +71,7 @@ class PostGlyphFilter(base_fempythonobject.BaseFemPythonObject):
                 name="Glyph",
                 group="Glyph",
                 doc="The form of the glyph",
-                value=["Arrow", "Cube"],
+                value=["Arrow", "Cone", "Cube", "Cylinder", "Line", "Sphere"],
             ),
             _PropHelper(
                 type="App::PropertyEnumeration",
@@ -91,7 +91,7 @@ class PostGlyphFilter(base_fempythonobject.BaseFemPythonObject):
                 type="App::PropertyEnumeration",
                 name="VectorScaleMode",
                 group="Scale",
-                doc="If the scale data is a vector this property decides if the glyph is scaled by vector magnitude or by the individual components",
+                doc="If the scale data is a vector, this property decides if the glyph is scaled by vector magnitude or by the individual components",
                 value=["Not a vector"],
             ),
             _PropHelper(
@@ -186,7 +186,14 @@ class PostGlyphFilter(base_fempythonobject.BaseFemPythonObject):
         self._algorithms = {}
 
         # create all vtkalgorithm combinations and set them as filter pipeline
-        sources = {"Arrow": vtkSources.vtkArrowSource, "Cube": vtkSources.vtkCubeSource}
+        sources = {
+            "Arrow": vtkSources.vtkArrowSource,
+            "Cone": vtkSources.vtkConeSource,
+            "Cube": vtkSources.vtkCubeSource,
+            "Cylinder": vtkSources.vtkCylinderSource,
+            "Line": vtkSources.vtkLineSource,
+            "Sphere": vtkSources.vtkSphereSource,
+        }
 
         for source_name in sources:
 

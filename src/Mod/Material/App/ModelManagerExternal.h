@@ -54,9 +54,9 @@ public:
     std::shared_ptr<std::list<std::shared_ptr<ModelLibrary>>> getLibraries();
     std::shared_ptr<ModelLibrary> getLibrary(const QString& name) const;
     void createLibrary(const QString& libraryName,
-                       const QString& icon,
+                       const QByteArray& icon,
                        bool readOnly = true);
-    std::shared_ptr<std::vector<std::tuple<QString, QString, QString>>>
+    std::shared_ptr<std::vector<LibraryObject>>
     libraryModels(const QString& libraryName);
 
     // Model management
@@ -73,6 +73,7 @@ public:
 
 private:
     static void initCache();
+    std::shared_ptr<Model> modelNotFound(const QString& uuid);
 
     static QMutex _mutex;
 

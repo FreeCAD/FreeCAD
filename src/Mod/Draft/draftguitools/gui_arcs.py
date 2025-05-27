@@ -61,7 +61,7 @@ class Arc(gui_base_original.Creator):
         return {"Pixmap": "Draft_Arc",
                 "Accel": "A, R",
                 "MenuText": QT_TRANSLATE_NOOP("Draft_Arc", "Arc"),
-                "ToolTip": QT_TRANSLATE_NOOP("Draft_Arc", "Creates a circular arc by a center point and a radius.\nCTRL to snap, SHIFT to constrain.")}
+                "ToolTip": QT_TRANSLATE_NOOP("Draft_Arc", "Creates a circular arc by a center point and a radius.\nSHIFT to constrain.")}
 
     def Activated(self):
         """Execute when the command is called."""
@@ -291,6 +291,36 @@ class Arc(gui_base_original.Creator):
                         self.step = 4
                         self.drawArc()
 
+        self.updateHints()
+
+    def getHints(self):
+        hint_global = Gui.InputHint(translate("draft", "%1 toggle global"), Gui.UserInput.KeyG)
+        hint_continue = Gui.InputHint(translate("draft", "%1 toggle continue"), Gui.UserInput.KeyN)
+
+        if self.step == 0:
+            return [
+                Gui.InputHint(translate("draft", "%1 pick center"), Gui.UserInput.MouseLeft),
+                hint_global,
+                hint_continue,
+            ]
+        elif self.step == 1:
+            return [
+                Gui.InputHint(translate("draft", "%1 pick radius"), Gui.UserInput.MouseLeft),
+                hint_continue,
+            ]
+        elif self.step == 2:
+            return [
+                Gui.InputHint(translate("draft", "%1 pick starting angle"), Gui.UserInput.MouseLeft),
+                hint_continue,
+            ]
+        elif self.step == 3:
+            return [
+                Gui.InputHint(translate("draft", "%1 pick aperture"), Gui.UserInput.MouseLeft),
+                hint_continue,
+            ]
+        else:
+            return []
+
     def drawArc(self):
         """Actually draw the arc object."""
         rot, sup, pts, fil = self.getStrings()
@@ -478,7 +508,7 @@ class Arc_3Points(gui_base.GuiCommandBase):
         return {"Pixmap": "Draft_Arc_3Points",
                 "Accel": "A, T",
                 "MenuText": QT_TRANSLATE_NOOP("Draft_Arc_3Points", "Arc by 3 points"),
-                "ToolTip": QT_TRANSLATE_NOOP("Draft_Arc_3Points", "Creates a circular arc by picking 3 points.\nCTRL to snap, SHIFT to constrain.")}
+                "ToolTip": QT_TRANSLATE_NOOP("Draft_Arc_3Points", "Creates a circular arc by 3 points.\nSHIFT to constrain.")}
 
     def Activated(self):
         """Execute when the command is called."""

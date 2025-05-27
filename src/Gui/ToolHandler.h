@@ -35,7 +35,7 @@
 namespace Gui
 {
 class View3DInventorViewer;
-
+struct InputHint;
 
 class GuiExport ToolHandler
 {
@@ -52,6 +52,9 @@ public:
     /// updates the actCursor with the icon by calling getCrosshairCursorSVGName(),
     /// enabling to set data member dependent icons (i.e. for different construction methods)
     void updateCursor();
+
+    virtual std::list<InputHint> getToolHints() const;
+    void updateHint() const;
 
 private:  // NVI
     virtual void preActivated()

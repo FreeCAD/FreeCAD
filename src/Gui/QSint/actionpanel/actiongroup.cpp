@@ -43,12 +43,21 @@ void ActionGroup::init(bool hasHeader)
 {
     m_foldStep = 0;
     myScheme = ActionPanelScheme::defaultScheme();
+    setBackgroundRole(QPalette::Button);
+    setAutoFillBackground(true);
 
     auto *layout = new QVBoxLayout(this);
     layout->setContentsMargins(0, 0, 0, 0);
     layout->setSpacing(0);
 
     layout->addWidget(myHeader);
+
+    auto *separator = new QFrame(this);
+    separator->setFrameShape(QFrame::HLine);
+    separator->setFrameShadow(QFrame::Raised);
+    separator->setFixedHeight(separatorHeight);
+    separator->setContentsMargins(8, 0, 8, 0);
+    layout->addWidget(separator);
 
     myGroup = new TaskGroup(this, hasHeader);
     layout->addWidget(myGroup);
@@ -58,6 +67,14 @@ void ActionGroup::init(bool hasHeader)
     myDummy->hide();
 
     connect(myHeader, &TaskHeader::activated, this, &ActionGroup::showHide);
+}
+
+void ActionGroup::setScheme(ActionPanelScheme *scheme)
+{
+    myScheme = scheme;
+    myHeader->setScheme(scheme);
+    myGroup->setScheme(scheme);
+    update();
 }
 
 QBoxLayout* ActionGroup::groupLayout()
@@ -122,14 +139,14 @@ void ActionGroup::processHide()
     {
         myDummy->hide();
         myHeader->setFold(false);
-        setFixedHeight(myHeader->height());
+        setFixedHeight(myHeader->height() + separatorHeight);
         setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
         return;
     }
 
     m_tempHeight -= m_foldDelta;
     myDummy->setFixedHeight(m_tempHeight);
-    setFixedHeight(myDummy->height() + myHeader->height());
+    setFixedHeight(myDummy->height() + myHeader->height() + separatorHeight);
 
     QTimer::singleShot(myScheme->groupFoldDelay, this, &ActionGroup::processHide);
 }
@@ -142,7 +159,7 @@ void ActionGroup::processShow()
         m_foldPixmap = QPixmap();
         myGroup->show();
         myHeader->setFold(true);
-        setFixedHeight(m_fullHeight + myHeader->height());
+        setFixedHeight(m_fullHeight + myHeader->height() + separatorHeight);
         setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
         setMaximumHeight(QWIDGETSIZE_MAX);
         return;
@@ -150,7 +167,7 @@ void ActionGroup::processShow()
 
     m_tempHeight += m_foldDelta;
     myDummy->setFixedHeight(m_tempHeight);
-    setFixedHeight(myDummy->height() + myHeader->height());
+    setFixedHeight(myDummy->height() + myHeader->height() + separatorHeight);
 
     QTimer::singleShot(myScheme->groupFoldDelay, this, &ActionGroup::processShow);
 }

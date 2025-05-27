@@ -74,6 +74,29 @@ public:
     {}
     ~DrawSketchHandlerPolygon() override = default;
 
+    std::list<Gui::InputHint> getToolHints() const override
+    {
+        using UserInput = Gui::InputHint::UserInput;
+
+        switch (state()) {
+            case SelectMode::SeekFirst:
+                return {
+                    {QWidget::tr("%1 pick polygon center"), {UserInput::MouseLeft}},
+                    {QWidget::tr("%1/%2 increase / decrease number of sides"),
+                     {UserInput::KeyU, UserInput::KeyJ}},
+                };
+            case SelectMode::SeekSecond:
+                return {
+                    {QWidget::tr("%1 pick rotation and size"), {UserInput::MouseMove}},
+                    {QWidget::tr("%1 confirm"), {UserInput::MouseLeft}},
+                    {QWidget::tr("%1/%2 increase / decrease number of sides"),
+                     {UserInput::KeyU, UserInput::KeyJ}},
+                };
+            default:
+                return {};
+        }
+    }
+
 private:
     void updateDataAndDrawToPosition(Base::Vector2d onSketchPos) override
     {
