@@ -9378,7 +9378,6 @@ CmdSketcherConstrainSymmetric::CmdSketcherConstrainSymmetric()
                            {SelVertex, SelVertex, SelEdgeOrAxis},
                            {SelVertex, SelRoot, SelVertex},
                            {SelVertex, SelVertex, SelVertexOrRoot},
-                           {SelVertex, SelVertex, SelVertex},
                            {SelRoot, SelVertex, SelVertex}};
 }
 
@@ -9665,8 +9664,7 @@ void CmdSketcherConstrainSymmetric::applyConstraint(std::vector<SelIdPair>& selS
         }
         case 14:// {SelVertex, SelRoot, SelVertex}
         case 15:// {SelVertex, SelVertex, SelVertexOrRoot}
-        case 16:// {SelVertex, SelVertex, SelVertex}
-        case 17:// {SelRoot, SelVertex, SelVertex}
+        case 16:// {SelRoot, SelVertex, SelVertex}
         {
             GeoId1 = selSeq.at(0).GeoId;
             GeoId2 = selSeq.at(1).GeoId;
