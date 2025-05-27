@@ -140,6 +140,7 @@ std::list<CCurve> MakePocketToolpath(
     const CArea& a,
     double tool_radius,
     double extra_offset,
+    double extra_offsetzz,
     double stepover,
     bool from_center,
     bool use_zig_zag,
@@ -151,6 +152,7 @@ std::list<CCurve> MakePocketToolpath(
     CAreaPocketParams params(
         tool_radius,
         extra_offset,
+        extra_offsetzz,
         stepover,
         from_center,
         use_zig_zag ? ZigZagPocketMode : SpiralPocketMode,
