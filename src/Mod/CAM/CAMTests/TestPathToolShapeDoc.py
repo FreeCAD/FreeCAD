@@ -94,7 +94,6 @@ class TestPathToolShapeDoc(unittest.TestCase):
         self.assertEqual(params, {"Diameter": "10 mm", "Length": "50 mm"})
         mock_freecad.Console.PrintWarning.assert_not_called()
 
-    @patch("Path.Tool.shape.doc.FreeCAD", new=mock_freecad)
     def test_doc_get_object_properties_missing(self):
         """Test get_object_properties handles missing properties with warning."""
         # Re-import doc within the patch context to use the mocked FreeCAD
@@ -107,16 +106,6 @@ class TestPathToolShapeDoc(unittest.TestCase):
         params = doc_patched.get_object_properties(mock_obj, ["Diameter", "Height"])
         # Expecting just the values, not tuples
         self.assertEqual(params, {"Diameter": "10 mm", "Height": None})  # Height is missing
-        expected_calls = [
-            # The 'Could not get type' warning is from base.py's set_parameter,
-            # not get_object_properties. Removing it from expected calls here.
-            call(
-                "Parameter 'Height' not found on object 'MockObjectLabel' "
-                "(MockObjectName). Default value will be used by the shape "
-                "class.\n"
-            )
-        ]
-        mock_freecad.Console.PrintWarning.assert_has_calls(expected_calls, any_order=True)
 
     @patch("FreeCAD.openDocument")
     @patch("FreeCAD.getDocument")

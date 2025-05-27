@@ -19,6 +19,8 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
+import json
+import pathlib
 from typing import Optional, Union, Sequence
 import Path
 from Path import Preferences
@@ -38,6 +40,37 @@ def ensure_library_assets_initialized(asset_manager: AssetManager, store_name: s
             asset_manager.add_file("toolbitlibrary", path)
 
 
+def ensure_toolbits_have_shape_type(asset_manager: AssetManager, store_name: str = "local"):
+    from .shape import ToolBitShape
+
+    toolbit_uris = asset_manager.list_assets(
+        asset_type="toolbit",
+        store=store_name,
+    )
+
+    for uri in toolbit_uris:
+        data = asset_manager.get_raw(uri, store=store_name)
+        attrs = json.loads(data)
+        if "shape-type" in attrs:
+            continue
+
+        shape_id = pathlib.Path(
+            str(attrs.get("shape", ""))
+        ).stem  # backward compatibility. used to be a filename
+        if not shape_id:
+            Path.Log.error(f"ToolBit {uri} missing shape ID")
+            continue
+
+        shape_class = ToolBitShape.get_shape_class_from_id(shape_id)
+        if not shape_class:
+            Path.Log.warning(f"Toolbit {uri} has no shape-type attribute, and failed to infer it")
+            continue
+        attrs["shape-type"] = shape_class.name
+        Path.Log.info(f"Migrating toolbit {uri}: Adding shape-type attribute '{shape_class.name}'")
+        data = json.dumps(attrs, sort_keys=True, indent=2).encode("utf-8")
+        asset_manager.add_raw("toolbit", uri.asset_id, data, store=store_name)
+
+
 def ensure_toolbit_assets_initialized(asset_manager: AssetManager, store_name: str = "local"):
     """
     Ensures the given store is initialized with built-in bits
@@ -48,6 +81,8 @@ def ensure_toolbit_assets_initialized(asset_manager: AssetManager, store_name: s
     if asset_manager.is_empty("toolbit", store=store_name):
         for path in builtin_toolbit_path.glob("*.fctb"):
             asset_manager.add_file("toolbit", path)
+
+    ensure_toolbits_have_shape_type(asset_manager, store_name)
 
 
 def ensure_toolbitshape_assets_initialized(asset_manager: AssetManager, store_name: str = "local"):
@@ -133,6 +168,14 @@ class CamAssetManager(AssetManager):
         self.register_store(user_asset_store)
         self.register_store(builtin_asset_store)
 
+    def setup(self):
+        try:
+            ensure_assets_initialized(cam_assets)
+        except Exception as e:
+            Path.Log.error(f"Failed to initialize CAM assets in {user_asset_store._base_dir}: {e}")
+        else:
+            Path.Log.debug(f"Using CAM assets in {user_asset_store._base_dir}")
+
     def get(
         self,
         uri: Union[AssetUri, str],
@@ -161,10 +204,4 @@ class CamAssetManager(AssetManager):
 # Set up the CAM asset manager.
 Path.Log.setLevel(Path.Log.Level.INFO, Path.Log.thisModule())
 cam_assets = CamAssetManager()
-try:
-    ensure_assets_initialized(cam_assets)
-except Exception as e:
-    Path.Log.error(f"Failed to initialize CAM assets in {user_asset_store._base_dir}: {e}")
-else:
-    Path.Log.debug(f"Using CAM assets in {user_asset_store._base_dir}")
 addToolPreferenceObserver(_on_asset_path_changed)

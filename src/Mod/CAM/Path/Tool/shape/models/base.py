@@ -128,6 +128,68 @@ class ToolBitShape(Asset):
         return shape_class
 
     @classmethod
+    def get_shape_class_from_id(
+        cls,
+        shape_id: str,
+        shape_type: str | None = None,
+        default: Type["ToolBitShape"] = None,
+    ) -> Type["ToolBitShape"]:
+        """
+        Extracts the shape class from the given ID and shape_type, retrieving it
+        from the asset manager if necessary.
+        """
+        # Best method: if the shape-type is specified, use that.
+        if shape_type:
+            return cls.get_subclass_by_name(shape_type)
+
+        # If no shape type is specified, try to find the shape class from the ID.
+        shape_class = cls.get_subclass_by_name(shape_id)
+        if shape_class:
+            return shape_class
+
+        # If that also fails, try to load the shape to get the class.
+        Path.Log.debug(
+            f'Failed to infer shape type from "{shape_id}", trying to load'
+            f' the shape "{shape_id}" to determine the class. This may'
+            " negatively impact performance."
+        )
+        shape_asset_uri = ToolBitShape.resolve_name(shape_id)
+        data = cam_assets.get_raw(shape_asset_uri)
+        if data:
+            try:
+                shape_class = ToolBitShape.get_shape_class_from_bytes(data)
+            except ValueError:
+                pass
+            else:
+                return shape_class
+
+        # Otherwise use the default, if we have one.
+        shape_types = [c.name for c in ToolBitShape.__subclasses__()]
+        if default is not None:
+            Path.Log.warning(
+                f'Failed to infer shape type from {shape_id}, using "{default.name}".'
+                f" To fix, name the body in the shape file to one of: {shape_types}"
+            )
+            return default
+
+        # If all else fails, try to guess the shape class from the ID.
+        shape_class = ToolBitShape.guess_subclass_from_name(shape_id)
+        if shape_class:
+            Path.Log.warning(
+                f'Failed to infer shape type from "{shape_id}",'
+                f' guessing "{shape_class.name}".'
+                f" To fix, name the body in the shape file to one of: {shape_types}"
+            )
+            return shape_class
+
+        # Default to endmill if nothing else works
+        Path.Log.warning(
+            f"Failed to infer shape type from {shape_id}."
+            f" To fix, name the body in the shape file to one of: {shape_types}"
+        )
+        return None
+
+    @classmethod
     def get_shape_class_from_bytes(cls, data: bytes) -> Type["ToolBitShape"]:
         """
         Identifies the ToolBitShape subclass from the raw bytes of an FCStd file

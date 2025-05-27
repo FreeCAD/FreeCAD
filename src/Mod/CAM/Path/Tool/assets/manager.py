@@ -46,6 +46,7 @@ from .cache import AssetCache, CacheKey
 
 
 logger = logging.getLogger(__name__)
+logging.basicConfig(level=logging.INFO)
 
 
 @dataclass
@@ -120,7 +121,7 @@ class AssetManager:
 
         asset_class = self._asset_classes.get(uri.asset_type)
         if not asset_class:
-            raise ValueError(f"No asset class registered for asset type: {asset_class}")
+            raise ValueError(f"No asset class registered for URI: {uri}")
 
         # Fetch the requested asset, trying each store in order
         raw_data = None

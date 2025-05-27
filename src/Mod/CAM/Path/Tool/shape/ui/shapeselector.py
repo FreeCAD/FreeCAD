@@ -19,7 +19,7 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-from typing import Optional, cast
+from typing import Optional
 import FreeCADGui
 from functools import partial
 from PySide import QtGui
@@ -65,11 +65,14 @@ class ShapeSelector:
 
     def update_shapes(self):
         # Retrieve each shape asset
-        shapes = set(cam_assets.fetch(asset_type="toolbitshape"))
-
-        builtin = set(s for s in shapes if cast(ToolBitShape, s).is_builtin)
-        self._add_shapes(self.form.standardTools, builtin)
-        self._add_shapes(self.form.customTools, shapes - builtin)
+        builtin = cam_assets.fetch(asset_type="toolbitshape", store="builtin")
+        print(cam_assets.list_assets(asset_type="toolbitshape", store="builtin"))
+        builtin = {c.id: c for c in builtin}
+        custom = cam_assets.fetch(asset_type="toolbitshape", store="local")
+        for shape in custom:
+            builtin.pop(shape.id, None)
+        self._add_shapes(self.form.standardTools, builtin.values())
+        self._add_shapes(self.form.customTools, custom)
 
     def on_shape_button_clicked(self, shape):
         self.shape = shape

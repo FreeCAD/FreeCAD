@@ -18,6 +18,7 @@ cam_assets.register_asset(ToolBitShape, DummyAssetSerializer)
 cam_assets.register_asset(ToolBitShapePngIcon, DummyAssetSerializer)
 cam_assets.register_asset(ToolBitShapeSvgIcon, DummyAssetSerializer)
 cam_assets.register_asset(Machine, DummyAssetSerializer)
+cam_assets.setup()
 
 # For backward compatibility with files saved before the toolbit rename
 # This makes the Path.Tool.toolbit.base module available as Path.Tool.Bit.

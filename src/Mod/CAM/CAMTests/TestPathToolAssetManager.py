@@ -156,7 +156,7 @@ class TestPathToolAssetManager(unittest.TestCase):
 
             with self.assertRaises(ValueError) as cm:
                 manager.get(non_registered_uri)
-            self.assertIn("No asset class registered for asset type:", str(cm.exception))
+            self.assertIn("No asset class registered for URI:", str(cm.exception))
 
     def test_delete(self):
         # Setup AssetManager with a real LocalStore
@@ -428,7 +428,7 @@ class TestPathToolAssetManager(unittest.TestCase):
         # This should raise ValueError because uri3 has an unregistered type
         with self.assertRaises(ValueError) as cm:
             manager.fetch(store="memory_fetch")
-        self.assertIn("No asset class registered for asset type:", str(cm.exception))
+        self.assertIn("No asset class registered for URI:", str(cm.exception))
 
         # Now test fetching with a registered asset type filter
         # Setup a new manager and store to avoid state from previous test
