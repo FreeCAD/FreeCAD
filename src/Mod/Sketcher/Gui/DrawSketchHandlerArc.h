@@ -28,7 +28,8 @@
 #include <Gui/BitmapFactory.h>
 #include <Gui/Notifications.h>
 #include <Gui/CommandT.h>
-
+#include <Gui/MainWindow.h>
+#include <Gui/InputHint.h>
 #include <Mod/Part/App/Geometry2d.h>
 
 #include <Mod/Sketcher/App/SketchObject.h>
@@ -84,8 +85,63 @@ public:
     ~DrawSketchHandlerArc() override = default;
 
 private:
+    void updateHints() const
+    {
+        using Gui::InputHint;
+        using UserInput = Gui::InputHint::UserInput;
+
+        std::list<InputHint> hints;
+
+        if (constructionMethod() == ConstructionMethod::Center) {
+            switch (state()) {
+                case SelectMode::SeekFirst:
+                    hints.push_back(
+                        InputHint(QCoreApplication::translate("Sketcher", "%1 pick arc center"),
+                                  {UserInput::MouseLeft}));
+                    break;
+                case SelectMode::SeekSecond:
+                    hints.push_back(InputHint(
+                        QCoreApplication::translate("Sketcher", "%1 pick arc start point"),
+                        {UserInput::MouseLeft}));
+                    break;
+                case SelectMode::SeekThird:
+                    hints.push_back(
+                        InputHint(QCoreApplication::translate("Sketcher", "%1 pick arc end point"),
+                                  {UserInput::MouseLeft}));
+                    break;
+                default:
+                    break;
+            }
+        }
+        else if (constructionMethod() == ConstructionMethod::ThreeRim) {
+            switch (state()) {
+                case SelectMode::SeekFirst:
+                    hints.push_back(InputHint(
+                        QCoreApplication::translate("Sketcher", "%1 pick first arc point"),
+                        {UserInput::MouseLeft}));
+                    break;
+                case SelectMode::SeekSecond:
+                    hints.push_back(InputHint(
+                        QCoreApplication::translate("Sketcher", "%1 pick second arc point"),
+                        {UserInput::MouseLeft}));
+                    break;
+                case SelectMode::SeekThird:
+                    hints.push_back(InputHint(
+                        QCoreApplication::translate("Sketcher", "%1 pick third arc point"),
+                        {UserInput::MouseLeft}));
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        Gui::getMainWindow()->showHints(hints);
+    }
+
     void updateDataAndDrawToPosition(Base::Vector2d onSketchPos) override
     {
+        updateHints();
+
         switch (state()) {
             case SelectMode::SeekFirst: {
                 toolWidgetManager.drawPositionAtCursor(onSketchPos);
