@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>TaskSpreadsheetView</class>
+ <widget class="QWidget" name="TaskSpreadsheetView">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>380</width>
+    <height>350</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Spreadsheet View Parameters</string>
+  </property>
+  <layout class="QGridLayout" name="verticalLayout_Main">
+   <item row="0" column="0">
+    <widget class="QLabel" name="label_StartCell">
+     <property name="text">
+      <string>Range:</string>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="1">
+    <widget class="QLineEdit" name="lineEdit_StartCell">
+     <property name="toolTip">
+      <string>Enter the top-left cell of the range (e.g., A1)</string>
+     </property>
+     <property name="placeholderText">
+      <string>A1</string>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="2">
+    <widget class="QLabel" name="label_EndCell">
+     <property name="text">
+      <string> to </string>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="3">
+    <widget class="QLineEdit" name="lineEdit_EndCell">
+     <property name="toolTip">
+      <string>Enter the bottom-right cell of the range (e.g., B2)</string>
+     </property>
+     <property name="placeholderText">
+      <string>B2</string>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="0" colspan="4">
+    <widget class="QGroupBox" name="groupBox_Appearance">
+     <property name="title">
+      <string>View Appearance</string>
+     </property>
+     <layout class="QFormLayout" name="formLayout_Appearance">
+      <item row="0" column="0">
+       <widget class="QLabel" name="label_Scale">
+        <property name="text">
+         <string>Scale:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QDoubleSpinBox" name="doubleSpinBox_Scale">
+        <property name="toolTip">
+         <string>Scale of the view. Let you adjust the overall size of the table.</string>
+        </property>
+        <property name="minimum">
+         <double>0.001</double>
+        </property>
+        <property name="maximum">
+         <double>100000.0</double>
+        </property>
+        <property name="value">
+         <double>1.0</double>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="label_Font">
+        <property name="text">
+         <string>Font:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="QFontComboBox" name="fontComboBox_Font"/>
+      </item>
+      <item row="2" column="0">
+       <widget class="QLabel" name="label_TextSize">
+        <property name="text">
+         <string>Text Size:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="1">
+       <widget class="QDoubleSpinBox" name="doubleSpinBox_TextSize">
+        <property name="toolTip">
+         <string>Font size in points</string>
+        </property>
+        <property name="decimals">
+         <number>1</number>
+        </property>
+        <property name="minimum">
+         <double>1.0</double>
+        </property>
+        <property name="maximum">
+         <double>100.0</double>
+        </property>
+        <property name="value">
+         <double>10.0</double>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="0">
+       <widget class="QLabel" name="label_TextColor">
+        <property name="text">
+         <string>Text Color:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="1">
+       <widget class="Gui::ColorButton" name="cpFrameColor">
+        <property name="toolTip">
+         <string>Line color</string>
+        </property>
+        <property name="color">
+         <color>
+          <red>0</red>
+          <green>0</green>
+          <blue>0</blue>
+         </color>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="0">
+       <widget class="QLabel" name="label_LineWidth">
+        <property name="text">
+         <string>Line Width:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="1">
+       <widget class="QDoubleSpinBox" name="doubleSpinBox_LineWidth">
+        <property name="toolTip">
+         <string>Width of the cell border lines</string>
+        </property>
+        <property name="decimals">
+         <number>2</number>
+        </property>
+        <property name="minimum">
+         <double>0.01</double>
+        </property>
+        <property name="maximum">
+         <double>5.0</double>
+        </property>
+        <property name="singleStep">
+         <double>0.05</double>
+        </property>
+        <property name="value">
+         <double>0.25</double>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="2" column="0" colspan="4">
+    <widget class="QCheckBox" name="checkBox_ClaimSpreadsheet">
+     <property name="text">
+      <string>Claim spreadsheet as child</string>
+     </property>
+     <property name="toolTip">
+      <string>If checked, this view will claim the associated spreadsheet as child in the tree.</string>
+     </property>
+    </widget>
+   </item>
+   <item row="3" column="0" colspan="4">
+    <spacer name="verticalSpacer_Main">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeType">
+        <enum>QSizePolicy::Expanding</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>20</width>
+       <height>10</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+  </layout>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>Gui::ColorButton</class>
+   <extends>QPushButton</extends>
+   <header>Gui/Widgets.h</header>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
+</ui>
