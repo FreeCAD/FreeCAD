@@ -892,12 +892,12 @@ enum SelType
 {
     SelUnknown = 0,
     SelVertex = 1,
-    SelVertexOrRoot = 64,
     SelRoot = 2,
+    SelVertexOrRoot = SelVertex | SelRoot,
     SelEdge = 4,
-    SelEdgeOrAxis = 128,
     SelHAxis = 8,
     SelVAxis = 16,
+    SelEdgeOrAxis = SelEdge | SelHAxis | SelVAxis,
     SelExternalEdge = 32
 };
 
@@ -928,11 +928,11 @@ public:
             return false;
         }
         std::string element(sSubName);
-        if ((allowedSelTypes & (SelRoot | SelVertexOrRoot) && element.substr(0, 9) == "RootPoint")
-            || (allowedSelTypes & (SelVertex | SelVertexOrRoot) && element.substr(0, 6) == "Vertex")
-            || (allowedSelTypes & (SelEdge | SelEdgeOrAxis) && element.substr(0, 4) == "Edge")
-            || (allowedSelTypes & (SelHAxis | SelEdgeOrAxis) && element.substr(0, 6) == "H_Axis")
-            || (allowedSelTypes & (SelVAxis | SelEdgeOrAxis) && element.substr(0, 6) == "V_Axis")
+        if ((allowedSelTypes & SelRoot && element.substr(0, 9) == "RootPoint")
+            || (allowedSelTypes & SelVertex && element.substr(0, 6) == "Vertex")
+            || (allowedSelTypes & SelEdge && element.substr(0, 4) == "Edge")
+            || (allowedSelTypes & SelHAxis && element.substr(0, 6) == "H_Axis")
+            || (allowedSelTypes & SelVAxis && element.substr(0, 6) == "V_Axis")
             || (allowedSelTypes & SelExternalEdge && element.substr(0, 12) == "ExternalEdge")) {
             return true;
         }
@@ -982,10 +982,6 @@ protected:
      * generate sequences to be passed to applyConstraint().
      * Whenever any sequence is completed, applyConstraint() is called, so it's
      * best to keep them prefix-free.
-     * Be mindful that when SelVertex and SelRoot are given preference over
-     * SelVertexOrRoot, and similar for edges/axes. Thus if a vertex is selected
-     * when SelVertex and SelVertexOrRoot are both applicable, only sequences with
-     * SelVertex will be continue.
      *
      * TODO: Introduce structs to allow keeping first selection
      */
@@ -1032,30 +1028,30 @@ public:
         int VtId = getPreselectPoint();
         int CrvId = getPreselectCurve();
         int CrsId = getPreselectCross();
-        if (allowedSelTypes & (SelRoot | SelVertexOrRoot) && CrsId == 0) {
+        if (allowedSelTypes & SelRoot && CrsId == 0) {
             selIdPair.GeoId = Sketcher::GeoEnum::RtPnt;
             selIdPair.PosId = Sketcher::PointPos::start;
-            newSelType = (allowedSelTypes & SelRoot) ? SelRoot : SelVertexOrRoot;
+            newSelType = SelRoot;
             ss << "RootPoint";
         }
-        else if (allowedSelTypes & (SelVertex | SelVertexOrRoot) && VtId >= 0) {
+        else if (allowedSelTypes & SelVertex && VtId >= 0) {
             sketchgui->getSketchObject()->getGeoVertexIndex(VtId, selIdPair.GeoId, selIdPair.PosId);
-            newSelType = (allowedSelTypes & SelVertex) ? SelVertex : SelVertexOrRoot;
+            newSelType = SelVertex;
             ss << "Vertex" << VtId + 1;
         }
-        else if (allowedSelTypes & (SelEdge | SelEdgeOrAxis) && CrvId >= 0) {
+        else if (allowedSelTypes & SelEdge && CrvId >= 0) {
             selIdPair.GeoId = CrvId;
-            newSelType = (allowedSelTypes & SelEdge) ? SelEdge : SelEdgeOrAxis;
+            newSelType = SelEdge;
             ss << "Edge" << CrvId + 1;
         }
-        else if (allowedSelTypes & (SelHAxis | SelEdgeOrAxis) && CrsId == 1) {
+        else if (allowedSelTypes & SelHAxis && CrsId == 1) {
             selIdPair.GeoId = Sketcher::GeoEnum::HAxis;
-            newSelType = (allowedSelTypes & SelHAxis) ? SelHAxis : SelEdgeOrAxis;
+            newSelType = SelHAxis;
             ss << "H_Axis";
         }
-        else if (allowedSelTypes & (SelVAxis | SelEdgeOrAxis) && CrsId == 2) {
+        else if (allowedSelTypes & SelVAxis && CrsId == 2) {
             selIdPair.GeoId = Sketcher::GeoEnum::VAxis;
-            newSelType = (allowedSelTypes & SelVAxis) ? SelVAxis : SelEdgeOrAxis;
+            newSelType = SelVAxis;
             ss << "V_Axis";
         }
         else if (allowedSelTypes & SelExternalEdge && CrvId <= Sketcher::GeoEnum::RefExt) {
@@ -1085,7 +1081,7 @@ public:
             for (std::set<int>::iterator token = ongoingSequences.begin();
                  token != ongoingSequences.end();
                  ++token) {
-                if ((cmd->allowedSelSequences).at(*token).at(seqIndex) == newSelType) {
+                if ((cmd->allowedSelSequences).at(*token).at(seqIndex) & newSelType) {
                     if (seqIndex == (cmd->allowedSelSequences).at(*token).size() - 1) {
                         // One of the sequences is completed. Pass to cmd->applyConstraint
                         cmd->applyConstraint(selSeq, *token);// replace arg 2 by ongoingToken
@@ -3154,7 +3150,7 @@ CmdSketcherConstrainHorVer::CmdSketcherConstrainHorVer()
     sAccel = "A";
     eType = ForEdit;
 
-    allowedSelSequences = { {SelEdge}, {SelVertex, SelVertexOrRoot}, {SelRoot, SelVertex} };
+    allowedSelSequences = { {SelEdge}, {SelVertexOrRoot, SelVertexOrRoot} };
 }
 
 void CmdSketcherConstrainHorVer::activated(int iMsg)
@@ -3200,7 +3196,7 @@ CmdSketcherConstrainHorizontal::CmdSketcherConstrainHorizontal()
     sAccel = "H";
     eType = ForEdit;
 
-    allowedSelSequences = {{SelEdge}, {SelVertex, SelVertexOrRoot}, {SelRoot, SelVertex}};
+    allowedSelSequences = {{SelEdge}, {SelVertexOrRoot, SelVertexOrRoot}};
 }
 
 void CmdSketcherConstrainHorizontal::activated(int iMsg)
@@ -3245,7 +3241,7 @@ CmdSketcherConstrainVertical::CmdSketcherConstrainVertical()
     sAccel = "V";
     eType = ForEdit;
 
-    allowedSelSequences = {{SelEdge}, {SelVertex, SelVertexOrRoot}, {SelRoot, SelVertex}};
+    allowedSelSequences = {{SelEdge}, {SelVertexOrRoot, SelVertexOrRoot}};
 }
 
 void CmdSketcherConstrainVertical::activated(int iMsg)
@@ -3783,15 +3779,14 @@ CmdSketcherConstrainCoincidentUnified::CmdSketcherConstrainCoincidentUnified(con
 
     eType = ForEdit;
 
-    allowedSelSequences = { {SelVertex, SelEdgeOrAxis},
+    allowedSelSequences = {{SelVertex, SelEdgeOrAxis},
                            {SelRoot, SelEdge},
                            {SelVertex, SelExternalEdge},
                            {SelEdge, SelVertexOrRoot},
                            {SelEdgeOrAxis, SelVertex},
                            {SelExternalEdge, SelVertex},
 
-                           {SelVertex, SelVertexOrRoot},
-                           {SelRoot, SelVertex},
+                           {SelVertexOrRoot, SelVertexOrRoot},
                            {SelEdge, SelEdge},
                            {SelEdge, SelExternalEdge},
                            {SelExternalEdge, SelEdge} };
@@ -4112,11 +4107,10 @@ void CmdSketcherConstrainCoincidentUnified::applyConstraint(std::vector<SelIdPai
     case 5:// {SelExternalEdge, SelVertex}
         applyConstraintPointOnObject(selSeq, seqIndex);
         break;
-    case 6:// {SelVertex, SelVertexOrRoot}
-    case 7:// {SelRoot, SelVertex}
-    case 8:// {SelEdge, SelEdge}
-    case 9:// {SelEdge, SelExternalEdge}
-    case 10:// {SelExternalEdge, SelEdge}
+    case 6:// {SelVertexOrRoot, SelVertexOrRoot}
+    case 7:// {SelEdge, SelEdge}
+    case 8:// {SelEdge, SelExternalEdge}
+    case 9:// {SelExternalEdge, SelEdge}
         seqIndex -= 6;
         applyConstraintCoincident(selSeq, seqIndex);
         break;
@@ -4211,13 +4205,12 @@ void CmdSketcherConstrainCoincidentUnified::applyConstraintCoincident(std::vecto
     Sketcher::PointPos PosId1 = selSeq.at(0).PosId, PosId2 = selSeq.at(1).PosId;
 
     switch (seqIndex) {
-    case 0:// {SelVertex, SelVertexOrRoot}
-    case 1:// {SelRoot, SelVertex}
+    case 0:// {SelVertexOrRoot, SelVertexOrRoot}
         // Nothing specific.
         break;
-    case 2:// {SelEdge, SelEdge}
-    case 3:// {SelEdge, SelExternalEdge}
-    case 4:// {SelExternalEdge, SelEdge}
+    case 1:// {SelEdge, SelEdge}
+    case 2:// {SelEdge, SelExternalEdge}
+    case 3:// {SelExternalEdge, SelEdge}
         // Concentric for circles, ellipse, arc, arcofEllipse only.
         if (!isGeoConcentricCompatible(Obj->getGeometry(GeoId1))
             || !isGeoConcentricCompatible(Obj->getGeometry(GeoId2))) {
@@ -4297,8 +4290,7 @@ CmdSketcherConstrainCoincident::CmdSketcherConstrainCoincident()
     sAccel = hGrp->GetBool("UnifiedCoincident", true) ? "C,C" : "C";
     eType = ForEdit;
 
-    allowedSelSequences = {{SelVertex, SelVertexOrRoot},
-                           {SelRoot, SelVertex},
+    allowedSelSequences = {{SelVertexOrRoot, SelVertexOrRoot},
                            {SelEdge, SelEdge},
                            {SelEdge, SelExternalEdge},
                            {SelExternalEdge, SelEdge}};
@@ -4399,15 +4391,13 @@ CmdSketcherConstrainDistance::CmdSketcherConstrainDistance()
     sAccel = "K, D";
     eType = ForEdit;
 
-    allowedSelSequences = { {SelVertex, SelVertexOrRoot},
-                           {SelRoot, SelVertex},
+    allowedSelSequences = {{SelVertexOrRoot, SelVertexOrRoot},
                            {SelEdge},
                            {SelExternalEdge},
                            {SelVertex, SelEdgeOrAxis},
                            {SelRoot, SelEdge},
-                           {SelVertex, SelExternalEdge},
-                           {SelRoot, SelExternalEdge},
-                           {SelEdge, SelEdge} };
+                           {SelVertexOrRoot, SelExternalEdge},
+                           {SelEdge, SelEdge}};
 }
 
 void CmdSketcherConstrainDistance::activated(int iMsg)
@@ -4783,8 +4773,7 @@ void CmdSketcherConstrainDistance::applyConstraint(std::vector<SelIdPair>& selSe
     bool arebothpointsorsegmentsfixed = areBothPointsOrSegmentsFixed(Obj, GeoId1, GeoId2);
 
     switch (seqIndex) {
-    case 0:// {SelVertex, SelVertexOrRoot}
-    case 1:// {SelRoot, SelVertex}
+    case 0:// {SelVertexOrRoot, SelVertexOrRoot}
     {
         GeoId1 = selSeq.at(0).GeoId;
         GeoId2 = selSeq.at(1).GeoId;
@@ -4848,8 +4837,8 @@ void CmdSketcherConstrainDistance::applyConstraint(std::vector<SelIdPair>& selSe
 
         return;
     }
-    case 2:// {SelEdge}
-    case 3:// {SelExternalEdge}
+    case 1:// {SelEdge}
+    case 2:// {SelExternalEdge}
     {
         GeoId1 = selSeq.at(0).GeoId;
 
@@ -4891,10 +4880,9 @@ void CmdSketcherConstrainDistance::applyConstraint(std::vector<SelIdPair>& selSe
 
         return;
     }
-    case 4:// {SelVertex, SelEdgeOrAxis}
-    case 5:// {SelRoot, SelEdge}
-    case 6:// {SelVertex, SelExternalEdge}
-    case 7:// {SelRoot, SelExternalEdge}
+    case 3:// {SelVertex, SelEdgeOrAxis}
+    case 4:// {SelRoot, SelEdge}
+    case 5:// {SelVertexOrRoot, SelExternalEdge}
     {
         GeoId1 = selSeq.at(0).GeoId;
         GeoId2 = selSeq.at(1).GeoId;
@@ -4934,7 +4922,7 @@ void CmdSketcherConstrainDistance::applyConstraint(std::vector<SelIdPair>& selSe
 
         return;
     }
-    case 8:// {SelEdge, SelEdge}
+    case 6:// {SelEdge, SelEdge}
     {
         GeoId1 = selSeq.at(0).GeoId;
         GeoId2 = selSeq.at(1).GeoId;
@@ -5052,8 +5040,7 @@ CmdSketcherConstrainDistanceX::CmdSketcherConstrainDistanceX()
     eType = ForEdit;
 
     // Can't do single vertex because its a prefix for 2 vertices
-    allowedSelSequences = {{SelVertex, SelVertexOrRoot},
-                           {SelRoot, SelVertex},
+    allowedSelSequences = {{SelVertexOrRoot, SelVertexOrRoot},
                            {SelEdge},
                            {SelExternalEdge}};
 }
@@ -5237,8 +5224,7 @@ void CmdSketcherConstrainDistanceX::applyConstraint(std::vector<SelIdPair>& selS
     Sketcher::PointPos PosId1 = Sketcher::PointPos::none, PosId2 = Sketcher::PointPos::none;
 
     switch (seqIndex) {
-        case 0:// {SelVertex, SelVertexOrRoot}
-        case 1:// {SelRoot, SelVertex}
+        case 0:// {SelVertexOrRoot, SelVertexOrRoot}
         {
             GeoId1 = selSeq.at(0).GeoId;
             GeoId2 = selSeq.at(1).GeoId;
@@ -5246,8 +5232,8 @@ void CmdSketcherConstrainDistanceX::applyConstraint(std::vector<SelIdPair>& selS
             PosId2 = selSeq.at(1).PosId;
             break;
         }
-        case 2:// {SelEdge}
-        case 3:// {SelExternalEdge}
+        case 1:// {SelEdge}
+        case 2:// {SelExternalEdge}
         {
             GeoId1 = GeoId2 = selSeq.at(0).GeoId;
             PosId1 = Sketcher::PointPos::start;
@@ -5355,8 +5341,7 @@ CmdSketcherConstrainDistanceY::CmdSketcherConstrainDistanceY()
     eType = ForEdit;
 
     // Can't do single vertex because its a prefix for 2 vertices
-    allowedSelSequences = {{SelVertex, SelVertexOrRoot},
-                           {SelRoot, SelVertex},
+    allowedSelSequences = {{SelVertexOrRoot, SelVertexOrRoot},
                            {SelEdge},
                            {SelExternalEdge}};
 }
@@ -5536,8 +5521,7 @@ void CmdSketcherConstrainDistanceY::applyConstraint(std::vector<SelIdPair>& selS
     Sketcher::PointPos PosId1 = Sketcher::PointPos::none, PosId2 = Sketcher::PointPos::none;
 
     switch (seqIndex) {
-        case 0:// {SelVertex, SelVertexOrRoot}
-        case 1:// {SelRoot, SelVertex}
+        case 0:// {SelVertexOrRoot, SelVertexOrRoot}
         {
             GeoId1 = selSeq.at(0).GeoId;
             GeoId2 = selSeq.at(1).GeoId;
@@ -5545,8 +5529,8 @@ void CmdSketcherConstrainDistanceY::applyConstraint(std::vector<SelIdPair>& selS
             PosId2 = selSeq.at(1).PosId;
             break;
         }
-        case 2:// {SelEdge}
-        case 3:// {SelExternalEdge}
+        case 1:// {SelEdge}
+        case 2:// {SelExternalEdge}
         {
             GeoId1 = GeoId2 = selSeq.at(0).GeoId;
             PosId1 = Sketcher::PointPos::start;
@@ -5653,8 +5637,7 @@ CmdSketcherConstrainParallel::CmdSketcherConstrainParallel()
     eType = ForEdit;
 
     // TODO: Also needed: ExternalEdges
-    allowedSelSequences = {{SelEdge, SelEdgeOrAxis},
-                           {SelEdgeOrAxis, SelEdge},
+    allowedSelSequences = {{SelEdgeOrAxis, SelEdgeOrAxis},
                            {SelEdge, SelExternalEdge},
                            {SelExternalEdge, SelEdge}};
 }
@@ -5748,10 +5731,9 @@ void CmdSketcherConstrainParallel::activated(int iMsg)
 void CmdSketcherConstrainParallel::applyConstraint(std::vector<SelIdPair>& selSeq, int seqIndex)
 {
     switch (seqIndex) {
-        case 0:// {SelEdge, SelEdgeOrAxis}
-        case 1:// {SelEdgeOrAxis, SelEdge}
-        case 2:// {SelEdge, SelExternalEdge}
-        case 3:// {SelExternalEdge, SelEdge}
+        case 0:// {SelEdgeOrAxis, SelEdgeOrAxis}
+        case 1:// {SelEdge, SelExternalEdge}
+        case 2:// {SelExternalEdge, SelEdge}
             // create the constraint
             SketcherGui::ViewProviderSketch* sketchgui =
                 static_cast<SketcherGui::ViewProviderSketch*>(getActiveGuiDocument()->getInEdit());
@@ -5816,16 +5798,13 @@ CmdSketcherConstrainPerpendicular::CmdSketcherConstrainPerpendicular()
     eType = ForEdit;
 
     // TODO: there are two more combos: endpoint then curve and endpoint then endpoint
-    allowedSelSequences = {{SelEdge, SelEdgeOrAxis},
-                           {SelEdgeOrAxis, SelEdge},
+    allowedSelSequences = {{SelEdgeOrAxis, SelEdgeOrAxis},
                            {SelEdge, SelExternalEdge},
                            {SelExternalEdge, SelEdge},
-                           {SelVertexOrRoot, SelEdge, SelEdgeOrAxis},
-                           {SelVertexOrRoot, SelEdgeOrAxis, SelEdge},
+                           {SelVertexOrRoot, SelEdgeOrAxis, SelEdgeOrAxis},
                            {SelVertexOrRoot, SelEdge, SelExternalEdge},
                            {SelVertexOrRoot, SelExternalEdge, SelEdge},
-                           {SelEdge, SelVertexOrRoot, SelEdgeOrAxis},
-                           {SelEdgeOrAxis, SelVertexOrRoot, SelEdge},
+                           {SelEdgeOrAxis, SelVertexOrRoot, SelEdgeOrAxis},
                            {SelEdge, SelVertexOrRoot, SelExternalEdge},
                            {SelExternalEdge, SelVertexOrRoot, SelEdge}};
     ;
@@ -6253,10 +6232,9 @@ void CmdSketcherConstrainPerpendicular::applyConstraint(std::vector<SelIdPair>& 
                        PosId3 = Sketcher::PointPos::none;
 
     switch (seqIndex) {
-        case 0:// {SelEdge, SelEdgeOrAxis}
-        case 1:// {SelEdgeOrAxis, SelEdge}
-        case 2:// {SelEdge, SelExternalEdge}
-        case 3:// {SelExternalEdge, SelEdge}
+        case 0:// {SelEdgeOrAxis, SelEdgeOrAxis}
+        case 1:// {SelEdge, SelExternalEdge}
+        case 2:// {SelExternalEdge, SelEdge}
         {
             GeoId1 = selSeq.at(0).GeoId;
             GeoId2 = selSeq.at(1).GeoId;
@@ -6435,10 +6413,9 @@ void CmdSketcherConstrainPerpendicular::applyConstraint(std::vector<SelIdPair>& 
             tryAutoRecompute(Obj);
             return;
         }
-        case 4:// {SelVertexOrRoot, SelEdge, SelEdgeOrAxis}
-        case 5:// {SelVertexOrRoot, SelEdgeOrAxis, SelEdge}
-        case 6:// {SelVertexOrRoot, SelEdge, SelExternalEdge}
-        case 7:// {SelVertexOrRoot, SelExternalEdge, SelEdge}
+        case 3:// {SelVertexOrRoot, SelEdgeOrAxis, SelEdgeOrAxis}
+        case 4:// {SelVertexOrRoot, SelEdge, SelExternalEdge}
+        case 5:// {SelVertexOrRoot, SelExternalEdge, SelEdge}
         {
             // let's sink the point to be GeoId3.
             GeoId1 = selSeq.at(1).GeoId;
@@ -6448,10 +6425,9 @@ void CmdSketcherConstrainPerpendicular::applyConstraint(std::vector<SelIdPair>& 
 
             break;
         }
-        case 8: // {SelEdge, SelVertexOrRoot, SelEdgeOrAxis}
-        case 9: // {SelEdgeOrAxis, SelVertexOrRoot, SelEdge}
-        case 10:// {SelEdge, SelVertexOrRoot, SelExternalEdge}
-        case 11:// {SelExternalEdge, SelVertexOrRoot, SelEdge}
+        case 6: // {SelEdgeOrAxis, SelVertexOrRoot, SelEdgeOrAxis}
+        case 7:// {SelEdge, SelVertexOrRoot, SelExternalEdge}
+        case 8:// {SelExternalEdge, SelVertexOrRoot, SelEdge}
         {
             // let's sink the point to be GeoId3.
             GeoId1 = selSeq.at(0).GeoId;
@@ -9364,21 +9340,13 @@ CmdSketcherConstrainSymmetric::CmdSketcherConstrainSymmetric()
 
     allowedSelSequences = {{SelEdge, SelVertexOrRoot},
                            {SelExternalEdge, SelVertex},
-                           {SelVertex, SelEdge, SelVertexOrRoot},
-                           {SelRoot, SelEdge, SelVertex},
-                           {SelVertex, SelExternalEdge, SelVertexOrRoot},
-                           {SelRoot, SelExternalEdge, SelVertex},
+                           {SelVertexOrRoot, SelEdge, SelVertexOrRoot},
+                           {SelVertexOrRoot, SelExternalEdge, SelVertexOrRoot},
                            {SelVertex, SelEdgeOrAxis, SelVertex},
-                           {SelVertex, SelVertex, SelEdge},
-                           {SelVertex, SelRoot, SelEdge},
-                           {SelRoot, SelVertex, SelEdge},
-                           {SelVertex, SelVertex, SelExternalEdge},
-                           {SelVertex, SelRoot, SelExternalEdge},
-                           {SelRoot, SelVertex, SelExternalEdge},
+                           {SelVertexOrRoot, SelVertexOrRoot, SelEdge},
+                           {SelVertexOrRoot, SelVertexOrRoot, SelExternalEdge},
                            {SelVertex, SelVertex, SelEdgeOrAxis},
-                           {SelVertex, SelRoot, SelVertex},
-                           {SelVertex, SelVertex, SelVertexOrRoot},
-                           {SelRoot, SelVertex, SelVertex}};
+                           {SelVertexOrRoot, SelVertexOrRoot, SelVertexOrRoot}};
 }
 
 void CmdSketcherConstrainSymmetric::activated(int iMsg)
@@ -9592,18 +9560,12 @@ void CmdSketcherConstrainSymmetric::applyConstraint(std::vector<SelIdPair>& selS
             }
             break;
         }
-        case 2: // {SelVertex, SelEdge, SelVertexOrRoot}
-        case 3: // {SelRoot, SelEdge, SelVertex}
-        case 4: // {SelVertex, SelExternalEdge, SelVertexOrRoot}
-        case 5: // {SelRoot, SelExternalEdge, SelVertex}
-        case 6: // {SelVertex, SelEdgeOrAxis, SelVertex}
-        case 7: // {SelVertex, SelVertex, SelEdge}
-        case 8: // {SelVertex, SelRoot, SelEdge}
-        case 9: // {SelRoot, SelVertex, SelEdge}
-        case 10:// {SelVertex, SelVertex, SelExternalEdge}
-        case 11:// {SelVertex, SelRoot, SelExternalEdge}
-        case 12:// {SelRoot, SelVertex, SelExternalEdge}
-        case 13:// {SelVertex, SelVertex, SelEdgeOrAxis}
+        case 2:// {SelVertexOrRoot, SelEdge, SelVertexOrRoot}
+        case 3:// {SelVertexOrRoot, SelExternalEdge, SelVertexOrRoot}
+        case 4:// {SelVertex, SelEdgeOrAxis, SelVertex}
+        case 5:// {SelVertexOrRoot, SelVertexOrRoot, SelEdge}
+        case 6:// {SelVertexOrRoot, SelVertexOrRoot, SelExternalEdge}
+        case 7:// {SelVertex, SelVertex, SelEdgeOrAxis}
         {
             GeoId1 = selSeq.at(0).GeoId;
             GeoId2 = selSeq.at(2).GeoId;
@@ -9662,9 +9624,7 @@ void CmdSketcherConstrainSymmetric::applyConstraint(std::vector<SelIdPair>& selS
             }
             return;
         }
-        case 14:// {SelVertex, SelRoot, SelVertex}
-        case 15:// {SelVertex, SelVertex, SelVertexOrRoot}
-        case 16:// {SelRoot, SelVertex, SelVertex}
+        case 8:// {SelVertexOrRoot, SelVertexOrRoot, SelVertexOrRoot}
         {
             GeoId1 = selSeq.at(0).GeoId;
             GeoId2 = selSeq.at(1).GeoId;
