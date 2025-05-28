@@ -413,14 +413,15 @@ bool QGSPage::attachView(App::DocumentObject* obj)
     else if (auto o = freecad_cast<TechDraw::DrawViewAnnotation*>(obj)) {
         qview = addAnnotation(o);
     }
+    else if (auto o = freecad_cast<TechDraw::DrawViewSpreadsheet*>(obj)) {
+        // has to be before DrawViewSymbol since it's a subclass of it.
+        qview = addDrawViewSpreadsheet(o);
+    }
     else if (auto o = freecad_cast<TechDraw::DrawViewSymbol*>(obj)) {
         qview = addDrawViewSymbol(o);
     }
     else if (auto o = freecad_cast<TechDraw::DrawViewClip*>(obj)) {
         qview = addDrawViewClip(o);
-    }
-    else if (auto o = freecad_cast<TechDraw::DrawViewSpreadsheet*>(obj)) {
-        qview = addDrawViewSpreadsheet(o);
     }
     else if (auto o = freecad_cast<TechDraw::DrawViewImage*>(obj)) {
         qview = addDrawViewImage(o);
