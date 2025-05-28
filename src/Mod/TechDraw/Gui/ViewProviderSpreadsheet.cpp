@@ -40,6 +40,7 @@ ViewProviderSpreadsheet::ViewProviderSpreadsheet()
                       "Display Options",
                       App::Prop_None,
                       "Claim (or not) the spreadsheet source as a child of the view.");
+    LegacyScaling.setValue(true);
 }
 
 ViewProviderSpreadsheet::~ViewProviderSpreadsheet()
