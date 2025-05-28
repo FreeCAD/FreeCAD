@@ -29,7 +29,6 @@
 #include <Gui/Command.h>
 #include <Gui/CommandT.h>
 #include <Gui/InputHint.h>
-#include <Gui/InputHint.h>
 
 #include <Mod/Part/App/Geometry2d.h>
 
