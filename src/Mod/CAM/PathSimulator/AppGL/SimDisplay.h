@@ -34,6 +34,8 @@
 namespace MillSim
 {
 
+using std::numbers::pi;
+
 struct Point3D
 {
     float x, y, z;
@@ -113,8 +115,8 @@ protected:
 
     float mEyeDistance = 30;
     float mEyeRoration = 0;
-    float mEyeInclination = PI / 6;  // 30 degree
-    float mEyeStep = PI / 36;        // 5 degree
+    float mEyeInclination = pi / 6;  // 30 degree
+    float mEyeStep = pi / 36;        // 5 degree
 
     float mMaxStockDim = 100;
     float mEyeDistFactor = 0.0f;
