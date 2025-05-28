@@ -60,11 +60,10 @@ public:
     ~DrawSketchHandlerPoint() override = default;
 
 private:
-    void updateHints() const
+    std::list<Gui::InputHint> getToolHints() const override
     {
         using Gui::InputHint;
         using UserInput = Gui::InputHint::UserInput;
-
         std::list<InputHint> hints;
 
         switch (state()) {
@@ -77,12 +76,11 @@ private:
                 break;
         }
 
-        Gui::getMainWindow()->showHints(hints);
+        return hints;
     }
+
     void updateDataAndDrawToPosition(Base::Vector2d onSketchPos) override
     {
-        updateHints();
-
         switch (state()) {
             case SelectMode::SeekFirst: {
                 toolWidgetManager.drawPositionAtCursor(onSketchPos);

@@ -96,8 +96,6 @@ public:
 private:
     void updateDataAndDrawToPosition(Base::Vector2d onSketchPos) override
     {
-        updateHints();
-
         switch (state()) {
             case SelectMode::SeekFirst: {
                 toolWidgetManager.drawPositionAtCursor(onSketchPos);
@@ -513,72 +511,6 @@ private:
             startAngle = startAngle + arcAngle;
             angleReversed = true;
         }
-    }
-
-    void updateHints() const
-    {
-        using Gui::InputHint;
-        using UserInput = Gui::InputHint::UserInput;
-        std::list<InputHint> hints;
-
-        switch (constructionMethod()) {
-            case ConstructionMethod::ArcSlot:
-                switch (state()) {
-                    case SelectMode::SeekFirst:
-                        hints.push_back(
-                            InputHint(QCoreApplication::translate("Sketcher", "%1 pick arc center"),
-                                      {UserInput::MouseLeft}));
-                        break;
-                    case SelectMode::SeekSecond:
-                        hints.push_back(InputHint(
-                            QCoreApplication::translate("Sketcher", "%1 pick arc start point"),
-                            {UserInput::MouseLeft}));
-                        break;
-                    case SelectMode::SeekThird:
-                        hints.push_back(InputHint(
-                            QCoreApplication::translate("Sketcher", "%1 pick arc end point"),
-                            {UserInput::MouseLeft}));
-                        break;
-                    case SelectMode::SeekFourth:
-                        hints.push_back(
-                            InputHint(QCoreApplication::translate("Sketcher", "%1 set slot radius"),
-                                      {UserInput::MouseMove}));
-                        break;
-                    default:
-                        break;
-                }
-                break;
-            case ConstructionMethod::RectangleSlot:
-                switch (state()) {
-                    case SelectMode::SeekFirst:
-                        hints.push_back(InputHint(
-                            QCoreApplication::translate("Sketcher", "%1 pick slot center"),
-                            {UserInput::MouseLeft}));
-                        break;
-                    case SelectMode::SeekSecond:
-                        hints.push_back(InputHint(
-                            QCoreApplication::translate("Sketcher", "%1 pick slot corner"),
-                            {UserInput::MouseLeft}));
-                        break;
-                    case SelectMode::SeekThird:
-                        hints.push_back(InputHint(
-                            QCoreApplication::translate("Sketcher", "%1 pick slot orientation"),
-                            {UserInput::MouseLeft}));
-                        break;
-                    case SelectMode::SeekFourth:
-                        hints.push_back(
-                            InputHint(QCoreApplication::translate("Sketcher", "%1 set slot width"),
-                                      {UserInput::MouseMove}));
-                        break;
-                    default:
-                        break;
-                }
-                break;
-            default:
-                break;
-        }
-
-        Gui::getMainWindow()->showHints(hints);
     }
 
 private:

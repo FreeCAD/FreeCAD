@@ -114,8 +114,6 @@ private:
     {
         using std::numbers::pi;
 
-        updateHints();
-
         switch (state()) {
             case SelectMode::SeekFirst: {
                 toolWidgetManager.drawPositionAtCursor(onSketchPos);
@@ -1577,7 +1575,7 @@ private:
         thickness = obliqueThickness * sin(angle412);
     }
 
-    void updateHints() const
+    std::list<Gui::InputHint> getToolHints() const override
     {
         using Gui::InputHint;
         using UserInput = Gui::InputHint::UserInput;
@@ -1711,7 +1709,7 @@ private:
                 break;
         }
 
-        Gui::getMainWindow()->showHints(hints);
+        return hints;
     }
 };
 

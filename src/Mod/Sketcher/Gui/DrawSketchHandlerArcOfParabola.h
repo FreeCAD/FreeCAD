@@ -69,8 +69,6 @@ public:
 
     void mouseMove(Base::Vector2d onSketchPos) override
     {
-        updateHints();
-
         if (Mode == STATUS_SEEK_First) {
             setPositionText(onSketchPos);
             seekAndRenderAutoConstraint(sugConstr1, onSketchPos, Base::Vector2d(0.f, 0.f));
@@ -333,7 +331,7 @@ protected:
     std::vector<AutoConstraint> sugConstr1, sugConstr2, sugConstr3, sugConstr4;
 
 private:
-    void updateHints() const
+    std::list<Gui::InputHint> getToolHints() const override
     {
         using Gui::InputHint;
         using UserInput = Gui::InputHint::UserInput;
@@ -364,7 +362,7 @@ private:
                 break;
         }
 
-        Gui::getMainWindow()->showHints(hints);
+        return hints;
     }
 };
 

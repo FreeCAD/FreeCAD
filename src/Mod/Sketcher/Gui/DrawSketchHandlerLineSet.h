@@ -99,13 +99,31 @@ public:
 
     std::list<Gui::InputHint> getToolHints() const override
     {
+        using Gui::InputHint;
         using UserInput = Gui::InputHint::UserInput;
+        std::list<InputHint> hints;
 
-        return {
-            {QWidget::tr("%1 change mode"), {UserInput::KeyM}},
-            {QWidget::tr("%1 start drawing"), {UserInput::MouseLeft}},
-            {QWidget::tr("%1 stop drawing"), {UserInput::MouseRight}},
-        };
+        switch (Mode) {
+            case STATUS_SEEK_First:
+                hints.push_back(
+                    InputHint(QCoreApplication::translate("Sketcher", "%1 pick first point"),
+                              {UserInput::MouseLeft}));
+                break;
+            case STATUS_SEEK_Second:
+                hints.push_back(
+                    InputHint(QCoreApplication::translate("Sketcher", "%1 pick next point"),
+                              {UserInput::MouseLeft}));
+                hints.push_back(
+                    InputHint(QCoreApplication::translate("Sketcher", "%1 right-click to finish"),
+                              {UserInput::MouseRight}));
+                hints.push_back(InputHint(QCoreApplication::translate("Sketcher", "%1 change mode"),
+                                          {UserInput::KeyM}));
+                break;
+            default:
+                break;
+        }
+
+        return hints;
     }
 
     void registerPressedKey(bool pressed, int key) override
@@ -201,8 +219,6 @@ public:
     void mouseMove(Base::Vector2d onSketchPos) override
     {
         using std::numbers::pi;
-
-        updateHints();
 
         suppressTransition = false;
         if (Mode == STATUS_SEEK_First) {
@@ -344,8 +360,6 @@ public:
 
     bool pressButton(Base::Vector2d onSketchPos) override
     {
-        updateHints();
-
         if (Mode == STATUS_SEEK_First) {
 
             EditCurve[0] = onSketchPos;  // this may be overwritten if previousCurve is found
@@ -457,8 +471,6 @@ public:
 
     bool releaseButton(Base::Vector2d onSketchPos) override
     {
-        updateHints();
-
         if (Mode == STATUS_Do || Mode == STATUS_Close) {
             bool addedGeometry = true;
             if (SegmentMode == SEGMENT_MODE_Line) {
@@ -772,36 +784,6 @@ private:
     QString getCrosshairCursorSVGName() const override
     {
         return QStringLiteral("Sketcher_Pointer_Create_Lineset");
-    }
-
-    void updateHints() const
-    {
-        using Gui::InputHint;
-        using UserInput = Gui::InputHint::UserInput;
-        std::list<InputHint> hints;
-
-        switch (Mode) {
-            case STATUS_SEEK_First:
-                hints.push_back(
-                    InputHint(QCoreApplication::translate("Sketcher", "%1 pick first point"),
-                              {UserInput::MouseLeft}));
-                break;
-            case STATUS_SEEK_Second:
-                hints.push_back(
-                    InputHint(QCoreApplication::translate("Sketcher", "%1 pick next point"),
-                              {UserInput::MouseLeft}));
-                hints.push_back(
-                    InputHint(QCoreApplication::translate("Sketcher", "%1 right-click to finish"),
-                              {UserInput::MouseRight}));
-
-                hints.push_back(InputHint(QCoreApplication::translate("Sketcher", "%1 change mode"),
-                                          {UserInput::KeyM}));
-                break;
-            default:
-                break;
-        }
-
-        Gui::getMainWindow()->showHints(hints);
     }
 
 protected:

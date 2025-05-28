@@ -71,8 +71,6 @@ public:
     {
         using std::numbers::pi;
 
-        updateHints();
-
         if (Mode == STATUS_SEEK_First) {
             setPositionText(onSketchPos);
             seekAndRenderAutoConstraint(sugConstr1,
@@ -221,8 +219,6 @@ public:
             setAngleSnapping(false);
             Mode = STATUS_Close;
         }
-
-        updateHints();
 
         return true;
     }
@@ -405,7 +401,7 @@ protected:
     std::vector<AutoConstraint> sugConstr1, sugConstr2, sugConstr3, sugConstr4;
 
 private:
-    void updateHints() const
+    std::list<Gui::InputHint> getToolHints() const override
     {
         using Gui::InputHint;
         using UserInput = Gui::InputHint::UserInput;
@@ -436,7 +432,7 @@ private:
                 break;
         }
 
-        Gui::getMainWindow()->showHints(hints);
+        return hints;
     }
 };
 

@@ -95,7 +95,7 @@ public:
     }
 
 private:
-    void updateHints() const
+    std::list<Gui::InputHint> getToolHints() const override
     {
         using Gui::InputHint;
         using UserInput = Gui::InputHint::UserInput;
@@ -115,17 +115,15 @@ private:
                     InputHint(QCoreApplication::translate("Sketcher", "%1 finish B-spline"),
                               {UserInput::MouseRight}));
                 break;
-            // Add more cases as needed for your state machine
             default:
                 break;
         }
 
-        Gui::getMainWindow()->showHints(hints);
+        return hints;
     }
     void updateDataAndDrawToPosition(Base::Vector2d onSketchPos) override
     {
         prevCursorPosition = onSketchPos;
-        updateHints();
 
         switch (state()) {
             case SelectMode::SeekFirst: {

@@ -84,6 +84,59 @@ public:
     ~DrawSketchHandlerEllipse() override = default;
 
 private:
+private:
+    std::list<Gui::InputHint> getToolHints() const override
+    {
+        using Gui::InputHint;
+        using UserInput = Gui::InputHint::UserInput;
+        std::list<InputHint> hints;
+
+        if (constructionMethod() == ConstructionMethod::Center) {
+            switch (state()) {
+                case SelectMode::SeekFirst:
+                    hints.push_back(
+                        InputHint(QCoreApplication::translate("Sketcher", "%1 pick ellipse center"),
+                                  {UserInput::MouseLeft}));
+                    break;
+                case SelectMode::SeekSecond:
+                    hints.push_back(
+                        InputHint(QCoreApplication::translate("Sketcher", "%1 pick axis endpoint"),
+                                  {UserInput::MouseLeft}));
+                    break;
+                case SelectMode::SeekThird:
+                    hints.push_back(InputHint(
+                        QCoreApplication::translate("Sketcher", "%1 pick minor axis endpoint"),
+                        {UserInput::MouseLeft}));
+                    break;
+                default:
+                    break;
+            }
+        }
+        else if (constructionMethod() == ConstructionMethod::ThreeRim) {
+            switch (state()) {
+                case SelectMode::SeekFirst:
+                    hints.push_back(InputHint(
+                        QCoreApplication::translate("Sketcher", "%1 pick first rim point"),
+                        {UserInput::MouseLeft}));
+                    break;
+                case SelectMode::SeekSecond:
+                    hints.push_back(InputHint(
+                        QCoreApplication::translate("Sketcher", "%1 pick second rim point"),
+                        {UserInput::MouseLeft}));
+                    break;
+                case SelectMode::SeekThird:
+                    hints.push_back(InputHint(
+                        QCoreApplication::translate("Sketcher", "%1 pick third rim point"),
+                        {UserInput::MouseLeft}));
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        return hints;
+    }
+
     void updateDataAndDrawToPosition(Base::Vector2d onSketchPos) override
     {
         switch (state()) {
