@@ -811,15 +811,14 @@ class ViewProviderBuildingPart:
         if FreeCADGui.activeWorkbench().name() != 'BIMWorkbench':
             return
         if (not hasattr(vobj,"DoubleClickActivates")) or vobj.DoubleClickActivates:
+            menuTxt = translate("Arch", "Active")
+            actionActivate = QtGui.QAction(menuTxt, menu)
+            actionActivate.setCheckable(True)
             if FreeCADGui.ActiveDocument.ActiveView.getActiveObject("Arch") == self.Object:
-                menuTxt = translate("Arch", "Deactivate")
+                actionActivate.setChecked(True)
             else:
-                menuTxt = translate("Arch", "Activate")
-            actionActivate = QtGui.QAction(menuTxt,
-                                           menu)
-            QtCore.QObject.connect(actionActivate,
-                                   QtCore.SIGNAL("triggered()"),
-                                   self.activate)
+                actionActivate.setChecked(False)
+            actionActivate.triggered.connect(lambda _: self.activate(actionActivate))
             menu.addAction(actionActivate)
 
         actionSetWorkingPlane = QtGui.QAction(QtGui.QIcon(":/icons/Draft_SelectPlane.svg"),
@@ -859,17 +858,15 @@ class ViewProviderBuildingPart:
                                self.cloneUp)
         menu.addAction(actionCloneUp)
 
-    def activate(self):
+    def activate(self, action=None):
+        from draftutils.utils import toggle_working_plane
         vobj = self.Object.ViewObject
-
-        if FreeCADGui.ActiveDocument.ActiveView.getActiveObject("Arch") == self.Object:
-            FreeCADGui.ActiveDocument.ActiveView.setActiveObject("Arch", None)
-            if vobj.SetWorkingPlane:
-                self.setWorkingPlane(restore=True)
-        elif (not hasattr(vobj,"DoubleClickActivates")) or vobj.DoubleClickActivates:
-            FreeCADGui.ActiveDocument.ActiveView.setActiveObject("Arch", self.Object)
-            if vobj.SetWorkingPlane:
-                self.setWorkingPlane()
+        
+        if (not hasattr(vobj,"DoubleClickActivates")) or vobj.DoubleClickActivates:
+            if toggle_working_plane(self.Object, action, restore=True):
+                print("Setting active working plane to: ", self.Object.Label)
+            else:
+                print("Deactivating working plane from: ", self.Object.Label)
 
         FreeCADGui.Selection.clearSelection()
 
@@ -883,7 +880,24 @@ class ViewProviderBuildingPart:
             autoclip = vobj.AutoCutView
         if restore:
             if wp.label.rstrip("*") == self.Object.Label:
-                wp._previous()
+                prev_data = wp._previous()
+                if prev_data:
+                    prev_label = prev_data.get("label", "").rstrip("*")
+                    prev_obj = None
+                    for obj in FreeCAD.ActiveDocument.Objects:
+                        if hasattr(obj, "Label") and obj.Label == prev_label:
+                            prev_obj = obj
+                            break
+
+                    if prev_obj:
+                        # check in which context we need to set the active object
+                        context = "Arch"
+                        obj_type = Draft.getType(prev_obj)
+                        if obj_type == "IfcBuildingStorey":
+                            context = "NativeIFC"
+                        FreeCADGui.ActiveDocument.ActiveView.setActiveObject(context, prev_obj)
+                        print(f"Set active object to: {prev_obj.Label} (context: {context})")
+
             if autoclip:
                 vobj.CutView = False
         else:

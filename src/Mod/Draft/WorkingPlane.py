@@ -1667,6 +1667,7 @@ class PlaneGui(PlaneBase):
         self.set_parameters(self._history["data_list"][idx])
         self._history["idx"] = idx
         self._update_all(_hist_add=False)
+        return self._history["data_list"][idx]
 
     def _next(self):
         idx = self._history["idx"]
