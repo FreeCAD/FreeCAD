@@ -34,6 +34,7 @@ from ...camassets import cam_assets
 from ..doc import (
     find_shape_object,
     get_object_properties,
+    get_unset_value_for,
     update_shape_object_properties,
     ShapeDocFromBytes,
 )
@@ -372,33 +373,34 @@ class ToolBitShape(Asset):
             props_obj = ToolBitShape._find_property_object(temp_doc)
             if not props_obj:
                 raise ValueError("No 'Attributes' PropertyBag object found in document bytes")
-
-            # Get properties from the properties object
-            expected_params = shape_class.get_expected_shape_parameters()
-            loaded_params = get_object_properties(props_obj, expected_params)
-
-            missing_params = [
-                name
-                for name in expected_params
-                if name not in loaded_params or loaded_params[name] is None
-            ]
+            loaded_params = get_object_properties(props_obj, group="Shape")
 
             # For now, we log missing parameters, but do not raise an error.
             # This allows for more flexible shape files that may not have all
             # parameters set, while still warning the user.
             # In the future, we may want to raise an error if critical parameters
             # are missing.
+            expected_params = shape_class.get_expected_shape_parameters()
+            missing_params = [
+                name
+                for name in expected_params
+                if name not in loaded_params or loaded_params[name] is None
+            ]
             if missing_params:
                 Path.Log.error(
                     f"Validation error: Object '{props_obj.Label}' in document {id} "
                     f"is missing parameters for {shape_class.__name__}: {', '.join(missing_params)}."
                     f" In future releases, these shapes will not load!"
                 )
+                for param in missing_params:
+                    param_type = shape_class.get_parameter_property_type(param)
+                    loaded_params[param] = get_unset_value_for(param_type)
 
             # Instantiate the specific subclass with the provided ID
             instance = shape_class(id=id)
-            instance._data = data  # Cache the byte content
+            instance._data = data  # Keep the byte content
             instance._defaults = loaded_params
+            instance._params = instance._defaults | instance._params
 
             if dependencies:  # dependencies is None = shallow load
                 # Assign resolved dependencies (like the icon) to the instance
@@ -414,10 +416,6 @@ class ToolBitShape(Asset):
                         asset_id=id + ".png",
                     )
                     instance.icon = cast(ToolBitShapeIcon, dependencies.get(icon_uri))
-
-            # Update instance parameters, prioritizing loaded defaults but not
-            # overwriting parameters that may already be set during __init__
-            instance._params = instance._defaults | instance._params
 
             return instance
 
@@ -584,11 +582,12 @@ class ToolBitShape(Asset):
         entry = self.schema().get(param_name)
         return entry[0] if entry else str_param_name
 
-    def get_parameter_property_type(self, param_name: str) -> str:
+    @classmethod
+    def get_parameter_property_type(cls, param_name: str) -> str:
         """
         Get the FreeCAD property type string for a given parameter name.
         """
-        return self.schema()[param_name][1]
+        return cls.schema()[param_name][1]
 
     def get_parameters(self) -> Dict[str, Any]:
         """

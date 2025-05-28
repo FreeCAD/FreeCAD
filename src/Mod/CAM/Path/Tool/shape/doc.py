@@ -55,8 +55,20 @@ def find_shape_object(doc: "FreeCAD.Document") -> Optional["FreeCAD.DocumentObje
     return doc.Objects[0] if doc.Objects else None
 
 
+def get_unset_value_for(attribute_type: str):
+    if attribute_type == "App::PropertyLength":
+        return FreeCAD.Units.Quantity(0)
+    elif attribute_type == "App::PropertyString":
+        return ""
+    elif attribute_type == "App::PropertyInteger":
+        return 0
+    return None
+
+
 def get_object_properties(
-    obj: "FreeCAD.DocumentObject", expected_params: List[str]
+    obj: "FreeCAD.DocumentObject",
+    props: List[str] | None = None,
+    group: Optional[str] = None,
 ) -> Dict[str, Any]:
     """
     Extract properties matching expected_params from a FreeCAD PropertyBag.
@@ -72,7 +84,9 @@ def get_object_properties(
                         Values are FreeCAD native types.
     """
     properties = {}
-    for name in expected_params:
+    for name in props or obj.PropertiesList:
+        if group and not obj.getGroupOfProperty(name) == group:
+            continue
         if hasattr(obj, name):
             properties[name] = getattr(obj, name)
         else:
