@@ -5637,7 +5637,8 @@ CmdSketcherConstrainParallel::CmdSketcherConstrainParallel()
     eType = ForEdit;
 
     // TODO: Also needed: ExternalEdges
-    allowedSelSequences = {{SelEdgeOrAxis, SelEdgeOrAxis},
+    allowedSelSequences = {{SelEdge, SelEdgeOrAxis},
+                           {SelEdgeOrAxis, SelEdge},
                            {SelEdge, SelExternalEdge},
                            {SelExternalEdge, SelEdge}};
 }
@@ -5731,9 +5732,10 @@ void CmdSketcherConstrainParallel::activated(int iMsg)
 void CmdSketcherConstrainParallel::applyConstraint(std::vector<SelIdPair>& selSeq, int seqIndex)
 {
     switch (seqIndex) {
-        case 0:// {SelEdgeOrAxis, SelEdgeOrAxis}
-        case 1:// {SelEdge, SelExternalEdge}
-        case 2:// {SelExternalEdge, SelEdge}
+        case 0:// {SelEdge, SelEdgeOrAxis}
+        case 1:// {SelEdgeOrAxis, SelEdge}
+        case 2:// {SelEdge, SelExternalEdge}
+        case 3:// {SelExternalEdge, SelEdge}
             // create the constraint
             SketcherGui::ViewProviderSketch* sketchgui =
                 static_cast<SketcherGui::ViewProviderSketch*>(getActiveGuiDocument()->getInEdit());
@@ -5798,13 +5800,16 @@ CmdSketcherConstrainPerpendicular::CmdSketcherConstrainPerpendicular()
     eType = ForEdit;
 
     // TODO: there are two more combos: endpoint then curve and endpoint then endpoint
-    allowedSelSequences = {{SelEdgeOrAxis, SelEdgeOrAxis},
+    allowedSelSequences = {{SelEdge, SelEdgeOrAxis},
+                           {SelEdgeOrAxis, SelEdge},
                            {SelEdge, SelExternalEdge},
                            {SelExternalEdge, SelEdge},
-                           {SelVertexOrRoot, SelEdgeOrAxis, SelEdgeOrAxis},
+                           {SelVertexOrRoot, SelEdge, SelEdgeOrAxis},
+                           {SelVertexOrRoot, SelEdgeOrAxis, SelEdge},
                            {SelVertexOrRoot, SelEdge, SelExternalEdge},
                            {SelVertexOrRoot, SelExternalEdge, SelEdge},
-                           {SelEdgeOrAxis, SelVertexOrRoot, SelEdgeOrAxis},
+                           {SelEdge, SelVertexOrRoot, SelEdgeOrAxis},
+                           {SelEdgeOrAxis, SelVertexOrRoot, SelEdge},
                            {SelEdge, SelVertexOrRoot, SelExternalEdge},
                            {SelExternalEdge, SelVertexOrRoot, SelEdge}};
     ;
@@ -6232,9 +6237,10 @@ void CmdSketcherConstrainPerpendicular::applyConstraint(std::vector<SelIdPair>& 
                        PosId3 = Sketcher::PointPos::none;
 
     switch (seqIndex) {
-        case 0:// {SelEdgeOrAxis, SelEdgeOrAxis}
-        case 1:// {SelEdge, SelExternalEdge}
-        case 2:// {SelExternalEdge, SelEdge}
+        case 0:// {SelEdge, SelEdgeOrAxis}
+        case 1:// {SelEdgeOrAxis, SelEdge}
+        case 2:// {SelEdge, SelExternalEdge}
+        case 3:// {SelExternalEdge, SelEdge}
         {
             GeoId1 = selSeq.at(0).GeoId;
             GeoId2 = selSeq.at(1).GeoId;
@@ -6413,9 +6419,10 @@ void CmdSketcherConstrainPerpendicular::applyConstraint(std::vector<SelIdPair>& 
             tryAutoRecompute(Obj);
             return;
         }
-        case 3:// {SelVertexOrRoot, SelEdgeOrAxis, SelEdgeOrAxis}
-        case 4:// {SelVertexOrRoot, SelEdge, SelExternalEdge}
-        case 5:// {SelVertexOrRoot, SelExternalEdge, SelEdge}
+        case 4:// {SelVertexOrRoot, SelEdge, SelEdgeOrAxis}
+        case 5:// {SelVertexOrRoot, SelEdgeOrAxis, SelEdge}
+        case 6:// {SelVertexOrRoot, SelEdge, SelExternalEdge}
+        case 7:// {SelVertexOrRoot, SelExternalEdge, SelEdge}
         {
             // let's sink the point to be GeoId3.
             GeoId1 = selSeq.at(1).GeoId;
@@ -6425,9 +6432,10 @@ void CmdSketcherConstrainPerpendicular::applyConstraint(std::vector<SelIdPair>& 
 
             break;
         }
-        case 6: // {SelEdgeOrAxis, SelVertexOrRoot, SelEdgeOrAxis}
-        case 7:// {SelEdge, SelVertexOrRoot, SelExternalEdge}
-        case 8:// {SelExternalEdge, SelVertexOrRoot, SelEdge}
+        case 8: // {SelEdge, SelVertexOrRoot, SelEdgeOrAxis}
+        case 9: // {SelEdgeOrAxis, SelVertexOrRoot, SelEdge}
+        case 10:// {SelEdge, SelVertexOrRoot, SelExternalEdge}
+        case 11:// {SelExternalEdge, SelVertexOrRoot, SelEdge}
         {
             // let's sink the point to be GeoId3.
             GeoId1 = selSeq.at(0).GeoId;
