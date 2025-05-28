@@ -94,6 +94,7 @@
         <file>icons/Draft_Snap_Ortho.svg</file>
         <file>icons/Draft_Snap_Parallel.svg</file>
         <file>icons/Draft_Snap_Perpendicular.svg</file>
+        <file>icons/Draft_Snap_Recenter.svg</file>
         <file>icons/Draft_Snap_Special.svg</file>
         <file>icons/Draft_Snap_WorkingPlane.svg</file>
         <file>icons/Draft_Split.svg</file>
