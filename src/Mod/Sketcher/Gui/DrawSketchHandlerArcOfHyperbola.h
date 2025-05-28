@@ -212,6 +212,7 @@ public:
             Mode = STATUS_Close;
         }
 
+        updateHint();
         return true;
     }
 
@@ -393,6 +394,7 @@ public:
                                             // ViewProvider
             }
         }
+        updateHint();
         return true;
     }
 
