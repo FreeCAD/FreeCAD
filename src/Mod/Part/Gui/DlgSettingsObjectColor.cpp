@@ -21,6 +21,12 @@
  ***************************************************************************/
 
 #include "PreCompiled.h"
+#ifndef _PreComp_
+#include <QMessageBox>
+#endif
+
+#include <Base/Interpreter.h>
+#include <Gui/Command.h>
 
 #include "DlgSettingsObjectColor.h"
 #include "ui_DlgSettingsObjectColor.h"
@@ -40,6 +46,11 @@ DlgSettingsObjectColor::DlgSettingsObjectColor(QWidget* parent)
 {
     ui->setupUi(this);
     ui->DefaultShapeColor->setDisabled(ui->checkRandomColor->isChecked());
+
+    connect(ui->btnTVApply,
+            &QPushButton::clicked,
+            this,
+            &DlgSettingsObjectColor::onBtnTVApplyClicked);
 }
 
 /**
@@ -99,6 +110,145 @@ void DlgSettingsObjectColor::changeEvent(QEvent *e)
     }
     else {
         QWidget::changeEvent(e);
+    }
+}
+
+static const char* APPLY_COMMAND_STRING = R"xxx(
+
+# get all TypeIds that are currently in use
+
+types = set()
+for name, doc in App.listDocuments().items():
+    types = types.union({ i.TypeId for i in doc.Objects })
+
+# create a temporary document
+
+tmp = App.newDocument(name="hidden", hidden=True, temp=True)
+
+# create a simple box to compare appearances against
+# by comparing against a newly created box instead of against the
+# values specified below, this also works before apply is clicked
+
+box = tmp.addObject("Part::Box").ViewObject
+
+# check if a view is the default appearance
+
+defaultView = {
+    "Lighting": %s,
+    "LineColor": %s,
+    "LineWidth": %d,
+    "PointColor": %s,
+    "PointSize": %d,
+}
+
+defaultShapeAppearance = {
+    "DiffuseColor": %s,
+    "AmbientColor": %s,
+    "SpecularColor": %s,
+    "EmissiveColor": %s,
+    "Shininess": %f,
+    "Transparency": %f,
+}
+
+def is_default(v):
+    for p in defaultView:
+        if not hasattr(v, p):
+            return False
+        if getattr(v, p) != getattr(box, p):
+            return False
+
+    if not hasattr(v, "ShapeAppearance") or len(v.ShapeAppearance) != 1:
+        return False
+
+    for p in defaultShapeAppearance:
+        if getattr(v.ShapeAppearance[0], p) != getattr(box.ShapeAppearance[0], p):
+            return False
+
+    return True
+
+# create an instance of every TypeId we found and check if it uses the default appearance
+
+default_view_types = set()
+for type in types:
+    obj = tmp.addObject(type)
+
+    if is_default(obj.ViewObject):
+        default_view_types.add(type)
+
+    tmp.removeObject(obj.Name)
+
+# SubShapeBinder uses default appearance depending on it's name
+
+default_view_types.discard("PartDesign::SubShapeBinder")
+
+# set a view to default appearance
+
+def set_default(v):
+    for p, val in defaultView.items():
+        if hasattr(v, p):
+            setattr(v, p, val)
+
+    if hasattr(v, "ShapeAppearance"):
+        v.ShapeAppearance = App.Material(**defaultShapeAppearance)
+
+# go through all documents and objects and set them to default appearance
+
+for name, doc in App.listDocuments().items():
+    for obj in doc.Objects:
+        if obj.TypeId in default_view_types:
+            set_default(obj.ViewObject)
+
+# close temporary document
+
+App.closeDocument(tmp.Name)
+
+)xxx";
+
+static QString colorToTuple(const QColor& c)
+{
+    return QStringLiteral("(%1,%2,%3)").arg(c.red()).arg(c.green()).arg(c.blue());
+}
+
+void DlgSettingsObjectColor::onBtnTVApplyClicked(bool)
+{
+    const char* lighting = ui->twosideRendering->isChecked()? "\"Two side\"": "\"One side\"";
+    const QString lineColor = colorToTuple(ui->DefaultShapeLineColor->color());
+    const int lineWidth = ui->DefaultShapeLineWidth->value();
+    const QString pointColor = colorToTuple(ui->DefaultShapeVertexColor->color());
+    const int pointSize = ui->DefaultShapeVertexSize->value();
+
+    const QString diffuseColor = colorToTuple(ui->DefaultShapeColor->color());
+    const QString ambientColor = colorToTuple(ui->DefaultAmbientColor->color());
+    const QString specularColor = colorToTuple(ui->DefaultSpecularColor->color());
+    const QString emissiveColor = colorToTuple(ui->DefaultEmissiveColor->color());
+    const float shininess = ui->DefaultShapeShininess->value() / 100.0f;
+    const float transparency = ui->DefaultShapeTransparency->value() / 100.0f;
+
+    QString errMsg;
+    try {
+        Gui::Command::doCommand(Gui::Command::Gui, APPLY_COMMAND_STRING,
+                lighting,
+                lineColor.toLatin1().constData(),
+                lineWidth,
+                pointColor.toLatin1().constData(),
+                pointSize,
+                diffuseColor.toLatin1().constData(),
+                ambientColor.toLatin1().constData(),
+                specularColor.toLatin1().constData(),
+                emissiveColor.toLatin1().constData(),
+                shininess,
+                transparency);
+    }
+    catch (Base::PyException& e) {
+        Base::Console().developerError("DlgSettingsObjectColor", "error in onBtnTVApplyClicked:\n");
+        e.reportException();
+        errMsg = QString::fromLatin1(e.what());
+    }
+    catch (...) {
+        errMsg = tr("Unexpected C++ exception");
+    }
+    if (errMsg.length() > 0) {
+        QMessageBox::warning(this, tr("Part/PartDesign"), errMsg);
     }
 }
 
