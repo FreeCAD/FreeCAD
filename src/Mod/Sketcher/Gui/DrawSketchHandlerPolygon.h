@@ -30,6 +30,7 @@
 #include <Gui/Notifications.h>
 #include <Gui/Command.h>
 #include <Gui/CommandT.h>
+#include <Gui/InputHint.h>
 
 #include <Mod/Sketcher/App/SketchObject.h>
 
@@ -74,32 +75,11 @@ public:
     {}
     ~DrawSketchHandlerPolygon() override = default;
 
-    std::list<Gui::InputHint> getToolHints() const override
-    {
-        using UserInput = Gui::InputHint::UserInput;
-
-        switch (state()) {
-            case SelectMode::SeekFirst:
-                return {
-                    {QWidget::tr("%1 pick polygon center"), {UserInput::MouseLeft}},
-                    {QWidget::tr("%1/%2 increase / decrease number of sides"),
-                     {UserInput::KeyU, UserInput::KeyJ}},
-                };
-            case SelectMode::SeekSecond:
-                return {
-                    {QWidget::tr("%1 pick rotation and size"), {UserInput::MouseMove}},
-                    {QWidget::tr("%1 confirm"), {UserInput::MouseLeft}},
-                    {QWidget::tr("%1/%2 increase / decrease number of sides"),
-                     {UserInput::KeyU, UserInput::KeyJ}},
-                };
-            default:
-                return {};
-        }
-    }
-
 private:
     void updateDataAndDrawToPosition(Base::Vector2d onSketchPos) override
     {
+        updateHints();
+
         switch (state()) {
             case SelectMode::SeekFirst: {
                 toolWidgetManager.drawPositionAtCursor(onSketchPos);
@@ -283,6 +263,40 @@ private:
                                    isConstructionMode());
             prevCorner = newCorner;
         }
+    }
+
+    void updateHints() const
+    {
+        using Gui::InputHint;
+        using UserInput = Gui::InputHint::UserInput;
+        std::list<InputHint> hints;
+
+        switch (state()) {
+            case SelectMode::SeekFirst:
+                hints.push_back(
+                    InputHint(QCoreApplication::translate("Sketcher", "%1 pick polygon center"),
+                              {UserInput::MouseLeft}));
+                hints.push_back(InputHint(
+                    QCoreApplication::translate("Sketcher",
+                                                "%1/%2 increase / decrease number of sides"),
+                    {UserInput::KeyU, UserInput::KeyJ}));
+                break;
+            case SelectMode::SeekSecond:
+                hints.push_back(
+                    InputHint(QCoreApplication::translate("Sketcher", "%1 pick rotation and size"),
+                              {UserInput::MouseMove}));
+                hints.push_back(InputHint(QCoreApplication::translate("Sketcher", "%1 confirm"),
+                                          {UserInput::MouseLeft}));
+                hints.push_back(InputHint(
+                    QCoreApplication::translate("Sketcher",
+                                                "%1/%2 increase / decrease number of sides"),
+                    {UserInput::KeyU, UserInput::KeyJ}));
+                break;
+            default:
+                break;
+        }
+
+        Gui::getMainWindow()->showHints(hints);
     }
 };
 
