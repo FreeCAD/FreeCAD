@@ -139,13 +139,10 @@ void Action::setCheckable(bool check)
 
 void Action::setChecked(bool check, bool no_signal)
 {
-    bool blocked = false;
-    if (no_signal) {
-        blocked = _action->blockSignals(true);
-    }
+    bool wasBlocked = no_signal && _action->blockSignals(true);
     _action->setChecked(check);
     if (no_signal) {
-        _action->blockSignals(blocked);
+        _action->blockSignals(wasBlocked);
     }
 }
 
