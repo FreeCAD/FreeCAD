@@ -29,6 +29,17 @@ from .base import AssetStore
 def _resolve_case_insensitive(path: pathlib.Path) -> pathlib.Path:
     if path.is_file():
         return path
+
+    # pathlib in Python 2.10 (2.1x versions) does not support
+    # 'case_sensitive' argument in glob. Instead, simulate
+    # case-insensitive search manually
+    pattern = path.name.lower()
+    for p in path.parent.glob("*"):
+        if p.name.lower() == pattern:
+            return p
+    return path
+
+    # Use this starting Python 2.13:
     try:
         return next(path.parent.glob(path.name, case_sensitive=False))
     except StopIteration:
