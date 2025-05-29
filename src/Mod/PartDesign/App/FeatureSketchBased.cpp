@@ -184,13 +184,18 @@ TopoShape ProfileBased::getTopoShapeVerifiedFace(bool silent,
         TopoShape shape;
         if (AllowMultiFace.getValue()) {
             if (subs.empty()) {
-                shape = Part::Feature::getTopoShape(obj);
+                shape = Part::Feature::getTopoShape(obj, Part::ShapeOption::ResolveLink | Part::ShapeOption::Transform);
             }
             else {
                 std::vector<TopoShape> shapes;
                 for (auto& sub : subs) {
-                    auto subshape =
-                        Part::Feature::getTopoShape(obj, sub.c_str(), /*needSubElement*/ true);
+                    auto subshape = Part::Feature::getTopoShape(obj,
+                                                                  Part::ShapeOption::NeedSubElement
+                                                                | Part::ShapeOption::ResolveLink
+                                                                | Part::ShapeOption::Transform,
+                                                                sub.c_str());
+
+
                     if (subshape.isNull()) {
                         FC_THROWM(Base::CADKernelError,
                                   "Sub shape not found: " << obj->getFullName() << "." << sub);
@@ -207,7 +212,11 @@ TopoShape ProfileBased::getTopoShapeVerifiedFace(bool silent,
                     sub = subs[0];
                 }
             }
-            shape = Part::Feature::getTopoShape(obj, sub.c_str(), !sub.empty());
+            shape = Part::Feature::getTopoShape(obj,
+                                                  (sub.empty() ? Part::ShapeOption::NoFlag : Part::ShapeOption::NeedSubElement)
+                                                | Part::ShapeOption::ResolveLink
+                                                | Part::ShapeOption::Transform,
+                                                sub.c_str());
         }
         if (shape.isNull()) {
             if (silent) {
@@ -404,19 +413,20 @@ TopoDS_Shape ProfileBased::getVerifiedFace(bool silent) const {
     return TopoDS_Face();
 }
 
-TopoShape ProfileBased::getProfileShape() const
+TopoShape ProfileBased::getProfileShape(Part::ShapeOptions subShapeOptions) const
 {
     TopoShape shape;
     const auto& subs = Profile.getSubValues();
     auto profile = Profile.getValue();
     if (subs.empty()) {
-        shape = Part::Feature::getTopoShape(profile);
+        shape = Part::Feature::getTopoShape(profile, Part::ShapeOption::ResolveLink | Part::ShapeOption::Transform);
     }
     else {
         std::vector<TopoShape> shapes;
         for (auto& sub : subs) {
-            shapes.push_back(
-                Part::Feature::getTopoShape(profile, sub.c_str(), /* needSubElement */ true));
+            shapes.push_back(Part::Feature::getTopoShape(profile,
+                                                         subShapeOptions,
+                                                         sub.c_str()));
         }
         shape = TopoShape(shape.Tag).makeElementCompound(shapes);
     }
@@ -567,9 +577,11 @@ TopoShape ProfileBased::getTopoShapeSupportFace() const
         const auto& Support = sketch->AttachmentSupport;
         App::DocumentObject* ref = Support.getValue();
         shape = Part::Feature::getTopoShape(
-            ref,
-            Support.getSubValues().size() ? Support.getSubValues()[0].c_str() : "",
-            true);
+                        ref,
+                            Part::ShapeOption::NeedSubElement
+                          | Part::ShapeOption::ResolveLink
+                          | Part::ShapeOption::Transform,
+                        Support.getSubValues().empty() ? "" : Support.getSubValues()[0].c_str());
     }
     if (!shape.isNull()) {
         if (shape.shapeType(true) != TopAbs_FACE) {
@@ -663,7 +675,13 @@ void ProfileBased::getUpToFaceFromLinkSub(TopoShape& upToFace, const App::Proper
     }
 
     const auto& subs = refFace.getSubValues();
-    upToFace = Part::Feature::getTopoShape(ref, subs.size() ? subs[0].c_str() : nullptr, true);
+    upToFace = Part::Feature::getTopoShape(
+        ref,
+          Part::ShapeOption::NeedSubElement
+        | Part::ShapeOption::ResolveLink
+        | Part::ShapeOption::Transform,
+        subs.empty() ? nullptr : subs[0].c_str());
+
     if (!upToFace.hasSubShape(TopAbs_FACE)) {
         throw Base::ValueError("SketchBased: Up to face: Failed to extract face");
     }
@@ -687,7 +705,12 @@ int ProfileBased::getUpToShapeFromLinkSubList(TopoShape& upToShape, const App::P
 
             auto subStrings = subSet.second;
             if (subStrings.empty() || subStrings[0].empty()) {
-                TopoShape baseShape = Part::Feature::getTopoShape(ref, nullptr, true);
+                TopoShape baseShape = Part::Feature::getTopoShape(ref,
+                                                                    Part::ShapeOption::NeedSubElement
+                                                                  | Part::ShapeOption::ResolveLink
+                                                                  | Part::ShapeOption::Transform);
+
+
                 for (auto face : baseShape.getSubTopoShapes(TopAbs_FACE)){
                     faceList.push_back(face);
                     ret ++;
@@ -695,7 +718,13 @@ int ProfileBased::getUpToShapeFromLinkSubList(TopoShape& upToShape, const App::P
             }
             else {
                 for (auto &subString : subStrings){
-                    auto shape = Part::Feature::getTopoShape(ref, subString.c_str(), true);
+                    auto shape = Part::Feature::getShape(
+                                    ref, 
+                                      Part::ShapeOption::NeedSubElement
+                                    | Part::ShapeOption::ResolveLink
+                                    | Part::ShapeOption::Transform,
+                                    subString.c_str());
+
                     TopoShape face = shape;
                     face = face.makeElementFace();
                     if (face.isNull()) {
@@ -1419,7 +1448,7 @@ Base::Vector3d ProfileBased::getProfileNormal() const {
 
     if (shape.hasSubShape(TopAbs_EDGE)) {
         // Find the first planar face that contains the edge, and return the plane normal
-        TopoShape objShape = Part::Feature::getTopoShape(obj);
+        TopoShape objShape = Part::Feature::getTopoShape(obj, Part::ShapeOption::ResolveLink | Part::ShapeOption::Transform);
         for (int idx : objShape.findAncestors(shape.getSubShape(TopAbs_EDGE, 1), TopAbs_FACE)) {
             if (objShape.getSubTopoShape(TopAbs_FACE, idx).findPlane(pln)) {
                 gp_Dir dir = pln.Axis().Direction();

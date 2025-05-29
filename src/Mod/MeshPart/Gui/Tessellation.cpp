@@ -217,7 +217,10 @@ void Tessellation::onEstimateMaximumEdgeLengthClicked()
 
     double edgeLen = 0;
     for (auto& sel : Gui::Selection().getSelection("*", Gui::ResolveMode::NoResolve)) {
-        auto shape = Part::Feature::getTopoShape(sel.pObject, sel.SubName);
+        auto shape = Part::Feature::getTopoShape(sel.pObject,
+                                                 Part::ShapeOption::ResolveLink
+                                                     | Part::ShapeOption::Transform,
+                                                 sel.SubName);
         if (shape.hasSubShape(TopAbs_FACE)) {
             Base::BoundBox3d bbox = shape.getBoundBox();
             edgeLen = std::max<double>(edgeLen, bbox.LengthX());
@@ -249,7 +252,10 @@ bool Tessellation::accept()
     bool bodyWithNoTip = false;
     bool partWithNoFace = false;
     for (auto& sel : Gui::Selection().getSelection("*", Gui::ResolveMode::NoResolve)) {
-        auto shape = Part::Feature::getTopoShape(sel.pObject, sel.SubName);
+        auto shape = Part::Feature::getTopoShape(sel.pObject,
+                                                 Part::ShapeOption::ResolveLink
+                                                     | Part::ShapeOption::Transform,
+                                                 sel.SubName);
         if (shape.hasSubShape(TopAbs_FACE)) {
             shapeObjects.emplace_back(sel.pObject, sel.SubName);
         }
@@ -568,7 +574,10 @@ bool Mesh2ShapeGmsh::writeProject(QString& inpFile, QString& outFile)
 
         App::DocumentObject* part = sub.getObject();
         if (part) {
-            Part::TopoShape shape = Part::Feature::getTopoShape(part, sub.getSubName().c_str());
+            Part::TopoShape shape = Part::Feature::getTopoShape(part,
+                                                                Part::ShapeOption::ResolveLink
+                                                                    | Part::ShapeOption::Transform,
+                                                                sub.getSubName().c_str());
             shape.exportBrep(d->cadFile.c_str());
             d->label = part->Label.getStrValue() + " (Meshed)";
 

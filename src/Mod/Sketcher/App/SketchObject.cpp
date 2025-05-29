@@ -7099,7 +7099,9 @@ int SketchObject::addExternal(App::DocumentObject* Obj,
         return -1;
     }
 
-    auto wholeShape = Part::Feature::getTopoShape(Obj);
+    auto wholeShape =
+        Part::Feature::getTopoShape(Obj,
+                                    Part::ShapeOption::ResolveLink | Part::ShapeOption::Transform);
     auto shape = wholeShape.getSubTopoShape(SubName, /*silent*/ true);
     TopAbs_ShapeEnum shapeType = TopAbs_SHAPE;
     if (shape.shapeType(/*silent*/ true) != TopAbs_FACE) {
