@@ -1703,6 +1703,7 @@ def makeWindow(baseobj=None, width=None, height=None, parts=None, name=None):
     1. If baseobj is not a closed shape, the tool may not create a proper solid figure.
     """
     import Draft
+    import DraftGeomUtils
     from draftutils import todo
 
     if baseobj and Draft.getType(baseobj) == "Window" and FreeCAD.ActiveDocument:
@@ -1730,8 +1731,12 @@ def makeWindow(baseobj=None, width=None, height=None, parts=None, name=None):
         window.WindowParts = parts
     else:
         if baseobj:
-            if baseobj.getLinkedObject().isDerivedFrom("Part::Part2DObject"):
-                # Base object is a 2D object (sketch or wire)
+            linked_obj = baseobj.getLinkedObject(True)
+            if (linked_obj.isDerivedFrom("Part::Part2DObject")
+                or Draft.getType(linked_obj) in ["BezCurve", "BSpline", "Wire"]) \
+                    and DraftGeomUtils.isPlanar(baseobj.Shape):
+                # "BezCurve", "BSpline" and "Wire" objects created with < v1.1 are "Part::Part2DObject" objects.
+                # In all versions these objects need not be planar.
                 if baseobj.Shape.Wires:
                     part_type = "Frame"
                     if len(baseobj.Shape.Wires) == 1:

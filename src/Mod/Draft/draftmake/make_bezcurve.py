@@ -81,7 +81,8 @@ def make_bezcurve(pointslist,
         utils.type_check([(placement,App.Placement)], "make_bezcurve")
     if len(pointslist) == 2: fname = "Line"
     else: fname = "BezCurve"
-    obj = App.ActiveDocument.addObject("Part::Part2DObjectPython",fname)
+    obj = App.ActiveDocument.addObject("Part::FeaturePython", fname)
+    obj.addExtension("Part::AttachExtensionPython")
     BezCurve(obj)
     obj.Points = pointslist
     if degree:
