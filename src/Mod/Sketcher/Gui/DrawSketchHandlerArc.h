@@ -90,17 +90,20 @@ private:
         using Gui::InputHint;
         using enum Gui::InputHint::UserInput;
 
+        // Define once at function level
+        const InputHint switchModeHint {QObject::tr("%1 switch mode"), {KeyM}};
+
         if (constructionMethod() == ConstructionMethod::Center) {
             switch (state()) {
                 case SelectMode::SeekFirst:
                     return {InputHint {QObject::tr("%1 pick arc center"), {MouseLeft}},
-                            InputHint {QObject::tr("%1 switch mode"), {KeyM}}};
+                            switchModeHint};
                 case SelectMode::SeekSecond:
                     return {InputHint {QObject::tr("%1 pick arc start point"), {MouseLeft}},
-                            InputHint {QObject::tr("%1 switch mode"), {KeyM}}};
+                            switchModeHint};
                 case SelectMode::SeekThird:
                     return {InputHint {QObject::tr("%1 pick arc end point"), {MouseLeft}},
-                            InputHint {QObject::tr("%1 switch mode"), {KeyM}}};
+                            switchModeHint};
                 default:
                     return {};
             }
@@ -108,14 +111,14 @@ private:
         else if (constructionMethod() == ConstructionMethod::ThreeRim) {
             switch (state()) {
                 case SelectMode::SeekFirst:
-                    return {InputHint {QObject::tr("%1 pick first rim point"), {MouseLeft}},
-                            InputHint {QObject::tr("%1 switch mode"), {KeyM}}};
+                    return {InputHint {QObject::tr("%1 pick first arc point"), {MouseLeft}},
+                            switchModeHint};
                 case SelectMode::SeekSecond:
-                    return {InputHint {QObject::tr("%1 pick second rim point"), {MouseLeft}},
-                            InputHint {QObject::tr("%1 switch mode"), {KeyM}}};
+                    return {InputHint {QObject::tr("%1 pick second arc point"), {MouseLeft}},
+                            switchModeHint};
                 case SelectMode::SeekThird:
-                    return {InputHint {QObject::tr("%1 pick third rim point"), {MouseLeft}},
-                            InputHint {QObject::tr("%1 switch mode"), {KeyM}}};
+                    return {InputHint {QObject::tr("%1 pick third arc point"), {MouseLeft}},
+                            switchModeHint};
                 default:
                     return {};
             }

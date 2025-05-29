@@ -117,22 +117,24 @@ private:
         using Gui::InputHint;
         using enum Gui::InputHint::UserInput;
 
+        const InputHint switchModeHint {QObject::tr("%1 switch mode"), {KeyM}};
+
         switch (constructionMethod()) {
             case ConstructionMethods::RectangleConstructionMethod::Diagonal:
                 switch (state()) {
                     case SelectMode::SeekFirst:
                         return {InputHint {QObject::tr("%1 pick first corner"), {MouseLeft}},
-                                InputHint {QObject::tr("%1 switch mode"), {KeyM}}};
+                                switchModeHint};
                     case SelectMode::SeekSecond:
                         return {InputHint {QObject::tr("%1 pick opposite corner"), {MouseLeft}},
-                                InputHint {QObject::tr("%1 switch mode"), {KeyM}}};
+                                switchModeHint};
                     case SelectMode::SeekThird:
                         return {InputHint {QObject::tr("%1 set corner radius or frame thickness"),
                                            {MouseMove}},
-                                InputHint {QObject::tr("%1 switch mode"), {KeyM}}};
+                                switchModeHint};
                     case SelectMode::SeekFourth:
                         return {InputHint {QObject::tr("%1 set frame thickness"), {MouseMove}},
-                                InputHint {QObject::tr("%1 switch mode"), {KeyM}}};
+                                switchModeHint};
                     default:
                         return {};
                 }
@@ -140,17 +142,17 @@ private:
                 switch (state()) {
                     case SelectMode::SeekFirst:
                         return {InputHint {QObject::tr("%1 pick center"), {MouseLeft}},
-                                InputHint {QObject::tr("%1 switch mode"), {KeyM}}};
+                                switchModeHint};
                     case SelectMode::SeekSecond:
                         return {InputHint {QObject::tr("%1 pick corner"), {MouseLeft}},
-                                InputHint {QObject::tr("%1 switch mode"), {KeyM}}};
+                                switchModeHint};
                     case SelectMode::SeekThird:
                         return {InputHint {QObject::tr("%1 set corner radius or frame thickness"),
                                            {MouseMove}},
-                                InputHint {QObject::tr("%1 switch mode"), {KeyM}}};
+                                switchModeHint};
                     case SelectMode::SeekFourth:
                         return {InputHint {QObject::tr("%1 set frame thickness"), {MouseMove}},
-                                InputHint {QObject::tr("%1 switch mode"), {KeyM}}};
+                                switchModeHint};
                     default:
                         return {};
                 }
@@ -158,17 +160,17 @@ private:
                 switch (state()) {
                     case SelectMode::SeekFirst:
                         return {InputHint {QObject::tr("%1 pick first corner"), {MouseLeft}},
-                                InputHint {QObject::tr("%1 switch mode"), {KeyM}}};
+                                switchModeHint};
                     case SelectMode::SeekSecond:
                         return {InputHint {QObject::tr("%1 pick second corner"), {MouseLeft}},
-                                InputHint {QObject::tr("%1 switch mode"), {KeyM}}};
+                                switchModeHint};
                     case SelectMode::SeekThird:
                         return {InputHint {QObject::tr("%1 pick third corner"), {MouseLeft}},
-                                InputHint {QObject::tr("%1 switch mode"), {KeyM}}};
+                                switchModeHint};
                     case SelectMode::SeekFourth:
                         return {InputHint {QObject::tr("%1 set corner radius or frame thickness"),
                                            {MouseMove}},
-                                InputHint {QObject::tr("%1 switch mode"), {KeyM}}};
+                                switchModeHint};
                     default:
                         return {};
                 }
@@ -176,17 +178,17 @@ private:
                 switch (state()) {
                     case SelectMode::SeekFirst:
                         return {InputHint {QObject::tr("%1 pick center"), {MouseLeft}},
-                                InputHint {QObject::tr("%1 switch mode"), {KeyM}}};
+                                switchModeHint};
                     case SelectMode::SeekSecond:
                         return {InputHint {QObject::tr("%1 pick first corner"), {MouseLeft}},
-                                InputHint {QObject::tr("%1 switch mode"), {KeyM}}};
+                                switchModeHint};
                     case SelectMode::SeekThird:
                         return {InputHint {QObject::tr("%1 pick second corner"), {MouseLeft}},
-                                InputHint {QObject::tr("%1 switch mode"), {KeyM}}};
+                                switchModeHint};
                     case SelectMode::SeekFourth:
                         return {InputHint {QObject::tr("%1 set corner radius or frame thickness"),
                                            {MouseMove}},
-                                InputHint {QObject::tr("%1 switch mode"), {KeyM}}};
+                                switchModeHint};
                     default:
                         return {};
                 }

@@ -258,13 +258,15 @@ private:
         using Gui::InputHint;
         using enum Gui::InputHint::UserInput;
 
+        const InputHint switchModeHint {QObject::tr("%1 switch mode"), {KeyM}};
+
         switch (state()) {
             case SelectMode::SeekFirst:
                 return {InputHint {QObject::tr("%1 pick first point"), {MouseLeft}},
-                        InputHint {QObject::tr("%1 switch mode"), {KeyM}}};
+                        switchModeHint};
             case SelectMode::SeekSecond:
                 return {InputHint {QObject::tr("%1 pick second point"), {MouseLeft}},
-                        InputHint {QObject::tr("%1 switch mode"), {KeyM}}};
+                        switchModeHint};
             default:
                 return {};
         }

@@ -100,15 +100,17 @@ private:
         using Gui::InputHint;
         using enum Gui::InputHint::UserInput;
 
+        const InputHint switchModeHint {QObject::tr("%1 switch mode"), {KeyM}};
+
         if (constructionMethod() == ConstructionMethod::ControlPoints) {
             switch (state()) {
                 case SelectMode::SeekFirst:
                     return {InputHint {QObject::tr("%1 pick first control point"), {MouseLeft}},
-                            InputHint {QObject::tr("%1 switch mode"), {KeyM}}};
+                            switchModeHint};
                 case SelectMode::SeekSecond:
                     return {InputHint {QObject::tr("%1 pick next control point"), {MouseLeft}},
                             InputHint {QObject::tr("%1 finish B-spline"), {MouseRight}},
-                            InputHint {QObject::tr("%1 switch mode"), {KeyM}}};
+                            switchModeHint};
                 default:
                     return {};
             }
@@ -117,11 +119,11 @@ private:
             switch (state()) {
                 case SelectMode::SeekFirst:
                     return {InputHint {QObject::tr("%1 pick first knot"), {MouseLeft}},
-                            InputHint {QObject::tr("%1 switch mode"), {KeyM}}};
+                            switchModeHint};
                 case SelectMode::SeekSecond:
                     return {InputHint {QObject::tr("%1 pick next knot"), {MouseLeft}},
                             InputHint {QObject::tr("%1 finish B-spline"), {MouseRight}},
-                            InputHint {QObject::tr("%1 switch mode"), {KeyM}}};
+                            switchModeHint};
                 default:
                     return {};
             }
