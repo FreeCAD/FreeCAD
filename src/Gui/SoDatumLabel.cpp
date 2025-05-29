@@ -1465,13 +1465,20 @@ void SoDatumLabel::drawAngle(const SbVec3f* points, float& angle, SbVec3f& textO
     glDrawArc(p0, r, startangle+range/2.+textMargin, endangle);
 
     // Direction vectors for start and end lines
-    SbVec3f v1(cos(startangle),sin(startangle),0);
-    SbVec3f v2(cos(endangle),sin(endangle),0);
+    SbVec3f *v1, *v2;
+    if (range < 0) {
+        v2 = new SbVec3f(cos(startangle), sin(startangle), 0);
+        v1 = new SbVec3f(cos(endangle), sin(endangle), 0);
+    }
+    else {
+        v1 = new SbVec3f(cos(startangle), sin(startangle), 0);
+        v2 = new SbVec3f(cos(endangle), sin(endangle), 0);
+    }
 
-    SbVec3f pnt1 = p0 + (r - endLineLength1) * v1;
-    SbVec3f pnt2 = p0 + (r + endLineLength12) * v1;
-    SbVec3f pnt3 = p0 + (r - endLineLength2) * v2;
-    SbVec3f pnt4 = p0 + (r + endLineLength22) * v2;
+    SbVec3f pnt1 = p0 + (r - endLineLength1) * *v1;
+    SbVec3f pnt2 = p0 + (r + endLineLength12) * *v1;
+    SbVec3f pnt3 = p0 + (r - endLineLength2) * *v2;
+    SbVec3f pnt4 = p0 + (r + endLineLength22) * *v2;
 
     glDrawLine(pnt1, pnt2);
     glDrawLine(pnt3, pnt4);
@@ -1480,14 +1487,16 @@ void SoDatumLabel::drawAngle(const SbVec3f* points, float& angle, SbVec3f& textO
     float arrowLength = margin * 2;
     float arrowWidth = margin * 0.5F;
 
-    SbVec3f dirStart(v1[1], -v1[0], 0);
-    SbVec3f startArrowBase = p0 + r * v1;
+    SbVec3f dirStart((*v1)[1], -(*v1)[0], 0);
+    SbVec3f startArrowBase = p0 + r * *v1;
     glDrawArrow(startArrowBase, dirStart, arrowWidth, arrowLength);
 
-    SbVec3f dirEnd(-v2[1], v2[0], 0);
-    SbVec3f endArrowBase = p0 + r * v2;
+    SbVec3f dirEnd(-(*v2)[1], (*v2)[0], 0);
+    SbVec3f endArrowBase = p0 + r * *v2;
     glDrawArrow(endArrowBase, dirEnd, arrowWidth, arrowLength);
 
+    delete v1;
+    delete v2;
 }
 
 void SoDatumLabel::drawSymmetric(const SbVec3f* points)
