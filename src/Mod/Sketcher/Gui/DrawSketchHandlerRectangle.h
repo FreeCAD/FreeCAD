@@ -115,123 +115,68 @@ private:
     std::list<Gui::InputHint> getToolHints() const override
     {
         using Gui::InputHint;
-        using UserInput = Gui::InputHint::UserInput;
-        std::list<InputHint> hints;
+        using enum Gui::InputHint::UserInput;
 
         switch (constructionMethod()) {
             case ConstructionMethods::RectangleConstructionMethod::Diagonal:
                 switch (state()) {
                     case SelectMode::SeekFirst:
-                        hints.push_back(InputHint(
-                            QCoreApplication::translate("Sketcher", "%1 pick first corner"),
-                            {UserInput::MouseLeft}));
-                        break;
+                        return {InputHint {QObject::tr("%1 pick first corner"), {MouseLeft}}};
                     case SelectMode::SeekSecond:
-                        hints.push_back(InputHint(
-                            QCoreApplication::translate("Sketcher", "%1 pick opposite corner"),
-                            {UserInput::MouseLeft}));
-                        break;
+                        return {InputHint {QObject::tr("%1 pick opposite corner"), {MouseLeft}}};
                     case SelectMode::SeekThird:
-                        hints.push_back(InputHint(
-                            QCoreApplication::translate("Sketcher",
-                                                        "%1 set corner radius or frame thickness"),
-                            {UserInput::MouseMove}));
-                        break;
+                        return {InputHint {QObject::tr("%1 set corner radius or frame thickness"),
+                                           {MouseMove}}};
                     case SelectMode::SeekFourth:
-                        hints.push_back(InputHint(
-                            QCoreApplication::translate("Sketcher", "%1 set frame thickness"),
-                            {UserInput::MouseMove}));
-                        break;
+                        return {InputHint {QObject::tr("%1 set frame thickness"), {MouseMove}}};
                     default:
-                        break;
+                        return {};
                 }
-                break;
             case ConstructionMethods::RectangleConstructionMethod::CenterAndCorner:
                 switch (state()) {
                     case SelectMode::SeekFirst:
-                        hints.push_back(
-                            InputHint(QCoreApplication::translate("Sketcher", "%1 pick center"),
-                                      {UserInput::MouseLeft}));
-                        break;
+                        return {InputHint {QObject::tr("%1 pick center"), {MouseLeft}}};
                     case SelectMode::SeekSecond:
-                        hints.push_back(
-                            InputHint(QCoreApplication::translate("Sketcher", "%1 pick corner"),
-                                      {UserInput::MouseLeft}));
-                        break;
+                        return {InputHint {QObject::tr("%1 pick corner"), {MouseLeft}}};
                     case SelectMode::SeekThird:
-                        hints.push_back(InputHint(
-                            QCoreApplication::translate("Sketcher",
-                                                        "%1 set corner radius or frame thickness"),
-                            {UserInput::MouseMove}));
-                        break;
+                        return {InputHint {QObject::tr("%1 set corner radius or frame thickness"),
+                                           {MouseMove}}};
                     case SelectMode::SeekFourth:
-                        hints.push_back(InputHint(
-                            QCoreApplication::translate("Sketcher", "%1 set frame thickness"),
-                            {UserInput::MouseMove}));
-                        break;
+                        return {InputHint {QObject::tr("%1 set frame thickness"), {MouseMove}}};
                     default:
-                        break;
+                        return {};
                 }
-                break;
             case ConstructionMethods::RectangleConstructionMethod::ThreePoints:
                 switch (state()) {
                     case SelectMode::SeekFirst:
-                        hints.push_back(InputHint(
-                            QCoreApplication::translate("Sketcher", "%1 pick first corner"),
-                            {UserInput::MouseLeft}));
-                        break;
+                        return {InputHint {QObject::tr("%1 pick first corner"), {MouseLeft}}};
                     case SelectMode::SeekSecond:
-                        hints.push_back(InputHint(
-                            QCoreApplication::translate("Sketcher", "%1 pick second corner"),
-                            {UserInput::MouseLeft}));
-                        break;
+                        return {InputHint {QObject::tr("%1 pick second corner"), {MouseLeft}}};
                     case SelectMode::SeekThird:
-                        hints.push_back(InputHint(
-                            QCoreApplication::translate("Sketcher", "%1 pick third corner"),
-                            {UserInput::MouseLeft}));
-                        break;
+                        return {InputHint {QObject::tr("%1 pick third corner"), {MouseLeft}}};
                     case SelectMode::SeekFourth:
-                        hints.push_back(InputHint(
-                            QCoreApplication::translate("Sketcher",
-                                                        "%1 set corner radius or frame thickness"),
-                            {UserInput::MouseMove}));
-                        break;
+                        return {InputHint {QObject::tr("%1 set corner radius or frame thickness"),
+                                           {MouseMove}}};
                     default:
-                        break;
+                        return {};
                 }
-                break;
             case ConstructionMethods::RectangleConstructionMethod::CenterAnd3Points:
                 switch (state()) {
                     case SelectMode::SeekFirst:
-                        hints.push_back(
-                            InputHint(QCoreApplication::translate("Sketcher", "%1 pick center"),
-                                      {UserInput::MouseLeft}));
-                        break;
+                        return {InputHint {QObject::tr("%1 pick center"), {MouseLeft}}};
                     case SelectMode::SeekSecond:
-                        hints.push_back(InputHint(
-                            QCoreApplication::translate("Sketcher", "%1 pick first corner"),
-                            {UserInput::MouseLeft}));
-                        break;
+                        return {InputHint {QObject::tr("%1 pick first corner"), {MouseLeft}}};
                     case SelectMode::SeekThird:
-                        hints.push_back(InputHint(
-                            QCoreApplication::translate("Sketcher", "%1 pick second corner"),
-                            {UserInput::MouseLeft}));
-                        break;
+                        return {InputHint {QObject::tr("%1 pick second corner"), {MouseLeft}}};
                     case SelectMode::SeekFourth:
-                        hints.push_back(InputHint(
-                            QCoreApplication::translate("Sketcher",
-                                                        "%1 set corner radius or frame thickness"),
-                            {UserInput::MouseMove}));
-                        break;
+                        return {InputHint {QObject::tr("%1 set corner radius or frame thickness"),
+                                           {MouseMove}}};
                     default:
-                        break;
+                        return {};
                 }
-                break;
             default:
-                break;
+                return {};
         }
-
-        return hints;
     }
 
     void updateDataAndDrawToPosition(Base::Vector2d onSketchPos) override
@@ -2194,246 +2139,6 @@ void DSHRectangleControllerBase::doEnforceControlParameters(Base::Vector2d& onSk
 
                 onSketchPos = handler->corner1 - dir * tr;
             }
-        } break;
-        default:
-            break;
-    }
-}
-
-template<>
-void DSHRectangleController::adaptParameters(Base::Vector2d onSketchPos)
-{
-
-    // If checkboxes need synchronisation (they were changed by the DSH, e.g. by using 'M' to switch
-    // construction method), synchronise them and return.
-    if (syncCheckboxToHandler(WCheckbox::FirstBox, handler->roundCorners)) {
-        return;
-    }
-
-    if (syncCheckboxToHandler(WCheckbox::SecondBox, handler->makeFrame)) {
-        return;
-    }
-
-    switch (handler->state()) {
-        case SelectMode::SeekFirst: {
-            if (!onViewParameters[OnViewParameter::First]->isSet) {
-                setOnViewParameterValue(OnViewParameter::First, onSketchPos.x);
-            }
-
-            if (!onViewParameters[OnViewParameter::Second]->isSet) {
-                setOnViewParameterValue(OnViewParameter::Second, onSketchPos.y);
-            }
-
-            bool sameSign = onSketchPos.x * onSketchPos.y > 0.;
-            onViewParameters[OnViewParameter::First]->setLabelAutoDistanceReverse(!sameSign);
-            onViewParameters[OnViewParameter::Second]->setLabelAutoDistanceReverse(sameSign);
-            onViewParameters[OnViewParameter::First]->setPoints(Base::Vector3d(),
-                                                                toVector3d(onSketchPos));
-            onViewParameters[OnViewParameter::Second]->setPoints(Base::Vector3d(),
-                                                                 toVector3d(onSketchPos));
-        } break;
-        case SelectMode::SeekSecond: {
-            if (handler->constructionMethod() == ConstructionMethod::Diagonal
-                || handler->constructionMethod() == ConstructionMethod::CenterAndCorner) {
-                if (!onViewParameters[OnViewParameter::Third]->isSet) {
-                    double length = handler->cornersReversed ? handler->width : handler->length;
-                    setOnViewParameterValue(OnViewParameter::Third, length);
-                }
-
-                if (!onViewParameters[OnViewParameter::Fourth]->isSet) {
-                    double width = handler->cornersReversed ? handler->length : handler->width;
-                    setOnViewParameterValue(OnViewParameter::Fourth, width);
-                }
-
-                Base::Vector3d start = toVector3d(handler->corner1);
-                Base::Vector3d vec = toVector3d(onSketchPos) - start;
-                bool sameSign = vec.x * vec.y > 0.;
-
-                onViewParameters[OnViewParameter::Third]->setLabelAutoDistanceReverse(sameSign);
-                onViewParameters[OnViewParameter::Fourth]->setLabelAutoDistanceReverse(!sameSign);
-
-                onViewParameters[OnViewParameter::Third]->setPoints(
-                    start,
-                    toVector3d(handler->cornersReversed ? handler->corner4 : handler->corner2));
-                onViewParameters[OnViewParameter::Fourth]->setPoints(
-                    start,
-                    toVector3d(handler->cornersReversed ? handler->corner2 : handler->corner4));
-            }
-            else if (handler->constructionMethod() == ConstructionMethod::ThreePoints) {
-                if (!onViewParameters[OnViewParameter::Third]->isSet) {
-                    setOnViewParameterValue(OnViewParameter::Third, handler->length);
-                }
-
-                onViewParameters[OnViewParameter::Third]->setPoints(toVector3d(handler->corner4),
-                                                                    toVector3d(handler->corner3));
-
-                if (!onViewParameters[OnViewParameter::Fourth]->isSet) {
-                    setOnViewParameterValue(OnViewParameter::Fourth,
-                                            Base::toDegrees(handler->angle),
-                                            Base::Unit::Angle);
-                }
-
-                onViewParameters[OnViewParameter::Fourth]->setPoints(toVector3d(handler->corner1),
-                                                                     Base::Vector3d());
-                onViewParameters[OnViewParameter::Fourth]->setLabelRange(
-                    (handler->corner2 - handler->corner1).Angle());
-            }
-            else {
-                if (!onViewParameters[OnViewParameter::Third]->isSet) {
-                    setOnViewParameterValue(OnViewParameter::Third, onSketchPos.x);
-                }
-
-                if (!onViewParameters[OnViewParameter::Fourth]->isSet) {
-                    setOnViewParameterValue(OnViewParameter::Fourth, onSketchPos.y);
-                }
-
-                bool sameSign = onSketchPos.x * onSketchPos.y > 0.;
-                onViewParameters[OnViewParameter::Third]->setLabelAutoDistanceReverse(!sameSign);
-                onViewParameters[OnViewParameter::Fourth]->setLabelAutoDistanceReverse(sameSign);
-                onViewParameters[OnViewParameter::Third]->setPoints(Base::Vector3d(),
-                                                                    toVector3d(onSketchPos));
-                onViewParameters[OnViewParameter::Fourth]->setPoints(Base::Vector3d(),
-                                                                     toVector3d(onSketchPos));
-            }
-        } break;
-        case SelectMode::SeekThird: {
-            if (handler->constructionMethod() == ConstructionMethod::Diagonal
-                || handler->constructionMethod() == ConstructionMethod::CenterAndCorner) {
-                if (handler->roundCorners) {
-                    if (!onViewParameters[OnViewParameter::Fifth]->isSet) {
-                        setOnViewParameterValue(OnViewParameter::Fifth, handler->radius);
-                    }
-
-                    Base::Vector3d center = handler->center3;
-                    Base::Vector3d end = toVector3d(handler->corner3);
-
-                    if (handler->radius != 0.0) {
-                        Base::Vector3d vec = (end - center).Normalize();
-                        end = center + vec * handler->radius;
-                    }
-
-                    onViewParameters[OnViewParameter::Fifth]->setPoints(center, end);
-                }
-                else {
-                    if (!onViewParameters[OnViewParameter::Sixth]->isSet) {
-                        setOnViewParameterValue(OnViewParameter::Sixth, handler->thickness);
-                    }
-
-                    Base::Vector3d start = toVector3d(handler->corner3);
-                    Base::Vector3d end =
-                        Base::Vector3d(handler->corner3.x, handler->frameCorner3.y, 0.0);
-                    onViewParameters[OnViewParameter::Sixth]->setPoints(start, end);
-                }
-            }
-            else if (handler->constructionMethod() == ConstructionMethod::ThreePoints) {
-                onViewParameters[OnViewParameter::Third]->setPoints(toVector3d(handler->corner4),
-                                                                    toVector3d(handler->corner3));
-
-                bool reversed = handler->cornersReversed;
-
-                if (!onViewParameters[OnViewParameter::Fifth]->isSet) {
-                    setOnViewParameterValue(OnViewParameter::Fifth,
-                                            reversed ? handler->length : handler->width);
-                }
-
-                Base::Vector3d start = toVector3d(handler->corner1);
-                onViewParameters[OnViewParameter::Fifth]->setLabelAutoDistanceReverse(reversed);
-                onViewParameters[OnViewParameter::Fifth]->setPoints(
-                    start,
-                    toVector3d(reversed ? handler->corner2 : handler->corner4));
-
-
-                if (!onViewParameters[OnViewParameter::Sixth]->isSet) {
-                    double val = Base::toDegrees(handler->angle123);
-                    setOnViewParameterValue(OnViewParameter::Sixth, val, Base::Unit::Angle);
-                }
-
-                onViewParameters[OnViewParameter::Sixth]->setPoints(
-                    toVector3d(reversed ? handler->corner4 : handler->corner2),
-                    Base::Vector3d());
-                double startAngle = reversed ? (handler->corner1 - handler->corner4).Angle()
-                                             : (handler->corner3 - handler->corner2).Angle();
-                onViewParameters[OnViewParameter::Sixth]->setLabelStartAngle(startAngle);
-                onViewParameters[OnViewParameter::Sixth]->setLabelRange(handler->angle123);
-            }
-            else {
-                bool reversed = handler->cornersReversed;
-
-                if (!onViewParameters[OnViewParameter::Fifth]->isSet) {
-                    setOnViewParameterValue(OnViewParameter::Fifth,
-                                            reversed ? handler->width : handler->length);
-                }
-
-                Base::Vector3d start = toVector3d(handler->corner1);
-                onViewParameters[OnViewParameter::Fifth]->setLabelAutoDistanceReverse(true);
-                onViewParameters[OnViewParameter::Fifth]->setPoints(
-                    start,
-                    toVector3d(reversed ? handler->corner4 : handler->corner2));
-
-
-                if (!onViewParameters[OnViewParameter::Sixth]->isSet) {
-                    double val = Base::toDegrees(handler->angle412);
-                    setOnViewParameterValue(OnViewParameter::Sixth, val, Base::Unit::Angle);
-                }
-
-                onViewParameters[OnViewParameter::Sixth]->setPoints(toVector3d(handler->corner1),
-                                                                    Base::Vector3d());
-                double startAngle = (handler->corner2 - handler->corner1).Angle();
-                onViewParameters[OnViewParameter::Sixth]->setLabelStartAngle(startAngle);
-                onViewParameters[OnViewParameter::Sixth]->setLabelRange(handler->angle412);
-            }
-
-        } break;
-        case SelectMode::SeekFourth: {
-            if (handler->constructionMethod() == ConstructionMethod::Diagonal
-                || handler->constructionMethod() == ConstructionMethod::CenterAndCorner) {
-                if (!onViewParameters[OnViewParameter::Sixth]->isSet) {
-                    setOnViewParameterValue(OnViewParameter::Sixth, handler->thickness);
-                }
-
-                Base::Vector3d start = toVector3d(handler->corner3);
-                Base::Vector3d end =
-                    Base::Vector3d(handler->corner3.x, handler->frameCorner3.y, 0.0);
-                onViewParameters[OnViewParameter::Sixth]->setPoints(start, end);
-            }
-            else {
-                if (handler->roundCorners) {
-                    if (!onViewParameters[OnViewParameter::Seventh]->isSet) {
-                        setOnViewParameterValue(OnViewParameter::Seventh, handler->radius);
-                    }
-
-                    Base::Vector3d center = handler->center3;
-                    Base::Vector3d end = toVector3d(handler->corner3);
-
-                    if (handler->radius != 0.0) {
-                        Base::Vector3d vec = (end - center).Normalize();
-                        end = center + vec * handler->radius;
-                    }
-
-                    onViewParameters[OnViewParameter::Seventh]->setPoints(center, end);
-                }
-                else {
-                    if (!onViewParameters[OnViewParameter::Eighth]->isSet) {
-                        setOnViewParameterValue(OnViewParameter::Eighth, handler->thickness);
-                    }
-
-                    Base::Vector3d start = toVector3d(handler->corner3);
-                    Base::Vector3d vec =
-                        toVector3d((handler->corner3 - handler->corner2).Normalize());
-                    Base::Vector3d end = start + handler->thickness * vec;
-                    onViewParameters[OnViewParameter::Eighth]->setPoints(start, end);
-                }
-            }
-        } break;
-        case SelectMode::SeekFifth: {
-            if (!onViewParameters[OnViewParameter::Eighth]->isSet) {
-                setOnViewParameterValue(OnViewParameter::Eighth, handler->thickness);
-            }
-
-            Base::Vector3d start = toVector3d(handler->corner3);
-            Base::Vector3d vec = toVector3d((handler->corner3 - handler->corner2).Normalize());
-            Base::Vector3d end = start + handler->thickness * vec;
-            onViewParameters[OnViewParameter::Eighth]->setPoints(start, end);
         } break;
         default:
             break;

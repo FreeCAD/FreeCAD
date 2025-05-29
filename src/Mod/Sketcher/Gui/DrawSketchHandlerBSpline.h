@@ -98,28 +98,17 @@ private:
     std::list<Gui::InputHint> getToolHints() const override
     {
         using Gui::InputHint;
-        using UserInput = Gui::InputHint::UserInput;
-        std::list<InputHint> hints;
+        using enum Gui::InputHint::UserInput;
 
         switch (state()) {
             case SelectMode::SeekFirst:
-                hints.push_back(
-                    InputHint(QCoreApplication::translate("Sketcher", "%1 pick first point"),
-                              {UserInput::MouseLeft}));
-                break;
+                return {InputHint {QObject::tr("%1 pick first point"), {MouseLeft}}};
             case SelectMode::SeekSecond:
-                hints.push_back(
-                    InputHint(QCoreApplication::translate("Sketcher", "%1 pick next point"),
-                              {UserInput::MouseLeft}));
-                hints.push_back(
-                    InputHint(QCoreApplication::translate("Sketcher", "%1 finish B-spline"),
-                              {UserInput::MouseRight}));
-                break;
+                return {InputHint {QObject::tr("%1 pick next point"), {MouseLeft}},
+                        InputHint {QObject::tr("%1 finish B-spline"), {MouseRight}}};
             default:
-                break;
+                return {};
         }
-
-        return hints;
     }
     void updateDataAndDrawToPosition(Base::Vector2d onSketchPos) override
     {

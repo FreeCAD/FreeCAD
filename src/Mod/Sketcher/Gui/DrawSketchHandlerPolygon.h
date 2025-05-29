@@ -266,35 +266,21 @@ private:
     std::list<Gui::InputHint> getToolHints() const override
     {
         using Gui::InputHint;
-        using UserInput = Gui::InputHint::UserInput;
-        std::list<InputHint> hints;
+        using enum Gui::InputHint::UserInput;
 
         switch (state()) {
             case SelectMode::SeekFirst:
-                hints.push_back(
-                    InputHint(QCoreApplication::translate("Sketcher", "%1 pick polygon center"),
-                              {UserInput::MouseLeft}));
-                hints.push_back(InputHint(
-                    QCoreApplication::translate("Sketcher",
-                                                "%1/%2 increase / decrease number of sides"),
-                    {UserInput::KeyU, UserInput::KeyJ}));
-                break;
+                return {InputHint {QObject::tr("%1 pick polygon center"), {MouseLeft}},
+                        InputHint {QObject::tr("%1/%2 increase / decrease number of sides"),
+                                   {KeyU, KeyJ}}};
             case SelectMode::SeekSecond:
-                hints.push_back(
-                    InputHint(QCoreApplication::translate("Sketcher", "%1 pick rotation and size"),
-                              {UserInput::MouseMove}));
-                hints.push_back(InputHint(QCoreApplication::translate("Sketcher", "%1 confirm"),
-                                          {UserInput::MouseLeft}));
-                hints.push_back(InputHint(
-                    QCoreApplication::translate("Sketcher",
-                                                "%1/%2 increase / decrease number of sides"),
-                    {UserInput::KeyU, UserInput::KeyJ}));
-                break;
+                return {InputHint {QObject::tr("%1 pick rotation and size"), {MouseMove}},
+                        InputHint {QObject::tr("%1 confirm"), {MouseLeft}},
+                        InputHint {QObject::tr("%1/%2 increase / decrease number of sides"),
+                                   {KeyU, KeyJ}}};
             default:
-                break;
+                return {};
         }
-
-        return hints;
     }
 };
 

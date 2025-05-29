@@ -94,6 +94,27 @@ public:
     ~DrawSketchHandlerArcSlot() override = default;
 
 private:
+    // ...existing code...
+
+    std::list<Gui::InputHint> getToolHints() const override
+    {
+        using Gui::InputHint;
+        using enum Gui::InputHint::UserInput;
+
+        switch (state()) {
+            case SelectMode::SeekFirst:
+                return {InputHint {QObject::tr("%1 pick arc slot center"), {MouseLeft}}};
+            case SelectMode::SeekSecond:
+                return {InputHint {QObject::tr("%1 pick arc slot radius"), {MouseLeft}}};
+            case SelectMode::SeekThird:
+                return {InputHint {QObject::tr("%1 pick arc slot angle"), {MouseLeft}}};
+            case SelectMode::SeekFourth:
+                return {InputHint {QObject::tr("%1 pick arc slot width"), {MouseLeft}}};
+            default:
+                return {};
+        }
+    }
+
     void updateDataAndDrawToPosition(Base::Vector2d onSketchPos) override
     {
         switch (state()) {

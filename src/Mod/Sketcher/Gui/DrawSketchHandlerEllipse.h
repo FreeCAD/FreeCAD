@@ -88,53 +88,34 @@ private:
     std::list<Gui::InputHint> getToolHints() const override
     {
         using Gui::InputHint;
-        using UserInput = Gui::InputHint::UserInput;
-        std::list<InputHint> hints;
+        using enum Gui::InputHint::UserInput;
 
         if (constructionMethod() == ConstructionMethod::Center) {
             switch (state()) {
                 case SelectMode::SeekFirst:
-                    hints.push_back(
-                        InputHint(QCoreApplication::translate("Sketcher", "%1 pick ellipse center"),
-                                  {UserInput::MouseLeft}));
-                    break;
+                    return {InputHint {QObject::tr("%1 pick ellipse center"), {MouseLeft}}};
                 case SelectMode::SeekSecond:
-                    hints.push_back(
-                        InputHint(QCoreApplication::translate("Sketcher", "%1 pick axis endpoint"),
-                                  {UserInput::MouseLeft}));
-                    break;
+                    return {InputHint {QObject::tr("%1 pick axis endpoint"), {MouseLeft}}};
                 case SelectMode::SeekThird:
-                    hints.push_back(InputHint(
-                        QCoreApplication::translate("Sketcher", "%1 pick minor axis endpoint"),
-                        {UserInput::MouseLeft}));
-                    break;
+                    return {InputHint {QObject::tr("%1 pick minor axis endpoint"), {MouseLeft}}};
                 default:
-                    break;
+                    return {};
             }
         }
         else if (constructionMethod() == ConstructionMethod::ThreeRim) {
             switch (state()) {
                 case SelectMode::SeekFirst:
-                    hints.push_back(InputHint(
-                        QCoreApplication::translate("Sketcher", "%1 pick first rim point"),
-                        {UserInput::MouseLeft}));
-                    break;
+                    return {InputHint {QObject::tr("%1 pick first rim point"), {MouseLeft}}};
                 case SelectMode::SeekSecond:
-                    hints.push_back(InputHint(
-                        QCoreApplication::translate("Sketcher", "%1 pick second rim point"),
-                        {UserInput::MouseLeft}));
-                    break;
+                    return {InputHint {QObject::tr("%1 pick second rim point"), {MouseLeft}}};
                 case SelectMode::SeekThird:
-                    hints.push_back(InputHint(
-                        QCoreApplication::translate("Sketcher", "%1 pick third rim point"),
-                        {UserInput::MouseLeft}));
-                    break;
+                    return {InputHint {QObject::tr("%1 pick third rim point"), {MouseLeft}}};
                 default:
-                    break;
+                    return {};
             }
         }
 
-        return hints;
+        return {};
     }
 
     void updateDataAndDrawToPosition(Base::Vector2d onSketchPos) override

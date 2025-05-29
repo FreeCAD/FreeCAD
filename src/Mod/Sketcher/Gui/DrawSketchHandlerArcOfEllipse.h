@@ -408,35 +408,20 @@ private:
     std::list<Gui::InputHint> getToolHints() const override
     {
         using Gui::InputHint;
-        using UserInput = Gui::InputHint::UserInput;
-        std::list<InputHint> hints;
+        using enum Gui::InputHint::UserInput;
 
         switch (Mode) {
             case STATUS_SEEK_First:
-                hints.push_back(
-                    InputHint(QCoreApplication::translate("Sketcher", "%1 pick ellipse center"),
-                              {UserInput::MouseLeft}));
-                break;
+                return {InputHint {QObject::tr("%1 pick ellipse center"), {MouseLeft}}};
             case STATUS_SEEK_Second:
-                hints.push_back(
-                    InputHint(QCoreApplication::translate("Sketcher", "%1 pick axis point"),
-                              {UserInput::MouseLeft}));
-                break;
+                return {InputHint {QObject::tr("%1 pick axis point"), {MouseLeft}}};
             case STATUS_SEEK_Third:
-                hints.push_back(
-                    InputHint(QCoreApplication::translate("Sketcher", "%1 pick arc start point"),
-                              {UserInput::MouseLeft}));
-                break;
+                return {InputHint {QObject::tr("%1 pick arc start point"), {MouseLeft}}};
             case STATUS_SEEK_Fourth:
-                hints.push_back(
-                    InputHint(QCoreApplication::translate("Sketcher", "%1 pick arc end point"),
-                              {UserInput::MouseLeft}));
-                break;
+                return {InputHint {QObject::tr("%1 pick arc end point"), {MouseLeft}}};
             default:
-                break;
+                return {};
         }
-
-        return hints;
     }
 };
 

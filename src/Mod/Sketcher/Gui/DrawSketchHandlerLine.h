@@ -256,25 +256,16 @@ private:
     std::list<Gui::InputHint> getToolHints() const override
     {
         using Gui::InputHint;
-        using UserInput = Gui::InputHint::UserInput;
-        std::list<InputHint> hints;
+        using enum Gui::InputHint::UserInput;
 
         switch (state()) {
             case SelectMode::SeekFirst:
-                hints.push_back(
-                    InputHint(QCoreApplication::translate("Sketcher", "%1 pick first point"),
-                              {UserInput::MouseLeft}));
-                break;
+                return {InputHint {QObject::tr("%1 pick first point"), {MouseLeft}}};
             case SelectMode::SeekSecond:
-                hints.push_back(
-                    InputHint(QCoreApplication::translate("Sketcher", "%1 pick second point"),
-                              {UserInput::MouseLeft}));
-                break;
+                return {InputHint {QObject::tr("%1 pick second point"), {MouseLeft}}};
             default:
-                break;
+                return {};
         }
-
-        return hints;
     }
 };
 
