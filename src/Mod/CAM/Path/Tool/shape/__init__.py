@@ -4,7 +4,9 @@
 # Import the base class and all concrete shape classes
 from .models.base import ToolBitShape
 from .models.ballend import ToolBitShapeBallend
+from .models.bullnose import ToolBitShapeBullnose
 from .models.chamfer import ToolBitShapeChamfer
+from .models.custom import ToolBitShapeCustom
 from .models.dovetail import ToolBitShapeDovetail
 from .models.drill import ToolBitShapeDrill
 from .models.endmill import ToolBitShapeEndmill
@@ -14,7 +16,6 @@ from .models.reamer import ToolBitShapeReamer
 from .models.slittingsaw import ToolBitShapeSlittingSaw
 from .models.tap import ToolBitShapeTap
 from .models.threadmill import ToolBitShapeThreadMill
-from .models.bullnose import ToolBitShapeBullnose
 from .models.vbit import ToolBitShapeVBit
 from .models.icon import (
     ToolBitShapeIcon,
@@ -29,7 +30,9 @@ TOOL_BIT_SHAPE_NAMES = sorted([cls.name for cls in ToolBitShape.__subclasses__()
 __all__ = [
     "ToolBitShape",
     "ToolBitShapeBallend",
+    "ToolBitShapeBullnose",
     "ToolBitShapeChamfer",
+    "ToolBitShapeCustom",
     "ToolBitShapeDovetail",
     "ToolBitShapeDrill",
     "ToolBitShapeEndmill",
@@ -39,7 +42,6 @@ __all__ = [
     "ToolBitShapeSlittingSaw",
     "ToolBitShapeTap",
     "ToolBitShapeThreadMill",
-    "ToolBitShapeBullnose",
     "ToolBitShapeVBit",
     "TOOL_BIT_SHAPE_NAMES",
     "ToolBitShapeIcon",

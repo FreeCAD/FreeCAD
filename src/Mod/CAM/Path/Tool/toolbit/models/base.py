@@ -35,7 +35,7 @@ from PySide.QtCore import QT_TRANSLATE_NOOP
 from Path.Base.Generator import toolchange
 from ...assets import Asset
 from ...camassets import cam_assets
-from ...shape import ToolBitShape, ToolBitShapeEndmill, ToolBitShapeIcon
+from ...shape import ToolBitShape, ToolBitShapeCustom, ToolBitShapeIcon
 from ..docobject import DetachedDocumentObject
 from ..util import to_json, format_value
 
@@ -101,7 +101,15 @@ class ToolBit(Asset, ABC):
         if not shape_id:
             raise ValueError("ToolBit dictionary is missing 'shape' key")
 
-        shape_class = ToolBitShape.get_shape_class_from_id(shape_id, attrs.get("shape-type"))
+        # Try to find the shape type. Default to Unknown if necessary.
+        shape_type = attrs.get("shape-type")
+        shape_class = ToolBitShape.get_shape_class_from_id(shape_id, shape_type)
+        if not shape_class:
+            Path.Log.debug(
+                f"Failed to find usable shape for ID '{shape_id}'"
+                f" (shape type {shape_type}). Falling back to 'Unknown'"
+            )
+            shape_class = ToolBitShapeCustom
 
         # Create a ToolBitShape instance.
         if not shallow:  # Shallow means: skip loading of child assets
@@ -230,7 +238,7 @@ class ToolBit(Asset, ABC):
             )
             names = [c.name for c in ToolBitShape.__subclasses__()]
             self.obj.ShapeType = names
-            self.obj.ShapeType = ToolBitShapeEndmill.name
+            self.obj.ShapeType = ToolBitShapeCustom.name
         if not hasattr(self.obj, "BitBody"):
             self.obj.addProperty(
                 "App::PropertyLink",

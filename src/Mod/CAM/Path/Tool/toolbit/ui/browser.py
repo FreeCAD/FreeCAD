@@ -143,7 +143,7 @@ class ToolBitBrowserWidget(QtGui.QWidget):
             self._all_assets.sort(key=lambda x: x.label.lower())
         elif self._sort_key == "tool_no" and self._tool_no_factory:
             self._all_assets.sort(
-                key=lambda x: (self._tool_no_factory(x) or 0) if self._tool_no_factory else 0
+                key=lambda x: (int(self._tool_no_factory(x)) or 0) if self._tool_no_factory else 0
             )
 
     def _trigger_fetch(self):

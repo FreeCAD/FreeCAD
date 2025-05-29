@@ -26,7 +26,6 @@ import FreeCAD
 from ...assets import Asset, AssetUri, AssetSerializer
 from ...shape import ToolBitShape
 from ..models.base import ToolBit
-from Path.Base import Util as PathUtil
 
 
 class FCTBSerializer(AssetSerializer):

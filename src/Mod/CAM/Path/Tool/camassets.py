@@ -61,9 +61,13 @@ def ensure_toolbits_have_shape_type(asset_manager: AssetManager, store_name: str
             Path.Log.error(f"ToolBit {uri} missing shape ID")
             continue
 
-        shape_class = ToolBitShape.get_shape_class_from_id(shape_id)
+        try:
+            shape_class = ToolBitShape.get_shape_class_from_id(shape_id)
+        except Exception as e:
+            Path.Log.error(f"Failed to load toolbit {uri}: {e}. Skipping")
+            continue
         if not shape_class:
-            Path.Log.warning(f"Toolbit {uri} has no shape-type attribute, and failed to infer it")
+            Path.Log.error(f"Toolbit {uri} has no shape-type attribute, and failed to infer it")
             continue
         attrs["shape-type"] = shape_class.name
         Path.Log.info(f"Migrating toolbit {uri}: Adding shape-type attribute '{shape_class.name}'")

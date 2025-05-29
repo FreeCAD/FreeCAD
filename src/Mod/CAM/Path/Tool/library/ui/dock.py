@@ -31,7 +31,6 @@ import PathScripts.PathUtilsGui as PathUtilsGui
 from PySide import QtGui, QtCore
 from functools import partial
 from typing import List, Tuple
-from ...assets import AssetUri
 from ...camassets import cam_assets, ensure_assets_initialized
 from ...toolbit import ToolBit
 from .editor import LibraryEditor

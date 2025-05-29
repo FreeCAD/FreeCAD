@@ -123,9 +123,7 @@ class ToolBitShape(Asset):
         shape_classes = {c.name: c for c in ToolBitShape.__subclasses__()}
         shape_class = shape_classes.get(body_obj.Label)
         if not shape_class:
-            raise ValueError(
-                f"No ToolBitShape subclass found matching Body label '{body_obj.Label}' in {doc}"
-            )
+            return ToolBitShape.get_subclass_by_id("Custom")
         return shape_class
 
     @classmethod
@@ -133,18 +131,18 @@ class ToolBitShape(Asset):
         cls,
         shape_id: str,
         shape_type: str | None = None,
-        default: Type["ToolBitShape"] = None,
-    ) -> Type["ToolBitShape"]:
+        default: Type["ToolBitShape"] | None = None,
+    ) -> Optional[Type["ToolBitShape"]]:
         """
         Extracts the shape class from the given ID and shape_type, retrieving it
         from the asset manager if necessary.
         """
         # Best method: if the shape-type is specified, use that.
         if shape_type:
-            return cls.get_subclass_by_name(shape_type)
+            return ToolBitShape.get_subclass_by_name(shape_type)
 
         # If no shape type is specified, try to find the shape class from the ID.
-        shape_class = cls.get_subclass_by_name(shape_id)
+        shape_class = ToolBitShape.get_subclass_by_name(shape_id)
         if shape_class:
             return shape_class
 
@@ -155,8 +153,11 @@ class ToolBitShape(Asset):
             " negatively impact performance."
         )
         shape_asset_uri = ToolBitShape.resolve_name(shape_id)
-        data = cam_assets.get_raw(shape_asset_uri)
-        if data:
+        try:
+            data = cam_assets.get_raw(shape_asset_uri)
+        except FileNotFoundError:
+            pass  # rely on fallback below
+        else:
             try:
                 shape_class = ToolBitShape.get_shape_class_from_bytes(data)
             except ValueError:
@@ -167,28 +168,14 @@ class ToolBitShape(Asset):
         # Otherwise use the default, if we have one.
         shape_types = [c.name for c in ToolBitShape.__subclasses__()]
         if default is not None:
-            Path.Log.warning(
+            Path.Log.debug(
                 f'Failed to infer shape type from {shape_id}, using "{default.name}".'
                 f" To fix, name the body in the shape file to one of: {shape_types}"
             )
             return default
 
-        # If all else fails, try to guess the shape class from the ID.
-        shape_class = ToolBitShape.guess_subclass_from_name(shape_id)
-        if shape_class:
-            Path.Log.warning(
-                f'Failed to infer shape type from "{shape_id}",'
-                f' guessing "{shape_class.name}".'
-                f" To fix, name the body in the shape file to one of: {shape_types}"
-            )
-            return shape_class
-
-        # Default to endmill if nothing else works
-        Path.Log.warning(
-            f"Failed to infer shape type from {shape_id}."
-            f" To fix, name the body in the shape file to one of: {shape_types}"
-        )
-        return None
+        # Default to Custom if nothing else works
+        return ToolBitShape.get_subclass_by_name("Custom")
 
     @classmethod
     def get_shape_class_from_bytes(cls, data: bytes) -> Type["ToolBitShape"]:
@@ -231,11 +218,7 @@ class ToolBitShape(Asset):
 
             # Find the correct subclass based on the body label
             shape_class = cls.get_subclass_by_name(body_label)
-            if not shape_class:
-                raise ValueError(
-                    f"No ToolBitShape subclass found matching Body label '{body_label}'"
-                )
-            return shape_class
+            return shape_class or ToolBitShape.get_subclass_by_id("Custom")
 
         except zipfile.BadZipFile:
             raise ValueError("Invalid FCStd file data (not a valid zip archive)")
@@ -351,23 +334,7 @@ class ToolBitShape(Asset):
                 shape_class = ToolBitShape.get_shape_class_from_bytes(data)
             except Exception as e:
                 Path.Log.debug(f"{id}: Failed to determine shape class from bytes: {e}")
-                shape_types = [c.name for c in ToolBitShape.__subclasses__()]
-                shape_class = ToolBitShape.guess_subclass_from_name(id)
-                if shape_class:
-                    Path.Log.warning(
-                        f"{id}: failed to infer shape type from bytes,"
-                        f' guessing "{shape_class.name}". To fix, name'
-                        f" the body in the shape file to one of: {shape_types}"
-                    )
-                else:
-                    Path.Log.warning(
-                        f"{id}: failed to infer shape type from bytes,"
-                        f' using "endmill". To fix, name'
-                        f" the body in the shape file to one of: {shape_types}"
-                    )
-                    from .endmill import ToolBitShapeEndmill
-
-                    shape_class = ToolBitShapeEndmill
+                shape_class = ToolBitShape.get_shape_class_from_id("Custom")
 
             # Load properties from the temporary document
             props_obj = ToolBitShape._find_property_object(temp_doc)
@@ -537,7 +504,7 @@ class ToolBitShape(Asset):
         # 2. If the input is a filename (with extension), assume the asset
         #    name is the base name.
         asset_name = identifier
-        if identifier.endswith(".fcstd"):
+        if pathlib.Path(identifier).suffix.lower() == ".fcstd":
             asset_name = os.path.splitext(os.path.basename(identifier))[0]
 
         # 3. Use get_subclass_by_name to try to resolve alias to a class.

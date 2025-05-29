@@ -26,6 +26,15 @@ from ..uri import AssetUri
 from .base import AssetStore
 
 
+def _resolve_case_insensitive(path: pathlib.Path) -> pathlib.Path:
+    if path.is_file():
+        return path
+    try:
+        return next(path.parent.glob(path.name, case_sensitive=False))
+    except StopIteration:
+        return path
+
+
 class FileStore(AssetStore):
     """
     Asset store implementation for the local filesystem with optional
@@ -114,7 +123,7 @@ class FileStore(AssetStore):
                 regex_parts.append(f"(?P<{keywords[i]}>.*)")
 
         pattern_regex_str = "".join(regex_parts)
-        match_obj = re.fullmatch(pattern_regex_str, path_str_posix)
+        match_obj = re.fullmatch(pattern_regex_str, path_str_posix, re.I)
 
         if not match_obj:
             raise ValueError(
@@ -258,6 +267,7 @@ class FileStore(AssetStore):
                 )
             path_to_read = self._uri_to_path(request_uri)
 
+        path_to_read = _resolve_case_insensitive(path_to_read)
         try:
             with open(path_to_read, mode="rb") as f:
                 return f.read()
@@ -307,6 +317,7 @@ class FileStore(AssetStore):
                 )
 
             path = self._uri_to_path(target_uri_for_path)
+            path = _resolve_case_insensitive(path)
             if path.is_file():
                 paths_to_delete.append(path)
 
@@ -380,6 +391,7 @@ class FileStore(AssetStore):
             params=uri.params,
         )
         asset_path = self._uri_to_path(next_uri)
+        asset_path = _resolve_case_insensitive(asset_path)
 
         # If the file is versioned, then the new version should not yet exist.
         # Double check to be sure.
@@ -472,6 +484,7 @@ class FileStore(AssetStore):
                 params=uri.params,
             )
             path_to_asset = self._uri_to_path(path_check_uri)
+            path_to_asset = _resolve_case_insensitive(path_to_asset)
             if path_to_asset.is_file():
                 return [path_check_uri]  # Returns URI with version "1" and original params
             return []

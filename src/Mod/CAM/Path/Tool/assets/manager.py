@@ -346,7 +346,7 @@ class AssetManager:
 
         if all_construction_data is None:
             # This means the top-level asset itself was not found by _fetch_...
-            raise FileNotFoundError(f"Asset '{asset_uri_obj}' not found in stores '{stores_list}'.")
+            raise FileNotFoundError(f"Asset '{asset_uri_obj}' not found in stores '{stores_list}'")
 
         # Step 2: Synchronously build the asset tree (and call from_bytes)
         # This happens in the current thread (which is assumed to be the main UI thread)
@@ -415,7 +415,7 @@ class AssetManager:
             # Consistent with get(), if the top-level asset is not found,
             # raise FileNotFoundError.
             raise FileNotFoundError(
-                f"Asset '{asset_uri_obj}' not found in stores '{stores_list}' (async path)."
+                f"Asset '{asset_uri_obj}' not found in stores '{stores_list}' (async path)"
             )
             # return None # Alternative: if Optional[Asset] means asset might not exist
 
@@ -459,7 +459,7 @@ class AssetManager:
                         f"GetRawAsync: Asset {asset_uri_obj} not found in store {current_store_name}"
                     )
                     continue
-            raise FileNotFoundError(f"Asset '{asset_uri_obj}' not found in stores '{stores_list}'.")
+            raise FileNotFoundError(f"Asset '{asset_uri_obj}' not found in stores '{stores_list}'")
 
         try:
             return asyncio.run(_fetch_raw_async(stores_list))
@@ -499,7 +499,7 @@ class AssetManager:
                 )
                 continue
 
-        raise FileNotFoundError(f"Asset '{asset_uri_obj}' not found in stores '{stores_list}'.")
+        raise FileNotFoundError(f"Asset '{asset_uri_obj}' not found in stores '{stores_list}'")
 
     def get_bulk(
         self,

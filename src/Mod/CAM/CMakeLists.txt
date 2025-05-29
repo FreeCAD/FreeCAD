@@ -171,6 +171,7 @@ SET(PathPythonToolsToolBitModels_SRCS
     Path/Tool/toolbit/models/base.py
     Path/Tool/toolbit/models/bullnose.py
     Path/Tool/toolbit/models/chamfer.py
+    Path/Tool/toolbit/models/custom.py
     Path/Tool/toolbit/models/dovetail.py
     Path/Tool/toolbit/models/drill.py
     Path/Tool/toolbit/models/endmill.py
@@ -248,6 +249,7 @@ SET(PathPythonToolsShapeModels_SRCS
     Path/Tool/shape/models/base.py
     Path/Tool/shape/models/bullnose.py
     Path/Tool/shape/models/chamfer.py
+    Path/Tool/shape/models/custom.py
     Path/Tool/shape/models/dovetail.py
     Path/Tool/shape/models/drill.py
     Path/Tool/shape/models/endmill.py
