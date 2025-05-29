@@ -82,7 +82,8 @@ Resetting everything helps to unify styles across different operating systems
 }
 
 /* specific reset for elements inside QToolBar */
-QToolBar * {}/*hacks */
+QToolBar * {
+}/*hacks */
 
 /* fix for column items background when a link is present */
 Gui--PropertyEditor--PropertyEditor > QWidget > QFrame:focus {
@@ -108,7 +109,7 @@ QDialog {
 }
  */
 
-/*navgation src/Mod/Tux/NavigationIndicatorGui.py */
+/*navigation src/Mod/Tux/NavigationIndicatorGui.py */
 Gui--NavigationIndicatorGui--BlenderNavigationStyle {
   qproperty-icon: url(:/icons/icons/NavigationBlender_light.svg);
 }
@@ -126,7 +127,10 @@ Gui--MDIView QLabel{
 
 Gui--MDIView QScrollArea{
   border: 1px solid @Border;
-  background-color: transparent;/* Added to maintain consistency */}
+  background-color: transparent;/* Added to maintain consistency */
+}
+
+
 /* QWidget ----------------------------------------------------------------
 This causes much load time. DONT USE "QWidget { " This causes a lot of lag.
 */
@@ -219,7 +223,6 @@ QStatusBar QToolTip {
   background-color: @Background;
   border: 1px solid @Border;
   /* Remove padding, for fix combo box tooltip */
-
   /* Reducing transparency to read better */
   opacity: 230;
 }
@@ -470,7 +473,6 @@ https://doc.qt.io/qt-5/stylesheet-examples.html#customizing-qmenu
 --------------------------------------------------------------------------- */
 QMenu {
   border: 1px solid @Border;
-
   background-color: @Menu;
   selection-background-color: @ThemeAccentColor1;
 }
@@ -680,7 +682,6 @@ QScrollBar::handle:vertical {
   border-top: 1px solid @Border;
   border-bottom: 1px solid @Border;
   min-height: 20px;
-
   background-color: qlineargradient(x1:0, y1:0, x2:1, y2:0, stop:0 @ButtonTop, stop:1 @ButtonBottom);
 }
 
@@ -813,7 +814,6 @@ QSizeGrip {
 
 --------------------------------------------------------------------------- */
 QStackedWidget {
-
   border-style: none;
 }
 
@@ -1030,7 +1030,7 @@ QLabel:disabled {
 }
 
 QLabel[haslink="true"] {
-  color: #71b6fb;
+  color: @LinkColor;
 }
 
 /* QTextBrowser -----------------------------------------------------------
@@ -1041,7 +1041,6 @@ https://doc.qt.io/qt-5/stylesheet-examples.html#customizing-qabstractscrollarea
 QTextBrowser {
   background-color: @Background;
   border: 1px solid @Border;
-
 }
 
 QTextBrowser:disabled {
@@ -1391,8 +1390,8 @@ QComboBox:on {
 QComboBox::item {
   background-color: @Menu;
 }
-/* Background color of popup-list.*/
 
+/* Background color of popup-list.*/
 /* Needed to complete the rule set. */
 QComboBox::item:alternate {
   background-color: @AlternateBackground;
@@ -1500,8 +1499,6 @@ QSint--ActionGroup QFrame[class="header"] QLabel[fold="true"]:hover {
 
 QSint--ActionGroup QFrame[class="content"] {
   background-color: @ButtonTop;/* Task Panel background color */
-
-
   border-bottom: 1px solid @Border;
   border-left: 1px solid @Border;
   border-right: 1px solid @Border;
@@ -1516,7 +1513,6 @@ QSint--ActionGroup QFrame[class="content"] {
 /* Fix for buttons with icons that showed cropped (still not happy with result) */
 QSint--ActionGroup QFrame[class="content"] > QWidget > QPushButton {
   padding: 2px;/* bigger padding crops text and icons... */
-
   border-radius: 3px;
 }
 
@@ -1599,7 +1595,6 @@ QSlider::groove:horizontal {
   background-color: @Background;
   border: 1px solid @Border;
   height: 4px;
-
   border-radius: 3px;
 }
 
@@ -1607,7 +1602,6 @@ QSlider::groove:vertical {
   background-color: @ThemeAccentColor1;
   border: 1px solid @Border;
   width: 4px;
-
   border-radius: 3px;
 }
 
@@ -1615,7 +1609,6 @@ QSlider::add-page:vertical {
   background-color: @ThemeAccentColor1;
   border: 1px solid @Border;
   width: 4px;
-
   border-radius: 3px;
 }
 
@@ -1627,7 +1620,6 @@ QSlider::sub-page:horizontal {
   background-color: @ThemeAccentColor1;
   border: 1px solid @Border;
   height: 4px;
-
   border-radius: 3px;
 }
 
@@ -1685,7 +1677,6 @@ QLineEdit {
   padding-right: 4px;
   border-style: solid;
   border: 1px solid @Border;
-
 }
 
 QLineEdit:disabled {
@@ -1720,9 +1711,7 @@ QTabWidget:tab-bar {
 QTabWidget QWidget {}
 
 QTabWidget::pane {
-
   /* Fixes double border inside pane with pyqt5 */
-
   background-color: @Background;
   border-radius: 3px;
   border: 1px solid @Border;
@@ -1820,7 +1809,6 @@ QTabBar[style="text-only"]::tab:left {
 QTabBar::close-button, QDockWidget QTabBar::close-button {
   border: 0;
   margin: 4px;
-
   image: url(qss:@IconFolder/close-lightgray.svg);
 }
 
@@ -1998,7 +1986,6 @@ QTabBar QToolButton::right-arrow:disabled, QDockWidget QTabBar QToolButton::righ
 --------------------------------------------------------------------------- */
 QDockWidget {
   border: 1px solid @Border;
-
   titlebar-close-icon: url(qss:@IconFolder/transparent.svg);
   titlebar-normal-icon: url(qss:@IconFolder/transparent.svg);
 }
@@ -2071,7 +2058,6 @@ QTreeView::branch  {
 }
 
 QTreeView::branch:has-siblings:!adjoins-item  {}
-
 QTreeView::branch:has-siblings:adjoins-item  {}
 QTreeView::branch:!has-children:!has-siblings:adjoins-item  {}
 QTreeView::branch:closed:has-children:has-siblings  {
@@ -2135,7 +2121,9 @@ QColumnView::indicator:checked:focus,
 QColumnView::indicator:checked:pressed {
   /* image: url(qss:@IconFolder/checkbox-checked-blue.svg);*/
   /* background-color: @ThemeAccentColor1;
-  border: 1px solid @Border;*/}
+  border: 1px solid @Border;*/
+}
+
 /* QTreeView::indicator:unchecked,
 QListView::indicator:unchecked,
 QTableView::indicator:unchecked,
@@ -2181,14 +2169,12 @@ QTableView,
 QColumnView {
   background-color: @Background;/* background of a lot of stuff including spreadsheets.*/
   /* gridline-color: @Border; */
-
   selection-background-color: @ThemeAccentColor1;
   alternate-background-color: @AlternateBackground;
 }
 
 QListView {
   background-color:   @Background;
-
   selection-background-color: @ThemeAccentColor1;
   border: 1px solid @Border;
   alternate-background-color: @AlternateBackground;
@@ -2344,14 +2330,12 @@ used in PATH
 
 --------------------------------------------------------------------------- */
 QToolBox {
-
   border-style: none;
   border-radius: 4px;
   background-color: transparent;
 }
 
 QToolBox:selected {
-
   border: 1px solid @ThemeAccentColor1;
 }
 
@@ -2496,7 +2480,6 @@ QAbstractView:selected {
 
 --------------------------------------------------------------------------- */
 PlotWidget {
-
   color: @DisabledText;
 }
 
@@ -2505,10 +2488,11 @@ SKETCHER
 ==================================================================================================*/
 
 Gui--StatefulLabel[state="empty_sketch"] {
-  color : @empty_sketch}
+  color : @empty_sketch
+  }
 Gui--StatefulLabel[state="under_constrained"] {
   color : @under_constrained
-  }
+}
 
 Gui--StatefulLabel[state="conflicting_constraints"] {
   color : @conflicting_constraints;
@@ -2657,7 +2641,7 @@ QGroupBox[objectName="matOpsGrpBox"] QPushButton {
 QToolBar > Gui--WorkbenchComboBox QAbstractItemView {
   min-width: 180px;
   margin-left: 30px;
-  }
+}
 
 /* Below is a fix for indentation in properties, but this is a QT 6 bug only and so is disabled since Windows is as I write this still on QT 5. */
 QTreeView::item:selected:active#groupsTreeView {
