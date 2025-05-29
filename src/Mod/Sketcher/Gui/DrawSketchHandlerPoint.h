@@ -69,7 +69,7 @@ private:
         switch (state()) {
             case SelectMode::SeekFirst:
                 hints.push_back(
-                    InputHint(QCoreApplication::translate("Sketcher", "%1 click to place a point"),
+                    InputHint(QCoreApplication::translate("Sketcher", "%1 place a point"),
                               {UserInput::MouseLeft}));
                 break;
             default:
