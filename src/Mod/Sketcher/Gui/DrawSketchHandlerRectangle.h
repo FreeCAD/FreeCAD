@@ -109,9 +109,6 @@ public:
     ~DrawSketchHandlerRectangle() override = default;
 
 private:
-    // ...existing code...
-
-private:
     std::list<Gui::InputHint> getToolHints() const override
     {
         using Gui::InputHint;
