@@ -47,7 +47,7 @@ using PyObject = struct _object;
 
 #include <map>
 #include <vector>
-#include <boost/signals2.hpp>
+#include <fastsignals/signal.h>
 #include <xercesc/util/XercesDefs.hpp>
 
 #include "Handle.h"
@@ -562,10 +562,10 @@ public:
      *  - Group removal: both 'name' and 'value' are empty
      *  - Group rename: 'name' is the new name, and 'value' is the old name
      */
-    boost::signals2::signal<void(ParameterGrp* /*param*/,
-                                 ParamType /*type*/,
-                                 const char* /*name*/,
-                                 const char* /*value*/)>
+    fastsignals::signal<void(ParameterGrp* /*param*/,
+                             ParamType /*type*/,
+                             const char* /*name*/,
+                             const char* /*value*/)>
         signalParamChanged;
 
     int LoadDocument(const char* sFileName);

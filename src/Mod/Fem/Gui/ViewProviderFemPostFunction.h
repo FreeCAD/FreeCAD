@@ -25,7 +25,7 @@
 
 #include <Inventor/SbBox3f.h>
 #include <QWidget>
-#include <boost/signals2.hpp>
+#include <fastsignals/signal.h>
 
 #include <Gui/ViewProviderDocumentObjectGroup.h>
 #include <Mod/Fem/App/FemPostFunction.h>
@@ -90,7 +90,7 @@ private:
     bool m_block {false};
     ViewProviderFemPostFunction* m_view {nullptr};
     Fem::FemPostFunction* m_object {nullptr};
-    boost::signals2::scoped_connection m_connection;
+    fastsignals::scoped_connection m_connection;
 };
 
 class FemGuiExport ViewProviderFemPostFunctionProvider: public Gui::ViewProviderDocumentObjectGroup
