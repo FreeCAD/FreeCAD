@@ -1927,7 +1927,8 @@ StdViewScreenShot::StdViewScreenShot()
   : Command("Std_ViewScreenShot")
 {
     sGroup      = "Standard-View";
-    sMenuText   = QT_TR_NOOP("Save &Image...");
+    sMenuText   = QT_TR_NOOP("Save &image...");
+
     sToolTipText= QT_TR_NOOP("Creates a screenshot of the active view");
     sWhatsThis  = "Std_ViewScreenShot";
     sStatusTip  = QT_TR_NOOP("Creates a screenshot of the active view");
@@ -1968,7 +1969,8 @@ void StdViewScreenShot::activated(int iMsg)
         FileOptionsDialog fd(getMainWindow(), Qt::WindowFlags());
         fd.setFileMode(QFileDialog::AnyFile);
         fd.setAcceptMode(QFileDialog::AcceptSave);
-        fd.setWindowTitle(QObject::tr("Save Image"));
+        fd.setWindowTitle(QObject::tr("Save image"));
+
         fd.setNameFilters(filter);
         if (!selFilter.isEmpty())
             fd.selectNameFilter(selFilter);
@@ -2095,7 +2097,8 @@ StdViewLoadImage::StdViewLoadImage()
   : Command("Std_ViewLoadImage")
 {
     sGroup      = "Standard-View";
-    sMenuText   = QT_TR_NOOP("&Load Image...");
+    sMenuText   = QT_TR_NOOP("&Load image...");
+
     sToolTipText= QT_TR_NOOP("Loads an image");
     sWhatsThis  = "Std_ViewLoadImage";
     sStatusTip  = QT_TR_NOOP("Loads an image");
@@ -3147,7 +3150,8 @@ StdCmdSceneInspector::StdCmdSceneInspector()
 {
     // setting the
     sGroup        = "Tools";
-    sMenuText     = QT_TR_NOOP("Scene I&nspector...");
+    sMenuText     = QT_TR_NOOP("Scene i&nspector...");
+
     sToolTipText  = QT_TR_NOOP("Scene inspector");
     sWhatsThis    = "Std_SceneInspector";
     sStatusTip    = QT_TR_NOOP("Scene inspector");
@@ -3207,7 +3211,8 @@ StdCmdDemoMode::StdCmdDemoMode()
   : Command("Std_DemoMode")
 {
     sGroup        = "Standard-View";
-    sMenuText     = QT_TR_NOOP("View &Turntable...");
+    sMenuText     = QT_TR_NOOP("View &turntable...");
+
     sToolTipText  = QT_TR_NOOP("View turntable");
     sWhatsThis    = "Std_DemoMode";
     sStatusTip    = QT_TR_NOOP("View turntable");

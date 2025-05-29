@@ -378,7 +378,8 @@ StdCmdDlgParameter::StdCmdDlgParameter()
   :Command("Std_DlgParameter")
 {
   sGroup        = "Tools";
-  sMenuText     = QT_TR_NOOP("E&dit Parameters...");
+  sMenuText     = QT_TR_NOOP("E&dit parameters...");
+
   sToolTipText  = QT_TR_NOOP("Opens a dialog to edit the parameters");
   sWhatsThis    = "Std_DlgParameter";
   sStatusTip    = QT_TR_NOOP("Opens a dialog to edit the parameters");
@@ -793,7 +794,8 @@ StdCmdTextDocument::StdCmdTextDocument()
   :Command("Std_TextDocument")
 {
     sGroup        = "Tools";
-    sMenuText     = QT_TR_NOOP("Add Te&xt Document");
+    sMenuText     = QT_TR_NOOP("Add te&xt document");
+
     sToolTipText  = QT_TR_NOOP("Add text document to active document");
     sWhatsThis    = "Std_TextDocument";
     sStatusTip    = QT_TR_NOOP("Add text document to active document");
@@ -826,7 +828,8 @@ StdCmdUnitsCalculator::StdCmdUnitsCalculator()
   : Command("Std_UnitsCalculator")
 {
     sGroup        = "Tools";
-    sMenuText     = QT_TR_NOOP("&Units Converter...");
+    sMenuText     = QT_TR_NOOP("&Units converter...");
+
     sToolTipText  = QT_TR_NOOP("Start the units converter");
     sWhatsThis    = "Std_UnitsCalculator";
     sStatusTip    = QT_TR_NOOP("Start the units converter");

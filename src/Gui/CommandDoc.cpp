@@ -605,7 +605,8 @@ StdCmdExportDependencyGraph::StdCmdExportDependencyGraph()
   : Command("Std_ExportDependencyGraph")
 {
     sGroup        = "Tools";
-    sMenuText     = QT_TR_NOOP("Export Dependency &Graph...");
+    sMenuText     = QT_TR_NOOP("Export dependency &graph...");
+
     sToolTipText  = QT_TR_NOOP("Export the dependency graph to a file");
     sStatusTip    = QT_TR_NOOP("Export the dependency graph to a file");
     sWhatsThis    = "Std_ExportDependencyGraph";
@@ -859,7 +860,8 @@ StdCmdProjectUtil::StdCmdProjectUtil()
     // setting the
     sGroup        = "Tools";
     sWhatsThis    = "Std_ProjectUtil";
-    sMenuText     = QT_TR_NOOP("Do&cument Utility...");
+    sMenuText     = QT_TR_NOOP("Do&cument utility...");
+
     sToolTipText  = QT_TR_NOOP("Utility to extract or create document files");
     sStatusTip    = QT_TR_NOOP("Utility to extract or create document files");
     sPixmap       = "Std_ProjectUtil";
