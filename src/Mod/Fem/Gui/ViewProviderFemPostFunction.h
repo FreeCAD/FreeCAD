@@ -25,9 +25,9 @@
 
 #include <Inventor/SbBox3f.h>
 #include <QWidget>
-#include <boost/signals2.hpp>
+#include <libfastsignals/signal.h>
 
-#include <Gui/ViewProviderDocumentObjectGroup.h>
+#include <Gui/ViewProviderDocumentObject.h>
 #include <Mod/Fem/App/FemPostFunction.h>
 
 
@@ -72,7 +72,7 @@ protected:
     template<class T>
     T* getObject() const
     {
-        return freecad_cast<T*>(getObject());
+        return dynamic_cast<T*>(getObject());
     }
 
     bool blockObjectUpdates()
@@ -90,12 +90,12 @@ private:
     bool m_block {false};
     ViewProviderFemPostFunction* m_view {nullptr};
     Fem::FemPostFunction* m_object {nullptr};
-    boost::signals2::scoped_connection m_connection;
+    fastsignals::scoped_connection m_connection;
 };
 
-class FemGuiExport ViewProviderFemPostFunctionProvider: public Gui::ViewProviderDocumentObjectGroup
+class FemGuiExport ViewProviderFemPostFunctionProvider: public Gui::ViewProviderDocumentObject
 {
-    PROPERTY_HEADER_WITH_OVERRIDE(FemGui::ViewProviderFemPostFunctionProvider);
+    PROPERTY_HEADER_WITH_OVERRIDE(FemGui::ViewProviderFemPostFunction);
 
 public:
     ViewProviderFemPostFunctionProvider();
@@ -111,6 +111,8 @@ public:
     bool canDelete(App::DocumentObject* obj) const override;
 
 protected:
+    std::vector<App::DocumentObject*> claimChildren() const override;
+    std::vector<App::DocumentObject*> claimChildren3D() const override;
     void onChanged(const App::Property* prop) override;
     void updateData(const App::Property*) override;
 
