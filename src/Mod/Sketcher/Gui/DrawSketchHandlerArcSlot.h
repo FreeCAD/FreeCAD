@@ -103,13 +103,13 @@ private:
 
         switch (state()) {
             case SelectMode::SeekFirst:
-                return {InputHint {QObject::tr("%1 pick arc slot center"), {MouseLeft}}};
+                return {InputHint {QObject::tr("%1 pick slot center"), {MouseLeft}}};
             case SelectMode::SeekSecond:
-                return {InputHint {QObject::tr("%1 pick arc slot radius"), {MouseLeft}}};
+                return {InputHint {QObject::tr("%1 pick slot radius"), {MouseLeft}}};
             case SelectMode::SeekThird:
-                return {InputHint {QObject::tr("%1 pick arc slot angle"), {MouseLeft}}};
+                return {InputHint {QObject::tr("%1 pick slot angle"), {MouseLeft}}};
             case SelectMode::SeekFourth:
-                return {InputHint {QObject::tr("%1 pick arc slot width"), {MouseLeft}}};
+                return {InputHint {QObject::tr("%1 pick slot width"), {MouseLeft}}};
             default:
                 return {};
         }
