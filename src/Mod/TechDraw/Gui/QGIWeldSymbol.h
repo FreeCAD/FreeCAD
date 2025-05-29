@@ -32,6 +32,7 @@
 #include <QPointF>
 #include <QStyleOptionGraphicsItem>
 
+#include "QGIUserTypes.h"
 #include "QGIView.h"
 
 
@@ -61,7 +62,7 @@ class TechDrawGuiExport QGIWeldSymbol : public QGIView
     Q_OBJECT
 
 public:
-    enum {Type = QGraphicsItem::UserType + 340};
+    enum {Type = UserType::QGIWeldSymbol};
 
     explicit QGIWeldSymbol();
     ~QGIWeldSymbol() override = default;

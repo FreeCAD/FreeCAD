@@ -325,8 +325,8 @@ QPixmap BitmapFactoryInst::pixmapFromSvg(const QByteArray& originalContents, con
     for ( const auto &colorToColor : colorMapping ) {
         ulong fromColor = colorToColor.first;
         ulong toColor = colorToColor.second;
-        QString fromColorString = QStringLiteral(":#%1;").arg(fromColor, 6, 16,  QChar::fromLatin1('0'));
-        QString toColorString = QStringLiteral(":#%1;").arg(toColor, 6, 16,  QChar::fromLatin1('0'));
+        QString fromColorString = QStringLiteral("#%1").arg(fromColor, 6, 16,  QChar::fromLatin1('0'));
+        QString toColorString = QStringLiteral("#%1").arg(toColor, 6, 16,  QChar::fromLatin1('0'));
         stringContents = stringContents.replace(fromColorString, toColorString);
     }
     QByteArray contents = stringContents.toUtf8();

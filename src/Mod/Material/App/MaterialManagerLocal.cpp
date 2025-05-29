@@ -140,7 +140,7 @@ std::shared_ptr<MaterialLibrary> MaterialManagerLocal::getLibrary(const QString&
 
 void MaterialManagerLocal::createLibrary(const QString& libraryName,
                                          const QString& directory,
-                                         const QString& icon,
+                                         const QString& iconPath,
                                          bool readOnly)
 {
     QDir dir;
@@ -151,7 +151,7 @@ void MaterialManagerLocal::createLibrary(const QString& libraryName,
     }
 
     auto materialLibrary =
-        std::make_shared<MaterialLibraryLocal>(libraryName, directory, icon, readOnly);
+        std::make_shared<MaterialLibraryLocal>(libraryName, directory, iconPath, readOnly);
     _libraryList->push_back(materialLibrary);
 
     // This needs to be persisted somehow
@@ -171,13 +171,13 @@ void MaterialManagerLocal::renameLibrary(const QString& libraryName, const QStri
     throw LibraryNotFound();
 }
 
-void MaterialManagerLocal::changeIcon(const QString& libraryName, const QString& icon)
+void MaterialManagerLocal::changeIcon(const QString& libraryName, const QByteArray& icon)
 {
     for (auto& library : *_libraryList) {
         if (library->isLocal() && library->isName(libraryName)) {
             auto materialLibrary =
                 reinterpret_cast<const std::shared_ptr<Materials::MaterialLibraryLocal>&>(library);
-            materialLibrary->setIconPath(icon);
+            materialLibrary->setIcon(icon);
             return;
         }
     }
@@ -199,18 +199,17 @@ void MaterialManagerLocal::removeLibrary(const QString& libraryName)
     throw LibraryNotFound();
 }
 
-std::shared_ptr<std::vector<std::tuple<QString, QString, QString>>>
+std::shared_ptr<std::vector<LibraryObject>>
 MaterialManagerLocal::libraryMaterials(const QString& libraryName)
 {
-    auto materials = std::make_shared<std::vector<std::tuple<QString, QString, QString>>>();
+    auto materials = std::make_shared<std::vector<LibraryObject>>();
 
     for (auto& it : *_materialMap) {
         // This is needed to resolve cyclic dependencies
         auto library = it.second->getLibrary();
         if (library->isName(libraryName)) {
-            materials->push_back(std::tuple<QString, QString, QString>(it.first,
-                                                                       it.second->getDirectory(),
-                                                                       it.second->getName()));
+            materials->push_back(
+                LibraryObject(it.first, it.second->getDirectory(), it.second->getName()));
         }
     }
 
@@ -235,21 +234,20 @@ bool MaterialManagerLocal::passFilter(const std::shared_ptr<Material>& material,
     return filter->modelIncluded(material);
 }
 
-std::shared_ptr<std::vector<std::tuple<QString, QString, QString>>>
+std::shared_ptr<std::vector<LibraryObject>>
 MaterialManagerLocal::libraryMaterials(const QString& libraryName,
                                        const std::shared_ptr<MaterialFilter>& filter,
                                        const MaterialFilterOptions& options)
 {
-    auto materials = std::make_shared<std::vector<std::tuple<QString, QString, QString>>>();
+    auto materials = std::make_shared<std::vector<LibraryObject>>();
 
     for (auto& it : *_materialMap) {
         // This is needed to resolve cyclic dependencies
         auto library = it.second->getLibrary();
         if (library->isName(libraryName)) {
             if (passFilter(it.second, filter, options)) {
-                materials->push_back(std::tuple<QString, QString, QString>(it.first,
-                                                                        it.second->getDirectory(),
-                                                                        it.second->getName()));
+                materials->push_back(
+                    LibraryObject(it.first, it.second->getDirectory(), it.second->getName()));
             }
         }
     }

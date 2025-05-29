@@ -17,6 +17,7 @@ target_sources(Tests_run PRIVATE
         MappedName.cpp
         Metadata.cpp
         ProjectFile.cpp
+        Property.h
         Property.cpp
         PropertyExpressionEngine.cpp
         StringHasher.cpp

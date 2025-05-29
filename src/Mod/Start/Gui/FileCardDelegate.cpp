@@ -111,7 +111,9 @@ void FileCardDelegate::paint(QPainter* painter,
                    painter->fontMetrics().lineSpacing() + margin);
 
     // Step 5: Draw
-    painter->drawPixmap(thumbnailRect, scaledPixmap);
+    QRect pixmapRect(thumbnailRect.topLeft(), scaledPixmap.size());
+    pixmapRect.moveCenter(thumbnailRect.center());
+    painter->drawPixmap(pixmapRect.topLeft(), scaledPixmap);
     painter->drawText(textRect, Qt::AlignLeft | Qt::AlignVCenter, elidedName);
     painter->drawText(sizeRect, Qt::AlignLeft | Qt::AlignTop, size);
     painter->restore();

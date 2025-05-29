@@ -25,7 +25,8 @@
 
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
-# include "QGIPrimPath.h"
+#include "QGIPrimPath.h"
+#include "QGIUserTypes.h"
 
 namespace Base {
 class Vector2d;
@@ -40,7 +41,7 @@ public:
     explicit QGIVertex(int index);
     ~QGIVertex() override = default;
 
-    enum {Type = QGraphicsItem::UserType + 105};
+    enum {Type = UserType::QGIVertex};
     int type() const override { return Type;}
     void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = nullptr ) override;
 

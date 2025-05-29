@@ -153,19 +153,19 @@ inline const UnitsSchemaSpec s3
             { 0               , "Pa"         , 1e-3            }}
         },
         { "Stiffness", {
-            { 1e-3            , "Pa/m"       , 1e-6            },
             { 1               , "mN/m"       , 1e-3            },
             { 1e3             , "N/m"        , 1.0             },
             { 1e6             , "kN/m"       , 1e3             },
             { 0               , "MN/m"       , 1e6             }}
         },
         { "StiffnessDensity", {
+            { 1e-3            , "Pa/m"       , 1e-6            },
             { 1               , "kPa/m"      , 1e-3            },
             { 1e3             , "MPa/m"      , 1.0             },
-            { 1e3             , "mN"         , 1.0             },
             { 0               , "GPa/m"      , 1e3             }}
         },
         { "Force", {
+            { 1e3             , "mN"         , 1.0             },
             { 1e6             , "N"          , 1e3             },
             { 1e9             , "kN"         , 1e6             },
             { 0               , "MN"         , 1e9             }}
