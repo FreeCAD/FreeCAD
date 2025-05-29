@@ -776,7 +776,7 @@ private:
             case STATUS_SEEK_Second:
                 return {InputHint {QObject::tr("%1 pick next point"), {MouseLeft}},
                         InputHint {QObject::tr("%1 finish"), {MouseRight}},
-                        InputHint {QObject::tr("%1 change mode"), {KeyM}}};
+                        InputHint {QObject::tr("%1 switch mode"), {KeyM}}};
             default:
                 return {};
         }
