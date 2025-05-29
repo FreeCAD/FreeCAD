@@ -513,6 +513,10 @@ def init_shared_values(values: Values) -> None:
     #
     values["OUTPUT_COMMENTS"] = True
     #
+    # If True output blank lines.  If False blank lines are suppressed.
+    #
+    values["OUTPUT_BLANK_LINES"] = True
+    #
     # if False duplicate axis values or feeds are suppressed
     # if they are the same as the previous line.
     #
