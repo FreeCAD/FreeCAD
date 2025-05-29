@@ -3,7 +3,7 @@
 ;which defines 5 different base types of lines
 ;in two different thicknesses:
 ; * 01: full line, freehand line / zickzack line
-: * 02: dash line
+; * 02: dash line
 ; * 04: dash-dot line
 ; * 05: dash-dot-dot line
 ; type .1: thin

@@ -35,6 +35,7 @@ import Path
 import Path.Base.Util as PathUtil
 import Path.Post.Utils as PostUtils
 import PathScripts.PathUtils as PathUtils
+from builtins import open as pyopen
 
 Revised = "2021-10-21"  # Revision date for this file.
 
@@ -355,7 +356,7 @@ def export(objectslist, filename, argstring):
             return
 
         # Skip inactive operations:
-        if PathUtil.opProperty(obj, "Active") is False:
+        if not PathUtil.activeForOp(obj):
             continue
 
         # Do the pre_op:
@@ -369,12 +370,7 @@ def export(objectslist, filename, argstring):
             gcode += linenumber() + line
 
         # Get coolant mode:
-        coolantMode = "None"  # None is the word returned from the operation
-        if hasattr(obj, "CoolantMode") or hasattr(obj, "Base") and hasattr(obj.Base, "CoolantMode"):
-            if hasattr(obj, "CoolantMode"):
-                coolantMode = obj.CoolantMode
-            else:
-                coolantMode = obj.Base.CoolantMode
+        coolantMode = PathUtil.coolantModeForOp(obj)
 
         # Turn coolant on if required:
         if OUTPUT_COMMENTS:
@@ -448,8 +444,12 @@ def export(objectslist, filename, argstring):
     print("Done postprocessing.")
 
     # Write the file:
-    with open(filename, "w") as fp:
-        fp.write(final)
+    if not filename == "-":
+        gfile = pyopen(filename, "w")
+        gfile.write(final)
+        gfile.close()
+
+    return final
 
 
 def linenumber():

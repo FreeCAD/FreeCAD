@@ -31,10 +31,12 @@
 #include "SimDisplay.h"
 #include "linmath.h"
 #include "OpenGlWrapper.h"
-
+#include <cmath>
 
 namespace MillSim
 {
+
+using std::numbers::pi;
 
 void SimDisplay::InitShaders()
 {
@@ -119,16 +121,16 @@ void SimDisplay::UniformHemisphere(vec3& randVec)
     float x1 = distr01(generator);
     float x2 = distr01(generator);
     float s = sqrt(1.0f - x1 * x1);
-    randVec[0] = cosf(PI2 * x2) * s;
-    randVec[1] = sinf(PI2 * x2) * s;
+    randVec[0] = cosf(pi * 2 * x2) * s;
+    randVec[1] = sinf(pi * 2 * x2) * s;
     randVec[2] = x1;
 }
 
 void SimDisplay::UniformCircle(vec3& randVec)
 {
     float x = distr01(generator);
-    randVec[0] = cosf(PI2 * x);
-    randVec[1] = sinf(PI2 * x);
+    randVec[0] = cosf(pi * 2 * x);
+    randVec[1] = sinf(pi * 2 * x);
     randVec[2] = 0;
 }
 
@@ -484,43 +486,61 @@ void SimDisplay::SetupLinePathPass(int curSegment, bool isHidden)
 void SimDisplay::TiltEye(float tiltStep)
 {
     mEyeInclination += tiltStep;
-    if (mEyeInclination > PI / 2) {
-        mEyeInclination = PI / 2;
+    if (mEyeInclination > pi / 2) {
+        mEyeInclination = pi / 2;
     }
-    else if (mEyeInclination < -PI / 2) {
-        mEyeInclination = -PI / 2;
+    else if (mEyeInclination < -pi / 2) {
+        mEyeInclination = -pi / 2;
     }
 }
 
 void SimDisplay::RotateEye(float rotStep)
 {
     mEyeRoration += rotStep;
-    if (mEyeRoration > PI2) {
-        mEyeRoration -= PI2;
+    if (mEyeRoration > pi * 2) {
+        mEyeRoration -= pi * 2;
     }
     else if (mEyeRoration < 0) {
-        mEyeRoration += PI2;
+        mEyeRoration += pi * 2;
     }
     updateDisplay = true;
 }
 
 void SimDisplay::MoveEye(float x, float z)
 {
+    // Exponential calculate maxValue
+    // https://forum.freecad.org/viewtopic.php?t=96939
+    const float arg1 = 124.938F;
+    const float arg2 = 578.754F;
+    const float arg3 = -20.7993F;
+    float maxValueX = arg1 + arg2 * exp(arg3 * mEyeDistFactor);
+    float maxValueZ = maxValueX * 0.4F;
+
     mEyeX += x;
-    if (mEyeX > 300) {
-        mEyeX = 300;
+    if (mEyeX > maxValueX) {
+        mEyeX = maxValueX;
     }
-    else if (mEyeX < -300) {
-        mEyeX = -300;
+    else if (mEyeX < -maxValueX) {
+        mEyeX = -maxValueX;
     }
     mEyeZ += z;
-    if (mEyeZ > 300) {
-        mEyeZ = 300;
+
+    if (mEyeZ > maxValueZ) {
+        mEyeZ = maxValueZ;
     }
-    else if (mEyeZ < -300) {
-        mEyeZ = -300;
+    else if (mEyeZ < -maxValueZ) {
+        mEyeZ = -maxValueZ;
     }
     updateDisplay = true;
+}
+
+void SimDisplay::MoveEyeCenter()
+{
+    mEyeRoration = 0;
+    mEyeInclination = pi / 6;
+    mEyeX = 0;
+    mEyeZ = 0;
+    UpdateEyeFactor(0.1f);
 }
 
 void SimDisplay::UpdateEyeFactor(float factor)

@@ -52,6 +52,7 @@ class BIM_Views:
         from PySide import QtCore, QtGui
 
         vm = findWidget()
+        self.allItemsInTree = []
         bimviewsbutton = None
         mw = FreeCADGui.getMainWindow()
         st = mw.statusBar()
@@ -85,7 +86,8 @@ class BIM_Views:
 
             # set button
             self.dialog.menu = QtGui.QMenu()
-            for button in [("AddLevel", translate("BIM","Add level")),
+            for button in [("Active", translate("BIM","Active (default)")),
+                            ("AddLevel", translate("BIM","Add level")),
                             ("AddProxy", translate("BIM","Add proxy")),
                             ("Delete", translate("BIM","Delete")),
                             ("Toggle", translate("BIM","Toggle on/off")),
@@ -93,6 +95,14 @@ class BIM_Views:
                             ("SaveView", translate("BIM","Save view position")),
                             ("Rename", translate("BIM","Rename"))]:
                 action = QtGui.QAction(button[1])
+
+                # Make the "Activate" button bold, as this is the default one
+                if button[0] == "Active":
+                    font = action.font()
+                    font.setBold(True)
+                    action.setFont(font)
+                    action.setCheckable(True)
+
                 self.dialog.menu.addAction(action)
                 setattr(self.dialog,"button"+button[0], action)
 
@@ -115,6 +125,7 @@ class BIM_Views:
             self.dialog.buttonIsolate.setToolTip(translate("BIM","Turns all items off except the selected ones"))
             self.dialog.buttonSaveView.setToolTip(translate("BIM","Saves the current camera position to the selected items"))
             self.dialog.buttonRename.setToolTip(translate("BIM","Renames the selected item"))
+            self.dialog.buttonActive.setToolTip(translate("BIM","Activates the selected item"))
 
             # connect signals
             self.dialog.buttonAddLevel.triggered.connect(self.addLevel)
@@ -124,6 +135,7 @@ class BIM_Views:
             self.dialog.buttonIsolate.triggered.connect(self.isolate)
             self.dialog.buttonSaveView.triggered.connect(self.saveView)
             self.dialog.buttonRename.triggered.connect(self.rename)
+            self.dialog.buttonActive.triggered.connect(lambda: BIM_Views.activate(self.dialog))
             self.dialog.tree.itemClicked.connect(self.select)
             self.dialog.tree.itemDoubleClicked.connect(show)
             self.dialog.viewtree.itemDoubleClicked.connect(show)
@@ -189,6 +201,7 @@ class BIM_Views:
         if vm and FreeCAD.ActiveDocument:
             if vm.isVisible() and (vm.tree.state() != vm.tree.State.EditingState):
                 vm.tree.clear()
+                self.allItemsInTree.clear()
                 treeViewItems = []  # QTreeWidgetItem to Display in tree
                 lvHold = []
                 soloProxyHold = []
@@ -306,8 +319,13 @@ class BIM_Views:
                     objActive = FreeCADGui.ActiveDocument.ActiveView.getActiveObject("Arch")
                 tparam = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/TreeView")
                 activeColor = tparam.GetUnsigned("TreeActiveColor",0)
-                allItemsInTree = getAllItemsInTree(vm.tree) + getAllItemsInTree(vm.viewtree)
-                for item in allItemsInTree:
+
+                # We reuse the variable later on in "Isolate", to not traverse the tree once
+                # again
+                self.allItemsInTree = getAllItemsInTree(vm.tree)
+                allItemsInTrees = self.allItemsInTree + getAllItemsInTree(vm.viewtree)
+
+                for item in allItemsInTrees:
                     if item.text(0) in objNameSelected:
                         item.setSelected(True)
                     if objActive and item.toolTip(0) == objActive.Name:
@@ -412,6 +430,17 @@ class BIM_Views:
                 if vm.tree.selectedItems():
                     item = vm.tree.selectedItems()[-1]
                     vm.tree.editItem(item, 0)
+    @staticmethod
+    def activate(dialog=None):
+        from draftutils.utils import toggle_working_plane
+        vm = findWidget()
+        if vm:
+            if vm.tree.selectedItems():
+                item = vm.tree.selectedItems()[-1]
+                obj = FreeCAD.ActiveDocument.getObject(item.toolTip(0))
+                if obj:
+                    toggle_working_plane(obj, None, restore=True, dialog=dialog)
+                    FreeCADGui.Selection.clearSelection()
 
     def editObject(self, item, column):
         "renames or edit height of the actual object"
@@ -434,19 +463,60 @@ class BIM_Views:
                     obj.ViewObject.Visibility = not (obj.ViewObject.Visibility)
             FreeCAD.ActiveDocument.recompute()
 
+    def _isAncestor(self, ancestor_item, child_item):
+        current = child_item.parent()
+        while current is not None:
+            if current == ancestor_item:
+                return True
+            current = current.parent()
+        return False
+
     def isolate(self):
-        "turns all items off except the selected ones"
+        import Draft
+        """
+        Isolate the currently selected items in the tree view.
+
+        This function first makes all items in the tree visible to ensure a clean slate.
+        Then, it hides all items that are not currently selected by the user in the GUI tree view.
+        As a result, only the selected items remain visible in the 3D view, effectively isolating them.
+
+        Assumes that `self.allItemsInTree` is a list of all QTreeWidgetItems in the tree.
+        """
+
+        # Iterate through all of the items and show them beforehand if they were hidden
+        # so we can "reset" the tree state before the real processing
+        for item in self.allItemsInTree:
+            toolTip = item.toolTip(0)
+            obj = FreeCAD.ActiveDocument.getObject(toolTip)
+            if obj:
+                # We switch visibility to be sure we will show childs of other childs
+                # beforehand, as the Visibility may not be propagated.
+                obj.ViewObject.Visibility = False
+                obj.ViewObject.Visibility = True
 
         vm = findWidget()
         if vm:
-            onnames = [item.toolTip(0) for item in vm.tree.selectedItems()]
-            for i in range(vm.tree.topLevelItemCount()):
-                item = vm.tree.topLevelItem(i)
-                if item.toolTip(0) not in onnames:
-                    obj = FreeCAD.ActiveDocument.getObject(item.toolTip(0))
-                    if obj:
+            selectedItems = vm.tree.selectedItems()
+            checkAncestors = False
+            # We can get a scenario where user has just selected only Building
+            # so we don't want to hide any of it's children, so just check if that's
+            # the case so we will know whether we should process items further or not
+            if len(selectedItems) == 1:
+                toolTip = selectedItems[0].toolTip(0)
+                obj = FreeCAD.ActiveDocument.getObject(toolTip)
+                t = Draft.getType(obj)
+                if obj and getattr(obj, "IfcType", "") == "Building":
+                    checkAncestors = True
+
+            for item in self.allItemsInTree:
+                toolTip = item.toolTip(0)
+                obj = FreeCAD.ActiveDocument.getObject(toolTip)
+                if obj:
+                    if item not in selectedItems and not (checkAncestors and self._isAncestor(selectedItems[0], item)):
                         obj.ViewObject.Visibility = False
-            FreeCAD.ActiveDocument.recompute()
+                    else:
+                        obj.ViewObject.Visibility = True
+
 
     def saveView(self):
         "save the current camera angle to the selected item"
@@ -462,8 +532,7 @@ class BIM_Views:
 
     def onDockLocationChanged(self, area):
         """Saves dock widget size and location"""
-
-        PARAMS.SetInt("BimViewArea", int(area))
+        PARAMS.SetInt("BimViewArea", area.value)
         mw = FreeCADGui.getMainWindow()
         vm = findWidget()
         if vm:
@@ -497,6 +566,10 @@ class BIM_Views:
             if selobj:
                 if Draft.getType(selobj).startswith("Ifc"):
                     self.dialog.buttonAddProxy.setEnabled(False)
+                if FreeCADGui.ActiveDocument.ActiveView.getActiveObject("Arch") == selobj:
+                    self.dialog.buttonActive.setChecked(True)
+                else:
+                    self.dialog.buttonActive.setChecked(False)
         self.dialog.menu.exec_(self.dialog.tree.mapToGlobal(pos))
 
     def getViews(self):
@@ -535,7 +608,6 @@ def findWidget():
 
 def show(item, column=None):
     "item has been double-clicked"
-
     import Draft
 
     obj = None
@@ -588,55 +660,11 @@ def show(item, column=None):
                 vparam.SetBool("Gradient", False)
                 vparam.SetBool("RadialGradient", False)
         else:
+            # case 3: This is maybe a BuildingPart. Place the WP on it")
+            type = Draft.getType(obj)
+            if type == "BuildingPart" or type == "IfcBuildingStorey":
+                BIM_Views.activate()
 
-            # case 3: This is maybe a BuildingPart. Place the WP on it
-            FreeCADGui.runCommand("Draft_SelectPlane")
-            if PARAMS.GetBool("BimViewsSwitchBackground", False):
-                vparam.SetBool("Simple", False)
-                vparam.SetBool("Gradient", False)
-                vparam.SetBool("RadialGradient", True)
-            if Draft.getType(obj) == "BuildingPart":
-                if obj.IfcType == "Building Storey":
-                    # hide all other storeys
-                    obj.ViewObject.Visibility = True
-                    bldgs = [o for o in obj.InList if Draft.getType(o) == "BuildingPart" and o.IfcType == "Building"]
-                    if len(bldgs) == 1:
-                        bldg = bldgs[0]
-                        storeys = [o for o in bldg.OutList if Draft.getType(o) == "BuildingPart" and o.IfcType == "Building Storey"]
-                        for storey in storeys:
-                            if storey != obj:
-                                storey.ViewObject.Visibility = False
-                elif obj.IfcType == "Building":
-                    # show all storeys
-                    storeys = [o for o in obj.OutList if Draft.getType(o) == "BuildingPart" and o.IfcType == "Building Storey"]
-                    for storey in storeys:
-                        storey.ViewObject.Visibility = True
-            elif Draft.getType(obj) == "IfcBuildingStorey":
-                obj.ViewObject.Visibility = True
-                bldgs = [o for o in obj.InList if Draft.getType(o) == "IfcBuilding"]
-                if len(bldgs) == 1:
-                    bldg = bldgs[0]
-                    storeys = [o for o in bldg.OutList if Draft.getType(o) == "IfcBuildingStorey"]
-                    for storey in storeys:
-                        if storey != obj:
-                            storey.ViewObject.Visibility = False
-            elif hasattr(obj, "IfcType") and obj.IfcType == "IfcBuilding":
-                # show all storeys
-                storeys = [o for o in obj.OutList if Draft.getType(o) == "IfcBuildingStorey"]
-                for storey in storeys:
-                    storey.ViewObject.Visibility = True
-
-        # perform stored interactions
-        if getattr(obj.ViewObject, "SetWorkingPlane", False):
-            obj.ViewObject.Proxy.setWorkingPlane()
-        if getattr(obj.ViewObject, "DoubleClickActivates", True):
-            if Draft.getType(obj) == "BuildingPart":
-                FreeCADGui.ActiveDocument.ActiveView.setActiveObject("Arch", obj)
-            elif Draft.getType(obj) == "IfcBuildingStorey":
-                FreeCADGui.ActiveDocument.ActiveView.setActiveObject("NativeIFC", obj)
-            else:
-                FreeCADGui.ActiveDocument.ActiveView.setActiveObject("Arch", None)
-                FreeCADGui.ActiveDocument.ActiveView.setActiveObject("NativeIFC", None)
     if vm:
         # store the last double-clicked item for the BIM WPView command
         if isinstance(item, str) or (

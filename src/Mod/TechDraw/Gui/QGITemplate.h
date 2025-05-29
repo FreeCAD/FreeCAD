@@ -28,6 +28,8 @@
 #include <QGraphicsItemGroup>
 #include <QObject>
 
+#include "QGIUserTypes.h"
+
 QT_BEGIN_NAMESPACE
 class QGraphicsScene;
 QT_END_NAMESPACE
@@ -49,7 +51,7 @@ public:
     QGITemplate(QGSPage *);
     ~QGITemplate() override;
 
-    enum {Type = QGraphicsItem::UserType + 150};
+    enum {Type = UserType::QGITemplate};
     int type() const override { return Type;}
 
     void clearContents();

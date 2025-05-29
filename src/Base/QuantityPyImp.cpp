@@ -192,7 +192,7 @@ PyObject* QuantityPy::getValueAs(PyObject* args) const
             return std::nullopt;
         }
 
-        return *getQuantityPtr();
+        return *static_cast<QuantityPy*>(object)->getQuantityPtr();
     };
 
     auto tryUnit = [&]() -> std::optional<Quantity> {

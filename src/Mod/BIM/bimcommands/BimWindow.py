@@ -187,6 +187,13 @@ class Arch_Window:
 
         FreeCADGui.doCommand("pl.Base = FreeCAD.Vector(" + str(point.x) + ", " + str(point.y) + ", " + str(point.z) + ")")
 
+        if self.baseFace is not None:
+            host = self.baseFace[0]
+        elif obj:
+            host = obj
+        else:
+            host = None
+
         if self.Preset >= len(WindowPresets):
             preset = False
             # library object
@@ -221,7 +228,11 @@ class Arch_Window:
             for p in self.wparams:
                 wp += ", " + p.lower() + "=" + str(getattr(self,p))
             import ArchSketchObject
-            if hasattr(ArchSketchObject, 'attachToHost'):
+
+            if (host and Draft.getType(host.Base) == "ArchSketch" and
+                hasattr(ArchSketchObject, 'attachToHost') and 
+                hasattr(FreeCAD, 'ArchSketchLock') and 
+                FreeCAD.ArchSketchLock):
                 # Window sketch's stay at orgin is good if addon exists
                 FreeCADGui.doCommand("win = Arch.makeWindowPreset('" + WindowPresets[self.Preset] + "' " + wp + ")")
                 FreeCADGui.doCommand("FreeCADGui.Selection.addSelection(win)")
@@ -230,23 +241,17 @@ class Arch_Window:
                 wPl = FreeCAD.SketchArchPl
                 SketchArch = True
             else:
-                FreeCADGui.doCommand("win = Arch.makeWindowPreset('" + WindowPresets[self.Preset] + "' " + wp + ", placement=pl)")
+                FreeCADGui.doCommand("win = Arch.makeWindowPreset('" + WindowPresets[self.Preset] + "' " + wp + ", placement=pl, window_sill=" + str(self.Sill.Value) + ")")
                 SketchArch = False
 
         if self.Include:
-            host = None
-            if self.baseFace is not None:
-                host = self.baseFace[0]
-            elif obj:
-                host = obj
             if Draft.getType(host) in ALLOWEDHOSTS:
                 FreeCADGui.doCommand("win.Hosts = [FreeCAD.ActiveDocument." + host.Name + "]")
                 siblings = host.Proxy.getSiblings(host)
                 for sibling in siblings:
                     FreeCADGui.doCommand("win.Hosts = win.Hosts + [FreeCAD.ActiveDocument." + sibling.Name + "]")
-                if preset == True and Draft.getType(host.Base) == "ArchSketch":
-                    if SketchArch:
-                        ArchSketchObject.attachToHost(w, target=host, pl=wPl)
+                if SketchArch:
+                    ArchSketchObject.attachToHost(w, target=host, pl=wPl)
 
         self.doc.commitTransaction()
         self.doc.recompute()

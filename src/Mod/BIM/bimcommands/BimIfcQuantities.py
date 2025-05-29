@@ -60,7 +60,7 @@ QTO_TYPES = {
     "IfcQuantityNumber": "App::PropertyInteger",
     "IfcQuantityTime": "App::PropertyTime",
     "IfcQuantityVolume": "App::PropertyVolume",
-    "IfcQuantityWeight": "App::PropertyWeight",
+    "IfcQuantityWeight": "App::PropertyMass",
 }
 
 

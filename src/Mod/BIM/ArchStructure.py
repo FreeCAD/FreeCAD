@@ -772,7 +772,6 @@ class _Structure(ArchComponent.Component):
                 obj.setEditorMode("ArchSketchPropertySet", ["ReadOnly"])
 
         # set a flag to indicate onDocumentRestored() is run
-        self.onDocRestoredDone = True
 
 
     def execute(self,obj):
@@ -956,11 +955,11 @@ class _Structure(ArchComponent.Component):
                                 # needs to take out those in Construction before
                                 # using as parameters.
                                 if (not obj.ArchSketchEdges and not geom.Construction) or str(ig) in obj.ArchSketchEdges:
-                                    # support Line, Arc, Circle, Ellipse for Sketch
+                                    # support Line, Arc, Circle, Ellipse, BSplineCurve for Sketch
                                     # as Base at the moment
                                     if isinstance(geom.Geometry, (Part.LineSegment,
                                                   Part.Circle, Part.ArcOfCircle,
-                                                  Part.Ellipse)):
+                                                  Part.Ellipse, Part.BSplineCurve)):
                                         skGeomEdgesI = geom.Geometry.toShape()
                                         skGeomEdges.append(skGeomEdgesI)
                             clusterTransformed = []
@@ -1086,10 +1085,10 @@ class _Structure(ArchComponent.Component):
 
     def onChanged(self,obj,prop):
 
-        # check the flag indicating if onDocumentRestored() has been run; if
-        # not, no further code is run - as getExtrusionData() below return
-        # error when some properties are not added by onDocumentRestored()
-        if not hasattr(self,"onDocRestoredDone"):
+        # check the flag indicating if we are currently in the process of
+        # restoring document; if not, no further code is run as getExtrusionData() 
+        # below return error when some properties are not added by onDocumentRestored()
+        if FreeCAD.ActiveDocument.Restoring:
             return
 
         if hasattr(obj,"IfcType"):

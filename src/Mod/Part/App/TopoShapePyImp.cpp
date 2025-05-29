@@ -699,28 +699,6 @@ PyObject*  TopoShapePy::multiFuse(PyObject *args) const
     return makeShape(Part::OpCodes::Fuse, *getTopoShapePtr(), args);
 }
 
-PyObject*  TopoShapePy::oldFuse(PyObject *args) const
-{
-    PyObject *pcObj;
-    if (!PyArg_ParseTuple(args, "O!", &(TopoShapePy::Type), &pcObj))
-        return nullptr;
-
-    TopoDS_Shape shape = static_cast<TopoShapePy*>(pcObj)->getTopoShapePtr()->getShape();
-    try {
-        // Let's call algorithm computing a fuse operation:
-        TopoDS_Shape fusShape = this->getTopoShapePtr()->oldFuse(shape);
-        return new TopoShapePy(new TopoShape(fusShape));
-    }
-    catch (Standard_Failure& e) {
-        PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
-        return nullptr;
-    }
-    catch (const std::exception& e) {
-        PyErr_SetString(PartExceptionOCCError, e.what());
-        return nullptr;
-    }
-}
-
 PyObject*  TopoShapePy::common(PyObject *args) const
 {
     return makeShape(Part::OpCodes::Common, *getTopoShapePtr(), args);

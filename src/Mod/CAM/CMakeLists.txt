@@ -60,7 +60,6 @@ SET(PathPythonDressup_SRCS
     Path/Dressup/__init__.py
     Path/Dressup/Utils.py
     Path/Dressup/Array.py
-    Path/Dressup/Base.py
     Path/Dressup/Boundary.py
     Path/Dressup/DogboneII.py
     Path/Dressup/Tags.py
@@ -223,6 +222,7 @@ SET(PathPythonOpGui_SRCS
     Path/Op/Gui/FeatureExtension.py
     Path/Op/Gui/Helix.py
     Path/Op/Gui/MillFace.py
+    Path/Op/Gui/PathShapeTC.py
     Path/Op/Gui/Pocket.py
     Path/Op/Gui/PocketBase.py
     Path/Op/Gui/PocketShape.py
@@ -301,6 +301,7 @@ SET(Tests_SRCS
     CAMTests/__init__.py
     CAMTests/boxtest.fcstd
     CAMTests/boxtest1.fcstd
+    CAMTests/dressuptest.FCStd
     CAMTests/Drilling_1.FCStd
     CAMTests/drill_test1.FCStd
     CAMTests/FilePathTestUtils.py
@@ -355,6 +356,7 @@ SET(Tests_SRCS
     CAMTests/TestRefactoredLinuxCNCPost.py
     CAMTests/TestRefactoredMach3Mach4Post.py
     CAMTests/TestRefactoredMassoG3Post.py
+    CAMTests/TestRefactoredTestDressupPost.py
     CAMTests/TestRefactoredTestPost.py
     CAMTests/TestRefactoredTestPostGCodes.py
     CAMTests/TestRefactoredTestPostMCodes.py

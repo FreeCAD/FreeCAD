@@ -843,14 +843,6 @@ void InterpreterSingleton::dbgObserveFile(const char* sFileName)
     }
 }
 
-void InterpreterSingleton::dbgSetBreakPoint(unsigned int /*uiLineNumber*/)
-{}
-
-void InterpreterSingleton::dbgUnsetBreakPoint(unsigned int /*uiLineNumber*/)
-{}
-
-void InterpreterSingleton::dbgStep()
-{}
 
 std::string InterpreterSingleton::strToPython(const char* Str)
 {

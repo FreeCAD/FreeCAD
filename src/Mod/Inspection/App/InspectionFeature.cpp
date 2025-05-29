@@ -646,7 +646,7 @@ void PropertyDistanceList::Save(Base::Writer& writer) const
 void PropertyDistanceList::Restore(Base::XMLReader& reader)
 {
     reader.readElement("FloatList");
-    std::string file(reader.getAttribute("file"));
+    std::string file(reader.getAttribute<const char*>("file"));
 
     if (!file.empty()) {
         // initiate a file read

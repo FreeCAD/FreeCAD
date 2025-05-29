@@ -53,6 +53,8 @@ PropertyExpressionContainer::PropertyExpressionContainer()
         inited = true;
         GetApplication().signalRelabelDocument.connect(
             PropertyExpressionContainer::slotRelabelDocument);
+        GetApplication().signalRenameDynamicProperty.connect(
+            PropertyExpressionContainer::slotRenameDynamicProperty);
     }
     _ExprContainers.insert(this);
 }
@@ -72,6 +74,13 @@ void PropertyExpressionContainer::slotRelabelDocument(const App::Document& doc)
         for (auto prop : _ExprContainers) {
             prop->onRelabeledDocument(doc);
         }
+    }
+}
+
+void PropertyExpressionContainer::slotRenameDynamicProperty(const App::Property& prop, const char* oldName)
+{
+    for (auto container : _ExprContainers) {
+        container->onRenameDynamicProperty(prop, oldName);
     }
 }
 
@@ -327,9 +336,9 @@ void PropertyExpressionEngine::Save(Base::Writer& writer) const
 void PropertyExpressionEngine::Restore(Base::XMLReader& reader)
 {
     reader.readElement("ExpressionEngine");
-    int count = reader.getAttributeAsFloat("count");
+    int count = reader.getAttribute<double>("count");
 
-    if (reader.hasAttribute("xlink") && reader.getAttributeAsInteger("xlink")) {
+    if (reader.hasAttribute("xlink") && reader.getAttribute<bool>("xlink")) {
         PropertyExpressionContainer::Restore(reader);
     }
 
@@ -340,10 +349,10 @@ void PropertyExpressionEngine::Restore(Base::XMLReader& reader)
         reader.readElement("Expression");
         restoredExpressions->emplace_back();
         auto& info = restoredExpressions->back();
-        info.path = reader.getAttribute("path");
-        info.expr = reader.getAttribute("expression");
+        info.path = reader.getAttribute<const char*>("path");
+        info.expr = reader.getAttribute<const char*>("expression");
         if (reader.hasAttribute("comment")) {
-            info.comment = reader.getAttribute("comment");
+            info.comment = reader.getAttribute<const char*>("comment");
         }
     }
 
@@ -1206,6 +1215,17 @@ void PropertyExpressionEngine::onRelabeledDocument(const App::Document& doc)
             e.second.expression->visit(v);
         }
     }
+}
+
+void PropertyExpressionEngine::onRenameDynamicProperty(const App::Property& prop, const char* oldName)
+{
+    ObjectIdentifier oldNameId = ObjectIdentifier(prop.getContainer(), std::string(oldName));
+    ObjectIdentifier newNameId = ObjectIdentifier(prop);
+    const std::map<ObjectIdentifier, ObjectIdentifier> paths = {
+        {oldNameId, newNameId},
+    };
+
+    renameObjectIdentifiers(paths);
 }
 
 void PropertyExpressionEngine::getLinksTo(std::vector<App::ObjectIdentifier>& identifiers,

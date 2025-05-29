@@ -76,7 +76,7 @@ UnitsSchema::translate(const Quantity& quant, double& factor, std::string& unitS
     auto unitSpecs = spec.translationSpecs.at(unitName);
     const auto unitSpec = std::find_if(unitSpecs.begin(), unitSpecs.end(), isSuitable);
     if (unitSpec == unitSpecs.end()) {
-        throw RuntimeError("Suitable threshhold not found. Schema: " + spec.name
+        throw RuntimeError("Suitable threshold not found. Schema: " + spec.name
                            + " value: " + std::to_string(value));
     }
 
@@ -103,12 +103,13 @@ UnitsSchema::toLocale(const Quantity& quant, const double factor, const std::str
     std::string valueString =
         Lc.toString((quant.getValue() / factor), format.toFormat(), format.precision).toStdString();
 
-    return fmt::format(
-        "{}{}{}",
-        valueString,
-        unitString.empty() || unitString == "°" || unitString == "″" || unitString == "′" ? ""
-                                                                                          : " ",
-        unitString);
+    return fmt::format("{}{}{}",
+                       valueString,
+                       unitString.empty() || unitString == "°" || unitString == "″"
+                               || unitString == "′" || unitString == "\"" || unitString == "'"
+                           ? ""
+                           : " ",
+                       unitString);
 }
 
 bool UnitsSchema::isMultiUnitLength() const

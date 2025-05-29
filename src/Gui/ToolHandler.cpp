@@ -41,6 +41,7 @@
 #include "View3DInventorViewer.h"
 
 #include "ToolHandler.h"
+#include "InputHint.h"
 
 using namespace Gui;
 
@@ -59,6 +60,7 @@ bool ToolHandler::activate()
         oldCursor = cw->cursor();
 
         updateCursor();
+        updateHint();
 
         this->preActivated();
         this->activated();
@@ -74,6 +76,8 @@ void ToolHandler::deactivate()
     this->postDeactivated();
 
     unsetCursor();
+
+    Gui::MainWindow::getInstance()->hideHints();
 }
 
 //**************************************************************************
@@ -231,6 +235,16 @@ void ToolHandler::updateCursor()
     if (cursorstring != QStringLiteral("None")) {
         setCrosshairCursor(cursorstring);
     }
+}
+
+std::list<InputHint> ToolHandler::getToolHints() const
+{
+    return {};
+}
+
+void ToolHandler::updateHint() const
+{
+    Gui::getMainWindow()->showHints(getToolHints());
 }
 
 void ToolHandler::applyCursor()

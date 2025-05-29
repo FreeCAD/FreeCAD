@@ -38,6 +38,7 @@ import datetime
 import shlex
 
 # from PathScripts import PostUtils
+import Path.Base.Util as PathUtil
 import Path.Post.Utils as PostUtils
 from PathScripts import PathUtils
 from builtins import open as pyopen
@@ -216,12 +217,8 @@ def export(objectslist, filename, argstring):
     for obj in objectslist:
 
         # Skip inactive operations
-        if hasattr(obj, "Active"):
-            if not obj.Active:
-                continue
-        if hasattr(obj, "Base") and hasattr(obj.Base, "Active"):
-            if not obj.Base.Active:
-                continue
+        if not PathUtil.activeForOp(obj):
+            continue
 
         # fetch machine details
         job = PathUtils.findParentJob(obj)
@@ -411,7 +408,7 @@ def parse(pathobj):
                 if command == lastcommand:
                     outstring.pop(0)
 
-            if c.Name[0] == "(" and not OUTPUT_COMMENTS:  # command is a comment
+            if c.Name.startswith("(") and not OUTPUT_COMMENTS:  # command is a comment
                 continue
 
             # Now add the remaining parameters in order

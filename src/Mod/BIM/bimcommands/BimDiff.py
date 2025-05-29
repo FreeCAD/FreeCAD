@@ -52,6 +52,7 @@ class BIM_Diff:
         # what will be compared: IDs, geometry, materials. Everything else is discarded.
         from PySide import QtGui
         import Draft
+        import Part
 
         MOVE_TOLERANCE = 0.2  # the max allowed move in mm
         VOL_TOLERANCE = 250  # the max allowed volume diff in mm^3

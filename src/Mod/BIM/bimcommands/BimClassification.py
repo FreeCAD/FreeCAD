@@ -624,6 +624,12 @@ class BIM_Classification:
                 FreeCAD.ActiveDocument.commitTransaction()
                 FreeCAD.ActiveDocument.recompute()
         else:
+            # Close the form if user has pressed Enter and did not
+            # select anything
+            if len(self.form.treeClass.selectedItems()) < 1:
+                self.form.close()
+                return
+
             code = self.form.treeClass.selectedItems()[0].text(0)
             pl = self.isEditing.PropertiesList
             if ("StandardCode" in pl) or ("IfcClass" in pl):

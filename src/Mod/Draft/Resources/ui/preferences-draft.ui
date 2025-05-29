@@ -449,7 +449,6 @@ accidentally and modifying the entered value.</string>
   </layout>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
- <pixmapfunction>qPixmapFromMimeSource</pixmapfunction>
  <customwidgets>
   <customwidget>
    <class>Gui::PrefCheckBox</class>

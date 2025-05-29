@@ -52,7 +52,7 @@ class Rectangle(gui_base_original.Creator):
         return {'Pixmap': 'Draft_Rectangle',
                 'Accel': "R, E",
                 'MenuText': QT_TRANSLATE_NOOP("Draft_Rectangle", "Rectangle"),
-                'ToolTip': QT_TRANSLATE_NOOP("Draft_Rectangle", "Creates a 2-point rectangle. CTRL to snap.")}
+                'ToolTip': QT_TRANSLATE_NOOP("Draft_Rectangle", "Creates a 2-point rectangle.")}
 
     def Activated(self):
         """Execute when the command is called."""

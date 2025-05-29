@@ -1781,15 +1781,6 @@ TopoDS_Shape TopoShape::fuse(const std::vector<TopoDS_Shape>& shapes, Standard_R
     return makeShell(resShape);
 }
 
-TopoDS_Shape TopoShape::oldFuse(TopoDS_Shape shape) const
-{
-    if (this->_Shape.IsNull())
-        Standard_Failure::Raise("Base shape is null");
-    if (shape.IsNull())
-        Standard_Failure::Raise("Tool shape is null");
-
-    throw Standard_Failure("BRepAlgo_Fuse is deprecated since OCCT 7.3");
-}
 
 TopoDS_Shape TopoShape::section(TopoDS_Shape shape, Standard_Boolean approximate) const
 {

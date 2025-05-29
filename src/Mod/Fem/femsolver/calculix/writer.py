@@ -53,6 +53,8 @@ from . import write_constraint_selfweight as con_selfweight
 from . import write_constraint_temperature as con_temperature
 from . import write_constraint_tie as con_tie
 from . import write_constraint_transform as con_transform
+from . import write_constraint_electricchargedensity as con_electricchargedensity
+from . import write_constraint_electrostatic as con_electrostatic
 from . import write_femelement_geometry
 from . import write_femelement_material
 from . import write_femelement_matgeosets
@@ -157,6 +159,10 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
         self.write_constraints_meshsets(inpfile, self.member.cons_planerotation, con_planerotation)
         self.write_constraints_meshsets(inpfile, self.member.cons_transform, con_transform)
         self.write_constraints_meshsets(inpfile, self.member.cons_temperature, con_temperature)
+        self.write_constraints_meshsets(
+            inpfile, self.member.cons_electricchargedensity, con_electricchargedensity
+        )
+        self.write_constraints_meshsets(inpfile, self.member.cons_electrostatic, con_electrostatic)
 
         # surface sets
         self.write_constraints_meshsets(inpfile, self.member.cons_contact, con_contact)
@@ -194,6 +200,10 @@ class FemInputWriterCcx(writerbase.FemInputWriter):
         self.write_constraints_meshsets(inpfile, self.member.cons_pressure, con_pressure)
         self.write_constraints_propdata(inpfile, self.member.cons_temperature, con_temperature)
         self.write_constraints_meshsets(inpfile, self.member.cons_heatflux, con_heatflux)
+        self.write_constraints_propdata(
+            inpfile, self.member.cons_electricchargedensity, con_electricchargedensity
+        )
+        self.write_constraints_propdata(inpfile, self.member.cons_electrostatic, con_electrostatic)
         con_fluidsection.write_constraints_fluidsection(inpfile, self)
 
         # output and step end

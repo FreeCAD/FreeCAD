@@ -232,8 +232,6 @@ public:
 
     boost::signals2::signal<void(int, int)> rowHeightChanged;
 
-    void observeDocument(App::Document* document);
-
     void renameObjectIdentifiers(
         const std::map<App::ObjectIdentifier, App::ObjectIdentifier>& paths) override;
 

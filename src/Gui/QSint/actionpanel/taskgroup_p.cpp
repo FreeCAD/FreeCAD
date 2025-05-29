@@ -22,12 +22,22 @@ TaskGroup::TaskGroup(QWidget *parent, bool hasHeader)
     setProperty("class", "content");
     setProperty("header", hasHeader ? "true" : "false");
 
+    setScheme(ActionPanelScheme::defaultScheme());
+
     QVBoxLayout *vbl = new QVBoxLayout();
     vbl->setContentsMargins(4, 4, 4, 4);
     vbl->setSpacing(0);
     setLayout(vbl);
 
     setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Maximum);
+}
+
+void TaskGroup::setScheme(ActionPanelScheme *scheme)
+{
+  if (scheme) {
+    myScheme = scheme;
+    update();
+  }
 }
 
 bool TaskGroup::addActionLabel(ActionLabel *label, bool addToLayout, bool addStretch)

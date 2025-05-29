@@ -28,6 +28,7 @@
 #include <vector>
 
 using namespace MillSim;
+using std::numbers::pi;
 
 int Shape::lastNumSlices = 0;
 std::vector<float> Shape::sinTable;
@@ -39,7 +40,7 @@ void Shape::GenerateSinTable(int nSlices)
         return;
     }
 
-    float slice = (float)(2 * PI / nSlices);
+    float slice = (float)(2 * pi / nSlices);
     int nvals = nSlices + 1;
     sinTable.resize(nvals);
     cosTable.resize(nvals);

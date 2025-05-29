@@ -78,7 +78,7 @@ class Circle(gui_arcs.Arc):
         return {'Pixmap': 'Draft_Circle',
                 'Accel': "C, I",
                 'MenuText': QT_TRANSLATE_NOOP("Draft_Circle", "Circle"),
-                'ToolTip': QT_TRANSLATE_NOOP("Draft_Circle", "Creates a circle (full circular arc).\nCTRL to snap, ALT to select tangent objects.")}
+                'ToolTip': QT_TRANSLATE_NOOP("Draft_Circle", "Creates a circle (full circular arc).")}
 
 
 Gui.addCommand('Draft_Circle', Circle())
