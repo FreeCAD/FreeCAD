@@ -574,11 +574,10 @@ bool Mesh2ShapeGmsh::writeProject(QString& inpFile, QString& outFile)
 
         App::DocumentObject* part = sub.getObject();
         if (part) {
-            Part::TopoShape shape =
-                Part::Feature::getTopoShape(part,
-                                            Part::ShapeOption::ResolveLink
-                                                | Part::ShapeOption::Transform,
-                                            sub.getSubName().c_str());
+            Part::TopoShape shape = Part::Feature::getTopoShape(part,
+                                                                Part::ShapeOption::ResolveLink
+                                                                    | Part::ShapeOption::Transform,
+                                                                sub.getSubName().c_str());
             shape.exportBrep(d->cadFile.c_str());
             d->label = part->Label.getStrValue() + " (Meshed)";
 

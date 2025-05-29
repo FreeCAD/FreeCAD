@@ -144,8 +144,7 @@ BlendPoint FeatureBlendCurve::GetBlendPoint(App::PropertyLinkSub& link,
     }
     else {
         axEdge = Feature::getShape(linked,
-                                    Part::ShapeOption::ResolveLink
-                                       | Part::ShapeOption::Transform);
+                                   Part::ShapeOption::ResolveLink | Part::ShapeOption::Transform);
     }
 
     if (axEdge.IsNull()) {
