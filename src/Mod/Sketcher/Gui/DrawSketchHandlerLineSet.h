@@ -781,9 +781,8 @@ private:
                 hints.push_back(
                     InputHint(QCoreApplication::translate("Sketcher", "%1 pick next point"),
                               {UserInput::MouseLeft}));
-                hints.push_back(
-                    InputHint(QCoreApplication::translate("Sketcher", "%1 right-click to finish"),
-                              {UserInput::MouseRight}));
+                hints.push_back(InputHint(QCoreApplication::translate("Sketcher", "%1 finish"),
+                                          {UserInput::MouseRight}));
                 hints.push_back(InputHint(QCoreApplication::translate("Sketcher", "%1 change mode"),
                                           {UserInput::KeyM}));
                 break;
