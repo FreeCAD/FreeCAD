@@ -116,6 +116,31 @@ namespace {
             textElement.replaceChild(tspan.firstChild(), tspan);
         }
 
+        // All `text` elements must have an id for using QSvgRenderer::transformForElement later on
+        int counter = 0;
+        for(QDomElement& textElement : textElements) {
+            if (!textElement.hasAttribute(QStringLiteral("id")) ||
+                textElement.attribute(QStringLiteral("id")).isEmpty()) {
+                QString id = QStringLiteral("freecad_id_") + QString::number(counter);
+                textElement.setAttribute(QStringLiteral("id"), id);
+                counter++;
+            }
+        }
+
+        // QSvgRenderer::transformForElement only returns transform for parents, not for the element itself
+        // If the `text` element itself has transform, let's wrap it in a shallow group so it's takin into account
+        // by QSvgRenderer::transformForElement
+        for(QDomElement& textElement : textElements) {
+            if (textElement.hasAttribute(QStringLiteral("transform"))) {
+                QDomElement group = doc.createElement(QStringLiteral("g"));
+                QString transform = textElement.attribute(QStringLiteral("transform"));
+                textElement.removeAttribute(QStringLiteral("transform"));
+                group.setAttribute(QStringLiteral("transform"), transform);
+                textElement.parentNode().replaceChild(group, textElement);
+                group.appendChild(textElement);
+            }
+        }
+
         svgCode = doc.toByteArray();
     }
 }  // anonymous namespace
@@ -240,26 +265,13 @@ void QGISVGTemplate::createClickHandles()
         return;
     }
 
-    QString templateFilename(QString::fromUtf8(svgTemplate->PageResult.getValue()));
-
-    if (templateFilename.isEmpty()) {
-        return;
-    }
-
-    QFile file(templateFilename);
-    if (!file.open(QIODevice::ReadOnly)) {
-        Base::Console().error(
-            "QGISVGTemplate::createClickHandles - error opening template file %s\n",
-            svgTemplate->PageResult.getValue());
-        return;
-    }
-
+    QByteArray svgCode = svgTemplate->processTemplate().toUtf8();
+    applyWorkaround(svgCode);
     QDomDocument templateDocument;
-    if (!templateDocument.setContent(&file)) {
+    if (!templateDocument.setContent(svgCode)) {
         Base::Console().message("QGISVGTemplate::createClickHandles - xml loading error\n");
         return;
     }
-    file.close();
 
     //TODO: Find location of special fields (first/third angle) and make graphics items for them
 
