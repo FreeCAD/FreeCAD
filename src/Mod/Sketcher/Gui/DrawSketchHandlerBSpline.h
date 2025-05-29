@@ -100,15 +100,34 @@ private:
         using Gui::InputHint;
         using enum Gui::InputHint::UserInput;
 
-        switch (state()) {
-            case SelectMode::SeekFirst:
-                return {InputHint {QObject::tr("%1 pick first point"), {MouseLeft}}};
-            case SelectMode::SeekSecond:
-                return {InputHint {QObject::tr("%1 pick next point"), {MouseLeft}},
-                        InputHint {QObject::tr("%1 finish B-spline"), {MouseRight}}};
-            default:
-                return {};
+        if (constructionMethod() == ConstructionMethod::ControlPoints) {
+            switch (state()) {
+                case SelectMode::SeekFirst:
+                    return {InputHint {QObject::tr("%1 pick first control point"), {MouseLeft}},
+                            InputHint {QObject::tr("%1 switch mode"), {KeyM}}};
+                case SelectMode::SeekSecond:
+                    return {InputHint {QObject::tr("%1 pick next control point"), {MouseLeft}},
+                            InputHint {QObject::tr("%1 finish B-spline"), {MouseRight}},
+                            InputHint {QObject::tr("%1 switch mode"), {KeyM}}};
+                default:
+                    return {};
+            }
         }
+        else if (constructionMethod() == ConstructionMethod::Knots) {
+            switch (state()) {
+                case SelectMode::SeekFirst:
+                    return {InputHint {QObject::tr("%1 pick first knot"), {MouseLeft}},
+                            InputHint {QObject::tr("%1 switch mode"), {KeyM}}};
+                case SelectMode::SeekSecond:
+                    return {InputHint {QObject::tr("%1 pick next knot"), {MouseLeft}},
+                            InputHint {QObject::tr("%1 finish B-spline"), {MouseRight}},
+                            InputHint {QObject::tr("%1 switch mode"), {KeyM}}};
+                default:
+                    return {};
+            }
+        }
+
+        return {};
     }
     void updateDataAndDrawToPosition(Base::Vector2d onSketchPos) override
     {
@@ -1101,6 +1120,8 @@ void DSHBSplineController::doConstructionMethodChanged()
     syncConstructionMethodComboboxToHandler();
     bool byCtrlPoints = handler->constructionMethod() == ConstructionMethod::ControlPoints;
     toolWidget->setParameterVisible(WParameter::First, byCtrlPoints);
+
+    handler->updateHint();
 }
 
 

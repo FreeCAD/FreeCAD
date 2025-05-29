@@ -121,56 +121,72 @@ private:
             case ConstructionMethods::RectangleConstructionMethod::Diagonal:
                 switch (state()) {
                     case SelectMode::SeekFirst:
-                        return {InputHint {QObject::tr("%1 pick first corner"), {MouseLeft}}};
+                        return {InputHint {QObject::tr("%1 pick first corner"), {MouseLeft}},
+                                InputHint {QObject::tr("%1 switch mode"), {KeyM}}};
                     case SelectMode::SeekSecond:
-                        return {InputHint {QObject::tr("%1 pick opposite corner"), {MouseLeft}}};
+                        return {InputHint {QObject::tr("%1 pick opposite corner"), {MouseLeft}},
+                                InputHint {QObject::tr("%1 switch mode"), {KeyM}}};
                     case SelectMode::SeekThird:
                         return {InputHint {QObject::tr("%1 set corner radius or frame thickness"),
-                                           {MouseMove}}};
+                                           {MouseMove}},
+                                InputHint {QObject::tr("%1 switch mode"), {KeyM}}};
                     case SelectMode::SeekFourth:
-                        return {InputHint {QObject::tr("%1 set frame thickness"), {MouseMove}}};
+                        return {InputHint {QObject::tr("%1 set frame thickness"), {MouseMove}},
+                                InputHint {QObject::tr("%1 switch mode"), {KeyM}}};
                     default:
                         return {};
                 }
             case ConstructionMethods::RectangleConstructionMethod::CenterAndCorner:
                 switch (state()) {
                     case SelectMode::SeekFirst:
-                        return {InputHint {QObject::tr("%1 pick center"), {MouseLeft}}};
+                        return {InputHint {QObject::tr("%1 pick center"), {MouseLeft}},
+                                InputHint {QObject::tr("%1 switch mode"), {KeyM}}};
                     case SelectMode::SeekSecond:
-                        return {InputHint {QObject::tr("%1 pick corner"), {MouseLeft}}};
+                        return {InputHint {QObject::tr("%1 pick corner"), {MouseLeft}},
+                                InputHint {QObject::tr("%1 switch mode"), {KeyM}}};
                     case SelectMode::SeekThird:
                         return {InputHint {QObject::tr("%1 set corner radius or frame thickness"),
-                                           {MouseMove}}};
+                                           {MouseMove}},
+                                InputHint {QObject::tr("%1 switch mode"), {KeyM}}};
                     case SelectMode::SeekFourth:
-                        return {InputHint {QObject::tr("%1 set frame thickness"), {MouseMove}}};
+                        return {InputHint {QObject::tr("%1 set frame thickness"), {MouseMove}},
+                                InputHint {QObject::tr("%1 switch mode"), {KeyM}}};
                     default:
                         return {};
                 }
             case ConstructionMethods::RectangleConstructionMethod::ThreePoints:
                 switch (state()) {
                     case SelectMode::SeekFirst:
-                        return {InputHint {QObject::tr("%1 pick first corner"), {MouseLeft}}};
+                        return {InputHint {QObject::tr("%1 pick first corner"), {MouseLeft}},
+                                InputHint {QObject::tr("%1 switch mode"), {KeyM}}};
                     case SelectMode::SeekSecond:
-                        return {InputHint {QObject::tr("%1 pick second corner"), {MouseLeft}}};
+                        return {InputHint {QObject::tr("%1 pick second corner"), {MouseLeft}},
+                                InputHint {QObject::tr("%1 switch mode"), {KeyM}}};
                     case SelectMode::SeekThird:
-                        return {InputHint {QObject::tr("%1 pick third corner"), {MouseLeft}}};
+                        return {InputHint {QObject::tr("%1 pick third corner"), {MouseLeft}},
+                                InputHint {QObject::tr("%1 switch mode"), {KeyM}}};
                     case SelectMode::SeekFourth:
                         return {InputHint {QObject::tr("%1 set corner radius or frame thickness"),
-                                           {MouseMove}}};
+                                           {MouseMove}},
+                                InputHint {QObject::tr("%1 switch mode"), {KeyM}}};
                     default:
                         return {};
                 }
             case ConstructionMethods::RectangleConstructionMethod::CenterAnd3Points:
                 switch (state()) {
                     case SelectMode::SeekFirst:
-                        return {InputHint {QObject::tr("%1 pick center"), {MouseLeft}}};
+                        return {InputHint {QObject::tr("%1 pick center"), {MouseLeft}},
+                                InputHint {QObject::tr("%1 switch mode"), {KeyM}}};
                     case SelectMode::SeekSecond:
-                        return {InputHint {QObject::tr("%1 pick first corner"), {MouseLeft}}};
+                        return {InputHint {QObject::tr("%1 pick first corner"), {MouseLeft}},
+                                InputHint {QObject::tr("%1 switch mode"), {KeyM}}};
                     case SelectMode::SeekThird:
-                        return {InputHint {QObject::tr("%1 pick second corner"), {MouseLeft}}};
+                        return {InputHint {QObject::tr("%1 pick second corner"), {MouseLeft}},
+                                InputHint {QObject::tr("%1 switch mode"), {KeyM}}};
                     case SelectMode::SeekFourth:
                         return {InputHint {QObject::tr("%1 set corner radius or frame thickness"),
-                                           {MouseMove}}};
+                                           {MouseMove}},
+                                InputHint {QObject::tr("%1 switch mode"), {KeyM}}};
                     default:
                         return {};
                 }
@@ -2488,6 +2504,11 @@ void DSHRectangleController::addConstraints()
     }
 }
 
+template<>
+void DSHRectangleController::doConstructionMethodChanged()
+{
+    handler->updateHint();
+}
 
 }  // namespace SketcherGui
 

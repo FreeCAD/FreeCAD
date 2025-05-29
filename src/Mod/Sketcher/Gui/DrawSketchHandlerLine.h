@@ -260,9 +260,11 @@ private:
 
         switch (state()) {
             case SelectMode::SeekFirst:
-                return {InputHint {QObject::tr("%1 pick first point"), {MouseLeft}}};
+                return {InputHint {QObject::tr("%1 pick first point"), {MouseLeft}},
+                        InputHint {QObject::tr("%1 switch mode"), {KeyM}}};
             case SelectMode::SeekSecond:
-                return {InputHint {QObject::tr("%1 pick second point"), {MouseLeft}}};
+                return {InputHint {QObject::tr("%1 pick second point"), {MouseLeft}},
+                        InputHint {QObject::tr("%1 switch mode"), {KeyM}}};
             default:
                 return {};
         }

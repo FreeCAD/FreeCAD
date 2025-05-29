@@ -86,9 +86,11 @@ private:
         if (constructionMethod() == ConstructionMethod::Center) {
             switch (state()) {
                 case SelectMode::SeekFirst:
-                    return {InputHint {QObject::tr("%1 pick circle center"), {MouseLeft}}};
+                    return {InputHint {QObject::tr("%1 pick circle center"), {MouseLeft}},
+                            InputHint {QObject::tr("%1 switch mode"), {KeyM}}};
                 case SelectMode::SeekSecond:
-                    return {InputHint {QObject::tr("%1 pick rim point"), {MouseLeft}}};
+                    return {InputHint {QObject::tr("%1 pick rim point"), {MouseLeft}},
+                            InputHint {QObject::tr("%1 switch mode"), {KeyM}}};
                 default:
                     return {};
             }
@@ -96,11 +98,14 @@ private:
         else if (constructionMethod() == ConstructionMethod::ThreeRim) {
             switch (state()) {
                 case SelectMode::SeekFirst:
-                    return {InputHint {QObject::tr("%1 pick first rim point"), {MouseLeft}}};
+                    return {InputHint {QObject::tr("%1 pick first rim point"), {MouseLeft}},
+                            InputHint {QObject::tr("%1 switch mode"), {KeyM}}};
                 case SelectMode::SeekSecond:
-                    return {InputHint {QObject::tr("%1 pick second rim point"), {MouseLeft}}};
+                    return {InputHint {QObject::tr("%1 pick second rim point"), {MouseLeft}},
+                            InputHint {QObject::tr("%1 switch mode"), {KeyM}}};
                 case SelectMode::SeekThird:
-                    return {InputHint {QObject::tr("%1 pick third rim point"), {MouseLeft}}};
+                    return {InputHint {QObject::tr("%1 pick third rim point"), {MouseLeft}},
+                            InputHint {QObject::tr("%1 switch mode"), {KeyM}}};
                 default:
                     return {};
             }
@@ -635,6 +640,13 @@ void DSHCircleController::doChangeDrawSketchHandlerMode()
         default:
             break;
     }
+}
+
+template<>
+void DSHCircleController::doConstructionMethodChanged()
+{
+    // Just update hints - combobox already handled by framework
+    handler->updateHint();
 }
 
 template<>
