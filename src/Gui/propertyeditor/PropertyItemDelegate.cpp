@@ -121,6 +121,9 @@ void PropertyItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
         checkboxOption.rect = alignedRect;
 
         QApplication::style()->drawPrimitive(QStyle::PE_IndicatorCheckBox, &checkboxOption, painter);
+        QColor borderColor = QApplication::palette().color(QPalette::BrightText);
+        painter->setPen(borderColor);
+        painter->drawRect(checkboxOption.rect.adjusted(0, 0, -1, -1));
         return;
     }
     QItemDelegate::paint(painter, option, index);
