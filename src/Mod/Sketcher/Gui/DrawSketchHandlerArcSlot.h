@@ -94,8 +94,6 @@ public:
     ~DrawSketchHandlerArcSlot() override = default;
 
 private:
-    // ...existing code...
-
     std::list<Gui::InputHint> getToolHints() const override
     {
         using Gui::InputHint;
