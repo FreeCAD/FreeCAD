@@ -37,6 +37,8 @@
 #include <Gui/Selection/Selection.h>
 #include <Gui/TreeItemMode.h>
 
+#include "Command.h"
+
 class QLineEdit;
 
 namespace Gui {
@@ -242,6 +244,7 @@ private:
     QAction* closeDocAction;
     QAction* searchObjectsAction;
     QAction* openFileLocationAction;
+    Command* skipRecomputeCommand;
     QTreeWidgetItem *contextItem;
     App::DocumentObject *searchObject;
     Gui::Document *searchDoc;
