@@ -198,11 +198,10 @@ void EditableDatumLabel::startEdit(double val, QObject* eventFilteringObj, bool 
 bool EditableDatumLabel::eventFilter(QObject* watched, QEvent* event)
 {
     if (event->type() == QEvent::KeyPress) {
-        QKeyEvent* keyEvent = static_cast<QKeyEvent*>(event);
+        auto* keyEvent = static_cast<QKeyEvent*>(event);
         if (keyEvent->key() == Qt::Key_Return || keyEvent->key() == Qt::Key_Enter) {
-            auto* spinBox = qobject_cast<QAbstractSpinBox*>(watched);
 
-            if (spinBox) {
+            if (auto* spinBox = qobject_cast<QAbstractSpinBox*>(watched)) {
                 this->hasFinishedEditing = true;
                 Q_EMIT this->valueChanged(this->value);
                 return false;

@@ -84,8 +84,8 @@ public:
 
     // NOLINTBEGIN
     SoDatumLabel* label;
-    bool isSet;
-    bool hasFinishedEditing;
+    bool isSet; ///< used to differentiate when user has started typing inside the label
+    bool hasFinishedEditing; ///< flag to know when user has finished editing, i.e. pressed enter
     bool autoDistance;
     bool autoDistanceReverse;
     bool avoidMouseCursor;
