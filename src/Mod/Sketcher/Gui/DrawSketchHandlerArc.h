@@ -42,6 +42,9 @@
 
 #include "CircleEllipseConstructionMethod.h"
 
+#include <vector>
+#include <algorithm>
+
 using namespace std;
 
 namespace SketcherGui
@@ -87,44 +90,7 @@ public:
 private:
     std::list<Gui::InputHint> getToolHints() const override
     {
-        using Gui::InputHint;
-        using enum Gui::InputHint::UserInput;
-
-        // Define once at function level
-        const InputHint switchModeHint {QObject::tr("%1 switch mode"), {KeyM}};
-
-        if (constructionMethod() == ConstructionMethod::Center) {
-            switch (state()) {
-                case SelectMode::SeekFirst:
-                    return {InputHint {QObject::tr("%1 pick arc center"), {MouseLeft}},
-                            switchModeHint};
-                case SelectMode::SeekSecond:
-                    return {InputHint {QObject::tr("%1 pick arc start point"), {MouseLeft}},
-                            switchModeHint};
-                case SelectMode::SeekThird:
-                    return {InputHint {QObject::tr("%1 pick arc end point"), {MouseLeft}},
-                            switchModeHint};
-                default:
-                    return {};
-            }
-        }
-        else if (constructionMethod() == ConstructionMethod::ThreeRim) {
-            switch (state()) {
-                case SelectMode::SeekFirst:
-                    return {InputHint {QObject::tr("%1 pick first arc point"), {MouseLeft}},
-                            switchModeHint};
-                case SelectMode::SeekSecond:
-                    return {InputHint {QObject::tr("%1 pick second arc point"), {MouseLeft}},
-                            switchModeHint};
-                case SelectMode::SeekThird:
-                    return {InputHint {QObject::tr("%1 pick third arc point"), {MouseLeft}},
-                            switchModeHint};
-                default:
-                    return {};
-            }
-        }
-
-        return {};
+        return lookupArcHints(constructionMethod(), state());
     }
 
     void updateDataAndDrawToPosition(Base::Vector2d onSketchPos) override
@@ -465,6 +431,21 @@ private:
             }
         }
     }
+
+    // Hint table structures
+    struct HintEntry
+    {
+        ConstructionMethod method;
+        SelectMode state;
+        std::list<Gui::InputHint> hints;
+    };
+
+    using HintTable = std::vector<HintEntry>;
+
+    // Static declaration
+    static const Gui::InputHint SWITCH_MODE_HINT;
+    static const HintTable ARC_HINT_TABLE;
+    static std::list<Gui::InputHint> lookupArcHints(ConstructionMethod method, SelectMode state);
 
 private:
     Base::Vector2d centerPoint, firstPoint, secondPoint;
@@ -934,6 +915,51 @@ template<>
 void DSHArcController::doConstructionMethodChanged()
 {
     handler->updateHint();
+}
+
+// Static member definitions
+const Gui::InputHint DrawSketchHandlerArc::SWITCH_MODE_HINT = {QObject::tr("%1 switch mode"),
+                                                               {Gui::InputHint::UserInput::KeyM}};
+
+const DrawSketchHandlerArc::HintTable DrawSketchHandlerArc::ARC_HINT_TABLE = {
+    // Center method
+    {ConstructionMethod::Center,
+     SelectMode::SeekFirst,
+     {{QObject::tr("%1 pick arc center"), {Gui::InputHint::UserInput::MouseLeft}},
+      SWITCH_MODE_HINT}},
+    {ConstructionMethod::Center,
+     SelectMode::SeekSecond,
+     {{QObject::tr("%1 pick arc start point"), {Gui::InputHint::UserInput::MouseLeft}},
+      SWITCH_MODE_HINT}},
+    {ConstructionMethod::Center,
+     SelectMode::SeekThird,
+     {{QObject::tr("%1 pick arc end point"), {Gui::InputHint::UserInput::MouseLeft}},
+      SWITCH_MODE_HINT}},
+
+    // ThreeRim method
+    {ConstructionMethod::ThreeRim,
+     SelectMode::SeekFirst,
+     {{QObject::tr("%1 pick first arc point"), {Gui::InputHint::UserInput::MouseLeft}},
+      SWITCH_MODE_HINT}},
+    {ConstructionMethod::ThreeRim,
+     SelectMode::SeekSecond,
+     {{QObject::tr("%1 pick second arc point"), {Gui::InputHint::UserInput::MouseLeft}},
+      SWITCH_MODE_HINT}},
+    {ConstructionMethod::ThreeRim,
+     SelectMode::SeekThird,
+     {{QObject::tr("%1 pick third arc point"), {Gui::InputHint::UserInput::MouseLeft}},
+      SWITCH_MODE_HINT}}};
+
+std::list<Gui::InputHint> DrawSketchHandlerArc::lookupArcHints(ConstructionMethod method,
+                                                               SelectMode state)
+{
+    auto it = std::find_if(ARC_HINT_TABLE.begin(),
+                           ARC_HINT_TABLE.end(),
+                           [method, state](const HintEntry& entry) {
+                               return entry.method == method && entry.state == state;
+                           });
+
+    return (it != ARC_HINT_TABLE.end()) ? it->hints : std::list<Gui::InputHint> {};
 }
 
 }  // namespace SketcherGui
