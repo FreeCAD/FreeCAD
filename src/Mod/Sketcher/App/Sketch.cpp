@@ -362,12 +362,6 @@ void Sketch::fixParametersAndDiagnose(std::vector<double*>& params_to_block)
         GCSsys.declareUnknowns(Parameters);
         GCSsys.declareDrivenParams(DrivenParameters);
         GCSsys.initSolution(defaultSolverRedundant);
-        /*GCSsys.getConflicting(Conflicting);
-        GCSsys.getRedundant(Redundant);
-        GCSsys.getPartlyRedundant(PartiallyRedundant);
-        GCSsys.getDependentParams(pDependentParametersList);
-
-        calculateDependentParametersElements();*/
     }
 }
 
@@ -452,7 +446,6 @@ bool Sketch::analyseBlockedConstraintDependentParameters(
             unsatisfied_groups = true;
         }
     }
-
     return unsatisfied_groups;
 }
 
@@ -489,7 +482,6 @@ void Sketch::calculateDependentParametersElements()
 
     for (auto param : pDependentParametersList) {
 
-        // auto element = param2geoelement.at(param);
         auto element = param2geoelement.find(param);
 
         if (element != param2geoelement.end()) {
@@ -1238,7 +1230,6 @@ int Sketch::addArcOfHyperbola(const Part::GeomArcOfHyperbola& hyperbolaSegment, 
             std::forward_as_tuple(Geoms.size() - 1, Sketcher::PointPos::none, 4));
     }
 
-
     // return the position of the newly added geometry
     return Geoms.size() - 1;
 }
@@ -1635,7 +1626,6 @@ int Sketch::addEllipse(const Part::GeomEllipse& elip, bool fixed)
     double dist_C_F = sqrt(radmaj * radmaj - radmin * radmin);
     // solver parameters
     Base::Vector3d focus1 = center + dist_C_F * radmajdir;  //+x
-    // double *radmin;
 
     GCS::Point c;
 
@@ -4168,7 +4158,6 @@ int Sketch::addInternalAlignmentParabolaFocalDistance(int geoId1, int geoId2)
 
         return ConstraintsCounter;
     }
-
     return -1;
 }
 
@@ -4272,7 +4261,6 @@ double Sketch::calculateAngleViaParams(int geoId1, int geoId2, double param1, do
     if (crv2AsBSpline && crv2AsBSpline->flattenedknots.empty()) {
         crv2AsBSpline->setupFlattenedKnots();
     }
-
     return GCSsys.calculateAngleViaParams(*crv1, *crv2, &param1, &param2);
 }
 
@@ -4367,12 +4355,6 @@ void Sketch::updateLineSegment(const GeoDef& def)
 void Sketch::updateArcOfCircle(const GeoDef& def)
 {
     GCS::Arc& myArc = Arcs[def.index];
-    // the following 4 lines are redundant since these equations are already included in
-    // the arc constraints *myArc.start.x = *myArc.center.x + *myArc.rad *
-    // cos(*myArc.startAngle); *myArc.start.y = *myArc.center.y + *myArc.rad *
-    // sin(*myArc.startAngle); *myArc.end.x = *myArc.center.x + *myArc.rad *
-    // cos(*myArc.endAngle); *myArc.end.y = *myArc.center.y + *myArc.rad *
-    // sin(*myArc.endAngle);
     GeomArcOfCircle* aoc = static_cast<GeomArcOfCircle*>(def.geo);
     aoc->setCenter(Vector3d(*Points[def.midPointId].x, *Points[def.midPointId].y, 0.0));
     aoc->setRadius(*myArc.rad);
@@ -5181,7 +5163,6 @@ int Sketch::moveGeometries(const std::vector<GeoElementId>& geoEltIds,
             }
         }
     }
-
     return solve();
 }
 
@@ -5231,23 +5212,6 @@ TopoShape Sketch::toShape() const
     TopoShape result;
     std::vector<GeoDef>::const_iterator it = Geoms.begin();
 
-#if 0
-
-    bool first = true;
-    for (; it!=Geoms.end(); ++it) {
-        if (!it->geo->Construction) {
-            TopoDS_Shape sh = it->geo->toShape();
-            if (first) {
-                first = false;
-                result.setShape(sh);
-            }
-            else {
-                result.setShape(result.fuse(sh));
-            }
-        }
-    }
-    return result;
-#else
     std::list<TopoDS_Edge> edge_list;
     std::list<TopoDS_Vertex> vertex_list;
     std::list<TopoDS_Wire> wires;
@@ -5331,7 +5295,6 @@ TopoShape Sketch::toShape() const
         }
         result.setShape(comp);
     }
-#endif
 
     return result;
 }
