@@ -454,6 +454,7 @@ def _get_param_dictionary():
         "HatchPatternResolution":      ("int",       128),  # used for SVG patterns
         "HatchPatternRotation":        ("float",     0.0),
         "HatchPatternScale":           ("float",     100.0),
+        "HatchPatternTranslate":       ("bool",      True),
         "labeltype":                   ("string",    "Custom"),
         "LayersManagerHeight":         ("int",       320),
         "LayersManagerWidth":          ("int",       640),

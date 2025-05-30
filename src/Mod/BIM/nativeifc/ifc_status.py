@@ -345,6 +345,7 @@ def unlock_document():
         props = ["IfcFilePath", "Modified", "Proxy", "Schema"]
         props += [p for p in doc.PropertiesList if doc.getGroupOfProperty(p) == "IFC"]
         for prop in props:
+            doc.setPropertyStatus(prop, "-LockDynamic")
             doc.removeProperty(prop)
         if project:
             project.Modified = True

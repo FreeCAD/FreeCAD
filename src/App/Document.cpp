@@ -824,7 +824,7 @@ Document::Document(const char* documentName)
         GetApplication()
             .GetParameterGroupByPath("User parameter:BaseApp/Preferences/Document")
             ->GetASCII("prefCompany", "");
-    ADD_PROPERTY_TYPE(Label, ("Unnamed"), 0, Prop_None, "The name of the document");
+    ADD_PROPERTY_TYPE(Label, ("Unnamed"), 0, Prop_ReadOnly, "The name of the document");
     ADD_PROPERTY_TYPE(FileName,
                       (""),
                       0,

@@ -110,6 +110,10 @@ if (OCC_FOUND)
             TKHLR
             TKFeat
     )
+    if (OCC_VERSION_STRING VERSION_GREATER_EQUAL 7.9.0)
+        list(APPEND OCC_LIBRARIES TKExpress)
+    endif ()
+
     set(OCC_OCAF_LIBRARIES
             TKBin
             TKBinL

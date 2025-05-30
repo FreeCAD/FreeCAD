@@ -955,11 +955,11 @@ class _Structure(ArchComponent.Component):
                                 # needs to take out those in Construction before
                                 # using as parameters.
                                 if (not obj.ArchSketchEdges and not geom.Construction) or str(ig) in obj.ArchSketchEdges:
-                                    # support Line, Arc, Circle, Ellipse for Sketch
+                                    # support Line, Arc, Circle, Ellipse, BSplineCurve for Sketch
                                     # as Base at the moment
                                     if isinstance(geom.Geometry, (Part.LineSegment,
                                                   Part.Circle, Part.ArcOfCircle,
-                                                  Part.Ellipse)):
+                                                  Part.Ellipse, Part.BSplineCurve)):
                                         skGeomEdgesI = geom.Geometry.toShape()
                                         skGeomEdges.append(skGeomEdgesI)
                             clusterTransformed = []

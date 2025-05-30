@@ -23,6 +23,7 @@
 #define MATERIAL_LIBRARY_H
 
 #include <QDir>
+#include <QByteArray>
 #include <QString>
 
 #include <Base/BaseClass.h>
@@ -40,15 +41,15 @@ public:
     Library() = default;
     Library(const Library &other) = default;
     Library(const QString& libraryName, const QString& icon, bool readOnly = true);
-    Library(const QString& libraryName,
-            const QString& icon,
-            bool readOnly,
-            const QString& timestamp);
+    Library(const QString& libraryName, const QByteArray& icon, bool readOnly);
     Library(const QString& libraryName,
             const QString& dir,
-            const QString& icon,
+            const QString& iconPath,
             bool readOnly = true);
     ~Library() override = default;
+
+    bool isLocal() const;
+    void setLocal(bool local);
 
     QString getName() const
     {
@@ -63,13 +64,19 @@ public:
         return (_name == name);
     }
 
-    QString getIconPath() const
+    QByteArray getIcon() const
     {
-        return _iconPath;
+        return _icon;
     }
-    void setIconPath(const QString& icon)
+    static QByteArray getIcon(const QString& iconPath);
+    void setIcon(const QByteArray& icon)
     {
-        _iconPath = icon;
+        _icon = icon;
+    }
+    void setIcon(const QString& iconPath);
+    bool hasIcon() const
+    {
+        return !_icon.isEmpty();
     }
     bool isReadOnly() const
     {
@@ -92,14 +99,6 @@ public:
     {
         return QDir(_directory).absolutePath();
     }
-    QString getTimestamp() const
-    {
-        return _timestamp;
-    }
-    void setTimestamp(const QString& timestamp)
-    {
-        _timestamp = timestamp;
-    }
 
     bool operator==(const Library& library) const;
     bool operator!=(const Library& library) const
@@ -118,9 +117,72 @@ public:
 private:
     QString _name;
     QString _directory;
-    QString _iconPath;
+    QByteArray _icon;
     bool _readOnly;
-    QString _timestamp;
+
+    bool _local;
+
+    QByteArray loadByteArrayFromFile(const QString& filePath) const;
+};
+
+class MaterialsExport LibraryObject
+{
+public:
+    LibraryObject(const QString& uuid, const QString& path, const QString& name)
+        : _uuid(uuid)
+        , _path(path)
+        , _name(name)
+    {}
+    LibraryObject(const std::string& uuid, const std::string& path, const std::string& name)
+        : _uuid(QString::fromStdString(uuid))
+        , _path(QString::fromStdString(path))
+        , _name(QString::fromStdString(name))
+    {}
+    ~LibraryObject() = default;
+
+    void setUUID(const QString& uuid)
+    {
+        _uuid = uuid;
+    }
+    void setUUID(const std::string& uuid)
+    {
+        _uuid = QString::fromStdString(uuid);
+    }
+    QString getUUID() const
+    {
+        return _uuid;
+    }
+
+    void setPath(const QString& path)
+    {
+        _path = path;
+    }
+    void setPath(const std::string& path)
+    {
+        _path = QString::fromStdString(path);
+    }
+    QString getPath() const
+    {
+        return _path;
+    }
+
+    void setName(const QString& name)
+    {
+        _name = name;
+    }
+    void setName(const std::string& name)
+    {
+        _name = QString::fromStdString(name);
+    }
+    QString getName() const
+    {
+        return _name;
+    }
+
+private:
+    QString _uuid;
+    QString _path;
+    QString _name;
 };
 
 }  // namespace Materials

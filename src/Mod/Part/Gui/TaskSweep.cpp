@@ -80,7 +80,7 @@ public:
             if (Base::Tools::isNullOrEmpty(sSubName)) {
                 // If selecting again the same edge the passed sub-element is empty. If the whole
                 // shape is an edge or wire we can use it completely.
-                Part::TopoShape topoShape = Part::Feature::getTopoShape(pObj);
+                Part::TopoShape topoShape = Part::Feature::getTopoShape(pObj, Part::ShapeOption::ResolveLink | Part::ShapeOption::Transform);
                 if (topoShape.isNull()) {
                     return false;
                 }
@@ -162,7 +162,7 @@ void SweepWidget::findShapes()
     std::vector<App::DocumentObject*> objs = activeDoc->getObjectsOfType<App::DocumentObject>();
 
     for (auto obj : objs) {
-        Part::TopoShape topoShape = Part::Feature::getTopoShape(obj);
+        Part::TopoShape topoShape = Part::Feature::getTopoShape(obj, Part::ShapeOption::ResolveLink | Part::ShapeOption::Transform);
         if (topoShape.isNull()) {
             continue;
         }
@@ -225,7 +225,7 @@ bool SweepWidget::isPathValid(const Gui::SelectionObject& sel) const
     const std::vector<std::string>& sub = sel.getSubNames();
 
     TopoDS_Shape pathShape;
-    const Part::TopoShape& shape = Part::Feature::getTopoShape(path);
+    const Part::TopoShape& shape = Part::Feature::getTopoShape(path, Part::ShapeOption::ResolveLink | Part::ShapeOption::Transform);
     if (shape.isNull()){
         return false;
     }
@@ -295,10 +295,14 @@ bool SweepWidget::accept()
         docobj = selobjs[0].getObject();
         spineObject = selobjs[0].getFeatName();
         spineLabel = docobj->Label.getValue();
-        topoShape = Part::Feature::getTopoShape(docobj);
+        topoShape = Part::Feature::getTopoShape(docobj, Part::ShapeOption::ResolveLink | Part::ShapeOption::Transform);
         if (!topoShape.isNull()) {
             for (std::vector<std::string>::const_iterator it = subnames.begin(); it != subnames.end(); ++it) {
-                subShapes.push_back(Part::Feature::getTopoShape(docobj, subnames[0].c_str(), true /*need element*/));
+                subShapes.push_back(Part::Feature::getTopoShape(docobj,
+                                                                    Part::ShapeOption::NeedSubElement
+                                                                  | Part::ShapeOption::ResolveLink
+                                                                  | Part::ShapeOption::Transform,
+                                                                subnames[0].c_str()));
             }
             for (const auto & it : subShapes) {
                 TopoDS_Shape dsShape = it.getShape();

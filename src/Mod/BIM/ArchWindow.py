@@ -125,7 +125,7 @@ class _Window(ArchComponent.Component):
         except:
             pass
 
-    def setProperties(self,obj):
+    def setProperties(self,obj,mode=None):
 
         lp = obj.PropertiesList
         if not "Hosts" in lp:
@@ -145,6 +145,13 @@ class _Window(ArchComponent.Component):
             obj.addProperty("App::PropertyLength","Sill","Window",QT_TRANSLATE_NOOP("App::Property","The height of this window's sill"), locked=True)
         if not "Normal" in lp:
             obj.addProperty("App::PropertyVector","Normal","Window",QT_TRANSLATE_NOOP("App::Property","The normal direction of this window"), locked=True)
+        # Automatic Normal Reverse
+        if not "AutoNormalReversed" in lp:
+            obj.addProperty("App::PropertyBool","AutoNormalReversed","Window",QT_TRANSLATE_NOOP("App::Property","When normal direction is in auto mode (0,0,0), use reversed normal direction of the Base Sketch, i.e. -z."), locked=True)
+            if mode == 'ODR':
+                obj.AutoNormalReversed = False  # To maintain auto extrusion behaviour before introduction of this flag, this remains False if this is called by onDocumentRestored()
+            elif mode == None:
+                obj.AutoNormalReversed = True  # To enable new extrusion behaviour which is consistent with Window intuitive creation tool after introduction of this flag, this is set True.
         if not "Preset" in lp:
             obj.addProperty("App::PropertyInteger","Preset","Window",QT_TRANSLATE_NOOP("App::Property","The preset number this window is based on"), locked=True)
             obj.setEditorMode("Preset",2)
@@ -174,7 +181,7 @@ class _Window(ArchComponent.Component):
     def onDocumentRestored(self,obj):
 
         ArchComponent.Component.onDocumentRestored(self,obj)
-        self.setProperties(obj)
+        self.setProperties(obj,mode='ODR')
 
         # Add features in the SketchArch External Add-on
         self.addSketchArchFeatures(obj, mode='ODR')
@@ -260,11 +267,17 @@ class _Window(ArchComponent.Component):
                         ext = w
                 wires.remove(ext)
                 shape = Part.Face(ext)
-                norm = shape.normalAt(0,0)
-                if hasattr(obj,"Normal"):
-                    if obj.Normal:
+                norm = None
+                if hasattr(obj,"Normal"):  # TODO Any reason need this test?
+                    if obj.Normal:  # TODO v=Vector(0,0,0), if v: print('true') - true: It always return True?  Why this test?
                         if not DraftVecUtils.isNull(obj.Normal):
                             norm = obj.Normal
+                if not norm:
+                    if not obj.AutoNormalReversed:
+                        norm = shape.normalAt(0,0)  # TODO Should use Sketch's normal, to avoid possible difference in edge direction of various wires, for consistency?
+                    else:  # elif obj.AutoNormalReversed:
+                        norm = obj.Base.getGlobalPlacement().Rotation.multVec(FreeCAD.Vector(0,0,1))
+                        norm = norm.negative()
                 if hinge and omode:
                     opening = None
                     if hasattr(obj,"Opening"):

@@ -74,7 +74,7 @@ DimensionGeometry validateDimSelection3d(DrawViewPart* dvp,
                                             const std::vector<int>& minimumCounts, //how many of each geometry are needed for a good dimension
                                             const std::vector<DimensionGeometry>& acceptableDimensionGeometrys);//isVertical, isHorizontal, ...
 
-bool validateSubnameList(const StringVector& subNames, GeometrySet acceptableGeometrySet);
+bool validateSubnameList(const StringVector& subNames, const GeometrySet& acceptableGeometrySet);
 
 DimensionGeometry getGeometryConfiguration(ReferenceVector valid2dReferences);
 DimensionGeometry getGeometryConfiguration3d(DrawViewPart* dvp,

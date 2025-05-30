@@ -107,7 +107,7 @@ App::DocumentObjectExecReturn *Boolean::execute()
     std::vector<TopoShape> shapes;
     shapes.push_back(baseTopShape);
     for(auto it=tools.begin(); it<tools.end(); ++it) {
-        auto shape = getTopoShape(*it);
+        auto shape = getTopoShape(*it, Part::ShapeOption::ResolveLink | Part::ShapeOption::Transform);
         if (shape.isNull())
             return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception","Tool shape is null"));
         shapes.push_back(shape);
