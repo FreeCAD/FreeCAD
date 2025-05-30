@@ -408,6 +408,10 @@ public:
      */
     void boxZoom(const SbBox2s&);
     /**
+     * Scale the viewport by a linear amount
+     */
+    void scale(float factor);
+    /**
      * Reposition the current camera so we can see the complete scene.
      */
     void viewAll() override;
