@@ -137,9 +137,14 @@ ViewProvider::~ViewProvider()
 
 ViewProvider *ViewProvider::startEditing(int ModNum)
 {
-    if(setEdit(ModNum)) {
-        _iEditMode = ModNum;
-        return this;
+    try {
+        if (setEdit(ModNum)) {
+            _iEditMode = ModNum;
+            return this;
+        }
+    }
+    catch (const Base::Exception& e) {
+        e.reportException();
     }
     return nullptr;
 }

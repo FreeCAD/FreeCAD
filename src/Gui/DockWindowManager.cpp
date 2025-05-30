@@ -49,13 +49,13 @@ DockWindowItems::DockWindowItems() = default;
 
 DockWindowItems::~DockWindowItems() = default;
 
-void DockWindowItems::addDockWidget(const char* name, Qt::DockWidgetArea pos, bool visibility, bool tabbed)
+void DockWindowItems::addDockWidget(const char* name, Qt::DockWidgetArea pos, DockWindowOptions option)
 {
     DockWindowItem item;
     item.name = QString::fromUtf8(name);
     item.pos = pos;
-    item.visibility = visibility;
-    item.tabbed = tabbed;
+    item.visibility = option.testFlag(DockWindowOption::Visible);
+    item.tabbed = option.testFlag(DockWindowOption::HiddenTabbed);
     _items << item;
 }
 

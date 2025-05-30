@@ -144,6 +144,10 @@ public Q_SLOTS:
      * nothing is selected
      */
     void prepend(const QString& str);
+    /** Removes \a str from the beginning of each selected line or the current line if
+     * nothing is selected
+     */
+    void remove(const QString& str);
 
 protected:
     void keyPressEvent(QKeyEvent *) override;

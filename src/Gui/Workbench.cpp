@@ -463,6 +463,9 @@ void Workbench::removeTaskWatcher()
 std::list<std::string> Workbench::listToolbars() const
 {
     std::unique_ptr<ToolBarItem> tb(setupToolBars());
+    setupCustomToolbars(tb.get(), "Toolbar");
+    WorkbenchManipulator::changeToolBars(tb.get());
+
     std::list<std::string> bars;
     QList<ToolBarItem*> items = tb->getItems();
     for (const auto & item : items) {
@@ -474,6 +477,8 @@ std::list<std::string> Workbench::listToolbars() const
 std::list<std::pair<std::string, std::list<std::string>>> Workbench::getToolbarItems() const
 {
     std::unique_ptr<ToolBarItem> tb(setupToolBars());
+    setupCustomToolbars(tb.get(), "Toolbar");
+    WorkbenchManipulator::changeToolBars(tb.get());
 
     std::list<std::pair<std::string, std::list<std::string>>> itemsList;
     QList<ToolBarItem*> items = tb->getItems();
@@ -492,6 +497,9 @@ std::list<std::pair<std::string, std::list<std::string>>> Workbench::getToolbarI
 std::list<std::string> Workbench::listMenus() const
 {
     std::unique_ptr<MenuItem> mb(setupMenuBar());
+    addPermanentMenuItems(mb.get());
+    WorkbenchManipulator::changeMenuBar(mb.get());
+
     std::list<std::string> menus;
     QList<MenuItem*> items = mb->getItems();
     for (const auto & item : items) {
@@ -852,13 +860,13 @@ ToolBarItem* StdWorkbench::setupCommandBars() const
 DockWindowItems* StdWorkbench::setupDockWindows() const
 {
     auto root = new DockWindowItems();
-    root->addDockWidget("Std_TreeView", Qt::LeftDockWidgetArea, true, false);
-    root->addDockWidget("Std_PropertyView", Qt::LeftDockWidgetArea, true, false);
-    root->addDockWidget("Std_SelectionView", Qt::LeftDockWidgetArea, false, false);
-    root->addDockWidget("Std_ComboView", Qt::LeftDockWidgetArea, true, true);
-    root->addDockWidget("Std_TaskView", Qt::LeftDockWidgetArea, true, true);
-    root->addDockWidget("Std_ReportView", Qt::BottomDockWidgetArea, false, true);
-    root->addDockWidget("Std_PythonView", Qt::BottomDockWidgetArea, false, true);
+    root->addDockWidget("Std_TreeView", Qt::LeftDockWidgetArea, Gui::DockWindowOption::Visible);
+    root->addDockWidget("Std_PropertyView", Qt::LeftDockWidgetArea, Gui::DockWindowOption::Visible);
+    root->addDockWidget("Std_SelectionView", Qt::LeftDockWidgetArea, Gui::DockWindowOption::Hidden);
+    root->addDockWidget("Std_ComboView", Qt::LeftDockWidgetArea, Gui::DockWindowOption::VisibleTabbed);
+    root->addDockWidget("Std_TaskView", Qt::LeftDockWidgetArea, Gui::DockWindowOption::VisibleTabbed);
+    root->addDockWidget("Std_ReportView", Qt::BottomDockWidgetArea, Gui::DockWindowOption::HiddenTabbed);
+    root->addDockWidget("Std_PythonView", Qt::BottomDockWidgetArea, Gui::DockWindowOption::HiddenTabbed);
 
     //Dagview through parameter.
     ParameterGrp::handle group = App::GetApplication().GetUserParameter().
@@ -866,7 +874,7 @@ DockWindowItems* StdWorkbench::setupDockWindows() const
 
     bool enabled = group->GetBool("Enabled", false);
     if (enabled) {
-      root->addDockWidget("Std_DAGView", Qt::RightDockWidgetArea, false, false);
+      root->addDockWidget("Std_DAGView", Qt::RightDockWidgetArea, Gui::DockWindowOption::Hidden);
     }
 
     return root;
@@ -987,7 +995,7 @@ ToolBarItem* NoneWorkbench::setupCommandBars() const
 DockWindowItems* NoneWorkbench::setupDockWindows() const
 {
     auto root = new DockWindowItems();
-    root->addDockWidget("Std_ReportView", Qt::BottomDockWidgetArea, true, false);
+    root->addDockWidget("Std_ReportView", Qt::BottomDockWidgetArea, Gui::DockWindowOption::Visible);
     return root;
 }
 
@@ -1049,6 +1057,7 @@ PythonBaseWorkbench::~PythonBaseWorkbench()
     delete _toolBar;
     delete _commandBar;
     if (_workbenchPy) {
+        Base::PyGILStateLocker lock;
         _workbenchPy->setInvalid();
         _workbenchPy->DecRef();
     }

@@ -250,42 +250,6 @@
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout_3">
      <item>
-      <layout class="QHBoxLayout" name="horizontalLayout">
-       <property name="spacing">
-        <number>2</number>
-       </property>
-       <item>
-        <widget class="QPushButton" name="discardBtn">
-         <property name="toolTip">
-          <string>Revert to last calculated value (as constant)</string>
-         </property>
-         <property name="text">
-          <string>&amp;Clear</string>
-         </property>
-         <property name="autoDefault">
-          <bool>true</bool>
-         </property>
-         <property name="default">
-          <bool>false</bool>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QPushButton" name="okBtn">
-         <property name="text">
-          <string>&amp;OK</string>
-         </property>
-         <property name="autoDefault">
-          <bool>true</bool>
-         </property>
-         <property name="default">
-          <bool>true</bool>
-         </property>
-        </widget>
-       </item>
-      </layout>
-     </item>
-     <item>
       <spacer name="horizontalSpacer_2">
        <property name="orientation">
         <enum>Qt::Horizontal</enum>
@@ -297,6 +261,13 @@
         </size>
        </property>
       </spacer>
+     </item>
+     <item>
+      <widget class="QDialogButtonBox" name="buttonBox">
+       <property name="standardButtons">
+        <set>QDialogButtonBox::Reset|QDialogButtonBox::Ok</set>
+       </property>
+      </widget>
      </item>
     </layout>
    </item>
@@ -324,15 +295,14 @@
  </customwidgets>
  <tabstops>
   <tabstop>expression</tabstop>
-  <tabstop>okBtn</tabstop>
-  <tabstop>discardBtn</tabstop>
+  <tabstop>buttonBox</tabstop>
   <tabstop>checkBoxVarSets</tabstop>
  </tabstops>
  <resources/>
  <connections>
   <connection>
-   <sender>okBtn</sender>
-   <signal>clicked()</signal>
+   <sender>buttonBox</sender>
+   <signal>accepted()</signal>
    <receiver>DlgExpressionInput</receiver>
    <slot>accept()</slot>
    <hints>

@@ -24,7 +24,7 @@
 #include "PreCompiled.h"
 
 #include <App/Document.h>
-#include <Gui/Command.h>
+#include <Gui/CommandT.h>
 #include <Mod/PartDesign/App/FeatureBase.h>
 
 #include "ViewProviderBase.h"
@@ -54,7 +54,7 @@ bool ViewProviderBase::doubleClicked()
             std::string Msg("Edit ");
             Msg += base->Label.getValue();
             Gui::Command::openCommand(Msg.c_str());
-            FCMD_SET_EDIT(base);
+            Gui::cmdSetEdit(base);
         }
         catch (const Base::Exception&) {
             Gui::Command::abortCommand();

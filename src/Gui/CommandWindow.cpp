@@ -362,7 +362,7 @@ Action* StdCmdToggleToolBarLock::createAction()
     Action* action = Command::createAction();
 
     action->setCheckable(true);
-    action->setChecked(ToolBarManager::getInstance()->areToolBarsLocked(), true);
+    action->setBlockedChecked(ToolBarManager::getInstance()->areToolBarsLocked());
 
     return action;
 }
@@ -420,7 +420,7 @@ Action * StdCmdStatusBar::createAction()
 {
     Action *pcAction = Command::createAction();
     pcAction->setCheckable(true);
-    pcAction->setChecked(false, true);
+    pcAction->setBlockedChecked(false);
     auto fsb = new FilterStatusBar(pcAction);
     getMainWindow()->statusBar()->installEventFilter(fsb);
 

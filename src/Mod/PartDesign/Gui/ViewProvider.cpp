@@ -34,7 +34,7 @@
 #include <App/Document.h>
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
-#include <Gui/Command.h>
+#include <Gui/CommandT.h>
 #include <Gui/Control.h>
 #include <Gui/Document.h>
 #include <Gui/MainWindow.h>
@@ -63,7 +63,7 @@ bool ViewProvider::doubleClicked()
     try {
         QString text = QObject::tr("Edit %1").arg(QString::fromUtf8(getObject()->Label.getValue()));
         Gui::Command::openCommand(text.toUtf8());
-        FCMD_SET_EDIT(pcObject);
+        Gui::cmdSetEdit(pcObject);
     }
     catch (const Base::Exception&) {
         Gui::Command::abortCommand();

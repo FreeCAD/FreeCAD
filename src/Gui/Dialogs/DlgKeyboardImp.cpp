@@ -139,7 +139,7 @@ void DlgCustomKeyboardImp::setupConnections()
             this, &DlgCustomKeyboardImp::onButtonResetClicked);
     connect(ui->buttonResetAll, &QPushButton::clicked,
             this, &DlgCustomKeyboardImp::onButtonResetAllClicked);
-    connect(ui->editShortcut, &AccelLineEdit::textChanged,
+    connect(ui->editShortcut, &AccelLineEdit::keySequenceChanged,
             this, &DlgCustomKeyboardImp::onEditShortcutTextChanged);
     // clang-format on
 }
@@ -336,11 +336,11 @@ DlgCustomKeyboardImp::initCommandWidgets(QTreeWidget* commandTreeWidget,
         auto timer = new QTimer(priorityList);
         timer->setSingleShot(true);
         if (currentShortcut) {
-            QObject::connect(currentShortcut, &QLineEdit::textChanged, timer, [timer]() {
+            QObject::connect(currentShortcut, &AccelLineEdit::keySequenceChanged, timer, [timer]() {
                 timer->start(200);
             });
         }
-        QObject::connect(editShortcut, &QLineEdit::textChanged, timer, [timer]() {
+        QObject::connect(editShortcut, &AccelLineEdit::keySequenceChanged, timer, [timer]() {
             timer->start(200);
         });
         QObject::connect(ShortcutManager::instance(),
@@ -368,10 +368,10 @@ void DlgCustomKeyboardImp::populatePriorityList(QTreeWidget* priorityList,
 
     priorityList->clear();
     QString sc;
-    if (!editor->isNone() && editor->text().size()) {
+    if (!editor->isEmpty()) {
         sc = editor->text();
     }
-    else if (curShortcut && !curShortcut->isNone()) {
+    else if (curShortcut && !curShortcut->isEmpty()) {
         sc = curShortcut->text();
     }
 
@@ -466,10 +466,10 @@ void DlgCustomKeyboardImp::onCommandTreeWidgetCurrentItemChanged(QTreeWidgetItem
         QKeySequence ks2 = QString::fromLatin1(cmd->getAccel());
         QKeySequence ks3 = ui->editShortcut->text();
         if (ks.isEmpty()) {
-            ui->accelLineEditShortcut->setText(tr("none"));
+            ui->accelLineEditShortcut->clear();
         }
         else {
-            ui->accelLineEditShortcut->setText(ks.toString(QKeySequence::NativeText));
+            ui->accelLineEditShortcut->setKeySequence(ks);
         }
 
         ui->buttonAssign->setEnabled(!ui->editShortcut->text().isEmpty() && (ks != ks3));
@@ -500,7 +500,7 @@ void DlgCustomKeyboardImp::setShortcutOfCurrentAction(const QString& accelText)
     if (!accelText.isEmpty()) {
         QKeySequence shortcut = accelText;
         portableText = shortcut.toString(QKeySequence::PortableText);
-        ui->accelLineEditShortcut->setText(accelText);
+        ui->accelLineEditShortcut->setKeySequence(shortcut);
         ui->editShortcut->clear();
     }
     else {
@@ -538,7 +538,7 @@ void DlgCustomKeyboardImp::onButtonResetClicked()
     ShortcutManager::instance()->reset(name);
 
     QString txt = ShortcutManager::instance()->getShortcut(name);
-    ui->accelLineEditShortcut->setText((txt.isEmpty() ? tr("none") : txt));
+    ui->accelLineEditShortcut->setKeySequence(QKeySequence(txt));
     ui->buttonReset->setEnabled(false);
 }
 
@@ -550,7 +550,7 @@ void DlgCustomKeyboardImp::onButtonResetAllClicked()
 }
 
 /** Checks for an already occupied shortcut. */
-void DlgCustomKeyboardImp::onEditShortcutTextChanged(const QString&)
+void DlgCustomKeyboardImp::onEditShortcutTextChanged(const QKeySequence&)
 {
     QTreeWidgetItem* item = ui->commandTreeWidget->currentItem();
     if (item) {
@@ -560,7 +560,7 @@ void DlgCustomKeyboardImp::onEditShortcutTextChanged(const QString&)
         CommandManager& cCmdMgr = Application::Instance->commandManager();
         Command* cmd = cCmdMgr.getCommandByName(name.constData());
 
-        if (!ui->editShortcut->isNone()) {
+        if (!ui->editShortcut->isEmpty()) {
             ui->buttonAssign->setEnabled(true);
         }
         else {

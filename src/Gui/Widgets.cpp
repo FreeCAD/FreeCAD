@@ -358,105 +358,39 @@ void ActionSelector::onDownButtonClicked()
 
 /**
  * Constructs a line edit with no text.
- * The \a parent argument is sent to the QLineEdit constructor.
+ * The \a parent argument is sent to the QKeySequenceEdit constructor.
  */
-AccelLineEdit::AccelLineEdit ( QWidget * parent )
-  : QLineEdit(parent)
+AccelLineEdit::AccelLineEdit(QWidget* parent)
+  : QKeySequenceEdit(parent)
 {
-    setPlaceholderText(tr("Press a keyboard shortcut"));
-    setClearButtonEnabled(true);
-    keyPressedCount = 0;
+    if (auto le = findChild<QLineEdit*>()) {
+        le->setClearButtonEnabled(true);
+    }
 }
 
-bool AccelLineEdit::isNone() const
+AccelLineEdit::AccelLineEdit(const QKeySequence& keySequence, QWidget* parent)
+  : QKeySequenceEdit(keySequence, parent)
 {
-    return text().isEmpty();
+    if (auto le = findChild<QLineEdit*>()) {
+        le->setClearButtonEnabled(true);
+    }
 }
 
-/**
- * Checks which keys are pressed and show it as text.
- */
-void AccelLineEdit::keyPressEvent (QKeyEvent * e)
+void AccelLineEdit::setReadOnly(bool value)
 {
-    if (isReadOnly()) {
-        QLineEdit::keyPressEvent(e);
-        return;
+    if (auto le = findChild<QLineEdit*>()) {
+        le->setReadOnly(value);
     }
+}
 
-    QString txtLine = text();
+bool AccelLineEdit::isEmpty() const
+{
+    return keySequence().isEmpty();
+}
 
-    int key = e->key();
-    Qt::KeyboardModifiers state = e->modifiers();
-
-    // Backspace clears the shortcut if text is present, else sets Backspace as shortcut.
-    // If a modifier is pressed without any other key, return.
-    // AltGr is not a modifier but doesn't have a QString representation.
-    switch(key) {
-    case Qt::Key_Backspace:
-    case Qt::Key_Delete:
-        if (state == Qt::NoModifier) {
-            keyPressedCount = 0;
-            if (isNone()) {
-                QKeySequence ks(key);
-                setText(ks.toString(QKeySequence::NativeText));
-            }
-            else {
-                clear();
-            }
-        }
-    case Qt::Key_Control:
-    case Qt::Key_Shift:
-    case Qt::Key_Alt:
-    case Qt::Key_Meta:
-    case Qt::Key_AltGr:
-        return;
-    default:
-        break;
-    }
-
-    if (txtLine.isEmpty()) {
-        // Text maybe cleared by QLineEdit's built in clear button
-        keyPressedCount = 0;
-    } else {
-        // 4 keys are allowed for QShortcut
-        switch (keyPressedCount) {
-        case 4:
-            keyPressedCount = 0;
-            txtLine.clear();
-            break;
-        case 0:
-            txtLine.clear();
-            break;
-        default:
-            txtLine += QStringLiteral(",");
-            break;
-        }
-    }
-
-    // Handles modifiers applying a mask.
-    if ((state & Qt::ControlModifier) == Qt::ControlModifier) {
-        QKeySequence ks(Qt::CTRL);
-        txtLine += ks.toString(QKeySequence::NativeText);
-    }
-    if ((state & Qt::AltModifier) == Qt::AltModifier) {
-        QKeySequence ks(Qt::ALT);
-        txtLine += ks.toString(QKeySequence::NativeText);
-    }
-    if ((state & Qt::ShiftModifier) == Qt::ShiftModifier) {
-        QKeySequence ks(Qt::SHIFT);
-        txtLine += ks.toString(QKeySequence::NativeText);
-    }
-    if ((state & Qt::MetaModifier) == Qt::MetaModifier) {
-        QKeySequence ks(Qt::META);
-        txtLine += ks.toString(QKeySequence::NativeText);
-    }
-
-    // Handles normal keys
-    QKeySequence ks(key);
-    txtLine += ks.toString(QKeySequence::NativeText);
-
-    setText(txtLine);
-    keyPressedCount++;
+QString AccelLineEdit::text() const
+{
+    return keySequence().toString(QKeySequence::NativeText);
 }
 
 // ------------------------------------------------------------------------------

@@ -57,7 +57,8 @@ public:
     virtual void setVisible(bool);
 
     void setCheckable(bool);
-    void setChecked (bool, bool no_signal=false);
+    void setChecked(bool);
+    void setBlockedChecked(bool);
     bool isChecked() const;
     bool isEnabled() const;
 

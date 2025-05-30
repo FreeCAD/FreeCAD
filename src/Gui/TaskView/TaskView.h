@@ -187,7 +187,7 @@ private:
     void slotViewClosed(const Gui::MDIView*);
     void slotUndoDocument(const App::Document&);
     void slotRedoDocument(const App::Document&);
-    void transactionChangeOnDocument(const App::Document&);
+    void transactionChangeOnDocument(const App::Document&, bool undo);
 
 protected:
     void keyPressEvent(QKeyEvent* event) override;

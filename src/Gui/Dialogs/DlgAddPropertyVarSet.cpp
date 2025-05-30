@@ -371,8 +371,7 @@ bool DlgAddPropertyVarSet::isGroupValid()
 bool DlgAddPropertyVarSet::isTypeValid()
 {
     std::string type = ui->comboBoxType->currentText().toStdString();
-
-    return !Base::Type::fromName(type.c_str()).isBad();
+    return Base::Type::fromName(type.c_str()).isDerivedFrom(App::Property::getClassTypeId());
 }
 
 bool DlgAddPropertyVarSet::areFieldsValid()
@@ -380,9 +379,41 @@ bool DlgAddPropertyVarSet::areFieldsValid()
     return isNameValid() && isGroupValid() && isTypeValid();
 }
 
-void DlgAddPropertyVarSet::onTextFieldChanged([[maybe_unused]] const QString& text)
+void DlgAddPropertyVarSet::onTextFieldChanged([[maybe_unused]]const QString& text)
 {
     setOkEnabled(areFieldsValid());
+    showStatusMessage();
+}
+
+void DlgAddPropertyVarSet::showStatusMessage()
+{
+    QString error;
+    QString text = ui->lineEditName->text();
+    std::string name = text.toStdString();
+
+    if (!isGroupValid()) {
+        error = tr("Invalid group name");
+    }
+    else if (!isTypeValid()) {
+        error = tr("Invalid type name");
+    }
+    else if (name.empty()) {
+        error.clear();
+    }
+    else if (name != Base::Tools::getIdentifier(name)) {
+        error = tr("Invalid property name '%1'").arg(text);
+    }
+    else if (propertyExists(name)) {
+        error = tr("Property '%1' already exists").arg(text);
+    }
+    else if (App::ExpressionParser::isTokenAConstant(name)) {
+        error = tr("'%1' is a constant").arg(text);
+    }
+    else if (App::ExpressionParser::isTokenAUnit(name)) {
+        error = tr("'%1' is a unit").arg(text);
+    }
+
+    ui->labelError->setText(error);
 }
 
 void DlgAddPropertyVarSet::removeEditor()
@@ -409,6 +440,7 @@ void DlgAddPropertyVarSet::onTypeChanged(const QString& text)
     }
 
     setOkEnabled(areFieldsValid());
+    showStatusMessage();
 }
 
 void DlgAddPropertyVarSet::changeEvent(QEvent* e)

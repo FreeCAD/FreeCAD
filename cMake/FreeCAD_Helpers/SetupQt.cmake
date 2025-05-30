@@ -78,6 +78,7 @@ else()
 endif()
 
 configure_file(${CMAKE_SOURCE_DIR}/src/QtCore.h.cmake ${CMAKE_BINARY_DIR}/src/QtCore.h)
+configure_file(${CMAKE_SOURCE_DIR}/src/QtWidgets.h.cmake ${CMAKE_BINARY_DIR}/src/QtWidgets.h)
 
 function(qt_find_and_add_translation _qm_files _tr_dir _qm_dir)
     file(GLOB _ts_files ${_tr_dir})

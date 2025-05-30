@@ -162,8 +162,12 @@ public:
     virtual bool accept();
     /// is called by the framework if the dialog is rejected (Cancel)
     virtual bool reject();
-    /// is called by the framework if the user press the help button 
+    /// is called by the framework if the user press the help button
     virtual void helpRequested();
+    /// is called by the framework if the user press the undo button
+    virtual void onUndo();
+    /// is called by the framework if the user press the redo button
+    virtual void onRedo();
 
     void emitDestructionSignal() {
         Q_EMIT aboutToBeDestroyed();

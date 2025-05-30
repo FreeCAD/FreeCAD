@@ -31,6 +31,7 @@
 #include <QButtonGroup>
 #include <QDialog>
 #include <QElapsedTimer>
+#include <QKeySequenceEdit>
 #include <QLabel>
 #include <QLineEdit>
 #include <QListWidget>
@@ -132,19 +133,16 @@ private:
  * The AccelLineEdit class provides a lineedit to specify shortcuts.
  * \author Werner Mayer
  */
-class GuiExport AccelLineEdit : public QLineEdit
+class GuiExport AccelLineEdit : public QKeySequenceEdit
 {
   Q_OBJECT
 
 public:
-    AccelLineEdit(QWidget * parent=nullptr);
-    bool isNone() const;
-
-protected:
-    void keyPressEvent(QKeyEvent * e) override;
-
-private:
-    int keyPressedCount;
+    explicit AccelLineEdit(QWidget* parent = nullptr);
+    explicit AccelLineEdit(const QKeySequence& keySequence, QWidget* parent = nullptr);
+    void setReadOnly(bool value);
+    bool isEmpty() const;
+    QString text() const;
 };
 
 // ------------------------------------------------------------------------------

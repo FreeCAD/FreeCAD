@@ -340,7 +340,7 @@ void CmdTechDrawToggleFrame::activated(int iMsg)
 
     Gui::Action *action = this->getAction();
     if (action) {
-        action->setChecked(!vpPage->getFrameState(), true);
+        action->setBlockedChecked(!vpPage->getFrameState());
     }
 }
 
@@ -358,7 +358,7 @@ bool CmdTechDrawToggleFrame::isActive()
 
     Gui::Action* action = this->getAction();
     if (action) {
-        action->setChecked(vpp && !vpp->getFrameState(), true);
+        action->setBlockedChecked(vpp && !vpp->getFrameState());
     }
 
     return true;
