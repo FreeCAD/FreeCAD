@@ -415,23 +415,48 @@ protected:
 private:
     std::list<Gui::InputHint> getToolHints() const override
     {
-        using Gui::InputHint;
-        using enum Gui::InputHint::UserInput;
-
-        switch (Mode) {
-            case STATUS_SEEK_First:
-                return {InputHint {QObject::tr("%1 pick center point"), {MouseLeft}}};
-            case STATUS_SEEK_Second:
-                return {InputHint {QObject::tr("%1 pick axis point"), {MouseLeft}}};
-            case STATUS_SEEK_Third:
-                return {InputHint {QObject::tr("%1 pick arc start point"), {MouseLeft}}};
-            case STATUS_SEEK_Fourth:
-                return {InputHint {QObject::tr("%1 pick arc end point"), {MouseLeft}}};
-            default:
-                return {};
-        }
+        return lookupArcOfHyperbolaHints(Mode);
     }
+
+private:
+    struct HintEntry
+    {
+        int mode;
+        std::list<Gui::InputHint> hints;
+    };
+
+    using HintTable = std::vector<HintEntry>;
+
+    static HintTable getArcOfHyperbolaHintTable();
+    static std::list<Gui::InputHint> lookupArcOfHyperbolaHints(int mode);
 };
+
+DrawSketchHandlerArcOfHyperbola::HintTable
+DrawSketchHandlerArcOfHyperbola::getArcOfHyperbolaHintTable()
+{
+    return {// Structure: {mode, {hints...}}
+            {STATUS_SEEK_First,
+             {{QObject::tr("%1 pick center point"), {Gui::InputHint::UserInput::MouseLeft}}}},
+            {STATUS_SEEK_Second,
+             {{QObject::tr("%1 pick axis point"), {Gui::InputHint::UserInput::MouseLeft}}}},
+            {STATUS_SEEK_Third,
+             {{QObject::tr("%1 pick arc start point"), {Gui::InputHint::UserInput::MouseLeft}}}},
+            {STATUS_SEEK_Fourth,
+             {{QObject::tr("%1 pick arc end point"), {Gui::InputHint::UserInput::MouseLeft}}}}};
+}
+
+std::list<Gui::InputHint> DrawSketchHandlerArcOfHyperbola::lookupArcOfHyperbolaHints(int mode)
+{
+    const auto arcOfHyperbolaHintTable = getArcOfHyperbolaHintTable();
+
+    auto it = std::find_if(arcOfHyperbolaHintTable.begin(),
+                           arcOfHyperbolaHintTable.end(),
+                           [mode](const HintEntry& entry) {
+                               return entry.mode == mode;
+                           });
+
+    return (it != arcOfHyperbolaHintTable.end()) ? it->hints : std::list<Gui::InputHint> {};
+}
 
 }  // namespace SketcherGui
 
