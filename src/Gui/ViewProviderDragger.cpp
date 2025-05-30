@@ -252,7 +252,7 @@ void ViewProviderDragger::dragMotionCallback(void* data, [[maybe_unused]] SoDrag
     vp->updateTransformFromDragger();
 }
 
-void ViewProviderDragger::updatePlacementFromDragger()
+void ViewProviderDragger::updatePlacementFromDragger(DraggerComponents components)
 {
     const auto placement = getObject()->getPropertyByName<App::PropertyPlacement>("Placement");
 
@@ -260,7 +260,112 @@ void ViewProviderDragger::updatePlacementFromDragger()
         return;
     }
 
-    placement->setValue(getDraggerPlacement() * getTransformOrigin().inverse());
+    // Get new target dragger placement
+    Base::Placement newDraggerPlacement = getDraggerPlacement();
+    Base::Vector3d newDraggerPosition = newDraggerPlacement.getPosition();
+    Base::Rotation newDraggerRotation = newDraggerPlacement.getRotation();
+
+    // Get old dragger placement before movement
+    const Base::Placement oldObjectPlacement = placement->getValue();
+    const Base::Placement oldDraggerPlacement = oldObjectPlacement * getTransformOrigin();
+    const Base::Vector3d oldDraggerPosition = oldDraggerPlacement.getPosition();
+    const Base::Rotation oldDraggerRotation = oldDraggerPlacement.getRotation();
+
+    // --- Mask translation ---
+    const Base::Vector3d deltaPositionGlobal = newDraggerPosition - oldDraggerPosition;
+    const Base::Vector3d deltaPositionLocal = oldDraggerRotation.inverse().multVec(deltaPositionGlobal);
+    Base::Vector3d maskedDeltaPositionLocal = deltaPositionLocal;
+
+    if (!components.testFlag(DraggerComponent::XPos)) {
+        maskedDeltaPositionLocal.x = 0.0;
+    }
+    if (!components.testFlag(DraggerComponent::YPos)) {
+        maskedDeltaPositionLocal.y = 0.0;
+    }
+    if (!components.testFlag(DraggerComponent::ZPos)) {
+        maskedDeltaPositionLocal.z = 0.0;
+    }
+
+    const Base::Vector3d maskedDeltaPositionGlobal = oldDraggerRotation.multVec(maskedDeltaPositionLocal);
+    Base::Vector3d finalPosition = oldDraggerPosition + maskedDeltaPositionGlobal;
+
+    // --- Mask rotation ---
+    Base::Vector3d oldX = oldDraggerRotation.multVec(Base::Vector3d::UnitX);
+    Base::Vector3d oldY = oldDraggerRotation.multVec(Base::Vector3d::UnitY);
+    Base::Vector3d oldZ = oldDraggerRotation.multVec(Base::Vector3d::UnitZ);
+
+    Base::Vector3d newX = newDraggerRotation.multVec(Base::Vector3d::UnitX);
+    Base::Vector3d newY = newDraggerRotation.multVec(Base::Vector3d::UnitY);
+    Base::Vector3d newZ = newDraggerRotation.multVec(Base::Vector3d::UnitZ);
+
+    // Choose which axes to align
+    Base::Vector3d x = components.testFlag(DraggerComponent::XRot) ? newX : oldX;
+    Base::Vector3d y = components.testFlag(DraggerComponent::YRot) ? newY : oldY;
+    Base::Vector3d z = components.testFlag(DraggerComponent::ZRot) ? newZ : oldZ;
+
+    Base::Rotation finalRotation = orthonormalize(x, y, z, components);
+
+    // Create new dragger placement, only if components are masked
+    Base::Placement finalDraggerPlacement(newDraggerPosition, newDraggerRotation);
+    if (!components.testFlag(DraggerComponent::All)){
+        finalDraggerPlacement.setPosition(finalPosition);
+        finalDraggerPlacement.setRotation(finalRotation);
+    }
+
+    placement->setValue((finalDraggerPlacement * getTransformOrigin().inverse()));
+}
+
+Base::Rotation Gui::ViewProviderDragger::orthonormalize(Base::Vector3d x,
+                                         Base::Vector3d y,
+                                         Base::Vector3d z,
+                                         ViewProviderDragger::DraggerComponents components)
+{
+    // Orthonormalize (Gram–Schmidt process) to find perpendicular unit vector depending on masked axes
+    if (components.testFlag(Gui::ViewProviderDragger::DraggerComponent::XRot)
+        && components.testFlag(Gui::ViewProviderDragger::DraggerComponent::YRot)) {
+        x.Normalize();
+        y = y - x * (x * y);
+        y.Normalize();
+        z = x.Cross(y);
+        z.Normalize();
+    }
+    else if (components.testFlag(Gui::ViewProviderDragger::DraggerComponent::XRot) && components.testFlag(Gui::ViewProviderDragger::DraggerComponent::ZRot)) {
+        x.Normalize();
+        z = z - x * (x * z);
+        z.Normalize();
+        y = z.Cross(x);
+        y.Normalize();
+    }
+    else if (components.testFlag(Gui::ViewProviderDragger::DraggerComponent::YRot) && components.testFlag(Gui::ViewProviderDragger::DraggerComponent::ZRot)) {
+        y.Normalize();
+        z = z - y * (y * z);
+        z.Normalize();
+        x = y.Cross(z);
+        x.Normalize();
+    }
+    else if (components.testFlag(Gui::ViewProviderDragger::DraggerComponent::XRot)) {
+        x.Normalize();
+        y = y - x * (x * y);
+        y.Normalize();
+        z = x.Cross(y);
+        z.Normalize();
+    }
+    else if (components.testFlag(Gui::ViewProviderDragger::DraggerComponent::YRot)) {
+        y.Normalize();
+        x = x - y * (x * y);
+        x.Normalize();
+        z = x.Cross(y);
+        z.Normalize();
+    }
+    else if (components.testFlag(Gui::ViewProviderDragger::DraggerComponent::ZRot)) {
+        z.Normalize();
+        x = x - z * (x * z);
+        x.Normalize();
+        y = z.Cross(x);
+        y.Normalize();
+    }
+
+    return Base::Rotation::makeRotationByAxes(x, y, z);
 }
 
 void ViewProviderDragger::updateTransformFromDragger()
