@@ -29,6 +29,7 @@
 
 #include <Gui/Command.h>
 #include <Gui/CommandT.h>
+#include <Gui/InputHint.h>
 
 #include <Mod/Sketcher/App/SketchObject.h>
 
@@ -193,6 +194,8 @@ public:
             endPoint = onSketchPos;
             Mode = STATUS_Close;
         }
+
+        updateHint();
         return true;
     }
 
@@ -313,6 +316,7 @@ public:
                                             // ViewProvider
             }
         }
+        updateHint();
         return true;
     }
 
@@ -328,9 +332,52 @@ protected:
     Base::Vector2d focusPoint, axisPoint, startingPoint, endPoint;
     double startAngle, endAngle, arcAngle, arcAngle_t;
     std::vector<AutoConstraint> sugConstr1, sugConstr2, sugConstr3, sugConstr4;
+
+private:
+    std::list<Gui::InputHint> getToolHints() const override
+    {
+        return lookupParabolaHints(Mode);
+    }
+
+private:
+    struct HintEntry
+    {
+        int mode;
+        std::list<Gui::InputHint> hints;
+    };
+
+    using HintTable = std::vector<HintEntry>;
+
+    static HintTable getParabolaHintTable();
+    static std::list<Gui::InputHint> lookupParabolaHints(int mode);
 };
 
-}  // namespace SketcherGui
+DrawSketchHandlerArcOfParabola::HintTable DrawSketchHandlerArcOfParabola::getParabolaHintTable()
+{
+    return {// Structure: {mode, {hints...}}
+            {STATUS_SEEK_First,
+             {{QObject::tr("%1 pick focus point"), {Gui::InputHint::UserInput::MouseLeft}}}},
+            {STATUS_SEEK_Second,
+             {{QObject::tr("%1 pick axis point"), {Gui::InputHint::UserInput::MouseLeft}}}},
+            {STATUS_SEEK_Third,
+             {{QObject::tr("%1 pick starting point"), {Gui::InputHint::UserInput::MouseLeft}}}},
+            {STATUS_SEEK_Fourth,
+             {{QObject::tr("%1 pick end point"), {Gui::InputHint::UserInput::MouseLeft}}}}};
+}
 
+std::list<Gui::InputHint> DrawSketchHandlerArcOfParabola::lookupParabolaHints(int mode)
+{
+    const auto parabolaHintTable = getParabolaHintTable();
+
+    auto it = std::find_if(parabolaHintTable.begin(),
+                           parabolaHintTable.end(),
+                           [mode](const HintEntry& entry) {
+                               return entry.mode == mode;
+                           });
+
+    return (it != parabolaHintTable.end()) ? it->hints : std::list<Gui::InputHint> {};
+}
+
+}  // namespace SketcherGui
 
 #endif  // SKETCHERGUI_DrawSketchHandlerArcOfParabola_H

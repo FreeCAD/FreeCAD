@@ -31,6 +31,7 @@
 #include <Gui/Notifications.h>
 #include <Gui/Command.h>
 #include <Gui/CommandT.h>
+#include <Gui/InputHint.h>
 
 #include <Mod/Sketcher/App/SketchObject.h>
 
@@ -96,16 +97,6 @@ public:
         SNAP_MODE_45Degree
     };
 
-    std::list<Gui::InputHint> getToolHints() const override
-    {
-        using UserInput = Gui::InputHint::UserInput;
-
-        return {
-            {QWidget::tr("%1 change mode"), {UserInput::KeyM}},
-            {QWidget::tr("%1 start drawing"), {UserInput::MouseLeft}},
-            {QWidget::tr("%1 stop drawing"), {UserInput::MouseRight}},
-        };
-    }
 
     void registerPressedKey(bool pressed, int key) override
     {
@@ -341,6 +332,7 @@ public:
 
     bool pressButton(Base::Vector2d onSketchPos) override
     {
+
         if (Mode == STATUS_SEEK_First) {
 
             EditCurve[0] = onSketchPos;  // this may be overwritten if previousCurve is found
@@ -447,6 +439,9 @@ public:
                 }
             }
         }
+
+        updateHint();
+
         return true;
     }
 
@@ -719,6 +714,9 @@ public:
                 mouseMove(onSketchPos);  // trigger an update of EditCurve
             }
         }
+
+        updateHint();
+
         return true;
     }
 
@@ -762,9 +760,25 @@ public:
     }
 
 private:
+    struct HintEntry
+    {
+        int mode;
+        std::list<Gui::InputHint> hints;
+    };
+
+    using HintTable = std::vector<HintEntry>;
+
+    static HintTable getLineSetHintTable();
+    static std::list<Gui::InputHint> lookupLineSetHints(int mode);
+
     QString getCrosshairCursorSVGName() const override
     {
         return QStringLiteral("Sketcher_Pointer_Create_Lineset");
+    }
+
+    std::list<Gui::InputHint> getToolHints() const override
+    {
+        return lookupLineSetHints(Mode);
     }
 
 protected:
@@ -827,7 +841,29 @@ protected:
     }
 };
 
+DrawSketchHandlerLineSet::HintTable DrawSketchHandlerLineSet::getLineSetHintTable()
+{
+    return {// Structure: {mode, {hints...}}
+            {STATUS_SEEK_First,
+             {{QObject::tr("%1 pick first point"), {Gui::InputHint::UserInput::MouseLeft}}}},
+            {STATUS_SEEK_Second,
+             {{QObject::tr("%1 pick next point"), {Gui::InputHint::UserInput::MouseLeft}},
+              {QObject::tr("%1 finish"), {Gui::InputHint::UserInput::MouseRight}},
+              {QObject::tr("%1 switch mode"), {Gui::InputHint::UserInput::KeyM}}}}};
+}
 
+std::list<Gui::InputHint> DrawSketchHandlerLineSet::lookupLineSetHints(int mode)
+{
+    const auto lineSetHintTable = getLineSetHintTable();
+
+    auto it = std::find_if(lineSetHintTable.begin(),
+                           lineSetHintTable.end(),
+                           [mode](const HintEntry& entry) {
+                               return entry.mode == mode;
+                           });
+
+    return (it != lineSetHintTable.end()) ? it->hints : std::list<Gui::InputHint> {};
+}
 }  // namespace SketcherGui
 
 
