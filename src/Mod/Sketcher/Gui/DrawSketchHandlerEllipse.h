@@ -84,38 +84,22 @@ public:
     ~DrawSketchHandlerEllipse() override = default;
 
 private:
-private:
+    struct HintEntry
+    {
+        ConstructionMethod method;
+        SelectMode state;
+        std::list<Gui::InputHint> hints;
+    };
+
+    using HintTable = std::vector<HintEntry>;
+
+    static HintTable getEllipseHintTable();
+    static std::list<Gui::InputHint> lookupEllipseHints(ConstructionMethod method,
+                                                        SelectMode state);
+
     std::list<Gui::InputHint> getToolHints() const override
     {
-        using Gui::InputHint;
-        using enum Gui::InputHint::UserInput;
-
-        if (constructionMethod() == ConstructionMethod::Center) {
-            switch (state()) {
-                case SelectMode::SeekFirst:
-                    return {InputHint {QObject::tr("%1 pick ellipse center"), {MouseLeft}}};
-                case SelectMode::SeekSecond:
-                    return {InputHint {QObject::tr("%1 pick axis endpoint"), {MouseLeft}}};
-                case SelectMode::SeekThird:
-                    return {InputHint {QObject::tr("%1 pick minor axis endpoint"), {MouseLeft}}};
-                default:
-                    return {};
-            }
-        }
-        else if (constructionMethod() == ConstructionMethod::ThreeRim) {
-            switch (state()) {
-                case SelectMode::SeekFirst:
-                    return {InputHint {QObject::tr("%1 pick first rim point"), {MouseLeft}}};
-                case SelectMode::SeekSecond:
-                    return {InputHint {QObject::tr("%1 pick second rim point"), {MouseLeft}}};
-                case SelectMode::SeekThird:
-                    return {InputHint {QObject::tr("%1 pick third rim point"), {MouseLeft}}};
-                default:
-                    return {};
-            }
-        }
-
-        return {};
+        return lookupEllipseHints(constructionMethod(), state());
     }
 
     void updateDataAndDrawToPosition(Base::Vector2d onSketchPos) override
@@ -986,7 +970,47 @@ void DSHEllipseController::addConstraints()
     // No constraint possible for 3 rim ellipse.
 }
 
+DrawSketchHandlerEllipse::HintTable DrawSketchHandlerEllipse::getEllipseHintTable()
+{
+    return {
+        // Structure: {ConstructionMethod, SelectMode, {hints...}}
 
+        // Center method
+        {ConstructionMethod::Center,
+         SelectMode::SeekFirst,
+         {{QObject::tr("%1 pick ellipse center"), {Gui::InputHint::UserInput::MouseLeft}}}},
+        {ConstructionMethod::Center,
+         SelectMode::SeekSecond,
+         {{QObject::tr("%1 pick axis endpoint"), {Gui::InputHint::UserInput::MouseLeft}}}},
+        {ConstructionMethod::Center,
+         SelectMode::SeekThird,
+         {{QObject::tr("%1 pick minor axis endpoint"), {Gui::InputHint::UserInput::MouseLeft}}}},
+
+        // ThreeRim method
+        {ConstructionMethod::ThreeRim,
+         SelectMode::SeekFirst,
+         {{QObject::tr("%1 pick first rim point"), {Gui::InputHint::UserInput::MouseLeft}}}},
+        {ConstructionMethod::ThreeRim,
+         SelectMode::SeekSecond,
+         {{QObject::tr("%1 pick second rim point"), {Gui::InputHint::UserInput::MouseLeft}}}},
+        {ConstructionMethod::ThreeRim,
+         SelectMode::SeekThird,
+         {{QObject::tr("%1 pick third rim point"), {Gui::InputHint::UserInput::MouseLeft}}}}};
+}
+
+std::list<Gui::InputHint> DrawSketchHandlerEllipse::lookupEllipseHints(ConstructionMethod method,
+                                                                       SelectMode state)
+{
+    const auto ellipseHintTable = getEllipseHintTable();
+
+    auto it = std::find_if(ellipseHintTable.begin(),
+                           ellipseHintTable.end(),
+                           [method, state](const HintEntry& entry) {
+                               return entry.method == method && entry.state == state;
+                           });
+
+    return (it != ellipseHintTable.end()) ? it->hints : std::list<Gui::InputHint> {};
+}
 }  // namespace SketcherGui
 
 
