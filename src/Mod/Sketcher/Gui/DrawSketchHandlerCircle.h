@@ -310,35 +310,34 @@ private:
 template<>
 auto DSHCircleControllerBase::getState(int labelindex) const
 {
-
     if (handler->constructionMethod() == DrawSketchHandlerCircle::ConstructionMethod::Center) {
         switch (labelindex) {
             case OnViewParameter::First:
             case OnViewParameter::Second:
                 return SelectMode::SeekFirst;
-                break;
             case OnViewParameter::Third:
                 return SelectMode::SeekSecond;
-                break;
+            // Handle ThreeRim parameters when in Center mode
+            case OnViewParameter::Fourth:
+            case OnViewParameter::Fifth:
+            case OnViewParameter::Sixth:
+                return SelectMode::SeekFirst;  // Safe fallback state
             default:
                 THROWM(Base::ValueError,
                        "OnViewParameter index without an associated machine state")
         }
     }
-    else {  // ConstructionMethod::ThreeRim
+    else {  // ThreeRim mode - unchanged
         switch (labelindex) {
             case OnViewParameter::First:
             case OnViewParameter::Second:
                 return SelectMode::SeekFirst;
-                break;
             case OnViewParameter::Third:
             case OnViewParameter::Fourth:
                 return SelectMode::SeekSecond;
-                break;
             case OnViewParameter::Fifth:
             case OnViewParameter::Sixth:
                 return SelectMode::SeekThird;
-                break;
             default:
                 THROWM(Base::ValueError, "Label index without an associated machine state")
         }
