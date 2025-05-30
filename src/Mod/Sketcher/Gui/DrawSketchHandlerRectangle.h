@@ -1584,11 +1584,9 @@ auto DSHRectangleControllerBase::getState(int labelindex) const
             case OnViewParameter::First:
             case OnViewParameter::Second:
                 return SelectMode::SeekFirst;
-                break;
             case OnViewParameter::Third:
             case OnViewParameter::Fourth:
                 return SelectMode::SeekSecond;
-                break;
             case OnViewParameter::Fifth:
                 if (handler->roundCorners) {
                     return SelectMode::SeekThird;
@@ -1596,7 +1594,6 @@ auto DSHRectangleControllerBase::getState(int labelindex) const
                 else {
                     return SelectMode::End;
                 }
-                break;
             case OnViewParameter::Sixth:
                 if (handler->makeFrame) {
                     if (!handler->roundCorners) {
@@ -1609,7 +1606,9 @@ auto DSHRectangleControllerBase::getState(int labelindex) const
                 else {
                     return SelectMode::End;
                 }
-                break;
+            case OnViewParameter::Seventh:
+            case OnViewParameter::Eighth:
+                return SelectMode::SeekFirst;  // Handle ThreePoints parameters gracefully
             default:
                 THROWM(Base::ValueError, "Parameter index without an associated machine state")
         }
@@ -1619,15 +1618,12 @@ auto DSHRectangleControllerBase::getState(int labelindex) const
             case OnViewParameter::First:
             case OnViewParameter::Second:
                 return SelectMode::SeekFirst;
-                break;
             case OnViewParameter::Third:
             case OnViewParameter::Fourth:
                 return SelectMode::SeekSecond;
-                break;
             case OnViewParameter::Fifth:
             case OnViewParameter::Sixth:
                 return SelectMode::SeekThird;
-                break;
             case OnViewParameter::Seventh:
                 if (handler->roundCorners) {
                     return SelectMode::SeekFourth;
@@ -1635,7 +1631,6 @@ auto DSHRectangleControllerBase::getState(int labelindex) const
                 else {
                     return SelectMode::End;
                 }
-                break;
             case OnViewParameter::Eighth:
                 if (handler->makeFrame) {
                     if (!handler->roundCorners) {
@@ -1648,7 +1643,6 @@ auto DSHRectangleControllerBase::getState(int labelindex) const
                 else {
                     return SelectMode::End;
                 }
-                break;
             default:
                 THROWM(Base::ValueError, "Parameter index without an associated machine state")
         }
