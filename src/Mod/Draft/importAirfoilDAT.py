@@ -121,8 +121,8 @@ def process(filename):
 
     Returns
     -------
-    Part::Part2DObject or None.
-        The created Draft Wire object or None if the file contains less
+    Part::Feature or None.
+        The created object or None if the file contains fewer
         than 3 points.
     """
     # Regex to identify data rows and throw away unused metadata

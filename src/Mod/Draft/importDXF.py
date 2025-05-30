@@ -795,7 +795,7 @@ def drawLine(line, forceShape=False):
 
     Returns
     -------
-    Part::Part2DObject or Part::TopoShape ('Edge')
+    Part::Feature or Part::TopoShape ('Edge')
         The returned object is normally a `Wire`, if the global
         variables `dxfCreateDraft` or `dxfCreateSketch` are set,
         and `forceShape` is `False`.
@@ -847,7 +847,7 @@ def drawPolyline(polyline, forceShape=False, num=None):
 
     Returns
     -------
-    Part::Part2DObject or Part::TopoShape ('Wire', 'Face', 'Shell')
+    Part::Feature or Part::TopoShape ('Wire', 'Face', 'Shell')
         It returns `None` if it fails producing a shape.
 
     If the polyline has a `width` and the global variable
@@ -1292,7 +1292,7 @@ def drawSplineIterpolation(verts, closed=False, forceShape=False,
 
     Returns
     -------
-    Part::Part2DObject or Part::TopoShape ('Edge', 'Face')
+    Part::Feature or Part::TopoShape ('Edge', 'Face')
         The returned object is normally a `Draft Wire` or `Draft BSpline`,
         if the global variables `dxfCreateDraft` or `dxfCreateSketch` are set,
         and `forceShape` is `False`.
@@ -1350,7 +1350,7 @@ def drawSplineOld(spline, forceShape=False):
 
     Returns
     -------
-    Part::Part2DObject or Part::TopoShape ('Edge', 'Face')
+    Part::Feature or Part::TopoShape ('Edge', 'Face')
         The returned object is normally a `Draft Wire` or `Draft BSpline`
         as returned from `drawSplineIterpolation()`.
 
@@ -1409,7 +1409,7 @@ def drawSpline(spline, forceShape=False):
 
     Returns
     -------
-    Part::Part2DObject or Part::TopoShape ('Edge', 'Face')
+    Part::Feature or Part::TopoShape ('Edge', 'Face')
         The returned object is normally a `Draft BezCurve`
         created with `Draft.make_bezcurve(controlpoints, degree=degree)`,
         if `forceShape` is `False` and there are no weights.
@@ -1813,7 +1813,7 @@ def drawLayerBlock(objlist, name="LayerBlock"):
 
     Returns
     -------
-    Part::Part2DObject or Part::TopoShape ('Compound')
+    Part::Feature or Part::TopoShape ('Compound')
         If the global variables `dxfCreateDraft` or `dxfCreateSketch` are set,
         and no element in `objlist` is a `Part.Shape`,
         it will try to return a `Draft Block`.
@@ -1910,9 +1910,8 @@ def addObject(shape, name="Shape", layer=None):
     -------
     Part::Feature or Part::Part2DObject
         If the `shape` is a simple `Part.Shape`, it will be encapsulated
-        inside a `Part::Feature` object and this will be returned.
-        Otherwise, it is assumed it is already a Draft object
-        (`Part::Part2DObject`) and will just return this.
+        inside a `Part::Feature` object and this will be returned. Otherwise,
+        it is assumed it is already a Draft object which will just be returned.
 
         It applies the text and line color by calling `formatObject()`
         before returning the new object.
@@ -1940,8 +1939,6 @@ def addObject(shape, name="Shape", layer=None):
             else:
                 l = layerObjects[lay]
             l.append(newob)
-
-
 
     formatObject(newob)
     return newob

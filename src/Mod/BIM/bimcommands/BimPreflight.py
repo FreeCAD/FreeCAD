@@ -256,28 +256,20 @@ class BIM_Preflight_TaskPanel:
             objs = FreeCADGui.Selection.getSelection()
         # clean objects list of unwanted types
         objs = Draft.get_group_contents(objs, walls=True, addgroups=True)
-        objs = [obj for obj in objs if not obj.isDerivedFrom("Part::Part2DObject")]
-        objs = [obj for obj in objs if not obj.isDerivedFrom("App::Annotation")]
         objs = [
             obj
             for obj in objs
             if (
-                hasattr(obj, "Shape")
+                not obj.isDerivedFrom("App::DocumentObjectGroup")
+                and not obj.isDerivedFrom("App::Annotation")
+                and not obj.isDerivedFrom("Part::Part2DObject")
+                and Draft.getType(obj) not in ["BezCurve", "BSpline", "Wire", "WorkingPlaneProxy"]
+                and hasattr(obj, "Shape")
                 and obj.Shape
                 and not (obj.Shape.Edges and (not obj.Shape.Faces))
             )
         ]
-        objs = Arch.pruneIncluded(objs)
-        objs = [
-            obj for obj in objs if not obj.isDerivedFrom("App::DocumentObjectGroup")
-        ]
-        objs = [
-            obj
-            for obj in objs
-            if Draft.getType(obj)
-            not in ["DraftText", "Material", "MaterialContainer", "WorkingPlaneProxy"]
-        ]
-        return objs
+        return Arch.pruneIncluded(objs)
 
     def getToolTip(self, test):
         "gets the toolTip text from the ui file"

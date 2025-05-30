@@ -108,7 +108,8 @@ def make_wire(pointslist, closed=False, placement=None, face=None, support=None,
     else:
         fname = "Wire"
 
-    obj = App.ActiveDocument.addObject("Part::Part2DObjectPython", fname)
+    obj = App.ActiveDocument.addObject("Part::FeaturePython", fname)
+    obj.addExtension("Part::AttachExtensionPython")
     Wire(obj)
     obj.Points = pointslist
     obj.Closed = closed

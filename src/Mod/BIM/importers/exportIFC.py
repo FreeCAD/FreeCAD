@@ -282,9 +282,12 @@ def export(exportList, filename, colors=None, preferences=None):
     annotations = []
     specials = []
     for obj in objectslist:
-        if obj.isDerivedFrom("Part::Part2DObject"):
-            annotations.append(obj)
-        elif obj.isDerivedFrom("App::Annotation") or (Draft.getType(obj) in ["DraftText","Text","Dimension","LinearDimension","AngularDimension"]):
+        if obj.isDerivedFrom("Part::Part2DObject") \
+                or obj.isDerivedFrom("App::Annotation") \
+                or Draft.getType(obj) in [
+                        "BezCurve", "BSpline", "Wire",
+                        "DraftText", "Text", "Dimension", "LinearDimension", "AngularDimension"
+                    ]:
             annotations.append(obj)
         elif hasattr(obj, "Proxy") and hasattr(obj.Proxy, "export_ifc"):
             specials.append(obj)
