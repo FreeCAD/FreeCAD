@@ -97,39 +97,7 @@ public:
 private:
     std::list<Gui::InputHint> getToolHints() const override
     {
-        using Gui::InputHint;
-        using enum Gui::InputHint::UserInput;
-
-        const InputHint switchModeHint {QObject::tr("%1 switch mode"), {KeyM}};
-
-        if (constructionMethod() == ConstructionMethod::ControlPoints) {
-            switch (state()) {
-                case SelectMode::SeekFirst:
-                    return {InputHint {QObject::tr("%1 pick first control point"), {MouseLeft}},
-                            switchModeHint};
-                case SelectMode::SeekSecond:
-                    return {InputHint {QObject::tr("%1 pick next control point"), {MouseLeft}},
-                            InputHint {QObject::tr("%1 finish B-spline"), {MouseRight}},
-                            switchModeHint};
-                default:
-                    return {};
-            }
-        }
-        else if (constructionMethod() == ConstructionMethod::Knots) {
-            switch (state()) {
-                case SelectMode::SeekFirst:
-                    return {InputHint {QObject::tr("%1 pick first knot"), {MouseLeft}},
-                            switchModeHint};
-                case SelectMode::SeekSecond:
-                    return {InputHint {QObject::tr("%1 pick next knot"), {MouseLeft}},
-                            InputHint {QObject::tr("%1 finish B-spline"), {MouseRight}},
-                            switchModeHint};
-                default:
-                    return {};
-            }
-        }
-
-        return {};
+        return lookupBSplineHints(constructionMethod(), state());
     }
     void updateDataAndDrawToPosition(Base::Vector2d onSketchPos) override
     {
@@ -824,6 +792,21 @@ private:
             }
         }
     }
+
+private:
+    struct HintEntry
+    {
+        ConstructionMethod method;
+        SelectMode state;
+        std::list<Gui::InputHint> hints;
+    };
+
+    using HintTable = std::vector<HintEntry>;
+
+    static Gui::InputHint switchModeHint();
+    static HintTable getBSplineHintTable();
+    static std::list<Gui::InputHint> lookupBSplineHints(ConstructionMethod method,
+                                                        SelectMode state);
 };
 
 template<>
@@ -1231,9 +1214,54 @@ void DSHBSplineController::addConstraints()
     }
 }
 
+Gui::InputHint DrawSketchHandlerBSpline::switchModeHint()
+{
+    return {QObject::tr("%1 switch mode"), {Gui::InputHint::UserInput::KeyM}};
+}
+
+DrawSketchHandlerBSpline::HintTable DrawSketchHandlerBSpline::getBSplineHintTable()
+{
+    const auto switchHint = switchModeHint();
+    return {
+        // Structure: {ConstructionMethod, SelectMode, {hints...}}
+
+        // ControlPoints method
+        {ConstructionMethod::ControlPoints,
+         SelectMode::SeekFirst,
+         {{QObject::tr("%1 pick first control point"), {Gui::InputHint::UserInput::MouseLeft}},
+          switchHint}},
+        {ConstructionMethod::ControlPoints,
+         SelectMode::SeekSecond,
+         {{QObject::tr("%1 pick next control point"), {Gui::InputHint::UserInput::MouseLeft}},
+          {QObject::tr("%1 finish B-spline"), {Gui::InputHint::UserInput::MouseRight}},
+          switchHint}},
+
+        // Knots method
+        {ConstructionMethod::Knots,
+         SelectMode::SeekFirst,
+         {{QObject::tr("%1 pick first knot"), {Gui::InputHint::UserInput::MouseLeft}}, switchHint}},
+        {ConstructionMethod::Knots,
+         SelectMode::SeekSecond,
+         {{QObject::tr("%1 pick next knot"), {Gui::InputHint::UserInput::MouseLeft}},
+          {QObject::tr("%1 finish B-spline"), {Gui::InputHint::UserInput::MouseRight}},
+          switchHint}}};
+}
+
+std::list<Gui::InputHint> DrawSketchHandlerBSpline::lookupBSplineHints(ConstructionMethod method,
+                                                                       SelectMode state)
+{
+    const auto bSplineHintTable = getBSplineHintTable();
+
+    auto it = std::find_if(bSplineHintTable.begin(),
+                           bSplineHintTable.end(),
+                           [method, state](const HintEntry& entry) {
+                               return entry.method == method && entry.state == state;
+                           });
+
+    return (it != bSplineHintTable.end()) ? it->hints : std::list<Gui::InputHint> {};
+}
 // TODO: On pressing, say, W, modify last pole's weight
 // TODO: On pressing, say, M, modify next knot's multiplicity
-
 
 }  // namespace SketcherGui
 
