@@ -251,11 +251,9 @@ void PropertyItemDelegate::valueChanged()
     if (propertyEditor) {
         Base::FlagToggler<> flag(changed);
         Q_EMIT commitData(propertyEditor);
-        if (qobject_cast<QComboBox*>(propertyEditor)) {
-            Q_EMIT closeEditor(propertyEditor);
-            return;
-        }
-        if (qobject_cast<QCheckBox*>(propertyEditor)) {
+        if (qobject_cast<QComboBox*>(propertyEditor)
+            || qobject_cast<QCheckBox*>(propertyEditor))
+        {
             Q_EMIT closeEditor(propertyEditor);
             return;
         }
