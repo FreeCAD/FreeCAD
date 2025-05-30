@@ -75,24 +75,23 @@ public:
     libraryMaterials(const QString& libraryName);
     std::shared_ptr<std::vector<LibraryObject>>
     libraryMaterials(const QString& libraryName,
-                     const std::shared_ptr<MaterialFilter>& filter,
+                     const MaterialFilter& filter,
                      const MaterialFilterOptions& options);
 
     // Folder management
-    void createFolder(const std::shared_ptr<MaterialLibrary>& library, const QString& path);
-    void renameFolder(const std::shared_ptr<MaterialLibrary>& library,
-                      const QString& oldPath,
-                      const QString& newPath);
-    void deleteRecursive(const std::shared_ptr<MaterialLibrary>& library, const QString& path);
+    void createFolder(const MaterialLibrary& library, const QString& path);
+    void
+    renameFolder(const MaterialLibrary& library, const QString& oldPath, const QString& newPath);
+    void deleteRecursive(const MaterialLibrary& library, const QString& path);
 
     // Material management
     std::shared_ptr<Material> getMaterial(const QString& uuid) const;
     void addMaterial(const QString& libraryName,
                      const QString& path,
-                     const std::shared_ptr<Material>& material);
+                     const Material& material);
     void migrateMaterial(const QString& libraryName,
                      const QString& path,
-                     const std::shared_ptr<Material>& material);
+                     const Material& material);
 
     // Cache functions
     void resetCache();

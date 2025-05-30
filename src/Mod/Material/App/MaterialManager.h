@@ -87,7 +87,7 @@ public:
     libraryMaterials(const QString& libraryName, bool local = false);
     std::shared_ptr<std::vector<LibraryObject>>
     libraryMaterials(const QString& libraryName,
-                     const std::shared_ptr<MaterialFilter>& filter,
+                     const MaterialFilter& filter,
                      const MaterialFilterOptions& options,
                      bool local = false);
     bool isLocalLibrary(const QString& libraryName);
@@ -103,14 +103,14 @@ public:
 
     // Tree management
     std::shared_ptr<std::map<QString, std::shared_ptr<MaterialTreeNode>>>
-    getMaterialTree(const std::shared_ptr<MaterialLibrary>& library,
-                    const std::shared_ptr<Materials::MaterialFilter>& filter) const;
+    getMaterialTree(const MaterialLibrary& library,
+                    const Materials::MaterialFilter& filter) const;
     std::shared_ptr<std::map<QString, std::shared_ptr<MaterialTreeNode>>>
-    getMaterialTree(const std::shared_ptr<MaterialLibrary>& library,
-                    const std::shared_ptr<Materials::MaterialFilter>& filter,
+    getMaterialTree(const MaterialLibrary& library,
+                    const Materials::MaterialFilter& filter,
                     const MaterialFilterOptions& options) const;
     std::shared_ptr<std::map<QString, std::shared_ptr<MaterialTreeNode>>>
-    getMaterialTree(const std::shared_ptr<MaterialLibrary>& library) const;
+    getMaterialTree(const MaterialLibrary& library) const;
 
     // Material management
     std::shared_ptr<std::map<QString, std::shared_ptr<Material>>> getLocalMaterials() const;
@@ -120,7 +120,7 @@ public:
     std::shared_ptr<Material> getMaterialByPath(const QString& path, const QString& library) const;
     std::shared_ptr<Material> getParent(const std::shared_ptr<Material>& material) const;
     bool exists(const QString& uuid) const;
-    bool exists(const std::shared_ptr<MaterialLibrary>& library, const QString& uuid) const;
+    bool exists(const MaterialLibrary& library, const QString& uuid) const;
     void remove(const QString& uuid) const;
 
     void saveMaterial(const std::shared_ptr<MaterialLibrary>& library,

@@ -63,9 +63,9 @@ public:
     std::shared_ptr<Model> getModel(const QString& uuid);
     std::shared_ptr<std::map<QString, std::shared_ptr<Model>>> getModels();
     void
-    addModel(const QString& libraryName, const QString& path, const std::shared_ptr<Model>& model);
+    addModel(const QString& libraryName, const QString& path, const Model& model);
     void
-    migrateModel(const QString& libraryName, const QString& path, const std::shared_ptr<Model>& model);
+    migrateModel(const QString& libraryName, const QString& path, const Model& model);
 
     // Cache functions
     void resetCache();

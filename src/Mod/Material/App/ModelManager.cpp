@@ -342,7 +342,7 @@ void ModelManager::migrateToExternal(const std::shared_ptr<Materials::ModelLibra
                             name.toStdString().c_str());
 
         auto model = _localManager->getModel(uuid);
-        _externalManager->migrateModel(library->getName(), path, model);
+        _externalManager->migrateModel(library->getName(), path, *model);
     }
 }
 
@@ -360,7 +360,7 @@ void ModelManager::validateMigration(const std::shared_ptr<Materials::ModelLibra
 
         auto model = _localManager->getModel(uuid);
         auto externalModel = _externalManager->getModel(uuid);
-        model->validate(externalModel);
+        model->validate(*externalModel);
     }
 }
 

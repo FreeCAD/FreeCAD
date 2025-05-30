@@ -75,7 +75,7 @@ public:
     libraryMaterials(const QString& libraryName);
     std::shared_ptr<std::vector<LibraryObject>>
     libraryMaterials(const QString& libraryName,
-                     const std::shared_ptr<MaterialFilter>& filter,
+                     const MaterialFilter& filter,
                      const MaterialFilterOptions& options);
 
     // Folder management
@@ -93,7 +93,7 @@ public:
     std::shared_ptr<Material> getMaterialByPath(const QString& path) const;
     std::shared_ptr<Material> getMaterialByPath(const QString& path, const QString& library) const;
     bool exists(const QString& uuid) const;
-    bool exists(const std::shared_ptr<MaterialLibrary>& library, const QString& uuid) const;
+    bool exists(const MaterialLibrary& library, const QString& uuid) const;
     void remove(const QString& uuid);
 
     void saveMaterial(const std::shared_ptr<MaterialLibraryLocal>& library,
@@ -115,8 +115,8 @@ public:
 
 protected:
     static std::shared_ptr<std::list<std::shared_ptr<MaterialLibrary>>> getConfiguredLibraries();
-    bool passFilter(const std::shared_ptr<Material>& material,
-                    const std::shared_ptr<Materials::MaterialFilter>& filter,
+    bool passFilter(const Material& material,
+                    const Materials::MaterialFilter& filter,
                     const Materials::MaterialFilterOptions& options) const;
 
 private:

@@ -141,104 +141,104 @@ TEST_F(TestMaterialFilter, TestFilters)
     ASSERT_EQ(material->getUUID().size(), 36); // We don't know the UUID
 
     // Create an empty filter
-    auto filter = std::make_shared<Materials::MaterialFilter>();
+    Materials::MaterialFilter filter;
     Materials::MaterialFilterOptions options;
     ASSERT_TRUE(_library);
 
-    auto tree = _materialManager->getMaterialTree(_library, filter, options);
+    auto tree = _materialManager->getMaterialTree(*_library, filter, options);
     ASSERT_EQ(tree->size(), 4);
 
     options.setIncludeLegacy(true);
-    tree = _materialManager->getMaterialTree(_library, filter, options);
+    tree = _materialManager->getMaterialTree(*_library, filter, options);
     ASSERT_EQ(tree->size(), 5);
 
     // Create a basic rendering filter
-    filter->setName(QStringLiteral("Basic Appearance"));
-    filter->addRequiredComplete(Materials::ModelUUIDs::ModelUUID_Rendering_Basic);
+    filter.setName(QStringLiteral("Basic Appearance"));
+    filter.addRequiredComplete(Materials::ModelUUIDs::ModelUUID_Rendering_Basic);
     options.setIncludeLegacy(false);
 
-    tree = _materialManager->getMaterialTree(_library, filter, options);
+    tree = _materialManager->getMaterialTree(*_library, filter, options);
     ASSERT_EQ(tree->size(), 3);
 
     options.setIncludeLegacy(true);
-    tree = _materialManager->getMaterialTree(_library, filter, options);
+    tree = _materialManager->getMaterialTree(*_library, filter, options);
     ASSERT_EQ(tree->size(), 3);
 
     // Create an advanced rendering filter
-    filter->clear();
-    filter->setName(QStringLiteral("Advanced Appearance"));
-    filter->addRequiredComplete(Materials::ModelUUIDs::ModelUUID_Rendering_Advanced);
+    filter.clear();
+    filter.setName(QStringLiteral("Advanced Appearance"));
+    filter.addRequiredComplete(Materials::ModelUUIDs::ModelUUID_Rendering_Advanced);
     options.setIncludeLegacy(false);
 
-    tree = _materialManager->getMaterialTree(_library, filter, options);
+    tree = _materialManager->getMaterialTree(*_library, filter, options);
     ASSERT_EQ(tree->size(), 0);
 
     options.setIncludeLegacy(true);
-    tree = _materialManager->getMaterialTree(_library, filter, options);
+    tree = _materialManager->getMaterialTree(*_library, filter, options);
     ASSERT_EQ(tree->size(), 0);
 
     // Create a Density filter
-    filter->clear();
-    filter->setName(QStringLiteral("Density"));
-    filter->addRequiredComplete(Materials::ModelUUIDs::ModelUUID_Mechanical_Density);
+    filter.clear();
+    filter.setName(QStringLiteral("Density"));
+    filter.addRequiredComplete(Materials::ModelUUIDs::ModelUUID_Mechanical_Density);
     options.setIncludeLegacy(false);
 
-    tree = _materialManager->getMaterialTree(_library, filter, options);
+    tree = _materialManager->getMaterialTree(*_library, filter, options);
     ASSERT_EQ(tree->size(), 2);
 
     options.setIncludeLegacy(true);
-    tree = _materialManager->getMaterialTree(_library, filter, options);
+    tree = _materialManager->getMaterialTree(*_library, filter, options);
     ASSERT_EQ(tree->size(), 3);
 
     // Create a Hardness filter
-    filter->clear();
-    filter->setName(QStringLiteral("Hardness"));
-    filter->addRequiredComplete(Materials::ModelUUIDs::ModelUUID_Mechanical_Hardness);
+    filter.clear();
+    filter.setName(QStringLiteral("Hardness"));
+    filter.addRequiredComplete(Materials::ModelUUIDs::ModelUUID_Mechanical_Hardness);
     options.setIncludeLegacy(false);
 
-    tree = _materialManager->getMaterialTree(_library, filter, options);
+    tree = _materialManager->getMaterialTree(*_library, filter, options);
     ASSERT_EQ(tree->size(), 0);
 
     options.setIncludeLegacy(true);
-    tree = _materialManager->getMaterialTree(_library, filter, options);
+    tree = _materialManager->getMaterialTree(*_library, filter, options);
     ASSERT_EQ(tree->size(), 0);
 
     // Create a Density and Basic Rendering filter
-    filter->clear();
-    filter->setName(QStringLiteral("Density and Basic Rendering"));
-    filter->addRequiredComplete(Materials::ModelUUIDs::ModelUUID_Rendering_Basic);
-    filter->addRequiredComplete(Materials::ModelUUIDs::ModelUUID_Mechanical_Density);
+    filter.clear();
+    filter.setName(QStringLiteral("Density and Basic Rendering"));
+    filter.addRequiredComplete(Materials::ModelUUIDs::ModelUUID_Rendering_Basic);
+    filter.addRequiredComplete(Materials::ModelUUIDs::ModelUUID_Mechanical_Density);
     options.setIncludeLegacy(false);
 
-    tree = _materialManager->getMaterialTree(_library, filter, options);
+    tree = _materialManager->getMaterialTree(*_library, filter, options);
     ASSERT_EQ(tree->size(), 1);
 
     options.setIncludeLegacy(true);
-    tree = _materialManager->getMaterialTree(_library, filter, options);
+    tree = _materialManager->getMaterialTree(*_library, filter, options);
     ASSERT_EQ(tree->size(), 1);
 
     // Create a Linear Elastic filter
-    filter->clear();
-    filter->setName(QStringLiteral("Linear Elastic"));
-    filter->addRequiredComplete(Materials::ModelUUIDs::ModelUUID_Mechanical_LinearElastic);
+    filter.clear();
+    filter.setName(QStringLiteral("Linear Elastic"));
+    filter.addRequiredComplete(Materials::ModelUUIDs::ModelUUID_Mechanical_LinearElastic);
     options.setIncludeLegacy(false);
 
-    tree = _materialManager->getMaterialTree(_library, filter, options);
+    tree = _materialManager->getMaterialTree(*_library, filter, options);
     ASSERT_EQ(tree->size(), 0);
 
     options.setIncludeLegacy(true);
-    tree = _materialManager->getMaterialTree(_library, filter, options);
+    tree = _materialManager->getMaterialTree(*_library, filter, options);
     ASSERT_EQ(tree->size(), 0);
 
-    filter->clear();
-    filter->setName(QStringLiteral("Linear Elastic"));
-    filter->addRequired(Materials::ModelUUIDs::ModelUUID_Mechanical_LinearElastic);
+    filter.clear();
+    filter.setName(QStringLiteral("Linear Elastic"));
+    filter.addRequired(Materials::ModelUUIDs::ModelUUID_Mechanical_LinearElastic);
     options.setIncludeLegacy(false);
 
-    tree = _materialManager->getMaterialTree(_library, filter, options);
+    tree = _materialManager->getMaterialTree(*_library, filter, options);
     ASSERT_EQ(tree->size(), 2);
 
     options.setIncludeLegacy(true);
-    tree = _materialManager->getMaterialTree(_library, filter, options);
+    tree = _materialManager->getMaterialTree(*_library, filter, options);
     ASSERT_EQ(tree->size(), 2);
 }

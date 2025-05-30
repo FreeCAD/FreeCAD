@@ -159,7 +159,7 @@ MaterialManagerExternal::libraryMaterials(const QString& libraryName)
 
 std::shared_ptr<std::vector<LibraryObject>>
 MaterialManagerExternal::libraryMaterials(const QString& libraryName,
-                                          const std::shared_ptr<MaterialFilter>& filter,
+                                          const MaterialFilter& filter,
                                           const MaterialFilterOptions& options)
 {
     return ExternalManager::getManager()->libraryMaterials(libraryName, filter, options);
@@ -171,23 +171,23 @@ MaterialManagerExternal::libraryMaterials(const QString& libraryName,
 //
 //=====
 
-void MaterialManagerExternal::createFolder(const std::shared_ptr<MaterialLibrary>& library,
+void MaterialManagerExternal::createFolder(const MaterialLibrary& library,
                                            const QString& path)
 {
-    ExternalManager::getManager()->createFolder(library->getName(), path);
+    ExternalManager::getManager()->createFolder(library.getName(), path);
 }
 
-void MaterialManagerExternal::renameFolder(const std::shared_ptr<MaterialLibrary>& library,
+void MaterialManagerExternal::renameFolder(const MaterialLibrary& library,
                                            const QString& oldPath,
                                            const QString& newPath)
 {
-    ExternalManager::getManager()->renameFolder(library->getName(), oldPath, newPath);
+    ExternalManager::getManager()->renameFolder(library.getName(), oldPath, newPath);
 }
 
-void MaterialManagerExternal::deleteRecursive(const std::shared_ptr<MaterialLibrary>& library,
+void MaterialManagerExternal::deleteRecursive(const MaterialLibrary& library,
                                               const QString& path)
 {
-    ExternalManager::getManager()->deleteRecursive(library->getName(), path);
+    ExternalManager::getManager()->deleteRecursive(library.getName(), path);
 }
 
 //=====
@@ -226,17 +226,17 @@ std::shared_ptr<Material> MaterialManagerExternal::getMaterial(const QString& uu
 
 void MaterialManagerExternal::addMaterial(const QString& libraryName,
                                           const QString& path,
-                                          const std::shared_ptr<Material>& material)
+                                          const Material& material)
 {
-    _cache.erase(material->getUUID().toStdString());
+    _cache.erase(material.getUUID().toStdString());
     ExternalManager::getManager()->addMaterial(libraryName, path, material);
 }
 
 void MaterialManagerExternal::migrateMaterial(const QString& libraryName,
                                               const QString& path,
-                                              const std::shared_ptr<Material>& material)
+                                              const Material& material)
 {
-    _cache.erase(material->getUUID().toStdString());
+    _cache.erase(material.getUUID().toStdString());
     ExternalManager::getManager()->migrateMaterial(libraryName, path, material);
 }
 

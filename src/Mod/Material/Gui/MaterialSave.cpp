@@ -154,7 +154,7 @@ void MaterialSave::onOk(bool checked)
     bool saveAsCopy = false;
     if (Materials::MaterialManager::getManager().exists(_material->getUUID())) {
         // Does it already exist in this library?
-        if (Materials::MaterialManager::getManager().exists(library, _material->getUUID())) {
+        if (Materials::MaterialManager::getManager().exists(*library, _material->getUUID())) {
             // Confirm saving a new material
             auto res = confirmNewMaterial();
             if (res == QMessageBox::Cancel) {
@@ -371,7 +371,7 @@ void MaterialSave::showSelectedTree()
         lib->setFlags(Qt::ItemIsEnabled | Qt::ItemIsDragEnabled | Qt::ItemIsDropEnabled);
         addExpanded(tree, model, lib);
 
-        auto modelTree = Materials::MaterialManager::getManager().getMaterialTree(library);
+        auto modelTree = Materials::MaterialManager::getManager().getMaterialTree(*library);
         addMaterials(*lib, modelTree, folderIcon, icon);
     }
     else {

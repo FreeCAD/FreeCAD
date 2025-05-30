@@ -53,7 +53,7 @@ class MaterialsEditor: public QDialog
     Q_OBJECT
 
 public:
-    explicit MaterialsEditor(std::shared_ptr<Materials::MaterialFilter> filter,
+    explicit MaterialsEditor(Materials::MaterialFilter filter,
                              QWidget* parent = nullptr);
     explicit MaterialsEditor(QWidget* parent = nullptr);
     ~MaterialsEditor() override = default;
@@ -121,7 +121,7 @@ private:
     std::list<QString> _recents;
     int _recentMax;
     QIcon _warningIcon;
-    std::shared_ptr<Materials::MaterialFilter> _filter;
+    Materials::MaterialFilter _filter;
     Materials::MaterialFilterOptions _filterOptions;
 
     void setup();

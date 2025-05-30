@@ -55,7 +55,7 @@ using namespace MatGui;
 
 TYPESYSTEM_SOURCE(MatGui::MaterialTreeWidget, Base::BaseClass)
 
-MaterialTreeWidget::MaterialTreeWidget(const std::shared_ptr<Materials::MaterialFilter>& filter,
+MaterialTreeWidget::MaterialTreeWidget(const Materials::MaterialFilter& filter,
                                        QWidget* parent)
     : QWidget(parent)
     , m_expanded(false)
@@ -72,7 +72,6 @@ MaterialTreeWidget::MaterialTreeWidget(
     : QWidget(parent)
     , m_expanded(false)
     , m_treeSizeHint(minimumTreeWidth, minimumTreeHeight)
-    , _filter(std::make_shared<Materials::MaterialFilter>())
     , _filterList(filterList)
     , _recentMax(defaultRecents)
 {
@@ -83,7 +82,6 @@ MaterialTreeWidget::MaterialTreeWidget(QWidget* parent)
     : QWidget(parent)
     , m_expanded(false)
     , m_treeSizeHint(minimumTreeWidth, minimumTreeHeight)
-    , _filter(std::make_shared<Materials::MaterialFilter>())
     , _recentMax(defaultRecents)
 {
     setup();
@@ -170,7 +168,7 @@ void MaterialTreeWidget::createLayout()
 
     // Set the filter if using a filter list
     if (hasMultipleFilters()) {
-        _filter = _filterList->front();
+        _filter = *_filterList->front();
     }
 
     fillFilterCombo();
@@ -349,11 +347,8 @@ QString MaterialTreeWidget::getMaterialUUID() const
     return m_uuid;
 }
 
-void MaterialTreeWidget::setFilter(const std::shared_ptr<Materials::MaterialFilter>& filter)
+void MaterialTreeWidget::setFilter(const Materials::MaterialFilter& filter)
 {
-    if (_filter) {
-        _filter.reset();
-    }
     if (_filterList) {
         _filterList.reset();
     }
@@ -369,14 +364,13 @@ void MaterialTreeWidget::setFilter(const std::shared_ptr<Materials::MaterialFilt
 void MaterialTreeWidget::setFilter(
     const std::shared_ptr<std::list<std::shared_ptr<Materials::MaterialFilter>>>& filterList)
 {
-    _filter.reset();
     if (_filterList) {
         _filterList.reset();
     }
 
     _filterList = filterList;
     if (hasMultipleFilters()) {
-        _filter = _filterList->front();
+        _filter = *_filterList->front();
     }
 
     fillFilterCombo();
@@ -390,9 +384,7 @@ void MaterialTreeWidget::setActiveFilter(const QString& name)
     if (_filterList) {
         for (auto const& filter : *_filterList) {
             if (filter->name() == name) {
-                _filter.reset();
-
-                _filter = filter;
+                _filter = *filter;
 
                 // Save the library/folder expansion state
                 saveMaterialTree();
@@ -427,7 +419,7 @@ void MaterialTreeWidget::getFavorites()
     for (int i = 0; static_cast<long>(i) < count; i++) {
         QString key = QStringLiteral("FAV%1").arg(i);
         QString uuid = QString::fromStdString(param->GetASCII(key.toStdString().c_str(), ""));
-        if (!_filter || _filter->modelIncluded(uuid)) {
+        if (_filter.modelIncluded(uuid)) {
             _favorites.push_back(uuid);
         }
     }
@@ -444,7 +436,7 @@ void MaterialTreeWidget::getRecents()
     for (int i = 0; static_cast<long>(i) < count; i++) {
         QString key = QStringLiteral("MRU%1").arg(i);
         QString uuid = QString::fromStdString(param->GetASCII(key.toStdString().c_str(), ""));
-        if (!_filter || _filter->modelIncluded(uuid)) {
+        if (_filter.modelIncluded(uuid)) {
             _recents.push_back(uuid);
         }
     }
@@ -558,7 +550,7 @@ void MaterialTreeWidget::fillMaterialTree()
     auto libraries = Materials::MaterialManager::getManager().getLibraries();
     for (const auto& library : *libraries) {
         auto materialTree =
-            Materials::MaterialManager::getManager().getMaterialTree(library,
+            Materials::MaterialManager::getManager().getMaterialTree(*library,
                                                                      _filter,
                                                                      _filterOptions);
 
