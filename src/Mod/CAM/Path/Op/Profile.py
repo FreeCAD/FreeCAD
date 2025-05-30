@@ -190,6 +190,12 @@ class ObjectProfile(PathAreaOp.ObjectOp):
                     "If doing multiple passes, the extra offset of each additional pass",
                 ),
             ),
+            (
+                "App::PropertyBool",
+                "KeepToolDown",
+                "Profile",
+                QT_TRANSLATE_NOOP("App::Property", "Attempts to avoid unnecessary retractions."),
+            ),
         ]
 
     @classmethod
@@ -255,6 +261,7 @@ class ObjectProfile(PathAreaOp.ObjectOp):
             "processPerimeter": True,
             "Stepover": 0,
             "NumPasses": 1,
+            "KeepToolDown": False,
         }
 
     def areaOpApplyPropertyDefaults(self, obj, job, propList):
@@ -335,6 +342,17 @@ class ObjectProfile(PathAreaOp.ObjectOp):
                     "If doing multiple passes, the extra offset of each additional pass",
                 ),
             )
+        if not hasattr(obj, "KeepToolDown"):
+            obj.addProperty(
+                "App::PropertyBool",
+                "KeepToolDown",
+                "Profile",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "Attempts to avoid unnecessary retractions than distance less than tool diameter.",
+                ),
+            )
+            obj.KeepToolDown = False
 
     def areaOpOnChanged(self, obj, prop):
         """areaOpOnChanged(obj, prop) ... updates certain property visibilities depending on changed properties."""
@@ -417,6 +435,8 @@ class ObjectProfile(PathAreaOp.ObjectOp):
         if obj.NumPasses > 1:
             # Disable path sorting to ensure that offsets appear in order, from farthest offset to closest, on all layers
             params["sort_mode"] = 0
+            if obj.KeepToolDown:
+                params["threshold"] = self.radius * 2.010
 
         return params
 
