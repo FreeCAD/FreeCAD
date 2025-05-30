@@ -143,7 +143,7 @@ private:
 
     using HintTable = std::vector<HintEntry>;
 
-    static const HintTable POINT_HINT_TABLE;
+    static HintTable getPointHintTable();
     static std::list<Gui::InputHint> lookupPointHints(int stateValue);
 };
 
@@ -285,28 +285,23 @@ void DSHPointController::addConstraints()
     }
 }
 
-struct HintEntry
+DrawSketchHandlerPoint::HintTable DrawSketchHandlerPoint::getPointHintTable()
 {
-    int stateValue;
-    std::list<Gui::InputHint> hints;
-};
-
-using HintTable = std::vector<HintEntry>;
-
-const DrawSketchHandlerPoint::HintTable DrawSketchHandlerPoint::POINT_HINT_TABLE = {
-    {0,
-     {// 0 corresponds to the first enum value
-      {QObject::tr("%1 place a point"), {Gui::InputHint::UserInput::MouseLeft}}}}};
+    return {// Structure: {ConstructionMethod, SelectMode, {hints...}}
+            {0, {{QObject::tr("%1 place a point"), {Gui::InputHint::UserInput::MouseLeft}}}}};
+}
 
 std::list<Gui::InputHint> DrawSketchHandlerPoint::lookupPointHints(int stateValue)
 {
-    auto it = std::find_if(POINT_HINT_TABLE.begin(),
-                           POINT_HINT_TABLE.end(),
+    const auto pointHintTable = getPointHintTable();
+
+    auto it = std::find_if(pointHintTable.begin(),
+                           pointHintTable.end(),
                            [stateValue](const HintEntry& entry) {
                                return entry.stateValue == stateValue;
                            });
 
-    return (it != POINT_HINT_TABLE.end()) ? it->hints : std::list<Gui::InputHint> {};
+    return (it != pointHintTable.end()) ? it->hints : std::list<Gui::InputHint> {};
 }
 
 }  // namespace SketcherGui
