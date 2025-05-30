@@ -28,6 +28,7 @@
 #include <Base/Persistence.h>
 #include <Base/Type.h>
 #include <Base/Handle.h>
+#include <Base/Bitmask.h>
 
 #include "PropertyContainer.h"
 #include "PropertyLinks.h"
@@ -43,6 +44,33 @@ namespace Base
 {
 class Writer;
 }
+
+namespace App 
+{
+enum class AddObjectOption
+{
+    none = 0,
+    setNewStatus = 1,
+    setPartialStatus = 2,
+    unsetPartialStatus = 4,
+    doSetup = 8,
+    activateObject = 16
+};
+using AddObjectOptions = Base::Flags<AddObjectOption>;
+
+enum class RemoveObjectOption
+{
+    none = 0,
+    mayRemoveWhileRecomputing = 1, 
+    mayDestroyOutOfTransaction = 2,
+    destroyOnRollback = 4, 
+    preserveChildrenVisibility = 8
+};
+using RemoveObjectOptions = Base::Flags<RemoveObjectOption>;
+
+}
+ENABLE_BITMASK_OPERATORS(App::AddObjectOption)
+ENABLE_BITMASK_OPERATORS(App::RemoveObjectOption)
 
 namespace App
 {
@@ -627,8 +655,8 @@ protected:
     /// Construction
     explicit Document(const char* documentName = "");
 
-    void _removeObject(DocumentObject* pcObject);
-    void _addObject(DocumentObject* pcObject, const char* pObjectName);
+    void _removeObject(DocumentObject* pcObject, RemoveObjectOptions options = RemoveObjectOption::destroyOnRollback | RemoveObjectOption::preserveChildrenVisibility);
+    void _addObject(DocumentObject* pcObject, const char* pObjectName, AddObjectOptions options = AddObjectOption::activateObject, const char* viewType = nullptr);
     /// checks if a valid transaction is open
     void _checkTransaction(DocumentObject* pcDelObj, const Property* What, int line);
     void breakDependency(DocumentObject* pcObject, bool clear);
