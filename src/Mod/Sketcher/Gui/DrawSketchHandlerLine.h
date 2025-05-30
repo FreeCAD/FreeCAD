@@ -270,8 +270,8 @@ private:
 
     using HintTable = std::vector<HintEntry>;
 
-    static const Gui::InputHint SWITCH_MODE_HINT;
-    static const HintTable LINE_HINT_TABLE;
+    static Gui::InputHint switchModeHint();
+    static HintTable getLineHintTable();
     static std::list<Gui::InputHint> lookupLineHints(int method, int state);
 };
 
@@ -818,49 +818,64 @@ void DSHLineController::addConstraints()
     }
 }
 
-const Gui::InputHint DrawSketchHandlerLine::SWITCH_MODE_HINT = {QObject::tr("%1 switch mode"),
-                                                                {Gui::InputHint::UserInput::KeyM}};
+Gui::InputHint DrawSketchHandlerLine::switchModeHint()
+{
+    return {QObject::tr("%1 switch mode"), {Gui::InputHint::UserInput::KeyM}};
+}
 
-const DrawSketchHandlerLine::HintTable DrawSketchHandlerLine::LINE_HINT_TABLE = {
-    // OnePointLengthAngle (0)
-    {0,
-     0,
-     {{QObject::tr("%1 pick first point"), {Gui::InputHint::UserInput::MouseLeft}},
-      SWITCH_MODE_HINT}},
-    {0,
-     1,
-     {{QObject::tr("%1 pick second point"), {Gui::InputHint::UserInput::MouseLeft}},
-      SWITCH_MODE_HINT}},
+DrawSketchHandlerLine::HintTable DrawSketchHandlerLine::getLineHintTable()
+{
+    const auto switchHint = switchModeHint();
+    return {// Structure: {constructionMethod, state, {hints...}}
 
-    // OnePointWidthHeight (1)
-    {1,
-     0,
-     {{QObject::tr("%1 pick first point"), {Gui::InputHint::UserInput::MouseLeft}},
-      SWITCH_MODE_HINT}},
-    {1,
-     1,
-     {{QObject::tr("%1 pick second point"), {Gui::InputHint::UserInput::MouseLeft}},
-      SWITCH_MODE_HINT}},
+            // OnePointLengthAngle (0)
+            {0,
+             0,
+             {// SeekFirst
+              {QObject::tr("%1 pick first point"), {Gui::InputHint::UserInput::MouseLeft}},
+              switchHint}},
+            {0,
+             1,
+             {// SeekSecond
+              {QObject::tr("%1 pick second point"), {Gui::InputHint::UserInput::MouseLeft}},
+              switchHint}},
 
-    // TwoPoints (2)
-    {2,
-     0,
-     {{QObject::tr("%1 pick first point"), {Gui::InputHint::UserInput::MouseLeft}},
-      SWITCH_MODE_HINT}},
-    {2,
-     1,
-     {{QObject::tr("%1 pick second point"), {Gui::InputHint::UserInput::MouseLeft}},
-      SWITCH_MODE_HINT}}};
+            // OnePointWidthHeight (1)
+            {1,
+             0,
+             {// SeekFirst
+              {QObject::tr("%1 pick first point"), {Gui::InputHint::UserInput::MouseLeft}},
+              switchHint}},
+            {1,
+             1,
+             {// SeekSecond
+              {QObject::tr("%1 pick second point"), {Gui::InputHint::UserInput::MouseLeft}},
+              switchHint}},
+
+            // TwoPoints (2)
+            {2,
+             0,
+             {// SeekFirst
+              {QObject::tr("%1 pick first point"), {Gui::InputHint::UserInput::MouseLeft}},
+              switchHint}},
+            {2,
+             1,
+             {// SeekSecond
+              {QObject::tr("%1 pick second point"), {Gui::InputHint::UserInput::MouseLeft}},
+              switchHint}}};
+}
 
 std::list<Gui::InputHint> DrawSketchHandlerLine::lookupLineHints(int method, int state)
 {
-    auto it = std::find_if(LINE_HINT_TABLE.begin(),
-                           LINE_HINT_TABLE.end(),
+    const auto lineHintTable = getLineHintTable();
+
+    auto it = std::find_if(lineHintTable.begin(),
+                           lineHintTable.end(),
                            [method, state](const HintEntry& entry) {
                                return entry.constructionMethod == method && entry.state == state;
                            });
 
-    return (it != LINE_HINT_TABLE.end()) ? it->hints : std::list<Gui::InputHint> {};
+    return (it != lineHintTable.end()) ? it->hints : std::list<Gui::InputHint> {};
 }
 
 }  // namespace SketcherGui
