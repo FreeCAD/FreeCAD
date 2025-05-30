@@ -84,7 +84,8 @@ public:
 
     // NOLINTBEGIN
     SoDatumLabel* label;
-    bool isSet;
+    bool isSet; ///< used to differentiate when user has started typing inside the label
+    bool hasFinishedEditing; ///< flag to know when user has finished editing, i.e. pressed enter
     bool autoDistance;
     bool autoDistanceReverse;
     bool avoidMouseCursor;
@@ -93,6 +94,9 @@ public:
 
 Q_SIGNALS:
     void valueChanged(double val);
+
+protected:
+    bool eventFilter(QObject* watched, QEvent* event) override;
 
 private:
     void positionSpinbox();
