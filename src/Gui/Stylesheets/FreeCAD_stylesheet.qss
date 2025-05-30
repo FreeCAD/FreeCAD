@@ -24,13 +24,9 @@ FOLLOWING CODES ARE CHANGED IN THE SETTINGS:
   @Menu
   @ButtonTop
   @ButtonBottom
-  @Background
   @Border
   @GroupBoxBackground
   @GroupBoxBorder
-  @ButtonBottom
-  @ButtonTop
-  @Menu
   @ScrollbarBackground
   @TabBarBackground
   @AlternateBackground
