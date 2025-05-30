@@ -683,28 +683,21 @@ class svgHandler(xml.sax.ContentHandler):
                                      'css' + str(self.svgdpi))
         if 'transform' in data:
             m = self.getMatrix(attrs.getValue('transform'))
-            if name == "g":
-                self.grouptransform.append(m)
-            elif name == "freecad:used":
-            #use tag acts as g tag but has x,y attribute
-                x = data.get("x", 0)
-                y = data.get("y", 0)
-                xy = FreeCAD.Matrix()
-                xy.move(Vector(x, -y, 0))
-                m=m.multiply(xy)
-                self.grouptransform.append(m)
-            else:
-                self.transform = m
         else:
-            if name == "g":
-                self.grouptransform.append(FreeCAD.Matrix())
-            elif name == "freecad:used":
+            m = FreeCAD.Matrix()
+        if name == "g":
+            self.grouptransform.append(m)
+        elif name == "freecad:used":
             #use tag acts as g tag but has x,y attribute
-                x = data.get("x", 0)
-                y = data.get("y", 0)
+            x = data.get("x", 0)
+            y = data.get("y", 0)
+            if x != 0 or y != 0:
                 xy = FreeCAD.Matrix()
                 xy.move(Vector(x, -y, 0))
-                self.grouptransform.append(xy)    
+                m = m.multiply(xy)
+            self.grouptransform.append(m)
+        elif 'transform' in data:
+            self.transform = m
 
         if self.style == 0:
             if self.fill is not None:
