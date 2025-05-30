@@ -119,11 +119,11 @@
         <file>panels/PointEdit.ui</file>
         <file>panels/PropertyBag.ui</file>
         <file>panels/PropertyCreate.ui</file>
+        <file>panels/ShapeSelector.ui</file>
         <file>panels/SetupGlobal.ui</file>
         <file>panels/SetupOp.ui</file>
         <file>panels/ToolBitEditor.ui</file>
         <file>panels/ToolBitLibraryEdit.ui</file>
-        <file>panels/ToolBitSelector.ui</file>
         <file>panels/TaskPathCamoticsSim.ui</file>
         <file>panels/TaskPathSimulator.ui</file>
         <file>panels/TaskCAMSimulator.ui</file>

@@ -2,6 +2,7 @@
   "version": 2,
   "name": "45 Deg. Chamfer",
   "shape": "chamfer.fcstd",
+  "shape-type": "Chamfer",
   "parameter": {
     "CuttingEdgeAngle": "45.0000 \u00b0",
     "CuttingEdgeHeight": "6.3500 mm",

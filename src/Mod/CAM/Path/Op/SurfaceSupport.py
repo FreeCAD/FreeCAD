@@ -2434,7 +2434,10 @@ class OCL_Tool:
         if hasattr(obj, "ToolController"):
             if hasattr(obj.ToolController, "Tool"):
                 self.tool = obj.ToolController.Tool
-                if hasattr(self.tool, "ShapeName"):
+                if hasattr(self.tool, "ShapeType"):
+                    self.toolType = self.tool.ShapeType.lower()
+                    self.toolMode = "ToolBit"
+                elif hasattr(self.tool, "ShapeName"):  # backward compatibility
                     self.toolType = self.tool.ShapeName  # Indicates ToolBit tool
                     self.toolMode = "ToolBit"
         if self.toolType:
@@ -2649,6 +2652,7 @@ class OCL_Tool:
                 "drill": "ConeCutter",
                 "engraver": "ConeCutter",
                 "v_bit": "ConeCutter",
+                "vbit": "ConeCutter",
                 "chamfer": "None",
             }
         self.toolMethod = "None"

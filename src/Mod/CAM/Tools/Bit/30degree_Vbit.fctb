@@ -2,6 +2,7 @@
   "version": 2,
   "name": "30 Deg. V-Bit",
   "shape": "v-bit.fcstd",
+  "shape-type": "VBit",
   "parameter": {
     "CuttingEdgeAngle": "30.0000 \u00b0",
     "Diameter": "10.0000 mm",
