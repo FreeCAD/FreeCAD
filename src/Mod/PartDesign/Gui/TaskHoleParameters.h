@@ -82,7 +82,7 @@ public:
     int getBaseProfileType() const;
 
 private Q_SLOTS:
-    void threadedChanged();
+    void holeTypeChanged(int index);
     void threadTypeChanged(int index);
     void threadSizeChanged(int index);
     void threadClassChanged(int index);
@@ -103,7 +103,6 @@ private Q_SLOTS:
     void taperedChanged();
     void taperedAngleChanged(double value);
     void reversedChanged();
-    void modelThreadChanged();
     void useCustomThreadClearanceChanged();
     void customThreadClearanceChanged(double value);
     void updateViewChanged(bool isChecked);
@@ -120,6 +119,11 @@ private:
         void slotChangedObject(const App::DocumentObject& Obj, const App::Property& Prop) override;
         TaskHoleParameters * owner;
         PartDesign::Hole * hole;
+    };
+    enum class HoleTypeIndex : int {
+        Clearance = 0,
+        TapDrill = 1,
+        ModeledThread = 2
     };
 
 protected:
