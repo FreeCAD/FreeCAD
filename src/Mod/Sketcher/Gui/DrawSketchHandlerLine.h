@@ -38,6 +38,9 @@
 #include "GeometryCreationMode.h"
 #include "Utils.h"
 
+#include <vector>
+#include <algorithm>
+
 namespace SketcherGui
 {
 
@@ -255,22 +258,21 @@ private:
 
     std::list<Gui::InputHint> getToolHints() const override
     {
-        using Gui::InputHint;
-        using enum Gui::InputHint::UserInput;
-
-        const InputHint switchModeHint {QObject::tr("%1 switch mode"), {KeyM}};
-
-        switch (state()) {
-            case SelectMode::SeekFirst:
-                return {InputHint {QObject::tr("%1 pick first point"), {MouseLeft}},
-                        switchModeHint};
-            case SelectMode::SeekSecond:
-                return {InputHint {QObject::tr("%1 pick second point"), {MouseLeft}},
-                        switchModeHint};
-            default:
-                return {};
-        }
+        return lookupLineHints(static_cast<int>(constructionMethod()), static_cast<int>(state()));
     }
+
+    struct HintEntry
+    {
+        int constructionMethod;
+        int state;
+        std::list<Gui::InputHint> hints;
+    };
+
+    using HintTable = std::vector<HintEntry>;
+
+    static const Gui::InputHint SWITCH_MODE_HINT;
+    static const HintTable LINE_HINT_TABLE;
+    static std::list<Gui::InputHint> lookupLineHints(int method, int state);
 };
 
 template<>
@@ -816,6 +818,50 @@ void DSHLineController::addConstraints()
     }
 }
 
+const Gui::InputHint DrawSketchHandlerLine::SWITCH_MODE_HINT = {QObject::tr("%1 switch mode"),
+                                                                {Gui::InputHint::UserInput::KeyM}};
+
+const DrawSketchHandlerLine::HintTable DrawSketchHandlerLine::LINE_HINT_TABLE = {
+    // OnePointLengthAngle (0)
+    {0,
+     0,
+     {{QObject::tr("%1 pick first point"), {Gui::InputHint::UserInput::MouseLeft}},
+      SWITCH_MODE_HINT}},
+    {0,
+     1,
+     {{QObject::tr("%1 pick second point"), {Gui::InputHint::UserInput::MouseLeft}},
+      SWITCH_MODE_HINT}},
+
+    // OnePointWidthHeight (1)
+    {1,
+     0,
+     {{QObject::tr("%1 pick first point"), {Gui::InputHint::UserInput::MouseLeft}},
+      SWITCH_MODE_HINT}},
+    {1,
+     1,
+     {{QObject::tr("%1 pick second point"), {Gui::InputHint::UserInput::MouseLeft}},
+      SWITCH_MODE_HINT}},
+
+    // TwoPoints (2)
+    {2,
+     0,
+     {{QObject::tr("%1 pick first point"), {Gui::InputHint::UserInput::MouseLeft}},
+      SWITCH_MODE_HINT}},
+    {2,
+     1,
+     {{QObject::tr("%1 pick second point"), {Gui::InputHint::UserInput::MouseLeft}},
+      SWITCH_MODE_HINT}}};
+
+std::list<Gui::InputHint> DrawSketchHandlerLine::lookupLineHints(int method, int state)
+{
+    auto it = std::find_if(LINE_HINT_TABLE.begin(),
+                           LINE_HINT_TABLE.end(),
+                           [method, state](const HintEntry& entry) {
+                               return entry.constructionMethod == method && entry.state == state;
+                           });
+
+    return (it != LINE_HINT_TABLE.end()) ? it->hints : std::list<Gui::InputHint> {};
+}
 
 }  // namespace SketcherGui
 
