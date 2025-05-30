@@ -685,7 +685,7 @@ class svgHandler(xml.sax.ContentHandler):
             m = self.getMatrix(attrs.getValue('transform'))
         else:
             m = FreeCAD.Matrix()
-        if name == "g":
+        if name == "g" or name == "a":
             self.grouptransform.append(m)
         elif name == "freecad:used":
             #use tag acts as g tag but has x,y attribute
@@ -706,7 +706,7 @@ class svgHandler(xml.sax.ContentHandler):
             self.width = self.width_default
 
         # apply group styles
-        if name == "g" or name == "freecad:used":
+        if name == "g" or name == "a" or name == "freecad:used":
             self.groupstyles.append([self.fill, self.color, self.width])
         if self.fill is None:
             if "fill" not in data:
@@ -1008,7 +1008,7 @@ class svgHandler(xml.sax.ContentHandler):
         if name not in ["tspan"]:
             self.transform = None
             self.text = None
-        if name == "g" or name == "svg" or name == "freecad:used":
+        if name == "g" or name == "a" or name == "svg" or name == "freecad:used":
             _msg("closing group")
             self.grouptransform.pop()
             if self.groupstyles:
