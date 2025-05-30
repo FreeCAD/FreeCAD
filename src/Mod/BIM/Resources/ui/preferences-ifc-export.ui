@@ -17,7 +17,16 @@
    <property name="spacing">
     <number>6</number>
    </property>
-   <property name="margin">
+   <property name="leftMargin">
+    <number>9</number>
+   </property>
+   <property name="topMargin">
+    <number>9</number>
+   </property>
+   <property name="rightMargin">
+    <number>9</number>
+   </property>
+   <property name="bottomMargin">
     <number>9</number>
    </property>
    <item>
@@ -398,22 +407,46 @@ However, at FreeCAD, we believe having a building should not be mandatory, and t
        </widget>
       </item>
       <item>
-       <widget class="Gui::PrefCheckBox" name="checkBox_2">
+       <widget class="QGroupBox" name="groupBox_ExportFreeCADGroups">
         <property name="toolTip">
-         <string>In FreeCAD, it is possible to nest groups inside buildings or storeys. If this option is disabled, FreeCAD groups will be saved as IfcGroups and aggregated to the building structure. Aggregating non-building elements such as IfcGroups is however not recommended by the IFC standards. It is therefore also possible to export these groups as IfcElementAssemblies, which produces an IFC-compliant file. However, at FreeCAD, we believe nesting groups inside structures should be possible, and this option is there to have a chance to demonstrate our point of view.</string>
+         <string>If not checked, standard FreeCAD groups (App::DocumentObjectGroup) will not be exported as IfcGroup or IfcElementAssembly.\nTheir children will be re-parented to the container of the skipped group in the IFC structure.</string>
         </property>
-        <property name="text">
-         <string>Export nested groups as assemblies</string>
+        <property name="title">
+         <string>Export FreeCAD groups</string>
         </property>
-        <property name="checked">
+        <property name="checkable">
          <bool>true</bool>
         </property>
+        <property name="checked">
+         <bool>false</bool>
+        </property>
         <property name="prefEntry" stdset="0">
-         <cstring>IfcGroupsAsAssemblies</cstring>
+         <cstring>IfcExportStdGroups</cstring>
         </property>
         <property name="prefPath" stdset="0">
          <cstring>Mod/Arch</cstring>
         </property>
+        <layout class="QVBoxLayout" name="verticalLayout_4">
+         <item>
+          <widget class="Gui::PrefCheckBox" name="checkBox_2">
+           <property name="toolTip">
+            <string>In FreeCAD, it is possible to nest groups inside buildings or storeys. If this option is disabled, FreeCAD groups will be saved as IfcGroups and aggregated to the building structure. Aggregating non-building elements such as IfcGroups is however not recommended by the IFC standards. It is therefore also possible to export these groups as IfcElementAssemblies, which produces an IFC-compliant file. However, at FreeCAD, we believe nesting groups inside structures should be possible, and this option is there to have a chance to demonstrate our point of view.</string>
+           </property>
+           <property name="text">
+            <string>Export nested groups as assemblies</string>
+           </property>
+           <property name="checked">
+            <bool>true</bool>
+           </property>
+           <property name="prefEntry" stdset="0">
+            <cstring>IfcGroupsAsAssemblies</cstring>
+           </property>
+           <property name="prefPath" stdset="0">
+            <cstring>Mod/Arch</cstring>
+           </property>
+          </widget>
+         </item>
+        </layout>
        </widget>
       </item>
      </layout>

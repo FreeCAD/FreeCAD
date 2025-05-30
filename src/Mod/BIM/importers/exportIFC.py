@@ -109,6 +109,57 @@ ENDSEC;
 END-ISO-10303-21;
 """
 
+def _prepare_export_list_skipping_std_groups(initial_export_list, preferences_dict):
+    """
+    Builds the list of objects for IFC export. This function is called when the preference to skip
+    standard groups is active. Standard FreeCAD groups (App::DocumentObjectGroup that would become
+    IfcGroup) are omitted from the returned list, and their children are processed. This includes
+    children from their .Group property and also architecturally hosted elements (like windows in
+    walls) if a child of the skipped group is a host.
+
+    The re-parenting of children of a skipped FreeCAD group in the resulting IFC file is achieved
+    implicitly:
+
+    1. The skipped FreeCAD group itself is not converted into an IFC product. It will not exist as
+        an IfcGroup or IfcElementAssembly in the IFC file.
+    2. Children of the skipped group (and architecturally hosted elements like windows within walls
+       that were part of the skipped group's content) are processed and converted into their
+       respective IFC products.
+    3. These IFC products, initially "orphaned" from the skipped FreeCAD group's potential IFC
+       representation, are then handled by the exporter's subsequent spatial relationship logic.
+       This logic typically assigns such "untreated" elements to the current or default IFC spatial
+       container (e.g., an IfcBuildingStorey if the skipped group was under a Level).
+
+    The net effect is that the children appear directly contained within the IFC representation of
+    the skipped group's parent container.
+    """
+    all_potential_objects = Arch.get_architectural_contents(
+        initial_export_list,
+        recursive=True,
+        discover_hosted_elements=True,
+        include_components_from_additions=True,
+        include_initial_objects_in_result=True
+    )
+
+    final_objects_for_processing = []
+
+    for obj in all_potential_objects:
+        is_std_group_to_skip = False
+        # Determine if the current object is a standard FreeCAD group that should be skipped
+        if obj.isDerivedFrom("App::DocumentObjectGroup"):
+            # Check its potential IFC type; only skip if it would become a generic IfcGroup
+            potential_ifc_type = getIfcTypeFromObj(obj)
+            if potential_ifc_type == "IfcGroup":
+                is_std_group_to_skip = True
+
+        if not is_std_group_to_skip:
+            if obj not in final_objects_for_processing: # Ensure uniqueness
+                final_objects_for_processing.append(obj)
+        elif preferences_dict['DEBUG']:
+            print(f"DEBUG: IFC Exporter: StdGroup '{obj.Label}' ({obj.Name}) "
+                  "was identified by get_architectural_contents but is now being filtered out.")
+
+    return final_objects_for_processing
 
 def getPreferences():
     """Retrieve the IFC preferences available in import and export."""
@@ -162,6 +213,7 @@ def getPreferences():
         'GET_STANDARD': params.get_param_arch("getStandardType"),
         'EXPORT_MODEL': ['arch', 'struct', 'hybrid'][params.get_param_arch("ifcExportModel")],
         'GROUPS_AS_ASSEMBLIES': params.get_param_arch("IfcGroupsAsAssemblies"),
+        'IGNORE_STD_GROUPS': not params.get_param_arch("IfcExportStdGroups"),
     }
 
     # get ifcopenshell version
@@ -274,8 +326,13 @@ def export(exportList, filename, colors=None, preferences=None):
     else:
         # IFC4 allows one to not write any history
         history = None
-    objectslist = Draft.get_group_contents(exportList, walls=True,
-                                           addgroups=True)
+
+    if preferences['IGNORE_STD_GROUPS']:
+        if preferences['DEBUG']:
+            print("IFC Export: Skipping standard FreeCAD groups and processing their children.")
+        objectslist = _prepare_export_list_skipping_std_groups(exportList, preferences)
+    else:
+        objectslist = Draft.get_group_contents(exportList, walls=True, addgroups=True)
 
     # separate 2D and special objects. Special objects provide their own IFC export method
 
