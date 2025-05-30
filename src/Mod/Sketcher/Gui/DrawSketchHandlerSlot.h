@@ -83,19 +83,7 @@ public:
 private:
     std::list<Gui::InputHint> getToolHints() const override
     {
-        using Gui::InputHint;
-        using enum Gui::InputHint::UserInput;
-
-        switch (state()) {
-            case SelectMode::SeekFirst:
-                return {InputHint {QObject::tr("%1 pick slot start point"), {MouseLeft}}};
-            case SelectMode::SeekSecond:
-                return {InputHint {QObject::tr("%1 pick slot end point"), {MouseLeft}}};
-            case SelectMode::SeekThird:
-                return {InputHint {QObject::tr("%1 set slot radius"), {MouseMove}}};
-            default:
-                return {};
-        }
+        return lookupSlotHints(state());
     }
 
     void updateDataAndDrawToPosition(Base::Vector2d onSketchPos) override
@@ -361,6 +349,17 @@ private:
     double radius, length, angle;
     bool isHorizontal, isVertical;
     int firstCurve;
+
+    struct HintEntry
+    {
+        SelectMode state;
+        std::list<Gui::InputHint> hints;
+    };
+
+    using HintTable = std::vector<HintEntry>;
+
+    static HintTable getSlotHintTable();
+    static std::list<Gui::InputHint> lookupSlotHints(SelectMode state);
 };
 
 template<>
@@ -691,6 +690,29 @@ void DSHSlotController::addConstraints()
                               firstCurve,
                               handler->radius);
     }
+}
+
+DrawSketchHandlerSlot::HintTable DrawSketchHandlerSlot::getSlotHintTable()
+{
+    return {// Structure: {SelectMode, {hints...}}
+            {SelectMode::SeekFirst,
+             {{QObject::tr("%1 pick slot start point"), {Gui::InputHint::UserInput::MouseLeft}}}},
+            {SelectMode::SeekSecond,
+             {{QObject::tr("%1 pick slot end point"), {Gui::InputHint::UserInput::MouseLeft}}}},
+            {SelectMode::SeekThird,
+             {{QObject::tr("%1 set slot radius"), {Gui::InputHint::UserInput::MouseMove}}}}};
+}
+
+std::list<Gui::InputHint> DrawSketchHandlerSlot::lookupSlotHints(SelectMode state)
+{
+    const auto slotHintTable = getSlotHintTable();
+
+    auto it =
+        std::find_if(slotHintTable.begin(), slotHintTable.end(), [state](const HintEntry& entry) {
+            return entry.state == state;
+        });
+
+    return (it != slotHintTable.end()) ? it->hints : std::list<Gui::InputHint> {};
 }
 
 }  // namespace SketcherGui
