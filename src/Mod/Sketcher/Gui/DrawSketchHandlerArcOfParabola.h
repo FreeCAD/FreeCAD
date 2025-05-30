@@ -336,23 +336,47 @@ protected:
 private:
     std::list<Gui::InputHint> getToolHints() const override
     {
-        using Gui::InputHint;
-        using enum Gui::InputHint::UserInput;
-
-        switch (Mode) {
-            case STATUS_SEEK_First:
-                return {InputHint {QObject::tr("%1 pick focus point"), {MouseLeft}}};
-            case STATUS_SEEK_Second:
-                return {InputHint {QObject::tr("%1 pick axis point"), {MouseLeft}}};
-            case STATUS_SEEK_Third:
-                return {InputHint {QObject::tr("%1 pick starting point"), {MouseLeft}}};
-            case STATUS_SEEK_Fourth:
-                return {InputHint {QObject::tr("%1 pick end point"), {MouseLeft}}};
-            default:
-                return {};
-        }
+        return lookupParabolaHints(Mode);
     }
+
+private:
+    struct HintEntry
+    {
+        int mode;
+        std::list<Gui::InputHint> hints;
+    };
+
+    using HintTable = std::vector<HintEntry>;
+
+    static HintTable getParabolaHintTable();
+    static std::list<Gui::InputHint> lookupParabolaHints(int mode);
 };
+
+DrawSketchHandlerArcOfParabola::HintTable DrawSketchHandlerArcOfParabola::getParabolaHintTable()
+{
+    return {// Structure: {mode, {hints...}}
+            {STATUS_SEEK_First,
+             {{QObject::tr("%1 pick focus point"), {Gui::InputHint::UserInput::MouseLeft}}}},
+            {STATUS_SEEK_Second,
+             {{QObject::tr("%1 pick axis point"), {Gui::InputHint::UserInput::MouseLeft}}}},
+            {STATUS_SEEK_Third,
+             {{QObject::tr("%1 pick starting point"), {Gui::InputHint::UserInput::MouseLeft}}}},
+            {STATUS_SEEK_Fourth,
+             {{QObject::tr("%1 pick end point"), {Gui::InputHint::UserInput::MouseLeft}}}}};
+}
+
+std::list<Gui::InputHint> DrawSketchHandlerArcOfParabola::lookupParabolaHints(int mode)
+{
+    const auto parabolaHintTable = getParabolaHintTable();
+
+    auto it = std::find_if(parabolaHintTable.begin(),
+                           parabolaHintTable.end(),
+                           [mode](const HintEntry& entry) {
+                               return entry.mode == mode;
+                           });
+
+    return (it != parabolaHintTable.end()) ? it->hints : std::list<Gui::InputHint> {};
+}
 
 }  // namespace SketcherGui
 
