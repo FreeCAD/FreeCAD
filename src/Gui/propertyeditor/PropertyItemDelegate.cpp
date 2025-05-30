@@ -25,6 +25,7 @@
 
 #ifndef _PreComp_
 # include <QApplication>
+# include <QCheckBox>
 # include <QComboBox>
 # include <QModelIndex>
 # include <QPainter>
@@ -103,6 +104,25 @@ void PropertyItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
 
     QPen savedPen = painter->pen();
 
+    if (index.column() == 1 && property && dynamic_cast<PropertyBoolItem*>(property)) {
+        bool checked = index.data(Qt::EditRole).toBool();
+        QStyleOptionButton checkboxOption;
+        if (property->isReadOnly()) {
+            checkboxOption.state |= QStyle::State_ReadOnly;
+        } else {
+            checkboxOption.state |= QStyle::State_Enabled;
+        }
+        checkboxOption.state |= checked ? QStyle::State_On : QStyle::State_Off;
+        checkboxOption.rect = QApplication::style()->subElementRect(QStyle::SE_CheckBoxIndicator, &checkboxOption);
+
+        QRect alignedRect = QStyle::alignedRect(
+            option.direction, Qt::AlignVCenter,
+            checkboxOption.rect.size(), option.rect);
+        checkboxOption.rect = alignedRect;
+
+        QApplication::style()->drawPrimitive(QStyle::PE_IndicatorCheckBox, &checkboxOption, painter);
+        return;
+    }
     QItemDelegate::paint(painter, option, index);
 
     QColor color = static_cast<QRgb>(QApplication::style()->styleHint(QStyle::SH_Table_GridLineColor, &opt, qobject_cast<QWidget*>(parent())));
@@ -228,9 +248,13 @@ void PropertyItemDelegate::valueChanged()
     if (propertyEditor) {
         Base::FlagToggler<> flag(changed);
         Q_EMIT commitData(propertyEditor);
-        auto *comboBox = qobject_cast<QComboBox*>(propertyEditor);
-        if (comboBox) {
+        if (qobject_cast<QComboBox*>(propertyEditor)) {
             Q_EMIT closeEditor(propertyEditor);
+            return;
+        }
+        if (qobject_cast<QCheckBox*>(propertyEditor)) {
+            Q_EMIT closeEditor(propertyEditor);
+            return;
         }
     }
 }
