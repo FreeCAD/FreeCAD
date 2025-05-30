@@ -36,6 +36,9 @@
 #include "DrawSketchDefaultWidgetController.h"
 #include "DrawSketchControllableHandler.h"
 
+#include <vector>
+#include <algorithm>
+
 namespace SketcherGui
 {
 
@@ -62,15 +65,7 @@ public:
 private:
     std::list<Gui::InputHint> getToolHints() const override
     {
-        using Gui::InputHint;
-        using enum Gui::InputHint::UserInput;
-
-        switch (state()) {
-            case SelectMode::SeekFirst:
-                return {InputHint {QObject::tr("%1 place a point"), {MouseLeft}}};
-            default:
-                return {};
-        }
+        return lookupPointHints(static_cast<int>(state()));
     }
 
     void updateDataAndDrawToPosition(Base::Vector2d onSketchPos) override
@@ -139,6 +134,17 @@ private:
 
 private:
     Base::Vector2d editPoint;
+
+    struct HintEntry
+    {
+        int stateValue;
+        std::list<Gui::InputHint> hints;
+    };
+
+    using HintTable = std::vector<HintEntry>;
+
+    static const HintTable POINT_HINT_TABLE;
+    static std::list<Gui::InputHint> lookupPointHints(int stateValue);
 };
 
 template<>
@@ -277,6 +283,30 @@ void DSHPointController::addConstraints()
                                    handler->sketchgui->getObject());
         }
     }
+}
+
+struct HintEntry
+{
+    int stateValue;
+    std::list<Gui::InputHint> hints;
+};
+
+using HintTable = std::vector<HintEntry>;
+
+const DrawSketchHandlerPoint::HintTable DrawSketchHandlerPoint::POINT_HINT_TABLE = {
+    {0,
+     {// 0 corresponds to the first enum value
+      {QObject::tr("%1 place a point"), {Gui::InputHint::UserInput::MouseLeft}}}}};
+
+std::list<Gui::InputHint> DrawSketchHandlerPoint::lookupPointHints(int stateValue)
+{
+    auto it = std::find_if(POINT_HINT_TABLE.begin(),
+                           POINT_HINT_TABLE.end(),
+                           [stateValue](const HintEntry& entry) {
+                               return entry.stateValue == stateValue;
+                           });
+
+    return (it != POINT_HINT_TABLE.end()) ? it->hints : std::list<Gui::InputHint> {};
 }
 
 }  // namespace SketcherGui
