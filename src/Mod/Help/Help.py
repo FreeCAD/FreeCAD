@@ -66,7 +66,7 @@ QT_TRANSLATE_NOOP = FreeCAD.Qt.QT_TRANSLATE_NOOP
 # texts and icons
 WIKI_URL = "https://wiki.freecad.org"
 MD_RAW_URL = "https://raw.githubusercontent.com/FreeCAD/FreeCAD-documentation/main/wiki"
-MD_RENDERED_URL = "https://github.com/FreeCAD/FreeCAD-documentation/blob/main/wiki"
+MD_RENDERED_URL = "https://reqrefusion.github.io/FreeCAD-Documentation-html"
 MD_TRANSLATIONS_FOLDER = "translations"
 ERRORTXT = translate(
     "Help",
@@ -109,8 +109,7 @@ def show(page, view=None, conv=None):
     if not location:
         FreeCAD.Console.PrintError(LOCTXT + "\n")
         return
-    md = get_contents(location)
-    html = convert(md, conv)
+    html = get_contents(location)
     baseurl = get_uri(location)
     if _pagename != "":
         pagename = _pagename
@@ -195,7 +194,7 @@ def get_location(page) -> tuple:
     # offline location
     if os.path.exists(page):
         return (page, "")
-    page = page.replace(".md", "")
+    page = page.replace(".html", "")
     page = page.replace(" ", "_")
     page = page.replace("wiki/", "")
     page = page.split("#")[0]
@@ -213,20 +212,20 @@ def get_location(page) -> tuple:
             location = MD_RAW_URL
         if suffix:
             location, pagename = location_url(
-                location + "/" + MD_TRANSLATIONS_FOLDER + suffix + "/" + page + ".md",
-                location + "/" + page + ".md",
+                location + "/wiki/" + suffix + "/" + page + ".html",
+                location + "/wiki/" + page + ".html",
             )
         else:
-            location += "/" + page + ".md"
+            location += "/wiki/" + page + ".html"
     elif PREFS.GetBool("optionGithub", False):
         location = MD_RENDERED_URL
         if suffix:
             location, pagename = location_url(
-                location + "/" + MD_TRANSLATIONS_FOLDER + suffix + "/" + page + ".md",
-                location + "/" + page + ".md",
+                location + "/wiki/" + suffix + "/" + page + ".html",
+                location + "/wiki/" + page + ".html",
             )
         else:
-            location += "/" + page + ".md"
+            location += "/wiki/" + page + ".html"
     elif PREFS.GetBool("optionCustom", False):
         location = PREFS.GetString("Location", "")
         if not location:
@@ -237,7 +236,7 @@ def get_location(page) -> tuple:
                 "FreeCAD-documentation-main",
                 "wiki",
             )
-        location = os.path.join(location, page + ".md")
+        location = os.path.join(location, page + ".html")
     return (location, pagename)
 
 
@@ -315,112 +314,6 @@ def get_contents(location):
                 contents = f.read()
             return contents
     return ERRORTXT
-
-
-def convert(content, force=None):
-    """converts the given markdown code to html. Force can be None (automatic)
-    or markdown, pandoc, github or raw/builtin"""
-
-    import urllib
-
-    def convert_markdown(m):
-        try:
-            import markdown
-            from markdown.extensions import codehilite
-
-            return markdown.markdown(m, extensions=["codehilite"])
-        except:
-            return None
-
-    def convert_pandoc(m):
-        try:
-            import pypandoc
-
-            return pypandoc.convert_text(m, "html", format="md")
-        except:
-            return None
-
-    def convert_github(m):
-        try:
-            import json
-            import urllib.request
-
-            data = {"text": m, "mode": "markdown"}
-            bdata = json.dumps(data).encode("utf-8")
-            return (
-                urllib.request.urlopen("https://api.github.com/markdown", data=bdata)
-                .read()
-                .decode("utf8")
-            )
-        except:
-            return None
-
-    def convert_raw(m):
-        # simple and dirty regex-based markdown to html
-
-        import re
-
-        f = re.DOTALL | re.MULTILINE
-        m = re.sub(r"^##### (.*?)\n", r"<h5>\1</h5>\n", m, flags=f)  # ##### titles
-        m = re.sub(r"^#### (.*?)\n", r"<h4>\1</h4>\n", m, flags=f)  # #### titles
-        m = re.sub(r"^### (.*?)\n", r"<h3>\1</h3>\n", m, flags=f)  # ### titles
-        m = re.sub(r"^## (.*?)\n", r"<h2>\1</h2>\n", m, flags=f)  # ## titles
-        m = re.sub(r"^# (.*?)\n", r"<h1>\1</h1>\n", m, flags=f)  # # titles
-        m = re.sub(r"!\[(.*?)\]\((.*?)\)", r'<img alt="\1" src="\2">', m, flags=f)  # images
-        m = re.sub(r"\[(.*?)\]\((.*?)\)", r'<a href="\2">\1</a>', m, flags=f)  # links
-        m = re.sub(r"\*\*(.*?)\*\*", r"<b>\1</b>", m)  # bold
-        m = re.sub(r"\*(.*?)\*", r"<i>\1</i>", m)  # italic
-        m = re.sub(r"\n\n", r"<br/>", m, flags=f)  # double new lines
-        m += "\n<br/><hr/><small>" + CONVERTTXT + "</small>"
-        return m
-
-    if "<html" in content:
-        # this is html already
-        return content
-
-    if force == "markdown":
-        html = convert_markdown(content)
-    elif force == "pandoc":
-        html = convert_pandoc(content)
-    elif force == "github":
-        html = convert_github(content)
-    elif force in ["raw", "builtin"]:
-        html = convert_raw(content)
-    elif force == "none":
-        return content
-    else:
-        # auto mode
-        html = convert_pandoc(content)
-        if not html:
-            html = convert_markdown(content)
-            if not html:
-                html = convert_raw(content)
-    if not "<html" in html:
-        html = (
-            '<html>\n<head>\n<meta charset="utf-8"/>\n</head>\n<body>\n\n'
-            + html
-            + "</body>\n</html>"
-        )
-    # insert css
-    css = None
-    cssfile = PREFS.GetString("StyleSheet", "")
-    if not cssfile:
-        cssfile = os.path.join(os.path.dirname(__file__), "default.css")
-    if False:  # linked CSS file
-        # below code doesn't work in FreeCAD apparently because it prohibits cross-URL stuff
-        cssfile = urllib.parse.urljoin("file:", urllib.request.pathname2url(cssfile))
-        css = '<link rel="stylesheet" type="text/css" href="' + cssfile + '"/>'
-    else:
-        if os.path.exists(cssfile):
-            with open(cssfile) as cf:
-                css = cf.read()
-            if css:
-                css = "<style>\n" + css + "\n</style>"
-        else:
-            print("Debug: Help: Unable to open css file:", cssfile)
-    if css:
-        html = html.replace("</head>", css + "\n</head>")
-    return html
 
 
 def add_preferences_page():
