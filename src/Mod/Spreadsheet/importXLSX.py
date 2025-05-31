@@ -372,8 +372,8 @@ def handleWorkBook(theBook, sheetDict, Doc):
         nameRef = sheetAtts.getNamedItem("name")
         sheetName = getText(nameRef.childNodes)
         # print("table name: ", sheetName)
-        idRef = sheetAtts.getNamedItem("sheetId")
-        sheetFile = "sheet" + getText(idRef.childNodes) + ".xml"
+        idRef = sheetAtts.getNamedItem("r:id")
+        sheetFile = "sheet" + getText(idRef.childNodes)[3:] + ".xml"
         # print("sheetFile: ", sheetFile)
         # add FreeCAD-spreadsheet
         sheetDict[sheetName] = (Doc.addObject("Spreadsheet::Sheet", sheetName), sheetFile)
