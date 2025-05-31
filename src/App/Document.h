@@ -28,6 +28,7 @@
 #include <Base/Persistence.h>
 #include <Base/Type.h>
 #include <Base/Handle.h>
+#include <Base/SharedRecursiveMutex.h>
 
 #include "PropertyContainer.h"
 #include "PropertyLinks.h"
@@ -38,6 +39,7 @@
 #include <utility>
 #include <list>
 #include <string>
+#include <shared_mutex>
 
 namespace Base
 {
@@ -55,6 +57,13 @@ class Application;
 class Transaction;
 class StringHasher;
 using StringHasherRef = Base::Reference<StringHasher>;
+
+using DocReadGuard = Base::SharedReadGuard<Document>;
+using DocWriteGuard = Base::SharedWriteGuard<Document>;
+
+// RAII lock‐guard macros
+#define DOC_READ_GUARD  DocReadGuard  _docReadGuard##__LINE__;
+#define DOC_WRITE_GUARD DocWriteGuard _docWriteLock##__LINE__;
 
 /**
  * @brief The document class
@@ -590,6 +599,7 @@ public:
 
     const std::string& getOldLabel() const
     {
+        DOC_READ_GUARD;
         return oldLabel;
     }
 
@@ -672,6 +682,8 @@ protected:
     void _abortTransaction();
 
 private:
+    Base::SharedRecursiveMutex<Document>& mSharedMutex;
+
     // # Data Member of the document
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     std::list<Transaction*> mUndoTransactions;
@@ -689,6 +701,7 @@ private:
 template<typename T>
 inline std::vector<T*> Document::getObjectsOfType() const
 {
+    DOC_READ_GUARD;
     std::vector<T*> type;
     const std::vector<DocumentObject*> obj = this->getObjectsOfType(T::getClassTypeId());
     type.reserve(obj.size());
@@ -701,6 +714,7 @@ inline std::vector<T*> Document::getObjectsOfType() const
 template<typename T>
 inline int Document::countObjectsOfType() const
 {
+    DOC_READ_GUARD;
     static_assert(std::is_base_of_v<DocumentObject, T>,
                   "T must be derived from App::DocumentObject");
     return this->countObjectsOfType(T::getClassTypeId());
@@ -709,6 +723,7 @@ inline int Document::countObjectsOfType() const
 template<typename T>
 T* Document::addObject(const char* pObjectName, bool isNew, const char* viewType, bool isPartial)
 {
+    DOC_WRITE_GUARD;
     static_assert(std::is_base_of<DocumentObject, T>::value, "T must be derived from DocumentObject");
     return static_cast<T*>(addObject(T::getClassName(), pObjectName, isNew, viewType, isPartial));
 }

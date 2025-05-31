@@ -86,7 +86,6 @@
 #include <zipios++/zipoutputstream.h>
 #include <zipios++/meta-iostreams.h>
 
-
 FC_LOG_LEVEL_INIT("App", true, true, true)
 
 using Base::Console;
@@ -129,11 +128,13 @@ PROPERTY_SOURCE(App::Document, App::PropertyContainer)
 
 bool Document::testStatus(const Status pos) const
 {
+    DOC_READ_GUARD;
     return d->StatusBits.test(static_cast<size_t>(pos));
 }
 
 void Document::setStatus(const Status pos, const bool on) // NOLINT
 {
+    DOC_WRITE_GUARD;
     d->StatusBits.set(static_cast<size_t>(pos), on);
 }
 
@@ -158,6 +159,7 @@ bool Document::checkOnCycle()
 
 bool Document::undo(const int id)
 {
+    DOC_WRITE_GUARD;
     if (d->iUndoMode != 0) {
         if (id != 0) {
             const auto it = mUndoMap.find(id);
@@ -213,6 +215,7 @@ bool Document::undo(const int id)
 
 bool Document::redo(const int id)
 {
+    DOC_WRITE_GUARD;
     if (d->iUndoMode != 0) {
         if (id != 0) {
             const auto it = mRedoMap.find(id);
@@ -265,6 +268,7 @@ bool Document::redo(const int id)
 void Document::addOrRemovePropertyOfObject(TransactionalObject* obj,
                                            const Property* prop, const bool add)
 {
+    DOC_WRITE_GUARD;
     if (!prop || !obj || !obj->isAttachedToDocument()) {
         return;
     }
@@ -284,11 +288,13 @@ void Document::addOrRemovePropertyOfObject(TransactionalObject* obj,
 
 bool Document::isPerformingTransaction() const
 {
+    DOC_READ_GUARD;
     return d->undoing || d->rollback;
 }
 
 std::vector<std::string> Document::getAvailableUndoNames() const
 {
+    DOC_READ_GUARD;
     std::vector<std::string> vList;
     if (d->activeUndoTransaction) {
         vList.push_back(d->activeUndoTransaction->Name);
@@ -303,6 +309,7 @@ std::vector<std::string> Document::getAvailableUndoNames() const
 
 std::vector<std::string> Document::getAvailableRedoNames() const
 {
+    DOC_READ_GUARD;
     std::vector<std::string> vList;
     for (auto It = mRedoTransactions.rbegin();
          It != mRedoTransactions.rend();
@@ -314,6 +321,7 @@ std::vector<std::string> Document::getAvailableRedoNames() const
 
 void Document::openTransaction(const char* name) // NOLINT
 {
+    DOC_WRITE_GUARD;
     if (isPerformingTransaction() || d->committing) {
         if (FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG)) {
             FC_WARN("Cannot open transaction while transacting");
@@ -326,6 +334,7 @@ void Document::openTransaction(const char* name) // NOLINT
 
 int Document::_openTransaction(const char* name, int id)
 {
+    DOC_WRITE_GUARD;
     if (isPerformingTransaction() || d->committing) {
         if (FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG)) {
             FC_WARN("Cannot open transaction while transacting");
@@ -376,6 +385,7 @@ int Document::_openTransaction(const char* name, int id)
 
 void Document::renameTransaction(const char* name, const int id) const
 {
+    DOC_WRITE_GUARD;
     if (name && d->activeUndoTransaction && d->activeUndoTransaction->getID() == id) {
         if (boost::starts_with(d->activeUndoTransaction->Name, "-> ")) {
             d->activeUndoTransaction->Name.resize(3);
@@ -389,6 +399,7 @@ void Document::renameTransaction(const char* name, const int id) const
 
 void Document::_checkTransaction(DocumentObject* pcDelObj, const Property* What, int line)
 {
+    DOC_WRITE_GUARD;
     // if the undo is active but no transaction open, open one!
     if ((d->iUndoMode != 0) && !isPerformingTransaction()) {
         if (!d->activeUndoTransaction) {
@@ -434,6 +445,7 @@ void Document::_checkTransaction(DocumentObject* pcDelObj, const Property* What,
 
 void Document::_clearRedos()
 {
+    DOC_WRITE_GUARD;
     if (isPerformingTransaction() || d->committing) {
         FC_ERR("Cannot clear redo while transacting");
         return;
@@ -448,6 +460,7 @@ void Document::_clearRedos()
 
 void Document::commitTransaction() // NOLINT
 {
+    DOC_WRITE_GUARD;
     if (isPerformingTransaction() || d->committing) {
         if (FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG)) {
             FC_WARN("Cannot commit transaction while transacting");
@@ -462,6 +475,7 @@ void Document::commitTransaction() // NOLINT
 
 void Document::_commitTransaction(const bool notify)
 {
+    DOC_WRITE_GUARD;
     if (isPerformingTransaction()) {
         if (FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG)) {
             FC_WARN("Cannot commit transaction while transacting");
@@ -496,6 +510,7 @@ void Document::_commitTransaction(const bool notify)
 
 void Document::abortTransaction() const
 {
+    DOC_WRITE_GUARD;
     if (isPerformingTransaction() || d->committing) {
         if (FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG)) {
             FC_WARN("Cannot abort transaction while transacting");
@@ -509,6 +524,7 @@ void Document::abortTransaction() const
 
 void Document::_abortTransaction()
 {
+    DOC_WRITE_GUARD;
     if (isPerformingTransaction() || d->committing) {
         if (FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG)) {
             FC_WARN("Cannot abort transaction while transacting");
@@ -532,11 +548,13 @@ void Document::_abortTransaction()
 
 bool Document::hasPendingTransaction() const
 {
+    DOC_READ_GUARD;
     return d->activeUndoTransaction != nullptr;
 }
 
 int Document::getTransactionID(const bool undo, unsigned pos) const
 {
+    DOC_READ_GUARD;
     if (undo) {
         if (d->activeUndoTransaction) {
             if (pos == 0) {
@@ -561,6 +579,7 @@ int Document::getTransactionID(const bool undo, unsigned pos) const
 
 bool Document::isTransactionEmpty() const
 {
+    DOC_READ_GUARD;
     return !d->activeUndoTransaction;
         // Transactions are now only created when there are actual changes.
         // Empty transaction is now significant for marking external changes. It
@@ -573,6 +592,7 @@ bool Document::isTransactionEmpty() const
 
 void Document::clearDocument() // NOLINT
 {
+    DOC_WRITE_GUARD;
     d->activeObject = nullptr;
 
     if (!d->objectArray.empty()) {
@@ -597,6 +617,7 @@ void Document::clearDocument() // NOLINT
 
 void Document::clearUndos()
 {
+    DOC_WRITE_GUARD;
     if (isPerformingTransaction() || d->committing) {
         FC_ERR("Cannot clear undos while transacting");
         return;
@@ -628,6 +649,7 @@ void Document::clearUndos()
 
 int Document::getAvailableUndos(const int id) const
 {
+    DOC_READ_GUARD;
     if (id != 0) {
         const auto it = mUndoMap.find(id);
         if (it == mUndoMap.end()) {
@@ -655,6 +677,7 @@ int Document::getAvailableUndos(const int id) const
 
 int Document::getAvailableRedos(const int id) const
 {
+    DOC_READ_GUARD;
     if (id != 0) {
         const auto it = mRedoMap.find(id);
         if (it == mRedoMap.end()) {
@@ -672,6 +695,7 @@ int Document::getAvailableRedos(const int id) const
 
 void Document::setUndoMode(const int iMode)
 {
+    DOC_WRITE_GUARD;
     if ((d->iUndoMode != 0) && (iMode == 0)) {
         clearUndos();
     }
@@ -681,31 +705,37 @@ void Document::setUndoMode(const int iMode)
 
 int Document::getUndoMode() const
 {
+    DOC_READ_GUARD;
     return d->iUndoMode;
 }
 
 unsigned int Document::getUndoMemSize() const
 {
+    DOC_READ_GUARD;
     return d->UndoMemSize;
 }
 
 void Document::setUndoLimit(const unsigned int UndoMemSize) // NOLINT
 {
+    DOC_WRITE_GUARD;
     d->UndoMemSize = UndoMemSize;
 }
 
 void Document::setMaxUndoStackSize(const unsigned int UndoMaxStackSize) // NOLINT
 {
+    DOC_WRITE_GUARD;
     d->UndoMaxStackSize = UndoMaxStackSize;
 }
 
 unsigned int Document::getMaxUndoStackSize() const
 {
+    DOC_READ_GUARD;
     return d->UndoMaxStackSize;
 }
 
 void Document::onBeforeChange(const Property* prop)
 {
+    DOC_WRITE_GUARD;
     if (prop == &Label) {
         oldLabel = Label.getValue();
     }
@@ -714,6 +744,7 @@ void Document::onBeforeChange(const Property* prop)
 
 void Document::onChanged(const Property* prop)
 {
+    DOC_WRITE_GUARD;
     signalChanged(*this, *prop);
 
     // the Name property is a label for display purposes
@@ -776,6 +807,7 @@ void Document::onChanged(const Property* prop)
 
 void Document::onBeforeChangeProperty(const TransactionalObject* Who, const Property* What)
 {
+    DOC_WRITE_GUARD;
     if (Who->isDerivedFrom<DocumentObject>()) {
         signalBeforeChangeObject(*static_cast<const DocumentObject*>(Who), *What);
     }
@@ -789,11 +821,13 @@ void Document::onBeforeChangeProperty(const TransactionalObject* Who, const Prop
 
 void Document::onChangedProperty(const DocumentObject* Who, const Property* What)
 {
+    DOC_READ_GUARD;
     signalChangedObject(*Who, *What);
 }
 
 void Document::setTransactionMode(const int iMode) // NOLINT
 {
+    DOC_WRITE_GUARD;
     d->iTransactionMode = iMode;
 }
 
@@ -801,7 +835,7 @@ void Document::setTransactionMode(const int iMode) // NOLINT
 // constructor
 //--------------------------------------------------------------------------
 Document::Document(const char* documentName)
-    : d(new DocumentP), myName(documentName)
+    : mSharedMutex(Base::SharedRecursiveMutex<Document>::instance()), d(new DocumentP), myName(documentName)
 {
     // Remark: In a constructor we should never increment a Python object as we cannot be sure
     // if the Python interpreter gets a reference of it. E.g. if we increment but Python don't
@@ -968,6 +1002,7 @@ std::string Document::getTransientDirectoryName(const std::string& uuid,
 
 void Document::Save(Base::Writer& writer) const
 {
+    DOC_WRITE_GUARD;
     d->hashers.clear();
     addStringHasher(d->Hasher);
 
@@ -998,6 +1033,7 @@ void Document::Save(Base::Writer& writer) const
 
 void Document::Restore(Base::XMLReader& reader)
 {
+    DOC_WRITE_GUARD;
     d->hashers.clear();
     d->touchedObjs.clear();
     addStringHasher(d->Hasher);
@@ -1102,6 +1138,7 @@ void DocumentP::checkStringHasher(const Base::XMLReader& reader)
 
 std::pair<bool, int> Document::addStringHasher(const StringHasherRef& hasher) const
 {
+    DOC_READ_GUARD;
     if (!hasher) {
         return std::make_pair(false, 0);
     }
@@ -1115,6 +1152,7 @@ std::pair<bool, int> Document::addStringHasher(const StringHasherRef& hasher) co
 
 StringHasherRef Document::getStringHasher(const int idx) const
 {
+    DOC_READ_GUARD;
     StringHasherRef hasher;
     if (idx < 0) {
         if (UseHasher.getValue()) {
@@ -1165,6 +1203,7 @@ public:
 // implementation can easily be changed here if necessary.
 Document::ExportStatus Document::isExporting(const DocumentObject* obj) const
 {
+    DOC_READ_GUARD;
     if (exportStatus.status != Document::NotExporting
         && ((obj == nullptr) || exportStatus.objs.find(obj) != exportStatus.objs.end())) {
         return exportStatus.status;
@@ -1174,7 +1213,7 @@ Document::ExportStatus Document::isExporting(const DocumentObject* obj) const
 
 void Document::exportObjects(const std::vector<DocumentObject*>& obj, std::ostream& out)
 {
-
+    DOC_WRITE_GUARD;
     DocumentExporting exporting(obj);
     d->hashers.clear();
 
@@ -1229,6 +1268,7 @@ constexpr auto fcElementObjectDep {"Dep"};
 void Document::writeObjects(const std::vector<DocumentObject*>& obj,
                             Base::Writer& writer) const
 {
+    DOC_READ_GUARD;
     // writing the features types
     writer.incInd();  // indentation for 'Objects count'
     writer.Stream() << writer.ind() << "<Objects Count=\"" << obj.size();
@@ -1360,6 +1400,7 @@ static void loadDeps(const std::string& name,
 
 std::vector<DocumentObject*> Document::readObjects(Base::XMLReader& reader)
 {
+    DOC_WRITE_GUARD;
     d->touchedObjs.clear();
     bool keepDigits = testStatus(Document::KeepTrailingDigits);
     setStatus(Document::KeepTrailingDigits, !reader.doNameMapping());
@@ -1553,6 +1594,7 @@ std::vector<DocumentObject*> Document::readObjects(Base::XMLReader& reader)
 
 void Document::addRecomputeObject(DocumentObject* obj) // NOLINT
 {
+    DOC_WRITE_GUARD;
     if (testStatus(Status::Restoring) && obj) {
         setStatus(Status::RecomputeOnRestore, true);
         d->touchedObjs.insert(obj);
@@ -1562,6 +1604,7 @@ void Document::addRecomputeObject(DocumentObject* obj) // NOLINT
 
 std::vector<DocumentObject*> Document::importObjects(Base::XMLReader& reader)
 {
+    DOC_WRITE_GUARD;
     d->hashers.clear();
     Base::FlagToggler<> flag(globalIsRestoring, false);
     Base::ObjectStatusLocker<Status, Document> restoreBit(Status::Restoring, this);
@@ -1627,6 +1670,7 @@ std::vector<DocumentObject*> Document::importObjects(Base::XMLReader& reader)
 
 unsigned int Document::getMemSize() const
 {
+    DOC_READ_GUARD;
     unsigned int size = 0;
 
     // size of the DocObjects in the document
@@ -1669,6 +1713,7 @@ static std::string checkFileName(const char* file)
 
 bool Document::saveAs(const char* _file)
 {
+    DOC_WRITE_GUARD;
     const std::string file = checkFileName(_file);
     const Base::FileInfo fi(file.c_str());
     if (this->FileName.getStrValue() != file) {
@@ -1682,6 +1727,7 @@ bool Document::saveAs(const char* _file)
 
 bool Document::saveCopy(const char* file) const
 {
+    DOC_READ_GUARD;
     const std::string checked = checkFileName(file);
     return this->FileName.getStrValue() != checked ? saveToFile(checked.c_str()) : false;
 }
@@ -1689,6 +1735,7 @@ bool Document::saveCopy(const char* file) const
 // Save the document under the name it has been opened
 bool Document::save()
 {
+    DOC_WRITE_GUARD;
     if (testStatus(Document::PartialDoc)) {
         FC_ERR("Partial loaded document '" << Label.getValue() << "' cannot be saved");
         // TODO We don't make this a fatal error and return 'true' to make it possible to
@@ -2040,6 +2087,7 @@ private:
 
 bool Document::saveToFile(const char* filename) const
 {
+    DOC_WRITE_GUARD;
     signalStartSave(*this, filename);
 
     auto hGrp = GetApplication().GetParameterGroupByPath(
@@ -2175,6 +2223,7 @@ bool Document::saveToFile(const char* filename) const
 
 void Document::registerLabel(const std::string& newLabel)
 {
+    DOC_WRITE_GUARD;
     if (!newLabel.empty()) {
         d->objectLabelManager.addExactName(newLabel);
     }
@@ -2182,6 +2231,7 @@ void Document::registerLabel(const std::string& newLabel)
 
 void Document::unregisterLabel(const std::string& oldLabel)
 {
+    DOC_WRITE_GUARD;
     if (!oldLabel.empty()) {
         d->objectLabelManager.removeExactName(oldLabel);
     }
@@ -2189,11 +2239,13 @@ void Document::unregisterLabel(const std::string& oldLabel)
 
 bool Document::containsLabel(const std::string& label)
 {
+    DOC_READ_GUARD;
     return d->objectLabelManager.containsName(label);
 }
 
 std::string Document::makeUniqueLabel(const std::string& modelLabel)
 {
+    DOC_READ_GUARD;
     if (modelLabel.empty()) {
         return {};
     }
@@ -2203,6 +2255,7 @@ std::string Document::makeUniqueLabel(const std::string& modelLabel)
 
 bool Document::isAnyRestoring()
 {
+    DOC_READ_GUARD;
     return globalIsRestoring;
 }
 
@@ -2211,6 +2264,7 @@ void Document::restore(const char* filename,
                        bool delaySignal,
                        const std::vector<std::string>& objNames)
 {
+    DOC_WRITE_GUARD;
     clearUndos();
     d->activeObject = nullptr;
 
@@ -2301,6 +2355,7 @@ void Document::restore(const char* filename,
 
 bool Document::afterRestore(const bool checkPartial)
 {
+    DOC_WRITE_GUARD;
     Base::FlagToggler<> flag(globalIsRestoring, false);
     if (!afterRestore(d->objectArray, checkPartial)) {
         FC_WARN("Reload partial document " << getName());
@@ -2314,6 +2369,7 @@ bool Document::afterRestore(const bool checkPartial)
 
 bool Document::afterRestore(const std::vector<DocumentObject*>& objArray, bool checkPartial)
 {
+    DOC_WRITE_GUARD;
     checkPartial = checkPartial && testStatus(Document::PartialDoc);
     if (checkPartial && !d->touchedObjs.empty()) {
         return false;
@@ -2424,6 +2480,7 @@ bool Document::afterRestore(const std::vector<DocumentObject*>& objArray, bool c
 
 bool Document::isSaved() const
 {
+    DOC_READ_GUARD;
     const std::string name = FileName.getValue();
     return !name.empty();
 }
@@ -2443,36 +2500,43 @@ bool Document::isSaved() const
  */
 const char* Document::getName() const
 {
+    DOC_READ_GUARD;
     // return GetApplication().getDocumentName(this);
     return myName.c_str();
 }
 
 std::string Document::getFullName() const
 {
+    DOC_READ_GUARD;
     return myName;
 }
 
 void Document::setAutoCreated(bool value) {
+    DOC_WRITE_GUARD;
     autoCreated = value;
 }
 
 bool Document::isAutoCreated() const {
+    DOC_READ_GUARD;
     return autoCreated;
 }
 
 const char* Document::getProgramVersion() const
 {
+    DOC_READ_GUARD;
     return d->programVersion.c_str();
 }
 
 const char* Document::getFileName() const
 {
+    DOC_READ_GUARD;
     return testStatus(TempDoc) ? TransientDir.getValue() : FileName.getValue();
 }
 
 /// Remove all modifications. After this call The document becomes valid again.
 void Document::purgeTouched() // NOLINT
 {
+    DOC_WRITE_GUARD;
     for (const auto It : d->objectArray) {
         It->purgeTouched();
     }
@@ -2480,6 +2544,7 @@ void Document::purgeTouched() // NOLINT
 
 bool Document::isTouched() const
 {
+    DOC_READ_GUARD;
     for (const auto It : d->objectArray) {
         if (It->isTouched()) {
             return true;
@@ -2490,6 +2555,7 @@ bool Document::isTouched() const
 
 vector<DocumentObject*> Document::getTouched() const
 {
+    DOC_READ_GUARD;
     vector<DocumentObject*> result;
 
     for (auto It : d->objectArray) {
@@ -2503,16 +2569,19 @@ vector<DocumentObject*> Document::getTouched() const
 
 void Document::setClosable(const bool c) // NOLINT
 {
+    DOC_WRITE_GUARD;
     setStatus(Document::Closable, c);
 }
 
 bool Document::isClosable() const
 {
+    DOC_READ_GUARD;
     return testStatus(Document::Closable);
 }
 
 int Document::countObjects() const
 {
+    DOC_READ_GUARD;
     return static_cast<int>(d->objectArray.size());
 }
 
@@ -2522,6 +2591,7 @@ void Document::getLinksTo(std::set<DocumentObject*>& links,
                           const int maxCount,
                           const std::vector<DocumentObject*>& objs) const
 {
+    DOC_READ_GUARD;
     std::map<const DocumentObject*, std::vector<DocumentObject*>> linkMap;
 
     for (auto o : !objs.empty() ? objs : d->objectArray) {
@@ -2589,6 +2659,7 @@ void Document::getLinksTo(std::set<DocumentObject*>& links,
 
 bool Document::hasLinksTo(const DocumentObject* obj) const
 {
+    DOC_READ_GUARD;
     std::set<DocumentObject*> links;
     getLinksTo(links, obj, 0, 1);
     return !links.empty();
@@ -2596,6 +2667,7 @@ bool Document::hasLinksTo(const DocumentObject* obj) const
 
 std::vector<DocumentObject*> Document::getInList(const DocumentObject* me) const
 {
+    DOC_READ_GUARD;
     // result list
     std::vector<DocumentObject*> result;
     // go through all objects
@@ -2691,6 +2763,7 @@ static void buildDependencyList(const std::vector<DocumentObject*>& objectArray,
 std::vector<DocumentObject*>
 Document::getDependencyList(const std::vector<DocumentObject*>& objs, int options)
 {
+    DOC_READ_GUARD;
     std::vector<DocumentObject*> ret;
     if ((options & DepSort) == 0) {
         buildDependencyList(objs, options, &ret, nullptr, nullptr);
@@ -2777,12 +2850,14 @@ Document::getDependencyList(const std::vector<DocumentObject*>& objs, int option
 
 std::vector<Document*> Document::getDependentDocuments(const bool sort)
 {
+    DOC_READ_GUARD;
     return getDependentDocuments({this}, sort);
 }
 
 std::vector<Document*> Document::getDependentDocuments(std::vector<Document*> docs,
                                                             const bool sort)
 {
+    DOC_READ_GUARD;
     DependencyList depList;
     std::map<Document*, Vertex> docMap;
     std::map<Vertex, Document*> vertexMap;
@@ -2863,6 +2938,7 @@ void Document::renameObjectIdentifiers(
     const std::map<ObjectIdentifier, ObjectIdentifier>& paths,
     const std::function<bool(const DocumentObject*)>& selector) // NOLINT
 {
+    DOC_WRITE_GUARD;
     std::map<ObjectIdentifier, ObjectIdentifier> extendedPaths;
 
     auto it = paths.begin();
@@ -2888,6 +2964,7 @@ int Document::recompute(const std::vector<DocumentObject*>& objs,
                         bool* hasError,
                         int options)
 {
+    DOC_WRITE_GUARD;
     ZoneScoped;
 
     if (d->undoing || d->rollback) {
@@ -2955,6 +3032,7 @@ int Document::recompute(const std::vector<DocumentObject*>& objs,
         getDependencyList(objs.empty() ? d->objectArray : objs, DepSort | options);
 
     for (auto obj : topoSortedObjects) {
+               DOC_WRITE_GUARD;
         obj->setStatus(ObjectStatus::PendingRecompute, true);
     }
 
@@ -3326,6 +3404,7 @@ int Document::_recomputeFeature(DocumentObject* Feat) // NOLINT
 
 bool Document::recomputeFeature(DocumentObject* feature, bool recursive)
 {
+    DOC_WRITE_GUARD;
     // delete recompute log
     d->clearRecomputeLog(feature);
 
@@ -3350,6 +3429,7 @@ DocumentObject* Document::addObject(const char* sType,
                                     const char* viewType,
                                     const bool isPartial)
 {
+    DOC_WRITE_GUARD;
     const Base::Type type =
         Base::Type::getTypeIfDerivedFrom(sType, DocumentObject::getClassTypeId(), true);
     if (type.isBad()) {
@@ -3435,6 +3515,7 @@ DocumentObject* Document::addObject(const char* sType,
 std::vector<DocumentObject*>
 Document::addObjects(const char* sType, const std::vector<std::string>& objectNames, bool isNew)
 {
+    DOC_WRITE_GUARD;
     Base::Type type =
         Base::Type::getTypeIfDerivedFrom(sType, DocumentObject::getClassTypeId(), true);
     if (type.isBad()) {
@@ -3523,6 +3604,7 @@ Document::addObjects(const char* sType, const std::vector<std::string>& objectNa
 
 void Document::addObject(DocumentObject* pcObject, const char* pObjectName)
 {
+    DOC_WRITE_GUARD;
     if (pcObject->getDocument()) {
         throw Base::RuntimeError("Document object is already added to a document");
     }
@@ -3585,6 +3667,7 @@ void Document::addObject(DocumentObject* pcObject, const char* pObjectName)
 
 void Document::_addObject(DocumentObject* pcObject, const char* pObjectName)
 {
+    DOC_WRITE_GUARD;
     const std::string ObjectName = getUniqueObjectName(pObjectName);
     d->objectMap[ObjectName] = pcObject;
     d->objectNameManager.addExactName(ObjectName);
@@ -3625,6 +3708,7 @@ void Document::_addObject(DocumentObject* pcObject, const char* pObjectName)
 
 bool Document::containsObject(const DocumentObject* pcObject) const
 {
+    DOC_READ_GUARD;
     // We could look for the object in objectMap (keyed by object name),
     // or search in objectArray (a O(n) vector search) but looking by Id
     // in objectIdMap would be fastest.
@@ -3635,6 +3719,7 @@ bool Document::containsObject(const DocumentObject* pcObject) const
 /// Remove an object out of the document
 void Document::removeObject(const char* sName)
 {
+    DOC_WRITE_GUARD;
     auto pos = d->objectMap.find(sName);
 
     // name not found?
@@ -3726,6 +3811,7 @@ void Document::removeObject(const char* sName)
 /// Remove an object out of the document (internal)
 void Document::_removeObject(DocumentObject* pcObject)
 {
+    DOC_WRITE_GUARD;
     if (testStatus(Document::Recomputing)) {
         FC_ERR("Cannot delete " << pcObject->getFullName() << " while recomputing");
         return;
@@ -3738,6 +3824,7 @@ void Document::_removeObject(DocumentObject* pcObject)
 
     auto pos = d->objectMap.find(pcObject->getNameInDocument());
     if (pos == d->objectMap.end()) {
+        DOC_WRITE_GUARD;
         FC_ERR("Internal error, could not find " << pcObject->getFullName() << " to remove");
     }
 
@@ -3819,6 +3906,7 @@ void Document::_removeObject(DocumentObject* pcObject)
 
 void Document::breakDependency(DocumentObject* pcObject, const bool clear) // NOLINT
 {
+    DOC_WRITE_GUARD;
     // Nullify all dependent objects
     PropertyLinkBase::breakLinks(pcObject, d->objectArray, clear);
 }
@@ -3826,6 +3914,7 @@ void Document::breakDependency(DocumentObject* pcObject, const bool clear) // NO
 std::vector<DocumentObject*>
 Document::copyObject(const std::vector<DocumentObject*>& objs, bool recursive, bool returnAll)
 {
+    DOC_READ_GUARD;
     std::vector<DocumentObject*> deps;
     if (!recursive) {
         deps = objs;
@@ -3899,6 +3988,7 @@ Document::copyObject(const std::vector<DocumentObject*>& objs, bool recursive, b
 std::vector<DocumentObject*>
 Document::importLinks(const std::vector<DocumentObject*>& objs)
 {
+    DOC_WRITE_GUARD;
     std::set<DocumentObject*> links;
     getLinksTo(links, nullptr, GetLinkExternal, 0, objs);
 
@@ -3970,6 +4060,7 @@ Document::importLinks(const std::vector<DocumentObject*>& objs)
 
 DocumentObject* Document::moveObject(DocumentObject* obj, const bool recursive)
 {
+    DOC_WRITE_GUARD;
     if (!obj) {
         return nullptr;
     }
@@ -4027,11 +4118,13 @@ DocumentObject* Document::moveObject(DocumentObject* obj, const bool recursive)
 
 DocumentObject* Document::getActiveObject() const
 {
+    DOC_READ_GUARD;
     return d->activeObject;
 }
 
 DocumentObject* Document::getObject(const char* Name) const
 {
+    DOC_READ_GUARD;
     const auto pos = d->objectMap.find(Name);
 
     return pos != d->objectMap.end() ?pos->second:nullptr;
@@ -4039,6 +4132,7 @@ DocumentObject* Document::getObject(const char* Name) const
 
 DocumentObject* Document::getObjectByID(const long id) const
 {
+    DOC_READ_GUARD;
     const auto it = d->objectIdMap.find(id);
 
     return it != d->objectIdMap.end() ?it->second:nullptr;
@@ -4048,6 +4142,7 @@ DocumentObject* Document::getObjectByID(const long id) const
 // Note: This method is only used in Tree.cpp slotChangeObject(), see explanation there
 bool Document::isIn(const DocumentObject* pFeat) const
 {
+    DOC_READ_GUARD;
     for (const auto& [key, object] : d->objectMap) {
         if (object == pFeat) {
             return true;
@@ -4059,6 +4154,7 @@ bool Document::isIn(const DocumentObject* pFeat) const
 
 const char* Document::getObjectName(const DocumentObject* pFeat) const
 {
+    DOC_READ_GUARD;
     for (const auto& [key, object] : d->objectMap) {
         if (object == pFeat) {
             return key.c_str();
@@ -4070,6 +4166,7 @@ const char* Document::getObjectName(const DocumentObject* pFeat) const
 
 std::string Document::getUniqueObjectName(const char* proposedName) const
 {
+    DOC_READ_GUARD;
     if (!proposedName || *proposedName == '\0') {
         return {};
     }
@@ -4085,6 +4182,7 @@ std::string Document::getUniqueObjectName(const char* proposedName) const
     bool
 Document::haveSameBaseName(const std::string& name, const std::string& label)
 {
+    DOC_READ_GUARD;
     // Both Labels and Names use the same decomposition rules for names,
     // i.e. the default one supplied by UniqueNameManager, so we can use either
     // of the name managers to do this test.
@@ -4093,21 +4191,25 @@ Document::haveSameBaseName(const std::string& name, const std::string& label)
 
 std::string Document::getStandardObjectLabel(const char* modelName, int digitCount) const
 {
+    DOC_READ_GUARD;
     return d->objectLabelManager.makeUniqueName(modelName, digitCount);
 }
 
 std::vector<DocumentObject*> Document::getDependingObjects() const
 {
+    DOC_READ_GUARD;
     return getDependencyList(d->objectArray);
 }
 
 const std::vector<DocumentObject*>& Document::getObjects() const
 {
+    DOC_READ_GUARD;
     return d->objectArray;
 }
 
 std::vector<DocumentObject*> Document::getObjectsOfType(const Base::Type& typeId) const
 {
+    DOC_READ_GUARD;
     std::vector<DocumentObject*> Objects;
     for (auto it : d->objectArray) {
         if (it->isDerivedFrom(typeId)) {
@@ -4119,6 +4221,7 @@ std::vector<DocumentObject*> Document::getObjectsOfType(const Base::Type& typeId
 
 std::vector<DocumentObject*> Document::getObjectsOfType(const std::vector<Base::Type>& types) const
 {
+    DOC_READ_GUARD;
     std::vector<DocumentObject*> Objects;
     for (auto it : d->objectArray) {
         for (auto& typeId : types) {
@@ -4134,7 +4237,7 @@ std::vector<DocumentObject*> Document::getObjectsOfType(const std::vector<Base::
 std::vector<DocumentObject*> Document::getObjectsWithExtension(const Base::Type& typeId,
                                                                const bool derived) const
 {
-
+    DOC_READ_GUARD;
     std::vector<DocumentObject*> Objects;
     for (auto it : d->objectArray) {
         if (it->hasExtension(typeId, derived)) {
@@ -4148,6 +4251,7 @@ std::vector<DocumentObject*> Document::getObjectsWithExtension(const Base::Type&
 std::vector<DocumentObject*>
 Document::findObjects(const Base::Type& typeId, const char* objname, const char* label) const
 {
+    DOC_READ_GUARD;
     boost::cmatch what;
     boost::regex rx_name;
     boost::regex rx_label;
@@ -4184,6 +4288,7 @@ Document::findObjects(const Base::Type& typeId, const char* objname, const char*
 
 int Document::countObjectsOfType(const Base::Type& typeId) const
 {
+    DOC_READ_GUARD;
     return std::count_if(d->objectMap.begin(), d->objectMap.end(), [&](const auto& it) {
         return it.second->isDerivedFrom(typeId);
     });
@@ -4191,17 +4296,20 @@ int Document::countObjectsOfType(const Base::Type& typeId) const
 
 int Document::countObjectsOfType(const char* typeName) const
 {
+    DOC_READ_GUARD;
     const Base::Type type = Base::Type::fromName(typeName);
     return type.isBad() ? 0 : countObjectsOfType(type);
 }
 
 PyObject* Document::getPyObject()
 {
+    DOC_READ_GUARD;
     return Py::new_reference_to(d->DocumentPythonObject);
 }
 
 std::vector<DocumentObject*> Document::getRootObjects() const
 {
+    DOC_READ_GUARD;
     std::vector<DocumentObject*> ret;
 
     for (auto objectIt : d->objectArray) {
@@ -4215,6 +4323,7 @@ std::vector<DocumentObject*> Document::getRootObjects() const
 
 std::vector<DocumentObject*> Document::getRootObjectsIgnoreLinks() const
 {
+    DOC_READ_GUARD;
     std::vector<DocumentObject*> ret;
 
     for (const auto &objectIt : d->objectArray) {
@@ -4265,6 +4374,7 @@ void DocumentP::findAllPathsAt(const std::vector<Node>& all_nodes,
 std::vector<std::list<DocumentObject*>>
 Document::getPathsByOutList(const DocumentObject* from, const DocumentObject* to) const
 {
+    DOC_READ_GUARD;
     std::map<const DocumentObject*, size_t> indexMap;
     for (size_t i = 0; i < d->objectArray.size(); ++i) {
         indexMap[d->objectArray[i]] = i;
@@ -4311,6 +4421,7 @@ Document::getPathsByOutList(const DocumentObject* from, const DocumentObject* to
 
 bool Document::mustExecute() const
 {
+    DOC_READ_GUARD;
     if (PropertyXLink::hasXLink(this)) {
         bool touched = false;
         buildDependencyList(d->objectArray, 0, nullptr, nullptr, nullptr, &touched);
