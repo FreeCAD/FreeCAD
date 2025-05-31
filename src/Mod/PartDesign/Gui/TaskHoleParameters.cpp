@@ -80,15 +80,7 @@ TaskHoleParameters::TaskHoleParameters(ViewProviderHole* HoleView, QWidget* pare
     ui->ThreadSize->setHidden(isNone);
     ui->labelSize->setHidden(isNone);
 
-    if (pcHole->Threaded.getValue()) {
-        if (pcHole->ModelThread.getValue()) {
-            ui->HoleType->setCurrentIndex(static_cast<int>(HoleTypeIndex::ModeledThread));
-        } else {
-            ui->HoleType->setCurrentIndex(static_cast<int>(HoleTypeIndex::TapDrill));
-        }
-    } else {
-        ui->HoleType->setCurrentIndex(static_cast<int>(HoleTypeIndex::Clearance));
-    }
+    updateHoleTypeCombo();
     ui->ThreadType->setCurrentIndex(pcHole->ThreadType.getValue());
 
     ui->ThreadSize->clear();
@@ -797,16 +789,7 @@ void TaskHoleParameters::changedObject(const App::Document&, const App::Property
     };
 
     if (&Prop == &hole->Threaded || &Prop == &hole->ModelThread) {
-        if (hole->Threaded.getValue()) {
-            if (hole->ModelThread.getValue()) {
-                updateComboBox(ui->HoleType, static_cast<int>(HoleTypeIndex::ModeledThread));
-            } else {
-                updateComboBox(ui->HoleType, static_cast<int>(HoleTypeIndex::TapDrill));
-            }
-        } else {
-            updateComboBox(ui->HoleType, static_cast<int>(HoleTypeIndex::Clearance));
-        }
-        ui->HoleType->setDisabled(false);
+        updateHoleTypeCombo();
     }
     else if (&Prop == &hole->ThreadType) {
         ui->ThreadType->setEnabled(true);
@@ -916,6 +899,24 @@ void TaskHoleParameters::changedObject(const App::Document&, const App::Property
     }
 }
 
+void TaskHoleParameters::updateHoleTypeCombo()
+{
+    auto hole = getObject<PartDesign::Hole>();
+    if (!hole) {
+        return;
+    }
+    [[maybe_unused]] QSignalBlocker blocker(ui->HoleType);
+    if (hole->Threaded.getValue()) {
+        if (hole->ModelThread.getValue()) {
+            ui->HoleType->setCurrentIndex(ModeledThread);
+        } else {
+            ui->HoleType->setCurrentIndex(TapDrill);
+        }
+    } else {
+        ui->HoleType->setCurrentIndex(Clearance);
+    }
+}
+
 void TaskHoleParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
 {
     Q_UNUSED(msg)
@@ -923,12 +924,12 @@ void TaskHoleParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
 
 bool TaskHoleParameters::getThreaded() const
 {
-    return ui->HoleType->currentIndex() != static_cast<int>(HoleTypeIndex::Clearance);
+    return ui->HoleType->currentIndex() != Clearance;
 }
 
 bool TaskHoleParameters::getModelThread() const
 {
-    return ui->HoleType->currentIndex() == static_cast<int>(HoleTypeIndex::ModeledThread);
+    return ui->HoleType->currentIndex() == ModeledThread;
 }
 
 long TaskHoleParameters::getThreadType() const

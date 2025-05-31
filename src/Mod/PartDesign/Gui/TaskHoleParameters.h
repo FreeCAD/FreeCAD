@@ -120,7 +120,7 @@ private:
         TaskHoleParameters * owner;
         PartDesign::Hole * hole;
     };
-    enum class HoleTypeIndex : int {
+    enum HoleTypeIndex : int {
         Clearance = 0,
         TapDrill = 1,
         ModeledThread = 2
@@ -133,6 +133,7 @@ protected:
 private:
     void onSelectionChanged(const Gui::SelectionChanges &msg) override;
     void updateHoleCutLimits(PartDesign::Hole* hole);
+    void updateHoleTypeCombo();
 
 private:
 
