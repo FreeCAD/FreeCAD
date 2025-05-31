@@ -86,6 +86,7 @@ def init_argument_defaults(argument_defaults: Dict[str, bool]) -> None:
     argument_defaults["tlo"] = True
     argument_defaults["tool_change"] = True
     argument_defaults["translate_drill"] = False
+    argument_defaults["translate_arc"] = False
 
 
 def init_arguments_visible(arguments_visible: Dict[str, bool]) -> None:
@@ -115,6 +116,7 @@ def init_arguments_visible(arguments_visible: Dict[str, bool]) -> None:
     arguments_visible["tlo"] = True
     arguments_visible["tool_change"] = False
     arguments_visible["translate_drill"] = False
+    arguments_visible["translate_arc"] = False
     arguments_visible["wait-for-spindle"] = False
 
 
@@ -382,6 +384,15 @@ def init_shared_arguments(
         "Don't translate drill cycles G73, G81, G82 & G83 into G0/G1 movements",
         arguments_visible["translate_drill"],
     )
+    add_flag_type_arguments(
+        shared,
+        argument_defaults["translate_arc"],
+        "--translate_arc",
+        "--no-translate_arc",
+        "Translate arc cycles G2, G3 into G1 movements",
+        "Don't translate arc cycles G2, G3 into G1 movements",
+        arguments_visible["translate_arc"],
+    )
     if arguments_visible["wait-for-spindle"]:
         help_message = "Time to wait (in seconds) after M3, M4 (default = 0.0)"
     else:
@@ -433,6 +444,18 @@ def init_shared_values(values: Values) -> None:
     # that get translated to G0 and G1 commands.
     #
     values["DRILL_CYCLES_TO_TRANSLATE"] = ["G73", "G81", "G82", "G83"]
+    #
+    # If TRANSLATE_ARC_CYCLES is True, these are the arc cycles
+    # that get translated to G0 and G1 commands.
+    #
+    values["ARC_CYCLES_TO_TRANSLATE"] = ["G2", "G3"]
+    #
+    # If TRANSLATE_ARC_CYCLES is True, this is the tolerance (in mm)
+    # used to compute the number of linear segments needed to
+    # approximate the arc.
+    #
+    values["ARC_TOLERANCE"] = 0.02
+    #
     #
     # If this is set to True, then M7, M8, and M9 commands
     # to enable/disable coolant will be output.
