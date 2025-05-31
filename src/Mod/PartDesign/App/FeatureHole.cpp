@@ -2096,12 +2096,13 @@ App::DocumentObjectExecReturn* Hole::execute()
         // parallel
         bool retry = true;
         const char *maker;
-        switch (getAddSubType()) {
-            case Additive:
-                maker = Part::OpCodes::Fuse;
-                break;
-            default:
-                maker = Part::OpCodes::Cut;
+        if (isAdditive())
+        {
+            maker = Part::OpCodes::Fuse;
+        }
+        else
+        {
+            maker = Part::OpCodes::Cut;
         }
         try {
             if (base.isNull())
