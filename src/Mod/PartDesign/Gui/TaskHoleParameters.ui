@@ -615,17 +615,7 @@ over 90: larger hole radius at the bottom</string>
      <property name="topMargin">
       <number>0</number>
      </property>
-     <item row="1" column="1">
-      <widget class="QComboBox" name="ThreadType">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Ignored" vsizetype="Fixed">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="0">
+     <item row="0" column="0">
       <widget class="Gui::ElideLabel" name="labelThreadType">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Ignored" vsizetype="Preferred">
@@ -638,8 +628,8 @@ over 90: larger hole radius at the bottom</string>
        </property>
       </widget>
      </item>
-     <item row="2" column="1">
-      <widget class="QComboBox" name="ThreadSize">
+     <item row="0" column="1">
+      <widget class="QComboBox" name="ThreadType">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Ignored" vsizetype="Fixed">
          <horstretch>0</horstretch>
@@ -648,7 +638,7 @@ over 90: larger hole radius at the bottom</string>
        </property>
       </widget>
      </item>
-     <item row="2" column="0">
+     <item row="1" column="0">
       <widget class="Gui::ElideLabel" name="labelSize">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Ignored" vsizetype="Preferred">
@@ -661,23 +651,43 @@ over 90: larger hole radius at the bottom</string>
        </property>
       </widget>
      </item>
+     <item row="1" column="1">
+      <widget class="QComboBox" name="ThreadSize">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Ignored" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="1">
+      <widget class="QComboBox" name="HoleType">
+       <item>
+        <property name="text">
+         <string>Clearance / Passthrough</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Tap Drill (To Be Threaded)</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Modeled Thread</string>
+        </property>
+       </item>
+      </widget>
+     </item>
+     <item row="2" column="0">
+      <widget class="Gui::ElideLabel" name="labelHoleType">
+       <property name="text">
+        <string>Hole Type</string>
+       </property>
+      </widget>
+     </item>
     </layout>
-   </item>
-   <item>
-    <widget class="QCheckBox" name="Threaded">
-     <property name="sizePolicy">
-      <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-       <horstretch>0</horstretch>
-       <verstretch>0</verstretch>
-      </sizepolicy>
-     </property>
-     <property name="toolTip">
-      <string>Whether the hole gets a thread</string>
-     </property>
-     <property name="text">
-      <string>Threaded</string>
-     </property>
-    </widget>
    </item>
    <item>
     <widget class="QWidget" name="ClearanceWidget" native="true">
@@ -779,6 +789,26 @@ Only available for holes without thread</string>
        <number>6</number>
       </property>
       <item>
+       <widget class="Gui::ElideCheckBox" name="UpdateView">
+        <property name="enabled">
+         <bool>true</bool>
+        </property>
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Ignored" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="toolTip">
+         <string>Live update of changes to the thread
+Note that the calculation can take some time</string>
+        </property>
+        <property name="text">
+         <string>Update thread view</string>
+        </property>
+       </widget>
+      </item>
+      <item>
        <layout class="QGridLayout" name="classLayout" columnstretch="2,5">
         <property name="topMargin">
          <number>0</number>
@@ -877,52 +907,6 @@ Only available for holes without thread</string>
        </layout>
       </item>
       <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_5">
-        <property name="leftMargin">
-         <number>0</number>
-        </property>
-        <property name="topMargin">
-         <number>0</number>
-        </property>
-        <item>
-         <widget class="Gui::ElideCheckBox" name="ModelThread">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Ignored" vsizetype="Fixed">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="toolTip">
-           <string>Whether the hole gets a modelled thread</string>
-          </property>
-          <property name="text">
-           <string>Model Thread</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="Gui::ElideCheckBox" name="UpdateView">
-          <property name="enabled">
-           <bool>true</bool>
-          </property>
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Ignored" vsizetype="Fixed">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="toolTip">
-           <string>Live update of changes to the thread
-Note that the calculation can take some time</string>
-          </property>
-          <property name="text">
-           <string>Update thread view</string>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </item>
-      <item>
        <widget class="QWidget" name="ThreadDepthWidget" native="true">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
@@ -944,7 +928,7 @@ Note that the calculation can take some time</string>
           <number>0</number>
          </property>
          <item>
-          <layout class="QHBoxLayout" name="horizontalLayout_11" stretch="2,5">
+          <layout class="QHBoxLayout" name="depthTypeLayout">
            <property name="spacing">
             <number>6</number>
            </property>
@@ -993,7 +977,7 @@ Note that the calculation can take some time</string>
          </item>
          <item>
           <widget class="QWidget" name="ThreadDepthDimensionWidget" native="true">
-           <layout class="QHBoxLayout" name="horizontalLayout_3" stretch="2,5">
+           <layout class="QHBoxLayout" name="horizontalLayout_3">
             <property name="leftMargin">
              <number>0</number>
             </property>
@@ -1037,7 +1021,7 @@ Note that the calculation can take some time</string>
       </item>
       <item>
        <widget class="QWidget" name="CustomClearanceWidget" native="true">
-        <layout class="QHBoxLayout" name="horizontalLayout_13" stretch="2,5">
+        <layout class="QHBoxLayout" name="horizontalLayout_13">
          <property name="spacing">
           <number>6</number>
          </property>
