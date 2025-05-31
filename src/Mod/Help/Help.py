@@ -237,7 +237,10 @@ def get_location(page) -> tuple:
                 "FreeCAD-documentation-main",
                 "wiki",
             )
-        location = os.path.join(location, page + ".md")
+        for ext in (".md", ".html", ".htm"):
+            if os.path.exists(os.path.join(location, page + ext)):
+                location = os.path.join(location, page + ext)
+                break
     return (location, pagename)
 
 
