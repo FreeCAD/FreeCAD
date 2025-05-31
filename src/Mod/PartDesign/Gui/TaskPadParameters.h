@@ -46,6 +46,9 @@ public:
     explicit TaskPadParameters(ViewProviderPad *PadView, QWidget *parent = nullptr, bool newObj=false);
     ~TaskPadParameters() override;
 
+    double getPadLength();
+    void setPadLength(double val);
+
     void apply() override;
 
 private:
@@ -62,7 +65,10 @@ class TaskDlgPadParameters : public TaskDlgExtrudeParameters
 public:
     explicit TaskDlgPadParameters(ViewProviderPad *PadView, bool newObj=false);
 
-protected:
+    double getPadLength();
+    void setPadLength(double val);
+
+// protected:
     TaskExtrudeParameters* getTaskParameters() override
     {
         return parameters;
