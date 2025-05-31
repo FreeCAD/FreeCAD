@@ -924,7 +924,7 @@ def makeRebar(baseobj=None, sketch=None, diameter=None, amount=1, offset=None, n
         "Part::FeaturePython",
         baseClassName="_Rebar",
         internalName="Rebar",
-        defaultLabel=name if name else translate("Arch", "Project"),
+        defaultLabel=name if name else translate("Arch", "Rebar"),
         moduleName="ArchRebar",
         viewProviderName="_ViewProviderRebar",
     )
