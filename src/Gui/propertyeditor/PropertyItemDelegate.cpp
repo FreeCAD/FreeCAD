@@ -22,7 +22,6 @@
 
 
 #include "PreCompiled.h"
-#include <qcheckbox.h>
 
 #ifndef _PreComp_
 # include <QApplication>
