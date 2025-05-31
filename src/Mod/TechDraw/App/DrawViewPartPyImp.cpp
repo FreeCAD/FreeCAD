@@ -62,8 +62,10 @@ std::string DrawViewPartPy::representation() const
 
 PyObject* DrawViewPartPy::getVisibleEdges(PyObject *args)
 {
-    if (!PyArg_ParseTuple(args, "")) {
-        return nullptr;
+    //NOLINTNEXTLINE
+    PyObject* conventionalCoords = Py_False;    // false for gui display (+Y down), true for calculations (+Y up)
+    if (!PyArg_ParseTuple(args, "|O!", &PyBool_Type, &conventionalCoords)) {
+        throw Py::ValueError("Expected '[conventionalCoords=True/False] or None' ");
     }
 
     DrawViewPart* dvp = getDrawViewPartPtr();
@@ -71,7 +73,12 @@ PyObject* DrawViewPartPy::getVisibleEdges(PyObject *args)
     std::vector<TechDraw::BaseGeomPtr> geoms = dvp->getEdgeGeometry();
     for (auto& g: geoms) {
         if (g->getHlrVisible()) {
-            PyObject* pEdge = new Part::TopoShapeEdgePy(new Part::TopoShape(g->getOCCEdge()));
+            TopoDS_Edge occEdge = g->getOCCEdge();
+            if (PyBool_Check(conventionalCoords) && conventionalCoords == Py_True) {
+                TopoDS_Shape occShape = ShapeUtils::invertGeometry(occEdge);
+                occEdge = TopoDS::Edge(occShape);
+            }
+            PyObject* pEdge = new Part::TopoShapeEdgePy(new Part::TopoShape(occEdge));
             pEdgeList.append(Py::asObject(pEdge));
         }
     }
@@ -81,8 +88,10 @@ PyObject* DrawViewPartPy::getVisibleEdges(PyObject *args)
 
 PyObject* DrawViewPartPy::getHiddenEdges(PyObject *args)
 {
-    if (!PyArg_ParseTuple(args, "")) {
-        return nullptr;
+    PyObject* conventionalCoords = Py_False;    // false for gui display (+Y down), true for calculations (+Y up)
+    //NOLINTNEXTLINE
+    if (!PyArg_ParseTuple(args, "|O!", &PyBool_Type, &conventionalCoords)) {
+        throw Py::ValueError("Expected '[conventionalCoords=True/False] or None' ");
     }
 
     DrawViewPart* dvp = getDrawViewPartPtr();
@@ -90,7 +99,12 @@ PyObject* DrawViewPartPy::getHiddenEdges(PyObject *args)
     std::vector<TechDraw::BaseGeomPtr> geoms = dvp->getEdgeGeometry();
     for (auto& g: geoms) {
         if (!g->getHlrVisible()) {
-            PyObject* pEdge = new Part::TopoShapeEdgePy(new Part::TopoShape(g->getOCCEdge()));
+            TopoDS_Edge occEdge = g->getOCCEdge();
+            if (PyBool_Check(conventionalCoords) && conventionalCoords == Py_True) {
+                TopoDS_Shape occShape = ShapeUtils::invertGeometry(occEdge);
+                occEdge = TopoDS::Edge(occShape);
+            }
+            PyObject* pEdge = new Part::TopoShapeEdgePy(new Part::TopoShape(occEdge));
             pEdgeList.append(Py::asObject(pEdge));
         }
     }
@@ -100,8 +114,10 @@ PyObject* DrawViewPartPy::getHiddenEdges(PyObject *args)
 
 PyObject* DrawViewPartPy::getVisibleVertexes(PyObject *args)
 {
-    if (!PyArg_ParseTuple(args, "")) {
-        return nullptr;
+    PyObject* conventionalCoords = Py_False;    // false for gui display (+Y down), true for calculations (+Y up)
+    //NOLINTNEXTLINE
+    if (!PyArg_ParseTuple(args, "|O!", &PyBool_Type, &conventionalCoords)) {
+        throw Py::ValueError("Expected '[conventionalCoords=True/False] or None' ");
     }
 
     DrawViewPart* dvp = getDrawViewPartPtr();
@@ -109,7 +125,11 @@ PyObject* DrawViewPartPy::getVisibleVertexes(PyObject *args)
     auto vertsAll = dvp->getVertexGeometry();
     for (auto& vert: vertsAll) {
         if (vert->getHlrVisible()) {
-            PyObject* pVertex = new Base::VectorPy(new Base::Vector3d(vert->point()));
+            Base::Vector3d vertPoint = vert->point();
+            if (PyBool_Check(conventionalCoords) && conventionalCoords == Py_True) {
+                vertPoint = DU::invertY(vertPoint);
+            }
+            PyObject* pVertex = new Base::VectorPy(new Base::Vector3d(vertPoint));
             pVertexList.append(Py::asObject(pVertex));
         }
     }
@@ -119,8 +139,10 @@ PyObject* DrawViewPartPy::getVisibleVertexes(PyObject *args)
 
 PyObject* DrawViewPartPy::getHiddenVertexes(PyObject *args)
 {
-    if (!PyArg_ParseTuple(args, "")) {
-        return nullptr;
+    PyObject* conventionalCoords = Py_False;    // false for gui display (+Y down), true for calculations (+Y up)
+    //NOLINTNEXTLINE
+    if (!PyArg_ParseTuple(args, "|O!", &PyBool_Type, &conventionalCoords)) {
+        throw Py::ValueError("Expected '[conventionalCoords=True/False] or None' ");
     }
 
     DrawViewPart* dvp = getDrawViewPartPtr();
@@ -128,14 +150,17 @@ PyObject* DrawViewPartPy::getHiddenVertexes(PyObject *args)
     auto vertsAll = dvp->getVertexGeometry();
     for (auto& vert: vertsAll) {
         if (!vert->getHlrVisible()) {
-            PyObject* pVertex = new Base::VectorPy(new Base::Vector3d(vert->point()));
+            Base::Vector3d vertPoint = vert->point();
+            if (PyBool_Check(conventionalCoords) && conventionalCoords == Py_True) {
+                vertPoint = DU::invertY(vertPoint);
+            }
+            PyObject* pVertex = new Base::VectorPy(new Base::Vector3d(vertPoint));
             pVertexList.append(Py::asObject(pVertex));
         }
     }
 
     return Py::new_reference_to(pVertexList);
 }
-
 
 
 PyObject* DrawViewPartPy::requestPaint(PyObject *args)
