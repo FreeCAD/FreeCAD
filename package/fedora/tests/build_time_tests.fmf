@@ -1,0 +1,12 @@
+/TestRun  :
+    test: |
+        cat /usr/share/freecad/tests_result/`uname -m`/Tests_run.result
+        if [ -f /usr/share/freecad/tests_result/`uname -m`/Tests_run.failed ]; then
+            exit 1
+        fi
+/ctest :
+    test: |
+        cat /usr/share/freecad/tests_result/`uname -m`/ctest.result
+        if [ -f /usr/share/freecad/tests_result/`uname -m`/ctest.failed ]; then
+            exit 1
+        fi
