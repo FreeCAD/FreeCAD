@@ -313,7 +313,7 @@ void Shape::ExtrudeProfileLinear(float* profPoints,
     SetModelData(vbuffer, ibuffer);
 }
 
-void Shape::GenerateModel(float* vbuffer, GLushort* ibuffer, int numVerts, int nIndices)
+void Shape::GenerateModel(const float* vbuffer, const GLushort* ibuffer, int numVerts, int nIndices)
 {
     // GLuint vbo, ibo, vao;
 
@@ -340,9 +340,13 @@ void Shape::GenerateModel(float* vbuffer, GLushort* ibuffer, int numVerts, int n
     numIndices = nIndices;
 }
 
-void MillSim::Shape::SetModelData(std::vector<Vertex>& vbuffer, std::vector<GLushort>& ibuffer)
+void MillSim::Shape::SetModelData(const std::vector<Vertex>& vbuffer,
+                                  const std::vector<GLushort>& ibuffer)
 {
-    GenerateModel((float*)vbuffer.data(), ibuffer.data(), (int)vbuffer.size(), (int)ibuffer.size());
+    GenerateModel((const float*)vbuffer.data(),
+                  ibuffer.data(),
+                  (int)vbuffer.size(),
+                  (int)ibuffer.size());
 }
 
 void Shape::Render()
