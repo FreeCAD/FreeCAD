@@ -2539,7 +2539,7 @@ void SketcherGui::centerScale(Sketcher::SketchObject* Obj, double scale_factor)
     auto doc = Gui::Application::Instance->activeDocument();
     SketcherGui::ViewProviderSketch* vp =
         static_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit());
-    DrawSketchHandlerScale scaler(allGeoIds, scale_factor, Base::Vector2d(0.0, 0.0));
+    DrawSketchHandlerScale scaler(allGeoIds, scale_factor, Base::Vector2d(0.0, 0.0), false);
     scaler.setSketchGui(vp);
     scaler.executeCommands();
 

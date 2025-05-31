@@ -74,16 +74,19 @@ public:
         , refLength(0.0)
         , length(0.0)
         , scaleFactor(0.0)
+        , abortOnFail(true)
     {}
     explicit DrawSketchHandlerScale(std::vector<int> listOfGeoIds,
                                     double scaleFactor,
-                                    Base::Vector2d referencePoint)
+                                    Base::Vector2d referencePoint, 
+                                    bool abortOnFail = true)
         : listOfGeoIds(listOfGeoIds)
         , referencePoint(referencePoint)
         , deleteOriginal(true)
         , refLength(0.0)
         , length(0.0)
         , scaleFactor(scaleFactor)
+        , abortOnFail(abortOnFail)
     {}
 
     DrawSketchHandlerScale(const DrawSketchHandlerScale&) = delete;
@@ -114,8 +117,10 @@ public:
             Gui::NotifyError(sketchgui,
                              QT_TRANSLATE_NOOP("Notifications", "Error"),
                              QT_TRANSLATE_NOOP("Notifications", "Failed to scale"));
-
-            Gui::Command::abortCommand();
+            
+            if (abortOnFail) {
+                Gui::Command::abortCommand();
+            }
             THROWM(Base::RuntimeError,
                    QT_TRANSLATE_NOOP(
                        "Notifications",
@@ -216,7 +221,9 @@ private:
     std::vector<int> listOfGeoIds;
     Base::Vector2d referencePoint, startPoint, endPoint;
     bool deleteOriginal;
+    bool abortOnFail; // When the scale operation is part of a larger transaction, one might want to continue even if the scaling failed
     double refLength, length, scaleFactor;
+
 
     void deleteOriginalGeos()
     {
