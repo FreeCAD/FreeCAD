@@ -547,13 +547,15 @@ void MillSimulation::SetBoxStock(float x, float y, float z, float l, float w, fl
     simDisplay.ScaleViewToStock(&mStockObject);
 }
 
-void MillSimulation::SetArbitraryStock(std::vector<Vertex>& verts, std::vector<GLushort>& indices)
+void MillSimulation::SetArbitraryStock(const std::vector<Vertex>& verts,
+                                       const std::vector<GLushort>& indices)
 {
     mStockObject.GenerateSolid(verts, indices);
     simDisplay.ScaleViewToStock(&mStockObject);
 }
 
-void MillSimulation::SetBaseObject(std::vector<Vertex>& verts, std::vector<GLushort>& indices)
+void MillSimulation::SetBaseObject(const std::vector<Vertex>& verts,
+                                   const std::vector<GLushort>& indices)
 {
     mBaseShape.GenerateSolid(verts, indices);
 }
