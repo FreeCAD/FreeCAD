@@ -738,6 +738,7 @@ def makePipe(baseobj=None, diameter=0, length=0, placement=None, name=None):
         baseClassName="_ArchPipe",
         internalName="Pipe",
         defaultLabel=name if name else translate("Arch", "Pipe"),
+        viewProviderName="_ViewProviderPipe",
     )
 
     # Initialize all relevant properties
