@@ -71,8 +71,8 @@ public:
     bool AddGcodeLine(const char* line);
     void SetSimulationStage(float stage);
     void SetBoxStock(float x, float y, float z, float l, float w, float h);
-    void SetArbitraryStock(std::vector<Vertex>& verts, std::vector<GLushort>& indices);
-    void SetBaseObject(std::vector<Vertex>& verts, std::vector<GLushort>& indices);
+    void SetArbitraryStock(const std::vector<Vertex>& verts, const std::vector<GLushort>& indices);
+    void SetBaseObject(const std::vector<Vertex>& verts, const std::vector<GLushort>& indices);
     void MouseDrag(int buttons, int dx, int dy);
     void MouseMove(int px, int py, int modifiers);
     void MouseScroll(float dy);
