@@ -34,7 +34,7 @@
 namespace MillSim
 {
 
-using std::numbers::pi;
+constexpr auto pi = std::numbers::pi_v<float>;
 
 struct Point3D
 {

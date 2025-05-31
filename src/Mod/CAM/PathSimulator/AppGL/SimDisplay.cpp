@@ -36,8 +36,6 @@
 namespace MillSim
 {
 
-using std::numbers::pi;
-
 void SimDisplay::InitShaders()
 {
     // use shaders
