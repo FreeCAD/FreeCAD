@@ -100,3 +100,34 @@ def generateSubstitute(newTC, oldTC=None):
         return [Path.Command(sd.value, {"S": newTC.SpindleSpeed})]
 
     return []
+
+
+def needToolChange(newTC, oldTC):
+    """
+    Check two toolcontrollers object for conditions to add commands for tool change
+    """
+    if newTC is None:
+        # No need to change tool if no New Tool Controller, in any case
+        return False
+
+    if oldTC is None:
+        # Need to change tool if New Tool controller is set
+        # and no Old Tool Controller
+        return True
+
+    if newTC.Tool != oldTC.Tool:
+        # Need to change tool if New Tool controller is set
+        # and toolbit is different from Old Tool Controller
+        return True
+
+    if newTC.SpindleSpeed != oldTC.SpindleSpeed:
+        # Need to change tool if New Tool controller is set
+        # and SpindleSpeed is different from Old Tool Controller
+        return True
+
+    if newTC.SpindleDir != oldTC.SpindleDir:
+        # Need to change tool if New Tool controller is set
+        # and SpindleDir is different from Old Tool Controller
+        return True
+
+    return False

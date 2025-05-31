@@ -34,6 +34,7 @@ from PySide import QtCore, QtGui
 import re
 import sys
 from typing import Any, Dict, List, Optional, Tuple, Union
+from Path.Base.Generator.toolchange import needToolChange
 
 import Path.Base.Util as PathUtil
 import Path.Post.UtilsArguments as PostUtilsArguments
@@ -195,11 +196,11 @@ class PostProcessor:
                 # Now generate the gcode
                 for obj in self._job.Operations.Group:
                     tc = PathUtil.toolControllerForOp(obj)
-                    if tc is not None and PathUtil.activeForOp(obj):
-                        if tc.ToolNumber != currTool:
+                    if PathUtil.activeForOp(obj):
+                        if needToolChange(tc, currTool):
                             sublist.append(tc)
-                            Path.Log.debug(f"Appending TC: {tc.Name}")
-                            currTool = tc.ToolNumber
+                            Path.Log.debug(f"Appending TC: {tc.Name} {tc.Label}")
+                            currTool = tc
                     sublist.append(obj)
                 postlist.append((f, sublist))
 
@@ -236,27 +237,27 @@ class PostProcessor:
                 if tc is None:
                     tcstring = "None"
                 elif "%T" in self._job.PostProcessorOutputFile:
-                    tcstring = f"{tc.ToolNumber}"
+                    tcstring = f"{tc.ToolNumber} {tc.Tool.Label}"
                 else:
                     tcstring = re.sub(r"[^\w\d-]", "_", tc.Label)
                 Path.Log.track(toolstring)
 
-                if tc is None or tc.ToolNumber == currTool:
+                if not needToolChange(tc, currTool):
                     curlist.append(obj)
-                elif tc.ToolNumber != currTool and currTool is None:  # first TC
+                elif needToolChange(tc, currTool) and currTool is None:  # first TC
                     sublist.append(tc)
                     curlist.append(obj)
-                    currTool = tc.ToolNumber
+                    currTool = tc
                     toolstring = tcstring
 
-                elif tc.ToolNumber != currTool and currTool is not None:  # TC
+                elif needToolChange(tc, currTool) and currTool is not None:  # TC
                     for fixture in fixturelist:
                         sublist.append(fixture)
                         sublist.extend(curlist)
                     postlist.append((toolstring, sublist))
                     sublist = [tc]
                     curlist = [obj]
-                    currTool = tc.ToolNumber
+                    currTool = tc
                     toolstring = tcstring
 
                 if idx == len(self._job.Operations.Group) - 1:  # Last operation.
@@ -286,9 +287,9 @@ class PostProcessor:
                     sublist.append(__fixtureSetup(index, f, self._job))
                     tc = PathUtil.toolControllerForOp(obj)
                     if tc is not None:
-                        if self._job.SplitOutput or (tc.ToolNumber != currTool):
+                        if self._job.SplitOutput or needToolChange(tc, currTool):
                             sublist.append(tc)
-                            currTool = tc.ToolNumber
+                            currTool = tc
                     sublist.append(obj)
                 postlist.append((obj.Label, sublist))
 
