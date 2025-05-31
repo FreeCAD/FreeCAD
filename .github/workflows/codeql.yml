@@ -94,8 +94,8 @@ jobs:
         # Prefix the list here with "+" to use these queries and those in the config file.
 
         # For more details on CodeQL's query packs, refer to: https://docs.github.com/en/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/configuring-code-scanning#using-queries-in-ql-packs
-        queries: security-extended
-        # queries: security-and-quality
+        # queries: security-extended
+        queries: security-and-quality
 
         # Change the CodeQL Bundle version
         # tools: https://github.com/github/codeql-action/releases/download/codeql-bundle-v2.20.7/codeql-bundle-linux64.tar.gz
@@ -208,8 +208,8 @@ jobs:
         # Prefix the list here with "+" to use these queries and those in the config file.
 
         # For more details on CodeQL's query packs, refer to: https://docs.github.com/en/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/configuring-code-scanning#using-queries-in-ql-packs
-        queries: security-extended
-        # queries: security-and-quality
+        # queries: security-extended
+        queries: security-and-quality
 
         # Change the CodeQL Bundle version
         # tools: https://github.com/github/codeql-action/releases/download/codeql-bundle-v2.20.7/codeql-bundle-linux64.tar.gz
