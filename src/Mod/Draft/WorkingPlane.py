@@ -241,18 +241,47 @@ class PlaneBase:
         self.position = pos + (self.axis * offset)
         return True
 
+    def align_to_face(self, face, offset=0):
+        """Align the WP to a face with an optional offset.
+
+        The face must be planar.
+
+        The center of gravity of the face defines the WP `position` and the
+        normal of the face the WP `axis`. The WP `u` and `v` vectors are
+        determined by the DraftGeomUtils.uv_vectors_from_face function.
+        See there.
+
+        Parameters
+        ----------
+        face: Part.Face
+            Face.
+        offset: float, optional
+            Defaults to zero.
+            Offset along the WP `axis`.
+
+        Returns
+        -------
+        `True`/`False`
+            `True` if successful.
+        """
+        if face.Surface.isPlanar() is False:
+            return False
+        place = DraftGeomUtils.placement_from_face(face)
+        self.u, self.v, self.axis = self._axes_from_rotation(place.Rotation)
+        self.position = place.Base + (self.axis * offset)
+        return True
+
     def align_to_face_and_edge(self, face, edge, offset=0):
         """Align the WP to a face and an edge.
 
         The face must be planar.
 
-        The WP will lie on the face, but its `position` will be the
-        first vertex of the edge, and its `u` vector will be aligned
-        with the edge.
+        The normal of the face defines the WP `axis`, the first vertex of the
+        edge its `position`, and its `u` vector is determined by the second
+        vertex of the edge.
 
         Parameters
         ----------
-
         face: Part.Face
             Face.
         edge: Part.Edge
@@ -270,40 +299,8 @@ class PlaneBase:
             return False
         axis = face.normalAt(0,0)
         point = edge.Vertexes[0].Point
-        upvec = edge.Vertexes[-1].Point.sub(point)
-        return self.align_to_point_and_axis(point, axis, offset, upvec)
-        #vertex = Part.Vertex(face.CenterOfMass)
-        #return self.align_to_edges_vertexes([edge, vertex], offset)
-
-    def align_to_face(self, shape, offset=0):
-        """Align the WP to a face with an optional offset.
-
-        The face must be planar.
-
-        The center of gravity of the face defines the WP `position` and the
-        normal of the face the WP `axis`. The WP `u` and `v` vectors are
-        determined by the DraftGeomUtils.uv_vectors_from_face function.
-        See there.
-
-        Parameters
-        ----------
-        shape: Part.Face
-            Face.
-        offset: float, optional
-            Defaults to zero.
-            Offset along the WP `axis`.
-
-        Returns
-        -------
-        `True`/`False`
-            `True` if successful.
-        """
-        if shape.Surface.isPlanar() is False:
-            return False
-        place = DraftGeomUtils.placement_from_face(shape)
-        self.u, self.v, self.axis = self._axes_from_rotation(place.Rotation)
-        self.position = place.Base + (self.axis * offset)
-        return True
+        vec = edge.Vertexes[-1].Point.sub(point)
+        return self.align_to_point_and_axis(point, axis, offset, axis.cross(vec))
 
     def align_to_placement(self, place, offset=0):
         """Align the WP to a placement with an optional offset.
@@ -352,12 +349,11 @@ class PlaneBase:
         tol = 1e-7
         if axis.Length < tol:
             return False
-        if upvec.Length < tol:
-            return False
         axis = Vector(axis).normalize()
-        upvec = Vector(upvec).normalize()
-        if axis.isEqual(upvec, tol) or axis.isEqual(upvec.negative(), tol):
-            upvec = axis
+        if upvec.Length < tol or upvec.isEqual(axis, tol) or upvec.isEqual(axis.negative(), tol):
+            upvec = Vector(axis)
+        else:
+            upvec = Vector(upvec).normalize()
         rot = FreeCAD.Rotation(Vector(), upvec, axis, "ZYX")
         self.u, self.v, _ = self._axes_from_rotation(rot)
         self.axis = axis
@@ -1359,9 +1355,9 @@ class PlaneGui(PlaneBase):
         self._handle_custom(_hist_add)
         return True
 
-    def align_to_face(self, shape, offset=0, _hist_add=True):
+    def align_to_face(self, face, offset=0, _hist_add=True):
         """See PlaneBase.align_to_face."""
-        if super().align_to_face(shape, offset) is False:
+        if super().align_to_face(face, offset) is False:
             return False
         self._handle_custom(_hist_add)
         return True
@@ -1678,6 +1674,7 @@ class PlaneGui(PlaneBase):
         self.set_parameters(self._history["data_list"][idx])
         self._history["idx"] = idx
         self._update_all(_hist_add=False)
+        return self._history["data_list"][idx]
 
     def _has_previous(self):
         return bool(self._history) and self._history["idx"] != 0
