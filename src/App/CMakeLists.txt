@@ -59,11 +59,13 @@ include_directories(
     ${CMAKE_BINARY_DIR}/src
     ${CMAKE_SOURCE_DIR}/src
     ${CMAKE_CURRENT_BINARY_DIR}
+    ${FastSignals_INCLUDE_DIRS}
 )
 
 set(FreeCADApp_LIBS
     FreeCADBase
     ${Boost_LIBRARIES}
+    libfastsignals
     fmt::fmt
 )
 
