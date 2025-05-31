@@ -22,10 +22,11 @@
 
 
 #include "PreCompiled.h"
-
+#ifndef _PreComp_
 #include <QDir>
 #include <QFileInfo>
 #include <boost/algorithm/string/predicate.hpp>
+#endif
 
 #include <Base/Console.h>
 #include <Base/Exception.h>

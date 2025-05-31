@@ -22,8 +22,9 @@
  ***************************************************************************/
 
 #include "PreCompiled.h"
-
+#ifdef _PreComp_
 #include <QTemporaryDir>
+#endif
 
 #include "Application.h"
 #include "FCConfig.h"
