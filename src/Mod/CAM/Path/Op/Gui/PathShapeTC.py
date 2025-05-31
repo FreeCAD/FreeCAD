@@ -22,7 +22,6 @@
 # *                                                                         *
 # ***************************************************************************
 
-import Draft
 import FreeCAD
 import FreeCADGui
 import Part
@@ -32,8 +31,9 @@ import PathScripts.PathUtils as PathUtils
 
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
+
 __title__ = "CAM Path from Shape with Tool Controller"
-__author__ = ""
+__author__ = "tarman3"
 __inspirer__ = "Russ4262"
 __url__ = "https://forum.freecad.org/viewtopic.php?t=93896"
 __doc__ = ""
@@ -45,96 +45,120 @@ if False:
 else:
     Path.Log.setLevel(Path.Log.Level.INFO, Path.Log.thisModule())
 
-
 translate = FreeCAD.Qt.translate
 
 
-# Add base set of operation properties
-def _addBaseProperties(obj):
-    obj.addProperty(
-        "App::PropertyBool",
-        "Active",
-        "Path",
-        QT_TRANSLATE_NOOP("App::Property", "Make False, to prevent operation from generating code"),
-        locked=True,
-    )
-    obj.addProperty(
-        "App::PropertyString",
-        "Comment",
-        "Path",
-        QT_TRANSLATE_NOOP("App::Property", "An optional comment for this Operation"),
-        locked=True,
-    )
-    obj.addProperty(
-        "App::PropertyString",
-        "UserLabel",
-        "Path",
-        QT_TRANSLATE_NOOP("App::Property", "User Assigned Label"),
-        locked=True,
-    )
-    obj.addProperty(
-        "App::PropertyString",
-        "CycleTime",
-        "Path",
-        QT_TRANSLATE_NOOP("App::Property", "Operations Cycle Time Estimation"),
-        locked=True,
-    )
-    obj.setEditorMode("CycleTime", 1)  # Set property read-only
-    obj.Active = True
+class ObjectPathShape:
+    def __init__(self, obj):
+        self.Type = "ShapeObject"
+        self.obj = obj
+        obj.Proxy = self
+        obj.addProperty(
+            "App::PropertyBool",
+            "Active",
+            "Path",
+            QT_TRANSLATE_NOOP(
+                "App::Property", "Make False, to prevent operation from generating code"
+            ),
+        )
+        obj.addProperty(
+            "App::PropertyString",
+            "Comment",
+            "Path",
+            QT_TRANSLATE_NOOP("App::Property", "An optional comment for this Operation"),
+        )
+        obj.addProperty(
+            "App::PropertyString",
+            "UserLabel",
+            "Path",
+            QT_TRANSLATE_NOOP("App::Property", "User Assigned Label"),
+        )
+        obj.addProperty(
+            "App::PropertyLink",
+            "ToolController",
+            "Path",
+            QT_TRANSLATE_NOOP(
+                "App::Property", "The tool controller that will be used to calculate the path"
+            ),
+        )
+        obj.addProperty(
+            "App::PropertyString",
+            "CycleTime",
+            "Path",
+            QT_TRANSLATE_NOOP("App::Property", "Operations Cycle Time Estimation"),
+        )
+        obj.Active = True
+        obj.setEditorMode("CycleTime", 1)  # Set property read-only
+        self.addToolController(obj)
+        self.setSafetyZ(obj)
 
+    def dumps(self):
+        return None
 
-# Add ToolController properties
-def _addToolController(obj):
-    obj.addProperty(
-        "App::PropertyLink",
-        "ToolController",
-        "Path",
-        QT_TRANSLATE_NOOP(
-            "App::Property",
-            "The tool controller that will be used to calculate the path",
-        ),
-    )
-    obj.addProperty(
-        "App::PropertyDistance",
-        "OpToolDiameter",
-        "Op Values",
-        QT_TRANSLATE_NOOP("App::Property", "Holds the diameter of the tool"),
-    )
-    obj.setEditorMode("OpToolDiameter", 1)  # Set property read-only
-    obj.ToolController = PathUtils.findToolController(obj, None)
-    if not obj.ToolController:
-        raise OpBase.PathNoTCException()
-    obj.OpToolDiameter = obj.ToolController.Tool.Diameter
+    def loads(self, state):
+        return None
 
-    obj.FeedRate = obj.ToolController.HorizFeed.Value
-    obj.FeedRateVertical = obj.ToolController.VertFeed.Value
+    def onDelete(self, obj, args):
+        return True
 
+    def onChanged(self, obj, prop):
+        return None
 
-# Get list of tool controllers
-def _getToolControllers(obj, proxy=None):
-    # Modified getToolControllers() from PathScripts.PathUtils
-    # for Path object without Proxy
-    job = PathUtils.findParentJob(obj)
-    if job:
-        return [tc for tc in job.Tools.Group]
-    else:
-        return []
+    def onDocumentRestored(self, obj):
+        return None
 
+    def execute(self, obj):
+        params = {}
+        params["shapes"] = [so.Shape for so in obj.Sources]
+        if obj.UseStartPoint:
+            params["start"] = obj.StartPoint
+        params["return_end"] = False
+        params["arc_plane"] = obj.getEnumerationsOfProperty("ArcPlane").index(obj.ArcPlane)
+        params["sort_mode"] = obj.getEnumerationsOfProperty("SortMode").index(obj.SortMode)
+        params["min_dist"] = obj.MinDistance
+        params["abscissa"] = obj.SortAbscissa
+        params["nearest_k"] = obj.NearestK
+        params["orientation"] = obj.getEnumerationsOfProperty("Orientation").index(obj.Orientation)
+        params["direction"] = obj.getEnumerationsOfProperty("Direction").index(obj.Direction)
+        params["threshold"] = obj.RetractThreshold
+        params["retract_axis"] = obj.getEnumerationsOfProperty("RetractAxis").index(obj.RetractAxis)
+        params["retraction"] = obj.Retraction
+        params["resume_height"] = obj.ResumeHeight
+        params["segmentation"] = obj.Segmentation
+        params["feedrate"] = obj.FeedRate
+        params["feedrate_v"] = obj.FeedRateVertical
+        params["verbose"] = obj.Verbose
+        params["abs_center"] = obj.AbsoluteArcCenter
+        params["preamble"] = obj.EmitPreamble
+        params["deflection"] = obj.Deflection
 
-# Set safety height parameters for Path operation
-def _setSafetyZ(obj):
-    job = PathUtils.findParentJob(obj)
-    if job:
-        safetyZ = job.Stock.Shape.BoundBox.ZMax + 10
-        obj.RetractThreshold = safetyZ
-        obj.Retraction = safetyZ
-        obj.ResumeHeight = safetyZ
+        obj.Path = Path.fromShapes(**params)
+
+        obj.CycleTime = OpBase.getCycleTimeEstimate(obj)
+
+    # This method must return True and needed for PathUtils.findToolController()
+    def isToolSupported(self, obj, tool=None):
+        return True
+
+    def addToolController(self, obj):
+        obj.ToolController = PathUtils.findToolController(obj, None)
+        if not obj.ToolController:
+            raise OpBase.PathNoTCException()
+        obj.FeedRate = obj.ToolController.HorizFeed.Value
+        obj.FeedRateVertical = obj.ToolController.VertFeed.Value
+
+    # Set safety height parameters
+    def setSafetyZ(self, obj):
+        job = PathUtils.findParentJob(obj)
+        if job:
+            safetyZ = job.Stock.Shape.BoundBox.ZMax + 10
+            obj.Retraction = safetyZ
+            obj.ResumeHeight = safetyZ
 
 
 # Geometry for selected shapes
 class ObjectPartShape:
     def __init__(self, obj, base):
-        # Path.Log.info("ObjectPartShape.__init__()")
         self.obj = obj
         obj.addProperty(
             "App::PropertyLinkSubListGlobal",
@@ -163,17 +187,9 @@ class ObjectPartShape:
             pass
 
     def execute(self, obj):
-        edges = []
-        if obj.Base:
-            (base, subNames) = obj.Base[0]
-            edges = [
-                base.Shape.getElement(sub).copy() for sub in subNames if sub.startswith("Edge")
-            ]
-
-        if edges:
-            obj.Shape = Part.Wire(Part.__sortEdges__(edges))
-        else:
-            obj.Shape = Part.Shape()
+        (baseObj, subNames) = obj.Base[0]
+        edges = [baseObj.Shape.getElement(sub).copy() for sub in subNames if sub.startswith("Edge")]
+        obj.Shape = Part.Wire(Part.__sortEdges__(edges))
 
 
 class CommandPathShapeTC:
@@ -196,41 +212,37 @@ class CommandPathShapeTC:
         if isJob:
             selection = FreeCADGui.Selection.getSelectionEx()
             if selection:
-                base = selection[0].Object
+                baseObj = selection[0].Object
                 subBase = selection[0].SubElementNames
                 if subBase and [edge for edge in subBase if "Edge" in edge]:
                     return True
-                elif base.Shape.ShapeType in ["Wire", "Edge"]:
+                elif (
+                    hasattr(baseObj, "Shape")
+                    and hasattr(baseObj.Shape, "Edges")
+                    and baseObj.Shape.Edges
+                ):
                     return True
         return False
 
     def Activated(self):
-        print("Create PathShape object with Tool Controller")
         doc = FreeCAD.ActiveDocument
         selection = FreeCADGui.Selection.getSelectionEx()
-        shapeObj = None
         if selection:
-            base = selection[0].Object
+            baseObj = selection[0].Object
             subBase = selection[0].SubElementNames
-            if subBase:
-                subEdges = [edge for edge in subBase if "Edge" in edge]
-                shapeObj = doc.addObject("Part::FeaturePython", "PartShape")
-                shapeObj.ViewObject.Proxy = 0
-                shapeObj.Visibility = False
-                shapeObj.Proxy = ObjectPartShape(shapeObj, [(base, subEdges)])
-            elif base.Shape.ShapeType in ["Wire", "Edge"]:
-                shapeObj = Draft.make_clone(base)
+            if not subBase:
+                subBase = [f"Edge{i[0]+1}" for i in enumerate(baseObj.Shape.Edges)]
+            base = [baseObj, subBase]
+            shapeObj = doc.addObject("Part::FeaturePython", "PartShape")
+            shapeObj.ViewObject.Proxy = 0
+            shapeObj.Visibility = False
+            selection[0].Object.Visibility = False
+            shapeObj.Proxy = ObjectPartShape(shapeObj, base)
 
-        pathObj = doc.addObject("Path::FeatureShape", "PathShape")
-        pathObj.Sources = [shapeObj]
-
-        # Overwrite getToolControllers() function with modified version
-        PathUtils.getToolControllers = _getToolControllers
-
-        PathUtils.addToJob(pathObj)
-        _addBaseProperties(pathObj)
-        _addToolController(pathObj)
-        _setSafetyZ(pathObj)
+        pathShapeObj = doc.addObject("Path::FeatureShapePython", "PathShape")
+        pathShapeObj.Sources = [shapeObj]
+        PathUtils.addToJob(pathShapeObj)
+        ObjectPathShape(pathShapeObj)
         doc.recompute()
 
 
