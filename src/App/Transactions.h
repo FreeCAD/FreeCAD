@@ -40,51 +40,113 @@ class TransactionObject;
 class TransactionalObject;
 
 
-/** Represents a atomic transaction of the document
+/**
+ * @brief A class that represents an atomic transaction of the document.
+ *
+ * A transaction can contain multiple actions.  These actions are represented
+ * by TransactionObject objects.  Actions can be on objects: adding one,
+ * removing one, or changing one.  It can also be on properties: adding one or
+ * removing one.
  */
 class AppExport Transaction: public Base::Persistence
 {
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
-    /** Construction
+    /**
+     * @brief Construct a transaction.
      *
-     * @param id: transaction id. If zero, then it will be generated
+     * @param[in] id: The transaction id. If zero, then it will be generated
      * automatically as a monotonically increasing index across the entire
-     * application. User can pass in a transaction id to group multiple
-     * transactions from different document, so that they can be undo/redo
+     * application. Users can pass in a transaction id to group multiple
+     * transactions from different document, so that they can be undone/redone
      * together.
      */
     explicit Transaction(int id = 0);
-    /// Construction
+
+    /// Deconstruct a transaction.
     ~Transaction() override;
 
-    /// apply the content to the document
+    /**
+     * @brief Apply the content of this transaction to the document.
+     *
+     * @param[in] Doc The document to apply the transaction to.
+     * @param[in] forward If true, apply the transaction; otherwise, undo it.
+     */
     void apply(Document& Doc, bool forward);
 
-    // the utf-8 name of the transaction
+    /// The name of the transaction
     std::string Name;
 
     unsigned int getMemSize() const override;
     void Save(Base::Writer& writer) const override;
-    /// This method is used to restore properties from an XML document.
     void Restore(Base::XMLReader& reader) override;
 
-    /// Return the transaction ID
+    /**
+     * Acquire the transaction ID of this transaction.
+     *
+     * @return the transaction ID.
+     */
     int getID() const;
 
-    /// Generate a new unique transaction ID
+    /**
+     * @brief Generate a new unique transaction ID.
+     *
+     * @return the new transaction ID.
+     */
     static int getNewID();
+
+    /**
+     * @brief Get the last transaction ID.
+     *
+     * @return the last transaction ID.
+     */
     static int getLastID();
 
-    /// Returns true if the transaction list is empty; otherwise returns false.
+    /**
+     * @brief Check if the transaction list is empty.
+     *
+     * @return true if the transaction list is empty; otherwise false.
+     */
     bool isEmpty() const;
-    /// check if this object is used in a transaction
+
+    /**
+     * @brief Check if this object is used in a transaction.
+     *
+     * @param[in] Obj The object to check.
+     * @return true if the object is used in a transaction; otherwise false.
+     */
     bool hasObject(const TransactionalObject* Obj) const;
+
+    /**
+     * @brief Record adding or removing a property from an object.
+     *
+     * @param[in] Obj The object to add or remove the property from.
+     * @param[in] pcProp The property to add or remove.
+     * @param[in] add If true, add the property; otherwise, remove it.
+     */
     void addOrRemoveProperty(TransactionalObject* Obj, const Property* pcProp, bool add);
 
+    /**
+     * @brief Record adding a new object to the transaction.
+     *
+     * @param[in] Obj The object to add.
+     */
     void addObjectNew(TransactionalObject* Obj);
+
+    /**
+     * @brief Record removing an object from the transaction.
+     *
+     * @param[in] Obj The object to remove.
+     */
     void addObjectDel(const TransactionalObject* Obj);
+
+    /**
+     *@brief Record changing an object in the transaction.
+     *
+     * @param[in] Obj The object to change.
+     * @param[in] Prop The property that is changed.
+     */
     void addObjectChange(const TransactionalObject* Obj, const Property* Prop);
 
 private:
@@ -98,73 +160,147 @@ private:
         _Objects;
 };
 
-/** Represents an entry for an object in a Transaction
+/**
+ * @brief Class that represents an entry for an object in a Transaction.
+ *
+ * This class is used to store the information about the object and its
+ * properties.  It should not be confused with the TransactionalObject class
+ * that is a base class that contains functionality for a DocumentObject
+ * regarding transactions.
  */
 class AppExport TransactionObject: public Base::Persistence
 {
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
-    /// Construction
+    /// Construct a transaction object.
     TransactionObject();
-    /// Destruction
+
+    /// Destruct a transaction object.
     ~TransactionObject() override;
 
-    virtual void applyNew(Document& Doc, TransactionalObject* pcObj);
-    virtual void applyDel(Document& Doc, TransactionalObject* pcObj);
-    virtual void applyChn(Document& Doc, TransactionalObject* pcObj, bool Forward);
+    /**
+     * @brief Apply the transaction that adds a new object to the document.
+     *
+     * @param[in,out] doc The document to apply the transaction to.
+     * @param[in,out] obj The object that is added in the transaction.
+     */
+    virtual void applyNew(Document& doc, TransactionalObject* obj);
 
-    void setProperty(const Property* pcProp);
-    void addOrRemoveProperty(const Property* pcProp, bool add);
+    /**
+     * @brief Apply the transaction that removes an object from the document.
+     *
+     * @param[in,out] doc The document to apply the transaction to.
+     * @param[in,out] obj The object that is removed in the transaction.
+     */
+    virtual void applyDel(Document& doc, TransactionalObject* obj);
+
+    /**
+     * @brief Apply the transaction that changes an object in the document.
+     *
+     * @param[in,out] doc The document to apply the transaction to.
+     * @param[in,out] obj The object that is changed in the transaction.
+     * @param[in] forward If true, apply the transaction; otherwise, undo it.
+     */
+    virtual void applyChn(Document& doc, TransactionalObject* obj, bool forward);
+
+    /**
+     * @brief Set the property of the object that is affected by the transaction.
+     *
+     * @param[in] prop The property that is affected by the transaction.
+     */
+    void setProperty(const Property* prop);
+
+    /**
+     * @brief Add or remove a property from the object.
+     *
+     * @param[in] prop The property to add or remove.
+     * @param[in] add If true, add the property; otherwise, remove it.
+     */
+    void addOrRemoveProperty(const Property* prop, bool add);
 
     unsigned int getMemSize() const override;
     void Save(Base::Writer& writer) const override;
-    /// This method is used to restore properties from an XML document.
     void Restore(Base::XMLReader& reader) override;
 
+    /// Give Transaction access to the internals of this class.
     friend class Transaction;
 
 protected:
+    /// The status of the transaction object.
     enum Status
     {
+        /// A new object is added to the document.
         New,
+        /// An object is removed from the document.
         Del,
+        /// An object is changed in the document.
         Chn
     } status {New};
 
+    /// Struct to maintain property information.
     struct PropData: DynamicProperty::PropData
     {
         Base::Type propertyType;
         const Property* propertyOrig = nullptr;
     };
+    /// A map to maintain the properties of the object.
     std::unordered_map<int64_t, PropData> _PropChangeMap;
 
+    /// The name of the object in the document.
     std::string _NameInDocument;
 };
 
-/** Represents an entry for a document object in a transaction
+/**
+ * @brief Class that represents an entry for a document object in a transaction.
  */
 class AppExport TransactionDocumentObject: public TransactionObject
 {
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
-    /// Construction
+    /// Construct a transaction document object.
     TransactionDocumentObject();
-    /// Destruction
+
+    /// Destruct a transaction document object.
     ~TransactionDocumentObject() override;
 
     void applyNew(Document& Doc, TransactionalObject* pcObj) override;
     void applyDel(Document& Doc, TransactionalObject* pcObj) override;
 };
 
+/**
+ * @brief Class that represents a factory for creating transaction objects.
+ *
+ * This class is used to create transaction objects for different types of
+ * transactions.
+ */
 class AppExport TransactionFactory
 {
 public:
+    /** @brief Get the singleton instance of the TransactionFactory.
+     *
+     * @return The singleton instance of the TransactionFactory.
+     */
     static TransactionFactory& instance();
+
+    /// Destruct the singleton instance of the TransactionFactory.
     static void destruct();
 
+    /**
+     * @brief Create a transaction object for the given type.
+     *
+     * @param[in] type The type of the transaction object to create.
+     * @return A pointer to the created transaction object.
+     */
     TransactionObject* createTransaction(const Base::Type& type) const;
+
+    /**
+     * @brief Add a producer for a transaction object.
+     *
+     * @param[in] type The type id of the transaction object.
+     * @param[in,out] producer The producer to add.
+     */
     void addProducer(const Base::Type& type, Base::AbstractProducer* producer);
 
 private:
@@ -175,19 +311,32 @@ private:
     ~TransactionFactory() = default;
 };
 
+/**
+ * @brief Class that represents a producer for creating transaction objects.
+ *
+ * @tparam CLASS The class of the transaction object to produce.
+ */
 template<class CLASS>
 class TransactionProducer: public Base::AbstractProducer
 {
 public:
+    /**
+     * @brief Construct a transaction producer.
+     *
+     * @param[in] type The type of the transaction object.
+     */
     explicit TransactionProducer(const Base::Type& type)
     {
         TransactionFactory::instance().addProducer(type, this);
     }
 
+    /// Destruct a transaction producer.
     ~TransactionProducer() override = default;
 
     /**
-     * Creates an instance of the specified transaction object.
+     * @brief Creates an instance of the specified transaction object.
+     *
+     * @return A pointer to the created transaction object.
      */
     void* Produce() const override
     {
