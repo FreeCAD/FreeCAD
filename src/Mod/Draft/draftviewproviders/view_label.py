@@ -286,16 +286,22 @@ class ViewProviderLabel(ViewProviderDraftAnnotation):
         properties = vobj.PropertiesList
 
         can_update_label = ("DisplayMode" in properties
-                            and "LineSpacing" in properties
-                            and "ScaleMultiplier" in properties
-                            and "TextAlignment" in properties # Top, Middle or Bottom.
                             and "FontName" in properties
                             and "FontSize" in properties
-                            and "Justification" in properties)
+                            and "Justification" in properties
+                            and "LineSpacing" in properties
+                            and "ScaleMultiplier" in properties
+                            and "TextAlignment" in properties)  # Top, Middle or Bottom.
         can_update_frame = (can_update_label
                             and "Frame" in properties)
 
-        if prop == "ScaleMultiplier" and "ScaleMultiplier" in properties:
+        if prop in ["DisplayMode", "FontName", "FontSize", "Justification", "LineSpacing", "TextAlignment", "Frame"]:
+            if can_update_label:
+                self.update_label(obj, vobj)
+            if can_update_frame:
+                self.update_frame(obj, vobj)
+
+        elif prop == "ScaleMultiplier" and "ScaleMultiplier" in properties:
             if "ArrowSize" in properties:
                 s = vobj.ArrowSize.Value * vobj.ScaleMultiplier
                 if s:
@@ -305,40 +311,6 @@ class ViewProviderLabel(ViewProviderDraftAnnotation):
             if can_update_frame:
                 self.update_frame(obj, vobj)
 
-        elif prop == "LineColor" and "LineColor" in properties:
-            col = vobj.LineColor
-            self.matline.diffuseColor.setValue([col[0], col[1], col[2]])
-
-        elif prop == "TextColor" and "TextColor" in properties:
-            col = vobj.TextColor
-            self.mattext.diffuseColor.setValue([col[0], col[1], col[2]])
-
-        elif prop == "LineWidth" and "LineWidth" in properties:
-            self.drawstyle.lineWidth = vobj.LineWidth
-
-        elif prop == "FontName" and "FontName" in properties:
-            self.font.name = vobj.FontName.encode("utf8")
-            if can_update_label:
-                self.update_label(obj, vobj)
-            if can_update_frame:
-                self.update_frame(obj, vobj)
-
-        elif prop in ["DisplayMode", "Frame", "TextAlignment", "FontSize", "Justification"]:
-            if can_update_label:
-                self.update_label(obj, vobj)
-            if can_update_frame:
-                self.update_frame(obj, vobj)
-
-        elif prop == "Line" and "Line" in properties:
-            if vobj.Line:
-                self.lineswitch.whichChild = 0
-            else:
-                self.lineswitch.whichChild = -1
-
-        elif prop == "ArrowType" and "ArrowType" in properties:
-            if len(obj.Points) > 1:
-                self.update_arrow(obj, vobj)
-
         elif (prop == "ArrowSize"
               and "ArrowSize" in properties
               and "ScaleMultiplier" in properties):
@@ -346,13 +318,26 @@ class ViewProviderLabel(ViewProviderDraftAnnotation):
             if s:
                 self.arrowpos.scaleFactor.setValue((s, s, s))
 
-        elif prop == "LineSpacing" and "LineSpacing" in properties:
-            self.text_wld.spacing = max(1, vobj.LineSpacing)
-            self.text_scr.spacing = max(1, vobj.LineSpacing)
-            if can_update_label:
-                self.update_label(obj, vobj)
-            if can_update_frame:
-                self.update_frame(obj, vobj)
+        elif prop == "ArrowType" and "ArrowType" in properties:
+            if len(obj.Points) > 1:
+                self.update_arrow(obj, vobj)
+
+        elif prop == "Line" and "Line" in properties:
+            if vobj.Line:
+                self.lineswitch.whichChild = 0
+            else:
+                self.lineswitch.whichChild = -1
+
+        elif prop == "LineWidth" and "LineWidth" in properties:
+            self.drawstyle.lineWidth = vobj.LineWidth
+
+        elif prop == "LineColor" and "LineColor" in properties:
+            col = vobj.LineColor
+            self.matline.diffuseColor.setValue([col[0], col[1], col[2]])
+
+        elif prop == "TextColor" and "TextColor" in properties:
+            col = vobj.TextColor
+            self.mattext.diffuseColor.setValue([col[0], col[1], col[2]])
 
     def get_text_size(self, vobj):
         """Return the bounding box of the text element."""
@@ -370,7 +355,11 @@ class ViewProviderLabel(ViewProviderDraftAnnotation):
     def update_label(self, obj, vobj):
         """Update the label including text size and multiplier."""
         size = vobj.FontSize.Value * vobj.ScaleMultiplier
+        line_spacing = max(1, vobj.LineSpacing)
         self.font.size = size
+        self.text_wld.spacing = line_spacing
+        self.text_scr.spacing = line_spacing
+        self.font.name = vobj.FontName.encode("utf8")
 
         if vobj.Justification == "Left":
             self.text_wld.justification = coin.SoAsciiText.LEFT
@@ -402,9 +391,9 @@ class ViewProviderLabel(ViewProviderDraftAnnotation):
             self.textpos.translation.setValue(obj.Placement.Base)
             return
 
-        line_height = size * max(1, vobj.LineSpacing)
-        if vobj.Frame == "None":
-            margin = size * 0.1
+        line_height = size * line_spacing
+        if vobj.Frame == "None" and vobj.Justification != "Center":
+            margin = line_height * 0.1
             first_line_height = size
             # We need to calculate total_height without using get_text_size:
             # If StraightDirection = "Horizontal" and TextAlignment = "Bottom"
@@ -422,9 +411,6 @@ class ViewProviderLabel(ViewProviderDraftAnnotation):
             v = App.Vector(margin, 0, 0)
         elif vobj.Justification == "Right":
             v = App.Vector(-margin, 0, 0)
-        elif vobj.TextAlignment == "Bottom" and vobj.Frame == "None":
-            # Justification is "Center"
-            v = App.Vector(0, margin, 0)
         else:
             v = App.Vector(0, 0, 0)
 
