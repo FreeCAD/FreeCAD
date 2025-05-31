@@ -734,13 +734,39 @@ def Execute(op, obj):
             adaptiveResults = list()
             for depths, region in cutlist:
                 for result in region["toolpaths"]:
+                    # Top depth is the height where the helix starts for a
+                    # region.
+                    # We want the lowest of 3 possibilities:
+                    # - the top of the stock OR
+                    # - the region's first cut depth + stepdown OR
+                    # - the operation's starting depth
+                    # The starting depth option covers the case where the user
+                    # has a previous operations that cleared some stock and
+                    # wants the adaptive toolpath to pick up where the previous
+                    # operation left off.
+                    # Regions are only generated where stock needs to be
+                    # removed, so we can't start at the cut level- we know
+                    # there's material there.
+                    # TODO: Due to the adaptive algorithm currently not
+                    # processing holes in the stock when finding entry points,
+                    # this may result in a helix up to stepdown in height where
+                    # one isn't required. This should be fixed in FindEntryPoint
+                    # or FindEntryPointOutside in Adaptive.cpp, not bandaged
+                    # here.
+
+                    TopDepth = min(
+                        topZ,
+                        depths[0] + stepdown,
+                        obj.StartDepth.Value,
+                    )
+
                     adaptiveResults.append(
                         {
                             "HelixCenterPoint": result.HelixCenterPoint,
                             "StartPoint": result.StartPoint,
                             "AdaptivePaths": result.AdaptivePaths,
                             "ReturnMotionType": result.ReturnMotionType,
-                            "TopDepth": depths[0] + stepdown,
+                            "TopDepth": TopDepth,
                             "BottomDepth": depths[-1],
                         }
                     )
