@@ -1380,7 +1380,6 @@ QWidget* PropertyBoolItem::createEditor(QWidget* parent,
                                         FrameOption /*frameOption*/) const
 {
     auto checkbox = new QCheckBox(parent);
-    QObject::connect(checkbox, &QCheckBox::toggled, method);
     return checkbox;
 }
 
