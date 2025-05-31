@@ -20,6 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
+#include "Base/Interpreter.h"
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
@@ -1200,6 +1201,8 @@ void Document::slotTouchedObject(const App::DocumentObject &Obj)
 // that the worker waits until it finishes
 void Document::callSignalBeforeRecompute()
 {
+    Base::PyGILStateRelease release;
+
     auto invokeSignalBeforeRecompute = [this]{
         // this runs in the GUI thread
         this->getDocument()->signalBeforeRecompute(*this->getDocument());
