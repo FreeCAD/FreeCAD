@@ -280,11 +280,11 @@ def export(exportList,filename,colors=None):
                     outfile.write("newmtl " + mat.Name + "\n")
                     for prop in kinds:
                         if prop in mat.Material:
-                            outfile.write(kinds[prop] + mat.Material[prop].strip("()").replace(',',' ') + "\n")
+                            outfile.write(kinds[prop] + mat.Material[prop].strip("()").replace(","," ") + "\n")
                     done.append(mat.Name)
         outfile.write("# Material Count: " + str(len(materials)))
         outfile.close()
-        FreeCAD.Console.PrintMessage(translate("Arch","Successfully written") + ' ' + filenamemtl + "\n")
+        FreeCAD.Console.PrintMessage(translate("Arch","Successfully written") + " " + filenamemtl + "\n")
 
 
 # return entry after given index from an array or None on array end
@@ -390,7 +390,7 @@ def insert(filename,docname):
             material = line[7:]
     if activeobject:
         makeMesh(doc,activeobject,verts,medges,facets,material,colortable)
-    FreeCAD.Console.PrintMessage(translate("Arch","Successfully imported") + ' ' + filename + "\n")
+    FreeCAD.Console.PrintMessage(translate("Arch","Successfully imported") + " " + filename + "\n")
     return doc
 
 def makeMesh(doc,activeobject,verts,edges,facets,material,colortable):

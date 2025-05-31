@@ -40,10 +40,10 @@ class Arch_CurtainWall:
 
     def GetResources(self):
 
-        return {'Pixmap'  : 'Arch_CurtainWall',
-                'MenuText': QT_TRANSLATE_NOOP("Arch_CurtainWall","Curtain Wall"),
-                'Accel': "C, W",
-                'ToolTip': QT_TRANSLATE_NOOP("Arch_CurtainWall","Creates a curtain wall object from selected line or from scratch")}
+        return {"Pixmap": "Arch_CurtainWall",
+                "MenuText": QT_TRANSLATE_NOOP("Arch_CurtainWall","Curtain Wall"),
+                "Accel": "C, W",
+                "ToolTip": QT_TRANSLATE_NOOP("Arch_CurtainWall","Creates a curtain wall object from selected line or from scratch")}
 
     def IsActive(self):
 
@@ -62,7 +62,7 @@ class Arch_CurtainWall:
             self.doc.openTransaction(translate("Arch","Create Curtain Wall"))
             FreeCADGui.addModule("Draft")
             FreeCADGui.addModule("Arch")
-            FreeCADGui.doCommand("obj = Arch.makeCurtainWall(FreeCAD.ActiveDocument."+FreeCADGui.Selection.getSelection()[0].Name+")")
+            FreeCADGui.doCommand("obj = Arch.makeCurtainWall(FreeCAD.ActiveDocument." + FreeCADGui.Selection.getSelection()[0].Name + ")")
             FreeCADGui.doCommand("Draft.autogroup(obj)")
             self.doc.commitTransaction()
             self.doc.recompute()
@@ -94,7 +94,7 @@ class Arch_CurtainWall:
             self.doc.openTransaction(translate("Arch","Create Curtain Wall"))
             FreeCADGui.addModule("Draft")
             FreeCADGui.addModule("Arch")
-            FreeCADGui.doCommand("base = Draft.makeLine(FreeCAD."+str(self.points[0])+",FreeCAD."+str(self.points[1])+")")
+            FreeCADGui.doCommand("base = Draft.makeLine(FreeCAD." + str(self.points[0]) + ",FreeCAD." + str(self.points[1]) + ")")
             FreeCADGui.doCommand("obj = Arch.makeCurtainWall(base)")
             FreeCADGui.doCommand("Draft.autogroup(obj)")
             self.doc.commitTransaction()
@@ -102,4 +102,4 @@ class Arch_CurtainWall:
 
 
 
-FreeCADGui.addCommand('Arch_CurtainWall', Arch_CurtainWall())
+FreeCADGui.addCommand("Arch_CurtainWall", Arch_CurtainWall())

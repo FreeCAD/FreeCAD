@@ -56,16 +56,16 @@ class ArchTest(unittest.TestCase):
     def testRebar(self):
         App.Console.PrintLog ('Checking Arch Rebar...\n')
         s = Arch.makeStructure(length=2,width=3,height=5)
-        sk = App.ActiveDocument.addObject('Sketcher::SketchObject','Sketch')
+        sk = App.ActiveDocument.addObject('Sketcher::SketchObject',"Sketch")
         sk.AttachmentSupport = (s,["Face6"])
         sk.addGeometry(Part.LineSegment(App.Vector(-0.85,1.25,0),App.Vector(0.75,1.25,0)))
         sk.addGeometry(Part.LineSegment(App.Vector(0.75,1.25,0),App.Vector(0.75,-1.20,0)))
         sk.addGeometry(Part.LineSegment(App.Vector(0.75,-1.20,0),App.Vector(-0.85,-1.20,0)))
         sk.addGeometry(Part.LineSegment(App.Vector(-0.85,-1.20,0),App.Vector(-0.85,1.25,0)))
-        sk.addConstraint(Sketcher.Constraint('Coincident',0,2,1,1))
-        sk.addConstraint(Sketcher.Constraint('Coincident',1,2,2,1))
-        sk.addConstraint(Sketcher.Constraint('Coincident',2,2,3,1))
-        sk.addConstraint(Sketcher.Constraint('Coincident',3,2,0,1))
+        sk.addConstraint(Sketcher.Constraint("Coincident",0,2,1,1))
+        sk.addConstraint(Sketcher.Constraint("Coincident",1,2,2,1))
+        sk.addConstraint(Sketcher.Constraint("Coincident",2,2,3,1))
+        sk.addConstraint(Sketcher.Constraint("Coincident",3,2,0,1))
         r = Arch.makeRebar(s,sk,diameter=.1,amount=2)
         self.assertTrue(r,"Arch Rebar failed")
 
@@ -85,10 +85,10 @@ class ArchTest(unittest.TestCase):
         sk.addGeometry(Part.LineSegment(App.Vector(1500,  800, 0), App.Vector(1500, 2000, 0)))
         sk.addGeometry(Part.LineSegment(App.Vector(1500, 2000, 0), App.Vector( 500, 2000, 0)))
         sk.addGeometry(Part.LineSegment(App.Vector( 500, 2000, 0), App.Vector( 500,  800, 0)))
-        sk.addConstraint(Sketcher.Constraint('Coincident', 0, 2, 1, 1))
-        sk.addConstraint(Sketcher.Constraint('Coincident', 1, 2, 2, 1))
-        sk.addConstraint(Sketcher.Constraint('Coincident', 2, 2, 3, 1))
-        sk.addConstraint(Sketcher.Constraint('Coincident', 3, 2, 0, 1))
+        sk.addConstraint(Sketcher.Constraint("Coincident", 0, 2, 1, 1))
+        sk.addConstraint(Sketcher.Constraint("Coincident", 1, 2, 2, 1))
+        sk.addConstraint(Sketcher.Constraint("Coincident", 2, 2, 3, 1))
+        sk.addConstraint(Sketcher.Constraint("Coincident", 3, 2, 0, 1))
         App.ActiveDocument.recompute()
         win = Arch.makeWindow(sk)
         Arch.removeComponents(win, host=wall)
@@ -97,12 +97,12 @@ class ArchTest(unittest.TestCase):
 
         # Wall visibility works when standalone
         FreeCADGui.Selection.clearSelection()
-        FreeCADGui.Selection.addSelection('ArchTest',wall.Name)
+        FreeCADGui.Selection.addSelection("ArchTest",wall.Name)
         assert wall.Visibility
-        FreeCADGui.runCommand('Std_ToggleVisibility',0)
+        FreeCADGui.runCommand("Std_ToggleVisibility",0)
         App.ActiveDocument.recompute()
         assert not wall.Visibility
-        FreeCADGui.runCommand('Std_ToggleVisibility',0)
+        FreeCADGui.runCommand("Std_ToggleVisibility",0)
         assert wall.Visibility
 
         bp.Group = [wall]
@@ -111,18 +111,18 @@ class ArchTest(unittest.TestCase):
         # self.assertTrue(len(bp.Shape.Faces) == 16, "'{}' failed".format(operation))
 
         # Wall visibility works when inside a BuildingPart
-        FreeCADGui.runCommand('Std_ToggleVisibility',0)
+        FreeCADGui.runCommand("Std_ToggleVisibility",0)
         App.ActiveDocument.recompute()
         assert not wall.Visibility
-        FreeCADGui.runCommand('Std_ToggleVisibility',0)
+        FreeCADGui.runCommand("Std_ToggleVisibility",0)
         assert wall.Visibility
 
         # Wall visibility works when BuildingPart Toggled
         FreeCADGui.Selection.clearSelection()
-        FreeCADGui.Selection.addSelection('ArchTest',bp.Name)
-        FreeCADGui.runCommand('Std_ToggleVisibility',0)
+        FreeCADGui.Selection.addSelection("ArchTest",bp.Name)
+        FreeCADGui.runCommand("Std_ToggleVisibility",0)
         assert not wall.Visibility
-        FreeCADGui.runCommand('Std_ToggleVisibility',0)
+        FreeCADGui.runCommand("Std_ToggleVisibility",0)
         assert wall.Visibility
 
         # Wall visibiity works inside group inside BuildingPart Toggled
@@ -132,10 +132,10 @@ class ArchTest(unittest.TestCase):
         bp.Group = [grp]
         App.ActiveDocument.recompute()
         assert wall.Visibility
-        FreeCADGui.runCommand('Std_ToggleVisibility',0)
+        FreeCADGui.runCommand("Std_ToggleVisibility",0)
         App.ActiveDocument.recompute()
         assert not wall.Visibility
-        FreeCADGui.runCommand('Std_ToggleVisibility',0)
+        FreeCADGui.runCommand("Std_ToggleVisibility",0)
         App.ActiveDocument.recompute()
         assert wall.Visibility
 

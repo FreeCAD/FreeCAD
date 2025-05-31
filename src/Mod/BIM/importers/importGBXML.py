@@ -147,7 +147,7 @@ def export(objectslist,filename):
 
     filestream.write( '</gbXML>' )
 
-'''
+"""
         <Area>18000.00000</Area>
         <Space id="sp1_LabandCorridor_Labcorridor" spaceType="LaboratoryOffice" zoneIdRef="z1_LabandCorridor">
             <Name>Lab corridor</Name>
@@ -501,4 +501,4 @@ def export(objectslist,filename):
 
 ... repeat
 
-</gbXML>'''
+</gbXML>"""

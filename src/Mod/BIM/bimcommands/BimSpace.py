@@ -39,10 +39,10 @@ class Arch_Space:
 
     def GetResources(self):
 
-        return {'Pixmap'  : 'Arch_Space',
-                'MenuText': QT_TRANSLATE_NOOP("Arch_Space","Space"),
-                'Accel': "S, P",
-                'ToolTip': QT_TRANSLATE_NOOP("Arch_Space","Creates a space object from selected boundary objects")}
+        return {"Pixmap": "Arch_Space",
+                "MenuText": QT_TRANSLATE_NOOP("Arch_Space","Space"),
+                "Accel": "S, P",
+                "ToolTip": QT_TRANSLATE_NOOP("Arch_Space","Creates a space object from selected boundary objects")}
 
     def IsActive(self):
 
@@ -69,4 +69,4 @@ class Arch_Space:
             FreeCADGui.Selection.addObserver(FreeCAD.ArchObserver)
 
 
-FreeCADGui.addCommand('Arch_Space', Arch_Space())
+FreeCADGui.addCommand("Arch_Space", Arch_Space())
