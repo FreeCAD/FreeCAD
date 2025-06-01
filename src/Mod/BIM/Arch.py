@@ -52,6 +52,7 @@ __author__ = "Yorik van Havre"
 __url__    = "https://www.freecad.org"
 
 import FreeCAD
+from typing import Optional
 
 if FreeCAD.GuiUp:
     import FreeCADGui
@@ -895,8 +896,14 @@ def makeProject(sites=None, name=None):
 
     return project
 
-
-def makeRebar(baseobj=None, sketch=None, diameter=None, amount=1, offset=None, name=None):
+def makeRebar(
+    baseobj: Optional[FreeCAD.DocumentObject] = None,
+    sketch: Optional[FreeCAD.DocumentObject] = None,
+    diameter: Optional[float] = None,
+    amount: int = 1,
+    offset: Optional[float] = None,
+    name: Optional[str] = None
+) -> Optional[FreeCAD.DocumentObject]:
     """
     Creates a reinforcement bar object.
 
