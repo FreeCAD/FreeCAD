@@ -938,8 +938,16 @@ def makeRebar(
 
     # Initialize all relevant properties
     if baseobj and sketch:
+        # Case 1: both the structural element (base object) and a sketch defining the shape and path
+        # of a single rebar strand are provided. This is the most common scenario.
         if hasattr(sketch, "AttachmentSupport"):
             if sketch.AttachmentSupport:
+                # If the sketch is already attached to the base object, remove that attachment.
+                # Support two AttachmentSupport (PropertyLinkList) formats:
+                # 1. Tuple: (baseobj, subelement)
+                # 2. Direct object: baseobj
+                # TODO: why is the list format not checked for here?
+                # ~ 3. List: [baseobj, subelement] ~
                 if isinstance(sketch.AttachmentSupport, tuple):
                     if sketch.AttachmentSupport[0] == baseobj:
                         sketch.AttachmentSupport = None
@@ -950,12 +958,15 @@ def makeRebar(
             sketch.ViewObject.hide()
         rebar.Host = baseobj
     elif not baseobj and sketch:
-        # A obj could be based on a wire without the existence of a Structure
+        # Case 2: standalone rebar strand defined by a sketch, not attached to any structural
+        # element.
         rebar.Base = sketch
         if FreeCAD.GuiUp:
             sketch.ViewObject.hide()
         rebar.Host = None
     elif baseobj and not sketch:
+        # Case 3: rebar strand defined by the shape of a structural element (base object). The
+        # base object becomes the rebar.
         rebar.Shape = baseobj.Shape
     rebar.Diameter = diameter if diameter else params.get_param_arch("RebarDiameter")
     rebar.Amount = amount
