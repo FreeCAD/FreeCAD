@@ -1137,7 +1137,7 @@ def makeSectionPlane(objectslist=None, name=None):
         "Part::FeaturePython",
         baseClassName="_SectionPlane",
         internalName="Section",
-        defaultLabel=name if name else translate("Arch", "Secton"),
+        defaultLabel=name if name else translate("Arch", "Section"),
     )
 
     # Initialize all relevant properties
