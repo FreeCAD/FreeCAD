@@ -49,22 +49,22 @@ namespace App
 {
 enum class AddObjectOption
 {
-    none = 0,
-    setNewStatus = 1,
-    setPartialStatus = 2,
-    unsetPartialStatus = 4,
-    doSetup = 8,
-    activateObject = 16
+    None = 0,
+    SetNewStatus = 1,
+    SetPartialStatus = 2,
+    UnsetPartialStatus = 4,
+    DoSetup = 8,
+    ActivateObject = 16
 };
 using AddObjectOptions = Base::Flags<AddObjectOption>;
 
 enum class RemoveObjectOption
 {
-    none = 0,
-    mayRemoveWhileRecomputing = 1, 
-    mayDestroyOutOfTransaction = 2,
-    destroyOnRollback = 4, 
-    preserveChildrenVisibility = 8
+    None = 0,
+    MayRemoveWhileRecomputing = 1, 
+    MayDestroyOutOfTransaction = 2,
+    DestroyOnRollback = 4, 
+    PreserveChildrenVisibility = 8
 };
 using RemoveObjectOptions = Base::Flags<RemoveObjectOption>;
 
@@ -655,8 +655,8 @@ protected:
     /// Construction
     explicit Document(const char* documentName = "");
 
-    void _removeObject(DocumentObject* pcObject, RemoveObjectOptions options = RemoveObjectOption::destroyOnRollback | RemoveObjectOption::preserveChildrenVisibility);
-    void _addObject(DocumentObject* pcObject, const char* pObjectName, AddObjectOptions options = AddObjectOption::activateObject, const char* viewType = nullptr);
+    void _removeObject(DocumentObject* pcObject, RemoveObjectOptions options = RemoveObjectOption::DestroyOnRollback | RemoveObjectOption::PreserveChildrenVisibility);
+    void _addObject(DocumentObject* pcObject, const char* pObjectName, AddObjectOptions options = AddObjectOption::ActivateObject, const char* viewType = nullptr);
     /// checks if a valid transaction is open
     void _checkTransaction(DocumentObject* pcDelObj, const Property* What, int line);
     void breakDependency(DocumentObject* pcObject, bool clear);

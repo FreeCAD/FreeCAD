@@ -3368,10 +3368,10 @@ DocumentObject* Document::addObject(const char* sType,
 
     _addObject(pcObject,
                pObjectName,
-               AddObjectOption::setNewStatus
-                   | (isPartial ? AddObjectOption::setPartialStatus : AddObjectOption::unsetPartialStatus)
-                   | (isNew ? AddObjectOption::doSetup : AddObjectOption::none)
-                   | AddObjectOption::activateObject, 
+               AddObjectOption::SetNewStatus
+                   | (isPartial ? AddObjectOption::SetPartialStatus : AddObjectOption::UnsetPartialStatus)
+                   | (isNew ? AddObjectOption::DoSetup : AddObjectOption::None)
+                   | AddObjectOption::ActivateObject, 
                viewType);
 
     // return the Object
@@ -3409,9 +3409,9 @@ Document::addObjects(const char* sType, const std::vector<std::string>& objectNa
         bool isLast = index == (objects.size() - 1);
         _addObject(pcObject,
                    objectNames[index].c_str(),
-                   AddObjectOption::setNewStatus
-                       | (isNew ? AddObjectOption::doSetup : AddObjectOption::none)
-                       | (isLast ? AddObjectOption::activateObject : AddObjectOption::none));
+                   AddObjectOption::SetNewStatus
+                       | (isNew ? AddObjectOption::DoSetup : AddObjectOption::None)
+                       | (isLast ? AddObjectOption::ActivateObject : AddObjectOption::None));
     }
 
     return objects;
@@ -3425,7 +3425,7 @@ void Document::addObject(DocumentObject* pcObject, const char* pObjectName)
 
     pcObject->setDocument(this);
 
-    _addObject(pcObject, pObjectName, AddObjectOption::setNewStatus | AddObjectOption::activateObject);
+    _addObject(pcObject, pObjectName, AddObjectOption::SetNewStatus | AddObjectOption::ActivateObject);
 }
 
 void Document::_addObject(DocumentObject* pcObject, const char* pObjectName, AddObjectOptions options, const char* viewType)
@@ -3457,7 +3457,7 @@ void Document::_addObject(DocumentObject* pcObject, const char* pObjectName, Add
      
      // do no transactions if we do a rollback!
     if (!d->rollback) {
-         // Undo stuff
+        // Undo stuff
         _checkTransaction(nullptr, nullptr, __LINE__);
         if (d->activeUndoTransaction) {
             d->activeUndoTransaction->addObjectDel(pcObject);
@@ -3465,20 +3465,20 @@ void Document::_addObject(DocumentObject* pcObject, const char* pObjectName, Add
      }
     // If we are restoring, don't set the Label object now; it will be restored later. This is to
     // avoid potential duplicate label conflicts later.
-    if (options.testFlag(AddObjectOption::setNewStatus) && !d->StatusBits.test(Restoring)) {
+    if (options.testFlag(AddObjectOption::SetNewStatus) && !d->StatusBits.test(Restoring)) {
         pcObject->Label.setValue(ObjectName);
     }
 
     // Call the object-specific initialization
-    if (!isPerformingTransaction() && options.testFlag(AddObjectOption::doSetup)) {
+    if (!isPerformingTransaction() && options.testFlag(AddObjectOption::DoSetup)) {
         pcObject->setupObject();
     }
  
-    if (options.testFlag(AddObjectOption::setNewStatus)) {
+    if (options.testFlag(AddObjectOption::SetNewStatus)) {
         pcObject->setStatus(ObjectStatus::New, true);    
     }
-    if (options.testFlag(AddObjectOption::setPartialStatus) || options.testFlag(AddObjectOption::unsetPartialStatus)) {
-        pcObject->setStatus(ObjectStatus::PartialObject, options.testFlag(AddObjectOption::setPartialStatus));
+    if (options.testFlag(AddObjectOption::SetPartialStatus) || options.testFlag(AddObjectOption::UnsetPartialStatus)) {
+        pcObject->setStatus(ObjectStatus::PartialObject, options.testFlag(AddObjectOption::SetPartialStatus));
     }
 
     if (Base::Tools::isNullOrEmpty(viewType)) {
@@ -3493,7 +3493,7 @@ void Document::_addObject(DocumentObject* pcObject, const char* pObjectName, Add
         signalTransactionAppend(*pcObject, d->activeUndoTransaction);
     }
  
-    if (options.testFlag(AddObjectOption::activateObject)) {
+    if (options.testFlag(AddObjectOption::ActivateObject)) {
         d->activeObject = pcObject;
         signalActivatedObject(*pcObject);    
     }
@@ -3520,11 +3520,11 @@ void Document::removeObject(const char* sName)
         return;
     }
 
-    _removeObject(pos->second, RemoveObjectOption::mayRemoveWhileRecomputing | RemoveObjectOption::mayDestroyOutOfTransaction);
+    _removeObject(pos->second, RemoveObjectOption::MayRemoveWhileRecomputing | RemoveObjectOption::MayDestroyOutOfTransaction);
 }
 void Document::_removeObject(DocumentObject* pcObject, RemoveObjectOptions options)
 {
-    if (!options.testFlag(RemoveObjectOption::mayRemoveWhileRecomputing) && testStatus(Document::Recomputing)) {
+    if (!options.testFlag(RemoveObjectOption::MayRemoveWhileRecomputing) && testStatus(Document::Recomputing)) {
         FC_ERR("Cannot delete " << pcObject->getFullName() << " while recomputing");
         return;
     }
@@ -3538,7 +3538,7 @@ void Document::_removeObject(DocumentObject* pcObject, RemoveObjectOptions optio
         FC_ERR("Internal error, could not find " << pcObject->getFullName() << " to remove");
     }
 
-    if (options.testFlag(RemoveObjectOption::preserveChildrenVisibility) 
+    if (options.testFlag(RemoveObjectOption::PreserveChildrenVisibility) 
         && !d->rollback && d->activeUndoTransaction && pcObject->hasChildElement()) {
         // Preserve link group sub object global visibilities. Normally those
         // claimed object should be hidden in global coordinate space. However,
@@ -3599,8 +3599,8 @@ void Document::_removeObject(DocumentObject* pcObject, RemoveObjectOptions optio
     }
 
     std::unique_ptr<DocumentObject> tobedestroyed;
-    if ((options.testFlag(RemoveObjectOption::mayDestroyOutOfTransaction) && !d->rollback && !d->activeUndoTransaction) 
-        || (options.testFlag(RemoveObjectOption::destroyOnRollback) && d->rollback)) {
+    if ((options.testFlag(RemoveObjectOption::MayDestroyOutOfTransaction) && !d->rollback && !d->activeUndoTransaction) 
+        || (options.testFlag(RemoveObjectOption::DestroyOnRollback) && d->rollback)) {
         // if not saved in undo -> delete object later
         std::unique_ptr<DocumentObject> delobj(pos->second);
         tobedestroyed.swap(delobj);
