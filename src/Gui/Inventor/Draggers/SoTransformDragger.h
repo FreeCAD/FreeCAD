@@ -41,7 +41,7 @@ class SoCamera;
 namespace Gui
 {
 
-class SoTranslationDragger;
+class SoLinearDraggerContainer;
 
 /*! @brief Coordinate System Dragger
  *
@@ -201,7 +201,7 @@ private:
     void updateAxisScale();
 
     void setupTranslationDraggers();
-    void setupTranslationDragger(const std::string& name, SoSFString* label, SoSFInt32& incrementCount, const SbVec3f& rotAxis);
+    void setupTranslationDragger(const std::string& name, SoSFString* label, SoSFInt32& incrementCount, const SbVec3d& rotDir);
 
     using inherited = SoDragger;
 };

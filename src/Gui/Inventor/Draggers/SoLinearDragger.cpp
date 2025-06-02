@@ -84,6 +84,7 @@ SoLinearDragger::SoLinearDragger()
     FC_ADD_CATALOG_ENTRY(secondaryColor, SoBaseColor, activeSwitch);
     FC_ADD_CATALOG_ENTRY(coneSeparator, SoSeparator, translator);
     FC_ADD_CATALOG_ENTRY(cylinderSeparator, SoSeparator, translator);
+    // For some reason changing the whichChild parameter of this switch doesn't hide the label
     FC_ADD_CATALOG_ENTRY(labelSwitch, SoSeparator, translator);
     FC_ADD_CATALOG_ENTRY(labelSeparator, SoSeparator, labelSwitch);
 
@@ -106,7 +107,6 @@ SoLinearDragger::SoLinearDragger()
     SoInteractionKit::setPart("secondaryColor", buildActiveColor());
 
     FC_SET_SWITCH("activeSwitch", SO_SWITCH_NONE);
-    setLabelVisibility(true);
 
     this->addStartCallback(&SoLinearDragger::startCB);
     this->addMotionCallback(&SoLinearDragger::motionCB);
@@ -216,6 +216,12 @@ SoBaseColor* SoLinearDragger::buildActiveColor()
 void SoLinearDragger::setupGeometryCalculator()
 {
     calculator = new SoCalculator;
+    // Recalculate the corresponding variables in the left hand side whenever any of the variables in the right hand side change
+    // oA -> cylinderTranslation
+    // oB -> coneTranslation
+    // oC -> labelTranslation
+    // a  -> cylinderHeight
+    // b  -> coneHeight
     calculator->expression =
         "oA = vec3f(0, a * 0.5, 0); "
         "oB = vec3f(0, a + b * 0.5, 0); "
@@ -384,27 +390,17 @@ SbVec3f SoLinearDragger::roundTranslation(const SbVec3f& vecIn, float incrementI
     return out;
 }
 
-void SoLinearDragger::setLabelVisibility(bool visible)
-{
-    FC_SET_SWITCH("labelSwitch", visible? SO_SWITCH_ALL : SO_SWITCH_NONE);
-}
+SO_KIT_SOURCE(SoLinearDraggerContainer)
 
-bool SoLinearDragger::isLabelVisible() {
-    auto* sw = SO_GET_ANY_PART(this, "labelSwitch", SoSwitch);
-    return sw->whichChild.getValue() == SO_SWITCH_ALL;
-}
-
-SO_KIT_SOURCE(SoTranslationDragger)
-
-void SoTranslationDragger::initClass()
+void SoLinearDraggerContainer::initClass()
 {
     SoLinearDragger::initClass();
-    SO_KIT_INIT_CLASS(SoTranslationDragger, SoDragger, "Dragger");
+    SO_KIT_INIT_CLASS(SoLinearDraggerContainer, SoDragger, "Dragger");
 }
 
-SoTranslationDragger::SoTranslationDragger()
+SoLinearDraggerContainer::SoLinearDraggerContainer()
 {
-    SO_KIT_CONSTRUCTOR(SoTranslationDragger);
+    SO_KIT_CONSTRUCTOR(SoLinearDraggerContainer);
 
 #if defined(Q_OS_MACOS) || defined(Q_OS_FREEBSD) || defined(Q_OS_OPENBSD)
     this->ref();
@@ -412,47 +408,59 @@ SoTranslationDragger::SoTranslationDragger()
 
     FC_ADD_CATALOG_ENTRY(draggerSwitch, SoSwitch, geomSeparator);
     FC_ADD_CATALOG_ENTRY(baseColor, SoBaseColor, draggerSwitch);
-    FC_ADD_CATALOG_ENTRY(localRotation, SoRotation, draggerSwitch);
+    FC_ADD_CATALOG_ENTRY(transform, SoTransform, draggerSwitch);
     FC_ADD_CATALOG_ENTRY(dragger, SoLinearDragger, draggerSwitch);
 
     SO_KIT_ADD_FIELD(rotation, (0, 0, 0, 0));
     SO_KIT_ADD_FIELD(color, (0, 0, 0));
+    SO_KIT_ADD_FIELD(translation, (0, 0, 0));
 
     SO_KIT_INIT_INSTANCE();
 
-    SoBaseKit::setPart("baseColor", buildColor());
-    SoBaseKit::setPart("localRotation", buildRotation());
+    SoInteractionKit::setPart("baseColor", buildColor());
+    SoInteractionKit::setPart("transform", buildTransform());
 
     setVisibility(true);
 }
 
-SoRotation* SoTranslationDragger::buildRotation()
+SoBaseColor* SoLinearDraggerContainer::buildColor()
 {
-    auto rotationNode = new SoRotation;
-    rotationNode->rotation.connectFrom(&rotation);
+    auto color = new SoBaseColor;
+    color->rgb.connectFrom(&this->color);
 
-    return rotationNode;
+    return color;
 }
 
-SoBaseColor* SoTranslationDragger::buildColor()
-{
-    auto _color = new SoBaseColor;
-    _color->rgb.connectFrom(&color);
+SoTransform* SoLinearDraggerContainer::buildTransform() {
+    auto transform = new SoTransform;
+    transform->translation.connectFrom(&this->translation);
+    transform->rotation.connectFrom(&this->rotation);
 
-    return _color;
+    return transform;
 }
 
-void SoTranslationDragger::setVisibility(bool visible)
+void SoLinearDraggerContainer::setVisibility(bool visible)
 {
     FC_SET_SWITCH("draggerSwitch", visible? SO_SWITCH_ALL : SO_SWITCH_NONE);
 }
 
-bool SoTranslationDragger::isVisible() {
+bool SoLinearDraggerContainer::isVisible() {
     auto* sw = SO_GET_ANY_PART(this, "draggerSwitch", SoSwitch);
-    return sw->whichChild.getValue() == SO_SWITCH_ALL;   
+    return sw->whichChild.getValue() == SO_SWITCH_ALL;
 }
 
-SoLinearDragger* SoTranslationDragger::getDragger()
+SoLinearDragger* SoLinearDraggerContainer::getDragger()
 {
     return SO_GET_PART(this, "dragger", SoLinearDragger);
+}
+
+void Gui::SoLinearDraggerContainer::setPointerDirection(const Base::Vector3d& dir)
+{
+    // This is the direction along which the SoLinearDragger points in it local space
+    Base::Vector3d draggerDir{0, 1, 0};
+    Base::Vector3d axis = draggerDir.Cross(dir).Normalize();
+    double ang = draggerDir.GetAngleOriented(dir, axis);
+
+    SbRotation rot{Base::convertTo<SbVec3f>(axis), static_cast<float>(ang)};
+    rotation.setValue(rot);
 }

@@ -20,8 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_TDRAGGER_H
-#define GUI_TDRAGGER_H
+#ifndef GUI_LINEAR_DRAGGER_H
+#define GUI_LINEAR_DRAGGER_H
 
 #include <Inventor/draggers/SoDragger.h>
 #include <Inventor/fields/SoSFColor.h>
@@ -30,12 +30,15 @@
 #include <Inventor/fields/SoSFInt32.h>
 #include <Inventor/fields/SoSFRotation.h>
 #include <Inventor/fields/SoSFString.h>
+#include <Inventor/fields/SoSFVec3f.h>
 #include <Inventor/projectors/SbLineProjector.h>
 #include <Inventor/projectors/SbPlaneProjector.h>
+#include <Base/Vector3D.h>
 
+class SoCamera;
 class SoSwitch;
 class SoBaseColor;
-class SoRotation;
+class SoTransform;
 class SoCalculator;
 
 namespace Gui
@@ -74,9 +77,6 @@ public:
     SoSFFloat cylinderRadius;
     SoSFColor activeColor;
 
-    void setLabelVisibility(bool visible);
-    bool isLabelVisible();
-
 protected:
     ~SoLinearDragger() override;
     SbBool setUpConnections(SbBool onoff, SbBool doitalways = FALSE) override;
@@ -108,33 +108,35 @@ private:
     using inherited = SoDragger;
 };
 
-class SoTranslationDragger: public SoDragger
+class SoLinearDraggerContainer: public SoDragger
 {
-    SO_KIT_HEADER(SoTranslationDragger);
+    SO_KIT_HEADER(SoLinearDraggerContainer);
     SO_KIT_CATALOG_ENTRY_HEADER(draggerSwitch);
     SO_KIT_CATALOG_ENTRY_HEADER(baseColor);
-    SO_KIT_CATALOG_ENTRY_HEADER(localRotation);
+    SO_KIT_CATALOG_ENTRY_HEADER(transform);
     SO_KIT_CATALOG_ENTRY_HEADER(dragger);
 
 public:
     static void initClass();
-    SoTranslationDragger();
+    SoLinearDraggerContainer();
 
     SoSFRotation rotation;
     SoSFColor color;
+    SoSFVec3f translation;
 
     void setVisibility(bool visible);
     bool isVisible();
+    void setPointerDirection(const Base::Vector3d& dir);
 
     SoLinearDragger* getDragger();
 
 private:
-    SoRotation* buildRotation();
     SoBaseColor* buildColor();
+    SoTransform* buildTransform();
 
     using inherited = SoDragger;
 };
 
 }
 
-#endif /* TDRAGGER_H */
+#endif /* GUI_LINEAR_DRAGGER_H */
