@@ -2347,7 +2347,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../ui/preferencesNativeIFC.ui" line="183"/>
       <source>If this is checked, a dialog will be shown at each import</source>
-      <translation>Ако је означено, приликом сваког увоза отвориће се прозор са опцијама</translation>
+      <translation>Ако је потврђено, приликом сваког увоза отвориће се прозор са опцијама</translation>
     </message>
     <message>
       <location filename="../ui/preferencesNativeIFC.ui" line="186"/>
@@ -2421,17 +2421,17 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../ui/preferences-arch.ui" line="42"/>
       <source>If this is checked, when 2 similar walls are being connected, their underlying sketches will be joined into one, and the two walls will become one</source>
-      <translation>Ако је ово означено, када се два слична зида спајају, њихове скице основа ће бити спојене у једну и два зида ће постати један</translation>
+      <translation>Ако је ово потврђено, када се два слична зида спајају, њихове скице основа ће бити спојене у једну и два зида ће постати један</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="58"/>
       <source>Two possible strategies to avoid circular dependencies: Create one more object (unchecked) or remove external geometry of base sketch (checked)</source>
-      <translation>Две могуће стратегије за избегавање кружне зависности: Направи још један објекат (није означено) или уклони спољну геометрију основне скице (означено)</translation>
+      <translation>Две могуће стратегије за избегавање кружне зависности: Направи још један објекат (није потврђено) или уклони спољну геометрију основне скице (потврђено)</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="93"/>
       <source>If this is checked, when an object becomes Subtraction or Addition of an Arch object, it will receive the Draft Construction color.</source>
-      <translation>Ако је означено, када објекат настане одузимањем или додавањем објекта окружења Архитектура, добиће боју помоћне геометрије окружења Цртање.</translation>
+      <translation>Ако је потврђено, када објекат настане одузимањем или додавањем објекта окружења Архитектура, добиће боју помоћне геометрије окружења Цртање.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="96"/>
@@ -2471,7 +2471,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../ui/preferences-arch.ui" line="74"/>
       <source>If this is checked, when an Arch object has a material, the object will take the color of the material. This can be overridden for each object.</source>
-      <translation>Ако је ово означено, када објекат окружења Архитектура има материјал, објекат ће попримити боју материјала. Ово се може заменити за сваки објекат.</translation>
+      <translation>Ако је ово потврђено, када објекат окружења Архитектура има материјал, објекат ће попримити боју материјала. Ово се може заменити за сваки објекат.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="77"/>
@@ -2506,7 +2506,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../ui/preferences-arch.ui" line="254"/>
       <source>If this is checked, conversion is faster but the result might still contain triangulated faces</source>
-      <translation>Ако је означено, конверзија је бржа, али резултат може и даље да садржи троугаоне странице</translation>
+      <translation>Ако је потврђено, конверзија је бржа, али резултат може и даље да садржи троугаоне странице</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="257"/>
@@ -2521,7 +2521,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../ui/preferences-arch.ui" line="276"/>
       <source>If this is checked, flat groups of faces will be force-flattened, resulting in possible gaps and non-solid results</source>
-      <translation>Ако је означено, групе равних страница ће бити силом изравнане, што ће резултирати могућим процепима и због тога објектима који не могу постати пуна тела</translation>
+      <translation>Ако је потврђено, групе равних страница ће бити силом изравнане, што ће резултирати могућим процепима и због тога објектима који не могу постати пуна тела</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="45"/>
@@ -2546,7 +2546,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../ui/preferences-arch.ui" line="295"/>
       <source>If this is checked, holes in faces will be performed by subtraction rather than using wires orientation</source>
-      <translation>Ако је означено, рупе у страницама ће бити изведене радије одузимањем, него помоћу оријентације жичаног рама</translation>
+      <translation>Ако је потврђено, рупе у страницама ће бити изведене радије одузимањем, него помоћу оријентације жичаног оквира</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="298"/>
@@ -2649,7 +2649,7 @@ instead of the FreeCAD web workbench</translation>
     <message>
       <location filename="../ui/preferences-arch.ui" line="571"/>
       <source>If this is checked, the text that gets placed in the clipboard will include the unit. Otherwise, it will be a simple number expressed in internal units (millimeters)</source>
-      <translation>Ако је ово означено, текст који се ставља у привремену меморију ће укључивати и јединицу. У супротном, то ће бити једноставан број изражен у унутрашњим јединицама (милиметрима)</translation>
+      <translation>Ако је ово потврђено, текст који се ставља у привремену меморију ће укључивати и јединицу. У супротном, то ће бити једноставан број изражен у унутрашњим јединицама (милиметрима)</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="574"/>
@@ -3133,7 +3133,7 @@ they will be treated as one.</source>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="374"/>
       <source>IFC files can contain unclean or non-solid geometry. If this option is checked, all the geometry is imported, regardless of their validity.</source>
-      <translation>IFC датотеке могу да садрже објекте која нису пуна тела. Ако је ова опција чекирана, увози се сва геометрија, без обзира на њену валидност.</translation>
+      <translation>IFC датотеке могу да садрже објекте која нису пуна тела. Ако је ова опција потврђена, увози се сва геометрија, без обзира на њену валидност.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="377"/>
@@ -3247,12 +3247,12 @@ If using Netgen, make sure that it is available.</source>
     <message>
       <location filename="../ui/preferences-dae.ui" line="116"/>
       <source>Tessellation</source>
-      <translation>Поплочавање</translation>
+      <translation>Апроксимација приказаног облика</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dae.ui" line="123"/>
       <source>Tessellation value to use with the Builtin and the Mefisto meshing program.</source>
-      <translation>Вредност поплочавања за коришћење са уграђеним и Мефисто генератором мреже.</translation>
+      <translation type="unfinished">Tessellation value to use with the Builtin and the Mefisto meshing program.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dae.ui" line="147"/>
@@ -3400,13 +3400,13 @@ Use this to force all objects to be exported as BREP geometry.</source>
 are decomposed into flat facets.
 If this is checked, an additional calculation is done to join coplanar facets.</source>
       <translation>Закривљени облици који се не могу представити као криве у IFC-у
-биће записани као скуп раванских фасета.
-Ако је ово означено, врши се додатни прорачун за спајање компланарних фасета.</translation>
+биће записани као скуп раванских пљосни.
+Ако је ово потврђено, врши се додатни прорачун за спајање компланарних пљосни.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="140"/>
       <source>Join coplanar facets when triangulating</source>
-      <translation>Споји компланарне фасете приликом триангулације</translation>
+      <translation>Споји компланарне пљосни приликом триангулације</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="153"/>
@@ -3882,7 +3882,7 @@ unit to work with when opening the file.</source>
     <message>
       <location filename="../../bimcommands/BimEquipment.py" line="121"/>
       <source>This mesh has more than 1000 facets.</source>
-      <translation type="unfinished">This mesh has more than 1000 facets.</translation>
+      <translation>Ова мрежа има више од 1000 пљосни.</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimEquipment.py" line="122"/>
@@ -3892,7 +3892,7 @@ unit to work with when opening the file.</source>
     <message>
       <location filename="../../bimcommands/BimEquipment.py" line="129"/>
       <source>The mesh has more than 500 facets. This will take a couple of minutes...</source>
-      <translation type="unfinished">The mesh has more than 500 facets. This will take a couple of minutes...</translation>
+      <translation>Ова мрежа има више од 500 пљосни. Ово ће потрајати неколико минута...</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimEquipment.py" line="130"/>
@@ -8177,7 +8177,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../bimcommands/BimRoof.py" line="44"/>
       <source>Creates a roof object from the selected wire.</source>
-      <translation>Од изабраног жичаног рама прави објекат кров.</translation>
+      <translation>Од изабраног жичаног оквира прави објекат кров.</translation>
     </message>
   </context>
   <context>
@@ -10648,7 +10648,7 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
     <message>
       <location filename="../../bimcommands/BimRewire.py" line="40"/>
       <source>Rewire</source>
-      <translation>Направи жичани рам</translation>
+      <translation>Направи жичани оквир</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimRewire.py" line="43"/>
