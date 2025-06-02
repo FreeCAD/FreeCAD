@@ -104,7 +104,7 @@ custom stylesheet below and can look nicer than the wiki option. The &apos;Markd
       <location filename="../../dlgPreferencesHelp.ui" line="221"/>
       <source>The documentation will open in a dockable dialog inside the FreeCAD window,
 which allows you to keep it open while working in the 3D view. This requires the PySide QtWebengineWidgets component</source>
-      <translation>Οι Οδηγίες θα ανοίξουν σε ένα διάλογο προσάρτησης μέσα στο παράθυρο του FreeCAD, που σας επιτρέπει να το διατηρήσετε ανοιχτό ενώ εργάζεστε στην τρισδιάστατη προβολή.
+      <translation>Οι Οδηγίες θα ανοίξουν σε ένα διάλογο προσάρτησης μέσα στο παράθυρο του FreeCAD, που σας επιτρέπει να το διατηρήσετε ανοιχτό ενώ εργάζεστε στην τρισδιάστατη προβολή. 
 Αυτό απαιτεί το στοιχείο PySide QtWebengineWidgets</translation>
     </message>
     <message>
@@ -112,7 +112,7 @@ which allows you to keep it open while working in the 3D view. This requires the
       <source>You can here indicate the path to an alternative CSS file to be used
 to style the Markdown pages. This will only work if you have selected the
 Markdown version above.</source>
-      <translation>Εδώ μπορείτε να υποδείξετε τη διαδρομή προς ένα εναλλακτικό αρχείο CSS που θα χρησιμοποιηθεί για να διαμορφώσετε τις σελίδες Markdown.
+      <translation>Εδώ μπορείτε να υποδείξετε τη διαδρομή προς ένα εναλλακτικό αρχείο CSS που θα χρησιμοποιηθεί για να διαμορφώσετε τις σελίδες Markdown. 
 Αυτό θα λειτουργήσει μόνο αν έχετε επιλέξει την έκδοση Markdown παραπάνω.</translation>
     </message>
     <message>

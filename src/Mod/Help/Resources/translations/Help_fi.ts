@@ -24,7 +24,7 @@ the default location ($USERAPPDATADIR/Mod/offline-documentation).</source>
       <translation>Aseta tämä mukautettuun URL-osoitteeseen tai kansioon, jossa ohjetiedostot sijaitsevat.
 Voit helposti ladata dokumentaation offline-käyttöä varten käyttämällä Addon
 Manageria ja asentamalla lisäosan &quot;offline-documentation&quot;. Jos tämä
-kenttä jätetään tyhjäksi, FreeCAD hakee automaattisesti ohjetiedostot
+kenttä jätetään tyhjäksi, FreeCAD hakee automaattisesti ohjetiedostot 
 oletussijainnista ($USERAPPDATADIR/Mod/offline-documentation).</translation>
     </message>
     <message>

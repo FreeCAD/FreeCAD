@@ -99,18 +99,18 @@
   <context>
     <name>CmdPointsStructure</name>
     <message>
-      <location filename="../../Command.cpp" line="438"/>
+      <location filename="../../Command.cpp" line="437"/>
       <source>Points</source>
       <translation>Punkty</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="439"/>
+      <location filename="../../Command.cpp" line="438"/>
       <source>Structured point cloud</source>
       <translation>Uporządkowana chmura punktów</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="440"/>
-      <location filename="../../Command.cpp" line="442"/>
+      <location filename="../../Command.cpp" line="439"/>
+      <location filename="../../Command.cpp" line="441"/>
       <source>Convert points to structured point cloud</source>
       <translation>Konwertuj punkty do uporządkowanej chmury punktów</translation>
     </message>
@@ -305,12 +305,12 @@
     <message>
       <location filename="../../Command.cpp" line="117"/>
       <source>Points not at Origin</source>
-      <translation type="unfinished">Points not at Origin</translation>
+      <translation>Punkty poza początkiem</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="118"/>
       <source>The Bounding Box of the imported points does not contain the origin.  Do you want to translate it to the origin?</source>
-      <translation type="unfinished">The Bounding Box of the imported points does not contain the origin.  Do you want to translate it to the origin?</translation>
+      <translation>Ramka otaczająca importowanych punktów nie zawiera początku. Czy chcesz przesunąć ją do początku?</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="260"/>

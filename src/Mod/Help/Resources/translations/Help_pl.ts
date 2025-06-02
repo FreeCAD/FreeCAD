@@ -21,9 +21,9 @@ You can easily download the documentation for offline use by using the Addon
 Manager and installing the &quot;offline-documentation&quot; addon. If this
 field is left blank, FreeCAD will automatically search for the help files at
 the default location ($USERAPPDATADIR/Mod/offline-documentation).</source>
-      <translation>Umożliwia nastawienie niestandardowego adresu URL lub folderu, w którym znajdują się pliki pomocy.
-Możesz łatwo pobrać dokumentację do użytku offline, korzystając z Menedżera dodatków
-i instalując dodatek "Dokumentacja offline". Jeśli to pole pozostanie puste, FreeCAD automatycznie wyszuka
+      <translation>Umożliwia nastawienie niestandardowego adresu URL lub folderu, w którym znajdują się pliki pomocy. 
+Możesz łatwo pobrać dokumentację do użytku offline, korzystając z Menedżera dodatków 
+i instalując dodatek "Dokumentacja offline". Jeśli to pole pozostanie puste, FreeCAD automatycznie wyszuka 
 pliki pomocy w domyślnej lokalizacji ($USERAPPDATADIR/Mod/offline-documentation).</translation>
     </message>
     <message>
@@ -102,7 +102,7 @@ custom stylesheet below and can look nicer than the wiki option. The &apos;Markd
       <source>The documentation will open in a dockable dialog inside the FreeCAD window,
 which allows you to keep it open while working in the 3D view. This requires the PySide QtWebengineWidgets component</source>
       <translation>Dokumentacja otworzy się w dokowanym oknie dialogowym wewnątrz okna FreeCAD,
-co pozwala na pozostawienie go otwartego podczas pracy w widoku 3D.
+co pozwala na pozostawienie go otwartego podczas pracy w widoku 3D. 
 Wymaga to komponentu PySide QtWebengineWidgets.</translation>
     </message>
     <message>
@@ -154,7 +154,7 @@ Wymaga to komponentu PySide QtWebengineWidgets</translation>
     <message>
       <location filename="../../Help.py" line="83"/>
       <source>PySide QtWebEngineWidgets module is not available. Help rendering is done with the system browser</source>
-      <translation>Moduł PySide2 QtWebEngineWidgets nie jest dostępny.
+      <translation>Moduł PySide2 QtWebEngineWidgets nie jest dostępny. 
 Renderowanie Pomocy odbywa się za pomocą przeglądarki z twojego systemu.</translation>
     </message>
     <message>
