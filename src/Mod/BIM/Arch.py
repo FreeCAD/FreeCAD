@@ -52,6 +52,7 @@ __author__ = "Yorik van Havre"
 __url__    = "https://www.freecad.org"
 
 import FreeCAD
+from typing import Optional
 
 if FreeCAD.GuiUp:
     import FreeCADGui
@@ -895,44 +896,100 @@ def makeProject(sites=None, name=None):
 
     return project
 
-
-def makeRebar(baseobj=None, sketch=None, diameter=None, amount=1, offset=None, name=None):
+def makeRebar(
+    baseobj: Optional[FreeCAD.DocumentObject] = None,
+    sketch: Optional[FreeCAD.DocumentObject] = None,
+    diameter: Optional[float] = None,
+    amount: int = 1,
+    offset: Optional[float] = None,
+    name: Optional[str] = None
+) -> Optional[FreeCAD.DocumentObject]:
     """
-    Creates a reinforcement bar object.
+    Creates a reinforcement bar (rebar) object.
+
+    The rebar's geometry is typically defined by a `sketch` object (e.g., a Sketcher::SketchObject
+    or a Draft.Wire). This sketch represents the path of a single bar. The `amount` and `spacing`
+    (calculated by the object) properties then determine how many such bars are created and
+    distributed.
+
+    The `baseobj` usually acts as the structural host for the rebar. The rebar's distribution (e.g.,
+    spacing, direction) can be calculated relative to this host object's dimensions if a `Host` is
+    assigned and the rebar logic uses it.
 
     Parameters
     ----------
-    baseobj : Part::FeaturePython, optional
-        The structural object to host the rebar. Defaults to None.
-    sketch : Part::FeaturePython, optional
-        The sketch defining the rebar profile. Defaults to None.
+    baseobj : FreeCAD.DocumentObject, optional
+        The structural object to host the rebar (e.g., an ArchStructure._Structure created with
+        `Arch.makeStructure()`). If provided with `sketch`, it's set as `rebar.Host`. If provided
+        *without* a `sketch`, `rebar.Shape` is set from `baseobj.Shape`, and `rebar.Host` remains
+        None. Defaults to None.
+    sketch : FreeCAD.DocumentObject, optional
+        An object (e.g., "Sketcher::SketchObject") whose shape defines the rebar's path. Assigned to
+        `rebar.Base`. If the sketch is attached to `baseobj` before calling this function (e.g. for
+        positioning purposes), this function may clear that specific attachment to avoid conflicts,
+        as the rebar itself will be hosted. Defaults to None.
     diameter : float, optional
-        The diameter of the rebar. Defaults to None.
+        The diameter of the rebar. If None, uses Arch preferences ("RebarDiameter"). Defaults to
+        None.
     amount : int, optional
-        The number of rebars. Defaults to 1.
+        The number of rebar instances. Defaults to 1.
     offset : float, optional
-        The offset distance for the rebar. Defaults to None.
+        Concrete cover distance, sets `rebar.OffsetStart` and `rebar.OffsetEnd`. If None, uses Arch
+        preferences ("RebarOffset"). Defaults to None.
     name : str, optional
-        The name to assign to the created rebar. Defaults to None.
+        The user-visible name (Label) for the rebar. If None, defaults to "Rebar". Defaults to None.
 
     Returns
     -------
-    Part::FeaturePython
-        The created rebar object.
+    FreeCAD.DocumentObject or None
+        The created rebar object, or None if creation fails.
+
+    Examples
+    --------
+    >>> import FreeCAD, Arch, Part, Sketcher
+    >>> doc = FreeCAD.newDocument()
+    >>> # Create a host structure (e.g., a concrete beam)
+    >>> beam = Arch.makeStructure(length=2000, width=200, height=300)
+    >>> doc.recompute() # Ensure beam's shape is ready
+    >>>
+    >>> # Create a sketch for the rebar path
+    >>> rebar_sketch = doc.addObject('Sketcher::SketchObject')
+    >>> # For positioning, attach the sketch to a face of the beam *before* makeRebar
+    >>> # Programmatically select a face (e.g., the first one)
+    >>> # For stable scripts, select faces by more reliable means
+    >>> rebar_sketch.AttachmentSupport = (beam, ['Face1']) # Faces are 1-indexed
+    >>> rebar_sketch.MapMode = "FlatFace"
+    >>> # Define sketch geometry relative to the attached face's plane
+    >>> rebar_sketch.addGeometry(Part.LineSegment(FreeCAD.Vector(25, 25, 0),
+    ...                                         FreeCAD.Vector(1975, 25, 0)), False)
+    >>> doc.recompute() # Recompute sketch after geometry and attachment
+    >>>
+    >>> # Create the rebar object, linking it to the beam and using the sketch
+    >>> rebar_obj = Arch.makeRebar(baseobj=beam, sketch=rebar_sketch, diameter=12,
+    ...                            amount=4, offset=25)
+    >>> doc.recompute() # Trigger rebar's geometry calculation
     """
     rebar = _initializeArchObject(
         "Part::FeaturePython",
         baseClassName="_Rebar",
         internalName="Rebar",
-        defaultLabel=name if name else translate("Arch", "Project"),
+        defaultLabel=name if name else translate("Arch", "Rebar"),
         moduleName="ArchRebar",
         viewProviderName="_ViewProviderRebar",
     )
 
     # Initialize all relevant properties
     if baseobj and sketch:
+        # Case 1: both the structural element (base object) and a sketch defining the shape and path
+        # of a single rebar strand are provided. This is the most common scenario.
         if hasattr(sketch, "AttachmentSupport"):
             if sketch.AttachmentSupport:
+                # If the sketch is already attached to the base object, remove that attachment.
+                # Support two AttachmentSupport (PropertyLinkList) formats:
+                # 1. Tuple: (baseobj, subelement)
+                # 2. Direct object: baseobj
+                # TODO: why is the list format not checked for here?
+                # ~ 3. List: [baseobj, subelement] ~
                 if isinstance(sketch.AttachmentSupport, tuple):
                     if sketch.AttachmentSupport[0] == baseobj:
                         sketch.AttachmentSupport = None
@@ -943,12 +1000,15 @@ def makeRebar(baseobj=None, sketch=None, diameter=None, amount=1, offset=None, n
             sketch.ViewObject.hide()
         rebar.Host = baseobj
     elif not baseobj and sketch:
-        # A obj could be based on a wire without the existence of a Structure
+        # Case 2: standalone rebar strand defined by a sketch, not attached to any structural
+        # element.
         rebar.Base = sketch
         if FreeCAD.GuiUp:
             sketch.ViewObject.hide()
         rebar.Host = None
     elif baseobj and not sketch:
+        # Case 3: rebar strand defined by the shape of a structural element (base object). The
+        # base object becomes the rebar.
         rebar.Shape = baseobj.Shape
     rebar.Diameter = diameter if diameter else params.get_param_arch("RebarDiameter")
     rebar.Amount = amount
