@@ -49,6 +49,7 @@ class MockAsset(Asset):
         """Returns the raw data stored in the mock asset."""
         return self._data
 
+
 # Mock Asset class with dependencies for testing deepcopy
 class MockAssetWithDeps(Asset):
     asset_type: str = "mock_asset_with_deps"
@@ -68,6 +69,7 @@ class MockAssetWithDeps(Asset):
         # Assuming data is a simple JSON string like '{"deps": ["uri1", "uri2"]}'
         try:
             import json
+
             data_str = data.decode("utf-8")
             data_dict = json.loads(data_str)
             dep_uris_str = data_dict.get("deps", [])
@@ -90,11 +92,12 @@ class MockAssetWithDeps(Asset):
         # Serialize data and dependency URIs into a simple format
         try:
             import json
+
             dep_uri_strs = [str(uri) for uri in self._dependencies.keys()]
             data_dict = {"data": self._data.decode("utf-8"), "deps": dep_uri_strs}
             return json.dumps(data_dict).encode("utf-8")
         except Exception:
-            return self._data # Fallback if serialization fails
+            return self._data  # Fallback if serialization fails
 
     def get_id(self) -> str:
         return self._id
@@ -106,6 +109,7 @@ class MockAssetWithDeps(Asset):
     def get_dependencies(self) -> Mapping[AssetUri, Asset]:
         """Returns the resolved dependencies."""
         return self._dependencies
+
 
 class TestPathToolAssetManager(unittest.TestCase):
     def test_register_store(self):
@@ -497,9 +501,10 @@ class TestPathToolAssetManager(unittest.TestCase):
         manager_filtered.add_raw(MockAsset.asset_type, "id2", data2, "memory_fetch_filtered")
         manager_filtered.add_raw("another_type", "id3", b"data for id3", "memory_fetch_filtered")
 
-        retrieved_assets_filtered = cast(List[MockAsset], manager_filtered.fetch(
-            asset_type=MockAsset.asset_type, store="memory_fetch_filtered"
-        ))
+        retrieved_assets_filtered = cast(
+            List[MockAsset],
+            manager_filtered.fetch(asset_type=MockAsset.asset_type, store="memory_fetch_filtered"),
+        )
 
         # Assert the correct number of assets were returned
         self.assertEqual(len(retrieved_assets_filtered), 2)
@@ -533,9 +538,7 @@ class TestPathToolAssetManager(unittest.TestCase):
 
         # Create a source asset
         src_data = b"source asset data"
-        src_uri = manager.add_raw(
-            MockAsset.asset_type, "source_id", src_data, "memory_copy_src"
-        )
+        src_uri = manager.add_raw(MockAsset.asset_type, "source_id", src_data, "memory_copy_src")
 
         # Test copying to a different store with default destination URI
         copied_uri_default_dest = manager.copy(
@@ -552,9 +555,7 @@ class TestPathToolAssetManager(unittest.TestCase):
         self.assertEqual(copied_data_default_dest, src_data)
 
         # Test copying to a different store with a specified destination URI
-        dest_uri_specified = AssetUri.build(
-            MockAsset.asset_type, "specified_dest_id", "1"
-        )
+        dest_uri_specified = AssetUri.build(MockAsset.asset_type, "specified_dest_id", "1")
         copied_uri_specified_dest = manager.copy(
             src_uri,
             dest_store="memory_copy_dest",
@@ -577,14 +578,14 @@ class TestPathToolAssetManager(unittest.TestCase):
         self.assertEqual(copied_uri_same_store, dest_uri_same_store)
 
         # Verify the copied asset exists in the same store at the new URI
-        copied_data_same_store = manager.get_raw(
-            copied_uri_same_store, store="memory_copy_src"
-        )
+        copied_data_same_store = manager.get_raw(copied_uri_same_store, store="memory_copy_src")
         self.assertEqual(copied_data_same_store, src_data)
 
         # Test assertion for source and destination being the same
         with self.assertRaises(ValueError) as cm:
-            manager.copy(src_uri, dest_store="memory_copy_src", store="memory_copy_src", dest=src_uri)
+            manager.copy(
+                src_uri, dest_store="memory_copy_src", store="memory_copy_src", dest=src_uri
+            )
         self.assertIn(
             "Source and destination cannot be the same asset in the same store.",
             str(cm.exception),
@@ -595,7 +596,7 @@ class TestPathToolAssetManager(unittest.TestCase):
         overwrite_uri = manager.add_raw(
             MockAsset.asset_type, "specified_dest_id", overwrite_data, "memory_copy_dest"
         )
-        self.assertEqual(overwrite_uri.version, "2") # Should be version 2 now
+        self.assertEqual(overwrite_uri.version, "2")  # Should be version 2 now
 
         # Copy the original src_uri to the existing destination
         copied_uri_overwrite = manager.copy(
@@ -608,9 +609,7 @@ class TestPathToolAssetManager(unittest.TestCase):
         self.assertEqual(copied_uri_overwrite.version, "3")
 
         # Verify the destination now contains the source data
-        retrieved_overwritten_data = manager.get_raw(
-            copied_uri_overwrite, store="memory_copy_dest"
-        )
+        retrieved_overwritten_data = manager.get_raw(copied_uri_overwrite, store="memory_copy_dest")
         self.assertEqual(retrieved_overwritten_data, src_data)
 
     def test_deepcopy(self):
@@ -633,7 +632,13 @@ class TestPathToolAssetManager(unittest.TestCase):
         )
 
         # Create a source asset with dependencies
-        src_data = b'{"data": "source asset data", "deps": ["' + str(dep1_uri).encode('utf-8') + b'", "' + str(dep2_uri).encode('utf-8') + b'"]}'
+        src_data = (
+            b'{"data": "source asset data", "deps": ["'
+            + str(dep1_uri).encode("utf-8")
+            + b'", "'
+            + str(dep2_uri).encode("utf-8")
+            + b'"]}'
+        )
         src_uri = manager.add_raw(
             MockAssetWithDeps.asset_type, "source_id", src_data, "memory_deepcopy_src"
         )
@@ -647,9 +652,9 @@ class TestPathToolAssetManager(unittest.TestCase):
         self.assertEqual(copied_uri_default_dest.version, "1")  # First version in dest
 
         # Verify the copied top-level asset exists in the destination store
-        copied_asset_default_dest = cast(MockAssetWithDeps, manager.get(
-            copied_uri_default_dest, store="memory_deepcopy_dest"
-        ))
+        copied_asset_default_dest = cast(
+            MockAssetWithDeps, manager.get(copied_uri_default_dest, store="memory_deepcopy_dest")
+        )
         self.assertIsInstance(copied_asset_default_dest, MockAssetWithDeps)
         # The copied asset's data should be the serialized form including dependencies
         expected_data = b'{"data": "source asset data", "deps": ["mock_asset_with_deps://dep1_id/1", "mock_asset_with_deps://dep2_id/1"]}'
@@ -670,9 +675,7 @@ class TestPathToolAssetManager(unittest.TestCase):
         self.assertEqual(copied_dep2.get_data(), b'{"data": "dependency 2 data", "deps": []}')
 
         # Test deep copying with a specified destination URI for the top-level asset
-        dest_uri_specified = AssetUri.build(
-            MockAssetWithDeps.asset_type, "specified_dest_id", "1"
-        )
+        dest_uri_specified = AssetUri.build(MockAssetWithDeps.asset_type, "specified_dest_id", "1")
         copied_uri_specified_dest = manager.deepcopy(
             src_uri,
             dest_store="memory_deepcopy_dest",
@@ -682,11 +685,14 @@ class TestPathToolAssetManager(unittest.TestCase):
         self.assertEqual(copied_uri_specified_dest, dest_uri_specified)
 
         # Verify the copied asset exists at the specified destination URI
-        copied_asset_specified_dest = cast(MockAssetWithDeps, manager.get(
-            copied_uri_specified_dest, store="memory_deepcopy_dest"
-        ))
+        copied_asset_specified_dest = cast(
+            MockAssetWithDeps, manager.get(copied_uri_specified_dest, store="memory_deepcopy_dest")
+        )
         self.assertIsInstance(copied_asset_specified_dest, MockAssetWithDeps)
-        self.assertEqual(copied_asset_specified_dest.get_data(), b'{"data": "source asset data", "deps": ["mock_asset_with_deps://dep1_id/1", "mock_asset_with_deps://dep2_id/1"]}')
+        self.assertEqual(
+            copied_asset_specified_dest.get_data(),
+            b'{"data": "source asset data", "deps": ["mock_asset_with_deps://dep1_id/1", "mock_asset_with_deps://dep2_id/1"]}',
+        )
 
         # Verify dependencies were copied and resolved correctly (their URIs should be
         # in the destination store, but their asset_type and asset_id should be the same)
@@ -700,29 +706,35 @@ class TestPathToolAssetManager(unittest.TestCase):
 
         copied_dep1_specified = cast(MockAssetWithDeps, copied_deps_specified_dest[dep1_uri])
         self.assertIsInstance(copied_dep1_specified, MockAssetWithDeps)
-        self.assertEqual(copied_dep1_specified.get_data(), b'{"data": "dependency 1 data", "deps": []}')
+        self.assertEqual(
+            copied_dep1_specified.get_data(), b'{"data": "dependency 1 data", "deps": []}'
+        )
         # Check the URI of the copied dependency in the destination store
-        self.assertIsNotNone(manager.get_or_none(copied_dep1_specified.get_uri(), store="memory_deepcopy_dest"))
+        self.assertIsNotNone(
+            manager.get_or_none(copied_dep1_specified.get_uri(), store="memory_deepcopy_dest")
+        )
         self.assertEqual(copied_dep1_specified.get_uri().asset_type, dep1_uri.asset_type)
         self.assertEqual(copied_dep1_specified.get_uri().asset_id, dep1_uri.asset_id)
 
-
         copied_dep2_specified = cast(MockAssetWithDeps, copied_deps_specified_dest[dep2_uri])
         self.assertIsInstance(copied_dep2_specified, MockAssetWithDeps)
-        self.assertEqual(copied_dep2_specified.get_data(), b'{"data": "dependency 2 data", "deps": []}')
+        self.assertEqual(
+            copied_dep2_specified.get_data(), b'{"data": "dependency 2 data", "deps": []}'
+        )
         # Check the URI of the copied dependency in the destination store
-        self.assertIsNotNone(manager.get_or_none(copied_dep2_specified.get_uri(), store="memory_deepcopy_dest"))
+        self.assertIsNotNone(
+            manager.get_or_none(copied_dep2_specified.get_uri(), store="memory_deepcopy_dest")
+        )
         self.assertEqual(copied_dep2_specified.get_uri().asset_type, dep2_uri.asset_type)
         self.assertEqual(copied_dep2_specified.get_uri().asset_id, dep2_uri.asset_id)
-
 
         # Test handling of existing dependencies in the destination store (should be skipped)
         # Add a dependency with the same URI as dep1_uri to the destination store
         existing_dep1_data = b'{"data": "existing dependency 1 data", "deps": []}'
         existing_dep1_uri_in_dest = manager.add_raw(
-             dep1_uri.asset_type, dep1_uri.asset_id, existing_dep1_data, "memory_deepcopy_dest"
+            dep1_uri.asset_type, dep1_uri.asset_id, existing_dep1_data, "memory_deepcopy_dest"
         )
-        self.assertEqual(existing_dep1_uri_in_dest.version, "2") # Should be version 2 now
+        self.assertEqual(existing_dep1_uri_in_dest.version, "2")  # Should be version 2 now
 
         # Deep copy the source asset again
         copied_uri_existing_dep = manager.deepcopy(
@@ -732,11 +744,14 @@ class TestPathToolAssetManager(unittest.TestCase):
         self.assertEqual(copied_uri_existing_dep.version, "2")
 
         # Verify the top-level asset was overwritten
-        copied_asset_existing_dep = cast(MockAssetWithDeps, manager.get(
-            copied_uri_existing_dep, store="memory_deepcopy_dest"
-        ))
+        copied_asset_existing_dep = cast(
+            MockAssetWithDeps, manager.get(copied_uri_existing_dep, store="memory_deepcopy_dest")
+        )
         self.assertIsInstance(copied_asset_existing_dep, MockAssetWithDeps)
-        self.assertEqual(copied_asset_existing_dep.get_data(), b'{"data": "source asset data", "deps": ["mock_asset_with_deps://dep1_id/1", "mock_asset_with_deps://dep2_id/1"]}')
+        self.assertEqual(
+            copied_asset_existing_dep.get_data(),
+            b'{"data": "source asset data", "deps": ["mock_asset_with_deps://dep1_id/1", "mock_asset_with_deps://dep2_id/1"]}',
+        )
 
         # Verify that the existing dependency was *not* overwritten
         retrieved_existing_dep1 = manager.get_raw(
@@ -753,31 +768,43 @@ class TestPathToolAssetManager(unittest.TestCase):
 
         copied_dep1_existing = cast(MockAssetWithDeps, copied_deps_existing_dep[dep1_uri])
         self.assertIsInstance(copied_dep1_existing, MockAssetWithDeps)
-        self.assertEqual(copied_dep1_existing.get_data(), b'{"data": "dependency 1 data", "deps": []}') # Should be the original data from source
+        self.assertEqual(
+            copied_dep1_existing.get_data(), b'{"data": "dependency 1 data", "deps": []}'
+        )  # Should be the original data from source
 
         copied_dep2_existing = cast(MockAssetWithDeps, copied_deps_existing_dep[dep2_uri])
         self.assertIsInstance(copied_dep2_existing, MockAssetWithDeps)
-        self.assertEqual(copied_dep2_existing.get_data(), b'{"data": "dependency 2 data", "deps": []}') # Should be the newly copied raw data
-
+        self.assertEqual(
+            copied_dep2_existing.get_data(), b'{"data": "dependency 2 data", "deps": []}'
+        )  # Should be the newly copied raw data
 
         # Test handling of existing top-level asset in the destination store (should be overwritten)
         # This was implicitly tested in the previous step where the top-level asset's
         # version was incremented. Let's add a more explicit test.
         overwrite_src_data = b'{"data": "overwrite source data", "deps": []}'
         overwrite_src_uri = manager.add_raw(
-             MockAssetWithDeps.asset_type, "overwrite_source_id", overwrite_src_data, "memory_deepcopy_src"
+            MockAssetWithDeps.asset_type,
+            "overwrite_source_id",
+            overwrite_src_data,
+            "memory_deepcopy_src",
         )
 
         # Add an asset to the destination store with the same URI as overwrite_src_uri
         existing_dest_data = b'{"data": "existing destination data", "deps": []}'
         existing_dest_uri = manager.add_raw(
-            overwrite_src_uri.asset_type, overwrite_src_uri.asset_id, existing_dest_data, "memory_deepcopy_dest"
+            overwrite_src_uri.asset_type,
+            overwrite_src_uri.asset_id,
+            existing_dest_data,
+            "memory_deepcopy_dest",
         )
         self.assertEqual(existing_dest_uri.version, "1")
 
         # Deep copy overwrite_src_uri to the existing destination URI
         copied_uri_overwrite_top = manager.deepcopy(
-            overwrite_src_uri, dest_store="memory_deepcopy_dest", store="memory_deepcopy_src", dest=existing_dest_uri
+            overwrite_src_uri,
+            dest_store="memory_deepcopy_dest",
+            store="memory_deepcopy_src",
+            dest=existing_dest_uri,
         )
         # The version should be incremented
         self.assertEqual(copied_uri_overwrite_top.version, "2")
@@ -788,14 +815,16 @@ class TestPathToolAssetManager(unittest.TestCase):
         )
         # Need to parse the data to get the actual content
         import json
-        retrieved_data_dict = json.loads(retrieved_overwritten_top.decode('utf-8'))
-        self.assertEqual(retrieved_data_dict.get("data"), b'overwrite source data'.decode('utf-8'))
 
+        retrieved_data_dict = json.loads(retrieved_overwritten_top.decode("utf-8"))
+        self.assertEqual(retrieved_data_dict.get("data"), b"overwrite source data".decode("utf-8"))
 
         # Test error handling for non-existent source asset
         non_existent_src_uri = AssetUri.build(MockAssetWithDeps.asset_type, "non_existent_src", "1")
         with self.assertRaises(FileNotFoundError) as cm:
-            manager.deepcopy(non_existent_src_uri, dest_store="memory_deepcopy_dest", store="memory_deepcopy_src")
+            manager.deepcopy(
+                non_existent_src_uri, dest_store="memory_deepcopy_dest", store="memory_deepcopy_src"
+            )
         self.assertIn("Source asset", str(cm.exception))
         self.assertIn("not found", str(cm.exception))
 

@@ -74,7 +74,7 @@ class ToolBitBrowserWidget(QtGui.QWidget):
         self._all_assets: List[ToolBit] = []  # Store all fetched assets
         self._current_search = ""  # Track current search term
         self._sort_key = "tool_no" if tool_no_factory else "label"
-        self._selected_uris: List[str] = [] # Track selected toolbit URIs
+        self._selected_uris: List[str] = []  # Track selected toolbit URIs
 
         # UI Elements
         self._search_edit = QtGui.QLineEdit()
@@ -310,7 +310,7 @@ class ToolBitBrowserWidget(QtGui.QWidget):
             return
 
         selected_bits = [self._asset_manager.get(AssetUri(uri)) for uri in uris]
-        selected_bits = [bit for bit in selected_bits if bit] # Filter out None
+        selected_bits = [bit for bit in selected_bits if bit]  # Filter out None
 
         if not selected_bits:
             return
@@ -319,7 +319,7 @@ class ToolBitBrowserWidget(QtGui.QWidget):
         serialized_toolbits_data = []
         for toolbit in selected_bits:
             yaml_data = YamlToolBitSerializer.serialize(toolbit)
-            serialized_toolbits_data.append(yaml_data.decode('utf-8'))
+            serialized_toolbits_data.append(yaml_data.decode("utf-8"))
 
         # Create a dictionary to hold the operation type and serialized data
         clipboard_data_dict = {
@@ -332,14 +332,12 @@ class ToolBitBrowserWidget(QtGui.QWidget):
             clipboard_data_dict.update(extra_data)
 
         # Serialize the dictionary to YAML
-        clipboard_content_yaml = yaml.dump(
-            clipboard_data_dict, default_flow_style=False
-        )
+        clipboard_content_yaml = yaml.dump(clipboard_data_dict, default_flow_style=False)
 
         # Put the YAML data on the clipboard with a custom MIME type
         mime_data = QMimeData()
         mime_type = "application/x-freecad-toolbit-list-yaml"
-        mime_data.setData(mime_type, clipboard_content_yaml.encode('utf-8'))
+        mime_data.setData(mime_type, clipboard_content_yaml.encode("utf-8"))
 
         # Put it in text format for pasting to text editors
         toolbit_list = [yaml.safe_load(d) for d in serialized_toolbits_data]

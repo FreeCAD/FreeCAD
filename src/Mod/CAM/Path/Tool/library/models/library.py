@@ -172,7 +172,7 @@ class Library(Asset):
         self._bits = [t for t in self._bits if t.id != bit.id]
         self._bit_nos = {k: v for (k, v) in self._bit_nos.items() if v.id != bit.id}
 
-    def remove_bit_by_uri(self, uri: AssetUri|str):
+    def remove_bit_by_uri(self, uri: AssetUri | str):
         if isinstance(uri, str):
             uri = AssetUri(uri)
         self._bits = [t for t in self._bits if t.get_uri() != uri]
