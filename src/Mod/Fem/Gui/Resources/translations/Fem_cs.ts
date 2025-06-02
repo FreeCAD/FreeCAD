@@ -790,7 +790,7 @@
       <location filename="../../TaskPanelInitialTemperature.ui" line="26"/>
       <source>Insert component's
  initial temperature:</source>
-      <translation>Vložte počáteční 
+      <translation>Vložte počáteční
 teplotu komponentu:</translation>
     </message>
   </context>
@@ -1558,7 +1558,7 @@ exported from FreeCAD.</source>
 Objekt sítě MKP: Výsledky nebudou v souboru VTK zahrnuty, pouze
 budou importována data sítě a bude vytvořen objekt FreeCAD MKP sítě.
 
-FreeCAD objekt výsledku: Importovaná data budou převedena na 
+FreeCAD objekt výsledku: Importovaná data budou převedena na
 objekt FreeCAD MKP výsledku. Poznámka: toto nastavení vyžaduje přesný
 název komponentu výsledku, a proto správně funguje pouze s VTK soubory
 exportované z FreeCADu.</translation>
@@ -6043,11 +6043,11 @@ Nejprve prosím vyberte typ výsledku.</translation>
       <location filename="../../../femguiutils/vtk_module_handling.py" line="194"/>
       <source>
 
-Correct module found in: 
+Correct module found in:
 {}</source>
       <translation type="unfinished">
 
-Correct module found in: 
+Correct module found in:
 {}</translation>
     </message>
     <message>

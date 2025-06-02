@@ -5431,7 +5431,7 @@ BFGS çözümleyici, Broyden–Fletcher–Goldfarb–Shanno algoritmalarını ku
       <location filename="../../TaskSketcherSolverAdvanced.ui" line="199"/>
       <source>Threshold for squared error that is used
 to determine whether a solution converges or not</source>
-      <translation>Bir çözümün yakınsayıp yakınsamadığını 
+      <translation>Bir çözümün yakınsayıp yakınsamadığını
 belirlemek için kullanılan hata karesi eşiği</translation>
     </message>
     <message>

@@ -5569,7 +5569,7 @@ Larger values (further to the right) will calculate faster; smaller values (furt
     </message>
     <message>
         <location filename="../../../Path/Op/Vcarve.py" line="332"/>
-        <source>Cutoff for removing colinear segments (degrees). 
+        <source>Cutoff for removing colinear segments (degrees).
                         default=10.0.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -7053,7 +7053,7 @@ Aborting op creation</source>
     <name>CAM_Inspect</name>
     <message>
         <location filename="../../../Path/Main/Gui/Inspect.py" line="132"/>
-        <source>&lt;b&gt;Note&lt;/b&gt;: This dialog shows Path Commands in FreeCAD base units (mm/s). 
+        <source>&lt;b&gt;Note&lt;/b&gt;: This dialog shows Path Commands in FreeCAD base units (mm/s).
  Values will be converted to the desired unit during post processing.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -7370,7 +7370,7 @@ Aborting op creation</source>
     </message>
     <message>
         <location filename="../../../Path/Main/Sanity/Sanity.py" line="364"/>
-        <source>Tool number {} is a legacy tool. Legacy tools not 
+        <source>Tool number {} is a legacy tool. Legacy tools not
                     supported by Path-Sanity</source>
         <translation type="unfinished"></translation>
     </message>
@@ -8526,7 +8526,7 @@ Aborting op creation</source>
     <message>
         <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="128"/>
         <source>Toolbit Working directory {} needs these sudirectories:
- {} 
+ {}
  Create them?</source>
         <translation type="unfinished"></translation>
     </message>

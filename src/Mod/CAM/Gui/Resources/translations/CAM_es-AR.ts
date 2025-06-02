@@ -2540,7 +2540,7 @@ Si se deja vacío, el directorio macro es usado.</translation>
 This can be helpful when almost all jobs will be processed by the same machine with a similar setup.
 
 If left empty no template will be preselected.</source>
-      <translation>La plantilla por defecto a seleccionar al crear un nuevo Trabajo. 
+      <translation>La plantilla por defecto a seleccionar al crear un nuevo Trabajo.
 
 Esto puede ser útil cuando casi todos los trabajos serán procesados por la misma máquina con una configuración similar.
 
@@ -5698,9 +5698,9 @@ Larger values (further to the right) will calculate faster; smaller values (furt
     </message>
     <message>
       <location filename="../../../Path/Op/Vcarve.py" line="332"/>
-      <source>Cutoff for removing colinear segments (degrees). 
+      <source>Cutoff for removing colinear segments (degrees).
                         default=10.0.</source>
-      <translation>Corte para eliminar segmentos colineales (grados). 
+      <translation>Corte para eliminar segmentos colineales (grados).
                         por defecto=10.0.</translation>
     </message>
     <message>
@@ -7187,9 +7187,9 @@ Abortando la creación de la op</translation>
     <name>CAM_Inspect</name>
     <message>
       <location filename="../../../Path/Main/Gui/Inspect.py" line="132"/>
-      <source>&lt;b&gt;Note&lt;/b&gt;: This dialog shows Path Commands in FreeCAD base units (mm/s). 
+      <source>&lt;b&gt;Note&lt;/b&gt;: This dialog shows Path Commands in FreeCAD base units (mm/s).
  Values will be converted to the desired unit during post processing.</source>
-      <translation>&lt;b&gt;Nota&lt;/b&gt;: Este diálogo muestra los comandos de trayectoria en las unidades base de FreeCAD (mm/s). 
+      <translation>&lt;b&gt;Nota&lt;/b&gt;: Este diálogo muestra los comandos de trayectoria en las unidades base de FreeCAD (mm/s).
  Los valores se convertirán a la unidad deseada durante el post-procesamiento.</translation>
     </message>
     <message>
@@ -7505,9 +7505,9 @@ Abortando la creación de la op</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Sanity/Sanity.py" line="364"/>
-      <source>Tool number {} is a legacy tool. Legacy tools not 
+      <source>Tool number {} is a legacy tool. Legacy tools not
                     supported by Path-Sanity</source>
-      <translation>El número de herramienta {} es una herramienta antigua. Las herramientas heredadas no 
+      <translation>El número de herramienta {} es una herramienta antigua. Las herramientas heredadas no
                         son soportadas por Path-Sanity</translation>
     </message>
     <message>
@@ -8662,10 +8662,10 @@ Abortando la creación de la op</translation>
     <message>
       <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="128"/>
       <source>Toolbit Working directory {} needs these sudirectories:
- {} 
+ {}
  Create them?</source>
       <translation>Directorio de trabajo de herramienta {} necesita estos sudirectorios:
- {} 
+ {}
  ¿Crearlos?</translation>
     </message>
     <message>

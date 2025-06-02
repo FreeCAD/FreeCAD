@@ -462,7 +462,7 @@ and an edge as an interface.</source>
       <location filename="../../CommandConstraints.cpp" line="9356"/>
       <source>Create a symmetry constraint between two points
 with respect to a line or a third point</source>
-      <translation>Luo symmetriarajoite kahden pisteen välille, 
+      <translation>Luo symmetriarajoite kahden pisteen välille,
 käyttäen jakajana viivaa tai kolmatta pistettä</translation>
     </message>
   </context>

@@ -2058,7 +2058,7 @@ to a smoother appearance.
       <location filename="../../Command.cpp" line="302"/>
       <source>OpenSCAD cannot be found on your system.
 Please visit http://www.openscad.org/index.html to install it.</source>
-      <translation>OpenSCAD nije moguće pronaći na vašem sustavu. 
+      <translation>OpenSCAD nije moguće pronaći na vašem sustavu.
 Posjetite http://www.openscad.org/index.html da biste ga instalirali.</translation>
     </message>
   </context>

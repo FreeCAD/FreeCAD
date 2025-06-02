@@ -899,7 +899,7 @@ Do you want to continue?</source>
       <location filename="../../DlgBindSheet.cpp" line="273"/>
       <source>Error:
 </source>
-      <translation>오류: 
+      <translation>오류:
 </translation>
     </message>
     <message>

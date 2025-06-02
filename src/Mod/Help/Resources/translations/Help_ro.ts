@@ -46,7 +46,7 @@ locaţia implicită ($USERAPPDATADIR/Mod/offline-documentation).</translation>
       <location filename="../../dlgPreferencesHelp.ui" line="29"/>
       <source>This will fetch the documentation from pages rendered on GitHub.
 This is currently not available...</source>
-      <translation>Aceasta va prelua documentația de pe paginile redate pe GitHub. 
+      <translation>Aceasta va prelua documentația de pe paginile redate pe GitHub.
 Acest lucru nu este disponibil momentan...</translation>
     </message>
     <message>
@@ -117,7 +117,7 @@ care vă permite să îl păstrați deschis în timp ce lucrați în vizualizare
 to style the Markdown pages. This will only work if you have selected the
 Markdown version above.</source>
       <translation>Aici poți indica locația unui fișier CSS alternativ care să fie folosit
-pentru a stiliza paginile Markdown. Acest lucru va funcționa doar dacă ați selectat 
+pentru a stiliza paginile Markdown. Acest lucru va funcționa doar dacă ați selectat
 versiunea de Markdown de mai sus.</translation>
     </message>
     <message>

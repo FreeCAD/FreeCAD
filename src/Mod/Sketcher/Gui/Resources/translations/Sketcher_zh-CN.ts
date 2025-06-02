@@ -2751,7 +2751,7 @@ invalid constraints, degenerated geometry, etc.</source>
 
 Accepted combinations: two curves; an endpoint and a curve; two endpoints; two curves and a point.</source>
       <comment>perpendicular constraint</comment>
-      <translation>可以采用多种方法来应用此约束。 
+      <translation>可以采用多种方法来应用此约束。
 
 接受的组合: 两条曲线; 一个端点和一个曲线; 两个端点; 两条曲线和一个点。</translation>
     </message>
@@ -2789,7 +2789,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
 
 Accepted combinations: two curves; an endpoint and a curve; two endpoints; two curves and a point.</source>
       <comment>tangent constraint</comment>
-      <translation>可以使用多种方法来应用此约束。 
+      <translation>可以使用多种方法来应用此约束。
 
 接受的组合: 两条曲线; 一个端点和一个曲线; 两个端点; 两条曲线和一个点。</translation>
     </message>

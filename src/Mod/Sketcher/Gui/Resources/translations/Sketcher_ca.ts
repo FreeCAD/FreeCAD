@@ -4417,7 +4417,7 @@ Llavors, els objectes només són visibles darrere del pla del croquis.</transla
 %2 constraints are linking to the endpoints. The constraints have been listed in Report view (menu View -&gt; Panels -&gt; Report view).
 
 Click "Swap endpoints in constraints" button to reassign endpoints. Do this only once to sketches created in FreeCAD older than v0.15</source>
-      <translation>S'han trobat %1 arcs de geometria externa inversa. Els seus extrems estan encerclats en la vista 3D. 
+      <translation>S'han trobat %1 arcs de geometria externa inversa. Els seus extrems estan encerclats en la vista 3D.
 %2 restriccions estan lligades als extrems. Les restriccions s'han llistat en la vista d'informe (menú Vista -&gt; Panells -&gt; Vista d'informe). Feu clic al botó «Intercanvia els extrems en les restriccions» per a reassignar els extrems. Feu això només una vegada en esbossos creats en una versió del FreeCAD anterior a la v0.15</translation>
     </message>
     <message>
@@ -5248,7 +5248,7 @@ Trieu un mètode per unir aquest croquis als objectes seleccionats.</translation
       <location filename="../../Command.cpp" line="779"/>
       <source>Can't map a sketch to support:
 %1</source>
-      <translation>No es pot mapar un croquis al suport: 
+      <translation>No es pot mapar un croquis al suport:
 %1</translation>
     </message>
   </context>
@@ -5285,7 +5285,7 @@ Trieu un mètode per unir aquest croquis als objectes seleccionats.</translation
       <location filename="../../Command.cpp" line="456"/>
       <source>Sketch with a support face cannot be reoriented.
 Do you want to detach it from the support?</source>
-      <translation>El croquis amb una cara de suport no es pot reorientar. 
+      <translation>El croquis amb una cara de suport no es pot reorientar.
 Voleu separar-lo del suport?</translation>
     </message>
   </context>

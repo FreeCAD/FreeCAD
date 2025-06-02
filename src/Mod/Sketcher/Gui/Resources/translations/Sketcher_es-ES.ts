@@ -2791,7 +2791,7 @@ Las combinaciones posibles son: dos curvas; extremo y curva; dos extremos; dos c
 
 Accepted combinations: two curves; an endpoint and a curve; two endpoints; two curves and a point.</source>
       <comment>tangent constraint</comment>
-      <translation>Hay varias maneras de que esta restricción se pueda aplicar. 
+      <translation>Hay varias maneras de que esta restricción se pueda aplicar.
 
 Combinaciones aceptadas: dos curvas; un extremo y una curva; dos extremos; dos curvas y un punto.</translation>
     </message>

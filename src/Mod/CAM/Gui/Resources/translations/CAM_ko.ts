@@ -188,7 +188,7 @@
       <source>Enable to include values of the SetupSheet in the template.
 
 Any values of the SetupSheet that are changed from their default are preselected. If this field not selected the current SetupSheet was not modified.</source>
-      <translation>기본형의 '설정값시트'에 있는 값을 포함 할 수 있게 합니다. 
+      <translation>기본형의 '설정값시트'에 있는 값을 포함 할 수 있게 합니다.
 설정값시트에 있는 모든 값은 기본값으로 부터 변경하려면 그 항목이 미리 선택되어져 있어야 합니다. 이 칸을 사용하여 선택 되어 있지 않으면 현재의 설정값시트에 있는 값은 재설정 되지 않습니다.</translation>
     </message>
     <message>
@@ -254,7 +254,7 @@ For stock from the Base object&apos;s bounding box it means the extra material i
       <source>Enable all operations for which the configuration values should be exported.
 
 Note that only operations which currently have configuration values set are listed.</source>
-      <translation>설정값을 옮겨 나갈 수 있게 모든 작업명이 가능하게 하세요. 
+      <translation>설정값을 옮겨 나갈 수 있게 모든 작업명이 가능하게 하세요.
 주의할 것은 현재 설정값 세트를 갖고 있는 작업명만 목록에 수록되어 있다는 겁니다.</translation>
     </message>
     <message>
@@ -5696,9 +5696,9 @@ Larger values (further to the right) will calculate faster; smaller values (furt
     </message>
     <message>
       <location filename="../../../Path/Op/Vcarve.py" line="332"/>
-      <source>Cutoff for removing colinear segments (degrees). 
+      <source>Cutoff for removing colinear segments (degrees).
                         default=10.0.</source>
-      <translation type="unfinished">Cutoff for removing colinear segments (degrees). 
+      <translation type="unfinished">Cutoff for removing colinear segments (degrees).
                         default=10.0.</translation>
     </message>
     <message>
@@ -7186,9 +7186,9 @@ Aborting op creation</translation>
     <name>CAM_Inspect</name>
     <message>
       <location filename="../../../Path/Main/Gui/Inspect.py" line="132"/>
-      <source>&lt;b&gt;Note&lt;/b&gt;: This dialog shows Path Commands in FreeCAD base units (mm/s). 
+      <source>&lt;b&gt;Note&lt;/b&gt;: This dialog shows Path Commands in FreeCAD base units (mm/s).
  Values will be converted to the desired unit during post processing.</source>
-      <translation type="unfinished">&lt;b&gt;Note&lt;/b&gt;: This dialog shows Path Commands in FreeCAD base units (mm/s). 
+      <translation type="unfinished">&lt;b&gt;Note&lt;/b&gt;: This dialog shows Path Commands in FreeCAD base units (mm/s).
  Values will be converted to the desired unit during post processing.</translation>
     </message>
     <message>
@@ -7504,9 +7504,9 @@ Aborting op creation</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Sanity/Sanity.py" line="364"/>
-      <source>Tool number {} is a legacy tool. Legacy tools not 
+      <source>Tool number {} is a legacy tool. Legacy tools not
                     supported by Path-Sanity</source>
-      <translation type="unfinished">Tool number {} is a legacy tool. Legacy tools not 
+      <translation type="unfinished">Tool number {} is a legacy tool. Legacy tools not
                     supported by Path-Sanity</translation>
     </message>
     <message>
@@ -8661,10 +8661,10 @@ Aborting op creation</translation>
     <message>
       <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="128"/>
       <source>Toolbit Working directory {} needs these sudirectories:
- {} 
+ {}
  Create them?</source>
       <translation type="unfinished">Toolbit Working directory {} needs these sudirectories:
- {} 
+ {}
  Create them?</translation>
     </message>
     <message>

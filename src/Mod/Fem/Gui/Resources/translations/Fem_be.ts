@@ -1099,7 +1099,7 @@ Only takes effect if 'Pipeline only' is enabled</translation>
 '%1'
  does not exist!
 Specify another file please.</source>
-      <translation>Двайковы файл 
+      <translation>Двайковы файл
 '%1'
 не існуе!
 Калі ласка, пакажыце іншы файл.</translation>
@@ -1225,7 +1225,7 @@ will be merged to make the volume boundaries invisible.</source>
 '%1'
  does not exist!
 Specify another file please.</source>
-      <translation>Двайковы файл 
+      <translation>Двайковы файл
 '%1'
 не існуе!
 Калі ласка, пакажыце іншы файл.</translation>
@@ -1509,7 +1509,7 @@ adding an analysis container</source>
 '%1'
  does not exist!
 Specify another file please.</source>
-      <translation>Двайковы файл 
+      <translation>Двайковы файл
 '%1'
 не існуе!
 Калі ласка, пакажыце іншы файл.</translation>
@@ -1636,7 +1636,7 @@ exported from FreeCAD.</source>
 '%1'
  does not exist!
 Specify another file please.</source>
-      <translation>Двайковы файл 
+      <translation>Двайковы файл
 '%1'
 не існуе!
 Калі ласка, пакажыце іншы файл.</translation>
@@ -1743,7 +1743,7 @@ that "MAXKOI" needs to be increased.</source>
 '%1'
  does not exist!
 Specify another file please.</source>
-      <translation>Паказаны двайковы файл z88r 
+      <translation>Паказаны двайковы файл z88r
 '%1'
  не існуе!
 Калі ласка, пакажыце іншы файл.</translation>
@@ -6025,11 +6025,11 @@ Please select a result type first.</source>
       <location filename="../../../femguiutils/vtk_module_handling.py" line="194"/>
       <source>
 
-Correct module found in: 
+Correct module found in:
 {}</source>
       <translation type="unfinished">
 
-Correct module found in: 
+Correct module found in:
 {}</translation>
     </message>
     <message>

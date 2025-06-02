@@ -6048,11 +6048,11 @@ Primer, seleccioneu un tipus de resultat.</translation>
       <location filename="../../../femguiutils/vtk_module_handling.py" line="194"/>
       <source>
 
-Correct module found in: 
+Correct module found in:
 {}</source>
       <translation type="unfinished">
 
-Correct module found in: 
+Correct module found in:
 {}</translation>
     </message>
     <message>

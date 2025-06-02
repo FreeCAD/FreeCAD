@@ -1369,7 +1369,7 @@
       <location filename="../../DlgSettingsImportExportImp.cpp" line="39"/>
       <source>This parameter indicates whether ZIP compression
 is used when writing a file in AMF format</source>
-      <translation>Tämä parametri ilmaisee, on ZIP pakkaaminen 
+      <translation>Tämä parametri ilmaisee, on ZIP pakkaaminen
 käytössä kirjoitettaessa tiedostoa AMF muodossa</translation>
     </message>
   </context>
@@ -2058,7 +2058,7 @@ to a smoother appearance.
       <location filename="../../Command.cpp" line="302"/>
       <source>OpenSCAD cannot be found on your system.
 Please visit http://www.openscad.org/index.html to install it.</source>
-      <translation>OpenSCAD:ia ei löydy järjestelmästäsi. Käy 
+      <translation>OpenSCAD:ia ei löydy järjestelmästäsi. Käy
 http://www.openscad.org/index.html asentaaksesi sen.</translation>
     </message>
   </context>

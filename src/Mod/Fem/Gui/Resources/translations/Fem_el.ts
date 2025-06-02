@@ -1738,11 +1738,11 @@ You might need to increase this when using an
 iterative solver and you get the error message
 that "MAXKOI" needs to be increased.</source>
       <translation>Μέγιστες θέσεις σε τυχαίο διάνυσμα.
-(αριθμός κόμπων ανά στοιχείο επί τον 
+(αριθμός κόμπων ανά στοιχείο επί τον
 αριθμό των πεπερασμένων στοιχείων)
 
 Ίσως, χρειαστεί να το αυξήσετε όταν χρησιμοποιείτε
-έναν επαναληπτικό λύτη όταν λαμβάνετε το μήνυμα 
+έναν επαναληπτικό λύτη όταν λαμβάνετε το μήνυμα
 σφάλματος ότι πρέπει να αυξηθεί το "MAXKOI".</translation>
     </message>
     <message>
@@ -4718,7 +4718,7 @@ normal vector of the face is used as direction</source>
       <location filename="../../TaskFemConstraintSpring.ui" line="122"/>
       <source>What stiffness should be
 used for the Elmer solver</source>
-      <translation>Ποια ακαμψία πρέπει να 
+      <translation>Ποια ακαμψία πρέπει να
 χρησιμοποιηθεί για τον επιλύτη Elmer</translation>
     </message>
     <message>
@@ -6044,11 +6044,11 @@ Please select a result type first.</translation>
       <location filename="../../../femguiutils/vtk_module_handling.py" line="194"/>
       <source>
 
-Correct module found in: 
+Correct module found in:
 {}</source>
       <translation type="unfinished">
 
-Correct module found in: 
+Correct module found in:
 {}</translation>
     </message>
     <message>

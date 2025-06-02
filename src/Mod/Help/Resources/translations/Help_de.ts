@@ -112,7 +112,7 @@ dadurch kann der Dialog geöffnet bleiben, während man in der 3D-Ansicht weiter
       <source>You can here indicate the path to an alternative CSS file to be used
 to style the Markdown pages. This will only work if you have selected the
 Markdown version above.</source>
-      <translation>Hier kann der Pfad zu einer alternativen CSS-Datei angeben werden, mit der die Markdown-Seiten 
+      <translation>Hier kann der Pfad zu einer alternativen CSS-Datei angeben werden, mit der die Markdown-Seiten
 gestalten werden sollen. Dies funktioniert nur, wenn oben
 Markdown-Version ausgewählt wurde.</translation>
     </message>

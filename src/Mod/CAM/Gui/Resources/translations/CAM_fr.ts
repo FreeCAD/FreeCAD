@@ -5710,7 +5710,7 @@ Rotationnel : balayage rotationnel sur le 4ᵉ axe.</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Vcarve.py" line="332"/>
-      <source>Cutoff for removing colinear segments (degrees). 
+      <source>Cutoff for removing colinear segments (degrees).
                         default=10.0.</source>
       <translation>Seuil de décision pour la suppression des segments colinéaires (degrés), par défaut = 10.0.</translation>
     </message>
@@ -7196,7 +7196,7 @@ Annulation de la création de l'opération</translation>
     <name>CAM_Inspect</name>
     <message>
       <location filename="../../../Path/Main/Gui/Inspect.py" line="132"/>
-      <source>&lt;b&gt;Note&lt;/b&gt;: This dialog shows Path Commands in FreeCAD base units (mm/s). 
+      <source>&lt;b&gt;Note&lt;/b&gt;: This dialog shows Path Commands in FreeCAD base units (mm/s).
  Values will be converted to the desired unit during post processing.</source>
       <translation>&lt;b&gt;Remarque &lt;/b&gt;: cette fenêtre de dialogue montre les commandes de parcours avec les unités de base de FreeCAD (mm/s).
 Les valeurs seront converties dans l'unité souhaitée pendant le post-traitement.</translation>
@@ -7514,7 +7514,7 @@ Les valeurs seront converties dans l'unité souhaitée pendant le post-traitemen
     </message>
     <message>
       <location filename="../../../Path/Main/Sanity/Sanity.py" line="364"/>
-      <source>Tool number {} is a legacy tool. Legacy tools not 
+      <source>Tool number {} is a legacy tool. Legacy tools not
                     supported by Path-Sanity</source>
       <translation>L'outil {} est un vieil outil. Les vieux outils ne sont pas pris en charge par l'outil Rechercher des erreurs.</translation>
     </message>
@@ -8670,10 +8670,10 @@ Les valeurs seront converties dans l'unité souhaitée pendant le post-traitemen
     <message>
       <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="128"/>
       <source>Toolbit Working directory {} needs these sudirectories:
- {} 
+ {}
  Create them?</source>
       <translation>Le répertoire de travail des outils coupants {} a besoin de ces sous-répertoires :
- {} 
+ {}
  Voulez-vous les créer ?</translation>
     </message>
     <message>

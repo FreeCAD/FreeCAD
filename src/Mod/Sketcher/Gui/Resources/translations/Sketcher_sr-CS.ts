@@ -3893,8 +3893,8 @@ u odnosu na ostale sa pomoćnim linijama</translation>
       <source>If selected, it substitutes dimensional constraints by geometric constraints
 in the copies, so that a change in the original element is directly
 reflected on copies</source>
-      <translation>Ako je potvrđeno, u kopijama će dimenzionalna ograničenja (kote) biti 
-zamenjene sa geometrijskim ograničenjima, tako da će se promene na 
+      <translation>Ako je potvrđeno, u kopijama će dimenzionalna ograničenja (kote) biti
+zamenjene sa geometrijskim ograničenjima, tako da će se promene na
 originalnom elementu direktno ogledati i na kopijama</translation>
     </message>
     <message>

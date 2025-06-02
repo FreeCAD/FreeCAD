@@ -1732,7 +1732,7 @@ You might need to increase this when using an
 iterative solver and you get the error message
 that "MAXKOI" needs to be increased.</source>
       <translation>Maximale Plätze im Zufallsvektor.
-(Anzahl der Knoten pro Element multipliziert 
+(Anzahl der Knoten pro Element multipliziert
 mit Anzahl der Finiten Elementen)
 
 Eventuell ist eine Erweiterung der Plätze nötig, wenn ein
@@ -6040,11 +6040,11 @@ Bitte zuerst einen Ergebnistyp auswählen.</translation>
       <location filename="../../../femguiutils/vtk_module_handling.py" line="194"/>
       <source>
 
-Correct module found in: 
+Correct module found in:
 {}</source>
       <translation type="unfinished">
 
-Correct module found in: 
+Correct module found in:
 {}</translation>
     </message>
     <message>

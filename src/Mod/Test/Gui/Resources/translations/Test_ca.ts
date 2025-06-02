@@ -113,7 +113,7 @@ Click 'start', and the test thus produced will be run.
 
 Double click on an error in the tree view to see more information about it, including the stack trace.</source>
       <translation>Introduïu el nom d'un objecte cridable que quan es cridi retorni un TestCase.
-Feu clic a 'Comença' i s'executarà el test anteriorment produït. 
+Feu clic a 'Comença' i s'executarà el test anteriorment produït.
 
 Feu doble clic a un error a la vista d'arbre per veure'n més informació, incloent-hi la traça de pila.</translation>
     </message>

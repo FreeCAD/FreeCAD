@@ -4317,7 +4317,7 @@ Defaults to: %N = %V
       <location filename="../../SketcherSettingsDisplay.ui" line="403"/>
       <source>When entering edit mode, force orthographic view of camera.
 Works only when "Restore camera position after editing" is enabled.</source>
-      <translation>В режиме правки эскиза, вид будет переключен на ортогональный. 
+      <translation>В режиме правки эскиза, вид будет переключен на ортогональный.
 Работает только, если включена функция «Восстановить позицию камеры после редактирования».</translation>
     </message>
     <message>
@@ -6232,8 +6232,8 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
       <source>Constrain contextually based on your selection.
 Depending on your selection you might have several constraints available. You can cycle through them using M key.
 Left clicking on empty space will validate the current constraint. Right clicking or pressing Esc will cancel.</source>
-      <translation>Добавляет автоопределенный тип размера или ограничения исходя из выбранных объектов. 
-Перебор доступных типов размеров и ограничений – клавиша M. 
+      <translation>Добавляет автоопределенный тип размера или ограничения исходя из выбранных объектов.
+Перебор доступных типов размеров и ограничений – клавиша M.
 Для подтверждения используйте ЛКМ, для отмены – ПКМ или Esc</translation>
     </message>
   </context>

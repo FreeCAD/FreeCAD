@@ -1226,7 +1226,7 @@ serão mescladas para tornar os limites de volume invisíveis.</translation>
 '%1'
  does not exist!
 Specify another file please.</source>
-      <translation>O executável especificado 
+      <translation>O executável especificado
 '%1'
  não existe!
 Especifique outro arquivo, por favor.</translation>
@@ -1557,8 +1557,8 @@ exported from FreeCAD.</source>
 Objeto de malha FEM: O resultado no arquivo VTK será omitido, apenas os
 dados da malha serão importados e o objeto de malha FEM FreeCAD será criado.
 
-Objeto resultado FreeCAD: Os dados importados serão convertidos em um 
-objeto resultado FEM FreeCAD. Nota: esta configuração precisa do componente nome 
+Objeto resultado FreeCAD: Os dados importados serão convertidos em um
+objeto resultado FEM FreeCAD. Nota: esta configuração precisa do componente nome
 exato, então só funciona com arquivos VTK própriamente exportados do FreeCAD.</translation>
     </message>
     <message>
@@ -3024,7 +3024,7 @@ Por favor, escolha outro arquivo.</translation>
       <location filename="../ui/ElectrostaticPotential.ui" line="100"/>
       <source>Imaginary part is only used for equations
 with a harmonic/oscillating driving force</source>
-      <translation>Parte imaginária é usada apenas para equações 
+      <translation>Parte imaginária é usada apenas para equações
 com forças atuantes harmônicas/oscilantes</translation>
     </message>
     <message>
@@ -6045,11 +6045,11 @@ Por favor, selecione primeiramente um tipo de resultado.</translation>
       <location filename="../../../femguiutils/vtk_module_handling.py" line="194"/>
       <source>
 
-Correct module found in: 
+Correct module found in:
 {}</source>
       <translation type="unfinished">
 
-Correct module found in: 
+Correct module found in:
 {}</translation>
     </message>
     <message>

@@ -188,7 +188,7 @@
       <source>Enable to include values of the SetupSheet in the template.
 
 Any values of the SetupSheet that are changed from their default are preselected. If this field not selected the current SetupSheet was not modified.</source>
-      <translation>Gaitu hau konfigurazio-orriaren balioak txantiloian sartzeko. 
+      <translation>Gaitu hau konfigurazio-orriaren balioak txantiloian sartzeko.
 
 Jatorrizko balioetatik aldatu diren konfigurazio-orriko balio guztiak hautatuko dira. Eremu hau hautatuta ez badago, uneko konfigurazio-orria ez da aldatu.</translation>
     </message>
@@ -1986,7 +1986,7 @@ Azken aukera pieza gordinaren area osoaren aurpegirako erabili daiteke, hurrengo
       <source>The amount by which the tool is laterally displaced on each cycle of the pattern, specified in percent of the tool diameter.
 
 A step over of 100% results in no overlap between two different cycles.</source>
-      <translation>Tresna saiheska zenbat desplazatuko den ereduaren ziklo bakoitzean, tresnaren diametroaren ehunekoetan adierazita. 
+      <translation>Tresna saiheska zenbat desplazatuko den ereduaren ziklo bakoitzean, tresnaren diametroaren ehunekoetan adierazita.
 
 Gainditzea % 100ekoa bada, ez da gainjartzerik egongo zikloen artean.</translation>
     </message>
@@ -5698,9 +5698,9 @@ Larger values (further to the right) will calculate faster; smaller values (furt
     </message>
     <message>
       <location filename="../../../Path/Op/Vcarve.py" line="332"/>
-      <source>Cutoff for removing colinear segments (degrees). 
+      <source>Cutoff for removing colinear segments (degrees).
                         default=10.0.</source>
-      <translation>Trontzatu segmentu lerrokideak kentzeko (graduak). 
+      <translation>Trontzatu segmentu lerrokideak kentzeko (graduak).
                         Lehenetsia=10.0.</translation>
     </message>
     <message>
@@ -7187,9 +7187,9 @@ Aukeren sorrera abortatzen</translation>
     <name>CAM_Inspect</name>
     <message>
       <location filename="../../../Path/Main/Gui/Inspect.py" line="132"/>
-      <source>&lt;b&gt;Note&lt;/b&gt;: This dialog shows Path Commands in FreeCAD base units (mm/s). 
+      <source>&lt;b&gt;Note&lt;/b&gt;: This dialog shows Path Commands in FreeCAD base units (mm/s).
  Values will be converted to the desired unit during post processing.</source>
-      <translation type="unfinished">&lt;b&gt;Note&lt;/b&gt;: This dialog shows Path Commands in FreeCAD base units (mm/s). 
+      <translation type="unfinished">&lt;b&gt;Note&lt;/b&gt;: This dialog shows Path Commands in FreeCAD base units (mm/s).
  Values will be converted to the desired unit during post processing.</translation>
     </message>
     <message>
@@ -7505,9 +7505,9 @@ Aukeren sorrera abortatzen</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Sanity/Sanity.py" line="364"/>
-      <source>Tool number {} is a legacy tool. Legacy tools not 
+      <source>Tool number {} is a legacy tool. Legacy tools not
                     supported by Path-Sanity</source>
-      <translation type="unfinished">Tool number {} is a legacy tool. Legacy tools not 
+      <translation type="unfinished">Tool number {} is a legacy tool. Legacy tools not
                     supported by Path-Sanity</translation>
     </message>
     <message>
@@ -8662,7 +8662,7 @@ Aukeren sorrera abortatzen</translation>
     <message>
       <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="128"/>
       <source>Toolbit Working directory {} needs these sudirectories:
- {} 
+ {}
  Create them?</source>
       <translation>Tresna-atalaren laneko direktorioak ({}) honako azpidirektorioak behar ditu:
 {}

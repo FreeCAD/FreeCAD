@@ -3796,7 +3796,7 @@ Ordering by operation will do each operation in all coordinate systems before mo
 Тады ўсе аперацыі будуць выконвацца там у тым жа парадку.
 Гэтае карысна, калі аператар можа бяспечна загружаць працу ў адну сістэму каардынат, а станок выконвае працу ў іншай.
 
-Упарадкаванне па інструменту прывядзе да найменшай колькасці змен інструмента. 
+Упарадкаванне па інструменту прывядзе да найменшай колькасці змен інструмента.
 Будзе праведзена змена інструмента, потым усе аперацыі ва ўсіх сістэмах каардынат перад зменай інструментаў.
 
 Упарадкаванне па аперацыях выканае кожную аперацыю ва ўсіх сістэмах каардынат перад пераходам да наступнай аперацыі.
@@ -5750,7 +5750,7 @@ Larger values (further to the right) will calculate faster; smaller values (furt
     </message>
     <message>
       <location filename="../../../Path/Op/Vcarve.py" line="332"/>
-      <source>Cutoff for removing colinear segments (degrees). 
+      <source>Cutoff for removing colinear segments (degrees).
                         default=10.0.</source>
       <translation>Адсячэнне для выдалення калінеарных  адрэзкаў (градусаў).
 Першапачаткова = 10.0.</translation>
@@ -7242,7 +7242,7 @@ Aborting op creation</source>
     <name>CAM_Inspect</name>
     <message>
       <location filename="../../../Path/Main/Gui/Inspect.py" line="132"/>
-      <source>&lt;b&gt;Note&lt;/b&gt;: This dialog shows Path Commands in FreeCAD base units (mm/s). 
+      <source>&lt;b&gt;Note&lt;/b&gt;: This dialog shows Path Commands in FreeCAD base units (mm/s).
  Values will be converted to the desired unit during post processing.</source>
       <translation>&lt;b>Заўвага&lt;/b>: У дыялогавым акне паказваюцца каманды вызначэння шляху ў асноўных адзінках FreeCAD (мм/с).
 Значэнні будуць пераўтвораныя ў патрэбныя адзінкі вымярэння падчас пасляапрацоўкі.</translation>
@@ -7560,7 +7560,7 @@ Aborting op creation</source>
     </message>
     <message>
       <location filename="../../../Path/Main/Sanity/Sanity.py" line="364"/>
-      <source>Tool number {} is a legacy tool. Legacy tools not 
+      <source>Tool number {} is a legacy tool. Legacy tools not
                     supported by Path-Sanity</source>
       <translation>Нумар інструменту {} - гэта састарэлы інструмент.
 Састарэлыя інструменты не падтрымліваюцца функцыяй Path-Sanity</translation>
@@ -8719,7 +8719,7 @@ Aborting op creation</source>
     <message>
       <location filename="../../../Path/Tool/Gui/BitLibrary.py" line="128"/>
       <source>Toolbit Working directory {} needs these sudirectories:
- {} 
+ {}
  Create them?</source>
       <translation>Працоўны каталог такарных разцоў {} мае патрэбу ва ўкладзеных каталогах:
 {}
