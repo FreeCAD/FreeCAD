@@ -139,6 +139,11 @@ bool PropertyItemDelegate::eventFilter(QObject *o, QEvent *ev)
     }
     else if (ev->type() == QEvent::FocusOut) {
         auto parentEditor = qobject_cast<PropertyEditor*>(this->parent());
+        if (auto* comboBox = qobject_cast<QComboBox*>(o)) {
+            if (parentEditor && parentEditor->activeEditor == comboBox) {
+                parentEditor->activeEditor = nullptr;
+            }
+        }
         auto widget = qobject_cast<QWidget*>(o);
         if (widget && parentEditor && parentEditor->activeEditor
                    && widget != parentEditor->activeEditor) {
