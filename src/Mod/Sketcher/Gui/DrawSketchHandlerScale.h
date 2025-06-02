@@ -263,14 +263,15 @@ private:
             }
             else if (isEllipse(*geo)) {
                 auto* ellipse = static_cast<Part::GeomEllipse*>(geo);  // NOLINT
-                
-                // OpenCascade throws if we try to set a major radius smaller than 
+
+                // OpenCascade throws if we try to set a major radius smaller than
                 // the minor radius or conversly, so we reorder the operations
                 // depending on if we scale up or down
                 if (scaleFactor < 1.0) {
                     ellipse->setMinorRadius(ellipse->getMinorRadius() * scaleFactor);
                     ellipse->setMajorRadius(ellipse->getMajorRadius() * scaleFactor);
-                } else {
+                }
+                else {
                     ellipse->setMajorRadius(ellipse->getMajorRadius() * scaleFactor);
                     ellipse->setMinorRadius(ellipse->getMinorRadius() * scaleFactor);
                 }
@@ -279,12 +280,13 @@ private:
             }
             else if (isArcOfEllipse(*geo)) {
                 auto* arcOfEllipse = static_cast<Part::GeomArcOfEllipse*>(geo);  // NOLINT
-                
+
                 // Same reasoning as Part::GeomEllipse
                 if (scaleFactor < 1.0) {
                     arcOfEllipse->setMinorRadius(arcOfEllipse->getMinorRadius() * scaleFactor);
                     arcOfEllipse->setMajorRadius(arcOfEllipse->getMajorRadius() * scaleFactor);
-                } else {
+                }
+                else {
                     arcOfEllipse->setMajorRadius(arcOfEllipse->getMajorRadius() * scaleFactor);
                     arcOfEllipse->setMinorRadius(arcOfEllipse->getMinorRadius() * scaleFactor);
                 }
