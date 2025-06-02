@@ -35,10 +35,9 @@ import Path.Main.Gui.JobCmd as PathJobCmd
 import Path.Main.Gui.JobDlg as PathJobDlg
 import Path.Main.Job as PathJob
 import Path.Main.Stock as PathStock
-import Path.Tool.Gui.Bit as PathToolBitGui
 import Path.Tool.Gui.Controller as PathToolControllerGui
 import PathScripts.PathUtils as PathUtils
-import json
+from Path.Tool.toolbit.ui.selector import ToolBitSelector
 import math
 import traceback
 from PySide import QtWidgets
@@ -1073,29 +1072,14 @@ class TaskPanel:
         self.toolControllerSelect()
 
     def toolControllerAdd(self):
-        # adding a TC from a toolbit directly.
-        # Try to find a tool number from the currently selected lib. Otherwise
-        # use next available number
-
-        tools = PathToolBitGui.LoadTools()
-
-        curLib = Path.Preferences.lastFileToolLibrary()
-
-        library = None
-        if curLib is not None:
-            with open(curLib) as fp:
-                library = json.load(fp)
-
-        for tool in tools:
-            toolNum = self.obj.Proxy.nextToolNumber()
-            if library is not None:
-                for toolBit in library["tools"]:
-
-                    if toolBit["path"] == tool.File:
-                        toolNum = toolBit["nr"]
-
-            tc = PathToolControllerGui.Create(name=tool.Label, tool=tool, toolNumber=toolNum)
-            self.obj.Proxy.addToolController(tc)
+        selector = ToolBitSelector(compact=True)
+        if not selector.exec_():
+            return
+        toolbit = selector.get_selected_tool()
+        toolbit.attach_to_doc(FreeCAD.ActiveDocument)
+        toolNum = self.obj.Proxy.nextToolNumber()
+        tc = PathToolControllerGui.Create(name=toolbit.label, tool=toolbit.obj, toolNumber=toolNum)
+        self.obj.Proxy.addToolController(tc)
 
         FreeCAD.ActiveDocument.recompute()
         self.updateToolController()
