@@ -151,36 +151,62 @@ class ViewProvider:
         if prop == "Visibility":
             self.showOriginAxis(vobj.Visibility)
             if vobj.Visibility:
-                self.rememberStockVisibility()
-                self.obj.Stock.ViewObject.Visibility = True
-
-                self.KeepBaseVisibility()
-                for base in self.obj.Model.Group:
-                    base.ViewObject.Visibility = True
-            else:
+                self.restoreOperationsVisibility()
+                self.restoreModelsVisibility()
                 self.restoreStockVisibility()
-                self.RestoreBaseVisibility()
+                self.restoreToolsVisibility()
+            else:
+                self.hideOperations()
+                self.hideModels()
+                self.hideStock()
+                self.hideTools()
 
-    def rememberStockVisibility(self):
-        self.stockVisibility = self.obj.Stock.ViewObject.Visibility
+    def hideOperations(self):
+        self.operationsVisibility = {}
+        for op in self.obj.Operations.Group:
+            self.operationsVisibility[op.Name] = op.Visibility
+            op.Visibility = False
+
+    def restoreOperationsVisibility(self):
+        if hasattr(self, "operationsVisibility"):
+            for op in self.obj.Operations.Group:
+                op.Visibility = self.operationsVisibility[op.Name]
+        else:
+            for op in self.obj.Operations.Group:
+                op.Visibility = True
+
+    def hideModels(self):
+        self.modelsVisibility = {}
+        for model in self.obj.Model.Group:
+            self.modelsVisibility[model.Name] = model.Visibility
+            model.Visibility = False
+
+    def restoreModelsVisibility(self):
+        if hasattr(self, "modelsVisibility"):
+            for base in self.obj.Model.Group:
+                base.Visibility = self.modelsVisibility[base.Name]
+        else:
+            for base in self.obj.Model.Group:
+                base.Visibility = True
+
+    def hideStock(self):
+        self.stockVisibility = self.obj.Stock.Visibility
+        self.obj.Stock.Visibility = False
 
     def restoreStockVisibility(self):
-        self.obj.Stock.ViewObject.Visibility = self.stockVisibility
+        if hasattr(self, "stockVisibility"):
+            self.obj.Stock.Visibility = self.stockVisibility
 
-    def KeepBaseVisibility(self):
-        Path.Log.debug("KeepBaseVisibility")
-        self.visibilitystate = {}
-        for base in self.obj.Model.Group:
-            Path.Log.debug(f"{base.Name}: {base.ViewObject.Visibility}")
-            self.visibilitystate[base.Name] = base.ViewObject.Visibility
-        Path.Log.debug(self.visibilitystate)
+    def hideTools(self):
+        self.toolsVisibility = {}
+        for tc in self.obj.Tools.Group:
+            self.toolsVisibility[tc.Tool.Name] = tc.Tool.Visibility
+            tc.Tool.Visibility = False
 
-    def RestoreBaseVisibility(self):
-        Path.Log.debug("RestoreBaseVisibility")
-        if hasattr(self, "visibilitystate"):
-            for base in self.obj.Model.Group:
-                base.ViewObject.Visibility = self.visibilitystate[base.Name]
-            Path.Log.debug(self.visibilitystate)
+    def restoreToolsVisibility(self):
+        if hasattr(self, "toolsVisibility"):
+            for tc in self.obj.Tools.Group:
+                tc.Tool.Visibility = self.toolsVisibility[tc.Tool.Name]
 
     def showOriginAxis(self, yes):
         sw = coin.SO_SWITCH_ALL if yes else coin.SO_SWITCH_NONE
