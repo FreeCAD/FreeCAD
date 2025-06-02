@@ -32,7 +32,7 @@ from params_utils import auto_comment
 
 sys.path.append(path.join(path.dirname(
     path.dirname(path.dirname(path.abspath(__file__)))), 'Gui'))
-import OverlayParams, TreeParams
+import OverlayParams 
 
 Title = 'Advanced'
 NameSpace = 'Gui'
@@ -41,13 +41,8 @@ ClassDoc = 'Preference dialog for various advanced UI settings'
 UserInit = 'init();'
 
 _OverlayParams = { param.name : param for param in OverlayParams.Params }
-_TreeParams = { param.name : param for param in TreeParams.Params }
 
 ParamGroup = (
-    ('Tree view', [_TreeParams[name] for name in (
-        'ItemBackgroundPadding',
-        'FontSize',
-    )]),
 
     ('Overlay', [_OverlayParams[name] for name in (
         'DockOverlayWheelDelay',
