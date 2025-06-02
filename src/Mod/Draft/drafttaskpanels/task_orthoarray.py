@@ -494,6 +494,19 @@ class TaskPanelOrthoArray:
             self.form.group_Y.setVisible(self.active_axis == "Y")
             self.form.group_Z.setVisible(self.active_axis == "Z")
 
+            for axis in ["X", "Y", "Z"]:
+                for coord in ["x", "y", "z"]:
+                    is_visible = (self.active_axis == axis and self.active_axis.lower() == coord)
+                    label_name = f"label_{axis}_{coord}"
+                    input_name = f"input_{axis}_{coord}"
+
+                    label_widget = self.form.findChild(QtWidgets.QWidget, label_name)
+                    input_widget = self.form.findChild(QtWidgets.QWidget, input_name)
+                    if label_widget:
+                        label_widget.setVisible(is_visible)
+                    if input_widget:
+                        input_widget.setVisible(is_visible)
+
             if hasattr(self.form, 'label_n_X') and hasattr(self.form, 'spinbox_n_X'):
                 self.form.label_n_X.setVisible(self.active_axis == "X")
                 self.form.spinbox_n_X.setVisible(self.active_axis == "X")
