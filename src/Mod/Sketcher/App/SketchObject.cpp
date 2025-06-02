@@ -2526,17 +2526,6 @@ void SketchObject::transferFilletConstraints(int geoId1, PointPos posId1, int ge
         return;
     }
 
-    // If the lines aren't straight, don't try to transfer the constraints.
-    // TODO: Add support for curved lines.
-    const Part::Geometry* geo1 = getGeometry(geoId1);
-    const Part::Geometry* geo2 = getGeometry(geoId2);
-    if (!geo1->is<Part::GeomLineSegment>()
-        || !geo2->is<Part::GeomLineSegment>()) {
-        delConstraintOnPoint(geoId1, posId1, false);
-        delConstraintOnPoint(geoId2, posId2, false);
-        return;
-    }
-
     // Add a vertex to preserve the original intersection of the filleted lines
     Part::GeomPoint* originalCorner = new Part::GeomPoint(getPoint(geoId1, posId1));
     int originalCornerId = addGeometry(originalCorner, true);
@@ -2561,6 +2550,9 @@ void SketchObject::transferFilletConstraints(int geoId1, PointPos posId1, int ge
     delete cornerToLine2;
 
     Base::StateLocker lock(managedoperation, true);
+
+    bool preserveLine1EqualConstraints = !getGeometry(geoId1)->is<Part::GeomLineSegment>();
+    bool preserveLine2EqualConstraints = !getGeometry(geoId2)->is<Part::GeomLineSegment>();
 
     // Loop through all the constraints and try to do reasonable things with the affected ones
     std::vector<Constraint*> newConstraints;
@@ -2639,9 +2631,11 @@ void SketchObject::transferFilletConstraints(int geoId1, PointPos posId1, int ge
             }
         }
         else if (c->Type == Sketcher::Equal) {
-            // Equal length constraints are dicey because the lines are getting shorter.  Safer to
+            // Equal length constraints are dicey for lines because the lines are getting shorter. Safer to
             // delete them and let the user notice the underconstraint.
-            if (line1First || line2First || line1Second || line2Second) {
+            // For other geometry like arcs it's safe to keep
+            if ((!preserveLine1EqualConstraints && (line1First || line1Second)) 
+                || (!preserveLine2EqualConstraints && (line2First || line2Second))) {
                 continue;
             }
         }
@@ -2810,7 +2804,7 @@ int SketchObject::fillet(int GeoId1, int GeoId2, const Base::Vector3d& refPnt1,
     Base::Vector3d p2 = arc->getEndPoint(true);
 
     if (trim) {
-        if (createCorner && geo1->is<Part::GeomLineSegment>() && geo2->is<Part::GeomLineSegment>()) {
+        if (createCorner) {
             transferFilletConstraints(GeoId1, PosId1, GeoId2, PosId2);
         }
         else {
