@@ -81,15 +81,15 @@ jobs:
         with:
           submodules: true
 
-      - name: Install FreeCAD Python build/test dependencies
+      - name: Install FreeCAD dependencies
+        run: ./package/ubuntu/install-apt-packages.sh
+
+      - name: Install FreeCAD Python test dependencies
         run: |
           sudo apt-get update -y -qq
           sudo apt-get install -y -qq python3-pip
           python3 -m pip install --upgrade pip
           python3 -m pip install ifcopenshell==0.8.0
-
-      - name: Install FreeCAD dependencies
-        run: ./package/ubuntu/install-apt-packages.sh
 
       - name: Make needed directories, files and initializations
         id: Init
