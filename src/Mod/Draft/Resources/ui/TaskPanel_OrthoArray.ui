@@ -25,9 +25,6 @@
   <property name="windowTitleStandardOrtho">
    <string>Orthogonal array</string>
   </property>
-  <property name="windowTitle1AxisMode">
-   <string>Orthogonal array (1-axis mode)</string>
-  </property>
   <layout class="QGridLayout" name="gridLayout_3">
    <item row="1" column="0">
     <widget class="QGroupBox" name="main_group">
@@ -51,16 +48,16 @@
       <item row="1" column="0">
        <widget class="QGroupBox" name="group_axis_mode">
         <property name="toolTip">
-         <string>Toggle between 3-axis mode and 1-axis mode. In 1-axis mode, you can select which axes to use.</string>
+         <string>Toggle between Orthogonal mode and Linear mode. In Linear mode, you can select which axes to use.</string>
         </property>
         <property name="title">
          <string>Axis Mode</string>
         </property>
         <layout class="QGridLayout" name="gridLayout_axis_mode">
          <item row="0" column="0">
-          <widget class="QPushButton" name="button_one_axis_mode">
+          <widget class="QPushButton" name="button_linear_mode">
            <property name="text">
-            <string>1-Axis Mode</string>
+            <string>Linear Mode</string>
            </property>
            <property name="checkable">
             <bool>true</bool>

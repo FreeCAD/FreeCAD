@@ -29,7 +29,7 @@
 # @{
 import PySide.QtGui as QtGui
 from PySide.QtCore import QT_TRANSLATE_NOOP
-
+from PySide import QtGui, QtCore, QtWidgets
 import FreeCAD as App
 import FreeCADGui as Gui
 import Draft_rc  # include resources, icons, ui files
@@ -143,19 +143,18 @@ class TaskPanelOrthoArray:
         self.form.checkbox_link.setChecked(self.use_link)
         # -------------------------------------------------------------------
 
-        # Initialize 1-Axis mode variables
-        self.one_axis_mode = False
-        self.active_axis = "X"  # Default to X axis when in 1-Axis mode
+        # Initialize Linear mode variables
+        self.linear_mode = False
+        self.active_axis = "X"  # Default to X axis when in Linear mode
 
         # Check if the UI elements exist before trying to access them
-        self.has_axis_ui = hasattr(self.form, 'button_one_axis_mode') and \
+        self.has_axis_ui = hasattr(self.form, 'button_linear_mode') and \
                           hasattr(self.form, 'checkbox_x_axis') and \
                           hasattr(self.form, 'checkbox_y_axis') and \
                           hasattr(self.form, 'checkbox_z_axis')
 
-        # Hide the axis checkboxes initially (they're only visible in 1-Axis mode)
+        # Hide the axis checkboxes initially (they're only visible in Linear mode)
         if self.has_axis_ui:
-            print("DO WE TOGGLE THIS?")
             self.toggle_axis_checkboxes(False)
         # -------------------------------------------------------------------
 
@@ -182,9 +181,9 @@ class TaskPanelOrthoArray:
         self.form.checkbox_fuse.stateChanged.connect(self.set_fuse)
         self.form.checkbox_link.stateChanged.connect(self.set_link)
 
-        # 1-Axis mode callbacks - only set up if the UI elements exist
+        # Linear mode callbacks - only set up if the UI elements exist
         if self.has_axis_ui:
-            self.form.button_one_axis_mode.clicked.connect(self.toggle_one_axis_mode)
+            self.form.button_linear_mode.clicked.connect(self.toggle_linear_mode)
             self.form.checkbox_x_axis.stateChanged.connect(lambda: self.set_active_axis("X"))
             self.form.checkbox_y_axis.stateChanged.connect(lambda: self.set_active_axis("Y"))
             self.form.checkbox_z_axis.stateChanged.connect(lambda: self.set_active_axis("Z"))
@@ -235,11 +234,11 @@ class TaskPanelOrthoArray:
             return False
 
         # we should not ever do this but maybe a sanity check here?
-        if self.one_axis_mode and self.has_axis_ui:
+        if self.linear_mode and self.has_axis_ui:
             if not (self.form.checkbox_x_axis.isChecked() or 
                     self.form.checkbox_y_axis.isChecked() or 
                     self.form.checkbox_z_axis.isChecked()):
-                _err(translate("draft","In 1-Axis mode, at least one axis must be selected."))
+                _err(translate("draft","In Linear mode, at least one axis must be selected."))
                 return False
 
         # The other arguments are not tested but they should be present.
@@ -267,7 +266,7 @@ class TaskPanelOrthoArray:
 
         # clear this stuff out to be sure we don't preserve something
         # from 3-axis mode
-        if self.one_axis_mode and self.has_axis_ui:
+        if self.linear_mode and self.has_axis_ui:
             if not self.form.checkbox_x_axis.isChecked():
                 self.n_x = 1
                 self.v_x = App.Vector(0, 0, 0)
@@ -402,8 +401,8 @@ class TaskPanelOrthoArray:
             sel_obj = self.selection[0]
         _msg(translate("draft","Object:") + " {}".format(sel_obj.Label))
 
-        if self.one_axis_mode and self.has_axis_ui:
-            _msg(translate("draft","Using 1-Axis mode"))
+        if self.linear_mode and self.has_axis_ui:
+            _msg(translate("draft","Using Linear mode"))
 
         _msg(translate("draft","Number of X elements:") + " {}".format(self.n_x))
         _msg(translate("draft","Interval X:")
@@ -427,21 +426,19 @@ class TaskPanelOrthoArray:
         """Execute when clicking the Cancel button or pressing Escape."""
         self.finish()
 
-    def toggle_one_axis_mode(self):
-        """Toggle between 1-Axis mode and 3-Axis mode."""
-        self.one_axis_mode = self.form.button_one_axis_mode.isChecked()
-        self.toggle_axis_checkboxes(self.one_axis_mode)
-
-        if self.one_axis_mode:
-            _msg(translate("draft","Switched to 1-Axis mode"))
-            print(translate("draft","Orthogonal array (1-axis mode)"))
-            self.form.setWindowTitle(translate("draft","Orthogonal array (1-axis mode)"))
+    def toggle_linear_mode(self):
+        """Toggle between Linear mode and Orthogonal mode."""
+        self.linear_mode = self.form.button_linear_mode.isChecked()
+        self.toggle_axis_checkboxes(self.linear_mode)
+        if self.linear_mode:
+            _msg(translate("draft","Switched to Linear mode"))
+            self.form.setWindowTitle(translate("draft","Orthogonal array (Linear mode)"))
             self.update_axis_ui()
             self.update_interval_visibility()
         else:
             # toggle everything back on
             self.form.setWindowTitle(translate("draft","Orthogonal array"))
-            _msg(translate("draft","Switched to 3-Axis mode"))
+            _msg(translate("draft","Switched to Orthogonal mode"))
             self.reset_axis_ui()
             self.show_all_intervals()
 
@@ -455,7 +452,7 @@ class TaskPanelOrthoArray:
 
     def set_active_axis(self, axis):
         """Set the active axis when a checkbox is changed."""
-        if self.one_axis_mode and self.has_axis_ui:
+        if self.linear_mode and self.has_axis_ui:
             # get current checkbox that was supposed to have state changed
             checkbox = getattr(self.form, f"checkbox_{axis.lower()}_axis")
 
@@ -473,8 +470,7 @@ class TaskPanelOrthoArray:
                 # update visibility of intervals based on axis
                 self.update_interval_visibility()
             else:
-                # haha!!! you wanted to deselect all of the checkboxes? hell no, we are selecting it back because we
-                # do not allow having no axis selected hue hue
+                # set back to True so user can't have no checkboxes selected
                 checkbox.setChecked(True)
 
     def update_axis_ui(self):
@@ -486,14 +482,14 @@ class TaskPanelOrthoArray:
             self.form.checkbox_z_axis.setChecked(self.active_axis == "Z")
 
     def reset_axis_ui(self):
-        """Reset the UI to 3-Axis mode."""
+        """Reset the UI to Orthogonal mode."""
         # Hide the axis checkboxes
         if self.has_axis_ui:
             self.toggle_axis_checkboxes(False)
 
     def update_interval_visibility(self):
-        """Show only the interval inputs for the selected axis in 1-Axis mode."""
-        if self.one_axis_mode and hasattr(self.form, 'group_X') and hasattr(self.form, 'group_Y') and hasattr(self.form, 'group_Z'):
+        """Show only the interval inputs for the selected axis in Linear mode."""
+        if self.linear_mode and hasattr(self.form, 'group_X') and hasattr(self.form, 'group_Y') and hasattr(self.form, 'group_Z'):
             self.form.group_X.setVisible(self.active_axis == "X")
             self.form.group_Y.setVisible(self.active_axis == "Y")
             self.form.group_Z.setVisible(self.active_axis == "Z")
@@ -511,7 +507,7 @@ class TaskPanelOrthoArray:
                 self.form.spinbox_n_Z.setVisible(self.active_axis == "Z")
 
     def show_all_intervals(self):
-        """Show all interval inputs for 3-Axis mode."""
+        """Show all interval inputs for Orthogonal mode."""
         if hasattr(self.form, 'group_X') and hasattr(self.form, 'group_Y') and hasattr(self.form, 'group_Z'):
             self.form.group_X.setVisible(True)
             self.form.group_Y.setVisible(True)
