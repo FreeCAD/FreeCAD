@@ -263,7 +263,7 @@ std::vector<Part::TopoShape> getShapesFromSelection()
     std::vector<App::DocumentObject*> objs = Gui::Selection().getObjectsOfType(App::DocumentObject::getClassTypeId());
     std::vector <Part::TopoShape> shapes;
     for (auto it : objs) {
-        Part::TopoShape shp = Part::Feature::getTopoShape(it);
+        Part::TopoShape shp = Part::Feature::getTopoShape(it, Part::ShapeOption::ResolveLink | Part::ShapeOption::Transform);
         if (!shp.isNull()){
             shapes.push_back(shp);
         }
@@ -279,8 +279,7 @@ bool hasShapesInSelection()
     bool hasShapes = false;
     std::vector<App::DocumentObject*> docobjs = Gui::Selection().getObjectsOfType(App::DocumentObject::getClassTypeId());
     for (auto it : docobjs) {
-        // Only check for the existence of a shape but don't perform a transformation
-        if (!Part::Feature::getTopoShape(it, nullptr, false, nullptr, nullptr, true, false, false).isNull()) {
+        if (!Part::Feature::getTopoShape(it, Part::ShapeOption::ResolveLink).isNull()) {
             hasShapes = true;
             break;
         }
@@ -321,7 +320,7 @@ void CmdPartCut::activated(int iMsg)
     std::vector<std::string> names;
     for (const auto & it : Sel) {
         const App::DocumentObject* obj = it.getObject();
-        const TopoDS_Shape& shape = Part::Feature::getShape(obj);
+        const TopoDS_Shape& shape = Part::Feature::getShape(obj, Part::ShapeOption::ResolveLink | Part::ShapeOption::Transform);
         if (!PartGui::checkForSolids(shape) && !askUser) {
             int ret = QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Non-solids selected"),
                 QObject::tr("The use of non-solids for boolean operations may lead to unexpected results.\n"
@@ -380,7 +379,7 @@ void CmdPartCommon::activated(int iMsg)
     std::vector<std::string> names;
     for (const auto & it : Sel) {
         const App::DocumentObject* obj = it.getObject();
-        const TopoDS_Shape& shape = Part::Feature::getShape(obj);
+        const TopoDS_Shape& shape = Part::Feature::getShape(obj, Part::ShapeOption::ResolveLink | Part::ShapeOption::Transform);
         if (!PartGui::checkForSolids(shape) && !askUser) {
             int ret = QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Non-solids selected"),
                 QObject::tr("The use of non-solids for boolean operations may lead to unexpected results.\n"
@@ -434,7 +433,7 @@ void CmdPartFuse::activated(int iMsg)
     if (Sel.size() == 1){
         numShapes = 1; //to be updated later in code
         Gui::SelectionObject selobj = Sel[0];
-        TopoDS_Shape sh = Part::Feature::getShape(selobj.getObject());
+        TopoDS_Shape sh = Part::Feature::getShape(selobj.getObject(), Part::ShapeOption::ResolveLink | Part::ShapeOption::Transform);
         while (numShapes==1 && sh.ShapeType() == TopAbs_COMPOUND) {
             numShapes = 0;
             TopoDS_Iterator it(sh);
@@ -458,7 +457,7 @@ void CmdPartFuse::activated(int iMsg)
     std::vector<std::string> names;
     for (const auto & it : Sel) {
         const App::DocumentObject* obj = it.getObject();
-        const TopoDS_Shape& shape = Part::Feature::getShape(obj);
+        const TopoDS_Shape& shape = Part::Feature::getShape(obj, Part::ShapeOption::ResolveLink | Part::ShapeOption::Transform);
         if (!PartGui::checkForSolids(shape) && !askUser) {
             int ret = QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Non-solids selected"),
                 QObject::tr("The use of non-solids for boolean operations may lead to unexpected results.\n"
@@ -1102,7 +1101,7 @@ void CmdPartMakeSolid::activated(int iMsg)
         (App::DocumentObject::getClassTypeId(), nullptr, Gui::ResolveMode::FollowLink);
     runCommand(Doc, "import Part");
     for (auto it : objs) {
-        const TopoDS_Shape& shape = Part::Feature::getShape(it);
+        const TopoDS_Shape& shape = Part::Feature::getShape(it, Part::ShapeOption::ResolveLink | Part::ShapeOption::Transform);
         if (!shape.IsNull()) {
             TopAbs_ShapeEnum type = shape.ShapeType();
             QString str;
@@ -1180,7 +1179,7 @@ void CmdPartReverseShape::activated(int iMsg)
         (App::DocumentObject::getClassTypeId());
     openCommand(QT_TRANSLATE_NOOP("Command", "Reverse"));
     for (auto it : objs) {
-        const TopoDS_Shape& shape = Part::Feature::getShape(it);
+        const TopoDS_Shape& shape = Part::Feature::getShape(it, Part::ShapeOption::ResolveLink | Part::ShapeOption::Transform);
         if (!shape.IsNull()) {
             std::string name = it->getNameInDocument();
             name += "_rev";
@@ -1619,7 +1618,7 @@ void CmdPartOffset::activated(int iMsg)
     std::vector<App::DocumentObject*> docobjs = Gui::Selection().getObjectsOfType(App::DocumentObject::getClassTypeId());
     std::vector<App::DocumentObject*> shapes;
     for (auto it : docobjs) {
-        if (!Part::Feature::getTopoShape(it).isNull()) {
+        if (!Part::Feature::getTopoShape(it, Part::ShapeOption::ResolveLink | Part::ShapeOption::Transform).isNull()) {
            shapes.push_back(it);
         }
     }
@@ -1677,7 +1676,7 @@ void CmdPartOffset2D::activated(int iMsg)
     std::vector<App::DocumentObject*> shapes;
 
     for (auto it : docobjs) {
-        if (!Part::Feature::getTopoShape(it).isNull()) {
+        if (!Part::Feature::getTopoShape(it, Part::ShapeOption::ResolveLink | Part::ShapeOption::Transform).isNull()) {
            shapes.push_back(it);
         }
     }
@@ -1831,7 +1830,7 @@ void CmdPartThickness::activated(int iMsg)
         selection = selobjs[0].getAsPropertyLinkSubString();
         const std::vector<std::string>& subnames = selobjs[0].getSubNames();
         obj = selobjs[0].getObject();
-        topoShape = Part::Feature::getTopoShape(obj);
+        topoShape = Part::Feature::getTopoShape(obj, Part::ShapeOption::ResolveLink | Part::ShapeOption::Transform);
         if (!topoShape.isNull()) {
             for (std::vector<std::string>::const_iterator it = subnames.begin(); it != subnames.end(); ++it) {
                 subShapes.emplace_back(topoShape.getSubShape(subnames[0].c_str()));
@@ -1966,17 +1965,26 @@ void CmdPartRuledSurface::activated(int iMsg)
             docobj1 = selobjs[0].getObject();
             obj1 = docobj1->getNameInDocument();
             obj2 = obj1; //changed later if 2 objects were selected
-            const Part::TopoShape& shape1 = Part::Feature::getTopoShape(docobj1);
+            const Part::TopoShape& shape1 = Part::Feature::getTopoShape(docobj1, Part::ShapeOption::ResolveLink | Part::ShapeOption::Transform);
             if (shape1.isNull()) {
                 ok = false;
             }
             if (ok && subnames1.size() <= 2) {
                 if (!subnames1.empty()) {
-                    curve1 = Part::Feature::getTopoShape(docobj1, subnames1[0].c_str(), true /*need element*/).getShape();
+                    curve2 = Part::Feature::getTopoShape(docobj1,
+                                                           Part::ShapeOption::NeedSubElement
+                                                         | Part::ShapeOption::ResolveLink
+                                                         | Part::ShapeOption::Transform,
+                                                         subnames1[0].c_str()).getShape();                                 
+
                     link1 = subnames1[0];
                 }
                 if (subnames1.size() == 2) {
-                    curve2 = Part::Feature::getTopoShape(docobj1, subnames1[1].c_str(), true /*need element*/).getShape();
+                    curve2 = Part::Feature::getTopoShape(docobj1,
+                                                           Part::ShapeOption::NeedSubElement
+                                                         | Part::ShapeOption::ResolveLink
+                                                         | Part::ShapeOption::Transform,
+                                                         subnames1[1].c_str()).getShape();                                 
                     link2 = subnames1[1];
                 }
                 if (subnames1.empty()) {
@@ -1991,12 +1999,17 @@ void CmdPartRuledSurface::activated(int iMsg)
             docobj2 = selobjs[1].getObject();
             obj2 = docobj2->getNameInDocument();
 
-            const Part::TopoShape& shape2 = Part::Feature::getTopoShape(docobj2);
+            const Part::TopoShape& shape2 = Part::Feature::getTopoShape(docobj2, Part::ShapeOption::ResolveLink | Part::ShapeOption::Transform);
             if (shape2.isNull()) {
                 ok = false;
             }
             if (ok && subnames2.size() == 1) {
-                curve2 = Part::Feature::getTopoShape(docobj2, subnames2[0].c_str(), true /*need element*/).getShape();
+                curve2 = Part::Feature::getTopoShape(docobj2,
+                                                       Part::ShapeOption::NeedSubElement
+                                                     | Part::ShapeOption::ResolveLink
+                                                     | Part::ShapeOption::Transform,
+                                                     subnames2[0].c_str()).getShape();                             
+
                 link2 = subnames2[0];
             } else {
                 if (subnames2.empty()) {

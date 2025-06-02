@@ -4,17 +4,17 @@
   <context>
     <name>CmdCreateSpreadsheet</name>
     <message>
-      <location filename="../../Command.cpp" line="947"/>
+      <location filename="../../Command.cpp" line="946"/>
       <source>Spreadsheet</source>
       <translation>Таблиця</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="948"/>
+      <location filename="../../Command.cpp" line="947"/>
       <source>&amp;Create spreadsheet</source>
-      <translation type="unfinished">&amp;Create spreadsheet</translation>
+      <translation>&amp;Створити таблицю</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="949"/>
+      <location filename="../../Command.cpp" line="948"/>
       <source>Create a new spreadsheet</source>
       <translation>Створює нову таблицю</translation>
     </message>
@@ -22,17 +22,17 @@
   <context>
     <name>CmdSpreadsheetAlignBottom</name>
     <message>
-      <location filename="../../Command.cpp" line="510"/>
+      <location filename="../../Command.cpp" line="509"/>
       <source>Spreadsheet</source>
       <translation>Таблиця</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="511"/>
+      <location filename="../../Command.cpp" line="510"/>
       <source>Align &amp;bottom</source>
-      <translation type="unfinished">Align &amp;bottom</translation>
+      <translation>Вирівняти &amp;по нижньому краю</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="512"/>
+      <location filename="../../Command.cpp" line="511"/>
       <source>Bottom-align contents of selected cells</source>
       <translation>Вирівнює вміст виділених комірок знизу</translation>
     </message>
@@ -40,17 +40,17 @@
   <context>
     <name>CmdSpreadsheetAlignCenter</name>
     <message>
-      <location filename="../../Command.cpp" line="339"/>
+      <location filename="../../Command.cpp" line="338"/>
       <source>Spreadsheet</source>
       <translation>Таблиця</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="340"/>
+      <location filename="../../Command.cpp" line="339"/>
       <source>Align &amp;center</source>
-      <translation type="unfinished">Align &amp;center</translation>
+      <translation>Вирівняти по &amp;центру</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="341"/>
+      <location filename="../../Command.cpp" line="340"/>
       <source>Center-align contents of selected cells</source>
       <translation>Вирівнює вміст виділених комірок у центрі</translation>
     </message>
@@ -58,17 +58,17 @@
   <context>
     <name>CmdSpreadsheetAlignLeft</name>
     <message>
-      <location filename="../../Command.cpp" line="282"/>
+      <location filename="../../Command.cpp" line="281"/>
       <source>Spreadsheet</source>
       <translation>Таблиця</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="283"/>
+      <location filename="../../Command.cpp" line="282"/>
       <source>Align &amp;left</source>
-      <translation type="unfinished">Align &amp;left</translation>
+      <translation>Вирівняти &amp;по лівому краю</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="284"/>
+      <location filename="../../Command.cpp" line="283"/>
       <source>Left-align contents of selected cells</source>
       <translation>Вирівнює ліворуч вміст виділених комірок</translation>
     </message>
@@ -76,17 +76,17 @@
   <context>
     <name>CmdSpreadsheetAlignRight</name>
     <message>
-      <location filename="../../Command.cpp" line="396"/>
+      <location filename="../../Command.cpp" line="395"/>
       <source>Spreadsheet</source>
       <translation>Таблиця</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="397"/>
+      <location filename="../../Command.cpp" line="396"/>
       <source>Align &amp;right</source>
-      <translation type="unfinished">Align &amp;right</translation>
+      <translation>Вирівняти по п&amp;равому краю</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="398"/>
+      <location filename="../../Command.cpp" line="397"/>
       <source>Right-align contents of selected cells</source>
       <translation>Вирівнює праворуч вміст виділених комірок</translation>
     </message>
@@ -94,17 +94,17 @@
   <context>
     <name>CmdSpreadsheetAlignTop</name>
     <message>
-      <location filename="../../Command.cpp" line="453"/>
+      <location filename="../../Command.cpp" line="452"/>
       <source>Spreadsheet</source>
       <translation>Таблиця</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="454"/>
+      <location filename="../../Command.cpp" line="453"/>
       <source>Align &amp;top</source>
-      <translation type="unfinished">Align &amp;top</translation>
+      <translation>Вирівняти по &amp;верхньому краю</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="455"/>
+      <location filename="../../Command.cpp" line="454"/>
       <source>Top-align contents of selected cells</source>
       <translation>Вирівнює вміст виділених комірок вгорі</translation>
     </message>
@@ -112,17 +112,17 @@
   <context>
     <name>CmdSpreadsheetAlignVCenter</name>
     <message>
-      <location filename="../../Command.cpp" line="567"/>
+      <location filename="../../Command.cpp" line="566"/>
       <source>Spreadsheet</source>
       <translation>Таблиця</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="568"/>
+      <location filename="../../Command.cpp" line="567"/>
       <source>&amp;Vertically center-align</source>
       <translation type="unfinished">&amp;Vertically center-align</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="569"/>
+      <location filename="../../Command.cpp" line="568"/>
       <source>Vertically center-align contents of selected cells</source>
       <translation>Вирівнює вміст виділених комірок вертикально у центрі</translation>
     </message>
@@ -130,17 +130,17 @@
   <context>
     <name>CmdSpreadsheetExport</name>
     <message>
-      <location filename="../../Command.cpp" line="236"/>
+      <location filename="../../Command.cpp" line="235"/>
       <source>Spreadsheet</source>
       <translation>Таблиця</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="237"/>
+      <location filename="../../Command.cpp" line="236"/>
       <source>&amp;Export spreadsheet</source>
       <translation type="unfinished">&amp;Export spreadsheet</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="238"/>
+      <location filename="../../Command.cpp" line="237"/>
       <source>Export spreadsheet to CSV file</source>
       <translation>Експортує таблицю у CSV-файл</translation>
     </message>
@@ -184,17 +184,17 @@
   <context>
     <name>CmdSpreadsheetSetAlias</name>
     <message>
-      <location filename="../../Command.cpp" line="876"/>
+      <location filename="../../Command.cpp" line="875"/>
       <source>Spreadsheet</source>
       <translation>Таблиця</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="877"/>
+      <location filename="../../Command.cpp" line="876"/>
       <source>Set alias</source>
       <translation>Встановити псевдонім</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="878"/>
+      <location filename="../../Command.cpp" line="877"/>
       <source>Set alias for selected cell</source>
       <translation>Встановлює псевдонім для виділеної комірки</translation>
     </message>
@@ -220,17 +220,17 @@
   <context>
     <name>CmdSpreadsheetStyleBold</name>
     <message>
-      <location filename="../../Command.cpp" line="624"/>
+      <location filename="../../Command.cpp" line="623"/>
       <source>Spreadsheet</source>
       <translation>Таблиця</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="625"/>
+      <location filename="../../Command.cpp" line="624"/>
       <source>&amp;Bold text</source>
       <translation type="unfinished">&amp;Bold text</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="626"/>
+      <location filename="../../Command.cpp" line="625"/>
       <source>Set text in selected cells bold</source>
       <translation>Робить текст у виділених комірках жирним шрифтом</translation>
     </message>
@@ -238,17 +238,17 @@
   <context>
     <name>CmdSpreadsheetStyleItalic</name>
     <message>
-      <location filename="../../Command.cpp" line="708"/>
+      <location filename="../../Command.cpp" line="707"/>
       <source>Spreadsheet</source>
       <translation>Таблиця</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="709"/>
+      <location filename="../../Command.cpp" line="708"/>
       <source>&amp;Italic text</source>
       <translation type="unfinished">&amp;Italic text</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="710"/>
+      <location filename="../../Command.cpp" line="709"/>
       <source>Set text in selected cells italic</source>
       <translation>Робить текст у виділених комірках курсивом</translation>
     </message>
@@ -256,17 +256,17 @@
   <context>
     <name>CmdSpreadsheetStyleUnderline</name>
     <message>
-      <location filename="../../Command.cpp" line="792"/>
+      <location filename="../../Command.cpp" line="791"/>
       <source>Spreadsheet</source>
       <translation>Таблиця</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="793"/>
+      <location filename="../../Command.cpp" line="792"/>
       <source>&amp;Underline text</source>
       <translation type="unfinished">&amp;Underline text</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="794"/>
+      <location filename="../../Command.cpp" line="793"/>
       <source>Underline text in selected cells</source>
       <translation>Робить текст у виділених комірках підкресленим</translation>
     </message>
@@ -292,52 +292,52 @@
       <translation type="unfinished">Sp&amp;lit cell</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="305"/>
+      <location filename="../../Command.cpp" line="304"/>
       <source>Left-align cell</source>
       <translation>Вирівнювання ліворуч</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="362"/>
+      <location filename="../../Command.cpp" line="361"/>
       <source>Center cell</source>
       <translation>Вирівнювання по центру</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="419"/>
+      <location filename="../../Command.cpp" line="418"/>
       <source>Right-align cell</source>
       <translation>Вирівнювання праворуч</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="476"/>
+      <location filename="../../Command.cpp" line="475"/>
       <source>Top-align cell</source>
       <translation>Вирівнювання по верхньому краю</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="533"/>
+      <location filename="../../Command.cpp" line="532"/>
       <source>Bottom-align cell</source>
       <translation>Вирівнювання по нижньому краю</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="590"/>
+      <location filename="../../Command.cpp" line="589"/>
       <source>Vertically center cells</source>
       <translation>Вирівнювання вертикально по центру</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="665"/>
+      <location filename="../../Command.cpp" line="664"/>
       <source>Set bold text</source>
       <translation>Зробити текст напівжирним</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="749"/>
+      <location filename="../../Command.cpp" line="748"/>
       <source>Set italic text</source>
       <translation>Зробити текст курсивом</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="833"/>
+      <location filename="../../Command.cpp" line="832"/>
       <source>Set underline text</source>
       <translation>Підкреслити текст</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="960"/>
+      <location filename="../../Command.cpp" line="959"/>
       <source>Create Spreadsheet</source>
       <translation>Створити таблицю</translation>
     </message>
@@ -347,31 +347,31 @@
       <translation>Зміна властивостей комірок</translation>
     </message>
     <message>
-      <location filename="../../SheetModel.cpp" line="546"/>
+      <location filename="../../SheetModel.cpp" line="556"/>
       <source>Edit cell</source>
       <translation>Редагування комірки</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="342"/>
-      <location filename="../../SheetTableView.cpp" line="375"/>
+      <location filename="../../SheetTableView.cpp" line="354"/>
+      <location filename="../../SheetTableView.cpp" line="387"/>
       <source>Insert rows</source>
       <translation>Вставити рядки</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="395"/>
-      <location filename="../../SheetTableView.cpp" line="473"/>
+      <location filename="../../SheetTableView.cpp" line="407"/>
+      <location filename="../../SheetTableView.cpp" line="485"/>
       <source>Remove rows</source>
       <translation>Видалити рядки</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="417"/>
-      <location filename="../../SheetTableView.cpp" line="450"/>
+      <location filename="../../SheetTableView.cpp" line="429"/>
+      <location filename="../../SheetTableView.cpp" line="462"/>
       <source>Insert columns</source>
       <translation>Вставити стовпці</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="677"/>
-      <location filename="../../SpreadsheetView.cpp" line="188"/>
+      <location filename="../../SheetTableView.cpp" line="689"/>
+      <location filename="../../SpreadsheetView.cpp" line="190"/>
       <source>Clear cell(s)</source>
       <translation>Очистити комірку(и)</translation>
     </message>
@@ -477,7 +477,7 @@ Useful to avoid cyclic dependencies, but use with caution!</source>
     <message>
       <location filename="../../DlgBindSheet.ui" line="154"/>
       <source>OK</source>
-      <translation>Підтвердити</translation>
+      <translation>Гаразд</translation>
     </message>
   </context>
   <context>
@@ -569,7 +569,7 @@ switch the design configuration. The property will be created if not exist.</sou
     <message>
       <location filename="../../DlgSheetConf.ui" line="102"/>
       <source>OK</source>
-      <translation>Підтвердити</translation>
+      <translation>Гаразд</translation>
     </message>
   </context>
   <context>
@@ -679,7 +679,7 @@ switch the design configuration. The property will be created if not exist.</sou
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../ViewProviderSpreadsheet.cpp" line="116"/>
+      <location filename="../../ViewProviderSpreadsheet.cpp" line="107"/>
       <location filename="../../Command.cpp" line="195"/>
       <source>CSV (*.csv *.CSV);;All (*)</source>
       <translation>CSV (*.csv *.CSV);Всі (*)</translation>
@@ -690,12 +690,12 @@ switch the design configuration. The property will be created if not exist.</sou
       <translation>Імпорт файлу</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSpreadsheet.cpp" line="118"/>
+      <location filename="../../ViewProviderSpreadsheet.cpp" line="109"/>
       <source>Export file</source>
       <translation>Експорт файлу</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSpreadsheet.cpp" line="143"/>
+      <location filename="../../ViewProviderSpreadsheet.cpp" line="134"/>
       <source>Show spreadsheet</source>
       <translation>Показати таблицю</translation>
     </message>
@@ -722,17 +722,17 @@ switch the design configuration. The property will be created if not exist.</sou
       <translation>Встановити фоновий колір комірки(ок) таблиці</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="806"/>
+      <location filename="../../SheetTableView.cpp" line="822"/>
       <source>Copy &amp; Paste failed</source>
       <translation>Копіювання і вставка завершилась невдачею</translation>
     </message>
     <message>
-      <location filename="../../SpreadsheetView.cpp" line="489"/>
+      <location filename="../../SpreadsheetView.cpp" line="493"/>
       <source>Alias contains invalid characters!</source>
       <translation>Псевдонім містить некоректні символи!</translation>
     </message>
     <message>
-      <location filename="../../SpreadsheetView.cpp" line="495"/>
+      <location filename="../../SpreadsheetView.cpp" line="499"/>
       <source>Refer to cell by alias, for example
 Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
       <translation>Зверніться до комірки за псевдонімом, наприклад
@@ -893,12 +893,12 @@ Spreadsheet.my_alias_name замість Spreadsheet.B1</translation>
   <context>
     <name>SpreadsheetGui::DlgBindSheet</name>
     <message>
-      <location filename="../../DlgBindSheet.cpp" line="226"/>
+      <location filename="../../DlgBindSheet.cpp" line="223"/>
       <source>Bind cells</source>
       <translation>Звʼязати комірки</translation>
     </message>
     <message>
-      <location filename="../../DlgBindSheet.cpp" line="227"/>
+      <location filename="../../DlgBindSheet.cpp" line="224"/>
       <source>Source and target cell count mismatch. Partial binding may still work.
 
 Do you want to continue?</source>
@@ -907,19 +907,19 @@ Do you want to continue?</source>
 Бажаєте продовжити?</translation>
     </message>
     <message>
-      <location filename="../../DlgBindSheet.cpp" line="275"/>
+      <location filename="../../DlgBindSheet.cpp" line="272"/>
       <source>Bind Spreadsheet Cells</source>
       <translation>Звʼязування комірок таблиці</translation>
     </message>
     <message>
-      <location filename="../../DlgBindSheet.cpp" line="276"/>
+      <location filename="../../DlgBindSheet.cpp" line="273"/>
       <source>Error:
 </source>
       <translation>Помилка:
 </translation>
     </message>
     <message>
-      <location filename="../../DlgBindSheet.cpp" line="303"/>
+      <location filename="../../DlgBindSheet.cpp" line="300"/>
       <source>Unbind cells</source>
       <translation>Відвʼязати комірки</translation>
     </message>
@@ -1018,12 +1018,12 @@ Defaults to: %V = %A
   <context>
     <name>SpreadsheetGui::DlgSheetConf</name>
     <message>
-      <location filename="../../DlgSheetConf.cpp" line="283"/>
+      <location filename="../../DlgSheetConf.cpp" line="280"/>
       <source>Setup configuration table</source>
       <translation>Створити Таблицю Конфігурацій</translation>
     </message>
     <message>
-      <location filename="../../DlgSheetConf.cpp" line="341"/>
+      <location filename="../../DlgSheetConf.cpp" line="338"/>
       <source>Unsetup configuration table</source>
       <translation>Видалити таблицю конфігурацій</translation>
     </message>
@@ -1031,7 +1031,7 @@ Defaults to: %V = %A
   <context>
     <name>SpreadsheetGui::SheetTableView</name>
     <message numerus="yes">
-      <location filename="../../SheetTableView.cpp" line="130"/>
+      <location filename="../../SheetTableView.cpp" line="142"/>
       <source>Insert %n row(s) above</source>
       <translation>
         <numerusform>Вставити %n рядок(ів) вище</numerusform>
@@ -1041,7 +1041,7 @@ Defaults to: %V = %A
       </translation>
     </message>
     <message numerus="yes">
-      <location filename="../../SheetTableView.cpp" line="135"/>
+      <location filename="../../SheetTableView.cpp" line="147"/>
       <source>Insert %n row(s) below</source>
       <translation>
         <numerusform>Вставити %n рядок нижче</numerusform>
@@ -1051,7 +1051,7 @@ Defaults to: %V = %A
       </translation>
     </message>
     <message numerus="yes">
-      <location filename="../../SheetTableView.cpp" line="140"/>
+      <location filename="../../SheetTableView.cpp" line="152"/>
       <source>Insert %n non-contiguous rows</source>
       <translation>
         <numerusform>Вставити %n несуміжний рядок</numerusform>
@@ -1061,7 +1061,7 @@ Defaults to: %V = %A
       </translation>
     </message>
     <message numerus="yes">
-      <location filename="../../SheetTableView.cpp" line="143"/>
+      <location filename="../../SheetTableView.cpp" line="155"/>
       <source>Remove row(s)</source>
       <translation>
         <numerusform>Видалити рядок</numerusform>
@@ -1071,7 +1071,7 @@ Defaults to: %V = %A
       </translation>
     </message>
     <message numerus="yes">
-      <location filename="../../SheetTableView.cpp" line="157"/>
+      <location filename="../../SheetTableView.cpp" line="169"/>
       <source>Insert %n column(s) left</source>
       <translation>
         <numerusform>Вставити %n стовпець ліворуч</numerusform>
@@ -1081,7 +1081,7 @@ Defaults to: %V = %A
       </translation>
     </message>
     <message numerus="yes">
-      <location filename="../../SheetTableView.cpp" line="162"/>
+      <location filename="../../SheetTableView.cpp" line="174"/>
       <source>Insert %n column(s) right</source>
       <translation>
         <numerusform>Вставити %n стовпець праворуч</numerusform>
@@ -1091,7 +1091,7 @@ Defaults to: %V = %A
       </translation>
     </message>
     <message numerus="yes">
-      <location filename="../../SheetTableView.cpp" line="171"/>
+      <location filename="../../SheetTableView.cpp" line="183"/>
       <source>Insert %n non-contiguous columns</source>
       <translation>
         <numerusform>Вставити %n несуміжний стовпець</numerusform>
@@ -1101,7 +1101,7 @@ Defaults to: %V = %A
       </translation>
     </message>
     <message numerus="yes">
-      <location filename="../../SheetTableView.cpp" line="174"/>
+      <location filename="../../SheetTableView.cpp" line="186"/>
       <source>Remove column(s)</source>
       <translation>
         <numerusform>Видалити стовпець</numerusform>
@@ -1111,62 +1111,62 @@ Defaults to: %V = %A
       </translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="179"/>
-      <location filename="../../SheetTableView.cpp" line="658"/>
+      <location filename="../../SheetTableView.cpp" line="191"/>
+      <location filename="../../SheetTableView.cpp" line="670"/>
       <source>Properties...</source>
       <translation>Властивості...</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="191"/>
-      <location filename="../../SheetTableView.cpp" line="659"/>
+      <location filename="../../SheetTableView.cpp" line="203"/>
+      <location filename="../../SheetTableView.cpp" line="671"/>
       <source>Recompute</source>
       <translation>Переобчислити</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="195"/>
-      <location filename="../../SheetTableView.cpp" line="667"/>
+      <location filename="../../SheetTableView.cpp" line="207"/>
+      <location filename="../../SheetTableView.cpp" line="679"/>
       <source>Bind...</source>
       <translation>Привʼязати...</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="199"/>
-      <location filename="../../SheetTableView.cpp" line="660"/>
+      <location filename="../../SheetTableView.cpp" line="211"/>
+      <location filename="../../SheetTableView.cpp" line="672"/>
       <source>Configuration table...</source>
       <translation>Таблиця Конфігурації...</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="207"/>
-      <location filename="../../SheetTableView.cpp" line="661"/>
+      <location filename="../../SheetTableView.cpp" line="219"/>
+      <location filename="../../SheetTableView.cpp" line="673"/>
       <source>Merge cells</source>
       <translation>Об'єднати комірки</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="209"/>
-      <location filename="../../SheetTableView.cpp" line="662"/>
+      <location filename="../../SheetTableView.cpp" line="221"/>
+      <location filename="../../SheetTableView.cpp" line="674"/>
       <source>Split cells</source>
       <translation>Розʼєднати комірки</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="213"/>
-      <location filename="../../SheetTableView.cpp" line="665"/>
+      <location filename="../../SheetTableView.cpp" line="225"/>
+      <location filename="../../SheetTableView.cpp" line="677"/>
       <source>Cut</source>
       <translation>Вирізати</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="215"/>
-      <location filename="../../SheetTableView.cpp" line="663"/>
+      <location filename="../../SheetTableView.cpp" line="227"/>
+      <location filename="../../SheetTableView.cpp" line="675"/>
       <source>Copy</source>
       <translation>Копіювати</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="217"/>
-      <location filename="../../SheetTableView.cpp" line="664"/>
+      <location filename="../../SheetTableView.cpp" line="229"/>
+      <location filename="../../SheetTableView.cpp" line="676"/>
       <source>Paste</source>
       <translation>Вставити</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="219"/>
-      <location filename="../../SheetTableView.cpp" line="666"/>
+      <location filename="../../SheetTableView.cpp" line="231"/>
+      <location filename="../../SheetTableView.cpp" line="678"/>
       <source>Delete</source>
       <translation>Видалити</translation>
     </message>
@@ -1174,12 +1174,12 @@ Defaults to: %V = %A
   <context>
     <name>SpreadsheetGui::SheetView</name>
     <message>
-      <location filename="../../SpreadsheetView.cpp" line="299"/>
+      <location filename="../../SpreadsheetView.cpp" line="301"/>
       <source>Export PDF</source>
       <translation>Експорт в PDF</translation>
     </message>
     <message>
-      <location filename="../../SpreadsheetView.cpp" line="301"/>
+      <location filename="../../SpreadsheetView.cpp" line="303"/>
       <source>PDF file</source>
       <translation>PDF-файл</translation>
     </message>

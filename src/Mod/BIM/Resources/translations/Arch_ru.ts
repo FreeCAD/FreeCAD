@@ -149,7 +149,7 @@
     <message>
       <location filename="../ui/BimServerTaskPanel.ui" line="31"/>
       <source>BIM Server</source>
-      <translation>Сервер BIM</translation>
+      <translation>BIM сервер</translation>
     </message>
     <message>
       <location filename="../ui/BimServerTaskPanel.ui" line="97"/>
@@ -250,13 +250,12 @@ to count the objects, or property names like 'Length' or
 When used with native IFC objects, this can be used to
 retrieve any attribute or custom properties of the elements
 retrieved.</source>
-      <translation type="unfinished">The property to retrieve from each object.Can be 'Count'
-to count the objects, or property names like 'Length' or
-'Shape.Volume' to retrieve a certain property.
+      <translation>Свойство для получения от каждого объекта. Может быть 'Count'
+для подсчета объектов или именем свойства, таким как 'Length' или
+'Shape.Volume' для получения определенного свойства.
 
-When used with native IFC objects, this can be used to
-retrieve any attribute or custom properties of the elements
-retrieved.</translation>
+При использовании с родными объектами IFC, это может быть использовано для
+получения любого атрибута или пользовательских свойств элементов.</translation>
     </message>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="93"/>
@@ -272,18 +271,18 @@ in FreeCAD or not.
 
 Use the name of the IFC project to get all the IFC entities
 of that project, no matter if they are expanded or not.</source>
-      <translation type="unfinished">An optional semicolon (;) separated list of object names
-(internal names, not labels), to be considered by this operation.
-If the list contains groups, children will be added.
+      <translation>Необязательный список имен объектов
+(внутренних имен, а не меток), разделенный точкой с запятой (;), которые должны учитываться при выполнении этой операции.
+Если список содержит группы, будут добавлены дочерние элементы.
 
-Leave blank to use all objects from the document.
+Оставьте поле пустым, чтобы использовать все объекты из документа.
 
-If the document is an IFC project, all IFC entities of the
-document will be used, no matter if they are expanded
-in FreeCAD or not.
+Если документ является проектом IFC, то будут использованы все объекты IFC в
+документе, независимо от того, развернуты они
+в FreeCAD или нет.
 
-Use the name of the IFC project to get all the IFC entities
-of that project, no matter if they are expanded or not.</translation>
+Используйте название проекта IFC, чтобы получить доступ ко всем объектам IFC
+этого проекта, независимо от того, развернуты они или нет.</translation>
     </message>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="112"/>
@@ -292,11 +291,11 @@ of that project, no matter if they are expanded or not.</translation>
 Examples of valid filters (everything is case-insensitive): Name:Wall - Will only consider objects with 'wall' in their name (internal name); !Name:Wall - Will only consider objects which DON'T have 'wall' in their name (internal name); Description:Win - Will only consider objects with 'win' in their description; !Label:Win - Will only consider objects which DO NOT have 'win' in their label; IfcType:Wall - Will only consider objects which Ifc Type is 'Wall'; !Tag:Wall - Will only consider objects which tag is NOT 'Wall'. If you leave this field empty, no filtering is applied
 
 When dealing with native IFC objects, you can use FreeCAD properties name, ex: 'Class:IfcWall' or any other IFC attribute (ex. 'IsTypedBy:#455'). If the 'Objects' column has been set to an IFC project or document, all the IFC entities of that project will be considered.</source>
-      <translation type="unfinished">An optional semicolon (;) separated list of property:value filters. Prepend ! to a property name to invert the effect of the filter (exclude objects that match the filter). Objects whose property contains the value will be matched.
+      <translation>Необязательный список фильтров "свойство:значение", разделенный точкой с запятой (;). Добавьте ! к имени свойства, чтобы изменить эффект фильтра (исключить объекты, соответствующие фильтру). Объекты, свойство которых содержит значение, будут сопоставлены.
 
-Examples of valid filters (everything is case-insensitive): Name:Wall - Will only consider objects with 'wall' in their name (internal name); !Name:Wall - Will only consider objects which DON'T have 'wall' in their name (internal name); Description:Win - Will only consider objects with 'win' in their description; !Label:Win - Will only consider objects which DO NOT have 'win' in their label; IfcType:Wall - Will only consider objects which Ifc Type is 'Wall'; !Tag:Wall - Will only consider objects which tag is NOT 'Wall'. If you leave this field empty, no filtering is applied
+Примеры допустимых фильтров (все без учета регистра): Name:Wall - Будут учитываться только объекты, в названии которых есть "Wall " (внутреннее имя); !Name:Wall - Будут учитываться только объекты, в названии которых нет "Wall " (внутреннее имя); Description:Win - Будут рассматриваться только объекты с надписью "win" в их описании; !Label:Win - Будут учитываться только объекты, у которых в метке нет "win"; IfcType:Wall - Будут учитываться только объекты, у которых тип Ifc - "Wall"; !Tag:Wall - Будут учитываться только объекты, у которых нет тега "wall". Если вы оставите это поле пустым, фильтрация не будет применена
 
-When dealing with native IFC objects, you can use FreeCAD properties name, ex: 'Class:IfcWall' or any other IFC attribute (ex. 'IsTypedBy:#455'). If the 'Objects' column has been set to an IFC project or document, all the IFC entities of that project will be considered.</translation>
+При работе с собственными объектами IFC вы можете использовать имя свойств FreeCAD, например: "Class:IfcWall" или любой другой атрибут IFC (например, "IsTypedBy:#455"). Если в столбце "Объекты" указано значение проекта или документа IFC, будут рассмотрены все объекты IFC этого проекта.</translation>
     </message>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="126"/>
@@ -506,12 +505,12 @@ When dealing with native IFC objects, you can use FreeCAD properties name, ex: '
     <message>
       <location filename="../ui/dialogClassification.ui" line="14"/>
       <source>Classification manager</source>
-      <translation/>
+      <translation>Менеджер классификации</translation>
     </message>
     <message>
       <location filename="../ui/dialogClassification.ui" line="42"/>
       <source>Objects &amp;&amp; Materials</source>
-      <translation>Объекты и материалы</translation>
+      <translation>Объекты &amp;&amp; Материалы</translation>
     </message>
     <message>
       <location filename="../ui/dialogClassification.ui" line="48"/>
@@ -521,7 +520,7 @@ When dealing with native IFC objects, you can use FreeCAD properties name, ex: '
     <message>
       <location filename="../ui/dialogClassification.ui" line="60"/>
       <source>Sort by:</source>
-      <translation>:</translation>
+      <translation>Сортировать по:</translation>
     </message>
     <message>
       <location filename="../ui/dialogClassification.ui" line="68"/>
@@ -535,7 +534,7 @@ When dealing with native IFC objects, you can use FreeCAD properties name, ex: '
       <location filename="../ui/dialogIfcProperties.ui" line="68"/>
       <location filename="../ui/dialogIfcElements.ui" line="57"/>
       <source>IFC type</source>
-      <translation/>
+      <translation>Тип IFC</translation>
     </message>
     <message>
       <location filename="../ui/dialogClassification.ui" line="88"/>
@@ -548,17 +547,17 @@ When dealing with native IFC objects, you can use FreeCAD properties name, ex: '
       <location filename="../ui/dialogIfcProperties.ui" line="78"/>
       <location filename="../ui/dialogIfcElements.ui" line="72"/>
       <source>Model structure</source>
-      <translation/>
+      <translation>Структура модели</translation>
     </message>
     <message>
       <location filename="../ui/dialogClassification.ui" line="122"/>
       <source>Object / Material</source>
-      <translation/>
+      <translation>Объект / Материал</translation>
     </message>
     <message>
       <location filename="../ui/dialogClassification.ui" line="127"/>
       <source>Class</source>
-      <translation>Поле допуска</translation>
+      <translation>Класс</translation>
     </message>
     <message>
       <location filename="../ui/dialogClassification.ui" line="136"/>
@@ -578,17 +577,17 @@ When dealing with native IFC objects, you can use FreeCAD properties name, ex: '
     <message>
       <location filename="../ui/dialogClassification.ui" line="181"/>
       <source>&lt;&lt; Apply to selected</source>
-      <translation/>
+      <translation>&lt;&lt; Применить к выбранному</translation>
     </message>
     <message>
       <location filename="../ui/dialogClassification.ui" line="188"/>
       <source>Use this class as material name</source>
-      <translation/>
+      <translation>Использовать этот класс как название материала</translation>
     </message>
     <message>
       <location filename="../ui/dialogClassification.ui" line="191"/>
       <source>&lt;&lt; Set as name</source>
-      <translation/>
+      <translation>&lt;&lt; Установить как название</translation>
     </message>
     <message>
       <location filename="../ui/dialogClassification.ui" line="200"/>
@@ -626,10 +625,9 @@ When dealing with native IFC objects, you can use FreeCAD properties name, ex: '
 and that document won't be turned into an IFC document automatically.
 You can still turn a FreeCAD document into an IFC document manually, using
 Utils -&gt; Make IFC project</source>
-      <translation type="unfinished">If this is checked, you won't be asked again when creating a new FreeCAD document,
-and that document won't be turned into an IFC document automatically.
-You can still turn a FreeCAD document into an IFC document manually, using
-Utils -&gt; Make IFC project</translation>
+      <translation>Если этот флажок установлен, у вас не будет снова запрашиваться этот параметр при создании нового документа FreeCAD, и этот документ не будет автоматически преобразован в документ IFC.
+Вы по-прежнему можете вручную преобразовать документ FreeCAD в документ IFC, используя
+Игструменты-&gt; сделать IFC проект</translation>
     </message>
     <message>
       <location filename="../ui/dialogConvertDocument.ui" line="46"/>
@@ -1023,7 +1021,7 @@ Utils -&gt; Make IFC project</translation>
     <message>
       <location filename="../ui/dialogAddPSet.ui" line="14"/>
       <source>Add standard IFC PSet</source>
-      <translation type="unfinished">Add standard IFC PSet</translation>
+      <translation>Добавить стандартный набор IFC PSet</translation>
     </message>
     <message>
       <location filename="../ui/dialogAddPSet.ui" line="43"/>
@@ -1376,52 +1374,52 @@ Utils -&gt; Make IFC project</translation>
     <message>
       <location filename="../ui/dialogConvertType.ui" line="14"/>
       <source>Convert to IFC type</source>
-      <translation type="unfinished">Convert to IFC type</translation>
+      <translation>Преобразовать в тип IFC</translation>
     </message>
     <message>
       <location filename="../ui/dialogConvertType.ui" line="26"/>
       <source>This object will be converted to a %1 type. Types can be used to give common attributes and properties to several objects at once.</source>
-      <translation type="unfinished">This object will be converted to a %1 type. Types can be used to give common attributes and properties to several objects at once.</translation>
+      <translation>Этот объект будет преобразован в тип %1. Типы могут использоваться для предоставления общих атрибутов и свойств нескольким объектам.</translation>
     </message>
     <message>
       <location filename="../ui/dialogConvertType.ui" line="36"/>
       <source>Keep original object. The object will adopt the new type</source>
-      <translation type="unfinished">Keep original object. The object will adopt the new type</translation>
+      <translation>Сохраните исходный объект. Объект примет новый тип</translation>
     </message>
     <message>
       <location filename="../ui/dialogAddProperty.ui" line="14"/>
       <source>Add IFC property</source>
-      <translation type="unfinished">Add IFC property</translation>
+      <translation>Добавить свойство IFC</translation>
     </message>
     <message>
       <location filename="../ui/dialogAddProperty.ui" line="44"/>
       <source>IfcLabel</source>
-      <translation type="unfinished">IfcLabel</translation>
+      <translation>Метка Ifc</translation>
     </message>
     <message>
       <location filename="../ui/dialogAddProperty.ui" line="49"/>
       <source>IfcBoolean</source>
-      <translation type="unfinished">IfcBoolean</translation>
+      <translation>Булевский ifc</translation>
     </message>
     <message>
       <location filename="../ui/dialogAddProperty.ui" line="54"/>
       <source>IfcInteger</source>
-      <translation type="unfinished">IfcInteger</translation>
+      <translation>Ifc Целое число</translation>
     </message>
     <message>
       <location filename="../ui/dialogAddProperty.ui" line="59"/>
       <source>IfcReal</source>
-      <translation type="unfinished">IfcReal</translation>
+      <translation>Ifc реальное число</translation>
     </message>
     <message>
       <location filename="../ui/dialogAddProperty.ui" line="64"/>
       <source>IfcLengthMeasure</source>
-      <translation type="unfinished">IfcLengthMeasure</translation>
+      <translation>Измерение длины Ifc</translation>
     </message>
     <message>
       <location filename="../ui/dialogAddProperty.ui" line="69"/>
       <source>IfcAreaMeasure</source>
-      <translation type="unfinished">IfcAreaMeasure</translation>
+      <translation>Измерение площади Ifc</translation>
     </message>
     <message>
       <location filename="../ui/dialogAddProperty.ui" line="80"/>
@@ -1431,7 +1429,7 @@ Utils -&gt; Make IFC project</translation>
     <message>
       <location filename="../ui/dialogAddProperty.ui" line="94"/>
       <source>PSet</source>
-      <translation type="unfinished">PSet</translation>
+      <translation>PSet</translation>
     </message>
   </context>
   <context>
@@ -2752,7 +2750,7 @@ instead of the FreeCAD web workbench</source>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="308"/>
       <source>Other</source>
-      <translation>Нечто</translation>
+      <translation>Другое</translation>
     </message>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="321"/>
@@ -2772,12 +2770,12 @@ instead of the FreeCAD web workbench</source>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="525"/>
       <source>When clicking a view or level in the BIM views manager, this switches the background to plain color when activating a 2D view, and to gradient color when activating a level</source>
-      <translation type="unfinished">When clicking a view or level in the BIM views manager, this switches the background to plain color when activating a 2D view, and to gradient color when activating a level</translation>
+      <translation>При нажатии на вид или уровень в менеджере просмотров BIM, позволяет переключать фон в обычный цвет при активации 2D представления и в градиентный цвет при активации уровня</translation>
     </message>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="528"/>
       <source>Switch backgrounds</source>
-      <translation type="unfinished">Switch backgrounds</translation>
+      <translation>Переключить фон</translation>
     </message>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="314"/>
@@ -2812,7 +2810,7 @@ instead of the FreeCAD web workbench</source>
     <message>
       <location filename="../ui/preferences-sh3d-import.ui" line="14"/>
       <source>SH3D import</source>
-      <translation type="unfinished">SH3D import</translation>
+      <translation>Импорт SH3D</translation>
     </message>
     <message>
       <location filename="../ui/preferences-sh3d-import.ui" line="32"/>
@@ -2824,121 +2822,119 @@ instead of the FreeCAD web workbench</source>
       <location filename="../ui/preferences-sh3d-import.ui" line="45"/>
       <source>Shows verbose debug messages during import of SH3D files in the Report
                     view panel. Log level message must be allowed for this setting to have an effect.</source>
-      <translation type="unfinished">Shows verbose debug messages during import of SH3D files in the Report
-                    view panel. Log level message must be allowed for this setting to have an effect.</translation>
+      <translation>Показывает подробные отладочные сообщения во время импорта файлов SH3D в панели просмотра отчетов. Для того чтобы эта настройка имела эффект, необходимо разрешить уровень сообщений журнала.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-sh3d-import.ui" line="71"/>
       <source>Whether to import the model's doors and windows</source>
-      <translation type="unfinished">Whether to import the model's doors and windows</translation>
+      <translation>Импортировать ли двери и окна модели</translation>
     </message>
     <message>
       <location filename="../ui/preferences-sh3d-import.ui" line="74"/>
       <source>Doors and Windows</source>
-      <translation type="unfinished">Doors and Windows</translation>
+      <translation>Двери и окна</translation>
     </message>
     <message>
       <location filename="../ui/preferences-sh3d-import.ui" line="87"/>
       <source>Whether to import the model's furnitures</source>
-      <translation type="unfinished">Whether to import the model's furnitures</translation>
+      <translation>Импортировать ли мебель модели</translation>
     </message>
     <message>
       <location filename="../ui/preferences-sh3d-import.ui" line="90"/>
       <source>Furnitures</source>
-      <translation type="unfinished">Furnitures</translation>
+      <translation>Мебель</translation>
     </message>
     <message>
       <location filename="../ui/preferences-sh3d-import.ui" line="103"/>
       <source>Whether to create Arch::Equipment for each furniture defined in the model (NOTE: this can negatively impact the import process speed)</source>
-      <translation type="unfinished">Whether to create Arch::Equipment for each furniture defined in the model (NOTE: this can negatively impact the import process speed)</translation>
+      <translation>Создавать ли Арч::Оборудование для каждой мебели, определенной в модели (ПРИМЕЧАНИЕ: это может негативно сказаться на скорости импортного процесса)</translation>
     </message>
     <message>
       <location filename="../ui/preferences-sh3d-import.ui" line="106"/>
       <source>Create Arch::Equipment</source>
-      <translation type="unfinished">Create Arch::Equipment</translation>
+      <translation>Создать Арх:снаряжение</translation>
     </message>
     <message>
       <location filename="../ui/preferences-sh3d-import.ui" line="119"/>
       <source>Whether to join the different Arch::Wall together</source>
-      <translation type="unfinished">Whether to join the different Arch::Wall together</translation>
+      <translation>Стоит ли обьединить различные Арх:Стены вместе</translation>
     </message>
     <message>
       <location filename="../ui/preferences-sh3d-import.ui" line="122"/>
       <source>Join Arch::Wall</source>
-      <translation type="unfinished">Join Arch::Wall</translation>
+      <translation>Присоединить Арх:Стена</translation>
     </message>
     <message>
       <location filename="../ui/preferences-sh3d-import.ui" line="135"/>
       <source>Whether to import the model's lights. Note that you also need to import
                     the model's furnitures.</source>
-      <translation type="unfinished">Whether to import the model's lights. Note that you also need to import
-                    the model's furnitures.</translation>
+      <translation>Импортировать ли освещение модели. Обратите внимание, что вам также необходимо импортировать мебель модели.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-sh3d-import.ui" line="139"/>
       <source>Lights (requires Render)</source>
-      <translation type="unfinished">Lights (requires Render)</translation>
+      <translation>Освещение (требуется рендер)</translation>
     </message>
     <message>
       <location filename="../ui/preferences-sh3d-import.ui" line="152"/>
       <source>Whether to import the model's cameras</source>
-      <translation type="unfinished">Whether to import the model's cameras</translation>
+      <translation>Импортировать ли камеры модели</translation>
     </message>
     <message>
       <location filename="../ui/preferences-sh3d-import.ui" line="155"/>
       <source>Cameras (requires Render)</source>
-      <translation type="unfinished">Cameras (requires Render)</translation>
+      <translation>Камеры (требуется Render)</translation>
     </message>
     <message>
       <location filename="../ui/preferences-sh3d-import.ui" line="168"/>
       <source>Merge imported element with existing FC object</source>
-      <translation type="unfinished">Merge imported element with existing FC object</translation>
+      <translation>Объединить импортированный элемент с существующим объектом FC</translation>
     </message>
     <message>
       <location filename="../ui/preferences-sh3d-import.ui" line="171"/>
       <source>Merge into existing document</source>
-      <translation type="unfinished">Merge into existing document</translation>
+      <translation>Объединить с существующим документом</translation>
     </message>
     <message>
       <location filename="../ui/preferences-sh3d-import.ui" line="186"/>
       <source>Default Floor Color</source>
-      <translation type="unfinished">Default Floor Color</translation>
+      <translation>Цвет пола по умолчанию</translation>
     </message>
     <message>
       <location filename="../ui/preferences-sh3d-import.ui" line="202"/>
       <location filename="../ui/preferences-sh3d-import.ui" line="242"/>
       <source>This color might be used when a room does not define its own color.</source>
-      <translation type="unfinished">This color might be used when a room does not define its own color.</translation>
+      <translation>Этот цвет может быть использован, когда комната не определяет свой собственный цвет.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-sh3d-import.ui" line="226"/>
       <source>Default Ceiling Color</source>
-      <translation type="unfinished">Default Ceiling Color</translation>
+      <translation>Цвет потолка по умолчанию</translation>
     </message>
     <message>
       <location filename="../ui/preferences-sh3d-import.ui" line="264"/>
       <source>Create a default Render project with the newly created Site</source>
-      <translation type="unfinished">Create a default Render project with the newly created Site</translation>
+      <translation>Создать проект рендера по умолчанию с недавно созданным сайтом</translation>
     </message>
     <message>
       <location filename="../ui/preferences-sh3d-import.ui" line="267"/>
       <source>Create Render Project (requires Render)</source>
-      <translation type="unfinished">Create Render Project (requires Render)</translation>
+      <translation>Создать проект рендера (требует Render)</translation>
     </message>
     <message>
       <location filename="../ui/preferences-sh3d-import.ui" line="280"/>
       <source>Fit view while importing.</source>
-      <translation type="unfinished">Fit view while importing.</translation>
+      <translation>Вписать в вид при импорте.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-sh3d-import.ui" line="296"/>
       <source>Create a default IFC project with the newly created Site.</source>
-      <translation type="unfinished">Create a default IFC project with the newly created Site.</translation>
+      <translation>Создать проект IFC по умолчанию с недавно созданным сайтом.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-sh3d-import.ui" line="299"/>
       <source>Create IFC Project</source>
-      <translation type="unfinished">Create IFC Project</translation>
+      <translation>Создать проект IFC</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="45"/>
@@ -3589,7 +3585,7 @@ unit to work with when opening the file.</source>
       <location filename="../../ArchStructure.py" line="129"/>
       <location filename="../../ArchStructure.py" line="446"/>
       <source>Column</source>
-      <translation>Столбец</translation>
+      <translation>Колонна</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="151"/>
@@ -4582,7 +4578,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../Arch.py" line="814"/>
       <source>Stairs</source>
-      <translation>Лестницы</translation>
+      <translation>Лестница</translation>
     </message>
     <message>
       <location filename="../../Arch.py" line="913"/>
@@ -4721,7 +4717,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchGrid.py" line="392"/>
       <source>Add column</source>
-      <translation>Добавить столбец</translation>
+      <translation>Добавляет колонну</translation>
     </message>
     <message>
       <location filename="../../ArchGrid.py" line="393"/>
@@ -4959,7 +4955,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../Arch.py" line="488"/>
       <source>Connector</source>
-      <translation>Коннектор</translation>
+      <translation>Соединитель</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimPipe.py" line="58"/>
@@ -4980,7 +4976,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../bimcommands/BimPipe.py" line="104"/>
       <source>Create Connector</source>
-      <translation>Создать коннектор</translation>
+      <translation>Создать Соединитель</translation>
     </message>
     <message>
       <location filename="../../ArchPipe.py" line="128"/>
@@ -5051,7 +5047,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchSchedule.py" line="102"/>
       <source>renamed property 'Description' to 'Operation'</source>
-      <translation type="unfinished">renamed property 'Description' to 'Operation'</translation>
+      <translation>переименовал свойство 'Description' в 'Operation'</translation>
     </message>
     <message>
       <location filename="../../ArchSchedule.py" line="103"/>
@@ -5236,7 +5232,7 @@ Floor creation aborted.</source>
     <message>
       <location filename="../../ArchComponent.py" line="1164"/>
       <source>Wrong base type</source>
-      <translation type="unfinished">Wrong base type</translation>
+      <translation>Неправильный базовый тип</translation>
     </message>
     <message>
       <location filename="../../ArchComponent.py" line="1653"/>
@@ -5756,7 +5752,7 @@ Building creation aborted.</source>
     <message>
       <location filename="../../bimcommands/BimDrawingView.py" line="55"/>
       <source>Create 2D View</source>
-      <translation type="unfinished">Create 2D View</translation>
+      <translation>Создать 2D вид</translation>
     </message>
   </context>
   <context>
@@ -5901,7 +5897,7 @@ Building creation aborted.</source>
     <message>
       <location filename="../../ArchStructure.py" line="733"/>
       <source>Select User Defined PropertySet to use in creating variant shape, with same ArchSketch </source>
-      <translation type="unfinished">Select User Defined PropertySet to use in creating variant shape, with same ArchSketch </translation>
+      <translation>Выберите пользовательский определенный набор свойств для использования при создании формы варианта, с тем же архивированием </translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="1195"/>
@@ -7398,7 +7394,7 @@ Building creation aborted.</source>
     <message>
       <location filename="../../ArchPipe.py" line="288"/>
       <source>The curvature radius of this connector</source>
-      <translation>Радиус кривизны этого коннектора</translation>
+      <translation>Радиус кривизны данного соединителя</translation>
     </message>
     <message>
       <location filename="../../ArchPipe.py" line="290"/>
@@ -7408,12 +7404,12 @@ Building creation aborted.</source>
     <message>
       <location filename="../../ArchPipe.py" line="292"/>
       <source>The type of this connector</source>
-      <translation>Тип коннектора</translation>
+      <translation>Тип соединителя</translation>
     </message>
     <message>
       <location filename="../../ArchSchedule.py" line="110"/>
       <source>The operation column</source>
-      <translation type="unfinished">The operation column</translation>
+      <translation>Столбец операции</translation>
     </message>
     <message>
       <location filename="../../ArchSchedule.py" line="112"/>
@@ -7892,7 +7888,7 @@ Building creation aborted.</source>
     <message>
       <location filename="../../ArchWall.py" line="160"/>
       <source>The length of this wall. Read-only if this wall is not based on an unconstrained sketch with a single edge, or on a Draft Wire with a single edge. Refer to wiki for details how length is deduced.</source>
-      <translation type="unfinished">The length of this wall. Read-only if this wall is not based on an unconstrained sketch with a single edge, or on a Draft Wire with a single edge. Refer to wiki for details how length is deduced.</translation>
+      <translation>Длина этой стены. Только для чтения, если эта стена не основана на неограниченном эскизе с одним краем или на чертежной проволоке с одним краем. Подробности того, как выводится длина, см. в вики.</translation>
     </message>
     <message>
       <location filename="../../ArchWall.py" line="166"/>
@@ -7962,12 +7958,12 @@ Building creation aborted.</source>
     <message>
       <location filename="../../ArchWall.py" line="214"/>
       <source>Selected edges (or group of edges) of the base Sketch/ArchSketch, to use in creating the shape of this Arch Wall (instead of using all the Base Sketch/ArchSketch's edges by default).  Input are index numbers of edges or groups.  Disabled and ignored if Base object (ArchSketch) provides selected edges (as Wall Axis) information, with getWallBaseShapeEdgesInfo() method.  [ENHANCEMENT by ArchSketch] GUI 'Edit Wall Segment' Tool is provided in external SketchArch Add-on to let users to (de)select the edges interactively.  'Toponaming-Tolerant' if ArchSketch is used in Base (and SketchArch Add-on is installed).  Warning : Not 'Toponaming-Tolerant' if just Sketch is used.</source>
-      <translation type="unfinished">Selected edges (or group of edges) of the base Sketch/ArchSketch, to use in creating the shape of this Arch Wall (instead of using all the Base Sketch/ArchSketch's edges by default).  Input are index numbers of edges or groups.  Disabled and ignored if Base object (ArchSketch) provides selected edges (as Wall Axis) information, with getWallBaseShapeEdgesInfo() method.  [ENHANCEMENT by ArchSketch] GUI 'Edit Wall Segment' Tool is provided in external SketchArch Add-on to let users to (de)select the edges interactively.  'Toponaming-Tolerant' if ArchSketch is used in Base (and SketchArch Add-on is installed).  Warning : Not 'Toponaming-Tolerant' if just Sketch is used.</translation>
+      <translation>Выбранные ребра (или группа ребер) базового Sketch/ArchSketch для использования при создании формы этой арочной стены (вместо использования всех ребер базового Sketch/ArchSketch по умолчанию). Вводимые данные — индексные номера ребер или групп. Отключено и игнорируется, если базовый объект (ArchSketch) предоставляет информацию о выбранных ребрах (как осях стены) с помощью метода getWallBaseShapeEdgesInfo(). [УЛУЧШЕНИЕ от ArchSketch] Инструмент графического интерфейса «Редактировать сегмент стены» предоставляется во внешнем дополнении SketchArch, чтобы пользователи могли интерактивно выбирать (отменять) ребра. «Toponaming-Tolerant», если ArchSketch используется в Base (и установлено дополнение SketchArch). Предупреждение: не «Toponaming-Tolerant», если используется только Sketch.</translation>
     </message>
     <message>
       <location filename="../../ArchWall.py" line="216"/>
       <source>Select User Defined PropertySet to use in creating variant shape, layers of the Arch Wall with same ArchSketch </source>
-      <translation type="unfinished">Select User Defined PropertySet to use in creating variant shape, layers of the Arch Wall with same ArchSketch </translation>
+      <translation>Выберите пользовательский определенный набор свойств для использования при создании формы варианта, слои стены, с тем же архивированием </translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="719"/>
@@ -8244,7 +8240,7 @@ Building creation aborted.</source>
     <message>
       <location filename="../../bimcommands/BimStairs.py" line="42"/>
       <source>Stairs</source>
-      <translation>Лестницы</translation>
+      <translation>Лестница</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimStairs.py" line="46"/>
@@ -8478,12 +8474,12 @@ Building creation aborted.</source>
     <message>
       <location filename="../../bimcommands/BimPipe.py" line="81"/>
       <source>Connector</source>
-      <translation>Коннектор</translation>
+      <translation>Соединитель</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimPipe.py" line="85"/>
       <source>Creates a connector between 2 or 3 selected pipes</source>
-      <translation>Создает коннектор между 2 или 3 выбранными пунктами</translation>
+      <translation>Создаёт соединитель между 2-мя или 3-мя выбранными трубами</translation>
     </message>
   </context>
   <context>
@@ -8548,12 +8544,12 @@ Building creation aborted.</source>
     <message>
       <location filename="../../bimcommands/BimRebar.py" line="42"/>
       <source>Custom Rebar</source>
-      <translation>Пользовательская арматура</translation>
+      <translation>Арматура</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimRebar.py" line="46"/>
       <source>Creates a Reinforcement bar from the selected face of solid object and/or a sketch</source>
-      <translation>Создает арматурный стержень из выбранной грани твёрдого объекта и/или эскиза</translation>
+      <translation>Создаёт пользовательский арматурный стержень из выбранной грани твёрдого объекта и/или эскиза</translation>
     </message>
   </context>
   <context>
@@ -8978,7 +8974,7 @@ CTRL+PgUp для удлинения выдавливанияCTRL+PgDown для �
       <location filename="../../bimcommands/BimIfcElements.py" line="137"/>
       <location filename="../../bimcommands/BimIfcProperties.py" line="205"/>
       <source>IFC type</source>
-      <translation/>
+      <translation>Тип IFC</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimIfcElements.py" line="138"/>
@@ -9150,12 +9146,12 @@ CTRL+PgUp для удлинения выдавливанияCTRL+PgDown для �
     <message>
       <location filename="../../bimcommands/BimIfcQuantities.py" line="177"/>
       <source>Add quantity set...</source>
-      <translation type="unfinished">Add quantity set...</translation>
+      <translation>Добавить набор количества...</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimIfcQuantities.py" line="193"/>
       <source>Adding quantity set</source>
-      <translation type="unfinished">Adding quantity set</translation>
+      <translation>Добавление набор количеств</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimIfcQuantities.py" line="440"/>
@@ -9230,7 +9226,7 @@ CTRL+PgUp для удлинения выдавливанияCTRL+PgDown для �
     <message>
       <location filename="../../bimcommands/BimLeader.py" line="53"/>
       <source>Leader</source>
-      <translation>Лидер</translation>
+      <translation>Выноска</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimLeader.py" line="95"/>
@@ -9305,7 +9301,7 @@ CTRL+PgUp для удлинения выдавливанияCTRL+PgDown для �
     <message>
       <location filename="../../bimcommands/BimLibrary.py" line="697"/>
       <source>Top right</source>
-      <translation>Верхний правый угол</translation>
+      <translation>Верхний правый</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimLibrary.py" line="698"/>
@@ -9325,7 +9321,7 @@ CTRL+PgUp для удлинения выдавливанияCTRL+PgDown для �
     <message>
       <location filename="../../bimcommands/BimLibrary.py" line="701"/>
       <source>Bottom left</source>
-      <translation>Нижний левый угол</translation>
+      <translation>Нижний левый</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimLibrary.py" line="702"/>
@@ -9335,7 +9331,7 @@ CTRL+PgUp для удлинения выдавливанияCTRL+PgDown для �
     <message>
       <location filename="../../bimcommands/BimLibrary.py" line="703"/>
       <source>Bottom right</source>
-      <translation>Нижний правый угол</translation>
+      <translation>Нижний правый</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimLibrary.py" line="809"/>
@@ -9849,7 +9845,7 @@ CTRL+PgUp для удлинения выдавливанияCTRL+PgDown для �
     <message>
       <location filename="../../nativeifc/ifc_diff.py" line="66"/>
       <source>The IFC file is not saved. Please save once to have an existing IFC file to compare with. Then, run this command again.</source>
-      <translation type="unfinished">The IFC file is not saved. Please save once to have an existing IFC file to compare with. Then, run this command again.</translation>
+      <translation>IFC файл не сохранен. Пожалуйста, сохраните существующий IFC файл для сравнения. Затем выполните эту команду снова.</translation>
     </message>
     <message>
       <location filename="../../nativeifc/ifc_diff.py" line="77"/>
@@ -9919,37 +9915,37 @@ CTRL+PgUp для удлинения выдавливанияCTRL+PgDown для �
     <message>
       <location filename="../../nativeifc/ifc_status.py" line="78"/>
       <source>Add IFC property...</source>
-      <translation type="unfinished">Add IFC property...</translation>
+      <translation>Добавить свойство IFC...</translation>
     </message>
     <message>
       <location filename="../../nativeifc/ifc_status.py" line="83"/>
       <source>Add standard IFC Property Set...</source>
-      <translation type="unfinished">Add standard IFC Property Set...</translation>
+      <translation>Добавить стандартный набор свойств IFC...</translation>
     </message>
     <message>
       <location filename="../../nativeifc/ifc_status.py" line="139"/>
       <source>No Property set provided</source>
-      <translation type="unfinished">No Property set provided</translation>
+      <translation>Свойства не заданы</translation>
     </message>
     <message>
       <location filename="../../nativeifc/ifc_status.py" line="145"/>
       <source>add property</source>
-      <translation type="unfinished">add property</translation>
+      <translation>добавить свойство</translation>
     </message>
     <message>
       <location filename="../../nativeifc/ifc_status.py" line="208"/>
       <source>Property set already exists</source>
-      <translation type="unfinished">Property set already exists</translation>
+      <translation>Набор свойств уже существует</translation>
     </message>
     <message>
       <location filename="../../nativeifc/ifc_status.py" line="212"/>
       <source>add property set</source>
-      <translation type="unfinished">add property set</translation>
+      <translation>добавить набор свойств</translation>
     </message>
     <message>
       <location filename="../../nativeifc/ifc_status.py" line="220"/>
       <source>Property already exists</source>
-      <translation type="unfinished">Property already exists</translation>
+      <translation>Свойство уже существует</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimTDView.py" line="74"/>
@@ -9959,27 +9955,27 @@ CTRL+PgUp для удлинения выдавливанияCTRL+PgDown для �
     <message>
       <location filename="../../bimcommands/BimDrawingView.py" line="66"/>
       <source>Viewed lines</source>
-      <translation type="unfinished">Viewed lines</translation>
+      <translation>Просмотренные линии</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimDrawingView.py" line="75"/>
       <source>Cut lines</source>
-      <translation type="unfinished">Cut lines</translation>
+      <translation>Вырезать линии</translation>
     </message>
     <message>
       <location filename="../../nativeifc/ifc_psets.py" line="376"/>
       <source>Removing property</source>
-      <translation type="unfinished">Removing property</translation>
+      <translation>Удаление свойства</translation>
     </message>
     <message>
       <location filename="../../nativeifc/ifc_psets.py" line="380"/>
       <source>Removing property set</source>
-      <translation type="unfinished">Removing property set</translation>
+      <translation>Удаление набора свойств</translation>
     </message>
     <message>
       <location filename="../../nativeifc/ifc_types.py" line="109"/>
       <source>Error: Incompatible type</source>
-      <translation type="unfinished">Error: Incompatible type</translation>
+      <translation>Ошибка: Несовместимый тип</translation>
     </message>
   </context>
   <context>
@@ -10095,7 +10091,7 @@ CTRL+PgUp для удлинения выдавливанияCTRL+PgDown для �
     <message>
       <location filename="../../bimcommands/BimColumn.py" line="47"/>
       <source>Column</source>
-      <translation>Столбец</translation>
+      <translation>Колонна</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimColumn.py" line="50"/>
@@ -10108,7 +10104,7 @@ CTRL+PgUp для удлинения выдавливанияCTRL+PgDown для �
     <message>
       <location filename="../../bimcommands/BimCommon.py" line="39"/>
       <source>Intersection</source>
-      <translation>Пересечение</translation>
+      <translation>Пересечь</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimCommon.py" line="42"/>
@@ -10121,12 +10117,12 @@ CTRL+PgUp для удлинения выдавливанияCTRL+PgDown для �
     <message>
       <location filename="../../bimcommands/BimCompound.py" line="39"/>
       <source>Make compound</source>
-      <translation>Создать соединение</translation>
+      <translation>Создать компаунд (обьединение)</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimCompound.py" line="42"/>
       <source>Make a compound of several shapes</source>
-      <translation>Создать соединение из нескольких форм</translation>
+      <translation>Создать обьединение из нескольких форм</translation>
     </message>
   </context>
   <context>
@@ -10196,7 +10192,7 @@ CTRL+PgUp для удлинения выдавливанияCTRL+PgDown для �
     <message>
       <location filename="../../bimcommands/BimDimensions.py" line="43"/>
       <source>Aligned dimension</source>
-      <translation>Выровненный размер</translation>
+      <translation>Размер линейный</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimDimensions.py" line="46"/>
@@ -10209,7 +10205,7 @@ CTRL+PgUp для удлинения выдавливанияCTRL+PgDown для �
     <message>
       <location filename="../../bimcommands/BimDimensions.py" line="61"/>
       <source>Horizontal dimension</source>
-      <translation>Горизонтальные оси</translation>
+      <translation>Размер горизонтальный</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimDimensions.py" line="64"/>
@@ -10222,7 +10218,7 @@ CTRL+PgUp для удлинения выдавливанияCTRL+PgDown для �
     <message>
       <location filename="../../bimcommands/BimDimensions.py" line="83"/>
       <source>Vertical dimension</source>
-      <translation>Вертикальный размер</translation>
+      <translation>Размер вертикальный</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimDimensions.py" line="86"/>
@@ -10297,12 +10293,12 @@ CTRL+PgUp для удлинения выдавливанияCTRL+PgDown для �
     <message>
       <location filename="../../bimcommands/BimFuse.py" line="38"/>
       <source>Union</source>
-      <translation>Объединение</translation>
+      <translation>Объединить</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimFuse.py" line="39"/>
       <source>Make a union of several shapes</source>
-      <translation>Создать объединение нескольких фигур</translation>
+      <translation>Производит объединение (слияние) нескольких фигур</translation>
     </message>
   </context>
   <context>
@@ -10414,7 +10410,7 @@ CTRL+PgUp для удлинения выдавливанияCTRL+PgDown для �
     <message>
       <location filename="../../bimcommands/BimLeader.py" line="44"/>
       <source>Leader</source>
-      <translation>Лидер</translation>
+      <translation>Выноска</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimLeader.py" line="47"/>
@@ -11396,12 +11392,12 @@ CTRL+PgUp для удлинения выдавливанияCTRL+PgDown для �
     <message>
       <location filename="../../bimcommands/BimDrawingView.py" line="43"/>
       <source>2D Drawing</source>
-      <translation type="unfinished">2D Drawing</translation>
+      <translation>2D Рисование</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimDrawingView.py" line="47"/>
       <source>Creates a drawing container to contain elements of a 2D view</source>
-      <translation type="unfinished">Creates a drawing container to contain elements of a 2D view</translation>
+      <translation>Создает контейнер чертежа для содержания элементов 2D вида</translation>
     </message>
   </context>
   <context>
@@ -11409,12 +11405,12 @@ CTRL+PgUp для удлинения выдавливанияCTRL+PgDown для �
     <message>
       <location filename="../../bimcommands/BimShape2DView.py" line="42"/>
       <source>Section view</source>
-      <translation type="unfinished">Section view</translation>
+      <translation>Вид Сечения</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimShape2DView.py" line="97"/>
       <source>Section cut</source>
-      <translation type="unfinished">Section cut</translation>
+      <translation>Разрезать секцию</translation>
     </message>
   </context>
   <context>
@@ -11422,12 +11418,12 @@ CTRL+PgUp для удлинения выдавливанияCTRL+PgDown для �
     <message>
       <location filename="../../bimcommands/BimTDView.py" line="39"/>
       <source>Insert view</source>
-      <translation type="unfinished">Insert view</translation>
+      <translation>Вставить Вид</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimTDView.py" line="43"/>
       <source>Inserts a drawing view on a page</source>
-      <translation type="unfinished">Inserts a drawing view on a page</translation>
+      <translation>Вставляет вид рисунка на странице</translation>
     </message>
   </context>
 </TS>

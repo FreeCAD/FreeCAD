@@ -508,9 +508,9 @@ class TaskPanel:
         self.obj.Proxy.execute(self.obj)
 
     def updateUI(self):
-        self.filterAngle.updateSpinBox()
-        self.offsetDistance.updateSpinBox()
-        self.pivotHeight.updateSpinBox()
+        self.filterAngle.updateWidget()
+        self.offsetDistance.updateWidget()
+        self.pivotHeight.updateWidget()
 
     def updateModel(self):
         self.getFields()

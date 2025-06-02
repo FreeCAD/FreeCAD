@@ -417,8 +417,7 @@ void StartView::changeEvent(QEvent* event)
     _openFirstStart->setEnabled(true);
     Gui::Document* doc = Gui::Application::Instance->activeDocument();
     if (doc) {
-        Gui::View3DInventor* view = static_cast<Gui::View3DInventor*>(doc->getActiveView());
-        if (view) {
+        if (auto view = dynamic_cast<Gui::View3DInventor*>(doc->getActiveView())) {
             Gui::View3DInventorViewer* viewer = view->getViewer();
             if (viewer->isEditing()) {
                 _openFirstStart->setEnabled(false);

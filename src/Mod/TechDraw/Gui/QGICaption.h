@@ -26,6 +26,7 @@
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
 #include "QGCustomText.h"
+#include "QGIUserTypes.h"
 
 namespace TechDrawGui
 {
@@ -36,7 +37,7 @@ public:
     explicit QGICaption();
     ~QGICaption() override {}
 
-    enum {Type = QGraphicsItem::UserType + 180};
+    enum {Type = UserType::QGICaption};
     int type() const override { return Type;}
 
 };

@@ -51,11 +51,19 @@ class TestPathPreferences(PathTestUtils.PathTestBase):
     def test10(self):
         """Default paths for tools are resolved correctly"""
 
-        self.assertTrue(Path.Preferences.pathDefaultToolsPath().endswith("/CAM/Tools/"))
-        self.assertTrue(Path.Preferences.pathDefaultToolsPath("Bit").endswith("/CAM/Tools/Bit"))
-        self.assertTrue(
-            Path.Preferences.pathDefaultToolsPath("Library").endswith("/CAM/Tools/Library")
+        self.assertEqual(
+            Path.Preferences.getDefaultAssetPath().parts[-2:],
+            ("CAM", "Tools"),
+            str(Path.Preferences.getDefaultAssetPath()),
         )
-        self.assertTrue(
-            Path.Preferences.pathDefaultToolsPath("Template").endswith("/CAM/Tools/Template")
+        self.assertEqual(
+            Path.Preferences.getBuiltinAssetPath().parts[-2:],
+            ("CAM", "Tools"),
+            str(Path.Preferences.getBuiltinAssetPath()),
         )
+        self.assertEqual(
+            Path.Preferences.getBuiltinShapePath().parts[-3:],
+            ("CAM", "Tools", "Shape"),
+            str(Path.Preferences.getBuiltinShapePath()),
+        )
+        self.assertEqual(Path.Preferences.getToolBitPath().name, "Bit")

@@ -121,8 +121,8 @@ inline const UnitsSchemaSpec s3
             { 0               , "kg/mm^3"    , 1.0             }}
         },
         { "ThermalConductivity", {
-            { 1e6             , "W/m/K"      , 1e6             },
-            { 0               , "W/mm/K"     , 1e3             }}
+            { 0               , "W/m/K"      , 1e3             },
+            { 1e6             , "W/mm/K"     , 1e6             }}
         },
         { "ThermalExpansionCoefficient", {
             { 1e-3            , "\xC2\xB5m/m/K" , 1e-6         },

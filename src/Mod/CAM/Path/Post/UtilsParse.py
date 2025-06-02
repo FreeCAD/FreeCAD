@@ -707,12 +707,18 @@ def parse_a_path(values: Values, gcode: Gcode, pathobj) -> None:
         command = c.Name
         command_line = []
 
+        # Skip blank lines if requested
+        if not command:
+            if not values["OUTPUT_BLANK_LINES"]:
+                continue
+
         # Modify the command name if necessary
-        if command[0] == "(":
+        if command.startswith("("):
             if not values["OUTPUT_COMMENTS"]:
                 continue
             if values["COMMENT_SYMBOL"] != "(" and len(command) > 2:
                 command = create_comment(values, command[1:-1])
+
         cmd = check_for_an_adaptive_op(values, command, command_line, adaptive_op_variables)
         if cmd:
             command = cmd

@@ -25,6 +25,7 @@
 
 #ifndef _PreComp_
 # include <QApplication>
+# include <QComboBox>
 # include <QModelIndex>
 # include <QPainter>
 #endif
@@ -82,6 +83,9 @@ void PropertyItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
     }
     else if (index.column() == 1) {
         option.state &= ~QStyle::State_Selected;
+        if (property && property->isReadOnly()) {
+            option.state &= ~QStyle::State_Enabled;
+        }
     }
 
     option.state &= ~QStyle::State_HasFocus;
@@ -124,8 +128,22 @@ bool PropertyItemDelegate::editorEvent (QEvent * event, QAbstractItemModel* mode
 
 bool PropertyItemDelegate::eventFilter(QObject *o, QEvent *ev)
 {
-    if (ev->type() == QEvent::FocusOut) {
+    if (ev->type() == QEvent::FocusIn) {
+        auto *comboBox = qobject_cast<QComboBox*>(o);
+        if (comboBox) {
+            auto parentEditor = qobject_cast<PropertyEditor*>(this->parent());
+            if (parentEditor && parentEditor->activeEditor == comboBox) {
+                comboBox->showPopup();
+            }
+        }
+    }
+    else if (ev->type() == QEvent::FocusOut) {
         auto parentEditor = qobject_cast<PropertyEditor*>(this->parent());
+        if (auto* comboBox = qobject_cast<QComboBox*>(o)) {
+            if (parentEditor && parentEditor->activeEditor == comboBox) {
+                parentEditor->activeEditor = nullptr;
+            }
+        }
         auto widget = qobject_cast<QWidget*>(o);
         if (widget && parentEditor && parentEditor->activeEditor
                    && widget != parentEditor->activeEditor) {
@@ -147,18 +165,15 @@ QWidget * PropertyItemDelegate::createEditor (QWidget * parent, const QStyleOpti
         return nullptr;
 
     auto childItem = static_cast<PropertyItem*>(index.internalPointer());
-    if (!childItem)
+    if (!childItem || childItem->isSeparator() || childItem->isReadOnly()) {
         return nullptr;
+    }
 
     auto parentEditor = qobject_cast<PropertyEditor*>(this->parent());
     if(parentEditor)
         parentEditor->closeEditor();
 
-    if (childItem->isSeparator())
-        return nullptr;
-
     FC_LOG("create editor " << index.row() << "," << index.column());
-
     QWidget* editor = nullptr;
     expressionEditor = nullptr;
     userEditor = nullptr;
@@ -218,6 +233,10 @@ void PropertyItemDelegate::valueChanged()
     if (propertyEditor) {
         Base::FlagToggler<> flag(changed);
         Q_EMIT commitData(propertyEditor);
+        auto *comboBox = qobject_cast<QComboBox*>(propertyEditor);
+        if (comboBox) {
+            Q_EMIT closeEditor(propertyEditor);
+        }
     }
 }
 

@@ -26,6 +26,7 @@
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
 #include "QGIView.h"
+#include "QGIUserTypes.h"
 
 namespace TechDrawGui
 {
@@ -39,7 +40,7 @@ public:
     QGIViewClip();
     ~QGIViewClip() override = default;
 
-    enum {Type = QGraphicsItem::UserType + 123};
+    enum {Type = UserType::QGIViewClip};
     int type() const override { return Type;}
 
     void updateView(bool update = false) override;

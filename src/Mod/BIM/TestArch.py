@@ -23,198 +23,28 @@
 # ***************************************************************************
 
 # Unit test for the Arch module
-
-import os
-import unittest
-
-import FreeCAD as App
-import Arch
-import Draft
-import Part
-import Sketcher
-import TechDraw
-import WorkingPlane
-
 from bimtests.TestArchRoof import TestArchRoof
 from bimtests.TestArchSpace import TestArchSpace
 from bimtests.TestArchWall import TestArchWall
+from bimtests.TestArchBuildingPart import TestArchBuildingPart
+from bimtests.TestArchAxis import TestArchAxis
+from bimtests.TestArch import TestArch
+from bimtests.TestArchMaterial import TestArchMaterial
+from bimtests.TestArchPanel import TestArchPanel
+from bimtests.TestArchWindow import TestArchWindow
+from bimtests.TestArchStairs import TestArchStairs
+from bimtests.TestArchPipe import TestArchPipe
+from bimtests.TestArchCurtainWall import TestArchCurtainWall
+from bimtests.TestArchProfile import TestArchProfile
+from bimtests.TestArchProject import TestArchProject
+from bimtests.TestArchSectionPlane import TestArchSectionPlane
+from bimtests.TestArchRebar import TestArchRebar
+from bimtests.TestArchGrid import TestArchGrid
+from bimtests.TestArchFence import TestArchFence
+from bimtests.TestArchEquipment import TestArchEquipment
+from bimtests.TestArchFrame import TestArchFrame
+from bimtests.TestArchReference import TestArchReference
+from bimtests.TestArchSchedule import TestArchSchedule
+from bimtests.TestArchTruss import TestArchTruss
 from bimtests.TestArchComponent import TestArchComponent
 
-from draftutils.messages import _msg
-
-
-class ArchTest(unittest.TestCase):
-
-    def setUp(self):
-        # setting a new document to hold the tests
-        if App.ActiveDocument:
-            if App.ActiveDocument.Name != "ArchTest":
-                App.newDocument("ArchTest")
-        else:
-            App.newDocument("ArchTest")
-        App.setActiveDocument("ArchTest")
-
-    def testStructure(self):
-        App.Console.PrintLog ('Checking BIM Structure...\n')
-        s = Arch.makeStructure(length=2,width=3,height=5)
-        self.assertTrue(s,"BIM Structure failed")
-
-    def testFloor(self):
-        App.Console.PrintLog ('Checking Arch Floor...\n')
-        s = Arch.makeStructure(length=2,width=3,height=5)
-        f = Arch.makeFloor([s])
-        self.assertTrue(f,"Arch Floor failed")
-
-    def testBuilding(self):
-        App.Console.PrintLog ('Checking Arch Building...\n')
-        s = Arch.makeStructure(length=2,width=3,height=5)
-        f = Arch.makeFloor([s])
-        b = Arch.makeBuilding([f])
-        self.assertTrue(b,"Arch Building failed")
-
-    def testSite(self):
-        App.Console.PrintLog ('Checking Arch Site...\n')
-        s = Arch.makeStructure(length=2,width=3,height=5)
-        f = Arch.makeFloor([s])
-        b = Arch.makeBuilding([f])
-        si = Arch.makeSite([b])
-        self.assertTrue(si,"Arch Site failed")
-
-    def testWindow(self):
-        operation = "Arch Window"
-        _msg("  Test '{}'".format(operation))
-        line = Draft.makeLine(App.Vector(0, 0, 0), App.Vector(3000, 0, 0))
-        wall = Arch.makeWall(line)
-        sk = App.ActiveDocument.addObject("Sketcher::SketchObject", "Sketch001")
-        sk.Placement.Rotation = App.Rotation(App.Vector(1, 0, 0), 90)
-        sk.addGeometry(Part.LineSegment(App.Vector( 500,  800, 0), App.Vector(1500,  800, 0)))
-        sk.addGeometry(Part.LineSegment(App.Vector(1500,  800, 0), App.Vector(1500, 2000, 0)))
-        sk.addGeometry(Part.LineSegment(App.Vector(1500, 2000, 0), App.Vector( 500, 2000, 0)))
-        sk.addGeometry(Part.LineSegment(App.Vector( 500, 2000, 0), App.Vector( 500,  800, 0)))
-        sk.addConstraint(Sketcher.Constraint('Coincident', 0, 2, 1, 1))
-        sk.addConstraint(Sketcher.Constraint('Coincident', 1, 2, 2, 1))
-        sk.addConstraint(Sketcher.Constraint('Coincident', 2, 2, 3, 1))
-        sk.addConstraint(Sketcher.Constraint('Coincident', 3, 2, 0, 1))
-        App.ActiveDocument.recompute()
-        win = Arch.makeWindow(sk)
-        Arch.removeComponents(win, host=wall)
-        App.ActiveDocument.recompute()
-        self.assertTrue(win, "'{}' failed".format(operation))
-
-    def testAxis(self):
-        App.Console.PrintLog ('Checking Arch Axis...\n')
-        a = Arch.makeAxis()
-        self.assertTrue(a,"Arch Axis failed")
-
-    def testSection(self):
-        App.Console.PrintLog ('Checking Arch Section...\n')
-        s = Arch.makeSectionPlane([])
-        self.assertTrue(s,"Arch Section failed")
-
-    def testStairs(self):
-        App.Console.PrintLog ('Checking Arch Stairs...\n')
-        s = Arch.makeStairs()
-        self.assertTrue(s,"Arch Stairs failed")
-
-    def testFrame(self):
-        App.Console.PrintLog ('Checking Arch Frame...\n')
-        l=Draft.makeLine(App.Vector(0,0,0),App.Vector(-2,0,0))
-        p = Draft.makeRectangle(length=.5,height=.5)
-        f = Arch.makeFrame(l,p)
-        self.assertTrue(f,"Arch Frame failed")
-
-    def testEquipment(self):
-        App.Console.PrintLog ('Checking Arch Equipment...\n')
-        box = App.ActiveDocument.addObject("Part::Box", "Box")
-        box.Length = 500
-        box.Width = 2000
-        box.Height = 600
-        equip = Arch.makeEquipment(box)
-        self.assertTrue(equip,"Arch Equipment failed")
-
-    def testPipe(self):
-        App.Console.PrintLog ('Checking Arch Pipe...\n')
-        pipe = Arch.makePipe(diameter=120, length=3000)
-        self.assertTrue(pipe,"Arch Pipe failed")
-
-    def testAdd(self):
-        App.Console.PrintLog ('Checking Arch Add...\n')
-        l=Draft.makeLine(App.Vector(0,0,0),App.Vector(2,0,0))
-        w = Arch.makeWall(l,width=0.2,height=2)
-        sb = Part.makeBox(1,1,1)
-        b = App.ActiveDocument.addObject('Part::Feature','Box')
-        b.Shape = sb
-        App.ActiveDocument.recompute()
-        Arch.addComponents(b,w)
-        App.ActiveDocument.recompute()
-        r = (w.Shape.Volume > 1.5)
-        self.assertTrue(r,"Arch Add failed")
-
-    def testRemove(self):
-        App.Console.PrintLog ('Checking Arch Remove...\n')
-        l=Draft.makeLine(App.Vector(0,0,0),App.Vector(2,0,0))
-        w = Arch.makeWall(l,width=0.2,height=2,align="Right")
-        sb = Part.makeBox(1,1,1)
-        b = App.ActiveDocument.addObject('Part::Feature','Box')
-        b.Shape = sb
-        App.ActiveDocument.recompute()
-        Arch.removeComponents(b,w)
-        App.ActiveDocument.recompute()
-        r = (w.Shape.Volume < 0.75)
-        self.assertTrue(r,"Arch Remove failed")
-
-    def testViewGeneration(self):
-        """Tests the whole TD view generation workflow"""
-
-        operation = "View generation"
-        _msg("  Test '{}'".format(operation))
-
-        # Create a few objects
-        points = [App.Vector(0.0, 0.0, 0.0), App.Vector(2000.0, 0.0, 0.0)]
-        line = Draft.make_wire(points)
-        wall = Arch.makeWall(line, height=2000)
-        wpl = App.Placement(App.Vector(500,0,1500), App.Vector(1,0,0),-90)
-        win = Arch.makeWindowPreset('Fixed', width=1000.0, height=1000.0, h1=50.0, h2=50.0, h3=50.0, w1=100.0, w2=50.0, o1=0.0, o2=50.0, placement=wpl)
-        win.Hosts = [wall]
-        profile = Arch.makeProfile([169, 'HEA', 'HEA100', 'H', 100.0, 96.0, 5.0, 8.0])
-        column = Arch.makeStructure(profile, height=2000.0)
-        column.Profile = "HEA100"
-        column.Placement.Base = App.Vector(500.0, 600.0, 0.0)
-        level = Arch.makeFloor()
-        level.addObjects([wall, column])
-        App.ActiveDocument.recompute()
-
-        # Create a drawing view
-        section = Arch.makeSectionPlane(level)
-        drawing = Arch.make2DDrawing()
-        view = Draft.make_shape2dview(section)
-        cut = Draft.make_shape2dview(section)
-        cut.InPlace = False
-        cut.ProjectionMode = "Cutfaces"
-        drawing.addObjects([view, cut])
-        App.ActiveDocument.recompute()
-
-        # Create a TD page
-        tpath = os.path.join(App.getResourceDir(),"Mod","TechDraw","Templates","A3_Landscape_blank.svg")
-        page = App.ActiveDocument.addObject("TechDraw::DrawPage", "Page")
-        template = App.ActiveDocument.addObject("TechDraw::DrawSVGTemplate", "Template")
-        template.Template = tpath
-        page.Template = template
-        view = App.ActiveDocument.addObject("TechDraw::DrawViewDraft", "DraftView")
-        view.Source = drawing
-        page.addView(view)
-        view.Scale = 1.0
-        view.X = "20cm"
-        view.Y = "15cm"
-        App.ActiveDocument.recompute()
-        assert True
-
-    def tearDown(self):
-        App.closeDocument("ArchTest")
-        pass
-
-# Use the modules so that code checkers don't complain (flake8)
-True if TestArchSpace else False
-True if TestArchRoof else False
-True if TestArchWall else False
-True if TestArchComponent else False

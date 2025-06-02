@@ -151,7 +151,7 @@ App::DocumentObjectExecReturn* Scale::execute()
 
     try {
         Scale::ScaleParameters params = computeFinalParameters();
-        TopoShape result = scaleShape(Feature::getTopoShape(link), params);
+        TopoShape result = scaleShape(Feature::getTopoShape(link, ShapeOption::ResolveLink | ShapeOption::Transform), params);
         this->Shape.setValue(result);
         return App::DocumentObject::StdReturn;
     }

@@ -66,6 +66,6 @@ repos:
         -   id: black
             args: ['--line-length', '100']
 -   repo: https://github.com/pre-commit/mirrors-clang-format
-    rev: 300fa4c170bf0887bb5585d17ec50901ad2625fb  # frozen: v20.1.4
+    rev: c8ab0f80399e63a4fabbf5313c0606831f09742e  # frozen: v20.1.5
     hooks:
         -   id: clang-format

@@ -309,6 +309,11 @@ class TestHole(unittest.TestCase):
                 "3", "3 1/4", "3 1/2", "3 3/4",
                 "4", "4 1/4",
             ],
+            'ISOTyre': [
+                "5v1", "5v2", "6v1", "8v1", "9v1", "10v2",
+                "12v1", "13v1", "8v2", "10v1", "11v1", "13v2",
+                "15v1", "16v1", "17v1", "17v2", "17v3", "19v1", "20v1",
+            ],
         }
         allowed_types = self.Hole.getEnumerationsOfProperty("ThreadType")
         for type_index, thread_type in enumerate(thread_types.keys(), 1):

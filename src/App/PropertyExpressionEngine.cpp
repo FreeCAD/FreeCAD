@@ -53,6 +53,8 @@ PropertyExpressionContainer::PropertyExpressionContainer()
         inited = true;
         GetApplication().signalRelabelDocument.connect(
             PropertyExpressionContainer::slotRelabelDocument);
+        GetApplication().signalRenameDynamicProperty.connect(
+            PropertyExpressionContainer::slotRenameDynamicProperty);
     }
     _ExprContainers.insert(this);
 }
@@ -72,6 +74,13 @@ void PropertyExpressionContainer::slotRelabelDocument(const App::Document& doc)
         for (auto prop : _ExprContainers) {
             prop->onRelabeledDocument(doc);
         }
+    }
+}
+
+void PropertyExpressionContainer::slotRenameDynamicProperty(const App::Property& prop, const char* oldName)
+{
+    for (auto container : _ExprContainers) {
+        container->onRenameDynamicProperty(prop, oldName);
     }
 }
 
@@ -1206,6 +1215,17 @@ void PropertyExpressionEngine::onRelabeledDocument(const App::Document& doc)
             e.second.expression->visit(v);
         }
     }
+}
+
+void PropertyExpressionEngine::onRenameDynamicProperty(const App::Property& prop, const char* oldName)
+{
+    ObjectIdentifier oldNameId = ObjectIdentifier(prop.getContainer(), std::string(oldName));
+    ObjectIdentifier newNameId = ObjectIdentifier(prop);
+    const std::map<ObjectIdentifier, ObjectIdentifier> paths = {
+        {oldNameId, newNameId},
+    };
+
+    renameObjectIdentifiers(paths);
 }
 
 void PropertyExpressionEngine::getLinksTo(std::vector<App::ObjectIdentifier>& identifiers,
