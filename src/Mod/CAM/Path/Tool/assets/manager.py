@@ -625,8 +625,8 @@ class AssetManager:
             for current_store_name in stores_list:
                 store = self.stores.get(current_store_name)
                 if not store:
-                    logger.warning(f"Store '{current_store_name}' not registered. Skipping.")
-                    continue
+                    logger.error(f"Store '{current_store_name}' not registered. Skipping.")
+                    raise ValueError(f"No store registered for name: {store}")
                 try:
                     exists = await store.exists(asset_uri_obj)
                     if exists:
@@ -860,9 +860,7 @@ class AssetManager:
             dest = src
 
         if src == dest and store == dest_store:
-            raise ValueError(
-                "Source and destination cannot be the same asset in the same store."
-            )
+            raise ValueError("Source and destination cannot be the same asset in the same store.")
 
         raw_data = await self.get_raw_async(src, store)
         return await self.add_raw_async(dest.asset_type, dest.asset_id, raw_data, dest_store)
@@ -928,7 +926,7 @@ class AssetManager:
         # Fetch the source asset and its dependencies recursively
         # Use a new set for visited_uris for this deepcopy operation
         construction_data = await self._fetch_asset_construction_data_recursive_async(
-            src, store, set(), depth=None
+            src, [store], set(), depth=None
         )
         if construction_data is None:
             raise FileNotFoundError(f"Source asset '{src}' not found in store '{store}'.")
@@ -936,12 +934,14 @@ class AssetManager:
         # Collect all assets (including dependencies) in a flat list,
         # ensuring dependencies are processed before the assets that depend on them.
         assets_to_copy: List[_AssetConstructionData] = []
+
         def collect_assets(data: _AssetConstructionData):
             if data.dependencies_data is not None:
                 for dep_data in data.dependencies_data.values():
-                    if dep_data: # Only collect if dependency data was successfully fetched
+                    if dep_data:  # Only collect if dependency data was successfully fetched
                         collect_assets(dep_data)
             assets_to_copy.append(data)
+
         collect_assets(construction_data)
 
         # Process assets in the collected order (dependencies first)
@@ -952,8 +952,7 @@ class AssetManager:
             asset_uri = dest if asset_data.uri == src else asset_data.uri
             if asset_uri in copied_uris:
                 logger.debug(
-                    f"Dependency '{asset_uri}' already added to '{dest_store}',"
-                    " skipping copy."
+                    f"Dependency '{asset_uri}' already added to '{dest_store}'," " skipping copy."
                 )
                 continue
             copied_uris.add(asset_uri)
@@ -963,8 +962,7 @@ class AssetManager:
             exists_in_dest = await dest_store.exists(asset_uri)
             if exists_in_dest and asset_uri != src:
                 logger.debug(
-                    f"Dependency '{asset_uri}' already exists in '{dest_store}',"
-                    " skipping copy."
+                    f"Dependency '{asset_uri}' already exists in '{dest_store}'," " skipping copy."
                 )
                 continue
 
@@ -980,7 +978,7 @@ class AssetManager:
             else:
                 # If it doesn't exist, or if it's a dependency that doesn't exist, create it
                 logger.debug(f"Creating asset '{asset_uri}' in '{dest_store}'")
-                logger.debug(f"Raw data before writing: {asset_data.raw_data}") # Added log
+                logger.debug(f"Raw data before writing: {asset_data.raw_data}")  # Added log
                 new_uri = await dest_store.create(
                     asset_uri.asset_type,
                     asset_uri.asset_id,
@@ -1017,8 +1015,7 @@ class AssetManager:
             RuntimeError: If a cyclic dependency is detected.
         """
         logger.debug(
-            f"Deepcopy URI '{src}' from store '{store}' to '{dest_store}'"
-            f" with dest '{dest}'"
+            f"Deepcopy URI '{src}' from store '{store}' to '{dest_store}'" f" with dest '{dest}'"
         )
         return asyncio.run(self.deepcopy_async(src, dest_store, store, dest))
 
