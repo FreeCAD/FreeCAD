@@ -110,7 +110,7 @@ class AssetPreferencesPage:
     def saveSettings(self):
         # Check path is writable, then call Path.Preferences.setAssetPath()
         asset_path = pathlib.Path(self.asset_path_edit.text())
-        param = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Path")
+        param = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/CAM")
         if param.GetBool("CheckAssetPathWritable", True):
             if not _is_writable_dir(asset_path):
                 QtGui.QMessageBox.warning(
