@@ -210,7 +210,11 @@ class Arch_Window:
                         break
                     FreeCADGui.doCommand("win = FreeCAD.ActiveDocument.getObject('" + o.Name + "')")
                     FreeCADGui.doCommand("win.Base.Placement = pl")
-                    FreeCADGui.doCommand("win.Normal = pl.Rotation.multVec(FreeCAD.Vector(0, 0, -1))")
+                    # Historically, this normal was deduced by the orientation of the Base Sketch and hardcoded in the Normal property.
+                    # Now with the new AutoNormalReversed property/flag, set True as default, the auto Normal previously in opposite direction to is now consistent with that previously hardcoded.
+                    # With the normal set to 'auto', window object would not suffer weird shape if the Base Sketch is rotated by some reason.
+                    # Keep the property be 'auto' (0,0,0) here.  
+                    #FreeCADGui.doCommand("win.Normal = pl.Rotation.multVec(FreeCAD.Vector(0, 0, -1))")
                     FreeCADGui.doCommand("win.Width = " + str(self.Width))
                     FreeCADGui.doCommand("win.Height = " + str(self.Height))
                     FreeCADGui.doCommand("win.Base.recompute()")
@@ -233,8 +237,17 @@ class Arch_Window:
                 hasattr(ArchSketchObject, 'attachToHost') and 
                 hasattr(FreeCAD, 'ArchSketchLock') and 
                 FreeCAD.ArchSketchLock):
-                # Window sketch's stay at orgin is good if addon exists
-                FreeCADGui.doCommand("win = Arch.makeWindowPreset('" + WindowPresets[self.Preset] + "' " + wp + ")")
+                if self.Include:
+                    # Window base sketch's placement stay at orgin is good if addon exists and self.Include
+                    # Window object triggers onChanged() upon setting/changing Window.Sill to move Window's z position
+                    # For Window with SketchArch add-on, attachToHost() is to be run below below to set the 'initial' Window's placement first before triggering onChanged() below,
+                    # so window_sill parameter is not used here at the moment, see 'if self.Include' below.
+                    #FreeCADGui.doCommand("win = Arch.makeWindowPreset('" + WindowPresets[self.Preset] + "' " + wp + ", window_sill=" + str(self.Sill.Value) + ")")
+                    FreeCADGui.doCommand("win = Arch.makeWindowPreset('" + WindowPresets[self.Preset] + "' " + wp + ")")
+                else:
+                    # Window base sketch's placement follow getPoint placement if addon exists but NOT self.Include
+                    FreeCADGui.doCommand("win = Arch.makeWindowPreset('" + WindowPresets[self.Preset] + "' " + wp + ", placement=pl, window_sill=" + str(self.Sill.Value) + ")")
+                    FreeCADGui.doCommand("win.AttachToAxisOrSketch = 'None'")
                 FreeCADGui.doCommand("FreeCADGui.Selection.addSelection(win)")
                 w = FreeCADGui.Selection.getSelection()[0]
                 FreeCADGui.doCommand("FreeCAD.SketchArchPl = pl")
@@ -252,6 +265,8 @@ class Arch_Window:
                     FreeCADGui.doCommand("win.Hosts = win.Hosts + [FreeCAD.ActiveDocument." + sibling.Name + "]")
                 if SketchArch:
                     ArchSketchObject.attachToHost(w, target=host, pl=wPl)
+                    # Trigger onChanged() in the window object by setting Window.Sill, after setting the Window's 'initial' placement by attachToHost() above
+                    FreeCADGui.doCommand("win.Sill = "  + str(self.Sill.Value))
 
         self.doc.commitTransaction()
         self.doc.recompute()
