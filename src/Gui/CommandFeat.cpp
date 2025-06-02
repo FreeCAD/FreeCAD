@@ -314,7 +314,7 @@ StdCmdToggleSkipRecompute::StdCmdToggleSkipRecompute()
     sToolTipText = toolTip.c_str();
     sStatusTip = sToolTipText;
     sWhatsThis = "Std_ToggleSkipRecompute";
-    //sPixmap = "Std_ToggleSkipRecomputes"; // TODO: to be added when icon is provided
+    sPixmap = "Std_ToggleSkipRecompute"; 
     eType = AlterDoc;
 }
 
@@ -322,7 +322,6 @@ Gui::Action* StdCmdToggleSkipRecompute::createAction(void)
 {
     Action* pcAction = Command::createAction();
     pcAction->setCheckable(true);
-    pcAction->setIcon(QIcon()); // TODO: to be deleted, when icon is provided
     _pcAction = pcAction;
     isActive();
     return pcAction;
