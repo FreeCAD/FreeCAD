@@ -75,7 +75,6 @@ public:
         , deleteOriginal(true)
         , abortOnFail(true)
         , allowOriginConstraint(false)
-        , allowExtGeometryConstraint(false)
         , refLength(0.0)
         , length(0.0)
         , scaleFactor(0.0)
@@ -227,7 +226,6 @@ private:
     bool deleteOriginal;
     bool abortOnFail; // When the scale operation is part of a larger transaction, one might want to continue even if the scaling failed
     bool allowOriginConstraint; // Conserve constraints with origin 
-    bool allowExtGeometryConstraint; // Conserve constraints with external geometries
     double refLength, length, scaleFactor;
 
 
