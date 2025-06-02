@@ -953,7 +953,6 @@ void CmdSketcherSelectElementsWithDoFs::activated(int iMsg)
                 }
             }
         }
-
         geoid++;
     }
 
