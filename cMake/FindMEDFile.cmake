@@ -1,5 +1,7 @@
 # - Find MED file installation
 #
+# Looks for med.h or med.hf header files
+#
 # The following variable are set:
 #   MEDFILE_INCLUDE_DIRS
 #   MEDFILE_LIBRARIES
@@ -41,10 +43,11 @@ IF(MEDFILE_ROOT_DIR)
   LIST(APPEND CMAKE_PREFIX_PATH "${MEDFILE_ROOT_DIR}")
 ENDIF(MEDFILE_ROOT_DIR)
 
-FIND_PATH(MEDFILE_INCLUDE_DIRS med.h PATH_SUFFIXES med)
-FIND_FILE(meddotH med.h PATHS ${MEDFILE_INCLUDE_DIRS} NO_DEFAULT_PATH)
+# Search for med.h or med.hf header files
+FIND_PATH(MEDFILE_INCLUDE_DIRS NAMES med.h med.hf PATH_SUFFIXES med)
+FIND_FILE(meddotH NAMES med.h med.hf PATHS ${MEDFILE_INCLUDE_DIRS} NO_DEFAULT_PATH)
 IF(NOT meddotH)
-	MESSAGE(FATAL_ERROR "med.h not found, please install development header-files for libmedc")
+    MESSAGE(FATAL_ERROR "med.h or med.hf not found, please install development header-files for libmedc")
 ENDIF(NOT meddotH)
 #FIND_PROGRAM(MDUMP mdump)
 FIND_LIBRARY(MEDFILE_C_LIBRARIES NAMES medC)
