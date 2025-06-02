@@ -204,7 +204,7 @@ class _ArchPipe(ArchComponent.Component):
 
         import Part
         if obj.Base:
-            if not hasattr(obj.Base,'Shape'):
+            if not hasattr(obj.Base,"Shape"):
                 FreeCAD.Console.PrintError(translate("Arch","The base object is not a Part")+"\n")
                 return
             if len(obj.Base.Shape.Wires) != 1:

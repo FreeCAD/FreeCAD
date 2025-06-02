@@ -53,20 +53,20 @@ def export(exportList, filename):
 
     # Write file
     outfile = pyopen(filename, "w")
-    json.dump(data, outfile, separators = (',', ':'))
+    json.dump(data, outfile, separators = (",", ":"))
     outfile.close()
 
     # Success
     FreeCAD.Console.PrintMessage(
-        translate("Arch", "Successfully written") + ' ' + filename + "\n")
+        translate("Arch", "Successfully written") + " " + filename + "\n")
 
 
 def getObjectData(obj):
-    result = {'name': str(obj.Label.encode("utf8"))}
-    if hasattr(obj, "Description"): result['description'] = str(obj.Description)
+    result = {"name": str(obj.Label.encode("utf8"))}
+    if hasattr(obj, "Description"): result["description"] = str(obj.Description)
 
     if FreeCADGui:
-        result['color'] = \
+        result["color"] = \
             Draft.getrgb(obj.ViewObject.ShapeColor, testbw = False)
 
     if obj.isDerivedFrom("Part::Feature"):
@@ -80,7 +80,7 @@ def getObjectData(obj):
                 wires.append([[v.x, v.y, v.z]
                               for v in wo.discretize(QuasiDeflection = 0.1)])
 
-        result['wires'] = wires
+        result["wires"] = wires
 
     elif obj.isDerivedFrom("Mesh::Feature"): mesh = obj.Mesh
 
@@ -95,13 +95,13 @@ def getObjectData(obj):
         count += 1
         vertices.append([v.x, v.y, v.z])
 
-    result['vertices'] = vertices
+    result["vertices"] = vertices
 
     # Add facets & normals
     facets = [[vIndex[i] for i in f.PointIndices] for f in mesh.Facets]
     normals = [[f.Normal.x, f.Normal.y, f.Normal.z] for f in mesh.Facets]
 
-    result['normals'] = normals
-    result['facets'] = facets
+    result["normals"] = normals
+    result["facets"] = facets
 
     return result

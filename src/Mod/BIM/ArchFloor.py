@@ -118,10 +118,10 @@ class _CommandFloor:
     def GetResources(self):
         """Return a dictionary with the visual aspects of the Arch Floor tool."""
 
-        return {'Pixmap'  : 'Arch_Floor',
-                'MenuText': QT_TRANSLATE_NOOP("Arch_Floor","Level"),
-                'Accel': "L, V",
-                'ToolTip': QT_TRANSLATE_NOOP("Arch_Floor","Creates a Building Part object that represents a level, including selected objects")}
+        return {"Pixmap": "Arch_Floor",
+                "MenuText": QT_TRANSLATE_NOOP("Arch_Floor","Level"),
+                "Accel": "L, V",
+                "ToolTip": QT_TRANSLATE_NOOP("Arch_Floor","Creates a Building Part object that represents a level, including selected objects")}
 
     def IsActive(self):
         """Determine whether or not the Arch Floor tool is active.
@@ -169,7 +169,7 @@ Floor creation aborted.") + "\n"
             ss += "]"
             FreeCAD.ActiveDocument.openTransaction(translate("Arch","Create Floor"))
             FreeCADGui.addModule("Arch")
-            FreeCADGui.doCommand("obj = Arch.makeFloor("+ss+")")
+            FreeCADGui.doCommand("obj = Arch.makeFloor(" + ss + ")")
             FreeCADGui.addModule("Draft")
             FreeCADGui.doCommand("Draft.autogroup(obj)")
             FreeCAD.ActiveDocument.commitTransaction()
@@ -403,7 +403,7 @@ class _ViewProviderFloor:
 
         from PySide import QtCore,QtGui
         import Arch_rc
-        if FreeCADGui.activeWorkbench().name() != 'BIMWorkbench':
+        if FreeCADGui.activeWorkbench().name() != "BIMWorkbench":
             return
         action1 = QtGui.QAction(QtGui.QIcon(":/icons/Arch_BuildingPart.svg"),"Convert to BuildingPart",menu)
         QtCore.QObject.connect(action1,QtCore.SIGNAL("triggered()"),self.convertToBuildingPart)
@@ -422,4 +422,4 @@ class _ViewProviderFloor:
 
 
 if FreeCAD.GuiUp:
-    FreeCADGui.addCommand('Arch_Floor',_CommandFloor())
+    FreeCADGui.addCommand("Arch_Floor",_CommandFloor())

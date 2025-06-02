@@ -430,6 +430,7 @@ class BIM_Views:
                 if vm.tree.selectedItems():
                     item = vm.tree.selectedItems()[-1]
                     vm.tree.editItem(item, 0)
+
     @staticmethod
     def activate(dialog=None):
         from draftutils.utils import toggle_working_plane
@@ -588,7 +589,7 @@ class BIM_Views:
 
     def getPages(self):
         """Returns a list of TD pages"""
-        return [o for o in FreeCAD.ActiveDocument.Objects if o.isDerivedFrom('TechDraw::DrawPage')]
+        return [o for o in FreeCAD.ActiveDocument.Objects if o.isDerivedFrom("TechDraw::DrawPage")]
 
 
 # These functions need to be localized outside the command class, as they are used outside this module
@@ -649,7 +650,7 @@ def show(item, column=None):
                     if hasattr(w, "getSceneGraph"):
                         FreeCADGui.getMainWindow().setActiveWindow(w)
                         break
-            FreeCADGui.runCommand('Std_OrthographicCamera')
+            FreeCADGui.runCommand("Std_OrthographicCamera")
             FreeCADGui.ActiveDocument.ActiveView.viewTop()
             FreeCADGui.SendMsgToActiveView("ViewSelection")
             FreeCADGui.ActiveDocument.ActiveView.viewTop()

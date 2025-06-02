@@ -733,6 +733,6 @@ class BIM_Setup:
                             return
                         from nativeifc import ifc_openshell
 
-                        FreeCADGui.runCommand('IFC_UpdateIOS',1)
+                        FreeCADGui.runCommand("IFC_UpdateIOS",1)
 
 FreeCADGui.addCommand("BIM_Setup", BIM_Setup())
