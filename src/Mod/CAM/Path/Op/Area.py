@@ -290,7 +290,8 @@ class ObjectOp(PathOp.ObjectOp):
             pathParams["threshold"] = 2.001 * self.radius
 
         if self.endVector is not None:
-            pathParams["start"] = self.endVector
+            if self.endVector[:2] != (0, 0):
+                pathParams["start"] = self.endVector
         elif PathOp.FeatureStartPoint & self.opFeatures(obj) and obj.UseStartPoint:
             pathParams["start"] = obj.StartPoint
 
