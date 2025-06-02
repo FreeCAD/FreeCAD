@@ -443,3 +443,20 @@
  * For a more high-level discussion see the topic @ref APP "App".
  */
 
+
+// Documentation for trivial functions
+
+/**
+ * @fn App::TransactionLocker::isActive() const
+ * @brief Check if the locker is active.
+ *
+ * @return true if the locker is active; otherwise false.
+ */
+
+/**
+ * @fn App::TransactionLocker::isLocked() const
+ * @brief Check if transaction is being locked.
+ *
+ * @return true if the transaction is locked; otherwise false.
+ */
+
