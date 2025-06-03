@@ -631,7 +631,13 @@ void Command::openCommand(const char* sCmdName)
         sCmdName = "Command";
     App::GetApplication().setActiveTransaction(sCmdName);
 }
-
+void Command::openCommand(App::Document* doc, std::string name)
+{
+    if (name.empty()) {
+        name = "Command";
+    }
+    doc->setActiveTransaction(name);
+}
 void Command::commitCommand()
 {
     App::GetApplication().closeActiveTransaction();

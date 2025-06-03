@@ -1338,7 +1338,7 @@ void StdCmdDelete::activated(int iMsg)
             return;
         }
 
-        App::TransactionLocker tlock;
+        std::vector<App::TransactionLocker> tlocks;
 
         Gui::getMainWindow()->setUpdatesEnabled(false);
         auto editDoc = Application::Instance->editDocument();
@@ -1351,6 +1351,7 @@ void StdCmdDelete::activated(int iMsg)
                     if (!sel.getSubNames().empty()) {
                         vpedit->onDelete(sel.getSubNames());
                         docs.insert(editDoc->getDocument());
+                        tlocks.emplace_back(editDoc->getDocument());
                     }
                     break;
                 }
