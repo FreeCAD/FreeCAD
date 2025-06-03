@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
 
 /***************************************************************************
- *   Copyright (c) 2017 Shai Seger <shaise at gmail>                       *
+ *   Copyright (c) 2024 Shai Seger <shaise at gmail>                       *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -22,56 +22,32 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef CAMSimulator_CAMSim_H
-#define CAMSimulator_CAMSim_H
-
-#include <memory>
-#include <TopoDS_Shape.hxx>
-
-#include <Mod/CAM/App/Command.h>
-#include <Mod/CAM/PathGlobal.h>
-#include <Mod/Mesh/App/Mesh.h>
-#include <Mod/Part/App/TopoShape.h>
-
+#include "ViewCAMSimulator.h"
 #include "DlgCAMSimulator.h"
-
-using namespace Path;
 
 namespace CAMSimulator
 {
 
-/** The representation of a CNC Toolpath Simulator */
-
-class CAMSimulatorExport CAMSim: public Base::BaseClass
+ViewCAMSimulator::ViewCAMSimulator(Gui::Document* pcDocument, QWidget* parent, Qt::WindowFlags wflags)
+    : Gui::MDIView(pcDocument, parent, wflags)
 {
-    // TYPESYSTEM_HEADER();
+    mDlg = new DlgCAMSimulator(*this);
+    setCentralWidget(mDlg);
+}
 
-public:
-    static Base::Type getClassTypeId();
-    Base::Type getTypeId() const override;
-    static void init();
-    static void* create();
+ViewCAMSimulator* ViewCAMSimulator::clone()
+{
+    auto viewCam = new ViewCAMSimulator(_pcDocument, nullptr);
 
-private:
-    static Base::Type classTypeId;
+    viewCam->cloneFrom(*this);
+    viewCam->mDlg->cloneFrom(*mDlg);
 
+    return viewCam;
+}
 
-public:
-    CAMSim() = default;
-
-    void BeginSimulation(const Part::TopoShape& stock, float resolution);
-    void resetSimulation();
-    void addTool(
-        const std::vector<float>& toolProfilePoints,
-        int toolNumber,
-        float diameter,
-        float resolution
-    );
-    void SetBaseShape(const Part::TopoShape& baseShape, float resolution);
-    void AddCommand(Command* cmd);
-};
+DlgCAMSimulator& ViewCAMSimulator::dlg()
+{
+    return *mDlg;
+}
 
 }  // namespace CAMSimulator
-
-
-#endif  // CAMSimulator_CAMSim_H

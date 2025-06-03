@@ -354,7 +354,7 @@ void Shape::GenerateModel(const float* vbuffer, const GLushort* ibuffer, int num
     numIndices = nIndices;
 }
 
-void MillSim::Shape::SetModelData(const std::vector<Vertex>& vbuffer, const std::vector<GLushort>& ibuffer)
+void Shape::SetModelData(const std::vector<Vertex>& vbuffer, const std::vector<GLushort>& ibuffer)
 {
     GenerateModel((const float*)vbuffer.data(), ibuffer.data(), (int)vbuffer.size(), (int)ibuffer.size());
 }
@@ -366,7 +366,7 @@ void Shape::Render()
     glDrawElements(GL_TRIANGLES, numIndices, GL_UNSIGNED_SHORT, nullptr);
 }
 
-void Shape::Render(mat4x4 modelMat, mat4x4 normallMat)  // normals are rotated only
+void Shape::Render(const mat4x4& modelMat, const mat4x4& normallMat)  // normals are rotated only
 {
     CurrentShader->UpdateModelMat(modelMat, normallMat);
     Render();

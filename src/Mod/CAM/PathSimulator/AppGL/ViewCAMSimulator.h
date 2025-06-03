@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
 
 /***************************************************************************
- *   Copyright (c) 2017 Shai Seger <shaise at gmail>                       *
+ *   Copyright (c) 2024 Shai Seger <shaise at gmail>                       *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -22,56 +22,32 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef CAMSimulator_CAMSim_H
-#define CAMSimulator_CAMSim_H
+#ifndef PATHSIMULATOR_VIEWCAMSIMULATOR_H
+#define PATHSIMULATOR_VIEWCAMSIMULATOR_H
 
-#include <memory>
-#include <TopoDS_Shape.hxx>
-
-#include <Mod/CAM/App/Command.h>
-#include <Mod/CAM/PathGlobal.h>
-#include <Mod/Mesh/App/Mesh.h>
-#include <Mod/Part/App/TopoShape.h>
-
-#include "DlgCAMSimulator.h"
-
-using namespace Path;
+#include <Gui/MDIView.h>
 
 namespace CAMSimulator
 {
+class DlgCAMSimulator;
 
-/** The representation of a CNC Toolpath Simulator */
-
-class CAMSimulatorExport CAMSim: public Base::BaseClass
+class ViewCAMSimulator: public Gui::MDIView
 {
-    // TYPESYSTEM_HEADER();
-
 public:
-    static Base::Type getClassTypeId();
-    Base::Type getTypeId() const override;
-    static void init();
-    static void* create();
-
-private:
-    static Base::Type classTypeId;
-
-
-public:
-    CAMSim() = default;
-
-    void BeginSimulation(const Part::TopoShape& stock, float resolution);
-    void resetSimulation();
-    void addTool(
-        const std::vector<float>& toolProfilePoints,
-        int toolNumber,
-        float diameter,
-        float resolution
+    ViewCAMSimulator(
+        Gui::Document* pcDocument,
+        QWidget* parent,
+        Qt::WindowFlags wflags = Qt::WindowFlags()
     );
-    void SetBaseShape(const Part::TopoShape& baseShape, float resolution);
-    void AddCommand(Command* cmd);
+
+    ViewCAMSimulator* clone() override;
+
+    DlgCAMSimulator& dlg();
+
+protected:
+    DlgCAMSimulator* mDlg;
 };
 
 }  // namespace CAMSimulator
 
-
-#endif  // CAMSimulator_CAMSim_H
+#endif /* PATHSIMULATOR_VIEWCAMSIMULATOR_H */

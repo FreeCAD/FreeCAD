@@ -83,7 +83,7 @@ public:
 
 public:
     void Render();
-    void Render(mat4x4 modelMat, mat4x4 normallMat);
+    void Render(const mat4x4& modelMat, const mat4x4& normallMat);
     void FreeResources();
     void SetModelData(const std::vector<Vertex>& vbuffer, const std::vector<GLushort>& ibuffer);
     void RotateProfile(
