@@ -202,6 +202,11 @@ public:
     int setActiveTransaction(const char *name, bool persist=false);
     /// Return the current active transaction name and ID
     const char *getActiveTransaction(int *tid=nullptr) const;
+    int getGlobalTransaction() const;
+    std::string getTransactionName(int tid) const;
+    bool transactionTmpName(int tid) const;
+    void setTransactionName(int tid, std::string name, bool tmp = false);
+
     /** Commit/abort current active transactions
      *
      * @param abort: whether to abort or commit the transactions
@@ -660,10 +665,22 @@ private:
     int _objCount{-1};
 
     friend class AutoTransaction;
+    
+    struct TransactionName {
+        std::string name;
+        bool tmp { false };
+    };
 
+    std::map<int, TransactionName> _activeTransactionNames; // Maps transaction ID to transaction name
     std::string _activeTransactionName;
     int _activeTransactionID{0};
     int _activeTransactionGuard{0};
+
+    // This is the transaction ID for a global transaction
+    // Documents will take this ID if it is non-zero
+    // and generate their own otherwise
+    int _globalTransactionID { 0 };
+
     bool _activeTransactionTmpName{false};
 
     Base::ProgressIndicator _progressIndicator;
