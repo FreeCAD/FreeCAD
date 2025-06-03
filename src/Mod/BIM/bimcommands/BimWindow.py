@@ -210,7 +210,12 @@ class Arch_Window:
                         break
                     FreeCADGui.doCommand("win = FreeCAD.ActiveDocument.getObject('" + o.Name + "')")
                     FreeCADGui.doCommand("win.Base.Placement = pl")
-                    FreeCADGui.doCommand("win.Normal = pl.Rotation.multVec(FreeCAD.Vector(0, 0, -1))")
+                    # 2025.5.25
+                    # Historically, this normal was deduced by the orientation of the Base Sketch and hardcoded in the Normal property.
+                    # Now with the new AutoNormalReversed property/flag, set True as default, the auto Normal previously in opposite direction to is now consistent with that previously hardcoded.
+                    # With the normal set to 'auto', window object would not suffer weird shape if the Base Sketch is rotated by some reason.
+                    # Keep the property be 'auto' (0,0,0) here.  
+                    #FreeCADGui.doCommand("win.Normal = pl.Rotation.multVec(FreeCAD.Vector(0, 0, -1))")
                     FreeCADGui.doCommand("win.Width = " + str(self.Width))
                     FreeCADGui.doCommand("win.Height = " + str(self.Height))
                     FreeCADGui.doCommand("win.Base.recompute()")
@@ -233,8 +238,13 @@ class Arch_Window:
                 hasattr(ArchSketchObject, 'attachToHost') and 
                 hasattr(FreeCAD, 'ArchSketchLock') and 
                 FreeCAD.ArchSketchLock):
-                # Window sketch's stay at orgin is good if addon exists
-                FreeCADGui.doCommand("win = Arch.makeWindowPreset('" + WindowPresets[self.Preset] + "' " + wp + ")")
+                if self.Include:
+                    # Window base sketch's placement stay at orgin is good if addon exists and self.Include
+                    FreeCADGui.doCommand("win = Arch.makeWindowPreset('" + WindowPresets[self.Preset] + "' " + wp + ", window_sill=" + str(self.Sill.Value) + ")")
+                else:
+                    # Window base sketch's placement follow getPoint placement if addon exists but NOT self.Include
+                    FreeCADGui.doCommand("win = Arch.makeWindowPreset('" + WindowPresets[self.Preset] + "' " + wp + ", placement=pl, window_sill=" + str(self.Sill.Value) + ")")
+                    FreeCADGui.doCommand("win.AttachToAxisOrSketch = 'None'")
                 FreeCADGui.doCommand("FreeCADGui.Selection.addSelection(win)")
                 w = FreeCADGui.Selection.getSelection()[0]
                 FreeCADGui.doCommand("FreeCAD.SketchArchPl = pl")
