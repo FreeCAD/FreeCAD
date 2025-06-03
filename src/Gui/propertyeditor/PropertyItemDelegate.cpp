@@ -139,9 +139,10 @@ void PropertyItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
         );
         painter->setPen(option.palette.color(QPalette::Text));
         painter->drawText(textRect, Qt::AlignVCenter | Qt::AlignLeft, labelText);
-        return;
     }
-    QItemDelegate::paint(painter, option, index);
+    else {
+        QItemDelegate::paint(painter, option, index);
+    }
 
     QColor color = static_cast<QRgb>(QApplication::style()->styleHint(QStyle::SH_Table_GridLineColor, &opt, qobject_cast<QWidget*>(parent())));
     painter->setPen(QPen(color));
