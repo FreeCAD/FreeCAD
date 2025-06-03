@@ -24,7 +24,8 @@ from lazy_loader.lazy_loader import LazyLoader
 import Path
 import Path.Op.Base as PathOp
 import Path.Op.Util as PathOpUtil
-import copy
+
+# import copy
 
 __doc__ = "Base class for all ops in the engrave family."
 
@@ -83,13 +84,16 @@ class ObjectOp(PathOp.ObjectOp):
 
             for z in zValues:
                 Path.Log.debug(z)
-                if last:
-                    self.appendCommand(
-                        Path.Command("G1", {"X": last.x, "Y": last.y, "Z": last.z}),
-                        z,
-                        relZ,
-                        self.vertFeed,
-                    )
+                # This code add strange down movement
+                # Please write if you know its purpose
+                # https://github.com/FreeCAD/FreeCAD/issues/21725
+                # if last:
+                #     self.appendCommand(
+                #         Path.Command("G1", {"X": last.x, "Y": last.y, "Z": last.z}),
+                #         z,
+                #         relZ,
+                #         self.vertFeed,
+                #     )
 
                 first = True
                 if start_idx > len(edges) - 1:
@@ -97,14 +101,9 @@ class ObjectOp(PathOp.ObjectOp):
 
                 edges = edges[start_idx:] + edges[:start_idx]
                 for edge in edges:
+                    Path.Log.debug(f"points: {edge.Vertexes[0].Point} -> {edge.Vertexes[-1].Point}")
                     Path.Log.debug(
-                        "points: {} -> {}".format(edge.Vertexes[0].Point, edge.Vertexes[-1].Point)
-                    )
-                    Path.Log.debug(
-                        "valueat {} -> {}".format(
-                            edge.valueAt(edge.FirstParameter),
-                            edge.valueAt(edge.LastParameter),
-                        )
+                        f"valueat {edge.valueAt(edge.FirstParameter)} -> {edge.valueAt(edge.LastParameter)}"
                     )
                     if first and (not last or not wire.isClosed()):
                         Path.Log.debug("processing first edge entry")
@@ -140,6 +139,7 @@ class ObjectOp(PathOp.ObjectOp):
                         for cmd in Path.Geom.cmdsForEdge(edge, True):
                             self.appendCommand(cmd, z, relZ, self.horizFeed)
                         last = edge.Vertexes[0].Point
+
             self.commandlist.append(
                 Path.Command("G0", {"Z": obj.ClearanceHeight.Value, "F": self.vertRapid})
             )
