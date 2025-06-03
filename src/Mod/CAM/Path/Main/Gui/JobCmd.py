@@ -84,7 +84,7 @@ class CommandJobCreate:
         if jobType:
             jobType = "'%s'" % jobType
         else:
-            jobTypes = PathJob.ObjectJob.propertyEnumerations(dataType="raw")['JobType']
+            jobTypes = PathJob.ObjectJob.propertyEnumerations(dataType="raw")["JobType"]
             # jobTypes returns a list of tuples, e.g. [('Milling', 'Milling'), ('Turning', 'Turning')]
             # where the first element is the translated type and the second element is the actual value.
             # use primary index selecting the untranslated value

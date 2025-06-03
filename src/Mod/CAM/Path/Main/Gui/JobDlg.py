@@ -310,7 +310,7 @@ class JobCreate:
 
     def setUpType(self):
         """setUpType() ... answer the type of the setup, either 'job' or 'resource'"""
-        jobTypes = PathJob.ObjectJob.propertyEnumerations(dataType="raw")['JobType']
+        jobTypes = PathJob.ObjectJob.propertyEnumerations(dataType="raw")["JobType"]
         for text, data in jobTypes:
             self.dialog.jobType.addItem(text, data)
 
