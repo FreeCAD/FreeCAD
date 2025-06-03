@@ -99,7 +99,6 @@ class TaskPanelOrthoArray:
         # Default values for the internal function,
         # and for the task panel interface
         start_x = params.get_param("X_interval", "Mod/Draft/OrthoArrayLinearMode")
-        print(start_x)
         start_y = params.get_param("Y_interval", "Mod/Draft/OrthoArrayLinearMode")
         start_z = params.get_param("Z_interval", "Mod/Draft/OrthoArrayLinearMode")
 
@@ -155,6 +154,7 @@ class TaskPanelOrthoArray:
                           hasattr(self.form, 'checkbox_y_axis') and \
                           hasattr(self.form, 'checkbox_z_axis')
 
+
         # Hide the axis checkboxes initially (they're only visible in Linear mode)
         if self.has_axis_ui:
             self.toggle_axis_checkboxes(False)
@@ -190,9 +190,9 @@ class TaskPanelOrthoArray:
         # Linear mode callbacks - only set up if the UI elements exist
         if self.has_axis_ui:
             self.form.button_linear_mode.clicked.connect(self.toggle_linear_mode)
-            self.form.checkbox_x_axis.stateChanged.connect(lambda: self.set_active_axis("X"))
-            self.form.checkbox_y_axis.stateChanged.connect(lambda: self.set_active_axis("Y"))
-            self.form.checkbox_z_axis.stateChanged.connect(lambda: self.set_active_axis("Z"))
+            self.form.checkbox_x_axis.clicked.connect(lambda: self.set_active_axis("X"))
+            self.form.checkbox_y_axis.clicked.connect(lambda: self.set_active_axis("Y"))
+            self.form.checkbox_z_axis.clicked.connect(lambda: self.set_active_axis("Z"))
 
 
     def accept(self):
@@ -454,7 +454,6 @@ class TaskPanelOrthoArray:
 
         if self.linear_mode:
             _msg(translate("draft","Switched to Linear mode"))
-            self.form.setWindowTitle(translate("draft","Orthogonal array (Linear mode)"))
             self.update_axis_ui()
             self.update_interval_visibility()
         else:
@@ -478,11 +477,20 @@ class TaskPanelOrthoArray:
             # get current checkbox that was supposed to have state changed
             checkbox = getattr(self.form, f"checkbox_{axis.lower()}_axis")
 
-            # if we have checked the checkbox, go through other checkboxes
-            # and deselect them
-            if checkbox.isChecked():
+            # If this is the currently active axis and the checkbox is being unchecked,
+            # prevent unchecking by setting it back to checked
+            if axis == self.active_axis and not checkbox.isChecked():
+                checkbox.blockSignals(True)
+                checkbox.setChecked(True)
+                checkbox.blockSignals(False)
+                return
+
+            # If we're checking a different checkbox than the current active axis
+            if checkbox.isChecked() and axis != self.active_axis:
                 self.active_axis = axis
                 params.set_param("AxisSelected", self.active_axis, "Mod/Draft/OrthoArrayLinearMode")
+
+                # Uncheck all other checkboxes
                 for other_axis in ["X", "Y", "Z"]:
                     if other_axis != axis:
                         other_checkbox = getattr(self.form, f"checkbox_{other_axis.lower()}_axis")
@@ -492,9 +500,6 @@ class TaskPanelOrthoArray:
 
                 # update visibility of intervals based on axis
                 self.update_interval_visibility()
-            else:
-                # set back to True so user can't have no checkboxes selected
-                checkbox.setChecked(True)
 
     def update_axis_ui(self):
         """Update the UI to reflect the current axis selection."""
