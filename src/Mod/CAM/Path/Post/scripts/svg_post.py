@@ -20,7 +20,6 @@
 # *                                                                         *
 # ***************************************************************************
 
-import os
 from Path.Post.Processor import PostProcessor
 import Path
 import FreeCAD
