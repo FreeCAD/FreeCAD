@@ -46,6 +46,11 @@ class MillSimulation;
 struct Vertex;
 }  // namespace MillSim
 
+namespace Gui
+{
+class MDIView;
+}
+
 namespace CAMSimulator
 {
 
@@ -81,7 +86,7 @@ class DlgCAMSimulator: public QOpenGLWidget, public QOpenGLExtraFunctions
     Q_OBJECT
 
 public:
-    explicit DlgCAMSimulator(QWidget* parent = nullptr);
+    explicit DlgCAMSimulator(Gui::MDIView& view, QWidget* parent = nullptr);
     ~DlgCAMSimulator() override;
 
     static DlgCAMSimulator* instance();
@@ -117,13 +122,14 @@ private:
     bool mNeedsClear = false;
 
     std::unique_ptr<MillSim::MillSimulation> mMillSimulator;
-    static DlgCAMSimulator* mInstance;
     float mQuality = 10;
 
     std::vector<std::string> mGCode;
     std::vector<SimTool> mTools;
     SimShape mStock;
     SimShape mBase;
+
+    Gui::MDIView& mView;
 };
 
 }  // namespace CAMSimulator

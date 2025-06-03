@@ -30,6 +30,10 @@
 #include <QSurfaceFormat>
 #include <QPoint>
 #include <App/Document.h>
+#include <Gui/MainWindow.h>
+#include <Gui/MDIView.h>
+#include <QHBoxLayout>
+#include <QPointer>
 
 using namespace MillSim;
 
@@ -38,8 +42,9 @@ namespace CAMSimulator
 
 static const float MouseScrollDelta = 120.0F;
 
-DlgCAMSimulator::DlgCAMSimulator(QWidget* parent)
+DlgCAMSimulator::DlgCAMSimulator(Gui::MDIView& view, QWidget* parent)
     : QOpenGLWidget(parent)
+    , mView(view)
 {
     QSurfaceFormat format;
     format.setVersion(4, 1);                         // Request OpenGL 4.1 - for MacOS
@@ -65,15 +70,30 @@ DlgCAMSimulator::~DlgCAMSimulator()
 
 DlgCAMSimulator* DlgCAMSimulator::instance()
 {
-    if (mInstance == nullptr) {
+    /* if (mInstance == nullptr) {
         mInstance = new DlgCAMSimulator();
         mInstance->resize(MillSim::gWindowSizeW, MillSim::gWindowSizeH);
         mInstance->setWindowModality(Qt::ApplicationModal);
         mInstance->setMinimumWidth(700);
         mInstance->setMinimumHeight(400);
+    }   */
+
+    using namespace Gui;
+
+    static QPointer<MDIView> view;
+    static QPointer<DlgCAMSimulator> instance;
+
+    if (!view) {
+        view = new MDIView(nullptr, nullptr);
+        getMainWindow()->addWindow(view);
     }
 
-    return mInstance;
+    if (!instance) {
+        instance = new DlgCAMSimulator(*view);
+        view->setCentralWidget(instance);
+    }
+
+    return instance;
 }
 
 void DlgCAMSimulator::setAnimating(bool animating)
@@ -88,15 +108,16 @@ void DlgCAMSimulator::setAnimating(bool animating)
 void DlgCAMSimulator::startSimulation(const Part::TopoShape& stock, float quality)
 {
     App::Document* doc = App::GetApplication().getActiveDocument();
-    setWindowTitle(tr("%1 - New CAM Simulator").arg(QString::fromUtf8(doc->getName())));
+    mView.setWindowTitle(tr("%1 - New CAM Simulator").arg(QString::fromUtf8(doc->getName())));
 
     mQuality = quality;
     mNeedsInitialize = true;
 
     setStockShape(stock, 1);
-
-    show();
     setAnimating(true);
+
+    Gui::getMainWindow()->setActiveWindow(&mView);
+    mView.show();
 }
 
 void DlgCAMSimulator::resetSimulation()
@@ -306,8 +327,6 @@ void DlgCAMSimulator::resizeGL(int w, int h)
     const qreal ratio = devicePixelRatio();
     mMillSimulator->UpdateWindowScale(w * ratio, h * ratio);
 }
-
-DlgCAMSimulator* DlgCAMSimulator::mInstance = nullptr;
 
 //************************************************************************************************************
 // stock
