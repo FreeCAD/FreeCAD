@@ -65,6 +65,7 @@ class CommandJobCreate:
     def Activated(self):
         dialog = PathJobDlg.JobCreate()
         dialog.setupTemplate()
+        dialog.setUpType()
         dialog.setupModel()
         if dialog.exec_() == 1:
             models = dialog.getModels()
