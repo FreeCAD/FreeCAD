@@ -60,6 +60,7 @@ class JobTemplate:
     Fixtures = "Fixtures"
     OrderOutputBy = "OrderOutputBy"
     SplitOutput = "SplitOutput"
+    JobType = "JobType"
     SetupSheet = "SetupSheet"
     Stock = "Stock"
     # TCs are grouped under Tools in a job, the template refers to them directly though
@@ -215,6 +216,7 @@ class ObjectJob:
         for n in self.propertyEnumerations():
             setattr(obj, n[0], n[1])
 
+        obj.JobType = jobType
         obj.PostProcessorOutputFile = Path.Preferences.defaultOutputFile()
         obj.PostProcessor = postProcessors = Path.Preferences.allEnabledPostProcessors()
         defaultPostProcessor = Path.Preferences.defaultPostProcessor()
@@ -588,6 +590,9 @@ class ObjectJob:
                 if attrs.get(JobTemplate.SplitOutput):
                     obj.SplitOutput = attrs.get(JobTemplate.SplitOutput)
 
+                if attrs.get(JobTemplate.JobType):
+                    obj.JobType = attrs.get(JobTemplate.JobType)
+
                 Path.Log.debug("setting tool controllers (%d)" % len(tcs))
                 if tcs:
                     obj.Tools.Group = tcs
@@ -614,6 +619,8 @@ class ObjectJob:
         attrs[JobTemplate.GeometryTolerance] = str(obj.GeometryTolerance.Value)
         if obj.Description:
             attrs[JobTemplate.Description] = obj.Description
+        if obj.JobType:
+            attrs[JobTemplate.JobType] = obj.JobType
         return attrs
 
     def dumps(self):
