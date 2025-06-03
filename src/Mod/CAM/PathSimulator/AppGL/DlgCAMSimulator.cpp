@@ -23,13 +23,19 @@
 #include "PreCompiled.h"
 
 #include "DlgCAMSimulator.h"
+#include "ViewCAMSimulator.h"
 #include "MillSimulation.h"
 #include "Gui/View3DInventorViewer.h"
 #include <Mod/Part/App/BRepMesh.h>
 #include <QDateTime>
 #include <QSurfaceFormat>
 #include <QPoint>
+#include <QTimerEvent>
 #include <App/Document.h>
+#include <Gui/MainWindow.h>
+#include <Gui/MDIView.h>
+#include <QHBoxLayout>
+#include <QPointer>
 
 using namespace MillSim;
 
@@ -38,9 +44,17 @@ namespace CAMSimulator
 
 static const float MouseScrollDelta = 120.0F;
 
-DlgCAMSimulator::DlgCAMSimulator(QWidget* parent)
+static QPointer<ViewCAMSimulator> viewCAMSimulator;
+
+DlgCAMSimulator::DlgCAMSimulator(ViewCAMSimulator& view, QWidget* parent)
     : QOpenGLWidget(parent)
+    , mView(view)
 {
+    // Under certain conditions, e.g. when docking/undocking the cam simulator, we need to create a
+    // new widget (due to some OpenGL bug). The new widget becomes THE cam simulator.
+
+    viewCAMSimulator = &view;
+
     QSurfaceFormat format;
     format.setVersion(4, 1);                         // Request OpenGL 4.1 - for MacOS
     format.setProfile(QSurfaceFormat::CoreProfile);  // Use the core profile = for MacOS
@@ -55,48 +69,83 @@ DlgCAMSimulator::DlgCAMSimulator(QWidget* parent)
 
     setMouseTracking(true);
 
-    mMillSimulator.reset(new MillSimulation());
+    mMillSimulator.reset(new MillSimulation);
+
+    mAnimatingTimer.setInterval(0);
+    connect(&mAnimatingTimer,
+            &QTimer::timeout,
+            this,
+            static_cast<void (DlgCAMSimulator::*)()>(&DlgCAMSimulator::update));
 }
 
 DlgCAMSimulator::~DlgCAMSimulator()
 {
-    // nothing to do but need to keep this destructor because of forward declared MillSimulation
+    makeCurrent();
+    mMillSimulator = nullptr;
+}
+
+void DlgCAMSimulator::cloneFrom(const DlgCAMSimulator& from)
+{
+    mNeedsInitialize = true;
+    mNeedsClear = true;
+    setAnimating(from.mAnimating);
+
+    mQuality = from.mQuality;
+
+    mGCode = from.mGCode;
+    mTools = from.mTools;
+
+    mStock = from.mStock;
+    mStock.needsUpdate = true;
+
+    mBase = from.mBase;
+    mBase.needsUpdate = true;
+
+    const auto state = from.mMillSimulator->GetState();
+    mState = std::make_unique<MillSim::MillSimulationState>(state);
 }
 
 DlgCAMSimulator* DlgCAMSimulator::instance()
 {
-    if (mInstance == nullptr) {
-        mInstance = new DlgCAMSimulator();
-        mInstance->resize(MillSim::gWindowSizeW, MillSim::gWindowSizeH);
-        mInstance->setWindowModality(Qt::ApplicationModal);
-        mInstance->setMinimumWidth(700);
-        mInstance->setMinimumHeight(400);
+    if (!viewCAMSimulator) {
+        auto view = new ViewCAMSimulator(nullptr, nullptr);
+        viewCAMSimulator = view;
+
+        Gui::getMainWindow()->addWindow(view);
     }
 
-    return mInstance;
+    return &viewCAMSimulator->dlg();
 }
 
 void DlgCAMSimulator::setAnimating(bool animating)
 {
+    if (animating == mAnimating) {
+        return;
+    }
+
     mAnimating = animating;
 
-    if (mAnimating) {
-        update();
+    if (animating) {
+        mAnimatingTimer.start();
+    }
+    else {
+        mAnimatingTimer.stop();
     }
 }
 
 void DlgCAMSimulator::startSimulation(const Part::TopoShape& stock, float quality)
 {
     App::Document* doc = App::GetApplication().getActiveDocument();
-    setWindowTitle(tr("%1 - New CAM Simulator").arg(QString::fromUtf8(doc->getName())));
+    mView.setWindowTitle(tr("%1 - New CAM Simulator").arg(QString::fromUtf8(doc->getName())));
 
     mQuality = quality;
     mNeedsInitialize = true;
 
     setStockShape(stock, 1);
-
-    show();
     setAnimating(true);
+
+    Gui::getMainWindow()->setActiveWindow(&mView);
+    mView.show();
 }
 
 void DlgCAMSimulator::resetSimulation()
@@ -198,7 +247,7 @@ void DlgCAMSimulator::mouseMoveEvent(QMouseEvent* ev)
     QPoint pnt = ev->position().toPoint();
 #endif
 
-    const qreal ratio = devicePixelRatio();
+    const qreal ratio = devicePixelRatioF();
     mMillSimulator->MouseMove(pnt.x() * ratio, pnt.y() * ratio, modifiers);
 
     update();
@@ -212,7 +261,7 @@ void DlgCAMSimulator::mousePressEvent(QMouseEvent* ev)
     QPoint pnt = ev->position().toPoint();
 #endif
 
-    const qreal ratio = devicePixelRatio();
+    const qreal ratio = devicePixelRatioF();
     mMillSimulator->MousePress(ev->button(), true, pnt.x() * ratio, pnt.y() * ratio);
 
     update();
@@ -226,7 +275,7 @@ void DlgCAMSimulator::mouseReleaseEvent(QMouseEvent* ev)
     QPoint pnt = ev->position().toPoint();
 #endif
 
-    const qreal ratio = devicePixelRatio();
+    const qreal ratio = devicePixelRatioF();
     mMillSimulator->MousePress(ev->button(), false, pnt.x() * ratio, pnt.y() * ratio);
 
     update();
@@ -245,16 +294,18 @@ void DlgCAMSimulator::updateResources()
 
     if (mNeedsClear) {
         mMillSimulator->Clear();
+        mLastGCode = 0;
         mNeedsClear = false;
     }
 
     // update gcode
 
-    for (const auto& cmd : mGCode) {
+    for (int i = mLastGCode; i < (int)mGCode.size(); i++) {
+        const std::string& cmd = mGCode[i];
         mMillSimulator->AddGcodeLine(cmd.c_str());
     }
 
-    mGCode.clear();
+    mLastGCode = mGCode.size();
 
     // update tools
 
@@ -263,8 +314,6 @@ void DlgCAMSimulator::updateResources()
             mMillSimulator->AddTool(tool.profile, tool.id, tool.diameter);
         }
     }
-
-    mTools.clear();
 
     // initialize simulator
 
@@ -277,13 +326,26 @@ void DlgCAMSimulator::updateResources()
 
     if (mStock.needsUpdate) {
         mMillSimulator->SetArbitraryStock(mStock.verts, mStock.indices);
-        mStock = {};
+        mStock.needsUpdate = false;
     }
 
     if (mBase.needsUpdate) {
         mMillSimulator->SetBaseObject(mBase.verts, mBase.indices);
-        mBase = {};
+        mBase.needsUpdate = false;
     }
+
+    // update state
+
+    if (mState) {
+        mMillSimulator->SetState(*mState);
+        mState = nullptr;
+    }
+}
+
+void DlgCAMSimulator::updateWindowScale()
+{
+    const qreal ratio = devicePixelRatioF();
+    mMillSimulator->UpdateWindowScale(width() * ratio, height() * ratio);
 }
 
 void DlgCAMSimulator::initializeGL()
@@ -294,34 +356,17 @@ void DlgCAMSimulator::initializeGL()
 void DlgCAMSimulator::paintGL()
 {
     updateResources();
-    mMillSimulator->ProcessSim((unsigned int)(QDateTime::currentMSecsSinceEpoch()));
 
-    if (mAnimating) {
-        update();
-    }
+    // We need to call updateWindowScale on every render since the devicePixelRatio we get in
+    // resizeGL might be wrong on the first resize.
+    updateWindowScale();
+
+    mMillSimulator->ProcessSim((unsigned int)(QDateTime::currentMSecsSinceEpoch()));
 }
 
 void DlgCAMSimulator::resizeGL(int w, int h)
 {
-    const qreal ratio = devicePixelRatio();
-    mMillSimulator->UpdateWindowScale(w * ratio, h * ratio);
-}
-
-DlgCAMSimulator* DlgCAMSimulator::mInstance = nullptr;
-
-//************************************************************************************************************
-// stock
-//************************************************************************************************************
-
-SimStock::SimStock(float px, float py, float pz, float lx, float ly, float lz, float res)
-    : mPx(px)
-    , mPy(py)
-    , mPz(pz + 0.005 * lz)
-    , mLx(lx)
-    , mLy(ly)
-    , mLz(1.01 * lz)
-{
-    (void)res;
+    (void)w, (void)h;
 }
 
 }  // namespace CAMSimulator

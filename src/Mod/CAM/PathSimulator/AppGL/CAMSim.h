@@ -65,9 +65,6 @@ public:
                  float resolution);
     void SetBaseShape(const Part::TopoShape& baseShape, float resolution);
     void AddCommand(Command* cmd);
-
-public:
-    std::unique_ptr<SimStock> m_stock;
 };
 
 }  // namespace CAMSimulator
