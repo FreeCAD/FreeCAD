@@ -191,7 +191,9 @@ class _Window(ArchComponent.Component):
         # Need to restore 'initial' settings as corresponding codes in onChanged() does upon object creation
         self.baseSill = obj.Sill.Value
         self.basePos = obj.Base.Placement.Base
-        self.atthOff = obj.AttachmentOffsetXyzAndRotation.Base
+        self.atthOff = None
+        if hasattr(obj, 'AttachmentOffsetXyzAndRotation'):
+            self.atthOff = obj.AttachmentOffsetXyzAndRotation.Base
 
     def onBeforeChange(self,obj,prop):
 
@@ -211,7 +213,9 @@ class _Window(ArchComponent.Component):
                 getattr(self, 'atthOff', None) is None):  # TODO Any cases only 1 or 2 are not None?
                 self.baseSill = val
                 self.basePos = obj.Base.Placement.Base
-                self.atthOff = obj.AttachmentOffsetXyzAndRotation.Base
+                self.atthOff = None
+                if hasattr(obj, 'AttachmentOffsetXyzAndRotation'):
+                    self.atthOff = obj.AttachmentOffsetXyzAndRotation.Base
                 return
 
             import ArchSketchObject  # Need to import per method
