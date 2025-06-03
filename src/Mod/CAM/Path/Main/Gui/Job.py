@@ -1521,6 +1521,9 @@ class TaskPanel:
         self.form.postProcessorOutputFile.editingFinished.connect(self.getFields)
         self.form.postProcessorSetOutputFile.clicked.connect(self.setPostProcessorOutputFile)
 
+        # Job Type
+        self.form.jobType.currentIndexChanged.connect(self.getFields)
+
         # Workplan
         self.form.operationsList.itemSelectionChanged.connect(self.operationSelect)
         self.form.operationsList.indexesMoved.connect(self.getFields)
