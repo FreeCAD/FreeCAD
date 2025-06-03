@@ -25,7 +25,7 @@
 
 import FreeCAD
 from typing import cast, List
-from PySide import QtGui, QtCore
+from PySide import QtCore, QtGui
 from PySide.QtGui import QMenu, QAction, QKeySequence
 import Path
 import yaml
@@ -43,8 +43,10 @@ Path.Log.trackModule(Path.Log.thisModule())
 class LibraryBrowserWidget(ToolBitBrowserWidget):
     """
     A widget to browse, filter, and select Tool Library assets from the
-    AssetManager, with sorting and batch insertion, including library selection.
+    AssetManager, with sorting and batch insertion, using a current library.
     """
+
+    current_library_changed = QtCore.Signal()
 
     def __init__(
         self,
@@ -60,24 +62,15 @@ class LibraryBrowserWidget(ToolBitBrowserWidget):
             tool_no_factory=self.get_tool_no_from_current_library,
             compact=compact,
         )
-
-        # Move search box into dedicated row to make space for the
-        # library selection combo box
-        layout = self.layout()
-        self._top_layout.removeWidget(self._search_edit)
-        layout.insertWidget(1, self._search_edit, 20)
-
-        # Add library selection combo box
-        self._library_combo = QtGui.QComboBox()
-        self._library_combo.setSizePolicy(QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Preferred)
-        self._top_layout.insertWidget(0, self._library_combo, 1)
-        self._library_combo.currentIndexChanged.connect(self._on_library_changed)
+        self.current_library = None
+        self.layout().setContentsMargins(0, 0, 0, 0)
 
     def _get_state(self):
         """Gets the current library URI, selected toolbit URI, and scroll
         position."""
-        current_library = self._get_current_library()
-        current_library_uri_str = str(current_library.get_uri()) if current_library else None
+        current_library_uri_str = (
+            str(self.current_library.get_uri()) if self.current_library else None
+        )
 
         selected_toolbit_uris = []
         selected_items = self._tool_list_widget.selectedItems()
@@ -101,95 +94,67 @@ class LibraryBrowserWidget(ToolBitBrowserWidget):
 
         # Restore library selection
         if library_uri_str:
-            for i in range(self._library_combo.count()):
-                item_data = self._library_combo.itemData(i)
-                if isinstance(item_data, Library):
-                    if str(item_data.get_uri()) == library_uri_str:
-                        self._library_combo.setCurrentIndex(i)
-                        # The _on_library_changed signal will be emitted automatically
-                        # and will repopulate the tool list.
-                        break
+            try:
+                library_uri = AssetUri(library_uri_str)
+                library = self._asset_manager.get(library_uri, store=self._store_name, depth=1)
+                self.set_current_library(library)
+            except FileNotFoundError:
+                Path.Log.error(f"Library {library_uri_str} not found.")
+                self.set_current_library(None)
+        else:
+            self.set_current_library(None)
 
-        # Restore toolbit selection after the tool list has been repopulated
-        # by _on_library_changed.
+        # Restore toolbit selection
         if toolbit_uris:
             for uri in toolbit_uris:
                 for i in range(self._tool_list_widget.count()):
                     item = self._tool_list_widget.item(i)
                     if item.data(ToolBitUriRole) == uri:
-                        item.setSelected(True)  # Use setSelected(True)
+                        item.setSelected(True)
 
-        # Always restore scroll position
+        # Restore scroll position
         self._tool_list_widget.verticalScrollBar().setValue(scroll_pos)
 
-    def _select_by_uri(self, uris: List[str]):
-        if not uris:
-            return
-
-        # Select and scroll to the first toolbit
-        is_first = True
-        for i in range(self._tool_list_widget.count()):
-            item = self._tool_list_widget.item(i)
-            if item.data(ToolBitUriRole) in uris:
-                self._tool_list_widget.setCurrentItem(item)
-                if is_first:
-                    # Scroll to the first selected item
-                    is_first = False
-                    self._tool_list_widget.scrollToItem(item)
-
     def refresh(self):
-        """Reads available libraries and toolbits from disk."""
-        Path.Log.debug("refresh(): Fetching and populating libraries and toolbits.")
-        selection_data = self._get_state()
-        self._library_combo.clear()
-
-        # Fetch the library (shallow load). Updating the combo box also
-        # triggers the _on_library_changed method, which populates the
-        # tool list widget with the toolbits from the selected library.
-        libraries = self._asset_manager.fetch("toolbitlibrary", store=self._store_name, depth=0)
-        for library in sorted(libraries, key=lambda x: x.label):
-            self._library_combo.addItem(library.label, userData=library)
-
-        self._set_state(selection_data)
+        """Refreshes the toolbits for the current library from disk."""
+        Path.Log.debug("refresh(): Fetching and populating toolbits.")
+        if self.current_library:
+            library_uri = self.current_library.get_uri()
+            try:
+                self.current_library = self._asset_manager.get(
+                    library_uri, store=self._store_name, depth=1
+                )
+            except FileNotFoundError:
+                Path.Log.error(f"Library {library_uri} not found.")
+                self.current_library = None
+        self._update_tool_list()
 
     def get_tool_no_from_current_library(self, toolbit):
         """
-        Retrieves the tool number for a toolbit based on the currently
-        selected library.
+        Retrieves the tool number for a toolbit based on the current library.
         """
-        selected_library = self._library_combo.currentData()
-        if selected_library is None:
+        if self.current_library is None:
             return None
-        # Use the get_bit_no_from_bit method of the Library object
-        # This method returns the tool number or None
-        tool_no = selected_library.get_bit_no_from_bit(toolbit)
+        tool_no = self.current_library.get_bit_no_from_bit(toolbit)
         return tool_no
 
-    def _on_library_changed(self, index):
-        """Handles library selection change."""
-        # Get the selected library from the combo box
-        selected_library = self._library_combo.currentData()
-        if not isinstance(selected_library, Library):
-            self._all_assets = []
-            return
+    def set_current_library(self, library):
+        """Sets the current library and updates the tool list."""
+        Path.Log.track(f"called with {library}")
+        self.current_library = library
+        self._update_tool_list()
+        self.current_library_changed.emit()
 
-        # Fetch the library from the asset manager
-        library_uri = selected_library.get_uri()
-        try:
-            library = self._asset_manager.get(library_uri, store=self._store_name, depth=1)
-            # Update the combo box item's user data with the fully fetched library
-            self._library_combo.setItemData(index, library)
-        except FileNotFoundError:
-            Path.Log.error(f"Library {library_uri} not found in store {self._store_name}.")
+    def _update_tool_list(self):
+        """Updates the tool list based on the current library."""
+        if self.current_library:
+            self._all_assets = [t for t in self.current_library]
+            self._sort_assets()
+            self._tool_list_widget.clear_list()
+            self._update_list()
+        else:
             self._all_assets = []
-            return
-
-        # Update _all_assets based on the selected library
-        library = cast(Library, library)
-        self._all_assets = [t for t in library]
-        self._sort_assets()
-        self._tool_list_widget.clear_list()
-        self._update_list()  # Display data for the selected library
+            self._tool_list_widget.clear_list()
 
     def _add_shortcuts(self):
         """Adds keyboard shortcuts for common actions."""
@@ -259,17 +224,14 @@ class LibraryBrowserWidget(ToolBitBrowserWidget):
         # Execute the menu
         context_menu.exec_(self._tool_list_widget.mapToGlobal(position))
 
-    def _get_current_library(self) -> Library | None:
-        """Helper to get the currently selected library."""
-        selected_library = self._library_combo.currentData()
-        if isinstance(selected_library, Library):
-            return selected_library
-        return None
+    def get_current_library(self) -> Library | None:
+        """Helper to get the current library."""
+        return self.current_library
 
     def _on_cut_requested(self):
         """Handles cut request by copying and marking for removal from library."""
         uris = self.get_selected_bit_uris()
-        library = self._get_current_library()
+        library = self.get_current_library()
         if not library or not uris:
             return
 
@@ -281,10 +243,10 @@ class LibraryBrowserWidget(ToolBitBrowserWidget):
         """Handles duplicate request by duplicating and adding to library."""
         Path.Log.debug("LibraryBrowserWidget._on_duplicate_requested: Called.\n")
         uris = self.get_selected_bit_uris()
-        library = self._get_current_library()
+        library = self.get_current_library()
         if not library or not uris:
             Path.Log.debug(
-                "LibraryBrowserWidget._on_duplicate_requested: No library or URIs selected. Returning.\n"
+                "LibraryBrowserWidget._on_duplicate_requested: No library or URIs selected. Returning."
             )
             return
 
@@ -308,11 +270,11 @@ class LibraryBrowserWidget(ToolBitBrowserWidget):
         self._asset_manager.add(library)  # Save the modified library
         self.refresh()
 
-        self._select_by_uri(list(new_uris))
+        self.select_by_uri(list(new_uris))
 
     def _on_paste_requested(self):
         """Handles paste request by adding toolbits to the current library."""
-        current_library = self._get_current_library()
+        current_library = self.get_current_library()
         if not current_library:
             return
 
@@ -361,7 +323,6 @@ class LibraryBrowserWidget(ToolBitBrowserWidget):
             toolbit.set_id()
             self._asset_manager.add(toolbit)  # Save the new toolbit to disk
 
-            # Save the bit to disk (handled by asset manager add)
             # Add the bit to the current library
             added_toolbit = current_library.add_bit(toolbit)
             if added_toolbit:
@@ -370,7 +331,7 @@ class LibraryBrowserWidget(ToolBitBrowserWidget):
         if new_uris:
             self._asset_manager.add(current_library)  # Save the modified library
             self.refresh()
-            self._select_by_uri(list(new_uris))
+            self.select_by_uri(list(new_uris))
 
     def _on_cut_paste(
         self,
@@ -416,13 +377,13 @@ class LibraryBrowserWidget(ToolBitBrowserWidget):
             self._asset_manager.add(current_library)
             self._asset_manager.add(source_library)
             self.refresh()
-            self._select_by_uri(list(new_uris))
+            self.select_by_uri(list(new_uris))
 
     def _on_remove_from_library_requested(self):
         """Handles request to remove selected toolbits from the current library."""
         Path.Log.debug("_on_remove_from_library_requested: Called.")
         uris = self.get_selected_bit_uris()
-        library = self._get_current_library()
+        library = self.get_current_library()
         if not library or not uris:
             return
 
@@ -452,5 +413,83 @@ class LibraryBrowserWidget(ToolBitBrowserWidget):
                 Path.Log.error(f"Failed to remove toolbit {uri_string} from library: {e}\n")
 
         if removed_count > 0:
-            self._asset_manager.add(library)  # Save the modified library
+            self._asset_manager.add(library)
             self.refresh()
+
+
+class LibraryBrowserWithCombo(LibraryBrowserWidget):
+    """
+    A widget extending LibraryBrowserWidget with a combo box for library selection.
+    """
+
+    def __init__(
+        self,
+        asset_manager: AssetManager,
+        store: str = "local",
+        parent=None,
+        compact=True,
+    ):
+        super().__init__(
+            asset_manager=asset_manager,
+            store=store,
+            parent=parent,
+            compact=compact,
+        )
+
+        # Move search box into dedicated row to make space for the
+        # library selection combo box
+        layout = self.layout()
+        self._top_layout.removeWidget(self._search_edit)
+        layout.insertWidget(1, self._search_edit, 20)
+
+        self._library_combo = QtGui.QComboBox()
+        self._library_combo.setSizePolicy(QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Preferred)
+        self._top_layout.insertWidget(0, self._library_combo, 1)
+        self._library_combo.currentIndexChanged.connect(self._on_library_combo_changed)
+        self.current_library_changed.connect(self._on_current_library_changed)
+        self.refresh()
+
+    def _on_library_combo_changed(self, index):
+        """Handles library selection change from the combo box."""
+        Path.Log.track(f"called with index {index}")
+        selected_library = cast(Library, self._library_combo.itemData(index))
+        if not selected_library:
+            return
+
+        # Have to refetch the non-shallow library.
+        uri = selected_library.get_uri()
+        library = self._asset_manager.get(uri, store=self._store_name, depth=1)
+        self.set_current_library(library)
+
+    def _on_current_library_changed(self):
+        """Updates the combo box when the current library changes externally."""
+        if self.current_library:
+            for i in range(self._library_combo.count()):
+                lib = self._library_combo.itemData(i)
+                if lib.get_uri() == self.current_library.get_uri():
+                    self._library_combo.setCurrentIndex(i)
+                    return
+            Path.Log.warning(
+                f"Current library {self.current_library.get_uri()} not found in combo box."
+            )
+
+    def refresh(self):
+        """Reads available libraries and refreshes the combo box and toolbits."""
+        Path.Log.debug("refresh(): Fetching and populating libraries and toolbits.")
+        libraries = self._asset_manager.fetch("toolbitlibrary", store=self._store_name, depth=0)
+        self._library_combo.clear()
+        for library in sorted(libraries, key=lambda x: x.label):
+            self._library_combo.addItem(library.label, userData=library)
+
+        if not libraries:
+            return
+        if not self.current_library:
+            self._library_combo.setCurrentIndex(0)
+
+        for i in range(self._library_combo.count()):
+            lib = self._library_combo.itemData(i)
+            if lib.get_uri() == self.current_library.get_uri():
+                self._library_combo.setCurrentIndex(i)
+                break
+        else:
+            self._library_combo.setCurrentIndex(0)

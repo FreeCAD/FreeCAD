@@ -24,7 +24,7 @@
 """Widget for browsing ToolBit assets with filtering and sorting."""
 
 import yaml
-from typing import List, cast
+from typing import List, cast, Sequence
 from PySide import QtGui, QtCore
 from PySide.QtGui import QApplication, QMessageBox, QMenu, QAction, QKeySequence, QDialog
 from PySide.QtCore import QMimeData
@@ -37,7 +37,7 @@ from .toollist import ToolBitListWidget, CompactToolBitListWidget, ToolBitUriRol
 from .editor import ToolBitEditor
 
 
-Path.Log.setLevel(Path.Log.Level.INFO, Path.Log.thisModule())
+Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
 Path.Log.trackModule(Path.Log.thisModule())
 
 
@@ -61,6 +61,7 @@ class ToolBitBrowserWidget(QtGui.QWidget):
         store: str = "local",
         parent=None,
         tool_no_factory=None,
+        tool_fetcher=None,
         compact=False,
     ):
         super().__init__(parent)
@@ -124,6 +125,7 @@ class ToolBitBrowserWidget(QtGui.QWidget):
         # Note that fetching of assets is done at showEvent(),
         # because we need to know the widget size to calculate the number
         # of items that need to be fetched.
+        self.tool_fetcher = tool_fetcher or self._tool_fetcher
 
     def showEvent(self, event):
         """Handles the widget show event to trigger initial data fetch."""
@@ -132,24 +134,43 @@ class ToolBitBrowserWidget(QtGui.QWidget):
         if not self._all_assets and not self._is_fetching:
             self.refresh()
 
+    def _tool_fetcher(self) -> Sequence[ToolBit]:
+        Path.Log.track()
+        return cast(
+            List[ToolBit],
+            self._asset_manager.fetch(
+                asset_type="toolbit",
+                depth=0,  # do not fetch dependencies (e.g. shape, icon)
+                store=self._store_name,
+            ),
+        )
+
+    def select_by_uri(self, uris: List[str]):
+        if not uris:
+            return
+
+        # Select and scroll to the first toolbit
+        is_first = True
+        for i in range(self._tool_list_widget.count()):
+            item = self._tool_list_widget.item(i)
+            if item.data(ToolBitUriRole) in uris:
+                self._tool_list_widget.setCurrentItem(item)
+                if is_first:
+                    # Scroll to the first selected item
+                    is_first = False
+                    self._tool_list_widget.scrollToItem(item)
+
     def refresh(self):
         """Fetches all ToolBit assets and stores them in memory, then updates the UI."""
         if self._is_fetching:
             return
         self._is_fetching = True
         try:
-            self._all_assets = cast(
-                List[ToolBit],
-                self._asset_manager.fetch(
-                    asset_type="toolbit",
-                    depth=0,  # do not fetch dependencies (e.g. shape, icon)
-                    store=self._store_name,
-                ),
-            )
-            self._sort_assets()
+            self._all_assets = self.tool_fetcher()
         finally:
             self._is_fetching = False
 
+        self._sort_assets()
         self._update_list()
 
     def _sort_assets(self):

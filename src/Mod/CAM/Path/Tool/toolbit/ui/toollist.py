@@ -63,6 +63,7 @@ class ToolBitListWidget(QtGui.QListWidget):
         cell.set_tool_no(final_tool_no)
         cell.set_upper_text(toolbit.label)
         cell.set_lower_text(toolbit.summary)
+        cell.set_icon_from_shape(toolbit._tool_bit_shape)
 
         # Set the custom widget for the list item
         item.setSizeHint(cell.sizeHint())

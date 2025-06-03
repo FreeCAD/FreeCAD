@@ -34,7 +34,7 @@ from typing import List, Tuple
 from ...camassets import cam_assets, ensure_assets_initialized
 from ...toolbit import ToolBit
 from .editor import LibraryEditor
-from .browser import LibraryBrowserWidget
+from .browser import LibraryBrowserWithCombo
 
 
 if False:
@@ -58,7 +58,7 @@ class ToolBitLibraryDock(object):
         self.form.setWindowTitle(translate("CAM_ToolBit", "Tool Selector"))
 
         # Create the browser widget
-        self.browser_widget = LibraryBrowserWidget(asset_manager=cam_assets)
+        self.browser_widget = LibraryBrowserWithCombo(asset_manager=cam_assets)
 
         self._setup_ui()
 
@@ -114,7 +114,7 @@ class ToolBitLibraryDock(object):
         self.browser_widget._on_edit_requested()
 
     def _open_editor(self):
-        library = LibraryEditor()
+        library = LibraryEditor(parent=FreeCADGui.getMainWindow())
         library.open()
         # After editing, we might need to refresh the libraries in the browser widget
         # Assuming _populate_libraries is the correct method to call

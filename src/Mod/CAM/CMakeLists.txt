@@ -223,10 +223,11 @@ SET(PathPythonToolsLibrarySerializers_SRCS
 
 SET(PathPythonToolsLibraryUi_SRCS
     Path/Tool/library/ui/__init__.py
+    Path/Tool/library/ui/browser.py
     Path/Tool/library/ui/cmd.py
     Path/Tool/library/ui/dock.py
     Path/Tool/library/ui/editor.py
-    Path/Tool/library/ui/browser.py
+    Path/Tool/library/ui/properties.py
 )
 
 SET(PathPythonToolsMachine_SRCS
