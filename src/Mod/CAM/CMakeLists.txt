@@ -317,6 +317,7 @@ SET(PathPythonPostScripts_SRCS
     Path/Post/scripts/slic3r_pre.py
     Path/Post/scripts/smoothie_post.py
     Path/Post/scripts/snapmaker_post.py
+    Path/Post/scripts/svg_post.py
     Path/Post/scripts/uccnc_post.py
     Path/Post/scripts/wedm_post.py
 )
