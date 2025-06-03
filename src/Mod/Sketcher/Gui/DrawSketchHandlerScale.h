@@ -263,15 +263,33 @@ private:
             }
             else if (isEllipse(*geo)) {
                 auto* ellipse = static_cast<Part::GeomEllipse*>(geo);  // NOLINT
-                ellipse->setMajorRadius(ellipse->getMajorRadius() * scaleFactor);
-                ellipse->setMinorRadius(ellipse->getMinorRadius() * scaleFactor);
+
+                // OpenCascade throws if we try to set a major radius smaller than
+                // the minor radius or conversly, so we reorder the operations
+                // depending on if we scale up or down
+                if (scaleFactor < 1.0) {
+                    ellipse->setMinorRadius(ellipse->getMinorRadius() * scaleFactor);
+                    ellipse->setMajorRadius(ellipse->getMajorRadius() * scaleFactor);
+                }
+                else {
+                    ellipse->setMajorRadius(ellipse->getMajorRadius() * scaleFactor);
+                    ellipse->setMinorRadius(ellipse->getMinorRadius() * scaleFactor);
+                }
                 ellipse->setCenter(
                     getScaledPoint(ellipse->getCenter(), referencePoint, scaleFactor));
             }
             else if (isArcOfEllipse(*geo)) {
                 auto* arcOfEllipse = static_cast<Part::GeomArcOfEllipse*>(geo);  // NOLINT
-                arcOfEllipse->setMajorRadius(arcOfEllipse->getMajorRadius() * scaleFactor);
-                arcOfEllipse->setMinorRadius(arcOfEllipse->getMinorRadius() * scaleFactor);
+
+                // Same reasoning as Part::GeomEllipse
+                if (scaleFactor < 1.0) {
+                    arcOfEllipse->setMinorRadius(arcOfEllipse->getMinorRadius() * scaleFactor);
+                    arcOfEllipse->setMajorRadius(arcOfEllipse->getMajorRadius() * scaleFactor);
+                }
+                else {
+                    arcOfEllipse->setMajorRadius(arcOfEllipse->getMajorRadius() * scaleFactor);
+                    arcOfEllipse->setMinorRadius(arcOfEllipse->getMinorRadius() * scaleFactor);
+                }
                 arcOfEllipse->setCenter(
                     getScaledPoint(arcOfEllipse->getCenter(), referencePoint, scaleFactor));
             }
