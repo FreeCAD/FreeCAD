@@ -30,6 +30,7 @@
 #include <Gui/Notifications.h>
 #include <Gui/Command.h>
 #include <Gui/CommandT.h>
+#include <Gui/InputHint.h>
 
 #include <Mod/Sketcher/App/SketchObject.h>
 
@@ -93,6 +94,23 @@ public:
     ~DrawSketchHandlerArcSlot() override = default;
 
 private:
+    std::list<Gui::InputHint> getToolHints() const override
+    {
+        return lookupArcSlotHints(state());
+    }
+
+private:
+    struct HintEntry
+    {
+        SelectMode state;
+        std::list<Gui::InputHint> hints;
+    };
+
+    using HintTable = std::vector<HintEntry>;
+
+    static HintTable getArcSlotHintTable();
+    static std::list<Gui::InputHint> lookupArcSlotHints(SelectMode state);
+
     void updateDataAndDrawToPosition(Base::Vector2d onSketchPos) override
     {
         switch (state()) {
@@ -754,20 +772,20 @@ void DSHArcSlotController::doChangeDrawSketchHandlerMode()
             }
         } break;
         case SelectMode::SeekSecond: {
-            if (onViewParameters[OnViewParameter::Third]->isSet
-                && onViewParameters[OnViewParameter::Fourth]->isSet) {
+            if (onViewParameters[OnViewParameter::Third]->hasFinishedEditing
+                || onViewParameters[OnViewParameter::Fourth]->hasFinishedEditing) {
 
                 handler->setState(SelectMode::SeekThird);
             }
         } break;
         case SelectMode::SeekThird: {
-            if (onViewParameters[OnViewParameter::Fifth]->isSet) {
+            if (onViewParameters[OnViewParameter::Fifth]->hasFinishedEditing) {
 
                 handler->setState(SelectMode::SeekFourth);
             }
         } break;
         case SelectMode::SeekFourth: {
-            if (onViewParameters[OnViewParameter::Sixth]->isSet) {
+            if (onViewParameters[OnViewParameter::Sixth]->hasFinishedEditing) {
 
                 handler->setState(SelectMode::End);
             }
@@ -936,6 +954,32 @@ void DSHArcSlotController::addConstraints()
             constraintSlotRadius();
         }
     }
+}
+
+DrawSketchHandlerArcSlot::HintTable DrawSketchHandlerArcSlot::getArcSlotHintTable()
+{
+    return {// Structure: {SelectMode, {hints...}}
+            {SelectMode::SeekFirst,
+             {{QObject::tr("%1 pick slot center"), {Gui::InputHint::UserInput::MouseLeft}}}},
+            {SelectMode::SeekSecond,
+             {{QObject::tr("%1 pick slot radius"), {Gui::InputHint::UserInput::MouseLeft}}}},
+            {SelectMode::SeekThird,
+             {{QObject::tr("%1 pick slot angle"), {Gui::InputHint::UserInput::MouseLeft}}}},
+            {SelectMode::SeekFourth,
+             {{QObject::tr("%1 pick slot width"), {Gui::InputHint::UserInput::MouseLeft}}}}};
+}
+
+std::list<Gui::InputHint> DrawSketchHandlerArcSlot::lookupArcSlotHints(SelectMode state)
+{
+    const auto arcSlotHintTable = getArcSlotHintTable();
+
+    auto it = std::find_if(arcSlotHintTable.begin(),
+                           arcSlotHintTable.end(),
+                           [state](const HintEntry& entry) {
+                               return entry.state == state;
+                           });
+
+    return (it != arcSlotHintTable.end()) ? it->hints : std::list<Gui::InputHint> {};
 }
 
 }  // namespace SketcherGui

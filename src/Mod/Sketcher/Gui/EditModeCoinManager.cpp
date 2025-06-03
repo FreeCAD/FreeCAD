@@ -369,7 +369,7 @@ void EditModeCoinManager::ParameterObserver::updateElementSizeParameters(
         App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
 
     double viewScalingFactor = hGrp->GetFloat("ViewScalingFactor", 1.0);
-    viewScalingFactor = Base::clamp<double>(viewScalingFactor, 0.5, 5.0);
+    viewScalingFactor = std::clamp<double>(viewScalingFactor, 0.5, 5.0);
 
     int markerSize = hGrp->GetInt("MarkerSize", 7);
 
@@ -382,7 +382,7 @@ void EditModeCoinManager::ParameterObserver::updateElementSizeParameters(
     double devicePixelRatio = Client.getDevicePixelRatio();
 
     // simple scaling factor for hardcoded pixel values in the Sketcher
-    Client.drawingParameters.pixelScalingFactor = devicePixelRatio;
+    Client.drawingParameters.pixelScalingFactor = devicePixelRatio * viewScalingFactor;
 
     // About sizes:
     // SoDatumLabel takes the size in points, not in pixels. This is because it uses QFont

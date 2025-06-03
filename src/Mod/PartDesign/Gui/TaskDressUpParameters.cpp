@@ -151,7 +151,8 @@ void TaskDressUpParameters::addAllEdges(QListWidget* widget)
     if (!base) {
         return;
     }
-    int count = Part::Feature::getTopoShape(base).countSubShapes(TopAbs_EDGE);
+    int count = Part::Feature::getTopoShape(base, Part::ShapeOption::ResolveLink 
+                                                | Part::ShapeOption::Transform).countSubShapes(TopAbs_EDGE);
     auto subValues = pcDressUp->Base.getSubValues(false);
     std::size_t len = subValues.size();
     for (int i = 0; i < count; ++i) {

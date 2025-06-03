@@ -30,6 +30,7 @@
 #include <Gui/Notifications.h>
 #include <Gui/Command.h>
 #include <Gui/CommandT.h>
+#include <Gui/InputHint.h>
 
 #include <Mod/Sketcher/App/SketchObject.h>
 
@@ -73,29 +74,6 @@ public:
         , radius(0.0)
     {}
     ~DrawSketchHandlerPolygon() override = default;
-
-    std::list<Gui::InputHint> getToolHints() const override
-    {
-        using UserInput = Gui::InputHint::UserInput;
-
-        switch (state()) {
-            case SelectMode::SeekFirst:
-                return {
-                    {QWidget::tr("%1 pick polygon center"), {UserInput::MouseLeft}},
-                    {QWidget::tr("%1/%2 increase / decrease number of sides"),
-                     {UserInput::KeyU, UserInput::KeyJ}},
-                };
-            case SelectMode::SeekSecond:
-                return {
-                    {QWidget::tr("%1 pick rotation and size"), {UserInput::MouseMove}},
-                    {QWidget::tr("%1 confirm"), {UserInput::MouseLeft}},
-                    {QWidget::tr("%1/%2 increase / decrease number of sides"),
-                     {UserInput::KeyU, UserInput::KeyJ}},
-                };
-            default:
-                return {};
-        }
-    }
 
 private:
     void updateDataAndDrawToPosition(Base::Vector2d onSketchPos) override
@@ -284,6 +262,23 @@ private:
             prevCorner = newCorner;
         }
     }
+
+    std::list<Gui::InputHint> getToolHints() const override
+    {
+        return lookupPolygonHints(state());
+    }
+
+private:
+    struct HintEntry
+    {
+        SelectMode state;
+        std::list<Gui::InputHint> hints;
+    };
+
+    using HintTable = std::vector<HintEntry>;
+
+    static HintTable getPolygonHintTable();
+    static std::list<Gui::InputHint> lookupPolygonHints(SelectMode state);
 };
 
 template<>
@@ -455,8 +450,8 @@ void DSHPolygonController::doChangeDrawSketchHandlerMode()
             }
         } break;
         case SelectMode::SeekSecond: {
-            if (onViewParameters[OnViewParameter::Third]->isSet
-                && onViewParameters[OnViewParameter::Fourth]->isSet) {
+            if (onViewParameters[OnViewParameter::Third]->hasFinishedEditing
+                || onViewParameters[OnViewParameter::Fourth]->hasFinishedEditing) {
 
                 handler->setState(SelectMode::End);
             }
@@ -552,6 +547,32 @@ void DSHPolygonController::addConstraints()
     }
 }
 
+DrawSketchHandlerPolygon::HintTable DrawSketchHandlerPolygon::getPolygonHintTable()
+{
+    return {// Structure: {SelectMode, {hints...}}
+            {SelectMode::SeekFirst,
+             {{QObject::tr("%1 pick polygon center"), {Gui::InputHint::UserInput::MouseLeft}},
+              {QObject::tr("%1/%2 increase / decrease number of sides"),
+               {Gui::InputHint::UserInput::KeyU, Gui::InputHint::UserInput::KeyJ}}}},
+            {SelectMode::SeekSecond,
+             {{QObject::tr("%1 pick rotation and size"), {Gui::InputHint::UserInput::MouseMove}},
+              {QObject::tr("%1 confirm"), {Gui::InputHint::UserInput::MouseLeft}},
+              {QObject::tr("%1/%2 increase / decrease number of sides"),
+               {Gui::InputHint::UserInput::KeyU, Gui::InputHint::UserInput::KeyJ}}}}};
+}
+
+std::list<Gui::InputHint> DrawSketchHandlerPolygon::lookupPolygonHints(SelectMode state)
+{
+    const auto polygonHintTable = getPolygonHintTable();
+
+    auto it = std::find_if(polygonHintTable.begin(),
+                           polygonHintTable.end(),
+                           [state](const HintEntry& entry) {
+                               return entry.state == state;
+                           });
+
+    return (it != polygonHintTable.end()) ? it->hints : std::list<Gui::InputHint> {};
+}
 
 }  // namespace SketcherGui
 

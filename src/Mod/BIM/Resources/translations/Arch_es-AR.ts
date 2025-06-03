@@ -608,7 +608,7 @@ When dealing with native IFC objects, you can use FreeCAD properties name, ex: '
     <message>
       <location filename="../ui/dialogConvertDocument.ui" line="20"/>
       <source>Do you wish to convert this document to an IFC document? Replying 'Yes' will automatically turn all new objects to IFC, while 'No' will allow you to have both IFC and non-IFC elements in the file.</source>
-      <translation>¿Deseas convertir este documento a un documento IFC? Responder 'Sí' convertirá automáticamente todos los nuevos objetos a IFC, mientras que 'No' te permitirá tener tanto elementos IFC como no IFC en el archivo.</translation>
+      <translation>¿Desea convertir este documento a un documento IFC? Responder "Sí" convertirá automáticamente todos los nuevos objetos a IFC, mientras que "No" le permitirá tener tanto elementos IFC como no IFC en el archivo.</translation>
     </message>
     <message>
       <location filename="../ui/dialogConvertDocument.ui" line="30"/>
@@ -1190,7 +1190,7 @@ Utils -&gt; Make IFC project</translation>
     <message>
       <location filename="../ui/dialogQuantitySurveying.ui" line="94"/>
       <source>Select from these options the values you want from each component. FreeCAD will generate a line in the spreadsheet with these values (if they are present).</source>
-      <translation>Selecciona de estas opciones los valores que deseas para cada componente. FreeCAD generará una línea en la hoja de cálculo con estos valores (si están presentes).</translation>
+      <translation>Seleccione de estas opciones los valores que desea para cada componente. FreeCAD generará una línea en la hoja de cálculo con estos valores (si están presentes).</translation>
     </message>
     <message>
       <location filename="../ui/dialogQuantitySurveying.ui" line="110"/>
@@ -1215,12 +1215,12 @@ Utils -&gt; Make IFC project</translation>
     <message>
       <location filename="../ui/dialogQuantitySurveying.ui" line="175"/>
       <source>Select these components from the list if you want to hide the rest of them and move to Survey mode.</source>
-      <translation>Selecciona estos componentes de la lista si deseas ocultar el resto y cambiar al modo de registro de medidas.</translation>
+      <translation>Seleccione estos componentes de la lista si desea ocultar el resto y cambiar al modo de registro de medidas.</translation>
     </message>
     <message>
       <location filename="../ui/dialogQuantitySurveying.ui" line="217"/>
       <source>Select these components from the list if you want to hide the rest of them and move to schedule definition mode.</source>
-      <translation>Selecciona estos componentes de la lista si deseas ocultar el resto y cambiar al modo de definición de programación.</translation>
+      <translation>Seleccione estos componentes de la lista si desea ocultar el resto y cambiar al modo de definición de programación.</translation>
     </message>
     <message>
       <location filename="../ui/dialogSpaces.ui" line="14"/>
@@ -1396,32 +1396,32 @@ Utils -&gt; Make IFC project</translation>
     <message>
       <location filename="../ui/dialogAddProperty.ui" line="44"/>
       <source>IfcLabel</source>
-      <translation type="unfinished">IfcLabel</translation>
+      <translation>IfcLabel</translation>
     </message>
     <message>
       <location filename="../ui/dialogAddProperty.ui" line="49"/>
       <source>IfcBoolean</source>
-      <translation type="unfinished">IfcBoolean</translation>
+      <translation>IfcBoolean</translation>
     </message>
     <message>
       <location filename="../ui/dialogAddProperty.ui" line="54"/>
       <source>IfcInteger</source>
-      <translation type="unfinished">IfcInteger</translation>
+      <translation>IfcInteger</translation>
     </message>
     <message>
       <location filename="../ui/dialogAddProperty.ui" line="59"/>
       <source>IfcReal</source>
-      <translation type="unfinished">IfcReal</translation>
+      <translation>IfcReal</translation>
     </message>
     <message>
       <location filename="../ui/dialogAddProperty.ui" line="64"/>
       <source>IfcLengthMeasure</source>
-      <translation type="unfinished">IfcLengthMeasure</translation>
+      <translation>IfcLengthMeasure</translation>
     </message>
     <message>
       <location filename="../ui/dialogAddProperty.ui" line="69"/>
       <source>IfcAreaMeasure</source>
-      <translation type="unfinished">IfcAreaMeasure</translation>
+      <translation>IfcAreaMeasure</translation>
     </message>
     <message>
       <location filename="../ui/dialogAddProperty.ui" line="80"/>
@@ -2774,7 +2774,7 @@ en lugar del banco de trabajo web FreeCAD</translation>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="528"/>
       <source>Switch backgrounds</source>
-      <translation type="unfinished">Switch backgrounds</translation>
+      <translation>Cambiar fondos</translation>
     </message>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="314"/>
@@ -2832,7 +2832,7 @@ en lugar del banco de trabajo web FreeCAD</translation>
     <message>
       <location filename="../ui/preferences-sh3d-import.ui" line="74"/>
       <source>Doors and Windows</source>
-      <translation type="unfinished">Doors and Windows</translation>
+      <translation>Puertas y ventanas</translation>
     </message>
     <message>
       <location filename="../ui/preferences-sh3d-import.ui" line="87"/>
@@ -2842,7 +2842,7 @@ en lugar del banco de trabajo web FreeCAD</translation>
     <message>
       <location filename="../ui/preferences-sh3d-import.ui" line="90"/>
       <source>Furnitures</source>
-      <translation type="unfinished">Furnitures</translation>
+      <translation>Muebles</translation>
     </message>
     <message>
       <location filename="../ui/preferences-sh3d-import.ui" line="103"/>
@@ -2889,12 +2889,12 @@ en lugar del banco de trabajo web FreeCAD</translation>
     <message>
       <location filename="../ui/preferences-sh3d-import.ui" line="168"/>
       <source>Merge imported element with existing FC object</source>
-      <translation type="unfinished">Merge imported element with existing FC object</translation>
+      <translation>Combinar elemento importado con objeto de FC existente</translation>
     </message>
     <message>
       <location filename="../ui/preferences-sh3d-import.ui" line="171"/>
       <source>Merge into existing document</source>
-      <translation type="unfinished">Merge into existing document</translation>
+      <translation>Combinar en el documento existente</translation>
     </message>
     <message>
       <location filename="../ui/preferences-sh3d-import.ui" line="186"/>
@@ -2935,7 +2935,7 @@ en lugar del banco de trabajo web FreeCAD</translation>
     <message>
       <location filename="../ui/preferences-sh3d-import.ui" line="299"/>
       <source>Create IFC Project</source>
-      <translation type="unfinished">Create IFC Project</translation>
+      <translation>Crea un proyecto IFC</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="45"/>
@@ -3872,7 +3872,7 @@ En cualquier caso, algunas aplicaciones BIM usarán este factor para elegir con 
     <message>
       <location filename="../../bimcommands/BimEquipment.py" line="122"/>
       <source>This operation can take a long time. Proceed?</source>
-      <translation>La operación puede tardar mucho tiempo ¿Deseas continuar?</translation>
+      <translation>La operación puede tardar mucho tiempo ¿Desea continuar?</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimEquipment.py" line="129"/>
@@ -4556,7 +4556,7 @@ Si Distancia = 0 entonces la distancia es calcula de forma que la altura sea igu
     <message>
       <location filename="../../importers/importIFClegacy.py" line="387"/>
       <source>IfcOpenShell not found or disabled, falling back on internal parser.</source>
-      <translation>No se encuentra o está deshabilitado IfcOpenShell, cambiando a parser interno.</translation>
+      <translation>No se encuentra IfcOpenShell o está deshabilitado. Cambiando al analizador interno.</translation>
     </message>
     <message>
       <location filename="../../importers/importIFClegacy.py" line="393"/>
@@ -4621,7 +4621,7 @@ Si Distancia = 0 entonces la distancia es calcula de forma que la altura sea igu
     <message>
       <location filename="../../ArchMaterial.py" line="90"/>
       <source>Merge duplicates</source>
-      <translation>Fusionar duplicados</translation>
+      <translation>Combinar duplicados</translation>
     </message>
     <message>
       <location filename="../../ArchMaterial.py" line="749"/>
@@ -5566,7 +5566,7 @@ Creación de Edificio cancelada.</translation>
     <message>
       <location filename="../../bimcommands/BimArchUtils.py" line="475"/>
       <source>The selected wall contains no subwall to merge</source>
-      <translation>El muro seleccionado no contiene submuros para unir</translation>
+      <translation>El muro seleccionado no contiene submuros para combinar</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimArchUtils.py" line="478"/>
@@ -5760,7 +5760,7 @@ Creación de Edificio cancelada.</translation>
     <message>
       <location filename="../../bimcommands/BimDrawingView.py" line="55"/>
       <source>Create 2D View</source>
-      <translation type="unfinished">Create 2D View</translation>
+      <translation>Crear vista 2D</translation>
     </message>
   </context>
   <context>
@@ -8610,12 +8610,12 @@ Creación de Edificio cancelada.</translation>
     <message>
       <location filename="../../bimcommands/BimArchUtils.py" line="436"/>
       <source>Merge Walls</source>
-      <translation>Unir muros</translation>
+      <translation>Combinar muros</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimArchUtils.py" line="439"/>
       <source>Merges the selected walls, if possible</source>
-      <translation>Une los muros seleccionados si es posible</translation>
+      <translation>Combina los muros seleccionados si es posible</translation>
     </message>
   </context>
   <context>
@@ -8826,12 +8826,12 @@ Creación de Edificio cancelada.</translation>
     <message>
       <location filename="../../BimStatus.py" line="158"/>
       <source>Toggle BIM views panel on/off (Ctrl+9)</source>
-      <translation>Alternar panel de vistas BIM activar/desactivar (Ctrl+9)</translation>
+      <translation>Activa/desactiva el panel de vistas de BIM (Ctrl+9)</translation>
     </message>
     <message>
       <location filename="../../BimStatus.py" line="176"/>
       <source>Toggle 3D view background between simple and gradient</source>
-      <translation>Alternar el fondo de la vista 3D entre simple y degradado</translation>
+      <translation>Alterna el fondo de la vista en 3D entre simple y degradado</translation>
     </message>
     <message>
       <location filename="../../BimStatus.py" line="203"/>
@@ -8959,7 +8959,7 @@ CTRL+/ para alternar entre modo automático y manual</translation>
     <message>
       <location filename="../../bimcommands/BimDiff.py" line="585"/>
       <source>You need two documents open to run this tool. One which is your main document, and one that contains new objects that you wish to compare against the existing one. Make sure only the objects you wish to compare in both documents are visible.</source>
-      <translation>Necesitas tener dos documentos abiertos para usar esta herramienta. Uno será tu documento principal y el otro contendrá los nuevos objetos que deseas comparar con el existente. Asegúrate de que solo los objetos que deseas comparar en ambos documentos sean visibles.</translation>
+      <translation>Necesita tener dos documentos abiertos para ejecutar esta herramienta: uno principal y otro con los nuevos objetos que desee comparar con el existente. Asegúrese de que solo sean visibles los objetos que desea comparar en ambos documentos.</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimIfcElements.py" line="86"/>
@@ -9383,7 +9383,7 @@ CTRL+/ para alternar entre modo automático y manual</translation>
     <message>
       <location filename="../../bimcommands/BimMaterial.py" line="145"/>
       <source>Merge duplicates</source>
-      <translation>Fusionar duplicados</translation>
+      <translation>Combinar duplicados</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimMaterial.py" line="153"/>
@@ -9592,7 +9592,7 @@ CTRL+/ para alternar entre modo automático y manual</translation>
     <message>
       <location filename="../../bimcommands/BimPreflight.py" line="1139"/>
       <source>Tip: The results are best viewed in Wireframe mode (menu Views -&gt; Draw Style -&gt; Wireframe)</source>
-      <translation>Consejo: Los resultados se ven mejor en el modo Wireframe (menú Vistas -&gt; Estilo de dibujo -&gt; Wireframe)</translation>
+      <translation>Consejo: Los resultados se ven mejor en el modo de modo de alambres (menú Vistas -&gt; Estilo de dibujo -&gt; Modo de alambres)</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimProjectManager.py" line="114"/>
@@ -9817,7 +9817,7 @@ CTRL+/ para alternar entre modo automático y manual</translation>
     <message>
       <location filename="../../bimcommands/BimViews.py" line="110"/>
       <source>Toggles selected items on/off</source>
-      <translation>activa/desactiva los elementos seleccionados</translation>
+      <translation>Activa/desactiva los elementos seleccionados</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimViews.py" line="111"/>
@@ -9927,37 +9927,37 @@ CTRL+/ para alternar entre modo automático y manual</translation>
     <message>
       <location filename="../../nativeifc/ifc_status.py" line="78"/>
       <source>Add IFC property...</source>
-      <translation type="unfinished">Add IFC property...</translation>
+      <translation>Añadir propiedad IFC...</translation>
     </message>
     <message>
       <location filename="../../nativeifc/ifc_status.py" line="83"/>
       <source>Add standard IFC Property Set...</source>
-      <translation type="unfinished">Add standard IFC Property Set...</translation>
+      <translation>Añadir conjunto de propiedades IFC estándar...</translation>
     </message>
     <message>
       <location filename="../../nativeifc/ifc_status.py" line="139"/>
       <source>No Property set provided</source>
-      <translation type="unfinished">No Property set provided</translation>
+      <translation>Ningún conjunto de propiedades proporcionado</translation>
     </message>
     <message>
       <location filename="../../nativeifc/ifc_status.py" line="145"/>
       <source>add property</source>
-      <translation type="unfinished">add property</translation>
+      <translation>añadir propiedad</translation>
     </message>
     <message>
       <location filename="../../nativeifc/ifc_status.py" line="208"/>
       <source>Property set already exists</source>
-      <translation type="unfinished">Property set already exists</translation>
+      <translation>El conjunto de propiedades ya existe</translation>
     </message>
     <message>
       <location filename="../../nativeifc/ifc_status.py" line="212"/>
       <source>add property set</source>
-      <translation type="unfinished">add property set</translation>
+      <translation>añadir conjunto de propiedades</translation>
     </message>
     <message>
       <location filename="../../nativeifc/ifc_status.py" line="220"/>
       <source>Property already exists</source>
-      <translation type="unfinished">Property already exists</translation>
+      <translation>La propiedad ya existe</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimTDView.py" line="74"/>
@@ -10017,7 +10017,7 @@ CTRL+/ para alternar entre modo automático y manual</translation>
     <message>
       <location filename="../../bimcommands/BimBackground.py" line="43"/>
       <source>Toggles the background of the 3D view between simple and gradient</source>
-      <translation>Alterna el fondo de la vista 3D entre simple y degradado</translation>
+      <translation>Alterna el fondo de la vista en 3D entre simple y degradado</translation>
     </message>
   </context>
   <context>
@@ -10741,7 +10741,7 @@ CTRL+/ para alternar entre modo automático y manual</translation>
     <message>
       <location filename="../../bimcommands/BimTogglePanels.py" line="42"/>
       <source>Toggle bottom dock panels on/off</source>
-      <translation>Activar/desactivar paneles de acoplamiento inferior</translation>
+      <translation>Activa/desactiva los paneles de acoplamiento inferior</translation>
     </message>
   </context>
   <context>
@@ -11155,7 +11155,7 @@ CTRL+/ para alternar entre modo automático y manual</translation>
     <message>
       <location filename="../ui/dialogSetup.ui" line="506"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Optional license you wish to use for new files. Keep &amp;quot;All rights reserved&amp;quot; if you don't wish to use any particular license. Location in preferences: &lt;span style=" font-weight:600;"&gt;General &amp;gt; Document &amp;gt; Default license&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Licencia opcional que deseas usar para nuevos archivos. Mantén &amp;quot;Todos los derechos reservados&amp;quot; si no deseas usar ninguna licencia en particular. Ubicación en preferencias: &lt;span style=" font-weight:600;"&gt;General &amp;gt; Documento &amp;gt; Licencia por defecto&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Licencia opcional que deseas usar para nuevos archivos. Mantenga &amp;quot;Todos los derechos reservados&amp;quot; si no desea usar ninguna licencia en particular. Ubicación en preferencias: &lt;span style=" font-weight:600;"&gt;General &amp;gt; Documento &amp;gt; Licencia por defecto&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="510"/>
@@ -11391,12 +11391,12 @@ CTRL+/ para alternar entre modo automático y manual</translation>
     <message>
       <location filename="../../bimcommands/BimArchUtils.py" line="298"/>
       <source>Toggle IFC B-rep flag</source>
-      <translation>Cambiar indicador IFC B-rep</translation>
+      <translation>Alternar el indicador B-rep de IFC</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimArchUtils.py" line="301"/>
       <source>Force an object to be exported as B-rep or not</source>
-      <translation>Forzar a un objeto para ser exportado como B-rep o no</translation>
+      <translation>Fuerza a que un objeto se exporte como B-rep o no</translation>
     </message>
   </context>
   <context>
@@ -11404,12 +11404,12 @@ CTRL+/ para alternar entre modo automático y manual</translation>
     <message>
       <location filename="../../bimcommands/BimDrawingView.py" line="43"/>
       <source>2D Drawing</source>
-      <translation type="unfinished">2D Drawing</translation>
+      <translation>Dibujo en 2D</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimDrawingView.py" line="47"/>
       <source>Creates a drawing container to contain elements of a 2D view</source>
-      <translation type="unfinished">Creates a drawing container to contain elements of a 2D view</translation>
+      <translation>Crea un contenedor de dibujo para contener elementos de una vista en 2D</translation>
     </message>
   </context>
   <context>
@@ -11430,12 +11430,12 @@ CTRL+/ para alternar entre modo automático y manual</translation>
     <message>
       <location filename="../../bimcommands/BimTDView.py" line="39"/>
       <source>Insert view</source>
-      <translation type="unfinished">Insert view</translation>
+      <translation>Insertar vista</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimTDView.py" line="43"/>
       <source>Inserts a drawing view on a page</source>
-      <translation type="unfinished">Inserts a drawing view on a page</translation>
+      <translation>Inserta una vista de dibujo en una página</translation>
     </message>
   </context>
 </TS>

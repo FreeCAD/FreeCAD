@@ -235,7 +235,7 @@ BIM 환경설정에서 변경 하십시오.</translation>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="90"/>
       <source>Objects</source>
-      <translation>오브젝트</translation>
+      <translation>대상체</translation>
     </message>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="109"/>
@@ -3223,7 +3223,7 @@ Netgen을 사용하는 경우 사용 가능한지 확인합니다.</translation>
     <message>
       <location filename="../ui/preferences-dae.ui" line="85"/>
       <source>Builtin</source>
-      <translation>분할 갯수</translation>
+      <translation>구축된</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dae.ui" line="90"/>
@@ -5278,7 +5278,7 @@ Floor creation aborted.</source>
     <message>
       <location filename="../../ArchComponent.py" line="1968"/>
       <source>Objects</source>
-      <translation>오브젝트</translation>
+      <translation>대상체</translation>
     </message>
     <message>
       <location filename="../../ArchComponent.py" line="1971"/>
@@ -7465,7 +7465,7 @@ Building creation aborted.</source>
       <location filename="../../ArchFloor.py" line="214"/>
       <location filename="../../ArchSectionPlane.py" line="812"/>
       <source>The placement of this object</source>
-      <translation>이 객체의 배치</translation>
+      <translation>이 대상체의 배치</translation>
     </message>
     <message>
       <location filename="../../ArchAxis.py" line="70"/>
@@ -8796,7 +8796,7 @@ Building creation aborted.</source>
     <message>
       <location filename="../../InitGui.py" line="451"/>
       <source>Draft</source>
-      <translation>구배</translation>
+      <translation>제도</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="677"/>
@@ -10427,7 +10427,7 @@ CTRL + / 키를 눌러 자동모드와 수동모드 전환</translation>
     <message>
       <location filename="../../bimcommands/BimLeader.py" line="47"/>
       <source>Creates a polyline with an arrow at its endpoint</source>
-      <translation type="unfinished">Creates a polyline with an arrow at its endpoint</translation>
+      <translation>끝점에 화살표가 있는 꺾은선을 생성합니다.</translation>
     </message>
   </context>
   <context>
@@ -10710,7 +10710,7 @@ CTRL + / 키를 눌러 자동모드와 수동모드 전환</translation>
     <message>
       <location filename="../../bimcommands/BimTDPage.py" line="40"/>
       <source>Page</source>
-      <translation>Page</translation>
+      <translation>페이지</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimTDPage.py" line="43"/>
@@ -11160,7 +11160,7 @@ CTRL + / 키를 눌러 자동모드와 수동모드 전환</translation>
     <message>
       <location filename="../ui/dialogSetup.ui" line="510"/>
       <source>All rights reserved (no specific license)</source>
-      <translation>모든 권한 부여 (특정 라이선스 없음)</translation>
+      <translation>창작자가 모든 저작권 보유 (창작자 허락 없이는 사용 불가)</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="119"/>
@@ -11195,7 +11195,7 @@ CTRL + / 키를 눌러 자동모드와 수동모드 전환</translation>
     <message>
       <location filename="../ui/dialogSetup.ui" line="320"/>
       <source>Default license for new files</source>
-      <translation>새 파일에 대한 기본 라이선스</translation>
+      <translation>새 파일에 대한 기본 면허</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="334"/>

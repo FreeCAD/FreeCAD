@@ -345,7 +345,7 @@ bool DimensionAutoCorrect::findExactEdge3d(ReferenceEntry& refToFix, const Part:
     // no match in refObj, so now search the cached objects
     for (auto& objectName : m_3dObjectCache) {
         auto object3d = getDimension()->getDocument()->getObject(objectName.c_str());
-        auto shape3d = Part::Feature::getShape(object3d);
+        auto shape3d = Part::Feature::getShape(object3d, Part::ShapeOption::ResolveLink | Part::ShapeOption::Transform);
         auto edgesAll = getDimension()->getEdges(shape3d);
         size_t iEdge {1};
         for (auto& edge : edgesAll) {
@@ -531,7 +531,7 @@ ReferenceEntry DimensionAutoCorrect::searchObjForEdge(App::DocumentObject* obj,
 {
     // Base::Console().message("DAC::searchObjForEdge(%s)\n", obj->Label.getValue());
     (void)exact;
-    auto shape3d = Part::Feature::getShape(obj);
+    auto shape3d = Part::Feature::getShape(obj, Part::ShapeOption::ResolveLink | Part::ShapeOption::Transform);
     if (shape3d.IsNull()) {
         // how to handle this?
         return {};

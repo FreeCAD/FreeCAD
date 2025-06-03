@@ -215,7 +215,7 @@ void CrossSections::apply()
             getObjectsOfType(App::DocumentObject::getClassTypeId());
     std::vector<App::DocumentObject*> obj;
     for (auto it : docobjs) {
-        if (!Part::Feature::getTopoShape(it).isNull()) {
+        if (!Part::Feature::getTopoShape(it, Part::ShapeOption::ResolveLink | Part::ShapeOption::Transform).isNull()) {
             obj.push_back(it);
         }
     }

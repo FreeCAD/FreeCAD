@@ -18,8 +18,8 @@
     <name>Assembly_CreateJointFixed</name>
     <message>
       <location filename="../../../CommandCreateJoint.py" line="77"/>
-      <source>Create a Fixed Joint</source>
-      <translation>Создать неподвижное соединение</translation>
+      <source>Create Fixed Joint</source>
+      <translation type="unfinished">Create Fixed Joint</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateJoint.py" line="84"/>
@@ -98,8 +98,8 @@
     </message>
     <message>
       <location filename="../../../CommandCreateJoint.py" line="231"/>
-      <source>Create one of several different joints based on the selection.For example, a distance of 0 between a plane and a cylinder creates a tangent joint. A distance of 0 between planes will make them co-planar.</source>
-      <translation>Создайте одно из нескольких различных соединений на основе выбора. Например, расстояние 0 между плоскостью и цилиндром создает касательное соединение. Расстояние 0 между плоскостями сделает их копланарными.</translation>
+      <source>Create one of several different joints based on the selection. For example, a distance of 0 between a plane and a cylinder creates a tangent joint. A distance of 0 between planes will make them co-planar.</source>
+      <translation type="unfinished">Create one of several different joints based on the selection. For example, a distance of 0 between a plane and a cylinder creates a tangent joint. A distance of 0 between planes will make them co-planar.</translation>
     </message>
   </context>
   <context>
@@ -118,12 +118,12 @@
   <context>
     <name>Assembly_ExportASMT</name>
     <message>
-      <location filename="../../../CommandExportASMT.py" line="47"/>
+      <location filename="../../../CommandExportASMT.py" line="46"/>
       <source>Export ASMT File</source>
       <translation>Экспортировать файл ASMT</translation>
     </message>
     <message>
-      <location filename="../../../CommandExportASMT.py" line="51"/>
+      <location filename="../../../CommandExportASMT.py" line="50"/>
       <source>Export currently active assembly as a ASMT file.</source>
       <translation>Экспорт текущей активной сборки в файл ASMT.</translation>
     </message>
@@ -131,27 +131,27 @@
   <context>
     <name>Assembly_InsertLink</name>
     <message>
-      <location filename="../../../CommandInsertLink.py" line="90"/>
+      <location filename="../../../CommandInsertLink.py" line="89"/>
       <source>Insert Component</source>
       <translation>Вставить компонент</translation>
     </message>
     <message>
-      <location filename="../../../CommandInsertLink.py" line="52"/>
+      <location filename="../../../CommandInsertLink.py" line="51"/>
       <source>Insert a component into the active assembly. This will create dynamic links to parts, bodies, primitives, and assemblies. To insert external components, make sure that the file is &lt;b&gt;open in the current session&lt;/b&gt;</source>
       <translation>Вставьте компонент в активную сборку. Это создаст динамические ссылки на детали, тела, примитивы и сборки. Чтобы вставить внешние компоненты, убедитесь, что файл &lt;b&gt;открыт в текущем сеансе&lt;/b&gt;</translation>
     </message>
     <message>
-      <location filename="../../../CommandInsertLink.py" line="54"/>
+      <location filename="../../../CommandInsertLink.py" line="53"/>
       <source>Insert by left clicking items in the list.</source>
       <translation>Вставьте, щелкнув левой кнопкой мыши элементы в списке.</translation>
     </message>
     <message>
-      <location filename="../../../CommandInsertLink.py" line="56"/>
+      <location filename="../../../CommandInsertLink.py" line="55"/>
       <source>Remove by right clicking items in the list.</source>
       <translation>Удалить, щелкнув правой кнопкой мыши элементы в списке.</translation>
     </message>
     <message>
-      <location filename="../../../CommandInsertLink.py" line="61"/>
+      <location filename="../../../CommandInsertLink.py" line="60"/>
       <source>Press shift to add several instances of the component while clicking on the view.</source>
       <translation>Нажмите клавишу Shift, чтобы добавить несколько экземпляров компонента, одновременно нажимая на вид.</translation>
     </message>
@@ -159,12 +159,12 @@
   <context>
     <name>Assembly_SolveAssembly</name>
     <message>
-      <location filename="../../../CommandSolveAssembly.py" line="51"/>
+      <location filename="../../../CommandSolveAssembly.py" line="50"/>
       <source>Solve Assembly</source>
       <translation>Решить сборку</translation>
     </message>
     <message>
-      <location filename="../../../CommandSolveAssembly.py" line="58"/>
+      <location filename="../../../CommandSolveAssembly.py" line="57"/>
       <source>Solve the currently active assembly.</source>
       <translation>Решите текущую активную сборку.</translation>
     </message>
@@ -177,7 +177,7 @@
       <translation>Сборка</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="126"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="127"/>
       <source>Active object</source>
       <translation>Активный объект</translation>
     </message>
@@ -189,17 +189,27 @@
     <message>
       <location filename="../../ViewProviderAssemblyLink.cpp" line="128"/>
       <source>Your sub-assembly is currently rigid. This will make it flexible instead.</source>
-      <translation>Текущая подсистема на данный момент жёсткая. Этот параметр сделает её гибкой.</translation>
+      <translation>Ваша подсборка в настоящее время жесткая. Это сделает ее гибкой.</translation>
     </message>
     <message>
       <location filename="../../ViewProviderAssemblyLink.cpp" line="132"/>
       <source>Turn rigid</source>
-      <translation>Сделать жёстким</translation>
+      <translation>Сделать жесткой</translation>
     </message>
     <message>
       <location filename="../../ViewProviderAssemblyLink.cpp" line="133"/>
       <source>Your sub-assembly is currently flexible. This will make it rigid instead.</source>
-      <translation>Текущая подсистема на данный момент гибкая. Этот параметр сделает её жёсткой.</translation>
+      <translation>Ваша подсборка в настоящее время гибкая. Это сделает ее жесткой.</translation>
+    </message>
+    <message>
+      <location filename="../../../App/BomObject.cpp" line="272"/>
+      <source>N/A</source>
+      <translation type="unfinished">N/A</translation>
+    </message>
+    <message>
+      <location filename="../../../App/BomObject.cpp" line="296"/>
+      <source>Not supported</source>
+      <translation type="unfinished">Not supported</translation>
     </message>
   </context>
   <context>
@@ -225,7 +235,7 @@
     <message>
       <location filename="../../../JointObject.py" line="50"/>
       <source>Fixed</source>
-      <translation>Неподвижное</translation>
+      <translation>Исправлено</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="51"/>
@@ -249,7 +259,7 @@
     </message>
     <message>
       <location filename="../../../JointObject.py" line="55"/>
-      <location filename="../../../JointObject.py" line="1476"/>
+      <location filename="../../../JointObject.py" line="1516"/>
       <source>Distance</source>
       <translation>Расстояние</translation>
     </message>
@@ -261,13 +271,13 @@
     <message>
       <location filename="../../../JointObject.py" line="57"/>
       <source>Perpendicular</source>
-      <translation>Перпендикулярное</translation>
+      <translation>Нормаль</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="58"/>
-      <location filename="../../../JointObject.py" line="1478"/>
+      <location filename="../../../JointObject.py" line="1518"/>
       <source>Angle</source>
-      <translation>Угловое</translation>
+      <translation>Угол</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="59"/>
@@ -290,17 +300,22 @@
       <translation>Ремень</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1320"/>
+      <location filename="../../../JointObject.py" line="624"/>
+      <source>Broken link in: </source>
+      <translation type="unfinished">Broken link in: </translation>
+    </message>
+    <message>
+      <location filename="../../../JointObject.py" line="1360"/>
       <source>You need to select 2 elements from 2 separate parts.</source>
       <translation>Необходимо выбрать 2 элемента от 2 отдельных деталей.</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1480"/>
+      <location filename="../../../JointObject.py" line="1520"/>
       <source>Radius 1</source>
       <translation>Радиус 1</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1482"/>
+      <location filename="../../../JointObject.py" line="1522"/>
       <source>Pitch radius</source>
       <translation>Радиус шага</translation>
     </message>
@@ -391,8 +406,8 @@
     </message>
     <message>
       <location filename="../../../CommandCreateBom.py" line="407"/>
-      <source>Custom columns : 'Description' and other custom columns you add by clicking on 'Add column' will not have their data overwritten. These columns can be renamed by double-clicking or pressing F2 (Renaming a column will currently lose its data).</source>
-      <translation>Пользовательские столбцы: «Описание» и другие пользовательские столбцы, которые вы добавляете, нажимая «Добавить столбец», не будут перезаписывать свои данные. Эти столбцы можно переименовать, дважды щелкнув или нажав F2 (переименование столбца в настоящее время приведет к потере данных).</translation>
+      <source>Custom columns : 'Description' and other custom columns you add by clicking on 'Add column' will not have their data overwritten. If a column name starts with '.' followed by a property name (e.g. '.Length'), it will be auto-populated with that property value. These columns can be renamed by double-clicking or pressing F2 (Renaming a column will currently lose its data).</source>
+      <translation type="unfinished">Custom columns : 'Description' and other custom columns you add by clicking on 'Add column' will not have their data overwritten. If a column name starts with '.' followed by a property name (e.g. '.Length'), it will be auto-populated with that property value. These columns can be renamed by double-clicking or pressing F2 (Renaming a column will currently lose its data).</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateBom.py" line="413"/>
@@ -402,17 +417,17 @@
     <message>
       <location filename="../../../CommandCreateBom.py" line="415"/>
       <source>Export:</source>
-      <translation type="unfinished">Export:</translation>
+      <translation>Экспорт:</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateBom.py" line="422"/>
       <source>The exported file format can be customized in the Spreadsheet workbench preferences.</source>
-      <translation type="unfinished">The exported file format can be customized in the Spreadsheet workbench preferences.</translation>
+      <translation>Экспортируемый формат файла может быть настроен в настройках рабочего стола приложений.</translation>
     </message>
     <message>
       <location filename="../../../CommandInsertNewPart.py" line="84"/>
       <source>Part name</source>
-      <translation type="unfinished">Part name</translation>
+      <translation>Наименование детали</translation>
     </message>
     <message>
       <location filename="../../../CommandInsertNewPart.py" line="89"/>
@@ -422,17 +437,17 @@
     <message>
       <location filename="../../../CommandInsertNewPart.py" line="94"/>
       <source>Create part in new file</source>
-      <translation type="unfinished">Create part in new file</translation>
+      <translation>Создать часть в новом файле</translation>
     </message>
     <message>
       <location filename="../../../CommandInsertNewPart.py" line="101"/>
       <source>Joint new part origin</source>
-      <translation type="unfinished">Joint new part origin</translation>
+      <translation>Создание новой детали соединения</translation>
     </message>
     <message>
       <location filename="../../../CommandInsertNewPart.py" line="135"/>
       <source>Save Document</source>
-      <translation type="unfinished">Save Document</translation>
+      <translation>Сохранить документ</translation>
     </message>
     <message>
       <location filename="../../../CommandInsertNewPart.py" line="137"/>
@@ -442,132 +457,132 @@
     <message>
       <location filename="../../../CommandInsertNewPart.py" line="140"/>
       <source>Don't link</source>
-      <translation type="unfinished">Don't link</translation>
+      <translation>Не связывать</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="467"/>
+      <location filename="../../../CommandCreateSimulation.py" line="474"/>
       <source>Enter your formula...</source>
-      <translation type="unfinished">Enter your formula...</translation>
+      <translation>Введите вашу формулу...</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="520"/>
+      <location filename="../../../CommandCreateSimulation.py" line="527"/>
       <source>In capital are variables that you need to replace with actual values. More details about each example in it's tooltip.</source>
-      <translation type="unfinished">In capital are variables that you need to replace with actual values. More details about each example in it's tooltip.</translation>
+      <translation>В заглавных переменных необходимо заменить фактическими значениями. Более подробно о каждом примере в подсказке.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="523"/>
+      <location filename="../../../CommandCreateSimulation.py" line="530"/>
       <source> - Linear: C + VEL*time</source>
-      <translation type="unfinished"> - Linear: C + VEL*time</translation>
+      <translation> - Линейка: C + VEL*time</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="525"/>
+      <location filename="../../../CommandCreateSimulation.py" line="532"/>
       <source> - Quadratic: C + VEL*time + ACC*time^2</source>
-      <translation type="unfinished"> - Quadratic: C + VEL*time + ACC*time^2</translation>
+      <translation> - Квадратичный: C + VEL*time + ACC*time^2</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="528"/>
+      <location filename="../../../CommandCreateSimulation.py" line="535"/>
       <source> - Harmonic: C + AMP*sin(VEL*time - PHASE)</source>
-      <translation type="unfinished"> - Harmonic: C + AMP*sin(VEL*time - PHASE)</translation>
+      <translation> - Гармоничный: C + AMP*sin(VEL*time - PHASE)</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="531"/>
+      <location filename="../../../CommandCreateSimulation.py" line="538"/>
       <source> - Exponential: C*exp(time/TIMEC)</source>
-      <translation type="unfinished"> - Exponential: C*exp(time/TIMEC)</translation>
-    </message>
-    <message>
-      <location filename="../../../CommandCreateSimulation.py" line="537"/>
-      <source> - Smooth Step: L1 + (L2 - L1)*((1/2) + (1/pi)*arctan(SLOPE*(time - T0)))</source>
-      <translation type="unfinished"> - Smooth Step: L1 + (L2 - L1)*((1/2) + (1/pi)*arctan(SLOPE*(time - T0)))</translation>
+      <translation> - Экспоненциальный: C*exp(время/TIMEC)</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="544"/>
-      <source> - Smooth Square Impulse: (H/pi)*(arctan(SLOPE*(time - T1)) - arctan(SLOPE*(time - T2)))</source>
-      <translation type="unfinished"> - Smooth Square Impulse: (H/pi)*(arctan(SLOPE*(time - T1)) - arctan(SLOPE*(time - T2)))</translation>
+      <source> - Smooth Step: L1 + (L2 - L1)*((1/2) + (1/pi)*arctan(SLOPE*(time - T0)))</source>
+      <translation> - Плавный шаг: L1 + (L2 - L1)*(1/2) + (1/pi)*arctan(SLOPE*(время - T0)))</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="551"/>
-      <source> - Smooth Ramp Top Impulse: ((1/pi)*(arctan(1000*(time - T1)) - arctan(1000*(time - T2))))*(((H2 - H1)/(T2 - T1))*(time - T1) + H1)</source>
-      <translation type="unfinished"> - Smooth Ramp Top Impulse: ((1/pi)*(arctan(1000*(time - T1)) - arctan(1000*(time - T2))))*(((H2 - H1)/(T2 - T1))*(time - T1) + H1)</translation>
+      <source> - Smooth Square Impulse: (H/pi)*(arctan(SLOPE*(time - T1)) - arctan(SLOPE*(time - T2)))</source>
+      <translation> - Плавный квадратный импульс: (H/pi)*(арктан(SLOPE*(время - T1)) - арктан(SLOPE*(время - T2)))</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="561"/>
+      <location filename="../../../CommandCreateSimulation.py" line="558"/>
+      <source> - Smooth Ramp Top Impulse: ((1/pi)*(arctan(1000*(time - T1)) - arctan(1000*(time - T2))))*(((H2 - H1)/(T2 - T1))*(time - T1) + H1)</source>
+      <translation> Плавный верхний импульс рампы: ((1/pi)*(arctan(1000*(time - T1)) - arctan(1000*(time - T2))))*(((H2 - H1)/(T2 - T1))*(time - T1) + H1)</translation>
+    </message>
+    <message>
+      <location filename="../../../CommandCreateSimulation.py" line="568"/>
       <source>C is a constant offset.
 VEL is a velocity or slope or gradient of the straight line.</source>
-      <translation type="unfinished">C is a constant offset.
-VEL is a velocity or slope or gradient of the straight line.</translation>
+      <translation>C - константа.
+VEL - это скорость или уклон или градиент прямой линии.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="569"/>
+      <location filename="../../../CommandCreateSimulation.py" line="576"/>
       <source>C is a constant offset.
 VEL is the velocity or slope or gradient of the straight line.
 ACC is the acceleration or coefficient of the second order. The function is a parabola.</source>
-      <translation type="unfinished">C is a constant offset.
-VEL is the velocity or slope or gradient of the straight line.
-ACC is the acceleration or coefficient of the second order. The function is a parabola.</translation>
+      <translation>C — постоянное смещение.
+VEL — скорость или наклон или градиент прямой линии.
+ACC — ускорение или коэффициент второго порядка. Функция — парабола.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="578"/>
+      <location filename="../../../CommandCreateSimulation.py" line="585"/>
       <source>C is a constant offset.
 AMP is the amplitude of the sine wave.
 VEL is the angular velocity in radians per second.
 PHASE is the phase of the sine wave.</source>
-      <translation type="unfinished">C is a constant offset.
-AMP is the amplitude of the sine wave.
-VEL is the angular velocity in radians per second.
-PHASE is the phase of the sine wave.</translation>
+      <translation>C — постоянное смещение.
+AMP — амплитуда синусоиды.
+VEL — угловая скорость в радианах в секунду.
+PHASE — фаза синусоиды.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="585"/>
+      <location filename="../../../CommandCreateSimulation.py" line="592"/>
       <source>C is a constant.
 TIMEC is the time constant of the exponential function.</source>
-      <translation type="unfinished">C is a constant.
-TIMEC is the time constant of the exponential function.</translation>
+      <translation>C — константа.
+TIMEC — константа времени экспоненциальной функции.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="593"/>
+      <location filename="../../../CommandCreateSimulation.py" line="600"/>
       <source>L1 is step level before time = T0.
 L2 is step level after time = T0.
 SLOPE defines the steepness of the transition between L1 and L2 about time = T0. Higher values gives sharper cornered steps. SLOPE = 1000 or greater are suitable.</source>
-      <translation type="unfinished">L1 is step level before time = T0.
-L2 is step level after time = T0.
-SLOPE defines the steepness of the transition between L1 and L2 about time = T0. Higher values gives sharper cornered steps. SLOPE = 1000 or greater are suitable.</translation>
+      <translation>L1 — уровень ступени до времени = T0.
+L2 — уровень ступени после времени = T0.
+SLOPE определяет крутизну перехода между L1 и L2 около времени = T0. Более высокие значения дают более острые угловые ступени. Подходят SLOPE = 1000 или больше.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="602"/>
+      <location filename="../../../CommandCreateSimulation.py" line="609"/>
       <source>H is the height of the impulse.
 T1 is the start of the impulse.
 T2 is the end of the impulse.
 SLOPE defines the steepness of the transition between 0 and H about time = T1 and T2. Higher values gives sharper cornered impulses. SLOPE = 1000 or greater are suitable.</source>
-      <translation type="unfinished">H is the height of the impulse.
-T1 is the start of the impulse.
-T2 is the end of the impulse.
-SLOPE defines the steepness of the transition between 0 and H about time = T1 and T2. Higher values gives sharper cornered impulses. SLOPE = 1000 or greater are suitable.</translation>
+      <translation>H — высота импульса.
+T1 — начало импульса.
+T2 — конец импульса.
+SLOPE определяет крутизну перехода между 0 и H относительно времени = T1 и T2. Более высокие значения дают более острые угловые импульсы. Подходят SLOPE = 1000 или больше.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="613"/>
+      <location filename="../../../CommandCreateSimulation.py" line="620"/>
       <source>This is similar to the square impulse but the top has a sloping ramp. It is good for building a smooth piecewise linear function by adding a series of these.
 T1 is the start of the impulse.
 T2 is the end of the impulse.
 H1 is the height at T1 at the beginning of the ramp.
 H2 is the height at T2 at the end of the ramp.
 SLOPE defines the steepness of the transition between 0 and H1 and H2 to 0 about time = T1 and T2 respectively. Higher values gives sharper cornered impulses. SLOPE = 1000 or greater are suitable.</source>
-      <translation type="unfinished">This is similar to the square impulse but the top has a sloping ramp. It is good for building a smooth piecewise linear function by adding a series of these.
-T1 is the start of the impulse.
-T2 is the end of the impulse.
-H1 is the height at T1 at the beginning of the ramp.
-H2 is the height at T2 at the end of the ramp.
-SLOPE defines the steepness of the transition between 0 and H1 and H2 to 0 about time = T1 and T2 respectively. Higher values gives sharper cornered impulses. SLOPE = 1000 or greater are suitable.</translation>
+      <translation>Это похоже на квадратный импульс, но сверху есть наклонный скат. Это хорошо для построения плавной кусочно-линейной функции путем добавления ряда из них.
+T1 — начало импульса.
+T2 — конец импульса.
+H1 — высота в точке T1 в начале ската.
+H2 — высота в точке T2 в конце ската.
+SLOPE определяет крутизну перехода между 0 и H1 и H2 к 0 примерно за время = T1 и T2 соответственно. Более высокие значения дают более острые угловые импульсы. SLOPE = 1000 или больше подходят.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="651"/>
-      <location filename="../../../CommandCreateSimulation.py" line="668"/>
+      <location filename="../../../CommandCreateSimulation.py" line="658"/>
+      <location filename="../../../CommandCreateSimulation.py" line="675"/>
       <source>Help</source>
       <translation>Справка</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="666"/>
+      <location filename="../../../CommandCreateSimulation.py" line="673"/>
       <source>Hide help</source>
-      <translation type="unfinished">Hide help</translation>
+      <translation>Скрыть справку</translation>
     </message>
   </context>
   <context>
@@ -578,120 +593,125 @@ SLOPE defines the steepness of the transition between 0 and H1 and H2 to 0 about
       <translation>Тип соединения</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="205"/>
+      <location filename="../../../JointObject.py" line="206"/>
       <source>The first reference of the joint</source>
       <translation>Первая ссылка соединения</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="216"/>
+      <location filename="../../../JointObject.py" line="218"/>
       <source>This is the local coordinate system within Reference1's object that will be used for the joint.</source>
       <translation>Это локальная система координат внутри объекта Reference1, которая будет использоваться для соединения.</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="238"/>
-      <location filename="../../../JointObject.py" line="503"/>
+      <location filename="../../../JointObject.py" line="242"/>
+      <location filename="../../../JointObject.py" line="526"/>
       <source>This is the attachment offset of the first connector of the joint.</source>
       <translation>Это смещение крепления первого соединителя соединения.</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="247"/>
+      <location filename="../../../JointObject.py" line="252"/>
       <source>The second reference of the joint</source>
       <translation>Вторая ссылка на совместное</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="258"/>
+      <location filename="../../../JointObject.py" line="264"/>
       <source>This is the local coordinate system within Reference2's object that will be used for the joint.</source>
       <translation>Это локальная система координат внутри объекта Reference2, которая будет использоваться для соединения.</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="280"/>
-      <location filename="../../../JointObject.py" line="513"/>
+      <location filename="../../../JointObject.py" line="288"/>
+      <location filename="../../../JointObject.py" line="537"/>
       <source>This is the attachment offset of the second connector of the joint.</source>
       <translation>Это смещение крепления второго соединителя соединения.</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="425"/>
+      <location filename="../../../JointObject.py" line="445"/>
       <source>The first object of the joint</source>
       <translation>Первый объект объединения</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="227"/>
+      <location filename="../../../JointObject.py" line="230"/>
       <source>This prevents Placement1 from recomputing, enabling custom positioning of the placement.</source>
       <translation>Это предотвращает перерасчет Placement1, позволяя настраивать позиционирование места размещения.</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="444"/>
+      <location filename="../../../JointObject.py" line="465"/>
       <source>The second object of the joint</source>
       <translation>Второй объект соединения</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="269"/>
+      <location filename="../../../JointObject.py" line="276"/>
       <source>This prevents Placement2 from recomputing, enabling custom positioning of the placement.</source>
       <translation>Это предотвращает перерасчет Placement2, позволяя настраивать позиционирование места размещения.</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="292"/>
+      <location filename="../../../JointObject.py" line="301"/>
       <source>This is the distance of the joint. It is used only by the Distance joint and Rack and Pinion (pitch radius), Screw and Gears and Belt (radius1)</source>
       <translation>Это расстояние соединения. Используется только дистанционным соединением и зубчатой ​​рейкой (радиус шага), винтом и шестернями и ремнем (радиус 1)</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="303"/>
+      <location filename="../../../JointObject.py" line="313"/>
       <source>This is the second distance of the joint. It is used only by the gear joint to store the second radius.</source>
       <translation>Это второе расстояние сустава. Он используется только зубчатым соединением для хранения второго радиуса.</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="314"/>
+      <location filename="../../../JointObject.py" line="325"/>
       <source>This indicates if the joint is active.</source>
       <translation>Это указывает на то, активно ли соединение.</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="326"/>
+      <location filename="../../../JointObject.py" line="338"/>
       <source>Enable the minimum length limit of the joint.</source>
       <translation>Включите ограничение минимальной длины соединения.</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="338"/>
+      <location filename="../../../JointObject.py" line="351"/>
       <source>Enable the maximum length limit of the joint.</source>
       <translation>Включить ограничение максимальной длины соединения.</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="350"/>
+      <location filename="../../../JointObject.py" line="364"/>
       <source>Enable the minimum angle limit of the joint.</source>
       <translation>Включить ограничение минимального угла соединения.</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="362"/>
+      <location filename="../../../JointObject.py" line="377"/>
       <source>Enable the minimum length of the joint.</source>
       <translation>Включите минимальную длину стыка.</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="374"/>
+      <location filename="../../../JointObject.py" line="390"/>
       <source>This is the minimum limit for the length between both coordinate systems (along their Z axis).</source>
       <translation>Это минимальный предел длины между обеими системами координат (вдоль их оси Z).</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="385"/>
+      <location filename="../../../JointObject.py" line="402"/>
       <source>This is the maximum limit for the length between both coordinate systems (along their Z axis).</source>
       <translation>Это максимальный предел длины между обеими системами координат (вдоль их оси Z).</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="396"/>
+      <location filename="../../../JointObject.py" line="414"/>
       <source>This is the minimum limit for the angle between both coordinate systems (between their X axis).</source>
       <translation>Это минимальный предел угла между обеими системами координат (между их осью X).</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="407"/>
+      <location filename="../../../JointObject.py" line="426"/>
       <source>This is the maximum limit for the angle between both coordinate systems (between their X axis).</source>
       <translation>Это максимальный предел угла между обеими системами координат (между их осью X).</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="954"/>
+      <location filename="../../../JointObject.py" line="479"/>
+      <source>The {order} reference of the joint</source>
+      <translation type="unfinished">The {order} reference of the joint</translation>
+    </message>
+    <message>
+      <location filename="../../../JointObject.py" line="993"/>
       <source>The object to ground</source>
       <translation>Объект для закрепления</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateView.py" line="255"/>
-      <location filename="../../../CommandCreateView.py" line="289"/>
+      <location filename="../../../CommandCreateView.py" line="254"/>
+      <location filename="../../../CommandCreateView.py" line="291"/>
       <source>The objects moved by the move</source>
       <translation>Объекты перемещены инструментом "Переместить"</translation>
     </message>
@@ -701,54 +721,54 @@ SLOPE defines the steepness of the transition between 0 and H1 and H2 to 0 about
       <translation>Это движение движения. Конечное размещение является результатом начального размещения * этого размещения.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateView.py" line="274"/>
+      <location filename="../../../CommandCreateView.py" line="275"/>
       <source>The type of the move</source>
       <translation>Тип хода</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="107"/>
       <source>Simulation start time.</source>
-      <translation type="unfinished">Simulation start time.</translation>
+      <translation>Время начала моделирования.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="118"/>
+      <location filename="../../../CommandCreateSimulation.py" line="119"/>
       <source>Simulation end time.</source>
-      <translation type="unfinished">Simulation end time.</translation>
+      <translation>Время окончания моделирования.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="129"/>
+      <location filename="../../../CommandCreateSimulation.py" line="131"/>
       <source>Simulation time step for output.</source>
-      <translation type="unfinished">Simulation time step for output.</translation>
+      <translation>Шаг времени моделирования для вывода.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="140"/>
+      <location filename="../../../CommandCreateSimulation.py" line="143"/>
       <source>Integration global error tolerance.</source>
-      <translation type="unfinished">Integration global error tolerance.</translation>
+      <translation>Интегральная глобальная ошибка допусков.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="151"/>
+      <location filename="../../../CommandCreateSimulation.py" line="155"/>
       <source>Frames Per Second.</source>
-      <translation type="unfinished">Frames Per Second.</translation>
+      <translation>Кадров в секунду.</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="203"/>
+      <location filename="../../../CommandCreateSimulation.py" line="207"/>
       <source>The number of decimals to use for calculated texts</source>
       <translation>Количество десятичных знаков для генерируемых текстов</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="299"/>
+      <location filename="../../../CommandCreateSimulation.py" line="304"/>
       <source>The joint that is moved by the motion</source>
-      <translation type="unfinished">The joint that is moved by the motion</translation>
+      <translation>Шарнир, который перемещается при движении</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="310"/>
+      <location filename="../../../CommandCreateSimulation.py" line="316"/>
       <source>This is the formula of the motion. For example '1.0*time'.</source>
-      <translation type="unfinished">This is the formula of the motion. For example '1.0*time'.</translation>
+      <translation>Это формула движения. Например, «1.0 * время».</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateSimulation.py" line="318"/>
+      <location filename="../../../CommandCreateSimulation.py" line="325"/>
       <source>The type of the motion</source>
-      <translation type="unfinished">The type of the motion</translation>
+      <translation>Тип движения</translation>
     </message>
   </context>
   <context>
@@ -791,17 +811,17 @@ SLOPE defines the steepness of the transition between 0 and H1 and H2 to 0 about
     <message>
       <location filename="../panels/TaskAssemblyCreateJoint.ui" line="144"/>
       <source>By clicking this button, you can set the attachment offset of the first marker (coordinate system) of the joint.</source>
-      <translation type="unfinished">By clicking this button, you can set the attachment offset of the first marker (coordinate system) of the joint.</translation>
+      <translation>Нажав на эту кнопку, можно задать смещение присоединения первого маркера (системы координат) стыка.</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateJoint.ui" line="165"/>
       <source>By clicking this button, you can set the attachment offset of the second marker (coordinate system) of the joint.</source>
-      <translation type="unfinished">By clicking this button, you can set the attachment offset of the second marker (coordinate system) of the joint.</translation>
+      <translation>Нажав на эту кнопку, можно задать смещение присоединения второго маркера (системы координат) стыка.</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateJoint.ui" line="177"/>
       <source>Show advanced offsets</source>
-      <translation type="unfinished">Show advanced offsets</translation>
+      <translation>Показать дополнительные смещения</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateJoint.ui" line="193"/>
@@ -883,11 +903,11 @@ Rigid means that the added sub-assembly will be considered as a solid unit withi
 Flexible means that the added sub-assembly will allow movement of its individual components' joints within the parent assembly.
 You can change this behavior at any time by either right-clicking the sub-assembly on the document tree and toggling the
 Turn rigid/Turn flexible command there, or by editing its Rigid property in the Property Editor.</source>
-      <translation type="unfinished">Sets whether the inserted sub-assemblies will be rigid or flexible.
-Rigid means that the added sub-assembly will be considered as a solid unit within the parent assembly.
-Flexible means that the added sub-assembly will allow movement of its individual components' joints within the parent assembly.
-You can change this behavior at any time by either right-clicking the sub-assembly on the document tree and toggling the
-Turn rigid/Turn flexible command there, or by editing its Rigid property in the Property Editor.</translation>
+      <translation>Устанавливает, будут ли вставленные подсборки жесткими или гибкими.
+Жесткий означает, что добавленный подсборочный узел будет рассматриваться как сплошной блок в родительской сборке.
+Гибкий означает, что добавленный подсборочный узел будет допускать перемещение соединений его отдельных компонентов в родительской сборке.
+Вы можете изменить это поведение в любое время, щелкнув правой кнопкой мыши подсборку в дереве документа и переключив команду
+Повернуть жестким/Повернуть гибким там, или отредактировав ее свойство Жесткий в Редакторе свойств.</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyInsertLink.ui" line="81"/>
@@ -904,8 +924,8 @@ Turn rigid/Turn flexible command there, or by editing its Rigid property in the 
     </message>
     <message>
       <location filename="../preferences/Assembly.ui" line="20"/>
-      <source>Allow to leave edit mode when pressing Esc button</source>
-      <translation>Разрешить выход из режима редактирования при нажатии кнопки Esc</translation>
+      <source>Allows leaving edit mode when pressing Esc button</source>
+      <translation type="unfinished">Allows leaving edit mode when pressing Esc button</translation>
     </message>
     <message>
       <location filename="../preferences/Assembly.ui" line="23"/>
@@ -938,17 +958,17 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
   <context>
     <name>AssemblyGui::ViewProviderAssembly</name>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="198"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="196"/>
       <source>The object is associated to one or more joints.</source>
       <translation>Объект связан с одним или несколькими соединениями.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="200"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="198"/>
       <source>Do you want to move the object and delete associated joints?</source>
       <translation>Вы хотите переместить объект и удалить связанные соединения?</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="888"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="891"/>
       <source>Move part</source>
       <translation>Переместить деталь</translation>
     </message>
@@ -1042,12 +1062,12 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
   <context>
     <name>Assembly_CreateView</name>
     <message>
-      <location filename="../../../CommandCreateView.py" line="55"/>
+      <location filename="../../../CommandCreateView.py" line="54"/>
       <source>Create Exploded View</source>
       <translation>Создать разнесенный вид</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateView.py" line="62"/>
+      <location filename="../../../CommandCreateView.py" line="61"/>
       <source>Create an exploded view of the current assembly.</source>
       <translation>Создайте разнесенный вид текущей сборки.</translation>
     </message>
@@ -1136,7 +1156,7 @@ Press ESC to cancel.</source>
     <message>
       <location filename="../panels/TaskAssemblyCreateBom.ui" line="96"/>
       <source>Export</source>
-      <translation>Экспорт</translation>
+      <translation>Экспортировать</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateBom.ui" line="109"/>
@@ -1209,7 +1229,7 @@ Press ESC to cancel.</source>
   <context>
     <name>Assembly::AssemblyLink</name>
     <message>
-      <location filename="../../../App/AssemblyLink.cpp" line="513"/>
+      <location filename="../../../App/AssemblyLink.cpp" line="492"/>
       <source>Joints</source>
       <translation>Соединения</translation>
     </message>
@@ -1226,13 +1246,13 @@ Press ESC to cancel.</source>
     <name>Assembly_InsertNewPart</name>
     <message>
       <location filename="../../../CommandInsertNewPart.py" line="54"/>
-      <source>Insert a new part</source>
-      <translation type="unfinished">Insert a new part</translation>
+      <source>Insert New Part</source>
+      <translation type="unfinished">Insert New Part</translation>
     </message>
     <message>
       <location filename="../../../CommandInsertNewPart.py" line="61"/>
       <source>Insert a new part into the active assembly. The new part's origin can be positioned in the assembly.</source>
-      <translation type="unfinished">Insert a new part into the active assembly. The new part's origin can be positioned in the assembly.</translation>
+      <translation>Вставить новую часть в активный монтаж. Источник новой части может находиться в монтаже.</translation>
     </message>
   </context>
   <context>
@@ -1240,18 +1260,18 @@ Press ESC to cancel.</source>
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="67"/>
       <source>Create Simulation</source>
-      <translation type="unfinished">Create Simulation</translation>
+      <translation>Создать моделирование</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="74"/>
       <source>Create a simulation of the current assembly.</source>
-      <translation type="unfinished">Create a simulation of the current assembly.</translation>
+      <translation>Создать имитацию текущей сборки.</translation>
     </message>
   </context>
   <context>
     <name>Assembly_Insert</name>
     <message>
-      <location filename="../../../CommandInsertLink.py" line="74"/>
+      <location filename="../../../CommandInsertLink.py" line="73"/>
       <source>Insert</source>
       <translation>Вставить</translation>
     </message>
@@ -1261,27 +1281,27 @@ Press ESC to cancel.</source>
     <message>
       <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="14"/>
       <source>Create Simulation</source>
-      <translation type="unfinished">Create Simulation</translation>
+      <translation>Создать моделирование</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="20"/>
       <source>Motions</source>
-      <translation type="unfinished">Motions</translation>
+      <translation>Движения</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="50"/>
       <source>Add a prescribed motion</source>
-      <translation type="unfinished">Add a prescribed motion</translation>
+      <translation>Добавить предписанное движение</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="70"/>
       <source>Delete selected motions</source>
-      <translation type="unfinished">Delete selected motions</translation>
+      <translation>Удалить выбранные движения</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="89"/>
       <source>Simulation settings</source>
-      <translation type="unfinished">Simulation settings</translation>
+      <translation>Настройки симулятора</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="95"/>
@@ -1292,18 +1312,18 @@ Press ESC to cancel.</source>
       <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="98"/>
       <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="105"/>
       <source>Start time of the simulation</source>
-      <translation type="unfinished">Start time of the simulation</translation>
+      <translation>Время начала моделирования</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="112"/>
       <source>End</source>
-      <translation type="unfinished">End</translation>
+      <translation>Конец</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="115"/>
       <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="122"/>
       <source>End time of the simulation</source>
-      <translation type="unfinished">End time of the simulation</translation>
+      <translation>Время окончания моделирования</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="129"/>
@@ -1314,7 +1334,7 @@ Press ESC to cancel.</source>
       <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="132"/>
       <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="139"/>
       <source>Time Step</source>
-      <translation type="unfinished">Time Step</translation>
+      <translation>Шаг времени</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="146"/>
@@ -1325,17 +1345,17 @@ Press ESC to cancel.</source>
       <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="149"/>
       <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="156"/>
       <source>Global Error Tolerance</source>
-      <translation type="unfinished">Global Error Tolerance</translation>
+      <translation>Глобальная ошибка допуска</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="166"/>
       <source>Generate</source>
-      <translation type="unfinished">Generate</translation>
+      <translation>Генерировать</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="173"/>
       <source>Animation player</source>
-      <translation type="unfinished">Animation player</translation>
+      <translation>Проигрыватель анимации</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="181"/>
@@ -1345,22 +1365,22 @@ Press ESC to cancel.</source>
     <message>
       <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="201"/>
       <source>0.00 s</source>
-      <translation type="unfinished">0.00 s</translation>
+      <translation>0.00 с</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="212"/>
       <source>Frames Per Second</source>
-      <translation type="unfinished">Frames Per Second</translation>
+      <translation>Кадров в секунду</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="232"/>
       <source>Step backward</source>
-      <translation type="unfinished">Step backward</translation>
+      <translation>Шаг назад</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="252"/>
       <source>Play backward</source>
-      <translation type="unfinished">Play backward</translation>
+      <translation>Воспроизвести назад</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="272"/>
@@ -1370,12 +1390,12 @@ Press ESC to cancel.</source>
     <message>
       <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="292"/>
       <source>Play forward</source>
-      <translation type="unfinished">Play forward</translation>
+      <translation>Играть вперед</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="312"/>
       <source>Step forward</source>
-      <translation type="unfinished">Step forward</translation>
+      <translation>Шаг вперед</translation>
     </message>
   </context>
 </TS>

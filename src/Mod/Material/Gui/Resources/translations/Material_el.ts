@@ -4,13 +4,13 @@
   <context>
     <name>CmdInspectAppearance</name>
     <message>
-      <location filename="../../Command.cpp" line="147"/>
+      <location filename="../../Command.cpp" line="146"/>
       <source>Inspect Appearance...</source>
       <translation>Επιθεώρηση Εμφάνισης...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="148"/>
-      <location filename="../../Command.cpp" line="150"/>
+      <location filename="../../Command.cpp" line="147"/>
+      <location filename="../../Command.cpp" line="149"/>
       <source>Inspect the appearance properties of the selected object</source>
       <translation>Επιθεωρήστε τις ιδιότητες εμφάνισης του επιλεγμένου αντικειμένου</translation>
     </message>
@@ -18,33 +18,15 @@
   <context>
     <name>CmdInspectMaterial</name>
     <message>
-      <location filename="../../Command.cpp" line="174"/>
+      <location filename="../../Command.cpp" line="173"/>
       <source>Inspect Material...</source>
       <translation>Επιθεώρηση Υλικού...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="175"/>
-      <location filename="../../Command.cpp" line="177"/>
+      <location filename="../../Command.cpp" line="174"/>
+      <location filename="../../Command.cpp" line="176"/>
       <source>Inspect the material properties of the selected object</source>
       <translation>Επιθεωρήστε τις ιδιότητες υλικού του επιλεγμένου αντικειμένου</translation>
-    </message>
-  </context>
-  <context>
-    <name>CmdMaterialsEdit</name>
-    <message>
-      <location filename="../../Command.cpp" line="52"/>
-      <source>Material</source>
-      <translation>Υλικό</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="53"/>
-      <source>Edit...</source>
-      <translation>Επεξεργασία...</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="54"/>
-      <source>Edit material properties</source>
-      <translation>Επεξεργασία ιδιοτήτων υλικού</translation>
     </message>
   </context>
   <context>
@@ -105,12 +87,12 @@
   <context>
     <name>MatGui::ArrayDelegate</name>
     <message>
-      <location filename="../../ArrayDelegate.cpp" line="150"/>
+      <location filename="../../ArrayDelegate.cpp" line="148"/>
       <source>False</source>
       <translation>Ψευδές</translation>
     </message>
     <message>
-      <location filename="../../ArrayDelegate.cpp" line="151"/>
+      <location filename="../../ArrayDelegate.cpp" line="149"/>
       <source>True</source>
       <translation>Αληθές</translation>
     </message>
@@ -400,7 +382,7 @@
     </message>
     <message>
       <location filename="../../DlgInspectMaterial.cpp" line="269"/>
-      <location filename="../../DlgInspectMaterial.cpp" line="343"/>
+      <location filename="../../DlgInspectMaterial.cpp" line="344"/>
       <source>Library: </source>
       <translation>Βιβλιοθήκη: </translation>
     </message>
@@ -671,12 +653,12 @@ If unchecked, they will be sorted by their name.</source>
   <context>
     <name>MatGui::MaterialDelegate</name>
     <message>
-      <location filename="../../MaterialDelegate.cpp" line="449"/>
+      <location filename="../../MaterialDelegate.cpp" line="475"/>
       <source>False</source>
       <translation>Ψευδές</translation>
     </message>
     <message>
-      <location filename="../../MaterialDelegate.cpp" line="450"/>
+      <location filename="../../MaterialDelegate.cpp" line="476"/>
       <source>True</source>
       <translation>Αληθές</translation>
     </message>
@@ -695,8 +677,8 @@ If unchecked, they will be sorted by their name.</source>
     </message>
     <message>
       <location filename="../../MaterialSave.ui" line="59"/>
-      <location filename="../../MaterialSave.cpp" line="482"/>
-      <location filename="../../MaterialSave.cpp" line="492"/>
+      <location filename="../../MaterialSave.cpp" line="485"/>
+      <location filename="../../MaterialSave.cpp" line="495"/>
       <source>New Folder</source>
       <translation>Νέος Φάκελος</translation>
     </message>
@@ -711,64 +693,64 @@ If unchecked, they will be sorted by their name.</source>
       <translation>Αποθήκευση ως Κληρονομούμενο</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="91"/>
+      <location filename="../../MaterialSave.cpp" line="92"/>
       <source>Delete</source>
       <translation>Διαγραφή</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="190"/>
+      <location filename="../../MaterialSave.cpp" line="192"/>
       <source>Are you sure you want to save over &apos;%1&apos;?</source>
       <translation>Είστε βέβαιοι ότι θέλετε να αποθηκεύσετε πάνω από &apos;%1&apos;;</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="193"/>
+      <location filename="../../MaterialSave.cpp" line="195"/>
       <source>Saving over the original file may cause other documents to break. This is not recommended.</source>
       <translation>Η αποθήκευση πάνω από το αρχικό αρχείο μπορεί να προκαλέσει τη διακοπή της λειτουργίας άλλων εγγράφων. 
 Αυτό δε συνιστάται.</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="215"/>
+      <location filename="../../MaterialSave.cpp" line="217"/>
       <source>Confirm Save As New Material</source>
       <translation>Επιβεβαίωση Αποθήκευσης Ως Νέο Υλικό</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="217"/>
+      <location filename="../../MaterialSave.cpp" line="219"/>
       <source>Save as new material</source>
       <translation>Αποθήκευση ως νέο υλικό</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="220"/>
+      <location filename="../../MaterialSave.cpp" line="222"/>
       <source>This material already exists in this library. Would you like to save as a new material?</source>
       <translation>Αυτό το υλικό υπάρχει ήδη σε αυτή τη βιβλιοθήκη. 
 Θα θέλατε να το αποθηκεύσετε ως νέο υλικό;</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="242"/>
+      <location filename="../../MaterialSave.cpp" line="244"/>
       <source>Confirm Save As Copy</source>
       <translation>Επιβεβαίωση Αποθήκευσης Ως Αντιγραφή</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="244"/>
+      <location filename="../../MaterialSave.cpp" line="246"/>
       <source>Save as Copy</source>
       <translation>Αποθήκευση ενός Αντιγράφου</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="247"/>
+      <location filename="../../MaterialSave.cpp" line="249"/>
       <source>Saving a copy is not recommended as it can break other documents. We recommend you save as a new material.</source>
       <translation>Δε συνιστάται η αποθήκευση αντιγράφου, καθώς μπορεί να καταστρέψει άλλα έγγραφα. Προτείνουμε να αποθηκεύσετε ως νέο υλικό.</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="250"/>
+      <location filename="../../MaterialSave.cpp" line="252"/>
       <source>Save Copy</source>
       <translation>Αποθήκευση αντιγράφου</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="251"/>
+      <location filename="../../MaterialSave.cpp" line="253"/>
       <source>Save As New</source>
       <translation>Αποθήκευση ως Νέο</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="532"/>
+      <location filename="../../MaterialSave.cpp" line="535"/>
       <source>Context menu</source>
       <translation>Μενού πλαισίου</translation>
     </message>
@@ -891,76 +873,76 @@ If unchecked, they will be sorted by their name.</source>
       <translation>Διαγραφή μοντέλου εμφάνισης</translation>
     </message>
     <message>
-      <location filename="../../MaterialsEditor.cpp" line="484"/>
+      <location filename="../../MaterialsEditor.cpp" line="485"/>
       <source>Unnamed</source>
       <translation>Ανώνυμο</translation>
     </message>
     <message>
-      <location filename="../../MaterialsEditor.cpp" line="606"/>
+      <location filename="../../MaterialsEditor.cpp" line="607"/>
       <source>Old Format Material</source>
       <translation>Υλικό Παλαιάς Μορφής</translation>
     </message>
     <message>
-      <location filename="../../MaterialsEditor.cpp" line="608"/>
+      <location filename="../../MaterialsEditor.cpp" line="609"/>
       <source>This file is in the old material card format.</source>
       <translation>Αυτό το αρχείο έχει την παλιά μορφή κάρτας υλικού.</translation>
     </message>
     <message>
-      <location filename="../../MaterialsEditor.cpp" line="690"/>
+      <location filename="../../MaterialsEditor.cpp" line="695"/>
       <source>This card uses the old format and must be saved before use</source>
       <translation>Αυτή η κάρτα χρησιμοποιεί την παλιά μορφή και πρέπει να αποθηκευτεί πριν από τη χρήση</translation>
     </message>
     <message>
-      <location filename="../../MaterialsEditor.cpp" line="748"/>
-      <location filename="../../MaterialsEditor.cpp" line="780"/>
-      <location filename="../../MaterialsEditor.cpp" line="1054"/>
-      <location filename="../../MaterialsEditor.cpp" line="1116"/>
+      <location filename="../../MaterialsEditor.cpp" line="755"/>
+      <location filename="../../MaterialsEditor.cpp" line="787"/>
+      <location filename="../../MaterialsEditor.cpp" line="1088"/>
+      <location filename="../../MaterialsEditor.cpp" line="1150"/>
       <source>Property</source>
       <translation>Ιδιότητα</translation>
     </message>
     <message>
-      <location filename="../../MaterialsEditor.cpp" line="749"/>
-      <location filename="../../MaterialsEditor.cpp" line="781"/>
-      <location filename="../../MaterialsEditor.cpp" line="1055"/>
-      <location filename="../../MaterialsEditor.cpp" line="1117"/>
+      <location filename="../../MaterialsEditor.cpp" line="756"/>
+      <location filename="../../MaterialsEditor.cpp" line="788"/>
+      <location filename="../../MaterialsEditor.cpp" line="1089"/>
+      <location filename="../../MaterialsEditor.cpp" line="1151"/>
       <source>Value</source>
       <translation>Τιμή</translation>
     </message>
     <message>
-      <location filename="../../MaterialsEditor.cpp" line="750"/>
-      <location filename="../../MaterialsEditor.cpp" line="782"/>
-      <location filename="../../MaterialsEditor.cpp" line="1056"/>
-      <location filename="../../MaterialsEditor.cpp" line="1118"/>
+      <location filename="../../MaterialsEditor.cpp" line="757"/>
+      <location filename="../../MaterialsEditor.cpp" line="789"/>
+      <location filename="../../MaterialsEditor.cpp" line="1090"/>
+      <location filename="../../MaterialsEditor.cpp" line="1152"/>
       <source>Type</source>
       <translation>Τύπος</translation>
     </message>
     <message>
-      <location filename="../../MaterialsEditor.cpp" line="846"/>
+      <location filename="../../MaterialsEditor.cpp" line="880"/>
       <source>Favorites</source>
       <translation>Αγαπημένα</translation>
     </message>
     <message>
-      <location filename="../../MaterialsEditor.cpp" line="853"/>
+      <location filename="../../MaterialsEditor.cpp" line="887"/>
       <source>Recent</source>
       <translation>Πρόσφατα</translation>
     </message>
     <message>
-      <location filename="../../MaterialsEditor.cpp" line="1119"/>
+      <location filename="../../MaterialsEditor.cpp" line="1153"/>
       <source>Units</source>
       <translation>Μονάδες</translation>
     </message>
     <message>
-      <location filename="../../MaterialsEditor.cpp" line="1286"/>
+      <location filename="../../MaterialsEditor.cpp" line="1320"/>
       <source>Context menu</source>
       <translation>Μενού πλαισίου</translation>
     </message>
     <message>
-      <location filename="../../MaterialsEditor.cpp" line="1288"/>
+      <location filename="../../MaterialsEditor.cpp" line="1322"/>
       <source>Inherit from</source>
       <translation>Κληρονόμηση από</translation>
     </message>
     <message>
-      <location filename="../../MaterialsEditor.cpp" line="1292"/>
+      <location filename="../../MaterialsEditor.cpp" line="1326"/>
       <source>Inherit new material</source>
       <translation>Κληρονόμηση νέου υλικού</translation>
     </message>
@@ -979,13 +961,13 @@ If unchecked, they will be sorted by their name.</source>
     </message>
     <message>
       <location filename="../../ModelSelect.ui" line="49"/>
-      <location filename="../../ModelSelect.cpp" line="360"/>
+      <location filename="../../ModelSelect.cpp" line="365"/>
       <source>URL</source>
       <translation>Διεύθυνση URL</translation>
     </message>
     <message>
       <location filename="../../ModelSelect.ui" line="56"/>
-      <location filename="../../ModelSelect.cpp" line="359"/>
+      <location filename="../../ModelSelect.cpp" line="364"/>
       <source>Description</source>
       <translation>Περιγραφή</translation>
     </message>
@@ -1006,38 +988,38 @@ If unchecked, they will be sorted by their name.</source>
     </message>
     <message>
       <location filename="../../ModelSelect.ui" line="172"/>
-      <location filename="../../ModelSelect.cpp" line="438"/>
-      <location filename="../../ModelSelect.cpp" line="454"/>
+      <location filename="../../ModelSelect.cpp" line="443"/>
+      <location filename="../../ModelSelect.cpp" line="459"/>
       <source>Properties</source>
       <translation>Ιδιότητες</translation>
     </message>
     <message>
-      <location filename="../../ModelSelect.cpp" line="332"/>
+      <location filename="../../ModelSelect.cpp" line="337"/>
       <source>Favorites</source>
       <translation>Αγαπημένα</translation>
     </message>
     <message>
-      <location filename="../../ModelSelect.cpp" line="337"/>
+      <location filename="../../ModelSelect.cpp" line="342"/>
       <source>Recent</source>
       <translation>Πρόσφατα</translation>
     </message>
     <message>
-      <location filename="../../ModelSelect.cpp" line="356"/>
+      <location filename="../../ModelSelect.cpp" line="361"/>
       <source>Inherited</source>
       <translation>Κληρονομικό</translation>
     </message>
     <message>
-      <location filename="../../ModelSelect.cpp" line="357"/>
+      <location filename="../../ModelSelect.cpp" line="362"/>
       <source>Property</source>
       <translation>Ιδιότητα</translation>
     </message>
     <message>
-      <location filename="../../ModelSelect.cpp" line="358"/>
+      <location filename="../../ModelSelect.cpp" line="363"/>
       <source>Units</source>
       <translation>Μονάδες</translation>
     </message>
     <message>
-      <location filename="../../ModelSelect.cpp" line="441"/>
+      <location filename="../../ModelSelect.cpp" line="446"/>
       <source>Appearance</source>
       <translation>Εμφάνιση</translation>
     </message>
@@ -1124,61 +1106,62 @@ If unchecked, they will be sorted by their name.</source>
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../AppMatGui.cpp" line="106"/>
+      <location filename="../../AppMatGui.cpp" line="110"/>
       <source>Material workbench</source>
       <translation>Πάγκος εργασίας Υλικού</translation>
     </message>
     <message>
-      <location filename="../../AppMatGui.cpp" line="108"/>
-      <location filename="../../AppMatGui.cpp" line="110"/>
+      <location filename="../../AppMatGui.cpp" line="112"/>
+      <location filename="../../AppMatGui.cpp" line="114"/>
+      <location filename="../../AppMatGui.cpp" line="117"/>
       <source>Material</source>
       <translation>Υλικό</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="187"/>
+      <location filename="../../MaterialSave.cpp" line="189"/>
       <source>Confirm Overwrite</source>
       <translation>Επιβεβαίωση Αντικατάστασης</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="376"/>
-      <location filename="../../MaterialSave.cpp" line="377"/>
+      <location filename="../../MaterialSave.cpp" line="379"/>
+      <location filename="../../MaterialSave.cpp" line="380"/>
       <source>No writeable library</source>
       <translation>Καμία εγγράψιμη βιβλιοθήκη</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="564"/>
+      <location filename="../../MaterialSave.cpp" line="567"/>
       <source>Are you sure you want to delete &apos;%1&apos;?</source>
       <translation>Είστε βέβαιοι ότι θέλετε να διαγράψετε &apos;%1&apos;;</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="568"/>
+      <location filename="../../MaterialSave.cpp" line="571"/>
       <source>Removing this will also remove all contents.</source>
       <translation>Η Αφαίρεση αυτού, θα αφαιρέσει επίσης όλα τα περιεχόμενα.</translation>
     </message>
     <message>
-      <location filename="../../MaterialsEditor.cpp" line="609"/>
+      <location filename="../../MaterialsEditor.cpp" line="610"/>
       <source>You must save the material before using it.</source>
       <translation>Πρέπει να αποθηκεύσετε το υλικό πριν το χρησιμοποιήσετε.</translation>
     </message>
     <message>
-      <location filename="../../MaterialsEditor.cpp" line="1313"/>
+      <location filename="../../MaterialsEditor.cpp" line="1347"/>
       <source>Unsaved Material</source>
       <translation>Μη Αποθηκευμένο Υλικό</translation>
     </message>
     <message>
-      <location filename="../../MaterialsEditor.cpp" line="1314"/>
+      <location filename="../../MaterialsEditor.cpp" line="1348"/>
       <source>Do you want to save your changes to the material before closing?</source>
       <translation>Θέλετε να αποθηκεύσετε τις αλλαγές σας στο υλικό πριν από το κλείσιμο;</translation>
     </message>
     <message>
-      <location filename="../../MaterialsEditor.cpp" line="1316"/>
+      <location filename="../../MaterialsEditor.cpp" line="1350"/>
       <source>If you don&apos;t save, your changes will be lost.</source>
       <translation>Αν don&apos;t αποθηκεύσετε, οι αλλαγές σας θα χαθούν.</translation>
     </message>
     <message>
       <location filename="../../Array2D.cpp" line="172"/>
       <location filename="../../ListEdit.cpp" line="142"/>
-      <location filename="../../MaterialSave.cpp" line="561"/>
+      <location filename="../../MaterialSave.cpp" line="564"/>
       <source>Confirm Delete</source>
       <translation>Επιβεβαίωση διαγραφής</translation>
     </message>
@@ -1192,13 +1175,13 @@ If unchecked, they will be sorted by their name.</source>
   <context>
     <name>StdCmdSetAppearance</name>
     <message>
-      <location filename="../../Command.cpp" line="89"/>
+      <location filename="../../Command.cpp" line="88"/>
       <source>&amp;Appearance...</source>
-      <translation type="unfinished">&amp;Appearance...</translation>
+      <translation>&amp;Εμφάνιση...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="90"/>
-      <location filename="../../Command.cpp" line="92"/>
+      <location filename="../../Command.cpp" line="89"/>
+      <location filename="../../Command.cpp" line="91"/>
       <source>Sets the display properties of the selected object</source>
       <translation>Ορίζει τις ιδιότητες εμφάνισης του επιλεγμένου αντικειμένου</translation>
     </message>
@@ -1206,13 +1189,13 @@ If unchecked, they will be sorted by their name.</source>
   <context>
     <name>StdCmdSetMaterial</name>
     <message>
-      <location filename="../../Command.cpp" line="118"/>
+      <location filename="../../Command.cpp" line="117"/>
       <source>&amp;Material...</source>
-      <translation type="unfinished">&amp;Material...</translation>
+      <translation>&amp;Υλικό...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="119"/>
-      <location filename="../../Command.cpp" line="121"/>
+      <location filename="../../Command.cpp" line="118"/>
+      <location filename="../../Command.cpp" line="120"/>
       <source>Sets the material of the selected object</source>
       <translation>Ορίζει το υλικό του επιλεγμένου αντικειμένου</translation>
     </message>
@@ -1228,6 +1211,174 @@ If unchecked, they will be sorted by their name.</source>
       <location filename="../../Workbench.cpp" line="35"/>
       <source>Materials</source>
       <translation>Υλικά</translation>
+    </message>
+  </context>
+  <context>
+    <name>MatGui::TaskMigrateExternal</name>
+    <message>
+      <location filename="../../TaskMigrateExternal.ui" line="14"/>
+      <source>Materials Migration</source>
+      <translation type="unfinished">Materials Migration</translation>
+    </message>
+    <message>
+      <location filename="../../TaskMigrateExternal.ui" line="20"/>
+      <source>Select Material Libraries</source>
+      <translation type="unfinished">Select Material Libraries</translation>
+    </message>
+    <message>
+      <location filename="../../TaskMigrateExternal.ui" line="27"/>
+      <source>Select material libraries to migrate. Existing materials will not be overwritten.</source>
+      <translation type="unfinished">Select material libraries to migrate. Existing materials will not be overwritten.</translation>
+    </message>
+    <message>
+      <location filename="../../TaskMigrateExternal.ui" line="34"/>
+      <source>Select Model Libraries</source>
+      <translation type="unfinished">Select Model Libraries</translation>
+    </message>
+    <message>
+      <location filename="../../TaskMigrateExternal.ui" line="41"/>
+      <source>Select model libraries to migrate. Existing models will not be overwritten.</source>
+      <translation type="unfinished">Select model libraries to migrate. Existing models will not be overwritten.</translation>
+    </message>
+    <message>
+      <location filename="../../TaskMigrateExternal.ui" line="48"/>
+      <source>Status</source>
+      <translation>Κατάσταση</translation>
+    </message>
+    <message>
+      <location filename="../../TaskMigrateExternal.cpp" line="180"/>
+      <source>&amp;Migrate</source>
+      <translation type="unfinished">&amp;Migrate</translation>
+    </message>
+  </context>
+  <context>
+    <name>MatGui::DlgSettingsExternal</name>
+    <message>
+      <location filename="../../DlgSettingsExternal.ui" line="14"/>
+      <location filename="../../DlgSettingsExternal.ui" line="29"/>
+      <source>External Interface</source>
+      <translation type="unfinished">External Interface</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsExternal.ui" line="20"/>
+      <source>Use External Interface</source>
+      <translation type="unfinished">Use External Interface</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsExternal.ui" line="65"/>
+      <source>Cache</source>
+      <translation>Κρυφή Μνήμη</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsExternal.ui" line="91"/>
+      <source>Model Cache Size</source>
+      <translation type="unfinished">Model Cache Size</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsExternal.ui" line="98"/>
+      <location filename="../../DlgSettingsExternal.ui" line="124"/>
+      <source>Hit Rate</source>
+      <translation type="unfinished">Hit Rate</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsExternal.ui" line="134"/>
+      <source>Material Cache Size</source>
+      <translation type="unfinished">Material Cache Size</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsExternal.cpp" line="97"/>
+      <source>None</source>
+      <translation>Κανένα</translation>
+    </message>
+  </context>
+  <context>
+    <name>MatGui::DlgMigrateExternal</name>
+    <message>
+      <location filename="../../TaskMigrateExternal.cpp" line="77"/>
+      <source>Migrating Models...</source>
+      <translation type="unfinished">Migrating Models...</translation>
+    </message>
+    <message>
+      <location filename="../../TaskMigrateExternal.cpp" line="83"/>
+      <location filename="../../TaskMigrateExternal.cpp" line="95"/>
+      <location filename="../../TaskMigrateExternal.cpp" line="107"/>
+      <location filename="../../TaskMigrateExternal.cpp" line="119"/>
+      <source>  Library: </source>
+      <translation type="unfinished">  Library: </translation>
+    </message>
+    <message>
+      <location filename="../../TaskMigrateExternal.cpp" line="87"/>
+      <location filename="../../TaskMigrateExternal.cpp" line="99"/>
+      <location filename="../../TaskMigrateExternal.cpp" line="111"/>
+      <location filename="../../TaskMigrateExternal.cpp" line="123"/>
+      <source>done</source>
+      <translation type="unfinished">done</translation>
+    </message>
+    <message>
+      <location filename="../../TaskMigrateExternal.cpp" line="89"/>
+      <source>Validating Models...</source>
+      <translation type="unfinished">Validating Models...</translation>
+    </message>
+    <message>
+      <location filename="../../TaskMigrateExternal.cpp" line="101"/>
+      <source>Migrating Materials...</source>
+      <translation type="unfinished">Migrating Materials...</translation>
+    </message>
+    <message>
+      <location filename="../../TaskMigrateExternal.cpp" line="113"/>
+      <source>Validating Materials...</source>
+      <translation type="unfinished">Validating Materials...</translation>
+    </message>
+    <message>
+      <location filename="../../TaskMigrateExternal.cpp" line="127"/>
+      <location filename="../../TaskMigrateExternal.cpp" line="131"/>
+      <location filename="../../TaskMigrateExternal.cpp" line="135"/>
+      <location filename="../../TaskMigrateExternal.cpp" line="139"/>
+      <location filename="../../TaskMigrateExternal.cpp" line="143"/>
+      <source>Aborted</source>
+      <translation type="unfinished">Aborted</translation>
+    </message>
+    <message>
+      <location filename="../../TaskMigrateExternal.cpp" line="147"/>
+      <location filename="../../TaskMigrateExternal.cpp" line="150"/>
+      <source>Unknown exception - Aborted</source>
+      <translation type="unfinished">Unknown exception - Aborted</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdMaterialEdit</name>
+    <message>
+      <location filename="../../Command.cpp" line="53"/>
+      <source>Material</source>
+      <translation>Υλικό</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="54"/>
+      <source>Edit...</source>
+      <translation type="unfinished">Edit...</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="55"/>
+      <source>Edit material properties</source>
+      <translation type="unfinished">Edit material properties</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdMigrateToExternal</name>
+    <message>
+      <location filename="../../Command.cpp" line="202"/>
+      <source>Migrate...</source>
+      <translation type="unfinished">Migrate...</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="203"/>
+      <source>Migrate the materials to the external materials manager</source>
+      <translation type="unfinished">Migrate the materials to the external materials manager</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="205"/>
+      <source>Migrate existing materials to the external materials manager</source>
+      <translation type="unfinished">Migrate existing materials to the external materials manager</translation>
     </message>
   </context>
 </TS>

@@ -24,6 +24,10 @@ import FreeCAD
 import Path
 import glob
 import os
+import pathlib
+from collections import defaultdict
+from typing import Optional
+
 
 if False:
     Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
@@ -31,7 +35,10 @@ if False:
 else:
     Path.Log.setLevel(Path.Log.Level.INFO, Path.Log.thisModule())
 
+
 translate = FreeCAD.Qt.translate
+
+PreferencesGroup = "User parameter:BaseApp/Preferences/Mod/CAM"
 
 DefaultFilePath = "DefaultFilePath"
 DefaultJobTemplate = "DefaultJobTemplate"
@@ -44,17 +51,9 @@ PostProcessorBlacklist = "PostProcessorBlacklist"
 PostProcessorOutputFile = "PostProcessorOutputFile"
 PostProcessorOutputPolicy = "PostProcessorOutputPolicy"
 
-LastPathToolBit = "LastPathToolBit"
-LastPathToolLibrary = "LastPathToolLibrary"
-LastPathToolShape = "LastPathToolShape"
-LastPathToolTable = "LastPathToolTable"
-
-LastFileToolBit = "LastFileToolBit"
-LastFileToolLibrary = "LastFileToolLibrary"
-LastFileToolShape = "LastFileToolShape"
-
-UseAbsoluteToolPaths = "UseAbsoluteToolPaths"
-# OpenLastLibrary                 = "OpenLastLibrary"
+ToolGroup = PreferencesGroup + "/Tools"
+ToolPath = "ToolPath"
+LastToolLibrary = "LastToolLibrary"
 
 # Linear tolerance to use when generating Paths, eg when tessellating geometry
 GeometryTolerance = "GeometryTolerance"
@@ -69,18 +68,84 @@ EnableExperimentalFeatures = "EnableExperimentalFeatures"
 EnableAdvancedOCLFeatures = "EnableAdvancedOCLFeatures"
 
 
+_observers = defaultdict(list)  # maps group name to callback functions
+
+
+def _add_group_observer(group, callback):
+    """Add an observer for any changes on the given parameter group"""
+    _observers[group].append(callback)
+
+
+def _emit_change(group, *args):
+    for cb in _observers[group]:
+        cb(group, *args)
+
+
 def preferences():
-    return FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/CAM")
+    return FreeCAD.ParamGet(PreferencesGroup)
+
+
+def tool_preferences():
+    return FreeCAD.ParamGet(ToolGroup)
+
+
+def addToolPreferenceObserver(callback):
+    _add_group_observer(ToolGroup, callback)
 
 
 def pathPostSourcePath():
     return os.path.join(FreeCAD.getHomePath(), "Mod/CAM/Path/Post/")
 
 
-def pathDefaultToolsPath(sub=None):
-    if sub:
-        return os.path.join(FreeCAD.getHomePath(), "Mod/CAM/Tools/", sub)
-    return os.path.join(FreeCAD.getHomePath(), "Mod/CAM/Tools/")
+def getBuiltinAssetPath() -> pathlib.Path:
+    home = pathlib.Path(FreeCAD.getHomePath())
+    return home / "Mod" / "CAM" / "Tools"
+
+
+def getBuiltinLibraryPath() -> pathlib.Path:
+    return getBuiltinAssetPath() / "Library"
+
+
+def getBuiltinShapePath() -> pathlib.Path:
+    return getBuiltinAssetPath() / "Shape"
+
+
+def getBuiltinToolBitPath() -> pathlib.Path:
+    return getBuiltinAssetPath() / "Bit"
+
+
+def getDefaultAssetPath():
+    config = pathlib.Path(FreeCAD.ConfigGet("UserConfigPath"))
+    return config / "Mod" / "CAM" / "Tools"
+
+
+def getAssetPath() -> pathlib.Path:
+    pref = tool_preferences()
+    default = getDefaultAssetPath()
+    path = pref.GetString(ToolPath, str(default))
+    return pathlib.Path(path or default)
+
+
+def setAssetPath(path: pathlib.Path):
+    assert path.is_dir(), f"Cannot put a non-initialized asset directory into preferences: {path}"
+    pref = tool_preferences()
+    pref.SetString(ToolPath, str(path))
+    _emit_change(ToolGroup, ToolPath, path)
+
+
+def getToolBitPath() -> pathlib.Path:
+    return getAssetPath() / "Bit"
+
+
+def getLastToolLibrary() -> Optional[str]:
+    pref = tool_preferences()
+    return pref.GetString(LastToolLibrary) or None
+
+
+def setLastToolLibrary(name: str):
+    assert isinstance(name, str), f"Library name '{name}' is not a string"
+    pref = tool_preferences()
+    pref.SetString(LastToolLibrary, name)
 
 
 def allAvailablePostProcessors():
@@ -159,26 +224,6 @@ def searchPathsPost():
     paths.append(os.path.join(pathPostSourcePath(), "scripts/"))
     paths.append(pathPostSourcePath())
     return paths
-
-
-def searchPathsTool(sub):
-    paths = []
-    paths.append(os.path.join(FreeCAD.getHomePath(), "Mod", "CAM", "Tools", sub))
-    return paths
-
-
-def toolsStoreAbsolutePaths():
-    return preferences().GetBool(UseAbsoluteToolPaths, False)
-
-
-# def toolsOpenLastLibrary():
-#     return preferences().GetBool(OpenLastLibrary, False)
-
-
-def setToolsSettings(relative):
-    pref = preferences()
-    pref.SetBool(UseAbsoluteToolPaths, relative)
-    # pref.SetBool(OpenLastLibrary, lastlibrary)
 
 
 def defaultJobTemplate():
@@ -284,65 +329,3 @@ def setPreferencesAdvanced(ocl, warnSpeeds, warnRapids, warnModes, warnOCL, warn
     preferences().SetBool(WarningSuppressSelectionMode, warnModes)
     preferences().SetBool(WarningSuppressOpenCamLib, warnOCL)
     preferences().SetBool(WarningSuppressVelocity, warnVelocity)
-
-
-def lastFileToolLibrary():
-    filename = preferences().GetString(LastFileToolLibrary)
-    if filename.endswith(".fctl") and os.path.isfile(filename):
-        return filename
-
-    libpath = preferences().GetString(LastPathToolLibrary, pathDefaultToolsPath("Library"))
-    libFiles = [f for f in glob.glob(libpath + "/*.fctl")]
-    libFiles.sort()
-    if len(libFiles) >= 1:
-        filename = libFiles[0]
-        setLastFileToolLibrary(filename)
-        Path.Log.track(filename)
-        return filename
-    else:
-        return None
-
-
-def setLastFileToolLibrary(path):
-    Path.Log.track(path)
-    if os.path.isfile(path):  # keep the path and file in sync
-        preferences().SetString(LastPathToolLibrary, os.path.split(path)[0])
-    return preferences().SetString(LastFileToolLibrary, path)
-
-
-def lastPathToolBit():
-    return preferences().GetString(LastPathToolBit, pathDefaultToolsPath("Bit"))
-
-
-def setLastPathToolBit(path):
-    return preferences().SetString(LastPathToolBit, path)
-
-
-def lastPathToolLibrary():
-    Path.Log.track()
-    return preferences().GetString(LastPathToolLibrary, pathDefaultToolsPath("Library"))
-
-
-def setLastPathToolLibrary(path):
-    Path.Log.track(path)
-    curLib = lastFileToolLibrary()
-    Path.Log.debug("curLib: {}".format(curLib))
-    if curLib and os.path.split(curLib)[0] != path:
-        setLastFileToolLibrary("")  # a path is known but not specific file
-    return preferences().SetString(LastPathToolLibrary, path)
-
-
-def lastPathToolShape():
-    return preferences().GetString(LastPathToolShape, pathDefaultToolsPath("Shape"))
-
-
-def setLastPathToolShape(path):
-    return preferences().SetString(LastPathToolShape, path)
-
-
-def lastPathToolTable():
-    return preferences().GetString(LastPathToolTable, "")
-
-
-def setLastPathToolTable(table):
-    return preferences().SetString(LastPathToolTable, table)

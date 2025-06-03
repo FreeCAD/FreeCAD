@@ -62,7 +62,7 @@ public:
     ~MaterialLibrary() override = default;
 
     virtual std::shared_ptr<std::map<QString, std::shared_ptr<MaterialTreeNode>>>
-    getMaterialTree(const std::shared_ptr<Materials::MaterialFilter>& filter,
+    getMaterialTree(const Materials::MaterialFilter& filter,
                     const Materials::MaterialFilterOptions& options) const;
 
     // Use this to get a shared_ptr for *this

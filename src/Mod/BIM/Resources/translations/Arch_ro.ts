@@ -528,7 +528,7 @@ When dealing with native IFC objects, you can use FreeCAD properties name, ex: '
       <location filename="../ui/dialogIfcProperties.ui" line="58"/>
       <location filename="../ui/dialogIfcElements.ui" line="47"/>
       <source>Alphabetical</source>
-      <translation type="unfinished">Alphabetical</translation>
+      <translation>Alfabetic</translation>
     </message>
     <message>
       <location filename="../ui/dialogClassification.ui" line="78"/>
@@ -2378,7 +2378,7 @@ p, li { white-space: pre-wrap; }
       <location filename="../ui/preferencesNativeIFC.ui" line="249"/>
       <location filename="../ui/preferencesNativeIFC.ui" line="293"/>
       <source>Ask every time</source>
-      <translation type="unfinished">Ask every time</translation>
+      <translation>Întreabă de fiecare dată</translation>
     </message>
     <message>
       <location filename="../ui/preferencesNativeIFC.ui" line="268"/>
@@ -3596,7 +3596,7 @@ unitate cu care să lucreze la deschiderea fișierului.</translation>
     <message>
       <location filename="../../ArchStructure.py" line="123"/>
       <source>Structure</source>
-      <translation>Structura</translation>
+      <translation>Structură</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="126"/>
@@ -5808,7 +5808,7 @@ Crearea de construcții a fost întreruptă.</translation>
     <message>
       <location filename="../../ArchStructure.py" line="271"/>
       <source>Structure</source>
-      <translation>Structura</translation>
+      <translation>Structură</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="275"/>

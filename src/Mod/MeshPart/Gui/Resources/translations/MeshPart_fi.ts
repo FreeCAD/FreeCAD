@@ -4,17 +4,17 @@
   <context>
     <name>CmdMeshPartCrossSections</name>
     <message>
-      <location filename="../../Command.cpp" line="281"/>
+      <location filename="../../Command.cpp" line="273"/>
       <source>MeshPart</source>
       <translation>VerkotaOsa</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="282"/>
+      <location filename="../../Command.cpp" line="274"/>
       <source>Cross-sections...</source>
       <translation>Poikkileikkaukset...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="283"/>
+      <location filename="../../Command.cpp" line="275"/>
       <source>Cross-sections</source>
       <translation>Poikkileikkaukset</translation>
     </message>
@@ -22,17 +22,17 @@
   <context>
     <name>CmdMeshPartCurveOnMesh</name>
     <message>
-      <location filename="../../Command.cpp" line="317"/>
+      <location filename="../../Command.cpp" line="309"/>
       <source>Mesh</source>
       <translation type="unfinished">Mesh</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="318"/>
+      <location filename="../../Command.cpp" line="310"/>
       <source>Curve on mesh...</source>
       <translation>Käyrä verkkopinnan päällä...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="319"/>
+      <location filename="../../Command.cpp" line="311"/>
       <source>Creates an approximated curve on top of a mesh.
 This command only works with a 'mesh' object.</source>
       <translation>Luo arvioidun käyrän verkkopinna päälle.
@@ -60,17 +60,17 @@ Tämä komento toimii vain 'verkkopinta' -objektin kanssa.</translation>
   <context>
     <name>CmdMeshPartSection</name>
     <message>
-      <location filename="../../Command.cpp" line="192"/>
+      <location filename="../../Command.cpp" line="188"/>
       <source>Mesh</source>
       <translation type="unfinished">Mesh</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="193"/>
+      <location filename="../../Command.cpp" line="189"/>
       <source>Create section from mesh and plane</source>
       <translation>Luo osio verkkopinnasta ja tasosta</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="194"/>
+      <location filename="../../Command.cpp" line="190"/>
       <source>Section</source>
       <translation>Leikkaus</translation>
     </message>
@@ -102,7 +102,7 @@ Tämä komento toimii vain 'verkkopinta' -objektin kanssa.</translation>
       <translation>Leikkaa tasolla</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="217"/>
+      <location filename="../../Command.cpp" line="213"/>
       <source>Section with plane</source>
       <translation>Lohkotaso</translation>
     </message>
@@ -195,15 +195,15 @@ Tämä komento toimii vain 'verkkopinta' -objektin kanssa.</translation>
     <message>
       <location filename="../../CurveOnMesh.cpp" line="367"/>
       <source>Cancel</source>
-      <translation>Peruuta</translation>
+      <translation>Kumoa</translation>
     </message>
     <message>
-      <location filename="../../CurveOnMesh.cpp" line="624"/>
+      <location filename="../../CurveOnMesh.cpp" line="623"/>
       <source>Wrong mesh picked</source>
       <translation>Väärä verkkopinta valittu</translation>
     </message>
     <message>
-      <location filename="../../CurveOnMesh.cpp" line="663"/>
+      <location filename="../../CurveOnMesh.cpp" line="662"/>
       <source>No point was picked</source>
       <translation>Yhtään kohdetta ei valittu</translation>
     </message>
@@ -222,7 +222,7 @@ Tämä komento toimii vain 'verkkopinta' -objektin kanssa.</translation>
 This command only works with a 'mesh' object, not a regular face or surface. To convert an object to a mesh use the tools of the Mesh Workbench.</source>
       <translation>Paina 'Aloita', valitse sitten pisteet verkkoon; kun on asetettu tarpeeksi pisteitä, niin napsauta hiiren kakkospainikkeella ja valitse 'Luo'. Toista tämä prosessi luodaksesi lisää käyriä. Sulje lopuksi tämä tehtäväpaneeli suorittaaksesi toiminnon loppuun.
 
-Tämä komento toimii vain verkkopinta-objektin kanssa, ei tavallisen näkymäpinnan tai ulkopinnan kanssa. Voit muuntaa objektin verkkopinnaksi käyttämällä Verkkopinta työpenkki (Mesh Workbench) työkaluja.</translation>
+Tämä komento toimii vain verkkopinta-objektin kanssa, ei tavallisen näkymäpinnan tai ulkopinnan kanssa. Voit muuntaa objektin verkkopinnaksi käyttämällä Mesh-työtila (Mesh Workbench) työkaluja.</translation>
     </message>
     <message>
       <location filename="../../TaskCurveOnMesh.ui" line="38"/>
@@ -491,27 +491,27 @@ Arvo välillä 0,2-10.</translation>
       <translation>Gmsh</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.cpp" line="237"/>
-      <location filename="../../Tessellation.cpp" line="243"/>
+      <location filename="../../Tessellation.cpp" line="240"/>
+      <location filename="../../Tessellation.cpp" line="246"/>
       <source>No active document</source>
       <translation>Ei aktiivista dokumenttia</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.cpp" line="273"/>
+      <location filename="../../Tessellation.cpp" line="279"/>
       <source>You have selected a body without tip.
 Either set the tip of the body or select a different shape, please.</source>
       <translation type="unfinished">You have selected a body without tip.
 Either set the tip of the body or select a different shape, please.</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.cpp" line="279"/>
+      <location filename="../../Tessellation.cpp" line="285"/>
       <source>You have selected a shape without faces.
 Select a different shape, please.</source>
       <translation type="unfinished">You have selected a shape without faces.
 Select a different shape, please.</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.cpp" line="283"/>
+      <location filename="../../Tessellation.cpp" line="289"/>
       <source>Select a shape for meshing, first.</source>
       <translation>Valitse ensin muoto verkkoihin.</translation>
     </message>
@@ -519,12 +519,12 @@ Select a different shape, please.</translation>
   <context>
     <name>MeshPart_Section</name>
     <message>
-      <location filename="../../Command.cpp" line="206"/>
+      <location filename="../../Command.cpp" line="202"/>
       <source>Select plane</source>
       <translation>Valitse taso</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="207"/>
+      <location filename="../../Command.cpp" line="203"/>
       <source>Please select a plane at which you section the mesh.</source>
       <translation>Valitse taso, jolla leikkaat verkkopinnan.</translation>
     </message>
