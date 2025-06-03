@@ -78,54 +78,24 @@ class TaskPanelPolarArray:
     """
 
     def __init__(self):
-        self.name = "Polar array"
-        _log(translate("draft","Task panel:") + " {}".format(self.name))
 
-        # The .ui file must be loaded into an attribute
-        # called `self.form` so that it is displayed in the task panel.
-        ui_file = ":/ui/TaskPanel_PolarArray.ui"
-        self.form = Gui.PySideUic.loadUi(ui_file)
-
-        icon_name = "Draft_PolarArray"
-        svg = ":/icons/" + icon_name
-        pix = QtGui.QPixmap(svg)
-        icon = QtGui.QIcon.fromTheme(icon_name, QtGui.QIcon(svg))
-        self.form.setWindowIcon(icon)
-        self.form.setWindowTitle(translate("draft","Polar array"))
-
-        self.form.label_icon.setPixmap(pix.scaled(32, 32))
+        self.form = Gui.PySideUic.loadUi(":/ui/TaskPanel_PolarArray.ui")
+        self.form.setWindowTitle(translate("draft", "Polar array"))
+        self.form.setWindowIcon(QtGui.QIcon(":/icons/Draft_PolarArray.svg"))
 
         # -------------------------------------------------------------------
-        # Default values for the internal function,
-        # and for the task panel interface
-        start_angle = U.Quantity(360.0, App.Units.Angle)
-        angle_unit = start_angle.getUserPreferred()[2]
-
-        self.angle = start_angle.Value
+        # Default values for the internal function, and for the task panel interface
+        self.center = App.Vector()
+        self.angle = 360
         self.number = 5
-
-        self.form.spinbox_angle.setProperty('rawValue', self.angle)
-        self.form.spinbox_angle.setProperty('unit', angle_unit)
-
-        self.form.spinbox_number.setValue(self.number)
-
-        start_point = U.Quantity(0.0, App.Units.Length)
-        length_unit = start_point.getUserPreferred()[2]
-
-        self.center = App.Vector(start_point.Value,
-                                 start_point.Value,
-                                 start_point.Value)
-
-        self.form.input_c_x.setProperty('rawValue', self.center.x)
-        self.form.input_c_x.setProperty('unit', length_unit)
-        self.form.input_c_y.setProperty('rawValue', self.center.y)
-        self.form.input_c_y.setProperty('unit', length_unit)
-        self.form.input_c_z.setProperty('rawValue', self.center.z)
-        self.form.input_c_z.setProperty('unit', length_unit)
-
         self.fuse = params.get_param("Draft_array_fuse")
         self.use_link = params.get_param("Draft_array_Link")
 
+        self.form.input_c_x.setProperty('rawValue', self.center.x)
+        self.form.input_c_y.setProperty('rawValue', self.center.y)
+        self.form.input_c_z.setProperty('rawValue', self.center.z)
+        self.form.spinbox_angle.setProperty('rawValue', self.angle)
+        self.form.spinbox_number.setValue(self.number)
         self.form.checkbox_fuse.setChecked(self.fuse)
         self.form.checkbox_link.setChecked(self.use_link)
         # -------------------------------------------------------------------

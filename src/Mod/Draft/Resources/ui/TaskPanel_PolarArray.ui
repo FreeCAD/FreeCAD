@@ -67,7 +67,7 @@ A negative angle produces a polar pattern in the opposite direction.
 The maximum absolute value is 360 degrees.</string>
           </property>
           <property name="unit" stdset="0">
-           <string notr="true"/>
+           <string notr="true">°</string>
           </property>
           <property name="minimum">
            <double>-360.000000000000000</double>
@@ -138,7 +138,7 @@ Change the direction of the axis itself in the property editor.</string>
               </sizepolicy>
              </property>
              <property name="unit" stdset="0">
-              <string notr="true"/>
+              <string notr="true">mm</string>
              </property>
             </widget>
            </item>
@@ -158,7 +158,7 @@ Change the direction of the axis itself in the property editor.</string>
               </sizepolicy>
              </property>
              <property name="unit" stdset="0">
-              <string notr="true"/>
+              <string notr="true">mm</string>
              </property>
             </widget>
            </item>
@@ -178,7 +178,7 @@ Change the direction of the axis itself in the property editor.</string>
               </sizepolicy>
              </property>
              <property name="unit" stdset="0">
-              <string notr="true"/>
+              <string notr="true">mm</string>
              </property>
             </widget>
            </item>

@@ -53,7 +53,7 @@
            <string>Enter coordinates or select point with mouse.</string>
           </property>
           <property name="unit" stdset="0">
-           <string notr="true"/>
+           <string notr="true">mm</string>
           </property>
          </widget>
         </item>
@@ -70,7 +70,7 @@
            <string>Enter coordinates or select point with mouse.</string>
           </property>
           <property name="unit" stdset="0">
-           <string notr="true"/>
+           <string notr="true">mm</string>
           </property>
          </widget>
         </item>
@@ -87,7 +87,7 @@
            <string>Enter coordinates or select point with mouse.</string>
           </property>
           <property name="unit" stdset="0">
-           <string notr="true"/>
+           <string notr="true">mm</string>
           </property>
          </widget>
         </item>
@@ -128,7 +128,7 @@ Uncheck to use working plane coordinate system</string>
            <string>Height of the result</string>
           </property>
           <property name="unit" stdset="0">
-           <string notr="true"/>
+           <string notr="true">mm</string>
           </property>
           <property name="minimum">
            <double>0.000000000000000</double>

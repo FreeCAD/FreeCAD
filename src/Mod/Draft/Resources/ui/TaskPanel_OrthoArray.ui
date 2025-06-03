@@ -151,7 +151,7 @@ Negative values will result in copies produced in the negative direction.</strin
               </sizepolicy>
              </property>
              <property name="unit" stdset="0">
-              <string notr="true"/>
+              <string notr="true">mm</string>
              </property>
              <property name="quantity" stdset="0">
               <double>100.000000000000000</double>
@@ -174,7 +174,7 @@ Negative values will result in copies produced in the negative direction.</strin
               </sizepolicy>
              </property>
              <property name="unit" stdset="0">
-              <string notr="true"/>
+              <string notr="true">mm</string>
              </property>
             </widget>
            </item>
@@ -194,7 +194,7 @@ Negative values will result in copies produced in the negative direction.</strin
               </sizepolicy>
              </property>
              <property name="unit" stdset="0">
-              <string notr="true"/>
+              <string notr="true">mm</string>
              </property>
             </widget>
            </item>
@@ -242,7 +242,7 @@ Negative values will result in copies produced in the negative direction.</strin
               </sizepolicy>
              </property>
              <property name="unit" stdset="0">
-              <string notr="true"/>
+              <string notr="true">mm</string>
              </property>
             </widget>
            </item>
@@ -262,7 +262,7 @@ Negative values will result in copies produced in the negative direction.</strin
               </sizepolicy>
              </property>
              <property name="unit" stdset="0">
-              <string notr="true"/>
+              <string notr="true">mm</string>
              </property>
              <property name="quantity" stdset="0">
               <double>100.000000000000000</double>
@@ -285,7 +285,7 @@ Negative values will result in copies produced in the negative direction.</strin
               </sizepolicy>
              </property>
              <property name="unit" stdset="0">
-              <string notr="true"/>
+              <string notr="true">mm</string>
              </property>
             </widget>
            </item>
@@ -333,7 +333,7 @@ Negative values will result in copies produced in the negative direction.</strin
               </sizepolicy>
              </property>
              <property name="unit" stdset="0">
-              <string notr="true"/>
+              <string notr="true">mm</string>
              </property>
             </widget>
            </item>
@@ -353,7 +353,7 @@ Negative values will result in copies produced in the negative direction.</strin
               </sizepolicy>
              </property>
              <property name="unit" stdset="0">
-              <string notr="true"/>
+              <string notr="true">mm</string>
              </property>
             </widget>
            </item>
@@ -373,7 +373,7 @@ Negative values will result in copies produced in the negative direction.</strin
               </sizepolicy>
              </property>
              <property name="unit" stdset="0">
-              <string notr="true"/>
+              <string notr="true">mm</string>
              </property>
              <property name="quantity" stdset="0">
               <double>100.000000000000000</double>
