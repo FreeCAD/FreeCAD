@@ -1455,7 +1455,7 @@ void PropertyString::setValue(const char* newValue)
             commit = true;
             std::ostringstream str;
             str << "Change " << obj->getNameInDocument() << ".Label";
-            GetApplication().setActiveTransaction(str.str().c_str());
+            obj->getDocument()->setActiveTransaction(str.str().c_str());
         }
     }
 

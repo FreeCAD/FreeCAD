@@ -64,7 +64,7 @@ TaskDressUpParameters::TaskDressUpParameters(ViewProviderDressUp *DressUpView, b
     , DressUpView(DressUpView)
 {
     // remember initial transaction ID
-    App::GetApplication().getActiveTransaction(&transactionID);
+    transactionID = DressUpView->getObject()->getDocument()->getBookedTransactionID();
 
     selectionMode = none;
 }
@@ -80,15 +80,15 @@ void TaskDressUpParameters::setupTransaction()
     if (DressUpView.expired())
         return;
 
-    int tid = 0;
-    App::GetApplication().getActiveTransaction(&tid);
-    if (tid && tid == transactionID)
+    int tid = DressUpView->getObject()->getDocument()->getBookedTransactionID();
+    if (tid != 0 && tid == transactionID) {
         return;
+    }
 
     // open a transaction if none is active
     std::string n("Edit ");
     n += DressUpView->getObject()->Label.getValue();
-    transactionID = App::GetApplication().setActiveTransaction(n.c_str());
+    transactionID = DressUpView->getObject()->getDocument()->setActiveTransaction(n);
 }
 
 void TaskDressUpParameters::referenceSelected(const Gui::SelectionChanges& msg, QListWidget* widget)

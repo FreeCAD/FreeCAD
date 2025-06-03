@@ -30,6 +30,7 @@ namespace App
 {
 
 class Application;
+class Document;
 
 /// Helper class to manager transaction (i.e. undo/redo)
 class AppExport AutoTransaction
@@ -98,7 +99,7 @@ public:
     /** Constructor
      * @param lock: whether to activate the lock
      */
-    TransactionLocker(bool lock = true);
+    TransactionLocker(Document* doc, bool lock = true);
 
     /** Destructor
      * Unlock the transaction is this locker is active
@@ -120,10 +121,7 @@ public:
     {
         return active;
     }
-
-    /// Check if transaction is being locked
-    static bool isLocked();
-
+    
     friend class Application;
 
 public:
@@ -132,6 +130,7 @@ public:
 
 private:
     bool active;
+    Document* doc;
 };
 
 }  // namespace App
