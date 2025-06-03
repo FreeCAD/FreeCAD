@@ -98,14 +98,16 @@ class TaskPanelOrthoArray:
         # -------------------------------------------------------------------
         # Default values for the internal function,
         # and for the task panel interface
-        start_x = U.Quantity(100.0, App.Units.Length)
-        start_y = start_x
-        start_z = start_x
-        length_unit = start_x.getUserPreferred()[2]
+        start_x = params.get_param("X_interval", "Mod/Draft/OrthoArrayLinearMode")
+        print(start_x)
+        start_y = params.get_param("Y_interval", "Mod/Draft/OrthoArrayLinearMode")
+        start_z = params.get_param("Z_interval", "Mod/Draft/OrthoArrayLinearMode")
 
-        self.v_x = App.Vector(start_x.Value, 0, 0)
-        self.v_y = App.Vector(0, start_y.Value, 0)
-        self.v_z = App.Vector(0, 0, start_z.Value)
+        length_unit = App.Units.Quantity(0.0, App.Units.Length).getUserPreferred()[2]
+
+        self.v_x = App.Vector(start_x, 0, 0)
+        self.v_y = App.Vector(0, start_y, 0)
+        self.v_z = App.Vector(0, 0, start_z)
 
         self.form.input_X_x.setProperty('rawValue', self.v_x.x)
         self.form.input_X_x.setProperty('unit', length_unit)
@@ -128,9 +130,9 @@ class TaskPanelOrthoArray:
         self.form.input_Z_z.setProperty('rawValue', self.v_z.z)
         self.form.input_Z_z.setProperty('unit', length_unit)
 
-        self.n_x = 2
-        self.n_y = 2
-        self.n_z = 1
+        self.n_x = params.get_param("X_NumOfElements", "Mod/Draft/OrthoArrayLinearMode")
+        self.n_y = params.get_param("Y_NumOfElements", "Mod/Draft/OrthoArrayLinearMode")
+        self.n_z = params.get_param("Z_NumOfElements", "Mod/Draft/OrthoArrayLinearMode")
 
         self.form.spinbox_n_X.setValue(self.n_x)
         self.form.spinbox_n_Y.setValue(self.n_y)
@@ -144,8 +146,8 @@ class TaskPanelOrthoArray:
         # -------------------------------------------------------------------
 
         # Initialize Linear mode variables
-        self.linear_mode = False
-        self.active_axis = "X"  # Default to X axis when in Linear mode
+        self.linear_mode = params.get_param("LinearModeOn", "Mod/Draft/OrthoArrayLinearMode")
+        self.active_axis = params.get_param("AxisSelected", "Mod/Draft/OrthoArrayLinearMode")
 
         # Check if the UI elements exist before trying to access them
         self.has_axis_ui = hasattr(self.form, 'button_linear_mode') and \
@@ -156,6 +158,10 @@ class TaskPanelOrthoArray:
         # Hide the axis checkboxes initially (they're only visible in Linear mode)
         if self.has_axis_ui:
             self.toggle_axis_checkboxes(False)
+
+        if self.linear_mode:
+            self.form.button_linear_mode.setChecked(True)
+            self.toggle_linear_mode()
         # -------------------------------------------------------------------
 
         # Some objects need to be selected before we can execute the function.
@@ -205,6 +211,20 @@ class TaskPanelOrthoArray:
                                                self.v_x, self.v_y, self.v_z,
                                                self.n_x, self.n_y, self.n_z)
         if self.valid_input:
+            axis_values = {
+                'X': (self.v_x.x, self.n_x),
+                'Y': (self.v_y.y, self.n_y),
+                'Z': (self.v_z.z, self.n_z),
+            }
+
+            values = axis_values.get(self.active_axis)
+            if values is not None:
+                interval, num_elements = values
+                # Set interval
+                params.set_param(f"{self.active_axis}_interval", interval, "Mod/Draft/OrthoArrayLinearMode")
+                # Set number of elements
+                params.set_param(f"{self.active_axis}_NumOfElements", num_elements, "Mod/Draft/OrthoArrayLinearMode")
+
             self.create_object()
             # The internal function already displays messages
             self.finish()
@@ -430,6 +450,8 @@ class TaskPanelOrthoArray:
         """Toggle between Linear mode and Orthogonal mode."""
         self.linear_mode = self.form.button_linear_mode.isChecked()
         self.toggle_axis_checkboxes(self.linear_mode)
+        params.set_param("LinearModeOn" , self.linear_mode, "Mod/Draft/OrthoArrayLinearMode")
+
         if self.linear_mode:
             _msg(translate("draft","Switched to Linear mode"))
             self.form.setWindowTitle(translate("draft","Orthogonal array (Linear mode)"))
@@ -460,6 +482,7 @@ class TaskPanelOrthoArray:
             # and deselect them
             if checkbox.isChecked():
                 self.active_axis = axis
+                params.set_param("AxisSelected", self.active_axis, "Mod/Draft/OrthoArrayLinearMode")
                 for other_axis in ["X", "Y", "Z"]:
                     if other_axis != axis:
                         other_checkbox = getattr(self.form, f"checkbox_{other_axis.lower()}_axis")
@@ -487,6 +510,23 @@ class TaskPanelOrthoArray:
         if self.has_axis_ui:
             self.toggle_axis_checkboxes(False)
 
+    def _set_intervals_visibility(self, show_all=False):
+        for axis in ["X", "Y", "Z"]:
+            for coord in ["x", "y", "z"]:
+                if show_all:
+                    is_visible = True
+                else:
+                    is_visible = (self.active_axis == axis and self.active_axis.lower() == coord)
+                label_name = f"label_{axis}_{coord}"
+                input_name = f"input_{axis}_{coord}"
+
+                label_widget = self.form.findChild(QtWidgets.QWidget, label_name)
+                input_widget = self.form.findChild(QtWidgets.QWidget, input_name)
+                if label_widget:
+                    label_widget.setVisible(is_visible)
+                if input_widget:
+                    input_widget.setVisible(is_visible)
+
     def update_interval_visibility(self):
         """Show only the interval inputs for the selected axis in Linear mode."""
         if self.linear_mode and hasattr(self.form, 'group_X') and hasattr(self.form, 'group_Y') and hasattr(self.form, 'group_Z'):
@@ -494,18 +534,7 @@ class TaskPanelOrthoArray:
             self.form.group_Y.setVisible(self.active_axis == "Y")
             self.form.group_Z.setVisible(self.active_axis == "Z")
 
-            for axis in ["X", "Y", "Z"]:
-                for coord in ["x", "y", "z"]:
-                    is_visible = (self.active_axis == axis and self.active_axis.lower() == coord)
-                    label_name = f"label_{axis}_{coord}"
-                    input_name = f"input_{axis}_{coord}"
-
-                    label_widget = self.form.findChild(QtWidgets.QWidget, label_name)
-                    input_widget = self.form.findChild(QtWidgets.QWidget, input_name)
-                    if label_widget:
-                        label_widget.setVisible(is_visible)
-                    if input_widget:
-                        input_widget.setVisible(is_visible)
+            self._set_intervals_visibility()
 
             if hasattr(self.form, 'label_n_X') and hasattr(self.form, 'spinbox_n_X'):
                 self.form.label_n_X.setVisible(self.active_axis == "X")
@@ -525,6 +554,8 @@ class TaskPanelOrthoArray:
             self.form.group_X.setVisible(True)
             self.form.group_Y.setVisible(True)
             self.form.group_Z.setVisible(True)
+
+            self._set_intervals_visibility(show_all=True)
 
             if hasattr(self.form, 'label_n_X') and hasattr(self.form, 'spinbox_n_X'):
                 self.form.label_n_X.setVisible(True)
