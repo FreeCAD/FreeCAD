@@ -24,7 +24,6 @@ import os
 from Path.Post.Processor import PostProcessor
 import Path
 import FreeCAD
-from FreeCAD import Vector
 import math
 
 Path.Log.setLevel(Path.Log.Level.INFO, Path.Log.thisModule())
