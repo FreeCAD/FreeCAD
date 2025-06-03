@@ -659,8 +659,15 @@ class _Site(ArchIFC.IfcProduct):
 
     def onChanged(self, obj, prop):
         ArchComponent.Component.onChanged(self, obj, prop)
-        if prop == "Terrain" and obj.Terrain and FreeCAD.GuiUp:
-            obj.Terrain.ViewObject.hide()
+        if prop == "Terrain" and obj.Terrain:
+            if obj.Terrain in getattr(obj,"Group",[]):
+                grp = obj.Group
+                grp.remove(obj.Terrain)
+                obj.Group = grp
+            if FreeCAD.GuiUp:
+                obj.Terrain.ViewObject.hide()
+        if prop == "Group" and getattr(obj,"Terrain",None) in obj.Group:
+            obj.Terrain = None
 
     def getMovableChildren(self, obj):
         return obj.Additions + obj.Subtractions

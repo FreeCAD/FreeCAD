@@ -10,6 +10,7 @@ set(Path_Scripts
     Init.py
     PathCommands.py
     TestCAMApp.py
+    TestCAMGui.py
 )
 
 if(BUILD_GUI)
@@ -114,18 +115,160 @@ SET(PathPythonMainSanity_SRCS
 
 SET(PathPythonTools_SRCS
     Path/Tool/__init__.py
-    Path/Tool/Bit.py
+    Path/Tool/camassets.py
     Path/Tool/Controller.py
+)
+
+SET(PathPythonToolsAssets_SRCS
+    Path/Tool/assets/__init__.py
+    Path/Tool/assets/asset.py
+    Path/Tool/assets/cache.py
+    Path/Tool/assets/manager.py
+    Path/Tool/assets/serializer.py
+    Path/Tool/assets/uri.py
+)
+
+SET(PathPythonToolsAssetsStore_SRCS
+    Path/Tool/assets/store/__init__.py
+    Path/Tool/assets/store/base.py
+    Path/Tool/assets/store/memory.py
+    Path/Tool/assets/store/filestore.py
+)
+
+SET(PathPythonToolsAssetsUi_SRCS
+    Path/Tool/assets/ui/__init__.py
+    Path/Tool/assets/ui/filedialog.py
+    Path/Tool/assets/ui/preferences.py
+    Path/Tool/assets/ui/util.py
 )
 
 SET(PathPythonToolsGui_SRCS
     Path/Tool/Gui/__init__.py
-    Path/Tool/Gui/Bit.py
-    Path/Tool/Gui/BitCmd.py
-    Path/Tool/Gui/BitEdit.py
-    Path/Tool/Gui/BitLibraryCmd.py
-    Path/Tool/Gui/BitLibrary.py
     Path/Tool/Gui/Controller.py
+)
+
+SET(PathPythonToolsUi_SRCS
+    Path/Tool/ui/__init__.py
+    Path/Tool/ui/docobject.py
+    Path/Tool/ui/property.py
+)
+
+SET(PathPythonToolsToolBit_SRCS
+    Path/Tool/toolbit/__init__.py
+    Path/Tool/toolbit/docobject.py
+    Path/Tool/toolbit/util.py
+)
+
+SET(PathPythonToolsToolBitMixins_SRCS
+    Path/Tool/toolbit/mixins/__init__.py
+    Path/Tool/toolbit/mixins/rotary.py
+    Path/Tool/toolbit/mixins/cutting.py
+)
+
+SET(PathPythonToolsToolBitModels_SRCS
+    Path/Tool/toolbit/models/__init__.py
+    Path/Tool/toolbit/models/ballend.py
+    Path/Tool/toolbit/models/base.py
+    Path/Tool/toolbit/models/bullnose.py
+    Path/Tool/toolbit/models/chamfer.py
+    Path/Tool/toolbit/models/custom.py
+    Path/Tool/toolbit/models/dovetail.py
+    Path/Tool/toolbit/models/drill.py
+    Path/Tool/toolbit/models/endmill.py
+    Path/Tool/toolbit/models/fillet.py
+    Path/Tool/toolbit/models/probe.py
+    Path/Tool/toolbit/models/reamer.py
+    Path/Tool/toolbit/models/slittingsaw.py
+    Path/Tool/toolbit/models/tap.py
+    Path/Tool/toolbit/models/threadmill.py
+    Path/Tool/toolbit/models/vbit.py
+)
+
+SET(PathPythonToolsToolBitSerializers_SRCS
+    Path/Tool/toolbit/serializers/__init__.py
+    Path/Tool/toolbit/serializers/camotics.py
+    Path/Tool/toolbit/serializers/fctb.py
+)
+
+SET(PathPythonToolsToolBitUi_SRCS
+    Path/Tool/toolbit/ui/__init__.py
+    Path/Tool/toolbit/ui/editor.py
+    Path/Tool/toolbit/ui/cmd.py
+    Path/Tool/toolbit/ui/browser.py
+    Path/Tool/toolbit/ui/file.py
+    Path/Tool/toolbit/ui/panel.py
+    Path/Tool/toolbit/ui/selector.py
+    Path/Tool/toolbit/ui/tablecell.py
+    Path/Tool/toolbit/ui/toollist.py
+    Path/Tool/toolbit/ui/view.py
+)
+
+SET(PathPythonToolsLibrary_SRCS
+    Path/Tool/library/__init__.py
+    Path/Tool/library/util.py
+)
+
+SET(PathPythonToolsLibraryModels_SRCS
+    Path/Tool/library/models/__init__.py
+    Path/Tool/library/models/library.py
+)
+
+SET(PathPythonToolsLibrarySerializers_SRCS
+    Path/Tool/library/serializers/__init__.py
+    Path/Tool/library/serializers/fctl.py
+    Path/Tool/library/serializers/camotics.py
+    Path/Tool/library/serializers/linuxcnc.py
+)
+
+SET(PathPythonToolsLibraryUi_SRCS
+    Path/Tool/library/ui/__init__.py
+    Path/Tool/library/ui/cmd.py
+    Path/Tool/library/ui/dock.py
+    Path/Tool/library/ui/editor.py
+    Path/Tool/library/ui/browser.py
+)
+
+SET(PathPythonToolsMachine_SRCS
+    Path/Tool/machine/__init__.py
+)
+
+SET(PathPythonToolsMachineModels_SRCS
+    Path/Tool/machine/models/__init__.py
+    Path/Tool/machine/models/machine.py
+)
+
+SET(PathPythonToolsShape_SRCS
+    Path/Tool/shape/__init__.py
+    Path/Tool/shape/util.py
+    Path/Tool/shape/doc.py
+)
+
+SET(PathPythonToolsShapeModels_SRCS
+    Path/Tool/shape/models/__init__.py
+    Path/Tool/shape/models/ballend.py
+    Path/Tool/shape/models/base.py
+    Path/Tool/shape/models/bullnose.py
+    Path/Tool/shape/models/chamfer.py
+    Path/Tool/shape/models/custom.py
+    Path/Tool/shape/models/dovetail.py
+    Path/Tool/shape/models/drill.py
+    Path/Tool/shape/models/endmill.py
+    Path/Tool/shape/models/fillet.py
+    Path/Tool/shape/models/icon.py
+    Path/Tool/shape/models/probe.py
+    Path/Tool/shape/models/reamer.py
+    Path/Tool/shape/models/slittingsaw.py
+    Path/Tool/shape/models/tap.py
+    Path/Tool/shape/models/threadmill.py
+    Path/Tool/shape/models/vbit.py
+)
+
+SET(PathPythonToolsShapeUi_SRCS
+    Path/Tool/shape/ui/__init__.py
+    Path/Tool/shape/ui/flowlayout.py
+    Path/Tool/shape/ui/shapebutton.py
+    Path/Tool/shape/ui/shapeselector.py
+    Path/Tool/shape/ui/shapewidget.py
 )
 
 SET(PathPythonPost_SRCS
@@ -267,14 +410,17 @@ SET(Tools_SRCS
 )
 
 SET(Tools_Bit_SRCS
+    Tools/Bit/30degree_Vbit.fctb
     Tools/Bit/375-16_Tap.fctb
     Tools/Bit/45degree_chamfer.fctb
+    Tools/Bit/45degree_Vbit.fctb
     Tools/Bit/5mm-thread-cutter.fctb
     Tools/Bit/5mm_Drill.fctb
     Tools/Bit/5mm_Endmill.fctb
     Tools/Bit/60degree_Vbit.fctb
     Tools/Bit/6mm_Ball_End.fctb
     Tools/Bit/6mm_Bullnose.fctb
+    Tools/Bit/90degree_Vbit.fctb
     Tools/Bit/probe.fctb
     Tools/Bit/slittingsaw.fctb
 )
@@ -285,16 +431,31 @@ SET(Tools_Library_SRCS
 
 SET(Tools_Shape_SRCS
     Tools/Shape/ballend.fcstd
+    Tools/Shape/ballend.svg
     Tools/Shape/bullnose.fcstd
+    Tools/Shape/bullnose.svg
     Tools/Shape/chamfer.fcstd
+    Tools/Shape/chamfer.svg
     Tools/Shape/dovetail.fcstd
+    Tools/Shape/dovetail.svg
     Tools/Shape/drill.fcstd
+    Tools/Shape/drill.svg
     Tools/Shape/endmill.fcstd
+    Tools/Shape/endmill.svg
+    Tools/Shape/fillet.fcstd
+    Tools/Shape/fillet.svg
     Tools/Shape/probe.fcstd
+    Tools/Shape/probe.svg
+    Tools/Shape/reamer.fcstd
+    Tools/Shape/reamer.svg
     Tools/Shape/slittingsaw.fcstd
+    Tools/Shape/slittingsaw.svg
     Tools/Shape/tap.fcstd
-    Tools/Shape/thread-mill.fcstd
-    Tools/Shape/v-bit.fcstd
+    Tools/Shape/tap.svg
+    Tools/Shape/threadmill.fcstd
+    Tools/Shape/threadmill.svg
+    Tools/Shape/vbit.fcstd
+    Tools/Shape/vbit.svg
 )
 
 SET(Tests_SRCS
@@ -346,7 +507,24 @@ SET(Tests_SRCS
     CAMTests/TestPathToolChangeGenerator.py
     CAMTests/TestPathThreadMilling.py
     CAMTests/TestPathThreadMillingGenerator.py
+    CAMTests/TestPathToolAsset.py
+    CAMTests/TestPathToolAssetCache.py
+    CAMTests/TestPathToolAssetUri.py
+    CAMTests/TestPathToolAssetStore.py
+    CAMTests/TestPathToolAssetManager.py
     CAMTests/TestPathToolBit.py
+    CAMTests/TestPathToolBitSerializer.py
+    CAMTests/TestPathToolBitBrowserWidget.py
+    CAMTests/TestPathToolBitEditorWidget.py
+    CAMTests/TestPathToolBitListWidget.py
+    CAMTests/TestPathToolBitPropertyEditorWidget.py
+    CAMTests/TestPathToolDocumentObjectEditorWidget.py
+    CAMTests/TestPathToolShapeClasses.py
+    CAMTests/TestPathToolShapeDoc.py
+    CAMTests/TestPathToolShapeIcon.py
+    CAMTests/TestPathToolLibrary.py
+    CAMTests/TestPathToolLibrarySerializer.py
+    CAMTests/TestPathToolMachine.py
     CAMTests/TestPathToolController.py
     CAMTests/TestPathUtil.py
     CAMTests/TestPathVcarve.py
@@ -415,7 +593,25 @@ SET(all_files
     ${PathPythonPost_SRCS}
     ${PathPythonPostScripts_SRCS}
     ${PathPythonTools_SRCS}
+    ${PathPythonToolsAssets_SRCS}
+    ${PathPythonToolsAssetsStore_SRCS}
+    ${PathPythonToolsAssetsUi_SRCS}
     ${PathPythonToolsGui_SRCS}
+    ${PathPythonToolsUi_SRCS}
+    ${PathPythonToolsShape_SRCS}
+    ${PathPythonToolsShapeModels_SRCS}
+    ${PathPythonToolsShapeUi_SRCS}
+    ${PathPythonToolsToolBit_SRCS}
+    ${PathPythonToolsToolBitMixins_SRCS}
+    ${PathPythonToolsToolBitModels_SRCS}
+    ${PathPythonToolsToolBitSerializers_SRCS}
+    ${PathPythonToolsToolBitUi_SRCS}
+    ${PathPythonToolsLibrary_SRCS}
+    ${PathPythonToolsLibraryModels_SRCS}
+    ${PathPythonToolsLibrarySerializers_SRCS}
+    ${PathPythonToolsLibraryUi_SRCS}
+    ${PathPythonToolsMachine_SRCS}
+    ${PathPythonToolsMachineModels_SRCS}
     ${PathPythonGui_SRCS}
     ${Tools_SRCS}
     ${Tools_Bit_SRCS}
@@ -546,9 +742,135 @@ INSTALL(
 
 INSTALL(
     FILES
+        ${PathPythonToolsAssets_SRCS}
+    DESTINATION
+        Mod/CAM/Path/Tool/assets
+)
+
+INSTALL(
+    FILES
+        ${PathPythonToolsAssetsStore_SRCS}
+    DESTINATION
+        Mod/CAM/Path/Tool/assets/store
+)
+
+INSTALL(
+    FILES
+        ${PathPythonToolsAssetsUi_SRCS}
+    DESTINATION
+        Mod/CAM/Path/Tool/assets/ui
+)
+
+INSTALL(
+    FILES
         ${PathPythonToolsGui_SRCS}
     DESTINATION
         Mod/CAM/Path/Tool/Gui
+)
+
+INSTALL(
+    FILES
+        ${PathPythonToolsUi_SRCS}
+    DESTINATION
+        Mod/CAM/Path/Tool/ui
+)
+
+INSTALL(
+    FILES
+        ${PathPythonToolsShape_SRCS}
+    DESTINATION
+        Mod/CAM/Path/Tool/shape
+)
+
+INSTALL(
+    FILES
+        ${PathPythonToolsShapeUi_SRCS}
+    DESTINATION
+        Mod/CAM/Path/Tool/shape/ui
+)
+
+INSTALL(
+    FILES
+        ${PathPythonToolsShapeModels_SRCS}
+    DESTINATION
+        Mod/CAM/Path/Tool/shape/models
+)
+
+INSTALL(
+    FILES
+        ${PathPythonToolsToolBit_SRCS}
+    DESTINATION
+        Mod/CAM/Path/Tool/toolbit
+)
+
+INSTALL(
+    FILES
+        ${PathPythonToolsToolBitMixins_SRCS}
+    DESTINATION
+        Mod/CAM/Path/Tool/toolbit/mixins
+)
+
+INSTALL(
+    FILES
+        ${PathPythonToolsToolBitModels_SRCS}
+    DESTINATION
+        Mod/CAM/Path/Tool/toolbit/models
+)
+
+INSTALL(
+    FILES
+        ${PathPythonToolsToolBitSerializers_SRCS}
+    DESTINATION
+        Mod/CAM/Path/Tool/toolbit/serializers
+)
+
+INSTALL(
+    FILES
+        ${PathPythonToolsToolBitUi_SRCS}
+    DESTINATION
+        Mod/CAM/Path/Tool/toolbit/ui
+)
+
+INSTALL(
+    FILES
+        ${PathPythonToolsLibrary_SRCS}
+    DESTINATION
+        Mod/CAM/Path/Tool/library
+)
+
+INSTALL(
+    FILES
+        ${PathPythonToolsLibraryModels_SRCS}
+    DESTINATION
+        Mod/CAM/Path/Tool/library/models
+)
+
+INSTALL(
+    FILES
+        ${PathPythonToolsLibrarySerializers_SRCS}
+    DESTINATION
+        Mod/CAM/Path/Tool/library/serializers
+)
+
+INSTALL(
+    FILES
+        ${PathPythonToolsLibraryUi_SRCS}
+    DESTINATION
+        Mod/CAM/Path/Tool/library/ui
+)
+
+INSTALL(
+    FILES
+        ${PathPythonToolsMachine_SRCS}
+    DESTINATION
+        Mod/CAM/Path/Tool/machine
+)
+
+INSTALL(
+    FILES
+        ${PathPythonToolsMachineModels_SRCS}
+    DESTINATION
+        Mod/CAM/Path/Tool/machine/models
 )
 
 INSTALL(

@@ -345,7 +345,7 @@ PyObject* MaterialManagerPy::filterMaterials(PyObject* args, PyObject* kwds)
     Py::List list;
 
     for (auto lib : *libraries) {
-        auto tree = getMaterialManagerPtr()->getMaterialTree(lib, filter, options);
+        auto tree = getMaterialManagerPtr()->getMaterialTree(*lib, *filter, options);
         if (tree->size() > 0) {
             addMaterials(getMaterialManagerPtr(), list, tree);
         }

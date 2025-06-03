@@ -250,13 +250,13 @@ to count the objects, or property names like 'Length' or
 When used with native IFC objects, this can be used to
 retrieve any attribute or custom properties of the elements
 retrieved.</source>
-      <translation type="unfinished">The property to retrieve from each object.Can be 'Count'
-to count the objects, or property names like 'Length' or
-'Shape.Volume' to retrieve a certain property.
+      <translation>从每个对象检索的属性。可以是“计数”
+计数对象或属性名称，如“Length”或
+“形状。Volume用于检索特定属性。
 
-When used with native IFC objects, this can be used to
-retrieve any attribute or custom properties of the elements
-retrieved.</translation>
+当与本机IFC对象一起使用时，这可用于
+检索元素的任何属性或自定义属性
+恢复。</translation>
     </message>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="93"/>
@@ -272,18 +272,18 @@ in FreeCAD or not.
 
 Use the name of the IFC project to get all the IFC entities
 of that project, no matter if they are expanded or not.</source>
-      <translation type="unfinished">An optional semicolon (;) separated list of object names
-(internal names, not labels), to be considered by this operation.
-If the list contains groups, children will be added.
+      <translation>以分号（；）分隔的可选对象名称列表
+（内部名称，而非标签），将由此操作考虑。
+如果列表包含组，则将添加子组。
 
-Leave blank to use all objects from the document.
+留空以使用文档中的所有对象。
 
-If the document is an IFC project, all IFC entities of the
-document will be used, no matter if they are expanded
-in FreeCAD or not.
+如果该文件是IFC项目，则所有IFC实体
+文档将被使用，无论它们是否被扩展
+无论是否使用FreeCAD。
 
-Use the name of the IFC project to get all the IFC entities
-of that project, no matter if they are expanded or not.</translation>
+使用IFC项目的名称获取所有IFC实体
+无论项目是否扩建。</translation>
     </message>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="112"/>
@@ -292,11 +292,19 @@ of that project, no matter if they are expanded or not.</translation>
 Examples of valid filters (everything is case-insensitive): Name:Wall - Will only consider objects with 'wall' in their name (internal name); !Name:Wall - Will only consider objects which DON'T have 'wall' in their name (internal name); Description:Win - Will only consider objects with 'win' in their description; !Label:Win - Will only consider objects which DO NOT have 'win' in their label; IfcType:Wall - Will only consider objects which Ifc Type is 'Wall'; !Tag:Wall - Will only consider objects which tag is NOT 'Wall'. If you leave this field empty, no filtering is applied
 
 When dealing with native IFC objects, you can use FreeCAD properties name, ex: 'Class:IfcWall' or any other IFC attribute (ex. 'IsTypedBy:#455'). If the 'Objects' column has been set to an IFC project or document, all the IFC entities of that project will be considered.</source>
-      <translation type="unfinished">An optional semicolon (;) separated list of property:value filters. Prepend ! to a property name to invert the effect of the filter (exclude objects that match the filter). Objects whose property contains the value will be matched.
+      <translation>一个可选的以分号（;）分隔的属性：值过滤器列表。在属性名称前添加！可以反转过滤器的效果（即排除匹配的对象）。如果对象的属性包含该值，则认为匹配。
 
-Examples of valid filters (everything is case-insensitive): Name:Wall - Will only consider objects with 'wall' in their name (internal name); !Name:Wall - Will only consider objects which DON'T have 'wall' in their name (internal name); Description:Win - Will only consider objects with 'win' in their description; !Label:Win - Will only consider objects which DO NOT have 'win' in their label; IfcType:Wall - Will only consider objects which Ifc Type is 'Wall'; !Tag:Wall - Will only consider objects which tag is NOT 'Wall'. If you leave this field empty, no filtering is applied
+以下是有效过滤器的例子（所有内容都不区分大小写）：
+- Name:Wall - 仅考虑在其名称（内部名称）中包含'wall'的对象；
+- !Name:Wall - 仅考虑在其名称（内部名称）中不包含'wall'的对象；
+- Description:Win - 仅考虑在其描述中含有'win'的对象；
+- !Label:Win - 仅考虑其标签中不包含'win'的对象；
+- IfcType:Wall - 仅考虑其Ifc类型为'Wall'的对象；
+- !Tag:Wall - 仅考虑其标签不是'Wall'的对象。
 
-When dealing with native IFC objects, you can use FreeCAD properties name, ex: 'Class:IfcWall' or any other IFC attribute (ex. 'IsTypedBy:#455'). If the 'Objects' column has been set to an IFC project or document, all the IFC entities of that project will be considered.</translation>
+如果你将此字段留空，则不应用任何过滤。
+
+在处理原生IFC对象时，你可以使用FreeCAD属性名称，例如 'Class:IfcWall' 或任何其他IFC属性（例如 'IsTypedBy:#455'）。如果已将“对象”列设置为一个IFC项目或文档，则会考虑该项目中的所有IFC实体。</translation>
     </message>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="126"/>
@@ -451,12 +459,12 @@ CSV 导出注意事项：在Libreoffice中，您可以通过右键单击工作�
     <message>
       <location filename="../ui/dialogIfcProperties.ui" line="20"/>
       <source>This dialog allows you to display and manage IFC properties attached to BIM objects. Only properties and sets present in all selected objects will be displayed and editable.</source>
-      <translation type="unfinished">This dialog allows you to display and manage IFC properties attached to BIM objects. Only properties and sets present in all selected objects will be displayed and editable.</translation>
+      <translation>此对话框允许您显示和管理附加到 BIM 对象的 IFC 属性。 只有所有选中对象中存在的属性和设置才会被显示和可编辑。</translation>
     </message>
     <message>
       <location filename="../ui/dialogIfcProperties.ui" line="32"/>
       <source>Only selected objects</source>
-      <translation type="unfinished">Only selected objects</translation>
+      <translation>仅选中对象</translation>
     </message>
     <message>
       <location filename="../ui/dialogIfcProperties.ui" line="39"/>
@@ -627,10 +635,9 @@ CSV 导出注意事项：在Libreoffice中，您可以通过右键单击工作�
 and that document won't be turned into an IFC document automatically.
 You can still turn a FreeCAD document into an IFC document manually, using
 Utils -&gt; Make IFC project</source>
-      <translation type="unfinished">If this is checked, you won't be asked again when creating a new FreeCAD document,
-and that document won't be turned into an IFC document automatically.
-You can still turn a FreeCAD document into an IFC document manually, using
-Utils -&gt; Make IFC project</translation>
+      <translation>如果选中此选项，则在创建新的 FreeCAD 文档时不会再次询问您，并且该文档不会自动转换为 IFC 文档。
+您仍然可以手动将 FreeCAD 文档转换为 IFC 文档，方法是使用
+工具 -&gt; 创建 IFC 工程</translation>
     </message>
     <message>
       <location filename="../ui/dialogConvertDocument.ui" line="46"/>
@@ -1013,7 +1020,7 @@ Utils -&gt; Make IFC project</translation>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="154"/>
       <source> E</source>
-      <translation type="unfinished"> E</translation>
+      <translation> E</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="170"/>
@@ -1033,7 +1040,7 @@ Utils -&gt; Make IFC project</translation>
     <message>
       <location filename="../ui/dialogAddPSet.ui" line="14"/>
       <source>Add standard IFC PSet</source>
-      <translation type="unfinished">Add standard IFC PSet</translation>
+      <translation>添加标准 IFC PSet</translation>
     </message>
     <message>
       <location filename="../ui/dialogAddPSet.ui" line="43"/>
@@ -1396,52 +1403,52 @@ Utils -&gt; Make IFC project</translation>
     <message>
       <location filename="../ui/dialogConvertType.ui" line="14"/>
       <source>Convert to IFC type</source>
-      <translation type="unfinished">Convert to IFC type</translation>
+      <translation>转换为 IFC 类型</translation>
     </message>
     <message>
       <location filename="../ui/dialogConvertType.ui" line="26"/>
       <source>This object will be converted to a %1 type. Types can be used to give common attributes and properties to several objects at once.</source>
-      <translation type="unfinished">This object will be converted to a %1 type. Types can be used to give common attributes and properties to several objects at once.</translation>
+      <translation>此对象将被转换为 %1 类型。类型可以同时给予几个对象共同的属性和属性。</translation>
     </message>
     <message>
       <location filename="../ui/dialogConvertType.ui" line="36"/>
       <source>Keep original object. The object will adopt the new type</source>
-      <translation type="unfinished">Keep original object. The object will adopt the new type</translation>
+      <translation>保留原始对象。对象将采用新的类型</translation>
     </message>
     <message>
       <location filename="../ui/dialogAddProperty.ui" line="14"/>
       <source>Add IFC property</source>
-      <translation type="unfinished">Add IFC property</translation>
+      <translation>添加 IFC 属性</translation>
     </message>
     <message>
       <location filename="../ui/dialogAddProperty.ui" line="44"/>
       <source>IfcLabel</source>
-      <translation type="unfinished">IfcLabel</translation>
+      <translation>Ifc标签</translation>
     </message>
     <message>
       <location filename="../ui/dialogAddProperty.ui" line="49"/>
       <source>IfcBoolean</source>
-      <translation type="unfinished">IfcBoolean</translation>
+      <translation>IFC布尔判断</translation>
     </message>
     <message>
       <location filename="../ui/dialogAddProperty.ui" line="54"/>
       <source>IfcInteger</source>
-      <translation type="unfinished">IfcInteger</translation>
+      <translation>IFC整数</translation>
     </message>
     <message>
       <location filename="../ui/dialogAddProperty.ui" line="59"/>
       <source>IfcReal</source>
-      <translation type="unfinished">IfcReal</translation>
+      <translation>IFC浮点数</translation>
     </message>
     <message>
       <location filename="../ui/dialogAddProperty.ui" line="64"/>
       <source>IfcLengthMeasure</source>
-      <translation type="unfinished">IfcLengthMeasure</translation>
+      <translation>IFC长度测量</translation>
     </message>
     <message>
       <location filename="../ui/dialogAddProperty.ui" line="69"/>
       <source>IfcAreaMeasure</source>
-      <translation type="unfinished">IfcAreaMeasure</translation>
+      <translation>IFC面积测量</translation>
     </message>
     <message>
       <location filename="../ui/dialogAddProperty.ui" line="80"/>
@@ -1451,7 +1458,7 @@ Utils -&gt; Make IFC project</translation>
     <message>
       <location filename="../ui/dialogAddProperty.ui" line="94"/>
       <source>PSet</source>
-      <translation type="unfinished">PSet</translation>
+      <translation>属性集</translation>
     </message>
   </context>
   <context>
@@ -1941,7 +1948,7 @@ Utils -&gt; Make IFC project</translation>
     <message>
       <location filename="../ui/dialogPreflight.ui" line="128"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;All elements derived from IfcProduct (that is, all the BIM elements that compose your model)  are required to be inside an IfcBuildingStorey (level) element. This is a mandatory requirement of the IFC standard. When exporting your FreeCAD model to IFC, a default IfcBuildingStorey will be created for all BIM objects found that are not inside one already. However, it is best if you make sure yourself that all elements are correctly located inside a level, so you have more control over it. This test is here to help you to find those BIM objects without a level.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;All elements derived from IfcProduct (that is, all the BIM elements that compose your model)  are required to be inside an IfcBuildingStorey (level) element. This is a mandatory requirement of the IFC standard. When exporting your FreeCAD model to IFC, a default IfcBuildingStorey will be created for all BIM objects found that are not inside one already. However, it is best if you make sure yourself that all elements are correctly located inside a level, so you have more control over it. This test is here to help you to find those BIM objects without a level.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;从所有IfcProduct（也即，构成您模型的所有BIM元素）需要位于IfcBuildingStorey（楼层）元素内。这是IFC标准的强制要求。当导出您的FreeCAD模型到IFC时，将会为所有发现的尚不在内部的BIM对象创建一个默认的IfcBuildingStorey。不过，可以的话最好是您自己确认所有元素已正确地位于楼层内，这样您对它有更多的控制。这里的测试将帮助您找到那些没有楼层的BIM对象。&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/dialogPreflight.ui" line="131"/>
@@ -1951,7 +1958,7 @@ Utils -&gt; Make IFC project</translation>
     <message>
       <location filename="../ui/dialogPreflight.ui" line="148"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;All IfcBuilding elements are required to be inside an IfcSite element. This is a mandatory requirement of the IFC standard. When exporting your FreeCAD model to IFC, a default IfcSite will be created for all Building objects found that are not inside a Site. However, it is best if you create that site yourself, so you have more control over its name and properties. This test is here to help you to find those buildings without sites.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;All IfcBuilding elements are required to be inside an IfcSite element. This is a mandatory requirement of the IFC standard. When exporting your FreeCAD model to IFC, a default IfcSite will be created for all Building objects found that are not inside a Site. However, it is best if you create that site yourself, so you have more control over its name and properties. This test is here to help you to find those buildings without sites.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;所有IfcBuilding元素被要求位于IfcSite元素内。这是IFC标准的强制要求。当您导出FreeCAD模型到IFC时，将会为所有发现的不在地点内的建筑对象创建一个默认的IfcSite。不过，可以的话最好是您自己创建地点，这样您对于其名称和属性有更多控制。这里的测试帮助您找到那些没有地点的建筑。&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/dialogPreflight.ui" line="151"/>
@@ -1961,7 +1968,7 @@ Utils -&gt; Make IFC project</translation>
     <message>
       <location filename="../ui/dialogPreflight.ui" line="168"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The IFC standard requires at least one site, one building and one level or building storey per project. This test will ensure that at least one object of each of these 3 types exists in the model.&lt;/p&gt;&lt;p&gt;Note that, as this is a mandatory requirement, FreeCAD will automatically add a default site, a default building and/or a default building storey if any of these is missing. So even if this test didn't pass, your exported IFC file will meet the requirements.&lt;/p&gt;&lt;p&gt;However, it is always better to create these objects yourself, as you get more control over naming and properties.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The IFC standard requires at least one site, one building and one level or building storey per project. This test will ensure that at least one object of each of these 3 types exists in the model.&lt;/p&gt;&lt;p&gt;Note that, as this is a mandatory requirement, FreeCAD will automatically add a default site, a default building and/or a default building storey if any of these is missing. So even if this test didn't pass, your exported IFC file will meet the requirements.&lt;/p&gt;&lt;p&gt;However, it is always better to create these objects yourself, as you get more control over naming and properties.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;IFC标准需要每个项目至少有一个地点，一个建筑和一个楼层或建筑层。该测试将确认在此模型中3个类型中的每一个至少有一个对象存在。&lt;/p&gt;&lt;p&gt;注意，由于这是一个强制要求，如果任意一项缺失，FreeCAD将自动添加一个默认的地点，默认的建筑和/或默认的建筑楼层。因此哪怕该测试未通过，你导出的IFC文件将符合这些要求。&lt;/p&gt;&lt;p&gt;不过，由您自己创建这些对象总是更好，这样您可以对名称和属性进行更多控制。&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/dialogPreflight.ui" line="171"/>
@@ -1976,7 +1983,7 @@ Utils -&gt; Make IFC project</translation>
     <message>
       <location filename="../ui/dialogPreflight.ui" line="204"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Although it is not a requirement for IFC objects to have fully clean and solid geometry (and you will more than often find IFC files with bad geometry out there, oh boy if you find!), it is of course better if they do. You will reduce chances of problems with other applications, and after all, in real life, all objects have solid shapes.&lt;/p&gt;&lt;p&gt;FreeCAD has a lot of tools to check for geometry quality, and most parametric objects, including BIM objects, will usually warn you if their geometry becomes unclean or not solid at some point. This test makes sure everything is OK.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Although it is not a requirement for IFC objects to have fully clean and solid geometry (and you will more than often find IFC files with bad geometry out there, oh boy if you find!), it is of course better if they do. You will reduce chances of problems with other applications, and after all, in real life, all objects have solid shapes.&lt;/p&gt;&lt;p&gt;FreeCAD has a lot of tools to check for geometry quality, and most parametric objects, including BIM objects, will usually warn you if their geometry becomes unclean or not solid at some point. This test makes sure everything is OK.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;尽管 IFC 对象不要求具有完全干净和完整的几何形状（而且您经常会发现几何形状不良的 IFC 文件，如果您发现的话，那可真是太糟糕了！），但如果它们有，那当然更好。这样可以减少其他应用程序出现问题的机会，毕竟，在现实生活中，所有对象都有完整的形状。&lt;/p&gt;&lt;p&gt;FreeCAD 有很多工具可以检查几何形状的质量，大多数参数化对象（包括 BIM 对象）通常会在几何形状变得不干净或不完整时向您发出警告。此​​测试可确保一切正常。&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/dialogPreflight.ui" line="207"/>
@@ -1986,7 +1993,7 @@ Utils -&gt; Make IFC project</translation>
     <message>
       <location filename="../ui/dialogPreflight.ui" line="217"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The IFC format provides a defined type for most of the objects that compose a building, for example walls, columns, doors, or sinks. But it also supports undefined objects, which are given the generic BuildingElementProxy type. This test will check that all objects have a defined type.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Note that failing this test is not necessarily bad, as you might specifically want some object to not have any defined type. In some cases, this might even give better results, as some applications like Revit might add possibly unwanted additional constraints or transformations to some known types such as structural elements (beams or columns). Exporting them as BuildingElementProxies will prevent that.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The IFC format provides a defined type for most of the objects that compose a building, for example walls, columns, doors, or sinks. But it also supports undefined objects, which are given the generic BuildingElementProxy type. This test will check that all objects have a defined type.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Note that failing this test is not necessarily bad, as you might specifically want some object to not have any defined type. In some cases, this might even give better results, as some applications like Revit might add possibly unwanted additional constraints or transformations to some known types such as structural elements (beams or columns). Exporting them as BuildingElementProxies will prevent that.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;IFC格式为构成建筑物的大多数对象（例如墙、柱、门或水槽）提供了定义的类型。 但它也支持未定义的对象，这些对象具有通用的BuildingElementProxy类型。 此测试将检查所有对象是否都具有定义的类型。&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;注意该测试失败并不一定是不好的，因为你可能想要一些没有任何已定义类型的对象。在某些情况下，这甚至可能会带来更好的结果，因为诸如Revit之类的某些应用程序可能会向某些已知类型例如结构元素（梁或柱）添加不必要的附加约束或转换。 将它们导出为BuildingElementProxies可以防止这种情况。&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/dialogPreflight.ui" line="220"/>
@@ -2001,52 +2008,52 @@ Utils -&gt; Make IFC project</translation>
     <message>
       <location filename="../ui/dialogPreflight.ui" line="246"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Classification systems, such as UniClass or MasterFormat, or even your own custom system, are in some cases an important part of a building project. This test will ensure that all BIM objects and materials found in the model have their standard code property dutifully filled.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Classification systems, such as UniClass or MasterFormat, or even your own custom system, are in some cases an important part of a building project. This test will ensure that all BIM objects and materials found in the model have their standard code property dutifully filled.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;分类系统（例如 UniClass 或 MasterFormat，甚至是您自己的自定义系统）在某些情况下是建筑项目的重要组成部分。此测试将确保模型中找到的所有 BIM 对象和材料都已尽职尽责地填写了其标准代码属性。&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/dialogPreflight.ui" line="249"/>
       <source>Do all BIM objects and materials have a standard classification code defined?</source>
-      <translation type="unfinished">Do all BIM objects and materials have a standard classification code defined?</translation>
+      <translation>所有 BIM 对象和材料是否都有定义的标准分类代码？</translation>
     </message>
     <message>
       <location filename="../ui/dialogPreflight.ui" line="273"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The IFC standard offers standard, predefined property sets for many object types. for example, the property set Pset_WallCommon contains properties that the IFC standard thinks all walls should have. This test will check that all BIM objects have the right property set, if available.&lt;/p&gt;&lt;p&gt;Note that this is by no means a formal requirement, and these will inflate the size of your IFC file consequently. We suggest you add standard property sets only if you are actually using any of them.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The IFC standard offers standard, predefined property sets for many object types. for example, the property set Pset_WallCommon contains properties that the IFC standard thinks all walls should have. This test will check that all BIM objects have the right property set, if available.&lt;/p&gt;&lt;p&gt;Note that this is by no means a formal requirement, and these will inflate the size of your IFC file consequently. We suggest you add standard property sets only if you are actually using any of them.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;IFC 标准为许多对象类型提供了标准的预定义属性集。例如，属性集 Pset_WallCommon 包含 IFC 标准认为所有墙壁都应具有的属性。此测试将检查所有 BIM 对象是否具有正确的属性集（如果可用）。&lt;/p&gt;&lt;p&gt;请注意，这绝不是正式要求，因此这些属性集会增加 IFC 文件的大小。我们建议您仅在实际使用其中任何一个时才添加标准属性集。&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/dialogPreflight.ui" line="276"/>
       <source>Do all common IFC types have the corresponding Property Set?</source>
-      <translation type="unfinished">Do all common IFC types have the corresponding Property Set?</translation>
+      <translation>所有通用 IFC 类型是否都有相应的属性集？</translation>
     </message>
     <message>
       <location filename="../ui/dialogPreflight.ui" line="286"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;IFC objects have a geometry representation, which defines the shape of the object, but can also have some or their dimensions, such as height, width or area, explicitly stated. This is very useful for BIM applications that don't process the geometry, such as spreadsheets. Those applications are still able to get and estimate quantities from IFC objects without the need to analyze the geometry.&lt;/p&gt;&lt;p&gt;It is also a possibility for errors (or even fraud), as nothing guarantees that those explicitly stated dimensions match what is inside the geometry.&lt;/p&gt;&lt;p&gt;This test will find any BIM object that has available dimension properties such as width or height, for example walls and structures, but such properties are not marked for explicit export to IFC.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;IFC objects have a geometry representation, which defines the shape of the object, but can also have some or their dimensions, such as height, width or area, explicitly stated. This is very useful for BIM applications that don't process the geometry, such as spreadsheets. Those applications are still able to get and estimate quantities from IFC objects without the need to analyze the geometry.&lt;/p&gt;&lt;p&gt;It is also a possibility for errors (or even fraud), as nothing guarantees that those explicitly stated dimensions match what is inside the geometry.&lt;/p&gt;&lt;p&gt;This test will find any BIM object that has available dimension properties such as width or height, for example walls and structures, but such properties are not marked for explicit export to IFC.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;IFC 对象具有几何表示，它定义了对象的形状，但也可以明确说明某些尺寸，例如高度、宽度或面积。这对于不处理几何图形的 BIM 应用程序（例如电子表格）非常有用。这些应用程序仍然能够从 IFC 对象获取和估算数量，而无需分析几何图形。&lt;/p&gt;&lt;p&gt;这也有可能出现错误（甚至是欺诈），因为没有什么可以保证那些明确说明的尺寸与几何图形内部的尺寸相匹配。&lt;/p&gt;&lt;p&gt;此测试将查找具有可用尺寸属性（例如宽度或高度）的任何 BIM 对象，例如墙壁和结构，但这些属性未标记为明确导出到 IFC。&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/dialogPreflight.ui" line="289"/>
       <source>Do all geometric BIM objects have explicit dimensions set?</source>
-      <translation type="unfinished">Do all geometric BIM objects have explicit dimensions set?</translation>
+      <translation>所有几何 BIM 对象是否都有明确的尺寸集？</translation>
     </message>
     <message>
       <location filename="../ui/dialogPreflight.ui" line="299"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Although there is no requirement for IFC objects to have a material defined, in the real world, it is an important layer of information to be added to you model. This test will find BIM objects without a material defined.&lt;/p&gt;&lt;p&gt;If a BIM object is exported without a material, it will nevertheless be assigned an IfcSurfaceStyle, which will be created from the object color. Some BIM applications actually disregard materials, and only consider the surface style of an object. No IfcMaterial will be attributed to that object.&lt;/p&gt;&lt;p&gt;If a BIM object has a material defined, a surface style will still be created (an IfcMaterial too) but its surface style will take the same name and properties as the material, thus giving more consistency to your file, no matter what other BIM consider, surface style, material, or both.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Although there is no requirement for IFC objects to have a material defined, in the real world, it is an important layer of information to be added to you model. This test will find BIM objects without a material defined.&lt;/p&gt;&lt;p&gt;If a BIM object is exported without a material, it will nevertheless be assigned an IfcSurfaceStyle, which will be created from the object color. Some BIM applications actually disregard materials, and only consider the surface style of an object. No IfcMaterial will be attributed to that object.&lt;/p&gt;&lt;p&gt;If a BIM object has a material defined, a surface style will still be created (an IfcMaterial too) but its surface style will take the same name and properties as the material, thus giving more consistency to your file, no matter what other BIM consider, surface style, material, or both.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;尽管IFC对象不需要定义材料，但在现实世界中，它是要添加到模型中的重要信息层。 此测试将查找未定义材料的BIM对象。&lt;/p&gt;&lt;p&gt;如果导出的BIM对象不包含材料，则仍将为其分配一个IfcSurfaceStyle，它将由对象颜色创建。 一些BIM应用程序实际上不考虑材质，而只考虑对象的表面样式。这些对象无IfcMaterial的归属。&lt;/p&gt;&lt;p&gt;如果一个BIM对象定义了材质，则仍将创建表面样式（也将是IfcMaterial），但是其表面样式将使用与该材质相同的名称和属性，如此可使您的文件更加一致，不管有其他怎样的BIM考虑（表面样式，材料或两者兼有）。&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/dialogPreflight.ui" line="302"/>
       <source>Do all BIM objects have a material?</source>
-      <translation type="unfinished">Do all BIM objects have a material?</translation>
+      <translation>所有 BIM 对象都有材质吗？</translation>
     </message>
     <message>
       <location filename="../ui/dialogPreflight.ui" line="319"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Even if a BIM object has a standard property set for its type attributed, there is no guarantee that this property set still contains or only contains all the properties that the IFC standard has defined for that set. They might have been modified after the property set has been added.&lt;/p&gt;&lt;p&gt;This test will check that all standard property sets found throughout the model contain all and only the properties specified in the standard definition.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Even if a BIM object has a standard property set for its type attributed, there is no guarantee that this property set still contains or only contains all the properties that the IFC standard has defined for that set. They might have been modified after the property set has been added.&lt;/p&gt;&lt;p&gt;This test will check that all standard property sets found throughout the model contain all and only the properties specified in the standard definition.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;即使 BIM 对象具有针对其类型属性的标准属性集，也不能保证此属性集仍然包含或仅包含 IFC 标准为该集定义的所有属性。这些属性可能在添加属性集后已被修改。&lt;/p&gt;&lt;p&gt;此测试将检查在整个模型中找到的所有标准属性集是否包含标准定义中指定的所有属性，并且仅包含这些属性。&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/dialogPreflight.ui" line="322"/>
       <source>Do all standard Property Set contain the correct properties?</source>
-      <translation type="unfinished">Do all standard Property Set contain the correct properties?</translation>
+      <translation>所有标准属性集是否都包含正确的属性？</translation>
     </message>
     <message>
       <location filename="../ui/dialogPreflight.ui" line="349"/>
@@ -2056,7 +2063,7 @@ Utils -&gt; Make IFC project</translation>
     <message>
       <location filename="../ui/dialogPreflight.ui" line="362"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The geometry of IFC objects can be defined in a large number of ways, such as extrusions, subtractions, revolutions, or even faceted objects.&lt;/p&gt;&lt;p&gt;However, extrusions of flat shapes, which is the most basic and common type, often offer advantages over other types in other BIM applications.&lt;/p&gt;&lt;p&gt;This test will find any object that cannot be exported to IFC as an extrusion, or as a shared extrusion (clone).&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The geometry of IFC objects can be defined in a large number of ways, such as extrusions, subtractions, revolutions, or even faceted objects.&lt;/p&gt;&lt;p&gt;However, extrusions of flat shapes, which is the most basic and common type, often offer advantages over other types in other BIM applications.&lt;/p&gt;&lt;p&gt;This test will find any object that cannot be exported to IFC as an extrusion, or as a shared extrusion (clone).&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;IFC 对象的几何形状可以通过多种方式定义，例如挤压、减法、旋转，甚至是多面对象。&lt;/p&gt;&lt;p&gt;但是，平面形状的挤压是最基本和最常见的类型，通常比其他 BIM 应用程序中的其他类型更具优势。&lt;/p&gt;&lt;p&gt;此测试将查找任何无法作为挤压或共享挤压（克隆）导出到 IFC 的对象。&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/dialogPreflight.ui" line="365"/>
@@ -2066,17 +2073,17 @@ Utils -&gt; Make IFC project</translation>
     <message>
       <location filename="../ui/dialogPreflight.ui" line="375"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Walls, columns and beams in FreeCAD can be constructed in a wide number of ways. But some simpler BIM applications might have difficulties with walls that are not of the most simple type, that is, a single, straight piece of wall (which correspond to the IfcWallStandardCase type) or beams and columns that are not based on a straight extrusion of a flat profile (BeamStandardCase, ColumnStandardCase)&lt;/p&gt;&lt;p&gt;This test will find any wall which is not such a standard case.&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Note&lt;/span&gt;: At the moment, BIM objects that meet the requirements to be of a standard case, are still exported as IfcWall, IfcBeam, IfcColumn.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Walls, columns and beams in FreeCAD can be constructed in a wide number of ways. But some simpler BIM applications might have difficulties with walls that are not of the most simple type, that is, a single, straight piece of wall (which correspond to the IfcWallStandardCase type) or beams and columns that are not based on a straight extrusion of a flat profile (BeamStandardCase, ColumnStandardCase)&lt;/p&gt;&lt;p&gt;This test will find any wall which is not such a standard case.&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Note&lt;/span&gt;: At the moment, BIM objects that meet the requirements to be of a standard case, are still exported as IfcWall, IfcBeam, IfcColumn.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;FreeCAD 中的墙、柱和梁可以用多种方式构建。但是一些较简单的 BIM 应用程序可能会难以处理不是最简单类型的墙，即单块直墙（对应于 IfcWallStandardCase 类型）或不是基于平面轮廓的直线挤压的梁和柱（BeamStandardCase、ColumnStandardCase）&lt;/p&gt;&lt;p&gt;此测试将找到任何不是这种标准情况的墙。&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;注意&lt;/span&gt;：目前，满足标准情况要求的 BIM 对象仍导出为 IfcWall、IfcBeam、IfcColumn。&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/dialogPreflight.ui" line="378"/>
       <source>Are all walls, beams and columns based on a single line or profile (standard case)?</source>
-      <translation type="unfinished">Are all walls, beams and columns based on a single line or profile (standard case)?</translation>
+      <translation>所有墙、梁和柱是否基于单条线或轮廓（标准情况）？</translation>
     </message>
     <message>
       <location filename="../ui/dialogPreflight.ui" line="395"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Revit discards all objects that contain lines smaller than 1/32 inch (0.8mm). This test will find any object containing lines smaller than that value.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Revit discards all objects that contain lines smaller than 1/32 inch (0.8mm). This test will find any object containing lines smaller than that value.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Revit 会丢弃所有包含小于 1/32 英寸（0.8 毫米）的线的对象。此测试将找出任何包含小于该值的线的对象。&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/dialogPreflight.ui" line="398"/>
@@ -2086,7 +2093,7 @@ Utils -&gt; Make IFC project</translation>
     <message>
       <location filename="../ui/dialogPreflight.ui" line="415"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;When exporting a model to IFC, all BIM objects that are an extrusion of a rectangular profile will use an IfcRectangleProfileDef entity as their extrusion profile. However, Revit won't import these correctly. If you are going to use the IFC file in Revit, we recommend you to disable this behavior by checking the option under menu &lt;span style=" font-weight:600;"&gt;Edit -&amp;gt; Preferences -&amp;gt; BIM -&amp;gt; NativeIFC -&amp;gt; Disable IfcRectangularProfileDef&lt;/span&gt;.&lt;/p&gt;&lt;p&gt;When that option is checked, all extrusion profiles will be exported as generic IfcArbitraryProfileDef entities, regardless of if they are rectangular or not, which will contain a little less information, but will open correctly in Revit.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;When exporting a model to IFC, all BIM objects that are an extrusion of a rectangular profile will use an IfcRectangleProfileDef entity as their extrusion profile. However, Revit won't import these correctly. If you are going to use the IFC file in Revit, we recommend you to disable this behavior by checking the option under menu &lt;span style=" font-weight:600;"&gt;Edit -&amp;gt; Preferences -&amp;gt; BIM -&amp;gt; NativeIFC -&amp;gt; Disable IfcRectangularProfileDef&lt;/span&gt;.&lt;/p&gt;&lt;p&gt;When that option is checked, all extrusion profiles will be exported as generic IfcArbitraryProfileDef entities, regardless of if they are rectangular or not, which will contain a little less information, but will open correctly in Revit.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;向IFC导出模型时 所有的 BIM 对象都是矩形配置文件的拉伸，将使用 IfcRectangleProfileDef 实体作为他们的退出配置文件。 然而，重置不会正确导入。 如果您要使用Revit中的 IFC 文件， 我们建议您通过检查菜单 &lt;span style=" font-weight:600;"&gt;编辑-&amp;gt; 首选项 -&amp;gt; BIM -&amp;gt; NativeIFC -&amp;gt; 禁用 IfcRectangularProfileDef&lt;/span&gt;来禁用此行为。&lt;/p&gt;&lt;p&gt;在选中此选项时，所有退出配置文件将作为通用IfcArbitraryProfileDef实体导出。 不论它们是否是矩形，它们将包含少一点信息，但将在Revit中正确打开。&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/dialogPreflight.ui" line="418"/>
@@ -2102,7 +2109,7 @@ Utils -&gt; Make IFC project</translation>
     <message>
       <location filename="../ui/dialogReorder.ui" line="20"/>
       <source>Drag items to reorder then press OK to accept</source>
-      <translation type="unfinished">Drag items to reorder then press OK to accept</translation>
+      <translation>拖动项目来重新排序，然后按确定来接受</translation>
     </message>
     <message>
       <location filename="../ui/dialogReorder.ui" line="37"/>
@@ -2125,15 +2132,15 @@ p, li { white-space: pre-wrap; }
 &lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;If this is the first time you are using the tutorial, this can take a while, since we need to download many images. On next runs, this will be faster as the images are cached locally.&lt;/p&gt;
 &lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;br /&gt;&lt;/p&gt;
 &lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;When the tutorial is fully written, we'll think of a faster system to avoid this annoying loading time. Please bear with us in the meantime! ;)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd"&gt;
+      <translation>&lt;!DOCTYPE HTML PUBLIC "-/W3C/DTD HTML 4.0/EN" "http://www.w3.org/TR/REC-html40/strict. td"&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;style type="text/css"&gt;
-p, li { white-space: pre-wrap; }
+p, li v. white-space: pre-wrapp; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=" font-family:'Fira Sans'; font-size:9pt; font-weight:400; font-style:normal;"&gt;
-&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;Loading tutorials contents from the FreeCAD wiki. Please wait...&lt;/p&gt;
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;从 FreeCAD wiki 加载教程内容。 请稍候...&lt;/p&gt;
 &lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;br /&gt;&lt;/p&gt;
-&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;If this is the first time you are using the tutorial, this can take a while, since we need to download many images. On next runs, this will be faster as the images are cached locally.&lt;/p&gt;
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;如果这是第一次使用教程， 这可能需要一段时间，因为我们需要下载许多图像。 在下次运行时，这将更快，因为图像是本地缓存的。&lt;/p&gt;
 &lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;br /&gt;&lt;/p&gt;
-&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;When the tutorial is fully written, we'll think of a faster system to avoid this annoying loading time. Please bear with us in the meantime! ;)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;当教程完全写入时， 我们会想到一个更快的系统来避免这个烦人的加载时间。 请与我们站在一起！;)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/dialogTutorial.ui" line="41"/>
@@ -2179,7 +2186,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../ui/dialogViews.ui" line="79"/>
       <source>2D Views</source>
-      <translation type="unfinished">2D Views</translation>
+      <translation>2D 视图</translation>
     </message>
     <message>
       <location filename="../ui/dialogWindows.ui" line="14"/>
@@ -2258,12 +2265,12 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../ui/dialogWindows.ui" line="233"/>
       <source>Spaces</source>
-      <translation type="unfinished">Spaces</translation>
+      <translation>空格</translation>
     </message>
     <message>
       <location filename="../ui/preferencesNativeIFC.ui" line="14"/>
       <source>NativeIFC</source>
-      <translation type="unfinished">NativeIFC</translation>
+      <translation>原生IFC</translation>
     </message>
     <message>
       <location filename="../ui/preferencesNativeIFC.ui" line="20"/>
@@ -2303,12 +2310,12 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../ui/preferencesNativeIFC.ui" line="70"/>
       <source>The type of object created at import. Coin only is much faster, but you don't get the full shape information. You can convert between the two anytime by right-clicking the object tree</source>
-      <translation type="unfinished">The type of object created at import. Coin only is much faster, but you don't get the full shape information. You can convert between the two anytime by right-clicking the object tree</translation>
+      <translation>导入时创建的对象类型。网格速度更快，但形状更精确。 您可以通过右键单击对象树随时在两者之间进行转换</translation>
     </message>
     <message>
       <location filename="../ui/preferencesNativeIFC.ui" line="83"/>
       <source>Load full shape (slower)</source>
-      <translation type="unfinished">Load full shape (slower)</translation>
+      <translation>加载完整形状(较慢)</translation>
     </message>
     <message>
       <location filename="../ui/preferencesNativeIFC.ui" line="88"/>
@@ -2323,17 +2330,17 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../ui/preferencesNativeIFC.ui" line="103"/>
       <source>If this is checked, the BIM workbench will be loaded after import</source>
-      <translation type="unfinished">If this is checked, the BIM workbench will be loaded after import</translation>
+      <translation>如果选中此项，导入后将加载 BIM 工作台</translation>
     </message>
     <message>
       <location filename="../ui/preferencesNativeIFC.ui" line="106"/>
       <source>Switch to BIM workbench after import</source>
-      <translation type="unfinished">Switch to BIM workbench after import</translation>
+      <translation>导入后切换到 BIM 工作台</translation>
     </message>
     <message>
       <location filename="../ui/preferencesNativeIFC.ui" line="119"/>
       <source>Load all property sets automatically when opening an IFC file</source>
-      <translation type="unfinished">Load all property sets automatically when opening an IFC file</translation>
+      <translation>打开 IFC 文件时自动加载所有属性集</translation>
     </message>
     <message>
       <location filename="../ui/preferencesNativeIFC.ui" line="122"/>
@@ -2343,7 +2350,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../ui/preferencesNativeIFC.ui" line="135"/>
       <source>Load all materials automatically when opening an IFC file</source>
-      <translation type="unfinished">Load all materials automatically when opening an IFC file</translation>
+      <translation>打开 IFC 文件时自动加载所有材料</translation>
     </message>
     <message>
       <location filename="../ui/preferencesNativeIFC.ui" line="138"/>
@@ -2353,7 +2360,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../ui/preferencesNativeIFC.ui" line="151"/>
       <source>Load all layers automatically when opening an IFC file</source>
-      <translation type="unfinished">Load all layers automatically when opening an IFC file</translation>
+      <translation>打开 IFC 文件时自动加载所有图层</translation>
     </message>
     <message>
       <location filename="../ui/preferencesNativeIFC.ui" line="154"/>
@@ -2363,22 +2370,22 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../ui/preferencesNativeIFC.ui" line="167"/>
       <source>When enabling this, the original version of objects dropped onto an IFC project tree will not be deleted.</source>
-      <translation type="unfinished">When enabling this, the original version of objects dropped onto an IFC project tree will not be deleted.</translation>
+      <translation>启用此项时，原始版本的对象将不会被删除到IFC项目树。</translation>
     </message>
     <message>
       <location filename="../ui/preferencesNativeIFC.ui" line="170"/>
       <source>Keep original version of aggregated objects</source>
-      <translation type="unfinished">Keep original version of aggregated objects</translation>
+      <translation>保留聚合对象的原始版本</translation>
     </message>
     <message>
       <location filename="../ui/preferencesNativeIFC.ui" line="183"/>
       <source>If this is checked, a dialog will be shown at each import</source>
-      <translation type="unfinished">If this is checked, a dialog will be shown at each import</translation>
+      <translation>如果选中此项，每次导入将显示对话框</translation>
     </message>
     <message>
       <location filename="../ui/preferencesNativeIFC.ui" line="186"/>
       <source>Show options dialog when importing</source>
-      <translation type="unfinished">Show options dialog when importing</translation>
+      <translation>导入时显示此对话框</translation>
     </message>
     <message>
       <location filename="../ui/preferencesNativeIFC.ui" line="205"/>
@@ -2388,17 +2395,17 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../ui/preferencesNativeIFC.ui" line="211"/>
       <source>Show warning when saving</source>
-      <translation type="unfinished">Show warning when saving</translation>
+      <translation>保存时显示警告</translation>
     </message>
     <message>
       <location filename="../ui/preferencesNativeIFC.ui" line="230"/>
       <source>New document</source>
-      <translation type="unfinished">New document</translation>
+      <translation>新文档</translation>
     </message>
     <message>
       <location filename="../ui/preferencesNativeIFC.ui" line="236"/>
       <source>Always lock new documents</source>
-      <translation type="unfinished">Always lock new documents</translation>
+      <translation>总是锁定新文档</translation>
     </message>
     <message>
       <location filename="../ui/preferencesNativeIFC.ui" line="249"/>
@@ -2409,22 +2416,22 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../ui/preferencesNativeIFC.ui" line="268"/>
       <source>New project</source>
-      <translation type="unfinished">New project</translation>
+      <translation>新项目</translation>
     </message>
     <message>
       <location filename="../ui/preferencesNativeIFC.ui" line="274"/>
       <source>If this is checked, when creating a new projects, a default structure (site, building and storey) will be added under the project</source>
-      <translation type="unfinished">If this is checked, when creating a new projects, a default structure (site, building and storey) will be added under the project</translation>
+      <translation>如果选中此项，当创建新项目时，将在项目下添加默认结构(站点，建筑和存储)</translation>
     </message>
     <message>
       <location filename="../ui/preferencesNativeIFC.ui" line="277"/>
       <source>Create a default structure</source>
-      <translation type="unfinished">Create a default structure</translation>
+      <translation>创建默认结构</translation>
     </message>
     <message>
       <location filename="../ui/preferencesNativeIFC.ui" line="290"/>
       <source>Check this to ask the above question every time a project is created</source>
-      <translation type="unfinished">Check this to ask the above question every time a project is created</translation>
+      <translation>每次创建项目时选中此项来提问上述问题</translation>
     </message>
   </context>
   <context>
@@ -2552,12 +2559,12 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../ui/preferences-arch.ui" line="45"/>
       <source>Join base sketches of walls if possible</source>
-      <translation type="unfinished">Join base sketches of walls if possible</translation>
+      <translation>如果可能，加入基础草图</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="61"/>
       <source>Remove external geometry of base sketches if needed</source>
-      <translation type="unfinished">Remove external geometry of base sketches if needed</translation>
+      <translation>必要时删除基础草图的外部几何体</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="144"/>
@@ -2634,8 +2641,8 @@ to projections of hidden objects.</source>
       <location filename="../ui/preferences-arch.ui" line="486"/>
       <source>Scaling factor for patterns used by objects that have
 a Footprint display mode</source>
-      <translation type="unfinished">Scaling factor for patterns used by objects that have
-a Footprint display mode</translation>
+      <translation>具有
+足迹显示模式的对象所使用模式的缩放因子</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="515"/>
@@ -2798,12 +2805,12 @@ instead of the FreeCAD web workbench</source>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="525"/>
       <source>When clicking a view or level in the BIM views manager, this switches the background to plain color when activating a 2D view, and to gradient color when activating a level</source>
-      <translation type="unfinished">When clicking a view or level in the BIM views manager, this switches the background to plain color when activating a 2D view, and to gradient color when activating a level</translation>
+      <translation>当点击BIM视图管理器中的视图或关卡时， 激活2D视图时将背景切换为纯色，并在激活关卡时切换为渐变颜色</translation>
     </message>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="528"/>
       <source>Switch backgrounds</source>
-      <translation type="unfinished">Switch backgrounds</translation>
+      <translation>切换背景</translation>
     </message>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="314"/>
@@ -2838,7 +2845,7 @@ instead of the FreeCAD web workbench</source>
     <message>
       <location filename="../ui/preferences-sh3d-import.ui" line="14"/>
       <source>SH3D import</source>
-      <translation type="unfinished">SH3D import</translation>
+      <translation>导入SH3D</translation>
     </message>
     <message>
       <location filename="../ui/preferences-sh3d-import.ui" line="32"/>
@@ -2850,121 +2857,121 @@ instead of the FreeCAD web workbench</source>
       <location filename="../ui/preferences-sh3d-import.ui" line="45"/>
       <source>Shows verbose debug messages during import of SH3D files in the Report
                     view panel. Log level message must be allowed for this setting to have an effect.</source>
-      <translation type="unfinished">Shows verbose debug messages during import of SH3D files in the Report
-                    view panel. Log level message must be allowed for this setting to have an effect.</translation>
+      <translation>调试报告
+                    视图面板中导入SH3D 文件时显示详细的调试信息。 必须允许日志级别的消息才能产生效果。</translation>
     </message>
     <message>
       <location filename="../ui/preferences-sh3d-import.ui" line="71"/>
       <source>Whether to import the model's doors and windows</source>
-      <translation type="unfinished">Whether to import the model's doors and windows</translation>
+      <translation>是否导入模型的门和窗口</translation>
     </message>
     <message>
       <location filename="../ui/preferences-sh3d-import.ui" line="74"/>
       <source>Doors and Windows</source>
-      <translation type="unfinished">Doors and Windows</translation>
+      <translation>门和窗口</translation>
     </message>
     <message>
       <location filename="../ui/preferences-sh3d-import.ui" line="87"/>
       <source>Whether to import the model's furnitures</source>
-      <translation type="unfinished">Whether to import the model's furnitures</translation>
+      <translation>是否导入模型的家具。</translation>
     </message>
     <message>
       <location filename="../ui/preferences-sh3d-import.ui" line="90"/>
       <source>Furnitures</source>
-      <translation type="unfinished">Furnitures</translation>
+      <translation>家具：</translation>
     </message>
     <message>
       <location filename="../ui/preferences-sh3d-import.ui" line="103"/>
       <source>Whether to create Arch::Equipment for each furniture defined in the model (NOTE: this can negatively impact the import process speed)</source>
-      <translation type="unfinished">Whether to create Arch::Equipment for each furniture defined in the model (NOTE: this can negatively impact the import process speed)</translation>
+      <translation>是否为模型定义的每个家具创建Arch::设备 (NOTE: 这可能对导入过程速度产生不利影响)</translation>
     </message>
     <message>
       <location filename="../ui/preferences-sh3d-import.ui" line="106"/>
       <source>Create Arch::Equipment</source>
-      <translation type="unfinished">Create Arch::Equipment</translation>
+      <translation>创建归档：设备：</translation>
     </message>
     <message>
       <location filename="../ui/preferences-sh3d-import.ui" line="119"/>
       <source>Whether to join the different Arch::Wall together</source>
-      <translation type="unfinished">Whether to join the different Arch::Wall together</translation>
+      <translation>是否加入不同的归档::墙一起使用</translation>
     </message>
     <message>
       <location filename="../ui/preferences-sh3d-import.ui" line="122"/>
       <source>Join Arch::Wall</source>
-      <translation type="unfinished">Join Arch::Wall</translation>
+      <translation>加入档案::墙</translation>
     </message>
     <message>
       <location filename="../ui/preferences-sh3d-import.ui" line="135"/>
       <source>Whether to import the model's lights. Note that you also need to import
                     the model's furnitures.</source>
-      <translation type="unfinished">Whether to import the model's lights. Note that you also need to import
-                    the model's furnitures.</translation>
+      <translation>是否导入模型的灯光。请注意，您还需要导入
+模特的家具。</translation>
     </message>
     <message>
       <location filename="../ui/preferences-sh3d-import.ui" line="139"/>
       <source>Lights (requires Render)</source>
-      <translation type="unfinished">Lights (requires Render)</translation>
+      <translation>灯光(需要渲染器)</translation>
     </message>
     <message>
       <location filename="../ui/preferences-sh3d-import.ui" line="152"/>
       <source>Whether to import the model's cameras</source>
-      <translation type="unfinished">Whether to import the model's cameras</translation>
+      <translation>是否导入模型的摄像头</translation>
     </message>
     <message>
       <location filename="../ui/preferences-sh3d-import.ui" line="155"/>
       <source>Cameras (requires Render)</source>
-      <translation type="unfinished">Cameras (requires Render)</translation>
+      <translation>摄影机（需要渲染）</translation>
     </message>
     <message>
       <location filename="../ui/preferences-sh3d-import.ui" line="168"/>
       <source>Merge imported element with existing FC object</source>
-      <translation type="unfinished">Merge imported element with existing FC object</translation>
+      <translation>将导入元素与现有的 FC 对象合并</translation>
     </message>
     <message>
       <location filename="../ui/preferences-sh3d-import.ui" line="171"/>
       <source>Merge into existing document</source>
-      <translation type="unfinished">Merge into existing document</translation>
+      <translation>合并到现有文档</translation>
     </message>
     <message>
       <location filename="../ui/preferences-sh3d-import.ui" line="186"/>
       <source>Default Floor Color</source>
-      <translation type="unfinished">Default Floor Color</translation>
+      <translation>默认地板颜色</translation>
     </message>
     <message>
       <location filename="../ui/preferences-sh3d-import.ui" line="202"/>
       <location filename="../ui/preferences-sh3d-import.ui" line="242"/>
       <source>This color might be used when a room does not define its own color.</source>
-      <translation type="unfinished">This color might be used when a room does not define its own color.</translation>
+      <translation>当空间没有定义自己的颜色时，可能会使用这种颜色。</translation>
     </message>
     <message>
       <location filename="../ui/preferences-sh3d-import.ui" line="226"/>
       <source>Default Ceiling Color</source>
-      <translation type="unfinished">Default Ceiling Color</translation>
+      <translation>默认层颜色</translation>
     </message>
     <message>
       <location filename="../ui/preferences-sh3d-import.ui" line="264"/>
       <source>Create a default Render project with the newly created Site</source>
-      <translation type="unfinished">Create a default Render project with the newly created Site</translation>
+      <translation>用新创建的站点创建默认渲染项目</translation>
     </message>
     <message>
       <location filename="../ui/preferences-sh3d-import.ui" line="267"/>
       <source>Create Render Project (requires Render)</source>
-      <translation type="unfinished">Create Render Project (requires Render)</translation>
+      <translation>创建渲染项目 (需要 渲染器)</translation>
     </message>
     <message>
       <location filename="../ui/preferences-sh3d-import.ui" line="280"/>
       <source>Fit view while importing.</source>
-      <translation type="unfinished">Fit view while importing.</translation>
+      <translation>导入时调整视图。</translation>
     </message>
     <message>
       <location filename="../ui/preferences-sh3d-import.ui" line="296"/>
       <source>Create a default IFC project with the newly created Site.</source>
-      <translation type="unfinished">Create a default IFC project with the newly created Site.</translation>
+      <translation>使用新创建的站点创建默认的 IFC 项目。</translation>
     </message>
     <message>
       <location filename="../ui/preferences-sh3d-import.ui" line="299"/>
       <source>Create IFC Project</source>
-      <translation type="unfinished">Create IFC Project</translation>
+      <translation>创建 IFC 项目</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="45"/>
@@ -3502,23 +3509,22 @@ If this is your case, you can disable this and then all profiles will be exporte
       <location filename="../ui/preferences-ifc-export.ui" line="268"/>
       <source>Some IFC types such as IfcWall or IfcBeam have special standard versions like IfcWallStandardCase or IfcBeamStandardCase. If this option is turned on, FreeCAD will automatically export such objects
 as standard cases when the necessary conditions are met.</source>
-      <translation type="unfinished">Some IFC types such as IfcWall or IfcBeam have special standard versions like IfcWallStandardCase or IfcBeamStandardCase. If this option is turned on, FreeCAD will automatically export such objects
-as standard cases when the necessary conditions are met.</translation>
+      <translation>某些IFC 类型，如IfcWall 或 IfcBeam 具有特殊的标准版本，如IfcWallStandardCase 或 IfcBeamStandardcase。 如果启用此选项，FreeCAD 将在满足必要条件时自动导出这些对象为标准案例。</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="387"/>
       <source>Add default building if one is not found in the document</source>
-      <translation type="unfinished">Add default building if one is not found in the document</translation>
+      <translation>如果文档中没有找到的话，添加默认设置</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="403"/>
       <source>In FreeCAD, it is possible to nest groups inside buildings or storeys. If this option is disabled, FreeCAD groups will be saved as IfcGroups and aggregated to the building structure. Aggregating non-building elements such as IfcGroups is however not recommended by the IFC standards. It is therefore also possible to export these groups as IfcElementAssemblies, which produces an IFC-compliant file. However, at FreeCAD, we believe nesting groups inside structures should be possible, and this option is there to have a chance to demonstrate our point of view.</source>
-      <translation type="unfinished">In FreeCAD, it is possible to nest groups inside buildings or storeys. If this option is disabled, FreeCAD groups will be saved as IfcGroups and aggregated to the building structure. Aggregating non-building elements such as IfcGroups is however not recommended by the IFC standards. It is therefore also possible to export these groups as IfcElementAssemblies, which produces an IFC-compliant file. However, at FreeCAD, we believe nesting groups inside structures should be possible, and this option is there to have a chance to demonstrate our point of view.</translation>
+      <translation>在FreeCAD中，可以将组嵌套到建筑物或楼层内。如果禁用此选项，FreeCAD组将作为IfcGroups保存并聚合到建筑结构中。然而，IFC标准并不推荐聚合非建筑元素，如IfcGroups。因此，也可以将这些组导出为IfcElementAssemblies，这会产生一个符合IFC标准的文件。然而，在FreeCAD中，我们认为应该能够在结构内部嵌套组，这个选项的存在是为了有机会展示我们的观点。</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="406"/>
       <source>Export nested groups as assemblies</source>
-      <translation type="unfinished">Export nested groups as assemblies</translation>
+      <translation>导出嵌套组为程序集</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="272"/>
@@ -3541,12 +3547,12 @@ A site is not mandatory but a common practice is to have at least one in the fil
       <location filename="../ui/preferences-ifc-export.ui" line="366"/>
       <location filename="../ui/preferences-ifc.ui" line="473"/>
       <source>Check also NativeIFC-specific preferences under BIM -&gt; NativeIFC</source>
-      <translation type="unfinished">Check also NativeIFC-specific preferences under BIM -&gt; NativeIFC</translation>
+      <translation>同时查看 BIM -&gt; NativeIFC 下的 NativeIFC 特定首选项</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="376"/>
       <source>IFC standard compliance</source>
-      <translation type="unfinished">IFC standard compliance</translation>
+      <translation>IFC 标准适配状态</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="382"/>
@@ -3714,17 +3720,17 @@ unit to work with when opening the file.</source>
     <message>
       <location filename="../../ArchStructure.py" line="444"/>
       <source>Parameters of the structure</source>
-      <translation type="unfinished">Parameters of the structure</translation>
+      <translation>结构参数</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="499"/>
       <source>Switch Length/Height</source>
-      <translation type="unfinished">Switch Length/Height</translation>
+      <translation>调整长度/高度</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="501"/>
       <source>Switch Length/Width</source>
-      <translation type="unfinished">Switch Length/Width</translation>
+      <translation>调整长度/宽度</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="505"/>
@@ -4079,22 +4085,22 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchWindowPresets.py" line="522"/>
       <source>Opening</source>
-      <translation type="unfinished">Opening</translation>
+      <translation>打开中</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimCutPlane.py" line="54"/>
       <source>Select two objects, an object to be cut and an object defining a cutting plane, in that order</source>
-      <translation type="unfinished">Select two objects, an object to be cut and an object defining a cutting plane, in that order</translation>
+      <translation>选择两个对象、一个要切割的对象和一个定义切割平面的对象。</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimCutPlane.py" line="57"/>
       <source>The first object does not have a shape</source>
-      <translation type="unfinished">The first object does not have a shape</translation>
+      <translation>第一个对象没有形状</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimCutPlane.py" line="60"/>
       <source>The second object does not define a plane</source>
-      <translation type="unfinished">The second object does not define a plane</translation>
+      <translation>第二个对象没有定义面</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimCutPlane.py" line="96"/>
@@ -4134,17 +4140,17 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchReference.py" line="85"/>
       <source>TransientReference property to ReferenceMode</source>
-      <translation type="unfinished">TransientReference property to ReferenceMode</translation>
+      <translation>暂时引用属性到参考模式</translation>
     </message>
     <message>
       <location filename="../../ArchReference.py" line="85"/>
       <source>Upgrading</source>
-      <translation type="unfinished">Upgrading</translation>
+      <translation>升级中</translation>
     </message>
     <message>
       <location filename="../../ArchReference.py" line="160"/>
       <source>Part not found in file</source>
-      <translation type="unfinished">Part not found in file</translation>
+      <translation>文件中找不到部件</translation>
     </message>
     <message>
       <location filename="../../ArchReference.py" line="181"/>
@@ -4152,12 +4158,12 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <location filename="../../ArchReference.py" line="438"/>
       <location filename="../../ArchReference.py" line="839"/>
       <source>NativeIFC not available - unable to process IFC files</source>
-      <translation type="unfinished">NativeIFC not available - unable to process IFC files</translation>
+      <translation>原生IFC功能不可用——无法处理IFC文件</translation>
     </message>
     <message>
       <location filename="../../ArchReference.py" line="281"/>
       <source>Error removing splitter</source>
-      <translation type="unfinished">Error removing splitter</translation>
+      <translation>移除分割器时出错</translation>
     </message>
     <message>
       <location filename="../../ArchReference.py" line="663"/>
@@ -4172,13 +4178,13 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchReference.py" line="718"/>
       <source>Unable to get lightWeight node for object referenced in</source>
-      <translation type="unfinished">Unable to get lightWeight node for object referenced in</translation>
+      <translation>无法为被引用的对象获取光重节点</translation>
     </message>
     <message>
       <location filename="../../ArchReference.py" line="726"/>
       <location filename="../../ArchReference.py" line="730"/>
       <source>Invalid lightWeight node for object referenced in</source>
-      <translation type="unfinished">Invalid lightWeight node for object referenced in</translation>
+      <translation/>
     </message>
     <message>
       <location filename="../../ArchReference.py" line="739"/>
@@ -4186,17 +4192,17 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <location filename="../../ArchReference.py" line="771"/>
       <location filename="../../ArchReference.py" line="775"/>
       <source>Invalid root node in</source>
-      <translation type="unfinished">Invalid root node in</translation>
+      <translation>无效的根节点</translation>
     </message>
     <message>
       <location filename="../../ArchReference.py" line="865"/>
       <source>External reference</source>
-      <translation type="unfinished">External reference</translation>
+      <translation>外部参考</translation>
     </message>
     <message>
       <location filename="../../ArchReference.py" line="867"/>
       <source>External file</source>
-      <translation type="unfinished">External file</translation>
+      <translation>外部文件</translation>
     </message>
     <message>
       <location filename="../../ArchReference.py" line="871"/>
@@ -4206,28 +4212,28 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchReference.py" line="878"/>
       <source>Part to use:</source>
-      <translation type="unfinished">Part to use:</translation>
+      <translation>使用的部件</translation>
     </message>
     <message>
       <location filename="../../ArchReference.py" line="883"/>
       <source>Choose file...</source>
-      <translation type="unfinished">Choose file...</translation>
+      <translation>选择文件</translation>
     </message>
     <message>
       <location filename="../../ArchReference.py" line="894"/>
       <location filename="../../ArchReference.py" line="958"/>
       <source>None (Use whole object)</source>
-      <translation type="unfinished">None (Use whole object)</translation>
+      <translation>无 (使用整个对象)</translation>
     </message>
     <message>
       <location filename="../../ArchReference.py" line="945"/>
       <source>Reference files</source>
-      <translation type="unfinished">Reference files</translation>
+      <translation>参考文件</translation>
     </message>
     <message>
       <location filename="../../ArchReference.py" line="947"/>
       <source>Choose reference file</source>
-      <translation type="unfinished">Choose reference file</translation>
+      <translation>选择参考文件</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimReference.py" line="54"/>
@@ -4272,12 +4278,12 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../importers/importSHP.py" line="134"/>
       <source>The shapefile Python library was not found on your system. Would you like to download it now from %1? It will be placed in your macros folder.</source>
-      <translation type="unfinished">The shapefile Python library was not found on your system. Would you like to download it now from %1? It will be placed in your macros folder.</translation>
+      <translation>您的系统中找不到shapefile python 库，您想现在从 下载它？ 它将被放置在您的宏文件夹中。</translation>
     </message>
     <message>
       <location filename="../../importers/importSHP.py" line="140"/>
       <source>Error: Unable to download from %1</source>
-      <translation type="unfinished">Error: Unable to download from %1</translation>
+      <translation>错误：无法从 %1 下载</translation>
     </message>
     <message>
       <location filename="../../importers/importSHP.py" line="150"/>
@@ -4498,7 +4504,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchWindow.py" line="1388"/>
       <source>If this is checked, the default Offset value of this window will be added to the value entered here</source>
-      <translation type="unfinished">If this is checked, the default Offset value of this window will be added to the value entered here</translation>
+      <translation>如果选中此项，此窗口的默认偏移值将添加到这里输入的值</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="1390"/>
@@ -4582,12 +4588,12 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../importers/importIFClegacy.py" line="387"/>
       <source>IfcOpenShell not found or disabled, falling back on internal parser.</source>
-      <translation type="unfinished">IfcOpenShell not found or disabled, falling back on internal parser.</translation>
+      <translation>IfcOpenShell 未找到或禁用，回到内部解析器。</translation>
     </message>
     <message>
       <location filename="../../importers/importIFClegacy.py" line="393"/>
       <source>IFC Schema not found, IFC import disabled.</source>
-      <translation type="unfinished">IFC Schema not found, IFC import disabled.</translation>
+      <translation>找不到 IFC 方案，IFC 导入已禁用。</translation>
     </message>
     <message>
       <location filename="../../importers/importIFClegacy.py" line="928"/>
@@ -4597,7 +4603,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../importers/importIFClegacy.py" line="935"/>
       <source>Error: your IfcOpenShell version is too old</source>
-      <translation type="unfinished">Error: your IfcOpenShell version is too old</translation>
+      <translation>错误: 您的 IfcOpenShell 版本太旧了</translation>
     </message>
     <message>
       <location filename="../../Arch.py" line="159"/>
@@ -4617,7 +4623,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../Arch.py" line="913"/>
       <source>Railing</source>
-      <translation type="unfinished">Railing</translation>
+      <translation>护栏</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimStairs.py" line="55"/>
@@ -4627,22 +4633,22 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchStairs.py" line="236"/>
       <source>removed properties 'OutlineWireLeft' and 'OutlineWireRight', and added properties 'RailingLeft' and 'RailingRight'</source>
-      <translation type="unfinished">removed properties 'OutlineWireLeft' and 'OutlineWireRight', and added properties 'RailingLeft' and 'RailingRight'</translation>
+      <translation>删除属性“outlineWreLeft”和“outlineWreRight”，并添加属性“RailingLeft”和“RailingRight”</translation>
     </message>
     <message>
       <location filename="../../ArchStairs.py" line="250"/>
       <source>changed the type of properties 'RailingLeft' and 'RailingRight'</source>
-      <translation type="unfinished">changed the type of properties 'RailingLeft' and 'RailingRight'</translation>
+      <translation>更改属性类型“左护栏”和“右护栏”</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimMaterial.py" line="570"/>
       <source>Create material</source>
-      <translation type="unfinished">Create material</translation>
+      <translation>创建材料</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimMaterial.py" line="601"/>
       <source>Create multi-material</source>
-      <translation type="unfinished">Create multi-material</translation>
+      <translation>创建多种材料</translation>
     </message>
     <message>
       <location filename="../../ArchMaterial.py" line="90"/>
@@ -4659,7 +4665,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../Arch.py" line="348"/>
       <source>MultiMaterial</source>
-      <translation type="unfinished">MultiMaterial</translation>
+      <translation>多种材料</translation>
     </message>
     <message>
       <location filename="../../ArchMaterial.py" line="799"/>
@@ -4674,28 +4680,28 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchMaterial.py" line="850"/>
       <source>depends on the object</source>
-      <translation type="unfinished">depends on the object</translation>
+      <translation>依赖对象</translation>
     </message>
     <message>
       <location filename="../../importers/importGBXML.py" line="46"/>
       <location filename="../../importers/importGBXML.py" line="50"/>
       <source>This exporter can currently only export one site object</source>
-      <translation type="unfinished">This exporter can currently only export one site object</translation>
+      <translation>此导出器目前只能导出一个站点对象</translation>
     </message>
     <message>
       <location filename="../../importers/importGBXML.py" line="92"/>
       <source>Error: Space '%s' has no Zone. Aborting.</source>
-      <translation type="unfinished">Error: Space '%s' has no Zone. Aborting.</translation>
+      <translation>错误: 空间 "%s" 没有区域。正在中止.</translation>
     </message>
     <message>
       <location filename="../../importers/importDAE.py" line="60"/>
       <source>pycollada not found, collada support is disabled.</source>
-      <translation type="unfinished">pycollada not found, collada support is disabled.</translation>
+      <translation>未找到pycollada，Collada支持已禁用</translation>
     </message>
     <message>
       <location filename="../../importers/importDAE.py" line="311"/>
       <source>file %s successfully created.</source>
-      <translation type="unfinished">file %s successfully created.</translation>
+      <translation>文件%s已成功创建.</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimAxis.py" line="109"/>
@@ -4705,22 +4711,22 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchGrid.py" line="109"/>
       <source>Auto height is larger than height</source>
-      <translation type="unfinished">Auto height is larger than height</translation>
+      <translation>自动高度大于高度</translation>
     </message>
     <message>
       <location filename="../../ArchGrid.py" line="118"/>
       <source>Total row size is larger than height</source>
-      <translation type="unfinished">Total row size is larger than height</translation>
+      <translation>总行大小大于高度</translation>
     </message>
     <message>
       <location filename="../../ArchGrid.py" line="140"/>
       <source>Auto width is larger than width</source>
-      <translation type="unfinished">Auto width is larger than width</translation>
+      <translation>自动宽度大于宽度</translation>
     </message>
     <message>
       <location filename="../../ArchGrid.py" line="149"/>
       <source>Total column size is larger than width</source>
-      <translation type="unfinished">Total column size is larger than width</translation>
+      <translation>总列大小大于宽度</translation>
     </message>
     <message>
       <location filename="../../ArchGrid.py" line="387"/>
@@ -4731,12 +4737,12 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchGrid.py" line="388"/>
       <source>Total width</source>
-      <translation type="unfinished">Total width</translation>
+      <translation>总宽度</translation>
     </message>
     <message>
       <location filename="../../ArchGrid.py" line="389"/>
       <source>Total height</source>
-      <translation type="unfinished">Total height</translation>
+      <translation>总高度</translation>
     </message>
     <message>
       <location filename="../../ArchGrid.py" line="390"/>
@@ -4756,37 +4762,37 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchGrid.py" line="393"/>
       <source>Del column</source>
-      <translation type="unfinished">Del column</translation>
+      <translation>删除列</translation>
     </message>
     <message>
       <location filename="../../ArchGrid.py" line="394"/>
       <source>Create span</source>
-      <translation type="unfinished">Create span</translation>
+      <translation>创建跨度</translation>
     </message>
     <message>
       <location filename="../../ArchGrid.py" line="395"/>
       <source>Remove span</source>
-      <translation type="unfinished">Remove span</translation>
+      <translation>删除跨度</translation>
     </message>
     <message>
       <location filename="../../ArchGrid.py" line="396"/>
       <source>Rows</source>
-      <translation type="unfinished">Rows</translation>
+      <translation>行</translation>
     </message>
     <message>
       <location filename="../../ArchGrid.py" line="396"/>
       <source>Columns</source>
-      <translation type="unfinished">Columns</translation>
+      <translation>列</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="1005"/>
       <source>Precast elements</source>
-      <translation type="unfinished">Precast elements</translation>
+      <translation>前置元素</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="1006"/>
       <source>Slab type</source>
-      <translation type="unfinished">Slab type</translation>
+      <translation>楼板类型</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="1007"/>
@@ -4796,22 +4802,22 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchPrecast.py" line="1008"/>
       <source>Dent length</source>
-      <translation type="unfinished">Dent length</translation>
+      <translation>齿长</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="1009"/>
       <source>Dent width</source>
-      <translation type="unfinished">Dent width</translation>
+      <translation>齿宽</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="1010"/>
       <source>Dent height</source>
-      <translation type="unfinished">Dent height</translation>
+      <translation>齿高</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="1011"/>
       <source>Slab base</source>
-      <translation type="unfinished">Slab base</translation>
+      <translation>楼板底部</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="1012"/>
@@ -4856,17 +4862,17 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchPrecast.py" line="1020"/>
       <source>Number of risers</source>
-      <translation type="unfinished">Number of risers</translation>
+      <translation>竖管数</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="1021"/>
       <source>Length of down floor</source>
-      <translation type="unfinished">Length of down floor</translation>
+      <translation>底层长度</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="1022"/>
       <source>Height of risers</source>
-      <translation type="unfinished">Height of risers</translation>
+      <translation>冒口高度</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="1023"/>
@@ -4876,33 +4882,33 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchPrecast.py" line="1408"/>
       <source>Precast options</source>
-      <translation type="unfinished">Precast options</translation>
+      <translation>预制选项</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="1409"/>
       <source>Dents list</source>
-      <translation type="unfinished">Dents list</translation>
+      <translation>凹痕名单</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="1410"/>
       <source>Add dent</source>
-      <translation type="unfinished">Add dent</translation>
+      <translation>添加凹痕</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="1411"/>
       <source>Remove dent</source>
-      <translation type="unfinished">Remove dent</translation>
+      <translation>删除凹痕</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="1415"/>
       <source>Slant</source>
-      <translation type="unfinished">Slant</translation>
+      <translation>倾斜文本</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="1416"/>
       <location filename="../../Arch.py" line="130"/>
       <source>Level</source>
-      <translation type="unfinished">Level</translation>
+      <translation>层级</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="1417"/>
@@ -4912,28 +4918,28 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../Arch.py" line="398"/>
       <source>Panel</source>
-      <translation type="unfinished">Panel</translation>
+      <translation>控制面板</translation>
     </message>
     <message>
       <location filename="../../Arch.py" line="421"/>
       <source>View of</source>
-      <translation type="unfinished">View of</translation>
+      <translation>视图</translation>
     </message>
     <message>
       <location filename="../../Arch.py" line="437"/>
       <source>PanelSheet</source>
-      <translation type="unfinished">PanelSheet</translation>
+      <translation>控制面板工作表</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimPanel.py" line="80"/>
       <location filename="../../bimcommands/BimPanel.py" line="109"/>
       <source>Create Panel</source>
-      <translation type="unfinished">Create Panel</translation>
+      <translation>创建面板</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimPanel.py" line="134"/>
       <source>Panel options</source>
-      <translation type="unfinished">Panel options</translation>
+      <translation>面板选项</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimPanel.py" line="169"/>
@@ -4943,17 +4949,17 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../bimcommands/BimPanel.py" line="262"/>
       <source>Create Panel Cut</source>
-      <translation type="unfinished">Create Panel Cut</translation>
+      <translation>创建剪切面板</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimPanel.py" line="289"/>
       <source>Create Panel Sheet</source>
-      <translation type="unfinished">Create Panel Sheet</translation>
+      <translation>创建表格面板</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="411"/>
       <source>Error computing shape of</source>
-      <translation type="unfinished">Error computing shape of</translation>
+      <translation>计算形状的时候出错</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="1067"/>
@@ -4963,23 +4969,23 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchPanel.py" line="1071"/>
       <source>Edit views positions</source>
-      <translation type="unfinished">Edit views positions</translation>
+      <translation>编辑视图位置</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimPanel.py" line="388"/>
       <source>This object has no face</source>
-      <translation type="unfinished">This object has no face</translation>
+      <translation>此对象没有面</translation>
     </message>
     <message>
       <location filename="../../Arch.py" line="226"/>
       <source>Curtain Wall</source>
-      <translation type="unfinished">Curtain Wall</translation>
+      <translation>幕墙</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimCurtainwall.py" line="60"/>
       <location filename="../../bimcommands/BimCurtainwall.py" line="87"/>
       <source>Create Curtain Wall</source>
-      <translation type="unfinished">Create Curtain Wall</translation>
+      <translation>创建幕墙</translation>
     </message>
     <message>
       <location filename="../../Arch.py" line="455"/>
@@ -4989,124 +4995,124 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../Arch.py" line="488"/>
       <source>Connector</source>
-      <translation type="unfinished">Connector</translation>
+      <translation>连接器</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimPipe.py" line="58"/>
       <location filename="../../bimcommands/BimPipe.py" line="65"/>
       <source>Create Pipe</source>
-      <translation type="unfinished">Create Pipe</translation>
+      <translation>创建管道</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimPipe.py" line="95"/>
       <source>Please select exactly 2 or 3 Pipe objects</source>
-      <translation type="unfinished">Please select exactly 2 or 3 Pipe objects</translation>
+      <translation>请选择2或3个管道对象</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimPipe.py" line="100"/>
       <source>Please select only Pipe objects</source>
-      <translation type="unfinished">Please select only Pipe objects</translation>
+      <translation>请只选择管道对象</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimPipe.py" line="104"/>
       <source>Create Connector</source>
-      <translation type="unfinished">Create Connector</translation>
+      <translation>创建连接器</translation>
     </message>
     <message>
       <location filename="../../ArchPipe.py" line="128"/>
       <source>Unable to build the base path</source>
-      <translation type="unfinished">Unable to build the base path</translation>
+      <translation>无法生成基础路径</translation>
     </message>
     <message>
       <location filename="../../ArchPipe.py" line="144"/>
       <source>Unable to build the profile</source>
-      <translation type="unfinished">Unable to build the profile</translation>
+      <translation>无法构建配置文件</translation>
     </message>
     <message>
       <location filename="../../ArchPipe.py" line="184"/>
       <source>Unable to build the pipe</source>
-      <translation type="unfinished">Unable to build the pipe</translation>
+      <translation>无法生成管道</translation>
     </message>
     <message>
       <location filename="../../ArchPipe.py" line="203"/>
       <source>The base object is not a Part</source>
-      <translation type="unfinished">The base object is not a Part</translation>
+      <translation>基础对象不是部件</translation>
     </message>
     <message>
       <location filename="../../ArchPipe.py" line="206"/>
       <source>Too many wires in the base shape</source>
-      <translation type="unfinished">Too many wires in the base shape</translation>
+      <translation>基础形状中的线太多了</translation>
     </message>
     <message>
       <location filename="../../ArchPipe.py" line="209"/>
       <source>The base wire is closed</source>
-      <translation type="unfinished">The base wire is closed</translation>
+      <translation>基线已关闭</translation>
     </message>
     <message>
       <location filename="../../ArchPipe.py" line="223"/>
       <source>The profile is not a 2D Part</source>
-      <translation type="unfinished">The profile is not a 2D Part</translation>
+      <translation>此轮廓不是2D零件</translation>
     </message>
     <message>
       <location filename="../../ArchPipe.py" line="226"/>
       <source>The profile is not closed</source>
-      <translation type="unfinished">The profile is not closed</translation>
+      <translation>此轮廓没有关闭</translation>
     </message>
     <message>
       <location filename="../../ArchPipe.py" line="319"/>
       <source>Only the 3 first wires will be connected</source>
-      <translation type="unfinished">Only the 3 first wires will be connected</translation>
+      <translation>只有前3条线将被连接</translation>
     </message>
     <message>
       <location filename="../../ArchPipe.py" line="339"/>
       <location filename="../../ArchPipe.py" line="400"/>
       <source>Common vertex not found</source>
-      <translation type="unfinished">Common vertex not found</translation>
+      <translation>未找到公共顶点</translation>
     </message>
     <message>
       <location filename="../../ArchPipe.py" line="360"/>
       <source>Pipes are already aligned</source>
-      <translation type="unfinished">Pipes are already aligned</translation>
+      <translation>管道已对齐</translation>
     </message>
     <message>
       <location filename="../../ArchPipe.py" line="389"/>
       <source>Unable to revolve this connector</source>
-      <translation type="unfinished">Unable to revolve this connector</translation>
+      <translation>无法旋转此连接器</translation>
     </message>
     <message>
       <location filename="../../ArchPipe.py" line="412"/>
       <source>At least 2 pipes must align</source>
-      <translation type="unfinished">At least 2 pipes must align</translation>
+      <translation>至少2根管道必须对齐</translation>
     </message>
     <message>
       <location filename="../../ArchSchedule.py" line="102"/>
       <source>renamed property 'Description' to 'Operation'</source>
-      <translation type="unfinished">renamed property 'Description' to 'Operation'</translation>
+      <translation>将属性“描述”重命名为“操作”</translation>
     </message>
     <message>
       <location filename="../../ArchSchedule.py" line="103"/>
       <source>removed property 'Result', and added property 'AutoUpdate'</source>
-      <translation type="unfinished">removed property 'Result', and added property 'AutoUpdate'</translation>
+      <translation>删除属性 '结果' 和添加属性 '自动更新'</translation>
     </message>
     <message>
       <location filename="../../ArchSchedule.py" line="105"/>
       <source>added property 'Schedule'</source>
-      <translation type="unfinished">added property 'Schedule'</translation>
+      <translation>添加属性“计数”</translation>
     </message>
     <message>
       <location filename="../../ArchSchedule.py" line="431"/>
       <source>Unable to retrieve value from object</source>
-      <translation type="unfinished">Unable to retrieve value from object</translation>
+      <translation>无法从对象中获取值</translation>
     </message>
     <message>
       <location filename="../../ArchSchedule.py" line="636"/>
       <source>Remove spreadsheet</source>
-      <translation type="unfinished">Remove spreadsheet</translation>
+      <translation>删除数据表格</translation>
     </message>
     <message>
       <location filename="../../ArchSchedule.py" line="638"/>
       <source>Attach spreadsheet</source>
-      <translation type="unfinished">Attach spreadsheet</translation>
+      <translation>附加电子表格</translation>
     </message>
     <message>
       <location filename="../../ArchSchedule.py" line="771"/>
@@ -5132,7 +5138,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchSchedule.py" line="825"/>
       <source>Unable to recognize that file type</source>
-      <translation type="unfinished">Unable to recognize that file type</translation>
+      <translation>无法识别该文件类型</translation>
     </message>
     <message>
       <location filename="../../ArchCommands.py" line="1038"/>
@@ -5158,7 +5164,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../Arch.py" line="705"/>
       <source>Schedule</source>
-      <translation type="unfinished">Schedule</translation>
+      <translation>预设</translation>
     </message>
     <message>
       <location filename="../../ArchFloor.py" line="155"/>
@@ -5169,37 +5175,35 @@ Floor object is not allowed to accept Site, Building, or Floor objects.
 Site, Building, and Floor objects will be removed from the selection.
 
 You can change that in the preferences.</source>
-      <translation type="unfinished">You can put anything but the following objects: Site, Building, and Floor - in a Floor object.
+      <translation>您可以放置以下对象以外的任何东西：站点、建筑和地板——在一个地板物体。
 
-Floor object is not allowed to accept Site, Building, or Floor objects.
+地板对象不允许接受站点、建筑或地板物体。
 
-Site, Building, and Floor objects will be removed from the selection.
+站点、 构建和地板对象将从选择中删除。
 
-You can change that in the preferences.</translation>
+您可以更改首选项中的内容。</translation>
     </message>
     <message>
       <location filename="../../ArchFloor.py" line="159"/>
       <source>There is no valid object in the selection.
 
 Floor creation aborted.</source>
-      <translation type="unfinished">There is no valid object in the selection.
-
-Floor creation aborted.</translation>
+      <translation>所选内容中没有有效的对象。网站创建中止。</translation>
     </message>
     <message>
       <location filename="../../ArchFloor.py" line="166"/>
       <source>Create Floor</source>
-      <translation type="unfinished">Create Floor</translation>
+      <translation>新建楼层</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimAxis.py" line="48"/>
       <source>Create Axis</source>
-      <translation type="unfinished">Create Axis</translation>
+      <translation>创建轴</translation>
     </message>
     <message>
       <location filename="../../ArchAxis.py" line="786"/>
       <source>Distances (mm) and angles (deg) between axes</source>
-      <translation type="unfinished">Distances (mm) and angles (deg) between axes</translation>
+      <translation>轴线间的距离和角度</translation>
     </message>
     <message>
       <location filename="../../ArchAxis.py" line="787"/>
@@ -5224,7 +5228,7 @@ Floor creation aborted.</translation>
     <message>
       <location filename="../../importers/importOBJ.py" line="84"/>
       <source>Found a shape containing curves, triangulating</source>
-      <translation type="unfinished">Found a shape containing curves, triangulating</translation>
+      <translation>找到一个包含曲线的形状，三角形</translation>
     </message>
     <message>
       <location filename="../../importers/importOBJ.py" line="364"/>
@@ -5234,17 +5238,17 @@ Floor creation aborted.</translation>
     <message>
       <location filename="../../ArchComponent.py" line="923"/>
       <source>Error computing the shape of this object</source>
-      <translation type="unfinished">Error computing the shape of this object</translation>
+      <translation>计算此对象形状时出错</translation>
     </message>
     <message>
       <location filename="../../ArchComponent.py" line="944"/>
       <source>has no solid</source>
-      <translation type="unfinished">has no solid</translation>
+      <translation>没有实体信息</translation>
     </message>
     <message>
       <location filename="../../ArchComponent.py" line="951"/>
       <source>has an invalid shape</source>
-      <translation type="unfinished">has an invalid shape</translation>
+      <translation>形状无效</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="130"/>
@@ -5255,49 +5259,49 @@ Floor creation aborted.</translation>
       <location filename="../../ArchPrecast.py" line="681"/>
       <location filename="../../ArchComponent.py" line="953"/>
       <source>has a null shape</source>
-      <translation type="unfinished">has a null shape</translation>
+      <translation>有空的形状</translation>
     </message>
     <message>
       <location filename="../../ArchSite.py" line="870"/>
       <location filename="../../ArchComponent.py" line="1527"/>
       <source>Toggle subcomponents</source>
-      <translation type="unfinished">Toggle subcomponents</translation>
+      <translation>切换子组件</translation>
     </message>
     <message>
       <location filename="../../ArchComponent.py" line="1164"/>
       <source>Wrong base type</source>
-      <translation type="unfinished">Wrong base type</translation>
+      <translation>错误的对象类型</translation>
     </message>
     <message>
       <location filename="../../ArchComponent.py" line="1653"/>
       <source>Closing Sketch edit</source>
-      <translation type="unfinished">Closing Sketch edit</translation>
+      <translation>关闭草图编辑</translation>
     </message>
     <message>
       <location filename="../../ArchComponent.py" line="1961"/>
       <location filename="../../ArchCommands.py" line="240"/>
       <source>Component</source>
-      <translation type="unfinished">Component</translation>
+      <translation>组件</translation>
     </message>
     <message>
       <location filename="../../ArchComponent.py" line="1964"/>
       <source>Components of this object</source>
-      <translation type="unfinished">Components of this object</translation>
+      <translation>此对象的组件</translation>
     </message>
     <message>
       <location filename="../../ArchComponent.py" line="1965"/>
       <source>Base component</source>
-      <translation type="unfinished">Base component</translation>
+      <translation>基本组件</translation>
     </message>
     <message>
       <location filename="../../ArchComponent.py" line="1966"/>
       <source>Additions</source>
-      <translation type="unfinished">Additions</translation>
+      <translation>添加项:</translation>
     </message>
     <message>
       <location filename="../../ArchComponent.py" line="1967"/>
       <source>Subtractions</source>
-      <translation type="unfinished">Subtractions</translation>
+      <translation>相减</translation>
     </message>
     <message>
       <location filename="../../ArchComponent.py" line="1968"/>
@@ -5307,7 +5311,7 @@ Floor creation aborted.</translation>
     <message>
       <location filename="../../ArchComponent.py" line="1971"/>
       <source>Fixtures</source>
-      <translation type="unfinished">Fixtures</translation>
+      <translation>固定</translation>
     </message>
     <message>
       <location filename="../../ArchComponent.py" line="1972"/>
@@ -5322,12 +5326,12 @@ Floor creation aborted.</translation>
     <message>
       <location filename="../../ArchComponent.py" line="1974"/>
       <source>Edit IFC properties</source>
-      <translation type="unfinished">Edit IFC properties</translation>
+      <translation>编辑IFC属性</translation>
     </message>
     <message>
       <location filename="../../ArchComponent.py" line="1975"/>
       <source>Edit standard code</source>
-      <translation type="unfinished">Edit standard code</translation>
+      <translation>编辑标准代码</translation>
     </message>
     <message>
       <location filename="../../ArchComponent.py" line="2024"/>
@@ -5343,7 +5347,7 @@ Floor creation aborted.</translation>
     <message>
       <location filename="../../ArchComponent.py" line="2030"/>
       <source>Add property set...</source>
-      <translation type="unfinished">Add property set...</translation>
+      <translation>添加属性集...</translation>
     </message>
     <message>
       <location filename="../../ArchComponent.py" line="2031"/>
@@ -5354,13 +5358,13 @@ Floor creation aborted.</translation>
       <location filename="../../ArchComponent.py" line="2169"/>
       <location filename="../../bimcommands/BimIfcProperties.py" line="645"/>
       <source>New property</source>
-      <translation type="unfinished">New property</translation>
+      <translation>新建属性</translation>
     </message>
     <message>
       <location filename="../../ArchComponent.py" line="2204"/>
       <location filename="../../bimcommands/BimIfcProperties.py" line="694"/>
       <source>New property set</source>
-      <translation type="unfinished">New property set</translation>
+      <translation>新属性集</translation>
     </message>
     <message>
       <location filename="../../Arch.py" line="577"/>
@@ -5371,12 +5375,12 @@ Floor creation aborted.</translation>
       <location filename="../../bimcommands/BimRebar.py" line="64"/>
       <location filename="../../bimcommands/BimRebar.py" line="85"/>
       <source>Create Rebar</source>
-      <translation type="unfinished">Create Rebar</translation>
+      <translation>创建螺纹钢</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimRebar.py" line="92"/>
       <source>Please select a base face on a structural object</source>
-      <translation type="unfinished">Please select a base face on a structural object</translation>
+      <translation>请在构造对象上选择一个基面</translation>
     </message>
     <message>
       <location filename="../../Arch.py" line="726"/>
@@ -5386,22 +5390,22 @@ Floor creation aborted.</translation>
     <message>
       <location filename="../../bimcommands/BimSectionPlane.py" line="60"/>
       <source>Create Section Plane</source>
-      <translation type="unfinished">Create Section Plane</translation>
+      <translation>创建剖面版块</translation>
     </message>
     <message>
       <location filename="../../ArchSectionPlane.py" line="1157"/>
       <source>Toggle Cutview</source>
-      <translation type="unfinished">Toggle Cutview</translation>
+      <translation>切换剪切视图</translation>
     </message>
     <message>
       <location filename="../../ArchSectionPlane.py" line="1334"/>
       <source>Section plane settings</source>
-      <translation type="unfinished">Section plane settings</translation>
+      <translation>平面设置</translation>
     </message>
     <message>
       <location filename="../../ArchSectionPlane.py" line="1336"/>
       <source>Remove highlighted objects from the list above</source>
-      <translation type="unfinished">Remove highlighted objects from the list above</translation>
+      <translation>从上面的列表中删除突出显示的对象</translation>
     </message>
     <message>
       <location filename="../../ArchSectionPlane.py" line="1337"/>
@@ -5411,47 +5415,47 @@ Floor creation aborted.</translation>
     <message>
       <location filename="../../ArchSectionPlane.py" line="1338"/>
       <source>Add selected object(s) to the scope of this section plane</source>
-      <translation type="unfinished">Add selected object(s) to the scope of this section plane</translation>
+      <translation>将选中的对象添加到本节平面的范围</translation>
     </message>
     <message>
       <location filename="../../ArchSectionPlane.py" line="1339"/>
       <source>Objects seen by this section plane:</source>
-      <translation type="unfinished">Objects seen by this section plane:</translation>
+      <translation>剖面中所看到的对象:</translation>
     </message>
     <message>
       <location filename="../../ArchSectionPlane.py" line="1340"/>
       <source>Section plane placement:</source>
-      <translation type="unfinished">Section plane placement:</translation>
+      <translation>剖面平面放置:</translation>
     </message>
     <message>
       <location filename="../../ArchSectionPlane.py" line="1341"/>
       <source>Rotate X</source>
-      <translation type="unfinished">Rotate X</translation>
+      <translation>沿 X 轴旋转</translation>
     </message>
     <message>
       <location filename="../../ArchSectionPlane.py" line="1342"/>
       <source>Rotates the plane along the X axis</source>
-      <translation type="unfinished">Rotates the plane along the X axis</translation>
+      <translation>沿X轴旋转平面</translation>
     </message>
     <message>
       <location filename="../../ArchSectionPlane.py" line="1343"/>
       <source>Rotate Y</source>
-      <translation type="unfinished">Rotate Y</translation>
+      <translation>沿 Y 轴旋转</translation>
     </message>
     <message>
       <location filename="../../ArchSectionPlane.py" line="1344"/>
       <source>Rotates the plane along the Y axis</source>
-      <translation type="unfinished">Rotates the plane along the Y axis</translation>
+      <translation>沿Y轴旋转平面</translation>
     </message>
     <message>
       <location filename="../../ArchSectionPlane.py" line="1345"/>
       <source>Rotate Z</source>
-      <translation type="unfinished">Rotate Z</translation>
+      <translation>沿 Z 轴旋转</translation>
     </message>
     <message>
       <location filename="../../ArchSectionPlane.py" line="1346"/>
       <source>Rotates the plane along the Z axis</source>
-      <translation type="unfinished">Rotates the plane along the Z axis</translation>
+      <translation>沿Z轴旋转平面</translation>
     </message>
     <message>
       <location filename="../../ArchSectionPlane.py" line="1347"/>
@@ -5461,7 +5465,7 @@ Floor creation aborted.</translation>
     <message>
       <location filename="../../ArchSectionPlane.py" line="1348"/>
       <source>Resizes the plane to fit the objects in the list above</source>
-      <translation type="unfinished">Resizes the plane to fit the objects in the list above</translation>
+      <translation>调整平面尺寸以适合上面列表中的对象</translation>
     </message>
     <message>
       <location filename="../../ArchSectionPlane.py" line="1349"/>
@@ -5704,33 +5708,33 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchCommands.py" line="1171"/>
       <source>Disabling B-rep force flag of object</source>
-      <translation type="unfinished">Disabling B-rep force flag of object</translation>
+      <translation>禁用对象的边界表示强制标记</translation>
     </message>
     <message>
       <location filename="../../ArchCommands.py" line="1174"/>
       <location filename="../../ArchCommands.py" line="1177"/>
       <source>Enabling B-rep force flag of object</source>
-      <translation type="unfinished">Enabling B-rep force flag of object</translation>
+      <translation>正在激活对象的边界表示强制标记</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimArchUtils.py" line="54"/>
       <source>Add space boundary</source>
-      <translation type="unfinished">Add space boundary</translation>
+      <translation>添加空间边界</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimArchUtils.py" line="62"/>
       <source>Grouping</source>
-      <translation type="unfinished">Grouping</translation>
+      <translation>分组中</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimArchUtils.py" line="93"/>
       <source>Remove space boundary</source>
-      <translation type="unfinished">Remove space boundary</translation>
+      <translation>移除空间边界</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimArchUtils.py" line="101"/>
       <source>Ungrouping</source>
-      <translation type="unfinished">Ungrouping</translation>
+      <translation>取消分组</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimArchUtils.py" line="135"/>
@@ -5849,7 +5853,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchStructure.py" line="690"/>
       <source>End offset distance along the extrusion path (positive: extend, negative: trim)</source>
-      <translation type="unfinished">End offset distance along the extrusion path (positive: extend, negative: trim)</translation>
+      <translation>沿挤压路径末端偏移距离(正值：扩张，负值：剪切)</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="692"/>
@@ -8139,7 +8143,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../InitGui.py" line="419"/>
       <source>&amp;Fasteners</source>
-      <translation type="unfinished">&amp;Fasteners</translation>
+      <translation>紧固件 (&amp;F)</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="420"/>
@@ -8482,7 +8486,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../bimcommands/BimCurtainwall.py" line="43"/>
       <source>Curtain Wall</source>
-      <translation type="unfinished">Curtain Wall</translation>
+      <translation>幕墙</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimCurtainwall.py" line="47"/>
@@ -8530,7 +8534,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../bimcommands/BimSchedule.py" line="41"/>
       <source>Schedule</source>
-      <translation type="unfinished">Schedule</translation>
+      <translation>预设</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimSchedule.py" line="44"/>
@@ -8543,7 +8547,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchFloor.py" line="118"/>
       <source>Level</source>
-      <translation type="unfinished">Level</translation>
+      <translation>层级</translation>
     </message>
     <message>
       <location filename="../../ArchFloor.py" line="122"/>
@@ -8753,7 +8757,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../bimcommands/BimArchUtils.py" line="316"/>
       <source>Component</source>
-      <translation type="unfinished">Component</translation>
+      <translation>组件</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimArchUtils.py" line="320"/>
@@ -8792,7 +8796,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../bimcommands/BimArchUtils.py" line="398"/>
       <source>Toggle subcomponents</source>
-      <translation type="unfinished">Toggle subcomponents</translation>
+      <translation>切换子组件</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimArchUtils.py" line="401"/>
@@ -9125,7 +9129,7 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
     <message>
       <location filename="../../bimcommands/BimIfcProperties.py" line="133"/>
       <source>Add property set...</source>
-      <translation type="unfinished">Add property set...</translation>
+      <translation>添加属性集...</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimIfcProperties.py" line="134"/>
@@ -9150,7 +9154,7 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
     <message>
       <location filename="../../bimcommands/BimIfcProperties.py" line="696"/>
       <source>New property set</source>
-      <translation type="unfinished">New property set</translation>
+      <translation>新属性集</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimIfcProperties.py" line="697"/>
@@ -9654,7 +9658,7 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
     <message>
       <location filename="../../bimcommands/BimProjectManager.py" line="244"/>
       <source>Level</source>
-      <translation type="unfinished">Level</translation>
+      <translation>层级</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimProjectManager.py" line="267"/>
@@ -10086,7 +10090,7 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
     <message>
       <location filename="../../bimcommands/BimBuildingPart.py" line="44"/>
       <source>Level</source>
-      <translation type="unfinished">Level</translation>
+      <translation>层级</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimBuildingPart.py" line="48"/>

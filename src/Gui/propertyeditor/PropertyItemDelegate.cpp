@@ -25,9 +25,11 @@
 
 #ifndef _PreComp_
 # include <QApplication>
+# include <QCheckBox>
 # include <QComboBox>
 # include <QModelIndex>
 # include <QPainter>
+# include <QTimer>
 #endif
 
 #include <Base/Tools.h>
@@ -103,7 +105,44 @@ void PropertyItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
 
     QPen savedPen = painter->pen();
 
-    QItemDelegate::paint(painter, option, index);
+    if (index.column() == 1 && property && dynamic_cast<PropertyBoolItem*>(property)) {
+        bool checked = index.data(Qt::EditRole).toBool();
+        QStyleOptionButton checkboxOption;
+        if (property->isReadOnly()) {
+            checkboxOption.state |= QStyle::State_ReadOnly;
+        } else {
+            checkboxOption.state |= QStyle::State_Enabled;
+        }
+        checkboxOption.state |= checked ? QStyle::State_On : QStyle::State_Off;
+        // Draw the checkbox
+        checkboxOption.rect = QApplication::style()->subElementRect(QStyle::SE_CheckBoxIndicator, &checkboxOption);
+        int leftSpacing = QApplication::style()->pixelMetric(QStyle::PM_FocusFrameHMargin, nullptr);
+        QRect checkboxRect = QStyle::alignedRect(
+            option.direction, Qt::AlignVCenter,
+            checkboxOption.rect.size(),
+            option.rect.adjusted(leftSpacing, 0, -leftSpacing, 0)
+        );
+        checkboxOption.rect = checkboxRect;
+        QApplication::style()->drawPrimitive(QStyle::PE_IndicatorCheckBox, &checkboxOption, painter);
+        // Draw a bright border on the checkbox to stand out
+        QColor borderColor = QApplication::palette().color(QPalette::BrightText);
+        painter->setPen(borderColor);
+        painter->drawRect(checkboxOption.rect.adjusted(0, 0, -1, -1));
+        // Draw the label of the checkbox
+        QString labelText = checked ? tr("Yes") : tr("No");
+        int spacing = QApplication::style()->pixelMetric(QStyle::PM_CheckBoxLabelSpacing, nullptr);
+        QRect textRect(
+            checkboxOption.rect.right() + spacing,
+            checkboxOption.rect.top(),
+            option.rect.right() - (checkboxOption.rect.right() + spacing),
+            checkboxOption.rect.height()
+        );
+        painter->setPen(option.palette.color(QPalette::Text));
+        painter->drawText(textRect, Qt::AlignVCenter | Qt::AlignLeft, labelText);
+    }
+    else {
+        QItemDelegate::paint(painter, option, index);
+    }
 
     QColor color = static_cast<QRgb>(QApplication::style()->styleHint(QStyle::SH_Table_GridLineColor, &opt, qobject_cast<QWidget*>(parent())));
     painter->setPen(QPen(color));
@@ -136,9 +175,25 @@ bool PropertyItemDelegate::eventFilter(QObject *o, QEvent *ev)
                 comboBox->showPopup();
             }
         }
+        auto *checkBox = qobject_cast<QCheckBox*>(o);
+        if (checkBox) {
+            auto parentEditor = qobject_cast<PropertyEditor*>(this->parent());
+            if (parentEditor && parentEditor->activeEditor == checkBox) {
+                checkBox->toggle();
+                // Delay valueChanged to ensure proper recomputation
+                QTimer::singleShot(0, this, [this]() {
+                    valueChanged();
+                });
+            }
+        }
     }
     else if (ev->type() == QEvent::FocusOut) {
         auto parentEditor = qobject_cast<PropertyEditor*>(this->parent());
+        if (auto* comboBox = qobject_cast<QComboBox*>(o)) {
+            if (parentEditor && parentEditor->activeEditor == comboBox) {
+                parentEditor->activeEditor = nullptr;
+            }
+        }
         auto widget = qobject_cast<QWidget*>(o);
         if (widget && parentEditor && parentEditor->activeEditor
                    && widget != parentEditor->activeEditor) {
@@ -228,9 +283,11 @@ void PropertyItemDelegate::valueChanged()
     if (propertyEditor) {
         Base::FlagToggler<> flag(changed);
         Q_EMIT commitData(propertyEditor);
-        auto *comboBox = qobject_cast<QComboBox*>(propertyEditor);
-        if (comboBox) {
+        if (qobject_cast<QComboBox*>(propertyEditor)
+            || qobject_cast<QCheckBox*>(propertyEditor))
+        {
             Q_EMIT closeEditor(propertyEditor);
+            return;
         }
     }
 }

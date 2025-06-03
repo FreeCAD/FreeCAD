@@ -31,6 +31,7 @@
 #include <Gui/Notifications.h>
 #include <Gui/Command.h>
 #include <Gui/CommandT.h>
+#include <Gui/InputHint.h>
 
 #include <Mod/Sketcher/App/SketchObject.h>
 
@@ -80,6 +81,11 @@ public:
     ~DrawSketchHandlerSlot() override = default;
 
 private:
+    std::list<Gui::InputHint> getToolHints() const override
+    {
+        return lookupSlotHints(state());
+    }
+
     void updateDataAndDrawToPosition(Base::Vector2d onSketchPos) override
     {
         switch (state()) {
@@ -343,6 +349,17 @@ private:
     double radius, length, angle;
     bool isHorizontal, isVertical;
     int firstCurve;
+
+    struct HintEntry
+    {
+        SelectMode state;
+        std::list<Gui::InputHint> hints;
+    };
+
+    using HintTable = std::vector<HintEntry>;
+
+    static HintTable getSlotHintTable();
+    static std::list<Gui::InputHint> lookupSlotHints(SelectMode state);
 };
 
 template<>
@@ -518,14 +535,14 @@ void DSHSlotController::doChangeDrawSketchHandlerMode()
             }
         } break;
         case SelectMode::SeekSecond: {
-            if (onViewParameters[OnViewParameter::Third]->isSet
-                && onViewParameters[OnViewParameter::Fourth]->isSet) {
+            if (onViewParameters[OnViewParameter::Third]->hasFinishedEditing
+                || onViewParameters[OnViewParameter::Fourth]->hasFinishedEditing) {
 
                 handler->setState(SelectMode::SeekThird);
             }
         } break;
         case SelectMode::SeekThird: {
-            if (onViewParameters[OnViewParameter::Fifth]->isSet) {
+            if (onViewParameters[OnViewParameter::Fifth]->hasFinishedEditing) {
 
                 handler->setState(SelectMode::End);
             }
@@ -673,6 +690,29 @@ void DSHSlotController::addConstraints()
                               firstCurve,
                               handler->radius);
     }
+}
+
+DrawSketchHandlerSlot::HintTable DrawSketchHandlerSlot::getSlotHintTable()
+{
+    return {// Structure: {SelectMode, {hints...}}
+            {SelectMode::SeekFirst,
+             {{QObject::tr("%1 pick slot start point"), {Gui::InputHint::UserInput::MouseLeft}}}},
+            {SelectMode::SeekSecond,
+             {{QObject::tr("%1 pick slot end point"), {Gui::InputHint::UserInput::MouseLeft}}}},
+            {SelectMode::SeekThird,
+             {{QObject::tr("%1 set slot radius"), {Gui::InputHint::UserInput::MouseMove}}}}};
+}
+
+std::list<Gui::InputHint> DrawSketchHandlerSlot::lookupSlotHints(SelectMode state)
+{
+    const auto slotHintTable = getSlotHintTable();
+
+    auto it =
+        std::find_if(slotHintTable.begin(), slotHintTable.end(), [state](const HintEntry& entry) {
+            return entry.state == state;
+        });
+
+    return (it != slotHintTable.end()) ? it->hints : std::list<Gui::InputHint> {};
 }
 
 }  // namespace SketcherGui
