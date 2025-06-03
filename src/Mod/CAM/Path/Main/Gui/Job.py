@@ -721,7 +721,7 @@ class TaskPanel:
         self.postProcessorArgsDefaultTooltip = self.form.postProcessorArguments.toolTip()
 
         # Populate the other comboboxes with enums from the job class
-        comboToPropertyMap = [("orderBy", "OrderOutputBy")]
+        comboToPropertyMap = [("orderBy", "OrderOutputBy"), ("jobType", "JobType")]
         enumTups = PathJob.ObjectJob.propertyEnumerations(dataType="raw")
         self.populateCombobox(self.form, enumTups, comboToPropertyMap)
 
