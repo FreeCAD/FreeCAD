@@ -979,7 +979,7 @@ class AssetManager:
                 # If it doesn't exist, or if it's a dependency that doesn't exist, create it
                 logger.debug(f"Creating asset '{asset_uri}' in '{dest_store}'")
                 logger.debug(f"Raw data before writing: {asset_data.raw_data}")  # Added log
-                new_uri = await dest_store.create(
+                await dest_store.create(
                     asset_uri.asset_type,
                     asset_uri.asset_id,
                     asset_data.raw_data,

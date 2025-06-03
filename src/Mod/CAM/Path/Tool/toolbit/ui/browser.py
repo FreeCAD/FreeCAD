@@ -25,9 +25,8 @@
 
 import yaml
 from typing import List, cast
-import PySide
 from PySide import QtGui, QtCore
-from PySide.QtGui import QApplication, QMessageBox, QMenu, QAction, QKeySequence
+from PySide.QtGui import QApplication, QMessageBox, QMenu, QAction, QKeySequence, QDialog
 from PySide.QtCore import QMimeData
 import FreeCAD
 import Path
@@ -187,8 +186,6 @@ class ToolBitBrowserWidget(QtGui.QWidget):
             if uri:
                 current_items[uri] = item
 
-        filtered_assets_map = {str(asset.get_uri()): asset for asset in filtered_assets}
-
         # Iterate through filtered assets and update the list widget
         for i, asset in enumerate(filtered_assets):
             uri = str(asset.get_uri())
@@ -261,7 +258,7 @@ class ToolBitBrowserWidget(QtGui.QWidget):
         # Open the editor for the selected toolbit
         editor = ToolBitEditor(toolbit)
         result = editor.show()
-        if result != PySide.QtGui.QDialog.Accepted:
+        if result != QDialog.Accepted:
             return
 
         # If the editor was closed with "OK", save the changes

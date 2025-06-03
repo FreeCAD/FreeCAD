@@ -136,7 +136,6 @@ class LibraryBrowserWidget(ToolBitBrowserWidget):
                     # Scroll to the first selected item
                     is_first = False
                     self._tool_list_widget.scrollToItem(item)
-                break
 
     def refresh(self):
         """Reads available libraries and toolbits from disk."""
@@ -269,7 +268,6 @@ class LibraryBrowserWidget(ToolBitBrowserWidget):
 
     def _on_cut_requested(self):
         """Handles cut request by copying and marking for removal from library."""
-        mime_type = "application/x-freecad-toolbit-list-yaml"
         uris = self.get_selected_bit_uris()
         library = self._get_current_library()
         if not library or not uris:
@@ -402,7 +400,7 @@ class LibraryBrowserWidget(ToolBitBrowserWidget):
 
             toolbit_data_bytes = toolbit_yaml_str.encode("utf-8")
             toolbit = YamlToolBitSerializer.deserialize(toolbit_data_bytes, dependencies=None)
-            success = source_library.remove_bit(toolbit)
+            source_library.remove_bit(toolbit)
 
             # Remove it from the old library, add it to the new library
             source_library.remove_bit(toolbit)

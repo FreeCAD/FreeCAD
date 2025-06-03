@@ -46,15 +46,12 @@ class YamlToolBitSerializer(AssetSerializer):
     @classmethod
     def extract_dependencies(cls, data: bytes) -> List[AssetUri]:
         """Extracts URIs of dependencies from serialized data."""
-        try:
-            data_dict = yaml.safe_load(data)
-            if isinstance(data_dict, dict):
-                shape_id = data_dict.get("shape")
-                if shape_id:
-                    # Assuming shape is identified by its ID/name
-                    return [ToolBitShape.resolve_name(str(shape_id))]
-        except yaml.YAMLError:
-            pass
+        data_dict = yaml.safe_load(data)
+        if isinstance(data_dict, dict):
+            shape_id = data_dict.get("shape")
+            if shape_id:
+                # Assuming shape is identified by its ID/name
+                return [ToolBitShape.resolve_name(str(shape_id))]
         return []
 
     @classmethod
