@@ -1785,7 +1785,12 @@ def makeWindow(baseobj=None, width=None, height=None, parts=None, name=None):
     if height:
         window.Height = height
     if baseobj:
-        window.Normal = baseobj.Placement.Rotation.multVec(FreeCAD.Vector(0, 0, -1))
+        # 2025.5.25
+        # Historically, this normal was deduced by the orientation of the Base Sketch and hardcoded in the Normal property.
+        # Now with the new AutoNormalReversed property/flag, set True as default, the auto Normal previously in opposite direction to is now consistent with that previously hardcoded.
+        # With the normal set to 'auto', window object would not suffer weird shape if the Base Sketch is rotated by some reason.
+        # Keep the property be 'auto' (0,0,0) here.  
+        #obj.Normal = baseobj.Placement.Rotation.multVec(FreeCAD.Vector(0, 0, -1))
         window.Base = baseobj
     if parts is not None:
         window.WindowParts = parts

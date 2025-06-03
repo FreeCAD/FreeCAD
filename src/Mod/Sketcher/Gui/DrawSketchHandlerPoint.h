@@ -237,8 +237,8 @@ void DSHPointController::doChangeDrawSketchHandlerMode()
 {
     switch (handler->state()) {
         case SelectMode::SeekFirst: {
-            if (onViewParameters[OnViewParameter::First]->isSet
-                && onViewParameters[OnViewParameter::Second]->isSet) {
+            if (onViewParameters[OnViewParameter::First]->hasFinishedEditing
+                || onViewParameters[OnViewParameter::Second]->hasFinishedEditing) {
 
                 handler->setState(SelectMode::End);
                 // handler->finish(); // Called by the change of mode

@@ -772,20 +772,20 @@ void DSHArcSlotController::doChangeDrawSketchHandlerMode()
             }
         } break;
         case SelectMode::SeekSecond: {
-            if (onViewParameters[OnViewParameter::Third]->isSet
-                && onViewParameters[OnViewParameter::Fourth]->isSet) {
+            if (onViewParameters[OnViewParameter::Third]->hasFinishedEditing
+                || onViewParameters[OnViewParameter::Fourth]->hasFinishedEditing) {
 
                 handler->setState(SelectMode::SeekThird);
             }
         } break;
         case SelectMode::SeekThird: {
-            if (onViewParameters[OnViewParameter::Fifth]->isSet) {
+            if (onViewParameters[OnViewParameter::Fifth]->hasFinishedEditing) {
 
                 handler->setState(SelectMode::SeekFourth);
             }
         } break;
         case SelectMode::SeekFourth: {
-            if (onViewParameters[OnViewParameter::Sixth]->isSet) {
+            if (onViewParameters[OnViewParameter::Sixth]->hasFinishedEditing) {
 
                 handler->setState(SelectMode::End);
             }
