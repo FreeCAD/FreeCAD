@@ -102,7 +102,7 @@ Notification = NotificationClass()
 
 
 class ObjectJob:
-    def __init__(self, obj, models, templateFile=None):
+    def __init__(self, obj, models, jobType, templateFile=None):
         self.obj = obj
         self.tooltip = None
         self.tooltipArgs = None
@@ -804,7 +804,7 @@ def Instances():
     return []
 
 
-def Create(name, base, templateFile=None):
+def Create(name, base, jobType, templateFile=None):
     """Create(name, base, templateFile=None) ... creates a new job and all it's resources.
     If a template file is specified the new job is initialized with the values from the template."""
     if isinstance(base[0], str):
@@ -815,5 +815,5 @@ def Create(name, base, templateFile=None):
         models = base
     obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", name)
     obj.addExtension("App::GroupExtensionPython")
-    obj.Proxy = ObjectJob(obj, models, templateFile)
+    obj.Proxy = ObjectJob(obj, models, jobType, templateFile)
     return obj

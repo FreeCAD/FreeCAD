@@ -74,14 +74,24 @@ class CommandJobCreate:
                 FreeCAD.ActiveDocument.recompute()
 
     @classmethod
-    def Execute(cls, base, template):
+    def Execute(cls, base, jobType, template):
         FreeCADGui.addModule("Path.Main.Gui.Job")
         if template:
             template = "'%s'" % template
         else:
             template = "None"
+
+        if jobType:
+            jobType = "'%s'" % jobType
+        else:
+            jobTypes = PathJob.ObjectJob.propertyEnumerations(dataType="raw")['JobType']
+            # jobTypes returns a list of tuples, e.g. [('Milling', 'Milling'), ('Turning', 'Turning')]
+            # where the first element is the translated type and the second element is the actual value.
+            # use primary index selecting the untranslated value
+            jobType = jobTypes[0][1]
+
         FreeCADGui.doCommand(
-            "Path.Main.Gui.Job.Create(%s, %s)" % ([o.Name for o in base], template)
+            "Path.Main.Gui.Job.Create(%s, %s, %s)" % ([o.Name for o in base], jobType, template)
         )
 
 
