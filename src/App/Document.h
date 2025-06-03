@@ -487,10 +487,17 @@ public:
     void commitTransaction();
     /// Abort the actually running transaction.
     void abortTransaction() const;
+
+    int setActiveTransaction(std::string name, bool tmpName = false);
+    void lockTransaction();
+    void unlockTransaction();
+    bool isTransactionLocked();
+
     /// Check if a transaction is open
     bool hasPendingTransaction() const;
     /// Return the undo/redo transaction ID starting from the back
     int getTransactionID(bool undo, unsigned pos = 0) const;
+    int getBookedTransactionID() const;
     /// Check if a transaction is open and its list is empty.
     /// If no transaction is open true is returned.
     bool isTransactionEmpty() const;
@@ -697,9 +704,9 @@ protected:
      * This function creates an actual transaction regardless of Application
      * AutoTransaction setting.
      */
-    int _openTransaction(const char* name = nullptr, int id = 0);
+    int _openTransaction(std::string name = "", int id = 0);
     /// Internally called by Application to commit the Command transaction.
-    void _commitTransaction(bool notify = false);
+    bool _commitTransaction(bool notify = false);
     /// Internally called by Application to abort the running transaction.
     void _abortTransaction();
 
