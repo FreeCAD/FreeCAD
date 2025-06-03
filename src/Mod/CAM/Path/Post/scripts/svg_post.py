@@ -104,14 +104,14 @@ class Svg(PostProcessor):
 
             if use_layers:
                 layer_id = f"layer{idx}_{obj_idx}"
-                svg_content += f'<g id="{layer_id}" inkscape:label="{obj.Label}" inkscape:groupmode="layer">\n'
+                svg_content += (
+                    f'<g id="{layer_id}" inkscape:label="{obj.Label}" inkscape:groupmode="layer">\n'
+                )
 
             for wire in wires:
                 path_data = self.wire_to_svg_path(wire, width, height, xmin, ymin)
                 if pathtype == "FILL":
-                    svg_content += (
-                        f'  <path d="{path_data}" stroke="none" fill="{color}" />\n'
-                    )
+                    svg_content += f'  <path d="{path_data}" stroke="none" fill="{color}" />\n'
                 else:
                     svg_content += f'  <path d="{path_data}" stroke="{color}" stroke-width="{width}" fill="none" />\n'
 
@@ -139,9 +139,7 @@ class Svg(PostProcessor):
             Path.Log.debug(
                 f"Start Point: ({format_coord(start_point.x)}, {format_coord(start_point.y)})"
             )
-            Path.Log.debug(
-                f"End Point: ({format_coord(end_point.x)}, {format_coord(end_point.y)})"
-            )
+            Path.Log.debug(f"End Point: ({format_coord(end_point.x)}, {format_coord(end_point.y)})")
 
             # Check if the edge is vertical (should be skipped)
             if start_point.x == end_point.x and start_point.y == end_point.y:
@@ -168,9 +166,7 @@ class Svg(PostProcessor):
                 # Handle circular arc using 'A' command
                 radius = edge.Curve.Radius
                 center = edge.Curve.Center
-                start_angle = math.atan2(
-                    start_point.y - center.y, start_point.x - center.x
-                )
+                start_angle = math.atan2(start_point.y - center.y, start_point.x - center.x)
                 end_angle = math.atan2(end_point.y - center.y, end_point.x - center.x)
 
                 # Calculate the angle difference and normalize to [-π, π]
@@ -202,9 +198,7 @@ class Svg(PostProcessor):
                 vertices = edge.discretize(100)
                 if len(vertices) < 2:
                     continue
-                if all(
-                    vertices[0].x == v.x and vertices[0].y == v.y for v in vertices[1:]
-                ):
+                if all(vertices[0].x == v.x and vertices[0].y == v.y for v in vertices[1:]):
                     continue
                 for vertex in vertices:
                     path_data += f"L {format_coord(vertex.x - xmin)} {format_coord(height - (vertex.y - ymin))} "
