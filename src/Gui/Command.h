@@ -410,6 +410,7 @@ public:
     //@{
     /// Open a new Undo transaction on the active document
     static void openCommand(const char* sName=nullptr);
+    static void openCommand(App::Document* doc, std::string name = "");
     /// Commit the Undo transaction on the active document
     static void commitCommand();
     /// Abort the Undo transaction on the active document
