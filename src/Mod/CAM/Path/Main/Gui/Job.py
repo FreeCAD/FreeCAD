@@ -958,6 +958,8 @@ class TaskPanel:
             self.form.splitOutput.setChecked(self.obj.SplitOutput)
         if hasattr(self.obj, "OrderOutputBy"):
             self.selectComboBoxText(self.form.orderBy, self.obj.OrderOutputBy)
+        if hasattr(self.obj, "JobType"):
+            self.selectComboBoxText(self.form.jobType, self.obj.JobType)
 
         if hasattr(self.obj, "Fixtures"):
             for f in self.obj.Fixtures:
