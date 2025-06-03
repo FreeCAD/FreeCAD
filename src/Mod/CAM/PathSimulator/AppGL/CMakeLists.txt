@@ -24,6 +24,8 @@ SET(CAMSimulator_SRCS_Module
     DlgCAMSimulator.h
     PreCompiled.cpp
     PreCompiled.h
+    ViewCAMSimulator.cpp
+    ViewCAMSimulator.h
 )
 
 SET(CAMSimulator_SRCS_Core
