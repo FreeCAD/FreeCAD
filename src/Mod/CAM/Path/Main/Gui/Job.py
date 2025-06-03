@@ -839,6 +839,7 @@ class TaskPanel:
             try:
                 self.obj.SplitOutput = self.form.splitOutput.isChecked()
                 self.obj.OrderOutputBy = str(self.form.orderBy.currentData())
+                self.obj.JobType = str(self.form.jobType.currentData())
 
                 flist = []
                 for i in range(self.form.wcslist.count()):
