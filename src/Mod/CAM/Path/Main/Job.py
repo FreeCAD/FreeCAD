@@ -251,10 +251,9 @@ class ObjectJob:
                 (translate("CAM_Job", "Operation"), "Operation"),
             ],
             "JobType": [
-                (translate("CAM_Job", "2D"), "2D"),
-                (translate("CAM_Job", "2.5D"), "2.5D"),
-                (translate("CAM_Job", "Lathe"), "Lathe"),
-                (translate("CAM_Job", "Multiaxis"), "Multiaxis"),
+                (translate("CAM_Job", "Milling"), "Milling"),
+                (translate("CAM_Job", "Turning"), "Turning"),
+                (translate("CAM_Job", "Cutting"), "Cutting"),
             ],
         }
 
