@@ -69,7 +69,7 @@ class CommandJobCreate:
         if dialog.exec_() == 1:
             models = dialog.getModels()
             if models:
-                self.Execute(models, dialog.getTemplate())
+                self.Execute(models, dialog.getType(), dialog.getTemplate())
                 FreeCAD.ActiveDocument.recompute()
 
     @classmethod
