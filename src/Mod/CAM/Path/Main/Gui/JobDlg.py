@@ -338,6 +338,10 @@ class JobCreate:
         """answer the file name of the template to be assigned"""
         return self.dialog.jobTemplate.itemData(self.dialog.jobTemplate.currentIndex())
 
+    def getType(self):
+        """answer the type of the job to be created"""
+        return self.dialog.jobType.itemData(self.dialog.jobType.currentIndex())
+
     def exec_(self):
         # ml: For some reason the callback has to be unregistered, otherwise there is a
         # segfault when python is shutdown. To keep it symmetric I also put the callback
