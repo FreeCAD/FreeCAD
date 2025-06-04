@@ -85,6 +85,8 @@ class LibraryEditor(QWidget):
         self.form.toolTable.hide()
 
         # Connect signals.
+        self.browser.itemDoubleClicked.connect(self.browser._on_edit_requested)
+
         self.form.addLibraryButton.clicked.connect(self._on_add_library_requested)
         self.form.removeLibraryButton.clicked.connect(self._on_remove_library_requested)
         self.form.renameLibraryButton.clicked.connect(self._on_rename_library_requested)
@@ -100,7 +102,7 @@ class LibraryEditor(QWidget):
         self._select_last_library()
         self._update_button_states()
 
-    def get_selected_library_id(self) -> str:
+    def get_selected_library_id(self) -> Optional[str]:
         index = self.form.TableList.currentIndex()
         if not index.isValid():
             return None

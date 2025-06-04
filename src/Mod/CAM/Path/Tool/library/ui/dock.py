@@ -29,7 +29,6 @@ import Path
 import Path.Tool.Gui.Controller as PathToolControllerGui
 import PathScripts.PathUtilsGui as PathUtilsGui
 from PySide import QtGui, QtCore
-from functools import partial
 from typing import List, Tuple
 from ...camassets import cam_assets, ensure_assets_initialized
 from ...toolbit import ToolBit
@@ -57,20 +56,12 @@ class ToolBitLibraryDock(object):
         self.form.setObjectName("ToolSelector")
         self.form.setWindowTitle(translate("CAM_ToolBit", "Tool Selector"))
 
-        # Create the browser widget
-        self.browser_widget = LibraryBrowserWithCombo(asset_manager=cam_assets)
-
-        self._setup_ui()
-
-    def _setup_ui(self):
-        """Setup the form and load the tooltable data"""
-        Path.Log.track()
-
         # Create a main widget and layout for the dock
         main_widget = QtGui.QWidget()
         main_layout = QtGui.QVBoxLayout(main_widget)
 
-        # Add the browser widget to the layout
+        # Create the browser widget
+        self.browser_widget = LibraryBrowserWithCombo(asset_manager=cam_assets)
         main_layout.addWidget(self.browser_widget)
 
         # Create buttons
@@ -91,27 +82,28 @@ class ToolBitLibraryDock(object):
         self.form.setWidget(main_widget)
 
         # Connect signals from the browser widget and buttons
-        self.browser_widget.toolSelected.connect(self._update_state)
-        self.browser_widget.itemDoubleClicked.connect(partial(self._on_doubleclick))
+        self.browser_widget.toolSelected.connect(lambda x: self._update_state())
+        self.browser_widget.itemDoubleClicked.connect(self._on_doubleclick)
         self.libraryEditorOpenButton.clicked.connect(self._open_editor)
-        self.addToolControllerButton.clicked.connect(partial(self._add_tool_controller_to_doc))
+        self.addToolControllerButton.clicked.connect(self._add_tool_controller_to_doc)
 
         # Initial state of buttons
         self._update_state()
 
+    def _count_jobs(self):
+        if not FreeCAD.ActiveDocument:
+            return 0
+        return len([1 for j in FreeCAD.ActiveDocument.Objects if j.Name[:3] == "Job"]) >= 1
+
     def _update_state(self):
         """Enable button to add tool controller when a tool is selected"""
-        # Set buttons inactive
-        self.addToolControllerButton.setEnabled(False)
-        # Check if any tool is selected in the browser widget
-        selected = self.browser_widget._tool_list_widget.selectedItems()
-        if selected and FreeCAD.ActiveDocument:
-            jobs = len([1 for j in FreeCAD.ActiveDocument.Objects if j.Name[:3] == "Job"]) >= 1
-            self.addToolControllerButton.setEnabled(len(selected) >= 1 and jobs)
+        selected = bool(self.browser_widget.get_selected_bit_uris())
+        has_job = selected and self._count_jobs() > 0
+        self.addToolControllerButton.setEnabled(selected and has_job)
 
     def _on_doubleclick(self, toolbit: ToolBit):
         """Opens the ToolBitEditor for the selected toolbit."""
-        self.browser_widget._on_edit_requested()
+        self._add_tool_controller_to_doc()
 
     def _open_editor(self):
         library = LibraryEditor(parent=FreeCADGui.getMainWindow())
@@ -142,7 +134,7 @@ class ToolBitLibraryDock(object):
 
         return tools
 
-    def _add_tool_controller_to_doc(self, index=None):
+    def _add_tool_controller_to_doc(self):
         """
         if no jobs, don't do anything, otherwise all TCs for all
         selected toolbit assets

@@ -24,7 +24,7 @@
 """Widget for browsing ToolBit assets with filtering and sorting."""
 
 import yaml
-from typing import List, cast, Sequence
+from typing import List, Optional, cast, Sequence
 from PySide import QtGui, QtCore
 from PySide.QtGui import QApplication, QMessageBox, QMenu, QAction, QKeySequence, QDialog
 from PySide.QtCore import QMimeData
@@ -37,7 +37,7 @@ from .toollist import ToolBitListWidget, CompactToolBitListWidget, ToolBitUriRol
 from .editor import ToolBitEditor
 
 
-Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
+Path.Log.setLevel(Path.Log.Level.INFO, Path.Log.thisModule())
 Path.Log.trackModule(Path.Log.thisModule())
 
 
@@ -71,7 +71,7 @@ class ToolBitBrowserWidget(QtGui.QWidget):
 
         self._is_fetching = False
         self._store_name = store
-        self._all_assets: List[ToolBit] = []  # Store all fetched assets
+        self._all_assets: Sequence[ToolBit] = []  # Store all fetched assets
         self._current_search = ""  # Track current search term
         self._sort_key = "tool_no" if tool_no_factory else "label"
         self._selected_uris: List[str] = []  # Track selected toolbit URIs
@@ -113,7 +113,7 @@ class ToolBitBrowserWidget(QtGui.QWidget):
 
         # Connect signals from the list widget
         self._tool_list_widget.itemDoubleClicked.connect(self._on_item_double_clicked)
-        self._tool_list_widget.currentItemChanged.connect(self._on_item_selection_changed)
+        self._tool_list_widget.itemSelectionChanged.connect(self._on_item_selection_changed)
 
         # Connect list widget context menu request to browser handler
         self._tool_list_widget.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
@@ -135,7 +135,6 @@ class ToolBitBrowserWidget(QtGui.QWidget):
             self.refresh()
 
     def _tool_fetcher(self) -> Sequence[ToolBit]:
-        Path.Log.track()
         return cast(
             List[ToolBit],
             self._asset_manager.fetch(
@@ -257,22 +256,24 @@ class ToolBitBrowserWidget(QtGui.QWidget):
         if toolbit:
             self.itemDoubleClicked.emit(toolbit)
 
-    def _on_item_selection_changed(self, current_item, previous_item):
+    def _on_item_selection_changed(self):
         """Emits toolSelected signal and tracks selected URIs."""
         selected_uris = self._tool_list_widget.get_selected_toolbit_uris()
         self._selected_uris = selected_uris
-        # Emit signal for the first selected item or None if no selection
-        self.toolSelected.emit(selected_uris[0] if selected_uris else None)
+        if not selected_uris:
+            return
+        self.toolSelected.emit(selected_uris[0])
 
-    def _on_edit_requested(self):
-        """Opens the ToolBitEditor for the selected toolbit."""
+    def _get_first_selected_bit(self) -> Optional[ToolBit]:
         uris = self.get_selected_bit_uris()
         if not uris:
             return
-
-        # For now, only handle editing the first selected toolbit
         uri_string = uris[0]
-        toolbit = self._asset_manager.get(AssetUri(uri_string))
+        return cast(ToolBit, self._asset_manager.get(AssetUri(uri_string)))
+
+    def _on_edit_requested(self):
+        """Opens the ToolBitEditor for the selected toolbit."""
+        toolbit = self._get_first_selected_bit()
         if not toolbit:
             return
 
@@ -322,14 +323,18 @@ class ToolBitBrowserWidget(QtGui.QWidget):
         context_menu = self._create_base_context_menu()
         context_menu.exec_(self._tool_list_widget.mapToGlobal(position))
 
-    def _to_clipboard(self, uris: List[str], mode: str = "copy", extra_data: dict = None):
+    def _to_clipboard(
+        self,
+        uris: List[str],
+        mode: str = "copy",
+        extra_data: Optional[dict] = None,
+    ):
         """Copies selected toolbits to the clipboard as YAML."""
         if not uris:
             return
 
-        selected_bits = [self._asset_manager.get(AssetUri(uri)) for uri in uris]
+        selected_bits = [cast(ToolBit, self._asset_manager.get(AssetUri(uri))) for uri in uris]
         selected_bits = [bit for bit in selected_bits if bit]  # Filter out None
-
         if not selected_bits:
             return
 

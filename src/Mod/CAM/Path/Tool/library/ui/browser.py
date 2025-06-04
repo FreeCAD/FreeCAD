@@ -24,13 +24,14 @@
 """Widget for browsing Tool Library assets with filtering and sorting."""
 
 import FreeCAD
-from typing import cast, List
+from typing import cast, List, Optional
 from PySide import QtCore, QtGui
 from PySide.QtGui import QMenu, QAction, QKeySequence
 import Path
 import yaml
 from ...assets import AssetManager, AssetUri
 from ...toolbit import ToolBit
+from ...toolbit.ui import ToolBitEditor
 from ...toolbit.ui.browser import ToolBitBrowserWidget, ToolBitUriRole
 from ...toolbit.serializers import YamlToolBitSerializer
 from ..models.library import Library
@@ -62,7 +63,7 @@ class LibraryBrowserWidget(ToolBitBrowserWidget):
             tool_no_factory=self.get_tool_no_from_current_library,
             compact=compact,
         )
-        self.current_library = None
+        self.current_library: Optional[Library] = None
         self.layout().setContentsMargins(0, 0, 0, 0)
 
     def _get_state(self):
@@ -121,8 +122,8 @@ class LibraryBrowserWidget(ToolBitBrowserWidget):
         if self.current_library:
             library_uri = self.current_library.get_uri()
             try:
-                self.current_library = self._asset_manager.get(
-                    library_uri, store=self._store_name, depth=1
+                self.current_library = cast(
+                    Library, self._asset_manager.get(library_uri, store=self._store_name, depth=1)
                 )
             except FileNotFoundError:
                 Path.Log.error(f"Library {library_uri} not found.")
@@ -140,7 +141,6 @@ class LibraryBrowserWidget(ToolBitBrowserWidget):
 
     def set_current_library(self, library):
         """Sets the current library and updates the tool list."""
-        Path.Log.track(f"called with {library}")
         self.current_library = library
         self._update_tool_list()
         self.current_library_changed.emit()
@@ -227,6 +227,33 @@ class LibraryBrowserWidget(ToolBitBrowserWidget):
     def get_current_library(self) -> Library | None:
         """Helper to get the current library."""
         return self.current_library
+
+    def _on_edit_requested(self):
+        """Opens the ToolBitEditor for the selected toolbit."""
+        toolbit = self._get_first_selected_bit()
+        if not toolbit or not self.current_library:
+            return
+
+        # Open the editor for the selected toolbit
+        tool_no = self.get_tool_no_from_current_library(toolbit)
+        editor = ToolBitEditor(toolbit, tool_no, parent=self)
+        result = editor.show()
+        if result != QtGui.QDialog.Accepted:
+            return
+
+        # If the editor was closed with "OK", save the changes
+        self._asset_manager.add(toolbit)
+        Path.Log.info(f"Toolbit {toolbit.get_id()} saved.")
+
+        # Also save the library because the tool number may have changed.
+        if tool_no != editor.tool_no:
+            self.current_library.assign_new_bit_no(toolbit, editor.tool_no)
+            self._asset_manager.add(self.current_library)
+
+        state = self._get_state()
+        self.refresh()
+        self._update_list()
+        self._set_state(state)
 
     def _on_cut_requested(self):
         """Handles cut request by copying and marking for removal from library."""
@@ -451,7 +478,6 @@ class LibraryBrowserWithCombo(LibraryBrowserWidget):
 
     def _on_library_combo_changed(self, index):
         """Handles library selection change from the combo box."""
-        Path.Log.track(f"called with index {index}")
         selected_library = cast(Library, self._library_combo.itemData(index))
         if not selected_library:
             return
