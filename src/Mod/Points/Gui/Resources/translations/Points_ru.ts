@@ -30,13 +30,13 @@
     <message>
       <location filename="../../Command.cpp" line="154"/>
       <source>Export points...</source>
-      <translation>Экспорт точек...</translation>
+      <translation>Экспортировать точки...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="155"/>
       <location filename="../../Command.cpp" line="157"/>
       <source>Exports a point cloud</source>
-      <translation>Экспорт облака точек</translation>
+      <translation>Экспортировать облако точек</translation>
     </message>
   </context>
   <context>
@@ -49,13 +49,13 @@
     <message>
       <location filename="../../Command.cpp" line="69"/>
       <source>Import points...</source>
-      <translation>Импорт точек...</translation>
+      <translation>Импортировать точки...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="70"/>
       <location filename="../../Command.cpp" line="72"/>
       <source>Imports a point cloud</source>
-      <translation>Импорт облака точек</translation>
+      <translation>Импортировать облако точек</translation>
     </message>
   </context>
   <context>
@@ -68,7 +68,7 @@
     <message>
       <location filename="../../Command.cpp" line="376"/>
       <source>Merge point clouds</source>
-      <translation>Слияние облаков точек</translation>
+      <translation>Объединить облака точек</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="377"/>
@@ -99,20 +99,20 @@
   <context>
     <name>CmdPointsStructure</name>
     <message>
-      <location filename="../../Command.cpp" line="438"/>
+      <location filename="../../Command.cpp" line="437"/>
       <source>Points</source>
       <translation>Точки</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="439"/>
+      <location filename="../../Command.cpp" line="438"/>
       <source>Structured point cloud</source>
       <translation>Облако структурированных точек</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="440"/>
-      <location filename="../../Command.cpp" line="442"/>
+      <location filename="../../Command.cpp" line="439"/>
+      <location filename="../../Command.cpp" line="441"/>
       <source>Convert points to structured point cloud</source>
-      <translation>Преобразование точек в облако структурированных точек</translation>
+      <translation>Преобразование точек в облако структурированных вдоль оси z точек</translation>
     </message>
   </context>
   <context>
@@ -131,7 +131,7 @@
       <location filename="../../Command.cpp" line="202"/>
       <location filename="../../Command.cpp" line="204"/>
       <source>Test to transform a point cloud</source>
-      <translation>Тест для преобразования облака точек</translation>
+      <translation>Попробовать преобразовать облако точек</translation>
     </message>
   </context>
   <context>
@@ -193,7 +193,7 @@
     <message>
       <location filename="../../DlgPointsRead.ui" line="101"/>
       <source>Cluster by lines starting with:</source>
-      <translation>Кластер по линии, начиная с:</translation>
+      <translation>Группировать по строкам, начинающимся с:</translation>
     </message>
     <message>
       <location filename="../../DlgPointsRead.ui" line="111"/>
@@ -208,7 +208,7 @@
     <message>
       <location filename="../../DlgPointsRead.ui" line="146"/>
       <source>Number separator:</source>
-      <translation>Числовой разделитель:</translation>
+      <translation>Разделитель чисел:</translation>
     </message>
     <message>
       <location filename="../../DlgPointsRead.ui" line="167"/>
@@ -261,7 +261,7 @@
       <location filename="../../DlgPointsRead.ui" line="255"/>
       <location filename="../../DlgPointsRead.ui" line="291"/>
       <source>I,K (normal vector 2D)</source>
-      <translation>I, K (вектор нормали 2D)</translation>
+      <translation>I, K (двумерный вектор нормали)</translation>
     </message>
     <message>
       <location filename="../../DlgPointsRead.ui" line="224"/>
@@ -305,12 +305,12 @@
     <message>
       <location filename="../../Command.cpp" line="117"/>
       <source>Points not at Origin</source>
-      <translation type="unfinished">Points not at Origin</translation>
+      <translation>Точки не в начале координат</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="118"/>
       <source>The Bounding Box of the imported points does not contain the origin.  Do you want to translate it to the origin?</source>
-      <translation type="unfinished">The Bounding Box of the imported points does not contain the origin.  Do you want to translate it to the origin?</translation>
+      <translation>Ограничительная рамка импортируемых точек не содержит точки отсчета координат.  Хотите привязать ее к точке отсчета координат верстака?</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="260"/>
@@ -328,7 +328,7 @@
     <message>
       <location filename="../../Workbench.cpp" line="34"/>
       <source>Points tools</source>
-      <translation>Инструменты для точек</translation>
+      <translation>Инструменты работы с точками</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="35"/>

@@ -163,17 +163,17 @@ std::shared_ptr<std::map<QString, std::shared_ptr<Model>>> ModelManagerExternal:
 
 void ModelManagerExternal::addModel(const QString& libraryName,
                                     const QString& path,
-                                    const std::shared_ptr<Model>& model)
+                                    const Model& model)
 {
-    _cache.erase(model->getUUID().toStdString());
+    _cache.erase(model.getUUID().toStdString());
     ExternalManager::getManager()->addModel(libraryName, path, model);
 }
 
 void ModelManagerExternal::migrateModel(const QString& libraryName,
                                     const QString& path,
-                                    const std::shared_ptr<Model>& model)
+                                    const Model& model)
 {
-    _cache.erase(model->getUUID().toStdString());
+    _cache.erase(model.getUUID().toStdString());
     ExternalManager::getManager()->migrateModel(libraryName, path, model);
 }
 

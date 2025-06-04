@@ -626,7 +626,7 @@ void DlgFilletEdges::setupFillet(const std::vector<App::DocumentObject*>& objs)
         std::vector<std::string> subElements;
         QStandardItemModel *model = qobject_cast<QStandardItemModel*>(ui->treeView->model());
         bool block = model->blockSignals(true); // do not call toggleCheckState
-        auto baseShape = Part::Feature::getTopoShape(base);
+        auto baseShape = Part::Feature::getTopoShape(base, Part::ShapeOption::ResolveLink | Part::ShapeOption::Transform);
         std::set<Part::FilletElement> elements;
         for(size_t i=0;i<e.size();++i) {
             auto &sub = subs[i];

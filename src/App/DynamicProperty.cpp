@@ -413,6 +413,51 @@ bool DynamicProperty::changeDynamicProperty(const Property* prop,
     return true;
 }
 
+bool DynamicProperty::renameDynamicProperty(Property* prop,
+                                            const char* newName)
+{
+    auto& propIndex = props.get<1>();
+    auto propIt = propIndex.find(prop);
+    if (propIt == propIndex.end()) {
+        return false;
+    }
+    const PropData& data = *propIt;
+
+    if (propIt->property->testStatus(Property::LockDynamic)) {
+        FC_THROWM(Base::RuntimeError, "Property " << prop->getName() << " is locked");
+    }
+
+    PropertyContainer* container = prop->getContainer();
+    if (container->getPropertyByName(newName) != nullptr) {
+        FC_THROWM(Base::NameError,
+                  "Property " << container->getFullName() << '.' << newName << " already exists");
+    }
+
+    if (Base::Tools::getIdentifier(newName) != newName) {
+        FC_THROWM(Base::NameError, "Invalid property name '" << newName << "'");
+    }
+
+    std::string oldName{data.getName()};
+    auto& nameIndex = props.get<0>();
+    auto nameIt = nameIndex.find(data.getName());
+    if (nameIt == nameIndex.end()) {
+        // This should never happen
+        FC_THROWM(Base::RuntimeError,
+                  "Property " << data.getName() << " not found in index");
+    }
+    nameIndex.modify(nameIt, [&](PropData& d) {
+        d.name = newName;
+        d.pName = nullptr;
+        // make sure that the property's name points to PropData.name that
+        // manages the memory.
+        d.property->myName = d.name.c_str();
+    });
+
+    GetApplication().signalRenameDynamicProperty(*prop, oldName.c_str());
+
+    return true;
+}
+
 const char* DynamicProperty::getPropertyName(const Property* prop) const
 {
     auto& index = props.get<1>();

@@ -802,7 +802,7 @@ void Sheet::updateProperty(CellAddress key)
                 Base::PyGILStateLocker lock;
                 setObjectProperty(key, constant->getPyValue());
             }
-            else if (!number->getUnit().isEmpty()) {
+            else if (number->getUnit() != Unit::One) {
                 setQuantityProperty(key, number->getValue(), number->getUnit());
             }
             else if (number->isInteger(&l)) {

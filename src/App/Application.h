@@ -36,6 +36,7 @@
 
 #include <Base/Observer.h>
 #include <Base/Parameter.h>
+#include <Base/ProgressIndicator.h>
 
 // forward declarations
 using PyObject = struct _object;
@@ -305,6 +306,8 @@ public:
     //@{
     /// signal on adding a dynamic property
     boost::signals2::signal<void (const App::Property&)> signalAppendDynamicProperty;
+    /// signal on renaming a dynamic property
+    boost::signals2::signal<void (const App::Property&, const char*)> signalRenameDynamicProperty;
     /// signal on about removing a dynamic property
     boost::signals2::signal<void (const App::Property&)> signalRemoveDynamicProperty;
     /// signal on about changing the editor mode of a property
@@ -472,6 +475,9 @@ public:
     /// Check if there is any link to the given object
     bool hasLinksTo(const DocumentObject *obj) const;
     //@}
+
+    /// Gets the base progress indicator instance.
+    Base::ProgressIndicator& getProgressIndicator() { return _progressIndicator; }
 
     friend class App::Document;
 
@@ -659,6 +665,8 @@ private:
     int _activeTransactionID{0};
     int _activeTransactionGuard{0};
     bool _activeTransactionTmpName{false};
+
+    Base::ProgressIndicator _progressIndicator;
 
     static Base::ConsoleObserverStd  *_pConsoleObserverStd;
     static Base::ConsoleObserverFile *_pConsoleObserverFile;

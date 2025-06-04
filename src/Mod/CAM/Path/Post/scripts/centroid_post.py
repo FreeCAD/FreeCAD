@@ -282,7 +282,7 @@ def parse(pathobj):
             commandlist = []  # list of elements in the command, code and params.
             command = c.Name  # command M or G code or comment string
 
-            if command[0] == "(":
+            if command.startswith("("):
                 command = PostUtils.fcoms(command, COMMENT)
 
             commandlist.append(command)

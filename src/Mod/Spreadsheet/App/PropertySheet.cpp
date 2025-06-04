@@ -1577,6 +1577,17 @@ void PropertySheet::onRelabeledDocument(const App::Document& doc)
     }
 }
 
+void PropertySheet::onRenameDynamicProperty(const App::Property& prop, const char* oldName)
+{
+    ObjectIdentifier oldNameId = ObjectIdentifier(prop.getContainer(), std::string(oldName));
+    ObjectIdentifier newNameId = ObjectIdentifier(prop);
+    const std::map<ObjectIdentifier, ObjectIdentifier> paths = {
+        {oldNameId, newNameId},
+    };
+
+    renameObjectIdentifiers(paths);
+}
+
 void PropertySheet::renameObjectIdentifiers(
     const std::map<App::ObjectIdentifier, App::ObjectIdentifier>& paths)
 {

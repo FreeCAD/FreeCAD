@@ -29,6 +29,7 @@
 #include "Base/UnitsSchemas.h"
 
 #include <QLocale>
+#include <array>
 #include <string>
 
 using Base::Quantity;
@@ -75,6 +76,119 @@ protected:
 
     std::unique_ptr<UnitsSchemas> schemas;  // NOLINT
 };
+
+TEST_F(SchemaTest, meter_decimal_1_mm_precision_6)
+{
+    const std::string result = setWithPrecision("MeterDecimal", 1.0, Unit::Length, 6);
+    const auto expect {"0.001000 m"};
+
+    EXPECT_EQ(result, expect);
+}
+
+TEST_F(SchemaTest, meter_decimal_15_mm2_precision_6)
+{
+    const std::string result = setWithPrecision("MeterDecimal", 15.0, Unit::Area, 6);
+    const auto expect {"0.000015 m^2"};
+
+    EXPECT_EQ(result, expect);
+}
+
+TEST_F(SchemaTest, meter_decimal_123456000_mm3_precision_6)
+{
+    const std::string result = setWithPrecision("MeterDecimal", 123456000.0, Unit::Volume, 6);
+    const auto expect {"0.123456 m^3"};
+
+    EXPECT_EQ(result, expect);
+}
+
+TEST_F(SchemaTest, meter_decimal_123456000_W_precision_6)
+{
+    const std::string result = setWithPrecision("MeterDecimal", 123456000.0, Unit::Power, 6);
+    const auto expect {"123.456000 W"};
+
+    EXPECT_EQ(result, expect);
+}
+
+TEST_F(SchemaTest, meter_decimal_123456000_V_precision_6)
+{
+    const std::string result =
+        setWithPrecision("MeterDecimal", 123456000.0, Unit::ElectricPotential, 6);
+    const auto expect {"123.456000 V"};
+
+    EXPECT_EQ(result, expect);
+}
+
+TEST_F(SchemaTest, meter_decimal_123456000_W_m2_precision_6)
+{
+    const std::string result = setWithPrecision("MeterDecimal", 123.456, Unit::HeatFlux, 6);
+    const auto expect {"123.456000 W/m^2"};
+
+    EXPECT_EQ(result, expect);
+}
+
+TEST_F(SchemaTest, meter_decimal_123456000_m_s_precision_6)
+{
+    const std::string result = setWithPrecision("MeterDecimal", 123.456, Unit::Velocity, 6);
+    const auto expect {"0.123456 m/s"};
+
+    EXPECT_EQ(result, expect);
+}
+
+TEST_F(SchemaTest, mks_1_mm_precision_6)
+{
+    const std::string result = setWithPrecision("MKS", 1.0, Unit::Length, 6);
+    const auto expect {"1.000000 mm"};
+
+    EXPECT_EQ(result, expect);
+}
+
+TEST_F(SchemaTest, mks_15_mm2_precision_6)
+{
+    const std::string result = setWithPrecision("MKS", 15.0, Unit::Area, 6);
+    const auto expect {"15.000000 mm^2"};
+
+    EXPECT_EQ(result, expect);
+}
+
+TEST_F(SchemaTest, mks_123456000_mm3_precision_6)
+{
+    const std::string result = setWithPrecision("MKS", 123456000.0, Unit::Volume, 6);
+    const auto expect {"123.456000 l"};
+
+    EXPECT_EQ(result, expect);
+}
+
+TEST_F(SchemaTest, mks_123456000_W_precision_6)
+{
+    const std::string result = setWithPrecision("MKS", 123456000.0, Unit::Power, 6);
+    const auto expect {"123.456000 W"};
+
+    EXPECT_EQ(result, expect);
+}
+
+TEST_F(SchemaTest, mks_123456000_V_precision_6)
+{
+    const std::string result = setWithPrecision("MKS", 123456000.0, Unit::ElectricPotential, 6);
+    const auto expect {"123.456000 V"};
+
+    EXPECT_EQ(result, expect);
+}
+
+TEST_F(SchemaTest, mks_123456000_W_m2_precision_6)
+{
+    const std::string result = setWithPrecision("MKS", 123.456, Unit::HeatFlux, 6);
+    const auto expect {"123.456000 W/m^2"};
+
+    EXPECT_EQ(result, expect);
+}
+
+TEST_F(SchemaTest, mks_123456000_m_s_precision_6)
+{
+    const std::string result = setWithPrecision("MKS", 123.456, Unit::Velocity, 6);
+    const auto expect {"0.123456 m/s"};
+
+    EXPECT_EQ(result, expect);
+}
 
 TEST_F(SchemaTest, imperial_decimal_1_mm_default_precision)
 {
@@ -409,4 +523,162 @@ TEST_F(SchemaTest, imperial_civil_special_function_angle_no_degrees)
 TEST_F(SchemaTest, unknown_schema_name_throws)
 {
     EXPECT_THROW(UnitsApi::setSchema("Unknown"), RuntimeError);
+}
+
+TEST_F(SchemaTest, round_trip_test)
+{
+    const auto units = std::to_array<Unit>({
+        Unit::Length,
+        Unit::Mass,
+        Unit::Area,
+        Unit::Density,
+        Unit::Volume,
+        Unit::TimeSpan,
+        Unit::Frequency,
+        Unit::Velocity,
+        Unit::Acceleration,
+        Unit::Temperature,
+        Unit::CurrentDensity,
+        Unit::ElectricCurrent,
+        Unit::ElectricPotential,
+        Unit::ElectricCharge,
+        Unit::SurfaceChargeDensity,
+        Unit::MagneticFieldStrength,
+        Unit::MagneticFlux,
+        Unit::MagneticFluxDensity,
+        Unit::Magnetization,
+        Unit::ElectricalCapacitance,
+        Unit::ElectricalInductance,
+        Unit::ElectricalConductance,
+        Unit::ElectricalResistance,
+        Unit::ElectricalConductivity,
+        Unit::ElectromagneticPotential,
+        Unit::AmountOfSubstance,
+        Unit::LuminousIntensity,
+        Unit::CompressiveStrength,
+        Unit::Pressure,
+        Unit::ShearModulus,
+        Unit::Stress,
+        Unit::UltimateTensileStrength,
+        Unit::YieldStrength,
+        Unit::YoungsModulus,
+        Unit::Stiffness,
+        Unit::StiffnessDensity,
+        Unit::Force,
+        Unit::Work,
+        Unit::Power,
+        Unit::Moment,
+        Unit::SpecificEnergy,
+        Unit::ThermalConductivity,
+        Unit::ThermalExpansionCoefficient,
+        Unit::VolumetricThermalExpansionCoefficient,
+        Unit::SpecificHeat,
+        Unit::ThermalTransferCoefficient,
+        Unit::HeatFlux,
+        Unit::DynamicViscosity,
+        Unit::KinematicViscosity,
+        Unit::VacuumPermittivity,
+        Unit::VolumeFlowRate,
+        Unit::DissipationRate,
+        Unit::InverseLength,
+        Unit::InverseArea,
+        Unit::InverseVolume,
+    });
+
+    std::array values = {0.01, 0.1, 1.0, 10.0, 100.0};
+
+    double factor {};
+    std::string unitString;
+
+    UnitsApi::setDecimals(16);
+
+    UnitsApi::setSchema("Internal");
+    for (auto unit : units) {
+        for (double value : values) {
+            Quantity q1 {value, unit};
+            std::string result = UnitsApi::schemaTranslate(q1, factor, unitString);
+            Quantity q2 = Quantity::parse(result);
+            EXPECT_DOUBLE_EQ(q2.getValue(), value);
+        }
+    }
+
+    UnitsApi::setSchema("MKS");
+    for (auto unit : units) {
+        for (double value : values) {
+            Quantity q1 {value, unit};
+            std::string result = UnitsApi::schemaTranslate(q1, factor, unitString);
+            Quantity q2 = Quantity::parse(result);
+            EXPECT_DOUBLE_EQ(q2.getValue(), value);
+        }
+    }
+
+    UnitsApi::setSchema("Imperial");
+    for (auto unit : units) {
+        for (double value : values) {
+            Quantity q1 {value, unit};
+            std::string result = UnitsApi::schemaTranslate(q1, factor, unitString);
+            Quantity q2 = Quantity::parse(result);
+            EXPECT_NEAR(q2.getValue(), value, 0.001);
+        }
+    }
+
+    UnitsApi::setSchema("ImperialDecimal");
+    for (auto unit : units) {
+        for (double value : values) {
+            Quantity q1 {value, unit};
+            std::string result = UnitsApi::schemaTranslate(q1, factor, unitString);
+            Quantity q2 = Quantity::parse(result);
+            EXPECT_NEAR(q2.getValue(), value, 0.001);
+        }
+    }
+
+    UnitsApi::setSchema("Centimeter");
+    for (auto unit : units) {
+        for (double value : values) {
+            Quantity q1 {value, unit};
+            std::string result = UnitsApi::schemaTranslate(q1, factor, unitString);
+            Quantity q2 = Quantity::parse(result);
+            EXPECT_DOUBLE_EQ(q2.getValue(), value);
+        }
+    }
+
+    UnitsApi::setSchema("MmMin");
+    for (auto unit : units) {
+        for (double value : values) {
+            Quantity q1 {value, unit};
+            std::string result = UnitsApi::schemaTranslate(q1, factor, unitString);
+            Quantity q2 = Quantity::parse(result);
+            EXPECT_DOUBLE_EQ(q2.getValue(), value);
+        }
+    }
+
+    UnitsApi::setSchema("ImperialCivil");
+    for (auto unit : units) {
+        for (double value : values) {
+            Quantity q1 {value, unit};
+            std::string result = UnitsApi::schemaTranslate(q1, factor, unitString);
+            Quantity q2 = Quantity::parse(result);
+            EXPECT_NEAR(q2.getValue(), value, 0.001);
+        }
+    }
+
+    UnitsApi::setSchema("FEM");
+    for (auto unit : units) {
+        for (double value : values) {
+            Quantity q1 {value, unit};
+            std::string result = UnitsApi::schemaTranslate(q1, factor, unitString);
+            Quantity q2 = Quantity::parse(result);
+            EXPECT_DOUBLE_EQ(q2.getValue(), value);
+        }
+    }
+
+    UnitsApi::setSchema("MeterDecimal");
+    for (auto unit : units) {
+        for (double value : values) {
+            Quantity q1 {value, unit};
+            std::string result = UnitsApi::schemaTranslate(q1, factor, unitString);
+            Quantity q2 = Quantity::parse(result);
+            EXPECT_DOUBLE_EQ(q2.getValue(), value);
+        }
+    }
 }

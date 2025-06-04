@@ -443,7 +443,7 @@ public:
         return getTypeId() == other.getTypeId() && _uuid == other._uuid;
     }
 
-    void validate(const std::shared_ptr<Material>& other) const;
+    void validate(Material& other) const;
 
 protected:
     void addModel(const QString& uuid);
@@ -456,10 +456,10 @@ protected:
     getValueString(const std::map<QString, std::shared_ptr<MaterialProperty>>& propertyList,
                    const QString& name);
 
-    bool modelChanged(const std::shared_ptr<Material>& parent,
-                      const std::shared_ptr<Model>& model) const;
-    bool modelAppearanceChanged(const std::shared_ptr<Material>& parent,
-                                const std::shared_ptr<Model>& model) const;
+    bool modelChanged(const Material& parent,
+                      const Model& model) const;
+    bool modelAppearanceChanged(const Material& parent,
+                                const Model& model) const;
     void saveGeneral(QTextStream& stream) const;
     void saveInherits(QTextStream& stream) const;
     void saveModels(QTextStream& stream, bool saveInherited) const;

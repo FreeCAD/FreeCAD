@@ -81,12 +81,12 @@
     <message>
       <location filename="../ui/ArchMaterial.ui" line="191"/>
       <source>A standard (MasterFormat, Omniclass...) code for this material</source>
-      <translation type="unfinished">A standard (MasterFormat, Omniclass...) code for this material</translation>
+      <translation>Standardi (MasterFormat, Omniclass...) Koodi tälle materiaalille</translation>
     </message>
     <message>
       <location filename="../ui/ArchMaterial.ui" line="204"/>
       <source>Opens a browser dialog to choose a class from a BIM standard</source>
-      <translation type="unfinished">Opens a browser dialog to choose a class from a BIM standard</translation>
+      <translation>Avaa selaimen valintaikkunan jotta voit valita BIM-standardin luokan</translation>
     </message>
     <message>
       <location filename="../ui/ArchMaterial.ui" line="223"/>
@@ -106,7 +106,7 @@
     <message>
       <location filename="../ui/ArchMaterial.ui" line="268"/>
       <source>Parent</source>
-      <translation type="unfinished">Parent</translation>
+      <translation>Ylätaso</translation>
     </message>
   </context>
   <context>
@@ -193,7 +193,7 @@
     <message>
       <location filename="../ui/ArchSchedule.ui" line="14"/>
       <source>Schedule definition</source>
-      <translation type="unfinished">Schedule definition</translation>
+      <translation>Aikataulun määrittely</translation>
     </message>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="22"/>
@@ -229,7 +229,7 @@
     <message>
       <location filename="../ui/ArchSchedule.ui" line="85"/>
       <source>An optional unit to express the resulting value. Ex: m^3 (you can also write m³ or m3)</source>
-      <translation type="unfinished">An optional unit to express the resulting value. Ex: m^3 (you can also write m³ or m3)</translation>
+      <translation>Valinnainen yksikkö, joka ilmaisee tuloksena olevan arvon. Esim: m^3 (voit myös kirjoittaa m³ tai m3)</translation>
     </message>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="90"/>
@@ -250,13 +250,13 @@ to count the objects, or property names like 'Length' or
 When used with native IFC objects, this can be used to
 retrieve any attribute or custom properties of the elements
 retrieved.</source>
-      <translation type="unfinished">The property to retrieve from each object.Can be 'Count'
-to count the objects, or property names like 'Length' or
-'Shape.Volume' to retrieve a certain property.
+      <translation>Ominaisuus noutaa jokaisen objektin. Voi olla 'Lukumäärä'
+laskeaksesi objektit tai ominaisuuden nimet, kuten 'Pituus' tai
+'Shape.Volume' noutaaksesi tietyn omaisuuden.
 
-When used with native IFC objects, this can be used to
-retrieve any attribute or custom properties of the elements
-retrieved.</translation>
+Kun käytetään natiiveja IFC kohteita, tätä voidaan käyttää
+noutaa mitä tahansa attribuuttia tai mukautettuja elementeistä
+noudettuja ominaisuuksia.</translation>
     </message>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="93"/>
@@ -272,18 +272,18 @@ in FreeCAD or not.
 
 Use the name of the IFC project to get all the IFC entities
 of that project, no matter if they are expanded or not.</source>
-      <translation type="unfinished">An optional semicolon (;) separated list of object names
-(internal names, not labels), to be considered by this operation.
-If the list contains groups, children will be added.
+      <translation>Valinnainen puolipisteillä (;) erotettu objektien nimien luettelo
+(sisäiset nimet, ei tunnisteet), jotka on otettava huomioon tässä toiminnossa.
+Jos lista sisältää ryhmiä, ryhmään kuuluvat lisätään.
 
-Leave blank to use all objects from the document.
+Jätä tyhjäksi jos haluat käyttää kaikkia asiakirjan kohteita.
 
-If the document is an IFC project, all IFC entities of the
-document will be used, no matter if they are expanded
-in FreeCAD or not.
+Jos asiakirja on IFC-projekti, käytetään kaikkia
+-asiakirjan IFC-yksiköitä, riippumatta siitä, onko niitä laajennettu
+FreeCADissä vai ei.
 
-Use the name of the IFC project to get all the IFC entities
-of that project, no matter if they are expanded or not.</translation>
+Käytä IFC-projektin nimeä saadaksesi kaikki IFC:n yksiköt
+tästä projektista, riippumatta siitä, onko niitä laajennettu vai ei.</translation>
     </message>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="112"/>
@@ -292,26 +292,26 @@ of that project, no matter if they are expanded or not.</translation>
 Examples of valid filters (everything is case-insensitive): Name:Wall - Will only consider objects with 'wall' in their name (internal name); !Name:Wall - Will only consider objects which DON'T have 'wall' in their name (internal name); Description:Win - Will only consider objects with 'win' in their description; !Label:Win - Will only consider objects which DO NOT have 'win' in their label; IfcType:Wall - Will only consider objects which Ifc Type is 'Wall'; !Tag:Wall - Will only consider objects which tag is NOT 'Wall'. If you leave this field empty, no filtering is applied
 
 When dealing with native IFC objects, you can use FreeCAD properties name, ex: 'Class:IfcWall' or any other IFC attribute (ex. 'IsTypedBy:#455'). If the 'Objects' column has been set to an IFC project or document, all the IFC entities of that project will be considered.</source>
-      <translation type="unfinished">An optional semicolon (;) separated list of property:value filters. Prepend ! to a property name to invert the effect of the filter (exclude objects that match the filter). Objects whose property contains the value will be matched.
+      <translation>Valinnainen puolipistein (;) erotettu luettelo property:value (ominaisuus:arvo) suodattimista. Käytä merkkiä ! ominaisuuden edessä kääntääksesi suodattimen vaikutuksen (sulje pois kohteet, jotka täsmäävät suodattimeen). Objektit, joiden omaisuus sisältää halutut arvot, näytetään.
 
-Examples of valid filters (everything is case-insensitive): Name:Wall - Will only consider objects with 'wall' in their name (internal name); !Name:Wall - Will only consider objects which DON'T have 'wall' in their name (internal name); Description:Win - Will only consider objects with 'win' in their description; !Label:Win - Will only consider objects which DO NOT have 'win' in their label; IfcType:Wall - Will only consider objects which Ifc Type is 'Wall'; !Tag:Wall - Will only consider objects which tag is NOT 'Wall'. If you leave this field empty, no filtering is applied
+Esimerkkejä kelvollisista suodattimista (kirjainkoolla ei merkitystä): Name:Seinä - Valitsee vain objekteja joilla ON merkkijono 'seinä' niiden nimessä (sisäinen nimi); !Name:Seinä - Valitsee vain objekteja joilla EI ole merkkijonoa 'seinä' niiden nimessä (sisäinen nimi); Description:Win - Valitsee vain objekteja joilla on 'Win' niiden kuvauksessa; !Label:Win - Valitsee vain kohteita, joilla EI ole 'Win' nimessä; IfcType:Wall - Valitsee vain objekteja, joiden IFC-tyyppi on 'Wall'; !Tag:Wall - Valitsee vain kohteita, joiden nimessä ei ole merkkijonoa 'Wall'. Jos jätät tämän kentän tyhjäksi, suodatusta ei käytetä.
 
-When dealing with native IFC objects, you can use FreeCAD properties name, ex: 'Class:IfcWall' or any other IFC attribute (ex. 'IsTypedBy:#455'). If the 'Objects' column has been set to an IFC project or document, all the IFC entities of that project will be considered.</translation>
+Natiivien IFC-objektien suodattamiseen voidaa näyttää FreeCAD -ominaisuuksien nimiä, esim: 'Class:IfcWall' tai joku muu IFC-attribuutti (esim. 'IsTypedBy:#455). Jos 'Objects' sarake on asetettu IFC-prljektille tai asiakirjalle, kaikkia projektin IFC-ominaisuuksia käytetään.</translation>
     </message>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="126"/>
       <source>If this is enabled, an associated spreadsheet containing the results will be maintained together with this schedule object</source>
-      <translation type="unfinished">If this is enabled, an associated spreadsheet containing the results will be maintained together with this schedule object</translation>
+      <translation>Jos tämä on käytössä, aikataulukohteen kanssa säilytetään tähän liittyvä laskentataulukko, joka sisältää tulokset</translation>
     </message>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="129"/>
       <source>Associate spreadsheet</source>
-      <translation type="unfinished">Associate spreadsheet</translation>
+      <translation>Yhdistä laskentataulukko</translation>
     </message>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="136"/>
       <source>If this is enabled, additional lines will be filled with each object considered. If not, only the totals.</source>
-      <translation type="unfinished">If this is enabled, additional lines will be filled with each object considered. If not, only the totals.</translation>
+      <translation>Jos tämä on käytössä, näytetään jokainen objekti. Jos ei, vain kokonaismäärät.</translation>
     </message>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="139"/>
@@ -321,7 +321,7 @@ When dealing with native IFC objects, you can use FreeCAD properties name, ex: '
     <message>
       <location filename="../ui/ArchSchedule.ui" line="146"/>
       <source>If this is enabled, the schedule and the associated spreadsheet are updated whenever the document is recomputed.</source>
-      <translation type="unfinished">If this is enabled, the schedule and the associated spreadsheet are updated whenever the document is recomputed.</translation>
+      <translation>Jos tämä on käytössä, aikataulu ja siihen liittyvä taulukkolaskenta päivitetään aina, kun asiakirja lasketaan uudelleen.</translation>
     </message>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="149"/>
@@ -331,7 +331,7 @@ When dealing with native IFC objects, you can use FreeCAD properties name, ex: '
     <message>
       <location filename="../ui/ArchSchedule.ui" line="160"/>
       <source>Adds a line below the selected line/cell</source>
-      <translation type="unfinished">Adds a line below the selected line/cell</translation>
+      <translation>Lisää valitun rivin tai solun alapuolelle viivan</translation>
     </message>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="163"/>
@@ -435,7 +435,7 @@ When dealing with native IFC objects, you can use FreeCAD properties name, ex: '
     <message>
       <location filename="../ui/dialogIfcPropertiesRedux.ui" line="29"/>
       <source>Leave this empty to generate one at export</source>
-      <translation type="unfinished">Leave this empty to generate one at export</translation>
+      <translation>Jätä tyhjäksi jos haluat luoda vietäessä</translation>
     </message>
     <message>
       <location filename="../ui/dialogIfcPropertiesRedux.ui" line="38"/>
@@ -465,17 +465,17 @@ When dealing with native IFC objects, you can use FreeCAD properties name, ex: '
     <message>
       <location filename="../ui/dialogIfcProperties.ui" line="50"/>
       <source>Order by:</source>
-      <translation type="unfinished">Order by:</translation>
+      <translation>Järjestä:</translation>
     </message>
     <message>
       <location filename="../ui/dialogIfcProperties.ui" line="111"/>
       <source>Search for a property or property set:</source>
-      <translation type="unfinished">Search for a property or property set:</translation>
+      <translation>Etsi ominaisuutta tai ominaisuuksia:</translation>
     </message>
     <message>
       <location filename="../ui/dialogIfcProperties.ui" line="131"/>
       <source>Only show matches</source>
-      <translation type="unfinished">Only show matches</translation>
+      <translation>Näytä vain osumat</translation>
     </message>
     <message>
       <location filename="../ui/dialogIfcProperties.ui" line="141"/>
@@ -496,22 +496,22 @@ When dealing with native IFC objects, you can use FreeCAD properties name, ex: '
     <message>
       <location filename="../ui/dialogIfcPropertiesRedux.ui" line="76"/>
       <source>Force exporting geometry as BREP</source>
-      <translation type="unfinished">Force exporting geometry as BREP</translation>
+      <translation>Pakota geometrian vienti BREP-muotoon</translation>
     </message>
     <message>
       <location filename="../ui/dialogIfcPropertiesRedux.ui" line="83"/>
       <source>Force export full FreeCAD parametric data</source>
-      <translation type="unfinished">Force export full FreeCAD parametric data</translation>
+      <translation>Pakota vientiin FreeCADin parametriset tiedot</translation>
     </message>
     <message>
       <location filename="../ui/dialogClassification.ui" line="14"/>
       <source>Classification manager</source>
-      <translation type="unfinished">Classification manager</translation>
+      <translation>Luokkien hallinta</translation>
     </message>
     <message>
       <location filename="../ui/dialogClassification.ui" line="42"/>
       <source>Objects &amp;&amp; Materials</source>
-      <translation type="unfinished">Objects &amp;&amp; Materials</translation>
+      <translation>Objektit &amp;&amp; Materiaalit</translation>
     </message>
     <message>
       <location filename="../ui/dialogClassification.ui" line="48"/>
@@ -521,7 +521,7 @@ When dealing with native IFC objects, you can use FreeCAD properties name, ex: '
     <message>
       <location filename="../ui/dialogClassification.ui" line="60"/>
       <source>Sort by:</source>
-      <translation type="unfinished">Sort by:</translation>
+      <translation>Järjestä:</translation>
     </message>
     <message>
       <location filename="../ui/dialogClassification.ui" line="68"/>
@@ -563,37 +563,37 @@ When dealing with native IFC objects, you can use FreeCAD properties name, ex: '
     <message>
       <location filename="../ui/dialogClassification.ui" line="136"/>
       <source>Available classification systems</source>
-      <translation type="unfinished">Available classification systems</translation>
+      <translation>Käytettävissä olevat luokitusjärjestelmät</translation>
     </message>
     <message>
       <location filename="../ui/dialogClassification.ui" line="142"/>
       <source>Classification systems found on this computer</source>
-      <translation type="unfinished">Classification systems found on this computer</translation>
+      <translation>Tällä tietokoneella löydetyt luokitusjärjestelmät</translation>
     </message>
     <message>
       <location filename="../ui/dialogClassification.ui" line="178"/>
       <source>Apply the selected class to selected materials</source>
-      <translation type="unfinished">Apply the selected class to selected materials</translation>
+      <translation>Käytä valittua luokkaa valituille materiaaleille</translation>
     </message>
     <message>
       <location filename="../ui/dialogClassification.ui" line="181"/>
       <source>&lt;&lt; Apply to selected</source>
-      <translation type="unfinished">&lt;&lt; Apply to selected</translation>
+      <translation>&lt;&lt; Käytä valittuun</translation>
     </message>
     <message>
       <location filename="../ui/dialogClassification.ui" line="188"/>
       <source>Use this class as material name</source>
-      <translation type="unfinished">Use this class as material name</translation>
+      <translation>Käytä tätä luokkaa materiaalin nimenä</translation>
     </message>
     <message>
       <location filename="../ui/dialogClassification.ui" line="191"/>
       <source>&lt;&lt; Set as name</source>
-      <translation type="unfinished">&lt;&lt; Set as name</translation>
+      <translation>&lt;&lt; Aseta nimeksi</translation>
     </message>
     <message>
       <location filename="../ui/dialogClassification.ui" line="200"/>
       <source>Prefix with class name when applying</source>
-      <translation type="unfinished">Prefix with class name when applying</translation>
+      <translation>Luokan nimen etuliite</translation>
     </message>
     <message>
       <location filename="../ui/dialogClassification.ui" line="214"/>
@@ -603,12 +603,12 @@ When dealing with native IFC objects, you can use FreeCAD properties name, ex: '
     <message>
       <location filename="../ui/dialogConvertDocument.ui" line="14"/>
       <source>Single IFC document</source>
-      <translation type="unfinished">Single IFC document</translation>
+      <translation>Yksittäinen IFC-asiakirja</translation>
     </message>
     <message>
       <location filename="../ui/dialogConvertDocument.ui" line="20"/>
       <source>Do you wish to convert this document to an IFC document? Replying 'Yes' will automatically turn all new objects to IFC, while 'No' will allow you to have both IFC and non-IFC elements in the file.</source>
-      <translation type="unfinished">Do you wish to convert this document to an IFC document? Replying 'Yes' will automatically turn all new objects to IFC, while 'No' will allow you to have both IFC and non-IFC elements in the file.</translation>
+      <translation>Haluatko muuntaa tämän asiakirjan IFC:n asiakirjaksi? Jos valitset 'Kyllä', kaiikki uudet objektit käännetään IFC-muotoon, kun taas vaihtoehto 'Ei' mahdollistaa sekä IFC- että ei-IFC-elementtien käytön tiedostossa.</translation>
     </message>
     <message>
       <location filename="../ui/dialogConvertDocument.ui" line="30"/>
@@ -618,7 +618,7 @@ When dealing with native IFC objects, you can use FreeCAD properties name, ex: '
     <message>
       <location filename="../ui/dialogConvertDocument.ui" line="33"/>
       <source>Also create a default structure</source>
-      <translation type="unfinished">Also create a default structure</translation>
+      <translation>Luo myös oletusrakenne</translation>
     </message>
     <message>
       <location filename="../ui/dialogConvertDocument.ui" line="40"/>
@@ -626,10 +626,10 @@ When dealing with native IFC objects, you can use FreeCAD properties name, ex: '
 and that document won't be turned into an IFC document automatically.
 You can still turn a FreeCAD document into an IFC document manually, using
 Utils -&gt; Make IFC project</source>
-      <translation type="unfinished">If this is checked, you won't be asked again when creating a new FreeCAD document,
-and that document won't be turned into an IFC document automatically.
-You can still turn a FreeCAD document into an IFC document manually, using
-Utils -&gt; Make IFC project</translation>
+      <translation>Jos tämä on valittuna, sinulta ei kysytä uudelleen kun luot uutta FreeCAD-asiakirjaa,
+ja asiakirja ei muutu IFC-asiakirjaksi automaattisesti.
+Voit edelleen muuntaa FreeCAD asiakirjan IFC asiakirjaksi manuaalisesti, käyttäen
+Työkalut -&gt; Tee IFC projekti</translation>
     </message>
     <message>
       <location filename="../ui/dialogConvertDocument.ui" line="46"/>
@@ -650,7 +650,7 @@ Utils -&gt; Make IFC project</translation>
     <message>
       <location filename="../ui/dialogExport.ui" line="20"/>
       <source>One or more IFC documents contained in this FreeCAD document have been modified, but were not saved.  They will automatically be saved now.</source>
-      <translation type="unfinished">One or more IFC documents contained in this FreeCAD document have been modified, but were not saved.  They will automatically be saved now.</translation>
+      <translation>Yksi tai useampi tässä FreeCAD-dokumentissa oleva IFC-dokumentti on muutettu, mutta sitä ei ole tallennettu. Ne tallennetaan nyt automaattisesti.</translation>
     </message>
     <message>
       <location filename="../ui/dialogImport.ui" line="152"/>
@@ -666,7 +666,7 @@ Utils -&gt; Make IFC project</translation>
     <message>
       <location filename="../ui/dialogIfcElements.ui" line="20"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;This dialog lets you change the IFC type and material associated with any BIM object in this document. Double-click the IFC type to change, or use the drop-down menu below the list.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;This dialog lets you change the IFC type and material associated with any BIM object in this document. Double-click the IFC type to change, or use the drop-down menu below the list.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Tämän ikkunan avulla voit muuttaa IFC-tyyppiä ja materiaalia, joka liittyy mihin tahansa BIM-objektiin tässä asiakirjassa. Kaksoisnapsauta IFC-tyyppiä muuttaaksesi tai käyttääksesi listan alapuolella olevaa valikkoa.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/dialogIfcElements.ui" line="30"/>
@@ -677,27 +677,27 @@ Utils -&gt; Make IFC project</translation>
     <message>
       <location filename="../ui/dialogIfcElements.ui" line="39"/>
       <source>order by:</source>
-      <translation type="unfinished">order by:</translation>
+      <translation>järjestä:</translation>
     </message>
     <message>
       <location filename="../ui/dialogIfcElements.ui" line="103"/>
       <source>change type to:</source>
-      <translation type="unfinished">change type to:</translation>
+      <translation>muuta tyyppiä:</translation>
     </message>
     <message>
       <location filename="../ui/dialogIfcElements.ui" line="110"/>
       <source>change material to:</source>
-      <translation type="unfinished">change material to:</translation>
+      <translation>vaihda materiaalia:</translation>
     </message>
     <message>
       <location filename="../ui/dialogIfcQuantities.ui" line="14"/>
       <source>IFC Quantities Manager</source>
-      <translation type="unfinished">IFC Quantities Manager</translation>
+      <translation>Ifc Määrän Hallinta</translation>
     </message>
     <message>
       <location filename="../ui/dialogIfcQuantities.ui" line="20"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Checked quantities will be exported to IFC. Quantities marked with a warning sign indicate a zero value that you might need to check. Clicking a column header will apply to all selected items.&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Warning&lt;/span&gt;: Horizontal area is the area obtained when projecting the object on the ground (X,Y) plane, but vertical area is the sum of all areas of the faces that are vertical (orthogonal to the ground plane), so a wall will have its both faces counted.&lt;/p&gt;&lt;p&gt;Length, width and height values can be changed here, but beware, it might change the geometry!&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Checked quantities will be exported to IFC. Quantities marked with a warning sign indicate a zero value that you might need to check. Clicking a column header will apply to all selected items.&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Warning&lt;/span&gt;: Horizontal area is the area obtained when projecting the object on the ground (X,Y) plane, but vertical area is the sum of all areas of the faces that are vertical (orthogonal to the ground plane), so a wall will have its both faces counted.&lt;/p&gt;&lt;p&gt;Length, width and height values can be changed here, but beware, it might change the geometry!&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Tarkastetut määrät viedään IFC:lle. Varoitusmerkillä merkityt määrät tarkoittavat nolla-arvoa, joka sinun on ehkä tarkistettava. Napsauttamalla sarakkeen otsikkoa sovelletaan kaikkiin valittuihin kohteisiin.&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Varoitus&lt;/span&gt;: Vaakasuuntainen alue on alue, joka saadaan projisoitaessa esinettä maassa (X,Y) mutta pystysuora alue on summa kaikkien alueiden kasvot, jotka ovat pystysuunnassa (ortogonaaliset maan taso), joten seinän molemmat sivut lasketaan.&lt;/p&gt;&lt;p&gt;Pituus-, leveys- ja korkeusarvot voidaan muuttaa täällä, mutta varo, se saattaa muuttaa geometriaa!&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/dialogIfcQuantities.ui" line="49"/>
@@ -723,27 +723,27 @@ Utils -&gt; Make IFC project</translation>
     <message>
       <location filename="../ui/dialogImport.ui" line="22"/>
       <source>How the IFC file will initially be imported: Only one object, only project structure, or all individual objects.</source>
-      <translation type="unfinished">How the IFC file will initially be imported: Only one object, only project structure, or all individual objects.</translation>
+      <translation>Kuinka IFC-tiedosto tuodaan aluksi: Vain yksi objekti, vain projektin rakenne, tai kaikki yksittäiset objektit.</translation>
     </message>
     <message>
       <location filename="../ui/dialogImport.ui" line="26"/>
       <source>Only root object (default)</source>
-      <translation type="unfinished">Only root object (default)</translation>
+      <translation>Vain juuriobjekti (oletus)</translation>
     </message>
     <message>
       <location filename="../ui/dialogImport.ui" line="31"/>
       <source>Project structure (levels)</source>
-      <translation type="unfinished">Project structure (levels)</translation>
+      <translation>Hankkeen rakenne (tasot)</translation>
     </message>
     <message>
       <location filename="../ui/dialogImport.ui" line="36"/>
       <source>All individual IFC objects</source>
-      <translation type="unfinished">All individual IFC objects</translation>
+      <translation>Kaikki yksittäiset IFC-objektit</translation>
     </message>
     <message>
       <location filename="../ui/dialogImport.ui" line="44"/>
       <source>Initial import</source>
-      <translation type="unfinished">Initial import</translation>
+      <translation>Alkuperäinen tuonti</translation>
     </message>
     <message>
       <location filename="../ui/dialogImport.ui" line="51"/>
@@ -753,12 +753,12 @@ Utils -&gt; Make IFC project</translation>
     <message>
       <location filename="../ui/dialogImport.ui" line="55"/>
       <source>Locked (IFC objects only)</source>
-      <translation type="unfinished">Locked (IFC objects only)</translation>
+      <translation>Lukittu (vain IFC-objektit)</translation>
     </message>
     <message>
       <location filename="../ui/dialogImport.ui" line="60"/>
       <source>Unlocked (non-IFC objects permitted)</source>
-      <translation type="unfinished">Unlocked (non-IFC objects permitted)</translation>
+      <translation>Avattu (muut kuin IFC-kohteet sallittu)</translation>
     </message>
     <message>
       <location filename="../ui/dialogImport.ui" line="68"/>
@@ -768,7 +768,7 @@ Utils -&gt; Make IFC project</translation>
     <message>
       <location filename="../ui/dialogImport.ui" line="75"/>
       <source>Representation type</source>
-      <translation type="unfinished">Representation type</translation>
+      <translation>Esitystapa</translation>
     </message>
     <message>
       <location filename="../ui/dialogImport.ui" line="82"/>
@@ -778,17 +778,17 @@ Utils -&gt; Make IFC project</translation>
     <message>
       <location filename="../ui/dialogImport.ui" line="89"/>
       <source>Load the shape (slower)</source>
-      <translation type="unfinished">Load the shape (slower)</translation>
+      <translation>Lataa muoto (hitaampi)</translation>
     </message>
     <message>
       <location filename="../ui/dialogImport.ui" line="94"/>
       <source>Load 3D representation only, no shape (default)</source>
-      <translation type="unfinished">Load 3D representation only, no shape (default)</translation>
+      <translation>Lataa vain 3D-esitys, ei muotoa (oletus)</translation>
     </message>
     <message>
       <location filename="../ui/dialogImport.ui" line="99"/>
       <source>No 3D representation at all</source>
-      <translation type="unfinished">No 3D representation at all</translation>
+      <translation>Ei 3D-kuvausta ollenkaan</translation>
     </message>
     <message>
       <location filename="../ui/dialogImport.ui" line="109"/>
@@ -798,7 +798,7 @@ Utils -&gt; Make IFC project</translation>
     <message>
       <location filename="../ui/dialogImport.ui" line="112"/>
       <source>Switch workbench after import</source>
-      <translation type="unfinished">Switch workbench after import</translation>
+      <translation>Vaihda työtilaa tuonnin jälkeen</translation>
     </message>
     <message>
       <location filename="../ui/dialogImport.ui" line="119"/>
@@ -818,7 +818,7 @@ Utils -&gt; Make IFC project</translation>
     <message>
       <location filename="../ui/dialogImport.ui" line="132"/>
       <source>Preload materials</source>
-      <translation type="unfinished">Preload materials</translation>
+      <translation>Esilataa materiaalit</translation>
     </message>
     <message>
       <location filename="../ui/dialogImport.ui" line="139"/>
@@ -828,7 +828,7 @@ Utils -&gt; Make IFC project</translation>
     <message>
       <location filename="../ui/dialogImport.ui" line="142"/>
       <source>Preload layers</source>
-      <translation type="unfinished">Preload layers</translation>
+      <translation>Esilataa tasot</translation>
     </message>
     <message>
       <location filename="../ui/dialogImport.ui" line="149"/>
@@ -848,7 +848,7 @@ Utils -&gt; Make IFC project</translation>
     <message>
       <location filename="../ui/dialogLayersIFC.ui" line="36"/>
       <source>Adds this layer to an IFC project</source>
-      <translation type="unfinished">Adds this layer to an IFC project</translation>
+      <translation>Lisää tämän taso IFC-projektiin</translation>
     </message>
     <message>
       <location filename="../ui/dialogPhases.ui" line="55"/>
@@ -869,7 +869,7 @@ Utils -&gt; Make IFC project</translation>
     <message>
       <location filename="../ui/dialogLayersIFC.ui" line="74"/>
       <source>Assign selected objects to the selected layer</source>
-      <translation type="unfinished">Assign selected objects to the selected layer</translation>
+      <translation>Määritä valitut objektit valitulle tasolle</translation>
     </message>
     <message>
       <location filename="../ui/dialogLayersIFC.ui" line="77"/>
@@ -880,7 +880,7 @@ Utils -&gt; Make IFC project</translation>
       <location filename="../ui/dialogProjectManager.ui" line="616"/>
       <location filename="../ui/dialogLayersIFC.ui" line="97"/>
       <source>Cancel</source>
-      <translation>Peruuta</translation>
+      <translation>Kumoa</translation>
     </message>
     <message>
       <location filename="../ui/dialogQuantitySurveying.ui" line="26"/>
@@ -898,12 +898,12 @@ Utils -&gt; Make IFC project</translation>
     <message>
       <location filename="../ui/dialogNudgeValue.ui" line="14"/>
       <source>Nudge</source>
-      <translation type="unfinished">Nudge</translation>
+      <translation>Tönäise</translation>
     </message>
     <message>
       <location filename="../ui/dialogNudgeValue.ui" line="20"/>
       <source>New nudge value:</source>
-      <translation type="unfinished">New nudge value:</translation>
+      <translation>Uusi tönäisyn arvo:</translation>
     </message>
     <message>
       <location filename="../ui/dialogPhases.ui" line="20"/>
@@ -978,7 +978,7 @@ Utils -&gt; Make IFC project</translation>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="130"/>
       <source>Create Site</source>
-      <translation type="unfinished">Create Site</translation>
+      <translation>Luo Rakennuspaikka</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="107"/>
@@ -988,7 +988,7 @@ Utils -&gt; Make IFC project</translation>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="117"/>
       <source>If this is checked, a human figure will be added, which helps greatly to give a sense of scale when viewing the model</source>
-      <translation type="unfinished">If this is checked, a human figure will be added, which helps greatly to give a sense of scale when viewing the model</translation>
+      <translation>Jos tämä on valittuna, lisätään ihmisfiguuri joka auttaa näyttämään mittakaavaa mallia tarkasteltaessa</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="120"/>
@@ -998,12 +998,12 @@ Utils -&gt; Make IFC project</translation>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="142"/>
       <source>The site object contains all the data relative to the project location. Later on, you can attach a physical object representing the terrain.</source>
-      <translation type="unfinished">The site object contains all the data relative to the project location. Later on, you can attach a physical object representing the terrain.</translation>
+      <translation>Rakennuspaikkaobjekti sisältää kaikki projektin lokaatioon liittyvät tiedot. Myöhemmin voit liittää fyysisen objektin, joka esittää maanpintaa.</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="154"/>
       <source> E</source>
-      <translation type="unfinished"> E</translation>
+      <translation> E</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="170"/>
@@ -1013,17 +1013,17 @@ Utils -&gt; Make IFC project</translation>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="177"/>
       <source>Declination</source>
-      <translation type="unfinished">Declination</translation>
+      <translation>Deklinaatio</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="184"/>
       <source>Default Site</source>
-      <translation type="unfinished">Default Site</translation>
+      <translation>Oletus Rakennuspaikka</translation>
     </message>
     <message>
       <location filename="../ui/dialogAddPSet.ui" line="14"/>
       <source>Add standard IFC PSet</source>
-      <translation type="unfinished">Add standard IFC PSet</translation>
+      <translation>Lisää standardi IFC PSet</translation>
     </message>
     <message>
       <location filename="../ui/dialogAddPSet.ui" line="43"/>
@@ -1036,12 +1036,12 @@ Utils -&gt; Make IFC project</translation>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="198"/>
       <source> °</source>
-      <translation type="unfinished"> °</translation>
+      <translation> °</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="208"/>
       <source>Longitude</source>
-      <translation type="unfinished">Longitude</translation>
+      <translation>Pituusaste:</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="225"/>
@@ -1051,12 +1051,12 @@ Utils -&gt; Make IFC project</translation>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="232"/>
       <source>Latitude</source>
-      <translation type="unfinished">Latitude</translation>
+      <translation>Leveysaste</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="239"/>
       <source> N</source>
-      <translation type="unfinished"> N</translation>
+      <translation> N</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="260"/>
@@ -1071,12 +1071,12 @@ Utils -&gt; Make IFC project</translation>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="281"/>
       <source>Gross building length</source>
-      <translation type="unfinished">Gross building length</translation>
+      <translation>Rakennuksen bruttopituus</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="288"/>
       <source>Gross building width</source>
-      <translation type="unfinished">Gross building width</translation>
+      <translation>Rakennuksen bruttoleveys</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="302"/>
@@ -1086,27 +1086,27 @@ Utils -&gt; Make IFC project</translation>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="309"/>
       <source>Number of H axes</source>
-      <translation type="unfinished">Number of H axes</translation>
+      <translation>Vaaka-akselien lukumäärä</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="316"/>
       <source>Distance between H axes</source>
-      <translation type="unfinished">Distance between H axes</translation>
+      <translation>Vaaka-akselien välinen etäisyys</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="323"/>
       <source>Number of V axes</source>
-      <translation type="unfinished">Number of V axes</translation>
+      <translation>Pystyakselien määrä</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="346"/>
       <source>Distance between V axes</source>
-      <translation type="unfinished">Distance between V axes</translation>
+      <translation>Pystyakselien välinen etäisyys</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="363"/>
       <source>Main use</source>
-      <translation type="unfinished">Main use</translation>
+      <translation>Pääasiallinen käyttö</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="377"/>
@@ -1115,42 +1115,42 @@ Utils -&gt; Make IFC project</translation>
       <location filename="../ui/dialogProjectManager.ui" line="414"/>
       <location filename="../ui/dialogProjectManager.ui" line="479"/>
       <source>0 </source>
-      <translation type="unfinished">0 </translation>
+      <translation>0 </translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="424"/>
       <source>Axes line width</source>
-      <translation type="unfinished">Axes line width</translation>
+      <translation>Akselien viivan leveys</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="442"/>
       <source>Axes color</source>
-      <translation type="unfinished">Axes color</translation>
+      <translation>Akselien väri</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="454"/>
       <source>Levels</source>
-      <translation type="unfinished">Levels</translation>
+      <translation>Kerrokset</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="472"/>
       <source>Level height</source>
-      <translation type="unfinished">Level height</translation>
+      <translation>Kerroskorkeus</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="489"/>
       <source>Number of levels</source>
-      <translation type="unfinished">Number of levels</translation>
+      <translation>Kerrosten määrä</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="498"/>
       <source>Bind levels to vertical axes</source>
-      <translation type="unfinished">Bind levels to vertical axes</translation>
+      <translation>Sido kerrokset pystyakseleihin</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="505"/>
       <source>Define a working plane for each level</source>
-      <translation type="unfinished">Define a working plane for each level</translation>
+      <translation>Määritä kullekin kerrokselle työtaso</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="512"/>
@@ -1175,12 +1175,12 @@ Utils -&gt; Make IFC project</translation>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="579"/>
       <source>Save preset</source>
-      <translation type="unfinished">Save preset</translation>
+      <translation>Tallenna esiasetus</translation>
     </message>
     <message>
       <location filename="../ui/dialogQuantitySurveying.ui" line="62"/>
       <source>This screen lists all the components of the current document. You can select them to create a FreeCAD spreadsheet containing information from them.</source>
-      <translation type="unfinished">This screen lists all the components of the current document. You can select them to create a FreeCAD spreadsheet containing information from them.</translation>
+      <translation>Tämä näyttö listaa kaikki nykyisen asiakirjan osat. Voit valita ne luodaksesi FreeCAD taulukon, joka sisältää niistä tietoja.</translation>
     </message>
     <message>
       <location filename="../ui/dialogQuantitySurveying.ui" line="78"/>
@@ -1253,7 +1253,7 @@ Utils -&gt; Make IFC project</translation>
     <message>
       <location filename="../ui/dialogSpaces.ui" line="55"/>
       <source>Total</source>
-      <translation type="unfinished">Total</translation>
+      <translation>Yhteensä</translation>
     </message>
     <message>
       <location filename="../ui/dialogSpaces.ui" line="68"/>
@@ -1265,13 +1265,13 @@ Utils -&gt; Make IFC project</translation>
       <location filename="../ui/dialogSpaces.ui" line="75"/>
       <location filename="../ui/dialogSpaces.ui" line="145"/>
       <source>1.00 m²</source>
-      <translation type="unfinished">1.00 m²</translation>
+      <translation>1,00 m2</translation>
     </message>
     <message>
       <location filename="../ui/dialogSpaces.ui" line="85"/>
       <location filename="../ui/dialogSpaces.ui" line="169"/>
       <source>Electric consumption</source>
-      <translation type="unfinished">Electric consumption</translation>
+      <translation>Sähkönkulutus</translation>
     </message>
     <message>
       <location filename="../ui/dialogSpaces.ui" line="92"/>
@@ -1281,7 +1281,7 @@ Utils -&gt; Make IFC project</translation>
     <message>
       <location filename="../ui/dialogSpaces.ui" line="102"/>
       <source>0 W</source>
-      <translation type="unfinished">0 W</translation>
+      <translation>0 W</translation>
     </message>
     <message>
       <location filename="../ui/dialogSpaces.ui" line="115"/>
@@ -1291,22 +1291,22 @@ Utils -&gt; Make IFC project</translation>
     <message>
       <location filename="../ui/dialogSpaces.ui" line="155"/>
       <source>Label</source>
-      <translation type="unfinished">Label</translation>
+      <translation>Selite</translation>
     </message>
     <message>
       <location filename="../ui/dialogSpaces.ui" line="179"/>
       <source>Level</source>
-      <translation type="unfinished">Level</translation>
+      <translation>Taso</translation>
     </message>
     <message>
       <location filename="../ui/dialogSpaces.ui" line="186"/>
       <source>Level name</source>
-      <translation type="unfinished">Level name</translation>
+      <translation>Tason nimi</translation>
     </message>
     <message>
       <location filename="../ui/dialogSpaces.ui" line="205"/>
       <source> W</source>
-      <translation type="unfinished"> W</translation>
+      <translation> W</translation>
     </message>
     <message>
       <location filename="../ui/dialogSpaces.ui" line="212"/>
@@ -1321,7 +1321,7 @@ Utils -&gt; Make IFC project</translation>
     <message>
       <location filename="../ui/dialogTree.ui" line="40"/>
       <source>GroupBox</source>
-      <translation type="unfinished">GroupBox</translation>
+      <translation>Ryhmälaatikko</translation>
     </message>
     <message>
       <location filename="../ui/dialogTree.ui" line="70"/>
@@ -1336,77 +1336,77 @@ Utils -&gt; Make IFC project</translation>
     <message>
       <location filename="../ui/dialogWelcome.ui" line="71"/>
       <source>Welcome to the BIM workbench!</source>
-      <translation type="unfinished">Welcome to the BIM workbench!</translation>
+      <translation>Tervetuloa BIM -työtilaan!</translation>
     </message>
     <message>
       <location filename="../ui/dialogWelcome.ui" line="78"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;This appears to be the first time that you are using the BIM workbench. If you press OK, the next screen will propose you to set a couple of typical FreeCAD options that are suitable for BIM work. You can change these options anytime later under menu &lt;span style=" font-weight:600;"&gt;Manage -&amp;gt; BIM Setup...&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;This appears to be the first time that you are using the BIM workbench. If you press OK, the next screen will propose you to set a couple of typical FreeCAD options that are suitable for BIM work. You can change these options anytime later under menu &lt;span style=" font-weight:600;"&gt;Manage -&amp;gt; BIM Setup...&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Tämä näyttää olevan ensimmäinen kerta, kun käytät BIM-työtilaa. Jos painat OK, seuraava näyttö ehdottaa sinulle muutamia tyypillisiä FreeCAD vaihtoehtoja, jotka sopivat BIM-työhön. Voit muuttaa näitä asetuksia milloin tahansa myöhemmin valikosta &lt;span style=" font-weight:600;"&gt;Hallitse -&amp;gt; BIM asetukset...&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/dialogWelcome.ui" line="93"/>
       <source>How to get started?</source>
-      <translation type="unfinished">How to get started?</translation>
+      <translation>Kuinka päästä alkuun?</translation>
     </message>
     <message>
       <location filename="../ui/dialogWelcome.ui" line="100"/>
       <source>FreeCAD is a complex application. If this is your first contact with FreeCAD, or you have never worked with 3D or BIM before, you might want to take our &lt;a href="https://wiki.freecad.org/BIM_ingame_tutorial"&gt;BIM tutorial&lt;/a&gt; first (Also available under menu &lt;span style=" font-weight:600;"&gt;Help -&amp;gt; BIM Tutorial&lt;/span&gt;).</source>
-      <translation type="unfinished">FreeCAD is a complex application. If this is your first contact with FreeCAD, or you have never worked with 3D or BIM before, you might want to take our &lt;a href="https://wiki.freecad.org/BIM_ingame_tutorial"&gt;BIM tutorial&lt;/a&gt; first (Also available under menu &lt;span style=" font-weight:600;"&gt;Help -&amp;gt; BIM Tutorial&lt;/span&gt;).</translation>
+      <translation>FreeCAD on monimutkainen sovellus. Jos tämä on ensimmäinen kontaktisi FreeCADin kanssa tai et ole koskaan työskennellyt 3D-tai BIM:n kanssa ennen, saatat haluta ottaa ensin meidän &lt;a href="https://wiki.freecad.org/BIM_ingame_tutorial"&gt;BIM opetusohjelma&lt;/a&gt; (Saatavilla myös valikosta &lt;span style=" font-weight:600;"&gt;Ohje -&amp;gt; BIM opetusohjelma&lt;/span&gt;).</translation>
     </message>
     <message>
       <location filename="../ui/dialogWelcome.ui" line="110"/>
       <source>The BIM workbench also has a &lt;a href="https://wiki.freecad.org/BIM_Workbench"&gt;complete documentation&lt;/a&gt;  available under the Help menu. The "what's this?" button will also open the help page of any tool from the toolbars.</source>
-      <translation type="unfinished">The BIM workbench also has a &lt;a href="https://wiki.freecad.org/BIM_Workbench"&gt;complete documentation&lt;/a&gt;  available under the Help menu. The "what's this?" button will also open the help page of any tool from the toolbars.</translation>
+      <translation>BIM-työtilalla on myös &lt;a href="https://wiki.freecad.org/BIM_Workbench"&gt;täydellinen dokumentaatio&lt;/a&gt;  saatavilla ohjevalikosta. "Mikä tämä on?" -painike avaa myös työkalupalkeilla olevan työkalun ohjesivun.</translation>
     </message>
     <message>
       <location filename="../ui/dialogWelcome.ui" line="120"/>
       <source>A good way to start building a BIM model is by setting up basic characteristics of your project, under menu &lt;span style=" font-weight:600;"&gt;Manage -&amp;gt; Project setup&lt;/span&gt;. You can also directly configure different floor plans for your project, under menu &lt;span style=" font-weight:600;"&gt;Manage -&amp;gt; Levels.&lt;/span&gt;</source>
-      <translation type="unfinished">A good way to start building a BIM model is by setting up basic characteristics of your project, under menu &lt;span style=" font-weight:600;"&gt;Manage -&amp;gt; Project setup&lt;/span&gt;. You can also directly configure different floor plans for your project, under menu &lt;span style=" font-weight:600;"&gt;Manage -&amp;gt; Levels.&lt;/span&gt;</translation>
+      <translation>Hyvä tapa aloittaa BIM-mallin rakentaminen on luoda oman projektin perusominaisuudet, valikosta &lt;span style=" font-weight:600;"&gt;Hallitse -&amp;gt; Projektin asetukset&lt;/span&gt;. Voit myös määrittää projektisi eri pohjapiirustuksia, valikon &lt;span style=" font-weight:600;"&gt;Hallitse -&amp;gt; tasoja.&lt;/span&gt;</translation>
     </message>
     <message>
       <location filename="../ui/dialogWelcome.ui" line="130"/>
       <source>There is no mandatory behaviour here though, and you can also start creating walls and columns directly, and care about organizing things in levels later.</source>
-      <translation type="unfinished">There is no mandatory behaviour here though, and you can also start creating walls and columns directly, and care about organizing things in levels later.</translation>
+      <translation>Tässä ei kuitenkaan ole mitää pakollista järjestystä, ja voit myös aloittaa suoraan seinien ja sarakkeiden luomisen ja järjestellä asioita tasoille myöhemmin.</translation>
     </message>
     <message>
       <location filename="../ui/dialogWelcome.ui" line="140"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;You might also want to start from an existing floor plan or 3D model made in another application. Under menu &lt;span style=" font-weight:600;"&gt;File -&amp;gt; Import&lt;/span&gt;, you will find a wide range of file formats that can be imported into FreeCAD.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;You might also want to start from an existing floor plan or 3D model made in another application. Under menu &lt;span style=" font-weight:600;"&gt;File -&amp;gt; Import&lt;/span&gt;, you will find a wide range of file formats that can be imported into FreeCAD.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Voit myös halutessasi aloittaa olemassa olevasta pohjapiirustuksesta tai toisessa sovelluksessa tehdystä 3D-mallista. Valikon &lt;span style=" font-weight:600;"&gt;Tiedosto -&amp;gt; Tuo&lt;/span&gt;, löydät laajan valikoiman tiedostomuotoja, jotka voidaan tuoda FreeCADiin.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/dialogConvertType.ui" line="14"/>
       <source>Convert to IFC type</source>
-      <translation type="unfinished">Convert to IFC type</translation>
+      <translation>Muunna IFC tyypiksi</translation>
     </message>
     <message>
       <location filename="../ui/dialogConvertType.ui" line="26"/>
       <source>This object will be converted to a %1 type. Types can be used to give common attributes and properties to several objects at once.</source>
-      <translation type="unfinished">This object will be converted to a %1 type. Types can be used to give common attributes and properties to several objects at once.</translation>
+      <translation>Tämä objekti muunnetaan %1 -tyyppiseksi. Tyyppejä voidaan käyttää antamaan yhteisiä attribuutteja ja ominaisuuksia usealle objektille kerralla.</translation>
     </message>
     <message>
       <location filename="../ui/dialogConvertType.ui" line="36"/>
       <source>Keep original object. The object will adopt the new type</source>
-      <translation type="unfinished">Keep original object. The object will adopt the new type</translation>
+      <translation>Säilytä alkuperäinen objekti. Objekti adaptoi uuden tyypin</translation>
     </message>
     <message>
       <location filename="../ui/dialogAddProperty.ui" line="14"/>
       <source>Add IFC property</source>
-      <translation type="unfinished">Add IFC property</translation>
+      <translation>Lisää IFC-ominaisuus</translation>
     </message>
     <message>
       <location filename="../ui/dialogAddProperty.ui" line="44"/>
       <source>IfcLabel</source>
-      <translation type="unfinished">IfcLabel</translation>
+      <translation>Ifclabel</translation>
     </message>
     <message>
       <location filename="../ui/dialogAddProperty.ui" line="49"/>
       <source>IfcBoolean</source>
-      <translation type="unfinished">IfcBoolean</translation>
+      <translation>IfcBoolean</translation>
     </message>
     <message>
       <location filename="../ui/dialogAddProperty.ui" line="54"/>
       <source>IfcInteger</source>
-      <translation type="unfinished">IfcInteger</translation>
+      <translation>IfcInteger</translation>
     </message>
     <message>
       <location filename="../ui/dialogAddProperty.ui" line="59"/>
@@ -1439,7 +1439,7 @@ Utils -&gt; Make IFC project</translation>
     <message>
       <location filename="../ui/GitTaskPanel.ui" line="14"/>
       <source>Git</source>
-      <translation type="unfinished">Git</translation>
+      <translation>Git</translation>
     </message>
     <message>
       <location filename="../ui/GitTaskPanel.ui" line="20"/>
@@ -1449,7 +1449,7 @@ Utils -&gt; Make IFC project</translation>
     <message>
       <location filename="../ui/GitTaskPanel.ui" line="48"/>
       <source>Log</source>
-      <translation type="unfinished">Log</translation>
+      <translation>Loki</translation>
     </message>
     <message>
       <location filename="../ui/GitTaskPanel.ui" line="55"/>
@@ -1715,7 +1715,7 @@ Utils -&gt; Make IFC project</translation>
     <message>
       <location filename="../ui/dialogLibrary.ui" line="14"/>
       <source>Library browser</source>
-      <translation type="unfinished">Library browser</translation>
+      <translation>Kirjaston selain</translation>
     </message>
     <message>
       <location filename="../ui/dialogLibrary.ui" line="29"/>
@@ -1730,7 +1730,7 @@ Utils -&gt; Make IFC project</translation>
     <message>
       <location filename="../ui/dialogLibrary.ui" line="39"/>
       <source>or</source>
-      <translation type="unfinished">or</translation>
+      <translation>tai</translation>
     </message>
     <message>
       <location filename="../ui/dialogLibrary.ui" line="49"/>
@@ -1745,17 +1745,17 @@ Utils -&gt; Make IFC project</translation>
     <message>
       <location filename="../ui/dialogLibrary.ui" line="63"/>
       <source>Search:</source>
-      <translation type="unfinished">Search:</translation>
+      <translation>Haku:</translation>
     </message>
     <message>
       <location filename="../ui/dialogLibrary.ui" line="79"/>
       <source>Search external websites</source>
-      <translation type="unfinished">Search external websites</translation>
+      <translation>Hae ulkoisilta sivustoilta</translation>
     </message>
     <message>
       <location filename="../ui/dialogLibrary.ui" line="83"/>
       <source>...</source>
-      <translation type="unfinished">...</translation>
+      <translation>...</translation>
     </message>
     <message>
       <location filename="../ui/dialogLibrary.ui" line="153"/>
@@ -1765,7 +1765,7 @@ Utils -&gt; Make IFC project</translation>
     <message>
       <location filename="../ui/dialogLibrary.ui" line="181"/>
       <source>Save thumbnails when saving a file</source>
-      <translation type="unfinished">Save thumbnails when saving a file</translation>
+      <translation>Tallenna pikkukuvat tallennettaessa tiedostoa</translation>
     </message>
     <message>
       <location filename="../ui/dialogLibrary.ui" line="193"/>
@@ -1825,7 +1825,7 @@ Utils -&gt; Make IFC project</translation>
     <message>
       <location filename="../ui/dialogPreflight.ui" line="14"/>
       <source>IFC Preflight</source>
-      <translation type="unfinished">IFC Preflight</translation>
+      <translation>IFC Esitarkistus</translation>
     </message>
     <message>
       <location filename="../ui/dialogPreflight.ui" line="20"/>
@@ -1840,12 +1840,12 @@ Utils -&gt; Make IFC project</translation>
     <message>
       <location filename="../ui/dialogPreflight.ui" line="33"/>
       <source>Run all tests</source>
-      <translation type="unfinished">Run all tests</translation>
+      <translation>Suorita kaikki testit</translation>
     </message>
     <message>
       <location filename="../ui/dialogPreflight.ui" line="40"/>
       <source>Work on</source>
-      <translation type="unfinished">Work on</translation>
+      <translation>Tarkista</translation>
     </message>
     <message>
       <location filename="../ui/dialogPreflight.ui" line="46"/>
@@ -1855,12 +1855,12 @@ Utils -&gt; Make IFC project</translation>
     <message>
       <location filename="../ui/dialogPreflight.ui" line="53"/>
       <source>All visible objects</source>
-      <translation type="unfinished">All visible objects</translation>
+      <translation>Kaikki näkyvät kohteet</translation>
     </message>
     <message>
       <location filename="../ui/dialogPreflight.ui" line="63"/>
       <source>Whole document</source>
-      <translation type="unfinished">Whole document</translation>
+      <translation>Koko asiakirja</translation>
     </message>
     <message>
       <location filename="../ui/dialogPreflight.ui" line="73"/>
@@ -1870,7 +1870,7 @@ Utils -&gt; Make IFC project</translation>
     <message>
       <location filename="../ui/dialogPreflight.ui" line="79"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;IFC export in FreeCAD is performed by an open-source third-party library called IfcOpenShell. To be able to export to the newer IFC4 standard, IfcOpenShell must have been compiled with IFC4 support enabled.  This test will check if IFC4 support is available in your version of IfcOpenShell. If not, you will only be able to export IFC files in the older IFC2x3 standard. Note that some applications out there still have incomplete or inexistent IFC4 support, so in some cases IFC2x3 might still work better.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;IFC export in FreeCAD is performed by an open-source third-party library called IfcOpenShell. To be able to export to the newer IFC4 standard, IfcOpenShell must have been compiled with IFC4 support enabled.  This test will check if IFC4 support is available in your version of IfcOpenShell. If not, you will only be able to export IFC files in the older IFC2x3 standard. Note that some applications out there still have incomplete or inexistent IFC4 support, so in some cases IFC2x3 might still work better.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;IFC vienti FreeCADistä tapahtuu kolmannen osapuolen Open Source -kirjaston  IfcOpenShell avulla. Jotta IfcOpenShell voi viedä uudempaan IFC4-standardiin, se täytyy kääntää IFC4-tuella. Tämä testi tarkistaa, onko IFC4-tuki saatavilla IfcOpenShellin versiossa. Jos näin ei ole, voit viedä IFC-tiedostoja vain vanhemmassa IFC2x3 -standardissa. Huomaa, että joissakin sovelluksissa IFC4-tuki on edelleen puutteellista tai olematonta, joten joissakin tapauksissa IFC2x3 saattaa siis olla parempi vaihtoehto.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/dialogPreflight.ui" line="82"/>
@@ -1900,7 +1900,7 @@ Utils -&gt; Make IFC project</translation>
     <message>
       <location filename="../ui/dialogPreflight.ui" line="102"/>
       <source>Project structure</source>
-      <translation type="unfinished">Project structure</translation>
+      <translation>Projektin rakenne</translation>
     </message>
     <message>
       <location filename="../ui/dialogPreflight.ui" line="115"/>
@@ -1920,7 +1920,7 @@ Utils -&gt; Make IFC project</translation>
     <message>
       <location filename="../ui/dialogPreflight.ui" line="131"/>
       <source>Are all BIM objects part of a level?</source>
-      <translation type="unfinished">Are all BIM objects part of a level?</translation>
+      <translation>Ovatko kaikki BIM-objektit osa tasoa?</translation>
     </message>
     <message>
       <location filename="../ui/dialogPreflight.ui" line="148"/>
@@ -1930,17 +1930,17 @@ Utils -&gt; Make IFC project</translation>
     <message>
       <location filename="../ui/dialogPreflight.ui" line="151"/>
       <source>Are all buildings part of a site?</source>
-      <translation type="unfinished">Are all buildings part of a site?</translation>
+      <translation>Ovatko kaikki rakennukset osa rakennuspaikkaa?</translation>
     </message>
     <message>
       <location filename="../ui/dialogPreflight.ui" line="168"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The IFC standard requires at least one site, one building and one level or building storey per project. This test will ensure that at least one object of each of these 3 types exists in the model.&lt;/p&gt;&lt;p&gt;Note that, as this is a mandatory requirement, FreeCAD will automatically add a default site, a default building and/or a default building storey if any of these is missing. So even if this test didn't pass, your exported IFC file will meet the requirements.&lt;/p&gt;&lt;p&gt;However, it is always better to create these objects yourself, as you get more control over naming and properties.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The IFC standard requires at least one site, one building and one level or building storey per project. This test will ensure that at least one object of each of these 3 types exists in the model.&lt;/p&gt;&lt;p&gt;Note that, as this is a mandatory requirement, FreeCAD will automatically add a default site, a default building and/or a default building storey if any of these is missing. So even if this test didn't pass, your exported IFC file will meet the requirements.&lt;/p&gt;&lt;p&gt;However, it is always better to create these objects yourself, as you get more control over naming and properties.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;IFC-standardi vaatii, että projektissa on vähintään yksi rakennuspaikka, yksi rakennus ja yksi kerrostaso tai rakennustaso. Tällä testillä varmistetaan, että mallissa on ainakin yksi kohde kustakin näistä kolmesta tyypistä.&lt;/p&gt;&lt;p&gt;Huomaa, että koska tämä on pakollinen vaatimus, FreeCAD lisää automaattisesti oletusrakennuspaikan, oletusrakennuksen ja/tai oletus rakennuksen kerroksen, jos jokin näistä puuttuu. Eli vaikka tämä testi ei läpäisisikään, viety IFC-tiedosto täyttää vaatimukset.&lt;/p&gt;&lt;p&gt;On kuitenkin aina parempi luoda nämä kohteet itse, koska silloin saat määriteltyä nimeämisen ja ominaisuudet paremmin.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/dialogPreflight.ui" line="171"/>
       <source>Is there at least one site, one building and one level in the model?</source>
-      <translation type="unfinished">Is there at least one site, one building and one level in the model?</translation>
+      <translation>Onko mallissa ainakin yksi rakennuspaikka, yksi rakennus ja yksi taso?</translation>
     </message>
     <message>
       <location filename="../ui/dialogPreflight.ui" line="191"/>
@@ -1955,7 +1955,7 @@ Utils -&gt; Make IFC project</translation>
     <message>
       <location filename="../ui/dialogPreflight.ui" line="207"/>
       <source>Are all BIM objects solid and valid?</source>
-      <translation type="unfinished">Are all BIM objects solid and valid?</translation>
+      <translation>Ovatko kaikki BIM-objektit kiinteitä ja kelvollisia?</translation>
     </message>
     <message>
       <location filename="../ui/dialogPreflight.ui" line="217"/>
@@ -1965,7 +1965,7 @@ Utils -&gt; Make IFC project</translation>
     <message>
       <location filename="../ui/dialogPreflight.ui" line="220"/>
       <source>Are all BIM objects of a defined IFC type?</source>
-      <translation type="unfinished">Are all BIM objects of a defined IFC type?</translation>
+      <translation>Ovatko kaikki BIM-objektit määritelty IFC-tyypillä?</translation>
     </message>
     <message>
       <location filename="../ui/dialogPreflight.ui" line="240"/>
@@ -2010,7 +2010,7 @@ Utils -&gt; Make IFC project</translation>
     <message>
       <location filename="../ui/dialogPreflight.ui" line="302"/>
       <source>Do all BIM objects have a material?</source>
-      <translation type="unfinished">Do all BIM objects have a material?</translation>
+      <translation>Onko kaikilla BIM-objekteilla materiaali?</translation>
     </message>
     <message>
       <location filename="../ui/dialogPreflight.ui" line="319"/>
@@ -2025,7 +2025,7 @@ Utils -&gt; Make IFC project</translation>
     <message>
       <location filename="../ui/dialogPreflight.ui" line="349"/>
       <source>Optional/Compatibility</source>
-      <translation type="unfinished">Optional/Compatibility</translation>
+      <translation>Vapaaehtoinen/Yhteensopivuus</translation>
     </message>
     <message>
       <location filename="../ui/dialogPreflight.ui" line="362"/>
@@ -2035,7 +2035,7 @@ Utils -&gt; Make IFC project</translation>
     <message>
       <location filename="../ui/dialogPreflight.ui" line="365"/>
       <source>Are all object exportable as extrusions?</source>
-      <translation type="unfinished">Are all object exportable as extrusions?</translation>
+      <translation>Voiko kaikki objektit viedä ekstruusioina?</translation>
     </message>
     <message>
       <location filename="../ui/dialogPreflight.ui" line="375"/>
@@ -2086,7 +2086,7 @@ Utils -&gt; Make IFC project</translation>
     <message>
       <location filename="../ui/dialogTutorial.ui" line="14"/>
       <source>BIM tutorial</source>
-      <translation type="unfinished">BIM tutorial</translation>
+      <translation>BIM:n opetusohjelma</translation>
     </message>
     <message>
       <location filename="../ui/dialogTutorial.ui" line="20"/>
@@ -2112,12 +2112,12 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../ui/dialogTutorial.ui" line="41"/>
       <source>Tasks to complete:</source>
-      <translation type="unfinished">Tasks to complete:</translation>
+      <translation>Suoritettavat tehtävät:</translation>
     </message>
     <message>
       <location filename="../ui/dialogTutorial.ui" line="50"/>
       <source>Goal1</source>
-      <translation type="unfinished">Goal1</translation>
+      <translation>Tavoite1</translation>
     </message>
     <message>
       <location filename="../ui/dialogTutorial.ui" line="60"/>
@@ -2190,7 +2190,7 @@ p, li { white-space: pre-wrap; }
       <location filename="../ui/dialogWindows.ui" line="151"/>
       <location filename="../ui/dialogWindows.ui" line="196"/>
       <source>Tag</source>
-      <translation type="unfinished">Tag</translation>
+      <translation>Tagi</translation>
     </message>
     <message>
       <location filename="../ui/dialogWindows.ui" line="97"/>
@@ -2247,32 +2247,32 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../ui/preferencesNativeIFC.ui" line="28"/>
       <source>Initial import</source>
-      <translation type="unfinished">Initial import</translation>
+      <translation>Alkuperäinen tuonti</translation>
     </message>
     <message>
       <location filename="../ui/preferencesNativeIFC.ui" line="35"/>
       <source>How the IFC file will initially be imported: Only one object, only project structure, or all individual objects.</source>
-      <translation type="unfinished">How the IFC file will initially be imported: Only one object, only project structure, or all individual objects.</translation>
+      <translation>Kuinka IFC-tiedosto tuodaan aluksi: Vain yksi objekti, vain projektin rakenne, tai kaikki yksittäiset objektit.</translation>
     </message>
     <message>
       <location filename="../ui/preferencesNativeIFC.ui" line="45"/>
       <source>Only root object (default)</source>
-      <translation type="unfinished">Only root object (default)</translation>
+      <translation>Vain juuriobjekti (oletus)</translation>
     </message>
     <message>
       <location filename="../ui/preferencesNativeIFC.ui" line="50"/>
       <source>Project structure (levels)</source>
-      <translation type="unfinished">Project structure (levels)</translation>
+      <translation>Hankkeen rakenne (tasot)</translation>
     </message>
     <message>
       <location filename="../ui/preferencesNativeIFC.ui" line="55"/>
       <source>All individual IFC objects</source>
-      <translation type="unfinished">All individual IFC objects</translation>
+      <translation>Kaikki yksittäiset IFC-objektit</translation>
     </message>
     <message>
       <location filename="../ui/preferencesNativeIFC.ui" line="63"/>
       <source>Representation type</source>
-      <translation type="unfinished">Representation type</translation>
+      <translation>Esitystapa</translation>
     </message>
     <message>
       <location filename="../ui/preferencesNativeIFC.ui" line="70"/>
@@ -2287,12 +2287,12 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../ui/preferencesNativeIFC.ui" line="88"/>
       <source>Load 3D representation only, no shape (default)</source>
-      <translation type="unfinished">Load 3D representation only, no shape (default)</translation>
+      <translation>Lataa vain 3D-esitys, ei muotoa (oletus)</translation>
     </message>
     <message>
       <location filename="../ui/preferencesNativeIFC.ui" line="93"/>
       <source>No 3D representation at all</source>
-      <translation type="unfinished">No 3D representation at all</translation>
+      <translation>Ei 3D-kuvausta ollenkaan</translation>
     </message>
     <message>
       <location filename="../ui/preferencesNativeIFC.ui" line="103"/>
@@ -2302,7 +2302,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../ui/preferencesNativeIFC.ui" line="106"/>
       <source>Switch to BIM workbench after import</source>
-      <translation type="unfinished">Switch to BIM workbench after import</translation>
+      <translation>Vaihda BIM-työtilaan tuonnin jälkeen</translation>
     </message>
     <message>
       <location filename="../ui/preferencesNativeIFC.ui" line="119"/>
@@ -2312,17 +2312,17 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../ui/preferencesNativeIFC.ui" line="122"/>
       <source>Preload property sets</source>
-      <translation type="unfinished">Preload property sets</translation>
+      <translation>Esilataa ominaisuudet</translation>
     </message>
     <message>
       <location filename="../ui/preferencesNativeIFC.ui" line="135"/>
       <source>Load all materials automatically when opening an IFC file</source>
-      <translation type="unfinished">Load all materials automatically when opening an IFC file</translation>
+      <translation>Lataa kaikki materiaalit automaattisesti, kun avaat IFC-tiedoston</translation>
     </message>
     <message>
       <location filename="../ui/preferencesNativeIFC.ui" line="138"/>
       <source>Preload materials</source>
-      <translation type="unfinished">Preload materials</translation>
+      <translation>Esilataa materiaalit</translation>
     </message>
     <message>
       <location filename="../ui/preferencesNativeIFC.ui" line="151"/>
@@ -2332,7 +2332,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../ui/preferencesNativeIFC.ui" line="154"/>
       <source>Preload layers</source>
-      <translation type="unfinished">Preload layers</translation>
+      <translation>Esilataa tasot</translation>
     </message>
     <message>
       <location filename="../ui/preferencesNativeIFC.ui" line="167"/>
@@ -2362,7 +2362,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../ui/preferencesNativeIFC.ui" line="211"/>
       <source>Show warning when saving</source>
-      <translation type="unfinished">Show warning when saving</translation>
+      <translation>Näytä varoitus tallennettaessa</translation>
     </message>
     <message>
       <location filename="../ui/preferencesNativeIFC.ui" line="230"/>
@@ -2372,7 +2372,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../ui/preferencesNativeIFC.ui" line="236"/>
       <source>Always lock new documents</source>
-      <translation type="unfinished">Always lock new documents</translation>
+      <translation>Lukitse aina uudet asiakirjat</translation>
     </message>
     <message>
       <location filename="../ui/preferencesNativeIFC.ui" line="249"/>
@@ -2388,7 +2388,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../ui/preferencesNativeIFC.ui" line="274"/>
       <source>If this is checked, when creating a new projects, a default structure (site, building and storey) will be added under the project</source>
-      <translation type="unfinished">If this is checked, when creating a new projects, a default structure (site, building and storey) will be added under the project</translation>
+      <translation>Jos tämä on valittuna, uusia projekteja luotaessa luodaan niiille oletusrakenne (rakennuspaikka, rakennus ja kerros)</translation>
     </message>
     <message>
       <location filename="../ui/preferencesNativeIFC.ui" line="277"/>
@@ -2615,12 +2615,12 @@ a Footprint display mode</translation>
     <message>
       <location filename="../ui/preferences-arch.ui" line="515"/>
       <source>BIM server</source>
-      <translation type="unfinished">BIM server</translation>
+      <translation>BIM- palvelin</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="528"/>
       <source>The URL of a BIM server instance (www.bimserver.org) to connect to.</source>
-      <translation type="unfinished">The URL of a BIM server instance (www.bimserver.org) to connect to.</translation>
+      <translation>BIM-palvelimen instanssin URL-osoite (www.bimserver.org), johon voit muodostaa yhteyden.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="544"/>
@@ -2674,7 +2674,7 @@ instead of the FreeCAD web workbench</translation>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="20"/>
       <source>Visual</source>
-      <translation type="unfinished">Visual</translation>
+      <translation>Visuaalinen</translation>
     </message>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="26"/>
@@ -3194,7 +3194,7 @@ are placed in a 'Group' instead.
     <message>
       <location filename="../ui/preferences-dae.ui" line="14"/>
       <source>DAE</source>
-      <translation type="unfinished">DAE</translation>
+      <translation>DAE</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="48"/>
@@ -3608,7 +3608,7 @@ unit to work with when opening the file.</translation>
       <location filename="../../ArchStructure.py" line="129"/>
       <location filename="../../ArchStructure.py" line="446"/>
       <source>Column</source>
-      <translation type="unfinished">Column</translation>
+      <translation>Pilari</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="151"/>
@@ -3649,7 +3649,7 @@ unit to work with when opening the file.</translation>
     <message>
       <location filename="../../ArchStructure.py" line="329"/>
       <source>Base point of column</source>
-      <translation type="unfinished">Base point of column</translation>
+      <translation>Pilarin peruspiste</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="345"/>
@@ -4636,7 +4636,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchMaterial.py" line="90"/>
       <source>Merge duplicates</source>
-      <translation type="unfinished">Merge duplicates</translation>
+      <translation>Yhdistä kaksoiskappaleet</translation>
     </message>
     <message>
       <location filename="../../ArchMaterial.py" line="749"/>
@@ -4709,7 +4709,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchGrid.py" line="149"/>
       <source>Total column size is larger than width</source>
-      <translation type="unfinished">Total column size is larger than width</translation>
+      <translation>Pilarin koko on suurempi kuin leveys</translation>
     </message>
     <message>
       <location filename="../../ArchGrid.py" line="387"/>
@@ -4740,12 +4740,12 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchGrid.py" line="392"/>
       <source>Add column</source>
-      <translation type="unfinished">Add column</translation>
+      <translation>Lisää pilari</translation>
     </message>
     <message>
       <location filename="../../ArchGrid.py" line="393"/>
       <source>Del column</source>
-      <translation type="unfinished">Del column</translation>
+      <translation>Poista pilari</translation>
     </message>
     <message>
       <location filename="../../ArchGrid.py" line="394"/>
@@ -4765,7 +4765,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchGrid.py" line="396"/>
       <source>Columns</source>
-      <translation type="unfinished">Columns</translation>
+      <translation>Pilarit</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="1005"/>
@@ -5380,7 +5380,7 @@ Floor creation aborted.</translation>
     <message>
       <location filename="../../ArchSectionPlane.py" line="1157"/>
       <source>Toggle Cutview</source>
-      <translation type="unfinished">Toggle Cutview</translation>
+      <translation>Vaihda leikkausnäkymää</translation>
     </message>
     <message>
       <location filename="../../ArchSectionPlane.py" line="1334"/>
@@ -5613,7 +5613,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchWall.py" line="1425"/>
       <source>Flip direction</source>
-      <translation type="unfinished">Flip direction</translation>
+      <translation>Käännä suuntaa</translation>
     </message>
     <message>
       <location filename="../../ArchCommands.py" line="434"/>
@@ -5930,7 +5930,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchStructure.py" line="1197"/>
       <source>The width of the nodes line</source>
-      <translation type="unfinished">The width of the nodes line</translation>
+      <translation>Solmuviivojen leveys</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="1199"/>
@@ -7744,7 +7744,7 @@ Building creation aborted.</translation>
       <location filename="../../ArchSectionPlane.py" line="910"/>
       <location filename="../../ArchSectionPlane.py" line="915"/>
       <source>Show the cut in the 3D view</source>
-      <translation type="unfinished">Show the cut in the 3D view</translation>
+      <translation>Näytä leikkaus 3D-näkymässä</translation>
     </message>
     <message>
       <location filename="../../ArchSectionPlane.py" line="912"/>
@@ -8103,12 +8103,12 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../InitGui.py" line="413"/>
       <source>&amp;Annotation</source>
-      <translation>&amp;Huomautukset</translation>
+      <translation>&amp;Merkintä</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="414"/>
       <source>&amp;Snapping</source>
-      <translation type="unfinished">&amp;Snapping</translation>
+      <translation>&amp;Tarttuminen</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="415"/>
@@ -8580,7 +8580,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../bimcommands/BimSectionPlane.py" line="43"/>
       <source>Section Plane</source>
-      <translation type="unfinished">Section Plane</translation>
+      <translation>Leikkaustaso</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimSectionPlane.py" line="46"/>
@@ -8796,7 +8796,7 @@ Building creation aborted.</translation>
       <location filename="../../ArchIFCView.py" line="70"/>
       <location filename="../../ArchAxis.py" line="625"/>
       <source>Transform</source>
-      <translation>Muunna</translation>
+      <translation>Muuta</translation>
     </message>
   </context>
   <context>
@@ -8809,12 +8809,12 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../InitGui.py" line="451"/>
       <source>Draft</source>
-      <translation>Syväys (vesirajasta pohjaan)</translation>
+      <translation>Draft</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="677"/>
       <source>Import-Export</source>
-      <translation>Tuo/Vie</translation>
+      <translation>Tuonti/Vienti</translation>
     </message>
   </context>
   <context>
@@ -8871,7 +8871,7 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
     <message>
       <location filename="../../InitGui.py" line="643"/>
       <source>Snapping</source>
-      <translation type="unfinished">Snapping</translation>
+      <translation>Tarttuminen</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimBox.py" line="148"/>
@@ -9394,7 +9394,7 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
     <message>
       <location filename="../../bimcommands/BimMaterial.py" line="145"/>
       <source>Merge duplicates</source>
-      <translation type="unfinished">Merge duplicates</translation>
+      <translation>Yhdistä kaksoiskappaleet</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimMaterial.py" line="153"/>
@@ -9908,7 +9908,7 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
     <message>
       <location filename="../../nativeifc/ifc_openshell.py" line="85"/>
       <source>Would you like to install the most recent version?</source>
-      <translation type="unfinished">Would you like to install the most recent version?</translation>
+      <translation>Haluatko asentaa uusimman version?</translation>
     </message>
     <message>
       <location filename="../../nativeifc/ifc_openshell.py" line="89"/>
@@ -10067,7 +10067,7 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
     <message>
       <location filename="../../bimcommands/BimBuilder.py" line="42"/>
       <source>Advanced utility to create shapes</source>
-      <translation>Lisäasetukset muotojen luomisen apuohjelmalle</translation>
+      <translation>Muotojen luomisen edistynyt työkalu</translation>
     </message>
   </context>
   <context>
@@ -10114,7 +10114,7 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
     <message>
       <location filename="../../bimcommands/BimColumn.py" line="47"/>
       <source>Column</source>
-      <translation type="unfinished">Column</translation>
+      <translation>Pilari</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimColumn.py" line="50"/>
@@ -10609,12 +10609,12 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
     <message>
       <location filename="../../bimcommands/BimReextrude.py" line="39"/>
       <source>Reextrude</source>
-      <translation type="unfinished">Reextrude</translation>
+      <translation>Pursota uudelleen</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimReextrude.py" line="42"/>
       <source>Recreates an extruded Structure from a selected face</source>
-      <translation type="unfinished">Recreates an extruded Structure from a selected face</translation>
+      <translation>Luo pursotetun rakenteen valitusta pinnasta</translation>
     </message>
   </context>
   <context>
@@ -10674,7 +10674,7 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
     <message>
       <location filename="../../bimcommands/BimShape2DView.py" line="86"/>
       <source>Create 2D view</source>
-      <translation>Luo 2D-näkymä</translation>
+      <translation>Luo 2D-projektio</translation>
     </message>
   </context>
   <context>
@@ -10812,12 +10812,12 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
     <message>
       <location filename="../../bimcommands/BimWelcome.py" line="37"/>
       <source>BIM Welcome screen</source>
-      <translation type="unfinished">BIM Welcome screen</translation>
+      <translation>BIM Tervetulonäyttö</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimWelcome.py" line="40"/>
       <source>Show the BIM workbench welcome screen</source>
-      <translation type="unfinished">Show the BIM workbench welcome screen</translation>
+      <translation>Näytä BIM-työtilan tervetuloruutu</translation>
     </message>
   </context>
   <context>
@@ -11021,7 +11021,7 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
       <location filename="../ui/dialogSetup.ui" line="489"/>
       <location filename="../ui/dialogSetup.ui" line="546"/>
       <source>0 </source>
-      <translation type="unfinished">0 </translation>
+      <translation>0 </translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="152"/>
@@ -11081,17 +11081,17 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
     <message>
       <location filename="../ui/dialogSetup.ui" line="579"/>
       <source>Top (XY)</source>
-      <translation>Ylä (XY)</translation>
+      <translation>Yläpuoli (XY)</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="584"/>
       <source>Front (XZ)</source>
-      <translation>ETU (XZ)</translation>
+      <translation>Etupuoli (XZ)</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="589"/>
       <source>Side (YZ)</source>
-      <translation>SIVU (YZ)</translation>
+      <translation>Sivupuoli (YZ)</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="223"/>
@@ -11428,12 +11428,12 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
     <message>
       <location filename="../../bimcommands/BimShape2DView.py" line="42"/>
       <source>Section view</source>
-      <translation type="unfinished">Section view</translation>
+      <translation>Leikkausnäkymä</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimShape2DView.py" line="97"/>
       <source>Section cut</source>
-      <translation type="unfinished">Section cut</translation>
+      <translation>Leikkaus</translation>
     </message>
   </context>
   <context>

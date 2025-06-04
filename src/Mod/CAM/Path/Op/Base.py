@@ -793,52 +793,9 @@ class ObjectOp(object):
 
         path = Path.Path(self.commandlist)
         obj.Path = path
-        obj.CycleTime = self.getCycleTimeEstimate(obj)
+        obj.CycleTime = getCycleTimeEstimate(obj)
         self.job.Proxy.getCycleTime()
         return result
-
-    def getCycleTimeEstimate(self, obj):
-
-        tc = obj.ToolController
-
-        if tc is None or tc.ToolNumber == 0:
-            Path.Log.error(translate("CAM", "No Tool Controller selected."))
-            return translate("CAM", "Tool Error")
-
-        hFeedrate = tc.HorizFeed.Value
-        vFeedrate = tc.VertFeed.Value
-        hRapidrate = tc.HorizRapid.Value
-        vRapidrate = tc.VertRapid.Value
-
-        if (hFeedrate == 0 or vFeedrate == 0) and not Path.Preferences.suppressAllSpeedsWarning():
-            Path.Log.warning(
-                translate(
-                    "CAM",
-                    "Tool Controller feedrates required to calculate the cycle time.",
-                )
-            )
-            return translate("CAM", "Feedrate Error")
-
-        if (
-            hRapidrate == 0 or vRapidrate == 0
-        ) and not Path.Preferences.suppressRapidSpeedsWarning():
-            Path.Log.warning(
-                translate(
-                    "CAM",
-                    "Add Tool Controller Rapid Speeds on the SetupSheet for more accurate cycle times.",
-                )
-            )
-
-        # Get the cycle time in seconds
-        seconds = obj.Path.getCycleTime(hFeedrate, vFeedrate, hRapidrate, vRapidrate)
-
-        if not seconds or math.isnan(seconds):
-            return translate("CAM", "Cycletime Error")
-
-        # Convert the cycle time to a HH:MM:SS format
-        cycleTime = time.strftime("%H:%M:%S", time.gmtime(seconds))
-
-        return cycleTime
 
     def addBase(self, obj, base, sub):
         Path.Log.track(obj, base, sub)
@@ -876,3 +833,45 @@ class ObjectOp(object):
         This function can safely be overwritten by subclasses."""
 
         return True
+
+
+def getCycleTimeEstimate(obj):
+    tc = obj.ToolController
+
+    if tc is None or tc.ToolNumber == 0:
+        Path.Log.error(translate("CAM", "No Tool Controller selected."))
+        return translate("CAM", "Tool Error")
+
+    hFeedrate = tc.HorizFeed.Value
+    vFeedrate = tc.VertFeed.Value
+    hRapidrate = tc.HorizRapid.Value
+    vRapidrate = tc.VertRapid.Value
+
+    if hFeedrate == 0 or vFeedrate == 0:
+        if not Path.Preferences.suppressAllSpeedsWarning():
+            Path.Log.warning(
+                translate(
+                    "CAM",
+                    "Tool Controller feedrates required to calculate the cycle time.",
+                )
+            )
+        return translate("CAM", "Tool Feedrate Error")
+
+    if (hRapidrate == 0 or vRapidrate == 0) and not Path.Preferences.suppressRapidSpeedsWarning():
+        Path.Log.warning(
+            translate(
+                "CAM",
+                "Add Tool Controller Rapid Speeds on the SetupSheet for more accurate cycle times.",
+            )
+        )
+
+    # Get the cycle time in seconds
+    seconds = obj.Path.getCycleTime(hFeedrate, vFeedrate, hRapidrate, vRapidrate)
+
+    if math.isnan(seconds):
+        return translate("CAM", "Cycletime Error")
+
+    # Convert the cycle time to a HH:MM:SS format
+    cycleTime = time.strftime("%H:%M:%S", time.gmtime(seconds))
+
+    return cycleTime

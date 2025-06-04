@@ -125,7 +125,12 @@ MeasureType Measurement::findType()
     for (; obj != objects.end(); ++obj, ++subEl) {
         TopoDS_Shape refSubShape;
         try {
-            refSubShape = Part::Feature::getShape(*obj, (*subEl).c_str(), true);
+            refSubShape = Part::Feature::getShape(*obj,
+                                                  Part::ShapeOption::NeedSubElement
+                                                      | Part::ShapeOption::ResolveLink
+                                                      | Part::ShapeOption::Transform,
+                                                  (*subEl).c_str());
+
             if (refSubShape.IsNull()) {
                 return MeasureType::Invalid;
             }
@@ -751,7 +756,12 @@ bool Measurement::planesAreParallel() const
     for (size_t i = 0; i < objects.size(); ++i) {
         TopoDS_Shape refSubShape;
         try {
-            refSubShape = Part::Feature::getShape(objects[i], subElements[i].c_str(), true);
+            refSubShape = Part::Feature::getShape(objects[i],
+                                                  Part::ShapeOption::NeedSubElement
+                                                      | Part::ShapeOption::ResolveLink
+                                                      | Part::ShapeOption::Transform,
+                                                  subElements[i].c_str());
+
             if (refSubShape.IsNull()) {
                 return false;
             }

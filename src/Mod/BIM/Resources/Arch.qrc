@@ -209,6 +209,7 @@
         <file>translations/Arch_vi.qm</file>
         <file>translations/Arch_zh-CN.qm</file>
         <file>translations/Arch_zh-TW.qm</file>
+        <file>translations/Arch_ms.qm</file>
         <file>ui/ArchMaterial.ui</file>
         <file>ui/ArchMultiMaterial.ui</file>
         <file>ui/ArchNest.ui</file>

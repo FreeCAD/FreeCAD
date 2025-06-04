@@ -65,7 +65,7 @@ public:
     std::shared_ptr<std::vector<LibraryObject>> libraryMaterials(const QString& libraryName);
     std::shared_ptr<std::vector<LibraryObject>>
     libraryMaterials(const QString& libraryName,
-                     const std::shared_ptr<MaterialFilter>& filter,
+                     const MaterialFilter& filter,
                      const MaterialFilterOptions& options);
     std::shared_ptr<std::vector<QString>> libraryFolders(const QString& libraryName);
 
@@ -79,12 +79,12 @@ public:
     // Model management
     std::shared_ptr<Model> getModel(const QString& uuid);
     void
-    addModel(const QString& libraryName, const QString& path, const std::shared_ptr<Model>& model);
+    addModel(const QString& libraryName, const QString& path, const Model& model);
     void
-    migrateModel(const QString& libraryName, const QString& path, const std::shared_ptr<Model>& model);
+    migrateModel(const QString& libraryName, const QString& path, const Model& model);
     void updateModel(const QString& libraryName,
                      const QString& path,
-                     const std::shared_ptr<Model>& model);
+                     const Model& model);
     void setModelPath(const QString& libraryName, const QString& path, const QString& uuid);
     void renameModel(const QString& libraryName, const QString& name, const QString& uuid);
     void moveModel(const QString& libraryName, const QString& path, const QString& uuid);
@@ -94,13 +94,13 @@ public:
     std::shared_ptr<Material> getMaterial(const QString& uuid);
     void addMaterial(const QString& libraryName,
                      const QString& path,
-                     const std::shared_ptr<Material>& material);
+                     const Material& material);
     void migrateMaterial(const QString& libraryName,
                      const QString& path,
-                     const std::shared_ptr<Material>& material);
+                     const Material& material);
     void updateMaterial(const QString& libraryName,
                         const QString& path,
-                        const std::shared_ptr<Material>& material);
+                        const Material& material);
     void setMaterialPath(const QString& libraryName, const QString& path, const QString& uuid);
     void renameMaterial(const QString& libraryName, const QString& name, const QString& uuid);
     void moveMaterial(const QString& libraryName, const QString& path, const QString& uuid);

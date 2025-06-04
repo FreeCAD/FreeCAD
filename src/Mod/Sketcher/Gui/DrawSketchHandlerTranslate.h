@@ -703,8 +703,8 @@ void DSHTranslateController::doChangeDrawSketchHandlerMode()
             }
         } break;
         case SelectMode::SeekSecond: {
-            if (onViewParameters[OnViewParameter::Third]->isSet
-                && onViewParameters[OnViewParameter::Fourth]->isSet) {
+            if (onViewParameters[OnViewParameter::Third]->hasFinishedEditing
+                || onViewParameters[OnViewParameter::Fourth]->hasFinishedEditing) {
 
                 if (handler->secondNumberOfCopies == 1) {
                     handler->setState(SelectMode::End);
@@ -715,8 +715,8 @@ void DSHTranslateController::doChangeDrawSketchHandlerMode()
             }
         } break;
         case SelectMode::SeekThird: {
-            if (onViewParameters[OnViewParameter::Fifth]->isSet
-                && onViewParameters[OnViewParameter::Sixth]->isSet) {
+            if (onViewParameters[OnViewParameter::Fifth]->hasFinishedEditing
+                || onViewParameters[OnViewParameter::Sixth]->hasFinishedEditing) {
 
                 handler->setState(SelectMode::End);
             }

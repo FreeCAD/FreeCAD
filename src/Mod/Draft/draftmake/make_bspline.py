@@ -92,7 +92,8 @@ def make_bspline(pointslist, closed=False, placement=None, face=None, support=No
         utils.type_check([(placement,App.Placement)], "make_bspline")
     if len(pointslist) == 2: fname = "Line"
     else: fname = "BSpline"
-    obj = App.ActiveDocument.addObject("Part::Part2DObjectPython",fname)
+    obj = App.ActiveDocument.addObject("Part::FeaturePython", fname)
+    obj.addExtension("Part::AttachExtensionPython")
     BSpline(obj)
     obj.Closed = closed
     obj.Points = pointslist

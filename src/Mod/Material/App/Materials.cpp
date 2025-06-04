@@ -1344,14 +1344,14 @@ void Material::saveInherits(QTextStream& stream) const
     }
 }
 
-bool Material::modelChanged(const std::shared_ptr<Material>& parent,
-                            const std::shared_ptr<Model>& model) const
+bool Material::modelChanged(const Material& parent,
+                            const Model& model) const
 {
-    for (auto& it : *model) {
+    for (auto& it : model) {
         QString propertyName = it.first;
         auto property = getPhysicalProperty(propertyName);
         try {
-            auto parentProperty = parent->getPhysicalProperty(propertyName);
+            auto parentProperty = parent.getPhysicalProperty(propertyName);
 
             if (*property != *parentProperty) {
                 return true;
@@ -1365,14 +1365,14 @@ bool Material::modelChanged(const std::shared_ptr<Material>& parent,
     return false;
 }
 
-bool Material::modelAppearanceChanged(const std::shared_ptr<Material>& parent,
-                                      const std::shared_ptr<Model>& model) const
+bool Material::modelAppearanceChanged(const Material& parent,
+                                      const Model& model) const
 {
-    for (auto& it : *model) {
+    for (auto& it : model) {
         QString propertyName = it.first;
         auto property = getAppearanceProperty(propertyName);
         try {
-            auto parentProperty = parent->getAppearanceProperty(propertyName);
+            auto parentProperty = parent.getAppearanceProperty(propertyName);
 
             if (*property != *parentProperty) {
                 return true;
@@ -1409,7 +1409,7 @@ void Material::saveModels(QTextStream& stream, bool saveInherited) const
     bool headerPrinted = false;
     for (auto& itm : _physicalUuids) {
         auto model = modelManager.getModel(itm);
-        if (!inherited || modelChanged(parent, model)) {
+        if (!inherited || modelChanged(*parent, *model)) {
             if (!headerPrinted) {
                 stream << "Models:\n";
                 headerPrinted = true;
@@ -1463,7 +1463,7 @@ void Material::saveAppearanceModels(QTextStream& stream, bool saveInherited) con
     bool headerPrinted = false;
     for (auto& itm : _appearanceUuids) {
         auto model = modelManager.getModel(itm);
-        if (!inherited || modelAppearanceChanged(parent, model)) {
+        if (!inherited || modelAppearanceChanged(*parent, *model)) {
             if (!headerPrinted) {
                 stream << "AppearanceModels:\n";
                 headerPrinted = true;
@@ -1781,97 +1781,97 @@ App::Material Material::getMaterialAppearance() const
     return material;
 }
 
-void Material::validate(const std::shared_ptr<Material>& other) const
+void Material::validate(Material& other) const
 {
 
     try {
-        _library->validate(*(other->_library));
+        _library->validate(*other._library);
     }
     catch (const InvalidLibrary& e) {
         throw InvalidMaterial(e.what());
     }
 
-    if (_directory != other->_directory) {
+    if (_directory != other._directory) {
         throw InvalidMaterial("Model directories don't match");
     }
-    if (!other->_filename.isEmpty()) {
+    if (!other._filename.isEmpty()) {
         throw InvalidMaterial("Remote filename is not empty");
     }
-    if (_uuid != other->_uuid) {
+    if (_uuid != other._uuid) {
         throw InvalidMaterial("Model UUIDs don't match");
     }
-    if (_name != other->_name) {
+    if (_name != other._name) {
         throw InvalidMaterial("Model names don't match");
     }
-    if (_author != other->_author) {
+    if (_author != other._author) {
         throw InvalidMaterial("Model authors don't match");
     }
-    if (_license != other->_license) {
+    if (_license != other._license) {
         throw InvalidMaterial("Model licenses don't match");
     }
-    if (_parentUuid != other->_parentUuid) {
+    if (_parentUuid != other._parentUuid) {
         throw InvalidMaterial("Model parents don't match");
     }
-    if (_description != other->_description) {
+    if (_description != other._description) {
         throw InvalidMaterial("Model descriptions don't match");
     }
-    if (_url != other->_url) {
+    if (_url != other._url) {
         throw InvalidMaterial("Model URLs don't match");
     }
-    if (_reference != other->_reference) {
+    if (_reference != other._reference) {
         throw InvalidMaterial("Model references don't match");
     }
 
-    if (_tags.size() != other->_tags.size()) {
+    if (_tags.size() != other._tags.size()) {
         Base::Console().log("Local tags count %d\n", _tags.size());
-        Base::Console().log("Remote tags count %d\n", other->_tags.size());
+        Base::Console().log("Remote tags count %d\n", other._tags.size());
         throw InvalidMaterial("Material tags counts don't match");
     }
-    if (!other->_tags.contains(_tags)) {
+    if (!other._tags.contains(_tags)) {
         throw InvalidMaterial("Material tags don't match");
     }
 
-    if (_physicalUuids.size() != other->_physicalUuids.size()) {
+    if (_physicalUuids.size() != other._physicalUuids.size()) {
         Base::Console().log("Local physical model count %d\n", _physicalUuids.size());
-        Base::Console().log("Remote physical model count %d\n", other->_physicalUuids.size());
+        Base::Console().log("Remote physical model count %d\n", other._physicalUuids.size());
         throw InvalidMaterial("Material physical model counts don't match");
     }
-    if (!other->_physicalUuids.contains(_physicalUuids)) {
+    if (!other._physicalUuids.contains(_physicalUuids)) {
         throw InvalidMaterial("Material physical models don't match");
     }
 
-    if (_physicalUuids.size() != other->_physicalUuids.size()) {
+    if (_physicalUuids.size() != other._physicalUuids.size()) {
         Base::Console().log("Local appearance model count %d\n", _physicalUuids.size());
-        Base::Console().log("Remote appearance model count %d\n", other->_physicalUuids.size());
+        Base::Console().log("Remote appearance model count %d\n", other._physicalUuids.size());
         throw InvalidMaterial("Material appearance model counts don't match");
     }
-    if (!other->_physicalUuids.contains(_physicalUuids)) {
+    if (!other._physicalUuids.contains(_physicalUuids)) {
         throw InvalidMaterial("Material appearance models don't match");
     }
 
-    if (_allUuids.size() != other->_allUuids.size()) {
+    if (_allUuids.size() != other._allUuids.size()) {
         Base::Console().log("Local model count %d\n", _allUuids.size());
-        Base::Console().log("Remote model count %d\n", other->_allUuids.size());
+        Base::Console().log("Remote model count %d\n", other._allUuids.size());
         throw InvalidMaterial("Material model counts don't match");
     }
-    if (!other->_allUuids.contains(_allUuids)) {
+    if (!other._allUuids.contains(_allUuids)) {
         throw InvalidMaterial("Material models don't match");
     }
 
     // Need to compare properties
-    if (_physical.size() != other->_physical.size()) {
+    if (_physical.size() != other._physical.size()) {
         throw InvalidMaterial("Material physical property counts don't match");
     }
     for (auto& property : _physical) {
-        auto& remote = other->_physical[property.first];
+        auto& remote = other._physical[property.first];
         property.second->validate(*remote);
     }
 
-    if (_appearance.size() != other->_appearance.size()) {
+    if (_appearance.size() != other._appearance.size()) {
         throw InvalidMaterial("Material appearance property counts don't match");
     }
     for (auto& property : _appearance) {
-        auto& remote = other->_appearance[property.first];
+        auto& remote = other._appearance[property.first];
         property.second->validate(*remote);
     }
 }

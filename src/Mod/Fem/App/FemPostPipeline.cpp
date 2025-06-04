@@ -611,12 +611,11 @@ Base::Unit FemPostPipeline::getFrameUnit()
 
     vtkAbstractArray* TimeInfo = multiblock->GetFieldData()->GetAbstractArray("TimeInfo");
     if (!TimeInfo->IsA("vtkStringArray") || TimeInfo->GetNumberOfTuples() < 2) {
-
         // units cannot be undefined, so use time
         return Base::Unit::TimeSpan;
     }
-
-    return Base::Unit(vtkStringArray::SafeDownCast(TimeInfo)->GetValue(1));
+    auto qty = Base::Quantity(0, vtkStringArray::SafeDownCast(TimeInfo)->GetValue(1));
+    return qty.getUnit();
 }
 
 std::vector<double> FemPostPipeline::getFrameValues()

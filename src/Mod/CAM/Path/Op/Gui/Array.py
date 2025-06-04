@@ -23,14 +23,15 @@
 import FreeCAD
 import FreeCADGui
 import Path
+import Path.Op.Base as PathOp
 import PathScripts
 import PathScripts.PathUtils as PathUtils
 from Path.Dressup.Utils import toolController
 from PySide import QtCore
 from PySide import QtGui
 
-import math
 import random
+
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
 __doc__ = """CAM Array object and FreeCAD command"""
@@ -139,7 +140,14 @@ class ObjectArray:
             "Path",
             QT_TRANSLATE_NOOP("PathOp", "Make False, to prevent operation from generating code"),
         )
+        obj.addProperty(
+            "App::PropertyString",
+            "CycleTime",
+            "Path",
+            QT_TRANSLATE_NOOP("App::Property", "Operations Cycle Time Estimation"),
+        )
 
+        obj.setEditorMode("CycleTime", 1)  # read-only
         obj.Active = True
         obj.Type = ["Linear1D", "Linear2D", "Polar"]
 
@@ -164,15 +172,6 @@ class ObjectArray:
         elif obj.Type == "Polar":
             angleMode = copiesMode = centreMode = 0
             copiesXMode = copiesYMode = offsetMode = swapDirectionMode = 2
-
-        if not hasattr(obj, "JitterSeed"):
-            obj.addProperty(
-                "App::PropertyInteger",
-                "JitterSeed",
-                "Path",
-                QtCore.QT_TRANSLATE_NOOP("App::Property", "Seed value for jitter randomness"),
-            )
-            obj.JitterSeed = 0
 
         obj.setEditorMode("Angle", angleMode)
         obj.setEditorMode("Copies", copiesMode)
@@ -203,6 +202,24 @@ class ObjectArray:
                 ),
             )
             obj.Active = True
+
+        if not hasattr(obj, "JitterSeed"):
+            obj.addProperty(
+                "App::PropertyInteger",
+                "JitterSeed",
+                "Path",
+                QtCore.QT_TRANSLATE_NOOP("App::Property", "Seed value for jitter randomness"),
+            )
+            obj.JitterSeed = 0
+
+        if not hasattr(obj, "CycleTime"):
+            obj.addProperty(
+                "App::PropertyString",
+                "CycleTime",
+                "Path",
+                QT_TRANSLATE_NOOP("App::Property", "Operations Cycle Time Estimation"),
+            )
+            obj.CycleTime = self.getCycleTimeEstimate(obj)
 
         self.setEditorModes(obj)
 
@@ -261,6 +278,7 @@ class ObjectArray:
         )
 
         obj.Path = pa.getPath()
+        obj.CycleTime = PathOp.getCycleTimeEstimate(obj)
 
 
 class PathArray:

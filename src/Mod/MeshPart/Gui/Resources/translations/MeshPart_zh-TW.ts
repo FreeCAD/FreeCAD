@@ -4,17 +4,17 @@
   <context>
     <name>CmdMeshPartCrossSections</name>
     <message>
-      <location filename="../../Command.cpp" line="281"/>
+      <location filename="../../Command.cpp" line="273"/>
       <source>MeshPart</source>
       <translation>網格零件</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="282"/>
+      <location filename="../../Command.cpp" line="274"/>
       <source>Cross-sections...</source>
       <translation>剖面...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="283"/>
+      <location filename="../../Command.cpp" line="275"/>
       <source>Cross-sections</source>
       <translation>剖面</translation>
     </message>
@@ -22,17 +22,17 @@
   <context>
     <name>CmdMeshPartCurveOnMesh</name>
     <message>
-      <location filename="../../Command.cpp" line="317"/>
+      <location filename="../../Command.cpp" line="309"/>
       <source>Mesh</source>
       <translation>網格</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="318"/>
+      <location filename="../../Command.cpp" line="310"/>
       <source>Curve on mesh...</source>
       <translation>網格上的曲線...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="319"/>
+      <location filename="../../Command.cpp" line="311"/>
       <source>Creates an approximated curve on top of a mesh.
 This command only works with a 'mesh' object.</source>
       <translation>在網格頂部建立一條近似曲線.
@@ -60,17 +60,17 @@ This command only works with a 'mesh' object.</source>
   <context>
     <name>CmdMeshPartSection</name>
     <message>
-      <location filename="../../Command.cpp" line="192"/>
+      <location filename="../../Command.cpp" line="188"/>
       <source>Mesh</source>
       <translation>網格</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="193"/>
+      <location filename="../../Command.cpp" line="189"/>
       <source>Create section from mesh and plane</source>
       <translation>由網格和平面建立截面</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="194"/>
+      <location filename="../../Command.cpp" line="190"/>
       <source>Section</source>
       <translation>剖面</translation>
     </message>
@@ -102,7 +102,7 @@ This command only works with a 'mesh' object.</source>
       <translation>平面修剪</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="217"/>
+      <location filename="../../Command.cpp" line="213"/>
       <source>Section with plane</source>
       <translation>有平面的剖面</translation>
     </message>
@@ -198,12 +198,12 @@ This command only works with a 'mesh' object.</source>
       <translation>取消</translation>
     </message>
     <message>
-      <location filename="../../CurveOnMesh.cpp" line="624"/>
+      <location filename="../../CurveOnMesh.cpp" line="623"/>
       <source>Wrong mesh picked</source>
       <translation>選擇了錯誤的網格</translation>
     </message>
     <message>
-      <location filename="../../CurveOnMesh.cpp" line="663"/>
+      <location filename="../../CurveOnMesh.cpp" line="662"/>
       <source>No point was picked</source>
       <translation>沒有選擇任何點</translation>
     </message>
@@ -489,27 +489,27 @@ A value in the range of 0.2-10.</source>
       <translation>Gmsh</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.cpp" line="237"/>
-      <location filename="../../Tessellation.cpp" line="243"/>
+      <location filename="../../Tessellation.cpp" line="240"/>
+      <location filename="../../Tessellation.cpp" line="246"/>
       <source>No active document</source>
       <translation>無作業中文件</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.cpp" line="273"/>
+      <location filename="../../Tessellation.cpp" line="279"/>
       <source>You have selected a body without tip.
 Either set the tip of the body or select a different shape, please.</source>
       <translation>您選擇了不帶尖端的主體。
 請設定主體的尖端或選擇不同的形狀。</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.cpp" line="279"/>
+      <location filename="../../Tessellation.cpp" line="285"/>
       <source>You have selected a shape without faces.
 Select a different shape, please.</source>
       <translation>您選擇了一個沒有面的形狀。
 請選擇不同的形狀。</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.cpp" line="283"/>
+      <location filename="../../Tessellation.cpp" line="289"/>
       <source>Select a shape for meshing, first.</source>
       <translation>請先選擇造型來產生網格</translation>
     </message>
@@ -517,12 +517,12 @@ Select a different shape, please.</source>
   <context>
     <name>MeshPart_Section</name>
     <message>
-      <location filename="../../Command.cpp" line="206"/>
+      <location filename="../../Command.cpp" line="202"/>
       <source>Select plane</source>
       <translation>選取平面</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="207"/>
+      <location filename="../../Command.cpp" line="203"/>
       <source>Please select a plane at which you section the mesh.</source>
       <translation>請選擇用於剖切網格的平面。</translation>
     </message>

@@ -21,6 +21,10 @@
  ***************************************************************************/
 
 #include "PreCompiled.h"
+#ifndef _PreComp_
+#include <algorithm>
+#include <ranges>
+#endif
 
 #include "Unit.h"
 
@@ -35,25 +39,7 @@ using namespace Base;
 // returns a string which represents the object e.g. when printed in python
 std::string UnitPy::representation() const
 {
-    std::stringstream ret;
-    Unit* self = getUnitPtr();
-
-    ret << "Unit: ";
-    ret << self->getString() << " (";
-    ret << (*self).length() << ",";
-    ret << (*self).mass() << ",";
-    ret << (*self).time() << ",";
-    ret << (*self).electricCurrent() << ",";
-    ret << (*self).thermodynamicTemperature() << ",";
-    ret << (*self).amountOfSubstance() << ",";
-    ret << (*self).luminousIntensity() << ",";
-    ret << (*self).angle() << ")";
-
-    std::string type = self->getTypeString();
-    if (!type.empty()) {
-        ret << " [" << type << "]";
-    }
-    return ret.str();
+    return getUnitPtr()->representation();
 }
 
 PyObject* UnitPy::PyMake(PyTypeObject* /*unused*/, PyObject* /*unused*/, PyObject* /*unused*/)
@@ -98,20 +84,24 @@ int UnitPy::PyInit(PyObject* args, PyObject* /*kwd*/)
     }
     PyErr_Clear();  // set by PyArg_ParseTuple()
 
-    int i1 = 0;
-    int i2 = 0;
-    int i3 = 0;
-    int i4 = 0;
-    int i5 = 0;
-    int i6 = 0;
-    int i7 = 0;
-    int i8 = 0;
+    int i1 {0};
+    int i2 {0};
+    int i3 {0};
+    int i4 {0};
+    int i5 {0};
+    int i6 {0};
+    int i7 {0};
+    int i8 {0};
     if (PyArg_ParseTuple(args, "|iiiiiiii", &i1, &i2, &i3, &i4, &i5, &i6, &i7, &i8)) {
         try {
             *self = Unit(i1, i2, i3, i4, i5, i6, i7, i8);
             return 0;
         }
         catch (const OverflowError& e) {
+            PyErr_SetString(PyExc_OverflowError, e.what());
+            return -1;
+        }
+        catch (const UnderflowError& e) {
             PyErr_SetString(PyExc_OverflowError, e.what());
             return -1;
         }
@@ -213,13 +203,11 @@ Py::String UnitPy::getType() const
 
 Py::Tuple UnitPy::getSignature() const
 {
-    Py::Tuple tuple(8);
-    Unit* self = getUnitPtr();
-
-    for (auto i = 0; i < tuple.size(); i++) {
-        tuple.setItem(i, Py::Long((*self)[i]));
-    }
-
+    Py::Tuple tuple {unitNumExponents};
+    auto exps = getUnitPtr()->exponents();
+    std::ranges::for_each(exps, [&, pos {0}](auto exp) mutable {
+        tuple.setItem(pos++, Py::Long {exp});
+    });
     return tuple;
 }
 

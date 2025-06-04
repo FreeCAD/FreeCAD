@@ -35,10 +35,9 @@ import Path.Main.Gui.JobCmd as PathJobCmd
 import Path.Main.Gui.JobDlg as PathJobDlg
 import Path.Main.Job as PathJob
 import Path.Main.Stock as PathStock
-import Path.Tool.Gui.Bit as PathToolBitGui
 import Path.Tool.Gui.Controller as PathToolControllerGui
 import PathScripts.PathUtils as PathUtils
-import json
+from Path.Tool.toolbit.ui.selector import ToolBitSelector
 import math
 import traceback
 from PySide import QtWidgets
@@ -152,36 +151,62 @@ class ViewProvider:
         if prop == "Visibility":
             self.showOriginAxis(vobj.Visibility)
             if vobj.Visibility:
-                self.rememberStockVisibility()
-                self.obj.Stock.ViewObject.Visibility = True
-
-                self.KeepBaseVisibility()
-                for base in self.obj.Model.Group:
-                    base.ViewObject.Visibility = True
-            else:
+                self.restoreOperationsVisibility()
+                self.restoreModelsVisibility()
                 self.restoreStockVisibility()
-                self.RestoreBaseVisibility()
+                self.restoreToolsVisibility()
+            else:
+                self.hideOperations()
+                self.hideModels()
+                self.hideStock()
+                self.hideTools()
 
-    def rememberStockVisibility(self):
-        self.stockVisibility = self.obj.Stock.ViewObject.Visibility
+    def hideOperations(self):
+        self.operationsVisibility = {}
+        for op in self.obj.Operations.Group:
+            self.operationsVisibility[op.Name] = op.Visibility
+            op.Visibility = False
+
+    def restoreOperationsVisibility(self):
+        if hasattr(self, "operationsVisibility"):
+            for op in self.obj.Operations.Group:
+                op.Visibility = self.operationsVisibility[op.Name]
+        else:
+            for op in self.obj.Operations.Group:
+                op.Visibility = True
+
+    def hideModels(self):
+        self.modelsVisibility = {}
+        for model in self.obj.Model.Group:
+            self.modelsVisibility[model.Name] = model.Visibility
+            model.Visibility = False
+
+    def restoreModelsVisibility(self):
+        if hasattr(self, "modelsVisibility"):
+            for base in self.obj.Model.Group:
+                base.Visibility = self.modelsVisibility[base.Name]
+        else:
+            for base in self.obj.Model.Group:
+                base.Visibility = True
+
+    def hideStock(self):
+        self.stockVisibility = self.obj.Stock.Visibility
+        self.obj.Stock.Visibility = False
 
     def restoreStockVisibility(self):
-        self.obj.Stock.ViewObject.Visibility = self.stockVisibility
+        if hasattr(self, "stockVisibility"):
+            self.obj.Stock.Visibility = self.stockVisibility
 
-    def KeepBaseVisibility(self):
-        Path.Log.debug("KeepBaseVisibility")
-        self.visibilitystate = {}
-        for base in self.obj.Model.Group:
-            Path.Log.debug(f"{base.Name}: {base.ViewObject.Visibility}")
-            self.visibilitystate[base.Name] = base.ViewObject.Visibility
-        Path.Log.debug(self.visibilitystate)
+    def hideTools(self):
+        self.toolsVisibility = {}
+        for tc in self.obj.Tools.Group:
+            self.toolsVisibility[tc.Tool.Name] = tc.Tool.Visibility
+            tc.Tool.Visibility = False
 
-    def RestoreBaseVisibility(self):
-        Path.Log.debug("RestoreBaseVisibility")
-        if hasattr(self, "visibilitystate"):
-            for base in self.obj.Model.Group:
-                base.ViewObject.Visibility = self.visibilitystate[base.Name]
-            Path.Log.debug(self.visibilitystate)
+    def restoreToolsVisibility(self):
+        if hasattr(self, "toolsVisibility"):
+            for tc in self.obj.Tools.Group:
+                tc.Tool.Visibility = self.toolsVisibility[tc.Tool.Name]
 
     def showOriginAxis(self, yes):
         sw = coin.SO_SWITCH_ALL if yes else coin.SO_SWITCH_NONE
@@ -1073,29 +1098,14 @@ class TaskPanel:
         self.toolControllerSelect()
 
     def toolControllerAdd(self):
-        # adding a TC from a toolbit directly.
-        # Try to find a tool number from the currently selected lib. Otherwise
-        # use next available number
-
-        tools = PathToolBitGui.LoadTools()
-
-        curLib = Path.Preferences.lastFileToolLibrary()
-
-        library = None
-        if curLib is not None:
-            with open(curLib) as fp:
-                library = json.load(fp)
-
-        for tool in tools:
-            toolNum = self.obj.Proxy.nextToolNumber()
-            if library is not None:
-                for toolBit in library["tools"]:
-
-                    if toolBit["path"] == tool.File:
-                        toolNum = toolBit["nr"]
-
-            tc = PathToolControllerGui.Create(name=tool.Label, tool=tool, toolNumber=toolNum)
-            self.obj.Proxy.addToolController(tc)
+        selector = ToolBitSelector(compact=True)
+        if not selector.exec_():
+            return
+        toolbit = selector.get_selected_tool()
+        toolbit.attach_to_doc(FreeCAD.ActiveDocument)
+        toolNum = self.obj.Proxy.nextToolNumber()
+        tc = PathToolControllerGui.Create(name=toolbit.label, tool=toolbit.obj, toolNumber=toolNum)
+        self.obj.Proxy.addToolController(tc)
 
         FreeCAD.ActiveDocument.recompute()
         self.updateToolController()

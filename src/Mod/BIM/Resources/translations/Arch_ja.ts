@@ -455,22 +455,22 @@ When dealing with native IFC objects, you can use FreeCAD properties name, ex: '
     <message>
       <location filename="../ui/dialogIfcProperties.ui" line="32"/>
       <source>Only selected objects</source>
-      <translation type="unfinished">Only selected objects</translation>
+      <translation>選択オブジェクトのみ</translation>
     </message>
     <message>
       <location filename="../ui/dialogIfcProperties.ui" line="39"/>
       <source>Only visible BIM objects</source>
-      <translation type="unfinished">Only visible BIM objects</translation>
+      <translation>表示されているBIMオブジェクトのみ</translation>
     </message>
     <message>
       <location filename="../ui/dialogIfcProperties.ui" line="50"/>
       <source>Order by:</source>
-      <translation type="unfinished">Order by:</translation>
+      <translation>並び順：</translation>
     </message>
     <message>
       <location filename="../ui/dialogIfcProperties.ui" line="111"/>
       <source>Search for a property or property set:</source>
-      <translation type="unfinished">Search for a property or property set:</translation>
+      <translation>プロパティまたはプロパティセットを検索：</translation>
     </message>
     <message>
       <location filename="../ui/dialogIfcProperties.ui" line="131"/>
@@ -485,7 +485,7 @@ When dealing with native IFC objects, you can use FreeCAD properties name, ex: '
     <message>
       <location filename="../ui/dialogIfcProperties.ui" line="150"/>
       <source>List of IFC properties for the selected objects. Double-click to edit, drag and drop to reorganize</source>
-      <translation type="unfinished">List of IFC properties for the selected objects. Double-click to edit, drag and drop to reorganize</translation>
+      <translation>選択オブジェクトにおけるIFCプロパティの一覧。ダブルクリックすると編集、ドラッグ＆ドロップすると再編成できます</translation>
     </message>
     <message>
       <location filename="../ui/dialogIfcPropertiesRedux.ui" line="63"/>
@@ -506,7 +506,7 @@ When dealing with native IFC objects, you can use FreeCAD properties name, ex: '
     <message>
       <location filename="../ui/dialogClassification.ui" line="14"/>
       <source>Classification manager</source>
-      <translation type="unfinished">Classification manager</translation>
+      <translation>分類マネージャー</translation>
     </message>
     <message>
       <location filename="../ui/dialogClassification.ui" line="42"/>
@@ -516,12 +516,12 @@ When dealing with native IFC objects, you can use FreeCAD properties name, ex: '
     <message>
       <location filename="../ui/dialogClassification.ui" line="48"/>
       <source>Only visible objects</source>
-      <translation type="unfinished">Only visible objects</translation>
+      <translation>表示されているオブジェクトのみ</translation>
     </message>
     <message>
       <location filename="../ui/dialogClassification.ui" line="60"/>
       <source>Sort by:</source>
-      <translation type="unfinished">Sort by:</translation>
+      <translation>並べ替え：</translation>
     </message>
     <message>
       <location filename="../ui/dialogClassification.ui" line="68"/>
@@ -553,7 +553,7 @@ When dealing with native IFC objects, you can use FreeCAD properties name, ex: '
     <message>
       <location filename="../ui/dialogClassification.ui" line="122"/>
       <source>Object / Material</source>
-      <translation type="unfinished">Object / Material</translation>
+      <translation>オブジェクト / マテリアル</translation>
     </message>
     <message>
       <location filename="../ui/dialogClassification.ui" line="127"/>
@@ -563,37 +563,37 @@ When dealing with native IFC objects, you can use FreeCAD properties name, ex: '
     <message>
       <location filename="../ui/dialogClassification.ui" line="136"/>
       <source>Available classification systems</source>
-      <translation type="unfinished">Available classification systems</translation>
+      <translation>利用可能な分類システム</translation>
     </message>
     <message>
       <location filename="../ui/dialogClassification.ui" line="142"/>
       <source>Classification systems found on this computer</source>
-      <translation type="unfinished">Classification systems found on this computer</translation>
+      <translation>このコンピューター上に分類システムが見つかりました。</translation>
     </message>
     <message>
       <location filename="../ui/dialogClassification.ui" line="178"/>
       <source>Apply the selected class to selected materials</source>
-      <translation type="unfinished">Apply the selected class to selected materials</translation>
+      <translation>選択したクラスを選択したマテリアルに適用</translation>
     </message>
     <message>
       <location filename="../ui/dialogClassification.ui" line="181"/>
       <source>&lt;&lt; Apply to selected</source>
-      <translation type="unfinished">&lt;&lt; Apply to selected</translation>
+      <translation>&lt;&lt; 選択したものに適用</translation>
     </message>
     <message>
       <location filename="../ui/dialogClassification.ui" line="188"/>
       <source>Use this class as material name</source>
-      <translation type="unfinished">Use this class as material name</translation>
+      <translation>このクラスをマテリアル名として使用</translation>
     </message>
     <message>
       <location filename="../ui/dialogClassification.ui" line="191"/>
       <source>&lt;&lt; Set as name</source>
-      <translation type="unfinished">&lt;&lt; Set as name</translation>
+      <translation>&lt;&lt; 名前として設定</translation>
     </message>
     <message>
       <location filename="../ui/dialogClassification.ui" line="200"/>
       <source>Prefix with class name when applying</source>
-      <translation type="unfinished">Prefix with class name when applying</translation>
+      <translation>適用時のクラス名の接頭辞</translation>
     </message>
     <message>
       <location filename="../ui/dialogClassification.ui" line="214"/>
@@ -603,22 +603,22 @@ When dealing with native IFC objects, you can use FreeCAD properties name, ex: '
     <message>
       <location filename="../ui/dialogConvertDocument.ui" line="14"/>
       <source>Single IFC document</source>
-      <translation type="unfinished">Single IFC document</translation>
+      <translation>シングルIFCドキュメント</translation>
     </message>
     <message>
       <location filename="../ui/dialogConvertDocument.ui" line="20"/>
       <source>Do you wish to convert this document to an IFC document? Replying 'Yes' will automatically turn all new objects to IFC, while 'No' will allow you to have both IFC and non-IFC elements in the file.</source>
-      <translation type="unfinished">Do you wish to convert this document to an IFC document? Replying 'Yes' will automatically turn all new objects to IFC, while 'No' will allow you to have both IFC and non-IFC elements in the file.</translation>
+      <translation>このドキュメントをIFCドキュメントに変換しますか？ 「はい」を選ぶと、新しいすべてのオブジェクトがIFCに自動的に変換され、「いいえ」を選ぶと、IFCとIFC以外の要素の両方をファイル内に保存できます。</translation>
     </message>
     <message>
       <location filename="../ui/dialogConvertDocument.ui" line="30"/>
       <source>Add a default building structure (IfcSite, IfcBuilding and IfcBuildingStorey). You can also add the structure manually later.</source>
-      <translation type="unfinished">Add a default building structure (IfcSite, IfcBuilding and IfcBuildingStorey). You can also add the structure manually later.</translation>
+      <translation>デフォルトの建物構成 (IfcSite, IfcBuilding and IfcBuildingStore) を追加。この構成は後から手動で追加することもできます。</translation>
     </message>
     <message>
       <location filename="../ui/dialogConvertDocument.ui" line="33"/>
       <source>Also create a default structure</source>
-      <translation type="unfinished">Also create a default structure</translation>
+      <translation>デフォルトの構成も作成</translation>
     </message>
     <message>
       <location filename="../ui/dialogConvertDocument.ui" line="40"/>
@@ -640,17 +640,17 @@ Utils -&gt; Make IFC project</translation>
     <message>
       <location filename="../ui/dialogCreateProject.ui" line="14"/>
       <source>Default structure</source>
-      <translation type="unfinished">Default structure</translation>
+      <translation>デフォルトの構成</translation>
     </message>
     <message>
       <location filename="../ui/dialogCreateProject.ui" line="20"/>
       <source>Create a default structure (IfcProject, IfcSite, IfcBuilding and IfcBuildingStorey)? Replying "No" will only create an IfcProject. You can then add the structure manually later.</source>
-      <translation type="unfinished">Create a default structure (IfcProject, IfcSite, IfcBuilding and IfcBuildingStorey)? Replying "No" will only create an IfcProject. You can then add the structure manually later.</translation>
+      <translation>デフォルトの構成 (IfcProject, IfcSite, IfcBuilding and IfcBuildingStore)を作成しますか？「いいえ」を選ぶとIfcProjectのみを作成します。この構成は後から手動で追加することもできます。</translation>
     </message>
     <message>
       <location filename="../ui/dialogExport.ui" line="20"/>
       <source>One or more IFC documents contained in this FreeCAD document have been modified, but were not saved.  They will automatically be saved now.</source>
-      <translation type="unfinished">One or more IFC documents contained in this FreeCAD document have been modified, but were not saved.  They will automatically be saved now.</translation>
+      <translation>このFreeCADドキュメントに含まれている1つ以上のIFCドキュメントが変更されましたが、保存されていませんでした。今すぐ自動的に保存されます。</translation>
     </message>
     <message>
       <location filename="../ui/dialogImport.ui" line="152"/>
@@ -661,7 +661,7 @@ Utils -&gt; Make IFC project</translation>
     <message>
       <location filename="../ui/dialogIfcElements.ui" line="14"/>
       <source>IFC Elements Manager</source>
-      <translation type="unfinished">IFC Elements Manager</translation>
+      <translation>IFC要素マネージャー</translation>
     </message>
     <message>
       <location filename="../ui/dialogIfcElements.ui" line="20"/>
@@ -672,27 +672,27 @@ Utils -&gt; Make IFC project</translation>
       <location filename="../ui/dialogIfcElements.ui" line="30"/>
       <location filename="../ui/dialogIfcQuantities.ui" line="30"/>
       <source>only visible BIM objects</source>
-      <translation type="unfinished">only visible BIM objects</translation>
+      <translation>表示されているBIMオブジェクトのみ</translation>
     </message>
     <message>
       <location filename="../ui/dialogIfcElements.ui" line="39"/>
       <source>order by:</source>
-      <translation type="unfinished">order by:</translation>
+      <translation>並び順：</translation>
     </message>
     <message>
       <location filename="../ui/dialogIfcElements.ui" line="103"/>
       <source>change type to:</source>
-      <translation type="unfinished">change type to:</translation>
+      <translation>タイプ変更先：</translation>
     </message>
     <message>
       <location filename="../ui/dialogIfcElements.ui" line="110"/>
       <source>change material to:</source>
-      <translation type="unfinished">change material to:</translation>
+      <translation>マテリアル変更先：</translation>
     </message>
     <message>
       <location filename="../ui/dialogIfcQuantities.ui" line="14"/>
       <source>IFC Quantities Manager</source>
-      <translation type="unfinished">IFC Quantities Manager</translation>
+      <translation>IFC数量マネージャー</translation>
     </message>
     <message>
       <location filename="../ui/dialogIfcQuantities.ui" line="20"/>
@@ -723,22 +723,22 @@ Utils -&gt; Make IFC project</translation>
     <message>
       <location filename="../ui/dialogImport.ui" line="22"/>
       <source>How the IFC file will initially be imported: Only one object, only project structure, or all individual objects.</source>
-      <translation type="unfinished">How the IFC file will initially be imported: Only one object, only project structure, or all individual objects.</translation>
+      <translation>IFCファイルの初期インポート方法：1つのオブジェクトのみ、プロジェクト構造のみ、またはすべての個別オブジェクト。</translation>
     </message>
     <message>
       <location filename="../ui/dialogImport.ui" line="26"/>
       <source>Only root object (default)</source>
-      <translation type="unfinished">Only root object (default)</translation>
+      <translation>ルートオブジェクトのみ（デフォルト）</translation>
     </message>
     <message>
       <location filename="../ui/dialogImport.ui" line="31"/>
       <source>Project structure (levels)</source>
-      <translation type="unfinished">Project structure (levels)</translation>
+      <translation>プロジェクト構造（階層）</translation>
     </message>
     <message>
       <location filename="../ui/dialogImport.ui" line="36"/>
       <source>All individual IFC objects</source>
-      <translation type="unfinished">All individual IFC objects</translation>
+      <translation>すべての個別IFCオブジェクト</translation>
     </message>
     <message>
       <location filename="../ui/dialogImport.ui" line="44"/>
@@ -753,12 +753,12 @@ Utils -&gt; Make IFC project</translation>
     <message>
       <location filename="../ui/dialogImport.ui" line="55"/>
       <source>Locked (IFC objects only)</source>
-      <translation type="unfinished">Locked (IFC objects only)</translation>
+      <translation>ロック（IFCオブジェクトのみ）</translation>
     </message>
     <message>
       <location filename="../ui/dialogImport.ui" line="60"/>
       <source>Unlocked (non-IFC objects permitted)</source>
-      <translation type="unfinished">Unlocked (non-IFC objects permitted)</translation>
+      <translation>ロック解除（IFC以外のオブジェクトを許可）</translation>
     </message>
     <message>
       <location filename="../ui/dialogImport.ui" line="68"/>
@@ -768,67 +768,67 @@ Utils -&gt; Make IFC project</translation>
     <message>
       <location filename="../ui/dialogImport.ui" line="75"/>
       <source>Representation type</source>
-      <translation type="unfinished">Representation type</translation>
+      <translation>表示タイプ</translation>
     </message>
     <message>
       <location filename="../ui/dialogImport.ui" line="82"/>
       <source>The type of object created at import. Mesh is faster, but Shapes are more precise. You can convert between the two anytime by right-clicking the object tree</source>
-      <translation type="unfinished">The type of object created at import. Mesh is faster, but Shapes are more precise. You can convert between the two anytime by right-clicking the object tree</translation>
+      <translation>インポート時に作成されたオブジェクトのタイプ。メッシュは高速ですが、シェイプはより正確です。オブジェクトツリーを右クリックすることで、いつでも切り替えられます。</translation>
     </message>
     <message>
       <location filename="../ui/dialogImport.ui" line="89"/>
       <source>Load the shape (slower)</source>
-      <translation type="unfinished">Load the shape (slower)</translation>
+      <translation>シェイプ読み込み（低速）</translation>
     </message>
     <message>
       <location filename="../ui/dialogImport.ui" line="94"/>
       <source>Load 3D representation only, no shape (default)</source>
-      <translation type="unfinished">Load 3D representation only, no shape (default)</translation>
+      <translation>シェイプなしで3D表現のみを読み込み（デフォルト）</translation>
     </message>
     <message>
       <location filename="../ui/dialogImport.ui" line="99"/>
       <source>No 3D representation at all</source>
-      <translation type="unfinished">No 3D representation at all</translation>
+      <translation>3D表現が全くありません</translation>
     </message>
     <message>
       <location filename="../ui/dialogImport.ui" line="109"/>
       <source>If this is checked, the workbench specified in Start preferences will be loaded after import</source>
-      <translation type="unfinished">If this is checked, the workbench specified in Start preferences will be loaded after import</translation>
+      <translation>チェックをいれると、開始設定で指定されたワークベンチがインポート後に読み込まれます。</translation>
     </message>
     <message>
       <location filename="../ui/dialogImport.ui" line="112"/>
       <source>Switch workbench after import</source>
-      <translation type="unfinished">Switch workbench after import</translation>
+      <translation>インポート後にワークベンチを切り替え</translation>
     </message>
     <message>
       <location filename="../ui/dialogImport.ui" line="119"/>
       <source>Preload property sets of all objects. It is advised to leave this unchecked and load property sets later, only when needed</source>
-      <translation type="unfinished">Preload property sets of all objects. It is advised to leave this unchecked and load property sets later, only when needed</translation>
+      <translation>すべてのオブジェクトのプロパティセットをあらかじめ読み込みます。チェックせず、後からプロパティセットを読み込むことをお勧めします。必要な場合にのみ使用してください。</translation>
     </message>
     <message>
       <location filename="../ui/dialogImport.ui" line="122"/>
       <source>Preload property sets</source>
-      <translation type="unfinished">Preload property sets</translation>
+      <translation>プロパティセットを事前読込</translation>
     </message>
     <message>
       <location filename="../ui/dialogImport.ui" line="129"/>
       <source>Preload all materials fo the file. It is advised to leave this unchecked and load materials later, only when needed</source>
-      <translation type="unfinished">Preload all materials fo the file. It is advised to leave this unchecked and load materials later, only when needed</translation>
+      <translation>ファイル内のマテリアルをすべてあらかじめ読み込みます。チェックせず、後からマテリアルを読み込むことをお勧めします。必要な場合にのみ使用してください。</translation>
     </message>
     <message>
       <location filename="../ui/dialogImport.ui" line="132"/>
       <source>Preload materials</source>
-      <translation type="unfinished">Preload materials</translation>
+      <translation>マテリアルを事前読込</translation>
     </message>
     <message>
       <location filename="../ui/dialogImport.ui" line="139"/>
       <source>Preload all layers of the file. It is advised to leave this unchecked and load layers later, only when needed</source>
-      <translation type="unfinished">Preload all layers of the file. It is advised to leave this unchecked and load layers later, only when needed</translation>
+      <translation>ファイル内のレイヤーをすべてあらかじめ読み込みます。チェックせず、後からレイヤーを読み込むことをお勧めします。必要な場合にのみ使用してください。</translation>
     </message>
     <message>
       <location filename="../ui/dialogImport.ui" line="142"/>
       <source>Preload layers</source>
-      <translation type="unfinished">Preload layers</translation>
+      <translation>レイヤーを事前読込</translation>
     </message>
     <message>
       <location filename="../ui/dialogImport.ui" line="149"/>
@@ -848,7 +848,7 @@ Utils -&gt; Make IFC project</translation>
     <message>
       <location filename="../ui/dialogLayersIFC.ui" line="36"/>
       <source>Adds this layer to an IFC project</source>
-      <translation type="unfinished">Adds this layer to an IFC project</translation>
+      <translation>このレイヤーをIFCプロジェクトに追加</translation>
     </message>
     <message>
       <location filename="../ui/dialogPhases.ui" line="55"/>
@@ -893,7 +893,7 @@ Utils -&gt; Make IFC project</translation>
     <message>
       <location filename="../ui/dialogMaterialChooser.ui" line="14"/>
       <source>Choose a material</source>
-      <translation type="unfinished">Choose a material</translation>
+      <translation>マテリアルを選択</translation>
     </message>
     <message>
       <location filename="../ui/dialogNudgeValue.ui" line="14"/>
@@ -918,12 +918,12 @@ Utils -&gt; Make IFC project</translation>
     <message>
       <location filename="../ui/dialogPreflightResults.ui" line="14"/>
       <source>Test results</source>
-      <translation type="unfinished">Test results</translation>
+      <translation>テスト結果</translation>
     </message>
     <message>
       <location filename="../ui/dialogPreflightResults.ui" line="43"/>
       <source>Results of test:</source>
-      <translation type="unfinished">Results of test:</translation>
+      <translation>テストの結果：</translation>
     </message>
     <message>
       <location filename="../ui/dialogPreflightResults.ui" line="91"/>
@@ -933,7 +933,7 @@ Utils -&gt; Make IFC project</translation>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="14"/>
       <source>BIM Project Setup</source>
-      <translation type="unfinished">BIM Project Setup</translation>
+      <translation>BIM プロジェクトのセットアップ</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="20"/>
@@ -943,42 +943,42 @@ Utils -&gt; Make IFC project</translation>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="31"/>
       <source>Use preset...</source>
-      <translation type="unfinished">Use preset...</translation>
+      <translation>プリセットを使用...</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="41"/>
       <source>Saves the current document as a template, including all the current BIM settings</source>
-      <translation type="unfinished">Saves the current document as a template, including all the current BIM settings</translation>
+      <translation>現在のBIM設定を含め、現在のドキュメントをテンプレートとして保存</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="44"/>
       <source>Save template...</source>
-      <translation type="unfinished">Save template...</translation>
+      <translation>テンプレートを保存...</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="56"/>
       <source>Loads the contents of a FCStd file into the active document, applying all the BIM settings stored in it if any</source>
-      <translation type="unfinished">Loads the contents of a FCStd file into the active document, applying all the BIM settings stored in it if any</translation>
+      <translation>FCStdファイルの内容をアクティブなドキュメントに読み込み、そこに保存されているすべてのBIM設定を適用</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="59"/>
       <source>Load template...</source>
-      <translation type="unfinished">Load template...</translation>
+      <translation>テンプレートを保存...</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="88"/>
       <source>Create new document</source>
-      <translation type="unfinished">Create new document</translation>
+      <translation>新しいドキュメントを作成</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="100"/>
       <source>Project name</source>
-      <translation type="unfinished">Project name</translation>
+      <translation>プロジェクト名</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="130"/>
       <source>Create Site</source>
-      <translation type="unfinished">Create Site</translation>
+      <translation>サイトを作成</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="107"/>
@@ -988,12 +988,12 @@ Utils -&gt; Make IFC project</translation>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="117"/>
       <source>If this is checked, a human figure will be added, which helps greatly to give a sense of scale when viewing the model</source>
-      <translation type="unfinished">If this is checked, a human figure will be added, which helps greatly to give a sense of scale when viewing the model</translation>
+      <translation>チェックした場合、人の姿が追加されます。モデルを表示した時に規模感を把握するための大きな助けになります。</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="120"/>
       <source>Add a human figure</source>
-      <translation type="unfinished">Add a human figure</translation>
+      <translation>人の姿を追加</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="142"/>
@@ -1008,7 +1008,7 @@ Utils -&gt; Make IFC project</translation>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="170"/>
       <source>Elevation</source>
-      <translation type="unfinished">Elevation</translation>
+      <translation>標高</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="177"/>
@@ -1018,12 +1018,12 @@ Utils -&gt; Make IFC project</translation>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="184"/>
       <source>Default Site</source>
-      <translation type="unfinished">Default Site</translation>
+      <translation>デフォルトの用地</translation>
     </message>
     <message>
       <location filename="../ui/dialogAddPSet.ui" line="14"/>
       <source>Add standard IFC PSet</source>
-      <translation type="unfinished">Add standard IFC PSet</translation>
+      <translation>標準IFCのPセットを追加</translation>
     </message>
     <message>
       <location filename="../ui/dialogAddPSet.ui" line="43"/>
@@ -1041,7 +1041,7 @@ Utils -&gt; Make IFC project</translation>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="208"/>
       <source>Longitude</source>
-      <translation type="unfinished">Longitude</translation>
+      <translation>経度</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="225"/>
@@ -1051,7 +1051,7 @@ Utils -&gt; Make IFC project</translation>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="232"/>
       <source>Latitude</source>
-      <translation type="unfinished">Latitude</translation>
+      <translation>緯度</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="239"/>
@@ -1061,27 +1061,27 @@ Utils -&gt; Make IFC project</translation>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="260"/>
       <source>Create Building</source>
-      <translation type="unfinished">Create Building</translation>
+      <translation>建物を作成</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="269"/>
       <source>This will configure a single building for this project. If your project is made of several buildings, you can duplicate it after creation and update its properties.</source>
-      <translation type="unfinished">This will configure a single building for this project. If your project is made of several buildings, you can duplicate it after creation and update its properties.</translation>
+      <translation>このプロジェクトに1棟のビルディングを設定します。プロジェクトが複数のビルディングから構成される場合は作成後に複製してそのプロパティを更新することができます。</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="281"/>
       <source>Gross building length</source>
-      <translation type="unfinished">Gross building length</translation>
+      <translation>建物の全体長さ</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="288"/>
       <source>Gross building width</source>
-      <translation type="unfinished">Gross building width</translation>
+      <translation>建物の全体幅</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="302"/>
       <source>Default Building</source>
-      <translation type="unfinished">Default Building</translation>
+      <translation>デフォルトの建物</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="309"/>
@@ -1106,7 +1106,7 @@ Utils -&gt; Make IFC project</translation>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="363"/>
       <source>Main use</source>
-      <translation type="unfinished">Main use</translation>
+      <translation>主な用途</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="377"/>
@@ -1135,12 +1135,12 @@ Utils -&gt; Make IFC project</translation>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="472"/>
       <source>Level height</source>
-      <translation type="unfinished">Level height</translation>
+      <translation>階の高さ</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="489"/>
       <source>Number of levels</source>
-      <translation type="unfinished">Number of levels</translation>
+      <translation>階数</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="498"/>
@@ -1376,7 +1376,7 @@ Utils -&gt; Make IFC project</translation>
     <message>
       <location filename="../ui/dialogConvertType.ui" line="14"/>
       <source>Convert to IFC type</source>
-      <translation type="unfinished">Convert to IFC type</translation>
+      <translation>IFCタイプに変換</translation>
     </message>
     <message>
       <location filename="../ui/dialogConvertType.ui" line="26"/>
@@ -1391,7 +1391,7 @@ Utils -&gt; Make IFC project</translation>
     <message>
       <location filename="../ui/dialogAddProperty.ui" line="14"/>
       <source>Add IFC property</source>
-      <translation type="unfinished">Add IFC property</translation>
+      <translation>IFCプロパティの追加</translation>
     </message>
     <message>
       <location filename="../ui/dialogAddProperty.ui" line="44"/>
@@ -2252,27 +2252,27 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../ui/preferencesNativeIFC.ui" line="35"/>
       <source>How the IFC file will initially be imported: Only one object, only project structure, or all individual objects.</source>
-      <translation type="unfinished">How the IFC file will initially be imported: Only one object, only project structure, or all individual objects.</translation>
+      <translation>IFCファイルの初期インポート方法：1つのオブジェクトのみ、プロジェクト構造のみ、またはすべての個別オブジェクト。</translation>
     </message>
     <message>
       <location filename="../ui/preferencesNativeIFC.ui" line="45"/>
       <source>Only root object (default)</source>
-      <translation type="unfinished">Only root object (default)</translation>
+      <translation>ルートオブジェクトのみ（デフォルト）</translation>
     </message>
     <message>
       <location filename="../ui/preferencesNativeIFC.ui" line="50"/>
       <source>Project structure (levels)</source>
-      <translation type="unfinished">Project structure (levels)</translation>
+      <translation>プロジェクト構造（階層）</translation>
     </message>
     <message>
       <location filename="../ui/preferencesNativeIFC.ui" line="55"/>
       <source>All individual IFC objects</source>
-      <translation type="unfinished">All individual IFC objects</translation>
+      <translation>すべての個別IFCオブジェクト</translation>
     </message>
     <message>
       <location filename="../ui/preferencesNativeIFC.ui" line="63"/>
       <source>Representation type</source>
-      <translation type="unfinished">Representation type</translation>
+      <translation>表示タイプ</translation>
     </message>
     <message>
       <location filename="../ui/preferencesNativeIFC.ui" line="70"/>
@@ -2287,12 +2287,12 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../ui/preferencesNativeIFC.ui" line="88"/>
       <source>Load 3D representation only, no shape (default)</source>
-      <translation type="unfinished">Load 3D representation only, no shape (default)</translation>
+      <translation>シェイプなしで3D表現のみを読み込み（デフォルト）</translation>
     </message>
     <message>
       <location filename="../ui/preferencesNativeIFC.ui" line="93"/>
       <source>No 3D representation at all</source>
-      <translation type="unfinished">No 3D representation at all</translation>
+      <translation>3D表現が全くありません</translation>
     </message>
     <message>
       <location filename="../ui/preferencesNativeIFC.ui" line="103"/>
@@ -2312,7 +2312,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../ui/preferencesNativeIFC.ui" line="122"/>
       <source>Preload property sets</source>
-      <translation type="unfinished">Preload property sets</translation>
+      <translation>プロパティセットを事前読込</translation>
     </message>
     <message>
       <location filename="../ui/preferencesNativeIFC.ui" line="135"/>
@@ -2322,7 +2322,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../ui/preferencesNativeIFC.ui" line="138"/>
       <source>Preload materials</source>
-      <translation type="unfinished">Preload materials</translation>
+      <translation>マテリアルを事前読込</translation>
     </message>
     <message>
       <location filename="../ui/preferencesNativeIFC.ui" line="151"/>
@@ -2332,7 +2332,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../ui/preferencesNativeIFC.ui" line="154"/>
       <source>Preload layers</source>
-      <translation type="unfinished">Preload layers</translation>
+      <translation>レイヤーを事前読込</translation>
     </message>
     <message>
       <location filename="../ui/preferencesNativeIFC.ui" line="167"/>
@@ -8033,12 +8033,12 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../InitGui.py" line="389"/>
       <source>Drafting tools</source>
-      <translation>基本設計ツール</translation>
+      <translation>ドラフト・ツール</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="390"/>
       <source>Draft snap</source>
-      <translation>基本設計スナップ</translation>
+      <translation>ドラフト・スナップ</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="391"/>
@@ -8078,7 +8078,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../InitGui.py" line="410"/>
       <source>&amp;2D Drafting</source>
-      <translation>&amp;2D基本設計</translation>
+      <translation>2Dドラフト(&amp;2)</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="411"/>
@@ -9763,7 +9763,7 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
     <message>
       <location filename="../../bimcommands/BimUnclone.py" line="133"/>
       <source>Draft Clones are not supported yet!</source>
-      <translation>基本設計のクローンは未実装です。</translation>
+      <translation>ドラフトのクローンはまだサポートされていません！</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimUnclone.py" line="137"/>

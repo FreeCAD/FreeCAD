@@ -166,6 +166,12 @@ public:
     void open() override;
     bool accept() override;
     bool reject() override;
+    void onUndo() override;
+    void onRedo() override;
+
+private:
+    void openCommand();
+    void updateDraggerPlacement();
 
 private:
     ViewProviderDragger* vp;

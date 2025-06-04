@@ -27,17 +27,17 @@
   <context>
     <name>StartGui::GeneralSettingsWidget</name>
     <message>
-      <location filename="../../GeneralSettingsWidget.cpp" line="212"/>
+      <location filename="../../GeneralSettingsWidget.cpp" line="213"/>
       <source>Language</source>
       <translation>言語</translation>
     </message>
     <message>
-      <location filename="../../GeneralSettingsWidget.cpp" line="213"/>
+      <location filename="../../GeneralSettingsWidget.cpp" line="214"/>
       <source>Unit System</source>
       <translation>使用する単位</translation>
     </message>
     <message>
-      <location filename="../../GeneralSettingsWidget.cpp" line="226"/>
+      <location filename="../../GeneralSettingsWidget.cpp" line="230"/>
       <source>Navigation Style</source>
       <translation>ナビゲーションスタイル</translation>
     </message>
@@ -47,103 +47,108 @@
     <message>
       <location filename="../../Manipulator.cpp" line="47"/>
       <source>Start</source>
-      <translation>開始</translation>
+      <translation>スタート</translation>
     </message>
     <message>
       <location filename="../../Manipulator.cpp" line="48"/>
       <source>&amp;Start Page</source>
-      <translation type="unfinished">&amp;Start Page</translation>
+      <translation>&amp;スタート・ページ</translation>
     </message>
     <message>
       <location filename="../../Manipulator.cpp" line="49"/>
       <source>Displays the Start Page</source>
-      <translation type="unfinished">Displays the Start Page</translation>
+      <translation>スタート・ページを表示</translation>
     </message>
   </context>
   <context>
     <name>StartGui::StartView</name>
     <message>
-      <location filename="../../StartView.cpp" line="289"/>
+      <location filename="../../StartView.cpp" line="193"/>
       <source>Empty file</source>
       <translation>空ファイル</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="290"/>
+      <location filename="../../StartView.cpp" line="194"/>
       <source>Create a new empty FreeCAD file</source>
       <translation>新しい空のFreeCADファイルを作成</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="293"/>
+      <location filename="../../StartView.cpp" line="197"/>
       <source>Open File</source>
       <translation>ファイルを開く</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="294"/>
+      <location filename="../../StartView.cpp" line="198"/>
       <source>Open an existing CAD file or 3D model</source>
       <translation>既存のCADファイルまたは3Dモデルを開く</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="297"/>
+      <location filename="../../StartView.cpp" line="201"/>
       <source>Parametric Part</source>
       <translation>パラメトリックパーツ</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="298"/>
+      <location filename="../../StartView.cpp" line="202"/>
       <source>Create a part with the Part Design workbench</source>
       <translation>パートデザインワークベンチでパーツを作成</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="301"/>
+      <location filename="../../StartView.cpp" line="205"/>
       <source>Assembly</source>
       <translation>アセンブリ</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="302"/>
+      <location filename="../../StartView.cpp" line="206"/>
       <source>Create an assembly project</source>
       <translation>アセンブリプロジェクトを作成</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="305"/>
+      <location filename="../../StartView.cpp" line="209"/>
       <source>2D Draft</source>
-      <translation>2D基本設計（下書き）</translation>
+      <translation>2Dドラフト</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="306"/>
+      <location filename="../../StartView.cpp" line="210"/>
       <source>Create a 2D Draft with the Draft workbench</source>
-      <translation>基本設計ワークベンチで2D基本設計を作成</translation>
+      <translation>ドラフトワークベンチで2D図面を作成</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="309"/>
+      <location filename="../../StartView.cpp" line="213"/>
       <source>BIM/Architecture</source>
       <translation>BIM/アーキテクチャ（建築）</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="310"/>
+      <location filename="../../StartView.cpp" line="214"/>
       <source>Create an architectural project</source>
       <translation>アーキテクチャ（建築）のプロジェクトを作成</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="525"/>
+      <location filename="../../StartView.cpp" line="442"/>
       <source>New File</source>
       <translation>新規ファイル</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="526"/>
+      <location filename="../../StartView.cpp" line="443"/>
       <source>Examples</source>
       <translation>サンプル</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="527"/>
+      <location filename="../../StartView.cpp" line="444"/>
       <source>Recent Files</source>
       <translation>最近使用したファイル</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="530"/>
+      <location filename="../../StartView.cpp" line="445"/>
+      <source>Custom Folder</source>
+      <translation type="unfinished">Custom Folder</translation>
+    </message>
+    <message>
+      <location filename="../../StartView.cpp" line="448"/>
       <source>Open first start setup</source>
       <translation>インストール直後のスタートアップウィンドウを表示する</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="532"/>
+      <location filename="../../StartView.cpp" line="450"/>
       <source>Don't show this Start page again (start with blank screen)</source>
       <translation>今後このスタートページを表示しない (空白の画面で開始)</translation>
     </message>
@@ -151,7 +156,7 @@
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="../../StartView.cpp" line="519"/>
+      <location filename="../../StartView.cpp" line="436"/>
       <source>Start</source>
       <translation>開始</translation>
     </message>
@@ -200,6 +205,74 @@
       <source>FreeCAD Classic</source>
       <comment>Visual theme name</comment>
       <translation>FreeCAD クラシック</translation>
+    </message>
+  </context>
+  <context>
+    <name>DlgStartPreferences</name>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="14"/>
+      <source>General</source>
+      <translation>標準</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="20"/>
+      <source>Contents</source>
+      <translation type="unfinished">Contents</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="26"/>
+      <source>Show only FreeCAD files in additional folder</source>
+      <translation type="unfinished">Show only FreeCAD files in additional folder</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="33"/>
+      <source>Show examples folder contents</source>
+      <translation type="unfinished">Show examples folder contents</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="40"/>
+      <source>Show additional folder contents</source>
+      <translation type="unfinished">Show additional folder contents</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="47"/>
+      <source>An optional custom folder to be displayed on the Start page.
+By using ";;" to separate paths, you can add several folders here.</source>
+      <translation type="unfinished">An optional custom folder to be displayed on the Start page.
+By using ";;" to separate paths, you can add several folders here.</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="64"/>
+      <source>If you want the examples to show on the first page</source>
+      <translation type="unfinished">If you want the examples to show on the first page</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="86"/>
+      <source>If the additional folder contents should include only .FCStd files</source>
+      <translation type="unfinished">If the additional folder contents should include only .FCStd files</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="108"/>
+      <source>Options</source>
+      <translation>オプション</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="114"/>
+      <source>If checked, will automatically close the Start page when FreeCAD launches</source>
+      <translation type="unfinished">If checked, will automatically close the Start page when FreeCAD launches</translation>
+    </message>
+    <message>
+      <location filename="../../DlgStartPreferences.ui" line="133"/>
+      <source>Close start page after loading</source>
+      <translation type="unfinished">Close start page after loading</translation>
+    </message>
+  </context>
+  <context>
+    <name>QObject</name>
+    <message>
+      <location filename="../../AppStartGui.cpp" line="131"/>
+      <source>Start</source>
+      <translation>開始</translation>
     </message>
   </context>
 </TS>
