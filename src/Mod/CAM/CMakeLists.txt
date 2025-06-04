@@ -201,6 +201,7 @@ SET(PathPythonToolsToolBitUi_SRCS
     Path/Tool/toolbit/ui/selector.py
     Path/Tool/toolbit/ui/tablecell.py
     Path/Tool/toolbit/ui/toollist.py
+    Path/Tool/toolbit/ui/util.py
     Path/Tool/toolbit/ui/view.py
 )
 

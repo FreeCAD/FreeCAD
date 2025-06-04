@@ -23,15 +23,16 @@
 
 """Widget for browsing Tool Library assets with filtering and sorting."""
 
-import FreeCAD
+import yaml
 from typing import cast, List, Optional
 from PySide import QtCore, QtGui
 from PySide.QtGui import QMenu, QAction, QKeySequence
+import FreeCAD
 import Path
-import yaml
 from ...assets import AssetManager, AssetUri
 from ...toolbit import ToolBit
 from ...toolbit.ui import ToolBitEditor
+from ...toolbit.ui.util import natural_sort_key
 from ...toolbit.ui.browser import ToolBitBrowserWidget, ToolBitUriRole
 from ...toolbit.serializers import YamlToolBitSerializer
 from ..models.library import Library
@@ -536,7 +537,7 @@ class LibraryBrowserWithCombo(LibraryBrowserWidget):
         self._in_refresh = True
         try:
             self._library_combo.clear()
-            for library in sorted(libraries, key=lambda x: x.label):
+            for library in sorted(libraries, key=lambda x: natural_sort_key(x.label)):
                 self._library_combo.addItem(library.label, userData=library)
         finally:
             self._in_refresh = False

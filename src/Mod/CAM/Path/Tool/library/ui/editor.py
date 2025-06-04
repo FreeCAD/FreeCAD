@@ -42,6 +42,7 @@ from ...shape.ui.shapeselector import ShapeSelector
 from ...toolbit import ToolBit
 from ...toolbit.serializers import all_serializers as toolbit_serializers
 from ...toolbit.ui import ToolBitEditor
+from ...toolbit.ui.util import natural_sort_key
 from ..serializers import all_serializers as library_serializers
 from ..models import Library
 from .browser import LibraryBrowserWidget
@@ -163,11 +164,10 @@ class LibraryEditor(QWidget):
             return self.listModel  # Return empty model on error
 
         # Sort by label for consistent ordering, falling back to asset_id if label is missing
-        def get_sort_key(library):
-            label = getattr(library, "label", None)
-            return label if label else library.get_id()
-
-        for library in sorted(libraries, key=get_sort_key):
+        for library in sorted(
+            libraries,
+            key=lambda library: natural_sort_key(library.label or library.get_id()),
+        ):
             lib_uri_str = str(library.get_uri())
             libItem = QStandardItem(library.label or library.get_id())
             libItem.setToolTip(f"ID: {library.get_id()}\nURI: {lib_uri_str}")

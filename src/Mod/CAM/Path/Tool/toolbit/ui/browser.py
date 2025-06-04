@@ -35,6 +35,7 @@ from ..models.base import ToolBit
 from ..serializers.yaml import YamlToolBitSerializer
 from .toollist import ToolBitListWidget, CompactToolBitListWidget, ToolBitUriRole
 from .editor import ToolBitEditor
+from .util import natural_sort_key
 
 
 Path.Log.setLevel(Path.Log.Level.INFO, Path.Log.thisModule())
@@ -175,7 +176,7 @@ class ToolBitBrowserWidget(QtGui.QWidget):
     def _sort_assets(self):
         """Sorts the in-memory assets based on the current sort key."""
         if self._sort_key == "label":
-            self._all_assets.sort(key=lambda x: x.label.lower())
+            self._all_assets.sort(key=lambda x: natural_sort_key(x.label))
         elif self._sort_key == "tool_no" and self._tool_no_factory:
             self._all_assets.sort(
                 key=lambda x: (int(self._tool_no_factory(x)) or 0) if self._tool_no_factory else 0
