@@ -1093,6 +1093,9 @@ public:
                         selSeq.clear();
                         resetOngoingSequences();
 
+                        // Re-arm hint for next operation
+                        updateHint();
+
                         return true;
                     }
                     _tempOnSequences.insert(*token);
