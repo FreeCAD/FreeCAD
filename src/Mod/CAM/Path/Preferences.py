@@ -54,6 +54,7 @@ PostProcessorOutputPolicy = "PostProcessorOutputPolicy"
 ToolGroup = PreferencesGroup + "/Tools"
 ToolPath = "ToolPath"
 LastToolLibrary = "LastToolLibrary"
+LastToolLibrarySortKey = "LastToolLibrarySortKey"
 
 # Linear tolerance to use when generating Paths, eg when tessellating geometry
 GeometryTolerance = "GeometryTolerance"
@@ -146,6 +147,16 @@ def setLastToolLibrary(name: str):
     assert isinstance(name, str), f"Library name '{name}' is not a string"
     pref = tool_preferences()
     pref.SetString(LastToolLibrary, name)
+
+
+def getLastToolLibrarySortKey() -> Optional[str]:
+    pref = tool_preferences()
+    return pref.GetString(LastToolLibrarySortKey) or None
+
+
+def setLastToolLibrarySortKey(name: str):
+    pref = tool_preferences()
+    pref.SetString(LastToolLibrarySortKey, name)
 
 
 def allAvailablePostProcessors():

@@ -66,6 +66,28 @@ class LibraryBrowserWidget(ToolBitBrowserWidget):
         self.current_library: Optional[Library] = None
         self.layout().setContentsMargins(0, 0, 0, 0)
 
+        self.restore_last_sort_order()
+        self.load_last_library()
+
+    def load_last_library(self):
+        """Loads the last selected library from preferences."""
+        library_uri = Path.Preferences.getLastToolLibrary()
+        if library_uri:
+            try:
+                library = self._asset_manager.get(library_uri, store="local", depth=1)
+                self.set_current_library(library)
+            except Exception as e:
+                Path.Log.warning(f"Failed to load last tool library: {e}")
+
+    def restore_last_sort_order(self):
+        """Sets the sort mode and updates the tool list."""
+        last_sort_key = Path.Preferences.getLastToolLibrarySortKey()
+        self.set_sort_order(last_sort_key)
+
+    def set_sort_order(self, key: str):
+        super().set_sort_order(key)
+        Path.Preferences.setLastToolLibrarySortKey(self._sort_key)
+
     def _get_state(self):
         """Gets the current library URI, selected toolbit URI, and scroll
         position."""
@@ -144,6 +166,9 @@ class LibraryBrowserWidget(ToolBitBrowserWidget):
         self.current_library = library
         self._update_tool_list()
         self.current_library_changed.emit()
+
+        # Save the selected library to preferences
+        Path.Preferences.setLastToolLibrary(str(library.get_uri()))
 
     def _update_tool_list(self):
         """Updates the tool list based on the current library."""
@@ -474,10 +499,15 @@ class LibraryBrowserWithCombo(LibraryBrowserWidget):
         self._top_layout.insertWidget(0, self._library_combo, 1)
         self._library_combo.currentIndexChanged.connect(self._on_library_combo_changed)
         self.current_library_changed.connect(self._on_current_library_changed)
+
+        self._in_refresh = False
         self.refresh()
 
     def _on_library_combo_changed(self, index):
         """Handles library selection change from the combo box."""
+        if self._in_refresh:
+            return
+
         selected_library = cast(Library, self._library_combo.itemData(index))
         if not selected_library:
             return
@@ -503,9 +533,13 @@ class LibraryBrowserWithCombo(LibraryBrowserWidget):
         """Reads available libraries and refreshes the combo box and toolbits."""
         Path.Log.debug("refresh(): Fetching and populating libraries and toolbits.")
         libraries = self._asset_manager.fetch("toolbitlibrary", store=self._store_name, depth=0)
-        self._library_combo.clear()
-        for library in sorted(libraries, key=lambda x: x.label):
-            self._library_combo.addItem(library.label, userData=library)
+        self._in_refresh = True
+        try:
+            self._library_combo.clear()
+            for library in sorted(libraries, key=lambda x: x.label):
+                self._library_combo.addItem(library.label, userData=library)
+        finally:
+            self._in_refresh = False
 
         if not libraries:
             return

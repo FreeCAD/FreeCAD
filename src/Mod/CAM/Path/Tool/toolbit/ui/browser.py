@@ -241,11 +241,22 @@ class ToolBitBrowserWidget(QtGui.QWidget):
         # Apply the filter to trigger highlighting in the list widget
         self._tool_list_widget.apply_filter(self._current_search)
 
-    def _on_sort_changed(self):
-        """Handles sort order change from the dropdown."""
-        self._sort_key = self._sort_combo.itemData(self._sort_combo.currentIndex())
+    def set_sort_order(self, key: str):
+        for i in range(self._sort_combo.count()):
+            if self._sort_combo.itemData(i) == key:
+                if self._sort_combo.currentIndex() != i:
+                    self._sort_combo.setCurrentIndex(i)
+                break
+        else:
+            return
+        self._sort_key = key
         self._sort_assets()
         self._update_list()
+
+    def _on_sort_changed(self):
+        """Handles sort order change from the dropdown."""
+        key = self._sort_combo.itemData(self._sort_combo.currentIndex())
+        self.set_sort_order(key)
 
     def _on_item_double_clicked(self, item):
         """Handles double-click on a list item to request editing."""

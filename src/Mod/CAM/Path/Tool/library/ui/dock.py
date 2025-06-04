@@ -87,7 +87,7 @@ class ToolBitLibraryDock(object):
         self.libraryEditorOpenButton.clicked.connect(self._open_editor)
         self.addToolControllerButton.clicked.connect(self._add_tool_controller_to_doc)
 
-        # Initial state of buttons
+        # Update the initial state of the UI
         self._update_state()
 
     def _count_jobs(self):
