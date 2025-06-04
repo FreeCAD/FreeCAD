@@ -181,9 +181,12 @@ def export(objectslist, filename, argstring):
     print("done postprocessing.")
 
     # Write the output
-    gfile = pyopen(filename, "w")
-    gfile.write(final)
-    gfile.close()
+    if not filename == "-":
+        gfile = pyopen(filename, "w")
+        gfile.write(final)
+        gfile.close()
+
+    return final
 
 
 def move(command):
@@ -356,7 +359,7 @@ def parse(pathobj):
                 output += scommands[command](c)
                 if c.Parameters:
                     CurrentState.update(c.Parameters)
-            elif command[0] == "(":
+            elif command.startswith("("):
                 output += "' " + command + "\n"
             else:
                 print("I don't know what the hell the command: ", end="")

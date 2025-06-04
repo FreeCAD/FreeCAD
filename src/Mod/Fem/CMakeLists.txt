@@ -1,6 +1,12 @@
 
 if(BUILD_FEM_VTK)
     add_definitions(-DFC_USE_VTK)
+
+    # we may use VTK but do not have the python wrappers available
+    if(BUILD_FEM_VTK_PYTHON)
+        add_definitions(-DFC_USE_VTK_PYTHON)
+    endif(BUILD_FEM_VTK_PYTHON)
+
 endif(BUILD_FEM_VTK)
 
 
@@ -203,8 +209,16 @@ SET(FemObjects_SRCS
     femobjects/mesh_region.py
     femobjects/mesh_result.py
     femobjects/result_mechanical.py
+    femobjects/solver_calculix.py
     femobjects/solver_ccxtools.py
 )
+
+if(BUILD_FEM_VTK_PYTHON)
+    SET(FemObjects_SRCS
+        ${FemObjects_SRCS}
+        femobjects/post_glyphfilter.py
+    )
+endif(BUILD_FEM_VTK_PYTHON)
 
 SET(FemResult_SRCS
     femresult/__init__.py
@@ -227,12 +241,15 @@ SET(FemSolver_SRCS
 
 SET(FemSolverCalculix_SRCS
     femsolver/calculix/__init__.py
+    femsolver/calculix/calculixtools.py
     femsolver/calculix/solver.py
     femsolver/calculix/tasks.py
     femsolver/calculix/write_constraint_bodyheatsource.py
     femsolver/calculix/write_constraint_centrif.py
     femsolver/calculix/write_constraint_contact.py
     femsolver/calculix/write_constraint_displacement.py
+    femsolver/calculix/write_constraint_electricchargedensity.py
+    femsolver/calculix/write_constraint_electrostatic.py
     femsolver/calculix/write_constraint_fixed.py
     femsolver/calculix/write_constraint_fluidsection.py
     femsolver/calculix/write_constraint_force.py
@@ -579,7 +596,7 @@ SET(FemGuiObjects_SRCS
 SET(FemGuiTaskPanels_SRCS
     femtaskpanels/__init__.py
     femtaskpanels/base_femtaskpanel.py
-    femtaskpanels/base_femmeshtaskpanel.py
+    femtaskpanels/base_femlogtaskpanel.py
     femtaskpanels/task_constraint_bodyheatsource.py
     femtaskpanels/task_constraint_centrif.py
     femtaskpanels/task_constraint_currentdensity.py
@@ -603,8 +620,16 @@ SET(FemGuiTaskPanels_SRCS
     femtaskpanels/task_mesh_region.py
     femtaskpanels/task_mesh_netgen.py
     femtaskpanels/task_result_mechanical.py
+    femtaskpanels/task_solver_calculix.py
     femtaskpanels/task_solver_ccxtools.py
 )
+
+if(BUILD_FEM_VTK_PYTHON)
+    SET(FemGuiTaskPanels_SRCS
+        ${FemGuiTaskPanels_SRCS}
+        femtaskpanels/task_post_glyphfilter.py
+    )
+endif(BUILD_FEM_VTK_PYTHON)
 
 SET(FemGuiTests_SRCS
     femtest/gui/__init__.py
@@ -616,6 +641,7 @@ SET(FemGuiUtils_SRCS
     femguiutils/disambiguate_solid_selection.py
     femguiutils/migrate_gui.py
     femguiutils/selection_widgets.py
+    femguiutils/vtk_module_handling.py
 )
 
 SET(FemGuiViewProvider_SRCS
@@ -652,8 +678,16 @@ SET(FemGuiViewProvider_SRCS
     femviewprovider/view_mesh_region.py
     femviewprovider/view_mesh_result.py
     femviewprovider/view_result_mechanical.py
+    femviewprovider/view_solver_calculix.py
     femviewprovider/view_solver_ccxtools.py
 )
+
+if(BUILD_FEM_VTK_PYTHON)
+    SET(FemGuiViewProvider_SRCS
+        ${FemGuiViewProvider_SRCS}
+        femviewprovider/view_post_glyphfilter.py
+    )
+endif(BUILD_FEM_VTK_PYTHON)
 
 SET(FemGuiPreferencePages_SRCS
     fempreferencepages/__init__.py

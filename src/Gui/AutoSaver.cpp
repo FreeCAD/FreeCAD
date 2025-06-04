@@ -222,7 +222,7 @@ void AutoSaver::saveDocument(const std::string& name, AutoSaveProperty& saver)
             }
         }
 
-        Base::Console().Log("Save AutoRecovery file in %fs\n", Base::TimeElapsed::diffTimeF(startTime,Base::TimeElapsed()));
+        Base::Console().log("Save AutoRecovery file in %fs\n", Base::TimeElapsed::diffTimeF(startTime,Base::TimeElapsed()));
         hGrp->SetBool("SaveThumbnail",save);
     }
 }
@@ -238,7 +238,7 @@ void AutoSaver::timerEvent(QTimerEvent * event)
                 break;
             }
             catch (...) {
-                Base::Console().Error("Failed to auto-save document '%s'\n", it.first.c_str());
+                Base::Console().error("Failed to auto-save document '%s'\n", it.first.c_str());
             }
         }
     }
@@ -344,17 +344,28 @@ public:
     }
     void run() override
     {
-        prop->SaveDocFile(writer);
-        writer.close();
+        try {
+            prop->SaveDocFile(writer);
+            writer.close();
 
-        // We could have renamed the file in this thread. However, there is
-        // still chance of crash when we deleted the original and before rename
-        // the new file. So we ask the main thread to do it. There is still
-        // possibility of crash caused by thread other than the main, but
-        // that's the best we can do for now.
-        QMetaObject::invokeMethod(AutoSaver::instance(), "renameFile",
-                Qt::QueuedConnection, Q_ARG(QString,dirName)
-                ,Q_ARG(QString,fileName),Q_ARG(QString,tmpName));
+            // We could have renamed the file in this thread. However, there is
+            // still chance of crash when we deleted the original and before rename
+            // the new file. So we ask the main thread to do it. There is still
+            // possibility of crash caused by thread other than the main, but
+            // that's the best we can do for now.
+            QMetaObject::invokeMethod(AutoSaver::instance(), "renameFile",
+                    Qt::QueuedConnection, Q_ARG(QString,dirName)
+                    ,Q_ARG(QString,fileName),Q_ARG(QString,tmpName));
+        }
+        catch (const Base::Exception& e) {
+            Base::Console().warning("Exception in auto-saving: %s\n", e.what());
+        }
+        catch (const std::exception& e) {
+            Base::Console().warning("C++ exception in auto-saving: %s\n", e.what());
+        }
+        catch (...) {
+            Base::Console().warning("Unknown exception in auto-saving\n");
+        }
     }
 
 private:

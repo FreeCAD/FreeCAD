@@ -206,6 +206,29 @@ def precision():
     return params.get_param("precision")
 
 
+def svg_precision():
+    """Return the precision value for SVG import from the parameter database.
+
+    It is the number of decimal places that a float will have.
+    Example
+    ::
+        precision=5, 0.12345
+        precision=4, 0.1234
+        precision=3, 0.123
+
+    Due to floating point operations there may be rounding errors.
+    Therefore, this precision number is used to round up values
+    so that all operations are consistent.
+    By default the precision is 3 decimal places.
+
+    Returns
+    -------
+    int
+        params.get_param("svgPrecision")
+    """
+    return params.get_param("svgPrecision")
+
+
 def tolerance():
     """Return a tolerance based on the precision() value
 
@@ -1044,5 +1067,70 @@ def pyopen(file, mode='r', buffering=-1, encoding=None, errors=None, newline=Non
     if encoding is None:
         encoding = 'utf-8'
     return open(file, mode, buffering, encoding, errors, newline, closefd, opener)
+
+def toggle_working_plane(obj, action=None, restore=False, dialog=None):
+    """Toggle the active state of a working plane object.
+
+    This function handles the common logic for activating and deactivating
+    working plane objects like BuildingParts and WorkingPlaneProxies.
+    It can be used by different modules that need to implement similar
+    working plane activation behavior.
+
+    Parameters
+    ----------
+    obj : App::DocumentObject
+        The object to activate or deactivate as a working plane.
+    action : QAction, optional
+        The action button that triggered this function, to update its checked state.
+    restore : bool, optional
+        If True, will restore the previous working plane when deactivating.
+        Defaults to False.
+    dialog : QDialog, optional
+        If provided, will update the checked state of the activate button in the dialog.
+
+    Returns
+    -------
+    bool
+        True if the object was activated, False if it was deactivated.
+    """
+    import FreeCADGui
+    import Draft
+    
+    # Determine the appropriate context based on object type
+    context = "Arch"
+    obj_type = get_type(obj)
+    if obj_type == "IfcBuildingStorey":
+        context = "NativeIFC"
+    
+    # Check if the object is already active in its context
+    is_active_arch = (FreeCADGui.ActiveDocument.ActiveView.getActiveObject("Arch") == obj)
+    is_active_ifc = (FreeCADGui.ActiveDocument.ActiveView.getActiveObject("NativeIFC") == obj)
+    is_active = is_active_arch or is_active_ifc
+    if is_active:
+        # Deactivate the object
+        if is_active_arch:
+            FreeCADGui.ActiveDocument.ActiveView.setActiveObject("Arch", None)
+        if is_active_ifc:
+            FreeCADGui.ActiveDocument.ActiveView.setActiveObject("NativeIFC", None)
+
+        if hasattr(obj, "ViewObject") and hasattr(obj.ViewObject, "Proxy") and \
+           hasattr(obj.ViewObject.Proxy, "setWorkingPlane"):
+            obj.ViewObject.Proxy.setWorkingPlane(restore=True)
+        if action:
+            action.setChecked(False)
+        if dialog and hasattr(dialog, "buttonActive"):
+            dialog.buttonActive.setChecked(False)
+        return False
+    else:
+        # Activate the object
+        FreeCADGui.ActiveDocument.ActiveView.setActiveObject(context, obj)
+        if hasattr(obj, "ViewObject") and hasattr(obj.ViewObject, "Proxy") and \
+           hasattr(obj.ViewObject.Proxy, "setWorkingPlane"):
+            obj.ViewObject.Proxy.setWorkingPlane()
+        if action:
+            action.setChecked(True)
+        if dialog and hasattr(dialog, "buttonActive"):
+            dialog.buttonActive.setChecked(True)
+        return True
 
 ## @}

@@ -605,7 +605,7 @@ class BIM_Classification:
                                     obj.StandardCode = code
                             elif hasattr(obj, "IfcClass"):
                                 if not "Classification" in obj.PropertiesList:
-                                    obj.addProperty("App::PropertyString", "Classification", "IFC")
+                                    obj.addProperty("App::PropertyString", "Classification", "IFC", locked=True)
                                 if code != obj.Classification:
                                     if not changed:
                                         FreeCAD.ActiveDocument.openTransaction(
@@ -624,6 +624,12 @@ class BIM_Classification:
                 FreeCAD.ActiveDocument.commitTransaction()
                 FreeCAD.ActiveDocument.recompute()
         else:
+            # Close the form if user has pressed Enter and did not
+            # select anything
+            if len(self.form.treeClass.selectedItems()) < 1:
+                self.form.close()
+                return
+
             code = self.form.treeClass.selectedItems()[0].text(0)
             pl = self.isEditing.PropertiesList
             if ("StandardCode" in pl) or ("IfcClass" in pl):
@@ -634,7 +640,7 @@ class BIM_Classification:
                     self.isEditing.StandardCode = code
                 else:
                     if not "Classification" in self.isEditing.PropertiesList:
-                        self.isEditing.addProperty("App::PropertyString", "Classification", "IFC")
+                        self.isEditing.addProperty("App::PropertyString", "Classification", "IFC", locked=True)
                     self.isEditing.Classification = code
                 if hasattr(self.isEditing.ViewObject, "Proxy") and hasattr(
                     self.isEditing.ViewObject.Proxy, "setTaskValue"

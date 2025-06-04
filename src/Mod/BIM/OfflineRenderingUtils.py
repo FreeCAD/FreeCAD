@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
 # ***************************************************************************
@@ -911,7 +909,7 @@ def saveiv(scene,filename):
     wa=coin.SoWriteAction()
     wa.getOutput().openFile(filename)
     wa.getOutput().setBinary(False)
-    wa.apply(sc)
+    wa.apply(scene)
     wa.getOutput().closeFile()
 
 

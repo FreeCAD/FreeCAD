@@ -317,8 +317,7 @@ void DlgPreferencesImp::createPageInGroup(PreferencesPageItem *groupItem, const 
         PreferencePage* page = createPreferencePage(pageName, groupItem->data(GroupNameRole).toString().toStdString());
 
         if (!page) {
-            Base::Console().Warning("%s is not a preference page\n", pageName.c_str());
-
+            Base::Console().warning("%s is not a preference page\n", pageName.c_str());
             return;
         }
 
@@ -344,11 +343,11 @@ void DlgPreferencesImp::createPageInGroup(PreferencesPageItem *groupItem, const 
         addSizeHint(page);
     }
     catch (const Base::Exception& e) {
-        Base::Console().Error("Base exception thrown for '%s'\n", pageName.c_str());
-        e.ReportException();
+        Base::Console().error("Base exception thrown for '%s'\n", pageName.c_str());
+        e.reportException();
     }
     catch (const std::exception& e) {
-        Base::Console().Error("C++ exception thrown for '%s' (%s)\n", pageName.c_str(), e.what());
+        Base::Console().error("C++ exception thrown for '%s' (%s)\n", pageName.c_str(), e.what());
     }
 }
 
@@ -366,18 +365,9 @@ int DlgPreferencesImp::minimumDialogWidth(int pageWidth) const
 {
     // this is additional safety spacing to ensure that everything fits with scrollbar etc.
     const auto additionalMargin = style()->pixelMetric(QStyle::PM_ScrollBarExtent) + 8;
-    
-    QSize size = ui->groupWidgetStack->sizeHint();
 
-    int diff = pageWidth - size.width();
-    int dw = width();
-
-    if (diff > 0) {
-        const int offset = 2;
-        dw += diff + offset;
-    }
-
-    return dw + additionalMargin;
+    QSize tree = ui->groupsTreeView->sizeHint();
+    return pageWidth + tree.width() + additionalMargin;
 }
 
 void DlgPreferencesImp::updatePageDependentWidgets()
@@ -909,7 +899,7 @@ void DlgPreferencesImp::onStackWidgetChange(int index)
         ui->groupsTreeView->expand(parentItem->index());
         parentItem->setExpanded(wasExpanded);
     }
-    
+
     ui->groupsTreeView->selectionModel()->select(currentIndex, QItemSelectionModel::ClearAndSelect);
 }
 

@@ -31,6 +31,9 @@
 # include <Inventor/nodes/SoSwitch.h>
 #endif // _PreComp_
 
+#include <QEvent>
+#include <QKeyEvent>
+
 #include <Gui/Application.h>
 #include <Gui/View3DInventor.h>
 #include <Gui/View3DInventorViewer.h>
@@ -52,6 +55,7 @@ EditableDatumLabel::EditableDatumLabel(View3DInventorViewer* view,
                                        bool autoDistance,
                                        bool avoidMouseCursor)
     : isSet(false)
+    , hasFinishedEditing(false)
     , autoDistance(autoDistance)
     , autoDistanceReverse(false)
     , avoidMouseCursor(avoidMouseCursor)
@@ -156,8 +160,11 @@ void EditableDatumLabel::startEdit(double val, QObject* eventFilteringObj, bool 
     spinBox->setMinimum(-std::numeric_limits<int>::max());
     spinBox->setMaximum(std::numeric_limits<int>::max());
     spinBox->setButtonSymbols(QAbstractSpinBox::NoButtons);
-    spinBox->setKeyboardTracking(false);
     spinBox->setFocusPolicy(Qt::ClickFocus); // prevent passing focus with tab.
+    spinBox->setAutoNormalize(false);
+    spinBox->setKeyboardTracking(true);
+    spinBox->installEventFilter(this);
+
     if (eventFilteringObj) {
         spinBox->installEventFilter(eventFilteringObj);
     }
@@ -172,12 +179,37 @@ void EditableDatumLabel::startEdit(double val, QObject* eventFilteringObj, bool 
     spinBox->adjustSize();
     setFocusToSpinbox();
 
-    connect(spinBox, qOverload<double>(&QuantitySpinBox::valueChanged),
-        this, [this](double value) {
-        this->isSet = true;
-        this->value = value;
+    const auto validateAndFinish = [this]() {
+        // this event can be fired after spinBox was already disposed
+        // in such case we need to skip processing that event
+        if (!spinBox) {
+            return;
+        }
+
+        isSet = true;
+        value = spinBox->rawValue();
+
         Q_EMIT this->valueChanged(value);
-    });
+    };
+
+    connect(spinBox, qOverload<double>(&QuantitySpinBox::valueChanged), this, validateAndFinish);
+}
+
+bool EditableDatumLabel::eventFilter(QObject* watched, QEvent* event)
+{
+    if (event->type() == QEvent::KeyPress) {
+        auto* keyEvent = static_cast<QKeyEvent*>(event);
+        if (keyEvent->key() == Qt::Key_Return || keyEvent->key() == Qt::Key_Enter) {
+
+            if (auto* spinBox = qobject_cast<QAbstractSpinBox*>(watched)) {
+                this->hasFinishedEditing = true;
+                Q_EMIT this->valueChanged(this->value);
+                return false;
+            }
+        }
+    }
+
+    return QObject::eventFilter(watched, event);
 }
 
 void EditableDatumLabel::stopEdit()
@@ -217,7 +249,7 @@ double EditableDatumLabel::getValue() const
 void EditableDatumLabel::setSpinboxValue(double val, const Base::Unit& unit)
 {
     if (!spinBox) {
-        Base::Console().DeveloperWarning("EditableDatumLabel::setSpinboxValue", "Spinbox doesn't exist in");
+        Base::Console().developerWarning("EditableDatumLabel::setSpinboxValue", "Spinbox doesn't exist in");
         return;
     }
 
@@ -234,7 +266,7 @@ void EditableDatumLabel::setSpinboxValue(double val, const Base::Unit& unit)
 void EditableDatumLabel::setFocusToSpinbox()
 {
     if (!spinBox) {
-        Base::Console().DeveloperWarning("EditableDatumLabel::setFocusToSpinbox", "Spinbox doesn't exist in");
+        Base::Console().developerWarning("EditableDatumLabel::setFocusToSpinbox", "Spinbox doesn't exist in");
         return;
     }
     if (!spinBox->hasFocus()) {

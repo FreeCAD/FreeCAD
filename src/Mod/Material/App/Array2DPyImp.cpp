@@ -106,7 +106,7 @@ void Array2DPy::setColumns(Py::Long arg)
     getArray2DPtr()->setColumns(arg);
 }
 
-PyObject* Array2DPy::getRow(PyObject* args)
+PyObject* Array2DPy::getRow(PyObject* args) const
 {
     int row;
     if (!PyArg_ParseTuple(args, "i", &row)) {
@@ -132,7 +132,7 @@ PyObject* Array2DPy::getRow(PyObject* args)
     return nullptr;
 }
 
-PyObject* Array2DPy::getValue(PyObject* args)
+PyObject* Array2DPy::getValue(PyObject* args) const
 {
     int row;
     int column;
@@ -159,7 +159,9 @@ PyObject* Array2DPy::setValue(PyObject* args)
     if (PyArg_ParseTuple(args, "iiO!", &row, &column, &PyUnicode_Type, &valueObj)) {
         Py::String item(valueObj);
         try {
-            QVariant variant = QVariant::fromValue(Base::Quantity::parse(item.as_string()));
+            auto quantity = Base::Quantity::parse(item.as_string());
+            quantity.setFormat(MaterialValue::getQuantityFormat());
+            QVariant variant = QVariant::fromValue(quantity);
             getArray2DPtr()->setValue(row, column, variant);
         }
         catch (const InvalidIndex&) {

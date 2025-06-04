@@ -36,6 +36,7 @@
 
 #include "QGCustomText.h"
 #include "QGIView.h"
+#include "QGIUserTypes.h"
 #include "Rez.h"
 
 
@@ -65,7 +66,7 @@ class TechDrawGuiExport QGIViewDimension : public QGIView
     Q_OBJECT
 
 public:
-    enum {Type = QGraphicsItem::UserType + 106};
+    enum {Type = UserType::QGIViewDimension};
 
     QGIViewDimension();
     ~QGIViewDimension() override = default;

@@ -97,7 +97,7 @@ class Array(DraftLink):
         if "Base" not in properties:
             _tip = QT_TRANSLATE_NOOP("App::Property",
                                      "The base object that will be duplicated")
-            obj.addProperty("App::PropertyLink", "Base", "Objects", _tip)
+            obj.addProperty("App::PropertyLink", "Base", "Objects", _tip, locked=True)
             obj.Base = None
 
         if "ArrayType" not in properties:
@@ -116,7 +116,8 @@ class Array(DraftLink):
             obj.addProperty("App::PropertyEnumeration",
                             "ArrayType",
                             "Objects",
-                            _tip)
+                            _tip,
+                            locked=True)
             obj.ArrayType = ['ortho', 'polar', 'circular']
 
         if "Fuse" not in properties:
@@ -127,7 +128,8 @@ class Array(DraftLink):
             obj.addProperty("App::PropertyBool",
                             "Fuse",
                             "Objects",
-                            _tip)
+                            _tip,
+                            locked=True)
             obj.Fuse = False
 
         if "Count" not in properties:
@@ -140,7 +142,8 @@ class Array(DraftLink):
             obj.addProperty("App::PropertyInteger",
                             "Count",
                             "Objects",
-                            _tip)
+                            _tip,
+                            locked=True)
             obj.Count = 0
             obj.setEditorMode("Count", 1)  # Read only
 
@@ -151,7 +154,8 @@ class Array(DraftLink):
                 obj.addProperty("App::PropertyPlacementList",
                                 "PlacementList",
                                 "Objects",
-                                _tip)
+                                _tip,
+                                locked=True)
                 obj.PlacementList = []
 
     def set_ortho_properties(self, obj):
@@ -164,7 +168,8 @@ class Array(DraftLink):
             obj.addProperty("App::PropertyInteger",
                             "NumberX",
                             "Orthogonal array",
-                            _tip)
+                            _tip,
+                            locked=True)
             obj.NumberX = 2
 
         if "NumberY" not in properties:
@@ -173,7 +178,8 @@ class Array(DraftLink):
             obj.addProperty("App::PropertyInteger",
                             "NumberY",
                             "Orthogonal array",
-                            _tip)
+                            _tip,
+                            locked=True)
             obj.NumberY = 2
 
         if "NumberZ" not in properties:
@@ -182,7 +188,8 @@ class Array(DraftLink):
             obj.addProperty("App::PropertyInteger",
                             "NumberZ",
                             "Orthogonal array",
-                            _tip)
+                            _tip,
+                            locked=True)
             obj.NumberZ = 1
 
         if "IntervalX" not in properties:
@@ -192,7 +199,8 @@ class Array(DraftLink):
             obj.addProperty("App::PropertyVectorDistance",
                             "IntervalX",
                             "Orthogonal array",
-                            _tip)
+                            _tip,
+                            locked=True)
             obj.IntervalX = App.Vector(50, 0, 0)
 
         if "IntervalY" not in properties:
@@ -202,7 +210,8 @@ class Array(DraftLink):
             obj.addProperty("App::PropertyVectorDistance",
                             "IntervalY",
                             "Orthogonal array",
-                            _tip)
+                            _tip,
+                            locked=True)
             obj.IntervalY = App.Vector(0, 50, 0)
 
         if "IntervalZ" not in properties:
@@ -212,7 +221,8 @@ class Array(DraftLink):
             obj.addProperty("App::PropertyVectorDistance",
                             "IntervalZ",
                             "Orthogonal array",
-                            _tip)
+                            _tip,
+                            locked=True)
             obj.IntervalZ = App.Vector(0, 0, 50)
 
     def set_polar_circular_properties(self, obj):
@@ -227,7 +237,8 @@ class Array(DraftLink):
             obj.addProperty("App::PropertyVector",
                             "Axis",
                             "Polar/circular array",
-                            _tip)
+                            _tip,
+                            locked=True)
             obj.Axis = App.Vector(0, 0, 1)
 
         if "Center" not in properties:
@@ -238,7 +249,8 @@ class Array(DraftLink):
             obj.addProperty("App::PropertyVectorDistance",
                             "Center",
                             "Polar/circular array",
-                            _tip)
+                            _tip,
+                            locked=True)
             obj.Center = App.Vector(0, 0, 0)
 
         # The AxisReference property must be attached after Axis and Center
@@ -257,7 +269,8 @@ class Array(DraftLink):
             obj.addProperty("App::PropertyLinkGlobal",
                             "AxisReference",
                             "Objects",
-                            _tip)
+                            _tip,
+                            locked=True)
             obj.AxisReference = None
 
     def set_polar_properties(self, obj):
@@ -270,7 +283,8 @@ class Array(DraftLink):
             obj.addProperty("App::PropertyInteger",
                             "NumberPolar",
                             "Polar array",
-                            _tip)
+                            _tip,
+                            locked=True)
             obj.NumberPolar = 5
 
         if "IntervalAxis" not in properties:
@@ -280,7 +294,8 @@ class Array(DraftLink):
             obj.addProperty("App::PropertyVectorDistance",
                             "IntervalAxis",
                             "Polar array",
-                            _tip)
+                            _tip,
+                            locked=True)
             obj.IntervalAxis = App.Vector(0, 0, 0)
 
         if "Angle" not in properties:
@@ -289,7 +304,8 @@ class Array(DraftLink):
             obj.addProperty("App::PropertyAngle",
                             "Angle",
                             "Polar array",
-                            _tip)
+                            _tip,
+                            locked=True)
             obj.Angle = 360
 
     def set_circular_properties(self, obj):
@@ -302,7 +318,8 @@ class Array(DraftLink):
             obj.addProperty("App::PropertyDistance",
                             "RadialDistance",
                             "Circular array",
-                            _tip)
+                            _tip,
+                            locked=True)
             obj.RadialDistance = 50
 
         if "TangentialDistance" not in properties:
@@ -312,7 +329,8 @@ class Array(DraftLink):
             obj.addProperty("App::PropertyDistance",
                             "TangentialDistance",
                             "Circular array",
-                            _tip)
+                            _tip,
+                            locked=True)
             obj.TangentialDistance = 25
 
         if "NumberCircles" not in properties:
@@ -322,7 +340,8 @@ class Array(DraftLink):
             obj.addProperty("App::PropertyInteger",
                             "NumberCircles",
                             "Circular array",
-                            _tip)
+                            _tip,
+                            locked=True)
             obj.NumberCircles = 3
 
         if "Symmetry" not in properties:
@@ -333,7 +352,8 @@ class Array(DraftLink):
             obj.addProperty("App::PropertyInteger",
                             "Symmetry",
                             "Circular array",
-                            _tip)
+                            _tip,
+                            locked=True)
             obj.Symmetry = 1
 
     def set_link_properties(self, obj):
@@ -348,7 +368,8 @@ class Array(DraftLink):
                 obj.addProperty("App::PropertyBool",
                                 "ExpandArray",
                                 "Objects",
-                                _tip)
+                                _tip,
+                                locked=True)
                 obj.ExpandArray = False
 
     def linkSetup(self, obj):

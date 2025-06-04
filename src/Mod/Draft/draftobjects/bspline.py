@@ -43,18 +43,18 @@ class BSpline(DraftObject):
 
         _tip =  QT_TRANSLATE_NOOP("App::Property",
                 "The points of the B-spline")
-        obj.addProperty("App::PropertyVectorList","Points", "Draft", _tip)
+        obj.addProperty("App::PropertyVectorList","Points", "Draft", _tip, locked=True)
 
         _tip = QT_TRANSLATE_NOOP("App::Property",
                 "If the B-spline is closed or not")
-        obj.addProperty("App::PropertyBool","Closed", "Draft", _tip)
+        obj.addProperty("App::PropertyBool","Closed", "Draft", _tip, locked=True)
 
         _tip = QT_TRANSLATE_NOOP("App::Property",
                 "Create a face if this spline is closed")
-        obj.addProperty("App::PropertyBool","MakeFace", "Draft",_tip)
+        obj.addProperty("App::PropertyBool","MakeFace", "Draft",_tip, locked=True)
 
         _tip = QT_TRANSLATE_NOOP("App::Property", "The area of this object")
-        obj.addProperty("App::PropertyArea","Area", "Draft", _tip)
+        obj.addProperty("App::PropertyArea","Area", "Draft", _tip, locked=True)
 
         obj.MakeFace = params.get_param("MakeFaceMode")
         obj.Closed = False
@@ -70,7 +70,7 @@ class BSpline(DraftObject):
     def assureProperties(self, obj): # for Compatibility with older versions
         if not hasattr(obj, "Parameterization"):
             _tip = QT_TRANSLATE_NOOP("App::Property","Parameterization factor")
-            obj.addProperty("App::PropertyFloat", "Parameterization", "Draft", _tip)
+            obj.addProperty("App::PropertyFloat", "Parameterization", "Draft", _tip, locked=True)
             obj.Parameterization = 1.0
             self.knotSeq = []
 

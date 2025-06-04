@@ -179,6 +179,7 @@ class Joint:
             "JointType",
             "Joint",
             QT_TRANSLATE_NOOP("App::Property", "The type of the joint"),
+            locked=True,
         )
         joint.JointType = JointTypes  # sets the list
         joint.JointType = JointTypes[type_index]  # set the initial value
@@ -203,6 +204,7 @@ class Joint:
                 "Reference1",
                 "Joint Connector 1",
                 QT_TRANSLATE_NOOP("App::Property", "The first reference of the joint"),
+                locked=True,
             )
 
         if not hasattr(joint, "Placement1"):
@@ -214,6 +216,7 @@ class Joint:
                     "App::Property",
                     "This is the local coordinate system within Reference1's object that will be used for the joint.",
                 ),
+                locked=True,
             )
 
         if not hasattr(joint, "Detach1"):
@@ -225,6 +228,7 @@ class Joint:
                     "App::Property",
                     "This prevents Placement1 from recomputing, enabling custom positioning of the placement.",
                 ),
+                locked=True,
             )
 
         if not hasattr(joint, "Offset1"):
@@ -236,6 +240,7 @@ class Joint:
                     "App::Property",
                     "This is the attachment offset of the first connector of the joint.",
                 ),
+                locked=True,
             )
 
         # Second Joint Connector
@@ -245,6 +250,7 @@ class Joint:
                 "Reference2",
                 "Joint Connector 2",
                 QT_TRANSLATE_NOOP("App::Property", "The second reference of the joint"),
+                locked=True,
             )
 
         if not hasattr(joint, "Placement2"):
@@ -256,6 +262,7 @@ class Joint:
                     "App::Property",
                     "This is the local coordinate system within Reference2's object that will be used for the joint.",
                 ),
+                locked=True,
             )
 
         if not hasattr(joint, "Detach2"):
@@ -267,6 +274,7 @@ class Joint:
                     "App::Property",
                     "This prevents Placement2 from recomputing, enabling custom positioning of the placement.",
                 ),
+                locked=True,
             )
 
         if not hasattr(joint, "Offset2"):
@@ -278,6 +286,7 @@ class Joint:
                     "App::Property",
                     "This is the attachment offset of the second connector of the joint.",
                 ),
+                locked=True,
             )
 
         # Other properties
@@ -290,6 +299,7 @@ class Joint:
                     "App::Property",
                     "This is the distance of the joint. It is used only by the Distance joint and Rack and Pinion (pitch radius), Screw and Gears and Belt (radius1)",
                 ),
+                locked=True,
             )
 
         if not hasattr(joint, "Distance2"):
@@ -301,6 +311,7 @@ class Joint:
                     "App::Property",
                     "This is the second distance of the joint. It is used only by the gear joint to store the second radius.",
                 ),
+                locked=True,
             )
 
         if not hasattr(joint, "Activated"):
@@ -312,6 +323,7 @@ class Joint:
                     "App::Property",
                     "This indicates if the joint is active.",
                 ),
+                locked=True,
             )
             joint.Activated = True
 
@@ -324,6 +336,7 @@ class Joint:
                     "App::Property",
                     "Enable the minimum length limit of the joint.",
                 ),
+                locked=True,
             )
             joint.EnableLengthMin = False
 
@@ -336,6 +349,7 @@ class Joint:
                     "App::Property",
                     "Enable the maximum length limit of the joint.",
                 ),
+                locked=True,
             )
             joint.EnableLengthMax = False
 
@@ -348,6 +362,7 @@ class Joint:
                     "App::Property",
                     "Enable the minimum angle limit of the joint.",
                 ),
+                locked=True,
             )
             joint.EnableAngleMin = False
 
@@ -360,6 +375,7 @@ class Joint:
                     "App::Property",
                     "Enable the minimum length of the joint.",
                 ),
+                locked=True,
             )
             joint.EnableAngleMax = False
 
@@ -372,6 +388,7 @@ class Joint:
                     "App::Property",
                     "This is the minimum limit for the length between both coordinate systems (along their Z axis).",
                 ),
+                locked=True,
             )
 
         if not hasattr(joint, "LengthMax"):
@@ -383,6 +400,7 @@ class Joint:
                     "App::Property",
                     "This is the maximum limit for the length between both coordinate systems (along their Z axis).",
                 ),
+                locked=True,
             )
 
         if not hasattr(joint, "AngleMin"):
@@ -394,6 +412,7 @@ class Joint:
                     "App::Property",
                     "This is the minimum limit for the angle between both coordinate systems (between their X axis).",
                 ),
+                locked=True,
             )
 
         if not hasattr(joint, "AngleMax"):
@@ -405,6 +424,7 @@ class Joint:
                     "App::Property",
                     "This is the maximum limit for the angle between both coordinate systems (between their X axis).",
                 ),
+                locked=True,
             )
 
     def migrationScript(self, joint):
@@ -423,6 +443,7 @@ class Joint:
                 "Object1",
                 "Joint Connector 1",
                 QT_TRANSLATE_NOOP("App::Property", "The first object of the joint"),
+                locked=True,
             )
 
             joint.Object1 = [obj1, [el1, vtx1]]
@@ -442,6 +463,7 @@ class Joint:
                 "Object2",
                 "Joint Connector 2",
                 QT_TRANSLATE_NOOP("App::Property", "The second object of the joint"),
+                locked=True,
             )
 
             joint.Object2 = [obj2, [el2, vtx2]]
@@ -455,6 +477,7 @@ class Joint:
                         reference_attr,
                         connector_label,
                         QT_TRANSLATE_NOOP("App::Property", f"The {order} reference of the joint"),
+                        locked=True,
                     )
 
                     obj = getattr(joint, object_attr)
@@ -501,6 +524,7 @@ class Joint:
                     "App::Property",
                     "This is the attachment offset of the first connector of the joint.",
                 ),
+                locked=True,
             )
 
             joint.addProperty(
@@ -511,6 +535,7 @@ class Joint:
                     "App::Property",
                     "This is the attachment offset of the second connector of the joint.",
                 ),
+                locked=True,
             )
 
             joint.Offset2 = App.Placement(current_offset, App.Rotation(current_rotation, 0, 0))
@@ -966,6 +991,7 @@ class GroundedJoint:
             "ObjectToGround",
             "Ground",
             QT_TRANSLATE_NOOP("App::Property", "The object to ground"),
+            locked=True,
         )
 
         joint.ObjectToGround = obj_to_ground

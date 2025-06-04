@@ -45,7 +45,6 @@ TYPESYSTEM_SOURCE(Materials::MaterialLibrary, Base::BaseClass)
 
 MaterialLibrary::MaterialLibrary(const QString& libraryName, const QString& icon, bool readOnly)
     : Library(libraryName, icon, readOnly)
-    , _local(false)
 {}
 
 MaterialLibrary::MaterialLibrary(const QString& libraryName,
@@ -53,31 +52,24 @@ MaterialLibrary::MaterialLibrary(const QString& libraryName,
                                  const QString& icon,
                                  bool readOnly)
     : Library(libraryName, dir, icon, readOnly)
-    , _local(false)
 {}
 
-bool MaterialLibrary::isLocal() const
-{
-    return _local;
-}
-
-void MaterialLibrary::setLocal(bool local)
-{
-    _local = local;
-}
+MaterialLibrary::MaterialLibrary(const Library& library)
+    : Library(library)
+{}
 
 std::shared_ptr<std::map<QString, std::shared_ptr<MaterialTreeNode>>>
-MaterialLibrary::getMaterialTree(const std::shared_ptr<Materials::MaterialFilter>& filter,
+MaterialLibrary::getMaterialTree(const Materials::MaterialFilter& filter,
                                  const Materials::MaterialFilterOptions& options) const
 {
     std::shared_ptr<std::map<QString, std::shared_ptr<MaterialTreeNode>>> materialTree =
         std::make_shared<std::map<QString, std::shared_ptr<MaterialTreeNode>>>();
 
-    auto materials = MaterialManager::getManager().libraryMaterials(getName(), filter, options);
+    auto materials = MaterialManager::getManager().libraryMaterials(getName(), filter, options, isLocal());
     for (auto& it : *materials) {
-        auto uuid = std::get<0>(it);
-        auto path = std::get<1>(it);
-        auto filename = std::get<2>(it);
+        auto uuid = it.getUUID();
+        auto path = it.getPath();
+        auto filename = it.getName();
 
         QStringList list = path.split(QStringLiteral("/"));
 
@@ -87,12 +79,13 @@ MaterialLibrary::getMaterialTree(const std::shared_ptr<Materials::MaterialFilter
         for (auto& itp : list) {
             if (!itp.isEmpty()) {
                 // Add the folder only if it's not already there
-                if (node->count(itp) == 0) {
+                if (!node->contains(itp)) {
                     auto mapPtr = std::make_shared<
                         std::map<QString, std::shared_ptr<MaterialTreeNode>>>();
                     std::shared_ptr<MaterialTreeNode> child =
                         std::make_shared<MaterialTreeNode>();
                     child->setFolder(mapPtr);
+                    child->setReadOnly(isReadOnly());
                     (*node)[itp] = child;
                     node = mapPtr;
                 }
@@ -103,6 +96,11 @@ MaterialLibrary::getMaterialTree(const std::shared_ptr<Materials::MaterialFilter
         }
         std::shared_ptr<MaterialTreeNode> child = std::make_shared<MaterialTreeNode>();
         child->setUUID(uuid);
+        child->setReadOnly(isReadOnly());
+        if (isLocal()) {
+            auto material = MaterialManager::getManager().getMaterial(uuid);
+            child->setOldFormat(material->isOldFormat());
+        }
         (*node)[filename] = child;
     }
 
@@ -120,7 +118,7 @@ MaterialLibrary::getMaterialTree(const std::shared_ptr<Materials::MaterialFilter
     //             auto node = materialTree;
     //             for (auto& itp : list) {
     //                 // Add the folder only if it's not already there
-    //                 if (node->count(itp) == 0) {
+    //                 if (!node->contains(itp)) {
     //                     std::shared_ptr<std::map<QString, std::shared_ptr<MaterialTreeNode>>>
     //                         mapPtr = std::make_shared<
     //                             std::map<QString, std::shared_ptr<MaterialTreeNode>>>();
@@ -162,7 +160,7 @@ void MaterialLibraryLocal::createFolder(const QString& path)
     QDir fileDir(filePath);
     if (!fileDir.exists()) {
         if (!fileDir.mkpath(filePath)) {
-            Base::Console().Error("Unable to create directory path '%s'\n",
+            Base::Console().error("Unable to create directory path '%s'\n",
                                   filePath.toStdString().c_str());
         }
     }
@@ -176,7 +174,7 @@ void MaterialLibraryLocal::renameFolder(const QString& oldPath, const QString& n
     QDir fileDir(filePath);
     if (fileDir.exists()) {
         if (!fileDir.rename(filePath, newFilePath)) {
-            Base::Console().Error("Unable to rename directory path '%s'\n",
+            Base::Console().error("Unable to rename directory path '%s'\n",
                                   filePath.toStdString().c_str());
         }
     }
@@ -191,7 +189,7 @@ void MaterialLibraryLocal::deleteRecursive(const QString& path)
     }
 
     QString filePath = getLocalPath(path);
-    auto manager = MaterialManager::getManager();
+    auto& manager = MaterialManager::getManager();
 
     QFileInfo info(filePath);
     if (info.isDir()) {
@@ -252,7 +250,7 @@ void MaterialLibraryLocal::deleteFile(MaterialManager& manager, const QString& p
             manager.remove(material->getUUID());
         }
         catch (const MaterialNotFound&) {
-            Base::Console().Log("Unable to remove file from materials list\n");
+            Base::Console().log("Unable to remove file from materials list\n");
         }
         _materialPathMap->erase(rPath);
     }
@@ -295,14 +293,14 @@ MaterialLibraryLocal::saveMaterial(const std::shared_ptr<Material>& material,
     QDir fileDir(info.path());
     if (!fileDir.exists()) {
         if (!fileDir.mkpath(info.path())) {
-            Base::Console().Error("Unable to create directory path '%s'\n",
+            Base::Console().error("Unable to create directory path '%s'\n",
                                   info.path().toStdString().c_str());
         }
     }
 
     if (info.exists()) {
         if (!overwrite) {
-            Base::Console().Error("File already exists '%s'\n", info.path().toStdString().c_str());
+            Base::Console().error("File already exists '%s'\n", info.path().toStdString().c_str());
             throw MaterialExists();
         }
     }

@@ -177,7 +177,7 @@ void TaskHelixParameters::showCoordinateAxes()
             vpOrigin->setTemporaryVisibility(Gui::DatumElement::Axes);
         }
         catch (const Base::Exception& ex) {
-            ex.ReportException();
+            ex.reportException();
         }
     }
 }
@@ -239,7 +239,7 @@ void TaskHelixParameters::addPartAxes()
             addAxisToCombo(orig->getZ(), "", tr("Base Z axis"));
         }
         catch (const Base::Exception& ex) {
-            ex.ReportException();
+            ex.reportException();
         }
     }
 }
@@ -496,7 +496,7 @@ void TaskHelixParameters::onAxisChanged(int num)
     }
     else {
         if (!helix->getDocument()->isIn(lnk.getValue())) {
-            Base::Console().Error("Object was deleted\n");
+            Base::Console().error("Object was deleted\n");
             return;
         }
         propReferenceAxis->Paste(lnk);
@@ -528,7 +528,7 @@ void TaskHelixParameters::onAxisChanged(int num)
         updateStatus();
     }
     catch (const Base::Exception& e) {
-        e.ReportException();
+        e.reportException();
     }
 }
 
@@ -589,7 +589,7 @@ TaskHelixParameters::~TaskHelixParameters()
         }
     }
     catch (const Base::Exception& ex) {
-        ex.ReportException();
+        ex.reportException();
     }
 }
 

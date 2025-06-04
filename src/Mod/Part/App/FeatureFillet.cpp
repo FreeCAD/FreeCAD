@@ -54,8 +54,8 @@ App::DocumentObjectExecReturn *Fillet::execute()
 #if defined(__GNUC__) && defined (FC_OS_LINUX)
         Base::SignalException se;
 #endif
-        auto baseShape = Feature::getShape(link);
-        TopoShape baseTopoShape = Feature::getTopoShape(link);
+        auto baseShape = Feature::getShape(link, ShapeOption::ResolveLink | ShapeOption::Transform);
+        TopoShape baseTopoShape = Feature::getTopoShape(link, ShapeOption::ResolveLink | ShapeOption::Transform);
         BRepFilletAPI_MakeFillet mkFillet(baseShape);
         TopTools_IndexedMapOfShape mapOfShape;
         TopExp::MapShapes(baseShape, TopAbs_EDGE, mapOfShape);

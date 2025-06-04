@@ -29,7 +29,7 @@
 #include <App/Document.h>
 #include <Base/Console.h>
 #include <Base/Exception.h>
-#include <Gui/Command.h>
+#include <Gui/CommandT.h>
 
 #include "ViewProvider.h"
 
@@ -50,11 +50,11 @@ bool ViewProviderPart::doubleClicked()
     try {
         QString text = QObject::tr("Edit %1").arg(QString::fromUtf8(getObject()->Label.getValue()));
         Gui::Command::openCommand(text.toUtf8());
-        FCMD_SET_EDIT(pcObject);
+        Gui::cmdSetEdit(pcObject);
         return true;
     }
     catch (const Base::Exception& e) {
-        Base::Console().Error("%s\n", e.what());
+        Base::Console().error("%s\n", e.what());
         return false;
     }
 }

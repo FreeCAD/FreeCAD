@@ -243,27 +243,7 @@ void PythonEditor::onComment()
 
 void PythonEditor::onUncomment()
 {
-    QTextCursor cursor = textCursor();
-    int selStart = cursor.selectionStart();
-    int selEnd = cursor.selectionEnd();
-    QTextBlock block;
-    cursor.beginEditBlock();
-    for (block = document()->begin(); block.isValid(); block = block.next()) {
-        int pos = block.position();
-        int off = block.length()-1;
-        // at least one char of the block is part of the selection
-        if ( pos >= selStart || pos+off >= selStart) {
-            if ( pos+1 > selEnd )
-                break; // end of selection reached
-            if (block.text().startsWith(QLatin1String("#"))) {
-                cursor.setPosition(block.position());
-                cursor.deleteChar();
-                selEnd--;
-            }
-        }
-    }
-
-    cursor.endEditBlock();
+    remove(QStringLiteral("#"));
 }
 
 void PythonEditor::onExecuteInConsole()
@@ -322,9 +302,9 @@ void PythonEditor::onExecuteInConsole()
                 Gui::Command::doCommand(Gui::Command::Doc, dedentedCode.toStdString().c_str());
             } catch (const Base::Exception& e) {
                 QString errorMessage = QString::fromStdString(e.what());
-                Base::Console().Error("Error executing Python code:\n%s\n", errorMessage.toUtf8().constData());
+                Base::Console().error("Error executing Python code:\n%s\n", errorMessage.toUtf8().constData());
             } catch (...) {
-                Base::Console().Error("An unknown error occurred while executing Python code.\n");
+                Base::Console().error("An unknown error occurred while executing Python code.\n");
             }
         }
     }

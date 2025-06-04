@@ -35,6 +35,9 @@
 #include "MaterialConfigLoader.h"
 #include "MaterialLoader.h"
 #include "MaterialManager.h"
+#if defined(BUILD_MATERIAL_EXTERNAL)
+#include "MaterialManagerExternal.h"
+#endif
 #include "MaterialManagerLocal.h"
 #include "ModelManager.h"
 #include "ModelUuids.h"
@@ -49,14 +52,31 @@ using namespace Materials;
 TYPESYSTEM_SOURCE(Materials::MaterialManager, Base::BaseClass)
 
 QMutex MaterialManager::_mutex;
+bool MaterialManager::_useExternal = false;
 MaterialManager* MaterialManager::_manager = nullptr;
 std::unique_ptr<MaterialManagerLocal> MaterialManager::_localManager;
+#if defined(BUILD_MATERIAL_EXTERNAL)
+std::unique_ptr<MaterialManagerExternal> MaterialManager::_externalManager;
+#endif
 
 MaterialManager::MaterialManager()
-{}
+{
+#if defined(BUILD_MATERIAL_EXTERNAL)
+    _hGrp = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/Mod/Material/ExternalInterface");
+    _useExternal = _hGrp->GetBool("UseExternal", false);
+    _hGrp->Attach(this);
+#else
+    _useExternal = false;
+#endif
+}
 
 MaterialManager::~MaterialManager()
-{}
+{
+#if defined(BUILD_MATERIAL_EXTERNAL)
+    _hGrp->Detach(this);
+#endif
+}
 
 MaterialManager& MaterialManager::getManager()
 {
@@ -77,6 +97,22 @@ void MaterialManager::initManagers()
     if (!_localManager) {
         _localManager = std::make_unique<MaterialManagerLocal>();
     }
+
+#if defined(BUILD_MATERIAL_EXTERNAL)
+    if (!_externalManager) {
+        _externalManager = std::make_unique<MaterialManagerExternal>();
+    }
+#endif
+}
+
+void MaterialManager::OnChange(ParameterGrp::SubjectType& rCaller, ParameterGrp::MessageType Reason)
+{
+    const ParameterGrp& rGrp = static_cast<ParameterGrp&>(rCaller);
+    if (strcmp(Reason, "UseExternal") == 0) {
+        Base::Console().log("Use external changed\n");
+        _useExternal = rGrp.GetBool("UseExternal", false);
+        // _dbManager->refresh();
+    }
 }
 
 void MaterialManager::cleanup()
@@ -84,6 +120,11 @@ void MaterialManager::cleanup()
     if (_localManager) {
         _localManager->cleanup();
     }
+#if defined(BUILD_MATERIAL_EXTERNAL)
+    if (_externalManager) {
+        _externalManager->cleanup();
+    }
+#endif
 }
 
 void MaterialManager::refresh()
@@ -183,45 +224,98 @@ QString MaterialManager::defaultMaterialUUID()
 
 std::shared_ptr<std::list<std::shared_ptr<MaterialLibrary>>> MaterialManager::getLibraries()
 {
-    auto libraries = std::make_shared<std::list<std::shared_ptr<MaterialLibrary>>>();
+    // External libraries take precedence over local libraries
+    auto libMap = std::map<QString, std::shared_ptr<MaterialLibrary>>();
+#if defined(BUILD_MATERIAL_EXTERNAL)
+    if (_useExternal) {
+        auto remoteLibraries = _externalManager->getLibraries();
+        for (auto& remote : *remoteLibraries) {
+            libMap.try_emplace(remote->getName(), remote);
+        }
+    }
+#endif
     auto localLibraries = _localManager->getLibraries();
     for (auto& local : *localLibraries) {
-        libraries->push_back(local);
+        libMap.try_emplace(local->getName(), local);
+    }
+
+    // Consolidate into a single list
+    auto libraries = std::make_shared<std::list<std::shared_ptr<MaterialLibrary>>>();
+    for (auto libEntry : libMap) {
+        libraries->push_back(libEntry.second);
     }
 
     return libraries;
 }
 
-std::shared_ptr<std::list<std::shared_ptr<MaterialLibrary>>> MaterialManager::getLocalLibraries()
+std::shared_ptr<std::list<std::shared_ptr<MaterialLibrary>>>
+MaterialManager::getLocalLibraries()
 {
     return _localManager->getLibraries();
 }
 
 std::shared_ptr<MaterialLibrary> MaterialManager::getLibrary(const QString& name) const
 {
+#if defined(BUILD_MATERIAL_EXTERNAL)
+    if (_useExternal) {
+        try
+        {
+            auto lib = _externalManager->getLibrary(name);
+            if (lib) {
+                return lib;
+            }
+        }
+        catch (const LibraryNotFound& e) {
+        }
+    }
+#endif
+    // We really want to return the local library if not found, such as for User folder models
     return _localManager->getLibrary(name);
 }
 
-void MaterialManager::createLibrary(const QString& libraryName, const QString& icon, bool readOnly)
+void MaterialManager::createLibrary(const QString& libraryName,
+                                    const QString& iconPath,
+                                    bool readOnly)
 {
+#if defined(BUILD_MATERIAL_EXTERNAL)
+    if (_useExternal) {
+        auto icon = Materials::Library::getIcon(iconPath);
+        _externalManager->createLibrary(libraryName, icon, readOnly);
+        return;
+    }
+#endif
     throw CreationError("Local library requires a path");
 }
 
 void MaterialManager::createLocalLibrary(const QString& libraryName,
                                          const QString& directory,
-                                         const QString& icon,
+                                         const QString& iconPath,
                                          bool readOnly)
 {
-    _localManager->createLibrary(libraryName, directory, icon, readOnly);
+    _localManager->createLibrary(libraryName, directory, iconPath, readOnly);
 }
 
 void MaterialManager::renameLibrary(const QString& libraryName, const QString& newName)
 {
-    _localManager->renameLibrary(libraryName, newName);
+    auto library = getLibrary(libraryName);
+    if (library) {
+#if defined(BUILD_MATERIAL_EXTERNAL)
+        if (!library->isLocal()) {
+            if (_useExternal) {
+                _externalManager->renameLibrary(libraryName, newName);
+                return;
+            }
+
+            throw Materials::RenameError();
+        }
+#endif
+        _localManager->renameLibrary(libraryName, newName);
+    }
 }
 
-void MaterialManager::changeIcon(const QString& libraryName, const QString& icon)
+void MaterialManager::changeIcon(const QString& libraryName, const QString& iconPath)
 {
+    auto icon = Materials::Library::getIcon(iconPath);
     _localManager->changeIcon(libraryName, icon);
 }
 
@@ -230,24 +324,66 @@ void MaterialManager::removeLibrary(const QString& libraryName)
     _localManager->removeLibrary(libraryName);
 }
 
-std::shared_ptr<std::vector<std::tuple<QString, QString, QString>>>
-MaterialManager::libraryMaterials(const QString& libraryName)
+std::shared_ptr<std::vector<LibraryObject>>
+MaterialManager::libraryMaterials(const QString& libraryName, bool local)
 {
+#if defined(BUILD_MATERIAL_EXTERNAL)
+    if (_useExternal && !local) {
+        try {
+            auto materials = _externalManager->libraryMaterials(libraryName);
+            if (materials) {
+                return materials;
+            }
+        }
+        catch (const LibraryNotFound& e) {
+        }
+    }
+#endif
     return _localManager->libraryMaterials(libraryName);
 }
 
-std::shared_ptr<std::vector<std::tuple<QString, QString, QString>>>
+std::shared_ptr<std::vector<LibraryObject>>
 MaterialManager::libraryMaterials(const QString& libraryName,
-                                  const std::shared_ptr<MaterialFilter>& filter,
-                                  const MaterialFilterOptions& options)
+                                  const MaterialFilter& filter,
+                                  const MaterialFilterOptions& options,
+                                  bool local)
 {
+#if defined(BUILD_MATERIAL_EXTERNAL)
+    if (_useExternal && !local) {
+        try {
+            auto materials = _externalManager->libraryMaterials(libraryName, filter, options);
+            if (materials) {
+                return materials;
+            }
+        }
+        catch (const LibraryNotFound& e) {
+        }
+    }
+#endif
     return _localManager->libraryMaterials(libraryName, filter, options);
 }
 
+#if defined(BUILD_MATERIAL_EXTERNAL)
 bool MaterialManager::isLocalLibrary(const QString& libraryName)
+{
+    if (_useExternal) {
+        try {
+            auto lib = _externalManager->getLibrary(libraryName);
+            if (lib) {
+                return false;
+            }
+        }
+        catch (const LibraryNotFound& e) {
+        }
+    }
+    return true;
+}
+#else
+bool MaterialManager::isLocalLibrary(const QString& /*libraryName*/)
 {
     return true;
 }
+#endif
 
 //=====
 //
@@ -277,6 +413,14 @@ void MaterialManager::createFolder(const std::shared_ptr<MaterialLibrary>& libra
 
         _localManager->createFolder(materialLibrary, path);
     }
+#if defined(BUILD_MATERIAL_EXTERNAL)
+    else if (_useExternal) {
+            _externalManager->createFolder(*library, path);
+    }
+    else {
+        throw Materials::CreationError("External materials are not enabled");
+    }
+#endif
 }
 
 void MaterialManager::renameFolder(const std::shared_ptr<MaterialLibrary>& library,
@@ -289,6 +433,14 @@ void MaterialManager::renameFolder(const std::shared_ptr<MaterialLibrary>& libra
 
         _localManager->renameFolder(materialLibrary, oldPath, newPath);
     }
+#if defined(BUILD_MATERIAL_EXTERNAL)
+    else if (_useExternal) {
+        _externalManager->renameFolder(*library, oldPath, newPath);
+    }
+    else {
+        throw Materials::RenameError("External materials are not enabled");
+    }
+#endif
 }
 
 void MaterialManager::deleteRecursive(const std::shared_ptr<MaterialLibrary>& library,
@@ -300,6 +452,14 @@ void MaterialManager::deleteRecursive(const std::shared_ptr<MaterialLibrary>& li
 
         _localManager->deleteRecursive(materialLibrary, path);
     }
+#if defined(BUILD_MATERIAL_EXTERNAL)
+    else if (_useExternal) {
+        _externalManager->deleteRecursive(*library, path);
+    }
+    else {
+        throw Materials::DeleteError("External materials are not enabled");
+    }
+#endif
 }
 
 //=====
@@ -309,27 +469,27 @@ void MaterialManager::deleteRecursive(const std::shared_ptr<MaterialLibrary>& li
 //=====
 
 std::shared_ptr<std::map<QString, std::shared_ptr<MaterialTreeNode>>>
-MaterialManager::getMaterialTree(const std::shared_ptr<MaterialLibrary>& library,
-                                 const std::shared_ptr<Materials::MaterialFilter>& filter) const
+MaterialManager::getMaterialTree(const MaterialLibrary& library,
+                                 const Materials::MaterialFilter& filter) const
 {
     MaterialFilterOptions options;
-    return library->getMaterialTree(filter, options);
+    return library.getMaterialTree(filter, options);
 }
 
 std::shared_ptr<std::map<QString, std::shared_ptr<MaterialTreeNode>>>
-MaterialManager::getMaterialTree(const std::shared_ptr<MaterialLibrary>& library,
-                                 const std::shared_ptr<Materials::MaterialFilter>& filter,
+MaterialManager::getMaterialTree(const MaterialLibrary& library,
+                                 const Materials::MaterialFilter& filter,
                                  const MaterialFilterOptions& options) const
 {
-    return library->getMaterialTree(filter, options);
+    return library.getMaterialTree(filter, options);
 }
 
 std::shared_ptr<std::map<QString, std::shared_ptr<MaterialTreeNode>>>
-MaterialManager::getMaterialTree(const std::shared_ptr<MaterialLibrary>& library) const
+MaterialManager::getMaterialTree(const MaterialLibrary& library) const
 {
-    std::shared_ptr<Materials::MaterialFilter> filter;
+    Materials::MaterialFilter filter;
     MaterialFilterOptions options;
-    return library->getMaterialTree(filter, options);
+    return library.getMaterialTree(filter, options);
 }
 
 //=====
@@ -346,6 +506,15 @@ MaterialManager::getLocalMaterials() const
 
 std::shared_ptr<Material> MaterialManager::getMaterial(const QString& uuid) const
 {
+#if defined(BUILD_MATERIAL_EXTERNAL)
+    if (_useExternal) {
+        auto material = _externalManager->getMaterial(uuid);
+        if (material) {
+            return material;
+        }
+    }
+#endif
+    // We really want to return the local material if not found, such as for User folder models
     return _localManager->getMaterial(uuid);
 }
 
@@ -382,14 +551,11 @@ bool MaterialManager::exists(const QString& uuid) const
     return _localManager->exists(uuid);
 }
 
-bool MaterialManager::exists(const std::shared_ptr<MaterialLibrary>& library,
+bool MaterialManager::exists(const MaterialLibrary& library,
                              const QString& uuid) const
 {
-    if (library->isLocal()) {
-        auto materialLibrary =
-            reinterpret_cast<const std::shared_ptr<Materials::MaterialLibraryLocal>&>(library);
-
-        return _localManager->exists(materialLibrary, uuid);
+    if (library.isLocal()) {
+        return _localManager->exists(library, uuid);
     }
     return false;
 }
@@ -443,3 +609,62 @@ void MaterialManager::dereference(std::shared_ptr<Material> material) const
 {
     _localManager->dereference(material);
 }
+
+#if defined(BUILD_MATERIAL_EXTERNAL)
+void MaterialManager::migrateToExternal(const std::shared_ptr<Materials::MaterialLibrary>& library)
+{
+    try {
+        _externalManager->createLibrary(library->getName(),
+                                        library->getIcon(),
+                                        library->isReadOnly());
+    }
+    catch (const CreationError&) {
+    }
+    catch (const ConnectionError&) {
+    }
+
+    auto materials = _localManager->libraryMaterials(library->getName());
+    for (auto& it : *materials) {
+        auto uuid = it.getUUID();
+        auto path = it.getPath();
+        auto name = it.getName();
+        Base::Console().log("\t('%s', '%s', '%s')\n",
+                            uuid.toStdString().c_str(),
+                            path.toStdString().c_str(),
+                            name.toStdString().c_str());
+
+        auto material = _localManager->getMaterial(uuid);
+        if (!material->isOldFormat()) {
+            _externalManager->migrateMaterial(library->getName(), path, *material);
+        }
+    }
+}
+
+void MaterialManager::validateMigration(const std::shared_ptr<Materials::MaterialLibrary>& library)
+{
+    auto materials = _localManager->libraryMaterials(library->getName());
+    _externalManager->resetCache();
+    for (auto& it : *materials) {
+        auto uuid = it.getUUID();
+        auto path = it.getPath();
+        auto name = it.getName();
+        Base::Console().log("\t('%s', '%s', '%s')\n",
+                            uuid.toStdString().c_str(),
+                            path.toStdString().c_str(),
+                            name.toStdString().c_str());
+
+        auto material = _localManager->getMaterial(uuid);
+        if (!material->isOldFormat()) {
+            auto externalMaterial = _externalManager->getMaterial(uuid);
+            material->validate(*externalMaterial);
+        }
+    }
+}
+
+// Cache stats
+double MaterialManager::materialHitRate()
+{
+    initManagers();
+    return _externalManager->materialHitRate();
+}
+#endif

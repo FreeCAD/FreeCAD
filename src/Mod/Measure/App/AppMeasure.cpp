@@ -183,12 +183,12 @@ PyMOD_INIT_FUNC(Measure)
     }
 
 
-    Base::Console().Log("Loading Measure module... done\n");
+    Base::Console().log("Loading Measure module... done\n");
     PyMOD_Return(mod);
 }
 
 // debug print for sketchsolv
 void debugprint(const std::string& text)
 {
-    Base::Console().Log("%s", text.c_str());
+    Base::Console().log("%s", text.c_str());
 }

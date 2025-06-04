@@ -122,12 +122,13 @@ void PropertyRowHeights::Restore(Base::XMLReader& reader)
 
     // Row info
     reader.readElement("RowInfo");
-    Cnt = reader.hasAttribute("Count") ? reader.getAttributeAsInteger("Count") : 0;
+    Cnt = reader.hasAttribute("Count") ? reader.getAttribute<long>("Count") : 0;
     for (int i = 0; i < Cnt; i++) {
         reader.readElement("Row");
-        const char* name = reader.hasAttribute("name") ? reader.getAttribute("name") : nullptr;
+        const char* name =
+            reader.hasAttribute("name") ? reader.getAttribute<const char*>("name") : nullptr;
         const char* height =
-            reader.hasAttribute("height") ? reader.getAttribute("height") : nullptr;
+            reader.hasAttribute("height") ? reader.getAttribute<const char*>("height") : nullptr;
 
         try {
             if (name && height) {

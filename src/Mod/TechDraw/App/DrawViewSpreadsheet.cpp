@@ -163,7 +163,7 @@ std::string DrawViewSpreadsheet::getSheetImage()
     std::string sColStart, sColEnd;
     if (boost::regex_search(scellstart, what, re)) {
         if (what.size() < 3) {
-            Base::Console().Error("%s - start cell (%s) is invalid\n", getNameInDocument(),
+            Base::Console().error("%s - start cell (%s) is invalid\n", getNameInDocument(),
                                   CellStart.getValue());
             return std::string();
         }
@@ -175,7 +175,7 @@ std::string DrawViewSpreadsheet::getSheetImage()
             iRowStart = std::stoi(rowPart);
         }
         catch (...) {
-            Base::Console().Error("%s - start cell (%s) invalid row\n",
+            Base::Console().error("%s - start cell (%s) invalid row\n",
                                     getNameInDocument(), rowPart.c_str());
             return std::string();
         }
@@ -183,7 +183,7 @@ std::string DrawViewSpreadsheet::getSheetImage()
 
     if (boost::regex_search(scellend, what, re)) {
         if (what.size() < 3) {
-            Base::Console().Error("%s - end cell (%s) is invalid\n", getNameInDocument(), CellEnd.getValue());
+            Base::Console().error("%s - end cell (%s) is invalid\n", getNameInDocument(), CellEnd.getValue());
         } else {
             colPart = what[1];
             sColEnd = colPart;
@@ -192,7 +192,7 @@ std::string DrawViewSpreadsheet::getSheetImage()
                 iRowEnd = std::stoi(rowPart);
             }
             catch (...) {
-                Base::Console().Error("%s - end cell (%s) invalid row\n",
+                Base::Console().error("%s - end cell (%s) invalid row\n",
                                       getNameInDocument(), rowPart.c_str());
                 return std::string();
             }
@@ -204,7 +204,7 @@ std::string DrawViewSpreadsheet::getSheetImage()
     //validate range start column in sheet's available columns
     int iAvailColStart = colInList(availcolumns, sColStart);
     if (iAvailColStart < 0) {               //not found range start column in availcolumns list
-        Base::Console().Error("DVS - %s - start Column (%s) is invalid\n",
+        Base::Console().error("DVS - %s - start Column (%s) is invalid\n",
                                getNameInDocument(), sColStart.c_str());
         return std::string();
     }
@@ -212,7 +212,7 @@ std::string DrawViewSpreadsheet::getSheetImage()
     //validate range end column in sheet's available columns
     int iAvailColEnd = colInList(availcolumns, sColEnd);
     if (iAvailColEnd < 0) {
-        Base::Console().Error("DVS - %s - end Column (%s) is invalid\n",
+        Base::Console().error("DVS - %s - end Column (%s) is invalid\n",
                               getNameInDocument(), sColEnd.c_str());
         return std::string();
     }
@@ -220,7 +220,7 @@ std::string DrawViewSpreadsheet::getSheetImage()
     //check for logical range
     if ( (iAvailColStart > iAvailColEnd) ||
          (iRowStart > iRowEnd) ) {
-        Base::Console().Error("%s - cell range is illogical\n", getNameInDocument());
+        Base::Console().error("%s - cell range is illogical\n", getNameInDocument());
         return std::string();
     }
 
@@ -286,7 +286,7 @@ std::string DrawViewSpreadsheet::getSheetImage()
                     DrawUtil::encodeXmlSpecialChars(temp);
                     field << temp;
                 } else {
-                    Base::Console().Error("DVSS: Unknown property type\n");
+                    Base::Console().error("DVSS: Unknown property type\n");
                 }
                 celltext = field.str();
             }

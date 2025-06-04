@@ -38,6 +38,7 @@ __url__    = "https://www.freecad.org"
 
 import FreeCAD
 import ArchCommands
+import ArchIFC
 import ArchComponent
 import Draft
 import DraftVecUtils
@@ -48,6 +49,11 @@ if FreeCAD.GuiUp:
     from PySide.QtCore import QT_TRANSLATE_NOOP
     import FreeCADGui
     from draftutils.translate import translate
+    # TODO: check if this import is still needed, and if so, whether
+    # it can be moved made conditional on the GUI being loaded
+    # for Rebar addon compatibility
+    from bimcommands import BimRebar
+    _CommandRebar = BimRebar.Arch_Rebar
 else:
     # \cond
     def translate(ctxt,txt):
@@ -55,10 +61,6 @@ else:
     def QT_TRANSLATE_NOOP(ctxt,txt):
         return txt
     # \endcond
-
-# for Rebar addon compatibility
-from bimcommands import BimRebar
-_CommandRebar = BimRebar.Arch_Rebar
 
 
 class _Rebar(ArchComponent.Component):
@@ -75,33 +77,33 @@ class _Rebar(ArchComponent.Component):
 
         pl = obj.PropertiesList
         if not "Diameter" in pl:
-            obj.addProperty("App::PropertyLength","Diameter","Rebar",QT_TRANSLATE_NOOP("App::Property","The diameter of the bar"))
+            obj.addProperty("App::PropertyLength","Diameter","Rebar",QT_TRANSLATE_NOOP("App::Property","The diameter of the bar"), locked=True)
         if not "OffsetStart" in pl:
-            obj.addProperty("App::PropertyDistance","OffsetStart","Rebar",QT_TRANSLATE_NOOP("App::Property","The distance between the border of the beam and the first bar (concrete cover)."))
+            obj.addProperty("App::PropertyDistance","OffsetStart","Rebar",QT_TRANSLATE_NOOP("App::Property","The distance between the border of the beam and the first bar (concrete cover)."), locked=True)
         if not "OffsetEnd" in pl:
-            obj.addProperty("App::PropertyDistance","OffsetEnd","Rebar",QT_TRANSLATE_NOOP("App::Property","The distance between the border of the beam and the last bar (concrete cover)."))
+            obj.addProperty("App::PropertyDistance","OffsetEnd","Rebar",QT_TRANSLATE_NOOP("App::Property","The distance between the border of the beam and the last bar (concrete cover)."), locked=True)
         if not "Amount" in pl:
-            obj.addProperty("App::PropertyInteger","Amount","Rebar",QT_TRANSLATE_NOOP("App::Property","The amount of bars"))
+            obj.addProperty("App::PropertyInteger","Amount","Rebar",QT_TRANSLATE_NOOP("App::Property","The amount of bars"), locked=True)
         if not "Spacing" in pl:
-            obj.addProperty("App::PropertyLength","Spacing","Rebar",QT_TRANSLATE_NOOP("App::Property","The spacing between the bars"))
+            obj.addProperty("App::PropertyLength","Spacing","Rebar",QT_TRANSLATE_NOOP("App::Property","The spacing between the bars"), locked=True)
             obj.setEditorMode("Spacing", 1)
         if not "Distance" in pl:
-            obj.addProperty("App::PropertyLength","Distance","Rebar",QT_TRANSLATE_NOOP("App::Property","The total distance to span the rebars over. Keep 0 to automatically use the host shape size."))
+            obj.addProperty("App::PropertyLength","Distance","Rebar",QT_TRANSLATE_NOOP("App::Property","The total distance to span the rebars over. Keep 0 to automatically use the host shape size."), locked=True)
         if not "Direction" in pl:
-            obj.addProperty("App::PropertyVector","Direction","Rebar",QT_TRANSLATE_NOOP("App::Property","The direction to use to spread the bars. Keep (0,0,0) for automatic direction."))
+            obj.addProperty("App::PropertyVector","Direction","Rebar",QT_TRANSLATE_NOOP("App::Property","The direction to use to spread the bars. Keep (0,0,0) for automatic direction."), locked=True)
         if not "Rounding" in pl:
-            obj.addProperty("App::PropertyFloat","Rounding","Rebar",QT_TRANSLATE_NOOP("App::Property","The fillet to apply to the angle of the base profile. This value is multiplied by the bar diameter."))
+            obj.addProperty("App::PropertyFloat","Rounding","Rebar",QT_TRANSLATE_NOOP("App::Property","The fillet to apply to the angle of the base profile. This value is multiplied by the bar diameter."), locked=True)
         if not "PlacementList" in pl:
-            obj.addProperty("App::PropertyPlacementList","PlacementList","Rebar",QT_TRANSLATE_NOOP("App::Property","List of placement of all the bars"))
+            obj.addProperty("App::PropertyPlacementList","PlacementList","Rebar",QT_TRANSLATE_NOOP("App::Property","List of placement of all the bars"), locked=True)
         if not "Host" in pl:
-            obj.addProperty("App::PropertyLink","Host","Rebar",QT_TRANSLATE_NOOP("App::Property","The structure object that hosts this rebar"))
+            obj.addProperty("App::PropertyLink","Host","Rebar",QT_TRANSLATE_NOOP("App::Property","The structure object that hosts this rebar"), locked=True)
         if not "CustomSpacing" in pl:
-            obj.addProperty("App::PropertyString", "CustomSpacing", "Rebar", QT_TRANSLATE_NOOP("App::Property","The custom spacing of rebar"))
+            obj.addProperty("App::PropertyString", "CustomSpacing", "Rebar", QT_TRANSLATE_NOOP("App::Property","The custom spacing of rebar"), locked=True)
         if not "Length" in pl:
-            obj.addProperty("App::PropertyDistance", "Length", "Rebar", QT_TRANSLATE_NOOP("App::Property","Length of a single rebar"))
+            obj.addProperty("App::PropertyDistance", "Length", "Rebar", QT_TRANSLATE_NOOP("App::Property","Length of a single rebar"), locked=True)
             obj.setEditorMode("Length", 1)
         if not "TotalLength" in pl:
-            obj.addProperty("App::PropertyDistance", "TotalLength", "Rebar", QT_TRANSLATE_NOOP("App::Property","Total length of all rebars"))
+            obj.addProperty("App::PropertyDistance", "TotalLength", "Rebar", QT_TRANSLATE_NOOP("App::Property","Total length of all rebars"), locked=True)
             obj.setEditorMode("TotalLength", 1)
         if not "Mark" in pl:
             obj.addProperty(
@@ -109,6 +111,7 @@ class _Rebar(ArchComponent.Component):
                 "Mark",
                 "Rebar",
                 QT_TRANSLATE_NOOP("App::Property", "The rebar mark"),
+                locked=True,
             )
         self.Type = "Rebar"
 
@@ -209,8 +212,11 @@ class _Rebar(ArchComponent.Component):
         return [wires,obj.Diameter.Value/2]
 
     def onChanged(self,obj,prop):
-
-        if prop == "Host":
+        if prop == "IfcType":
+            root = ArchIFC.IfcProduct()
+            root.setupIfcAttributes(obj)
+            root.setupIfcComplexAttributes(obj)
+        elif prop == "Host":
             if hasattr(obj,"Host"):
                 if obj.Host:
                     # mark host to recompute so it can detect this object
@@ -404,7 +410,7 @@ class _ViewProviderRebar(ArchComponent.ViewProviderComponent):
 
         pl = vobj.PropertiesList
         if not "RebarShape" in pl:
-            vobj.addProperty("App::PropertyString","RebarShape","Rebar",QT_TRANSLATE_NOOP("App::Property","Shape of rebar")).RebarShape
+            vobj.addProperty("App::PropertyString","RebarShape","Rebar",QT_TRANSLATE_NOOP("App::Property","Shape of rebar"), locked=True).RebarShape
             vobj.setEditorMode("RebarShape",2)
 
     def onDocumentRestored(self,vobj):

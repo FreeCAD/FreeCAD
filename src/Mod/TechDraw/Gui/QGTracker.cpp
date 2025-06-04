@@ -112,7 +112,7 @@ void QGTracker::mousePressEvent(QGraphicsSceneMouseEvent *event)
         double someLimit = Rez::guiX(1.0);
         QPointF manhat = myScenePos - m_lastClick;
 
-        if (manhat.manhattanLength() >= someLimit) {         
+        if (manhat.manhattanLength() >= someLimit) {
             if (event->button() == Qt::LeftButton)  {
                 if (event->modifiers() & Qt::ControlModifier) {
                     myScenePos = snapToAngle(myScenePos);
@@ -243,7 +243,7 @@ void QGTracker::onMousePress(QPointF pos)
         //just return pos to caller
         getPickedQGIV(pos);
         setCursor(Qt::CrossCursor);  //why cross??
-        
+
         if (mode == TrackerMode::Point) {
             setPoint(m_points);  //first point is mouse click scene pos
             terminateDrawing();
@@ -419,7 +419,7 @@ void QGTracker::setCircleFromPoints(std::vector<QPointF> pts)
 void QGTracker::setPoint(std::vector<QPointF> pts)
 {
     if (pts.empty()) {
-        Base::Console().Message("QGTracker::setPoint - no pts!\n");
+        Base::Console().message("QGTracker::setPoint - no pts!\n");
         return;
     }
     prepareGeometryChange();

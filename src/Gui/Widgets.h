@@ -1,4 +1,4 @@
-/***************************************************************************
+ /***************************************************************************
  *   Copyright (c) 2004 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
@@ -31,6 +31,7 @@
 #include <QButtonGroup>
 #include <QDialog>
 #include <QElapsedTimer>
+#include <QKeySequenceEdit>
 #include <QLabel>
 #include <QLineEdit>
 #include <QListWidget>
@@ -132,19 +133,16 @@ private:
  * The AccelLineEdit class provides a lineedit to specify shortcuts.
  * \author Werner Mayer
  */
-class GuiExport AccelLineEdit : public QLineEdit
+class GuiExport AccelLineEdit : public QKeySequenceEdit
 {
   Q_OBJECT
 
 public:
-    AccelLineEdit(QWidget * parent=nullptr);
-    bool isNone() const;
-
-protected:
-    void keyPressEvent(QKeyEvent * e) override;
-
-private:
-    int keyPressedCount;
+    explicit AccelLineEdit(QWidget* parent = nullptr);
+    explicit AccelLineEdit(const QKeySequence& keySequence, QWidget* parent = nullptr);
+    void setReadOnly(bool value);
+    bool isEmpty() const;
+    QString text() const;
 };
 
 // ------------------------------------------------------------------------------
@@ -300,7 +298,7 @@ public:
 
   QString url() const;
   bool launchExternal() const;
-  
+
 Q_SIGNALS:
   void linkClicked(QString url);
 
@@ -318,18 +316,18 @@ private:
 
 
 /**
- * A text label whose appearance can change based on a specified state. 
+ * A text label whose appearance can change based on a specified state.
  *
- * The state is an arbitrary string exposed as a Qt Property (and thus available for selection via 
- * a stylesheet). This is intended for things like messages to the user, where a message that is an 
+ * The state is an arbitrary string exposed as a Qt Property (and thus available for selection via
+ * a stylesheet). This is intended for things like messages to the user, where a message that is an
  * "error" might be colored differently than one that is a "warning" or a "message".
- * 
+ *
  * In order of style precedence for a given state: User preference > Stylesheet > Default
  * unless the stylesheet sets the overridePreference, in which case the stylesheet will
  * take precedence. If a stylesheet sets styles for this widgets states, it should also
  * set the "handledByStyle" property to ensure the style values are used, rather than the
  * defaults.
- * 
+ *
  * For example, the .qss might contain:
  * Gui--StatefulLabel {
  *   qproperty-overridePreference: true;
@@ -339,7 +337,7 @@ private:
  * }
  * In this case, StatefulLabels with state "special_state" will be colored red, regardless of any
  * entry in preferences. Use the "overridePreference" stylesheet option with care!
- * 
+ *
  * @author Chris Hennes
  */
 class GuiExport StatefulLabel : public QLabel, public Base::Observer<const char*>
@@ -361,15 +359,15 @@ public:
     void setParameterGroup(const std::string& groupName);
 
     /** Register a state and its corresponding style (optionally attached to a user preference) */
-    void registerState(const QString &state, const QString &styleCSS, 
+    void registerState(const QString &state, const QString &styleCSS,
         const std::string& preferenceName = std::string());
 
     /** For convenience, allow simple color-only states via QColor (optionally attached to a user preference) */
-    void registerState(const QString& state, const QColor& color, 
+    void registerState(const QString& state, const QColor& color,
         const std::string& preferenceName = std::string());
 
     /** For convenience, allow simple color-only states via QColor (optionally attached to a user preference) */
-    void registerState(const QString& state, const QColor& foregroundColor, const QColor& backgroundColor, 
+    void registerState(const QString& state, const QColor& foregroundColor, const QColor& backgroundColor,
         const std::string& preferenceName = std::string());
 
     /** Observes the parameter group and clears the cache if it changes */
@@ -389,7 +387,7 @@ private:
         QString defaultCSS;
         std::string preferenceString;
     };
-    
+
     std::map<QString, StateData> _availableStates;
     std::map<QString, QString> _styleCache;
     QString _defaultStyle;

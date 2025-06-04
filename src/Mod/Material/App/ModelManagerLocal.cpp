@@ -34,7 +34,7 @@
 
 using namespace Materials;
 
-std::shared_ptr<std::list<std::shared_ptr<ModelLibrary>>> ModelManagerLocal::_libraryList = nullptr;
+std::shared_ptr<std::list<std::shared_ptr<ModelLibraryLocal>>> ModelManagerLocal::_libraryList = nullptr;
 std::shared_ptr<std::map<QString, std::shared_ptr<Model>>> ModelManagerLocal::_modelMap = nullptr;
 QMutex ModelManagerLocal::_mutex;
 
@@ -53,7 +53,7 @@ void ModelManagerLocal::initLibraries()
     if (_modelMap == nullptr) {
         _modelMap = std::make_shared<std::map<QString, std::shared_ptr<Model>>>();
         if (_libraryList == nullptr) {
-            _libraryList = std::make_shared<std::list<std::shared_ptr<ModelLibrary>>>();
+            _libraryList = std::make_shared<std::list<std::shared_ptr<ModelLibraryLocal>>>();
         }
 
         // Load the libraries
@@ -98,7 +98,8 @@ void ModelManagerLocal::refresh()
 
 std::shared_ptr<std::list<std::shared_ptr<ModelLibrary>>> ModelManagerLocal::getLibraries()
 {
-    return _libraryList;
+    return reinterpret_cast<std::shared_ptr<std::list<std::shared_ptr<ModelLibrary>>>&>(
+        _libraryList);
 }
 
 void ModelManagerLocal::createLibrary(const QString& libraryName,
@@ -113,16 +114,14 @@ void ModelManagerLocal::createLibrary(const QString& libraryName,
         }
     }
 
-    auto modelLibrary = std::make_shared<ModelLibrary>(libraryName, directory, icon, readOnly);
+    auto modelLibrary = std::make_shared<ModelLibraryLocal>(libraryName, directory, icon, readOnly);
     _libraryList->push_back(modelLibrary);
-
-    // This needs to be persisted somehow
 }
 
 void ModelManagerLocal::renameLibrary(const QString& libraryName, const QString& newName)
 {
     for (auto& library : *_libraryList) {
-        if (library->getName() == libraryName) {
+        if (library->isName(libraryName)) {
             library->setName(newName);
             return;
         }
@@ -134,8 +133,8 @@ void ModelManagerLocal::renameLibrary(const QString& libraryName, const QString&
 void ModelManagerLocal::changeIcon(const QString& libraryName, const QString& icon)
 {
     for (auto& library : *_libraryList) {
-        if (library->getName() == libraryName) {
-            library->setIconPath(icon);
+        if (library->isName(libraryName)) {
+            library->setIcon(icon);
             return;
         }
     }
@@ -146,7 +145,7 @@ void ModelManagerLocal::changeIcon(const QString& libraryName, const QString& ic
 void ModelManagerLocal::removeLibrary(const QString& libraryName)
 {
     for (auto& library : *_libraryList) {
-        if (library->getName() == libraryName) {
+        if (library->isName(libraryName)) {
             _libraryList->remove(library);
 
             // At this point we should rebuild the model map
@@ -157,16 +156,16 @@ void ModelManagerLocal::removeLibrary(const QString& libraryName)
     throw LibraryNotFound();
 }
 
-std::shared_ptr<std::vector<std::tuple<QString, QString, QString>>>
+std::shared_ptr<std::vector<LibraryObject>>
 ModelManagerLocal::libraryModels(const QString& libraryName)
 {
-    auto models = std::make_shared<std::vector<std::tuple<QString, QString, QString>>>();
+    auto models = std::make_shared<std::vector<LibraryObject>>();
 
     for (auto& it : *_modelMap) {
         // This is needed to resolve cyclic dependencies
-        if (it.second->getLibrary()->getName() == libraryName) {
+        if (it.second->getLibrary()->isName(libraryName)) {
             models->push_back(
-                std::tuple<QString, QString, QString>(it.first, it.second->getDirectory(), it.second->getName()));
+                LibraryObject(it.first, it.second->getDirectory(), it.second->getName()));
         }
     }
 
@@ -192,25 +191,33 @@ std::shared_ptr<Model> ModelManagerLocal::getModelByPath(const QString& path) co
     QString cleanPath = QDir::cleanPath(path);
 
     for (auto& library : *_libraryList) {
-        if (cleanPath.startsWith(library->getDirectory())) {
-            return library->getModelByPath(cleanPath);
+        if (library->isLocal()) {
+            auto localLibrary = std::static_pointer_cast<Materials::ModelLibraryLocal> (library);
+            if (cleanPath.startsWith(localLibrary->getDirectory())) {
+                return localLibrary->getModelByPath(cleanPath);
+            }
         }
     }
 
-    throw MaterialNotFound();
+    throw ModelNotFound();
 }
 
 std::shared_ptr<Model> ModelManagerLocal::getModelByPath(const QString& path,
                                                          const QString& lib) const
 {
     auto library = getLibrary(lib);        // May throw LibraryNotFound
-    return library->getModelByPath(path);  // May throw ModelNotFound
+    if (library->isLocal()) {
+        auto localLibrary = std::static_pointer_cast<Materials::ModelLibraryLocal>(library);
+        return localLibrary->getModelByPath(path);  // May throw ModelNotFound
+    }
+
+    throw ModelNotFound();
 }
 
 std::shared_ptr<ModelLibrary> ModelManagerLocal::getLibrary(const QString& name) const
 {
     for (auto& library : *_libraryList) {
-        if (library->getName() == name) {
+        if (library->isName(name)) {
             return library;
         }
     }

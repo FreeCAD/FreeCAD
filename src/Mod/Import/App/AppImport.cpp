@@ -51,6 +51,6 @@ PyMOD_INIT_FUNC(Import)
     Base::Interpreter().addType(&Import::StepShapePy ::Type, importModule, "StepShape");
 
 
-    Base::Console().Log("Loading Import module... done\n");
+    Base::Console().log("Loading Import module... done\n");
     PyMOD_Return(importModule);
 }

@@ -104,7 +104,7 @@ TaskRevolutionParameters::TaskRevolutionParameters(PartDesignGui::ViewProvider* 
         }
     }
     catch (const Base::Exception &ex) {
-        ex.ReportException();
+        ex.reportException();
     }
 }
 
@@ -114,7 +114,7 @@ Gui::ViewProviderCoordinateSystem* TaskRevolutionParameters::getOriginView() con
     PartDesign::Body * body = PartDesign::Body::findBodyOf(getObject());
     if (body) {
         App::Origin *origin = body->getOrigin();
-        return dynamic_cast<ViewProviderCoordinateSystem*>(
+        return freecad_cast<ViewProviderCoordinateSystem*>(
             Gui::Application::Instance->getViewProvider(origin));
      }
 
@@ -236,7 +236,7 @@ void TaskRevolutionParameters::fillAxisCombo(bool forceRefill)
                 addAxisToCombo(orig->getY(), std::string(), tr("Base Y axis"));
                 addAxisToCombo(orig->getZ(), std::string(), tr("Base Z axis"));
             } catch (const Base::Exception &ex) {
-                ex.ReportException();
+                ex.reportException();
             }
         }
 
@@ -541,7 +541,7 @@ void TaskRevolutionParameters::onAxisChanged(int num)
                                                      AllowSelection::CIRCLE);
     } else {
         if (!pcRevolution->getDocument()->isIn(lnk.getValue())){
-            Base::Console().Error("Object was deleted\n");
+            Base::Console().error("Object was deleted\n");
             return;
         }
         propReferenceAxis->Paste(lnk);
@@ -578,7 +578,7 @@ void TaskRevolutionParameters::onAxisChanged(int num)
         recomputeFeature();
     }
     catch (const Base::Exception& e) {
-        e.ReportException();
+        e.reportException();
     }
 }
 
@@ -665,7 +665,7 @@ TaskRevolutionParameters::~TaskRevolutionParameters()
         }
     }
     catch (const Base::Exception &ex) {
-        ex.ReportException();
+        ex.reportException();
     }
 
     axesInList.clear();

@@ -29,6 +29,8 @@
 #include <QGraphicsRectItem>
 #include <QPointF>
 
+#include "QGIUserTypes.h"
+
 QT_BEGIN_NAMESPACE
 class QPainter;
 class QStyleOptionGraphicsItem;
@@ -43,7 +45,7 @@ public:
     explicit QGCustomBorder();
     ~QGCustomBorder() override = default;
 
-    enum {Type = QGraphicsItem::UserType + 136};
+    enum {Type = UserType::QGCustomBorder};
     int type() const override { return Type;}
 
     void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = nullptr ) override;

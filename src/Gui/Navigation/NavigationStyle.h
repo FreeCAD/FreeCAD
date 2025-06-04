@@ -37,6 +37,7 @@
 
 #include <QEvent>
 #include <Base/BaseClass.h>
+#include <Base/SmartPtrPy.h>
 #include <Gui/Namespace.h>
 #include <FCGlobal.h>
 #include <memory>
@@ -103,7 +104,9 @@ public:
     enum OrbitStyle {
         Turntable,
         Trackball,
-        FreeTurntable
+        FreeTurntable,
+        TrackballClassic,
+        RoundedArcball
     };
 
     enum class RotationCenterMode {
@@ -216,7 +219,7 @@ protected:
     void setupPanningPlane(const SoCamera* camera);
     int getDelta() const;
     void zoom(SoCamera * camera, float diffvalue);
-    void zoomByCursor(const SbVec2f & thispos, const SbVec2f & prevpos);
+    virtual void zoomByCursor(const SbVec2f & thispos, const SbVec2f & prevpos);
     void doZoom(SoCamera * camera, int wheeldelta, const SbVec2f& pos);
     void doZoom(SoCamera * camera, float logzoomfactor, const SbVec2f& pos);
     void doScale(SoCamera * camera, float factor);
@@ -284,7 +287,7 @@ protected:
     SbSphereSheetProjector * spinprojector;
     //@}
 
-    PyObject* pythonObject;
+    Py::SmartPtr pythonObject;
 
 private:
     friend class NavigationAnimator;
@@ -415,6 +418,8 @@ public:
     const char* mouseButtons(ViewerMode) override;
 
 protected:
+    void zoomByCursor(const SbVec2f & thispos, const SbVec2f & prevpos) override;
+
     SbBool processSoEvent(const SoEvent * const ev) override;
 
     SbVec2s mousedownPos;//the position where some mouse button was pressed (local pixel coordinates).

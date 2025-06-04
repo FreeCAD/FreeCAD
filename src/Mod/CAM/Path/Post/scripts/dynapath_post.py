@@ -86,11 +86,11 @@ parser.add_argument(
 parser.add_argument("--precision", default="3", help="number of digits of precision, default=3")
 parser.add_argument(
     "--preamble",
-    help='set commands to be issued before the first command, default="G17\\nG90\\nG80\\nG40"',
+    help='set commands to be issued before the first command, default="G17\\nG90\\nG80\\nG40\\n"',
 )
 parser.add_argument(
     "--postamble",
-    help='set commands to be issued after the last command, default="M09\\nM05\\nG80\\nG40\\nG17\\nG90\\nM30"',
+    help='set commands to be issued after the last command, default="M09\\nM05\\nG80\\nG40\\nG17\\nG90\\nM30\\n"',
 )
 parser.add_argument(
     "--inches", action="store_true", help="Convert output for US imperial mode (G20)"
@@ -231,8 +231,8 @@ def export(objectslist, filename, argstring):
     # Write the preamble
     if OUTPUT_COMMENTS:
         gcode += linenumber() + "(begin preamble)\n"
-    for line in PREAMBLE.splitlines(True):
-        gcode += linenumber() + line
+    for line in PREAMBLE.splitlines():
+        gcode += linenumber() + line + "\n"
     gcode += linenumber() + UNITS + "\n"
 
     for obj in objectslist:
@@ -255,8 +255,8 @@ def export(objectslist, filename, argstring):
 
     if OUTPUT_COMMENTS:
         gcode += "(begin postamble)\n"
-    for line in POSTAMBLE.splitlines(True):
-        gcode += linenumber() + line
+    for line in POSTAMBLE.splitlines():
+        gcode += linenumber() + line + "\n"
 
     print("show editor: {}".format(SHOW_EDITOR))
     if FreeCAD.GuiUp and SHOW_EDITOR:

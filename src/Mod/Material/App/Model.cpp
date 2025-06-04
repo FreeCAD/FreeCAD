@@ -113,8 +113,8 @@ void ModelProperty::validate(const ModelProperty& other) const
         throw InvalidProperty("Model names don't match");
     }
     if (getDisplayName() != other.getDisplayName()) {
-        Base::Console().Log("Local display name '%s'\n", getDisplayName().toStdString().c_str());
-        Base::Console().Log("Remote display name '%s'\n",
+        Base::Console().log("Local display name '%s'\n", getDisplayName().toStdString().c_str());
+        Base::Console().log("Remote display name '%s'\n",
                             other.getDisplayName().toStdString().c_str());
         throw InvalidProperty("Model display names don't match");
     }
@@ -135,8 +135,8 @@ void ModelProperty::validate(const ModelProperty& other) const
     }
 
     if (_columns.size() != other._columns.size()) {
-        Base::Console().Log("Local property column count %d\n", _columns.size());
-        Base::Console().Log("Remote property column count %d\n", other._columns.size());
+        Base::Console().log("Local property column count %d\n", _columns.size());
+        Base::Console().log("Remote property column count %d\n", other._columns.size());
         throw InvalidProperty("Model property column counts don't match");
     }
     for (size_t i = 0; i < _columns.size(); i++) {
@@ -202,10 +202,10 @@ ModelProperty& Model::operator[](const QString& key)
     }
 }
 
-void Model::validate(const std::shared_ptr<Model>& other) const
+void Model::validate(Model& other) const
 {
     try {
-        _library->validate(*(other->_library));
+        _library->validate(*(other._library));
     }
     catch (const InvalidLibrary& e)
     {
@@ -213,42 +213,40 @@ void Model::validate(const std::shared_ptr<Model>& other) const
     }
 
     // std::map<QString, ModelProperty> _properties;
-    if (_type != other->_type) {
+    if (_type != other._type) {
         throw InvalidModel("Model types don't match");
     }
-    if (_name != other->_name) {
+    if (_name != other._name) {
         throw InvalidModel("Model names don't match");
     }
-    if (_directory != other->_directory) {
+    if (_directory != other._directory) {
         throw InvalidModel("Model directories don't match");
     }
-    if (!other->_filename.isEmpty()) {
+    if (!other._filename.isEmpty()) {
         throw InvalidModel("Remote filename is not empty");
     }
-    if (_uuid != other->_uuid) {
+    if (_uuid != other._uuid) {
         throw InvalidModel("Model UUIDs don't match");
     }
-    if (_description != other->_description) {
+    if (_description != other._description) {
         throw InvalidModel("Model descriptions don't match");
     }
-    if (_url != other->_url) {
+    if (_url != other._url) {
         throw InvalidModel("Model URLs don't match");
     }
-    if (_doi != other->_doi) {
+    if (_doi != other._doi) {
         throw InvalidModel("Model DOIs don't match");
     }
-    if (_inheritedUuids != other->_inheritedUuids) {
+    if (_inheritedUuids != other._inheritedUuids) {
         throw InvalidModel("Model inherited UUIDs don't match");
     }
 
     // Need to compare properties
-    if (_properties.size() != other->_properties.size()) {
-        // Base::Console().Log("Local property count %d\n", _properties.size());
-        // Base::Console().Log("Remote property count %d\n", other->_properties.size());
+    if (_properties.size() != other._properties.size()) {
         throw InvalidModel("Model property counts don't match");
     }
     for (auto& property : _properties) {
-        auto& remote = other->_properties[property.first];
+        auto& remote = other._properties[property.first];
         property.second.validate(remote);
     }
 }

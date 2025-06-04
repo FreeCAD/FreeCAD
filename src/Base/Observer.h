@@ -85,7 +85,7 @@ public:
      * and returns the name of the observer. Needed to use the Get
      * Method of the Subject.
      */
-    virtual const char* Name()
+    virtual const char* name()
     {
         return nullptr;
     }
@@ -122,7 +122,7 @@ public:
     virtual ~Subject()
     {
         if (_ObserverSet.size() > 0) {
-            Base::Console().DeveloperWarning(std::string("~Subject()"),
+            Base::Console().developerWarning(std::string("~Subject()"),
                                              "Not detached all observers yet\n");
         }
     }
@@ -139,7 +139,7 @@ public:
         size_t count = _ObserverSet.size();
         _ObserverSet.insert(ToObserv);
         if (_ObserverSet.size() == count) {
-            Base::Console().DeveloperWarning(std::string("Subject::Attach"),
+            Base::Console().developerWarning(std::string("Subject::Attach"),
                                              "Observer %p already attached\n",
                                              static_cast<void*>(ToObserv));
         }
@@ -160,7 +160,7 @@ public:
         size_t count = _ObserverSet.size();
         _ObserverSet.erase(ToObserv);
         if (_ObserverSet.size() == count) {
-            Base::Console().DeveloperWarning(std::string("Subject::Detach"),
+            Base::Console().developerWarning(std::string("Subject::Detach"),
                                              "Observer %p already detached\n",
                                              static_cast<void*>(ToObserv));
         }
@@ -184,17 +184,17 @@ public:
                 (*Iter)->OnChange(*this, rcReason);  // send OnChange-signal
             }
             catch (Base::Exception& e) {
-                Base::Console().Error("Unhandled Base::Exception caught when notifying observer.\n"
+                Base::Console().error("Unhandled Base::Exception caught when notifying observer.\n"
                                       "The error message is: %s\n",
                                       e.what());
             }
             catch (std::exception& e) {
-                Base::Console().Error("Unhandled std::exception caught when notifying observer\n"
+                Base::Console().error("Unhandled std::exception caught when notifying observer\n"
                                       "The error message is: %s\n",
                                       e.what());
             }
             catch (...) {
-                Base::Console().Error(
+                Base::Console().error(
                     "Unhandled unknown exception caught in when notifying observer.\n");
             }
         }
@@ -210,7 +210,7 @@ public:
         for (typename std::set<Observer<MsgType>*>::iterator Iter = _ObserverSet.begin();
              Iter != _ObserverSet.end();
              ++Iter) {
-            OName = (*Iter)->Name();  // get the name
+            OName = (*Iter)->name();  // get the name
             if (OName && strcmp(OName, Name) == 0) {
                 return *Iter;
             }

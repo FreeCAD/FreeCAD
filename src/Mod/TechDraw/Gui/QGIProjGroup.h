@@ -26,6 +26,7 @@
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
 #include "QGIViewCollection.h"
+#include "QGIUserTypes.h"
 
 
 QT_BEGIN_NAMESPACE
@@ -49,7 +50,7 @@ public:
     // TODO: if the QGIVO is deleted, should we clean up any remaining QGIVParts??
     ~QGIProjGroup() override = default;
 
-    enum {Type = QGraphicsItem::UserType + 113};
+    enum {Type = UserType::QGIProjGroup};
     int type() const override { return Type;}
 
     void alignTo(QGIProjGroup *, const QString &alignment);

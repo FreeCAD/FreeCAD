@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # ***************************************************************************
 # *   Copyright (c) 2014 Yorik van Havre <yorik@uncreated.net>              *
 # *                                                                         *
@@ -20,6 +21,10 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
+import FreeCAD
+
+
+FreeCAD.__unit_test__ += ["TestCAMGui"]
 
 
 class PathCommandGroup:
@@ -58,6 +63,7 @@ class CAMWorkbench(Workbench):
 
         # Add preferences pages - before loading PathGui to properly order pages of Path group
         import Path.Dressup.Gui.Preferences as PathPreferencesPathDressup
+        import Path.Tool.assets.ui.preferences as AssetPreferences
         import Path.Main.Gui.PreferencesJob as PathPreferencesPathJob
 
         translate = FreeCAD.Qt.translate
@@ -74,8 +80,8 @@ class CAMWorkbench(Workbench):
 
         from Path.Main.Gui import JobCmd as PathJobCmd
         from Path.Main.Gui import SanityCmd as SanityCmd
-        from Path.Tool.Gui import BitCmd as PathToolBitCmd
-        from Path.Tool.Gui import BitLibraryCmd as PathToolBitLibraryCmd
+        from Path.Tool.toolbit.ui import cmd as PathToolBitCmd
+        from Path.Tool.library.ui import cmd as PathToolBitLibraryCmd
 
         from PySide.QtCore import QT_TRANSLATE_NOOP
 
@@ -85,6 +91,10 @@ class CAMWorkbench(Workbench):
 
         FreeCADGui.addPreferencePage(
             PathPreferencesPathJob.JobPreferencesPage,
+            QT_TRANSLATE_NOOP("QObject", "CAM"),
+        )
+        FreeCADGui.addPreferencePage(
+            AssetPreferences.AssetPreferencesPage,
             QT_TRANSLATE_NOOP("QObject", "CAM"),
         )
         FreeCADGui.addPreferencePage(
@@ -154,9 +164,17 @@ class CAMWorkbench(Workbench):
                 QT_TRANSLATE_NOOP("CAM_DrillingTools", "Drilling Operations"),
             ),
         )
+        dressupcmdgroup = ["CAM_DressupTools"]
+        FreeCADGui.addCommand(
+            "CAM_DressupTools",
+            PathCommandGroup(
+                dressupcmdlist,
+                QT_TRANSLATE_NOOP("CAM_DressupTools", "Dressup Operations"),
+            ),
+        )
         threedcmdgroup = threedopcmdlist
         if Path.Preferences.experimentalFeaturesEnabled():
-            prepcmdlist.append("CAM_Shape")
+            prepcmdlist.append("CAM_PathShapeTC")
             extracmdlist.extend(["CAM_Area", "CAM_Area_Workplane"])
             specialcmdlist.append("CAM_ThreadMilling")
             twodopcmdlist.append("CAM_Slot")
@@ -206,7 +224,9 @@ class CAMWorkbench(Workbench):
             QT_TRANSLATE_NOOP("Workbench", "New Operations"),
             twodopcmdlist + drillingcmdgroup + engravecmdgroup + threedcmdgroup,
         )
-        self.appendToolbar(QT_TRANSLATE_NOOP("Workbench", "Path Modification"), modcmdlist)
+        self.appendToolbar(
+            QT_TRANSLATE_NOOP("Workbench", "Path Modification"), modcmdlist + dressupcmdgroup
+        )
         if extracmdlist:
             self.appendToolbar(QT_TRANSLATE_NOOP("Workbench", "Helpful Tools"), extracmdlist)
 
@@ -310,6 +330,8 @@ class CAMWorkbench(Workbench):
                 menuAppended = True
             if isinstance(obj.Proxy, Path.Op.Base.ObjectOp):
                 self.appendContextMenu("", ["CAM_OperationCopy", "CAM_OpActiveToggle"])
+                if hasattr(obj, "StartPoint"):
+                    self.appendContextMenu("", ["CAM_SetStartPoint"])
                 menuAppended = True
             if obj.isDerivedFrom("Path::Feature"):
                 if (
@@ -321,9 +343,9 @@ class CAMWorkbench(Workbench):
                     # self.appendContextMenu("", ["Set_StartPoint"])
                     # self.appendContextMenu("", ["Set_EndPoint"])
                     for cmd in self.dressupcmds:
-                        self.appendContextMenu("", [cmd])
+                        self.appendContextMenu("Dressup", [cmd])
                     menuAppended = True
-            if isinstance(obj.Proxy, Path.Tool.Bit.ToolBit):
+            if isinstance(obj.Proxy, Path.Tool.ToolBit):
                 self.appendContextMenu("", ["CAM_ToolBitSave", "CAM_ToolBitSaveAs"])
                 menuAppended = True
         if menuAppended:

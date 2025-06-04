@@ -33,6 +33,7 @@
 #include <Gui/Command.h>
 #include <Gui/WaitCursor.h>
 
+#include "MaterialsEditor.h"
 #include "ModelSelect.h"
 #include "ui_ModelSelect.h"
 
@@ -240,8 +241,12 @@ void ModelSelect::addModels(
     for (auto& mod : *modelTree) {
         std::shared_ptr<Materials::ModelTreeNode> nodePtr = mod.second;
         if (nodePtr->getType() == Materials::ModelTreeNode::NodeType::DataNode) {
+            QString uuid = nodePtr->getUUID();
             auto model = nodePtr->getData();
-            QString uuid = model->getUUID();
+            if (!model) {
+                model = Materials::ModelManager::getManager().getModel(uuid);
+                nodePtr->setData(model);
+            }
 
             auto card = new QStandardItem(icon, model->getName());
             card->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled | Qt::ItemIsDragEnabled
@@ -268,7 +273,7 @@ void ModelSelect::addRecents(QStandardItem* parent)
             auto model = Materials::ModelManager::getManager().getModel(uuid);
 
             if (Materials::ModelManager::getManager().passFilter(_filter, model->getType())) {
-                QIcon icon = QIcon(model->getLibrary()->getIconPath());
+                auto icon = MaterialsEditor::getIcon(model->getLibrary());
                 auto card = new QStandardItem(icon, model->getName());
                 card->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled | Qt::ItemIsDragEnabled
                                | Qt::ItemIsDropEnabled);
@@ -290,7 +295,7 @@ void ModelSelect::addFavorites(QStandardItem* parent)
             auto model = Materials::ModelManager::getManager().getModel(uuid);
 
             if (Materials::ModelManager::getManager().passFilter(_filter, model->getType())) {
-                QIcon icon = QIcon(model->getLibrary()->getIconPath());
+                auto icon = MaterialsEditor::getIcon(model->getLibrary());
                 auto card = new QStandardItem(icon, model->getName());
                 card->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled | Qt::ItemIsDragEnabled
                                | Qt::ItemIsDropEnabled);
@@ -346,7 +351,7 @@ void ModelSelect::fillTree()
         addExpanded(tree, model, lib);
 
         auto modelTree = Materials::ModelManager::getManager().getModelTree(library, _filter);
-        addModels(*lib, modelTree, QIcon(library->getIconPath()));
+        addModels(*lib, modelTree, MaterialsEditor::getIcon(library));
     }
 }
 
@@ -389,7 +394,7 @@ void ModelSelect::createModelProperties()
 void ModelSelect::updateModelProperties(std::shared_ptr<Materials::Model> model)
 {
     QTableView* table = ui->tableProperties;
-    auto tableModel = dynamic_cast<QStandardItemModel*>(table->model());
+    auto tableModel = qobject_cast<QStandardItemModel*>(table->model());
     tableModel->clear();
 
     setHeaders(tableModel);
@@ -454,7 +459,7 @@ void ModelSelect::clearMaterialModel()
     ui->tabWidget->setTabText(1, tr("Properties"));
 
     QTableView* table = ui->tableProperties;
-    auto tableModel = dynamic_cast<QStandardItemModel*>(table->model());
+    auto tableModel = qobject_cast<QStandardItemModel*>(table->model());
     tableModel->clear();
 
     setHeaders(tableModel);
@@ -465,7 +470,7 @@ void ModelSelect::onSelectModel(const QItemSelection& selected, const QItemSelec
 {
     Q_UNUSED(deselected);
 
-    auto model = dynamic_cast<QStandardItemModel*>(ui->treeModels->model());
+    auto model = qobject_cast<QStandardItemModel*>(ui->treeModels->model());
     QModelIndexList indexes = selected.indexes();
     for (auto it = indexes.begin(); it != indexes.end(); it++) {
         QStandardItem* item = model->itemFromIndex(*it);

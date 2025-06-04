@@ -433,7 +433,7 @@ ReportOutput::ReportOutput(QWidget* parent)
     clear();
     setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 
-    Base::Console().AttachObserver(this);
+    Base::Console().attachObserver(this);
     getWindowParameter()->Attach(this);
     getWindowParameter()->NotifyAll();
     // do this explicitly because the keys below might not yet be part of a group
@@ -457,7 +457,7 @@ ReportOutput::~ReportOutput()
 {
     getWindowParameter()->Detach(this);
     _prefs->Detach(this);
-    Base::Console().DetachObserver(this);
+    Base::Console().detachObserver(this);
     delete reportHl;
     delete d;
 }
@@ -468,7 +468,7 @@ void ReportOutput::restoreFont()
     setFont(serifFont);
 }
 
-void ReportOutput::SendLog(const std::string& notifiername, const std::string& msg, Base::LogStyle level,
+void ReportOutput::sendLog(const std::string& notifiername, const std::string& msg, Base::LogStyle level,
                            Base::IntendedRecipient recipient, Base::ContentType content)
 {
     // Do not log translated messages, or messages intended only to the user to the Report View

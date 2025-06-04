@@ -40,6 +40,11 @@
 #ifdef FC_USE_VTK
 #include "FemPostPipeline.h"
 #include "FemVTKTools.h"
+#include <LibraryVersions.h>
+#endif
+
+#ifdef FC_USE_VTK_PYTHON
+#include <vtkPythonUtil.h>
 #endif
 
 
@@ -75,6 +80,15 @@ public:
                            &Module::writeResult,
                            "write a CFD or FEM result (auto detect) to a file (file format "
                            "detected from file suffix)");
+        add_varargs_method("getVtkVersion",
+                           &Module::getVtkVersion,
+                           "Returns the VTK version FreeCAD is linked against");
+#ifdef FC_USE_VTK_PYTHON
+        add_varargs_method(
+            "isVtkCompatible",
+            &Module::isVtkCompatible,
+            "Checks if the passed vtkObject is compatible with the c++ VTK version FreeCAD uses");
+#endif
 #endif
         add_varargs_method("show",
                            &Module::show,
@@ -252,14 +266,14 @@ private:
     Py::Object frdToVTK(const Py::Tuple& args)
     {
         char* filename = nullptr;
-
-        if (!PyArg_ParseTuple(args.ptr(), "et", "utf-8", &filename)) {
+        PyObject* binary = Py_True;
+        if (!PyArg_ParseTuple(args.ptr(), "et|O!", "utf-8", &filename, &PyBool_Type, &binary)) {
             throw Py::Exception();
         }
         std::string encodedName = std::string(filename);
         PyMem_Free(filename);
 
-        FemVTKTools::frdToVTK(encodedName.c_str());
+        FemVTKTools::frdToVTK(encodedName.c_str(), Base::asBoolean(binary));
 
         return Py::None();
     }
@@ -318,6 +332,34 @@ private:
 
         return Py::None();
     }
+
+    Py::Object getVtkVersion(const Py::Tuple& args)
+    {
+        if (!PyArg_ParseTuple(args.ptr(), "")) {
+            throw Py::Exception();
+        }
+
+        return Py::String(fcVtkVersion);
+    }
+
+#ifdef FC_USE_VTK_PYTHON
+    Py::Object isVtkCompatible(const Py::Tuple& args)
+    {
+        PyObject* pcObj = nullptr;
+        if (!PyArg_ParseTuple(args.ptr(), "O", &pcObj)) {
+            throw Py::Exception();
+        }
+
+        // if none is returned the VTK object was created by another VTK library, and the
+        // python api used to create it cannot be used with FreeCAD
+        vtkObjectBase* obj = vtkPythonUtil::GetPointerFromObject(pcObj, "vtkObject");
+        if (!obj) {
+            PyErr_Clear();
+            return Py::False();
+        }
+        return Py::True();
+    }
+#endif
 #endif
 
     Py::Object show(const Py::Tuple& args)

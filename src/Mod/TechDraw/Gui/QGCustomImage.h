@@ -31,6 +31,7 @@
 #include <QPointF>
 #include <QSize>
 
+#include "QGIUserTypes.h"
 
 QT_BEGIN_NAMESPACE
 class QPainter;
@@ -46,7 +47,7 @@ public:
     explicit QGCustomImage();
     ~QGCustomImage() override;
 
-    enum {Type = QGraphicsItem::UserType + 201};
+    enum {Type = UserType::QGCustomImage};
     int type() const override { return Type;}
 
     void paint( QPainter *painter,

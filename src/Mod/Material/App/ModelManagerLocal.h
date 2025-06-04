@@ -55,7 +55,7 @@ public:
     void renameLibrary(const QString& libraryName, const QString& newName);
     void changeIcon(const QString& libraryName, const QString& icon);
     void removeLibrary(const QString& libraryName);
-    std::shared_ptr<std::vector<std::tuple<QString, QString, QString>>>
+    std::shared_ptr<std::vector<LibraryObject>>
     libraryModels(const QString& libraryName);
 
     std::shared_ptr<std::map<QString, std::shared_ptr<Model>>> getModels()
@@ -77,7 +77,7 @@ public:
 private:
     static void initLibraries();
 
-    static std::shared_ptr<std::list<std::shared_ptr<ModelLibrary>>> _libraryList;
+    static std::shared_ptr<std::list<std::shared_ptr<ModelLibraryLocal>>> _libraryList;
     static std::shared_ptr<std::map<QString, std::shared_ptr<Model>>> _modelMap;
     static QMutex _mutex;
 };

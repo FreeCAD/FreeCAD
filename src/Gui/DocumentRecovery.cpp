@@ -49,6 +49,7 @@
 
 #include <App/Application.h>
 #include <App/Document.h>
+#include <App/ProjectFile.h>
 #include <Base/Exception.h>
 #include <Gui/Application.h>
 #include <Gui/Command.h>
@@ -164,6 +165,7 @@ public:
     QList<Info> recoveryInfo;
 
     Info getRecoveryInfo(const QFileInfo&) const;
+    bool isValidProject(const QFileInfo&) const;
     void writeRecoveryInfo(const Info&) const;
     XmlConfig readXmlFile(const QString& fn) const;
 };
@@ -433,7 +435,7 @@ DocumentRecoveryPrivate::Info DocumentRecoveryPrivate::getRecoveryInfo(const QFi
         if (info.status == DocumentRecoveryPrivate::Created) {
             // compare the modification dates
             QFileInfo fileInfo(info.fileName);
-            if (!info.fileName.isEmpty() && fileInfo.exists()) {
+            if (!info.fileName.isEmpty() && isValidProject(fileInfo)) {
                 QDateTime dateRecv = QFileInfo(file).lastModified();
                 QDateTime dateProj = fileInfo.lastModified();
                 if (dateRecv < dateProj) {
@@ -447,6 +449,16 @@ DocumentRecoveryPrivate::Info DocumentRecoveryPrivate::getRecoveryInfo(const QFi
     }
 
     return info;
+}
+
+bool DocumentRecoveryPrivate::isValidProject(const QFileInfo& fi) const
+{
+    if (!fi.exists()) {
+        return false;
+    }
+
+    App::ProjectFile project(fi.absoluteFilePath().toStdString());
+    return project.loadDocument();
 }
 
 DocumentRecoveryPrivate::XmlConfig DocumentRecoveryPrivate::readXmlFile(const QString& fn) const
@@ -484,7 +496,7 @@ DocumentRecoveryPrivate::XmlConfig DocumentRecoveryPrivate::readXmlFile(const QS
         while (!child.isNull()) {
             QString name = child.localName();
             const QString value = child.text();
-            if (std::ranges::find(filter, name) != filter.end())
+            if (filter.contains(name))
                 cfg[name] = value;
             child = child.nextSiblingElement();
         }
@@ -677,7 +689,7 @@ void DocumentRecoveryHandler::checkForPreviousCrashes(const std::function<void(Q
                 callableFunc(tmp, dirs, it.fileName());
             }
             else {
-                Base::Console().Log("Failed to lock file %s\n", fn.toUtf8().constData());
+                Base::Console().log("Failed to lock file %s\n", fn.toUtf8().constData());
             }
         }
     }

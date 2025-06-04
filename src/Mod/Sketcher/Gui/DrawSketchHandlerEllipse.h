@@ -84,6 +84,24 @@ public:
     ~DrawSketchHandlerEllipse() override = default;
 
 private:
+    struct HintEntry
+    {
+        ConstructionMethod method;
+        SelectMode state;
+        std::list<Gui::InputHint> hints;
+    };
+
+    using HintTable = std::vector<HintEntry>;
+
+    static HintTable getEllipseHintTable();
+    static std::list<Gui::InputHint> lookupEllipseHints(ConstructionMethod method,
+                                                        SelectMode state);
+
+    std::list<Gui::InputHint> getToolHints() const override
+    {
+        return lookupEllipseHints(constructionMethod(), state());
+    }
+
     void updateDataAndDrawToPosition(Base::Vector2d onSketchPos) override
     {
         switch (state()) {
@@ -676,8 +694,8 @@ void DSHEllipseController::doChangeDrawSketchHandlerMode()
             }
         } break;
         case SelectMode::SeekSecond: {
-            if (onViewParameters[OnViewParameter::Third]->isSet
-                && onViewParameters[OnViewParameter::Fourth]->isSet) {
+            if (onViewParameters[OnViewParameter::Third]->hasFinishedEditing
+                || onViewParameters[OnViewParameter::Fourth]->hasFinishedEditing) {
 
                 handler->setState(SelectMode::SeekThird);
             }
@@ -685,14 +703,14 @@ void DSHEllipseController::doChangeDrawSketchHandlerMode()
         case SelectMode::SeekThird: {
             if (handler->constructionMethod()
                 == DrawSketchHandlerEllipse::ConstructionMethod::Center) {
-                if (onViewParameters[OnViewParameter::Fifth]->isSet) {
+                if (onViewParameters[OnViewParameter::Fifth]->hasFinishedEditing) {
 
                     handler->setState(SelectMode::End);
                 }
             }
             else {
-                if (onViewParameters[OnViewParameter::Fifth]->isSet
-                    && onViewParameters[OnViewParameter::Sixth]->isSet) {
+                if (onViewParameters[OnViewParameter::Fifth]->hasFinishedEditing
+                    || onViewParameters[OnViewParameter::Sixth]->hasFinishedEditing) {
 
                     handler->setState(SelectMode::End);
                 }
@@ -952,7 +970,47 @@ void DSHEllipseController::addConstraints()
     // No constraint possible for 3 rim ellipse.
 }
 
+DrawSketchHandlerEllipse::HintTable DrawSketchHandlerEllipse::getEllipseHintTable()
+{
+    return {
+        // Structure: {ConstructionMethod, SelectMode, {hints...}}
 
+        // Center method
+        {ConstructionMethod::Center,
+         SelectMode::SeekFirst,
+         {{QObject::tr("%1 pick ellipse center"), {Gui::InputHint::UserInput::MouseLeft}}}},
+        {ConstructionMethod::Center,
+         SelectMode::SeekSecond,
+         {{QObject::tr("%1 pick axis endpoint"), {Gui::InputHint::UserInput::MouseLeft}}}},
+        {ConstructionMethod::Center,
+         SelectMode::SeekThird,
+         {{QObject::tr("%1 pick minor axis endpoint"), {Gui::InputHint::UserInput::MouseLeft}}}},
+
+        // ThreeRim method
+        {ConstructionMethod::ThreeRim,
+         SelectMode::SeekFirst,
+         {{QObject::tr("%1 pick first rim point"), {Gui::InputHint::UserInput::MouseLeft}}}},
+        {ConstructionMethod::ThreeRim,
+         SelectMode::SeekSecond,
+         {{QObject::tr("%1 pick second rim point"), {Gui::InputHint::UserInput::MouseLeft}}}},
+        {ConstructionMethod::ThreeRim,
+         SelectMode::SeekThird,
+         {{QObject::tr("%1 pick third rim point"), {Gui::InputHint::UserInput::MouseLeft}}}}};
+}
+
+std::list<Gui::InputHint> DrawSketchHandlerEllipse::lookupEllipseHints(ConstructionMethod method,
+                                                                       SelectMode state)
+{
+    const auto ellipseHintTable = getEllipseHintTable();
+
+    auto it = std::find_if(ellipseHintTable.begin(),
+                           ellipseHintTable.end(),
+                           [method, state](const HintEntry& entry) {
+                               return entry.method == method && entry.state == state;
+                           });
+
+    return (it != ellipseHintTable.end()) ? it->hints : std::list<Gui::InputHint> {};
+}
 }  // namespace SketcherGui
 
 

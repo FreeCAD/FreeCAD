@@ -53,6 +53,8 @@ PropertyExpressionContainer::PropertyExpressionContainer()
         inited = true;
         GetApplication().signalRelabelDocument.connect(
             PropertyExpressionContainer::slotRelabelDocument);
+        GetApplication().signalRenameDynamicProperty.connect(
+            PropertyExpressionContainer::slotRenameDynamicProperty);
     }
     _ExprContainers.insert(this);
 }
@@ -72,6 +74,13 @@ void PropertyExpressionContainer::slotRelabelDocument(const App::Document& doc)
         for (auto prop : _ExprContainers) {
             prop->onRelabeledDocument(doc);
         }
+    }
+}
+
+void PropertyExpressionContainer::slotRenameDynamicProperty(const App::Property& prop, const char* oldName)
+{
+    for (auto container : _ExprContainers) {
+        container->onRenameDynamicProperty(prop, oldName);
     }
 }
 
@@ -246,7 +255,7 @@ void PropertyExpressionEngine::updateHiddenReference(const std::string& key)
             }
         }
         catch (Base::Exception& e) {
-            e.ReportException();
+            e.reportException();
             FC_ERR("Failed to evaluate property binding " << myProp->getFullName()
                                                           << " on change of " << key);
         }
@@ -327,9 +336,9 @@ void PropertyExpressionEngine::Save(Base::Writer& writer) const
 void PropertyExpressionEngine::Restore(Base::XMLReader& reader)
 {
     reader.readElement("ExpressionEngine");
-    int count = reader.getAttributeAsFloat("count");
+    int count = reader.getAttribute<double>("count");
 
-    if (reader.hasAttribute("xlink") && reader.getAttributeAsInteger("xlink")) {
+    if (reader.hasAttribute("xlink") && reader.getAttribute<bool>("xlink")) {
         PropertyExpressionContainer::Restore(reader);
     }
 
@@ -340,10 +349,10 @@ void PropertyExpressionEngine::Restore(Base::XMLReader& reader)
         reader.readElement("Expression");
         restoredExpressions->emplace_back();
         auto& info = restoredExpressions->back();
-        info.path = reader.getAttribute("path");
-        info.expr = reader.getAttribute("expression");
+        info.path = reader.getAttribute<const char*>("path");
+        info.expr = reader.getAttribute<const char*>("expression");
         if (reader.hasAttribute("comment")) {
-            info.comment = reader.getAttribute("comment");
+            info.comment = reader.getAttribute<const char*>("comment");
         }
     }
 
@@ -406,7 +415,7 @@ void PropertyExpressionEngine::buildGraphStructures(
  * @return New ObjectIdentifier
  */
 
-ObjectIdentifier PropertyExpressionEngine::canonicalPath(const ObjectIdentifier& p) const
+ObjectIdentifier PropertyExpressionEngine::canonicalPath(const ObjectIdentifier& oid) const
 {
     DocumentObject* docObj = freecad_cast<DocumentObject*>(getContainer());
 
@@ -416,24 +425,24 @@ ObjectIdentifier PropertyExpressionEngine::canonicalPath(const ObjectIdentifier&
     }
 
     int ptype;
-    Property* prop = p.getProperty(&ptype);
+    Property* prop = oid.getProperty(&ptype);
 
-    // p pointing to a property...?
+    // oid pointing to a property...?
     if (!prop) {
-        throw Base::RuntimeError(p.resolveErrorString().c_str());
+        throw Base::RuntimeError(oid.resolveErrorString().c_str());
     }
 
     if (ptype || prop->getContainer() != getContainer()) {
-        return p;
+        return oid;
     }
 
     // In case someone calls this with p pointing to a PropertyExpressionEngine for some reason
     if (prop->isDerivedFrom(PropertyExpressionEngine::classTypeId)) {
-        return p;
+        return oid;
     }
 
     // Dispatch call to actual canonicalPath implementation
-    return p.canonicalPath();
+    return oid.canonicalPath();
 }
 
 /**
@@ -873,7 +882,7 @@ PropertyExpressionEngine::validateExpression(const ObjectIdentifier& path,
     auto inList = pathDocObj->getInListEx(true);
     for (auto& v : expr->getDepObjects()) {
         auto docObj = v.first;
-        if (!v.second && inList.count(docObj)) {
+        if (!v.second && inList.contains(docObj)) {
             std::stringstream ss;
             ss << "cyclic reference to " << docObj->getFullName();
             return ss.str();
@@ -1008,7 +1017,7 @@ bool PropertyExpressionEngine::adjustLink(const std::set<DocumentObject*>& inLis
     }
     bool found = false;
     for (auto& v : _Deps) {
-        if (inList.count(v.first)) {
+        if (inList.contains(v.first)) {
             found = true;
             break;
         }
@@ -1206,6 +1215,17 @@ void PropertyExpressionEngine::onRelabeledDocument(const App::Document& doc)
             e.second.expression->visit(v);
         }
     }
+}
+
+void PropertyExpressionEngine::onRenameDynamicProperty(const App::Property& prop, const char* oldName)
+{
+    ObjectIdentifier oldNameId = ObjectIdentifier(prop.getContainer(), std::string(oldName));
+    ObjectIdentifier newNameId = ObjectIdentifier(prop);
+    const std::map<ObjectIdentifier, ObjectIdentifier> paths = {
+        {oldNameId, newNameId},
+    };
+
+    renameObjectIdentifiers(paths);
 }
 
 void PropertyExpressionEngine::getLinksTo(std::vector<App::ObjectIdentifier>& identifiers,

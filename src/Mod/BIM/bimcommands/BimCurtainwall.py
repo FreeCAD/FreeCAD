@@ -52,21 +52,23 @@ class Arch_CurtainWall:
 
     def Activated(self):
 
+        self.doc = FreeCAD.ActiveDocument
         sel = FreeCADGui.Selection.getSelection()
         if len(sel) > 1:
             FreeCAD.Console.PrintError(translate("Arch","Please select only one base object or none")+"\n")
         elif len(sel) == 1:
             # build on selection
             FreeCADGui.Control.closeDialog()
-            FreeCAD.ActiveDocument.openTransaction(translate("Arch","Create Curtain Wall"))
+            self.doc.openTransaction(translate("Arch","Create Curtain Wall"))
             FreeCADGui.addModule("Draft")
             FreeCADGui.addModule("Arch")
             FreeCADGui.doCommand("obj = Arch.makeCurtainWall(FreeCAD.ActiveDocument."+FreeCADGui.Selection.getSelection()[0].Name+")")
             FreeCADGui.doCommand("Draft.autogroup(obj)")
-            FreeCAD.ActiveDocument.commitTransaction()
-            FreeCAD.ActiveDocument.recompute()
+            self.doc.commitTransaction()
+            self.doc.recompute()
         else:
             # interactive line drawing
+            FreeCAD.activeDraftCommand = self  # register as a Draft command for auto grid on/off
             self.points = []
             import WorkingPlane
             WorkingPlane.get_working_plane()
@@ -79,20 +81,24 @@ class Arch_CurtainWall:
 
         if point is None:
             # cancelled
+            FreeCAD.activeDraftCommand = None
+            FreeCADGui.Snapper.off()
             return
         self.points.append(point)
         if len(self.points) == 1:
             FreeCADGui.Snapper.getPoint(last=self.points[0],callback=self.getPoint)
         elif len(self.points) == 2:
+            FreeCAD.activeDraftCommand = None
+            FreeCADGui.Snapper.off()
             FreeCADGui.Control.closeDialog()
-            FreeCAD.ActiveDocument.openTransaction(translate("Arch","Create Curtain Wall"))
+            self.doc.openTransaction(translate("Arch","Create Curtain Wall"))
             FreeCADGui.addModule("Draft")
             FreeCADGui.addModule("Arch")
             FreeCADGui.doCommand("base = Draft.makeLine(FreeCAD."+str(self.points[0])+",FreeCAD."+str(self.points[1])+")")
             FreeCADGui.doCommand("obj = Arch.makeCurtainWall(base)")
             FreeCADGui.doCommand("Draft.autogroup(obj)")
-            FreeCAD.ActiveDocument.commitTransaction()
-            FreeCAD.ActiveDocument.recompute()
+            self.doc.commitTransaction()
+            self.doc.recompute()
 
 
 

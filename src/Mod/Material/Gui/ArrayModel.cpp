@@ -391,7 +391,7 @@ QVariant Array3DModel::data(const QModelIndex& index, int role) const
         catch (const Materials::InvalidIndex&) {
         }
         catch (const std::exception& e) {
-            Base::Console().Error("The error message is: %s\n", e.what());
+            Base::Console().error("The error message is: %s\n", e.what());
         }
 
         try {
@@ -442,7 +442,7 @@ bool Array3DModel::setData(const QModelIndex& index, const QVariant& value, int 
         _value->setValue(index.row(), index.column(), value.value<Base::Quantity>());
     }
     catch (const Materials::InvalidIndex&) {
-        Base::Console().Error("Array3DModel::setData - InvalidIndex");
+        Base::Console().error("Array3DModel::setData - InvalidIndex");
     }
 
     Q_EMIT dataChanged(index, index);

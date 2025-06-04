@@ -24,7 +24,9 @@
 #ifndef _PreComp_
 #include <QApplication>
 #include <QByteArray>
+#include <QDateTime>
 #include <QDesktopServices>
+#include <QLocale>
 #include <QUrl>
 #endif
 
@@ -37,7 +39,7 @@
 
 #include "MainWindow.h"
 
-#if 0 // needed for Qt's lupdate utility
+#if 0  // needed for Qt's lupdate utility
     qApp->translate("Gui::Dialog::DlgSettingsDocument", "All rights reserved");
     qApp->translate("Gui::Dialog::DlgSettingsDocument", "Creative Commons Attribution");
     qApp->translate("Gui::Dialog::DlgSettingsDocument", "Creative Commons Attribution-ShareAlike");
@@ -64,26 +66,41 @@ using namespace Gui::Dialog;
  *  The dialog will by default be modeless, unless you set 'modal' to
  *  true to construct a modal dialog.
  */
-DlgProjectInformationImp::DlgProjectInformationImp(App::Document* doc, QWidget* parent, Qt::WindowFlags fl)
-  : QDialog(parent, fl), _doc(doc), ui(new Ui_DlgProjectInformation)
+DlgProjectInformationImp::DlgProjectInformationImp(App::Document* doc,
+                                                   QWidget* parent,
+                                                   Qt::WindowFlags fl)
+    : QDialog(parent, fl)
+    , _doc(doc)
+    , ui(new Ui_DlgProjectInformation)
 {
+    auto convertISODate = [](const char* isoDate) {
+        auto str = QString::fromUtf8(isoDate);
+        QDateTime dt = QDateTime::fromString(str, Qt::DateFormat::ISODate);
+        if (dt.isNull()) {
+            return str;
+        }
+
+        QLocale loc = QLocale::system();
+        return loc.toString(dt);
+    };
     ui->setupUi(this);
     ui->lineEditName->setText(QString::fromUtf8(doc->Label.getValue()));
     ui->lineEditPath->setText(QString::fromUtf8(doc->FileName.getValue()));
     ui->lineEditUuid->setText(QString::fromUtf8(doc->Uid.getValueStr().c_str()));
     ui->lineEditProgramVersion->setText(QString::fromUtf8(doc->getProgramVersion()));
     ui->lineEditCreator->setText(QString::fromUtf8(doc->CreatedBy.getValue()));
-    ui->lineEditDate->setText(QString::fromUtf8(doc->CreationDate.getValue()));
+    ui->lineEditDate->setText(convertISODate(doc->CreationDate.getValue()));
     ui->lineEditLastMod->setText(QString::fromUtf8(doc->LastModifiedBy.getValue()));
-    ui->lineEditLastModDate->setText(QString::fromUtf8(doc->LastModifiedDate.getValue()));
+    ui->lineEditLastModDate->setText(convertISODate(doc->LastModifiedDate.getValue()));
     ui->lineEditCompany->setText(QString::fromUtf8(doc->Company.getValue()));
 
     // Load comboBox with unit systems
-    int num = static_cast<int>(Base::UnitSystem::NumUnitSystemTypes);
-    for (int i = 0; i < num; i++) {
-        QString item = Base::UnitsApi::getDescription(static_cast<Base::UnitSystem>(i));
-        ui->comboBox_unitSystem->addItem(item, i);
-    }
+    auto addDesc = [&, index {0}](const std::string& item) mutable {
+        ui->comboBox_unitSystem->addItem(QString::fromStdString(item), index++);
+    };
+    const auto descriptions = Base::UnitsApi::getDescriptions();
+    std::for_each(descriptions.begin(), descriptions.end(), addDesc);
+
     ui->comboBox_unitSystem->setCurrentIndex(doc->UnitSystem.getValue());
 
     // load comboBox with license names
@@ -114,11 +131,15 @@ DlgProjectInformationImp::DlgProjectInformationImp(App::Document* doc, QWidget* 
     QStringList lines = comment.split(QLatin1String("\\n"), Qt::KeepEmptyParts);
 
     QString text = lines.join(QLatin1String("\n"));
-    ui->textEditComment->setPlainText( text );
-    connect(ui->pushButtonOpenURL, &QPushButton::clicked,
-            this, &DlgProjectInformationImp::open_url);
-    connect(ui->comboLicense, qOverload<int>(&QComboBox::currentIndexChanged),
-            this, &DlgProjectInformationImp::onLicenseTypeChanged);
+    ui->textEditComment->setPlainText(text);
+    connect(ui->pushButtonOpenURL,
+            &QPushButton::clicked,
+            this,
+            &DlgProjectInformationImp::open_url);
+    connect(ui->comboLicense,
+            qOverload<int>(&QComboBox::currentIndexChanged),
+            this,
+            &DlgProjectInformationImp::onLicenseTypeChanged);
 }
 
 /**
@@ -148,8 +169,8 @@ void DlgProjectInformationImp::accept()
     _doc->LicenseURL.setValue(ui->lineEditLicenseURL->text().toUtf8());
 
     // Replace newline escape sequence through '\\n' string
-    QStringList lines = ui->textEditComment->toPlainText().split
-        (QLatin1String("\n"), Qt::KeepEmptyParts);
+    QStringList lines =
+        ui->textEditComment->toPlainText().split(QLatin1String("\n"), Qt::KeepEmptyParts);
 
     QString text = lines.join(QLatin1String("\\n"));
     _doc->Comment.setValue(text.isEmpty() ? QByteArray() : text.toUtf8());
@@ -159,8 +180,9 @@ void DlgProjectInformationImp::accept()
 
 void DlgProjectInformationImp::onLicenseTypeChanged(int index)
 {
-    const char* url {index >= 0 && index < App::countOfLicenses ? App::licenseItems.at(index).at(App::posnOfUrl)
-                                                  : _doc->LicenseURL.getValue()};
+    const char* url {index >= 0 && index < App::countOfLicenses
+                         ? App::licenseItems.at(index).at(App::posnOfUrl)
+                         : _doc->LicenseURL.getValue()};
 
     ui->lineEditLicenseURL->setText(QString::fromLatin1(url));
 }

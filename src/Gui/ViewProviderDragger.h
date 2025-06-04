@@ -25,7 +25,6 @@
 #define GUI_VIEWPROVIDER_DRAGGER_H
 
 #include "ViewProviderDocumentObject.h"
-#include "Inventor/Draggers/SoTransformDragger.h"
 #include <Base/Placement.h>
 #include <App/PropertyGeo.h>
 
@@ -38,6 +37,7 @@ namespace TaskView {
     class TaskDialog;
 }
 
+class SoTransformDragger;
 class View3DInventorViewer;
 
 /**
@@ -113,7 +113,7 @@ protected:
      */
     virtual TaskView::TaskDialog* getTransformDialog();
 
-    CoinPtr<SoTransformDragger> transformDragger = nullptr;
+    CoinPtr<SoTransformDragger> transformDragger;
     ViewProvider *forwardedViewProvider = nullptr;
 
     CoinPtr<SoSwitch> pcPlacement;

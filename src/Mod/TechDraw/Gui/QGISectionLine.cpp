@@ -31,6 +31,7 @@
 #include <App/Application.h>
 #include <Base/Console.h>
 #include <Base/Parameter.h>
+#include <Base/Tools.h>
 
 #include <Mod/TechDraw/App/Preferences.h>
 
@@ -320,7 +321,7 @@ void QGISectionLine::extensionEndsISO()
 
 void QGISectionLine::makeChangePointMarks()
 {
-//    Base::Console().Message("QGISL::makeChangePointMarks()\n");
+//    Base::Console().message("QGISL::makeChangePointMarks()\n");
     double segmentLength = 0.50 * QGIArrow::getPrefArrowSize();
     QPen cPointPen;
     //TODO: this should really be 2.0 * thickLineWidth, but we only have one
@@ -404,7 +405,7 @@ double QGISectionLine::getArrowRotation(Base::Vector3d arrowDir)
     if (angle < 0.0) {
         angle = 2 * std::numbers::pi + angle;
     }
-    double arrowRotation = 360.0 - angle * (180.0/std::numbers::pi);   //convert to Qt rotation (clockwise degrees)
+    double arrowRotation = 360.0 - Base::toDegrees(angle);   //convert to Qt rotation (clockwise degrees)
     return arrowRotation;
 }
 

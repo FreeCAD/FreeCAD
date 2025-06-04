@@ -54,7 +54,7 @@ void GeometryDefaultExtension<T>::restoreAttributes(Base::XMLReader &reader)
 {
     Part::GeometryPersistenceExtension::restoreAttributes(reader);
 
-    value = reader.getAttribute("value");
+    value = reader.getAttribute<const char*>("value");
 }
 
 template <typename T>
@@ -100,7 +100,7 @@ void GeometryDefaultExtension<long>::restoreAttributes(Base::XMLReader &reader)
 {
     Part::GeometryPersistenceExtension::restoreAttributes(reader);
 
-    value = reader.getAttributeAsInteger("value");
+    value = reader.getAttribute<long>("value");
 }
 
 // ---------- GeometryStringExtension ----------
@@ -126,7 +126,7 @@ void GeometryDefaultExtension<bool>::restoreAttributes(Base::XMLReader &reader)
 {
     Part::GeometryPersistenceExtension::restoreAttributes(reader);
 
-    value = (bool)reader.getAttributeAsInteger("value");
+    value = reader.getAttribute<bool>("value");
 }
 
 // ---------- GeometryDoubleExtension ----------
@@ -143,7 +143,7 @@ void GeometryDefaultExtension<double>::restoreAttributes(Base::XMLReader &reader
 {
     Part::GeometryPersistenceExtension::restoreAttributes(reader);
 
-    value = reader.getAttributeAsFloat("value");
+    value = reader.getAttribute<double>("value");
 }
 
 

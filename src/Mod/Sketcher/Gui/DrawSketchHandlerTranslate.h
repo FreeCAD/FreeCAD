@@ -26,6 +26,8 @@
 
 #include <QApplication>
 
+#include <Base/Tools.h>
+
 #include <Gui/BitmapFactory.h>
 #include <Gui/Notifications.h>
 #include <Gui/Command.h>
@@ -124,7 +126,7 @@ private:
             Gui::Command::commitCommand();
         }
         catch (const Base::Exception& e) {
-            e.ReportException();
+            e.reportException();
             Gui::NotifyError(sketchgui,
                              QT_TRANSLATE_NOOP("Notifications", "Error"),
                              QT_TRANSLATE_NOOP("Notifications", "Failed to translate"));
@@ -238,7 +240,7 @@ private:
                                   stream.str().c_str());
         }
         catch (const Base::Exception& e) {
-            Base::Console().Error("%s\n", e.what());
+            Base::Console().error("%s\n", e.what());
         }
     }
 
@@ -585,7 +587,7 @@ void DSHTranslateControllerBase::doEnforceControlParameters(Base::Vector2d& onSk
 
             if (onViewParameters[OnViewParameter::Fourth]->isSet) {
                 double angle =
-                    onViewParameters[OnViewParameter::Fourth]->getValue() * std::numbers::pi / 180;
+                    Base::toRadians(onViewParameters[OnViewParameter::Fourth]->getValue());
                 onSketchPos.x = handler->referencePoint.x + cos(angle) * length;
                 onSketchPos.y = handler->referencePoint.y + sin(angle) * length;
             }
@@ -609,7 +611,7 @@ void DSHTranslateControllerBase::doEnforceControlParameters(Base::Vector2d& onSk
 
             if (onViewParameters[OnViewParameter::Sixth]->isSet) {
                 double angle =
-                    onViewParameters[OnViewParameter::Sixth]->getValue() * std::numbers::pi / 180;
+                    Base::toRadians(onViewParameters[OnViewParameter::Sixth]->getValue());
                 onSketchPos.x = handler->referencePoint.x + cos(angle) * length;
                 onSketchPos.y = handler->referencePoint.y + sin(angle) * length;
             }
@@ -701,8 +703,8 @@ void DSHTranslateController::doChangeDrawSketchHandlerMode()
             }
         } break;
         case SelectMode::SeekSecond: {
-            if (onViewParameters[OnViewParameter::Third]->isSet
-                && onViewParameters[OnViewParameter::Fourth]->isSet) {
+            if (onViewParameters[OnViewParameter::Third]->hasFinishedEditing
+                || onViewParameters[OnViewParameter::Fourth]->hasFinishedEditing) {
 
                 if (handler->secondNumberOfCopies == 1) {
                     handler->setState(SelectMode::End);
@@ -713,8 +715,8 @@ void DSHTranslateController::doChangeDrawSketchHandlerMode()
             }
         } break;
         case SelectMode::SeekThird: {
-            if (onViewParameters[OnViewParameter::Fifth]->isSet
-                && onViewParameters[OnViewParameter::Sixth]->isSet) {
+            if (onViewParameters[OnViewParameter::Fifth]->hasFinishedEditing
+                || onViewParameters[OnViewParameter::Sixth]->hasFinishedEditing) {
 
                 handler->setState(SelectMode::End);
             }

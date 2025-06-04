@@ -23,10 +23,13 @@
 #ifndef DIMENSIONFORMATTER_H
 #define DIMENSIONFORMATTER_H
 
+#include <QString>
+
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
 //#include <DrawViewDimension.h> Cyclic dependency issue!
 
+class QString;
 
 namespace TechDraw {
 class DrawViewDimension;
@@ -41,28 +44,27 @@ public:
         UNIT       // return only the unit of measure
     };
 
-    DimensionFormatter() {}
-    DimensionFormatter(DrawViewDimension* dim) { m_dimension = dim; }
+    DimensionFormatter() = default;
+    explicit DimensionFormatter(DrawViewDimension* dim)
+        : m_dimension {dim}
+    {}
     ~DimensionFormatter() = default;
 
     //void setDimension(DrawViewDimension* dim) { m_dimension = dim; }
     bool isMultiValueSchema() const;
-    std::string formatValue(const qreal value,
-                            const QString& qFormatSpec,
-                            const Format partial,
-                            const bool isDim) const;
-    std::string getFormattedToleranceValue(const Format partial) const;
-    std::pair<std::string, std::string> getFormattedToleranceValues(const Format partial) const;
-    std::string getFormattedDimensionValue(const Format partial) const;
+    std::string formatValue(qreal value, const QString& qFormatSpec, Format partial, bool isDim) const;
+    std::string getFormattedToleranceValue(Format partial) const;
+    std::pair<std::string, std::string> getFormattedToleranceValues(Format partial) const;
+    std::string getFormattedDimensionValue(Format partial) const;
     QStringList getPrefixSuffixSpec(const QString& fSpec) const;
     std::string getDefaultFormatSpec(bool isToleranceFormat) const;
-    bool isTooSmall(const double value, const QString& formatSpec) const;
-    QString formatValueToSpec(const double value, QString formatSpecifier) const;
-    bool isNumericFormat(const QString& formatSpecifier) const;
 
 private:
-    DrawViewDimension* m_dimension;
+    QString formatValueToSpec(double value, QString formatSpecifier) const;
+    bool isNumericFormat(const QString& formatSpecifier) const;
+
+    DrawViewDimension* m_dimension {nullptr};
 };
 
-} //end namespace TechDraw
+}  // end namespace TechDraw
 #endif

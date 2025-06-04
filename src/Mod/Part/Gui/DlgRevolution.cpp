@@ -74,7 +74,7 @@ public:
         std::string element(sSubName);
         if (element.substr(0,4) != "Edge")
             return false;
-        Part::TopoShape part = Part::Feature::getTopoShape(pObj);
+        Part::TopoShape part = Part::Feature::getTopoShape(pObj, Part::ShapeOption::ResolveLink | Part::ShapeOption::Transform);
         if (part.isNull()) {
             return false;
         }
@@ -309,7 +309,7 @@ bool DlgRevolution::validate()
 
     //check angle
     if (!axisLinkHasAngle){
-        if (fabs(this->getAngle() / 180.0 * std::numbers::pi) < Precision::Angular()) {
+        if (fabs(Base::toRadians(this->getAngle())) < Precision::Angular()) {
             QMessageBox::critical(this, windowTitle(),
                 tr("Revolution angle span is zero. It must be non-zero."));
             ui->angle->setFocus();
@@ -347,7 +347,7 @@ void DlgRevolution::findShapes()
     std::vector<App::DocumentObject*> objs = activeDoc->getObjectsOfType<App::DocumentObject>();
 
     for (auto obj : objs) {
-        Part::TopoShape topoShape = Part::Feature::getTopoShape(obj);
+        Part::TopoShape topoShape = Part::Feature::getTopoShape(obj, Part::ShapeOption::ResolveLink | Part::ShapeOption::Transform);
         if (topoShape.isNull()) {
             continue;
         }
@@ -542,7 +542,7 @@ void DlgRevolution::autoSolid()
 {
     try{
         App::DocumentObject &dobj = this->getShapeToRevolve();
-        Part::TopoShape topoShape = Part::Feature::getTopoShape(&dobj);
+        Part::TopoShape topoShape = Part::Feature::getTopoShape(&dobj, Part::ShapeOption::ResolveLink | Part::ShapeOption::Transform);
         if (topoShape.isNull()) {
             return;
         } else {

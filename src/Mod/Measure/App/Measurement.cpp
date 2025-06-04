@@ -125,7 +125,12 @@ MeasureType Measurement::findType()
     for (; obj != objects.end(); ++obj, ++subEl) {
         TopoDS_Shape refSubShape;
         try {
-            refSubShape = Part::Feature::getShape(*obj, (*subEl).c_str(), true);
+            refSubShape = Part::Feature::getShape(*obj,
+                                                  Part::ShapeOption::NeedSubElement
+                                                      | Part::ShapeOption::ResolveLink
+                                                      | Part::ShapeOption::Transform,
+                                                  (*subEl).c_str());
+
             if (refSubShape.IsNull()) {
                 return MeasureType::Invalid;
             }
@@ -292,10 +297,10 @@ double Measurement::length() const
     double result = 0.0;
     int numRefs = References3D.getSize();
     if (numRefs == 0) {
-        Base::Console().Error("Measurement::length - No 3D references available\n");
+        Base::Console().error("Measurement::length - No 3D references available\n");
     }
     else if (measureType == MeasureType::Invalid) {
-        Base::Console().Error("Measurement::length - measureType is Invalid\n");
+        Base::Console().error("Measurement::length - measureType is Invalid\n");
     }
     else {
         const std::vector<App::DocumentObject*>& objects = References3D.getValues();
@@ -406,7 +411,7 @@ double Measurement::lineLineDistance() const
         distance = perpendicularComponent.Magnitude();
     }
     else {
-        Base::Console().Error("Measurement::length - TwoLines measureType requires two lines\n");
+        Base::Console().error("Measurement::length - TwoLines measureType requires two lines\n");
     }
     return distance;
 }
@@ -528,7 +533,7 @@ double Measurement::radius() const
 
     int numRefs = References3D.getSize();
     if (numRefs == 0) {
-        Base::Console().Error("Measurement::radius - No 3D references available\n");
+        Base::Console().error("Measurement::radius - No 3D references available\n");
     }
     else if (measureType == MeasureType::Circle) {
         TopoDS_Shape shape = getShape(objects.at(0), subElements.at(0).c_str());
@@ -555,7 +560,7 @@ double Measurement::radius() const
             return sf.Torus().MinorRadius();
         }
     }
-    Base::Console().Error("Measurement::radius - Invalid References3D Provided\n");
+    Base::Console().error("Measurement::radius - Invalid References3D Provided\n");
     return 0.0;
 }
 
@@ -564,10 +569,10 @@ Base::Vector3d Measurement::delta() const
     Base::Vector3d result;
     int numRefs = References3D.getSize();
     if (numRefs == 0) {
-        Base::Console().Error("Measurement::delta - No 3D references available\n");
+        Base::Console().error("Measurement::delta - No 3D references available\n");
     }
     else if (measureType == MeasureType::Invalid) {
-        Base::Console().Error("Measurement::delta - measureType is Invalid\n");
+        Base::Console().error("Measurement::delta - measureType is Invalid\n");
     }
     else {
         const std::vector<App::DocumentObject*>& objects = References3D.getValues();
@@ -646,7 +651,7 @@ Base::Vector3d Measurement::delta() const
             }
         }
         else {
-            Base::Console().Error("Measurement::delta - measureType is not recognized\n");
+            Base::Console().error("Measurement::delta - measureType is not recognized\n");
         }
     }
     return result;
@@ -656,10 +661,10 @@ double Measurement::volume() const
 {
     double result = 0.0;
     if (References3D.getSize() == 0) {
-        Base::Console().Error("Measurement::volume - No 3D references available\n");
+        Base::Console().error("Measurement::volume - No 3D references available\n");
     }
     else if (measureType != MeasureType::Volumes) {
-        Base::Console().Error("Measurement::volume - measureType is not Volumes\n");
+        Base::Console().error("Measurement::volume - measureType is not Volumes\n");
     }
     else {
         const std::vector<App::DocumentObject*>& objects = References3D.getValues();
@@ -678,7 +683,7 @@ double Measurement::area() const
 {
     double result = 0.0;
     if (References3D.getSize() == 0) {
-        Base::Console().Error("Measurement::area - No 3D references available\n");
+        Base::Console().error("Measurement::area - No 3D references available\n");
     }
     else if (measureType == MeasureType::Volumes || measureType == MeasureType::Surfaces
              || measureType == MeasureType::Cylinder || measureType == MeasureType::Cone
@@ -695,7 +700,7 @@ double Measurement::area() const
         }
     }
     else {
-        Base::Console().Error("Measurement::area - measureType is not valid\n");
+        Base::Console().error("Measurement::area - measureType is not valid\n");
     }
     return result;
 }
@@ -705,10 +710,10 @@ Base::Vector3d Measurement::massCenter() const
     Base::Vector3d result;
     int numRefs = References3D.getSize();
     if (numRefs == 0) {
-        Base::Console().Error("Measurement::massCenter - No 3D references available\n");
+        Base::Console().error("Measurement::massCenter - No 3D references available\n");
     }
     else if (measureType == MeasureType::Invalid) {
-        Base::Console().Error("Measurement::massCenter - measureType is Invalid\n");
+        Base::Console().error("Measurement::massCenter - measureType is Invalid\n");
     }
     else {
         const std::vector<App::DocumentObject*>& objects = References3D.getValues();
@@ -735,7 +740,7 @@ Base::Vector3d Measurement::massCenter() const
             return Base::Vector3d(cog.X(), cog.Y(), cog.Z());
         }
         else {
-            Base::Console().Error("Measurement::massCenter - measureType is not recognized\n");
+            Base::Console().error("Measurement::massCenter - measureType is not recognized\n");
         }
     }
     return result;
@@ -751,7 +756,12 @@ bool Measurement::planesAreParallel() const
     for (size_t i = 0; i < objects.size(); ++i) {
         TopoDS_Shape refSubShape;
         try {
-            refSubShape = Part::Feature::getShape(objects[i], subElements[i].c_str(), true);
+            refSubShape = Part::Feature::getShape(objects[i],
+                                                  Part::ShapeOption::NeedSubElement
+                                                      | Part::ShapeOption::ResolveLink
+                                                      | Part::ShapeOption::Transform,
+                                                  subElements[i].c_str());
+
             if (refSubShape.IsNull()) {
                 return false;
             }

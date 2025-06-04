@@ -199,44 +199,44 @@ class Component(ArchIFC.IfcProduct):
 
         pl = obj.PropertiesList
         if not "Base" in pl:
-            obj.addProperty("App::PropertyLink","Base","Component",QT_TRANSLATE_NOOP("App::Property","The base object this component is built upon"))
+            obj.addProperty("App::PropertyLink","Base","Component",QT_TRANSLATE_NOOP("App::Property","The base object this component is built upon"), locked=True)
         if not "CloneOf" in pl:
-            obj.addProperty("App::PropertyLink","CloneOf","Component",QT_TRANSLATE_NOOP("App::Property","The object this component is cloning"))
+            obj.addProperty("App::PropertyLink","CloneOf","Component",QT_TRANSLATE_NOOP("App::Property","The object this component is cloning"), locked=True)
         if not "Additions" in pl:
-            obj.addProperty("App::PropertyLinkList","Additions","Component",QT_TRANSLATE_NOOP("App::Property","Other shapes that are appended to this object"))
+            obj.addProperty("App::PropertyLinkList","Additions","Component",QT_TRANSLATE_NOOP("App::Property","Other shapes that are appended to this object"), locked=True)
         if not "Subtractions" in pl:
-            obj.addProperty("App::PropertyLinkList","Subtractions","Component",QT_TRANSLATE_NOOP("App::Property","Other shapes that are subtracted from this object"))
+            obj.addProperty("App::PropertyLinkList","Subtractions","Component",QT_TRANSLATE_NOOP("App::Property","Other shapes that are subtracted from this object"), locked=True)
         if not "Description" in pl:
-            obj.addProperty("App::PropertyString","Description","Component",QT_TRANSLATE_NOOP("App::Property","An optional description for this component"))
+            obj.addProperty("App::PropertyString","Description","Component",QT_TRANSLATE_NOOP("App::Property","An optional description for this component"), locked=True)
         if not "Tag" in pl:
-            obj.addProperty("App::PropertyString","Tag","Component",QT_TRANSLATE_NOOP("App::Property","An optional tag for this component"))
+            obj.addProperty("App::PropertyString","Tag","Component",QT_TRANSLATE_NOOP("App::Property","An optional tag for this component"), locked=True)
         if not "StandardCode" in pl:
-            obj.addProperty("App::PropertyString","StandardCode","Component",QT_TRANSLATE_NOOP("App::Property","An optional standard (OmniClass, etc...) code for this component"))
+            obj.addProperty("App::PropertyString","StandardCode","Component",QT_TRANSLATE_NOOP("App::Property","An optional standard (OmniClass, etc...) code for this component"), locked=True)
         if not "Material" in pl:
-            obj.addProperty("App::PropertyLink","Material","Component",QT_TRANSLATE_NOOP("App::Property","A material for this object"))
+            obj.addProperty("App::PropertyLink","Material","Component",QT_TRANSLATE_NOOP("App::Property","A material for this object"), locked=True)
         if "BaseMaterial" in pl:
             obj.Material = obj.BaseMaterial
             obj.removeProperty("BaseMaterial")
             FreeCAD.Console.PrintMessage("Upgrading "+obj.Label+" BaseMaterial property to Material\n")
         if not "MoveBase" in pl:
-            obj.addProperty("App::PropertyBool","MoveBase","Component",QT_TRANSLATE_NOOP("App::Property","Specifies if moving this object moves its base instead"))
+            obj.addProperty("App::PropertyBool","MoveBase","Component",QT_TRANSLATE_NOOP("App::Property","Specifies if moving this object moves its base instead"), locked=True)
             obj.MoveBase = params.get_param_arch("MoveBase")
         if not "MoveWithHost" in pl:
-            obj.addProperty("App::PropertyBool","MoveWithHost","Component",QT_TRANSLATE_NOOP("App::Property","Specifies if this object must move together when its host is moved"))
+            obj.addProperty("App::PropertyBool","MoveWithHost","Component",QT_TRANSLATE_NOOP("App::Property","Specifies if this object must move together when its host is moved"), locked=True)
             obj.MoveWithHost = params.get_param_arch("MoveWithHost")
         if not "VerticalArea" in pl:
-            obj.addProperty("App::PropertyArea","VerticalArea","Component",QT_TRANSLATE_NOOP("App::Property","The area of all vertical faces of this object"))
+            obj.addProperty("App::PropertyArea","VerticalArea","Component",QT_TRANSLATE_NOOP("App::Property","The area of all vertical faces of this object"), locked=True)
             obj.setEditorMode("VerticalArea",1)
         if not "HorizontalArea" in pl:
-            obj.addProperty("App::PropertyArea","HorizontalArea","Component",QT_TRANSLATE_NOOP("App::Property","The area of the projection of this object onto the XY plane"))
+            obj.addProperty("App::PropertyArea","HorizontalArea","Component",QT_TRANSLATE_NOOP("App::Property","The area of the projection of this object onto the XY plane"), locked=True)
             obj.setEditorMode("HorizontalArea",1)
         if not "PerimeterLength" in pl:
-            obj.addProperty("App::PropertyLength","PerimeterLength","Component",QT_TRANSLATE_NOOP("App::Property","The perimeter length of the horizontal area"))
+            obj.addProperty("App::PropertyLength","PerimeterLength","Component",QT_TRANSLATE_NOOP("App::Property","The perimeter length of the horizontal area"), locked=True)
             obj.setEditorMode("PerimeterLength",1)
         if not "HiRes" in pl:
-            obj.addProperty("App::PropertyLink","HiRes","Component",QT_TRANSLATE_NOOP("App::Property","An optional higher-resolution mesh or shape for this object"))
+            obj.addProperty("App::PropertyLink","HiRes","Component",QT_TRANSLATE_NOOP("App::Property","An optional higher-resolution mesh or shape for this object"), locked=True)
         if not "Axis" in pl:
-            obj.addProperty("App::PropertyLink","Axis","Component",QT_TRANSLATE_NOOP("App::Property","An optional axis or axis system on which this object should be duplicated"))
+            obj.addProperty("App::PropertyLink","Axis","Component",QT_TRANSLATE_NOOP("App::Property","An optional axis or axis system on which this object should be duplicated"), locked=True)
 
         self.Subvolume = None
         #self.MoveWithHost = False
@@ -767,12 +767,11 @@ class Component(ArchIFC.IfcProduct):
         # treat subtractions
         subs = obj.Subtractions
         for link in obj.InListRecursive:
-            if hasattr(link,"Hosts"):
-                if link.Hosts:
-                    if obj in link.Hosts:
-                        subs.append(link)
-            elif hasattr(link,"Host") and Draft.getType(link) != "Rebar":
-                if link.Host == obj:
+            if hasattr(link,"Host"):
+                if Draft.getType(link) != "Rebar" and link.Host == obj and not self._objectInInternalLinkgroup(link):
+                    subs.append(link)
+            elif hasattr(link,"Hosts"):
+                if obj in link.Hosts and not self._objectInInternalLinkgroup(link):
                     subs.append(link)
         for o in subs:
             if base:
@@ -962,98 +961,21 @@ class Component(ArchIFC.IfcProduct):
     def computeAreas(self,obj):
         """Compute the area properties of the object's shape.
 
-        Compute the vertical area, horizontal area, and perimeter length of
-        the object's shape.
+        This function calculates and assigns the following properties to the object:
+        - **VerticalArea**: The total area of all vertical faces of the object.
+        - **HorizontalArea**: The area of the object's projection onto the XY plane.
+        - **PerimeterLength**: The perimeter of the horizontal area.
 
-        The vertical area is the surface area of the faces perpendicular to the
-        ground.
-
-        The horizontal area is the area of the shape, when projected onto a
-        hyperplane across the XY axes, IE: the area when viewed from a bird's
-        eye view.
-
-        The perimeter length is the length of the outside edges of this bird's
-        eye view.
-
-        Assign these values to the object's "VerticalArea", "HorizontalArea",
-        and "PerimeterLength" properties.
+        The function uses the `AreaCalculator` helper class to perform these calculations.
+        Refer to that class for more details on the calculation.
 
         Parameters
         ----------
-        obj: <App::FeaturePython>
-            The component object.
+        obj : App::FeaturePython
+            The component object whose area properties are to be computed.
         """
-
-
-        if (not obj.Shape) or obj.Shape.isNull() or (not obj.Shape.isValid()) or (not obj.Shape.Faces):
-            obj.VerticalArea = 0
-            obj.HorizontalArea = 0
-            obj.PerimeterLength = 0
-            return
-
-        import Part
-        import DraftGeomUtils
-
-        fmax = params.get_param_arch("MaxComputeAreas")
-        if len(obj.Shape.Faces) > fmax:
-            obj.VerticalArea = 0
-            obj.HorizontalArea = 0
-            obj.PerimeterLength = 0
-            return
-
-        a = 0
-        fset = []
-        for i,f in enumerate(obj.Shape.Faces):
-            try:
-                ang = f.normalAt(0,0).getAngle(FreeCAD.Vector(0,0,1))
-            except Part.OCCError:
-                print("Debug: Error computing areas for ",obj.Label,": normalAt() Face ",i)
-                obj.VerticalArea = 0
-                obj.HorizontalArea = 0
-                obj.PerimeterLength = 0
-                return
-            else:
-                if  ((ang > 1.57) and
-                    (ang < 1.571) and
-                    f.Surface.isPlanar()):
-                    a += f.Area
-                else:
-                    fset.append(f)
-
-        if a and hasattr(obj,"VerticalArea"):
-            if obj.VerticalArea.Value != a:
-                obj.VerticalArea = a
-        if fset and hasattr(obj,"HorizontalArea"):
-            pset = []
-            for f in fset:
-                try:
-                    import TechDraw
-                    pf = Part.Face(DraftGeomUtils.findWires(TechDraw.project(f,FreeCAD.Vector(0,0,1))[0].Edges))
-                except Part.OCCError:
-                    # error in computing the areas. Better set them to zero than show a wrong value
-                    if obj.HorizontalArea.Value != 0:
-                        print("Debug: Error computing areas for ",obj.Label,": unable to project face: ",str([v.Point for v in f.Vertexes])," (face normal:",f.normalAt(0,0),")")
-                        obj.HorizontalArea = 0
-                    if hasattr(obj,"PerimeterLength"):
-                        if obj.PerimeterLength.Value != 0:
-                            obj.PerimeterLength = 0
-                else:
-                    pset.append(pf)
-
-
-            if pset:
-                self.flatarea = pset.pop()
-                for f in pset:
-                    self.flatarea = self.flatarea.fuse(f)
-                self.flatarea = self.flatarea.removeSplitter()
-                if obj.HorizontalArea.Value != self.flatarea.Area:
-                    obj.HorizontalArea = self.flatarea.Area
-                if hasattr(obj,"PerimeterLength") and (len(self.flatarea.Faces) == 1):
-                    edges_table = {}
-                    for e in self.flatarea.Edges:
-                        edges_table.setdefault(e.hashCode(),[]).append(e)
-                    border_edges = [pair[0] for pair in edges_table.values() if len(pair) == 1]
-                    obj.PerimeterLength = sum([e.Length for e in border_edges])
+        calculator = AreaCalculator(obj)
+        calculator.compute()
 
     def isStandardCase(self,obj):
         """Determine if the component is a standard case of its IFC type.
@@ -1143,13 +1065,11 @@ class Component(ArchIFC.IfcProduct):
 
         for link in obj.InListRecursive:
             if hasattr(link,"Host"):
-                if link.Host:
-                    if link.Host == obj:
-                        hosts.append(link)
+                if link.Host == obj and not self._objectInInternalLinkgroup(link):
+                    hosts.append(link)
             elif hasattr(link,"Hosts"):
-                if link.Hosts:
-                    if obj in link.Hosts:
-                        hosts.append(link)
+                if obj in link.Hosts and not self._objectInInternalLinkgroup(link):
+                    hosts.append(link)
         return hosts
 
     def ensureBase(self, obj):
@@ -1170,6 +1090,221 @@ class Component(ArchIFC.IfcProduct):
                     FreeCAD.Console.PrintError(obj.Label+": "+t+"\n")
                     return False
 
+    def _isInternalLinkgroup(self, obj):
+        """Returns True if obj is an internal LinkGroup. Such a group is used to
+        store hidden objects used for variant Links that should not be hosted."""
+
+        # based on code by bdm
+        # https://forum.freecad.org/viewtopic.php?p=820487#p820428
+        if obj.TypeId != "App::LinkGroup":
+            return False
+        for inObj in obj.InList:
+            if getattr(inObj, "LinkCopyOnChangeGroup", None) is obj:
+                return True
+        return False
+
+    def _objectInInternalLinkgroup(self, obj):
+        """Returns True if obj is a hidden object in an internal LinkGroup."""
+
+        for inObj in obj.InList:
+            if self._isInternalLinkgroup(inObj):
+                return True
+        return False
+
+class AreaCalculator:
+    """Helper class to compute vertical area, horizontal area, and perimeter length.
+
+    This class encapsulates the logic for calculating the following properties:
+    - **VerticalArea**: The total area of all vertical faces of the object. See the
+      `isFaceVertical` method for the criteria used to determine vertical faces.
+    - **HorizontalArea**: The area of the object's projection onto the XY plane.
+    - **PerimeterLength**: The perimeter of the horizontal area.
+
+    The class provides methods to validate the object's shape, identify vertical and
+    horizontal faces, and compute the required properties.
+    """
+    def __init__(self, obj):
+        self.obj = obj
+
+    def isShapeInvalid(self):
+        """Check if the object's shape is invalid."""
+        return (
+            not self.obj.Shape
+            or self.obj.Shape.isNull()
+            or not self.obj.Shape.isValid()
+            or not self.obj.Shape.Faces
+        )
+
+    def tooManyFaces(self):
+        """Check if the object's shape has too many faces to process."""
+        return len(self.obj.Shape.Faces) > params.get_param_arch("MaxComputeAreas")
+
+    def resetAreas(self):
+        """Reset the area properties of the object to zero. Generally called when
+        there is an error.
+        """
+        for prop in ["VerticalArea", "HorizontalArea", "PerimeterLength"]:
+            setattr(self.obj, prop, 0)
+
+    def isFaceVertical(self, face):
+        """Determine if a face is vertical.
+
+        A face is considered vertical if:
+        - Its normal vector forms an angle close to 90 degrees with the Z-axis.
+        - The projected face has an area of zero.
+
+        Notes
+        -----
+        The check whether the projected face has an area of zero means that roof-like
+        (sloped) and domed faces alike will not be counted as vertical faces.
+        Vertically-extruded curved edges (for instance from a slab) will be classified
+        as vertical and be counted. This is an improvement over the fix for
+        https://github.com/FreeCAD/FreeCAD/issues/14687.
+        """
+        from Part import OCCError, Face
+        from DraftGeomUtils import findWires
+        from TechDraw import project
+
+        try:
+            projectedFace = Face(
+                findWires(project(face, FreeCAD.Vector(0 ,0 ,1))[0].Edges))
+        except OCCError:
+            FreeCAD.Console.PrintWarning(
+                translate("Arch",
+                          f"Could not project face from {self.obj.Label}\n")
+            )
+            return False
+
+        isProjectedAreaZero = projectedFace.Area < 0.0001
+
+        try:
+            angle = face.normalAt(0, 0).getAngle(FreeCAD.Vector(0, 0, 1))
+            return self.isRightAngle(angle) and isProjectedAreaZero
+        except OCCError:
+            FreeCAD.Console.PrintWarning(
+                translate("Arch",
+                          f"Could not determine if a face from {self.obj.Label}"
+                          " is vertical: normalAt() failed\n")
+            )
+            return False
+
+    def isFaceHorizontal(self, face):
+        """Determine if a face is horizontal.
+
+        A face is considered horizontal if its normal vector is parallel to the Z-axis.
+        """
+        from Part import OCCError
+        try:
+            angle = face.normalAt(0, 0).getAngle(FreeCAD.Vector(0, 0, 1))
+            return not self.isRightAngle(angle)
+        except OCCError:
+            FreeCAD.Console.PrintWarning(
+                translate("Arch",
+                          f"Could not determine if a face from {self.obj.Label}"
+                          " is horizontal: normalAt() failed\n")
+            )
+            return False
+
+    def isRightAngle(self, angle):
+        """Check if the angle is close to 90 degrees."""
+        return 1.57 < angle < 1.571
+
+    def compute(self):
+        """Compute the vertical area, horizontal area, and perimeter length.
+
+        This method performs the following steps:
+        1. Identifies the object's vertical and horizontal faces.
+        2. Computes the total vertical area by adding areas of all vertical faces.
+        3. Projects horizontal faces onto the XY plane and computes their total horizontal area.
+        4. Computes the perimeter length of the horizontal area.
+
+        The computed values are assigned to the object's properties:
+        - VerticalArea
+        - HorizontalArea
+        - PerimeterLength
+        """
+        if self.isShapeInvalid() or self.tooManyFaces():
+            self.resetAreas()
+            return
+
+        verticalArea = 0
+        horizontalFaces = []
+
+        # Compute vertical area and collect horizontal faces
+        for face in self.obj.Shape.Faces:
+            if self.isFaceVertical(face):
+                verticalArea += face.Area
+            elif self.isFaceHorizontal(face):
+                horizontalFaces.append(face)
+
+        # Update vertical area
+        if verticalArea and hasattr(self.obj, "VerticalArea"):
+            if self.obj.VerticalArea.Value != verticalArea:
+                self.obj.VerticalArea = verticalArea
+
+        # Compute horizontal area and perimeter length
+        if horizontalFaces and hasattr(self.obj, "HorizontalArea"):
+            self._computeHorizontalAreaAndPerimeter(horizontalFaces)
+
+    def _computeHorizontalAreaAndPerimeter(self, horizontalFaces):
+        """Compute the horizontal area and perimeter length.
+
+        Projects the given horizontal faces onto the XY plane, fuses them,
+        and calculates:
+        - The total horizontal area.
+        - The perimeter length of the fused horizontal area.
+
+        Parameters
+        ----------
+        horizontalFaces : list of Part.Face
+            The horizontal faces to process.
+
+        Notes
+        -----
+        The operation of projecting faces is done with the `Part::FaceMakerCheese`
+        facemaker algorithm, so that holes in the faces are taken into account for
+        the area calculation.
+        """
+        import Part
+        from DraftGeomUtils import findWires
+        from TechDraw import project
+
+        projectedFaces = []
+        for face in horizontalFaces:
+            try:
+                projectedEdges = project(face, FreeCAD.Vector(0, 0, 1))[0].Edges
+                wires = findWires(projectedEdges)
+                projectedFace = Part.makeFace(wires, "Part::FaceMakerCheese")
+                projectedFaces.append(projectedFace)
+            except Part.OCCError:
+                FreeCAD.Console.PrintWarning(
+                    translate(
+                        "Arch",
+                        f"Error computing areas for {self.obj.Label}: unable to project or "
+                        f"make face with normal {face.normalAt(0, 0)}. "
+                        "Area values will be reset to 0.\n"
+                    )
+                )
+                self.resetAreas()
+                return
+
+        if projectedFaces:
+            fusedFace = projectedFaces.pop()
+            for face in projectedFaces:
+                fusedFace = fusedFace.fuse(face)
+            fusedFace = fusedFace.removeSplitter()
+
+            if self.obj.HorizontalArea.Value != fusedFace.Area:
+                self.obj.HorizontalArea = fusedFace.Area
+
+            if hasattr(self.obj, "PerimeterLength") and len(fusedFace.Faces) == 1:
+                edgeTable = {}
+                for edge in fusedFace.Edges:
+                    edgeTable.setdefault(edge.hashCode(), []).append(edge)
+                borderEdges = [edges[0] for edges in edgeTable.values() if len(edges) == 1]
+                perimeterLength = sum(edge.Length for edge in borderEdges)
+                if self.obj.PerimeterLength.Value != perimeterLength:
+                    self.obj.PerimeterLength = perimeterLength
 
 class ViewProviderComponent:
     """A default View Provider for Component objects.
@@ -1196,7 +1331,7 @@ class ViewProviderComponent:
         """
 
         if not "UseMaterialColor" in vobj.PropertiesList:
-            vobj.addProperty("App::PropertyBool","UseMaterialColor","Component",QT_TRANSLATE_NOOP("App::Property","Use the material color as this object's shape color, if available"))
+            vobj.addProperty("App::PropertyBool","UseMaterialColor","Component",QT_TRANSLATE_NOOP("App::Property","Use the material color as this object's shape color, if available"), locked=True)
             vobj.UseMaterialColor = params.get_param_arch("UseMaterialColor")
 
     def updateData(self,obj,prop):

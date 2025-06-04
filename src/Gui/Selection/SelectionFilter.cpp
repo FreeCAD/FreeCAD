@@ -104,7 +104,7 @@ bool SelectionGatePython::allow(App::Document* doc, App::DocumentObject* obj, co
     }
     catch (Py::Exception&) {
         Base::PyException e; // extract the Python error text
-        e.ReportException();
+        e.reportException();
     }
 
     return true;
@@ -132,15 +132,13 @@ bool SelectionFilterGatePython::allow(App::Document*, App::DocumentObject* obj, 
 // ----------------------------------------------------------------------------
 
 SelectionFilter::SelectionFilter(const char* filter, App::DocumentObject* container)
-    : Ast(nullptr)
-    , container(container)
+    : container(container)
 {
     setFilter(filter);
 }
 
 SelectionFilter::SelectionFilter(const std::string& filter, App::DocumentObject* container)
-    : Ast(nullptr)
-    , container(container)
+    : container(container)
 {
     setFilter(filter.c_str());
 }

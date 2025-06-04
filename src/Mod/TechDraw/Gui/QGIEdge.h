@@ -27,6 +27,7 @@
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
 #include "QGIPrimPath.h"
+#include "QGIUserTypes.h"
 
 namespace TechDrawGui
 {
@@ -37,7 +38,7 @@ public:
     explicit QGIEdge(int index);
     ~QGIEdge() override = default;
 
-    enum {Type = QGraphicsItem::UserType + 103};
+    enum {Type = UserType::QGIEdge};
 
     int type() const override { return Type;}
     QRectF boundingRect() const override;
@@ -47,14 +48,14 @@ public:
 
     void setCosmetic(bool state);
     void setHiddenEdge(bool b);
-    bool getHiddenEdge() { return(isHiddenEdge); }
+    bool getHiddenEdge() const { return(isHiddenEdge); }
     void setSmoothEdge(bool b) { isSmoothEdge = b; }
-    bool getSmoothEdge() { return(isSmoothEdge); }
+    bool getSmoothEdge() const { return(isSmoothEdge); }
     void setPrettyNormal() override;
 
     double getEdgeFuzz() const;
 
-    void setLinePen(QPen isoPen);
+    void setLinePen(const QPen& isoPen);
 
     void setSource(TechDraw::SourceType source) { m_source = source; }
     TechDraw::SourceType getSource() const { return m_source;}
@@ -65,15 +66,15 @@ protected:
 
     bool multiselectEligible() override { return true; }
 
+    QColor getHiddenColor();
+
+private:
     int projIndex;                                                     //index of edge in Projection. must exist.
 
     bool isCosmetic;
     bool isHiddenEdge;
     bool isSmoothEdge;
-    QColor getHiddenColor();
-    Qt::PenStyle getHiddenStyle();
 
-private:
     TechDraw::SourceType m_source{TechDraw::SourceType::GEOMETRY};
 };
 

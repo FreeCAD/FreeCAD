@@ -237,7 +237,7 @@ bool AbstractPolygonTriangulator::TriangulatePolygon()
 {
     try {
         if (!this->_indices.empty() && this->_points.size() != this->_indices.size()) {
-            Base::Console().Log("Triangulation: %d points <> %d indices\n",
+            Base::Console().log("Triangulation: %d points <> %d indices\n",
                                 _points.size(),
                                 _indices.size());
             return false;
@@ -249,11 +249,11 @@ bool AbstractPolygonTriangulator::TriangulatePolygon()
         return ok;
     }
     catch (const Base::Exception& e) {
-        Base::Console().Log("Triangulation: %s\n", e.what());
+        Base::Console().log("Triangulation: %s\n", e.what());
         return false;
     }
     catch (const std::exception& e) {
-        Base::Console().Log("Triangulation: %s\n", e.what());
+        Base::Console().log("Triangulation: %s\n", e.what());
         return false;
     }
     catch (...) {

@@ -95,8 +95,10 @@
 #include "FaceMaker.h"
 #include "Geometry.h"
 #include "BRepOffsetAPI_MakeOffsetFix.h"
-#include "Base/Tools.h"
 #include "Base/BoundBox.h"
+#include "Base/Exception.h"
+#include "Base/Tools.h"
+#include "OCCTProgressIndicator.h"
 
 #include <App/ElementMap.h>
 #include <App/ElementNamingUtils.h>
@@ -860,7 +862,7 @@ void TopoShape::mapSubElementForShape(const TopoShape& other, const char* op)
     for (auto type : types) {
         auto& shapeMap = _cache->getAncestry(type);
         auto& otherMap = other._cache->getAncestry(type);
-        if ((shapeMap.count() == 0) || (otherMap.count() == 0)) {
+        if ((shapeMap.empty()) || (otherMap.empty())) {
             continue;
         }
 
@@ -1450,7 +1452,7 @@ TopoShape& TopoShape::makeShapeWithElementMap(const TopoDS_Shape& shape,
                 continue;
             }
             auto& otherMap = incomingShape._cache->getAncestry(info.type);
-            if (otherMap.count() == 0) {
+            if (otherMap.empty()) {
                 continue;
             }
             for (int i = 1; i <= otherMap.count(); i++) {
@@ -2428,7 +2430,11 @@ TopoShape& TopoShape::makeElementPipeShell(const std::vector<TopoShape>& shapes,
         FC_THROWM(Base::CADKernelError, "shape is not ready to build");
     }
     else {
+#if OCC_VERSION_HEX >= 0x070600
+        mkPipeShell.Build(OCCTProgressIndicator::getAppIndicator().Start());
+#else
         mkPipeShell.Build();
+#endif
     }
 
     if (make_solid == MakeSolid::makeSolid) {
@@ -2534,7 +2540,11 @@ TopoShape& TopoShape::makeElementOffset(const TopoShape& shape,
         BRepOffsetAPI_ThruSections aGenerator;
         aGenerator.AddWire(TopoDS::Wire(originalWire.getShape()));
         aGenerator.AddWire(offsetWire);
+#if OCC_VERSION_HEX >= 0x070600
+        aGenerator.Build(OCCTProgressIndicator::getAppIndicator().Start());
+#else
         aGenerator.Build();
+#endif
         if (!aGenerator.IsDone()) {
             FC_THROWM(Base::CADKernelError, "ThruSections failed");
         }
@@ -2949,8 +2959,11 @@ TopoShape& TopoShape::makeElementOffset2D(const TopoShape& shape,
                 }
                 // add final joining edge
                 mkWire.Add(BRepBuilderAPI_MakeEdge(v3, v1).Edge());
-
+#if OCC_VERSION_HEX >= 0x070600
+                mkWire.Build(OCCTProgressIndicator::getAppIndicator().Start());
+#else
                 mkWire.Build();
+#endif
 
                 wiresForMakingFaces.push_back(
                     TopoShape(Tag, Hasher).makeElementShape(mkWire, openWires, op));
@@ -3820,7 +3833,11 @@ TopoShape& TopoShape::makeElementFilledFace(const std::vector<TopoShape>& _shape
         }
     }
 
+#if OCC_VERSION_HEX >= 0x070600
+    maker.Build(OCCTProgressIndicator::getAppIndicator().Start());
+#else
     maker.Build();
+#endif
     if (!maker.IsDone()) {
         FC_THROWM(Base::CADKernelError, "Failed to created face by filling edges");
     }
@@ -4089,7 +4106,11 @@ TopoShape& TopoShape::makeElementGeneralFuse(const std::vector<TopoShape>& _shap
         FCBRepAlgoAPIHelper::setAutoFuzzy(&mkGFA);
     }
     mkGFA.SetNonDestructive(Standard_True);
+#if OCC_VERSION_HEX >= 0x070600
+    mkGFA.Build(OCCTProgressIndicator::getAppIndicator().Start());
+#else
     mkGFA.Build();
+#endif
     if (!mkGFA.IsDone()) {
         FC_THROWM(Base::CADKernelError, "GeneralFuse failed");
     }
@@ -4206,7 +4227,7 @@ TopoShape& TopoShape::makeElementLoft(const std::vector<TopoShape>& shapes,
             - W1-W2-W3-V1     ==> W1-W2-W3-V1-W1     invalid closed
             - W1-W2-W3        ==> W1-W2-W3-W1        valid closed*/
         if (profiles.back().getShape().ShapeType() == TopAbs_VERTEX) {
-            Base::Console().Message("TopoShape::makeLoft: can't close Loft with Vertex as last "
+            Base::Console().message("TopoShape::makeLoft: can't close Loft with Vertex as last "
                                     "profile. 'Closed' ignored.\n");
         }
         else {
@@ -4228,7 +4249,11 @@ TopoShape& TopoShape::makeElementLoft(const std::vector<TopoShape>& shapes,
     aGenerator.CheckCompatibility(anIsCheck);  // use BRepFill_CompatibleWires on profiles. force
                                                // #edges, orientation, "origin" to match.
 
+#if OCC_VERSION_HEX >= 0x070600
+    aGenerator.Build(OCCTProgressIndicator::getAppIndicator().Start());
+#else
     aGenerator.Build();
+#endif
     return makeShapeWithElementMap(aGenerator.Shape(),
                                    MapperThruSections(aGenerator, profiles),
                                    shapes,
@@ -4555,7 +4580,11 @@ TopoShape& TopoShape::makeElementDraft(const TopoShape& shape,
         }
     } while (retry && !done);
 
+#if OCC_VERSION_HEX >= 0x070600
+    mkDraft.Build(OCCTProgressIndicator::getAppIndicator().Start());
+#else
     mkDraft.Build();
+#endif
     return makeElementShape(mkDraft, shape, op);
 }
 
@@ -4600,7 +4629,11 @@ TopoShape& TopoShape::makeElementFace(const std::vector<TopoShape>& shapes,
             mkFace->addTopoShape(shape);
         }
     }
+#if OCC_VERSION_HEX >= 0x070600
+    mkFace->Build(OCCTProgressIndicator::getAppIndicator().Start());
+#else
     mkFace->Build();
+#endif
 
     const auto& ret = mkFace->getTopoShape();
     setShape(ret._Shape);
@@ -5587,6 +5620,10 @@ TopoShape& TopoShape::makeElementBoolean(const char* maker,
         FC_THROWM(NullShapeException, "Null shape");
     }
 
+    if (OCCTProgressIndicator::getAppIndicator().UserBreak()) {
+        FC_THROWM(Base::CADKernelError, "User aborted");
+    }
+
     if (strcmp(maker, Part::OpCodes::Compound) == 0) {
         return makeElementCompound(shapes, op, SingleShapeCompoundCreationPolicy::returnShape);
     }
@@ -5750,7 +5787,14 @@ TopoShape& TopoShape::makeElementBoolean(const char* maker,
     } else if (tolerance < 0.0) {
         FCBRepAlgoAPIHelper::setAutoFuzzy(mk.get());
     }
+#if OCC_VERSION_HEX >= 0x070600
+    mk->Build(OCCTProgressIndicator::getAppIndicator().Start());
+#else
     mk->Build();
+#endif
+    if (OCCTProgressIndicator::getAppIndicator().UserBreak()) {
+        FC_THROWM(Base::CADKernelError, "User aborted");
+    }
     makeElementShape(*mk, inputs, op);
 
     if (buildShell) {

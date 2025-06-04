@@ -30,10 +30,6 @@
 
 #include <App/Application.h>
 
-#if QT_VERSION >= QT_VERSION_CHECK(6,0,0) && QT_VERSION < QT_VERSION_CHECK(6,8,1)
-# define HAS_QTBUG_129596
-#endif
-
 class QCloseEvent;
 class SoNode;
 class NavlibInterface;
@@ -251,6 +247,9 @@ public:
     static void runApplication();
     void tryClose( QCloseEvent * e );
     //@}
+
+    /// get verbose DPI and style info
+    static void getVerboseDPIStyleInfo(QTextStream& str);
 
     /// whenever GUI is about to start with the main window hidden
     static bool hiddenMainWindow();

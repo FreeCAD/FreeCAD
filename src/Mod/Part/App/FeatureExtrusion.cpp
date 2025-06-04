@@ -38,6 +38,7 @@
 #endif
 
 #include <Base/Exception.h>
+#include <Base/Tools.h>
 
 #include "FeatureExtrusion.h"
 #include "ExtrusionHelper.h"
@@ -169,10 +170,14 @@ bool Extrusion::fetchAxisLink(const App::PropertyLinkSub& axisLink, Base::Vector
 
     TopoDS_Shape axEdge;
     if (!axisLink.getSubValues().empty() && axisLink.getSubValues()[0].length() > 0) {
-        axEdge = Feature::getTopoShape(linked, axisLink.getSubValues()[0].c_str(), true /*need element*/).getShape();
+        axEdge = Feature::getTopoShape(linked,
+                                          ShapeOption::NeedSubElement
+                                        | ShapeOption::ResolveLink
+                                        | ShapeOption::Transform,
+                                       axisLink.getSubValues()[0].c_str()).getShape();
     }
     else {
-        axEdge = Feature::getShape(linked);
+        axEdge = Feature::getShape(linked, ShapeOption::ResolveLink | ShapeOption::Transform);
     }
 
     if (axEdge.IsNull())
@@ -246,10 +251,10 @@ ExtrusionParameters Extrusion::computeFinalParameters()
 
     result.solid = this->Solid.getValue();
 
-    result.taperAngleFwd = this->TaperAngle.getValue() * pi / 180.0;
+    result.taperAngleFwd = Base::toRadians(this->TaperAngle.getValue());
     if (fabs(result.taperAngleFwd) > pi * 0.5 - Precision::Angular())
         throw Base::ValueError("Magnitude of taper angle matches or exceeds 90 degrees. That is too much.");
-    result.taperAngleRev = this->TaperAngleRev.getValue() * pi / 180.0;
+    result.taperAngleRev = Base::toRadians(this->TaperAngleRev.getValue());
     if (fabs(result.taperAngleRev) > pi * 0.5 - Precision::Angular())
         throw Base::ValueError("Magnitude of taper angle matches or exceeds 90 degrees. That is too much.");
 
@@ -262,7 +267,12 @@ Base::Vector3d Extrusion::calculateShapeNormal(const App::PropertyLink& shapeLin
 {
     App::DocumentObject* docobj = nullptr;
     Base::Matrix4D mat;
-    TopoDS_Shape sh = Feature::getShape(shapeLink.getValue(), nullptr, false, &mat, &docobj);
+    TopoDS_Shape sh = Feature::getShape(shapeLink.getValue(),
+                                           ShapeOption::ResolveLink 
+                                         | ShapeOption::Transform,
+                                        nullptr,
+                                        &mat,
+                                        &docobj);
 
     if (!docobj)
         throw Base::ValueError("calculateShapeNormal: link is empty");
@@ -365,7 +375,7 @@ App::DocumentObjectExecReturn* Extrusion::execute()
     try {
         ExtrusionParameters params = computeFinalParameters();
         TopoShape result(0);
-        extrudeShape(result, Feature::getTopoShape(link), params);
+        extrudeShape(result, Feature::getTopoShape(link, ShapeOption::ResolveLink | ShapeOption::Transform), params);
         this->Shape.setValue(result);
         return App::DocumentObject::StdReturn;
     }

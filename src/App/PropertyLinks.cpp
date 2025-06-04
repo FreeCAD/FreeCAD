@@ -88,7 +88,7 @@ void PropertyLinkBase::setReturnNewElement(bool enable)
 
 void PropertyLinkBase::hasSetValue()
 {
-    auto owner = dynamic_cast<DocumentObject*>(getContainer());
+    auto owner = freecad_cast<DocumentObject*>(getContainer());
     if (owner) {
         owner->clearOutListCache();
     }
@@ -189,7 +189,7 @@ void PropertyLinkBase::checkLabelReferences(const std::vector<std::string>& subs
 
 std::string PropertyLinkBase::updateLabelReference(const App::DocumentObject* parent,
                                                    const char* subname,
-                                                   App::DocumentObject* obj,
+                                                   const App::DocumentObject* obj,
                                                    const std::string& ref,
                                                    const char* newLabel)
 {
@@ -288,7 +288,7 @@ void PropertyLinkBase::updateElementReferences(DocumentObject* feature, bool rev
                 prop->updateElementReference(feature, reverse, true);
             }
             catch (Base::Exception& e) {
-                e.ReportException();
+                e.reportException();
                 FC_ERR("Failed to update element reference of " << propertyName(prop));
             }
             catch (std::exception& e) {
@@ -776,7 +776,7 @@ void PropertyLink::Restore(Base::XMLReader& reader)
     // read my element
     reader.readElement("Link");
     // get the value of my attribute
-    std::string name = reader.getName(reader.getAttribute("value"));
+    std::string name = reader.getName(reader.getAttribute<const char*>("value"));
 
     // Property not in a DocumentObject!
     assert(getContainer()->isDerivedFrom<App::DocumentObject>());
@@ -788,14 +788,14 @@ void PropertyLink::Restore(Base::XMLReader& reader)
         DocumentObject* object = document ? document->getObject(name.c_str()) : nullptr;
         if (!object) {
             if (reader.isVerbose()) {
-                Base::Console().Warning("Lost link to '%s' while loading, maybe "
+                Base::Console().warning("Lost link to '%s' while loading, maybe "
                                         "an object was not loaded correctly\n",
                                         name.c_str());
             }
         }
         else if (parent == object) {
             if (reader.isVerbose()) {
-                Base::Console().Warning("Object '%s' links to itself, nullify it\n", name.c_str());
+                Base::Console().warning("Object '%s' links to itself, nullify it\n", name.c_str());
             }
             object = nullptr;
         }
@@ -1060,7 +1060,7 @@ void PropertyLinkList::Restore(Base::XMLReader& reader)
     // read my element
     reader.readElement("LinkList");
     // get the value of my attribute
-    int count = reader.getAttributeAsInteger("count");
+    int count = reader.getAttribute<long>("count");
     App::PropertyContainer* container = getContainer();
     if (!container) {
         throw Base::RuntimeError("Property is not part of a container");
@@ -1075,7 +1075,7 @@ void PropertyLinkList::Restore(Base::XMLReader& reader)
     values.reserve(count);
     for (int i = 0; i < count; i++) {
         reader.readElement("Link");
-        std::string name = reader.getName(reader.getAttribute("value"));
+        std::string name = reader.getName(reader.getAttribute<const char*>("value"));
         // In order to do copy/paste it must be allowed to have defined some
         // referenced objects in XML which do not exist anymore in the new
         // document. Thus, we should silently ignore this.
@@ -1521,7 +1521,7 @@ static bool updateLinkReference(App::PropertyLinkBase* prop,
     if (!link || !link->isAttachedToDocument()) {
         return false;
     }
-    auto owner = dynamic_cast<DocumentObject*>(prop->getContainer());
+    auto owner = freecad_cast<DocumentObject*>(prop->getContainer());
     if (owner && owner->isRestoring()) {
         return false;
     }
@@ -1846,7 +1846,7 @@ void PropertyLinkSub::Save(Base::Writer& writer) const
                     << _cSubList.size();
     writer.Stream() << "\">" << std::endl;
     writer.incInd();
-    auto owner = dynamic_cast<DocumentObject*>(getContainer());
+    auto owner = freecad_cast<DocumentObject*>(getContainer());
     bool exporting = owner && owner->isExporting();
     for (unsigned int i = 0; i < _cSubList.size(); i++) {
         const auto& shadow = _ShadowSubList[i];
@@ -1888,8 +1888,8 @@ void PropertyLinkSub::Restore(Base::XMLReader& reader)
     // read my element
     reader.readElement("LinkSub");
     // get the values of my attributes
-    std::string name = reader.getName(reader.getAttribute("value"));
-    int count = reader.getAttributeAsInteger("count");
+    std::string name = reader.getName(reader.getAttribute<const char*>("value"));
+    int count = reader.getAttribute<long>("count");
 
     // Property not in a DocumentObject!
     assert(getContainer()->isDerivedFrom<App::DocumentObject>());
@@ -1913,16 +1913,16 @@ void PropertyLinkSub::Restore(Base::XMLReader& reader)
     // Sub may store '.' separated object names, so be aware of the possible mapping when import
     for (int i = 0; i < count; i++) {
         reader.readElement("Sub");
-        shadows[i].oldName = importSubName(reader, reader.getAttribute("value"), restoreLabel);
+        shadows[i].oldName = importSubName(reader, reader.getAttribute<const char*>("value"), restoreLabel);
         if (reader.hasAttribute(ATTR_SHADOWED) && !IGNORE_SHADOW) {
             values[i] = shadows[i].newName =
-                importSubName(reader, reader.getAttribute(ATTR_SHADOWED), restoreLabel);
+                importSubName(reader, reader.getAttribute<const char*>(ATTR_SHADOWED), restoreLabel);
         }
         else {
             values[i] = shadows[i].oldName;
             if (reader.hasAttribute(ATTR_SHADOW) && !IGNORE_SHADOW) {
                 shadows[i].newName =
-                    importSubName(reader, reader.getAttribute(ATTR_SHADOW), restoreLabel);
+                    importSubName(reader, reader.getAttribute<const char*>(ATTR_SHADOW), restoreLabel);
             }
         }
         if (reader.hasAttribute(ATTR_MAPPED)) {
@@ -2107,7 +2107,7 @@ adjustLinkSubs(App::PropertyLinkBase* prop,
                 break;
             }
             if (!newLink) {
-                if (inList.count(sobj)) {
+                if (inList.contains(sobj)) {
                     continue;
                 }
                 newLink = sobj;
@@ -2138,7 +2138,7 @@ bool PropertyLinkSub::adjustLink(const std::set<App::DocumentObject*>& inList)
     if (_pcScope == LinkScope::Hidden) {
         return false;
     }
-    if (!_pcLinkSub || !_pcLinkSub->isAttachedToDocument() || !inList.count(_pcLinkSub)) {
+    if (!_pcLinkSub || !_pcLinkSub->isAttachedToDocument() || !inList.contains(_pcLinkSub)) {
         return false;
     }
     auto subs = _cSubList;
@@ -2788,7 +2788,7 @@ void PropertyLinkSubList::Save(Base::Writer& writer) const
     }
     writer.Stream() << writer.ind() << "<LinkSubList count=\"" << count << "\">" << endl;
     writer.incInd();
-    auto owner = dynamic_cast<DocumentObject*>(getContainer());
+    auto owner = freecad_cast<DocumentObject*>(getContainer());
     bool exporting = owner && owner->isExporting();
     for (int i = 0; i < getSize(); i++) {
         auto obj = _lValueList[i];
@@ -2836,7 +2836,7 @@ void PropertyLinkSubList::Restore(Base::XMLReader& reader)
     // read my element
     reader.readElement("LinkSubList");
     // get the value of my attribute
-    int count = reader.getAttributeAsInteger("count");
+    int count = reader.getAttribute<long>("count");
 
     std::vector<DocumentObject*> values;
     values.reserve(count);
@@ -2844,13 +2844,13 @@ void PropertyLinkSubList::Restore(Base::XMLReader& reader)
     SubNames.reserve(count);
     std::vector<ShadowSub> shadows;
     shadows.reserve(count);
-    DocumentObject* father = dynamic_cast<DocumentObject*>(getContainer());
+    DocumentObject* father = freecad_cast<DocumentObject*>(getContainer());
     App::Document* document = father ? father->getDocument() : nullptr;
     std::vector<int> mapped;
     bool restoreLabel = false;
     for (int i = 0; i < count; i++) {
         reader.readElement("Link");
-        std::string name = reader.getName(reader.getAttribute("obj"));
+        std::string name = reader.getName(reader.getAttribute<const char*>("obj"));
         // In order to do copy/paste it must be allowed to have defined some
         // referenced objects in XML which do not exist anymore in the new
         // document. Thus, we should silently ignore this.
@@ -2860,17 +2860,17 @@ void PropertyLinkSubList::Restore(Base::XMLReader& reader)
             values.push_back(child);
             shadows.emplace_back();
             auto& shadow = shadows.back();
-            shadow.oldName = importSubName(reader, reader.getAttribute("sub"), restoreLabel);
+            shadow.oldName = importSubName(reader, reader.getAttribute<const char*>("sub"), restoreLabel);
             if (reader.hasAttribute(ATTR_SHADOWED) && !IGNORE_SHADOW) {
                 shadow.newName =
-                    importSubName(reader, reader.getAttribute(ATTR_SHADOWED), restoreLabel);
+                    importSubName(reader, reader.getAttribute<const char*>(ATTR_SHADOWED), restoreLabel);
                 SubNames.push_back(shadow.newName);
             }
             else {
                 SubNames.push_back(shadow.oldName);
                 if (reader.hasAttribute(ATTR_SHADOW) && !IGNORE_SHADOW) {
                     shadow.newName =
-                        importSubName(reader, reader.getAttribute(ATTR_SHADOW), restoreLabel);
+                        importSubName(reader, reader.getAttribute<const char*>(ATTR_SHADOW), restoreLabel);
                 }
             }
             if (reader.hasAttribute(ATTR_MAPPED)) {
@@ -2878,7 +2878,7 @@ void PropertyLinkSubList::Restore(Base::XMLReader& reader)
             }
         }
         else if (reader.isVerbose()) {
-            Base::Console().Warning("Lost link to '%s' while loading, maybe "
+            Base::Console().warning("Lost link to '%s' while loading, maybe "
                                     "an object was not loaded correctly\n",
                                     name.c_str());
         }
@@ -3229,7 +3229,7 @@ bool PropertyLinkSubList::adjustLink(const std::set<App::DocumentObject*>& inLis
     for (std::string& sub : subs) {
         ++idx;
         auto& link = links[idx];
-        if (!link || !link->isAttachedToDocument() || !inList.count(link)) {
+        if (!link || !link->isAttachedToDocument() || !inList.contains(link)) {
             continue;
         }
         touched = true;
@@ -3240,7 +3240,7 @@ bool PropertyLinkSubList::adjustLink(const std::set<App::DocumentObject*>& inLis
                 pos = std::string::npos;
                 break;
             }
-            if (!inList.count(sobj)) {
+            if (!inList.contains(sobj)) {
                 link = sobj;
                 sub = sub.substr(pos + 1);
                 break;
@@ -3609,7 +3609,7 @@ public:
         for (auto it = links.begin(), itNext = it; it != links.end(); it = itNext) {
             ++itNext;
             auto link = *it;
-            auto obj = dynamic_cast<DocumentObject*>(link->getContainer());
+            auto obj = freecad_cast<DocumentObject*>(link->getContainer());
             if (obj && obj->getDocument() == &doc) {
                 links.erase(it);
                 // must call unlink here, so that PropertyLink::resetLink can
@@ -3654,7 +3654,7 @@ public:
     bool hasXLink(const App::Document* doc) const
     {
         for (auto link : links) {
-            auto obj = dynamic_cast<DocumentObject*>(link->getContainer());
+            auto obj = freecad_cast<DocumentObject*>(link->getContainer());
             if (obj && obj->getDocument() == doc) {
                 return true;
             }
@@ -3703,7 +3703,7 @@ void PropertyLinkBase::breakLinks(App::DocumentObject* link,
         props.clear();
         obj->getPropertyList(props);
         for (auto prop : props) {
-            auto linkProp = dynamic_cast<PropertyLinkBase*>(prop);
+            auto linkProp = freecad_cast<PropertyLinkBase*>(prop);
             if (linkProp) {
                 linkProp->breakLink(link, clear);
             }
@@ -3826,7 +3826,7 @@ void PropertyXLink::restoreLink(App::DocumentObject* lValue)
 {
     assert(!_pcLink && lValue && docInfo);
 
-    auto owner = dynamic_cast<DocumentObject*>(getContainer());
+    auto owner = freecad_cast<DocumentObject*>(getContainer());
     if (!owner || !owner->isAttachedToDocument()) {
         throw Base::RuntimeError("invalid container");
     }
@@ -3863,7 +3863,7 @@ void PropertyXLink::setValue(App::DocumentObject* lValue,
         throw Base::ValueError("Invalid object");
     }
 
-    auto owner = dynamic_cast<DocumentObject*>(getContainer());
+    auto owner = freecad_cast<DocumentObject*>(getContainer());
     if (!owner || !owner->isAttachedToDocument()) {
         throw Base::RuntimeError("invalid container");
     }
@@ -3930,7 +3930,7 @@ void PropertyXLink::setValue(std::string&& filename,
         setValue(nullptr, std::move(subs), std::move(shadows));
         return;
     }
-    auto owner = dynamic_cast<DocumentObject*>(getContainer());
+    auto owner = freecad_cast<DocumentObject*>(getContainer());
     if (!owner || !owner->isAttachedToDocument()) {
         throw Base::RuntimeError("invalid container");
     }
@@ -4232,20 +4232,20 @@ void PropertyXLink::Restore(Base::XMLReader& reader)
     reader.readElement("XLink");
     std::string stampAttr, file;
     if (reader.hasAttribute("stamp")) {
-        stampAttr = reader.getAttribute("stamp");
+        stampAttr = reader.getAttribute<const char*>("stamp");
     }
     if (reader.hasAttribute("file")) {
-        file = reader.getAttribute("file");
+        file = reader.getAttribute<const char*>("file");
     }
 
     setFlag(LinkAllowPartial,
-            reader.hasAttribute("partial") && reader.getAttributeAsInteger("partial"));
+            reader.hasAttribute("partial") && reader.getAttribute<bool>("partial"));
     std::string name;
     if (file.empty()) {
-        name = reader.getName(reader.getAttribute("name"));
+        name = reader.getName(reader.getAttribute<const char*>("name"));
     }
     else {
-        name = reader.getAttribute("name");
+        name = reader.getAttribute<const char*>("name");
     }
 
     assert(getContainer()->isDerivedFrom<App::DocumentObject>());
@@ -4275,35 +4275,35 @@ void PropertyXLink::Restore(Base::XMLReader& reader)
         auto& subname = subs.back();
         shadows.emplace_back();
         auto& shadow = shadows.back();
-        shadow.oldName = importSubName(reader, reader.getAttribute("sub"), restoreLabel);
+        shadow.oldName = importSubName(reader, reader.getAttribute<const char*>("sub"), restoreLabel);
         if (reader.hasAttribute(ATTR_SHADOWED) && !IGNORE_SHADOW) {
             subname = shadow.newName =
-                importSubName(reader, reader.getAttribute(ATTR_SHADOWED), restoreLabel);
+                importSubName(reader, reader.getAttribute<const char*>(ATTR_SHADOWED), restoreLabel);
         }
         else {
             subname = shadow.oldName;
             if (reader.hasAttribute(ATTR_SHADOW) && !IGNORE_SHADOW) {
                 shadow.newName =
-                    importSubName(reader, reader.getAttribute(ATTR_SHADOW), restoreLabel);
+                    importSubName(reader, reader.getAttribute<const char*>(ATTR_SHADOW), restoreLabel);
             }
         }
     }
     else if (reader.hasAttribute("count")) {
-        int count = reader.getAttributeAsInteger("count");
+        int count = reader.getAttribute<long>("count");
         subs.resize(count);
         shadows.resize(count);
         for (int i = 0; i < count; i++) {
             reader.readElement("Sub");
-            shadows[i].oldName = importSubName(reader, reader.getAttribute("value"), restoreLabel);
+            shadows[i].oldName = importSubName(reader, reader.getAttribute<const char*>("value"), restoreLabel);
             if (reader.hasAttribute(ATTR_SHADOWED) && !IGNORE_SHADOW) {
                 subs[i] = shadows[i].newName =
-                    importSubName(reader, reader.getAttribute(ATTR_SHADOWED), restoreLabel);
+                    importSubName(reader, reader.getAttribute<const char*>(ATTR_SHADOWED), restoreLabel);
             }
             else {
                 subs[i] = shadows[i].oldName;
                 if (reader.hasAttribute(ATTR_SHADOW) && !IGNORE_SHADOW) {
                     shadows[i].newName =
-                        importSubName(reader, reader.getAttribute(ATTR_SHADOW), restoreLabel);
+                        importSubName(reader, reader.getAttribute<const char*>(ATTR_SHADOW), restoreLabel);
                 }
             }
             if (reader.hasAttribute(ATTR_MAPPED)) {
@@ -4657,7 +4657,7 @@ bool PropertyXLink::adjustLink(const std::set<App::DocumentObject*>& inList)
     if (_pcScope == LinkScope::Hidden) {
         return false;
     }
-    if (!_pcLink || !_pcLink->isAttachedToDocument() || !inList.count(_pcLink)) {
+    if (!_pcLink || !_pcLink->isAttachedToDocument() || !inList.contains(_pcLink)) {
         return false;
     }
     auto subs = _SubList;
@@ -5128,8 +5128,8 @@ void PropertyXLinkSubList::Restore(Base::XMLReader& reader)
 {
     reader.readElement("XLinkSubList");
     setFlag(LinkAllowPartial,
-            reader.hasAttribute("partial") && reader.getAttributeAsInteger("partial"));
-    int count = reader.getAttributeAsInteger("count");
+            reader.hasAttribute("partial") && reader.getAttribute<bool>("partial"));
+    int count = reader.getAttribute<long>("count");
     atomic_change guard(*this, false);
     _Links.clear();
     for (int i = 0; i < count; ++i) {
@@ -5479,7 +5479,7 @@ bool PropertyXLinkSubList::adjustLink(const std::set<App::DocumentObject*>& inLi
             ++count;
             continue;
         }
-        if (inList.count(obj) && adjustLinkSubs(this, inList, obj, l._SubList, &values)) {
+        if (inList.contains(obj) && adjustLinkSubs(this, inList, obj, l._SubList, &values)) {
             touched = true;
         }
     }
@@ -5789,11 +5789,11 @@ void PropertyXLinkContainer::Save(Base::Writer& writer) const
 void PropertyXLinkContainer::Restore(Base::XMLReader& reader)
 {
     reader.readElement("XLinks");
-    auto count = reader.getAttributeAsUnsigned("count");
+    auto count = reader.getAttribute<unsigned long>("count");
     _XLinkRestores = std::make_unique<std::vector<RestoreInfo>>(count);
 
     if (reader.hasAttribute("hidden")) {
-        std::istringstream iss(reader.getAttribute("hidden"));
+        std::istringstream iss(reader.getAttribute<const char*>("hidden"));
         int index;
         while (iss >> index) {
             if (index >= 0 && index < static_cast<int>(count)) {
@@ -5803,18 +5803,18 @@ void PropertyXLinkContainer::Restore(Base::XMLReader& reader)
     }
 
     if (reader.hasAttribute("docs")) {
-        auto docCount = reader.getAttributeAsUnsigned("docs");
+        auto docCount = reader.getAttribute<unsigned long>("docs");
         _DocMap.clear();
         for (unsigned i = 0; i < docCount; ++i) {
             reader.readElement("DocMap");
-            auto index = reader.getAttributeAsUnsigned("index");
+            auto index = reader.getAttribute<unsigned long>("index");
             if (index >= count) {
                 FC_ERR(propertyName(this) << " invalid document map entry");
                 continue;
             }
             auto& info = _XLinkRestores->at(index);
-            info.docName = reader.getAttribute("name");
-            info.docLabel = reader.getAttribute("label");
+            info.docName = reader.getAttribute<const char*>("name");
+            info.docLabel = reader.getAttribute<const char*>("label");
         }
     }
 
@@ -5849,7 +5849,7 @@ void PropertyXLinkContainer::_onBreakLink(DocumentObject* obj)
         onBreakLink(obj);
     }
     catch (Base::Exception& e) {
-        e.ReportException();
+        e.reportException();
         FC_ERR("Exception on breaking link property " << getFullName());
     }
     catch (std::exception& e) {

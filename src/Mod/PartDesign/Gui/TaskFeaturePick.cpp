@@ -138,8 +138,8 @@ TaskFeaturePick::TaskFeaturePick(std::vector<App::DocumentObject*>& objects,
 
         // check if we need to set any origin in temporary visibility mode
         auto* datum = dynamic_cast<App::DatumElement*>(*objIt);
-        if (*statusIt != invalidShape && datum) {
-            App::Origin* origin = dynamic_cast<App::Origin*>(datum->getLCS());
+        if ((*statusIt == validFeature || *statusIt == basePlane) && datum) {
+            auto* origin = dynamic_cast<App::Origin*>(datum->getLCS());
             if (origin) {
                 if ((*objIt)->isDerivedFrom<App::Plane>()) {
                     originVisStatus[origin].setFlag(Gui::DatumElement::Planes, true);
@@ -155,7 +155,7 @@ TaskFeaturePick::TaskFeaturePick(std::vector<App::DocumentObject*>& objects,
     for (const auto& originPair : originVisStatus) {
         const auto& origin = originPair.first;
 
-        Gui::ViewProviderCoordinateSystem* vpo = static_cast<Gui::ViewProviderCoordinateSystem*>(
+        auto* vpo = static_cast<Gui::ViewProviderCoordinateSystem*>(
             Gui::Application::Instance->getViewProvider(origin));
         if (vpo) {
             vpo->setTemporaryVisibility(originVisStatus[origin]);
@@ -325,16 +325,16 @@ std::vector<App::DocumentObject*> TaskFeaturePick::buildFeatures()
         }
     }
     catch (const Base::Exception& e) {
-        e.ReportException();
+        e.reportException();
     }
     catch (Py::Exception& e) {
         // reported by code analyzers
         e.clear();
-        Base::Console().Warning("Unexpected PyCXX exception\n");
+        Base::Console().warning("Unexpected PyCXX exception\n");
     }
     catch (const boost::exception&) {
         // reported by code analyzers
-        Base::Console().Warning("Unexpected boost exception\n");
+        Base::Console().warning("Unexpected boost exception\n");
     }
 
     return result;

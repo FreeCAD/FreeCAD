@@ -65,16 +65,15 @@ void SketchGeometryExtension::restoreAttributes(Base::XMLReader& reader)
     Part::GeometryPersistenceExtension::restoreAttributes(reader);
 
     if (reader.hasAttribute("id")) {
-        Id = reader.getAttributeAsInteger("id");
+        Id = reader.getAttribute<long>("id");
     }
 
-    InternalGeometryType = static_cast<InternalType::InternalType>(
-        reader.getAttributeAsInteger("internalGeometryType"));
+    InternalGeometryType = reader.getAttribute<InternalType::InternalType>("internalGeometryType");
 
-    GeometryModeFlags = GeometryModeFlagType(reader.getAttribute("geometryModeFlags"));
+    GeometryModeFlags = GeometryModeFlagType(reader.getAttribute<const char*>("geometryModeFlags"));
 
     if (reader.hasAttribute("geometryLayer")) {
-        GeometryLayer = reader.getAttributeAsInteger("geometryLayer");
+        GeometryLayer = reader.getAttribute<long>("geometryLayer");
     }
 }
 

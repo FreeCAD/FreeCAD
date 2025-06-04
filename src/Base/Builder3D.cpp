@@ -1002,7 +1002,7 @@ void Builder3D::clear()
 }
 
 /**
- * Save the resulting inventor 3D representation to the Console().Log() facility.
+ * Save the resulting inventor 3D representation to the Console().log() facility.
  * In DEBUG mode the Gui (if running) will trigger on that and show the representation in
  * the active Viewer/Document. It shows only one representation on time. If you need to
  * show more then one representation use saveToFile() instead.
@@ -1010,9 +1010,9 @@ void Builder3D::clear()
  */
 void Builder3D::saveToLog()
 {
-    ILogger* obs = Base::Console().Get("StatusBar");
+    ILogger* obs = Base::Console().get("StatusBar");
     if (obs) {
-        obs->SendLog("Builder3D",
+        obs->sendLog("Builder3D",
                      result.str(),
                      Base::LogStyle::Log,
                      Base::IntendedRecipient::Developer,

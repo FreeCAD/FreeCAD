@@ -121,7 +121,7 @@ on:
         type: string
         required: false
       spellingIgnore:
-        default: ./.git,*.po,*.ts,*.svg,./ChangeLog.txt,./src/3rdParty,./src/Mod/Assembly/App/opendcm,./src/Base/swig*,./src/Mod/Robot/App/kdl_cp,./src/Mod/Import/App/SCL*,./src/WindowsInstaller,./src/Doc/FreeCAD.uml,./build/
+        default: ./.git*,*.po,*.ts,*.svg,./src/3rdParty,./src/Base/swig*,./src/Mod/Robot/App/kdl_cp,./src/Mod/Import/App/SCL*,./src/Doc/FreeCAD.uml,./build/
         type: string
         required: false
       codespellFailSilent:
@@ -168,6 +168,9 @@ on:
       reportFile:
         value: ${{ jobs.Lint.outputs.reportFile }}
 
+permissions:
+  contents: read
+
 jobs:
 
   Lint:
@@ -185,8 +188,13 @@ jobs:
       reportFile: ${{ steps.Init.outputs.reportFile }}
 
     steps:
+      - name: Harden the runner (Audit all outbound calls)
+        uses: step-security/harden-runner@0634a2670c59f64b4a01f0f96f84700a4088b9f0 # v2.12.0
+        with:
+          egress-policy: audit
+
       - name: Check out code
-        uses: actions/checkout@v4
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
         with:
           submodules: true
 
@@ -199,6 +207,8 @@ jobs:
           echo "reportFile=${{ env.reportfilename }}" >> $GITHUB_OUTPUT
 
     # Generic lints steps
+      - name: Check File Case Sensitivity
+        uses: credfeto/action-case-checker@cb652aeab29ed363bbdb7d9ee1bfcc010c46cac5 # v1.3.0
 
       - name: Check for non Unix line ending
         if: inputs.checkLineendings && always()
@@ -295,7 +305,7 @@ jobs:
         continue-on-error: ${{ inputs.codespellFailSilent }}
         run: |
           python3 tools/lint/codespell.py \
-            --files "${{ inputs.changedFiles }}" \
+            --files ${{ inputs.changedFiles }} \
             --ignore-words "${{ inputs.listIgnoredMisspelling }}" \
             --skip "${{ inputs.spellingIgnore }}" \
             --log-dir "${{ env.logdir }}" \
@@ -335,7 +345,7 @@ jobs:
 
       - name: Upload logs and fixes
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
           name: ${{ inputs.artifactBasename }}-Logs
           path: |
@@ -344,7 +354,7 @@ jobs:
 
       - name: Upload report
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
           name: ${{ env.reportfilename }}
           path: |

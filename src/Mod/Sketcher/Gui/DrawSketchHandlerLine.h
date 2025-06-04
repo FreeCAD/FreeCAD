@@ -28,6 +28,7 @@
 #include <Gui/Notifications.h>
 #include <Gui/Command.h>
 #include <Gui/CommandT.h>
+#include <Gui/InputHint.h>
 
 #include <Mod/Sketcher/App/SketchObject.h>
 
@@ -36,6 +37,9 @@
 
 #include "GeometryCreationMode.h"
 #include "Utils.h"
+
+#include <vector>
+#include <algorithm>
 
 namespace SketcherGui
 {
@@ -251,6 +255,24 @@ private:
                                    isConstructionMode());
         }
     }
+
+    std::list<Gui::InputHint> getToolHints() const override
+    {
+        return lookupLineHints(static_cast<int>(constructionMethod()), static_cast<int>(state()));
+    }
+
+    struct HintEntry
+    {
+        int constructionMethod;
+        int state;
+        std::list<Gui::InputHint> hints;
+    };
+
+    using HintTable = std::vector<HintEntry>;
+
+    static Gui::InputHint switchModeHint();
+    static HintTable getLineHintTable();
+    static std::list<Gui::InputHint> lookupLineHints(int method, int state);
 };
 
 template<>
@@ -542,8 +564,8 @@ void DSHLineController::doChangeDrawSketchHandlerMode()
             }
         } break;
         case SelectMode::SeekSecond: {
-            if (onViewParameters[OnViewParameter::Third]->isSet
-                && onViewParameters[OnViewParameter::Fourth]->isSet) {
+            if (onViewParameters[OnViewParameter::Third]->hasFinishedEditing
+                || onViewParameters[OnViewParameter::Fourth]->hasFinishedEditing) {
 
                 handler->setState(SelectMode::End);
             }
@@ -796,6 +818,65 @@ void DSHLineController::addConstraints()
     }
 }
 
+Gui::InputHint DrawSketchHandlerLine::switchModeHint()
+{
+    return {QObject::tr("%1 switch mode"), {Gui::InputHint::UserInput::KeyM}};
+}
+
+DrawSketchHandlerLine::HintTable DrawSketchHandlerLine::getLineHintTable()
+{
+    const auto switchHint = switchModeHint();
+    return {// Structure: {constructionMethod, state, {hints...}}
+
+            // OnePointLengthAngle (0)
+            {0,
+             0,
+             {// SeekFirst
+              {QObject::tr("%1 pick first point"), {Gui::InputHint::UserInput::MouseLeft}},
+              switchHint}},
+            {0,
+             1,
+             {// SeekSecond
+              {QObject::tr("%1 pick second point"), {Gui::InputHint::UserInput::MouseLeft}},
+              switchHint}},
+
+            // OnePointWidthHeight (1)
+            {1,
+             0,
+             {// SeekFirst
+              {QObject::tr("%1 pick first point"), {Gui::InputHint::UserInput::MouseLeft}},
+              switchHint}},
+            {1,
+             1,
+             {// SeekSecond
+              {QObject::tr("%1 pick second point"), {Gui::InputHint::UserInput::MouseLeft}},
+              switchHint}},
+
+            // TwoPoints (2)
+            {2,
+             0,
+             {// SeekFirst
+              {QObject::tr("%1 pick first point"), {Gui::InputHint::UserInput::MouseLeft}},
+              switchHint}},
+            {2,
+             1,
+             {// SeekSecond
+              {QObject::tr("%1 pick second point"), {Gui::InputHint::UserInput::MouseLeft}},
+              switchHint}}};
+}
+
+std::list<Gui::InputHint> DrawSketchHandlerLine::lookupLineHints(int method, int state)
+{
+    const auto lineHintTable = getLineHintTable();
+
+    auto it = std::find_if(lineHintTable.begin(),
+                           lineHintTable.end(),
+                           [method, state](const HintEntry& entry) {
+                               return entry.constructionMethod == method && entry.state == state;
+                           });
+
+    return (it != lineHintTable.end()) ? it->hints : std::list<Gui::InputHint> {};
+}
 
 }  // namespace SketcherGui
 

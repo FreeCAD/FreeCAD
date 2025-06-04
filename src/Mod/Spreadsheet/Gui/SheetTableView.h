@@ -47,6 +47,7 @@ Q_SIGNALS:
     void resizeFinished();
 
 protected:
+    void mouseMoveEvent(QMouseEvent* e) override;
     void mouseReleaseEvent(QMouseEvent* event) override;
     bool viewportEvent(QEvent* e) override;
 

@@ -385,7 +385,7 @@ void Command::setupCheckable(int iMsg) {
         action->setChecked(checked);
         action->blockSignals(blocked);
         if(action!=_pcAction->action())
-            _pcAction->setChecked(checked,true);
+            _pcAction->setBlockedChecked(checked);
     }
 
 }
@@ -402,7 +402,7 @@ void Command::invoke(int i, TriggerSource trigger)
 
     // Do not query _pcAction since it isn't created necessarily
 #ifdef FC_LOGUSERACTION
-    Base::Console().Log("CmdG: %s\n",sName);
+    Base::Console().log("CmdG: %s\n",sName);
 #endif
 
     _invoke(i, bCanLog && !_busy);
@@ -473,29 +473,29 @@ void Command::_invoke(int id, bool disablelog)
         throw;
     }
     catch (Base::PyException &e) {
-        e.ReportException();
+        e.reportException();
     }
     catch (Py::Exception&) {
         Base::PyGILStateLocker lock;
         Base::PyException e;
-        e.ReportException();
+        e.reportException();
     }
     catch (Base::AbortException&) {
     }
     catch (Base::Exception &e) {
-        e.ReportException();
+        e.reportException();
         // Pop-up a dialog for FreeCAD-specific exceptions
         QMessageBox::critical(Gui::getMainWindow(), QObject::tr("Exception"), QLatin1String(e.what()));
     }
     catch (std::exception &e) {
-        Base::Console().Error("C++ exception thrown (%s)\n", e.what());
+        Base::Console().error("C++ exception thrown (%s)\n", e.what());
     }
     catch (const char* e) {
-        Base::Console().Error("%s\n", e);
+        Base::Console().error("%s\n", e);
     }
 #ifndef FC_DEBUG
     catch (...) {
-        Base::Console().Error("Gui::Command::activated(%d): Unknown C++ exception thrown\n", id);
+        Base::Console().error("Gui::Command::activated(%d): Unknown C++ exception thrown\n", id);
     }
 #endif
 }
@@ -667,7 +667,7 @@ void Command::_doCommand(const char *file, int line, DoCmd_Type eType, const cha
     QByteArray format = cmd.toUtf8();
 
 #ifdef FC_LOGUSERACTION
-    Base::Console().Log("CmdC: %s\n", format.constData());
+    Base::Console().log("CmdC: %s\n", format.constData());
 #endif
 
     _runCommand(file,line,eType,format.constData());
@@ -721,7 +721,7 @@ void Command::_runCommand(const char *file, int line, DoCmd_Type eType, const ch
         Base::Interpreter().runString(sCmd);
     }
     catch(Py::Exception &) {
-        Base::PyException::ThrowException();
+        Base::PyException::throwException();
     }
 }
 
@@ -899,8 +899,14 @@ const char* Command::keySequenceToAccel(int sk) const
     static StringMap strings;
     auto i = strings.find(sk);
 
-    if (i != strings.end())
+    if (i != strings.end()) {
         return i->second.c_str();
+    }
+
+    // In case FreeCAD is loaded without GUI (issue 16407)
+    if (!QApplication::instance()) {
+        return "";
+    }
 
     auto type = static_cast<QKeySequence::StandardKey>(sk);
     QKeySequence ks(type);
@@ -955,7 +961,7 @@ void Command::printConflictingAccelerators() const
 {
     auto cmd = Application::Instance->commandManager().checkAcceleratorForConflicts(sAccel, this);
     if (cmd)
-        Base::Console().Warning("Accelerator conflict between %s (%s) and %s (%s)\n", sName, sAccel, cmd->sName, cmd->sAccel);
+        Base::Console().warning("Accelerator conflict between %s (%s) and %s (%s)\n", sName, sAccel, cmd->sName, cmd->sAccel);
 }
 
 Action * Command::createAction()
@@ -1322,11 +1328,11 @@ void PythonCommand::activated(int iMsg)
             }
         }
         catch (const Base::PyException& e) {
-            Base::Console().Error("Running the Python command '%s' failed:\n%s\n%s",
+            Base::Console().error("Running the Python command '%s' failed:\n%s\n%s",
                                   sName, e.getStackTrace().c_str(), e.what());
         }
         catch (const Base::Exception&) {
-            Base::Console().Error("Running the Python command '%s' failed, try to resume",sName);
+            Base::Console().error("Running the Python command '%s' failed, try to resume",sName);
         }
     }
     else {
@@ -1395,7 +1401,7 @@ Action * PythonCommand::createAction()
         }
     }
     catch (const Base::Exception& e) {
-        Base::Console().Error("%s\n", e.what());
+        Base::Console().error("%s\n", e.what());
     }
 
     return pcAction;
@@ -1559,7 +1565,7 @@ void PythonGroupCommand::activated(int iMsg)
     catch(Py::Exception&) {
         Base::PyGILStateLocker lock;
         Base::PyException e;
-        Base::Console().Error("Running the Python command '%s' failed:\n%s\n%s",
+        Base::Console().error("Running the Python command '%s' failed:\n%s\n%s",
                               sName, e.getStackTrace().c_str(), e.what());
     }
 }
@@ -1637,7 +1643,7 @@ Action * PythonGroupCommand::createAction()
                     qtAction->blockSignals(false);
                 }else if(qtAction->isCheckable()){
                     pcAction->setCheckable(true);
-                    pcAction->setChecked(qtAction->isChecked(),true);
+                    pcAction->setBlockedChecked(qtAction->isChecked());
                 }
             }
         }
@@ -1645,7 +1651,7 @@ Action * PythonGroupCommand::createAction()
     catch(Py::Exception&) {
         Base::PyGILStateLocker lock;
         Base::PyException e;
-        Base::Console().Error("createAction() of the Python command '%s' failed:\n%s\n%s",
+        Base::Console().error("createAction() of the Python command '%s' failed:\n%s\n%s",
                               sName, e.getStackTrace().c_str(), e.what());
     }
 
@@ -1878,9 +1884,9 @@ bool CommandManager::addTo(const char* Name, QWidget *pcWidget)
     if (_sCommands.find(Name) == _sCommands.end()) {
         // Print in release mode only a log message instead of an error message to avoid to annoy the user
 #ifdef FC_DEBUG
-        Base::Console().Error("CommandManager::addTo() try to add an unknown command (%s) to a widget!\n",Name);
+        Base::Console().error("CommandManager::addTo() try to add an unknown command (%s) to a widget!\n",Name);
 #else
-        Base::Console().Warning("Unknown command '%s'\n",Name);
+        Base::Console().warning("Unknown command '%s'\n",Name);
 #endif
         return false;
     }
@@ -1977,7 +1983,7 @@ const Command* Gui::CommandManager::checkAcceleratorForConflicts(const char* acc
     if (newCombo.isEmpty())
         return nullptr;
     auto newSequence = QKeySequence::fromString(newCombo);
-    if (newSequence.count() == 0)
+    if (newSequence.isEmpty())
         return nullptr;
 
     // Does this command shortcut conflict with other commands already defined?
@@ -1998,7 +2004,7 @@ const Command* Gui::CommandManager::checkAcceleratorForConflicts(const char* acc
         if (existingCombo.isEmpty())
             continue;
         auto existingSequence = QKeySequence::fromString(existingCombo);
-        if (existingSequence.count() == 0)
+        if (existingSequence.isEmpty())
             continue;
 
         // Exact match

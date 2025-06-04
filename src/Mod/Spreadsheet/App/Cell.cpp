@@ -201,7 +201,7 @@ void Cell::setExpression(App::ExpressionPtr&& expr)
                 restore(reader, true);
             }
             catch (Base::Exception& e) {
-                e.ReportException();
+                e.reportException();
                 FC_ERR("Failed to restore style of cell " << owner->sheet()->getFullName() << '.'
                                                           << address.toString() << ": "
                                                           << e.what());
@@ -607,7 +607,7 @@ void Cell::setComputedUnit(const Base::Unit& unit)
     PropertySheet::AtomicPropertyChange signaller(*owner);
 
     computedUnit = unit;
-    setUsed(COMPUTED_UNIT_SET, !computedUnit.isEmpty());
+    setUsed(COMPUTED_UNIT_SET, computedUnit != Unit::One);
     setDirty();
 
     signaller.tryInvoke();
@@ -728,19 +728,27 @@ void Cell::moveAbsolute(CellAddress newAddress)
 
 void Cell::restore(Base::XMLReader& reader, bool checkAlias)
 {
-    const char* style = reader.hasAttribute("style") ? reader.getAttribute("style") : nullptr;
+    const char* style =
+        reader.hasAttribute("style") ? reader.getAttribute<const char*>("style") : nullptr;
     const char* alignment =
-        reader.hasAttribute("alignment") ? reader.getAttribute("alignment") : nullptr;
-    const char* content = reader.hasAttribute("content") ? reader.getAttribute("content") : "";
-    const char* foregroundColor =
-        reader.hasAttribute("foregroundColor") ? reader.getAttribute("foregroundColor") : nullptr;
-    const char* backgroundColor =
-        reader.hasAttribute("backgroundColor") ? reader.getAttribute("backgroundColor") : nullptr;
-    const char* displayUnit =
-        reader.hasAttribute("displayUnit") ? reader.getAttribute("displayUnit") : nullptr;
-    const char* alias = reader.hasAttribute("alias") ? reader.getAttribute("alias") : nullptr;
-    const char* rowSpan = reader.hasAttribute("rowSpan") ? reader.getAttribute("rowSpan") : nullptr;
-    const char* colSpan = reader.hasAttribute("colSpan") ? reader.getAttribute("colSpan") : nullptr;
+        reader.hasAttribute("alignment") ? reader.getAttribute<const char*>("alignment") : nullptr;
+    const char* content =
+        reader.hasAttribute("content") ? reader.getAttribute<const char*>("content") : "";
+    const char* foregroundColor = reader.hasAttribute("foregroundColor")
+        ? reader.getAttribute<const char*>("foregroundColor")
+        : nullptr;
+    const char* backgroundColor = reader.hasAttribute("backgroundColor")
+        ? reader.getAttribute<const char*>("backgroundColor")
+        : nullptr;
+    const char* displayUnit = reader.hasAttribute("displayUnit")
+        ? reader.getAttribute<const char*>("displayUnit")
+        : nullptr;
+    const char* alias =
+        reader.hasAttribute("alias") ? reader.getAttribute<const char*>("alias") : nullptr;
+    const char* rowSpan =
+        reader.hasAttribute("rowSpan") ? reader.getAttribute<const char*>("rowSpan") : nullptr;
+    const char* colSpan =
+        reader.hasAttribute("colSpan") ? reader.getAttribute<const char*>("colSpan") : nullptr;
 
     // Don't trigger multiple updates below; wait until everything is loaded by calling unfreeze()
     // below.
@@ -1102,7 +1110,7 @@ std::string Cell::getFormattedQuantity()
         const Base::Unit& computedUnit = floatProp->getUnit();
         qFormatted = QLocale().toString(rawVal, 'f', Base::UnitsApi::getDecimals());
         if (hasDisplayUnit) {
-            if (computedUnit.isEmpty() || computedUnit == du.unit) {
+            if (computedUnit == Unit::One || computedUnit == du.unit) {
                 QString number =
                     QLocale().toString(rawVal / duScale, 'f', Base::UnitsApi::getDecimals());
                 qFormatted = number + QString::fromStdString(" " + displayUnit.stringRep);

@@ -112,7 +112,7 @@ void QGIViewSymbol::drawSvg()
     }
 
     auto vp = getViewProvider(viewSymbol);
-    auto vps = dynamic_cast<ViewProviderSymbol*>(vp);
+    auto vps = freecad_cast<ViewProviderSymbol*>(vp);
     if (!vp || !vps) {
         return;
     }
@@ -139,7 +139,7 @@ void QGIViewSymbol::symbolToSvg(QByteArray qba)
 
     prepareGeometryChange();
     if (!m_svgItem->load(&qba)) {
-        Base::Console().Error("Error - Could not load Symbol into SVG renderer for %s\n",
+        Base::Console().error("Error - Could not load Symbol into SVG renderer for %s\n",
                               getViewName());
     }
     m_svgItem->centerAt(0., 0.);

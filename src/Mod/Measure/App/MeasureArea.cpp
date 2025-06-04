@@ -68,8 +68,8 @@ bool MeasureArea::isValidSelection(const App::MeasureSelection& selection)
             return false;
         }
 
-        // TODO: Also support Cylinder & Volume?
-        if ((type != App::MeasureElementType::PLANE && type != App::MeasureElementType::CYLINDER)) {
+        if ((type != App::MeasureElementType::PLANE && type != App::MeasureElementType::CYLINDER
+             && type != App::MeasureElementType::SURFACE)) {
             return false;
         }
     }

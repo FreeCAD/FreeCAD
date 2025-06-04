@@ -15,17 +15,19 @@ build:
 requirements:
   build:
     - ccache
-    - cmake>=3.31.6,<4.0.0
+    - cmake
     - compilers
     - doxygen
     - ninja
     - noqt5
-    - python==3.12.9
-    - qt6-main==6.8.2
+    - python>=3.11,<3.12
+    - qt6-main>=6.7,<6.8
     - swig
 
     - if: linux and x86_64
       then:
+        - clang
+        - clangxx
         - kernel-headers_linux-64
         - libdrm-cos7-x86_64
         - libselinux-cos7-x86_64
@@ -46,6 +48,7 @@ requirements:
         - mesa-libegl-devel-cos7-x86_64
         - mesa-libgl-cos7-x86_64
         - mesa-libgl-devel-cos7-x86_64
+        - mold
         - pixman-cos7-x86_64
         - sed
         - sysroot_linux-64
@@ -55,6 +58,8 @@ requirements:
 
     - if: linux and aarch64
       then:
+        - clang
+        - clangxx
         - kernel-headers_linux-aarch64
         - libdrm-cos7-aarch64
         - libselinux-cos7-aarch64
@@ -75,6 +80,7 @@ requirements:
         - mesa-libegl-devel-cos7-aarch64
         - mesa-libgl-cos7-aarch64
         - mesa-libgl-devel-cos7-aarch64
+        - mold
         - pixman-cos7-aarch64
         - sed
         - sysroot_linux-aarch64
@@ -96,14 +102,14 @@ requirements:
     - matplotlib-base
     - noqt5
     - numpy
-    - occt
+    - occt>=7.8,<7.9
     - pcl
     - pivy
     - ply
     - pybind11
     - pyside6
-    - python==3.12.9
-    - qt6-main==6.8.2
+    - python>=3.11,<3.12
+    - qt6-main>=6.7,<6.8
     - six
     - smesh
     - vtk
@@ -111,8 +117,9 @@ requirements:
     - yaml-cpp
     - zlib
 
-    - if: windows
+    - if: win
       then:
+        - winpthreads-devel
         - tbb-devel
 
     - if: unix
@@ -136,7 +143,7 @@ requirements:
     - docutils
     - gmsh
     - graphviz
-    # - ifcopenshell
+    - ifcopenshell
     - jinja2
     - lark
     - lxml
@@ -144,7 +151,7 @@ requirements:
     - nine
     - noqt5
     - numpy
-    - occt
+    - occt>=7.8,<7.9
     - olefile
     - opencamlib
     - opencv
@@ -154,13 +161,14 @@ requirements:
     - ply
     - pycollada
     - pyside6
-    - python==3.12.9
+    - python>=3.11,<3.12
     - pythonocc-core
     - pyyaml
-    - qt6-main==6.8.2
+    - qt6-main>=6.7,<6.8
     - requests
     - scipy
     - sympy
+    - typing_extension
     - vtk
     - xlutils
 

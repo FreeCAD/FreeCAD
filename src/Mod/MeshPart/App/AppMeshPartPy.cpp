@@ -155,7 +155,7 @@ private:
             str += " ";
             if (msg) {str += msg;}
             else     {str += "No OCCT Exception Message";}
-            Base::Console().Error("%s\n", str.c_str());
+            Base::Console().error("%s\n", str.c_str());
             throw Py::Exception(Base::PyExc_FC_GeneralError, str);
         }
         catch (const Base::Exception &e) {
@@ -163,7 +163,7 @@ private:
             str += "FreeCAD exception thrown (";
             str += e.what();
             str += ")";
-            e.ReportException();
+            e.reportException();
             throw Py::RuntimeError(str);
         }
         catch (const std::exception &e) {
@@ -171,7 +171,7 @@ private:
             str += "C++ exception thrown (";
             str += e.what();
             str += ")";
-            Base::Console().Error("%s\n", str.c_str());
+            Base::Console().error("%s\n", str.c_str());
             throw Py::RuntimeError(str);
         }
     }

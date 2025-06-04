@@ -29,9 +29,6 @@
 #include <unordered_map>
 #endif
 
-#include <thread>
-#include <chrono>
-
 #include <App/Application.h>
 #include <App/Datums.h>
 #include <App/Document.h>
@@ -88,7 +85,6 @@
 #include "AssemblyUtils.h"
 #include "JointGroup.h"
 #include "ViewGroup.h"
-#include "SimulationGroup.h"
 
 FC_LOG_LEVEL_INIT("Assembly", true, true, true)
 
@@ -201,7 +197,7 @@ int AssemblyObject::generateSimulation(App::DocumentObject* sim)
         mbdAssembly->runKINEMATIC();
     }
     catch (...) {
-        Base::Console().Error("Generation of simulation failed\n");
+        Base::Console().error("Generation of simulation failed\n");
         motions.clear();
         return -1;
     }
@@ -371,7 +367,7 @@ bool AssemblyObject::validateNewPlacements()
                 }
 
                 if (!oldPlc.isSame(newPlacement)) {
-                    Base::Console().Warning(
+                    Base::Console().warning(
                         "Assembly : Ignoring bad solve, a grounded object (%s) moved.\n",
                         obj->getFullLabel());
                     return false;
@@ -604,7 +600,7 @@ T* AssemblyObject::getGroup()
     }
     for (auto group : groups) {
         if (hasObject(group)) {
-            return dynamic_cast<T*>(group);
+            return freecad_cast<T*>(group);
         }
     }
     return nullptr;
@@ -625,7 +621,7 @@ ViewGroup* AssemblyObject::getExplodedViewGroup() const
     }
     for (auto viewGroup : viewGroups) {
         if (hasObject(viewGroup)) {
-            return dynamic_cast<ViewGroup*>(viewGroup);
+            return freecad_cast<ViewGroup*>(viewGroup);
         }
     }
     return nullptr;
@@ -944,7 +940,7 @@ void AssemblyObject::removeUnconnectedJoints(std::vector<App::DocumentObject*>& 
                 App::DocumentObject* obj2 = getMovingPartFromRef(this, joint, "Reference2");
                 if (!isObjInSetOfObjRefs(obj1, connectedParts)
                     || !isObjInSetOfObjRefs(obj2, connectedParts)) {
-                    Base::Console().Warning(
+                    Base::Console().warning(
                         "%s is unconnected to a grounded part so it is ignored.\n",
                         joint->getFullName());
                     return true;  // Remove joint if any connected object is not in connectedParts
@@ -1091,77 +1087,82 @@ void Assembly::AssemblyObject::create_mbdSimulationParameters(App::DocumentObjec
 std::shared_ptr<ASMTJoint> AssemblyObject::makeMbdJointOfType(App::DocumentObject* joint,
                                                               JointType type)
 {
-    if (type == JointType::Fixed) {
-        if (bundleFixed) {
-            return nullptr;
-        }
-        return CREATE<ASMTFixedJoint>::With();
-    }
-    else if (type == JointType::Revolute) {
-        return CREATE<ASMTRevoluteJoint>::With();
-    }
-    else if (type == JointType::Cylindrical) {
-        return CREATE<ASMTCylindricalJoint>::With();
-    }
-    else if (type == JointType::Slider) {
-        return CREATE<ASMTTranslationalJoint>::With();
-    }
-    else if (type == JointType::Ball) {
-        return CREATE<ASMTSphericalJoint>::With();
-    }
-    else if (type == JointType::Distance) {
-        return makeMbdJointDistance(joint);
-    }
-    else if (type == JointType::Parallel) {
-        return CREATE<ASMTParallelAxesJoint>::With();
-    }
-    else if (type == JointType::Perpendicular) {
-        return CREATE<ASMTPerpendicularJoint>::With();
-    }
-    else if (type == JointType::Angle) {
-        double angle = fabs(Base::toRadians(getJointDistance(joint)));
-        if (fmod(angle, 2 * std::numbers::pi) < Precision::Confusion()) {
+    switch (type) {
+        case JointType::Fixed:
+            if (bundleFixed) {
+                return nullptr;
+            }
+            return CREATE<ASMTFixedJoint>::With();
+
+        case JointType::Revolute:
+            return CREATE<ASMTRevoluteJoint>::With();
+
+        case JointType::Cylindrical:
+            return CREATE<ASMTCylindricalJoint>::With();
+
+        case JointType::Slider:
+            return CREATE<ASMTTranslationalJoint>::With();
+
+        case JointType::Ball:
+            return CREATE<ASMTSphericalJoint>::With();
+
+        case JointType::Distance:
+            return makeMbdJointDistance(joint);
+
+        case JointType::Parallel:
             return CREATE<ASMTParallelAxesJoint>::With();
-        }
-        else {
+
+        case JointType::Perpendicular:
+            return CREATE<ASMTPerpendicularJoint>::With();
+
+        case JointType::Angle: {
+            double angle = fabs(Base::toRadians(getJointDistance(joint)));
+            if (fmod(angle, 2 * std::numbers::pi) < Precision::Confusion()) {
+                return CREATE<ASMTParallelAxesJoint>::With();
+            }
             auto mbdJoint = CREATE<ASMTAngleJoint>::With();
             mbdJoint->theIzJz = angle;
             return mbdJoint;
         }
-    }
-    else if (type == JointType::RackPinion) {
-        auto mbdJoint = CREATE<ASMTRackPinionJoint>::With();
-        mbdJoint->pitchRadius = getJointDistance(joint);
-        return mbdJoint;
-    }
-    else if (type == JointType::Screw) {
-        int slidingIndex = slidingPartIndex(joint);
-        if (slidingIndex == 0) {  // invalid this joint needs a slider
+
+        case JointType::RackPinion: {
+            auto mbdJoint = CREATE<ASMTRackPinionJoint>::With();
+            mbdJoint->pitchRadius = getJointDistance(joint);
+            return mbdJoint;
+        }
+
+        case JointType::Screw: {
+            int slidingIndex = slidingPartIndex(joint);
+            if (slidingIndex == 0) {  // invalid this joint needs a slider
+                return nullptr;
+            }
+
+            if (slidingIndex != 1) {
+                swapJCS(joint);  // make sure that sliding is first.
+            }
+
+            auto mbdJoint = CREATE<ASMTScrewJoint>::With();
+            mbdJoint->pitch = getJointDistance(joint);
+            return mbdJoint;
+        }
+
+        case JointType::Gears: {
+            auto mbdJoint = CREATE<ASMTGearJoint>::With();
+            mbdJoint->radiusI = getJointDistance(joint);
+            mbdJoint->radiusJ = getJointDistance2(joint);
+            return mbdJoint;
+        }
+
+        case JointType::Belt: {
+            auto mbdJoint = CREATE<ASMTGearJoint>::With();
+            mbdJoint->radiusI = getJointDistance(joint);
+            mbdJoint->radiusJ = -getJointDistance2(joint);
+            return mbdJoint;
+        }
+
+        default:
             return nullptr;
-        }
-
-        if (slidingIndex != 1) {
-            swapJCS(joint);  // make sure that sliding is first.
-        }
-
-        auto mbdJoint = CREATE<ASMTScrewJoint>::With();
-        mbdJoint->pitch = getJointDistance(joint);
-        return mbdJoint;
     }
-    else if (type == JointType::Gears) {
-        auto mbdJoint = CREATE<ASMTGearJoint>::With();
-        mbdJoint->radiusI = getJointDistance(joint);
-        mbdJoint->radiusJ = getJointDistance2(joint);
-        return mbdJoint;
-    }
-    else if (type == JointType::Belt) {
-        auto mbdJoint = CREATE<ASMTGearJoint>::With();
-        mbdJoint->radiusI = getJointDistance(joint);
-        mbdJoint->radiusJ = -getJointDistance2(joint);
-        return mbdJoint;
-    }
-
-    return nullptr;
 }
 
 std::shared_ptr<ASMTJoint> AssemblyObject::makeMbdJointDistance(App::DocumentObject* joint)
@@ -1173,186 +1174,154 @@ std::shared_ptr<ASMTJoint> AssemblyObject::makeMbdJointDistance(App::DocumentObj
     auto* obj1 = getLinkedObjFromRef(joint, "Reference1");
     auto* obj2 = getLinkedObjFromRef(joint, "Reference2");
 
-    if (type == DistanceType::PointPoint) {
-        // Point to point distance, or ball joint if distance=0.
-        double distance = getJointDistance(joint);
-        if (distance < Precision::Confusion()) {
-            return CREATE<ASMTSphericalJoint>::With();
+    switch (type) {
+        case DistanceType::PointPoint: {
+            // Point to point distance, or ball joint if distance=0.
+            double distance = getJointDistance(joint);
+            if (distance < Precision::Confusion()) {
+                return CREATE<ASMTSphericalJoint>::With();
+            }
+            auto mbdJoint = CREATE<ASMTSphSphJoint>::With();
+            mbdJoint->distanceIJ = distance;
+            return mbdJoint;
         }
-        auto mbdJoint = CREATE<ASMTSphSphJoint>::With();
-        mbdJoint->distanceIJ = distance;
-        return mbdJoint;
-    }
 
-    // Edge - edge cases
-    else if (type == DistanceType::LineLine) {
-        auto mbdJoint = CREATE<ASMTRevCylJoint>::With();
-        mbdJoint->distanceIJ = getJointDistance(joint);
-        return mbdJoint;
-    }
-    else if (type == DistanceType::LineCircle) {
-        auto mbdJoint = CREATE<ASMTRevCylJoint>::With();
-        mbdJoint->distanceIJ = getJointDistance(joint) + getEdgeRadius(obj2, elt2);
-        return mbdJoint;
-    }
-    else if (type == DistanceType::CircleCircle) {
-        auto mbdJoint = CREATE<ASMTRevCylJoint>::With();
-        mbdJoint->distanceIJ =
-            getJointDistance(joint) + getEdgeRadius(obj1, elt1) + getEdgeRadius(obj2, elt2);
-        return mbdJoint;
-    }
-    // TODO : other cases od edge-edge : Ellipse, parabola, hyperbola...
+        // Edge - edge cases
+        case DistanceType::LineLine: {
+            auto mbdJoint = CREATE<ASMTRevCylJoint>::With();
+            mbdJoint->distanceIJ = getJointDistance(joint);
+            return mbdJoint;
+        }
 
-    // Face - Face cases
-    else if (type == DistanceType::PlanePlane) {
-        auto mbdJoint = CREATE<ASMTPlanarJoint>::With();
-        mbdJoint->offset = getJointDistance(joint);
-        return mbdJoint;
-    }
-    else if (type == DistanceType::PlaneCylinder) {
-        auto mbdJoint = CREATE<ASMTLineInPlaneJoint>::With();
-        mbdJoint->offset = getJointDistance(joint) + getFaceRadius(obj2, elt2);
-        return mbdJoint;
-    }
-    else if (type == DistanceType::PlaneSphere) {
-        auto mbdJoint = CREATE<ASMTPointInPlaneJoint>::With();
-        mbdJoint->offset = getJointDistance(joint) + getFaceRadius(obj2, elt2);
-        return mbdJoint;
-    }
-    else if (type == DistanceType::PlaneCone) {
-        // TODO
-    }
-    else if (type == DistanceType::PlaneTorus) {
-        auto mbdJoint = CREATE<ASMTPlanarJoint>::With();
-        mbdJoint->offset = getJointDistance(joint);
-        return mbdJoint;
-    }
-    else if (type == DistanceType::CylinderCylinder) {
-        auto mbdJoint = CREATE<ASMTRevCylJoint>::With();
-        mbdJoint->distanceIJ =
-            getJointDistance(joint) + getFaceRadius(obj1, elt1) + getFaceRadius(obj2, elt2);
-        return mbdJoint;
-    }
-    else if (type == DistanceType::CylinderSphere) {
-        auto mbdJoint = CREATE<ASMTCylSphJoint>::With();
-        mbdJoint->distanceIJ =
-            getJointDistance(joint) + getFaceRadius(obj1, elt1) + getFaceRadius(obj2, elt2);
-        return mbdJoint;
-    }
-    else if (type == DistanceType::CylinderCone) {
-        // TODO
-    }
-    else if (type == DistanceType::CylinderTorus) {
-        auto mbdJoint = CREATE<ASMTRevCylJoint>::With();
-        mbdJoint->distanceIJ =
-            getJointDistance(joint) + getFaceRadius(obj1, elt1) + getFaceRadius(obj2, elt2);
-        return mbdJoint;
-    }
-    else if (type == DistanceType::ConeCone) {
-        // TODO
-    }
-    else if (type == DistanceType::ConeTorus) {
-        // TODO
-    }
-    else if (type == DistanceType::ConeSphere) {
-        // TODO
-    }
-    else if (type == DistanceType::TorusTorus) {
-        auto mbdJoint = CREATE<ASMTPlanarJoint>::With();
-        mbdJoint->offset = getJointDistance(joint);
-        return mbdJoint;
-    }
-    else if (type == DistanceType::TorusSphere) {
-        auto mbdJoint = CREATE<ASMTCylSphJoint>::With();
-        mbdJoint->distanceIJ =
-            getJointDistance(joint) + getFaceRadius(obj1, elt1) + getFaceRadius(obj2, elt2);
-        return mbdJoint;
-    }
-    else if (type == DistanceType::SphereSphere) {
-        auto mbdJoint = CREATE<ASMTSphSphJoint>::With();
-        mbdJoint->distanceIJ =
-            getJointDistance(joint) + getFaceRadius(obj1, elt1) + getFaceRadius(obj2, elt2);
-        return mbdJoint;
-    }
+        case DistanceType::LineCircle: {
+            auto mbdJoint = CREATE<ASMTRevCylJoint>::With();
+            mbdJoint->distanceIJ = getJointDistance(joint) + getEdgeRadius(obj2, elt2);
+            return mbdJoint;
+        }
 
-    // Point - Face cases
-    else if (type == DistanceType::PointPlane) {
-        auto mbdJoint = CREATE<ASMTPointInPlaneJoint>::With();
-        mbdJoint->offset = getJointDistance(joint);
-        return mbdJoint;
-    }
-    else if (type == DistanceType::PointCylinder) {
-        auto mbdJoint = CREATE<ASMTCylSphJoint>::With();
-        mbdJoint->distanceIJ = getJointDistance(joint) + getFaceRadius(obj1, elt1);
-        return mbdJoint;
-    }
-    else if (type == DistanceType::PointSphere) {
-        auto mbdJoint = CREATE<ASMTSphSphJoint>::With();
-        mbdJoint->distanceIJ = getJointDistance(joint) + getFaceRadius(obj1, elt1);
-        return mbdJoint;
-    }
-    else if (type == DistanceType::PointCone) {
-        // TODO
-    }
-    else if (type == DistanceType::PointTorus) {
-        // TODO
-    }
+        case DistanceType::CircleCircle: {
+            auto mbdJoint = CREATE<ASMTRevCylJoint>::With();
+            mbdJoint->distanceIJ =
+                getJointDistance(joint) + getEdgeRadius(obj1, elt1) + getEdgeRadius(obj2, elt2);
+            return mbdJoint;
+        }
 
-    // Edge - Face cases
-    else if (type == DistanceType::LinePlane) {
-        auto mbdJoint = CREATE<ASMTLineInPlaneJoint>::With();
-        mbdJoint->offset = getJointDistance(joint);
-        return mbdJoint;
-    }
-    else if (type == DistanceType::LineCylinder) {
-        // TODO
-    }
-    else if (type == DistanceType::LineSphere) {
-        // TODO
-    }
-    else if (type == DistanceType::LineCone) {
-        // TODO
-    }
-    else if (type == DistanceType::LineTorus) {
-        // TODO
-    }
+        // Face - Face cases
+        case DistanceType::PlanePlane: {
+            auto mbdJoint = CREATE<ASMTPlanarJoint>::With();
+            mbdJoint->offset = getJointDistance(joint);
+            return mbdJoint;
+        }
 
-    else if (type == DistanceType::CurvePlane) {
-        // TODO
-    }
-    else if (type == DistanceType::CurveCylinder) {
-        // TODO
-    }
-    else if (type == DistanceType::CurveSphere) {
-        // TODO
-    }
-    else if (type == DistanceType::CurveCone) {
-        // TODO
-    }
-    else if (type == DistanceType::CurveTorus) {
-        // TODO
-    }
+        case DistanceType::PlaneCylinder: {
+            auto mbdJoint = CREATE<ASMTLineInPlaneJoint>::With();
+            mbdJoint->offset = getJointDistance(joint) + getFaceRadius(obj2, elt2);
+            return mbdJoint;
+        }
 
-    // Point - Edge cases
-    else if (type == DistanceType::PointLine) {
-        auto mbdJoint = CREATE<ASMTCylSphJoint>::With();
-        mbdJoint->distanceIJ = getJointDistance(joint);
-        return mbdJoint;
-    }
-    else if (type == DistanceType::PointCurve) {
-        // For other curves we do a point in plane-of-the-curve.
-        // Maybe it would be best tangent / distance to the conic?
-        // For arcs and circles we could use ASMTRevSphJoint. But is it better than pointInPlane?
-        auto mbdJoint = CREATE<ASMTPointInPlaneJoint>::With();
-        mbdJoint->offset = getJointDistance(joint);
-        return mbdJoint;
-    }
+        case DistanceType::PlaneSphere: {
+            auto mbdJoint = CREATE<ASMTPointInPlaneJoint>::With();
+            mbdJoint->offset = getJointDistance(joint) + getFaceRadius(obj2, elt2);
+            return mbdJoint;
+        }
 
+        case DistanceType::PlaneTorus: {
+            auto mbdJoint = CREATE<ASMTPlanarJoint>::With();
+            mbdJoint->offset = getJointDistance(joint);
+            return mbdJoint;
+        }
 
-    // by default we make a planar joint.
-    auto mbdJoint = CREATE<ASMTPlanarJoint>::With();
-    mbdJoint->offset = getJointDistance(joint);
-    return mbdJoint;
+        case DistanceType::CylinderCylinder: {
+            auto mbdJoint = CREATE<ASMTRevCylJoint>::With();
+            mbdJoint->distanceIJ =
+                getJointDistance(joint) + getFaceRadius(obj1, elt1) + getFaceRadius(obj2, elt2);
+            return mbdJoint;
+        }
+
+        case DistanceType::CylinderSphere: {
+            auto mbdJoint = CREATE<ASMTCylSphJoint>::With();
+            mbdJoint->distanceIJ =
+                getJointDistance(joint) + getFaceRadius(obj1, elt1) + getFaceRadius(obj2, elt2);
+            return mbdJoint;
+        }
+
+        case DistanceType::CylinderTorus: {
+            auto mbdJoint = CREATE<ASMTRevCylJoint>::With();
+            mbdJoint->distanceIJ =
+                getJointDistance(joint) + getFaceRadius(obj1, elt1) + getFaceRadius(obj2, elt2);
+            return mbdJoint;
+        }
+
+        case DistanceType::TorusTorus: {
+            auto mbdJoint = CREATE<ASMTPlanarJoint>::With();
+            mbdJoint->offset = getJointDistance(joint);
+            return mbdJoint;
+        }
+
+        case DistanceType::TorusSphere: {
+            auto mbdJoint = CREATE<ASMTCylSphJoint>::With();
+            mbdJoint->distanceIJ =
+                getJointDistance(joint) + getFaceRadius(obj1, elt1) + getFaceRadius(obj2, elt2);
+            return mbdJoint;
+        }
+
+        case DistanceType::SphereSphere: {
+            auto mbdJoint = CREATE<ASMTSphSphJoint>::With();
+            mbdJoint->distanceIJ =
+                getJointDistance(joint) + getFaceRadius(obj1, elt1) + getFaceRadius(obj2, elt2);
+            return mbdJoint;
+        }
+
+        // Point - Face cases
+        case DistanceType::PointPlane: {
+            auto mbdJoint = CREATE<ASMTPointInPlaneJoint>::With();
+            mbdJoint->offset = getJointDistance(joint);
+            return mbdJoint;
+        }
+
+        case DistanceType::PointCylinder: {
+            auto mbdJoint = CREATE<ASMTCylSphJoint>::With();
+            mbdJoint->distanceIJ = getJointDistance(joint) + getFaceRadius(obj1, elt1);
+            return mbdJoint;
+        }
+
+        case DistanceType::PointSphere: {
+            auto mbdJoint = CREATE<ASMTSphSphJoint>::With();
+            mbdJoint->distanceIJ = getJointDistance(joint) + getFaceRadius(obj1, elt1);
+            return mbdJoint;
+        }
+
+        // Edge - Face cases
+        case DistanceType::LinePlane: {
+            auto mbdJoint = CREATE<ASMTLineInPlaneJoint>::With();
+            mbdJoint->offset = getJointDistance(joint);
+            return mbdJoint;
+        }
+
+        // Point - Edge cases
+        case DistanceType::PointLine: {
+            auto mbdJoint = CREATE<ASMTCylSphJoint>::With();
+            mbdJoint->distanceIJ = getJointDistance(joint);
+            return mbdJoint;
+        }
+
+        case DistanceType::PointCurve: {
+            // For other curves we do a point in plane-of-the-curve.
+            // Maybe it would be best tangent / distance to the conic?
+            // For arcs and circles we could use ASMTRevSphJoint. But is it better than
+            // pointInPlane?
+            auto mbdJoint = CREATE<ASMTPointInPlaneJoint>::With();
+            mbdJoint->offset = getJointDistance(joint);
+            return mbdJoint;
+        }
+
+        default: {
+            // by default we make a planar joint.
+            auto mbdJoint = CREATE<ASMTPlanarJoint>::With();
+            mbdJoint->offset = getJointDistance(joint);
+            return mbdJoint;
+        }
+    }
 }
 
 std::vector<std::shared_ptr<MbD::ASMTJoint>>
@@ -1581,7 +1550,7 @@ std::string AssemblyObject::handleOneSideOfJoint(App::DocumentObject* joint,
     App::DocumentObject* obj = getObjFromRef(joint, propRefName);
 
     if (!part || !obj) {
-        Base::Console().Warning("The property %s of Joint %s is bad.",
+        Base::Console().warning("The property %s of Joint %s is bad.",
                                 propRefName,
                                 joint->getFullName());
         return "";
@@ -1645,7 +1614,7 @@ void AssemblyObject::getRackPinionMarkers(App::DocumentObject* joint,
     Base::Placement plc2 = getPlacementFromProp(joint, "Placement2");
 
     if (!part1 || !obj1) {
-        Base::Console().Warning("Reference1 of Joint %s is bad.", joint->getFullName());
+        Base::Console().warning("Reference1 of Joint %s is bad.", joint->getFullName());
         return;
     }
 
@@ -1966,7 +1935,7 @@ std::vector<AssemblyLink*> AssemblyObject::getSubAssemblies()
         doc->getObjectsOfType(Assembly::AssemblyLink::getClassTypeId());
     for (auto assembly : assemblies) {
         if (hasObject(assembly)) {
-            subAssemblies.push_back(dynamic_cast<AssemblyLink*>(assembly));
+            subAssemblies.push_back(freecad_cast<AssemblyLink*>(assembly));
         }
     }
 

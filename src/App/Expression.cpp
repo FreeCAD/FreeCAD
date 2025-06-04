@@ -49,6 +49,7 @@
 #include <Base/PlacementPy.h>
 #include <Base/QuantityPy.h>
 #include <Base/RotationPy.h>
+#include <Base/Tools.h>
 #include <Base/VectorPy.h>
 
 #include "ExpressionParser.h"
@@ -487,7 +488,7 @@ static inline Quantity pyToQuantity(const Py::Object &pyobj,
 }
 
 Py::Object pyFromQuantity(const Quantity &quantity) {
-    if(!quantity.getUnit().isEmpty())
+    if (!quantity.isDimensionless())
         return Py::asObject(new QuantityPy(new Quantity(quantity)));
     double v = quantity.getValue();
     long l;
@@ -618,7 +619,7 @@ bool isAnyEqual(const App::any &v1, const App::any &v2) {
         return false;
     int res = PyObject_RichCompareBool(o1.ptr(),o2.ptr(),Py_EQ);
     if(res<0)
-        PyException::ThrowException();
+        PyException::throwException();
     return !!res;
 }
 
@@ -996,7 +997,7 @@ ExpressionPtr Expression::importSubNames(const std::map<std::string,std::string>
                 if(it!=nameMap.end())
                     subNameMap.emplace(std::make_pair(obj,std::string()),it->second);
                 auto key = std::make_pair(obj,path.getSubObjectName());
-                if(key.second.empty() || subNameMap.count(key))
+                if(key.second.empty() || subNameMap.contains(key))
                     continue;
                 std::string imported = PropertyLinkBase::tryImportSubName(
                                obj,key.second.c_str(),owner->getDocument(), nameMap);
@@ -2213,7 +2214,7 @@ Py::Object FunctionExpression::evaluate(const Expression *expr, int f, const std
 
         Rotation rotation = Base::Rotation(
             Vector3d(static_cast<double>(f == MROTATEX), static_cast<double>(f == MROTATEY), static_cast<double>(f == MROTATEZ)),
-            rotationAngle.getValue() * pi / 180.0);
+            Base::toRadians(rotationAngle.getValue()));
         Base::Matrix4D rotationMatrix;
         rotation.getValue(rotationMatrix);
 
@@ -2352,7 +2353,7 @@ Py::Object FunctionExpression::evaluate(const Expression *expr, int f, const std
 
         switch (f) {
         case VANGLE:
-            return Py::asObject(new QuantityPy(new Quantity(vector1.GetAngle(vector2) * 180 / pi, Unit::Angle)));
+            return Py::asObject(new QuantityPy(new Quantity(Base::toDegrees(vector1.GetAngle(vector2)), Unit::Angle)));
         case VCROSS:
             return Py::asObject(new Base::VectorPy(vector1.Cross(vector2)));
         case VDOT:
@@ -2411,7 +2412,7 @@ Py::Object FunctionExpression::evaluate(const Expression *expr, int f, const std
             _EXPR_THROW("Unit must be either empty or an angle.", expr);
 
         // Convert value to radians
-        value *= pi / 180.0;
+        value = Base::toRadians(value);
         unit = Unit();
         break;
     case ACOS:

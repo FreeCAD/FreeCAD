@@ -155,7 +155,7 @@ static PyObject* FreeCADGui_showMainWindow(PyObject* /*self*/, PyObject* args)
     }
 
     // if successful then enable Console logger
-    Base::ILogger* console = Base::Console().Get("Console");
+    Base::ILogger* console = Base::Console().get("Console");
     if (console) {
         console->bMsg = true;
         console->bWrn = true;

@@ -514,7 +514,12 @@ App::DocumentObjectExecReturn* FeatureExtrude::buildExtrusion(ExtrudeOptions opt
                 if (sub.empty() && subs.size() > 1) {
                     continue;
                 }
-                TopoShape shape = Part::Feature::getTopoShape(obj, sub.c_str(), true);
+                TopoShape shape = Part::Feature::getTopoShape(obj,
+                                                                 Part::ShapeOption::NeedSubElement
+                                                               | Part::ShapeOption::ResolveLink
+                                                               | Part::ShapeOption::Transform,
+                                                              sub.c_str());
+
                 if (shape.isNull()) {
                     FC_ERR(getFullName()
                            << ": failed to get profile shape " << obj->getFullName() << "." << sub);
@@ -721,8 +726,8 @@ App::DocumentObjectExecReturn* FeatureExtrude::buildExtrusion(ExtrudeOptions opt
             Part::ExtrusionParameters params;
             params.dir = dir;
             params.solid = makeface;
-            params.taperAngleFwd = this->TaperAngle.getValue() * pi / 180.0;
-            params.taperAngleRev = this->TaperAngle2.getValue() * pi / 180.0;
+            params.taperAngleFwd = Base::toRadians(this->TaperAngle.getValue());
+            params.taperAngleRev = Base::toRadians(this->TaperAngle2.getValue());
             if (L2 == 0.0 && Midplane.getValue()) {
                 params.lengthFwd = L / 2;
                 params.lengthRev = L / 2;

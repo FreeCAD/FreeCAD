@@ -92,7 +92,7 @@ void QuickMeasure::processSelection()
             // sub-element e.g. when selecting a constraint in sketcher
         }
         catch (const Base::Exception& e) {
-            e.ReportException();
+            e.reportException();
         }
         catch (const Standard_Failure& e) {
             FC_ERR(e);

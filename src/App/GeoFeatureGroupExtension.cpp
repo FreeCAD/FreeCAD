@@ -134,7 +134,7 @@ Base::Placement GeoFeatureGroupExtension::recursiveGroupPlacement(
         auto parent = link->getExtensionByType<GeoFeatureGroupExtension>(true);
         if (parent && parent->hasObject(group->getExtendedObject())) {
             // Cyclic dependencies detected
-            if (history.count(parent) > 0) {
+            if (history.contains(parent)) {
                 break;
             }
             return recursiveGroupPlacement(parent, history) * group->placement().getValue();

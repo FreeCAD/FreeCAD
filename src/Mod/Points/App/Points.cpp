@@ -203,14 +203,14 @@ void PointKernel::Restore(Base::XMLReader& reader)
     clear();
 
     reader.readElement("Points");
-    std::string file(reader.getAttribute("file"));
+    std::string file(reader.getAttribute<const char*>("file"));
 
     if (!file.empty()) {
         // initiate a file read
         reader.addFile(file.c_str(), this);
     }
     if (reader.DocumentSchema > 3) {
-        std::string Matrix(reader.getAttribute("mtrx"));
+        std::string Matrix(reader.getAttribute<const char*>("mtrx"));
         _Mtrx.fromString(Matrix);
     }
 }

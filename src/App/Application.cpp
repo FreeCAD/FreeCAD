@@ -64,7 +64,10 @@
 #include <QDir>
 #include <QFileInfo>
 #include <QProcessEnvironment>
+#include <QRegularExpression>
+#include <QSettings>
 #include <QStandardPaths>
+#include <Inventor/C/basic.h>
 #include <LibraryVersions.h>
 
 #include <App/MaterialPy.h>
@@ -125,7 +128,6 @@
 #include "OriginGroupExtension.h"
 #include "OriginGroupExtensionPy.h"
 #include "SuppressibleExtension.h"
-#include "SuppressibleExtensionPy.h"
 #include "Part.h"
 #include "GeoFeaturePy.h"
 #include "Placement.h"
@@ -172,6 +174,7 @@ FC_LOG_LEVEL_INIT("App", true, true)
 
 using namespace App;
 namespace sp = std::placeholders;
+namespace fs = std::filesystem;
 
 //==========================================================================
 // Application
@@ -659,7 +662,7 @@ public:
             }
             catch (const boost::exception&) {
                 // reported by code analyzers
-                Base::Console().Warning("~DocOpenGuard: Unexpected boost exception\n");
+                Base::Console().warning("~DocOpenGuard: Unexpected boost exception\n");
             }
         }
     }
@@ -790,13 +793,13 @@ std::vector<Document*> Application::openDocuments(const std::vector<std::string>
                 _objCount = -1;
             }
             catch (const Base::Exception &e) {
-                e.ReportException();
+                e.reportException();
                 if (!errs && isMainDoc)
                     throw;
                 if (errs && isMainDoc)
                     (*errs)[count] = e.what();
                 else
-                    Base::Console().Error("Exception opening file: %s [%s]\n", name.c_str(), e.what());
+                    Base::Console().error("Exception opening file: %s [%s]\n", name.c_str(), e.what());
             }
             catch (const std::exception &e) {
                 if (!errs && isMainDoc)
@@ -804,7 +807,7 @@ std::vector<Document*> Application::openDocuments(const std::vector<std::string>
                 if (errs && isMainDoc)
                     (*errs)[count] = e.what();
                 else
-                    Base::Console().Error("Exception opening file: %s [%s]\n", name.c_str(), e.what());
+                    Base::Console().error("Exception opening file: %s [%s]\n", name.c_str(), e.what());
             }
             catch (...) {
                 if (errs) {
@@ -854,7 +857,7 @@ std::vector<Document*> Application::openDocuments(const std::vector<std::string>
         try {
             docs = Document::getDependentDocuments(docs, true);
         } catch (Base::Exception &e) {
-            e.ReportException();
+            e.reportException();
         }
         for(auto it=docs.begin(); it!=docs.end();) {
             auto doc = *it;
@@ -862,7 +865,7 @@ std::vector<Document*> Application::openDocuments(const std::vector<std::string>
             // It is possible that the newly opened document depends on an existing
             // document, which will be included with the above call to
             // Document::getDependentDocuments(). Make sure to exclude that.
-            if(!newDocs.count(doc)) {
+            if(!newDocs.contains(doc)) {
                 it = docs.erase(it);
                 continue;
             }
@@ -1088,7 +1091,7 @@ Application::TransactionSignaller::~TransactionSignaller() {
         }
         catch (const boost::exception&) {
             // reported by code analyzers
-            Base::Console().Warning("~TransactionSignaller: Unexpected boost exception\n");
+            Base::Console().warning("~TransactionSignaller: Unexpected boost exception\n");
         }
     }
 }
@@ -1698,21 +1701,21 @@ void Application::destruct()
 {
     // saving system parameter
     if (_pcSysParamMngr->IgnoreSave()) {
-        Base::Console().Warning("Discard system parameter\n");
+        Base::Console().warning("Discard system parameter\n");
     }
     else {
-        Base::Console().Log("Saving system parameter...\n");
+        Base::Console().log("Saving system parameter...\n");
         _pcSysParamMngr->SaveDocument();
-        Base::Console().Log("Saving system parameter...done\n");
+        Base::Console().log("Saving system parameter...done\n");
     }
     // saving the User parameter
     if (_pcUserParamMngr->IgnoreSave()) {
-        Base::Console().Warning("Discard user parameter\n");
+        Base::Console().warning("Discard user parameter\n");
     }
     else {
-        Base::Console().Log("Saving user parameter...\n");
+        Base::Console().log("Saving user parameter...\n");
         _pcUserParamMngr->SaveDocument();
-        Base::Console().Log("Saving user parameter...done\n");
+        Base::Console().log("Saving user parameter...done\n");
     }
 
     // now save all other parameter files
@@ -1720,9 +1723,9 @@ void Application::destruct()
     for (const auto &it : paramMgr) {
         if ((it.second != _pcSysParamMngr) && (it.second != _pcUserParamMngr)) {
             if (it.second->HasSerializer() && !it.second->IgnoreSave()) {
-                Base::Console().Log("Saving %s...\n", it.first.c_str());
+                Base::Console().log("Saving %s...\n", it.first.c_str());
                 it.second->SaveDocument();
-                Base::Console().Log("Saving %s...done\n", it.first.c_str());
+                Base::Console().log("Saving %s...done\n", it.first.c_str());
             }
         }
     }
@@ -1757,12 +1760,12 @@ void Application::destruct()
 void Application::destructObserver()
 {
     if ( _pConsoleObserverFile ) {
-        Base::Console().DetachObserver(_pConsoleObserverFile);
+        Base::Console().detachObserver(_pConsoleObserverFile);
         delete _pConsoleObserverFile;
         _pConsoleObserverFile = nullptr;
     }
     if ( _pConsoleObserverStd ) {
-        Base::Console().DetachObserver(_pConsoleObserverStd);
+        Base::Console().detachObserver(_pConsoleObserverStd);
         delete _pConsoleObserverStd;
         _pConsoleObserverStd = nullptr;
     }
@@ -1899,7 +1902,7 @@ void my_se_translator_filter(unsigned int code, EXCEPTION_POINTERS* pExp)
         throw Base::AccessViolation();
     case EXCEPTION_FLT_DIVIDE_BY_ZERO:
     case EXCEPTION_INT_DIVIDE_BY_ZERO:
-        Base::Console().Error("SEH exception (%u): Division by zero\n", code);
+        Base::Console().error("SEH exception (%u): Division by zero\n", code);
         return;
     }
 
@@ -2349,7 +2352,7 @@ void parseProgramOptions(int ac, char ** av, const std::string& exe, boost::prog
         throw Base::UnknownProgramOption(str.str());
     }
 
-    if (vm.count("help")) {
+    if (vm.contains("help")) {
         std::stringstream str;
         str << exe << '\n' << '\n';
         str << "For a detailed description see https://www.freecad.org/wiki/Start_up_and_Configuration" << '\n'<<'\n';
@@ -2358,11 +2361,11 @@ void parseProgramOptions(int ac, char ** av, const std::string& exe, boost::prog
         throw Base::ProgramInformation(str.str());
     }
 
-    if (vm.count("response-file")) {
+    if (vm.contains("response-file")) {
         // Load the file and tokenize it
         std::ifstream ifs(vm["response-file"].as<std::string>().c_str());
         if (!ifs) {
-            Base::Console().Error("Could no open the response file\n");
+            Base::Console().error("Could no open the response file\n");
             std::stringstream str;
             str << "Could no open the response file: '"
                 << vm["response-file"].as<std::string>() << "'" << '\n';
@@ -2384,32 +2387,14 @@ void parseProgramOptions(int ac, char ** av, const std::string& exe, boost::prog
 
 void processProgramOptions(const boost::program_options::variables_map& vm, std::map<std::string,std::string>& mConfig)
 {
-    if (vm.count("version")) {
+    if (vm.contains("version") && !vm.contains("verbose")) {
         std::stringstream str;
         str << mConfig["ExeName"] << " " << mConfig["ExeVersion"]
             << " Revision: " << mConfig["BuildRevision"] << '\n';
-        if (vm.count("verbose")) {
-            str << "\nLibrary versions:\n";
-            str << "boost    " << BOOST_LIB_VERSION << '\n';
-            str << "Coin3D   " << fcCoin3dVersion << '\n';
-            str << "Eigen3   " << fcEigen3Version << '\n';
-#ifdef OCC_VERSION_STRING_EXT
-            str << "OCC      " << OCC_VERSION_STRING_EXT << '\n';
-#endif
-            str << "Qt       " << QT_VERSION_STR << '\n';
-            str << "Python   " << PY_VERSION << '\n';
-            str << "PySide   " << fcPysideVersion << '\n';
-            str << "shiboken " << fcShibokenVersion << '\n';
-#ifdef SMESH_VERSION_STR
-            str << "SMESH    " << SMESH_VERSION_STR << '\n';
-#endif
-            str << "VTK      " << fcVtkVersion << '\n';
-            str << "xerces-c " << fcXercescVersion << '\n';
-        }
         throw Base::ProgramInformation(str.str());
     }
 
-    if (vm.count("module-path")) {
+    if (vm.contains("module-path")) {
         auto  Mods = vm["module-path"].as< std::vector<std::string> >();
         std::string temp;
         for (const auto & It : Mods)
@@ -2418,7 +2403,7 @@ void processProgramOptions(const boost::program_options::variables_map& vm, std:
         mConfig["AdditionalModulePaths"] = temp;
     }
 
-    if (vm.count("macro-path")) {
+    if (vm.contains("macro-path")) {
         std::vector<std::string> Macros = vm["macro-path"].as< std::vector<std::string> >();
         std::string temp;
         for (const auto & It : Macros)
@@ -2427,13 +2412,13 @@ void processProgramOptions(const boost::program_options::variables_map& vm, std:
         mConfig["AdditionalMacroPaths"] = std::move(temp);
     }
 
-    if (vm.count("python-path")) {
+    if (vm.contains("python-path")) {
         auto  Paths = vm["python-path"].as< std::vector<std::string> >();
         for (const auto & It : Paths)
             Base::Interpreter().addPythonPath(It.c_str());
     }
 
-    if (vm.count("disable-addon")) {
+    if (vm.contains("disable-addon")) {
         auto Addons = vm["disable-addon"].as< std::vector<std::string> >();
         std::string temp;
         for (const auto & It : Addons) {
@@ -2443,7 +2428,7 @@ void processProgramOptions(const boost::program_options::variables_map& vm, std:
         mConfig["DisabledAddons"] = temp;
     }
 
-    if (vm.count("input-file")) {
+    if (vm.contains("input-file")) {
         auto  files(vm["input-file"].as< std::vector<std::string> >());
         int OpenFileCount=0;
         for (const auto & It : files) {
@@ -2458,34 +2443,34 @@ void processProgramOptions(const boost::program_options::variables_map& vm, std:
         mConfig["OpenFileCount"] = buffer.str();
     }
 
-    if (vm.count("output")) {
+    if (vm.contains("output")) {
         mConfig["SaveFile"] = vm["output"].as<std::string>();
     }
 
-    if (vm.count("hidden")) {
+    if (vm.contains("hidden")) {
         mConfig["StartHidden"] = "1";
     }
 
-    if (vm.count("write-log")) {
+    if (vm.contains("write-log")) {
         mConfig["LoggingFile"] = "1";
         mConfig["LoggingFileName"] = mConfig["UserAppData"] + mConfig["ExeName"] + ".log";
     }
 
-    if (vm.count("log-file")) {
+    if (vm.contains("log-file")) {
         mConfig["LoggingFile"] = "1";
         mConfig["LoggingFileName"] = vm["log-file"].as<std::string>();
     }
 
-    if (vm.count("user-cfg")) {
+    if (vm.contains("user-cfg")) {
         mConfig["UserParameter"] = vm["user-cfg"].as<std::string>();
     }
 
-    if (vm.count("system-cfg")) {
+    if (vm.contains("system-cfg")) {
         mConfig["SystemParameter"] = vm["system-cfg"].as<std::string>();
     }
 
-    if (vm.count("run-test") || vm.count("run-open")) {
-        std::string testCase = vm.count("run-open") ? vm["run-open"].as<std::string>() : vm["run-test"].as<std::string>();
+    if (vm.contains("run-test") || vm.contains("run-open")) {
+        std::string testCase = vm.contains("run-open") ? vm["run-open"].as<std::string>() : vm["run-test"].as<std::string>();
 
         if ( "0" == testCase) {
             testCase = "TestApp.All";
@@ -2496,14 +2481,14 @@ void processProgramOptions(const boost::program_options::variables_map& vm, std:
         mConfig["TestCase"] = std::move(testCase);
         mConfig["RunMode"] = "Internal";
         mConfig["ScriptFileName"] = "FreeCADTest";
-        mConfig["ExitTests"] = vm.count("run-open") == 0  ? "yes" : "no";
+        mConfig["ExitTests"] = vm.contains("run-open") ? "no" : "yes";
     }
 
-    if (vm.count("single-instance")) {
+    if (vm.contains("single-instance")) {
         mConfig["SingleInstance"] = "1";
     }
 
-    if (vm.count("dump-config")) {
+    if (vm.contains("dump-config")) {
         std::stringstream str;
         for (const auto & it : mConfig) {
             str << it.first << "=" << it.second << '\n';
@@ -2511,7 +2496,7 @@ void processProgramOptions(const boost::program_options::variables_map& vm, std:
         throw Base::ProgramInformation(str.str());
     }
 
-    if (vm.count("get-config")) {
+    if (vm.contains("get-config")) {
         auto configKey = vm["get-config"].as<std::string>();
         std::stringstream str;
         std::map<std::string,std::string>::iterator pos;
@@ -2523,7 +2508,7 @@ void processProgramOptions(const boost::program_options::variables_map& vm, std:
         throw Base::ProgramInformation(str.str());
     }
 
-    if (vm.count("set-config")) {
+    if (vm.contains("set-config")) {
         auto  configKeyValue = vm["set-config"].as< std::vector<std::string> >();
         for (const auto& it : configKeyValue) {
             auto pos = it.find('=');
@@ -2535,6 +2520,7 @@ void processProgramOptions(const boost::program_options::variables_map& vm, std:
         }
     }
 }
+
 }
 // clang-format on
 
@@ -2586,7 +2572,7 @@ void Application::initConfig(int argc, char ** argv)
         BOOST_SCOPE_EXIT_ALL(&) {
             // console-mode needs to be set (if possible) also in case parseProgramOptions
             // throws, as it's needed when reporting such exceptions
-            if (vm.count("console")) {
+            if (vm.contains("console")) {
                 mConfig["Console"] = "1";
                 mConfig["RunMode"] = "Cmd";
             }
@@ -2594,14 +2580,14 @@ void Application::initConfig(int argc, char ** argv)
         parseProgramOptions(argc, argv, mConfig["ExeName"], vm);
     }
 
-    if (vm.count("keep-deprecated-paths")) {
+    if (vm.contains("keep-deprecated-paths")) {
         mConfig["KeepDeprecatedPaths"] = "1";
     }
 
     // extract home paths
     ExtractUserPath();
 
-    if (vm.count("safe-mode")) {
+    if (vm.contains("safe-mode")) {
         SafeMode::StartSafeMode();
     }
 
@@ -2643,7 +2629,7 @@ void Application::initConfig(int argc, char ** argv)
     if (!pythonpath.empty())
         mConfig["PythonSearchPath"] = pythonpath;
     else
-        Base::Console().Warning("Encoding of Python paths failed\n");
+        Base::Console().warning("Encoding of Python paths failed\n");
 
     // Handle the options that have impact on the init process
     processProgramOptions(vm, mConfig);
@@ -2651,30 +2637,28 @@ void Application::initConfig(int argc, char ** argv)
     // Init console ===========================================================
     Base::PyGILStateLocker lock;
     _pConsoleObserverStd = new Base::ConsoleObserverStd();
-    Base::Console().AttachObserver(_pConsoleObserverStd);
+    Base::Console().attachObserver(_pConsoleObserverStd);
     if (mConfig["LoggingConsole"] != "1") {
         _pConsoleObserverStd->bMsg = false;
         _pConsoleObserverStd->bLog = false;
         _pConsoleObserverStd->bWrn = false;
         _pConsoleObserverStd->bErr = false;
     }
-    if (mConfig["Verbose"] == "Strict")
-        Base::Console().UnsetConsoleMode(Base::ConsoleSingleton::Verbose);
 
     // file logging Init ===========================================================
     if (mConfig["LoggingFile"] == "1") {
         _pConsoleObserverFile = new Base::ConsoleObserverFile(mConfig["LoggingFileName"].c_str());
-        Base::Console().AttachObserver(_pConsoleObserverFile);
+        Base::Console().attachObserver(_pConsoleObserverFile);
     }
     else
         _pConsoleObserverFile = nullptr;
 
     // Banner ===========================================================
-    if (mConfig["RunMode"] != "Cmd") {
+    if (mConfig["RunMode"] != "Cmd" && !(vm.contains("verbose") && vm.contains("version"))) {
         // Remove banner if FreeCAD is invoked via the -c command as regular
         // Python interpreter
         if (mConfig["Verbose"] != "Strict")
-            Base::Console().Message("%s %s, Libs: %s.%s.%s%sR%s\n%s",
+            Base::Console().message("%s %s, Libs: %s.%s.%s%sR%s\n%s",
                               mConfig["ExeName"].c_str(),
                               mConfig["ExeVersion"].c_str(),
                               mConfig["BuildVersionMajor"].c_str(),
@@ -2684,7 +2668,7 @@ void Application::initConfig(int argc, char ** argv)
                               mConfig["BuildRevision"].c_str(),
                               mConfig["CopyrightInfo"].c_str());
         else
-            Base::Console().Message("%s %s, Libs: %s.%s.%s%sR%s\n",
+            Base::Console().message("%s %s, Libs: %s.%s.%s%sR%s\n",
                               mConfig["ExeName"].c_str(),
                               mConfig["ExeVersion"].c_str(),
                               mConfig["BuildVersionMajor"].c_str(),
@@ -2694,7 +2678,7 @@ void Application::initConfig(int argc, char ** argv)
                               mConfig["BuildRevision"].c_str());
 
         if (SafeMode::SafeModeEnabled()) {
-            Base::Console().Message("FreeCAD is running in _SAFE_MODE_.\n"
+            Base::Console().message("FreeCAD is running in _SAFE_MODE_.\n"
                               "Safe mode temporarily disables your configurations and "
                               "addons. Restart the application to exit safe mode.\n\n");
         }
@@ -2709,7 +2693,7 @@ void Application::initConfig(int argc, char ** argv)
 #ifndef FC_DEBUG
             if (v.second>=0) {
                 hasDefault = true;
-                Base::Console().SetDefaultLogLevel(v.second);
+                Base::Console().setDefaultLogLevel(v.second);
             }
 #endif
         }
@@ -2717,20 +2701,20 @@ void Application::initConfig(int argc, char ** argv)
 #ifdef FC_DEBUG
             if (v.second>=0) {
                 hasDefault = true;
-                Base::Console().SetDefaultLogLevel(static_cast<int>(v.second));
+                Base::Console().setDefaultLogLevel(static_cast<int>(v.second));
             }
 #endif
         }
         else {
-            *Base::Console().GetLogLevel(v.first.c_str()) = static_cast<int>(v.second);
+            *Base::Console().getLogLevel(v.first.c_str()) = static_cast<int>(v.second);
         }
     }
 
     if (!hasDefault) {
 #ifdef FC_DEBUG
-        loglevelParam->SetInt("DebugDefault", Base::Console().LogLevel(-1));
+        loglevelParam->SetInt("DebugDefault", Base::Console().logLevel(-1));
 #else
-        loglevelParam->SetInt("Default", Base::Console().LogLevel(-1));
+        loglevelParam->SetInt("Default", Base::Console().logLevel(-1));
 #endif
     }
 
@@ -2781,6 +2765,11 @@ void Application::initConfig(int argc, char ** argv)
 
 
     logStatus();
+
+    if (vm.contains("verbose") && vm.contains("version")) {
+        Application::_pcSingleton = new Application(mConfig);
+        throw Base::ProgramInformation(Application::verboseVersionEmitMessage);
+    }
 }
 
 void Application::SaveEnv(const char* s)
@@ -2800,31 +2789,29 @@ void Application::initApplication()
 
     // creating the application
     if (mConfig["Verbose"] != "Strict")
-        Base::Console().Log("Create Application\n");
+        Base::Console().log("Create Application\n");
     Application::_pcSingleton = new Application(mConfig);
 
     // set up Unit system default
     const ParameterGrp::handle hGrp = GetApplication().GetParameterGroupByPath
        ("User parameter:BaseApp/Preferences/Units");
-    Base::UnitsApi::setSchema(static_cast<Base::UnitSystem>(hGrp->GetInt("UserSchema", 0)));
-    Base::UnitsApi::setDecimals(static_cast<int>(hGrp->GetInt("Decimals", Base::UnitsApi::getDecimals())));
-
-    // In case we are using fractional inches, get user setting for min unit
-    const int denom = static_cast<int>(hGrp->GetInt("FracInch", Base::QuantityFormat::getDefaultDenominator()));
-    Base::QuantityFormat::setDefaultDenominator(denom);
+    Base::UnitsApi::setSchema(hGrp->GetInt("UserSchema", Base::UnitsApi::getDefSchemaNum()));
+    Base::UnitsApi::setDecimals(hGrp->GetInt("Decimals", Base::UnitsApi::getDecimals()));
+    Base::QuantityFormat::setDefaultDenominator(
+        hGrp->GetInt("FracInch", Base::QuantityFormat::getDefaultDenominator()));
 
 #if defined (_DEBUG)
-    Base::Console().Log("Application is built with debug information\n");
+    Base::Console().log("Application is built with debug information\n");
 #endif
 
     // starting the init script
-    Base::Console().Log("Run App init script\n");
+    Base::Console().log("Run App init script\n");
     try {
         Base::Interpreter().runString(Base::ScriptFactory().ProduceScript("CMakeVariables"));
         Base::Interpreter().runString(Base::ScriptFactory().ProduceScript("FreeCADInit"));
     }
     catch (const Base::Exception& e) {
-        e.ReportException();
+        e.reportException();
     }
 
     // seed randomizer
@@ -2853,11 +2840,11 @@ std::list<std::string> Application::getCmdLineFiles()
 std::list<std::string> Application::processFiles(const std::list<std::string>& files)
 {
     std::list<std::string> processed;
-    Base::Console().Log("Init: Processing command line files\n");
+    Base::Console().log("Init: Processing command line files\n");
     for (const auto & it : files) {
         Base::FileInfo file(it);
 
-        Base::Console().Log("Init:     Processing file: %s\n",file.filePath().c_str());
+        Base::Console().log("Init:     Processing file: %s\n",file.filePath().c_str());
 
         try {
             if (file.hasExtension("fcstd") || file.hasExtension("std")) {
@@ -2893,10 +2880,10 @@ std::list<std::string> Application::processFiles(const std::list<std::string>& f
                     Base::Interpreter().runStringArg("%s.open(u\"%s\")",mods.front().c_str(),
                             escapedstr.c_str());
                     processed.push_back(it);
-                    Base::Console().Log("Command line open: %s.open(u\"%s\")\n",mods.front().c_str(),escapedstr.c_str());
+                    Base::Console().log("Command line open: %s.open(u\"%s\")\n",mods.front().c_str(),escapedstr.c_str());
                 }
                 else if (file.exists()) {
-                    Base::Console().Warning("File format not supported: %s \n", file.filePath().c_str());
+                    Base::Console().warning("File format not supported: %s \n", file.filePath().c_str());
                 }
             }
         }
@@ -2904,10 +2891,10 @@ std::list<std::string> Application::processFiles(const std::list<std::string>& f
             throw; // re-throw to main() function
         }
         catch (const Base::Exception& e) {
-            Base::Console().Error("Exception while processing file: %s [%s]\n", file.filePath().c_str(), e.what());
+            Base::Console().error("Exception while processing file: %s [%s]\n", file.filePath().c_str(), e.what());
         }
         catch (...) {
-            Base::Console().Error("Unknown exception while processing file: %s \n", file.filePath().c_str());
+            Base::Console().error("Unknown exception while processing file: %s \n", file.filePath().c_str());
         }
     }
 
@@ -2951,14 +2938,14 @@ void Application::processCmdLineFiles()
                     ,mods.front().c_str(),output.c_str());
             }
             else {
-                Base::Console().Warning("File format not supported: %s \n", output.c_str());
+                Base::Console().warning("File format not supported: %s \n", output.c_str());
             }
         }
         catch (const Base::Exception& e) {
-            Base::Console().Error("Exception while saving to file: %s [%s]\n", output.c_str(), e.what());
+            Base::Console().error("Exception while saving to file: %s [%s]\n", output.c_str(), e.what());
         }
         catch (...) {
-            Base::Console().Error("Unknown exception while saving to file: %s \n", output.c_str());
+            Base::Console().error("Unknown exception while saving to file: %s \n", output.c_str());
         }
     }
 }
@@ -2974,15 +2961,15 @@ void Application::runApplication()
     }
     else if (mConfig["RunMode"] == "Internal") {
         // run internal script
-        Base::Console().Log("Running internal script:\n");
+        Base::Console().log("Running internal script:\n");
         Base::Interpreter().runString(Base::ScriptFactory().ProduceScript(mConfig["ScriptFileName"].c_str()));
     }
     else if (mConfig["RunMode"] == "Exit") {
         // getting out
-        Base::Console().Log("Exiting on purpose\n");
+        Base::Console().log("Exiting on purpose\n");
     }
     else {
-        Base::Console().Log("Unknown Run mode (%d) in main()?!?\n\n", mConfig["RunMode"].c_str());
+        Base::Console().log("Unknown Run mode (%d) in main()?!?\n\n", mConfig["RunMode"].c_str());
     }
 }
 
@@ -2990,10 +2977,10 @@ void Application::logStatus()
 {
     const std::string time_str = boost::posix_time::to_simple_string(
         boost::posix_time::second_clock::local_time());
-    Base::Console().Log("Time = %s\n", time_str.c_str());
+    Base::Console().log("Time = %s\n", time_str.c_str());
 
     for (const auto & It : mConfig) {
-        Base::Console().Log("%s = %s\n", It.first.c_str(), It.second.c_str());
+        Base::Console().log("%s = %s\n", It.first.c_str(), It.second.c_str());
     }
 }
 
@@ -3017,8 +3004,8 @@ void Application::LoadParameters()
         if (_pcSysParamMngr->LoadOrCreateDocument() && mConfig["Verbose"] != "Strict") {
             // Configuration file optional when using as Python module
             if (!Py_IsInitialized()) {
-                Base::Console().Warning("   Parameter does not exist, writing initial one\n");
-                Base::Console().Message("   This warning normally means that FreeCAD is running for the first time\n"
+                Base::Console().warning("   Parameter does not exist, writing initial one\n");
+                Base::Console().message("   This warning normally means that FreeCAD is running for the first time\n"
                                   "   or the configuration was deleted or moved. FreeCAD is generating the standard\n"
                                   "   configuration.\n");
             }
@@ -3026,7 +3013,7 @@ void Application::LoadParameters()
     }
     catch (const Base::Exception& e) {
         // try to proceed with an empty XML document
-        Base::Console().Error("%s in file %s.\n"
+        Base::Console().error("%s in file %s.\n"
                               "Continue with an empty configuration.\n",
                               e.what(), mConfig["SystemParameter"].c_str());
         _pcSysParamMngr->CreateDocument();
@@ -3051,8 +3038,8 @@ void Application::LoadParameters()
 
             // Configuration file optional when using as Python module
             if (!Py_IsInitialized()) {
-                Base::Console().Warning("   User settings do not exist, writing initial one\n");
-                Base::Console().Message("   This warning normally means that FreeCAD is running for the first time\n"
+                Base::Console().warning("   User settings do not exist, writing initial one\n");
+                Base::Console().message("   This warning normally means that FreeCAD is running for the first time\n"
                                   "   or your configuration was deleted or moved. The system defaults\n"
                                   "   will be automatically generated for you.\n");
             }
@@ -3060,7 +3047,7 @@ void Application::LoadParameters()
     }
     catch (const Base::Exception& e) {
         // try to proceed with an empty XML document
-        Base::Console().Error("%s in file %s.\n"
+        Base::Console().error("%s in file %s.\n"
                               "Continue with an empty configuration.\n",
                               e.what(), mConfig["UserParameter"].c_str());
         _pcUserParamMngr->CreateDocument();
@@ -3301,7 +3288,7 @@ std::tuple<QString, QString, QString, QString> getStandardPaths()
 
 void Application::ExtractUserPath()
 {
-    bool keepDeprecatedPaths = mConfig.count("KeepDeprecatedPaths") > 0;
+    bool keepDeprecatedPaths = mConfig.contains("KeepDeprecatedPaths");
 
     // std paths
     mConfig["BinPath"] = mConfig["AppHomePath"] + "bin" + PATHSEP;
@@ -3549,3 +3536,271 @@ std::string Application::FindHomePath(const char* sCall)
 #else
 # error "std::string Application::FindHomePath(const char*) not implemented"
 #endif
+
+QString Application::prettyProductInfoWrapper()
+{
+    auto productName = QSysInfo::prettyProductName();
+#ifdef FC_OS_MACOSX
+    auto macosVersionFile =
+        QStringLiteral("/System/Library/CoreServices/.SystemVersionPlatform.plist");
+    auto fi = QFileInfo(macosVersionFile);
+    if (fi.exists() && fi.isReadable()) {
+        auto plistFile = QFile(macosVersionFile);
+        plistFile.open(QIODevice::ReadOnly);
+        while (!plistFile.atEnd()) {
+            auto line = plistFile.readLine();
+            if (line.contains("ProductUserVisibleVersion")) {
+                auto nextLine = plistFile.readLine();
+                if (nextLine.contains("<string>")) {
+                    QRegularExpression re(QStringLiteral("\\s*<string>(.*)</string>"));
+                    auto matches = re.match(QString::fromUtf8(nextLine));
+                    if (matches.hasMatch()) {
+                        productName = QStringLiteral("macOS ") + matches.captured(1);
+                        break;
+                    }
+                }
+            }
+        }
+    }
+#endif
+#ifdef FC_OS_WIN64
+    QSettings regKey {
+        QStringLiteral("HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion"),
+        QSettings::NativeFormat};
+    if (regKey.contains(QStringLiteral("CurrentBuildNumber"))) {
+        auto buildNumber = regKey.value(QStringLiteral("CurrentBuildNumber")).toInt();
+        if (buildNumber > 0) {
+            if (buildNumber < 9200) {
+                productName = QStringLiteral("Windows 7 build %1").arg(buildNumber);
+            }
+            else if (buildNumber < 10240) {
+                productName = QStringLiteral("Windows 8 build %1").arg(buildNumber);
+            }
+            else if (buildNumber < 22000) {
+                productName = QStringLiteral("Windows 10 build %1").arg(buildNumber);
+            }
+            else {
+                productName = QStringLiteral("Windows 11 build %1").arg(buildNumber);
+            }
+        }
+    }
+#endif
+    return productName;
+}
+
+void Application::addModuleInfo(QTextStream& str, const QString& modPath, bool& firstMod)
+{
+    QFileInfo mod(modPath);
+    if (mod.isHidden()) {  // Ignore hidden directories
+        return;
+    }
+    if (firstMod) {
+        firstMod = false;
+        str << "Installed mods: \n";
+    }
+    str << "  * " << (mod.isDir() ? QDir(modPath).dirName() : mod.fileName());
+    try {
+        auto metadataFile =
+            std::filesystem::path(mod.absoluteFilePath().toStdString()) / "package.xml";
+        if (std::filesystem::exists(metadataFile)) {
+            App::Metadata metadata(metadataFile);
+            if (metadata.version() != App::Meta::Version()) {
+                str << QLatin1String(" ") + QString::fromStdString(metadata.version().str());
+            }
+        }
+    }
+    catch (const Base::Exception& e) {
+        auto what = QString::fromUtf8(e.what()).trimmed().replace(QChar::fromLatin1('\n'),
+                                                                  QChar::fromLatin1(' '));
+        str << " (Malformed metadata: " << what << ")";
+    }
+    QFileInfo disablingFile(mod.absoluteFilePath(), QStringLiteral("ADDON_DISABLED"));
+    if (disablingFile.exists()) {
+        str << " (Disabled)";
+    }
+
+    str << "\n";
+}
+
+QString Application::getValueOrEmpty(const std::map<std::string, std::string>& map, const std::string& key) {
+    auto it = map.find(key);
+    return (it != map.end()) ? QString::fromStdString(it->second) : QString();
+}
+
+void Application::getVerboseCommonInfo(QTextStream& str, const std::map<std::string,std::string>& mConfig)
+{
+    std::map<std::string, std::string>::iterator it;
+    const QString deskEnv =
+    QProcessEnvironment::systemEnvironment().value(QStringLiteral("XDG_CURRENT_DESKTOP"),
+                                                   QString());
+    const QString deskSess =
+        QProcessEnvironment::systemEnvironment().value(QStringLiteral("DESKTOP_SESSION"),
+                                                    QString());
+  
+    const QString major = getValueOrEmpty(mConfig, "BuildVersionMajor");
+    const QString minor = getValueOrEmpty(mConfig, "BuildVersionMinor");
+    const QString point = getValueOrEmpty(mConfig, "BuildVersionPoint");
+    const QString suffix = getValueOrEmpty(mConfig, "BuildVersionSuffix");
+    const QString build = getValueOrEmpty(mConfig, "BuildRevision");
+    const QString buildDate = getValueOrEmpty(mConfig, "BuildRevisionDate");
+
+    QStringList deskInfoList;
+    QString deskInfo;
+
+    if (!deskEnv.isEmpty()) {
+        deskInfoList.append(deskEnv);
+    }
+    if (!deskSess.isEmpty()) {
+        deskInfoList.append(deskSess);
+    }
+
+    const QString sysType = QSysInfo::productType();
+    if (sysType != QLatin1String("windows") && sysType != QLatin1String("macos")) {
+        QString sessionType = QProcessEnvironment::systemEnvironment().value(QStringLiteral("XDG_SESSION_TYPE"),
+             QString());
+        if (sessionType == QLatin1String("x11")) {
+            sessionType = QStringLiteral("xcb");
+        }
+        deskInfoList.append(sessionType);
+    }
+    if (!deskInfoList.isEmpty()) {
+        deskInfo = QLatin1String(" (") + deskInfoList.join(QLatin1String("/")) + QLatin1String(")");
+    }
+
+    str << "OS: " << prettyProductInfoWrapper() << deskInfo << '\n';
+    if (QSysInfo::buildCpuArchitecture() == QSysInfo::currentCpuArchitecture()) {
+        str << "Architecture: " << QSysInfo::buildCpuArchitecture() << "\n";
+    }
+    else {
+        str << "Architecture: " << QSysInfo::buildCpuArchitecture()
+            << "(running on: " << QSysInfo::currentCpuArchitecture() << ")\n";
+    }
+    str << "Version: " << major << "." << minor << "." << point << suffix << "." << build;
+
+#ifdef FC_CONDA
+    str << " Conda";
+#endif
+#ifdef FC_FLATPAK
+    str << " Flatpak";
+#endif
+    const char* appimage = getenv("APPIMAGE");
+    if (appimage) {
+        str << " AppImage";
+    }
+    const char* snap = getenv("SNAP_REVISION");
+    if (snap) {
+        str << " Snap " << snap;
+    }
+    str << '\n';
+    str << "Build date: " << buildDate << "\n";
+
+#if defined(_DEBUG) || defined(DEBUG)
+    str << "Build type: Debug\n";
+#elif defined(NDEBUG)
+    str << "Build type: Release\n";
+#elif defined(CMAKE_BUILD_TYPE)
+    str << "Build type: " << CMAKE_BUILD_TYPE << '\n';
+#else
+    str << "Build type: Unknown\n";
+#endif
+    const QString buildRevisionBranch = getValueOrEmpty(mConfig, "BuildRevisionBranch");
+    if (!buildRevisionBranch.isEmpty()) {
+        str << "Branch: " << buildRevisionBranch << '\n';
+    }
+    const QString buildRevisionHash = getValueOrEmpty(mConfig, "BuildRevisionHash");
+    if (!buildRevisionHash.isEmpty()) {
+        str << "Hash: " << buildRevisionHash << '\n';
+    }
+    // report also the version numbers of the most important libraries in FreeCAD
+    str << "Python " << PY_VERSION << ", ";
+    str << "Qt " << QT_VERSION_STR << ", ";
+    str << "Coin " << COIN_VERSION << ", ";
+    str << "Vtk " << fcVtkVersion << ", ";
+    str << "boost " << BOOST_LIB_VERSION << ", ";
+    str << "Eigen3 " << fcEigen3Version << ", ";
+    str << "PySide " << fcPysideVersion << '\n';
+    str << "shiboken " << fcShibokenVersion << ", ";
+#ifdef SMESH_VERSION_STR
+    str << "SMESH " << SMESH_VERSION_STR << ", ";
+#endif
+    str << "xerces-c " << fcXercescVersion << ", ";
+
+    const char* cmd = "import ifcopenshell\n"
+                  "version = ifcopenshell.version";
+    PyObject * ifcopenshellVer = nullptr;
+
+    try {
+        ifcopenshellVer = Base::Interpreter().getValue(cmd, "version");
+    }
+    catch (const Base::Exception& e) {
+        Base::Console().log("%s (safe to ignore, unless using the BIM workbench and IFC).\n", e.what());
+    }
+
+    if (ifcopenshellVer) {
+        const char* ifcopenshellVerAsStr = PyUnicode_AsUTF8(ifcopenshellVer);
+
+        if (ifcopenshellVerAsStr) {
+            str << "IfcOpenShell " << ifcopenshellVerAsStr << ", ";
+        }
+        Py_DECREF(ifcopenshellVer);
+    }
+
+#if defined(HAVE_OCC_VERSION)
+    str << "OCC " << OCC_VERSION_MAJOR << "." << OCC_VERSION_MINOR << "." << OCC_VERSION_MAINTENANCE
+#ifdef OCC_VERSION_DEVELOPMENT
+        << "." OCC_VERSION_DEVELOPMENT
+#endif
+        << '\n';
+#endif
+    QLocale loc;
+    str << "Locale: " << QLocale::languageToString(loc.language()) << "/"
+#if QT_VERSION < QT_VERSION_CHECK(6, 6, 0)
+        << QLocale::countryToString(loc.country())
+#else
+        << QLocale::territoryToString(loc.territory())
+#endif
+        << " (" << loc.name() << ")";
+    if (loc != QLocale::system()) {
+        loc = QLocale::system();
+        str << " [ OS: " << QLocale::languageToString(loc.language()) << "/"
+#if QT_VERSION < QT_VERSION_CHECK(6, 6, 0)
+            << QLocale::countryToString(loc.country())
+#else
+            << QLocale::territoryToString(loc.territory())
+#endif
+            << " (" << loc.name() << ") ]";
+    }
+    str << "\n";
+
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
+
+    const QString navStyle = QString::fromStdString(hGrp->GetASCII("NavigationStyle", "Gui::CADNavigationStyle")).remove(0, 5).chopped(15);
+    const QString orbitStyle = QStringLiteral("Turntable,Trackball,Free Turntable,Trackball Classic,Rounded Arcball")
+                               .split(QLatin1Char(','))
+                               .at(hGrp->GetInt("OrbitStyle", 4));
+    const QString rotMode = QStringLiteral("Window center,Drag at cursor,Object center")
+                            .split(QLatin1Char(','))
+                            .at(hGrp->GetInt("RotationMode", 0));
+
+    str << QStringLiteral("Navigation Style/Orbit Style/Rotation Mode: %1/%2/%3\n").arg(navStyle, orbitStyle, rotMode);
+}
+
+void Application::getVerboseAddOnsInfo(QTextStream& str, const std::map<std::string,std::string>& mConfig) {
+    // Add installed module information:
+    const auto modDir = fs::path(Application::getUserAppDataDir()) / "Mod";
+    bool firstMod = true;
+    if (fs::exists(modDir) && fs::is_directory(modDir)) {
+        for (const auto& mod : fs::directory_iterator(modDir)) {
+            auto dirName = mod.path().string();
+            addModuleInfo(str, QString::fromStdString(dirName), firstMod);
+        }
+    }
+    const QString additionalModules = getValueOrEmpty(mConfig, "AdditionalModulePaths");
+
+    if (!additionalModules.isEmpty()) {
+        auto mods = additionalModules.split(QChar::fromLatin1(';'));
+        for (const auto& mod : mods) {
+            addModuleInfo(str, mod, firstMod);
+        }
+    }
+}

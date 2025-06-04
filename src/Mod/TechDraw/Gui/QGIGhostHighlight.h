@@ -30,6 +30,7 @@
 #include <QPointF>
 
 #include "QGIHighlight.h"
+#include "QGIUserTypes.h"
 
 
 //a movable, selectable surrogate for detail highlights in QGIVPart
@@ -44,7 +45,7 @@ public:
     explicit QGIGhostHighlight();
     ~QGIGhostHighlight() override;
 
-    enum {Type = QGraphicsItem::UserType + 177};
+    enum {Type = UserType::QGIGhostHighlight};
     int type() const override { return Type;}
 
     void setInteractive(bool state);

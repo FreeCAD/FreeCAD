@@ -20,13 +20,19 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
+from os import linesep, path, remove
+import tempfile
+from unittest.mock import mock_open, patch
 
 import FreeCAD
 
 import Path
 import CAMTests.PathTestUtils as PathTestUtils
+from Path.Post.Command import CommandPathPost
 from Path.Post.Processor import PostProcessorFactory
+from Path.Post.Utils import FilenameGenerator
 
+from PySide.QtCore import QT_TRANSLATE_NOOP  # type: ignore
 
 Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
 Path.Log.trackModule(Path.Log.thisModule())
@@ -93,25 +99,26 @@ class TestRefactoredTestPost(PathTestUtils.PathTestBase):
         """
         pass
 
-    def single_compare(self, path, expected, args, debug=False):
+    def single_compare(self, test_path, expected, args, debug=False):
         """Perform a test with a single line of gcode comparison."""
         nl = "\n"
         self.job.PostProcessorArgs = args
         # replace the original path (that came with the job and operation) with our path
-        self.profile_op.Path = Path.Path(path)
+        self.profile_op.Path = Path.Path(test_path)
         # the gcode is in the first section for this particular job and operation
         gcode = self.post.export()[0][1]
         if debug:
             print(f"--------{nl}{gcode}--------{nl}")
-        # there are 4 lines of "other stuff" before the line we are interested in
-        self.assertEqual(gcode.splitlines()[4], expected)
+        # there are 3 lines of "other stuff" before the line we are interested in
+        self.assertEqual(gcode.splitlines()[3], expected)
 
-    def multi_compare(self, path, expected, args, debug=False):
+    def multi_compare(self, test_path, expected, args, debug=False):
         """Perform a test with multiple lines of gcode comparison."""
         nl = "\n"
+
         self.job.PostProcessorArgs = args
         # replace the original path (that came with the job and operation) with our path
-        self.profile_op.Path = Path.Path(path)
+        self.profile_op.Path = Path.Path(test_path)
         # the gcode is in the first section for this particular job and operation
         gcode = self.post.export()[0][1]
         if debug:
@@ -144,12 +151,12 @@ class TestRefactoredTestPost(PathTestUtils.PathTestBase):
         self.job.PostProcessorArgs = "--axis-modal"
         gcode = self.post.export()[0][1]
         # print(f"--------{nl}{gcode}--------{nl}")
-        self.assertEqual(gcode.splitlines()[5], "G0 Y30.000")
+        self.assertEqual(gcode.splitlines()[4], "G0 Y30.000")
 
         self.job.PostProcessorArgs = "--no-axis-modal"
         gcode = self.post.export()[0][1]
         # print(f"--------{nl}{gcode}--------{nl}")
-        self.assertEqual(gcode.splitlines()[5], "G0 X10.000 Y30.000 Z30.000")
+        self.assertEqual(gcode.splitlines()[4], "G0 X10.000 Y30.000 Z30.000")
 
     #############################################################################
 
@@ -172,7 +179,6 @@ G54
 (Block-name: TC: Default Tool)
 (Block-expand: 0)
 (Block-enable: 1)
-M6 T1
 (Block-name: Profile)
 (Block-expand: 0)
 (Block-enable: 1)
@@ -187,7 +193,6 @@ M6 T1
             """G90
 G21
 G54
-M6 T1
 """,
             "--no-bcnc",
         )
@@ -196,7 +201,7 @@ M6 T1
 
     def test00125(self) -> None:
         """Test chipbreaking amount."""
-        path = [
+        test_path = [
             Path.Command("G0 X1 Y2"),
             Path.Command("G0 Z8"),
             Path.Command("G90"),
@@ -207,11 +212,10 @@ M6 T1
         ]
         # check the default chipbreaking amount
         self.multi_compare(
-            path,
+            test_path,
             """G90
 G21
 G54
-M6 T1
 G0 X1.000 Y2.000
 G0 Z8.000
 G90
@@ -234,11 +238,10 @@ G90
         )
         # check for a metric chipbreaking amount
         self.multi_compare(
-            path,
+            test_path,
             """G90
 G21
 G54
-M6 T1
 G0 X1.000 Y2.000
 G0 Z8.000
 G90
@@ -260,7 +263,7 @@ G90
             "--translate_drill --chipbreaking_amount='1.23456 mm'",
         )
         # check for an inch/imperial chipbreaking amount
-        path = [
+        test_path = [
             Path.Command("G0 X25.4 Y50.8"),
             Path.Command("G0 Z203.2"),
             Path.Command("G90"),
@@ -270,11 +273,10 @@ G90
             Path.Command("G90"),
         ]
         self.multi_compare(
-            path,
+            test_path,
             """G90
 G20
 G54
-M6 T1
 G0 X1.0000 Y2.0000
 G0 Z8.0000
 G90
@@ -303,43 +305,43 @@ G90
         self.single_compare("G0 X10 Y20 Z30", "G0 X10.000 Y20.000 Z30.000", "")
         self.single_compare("G0 X10 Y20 Z30", "G0X10.000Y20.000Z30.000", "--command_space=''")
         self.single_compare("G0 X10 Y20 Z30", "G0_X10.000_Y20.000_Z30.000", "--command_space='_'")
-        path = [Path.Command("(comment with spaces)")]
+        test_path = [Path.Command("(comment with spaces)")]
         self.multi_compare(
-            path,
+            test_path,
             """(Begin preamble)
 G90
 G21
 (Begin operation)
 G54
-(Finish operation: Fixture)
+(Finish operation)
 (Begin operation)
 (TC: Default Tool)
 (Begin toolchange)
 (M6 T1)
-(Finish operation: TC: Default Tool)
+(Finish operation)
 (Begin operation)
 (comment with spaces)
-(Finish operation: Profile)
+(Finish operation)
 (Begin postamble)
 """,
             "--command_space=' ' --comments",
         )
         self.multi_compare(
-            path,
+            test_path,
             """(Begin preamble)
 G90
 G21
 (Begin operation)
 G54
-(Finish operation: Fixture)
+(Finish operation)
 (Begin operation)
 (TC: Default Tool)
 (Begin toolchange)
 (M6T1)
-(Finish operation: TC: Default Tool)
+(Finish operation)
 (Begin operation)
 (comment with spaces)
-(Finish operation: Profile)
+(Finish operation)
 (Begin postamble)
 """,
             "--command_space='' --comments",
@@ -349,63 +351,63 @@ G54
 
     def test00127(self) -> None:
         """Test comment symbol."""
-        path = [Path.Command("(comment with spaces)")]
+        test_path = [Path.Command("(comment with spaces)")]
         self.multi_compare(
-            path,
+            test_path,
             """(Begin preamble)
 G90
 G21
 (Begin operation)
 G54
-(Finish operation: Fixture)
+(Finish operation)
 (Begin operation)
 (TC: Default Tool)
 (Begin toolchange)
 (M6 T1)
-(Finish operation: TC: Default Tool)
+(Finish operation)
 (Begin operation)
 (comment with spaces)
-(Finish operation: Profile)
+(Finish operation)
 (Begin postamble)
 """,
             "--comments",
         )
         self.multi_compare(
-            path,
+            test_path,
             """;Begin preamble
 G90
 G21
 ;Begin operation
 G54
-;Finish operation: Fixture
+;Finish operation
 ;Begin operation
 ;TC: Default Tool
 ;Begin toolchange
 ;M6 T1
-;Finish operation: TC: Default Tool
+;Finish operation
 ;Begin operation
 ;comment with spaces
-;Finish operation: Profile
+;Finish operation
 ;Begin postamble
 """,
             "--comment_symbol=';' --comments",
         )
         self.multi_compare(
-            path,
+            test_path,
             """!Begin preamble
 G90
 G21
 !Begin operation
 G54
-!Finish operation: Fixture
+!Finish operation
 !Begin operation
 !TC: Default Tool
 !Begin toolchange
 !M6 T1
-!Finish operation: TC: Default Tool
+!Finish operation
 !Begin operation
 !comment with spaces
-!Finish operation: Profile
+!Finish operation
 !Begin postamble
 """,
             "--comment_symbol='!' --comments",
@@ -427,6 +429,436 @@ G54
 
     #############################################################################
 
+    def test00135(self) -> None:
+        """Test enabling and disabling coolant."""
+        args: str
+        expected: str
+        gcode: str
+        nl = "\n"
+        save_CoolantMode = self.profile_op.CoolantMode
+
+        c = Path.Command("G0 X10 Y20 Z30")
+        self.profile_op.Path = Path.Path([c])
+
+        # Test Flood coolant enabled
+        self.profile_op.CoolantMode = "Flood"
+        expected = """(Begin preamble)
+G90
+G21
+(Begin operation)
+G54
+(Finish operation)
+(Begin operation)
+(TC: Default Tool)
+(Begin toolchange)
+(M6 T1)
+(Finish operation)
+(Begin operation)
+(Coolant On: Flood)
+M8
+G0 X10.000 Y20.000 Z30.000
+(Finish operation)
+(Coolant Off: Flood)
+M9
+(Begin postamble)
+"""
+        self.job.PostProcessorArgs = "--enable_coolant --comments"
+        gcode = self.post.export()[0][1]
+        # print("--------\n" + gcode + "--------\n")
+        self.assertEqual(gcode, expected)
+
+        # Test Mist coolant enabled
+        self.profile_op.CoolantMode = "Mist"
+        expected = """(Begin preamble)
+G90
+G21
+(Begin operation)
+G54
+(Finish operation)
+(Begin operation)
+(TC: Default Tool)
+(Begin toolchange)
+(M6 T1)
+(Finish operation)
+(Begin operation)
+(Coolant On: Mist)
+M7
+G0 X10.000 Y20.000 Z30.000
+(Finish operation)
+(Coolant Off: Mist)
+M9
+(Begin postamble)
+"""
+        self.job.PostProcessorArgs = "--enable_coolant --comments"
+        gcode = self.post.export()[0][1]
+        # print("--------\n" + gcode + "--------\n")
+        self.assertEqual(gcode, expected)
+
+        # Test None coolant enabled with CoolantMode property
+        self.profile_op.CoolantMode = "None"
+        expected = """(Begin preamble)
+G90
+G21
+(Begin operation)
+G54
+(Finish operation)
+(Begin operation)
+(TC: Default Tool)
+(Begin toolchange)
+(M6 T1)
+(Finish operation)
+(Begin operation)
+G0 X10.000 Y20.000 Z30.000
+(Finish operation)
+(Begin postamble)
+"""
+        self.job.PostProcessorArgs = "--enable_coolant --comments"
+        gcode = self.post.export()[0][1]
+        # print("--------\n" + gcode + "--------\n")
+        self.assertEqual(gcode, expected)
+
+        # Test Flood coolant disabled
+        self.profile_op.CoolantMode = "Flood"
+        expected = """(Begin preamble)
+G90
+G21
+(Begin operation)
+G54
+(Finish operation)
+(Begin operation)
+(TC: Default Tool)
+(Begin toolchange)
+(M6 T1)
+(Finish operation)
+(Begin operation)
+G0 X10.000 Y20.000 Z30.000
+(Finish operation)
+(Begin postamble)
+"""
+        self.job.PostProcessorArgs = "--disable_coolant --comments"
+        gcode = self.post.export()[0][1]
+        # print("--------\n" + gcode + "--------\n")
+        self.assertEqual(gcode, expected)
+
+        # Test Mist coolant disabled
+        self.profile_op.CoolantMode = "Mist"
+        expected = """(Begin preamble)
+G90
+G21
+(Begin operation)
+G54
+(Finish operation)
+(Begin operation)
+(TC: Default Tool)
+(Begin toolchange)
+(M6 T1)
+(Finish operation)
+(Begin operation)
+G0 X10.000 Y20.000 Z30.000
+(Finish operation)
+(Begin postamble)
+"""
+        self.job.PostProcessorArgs = "--disable_coolant --comments"
+        gcode = self.post.export()[0][1]
+        # print("--------\n" + gcode + "--------\n")
+        self.assertEqual(gcode, expected)
+
+        # Test None coolant disabled with CoolantMode property
+        self.profile_op.CoolantMode = "None"
+        expected = """(Begin preamble)
+G90
+G21
+(Begin operation)
+G54
+(Finish operation)
+(Begin operation)
+(TC: Default Tool)
+(Begin toolchange)
+(M6 T1)
+(Finish operation)
+(Begin operation)
+G0 X10.000 Y20.000 Z30.000
+(Finish operation)
+(Begin postamble)
+"""
+        self.job.PostProcessorArgs = "--disable_coolant --comments"
+        gcode = self.post.export()[0][1]
+        # print("--------\n" + gcode + "--------\n")
+        self.assertEqual(gcode, expected)
+
+        # Test Flood coolant configured but no coolant argument (default)
+        self.profile_op.CoolantMode = "Flood"
+        expected = """(Begin preamble)
+G90
+G21
+(Begin operation)
+G54
+(Finish operation)
+(Begin operation)
+(TC: Default Tool)
+(Begin toolchange)
+(M6 T1)
+(Finish operation)
+(Begin operation)
+G0 X10.000 Y20.000 Z30.000
+(Finish operation)
+(Begin postamble)
+"""
+        self.job.PostProcessorArgs = "--comments"
+        gcode = self.post.export()[0][1]
+        # print("--------\n" + gcode + "--------\n")
+        self.assertEqual(gcode, expected)
+
+        # Test coolant enabled without a CoolantMode property
+
+        self.profile_op.removeProperty("CoolantMode")
+
+        expected = """(Begin preamble)
+G90
+G21
+(Begin operation)
+G54
+(Finish operation)
+(Begin operation)
+(TC: Default Tool)
+(Begin toolchange)
+(M6 T1)
+(Finish operation)
+(Begin operation)
+G0 X10.000 Y20.000 Z30.000
+(Finish operation)
+(Begin postamble)
+"""
+        self.job.PostProcessorArgs = "--enable_coolant --comments"
+        gcode = self.post.export()[0][1]
+        # print("--------\n" + gcode + "--------\n")
+        self.assertEqual(gcode, expected)
+
+        # Test coolant disabled without a CoolantMode property
+        expected = """(Begin preamble)
+G90
+G21
+(Begin operation)
+G54
+(Finish operation)
+(Begin operation)
+(TC: Default Tool)
+(Begin toolchange)
+(M6 T1)
+(Finish operation)
+(Begin operation)
+G0 X10.000 Y20.000 Z30.000
+(Finish operation)
+(Begin postamble)
+"""
+        self.job.PostProcessorArgs = "--disable_coolant --comments"
+        gcode = self.post.export()[0][1]
+        # print("--------\n" + gcode + "--------\n")
+        self.assertEqual(gcode, expected)
+
+        # re-create the original CoolantMode property
+        self.profile_op.addProperty(
+            "App::PropertyEnumeration",
+            "CoolantMode",
+            "Path",
+            QT_TRANSLATE_NOOP("App::Property", "Coolant option for this operation"),
+        )
+        self.profile_op.CoolantMode = ["None", "Flood", "Mist"]
+        self.profile_op.CoolantMode = save_CoolantMode
+
+    #############################################################################
+
+    def test00137(self) -> None:
+        """Test enabling/disabling machine specific commands."""
+
+        # test with machine specific commands enabled
+        self.multi_compare(
+            "(MC_RUN_COMMAND: blah)",
+            """(Begin preamble)
+G90
+G21
+(Begin operation)
+G54
+(Finish operation)
+(Begin operation)
+(TC: Default Tool)
+(Begin toolchange)
+(M6 T1)
+(Finish operation)
+(Begin operation)
+(MC_RUN_COMMAND: blah)
+blah
+(Finish operation)
+(Begin postamble)
+""",
+            "--enable_machine_specific_commands --comments",
+        )
+        # test with machine specific commands disabled
+        self.multi_compare(
+            "(MC_RUN_COMMAND: blah)",
+            """(Begin preamble)
+G90
+G21
+(Begin operation)
+G54
+(Finish operation)
+(Begin operation)
+(TC: Default Tool)
+(Begin toolchange)
+(M6 T1)
+(Finish operation)
+(Begin operation)
+(MC_RUN_COMMAND: blah)
+(Finish operation)
+(Begin postamble)
+""",
+            "--disable_machine_specific_commands --comments",
+        )
+        # test with machine specific commands default
+        self.multi_compare(
+            "(MC_RUN_COMMAND: blah)",
+            """(Begin preamble)
+G90
+G21
+(Begin operation)
+G54
+(Finish operation)
+(Begin operation)
+(TC: Default Tool)
+(Begin toolchange)
+(M6 T1)
+(Finish operation)
+(Begin operation)
+(MC_RUN_COMMAND: blah)
+(Finish operation)
+(Begin postamble)
+""",
+            "--comments",
+        )
+        # test with odd characters and spaces in the machine specific command
+        self.multi_compare(
+            "(MC_RUN_COMMAND: These are odd characters:!@#$%^&*?/)",
+            """(Begin preamble)
+G90
+G21
+(Begin operation)
+G54
+(Finish operation)
+(Begin operation)
+(TC: Default Tool)
+(Begin toolchange)
+(M6 T1)
+(Finish operation)
+(Begin operation)
+(MC_RUN_COMMAND: These are odd characters:!@#$%^&*?/)
+These are odd characters:!@#$%^&*?/
+(Finish operation)
+(Begin postamble)
+""",
+            "--enable_machine_specific_commands --comments",
+        )
+
+    #############################################################################
+
+    def test00138(self) -> None:
+        """Test end of line characters."""
+
+        class MockWriter:
+            def __init__(self):
+                self.contents = ""
+
+            def write(self, data):
+                self.contents = data
+
+        writer = MockWriter()
+        opener = mock_open()
+        opener.return_value.write = writer.write
+
+        output_file_pattern = path.join(tempfile.gettempdir(), "test_postprocessor_write.nc")
+        self.job.PostProcessorOutputFile = output_file_pattern
+        Path.Preferences.setOutputFileDefaults(output_file_pattern, "Append Unique ID on conflict")
+        policy = Path.Preferences.defaultOutputPolicy()
+        generator = FilenameGenerator(job=self.job)
+        generated_filename = generator.generate_filenames()
+        generator.set_subpartname("")
+        fname = next(generated_filename)
+
+        self.profile_op.Path = Path.Path([])
+
+        # Test with whatever end-of-line characters the system running the test happens to use
+        expected = """G90
+G21
+G54
+"""
+        self.job.PostProcessorArgs = ""
+        gcode = self.post.export()[0][1]
+        self.assertEqual(gcode, expected)
+        # also test what is written to a mock file
+        with patch("builtins.open", opener) as m:
+            CommandPathPost._write_file(self, fname, gcode, policy)
+        if m.call_args.kwargs["newline"] is None:
+            mocked_output = writer.contents.replace("\n", linesep)
+        else:
+            mocked_output = writer.contents
+        expected = expected.replace("\n", linesep)
+        self.assertEqual(expected, mocked_output)
+
+        # Test with a new line
+        expected = "\n\nG90\nG21\nG54\n"
+        self.job.PostProcessorArgs = "--end_of_line_characters='\n'"
+        gcode = self.post.export()[0][1]
+        self.assertEqual(gcode, expected)
+        # also test what is written to a mock file
+        with patch("builtins.open", opener) as m:
+            CommandPathPost._write_file(self, fname, gcode, policy)
+        if m.call_args.kwargs["newline"] is None:
+            mocked_output = writer.contents.replace("\n", linesep)
+        else:
+            mocked_output = writer.contents
+        expected = expected[2:]
+        self.assertEqual(expected, mocked_output)
+
+        # Test with a carriage return followed by a new line
+        expected = "G90\r\nG21\r\nG54\r\n"
+        self.job.PostProcessorArgs = "--end_of_line_characters='\r\n'"
+        gcode = self.post.export()[0][1]
+        self.assertEqual(gcode, expected)
+        # also test what is written to a mock file
+        with patch("builtins.open", opener) as m:
+            CommandPathPost._write_file(self, fname, gcode, policy)
+        if m.call_args.kwargs["newline"] is None:
+            mocked_output = writer.contents.replace("\n", linesep)
+        else:
+            mocked_output = writer.contents
+        self.assertEqual(expected, mocked_output)
+
+        # Test with a carriage return
+        expected = "G90\rG21\rG54\r"
+        self.job.PostProcessorArgs = "--end_of_line_characters='\r'"
+        gcode = self.post.export()[0][1]
+        self.assertEqual(gcode, expected)
+        # also test what is written to a mock file
+        with patch("builtins.open", opener) as m:
+            CommandPathPost._write_file(self, fname, gcode, policy)
+        if m.call_args.kwargs["newline"] is None:
+            mocked_output = writer.contents.replace("\n", linesep)
+        else:
+            mocked_output = writer.contents
+        self.assertEqual(expected, mocked_output)
+
+        # Test writing a mock file with a zero-length string for gcode
+        expected = ""
+        gcode = ""
+        with patch("builtins.open", opener) as m:
+            CommandPathPost._write_file(self, fname, gcode, policy)
+        if m.call_args.kwargs["newline"] is None:
+            mocked_output = writer.contents.replace("\n", linesep)
+        else:
+            mocked_output = writer.contents
+        self.assertEqual(expected, mocked_output)
+
+    #############################################################################
+
     def test00140(self):
         """Test feed-precision."""
         nl = "\n"
@@ -439,14 +871,14 @@ G54
         # print(f"--------{nl}{gcode}--------{nl}")
         # Note:  The "internal" F speed is in mm/s,
         #        while the output F speed is in mm/min.
-        self.assertEqual(gcode.splitlines()[4], "G1 X10.000 Y20.000 Z30.000 F7387.407")
+        self.assertEqual(gcode.splitlines()[3], "G1 X10.000 Y20.000 Z30.000 F7387.407")
 
         self.job.PostProcessorArgs = "--feed-precision=2"
         gcode = self.post.export()[0][1]
         # print(f"--------{nl}{gcode}--------{nl}")
         # Note:  The "internal" F speed is in mm/s,
         #        while the output F speed is in mm/min.
-        self.assertEqual(gcode.splitlines()[4], "G1 X10.000 Y20.000 Z30.000 F7387.41")
+        self.assertEqual(gcode.splitlines()[3], "G1 X10.000 Y20.000 Z30.000 F7387.41")
 
     #############################################################################
 
@@ -476,14 +908,14 @@ G54
         self.assertEqual(split_gcode[6], "G21")
         self.assertEqual(split_gcode[7], "(Begin operation)")
         self.assertEqual(split_gcode[8], "G54")
-        self.assertEqual(split_gcode[9], "(Finish operation: Fixture)")
+        self.assertEqual(split_gcode[9], "(Finish operation)")
         self.assertEqual(split_gcode[10], "(Begin operation)")
         self.assertEqual(split_gcode[11], "(TC: Default Tool)")
         self.assertEqual(split_gcode[12], "(Begin toolchange)")
         self.assertEqual(split_gcode[13], "(M6 T1)")
-        self.assertEqual(split_gcode[14], "(Finish operation: TC: Default Tool)")
+        self.assertEqual(split_gcode[14], "(Finish operation)")
         self.assertEqual(split_gcode[15], "(Begin operation)")
-        self.assertEqual(split_gcode[16], "(Finish operation: Profile)")
+        self.assertEqual(split_gcode[16], "(Finish operation)")
         self.assertEqual(split_gcode[17], "(Begin postamble)")
 
         # Test with comments without header.
@@ -492,14 +924,14 @@ G90
 G21
 (Begin operation)
 G54
-(Finish operation: Fixture)
+(Finish operation)
 (Begin operation)
 (TC: Default Tool)
 (Begin toolchange)
 (M6 T1)
-(Finish operation: TC: Default Tool)
+(Finish operation)
 (Begin operation)
-(Finish operation: Profile)
+(Finish operation)
 (Begin postamble)
 """
         self.job.PostProcessorArgs = "--comments --no-header"
@@ -522,13 +954,11 @@ G54
         self.assertEqual(split_gcode[4], "G90")
         self.assertEqual(split_gcode[5], "G21")
         self.assertEqual(split_gcode[6], "G54")
-        self.assertEqual(split_gcode[7], "M6 T1")
 
         # Test without comments or header.
         expected = """G90
 G21
 G54
-M6 T1
 """
         self.job.PostProcessorArgs = "--no-comments --no-header"
         gcode = self.post.export()[0][1]
@@ -539,7 +969,128 @@ M6 T1
 
     def test00160(self):
         """Test Line Numbers."""
-        self.single_compare("G0 X10 Y20 Z30", "N140 G0 X10.000 Y20.000 Z30.000", "--line-numbers")
+        self.single_compare("G0 X10 Y20 Z30", "N130 G0 X10.000 Y20.000 Z30.000", "--line-numbers")
+        self.single_compare("G0 X10 Y20 Z30", "G0 X10.000 Y20.000 Z30.000", "--no-line-numbers")
+
+    #############################################################################
+
+    def test00165(self) -> None:
+        """Test line number increment and line number start."""
+        test_path = [
+            Path.Command("G0 X1 Y2"),
+            Path.Command("G0 Z8"),
+        ]
+        # check the default line number increment
+        self.multi_compare(
+            test_path,
+            """N100 G90
+N110 G21
+N120 G54
+N130 G0 X1.000 Y2.000
+N140 G0 Z8.000
+""",
+            "--line-numbers",
+        )
+
+        # check a non-default line number increment
+        self.multi_compare(
+            test_path,
+            """N150 G90
+N153 G21
+N156 G54
+N159 G0 X1.000 Y2.000
+N162 G0 Z8.000
+""",
+            "--line-numbers --line_number_increment=3",
+        )
+
+        # check a non-default starting line number
+        self.multi_compare(
+            test_path,
+            """N123 G90
+N126 G21
+N129 G54
+N132 G0 X1.000 Y2.000
+N135 G0 Z8.000
+""",
+            "--line-numbers --line_number_increment=3 --line_number_start=123",
+        )
+
+    #############################################################################
+
+    def test00166(self) -> None:
+        """Test listing tools in the preamble."""
+        test_path = [
+            Path.Command("G0 X1 Y2"),
+            Path.Command("G0 Z8"),
+        ]
+        # test listing tools in the preamble
+        self.multi_compare(
+            test_path,
+            """(T1=TC__Default_Tool)
+(Begin preamble)
+G90
+G21
+(Begin operation)
+G54
+(Finish operation)
+(Begin operation)
+(TC: Default Tool)
+(Begin toolchange)
+M6 T1
+(Finish operation)
+(Begin operation)
+G0 X1.000 Y2.000
+G0 Z8.000
+(Finish operation)
+(Begin postamble)
+""",
+            "--comments --tool_change --list_tools_in_preamble",
+        )
+        # test not listing tools in the preamble
+        self.multi_compare(
+            test_path,
+            """(Begin preamble)
+G90
+G21
+(Begin operation)
+G54
+(Finish operation)
+(Begin operation)
+(TC: Default Tool)
+(Begin toolchange)
+M6 T1
+(Finish operation)
+(Begin operation)
+G0 X1.000 Y2.000
+G0 Z8.000
+(Finish operation)
+(Begin postamble)
+""",
+            "--comments --tool_change --no-list_tools_in_preamble",
+        )
+        # test the default behavior for listing tools in the preamble
+        self.multi_compare(
+            test_path,
+            """(Begin preamble)
+G90
+G21
+(Begin operation)
+G54
+(Finish operation)
+(Begin operation)
+(TC: Default Tool)
+(Begin toolchange)
+M6 T1
+(Finish operation)
+(Begin operation)
+G0 X1.000 Y2.000
+G0 Z8.000
+(Finish operation)
+(Begin postamble)
+""",
+            "--comments --tool_change",
+        )
 
     #############################################################################
 
@@ -555,7 +1106,7 @@ M6 T1
         # print(f"--------{nl}{gcode}--------{nl}")
         self.assertEqual(gcode.splitlines()[1], "G20")
         self.assertEqual(
-            gcode.splitlines()[4],
+            gcode.splitlines()[3],
             "G0 X0.3937 Y0.7874 Z1.1811 A10.0000 B20.0000 C30.0000 U0.3937 V0.7874 W1.1811",
         )
 
@@ -575,11 +1126,11 @@ M6 T1
         self.job.PostProcessorArgs = "--modal"
         gcode = self.post.export()[0][1]
         # print(f"--------{nl}{gcode}--------{nl}")
-        self.assertEqual(gcode.splitlines()[5], "X10.000 Y30.000 Z30.000")
+        self.assertEqual(gcode.splitlines()[4], "X10.000 Y30.000 Z30.000")
         self.job.PostProcessorArgs = "--no-modal"
         gcode = self.post.export()[0][1]
         # print(f"--------{nl}{gcode}--------{nl}")
-        self.assertEqual(gcode.splitlines()[5], "G0 X10.000 Y30.000 Z30.000")
+        self.assertEqual(gcode.splitlines()[4], "G0 X10.000 Y30.000 Z30.000")
 
     #############################################################################
 
@@ -613,13 +1164,32 @@ M6 T1
   --no-comments         Suppress comment output
   --comment_symbol COMMENT_SYMBOL
                         The character used to start a comment, default is "("
+  --enable_coolant      Enable coolant
+  --disable_coolant     Disable coolant (default)
+  --enable_machine_specific_commands
+                        Enable machine specific commands of the form
+                        (MC_RUN_COMMAND: blah)
+  --disable_machine_specific_commands
+                        Disable machine specific commands (default)
+  --end_of_line_characters END_OF_LINE_CHARACTERS
+                        The character(s) to use at the end of each line in the
+                        output file, default is whatever the system uses, may
+                        also use '\\n', '\\r', or '\\r\\n'
   --feed-precision FEED_PRECISION
                         Number of digits of precision for feed rate, default
                         is 3
   --header              Output headers (default)
   --no-header           Suppress header output
+  --line_number_increment LINE_NUMBER_INCREMENT
+                        Amount to increment the line numbers, default is 10
+  --line_number_start LINE_NUMBER_START
+                        The number the line numbers start at, default is 100
   --line-numbers        Prefix with line numbers
   --no-line-numbers     Don't prefix with line numbers (default)
+  --list_tools_in_preamble
+                        List the tools used in the operation in the preamble
+  --no-list_tools_in_preamble
+                        Don't list the tools used in the operation (default)
   --modal               Don't output the G-command name if it is the same as
                         the previous line
   --no-modal            Output the G-command name even if it is the same as
@@ -671,6 +1241,42 @@ M6 T1
         gcode = "".join(gcode.split())
         expected = "".join(expected.split())
         self.assertEqual(gcode, expected)
+
+    #############################################################################
+
+    def test00191(self):
+        """Make sure postprocessor doesn't crash on blank lines"""
+
+        path = [
+            Path.Command("G0 X1"),
+            Path.Command(""),
+            Path.Command("G0 X2"),
+        ]
+
+        self.post.values["OUTPUT_BLANK_LINES"] = True
+        self.multi_compare(
+            path,
+            """G90
+G21
+G54
+G0 X1.000
+
+G0 X2.000
+""",
+            "",
+        )
+
+        self.post.values["OUTPUT_BLANK_LINES"] = False
+        self.multi_compare(
+            path,
+            """G90
+G21
+G54
+G0 X1.000
+G0 X2.000
+""",
+            "",
+        )
 
     #############################################################################
 
@@ -743,7 +1349,7 @@ M6 T1
 
         self.profile_op.Path = Path.Path([c, c2])
 
-        self.job.PostProcessorArgs = "--tlo"
+        self.job.PostProcessorArgs = "--tlo --tool_change"
         gcode = self.post.export()[0][1]
         split_gcode = gcode.splitlines()
         # print(f"--------{nl}{gcode}--------{nl}")
@@ -752,7 +1358,7 @@ M6 T1
         self.assertEqual(split_gcode[7], "M3 S3000")
 
         # suppress TLO
-        self.job.PostProcessorArgs = "--no-tlo"
+        self.job.PostProcessorArgs = "--no-tlo --tool_change"
         gcode = self.post.export()[0][1]
         split_gcode = gcode.splitlines()
         # print(f"--------{nl}{gcode}--------{nl}")
@@ -769,19 +1375,30 @@ M6 T1
         c2 = Path.Command("M3 S3000")
         self.profile_op.Path = Path.Path([c, c2])
 
-        self.job.PostProcessorArgs = "--tool_change"
+        self.job.PostProcessorArgs = "--no-comments --no-tool_change"
+        gcode = self.post.export()[0][1]
+        split_gcode = gcode.splitlines()
+        # print(f"--------{nl}{gcode}--------{nl}")
+        self.assertEqual(split_gcode[2], "G54")
+        self.assertEqual(split_gcode[3], "M3 S3000")
+
+        self.job.PostProcessorArgs = "--no-comments --tool_change"
         gcode = self.post.export()[0][1]
         split_gcode = gcode.splitlines()
         # print(f"--------{nl}{gcode}--------{nl}")
         self.assertEqual(split_gcode[4], "M6 T2")
-        self.assertEqual(split_gcode[5], "M3 S3000")
 
         self.job.PostProcessorArgs = "--comments --no-tool_change"
         gcode = self.post.export()[0][1]
         split_gcode = gcode.splitlines()
         # print(f"--------{nl}{gcode}--------{nl}")
         self.assertEqual(split_gcode[13], "(M6 T2)")
-        self.assertEqual(split_gcode[14], "M3 S3000")
+
+        self.job.PostProcessorArgs = "--comments --tool_change"
+        gcode = self.post.export()[0][1]
+        split_gcode = gcode.splitlines()
+        # print(f"--------{nl}{gcode}--------{nl}")
+        self.assertEqual(split_gcode[13], "M6 T2")
 
     #############################################################################
 
@@ -795,14 +1412,14 @@ M6 T1
         self.job.PostProcessorArgs = ""
         gcode = self.post.export()[0][1]
         # print(f"--------{nl}{gcode}--------{nl}")
-        self.assertEqual(gcode.splitlines()[4], "M3 S3000")
+        self.assertEqual(gcode.splitlines()[3], "M3 S3000")
 
         self.job.PostProcessorArgs = "--wait-for-spindle=1.23456"
         gcode = self.post.export()[0][1]
         split_gcode = gcode.splitlines()
         # print(f"--------{nl}{gcode}--------{nl}")
-        self.assertEqual(split_gcode[4], "M3 S3000")
-        self.assertEqual(split_gcode[5], "G4 P1.23456")
+        self.assertEqual(split_gcode[3], "M3 S3000")
+        self.assertEqual(split_gcode[4], "G4 P1.23456")
 
         c = Path.Command("M4 S3000")
         self.profile_op.Path = Path.Path([c])
@@ -812,11 +1429,11 @@ M6 T1
         self.job.PostProcessorArgs = ""
         gcode = self.post.export()[0][1]
         # print(f"--------{nl}{gcode}--------{nl}")
-        self.assertEqual(gcode.splitlines()[4], "M4 S3000")
+        self.assertEqual(gcode.splitlines()[3], "M4 S3000")
 
         self.job.PostProcessorArgs = "--wait-for-spindle=1.23456"
         gcode = self.post.export()[0][1]
         split_gcode = gcode.splitlines()
         # print(f"--------{nl}{gcode}--------{nl}")
-        self.assertEqual(split_gcode[4], "M4 S3000")
-        self.assertEqual(split_gcode[5], "G4 P1.23456")
+        self.assertEqual(split_gcode[3], "M4 S3000")
+        self.assertEqual(split_gcode[4], "G4 P1.23456")

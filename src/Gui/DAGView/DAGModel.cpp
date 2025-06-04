@@ -546,7 +546,7 @@ void Model::updateSlot()
   }
   catch(const boost::not_a_dag &)
   {
-    Base::Console().Error("not a dag exception in DAGView::Model::updateSlot()\n");
+    Base::Console().error("not a dag exception in DAGView::Model::updateSlot()\n");
     //do not continuously report an error for cyclic graphs
     graphDirty = false;
     return;
@@ -1096,7 +1096,7 @@ void Model::contextMenuEvent(QGraphicsSceneContextMenuEvent* event)
         contextMenu.addAction(editingFinishedAction);
     }
 
-    if (contextMenu.actions().count() > 0)
+    if (!contextMenu.actions().isEmpty())
         contextMenu.exec(event->screenPos());
   }
 
@@ -1130,7 +1130,7 @@ void Model::renameAcceptedSlot()
   assert(selections.size() == 1);
   const GraphLinkRecord &record = findRecord(selections.front(), *graphLink);
 
-  auto lineEdit = dynamic_cast<LineEdit*>(proxy->widget());
+  auto lineEdit = qobject_cast<LineEdit*>(proxy->widget());
   assert(lineEdit);
   const_cast<App::DocumentObject*>(record.DObject)->Label.setValue(lineEdit->text().toUtf8().constData()); //const hack
 

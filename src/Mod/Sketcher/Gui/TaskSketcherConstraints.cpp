@@ -1105,7 +1105,7 @@ void TaskSketcherConstraints::changeFilteredVisibility(bool show, ActionTarget t
             processItem = !item->isHidden();
         }
         else if (target == ActionTarget::Selected) {
-            if (std::ranges::find(selecteditems, item) != selecteditems.end())
+            if (selecteditems.contains(item))
                 processItem = true;
         }
 
@@ -1224,12 +1224,14 @@ void TaskSketcherConstraints::onListWidgetConstraintsItemChanged(QListWidgetItem
     // otherwise a checkbox change will trigger a rename on the first execution, bloating the
     // constraint icons with the default constraint name "constraint1, constraint2"
     if (newName != currConstraintName && !basename.empty()) {
-        std::string escapedstr = Base::Tools::escapedUnicodeFromUtf8(newName.c_str());
+        if (!SketcherGui::checkConstraintName(sketch, newName)) {
+            newName = currConstraintName;
+        }
 
         Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Rename sketch constraint"));
         try {
             Gui::cmdAppObjectArgs(
-                sketch, "renameConstraint(%d, u'%s')", it->ConstraintNbr, escapedstr.c_str());
+                sketch, "renameConstraint(%d, u'%s')", it->ConstraintNbr, newName.c_str());
             Gui::Command::commitCommand();
         }
         catch (const Base::Exception& e) {
@@ -1373,10 +1375,7 @@ void TaskSketcherConstraints::onSelectionChanged(const Gui::SelectionChanges& ms
                                 auto tmpBlock = ui->listWidgetConstraints->blockSignals(true);
                                 item->setSelected(select);
                                 ui->listWidgetConstraints->blockSignals(tmpBlock);
-                                if (select && ui->listWidgetConstraints->model()) { // scrollTo only on select, not de-select
-                                    QModelIndex index = ui->listWidgetConstraints->model()->index(i, 0);
-                                    ui->listWidgetConstraints->scrollTo(index, QAbstractItemView::PositionAtCenter);
-                                }
+                                SketcherGui::scrollTo(ui->listWidgetConstraints, i, select);
                                 break;
                             }
                         }

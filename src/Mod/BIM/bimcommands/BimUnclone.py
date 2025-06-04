@@ -1,5 +1,3 @@
-# -*- coding: utf8 -*-
-
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
 # ***************************************************************************
@@ -50,6 +48,7 @@ class BIM_Unclone:
         return v
 
     def Activated(self):
+        import Arch
         import Draft
 
         # get selected object and face

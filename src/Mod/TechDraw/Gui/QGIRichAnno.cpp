@@ -68,6 +68,7 @@ QGIRichAnno::QGIRichAnno() :
 
     m_text = new QGCustomText();
     m_text->setTextInteractionFlags(Qt::NoTextInteraction);
+    m_text->setDefaultTextColor(PreferencesGui::normalQColor());
     addToGroup(m_text);
     m_text->setZValue(ZVALUE::DIMENSION);
     m_text->centerAt(0.0, 0.0);
@@ -83,7 +84,7 @@ QGIRichAnno::QGIRichAnno() :
 
 void QGIRichAnno::updateView(bool update)
 {
-//    Base::Console().Message("QGIRA::updateView() - %s\n", getViewName());
+//    Base::Console().message("QGIRA::updateView() - %s\n", getViewName());
     Q_UNUSED(update);
     auto annoFeat( dynamic_cast<TechDraw::DrawRichAnno*>(getViewObject()) );
     if (!annoFeat) {
@@ -122,19 +123,19 @@ void QGIRichAnno::drawBorder()
 
 void QGIRichAnno::draw()
 {
-//    Base::Console().Log("QGIRA::draw() - %s - parent: %X\n", getFeature()->getNameInDocument(), parentItem());
+//    Base::Console().log("QGIRA::draw() - %s - parent: %X\n", getFeature()->getNameInDocument(), parentItem());
     if (!isVisible())
-//        Base::Console().Message("QGIRA::draw - not visible\n");
+//        Base::Console().message("QGIRA::draw - not visible\n");
         return;
 
     TechDraw::DrawRichAnno* annoFeat = getFeature();
     if (!annoFeat)
-//        Base::Console().Message("QGIRA::draw - no feature\n");
+//        Base::Console().message("QGIRA::draw - no feature\n");
         return;
 
     auto vp = static_cast<ViewProviderRichAnno*>(getViewProvider(getFeature()));
     if (!vp) {
-//        Base::Console().Message("QGIRA::draw - no viewprovider\n");
+//        Base::Console().message("QGIRA::draw - no viewprovider\n");
         return;
     }
 
@@ -145,7 +146,7 @@ void QGIRichAnno::draw()
 
 void QGIRichAnno::setTextItem()
 {
-//    Base::Console().Message("QGIRA::setTextItem() - %s - exportingSvg: %d\n", getViewName(), getExportingSvg());
+//    Base::Console().message("QGIRA::setTextItem() - %s - exportingSvg: %d\n", getViewName(), getExportingSvg());
     TechDraw::DrawRichAnno* annoFeat = getFeature();
 
     // convert the text size

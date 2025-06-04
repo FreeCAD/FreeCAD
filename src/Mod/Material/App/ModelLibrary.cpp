@@ -22,6 +22,7 @@
 #include "PreCompiled.h"
 #ifndef _PreComp_
 #include <string>
+#include <QLatin1Char>
 #endif
 
 #include <QFileInfo>
@@ -38,21 +39,92 @@ using namespace Materials;
 
 TYPESYSTEM_SOURCE(Materials::ModelLibrary, Materials::Library)
 
+ModelLibrary::ModelLibrary(const Library& other)
+    : Library(other)
+{}
+
 ModelLibrary::ModelLibrary(const QString& libraryName,
                            const QString& dir,
-                           const QString& icon,
+                           const QString& iconPath,
                            bool readOnly)
-    : Library(libraryName, dir, icon, readOnly)
-{
-    _modelPathMap = std::make_unique<std::map<QString, std::shared_ptr<Model>>>();
-}
+    : Library(libraryName, dir, iconPath, readOnly)
+{}
 
 ModelLibrary::ModelLibrary()
 {
+}
+
+std::shared_ptr<std::map<QString, std::shared_ptr<ModelTreeNode>>>
+ModelLibrary::getModelTree(ModelFilter filter) const
+{
+    std::shared_ptr<std::map<QString, std::shared_ptr<ModelTreeNode>>> modelTree =
+        std::make_shared<std::map<QString, std::shared_ptr<ModelTreeNode>>>();
+
+    auto models = ModelManager::getManager().libraryModels(getName());
+    for (auto& it : *models) {
+        auto uuid = it.getUUID();
+        auto path = it.getPath();
+        auto filename = it.getName();
+
+        auto model = ModelManager::getManager().getModel(getName(), uuid);
+        if (ModelManager::passFilter(filter, model->getType())) {
+            QStringList list = path.split(QLatin1Char('/'));
+
+            // Start at the root
+            std::shared_ptr<std::map<QString, std::shared_ptr<ModelTreeNode>>> node = modelTree;
+            for (auto& itp : list) {
+                // Add the folder only if it's not already there
+                if (!node->contains(itp)) {
+                    auto mapPtr =
+                        std::make_shared<std::map<QString, std::shared_ptr<ModelTreeNode>>>();
+                    std::shared_ptr<ModelTreeNode> child = std::make_shared<ModelTreeNode>();
+                    child->setFolder(mapPtr);
+                    (*node)[itp] = child;
+                    node = mapPtr;
+                }
+                else {
+                    node = (*node)[itp]->getFolder();
+                }
+            }
+            std::shared_ptr<ModelTreeNode> child = std::make_shared<ModelTreeNode>();
+            child->setUUID(uuid);
+            child->setData(model);
+            (*node)[filename] = child;
+        }
+    }
+
+    return modelTree;
+}
+
+TYPESYSTEM_SOURCE(Materials::ModelLibraryLocal, Materials::ModelLibrary)
+
+ModelLibraryLocal::ModelLibraryLocal(const Library& other)
+    : ModelLibrary(other)
+{
+    setLocal(true);
+
     _modelPathMap = std::make_unique<std::map<QString, std::shared_ptr<Model>>>();
 }
 
-std::shared_ptr<Model> ModelLibrary::getModelByPath(const QString& path) const
+ModelLibraryLocal::ModelLibraryLocal(const QString& libraryName,
+                                     const QString& dir,
+                                     const QString& iconPath,
+                                     bool readOnly)
+    : ModelLibrary(libraryName, dir, iconPath, readOnly)
+{
+    setLocal(true);
+
+    _modelPathMap = std::make_unique<std::map<QString, std::shared_ptr<Model>>>();
+}
+
+ModelLibraryLocal::ModelLibraryLocal()
+{
+    setLocal(true);
+
+    _modelPathMap = std::make_unique<std::map<QString, std::shared_ptr<Model>>>();
+}
+
+std::shared_ptr<Model> ModelLibraryLocal::getModelByPath(const QString& path) const
 {
     QString filePath = getRelativePath(path);
     try {
@@ -64,7 +136,7 @@ std::shared_ptr<Model> ModelLibrary::getModelByPath(const QString& path) const
     }
 }
 
-std::shared_ptr<Model> ModelLibrary::addModel(const Model& model, const QString& path)
+std::shared_ptr<Model> ModelLibraryLocal::addModel(const Model& model, const QString& path)
 {
     QString filePath = getRelativePath(path);
     QFileInfo info(filePath);
@@ -76,47 +148,4 @@ std::shared_ptr<Model> ModelLibrary::addModel(const Model& model, const QString&
     (*_modelPathMap)[filePath] = newModel;
 
     return newModel;
-}
-
-std::shared_ptr<std::map<QString, std::shared_ptr<ModelTreeNode>>>
-ModelLibrary::getModelTree(ModelFilter filter) const
-{
-    std::shared_ptr<std::map<QString, std::shared_ptr<ModelTreeNode>>> modelTree =
-        std::make_shared<std::map<QString, std::shared_ptr<ModelTreeNode>>>();
-
-    for (auto& it : *_modelPathMap) {
-        auto filename = it.first;
-        auto model = it.second;
-
-        if (ModelManager::passFilter(filter, model->getType())) {
-            QStringList list = filename.split(QStringLiteral("/"));
-
-            // Start at the root
-            std::shared_ptr<std::map<QString, std::shared_ptr<ModelTreeNode>>> node = modelTree;
-            for (auto& itp : list) {
-                if (ModelManager::isModel(itp)) {
-                    std::shared_ptr<ModelTreeNode> child = std::make_shared<ModelTreeNode>();
-                    child->setUUID(model->getUUID());
-                    child->setData(model);
-                    (*node)[itp] = child;
-                }
-                else {
-                    // Add the folder only if it's not already there
-                    if (node->count(itp) == 0) {
-                        auto mapPtr =
-                            std::make_shared<std::map<QString, std::shared_ptr<ModelTreeNode>>>();
-                        std::shared_ptr<ModelTreeNode> child = std::make_shared<ModelTreeNode>();
-                        child->setFolder(mapPtr);
-                        (*node)[itp] = child;
-                        node = mapPtr;
-                    }
-                    else {
-                        node = (*node)[itp]->getFolder();
-                    }
-                }
-            }
-        }
-    }
-
-    return modelTree;
 }

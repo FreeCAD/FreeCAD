@@ -40,6 +40,7 @@
 
 #include <App/PropertyUnits.h>
 #include <App/DocumentObjectExtension.h>
+#include <App/FeaturePython.h>
 
 #include "FemPostObject.h"
 
@@ -52,6 +53,8 @@ enum class TransformLocation : size_t
     input,
     output
 };
+
+class FemPostFilterPy;
 
 class FemExport FemPostFilter: public Fem::FemPostObject
 {
@@ -69,11 +72,15 @@ protected:
         std::vector<vtkSmartPointer<vtkAlgorithm>> algorithmStorage;
     };
 
+    // pipeline handling
     void addFilterPipeline(const FilterPipeline& p, std::string name);
-    void setActiveFilterPipeline(std::string name);
     FilterPipeline& getFilterPipeline(std::string name);
+    void setActiveFilterPipeline(std::string name);
 
+    // Transformation handling
     void setTransformLocation(TransformLocation loc);
+
+    friend class FemPostFilterPy;
 
 public:
     /// Constructor
@@ -88,15 +95,20 @@ public:
     vtkSmartPointer<vtkAlgorithm> getFilterInput();
     vtkSmartPointer<vtkAlgorithm> getFilterOutput();
 
+    PyObject* getPyObject() override;
+
 private:
     // handling of multiple pipelines which can be the filter
     std::map<std::string, FilterPipeline> m_pipelines;
     std::string m_activePipeline;
     bool m_use_transform = false;
+    bool m_running_setup = false;
     TransformLocation m_transform_location = TransformLocation::output;
 
     void pipelineChanged();  // inform parents that the pipeline changed
 };
+
+using PostFilterPython = App::FeaturePythonT<FemPostFilter>;
 
 class FemExport FemPostSmoothFilterExtension: public App::DocumentObjectExtension
 {

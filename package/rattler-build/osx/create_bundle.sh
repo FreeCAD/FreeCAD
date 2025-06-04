@@ -1,7 +1,7 @@
 #!/bin/bash
 
 set -e
-set -x 
+set -x
 
 conda_env="FreeCAD.app/Contents/Resources"
 
@@ -41,6 +41,7 @@ find . -name "*.pyc" -type f -delete
 # fix problematic rpaths and reexport_dylibs for signing
 # see https://github.com/FreeCAD/FreeCAD/issues/10144#issuecomment-1836686775
 # and https://github.com/FreeCAD/FreeCAD-Bundle/pull/203
+# and https://github.com/FreeCAD/FreeCAD-Bundle/issues/375
 python ../scripts/fix_macos_lib_paths.py ${conda_env}/lib
 
 # build and install the launcher
@@ -80,6 +81,5 @@ fi
 sha256sum ${version_name}.dmg > ${version_name}.dmg-SHA256.txt
 
 if [[ "${UPLOAD_RELEASE}" == "true" ]]; then
-    gh release create ${BUILD_TAG} --title "Weekly Build ${BUILD_TAG}" --notes "Weekly Build ${BUILD_TAG}" --prerelease || true
     gh release upload --clobber ${BUILD_TAG} "${version_name}.dmg" "${version_name}.dmg-SHA256.txt"
 fi

@@ -211,3 +211,17 @@ class PropertyContainer(Persistence):
             Object with buffer protocol support.
         """
         ...
+
+    @constmethod
+    def renameProperty(self, oldName: str, newName: str) -> None:
+        """
+        renameProperty(oldName, newName) -> None
+
+        Rename a property.
+
+        oldName : str
+            Old property name.
+        newName : str
+            New property name.
+        """
+        ...

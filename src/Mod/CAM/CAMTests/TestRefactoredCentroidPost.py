@@ -141,14 +141,14 @@ G53 G00 G17
 G21
 ;Begin operation
 G54
-;End operation: Fixture
+;End operation
 ;Begin operation
 ;TC: Default Tool
 ;Begin toolchange
 M6 T1
-;End operation: TC: Default Tool
+;End operation
 ;Begin operation
-;End operation: Profile
+;End operation
 ;Begin postamble
 M5
 M25

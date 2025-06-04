@@ -68,10 +68,9 @@ class TestObjectCreate(unittest.TestCase):
 
         # count the def make in ObjectsFem module
         # if FEM VTK post processing is disabled, we are not able to create VTK post objects
-        if "BUILD_FEM_VTK" in FreeCAD.__cmake__:
-            count_defmake = testtools.get_defmake_count()
-        else:
-            count_defmake = testtools.get_defmake_count(False)
+        vtk_objects_used = "BUILD_FEM_VTK" in FreeCAD.__cmake__
+        count_defmake = testtools.get_defmake_count(vtk_objects_used)
+
         # TODO if the children are added to the analysis, they show up twice on Tree
         # thus they are not added to the analysis group ATM
         # https://forum.freecad.org/viewtopic.php?t=25283
@@ -79,12 +78,23 @@ class TestObjectCreate(unittest.TestCase):
         # solver children: equations --> 10
         # gmsh mesh children: group, region, boundary layer --> 3
         # result children: mesh result --> 1
-        # post pipeline children: region, scalar, cut, wrap --> 5
         # analysis itself is not in analysis group --> 1
-        # thus: -20
+        # vtk post pipeline children: region, scalar, cut, wrap, glyph --> 5
+        # vtk python post objects: glyph --> 1
 
-        self.assertEqual(len(doc.Analysis.Group), count_defmake - 20)
-        self.assertEqual(len(doc.Objects), count_defmake)
+        subtraction = 15
+        if vtk_objects_used:
+            subtraction += 6
+
+        self.assertEqual(len(doc.Analysis.Group), count_defmake - subtraction)
+
+        # if vtk used, but python API is not available, the vtk python based objects "def make" functions
+        # have been counted, but will not be executed to create objects
+        failed = 0
+        if vtk_objects_used and not ("BUILD_FEM_VTK_PYTHON" in FreeCAD.__cmake__):
+            failed += 1
+
+        self.assertEqual(len(doc.Objects), count_defmake - failed)
 
         fcc_print(
             "doc objects count: {}, method: {}".format(
@@ -254,7 +264,7 @@ class TestObjectType(unittest.TestCase):
         self.assertEqual(
             "Fem::SolverCcxTools", type_of_obj(ObjectsFem.makeSolverCalculiXCcxTools(doc))
         )
-        self.assertEqual("Fem::SolverCalculix", type_of_obj(ObjectsFem.makeSolverCalculix(doc)))
+        self.assertEqual("Fem::SolverCalculiX", type_of_obj(ObjectsFem.makeSolverCalculiX(doc)))
         self.assertEqual("Fem::SolverElmer", type_of_obj(solverelmer))
         self.assertEqual("Fem::SolverMystran", type_of_obj(ObjectsFem.makeSolverMystran(doc)))
         self.assertEqual("Fem::SolverZ88", type_of_obj(ObjectsFem.makeSolverZ88(doc)))
@@ -434,7 +444,7 @@ class TestObjectType(unittest.TestCase):
         self.assertTrue(
             is_of_type(ObjectsFem.makeSolverCalculiXCcxTools(doc), "Fem::SolverCcxTools")
         )
-        self.assertTrue(is_of_type(ObjectsFem.makeSolverCalculix(doc), "Fem::SolverCalculix"))
+        self.assertTrue(is_of_type(ObjectsFem.makeSolverCalculiX(doc), "Fem::SolverCalculiX"))
         self.assertTrue(is_of_type(solverelmer, "Fem::SolverElmer"))
         self.assertTrue(is_of_type(ObjectsFem.makeSolverMystran(doc), "Fem::SolverMystran"))
         self.assertTrue(is_of_type(ObjectsFem.makeSolverZ88(doc), "Fem::SolverZ88"))
@@ -805,12 +815,12 @@ class TestObjectType(unittest.TestCase):
         self.assertTrue(is_derived_from(solver_ccxtools, "Fem::FemSolverObjectPython"))
         self.assertTrue(is_derived_from(solver_ccxtools, "Fem::SolverCcxTools"))
 
-        # SolverCalculix
-        solver_calculix = ObjectsFem.makeSolverCalculix(doc)
+        # SolverCalculiX
+        solver_calculix = ObjectsFem.makeSolverCalculiX(doc)
         self.assertTrue(is_derived_from(solver_calculix, "App::DocumentObject"))
         self.assertTrue(is_derived_from(solver_calculix, "Fem::FemSolverObject"))
         self.assertTrue(is_derived_from(solver_calculix, "Fem::FemSolverObjectPython"))
-        self.assertTrue(is_derived_from(solver_calculix, "Fem::SolverCalculix"))
+        self.assertTrue(is_derived_from(solver_calculix, "Fem::SolverCalculiX"))
 
         # SolverElmer
         solver_elmer = ObjectsFem.makeSolverElmer(doc)
@@ -1036,7 +1046,7 @@ class TestObjectType(unittest.TestCase):
             ObjectsFem.makeSolverCalculiXCcxTools(doc).isDerivedFrom("Fem::FemSolverObjectPython")
         )
         self.assertTrue(
-            ObjectsFem.makeSolverCalculix(doc).isDerivedFrom("Fem::FemSolverObjectPython")
+            ObjectsFem.makeSolverCalculiX(doc).isDerivedFrom("Fem::FemSolverObjectPython")
         )
         self.assertTrue(solverelmer.isDerivedFrom("Fem::FemSolverObjectPython"))
         self.assertTrue(
@@ -1154,9 +1164,11 @@ def create_all_fem_objects_doc(doc):
         ObjectsFem.makePostVtkFilterCutFunction(doc, vres)
         ObjectsFem.makePostVtkFilterWarp(doc, vres)
         ObjectsFem.makePostVtkFilterContours(doc, vres)
+        if "BUILD_FEM_VTK_PYTHON" in FreeCAD.__cmake__:
+            ObjectsFem.makePostFilterGlyph(doc, vres)
 
     analysis.addObject(ObjectsFem.makeSolverCalculiXCcxTools(doc))
-    analysis.addObject(ObjectsFem.makeSolverCalculix(doc))
+    analysis.addObject(ObjectsFem.makeSolverCalculiX(doc))
     sol = analysis.addObject(ObjectsFem.makeSolverElmer(doc))[0]
     analysis.addObject(ObjectsFem.makeSolverMystran(doc))
     analysis.addObject(ObjectsFem.makeSolverZ88(doc))

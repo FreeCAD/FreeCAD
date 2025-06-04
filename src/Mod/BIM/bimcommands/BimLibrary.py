@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
 # ***************************************************************************
@@ -30,6 +28,7 @@ from __future__ import print_function
 
 import os
 import sys
+import tempfile
 
 import FreeCAD
 import FreeCADGui
@@ -106,7 +105,9 @@ class BIM_Library:
                 # save file paths with forward slashes even on windows
                 pr.SetString("destination", addondir.replace("\\", "/"))
                 libok = True
-        FreeCADGui.Control.showDialog(BIM_Library_TaskPanel(offlinemode=libok))
+        task = FreeCADGui.Control.showDialog(BIM_Library_TaskPanel(offlinemode=libok))
+        task.setDocumentName(FreeCAD.ActiveDocument.Name)
+        task.setAutoCloseOnDeletedDocument(True)
 
 
 class BIM_Library_TaskPanel:
@@ -654,6 +655,7 @@ class BIM_Library_TaskPanel:
     def place(self, path):
 
         import Part
+        import WorkingPlane
 
         self.shape = Part.read(path)
         if hasattr(FreeCADGui, "Snapper"):
@@ -667,8 +669,7 @@ class BIM_Library_TaskPanel:
             self.delta = self.shape.BoundBox.Center
             self.box.move(self.delta)
             self.box.on()
-            if hasattr(FreeCAD, "DraftWorkingPlane"):
-                FreeCAD.DraftWorkingPlane.setup()
+            WorkingPlane.get_working_plane()
             self.origin = self.makeOriginWidget()
             FreeCADGui.Snapper.getPoint(
                 movecallback=self.mouseMove,
@@ -778,43 +779,6 @@ class BIM_Library_TaskPanel:
                 )
             )
 
-    def getOnlineContentsWEB(self, url):
-        """Returns a dirs,files pair representing files found from a github url. OBSOLETE"""
-
-        # obsolete code - now using getOnlineContentsAPI
-        import urllib.request
-        result = {}
-        u = urllib.request.urlopen(url)
-        if u:
-            p = u.read()
-            if sys.version_info.major >= 3:
-                p = str(p)
-            dirs = re.findall(r"<.*?octicon-file-directory.*?href.*?>(.*?)</a>", p)
-            files = re.findall(r'<.*?octicon-file".*?href.*?>(.*?)</a>', p)
-            nfiles = []
-            for f in files:
-                for ft in self.getFilters():
-                    if f.endswith(ft[1:]):
-                        nfiles.append(f)
-                        break
-            files = nfiles
-            for d in dirs:
-                # <spans>
-                if "</span" in d:
-                    d1 = re.findall(r"<span.*?>(.*?)<", d)
-                    d2 = re.findall(r"</span>(.*?)$", d)
-                    if d1 and d2:
-                        d = d1[0] + "/" + d2[0]
-                r = self.getOnlineContentsWEB(url + "/" + d.replace(" ", "%20"))
-                result[d] = r
-            for f in files:
-                result[f] = f
-        else:
-            FreeCAD.Console.PrintError(
-                translate("BIM", "Cannot open URL") + ":" + url + "\n"
-            )
-        return result
-
     def getOnlineContentsAPI(self, url):
         """same as getOnlineContents but uses github API (faster)"""
 
@@ -908,8 +872,6 @@ class BIM_Library_TaskPanel:
         def writeOfflineLib():
             if USE_API:
                 rootfiles = self.getOnlineContentsAPI(LIBRARYURL)
-            else:
-                rootfiles = self.getOnlineContentsWEB(LIBRARYURL)
             if rootfiles:
                 templibfile = os.path.join(TEMPLIBPATH, LIBINDEXFILE)
                 os.makedirs(TEMPLIBPATH, exist_ok=True)

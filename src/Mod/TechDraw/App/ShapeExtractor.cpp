@@ -135,7 +135,7 @@ TopoDS_Shape ShapeExtractor::getShapes(const std::vector<App::DocumentObject*> l
             }
         }
         else {
-            auto shape = Part::Feature::getShape(obj);
+            auto shape = Part::Feature::getShape(obj, Part::ShapeOption::ResolveLink | Part::ShapeOption::Transform);
             // if source obj has a shape, we use that shape.
             if(!SU::isShapeReallyNull(shape)) {
                 if (checkShape(obj, shape)) {
@@ -225,7 +225,8 @@ std::vector<TopoDS_Shape> ShapeExtractor::getXShapes(const App::Link* xLink)
                     childNeedsTransform = true;
                 }
             }
-            auto shape = Part::Feature::getShape(l);    // TODO:  getTopoShape() ?
+            // TODO:  getTopoShape() ?
+            auto shape = Part::Feature::getShape(l, Part::ShapeOption::ResolveLink | Part::ShapeOption::Transform);
             Part::TopoShape ts(shape);
             if (ts.isInfinite()) {
                 shape = ShapeFinder::stripInfiniteShapes(shape);
@@ -248,7 +249,7 @@ std::vector<TopoDS_Shape> ShapeExtractor::getXShapes(const App::Link* xLink)
                 }
                 xSourceShapes.push_back(shape);
             } else {
-                Base::Console().Message("SE::getXShapes - no shape from getXShape\n");
+                Base::Console().message("SE::getXShapes - no shape from getXShape\n");
             }
         }
     } else {
@@ -280,7 +281,7 @@ TopoDS_Shape ShapeExtractor::getShapeFromXLink(const App::Link* xLink)
     App::DocumentObject* linkedObject = xLink->getLink(depth);
     if (linkedObject) {
         // have a linked object, get the shape
-        TopoDS_Shape shape = Part::Feature::getShape(linkedObject);
+        TopoDS_Shape shape = Part::Feature::getShape(linkedObject, Part::ShapeOption::ResolveLink | Part::ShapeOption::Transform);
         if (shape.IsNull()) {
             // this is where we need to parse the target for objects with a shape??
             return TopoDS_Shape();
@@ -297,7 +298,7 @@ TopoDS_Shape ShapeExtractor::getShapeFromXLink(const App::Link* xLink)
             }
         }
         catch (...) {
-            Base::Console().Error("ShapeExtractor failed to retrieve shape from %s\n", xLink->getNameInDocument());
+            Base::Console().error("ShapeExtractor failed to retrieve shape from %s\n", xLink->getNameInDocument());
             return TopoDS_Shape();
         }
         if (checkShape(linkedObject, ts.getShape())) {
@@ -361,7 +362,7 @@ TopoDS_Shape ShapeExtractor::getShapesFused(const std::vector<App::DocumentObjec
             FCBRepAlgoAPI_Fuse mkFuse(fusedShape, aChild);
             // Let's check if the fusion has been successful
             if (!mkFuse.IsDone()) {
-                Base::Console().Error("SE - Fusion failed\n");
+                Base::Console().error("SE - Fusion failed\n");
                 return baseShape;
             }
             fusedShape = mkFuse.Shape();
@@ -445,7 +446,7 @@ Base::Vector3d ShapeExtractor::getLocation3dFromFeat(const App::DocumentObject* 
         return Base::Vector3d(0.0, 0.0, 0.0);
     }
 //    if (isDraftPoint(obj) {
-//        //Draft Points are not necc. Part::PartFeature??
+//        //Draft Points are not necc. Part::Feature??
 //        //if Draft option "use part primitives" is not set are Draft points still PartFeature?
 
     const Part::Feature* pf = dynamic_cast<const Part::Feature*>(obj);
@@ -465,7 +466,7 @@ Base::Vector3d ShapeExtractor::getLocation3dFromFeat(const App::DocumentObject* 
 //! get the located and oriented version of docObj shape
 TopoDS_Shape ShapeExtractor::getLocatedShape(const App::DocumentObject* docObj)
 {
-        Part::TopoShape shape = Part::Feature::getTopoShape(docObj);
+        Part::TopoShape shape = Part::Feature::getTopoShape(docObj, Part::ShapeOption::ResolveLink | Part::ShapeOption::Transform);
         const Part::Feature* pf = dynamic_cast<const Part::Feature*>(docObj);
         if (pf) {
             shape.setPlacement(pf->globalPlacement());
@@ -496,7 +497,7 @@ bool ShapeExtractor::checkShape(const App::DocumentObject* shapeObj, TopoDS_Shap
         }
         // this is ok for devs, but there must be a better way to inform the user from somewhere deep in the
         // call stack. notification area from App?
-        Base::Console().Warning(
+        Base::Console().warning(
             "ShapeExtractor found a problem shape in %s.  Results may be incorrect.\n",
             shapeObj->getNameInDocument());
         return false;

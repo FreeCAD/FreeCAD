@@ -113,7 +113,7 @@ void QGVNavStyleRevit::handleMouseReleaseEvent(QMouseEvent *event)
 
 bool QGVNavStyleRevit::allowContextMenu(QContextMenuEvent *event)
 {
-//    Base::Console().Message("QGVNSRevit::allowContextMenu()\n");
+//    Base::Console().message("QGVNSRevit::allowContextMenu()\n");
     if (event->reason() == QContextMenuEvent::Mouse) {
         //must check for a button combination involving context menu button
         if (QGuiApplication::mouseButtons() & Qt::LeftButton) {

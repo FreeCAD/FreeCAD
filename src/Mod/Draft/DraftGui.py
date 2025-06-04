@@ -156,6 +156,7 @@ class DraftToolBar:
         self.paramconstr = utils.rgba_to_argb(params.get_param("constructioncolor"))
         self.constrMode = False
         self.continueMode = False
+        self.chainedMode = False
         self.relativeMode = True
         self.globalMode = False
         self.state = None
@@ -168,8 +169,8 @@ class DraftToolBar:
         self.x = 0  # coord of the point as displayed in the task panel (global/local and relative/absolute)
         self.y = 0  # idem
         self.z = 0  # idem
-        self.new_point = FreeCAD.Vector()   # global point value
-        self.last_point = FreeCAD.Vector()  # idem
+        self.new_point = None   # global point value
+        self.last_point = None  # idem
         self.lvalue = 0
         self.pvalue = 90
         self.avalue = 0
@@ -390,7 +391,11 @@ class DraftToolBar:
         self.relativeMode = params.get_param("RelativeMode")
         self.globalMode = params.get_param("GlobalMode")
         self.makeFaceMode = params.get_param("MakeFaceMode")
-        self.continueMode = params.get_param("ContinueMode")
+
+        feature_name = getattr(FreeCAD.activeDraftCommand, "featureName", None)
+        self.continueMode = params.get_param(feature_name, "Mod/Draft/ContinueMode", silent=True)
+
+        self.chainedMode = params.get_param("ChainedMode")
 
         # Note: The order of the calls to self._checkbox() below controls
         #       the position of the checkboxes in the task panel.
@@ -399,7 +404,11 @@ class DraftToolBar:
         self.isRelative = self._checkbox("isRelative", self.layout, checked=self.relativeMode)
         self.isGlobal = self._checkbox("isGlobal", self.layout, checked=self.globalMode)
         self.makeFace = self._checkbox("makeFace", self.layout, checked=self.makeFaceMode)
-        self.continueCmd = self._checkbox("continueCmd", self.layout, checked=self.continueMode)
+        self.continueCmd = self._checkbox("continueCmd", self.layout, checked=bool(self.continueMode))
+        self.chainedModeCmd = self._checkbox("chainedModeCmd", self.layout, checked=self.chainedMode)
+
+        self.chainedModeCmd.setEnabled(not (hasattr(self.sourceCmd, "contMode") and self.continueMode))
+        self.continueCmd.setEnabled(not (hasattr(self.sourceCmd, "chain") and self.chainedMode))
 
         # update checkboxes without parameters and without internal modes:
         self.occOffset = self._checkbox("occOffset", self.layout, checked=False)
@@ -449,6 +458,7 @@ class DraftToolBar:
         QtCore.QObject.connect(self.undoButton,QtCore.SIGNAL("pressed()"),self.undoSegment)
         QtCore.QObject.connect(self.selectButton,QtCore.SIGNAL("pressed()"),self.selectEdge)
         QtCore.QObject.connect(self.continueCmd,QtCore.SIGNAL("stateChanged(int)"),self.setContinue)
+        QtCore.QObject.connect(self.chainedModeCmd,QtCore.SIGNAL("stateChanged(int)"),self.setChainedMode)
 
         QtCore.QObject.connect(self.isCopy,QtCore.SIGNAL("stateChanged(int)"),self.setCopymode)
         QtCore.QObject.connect(self.isSubelementMode, QtCore.SIGNAL("stateChanged(int)"), self.setSubelementMode)
@@ -544,16 +554,18 @@ class DraftToolBar:
             "draft", "Finish") + " (" + _get_incmd_shortcut("Exit") + ")")
         self.finishButton.setToolTip(translate(
             "draft", "Finishes the current drawing or editing operation"))
+        self.continueCmd.setText(translate(
+            "draft", "Continue") + " (" + _get_incmd_shortcut("Continue") + ")")
         self.continueCmd.setToolTip(translate(
             "draft", "If checked, command will not finish until you press "
                      + "the command button again"))
-        self.continueCmd.setText(translate(
-            "draft", "Continue") + " (" + _get_incmd_shortcut("Continue") + ")")
+        self.chainedModeCmd.setText(translate("draft", "Chained mode"))
+        self.chainedModeCmd.setToolTip(translate("draft", "If checked, the next Dimension will be placed in a chain" \
+                                       " with the previously placed Dimension"))
+        self.occOffset.setText(translate("draft", "OCC-style offset"))
         self.occOffset.setToolTip(translate(
             "draft", "If checked, an OCC-style offset will be performed"
                      + " instead of the classic offset"))
-        self.occOffset.setText(translate("draft", "OCC-style offset"))
-
         self.undoButton.setText(translate("draft", "Undo") + " (" + _get_incmd_shortcut("Undo") + ")")
         self.undoButton.setToolTip(translate("draft", "Undo the last segment"))
         self.closeButton.setText(translate("draft", "Close") + " (" + _get_incmd_shortcut("Close") + ")")
@@ -603,18 +615,23 @@ class DraftToolBar:
 # Interface modes
 #---------------------------------------------------------------------------
 
-    def taskUi(self,title="Draft",extra=None,icon="Draft_Draft"):
+    def _show_dialog(self, panel):
+        task = FreeCADGui.Control.showDialog(panel)
+        task.setDocumentName(FreeCADGui.ActiveDocument.Document.Name)
+        task.setAutoCloseOnDeletedDocument(True)
+
+    def taskUi(self,title="Draft", extra=None, icon="Draft_Draft"):
         # reset InputField values
         self.reset_ui_values()
         self.isTaskOn = True
-        todo.delay(FreeCADGui.Control.closeDialog,None)
+        todo.delay(FreeCADGui.Control.closeDialog, None)
         self.baseWidget = DraftBaseWidget()
         self.layout = QtWidgets.QVBoxLayout(self.baseWidget)
         self.setupToolBar(task=True)
         self.retranslateUi(self.baseWidget)
-        self.panel = DraftTaskPanel(self.baseWidget,extra)
-        todo.delay(FreeCADGui.Control.showDialog,self.panel)
-        self.setTitle(title,icon)
+        self.panel = DraftTaskPanel(self.baseWidget, extra)
+        todo.delay(self._show_dialog, self.panel)
+        self.setTitle(title, icon)
 
     def redraw(self):
         """utility function that is performed after each clicked point"""
@@ -736,8 +753,8 @@ class DraftToolBar:
         self.x = 0
         self.y = 0
         self.z = 0
-        self.new_point = FreeCAD.Vector()
-        self.last_point = FreeCAD.Vector()
+        self.new_point = None
+        self.last_point = None
         self.pointButton.show()
         if rel: self.isRelative.show()
         todo.delay(self.setFocus, None)
@@ -910,9 +927,9 @@ class DraftToolBar:
                 if self.callback:
                     self.callback()
                 return True
-        todo.delay(FreeCADGui.Control.closeDialog,None)
+        todo.delay(FreeCADGui.Control.closeDialog, None)
         panel = TaskPanel(extra, on_close_call)
-        todo.delay(FreeCADGui.Control.showDialog,panel)
+        todo.delay(self._show_dialog, panel)
 
 
 #---------------------------------------------------------------------------
@@ -920,8 +937,18 @@ class DraftToolBar:
 #---------------------------------------------------------------------------
 
     def setContinue(self, val):
-        params.set_param("ContinueMode", bool(val))
+        params.set_param(FreeCAD.activeDraftCommand.featureName, bool(val), "Mod/Draft/ContinueMode")
         self.continueMode = bool(val)
+        self.chainedModeCmd.setEnabled(not val)
+
+    def setChainedMode(self, val):
+        params.set_param("ChainedMode", bool(val))
+        self.chainedMode = bool(val)
+        self.continueCmd.setEnabled(not val)
+        if val == False:
+            # If user has deselected the checkbox, reactive the command
+            # which will result in closing it
+            FreeCAD.activeDraftCommand.Activated()
 
     # val=-1 is used to temporarily switch to relativeMode and disable the checkbox.
     # val=-2 is used to switch back.
@@ -1128,6 +1155,10 @@ class DraftToolBar:
             if hasattr(FreeCADGui,"Snapper"):
                 FreeCADGui.Snapper.addHoldPoint()
             spec = True
+        elif txt == _get_incmd_shortcut("Recenter"):
+            if hasattr(FreeCADGui,"Snapper"):
+                FreeCADGui.Snapper.recenter_workingplane()
+            spec = True
         elif txt == _get_incmd_shortcut("Snap"):
             self.togglesnap()
             spec = True
@@ -1228,7 +1259,7 @@ class DraftToolBar:
                 plane = WorkingPlane.get_working_plane(update=False)
             if not last:
                 if self.globalMode:
-                    last = FreeCAD.Vector(0,0,0)
+                    last = FreeCAD.Vector()
                 else:
                     last = plane.position
 
@@ -1576,9 +1607,13 @@ class DraftToolBar:
 
     def get_last_point(self):
         """Get the last point in the GCS."""
-        if hasattr(self.sourceCmd, "node") and self.sourceCmd.node:
+        if getattr(self.sourceCmd, "node", []):
             return self.sourceCmd.node[-1]
-        return self.last_point
+        if self.last_point is not None:
+            return self.last_point
+        if self.globalMode:
+            return FreeCAD.Vector()
+        return WorkingPlane.get_working_plane(update=False).position
 
     def get_new_point(self, delta):
         """Get the new point in the GCS.
@@ -1586,9 +1621,10 @@ class DraftToolBar:
         The delta vector (from the task panel) can be global/local
         and relative/absolute.
         """
-        plane = WorkingPlane.get_working_plane(update=False)
-        base_point = FreeCAD.Vector()
-        if plane and not self.globalMode:
+        if self.globalMode:
+            base_point = FreeCAD.Vector()
+        else:
+            plane = WorkingPlane.get_working_plane(update=False)
             delta = plane.get_global_coords(delta, as_vector=True)
             base_point = plane.position
         if self.relativeMode:
@@ -1647,8 +1683,8 @@ class DraftToolBar:
         self.x = 0
         self.y = 0
         self.z = 0
-        self.new_point = FreeCAD.Vector()
-        self.last_point = FreeCAD.Vector()
+        self.new_point = None
+        self.last_point = None
         self.lvalue = 0
         self.pvalue = 90
         self.avalue = 0

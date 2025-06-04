@@ -56,7 +56,18 @@
 using namespace SpreadsheetGui;
 using namespace Spreadsheet;
 using namespace App;
-namespace sp = std::placeholders;
+
+void SheetViewHeader::mouseMoveEvent(QMouseEvent* e)
+{
+    // for some reason QWidget::setCursor() has no effect in QGraphicsView
+    // therefore we resort to override cursor
+    const QCursor currentCursor = this->cursor();
+    QHeaderView::mouseMoveEvent(e);
+    const QCursor newerCursor = this->cursor();
+    if (newerCursor != currentCursor) {
+        qApp->setOverrideCursor(newerCursor);
+    }
+}
 
 void SheetViewHeader::mouseReleaseEvent(QMouseEvent* event)
 {
@@ -806,7 +817,7 @@ void SheetTableView::pasteClipboard()
         GetApplication().getActiveDocument()->recompute();
     }
     catch (Base::Exception& e) {
-        e.ReportException();
+        e.reportException();
         QMessageBox::critical(Gui::getMainWindow(),
                               QObject::tr("Copy & Paste failed"),
                               QString::fromLatin1(e.what()));

@@ -25,6 +25,7 @@
 #include <QApplication>
 #endif  // #ifndef _PreComp_
 
+#include <Base/Tools.h>
 #include <Mod/Sketcher/App/SketchObject.h>
 
 #include "SnapManager.h"
@@ -122,8 +123,8 @@ void SnapManager::ParameterObserver::updateSnapAngleParameter(const std::string&
 {
     ParameterGrp::handle hGrp = getParameterGrpHandle();
 
-    client.snapAngle = fmod(hGrp->GetFloat(parametername.c_str(), 5.) * std::numbers::pi / 180,
-                            2 * std::numbers::pi);
+    client.snapAngle =
+        fmod(Base::toRadians(hGrp->GetFloat(parametername.c_str(), 5.)), 2 * std::numbers::pi);
 }
 
 void SnapManager::ParameterObserver::subscribeToParameters()
@@ -134,7 +135,7 @@ void SnapManager::ParameterObserver::subscribeToParameters()
     }
     catch (const Base::ValueError& e) {  // ensure that if parameter strings are not well-formed,
                                          // the exception is not propagated
-        Base::Console().DeveloperError("SnapManager", "Malformed parameter string: %s\n", e.what());
+        Base::Console().developerError("SnapManager", "Malformed parameter string: %s\n", e.what());
     }
 }
 
@@ -147,7 +148,7 @@ void SnapManager::ParameterObserver::unsubscribeToParameters()
     catch (const Base::ValueError&
                e) {  // ensure that if parameter strings are not well-formed, the program is not
                      // terminated when calling the noexcept destructor.
-        Base::Console().DeveloperError("SnapManager", "Malformed parameter string: %s\n", e.what());
+        Base::Console().developerError("SnapManager", "Malformed parameter string: %s\n", e.what());
     }
 }
 
@@ -279,7 +280,7 @@ bool SnapManager::snapToObject(double& x, double& y)
                 pointToOverride = curve->pointAtParameter(pointParam);
             }
             catch (Base::CADKernelError& e) {
-                e.ReportException();
+                e.reportException();
                 return false;
             }
 

@@ -26,6 +26,7 @@
 #ifndef _PreComp_
 #include <boost/algorithm/string/predicate.hpp>
 #include <QApplication>
+#include <QClipboard>
 #include <QInputDialog>
 #include <QHeaderView>
 #include <QMenu>
@@ -377,16 +378,16 @@ void PropertyEditor::recomputeDocument(App::Document* doc)
     }
     // do not re-throw
     catch (const Base::Exception& e) {
-        e.ReportException();
+        e.reportException();
     }
     catch (const std::exception& e) {
-        Base::Console().Error(
+        Base::Console().error(
             "Unhandled std::exception caught in PropertyEditor::recomputeDocument.\n"
             "The error message is: %s\n",
             e.what());
     }
     catch (...) {
-        Base::Console().Error(
+        Base::Console().error(
             "Unhandled unknown exception caught in PropertyEditor::recomputeDocument.\n");
     }
 }
@@ -612,7 +613,7 @@ void PropertyEditor::buildUp(PropertyModel::PropertyList&& props, bool _checkDoc
     checkDocument = _checkDocument;
 
     if (committing) {
-        Base::Console().Warning(
+        Base::Console().warning(
             "While committing the data to the property the selection has changed.\n");
         delaybuild = true;
         return;
@@ -709,6 +710,7 @@ enum MenuAction
     MA_Touched,
     MA_EvalOnRestore,
     MA_CopyOnChange,
+    MA_Copy,
 };
 
 void PropertyEditor::contextMenuEvent(QContextMenuEvent*)
@@ -732,6 +734,15 @@ void PropertyEditor::contextMenuEvent(QContextMenuEvent*)
                 props.insert(ps.begin(), ps.end());
                 break;
             }
+        }
+        if (index.column() > 0) {
+            continue;
+        }
+        const QVariant valueToCopy = contextIndex.data(Qt::DisplayRole);
+        if (valueToCopy.isValid()) {
+            QAction* copyAction = menu.addAction(tr("Copy"));
+            copyAction->setData(QVariant(MA_Copy));
+            menu.addSeparator();
         }
     }
 
@@ -848,6 +859,14 @@ void PropertyEditor::contextMenuEvent(QContextMenuEvent*)
         case MA_ShowHidden:
             PropertyView::setShowAll(action->isChecked());
             return;
+        case MA_Copy: {
+            const QVariant valueToCopy = contextIndex.data(Qt::DisplayRole);
+            if (valueToCopy.isValid()) {
+                auto *clipboard = QApplication::clipboard();
+                clipboard->setText(valueToCopy.toString());
+            }
+            return;
+        }
 #define ACTION_CHECK(_name)                                                                        \
     case MA_##_name:                                                                               \
         for (auto prop : props)                                                                    \
@@ -919,7 +938,7 @@ void PropertyEditor::contextMenuEvent(QContextMenuEvent*)
                     prop->getContainer()->removeDynamicProperty(prop->getName());
                 }
                 catch (Base::Exception& e) {
-                    e.ReportException();
+                    e.reportException();
                 }
             }
             break;

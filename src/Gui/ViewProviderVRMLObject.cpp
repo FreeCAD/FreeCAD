@@ -232,7 +232,7 @@ void ViewProviderVRMLObject::updateData(const App::Property* prop)
 
             if (node) {
                 if (!checkRecursion(node)) {
-                    Base::Console().Error("The VRML file causes an infinite recursion!\n");
+                    Base::Console().error("The VRML file causes an infinite recursion!\n");
                     return;
                 }
                 pcVRML->addChild(node);

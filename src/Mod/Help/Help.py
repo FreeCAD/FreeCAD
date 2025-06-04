@@ -237,7 +237,10 @@ def get_location(page) -> tuple:
                 "FreeCAD-documentation-main",
                 "wiki",
             )
-        location = os.path.join(location, page + ".md")
+        for ext in (".md", ".html", ".htm"):
+            if os.path.exists(os.path.join(location, page + ext)):
+                location = os.path.join(location, page + ext)
+                break
     return (location, pagename)
 
 
@@ -460,7 +463,7 @@ def openBrowserHTML(html, baseurl, title, icon, dialog=False):
 
     # save dock widget size and location
     def onDockLocationChanged(area):
-        PREFS.SetInt("dockWidgetArea", int(area))
+        PREFS.SetInt("dockWidgetArea", int(area.value))
         mw = FreeCADGui.getMainWindow()
         dock = mw.findChild(QtWidgets.QDockWidget, "HelpWidget")
         if dock:

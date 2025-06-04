@@ -3,6 +3,7 @@
 # ***************************************************************************
 # *                                                                         *
 # *   Copyright (c) 2013 Yorik van Havre <yorik@uncreated.net>              *
+# *   Copyright (c) 2025 Furgo                                              *
 # *                                                                         *
 # *   This file is part of FreeCAD.                                         *
 # *                                                                         *
@@ -25,7 +26,6 @@
 # Unit tests for the Arch space module
 
 import os
-import unittest
 import Arch
 import Draft
 import Part
@@ -151,7 +151,7 @@ class TestArchSpace(TestArchBase.TestArchBase):
             # space = App.ActiveDocument.Space
         else:
             # Also tests the alternative way of specifying the boundaries
-            # [ (<Part::PartFeature>, ["Face1", ...]), ... ]
+            # [ (<Part::Feature>, ["Face1", ...]), ... ]
             space = Arch.makeSpace([(wall, boundaries)])
 
         App.ActiveDocument.recompute() # To calculate space area

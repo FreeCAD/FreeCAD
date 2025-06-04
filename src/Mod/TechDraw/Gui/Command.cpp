@@ -317,7 +317,7 @@ void CmdTechDrawView::activated(int iMsg)
     std::string PageName = page->getNameInDocument();
 
     // switch to the page if it's not current active window
-    auto* vpp = dynamic_cast<ViewProviderPage*>
+    auto* vpp = freecad_cast<ViewProviderPage*>
         (Gui::Application::Instance->getViewProvider(page));
     if (vpp) {
         vpp->show();
@@ -731,7 +731,7 @@ CmdTechDrawSectionGroup::CmdTechDrawSectionGroup() : Command("TechDraw_SectionGr
 
 void CmdTechDrawSectionGroup::activated(int iMsg)
 {
-    //    Base::Console().Message("CMD::SectionGrp - activated(%d)\n", iMsg);
+    //    Base::Console().message("CMD::SectionGrp - activated(%d)\n", iMsg);
     Gui::TaskView::TaskDialog* dlg = Gui::Control().activeDialog();
     if (dlg) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Task In Progress"),
@@ -749,7 +749,7 @@ void CmdTechDrawSectionGroup::activated(int iMsg)
             execComplexSection(this);
             break;
         default:
-            Base::Console().Message("CMD::SectionGrp - invalid iMsg: %d\n", iMsg);
+            Base::Console().message("CMD::SectionGrp - invalid iMsg: %d\n", iMsg);
     };
 }
 
@@ -1296,9 +1296,9 @@ void CmdTechDrawBalloon::activated(int iMsg)
     std::string PageName = page->getNameInDocument();
 
     Gui::Document* guiDoc = Gui::Application::Instance->getDocument(page->getDocument());
-    ViewProviderPage* pageVP = dynamic_cast<ViewProviderPage*>(guiDoc->getViewProvider(page));
+    ViewProviderPage* pageVP = freecad_cast<ViewProviderPage*>(guiDoc->getViewProvider(page));
     ViewProviderDrawingView* viewVP =
-        dynamic_cast<ViewProviderDrawingView*>(guiDoc->getViewProvider(objFeat));
+        freecad_cast<ViewProviderDrawingView*>(guiDoc->getViewProvider(objFeat));
 
     if (pageVP && viewVP) {
         QGVPage* viewPage = pageVP->getQGVPage();
@@ -1711,6 +1711,8 @@ void CmdTechDrawArchView::activated(int iMsg)
               SourceName.c_str());
     doCommand(Doc, "App.activeDocument().%s.addView(App.activeDocument().%s)", PageName.c_str(),
               FeatName.c_str());
+    doCommand(Doc, "if App.activeDocument().%s.Scale: App.activeDocument().%s.Scale = App.activeDocument().%s.Scale",
+        PageName.c_str(), FeatName.c_str(), PageName.c_str());
     updateActive();
     commitCommand();
 }
@@ -1818,7 +1820,7 @@ void CmdTechDrawExportPageSVG::activated(int iMsg)
 
     Gui::Document* activeGui = Gui::Application::Instance->getDocument(page->getDocument());
     Gui::ViewProvider* vp = activeGui->getViewProvider(page);
-    ViewProviderPage* vpPage = dynamic_cast<ViewProviderPage*>(vp);
+    ViewProviderPage* vpPage = freecad_cast<ViewProviderPage*>(vp);
 
     if (vpPage) {
         vpPage->show();  // make sure a mdi will be available

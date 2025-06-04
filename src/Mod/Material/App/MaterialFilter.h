@@ -164,7 +164,7 @@ public:
      *
      * Models only need to be included in one set.
      */
-    bool modelIncluded(const std::shared_ptr<Material>& material) const;
+    bool modelIncluded(const Material& material) const;
     bool modelIncluded(const QString& uuid) const;
 
     /* Add model UUIDs for required models, or models that are both required

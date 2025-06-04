@@ -50,7 +50,7 @@ std::string AxisOriginPy::representation() const
     return "<AxisOrigin>";
 }
 
-PyObject* AxisOriginPy::getElementPicked(PyObject* args)
+PyObject* AxisOriginPy::getElementPicked(PyObject* args) const
 {
     PyObject *obj;
     if (!PyArg_ParseTuple(args, "O", &obj))
@@ -71,7 +71,7 @@ PyObject* AxisOriginPy::getElementPicked(PyObject* args)
     return Py::new_reference_to(Py::String(name));
 }
 
-PyObject* AxisOriginPy::getDetailPath(PyObject* args)
+PyObject* AxisOriginPy::getDetailPath(PyObject* args) const
 {
     const char *sub;
     PyObject *path;

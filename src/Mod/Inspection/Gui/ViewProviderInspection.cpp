@@ -121,13 +121,13 @@ ViewProviderInspection::~ViewProviderInspection()
         deleteColorBar();
     }
     catch (Base::Exception& e) {
-        Base::Console().DestructorError(
+        Base::Console().destructorError(
             "ViewProviderInspection",
             "ViewProviderInspection::deleteColorBar() threw an exception: %s\n",
             e.what());
     }
     catch (...) {
-        Base::Console().DestructorError(
+        Base::Console().destructorError(
             "ViewProviderInspection",
             "ViewProviderInspection destructor threw an unknown exception");
     }
@@ -583,7 +583,7 @@ void ViewProviderInspection::inspectCallback(void* ud, SoEventCallback* n)
                  && mbe->getState() == SoButtonEvent::UP) {
             const SoPickedPoint* point = n->getPickedPoint();
             if (!point) {
-                Base::Console().Message("No point picked.\n");
+                Base::Console().message("No point picked.\n");
                 return;
             }
 

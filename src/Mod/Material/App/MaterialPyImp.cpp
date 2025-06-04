@@ -87,15 +87,19 @@ Py::String MaterialPy::getLibraryRoot() const
     return "";
 }
 
-Py::String MaterialPy::getLibraryIcon() const
+Py::Object MaterialPy::getLibraryIcon() const
 {
     auto library = getMaterialPtr()->getLibrary();
     if (library->isLocal()) {
         auto materialLibrary =
             reinterpret_cast<const std::shared_ptr<Materials::MaterialLibraryLocal>&>(library);
-        return {materialLibrary ? materialLibrary->getIconPath().toStdString() : ""};
+        auto icon = materialLibrary->getIcon();
+        if (icon.isNull()) {
+            return Py::Bytes();
+        }
+        return Py::Bytes(icon.data(), icon.size());
     }
-    return "";
+    return Py::Bytes();
 }
 
 Py::String MaterialPy::getName() const
@@ -551,6 +555,7 @@ PyObject* MaterialPy::setAppearanceValue(PyObject* args)
     Py_INCREF(Py_None);
     return Py_None;
 }
+
 PyObject* MaterialPy::setValue(PyObject* args)
 {
     char* name;
@@ -595,7 +600,8 @@ PyObject* MaterialPy::setValue(PyObject* args)
         Py_Return;
     }
 
-    PyErr_SetString(PyExc_TypeError, "Either a string, a list, or an array are expected");
+    PyErr_SetString(PyExc_TypeError,
+                    "Either a string, a list, or an array are expected");
     return nullptr;
 }
 

@@ -358,20 +358,15 @@ public:
             tryViewValueChanged(onviewparameterindex, value);
         }
         catch (const Base::Exception& e) {
-            e.ReportException();
+            e.reportException();
         }
         catch (const std::exception& e) {
-            Base::Console().Error("C++ exception in onViewValueChanged: %s\n", e.what());
+            Base::Console().error("C++ exception in onViewValueChanged: %s\n", e.what());
         }
     }
 
     void tryViewValueChanged(int onviewparameterindex, double value)
     {
-        int nextindex = onviewparameterindex + 1;
-        if (isOnViewParameterOfCurrentMode(nextindex)) {
-            setFocusToOnViewParameter(nextindex);
-        }
-
         /* That is not supported with on-view parameters.
         // -> A machine does not forward to a next state when adapting the parameter (though it
         // may forward to
@@ -630,6 +625,7 @@ protected:
     void unsetOnViewParameter(Gui::EditableDatumLabel* onViewParameter)
     {
         onViewParameter->isSet = false;
+        onViewParameter->hasFinishedEditing = false;
         onViewParameter->setColor(colorManager.dimConstrDeactivatedColor);
     }
 

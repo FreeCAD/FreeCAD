@@ -89,7 +89,7 @@ InputField::InputField(QWidget * parent)
     iconLabel->setCursor(Qt::ArrowCursor);
     QFontMetrics fm(font());
     int iconSize = fm.height();
-    QPixmap pixmap = getValidationIcon(":/icons/button_valid.svg", QSize(iconSize, iconSize));
+    QPixmap pixmap = getValidationIcon(":/icons/button_invalid.svg", QSize(iconSize, iconSize));
     iconLabel->setPixmap(pixmap);
     iconLabel->hide();
     connect(this, &QLineEdit::textChanged, this, &InputField::updateIconLabel);
@@ -195,7 +195,7 @@ void InputField::resizeEvent(QResizeEvent * /*event*/)
 
 void InputField::updateIconLabel(const QString& text)
 {
-    iconLabel->setVisible(!text.isEmpty());
+    iconLabel->setVisible(text.isEmpty());
 }
 
 void InputField::contextMenuEvent(QContextMenuEvent *event)
@@ -270,28 +270,30 @@ void InputField::newInput(const QString & text)
     }
     catch(Base::Exception &e){
         QString errorText = QString::fromLatin1(e.what());
-        QPixmap pixmap = getValidationIcon(":/icons/button_invalid.svg", iconLabel->sizeHint());
-        iconLabel->setPixmap(pixmap);
+        if (iconLabel->isHidden()) {
+            iconLabel->setVisible(true);
+        }
         Q_EMIT parseError(errorText);
         validInput = false;
         return;
     }
 
-    if (res.getUnit().isEmpty())
+    if (res.isDimensionless())
         res.setUnit(this->actUnit);
 
     // check if unit fits!
-    if(!actUnit.isEmpty() && !res.getUnit().isEmpty() && actUnit != res.getUnit()){
-        QPixmap pixmap = getValidationIcon(":/icons/button_invalid.svg", iconLabel->sizeHint());
-        iconLabel->setPixmap(pixmap);
+    if (actUnit != Unit::One && !res.isDimensionless() && actUnit != res.getUnit()){
+        if (iconLabel->isHidden()) {
+            iconLabel->setVisible(true);
+        }
         Q_EMIT parseError(QStringLiteral("Wrong unit"));
         validInput = false;
         return;
     }
 
-
-    QPixmap pixmap = getValidationIcon(":/icons/button_valid.svg", iconLabel->sizeHint());
-    iconLabel->setPixmap(pixmap);
+    if (iconLabel->isVisible()) {
+        iconLabel->setVisible(false);
+    }
     validInput = true;
 
     if (res.getValue() > Maximum){
@@ -642,7 +644,7 @@ void InputField::focusInEvent(QFocusEvent *event)
 void InputField::focusOutEvent(QFocusEvent *event)
 {
     try {
-        if (Quantity::parse(this->text().toStdString()).getUnit().isEmpty()) {
+        if (Quantity::parse(this->text().toStdString()).isDimensionless()) {
             // if user didn't enter a unit, we virtually compensate
             // the multiplication factor induced by user unit system
             double factor;

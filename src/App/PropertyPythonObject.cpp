@@ -51,7 +51,7 @@ PropertyPythonObject::~PropertyPythonObject()
     try {
         this->object = Py::Object();
     } catch (Py::TypeError &) {
-        Base::Console().Warning("Py::TypeError Exception caught while destroying PropertyPythonObject\n");
+        Base::Console().warning("Py::TypeError Exception caught while destroying PropertyPythonObject\n");
     }
 }
 
@@ -122,10 +122,10 @@ std::string PropertyPythonObject::toString() const
     }
     catch (Py::Exception&) {
         Py::String typestr(this->object.type().str());
-        Base::Console().Error("PropertyPythonObject::toString(): failed for %s\n",
+        Base::Console().error("PropertyPythonObject::toString(): failed for %s\n",
                               typestr.as_string().c_str());
         Base::PyException e;  // extract the Python error text
-        e.ReportException();
+        e.reportException();
     }
 
     return repr;
@@ -175,7 +175,7 @@ void PropertyPythonObject::fromString(const std::string& repr)
     }
     catch (Py::Exception&) {
         Base::PyException e;  // extract the Python error text
-        e.ReportException();
+        e.reportException();
     }
 }
 
@@ -201,7 +201,7 @@ void PropertyPythonObject::loadPickle(const std::string& str)
     }
     catch (Py::Exception&) {
         Base::PyException e;  // extract the Python error text
-        e.ReportException();
+        e.reportException();
     }
 }
 
@@ -277,13 +277,13 @@ void PropertyPythonObject::restoreObject(Base::XMLReader& reader)
     try {
         PropertyContainer* parent = this->getContainer();
         if (reader.hasAttribute("object")) {
-            if (strcmp(reader.getAttribute("object"), "yes") == 0) {
+            if (strcmp(reader.getAttribute<const char*>("object"), "yes") == 0) {
                 Py::Object obj = Py::asObject(parent->getPyObject());
                 this->object.setAttr("__object__", obj);
             }
         }
         if (reader.hasAttribute("vobject")) {
-            if (strcmp(reader.getAttribute("vobject"), "yes") == 0) {
+            if (strcmp(reader.getAttribute<const char*>("vobject"), "yes") == 0) {
                 Py::Object obj = Py::asObject(parent->getPyObject());
                 this->object.setAttr("__vobject__", obj);
             }
@@ -293,10 +293,10 @@ void PropertyPythonObject::restoreObject(Base::XMLReader& reader)
         e.clear();
     }
     catch (const Base::Exception& e) {
-        Base::Console().Error("%s\n", e.what());
+        Base::Console().error("%s\n", e.what());
     }
     catch (...) {
-        Base::Console().Error("Critical error in PropertyPythonObject::restoreObject\n");
+        Base::Console().error("Critical error in PropertyPythonObject::restoreObject\n");
     }
 }
 
@@ -324,7 +324,7 @@ void PropertyPythonObject::Save(Base::Writer& writer) const
     }
     catch (Py::Exception&) {
         Base::PyException e;  // extract the Python error text
-        e.ReportException();
+        e.reportException();
     }
 
     saveObject(writer);
@@ -335,15 +335,15 @@ void PropertyPythonObject::Restore(Base::XMLReader& reader)
 {
     reader.readElement("Python");
     if (reader.hasAttribute("file")) {
-        std::string file(reader.getAttribute("file"));
+        std::string file(reader.getAttribute<const char*>("file"));
         reader.addFile(file.c_str(), this);
     }
     else {
         bool load_json = false;
         bool load_pickle = false;
         bool load_failed = false;
-        std::string buffer = reader.getAttribute("value");
-        if (reader.hasAttribute("encoded") && strcmp(reader.getAttribute("encoded"), "yes") == 0) {
+        std::string buffer = reader.getAttribute<const char*>("value");
+        if (reader.hasAttribute("encoded") && strcmp(reader.getAttribute<const char*>("encoded"), "yes") == 0) {
             buffer = Base::base64_decode(buffer);
         }
         else {
@@ -358,15 +358,15 @@ void PropertyPythonObject::Restore(Base::XMLReader& reader)
             start = buffer.begin();
             end = buffer.end();
             if (reader.hasAttribute("module") && reader.hasAttribute("class")) {
-                Py::Module mod(PyImport_ImportModule(reader.getAttribute("module")), true);
+                Py::Module mod(PyImport_ImportModule(reader.getAttribute<const char*>("module")), true);
                 if (mod.isNull()) {
                     throw Py::Exception();
                 }
-                PyObject* cls = mod.getAttr(reader.getAttribute("class")).ptr();
+                PyObject* cls = mod.getAttr(reader.getAttribute<const char*>("class")).ptr();
                 if (!cls) {
                     std::stringstream s;
-                    s << "Module " << reader.getAttribute("module") << " has no class "
-                      << reader.getAttribute("class");
+                    s << "Module " << reader.getAttribute<const char*>("module") << " has no class "
+                      << reader.getAttribute<const char*>("class");
                     throw Py::AttributeError(s.str());
                 }
                 if (PyType_Check(cls)) {
@@ -394,7 +394,7 @@ void PropertyPythonObject::Restore(Base::XMLReader& reader)
         }
         catch (Py::Exception&) {
             Base::PyException e;  // extract the Python error text
-            e.ReportException();
+            e.reportException();
             this->object = Py::None();
             load_failed = true;
         }
@@ -407,7 +407,7 @@ void PropertyPythonObject::Restore(Base::XMLReader& reader)
             this->loadPickle(buffer);
         }
         else if (!load_failed) {
-            Base::Console().Warning(
+            Base::Console().warning(
                 "PropertyPythonObject::Restore: unsupported serialisation: %s\n",
                 buffer.c_str());
         }

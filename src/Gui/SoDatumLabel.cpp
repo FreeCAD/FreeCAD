@@ -48,6 +48,8 @@
 # include <Inventor/misc/SoState.h>
 #endif // _PreComp_
 
+#include <Base/Tools.h>
+
 #include <Gui/BitmapFactory.h>
 #include <Gui/Tools.h>
 
@@ -550,7 +552,7 @@ private:
         float startangle = atan2f(vc1[1], vc1[0]);
         float endangle = atan2f(vc2[1], vc2[0]);
         if (endangle < startangle) {
-            endangle += 2. * std::numbers::pi;
+            endangle += 2.F * std::numbers::pi_v<float>;
         }
 
         SbVec3f textCenter;
@@ -695,7 +697,7 @@ SbVec3f SoDatumLabel::getLabelTextCenterArcLength(const SbVec3f& ctr, const SbVe
     float endangle = atan2f(vc2[1], vc2[0]);
 
     if (endangle < startangle) {
-        endangle += 2. * std::numbers::pi;
+        endangle += 2.F * std::numbers::pi_v<float>;
     }
 
     // Text location
@@ -1454,7 +1456,7 @@ void SoDatumLabel::drawAngle(const SbVec3f* points, float& angle, SbVec3f& textO
     SbVec3f v0(cos(startangle+range/2),sin(startangle+range/2),0);
 
     // leave some space for the text
-    double textMargin = std::min(0.2F*range,  this->imgWidth/(2*r));
+    double textMargin = std::min(0.2F * abs(range), this->imgWidth / (2 * r));
 
     textOffset = p0 + v0 * r;
 
@@ -1463,8 +1465,12 @@ void SoDatumLabel::drawAngle(const SbVec3f* points, float& angle, SbVec3f& textO
     glDrawArc(p0, r, startangle+range/2.+textMargin, endangle);
 
     // Direction vectors for start and end lines
-    SbVec3f v1(cos(startangle),sin(startangle),0);
-    SbVec3f v2(cos(endangle),sin(endangle),0);
+    SbVec3f v1(cos(startangle), sin(startangle), 0);
+    SbVec3f v2(cos(endangle), sin(endangle), 0);
+
+    if (range < 0) {
+        std::swap(v1, v2);
+    }
 
     SbVec3f pnt1 = p0 + (r - endLineLength1) * v1;
     SbVec3f pnt2 = p0 + (r + endLineLength12) * v1;
@@ -1485,7 +1491,6 @@ void SoDatumLabel::drawAngle(const SbVec3f* points, float& angle, SbVec3f& textO
     SbVec3f dirEnd(-v2[1], v2[0], 0);
     SbVec3f endArrowBase = p0 + r * v2;
     glDrawArrow(endArrowBase, dirEnd, arrowWidth, arrowLength);
-
 }
 
 void SoDatumLabel::drawSymmetric(const SbVec3f* points)
@@ -1691,7 +1696,7 @@ void SoDatumLabel::drawText(SoState *state, int srcw, int srch, float angle, con
 
     // Apply a rotation and translation matrix
     glTranslatef(textOffset[0], textOffset[1], textOffset[2]);
-    glRotatef((GLfloat) angle * 180 / std::numbers::pi, 0,0,1);
+    glRotatef(Base::toDegrees<GLfloat>(angle), 0,0,1);
     glBegin(GL_QUADS);
 
     glColor3f(1.F, 1.F, 1.F);

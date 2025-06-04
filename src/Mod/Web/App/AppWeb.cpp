@@ -187,6 +187,6 @@ PyMOD_INIT_FUNC(Web)
     //
     //
     PyObject* mod = Web::initModule();
-    Base::Console().Log("Loading Web module... done\n");
+    Base::Console().log("Loading Web module... done\n");
     PyMOD_Return(mod);
 }

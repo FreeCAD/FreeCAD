@@ -1,10 +1,10 @@
-if ( EXISTS "${CMAKE_SOURCE_DIR}/tests/lib/googletest" )
-    include_directories( ${CMAKE_SOURCE_DIR}/tests/lib/googletest/include/ )
-    include_directories( ${CMAKE_SOURCE_DIR}/tests/lib/googlemock/include/ )
+if(FREECAD_USE_EXTERNAL_GTEST)
+    find_package(GTest REQUIRED)
+    set(Google_Tests_LIBS ${GTEST_LIBRARIES} ${GMOCK_LIBRARIES})
 else()
-    find_package(GTest)
-    if( GTest_FOUND )
-        message( STATUS "Found Google Test: version ${GTest_VERSION}" )
+    if ( EXISTS "${CMAKE_SOURCE_DIR}/tests/lib/googletest" )
+        include_directories( ${CMAKE_SOURCE_DIR}/tests/lib/googletest/include/ )
+        include_directories( ${CMAKE_SOURCE_DIR}/tests/lib/googlemock/include/ )
     else()
         message( SEND_ERROR "The Google Test submodule is not available. Please run git submodule update --init" )
     endif()
@@ -114,6 +114,9 @@ endif(BUILD_SKETCHER)
 if(BUILD_SPREADSHEET)
   list (APPEND TestExecutables Spreadsheet_tests_run)
 endif()
+if(BUILD_START)
+  list (APPEND TestExecutables Start_tests_run)
+endif()
 
 # -------------------------
 
@@ -121,7 +124,7 @@ foreach (exe ${TestExecutables})
     add_executable(${exe})
 endforeach()
 
-if ( EXISTS "${CMAKE_SOURCE_DIR}/tests/lib/googletest" )
+if ( NOT FREECAD_USE_EXTERNAL_GTEST )
     add_subdirectory(lib)
 endif()
 add_subdirectory(src)
@@ -131,6 +134,7 @@ target_link_libraries(Tests_run
     gmock_main
     ${Google_Tests_LIBS}
     FreeCADApp
+    FreeCADGui
 )
 
 include(GoogleTest)

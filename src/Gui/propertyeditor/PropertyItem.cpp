@@ -29,6 +29,7 @@
 #include <limits>
 #include <QApplication>
 #include <QComboBox>
+#include <QCheckBox>
 #include <QFontDatabase>
 #include <QLocale>
 #include <QMessageBox>
@@ -73,6 +74,7 @@ namespace
 constexpr const int lowPrec = 2;
 constexpr const int highPrec = 16;
 }  // namespace
+
 
 PropertyItemFactory& PropertyItemFactory::instance()
 {
@@ -490,7 +492,8 @@ void PropertyItem::setValue(const QVariant& /*value*/)
 {}
 
 QWidget* PropertyItem::createEditor(QWidget* /*parent*/,
-                                    const std::function<void()>& /*method*/) const
+                                    const std::function<void()>& /*method*/,
+                                    FrameOption /*frameOption*/) const
 {
     return nullptr;
 }
@@ -634,14 +637,14 @@ void PropertyItem::setPropertyValue(const std::string& value)
         Gui::Command::runCommand(Gui::Command::App, cmd.c_str());
     }
     catch (Base::PyException& e) {
-        e.ReportException();
-        Base::Console().Error("Stack Trace: %s\n", e.getStackTrace().c_str());
+        e.reportException();
+        Base::Console().error("Stack Trace: %s\n", e.getStackTrace().c_str());
     }
     catch (Base::Exception& e) {
-        e.ReportException();
+        e.reportException();
     }
     catch (...) {
-        Base::Console().Error("Unknown C++ exception in PropertyItem::setPropertyValue thrown\n");
+        Base::Console().error("Unknown C++ exception in PropertyItem::setPropertyValue thrown\n");
     }
 }
 
@@ -809,7 +812,7 @@ QString PropertyItem::expressionAsString() const
             return QString::fromStdString(result->toString());
         }
         catch (const Base::Exception& e) {
-            e.ReportException();
+            e.reportException();
         }
     }
 
@@ -839,11 +842,11 @@ void PropertyStringItem::setValue(const QVariant& value)
 }
 
 QWidget* PropertyStringItem::createEditor(QWidget* parent,
-                                          const std::function<void()>& method) const
+                                          const std::function<void()>& method,
+                                          FrameOption frameOption) const
 {
     auto le = new ExpLineEdit(parent);
-    le->setFrame(false);
-    le->setReadOnly(isReadOnly());
+    le->setFrame(static_cast<bool>(frameOption));
     QObject::connect(le, &ExpLineEdit::textChanged, method);
     if (isBound()) {
         le->bind(getPath());
@@ -886,11 +889,12 @@ void PropertyFontItem::setValue(const QVariant& value)
     }
 }
 
-QWidget* PropertyFontItem::createEditor(QWidget* parent, const std::function<void()>& method) const
+QWidget* PropertyFontItem::createEditor(QWidget* parent,
+                                        const std::function<void()>& method,
+                                        FrameOption frameOption) const
 {
     auto cb = new QComboBox(parent);
-    cb->setFrame(false);
-    cb->setDisabled(isReadOnly());
+    cb->setFrame(static_cast<bool>(frameOption));
     QObject::connect(cb, &QComboBox::textActivated, method);
     return cb;
 }
@@ -919,10 +923,12 @@ QVariant PropertyFontItem::editorData(QWidget* editor) const
 PROPERTYITEM_SOURCE(Gui::PropertyEditor::PropertySeparatorItem)
 
 QWidget* PropertySeparatorItem::createEditor(QWidget* parent,
-                                             const std::function<void()>& method) const
+                                             const std::function<void()>& method,
+                                             FrameOption frameOption) const
 {
     Q_UNUSED(parent);
     Q_UNUSED(method);
+    Q_UNUSED(frameOption);
     return nullptr;
 }
 
@@ -950,11 +956,11 @@ void PropertyIntegerItem::setValue(const QVariant& value)
 }
 
 QWidget* PropertyIntegerItem::createEditor(QWidget* parent,
-                                           const std::function<void()>& method) const
+                                           const std::function<void()>& method,
+                                           FrameOption frameOption) const
 {
     auto sb = new Gui::IntSpinBox(parent);
-    sb->setFrame(false);
-    sb->setReadOnly(isReadOnly());
+    sb->setFrame(static_cast<bool>(frameOption));
     QObject::connect(sb, qOverload<int>(&Gui::IntSpinBox::valueChanged), method);
 
     if (isBound()) {
@@ -1016,11 +1022,11 @@ void PropertyIntegerConstraintItem::setValue(const QVariant& value)
 }
 
 QWidget* PropertyIntegerConstraintItem::createEditor(QWidget* parent,
-                                                     const std::function<void()>& method) const
+                                                     const std::function<void()>& method,
+                                                     FrameOption frameOption) const
 {
     auto sb = new Gui::IntSpinBox(parent);
-    sb->setFrame(false);
-    sb->setReadOnly(isReadOnly());
+    sb->setFrame(static_cast<bool>(frameOption));
     QObject::connect(sb, qOverload<int>(&Gui::IntSpinBox::valueChanged), method);
 
     if (isBound()) {
@@ -1110,12 +1116,13 @@ void PropertyFloatItem::setValue(const QVariant& value)
     }
 }
 
-QWidget* PropertyFloatItem::createEditor(QWidget* parent, const std::function<void()>& method) const
+QWidget* PropertyFloatItem::createEditor(QWidget* parent,
+                                         const std::function<void()>& method,
+                                         FrameOption frameOption) const
 {
     auto sb = new Gui::DoubleSpinBox(parent);
-    sb->setFrame(false);
+    sb->setFrame(static_cast<bool>(frameOption));
     sb->setDecimals(decimals());
-    sb->setReadOnly(isReadOnly());
     QObject::connect(sb, qOverload<double>(&Gui::DoubleSpinBox::valueChanged), method);
 
     if (isBound()) {
@@ -1176,12 +1183,13 @@ void PropertyUnitItem::setValue(const QVariant& value)
     }
 }
 
-QWidget* PropertyUnitItem::createEditor(QWidget* parent, const std::function<void()>& method) const
+QWidget* PropertyUnitItem::createEditor(QWidget* parent,
+                                        const std::function<void()>& method,
+                                        FrameOption frameOption) const
 {
     auto infield = new Gui::QuantitySpinBox(parent);
-    infield->setFrame(false);
+    infield->setFrame(static_cast<bool>(frameOption));
     infield->setMinimumHeight(0);
-    infield->setReadOnly(isReadOnly());
 
     // if we are bound to an expression we need to bind it to the input field
     if (isBound()) {
@@ -1274,12 +1282,12 @@ void PropertyFloatConstraintItem::setValue(const QVariant& value)
 }
 
 QWidget* PropertyFloatConstraintItem::createEditor(QWidget* parent,
-                                                   const std::function<void()>& method) const
+                                                   const std::function<void()>& method,
+                                                   FrameOption frameOption) const
 {
     auto sb = new Gui::DoubleSpinBox(parent);
     sb->setDecimals(decimals());
-    sb->setFrame(false);
-    sb->setReadOnly(isReadOnly());
+    sb->setFrame(static_cast<bool>(frameOption));
     QObject::connect(sb, qOverload<double>(&Gui::DoubleSpinBox::valueChanged), method);
 
     if (isBound()) {
@@ -1367,27 +1375,27 @@ void PropertyBoolItem::setValue(const QVariant& value)
     }
 }
 
-QWidget* PropertyBoolItem::createEditor(QWidget* parent, const std::function<void()>& method) const
+QWidget* PropertyBoolItem::createEditor(QWidget* parent,
+                                        const std::function<void()>& method,
+                                        FrameOption /*frameOption*/) const
 {
-    auto cb = new QComboBox(parent);
-    cb->setFrame(false);
-    cb->addItem(QLatin1String("false"));
-    cb->addItem(QLatin1String("true"));
-    cb->setDisabled(isReadOnly());
-    QObject::connect(cb, qOverload<int>(&QComboBox::activated), method);
-    return cb;
+    auto checkbox = new QCheckBox(parent);
+    return checkbox;
 }
 
 void PropertyBoolItem::setEditorData(QWidget* editor, const QVariant& data) const
 {
-    auto cb = qobject_cast<QComboBox*>(editor);
-    cb->setCurrentIndex(cb->findText(data.toString()));
+    if (auto checkbox = qobject_cast<QCheckBox*>(editor)) {
+        checkbox->setChecked(data.toBool());
+    }
 }
 
 QVariant PropertyBoolItem::editorData(QWidget* editor) const
 {
-    auto cb = qobject_cast<QComboBox*>(editor);
-    return {cb->currentText()};
+    if (auto checkbox = qobject_cast<QCheckBox*>(editor)) {
+        return checkbox->isChecked();
+    }
+    return false;
 }
 
 // ---------------------------------------------------------------
@@ -1486,10 +1494,11 @@ void PropertyVectorItem::setValue(const QVariant& value)
 }
 
 QWidget* PropertyVectorItem::createEditor(QWidget* parent,
-                                          const std::function<void()>& /*method*/) const
+                                          const std::function<void()>& /*method*/,
+                                          FrameOption frameOption) const
 {
     auto le = new VectorLineEdit(decimals(), parent);
-    le->setFrame(false);
+    le->setFrame(static_cast<bool>(frameOption));
     le->setReadOnly(true);
 
     if (isBound()) {
@@ -1708,11 +1717,11 @@ void PropertyVectorListItem::setValue(const QVariant& value)
 }
 
 QWidget* PropertyVectorListItem::createEditor(QWidget* parent,
-                                              const std::function<void()>& method) const
+                                              const std::function<void()>& method,
+                                              FrameOption /*frameOption*/) const
 {
     auto pe = new VectorListWidget(decimals(), parent);
     QObject::connect(pe, &VectorListWidget::valueChanged, method);
-    pe->setDisabled(isReadOnly());
     return pe;
 }
 
@@ -1777,15 +1786,11 @@ void PropertyVectorDistanceItem::setValue(const QVariant& variant)
     }
     const Base::Vector3d& value = variant.value<Base::Vector3d>();
 
-    Base::Quantity x = Base::Quantity(value.x, Base::Unit::Length);
-    Base::Quantity y = Base::Quantity(value.y, Base::Unit::Length);
-    Base::Quantity z = Base::Quantity(value.z, Base::Unit::Length);
-
     Base::QuantityFormat format(Base::QuantityFormat::Default, highPrec);
     std::string val = fmt::format("({}, {}, {})",
-                                  Base::UnitsApi::toNumber(x, format),
-                                  Base::UnitsApi::toNumber(y, format),
-                                  Base::UnitsApi::toNumber(z, format));
+                                  Base::UnitsApi::toNumber(value.x, format),
+                                  Base::UnitsApi::toNumber(value.y, format),
+                                  Base::UnitsApi::toNumber(value.z, format));
     setPropertyValue(val);
 }
 
@@ -1797,10 +1802,11 @@ void PropertyVectorDistanceItem::setEditorData(QWidget* editor, const QVariant& 
 }
 
 QWidget* PropertyVectorDistanceItem::createEditor(QWidget* parent,
-                                                  const std::function<void()>& /*method*/) const
+                                                  const std::function<void()>& /*method*/,
+                                                  FrameOption frameOption) const
 {
     auto le = new VectorLineEdit(decimals(), parent);
-    le->setFrame(false);
+    le->setFrame(static_cast<bool>(frameOption));
     le->setReadOnly(true);
 
     if (isBound()) {
@@ -2022,10 +2028,11 @@ void PropertyMatrixItem::setValue(const QVariant& value)
 }
 
 QWidget* PropertyMatrixItem::createEditor(QWidget* parent,
-                                          const std::function<void()>& /*method*/) const
+                                          const std::function<void()>& /*method*/,
+                                          FrameOption frameOption) const
 {
     auto le = new QLineEdit(parent);
-    le->setFrame(false);
+    le->setFrame(static_cast<bool>(frameOption));
     le->setReadOnly(true);
     return le;
 }
@@ -2528,10 +2535,12 @@ void PropertyRotationItem::setValue(const QVariant& value)
 }
 
 QWidget* PropertyRotationItem::createEditor(QWidget* parent,
-                                            const std::function<void()>& method) const
+                                            const std::function<void()>& method,
+                                            FrameOption frameOption) const
 {
     Q_UNUSED(parent)
     Q_UNUSED(method)
+    Q_UNUSED(frameOption)
     return nullptr;
 }
 
@@ -2850,7 +2859,8 @@ void PropertyPlacementItem::setValue(const QVariant& value)
 }
 
 QWidget* PropertyPlacementItem::createEditor(QWidget* parent,
-                                             const std::function<void()>& method) const
+                                             const std::function<void()>& method,
+                                             FrameOption /*frameOption*/) const
 {
     auto pe = new PlacementEditor(this->propertyName(), parent);
     QObject::connect(pe, &PlacementEditor::valueChanged, method);
@@ -3095,7 +3105,9 @@ QStringList PropertyEnumItem::getCommonModes() const
     return commonModes;
 }
 
-QWidget* PropertyEnumItem::createEditor(QWidget* parent, const std::function<void()>& method) const
+QWidget* PropertyEnumItem::createEditor(QWidget* parent,
+                                        const std::function<void()>& method,
+                                        FrameOption frameOption) const
 {
     QStringList commonModes = getCommonModes();
     if (commonModes.isEmpty()) {
@@ -3106,8 +3118,7 @@ QWidget* PropertyEnumItem::createEditor(QWidget* parent, const std::function<voi
 
     if (!enumItems) {
         auto cb = new QComboBox(parent);
-        cb->setFrame(false);
-        cb->setDisabled(isReadOnly());
+        cb->setFrame(static_cast<bool>(frameOption));
         cb->addItems(commonModes);
         QObject::connect(cb, qOverload<int>(&QComboBox::activated), method);
         return cb;
@@ -3160,11 +3171,11 @@ PROPERTYITEM_SOURCE(Gui::PropertyEditor::PropertyStringListItem)
 PropertyStringListItem::PropertyStringListItem() = default;
 
 QWidget* PropertyStringListItem::createEditor(QWidget* parent,
-                                              const std::function<void()>& method) const
+                                              const std::function<void()>& method,
+                                              FrameOption /*frameOption*/) const
 {
     auto le = new Gui::LabelEditor(parent);
     le->setAutoFillBackground(true);
-    le->setDisabled(isReadOnly());
     QObject::connect(le, &Gui::LabelEditor::textChanged, method);
     return le;
 }
@@ -3234,12 +3245,12 @@ PROPERTYITEM_SOURCE(Gui::PropertyEditor::PropertyFloatListItem)
 PropertyFloatListItem::PropertyFloatListItem() = default;
 
 QWidget* PropertyFloatListItem::createEditor(QWidget* parent,
-                                             const std::function<void()>& method) const
+                                             const std::function<void()>& method,
+                                             FrameOption /*frameOption*/) const
 {
     auto le = new Gui::LabelEditor(parent);
     le->setAutoFillBackground(true);
     le->setInputType(Gui::LabelEditor::Float);
-    le->setDisabled(isReadOnly());
     QObject::connect(le, &Gui::LabelEditor::textChanged, method);
     return le;
 }
@@ -3311,12 +3322,12 @@ PROPERTYITEM_SOURCE(Gui::PropertyEditor::PropertyIntegerListItem)
 PropertyIntegerListItem::PropertyIntegerListItem() = default;
 
 QWidget* PropertyIntegerListItem::createEditor(QWidget* parent,
-                                               const std::function<void()>& method) const
+                                               const std::function<void()>& method,
+                                               FrameOption /*frameOption*/) const
 {
     auto le = new Gui::LabelEditor(parent);
     le->setAutoFillBackground(true);
     le->setInputType(Gui::LabelEditor::Integer);
-    le->setDisabled(isReadOnly());
     QObject::connect(le, &Gui::LabelEditor::textChanged, method);
     return le;
 }
@@ -3426,10 +3437,11 @@ void PropertyColorItem::setValue(const QVariant& value)
     setPropertyValue(data);
 }
 
-QWidget* PropertyColorItem::createEditor(QWidget* parent, const std::function<void()>& method) const
+QWidget* PropertyColorItem::createEditor(QWidget* parent,
+                                         const std::function<void()>& method,
+                                         FrameOption /*frameOption*/) const
 {
     auto cb = new Gui::ColorButton(parent);
-    cb->setDisabled(isReadOnly());
     QObject::connect(cb, &Gui::ColorButton::changed, method);
     return cb;
 }
@@ -3736,46 +3748,42 @@ void PropertyMaterialItem::setValue(const QVariant& value)
     auto mat = value.value<Material>();
     Base::Color dc;
     dc.setValue<QColor>(mat.diffuseColor);
+    uint32_t dcp = dc.getPackedValue();
     Base::Color ac;
     ac.setValue<QColor>(mat.ambientColor);
+    uint32_t acp = ac.getPackedValue();
     Base::Color sc;
     sc.setValue<QColor>(mat.specularColor);
+    uint32_t scp = sc.getPackedValue();
     Base::Color ec;
     ec.setValue<QColor>(mat.emissiveColor);
+    uint32_t ecp = ec.getPackedValue();
     float s = mat.shininess;
     float t = mat.transparency;
 
     QString data = QStringLiteral("App.Material("
-                                       "DiffuseColor=(%1,%2,%3),"
-                                       "AmbientColor=(%4,%5,%6),"
-                                       "SpecularColor=(%7,%8,%9),"
-                                       "EmissiveColor=(%10,%11,%12),"
-                                       "Shininess=(%13),"
-                                       "Transparency=(%14),"
-                                       ")")
-                       .arg(dc.r, 0, 'f', decimals())
-                       .arg(dc.g, 0, 'f', decimals())
-                       .arg(dc.b, 0, 'f', decimals())
-                       .arg(ac.r, 0, 'f', decimals())
-                       .arg(ac.g, 0, 'f', decimals())
-                       .arg(ac.b, 0, 'f', decimals())
-                       .arg(sc.r, 0, 'f', decimals())
-                       .arg(sc.g, 0, 'f', decimals())
-                       .arg(sc.b, 0, 'f', decimals())
-                       .arg(ec.r, 0, 'f', decimals())
-                       .arg(ec.g, 0, 'f', decimals())
-                       .arg(ec.b, 0, 'f', decimals())
-                       .arg(s, 0, 'f', decimals())
-                       .arg(t, 0, 'f', decimals());
+                                  "DiffuseColor = %1,"
+                                  "AmbientColor = %2,"
+                                  "SpecularColor = %3,"
+                                  "EmissiveColor = %4,"
+                                  "Shininess = %5,"
+                                  "Transparency = %6,"
+                                  ")")
+                       .arg(dcp)
+                       .arg(acp)
+                       .arg(scp)
+                       .arg(ecp)
+                       .arg(s, 0, 'f', 10)
+                       .arg(t, 0, 'f', 10);
 
     setPropertyValue(data);
 }
 
 QWidget* PropertyMaterialItem::createEditor(QWidget* parent,
-                                            const std::function<void()>& method) const
+                                            const std::function<void()>& method,
+                                            FrameOption /*frameOption*/) const
 {
     auto cb = new Gui::ColorButton(parent);
-    cb->setDisabled(isReadOnly());
     QObject::connect(cb, &Gui::ColorButton::changed, method);
     return cb;
 }
@@ -4242,47 +4250,43 @@ void PropertyMaterialListItem::setValue(const QVariant& value)
     auto mat = list[0].value<Material>();
     Base::Color dc;
     dc.setValue<QColor>(mat.diffuseColor);
+    uint32_t dcp = dc.getPackedValue();
     Base::Color ac;
     ac.setValue<QColor>(mat.ambientColor);
+    uint32_t acp = ac.getPackedValue();
     Base::Color sc;
     sc.setValue<QColor>(mat.specularColor);
+    uint32_t scp = sc.getPackedValue();
     Base::Color ec;
     ec.setValue<QColor>(mat.emissiveColor);
+    uint32_t ecp = ec.getPackedValue();
     float s = mat.shininess;
     float t = mat.transparency;
 
     QString item = QStringLiteral("App.Material("
-                                       "DiffuseColor=(%1,%2,%3),"
-                                       "AmbientColor=(%4,%5,%6),"
-                                       "SpecularColor=(%7,%8,%9),"
-                                       "EmissiveColor=(%10,%11,%12),"
-                                       "Shininess=(%13),"
-                                       "Transparency=(%14),"
-                                       ")")
-                       .arg(dc.r, 0, 'f', decimals())
-                       .arg(dc.g, 0, 'f', decimals())
-                       .arg(dc.b, 0, 'f', decimals())
-                       .arg(ac.r, 0, 'f', decimals())
-                       .arg(ac.g, 0, 'f', decimals())
-                       .arg(ac.b, 0, 'f', decimals())
-                       .arg(sc.r, 0, 'f', decimals())
-                       .arg(sc.g, 0, 'f', decimals())
-                       .arg(sc.b, 0, 'f', decimals())
-                       .arg(ec.r, 0, 'f', decimals())
-                       .arg(ec.g, 0, 'f', decimals())
-                       .arg(ec.b, 0, 'f', decimals())
-                       .arg(s, 0, 'f', decimals())
-                       .arg(t, 0, 'f', decimals());
+                                  "DiffuseColor = %1,"
+                                  "AmbientColor = %2,"
+                                  "SpecularColor = %3,"
+                                  "EmissiveColor = %4,"
+                                  "Shininess = %5,"
+                                  "Transparency = %6,"
+                                  ")")
+                       .arg(dcp)
+                       .arg(acp)
+                       .arg(scp)
+                       .arg(ecp)
+                       .arg(s, 0, 'f', 10)
+                       .arg(t, 0, 'f', 10);
     str << item << ")";
 
     setPropertyValue(data);
 }
 
 QWidget* PropertyMaterialListItem::createEditor(QWidget* parent,
-                                                const std::function<void()>& method) const
+                                                const std::function<void()>& method,
+                                                FrameOption /*frameOption*/) const
 {
     auto cb = new Gui::ColorButton(parent);
-    cb->setDisabled(isReadOnly());
     QObject::connect(cb, &Gui::ColorButton::changed, method);
     return cb;
 }
@@ -4361,11 +4365,12 @@ QVariant PropertyFileItem::toolTip(const App::Property* prop) const
     return value(prop);
 }
 
-QWidget* PropertyFileItem::createEditor(QWidget* parent, const std::function<void()>& method) const
+QWidget* PropertyFileItem::createEditor(QWidget* parent,
+                                        const std::function<void()>& method,
+                                        FrameOption /*frameOption*/) const
 {
     auto fc = new Gui::FileChooser(parent);
     fc->setAutoFillBackground(true);
-    fc->setDisabled(isReadOnly());
     QObject::connect(fc, &Gui::FileChooser::fileNameSelected, method);
     return fc;
 }
@@ -4415,12 +4420,13 @@ QVariant PropertyPathItem::toolTip(const App::Property* prop) const
     return value(prop);
 }
 
-QWidget* PropertyPathItem::createEditor(QWidget* parent, const std::function<void()>& method) const
+QWidget* PropertyPathItem::createEditor(QWidget* parent,
+                                        const std::function<void()>& method,
+                                        FrameOption /*frameOption*/) const
 {
     auto fc = new Gui::FileChooser(parent);
     fc->setMode(FileChooser::Directory);
     fc->setAutoFillBackground(true);
-    fc->setDisabled(isReadOnly());
     QObject::connect(fc, &Gui::FileChooser::fileNameSelected, method);
     return fc;
 }
@@ -4464,11 +4470,11 @@ QVariant PropertyTransientFileItem::toolTip(const App::Property* prop) const
 }
 
 QWidget* PropertyTransientFileItem::createEditor(QWidget* parent,
-                                                 const std::function<void()>& method) const
+                                                 const std::function<void()>& method,
+                                                 FrameOption /*frameOption*/) const
 {
     auto fc = new Gui::FileChooser(parent);
     fc->setAutoFillBackground(true);
-    fc->setDisabled(isReadOnly());
     QObject::connect(fc, &Gui::FileChooser::fileNameSelected, method);
     return fc;
 }
@@ -4692,14 +4698,15 @@ void PropertyLinkItem::setValue(const QVariant& value)
     setPropertyValue(DlgPropertyLink::linksToPython(links));
 }
 
-QWidget* PropertyLinkItem::createEditor(QWidget* parent, const std::function<void()>& method) const
+QWidget* PropertyLinkItem::createEditor(QWidget* parent,
+                                        const std::function<void()>& method,
+                                        FrameOption /*frameOption*/) const
 {
     if (propertyItems.empty()) {
         return nullptr;
     }
     auto ll = new LinkLabel(parent, propertyItems.front());
     ll->setAutoFillBackground(true);
-    ll->setDisabled(isReadOnly());
     QObject::connect(ll, &LinkLabel::linkChanged, method);
     return ll;
 }
@@ -4707,13 +4714,13 @@ QWidget* PropertyLinkItem::createEditor(QWidget* parent, const std::function<voi
 void PropertyLinkItem::setEditorData(QWidget* editor, const QVariant& data) const
 {
     (void)data;
-    auto ll = dynamic_cast<LinkLabel*>(editor);
+    auto ll = qobject_cast<LinkLabel*>(editor);
     return ll->updatePropertyLink();
 }
 
 QVariant PropertyLinkItem::editorData(QWidget* editor) const
 {
-    auto ll = dynamic_cast<LinkLabel*>(editor);
+    auto ll = qobject_cast<LinkLabel*>(editor);
     return ll->propertyLink();
 }
 
@@ -4727,7 +4734,8 @@ PropertyItemEditorFactory::PropertyItemEditorFactory() = default;
 
 PropertyItemEditorFactory::~PropertyItemEditorFactory() = default;
 
-QWidget* PropertyItemEditorFactory::createEditor(int /*type*/, QWidget* /*parent*/) const
+QWidget* PropertyItemEditorFactory::createEditor(int /*type*/,
+                                                 QWidget* /*parent*/) const
 {
     // do not allow to create any editor widgets because we do that in subclasses of PropertyItem
     return nullptr;

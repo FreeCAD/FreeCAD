@@ -653,6 +653,22 @@ def makePostVtkFilterContours(doc, base_vtk_result, name="VtkFilterContours"):
     return obj
 
 
+def makePostFilterGlyph(doc, base_vtk_result, name="Glyph"):
+    """makePostVtkFilterGlyph(document, [name]):
+    creates a FEM post processing filter that visualizes vector fields with glyphs
+    """
+    obj = doc.addObject("Fem::PostFilterPython", name)
+    from femobjects import post_glyphfilter
+
+    post_glyphfilter.PostGlyphFilter(obj)
+    base_vtk_result.addObject(obj)
+    if FreeCAD.GuiUp:
+        from femviewprovider import view_post_glyphfilter
+
+        view_post_glyphfilter.VPPostGlyphFilter(obj.ViewObject)
+    return obj
+
+
 def makePostVtkResult(doc, result_data, name="VtkResult"):
     """makePostVtkResult(document, base_result, [name]):
     creates a FEM post processing result data (vtk based) to hold FEM results
@@ -795,12 +811,17 @@ def makeSolverCalculiXCcxTools(doc, name="SolverCcxTools"):
     return obj
 
 
-def makeSolverCalculix(doc, name="SolverCalculix"):
-    """makeSolverCalculix(document, [name]):
+def makeSolverCalculiX(doc, name="SolverCalculiX"):
+    """makeSolverCalculiX(document, [name]):
     makes a Calculix solver object"""
-    import femsolver.calculix.solver
+    obj = doc.addObject("Fem::FemSolverObjectPython", name)
+    from femobjects import solver_calculix
 
-    obj = femsolver.calculix.solver.create(doc, name)
+    solver_calculix.SolverCalculiX(obj)
+    if FreeCAD.GuiUp:
+        from femviewprovider import view_solver_calculix
+
+        view_solver_calculix.VPSolverCalculiX(obj.ViewObject)
     return obj
 
 
