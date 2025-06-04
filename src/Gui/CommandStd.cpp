@@ -379,9 +379,10 @@ StdCmdDlgParameter::StdCmdDlgParameter()
 {
   sGroup        = "Tools";
   sMenuText     = QT_TR_NOOP("E&dit parameters...");
-  sToolTipText  = QT_TR_NOOP("Opens a Dialog to edit the parameters");
+
+  sToolTipText  = QT_TR_NOOP("Opens a dialog to edit the parameters");
   sWhatsThis    = "Std_DlgParameter";
-  sStatusTip    = QT_TR_NOOP("Opens a Dialog to edit the parameters");
+  sStatusTip    = QT_TR_NOOP("Opens a dialog to edit the parameters");
   sPixmap       = "Std_DlgParameter";
   eType         = 0;
 }
@@ -404,9 +405,9 @@ StdCmdDlgPreferences::StdCmdDlgPreferences()
 {
     sGroup        = "Tools";
     sMenuText     = QT_TR_NOOP("Prefere&nces ...");
-    sToolTipText  = QT_TR_NOOP("Opens a Dialog to edit the preferences");
+    sToolTipText  = QT_TR_NOOP("Opens a dialog to edit the preferences");
     sWhatsThis    = "Std_DlgPreferences";
-    sStatusTip    = QT_TR_NOOP("Opens a Dialog to edit the preferences");
+    sStatusTip    = QT_TR_NOOP("Opens a dialog to edit the preferences");
     sPixmap     = "preferences-system";
     eType         = 0;
     sAccel        = "Ctrl+,";
@@ -794,6 +795,7 @@ StdCmdTextDocument::StdCmdTextDocument()
 {
     sGroup        = "Tools";
     sMenuText     = QT_TR_NOOP("Add te&xt document");
+
     sToolTipText  = QT_TR_NOOP("Add text document to active document");
     sWhatsThis    = "Std_TextDocument";
     sStatusTip    = QT_TR_NOOP("Add text document to active document");
@@ -827,6 +829,7 @@ StdCmdUnitsCalculator::StdCmdUnitsCalculator()
 {
     sGroup        = "Tools";
     sMenuText     = QT_TR_NOOP("&Units converter...");
+
     sToolTipText  = QT_TR_NOOP("Start the units converter");
     sWhatsThis    = "Std_UnitsCalculator";
     sStatusTip    = QT_TR_NOOP("Start the units converter");
