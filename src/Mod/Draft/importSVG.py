@@ -1391,6 +1391,13 @@ def export(exportList, filename):
 # function to replace use tag to it's referenced object
 def replace_use_with_reference(file_path):
     #function that replace use tag to freecad:used
+    def register_svg_namespaces(svg_content):
+        # register namespaces
+        xmlns_attrs = re.findall(r'\s+xmlns(?::([a-zA-Z0-9_]+))?="([^"]+)"', svg_content)
+        for prefix, uri in xmlns_attrs:
+            ns_prefix = '' if prefix is None or prefix == 'svg' else prefix
+            ET.register_namespace(ns_prefix, uri)
+
     def replace_use(element, tree):
         while True:
             uses = element.findall(".//{http://www.w3.org/2000/svg}use")
@@ -1447,7 +1454,8 @@ def replace_use_with_reference(file_path):
 
     # open file and read
     svg_content = pyopen(file_path).read()
-
+    #register namespace before parsing
+    register_svg_namespaces(svg_content)
     # parse as xml.
     tree = ET.ElementTree(ET.fromstring(svg_content))
     root = tree.getroot()
@@ -1458,15 +1466,6 @@ def replace_use_with_reference(file_path):
         id_map[elem.attrib["id"]] = elem
 
     replace_use(root, tree)
-
     
-    # function that remove namespace prefix from tree.
-    def strip_ns_prefix(tree):
-        for elem in tree.iter():
-            if '}' in elem.tag:
-                elem.tag = elem.tag.split('}', 1)[1]
-            elem.attrib = {k.split('}', 1)[1] if '}' in k else k: v for k, v in elem.attrib.items()}
-
-    strip_ns_prefix(root)
-    # return tree as xml string.
-    return ET.tostring(root, encoding='unicode')
+    # return tree as xml string with namespace declaration.
+    return ET.tostring(root, encoding='unicode',xml_declaration=True)
