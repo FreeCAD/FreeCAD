@@ -136,15 +136,12 @@ QPixmap Gui::InputHintWidget::generateKeyIcon(const InputHint::UserInput key, co
     const QFontMetrics fm(font);
     const QString text = inputRepresentation(key);
     const QRect textBoundingRect = fm.tightBoundingRect(text);
-    const qreal dpr = BitmapFactoryInst::getMaximumDPR();
 
     const int symbolWidth = std::max(textBoundingRect.width() + padding * 2, iconSymbolHeight);
 
     const QRect keyRect(margin, margin, symbolWidth, iconSymbolHeight);
 
-    QPixmap pixmap((symbolWidth + margin * 2) * dpr, height * dpr);
-    pixmap.fill(Qt::transparent);
-    pixmap.setDevicePixelRatio(dpr);
+    QPixmap pixmap = BitmapFactory().empty({ symbolWidth + margin * 2, height });
 
     QPainter painter(&pixmap);
     painter.setRenderHint(QPainter::Antialiasing);
