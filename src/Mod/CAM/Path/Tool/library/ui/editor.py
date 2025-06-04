@@ -161,7 +161,7 @@ class LibraryEditor(QWidget):
             libraries = cast(List[Library], cam_assets.fetch(asset_type="toolbitlibrary", depth=0))
         except Exception as e:
             Path.Log.error(f"Failed to fetch toolbit libraries: {e}")
-            return self.listModel  # Return empty model on error
+            return
 
         # Sort by label for consistent ordering, falling back to asset_id if label is missing
         for library in sorted(

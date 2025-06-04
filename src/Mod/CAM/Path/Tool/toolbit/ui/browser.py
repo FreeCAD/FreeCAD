@@ -279,7 +279,7 @@ class ToolBitBrowserWidget(QtGui.QWidget):
     def _get_first_selected_bit(self) -> Optional[ToolBit]:
         uris = self.get_selected_bit_uris()
         if not uris:
-            return
+            return None
         uri_string = uris[0]
         return cast(ToolBit, self._asset_manager.get(AssetUri(uri_string)))
 
