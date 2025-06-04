@@ -186,7 +186,7 @@ Larger value eases to pick things, but can make small features impossible to sel
    <item>
     <widget class="QGroupBox" name="groupBox_3">
      <property name="title">
-      <string>Tree Behavior</string>
+      <string>Tree selection behavior</string>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_2">
       <item>
