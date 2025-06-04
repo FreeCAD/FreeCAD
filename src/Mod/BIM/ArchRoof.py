@@ -868,37 +868,6 @@ class _ViewProviderRoof(ArchComponent.ViewProviderComponent):
         return True
 
 
-class _RoofTaskPanel_Delegate(QtWidgets.QStyledItemDelegate):
-    '''Model delegate'''
-    def createEditor(self, parent, option, index):
-        if index.column() in (0, 6):
-            # Make these columns read-only.
-            return None
-        editor = QtWidgets.QLineEdit(parent)
-        if index.column() != 3:
-            editor.installEventFilter(self)
-        return editor
-
-    def setEditorData(self, editor, index):
-        editor.setText(index.data())
-
-    def setModelData(self, editor, model, index):
-        model.setData(index,editor.text())
-
-    def eventFilter(self, widget, event):
-        if event.type() == QtCore.QEvent.FocusIn:
-            widget.setSelection(0, self.number_length(widget.text()))
-        return super().eventFilter(widget, event)
-
-    def number_length(self, str):
-        # Code taken from DraftGui.py.
-        nl = 0
-        for char in str:
-            if char in "0123456789.,-":
-                nl += 1
-        return nl
-
-
 class _RoofTaskPanel:
     '''The editmode TaskPanel for Roof objects'''
     def __init__(self):
@@ -1006,3 +975,35 @@ class _RoofTaskPanel:
                                    QtGui.QApplication.translate("Arch", "Thickness", None),
                                    QtGui.QApplication.translate("Arch", "Overhang", None),
                                    QtGui.QApplication.translate("Arch", "Height", None)])
+
+
+if FreeCAD.GuiUp:
+    class _RoofTaskPanel_Delegate(QtWidgets.QStyledItemDelegate):
+        '''Model delegate'''
+        def createEditor(self, parent, option, index):
+            if index.column() in (0, 6):
+                # Make these columns read-only.
+                return None
+            editor = QtWidgets.QLineEdit(parent)
+            if index.column() != 3:
+                editor.installEventFilter(self)
+            return editor
+
+        def setEditorData(self, editor, index):
+            editor.setText(index.data())
+
+        def setModelData(self, editor, model, index):
+            model.setData(index,editor.text())
+
+        def eventFilter(self, widget, event):
+            if event.type() == QtCore.QEvent.FocusIn:
+                widget.setSelection(0, self.number_length(widget.text()))
+            return super().eventFilter(widget, event)
+
+        def number_length(self, str):
+            # Code taken from DraftGui.py.
+            nl = 0
+            for char in str:
+                if char in "0123456789.,-":
+                    nl += 1
+            return nl
