@@ -835,7 +835,7 @@ def getPathWithPlacement(pathobj):
     # check for no placement or placement POS=(0,0,0), Yaw-Pitch-Roll=(0,0,0)
     # isIdentity() returns True if the placement has no displacement and no rotation
     if not hasattr(pathobj, "Placement") or pathobj.Placement.isIdentity():
-        return pathobj.Path.
+        return pathobj.Path
 
     return applyPlacementToPath(pathobj.Placement, pathobj.Path)
 
