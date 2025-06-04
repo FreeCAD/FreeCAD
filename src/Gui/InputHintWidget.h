@@ -20,7 +20,7 @@
  *   <https://www.gnu.org/licenses/>.                                       *
  *                                                                          *
  ***************************************************************************/
- 
+
 #ifndef INPUTHINTWIDGET_H
 #define INPUTHINTWIDGET_H
 
@@ -45,8 +45,8 @@ public:
 
 private:
     static std::optional<const char*> getCustomIconPath(InputHint::UserInput key);
-    static QPixmap generateKeyIcon(InputHint::UserInput key, QColor color);
     static QString inputRepresentation(InputHint::UserInput key);
+    QPixmap generateKeyIcon(InputHint::UserInput key, QColor color);
 };
 
 } // Namespace Gui

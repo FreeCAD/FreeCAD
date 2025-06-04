@@ -61,9 +61,8 @@ void Gui::InputHintWidget::showHints(const std::list<InputHint>& hints)
         QBuffer buffer;
         image.save(&buffer, "png");
 
-        return QStringLiteral("<img src=\"data:image/png;base64,%1\" width=%2 height=24 />")
-            .arg(QLatin1String(buffer.data().toBase64()))
-            .arg(image.width());
+        return QStringLiteral("<img src=\"data:image/png;base64,%1\" height=24 />")
+            .arg(QString::fromLatin1(buffer.data().toBase64()));
     };
 
     const auto getHintHTML = [&](const InputHint& hint) {
@@ -133,13 +132,15 @@ QPixmap Gui::InputHintWidget::generateKeyIcon(const InputHint::UserInput key, co
     const QFontMetrics fm(font);
     const QString text = inputRepresentation(key);
     const QRect textBoundingRect = fm.tightBoundingRect(text);
+    const qreal dpr = BitmapFactoryInst::getMaximumDPR();
 
     const int symbolWidth = std::max(textBoundingRect.width() + padding * 2, iconSymbolHeight);
 
-    const QRect keyRect(margin, margin, symbolWidth, 18);
+    const QRect keyRect(margin, margin, symbolWidth, iconSymbolHeight);
 
-    QPixmap pixmap(symbolWidth + margin * 2, iconTotalHeight);
+    QPixmap pixmap((symbolWidth + margin * 2) * dpr, iconTotalHeight * dpr);
     pixmap.fill(Qt::transparent);
+    pixmap.setDevicePixelRatio(dpr);
 
     QPainter painter(&pixmap);
     painter.setRenderHint(QPainter::Antialiasing);
