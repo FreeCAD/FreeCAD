@@ -24,7 +24,9 @@
 #ifndef _PreComp_
 #include <QApplication>
 #include <QByteArray>
+#include <QDateTime>
 #include <QDesktopServices>
+#include <QLocale>
 #include <QUrl>
 #endif
 
@@ -71,15 +73,25 @@ DlgProjectInformationImp::DlgProjectInformationImp(App::Document* doc,
     , _doc(doc)
     , ui(new Ui_DlgProjectInformation)
 {
+    auto convertISODate = [](const char* isoDate) {
+        auto str = QString::fromUtf8(isoDate);
+        QDateTime dt = QDateTime::fromString(str, Qt::DateFormat::ISODate);
+        if (dt.isNull()) {
+            return str;
+        }
+
+        QLocale loc = QLocale::system();
+        return loc.toString(dt);
+    };
     ui->setupUi(this);
     ui->lineEditName->setText(QString::fromUtf8(doc->Label.getValue()));
     ui->lineEditPath->setText(QString::fromUtf8(doc->FileName.getValue()));
     ui->lineEditUuid->setText(QString::fromUtf8(doc->Uid.getValueStr().c_str()));
     ui->lineEditProgramVersion->setText(QString::fromUtf8(doc->getProgramVersion()));
     ui->lineEditCreator->setText(QString::fromUtf8(doc->CreatedBy.getValue()));
-    ui->lineEditDate->setText(QString::fromUtf8(doc->CreationDate.getValue()));
+    ui->lineEditDate->setText(convertISODate(doc->CreationDate.getValue()));
     ui->lineEditLastMod->setText(QString::fromUtf8(doc->LastModifiedBy.getValue()));
-    ui->lineEditLastModDate->setText(QString::fromUtf8(doc->LastModifiedDate.getValue()));
+    ui->lineEditLastModDate->setText(convertISODate(doc->LastModifiedDate.getValue()));
     ui->lineEditCompany->setText(QString::fromUtf8(doc->Company.getValue()));
 
     // Load comboBox with unit systems

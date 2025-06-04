@@ -385,7 +385,7 @@ void Command::setupCheckable(int iMsg) {
         action->setChecked(checked);
         action->blockSignals(blocked);
         if(action!=_pcAction->action())
-            _pcAction->setChecked(checked,true);
+            _pcAction->setBlockedChecked(checked);
     }
 
 }
@@ -899,8 +899,14 @@ const char* Command::keySequenceToAccel(int sk) const
     static StringMap strings;
     auto i = strings.find(sk);
 
-    if (i != strings.end())
+    if (i != strings.end()) {
         return i->second.c_str();
+    }
+
+    // In case FreeCAD is loaded without GUI (issue 16407)
+    if (!QApplication::instance()) {
+        return "";
+    }
 
     auto type = static_cast<QKeySequence::StandardKey>(sk);
     QKeySequence ks(type);
@@ -1637,7 +1643,7 @@ Action * PythonGroupCommand::createAction()
                     qtAction->blockSignals(false);
                 }else if(qtAction->isCheckable()){
                     pcAction->setCheckable(true);
-                    pcAction->setChecked(qtAction->isChecked(),true);
+                    pcAction->setBlockedChecked(qtAction->isChecked());
                 }
             }
         }

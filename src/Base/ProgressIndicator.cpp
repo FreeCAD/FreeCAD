@@ -20,6 +20,8 @@
  *                                                                         *
  **************************************************************************/
 
+#include "PreCompiled.h"
+
 #include "ProgressIndicator.h"
 
 namespace Base

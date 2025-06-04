@@ -890,6 +890,27 @@ void ExpressionCompleter::slotUpdate(const QString& prefix, int pos)
     }
 }
 
+ExpressionValidator::ExpressionValidator(QObject* parent)
+    : QValidator(parent)
+{}
+
+void ExpressionValidator::fixup(QString &input) const
+{
+    if (input.startsWith(QLatin1String("="))) {
+        input = input.mid(1);
+    }
+}
+
+QValidator::State ExpressionValidator::validate(QString &input, int &pos) const
+{
+    if (input.startsWith(QLatin1String("="))) {
+        pos = 0;
+        return QValidator::Invalid;
+    }
+
+    return QValidator::Acceptable;
+}
+
 ExpressionLineEdit::ExpressionLineEdit(QWidget* parent,
                                        bool noProperty,
                                        char checkPrefix,
@@ -902,6 +923,7 @@ ExpressionLineEdit::ExpressionLineEdit(QWidget* parent,
     , checkInList(checkInList)
     , checkPrefix(checkPrefix)
 {
+    setValidator(new ExpressionValidator(this));
     connect(this, &QLineEdit::textEdited, this, &ExpressionLineEdit::slotTextChanged);
 }
 

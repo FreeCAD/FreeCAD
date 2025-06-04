@@ -1752,12 +1752,14 @@ StdCmdProperties::StdCmdProperties()
 void StdCmdProperties::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    QWidget* propertyView = Gui::DockWindowManager::instance()->getDockWindow("Property view");
-    if (propertyView) {
-        QWidget* parent = propertyView->parentWidget();
-        if (parent && !parent->isVisible()) {
-            parent->show();
-        }
+    auto dw = Gui::DockWindowManager::instance();
+    if (auto propertyView = dw->getDockWindow("Property view")) {
+        dw->activate(propertyView);
+        return;
+    }
+    if (auto comboView = dw->getDockWindow("Model")) {
+        dw->activate(comboView);
+        return;
     }
 }
 
