@@ -34,6 +34,8 @@
 # include <QFontMetrics>
 # include <QPainter>
 # include <QPen>
+# include <Inventor/SbMatrix.h>
+# include <Inventor/SbViewVolume.h>
 # include <Inventor/actions/SoGLRenderAction.h>
 # include <Inventor/bundles/SoMaterialBundle.h>
 # include <Inventor/elements/SoLazyElement.h>
@@ -177,7 +179,11 @@ void SoTextLabel::GLRender(SoGLRenderAction *action)
         glMatrixMode(GL_PROJECTION);
         glPushMatrix();
         glLoadIdentity();
-        glOrtho(0, vpsize[0], 0, vpsize[1], -1.0f, 1.0f);
+        SbViewVolume vvp;
+        vvp.ortho(0, vpsize[0], 0, vpsize[1], -1.0f, 1.0f);
+        SbMatrix affine, proj;
+        vvp.getMatrices(affine, proj);
+        glLoadMatrixf((float*)proj);
         glPixelStorei(GL_UNPACK_ALIGNMENT,1);
 
         state->push();
@@ -284,7 +290,11 @@ void SoStringLabel::GLRender(SoGLRenderAction *action)
     glMatrixMode(GL_PROJECTION);
     glPushMatrix();
     glLoadIdentity();
-    glOrtho(-1,1,-1,1,-1,1);
+    SbViewVolume vv;
+    vv.ortho(-1,1,-1,1,-1,1);
+    SbMatrix affine, proj;
+    vv.getMatrices(affine, proj);
+    glLoadMatrixf((float*)proj);
     glMatrixMode(GL_MODELVIEW);
     glPushMatrix();
     glLoadIdentity();
