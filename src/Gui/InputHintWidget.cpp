@@ -42,6 +42,9 @@ void Gui::InputHintWidget::showHints(const std::list<InputHint>& hints)
         return;
     }
 
+    constexpr int iconSize = 22;
+    constexpr int iconMargin = 2;
+
     const auto getKeyImage = [this](InputHint::UserInput key) {
         const auto& factory = BitmapFactory();
 
@@ -50,19 +53,20 @@ void Gui::InputHintWidget::showHints(const std::list<InputHint>& hints)
 
             if (auto iconPath = getCustomIconPath(key)) {
                 return factory.pixmapFromSvg(*iconPath,
-                                             QSize(24, 24),
+                                             QSize(iconSize, iconSize),
                                              {{0xFFFFFF, color.rgb() & RGB_MASK}});
             }
 
-            return generateKeyIcon(key, color);
+            return generateKeyIcon(key, color, iconSize);
         }();
 
 
         QBuffer buffer;
         image.save(&buffer, "png");
 
-        return QStringLiteral("<img src=\"data:image/png;base64,%1\" height=24 />")
-            .arg(QString::fromLatin1(buffer.data().toBase64()));
+        return QStringLiteral("<img src=\"data:image/png;base64,%1\" height=%2 />")
+            .arg(QString::fromLatin1(buffer.data().toBase64()))
+            .arg(iconSize);
     };
 
     const auto getHintHTML = [&](const InputHint& hint) {
@@ -86,9 +90,10 @@ void Gui::InputHintWidget::showHints(const std::list<InputHint>& hints)
         messages.append(getHintHTML(hint));
     }
 
-    QString html = QStringLiteral("<table style=\"line-height: 28px\" height=28>"
-                                  "<tr>%1</tr>"
-                                  "</table>");
+    QString html = QStringLiteral("<table style=\"line-height: %1px\" height=%1>"
+                                  "<tr>%2</tr>"
+                                  "</table>")
+                       .arg(iconSize + iconMargin * 2);
 
     setText(html.arg(messages.join(QStringLiteral("<td width=10></td>"))));
 }
@@ -120,13 +125,12 @@ std::optional<const char*> Gui::InputHintWidget::getCustomIconPath(const InputHi
     }
 }
 
-QPixmap Gui::InputHintWidget::generateKeyIcon(const InputHint::UserInput key, const QColor color)
+QPixmap Gui::InputHintWidget::generateKeyIcon(const InputHint::UserInput key, const QColor color, int height)
 {
     constexpr int margin = 3;
     constexpr int padding = 4;
     constexpr int radius = 2;
-    constexpr int iconTotalHeight = 24;
-    constexpr int iconSymbolHeight = iconTotalHeight - 2 * margin;
+    const int iconSymbolHeight = height - 2 * margin;
 
     const QFont font(QStringLiteral("sans"), 10, QFont::Bold);
     const QFontMetrics fm(font);
@@ -138,7 +142,7 @@ QPixmap Gui::InputHintWidget::generateKeyIcon(const InputHint::UserInput key, co
 
     const QRect keyRect(margin, margin, symbolWidth, iconSymbolHeight);
 
-    QPixmap pixmap((symbolWidth + margin * 2) * dpr, iconTotalHeight * dpr);
+    QPixmap pixmap((symbolWidth + margin * 2) * dpr, height * dpr);
     pixmap.fill(Qt::transparent);
     pixmap.setDevicePixelRatio(dpr);
 
