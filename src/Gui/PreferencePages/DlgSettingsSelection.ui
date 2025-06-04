@@ -17,7 +17,7 @@
    <item>
     <widget class="QGroupBox" name="groupBox">
      <property name="title">
-      <string>Preselection</string>
+      <string>Viewport selection behavior</string>
      </property>
      <layout class="QGridLayout" name="gridLayout">
       <item row="4" column="1">
