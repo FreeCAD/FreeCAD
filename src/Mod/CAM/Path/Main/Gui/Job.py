@@ -115,6 +115,11 @@ class ViewProvider:
         self.baseVisibility = {}
         self.stockVisibility = False
 
+        self.operationsVisibility = {}
+        self.modelsVisibility = {}
+        self.stockVisibility = False
+        self.toolsVisibility = {}
+
     def attach(self, vobj):
         self.vobj = vobj
         self.obj = vobj.Object
@@ -148,7 +153,19 @@ class ViewProvider:
             Path.Log.debug(f"{base.Name}: {base.ViewObject.Visibility}")
 
     def onChanged(self, vobj, prop):
-        if prop == "Visibility":
+        if prop == "ShapeAppearance" and not hasattr(self, "operationsVisibility"):
+            # Init visibility attributes while restore document
+            self.initVisibilityState()
+
+        elif prop == "StartIndex" and hasattr(self, "operationsVisibility"):
+            # Init visibility properties in the end of restore document
+            # Not get result, if try to do it earlier
+            if vobj.Visibility:
+                # Only for Job which saved in visible state
+                self.restoreOperationsVisibility()
+                self.restoreModelsVisibility()
+
+        elif prop == "Visibility" and hasattr(self, "operationsVisibility"):
             self.showOriginAxis(vobj.Visibility)
             if vobj.Visibility:
                 self.restoreOperationsVisibility()
@@ -161,52 +178,48 @@ class ViewProvider:
                 self.hideStock()
                 self.hideTools()
 
+    def initVisibilityState(self):
+        self.operationsVisibility = {op.Name: True for op in self.obj.Operations.Group}
+        self.modelsVisibility = {model.Name: True for model in self.obj.Model.Group}
+        self.stockVisibility = False
+        self.toolsVisibility = {tc.Tool.Name: False for tc in self.obj.Tools.Group}
+
     def hideOperations(self):
-        self.operationsVisibility = {}
         for op in self.obj.Operations.Group:
             self.operationsVisibility[op.Name] = op.Visibility
             op.Visibility = False
 
     def restoreOperationsVisibility(self):
-        if hasattr(self, "operationsVisibility"):
-            for op in self.obj.Operations.Group:
-                op.Visibility = self.operationsVisibility[op.Name]
-        else:
-            for op in self.obj.Operations.Group:
-                op.Visibility = True
+        for op in self.obj.Operations.Group:
+            op.Visibility = self.operationsVisibility[op.Name]
 
     def hideModels(self):
-        self.modelsVisibility = {}
         for model in self.obj.Model.Group:
             self.modelsVisibility[model.Name] = model.Visibility
             model.Visibility = False
 
     def restoreModelsVisibility(self):
-        if hasattr(self, "modelsVisibility"):
-            for base in self.obj.Model.Group:
+        for base in self.obj.Model.Group:
+            try:
                 base.Visibility = self.modelsVisibility[base.Name]
-        else:
-            for base in self.obj.Model.Group:
-                base.Visibility = True
+            except Exception:
+                pass
 
     def hideStock(self):
         self.stockVisibility = self.obj.Stock.Visibility
         self.obj.Stock.Visibility = False
 
     def restoreStockVisibility(self):
-        if hasattr(self, "stockVisibility"):
-            self.obj.Stock.Visibility = self.stockVisibility
+        self.obj.Stock.Visibility = self.stockVisibility
 
     def hideTools(self):
-        self.toolsVisibility = {}
         for tc in self.obj.Tools.Group:
             self.toolsVisibility[tc.Tool.Name] = tc.Tool.Visibility
             tc.Tool.Visibility = False
 
     def restoreToolsVisibility(self):
-        if hasattr(self, "toolsVisibility"):
-            for tc in self.obj.Tools.Group:
-                tc.Tool.Visibility = self.toolsVisibility[tc.Tool.Name]
+        for tc in self.obj.Tools.Group:
+            tc.Tool.Visibility = self.toolsVisibility[tc.Tool.Name]
 
     def showOriginAxis(self, yes):
         sw = coin.SO_SWITCH_ALL if yes else coin.SO_SWITCH_NONE
