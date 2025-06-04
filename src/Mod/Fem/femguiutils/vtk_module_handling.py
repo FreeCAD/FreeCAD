@@ -178,7 +178,7 @@ def vtk_module_handling():
         message = translate(
             "FEM",
             (
-                "FreeCAD is linked to a different VTK library then the imported "
+                "FreeCAD is linked to a different VTK library than the imported "
                 "VTK python module. This is incompatible and will lead to errors."
                 "\n\nWrong python module is imported from: \n{}"
             ),
