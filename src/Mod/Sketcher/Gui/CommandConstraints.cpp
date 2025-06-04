@@ -1120,13 +1120,17 @@ public:
 
 private:
     struct ConstraintHintEntry {
-        std::string commandName;
-        int selectionStep;
-        std::list<Gui::InputHint> hints;
+        std::string commandName;    // FreeCAD command name (e.g., "Sketcher_ConstrainSymmetric")
+        int selectionStep;          // 0-indexed step in the selection sequence
+        std::list<Gui::InputHint> hints;  // Hint text and input types for this step
     };
 
     using ConstraintHintTable = std::vector<ConstraintHintEntry>;
 
+    // Constraint hint lookup table
+    // Format: {command_name, selection_step, {hint_text, input_types}}
+    // Steps are 0-indexed and correspond to DrawSketchHandlerGenConstraint::seqIndex
+    // Each step provides contextual guidance for what the user should select next
     static ConstraintHintTable getConstraintHintTable() {
         return {
             // Coincident
