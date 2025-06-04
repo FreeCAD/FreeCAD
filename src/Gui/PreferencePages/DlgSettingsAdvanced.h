@@ -71,7 +71,6 @@ protected:
 
 private:
 
-
     // Auto generated code (Tools/params_utils.py:400)
     QGroupBox * groupOverlay = nullptr;
     QLabel *labelDockOverlayWheelDelay = nullptr;

@@ -32,7 +32,7 @@ from params_utils import auto_comment
 
 sys.path.append(path.join(path.dirname(
     path.dirname(path.dirname(path.abspath(__file__)))), 'Gui'))
-import OverlayParams 
+import OverlayParams
 
 Title = 'Advanced'
 NameSpace = 'Gui'
@@ -75,3 +75,4 @@ def declare_end():
 
 def define():
     params_utils.preference_dialog_define(sys.modules[__name__])
+    
