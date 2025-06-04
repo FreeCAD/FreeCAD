@@ -87,9 +87,8 @@ public:
 
     ~DrawSketchHandlerScale() override = default;
 
-    static std::unique_ptr<DrawSketchHandlerScale> make_centerScale( std::vector<int> listOfGeoIds, 
-                                                    double scaleFactor, 
-                                                    bool abortOnFail)
+    static std::unique_ptr<DrawSketchHandlerScale>
+    make_centerScale(std::vector<int> listOfGeoIds, double scaleFactor, bool abortOnFail)
     {
         auto out = std::make_unique<DrawSketchHandlerScale>(listOfGeoIds);
         out->referencePoint = Base::Vector2d(0.0, 0.0);
@@ -120,7 +119,7 @@ public:
             Gui::NotifyError(sketchgui,
                              QT_TRANSLATE_NOOP("Notifications", "Error"),
                              QT_TRANSLATE_NOOP("Notifications", "Failed to scale"));
-            
+
             if (abortOnFail) {
                 Gui::Command::abortCommand();
             }
@@ -224,8 +223,9 @@ private:
     std::vector<int> listOfGeoIds;
     Base::Vector2d referencePoint, startPoint, endPoint;
     bool deleteOriginal;
-    bool abortOnFail; // When the scale operation is part of a larger transaction, one might want to continue even if the scaling failed
-    bool allowOriginConstraint; // Conserve constraints with origin 
+    bool abortOnFail;  // When the scale operation is part of a larger transaction, one might want
+                       // to continue even if the scaling failed
+    bool allowOriginConstraint;  // Conserve constraints with origin
     double refLength, length, scaleFactor;
 
 
@@ -376,8 +376,7 @@ private:
 
                 if ((cstr->Type == Symmetric || cstr->Type == Tangent || cstr->Type == Perpendicular
                      || cstr->Type == Angle)
-                    && secondIndex != GeoEnum::GeoUndef 
-                    && thirdIndex != GeoEnum::GeoUndef) {
+                    && secondIndex != GeoEnum::GeoUndef && thirdIndex != GeoEnum::GeoUndef) {
                     newConstr->Second = offsetGeoID(secondIndex, firstCurveCreated);
                     newConstr->Third = offsetGeoID(thirdIndex, firstCurveCreated);
                 }
@@ -385,8 +384,7 @@ private:
                           || cstr->Type == Symmetric || cstr->Type == Perpendicular
                           || cstr->Type == Parallel || cstr->Type == Equal || cstr->Type == Angle
                           || cstr->Type == PointOnObject || cstr->Type == InternalAlignment)
-                         && secondIndex != GeoEnum::GeoUndef
-                         && thirdIndex == GeoEnum::GeoUndef) {
+                         && secondIndex != GeoEnum::GeoUndef && thirdIndex == GeoEnum::GeoUndef) {
                     newConstr->Second = offsetGeoID(secondIndex, firstCurveCreated);
                 }
                 else if (cstr->Type == Radius || cstr->Type == Diameter) {
@@ -406,13 +404,14 @@ private:
     }
     bool skipConstraint(const Constraint* constr)
     {
-        return  (constr->First == GeoEnum::GeoUndef) || 
-                (!allowOriginConstraint && (  constr->First == GeoEnum::VAxis || constr->First == GeoEnum::HAxis ||
-                                            constr->Second == GeoEnum::VAxis || constr->Second == GeoEnum::HAxis ||
-                                            constr->Third == GeoEnum::VAxis || constr->Third == GeoEnum::HAxis)) ||
-                (constr->First != GeoEnum::GeoUndef && constr->First <= GeoEnum::RefExt) ||
-                (constr->Second != GeoEnum::GeoUndef && constr->Second <= GeoEnum::RefExt) ||
-                (constr->Third != GeoEnum::GeoUndef && constr->Third <= GeoEnum::RefExt);
+        return (constr->First == GeoEnum::GeoUndef)
+            || (!allowOriginConstraint
+                && (constr->First == GeoEnum::VAxis || constr->First == GeoEnum::HAxis
+                    || constr->Second == GeoEnum::VAxis || constr->Second == GeoEnum::HAxis
+                    || constr->Third == GeoEnum::VAxis || constr->Third == GeoEnum::HAxis))
+            || (constr->First != GeoEnum::GeoUndef && constr->First <= GeoEnum::RefExt)
+            || (constr->Second != GeoEnum::GeoUndef && constr->Second <= GeoEnum::RefExt)
+            || (constr->Third != GeoEnum::GeoUndef && constr->Third <= GeoEnum::RefExt);
     }
 
     // Offset the geom index to match the newly created one

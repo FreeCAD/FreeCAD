@@ -415,7 +415,8 @@ void EditDatumDialog::performAutoScale(double newDatum)
             centerScale(sketch, scale_factor);
             sketch->setLabelDistance(ConstrNbr, initLabelDistance * scale_factor);
             sketch->setLabelPosition(ConstrNbr, initLabelPosition * scale_factor);
-        } catch (const Base::Exception& e) {
+        }
+        catch (const Base::Exception& e) {
             Base::Console().Error("Exception performing autoscale: %s\n", e.what());
         }
     }
