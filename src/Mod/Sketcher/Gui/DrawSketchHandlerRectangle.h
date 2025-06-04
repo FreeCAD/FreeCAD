@@ -679,6 +679,12 @@ private:
         }
     }
 
+    void onReset() override
+    {
+        thickness = 0.;
+        toolWidgetManager.resetControls();
+    }
+
 private:
     Base::Vector2d center, corner1, corner2, corner3, corner4, frameCorner1, frameCorner2,
         frameCorner3, frameCorner4, corner2Initial;
