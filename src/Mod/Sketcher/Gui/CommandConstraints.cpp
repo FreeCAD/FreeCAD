@@ -1761,20 +1761,15 @@ public:
     }
 
 std::list<Gui::InputHint> getToolHints() const override {
-    std::list<Gui::InputHint> hints;
-
     if (selectionEmpty()) {
-        hints.push_back({QObject::tr("%1 Select geometry to dimension"), {Gui::InputHint::UserInput::MouseLeft}});
+        return {{QObject::tr("%1 pick geometry"), {Gui::InputHint::UserInput::MouseLeft}}};
     } else if (selPoints.size() == 1 && selLine.empty() && selCircleArc.empty()) {
-        hints.push_back({QObject::tr("%1 Select second point or geometry"), {Gui::InputHint::UserInput::MouseLeft}});
-    } else if (selLine.size() == 1 && selPoints.empty()) {
-        hints.push_back({QObject::tr("%1 Click to place dimension"), {Gui::InputHint::UserInput::MouseLeft}});
+        return {{QObject::tr("%1 pick second point or geometry"), {Gui::InputHint::UserInput::MouseLeft}}};
     } else {
-        hints.push_back({QObject::tr("%1 Click to place dimension"), {Gui::InputHint::UserInput::MouseLeft}});
+        return {{QObject::tr("%1 place dimension"), {Gui::InputHint::UserInput::MouseLeft}}};
     }
-
-    return hints;
 }
+
 protected:
     SpecialConstraint specialConstraint;
     AvailableConstraint availableConstraint;
