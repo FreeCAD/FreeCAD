@@ -648,7 +648,14 @@ void CArea::MakePocketToolpath(std::list<CCurve>& curve_list, const CAreaPocketP
 
     if (params.mode == ZigZagPocketMode || params.mode == ZigZagThenSingleOffsetPocketMode) {
         curve_list_for_zigs = &curve_list;
-        zigzag(a_offset);
+        if (params.mode == ZigZagThenSingleOffsetPocketMode && params.extra_offsetzz != 0) {
+            CArea a_offset_zz = a_offset;
+            a_offset_zz.Offset(params.extra_offsetzz);
+            zigzag(a_offset_zz);
+        }
+        else {
+            zigzag(a_offset);
+        }
     }
     else if (params.mode == SpiralPocketMode) {
         std::list<CArea> m_areas;
