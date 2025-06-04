@@ -488,7 +488,7 @@ static inline Quantity pyToQuantity(const Py::Object &pyobj,
 }
 
 Py::Object pyFromQuantity(const Quantity &quantity) {
-    if(!quantity.getUnit().isEmpty())
+    if (!quantity.isDimensionless())
         return Py::asObject(new QuantityPy(new Quantity(quantity)));
     double v = quantity.getValue();
     long l;

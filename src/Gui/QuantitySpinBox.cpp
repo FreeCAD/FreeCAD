@@ -224,7 +224,7 @@ public:
         ok = parseString(copy, res, value, path);
 
         // If result does not have unit: add default unit
-        if (res.getUnit().isEmpty()){
+        if (res.isDimensionless()) {
             res.setUnit(unit);
         }
 
