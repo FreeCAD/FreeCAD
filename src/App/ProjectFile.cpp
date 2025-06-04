@@ -66,6 +66,26 @@ using namespace App;
 
 namespace
 {
+
+class ZipTools
+{
+public:
+    static std::unique_ptr<zipios::ZipFile> open(const std::string& file)
+    {
+        std::unique_ptr<zipios::ZipFile> project;
+        try {
+            project = std::make_unique<zipios::ZipFile>(file);
+            if (!project->isValid()) {
+                project.reset();
+            }
+        }
+        catch (const std::exception&) {
+        }
+
+        return project;
+    }
+};
+
 class DocumentMetadata
 {
 public:
@@ -212,11 +232,12 @@ bool ProjectFile::loadDocument()
         return true;  // already loaded
     }
 
-    zipios::ZipFile project(stdFile);
-    if (!project.isValid()) {
+    auto project = ZipTools::open(stdFile);
+    if (!project) {
         return false;
     }
-    std::unique_ptr<std::istream> str(project.getInputStream("Document.xml"));
+
+    std::unique_ptr<std::istream> str(project->getInputStream("Document.xml"));
     if (str) {
         std::unique_ptr<XercesDOMParser> parser(new XercesDOMParser);
         parser->setValidationScheme(XercesDOMParser::Val_Auto);

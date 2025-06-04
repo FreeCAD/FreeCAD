@@ -27,7 +27,7 @@
 #include "GlUtils.h"
 #include <iostream>
 
-using std::numbers::pi;
+constexpr auto pi = std::numbers::pi_v<float>;
 
 #define N_MILL_SLICES 8
 #define MAX_SEG_DEG (pi / 2.0f)   // 90 deg

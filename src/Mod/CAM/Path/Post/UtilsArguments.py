@@ -78,6 +78,7 @@ def init_argument_defaults(argument_defaults: Dict[str, bool]) -> None:
     argument_defaults["enable_machine_specific_commands"] = False
     argument_defaults["header"] = True
     argument_defaults["line-numbers"] = False
+    argument_defaults["list_tools_in_preamble"] = False
     argument_defaults["metric_inches"] = True
     argument_defaults["modal"] = False
     argument_defaults["output_all_arguments"] = False
@@ -102,7 +103,10 @@ def init_arguments_visible(arguments_visible: Dict[str, bool]) -> None:
     arguments_visible["end_of_line_characters"] = False
     arguments_visible["feed-precision"] = True
     arguments_visible["header"] = True
+    arguments_visible["line_number_increment"] = False
+    arguments_visible["line_number_start"] = False
     arguments_visible["line-numbers"] = True
+    arguments_visible["list_tools_in_preamble"] = False
     arguments_visible["metric_inches"] = True
     arguments_visible["modal"] = True
     arguments_visible["output_all_arguments"] = True
@@ -268,6 +272,30 @@ def init_shared_arguments(
         "Suppress header output",
         arguments_visible["header"],
     )
+    if arguments_visible["line_number_increment"]:
+        help_message = (
+            f'Amount to increment the line numbers, default is {str(values["LINE_INCREMENT"])}'
+        )
+    else:
+        help_message = argparse.SUPPRESS
+    shared.add_argument(
+        "--line_number_increment",
+        default=-1,
+        type=int,
+        help=help_message,
+    )
+    if arguments_visible["line_number_start"]:
+        help_message = (
+            f'The number the line numbers start at, default is {str(values["line_number"])}'
+        )
+    else:
+        help_message = argparse.SUPPRESS
+    shared.add_argument(
+        "--line_number_start",
+        default=-1,
+        type=int,
+        help=help_message,
+    )
     add_flag_type_arguments(
         shared,
         argument_defaults["line-numbers"],
@@ -276,6 +304,15 @@ def init_shared_arguments(
         "Prefix with line numbers",
         "Don't prefix with line numbers",
         arguments_visible["line-numbers"],
+    )
+    add_flag_type_arguments(
+        shared,
+        argument_defaults["list_tools_in_preamble"],
+        "--list_tools_in_preamble",
+        "--no-list_tools_in_preamble",
+        "List the tools used in the operation in the preamble",
+        "Don't list the tools used in the operation",
+        arguments_visible["list_tools_in_preamble"],
     )
     add_flag_type_arguments(
         shared,
@@ -784,10 +821,18 @@ def process_shared_arguments(
             values["OUTPUT_HEADER"] = True
         if args.no_header:
             values["OUTPUT_HEADER"] = False
+        if args.line_number_increment != -1:
+            values["LINE_INCREMENT"] = args.line_number_increment
+        if args.line_number_start != -1:
+            values["line_number"] = args.line_number_start
         if args.line_numbers:
             values["OUTPUT_LINE_NUMBERS"] = True
         if args.no_line_numbers:
             values["OUTPUT_LINE_NUMBERS"] = False
+        if args.list_tools_in_preamble:
+            values["LIST_TOOLS_IN_PREAMBLE"] = True
+        if args.no_list_tools_in_preamble:
+            values["LIST_TOOLS_IN_PREAMBLE"] = False
         if args.modal:
             values["MODAL"] = True
         if args.no_modal:

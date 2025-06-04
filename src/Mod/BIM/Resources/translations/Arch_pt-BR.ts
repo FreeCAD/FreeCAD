@@ -250,13 +250,9 @@ to count the objects, or property names like 'Length' or
 When used with native IFC objects, this can be used to
 retrieve any attribute or custom properties of the elements
 retrieved.</source>
-      <translation type="unfinished">The property to retrieve from each object.Can be 'Count'
-to count the objects, or property names like 'Length' or
-'Shape.Volume' to retrieve a certain property.
+      <translation>Obter as propriedades de objetos. Pode usar 'Contar' para contar os objetos, ou nome de propriedade como 'Comprimento' ou 'Forma.Volume' para recuperar uma certa propriedade.
 
-When used with native IFC objects, this can be used to
-retrieve any attribute or custom properties of the elements
-retrieved.</translation>
+Quando usada com objetos IFC nativos, isso pode ser usado para obter qualquer atributo ou propriedade customizada dos elementos obtidos.</translation>
     </message>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="93"/>
@@ -272,18 +268,14 @@ in FreeCAD or not.
 
 Use the name of the IFC project to get all the IFC entities
 of that project, no matter if they are expanded or not.</source>
-      <translation type="unfinished">An optional semicolon (;) separated list of object names
-(internal names, not labels), to be considered by this operation.
-If the list contains groups, children will be added.
+      <translation>Uma lista opcional de nomes de objetos (nomes internos, não os rótulos), separada por ponto e vírgula (;) a ser considerada por essa operação.
+Se a lista contem grupos, filhos serão adicionados.
 
-Leave blank to use all objects from the document.
+Deixe em branco para usar todos os objetos do documento.
 
-If the document is an IFC project, all IFC entities of the
-document will be used, no matter if they are expanded
-in FreeCAD or not.
+Se o documento é um projeto IFC, todas as entidades IFC do documento serão usadas, não importa se elas estão expandidas no FreeCAD ou não.
 
-Use the name of the IFC project to get all the IFC entities
-of that project, no matter if they are expanded or not.</translation>
+Use o nome do projeto IFC para recuperar o nome de todas as entidades IFC contidas nele, não importa se elas estão expandidas ou não.</translation>
     </message>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="112"/>
@@ -292,11 +284,18 @@ of that project, no matter if they are expanded or not.</translation>
 Examples of valid filters (everything is case-insensitive): Name:Wall - Will only consider objects with 'wall' in their name (internal name); !Name:Wall - Will only consider objects which DON'T have 'wall' in their name (internal name); Description:Win - Will only consider objects with 'win' in their description; !Label:Win - Will only consider objects which DO NOT have 'win' in their label; IfcType:Wall - Will only consider objects which Ifc Type is 'Wall'; !Tag:Wall - Will only consider objects which tag is NOT 'Wall'. If you leave this field empty, no filtering is applied
 
 When dealing with native IFC objects, you can use FreeCAD properties name, ex: 'Class:IfcWall' or any other IFC attribute (ex. 'IsTypedBy:#455'). If the 'Objects' column has been set to an IFC project or document, all the IFC entities of that project will be considered.</source>
-      <translation type="unfinished">An optional semicolon (;) separated list of property:value filters. Prepend ! to a property name to invert the effect of the filter (exclude objects that match the filter). Objects whose property contains the value will be matched.
+      <translation>Uma lista de 'propriedade:valor filtros' separada por ponto e vírgula (;). Adicione exclamação (!) ao começo do nome de uma propriedade para inverter o efeito do filtro (exclui os objetos que são encontrados pelo filtro). Objetos cujas propriedades contiverem os valores serão recuperados.
 
-Examples of valid filters (everything is case-insensitive): Name:Wall - Will only consider objects with 'wall' in their name (internal name); !Name:Wall - Will only consider objects which DON'T have 'wall' in their name (internal name); Description:Win - Will only consider objects with 'win' in their description; !Label:Win - Will only consider objects which DO NOT have 'win' in their label; IfcType:Wall - Will only consider objects which Ifc Type is 'Wall'; !Tag:Wall - Will only consider objects which tag is NOT 'Wall'. If you leave this field empty, no filtering is applied
+Exemplos de filtros válidos (tudo é sensível a letras minúsculas/maiúsculas):
+Name:Parede - Considerará apenas objetos que contenham 'Parede' no nome (nome interno);
+!Name:Parede - Considerará, por sua vez, apenas os objetos que NÃO contenham 'parede' em seus nomes (nomes internos);
+Description:Vencer - Considerará apenas objetos que contenham 'Vencer' em sua descrição;
+!Label:Vencer - Considerará apenas objetos que NÃO contenham 'Vencer' em seus rótulos;
+IfcType:Parede - Considerará apenas objetos os quais o IfcType seja 'Parede';
+!Tag:Parede - Considerará apenas objetos os quais NÃO tenham a marcação 'Parede'.
+Se deixar esse campo em branco, nenhum filtro será aplicado.
 
-When dealing with native IFC objects, you can use FreeCAD properties name, ex: 'Class:IfcWall' or any other IFC attribute (ex. 'IsTypedBy:#455'). If the 'Objects' column has been set to an IFC project or document, all the IFC entities of that project will be considered.</translation>
+Quando estiver lidando com objetos IFC nativos, você pode usar nomes de propriedades do FreeCAD, exemplo: 'Class:IfcWall' ou qualquer outro atributo IFC (exemplo: 'IsTypedBy:#455'). Se a coluna de 'Objetos' estiver configurada para um projeto ou documento IFC, todas as entidades IFC daquele projeto serão consideradas.</translation>
     </message>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="126"/>
@@ -626,10 +625,9 @@ When dealing with native IFC objects, you can use FreeCAD properties name, ex: '
 and that document won't be turned into an IFC document automatically.
 You can still turn a FreeCAD document into an IFC document manually, using
 Utils -&gt; Make IFC project</source>
-      <translation type="unfinished">If this is checked, you won't be asked again when creating a new FreeCAD document,
-and that document won't be turned into an IFC document automatically.
-You can still turn a FreeCAD document into an IFC document manually, using
-Utils -&gt; Make IFC project</translation>
+      <translation>Se isto estiver marcado, não perguntaremos novamente ao criar um 'documento FreeCAD' e não o tornaremos automaticamente em um 'documento IFC'.
+Você ainda pode tornar um 'documento FreeCad' em um 'documento IFC' manualmente indo em
+Utilidades → Crie um projeto IFC</translation>
     </message>
     <message>
       <location filename="../ui/dialogConvertDocument.ui" line="46"/>
@@ -1381,17 +1379,17 @@ Utils -&gt; Make IFC project</translation>
     <message>
       <location filename="../ui/dialogConvertType.ui" line="26"/>
       <source>This object will be converted to a %1 type. Types can be used to give common attributes and properties to several objects at once.</source>
-      <translation type="unfinished">This object will be converted to a %1 type. Types can be used to give common attributes and properties to several objects at once.</translation>
+      <translation>Esse objeto será convertido para o tipo %1. Esses tipos podem ser usados para enviar atributos e propriedades comuns para diversos objetos de uma vez.</translation>
     </message>
     <message>
       <location filename="../ui/dialogConvertType.ui" line="36"/>
       <source>Keep original object. The object will adopt the new type</source>
-      <translation type="unfinished">Keep original object. The object will adopt the new type</translation>
+      <translation>Mantenha o objeto original. O objeto adotará o novo tipo</translation>
     </message>
     <message>
       <location filename="../ui/dialogAddProperty.ui" line="14"/>
       <source>Add IFC property</source>
-      <translation type="unfinished">Add IFC property</translation>
+      <translation>Adicionar propriedade IFC</translation>
     </message>
     <message>
       <location filename="../ui/dialogAddProperty.ui" line="44"/>
@@ -2909,7 +2907,7 @@ instead of the FreeCAD web workbench</source>
       <location filename="../ui/preferences-sh3d-import.ui" line="202"/>
       <location filename="../ui/preferences-sh3d-import.ui" line="242"/>
       <source>This color might be used when a room does not define its own color.</source>
-      <translation type="unfinished">This color might be used when a room does not define its own color.</translation>
+      <translation>Essa cor pode ser utilizada quando uma área não definir sua própria cor.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-sh3d-import.ui" line="226"/>

@@ -250,13 +250,12 @@ to count the objects, or property names like 'Length' or
 When used with native IFC objects, this can be used to
 retrieve any attribute or custom properties of the elements
 retrieved.</source>
-      <translation type="unfinished">The property to retrieve from each object.Can be 'Count'
-to count the objects, or property names like 'Length' or
-'Shape.Volume' to retrieve a certain property.
+      <translation>La propriété à extraire de chaque objet. Elle peut être "Count" pour compter les objets,
+ou des noms de propriétés tels que "Length" ou "Shape.Volume" pour récupérer une
+certaine propriété.
 
-When used with native IFC objects, this can be used to
-retrieve any attribute or custom properties of the elements
-retrieved.</translation>
+Lorsqu'elle est utilisée avec des objets IFC natifs, cette propriété peut être utilisée pour
+récupérer n'importe quel attribut ou propriété personnalisée des éléments récupérées.</translation>
     </message>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="93"/>
@@ -272,18 +271,17 @@ in FreeCAD or not.
 
 Use the name of the IFC project to get all the IFC entities
 of that project, no matter if they are expanded or not.</source>
-      <translation type="unfinished">An optional semicolon (;) separated list of object names
-(internal names, not labels), to be considered by this operation.
-If the list contains groups, children will be added.
+      <translation>Une liste facultative de noms d'objets séparés par des points-virgules (;)
+(noms internes, pas les étiquettes), à prendre en compte par cette opération.
+Si la liste contient des groupes, les enfants seront ajoutés.
 
-Leave blank to use all objects from the document.
+Laisser vide pour utiliser tous les objets du document.
 
-If the document is an IFC project, all IFC entities of the
-document will be used, no matter if they are expanded
-in FreeCAD or not.
+Si le document est un projet IFC, toutes les entités IFC du document seront
+utilisées, peu importe si le document est un projet IFC ou non.
 
-Use the name of the IFC project to get all the IFC entities
-of that project, no matter if they are expanded or not.</translation>
+Utiliser le nom du projet IFC pour obtenir toutes les entités IFC de ce projet,
+peu importe si elles sont développées dans FreeCAD ou non.</translation>
     </message>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="112"/>
@@ -292,11 +290,23 @@ of that project, no matter if they are expanded or not.</translation>
 Examples of valid filters (everything is case-insensitive): Name:Wall - Will only consider objects with 'wall' in their name (internal name); !Name:Wall - Will only consider objects which DON'T have 'wall' in their name (internal name); Description:Win - Will only consider objects with 'win' in their description; !Label:Win - Will only consider objects which DO NOT have 'win' in their label; IfcType:Wall - Will only consider objects which Ifc Type is 'Wall'; !Tag:Wall - Will only consider objects which tag is NOT 'Wall'. If you leave this field empty, no filtering is applied
 
 When dealing with native IFC objects, you can use FreeCAD properties name, ex: 'Class:IfcWall' or any other IFC attribute (ex. 'IsTypedBy:#455'). If the 'Objects' column has been set to an IFC project or document, all the IFC entities of that project will be considered.</source>
-      <translation type="unfinished">An optional semicolon (;) separated list of property:value filters. Prepend ! to a property name to invert the effect of the filter (exclude objects that match the filter). Objects whose property contains the value will be matched.
+      <translation>Une liste facultative de filtres propriété/valeur séparés par des points-virgules (;).
+Ajouter un ! au nom d'une propriété pour inverser l'effet du filtre (cela exclut les objets qui
+correspondent au filtre). Les objets dont la propriété contient la valeur seront pris en compte.
 
-Examples of valid filters (everything is case-insensitive): Name:Wall - Will only consider objects with 'wall' in their name (internal name); !Name:Wall - Will only consider objects which DON'T have 'wall' in their name (internal name); Description:Win - Will only consider objects with 'win' in their description; !Label:Win - Will only consider objects which DO NOT have 'win' in their label; IfcType:Wall - Will only consider objects which Ifc Type is 'Wall'; !Tag:Wall - Will only consider objects which tag is NOT 'Wall'. If you leave this field empty, no filtering is applied
+Exemples de filtres valides (tout est insensible à la casse) : 
+- Name:Wall : ne prendra en compte que les objets dont le nom (nom interne) contient "wall"
+- !Name:Wall : ne prendra en compte que les objets dont le nom (nom interne) ne contient pas "wall"
+- Description:Win : ne prendra en compte que les objets dont la description contient "win"
+- !Label:Win : ne prendra en compte que les objets dont l'étiquette ne contient pas "win"
+- IfcType:Wall : ne prendra en compte que les objets dont le type Ifc est "Wall"
+- !Tag:Wall : ne prendra en compte que les objets dont le tag n'est pas "Wall".
+- Si vous laissez ce champ vide, aucun filtrage n'est appliqué
 
-When dealing with native IFC objects, you can use FreeCAD properties name, ex: 'Class:IfcWall' or any other IFC attribute (ex. 'IsTypedBy:#455'). If the 'Objects' column has been set to an IFC project or document, all the IFC entities of that project will be considered.</translation>
+Lorsque vous manipulez des objets IFC natifs, vous pouvez utiliser le nom des propriétés FreeCAD.
+Par ex : 'Class:IfcWall' ou tout autre attribut IFC (ex : 'IsTypedBy:#455')
+Si la colonne "Objets" a été définie à projet ou document IFC, toutes les entités IFC de ce projet
+seront prises en compte.</translation>
     </message>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="126"/>
@@ -630,10 +640,11 @@ Double-cliquer pour modifier. Glisser/déposer pour réorganiser.</translation>
 and that document won't be turned into an IFC document automatically.
 You can still turn a FreeCAD document into an IFC document manually, using
 Utils -&gt; Make IFC project</source>
-      <translation type="unfinished">If this is checked, you won't be asked again when creating a new FreeCAD document,
-and that document won't be turned into an IFC document automatically.
-You can still turn a FreeCAD document into an IFC document manually, using
-Utils -&gt; Make IFC project</translation>
+      <translation>Si cette case est cochée, la question ne vous sera plus posée lors de la création d'un nouveau document
+FreeCAD, et ce document ne sera pas transformé automatiquement en document IFC.
+
+Vous pouvez toujours transformer un document FreeCAD en document IFC manuellement, en utilisant :
+Utilitaires → Créer un projet IFC</translation>
     </message>
     <message>
       <location filename="../ui/dialogConvertDocument.ui" line="46"/>
@@ -731,7 +742,8 @@ Les valeurs de longueur, de largeur et de hauteur peuvent être modifiées ici, 
     <message>
       <location filename="../ui/dialogImport.ui" line="22"/>
       <source>How the IFC file will initially be imported: Only one object, only project structure, or all individual objects.</source>
-      <translation>Comment le fichier IFC sera initialement importé : un seul objet, une seule structure de projet ou tous les objets séparément.</translation>
+      <translation>La manière dont le fichier IFC sera initialement importé : un seul objet,
+une seule structure de projet ou tous les objets séparément.</translation>
     </message>
     <message>
       <location filename="../ui/dialogImport.ui" line="26"/>
@@ -843,7 +855,7 @@ Les valeurs de longueur, de largeur et de hauteur peuvent être modifiées ici, 
     <message>
       <location filename="../ui/dialogImport.ui" line="149"/>
       <source>If this is unchecked, these settings will be applied automatically next time. You can change this later under menu Edit -&gt; Preferences -&gt; BIM -&gt; Native IFC</source>
-      <translation>Si cette option n'est pas cochée, ces paramètres seront appliqués automatiquement la prochaine fois. Vous pourrez modifier ces paramètres plus tard dans le menu : Édition → Préférences → BIM → NativeIFC</translation>
+      <translation>Si cette option n'est pas cochée, ces paramètres seront appliqués automatiquement la prochaine fois. Vous pourrez modifier ces paramètres plus tard dans le menu : Édition → Préférences → BIM → IFC natifs</translation>
     </message>
     <message>
       <location filename="../ui/dialogLayersIFC.ui" line="14"/>
@@ -1033,7 +1045,7 @@ Les valeurs de longueur, de largeur et de hauteur peuvent être modifiées ici, 
     <message>
       <location filename="../ui/dialogAddPSet.ui" line="14"/>
       <source>Add standard IFC PSet</source>
-      <translation type="unfinished">Add standard IFC PSet</translation>
+      <translation>Ajouter un jeu de propriétés standard IFC</translation>
     </message>
     <message>
       <location filename="../ui/dialogAddPSet.ui" line="43"/>
@@ -1351,7 +1363,7 @@ Les valeurs de longueur, de largeur et de hauteur peuvent être modifiées ici, 
     <message>
       <location filename="../ui/dialogWelcome.ui" line="78"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;This appears to be the first time that you are using the BIM workbench. If you press OK, the next screen will propose you to set a couple of typical FreeCAD options that are suitable for BIM work. You can change these options anytime later under menu &lt;span style=" font-weight:600;"&gt;Manage -&amp;gt; BIM Setup...&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>Il semble que ce soit la première fois que vous utilisez l'atelier BIM. Si vous appuyez sur OK, l'écran suivant vous proposera de définir quelques options typiques de FreeCAD qui conviennent au travail BIM. Vous pouvez modifier ces options à tout moment par la suite dans le menu &lt;span style=" font-weight:600;"&gt;Gestion → Configurer des BIM...&lt;/span&gt;</translation>
+      <translation>Il semble que ce soit la première fois que vous utilisez l'atelier BIM. Si vous appuyez sur OK, l'écran suivant vous proposera de définir quelques options typiques de FreeCAD qui conviennent au travail BIM. Vous pouvez modifier ces options à tout moment par la suite dans le menu &lt;span style=" font-weight:600;"&gt;Gestion → Configurer l'atelier BIM...&lt;/span&gt;</translation>
     </message>
     <message>
       <location filename="../ui/dialogWelcome.ui" line="93"/>
@@ -1371,7 +1383,7 @@ Les valeurs de longueur, de largeur et de hauteur peuvent être modifiées ici, 
     <message>
       <location filename="../ui/dialogWelcome.ui" line="120"/>
       <source>A good way to start building a BIM model is by setting up basic characteristics of your project, under menu &lt;span style=" font-weight:600;"&gt;Manage -&amp;gt; Project setup&lt;/span&gt;. You can also directly configure different floor plans for your project, under menu &lt;span style=" font-weight:600;"&gt;Manage -&amp;gt; Levels.&lt;/span&gt;</source>
-      <translation>Une bonne façon de commencer à construire un modèle BIM est de définir les fonctions de base de votre projet depuis le menu &lt;span style=" font-weight:600;"&gt;Gérer → Configuration du projet&lt;/span&gt;. Vous pouvez également configurer directement différents plans d'étage pour votre projet, dans le menu &lt;span style=" font-weight:600;"&gt;Gérer → Niveaux&lt;/span&gt;</translation>
+      <translation>Une bonne façon de commencer à construire un modèle BIM est de définir les fonctions de base de votre projet depuis le menu &lt;span style=" font-weight:600;"&gt;Gestion → Configurer un projet...&lt;/span&gt;. Vous pouvez aussi directement configurer des plans de niveaux de votre projet par le menu &lt;span style=" font-weight:600;"&gt;Gestion → Niveaux&lt;/span&gt;</translation>
     </message>
     <message>
       <location filename="../ui/dialogWelcome.ui" line="130"/>
@@ -1386,52 +1398,53 @@ Les valeurs de longueur, de largeur et de hauteur peuvent être modifiées ici, 
     <message>
       <location filename="../ui/dialogConvertType.ui" line="14"/>
       <source>Convert to IFC type</source>
-      <translation type="unfinished">Convert to IFC type</translation>
+      <translation>Convertir en type IFC</translation>
     </message>
     <message>
       <location filename="../ui/dialogConvertType.ui" line="26"/>
       <source>This object will be converted to a %1 type. Types can be used to give common attributes and properties to several objects at once.</source>
-      <translation type="unfinished">This object will be converted to a %1 type. Types can be used to give common attributes and properties to several objects at once.</translation>
+      <translation>Cet objet sera converti en type %1. Les types peuvent être utilisés pour donner des attributs
+et des propriétés communs à plusieurs objets à la fois.</translation>
     </message>
     <message>
       <location filename="../ui/dialogConvertType.ui" line="36"/>
       <source>Keep original object. The object will adopt the new type</source>
-      <translation type="unfinished">Keep original object. The object will adopt the new type</translation>
+      <translation>Conserver l'objet original. L'objet adoptera le nouveau type.</translation>
     </message>
     <message>
       <location filename="../ui/dialogAddProperty.ui" line="14"/>
       <source>Add IFC property</source>
-      <translation type="unfinished">Add IFC property</translation>
+      <translation>Ajouter une propriété IFC</translation>
     </message>
     <message>
       <location filename="../ui/dialogAddProperty.ui" line="44"/>
       <source>IfcLabel</source>
-      <translation type="unfinished">IfcLabel</translation>
+      <translation>IfcLabel</translation>
     </message>
     <message>
       <location filename="../ui/dialogAddProperty.ui" line="49"/>
       <source>IfcBoolean</source>
-      <translation type="unfinished">IfcBoolean</translation>
+      <translation>IfcBoolean</translation>
     </message>
     <message>
       <location filename="../ui/dialogAddProperty.ui" line="54"/>
       <source>IfcInteger</source>
-      <translation type="unfinished">IfcInteger</translation>
+      <translation>IfcInteger</translation>
     </message>
     <message>
       <location filename="../ui/dialogAddProperty.ui" line="59"/>
       <source>IfcReal</source>
-      <translation type="unfinished">IfcReal</translation>
+      <translation>IfcReal</translation>
     </message>
     <message>
       <location filename="../ui/dialogAddProperty.ui" line="64"/>
       <source>IfcLengthMeasure</source>
-      <translation type="unfinished">IfcLengthMeasure</translation>
+      <translation>IfcLengthMeasure</translation>
     </message>
     <message>
       <location filename="../ui/dialogAddProperty.ui" line="69"/>
       <source>IfcAreaMeasure</source>
-      <translation type="unfinished">IfcAreaMeasure</translation>
+      <translation>IfcAreaMeasure</translation>
     </message>
     <message>
       <location filename="../ui/dialogAddProperty.ui" line="80"/>
@@ -1441,7 +1454,7 @@ Les valeurs de longueur, de largeur et de hauteur peuvent être modifiées ici, 
     <message>
       <location filename="../ui/dialogAddProperty.ui" line="94"/>
       <source>PSet</source>
-      <translation type="unfinished">PSet</translation>
+      <translation>Jeu de propriétés</translation>
     </message>
   </context>
   <context>
@@ -1596,7 +1609,7 @@ Les valeurs de longueur, de largeur et de hauteur peuvent être modifiées ici, 
     <message>
       <location filename="../ui/ArchNest.ui" line="76"/>
       <source>Nesting parameters</source>
-      <translation>Paramètres de calepinage</translation>
+      <translation>Paramètres du calepinage</translation>
     </message>
     <message>
       <location filename="../ui/ArchNest.ui" line="82"/>
@@ -2102,7 +2115,7 @@ Ce test permettra de trouver tout mur qui ne relève pas d'un tel cas standard.
     <message>
       <location filename="../ui/dialogPreflight.ui" line="415"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;When exporting a model to IFC, all BIM objects that are an extrusion of a rectangular profile will use an IfcRectangleProfileDef entity as their extrusion profile. However, Revit won't import these correctly. If you are going to use the IFC file in Revit, we recommend you to disable this behavior by checking the option under menu &lt;span style=" font-weight:600;"&gt;Edit -&amp;gt; Preferences -&amp;gt; BIM -&amp;gt; NativeIFC -&amp;gt; Disable IfcRectangularProfileDef&lt;/span&gt;.&lt;/p&gt;&lt;p&gt;When that option is checked, all extrusion profiles will be exported as generic IfcArbitraryProfileDef entities, regardless of if they are rectangular or not, which will contain a little less information, but will open correctly in Revit.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>Lors de l'exportation d'un modèle en IFC, tous les objets BIM qui sont une extrusion d'un profil rectangulaire utiliseront une entité IfcRectangleProfileDef comme profil d'extrusion. Cependant, Revit ne les importera pas correctement. Si vous comptez utiliser le fichier IFC dans Revit, nous vous recommandons de désactiver ce comportement en cochant l'option dans le menu &lt;span style=" font-weight:600;"&gt;Édition → Préférences → BIM → NativeIFC → Désactiver IfcRectangularProfileDef&lt;/span&gt;.
+      <translation>Lors de l'exportation d'un modèle en IFC, tous les objets BIM qui sont une extrusion d'un profil rectangulaire utiliseront une entité IfcRectangleProfileDef comme profil d'extrusion. Cependant, Revit ne les importera pas correctement. Si vous comptez utiliser le fichier IFC dans Revit, nous vous recommandons de désactiver ce comportement en cochant l'option dans le menu &lt;span style=" font-weight:600;"&gt;Édition → Préférences → BIM → IFC natifs → Désactiver IfcRectangularProfileDef&lt;/span&gt;.
 Lorsque cette option est cochée, tous les profils d'extrusion seront exportés en tant qu'entités génériques IfcArbitraryProfileDef, qu'ils soient rectangulaires ou non. Ils contiendront un peu moins d'informations, mais s'ouvriront correctement dans Revit.</translation>
     </message>
     <message>
@@ -2142,11 +2155,15 @@ p, li { white-space: pre-wrap; }
 &lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;If this is the first time you are using the tutorial, this can take a while, since we need to download many images. On next runs, this will be faster as the images are cached locally.&lt;/p&gt;
 &lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;br /&gt;&lt;/p&gt;
 &lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;When the tutorial is fully written, we'll think of a faster system to avoid this annoying loading time. Please bear with us in the meantime! ;)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>Chargement du contenu des tutoriels depuis le wiki de FreeCAD. Veuillez patienter...
-
-Si c'est la première fois que vous utilisez le tutoriel, cela peut prendre un certain temps, car nous avons besoin de télécharger de nombreuses images. Lors des prochaines exécutions, ce sera plus rapide car les images seront mises en cache localement.
-
-Lorsque le tutoriel sera entièrement écrit, nous réfléchirons à un système plus rapide pour éviter ce temps de chargement fastidieux. En attendant, soyez indulgents avec nous !</translation>
+      <translation>&lt;!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd"&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;style type="text/css"&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=" font-family:'Fira Sans'; font-size:9pt; font-weight:400; font-style:normal;"&gt;
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;Chargement du contenu des tutoriels depuis le wiki de FreeCAD. Veuillez patienter...&lt;/p&gt;
+&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;br /&gt;&lt;/p&gt;
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;Si c'est la première fois que vous utilisez le tutoriel, cela peut prendre un certain temps, car nous avons besoin de télécharger de nombreuses images. Lors des prochaines exécutions, ce sera plus rapide car les images seront mises en cache localement.&lt;/p&gt;
+&lt;p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;br /&gt;&lt;/p&gt;
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;Lorsque le tutoriel sera entièrement écrit, nous réfléchirons à un système plus rapide pour éviter ce temps de chargement fastidieux. En attendant, soyez indulgents avec nous !&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/dialogTutorial.ui" line="41"/>
@@ -2276,7 +2293,7 @@ Lorsque le tutoriel sera entièrement écrit, nous réfléchirons à un système
     <message>
       <location filename="../ui/preferencesNativeIFC.ui" line="14"/>
       <source>NativeIFC</source>
-      <translation>NativeIFC</translation>
+      <translation>IFC natifs</translation>
     </message>
     <message>
       <location filename="../ui/preferencesNativeIFC.ui" line="20"/>
@@ -2291,7 +2308,8 @@ Lorsque le tutoriel sera entièrement écrit, nous réfléchirons à un système
     <message>
       <location filename="../ui/preferencesNativeIFC.ui" line="35"/>
       <source>How the IFC file will initially be imported: Only one object, only project structure, or all individual objects.</source>
-      <translation>Comment le fichier IFC sera initialement importé : un seul objet, une seule structure de projet ou tous les objets séparément.</translation>
+      <translation>La manière dont le fichier IFC sera initialement importé : un seul objet,
+une seule structure de projet ou tous les objets séparément.</translation>
     </message>
     <message>
       <location filename="../ui/preferencesNativeIFC.ui" line="45"/>
@@ -2316,7 +2334,10 @@ Lorsque le tutoriel sera entièrement écrit, nous réfléchirons à un système
     <message>
       <location filename="../ui/preferencesNativeIFC.ui" line="70"/>
       <source>The type of object created at import. Coin only is much faster, but you don't get the full shape information. You can convert between the two anytime by right-clicking the object tree</source>
-      <translation>Le type d'objet créé lors de l'importation. L'utilisation de Coin est beaucoup plus rapide, mais vous n'obtenez pas toutes les informations sur la forme de l'objet. Vous pouvez passer de l'un à l'autre à tout moment en cliquant avec le bouton droit de la souris sur l'arborescence de l'objet.</translation>
+      <translation>Le type d'objet créé lors de l'importation. L'utilisation de Coin est beaucoup plus rapide,
+mais vous n'obtenez pas toutes les informations sur la forme de l'objet. Vous pouvez
+passer de l'un à l'autre à tout moment en cliquant avec le bouton droit de la souris sur 
+'arborescence de l'objet.</translation>
     </message>
     <message>
       <location filename="../ui/preferencesNativeIFC.ui" line="83"/>
@@ -2511,7 +2532,7 @@ Cela signifie qu'ils ne se déplacent pas lorsque leur objet hôte est déplacé
     <message>
       <location filename="../ui/preferences-arch.ui" line="128"/>
       <source>Set "Move base" property to True by default</source>
-      <translation>Définir la propriété "Move base" à Vrai par défaut</translation>
+      <translation>Définir la propriété "Move base" à True par défaut</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="74"/>
@@ -2821,12 +2842,13 @@ Dans le cas contraire, ce sera un simple nombre exprimé en unité interne (mill
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="525"/>
       <source>When clicking a view or level in the BIM views manager, this switches the background to plain color when activating a 2D view, and to gradient color when activating a level</source>
-      <translation type="unfinished">When clicking a view or level in the BIM views manager, this switches the background to plain color when activating a 2D view, and to gradient color when activating a level</translation>
+      <translation>Lorsque l'on clique sur une vue ou un niveau dans le gestionnaire de vues BIM, l'arrière-plan prend
+une couleur unie si l'on active une vue 2D, et une couleur dégradée si l'on active un niveau.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="528"/>
       <source>Switch backgrounds</source>
-      <translation type="unfinished">Switch backgrounds</translation>
+      <translation>Changer la couleur de l'arrière-plan</translation>
     </message>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="314"/>
@@ -2861,7 +2883,7 @@ Dans le cas contraire, ce sera un simple nombre exprimé en unité interne (mill
     <message>
       <location filename="../ui/preferences-sh3d-import.ui" line="14"/>
       <source>SH3D import</source>
-      <translation type="unfinished">SH3D import</translation>
+      <translation>Importer des SH3D</translation>
     </message>
     <message>
       <location filename="../ui/preferences-sh3d-import.ui" line="32"/>
@@ -2873,127 +2895,126 @@ Dans le cas contraire, ce sera un simple nombre exprimé en unité interne (mill
       <location filename="../ui/preferences-sh3d-import.ui" line="45"/>
       <source>Shows verbose debug messages during import of SH3D files in the Report
                     view panel. Log level message must be allowed for this setting to have an effect.</source>
-      <translation type="unfinished">Shows verbose debug messages during import of SH3D files in the Report
-                    view panel. Log level message must be allowed for this setting to have an effect.</translation>
+      <translation>Afficher des messages de débogage détaillés lors de l'importation de fichiers SH3D dans le panneau
+de la vue rapport. Le niveau des logs doit être autorisé pour que ce paramètre ait un effet.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-sh3d-import.ui" line="71"/>
       <source>Whether to import the model's doors and windows</source>
-      <translation type="unfinished">Whether to import the model's doors and windows</translation>
+      <translation>Importer ou non les portes et fenêtres du modèle</translation>
     </message>
     <message>
       <location filename="../ui/preferences-sh3d-import.ui" line="74"/>
       <source>Doors and Windows</source>
-      <translation type="unfinished">Doors and Windows</translation>
+      <translation>Portes et fenêtres</translation>
     </message>
     <message>
       <location filename="../ui/preferences-sh3d-import.ui" line="87"/>
       <source>Whether to import the model's furnitures</source>
-      <translation type="unfinished">Whether to import the model's furnitures</translation>
+      <translation>Importer ou non les meubles du modèle</translation>
     </message>
     <message>
       <location filename="../ui/preferences-sh3d-import.ui" line="90"/>
       <source>Furnitures</source>
-      <translation type="unfinished">Furnitures</translation>
+      <translation>Meubles</translation>
     </message>
     <message>
       <location filename="../ui/preferences-sh3d-import.ui" line="103"/>
       <source>Whether to create Arch::Equipment for each furniture defined in the model (NOTE: this can negatively impact the import process speed)</source>
-      <translation type="unfinished">Whether to create Arch::Equipment for each furniture defined in the model (NOTE: this can negatively impact the import process speed)</translation>
+      <translation>Créer ou non Arch::Equipment pour chaque meuble défini dans le modèle (remarque : ceci peut avoir un impact négatif sur la vitesse du processus d'importation)</translation>
     </message>
     <message>
       <location filename="../ui/preferences-sh3d-import.ui" line="106"/>
       <source>Create Arch::Equipment</source>
-      <translation type="unfinished">Create Arch::Equipment</translation>
+      <translation>Créer des Arch::Equipment</translation>
     </message>
     <message>
       <location filename="../ui/preferences-sh3d-import.ui" line="119"/>
       <source>Whether to join the different Arch::Wall together</source>
-      <translation type="unfinished">Whether to join the different Arch::Wall together</translation>
+      <translation>Assembler ou non les différents Arch::Wall ensemble</translation>
     </message>
     <message>
       <location filename="../ui/preferences-sh3d-import.ui" line="122"/>
       <source>Join Arch::Wall</source>
-      <translation type="unfinished">Join Arch::Wall</translation>
+      <translation>Assembler les Arch::Wall</translation>
     </message>
     <message>
       <location filename="../ui/preferences-sh3d-import.ui" line="135"/>
       <source>Whether to import the model's lights. Note that you also need to import
                     the model's furnitures.</source>
-      <translation type="unfinished">Whether to import the model's lights. Note that you also need to import
-                    the model's furnitures.</translation>
+      <translation>Importer ou non les lumières du modèle. Notez que vous devez également importer les meubles du modèle.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-sh3d-import.ui" line="139"/>
       <source>Lights (requires Render)</source>
-      <translation type="unfinished">Lights (requires Render)</translation>
+      <translation>Lumières (nécessite Render)</translation>
     </message>
     <message>
       <location filename="../ui/preferences-sh3d-import.ui" line="152"/>
       <source>Whether to import the model's cameras</source>
-      <translation type="unfinished">Whether to import the model's cameras</translation>
+      <translation>Importer ou non les caméras du modèle</translation>
     </message>
     <message>
       <location filename="../ui/preferences-sh3d-import.ui" line="155"/>
       <source>Cameras (requires Render)</source>
-      <translation type="unfinished">Cameras (requires Render)</translation>
+      <translation>Caméras (nécessite Render)</translation>
     </message>
     <message>
       <location filename="../ui/preferences-sh3d-import.ui" line="168"/>
       <source>Merge imported element with existing FC object</source>
-      <translation type="unfinished">Merge imported element with existing FC object</translation>
+      <translation>Fusionner les éléments importés avec un objet IFC existant</translation>
     </message>
     <message>
       <location filename="../ui/preferences-sh3d-import.ui" line="171"/>
       <source>Merge into existing document</source>
-      <translation type="unfinished">Merge into existing document</translation>
+      <translation>Fusionner dans un document existant</translation>
     </message>
     <message>
       <location filename="../ui/preferences-sh3d-import.ui" line="186"/>
       <source>Default Floor Color</source>
-      <translation type="unfinished">Default Floor Color</translation>
+      <translation>Couleur des sols par défaut</translation>
     </message>
     <message>
       <location filename="../ui/preferences-sh3d-import.ui" line="202"/>
       <location filename="../ui/preferences-sh3d-import.ui" line="242"/>
       <source>This color might be used when a room does not define its own color.</source>
-      <translation type="unfinished">This color might be used when a room does not define its own color.</translation>
+      <translation>Cette couleur peut être utilisée lorsqu'une pièce ne définit pas sa propre couleur.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-sh3d-import.ui" line="226"/>
       <source>Default Ceiling Color</source>
-      <translation type="unfinished">Default Ceiling Color</translation>
+      <translation>Couleur des plafonds par défaut</translation>
     </message>
     <message>
       <location filename="../ui/preferences-sh3d-import.ui" line="264"/>
       <source>Create a default Render project with the newly created Site</source>
-      <translation type="unfinished">Create a default Render project with the newly created Site</translation>
+      <translation>Créer un projet Render par défaut avec le site juste créé</translation>
     </message>
     <message>
       <location filename="../ui/preferences-sh3d-import.ui" line="267"/>
       <source>Create Render Project (requires Render)</source>
-      <translation type="unfinished">Create Render Project (requires Render)</translation>
+      <translation>Créer un projet Render (nécessite Render)</translation>
     </message>
     <message>
       <location filename="../ui/preferences-sh3d-import.ui" line="280"/>
       <source>Fit view while importing.</source>
-      <translation type="unfinished">Fit view while importing.</translation>
+      <translation>Ajuster la vue lors de l’importation</translation>
     </message>
     <message>
       <location filename="../ui/preferences-sh3d-import.ui" line="296"/>
       <source>Create a default IFC project with the newly created Site.</source>
-      <translation type="unfinished">Create a default IFC project with the newly created Site.</translation>
+      <translation>Créer un projet IFC par défaut avec le site juste créé</translation>
     </message>
     <message>
       <location filename="../ui/preferences-sh3d-import.ui" line="299"/>
       <source>Create IFC Project</source>
-      <translation type="unfinished">Create IFC Project</translation>
+      <translation>Créer un projet IFC</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="45"/>
       <source>Shows verbose debug messages during import and export
 of IFC files in the Report view panel</source>
-      <translation>Afficher les messages de débogage pendant l'import et l'export des fichiers IFC dans la Vue rapport</translation>
+      <translation>Afficher les messages de débogage lors l'importation/exportation des fichiers IFC dans la vue rapport</translation>
     </message>
     <message>
       <location filename="../ui/preferences-sh3d-import.ui" line="49"/>
@@ -3191,14 +3212,14 @@ Si cette option est cochée, toutes les géométries seront importées, quelle q
     <message>
       <location filename="../ui/preferences-ifc.ui" line="399"/>
       <source>Comma-separated list of IFC entities to be excluded from imports</source>
-      <translation>Liste, séparée par des virgules, des entités IFC à exclure des importations</translation>
+      <translation>Liste des entités IFC, séparée par des virgules, à exclure des importations</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="420"/>
       <source>Fit view during import on the imported objects.
 This will slow down the import, but one can watch the import.</source>
-      <translation>Ajuster la vue lors de l'importation sur les objets importés.
-Cela ralentira l'importation, mais il sera possible d'observer l'importation.</translation>
+      <translation>Ajuster la vue lors de l'importation sur les objets importés
+Cela ralentira l'importation mais il sera possible d'observer l'importation.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-sh3d-import.ui" line="283"/>
@@ -3566,7 +3587,7 @@ n'est pas obligatoire, mais la pratique courante est d'en avoir au moins un dans
       <location filename="../ui/preferences-ifc-export.ui" line="366"/>
       <location filename="../ui/preferences-ifc.ui" line="473"/>
       <source>Check also NativeIFC-specific preferences under BIM -&gt; NativeIFC</source>
-      <translation>Vérifier également les préférences spécifiques à NativeIFC sous Préférences → BIM → NativeIFC</translation>
+      <translation>Vérifier également les préférences spécifiques à NativeIFC sous Préférences → BIM → IFC natifs</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="376"/>
@@ -4175,7 +4196,7 @@ Si Course = 0 alors la course est calculée de façon à ce que la hauteur du pr
       <location filename="../../ArchReference.py" line="438"/>
       <location filename="../../ArchReference.py" line="839"/>
       <source>NativeIFC not available - unable to process IFC files</source>
-      <translation>NativeIFC n'est pas disponible, impossible de traiter les fichiers IFC</translation>
+      <translation>Les IFC natifs ne sont pas disponibles, il est impossible de traiter les fichiers IFC.</translation>
     </message>
     <message>
       <location filename="../../ArchReference.py" line="281"/>
@@ -5105,7 +5126,7 @@ valeur de zéro adoptera automatiquement la ligne la plus grande.</translation>
     <message>
       <location filename="../../ArchSchedule.py" line="102"/>
       <source>renamed property 'Description' to 'Operation'</source>
-      <translation type="unfinished">renamed property 'Description' to 'Operation'</translation>
+      <translation>La propriété "Description" a été renommée "Operation".</translation>
     </message>
     <message>
       <location filename="../../ArchSchedule.py" line="103"/>
@@ -5115,7 +5136,7 @@ valeur de zéro adoptera automatiquement la ligne la plus grande.</translation>
     <message>
       <location filename="../../ArchSchedule.py" line="105"/>
       <source>added property 'Schedule'</source>
-      <translation>ajout de la propriété "Schedule"</translation>
+      <translation>propriété "Schedule" ajoutée</translation>
     </message>
     <message>
       <location filename="../../ArchSchedule.py" line="431"/>
@@ -5285,7 +5306,7 @@ Floor creation aborted.</source>
     <message>
       <location filename="../../ArchComponent.py" line="1164"/>
       <source>Wrong base type</source>
-      <translation type="unfinished">Wrong base type</translation>
+      <translation>Type de base incorrect</translation>
     </message>
     <message>
       <location filename="../../ArchComponent.py" line="1653"/>
@@ -5630,7 +5651,7 @@ La création du bâtiment est annulée.</translation>
     <message>
       <location filename="../../ArchWall.py" line="504"/>
       <source>Cannot compute blocks for wall</source>
-      <translation>Ne peut pas calculer les blocs pour le mur</translation>
+      <translation>Le calcul des briques pour le mur n'est pas possible.</translation>
     </message>
     <message>
       <location filename="../../ArchWall.py" line="617"/>
@@ -5756,7 +5777,7 @@ La création du bâtiment est annulée.</translation>
     <message>
       <location filename="../../bimcommands/BimArchUtils.py" line="178"/>
       <source>Mesh to Shape</source>
-      <translation>Maillage vers une forme</translation>
+      <translation>Convertir un maillage en une forme</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimArchUtils.py" line="268"/>
@@ -5802,7 +5823,7 @@ La création du bâtiment est annulée.</translation>
     <message>
       <location filename="../../bimcommands/BimDrawingView.py" line="55"/>
       <source>Create 2D View</source>
-      <translation type="unfinished">Create 2D View</translation>
+      <translation>Créer une vue 2D</translation>
     </message>
   </context>
   <context>
@@ -5947,7 +5968,7 @@ La création du bâtiment est annulée.</translation>
     <message>
       <location filename="../../ArchStructure.py" line="733"/>
       <source>Select User Defined PropertySet to use in creating variant shape, with same ArchSketch </source>
-      <translation type="unfinished">Select User Defined PropertySet to use in creating variant shape, with same ArchSketch </translation>
+      <translation>Sélectionner le jeu de propriétés défini par l'utilisateur à utiliser pour créer une variante de forme, avec le même ArchSketch </translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="1195"/>
@@ -6398,7 +6419,8 @@ La création du bâtiment est annulée.</translation>
     <message>
       <location filename="../../ArchSite.py" line="575"/>
       <source>An optional EPW File for the location of this site. Refer to the Site documentation to know how to obtain one</source>
-      <translation>Un fichier EPW facultatif pour l'emplacement de ce site. Consulter la documentation du site pour savoir comment en obtenir un</translation>
+      <translation>Un fichier EPW optionnel pour l'emplacement de ce site. Consulter la
+documentation du site pour savoir comment en obtenir un.</translation>
     </message>
     <message>
       <location filename="../../ArchSite.py" line="779"/>
@@ -7396,8 +7418,8 @@ La création du bâtiment est annulée.</translation>
       <location filename="../../ArchCurtainWall.py" line="181"/>
       <source>Input are index numbers of edges of Base ArchSketch/Sketch geometries (in Edit mode).  Selected edges are used to create the shape of this Arch Curtain Wall (instead of using all edges by default).  [ENHANCED by ArchSketch] GUI 'Edit Curtain Wall' Tool is provided in external Add-on ('SketchArch') to let users to select the edges interactively.  'Toponaming-Tolerant' if ArchSketch is used in Base (and SketchArch Add-on is installed).  Warning : Not 'Toponaming-Tolerant' if just Sketch is used. Property is ignored if Base ArchSketch provided the selected edges.</source>
       <translation>Les données d'entrée sont des numéros d'index des arêtes de Base des géométries ArchSketch/Sketch. Les arêtes sélectionnées sont utilisées pour créer la forme de ce mur-rideau (au lieu d'utiliser toutes les arêtes par défaut).
-[Améliorations par l'extension ArchSketch] L'outil "Edit Curtain Wall" est fourni dans l'extension ("SketchArch") pour permettre aux utilisateurs de sélectionner les arêtes de manière interactive. "Toponaming-Tolerant" si ArchSketch est utilisé dans Base (et que l'extension SketchArch est installée).
-Attention : il n'y a pas "Toponaming-Tolerant" si Sketch est seulement utilisé. La propriété est ignorée si Base de ArchSketch a fourni les arêtes sélectionnées.</translation>
+[Améliorations par l'extension ArchSketch] L'outil "Edit Curtain Wall" est fourni dans l'extension ("SketchArch") pour permettre aux utilisateurs de sélectionner les arêtes de manière interactive. "Toponaming-Tolerant" si ArchSketch est utilisé dans Base (et si l'extension SketchArch est installée).
+Attention : non "Toponaming-Tolerant" si Sketch est seulement utilisé. La propriété est ignorée si Base de ArchSketch a fourni les arêtes sélectionnées.</translation>
     </message>
     <message>
       <location filename="../../ArchPipe.py" line="74"/>
@@ -7462,7 +7484,7 @@ Attention : il n'y a pas "Toponaming-Tolerant" si Sketch est seulement utilisé.
     <message>
       <location filename="../../ArchSchedule.py" line="110"/>
       <source>The operation column</source>
-      <translation type="unfinished">The operation column</translation>
+      <translation>La colonne Opération</translation>
     </message>
     <message>
       <location filename="../../ArchSchedule.py" line="112"/>
@@ -7806,7 +7828,7 @@ Attention : il n'y a pas "Toponaming-Tolerant" si Sketch est seulement utilisé.
     <message>
       <location filename="../../ArchSpace.py" line="221"/>
       <source>The objects that make the boundaries of this space object</source>
-      <translation>Les objets qui constituent les limites de cet objet espace</translation>
+      <translation>Les objets qui constituent les limites de cet objet espace.</translation>
     </message>
     <message>
       <location filename="../../ArchSpace.py" line="223"/>
@@ -7943,28 +7965,28 @@ Désactivé et ignoré si l'objet de base (ArchSketch) fournit l'information.</t
     <message>
       <location filename="../../ArchWall.py" line="160"/>
       <source>The length of this wall. Read-only if this wall is not based on an unconstrained sketch with a single edge, or on a Draft Wire with a single edge. Refer to wiki for details how length is deduced.</source>
-      <translation type="unfinished">The length of this wall. Read-only if this wall is not based on an unconstrained sketch with a single edge, or on a Draft Wire with a single edge. Refer to wiki for details how length is deduced.</translation>
+      <translation>Longueur de ce mur. En lecture seule si ce mur n'est pas basé sur une esquisse non contrainte avec une seule arête, ou sur une Draft polyligne avec une seule arête. Se référer au wiki pour plus de détails sur la façon dont la longueur est déduite.</translation>
     </message>
     <message>
       <location filename="../../ArchWall.py" line="166"/>
       <source>This overrides Width attribute to set width of each segment of wall.  Disabled and ignored if Base object (ArchSketch) provides Widths information, with getWidths() method  (If a value is zero, the value of 'Width' will be followed).  [ENHANCEMENT by ArchSketch] GUI 'Edit Wall Segment Width' Tool is provided in external SketchArch Add-on to let users to set the values interactively.  'Toponaming-Tolerant' if ArchSketch is used in Base (and SketchArch Add-on is installed).  Warning : Not 'Toponaming-Tolerant' if just Sketch is used.</source>
       <translation>Cet attribut remplace l'attribut Width pour définir la largeur de chaque segment de mur.  Désactivé et ignoré si l'objet de base (ArchSketch) fournit des informations sur les largeurs, avec la méthode getWidths() (Si une valeur est nulle, la valeur de "Width" sera suivie).
-[Améliorations par l'extension ArchSketch] L'outil "Edit Wall Segment Width" est fourni dans l'extension ("SketchArch") pour permettre aux utilisateurs  de définir les valeurs de manière interactive. "Toponaming-Tolerant" si ArchSketch est utilisé dans Base (et que l'extension SketchArch est installée).
-Attention : il n'y a pas "Toponaming-Tolerant" si Sketch est seulement utilisé. La propriété est ignorée si Base de ArchSketch a fourni les arêtes sélectionnées.</translation>
+[Améliorations par l'extension ArchSketch] L'outil "Edit Wall Segment Width" est fourni dans l'extension ("SketchArch") pour permettre aux utilisateurs  de définir les valeurs de manière interactive. "Toponaming-Tolerant" si ArchSketch est utilisé dans Base (et si l'extension SketchArch est installée).
+Attention : non "Toponaming-Tolerant" si Sketch est seulement utilisé. La propriété est ignorée si Base de ArchSketch a fourni les arêtes sélectionnées.</translation>
     </message>
     <message>
       <location filename="../../ArchWall.py" line="168"/>
       <source>This overrides Align attribute to set align of each segment of wall.  Disabled and ignored if Base object (ArchSketch) provides Aligns information, with getAligns() method  (If a value is not 'Left, Right, Center', the value of 'Align' will be followed).  [ENHANCEMENT by ArchSketch] GUI 'Edit Wall Segment Align' Tool is provided in external SketchArch Add-on to let users to set the values interactively.  'Toponaming-Tolerant' if ArchSketch is used in Base (and SketchArch Add-on is installed).  Warning : Not 'Toponaming-Tolerant' if just Sketch is used.</source>
       <translation>Cet attribut remplace l'attribut Align pour définir l'alignement de chaque segment de mur. Désactivé et ignoré si l'objet de base (ArchSketch) fournit des informations sur l'alignement avec la méthode getAligns() (si une valeur n'est pas "Left, Right, Center", la valeur de "Align" sera suivie).
-[Améliorations par l'extension ArchSketch] L'outil "Edit Wall Segment Width" est fourni dans l'extension ("SketchArch") pour permettre aux utilisateurs  de définir les valeurs de manière interactive. "Toponaming-Tolerant" si ArchSketch est utilisé dans Base (et que l'extension SketchArch est installée).
-Attention : il n'y a pas "Toponaming-Tolerant" si Sketch est seulement utilisé. La propriété est ignorée si Base de ArchSketch a fourni les arêtes sélectionnées.</translation>
+[Améliorations par l'extension ArchSketch] L'outil "Edit Wall Segment Width" est fourni dans l'extension ("SketchArch") pour permettre aux utilisateurs  de définir les valeurs de manière interactive. "Toponaming-Tolerant" si ArchSketch est utilisé dans Base (et si l'extension SketchArch est installée).
+Attention : non "Toponaming-Tolerant" si Sketch est seulement utilisé. La propriété est ignorée si Base de ArchSketch a fourni les arêtes sélectionnées.</translation>
     </message>
     <message>
       <location filename="../../ArchWall.py" line="170"/>
       <source>This overrides Offset attribute to set offset of each segment of wall.  Disabled and ignored if Base object (ArchSketch) provides Offsets information, with getOffsets() method  (If a value is zero, the value of 'Offset' will be followed).  [ENHANCED by ArchSketch] GUI 'Edit Wall Segment Offset' Tool is provided in external Add-on ('SketchArch') to let users to select the edges interactively.  'Toponaming-Tolerant' if ArchSketch is used in Base (and SketchArch Add-on is installed).  Warning : Not 'Toponaming-Tolerant' if just Sketch is used. Property is ignored if Base ArchSketch provided the selected edges. </source>
       <translation>Cet attribut remplace l'attribut Offset pour définir le décalage de chaque segment de mur. Désactivé et ignoré si l'objet de base (ArchSketch) fournit des informations sur les décalages, avec la méthode getOffsets() (Si une valeur est nulle, la valeur de "Offset" sera suivie).
-[Améliorations par l'extension ArchSketch] L'outil "Edit Wall Segment Offset" est fourni dans l'extension ("SketchArch") pour permettre aux utilisateurs de sélectionner les arêtes de manière interactive. "Toponaming-Tolerant" si ArchSketch est utilisé dans Base (et que l'extension SketchArch est installée).
-Attention : il n'y a pas "Toponaming-Tolerant" si Sketch est seulement utilisé. La propriété est ignorée si Base de ArchSketch a fourni les arêtes sélectionnées.</translation>
+[Améliorations par l'extension ArchSketch] L'outil "Edit Wall Segment Offset" est fourni dans l'extension ("SketchArch") pour permettre aux utilisateurs de sélectionner les arêtes de manière interactive. "Toponaming-Tolerant" si ArchSketch est utilisé dans Base (et si l'extension SketchArch est installée).
+Attention : non "Toponaming-Tolerant" si Sketch est seulement utilisé. La propriété est ignorée si Base de ArchSketch a fourni les arêtes sélectionnées. </translation>
     </message>
     <message>
       <location filename="../../ArchWall.py" line="177"/>
@@ -7979,52 +8001,54 @@ Attention : il n'y a pas "Toponaming-Tolerant" si Sketch est seulement utilisé.
     <message>
       <location filename="../../ArchWall.py" line="193"/>
       <source>Enable this to make the wall generate blocks</source>
-      <translation>Activer cette option pour que le mur génère des blocs</translation>
+      <translation>Activer cette option pour que le mur génère des briques</translation>
     </message>
     <message>
       <location filename="../../ArchWall.py" line="195"/>
       <source>The length of each block</source>
-      <translation>La longueur de chaque bloc</translation>
+      <translation>La longueur de chaque brique</translation>
     </message>
     <message>
       <location filename="../../ArchWall.py" line="197"/>
       <source>The height of each block</source>
-      <translation>La hauteur de chaque bloc</translation>
+      <translation>La hauteur de chaque brique</translation>
     </message>
     <message>
       <location filename="../../ArchWall.py" line="199"/>
       <source>The horizontal offset of the first line of blocks</source>
-      <translation>Le décalage horizontal de la première ligne des blocs</translation>
+      <translation>Le décalage horizontal de la première ligne des briques</translation>
     </message>
     <message>
       <location filename="../../ArchWall.py" line="201"/>
       <source>The horizontal offset of the second line of blocks</source>
-      <translation>Le décalage horizontal de la deuxième ligne de blocs</translation>
+      <translation>Le décalage horizontal de la deuxième ligne de briques</translation>
     </message>
     <message>
       <location filename="../../ArchWall.py" line="203"/>
       <source>The size of the joints between each block</source>
-      <translation>La taille des joints entre chaque bloc</translation>
+      <translation>La taille des joints entre chaque brique</translation>
     </message>
     <message>
       <location filename="../../ArchWall.py" line="205"/>
       <source>The number of entire blocks</source>
-      <translation>Le nombre de blocs entiers</translation>
+      <translation>Le nombre de briques entières</translation>
     </message>
     <message>
       <location filename="../../ArchWall.py" line="208"/>
       <source>The number of broken blocks</source>
-      <translation>Le nombre de blocs cassés</translation>
+      <translation>Le nombre de briques coupées</translation>
     </message>
     <message>
       <location filename="../../ArchWall.py" line="214"/>
       <source>Selected edges (or group of edges) of the base Sketch/ArchSketch, to use in creating the shape of this Arch Wall (instead of using all the Base Sketch/ArchSketch's edges by default).  Input are index numbers of edges or groups.  Disabled and ignored if Base object (ArchSketch) provides selected edges (as Wall Axis) information, with getWallBaseShapeEdgesInfo() method.  [ENHANCEMENT by ArchSketch] GUI 'Edit Wall Segment' Tool is provided in external SketchArch Add-on to let users to (de)select the edges interactively.  'Toponaming-Tolerant' if ArchSketch is used in Base (and SketchArch Add-on is installed).  Warning : Not 'Toponaming-Tolerant' if just Sketch is used.</source>
-      <translation type="unfinished">Selected edges (or group of edges) of the base Sketch/ArchSketch, to use in creating the shape of this Arch Wall (instead of using all the Base Sketch/ArchSketch's edges by default).  Input are index numbers of edges or groups.  Disabled and ignored if Base object (ArchSketch) provides selected edges (as Wall Axis) information, with getWallBaseShapeEdgesInfo() method.  [ENHANCEMENT by ArchSketch] GUI 'Edit Wall Segment' Tool is provided in external SketchArch Add-on to let users to (de)select the edges interactively.  'Toponaming-Tolerant' if ArchSketch is used in Base (and SketchArch Add-on is installed).  Warning : Not 'Toponaming-Tolerant' if just Sketch is used.</translation>
+      <translation>Arêtes sélectionnées (ou groupe d'arêtes) de l'objet de base (Sketch/ArchSketch) à utiliser pour créer la forme de ce Arch mur (au lieu d'utiliser toutes les arêtes de l'objet de base (Sketch/ArchSketch) par défaut). Les données saisies sont des numéros d'index des arêtes ou des groupes. Désactivé et ignoré si l'objet de base (ArchSketch) fournit des informations sur les arêtes sélectionnées (en tant qu'axe du mur), avec la méthode getWallBaseShapeEdgesInfo().
+[Amélioration par l'extension ArchSketch] L'outil "Edit Wall Segment" est fourni dans l'extension SketchArch pour permettre aux utilisateurs de (dé)sélectionner les arêtes de manière interactive. "Toponaming-Tolerant" si ArchSketch est utilisé dans Base (et si l'extension SketchArch est installée). 
+Attention : non 'Toponaming-Tolerant' si Sketch est seulement utilisé.</translation>
     </message>
     <message>
       <location filename="../../ArchWall.py" line="216"/>
       <source>Select User Defined PropertySet to use in creating variant shape, layers of the Arch Wall with same ArchSketch </source>
-      <translation type="unfinished">Select User Defined PropertySet to use in creating variant shape, layers of the Arch Wall with same ArchSketch </translation>
+      <translation>Sélectionner le jeu de propriétés défini par l'utilisateur à utiliser pour créer des variantes de forme, des couches du Arch mur avec le même ArchSketch </translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="719"/>
@@ -8707,7 +8731,7 @@ Attention : il n'y a pas "Toponaming-Tolerant" si Sketch est seulement utilisé.
     <message>
       <location filename="../../bimcommands/BimArchUtils.py" line="127"/>
       <source>Splits selected meshes into independent components</source>
-      <translation>Divise les maillages sélectionnés en composantes indépendantes</translation>
+      <translation>Diviser les maillages sélectionnés en composantes indépendantes</translation>
     </message>
   </context>
   <context>
@@ -8715,7 +8739,7 @@ Attention : il n'y a pas "Toponaming-Tolerant" si Sketch est seulement utilisé.
     <message>
       <location filename="../../bimcommands/BimArchUtils.py" line="152"/>
       <source>Mesh to Shape</source>
-      <translation>Maillage vers une forme</translation>
+      <translation>Convertir un maillage en une forme</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimArchUtils.py" line="155"/>
@@ -8733,7 +8757,7 @@ Attention : il n'y a pas "Toponaming-Tolerant" si Sketch est seulement utilisé.
     <message>
       <location filename="../../bimcommands/BimArchUtils.py" line="193"/>
       <source>Selects all non-manifold meshes from the document or from the selected groups</source>
-      <translation>Sélectionne tous les maillages non-manifold du document ou des groupes sélectionnés</translation>
+      <translation>Sélectionner tous les maillages non-manifold du document ou des groupes sélectionnés</translation>
     </message>
   </context>
   <context>
@@ -8741,12 +8765,12 @@ Attention : il n'y a pas "Toponaming-Tolerant" si Sketch est seulement utilisé.
     <message>
       <location filename="../../bimcommands/BimArchUtils.py" line="238"/>
       <source>Close holes</source>
-      <translation>Boucher les trous</translation>
+      <translation>Boucher des trous</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimArchUtils.py" line="241"/>
       <source>Closes holes in open shapes, turning them solids</source>
-      <translation>Bouche les trous des formes ouvertes les transformant en solides</translation>
+      <translation>Boucher les trous de formes ouvertes en les transformant en solides</translation>
     </message>
   </context>
   <context>
@@ -8759,7 +8783,7 @@ Attention : il n'y a pas "Toponaming-Tolerant" si Sketch est seulement utilisé.
     <message>
       <location filename="../../bimcommands/BimArchUtils.py" line="260"/>
       <source>Checks the selected objects for problems</source>
-      <translation>Vérifier les objets sélectionnés pour les problèmes</translation>
+      <translation>Vérifier que les objets sélectionnés ne présentent pas de problèmes</translation>
     </message>
   </context>
   <context>
@@ -8892,12 +8916,12 @@ Attention : il n'y a pas "Toponaming-Tolerant" si Sketch est seulement utilisé.
 CTRL+, to rotate leftCTRL+. to rotate right
 CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch between auto and manual mode</source>
       <translation>La valeur du mouvement du petit déplacement (la rotation est toujours de 45°).
-- CTRL+flèches, pour se déplacer
-- CTRL+, pour tourner à gauche
-- CTRL+., pour tourner à droite
-- CTRL+page précédente, pour étendre l'extrusion
-- CTRL+page suivante, pour rétrécir l'extrusion
-- CTRL+/, pour passer du mode automatique au mode manuel</translation>
+- Ctrl+flèches, pour se déplacer
+- Ctrl+, pour tourner à gauche
+- Ctrl+., pour tourner à droite
+- Ctrl+page précédente, pour étendre l'extrusion
+- Ctrl+page suivante, pour rétrécir l'extrusion
+- Ctrl+/, pour passer du mode automatique au mode manuel</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="39"/>
@@ -9211,12 +9235,12 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
     <message>
       <location filename="../../bimcommands/BimIfcQuantities.py" line="177"/>
       <source>Add quantity set...</source>
-      <translation type="unfinished">Add quantity set...</translation>
+      <translation>Ajouter une quantité...</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimIfcQuantities.py" line="193"/>
       <source>Adding quantity set</source>
-      <translation type="unfinished">Adding quantity set</translation>
+      <translation>Ajouter une quantité</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimIfcQuantities.py" line="440"/>
@@ -9326,7 +9350,7 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
     <message>
       <location filename="../../bimcommands/BimLibrary.py" line="498"/>
       <source>No structure in cache. Please refresh.</source>
-      <translation>Pas de structure dans le cache. Veuillez rafraîchir.</translation>
+      <translation>Il n'y a pas de structure dans le cache. Veuillez rafraîchir.</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimLibrary.py" line="564"/>
@@ -9910,7 +9934,7 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
     <message>
       <location filename="../../nativeifc/ifc_diff.py" line="66"/>
       <source>The IFC file is not saved. Please save once to have an existing IFC file to compare with. Then, run this command again.</source>
-      <translation type="unfinished">The IFC file is not saved. Please save once to have an existing IFC file to compare with. Then, run this command again.</translation>
+      <translation>Le fichier IFC n'est pas enregistré. Enregistrer le fichier une fois pour avoir un fichier IFC existant avec lequel comparer, puis lancer à nouveau cette commande.</translation>
     </message>
     <message>
       <location filename="../../nativeifc/ifc_diff.py" line="77"/>
@@ -9965,7 +9989,7 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
     <message>
       <location filename="../../nativeifc/ifc_openshell.py" line="125"/>
       <source>Unable to run pip. Please ensure pip is installed on your system.</source>
-      <translation>Impossible d'exécuter pip. Assurez-vous que pip est installé sur votre système.</translation>
+      <translation>Impossible d'exécuter le gestionnaire de paquets pip. Assurez-vous que pip est installé sur votre système.</translation>
     </message>
     <message>
       <location filename="../../nativeifc/ifc_status.py" line="36"/>
@@ -9980,37 +10004,37 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
     <message>
       <location filename="../../nativeifc/ifc_status.py" line="78"/>
       <source>Add IFC property...</source>
-      <translation type="unfinished">Add IFC property...</translation>
+      <translation>Ajouter une propriété IFC...</translation>
     </message>
     <message>
       <location filename="../../nativeifc/ifc_status.py" line="83"/>
       <source>Add standard IFC Property Set...</source>
-      <translation type="unfinished">Add standard IFC Property Set...</translation>
+      <translation>Ajouter un jeu de propriétés IFC standard...</translation>
     </message>
     <message>
       <location filename="../../nativeifc/ifc_status.py" line="139"/>
       <source>No Property set provided</source>
-      <translation type="unfinished">No Property set provided</translation>
+      <translation>Aucun jeu de propriétés n'est fourni.</translation>
     </message>
     <message>
       <location filename="../../nativeifc/ifc_status.py" line="145"/>
       <source>add property</source>
-      <translation type="unfinished">add property</translation>
+      <translation>Ajouter une propriété</translation>
     </message>
     <message>
       <location filename="../../nativeifc/ifc_status.py" line="208"/>
       <source>Property set already exists</source>
-      <translation type="unfinished">Property set already exists</translation>
+      <translation>Le jeu de propriétés existe déjà.</translation>
     </message>
     <message>
       <location filename="../../nativeifc/ifc_status.py" line="212"/>
       <source>add property set</source>
-      <translation type="unfinished">add property set</translation>
+      <translation>Ajouter un jeu de propriétés</translation>
     </message>
     <message>
       <location filename="../../nativeifc/ifc_status.py" line="220"/>
       <source>Property already exists</source>
-      <translation type="unfinished">Property already exists</translation>
+      <translation>La propriété existe déjà.</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimTDView.py" line="74"/>
@@ -10020,27 +10044,27 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
     <message>
       <location filename="../../bimcommands/BimDrawingView.py" line="66"/>
       <source>Viewed lines</source>
-      <translation type="unfinished">Viewed lines</translation>
+      <translation>Lignes vues</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimDrawingView.py" line="75"/>
       <source>Cut lines</source>
-      <translation type="unfinished">Cut lines</translation>
+      <translation>Lignes coupées</translation>
     </message>
     <message>
       <location filename="../../nativeifc/ifc_psets.py" line="376"/>
       <source>Removing property</source>
-      <translation type="unfinished">Removing property</translation>
+      <translation>Supprimer la propriété</translation>
     </message>
     <message>
       <location filename="../../nativeifc/ifc_psets.py" line="380"/>
       <source>Removing property set</source>
-      <translation type="unfinished">Removing property set</translation>
+      <translation>Supprimer le jeu de propriétés</translation>
     </message>
     <message>
       <location filename="../../nativeifc/ifc_types.py" line="109"/>
       <source>Error: Incompatible type</source>
-      <translation type="unfinished">Error: Incompatible type</translation>
+      <translation>Erreur : type non compatible</translation>
     </message>
   </context>
   <context>
@@ -10630,7 +10654,7 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
     <message>
       <location filename="../../bimcommands/BimProject.py" line="41"/>
       <source>Create an empty NativeIFC project</source>
-      <translation>Créer un projet vide NativeIFC</translation>
+      <translation>Créer un projet vide d'IFC natif</translation>
     </message>
   </context>
   <context>
@@ -10690,12 +10714,12 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
     <message>
       <location filename="../../bimcommands/BimRewire.py" line="40"/>
       <source>Rewire</source>
-      <translation>Recréer les polylignes</translation>
+      <translation>Recréer des polylignes</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimRewire.py" line="43"/>
       <source>Recreates wires from selected objects</source>
-      <translation>Recréer les polylignes à partir des objets sélectionnés</translation>
+      <translation>Recréer des polylignes à partir d'objets sélectionnés</translation>
     </message>
   </context>
   <context>
@@ -10703,7 +10727,7 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
     <message>
       <location filename="../../bimcommands/BimSetup.py" line="39"/>
       <source>BIM Setup...</source>
-      <translation>Configurer des BIM...</translation>
+      <translation>Configurer l'atelier BIM...</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimSetup.py" line="42"/>
@@ -10729,7 +10753,7 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
     <message>
       <location filename="../../bimcommands/BimSimpleCopy.py" line="42"/>
       <source>Create a simple non-parametric copy</source>
-      <translation>Créer une copie simple non-paramétrique</translation>
+      <translation>Copie simple non paramétrique</translation>
     </message>
   </context>
   <context>
@@ -10763,7 +10787,7 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
     <message>
       <location filename="../../bimcommands/BimTDPage.py" line="40"/>
       <source>Page</source>
-      <translation>Page</translation>
+      <translation>Créer une page Techdraw</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimTDPage.py" line="43"/>
@@ -11031,13 +11055,13 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
     <message>
       <location filename="../ui/dialogSetup.ui" line="17"/>
       <source>BIM Setup</source>
-      <translation>Configurer des BIM</translation>
+      <translation>Configurer l'atelier BIM</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="23"/>
       <source>This dialog will help you to set FreeCAD up for efficient BIM workflow by setting a couple of typical FreeCAD options. This dialog can be accessed again anytime from menu Manage -&gt; Setup, and more options are available under menu Edit -&gt; Preferences.</source>
       <translation>Cette fenêtre de dialogue vous aidera à configurer FreeCAD pour un flux de travail BIM efficace, en définissant quelques options typiques de FreeCAD.
-Vous pourrez de nouveau accéder à cette fenêtre de dialogue n’importe quand depuis le menu : Gestion → Configurer des BIM.
+Vous pourrez de nouveau accéder à cette fenêtre de dialogue n’importe quand depuis le menu : Gestion → Configurer l'atelier BIM.
 D’autres options de menu sont disponibles depuis le menu : Édition → Préférences.</translation>
     </message>
     <message>
@@ -11127,7 +11151,7 @@ Voir les préférences : &lt;span style=" font-weight:600;"&gt;Affichage → Co
     <message>
       <location filename="../ui/dialogSetup.ui" line="579"/>
       <source>Top (XY)</source>
-      <translation>Haut (XY)</translation>
+      <translation>Dessus (XY)</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="584"/>
@@ -11482,12 +11506,12 @@ Voir les préférences : Draft → Général → Plan de travail par défaut</tr
     <message>
       <location filename="../../bimcommands/BimDrawingView.py" line="43"/>
       <source>2D Drawing</source>
-      <translation type="unfinished">2D Drawing</translation>
+      <translation>Dessin 2D</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimDrawingView.py" line="47"/>
       <source>Creates a drawing container to contain elements of a 2D view</source>
-      <translation type="unfinished">Creates a drawing container to contain elements of a 2D view</translation>
+      <translation>Créer un conteneur de dessin pour contenir des éléments d'une vue 2D</translation>
     </message>
   </context>
   <context>
@@ -11495,12 +11519,12 @@ Voir les préférences : Draft → Général → Plan de travail par défaut</tr
     <message>
       <location filename="../../bimcommands/BimShape2DView.py" line="42"/>
       <source>Section view</source>
-      <translation type="unfinished">Section view</translation>
+      <translation>Vue de section</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimShape2DView.py" line="97"/>
       <source>Section cut</source>
-      <translation type="unfinished">Section cut</translation>
+      <translation>Section coupée</translation>
     </message>
   </context>
   <context>
@@ -11508,12 +11532,12 @@ Voir les préférences : Draft → Général → Plan de travail par défaut</tr
     <message>
       <location filename="../../bimcommands/BimTDView.py" line="39"/>
       <source>Insert view</source>
-      <translation type="unfinished">Insert view</translation>
+      <translation>Insérer une vue</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimTDView.py" line="43"/>
       <source>Inserts a drawing view on a page</source>
-      <translation type="unfinished">Inserts a drawing view on a page</translation>
+      <translation>Insérer une vue de dessin sur une page</translation>
     </message>
   </context>
 </TS>

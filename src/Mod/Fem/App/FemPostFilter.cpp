@@ -390,11 +390,8 @@ FemPostDataAlongLineFilter::FemPostDataAlongLineFilter()
     m_probe->SetValidPointMaskArrayName("ValidPointArray");
     m_probe->SetPassPointArrays(1);
     m_probe->SetPassCellArrays(1);
-    // needs vtk > 6.1
-#if (VTK_MAJOR_VERSION > 6) && (VTK_MINOR_VERSION > 1)
     m_probe->ComputeToleranceOff();
     m_probe->SetTolerance(0.01);
-#endif
 
     clip.source = passthrough;
     clip.target = m_probe;
@@ -563,11 +560,8 @@ FemPostDataAtPointFilter::FemPostDataAtPointFilter()
     m_probe->SetValidPointMaskArrayName("ValidPointArray");
     m_probe->SetPassPointArrays(1);
     m_probe->SetPassCellArrays(1);
-    // needs vtk > 6.1
-#if (VTK_MAJOR_VERSION > 6) && (VTK_MINOR_VERSION > 1)
     m_probe->ComputeToleranceOff();
     m_probe->SetTolerance(0.01);
-#endif
 
     clip.source = passthrough;
     clip.target = m_probe;
@@ -1459,7 +1453,6 @@ void FemPostCalculatorFilter::updateAvailableFields()
 
     std::vector<std::string> scalars;
     std::vector<std::string> vectors;
-    //    std::vector<std::string> tensors;
 
     vtkSmartPointer<vtkDataObject> data = getInputData();
     vtkDataSet* dset = vtkDataSet::SafeDownCast(data);

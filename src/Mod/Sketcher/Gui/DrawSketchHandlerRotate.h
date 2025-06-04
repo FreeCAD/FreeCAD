@@ -657,7 +657,7 @@ void DSHRotateController::doChangeDrawSketchHandlerMode()
             }
         } break;
         case SelectMode::SeekSecond: {
-            if (onViewParameters[OnViewParameter::Third]->isSet) {
+            if (onViewParameters[OnViewParameter::Third]->hasFinishedEditing) {
                 handler->totalAngle =
                     Base::toRadians(onViewParameters[OnViewParameter::Third]->getValue());
 
@@ -665,7 +665,7 @@ void DSHRotateController::doChangeDrawSketchHandlerMode()
             }
         } break;
         case SelectMode::SeekThird: {
-            if (onViewParameters[OnViewParameter::Fourth]->isSet) {
+            if (onViewParameters[OnViewParameter::Fourth]->hasFinishedEditing) {
 
                 handler->setState(SelectMode::End);
             }

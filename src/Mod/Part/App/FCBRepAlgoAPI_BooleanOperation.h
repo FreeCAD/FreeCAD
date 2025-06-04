@@ -28,7 +28,9 @@
 
 #ifndef FCREPALGOAPIBOOLEANOPERATION_H
 #define FCREPALGOAPIBOOLEANOPERATION_H
+
 #include <BRepAlgoAPI_BooleanOperation.hxx>
+#include <Message_ProgressRange.hxx>
 
 class FCBRepAlgoAPIHelper
 {
@@ -51,6 +53,12 @@ public:
 
     // not an override - real Build() has optionals, sadly type of those optionals that are differs between OCCT versions
     Standard_EXPORT virtual void Build(); // NOLINT(clang-diagnostic-overloaded-virtual, -Woverloaded-virtual)
+
+#if OCC_VERSION_HEX >= 0x070600
+    Standard_EXPORT void Build(const Message_ProgressRange& progressRange) Standard_OVERRIDE;
+#else
+    Standard_EXPORT virtual void Build(const Message_ProgressRange& progressRange);
+#endif
 
 protected: //! @name Constructors
 

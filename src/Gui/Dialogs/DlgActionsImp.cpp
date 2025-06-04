@@ -219,8 +219,8 @@ void DlgCustomActionsImp::onActionListWidgetItemActivated(QTreeWidgetItem* item)
         ui->actionMenu->setText(QString::fromUtf8(pScript->getMenuText()));
         ui->actionToolTip->setText(QString::fromUtf8(pScript->getToolTipText()));
         ui->actionStatus->setText(QString::fromUtf8(pScript->getStatusTip()));
-        ui->actionAccel->setText(
-            ShortcutManager::instance()->getShortcut(actionName.constData(), pScript->getAccel()));
+        ui->actionAccel->setKeySequence(QKeySequence(
+            ShortcutManager::instance()->getShortcut(actionName.constData(), pScript->getAccel())));
         ui->pixmapLabel->clear();
         m_sPixmap.clear();
         const char* name = pScript->getPixmap();
@@ -290,9 +290,10 @@ void DlgCustomActionsImp::onButtonAddActionClicked()
     ui->pixmapLabel->clear();
     m_sPixmap.clear();
 
-    if (!ui->actionAccel->text().isEmpty()) {
+    if (!ui->actionAccel->isEmpty()) {
+        QString text = ui->actionAccel->text();
         ShortcutManager::instance()->setShortcut(actionName.constData(),
-                                                 ui->actionAccel->text().toLatin1().constData());
+                                                 text.toLatin1().constData());
     }
     ui->actionAccel->clear();
 
@@ -353,8 +354,9 @@ void DlgCustomActionsImp::onButtonReplaceActionClicked()
     ui->pixmapLabel->clear();
     m_sPixmap.clear();
 
-    if (!ui->actionAccel->text().isEmpty()) {
-        macro->setAccel(ui->actionAccel->text().toLatin1());
+    if (!ui->actionAccel->isEmpty()) {
+        QString text = ui->actionAccel->text();
+        macro->setAccel(text.toLatin1());
     }
     ui->actionAccel->clear();
 
@@ -521,7 +523,6 @@ void DlgCustomActionsImp::changeEvent(QEvent* e)
         ui->retranslateUi(this);
         ui->actionListWidget->clear();
         showActions();
-        ui->actionAccel->setText(qApp->translate("Gui::AccelLineEdit", "none"));
     }
     QWidget::changeEvent(e);
 }

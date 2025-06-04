@@ -321,10 +321,10 @@ class GlobalEditor(object):
         self.form.setupStepDownExpr.setText(self.obj.StepDownExpression)
         self.form.setupClearanceHeightExpr.setText(self.obj.ClearanceHeightExpression)
         self.form.setupSafeHeightExpr.setText(self.obj.SafeHeightExpression)
-        self.clearanceHeightOffs.updateSpinBox()
-        self.safeHeightOffs.updateSpinBox()
-        self.rapidVertical.updateSpinBox()
-        self.rapidHorizontal.updateSpinBox()
+        self.clearanceHeightOffs.updateWidget()
+        self.safeHeightOffs.updateWidget()
+        self.rapidVertical.updateWidget()
+        self.rapidHorizontal.updateWidget()
         self.selectInComboBox(self.obj.CoolantMode, self.form.setupCoolantMode)
 
     def updateModel(self, recomp=True):

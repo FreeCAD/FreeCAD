@@ -512,7 +512,6 @@ void GeometryObject::extractGeometry(EdgeClass category, bool hlrVisible)
 void GeometryObject::addGeomFromCompound(TopoDS_Shape edgeCompound, EdgeClass category,
                                          bool hlrVisible)
 {
-//    Base::Console().message("GO::addGeomFromCompound(%d, %d)\n", category, hlrVisible);
     if (edgeCompound.IsNull()) {
         return;    // There is no OpenCascade Geometry to be calculated
     }
@@ -549,7 +548,6 @@ void GeometryObject::addGeomFromCompound(TopoDS_Shape edgeCompound, EdgeClass ca
         base = BaseGeom::baseFactory(edge);
         if (!base) {
             continue;
-            //            throw Base::ValueError("GeometryObject::addGeomFromCompound - baseFactory failed");
         }
 
         base->source(SourceType::GEOMETRY);
@@ -559,59 +557,60 @@ void GeometryObject::addGeomFromCompound(TopoDS_Shape edgeCompound, EdgeClass ca
         edgeGeom.push_back(base);
 
         //add vertices of new edge if not already in list
-        if (hlrVisible) {
-            BaseGeomPtr lastAdded = edgeGeom.back();
-            bool v1Add = true, v2Add = true;
-            bool c1Add = true;
-            TechDraw::VertexPtr v1 = std::make_shared<TechDraw::Vertex>(lastAdded->getStartPoint());
-            TechDraw::VertexPtr v2 = std::make_shared<TechDraw::Vertex>(lastAdded->getEndPoint());
-            TechDraw::CirclePtr circle = std::dynamic_pointer_cast<TechDraw::Circle>(lastAdded);
-            TechDraw::VertexPtr c1;
-            if (circle) {
-                c1 = std::make_shared<TechDraw::Vertex>(circle->center);
-                c1->isCenter(true);
-                c1->setHlrVisible(true);
-            }
+        // note that if a vertex belongs to both a hidden and a visible edge, it will be treated as
+        // a visible vertex.
+        BaseGeomPtr lastAdded = edgeGeom.back();
+        bool v1Add = true, v2Add = true;
+        bool c1Add = true;
+        TechDraw::VertexPtr v1 = std::make_shared<TechDraw::Vertex>(lastAdded->getStartPoint());
+        TechDraw::VertexPtr v2 = std::make_shared<TechDraw::Vertex>(lastAdded->getEndPoint());
+        TechDraw::CirclePtr circle = std::dynamic_pointer_cast<TechDraw::Circle>(lastAdded);
+        TechDraw::VertexPtr c1;
+        if (circle) {
+            c1 = std::make_shared<TechDraw::Vertex>(circle->center);
+            c1->isCenter(true);
+            c1->setHlrVisible(hlrVisible);
+        }
 
-            std::vector<VertexPtr>::iterator itVertex = vertexGeom.begin();
-            for (; itVertex != vertexGeom.end(); itVertex++) {
-                if ((*itVertex)->isEqual(*v1, Precision::Confusion())) {
-                    v1Add = false;
-                }
-                if ((*itVertex)->isEqual(*v2, Precision::Confusion())) {
-                    v2Add = false;
-                }
-                if (circle) {
-                    if ((*itVertex)->isEqual(*c1, Precision::Confusion())) {
-                        c1Add = false;
-                    }
-                }
+        std::vector<VertexPtr>::iterator itVertex = vertexGeom.begin();
+        for (; itVertex != vertexGeom.end(); itVertex++) {
+            if ((*itVertex)->isEqual(*v1, Precision::Confusion())) {
+                v1Add = false;
             }
-            if (v1Add) {
-                vertexGeom.push_back(v1);
-                v1->setHlrVisible( true);
+            if ((*itVertex)->isEqual(*v2, Precision::Confusion())) {
+                v2Add = false;
             }
-            else {
-                //    delete v1;
-            }
-            if (v2Add) {
-                vertexGeom.push_back(v2);
-                v2->setHlrVisible( true);
-            }
-            else {
-                //    delete v2;
-            }
-
             if (circle) {
-                if (c1Add) {
-                    vertexGeom.push_back(c1);
-                    c1->setHlrVisible( true);
-                }
-                else {
-                    //    delete c1;
+                if ((*itVertex)->isEqual(*c1, Precision::Confusion())) {
+                    c1Add = false;
                 }
             }
         }
+        if (v1Add) {
+            vertexGeom.push_back(v1);
+            v1->setHlrVisible(hlrVisible);
+        }
+        else {
+            //    delete v1;
+        }
+        if (v2Add) {
+            vertexGeom.push_back(v2);
+            v2->setHlrVisible(hlrVisible);
+        }
+        else {
+            //    delete v2;
+        }
+
+        if (circle) {
+            if (c1Add) {
+                vertexGeom.push_back(c1);
+                c1->setHlrVisible(hlrVisible);
+            }
+            else {
+                //    delete c1;
+            }
+        }
+    // }
     }//end TopExp
 }
 

@@ -107,8 +107,8 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
             self.form.reverseDirection.setCheckState(QtCore.Qt.Unchecked)
 
     def updateQuantitySpinBoxes(self):
-        self.geo1Extension.updateSpinBox()
-        self.geo2Extension.updateSpinBox()
+        self.geo1Extension.updateWidget()
+        self.geo2Extension.updateWidget()
 
     def getFields(self, obj):
         """getFields(obj) ... transfers values from UI to obj's properties"""

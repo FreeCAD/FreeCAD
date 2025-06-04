@@ -29,6 +29,7 @@
 #include <limits>
 #include <QApplication>
 #include <QComboBox>
+#include <QCheckBox>
 #include <QFontDatabase>
 #include <QLocale>
 #include <QMessageBox>
@@ -1376,26 +1377,25 @@ void PropertyBoolItem::setValue(const QVariant& value)
 
 QWidget* PropertyBoolItem::createEditor(QWidget* parent,
                                         const std::function<void()>& method,
-                                        FrameOption frameOption) const
+                                        FrameOption /*frameOption*/) const
 {
-    auto cb = new QComboBox(parent);
-    cb->setFrame(static_cast<bool>(frameOption));
-    cb->addItem(QLatin1String("false"));
-    cb->addItem(QLatin1String("true"));
-    QObject::connect(cb, qOverload<int>(&QComboBox::activated), method);
-    return cb;
+    auto checkbox = new QCheckBox(parent);
+    return checkbox;
 }
 
 void PropertyBoolItem::setEditorData(QWidget* editor, const QVariant& data) const
 {
-    auto cb = qobject_cast<QComboBox*>(editor);
-    cb->setCurrentIndex(cb->findText(data.toString()));
+    if (auto checkbox = qobject_cast<QCheckBox*>(editor)) {
+        checkbox->setChecked(data.toBool());
+    }
 }
 
 QVariant PropertyBoolItem::editorData(QWidget* editor) const
 {
-    auto cb = qobject_cast<QComboBox*>(editor);
-    return {cb->currentText()};
+    if (auto checkbox = qobject_cast<QCheckBox*>(editor)) {
+        return checkbox->isChecked();
+    }
+    return false;
 }
 
 // ---------------------------------------------------------------
@@ -3752,37 +3752,33 @@ void PropertyMaterialItem::setValue(const QVariant& value)
     auto mat = value.value<Material>();
     Base::Color dc;
     dc.setValue<QColor>(mat.diffuseColor);
+    uint32_t dcp = dc.getPackedValue();
     Base::Color ac;
     ac.setValue<QColor>(mat.ambientColor);
+    uint32_t acp = ac.getPackedValue();
     Base::Color sc;
     sc.setValue<QColor>(mat.specularColor);
+    uint32_t scp = sc.getPackedValue();
     Base::Color ec;
     ec.setValue<QColor>(mat.emissiveColor);
+    uint32_t ecp = ec.getPackedValue();
     float s = mat.shininess;
     float t = mat.transparency;
 
     QString data = QStringLiteral("App.Material("
-                                       "DiffuseColor=(%1,%2,%3),"
-                                       "AmbientColor=(%4,%5,%6),"
-                                       "SpecularColor=(%7,%8,%9),"
-                                       "EmissiveColor=(%10,%11,%12),"
-                                       "Shininess=(%13),"
-                                       "Transparency=(%14),"
-                                       ")")
-                       .arg(dc.r, 0, 'f', decimals())
-                       .arg(dc.g, 0, 'f', decimals())
-                       .arg(dc.b, 0, 'f', decimals())
-                       .arg(ac.r, 0, 'f', decimals())
-                       .arg(ac.g, 0, 'f', decimals())
-                       .arg(ac.b, 0, 'f', decimals())
-                       .arg(sc.r, 0, 'f', decimals())
-                       .arg(sc.g, 0, 'f', decimals())
-                       .arg(sc.b, 0, 'f', decimals())
-                       .arg(ec.r, 0, 'f', decimals())
-                       .arg(ec.g, 0, 'f', decimals())
-                       .arg(ec.b, 0, 'f', decimals())
-                       .arg(s, 0, 'f', decimals())
-                       .arg(t, 0, 'f', decimals());
+                                  "DiffuseColor = %1,"
+                                  "AmbientColor = %2,"
+                                  "SpecularColor = %3,"
+                                  "EmissiveColor = %4,"
+                                  "Shininess = %5,"
+                                  "Transparency = %6,"
+                                  ")")
+                       .arg(dcp)
+                       .arg(acp)
+                       .arg(scp)
+                       .arg(ecp)
+                       .arg(s, 0, 'f', 10)
+                       .arg(t, 0, 'f', 10);
 
     setPropertyValue(data);
 }
@@ -4258,37 +4254,33 @@ void PropertyMaterialListItem::setValue(const QVariant& value)
     auto mat = list[0].value<Material>();
     Base::Color dc;
     dc.setValue<QColor>(mat.diffuseColor);
+    uint32_t dcp = dc.getPackedValue();
     Base::Color ac;
     ac.setValue<QColor>(mat.ambientColor);
+    uint32_t acp = ac.getPackedValue();
     Base::Color sc;
     sc.setValue<QColor>(mat.specularColor);
+    uint32_t scp = sc.getPackedValue();
     Base::Color ec;
     ec.setValue<QColor>(mat.emissiveColor);
+    uint32_t ecp = ec.getPackedValue();
     float s = mat.shininess;
     float t = mat.transparency;
 
     QString item = QStringLiteral("App.Material("
-                                       "DiffuseColor=(%1,%2,%3),"
-                                       "AmbientColor=(%4,%5,%6),"
-                                       "SpecularColor=(%7,%8,%9),"
-                                       "EmissiveColor=(%10,%11,%12),"
-                                       "Shininess=(%13),"
-                                       "Transparency=(%14),"
-                                       ")")
-                       .arg(dc.r, 0, 'f', decimals())
-                       .arg(dc.g, 0, 'f', decimals())
-                       .arg(dc.b, 0, 'f', decimals())
-                       .arg(ac.r, 0, 'f', decimals())
-                       .arg(ac.g, 0, 'f', decimals())
-                       .arg(ac.b, 0, 'f', decimals())
-                       .arg(sc.r, 0, 'f', decimals())
-                       .arg(sc.g, 0, 'f', decimals())
-                       .arg(sc.b, 0, 'f', decimals())
-                       .arg(ec.r, 0, 'f', decimals())
-                       .arg(ec.g, 0, 'f', decimals())
-                       .arg(ec.b, 0, 'f', decimals())
-                       .arg(s, 0, 'f', decimals())
-                       .arg(t, 0, 'f', decimals());
+                                  "DiffuseColor = %1,"
+                                  "AmbientColor = %2,"
+                                  "SpecularColor = %3,"
+                                  "EmissiveColor = %4,"
+                                  "Shininess = %5,"
+                                  "Transparency = %6,"
+                                  ")")
+                       .arg(dcp)
+                       .arg(acp)
+                       .arg(scp)
+                       .arg(ecp)
+                       .arg(s, 0, 'f', 10)
+                       .arg(t, 0, 'f', 10);
     str << item << ")";
 
     setPropertyValue(data);

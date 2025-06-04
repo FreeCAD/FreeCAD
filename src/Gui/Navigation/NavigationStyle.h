@@ -37,6 +37,7 @@
 
 #include <QEvent>
 #include <Base/BaseClass.h>
+#include <Base/SmartPtrPy.h>
 #include <Gui/Namespace.h>
 #include <FCGlobal.h>
 #include <memory>
@@ -283,7 +284,7 @@ protected:
     SbSphereSheetProjector * spinprojector;
     //@}
 
-    PyObject* pythonObject;
+    Py::SmartPtr pythonObject;
 
 private:
     friend class NavigationAnimator;
