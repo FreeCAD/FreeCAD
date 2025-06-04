@@ -1415,7 +1415,7 @@ def replace_use_with_reference(file_path):
                         new_element = ET.Element("freecad:used")
                         for attr in use.attrib:
                             # copy attribute to new one except href attribute
-                            if attr != ("href" or "{http://www.w3.org/1999/xlink}href") and attr not in new_element.attrib:
+                            if attr not in {"href", "{http://www.w3.org/1999/xlink}href"} and attr not in new_element.attrib:
                                 new_element.set(attr, use.attrib[attr])
                         ref_element=deepcopy(ref_element)
                         # change referenced symbol tag to g tag, because symbol tag will be ignored when importing.
