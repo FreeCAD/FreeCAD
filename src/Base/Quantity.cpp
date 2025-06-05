@@ -88,22 +88,21 @@ Quantity::Quantity(double value, const Unit& unit)
 {}
 
 Quantity::Quantity(double value, const std::string& unit)
-    : myValue {0.0}
 {
     if (unit.empty()) {
-        this->myValue = value;
-        this->myUnit = Unit();
+        myValue = value;
+        myUnit = Unit();
         return;
     }
 
     try {
         auto tmpQty = parse(unit);
-        this->myUnit = tmpQty.getUnit();
-        this->myValue = value * tmpQty.getValue();
+        myValue = value * tmpQty.getValue();
+        myUnit = tmpQty.getUnit();
     }
     catch (const Base::ParserError&) {
-        this->myValue = 0.0;
-        this->myUnit = Unit();
+        myValue = 0.0;
+        myUnit = Unit();
     }
 }
 
@@ -114,7 +113,7 @@ double Quantity::getValueAs(const Quantity& other) const
 
 bool Quantity::operator==(const Quantity& that) const
 {
-    return (this->myValue == that.myValue) && (this->myUnit == that.myUnit);
+    return (myValue == that.myValue) && (myUnit == that.myUnit);
 }
 
 bool Quantity::operator!=(const Quantity& that) const
@@ -124,62 +123,62 @@ bool Quantity::operator!=(const Quantity& that) const
 
 bool Quantity::operator<(const Quantity& that) const
 {
-    if (this->myUnit != that.myUnit) {
+    if (myUnit != that.myUnit) {
         throw Base::UnitsMismatchError(
             "Quantity::operator <(): quantities need to have same unit to compare");
     }
 
-    return (this->myValue < that.myValue);
+    return (myValue < that.myValue);
 }
 
 bool Quantity::operator>(const Quantity& that) const
 {
-    if (this->myUnit != that.myUnit) {
+    if (myUnit != that.myUnit) {
         throw Base::UnitsMismatchError(
             "Quantity::operator >(): quantities need to have same unit to compare");
     }
 
-    return (this->myValue > that.myValue);
+    return (myValue > that.myValue);
 }
 
 bool Quantity::operator<=(const Quantity& that) const
 {
-    if (this->myUnit != that.myUnit) {
+    if (myUnit != that.myUnit) {
         throw Base::UnitsMismatchError(
             "Quantity::operator <=(): quantities need to have same unit to compare");
     }
 
-    return (this->myValue <= that.myValue);
+    return (myValue <= that.myValue);
 }
 
 bool Quantity::operator>=(const Quantity& that) const
 {
-    if (this->myUnit != that.myUnit) {
+    if (myUnit != that.myUnit) {
         throw Base::UnitsMismatchError(
             "Quantity::operator >=(): quantities need to have same unit to compare");
     }
 
-    return (this->myValue >= that.myValue);
+    return (myValue >= that.myValue);
 }
 
 Quantity Quantity::operator*(const Quantity& other) const
 {
-    return Quantity(this->myValue * other.myValue, this->myUnit * other.myUnit);
+    return Quantity(myValue * other.myValue, myUnit * other.myUnit);
 }
 
 Quantity Quantity::operator*(double factor) const
 {
-    return Quantity(this->myValue * factor, this->myUnit);
+    return Quantity(myValue * factor, myUnit);
 }
 
 Quantity Quantity::operator/(const Quantity& other) const
 {
-    return Quantity(this->myValue / other.myValue, this->myUnit / other.myUnit);
+    return Quantity(myValue / other.myValue, myUnit / other.myUnit);
 }
 
 Quantity Quantity::operator/(double factor) const
 {
-    return Quantity(this->myValue / factor, this->myUnit);
+    return Quantity(myValue / factor, myUnit);
 }
 
 Quantity Quantity::pow(const Quantity& other) const
@@ -188,27 +187,27 @@ Quantity Quantity::pow(const Quantity& other) const
         throw Base::UnitsMismatchError("Quantity::pow(): exponent must not have a unit");
     }
 
-    return Quantity(std::pow(this->myValue, other.myValue),
-                    this->myUnit.pow(static_cast<signed char>(other.myValue)));
+    return Quantity(std::pow(myValue, other.myValue),
+                    myUnit.pow(static_cast<signed char>(other.myValue)));
 }
 
 Quantity Quantity::pow(double exp) const
 {
-    return Quantity(std::pow(this->myValue, exp), this->myUnit.pow(exp));
+    return Quantity(std::pow(myValue, exp), myUnit.pow(exp));
 }
 
 Quantity Quantity::operator+(const Quantity& other) const
 {
-    if (this->myUnit != other.myUnit) {
+    if (myUnit != other.myUnit) {
         throw Base::UnitsMismatchError("Quantity::operator +(): Unit mismatch in plus operation");
     }
 
-    return Quantity(this->myValue + other.myValue, this->myUnit);
+    return Quantity(myValue + other.myValue, myUnit);
 }
 
 Quantity& Quantity::operator+=(const Quantity& other)
 {
-    if (this->myUnit != other.myUnit) {
+    if (myUnit != other.myUnit) {
         throw Base::UnitsMismatchError("Quantity::operator +=(): Unit mismatch in plus operation");
     }
 
@@ -219,16 +218,16 @@ Quantity& Quantity::operator+=(const Quantity& other)
 
 Quantity Quantity::operator-(const Quantity& other) const
 {
-    if (this->myUnit != other.myUnit) {
+    if (myUnit != other.myUnit) {
         throw Base::UnitsMismatchError("Quantity::operator -(): Unit mismatch in minus operation");
     }
 
-    return Quantity(this->myValue - other.myValue, this->myUnit);
+    return Quantity(myValue - other.myValue, myUnit);
 }
 
 Quantity& Quantity::operator-=(const Quantity& other)
 {
-    if (this->myUnit != other.myUnit) {
+    if (myUnit != other.myUnit) {
         throw Base::UnitsMismatchError("Quantity::operator -=(): Unit mismatch in minus operation");
     }
 
@@ -239,7 +238,7 @@ Quantity& Quantity::operator-=(const Quantity& other)
 
 Quantity Quantity::operator-() const
 {
-    return Quantity(-(this->myValue), this->myUnit);
+    return Quantity(-myValue, myUnit);
 }
 
 std::string Quantity::toString(const QuantityFormat& format) const
