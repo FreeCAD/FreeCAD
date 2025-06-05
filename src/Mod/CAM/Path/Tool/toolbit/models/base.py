@@ -738,6 +738,7 @@ class ToolBit(Asset, ABC):
         Path.Log.track(self.obj.Label)
         attrs = {}
         attrs["version"] = 2
+        attrs["id"] = self.id
         attrs["name"] = self.obj.Label
         attrs["shape"] = self._tool_bit_shape.get_id() + ".fcstd"
         attrs["shape-type"] = self._tool_bit_shape.name

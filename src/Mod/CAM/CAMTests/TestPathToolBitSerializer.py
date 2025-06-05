@@ -146,10 +146,10 @@ class TestYamlToolBitSerializer(_BaseToolBitSerializerTestCase):
         data = yaml.safe_load(serialized_data.decode("utf-8"))
         self.assertEqual(data.get("id"), "5mm_Endmill")
         self.assertEqual(data.get("name"), "Test Tool")
-        self.assertEqual(data.get("shape"), "Endmill")
+        self.assertEqual(data.get("shape"), "endmill.fcstd")
         self.assertEqual(data.get("shape-type"), "Endmill")
         self.assertEqual(data.get("parameter", {}).get("Diameter"), "4.12 mm")
-        self.assertEqual(data.get("parameter", {}).get("Length"), "15.00 mm")
+        self.assertEqual(data.get("parameter", {}).get("Length"), "15.0 mm")
 
     def test_extract_dependencies(self):
         """Test dependency extraction for YAML."""

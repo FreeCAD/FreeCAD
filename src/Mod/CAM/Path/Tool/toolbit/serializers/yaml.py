@@ -25,7 +25,6 @@ from ...assets.serializer import AssetSerializer
 from ...assets.uri import AssetUri
 from ...shape import ToolBitShape
 from ..models.base import ToolBit
-from ..util import format_value
 
 
 class YamlToolBitSerializer(AssetSerializer):
@@ -58,25 +57,7 @@ class YamlToolBitSerializer(AssetSerializer):
     def serialize(cls, asset: ToolBit) -> bytes:
         """Serializes a ToolBit instance to bytes (shallow)."""
         # Shallow serialization: only serialize direct attributes and shape ID
-        data = {
-            "id": asset.id,
-            "name": asset.label,
-            "shape": asset.get_shape_name(),  # Serialize shape ID/name
-            "shape-type": asset.obj.ShapeType,  # Include shape type for deserialization
-            "parameter": {},
-            "attribute": {},
-        }
-
-        # Include parameters and attributes from the FreeCAD object
-        for prop_name in asset.obj.PropertiesList:
-            group = asset.obj.getGroupOfProperty(prop_name)
-            if group == "Shape":
-                # Parameters are part of the shape schema
-                data["parameter"][prop_name] = format_value(asset.get_property(prop_name))
-            elif group == "Attributes":
-                # Attributes are general toolbit properties
-                data["attribute"][prop_name] = format_value(asset.get_property(prop_name))
-
+        data = asset.to_dict()
         return yaml.dump(data, default_flow_style=False).encode("utf-8")
 
     @classmethod
@@ -93,32 +74,10 @@ class YamlToolBitSerializer(AssetSerializer):
         data_dict = yaml.safe_load(data)
         if not isinstance(data_dict, dict):
             raise ValueError("Invalid YAML data for ToolBit")
-
-        # Ensure required keys are present
-        if "shape" not in data_dict:
-            raise ValueError("YAML data is missing attribute 'shape'")
-        if "shape-type" not in data_dict:
-            raise ValueError("YAML data is missing attribute 'shape-type'")
-
-        # Deserialize shallowly: use the provided dependencies or create a dummy
-        tool_bit_shape = None
-        shape_id = str(data_dict["shape"])
-        shape_uri = ToolBitShape.resolve_name(shape_id)
-
-        if dependencies and shape_uri in dependencies:
-            tool_bit_shape = dependencies[shape_uri]
-        else:
-            # If dependency not provided, create a dummy shape instance
-            shape_type = data_dict["shape-type"]
-            shape_class = ToolBitShape.get_subclass_by_name(shape_type or shape_id)
-            if not shape_class:
-                raise ValueError(f"Unknown tool shape type: {shape_type or shape_id}")
-            tool_bit_shape = shape_class(shape_id)
-
-        # Create the ToolBit instance using from_shape
-        # Pass the full data_dict to from_shape to handle parameters/attributes
-        id = id or data_dict.get("id")
-        return ToolBit.from_shape(tool_bit_shape, data_dict, id=id)
+        toolbit = ToolBit.from_dict(data_dict)
+        if id:
+            toolbit.id = id
+        return toolbit
 
     @classmethod
     def deep_deserialize(cls, data: bytes) -> ToolBit:
