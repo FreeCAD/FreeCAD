@@ -196,16 +196,6 @@
        </property>
       </widget>
      </item>
-     <item row="2" column="0">
-      <widget class="QCheckBox" name="chkKeepToolDown">
-       <property name="toolTip">
-        <string>Keep the tool down in the path</string>
-       </property>
-       <property name="text">
-        <string>Keep Tool Down</string>
-       </property>
-      </widget>
-     </item>
     </layout>
    </item>
    <item>
