@@ -89,7 +89,7 @@ TaskFemConstraintForce::TaskFemConstraintForce(ViewProviderFemConstraintForce* C
     ui->checkReverse->setChecked(reversed);
 
     // create a context menu for the listview of the references
-    createDeleteAction(ui->listReferences);
+    createActions(ui->listReferences);
     connect(deleteAction, &QAction::triggered, this, &TaskFemConstraintForce::onReferenceDeleted);
     connect(ui->buttonDirection,
             &QToolButton::clicked,
