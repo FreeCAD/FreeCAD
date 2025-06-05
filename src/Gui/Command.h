@@ -413,6 +413,7 @@ public:
     static void openCommand(App::Document* doc, std::string name = "");
     /// Commit the Undo transaction on the active document
     static void commitCommand();
+    static void commitCommand(int tid);
     /// Abort the Undo transaction on the active document
     static void abortCommand();
     /// Check if an Undo transaction is open on the active document
