@@ -638,13 +638,7 @@ class DraftToolBar:
         self.checkLocal()
 
     def setFocus(self,f=None):
-        if params.get_param("focusOnLength") and self.lengthValue.isVisible():
-            self.lengthValue.setFocus()
-            self.lengthValue.setSelection(0,self.number_length(self.lengthValue.text()))
-        elif self.angleLock.isVisible() and self.angleLock.isChecked():
-            self.lengthValue.setFocus()
-            self.lengthValue.setSelection(0,self.number_length(self.lengthValue.text()))
-        elif (f is None) or (f == "x"):
+        if f == "x":
             self.xValue.setFocus()
             self.xValue.setSelection(0,self.number_length(self.xValue.text()))
         elif f == "y":
@@ -656,6 +650,16 @@ class DraftToolBar:
         elif f == "radius":
             self.radiusValue.setFocus()
             self.radiusValue.setSelection(0,self.number_length(self.radiusValue.text()))
+        elif params.get_param("focusOnLength") and self.lengthValue.isVisible():
+            self.lengthValue.setFocus()
+            self.lengthValue.setSelection(0,self.number_length(self.lengthValue.text()))
+        elif self.angleLock.isVisible() and self.angleLock.isChecked():
+            self.lengthValue.setFocus()
+            self.lengthValue.setSelection(0,self.number_length(self.lengthValue.text()))
+        else:
+            # f is None
+            self.xValue.setFocus()
+            self.xValue.setSelection(0,self.number_length(self.xValue.text()))
 
     def number_length(self, str):
         nl = 0
@@ -1298,7 +1302,7 @@ class DraftToolBar:
             self.yValue.setEnabled(False)
             self.zValue.setEnabled(False)
             self.angleValue.setEnabled(False)
-            self.setFocus()
+            self.setFocus("x")
         elif (mask == "y") or (self.mask == "y"):
             self.xValue.setEnabled(False)
             self.yValue.setEnabled(True)
