@@ -1330,15 +1330,24 @@ void StdCmdDelete::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
 
-    std::set<App::Document*> docs;
+    int tid = 0;
     try {
-        openCommand(QT_TRANSLATE_NOOP("Command", "Delete"));
+        std::set<App::Document*> docs;
+        std::vector<App::TransactionLocker> tlocks;
+        auto manage_doc_command = [&tid, &tlocks](App::Document* doc) {
+            tid = doc->setActiveTransaction(QT_TRANSLATE_NOOP("Command", "Delete"), false, tid);
+            tlocks.emplace_back(doc);
+        };
+
+        // openCommand(QT_TRANSLATE_NOOP("Command", "Delete"));
         if (getGuiApplication()->sendHasMsgToFocusView(getName())) {
-            commitCommand();
+            // commitCommand();
             return;
         }
-
-        std::vector<App::TransactionLocker> tlocks;
+        // Ensure that the document from which we send the command
+        // has can undo it (e.g delete a subobject of an assmebly
+        // from the assembly)
+        manage_doc_command(getActiveGuiDocument()->getDocument());
 
         Gui::getMainWindow()->setUpdatesEnabled(false);
         auto editDoc = Application::Instance->editDocument();
@@ -1349,9 +1358,9 @@ void StdCmdDelete::activated(int iMsg)
             for(auto &sel : Selection().getSelectionEx(editDoc->getDocument()->getName())) {
                 if(sel.getObject() == vpedit->getObject()) {
                     if (!sel.getSubNames().empty()) {
+                        manage_doc_command(editDoc->getDocument());
                         vpedit->onDelete(sel.getSubNames());
                         docs.insert(editDoc->getDocument());
-                        tlocks.emplace_back(editDoc->getDocument());
                     }
                     break;
                 }
@@ -1415,6 +1424,7 @@ void StdCmdDelete::activated(int iMsg)
                     auto obj = sel.getObject();
                     Gui::ViewProvider* vp = Application::Instance->getViewProvider(obj);
                     if (vp) {
+                        manage_doc_command(obj->getDocument());
                         // ask the ViewProvider if it wants to do some clean up
                         if (vp->onDelete(sel.getSubNames())) {
                             docs.insert(obj->getDocument());
@@ -1447,7 +1457,10 @@ void StdCmdDelete::activated(int iMsg)
         QMessageBox::critical(getMainWindow(), QObject::tr("Delete failed"),
                 QStringLiteral("Unknown error"));
     }
-    commitCommand();
+    if (tid) {
+        std::cerr << "Std_Delete close commit command #" << tid << "\n";
+        commitCommand(tid);
+    }
     Gui::getMainWindow()->setUpdatesEnabled(true);
     Gui::getMainWindow()->update();
 }
