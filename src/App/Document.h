@@ -488,7 +488,9 @@ public:
     /// Abort the actually running transaction.
     void abortTransaction() const;
 
-    int setActiveTransaction(std::string name, bool tmpName = false);
+    // If the tid != 0, it will take the transaction id if it exists
+    int setActiveTransaction(const std::string& name, bool tmpName = false, int tid = 0);
+
     void lockTransaction();
     void unlockTransaction();
     bool isTransactionLocked();
