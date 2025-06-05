@@ -402,13 +402,20 @@ private:
             }
         }
     }
-    bool skipConstraint(const Constraint* constr)
+    bool skipConstraint(const Constraint* constr) const
     {
-        return (constr->First == GeoEnum::GeoUndef)
+        // We might want to skip (remove) a constraint if
+        return 
+            // 1. it's first geometry is undefined => not a valid constraint, should not happen
+            (constr->First == GeoEnum::GeoUndef)
+
+            // 2. we do not want to have constraints that relate to the origin => it would break if the scale center is not the origin
             || (!allowOriginConstraint
                 && (constr->First == GeoEnum::VAxis || constr->First == GeoEnum::HAxis
                     || constr->Second == GeoEnum::VAxis || constr->Second == GeoEnum::HAxis
                     || constr->Third == GeoEnum::VAxis || constr->Third == GeoEnum::HAxis))
+            
+            // 3. it is linked to an external projected geometry => would be unstable
             || (constr->First != GeoEnum::GeoUndef && constr->First <= GeoEnum::RefExt)
             || (constr->Second != GeoEnum::GeoUndef && constr->Second <= GeoEnum::RefExt)
             || (constr->Third != GeoEnum::GeoUndef && constr->Third <= GeoEnum::RefExt);
@@ -424,7 +431,6 @@ private:
     {
         return index < 0 ? index : index + firstCurveCreated;
     }
-    // int geometryIndex(int originalIndex, int firstCurveCreated)
     Base::Vector3d getScaledPoint(Base::Vector3d&& pointToScale,
                                   const Base::Vector2d& referencePoint,
                                   double scaleFactor)

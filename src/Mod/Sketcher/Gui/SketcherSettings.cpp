@@ -225,11 +225,13 @@ void SketcherSettings::loadSettings()
     ui->radiusDiameterMode->setCurrentIndex(index);
 
 
+    // The items have to be added in the same order
+    // as the AutoScaleMode enum
     ui->autoScaleMode->clear();
     ui->autoScaleMode->addItem(tr("Always"));
     ui->autoScaleMode->addItem(tr("Never"));
-    ui->autoScaleMode->addItem(tr("Only when no item is on screen"));
-    index = hGrp->GetInt("AutoScaleMode", 0);
+    ui->autoScaleMode->addItem(tr("When no scale feature is visible"));
+    index = hGrp->GetInt("AutoScaleMode", static_cast<int>(AutoScaleMode::Always));
     ui->autoScaleMode->setCurrentIndex(index);
 
     hGrp = App::GetApplication().GetParameterGroupByPath(
@@ -291,6 +293,8 @@ void SketcherSettings::resetSettingsToDefaults()
     // reset "radius/diameter mode for dimensioning" parameter
     hGrp->RemoveBool("DimensioningDiameter");
     hGrp->RemoveBool("DimensioningRadius");
+
+    hGrp->RemoveInt("AutoScaleMode");
 
     hGrp = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/Mod/Sketcher/Tools");

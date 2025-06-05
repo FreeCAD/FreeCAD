@@ -606,9 +606,9 @@ void NavigationStyle::boxZoom(const SbBox2s& box)
     // Set height or height angle of the camera
     float scaleX = (float)sizeX/(float)size[0];
     float scaleY = (float)sizeY/(float)size[1];
-    float scale_factor = std::max<float>(scaleX, scaleY);
+    float scaleFactor = std::max<float>(scaleX, scaleY);
 
-    doScale(cam, scale_factor);
+    doScale(cam, scaleFactor);
 }
 void NavigationStyle::scale(float factor)
 {

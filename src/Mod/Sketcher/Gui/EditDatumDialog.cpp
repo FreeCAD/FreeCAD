@@ -46,6 +46,7 @@
 #include "CommandSketcherTools.h"
 #include "Utils.h"
 #include "ViewProviderSketch.h"
+#include "SketcherSettings.h"
 #include "ui_InsertDatum.h"
 
 #include <numeric>
@@ -396,15 +397,15 @@ void EditDatumDialog::performAutoScale(double newDatum)
 {
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/Mod/Sketcher/dimensioning");
-    long autoScaleMode = hGrp->GetInt("AutoScaleMode", 0);
+    long autoScaleMode = hGrp->GetInt("AutoScaleMode", static_cast<int>(SketcherGui::AutoScaleMode::Always));
 
     // There is a single constraint in the sketch so it can
     // be used as a reference to scale the geometries around the origin
     // if there are external geometries, it is safe to assume that the sketch
     // was drawn with these geometries as scale references (use <= 2 because
     // the sketch axis are considered as external geometries)
-    if ((autoScaleMode == 0
-         || (autoScaleMode == 2
+    if ((autoScaleMode == static_cast<int>(SketcherGui::AutoScaleMode::Always)
+         || (autoScaleMode == static_cast<int>(SketcherGui::AutoScaleMode::WhenNoScaleFeatureIsVisible)
              && !hasVisualFeature(sketch, nullptr, Gui::Application::Instance->activeDocument())))
         && sketch->getExternalGeometryCount() <= 2 && sketch->hasSingleScaleDefiningConstraint()) {
         try {
@@ -417,7 +418,7 @@ void EditDatumDialog::performAutoScale(double newDatum)
             sketch->setLabelPosition(ConstrNbr, initLabelPosition * scale_factor);
         }
         catch (const Base::Exception& e) {
-            Base::Console().Error("Exception performing autoscale: %s\n", e.what());
+            Base::Console().error("Exception performing autoscale: %s\n", e.what());
         }
     }
 }

@@ -2530,26 +2530,23 @@ void CreateSketcherCommandsConstraintAccel()
 }
 // clang-format on
 
-void SketcherGui::centerScale(Sketcher::SketchObject* Obj, double scale_factor)
+void SketcherGui::centerScale(Sketcher::SketchObject* Obj, double scaleFactor)
 {
     std::vector<int> allGeoIds(Obj->Geometry.getValues().size());
     std::iota(allGeoIds.begin(), allGeoIds.end(), 0);
 
-
-    auto doc = Gui::Application::Instance->activeDocument();
-    SketcherGui::ViewProviderSketch* vp =
-        static_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit());
-    auto scaler = DrawSketchHandlerScale::make_centerScale(allGeoIds, scale_factor, false);
+    Gui::Document* doc = Gui::Application::Instance->activeDocument();
+    auto* vp = static_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit());
+    auto scaler = DrawSketchHandlerScale::make_centerScale(allGeoIds, scaleFactor, false);
     scaler->setSketchGui(vp);
     scaler->executeCommands();
 
-    auto view3d = dynamic_cast<Gui::View3DInventor*>(doc->getActiveView());
-    if (view3d) {
+    if (auto* view3d = dynamic_cast<Gui::View3DInventor*>(doc->getActiveView())) {
         auto viewer = view3d->getViewer();
         bool isAnimating = viewer->isAnimationEnabled();
 
         viewer->setAnimationEnabled(false);
-        viewer->scale(scale_factor);
+        viewer->scale(scaleFactor);
         viewer->setAnimationEnabled(isAnimating);
     }
 }

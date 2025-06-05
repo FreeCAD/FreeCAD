@@ -7609,6 +7609,7 @@ bool SketchObject::hasSingleScaleDefiningConstraint() const
 
     bool foundOne = false;
     for (auto val : vals) {
+        // An angle does not define scale
         if (val->isDimensional() && val->Type != Angle) {
             if (foundOne) {
                 return false;
