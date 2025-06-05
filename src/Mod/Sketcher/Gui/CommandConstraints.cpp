@@ -1239,11 +1239,10 @@ private:
     static std::list<Gui::InputHint> lookupConstraintHints(const std::string& commandName, int selectionStep) {
         const auto constraintHintTable = getConstraintHintTable();
 
-        auto it = std::find_if(constraintHintTable.begin(),
-                              constraintHintTable.end(),
-                              [&commandName, selectionStep](const ConstraintHintEntry& entry) {
-                                  return entry.commandName == commandName && entry.selectionStep == selectionStep;
-                              });
+        auto it = std::ranges::find_if(constraintHintTable,
+                                [&commandName, selectionStep](const ConstraintHintEntry& entry) {
+                                    return entry.commandName == commandName && entry.selectionStep == selectionStep;
+                                });
 
         return (it != constraintHintTable.end()) ? it->hints : std::list<Gui::InputHint>{};
     }
