@@ -157,7 +157,7 @@ class LibraryBrowserWidget(ToolBitBrowserWidget):
         """
         Retrieves the tool number for a toolbit based on the current library.
         """
-        if self.current_library is None:
+        if not self.current_library:
             return None
         tool_no = self.current_library.get_bit_no_from_bit(toolbit)
         return tool_no
@@ -546,6 +546,7 @@ class LibraryBrowserWithCombo(LibraryBrowserWidget):
             return
         if not self.current_library:
             self._library_combo.setCurrentIndex(0)
+            return
 
         for i in range(self._library_combo.count()):
             lib = self._library_combo.itemData(i)

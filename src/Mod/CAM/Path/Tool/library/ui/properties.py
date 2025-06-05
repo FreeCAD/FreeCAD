@@ -19,7 +19,7 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-from PySide2 import QtWidgets
+from PySide import QtWidgets
 import FreeCADGui
 import FreeCAD
 from ..models.library import Library
