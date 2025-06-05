@@ -168,7 +168,7 @@ requirements:
     - requests
     - scipy
     - sympy
-    - typing_extension
+    - typing_extensions
     - vtk
     - xlutils
 
