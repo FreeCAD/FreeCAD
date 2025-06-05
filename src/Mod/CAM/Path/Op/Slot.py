@@ -510,7 +510,9 @@ class ObjectSlot(PathOp.ObjectOp):
 
         if self.showDebugObjects:
             self._clearDebugGroups()
-            self.tmpGrp = FreeCAD.ActiveDocument.addObject("App::DocumentObjectGroup", "tmpDebugGrp")
+            self.tmpGrp = FreeCAD.ActiveDocument.addObject(
+                "App::DocumentObjectGroup", "tmpDebugGrp"
+            )
 
         # GCode operation header
         tool = obj.ToolController.Tool
@@ -523,17 +525,24 @@ class ObjectSlot(PathOp.ObjectOp):
             self.commandlist.append(Path.Command(f"N ({obj.Comment})", {}))
         self.commandlist.append(Path.Command(f"N ({obj.Label})", {}))
         self.commandlist.append(Path.Command(f"N (Tool type: {toolType})", {}))
-        self.commandlist.append(Path.Command(f"N (Compensated Tool Path. Diameter: {tool.Diameter})", {}))
+        self.commandlist.append(
+            Path.Command(f"N (Compensated Tool Path. Diameter: {tool.Diameter})", {})
+        )
         self.commandlist.append(Path.Command("N ()", {}))
 
-        self.commandlist.append(Path.Command("G0", {"Z": obj.ClearanceHeight.Value, "F": self.vertRapid}))
+        self.commandlist.append(
+            Path.Command("G0", {"Z": obj.ClearanceHeight.Value, "F": self.vertRapid})
+        )
         if obj.UseStartPoint:
             self.commandlist.append(
-                Path.Command("G0", {
-                    "X": obj.StartPoint.x,
-                    "Y": obj.StartPoint.y,
-                    "F": self.horizRapid,
-                })
+                Path.Command(
+                    "G0",
+                    {
+                        "X": obj.StartPoint.x,
+                        "Y": obj.StartPoint.y,
+                        "F": self.horizRapid,
+                    },
+                )
             )
 
         # Enforce limits and prep depth steps
@@ -553,7 +562,9 @@ class ObjectSlot(PathOp.ObjectOp):
             self.commandlist.extend(cmds)
 
         # Final move to clearance height
-        self.commandlist.append(Path.Command("G0", {"Z": obj.ClearanceHeight.Value, "F": self.vertRapid}))
+        self.commandlist.append(
+            Path.Command("G0", {"Z": obj.ClearanceHeight.Value, "F": self.vertRapid})
+        )
 
         # Hide debug visuals
         if self.showDebugObjects and FreeCAD.GuiUp:
@@ -561,7 +572,6 @@ class ObjectSlot(PathOp.ObjectOp):
             self.tmpGrp.purgeTouched()
 
         return True
-
 
     def _clearDebugGroups(self):
         doc = FreeCAD.ActiveDocument
@@ -1006,7 +1016,9 @@ class ObjectSlot(PathOp.ObjectOp):
         if self.isDebug:
             Path.Log.debug(f" - Parallel pair count: {pair_count}")
             for edge1, edge2 in parallel_pairs:
-                Path.Log.debug(f" - Pair lengths: {round(edge1.Length, 4)}, {round(edge2.Length, 4)}")
+                Path.Log.debug(
+                    f" - Pair lengths: {round(edge1.Length, 4)}, {round(edge2.Length, 4)}"
+                )
             Path.Log.debug(f" - Parallel flags: {parallel_flags}")
 
         if pair_count == 0:
@@ -1017,7 +1029,9 @@ class ObjectSlot(PathOp.ObjectOp):
         if pair_count == 1:
             if len(shape.Edges) == 4:
                 # Find edges that are NOT in the identified parallel pair
-                non_parallel_edges = [shape.Edges[i] for i, flag in enumerate(parallel_flags) if flag == 0]
+                non_parallel_edges = [
+                    shape.Edges[i] for i, flag in enumerate(parallel_flags) if flag == 0
+                ]
                 if len(non_parallel_edges) == 2:
                     selected_edges = (non_parallel_edges[0], non_parallel_edges[1])
                 else:
@@ -1162,7 +1176,9 @@ class ObjectSlot(PathOp.ObjectOp):
             return (p1, p2)
 
         else:
-            msg = translate("CAM_Slot", "Failed, slot from edge only accepts lines, arcs and circles.")
+            msg = translate(
+                "CAM_Slot", "Failed, slot from edge only accepts lines, arcs and circles."
+            )
             FreeCAD.Console.PrintError(msg + "\n")
             return False
 
@@ -1225,12 +1241,14 @@ class ObjectSlot(PathOp.ObjectOp):
         """Return a normalized vector with components rounded to nearest axis-aligned value if close."""
         tol = 1e-10
         V = FreeCAD.Vector(v).normalize()
+
         def snap(val):
             if abs(val) < tol:
                 return 0.0
             if abs(1.0 - abs(val)) < tol:
                 return 1.0 if val > 0 else -1.0
             return val
+
         return FreeCAD.Vector(snap(V.x), snap(V.y), snap(V.z))
 
     def _getLowestPoint(self, shape):
@@ -1422,13 +1440,13 @@ class ObjectSlot(PathOp.ObjectOp):
         midPnt = (p1.add(p2)).multiply(0.5)
         halfDist = length / 2.0
 
-        if getattr(self, 'dYdX1', None):
+        if getattr(self, "dYdX1", None):
             half = FreeCAD.Vector(self.dYdX1.x, self.dYdX1.y, 0.0).multiply(halfDist)
             n1 = midPnt.add(half)
             n2 = midPnt.sub(half)
             return (n1, n2)
 
-        elif getattr(self, 'dYdX2', None):
+        elif getattr(self, "dYdX2", None):
             half = FreeCAD.Vector(self.dYdX2.x, self.dYdX2.y, 0.0).multiply(halfDist)
             n1 = midPnt.add(half)
             n2 = midPnt.sub(half)
@@ -1649,12 +1667,14 @@ class ObjectSlot(PathOp.ObjectOp):
 
             v1, v2 = p1.add(perp), p1.sub(perp)
             v3, v4 = p2.sub(perp), p2.add(perp)
-            edges = Part.__sortEdges__([
-                Part.makeLine(v1, v2),
-                Part.makeLine(v2, v3),
-                Part.makeLine(v3, v4),
-                Part.makeLine(v4, v1)
-            ])
+            edges = Part.__sortEdges__(
+                [
+                    Part.makeLine(v1, v2),
+                    Part.makeLine(v2, v3),
+                    Part.makeLine(v3, v4),
+                    Part.makeLine(v4, v1),
+                ]
+            )
             face = Part.Face(Part.Wire(edges))
             face.translate(FreeCAD.Vector(0, 0, obj.FinalDepth.Value - face.BoundBox.ZMin))
             return face.extrude(extVect)
@@ -1713,7 +1733,11 @@ class ObjectSlot(PathOp.ObjectOp):
             # Full circle slot: make annular ring
             outer = Part.Face(Part.Wire(Part.makeCircle(arcRadius + rad, arcCenter).Edges))
             iRadius = arcRadius - rad
-            path = outer.cut(Part.Face(Part.Wire(Part.makeCircle(iRadius, arcCenter).Edges))) if iRadius > 0 else outer
+            path = (
+                outer.cut(Part.Face(Part.Wire(Part.makeCircle(iRadius, arcCenter).Edges)))
+                if iRadius > 0
+                else outer
+            )
             path.translate(FreeCAD.Vector(0, 0, obj.FinalDepth.Value - path.BoundBox.ZMin))
             pathTravel = path.extrude(extVect)
 
@@ -1725,13 +1749,17 @@ class ObjectSlot(PathOp.ObjectOp):
             # Validate inner arc
             inner_radius = arcRadius - rad
             if inner_radius <= 0:
-                FreeCAD.Console.PrintError(translate("CAM_Slot", "Current offset value produces negative radius.") + "\n")
+                FreeCAD.Console.PrintError(
+                    translate("CAM_Slot", "Current offset value produces negative radius.") + "\n"
+                )
                 return False
 
             # Validate outer arc
             outer_radius = arcRadius + rad
             if outer_radius <= 0:
-                FreeCAD.Console.PrintError(translate("CAM_Slot", "Current offset value produces negative radius.") + "\n")
+                FreeCAD.Console.PrintError(
+                    translate("CAM_Slot", "Current offset value produces negative radius.") + "\n"
+                )
                 return False
 
             rectFace = make_arc_face(p1, p2, arcCenter, inner_radius, outer_radius)
