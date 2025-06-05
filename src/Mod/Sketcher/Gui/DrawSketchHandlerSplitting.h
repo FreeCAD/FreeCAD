@@ -187,7 +187,41 @@ private:
     {
         return QStringLiteral("Sketcher_Pointer_Splitting");
     }
+
+    // Add hint structures here
+    struct HintEntry
+    {
+        int stateValue;
+        std::list<Gui::InputHint> hints;
+    };
+
+    using HintTable = std::vector<HintEntry>;
+
+    static HintTable getSplittingHintTable();
+    static std::list<Gui::InputHint> lookupSplittingHints(int stateValue);
+
+public:
+    std::list<Gui::InputHint> getToolHints() const override
+    {
+        return lookupSplittingHints(0);
+    }
 };
+
+DrawSketchHandlerSplitting::HintTable DrawSketchHandlerSplitting::getSplittingHintTable()
+{
+    return {{0, {{QObject::tr("%1 click edge to split"), {Gui::InputHint::UserInput::MouseLeft}}}}};
+}
+
+std::list<Gui::InputHint> DrawSketchHandlerSplitting::lookupSplittingHints(int stateValue)
+{
+    const auto splittingHintTable = getSplittingHintTable();
+
+    auto it = std::ranges::find_if(splittingHintTable, [stateValue](const HintEntry& entry) {
+        return entry.stateValue == stateValue;
+    });
+
+    return (it != splittingHintTable.end()) ? it->hints : std::list<Gui::InputHint> {};
+}
 
 }  // namespace SketcherGui
 
