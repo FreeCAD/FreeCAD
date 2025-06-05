@@ -853,7 +853,14 @@ class DraftToolBar:
         self.makeDumbTask(extra, on_close_call)
 
     def editUi(self):
-        self.makeDumbTask(on_close_call=self.finish)
+        extra = QtWidgets.QWidget()
+        extra.setWindowTitle(translate("draft","Edit"))
+        extra.setWindowIcon(QtGui.QIcon(":/icons/Draft_Edit.svg"))
+        label = QtWidgets.QLabel(translate("draft","Please pick an editable point"))
+        layout = QtWidgets.QVBoxLayout(extra)
+        layout.addWidget(label)
+
+        self.makeDumbTask(extra, on_close_call=self.finish)
 
     def extUi(self):
         if params.get_param("UsePartPrimitives"):

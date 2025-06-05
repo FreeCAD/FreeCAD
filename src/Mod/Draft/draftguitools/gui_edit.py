@@ -290,6 +290,26 @@ class Edit(gui_base_original.Modifier):
                                                + "\n")
             self.register_selection_callback()
 
+        # update hints after the tool is fully initialized
+        QtCore.QTimer.singleShot(0, self.updateHints)
+
+    def getHints(self):
+        if self.editing is None:
+            return [
+            Gui.InputHint(translate("draft", "%1 pick point to move"), Gui.UserInput.MouseLeft),
+            Gui.InputHint(translate("draft", "%1 %2 modify wire/point"), Gui.UserInput.KeyAlt, Gui.UserInput.MouseLeft),
+        ]
+        return [
+            Gui.InputHint(translate("draft", "%1 pick target"), Gui.UserInput.MouseLeft),
+            Gui.InputHint(translate("draft", "%1 / %2%3%4 constrain"), Gui.UserInput.KeyShift,Gui.UserInput.KeyX,Gui.UserInput.KeyY,Gui.UserInput.KeyZ),
+            Gui.InputHint(translate("draft", "%1 switch global/local"), Gui.UserInput.KeyG),
+            Gui.InputHint(translate("draft", "%1 switch relative/absolute"), Gui.UserInput.KeyR),
+            Gui.InputHint(translate("draft", "%1 cancel"), Gui.UserInput.KeyEscape),
+        ]
+
+    def updateHints(self):
+        Gui.HintManager.show(*self.getHints())
+
 
     def proceed(self):
         """this method set the editTrackers"""
@@ -341,6 +361,8 @@ class Edit(gui_base_original.Modifier):
         # delay resetting edit mode otherwise it doesn't happen
         from PySide import QtCore
         QtCore.QTimer.singleShot(0, self.reset_edit)
+
+        Gui.HintManager.hide()
 
     def reset_edit(self):
         if Gui.ActiveDocument is not None:
@@ -484,6 +506,7 @@ class Edit(gui_base_original.Modifier):
         self.ui.lineUi(title=translate("draft", "Edit node"), icon="Draft_Edit")
         self.ui.continueCmd.hide()
         self.editing = node_idx
+        self.updateHints()
         self.trackers[obj.Name][node_idx].off()
 
         self.finalizeGhost()
@@ -522,6 +545,7 @@ class Edit(gui_base_original.Modifier):
         self.ui.editUi()
         self.node = []
         self.editing = None
+        self.updateHints()
         self.showTrackers()
         gui_tool_utils.redraw_3d_view()
 
