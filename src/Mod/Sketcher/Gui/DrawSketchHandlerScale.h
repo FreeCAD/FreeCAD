@@ -265,7 +265,7 @@ private:
                 auto* ellipse = static_cast<Part::GeomEllipse*>(geo);  // NOLINT
 
                 // OpenCascade throws if we try to set a major radius smaller than
-                // the minor radius or conversly, so we reorder the operations
+                // the minor radius or conversely, so we reorder the operations
                 // depending on if we scale up or down
                 if (scaleFactor < 1.0) {
                     ellipse->setMinorRadius(ellipse->getMinorRadius() * scaleFactor);
