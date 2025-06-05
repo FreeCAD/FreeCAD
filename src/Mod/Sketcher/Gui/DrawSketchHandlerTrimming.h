@@ -208,10 +208,42 @@ private:
 private:
     std::vector<Base::Vector2d> EditMarkers;
     bool mousePressed = false;
+
+    // Add hint structures here
+    struct HintEntry
+    {
+        int stateValue;
+        std::list<Gui::InputHint> hints;
+    };
+
+    using HintTable = std::vector<HintEntry>;
+
+    static HintTable getTrimmingHintTable();
+    static std::list<Gui::InputHint> lookupTrimmingHints(int stateValue);
+
+public:
+    std::list<Gui::InputHint> getToolHints() const override
+    {
+        return lookupTrimmingHints(0);
+    }
 };
 
+DrawSketchHandlerTrimming::HintTable DrawSketchHandlerTrimming::getTrimmingHintTable()
+{
+    return {{0, {{QObject::tr("%1 click edge to trim"), {Gui::InputHint::UserInput::MouseLeft}}}}};
+}
+
+std::list<Gui::InputHint> DrawSketchHandlerTrimming::lookupTrimmingHints(int stateValue)
+{
+    const auto trimmingHintTable = getTrimmingHintTable();
+
+    auto it = std::ranges::find_if(trimmingHintTable, [stateValue](const HintEntry& entry) {
+        return entry.stateValue == stateValue;
+    });
+
+    return (it != trimmingHintTable.end()) ? it->hints : std::list<Gui::InputHint> {};
+}
 
 }  // namespace SketcherGui
-
 
 #endif  // SKETCHERGUI_DrawSketchHandlerTrimming_H
