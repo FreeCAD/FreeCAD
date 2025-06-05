@@ -402,6 +402,7 @@ private:
                 moveToNextMode();
             }
         }
+        updateHint();
     }
 
 
@@ -409,6 +410,24 @@ private:
     bool preserveCorner;
     int vtId, geoId1, geoId2;
     Base::Vector2d firstPos, secondPos;
+
+    // Add hint structures here
+    struct HintEntry
+    {
+        int stateValue;
+        std::list<Gui::InputHint> hints;
+    };
+
+    using HintTable = std::vector<HintEntry>;
+
+    static HintTable getFilletHintTable();
+    static std::list<Gui::InputHint> lookupFilletHints(int stateValue);
+
+public:
+    std::list<Gui::InputHint> getToolHints() const override
+    {
+        return lookupFilletHints(static_cast<int>(state()));
+    }
 };
 
 template<>
@@ -456,7 +475,27 @@ void DSHFilletController::adaptDrawingToCheckboxChange(int checkboxindex, bool v
     handler->updateCursor();
 }
 
-}  // namespace SketcherGui
 
+DrawSketchHandlerFillet::HintTable DrawSketchHandlerFillet::getFilletHintTable()
+{
+    return {
+        {0,
+         {{QObject::tr("%1 pick first line or vertex"), {Gui::InputHint::UserInput::MouseLeft}}}},
+        {1, {{QObject::tr("%1 pick second line"), {Gui::InputHint::UserInput::MouseLeft}}}},
+        {2, {{QObject::tr("%1 click to create fillet"), {Gui::InputHint::UserInput::MouseLeft}}}}};
+}
+
+std::list<Gui::InputHint> DrawSketchHandlerFillet::lookupFilletHints(int stateValue)
+{
+    const auto filletHintTable = getFilletHintTable();
+
+    auto it = std::ranges::find_if(filletHintTable, [stateValue](const HintEntry& entry) {
+        return entry.stateValue == stateValue;
+    });
+
+    return (it != filletHintTable.end()) ? it->hints : std::list<Gui::InputHint> {};
+}
+
+}  // namespace SketcherGui
 
 #endif  // SKETCHERGUI_DrawSketchHandlerFillet_H
