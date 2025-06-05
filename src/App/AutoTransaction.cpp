@@ -178,36 +178,63 @@ int Application::getGlobalTransaction() const
 {
     return _globalTransactionID;
 }
+bool Application::transactionIsActive(int tid) const
+{
+    return transactionDescription(tid) != std::nullopt;
+}
 std::string Application::getTransactionName(int tid) const
 {
-    if (tid == 0) {
-        return "";
-    }
-    auto found = _activeTransactionNames.find(tid);
-    return found != _activeTransactionNames.end() ? found->second.name : "";
+    auto desc = transactionDescription(tid);
+    return desc ? desc->name : "";
 }
 bool Application::transactionTmpName(int tid) const
 {
-    if (tid == 0) {
-        return false;
-    }
-    auto found = _activeTransactionNames.find(tid);
-    return (found != _activeTransactionNames.end()) ? found->second.tmp : false;
+    auto desc = transactionDescription(tid);
+    return desc ? desc->tmp : false;
 }
-void Application::setTransactionName(int tid, std::string name, bool tmp)
+Document* Application::transactionInitiator(int tid) const
+{
+    auto desc = transactionDescription(tid);
+    return desc ? desc->initiator : nullptr;
+}
+std::optional<TransactionDescription> Application::transactionDescription(int tid) const
+{
+    if (tid == 0) {
+        return std::nullopt;
+    }
+    auto found = _activeTransactionDescriptions.find(tid);
+    return (found != _activeTransactionDescriptions.end()) ? std::optional<TransactionDescription>(found->second) : std::nullopt;    
+}
+void Application::setTransactionDescription(int tid, const TransactionDescription& desc)
 {
     if (tid == 0) {
         return;
     }
-    auto found = _activeTransactionNames.find(tid);
-    if (found == _activeTransactionNames.end() || found->second.tmp) {
-        _activeTransactionNames[tid] = TransactionName {.name = name, .tmp = tmp};
+    auto found = _activeTransactionDescriptions.find(tid);
+    if (found == _activeTransactionDescriptions.end() || found->second.tmp) {
+        _activeTransactionDescriptions[tid] = desc;
+        FC_LOG("transaction rename to '" << desc.name << "'");
+        for (auto& v : DocMap) {
+            v.second->renameTransaction(desc.name.c_str(), _activeTransactionID);
+        }
+    }
+}
+void Application::setTransactionName(int tid, const std::string& name, bool tmp)
+{
+    if (tid == 0) {
+        return;
+    }
+    auto found = _activeTransactionDescriptions.find(tid);
+    if (found == _activeTransactionDescriptions.end() || found->second.tmp) {
+        _activeTransactionDescriptions[tid].name = name;
+        _activeTransactionDescriptions[tid].tmp = tmp;
         FC_LOG("transaction rename to '" << name << "'");
         for (auto& v : DocMap) {
             v.second->renameTransaction(name.c_str(), _activeTransactionID);
         }
-    }
+    } 
 }
+
 void Application::closeActiveTransaction(bool abort, int id)
 {
     if (!id) {
@@ -217,25 +244,31 @@ void Application::closeActiveTransaction(bool abort, int id)
         return;
     }
 
-    if (_activeTransactionGuard > 0 && !abort) {
-        FC_LOG("ignore close transaction");
-        return;
+    if (!transactionIsActive(id)) {
+        FC_WARN("ignore close transaction, is not active");
+        return;        
     }
+
+    // if (_activeTransactionGuard > 0 && !abort) {
+    //     FC_LOG("ignore close transaction");
+    //     return;
+    // }
 
 
     std::vector<Document*> docsToPoke;
     for (auto& v : DocMap) {
-        if (v.second->getTransactionID(true) != id) {
+        if (v.second->getBookedTransactionID() != id) {
             continue;
         }
         if(v.second->isTransactionLocked()) {
+            std::cerr<<"Transaction locked..\n";
             FC_LOG("pending " << (abort ? "abort" : "close") << " transaction");
             return;          
         }
         docsToPoke.push_back(v.second);
     }
-    FC_LOG("close transaction '" << _activeTransactionNames[id].name << "' " << abort);
-    _activeTransactionNames.erase(id);
+    FC_LOG("close transaction '" << _activeTransactionDescriptions[id].name << "' " << abort);
+    _activeTransactionDescriptions.erase(id);
     TransactionSignaller signaller(abort, false);
 
     for (auto& doc : docsToPoke) {
