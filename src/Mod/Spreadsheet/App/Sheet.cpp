@@ -146,11 +146,6 @@ void Sheet::clearAll()
     cellErrors.clear();
     columnWidths.clear();
     rowHeights.clear();
-
-    for (auto& observer : observers) {
-        delete observer.second;
-    }
-    observers.clear();
 }
 
 // validate import/export parameters

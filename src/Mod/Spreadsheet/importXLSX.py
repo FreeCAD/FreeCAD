@@ -346,9 +346,18 @@ def handleCells(cellList, actCellSheet, sList):
         formulaRef = cell.getElementsByTagName("f")
         if len(formulaRef) == 1:
             theFormula = getText(formulaRef[0].childNodes)
-            # print("theFormula: ", theFormula)
-            fTrans = FormulaTranslator()
-            actCellSheet.set(ref, fTrans.translateForm(theFormula))
+            if theFormula:
+                # print("theFormula: ", theFormula)
+                fTrans = FormulaTranslator()
+                actCellSheet.set(ref, fTrans.translateForm(theFormula))
+            else:
+                attrs = formulaRef[0].attributes
+                attrRef = attrs.getNamedItem("t")
+                attrName = getText(attrRef.childNodes)
+                indexRef = attrs.getNamedItem("si")
+                indexName = getText(indexRef.childNodes)
+                content = "<f t='{}' si='{}'/>".format(attrName, indexName)
+                print(f"Unsupported formula in cell {ref}: {content}")
 
         else:
             valueRef = cell.getElementsByTagName("v")
@@ -364,8 +373,22 @@ def handleCells(cellList, actCellSheet, sList):
                         actCellSheet.set(ref, (sList[int(theValue)]))
 
 
-def handleWorkBook(theBook, sheetDict, Doc):
+def handleWorkBookRels(theBookRels):
+    theRels = theBookRels.getElementsByTagName("Relationship")
+    idTarget = {}
+    for rel in theRels:
+        relAtts = rel.attributes
+        idRef = relAtts.getNamedItem("Id")
+        relRef = getText(idRef.childNodes)
+        targetRef = relAtts.getNamedItem("Target")
+        relTarget = getText(targetRef.childNodes)
+        idTarget[relRef] = relTarget
+    return idTarget
+
+
+def handleWorkBook(theBook, theBookRels, sheetDict, Doc):
     theSheets = theBook.getElementsByTagName("sheet")
+    theIdTargetMap = handleWorkBookRels(theBookRels)
     # print("theSheets: ", theSheets)
     for sheet in theSheets:
         sheetAtts = sheet.attributes
@@ -373,7 +396,7 @@ def handleWorkBook(theBook, sheetDict, Doc):
         sheetName = getText(nameRef.childNodes)
         # print("table name: ", sheetName)
         idRef = sheetAtts.getNamedItem("r:id")
-        sheetFile = "sheet" + getText(idRef.childNodes)[3:] + ".xml"
+        sheetFile = theIdTargetMap[getText(idRef.childNodes)]
         # print("sheetFile: ", sheetFile)
         # add FreeCAD-spreadsheet
         sheetDict[sheetName] = (Doc.addObject("Spreadsheet::Sheet", sheetName), sheetFile)
@@ -397,10 +420,10 @@ def handleWorkBook(theBook, sheetDict, Doc):
 
 
 def handleStrings(theStr, sList):
-    print("process Strings: ")
+    # print("process Strings: ")
     stringElements = theStr.getElementsByTagName("t")
     for sElem in stringElements:
-        print("string: ", getText(sElem.childNodes))
+        # print("string: ", getText(sElem.childNodes))
         sList.append(getText(sElem.childNodes))
 
 
@@ -416,8 +439,11 @@ def open(nameXLSX):
 
         theBookFile = z.open("xl/workbook.xml")
         theBook = xml.dom.minidom.parse(theBookFile)
-        handleWorkBook(theBook, sheetDict, theDoc)
+        theBookRelsFile = z.open("xl/_rels/workbook.xml.rels")
+        theBookRels = xml.dom.minidom.parse(theBookRelsFile)
+        handleWorkBook(theBook, theBookRels, sheetDict, theDoc)
         theBook.unlink()
+        theBookRels.unlink()
 
         if "xl/sharedStrings.xml" in z.namelist():
             theStringFile = z.open("xl/sharedStrings.xml")
@@ -428,7 +454,7 @@ def open(nameXLSX):
         for sheetSpec in sheetDict:
             # print("sheetSpec: ", sheetSpec)
             theSheet, sheetFile = sheetDict[sheetSpec]
-            f = z.open("xl/worksheets/" + sheetFile)
+            f = z.open("xl/" + sheetFile)
             myDom = xml.dom.minidom.parse(f)
 
             handleWorkSheet(myDom, theSheet, stringList)
@@ -455,8 +481,11 @@ def insert(nameXLSX, docname):
     z = zipfile.ZipFile(nameXLSX)
     theBookFile = z.open("xl/workbook.xml")
     theBook = xml.dom.minidom.parse(theBookFile)
-    handleWorkBook(theBook, sheetDict, theDoc)
+    theBookRelsFile = z.open("xl/_rels/workbook.xml.rels")
+    theBookRels = xml.dom.minidom.parse(theBookRelsFile)
+    handleWorkBook(theBook, theBookRels, sheetDict, theDoc)
     theBook.unlink()
+    theBookRels.unlink()
 
     if "xl/sharedStrings.xml" in z.namelist():
         theStringFile = z.open("xl/sharedStrings.xml")
@@ -467,7 +496,7 @@ def insert(nameXLSX, docname):
     for sheetSpec in sheetDict:
         # print("sheetSpec: ", sheetSpec)
         theSheet, sheetFile = sheetDict[sheetSpec]
-        f = z.open("xl/worksheets/" + sheetFile)
+        f = z.open("xl/" + sheetFile)
         myDom = xml.dom.minidom.parse(f)
 
         handleWorkSheet(myDom, theSheet, stringList)
