@@ -73,10 +73,12 @@ class ObjectDressup:
             QT_TRANSLATE_NOOP("App::Property", "Calculate roll-off from toolpath"),
         )
         obj.addProperty(
-            "App::PropertyBool",
-            "KeepToolDown",
+            "App::PropertyLength",
+            "RetractThreshold",
             "Path",
-            QT_TRANSLATE_NOOP("App::Property", "Keep the Tool Down in toolpath"),
+            QT_TRANSLATE_NOOP(
+                "App::Property", "Set distance which will attempts to avoid unnecessary retractions"
+            ),
         )
         obj.addProperty(
             "App::PropertyDistance",
@@ -144,7 +146,6 @@ class ObjectDressup:
         obj.LengthOut = PathDressup.toolController(obj.Base).Tool.Diameter * 0.75
         obj.LeadIn = True
         obj.LeadOut = True
-        obj.KeepToolDown = False
         obj.StyleIn = "Arc"
         obj.StyleOut = "Arc"
         obj.ExtendLeadIn = 0
@@ -214,6 +215,18 @@ class ObjectDressup:
             )
             obj.LengthIn = obj.Length
             obj.removeProperty("Length")
+        if not hasattr(obj, "RetractThreshold"):
+            obj.addProperty(
+                "App::PropertyLength",
+                "RetractThreshold",
+                "Path",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "Set distance which will attempts to avoid unnecessary retractions",
+                ),
+            )
+        if hasattr(obj, "KeepToolDown"):
+            obj.removeProperty("KeepToolDown")
 
     def getDirectionOfPath(self, obj):
         op = PathDressup.baseOp(obj.Base)
@@ -229,7 +242,7 @@ class ObjectDressup:
         direction = self.getDirectionOfPath(obj)
         return math.pi / 2 if direction == "left" else -math.pi / 2
 
-    def getTravelStart(self, obj, pos, first):
+    def getTravelStart(self, obj, pos, first, posPrev):
         op = PathDressup.baseOp(obj.Base)
         vertfeed = PathDressup.toolController(obj.Base).VertFeed.Value
         travel = []
@@ -237,18 +250,22 @@ class ObjectDressup:
         # begin positions for travel and plunge moves are not used anywhere,
         # skipping them makes our life a lot easier
 
-        # move to clearance height
-        if first:
+        # move to clearance height if distance > RetractThreshold
+        distance = posPrev.distanceToPoint(App.Vector(pos.x, pos.y, 0))
+        if first or (distance > obj.RetractThreshold):
             travel.append(PathLanguage.MoveStraight(None, "G0", {"Z": op.ClearanceHeight.Value}))
 
-        # move to correct xy-position
-        travel.append(PathLanguage.MoveStraight(None, "G0", {"X": pos.x, "Y": pos.y}))
+        # move to mill X/Y-position (without move Z)
+        travel.append(PathLanguage.MoveStraight(None, "G00", {"X": pos.x, "Y": pos.y}))
 
-        # move to correct z-position (either rapidly or in two steps)
+        # move vertical to mill position
         if obj.RapidPlunge:
+            # move to mill position rapidly if RapidPlunge
             travel.append(PathLanguage.MoveStraight(None, "G0", {"Z": pos.z}))
         else:
-            if first or not obj.KeepToolDown:
+            # move to mill position in one or two steps
+            if first or (distance > obj.RetractThreshold):
+                # move down to SafeHeight if before was move up to ClearanceHeight
                 travel.append(PathLanguage.MoveStraight(None, "G0", {"Z": op.SafeHeight.Value}))
             travel.append(PathLanguage.MoveStraight(None, "G1", {"Z": pos.z, "F": vertfeed}))
 
@@ -259,7 +276,7 @@ class ObjectDressup:
         travel = []
 
         # move to clearance height
-        if last or not obj.KeepToolDown:
+        if last:
             travel.append(PathLanguage.MoveStraight(None, "G0", {"Z": op.ClearanceHeight.Value}))
 
         return travel
@@ -282,7 +299,7 @@ class ObjectDressup:
         param = {"X": end.x, "Y": end.y, "F": horizfeed}
         return PathLanguage.MoveStraight(begin, "G1", param)
 
-    def getLeadStart(self, obj, move, first):
+    def getLeadStart(self, obj, move, first, posPrev):
         lead = []
         begin = move.positionBegin()
 
@@ -321,7 +338,7 @@ class ObjectDressup:
                 prepend(self.createStraightMove(obj, extendbegin, begin))
 
         # prepend travel moves
-        lead = self.getTravelStart(obj, begin, first) + lead
+        lead = self.getTravelStart(obj, begin, first, posPrev) + lead
 
         return lead
 
@@ -390,6 +407,7 @@ class ObjectDressup:
         # cutting move we need to search the list in reverse order.
         first = True
         lastCuttingMoveIndex = self.findLastCuttingMoveIndex(obj, source)
+        posPrev = App.Vector()
 
         for i, instr in enumerate(source):
             if not self.isCuttingMove(obj, instr):
@@ -403,7 +421,7 @@ class ObjectDressup:
 
             if first or not self.isCuttingMove(obj, source[i - 1]):
                 # add lead start and travel moves
-                maneuver.addInstructions(self.getLeadStart(obj, instr, first))
+                maneuver.addInstructions(self.getLeadStart(obj, instr, first, posPrev))
                 first = False
 
             # add current move
@@ -412,7 +430,10 @@ class ObjectDressup:
             last = i == lastCuttingMoveIndex
             if last or not self.isCuttingMove(obj, source[i + 1]):
                 # add lead end and travel moves
-                maneuver.addInstructions(self.getLeadEnd(obj, instr, last))
+                newInstr = self.getLeadEnd(obj, instr, last)
+                maneuver.addInstructions(newInstr)
+                posPrev.x = newInstr[0].x()
+                posPrev.y = newInstr[0].y()
 
         return maneuver.toPath()
 
@@ -432,7 +453,6 @@ class TaskDressupLeadInOut(SimpleEditPanel):
         self.connectWidget("StyleOut", self.form.cboStyleOut)
         self.connectWidget("RapidPlunge", self.form.chkRapidPlunge)
         self.connectWidget("IncludeLayers", self.form.chkLayers)
-        self.connectWidget("KeepToolDown", self.form.chkKeepToolDown)
         self.setFields()
 
 
