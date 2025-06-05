@@ -577,7 +577,7 @@ void TaskProjGroup::spacingChanged()
     }
     multiView->spacingX.setValue(ui->sbXSpacing->value().getValue());
     multiView->spacingY.setValue(ui->sbYSpacing->value().getValue());
-    multiView->recomputeFeature();
+    multiView->recomputeChildren();
 }
 
 void TaskProjGroup::updateTask()
