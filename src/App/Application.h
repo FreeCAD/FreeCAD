@@ -80,6 +80,13 @@ struct DocumentInitFlags {
     bool temporary {false};
 };
 
+struct TransactionDescription {
+    Document* initiator { nullptr };
+    std::string name { "" };
+    bool tmp { false };
+};
+
+
 /** The Application
  *  The root of the whole application
  *  @see App::Document
@@ -203,9 +210,14 @@ public:
     /// Return the current active transaction name and ID
     const char *getActiveTransaction(int *tid=nullptr) const;
     int getGlobalTransaction() const;
+
+    bool transactionIsActive(int tid) const;
     std::string getTransactionName(int tid) const;
     bool transactionTmpName(int tid) const;
-    void setTransactionName(int tid, std::string name, bool tmp = false);
+    Document* transactionInitiator(int tid) const;
+    std::optional<TransactionDescription> transactionDescription(int tid) const;
+    void setTransactionDescription(int tid, const TransactionDescription& desc);
+    void setTransactionName(int tid, const std::string& name, bool tmp = false);
 
     /** Commit/abort current active transactions
      *
@@ -665,13 +677,8 @@ private:
     int _objCount{-1};
 
     friend class AutoTransaction;
-    
-    struct TransactionName {
-        std::string name;
-        bool tmp { false };
-    };
 
-    std::map<int, TransactionName> _activeTransactionNames; // Maps transaction ID to transaction name
+    std::map<int, TransactionDescription> _activeTransactionDescriptions; // Maps transaction ID to transaction name
     std::string _activeTransactionName;
     int _activeTransactionID{0};
     int _activeTransactionGuard{0};
