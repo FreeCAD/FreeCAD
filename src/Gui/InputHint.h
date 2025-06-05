@@ -184,6 +184,18 @@ struct InputHint
         KeyF34 = Qt::Key_F34,
         KeyF35 = Qt::Key_F35,
 
+        // numpad keys
+        KeyNum0 = Qt::Key_0 + Qt::KeypadModifier,
+        KeyNum1 = Qt::Key_1 + Qt::KeypadModifier,
+        KeyNum2 = Qt::Key_2 + Qt::KeypadModifier,
+        KeyNum3 = Qt::Key_3 + Qt::KeypadModifier,
+        KeyNum4 = Qt::Key_4 + Qt::KeypadModifier,
+        KeyNum5 = Qt::Key_5 + Qt::KeypadModifier,
+        KeyNum6 = Qt::Key_6 + Qt::KeypadModifier,
+        KeyNum7 = Qt::Key_7 + Qt::KeypadModifier,
+        KeyNum8 = Qt::Key_8 + Qt::KeypadModifier,
+        KeyNum9 = Qt::Key_9 + Qt::KeypadModifier,
+
         // Mouse Keys
         MouseMove = 1 << 16,
         MouseLeft = 2 << 16,
