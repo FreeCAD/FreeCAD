@@ -46,7 +46,7 @@ from FreeCAD import Units
 from FreeCAD import Vector
 
 if FreeCAD.GuiUp:
-    from PySide import QtCore, QtGui
+    from PySide import QtCore, QtGui, QtWidgets
     from PySide.QtCore import QT_TRANSLATE_NOOP
     import FreeCADGui
     from draftutils.translate import translate
@@ -883,15 +883,16 @@ class _RoofTaskPanel:
         # tree
         self.tree = QtGui.QTreeWidget(self.form)
         self.grid.addWidget(self.tree, 1, 0, 1, 1)
+        self.tree.setItemDelegate(_RoofTaskPanel_Delegate())
         self.tree.setRootIsDecorated(False) # remove 1st column's extra left margin
         self.tree.setColumnCount(7)
         self.tree.header().resizeSection(0, 37) # 37px seems to be the minimum size
         self.tree.header().resizeSection(1, 60)
-        self.tree.header().resizeSection(2, 70)
+        self.tree.header().resizeSection(2, 90)
         self.tree.header().resizeSection(3, 37)
-        self.tree.header().resizeSection(4, 70)
-        self.tree.header().resizeSection(5, 70)
-        self.tree.header().resizeSection(6, 70)
+        self.tree.header().resizeSection(4, 90)
+        self.tree.header().resizeSection(5, 90)
+        self.tree.header().resizeSection(6, 90)
 
         QtCore.QObject.connect(self.tree, QtCore.SIGNAL("itemChanged(QTreeWidgetItem *, int)"), self.edit)
         self.update()
@@ -940,9 +941,6 @@ class _RoofTaskPanel:
         if self.updating:
             return
         row = int(item.text(0))
-        if not (0 <= row < len(self.obj.Angles)):
-            # Users should not change the Id (index) column, but you never know:
-            return
         match column:
             case 1:
                 self._update_value(row, "Angles", item.text(1))
@@ -969,7 +967,7 @@ class _RoofTaskPanel:
 
     def retranslateUi(self, TaskPanel):
         TaskPanel.setWindowTitle(QtGui.QApplication.translate("Arch", "Roof", None))
-        self.title.setText(QtGui.QApplication.translate("Arch", "Parameters of the roof profiles :\n* Angle : slope in degrees relative to the horizontal.\n* Run : horizontal distance between the wall and the ridge.\n* Thickness : thickness of the roof.\n* Overhang : horizontal distance between the eave and the wall.\n* Height : height of the ridge above the base (calculated automatically).\n* IdRel : Id of the relative profile used for automatic calculations.\n---\nIf Angle = 0 and Run = 0 then the profile is identical to the relative profile.\nIf Angle = 0 then the angle is calculated so that the height is the same as the relative profile.\nIf Run = 0 then the run is calculated so that the height is the same as the relative profile.", None))
+        self.title.setText(QtGui.QApplication.translate("Arch", "Parameters of the roof profiles:\n* Angle: slope in degrees relative to the horizontal.\n* Run: horizontal distance between the wall and the ridge.\n* IdRel: Id of the relative profile used for automatic calculations.\n* Thickness: thickness of the roof.\n* Overhang: horizontal distance between the eave and the wall.\n* Height: height of the ridge above the base (calculated automatically).\n---\nIf Angle = 0 and Run = 0 then the profile is identical to the relative profile.\nIf Angle = 0 then the angle is calculated so that the height is the same as the relative profile.\nIf Run = 0 then the run is calculated so that the height is the same as the relative profile.", None))
         self.tree.setHeaderLabels([QtGui.QApplication.translate("Arch", "Id", None),
                                    QtGui.QApplication.translate("Arch", "Angle", None),
                                    QtGui.QApplication.translate("Arch", "Run", None),
@@ -977,3 +975,35 @@ class _RoofTaskPanel:
                                    QtGui.QApplication.translate("Arch", "Thickness", None),
                                    QtGui.QApplication.translate("Arch", "Overhang", None),
                                    QtGui.QApplication.translate("Arch", "Height", None)])
+
+
+if FreeCAD.GuiUp:
+    class _RoofTaskPanel_Delegate(QtWidgets.QStyledItemDelegate):
+        '''Model delegate'''
+        def createEditor(self, parent, option, index):
+            if index.column() in (0, 6):
+                # Make these columns read-only.
+                return None
+            editor = QtWidgets.QLineEdit(parent)
+            if index.column() != 3:
+                editor.installEventFilter(self)
+            return editor
+
+        def setEditorData(self, editor, index):
+            editor.setText(index.data())
+
+        def setModelData(self, editor, model, index):
+            model.setData(index,editor.text())
+
+        def eventFilter(self, widget, event):
+            if event.type() == QtCore.QEvent.FocusIn:
+                widget.setSelection(0, self.number_length(widget.text()))
+            return super().eventFilter(widget, event)
+
+        def number_length(self, str):
+            # Code taken from DraftGui.py.
+            nl = 0
+            for char in str:
+                if char in "0123456789.,-":
+                    nl += 1
+            return nl
