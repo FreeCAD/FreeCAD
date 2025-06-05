@@ -847,6 +847,14 @@ bool TaskProjGroup::reject()
         if (Gui::Command::hasPendingCommand()) {
             Gui::Command::abortCommand();
         }
+        // Restore the original spacing values if multiView is valid
+        if (multiView) {
+            multiView->spacingX.setValue(m_saveSpacingX);
+            multiView->spacingY.setValue(m_saveSpacingY);
+
+            // Recompute with restored values to update the model
+            multiView->recomputeChildren();
+        }
     }
     Gui::Command::runCommand(Gui::Command::Gui, "Gui.ActiveDocument.resetEdit()");
     return false;
