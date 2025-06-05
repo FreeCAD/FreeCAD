@@ -300,7 +300,9 @@ def convertFloors(floor=None):
                 nobj.IfcType = "Building"
                 nobj.CompositionType = "ELEMENT"
                 t = QT_TRANSLATE_NOOP("App::Property", "The type of this building")
-                nobj.addProperty("App::PropertyEnumeration", "BuildingType", "Building", t, locked=True)
+                nobj.addProperty(
+                    "App::PropertyEnumeration", "BuildingType", "Building", t, locked=True
+                )
                 nobj.BuildingType = ArchBuildingPart.BuildingTypes
             label = obj.Label
             for parent in obj.InList:
@@ -363,7 +365,7 @@ def makeEquipment(baseobj=None, placement=None, name=None):
     ----------
     baseobj : Part::FeaturePython or Mesh::Feature, optional
         The base object for the equipment. Defaults to None.
-    placement : Placement, optional
+    placement : FreeCAD.Placement, optional
         The placement of the equipment. Defaults to None.
     name : str, optional
         The name to assign to the created equipment. Defaults to None.
@@ -623,7 +625,7 @@ def makePanel(baseobj=None, length=0, width=0, thickness=0, placement=None, name
         The width of the panel. Defaults to 0.
     thickness : float, optional
         The thickness of the panel. Defaults to 0.
-    placement : Placement, optional
+    placement : FreeCAD.Placement, optional
         The placement of the panel. Defaults to None.
     name : str, optional
         The name to assign to the created panel. Defaults to None.
@@ -724,7 +726,7 @@ def makePipe(baseobj=None, diameter=0, length=0, placement=None, name=None):
         The diameter of the pipe. Defaults to 0.
     length : float, optional
         The length of the pipe. Defaults to 0.
-    placement : Placement, optional
+    placement : FreeCAD.Placement, optional
         The placement of the pipe. Defaults to None.
     name : str, optional
         The name to assign to the created pipe. Defaults to None.
@@ -770,7 +772,8 @@ def makePipeConnector(pipes, radius=0, name=None):
     pipes : list of Part::FeaturePython
         A list of pipe objects to connect.
     radius : float, optional
-        The curvature radius of the connector. Defaults to 0, which uses the diameter of the first pipe.
+        The curvature radius of the connector. Defaults to 0, which uses the diameter of the first
+        pipe.
     name : str, optional
         The name to assign to the created connector. Defaults to None.
 
@@ -804,9 +807,10 @@ def makeProfile(profile=[0, 'REC', 'REC100x100', 'R', 100, 100]):
     profile : list, optional
         A list defining the profile data. Defaults to [0, 'REC', 'REC100x100', 'R', 100, 100].
         The list should contain the following elements:
+
         0. listOrder: str
             The order of the profile data. Currently not used.
-        1, profileSubClass: str
+        1. profileSubClass: str
             The subclass of a given profile class (e.g. 'REC' for the 'C' class).
         2. profileName: str
             The name of the profile (e.g., 'REC100x100').
@@ -864,6 +868,8 @@ def makeProject(sites=None, name=None):
     """Create an Arch project.
 
     If sites are provided, add them as children of the new project.
+
+    .. deprecated:: 1.0.0
 
     Parameters
     ----------
@@ -1278,6 +1284,7 @@ def makeSpace(objects=None, baseobj=None, name=None):
     Notes
     -----
     The objects parameter can be passed using either of these different formats:
+
     1. Single object (e.g. a Part::Feature document object). Will be used as the space's base
        shape.::
             objects = <Part::Feature>
@@ -1288,8 +1295,8 @@ def makeSpace(objects=None, baseobj=None, name=None):
        the base shape.::
             objects = [<SelectionObject>, ...]
     3. A list of tuples that can be assigned to an ``App::PropertyLinkSubList`` property. Each
-       tuple contains a document object and a nested tuple of subobjects that define the boundaries. If
-       the list contains a single tuple without a nested subobjects tuple, or a subobjects tuple
+       tuple contains a document object and a nested tuple of subobjects that define the boundaries.
+       If the list contains a single tuple without a nested subobjects tuple, or a subobjects tuple
        with only one subobject, the object in the tuple is used as the base shape.::
             objects = [(obj1, ("Face1")), (obj2, ("Face1")), ...]
             objects = [(obj, ("Face1", "Face2", "Face3", "Face4"))]
@@ -1357,6 +1364,7 @@ def addSpaceBoundaries(space, subobjects):
     Notes
     -----
     The subobjects parameter can be passed using either of these different formats:
+
     1. List of selection objects, as provided by ``Gui.Selection.getSelectionEx()``. This
        requires the GUI to be active. The `SubObjects` property of each selection object in the
        list defines the boundaries to add to the space.::
@@ -1384,6 +1392,7 @@ def removeSpaceBoundaries(space, subobjects):
     Notes
     -----
     The subobjects parameter can be passed using either of these different formats:
+
     1. List of selection objects, as provided by ``Gui.Selection.getSelectionEx()``. This
        requires the GUI to be active. The `SubObjects` property of each selection object in the
        list defines the boundaries to remove from the space.::
@@ -1432,7 +1441,8 @@ def makeStairs(baseobj=None, length=None, width=None, height=None, steps=None, n
     label = name if name else translate("Arch", "Stairs")
 
     def setProperty(obj, length, width, height, steps):
-        """setProperty(obj,length,width,height,steps): sets up the basic properties for this stair"""
+        """setProperty(obj,length,width,height,steps): sets up the basic properties for this stair
+        """
         obj.Length = length if length else params.get_param_arch("StairsLength")
         obj.Width = width if width else params.get_param_arch("StairsWidth")
         obj.Height = height if height else params.get_param_arch("StairsHeight")
@@ -1476,7 +1486,7 @@ def makeStairs(baseobj=None, length=None, width=None, height=None, steps=None, n
                 additions.append(stairs[i])
                 stairs[i].LastSegment = stairs[i - 1]
             else:
-                if len(stairs) > 1:                     # i.e. length >1, have a 'master' staircase created
+                if len(stairs) > 1: # i.e. length >1, have a 'master' staircase created
                     stairs[0].Base = stairs[1]
             i += 1
         if lenSelection > 1:
@@ -1518,7 +1528,8 @@ def makeRailing(stairs):
     None
     """
     def makeRailingLorR(stairs, side="L"):
-        """makeRailingLorR(stairs,side="L"): Creates a railing on the given side of the stairs, L or R"""
+        """makeRailingLorR(stairs,side="L"): Creates a railing on the given side of the stairs, L or
+        R"""
         for stair in reversed(stairs):
             if side == "L":
                 outlineLR = stair.OutlineLeft
@@ -1529,7 +1540,10 @@ def makeRailing(stairs):
                 outlineLRAll = stair.OutlineRightAll
                 stairRailingLR = "RailingRight"
             if outlineLR or outlineLRAll:
-                lrRail = makePipe(baseobj=None, diameter=0, length=0, placement=None, name=translate("Arch", "Railing"))
+                lrRail = makePipe(
+                    baseobj=None, diameter=0, length=0, placement=None,
+                    name=translate("Arch", "Railing")
+                )
                 if outlineLRAll:
                     setattr(stair, stairRailingLR, lrRail)
                     break
@@ -1593,7 +1607,10 @@ def makeTruss(baseobj=None, name=None):
     return truss
 
 
-def makeWall(baseobj=None, height=None, length=None, width=None, align=None, offset=None, face=None, name=None):
+def makeWall(
+        baseobj=None, height=None, length=None, width=None, align=None, offset=None,
+        face=None, name=None
+):
     """Create a wall based on a given object, and returns the generated wall.
 
     TODO: It is unclear what defines which units this function uses.
@@ -1648,14 +1665,18 @@ def makeWall(baseobj=None, height=None, length=None, width=None, align=None, off
         if hasattr(baseobj, 'Shape') or baseobj.isDerivedFrom("Mesh::Feature"):
             wall.Base = baseobj
         else:
-            FreeCAD.Console.PrintWarning(str(translate("Arch", "Walls can only be based on Part or Mesh objects")))
+            FreeCAD.Console.PrintWarning(
+                str(translate("Arch", "Walls can only be based on Part or Mesh objects"))
+            )
     if face:
         wall.Face = face
     if length:
         wall.Length = length
     wall.Width = width if width else params.get_param_arch("WallWidth")
     wall.Height = height if height else params.get_param_arch("WallHeight")
-    wall.Align = align if align else ["Center", "Left", "Right"][params.get_param_arch("WallAlignment")]
+    wall.Align = (
+        align if align else ["Center", "Left", "Right"][params.get_param_arch("WallAlignment")]
+    )
 
     if wall.Base and FreeCAD.GuiUp:
         if Draft.getType(wall.Base) != "Space":
@@ -1786,10 +1807,12 @@ def makeWindow(baseobj=None, width=None, height=None, parts=None, name=None):
         window.Height = height
     if baseobj:
         # 2025.5.25
-        # Historically, this normal was deduced by the orientation of the Base Sketch and hardcoded in the Normal property.
-        # Now with the new AutoNormalReversed property/flag, set True as default, the auto Normal previously in opposite direction to is now consistent with that previously hardcoded.
-        # With the normal set to 'auto', window object would not suffer weird shape if the Base Sketch is rotated by some reason.
-        # Keep the property be 'auto' (0,0,0) here.  
+        # Historically, this normal was deduced by the orientation of the Base Sketch and hardcoded
+        # in the Normal property. Now with the new AutoNormalReversed property/flag, set True as
+        # default, the auto Normal previously in opposite direction to is now consistent with that
+        # previously hardcoded. With the normal set to 'auto', window object would not suffer weird
+        # shape if the Base Sketch is rotated by some reason. Keep the property be 'auto' (0,0,0)
+        # here.
         #obj.Normal = baseobj.Placement.Rotation.multVec(FreeCAD.Vector(0, 0, -1))
         window.Base = baseobj
     if parts is not None:
@@ -1800,8 +1823,8 @@ def makeWindow(baseobj=None, width=None, height=None, parts=None, name=None):
             if (linked_obj.isDerivedFrom("Part::Part2DObject")
                 or Draft.getType(linked_obj) in ["BezCurve", "BSpline", "Wire"]) \
                     and DraftGeomUtils.isPlanar(baseobj.Shape):
-                # "BezCurve", "BSpline" and "Wire" objects created with < v1.1 are "Part::Part2DObject" objects.
-                # In all versions these objects need not be planar.
+                # "BezCurve", "BSpline" and "Wire" objects created with < v1.1 are
+                # "Part::Part2DObject" objects. In all versions these objects need not be planar.
                 if baseobj.Shape.Wires:
                     part_type = "Frame"
                     if len(baseobj.Shape.Wires) == 1:
@@ -1814,7 +1837,9 @@ def makeWindow(baseobj=None, width=None, height=None, parts=None, name=None):
                     part_name = "Default"
                     part_frame_thickness = "1" # mm
                     part_offset = "0" # mm
-                    window.WindowParts = [part_name, part_type, wires_str, part_frame_thickness, part_offset]
+                    window.WindowParts = [
+                        part_name, part_type, wires_str, part_frame_thickness, part_offset
+                    ]
             else:
                 # bind properties from base obj if existing
                 for prop in ["Height", "Width", "Subvolume", "Tag", "Description", "Material"]:
