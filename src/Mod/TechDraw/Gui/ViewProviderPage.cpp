@@ -30,8 +30,8 @@
 # include <QPointer>
 # include <QTextStream>
 
-# include <boost/signals2.hpp>
-# include <boost/signals2/connection.hpp>
+# include <libfastsignals/signal.h>
+# include <libfastsignals/connection.h>
 #endif
 
 #include <App/Document.h>
