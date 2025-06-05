@@ -188,6 +188,13 @@ class _Window(ArchComponent.Component):
         # Add features in the SketchArch External Add-on
         self.addSketchArchFeatures(obj, mode='ODR')
 
+        # Need to restore 'initial' settings as corresponding codes in onChanged() does upon object creation
+        self.baseSill = obj.Sill.Value
+        self.basePos = obj.Base.Placement.Base
+        self.atthOff = None
+        if hasattr(obj, 'AttachmentOffsetXyzAndRotation'):
+            self.atthOff = obj.AttachmentOffsetXyzAndRotation.Base
+
     def onBeforeChange(self,obj,prop):
 
         if prop in ["Base","WindowParts","Placement","HoleDepth","Height","Width","Hosts"]:
@@ -200,12 +207,36 @@ class _Window(ArchComponent.Component):
         self.hideSubobjects(obj,prop)
         if prop == "Sill":
             val = getattr(obj,prop).Value
-            if getattr(self, 'baseSill', None) is None and getattr(self, 'basePos', None) is None:
+
+            if (getattr(self, 'baseSill', None) is None and
+                getattr(self, 'basePos', None) is None and
+                getattr(self, 'atthOff', None) is None):  # TODO Any cases only 1 or 2 are not None?
                 self.baseSill = val
                 self.basePos = obj.Base.Placement.Base
+                self.atthOff = None
+                if hasattr(obj, 'AttachmentOffsetXyzAndRotation'):
+                    self.atthOff = obj.AttachmentOffsetXyzAndRotation.Base
                 return
 
-            obj.Base.Placement.Base.z = self.basePos.z + (obj.Sill.Value - self.baseSill)
+            import ArchSketchObject  # Need to import per method
+            host = None
+            if obj.Hosts:
+                host = obj.Hosts[0]
+            if (hasattr(obj, 'AttachToAxisOrSketch') and
+                obj.AttachToAxisOrSketch == "Host" and
+                host and Draft.getType(host.Base) == "ArchSketch" and
+                hasattr(ArchSketchObject, 'updateAttachmentOffset')):
+                SketchArch = True
+            else:
+                SketchArch = False
+
+            if SketchArch:
+                objAttOff = obj.AttachmentOffsetXyzAndRotation
+                objAttOff.Base.z = self.atthOff.z + (obj.Sill.Value - self.baseSill)
+                obj.AttachmentOffsetXyzAndRotation = objAttOff
+            else:
+                obj.Base.Placement.Base.z = self.basePos.z + (obj.Sill.Value - self.baseSill)
+
         elif not "Restore" in obj.State:
             if prop in ["Base","WindowParts","Placement","HoleDepth","Height","Width","Hosts","Shape"]:
                 # anti-recursive loops, bc the base sketch will touch the Placement all the time
