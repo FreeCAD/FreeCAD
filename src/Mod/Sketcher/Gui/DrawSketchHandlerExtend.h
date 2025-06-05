@@ -344,6 +344,8 @@ public:
             sketchgui
                 ->purgeHandler();  // no code after this line, Handler get deleted in ViewProvider
         }
+
+        updateHint();
         return true;
     }
 
@@ -371,6 +373,24 @@ protected:
     double Increment;
     std::vector<AutoConstraint> SugConstr;
 
+    // Add hint structures here
+    struct HintEntry
+    {
+        int stateValue;
+        std::list<Gui::InputHint> hints;
+    };
+
+    using HintTable = std::vector<HintEntry>;
+
+    static HintTable getExtendHintTable();
+    static std::list<Gui::InputHint> lookupExtendHints(int stateValue);
+
+public:
+    std::list<Gui::InputHint> getToolHints() const override
+    {
+        return lookupExtendHints(static_cast<int>(Mode));
+    }
+
 private:
     int crossProduct(Base::Vector2d& vec1, Base::Vector2d& vec2)
     {
@@ -378,8 +398,26 @@ private:
     }
 };
 
+DrawSketchHandlerExtend::HintTable DrawSketchHandlerExtend::getExtendHintTable()
+{
+    return {
+        {0, {{QObject::tr("%1 select edge to extend"), {Gui::InputHint::UserInput::MouseLeft}}}},
+        {1,
+         {{QObject::tr("%1 click to set extension length"),
+           {Gui::InputHint::UserInput::MouseLeft}}}}};
+}
+
+std::list<Gui::InputHint> DrawSketchHandlerExtend::lookupExtendHints(int stateValue)
+{
+    const auto extendHintTable = getExtendHintTable();
+
+    auto it = std::ranges::find_if(extendHintTable, [stateValue](const HintEntry& entry) {
+        return entry.stateValue == stateValue;
+    });
+
+    return (it != extendHintTable.end()) ? it->hints : std::list<Gui::InputHint> {};
+}
 
 }  // namespace SketcherGui
-
 
 #endif  // SKETCHERGUI_DrawSketchHandlerExtend_H
