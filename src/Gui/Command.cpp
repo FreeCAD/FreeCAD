@@ -640,6 +640,10 @@ void Command::commitCommand()
 {
     App::GetApplication().closeActiveTransaction();
 }
+void Command::commitCommand(int tid)
+{
+    App::GetApplication().closeActiveTransaction(false, tid);
+}
 
 void Command::abortCommand()
 {

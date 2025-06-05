@@ -349,7 +349,7 @@ void Document::openTransaction(const char* name) // NOLINT
 
 int Document::_openTransaction(std::string name, int id)
 {
-    if (isTransactionLocked()) {
+    if (isTransactionLocked() && id != d->bookedTransaction) {
         if (FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG)) {
             FC_WARN("Transaction locked, ignore new transaction '" << name << "'");
         }
@@ -394,6 +394,14 @@ int Document::_openTransaction(std::string name, int id)
 
     signalOpenTransaction(*this, name);
 
+    Document* transactionInitiator = GetApplication().transactionInitiator(id);
+    if (transactionInitiator && transactionInitiator != this && !transactionInitiator->hasPendingTransaction()) {
+        std::string aname("-> ");
+        aname += d->activeUndoTransaction->Name;
+        FC_LOG("auto transaction " << getName() << " -> " << transactionInitiator->getName());
+        transactionInitiator->_openTransaction(aname.c_str(), id);
+
+    }
     // auto& app = GetApplication();
     // auto activeDoc = app.getActiveDocument();
     // if (activeDoc && activeDoc != this && !activeDoc->hasPendingTransaction()) {
@@ -417,17 +425,35 @@ void Document::renameTransaction(const char* name, const int id) const
         d->activeUndoTransaction->Name += name;
     }
 }
-int Document::setActiveTransaction(std::string name, bool tmpName)
+int Document::setActiveTransaction(const std::string& name, bool tmpName, int tid)
 {
+    // Probably a group transaction situation
+    if (tid != 0) {
+        if (!GetApplication().transactionIsActive(tid)) {
+            FC_LOG("Could not set active transaction to inactive ID");
+            return 0;
+        }
+
+        if (d->bookedTransaction != 0 && d->bookedTransaction != tid && !_commitTransaction()) {
+            FC_LOG("Could not book transaction for document");
+            return 0;
+        }
+        d->bookedTransaction = tid;
+        if (GetApplication().transactionTmpName(d->bookedTransaction)) {
+            GetApplication().setTransactionName(d->bookedTransaction, name, tmpName);
+        }
+        return d->bookedTransaction;
+    }
+
     // Rename the transaction if it had a tmp name
     if (d->bookedTransaction && GetApplication().transactionTmpName(d->bookedTransaction)) {
         GetApplication().setTransactionName(d->bookedTransaction, name, false);
-    } else if (d->bookedTransaction || !_commitTransaction()) {
+    } else if (d->bookedTransaction && !_commitTransaction()) {
         FC_LOG("Could not book transaction for document");
         return 0;
     }
     d->bookedTransaction = Transaction::getNewID();
-    GetApplication().setTransactionName(d->bookedTransaction, name, tmpName);
+    GetApplication().setTransactionDescription(d->bookedTransaction, TransactionDescription {.initiator = this, .name = name, .tmp = tmpName});
     return d->bookedTransaction;
 }
 
