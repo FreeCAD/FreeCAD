@@ -720,7 +720,7 @@ void Document::_resetEdit()
         // resetEdit() above calls into Application->setEditDocument(0) which
         // will prevent recursive calling.
 
-        App::GetApplication().closeActiveTransaction();
+        App::GetApplication().closeActiveTransaction(false, getDocument()->getBookedTransactionID());
     }
     d->_editViewProviderParent = nullptr;
     d->_editingViewer = nullptr;
