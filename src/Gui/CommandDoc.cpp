@@ -1354,7 +1354,7 @@ void StdCmdDelete::activated(int iMsg)
         std::set<App::Document*> docs;
         std::vector<App::TransactionLocker> tlocks;
         auto manage_doc_command = [&tid, &tlocks](App::Document* doc) {
-            tid = doc->setActiveTransaction(QT_TRANSLATE_NOOP("Command", "Delete"), false, tid);
+            tid = openCommand(doc, QT_TRANSLATE_NOOP("Command", "Delete"), false, tid);
             tlocks.emplace_back(doc);
         };
 
@@ -1476,10 +1476,7 @@ void StdCmdDelete::activated(int iMsg)
         QMessageBox::critical(getMainWindow(), QObject::tr("Delete failed"),
                 QStringLiteral("Unknown error"));
     }
-    if (tid) {
-        std::cerr << "Std_Delete close commit command #" << tid << "\n";
-        commitCommand(tid);
-    }
+    commitCommand(tid);
     Gui::getMainWindow()->setUpdatesEnabled(true);
     Gui::getMainWindow()->update();
 }
@@ -1970,9 +1967,11 @@ protected:
             return;
         }
 
-        openCommand(QT_TRANSLATE_NOOP("Command", "Paste expressions"));
+        // openCommand(QT_TRANSLATE_NOOP("Command", "Paste expressions"));
+        int tid = 0;
         try {
             for(auto &v : exprs) {
+                tid = openCommand(v.first, QT_TRANSLATE_NOOP("Command", "Paste expressions"), false, tid);
                 for(auto &v2 : v.second) {
                     auto &expressions = v2.second;
                     auto old = v2.first->getExpressions();
@@ -1986,7 +1985,7 @@ protected:
                         v2.first->setExpressions(std::move(expressions));
                 }
             }
-            commitCommand();
+            commitCommand(tid);
         } catch (const Base::Exception& e) {
             abortCommand();
             QMessageBox::critical(getMainWindow(), QObject::tr("Failed to paste expressions"),
