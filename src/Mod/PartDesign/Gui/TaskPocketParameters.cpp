@@ -38,9 +38,9 @@ using namespace Gui;
 
 TaskPocketParameters::TaskPocketParameters(ViewProviderPocket *PocketView,QWidget *parent, bool newObj)
     : TaskExtrudeParameters(PocketView, parent, "PartDesign_Pocket", tr("Pocket parameters"))
-    , oldLength(0)
 {
-    ui->offsetEdit->setToolTip(tr("Offset from face at which pocket will end"));
+    ui->offsetEdit->setToolTip(tr("Offset from face at which pocket will end on side 1"));
+    ui->offsetEdit2->setToolTip(tr("Offset from face at which pocket will end on side 2"));
     ui->checkBoxReversed->setToolTip(tr("Reverses pocket direction"));
 
     // set the history path
@@ -50,6 +50,8 @@ TaskPocketParameters::TaskPocketParameters(ViewProviderPocket *PocketView,QWidge
     ui->lengthEdit2->setParamGrpPath(QByteArray("User parameter:BaseApp/History/PocketLength2"));
     ui->offsetEdit->setEntryName(QByteArray("Offset"));
     ui->offsetEdit->setParamGrpPath(QByteArray("User parameter:BaseApp/History/PocketOffset"));
+    ui->offsetEdit2->setEntryName(QByteArray("Offset2"));
+    ui->offsetEdit2->setParamGrpPath(QByteArray("User parameter:BaseApp/History/PocketOffset2"));
     ui->taperEdit->setEntryName(QByteArray("TaperAngle"));
     ui->taperEdit->setParamGrpPath(QByteArray("User parameter:BaseApp/History/PocketTaperAngle"));
     ui->taperEdit2->setEntryName(QByteArray("TaperAngle2"));
@@ -65,24 +67,23 @@ TaskPocketParameters::TaskPocketParameters(ViewProviderPocket *PocketView,QWidge
 
 TaskPocketParameters::~TaskPocketParameters() = default;
 
-void TaskPocketParameters::translateModeList(int index)
+void TaskPocketParameters::translateModeList(QComboBox* box, int index)
 {
-    ui->changeMode->clear();
-    ui->changeMode->addItem(tr("Dimension"));
-    ui->changeMode->addItem(tr("Through all"));
-    ui->changeMode->addItem(tr("To first"));
-    ui->changeMode->addItem(tr("Up to face"));
-    ui->changeMode->addItem(tr("Two dimensions"));
-    ui->changeMode->addItem(tr("Up to shape"));
-    ui->changeMode->setCurrentIndex(index);
+    box->clear();
+    box->addItem(tr("Dimension"));
+    box->addItem(tr("Through all"));
+    box->addItem(tr("To first"));
+    box->addItem(tr("Up to face"));
+    box->addItem(tr("Up to shape"));
+    box->setCurrentIndex(index);
 }
 
-void TaskPocketParameters::updateUI(int index)
+void TaskPocketParameters::updateUI(Sides side)
 {
     // update direction combobox
     fillDirectionCombo();
     // set and enable checkboxes
-    setCheckboxes(static_cast<Mode>(index), Type::Pocket);
+    setCheckboxes(Type::Pocket, side);
 }
 
 void TaskPocketParameters::onModeChanged(int index)
@@ -90,56 +91,78 @@ void TaskPocketParameters::onModeChanged(int index)
     auto pcPocket = getObject<PartDesign::Pocket>();
 
     switch (static_cast<Mode>(index)) {
-        case Mode::Dimension:
-            // Why? See below for "UpToFace"
-            if (oldLength < Precision::Confusion())
-                oldLength = 5.0;
-            pcPocket->Length.setValue(oldLength);
-            ui->lengthEdit->setValue(oldLength);
+        case Mode::Dimension: {
             pcPocket->Type.setValue("Length");
+
+            // Avoid error message
+            double L = ui->lengthEdit->value().getValue();
+            double L2 = static_cast<SidesMode>(getSidesMode()) == SidesMode::TwoSides
+                ? ui->lengthEdit->value().getValue()
+                : 0;
+            if (std::abs(L + L2) < Precision::Confusion()) {
+                ui->lengthEdit->setValue(5.0);
+            }
             break;
+        }
         case Mode::ThroughAll:
-            oldLength = pcPocket->Length.getValue();
             pcPocket->Type.setValue("ThroughAll");
             break;
         case Mode::ToFirst:
-            oldLength = pcPocket->Length.getValue();
             pcPocket->Type.setValue("UpToFirst");
             break;
         case Mode::ToFace:
-            // Note: ui->checkBoxReversed is purposely enabled because the selected face
-            // could be a circular one around the sketch
-            // Also note: Because of the code at the beginning of Pocket::execute() which is used
-            // to detect broken legacy parts, we must set the length to zero here!
-            oldLength = pcPocket->Length.getValue();
             pcPocket->Type.setValue("UpToFace");
-            pcPocket->Length.setValue(0.0);
-            ui->lengthEdit->setValue(0.0);
             if (ui->lineFaceName->text().isEmpty()) {
                 ui->buttonFace->setChecked(true);
-                handleLineFaceNameClick(); // sets placeholder text
+                handleLineFaceNameClick(ui->lineFaceName);  // sets placeholder text
             }
-            break;
-        case Mode::TwoDimensions:
-            oldLength = pcPocket->Length.getValue();
-            pcPocket->Type.setValue("TwoLengths");
             break;
         case Mode::ToShape:
             pcPocket->Type.setValue("UpToShape");
             break;
     }
 
-    updateUI(index);
+    updateUI(Sides::First);
+    recomputeFeature();
+}
+
+void TaskPocketParameters::onMode2Changed(int index)
+{
+    auto pcPocket = getObject<PartDesign::Pocket>();
+
+    switch (static_cast<Mode>(index)) {
+        case Mode::Dimension:
+            pcPocket->Type2.setValue("Length");
+            break;
+        case Mode::ThroughAll:
+            pcPocket->Type2.setValue("ThroughAll");
+            break;
+        case Mode::ToFirst:
+            pcPocket->Type2.setValue("UpToFirst");
+            break;
+        case Mode::ToFace:
+            // Note: ui->checkBoxReversed is purposely enabled because the selected face
+            // could be a circular one around the sketch
+            // Also note: Because of the code at the beginning of Pocket::execute() which is used
+            // to detect broken legacy parts, we must set the length to zero here!
+            pcPocket->Type2.setValue("UpToFace");
+            if (ui->lineFaceName2->text().isEmpty()) {
+                ui->buttonFace2->setChecked(true);
+                handleLineFaceNameClick(ui->lineFaceName2);  // sets placeholder text
+            }
+            break;
+        case Mode::ToShape:
+            pcPocket->Type2.setValue("UpToShape");
+            break;
+    }
+
+    updateUI(Sides::Second);
     recomputeFeature();
 }
 
 void TaskPocketParameters::apply()
 {
-    QString facename = QStringLiteral("None");
-    if (static_cast<Mode>(getMode()) == Mode::ToFace) {
-        facename = getFaceName();
-    }
-    applyParameters(facename);
+    applyParameters();
 }
 
 //**************************************************************************
