@@ -224,7 +224,7 @@ bool TaskDlgFeatureParameters::reject()
     }
 
     // roll back the done things which may delete the feature
-    Gui::Command::abortCommand();
+    document->abortTransaction();
 
     // if abort command deleted the object make the previous feature visible again
     if (weakptr.expired()) {

@@ -412,7 +412,12 @@ void Command::_invoke(int id, bool disablelog)
         // Because Transaction now captures ViewObject changes, auto named
         // transaction is disabled here to avoid too many unnecessary transactions.
         //
-        App::AutoTransaction committer(nullptr, true);
+        Gui::Document* activeDoc = getGuiApplication()->activeDocument();
+        if (activeDoc) {
+            currentTransactionID = openSelf(activeDoc->getDocument(), "", true);
+        }        
+
+        // App::AutoTransaction committer(nullptr, true);
 
         // set the application module type for the macro
         getGuiApplication()->macroManager()->setModule(sAppModule);
@@ -425,7 +430,6 @@ void Command::_invoke(int id, bool disablelog)
         // check if it really works NOW (could be a delay between click deactivation of the button)
         if (isActive()) {
             auto manager = getGuiApplication()->macroManager();
-            auto editDoc = getGuiApplication()->editDocument();
 
             if (!logdisabler) {
                 activated(id);
@@ -461,11 +465,17 @@ void Command::_invoke(int id, bool disablelog)
             }
 
             getMainWindow()->updateActions();
-
-            // If this command starts an editing, let the transaction persist
-            if (!editDoc && getGuiApplication()->editDocument())
-                committer.setEnable(false);
         }
+        // If this command starts an editing, let the transaction persist
+        // if (!editDoc && getGuiApplication()->editDocument())
+        //     committer.setEnable(false);
+        // If the document is in editing mode, let the transaction continue,
+        // otherwise commit
+        if (!getGuiApplication()->isInEdit(activeDoc)) {
+            commitSelf();
+        }
+        currentTransactionID = 0; // Get ready for next invoke
+    
     }
     catch (const Base::SystemExitException&) {
         throw;
@@ -629,27 +639,62 @@ void Command::openCommand(const char* sCmdName)
         sCmdName = "Command";
     App::GetApplication().setActiveTransaction(sCmdName);
 }
-void Command::openCommand(App::Document* doc, std::string name)
+int Command::openCommand(App::Document* doc, std::string name, bool tmpName, int tid)
 {
     if (name.empty()) {
         name = "Command";
     }
-    doc->setActiveTransaction(name);
+
+    if (doc == nullptr) {
+        FC_WARN("Doc is nullptr in Command::openCommand, opening a global transaction");
+        // App::GetApplication().setGlobalTransaction();
+        return 0;
+    } else {
+        return doc->setActiveTransaction(name, tmpName, tid);
+    }
 }
+int Command::openSelf(App::Document* doc, const std::string& name, bool tmpName, int tid)
+{
+    currentTransactionID = openCommand(doc, name, tmpName, tid);
+    return currentTransactionID;
+}
+void Command::renameSelf(const std::string& name)
+{
+    std::cout << "Rename transaction!: " << name << "\n";
+    App::GetApplication().setTransactionName(currentTransactionID, name, false);
+}
+
 void Command::commitCommand()
 {
     App::GetApplication().closeActiveTransaction();
 }
 void Command::commitCommand(int tid)
 {
-    App::GetApplication().closeActiveTransaction(false, tid);
+    if (tid != 0) {
+        App::GetApplication().closeActiveTransaction(false, tid);
+    }
+}
+void Command::commitSelf()
+{
+    commitCommand(currentTransactionID);
+    currentTransactionID = 0;
 }
 
 void Command::abortCommand()
 {
     App::GetApplication().closeActiveTransaction(true);
 }
-
+void Command::abortCommand(int tid)
+{
+    if (tid != 0) {
+        App::GetApplication().closeActiveTransaction(true, tid);
+    }
+}
+void Command::abortSelf()
+{
+    abortCommand(currentTransactionID);
+    currentTransactionID = 0;
+}
 bool Command::hasPendingCommand()
 {
     return !!App::GetApplication().getActiveTransaction();
