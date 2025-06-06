@@ -63,7 +63,7 @@
            <string>Distance from one layer of objects to the next layer of objects.</string>
           </property>
           <property name="unit" stdset="0">
-           <string notr="true"/>
+           <string notr="true">mm</string>
           </property>
           <property name="value">
            <double>200.000000000000000</double>
@@ -88,7 +88,7 @@ It cannot be zero.</string>
 It cannot be zero.</string>
           </property>
           <property name="unit" stdset="0">
-           <string notr="true"/>
+           <string notr="true">mm</string>
           </property>
           <property name="value">
            <double>100.000000000000000</double>
@@ -176,7 +176,7 @@ Change the direction of the axis itself in the property editor.</string>
               </sizepolicy>
              </property>
              <property name="unit" stdset="0">
-              <string notr="true"/>
+              <string notr="true">mm</string>
              </property>
             </widget>
            </item>
@@ -196,7 +196,7 @@ Change the direction of the axis itself in the property editor.</string>
               </sizepolicy>
              </property>
              <property name="unit" stdset="0">
-              <string notr="true"/>
+              <string notr="true">mm</string>
              </property>
             </widget>
            </item>
@@ -216,7 +216,7 @@ Change the direction of the axis itself in the property editor.</string>
               </sizepolicy>
              </property>
              <property name="unit" stdset="0">
-              <string notr="true"/>
+              <string notr="true">mm</string>
              </property>
             </widget>
            </item>

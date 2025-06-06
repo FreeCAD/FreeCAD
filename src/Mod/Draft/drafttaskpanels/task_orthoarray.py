@@ -78,67 +78,35 @@ class TaskPanelOrthoArray:
     """
 
     def __init__(self):
-        self.name = "Orthogonal array"
-        _log(translate("draft","Task panel:") + " {}".format(translate("draft","Orthogonal array")))
 
-        # The .ui file must be loaded into an attribute
-        # called `self.form` so that it is displayed in the task panel.
-        ui_file = ":/ui/TaskPanel_OrthoArray.ui"
-        self.form = Gui.PySideUic.loadUi(ui_file)
-
-        icon_name = "Draft_Array"
-        svg = ":/icons/" + icon_name
-        pix = QtGui.QPixmap(svg)
-        icon = QtGui.QIcon.fromTheme(icon_name, QtGui.QIcon(svg))
-        self.form.setWindowIcon(icon)
-        self.form.setWindowTitle(translate("draft","Orthogonal array"))
-
-        self.form.label_icon.setPixmap(pix.scaled(32, 32))
+        self.form = Gui.PySideUic.loadUi(":/ui/TaskPanel_OrthoArray.ui")
+        self.form.setWindowTitle(translate("draft", "Orthogonal array"))
+        self.form.setWindowIcon(QtGui.QIcon(":/icons/Draft_Array.svg"))
 
         # -------------------------------------------------------------------
-        # Default values for the internal function,
-        # and for the task panel interface
-        start_x = U.Quantity(100.0, App.Units.Length)
-        start_y = start_x
-        start_z = start_x
-        length_unit = start_x.getUserPreferred()[2]
-
-        self.v_x = App.Vector(start_x.Value, 0, 0)
-        self.v_y = App.Vector(0, start_y.Value, 0)
-        self.v_z = App.Vector(0, 0, start_z.Value)
-
-        self.form.input_X_x.setProperty('rawValue', self.v_x.x)
-        self.form.input_X_x.setProperty('unit', length_unit)
-        self.form.input_X_y.setProperty('rawValue', self.v_x.y)
-        self.form.input_X_y.setProperty('unit', length_unit)
-        self.form.input_X_z.setProperty('rawValue', self.v_x.z)
-        self.form.input_X_z.setProperty('unit', length_unit)
-
-        self.form.input_Y_x.setProperty('rawValue', self.v_y.x)
-        self.form.input_Y_x.setProperty('unit', length_unit)
-        self.form.input_Y_y.setProperty('rawValue', self.v_y.y)
-        self.form.input_Y_y.setProperty('unit', length_unit)
-        self.form.input_Y_z.setProperty('rawValue', self.v_y.z)
-        self.form.input_Y_z.setProperty('unit', length_unit)
-
-        self.form.input_Z_x.setProperty('rawValue', self.v_z.x)
-        self.form.input_Z_x.setProperty('unit', length_unit)
-        self.form.input_Z_y.setProperty('rawValue', self.v_z.y)
-        self.form.input_Z_y.setProperty('unit', length_unit)
-        self.form.input_Z_z.setProperty('rawValue', self.v_z.z)
-        self.form.input_Z_z.setProperty('unit', length_unit)
-
+        # Default values for the internal function, and for the task panel interface
+        start = 100
+        self.v_x = App.Vector(start, 0, 0)
+        self.v_y = App.Vector(0, start, 0)
+        self.v_z = App.Vector(0, 0, start)
         self.n_x = 2
         self.n_y = 2
         self.n_z = 1
-
-        self.form.spinbox_n_X.setValue(self.n_x)
-        self.form.spinbox_n_Y.setValue(self.n_y)
-        self.form.spinbox_n_Z.setValue(self.n_z)
-
         self.fuse = params.get_param("Draft_array_fuse")
         self.use_link = params.get_param("Draft_array_Link")
 
+        self.form.input_X_x.setProperty('rawValue', self.v_x.x)
+        self.form.input_X_y.setProperty('rawValue', self.v_x.y)
+        self.form.input_X_z.setProperty('rawValue', self.v_x.z)
+        self.form.input_Y_x.setProperty('rawValue', self.v_y.x)
+        self.form.input_Y_y.setProperty('rawValue', self.v_y.y)
+        self.form.input_Y_z.setProperty('rawValue', self.v_y.z)
+        self.form.input_Z_x.setProperty('rawValue', self.v_z.x)
+        self.form.input_Z_y.setProperty('rawValue', self.v_z.y)
+        self.form.input_Z_z.setProperty('rawValue', self.v_z.z)
+        self.form.spinbox_n_X.setValue(self.n_x)
+        self.form.spinbox_n_Y.setValue(self.n_y)
+        self.form.spinbox_n_Z.setValue(self.n_z)
         self.form.checkbox_fuse.setChecked(self.fuse)
         self.form.checkbox_link.setChecked(self.use_link)
         # -------------------------------------------------------------------
