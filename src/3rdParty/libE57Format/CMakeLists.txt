@@ -98,7 +98,7 @@ option( E57_WRITE_CRAZY_PACKET_MODE "Compile library to enable reader-stressing 
 #########################################################################################
 
 set( revision_id "${PROJECT_NAME}-${PROJECT_VERSION}-${${PROJECT_NAME}_BUILD_TAG}" )
-message( STATUS "[E57] Revison ID: ${revision_id}" )
+message( STATUS "[E57] Revision ID: ${revision_id}" )
 
 # Need to explicitly set the source files to add_library()
 if(${CMAKE_VERSION} VERSION_LESS "3.11.0")
