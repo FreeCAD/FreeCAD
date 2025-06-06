@@ -171,6 +171,12 @@ if ( WIN32 )
     endif()
 endif()
 
+# Suppress all warnings for this specific 3rd-party target
+target_compile_options(E57Format PRIVATE
+    $<$<CXX_COMPILER_ID:GNU,Clang>:-w>
+    $<$<CXX_COMPILER_ID:MSVC>:/w>
+)
+
 # Target Libraries
 target_link_libraries( E57Format PRIVATE XercesC::XercesC )
 
