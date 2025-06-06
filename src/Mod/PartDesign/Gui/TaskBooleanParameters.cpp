@@ -425,11 +425,11 @@ bool TaskDlgBooleanParameters::reject()
                 doc->setShow(body->getNameInDocument());
             }
         }
+        // roll back the done things
+        doc->abortCommand();
+        Gui::Command::doCommand(Gui::Command::Gui, "Gui.activeDocument().resetEdit()");
     }
 
-    // roll back the done things
-    Gui::Command::abortCommand();
-    Gui::Command::doCommand(Gui::Command::Gui, "Gui.activeDocument().resetEdit()");
 
 
     return true;
