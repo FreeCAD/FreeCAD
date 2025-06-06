@@ -40,6 +40,7 @@ class AssetOpenDialog(QFileDialog):
         parent=None,
     ):
         super().__init__(parent)
+        self.setDirectory(pathlib.Path.home().as_posix())
         self.asset_class = asset_class
         self.asset_manager = asset_manager
         self.serializers = list(serializers)
@@ -109,6 +110,7 @@ class AssetSaveDialog(QFileDialog):
         parent=None,
     ):
         super().__init__(parent)
+        self.setDirectory(pathlib.Path.home().as_posix())
         self.asset_class = asset_class
         self.serializers = list(serializers)
         self.setFileMode(QFileDialog.AnyFile)
