@@ -308,6 +308,12 @@ class JobCreate:
         Path.Log.track(path)
         return glob.glob(path + "/job_*.json")
 
+    def setUpType(self):
+        """setUpType() ... answer the type of the setup, either 'job' or 'resource'"""
+        jobTypes = PathJob.ObjectJob.propertyEnumerations(dataType="raw")["JobType"]
+        for text, data in jobTypes:
+            self.dialog.jobType.addItem(text, data)
+
     def getModels(self):
         models = []
 
@@ -331,6 +337,10 @@ class JobCreate:
     def getTemplate(self):
         """answer the file name of the template to be assigned"""
         return self.dialog.jobTemplate.itemData(self.dialog.jobTemplate.currentIndex())
+
+    def getType(self):
+        """answer the type of the job to be created"""
+        return self.dialog.jobType.itemData(self.dialog.jobType.currentIndex())
 
     def exec_(self):
         # ml: For some reason the callback has to be unregistered, otherwise there is a
