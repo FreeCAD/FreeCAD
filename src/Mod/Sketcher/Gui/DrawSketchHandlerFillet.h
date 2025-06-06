@@ -477,15 +477,18 @@ void DSHFilletController::adaptDrawingToCheckboxChange(int checkboxindex, bool v
 
 DrawSketchHandlerFillet::HintTable DrawSketchHandlerFillet::getFilletHintTable()
 {
-    return {{SelectMode::SeekFirst,
-             {{QObject::tr("%1 pick first edge or vertex", "Sketcher Fillet/Chamfer: hint"),
-               {Gui::InputHint::UserInput::MouseLeft}}}},
-            {SelectMode::SeekSecond,
-             {{QObject::tr("%1 pick second edge", "Sketcher Fillet/Chamfer: hint"),
-               {Gui::InputHint::UserInput::MouseLeft}}}},
-            {SelectMode::End,
-             {{QObject::tr("%1 create fillet", "Sketcher Fillet/Chamfer: hint"),
-               {Gui::InputHint::UserInput::MouseLeft}}}}};
+    using enum Gui::InputHint::UserInput;
+
+    return {
+        {.state = SelectMode::SeekFirst,
+         .hints = {{QObject::tr("%1 pick first edge or vertex", "Sketcher Fillet/Chamfer: hint"),
+                    {MouseLeft}}}},
+        {.state = SelectMode::SeekSecond,
+         .hints = {{QObject::tr("%1 pick second edge", "Sketcher Fillet/Chamfer: hint"),
+                    {MouseLeft}}}},
+        {.state = SelectMode::End,
+         .hints = {
+             {QObject::tr("%1 create fillet", "Sketcher Fillet/Chamfer: hint"), {MouseLeft}}}}};
 }
 
 std::list<Gui::InputHint> DrawSketchHandlerFillet::lookupFilletHints(SelectMode state)
