@@ -22,8 +22,8 @@
  **************************************************************************/
 
 
-#ifndef GUI_SIEMENSNXSTYLE_H
-#define GUI_SIEMENSNXSTYLE_H
+#ifndef GUI_SIEMENSNXNAVIGATIONSTYLE_H
+#define GUI_SIEMENSNXNAVIGATIONSTYLE_H
 
 #include <Gui/Navigation/NavigationStateChart.h>
 
@@ -31,14 +31,14 @@
 namespace Gui
 {
 
-class GuiExport SiemensNXStyle : public NavigationStateChart {
+class GuiExport SiemensNXNavigationStyle : public NavigationStateChart {
     using inherited = NavigationStateChart;
 
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
-    SiemensNXStyle();
-    ~SiemensNXStyle() override;
+    SiemensNXNavigationStyle();
+    ~SiemensNXNavigationStyle() override;
     const char* mouseButtons(ViewerMode mode) override;
     std::string userFriendlyName() const override;
 
@@ -60,4 +60,4 @@ private:
 }  // namespace Gui
 // NOLINTEND(cppcoreguidelines-avoid*, readability-avoid-const-params-in-decls)
 
-#endif  // GUI_SIEMENSNXSTYLE_H
+#endif  // GUI_SIEMENSNXNAVIGATIONSTYLE_H

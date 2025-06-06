@@ -32,7 +32,7 @@
 #include <boost/statechart/state.hpp>
 
 #include "Camera.h"
-#include "SiemensNXStyle.h"
+#include "SiemensNXNavigationStyle.h"
 #include "View3DInventorViewer.h"
 
 // NOLINTBEGIN(cppcoreguidelines-pro-type-static-cast-downcast,
@@ -41,7 +41,7 @@
 using namespace Gui;
 namespace sc = boost::statechart;
 using SC = NavigationStateChart;
-using NS = SiemensNXStyle;
+using NS = SiemensNXNavigationStyle;
 
 struct NS::NaviMachine: public sc::state_machine<NS::NaviMachine, NS::IdleState>
 {
@@ -396,20 +396,20 @@ struct NS::SelectionState: public sc::state<NS::SelectionState, NS::NaviMachine>
 
 // ----------------------------------------------------------------------------------
 
-/* TRANSLATOR Gui::SiemensNXStyle */
+/* TRANSLATOR Gui::SiemensNXNavigationStyle */
 
-TYPESYSTEM_SOURCE(Gui::SiemensNXStyle, Gui::UserNavigationStyle)
+TYPESYSTEM_SOURCE(Gui::SiemensNXNavigationStyle, Gui::UserNavigationStyle)
 
-SiemensNXStyle::SiemensNXStyle()
+SiemensNXNavigationStyle::SiemensNXNavigationStyle()
 {
     naviMachine.reset(new NaviStateMachineT(new NaviMachine(*this)));
 }
 
-SiemensNXStyle::~SiemensNXStyle()
+SiemensNXNavigationStyle::~SiemensNXNavigationStyle()
 {
 }
 
-const char* SiemensNXStyle::mouseButtons(ViewerMode mode)
+const char* SiemensNXNavigationStyle::mouseButtons(ViewerMode mode)
 {
     switch (mode) {
     case NavigationStyle::SELECTION:
@@ -425,12 +425,12 @@ const char* SiemensNXStyle::mouseButtons(ViewerMode mode)
     }
 }
 
-std::string SiemensNXStyle::userFriendlyName() const
+std::string SiemensNXNavigationStyle::userFriendlyName() const
 {
     return {"Siemens NX"};
 }
 
-SbBool SiemensNXStyle::processKeyboardEvent(const SoKeyboardEvent * const event)
+SbBool SiemensNXNavigationStyle::processKeyboardEvent(const SoKeyboardEvent* const event)
 {
     // See https://forum.freecad.org/viewtopic.php?t=96459
     // Isometric view: Home key button

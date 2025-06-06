@@ -760,7 +760,7 @@ a8.setObjectName("Indicator_NavigationRevit")
 
 a9 = QtGui.QAction(gStyle)
 a9.setText("Siemens NX  ")
-a9.setData("Gui::SiemensNXStyle")
+a9.setData("Gui::SiemensNXNavigationStyle")
 a9.setObjectName("Indicator_NavigationSiemensNX")
 
 a10 = QtGui.QAction(gStyle)
