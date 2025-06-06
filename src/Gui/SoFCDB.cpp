@@ -190,18 +190,18 @@ void Gui::SoFCDB::init()
     NavigationStyle                 ::init();
     UserNavigationStyle             ::init();
     NavigationStateChart            ::init();
-    InventorNavigationStyle         ::init();
-    CADNavigationStyle              ::init();
-    RevitNavigationStyle            ::init();
     BlenderNavigationStyle          ::init();
-    SolidWorksNavigationStyle       ::init();
-    MayaGestureNavigationStyle      ::init();
-    TouchpadNavigationStyle         ::init();
+    CADNavigationStyle              ::init();
     GestureNavigationStyle          ::init();
+    MayaGestureNavigationStyle      ::init();
     OpenCascadeNavigationStyle      ::init();
+    InventorNavigationStyle         ::init();
     OpenSCADNavigationStyle         ::init();
-    TinkerCADNavigationStyle        ::init();
+    RevitNavigationStyle            ::init();
     SiemensNXStyle                  ::init();
+    SolidWorksNavigationStyle       ::init();
+    TinkerCADNavigationStyle        ::init();
+    TouchpadNavigationStyle         ::init();
 
     GLGraphicsItem                  ::init();
     GLFlagWindow                    ::init();
