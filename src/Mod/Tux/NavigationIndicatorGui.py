@@ -74,9 +74,10 @@ def RePopulateIcons():
     a6.setIcon(QtGui.QIcon(":/icons/NavigationOpenInventor_" + StyleSheetType + ".svg"))
     a7.setIcon(QtGui.QIcon(":/icons/NavigationOpenSCAD_" + StyleSheetType + ".svg"))
     a8.setIcon(QtGui.QIcon(":/icons/NavigationRevit_" + StyleSheetType + ".svg"))
-    a9.setIcon(QtGui.QIcon(":/icons/NavigationSolidWorks_" + StyleSheetType + ".svg"))
-    a10.setIcon(QtGui.QIcon(":/icons/NavigationTinkerCAD_" + StyleSheetType + ".svg"))
-    a11.setIcon(QtGui.QIcon(":/icons/NavigationTouchpad_" + StyleSheetType + ".svg"))
+    a9.setIcon(QtGui.QIcon(":/icons/NavigationSiemensNX_" + StyleSheetType + ".svg"))
+    a10.setIcon(QtGui.QIcon(":/icons/NavigationSolidWorks_" + StyleSheetType + ".svg"))
+    a11.setIcon(QtGui.QIcon(":/icons/NavigationTinkerCAD_" + StyleSheetType + ".svg"))
+    a12.setIcon(QtGui.QIcon(":/icons/NavigationTouchpad_" + StyleSheetType + ".svg"))
 
 
 def retranslateUi():
@@ -474,6 +475,48 @@ def retranslateUi():
 
     global t9
     t9 = (
+        "<p align='center'><b>Siemens NX</b> "
+        + text06
+        + """</p>
+    <table>
+     <tr>
+      <th><small>"""
+        + text01
+        + """</small></th>
+      <th><small>"""
+        + text02
+        + """</small></th>
+      <th><small>"""
+        + text02
+        + """</small></th>
+      <th><small>"""
+        + text03
+        + """</small></th>
+      <th><small>"""
+        + text04
+        + """</small></th>
+        <th><small>"""
+        + text04
+        + """</small></th>
+     </tr>
+     <tr>
+      <td align='center'><img src=':/icons/Navigation_Mouse_Left.svg'></td>
+      <td align='center'><img src=':/icons/Navigation_Mouse_Scroll.svg'></td>
+      <td align='center'><img src=':/icons/Navigation_Mouse_MiddleLeft.svg'></td>
+      <td align='center'><img src=':/icons/Navigation_Mouse_Middle.svg'></td>
+      <td align='center'><img src=':/icons/Navigation_Mouse_MiddleRight.svg'></td>
+      <td align='center'><img src=':/icons/Navigation_Mouse_ShiftMiddle.svg'></td>
+     </tr>
+    </table>
+    <b>"""
+        + text08
+        + ":</b> "
+        + text10
+        + "</small></p>"
+    )
+
+    global t10
+    t10 = (
         "<p align='center'><b>SolidWorks</b> "
         + text06
         + """</p>
@@ -510,8 +553,8 @@ def retranslateUi():
         + "</small></p>"
     )
 
-    global t10
-    t10 = (
+    global t11
+    t11 = (
         "<p align='center'><b>TinkerCAD</b> "
         + text06
         + """</p>
@@ -539,8 +582,8 @@ def retranslateUi():
     </table>"""
     )
 
-    global t11
-    t11 = (
+    global t12
+    t12 = (
         "<p align='center'><b>Touchpad</b> "
         + text06
         + """</p>
@@ -716,19 +759,24 @@ a8.setData("Gui::RevitNavigationStyle")
 a8.setObjectName("Indicator_NavigationRevit")
 
 a9 = QtGui.QAction(gStyle)
-a9.setText("SolidWorks  ")
-a9.setData("Gui::SolidWorksNavigationStyle")
-a9.setObjectName("Indicator_NavigationSolidWorks")
+a9.setText("Siemens NX  ")
+a9.setData("Gui::SiemensNXNavigationStyle")
+a9.setObjectName("Indicator_NavigationSiemensNX")
 
 a10 = QtGui.QAction(gStyle)
-a10.setText("TinkerCAD  ")
-a10.setData("Gui::TinkerCADNavigationStyle")
-a10.setObjectName("Indicator_NavigationTinkerCAD")
+a10.setText("SolidWorks  ")
+a10.setData("Gui::SolidWorksNavigationStyle")
+a10.setObjectName("Indicator_NavigationSolidWorks")
 
 a11 = QtGui.QAction(gStyle)
-a11.setText("Touchpad  ")
-a11.setData("Gui::TouchpadNavigationStyle")
-a11.setObjectName("Indicator_NavigationTouchpad")
+a11.setText("TinkerCAD  ")
+a11.setData("Gui::TinkerCADNavigationStyle")
+a11.setObjectName("Indicator_NavigationTinkerCAD")
+
+a12 = QtGui.QAction(gStyle)
+a12.setText("Touchpad  ")
+a12.setData("Gui::TouchpadNavigationStyle")
+a12.setObjectName("Indicator_NavigationTouchpad")
 
 RePopulateIcons()
 
@@ -746,6 +794,7 @@ menu.addAction(a8)
 menu.addAction(a9)
 menu.addAction(a10)
 menu.addAction(a11)
+menu.addAction(a12)
 
 pView.Attach(indicator)
 
@@ -787,6 +836,7 @@ def onTooltip():
         a9.setToolTip(t9)
         a10.setToolTip(t10)
         a11.setToolTip(t11)
+        a12.setToolTip(t12)
         p.SetBool("Tooltip", 1)
     else:
         for i in gStyle.actions():

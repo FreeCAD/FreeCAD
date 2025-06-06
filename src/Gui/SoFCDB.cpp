@@ -53,6 +53,7 @@
 #include "Inventor/Draggers/SoTransformDragger.h"
 #include "Navigation/GestureNavigationStyle.h"
 #include "Navigation/NavigationStyle.h"
+#include "Navigation/SiemensNXNavigationStyle.h"
 #include "SelectionObject.h"
 #include "SoDevicePixelRatioElement.h"
 #include "SoFCColorBar.h"
@@ -188,17 +189,19 @@ void Gui::SoFCDB::init()
 
     NavigationStyle                 ::init();
     UserNavigationStyle             ::init();
-    InventorNavigationStyle         ::init();
-    CADNavigationStyle              ::init();
-    RevitNavigationStyle            ::init();
+    NavigationStateChart            ::init();
     BlenderNavigationStyle          ::init();
-    SolidWorksNavigationStyle       ::init();
-    MayaGestureNavigationStyle      ::init();
-    TouchpadNavigationStyle         ::init();
+    CADNavigationStyle              ::init();
     GestureNavigationStyle          ::init();
+    MayaGestureNavigationStyle      ::init();
     OpenCascadeNavigationStyle      ::init();
+    InventorNavigationStyle         ::init();
     OpenSCADNavigationStyle         ::init();
+    RevitNavigationStyle            ::init();
+    SiemensNXNavigationStyle        ::init();
+    SolidWorksNavigationStyle       ::init();
     TinkerCADNavigationStyle        ::init();
+    TouchpadNavigationStyle         ::init();
 
     GLGraphicsItem                  ::init();
     GLFlagWindow                    ::init();

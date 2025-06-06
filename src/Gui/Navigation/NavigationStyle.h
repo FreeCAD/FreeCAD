@@ -51,6 +51,7 @@ class SoCamera;
 class SoSensor;
 class SbSphereSheetProjector;
 
+// NOLINTBEGIN(cppcoreguidelines-avoid*, readability-avoid-const-params-in-decls)
 namespace Gui {
 
 class View3DInventorViewer;
@@ -490,6 +491,7 @@ protected:
 };
 
 } // namespace Gui
+// NOLINTEND(cppcoreguidelines-avoid*, readability-avoid-const-params-in-decls)
 
 Q_DECLARE_OPERATORS_FOR_FLAGS(Gui::NavigationStyle::RotationCenterModes)
 
