@@ -102,9 +102,11 @@ jobs:
 
         # Add exclusions
         config: |
+          paths-ignore:
+            - src/Mod/Import/App/SCL_output/**
           query-filters:
-          - exclude:
-              id: py/file-not-closed
+            - exclude:
+                id: py/file-not-closed
 
     # If the analyze step fails for one of the languages you are analyzing with
     # "We were unable to automatically build your code", modify the matrix above
