@@ -389,7 +389,7 @@ void StdCmdFreezeViews::activated(int iMsg)
         for (QList<QAction*>::Iterator it = acts.begin()+offset; it != acts.end(); ++it, index++) {
             if (!(*it)->isVisible()) {
                 savedViews++;
-                QString viewnr = QString(QObject::tr("Restore view &%1")).arg(index);
+                QString viewnr = QObject::tr("Restore view &%1").arg(index);
                 (*it)->setText(viewnr);
                 (*it)->setToolTip(QString::fromLatin1(ppReturn));
                 (*it)->setVisible(true);
@@ -528,7 +528,7 @@ void StdCmdFreezeViews::onRestoreViews()
             separator->setVisible(true);
         for(int i=0; i<numRestoredViews; i++) {
             QString setting = cameras[i];
-            QString viewnr = QString(QObject::tr("Restore view &%1")).arg(i+1);
+            QString viewnr = QObject::tr("Restore view &%1").arg(i+1);
             acts[i+offset]->setText(viewnr);
             acts[i+offset]->setToolTip(setting);
             acts[i+offset]->setVisible(true);
@@ -575,7 +575,7 @@ void StdCmdFreezeViews::languageChange()
     int index=1;
     for (QList<QAction*>::Iterator it = acts.begin()+5; it != acts.end(); ++it, index++) {
         if ((*it)->isVisible()) {
-            QString viewnr = QString(QObject::tr("Restore view &%1")).arg(index);
+            QString viewnr = QObject::tr("Restore view &%1").arg(index);
             (*it)->setText(viewnr);
         }
     }

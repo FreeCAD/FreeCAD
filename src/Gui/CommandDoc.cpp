@@ -380,7 +380,7 @@ QString createDefaultExportBasename()
                 }
                 else {
                     FC_WARN("When parsing default export filename format string, %"
-                        << QString(formatChar).toStdString()
+                        << formatChar.toLatin1()
                         << " is not a known format string.");
                 }
             }
