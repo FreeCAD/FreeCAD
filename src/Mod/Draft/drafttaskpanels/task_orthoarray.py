@@ -29,7 +29,7 @@
 # @{
 import PySide.QtGui as QtGui
 from PySide.QtCore import QT_TRANSLATE_NOOP
-from PySide import QtGui, QtCore, QtWidgets
+from PySide import QtWidgets
 import FreeCAD as App
 import FreeCADGui as Gui
 import Draft_rc  # include resources, icons, ui files
@@ -93,14 +93,12 @@ class TaskPanelOrthoArray:
         self.form.setWindowIcon(icon)
         self.form.setWindowTitle(translate("draft","Orthogonal array"))
 
-        self.form.label_icon.setPixmap(pix.scaled(32, 32))
-
         # -------------------------------------------------------------------
         # Default values for the internal function,
         # and for the task panel interface
-        start_x = params.get_param("X_interval", "Mod/Draft/OrthoArrayLinearMode")
-        start_y = params.get_param("Y_interval", "Mod/Draft/OrthoArrayLinearMode")
-        start_z = params.get_param("Z_interval", "Mod/Draft/OrthoArrayLinearMode")
+        start_x = params.get_param("XInterval", "Mod/Draft/OrthoArrayLinearMode")
+        start_y = params.get_param("YInterval", "Mod/Draft/OrthoArrayLinearMode")
+        start_z = params.get_param("ZInterval", "Mod/Draft/OrthoArrayLinearMode")
 
         length_unit = App.Units.Quantity(0.0, App.Units.Length).getUserPreferred()[2]
 
@@ -129,9 +127,9 @@ class TaskPanelOrthoArray:
         self.form.input_Z_z.setProperty('rawValue', self.v_z.z)
         self.form.input_Z_z.setProperty('unit', length_unit)
 
-        self.n_x = params.get_param("X_NumOfElements", "Mod/Draft/OrthoArrayLinearMode")
-        self.n_y = params.get_param("Y_NumOfElements", "Mod/Draft/OrthoArrayLinearMode")
-        self.n_z = params.get_param("Z_NumOfElements", "Mod/Draft/OrthoArrayLinearMode")
+        self.n_x = params.get_param("XNumOfElements", "Mod/Draft/OrthoArrayLinearMode")
+        self.n_y = params.get_param("YNumOfElements", "Mod/Draft/OrthoArrayLinearMode")
+        self.n_z = params.get_param("ZNumOfElements", "Mod/Draft/OrthoArrayLinearMode")
 
         self.form.spinbox_n_X.setValue(self.n_x)
         self.form.spinbox_n_Y.setValue(self.n_y)
@@ -148,20 +146,13 @@ class TaskPanelOrthoArray:
         self.linear_mode = params.get_param("LinearModeOn", "Mod/Draft/OrthoArrayLinearMode")
         self.active_axis = params.get_param("AxisSelected", "Mod/Draft/OrthoArrayLinearMode")
 
-        # Check if the UI elements exist before trying to access them
-        self.has_axis_ui = hasattr(self.form, 'button_linear_mode') and \
-                          hasattr(self.form, 'checkbox_x_axis') and \
-                          hasattr(self.form, 'checkbox_y_axis') and \
-                          hasattr(self.form, 'checkbox_z_axis')
-
-
-        # Hide the axis checkboxes initially (they're only visible in Linear mode)
-        if self.has_axis_ui:
-            self.toggle_axis_checkboxes(False)
-
+        # Hide the axis radiobuttons initially (they're only visible in Linear mode)
+        self.toggle_axis_radiobuttons(False)
         if self.linear_mode:
             self.form.button_linear_mode.setChecked(True)
             self.toggle_linear_mode()
+        else:
+            self.form.group_linearmode.hide()
         # -------------------------------------------------------------------
 
         # Some objects need to be selected before we can execute the function.
@@ -188,11 +179,10 @@ class TaskPanelOrthoArray:
         self.form.checkbox_link.stateChanged.connect(self.set_link)
 
         # Linear mode callbacks - only set up if the UI elements exist
-        if self.has_axis_ui:
-            self.form.button_linear_mode.clicked.connect(self.toggle_linear_mode)
-            self.form.checkbox_x_axis.clicked.connect(lambda: self.set_active_axis("X"))
-            self.form.checkbox_y_axis.clicked.connect(lambda: self.set_active_axis("Y"))
-            self.form.checkbox_z_axis.clicked.connect(lambda: self.set_active_axis("Z"))
+        self.form.button_linear_mode.clicked.connect(self.toggle_linear_mode)
+        self.form.radiobutton_x_axis.clicked.connect(lambda: self.set_active_axis("X"))
+        self.form.radiobutton_y_axis.clicked.connect(lambda: self.set_active_axis("Y"))
+        self.form.radiobutton_z_axis.clicked.connect(lambda: self.set_active_axis("Z"))
 
 
     def accept(self):
@@ -221,9 +211,9 @@ class TaskPanelOrthoArray:
             if values is not None:
                 interval, num_elements = values
                 # Set interval
-                params.set_param(f"{self.active_axis}_interval", interval, "Mod/Draft/OrthoArrayLinearMode")
+                params.set_param(f"{self.active_axis}Interval", interval, "Mod/Draft/OrthoArrayLinearMode")
                 # Set number of elements
-                params.set_param(f"{self.active_axis}_NumOfElements", num_elements, "Mod/Draft/OrthoArrayLinearMode")
+                params.set_param(f"{self.active_axis}NumOfElements", num_elements, "Mod/Draft/OrthoArrayLinearMode")
 
             self.create_object()
             # The internal function already displays messages
@@ -254,10 +244,10 @@ class TaskPanelOrthoArray:
             return False
 
         # we should not ever do this but maybe a sanity check here?
-        if self.linear_mode and self.has_axis_ui:
-            if not (self.form.checkbox_x_axis.isChecked() or 
-                    self.form.checkbox_y_axis.isChecked() or 
-                    self.form.checkbox_z_axis.isChecked()):
+        if self.linear_mode:
+            if not (self.form.radiobutton_x_axis.isChecked() or 
+                    self.form.radiobutton_y_axis.isChecked() or 
+                    self.form.radiobutton_z_axis.isChecked()):
                 _err(translate("draft","In Linear mode, at least one axis must be selected."))
                 return False
 
@@ -286,16 +276,17 @@ class TaskPanelOrthoArray:
 
         # clear this stuff out to be sure we don't preserve something
         # from 3-axis mode
-        if self.linear_mode and self.has_axis_ui:
-            if not self.form.checkbox_x_axis.isChecked():
+        if self.linear_mode:
+            start_val = App.Units.Quantity(100.0, App.Units.Length).Value
+            if not self.form.radiobutton_x_axis.isChecked():
                 self.n_x = 1
-                self.v_x = App.Vector(0, 0, 0)
-            if not self.form.checkbox_y_axis.isChecked():
+                self.v_x = App.Vector(start_val, 0, 0)
+            if not self.form.radiobutton_y_axis.isChecked():
                 self.n_y = 1
-                self.v_y = App.Vector(0, 0, 0)
-            if not self.form.checkbox_z_axis.isChecked():
+                self.v_y = App.Vector(0, start_val, 0)
+            if not self.form.radiobutton_z_axis.isChecked():
                 self.n_z = 1
-                self.v_z = App.Vector(0, 0, 0)
+                self.v_z = App.Vector(0, 0, start_val)
 
         # This creates the object immediately
         # obj = Draft.make_ortho_array(sel_obj,
@@ -421,9 +412,6 @@ class TaskPanelOrthoArray:
             sel_obj = self.selection[0]
         _msg(translate("draft","Object:") + " {}".format(sel_obj.Label))
 
-        if self.linear_mode and self.has_axis_ui:
-            _msg(translate("draft","Using Linear mode"))
-
         _msg(translate("draft","Number of X elements:") + " {}".format(self.n_x))
         _msg(translate("draft","Interval X:")
              + " ({0}, {1}, {2})".format(self.v_x.x,
@@ -449,130 +437,151 @@ class TaskPanelOrthoArray:
     def toggle_linear_mode(self):
         """Toggle between Linear mode and Orthogonal mode."""
         self.linear_mode = self.form.button_linear_mode.isChecked()
-        self.toggle_axis_checkboxes(self.linear_mode)
+        self.toggle_axis_radiobuttons(self.linear_mode)
         params.set_param("LinearModeOn" , self.linear_mode, "Mod/Draft/OrthoArrayLinearMode")
 
         if self.linear_mode:
-            _msg(translate("draft","Switched to Linear mode"))
+            self.form.button_linear_mode.setText(translate("draft", "Switch to ortho mode"))
+            
+            # check radiobutton based on current cfg
             self.update_axis_ui()
-            self.update_interval_visibility()
-        else:
-            # toggle everything back on
-            self.form.setWindowTitle(translate("draft","Orthogonal array"))
-            _msg(translate("draft","Switched to Orthogonal mode"))
-            self.reset_axis_ui()
-            self.show_all_intervals()
 
-    def toggle_axis_checkboxes(self, show):
-        """Show or hide the axis checkboxes."""
-        if self.has_axis_ui:
-            for checkbox in [self.form.checkbox_x_axis,
-                            self.form.checkbox_y_axis,
-                            self.form.checkbox_z_axis]:
-                checkbox.setVisible(show)
+            # For linear mode we're hiding all group boxes for X, Y, Z axis and the one
+            # with number of elements as we will reparent those spinboxes under newly
+            # created group
+            self._set_orthomode_groups_visibility(hide=True)
+            self._reparent_groups(mode="Linear")
+
+            # Set the appropriate title for the group (we flip it back and forth after changing mode)
+            # and show the group
+            self.form.group_linearmode.show()
+            self.form.group_linearmode.setTitle(f"{self.active_axis} Axis")
+        else: # ortho mode
+            self.form.button_linear_mode.setText(translate("draft", "Switch to linear mode"))
+
+            # For ortho mode we're showing back default groupboxes and we reparent everything
+            # back to them, as we reuse spinboxes in both modes
+            self._set_orthomode_groups_visibility(hide=False)
+            self._reparent_groups(mode="Ortho")
+
+            self.form.group_linearmode.hide()
+
+    def toggle_axis_radiobuttons(self, show):
+        """Show or hide the axis radio buttons."""
+        for radiobutton in [self.form.radiobutton_x_axis,
+                        self.form.radiobutton_y_axis,
+                        self.form.radiobutton_z_axis]:
+            radiobutton.setVisible(show)
 
     def set_active_axis(self, axis):
-        """Set the active axis when a checkbox is changed."""
-        if self.linear_mode and self.has_axis_ui:
-            # get current checkbox that was supposed to have state changed
-            checkbox = getattr(self.form, f"checkbox_{axis.lower()}_axis")
+        """Set the active axis when a radio button is changed."""
+        if self.linear_mode:
+            # get current radiobutton that was supposed to have state changed
+            radiobutton = getattr(self.form, f"radiobutton_{axis.lower()}_axis")
 
-            # If this is the currently active axis and the checkbox is being unchecked,
-            # prevent unchecking by setting it back to checked
-            if axis == self.active_axis and not checkbox.isChecked():
-                checkbox.blockSignals(True)
-                checkbox.setChecked(True)
-                checkbox.blockSignals(False)
-                return
-
-            # If we're checking a different checkbox than the current active axis
-            if checkbox.isChecked() and axis != self.active_axis:
+            # If we're checking a different radio button than the current active axis
+            if radiobutton.isChecked() and axis != self.active_axis:
                 self.active_axis = axis
                 params.set_param("AxisSelected", self.active_axis, "Mod/Draft/OrthoArrayLinearMode")
+                self._setup_linear_mode_layout()
+                self.form.group_linearmode.setTitle(f"{self.active_axis} Axis")
 
-                # Uncheck all other checkboxes
-                for other_axis in ["X", "Y", "Z"]:
-                    if other_axis != axis:
-                        other_checkbox = getattr(self.form, f"checkbox_{other_axis.lower()}_axis")
-                        other_checkbox.blockSignals(True)
-                        other_checkbox.setChecked(False)
-                        other_checkbox.blockSignals(False)
-
-                # update visibility of intervals based on axis
-                self.update_interval_visibility()
 
     def update_axis_ui(self):
         """Update the UI to reflect the current axis selection."""
         # Make sure only one axis is selected
-        if self.has_axis_ui:
-            self.form.checkbox_x_axis.setChecked(self.active_axis == "X")
-            self.form.checkbox_y_axis.setChecked(self.active_axis == "Y")
-            self.form.checkbox_z_axis.setChecked(self.active_axis == "Z")
+        self.form.radiobutton_x_axis.setChecked(self.active_axis == "X")
+        self.form.radiobutton_y_axis.setChecked(self.active_axis == "Y")
+        self.form.radiobutton_z_axis.setChecked(self.active_axis == "Z")
 
-    def reset_axis_ui(self):
-        """Reset the UI to Orthogonal mode."""
-        # Hide the axis checkboxes
-        if self.has_axis_ui:
-            self.toggle_axis_checkboxes(False)
+    def _get_axis_widgets(self, axis):
+        """Get all widgets for a specific axis."""
+        return {
+            'spinbox_elements': getattr(self.form, f"spinbox_n_{axis}", None),
+            'spinbox_interval': getattr(self.form, f"input_{axis}_{axis.lower()}", None),
+            'button_reset': getattr(self.form, f"button_reset_{axis}", None)
+        }
 
-    def _set_intervals_visibility(self, show_all=False):
+    def _clear_linear_mode_layout(self):
+        """Clear all widgets from the linear mode layout."""
+        group_layout = self.form.group_linearmode.layout()
+
+        # Remove all items from the layout
+        while group_layout.count():
+            item = group_layout.takeAt(0)
+            if item.widget():
+                item.widget().setParent(None)
+
+    def _setup_linear_mode_layout(self):
+        """Set up the Linear mode layout with widgets for the active axis."""
+        # Clear existing layout first
+        self._clear_linear_mode_layout()
+
+        group_layout = self.form.group_linearmode.layout()
+
+        # Create labels
+        label_elements = QtWidgets.QLabel(translate("draft", "Number of elements"))
+        label_interval = QtWidgets.QLabel(translate("draft", "Interval"))
+
+        # Get widgets for active axis
+        widgets = self._get_axis_widgets(self.active_axis)
+
+        # Add widgets to layout
+        widget_pairs = [
+            (label_elements, widgets['spinbox_elements']),
+            (label_interval, widgets['spinbox_interval'])
+        ]
+
+        for row_index, (label, widget) in enumerate(widget_pairs):
+            label.setParent(self.form.group_linearmode)
+            widget.setParent(self.form.group_linearmode)
+            group_layout.addWidget(label, row_index, 0)
+            group_layout.addWidget(widget, row_index, 1)
+
+        # Add reset button spanning both columns
+        widgets['button_reset'].setParent(self.form.group_linearmode)
+        group_layout.addWidget(widgets['button_reset'], 2, 0, 1, 2)
+
+    def _restore_axis_to_ortho_layout(self, axis, row_index):
+        """Restore widgets for a specific axis back to their original Ortho layout positions."""
+        widgets = self._get_axis_widgets(axis)
+
+        # Restore spinbox elements to grid layout
+        grid_number_layout = self.form.findChild(QtWidgets.QGridLayout, "grid_number")
+        grid_number_layout.addWidget(widgets['spinbox_elements'], row_index, 1)
+
+        # Restore interval input to its axis-specific inner grid layout
+        inner_grid_layout = self.form.findChild(QtWidgets.QGridLayout, f"grid_{axis}")
+        inner_grid_layout.addWidget(widgets['spinbox_interval'], row_index, 1)
+
+        # Restore reset button to its axis group
+        group_box = self.form.findChild(QtWidgets.QGroupBox, f"group_{axis}")
+        group_axis_layout = group_box.layout()
+        group_axis_layout.addWidget(widgets['button_reset'], 1, 0)
+
+    def _setup_ortho_mode_layout(self):
+        """Restore all widgets back to their original Ortho mode layout positions."""
+        for row_index, axis in enumerate(["X", "Y", "Z"]):
+            self._restore_axis_to_ortho_layout(axis, row_index)
+
+    def _reparent_groups(self, mode="Linear"):
+        """Reparent widgets between Linear and Ortho mode layouts."""
+        if mode == "Linear":
+            self._setup_linear_mode_layout()
+        else:
+            self._setup_ortho_mode_layout()
+
+    def _set_orthomode_groups_visibility(self, hide=True):
+        """Change visibility of ortho mode groups"""
         for axis in ["X", "Y", "Z"]:
-            for coord in ["x", "y", "z"]:
-                if show_all:
-                    is_visible = True
-                else:
-                    is_visible = (self.active_axis == axis and self.active_axis.lower() == coord)
-                label_name = f"label_{axis}_{coord}"
-                input_name = f"input_{axis}_{coord}"
-
-                label_widget = self.form.findChild(QtWidgets.QWidget, label_name)
-                input_widget = self.form.findChild(QtWidgets.QWidget, input_name)
-                if label_widget:
-                    label_widget.setVisible(is_visible)
-                if input_widget:
-                    input_widget.setVisible(is_visible)
-
-    def update_interval_visibility(self):
-        """Show only the interval inputs for the selected axis in Linear mode."""
-        if self.linear_mode and hasattr(self.form, 'group_X') and hasattr(self.form, 'group_Y') and hasattr(self.form, 'group_Z'):
-            self.form.group_X.setVisible(self.active_axis == "X")
-            self.form.group_Y.setVisible(self.active_axis == "Y")
-            self.form.group_Z.setVisible(self.active_axis == "Z")
-
-            self._set_intervals_visibility()
-
-            if hasattr(self.form, 'label_n_X') and hasattr(self.form, 'spinbox_n_X'):
-                self.form.label_n_X.setVisible(self.active_axis == "X")
-                self.form.spinbox_n_X.setVisible(self.active_axis == "X")
-
-            if hasattr(self.form, 'label_n_Y') and hasattr(self.form, 'spinbox_n_Y'):
-                self.form.label_n_Y.setVisible(self.active_axis == "Y")
-                self.form.spinbox_n_Y.setVisible(self.active_axis == "Y")
-
-            if hasattr(self.form, 'label_n_Z') and hasattr(self.form, 'spinbox_n_Z'):
-                self.form.label_n_Z.setVisible(self.active_axis == "Z")
-                self.form.spinbox_n_Z.setVisible(self.active_axis == "Z")
-
-    def show_all_intervals(self):
-        """Show all interval inputs for Orthogonal mode."""
-        if hasattr(self.form, 'group_X') and hasattr(self.form, 'group_Y') and hasattr(self.form, 'group_Z'):
-            self.form.group_X.setVisible(True)
-            self.form.group_Y.setVisible(True)
-            self.form.group_Z.setVisible(True)
-
-            self._set_intervals_visibility(show_all=True)
-
-            if hasattr(self.form, 'label_n_X') and hasattr(self.form, 'spinbox_n_X'):
-                self.form.label_n_X.setVisible(True)
-                self.form.spinbox_n_X.setVisible(True)
-
-            if hasattr(self.form, 'label_n_Y') and hasattr(self.form, 'spinbox_n_Y'):
-                self.form.label_n_Y.setVisible(True)
-                self.form.spinbox_n_Y.setVisible(True)
-
-            if hasattr(self.form, 'label_n_Z') and hasattr(self.form, 'spinbox_n_Z'):
-                self.form.label_n_Z.setVisible(True)
-                self.form.spinbox_n_Z.setVisible(True)
+            group_name = f"group_{axis}"
+            group_box = self.form.findChild(QtWidgets.QGroupBox, group_name)
+            if hide:
+                group_box.hide()
+                self.form.group_copies.hide()
+            else:
+                group_box.show()
+                self.form.group_copies.show()
 
     def finish(self):
         """Finish the command, after accept or reject.
