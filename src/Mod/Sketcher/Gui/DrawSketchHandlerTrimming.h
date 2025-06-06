@@ -209,36 +209,43 @@ private:
     std::vector<Base::Vector2d> EditMarkers;
     bool mousePressed = false;
 
-    // Add hint structures here
+    enum State
+    {
+        WaitingForEdge
+    };
+
     struct HintEntry
     {
-        int stateValue;
+        State state;
         std::list<Gui::InputHint> hints;
     };
 
     using HintTable = std::vector<HintEntry>;
 
     static HintTable getTrimmingHintTable();
-    static std::list<Gui::InputHint> lookupTrimmingHints(int stateValue);
+    static std::list<Gui::InputHint> lookupTrimmingHints(State state);
 
 public:
     std::list<Gui::InputHint> getToolHints() const override
     {
-        return lookupTrimmingHints(0);
+        return lookupTrimmingHints(WaitingForEdge);
     }
 };
 
 DrawSketchHandlerTrimming::HintTable DrawSketchHandlerTrimming::getTrimmingHintTable()
 {
-    return {{0, {{QObject::tr("%1 pick edge to trim"), {Gui::InputHint::UserInput::MouseLeft}}}}};
+    return {{WaitingForEdge,
+             {{QObject::tr("%1 pick edge to trim", "Sketcher Trimming: hint"),
+               {Gui::InputHint::UserInput::MouseLeft}}}}};
 }
 
-std::list<Gui::InputHint> DrawSketchHandlerTrimming::lookupTrimmingHints(int stateValue)
+std::list<Gui::InputHint>
+DrawSketchHandlerTrimming::lookupTrimmingHints(DrawSketchHandlerTrimming::State state)
 {
     const auto trimmingHintTable = getTrimmingHintTable();
 
-    auto it = std::ranges::find_if(trimmingHintTable, [stateValue](const HintEntry& entry) {
-        return entry.stateValue == stateValue;
+    auto it = std::ranges::find_if(trimmingHintTable, [state](const HintEntry& entry) {
+        return entry.state == state;
     });
 
     return (it != trimmingHintTable.end()) ? it->hints : std::list<Gui::InputHint> {};

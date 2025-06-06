@@ -188,36 +188,43 @@ private:
         return QStringLiteral("Sketcher_Pointer_Splitting");
     }
 
-    // Add hint structures here
+    enum State
+    {
+        WaitingForEdge
+    };
+
     struct HintEntry
     {
-        int stateValue;
+        State state;
         std::list<Gui::InputHint> hints;
     };
 
     using HintTable = std::vector<HintEntry>;
 
     static HintTable getSplittingHintTable();
-    static std::list<Gui::InputHint> lookupSplittingHints(int stateValue);
+    static std::list<Gui::InputHint> lookupSplittingHints(State state);
 
 public:
     std::list<Gui::InputHint> getToolHints() const override
     {
-        return lookupSplittingHints(0);
+        return lookupSplittingHints(WaitingForEdge);
     }
 };
 
 DrawSketchHandlerSplitting::HintTable DrawSketchHandlerSplitting::getSplittingHintTable()
 {
-    return {{0, {{QObject::tr("%1 pick edge to split"), {Gui::InputHint::UserInput::MouseLeft}}}}};
+    return {{WaitingForEdge,
+             {{QObject::tr("%1 pick edge to split", "Sketcher Splitting: hint"),
+               {Gui::InputHint::UserInput::MouseLeft}}}}};
 }
 
-std::list<Gui::InputHint> DrawSketchHandlerSplitting::lookupSplittingHints(int stateValue)
+std::list<Gui::InputHint>
+DrawSketchHandlerSplitting::lookupSplittingHints(DrawSketchHandlerSplitting::State state)
 {
     const auto splittingHintTable = getSplittingHintTable();
 
-    auto it = std::ranges::find_if(splittingHintTable, [stateValue](const HintEntry& entry) {
-        return entry.stateValue == stateValue;
+    auto it = std::ranges::find_if(splittingHintTable, [state](const HintEntry& entry) {
+        return entry.state == state;
     });
 
     return (it != splittingHintTable.end()) ? it->hints : std::list<Gui::InputHint> {};

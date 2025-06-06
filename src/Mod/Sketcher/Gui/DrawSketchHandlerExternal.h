@@ -245,36 +245,43 @@ private:
     bool alwaysReference;
     bool intersection;
 
+    enum State
+    {
+        WaitingForSelection
+    };
+
     struct HintEntry
     {
-        int stateValue;
+        State state;
         std::list<Gui::InputHint> hints;
     };
 
     using HintTable = std::vector<HintEntry>;
 
     static HintTable getExternalHintTable();
-    static std::list<Gui::InputHint> lookupExternalHints(int stateValue);
+    static std::list<Gui::InputHint> lookupExternalHints(State state);
 
 public:
     std::list<Gui::InputHint> getToolHints() const override
     {
-        return lookupExternalHints(0);
+        return lookupExternalHints(WaitingForSelection);
     }
 };
 
 DrawSketchHandlerExternal::HintTable DrawSketchHandlerExternal::getExternalHintTable()
 {
-    return {
-        {0, {{QObject::tr("%1 pick external geometry"), {Gui::InputHint::UserInput::MouseLeft}}}}};
+    return {{WaitingForSelection,
+             {{QObject::tr("%1 pick external geometry", "Sketcher External: hint"),
+               {Gui::InputHint::UserInput::MouseLeft}}}}};
 }
 
-std::list<Gui::InputHint> DrawSketchHandlerExternal::lookupExternalHints(int stateValue)
+std::list<Gui::InputHint>
+DrawSketchHandlerExternal::lookupExternalHints(DrawSketchHandlerExternal::State state)
 {
     const auto externalHintTable = getExternalHintTable();
 
-    auto it = std::ranges::find_if(externalHintTable, [stateValue](const HintEntry& entry) {
-        return entry.stateValue == stateValue;
+    auto it = std::ranges::find_if(externalHintTable, [state](const HintEntry& entry) {
+        return entry.state == state;
     });
 
     return (it != externalHintTable.end()) ? it->hints : std::list<Gui::InputHint> {};

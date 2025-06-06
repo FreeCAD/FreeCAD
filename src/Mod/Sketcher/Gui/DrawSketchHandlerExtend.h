@@ -376,19 +376,19 @@ protected:
     // Add hint structures here
     struct HintEntry
     {
-        int stateValue;
+        SelectMode state;
         std::list<Gui::InputHint> hints;
     };
 
     using HintTable = std::vector<HintEntry>;
 
     static HintTable getExtendHintTable();
-    static std::list<Gui::InputHint> lookupExtendHints(int stateValue);
+    static std::list<Gui::InputHint> lookupExtendHints(SelectMode state);
 
 public:
     std::list<Gui::InputHint> getToolHints() const override
     {
-        return lookupExtendHints(static_cast<int>(Mode));
+        return lookupExtendHints(Mode);
     }
 
 private:
@@ -400,17 +400,20 @@ private:
 
 DrawSketchHandlerExtend::HintTable DrawSketchHandlerExtend::getExtendHintTable()
 {
-    return {
-        {0, {{QObject::tr("%1 pick edge to extend"), {Gui::InputHint::UserInput::MouseLeft}}}},
-        {1, {{QObject::tr("%1 set extension length"), {Gui::InputHint::UserInput::MouseLeft}}}}};
+    return {{STATUS_SEEK_First,
+             {{QObject::tr("%1 pick edge to extend", "Sketcher Extend: hint"),
+               {Gui::InputHint::UserInput::MouseLeft}}}},
+            {STATUS_SEEK_Second,
+             {{QObject::tr("%1 set extension length", "Sketcher Extend: hint"),
+               {Gui::InputHint::UserInput::MouseLeft}}}}};
 }
 
-std::list<Gui::InputHint> DrawSketchHandlerExtend::lookupExtendHints(int stateValue)
+std::list<Gui::InputHint> DrawSketchHandlerExtend::lookupExtendHints(SelectMode state)
 {
     const auto extendHintTable = getExtendHintTable();
 
-    auto it = std::ranges::find_if(extendHintTable, [stateValue](const HintEntry& entry) {
-        return entry.stateValue == stateValue;
+    auto it = std::ranges::find_if(extendHintTable, [state](const HintEntry& entry) {
+        return entry.state == state;
     });
 
     return (it != extendHintTable.end()) ? it->hints : std::list<Gui::InputHint> {};

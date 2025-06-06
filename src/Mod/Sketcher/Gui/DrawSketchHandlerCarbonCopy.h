@@ -220,36 +220,43 @@ private:
         setAxisPickStyle(true);
     }
 
-    // Add hint structures here
+    enum State
+    {
+        WaitingForSketch
+    };
+
     struct HintEntry
     {
-        int stateValue;
+        State state;
         std::list<Gui::InputHint> hints;
     };
 
     using HintTable = std::vector<HintEntry>;
 
     static HintTable getCarbonCopyHintTable();
-    static std::list<Gui::InputHint> lookupCarbonCopyHints(int stateValue);
+    static std::list<Gui::InputHint> lookupCarbonCopyHints(State state);
 
 public:
     std::list<Gui::InputHint> getToolHints() const override
     {
-        return lookupCarbonCopyHints(0);
+        return lookupCarbonCopyHints(WaitingForSketch);
     }
 };
 
 DrawSketchHandlerCarbonCopy::HintTable DrawSketchHandlerCarbonCopy::getCarbonCopyHintTable()
 {
-    return {{0, {{QObject::tr("%1 pick sketch to copy"), {Gui::InputHint::UserInput::MouseLeft}}}}};
+    return {{WaitingForSketch,
+             {{QObject::tr("%1 pick sketch to copy", "Sketcher CarbonCopy: hint"),
+               {Gui::InputHint::UserInput::MouseLeft}}}}};
 }
 
-std::list<Gui::InputHint> DrawSketchHandlerCarbonCopy::lookupCarbonCopyHints(int stateValue)
+std::list<Gui::InputHint>
+DrawSketchHandlerCarbonCopy::lookupCarbonCopyHints(DrawSketchHandlerCarbonCopy::State state)
 {
     const auto carbonCopyHintTable = getCarbonCopyHintTable();
 
-    auto it = std::ranges::find_if(carbonCopyHintTable, [stateValue](const HintEntry& entry) {
-        return entry.stateValue == stateValue;
+    auto it = std::ranges::find_if(carbonCopyHintTable, [state](const HintEntry& entry) {
+        return entry.state == state;
     });
 
     return (it != carbonCopyHintTable.end()) ? it->hints : std::list<Gui::InputHint> {};

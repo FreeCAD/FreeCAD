@@ -411,22 +411,21 @@ private:
     int vtId, geoId1, geoId2;
     Base::Vector2d firstPos, secondPos;
 
-    // Add hint structures here
     struct HintEntry
     {
-        int stateValue;
+        SelectMode state;
         std::list<Gui::InputHint> hints;
     };
 
     using HintTable = std::vector<HintEntry>;
 
     static HintTable getFilletHintTable();
-    static std::list<Gui::InputHint> lookupFilletHints(int stateValue);
+    static std::list<Gui::InputHint> lookupFilletHints(SelectMode state);
 
 public:
     std::list<Gui::InputHint> getToolHints() const override
     {
-        return lookupFilletHints(static_cast<int>(state()));
+        return lookupFilletHints(state());
     }
 };
 
@@ -478,19 +477,23 @@ void DSHFilletController::adaptDrawingToCheckboxChange(int checkboxindex, bool v
 
 DrawSketchHandlerFillet::HintTable DrawSketchHandlerFillet::getFilletHintTable()
 {
-    return {
-        {0,
-         {{QObject::tr("%1 pick first edge or vertex"), {Gui::InputHint::UserInput::MouseLeft}}}},
-        {1, {{QObject::tr("%1 pick second edge"), {Gui::InputHint::UserInput::MouseLeft}}}},
-        {2, {{QObject::tr("%1 create fillet"), {Gui::InputHint::UserInput::MouseLeft}}}}};
+    return {{SelectMode::SeekFirst,
+             {{QObject::tr("%1 pick first edge or vertex", "Sketcher Fillet/Chamfer: hint"),
+               {Gui::InputHint::UserInput::MouseLeft}}}},
+            {SelectMode::SeekSecond,
+             {{QObject::tr("%1 pick second edge", "Sketcher Fillet/Chamfer: hint"),
+               {Gui::InputHint::UserInput::MouseLeft}}}},
+            {SelectMode::End,
+             {{QObject::tr("%1 create fillet", "Sketcher Fillet/Chamfer: hint"),
+               {Gui::InputHint::UserInput::MouseLeft}}}}};
 }
 
-std::list<Gui::InputHint> DrawSketchHandlerFillet::lookupFilletHints(int stateValue)
+std::list<Gui::InputHint> DrawSketchHandlerFillet::lookupFilletHints(SelectMode state)
 {
     const auto filletHintTable = getFilletHintTable();
 
-    auto it = std::ranges::find_if(filletHintTable, [stateValue](const HintEntry& entry) {
-        return entry.stateValue == stateValue;
+    auto it = std::ranges::find_if(filletHintTable, [state](const HintEntry& entry) {
+        return entry.state == state;
     });
 
     return (it != filletHintTable.end()) ? it->hints : std::list<Gui::InputHint> {};
