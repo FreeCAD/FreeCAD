@@ -28,12 +28,16 @@
 #include <App/GroupExtension.h>
 #include <App/Document.h>
 
-#include "Command.h"
+#include <QDialog>
+
 #include "ActiveObjectList.h"
 #include "Application.h"
+#include "Command.h"
 #include "Document.h"
-#include "ViewProviderDocumentObject.h"
+#include "Gui/Dialogs/DlgAddPropertyToObjects.h"
+#include "Gui/MainWindow.h"
 #include "Selection.h"
+#include "ViewProviderDocumentObject.h"
 
 using namespace Gui;
 
@@ -187,6 +191,48 @@ bool StdCmdVarSet::isActive()
     return hasActiveDocument();
 }
 
+//===========================================================================
+// Std_AddPropertyToObjects
+//===========================================================================
+DEF_STD_CMD_A(StdCmdAddPropertyToObjects)
+
+StdCmdAddPropertyToObjects::StdCmdAddPropertyToObjects()
+  : Command("Std_AddPropertyToObjects")
+{
+    sGroup        = "Structure";
+    sMenuText     = QT_TR_NOOP("Add properties to selected objects");
+    sToolTipText  = QT_TR_NOOP("Add custom properties to multiple selected objects");
+    sWhatsThis    = "Std_AddPropertyToObjects";
+    sStatusTip    = sToolTipText;
+    sPixmap       = "AddProperties";
+}
+
+void StdCmdAddPropertyToObjects::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+
+    std::vector<App::DocumentObject*> objects;
+    for (const auto& sel : Gui::Selection().getSelectionEx("*", App::DocumentObject::getClassTypeId())) {
+        if (sel.getObject()) {
+            objects.push_back(const_cast<App::DocumentObject*>(sel.getObject()));
+        }
+    }
+
+    if (objects.empty()) {
+        return;
+    }
+    auto dlg = new Gui::Dialog::DlgAddPropertyToObjects(Gui::MainWindow::getInstance(), objects);
+    dlg->setAttribute(Qt::WA_DeleteOnClose);
+    dlg->show();
+    dlg->raise();
+    dlg->activateWindow();
+}
+
+bool StdCmdAddPropertyToObjects::isActive()
+{
+    return hasActiveDocument() && !Selection().getSelectionEx(nullptr, App::DocumentObject::getClassTypeId()).empty();
+}
+
 namespace Gui {
 
 void CreateStructureCommands()
@@ -196,6 +242,7 @@ void CreateStructureCommands()
     rcCmdMgr.addCommand(new StdCmdPart());
     rcCmdMgr.addCommand(new StdCmdGroup());
     rcCmdMgr.addCommand(new StdCmdVarSet());
+    rcCmdMgr.addCommand(new StdCmdAddPropertyToObjects());
 }
 
 } // namespace Gui
