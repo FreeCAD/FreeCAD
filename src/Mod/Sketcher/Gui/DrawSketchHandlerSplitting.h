@@ -204,10 +204,15 @@ private:
     static HintTable getSplittingHintTable();
     static std::list<Gui::InputHint> lookupSplittingHints(State state);
 
+private:
+    std::vector<Base::Vector2d> EditMarkers;
+    bool mousePressed = false;
+
 public:
     std::list<Gui::InputHint> getToolHints() const override
     {
-        return lookupSplittingHints(WaitingForEdge);
+        return {{QObject::tr("%1 pick edge to split", "Sketcher Splitting: hint"),
+                 {Gui::InputHint::UserInput::MouseLeft}}};
     }
 };
 

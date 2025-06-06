@@ -209,47 +209,13 @@ private:
     std::vector<Base::Vector2d> EditMarkers;
     bool mousePressed = false;
 
-    enum State
-    {
-        WaitingForEdge
-    };
-
-    struct HintEntry
-    {
-        State state;
-        std::list<Gui::InputHint> hints;
-    };
-
-    using HintTable = std::vector<HintEntry>;
-
-    static HintTable getTrimmingHintTable();
-    static std::list<Gui::InputHint> lookupTrimmingHints(State state);
-
 public:
     std::list<Gui::InputHint> getToolHints() const override
     {
-        return lookupTrimmingHints(WaitingForEdge);
+        return {{QObject::tr("%1 pick edge to trim", "Sketcher Trimming: hint"),
+                 {Gui::InputHint::UserInput::MouseLeft}}};
     }
 };
-
-DrawSketchHandlerTrimming::HintTable DrawSketchHandlerTrimming::getTrimmingHintTable()
-{
-    return {{WaitingForEdge,
-             {{QObject::tr("%1 pick edge to trim", "Sketcher Trimming: hint"),
-               {Gui::InputHint::UserInput::MouseLeft}}}}};
-}
-
-std::list<Gui::InputHint>
-DrawSketchHandlerTrimming::lookupTrimmingHints(DrawSketchHandlerTrimming::State state)
-{
-    const auto trimmingHintTable = getTrimmingHintTable();
-
-    auto it = std::ranges::find_if(trimmingHintTable, [state](const HintEntry& entry) {
-        return entry.state == state;
-    });
-
-    return (it != trimmingHintTable.end()) ? it->hints : std::list<Gui::InputHint> {};
-}
 
 }  // namespace SketcherGui
 

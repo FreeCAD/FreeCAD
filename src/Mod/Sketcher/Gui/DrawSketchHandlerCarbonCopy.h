@@ -220,47 +220,13 @@ private:
         setAxisPickStyle(true);
     }
 
-    enum State
-    {
-        WaitingForSketch
-    };
-
-    struct HintEntry
-    {
-        State state;
-        std::list<Gui::InputHint> hints;
-    };
-
-    using HintTable = std::vector<HintEntry>;
-
-    static HintTable getCarbonCopyHintTable();
-    static std::list<Gui::InputHint> lookupCarbonCopyHints(State state);
-
 public:
     std::list<Gui::InputHint> getToolHints() const override
     {
-        return lookupCarbonCopyHints(WaitingForSketch);
+        return {{QObject::tr("%1 pick sketch to copy", "Sketcher CarbonCopy: hint"),
+                 {Gui::InputHint::UserInput::MouseLeft}}};
     }
 };
-
-DrawSketchHandlerCarbonCopy::HintTable DrawSketchHandlerCarbonCopy::getCarbonCopyHintTable()
-{
-    return {{WaitingForSketch,
-             {{QObject::tr("%1 pick sketch to copy", "Sketcher CarbonCopy: hint"),
-               {Gui::InputHint::UserInput::MouseLeft}}}}};
-}
-
-std::list<Gui::InputHint>
-DrawSketchHandlerCarbonCopy::lookupCarbonCopyHints(DrawSketchHandlerCarbonCopy::State state)
-{
-    const auto carbonCopyHintTable = getCarbonCopyHintTable();
-
-    auto it = std::ranges::find_if(carbonCopyHintTable, [state](const HintEntry& entry) {
-        return entry.state == state;
-    });
-
-    return (it != carbonCopyHintTable.end()) ? it->hints : std::list<Gui::InputHint> {};
-}
 
 }  // namespace SketcherGui
 
