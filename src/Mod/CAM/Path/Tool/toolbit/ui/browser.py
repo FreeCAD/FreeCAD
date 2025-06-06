@@ -179,7 +179,7 @@ class ToolBitBrowserWidget(QtGui.QWidget):
             self._all_assets.sort(key=lambda x: natural_sort_key(x.label))
         elif self._sort_key == "tool_no" and self._tool_no_factory:
             self._all_assets.sort(
-                key=lambda x: (int(self._tool_no_factory(x)) or 0) if self._tool_no_factory else 0
+                key=lambda x: int(self._tool_no_factory(x) or 0) if self._tool_no_factory else 0
             )
 
     def _matches_search(self, toolbit, search_term):
