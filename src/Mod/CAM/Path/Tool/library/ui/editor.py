@@ -287,7 +287,9 @@ class LibraryEditor(QWidget):
     def _on_import_library_requested(self):
         """Handles request to import a library."""
         Path.Log.debug("_on_import_library_requested: Called.")
-        dialog = AssetOpenDialog(asset_class=Library, serializers=library_serializers, parent=self)
+        dialog = AssetOpenDialog(
+            cam_assets, asset_class=Library, serializers=library_serializers, parent=self
+        )
         response = dialog.exec_()
         if not response:
             return
@@ -386,7 +388,9 @@ class LibraryEditor(QWidget):
             )
             return
 
-        dialog = AssetOpenDialog(asset_class=ToolBit, serializers=toolbit_serializers, parent=self)
+        dialog = AssetOpenDialog(
+            cam_assets, asset_class=ToolBit, serializers=toolbit_serializers, parent=self
+        )
         response = dialog.exec_()
         if not response:
             return
