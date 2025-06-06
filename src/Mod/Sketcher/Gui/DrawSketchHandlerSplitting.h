@@ -209,7 +209,7 @@ public:
 
 DrawSketchHandlerSplitting::HintTable DrawSketchHandlerSplitting::getSplittingHintTable()
 {
-    return {{0, {{QObject::tr("%1 click edge to split"), {Gui::InputHint::UserInput::MouseLeft}}}}};
+    return {{0, {{QObject::tr("%1 pick edge to split"), {Gui::InputHint::UserInput::MouseLeft}}}}};
 }
 
 std::list<Gui::InputHint> DrawSketchHandlerSplitting::lookupSplittingHints(int stateValue)

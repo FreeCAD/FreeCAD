@@ -241,8 +241,7 @@ public:
 
 DrawSketchHandlerCarbonCopy::HintTable DrawSketchHandlerCarbonCopy::getCarbonCopyHintTable()
 {
-    return {
-        {0, {{QObject::tr("%1 select sketch to copy"), {Gui::InputHint::UserInput::MouseLeft}}}}};
+    return {{0, {{QObject::tr("%1 pick sketch to copy"), {Gui::InputHint::UserInput::MouseLeft}}}}};
 }
 
 std::list<Gui::InputHint> DrawSketchHandlerCarbonCopy::lookupCarbonCopyHints(int stateValue)

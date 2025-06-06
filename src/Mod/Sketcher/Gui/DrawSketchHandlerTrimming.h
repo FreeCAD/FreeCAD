@@ -230,7 +230,7 @@ public:
 
 DrawSketchHandlerTrimming::HintTable DrawSketchHandlerTrimming::getTrimmingHintTable()
 {
-    return {{0, {{QObject::tr("%1 click edge to trim"), {Gui::InputHint::UserInput::MouseLeft}}}}};
+    return {{0, {{QObject::tr("%1 pick edge to trim"), {Gui::InputHint::UserInput::MouseLeft}}}}};
 }
 
 std::list<Gui::InputHint> DrawSketchHandlerTrimming::lookupTrimmingHints(int stateValue)

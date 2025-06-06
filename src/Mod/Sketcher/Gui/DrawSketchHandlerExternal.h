@@ -266,8 +266,7 @@ public:
 DrawSketchHandlerExternal::HintTable DrawSketchHandlerExternal::getExternalHintTable()
 {
     return {
-        {0,
-         {{QObject::tr("%1 select external geometry"), {Gui::InputHint::UserInput::MouseLeft}}}}};
+        {0, {{QObject::tr("%1 pick external geometry"), {Gui::InputHint::UserInput::MouseLeft}}}}};
 }
 
 std::list<Gui::InputHint> DrawSketchHandlerExternal::lookupExternalHints(int stateValue)

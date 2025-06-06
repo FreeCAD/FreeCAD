@@ -400,11 +400,10 @@ private:
 
 DrawSketchHandlerExtend::HintTable DrawSketchHandlerExtend::getExtendHintTable()
 {
-    return {
-        {0, {{QObject::tr("%1 select edge to extend"), {Gui::InputHint::UserInput::MouseLeft}}}},
-        {1,
-         {{QObject::tr("%1 click to set extension length"),
-           {Gui::InputHint::UserInput::MouseLeft}}}}};
+    return {{0, {{QObject::tr("%1 pick edge to extend"), {Gui::InputHint::UserInput::MouseLeft}}}},
+            {1,
+             {{QObject::tr("%1 click to set extension length"),
+               {Gui::InputHint::UserInput::MouseLeft}}}}};
 }
 
 std::list<Gui::InputHint> DrawSketchHandlerExtend::lookupExtendHints(int stateValue)
