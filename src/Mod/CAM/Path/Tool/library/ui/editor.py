@@ -153,6 +153,12 @@ class LibraryEditor(QWidget):
         Path.Log.track()
         self.listModel.clear()
 
+        # Add "All Tools" item
+        all_tools_item = QStandardItem(translate("CAM", "All Tools"))
+        all_tools_item.setData("all_tools", _LibraryRole)
+        all_tools_item.setIcon(QPixmap(":/icons/CAM_ToolTable.svg"))
+        self.listModel.appendRow(all_tools_item)
+
         # Use AssetManager to fetch library assets (depth=0 for shallow fetch)
         try:
             # Fetch library assets themselves, not their deep dependencies (toolbits).
@@ -182,7 +188,14 @@ class LibraryEditor(QWidget):
     def _on_library_selected(self):
         """Sets the current library in the browser when a library is selected."""
         Path.Log.debug("_on_library_selected: Called.")
-        selected_library = self.get_selected_library()
+        index = self.form.TableList.currentIndex()
+        item = self.listModel.itemFromIndex(index)
+        if not item:
+            return
+        if item.data(_LibraryRole) == "all_tools":
+            selected_library = None
+        else:
+            selected_library = self.get_selected_library()
         self.browser.set_current_library(selected_library)
         self._update_button_states()
 

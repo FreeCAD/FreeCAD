@@ -169,18 +169,20 @@ class LibraryBrowserWidget(ToolBitBrowserWidget):
         self.current_library_changed.emit()
 
         # Save the selected library to preferences
-        Path.Preferences.setLastToolLibrary(str(library.get_uri()))
+        if library:
+            Path.Preferences.setLastToolLibrary(str(library.get_uri()))
 
     def _update_tool_list(self):
         """Updates the tool list based on the current library."""
         if self.current_library:
             self._all_assets = [t for t in self.current_library]
-            self._sort_assets()
-            self._tool_list_widget.clear_list()
-            self._update_list()
         else:
-            self._all_assets = []
-            self._tool_list_widget.clear_list()
+            # Fetch all toolbits
+            all_toolbits = self._asset_manager.fetch(asset_type="toolbit", depth=0)
+            self._all_assets = cast(List[ToolBit], all_toolbits)
+        self._sort_assets()
+        self._tool_list_widget.clear_list()
+        self._update_list()
 
     def _add_shortcuts(self):
         """Adds keyboard shortcuts for common actions."""
