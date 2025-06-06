@@ -148,6 +148,27 @@ public:
 // Geometries
 ///////////////////////////////////////
 
+
+class SketcherExport Note
+{
+public:
+    Note()
+    {
+        x = nullptr;
+        y = nullptr;
+    }
+    Note(double* px, double* py)
+    {
+        x = px;
+        y = py;
+    }
+    double* x;
+    double* y;
+    int PushOwnParams(VEC_pD& pvec);
+    void ReconstructOnNewPvec(VEC_pD& pvec, int& cnt);
+};
+
+
 /// A base class for all curve-based objects (line, circle/arc, ellipse/arc).
 class SketcherExport Curve
 {

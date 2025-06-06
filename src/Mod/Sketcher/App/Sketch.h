@@ -227,6 +227,8 @@ public:
     int addArcOfParabola(const Part::GeomArcOfParabola& parabolaSegment, bool fixed = false);
     /// add a BSpline
     int addBSpline(const Part::GeomBSplineCurve& spline, bool fixed = false);
+    /// add a note
+    int addNote(const Part::GeomNote& note, bool fixed = false);
     //@}
 
 
@@ -522,7 +524,8 @@ public:
         ArcOfEllipse = 6,
         ArcOfHyperbola = 7,
         ArcOfParabola = 8,
-        BSpline = 9
+        BSpline = 9,
+        Note = 10
     };
 
 private:
@@ -724,6 +727,7 @@ private:
     void tryUpdateGeometry();
     void updateGeometry(const GeoDef&);
     void updatePoint(const GeoDef&);
+    void updateNote(const GeoDef&);
     void updateLineSegment(const GeoDef&);
     void updateArcOfCircle(const GeoDef&);
     void updateArcOfEllipse(const GeoDef&);

@@ -893,6 +893,19 @@ with respect to a line or a third point</source>
     </message>
 </context>
 <context>
+    <name>CmdSketcherCreateNote</name>
+    <message>
+        <location filename="../../CommandCreateNote.cpp" line="1727"/>
+        <source>Create note</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../CommandCreateGeo.cpp" line="1728"/>
+        <source>Create a note in the sketch</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>CmdSketcherDecreaseDegree</name>
     <message>
         <location filename="../../CommandSketcherBSpline.cpp" line="268"/>

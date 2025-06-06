@@ -81,7 +81,8 @@ private:
         InsertSingle,
         InsertStartEnd,
         InsertStartEndMid,
-        InsertMidOnly
+        InsertMidOnly,
+        InsertNote
     };
 
     enum class CurveMode
@@ -165,7 +166,9 @@ private:
     std::vector<std::vector<Base::Vector3d>> Points;
     std::vector<std::vector<std::vector<Base::Vector3d>>> Coords;
     std::vector<std::vector<std::vector<unsigned int>>> Index;
-
+    std::vector<std::vector<Base::Vector3d>> Notes;
+    std::vector<std::vector<std::string>> Texts;
+    
     // temporal counters, one per layer
     std::vector<int> pointCounter;
 

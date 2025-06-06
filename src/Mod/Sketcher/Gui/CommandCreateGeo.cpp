@@ -72,6 +72,7 @@
 #include "DrawSketchHandlerSlot.h"
 #include "DrawSketchHandlerSplitting.h"
 #include "DrawSketchHandlerTrimming.h"
+#include "DrawSketchHandlerNote.h"
 
 
 using namespace std;
@@ -1868,6 +1869,40 @@ bool CmdSketcherCarbonCopy::isActive()
     return isCommandActive(getActiveGuiDocument());
 }
 
+
+// Notes ================================================================
+
+DEF_STD_CMD_AU(CmdSketcherCreateNote)
+
+CmdSketcherCreateNote::CmdSketcherCreateNote()
+    : Command("Sketcher_CreateNote")
+{
+    sAppModule = "Sketcher";
+    sGroup = "Sketcher";
+    sMenuText = QT_TR_NOOP("Create note");
+    sToolTipText = QT_TR_NOOP("Create a note in the sketch");
+    sWhatsThis = "Sketcher_CreateNote";
+    sStatusTip = sToolTipText;
+    sPixmap = "Sketcher_CreateText";
+    sAccel = "N, P";
+    eType = ForEdit;
+}
+
+CONSTRUCTION_UPDATE_ACTION(CmdSketcherCreateNote, "Sketcher_CreateNote")
+
+void CmdSketcherCreateNote::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+    ActivateHandler(getActiveGuiDocument(), std::make_unique<DrawSketchHandlerNote>());
+    
+}
+
+bool CmdSketcherCreateNote::isActive()
+{
+    return isCommandActive(getActiveGuiDocument());
+}
+
+
 void CreateSketcherCommandsCreateGeo()
 {
     Gui::CommandManager& rcCmdMgr = Gui::Application::Instance->commandManager();
@@ -1922,4 +1957,5 @@ void CreateSketcherCommandsCreateGeo()
     rcCmdMgr.addCommand(new CmdSketcherCompCreateFillets());
     rcCmdMgr.addCommand(new CmdSketcherCompCurveEdition());
     rcCmdMgr.addCommand(new CmdSketcherCompExternal());
+    rcCmdMgr.addCommand(new CmdSketcherCreateNote());
 }

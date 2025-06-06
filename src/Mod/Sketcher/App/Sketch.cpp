@@ -666,6 +666,8 @@ const char* nameByType(Sketch::GeoType type)
             return "arcofparabola";
         case Sketch::BSpline:
             return "bspline";
+        case Sketch::Note:
+            return "note";
         case Sketch::None:
         default:
             return "unknown";
@@ -725,6 +727,11 @@ int Sketch::addGeometry(const Part::Geometry* geo, bool fixed)
         // geometry
         resolveAfterGeometryUpdated = true;
         return addBSpline(*bsp, fixed);
+    }
+    else if (geo->is<GeomNote>()) {  // add a note
+        const GeomNote* note = static_cast<const GeomNote*>(geo);
+        // create the definition struct for that geom
+        return addNote(*note, fixed);
     }
     else {
         throw Base::TypeError(
@@ -1703,6 +1710,48 @@ int Sketch::addEllipse(const Part::GeomEllipse& elip, bool fixed)
             std::piecewise_construct,
             std::forward_as_tuple(rmin),
             std::forward_as_tuple(Geoms.size() - 1, Sketcher::PointPos::none, 2));
+    }
+
+    // return the position of the newly added geometry
+    return Geoms.size() - 1;
+}
+
+int Sketch::addNote(const Part::GeomNote& note, bool fixed)
+{
+    std::vector<double*>& params = fixed ? FixParameters : Parameters;
+
+    // create our own copy
+    GeomNote* n = static_cast<GeomNote*>(note.clone());
+    // create the definition struct for that geom
+    GeoDef def;
+    def.geo = n;
+    def.type = Note;
+
+    // set the parameter for the solver
+    params.push_back(new double(n->getPosition().x));
+    params.push_back(new double(n->getPosition().y));
+
+    // set the points for later constraints
+    GCS::Point p1;
+    p1.x = params[params.size() - 2];
+    p1.y = params[params.size() - 1];
+    def.startPointId = Points.size();
+    def.endPointId = Points.size();
+    def.midPointId = Points.size();
+    Points.push_back(p1);
+
+    // store complete set
+    Geoms.push_back(def);
+
+    if (!fixed) {
+        param2geoelement.emplace(
+            std::piecewise_construct,
+            std::forward_as_tuple(p1.x),
+            std::forward_as_tuple(Geoms.size() - 1, Sketcher::PointPos::start, 0));
+        param2geoelement.emplace(
+            std::piecewise_construct,
+            std::forward_as_tuple(p1.y),
+            std::forward_as_tuple(Geoms.size() - 1, Sketcher::PointPos::start, 1));
     }
 
     // return the position of the newly added geometry
@@ -4359,6 +4408,9 @@ void Sketch::updateGeometry(const GeoDef& it)
     else if (it.type == BSpline) {
         updateBSpline(it);
     }
+    else if (it.type == Note) {
+        updateNote(it);
+    }
 }
 
 void Sketch::updatePoint(const GeoDef& def)
@@ -4367,6 +4419,13 @@ void Sketch::updatePoint(const GeoDef& def)
     auto pointf = GeometryFacade::getFacade(point);
 
     point->setPoint(Vector3d(*Points[def.startPointId].x, *Points[def.startPointId].y, 0.0));
+}
+
+void Sketch::updateNote(const GeoDef& def)
+{
+    GeomNote* note = static_cast<GeomNote*>(def.geo);
+
+    note->setPosition(Vector3d(*Points[def.startPointId].x, *Points[def.startPointId].y, 0.0));
 }
 
 void Sketch::updateLineSegment(const GeoDef& def)

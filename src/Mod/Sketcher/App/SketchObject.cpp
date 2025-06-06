@@ -1641,7 +1641,8 @@ bool SketchObject::isSupportedGeometry(const Part::Geometry* geo) const
         || geo->is<Part::GeomArcOfHyperbola>()
         || geo->is<Part::GeomArcOfParabola>()
         || geo->is<Part::GeomBSplineCurve>()
-        || geo->is<Part::GeomLineSegment>()) {
+        || geo->is<Part::GeomLineSegment>()
+        || geo->is<Part::GeomNote>()) {
         return true;
     }
     if (geo->is<Part::GeomTrimmedCurve>()) {

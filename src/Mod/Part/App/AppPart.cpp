@@ -104,6 +104,7 @@
 #include "LineSegmentPy.h"
 #include "OffsetCurvePy.h"
 #include "OffsetSurfacePy.h"
+#include "NotePy.h"
 #include "ParabolaPy.h"
 #include "Part2DObject.h"
 #include "Part2DObjectPy.h"
@@ -298,6 +299,7 @@ PyMOD_INIT_FUNC(Part)
     Base::Interpreter().addType(&Part::LinePy               ::Type,partModule,"Line");
     Base::Interpreter().addType(&Part::LineSegmentPy        ::Type,partModule,"LineSegment");
     Base::Interpreter().addType(&Part::PointPy              ::Type,partModule,"Point");
+    Base::Interpreter().addType(&Part::NotePy               ::Type,partModule,"Note");
     Base::Interpreter().addType(&Part::ConicPy              ::Type,partModule,"Conic");
     Base::Interpreter().addType(&Part::ArcOfConicPy         ::Type,partModule,"ArcOfConic");
     Base::Interpreter().addType(&Part::CirclePy             ::Type,partModule,"Circle");
@@ -507,6 +509,7 @@ PyMOD_INIT_FUNC(Part)
     Part::GeometryMigrationExtension	::init();
     Part::GeometryMigrationPersistenceExtension	::init();
     Part::Geometry                	::init();
+    Part::GeomNote               	::init();
     Part::GeomPoint               	::init();
     Part::GeomCurve               	::init();
     Part::GeomBoundedCurve        	::init();

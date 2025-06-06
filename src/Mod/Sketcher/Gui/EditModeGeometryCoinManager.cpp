@@ -31,6 +31,9 @@
 #include <Inventor/nodes/SoMarkerSet.h>
 #include <Inventor/nodes/SoMaterial.h>
 #include <Inventor/nodes/SoSeparator.h>
+#include <Inventor/nodes/SoText2.h>
+#include <Inventor/nodes/SoTranslation.h>
+#include <Inventor/nodes/SoFont.h>
 #endif  // #ifndef _PreComp_
 
 #include <Gui/Inventor/MarkerBitmaps.h>
@@ -76,8 +79,10 @@ void EditModeGeometryCoinManager::processGeometry(const GeoListFacade& geolistfa
     editModeScenegraphNodes.PointsGroup->enable.setNum(geometryLayerParameters.getCoinLayerCount());
     editModeScenegraphNodes.CurvesGroup->enable.setNum(
         geometryLayerParameters.getCoinLayerCount() * geometryLayerParameters.getSubLayerCount());
+    editModeScenegraphNodes.NotesGroup->enable.setNum(geometryLayerParameters.getCoinLayerCount());
     SbBool* swsp = editModeScenegraphNodes.PointsGroup->enable.startEditing();
     SbBool* swsc = editModeScenegraphNodes.CurvesGroup->enable.startEditing();
+    SbBool* swsn = editModeScenegraphNodes.NotesGroup->enable.startEditing();
 
     auto layersconfigurations = viewProvider.VisualLayerList.getValues();
 
@@ -85,6 +90,7 @@ void EditModeGeometryCoinManager::processGeometry(const GeoListFacade& geolistfa
         auto enabled = layersconfigurations[l].isVisible();
 
         swsp[l] = enabled;
+        swsn[l] = enabled;
         int slCount = geometryLayerParameters.getSubLayerCount();
         for (int t = 0; t < slCount; t++) {
             swsc[l * slCount + t] = enabled;
@@ -93,13 +99,19 @@ void EditModeGeometryCoinManager::processGeometry(const GeoListFacade& geolistfa
 
     editModeScenegraphNodes.PointsGroup->enable.finishEditing();
     editModeScenegraphNodes.CurvesGroup->enable.finishEditing();
+    editModeScenegraphNodes.NotesGroup->enable.finishEditing();
 
     // Define the coin nodes that will be filled in with the geometry layers
     GeometryLayerNodes geometrylayernodes {editModeScenegraphNodes.PointsMaterials,
                                            editModeScenegraphNodes.PointsCoordinate,
                                            editModeScenegraphNodes.CurvesMaterials,
                                            editModeScenegraphNodes.CurvesCoordinate,
-                                           editModeScenegraphNodes.CurveSet};
+                                           editModeScenegraphNodes.CurveSet,
+                                           editModeScenegraphNodes.NotesMaterials,
+                                           editModeScenegraphNodes.NotesCoordinates,
+                                           editModeScenegraphNodes.NotesFonts,
+                                           editModeScenegraphNodes.NotesTexts,
+                                           };
 
     // process geometry layers
     EditModeGeometryCoinConverter gcconv(viewProvider,
@@ -546,6 +558,7 @@ void EditModeGeometryCoinManager::updateGeometryLayersConfiguration()
     emptyGeometryRootNodes();
     createEditModePointInventorNodes();
     createEditModeCurveInventorNodes();
+    createEditModeNoteInventorNodes();
 }
 
 auto concat(std::string string, int i)
@@ -563,6 +576,8 @@ void EditModeGeometryCoinManager::createEditModeInventorNodes()
     createEditModePointInventorNodes();
 
     createEditModeCurveInventorNodes();
+
+    createEditModeNoteInventorNodes();
 }
 
 void EditModeGeometryCoinManager::createGeometryRootNodes()
@@ -574,12 +589,17 @@ void EditModeGeometryCoinManager::createGeometryRootNodes()
     // stuff for the Curves +++++++++++++++++++++++++++++++++++++++
     editModeScenegraphNodes.CurvesGroup = new SmSwitchboard;
     editModeScenegraphNodes.EditRoot->addChild(editModeScenegraphNodes.CurvesGroup);
+
+    // stuff for the Notes +++++++++++++++++++++++++++++++++++++++
+    editModeScenegraphNodes.NotesGroup = new SmSwitchboard;
+    editModeScenegraphNodes.EditRoot->addChild(editModeScenegraphNodes.NotesGroup);
 }
 
 void EditModeGeometryCoinManager::emptyGeometryRootNodes()
 {
     Gui::coinRemoveAllChildren(editModeScenegraphNodes.PointsGroup);
     Gui::coinRemoveAllChildren(editModeScenegraphNodes.CurvesGroup);
+    Gui::coinRemoveAllChildren(editModeScenegraphNodes.NotesGroup);
 }
 
 void EditModeGeometryCoinManager::createEditModePointInventorNodes()
@@ -712,5 +732,41 @@ void EditModeGeometryCoinManager::createEditModeCurveInventorNodes()
             editModeScenegraphNodes.CurvesGroup->addChild(sep);
             sep->unref();
         }
+    }
+}
+
+void EditModeGeometryCoinManager::createEditModeNoteInventorNodes()
+{
+    for (int i = 0; i < geometryLayerParameters.getCoinLayerCount(); i++) {
+        SoSeparator* sep = new SoSeparator;
+        sep->ref();
+
+        auto somaterial = new SoMaterial;
+        editModeScenegraphNodes.NotesMaterials.push_back(somaterial);
+        editModeScenegraphNodes.NotesMaterials[i]->setName(concat("NotesMaterials_", i).c_str());
+        sep->addChild(editModeScenegraphNodes.NotesMaterials[i]);
+
+        SoMaterialBinding* MtlBind = new SoMaterialBinding;
+        MtlBind->setName(concat("NotesMaterialBinding", i).c_str());
+        MtlBind->value = SoMaterialBinding::PER_VERTEX; //OVERALL?
+        sep->addChild(MtlBind);
+
+        auto coords = new SoTranslation;
+        editModeScenegraphNodes.NotesCoordinates.push_back(coords);
+        editModeScenegraphNodes.NotesCoordinates[i]->setName(concat("NotesCoordinates", i).c_str());
+        sep->addChild(editModeScenegraphNodes.NotesCoordinates[i]);
+
+        auto text = new SoText2;
+        editModeScenegraphNodes.NotesTexts.push_back(text);
+        editModeScenegraphNodes.NotesTexts[i]->setName(concat("NotesTexts", i).c_str());
+        sep->addChild(editModeScenegraphNodes.NotesTexts[i]);
+
+        auto font = new SoFont;
+        editModeScenegraphNodes.NotesFonts.push_back(font);
+        editModeScenegraphNodes.NotesFonts[i]->setName(concat("NotesFonts", i).c_str());
+        sep->addChild(editModeScenegraphNodes.NotesFonts[i]);
+
+        editModeScenegraphNodes.NotesGroup->addChild(sep);
+        sep->unref();
     }
 }

@@ -115,7 +115,7 @@ PyObject* SketchObjectPy::addGeometry(PyObject* args)
                  || geo->is<Part::GeomEllipse>() || geo->is<Part::GeomArcOfCircle>()
                  || geo->is<Part::GeomArcOfEllipse>() || geo->is<Part::GeomArcOfHyperbola>()
                  || geo->is<Part::GeomArcOfParabola>() || geo->is<Part::GeomBSplineCurve>()
-                 || geo->is<Part::GeomLineSegment>()) {
+                 || geo->is<Part::GeomLineSegment>() || geo->is<Part::GeomNote>()) {
             ret = this->getSketchObjectPtr()->addGeometry(geo, isConstruction);
         }
         else {
@@ -167,7 +167,7 @@ PyObject* SketchObjectPy::addGeometry(PyObject* args)
                          || geo->is<Part::GeomEllipse>() || geo->is<Part::GeomArcOfCircle>()
                          || geo->is<Part::GeomArcOfEllipse>() || geo->is<Part::GeomArcOfHyperbola>()
                          || geo->is<Part::GeomArcOfParabola>() || geo->is<Part::GeomBSplineCurve>()
-                         || geo->is<Part::GeomLineSegment>()) {
+                         || geo->is<Part::GeomLineSegment>() || geo->is<Part::GeomNote>()) {
                     geoList.push_back(geo);
                 }
                 else {

@@ -1,5 +1,4 @@
-# **************************************************************************
-#   Copyright (c) 2011 Juergen Riegel <FreeCAD@juergen-riegel.net>        *
+# *************************************************************************
 #   Copyright (c) 2021 Emmanuel O'Brien                                   *
 #                                                                         *
 #   This file is part of the FreeCAD CAx development system.              *
@@ -21,15 +20,29 @@
 #   USA                                                                   *
 # **************************************************************************
 
-# Broken-out test modules
-from SketcherTests.TestSketcherSolver import TestSketcherSolver
-from SketcherTests.TestSketchFillet import TestSketchFillet
-from SketcherTests.TestSketchExpression import TestSketchExpression
-from SketcherTests.TestSketchValidateCoincidents import TestSketchValidateCoincidents
-from SketcherTests.TestSketchNote import TestSketchNote
+import unittest
+import FreeCAD
+import Part
+import Sketcher
+from FreeCAD import Vector
 
-# Path and PartDesign tests use these functions that used to live here
-# but moved to SketcherTests/TestSketcherSolver.py
-from SketcherTests.TestSketcherSolver import CreateCircleSketch
-from SketcherTests.TestSketcherSolver import CreateRectangleSketch
-from SketcherTests.TestSketcherSolver import CreateSlotPlateSet
+App = FreeCAD
+
+class TestSketchNote(unittest.TestCase):
+    def setUp(self):
+        self.doc = FreeCAD.newDocument("SketchNoteTest")
+
+    def test_note_creation(self):
+        sketch = self.doc.addObject("Sketcher::SketchObject", "Sketcher")
+        pos = FreeCAD.Vector(10, 20, 30)
+        text = "Note test"
+
+        note_geom = Part.Note(pos, text)
+        idx = sketch.addGeometry(note_geom, False)
+
+        note = sketch.Geometry[idx]
+
+        self.assertEqual(str(note_geom).strip(), str(note).strip())
+    
+    def tearDown(self):
+        FreeCAD.closeDocument(self.doc.Name)

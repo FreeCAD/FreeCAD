@@ -58,6 +58,8 @@ void EditModeGeometryCoinConverter::convert(const Sketcher::GeoListFacade& geoli
     Points.clear();
     Coords.clear();
     Index.clear();
+    Notes.clear();
+    Texts.clear();
 
     coinMapping.clear();
 
@@ -67,6 +69,8 @@ void EditModeGeometryCoinConverter::convert(const Sketcher::GeoListFacade& geoli
         Points.emplace_back();
         Coords.emplace_back();
         Index.emplace_back();
+        Notes.emplace_back();
+        Texts.emplace_back();
 
         coinMapping.CurvIdToGeoId.emplace_back();
         for (int t = 0; t < geometryLayerParameters.getSubLayerCount(); t++) {
@@ -267,10 +271,24 @@ void EditModeGeometryCoinConverter::convert(const Sketcher::GeoListFacade& geoli
                         subLayerId);
             bsplineGeoIds.push_back(GeoId);
         }
+        else if (type == Part::GeomNote::getClassTypeId()) {
+            convert<Part::GeomNote,
+                    EditModeGeometryCoinConverter::PointsMode::InsertNote,
+                    EditModeGeometryCoinConverter::CurveMode::NoCurve,
+                    EditModeGeometryCoinConverter::AnalyseMode::BoundingBoxMagnitude>(geom,
+                                                                                      GeoId,
+                                                                                      subLayerId);
+            setTracking(GeoId,
+                        coinLayer,
+                        EditModeGeometryCoinConverter::PointsMode::InsertNote,
+                        0,
+                        subLayerId);
+        }
     }
 
     // Coin Nodes Editing
     int vOrFactor = ViewProviderSketchCoinAttorney::getViewOrientationFactor(viewProvider);
+    double notez = vOrFactor * drawingParameters.zLowPoints;
     double linez = vOrFactor * drawingParameters.zLowLines;  // NOLINT
     double pointz = vOrFactor * drawingParameters.zLowPoints;
 
@@ -306,6 +324,21 @@ void EditModeGeometryCoinConverter::convert(const Sketcher::GeoListFacade& geoli
             geometryLayerNodes.CurvesCoordinate[l][t]->point.finishEditing();
             geometryLayerNodes.CurveSet[l][t]->numVertices.finishEditing();
         }
+
+
+        SoTranslation* translations = geometryLayerNodes.NotesCoordinates[l];
+        SoText2* text = geometryLayerNodes.NotesTexts[l];
+        text->justification = SoText2::CENTER;
+        text->spacing = 1.0f;
+        text->string.setNum(Notes[l].size());
+        SbString *text_strings = text->string.startEditing();
+
+        i = 0;  // setting up the note set
+        for (auto& note : Notes[l]) {
+            translations->translation.setValue(note.x, note.y, notez);
+            text_strings[i] = SbString(Texts[l][i].c_str());
+        }
+        text->string.finishEditing();
     }
 }
 
@@ -347,6 +380,10 @@ void EditModeGeometryCoinConverter::convert(const Sketcher::GeometryFacade* geom
     }
     else if constexpr (pointmode == PointsMode::InsertMidOnly) {
         addPoint(Points[coinLayer], geo->getCenter());
+    }
+    else if constexpr (pointmode == PointsMode::InsertNote) {
+        Notes[coinLayer].push_back(geo->getPosition());
+        Texts[coinLayer].push_back(geo->getText());
     }
 
     // Curves
