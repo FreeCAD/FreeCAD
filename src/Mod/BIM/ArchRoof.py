@@ -335,11 +335,11 @@ class _Roof(ArchComponent.Component):
         runs = []
         if ((not 0 <= profilNext2["idrel"] < numEdges)
             and 0.0 < profilNext2["angle"] < 90.0
-            and vecCurr.getAngle(vecNext2) == math.pi):
+            and math.isclose(vecCurr.getAngle(vecNext2), math.pi, abs_tol=1e-7)):
             runs.append((self.helperCalcApex(profilCurr, profilNext2)))
         if ((not 0 <= profilBack2["idrel"] < numEdges)
             and 0.0 < profilBack2["angle"] < 90.0
-            and vecCurr.getAngle(vecBack2) == math.pi):
+            and math.isclose(vecCurr.getAngle(vecBack2), math.pi, abs_tol=1e-7)):
             runs.append((self.helperCalcApex(profilCurr, profilBack2)))
         runs.sort()
         if len(runs) != 0 and runs[0] != profilCurr["run"]:
