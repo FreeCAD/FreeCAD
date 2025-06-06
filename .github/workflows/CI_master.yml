@@ -26,7 +26,13 @@
 
 name: FreeCAD master CI
 
-on: [workflow_dispatch, push, pull_request, merge_group]
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+  merge_group:
+  workflow_dispatch:
 
 concurrency:
   group: FC-CI-${{ github.head_ref || github.run_id }}
