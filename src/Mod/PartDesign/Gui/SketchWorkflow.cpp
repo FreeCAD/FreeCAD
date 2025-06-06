@@ -671,8 +671,9 @@ private:
         auto rejectFunction = [docname, restorePlaneVisibility]() {
             restorePlaneVisibility();
             Gui::Document* document = Gui::Application::Instance->getDocument(docname.c_str());
-            if (document)
+            if (document) {
                 document->abortCommand();
+            }
         };
 
         //

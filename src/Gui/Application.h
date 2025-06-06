@@ -182,6 +182,9 @@ public:
     void setActiveDocument(Gui::Document* pcDocument);
     /// Getter for the editing document
     Gui::Document* editDocument() const;
+    // Returns true if the document is in edit (will make more sense once the edit document it is a vector)
+    bool isInEdit(Gui::Document* pcDocument) const;
+    
     Gui::MDIView* editViewOfNode(SoNode *node) const;
     /// Set editing document, which will reset editing of all other document
     void setEditDocument(Gui::Document* pcDocument);
