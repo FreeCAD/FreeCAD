@@ -480,9 +480,9 @@ DrawSketchHandlerFillet::HintTable DrawSketchHandlerFillet::getFilletHintTable()
 {
     return {
         {0,
-         {{QObject::tr("%1 pick first line or vertex"), {Gui::InputHint::UserInput::MouseLeft}}}},
-        {1, {{QObject::tr("%1 pick second line"), {Gui::InputHint::UserInput::MouseLeft}}}},
-        {2, {{QObject::tr("%1 click to create fillet"), {Gui::InputHint::UserInput::MouseLeft}}}}};
+         {{QObject::tr("%1 pick first edge or vertex"), {Gui::InputHint::UserInput::MouseLeft}}}},
+        {1, {{QObject::tr("%1 pick second edge"), {Gui::InputHint::UserInput::MouseLeft}}}},
+        {2, {{QObject::tr("%1 create fillet"), {Gui::InputHint::UserInput::MouseLeft}}}}};
 }
 
 std::list<Gui::InputHint> DrawSketchHandlerFillet::lookupFilletHints(int stateValue)
