@@ -77,6 +77,9 @@ public:
     SoSFFloat cylinderRadius;
     SoSFColor activeColor;
 
+    void setLabelVisibility(bool visible);
+    bool isLabelVisible();
+
 protected:
     ~SoLinearDragger() override;
     SbBool setUpConnections(SbBool onoff, SbBool doitalways = FALSE) override;

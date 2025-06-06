@@ -85,7 +85,7 @@ SoLinearDragger::SoLinearDragger()
     FC_ADD_CATALOG_ENTRY(coneSeparator, SoSeparator, translator);
     FC_ADD_CATALOG_ENTRY(cylinderSeparator, SoSeparator, translator);
     // For some reason changing the whichChild parameter of this switch doesn't hide the label
-    FC_ADD_CATALOG_ENTRY(labelSwitch, SoSeparator, translator);
+    FC_ADD_CATALOG_ENTRY(labelSwitch, SoSwitch, translator);
     FC_ADD_CATALOG_ENTRY(labelSeparator, SoSeparator, labelSwitch);
 
     SO_KIT_ADD_FIELD(translation, (0.0, 0.0, 0.0));
@@ -107,6 +107,7 @@ SoLinearDragger::SoLinearDragger()
     SoInteractionKit::setPart("secondaryColor", buildActiveColor());
 
     FC_SET_SWITCH("activeSwitch", SO_SWITCH_NONE);
+    setLabelVisibility(true);
 
     this->addStartCallback(&SoLinearDragger::startCB);
     this->addMotionCallback(&SoLinearDragger::motionCB);
@@ -388,6 +389,15 @@ SbVec3f SoLinearDragger::roundTranslation(const SbVec3f& vecIn, float incrementI
     out[2] = 0.0;
 
     return out;
+}
+
+void SoLinearDragger::setLabelVisibility(bool visible) {
+    FC_SET_SWITCH("labelSwitch", visible? SO_SWITCH_ALL : SO_SWITCH_NONE);
+}
+
+bool SoLinearDragger::isLabelVisible() {
+    auto* sw = SO_GET_ANY_PART(this, "labelSwitch", SoSwitch);
+    return sw->whichChild.getValue() == SO_SWITCH_ALL;
 }
 
 SO_KIT_SOURCE(SoLinearDraggerContainer)
