@@ -208,6 +208,8 @@ public:
                 return true;
             }
         }
+        updateHint();
+
         return false;
     }
 
@@ -242,8 +244,42 @@ private:
 
     bool alwaysReference;
     bool intersection;
+
+    struct HintEntry
+    {
+        int stateValue;
+        std::list<Gui::InputHint> hints;
+    };
+
+    using HintTable = std::vector<HintEntry>;
+
+    static HintTable getExternalHintTable();
+    static std::list<Gui::InputHint> lookupExternalHints(int stateValue);
+
+public:
+    std::list<Gui::InputHint> getToolHints() const override
+    {
+        return lookupExternalHints(0);
+    }
 };
 
+DrawSketchHandlerExternal::HintTable DrawSketchHandlerExternal::getExternalHintTable()
+{
+    return {
+        {0,
+         {{QObject::tr("%1 select external geometry"), {Gui::InputHint::UserInput::MouseLeft}}}}};
+}
+
+std::list<Gui::InputHint> DrawSketchHandlerExternal::lookupExternalHints(int stateValue)
+{
+    const auto externalHintTable = getExternalHintTable();
+
+    auto it = std::ranges::find_if(externalHintTable, [stateValue](const HintEntry& entry) {
+        return entry.stateValue == stateValue;
+    });
+
+    return (it != externalHintTable.end()) ? it->hints : std::list<Gui::InputHint> {};
+}
 
 }  // namespace SketcherGui
 
