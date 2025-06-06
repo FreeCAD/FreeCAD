@@ -191,6 +191,7 @@ public:
                 return true;
             }
         }
+        updateHint();
         return false;
     }
 
@@ -218,7 +219,42 @@ private:
         Q_UNUSED(sketchgui);
         setAxisPickStyle(true);
     }
+
+    // Add hint structures here
+    struct HintEntry
+    {
+        int stateValue;
+        std::list<Gui::InputHint> hints;
+    };
+
+    using HintTable = std::vector<HintEntry>;
+
+    static HintTable getCarbonCopyHintTable();
+    static std::list<Gui::InputHint> lookupCarbonCopyHints(int stateValue);
+
+public:
+    std::list<Gui::InputHint> getToolHints() const override
+    {
+        return lookupCarbonCopyHints(0);
+    }
 };
+
+DrawSketchHandlerCarbonCopy::HintTable DrawSketchHandlerCarbonCopy::getCarbonCopyHintTable()
+{
+    return {
+        {0, {{QObject::tr("%1 select sketch to copy"), {Gui::InputHint::UserInput::MouseLeft}}}}};
+}
+
+std::list<Gui::InputHint> DrawSketchHandlerCarbonCopy::lookupCarbonCopyHints(int stateValue)
+{
+    const auto carbonCopyHintTable = getCarbonCopyHintTable();
+
+    auto it = std::ranges::find_if(carbonCopyHintTable, [stateValue](const HintEntry& entry) {
+        return entry.stateValue == stateValue;
+    });
+
+    return (it != carbonCopyHintTable.end()) ? it->hints : std::list<Gui::InputHint> {};
+}
 
 }  // namespace SketcherGui
 
