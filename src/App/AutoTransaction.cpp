@@ -230,7 +230,7 @@ void Application::setTransactionName(int tid, const std::string& name, bool tmp)
         _activeTransactionDescriptions[tid].tmp = tmp;
         FC_LOG("transaction rename to '" << name << "'");
         for (auto& v : DocMap) {
-            v.second->renameTransaction(name.c_str(), _activeTransactionID);
+            v.second->renameTransaction(name.c_str(), tid);
         }
     } 
 }

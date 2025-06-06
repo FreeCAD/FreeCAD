@@ -1320,7 +1320,10 @@ Gui::Document* Application::editDocument() const
 {
     return d->editDocument;
 }
-
+bool Application::isInEdit(Gui::Document* pcDocument) const
+{
+    return pcDocument != nullptr && d->editDocument == pcDocument;
+}
 Gui::MDIView* Application::editViewOfNode(SoNode* node) const
 {
     return d->editDocument ? d->editDocument->getViewOfNode(node) : nullptr;

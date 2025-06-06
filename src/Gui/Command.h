@@ -410,12 +410,19 @@ public:
     //@{
     /// Open a new Undo transaction on the active document
     static void openCommand(const char* sName=nullptr);
-    static void openCommand(App::Document* doc, std::string name = "");
+    static int openCommand(App::Document* doc, std::string name = "", bool tmpName = false, int tid = 0);
+    int openSelf(App::Document* doc, const std::string& name = "", bool tmpName = false, int tid = 0);
+    void renameSelf(const std::string& name);
     /// Commit the Undo transaction on the active document
     static void commitCommand();
     static void commitCommand(int tid);
+    void commitSelf();
+
     /// Abort the Undo transaction on the active document
     static void abortCommand();
+    static void abortCommand(int tid);
+    void abortSelf();
+
     /// Check if an Undo transaction is open on the active document
     static bool hasPendingCommand();
     /// Updates the (active) document (propagate changes)
@@ -615,6 +622,8 @@ protected:
     /// Indicate if the command shall log to MacroManager
     bool        bCanLog;
     //@}
+
+    int currentTransactionID { 0 }; // TransactionID created in _invoke 
 private:
     static int _busy;
     bool bEnabled;
