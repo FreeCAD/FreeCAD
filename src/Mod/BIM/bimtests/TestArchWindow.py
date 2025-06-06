@@ -58,7 +58,7 @@ class TestArchWindow(TestArchBase.TestArchBase):
         self.assertEqual(window.WindowParts[1], "Solid panel", "Default part type incorrect for single-wire sketch.")
         self.assertIn("Wire0", window.WindowParts[2])
         self.assertFalse(window.Shape.isNull())
-        self.assertTrue(len(window.Shape.Solids) > 0)
+        self.assertGreater(len(window.Shape.Solids), 0)
 
     def test_create_from_sketch_two_wires_default_parts(self):
         """Test creating a window from two-wire sketch (concentric), relying on default parts."""
@@ -67,13 +67,13 @@ class TestArchWindow(TestArchBase.TestArchBase):
         self.document.recompute()
 
         self.assertEqual(window.Base, sketch)
-        self.assertTrue(len(window.WindowParts) >= 5)
+        self.assertGreaterEqual(len(window.WindowParts), 5)
         self.assertEqual(window.WindowParts[0], "Default")
         self.assertEqual(window.WindowParts[1], "Frame", "Default type for multi-wire should be Frame.")
         self.assertIn("Wire0", window.WindowParts[2])
         self.assertIn("Wire1", window.WindowParts[2])
         self.assertFalse(window.Shape.isNull())
-        self.assertTrue(len(window.Shape.Solids) > 0)
+        self.assertGreater(len(window.Shape.Solids), 0)
 
     def test_sketch_named_constraints_driven_by_window_props(self):
         """Test that window Width/Height properties drive sketch's named constraints."""
@@ -131,7 +131,7 @@ class TestArchWindow(TestArchBase.TestArchBase):
         self.document.recompute()
 
         self.assertFalse(window.Shape.isNull())
-        self.assertTrue(len(window.Shape.Solids) > 0)
+        self.assertGreater(len(window.Shape.Solids), 0)
 
 # In class TestArchWindow(TestArchBase.TestArchBase):
 
@@ -326,7 +326,7 @@ class TestArchWindow(TestArchBase.TestArchBase):
         self.document.recompute()
 
         self.assertFalse(window.Shape.isNull())
-        self.assertTrue(len(window.Shape.Solids) > 0)
+        self.assertGreater(len(window.Shape.Solids), 0)
 
         expected_normal_y = 1.0
 
