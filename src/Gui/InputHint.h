@@ -185,16 +185,16 @@ struct InputHint
         KeyF35 = Qt::Key_F35,
 
         // numpad keys
-        KeyNum0 = Qt::Key_0 + Qt::KeypadModifier,
-        KeyNum1 = Qt::Key_1 + Qt::KeypadModifier,
-        KeyNum2 = Qt::Key_2 + Qt::KeypadModifier,
-        KeyNum3 = Qt::Key_3 + Qt::KeypadModifier,
-        KeyNum4 = Qt::Key_4 + Qt::KeypadModifier,
-        KeyNum5 = Qt::Key_5 + Qt::KeypadModifier,
-        KeyNum6 = Qt::Key_6 + Qt::KeypadModifier,
-        KeyNum7 = Qt::Key_7 + Qt::KeypadModifier,
-        KeyNum8 = Qt::Key_8 + Qt::KeypadModifier,
-        KeyNum9 = Qt::Key_9 + Qt::KeypadModifier,
+        KeyNum0 = static_cast<int>(Qt::Key_0) | static_cast<int>(Qt::KeypadModifier),
+        KeyNum1 = static_cast<int>(Qt::Key_1) | static_cast<int>(Qt::KeypadModifier),
+        KeyNum2 = static_cast<int>(Qt::Key_2) | static_cast<int>(Qt::KeypadModifier),
+        KeyNum3 = static_cast<int>(Qt::Key_3) | static_cast<int>(Qt::KeypadModifier),
+        KeyNum4 = static_cast<int>(Qt::Key_4) | static_cast<int>(Qt::KeypadModifier),
+        KeyNum5 = static_cast<int>(Qt::Key_5) | static_cast<int>(Qt::KeypadModifier),
+        KeyNum6 = static_cast<int>(Qt::Key_6) | static_cast<int>(Qt::KeypadModifier),
+        KeyNum7 = static_cast<int>(Qt::Key_7) | static_cast<int>(Qt::KeypadModifier),
+        KeyNum8 = static_cast<int>(Qt::Key_8) | static_cast<int>(Qt::KeypadModifier),
+        KeyNum9 = static_cast<int>(Qt::Key_9) | static_cast<int>(Qt::KeypadModifier),
 
         // Mouse Keys
         MouseMove = 1 << 16,
