@@ -33,6 +33,36 @@
 
 namespace Gui
 {
+
+/**
+ * @brief Representation of one input hint.
+ *
+ * Each input is essentially a short message defining action with reference to inputs that will
+ * trigger that action.
+ *
+ * For example,
+ * @code{c++}
+ * using enum InputHint::UserInput;
+ *
+ * // simple example of hint
+ * InputHint selectPointHint {
+ *     .message = QWidget::tr("%1 select point"),
+ *     .sequences = { MouseLeft }
+ * }
+ *
+ * // multiple sequences are also allowed in one hint
+ * InputHint lockAxisHint {
+ *     .message = QWidget::tr("%1, %2 or %3 lock X, Y or Z axis"),
+ *     .sequences = { KeyX, KeyY, KeyZ }
+ * }
+ *
+ * // hints can also use sequences consisting of multiple keys
+ * InputHint exitProgramHint {
+ *     .message = QWidget::tr("%1 exit program"),
+ *     .sequences = { {KeyAlt, KeyF4} }
+ * }
+ * @endcode
+ */
 struct InputHint
 {
     enum class UserInput
@@ -225,7 +255,37 @@ struct InputHint
         {}
     };
 
+    /**
+     * @brief Message associated with the hint.
+     *
+     * The message should confirm to rules stated in the documentation of the InputHint class.
+     * Message can contain placeholders like %1, %2 etc. that will then be replaced with graphical
+     * key representation from sequences field.
+     *
+     * Messages for hints should respect these rules:
+     *  1. Start with input, then lowercase letter, hint is not a sentence, e.g. "%1 pick radius".
+     *  2. Keep hints as short as possible, avoid redundancy if context is clear,
+     *     e.g. "%1 pick arc center" instead of "1% pick center of an arc".
+     *  3. Start with modifiers (ctrl, alt, shift, etc.), then mouse inputs, then  normal keys.
+     *  4. Ideally within groups hints should be ordered by frequency of use (more common actions
+     *     should be first).
+     *  5. Try to be specific - instead of "change mode" try creating a dynamic hint with the name of
+     *     the next mode.
+     *  6. If actions are similar but differ in minor detail - they can be combined,
+     *     e.g. "%1 / %2 decrease / increase sides", "%1, %2 or %3 constrain axis".
+     *  7. Remember to use translate function!
+     *  8. Due to limited space available - try to keep the list of actions short, ideally no more
+     *     than 6 hints. Focus on the most common and important actions.
+     *  9. Avoid adding unnecessary hints, e.g. don't show navigation commands as hints, when tools
+     *     are active and don't show hints which are currently not possible due to other actions.
+     * 10. If hints change dynamically - keep common hints between states of the tool used. If given
+     *     action is removed, it is a strong suggestion that it is no longer available.
+     */
     QString message;
+
+    /**
+     * @brief List of sequences to be substituted.
+     */
     std::list<InputSequence> sequences;
 };
 
