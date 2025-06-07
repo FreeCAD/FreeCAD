@@ -181,12 +181,15 @@ void DSHPointController::doEnforceControlParameters(Base::Vector2d& onSketchPos)
 {
     switch (handler->state()) {
         case SelectMode::SeekFirst: {
-            if (onViewParameters[OnViewParameter::First]->isSet) {
-                onSketchPos.x = onViewParameters[OnViewParameter::First]->getValue();
+            auto& firstParam = onViewParameters[OnViewParameter::First];
+            auto& secondParam = onViewParameters[OnViewParameter::Second];
+
+            if (firstParam->isSet) {
+                onSketchPos.x = firstParam->getValue();
             }
 
-            if (onViewParameters[OnViewParameter::Second]->isSet) {
-                onSketchPos.y = onViewParameters[OnViewParameter::Second]->getValue();
+            if (secondParam->isSet) {
+                onSketchPos.y = secondParam->getValue();
             }
         } break;
         default:
@@ -199,23 +202,24 @@ void DSHPointController::adaptParameters(Base::Vector2d onSketchPos)
 {
     switch (handler->state()) {
         case SelectMode::SeekFirst: {
-            if (!onViewParameters[OnViewParameter::First]->isSet) {
+            auto& firstParam = onViewParameters[OnViewParameter::First];
+            auto& secondParam = onViewParameters[OnViewParameter::Second];
+
+            if (!firstParam->isSet) {
                 setOnViewParameterValue(OnViewParameter::First, onSketchPos.x);
             }
 
-            if (!onViewParameters[OnViewParameter::Second]->isSet) {
+            if (!secondParam->isSet) {
                 setOnViewParameterValue(OnViewParameter::Second, onSketchPos.y);
             }
 
             bool sameSign = onSketchPos.x * onSketchPos.y > 0.;
-            onViewParameters[OnViewParameter::First]->setLabelAutoDistanceReverse(!sameSign);
-            onViewParameters[OnViewParameter::Second]->setLabelAutoDistanceReverse(sameSign);
-            onViewParameters[OnViewParameter::First]->setPoints(
-                Base::Vector3d(0., 0., 0.),
-                Base::Vector3d(onSketchPos.x, onSketchPos.y, 0.));
-            onViewParameters[OnViewParameter::Second]->setPoints(
-                Base::Vector3d(0., 0., 0.),
-                Base::Vector3d(onSketchPos.x, onSketchPos.y, 0.));
+            firstParam->setLabelAutoDistanceReverse(!sameSign);
+            secondParam->setLabelAutoDistanceReverse(sameSign);
+            firstParam->setPoints(Base::Vector3d(0., 0., 0.),
+                                  Base::Vector3d(onSketchPos.x, onSketchPos.y, 0.));
+            secondParam->setPoints(Base::Vector3d(0., 0., 0.),
+                                   Base::Vector3d(onSketchPos.x, onSketchPos.y, 0.));
         } break;
         default:
             break;
@@ -227,9 +231,10 @@ void DSHPointController::doChangeDrawSketchHandlerMode()
 {
     switch (handler->state()) {
         case SelectMode::SeekFirst: {
-            if (onViewParameters[OnViewParameter::First]->hasFinishedEditing
-                || onViewParameters[OnViewParameter::Second]->hasFinishedEditing) {
+            auto& firstParam = onViewParameters[OnViewParameter::First];
+            auto& secondParam = onViewParameters[OnViewParameter::Second];
 
+            if (firstParam->hasFinishedEditing || secondParam->hasFinishedEditing) {
                 handler->setState(SelectMode::End);
                 // handler->finish(); // Called by the change of mode
             }
