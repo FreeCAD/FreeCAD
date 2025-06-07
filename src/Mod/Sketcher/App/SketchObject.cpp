@@ -2634,7 +2634,7 @@ void SketchObject::transferFilletConstraints(int geoId1, PointPos posId1, int ge
             // Equal length constraints are dicey for lines because the lines are getting shorter. Safer to
             // delete them and let the user notice the underconstraint.
             // For other geometry like arcs it's safe to keep
-            if ((!preserveLine1EqualConstraints && (line1First || line1Second)) 
+            if ((!preserveLine1EqualConstraints && (line1First || line1Second))
                 || (!preserveLine2EqualConstraints && (line2First || line2Second))) {
                 continue;
             }
