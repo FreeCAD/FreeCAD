@@ -405,7 +405,7 @@ SO_KIT_SOURCE(SoLinearDraggerContainer)
 void SoLinearDraggerContainer::initClass()
 {
     SoLinearDragger::initClass();
-    SO_KIT_INIT_CLASS(SoLinearDraggerContainer, SoDragger, "Dragger");
+    SO_KIT_INIT_CLASS(SoLinearDraggerContainer, SoInteractionKit, "InteractionKit");
 }
 
 SoLinearDraggerContainer::SoLinearDraggerContainer()

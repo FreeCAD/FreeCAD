@@ -111,7 +111,7 @@ private:
     using inherited = SoDragger;
 };
 
-class SoLinearDraggerContainer: public SoDragger
+class SoLinearDraggerContainer: public SoInteractionKit
 {
     SO_KIT_HEADER(SoLinearDraggerContainer);
     SO_KIT_CATALOG_ENTRY_HEADER(draggerSwitch);
@@ -137,7 +137,7 @@ private:
     SoBaseColor* buildColor();
     SoTransform* buildTransform();
 
-    using inherited = SoDragger;
+    using inherited = SoInteractionKit;
 };
 
 }

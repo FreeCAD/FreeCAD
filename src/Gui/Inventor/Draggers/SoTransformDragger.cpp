@@ -415,9 +415,9 @@ SbBool SoTransformDragger::setUpConnections(SbBool onoff, SbBool doitalways)
         }
     }
     else {
-        unregisterChildDragger(tDraggerX);
-        unregisterChildDragger(tDraggerY);
-        unregisterChildDragger(tDraggerZ);
+        unregisterChildDragger(tDraggerX->getDragger());
+        unregisterChildDragger(tDraggerY->getDragger());
+        unregisterChildDragger(tDraggerZ->getDragger());
         unregisterChildDragger(tPlanarDraggerXZ);
         unregisterChildDragger(tPlanarDraggerYZ);
         unregisterChildDragger(tPlanarDraggerZX);
