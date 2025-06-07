@@ -618,6 +618,16 @@ protected:
                                  parameter->setColor(colorManager.dimConstrColor);
                                  onViewValueChanged(i, value);
                              });
+
+            // this gets triggered whenever user deletes content in OVP, we remove the
+            // constraints and unset everything to give user another change to select stuff
+            // with mouse
+            QObject::connect(parameter,
+                             &Gui::EditableDatumLabel::parameterUnset,
+                             [this, parameter]() {
+                                 unsetOnViewParameter(parameter);
+                                 finishControlsChanged();
+                             });
         }
     }
 

@@ -94,6 +94,7 @@ public:
 
 Q_SIGNALS:
     void valueChanged(double val);
+    void parameterUnset();
 
 protected:
     bool eventFilter(QObject* watched, QEvent* event) override;
