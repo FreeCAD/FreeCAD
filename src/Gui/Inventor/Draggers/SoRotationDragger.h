@@ -20,8 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_RDRAGGER_H
-#define GUI_RDRAGGER_H
+#ifndef GUI_ROTATION_DRAGGER_H
+#define GUI_ROTATION_DRAGGER_H
 
 #include <Inventor/draggers/SoDragger.h>
 #include <Inventor/fields/SoSFColor.h>
@@ -84,4 +84,4 @@ private:
 
 }
 
-#endif /* GUI_RDRAGGER_H */
+#endif /* GUI_ROTATION_DRAGGER_H */
