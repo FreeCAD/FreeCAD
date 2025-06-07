@@ -215,6 +215,14 @@ private:
     Sketcher::PointPos refPosId;
     bool deleteOriginal, createSymConstraints;
 
+public:
+    std::list<Gui::InputHint> getToolHints() const override
+    {
+        using enum Gui::InputHint::UserInput;
+
+        return {{QObject::tr("%1 pick axis or edge", "Sketcher Symmetry: hint"), {MouseLeft}}};
+    }
+
     void deleteOriginalGeos()
     {
         std::stringstream stream;
