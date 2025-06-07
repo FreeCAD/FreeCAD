@@ -1093,6 +1093,9 @@ public:
                         selSeq.clear();
                         resetOngoingSequences();
 
+                        // Re-arm hint for next operation
+                        updateHint();
+
                         return true;
                     }
                     _tempOnSequences.insert(*token);
@@ -1106,11 +1109,144 @@ public:
             seqIndex++;
             selFilterGate->setAllowedSelTypes(allowedSelTypes);
         }
+        updateHint();
 
         return true;
     }
 
+    std::list<Gui::InputHint> getToolHints() const override {
+        return lookupConstraintHints(cmd->getName(), selSeq.size());
+    }
+
 private:
+    struct ConstraintHintEntry {
+        std::string commandName;    // FreeCAD command name (e.g., "Sketcher_ConstrainSymmetric")
+        int selectionStep;          // 0-indexed step in the selection sequence
+        std::list<Gui::InputHint> hints;  // Hint text and input types for this step
+    };
+
+    using ConstraintHintTable = std::vector<ConstraintHintEntry>;
+
+    // Constraint hint lookup table
+    // Format: {command_name, selection_step, {hint_text, input_types}}
+    // Steps are 0-indexed and correspond to DrawSketchHandlerGenConstraint::seqIndex
+    // Each step provides contextual guidance for what the user should select next
+    static ConstraintHintTable getConstraintHintTable() {
+        return {
+            // Coincident
+            {"Sketcher_ConstrainCoincidentUnified", 0,
+            {{QObject::tr("%1 pick point or edge"), {Gui::InputHint::UserInput::MouseLeft}}}},
+            {"Sketcher_ConstrainCoincidentUnified", 1,
+            {{QObject::tr("%1 pick second point or edge"), {Gui::InputHint::UserInput::MouseLeft}}}},
+
+            // Distance X/Y
+            {"Sketcher_ConstrainDistanceX", 0,
+            {{QObject::tr("%1 pick point or line"), {Gui::InputHint::UserInput::MouseLeft}}}},
+            {"Sketcher_ConstrainDistanceX", 1,
+            {{QObject::tr("%1 pick second point"), {Gui::InputHint::UserInput::MouseLeft}}}},
+
+            {"Sketcher_ConstrainDistanceY", 0,
+            {{QObject::tr("%1 pick point or line"), {Gui::InputHint::UserInput::MouseLeft}}}},
+            {"Sketcher_ConstrainDistanceY", 1,
+            {{QObject::tr("%1 pick second point"), {Gui::InputHint::UserInput::MouseLeft}}}},
+
+            // Horizontal/Vertical
+            {"Sketcher_ConstrainHorizontal", 0,
+            {{QObject::tr("%1 pick line or two points"), {Gui::InputHint::UserInput::MouseLeft}}}},
+            {"Sketcher_ConstrainHorizontal", 1,
+            {{QObject::tr("%1 pick second point"), {Gui::InputHint::UserInput::MouseLeft}}}},
+
+            {"Sketcher_ConstrainVertical", 0,
+            {{QObject::tr("%1 pick line or two points"), {Gui::InputHint::UserInput::MouseLeft}}}},
+            {"Sketcher_ConstrainVertical", 1,
+            {{QObject::tr("%1 pick second point"), {Gui::InputHint::UserInput::MouseLeft}}}},
+
+            {"Sketcher_ConstrainHorVer", 0,
+            {{QObject::tr("%1 pick line or two points"), {Gui::InputHint::UserInput::MouseLeft}}}},
+            {"Sketcher_ConstrainHorVer", 1,
+            {{QObject::tr("%1 pick second point"), {Gui::InputHint::UserInput::MouseLeft}}}},
+
+            // Block/Lock
+            {"Sketcher_ConstrainBlock", 0,
+            {{QObject::tr("%1 pick edge to block"), {Gui::InputHint::UserInput::MouseLeft}}}},
+
+            {"Sketcher_ConstrainLock", 0,
+            {{QObject::tr("%1 pick point to lock"), {Gui::InputHint::UserInput::MouseLeft}}}},
+
+            // Coincident (individual)
+            {"Sketcher_ConstrainCoincident", 0,
+            {{QObject::tr("%1 pick point or curve"), {Gui::InputHint::UserInput::MouseLeft}}}},
+            {"Sketcher_ConstrainCoincident", 1,
+            {{QObject::tr("%1 pick second point or curve"), {Gui::InputHint::UserInput::MouseLeft}}}},
+
+            // Equal
+            {"Sketcher_ConstrainEqual", 0,
+            {{QObject::tr("%1 pick edge"), {Gui::InputHint::UserInput::MouseLeft}}}},
+            {"Sketcher_ConstrainEqual", 1,
+            {{QObject::tr("%1 pick second edge"), {Gui::InputHint::UserInput::MouseLeft}}}},
+
+            // Radius/Diameter
+            {"Sketcher_ConstrainRadius", 0,
+            {{QObject::tr("%1 pick circle or arc"), {Gui::InputHint::UserInput::MouseLeft}}}},
+
+            {"Sketcher_ConstrainDiameter", 0,
+            {{QObject::tr("%1 pick circle or arc"), {Gui::InputHint::UserInput::MouseLeft}}}},
+
+            // Angle
+            {"Sketcher_ConstrainAngle", 0,
+            {{QObject::tr("%1 pick line"), {Gui::InputHint::UserInput::MouseLeft}}}},
+            {"Sketcher_ConstrainAngle", 1,
+            {{QObject::tr("%1 pick second line"), {Gui::InputHint::UserInput::MouseLeft}}}},
+
+            // Symmetry
+            {"Sketcher_ConstrainSymmetric", 0,
+            {{QObject::tr("%1 pick point"), {Gui::InputHint::UserInput::MouseLeft}}}},
+            {"Sketcher_ConstrainSymmetric", 1,
+            {{QObject::tr("%1 pick second point"), {Gui::InputHint::UserInput::MouseLeft}}}},
+            {"Sketcher_ConstrainSymmetric", 2,
+            {{QObject::tr("%1 pick symmetry line"), {Gui::InputHint::UserInput::MouseLeft}}}},
+
+            // Tangent
+            {"Sketcher_ConstrainTangent", 0,
+            {{QObject::tr("%1 pick curve or endpoint"), {Gui::InputHint::UserInput::MouseLeft}}}},
+            {"Sketcher_ConstrainTangent", 1,
+            {{QObject::tr("%1 pick second curve or endpoint"), {Gui::InputHint::UserInput::MouseLeft}}}},
+            {"Sketcher_ConstrainTangent", 2,
+            {{QObject::tr("%1 pick tangent point"), {Gui::InputHint::UserInput::MouseLeft}}}},
+
+            // Perpendicular
+            {"Sketcher_ConstrainPerpendicular", 0,
+            {{QObject::tr("%1 pick line or endpoint"), {Gui::InputHint::UserInput::MouseLeft}}}},
+            {"Sketcher_ConstrainPerpendicular", 1,
+            {{QObject::tr("%1 pick second line or endpoint"), {Gui::InputHint::UserInput::MouseLeft}}}},
+            {"Sketcher_ConstrainPerpendicular", 2,
+            {{QObject::tr("%1 pick perpendicular point"), {Gui::InputHint::UserInput::MouseLeft}}}},
+
+            // Parallel
+            {"Sketcher_ConstrainParallel", 0,
+            {{QObject::tr("%1 pick line"), {Gui::InputHint::UserInput::MouseLeft}}}},
+            {"Sketcher_ConstrainParallel", 1,
+            {{QObject::tr("%1 pick second line"), {Gui::InputHint::UserInput::MouseLeft}}}},
+
+            // Distance
+            {"Sketcher_ConstrainDistance", 0,
+            {{QObject::tr("%1 pick point, line or circle"), {Gui::InputHint::UserInput::MouseLeft}}}},
+            {"Sketcher_ConstrainDistance", 1,
+            {{QObject::tr("%1 pick second point, line or circle"), {Gui::InputHint::UserInput::MouseLeft}}}},
+        };
+    }
+
+    static std::list<Gui::InputHint> lookupConstraintHints(const std::string& commandName, int selectionStep) {
+        const auto constraintHintTable = getConstraintHintTable();
+
+        auto it = std::ranges::find_if(constraintHintTable,
+                                [&commandName, selectionStep](const ConstraintHintEntry& entry) {
+                                    return entry.commandName == commandName && entry.selectionStep == selectionStep;
+                                });
+
+        return (it != constraintHintTable.end()) ? it->hints : std::list<Gui::InputHint>{};
+    }
+
     void activated() override
     {
         selFilterGate = new GenericConstraintSelection(sketchgui->getObject());
@@ -1606,6 +1742,8 @@ public:
                 ss.str().c_str());
             sketchgui->draw(false, false); // Redraw
         }
+
+        updateHint();
         return true;
     }
 
@@ -1620,6 +1758,17 @@ public:
             DrawSketchHandler::quit();
         }
     }
+
+std::list<Gui::InputHint> getToolHints() const override {
+    if (selectionEmpty()) {
+        return {{QObject::tr("%1 pick geometry"), {Gui::InputHint::UserInput::MouseLeft}}};
+    } else if (selPoints.size() == 1 && selLine.empty() && selCircleArc.empty()) {
+        return {{QObject::tr("%1 pick second point or geometry"), {Gui::InputHint::UserInput::MouseLeft}}};
+    } else {
+        return {{QObject::tr("%1 place dimension"), {Gui::InputHint::UserInput::MouseLeft}}};
+    }
+}
+
 protected:
     SpecialConstraint specialConstraint;
     AvailableConstraint availableConstraint;
@@ -1763,7 +1912,7 @@ protected:
             && !contains(selEllipseAndCo, elem);
     }
 
-    bool selectionEmpty()
+    bool selectionEmpty() const
     {
         return selPoints.empty() && selLine.empty() && selCircleArc.empty() && selEllipseAndCo.empty();
     }
