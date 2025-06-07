@@ -308,9 +308,11 @@ def insert(filename,docname):
         if "." in i:
             i = i.split(".")[0]
     meshName = i
+    group = None
     "called when freecad wants to import a file"
     try:
         doc = FreeCAD.getDocument(docname)
+        group = doc.addObject("App::DocumentObjectGroup", meshName)
     except NameError:
         doc = FreeCAD.newDocument(docname)
     FreeCAD.ActiveDocument = doc
@@ -360,7 +362,7 @@ def insert(filename,docname):
                         colortable[mname] = [color,trans]
         elif line[:2] == "o ":
             if activeobject:
-                makeMesh(doc,activeobject,verts,medges,facets,material,colortable)
+                makeMesh(doc,group,activeobject,verts,medges,facets,material,colortable)
             material = None
             medges = []
             facets = []
@@ -389,11 +391,11 @@ def insert(filename,docname):
         elif line[:7] == "usemtl ":
             material = line[7:]
     if activeobject:
-        makeMesh(doc,activeobject,verts,medges,facets,material,colortable)
+        makeMesh(doc,group,activeobject,verts,medges,facets,material,colortable)
     FreeCAD.Console.PrintMessage(translate("Arch","Successfully imported") + ' ' + filename + "\n")
     return doc
 
-def makeMesh(doc,activeobject,verts,edges,facets,material,colortable):
+def makeMesh(doc,group,activeobject,verts,edges,facets,material,colortable):
     mfacets = []
     if facets:
         for facet in facets:
@@ -419,6 +421,8 @@ def makeMesh(doc,activeobject,verts,edges,facets,material,colortable):
             mobj.ViewObject.ShapeColor = colortable[material][0]
             if colortable[material][1] is not None:
                 mobj.ViewObject.Transparency = colortable[material][1]
+        if group:
+            group.addObjects([mobj])
 
     # make polylines from edges
     medges = []
@@ -459,5 +463,7 @@ def makeMesh(doc,activeobject,verts,edges,facets,material,colortable):
                     wire.ViewObject.Transparency = colortable[material][1]
             features.append(wire)
         part.addObjects(features)
+        if group:
+            group.addObjects([part])
 
     doc.recompute()
