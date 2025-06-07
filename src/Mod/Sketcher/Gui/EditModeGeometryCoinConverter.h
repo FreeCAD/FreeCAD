@@ -168,7 +168,7 @@ private:
     std::vector<std::vector<std::vector<unsigned int>>> Index;
     std::vector<std::vector<Base::Vector3d>> Notes;
     std::vector<std::vector<std::string>> Texts;
-    
+
     // temporal counters, one per layer
     std::vector<int> pointCounter;
 

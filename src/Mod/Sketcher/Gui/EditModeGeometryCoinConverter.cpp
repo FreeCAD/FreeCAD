@@ -331,7 +331,7 @@ void EditModeGeometryCoinConverter::convert(const Sketcher::GeoListFacade& geoli
         text->justification = SoText2::CENTER;
         text->spacing = 1.0f;
         text->string.setNum(Notes[l].size());
-        SbString *text_strings = text->string.startEditing();
+        SbString* text_strings = text->string.startEditing();
 
         i = 0;  // setting up the note set
         for (auto& note : Notes[l]) {

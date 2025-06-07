@@ -1894,7 +1894,6 @@ void CmdSketcherCreateNote::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     ActivateHandler(getActiveGuiDocument(), std::make_unique<DrawSketchHandlerNote>());
-    
 }
 
 bool CmdSketcherCreateNote::isActive()

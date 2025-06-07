@@ -28,6 +28,7 @@ from FreeCAD import Vector
 
 App = FreeCAD
 
+
 class TestSketchNote(unittest.TestCase):
     def setUp(self):
         self.doc = FreeCAD.newDocument("SketchNoteTest")
@@ -43,6 +44,6 @@ class TestSketchNote(unittest.TestCase):
         note = sketch.Geometry[idx]
 
         self.assertEqual(str(note_geom).strip(), str(note).strip())
-    
+
     def tearDown(self):
         FreeCAD.closeDocument(self.doc.Name)

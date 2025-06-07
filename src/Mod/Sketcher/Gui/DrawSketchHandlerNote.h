@@ -45,9 +45,9 @@ extern GeometryCreationMode geometryCreationMode;  // defined in CommandCreateGe
 class DrawSketchHandlerNote;
 
 using DSHNoteController = DrawSketchController<DrawSketchHandlerNote,
-                                                StateMachines::OneSeekEnd,
-                                                /*PAutoConstraintSize =*/1,
-                                                /*OnViewParametersT =*/OnViewParameters<2>>;
+                                               StateMachines::OneSeekEnd,
+                                               /*PAutoConstraintSize =*/1,
+                                               /*OnViewParametersT =*/OnViewParameters<2>>;
 
 using DrawSketchHandlerNoteBase = DrawSketchControllableHandler<DSHNoteController>;
 
@@ -75,20 +75,19 @@ private:
             } break;
             default:
                 break;
-        }    
+        }
     }
 
     void executeCommands() override
     {
         try {
             bool ok;
-            QString text = QInputDialog::getText(
-                nullptr,  
-                QObject::tr("Create Note"),
-                QObject::tr("Note text:"),
-                QLineEdit::Normal,
-                QString(),       
-                &ok);
+            QString text = QInputDialog::getText(nullptr,
+                                                 QObject::tr("Create Note"),
+                                                 QObject::tr("Note text:"),
+                                                 QLineEdit::Normal,
+                                                 QString(),
+                                                 &ok);
             if (!ok || text.isEmpty()) {
                 Gui::Command::abortCommand();
                 return;
@@ -113,7 +112,7 @@ private:
 
     void createAutoConstraints() override
     {
-        
+
         if (!sugConstraints[0].empty()) {
             DrawSketchHandler::createAutoConstraints(sugConstraints[0],
                                                      getHighestCurveIndex(),
@@ -139,7 +138,6 @@ private:
 
 private:
     Base::Vector2d editNote;
-    
 };
 
 template<>

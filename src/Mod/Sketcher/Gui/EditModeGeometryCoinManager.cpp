@@ -102,16 +102,17 @@ void EditModeGeometryCoinManager::processGeometry(const GeoListFacade& geolistfa
     editModeScenegraphNodes.NotesGroup->enable.finishEditing();
 
     // Define the coin nodes that will be filled in with the geometry layers
-    GeometryLayerNodes geometrylayernodes {editModeScenegraphNodes.PointsMaterials,
-                                           editModeScenegraphNodes.PointsCoordinate,
-                                           editModeScenegraphNodes.CurvesMaterials,
-                                           editModeScenegraphNodes.CurvesCoordinate,
-                                           editModeScenegraphNodes.CurveSet,
-                                           editModeScenegraphNodes.NotesMaterials,
-                                           editModeScenegraphNodes.NotesCoordinates,
-                                           editModeScenegraphNodes.NotesFonts,
-                                           editModeScenegraphNodes.NotesTexts,
-                                           };
+    GeometryLayerNodes geometrylayernodes {
+        editModeScenegraphNodes.PointsMaterials,
+        editModeScenegraphNodes.PointsCoordinate,
+        editModeScenegraphNodes.CurvesMaterials,
+        editModeScenegraphNodes.CurvesCoordinate,
+        editModeScenegraphNodes.CurveSet,
+        editModeScenegraphNodes.NotesMaterials,
+        editModeScenegraphNodes.NotesCoordinates,
+        editModeScenegraphNodes.NotesFonts,
+        editModeScenegraphNodes.NotesTexts,
+    };
 
     // process geometry layers
     EditModeGeometryCoinConverter gcconv(viewProvider,
@@ -748,7 +749,7 @@ void EditModeGeometryCoinManager::createEditModeNoteInventorNodes()
 
         SoMaterialBinding* MtlBind = new SoMaterialBinding;
         MtlBind->setName(concat("NotesMaterialBinding", i).c_str());
-        MtlBind->value = SoMaterialBinding::PER_VERTEX; //OVERALL?
+        MtlBind->value = SoMaterialBinding::PER_VERTEX;  // OVERALL?
         sep->addChild(MtlBind);
 
         auto coords = new SoTranslation;
