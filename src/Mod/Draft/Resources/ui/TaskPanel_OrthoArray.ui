@@ -39,10 +39,59 @@
      </property>
      <layout class="QGridLayout" name="gridLayout_4">
       <item row="0" column="0">
-       <widget class="QLabel" name="label_icon">
-        <property name="text">
-         <string notr="true">(Placeholder for the icon)</string>
+       <widget class="QGroupBox" name="group_axis_mode">
+        <property name="toolTip">
+         <string>Toggle between Orthogonal mode and Linear mode. In Linear mode, you can select which axis to use.</string>
         </property>
+        <property name="title">
+         <string>Axis mode</string>
+        </property>
+        <layout class="QGridLayout" name="gridLayout_axis_mode">
+         <item row="0" column="0">
+          <widget class="QPushButton" name="button_linear_mode">
+           <property name="text">
+            <string>Switch to linear mode</string>
+           </property>
+           <property name="checkable">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="0">
+          <layout class="QGridLayout" name="grid_axis_select">
+           <item row="0" column="0">
+            <widget class="QRadioButton" name="radiobutton_x_axis">
+             <property name="text">
+              <string>X Axis</string>
+             </property>
+             <property name="checked">
+              <bool>true</bool>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="0">
+            <widget class="QRadioButton" name="radiobutton_y_axis">
+             <property name="text">
+              <string>Y Axis</string>
+             </property>
+             <property name="checked">
+              <bool>false</bool>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="0">
+            <widget class="QRadioButton" name="radiobutton_z_axis">
+             <property name="text">
+              <string>Z Axis</string>
+             </property>
+             <property name="checked">
+              <bool>false</bool>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+        </layout>
        </widget>
       </item>
       <item row="1" column="0">
@@ -119,6 +168,18 @@ The number must be at least 1 in each direction.</string>
            </item>
           </layout>
          </item>
+        </layout>
+       </widget>
+      </item>
+      <item row="2" column="0">
+       <widget class="QGroupBox" name="group_linearmode">
+        <property name="toolTip">
+         <string>Currently selected axis</string>
+        </property>
+        <property name="title">
+         <string></string>
+        </property>
+        <layout class="QGridLayout" name="gridLayout_5">
         </layout>
        </widget>
       </item>

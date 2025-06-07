@@ -506,6 +506,18 @@ def _get_param_dictionary():
         "Wall":                        ("bool",      False),
     }
 
+    start_val = App.Units.Quantity(100.0, App.Units.Length).Value
+    param_dict["Mod/Draft/OrthoArrayLinearMode"] = {
+        "LinearModeOn": ("bool", True),
+        "AxisSelected": ("string", "X"),
+        "XInterval": ("float", start_val),
+        "YInterval": ("float", start_val),
+        "ZInterval": ("float", start_val),
+        "XNumOfElements": ("int", 2),
+        "YNumOfElements": ("int", 2),
+        "ZNumOfElements": ("int", 2)
+    }
+
     # Arch parameters that are not in the preferences:
     param_dict["Mod/Arch"] = {
         "applyConstructionStyle":      ("bool",      True),
