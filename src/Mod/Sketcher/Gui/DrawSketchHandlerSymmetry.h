@@ -126,8 +126,6 @@ private:
             default:
                 break;
         }
-
-        updateHint();
     }
 
     void executeCommands() override
@@ -217,7 +215,6 @@ private:
     Sketcher::PointPos refPosId;
     bool deleteOriginal, createSymConstraints;
 
-    // Add hint structures here
     struct HintEntry
     {
         int stateValue;
@@ -232,7 +229,9 @@ private:
 public:
     std::list<Gui::InputHint> getToolHints() const override
     {
-        return lookupSymmetryHints(static_cast<int>(state()));
+        using enum Gui::InputHint::UserInput;
+
+        return {{QObject::tr("%1 pick axis or edge", "Sketcher Symmetry: hint"), {MouseLeft}}};
     }
 
     void deleteOriginalGeos()
@@ -274,22 +273,6 @@ public:
         }
     }
 };
-
-DrawSketchHandlerSymmetry::HintTable DrawSketchHandlerSymmetry::getSymmetryHintTable()
-{
-    return {{0, {{QObject::tr("%1 pick axis or edge"), {Gui::InputHint::UserInput::MouseLeft}}}}};
-}
-
-std::list<Gui::InputHint> DrawSketchHandlerSymmetry::lookupSymmetryHints(int stateValue)
-{
-    const auto symmetryHintTable = getSymmetryHintTable();
-
-    auto it = std::ranges::find_if(symmetryHintTable, [stateValue](const HintEntry& entry) {
-        return entry.stateValue == stateValue;
-    });
-
-    return (it != symmetryHintTable.end()) ? it->hints : std::list<Gui::InputHint> {};
-}
 
 template<>
 void DSHSymmetryController::configureToolWidget()
