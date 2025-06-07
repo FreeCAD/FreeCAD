@@ -49,16 +49,23 @@ using namespace SurfaceGui;
 class BlendCurvePanel::EdgeSelection: public Gui::SelectionFilterGate
 {
 public:
-    EdgeSelection(Surface::FeatureBlendCurve* editedObject)
+    explicit EdgeSelection(Surface::FeatureBlendCurve* editedObject)
         : Gui::SelectionFilterGate(nullPointer())
         , editedObject(editedObject)
     {}
     ~EdgeSelection() override = default;
+
+    EdgeSelection(const EdgeSelection&) = delete;
+    EdgeSelection& operator=(const EdgeSelection&) = delete;
+    EdgeSelection(EdgeSelection&&) = delete;
+    EdgeSelection& operator=(EdgeSelection&&) = delete;
     /**
      * Allow the user to pick only edges.
      */
-    bool allow(App::Document*, App::DocumentObject* pObj, const char* sSubName) override
+    bool allow(App::Document* doc, App::DocumentObject* pObj, const char* sSubName) override
     {
+        (void)doc;
+
         // don't allow references to itself
         if (pObj == editedObject) {
             return false;
@@ -440,5 +447,3 @@ bool TaskBlendCurve::reject()
 {
     return widget->reject();
 }
-
-#include "moc_TaskBlendCurve.cpp"

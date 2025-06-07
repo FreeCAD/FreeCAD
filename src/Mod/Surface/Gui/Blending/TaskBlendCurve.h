@@ -108,7 +108,7 @@ class TaskBlendCurve: public Gui::TaskView::TaskDialog
     Q_OBJECT
 
 public:
-    TaskBlendCurve(ViewProviderBlendCurve* vp);
+    explicit TaskBlendCurve(ViewProviderBlendCurve* vp);
 
 public:
     void open() override;
