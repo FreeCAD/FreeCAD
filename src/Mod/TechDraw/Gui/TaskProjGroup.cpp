@@ -577,7 +577,7 @@ void TaskProjGroup::spacingChanged()
     }
     multiView->spacingX.setValue(ui->sbXSpacing->value().getValue());
     multiView->spacingY.setValue(ui->sbYSpacing->value().getValue());
-    multiView->recomputeFeature();
+    multiView->recomputeChildren();
 }
 
 void TaskProjGroup::updateTask()
@@ -846,6 +846,14 @@ bool TaskProjGroup::reject()
         //set the DPG and its views back to entry state.
         if (Gui::Command::hasPendingCommand()) {
             Gui::Command::abortCommand();
+        }
+        // Restore the original spacing values if multiView is valid
+        if (multiView) {
+            multiView->spacingX.setValue(m_saveSpacingX);
+            multiView->spacingY.setValue(m_saveSpacingY);
+
+            // Recompute with restored values to update the model
+            multiView->recomputeChildren();
         }
     }
     Gui::Command::runCommand(Gui::Command::Gui, "Gui.ActiveDocument.resetEdit()");
