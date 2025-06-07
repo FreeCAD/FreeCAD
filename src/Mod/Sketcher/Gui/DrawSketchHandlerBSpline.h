@@ -958,19 +958,25 @@ void DSHBSplineControllerBase::doEnforceControlParameters(Base::Vector2d& onSket
 {
     switch (handler->state()) {
         case SelectMode::SeekFirst: {
-            if (onViewParameters[OnViewParameter::First]->isSet) {
-                onSketchPos.x = onViewParameters[OnViewParameter::First]->getValue();
+            auto& firstParam = onViewParameters[OnViewParameter::First];
+            auto& secondParam = onViewParameters[OnViewParameter::Second];
+
+            if (firstParam->isSet) {
+                onSketchPos.x = firstParam->getValue();
             }
 
-            if (onViewParameters[OnViewParameter::Second]->isSet) {
-                onSketchPos.y = onViewParameters[OnViewParameter::Second]->getValue();
+            if (secondParam->isSet) {
+                onSketchPos.y = secondParam->getValue();
             }
         } break;
         case SelectMode::SeekSecond: {
+            auto& thirdParam = onViewParameters[OnViewParameter::Third];
+            auto& fourthParam = onViewParameters[OnViewParameter::Fourth];
+
             if (handler->resetSeekSecond) {
                 handler->resetSeekSecond = false;
-                unsetOnViewParameter(onViewParameters[OnViewParameter::Third].get());
-                unsetOnViewParameter(onViewParameters[OnViewParameter::Fourth].get());
+                unsetOnViewParameter(thirdParam.get());
+                unsetOnViewParameter(fourthParam.get());
                 setFocusToOnViewParameter(OnViewParameter::Third);
                 return;
             }
@@ -983,10 +989,10 @@ void DSHBSplineControllerBase::doEnforceControlParameters(Base::Vector2d& onSket
             }
             double length = dir.Length();
 
-            if (onViewParameters[OnViewParameter::Third]->isSet) {
-                length = onViewParameters[OnViewParameter::Third]->getValue();
+            if (thirdParam->isSet) {
+                length = thirdParam->getValue();
                 if (length < Precision::Confusion()) {
-                    unsetOnViewParameter(onViewParameters[OnViewParameter::Third].get());
+                    unsetOnViewParameter(thirdParam.get());
                     return;
                 }
 
@@ -1000,18 +1006,16 @@ void DSHBSplineControllerBase::doEnforceControlParameters(Base::Vector2d& onSket
                 }
             }
 
-            if (onViewParameters[OnViewParameter::Fourth]->isSet) {
-                double angle =
-                    Base::toRadians(onViewParameters[OnViewParameter::Fourth]->getValue());
+            if (fourthParam->isSet) {
+                double angle = Base::toRadians(fourthParam->getValue());
                 onSketchPos.x = prevPoint.x + cos(angle) * length;
                 onSketchPos.y = prevPoint.y + sin(angle) * length;
             }
 
-            if (onViewParameters[OnViewParameter::Third]->isSet
-                && onViewParameters[OnViewParameter::Fourth]->isSet
+            if (thirdParam->isSet && fourthParam->isSet
                 && (onSketchPos - prevPoint).Length() < Precision::Confusion()) {
-                unsetOnViewParameter(onViewParameters[OnViewParameter::Third].get());
-                unsetOnViewParameter(onViewParameters[OnViewParameter::Fourth].get());
+                unsetOnViewParameter(thirdParam.get());
+                unsetOnViewParameter(fourthParam.get());
             }
         } break;
         default:
@@ -1024,23 +1028,27 @@ void DSHBSplineController::adaptParameters(Base::Vector2d onSketchPos)
 {
     switch (handler->state()) {
         case SelectMode::SeekFirst: {
-            if (!onViewParameters[OnViewParameter::First]->isSet) {
+            auto& firstParam = onViewParameters[OnViewParameter::First];
+            auto& secondParam = onViewParameters[OnViewParameter::Second];
+
+            if (!firstParam->isSet) {
                 setOnViewParameterValue(OnViewParameter::First, onSketchPos.x);
             }
 
-            if (!onViewParameters[OnViewParameter::Second]->isSet) {
+            if (!secondParam->isSet) {
                 setOnViewParameterValue(OnViewParameter::Second, onSketchPos.y);
             }
 
             bool sameSign = onSketchPos.x * onSketchPos.y > 0.;
-            onViewParameters[OnViewParameter::First]->setLabelAutoDistanceReverse(!sameSign);
-            onViewParameters[OnViewParameter::Second]->setLabelAutoDistanceReverse(sameSign);
-            onViewParameters[OnViewParameter::First]->setPoints(Base::Vector3d(),
-                                                                toVector3d(onSketchPos));
-            onViewParameters[OnViewParameter::Second]->setPoints(Base::Vector3d(),
-                                                                 toVector3d(onSketchPos));
+            firstParam->setLabelAutoDistanceReverse(!sameSign);
+            secondParam->setLabelAutoDistanceReverse(sameSign);
+            firstParam->setPoints(Base::Vector3d(), toVector3d(onSketchPos));
+            secondParam->setPoints(Base::Vector3d(), toVector3d(onSketchPos));
         } break;
         case SelectMode::SeekSecond: {
+            auto& thirdParam = onViewParameters[OnViewParameter::Third];
+            auto& fourthParam = onViewParameters[OnViewParameter::Fourth];
+
             Base::Vector2d prevPoint;
             if (!handler->points.empty()) {
                 prevPoint = handler->getLastPoint();
@@ -1050,20 +1058,20 @@ void DSHBSplineController::adaptParameters(Base::Vector2d onSketchPos)
             Base::Vector3d end = toVector3d(onSketchPos);
             Base::Vector3d vec = end - start;
 
-            if (!onViewParameters[OnViewParameter::Third]->isSet) {
+            if (!thirdParam->isSet) {
                 setOnViewParameterValue(OnViewParameter::Third, vec.Length());
             }
 
             double range = (onSketchPos - prevPoint).Angle();
-            if (!onViewParameters[OnViewParameter::Fourth]->isSet) {
+            if (!fourthParam->isSet) {
                 setOnViewParameterValue(OnViewParameter::Fourth,
                                         Base::toDegrees(range),
                                         Base::Unit::Angle);
             }
 
-            onViewParameters[OnViewParameter::Third]->setPoints(start, end);
-            onViewParameters[OnViewParameter::Fourth]->setPoints(start, Base::Vector3d());
-            onViewParameters[OnViewParameter::Fourth]->setLabelRange(range);
+            thirdParam->setPoints(start, end);
+            fourthParam->setPoints(start, Base::Vector3d());
+            fourthParam->setLabelRange(range);
         } break;
         default:
             break;
@@ -1075,20 +1083,24 @@ void DSHBSplineController::doChangeDrawSketchHandlerMode()
 {
     switch (handler->state()) {
         case SelectMode::SeekFirst: {
-            if (onViewParameters[OnViewParameter::First]->isSet
-                && onViewParameters[OnViewParameter::Second]->isSet) {
-                double x = onViewParameters[OnViewParameter::First]->getValue();
-                double y = onViewParameters[OnViewParameter::Second]->getValue();
+            auto& firstParam = onViewParameters[OnViewParameter::First];
+            auto& secondParam = onViewParameters[OnViewParameter::Second];
+
+            if (firstParam->isSet && secondParam->isSet) {
+                double x = firstParam->getValue();
+                double y = secondParam->getValue();
                 handler->onButtonPressed(Base::Vector2d(x, y));
             }
         } break;
         case SelectMode::SeekSecond: {
-            if (onViewParameters[OnViewParameter::Third]->hasFinishedEditing
-                || onViewParameters[OnViewParameter::Fourth]->hasFinishedEditing) {
+            auto& thirdParam = onViewParameters[OnViewParameter::Third];
+            auto& fourthParam = onViewParameters[OnViewParameter::Fourth];
+
+            if (thirdParam->hasFinishedEditing || fourthParam->hasFinishedEditing) {
                 handler->canGoToNextMode();  // its not going to next mode
 
-                unsetOnViewParameter(onViewParameters[OnViewParameter::Third].get());
-                unsetOnViewParameter(onViewParameters[OnViewParameter::Fourth].get());
+                unsetOnViewParameter(thirdParam.get());
+                unsetOnViewParameter(fourthParam.get());
             }
         } break;
         default:

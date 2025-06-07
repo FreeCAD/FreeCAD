@@ -555,21 +555,24 @@ void DSHRotateControllerBase::doEnforceControlParameters(Base::Vector2d& onSketc
 
     switch (handler->state()) {
         case SelectMode::SeekFirst: {
-            if (onViewParameters[OnViewParameter::First]->isSet) {
-                onSketchPos.x = onViewParameters[OnViewParameter::First]->getValue();
+            auto& firstParam = onViewParameters[OnViewParameter::First];
+            auto& secondParam = onViewParameters[OnViewParameter::Second];
+
+            if (firstParam->isSet) {
+                onSketchPos.x = firstParam->getValue();
             }
 
-            if (onViewParameters[OnViewParameter::Second]->isSet) {
-                onSketchPos.y = onViewParameters[OnViewParameter::Second]->getValue();
+            if (secondParam->isSet) {
+                onSketchPos.y = secondParam->getValue();
             }
         } break;
         case SelectMode::SeekSecond: {
-            if (onViewParameters[OnViewParameter::Third]->isSet) {
+            auto& thirdParam = onViewParameters[OnViewParameter::Third];
 
-                double arcAngle =
-                    Base::toRadians(onViewParameters[OnViewParameter::Third]->getValue());
+            if (thirdParam->isSet) {
+                double arcAngle = Base::toRadians(thirdParam->getValue());
                 if (fmod(fabs(arcAngle), 2 * std::numbers::pi) < Precision::Confusion()) {
-                    unsetOnViewParameter(onViewParameters[OnViewParameter::Third].get());
+                    unsetOnViewParameter(thirdParam.get());
                     return;
                 }
                 onSketchPos.x = handler->centerPoint.x + 1;
@@ -577,12 +580,12 @@ void DSHRotateControllerBase::doEnforceControlParameters(Base::Vector2d& onSketc
             }
         } break;
         case SelectMode::SeekThird: {
-            if (onViewParameters[OnViewParameter::Fourth]->isSet) {
+            auto& fourthParam = onViewParameters[OnViewParameter::Fourth];
 
-                double arcAngle =
-                    Base::toRadians(onViewParameters[OnViewParameter::Fourth]->getValue());
+            if (fourthParam->isSet) {
+                double arcAngle = Base::toRadians(fourthParam->getValue());
                 if (fmod(fabs(arcAngle), 2 * std::numbers::pi) < Precision::Confusion()) {
-                    unsetOnViewParameter(onViewParameters[OnViewParameter::Fourth].get());
+                    unsetOnViewParameter(fourthParam.get());
                     return;
                 }
 
@@ -600,45 +603,50 @@ void DSHRotateController::adaptParameters(Base::Vector2d onSketchPos)
 {
     switch (handler->state()) {
         case SelectMode::SeekFirst: {
-            if (!onViewParameters[OnViewParameter::First]->isSet) {
+            auto& firstParam = onViewParameters[OnViewParameter::First];
+            auto& secondParam = onViewParameters[OnViewParameter::Second];
+
+            if (!firstParam->isSet) {
                 setOnViewParameterValue(OnViewParameter::First, onSketchPos.x);
             }
 
-            if (!onViewParameters[OnViewParameter::Second]->isSet) {
+            if (!secondParam->isSet) {
                 setOnViewParameterValue(OnViewParameter::Second, onSketchPos.y);
             }
 
             bool sameSign = onSketchPos.x * onSketchPos.y > 0.;
-            onViewParameters[OnViewParameter::First]->setLabelAutoDistanceReverse(!sameSign);
-            onViewParameters[OnViewParameter::Second]->setLabelAutoDistanceReverse(sameSign);
-            onViewParameters[OnViewParameter::First]->setPoints(Base::Vector3d(),
-                                                                toVector3d(onSketchPos));
-            onViewParameters[OnViewParameter::Second]->setPoints(Base::Vector3d(),
-                                                                 toVector3d(onSketchPos));
+            firstParam->setLabelAutoDistanceReverse(!sameSign);
+            secondParam->setLabelAutoDistanceReverse(sameSign);
+            firstParam->setPoints(Base::Vector3d(), toVector3d(onSketchPos));
+            secondParam->setPoints(Base::Vector3d(), toVector3d(onSketchPos));
         } break;
         case SelectMode::SeekSecond: {
+            auto& thirdParam = onViewParameters[OnViewParameter::Third];
+
             double range = Base::toDegrees(handler->startAngle);
-            if (!onViewParameters[OnViewParameter::Third]->isSet) {
+            if (!thirdParam->isSet) {
                 setOnViewParameterValue(OnViewParameter::Third, range, Base::Unit::Angle);
             }
 
             Base::Vector3d start = toVector3d(handler->centerPoint);
 
-            onViewParameters[OnViewParameter::Third]->setPoints(start, Base::Vector3d());
-            onViewParameters[OnViewParameter::Third]->setLabelRange(handler->startAngle);
+            thirdParam->setPoints(start, Base::Vector3d());
+            thirdParam->setLabelRange(handler->startAngle);
         } break;
         case SelectMode::SeekThird: {
+            auto& fourthParam = onViewParameters[OnViewParameter::Fourth];
+
             double range = Base::toDegrees(handler->totalAngle);
 
-            if (!onViewParameters[OnViewParameter::Fourth]->isSet) {
+            if (!fourthParam->isSet) {
                 setOnViewParameterValue(OnViewParameter::Fourth, range, Base::Unit::Angle);
             }
 
             Base::Vector3d start = toVector3d(handler->centerPoint);
-            onViewParameters[OnViewParameter::Fourth]->setPoints(start, Base::Vector3d());
+            fourthParam->setPoints(start, Base::Vector3d());
 
-            onViewParameters[OnViewParameter::Fourth]->setLabelStartAngle(handler->startAngle);
-            onViewParameters[OnViewParameter::Fourth]->setLabelRange(handler->totalAngle);
+            fourthParam->setLabelStartAngle(handler->startAngle);
+            fourthParam->setLabelRange(handler->totalAngle);
         } break;
         default:
             break;
@@ -650,23 +658,25 @@ void DSHRotateController::doChangeDrawSketchHandlerMode()
 {
     switch (handler->state()) {
         case SelectMode::SeekFirst: {
-            if (onViewParameters[OnViewParameter::First]->isSet
-                && onViewParameters[OnViewParameter::Second]->isSet) {
+            auto& firstParam = onViewParameters[OnViewParameter::First];
+            auto& secondParam = onViewParameters[OnViewParameter::Second];
 
+            if (firstParam->isSet && secondParam->isSet) {
                 handler->setState(SelectMode::SeekSecond);
             }
         } break;
         case SelectMode::SeekSecond: {
-            if (onViewParameters[OnViewParameter::Third]->hasFinishedEditing) {
-                handler->totalAngle =
-                    Base::toRadians(onViewParameters[OnViewParameter::Third]->getValue());
+            auto& thirdParam = onViewParameters[OnViewParameter::Third];
 
+            if (thirdParam->hasFinishedEditing) {
+                handler->totalAngle = Base::toRadians(thirdParam->getValue());
                 handler->setState(SelectMode::End);
             }
         } break;
         case SelectMode::SeekThird: {
-            if (onViewParameters[OnViewParameter::Fourth]->hasFinishedEditing) {
+            auto& fourthParam = onViewParameters[OnViewParameter::Fourth];
 
+            if (fourthParam->hasFinishedEditing) {
                 handler->setState(SelectMode::End);
             }
         } break;
