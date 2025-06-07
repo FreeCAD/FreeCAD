@@ -80,8 +80,16 @@ jobs:
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
         with:
           submodules: true
+
       - name: Install FreeCAD dependencies
         run: ./package/ubuntu/install-apt-packages.sh
+
+      - name: Install FreeCAD Python test dependencies
+        run: |
+          sudo apt-get update -y -qq
+          sudo apt-get install -y -qq python3-pip
+          python3 -m pip install --upgrade pip
+          python3 -m pip install ifcopenshell==0.8.2
 
       - name: Make needed directories, files and initializations
         id: Init
