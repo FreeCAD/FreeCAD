@@ -22,7 +22,8 @@
 
 import FreeCAD
 import Path
-import PathScripts
+
+# import PathScripts
 import traceback
 
 from PathScripts.PathUtils import loopdetect
@@ -35,7 +36,8 @@ from PySide.QtCore import QT_TRANSLATE_NOOP
 
 if FreeCAD.GuiUp:
     import FreeCADGui
-    from PySide import QtCore
+
+    # from PySide import QtCore
     from PySide import QtGui
 
 # translate = FreeCAD.Qt.translate
@@ -202,9 +204,22 @@ class _CopyOperation:
             return False
 
     def Activated(self):
-        for sel in FreeCADGui.Selection.getSelectionEx():
-            jobname = findParentJob(sel.Object).Name
-            addToJob(FreeCAD.ActiveDocument.copyObject(sel.Object, False), jobname)
+        for sel in FreeCADGui.Selection.getSelection():
+            jobname = findParentJob(sel).Name
+            newObj = FreeCAD.ActiveDocument.copyObject(sel, False)
+            addToJob(newObj, jobname)
+            for property in newObj.PropertiesList:
+                if property == "Label":
+                    newObj.Label = f"{sel.Name}_expCopy"
+                elif property not in [
+                    "_ElementMapVersion",
+                    "ExpressionEngine",
+                    "removalshape",
+                    "CycleTime",
+                    "Visibility",
+                ]:
+                    expression = f"{sel.Name}.{property}"
+                    newObj.setExpression(property, expression)
 
 
 if FreeCAD.GuiUp:
