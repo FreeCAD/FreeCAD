@@ -215,17 +215,6 @@ private:
     Sketcher::PointPos refPosId;
     bool deleteOriginal, createSymConstraints;
 
-    struct HintEntry
-    {
-        int stateValue;
-        std::list<Gui::InputHint> hints;
-    };
-
-    using HintTable = std::vector<HintEntry>;
-
-    static HintTable getSymmetryHintTable();
-    static std::list<Gui::InputHint> lookupSymmetryHints(int stateValue);
-
 public:
     std::list<Gui::InputHint> getToolHints() const override
     {
