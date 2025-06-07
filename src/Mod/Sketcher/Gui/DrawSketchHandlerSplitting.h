@@ -187,6 +187,22 @@ private:
     {
         return QStringLiteral("Sketcher_Pointer_Splitting");
     }
+
+    enum State
+    {
+        WaitingForEdge
+    };
+
+private:
+    std::vector<Base::Vector2d> EditMarkers;
+    bool mousePressed = false;
+
+public:
+    std::list<Gui::InputHint> getToolHints() const override
+    {
+        return {{QObject::tr("%1 pick edge to split", "Sketcher Splitting: hint"),
+                 {Gui::InputHint::UserInput::MouseLeft}}};
+    }
 };
 
 }  // namespace SketcherGui
