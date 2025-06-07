@@ -193,17 +193,6 @@ private:
         WaitingForEdge
     };
 
-    struct HintEntry
-    {
-        State state;
-        std::list<Gui::InputHint> hints;
-    };
-
-    using HintTable = std::vector<HintEntry>;
-
-    static HintTable getSplittingHintTable();
-    static std::list<Gui::InputHint> lookupSplittingHints(State state);
-
 private:
     std::vector<Base::Vector2d> EditMarkers;
     bool mousePressed = false;
@@ -215,25 +204,6 @@ public:
                  {Gui::InputHint::UserInput::MouseLeft}}};
     }
 };
-
-DrawSketchHandlerSplitting::HintTable DrawSketchHandlerSplitting::getSplittingHintTable()
-{
-    return {{WaitingForEdge,
-             {{QObject::tr("%1 pick edge to split", "Sketcher Splitting: hint"),
-               {Gui::InputHint::UserInput::MouseLeft}}}}};
-}
-
-std::list<Gui::InputHint>
-DrawSketchHandlerSplitting::lookupSplittingHints(DrawSketchHandlerSplitting::State state)
-{
-    const auto splittingHintTable = getSplittingHintTable();
-
-    auto it = std::ranges::find_if(splittingHintTable, [state](const HintEntry& entry) {
-        return entry.state == state;
-    });
-
-    return (it != splittingHintTable.end()) ? it->hints : std::list<Gui::InputHint> {};
-}
 
 }  // namespace SketcherGui
 
