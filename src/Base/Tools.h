@@ -355,6 +355,12 @@ struct BaseExport ZipTools
     static void rewrite(const std::string& source, const std::string& target);
 };
 
+// helper type for the visitor
+template<class... Ts>
+struct Overloads: Ts...
+{
+    using Ts::operator()...;
+};
 
 }  // namespace Base
 
