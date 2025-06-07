@@ -128,6 +128,19 @@ private:
     std::unique_ptr<Ui_SketcherSettingsAppearance> ui;
 };
 
+// Mode for the sketch autoscale feature which scales
+// the geometry and zooms the camera when the first
+// scale defining constraint is set
+enum class AutoScaleMode : int
+{
+    Always = 0,
+    Never = 1,
+
+    // Attempts to find scale reference objects int the viewport
+    // (such as a 3d body) and disable the feature if it finds one
+    WhenNoScaleFeatureIsVisible = 2
+};
+
 }  // namespace SketcherGui
 
 #endif  // SKETCHERGUI_SKETCHERSETTINGS_H

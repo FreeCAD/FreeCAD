@@ -40,6 +40,8 @@
 #include "GeometryCreationMode.h"
 #include "Utils.h"
 
+#include <memory>
+
 using namespace Sketcher;
 
 namespace SketcherGui
@@ -71,6 +73,8 @@ public:
     explicit DrawSketchHandlerScale(std::vector<int> listOfGeoIds)
         : listOfGeoIds(listOfGeoIds)
         , deleteOriginal(true)
+        , abortOnFail(true)
+        , allowOriginConstraint(false)
         , refLength(0.0)
         , length(0.0)
         , scaleFactor(0.0)
@@ -82,6 +86,51 @@ public:
     DrawSketchHandlerScale& operator=(DrawSketchHandlerScale&&) = delete;
 
     ~DrawSketchHandlerScale() override = default;
+
+    static std::unique_ptr<DrawSketchHandlerScale>
+    make_centerScale(std::vector<int> listOfGeoIds, double scaleFactor, bool abortOnFail)
+    {
+        auto out = std::make_unique<DrawSketchHandlerScale>(listOfGeoIds);
+        out->referencePoint = Base::Vector2d(0.0, 0.0);
+        out->scaleFactor = scaleFactor;
+        out->abortOnFail = abortOnFail;
+        out->allowOriginConstraint = true;
+        return out;
+    }
+
+public:
+    void executeCommands() override
+    {
+        try {
+            Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Scale geometries"));
+
+            createShape(false);
+
+            commandAddShapeGeometryAndConstraints();
+
+            if (deleteOriginal) {
+                deleteOriginalGeos();
+            }
+
+            Gui::Command::commitCommand();
+        }
+        catch (const Base::Exception& e) {
+            e.reportException();
+            Gui::NotifyError(sketchgui,
+                             QT_TRANSLATE_NOOP("Notifications", "Error"),
+                             QT_TRANSLATE_NOOP("Notifications", "Failed to scale"));
+
+            if (abortOnFail) {
+                Gui::Command::abortCommand();
+            }
+            THROWM(Base::RuntimeError,
+                   QT_TRANSLATE_NOOP(
+                       "Notifications",
+                       "Tool execution aborted") "\n")  // This prevents constraints from being
+                                                        // applied on non existing geometry
+        }
+    }
+
 
 private:
     void updateDataAndDrawToPosition(Base::Vector2d onSketchPos) override
@@ -106,36 +155,6 @@ private:
             } break;
             default:
                 break;
-        }
-    }
-
-    void executeCommands() override
-    {
-        try {
-            Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Scale geometries"));
-
-            createShape(false);
-
-            commandAddShapeGeometryAndConstraints();
-
-            if (deleteOriginal) {
-                deleteOriginalGeos();
-            }
-
-            Gui::Command::commitCommand();
-        }
-        catch (const Base::Exception& e) {
-            e.reportException();
-            Gui::NotifyError(sketchgui,
-                             QT_TRANSLATE_NOOP("Notifications", "Error"),
-                             QT_TRANSLATE_NOOP("Notifications", "Failed to scale"));
-
-            Gui::Command::abortCommand();
-            THROWM(Base::RuntimeError,
-                   QT_TRANSLATE_NOOP(
-                       "Notifications",
-                       "Tool execution aborted") "\n")  // This prevents constraints from being
-                                                        // applied on non existing geometry
         }
     }
 
@@ -204,7 +223,11 @@ private:
     std::vector<int> listOfGeoIds;
     Base::Vector2d referencePoint, startPoint, endPoint;
     bool deleteOriginal;
+    bool abortOnFail;  // When the scale operation is part of a larger transaction, one might want
+                       // to continue even if the scaling failed
+    bool allowOriginConstraint;  // Conserve constraints with origin
     double refLength, length, scaleFactor;
+
 
     void deleteOriginalGeos()
     {
@@ -340,48 +363,75 @@ private:
             std::vector<int> geoIdsWhoAlreadyHasEqual = {};
 
             for (auto& cstr : vals) {
+                if (skipConstraint(cstr)) {
+                    continue;
+                }
+
                 int firstIndex = indexOfGeoId(listOfGeoIds, cstr->First);
                 int secondIndex = indexOfGeoId(listOfGeoIds, cstr->Second);
                 int thirdIndex = indexOfGeoId(listOfGeoIds, cstr->Third);
 
                 auto newConstr = std::unique_ptr<Constraint>(cstr->copy());
-                newConstr->First = firstCurveCreated + firstIndex;
+                newConstr->First = offsetGeoID(firstIndex, firstCurveCreated);
 
                 if ((cstr->Type == Symmetric || cstr->Type == Tangent || cstr->Type == Perpendicular
                      || cstr->Type == Angle)
-                    && firstIndex >= 0 && secondIndex >= 0 && thirdIndex >= 0) {
-                    newConstr->Second = firstCurveCreated + secondIndex;
-                    newConstr->Third = firstCurveCreated + thirdIndex;
+                    && secondIndex != GeoEnum::GeoUndef && thirdIndex != GeoEnum::GeoUndef) {
+                    newConstr->Second = offsetGeoID(secondIndex, firstCurveCreated);
+                    newConstr->Third = offsetGeoID(thirdIndex, firstCurveCreated);
                 }
                 else if ((cstr->Type == Coincident || cstr->Type == Tangent
                           || cstr->Type == Symmetric || cstr->Type == Perpendicular
                           || cstr->Type == Parallel || cstr->Type == Equal || cstr->Type == Angle
                           || cstr->Type == PointOnObject || cstr->Type == InternalAlignment)
-                         && firstIndex >= 0 && secondIndex >= 0
-                         && thirdIndex == GeoEnum::GeoUndef) {
-                    newConstr->Second = firstCurveCreated + secondIndex;
+                         && secondIndex != GeoEnum::GeoUndef && thirdIndex == GeoEnum::GeoUndef) {
+                    newConstr->Second = offsetGeoID(secondIndex, firstCurveCreated);
                 }
-                else if ((cstr->Type == Radius || cstr->Type == Diameter) && firstIndex >= 0) {
+                else if (cstr->Type == Radius || cstr->Type == Diameter) {
                     newConstr->setValue(newConstr->getValue() * scaleFactor);
                 }
                 else if ((cstr->Type == Distance || cstr->Type == DistanceX
                           || cstr->Type == DistanceY)
-                         && firstIndex >= 0 && secondIndex >= 0) {
-                    newConstr->Second = firstCurveCreated + secondIndex;
+                         && secondIndex != GeoEnum::GeoUndef) {
+                    newConstr->Second = offsetGeoID(secondIndex, firstCurveCreated);
                     newConstr->setValue(newConstr->getValue() * scaleFactor);
                 }
-                else if ((cstr->Type == Block || cstr->Type == Weight) && firstIndex >= 0) {
-                    newConstr->First = firstCurveCreated + firstIndex;
-                }
-                else {
-                    continue;
-                }
+                // (cstr->Type == Block || cstr->Type == Weight)
 
                 ShapeConstraints.push_back(std::move(newConstr));
             }
         }
     }
+    bool skipConstraint(const Constraint* constr) const
+    {
+        // We might want to skip (remove) a constraint if
+        return
+            // 1. it's first geometry is undefined => not a valid constraint, should not happen
+            (constr->First == GeoEnum::GeoUndef)
 
+            // 2. we do not want to have constraints that relate to the origin => it would break if
+            // the scale center is not the origin
+            || (!allowOriginConstraint
+                && (constr->First == GeoEnum::VAxis || constr->First == GeoEnum::HAxis
+                    || constr->Second == GeoEnum::VAxis || constr->Second == GeoEnum::HAxis
+                    || constr->Third == GeoEnum::VAxis || constr->Third == GeoEnum::HAxis))
+
+            // 3. it is linked to an external projected geometry => would be unstable
+            || (constr->First != GeoEnum::GeoUndef && constr->First <= GeoEnum::RefExt)
+            || (constr->Second != GeoEnum::GeoUndef && constr->Second <= GeoEnum::RefExt)
+            || (constr->Third != GeoEnum::GeoUndef && constr->Third <= GeoEnum::RefExt);
+    }
+
+    // Offset the geom index to match the newly created one
+    // except if it is negative in which case it is external
+    // or origin which remain unchanged
+    // this assumes that a call to skipConstraint() has been
+    // performed and that the constraint is valid within the context
+    // of the scale operation
+    int offsetGeoID(int index, int firstCurveCreated)
+    {
+        return index < 0 ? index : index + firstCurveCreated;
+    }
     Base::Vector3d getScaledPoint(Base::Vector3d&& pointToScale,
                                   const Base::Vector2d& referencePoint,
                                   double scaleFactor)
