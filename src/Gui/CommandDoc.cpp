@@ -63,6 +63,7 @@
 #include "MergeDocuments.h"
 #include "Navigation/NavigationStyle.h"
 #include "Placement.h"
+#include "Tools.h"
 #include "Transform.h"
 #include "View3DInventor.h"
 #include "View3DInventorViewer.h"
@@ -1320,11 +1321,7 @@ StdCmdDelete::StdCmdDelete()
   sWhatsThis    = "Std_Delete";
   sStatusTip    = QT_TR_NOOP("Deletes the selected objects");
   sPixmap       = "edit-delete";
-#ifdef FC_OS_MACOSX
-  sAccel        = "Backspace";
-#else
-  sAccel        = keySequenceToAccel(QKeySequence::Delete);
-#endif
+  sAccel        = keySequenceToAccel(QtTools::deleteKeySequence());
   eType         = ForEdit;
 }
 
