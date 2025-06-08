@@ -341,6 +341,17 @@ public:
     const char* flattenSubname(const char* subname) const;
     void expandSubname(std::string& subname) const;
 
+    /**
+     * @brief Get the object the link points to.
+     *
+     * This method returns the linked object of this link. The @p depth
+     * parameter is used as an indication of how deep the recursion is as a
+     * safeguard against infinite recursion caused by cyclic dependencies.
+     *
+     * @param[in] depth The level on which we are resolving the link.
+     *
+     * @return Returns the linked object or @c nullptr if there is no linked value.
+     */
     DocumentObject* getLink(int depth = 0) const;
 
     Base::Matrix4D getTransform(bool transform) const;
@@ -403,6 +414,33 @@ public:
                  const char* subname = nullptr,
                  const std::vector<std::string>& subs = std::vector<std::string>());
 
+    /**
+     * @brief Get the true linked object.
+     *
+     * This method returns the true linked object, which is the object that the
+     * link points to.  The @p depth parameter is used as an indication of the
+     * current level of recursion is as a safeguard against infinite recursion
+     * caused by cyclic dependencies.
+     *
+     * @param recurse If true, it will recursively resolve the link until it reaches
+     * the final linked object, or until it reaches the maximum recursion depth.
+     *
+     * @param mat If non-null, it is used as the current transformation matrix on
+     * input. On output it is used as the accumulated transformation up until
+     * the final linked object.
+     *
+     * @param depth This parameter indicates the level on which we are
+     * resolving the link.
+     *
+     * @param noElement If true, it will not return the linked object if it is
+     * a link to an element.
+     *
+     * @return Returns the true linked object. If the linked object is not found
+     * or is invalid, it returns @c nullptr.
+     *
+     * @sa DocumentObject::getLinkedObject() which may return itself if it is not a link.
+     *
+     */
     DocumentObject* getTrueLinkedObject(bool recurse,
                                         Base::Matrix4D* mat = nullptr,
                                         int depth = 0,

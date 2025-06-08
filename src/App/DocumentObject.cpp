@@ -616,7 +616,7 @@ bool DocumentObject::isInOutListRecursive(DocumentObject* linkTo) const
 }
 
 std::vector<std::list<App::DocumentObject*>>
-DocumentObject::getPathsByOutList(App::DocumentObject* to) const
+DocumentObject::getPathsByOutList(const App::DocumentObject* to) const
 {
     return _pDoc->getPathsByOutList(this, to);
 }
