@@ -9,6 +9,7 @@ SET(Test_SRCS
     StringHasher.py
     Menu.py
     TestApp.py
+    TestDlgAddPropertyToObjects.py
     TestGui.py
     UnicodeTests.py
     UnitTests.py
