@@ -71,16 +71,19 @@ class ObjectDressup:
         )
         obj.addProperty(
             "App::PropertyBool",
-            "RemoveOriginalPath",
+            "InvertPathDirection",
             "Path",
-            QT_TRANSLATE_NOOP("App::Property", "The offset for mirror at the center of base model"),
+            QT_TRANSLATE_NOOP(
+                "App::Property",
+                "Invert Path direction of Base operation to get correct direction after mirror",
+            ),
         )
         obj.MirrorAxis = ["X", "Y", "XY"]
         obj.MirrorAxis = "Y"
         obj.MirrorOffsetX = 0
         obj.MirrorOffsetY = 0
         obj.CenterModel = False
-        obj.RemoveOriginalPath = True
+        obj.InvertPathDirection = True
         obj.Proxy = self
 
     def dumps(self):
@@ -94,44 +97,53 @@ class ObjectDressup:
         return None
 
     def execute(self, obj):
-        if not obj.Base:
+        baseOp = self.getBaseOperation(obj)
+        if not baseOp:
             obj.Path = Path.Path()
             return
 
-        if not obj.Base.isDerivedFrom("Path::Feature"):
+        if not baseOp.isDerivedFrom("Path::Feature"):
             obj.Path = Path.Path()
             return
 
-        if not obj.Base.Path:
+        if not baseOp.Path:
             obj.Path = Path.Path()
             return
 
-        if not obj.Base.Path.Commands:
+        if not baseOp.Path.Commands:
             obj.Path = Path.Path()
             return
+
+        # Change Path direction
+        if hasattr(baseOp, "Direction"):
+            baseOp.clearExpression("Direction")
+            origObj = self.getOriginalOperation(baseOp)
+            # Change direction only if needed
+            if obj.InvertPathDirection and baseOp.Direction == origObj.Direction:
+                baseOp.Direction = "CCW" if origObj.Direction == "CW" else "CW"
+            elif not obj.InvertPathDirection and baseOp.Direction != origObj.Direction:
+                baseOp.Direction = origObj.Direction
 
         offsetX = obj.MirrorOffsetX.Value
         offsetY = obj.MirrorOffsetY.Value
 
         # Calculate offset for center of model
         if obj.CenterModel:
-            # If possible get model from Base object
-            model = self.getBaseModel(obj)
+            model = None
+            # If possible get model from Base operation in low level
+            if isinstance(baseOp.Base, list) and baseOp.Base != []:
+                if baseOp.Base[0][0].isDerivedFrom("Part::Feature"):
+                    model = baseOp.Base[0][0]
             if not model:
                 # Otherwise get first model from Model group of the Job
                 job = PathUtils.findParentJob(obj)
                 model = job.Model.Group[0]
-            bounbox = model.Shape.BoundBox
-            offsetX += bounbox.XMax + model.Placement.Base.x
-            offsetY += bounbox.YMax + model.Placement.Base.y
+            offsetX += model.Shape.BoundBox.XMax + model.Placement.Base.x
+            offsetY += model.Shape.BoundBox.YMax + model.Placement.Base.y
 
         mirrorAxis = obj.MirrorAxis
         pathlist = PathUtils.getPathWithPlacement(obj.Base).Commands
-        if obj.RemoveOriginalPath:
-            newcommandlist = []
-        else:
-            newcommandlist = PathUtils.getPathWithPlacement(obj.Base).Commands
-
+        newcommandlist = []
         for cmd in pathlist:
             if not re.search(r"^G0?[0123]$", cmd.Name, re.IGNORECASE):
                 # Add command without move
@@ -162,20 +174,30 @@ class ObjectDressup:
 
         obj.Path = Path.Path(newcommandlist)
 
-    def getBaseModel(self, obj):
-        def recursiveSearch(obj):
-            if not hasattr(obj, "Base") or not obj.Base:
-                return None
-            if isinstance(obj.Base, list):
-                return obj.Base[0]
-            else:
-                return recursiveSearch(obj.Base)
+    def recursiveSearch(self, obj):
+        if not hasattr(obj, "Base"):
+            return None
+        elif not obj.Base:
+            return obj
+        elif isinstance(obj.Base, list):
+            if obj.Base[0][0].isDerivedFrom("Part::Feature"):
+                return obj
+        elif obj.Base.isDerivedFrom("Path::Feature"):
+            return self.recursiveSearch(obj.Base)
+        return None
 
-        result = recursiveSearch(obj)
+    def getBaseOperation(self, obj):
+        # Get operation in low level, e.g. from bottom of Dressups
+        return self.recursiveSearch(obj)
 
-        if isinstance(result, tuple) and len(result) > 0:
-            if result[0].isDerivedFrom("Part::Feature"):
-                return result[0]
+    def getOriginalOperation(self, obj):
+        # Get original object from expression of copy object
+        for expr in obj.ExpressionEngine:
+            if expr[0] == "Label2":
+                name = expr[1].split(".")[0]
+                origObj = FreeCAD.ActiveDocument.getObject(name)
+                return origObj
+
         return None
 
     def onChanged(self, obj, prop):
@@ -186,7 +208,8 @@ class ObjectDressup:
                 obj.setEditorMode("MirrorOffsetY", 2)  # hide
             elif obj.MirrorAxis == "X":
                 obj.setEditorMode("MirrorOffsetX", 2)  # hide
-            return None
+
+        return None
 
 
 class ViewProviderDressup:
@@ -231,6 +254,59 @@ class ViewProviderDressup:
         return True
 
 
+def createBaseCopy(obj):
+    # Get recursive list of operations
+    def getRecursiveOperationsList(obj):
+        if not hasattr(obj, "Base"):
+            return None
+        if obj.isDerivedFrom("Path::Feature"):
+            tree.append(obj)
+            return getRecursiveOperationsList(obj.Base)
+        else:
+            return None
+
+    # Set expressions for properties to link to original object
+    def setProperties(newObj, origObj):
+        for property in newObj.PropertiesList:
+            if property == "Label":
+                newObj.Label = f"{origObj.Name}_expCopy"
+            # Do not change properties in list below
+            elif property not in [
+                "Active",
+                "AreaParams",
+                "Base",
+                "CycleTime",
+                "_ElementMapVersion",
+                "ExpressionEngine",
+                "PathParams",
+                "removalshape",
+            ]:
+                expression = f"{origObj.Name}.{property}"
+                newObj.setExpression(property, expression)
+
+    tree = []
+    getRecursiveOperationsList(obj)
+    if len(tree) > 1:
+        print(f"    Recursive list of operations: {[op.Name for op in tree]}")
+    job = PathUtils.findParentJob(obj)
+
+    temp = None
+    # Create copy of objects in list
+    for i, obj in enumerate(reversed(tree)):
+        newObj = FreeCAD.ActiveDocument.copyObject(obj, False)
+        setProperties(newObj, obj)
+        # Set Base for objects, but do not touch first in the list
+        if i > 0:
+            newObj.Base = temp
+        # Add only last object copy to Job
+        if i == len(tree) - 1:
+            PathUtils.addToJob(newObj, job.Name)
+            break
+        temp = newObj
+
+    return newObj
+
+
 class CommandPathDressup:
     def GetResources(self):
         return {
@@ -269,18 +345,16 @@ class CommandPathDressup:
             'obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", "MirrorDressup")'
         )
         FreeCADGui.doCommand("Path.Dressup.Gui.Mirror.ObjectDressup(obj)")
-        FreeCADGui.doCommand("base = FreeCAD.ActiveDocument." + selection[0].Name)
+        FreeCADGui.doCommand("orig = FreeCAD.ActiveDocument." + selection[0].Name)
+        FreeCADGui.doCommand("base = Path.Dressup.Gui.Mirror.createBaseCopy(orig)")
         FreeCADGui.doCommand("job = PathScripts.PathUtils.findParentJob(base)")
         FreeCADGui.doCommand("obj.Base = base")
-
         FreeCADGui.doCommand("job.Proxy.addOperation(obj, base)")
         FreeCADGui.doCommand(
             "obj.ViewObject.Proxy = Path.Dressup.Gui.Mirror.ViewProviderDressup(obj.ViewObject)"
         )
-        FreeCADGui.doCommand("Gui.ActiveDocument.getObject(base.Name).Visibility = False")
-
+        FreeCADGui.doCommand("base.Visibility = False")
         FreeCAD.ActiveDocument.commitTransaction()  # Final `commitTransaction()`
-
         FreeCAD.ActiveDocument.recompute()
 
 
