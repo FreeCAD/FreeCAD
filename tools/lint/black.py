@@ -71,7 +71,7 @@ def main():
     init_environment(args)
 
     logging.info("Installing black (if needed)...")
-    run_command(["pip", "install", "-q", "black"], check=True)
+    run_command(["pipx", "install", "-q", "black"], check=True)
 
     cmd = [
         "black",
