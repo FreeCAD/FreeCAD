@@ -75,6 +75,9 @@ public:
     App::PropertyBool           UseCustomThreadClearance;
     App::PropertyLength         CustomThreadClearance;
     App::PropertyInteger        BaseProfileType;
+    App::PropertyBool           RainDrop;       // Make a raindrop shape to make it easier to 3d print upright
+    // App::PropertyAngle          RainDropAngle;
+    // App::PropertyDirection      RainDropDirection;
 
     enum BaseProfileTypeOptions {
         OnPoints    = 1 << 0,
@@ -255,6 +258,13 @@ private:
     void rotateToNormal(const gp_Dir& helixAxis, const gp_Dir& normalAxis, TopoDS_Shape& helixShape) const;
     gp_Vec computePerpendicular(const gp_Vec&) const;
     TopoDS_Shape makeThread(const gp_Vec&, const gp_Vec&, double);
+
+    // Make a little hat for the hole to make it easier to print
+    // @xDir the normal vector from the center of the hole to the tip of the hat
+    // @zDir the normal vector in the drilling direction
+    // @depth the depth of the hole
+    // @angle the angle between the hat sides and xDir
+    static TopoDS_Shape makeRainDropHat(const gp_Vec& xDir, const gp_Vec& zDir, double radius, double depth, double angle);
     TopoShape findHoles(std::vector<TopoShape> &holes, const TopoShape& profileshape, const TopoDS_Shape& protohole) const;
 
     // helpers for nlohmann json

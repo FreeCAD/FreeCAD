@@ -182,6 +182,9 @@ TaskHoleParameters::TaskHoleParameters(ViewProviderHole* HoleView, QWidget* pare
 
     ui->BaseProfileType->setCurrentIndex(PartDesign::Hole::baseProfileOption_bitmaskToIdx(pcHole->BaseProfileType.getValue()));
 
+    ui->makeRaindropHat->setChecked(false);
+    ui->raindropParams->setVisible(ui->makeRaindropHat->isChecked());
+
     setCutDiagram();
 
     // clang-format off
@@ -239,7 +242,10 @@ TaskHoleParameters::TaskHoleParameters(ViewProviderHole* HoleView, QWidget* pare
             this, &TaskHoleParameters::threadDepthChanged);
     connect(ui->BaseProfileType, qOverload<int>(&QComboBox::currentIndexChanged),
             this, &TaskHoleParameters::baseProfileTypeChanged);
-    // clang-format on
+    connect(ui->makeRaindropHat, &QCheckBox::toggled, 
+            this, &TaskHoleParameters::makeRaindropHatChanged);
+    
+            // clang-format on
 
     getViewObject()->show();
 
@@ -332,7 +338,6 @@ void TaskHoleParameters::useCustomThreadClearanceChanged()
         recomputeFeature();
     }
 }
-
 void TaskHoleParameters::customThreadClearanceChanged(double value)
 {
     if (auto hole = getObject<PartDesign::Hole>()) {
@@ -398,6 +403,15 @@ void TaskHoleParameters::baseProfileTypeChanged(int index)
 {
     if (auto hole = getObject<PartDesign::Hole>()) {
         hole->BaseProfileType.setValue(PartDesign::Hole::baseProfileOption_idxToBitmask(index));
+        recomputeFeature();
+    }
+}
+void TaskHoleParameters::makeRaindropHatChanged()
+{
+    bool isChecked = ui->makeRaindropHat->isChecked();
+    ui->raindropParams->setEnabled(isChecked);
+    if (auto hole = getObject<PartDesign::Hole>()) {
+        hole->RainDrop.setValue(isChecked);
         recomputeFeature();
     }
 }

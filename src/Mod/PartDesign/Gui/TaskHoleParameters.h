@@ -109,6 +109,7 @@ private Q_SLOTS:
     void threadDepthTypeChanged(int index);
     void threadDepthChanged(double value);
     void baseProfileTypeChanged(int index);
+    void makeRaindropHatChanged();
     void setCutDiagram();
 
 private:

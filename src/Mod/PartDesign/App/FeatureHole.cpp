@@ -38,6 +38,7 @@
 # include <BRepClass3d_SolidClassifier.hxx>
 # include <BRepOffsetAPI_MakePipeShell.hxx>
 # include <BRepPrimAPI_MakeRevol.hxx>
+# include <BRepPrimAPI_MakePrism.hxx>
 # include <BRepAdaptor_Curve.hxx>
 # include <Geom_Circle.hxx>
 # include <GC_MakeArcOfCircle.hxx>
@@ -844,6 +845,8 @@ Hole::Hole()
     // Defaults to circles & arcs so that older files are kept intact
     // while new file get points, circles and arcs set in setupObject()
     ADD_PROPERTY_TYPE(BaseProfileType, (BaseProfileTypeOptions::OnCirclesArcs), "Hole", App::Prop_None, "Which profile feature to base the holes on");
+
+    ADD_PROPERTY_TYPE(RainDrop, (false), "Hole", App::Prop_None, "RainDrop");
 }
 
 void Hole::updateHoleCutParams()
@@ -2107,6 +2110,23 @@ App::DocumentObjectExecReturn* Hole::execute()
             // we reuse the name protoHole (only now it is threaded)
             protoHole = mkFuse.Shape();
         }
+        // Make raindrop hat thing
+        if (RainDrop.getValue()) {
+            TopoDS_Shape protoRainDrop = makeRainDropHat(xDir, zDir, radius, length, 0.8726);
+
+            std::cerr << "Raindrop is null: " << protoRainDrop.IsNull() << "\n";
+
+            FCBRepAlgoAPI_Fuse mkFuse(protoHole, protoRainDrop);
+
+            if (!mkFuse.IsDone()) {
+                std::cerr << "Could not fuse hat :(\n";
+            }
+
+            protoHole = mkFuse.Shape();
+
+            std::cerr << "Protohole is null: " << protoHole.IsNull() << "\n";
+        }
+
         std::vector<TopoShape> holes;
         auto compound = findHoles(holes, profileshape, protoHole);
 
@@ -2514,6 +2534,38 @@ TopoDS_Shape Hole::makeThread(const gp_Vec& xDir, const gp_Vec& zDir, double len
 
     // we are done
     return result;
+}
+TopoDS_Shape Hole::makeRainDropHat(const gp_Vec& xDir, const gp_Vec& zDir, double radius, double depth, double angle)
+{
+    double hatTipDist = radius / std::sin(angle);
+    double complementoryAngle = std::numbers::pi / 2.0 - angle;
+
+    gp_Ax1 holeAxis(gp_Pnt(), zDir);
+    gp_Pnt hatTip       = toPnt(xDir * hatTipDist);
+    gp_Pnt hatBaseCCW   = toPnt(xDir.Rotated(holeAxis, complementoryAngle) * radius);
+    gp_Pnt hatBaseCW    = toPnt(xDir.Rotated(holeAxis, -complementoryAngle) * radius);
+
+    BRepBuilderAPI_MakeWire mkHatWire;
+
+
+    mkHatWire.Add(BRepBuilderAPI_MakeEdge(hatTip, hatBaseCCW).Edge());
+    mkHatWire.Add(BRepBuilderAPI_MakeEdge(hatBaseCCW, hatBaseCW).Edge());
+    mkHatWire.Add(BRepBuilderAPI_MakeEdge(hatBaseCW, hatTip).Edge());
+
+    TopoDS_Face face = BRepBuilderAPI_MakeFace(mkHatWire.Wire());
+    BRepPrimAPI_MakePrism mkHatPrism(face, zDir * -depth);
+
+    if (!mkHatPrism.IsDone()) {
+        std::cerr << "Could not make hat :(\n";
+    }
+
+    TopoDS_Shape shape = mkHatPrism.Shape();
+
+    if (shape.IsNull()) {
+        std::cerr << "Hat is null :(\n";
+    }
+
+    return shape;
 }
 
 void Hole::addCutType(const CutDimensionSet& dimensions)
