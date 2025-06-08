@@ -9,15 +9,19 @@
 # the `language` matrix defined below to confirm you have the correct set of
 # supported CodeQL languages.
 #
-name: "CodeQL Advanced"
+name: "CodeQL Advanced (c-cpp)"
 
 on:
-  push:
-    branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
+  # push:
+  #   branches: [ "main" ]
+  # pull_request:
+  #   branches: [ "main" ]
   schedule:
     - cron: '28 12 * * 6'
+  workflow_dispatch:  # Allow manual triggers
+
+env:
+  CODEQL_EXTRACTOR_CPP_AUTOINSTALL_DEPENDENCIES: false
 
 permissions:
   contents: read
@@ -46,14 +50,14 @@ jobs:
       fail-fast: false
       matrix:
         include:
-        - language: actions
-          build-mode: none
-        # - language: c-cpp
-        #   build-mode: autobuild
+        # - language: actions
+        #   build-mode: none
+        - language: c-cpp
+          build-mode: autobuild
         # - language: javascript-typescript
         #   build-mode: none
-        - language: python
-          build-mode: none
+        # - language: python
+        #   build-mode: none
         # CodeQL supports the following values keywords for 'language': 'actions', 'c-cpp', 'csharp', 'go', 'java-kotlin', 'javascript-typescript', 'python', 'ruby', 'swift'
         # Use `c-cpp` to analyze code written in C, C++ or both
         # Use 'java-kotlin' to analyze code written in Java, Kotlin or both
@@ -73,6 +77,18 @@ jobs:
       with:
         fetch-depth: 2
         submodules: recursive
+
+    # prevent running out of disk space on Ubuntu runners.
+    - name: Maximize build space
+      uses: AdityaGarg8/remove-unwanted-software@90e01b21170618765a73370fcc3abbd1684a7793 # v5
+      with:
+        verbose: 'true'
+        remove-android: 'true'      # (frees ~9 GB)
+        remove-cached-tools: 'true' # (frees ~8.3 GB)
+
+    # Install FreeCAD dependencies (cpp)
+    - name: Setup build environment
+      run: ./package/ubuntu/install-apt-packages.sh
 
     # Add any setup steps before running the `github/codeql-action/init` action.
     # This includes steps like installing compilers or runtimes (`actions/setup-node`
@@ -98,12 +114,10 @@ jobs:
         # tools: https://github.com/github/codeql-action/releases/download/codeql-bundle-v2.20.7/codeql-bundle-linux64.tar.gz
 
         # Add exclusions
-        config: |
-          paths-ignore:
-            - src/Mod/Import/App/SCL_output/**
-          query-filters:
-            - exclude:
-                id: py/file-not-closed
+        # config: |
+        #   query-filters:
+        #   - exclude:
+        #       id: py/file-not-closed
 
     # If the analyze step fails for one of the languages you are analyzing with
     # "We were unable to automatically build your code", modify the matrix above
