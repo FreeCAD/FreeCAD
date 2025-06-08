@@ -851,7 +851,8 @@ Hole::Hole()
     ADD_PROPERTY_TYPE(RainDrop, (false), "Hole", App::Prop_None, "Enable rain drop");
     ADD_PROPERTY_TYPE(RainDropAngle, (50.0), "Hole", App::Prop_None, "Rain drop hat angle to vertical");
     RainDropAngle.setConstraints(&rainDropAngleRange);
-
+    ADD_PROPERTY_TYPE(RainDropReferenceAxis,(nullptr),"Hole",(App::Prop_None),"Reference axis of rain drop hat");
+    ADD_PROPERTY_TYPE(RainDropReversed, (false), "Hole", App::Prop_None, "Reverse direction of rain drop");
 }
 
 void Hole::updateHoleCutParams()
@@ -1756,10 +1757,12 @@ void Hole::onChanged(const App::Property* prop)
         if (RainDrop.getValue()) {
             RainDropAngle.setReadOnly(false);
             RainDropDirection.setReadOnly(false);
+            RainDropReversed.setReadOnly(false);
         }
         else {
             RainDropAngle.setReadOnly(true);
             RainDropDirection.setReadOnly(true);
+            RainDropReversed.setReadOnly(true);
         }
     }
 
@@ -1858,8 +1861,9 @@ short Hole::mustExecute() const
         BaseProfileType.isTouched() ||
         RainDrop.isTouched() ||
         RainDropAngle.isTouched() || 
-        RainDropDirection.isTouched()
-        )
+        RainDropReferenceAxis.isTouched() ||
+        RainDropReversed.isTouched()
+    )
         return 1;
     return ProfileBased::mustExecute();
 }
@@ -1897,12 +1901,17 @@ void Hole::updateProps()
     onChanged(&BaseProfileType);
     onChanged(&RainDrop);
     onChanged(&RainDropAngle);
-    onChanged(&RainDropDirection);
+    onChanged(&RainDropReferenceAxis);
+    onChanged(&RainDropReversed);
 }
 
 static gp_Pnt toPnt(gp_Vec dir)
 {
     return {dir.X(), dir.Y(), dir.Z()};
+}
+static gp_Vec toVec(const Base::Vector3<double>& vec)
+{
+    return { vec.x, vec.y, vec.z };
 }
 
 App::DocumentObjectExecReturn* Hole::execute()
@@ -2133,7 +2142,8 @@ App::DocumentObjectExecReturn* Hole::execute()
         }
         // Make raindrop hat thing
         if (RainDrop.getValue()) {
-            TopoDS_Shape protoRainDrop = makeRainDropHat(xDir, zDir, radius, length, RainDropAngle.getValue());
+            updateRainDropAxis();
+            TopoDS_Shape protoRainDrop = makeRainDropHat(toVec(RainDropDirection.getValue()), zDir, radius, length, RainDropAngle.getValue());
 
             std::cerr << "Raindrop is null: " << protoRainDrop.IsNull() << "\n";
 
@@ -2589,6 +2599,20 @@ TopoDS_Shape Hole::makeRainDropHat(const gp_Vec& xDir, const gp_Vec& zDir, doubl
     }
 
     return shape;
+}
+void Hole::updateRainDropAxis()
+{
+    App::DocumentObject *pcRainDropReferenceAxis = RainDropReferenceAxis.getValue();
+    const std::vector<std::string> &subRainDropReferenceAxis = RainDropReferenceAxis.getSubValues();
+    Base::Vector3d base;
+    Base::Vector3d dir;
+    getAxis(pcRainDropReferenceAxis, subRainDropReferenceAxis, base, dir, ForbiddenAxis::NotParallelWithNormal);
+
+    if (RainDropReversed.getValue()) {
+        dir = -dir;
+    }
+
+    RainDropDirection.setValue(dir.x,dir.y,dir.z);
 }
 
 void Hole::addCutType(const CutDimensionSet& dimensions)

@@ -78,6 +78,8 @@ public:
     App::PropertyBool           RainDrop;       // Make a raindrop shape to make it easier to 3d print upright
     App::PropertyAngle          RainDropAngle;
     App::PropertyDirection      RainDropDirection;
+    App::PropertyBool           RainDropReversed;
+    App::PropertyLinkSub        RainDropReferenceAxis;
 
     enum BaseProfileTypeOptions {
         OnPoints    = 1 << 0,
@@ -266,6 +268,7 @@ private:
     // @depth the depth of the hole
     // @angle the angle between the hat sides and xDir
     static TopoDS_Shape makeRainDropHat(const gp_Vec& xDir, const gp_Vec& zDir, double radius, double depth, double angle);
+    void updateRainDropAxis();
     TopoShape findHoles(std::vector<TopoShape> &holes, const TopoShape& profileshape, const TopoDS_Shape& protohole) const;
 
     // helpers for nlohmann json

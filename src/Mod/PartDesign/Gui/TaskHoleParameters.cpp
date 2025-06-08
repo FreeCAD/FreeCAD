@@ -25,12 +25,17 @@
 #include <Base/Console.h>
 #include <Base/Tools.h>
 #include <App/Document.h>
+#include <App/Origin.h>
 #include <Gui/Application.h>
 #include <Gui/Command.h>
 #include <Gui/Document.h>
 #include <Gui/Selection/Selection.h>
 #include <Gui/ViewProvider.h>
+#include <Gui/CommandT.h>
+#include <Gui/Selection/Selection.h>
 #include <Mod/PartDesign/App/FeatureHole.h>
+#include <Mod/PartDesign/App/Body.h>
+#include "ReferenceSelection.h"
 
 #include "ui_TaskHoleParameters.h"
 #include "TaskHoleParameters.h"
@@ -183,10 +188,13 @@ TaskHoleParameters::TaskHoleParameters(ViewProviderHole* HoleView, QWidget* pare
     ui->BaseProfileType->setCurrentIndex(PartDesign::Hole::baseProfileOption_bitmaskToIdx(pcHole->BaseProfileType.getValue()));
 
     ui->RainDrop->setChecked(pcHole->RainDrop.getValue());
+    ui->RainDropReversed->setChecked(pcHole->RainDropReversed.getValue());
     ui->RainDropAngle->setMinimum(pcHole->RainDropAngle.getMinimum());
     ui->RainDropAngle->setMaximum(pcHole->RainDropAngle.getMaximum());
     ui->RainDropAngle->setValue(pcHole->RainDropAngle.getValue());
     ui->RainDropParams->setVisible(ui->RainDrop->isChecked());
+    propRainDropReferenceAxis = &(pcHole->RainDropReferenceAxis);
+    fillRainDropAxisCombo();
 
     setCutDiagram();
 
@@ -249,6 +257,10 @@ TaskHoleParameters::TaskHoleParameters(ViewProviderHole* HoleView, QWidget* pare
             this, &TaskHoleParameters::rainDropChanged);
     connect(ui->RainDropAngle, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
             this, &TaskHoleParameters::rainDropAngleValueChanged);
+    connect(ui->RainDropAxis, qOverload<int>(&QComboBox::activated),
+            this, &TaskHoleParameters::onRainDropAxisChanged);
+    connect(ui->RainDropReversed, &QCheckBox::toggled, 
+            this, &TaskHoleParameters::rainDropReversedChanged);
     // clang-format on
 
     getViewObject()->show();
@@ -417,6 +429,11 @@ void TaskHoleParameters::rainDropChanged()
     ui->RainDropParams->setVisible(isChecked);
     if (auto hole = getObject<PartDesign::Hole>()) {
         hole->RainDrop.setValue(isChecked);
+
+        if (isChecked) {
+            onRainDropAxisChanged(ui->RainDropAxis->currentIndex());
+        }
+
         recomputeFeature();
     }
 }
@@ -424,6 +441,48 @@ void TaskHoleParameters::rainDropAngleValueChanged(double value)
 {
     if (auto hole = getObject<PartDesign::Hole>()) {
         hole->RainDropAngle.setValue(value);
+        recomputeFeature();
+    }
+}
+void TaskHoleParameters::onRainDropAxisChanged(int num)
+{
+    if (isUpdateBlocked()) {
+        return;
+    }
+    auto hole = getObject<PartDesign::Hole>();
+
+    if (axesInList.empty()) {
+        return;
+    }
+
+    std::vector<std::string> oldSubRefAxis = propRainDropReferenceAxis->getSubValues();
+    std::string oldRefName;
+    if (!oldSubRefAxis.empty()) {
+        oldRefName = oldSubRefAxis.front();
+    }
+
+    App::PropertyLinkSub &lnk = *(axesInList[num]);
+    if (!lnk.getValue()) {
+        // enter reference selection mode
+        if (auto sketch = dynamic_cast<Part::Part2DObject*>(hole->Profile.getValue())) {
+            Gui::cmdAppObjectShow(sketch);
+        }
+        TaskSketchBasedParameters::onSelectReference(AllowSelection::EDGE);
+    } else {
+        if (!hole->getDocument()->isIn(lnk.getValue())){
+            Base::Console().error("Object was deleted\n");
+            return;
+        }
+        propRainDropReferenceAxis->Paste(lnk);
+        exitSelectionMode();
+    }
+
+    recomputeFeature();
+}
+void TaskHoleParameters::rainDropReversedChanged()
+{
+    if (auto hole = getObject<PartDesign::Hole>()) {
+        hole->RainDropReversed.setValue(ui->RainDropReversed->isChecked());
         recomputeFeature();
     }
 }
@@ -933,6 +992,10 @@ void TaskHoleParameters::changedObject(const App::Document&, const App::Property
         ui->RainDropAngle->setEnabled(true);
         updateSpinBox(ui->RainDropAngle, hole->RainDropAngle.getValue());
     }
+    else if (&Prop == &hole->RainDropReversed) {
+        ui->RainDropAngle->setEnabled(true);
+        updateCheckable(ui->RainDropReversed, hole->RainDropReversed.getValue());
+    }
 }
 
 void TaskHoleParameters::updateHoleTypeCombo()
@@ -952,10 +1015,99 @@ void TaskHoleParameters::updateHoleTypeCombo()
         ui->HoleType->setCurrentIndex(Clearance);
     }
 }
+void TaskHoleParameters::fillRainDropAxisCombo(bool forceRefill)
+{
+    Base::StateLocker lock(getUpdateBlockRef(), true);
 
+    if (axesInList.empty()) {
+        // not filled yet, full refill
+        forceRefill = true;
+    }
+
+    if (forceRefill) {
+        ui->RainDropAxis->clear();
+        axesInList.clear();
+
+        auto *pcFeat = getObject<PartDesign::ProfileBased>();
+        if (!pcFeat) {
+            throw Base::TypeError("The object is not ProfileBased.");
+        }
+
+        //add sketch axes
+        if (auto *pcSketch = dynamic_cast<Part::Part2DObject*>(pcFeat->Profile.getValue())) {
+            addAxisToCombo(pcSketch, "V_Axis", QObject::tr("Vertical sketch axis"));
+            addAxisToCombo(pcSketch, "H_Axis", QObject::tr("Horizontal sketch axis"));
+            for (int i=0; i < pcSketch->getAxisCount(); i++) {
+                QString itemText = QObject::tr("Construction line %1").arg(i+1);
+                std::stringstream sub;
+                sub << "Axis" << i;
+                addAxisToCombo(pcSketch,sub.str(),itemText);
+            }
+        }
+
+        //add origin axes
+        if (PartDesign::Body * body = PartDesign::Body::findBodyOf(pcFeat)) {
+            try {
+                App::Origin* orig = body->getOrigin();
+                addAxisToCombo(orig->getX(), std::string(), tr("Base X axis"));
+                addAxisToCombo(orig->getY(), std::string(), tr("Base Y axis"));
+                addAxisToCombo(orig->getZ(), std::string(), tr("Base Z axis"));
+            } catch (const Base::Exception &ex) {
+                ex.reportException();
+            }
+        }
+
+        //add "Select reference"
+        addAxisToCombo(nullptr, std::string(), tr("Select reference..."));
+    }//endif forceRefill
+
+    //add current link, if not in list
+    //first, figure out the item number for current axis
+    int indexOfCurrent = -1;
+    App::DocumentObject* ax = propRainDropReferenceAxis->getValue();
+    const std::vector<std::string> &subList = propRainDropReferenceAxis->getSubValues();
+    for (size_t i = 0; i < axesInList.size(); i++) {
+        if (ax == axesInList[i]->getValue() && subList == axesInList[i]->getSubValues()) {
+            indexOfCurrent = int(i);
+        }
+    }
+    if (indexOfCurrent == -1  &&  ax) {
+        assert(subList.size() <= 1);
+        std::string sub;
+        if (!subList.empty()) {
+            sub = subList[0];
+        }
+        addAxisToCombo(ax, sub, getRefStr(ax, subList));
+        indexOfCurrent = int(axesInList.size()) - 1;
+    }
+
+    //highlight current.
+    if (indexOfCurrent != -1) {
+        ui->RainDropAxis->setCurrentIndex(indexOfCurrent);
+    }
+}
+void TaskHoleParameters::addAxisToCombo(App::DocumentObject* linkObj,
+                                        const std::string& linkSubname,
+                                        const QString& itemText)
+{
+    this->ui->RainDropAxis->addItem(itemText);
+    this->axesInList.emplace_back(new App::PropertyLinkSub());
+    App::PropertyLinkSub &lnk = *(axesInList[axesInList.size()-1]);
+    lnk.setValue(linkObj, std::vector<std::string>(1, linkSubname));
+}
 void TaskHoleParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
 {
-    Q_UNUSED(msg)
+    if (msg.Type == Gui::SelectionChanges::AddSelection) {
+        exitSelectionMode();
+        std::vector<std::string> axis;
+        App::DocumentObject* selObj {};
+        if (getReferencedSelection(getObject(), msg, selObj, axis) && selObj) {
+            propRainDropReferenceAxis->setValue(selObj, axis);
+
+            recomputeFeature();
+            fillRainDropAxisCombo();
+        }
+    }
 }
 
 bool TaskHoleParameters::getThreaded() const
@@ -1111,6 +1263,38 @@ double TaskHoleParameters::getRainDropAngle() const
 {
     return ui->RainDropAngle->value().getValue();
 }
+std::string TaskHoleParameters::getRainDropAxis()
+{
+    std::vector<std::string> sub;
+    App::DocumentObject* obj {};
+    getReferenceAxis(obj, sub);
+    std::string axis = buildLinkSingleSubPythonStr(obj, sub);
+    return axis;
+}
+bool TaskHoleParameters::getRainDropReversed() const
+{
+    return ui->RainDropReversed->isChecked();
+}
+void TaskHoleParameters::getReferenceAxis(App::DocumentObject*& obj, std::vector<std::string>& sub) const
+{
+    if (axesInList.empty()) {
+        throw Base::RuntimeError("Not initialized!");
+    }
+
+    int num = ui->RainDropAxis->currentIndex();
+    const App::PropertyLinkSub &lnk = *(axesInList[num]);
+    if (!lnk.getValue()) {
+        throw Base::RuntimeError("Still in reference selection mode; reference wasn't selected yet");
+    }
+
+    auto revolution = getObject<PartDesign::ProfileBased>();
+    if (!revolution->getDocument()->isIn(lnk.getValue())){
+        throw Base::RuntimeError("Object was deleted");
+    }
+
+    obj = lnk.getValue();
+    sub = lnk.getSubValues();
+}
 void TaskHoleParameters::apply()
 {
     auto hole = getObject<PartDesign::Hole>();
@@ -1186,6 +1370,12 @@ void TaskHoleParameters::apply()
     }
     if (!hole->RainDropAngle.isReadOnly()) {
         FCMD_OBJ_CMD(hole, "RainDropAngle = " << getRainDropAngle());
+    }
+    if (!hole->RainDropReferenceAxis.isReadOnly()) {
+        FCMD_OBJ_CMD(hole, "RainDropReferenceAxis = " << getRainDropAxis());
+    }
+    if (!hole->RainDropReversed.isReadOnly()) {
+        FCMD_OBJ_CMD(hole, "RainDropReversed = " << getRainDropReversed());
     }
 
     isApplying = false;

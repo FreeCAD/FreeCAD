@@ -1086,18 +1086,56 @@ Note that the calculation can take some time</string>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_16">
       <item>
-       <layout class="QVBoxLayout" name="verticalLayout_20">
+       <layout class="QHBoxLayout" name="horizontalLayout_2">
         <item>
-         <widget class="QToolButton" name="buttonSelectRaindropHatUpVector">
+         <widget class="QLabel" name="label_2">
           <property name="text">
-           <string>Select up vector</string>
+           <string>Axis</string>
           </property>
          </widget>
         </item>
         <item>
-         <widget class="QListWidget" name="listWidget"/>
+         <widget class="QComboBox" name="RainDropAxis">
+          <item>
+           <property name="text">
+            <string>Base X axis</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Base Y axis</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Base Z axis</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Horizontal sketch axis</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Vertical sketch axis</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Select reference...</string>
+           </property>
+          </item>
+         </widget>
         </item>
        </layout>
+      </item>
+      <item>
+       <widget class="QCheckBox" name="RainDropReversed">
+        <property name="text">
+         <string>Reversed</string>
+        </property>
+       </widget>
       </item>
       <item>
        <layout class="QVBoxLayout" name="verticalLayout_14">

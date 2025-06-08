@@ -82,6 +82,9 @@ public:
     int getBaseProfileType() const;
     bool getRainDrop() const;
     double getRainDropAngle() const;
+    std::string getRainDropAxis();
+    bool getRainDropReversed() const;
+    void getReferenceAxis(App::DocumentObject*& obj, std::vector<std::string>& sub) const;
 
 private Q_SLOTS:
     void holeTypeChanged(int index);
@@ -113,6 +116,8 @@ private Q_SLOTS:
     void baseProfileTypeChanged(int index);
     void rainDropChanged();
     void rainDropAngleValueChanged(double value);
+    void onRainDropAxisChanged(int num);
+    void rainDropReversedChanged();
     void setCutDiagram();
 
 private:
@@ -139,6 +144,11 @@ private:
     void updateHoleCutLimits(PartDesign::Hole* hole);
     void updateHoleTypeCombo();
 
+    void fillRainDropAxisCombo(bool forceRefill = false);
+    void addAxisToCombo(App::DocumentObject* linkObj,
+                        const std::string& linkSubname,
+                        const QString& itemText);
+
 private:
 
     using Connection = boost::signals2::scoped_connection;
@@ -148,6 +158,17 @@ private:
     bool isApplying;
     QWidget* proxy;
     std::unique_ptr<Ui_TaskHoleParameters> ui;
+
+    App::PropertyLinkSub* propRainDropReferenceAxis;
+    /**
+     * @brief axesInList is the list of links corresponding to axis combo; must
+     * be kept in sync with the combo. A special value of zero-pointer link is
+     * for "Select axis" item.
+     *
+     * It is a list of pointers, because properties prohibit assignment. Use new
+     * when adding stuff, and delete when removing stuff.
+     */
+    std::vector<std::unique_ptr<App::PropertyLinkSub>> axesInList;
 };
 
 /// simulation dialog for the TaskView
