@@ -30,11 +30,10 @@ jobs:
         uses: actions/stale@5bef64f19d7facfb25b37b414482c7164d639639 # v9.1.0
         with:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
-          days-before-stale: -1
-          days-before-issue-stale: 90
-          days-before-issue-close: 20
+          days-before-issue-stale: 60
+          days-before-issue-close: 14
           days-before-pr-stale: -1
-          day-before-pr-close: -1
+          days-before-pr-close: -1
           operations-per-run: 100  # max num of ops per run
           stale-issue-label: 'Status: Stale'
           close-issue-label: 'Status: Auto-closing'
@@ -57,11 +56,10 @@ jobs:
         uses: actions/stale@5bef64f19d7facfb25b37b414482c7164d639639 # v9.1.0
         with:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
-          days-before-stale: -1
           days-before-issue-stale: 20
-          days-before-issue-close: 20
+          days-before-issue-close: 14
           days-before-pr-stale: -1
-          day-before-pr-close: -1
+          days-before-pr-close: -1
           operations-per-run: 30  # max num of ops per run
           stale-issue-label: 'Status: Stale'
           close-issue-label: 'Status: Auto-closing'
@@ -85,11 +83,10 @@ jobs:
         uses: actions/stale@5bef64f19d7facfb25b37b414482c7164d639639 # v9.1.0
         with:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
-          days-before-stale: -1
           days-before-issue-stale: 190
           days-before-issue-close: 60
           days-before-pr-stale: -1
-          day-before-pr-close: -1
+          days-before-pr-close: -1
           operations-per-run: 30  # max num of ops per run
           stale-issue-label: 'Status: Stale'
           close-issue-label: 'Status: Auto-closing'
@@ -116,7 +113,6 @@ jobs:
         uses: actions/stale@5bef64f19d7facfb25b37b414482c7164d639639 # v9.1.0
         with:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
-          days-before-stale: -1
           days-before-issue-stale: -1
           days-before-issue-close: -1
           days-before-pr-stale: 150
