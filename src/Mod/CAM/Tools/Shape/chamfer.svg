@@ -22,13 +22,13 @@
      borderopacity="1.0"
      inkscape:showpageshadow="2"
      inkscape:pageopacity="0.0"
-     inkscape:pagecheckerboard="0"
+     inkscape:pagecheckerboard="true"
      inkscape:deskcolor="#d1d1d1"
      inkscape:document-units="mm"
      showgrid="false"
      inkscape:zoom="1.0079712"
-     inkscape:cx="133.93239"
-     inkscape:cy="467.77128"
+     inkscape:cx="134.42844"
+     inkscape:cy="467.7713"
      inkscape:window-width="2368"
      inkscape:window-height="1509"
      inkscape:window-x="121"
@@ -332,7 +332,7 @@
          id="path920-5" /></marker></defs><metadata
      id="metadata5"><rdf:RDF><cc:Work
          rdf:about=""><dc:format>image/svg+xml</dc:format><dc:type
-           rdf:resource="http://purl.org/dc/dcmitype/StillImage" /><dc:title /></cc:Work></rdf:RDF></metadata><path
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" /></cc:Work></rdf:RDF></metadata><path
      id="path3652"
      d="m 38.74436,159.17482 h 133.29261 l -57.61384,63.78815 H 93.795122 Z"
      style="fill:url(#linearGradient36362);fill-opacity:1;stroke:none;stroke-width:1.84358;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
