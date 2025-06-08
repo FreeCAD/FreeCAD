@@ -187,14 +187,14 @@ TaskHoleParameters::TaskHoleParameters(ViewProviderHole* HoleView, QWidget* pare
 
     ui->BaseProfileType->setCurrentIndex(PartDesign::Hole::baseProfileOption_bitmaskToIdx(pcHole->BaseProfileType.getValue()));
 
-    ui->RainDrop->setChecked(pcHole->RainDrop.getValue());
-    ui->RainDropReversed->setChecked(pcHole->RainDropReversed.getValue());
-    ui->RainDropAngle->setMinimum(pcHole->RainDropAngle.getMinimum());
-    ui->RainDropAngle->setMaximum(pcHole->RainDropAngle.getMaximum());
-    ui->RainDropAngle->setValue(pcHole->RainDropAngle.getValue());
-    ui->RainDropParams->setVisible(ui->RainDrop->isChecked());
-    propRainDropReferenceAxis = &(pcHole->RainDropReferenceAxis);
-    fillRainDropAxisCombo();
+    ui->TearDrop->setChecked(pcHole->TearDrop.getValue());
+    ui->TearDropReversed->setChecked(pcHole->TearDropReversed.getValue());
+    ui->TearDropAngle->setMinimum(pcHole->TearDropAngle.getMinimum());
+    ui->TearDropAngle->setMaximum(pcHole->TearDropAngle.getMaximum());
+    ui->TearDropAngle->setValue(pcHole->TearDropAngle.getValue());
+    ui->TearDropParams->setVisible(ui->TearDrop->isChecked());
+    propTearDropReferenceAxis = &(pcHole->TearDropReferenceAxis);
+    fillTearDropAxisCombo();
 
     setCutDiagram();
 
@@ -253,14 +253,14 @@ TaskHoleParameters::TaskHoleParameters(ViewProviderHole* HoleView, QWidget* pare
             this, &TaskHoleParameters::threadDepthChanged);
     connect(ui->BaseProfileType, qOverload<int>(&QComboBox::currentIndexChanged),
             this, &TaskHoleParameters::baseProfileTypeChanged);
-    connect(ui->RainDrop, &QCheckBox::toggled, 
-            this, &TaskHoleParameters::rainDropChanged);
-    connect(ui->RainDropAngle, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
-            this, &TaskHoleParameters::rainDropAngleValueChanged);
-    connect(ui->RainDropAxis, qOverload<int>(&QComboBox::activated),
-            this, &TaskHoleParameters::onRainDropAxisChanged);
-    connect(ui->RainDropReversed, &QCheckBox::toggled, 
-            this, &TaskHoleParameters::rainDropReversedChanged);
+    connect(ui->TearDrop, &QCheckBox::toggled, 
+            this, &TaskHoleParameters::tearDropChanged);
+    connect(ui->TearDropAngle, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+            this, &TaskHoleParameters::tearDropAngleValueChanged);
+    connect(ui->TearDropAxis, qOverload<int>(&QComboBox::activated),
+            this, &TaskHoleParameters::onTearDropAxisChanged);
+    connect(ui->TearDropReversed, &QCheckBox::toggled, 
+            this, &TaskHoleParameters::tearDropReversedChanged);
     // clang-format on
 
     getViewObject()->show();
@@ -274,7 +274,7 @@ TaskHoleParameters::TaskHoleParameters(ViewProviderHole* HoleView, QWidget* pare
     ui->TaperedAngle->bind(pcHole->TaperedAngle);
     ui->ThreadDepth->bind(pcHole->ThreadDepth);
     ui->CustomThreadClearance->bind(pcHole->CustomThreadClearance);
-    ui->RainDropAngle->bind(pcHole->RainDropAngle);
+    ui->TearDropAngle->bind(pcHole->TearDropAngle);
 
     // NOLINTBEGIN
     connectPropChanged = App::GetApplication().signalChangePropertyEditor.connect(
@@ -423,28 +423,28 @@ void TaskHoleParameters::baseProfileTypeChanged(int index)
         recomputeFeature();
     }
 }
-void TaskHoleParameters::rainDropChanged()
+void TaskHoleParameters::tearDropChanged()
 {
-    bool isChecked = ui->RainDrop->isChecked();
-    ui->RainDropParams->setVisible(isChecked);
+    bool isChecked = ui->TearDrop->isChecked();
+    ui->TearDropParams->setVisible(isChecked);
     if (auto hole = getObject<PartDesign::Hole>()) {
-        hole->RainDrop.setValue(isChecked);
+        hole->TearDrop.setValue(isChecked);
 
         if (isChecked) {
-            onRainDropAxisChanged(ui->RainDropAxis->currentIndex());
+            onTearDropAxisChanged(ui->TearDropAxis->currentIndex());
         }
 
         recomputeFeature();
     }
 }
-void TaskHoleParameters::rainDropAngleValueChanged(double value)
+void TaskHoleParameters::tearDropAngleValueChanged(double value)
 {
     if (auto hole = getObject<PartDesign::Hole>()) {
-        hole->RainDropAngle.setValue(value);
+        hole->TearDropAngle.setValue(value);
         recomputeFeature();
     }
 }
-void TaskHoleParameters::onRainDropAxisChanged(int num)
+void TaskHoleParameters::onTearDropAxisChanged(int num)
 {
     if (isUpdateBlocked()) {
         return;
@@ -455,7 +455,7 @@ void TaskHoleParameters::onRainDropAxisChanged(int num)
         return;
     }
 
-    std::vector<std::string> oldSubRefAxis = propRainDropReferenceAxis->getSubValues();
+    std::vector<std::string> oldSubRefAxis = propTearDropReferenceAxis->getSubValues();
     std::string oldRefName;
     if (!oldSubRefAxis.empty()) {
         oldRefName = oldSubRefAxis.front();
@@ -473,16 +473,16 @@ void TaskHoleParameters::onRainDropAxisChanged(int num)
             Base::Console().error("Object was deleted\n");
             return;
         }
-        propRainDropReferenceAxis->Paste(lnk);
+        propTearDropReferenceAxis->Paste(lnk);
         exitSelectionMode();
     }
 
     recomputeFeature();
 }
-void TaskHoleParameters::rainDropReversedChanged()
+void TaskHoleParameters::tearDropReversedChanged()
 {
     if (auto hole = getObject<PartDesign::Hole>()) {
-        hole->RainDropReversed.setValue(ui->RainDropReversed->isChecked());
+        hole->TearDropReversed.setValue(ui->TearDropReversed->isChecked());
         recomputeFeature();
     }
 }
@@ -984,17 +984,17 @@ void TaskHoleParameters::changedObject(const App::Document&, const App::Property
         ui->BaseProfileType->setEnabled(true);
         updateComboBox(ui->BaseProfileType, PartDesign::Hole::baseProfileOption_bitmaskToIdx(hole->BaseProfileType.getValue()));
     }
-    else if (&Prop == &hole->RainDrop) {
-        ui->RainDrop->setEnabled(true);
-        updateCheckable(ui->RainDrop, hole->RainDrop.getValue());
+    else if (&Prop == &hole->TearDrop) {
+        ui->TearDrop->setEnabled(true);
+        updateCheckable(ui->TearDrop, hole->TearDrop.getValue());
     }
-    else if (&Prop == &hole->RainDropAngle) {
-        ui->RainDropAngle->setEnabled(true);
-        updateSpinBox(ui->RainDropAngle, hole->RainDropAngle.getValue());
+    else if (&Prop == &hole->TearDropAngle) {
+        ui->TearDropAngle->setEnabled(true);
+        updateSpinBox(ui->TearDropAngle, hole->TearDropAngle.getValue());
     }
-    else if (&Prop == &hole->RainDropReversed) {
-        ui->RainDropAngle->setEnabled(true);
-        updateCheckable(ui->RainDropReversed, hole->RainDropReversed.getValue());
+    else if (&Prop == &hole->TearDropReversed) {
+        ui->TearDropAngle->setEnabled(true);
+        updateCheckable(ui->TearDropReversed, hole->TearDropReversed.getValue());
     }
 }
 
@@ -1015,7 +1015,7 @@ void TaskHoleParameters::updateHoleTypeCombo()
         ui->HoleType->setCurrentIndex(Clearance);
     }
 }
-void TaskHoleParameters::fillRainDropAxisCombo(bool forceRefill)
+void TaskHoleParameters::fillTearDropAxisCombo(bool forceRefill)
 {
     Base::StateLocker lock(getUpdateBlockRef(), true);
 
@@ -1025,7 +1025,7 @@ void TaskHoleParameters::fillRainDropAxisCombo(bool forceRefill)
     }
 
     if (forceRefill) {
-        ui->RainDropAxis->clear();
+        ui->TearDropAxis->clear();
         axesInList.clear();
 
         auto *pcFeat = getObject<PartDesign::ProfileBased>();
@@ -1064,8 +1064,8 @@ void TaskHoleParameters::fillRainDropAxisCombo(bool forceRefill)
     //add current link, if not in list
     //first, figure out the item number for current axis
     int indexOfCurrent = -1;
-    App::DocumentObject* ax = propRainDropReferenceAxis->getValue();
-    const std::vector<std::string> &subList = propRainDropReferenceAxis->getSubValues();
+    App::DocumentObject* ax = propTearDropReferenceAxis->getValue();
+    const std::vector<std::string> &subList = propTearDropReferenceAxis->getSubValues();
     for (size_t i = 0; i < axesInList.size(); i++) {
         if (ax == axesInList[i]->getValue() && subList == axesInList[i]->getSubValues()) {
             indexOfCurrent = int(i);
@@ -1083,14 +1083,14 @@ void TaskHoleParameters::fillRainDropAxisCombo(bool forceRefill)
 
     //highlight current.
     if (indexOfCurrent != -1) {
-        ui->RainDropAxis->setCurrentIndex(indexOfCurrent);
+        ui->TearDropAxis->setCurrentIndex(indexOfCurrent);
     }
 }
 void TaskHoleParameters::addAxisToCombo(App::DocumentObject* linkObj,
                                         const std::string& linkSubname,
                                         const QString& itemText)
 {
-    this->ui->RainDropAxis->addItem(itemText);
+    this->ui->TearDropAxis->addItem(itemText);
     this->axesInList.emplace_back(new App::PropertyLinkSub());
     App::PropertyLinkSub &lnk = *(axesInList[axesInList.size()-1]);
     lnk.setValue(linkObj, std::vector<std::string>(1, linkSubname));
@@ -1102,10 +1102,10 @@ void TaskHoleParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
         std::vector<std::string> axis;
         App::DocumentObject* selObj {};
         if (getReferencedSelection(getObject(), msg, selObj, axis) && selObj) {
-            propRainDropReferenceAxis->setValue(selObj, axis);
+            propTearDropReferenceAxis->setValue(selObj, axis);
 
             recomputeFeature();
-            fillRainDropAxisCombo();
+            fillTearDropAxisCombo();
         }
     }
 }
@@ -1255,15 +1255,15 @@ int TaskHoleParameters::getBaseProfileType() const
 {
     return PartDesign::Hole::baseProfileOption_idxToBitmask(ui->BaseProfileType->currentIndex());
 }
-bool TaskHoleParameters::getRainDrop() const
+bool TaskHoleParameters::getTearDrop() const
 {
-    return ui->RainDrop->isChecked();
+    return ui->TearDrop->isChecked();
 }
-double TaskHoleParameters::getRainDropAngle() const
+double TaskHoleParameters::getTearDropAngle() const
 {
-    return ui->RainDropAngle->value().getValue();
+    return ui->TearDropAngle->value().getValue();
 }
-std::string TaskHoleParameters::getRainDropAxis()
+std::string TaskHoleParameters::getTearDropAxis()
 {
     std::vector<std::string> sub;
     App::DocumentObject* obj {};
@@ -1271,9 +1271,9 @@ std::string TaskHoleParameters::getRainDropAxis()
     std::string axis = buildLinkSingleSubPythonStr(obj, sub);
     return axis;
 }
-bool TaskHoleParameters::getRainDropReversed() const
+bool TaskHoleParameters::getTearDropReversed() const
 {
-    return ui->RainDropReversed->isChecked();
+    return ui->TearDropReversed->isChecked();
 }
 void TaskHoleParameters::getReferenceAxis(App::DocumentObject*& obj, std::vector<std::string>& sub) const
 {
@@ -1281,7 +1281,7 @@ void TaskHoleParameters::getReferenceAxis(App::DocumentObject*& obj, std::vector
         throw Base::RuntimeError("Not initialized!");
     }
 
-    int num = ui->RainDropAxis->currentIndex();
+    int num = ui->TearDropAxis->currentIndex();
     const App::PropertyLinkSub &lnk = *(axesInList[num]);
     if (!lnk.getValue()) {
         throw Base::RuntimeError("Still in reference selection mode; reference wasn't selected yet");
@@ -1308,7 +1308,7 @@ void TaskHoleParameters::apply()
     ui->Depth->apply();
     ui->DrillPointAngle->apply();
     ui->TaperedAngle->apply();
-    ui->RainDropAngle->apply();
+    ui->TearDropAngle->apply();
 
     if (!hole->Threaded.isReadOnly()) {
         FCMD_OBJ_CMD(hole, "Threaded = " << (getThreaded() ? 1 : 0));
@@ -1365,17 +1365,17 @@ void TaskHoleParameters::apply()
     if (!hole->BaseProfileType.isReadOnly()) {
         FCMD_OBJ_CMD(hole, "BaseProfileType = " << getBaseProfileType());
     }
-    if (!hole->RainDrop.isReadOnly()) {
-        FCMD_OBJ_CMD(hole, "RainDrop = " << getRainDrop());
+    if (!hole->TearDrop.isReadOnly()) {
+        FCMD_OBJ_CMD(hole, "TearDrop = " << getTearDrop());
     }
-    if (!hole->RainDropAngle.isReadOnly()) {
-        FCMD_OBJ_CMD(hole, "RainDropAngle = " << getRainDropAngle());
+    if (!hole->TearDropAngle.isReadOnly()) {
+        FCMD_OBJ_CMD(hole, "TearDropAngle = " << getTearDropAngle());
     }
-    if (!hole->RainDropReferenceAxis.isReadOnly()) {
-        FCMD_OBJ_CMD(hole, "RainDropReferenceAxis = " << getRainDropAxis());
+    if (!hole->TearDropReferenceAxis.isReadOnly()) {
+        FCMD_OBJ_CMD(hole, "TearDropReferenceAxis = " << getTearDropAxis());
     }
-    if (!hole->RainDropReversed.isReadOnly()) {
-        FCMD_OBJ_CMD(hole, "RainDropReversed = " << getRainDropReversed());
+    if (!hole->TearDropReversed.isReadOnly()) {
+        FCMD_OBJ_CMD(hole, "TearDropReversed = " << getTearDropReversed());
     }
 
     isApplying = false;

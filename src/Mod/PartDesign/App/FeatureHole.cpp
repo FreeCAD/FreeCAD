@@ -764,7 +764,7 @@ const char* Hole::ThreadDirectionEnums[]  = { "Right", "Left", nullptr};
 PROPERTY_SOURCE(PartDesign::Hole, PartDesign::ProfileBased)
 
 const App::PropertyAngle::Constraints Hole::floatAngle = { .LowerBound=Base::toDegrees<double>(Precision::Angular()), .UpperBound=180.0 - Base::toDegrees<double>(Precision::Angular()), .StepSize=1.0 };
-const App::PropertyAngle::Constraints Hole::rainDropAngleRange = { .LowerBound=20.0, .UpperBound=80.0, .StepSize=0.1 };
+const App::PropertyAngle::Constraints Hole::tearDropAngleRange = { .LowerBound=20.0, .UpperBound=80.0, .StepSize=0.1 };
 
 // OCC can only create holes with a min diameter of 10 times the Precision::Confusion()
 const App::PropertyQuantityConstraint::Constraints diameterRange = { .LowerBound=10 * Precision::Confusion(), .UpperBound=std::numeric_limits<float>::max(), .StepSize=1.0 };
@@ -848,11 +848,11 @@ Hole::Hole()
     // while new file get points, circles and arcs set in setupObject()
     ADD_PROPERTY_TYPE(BaseProfileType, (BaseProfileTypeOptions::OnCirclesArcs), "Hole", App::Prop_None, "Which profile feature to base the holes on");
 
-    ADD_PROPERTY_TYPE(RainDrop, (false), "Hole", App::Prop_None, "Enable rain drop");
-    ADD_PROPERTY_TYPE(RainDropAngle, (50.0), "Hole", App::Prop_None, "Rain drop hat angle to vertical");
-    RainDropAngle.setConstraints(&rainDropAngleRange);
-    ADD_PROPERTY_TYPE(RainDropReferenceAxis,(nullptr),"Hole",(App::Prop_None),"Reference axis of rain drop hat");
-    ADD_PROPERTY_TYPE(RainDropReversed, (false), "Hole", App::Prop_None, "Reverse direction of rain drop");
+    ADD_PROPERTY_TYPE(TearDrop, (false), "Hole", App::Prop_None, "Enable tear drop");
+    ADD_PROPERTY_TYPE(TearDropAngle, (70.0), "Hole", App::Prop_None, "Tear drop hat angle to vertical");
+    TearDropAngle.setConstraints(&tearDropAngleRange);
+    ADD_PROPERTY_TYPE(TearDropReferenceAxis,(nullptr),"Hole",(App::Prop_None),"Reference axis of tear drop hat");
+    ADD_PROPERTY_TYPE(TearDropReversed, (false), "Hole", App::Prop_None, "Reverse direction of tear drop");
 }
 
 void Hole::updateHoleCutParams()
@@ -1753,16 +1753,16 @@ void Hole::onChanged(const App::Property* prop)
     else if (prop == &CustomThreadClearance) {
         updateDiameterParam();
     }
-    else if (prop == &RainDrop) {
-        if (RainDrop.getValue()) {
-            RainDropAngle.setReadOnly(false);
-            RainDropDirection.setReadOnly(false);
-            RainDropReversed.setReadOnly(false);
+    else if (prop == &TearDrop) {
+        if (TearDrop.getValue()) {
+            TearDropAngle.setReadOnly(false);
+            TearDropDirection.setReadOnly(false);
+            TearDropReversed.setReadOnly(false);
         }
         else {
-            RainDropAngle.setReadOnly(true);
-            RainDropDirection.setReadOnly(true);
-            RainDropReversed.setReadOnly(true);
+            TearDropAngle.setReadOnly(true);
+            TearDropDirection.setReadOnly(true);
+            TearDropReversed.setReadOnly(true);
         }
     }
 
@@ -1859,10 +1859,10 @@ short Hole::mustExecute() const
         ThreadDepthType.isTouched() ||
         ThreadDepth.isTouched() ||
         BaseProfileType.isTouched() ||
-        RainDrop.isTouched() ||
-        RainDropAngle.isTouched() || 
-        RainDropReferenceAxis.isTouched() ||
-        RainDropReversed.isTouched()
+        TearDrop.isTouched() ||
+        TearDropAngle.isTouched() || 
+        TearDropReferenceAxis.isTouched() ||
+        TearDropReversed.isTouched()
     )
         return 1;
     return ProfileBased::mustExecute();
@@ -1899,10 +1899,10 @@ void Hole::updateProps()
     onChanged(&ThreadDepthType);
     onChanged(&ThreadDepth);
     onChanged(&BaseProfileType);
-    onChanged(&RainDrop);
-    onChanged(&RainDropAngle);
-    onChanged(&RainDropReferenceAxis);
-    onChanged(&RainDropReversed);
+    onChanged(&TearDrop);
+    onChanged(&TearDropAngle);
+    onChanged(&TearDropReferenceAxis);
+    onChanged(&TearDropReversed);
 }
 
 static gp_Pnt toPnt(gp_Vec dir)
@@ -2140,37 +2140,35 @@ App::DocumentObjectExecReturn* Hole::execute()
             // we reuse the name protoHole (only now it is threaded)
             protoHole = mkFuse.Shape();
         }
-        // Make raindrop hat thing
-        if (RainDrop.getValue()) {
-            updateRainDropAxis();
+        // Make teardrop hat thing
+        if (TearDrop.getValue()) {
+            updateTearDropAxis();
 
-            gp_Vec hatDir = toVec(RainDropDirection.getValue());
-            TopoDS_Shape protoRainDrop = makeRainDropHat(hatDir, zDir, radius, length, RainDropAngle.getValue());
-            FCBRepAlgoAPI_Fuse mkFuse(protoHole, protoRainDrop);
+            gp_Vec hatDir = toVec(TearDropDirection.getValue());
+            TopoDS_Shape protoTearDrop = makeTearDropHat(hatDir, zDir, radius, length, TearDropAngle.getValue());
+            FCBRepAlgoAPI_Fuse mkFuse(protoHole, protoTearDrop);
 
             if (!mkFuse.IsDone()) {
-                std::cerr << "Could not fuse hat :(\n";
+                return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Error: Adding the tear drop hat failed"));
             }
 
             protoHole = mkFuse.Shape();
 
             if (isCounterbore || isCounterdrill) {
-                protoRainDrop = makeRainDropHat(hatDir,
+                protoTearDrop = makeTearDropHat(hatDir,
                                                 zDir,
                                                 HoleCutDiameter.getValue() / 2.0,
                                                 HoleCutDepth.getValue(),
-                                                RainDropAngle.getValue());
+                                                TearDropAngle.getValue());
 
-                FCBRepAlgoAPI_Fuse mkCounterboreFuse(protoHole, protoRainDrop);
+                FCBRepAlgoAPI_Fuse mkCounterboreFuse(protoHole, protoTearDrop);
 
                 if (!mkCounterboreFuse.IsDone()) {
-                    std::cerr << "Could not fuse counterbore hat :(\n";
+                    return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Error: Adding the tear drop hat to the head failed")); 
                 }
 
                 protoHole = mkCounterboreFuse.Shape();
             }
-
-            std::cerr << "Protohole is null: " << protoHole.IsNull() << "\n";
         }
 
         std::vector<TopoShape> holes;
@@ -2581,7 +2579,7 @@ TopoDS_Shape Hole::makeThread(const gp_Vec& xDir, const gp_Vec& zDir, double len
     // we are done
     return result;
 }
-TopoDS_Shape Hole::makeRainDropHat(const gp_Vec& xDir, const gp_Vec& zDir, double radius, double depth, double angle)
+TopoDS_Shape Hole::makeTearDropHat(const gp_Vec& xDir, const gp_Vec& zDir, double radius, double depth, double angle)
 {
     angle = Base::toRadians(angle);
 
@@ -2602,32 +2600,23 @@ TopoDS_Shape Hole::makeRainDropHat(const gp_Vec& xDir, const gp_Vec& zDir, doubl
 
     TopoDS_Face face = BRepBuilderAPI_MakeFace(mkHatWire.Wire());
     BRepPrimAPI_MakePrism mkHatPrism(face, zDir * -depth);
-
-    if (!mkHatPrism.IsDone()) {
-        std::cerr << "Could not make hat :(\n";
-    }
-
     TopoDS_Shape shape = mkHatPrism.Shape();
-
-    if (shape.IsNull()) {
-        std::cerr << "Hat is null :(\n";
-    }
 
     return shape;
 }
-void Hole::updateRainDropAxis()
+void Hole::updateTearDropAxis()
 {
-    App::DocumentObject *pcRainDropReferenceAxis = RainDropReferenceAxis.getValue();
-    const std::vector<std::string> &subRainDropReferenceAxis = RainDropReferenceAxis.getSubValues();
+    App::DocumentObject *pcTearDropReferenceAxis = TearDropReferenceAxis.getValue();
+    const std::vector<std::string> &subTearDropReferenceAxis = TearDropReferenceAxis.getSubValues();
     Base::Vector3d base;
     Base::Vector3d dir;
-    getAxis(pcRainDropReferenceAxis, subRainDropReferenceAxis, base, dir, ForbiddenAxis::NotParallelWithNormal);
+    getAxis(pcTearDropReferenceAxis, subTearDropReferenceAxis, base, dir, ForbiddenAxis::NotParallelWithNormal);
 
-    if (RainDropReversed.getValue()) {
+    if (TearDropReversed.getValue()) {
         dir = -dir;
     }
 
-    RainDropDirection.setValue(dir.x,dir.y,dir.z);
+    TearDropDirection.setValue(dir.x,dir.y,dir.z);
 }
 
 void Hole::addCutType(const CutDimensionSet& dimensions)

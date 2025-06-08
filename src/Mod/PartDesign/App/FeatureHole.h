@@ -75,11 +75,11 @@ public:
     App::PropertyBool           UseCustomThreadClearance;
     App::PropertyLength         CustomThreadClearance;
     App::PropertyInteger        BaseProfileType;
-    App::PropertyBool           RainDrop;       // Make a raindrop shape to make it easier to 3d print upright
-    App::PropertyAngle          RainDropAngle;
-    App::PropertyDirection      RainDropDirection;
-    App::PropertyBool           RainDropReversed;
-    App::PropertyLinkSub        RainDropReferenceAxis;
+    App::PropertyBool           TearDrop;       // Make a tear drop shape to make it easier to 3d print upright
+    App::PropertyAngle          TearDropAngle;
+    App::PropertyDirection      TearDropDirection;
+    App::PropertyBool           TearDropReversed;
+    App::PropertyLinkSub        TearDropReferenceAxis;
 
     enum BaseProfileTypeOptions {
         OnPoints    = 1 << 0,
@@ -134,7 +134,7 @@ protected:
     void setupObject() override;
 
     static const App::PropertyAngle::Constraints floatAngle;
-    static const App::PropertyAngle::Constraints rainDropAngleRange;
+    static const App::PropertyAngle::Constraints tearDropAngleRange;
 
 private:
     static const char* DepthTypeEnums[];
@@ -267,8 +267,8 @@ private:
     // @zDir the normal vector in the drilling direction
     // @depth the depth of the hole
     // @angle the angle between the hat sides and xDir
-    static TopoDS_Shape makeRainDropHat(const gp_Vec& xDir, const gp_Vec& zDir, double radius, double depth, double angle);
-    void updateRainDropAxis();
+    static TopoDS_Shape makeTearDropHat(const gp_Vec& xDir, const gp_Vec& zDir, double radius, double depth, double angle);
+    void updateTearDropAxis();
     TopoShape findHoles(std::vector<TopoShape> &holes, const TopoShape& profileshape, const TopoDS_Shape& protohole) const;
 
     // helpers for nlohmann json

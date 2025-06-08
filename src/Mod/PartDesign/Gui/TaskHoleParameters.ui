@@ -1073,14 +1073,17 @@ Note that the calculation can take some time</string>
     </widget>
    </item>
    <item>
-    <widget class="QCheckBox" name="RainDrop">
+    <widget class="QCheckBox" name="TearDrop">
+     <property name="toolTip">
+      <string>Make a tear drop shape for easier printing on FDM machines without support</string>
+     </property>
      <property name="text">
-      <string>Raindrop</string>
+      <string>Tear Drop</string>
      </property>
     </widget>
    </item>
    <item>
-    <widget class="QGroupBox" name="RainDropParams">
+    <widget class="QGroupBox" name="TearDropParams">
      <property name="title">
       <string/>
      </property>
@@ -1090,12 +1093,15 @@ Note that the calculation can take some time</string>
         <item>
          <widget class="QLabel" name="label_2">
           <property name="text">
-           <string>Axis</string>
+           <string>Direction</string>
           </property>
          </widget>
         </item>
         <item>
-         <widget class="QComboBox" name="RainDropAxis">
+         <widget class="QComboBox" name="TearDropAxis">
+          <property name="toolTip">
+           <string>Direction of the tip, it should point up from the print bed</string>
+          </property>
           <item>
            <property name="text">
             <string>Base X axis</string>
@@ -1131,7 +1137,7 @@ Note that the calculation can take some time</string>
        </layout>
       </item>
       <item>
-       <widget class="QCheckBox" name="RainDropReversed">
+       <widget class="QCheckBox" name="TearDropReversed">
         <property name="text">
          <string>Reversed</string>
         </property>
@@ -1142,12 +1148,15 @@ Note that the calculation can take some time</string>
         <item>
          <widget class="QLabel" name="label">
           <property name="text">
-           <string>Angle to vertical</string>
+           <string>Angle to direction</string>
           </property>
          </widget>
         </item>
         <item>
-         <widget class="Gui::PrefQuantitySpinBox" name="RainDropAngle">
+         <widget class="Gui::PrefQuantitySpinBox" name="TearDropAngle">
+          <property name="toolTip">
+           <string>Angle of the tear drop, smaller is pointier</string>
+          </property>
           <property name="unit" stdset="0">
            <string notr="true">deg</string>
           </property>

@@ -80,10 +80,10 @@ public:
     long getThreadDepthType() const;
     double getThreadDepth() const;
     int getBaseProfileType() const;
-    bool getRainDrop() const;
-    double getRainDropAngle() const;
-    std::string getRainDropAxis();
-    bool getRainDropReversed() const;
+    bool getTearDrop() const;
+    double getTearDropAngle() const;
+    std::string getTearDropAxis();
+    bool getTearDropReversed() const;
     void getReferenceAxis(App::DocumentObject*& obj, std::vector<std::string>& sub) const;
 
 private Q_SLOTS:
@@ -114,10 +114,10 @@ private Q_SLOTS:
     void threadDepthTypeChanged(int index);
     void threadDepthChanged(double value);
     void baseProfileTypeChanged(int index);
-    void rainDropChanged();
-    void rainDropAngleValueChanged(double value);
-    void onRainDropAxisChanged(int num);
-    void rainDropReversedChanged();
+    void tearDropChanged();
+    void tearDropAngleValueChanged(double value);
+    void onTearDropAxisChanged(int num);
+    void tearDropReversedChanged();
     void setCutDiagram();
 
 private:
@@ -144,7 +144,7 @@ private:
     void updateHoleCutLimits(PartDesign::Hole* hole);
     void updateHoleTypeCombo();
 
-    void fillRainDropAxisCombo(bool forceRefill = false);
+    void fillTearDropAxisCombo(bool forceRefill = false);
     void addAxisToCombo(App::DocumentObject* linkObj,
                         const std::string& linkSubname,
                         const QString& itemText);
@@ -159,7 +159,7 @@ private:
     QWidget* proxy;
     std::unique_ptr<Ui_TaskHoleParameters> ui;
 
-    App::PropertyLinkSub* propRainDropReferenceAxis;
+    App::PropertyLinkSub* propTearDropReferenceAxis;
     /**
      * @brief axesInList is the list of links corresponding to axis combo; must
      * be kept in sync with the combo. A special value of zero-pointer link is
