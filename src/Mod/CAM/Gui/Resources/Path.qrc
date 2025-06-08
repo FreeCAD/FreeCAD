@@ -93,6 +93,7 @@
         <file>panels/DragKnifeEdit.ui</file>
         <file>panels/DressUpLeadInOutEdit.ui</file>
         <file>panels/HoldingTagsEdit.ui</file>
+        <file>panels/LibraryProperties.ui</file>
         <file>panels/PageBaseGeometryEdit.ui</file>
         <file>panels/PageBaseHoleGeometryEdit.ui</file>
         <file>panels/PageBaseLocationEdit.ui</file>

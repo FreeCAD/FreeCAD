@@ -188,6 +188,7 @@ SET(PathPythonToolsToolBitSerializers_SRCS
     Path/Tool/toolbit/serializers/__init__.py
     Path/Tool/toolbit/serializers/camotics.py
     Path/Tool/toolbit/serializers/fctb.py
+    Path/Tool/toolbit/serializers/yaml.py
 )
 
 SET(PathPythonToolsToolBitUi_SRCS
@@ -200,6 +201,7 @@ SET(PathPythonToolsToolBitUi_SRCS
     Path/Tool/toolbit/ui/selector.py
     Path/Tool/toolbit/ui/tablecell.py
     Path/Tool/toolbit/ui/toollist.py
+    Path/Tool/toolbit/ui/util.py
     Path/Tool/toolbit/ui/view.py
 )
 
@@ -222,10 +224,11 @@ SET(PathPythonToolsLibrarySerializers_SRCS
 
 SET(PathPythonToolsLibraryUi_SRCS
     Path/Tool/library/ui/__init__.py
+    Path/Tool/library/ui/browser.py
     Path/Tool/library/ui/cmd.py
     Path/Tool/library/ui/dock.py
     Path/Tool/library/ui/editor.py
-    Path/Tool/library/ui/browser.py
+    Path/Tool/library/ui/properties.py
 )
 
 SET(PathPythonToolsMachine_SRCS
