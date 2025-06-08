@@ -72,6 +72,9 @@ def main():
     args = parser.parse_args()
     init_environment(args)
 
+    logging.info("Installing black (if needed)...")
+    run_command(["pip", "install", "-q", "black"], check=True)
+
     cmd = [
         "black",
         "--line-length",
