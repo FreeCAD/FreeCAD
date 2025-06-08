@@ -147,29 +147,29 @@ pthreads-win32 = "*"
 
 ## Qt 6 Configuration Presets
 [target.linux-64.tasks]
-configure = { cmd = [ "cmake", "-B", "build", "--preset", "conda-linux-debug", "-DFREECAD_QT_VERSION=6", "-DBUILD_REVERSEENGINEERING=OFF" ], depends-on = ["initialize"], env={ CFLAGS="", CXXFLAGS="", DEBUG_CFLAGS="", DEBUG_CXXFLAGS="" }}
-configure-debug = { cmd = [ "cmake", "-B", "build", "--preset", "conda-linux-debug", "-DFREECAD_QT_VERSION=6", "-DBUILD_REVERSEENGINEERING=OFF" ], depends-on = ["initialize"], env={ CFLAGS="", CXXFLAGS="", DEBUG_CFLAGS="", DEBUG_CXXFLAGS="" }}
-configure-release = { cmd = [ "cmake", "-B", "build", "--preset", "conda-linux-release", "-DFREECAD_QT_VERSION=6", "-DBUILD_REVERSEENGINEERING=OFF" ], depends-on = ["initialize"], env={ CFLAGS="", CXXFLAGS="", DEBUG_CFLAGS="", DEBUG_CXXFLAGS="" }}
+configure = { cmd = [ "cmake", "-B", "build", "--preset", "conda-linux-debug", "-DBUILD_REVERSEENGINEERING=OFF" ], depends-on = ["initialize"], env={ CFLAGS="", CXXFLAGS="", DEBUG_CFLAGS="", DEBUG_CXXFLAGS="" }}
+configure-debug = { cmd = [ "cmake", "-B", "build", "--preset", "conda-linux-debug", "-DBUILD_REVERSEENGINEERING=OFF" ], depends-on = ["initialize"], env={ CFLAGS="", CXXFLAGS="", DEBUG_CFLAGS="", DEBUG_CXXFLAGS="" }}
+configure-release = { cmd = [ "cmake", "-B", "build", "--preset", "conda-linux-release", "-DBUILD_REVERSEENGINEERING=OFF" ], depends-on = ["initialize"], env={ CFLAGS="", CXXFLAGS="", DEBUG_CFLAGS="", DEBUG_CXXFLAGS="" }}
 
 [target.linux-aarch64.tasks]
-configure = { cmd = [ "cmake", "-B", "build", "--preset", "conda-linux-debug", "-DFREECAD_QT_VERSION=6", "-DBUILD_REVERSEENGINEERING=OFF" ], depends-on= ["initialize"], env={ CFLAGS="", CXXFLAGS="", DEBUG_CFLAGS="", DEBUG_CXXFLAGS="" }}
-configure-debug = { cmd = [ "cmake", "-B", "build", "--preset", "conda-linux-debug", "-DFREECAD_QT_VERSION=6", "-DBUILD_REVERSEENGINEERING=OFF" ], depends-on= ["initialize"], env={ CFLAGS="", CXXFLAGS="", DEBUG_CFLAGS="", DEBUG_CXXFLAGS="" }}
-configure-release = { cmd = [ "cmake", "-B", "build", "--preset", "conda-linux-release", "-DFREECAD_QT_VERSION=6", "-DBUILD_REVERSEENGINEERING=OFF" ], depends-on= ["initialize"], env={ CFLAGS="", CXXFLAGS="", DEBUG_CFLAGS="", DEBUG_CXXFLAGS="" }}
+configure = { cmd = [ "cmake", "-B", "build", "--preset", "conda-linux-debug", "-DBUILD_REVERSEENGINEERING=OFF" ], depends-on= ["initialize"], env={ CFLAGS="", CXXFLAGS="", DEBUG_CFLAGS="", DEBUG_CXXFLAGS="" }}
+configure-debug = { cmd = [ "cmake", "-B", "build", "--preset", "conda-linux-debug", "-DBUILD_REVERSEENGINEERING=OFF" ], depends-on= ["initialize"], env={ CFLAGS="", CXXFLAGS="", DEBUG_CFLAGS="", DEBUG_CXXFLAGS="" }}
+configure-release = { cmd = [ "cmake", "-B", "build", "--preset", "conda-linux-release", "-DBUILD_REVERSEENGINEERING=OFF" ], depends-on= ["initialize"], env={ CFLAGS="", CXXFLAGS="", DEBUG_CFLAGS="", DEBUG_CXXFLAGS="" }}
 
 [target.osx-64.tasks]
-configure = { cmd = [ "cmake", "-B", "build", "--preset", "conda-macos-debug", "-DFREECAD_QT_VERSION=6", "-DBUILD_REVERSEENGINEERING=OFF" ], depends-on = ["initialize"], env={ CFLAGS="", CXXFLAGS="", DEBUG_CFLAGS="", DEBUG_CXXFLAGS="" }}
-configure-debug = { cmd = [ "cmake", "-B", "build", "--preset", "conda-macos-debug", "-DFREECAD_QT_VERSION=6", "-DBUILD_REVERSEENGINEERING=OFF" ], depends-on = ["initialize"], env={ CFLAGS="", CXXFLAGS="", DEBUG_CFLAGS="", DEBUG_CXXFLAGS="" }}
-configure-release = { cmd = [ "cmake", "-B", "build", "--preset", "conda-macos-release", "-DFREECAD_QT_VERSION=6", "-DBUILD_REVERSEENGINEERING=OFF" ], depends-on = ["initialize"], env={ CFLAGS="", CXXFLAGS="", DEBUG_CFLAGS="", DEBUG_CXXFLAGS="" }}
+configure = { cmd = [ "cmake", "-B", "build", "--preset", "conda-macos-debug", "-DBUILD_REVERSEENGINEERING=OFF" ], depends-on = ["initialize"], env={ CFLAGS="", CXXFLAGS="", DEBUG_CFLAGS="", DEBUG_CXXFLAGS="" }}
+configure-debug = { cmd = [ "cmake", "-B", "build", "--preset", "conda-macos-debug", "-DBUILD_REVERSEENGINEERING=OFF" ], depends-on = ["initialize"], env={ CFLAGS="", CXXFLAGS="", DEBUG_CFLAGS="", DEBUG_CXXFLAGS="" }}
+configure-release = { cmd = [ "cmake", "-B", "build", "--preset", "conda-macos-release", "-DBUILD_REVERSEENGINEERING=OFF" ], depends-on = ["initialize"], env={ CFLAGS="", CXXFLAGS="", DEBUG_CFLAGS="", DEBUG_CXXFLAGS="" }}
 
 [target.osx-arm64.tasks]
-configure = { cmd = [ "cmake", "-B", "build", "--preset", "conda-macos-debug", "-DFREECAD_QT_VERSION=6", "-DBUILD_REVERSEENGINEERING=OFF" ], depends-on = ["initialize"], env={ CFLAGS="", CXXFLAGS="", DEBUG_CFLAGS="", DEBUG_CXXFLAGS="" }}
-configure-debug = { cmd = [ "cmake", "-B", "build", "--preset", "conda-macos-debug", "-DFREECAD_QT_VERSION=6", "-DBUILD_REVERSEENGINEERING=OFF" ], depends-on = ["initialize"], env={ CFLAGS="", CXXFLAGS="", DEBUG_CFLAGS="", DEBUG_CXXFLAGS="" }}
-configure-release = { cmd = [ "cmake", "-B", "build", "--preset", "conda-macos-release", "-DFREECAD_QT_VERSION=6", "-DBUILD_REVERSEENGINEERING=OFF" ], depends-on = ["initialize"], env={ CFLAGS="", CXXFLAGS="", DEBUG_CFLAGS="", DEBUG_CXXFLAGS="" }}
+configure = { cmd = [ "cmake", "-B", "build", "--preset", "conda-macos-debug", "-DBUILD_REVERSEENGINEERING=OFF" ], depends-on = ["initialize"], env={ CFLAGS="", CXXFLAGS="", DEBUG_CFLAGS="", DEBUG_CXXFLAGS="" }}
+configure-debug = { cmd = [ "cmake", "-B", "build", "--preset", "conda-macos-debug", "-DBUILD_REVERSEENGINEERING=OFF" ], depends-on = ["initialize"], env={ CFLAGS="", CXXFLAGS="", DEBUG_CFLAGS="", DEBUG_CXXFLAGS="" }}
+configure-release = { cmd = [ "cmake", "-B", "build", "--preset", "conda-macos-release", "-DBUILD_REVERSEENGINEERING=OFF" ], depends-on = ["initialize"], env={ CFLAGS="", CXXFLAGS="", DEBUG_CFLAGS="", DEBUG_CXXFLAGS="" }}
 
 [target.win-64.tasks]
-configure = { cmd = [ "cmake", "-B", "build", "--preset", "conda-windows-debug", "-DFREECAD_QT_VERSION=6", "-DBUILD_REVERSEENGINEERING=OFF", "-DCMAKE_GENERATOR_PLATFORM=", "-DCMAKE_GENERATOR_TOOLSET=" ], depends-on = ["initialize"], env={ CFLAGS="", CXXFLAGS="", DEBUG_CFLAGS="", DEBUG_CXXFLAGS="" }}
-configure-debug = { cmd = [ "cmake", "-B", "build", "--preset", "conda-windows-debug", "-DFREECAD_QT_VERSION=6", "-DBUILD_REVERSEENGINEERING=OFF", "-DCMAKE_GENERATOR_PLATFORM=", "-DCMAKE_GENERATOR_TOOLSET=" ], depends-on = ["initialize"], env={ CFLAGS="", CXXFLAGS="", DEBUG_CFLAGS="", DEBUG_CXXFLAGS="" }}
-configure-release = { cmd = [ "cmake", "-B", "build", "--preset", "conda-windows-release", "-DFREECAD_QT_VERSION=6", "-DBUILD_REVERSEENGINEERING=OFF", "-DCMAKE_GENERATOR_PLATFORM=", "-DCMAKE_GENERATOR_TOOLSET=" ], depends-on = ["initialize"], env={ CFLAGS="", CXXFLAGS="", DEBUG_CFLAGS="", DEBUG_CXXFLAGS="" }}
+configure = { cmd = [ "cmake", "-B", "build", "--preset", "conda-windows-debug", "-DBUILD_REVERSEENGINEERING=OFF", "-DCMAKE_GENERATOR_PLATFORM=", "-DCMAKE_GENERATOR_TOOLSET=" ], depends-on = ["initialize"], env={ CFLAGS="", CXXFLAGS="", DEBUG_CFLAGS="", DEBUG_CXXFLAGS="" }}
+configure-debug = { cmd = [ "cmake", "-B", "build", "--preset", "conda-windows-debug", "-DBUILD_REVERSEENGINEERING=OFF", "-DCMAKE_GENERATOR_PLATFORM=", "-DCMAKE_GENERATOR_TOOLSET=" ], depends-on = ["initialize"], env={ CFLAGS="", CXXFLAGS="", DEBUG_CFLAGS="", DEBUG_CXXFLAGS="" }}
+configure-release = { cmd = [ "cmake", "-B", "build", "--preset", "conda-windows-release", "-DBUILD_REVERSEENGINEERING=OFF", "-DCMAKE_GENERATOR_PLATFORM=", "-DCMAKE_GENERATOR_TOOLSET=" ], depends-on = ["initialize"], env={ CFLAGS="", CXXFLAGS="", DEBUG_CFLAGS="", DEBUG_CXXFLAGS="" }}
 freecad = { cmd = [ ".pixi/envs/default/Library/bin/FreeCAD.exe" ], depends-on = ["install"]}
 
 ## Tasks
