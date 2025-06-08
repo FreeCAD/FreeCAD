@@ -764,6 +764,8 @@ const char* Hole::ThreadDirectionEnums[]  = { "Right", "Left", nullptr};
 PROPERTY_SOURCE(PartDesign::Hole, PartDesign::ProfileBased)
 
 const App::PropertyAngle::Constraints Hole::floatAngle = { Base::toDegrees<double>(Precision::Angular()), 180.0 - Base::toDegrees<double>(Precision::Angular()), 1.0 };
+const App::PropertyAngle::Constraints Hole::rainDropAngleRange = { .LowerBound=20.0, .UpperBound=80.0, .StepSize=1.0 };
+
 // OCC can only create holes with a min diameter of 10 times the Precision::Confusion()
 const App::PropertyQuantityConstraint::Constraints diameterRange = { 10 * Precision::Confusion(), std::numeric_limits<float>::max(), 1.0 };
 
@@ -846,7 +848,10 @@ Hole::Hole()
     // while new file get points, circles and arcs set in setupObject()
     ADD_PROPERTY_TYPE(BaseProfileType, (BaseProfileTypeOptions::OnCirclesArcs), "Hole", App::Prop_None, "Which profile feature to base the holes on");
 
-    ADD_PROPERTY_TYPE(RainDrop, (false), "Hole", App::Prop_None, "RainDrop");
+    ADD_PROPERTY_TYPE(RainDrop, (false), "Hole", App::Prop_None, "Enable rain drop");
+    ADD_PROPERTY_TYPE(RainDropAngle, (50.0), "Hole", App::Prop_None, "Rain drop hat angle to vertical");
+    RainDropAngle.setConstraints(&rainDropAngleRange);
+
 }
 
 void Hole::updateHoleCutParams()
@@ -1747,6 +1752,16 @@ void Hole::onChanged(const App::Property* prop)
     else if (prop == &CustomThreadClearance) {
         updateDiameterParam();
     }
+    else if (prop == &RainDrop) {
+        if (RainDrop.getValue()) {
+            RainDropAngle.setReadOnly(false);
+            RainDropDirection.setReadOnly(false);
+        }
+        else {
+            RainDropAngle.setReadOnly(true);
+            RainDropDirection.setReadOnly(true);
+        }
+    }
 
     ProfileBased::onChanged(prop);
 }
@@ -1840,7 +1855,10 @@ short Hole::mustExecute() const
         CustomThreadClearance.isTouched() ||
         ThreadDepthType.isTouched() ||
         ThreadDepth.isTouched() ||
-        BaseProfileType.isTouched()
+        BaseProfileType.isTouched() ||
+        RainDrop.isTouched() ||
+        RainDropAngle.isTouched() || 
+        RainDropDirection.isTouched()
         )
         return 1;
     return ProfileBased::mustExecute();
@@ -1877,6 +1895,9 @@ void Hole::updateProps()
     onChanged(&ThreadDepthType);
     onChanged(&ThreadDepth);
     onChanged(&BaseProfileType);
+    onChanged(&RainDrop);
+    onChanged(&RainDropAngle);
+    onChanged(&RainDropDirection);
 }
 
 static gp_Pnt toPnt(gp_Vec dir)
@@ -2112,7 +2133,7 @@ App::DocumentObjectExecReturn* Hole::execute()
         }
         // Make raindrop hat thing
         if (RainDrop.getValue()) {
-            TopoDS_Shape protoRainDrop = makeRainDropHat(xDir, zDir, radius, length, 0.8726);
+            TopoDS_Shape protoRainDrop = makeRainDropHat(xDir, zDir, radius, length, RainDropAngle.getValue());
 
             std::cerr << "Raindrop is null: " << protoRainDrop.IsNull() << "\n";
 
@@ -2537,6 +2558,8 @@ TopoDS_Shape Hole::makeThread(const gp_Vec& xDir, const gp_Vec& zDir, double len
 }
 TopoDS_Shape Hole::makeRainDropHat(const gp_Vec& xDir, const gp_Vec& zDir, double radius, double depth, double angle)
 {
+    angle = Base::toRadians(angle);
+
     double hatTipDist = radius / std::sin(angle);
     double complementoryAngle = std::numbers::pi / 2.0 - angle;
 

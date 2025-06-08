@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>362</width>
-    <height>1127</height>
+    <width>351</width>
+    <height>1107</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -1073,57 +1073,51 @@ Note that the calculation can take some time</string>
     </widget>
    </item>
    <item>
-    <widget class="QCheckBox" name="makeRaindropHat">
+    <widget class="QCheckBox" name="RainDrop">
      <property name="text">
       <string>Raindrop</string>
      </property>
     </widget>
    </item>
    <item>
-    <widget class="QGroupBox" name="raindropParams">
+    <widget class="QGroupBox" name="RainDropParams">
      <property name="title">
       <string/>
      </property>
-     <widget class="QWidget" name="verticalLayoutWidget_3">
-      <property name="geometry">
-       <rect>
-        <x>-1</x>
-        <y>10</y>
-        <width>351</width>
-        <height>161</height>
-       </rect>
-      </property>
-      <layout class="QVBoxLayout" name="verticalLayout_17">
-       <item>
-        <layout class="QVBoxLayout" name="verticalLayout_20">
-         <item>
-          <widget class="QToolButton" name="buttonSelectRaindropHatUpVector">
-           <property name="text">
-            <string>Select up vector</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QListWidget" name="listWidget"/>
-         </item>
-         <item>
-          <layout class="QVBoxLayout" name="verticalLayout_14">
-           <item>
-            <widget class="QLabel" name="label">
-             <property name="text">
-              <string>Angle to vertical</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="Gui::QuantitySpinBox" name="raindropHatAngle"/>
-           </item>
-          </layout>
-         </item>
-        </layout>
-       </item>
-      </layout>
-     </widget>
+     <layout class="QVBoxLayout" name="verticalLayout_16">
+      <item>
+       <layout class="QVBoxLayout" name="verticalLayout_20">
+        <item>
+         <widget class="QToolButton" name="buttonSelectRaindropHatUpVector">
+          <property name="text">
+           <string>Select up vector</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QListWidget" name="listWidget"/>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QVBoxLayout" name="verticalLayout_14">
+        <item>
+         <widget class="QLabel" name="label">
+          <property name="text">
+           <string>Angle to vertical</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="Gui::PrefQuantitySpinBox" name="RainDropAngle">
+          <property name="unit" stdset="0">
+           <string notr="true">deg</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+     </layout>
     </widget>
    </item>
   </layout>

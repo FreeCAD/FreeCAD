@@ -182,8 +182,11 @@ TaskHoleParameters::TaskHoleParameters(ViewProviderHole* HoleView, QWidget* pare
 
     ui->BaseProfileType->setCurrentIndex(PartDesign::Hole::baseProfileOption_bitmaskToIdx(pcHole->BaseProfileType.getValue()));
 
-    ui->makeRaindropHat->setChecked(false);
-    ui->raindropParams->setVisible(ui->makeRaindropHat->isChecked());
+    ui->RainDrop->setChecked(pcHole->RainDrop.getValue());
+    ui->RainDropAngle->setMinimum(pcHole->RainDropAngle.getMinimum());
+    ui->RainDropAngle->setMaximum(pcHole->RainDropAngle.getMaximum());
+    ui->RainDropAngle->setValue(pcHole->RainDropAngle.getValue());
+    ui->RainDropParams->setVisible(ui->RainDrop->isChecked());
 
     setCutDiagram();
 
@@ -242,10 +245,11 @@ TaskHoleParameters::TaskHoleParameters(ViewProviderHole* HoleView, QWidget* pare
             this, &TaskHoleParameters::threadDepthChanged);
     connect(ui->BaseProfileType, qOverload<int>(&QComboBox::currentIndexChanged),
             this, &TaskHoleParameters::baseProfileTypeChanged);
-    connect(ui->makeRaindropHat, &QCheckBox::toggled, 
-            this, &TaskHoleParameters::makeRaindropHatChanged);
-    
-            // clang-format on
+    connect(ui->RainDrop, &QCheckBox::toggled, 
+            this, &TaskHoleParameters::rainDropChanged);
+    connect(ui->RainDropAngle, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+            this, &TaskHoleParameters::rainDropAngleValueChanged);
+    // clang-format on
 
     getViewObject()->show();
 
@@ -258,6 +262,7 @@ TaskHoleParameters::TaskHoleParameters(ViewProviderHole* HoleView, QWidget* pare
     ui->TaperedAngle->bind(pcHole->TaperedAngle);
     ui->ThreadDepth->bind(pcHole->ThreadDepth);
     ui->CustomThreadClearance->bind(pcHole->CustomThreadClearance);
+    ui->RainDropAngle->bind(pcHole->RainDropAngle);
 
     // NOLINTBEGIN
     connectPropChanged = App::GetApplication().signalChangePropertyEditor.connect(
@@ -406,12 +411,19 @@ void TaskHoleParameters::baseProfileTypeChanged(int index)
         recomputeFeature();
     }
 }
-void TaskHoleParameters::makeRaindropHatChanged()
+void TaskHoleParameters::rainDropChanged()
 {
-    bool isChecked = ui->makeRaindropHat->isChecked();
-    ui->raindropParams->setEnabled(isChecked);
+    bool isChecked = ui->RainDrop->isChecked();
+    ui->RainDropParams->setVisible(isChecked);
     if (auto hole = getObject<PartDesign::Hole>()) {
         hole->RainDrop.setValue(isChecked);
+        recomputeFeature();
+    }
+}
+void TaskHoleParameters::rainDropAngleValueChanged(double value)
+{
+    if (auto hole = getObject<PartDesign::Hole>()) {
+        hole->RainDropAngle.setValue(value);
         recomputeFeature();
     }
 }
@@ -908,9 +920,18 @@ void TaskHoleParameters::changedObject(const App::Document&, const App::Property
     else if (&Prop == &hole->ThreadDepth) {
         ui->ThreadDepth->setEnabled(true);
         updateSpinBox(ui->ThreadDepth, hole->ThreadDepth.getValue());
-    } else if (&Prop == &hole->BaseProfileType) {
+    }
+    else if (&Prop == &hole->BaseProfileType) {
         ui->BaseProfileType->setEnabled(true);
         updateComboBox(ui->BaseProfileType, PartDesign::Hole::baseProfileOption_bitmaskToIdx(hole->BaseProfileType.getValue()));
+    }
+    else if (&Prop == &hole->RainDrop) {
+        ui->RainDrop->setEnabled(true);
+        updateCheckable(ui->RainDrop, hole->RainDrop.getValue());
+    }
+    else if (&Prop == &hole->RainDropAngle) {
+        ui->RainDropAngle->setEnabled(true);
+        updateSpinBox(ui->RainDropAngle, hole->RainDropAngle.getValue());
     }
 }
 
@@ -1082,6 +1103,14 @@ int TaskHoleParameters::getBaseProfileType() const
 {
     return PartDesign::Hole::baseProfileOption_idxToBitmask(ui->BaseProfileType->currentIndex());
 }
+bool TaskHoleParameters::getRainDrop() const
+{
+    return ui->RainDrop->isChecked();
+}
+double TaskHoleParameters::getRainDropAngle() const
+{
+    return ui->RainDropAngle->value().getValue();
+}
 void TaskHoleParameters::apply()
 {
     auto hole = getObject<PartDesign::Hole>();
@@ -1095,6 +1124,7 @@ void TaskHoleParameters::apply()
     ui->Depth->apply();
     ui->DrillPointAngle->apply();
     ui->TaperedAngle->apply();
+    ui->RainDropAngle->apply();
 
     if (!hole->Threaded.isReadOnly()) {
         FCMD_OBJ_CMD(hole, "Threaded = " << (getThreaded() ? 1 : 0));
@@ -1150,6 +1180,12 @@ void TaskHoleParameters::apply()
     }
     if (!hole->BaseProfileType.isReadOnly()) {
         FCMD_OBJ_CMD(hole, "BaseProfileType = " << getBaseProfileType());
+    }
+    if (!hole->RainDrop.isReadOnly()) {
+        FCMD_OBJ_CMD(hole, "RainDrop = " << getRainDrop());
+    }
+    if (!hole->RainDropAngle.isReadOnly()) {
+        FCMD_OBJ_CMD(hole, "RainDropAngle = " << getRainDropAngle());
     }
 
     isApplying = false;

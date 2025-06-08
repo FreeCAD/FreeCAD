@@ -76,8 +76,8 @@ public:
     App::PropertyLength         CustomThreadClearance;
     App::PropertyInteger        BaseProfileType;
     App::PropertyBool           RainDrop;       // Make a raindrop shape to make it easier to 3d print upright
-    // App::PropertyAngle          RainDropAngle;
-    // App::PropertyDirection      RainDropDirection;
+    App::PropertyAngle          RainDropAngle;
+    App::PropertyDirection      RainDropDirection;
 
     enum BaseProfileTypeOptions {
         OnPoints    = 1 << 0,
@@ -132,6 +132,7 @@ protected:
     void setupObject() override;
 
     static const App::PropertyAngle::Constraints floatAngle;
+    static const App::PropertyAngle::Constraints rainDropAngleRange;
 
 private:
     static const char* DepthTypeEnums[];

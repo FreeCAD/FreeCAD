@@ -80,6 +80,8 @@ public:
     long getThreadDepthType() const;
     double getThreadDepth() const;
     int getBaseProfileType() const;
+    bool getRainDrop() const;
+    double getRainDropAngle() const;
 
 private Q_SLOTS:
     void holeTypeChanged(int index);
@@ -109,7 +111,8 @@ private Q_SLOTS:
     void threadDepthTypeChanged(int index);
     void threadDepthChanged(double value);
     void baseProfileTypeChanged(int index);
-    void makeRaindropHatChanged();
+    void rainDropChanged();
+    void rainDropAngleValueChanged(double value);
     void setCutDiagram();
 
 private:
