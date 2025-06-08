@@ -412,6 +412,7 @@ SET(Tools_SRCS
 
 SET(Tools_Bit_SRCS
     Tools/Bit/30degree_Vbit.fctb
+    Tools/Bit/3.175mm_Endmill.fctb
     Tools/Bit/375-16_Tap.fctb
     Tools/Bit/45degree_chamfer.fctb
     Tools/Bit/45degree_Vbit.fctb
