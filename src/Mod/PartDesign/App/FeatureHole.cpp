@@ -763,11 +763,11 @@ const char* Hole::ThreadDirectionEnums[]  = { "Right", "Left", nullptr};
 
 PROPERTY_SOURCE(PartDesign::Hole, PartDesign::ProfileBased)
 
-const App::PropertyAngle::Constraints Hole::floatAngle = { Base::toDegrees<double>(Precision::Angular()), 180.0 - Base::toDegrees<double>(Precision::Angular()), 1.0 };
-const App::PropertyAngle::Constraints Hole::rainDropAngleRange = { .LowerBound=20.0, .UpperBound=80.0, .StepSize=1.0 };
+const App::PropertyAngle::Constraints Hole::floatAngle = { .LowerBound=Base::toDegrees<double>(Precision::Angular()), .UpperBound=180.0 - Base::toDegrees<double>(Precision::Angular()), .StepSize=1.0 };
+const App::PropertyAngle::Constraints Hole::rainDropAngleRange = { .LowerBound=20.0, .UpperBound=80.0, .StepSize=0.1 };
 
 // OCC can only create holes with a min diameter of 10 times the Precision::Confusion()
-const App::PropertyQuantityConstraint::Constraints diameterRange = { 10 * Precision::Confusion(), std::numeric_limits<float>::max(), 1.0 };
+const App::PropertyQuantityConstraint::Constraints diameterRange = { .LowerBound=10 * Precision::Confusion(), .UpperBound=std::numeric_limits<float>::max(), .StepSize=1.0 };
 
 Hole::Hole()
 {
@@ -2143,10 +2143,9 @@ App::DocumentObjectExecReturn* Hole::execute()
         // Make raindrop hat thing
         if (RainDrop.getValue()) {
             updateRainDropAxis();
-            TopoDS_Shape protoRainDrop = makeRainDropHat(toVec(RainDropDirection.getValue()), zDir, radius, length, RainDropAngle.getValue());
 
-            std::cerr << "Raindrop is null: " << protoRainDrop.IsNull() << "\n";
-
+            gp_Vec hatDir = toVec(RainDropDirection.getValue());
+            TopoDS_Shape protoRainDrop = makeRainDropHat(hatDir, zDir, radius, length, RainDropAngle.getValue());
             FCBRepAlgoAPI_Fuse mkFuse(protoHole, protoRainDrop);
 
             if (!mkFuse.IsDone()) {
@@ -2154,6 +2153,22 @@ App::DocumentObjectExecReturn* Hole::execute()
             }
 
             protoHole = mkFuse.Shape();
+
+            if (isCounterbore || isCounterdrill) {
+                protoRainDrop = makeRainDropHat(hatDir,
+                                                zDir,
+                                                HoleCutDiameter.getValue() / 2.0,
+                                                HoleCutDepth.getValue(),
+                                                RainDropAngle.getValue());
+
+                FCBRepAlgoAPI_Fuse mkCounterboreFuse(protoHole, protoRainDrop);
+
+                if (!mkCounterboreFuse.IsDone()) {
+                    std::cerr << "Could not fuse counterbore hat :(\n";
+                }
+
+                protoHole = mkCounterboreFuse.Shape();
+            }
 
             std::cerr << "Protohole is null: " << protoHole.IsNull() << "\n";
         }
