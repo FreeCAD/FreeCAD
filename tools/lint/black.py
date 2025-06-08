@@ -40,9 +40,7 @@ def parse_black_output(output: str) -> Tuple[int, int]:
     return black_reformats, black_fails
 
 
-def generate_markdown_report(
-    black_reformats: int, black_fails: int, log_file: str
-) -> str:
+def generate_markdown_report(black_reformats: int, black_fails: int, log_file: str) -> str:
     """Generate a Markdown report section based on Black results and log file."""
     report_lines = []
     if black_reformats > 0 or black_fails > 0:
