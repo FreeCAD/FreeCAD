@@ -534,6 +534,8 @@ class BIM_Views:
         """Saves dock widget size and location"""
         if hasattr(area, "value"):
             PARAMS.SetInt("BimViewArea", area.value)
+        else:
+            PARAMS.SetInt("BimViewArea", int(area))
         mw = FreeCADGui.getMainWindow()
         vm = findWidget()
         if vm:
