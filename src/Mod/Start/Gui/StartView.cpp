@@ -448,6 +448,7 @@ void StartView::retranslateUi()
     bool shortCustomFolder = hGrp->GetBool("ShortCustomFolder", true);  // false shows full path
     if (!customFolder.empty()) {
         if (shortCustomFolder) {
+            _customFolderLabel->setToolTip(QString::fromUtf8(customFolder.c_str()));
             customFolder = customFolder.substr(customFolder.find_last_of("/\\") + 1);
         }
         _customFolderLabel->setText(h1Start + QString::fromUtf8(customFolder.c_str()) + h1End);
