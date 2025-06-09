@@ -532,7 +532,7 @@ class BIM_Views:
 
     def onDockLocationChanged(self, area):
         """Saves dock widget size and location"""
-        if hasattr(area, "value"):
+        if hasattr(area, "value"):  # To support Qt5.15
             PARAMS.SetInt("BimViewArea", area.value)
         else:
             PARAMS.SetInt("BimViewArea", int(area))
