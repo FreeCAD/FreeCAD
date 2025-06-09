@@ -295,6 +295,7 @@ class GeometryElementsSelection(QtGui.QWidget):
         self.setWindowTitle(self.tr("Geometry reference selector"))
         # button
         self.pushButton_Add = QtGui.QPushButton(self.tr("Add"))
+        self.pushButton_Remove = QtGui.QPushButton(self.tr("Remove"))
         # list
         self.list_References = QtGui.QListWidget()
         # radiobutton down the list
@@ -307,9 +308,13 @@ class GeometryElementsSelection(QtGui.QWidget):
         rbtnLayout.addWidget(self.lb_selmod)
         rbtnLayout.addWidget(self.rb_standard)
         rbtnLayout.addWidget(self.rb_solid)
+        # add/remove button
+        subLayout = QtGui.QHBoxLayout()
+        subLayout.addWidget(self.pushButton_Add)
+        subLayout.addWidget(self.pushButton_Remove)
         # main layout
         mainLayout = QtGui.QVBoxLayout()
-        mainLayout.addWidget(self.pushButton_Add)
+        mainLayout.addLayout(subLayout)
         mainLayout.addWidget(self.list_References)
 
         tip1 = self.tr(
@@ -344,6 +349,9 @@ class GeometryElementsSelection(QtGui.QWidget):
             self.references_list_right_clicked,
         )
         QtCore.QObject.connect(self.pushButton_Add, QtCore.SIGNAL("clicked()"), self.add_references)
+        QtCore.QObject.connect(
+            self.pushButton_Remove, QtCore.SIGNAL("clicked()"), self.remove_selected_reference
+        )
         QtCore.QObject.connect(
             self.rb_standard, QtCore.SIGNAL("toggled(bool)"), self.choose_selection_mode_standard
         )
