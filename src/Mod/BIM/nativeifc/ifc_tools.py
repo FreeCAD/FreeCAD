@@ -67,7 +67,6 @@ from . import ifc_layers
 from . import ifc_status
 from . import ifc_export
 from . import ifc_psets
-from . import ifc_tools
 
 SCALE = 1000.0  # IfcOpenShell works in meters, FreeCAD works in mm
 SHORT = False  # If True, only Step ID attribute is created
