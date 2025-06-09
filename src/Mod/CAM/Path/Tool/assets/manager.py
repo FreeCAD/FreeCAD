@@ -145,7 +145,7 @@ class AssetManager:
                 )
                 continue  # Try next store
 
-        if raw_data is None:
+        if raw_data is None or not found_store_name:
             return None  # Asset not found in any store
 
         if depth == 0:
@@ -194,7 +194,6 @@ class AssetManager:
     def _calculate_cache_key_from_construction_data(
         self,
         construction_data: _AssetConstructionData,
-        store_name_for_cache: str,
     ) -> Optional[CacheKey]:
         if not construction_data or not construction_data.raw_data:
             return None
@@ -209,7 +208,7 @@ class AssetManager:
         raw_data_hash = int(hashlib.sha256(construction_data.raw_data).hexdigest(), 16)
 
         return CacheKey(
-            store_name=store_name_for_cache,
+            store_name=construction_data.store,
             asset_uri_str=str(construction_data.uri),
             raw_data_hash=raw_data_hash,
             dependency_signature=deps_signature_tuple,
@@ -218,7 +217,6 @@ class AssetManager:
     def _build_asset_tree_from_data_sync(
         self,
         construction_data: Optional[_AssetConstructionData],
-        store_name_for_cache: str,
     ) -> Asset | None:
         """
         Synchronously and recursively builds an asset instance.
@@ -228,10 +226,8 @@ class AssetManager:
             return None
 
         cache_key: Optional[CacheKey] = None
-        if store_name_for_cache in self._cacheable_stores:
-            cache_key = self._calculate_cache_key_from_construction_data(
-                construction_data, store_name_for_cache
-            )
+        if construction_data.store in self._cacheable_stores:
+            cache_key = self._calculate_cache_key_from_construction_data(construction_data)
             if cache_key:
                 cached_asset = self.asset_cache.get(cache_key)
                 if cached_asset is not None:
@@ -255,7 +251,7 @@ class AssetManager:
                 # this would need more complex store_name propagation.
                 # For now, use the parent's store_name_for_cache.
                 try:
-                    dep = self._build_asset_tree_from_data_sync(dep_data_node, store_name_for_cache)
+                    dep = self._build_asset_tree_from_data_sync(dep_data_node)
                 except Exception as e:
                     logger.error(
                         f"Error building dependency '{dep_uri}' for asset '{construction_data.uri}': {e}",
@@ -365,10 +361,9 @@ class AssetManager:
             f"and {deps_count} dependencies ({found_deps_count} resolved)."
         )
         # Use the first store from the list for caching purposes
-        store_name_for_cache = stores_list[0] if stores_list else "local"
-        final_asset = self._build_asset_tree_from_data_sync(
-            all_construction_data, store_name_for_cache=store_name_for_cache
-        )
+        final_asset = self._build_asset_tree_from_data_sync(all_construction_data)
+        if not final_asset:
+            raise ValueError(f"failed to build asset {uri}")
         logger.debug(f"Get: Synchronous asset tree build for '{asset_uri_obj}' completed.")
         return final_asset
 
@@ -423,9 +418,7 @@ class AssetManager:
         logger.debug(
             f"get_async: Building asset tree for '{asset_uri_obj}', depth {depth} in current async context."
         )
-        return self._build_asset_tree_from_data_sync(
-            all_construction_data, store_name_for_cache=store
-        )
+        return self._build_asset_tree_from_data_sync(all_construction_data)
 
     def get_raw(
         self,
@@ -438,31 +431,8 @@ class AssetManager:
             f"AssetManager.get_raw(uri='{uri}', stores='{stores_list}') from T:{threading.current_thread().name}"
         )
 
-        async def _fetch_raw_async(stores_list: Sequence[str]):
-            asset_uri_obj = AssetUri(uri) if isinstance(uri, str) else uri
-            logger.debug(
-                f"GetRawAsync (internal): Trying stores '{stores_list}'. Available stores: {list(self.stores.keys())}"
-            )
-            for current_store_name in stores_list:
-                store = self.stores.get(current_store_name)
-                if not store:
-                    logger.warning(f"Store '{current_store_name}' not registered. Skipping.")
-                    continue
-                try:
-                    raw_data = await store.get(asset_uri_obj)
-                    logger.debug(
-                        f"GetRawAsync: Asset {asset_uri_obj} found in store {current_store_name}"
-                    )
-                    return raw_data
-                except FileNotFoundError:
-                    logger.debug(
-                        f"GetRawAsync: Asset {asset_uri_obj} not found in store {current_store_name}"
-                    )
-                    continue
-            raise FileNotFoundError(f"Asset '{asset_uri_obj}' not found in stores '{stores_list}'")
-
         try:
-            return asyncio.run(_fetch_raw_async(stores_list))
+            return asyncio.run(self.get_raw_async(uri, stores_list))
         except Exception as e:
             logger.error(
                 f"GetRaw: Error during asyncio.run for '{uri}': {e}",
@@ -483,12 +453,12 @@ class AssetManager:
         asset_uri_obj = AssetUri(uri) if isinstance(uri, str) else uri
 
         for current_store_name in stores_list:
-            store = self.stores.get(current_store_name)
-            if not store:
+            thestore = self.stores.get(current_store_name)
+            if not thestore:
                 logger.warning(f"Store '{current_store_name}' not registered. Skipping.")
                 continue
             try:
-                raw_data = await store.get(asset_uri_obj)
+                raw_data = await thestore.get(asset_uri_obj)
                 logger.debug(
                     f"GetRawAsync: Asset {asset_uri_obj} found in store {current_store_name}"
                 )
@@ -551,12 +521,7 @@ class AssetManager:
             elif isinstance(data_or_exc, _AssetConstructionData):
                 # Build asset instance synchronously. Exceptions during build should propagate.
                 # Use the first store from the list for caching purposes in build_asset_tree
-                store_name_for_cache = stores_list[0] if stores_list else "local"
-                assets.append(
-                    self._build_asset_tree_from_data_sync(
-                        data_or_exc, store_name_for_cache=store_name_for_cache
-                    )
-                )
+                assets.append(self._build_asset_tree_from_data_sync(data_or_exc))
             elif data_or_exc is None:  # From _fetch_... returning None for not found
                 logger.debug(f"GetBulk: Asset '{original_uri_input}' not found")
                 assets.append(None)
@@ -596,12 +561,8 @@ class AssetManager:
         for i, data_or_exc in enumerate(all_construction_data_list):
             if isinstance(data_or_exc, _AssetConstructionData):
                 # Use the first store from the list for caching purposes in build_asset_tree
-                store_name_for_cache = stores_list[0] if stores_list else "local"
-                assets.append(
-                    self._build_asset_tree_from_data_sync(
-                        data_or_exc, store_name_for_cache=store_name_for_cache
-                    )
-                )
+                asset = self._build_asset_tree_from_data_sync(data_or_exc)
+                assets.append(asset)
             elif isinstance(data_or_exc, FileNotFoundError) or data_or_exc is None:
                 assets.append(None)
             elif isinstance(data_or_exc, Exception):
