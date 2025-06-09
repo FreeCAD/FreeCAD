@@ -1252,64 +1252,61 @@ BezierSegment::BezierSegment(const TopoDS_Edge &e)
 }
 
 //**** Vertex
-Vertex::Vertex()
+Vertex::Vertex() :
+    extractType(ExtractionType::Plain),    // obsolete?
+    hlrVisible(false),
+    ref3D(-1),                              // obsolete
+    m_center(false),
+    cosmetic(false),
+    cosmeticLink(-1),
+    m_reference(false)
+
 {
     pnt = Base::Vector3d(0.0, 0.0, 0.0);
-    extractType = ExtractionType::Plain;       //obs?
-    hlrVisible = false;
-    ref3D = -1;                        //obs. never used.
-    m_center = false;
     BRepBuilderAPI_MakeVertex mkVert(gp_Pnt(0.0, 0.0, 0.0));
     occVertex = mkVert.Vertex();
-    cosmetic = false;
-    cosmeticLink = -1;
     cosmeticTag = std::string();
-    m_reference = false;
 }
 
-Vertex::Vertex(const Vertex* v)
+Vertex::Vertex(const Vertex* v) :
+    extractType(v->extractType),    // obsolete?
+    hlrVisible(v->hlrVisible),
+    ref3D(v->ref3D),                              // obsolete
+    m_center(v->m_center),
+    occVertex(v->occVertex),
+    cosmetic(v->cosmetic),
+    cosmeticLink(v->cosmeticLink),
+    cosmeticTag(v->cosmeticTag),
+    m_reference(v->m_reference)
 {
     pnt = v->point();
-    extractType = v->extractType;       //obs?
-    hlrVisible = v->hlrVisible;
-    ref3D = v->ref3D;                  //obs. never used.
-    m_center = v->m_center;
-    occVertex = v->occVertex;
-    cosmetic = v->cosmetic;
-    cosmeticLink = v->cosmeticLink;
-    cosmeticTag = v->cosmeticTag;
-    m_reference = false;
 }
 
-Vertex::Vertex(double x, double y)
+Vertex::Vertex(double x, double y) :
+    extractType(ExtractionType::Plain),    // obsolete?
+    hlrVisible(false),
+    ref3D(-1),                              // obsolete
+    m_center(false),
+    cosmetic(false),
+    cosmeticLink(-1),
+    m_reference(false)
 {
     pnt = Base::Vector3d(x, y, 0.0);
-    extractType = ExtractionType::Plain;       //obs?
-    hlrVisible = false;
-    ref3D = -1;                        //obs. never used.
-    m_center = false;
     BRepBuilderAPI_MakeVertex mkVert(gp_Pnt(x, y, 0.0));
     occVertex = mkVert.Vertex();
-    cosmetic = false;
-    cosmeticLink = -1;
     cosmeticTag = std::string();
-    m_reference = false;
 }
 
 Vertex::Vertex(Base::Vector3d v) : Vertex(v.x, v.y)
 {
-//    Base::Console().message("V::V(%s)\n",
-//                            DrawUtil::formatVector(v).c_str());
+
 }
 
 
 bool Vertex::isEqual(const Vertex& v, double tol)
 {
     double dist = (pnt - (v.pnt)).Length();
-    if (dist <= tol) {
-        return true;
-    }
-    return false;
+    return (dist <= tol);
 }
 
 void Vertex::Save(Base::Writer &writer) const
@@ -1318,24 +1315,18 @@ void Vertex::Save(Base::Writer &writer) const
                 << "X=\"" <<  pnt.x <<
                 "\" Y=\"" <<  pnt.y <<
                 "\" Z=\"" <<  pnt.z <<
-                 "\"/>" << endl;
+                 "\"/>" << '\n';
 
-    writer.Stream() << writer.ind() << "<Extract value=\"" <<  extractType << "\"/>" << endl;
+    writer.Stream() << writer.ind() << "<Extract value=\"" <<  extractType << "\"/>" << '\n';
     const char v = hlrVisible ? '1':'0';
-    writer.Stream() << writer.ind() << "<HLRVisible value=\"" <<  v << "\"/>" << endl;
-    writer.Stream() << writer.ind() << "<Ref3D value=\"" <<  ref3D << "\"/>" << endl;
+    writer.Stream() << writer.ind() << "<HLRVisible value=\"" <<  v << "\"/>" << '\n';
+    writer.Stream() << writer.ind() << "<Ref3D value=\"" <<  ref3D << "\"/>" << '\n';
     const char c = m_center ?'1':'0';
-    writer.Stream() << writer.ind() << "<IsCenter value=\"" <<  c << "\"/>" << endl;
+    writer.Stream() << writer.ind() << "<IsCenter value=\"" <<  c << "\"/>" << '\n';
     const char c2 = cosmetic?'1':'0';
-    writer.Stream() << writer.ind() << "<Cosmetic value=\"" <<  c2 << "\"/>" << endl;
-    writer.Stream() << writer.ind() << "<CosmeticLink value=\"" <<  cosmeticLink << "\"/>" << endl;
-    writer.Stream() << writer.ind() << "<CosmeticTag value=\"" <<  cosmeticTag << "\"/>" << endl;
-
-    //do we need to save this?  always recreated by program.
-//    const char r = reference?'1':'0';
-//    writer.Stream() << writer.ind() << "<Reference value=\"" <<  r << "\"/>" << endl;
-
-    Tag::Save(writer);
+    writer.Stream() << writer.ind() << "<Cosmetic value=\"" <<  c2 << "\"/>" << '\n';
+    writer.Stream() << writer.ind() << "<CosmeticLink value=\"" <<  cosmeticLink << "\"/>" << '\n';
+    writer.Stream() << writer.ind() << "<CosmeticTag value=\"" <<  cosmeticTag << "\"/>" << '\n';
 }
 
 void Vertex::Restore(Base::XMLReader &reader)
@@ -1350,24 +1341,38 @@ void Vertex::Restore(Base::XMLReader &reader)
     reader.readElement("Visible");
     hlrVisible = reader.getAttribute<bool>("value");
     reader.readElement("Ref3D");
-    ref3D = reader.getAttribute<long>("value");
+    ref3D = reader.getAttribute<int>("value");
     reader.readElement("IsCenter");
-    hlrVisible = reader.getAttribute<bool>("value");
+    m_center = reader.getAttribute<bool>("value");
     reader.readElement("Cosmetic");
     cosmetic = reader.getAttribute<bool>("value");
     reader.readElement("CosmeticLink");
-    cosmeticLink = reader.getAttribute<long>("value");
+    cosmeticLink = reader.getAttribute<int>("value");
     reader.readElement("CosmeticTag");
     cosmeticTag = reader.getAttribute<const char*>("value");
 
-    //will restore read to eof looking for "Reference" in old docs??  YES!!
-//    reader.readElement("Reference");
-//    m_reference = reader.getAttribute<bool>("value");
-
-    Tag::Restore(reader, "VertexTag");
+    // restore tag from VertexTag if it exists
+    restoreVertexTag(reader);
 
     BRepBuilderAPI_MakeVertex mkVert(gp_Pnt(pnt.x, pnt.y, pnt.z));
     occVertex = mkVert.Vertex();
+}
+
+//! look at the next element in the file.  If it is a VertexTag, set the tag.
+//! readNextElement will stop searching when it encounters an end element (ex: </CosmeticVertex>) or
+//! end of document.
+void Vertex::restoreVertexTag(Base::XMLReader& reader)
+{
+    if (!reader.readNextElement()) {
+        return;
+    }
+
+    if(strcmp(reader.localName(),"VertexTag") == 0) {
+        std::string temp = reader.getAttribute<const char*>("value");
+        setTag(Tag::fromString(temp));
+    }
+    // else we can not set the tag here.  if this is a CosmeticVertex, the tag will be set later.
+    // the tag is not used for geometry vertices.
 }
 
 void Vertex::dump(const char* title)
@@ -1382,7 +1387,7 @@ TopoShape Vertex::asTopoShape(double scale)
     Base::Vector3d point = Base::convertTo<Base::Vector3d>(BRep_Tool::Pnt(getOCCVertex()));
     point = point / scale;
     BRepBuilderAPI_MakeVertex mkVert(Base::convertTo<gp_Pnt>(point));
-    return TopoShape(mkVert.Vertex());
+    return {mkVert.Vertex()};
 }
 
 
