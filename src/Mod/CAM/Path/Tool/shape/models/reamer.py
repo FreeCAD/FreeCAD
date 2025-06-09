@@ -33,11 +33,11 @@ class ToolBitShapeReamer(ToolBitShape):
     def schema(cls) -> Mapping[str, Tuple[str, str]]:
         return {
             "CuttingEdgeHeight": (
-                FreeCAD.Qt.translate("ToolBitShape", "Cutting edge height"),
+                FreeCAD.Qt.translate("ToolBitShape", "Cutting edge height (H)"),
                 "App::PropertyLength",
             ),
             "Diameter": (
-                FreeCAD.Qt.translate("ToolBitShape", "Diameter"),
+                FreeCAD.Qt.translate("ToolBitShape", "Diameter (D)"),
                 "App::PropertyLength",
             ),
             "Length": (

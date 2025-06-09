@@ -33,19 +33,19 @@ class ToolBitShapeDovetail(ToolBitShape):
     def schema(cls) -> Mapping[str, Tuple[str, str]]:
         return {
             "TipDiameter": (
-                FreeCAD.Qt.translate("ToolBitShape", "Crest height"),
+                FreeCAD.Qt.translate("ToolBitShape", "Crest height (C)"),
                 "App::PropertyLength",
             ),
             "CuttingEdgeAngle": (
-                FreeCAD.Qt.translate("ToolBitShape", "Cutting angle"),
+                FreeCAD.Qt.translate("ToolBitShape", "Cutting angle (α)"),
                 "App::PropertyAngle",
             ),
             "CuttingEdgeHeight": (
-                FreeCAD.Qt.translate("ToolBitShape", "Dovetail height"),
+                FreeCAD.Qt.translate("ToolBitShape", "Dovetail height (H)"),
                 "App::PropertyLength",
             ),
             "Diameter": (
-                FreeCAD.Qt.translate("ToolBitShape", "Major diameter"),
+                FreeCAD.Qt.translate("ToolBitShape", "Major diameter (D)"),
                 "App::PropertyLength",
             ),
             "Flutes": (
@@ -53,19 +53,19 @@ class ToolBitShapeDovetail(ToolBitShape):
                 "App::PropertyInteger",
             ),
             "Length": (
-                FreeCAD.Qt.translate("ToolBitShape", "Overall tool length"),
+                FreeCAD.Qt.translate("ToolBitShape", "Overall tool length (L)"),
                 "App::PropertyLength",
             ),
             "NeckDiameter": (
-                FreeCAD.Qt.translate("ToolBitShape", "Neck diameter"),
+                FreeCAD.Qt.translate("ToolBitShape", "Neck diameter (N)"),
                 "App::PropertyLength",
             ),
             "NeckHeight": (
-                FreeCAD.Qt.translate("ToolBitShape", "Neck length"),
+                FreeCAD.Qt.translate("ToolBitShape", "Neck length (h)"),
                 "App::PropertyLength",
             ),
             "ShankDiameter": (
-                FreeCAD.Qt.translate("ToolBitShape", "Shank diameter"),
+                FreeCAD.Qt.translate("ToolBitShape", "Shank diameter (S)"),
                 "App::PropertyLength",
             ),
         }

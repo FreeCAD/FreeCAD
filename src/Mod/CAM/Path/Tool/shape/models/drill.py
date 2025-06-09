@@ -33,7 +33,7 @@ class ToolBitShapeDrill(ToolBitShape):
     def schema(cls) -> Mapping[str, Tuple[str, str]]:
         return {
             "Diameter": (
-                FreeCAD.Qt.translate("ToolBitShape", "Diameter"),
+                FreeCAD.Qt.translate("ToolBitShape", "Diameter (D)"),
                 "App::PropertyLength",
             ),
             "Flutes": (
@@ -41,11 +41,11 @@ class ToolBitShapeDrill(ToolBitShape):
                 "App::PropertyInteger",
             ),
             "Length": (
-                FreeCAD.Qt.translate("ToolBitShape", "Overall tool length"),
+                FreeCAD.Qt.translate("ToolBitShape", "Overall tool length (H)"),
                 "App::PropertyLength",
             ),
             "TipAngle": (
-                FreeCAD.Qt.translate("ToolBitShape", "Tip angle"),
+                FreeCAD.Qt.translate("ToolBitShape", "Tip angle (α)"),
                 "App::PropertyAngle",
             ),
         }

@@ -33,15 +33,15 @@ class ToolBitShapeFillet(ToolBitShape):
     def schema(cls) -> Mapping[str, Tuple[str, str]]:
         return {
             "CrownHeight": (
-                FreeCAD.Qt.translate("ToolBitShape", "Crown height"),
+                FreeCAD.Qt.translate("ToolBitShape", "Crown height (h)"),
                 "App::PropertyLength",
             ),
             "Diameter": (
-                FreeCAD.Qt.translate("ToolBitShape", "Diameter"),
+                FreeCAD.Qt.translate("ToolBitShape", "Diameter (D)"),
                 "App::PropertyLength",
             ),
             "FilletRadius": (
-                FreeCAD.Qt.translate("ToolBitShape", "Fillet radius"),
+                FreeCAD.Qt.translate("ToolBitShape", "Fillet radius (r)"),
                 "App::PropertyLength",
             ),
             "Flutes": (
@@ -49,11 +49,11 @@ class ToolBitShapeFillet(ToolBitShape):
                 "App::PropertyInteger",
             ),
             "Length": (
-                FreeCAD.Qt.translate("ToolBitShape", "Overall tool length"),
+                FreeCAD.Qt.translate("ToolBitShape", "Overall tool length (L)"),
                 "App::PropertyLength",
             ),
             "ShankDiameter": (
-                FreeCAD.Qt.translate("ToolBitShape", "Shank diameter"),
+                FreeCAD.Qt.translate("ToolBitShape", "Shank diameter (S)"),
                 "App::PropertyLength",
             ),
         }

@@ -33,11 +33,11 @@ class ToolBitShapeChamfer(ToolBitShape):
     def schema(cls) -> Mapping[str, Tuple[str, str]]:
         return {
             "CuttingEdgeAngle": (
-                FreeCAD.Qt.translate("ToolBitShape", "Cutting edge angle"),
+                FreeCAD.Qt.translate("ToolBitShape", "Cutting edge angle (α)"),
                 "App::PropertyAngle",
             ),
             "CuttingEdgeHeight": (
-                FreeCAD.Qt.translate("ToolBitShape", "Cutting edge height"),
+                FreeCAD.Qt.translate("ToolBitShape", "Cutting edge height (h)"),
                 "App::PropertyLength",
             ),
             "Diameter": (
@@ -49,15 +49,15 @@ class ToolBitShapeChamfer(ToolBitShape):
                 "App::PropertyInteger",
             ),
             "Length": (
-                FreeCAD.Qt.translate("ToolBitShape", "Overall tool length"),
+                FreeCAD.Qt.translate("ToolBitShape", "Overall tool length (L)"),
                 "App::PropertyLength",
             ),
             "ShankDiameter": (
-                FreeCAD.Qt.translate("ToolBitShape", "Shank diameter"),
+                FreeCAD.Qt.translate("ToolBitShape", "Shank diameter (S)"),
                 "App::PropertyLength",
             ),
             "TipDiameter": (
-                FreeCAD.Qt.translate("ToolBitShape", "Tip diameter"),
+                FreeCAD.Qt.translate("ToolBitShape", "Tip diameter (D)"),
                 "App::PropertyLength",
             ),
         }

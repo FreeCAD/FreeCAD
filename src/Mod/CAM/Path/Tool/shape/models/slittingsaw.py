@@ -33,19 +33,19 @@ class ToolBitShapeSlittingSaw(ToolBitShape):
     def schema(cls) -> Mapping[str, Tuple[str, str]]:
         return {
             "BladeThickness": (
-                FreeCAD.Qt.translate("ToolBitShape", "Blade thickness"),
+                FreeCAD.Qt.translate("ToolBitShape", "Blade thickness (T)"),
                 "App::PropertyLength",
             ),
             "CapDiameter": (
-                FreeCAD.Qt.translate("ToolBitShape", "Cap diameter"),
+                FreeCAD.Qt.translate("ToolBitShape", "Cap diameter (d)"),
                 "App::PropertyLength",
             ),
             "CapHeight": (
-                FreeCAD.Qt.translate("ToolBitShape", "Cap height"),
+                FreeCAD.Qt.translate("ToolBitShape", "Cap height (h)"),
                 "App::PropertyLength",
             ),
             "Diameter": (
-                FreeCAD.Qt.translate("ToolBitShape", "Diameter"),
+                FreeCAD.Qt.translate("ToolBitShape", "Diameter (D)"),
                 "App::PropertyLength",
             ),
             "Flutes": (
@@ -53,11 +53,11 @@ class ToolBitShapeSlittingSaw(ToolBitShape):
                 "App::PropertyInteger",
             ),
             "Length": (
-                FreeCAD.Qt.translate("ToolBitShape", "Overall tool length"),
+                FreeCAD.Qt.translate("ToolBitShape", "Overall tool length (L)"),
                 "App::PropertyLength",
             ),
             "ShankDiameter": (
-                FreeCAD.Qt.translate("ToolBitShape", "Shank diameter"),
+                FreeCAD.Qt.translate("ToolBitShape", "Shank diameter (S)"),
                 "App::PropertyLength",
             ),
         }

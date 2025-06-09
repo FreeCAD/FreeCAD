@@ -33,11 +33,11 @@ class ToolBitShapeBullnose(ToolBitShape):
     def schema(cls) -> Mapping[str, Tuple[str, str]]:
         return {
             "CuttingEdgeHeight": (
-                FreeCAD.Qt.translate("ToolBitShape", "Cutting edge height"),
+                FreeCAD.Qt.translate("ToolBitShape", "Cutting edge height (H)"),
                 "App::PropertyLength",
             ),
             "Diameter": (
-                FreeCAD.Qt.translate("ToolBitShape", "Diameter"),
+                FreeCAD.Qt.translate("ToolBitShape", "Diameter (D)"),
                 "App::PropertyLength",
             ),
             "Flutes": (
@@ -45,15 +45,15 @@ class ToolBitShapeBullnose(ToolBitShape):
                 "App::PropertyInteger",
             ),
             "Length": (
-                FreeCAD.Qt.translate("ToolBitShape", "Overall tool length"),
+                FreeCAD.Qt.translate("ToolBitShape", "Overall tool length (L)"),
                 "App::PropertyLength",
             ),
             "ShankDiameter": (
-                FreeCAD.Qt.translate("ToolBitShape", "Shank diameter"),
+                FreeCAD.Qt.translate("ToolBitShape", "Shank diameter (S)"),
                 "App::PropertyLength",
             ),
             "FlatRadius": (
-                FreeCAD.Qt.translate("ToolBitShape", "Torus radius"),
+                FreeCAD.Qt.translate("ToolBitShape", "Torus radius (R)"),
                 "App::PropertyLength",
             ),
         }

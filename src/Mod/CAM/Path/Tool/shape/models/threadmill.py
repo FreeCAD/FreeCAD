@@ -33,11 +33,11 @@ class ToolBitShapeThreadMill(ToolBitShape):
     def schema(cls) -> Mapping[str, Tuple[str, str]]:
         return {
             "Crest": (
-                FreeCAD.Qt.translate("ToolBitShape", "Crest height"),
+                FreeCAD.Qt.translate("ToolBitShape", "Crest height (C)"),
                 "App::PropertyLength",
             ),
             "Diameter": (
-                FreeCAD.Qt.translate("ToolBitShape", "Major diameter"),
+                FreeCAD.Qt.translate("ToolBitShape", "Major diameter (D)"),
                 "App::PropertyLength",
             ),
             "Flutes": (
@@ -49,19 +49,19 @@ class ToolBitShapeThreadMill(ToolBitShape):
                 "App::PropertyLength",
             ),
             "NeckDiameter": (
-                FreeCAD.Qt.translate("ToolBitShape", "Neck diameter"),
+                FreeCAD.Qt.translate("ToolBitShape", "Neck diameter (N)"),
                 "App::PropertyLength",
             ),
             "NeckLength": (
-                FreeCAD.Qt.translate("ToolBitShape", "Neck length"),
+                FreeCAD.Qt.translate("ToolBitShape", "Neck length (n)"),
                 "App::PropertyLength",
             ),
             "ShankDiameter": (
-                FreeCAD.Qt.translate("ToolBitShape", "Shank diameter"),
+                FreeCAD.Qt.translate("ToolBitShape", "Shank diameter (S)"),
                 "App::PropertyLength",
             ),
             "cuttingAngle": (  # TODO rename to CuttingAngle
-                FreeCAD.Qt.translate("ToolBitShape", "Cutting angle"),
+                FreeCAD.Qt.translate("ToolBitShape", "Cutting angle (α)"),
                 "App::PropertyAngle",
             ),
         }

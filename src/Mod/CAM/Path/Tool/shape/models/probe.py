@@ -33,15 +33,15 @@ class ToolBitShapeProbe(ToolBitShape):
     def schema(cls) -> Mapping[str, Tuple[str, str]]:
         return {
             "Diameter": (
-                FreeCAD.Qt.translate("ToolBitShape", "Ball diameter"),
+                FreeCAD.Qt.translate("ToolBitShape", "Ball diameter (d)"),
                 "App::PropertyLength",
             ),
             "Length": (
-                FreeCAD.Qt.translate("ToolBitShape", "Length of probe"),
+                FreeCAD.Qt.translate("ToolBitShape", "Length of probe (L)"),
                 "App::PropertyLength",
             ),
             "ShaftDiameter": (
-                FreeCAD.Qt.translate("ToolBitShape", "Shaft diameter"),
+                FreeCAD.Qt.translate("ToolBitShape", "Shaft diameter (S)"),
                 "App::PropertyLength",
             ),
         }

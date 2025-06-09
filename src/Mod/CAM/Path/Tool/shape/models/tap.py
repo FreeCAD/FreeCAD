@@ -33,11 +33,11 @@ class ToolBitShapeTap(ToolBitShape):
     def schema(cls) -> Mapping[str, Tuple[str, str]]:
         return {
             "CuttingEdgeLength": (
-                FreeCAD.Qt.translate("ToolBitShape", "Cutting edge length"),
+                FreeCAD.Qt.translate("ToolBitShape", "Cutting edge length (h)"),
                 "App::PropertyLength",
             ),
             "Diameter": (
-                FreeCAD.Qt.translate("ToolBitShape", "Tap diameter"),
+                FreeCAD.Qt.translate("ToolBitShape", "Tap diameter (D)"),
                 "App::PropertyLength",
             ),
             "Flutes": (
@@ -45,15 +45,15 @@ class ToolBitShapeTap(ToolBitShape):
                 "App::PropertyInteger",
             ),
             "Length": (
-                FreeCAD.Qt.translate("ToolBitShape", "Overall length of tap"),
+                FreeCAD.Qt.translate("ToolBitShape", "Overall length of tap (L)"),
                 "App::PropertyLength",
             ),
             "ShankDiameter": (
-                FreeCAD.Qt.translate("ToolBitShape", "Shank diameter"),
+                FreeCAD.Qt.translate("ToolBitShape", "Shank diameter (S)"),
                 "App::PropertyLength",
             ),
             "TipAngle": (
-                FreeCAD.Qt.translate("ToolBitShape", "Tip angle"),
+                FreeCAD.Qt.translate("ToolBitShape", "Tip angle (α)"),
                 "App::PropertyAngle",
             ),
         }
