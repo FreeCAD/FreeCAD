@@ -114,6 +114,16 @@
     </widget>
    </item>
    <item>
+    <widget class="QCheckBox" name="checkLoadTypes">
+     <property name="toolTip">
+      <string>Preload IFC types that are connected to the objects. It is also possible to leave this setting disabled and double click later on the object to load the types</string>
+     </property>
+     <property name="text">
+      <string>Preload types</string>
+     </property>
+    </widget>
+   </item>
+   <item>
     <widget class="QCheckBox" name="checkLoadPsets">
      <property name="toolTip">
       <string>Preload property sets of all objects. It is advised to leave this unchecked and load property sets later, only when needed</string>

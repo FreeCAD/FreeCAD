@@ -130,6 +130,22 @@
        </widget>
       </item>
       <item>
+       <widget class="Gui::PrefCheckBox" name="checkBox_9">
+        <property name="toolTip">
+         <string>Load all types automatically when opening an IFC file</string>
+        </property>
+        <property name="text">
+         <string>Preload types</string>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>LoadTypes</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/NativeIFC</cstring>
+        </property>
+       </widget>
+      </item>
+      <item>
        <widget class="Gui::PrefCheckBox" name="checkBox_8">
         <property name="toolTip">
          <string>Load all materials automatically when opening an IFC file</string>
