@@ -21,6 +21,7 @@
 # ***************************************************************************
 from typing import Optional
 from PySide import QtGui, QtCore
+from ..models.base import ToolBitShape
 
 
 def _png2qpixmap(data, icon_size):
@@ -37,30 +38,29 @@ def _png2qpixmap(data, icon_size):
 
 
 class ShapeWidget(QtGui.QWidget):
-    def __init__(self, shape, icon_size: Optional[QtCore.QSize] = None, parent=None):
+    def __init__(self, shape: ToolBitShape, icon_size: Optional[QtCore.QSize] = None, parent=None):
         super(ShapeWidget, self).__init__(parent)
         self.layout = QtGui.QVBoxLayout(self)
         self.layout.setAlignment(QtCore.Qt.AlignHCenter)
 
         self.shape = shape
-        ratio = self.devicePixelRatioF()
-        self.icon_size = icon_size or QtCore.QSize(200 * ratio, 235 * ratio)
+        self.icon_size = icon_size or QtCore.QSize(200, 235)
         self.icon_widget = QtGui.QLabel()
         self.layout.addWidget(self.icon_widget)
 
         self._update_icon()
 
     def _update_icon(self):
+        ratio = self.devicePixelRatioF()
+        size = self.icon_size * ratio
         icon = self.shape.get_icon()
         if icon:
-            pixmap = icon.get_qpixmap(self.icon_size)
+            pixmap = icon.get_qpixmap(size)
             self.icon_widget.setPixmap(pixmap)
             return
 
         thumbnail = self.shape.get_thumbnail()
         if thumbnail:
-            ratio = self.devicePixelRatioF()
-            size = self.icon_size * ratio
             pixmap = _png2qpixmap(thumbnail, size)
             self.icon_widget.setPixmap(pixmap)
             return
