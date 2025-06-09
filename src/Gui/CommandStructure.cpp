@@ -32,6 +32,7 @@
 #include "ActiveObjectList.h"
 #include "Application.h"
 #include "Document.h"
+#include "MDIView.h"
 #include "ViewProviderDocumentObject.h"
 #include "Selection.h"
 
@@ -121,11 +122,42 @@ void StdCmdGroup::activated(int iMsg)
     std::string GroupName;
     GroupName = getUniqueObjectName("Group");
     QString label = QApplication::translate("Std_Group", "Group");
-    doCommand(Doc,"App.activeDocument().Tip = App.activeDocument().addObject('App::DocumentObjectGroup','%s')",GroupName.c_str());
-    doCommand(Doc,"App.activeDocument().%s.Label = '%s'", GroupName.c_str(),
-              label.toUtf8().data());
+
+    // create a group
+    doCommand(Doc,"group = App.activeDocument().addObject('App::DocumentObjectGroup','%s')",GroupName.c_str());
+    doCommand(Doc,"group.Label = '%s'", label.toUtf8().data());
+    doCommand(Doc,"App.activeDocument().Tip = group");
+
+    // Get the currently active object in C++
+    auto activeDoc = Gui::Application::Instance->activeDocument();
+    if (activeDoc) {
+        auto activeView = activeDoc->getActiveView();
+        if (activeView) {
+            // Check for active objects in same priority order as Draft autogroup: NativeIFC -> Arch-> part
+            App::DocumentObject* activeObj = activeView->getActiveObject<App::DocumentObject*>("NativeIFC");
+            if (!activeObj) {
+                activeObj = activeView->getActiveObject<App::DocumentObject*>("Arch");
+            }
+            if (!activeObj) {
+                activeObj = activeView->getActiveObject<App::DocumentObject*>("part");
+            }
+
+            if (activeObj && activeObj->hasExtension(App::GroupExtension::getExtensionClassTypeId())) {
+                // Add the group to the active object if it supports grouping
+                doCommand(Doc,
+                    "active_obj = App.activeDocument().getObject('%s')\n"
+                    "if hasattr(active_obj, 'Group'):\n"
+                    "    active_obj.Group = active_obj.Group + [group]",
+                    activeObj->getNameInDocument());
+            }
+            // If no active object or active object doesn't support grouping, 
+            // the group just stays at document root level
+        }
+    }
+
     commitCommand();
 
+    // Scroll to the newly created group
     Gui::Document* gui = Application::Instance->activeDocument();
     App::Document* app = gui->getDocument();
     ViewProvider* vp = gui->getViewProvider(app->getActiveObject());

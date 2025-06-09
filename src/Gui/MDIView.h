@@ -147,6 +147,11 @@ public:
         return ActiveObjects.hasObject(o,n,subname);
     }
 
+    std::optional<App::DocumentObject*> findActiveObjectWithExtension(const Base::Type& extensionTypeId) const
+    {
+        return ActiveObjects.findActiveObjectWithExtension(extensionTypeId);
+    }
+
     /*!
      * \brief containsViewProvider
      * Checks if the given view provider is part of this view. The default implementation

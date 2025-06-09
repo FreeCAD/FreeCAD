@@ -197,3 +197,16 @@ void ActiveObjectList::objectDeleted(const ViewProviderDocumentObject &vp)
         }
     }
 }
+
+std::optional<App::DocumentObject*> ActiveObjectList::findActiveObjectWithExtension(const Base::Type& extensionTypeId) const
+{
+    // If no priority order specified or no priority objects found, check all active objects
+    for (const auto& pair : _ObjectMap) {
+        App::DocumentObject* obj = getObject(pair.second, true);
+        if (obj && obj->hasExtension(extensionTypeId)) {
+            return obj;
+        }
+    }
+
+    return {};
+}
