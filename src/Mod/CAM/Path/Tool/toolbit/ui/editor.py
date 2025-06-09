@@ -152,7 +152,7 @@ class ToolBitPropertiesWidget(QtGui.QWidget):
         self._label_edit.setEnabled(True)
         self._label_edit.setText(self._toolbit.obj.Label)
         self._id_label.setText(self._toolbit.get_id())
-        self._tool_no_edit.setValue(self._tool_no or 1)
+        self._tool_no_edit.setValue(int(self._tool_no or 1))
 
         # Get properties and suffixes
         props_to_show = self._toolbit._get_props(("Shape", "Attributes"))
