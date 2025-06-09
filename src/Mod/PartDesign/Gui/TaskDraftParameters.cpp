@@ -185,7 +185,7 @@ void TaskDraftParameters::onButtonPlane(bool checked)
         Gui::Selection().clearSelection();
         Gui::Selection().addSelectionGate(new ReferenceSelection(
             this->getBase(),
-            AllowSelection::EDGE | AllowSelection::FACE | AllowSelection::PLANAR | AllowSelection::WHOLE | AllowSelection::SKETCH));
+            AllowSelection::EDGE | AllowSelection::FACE | AllowSelection::PLANAR));
     }
 }
 

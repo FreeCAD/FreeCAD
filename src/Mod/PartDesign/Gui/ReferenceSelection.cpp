@@ -39,6 +39,7 @@
 #include <Gui/Command.h>
 #include <Gui/Document.h>
 #include <Gui/MainWindow.h>
+#include <Mod/Part/App/Part2DObject.h>
 #include <Mod/Part/App/PartFeature.h>
 #include <Mod/Part/App/TopoShape.h>
 #include <Mod/PartDesign/App/Feature.h>
@@ -89,11 +90,12 @@ bool ReferenceSelection::allow(App::Document* pDoc, App::DocumentObject* pObj, c
             return false;
     }
 #endif
+    if (pObj->isDerivedFrom<Part::Part2DObject>() && Base::Tools::isNullOrEmpty(sSubName)) {
+        return type.testFlag(AllowSelection::FACE);
+    }
+
     // Handle selection of geometry elements
-    if (Base::Tools::isNullOrEmpty(sSubName)){
-        if (pObj->isDerivedFrom(Base::Type::fromName("Sketcher::SketchObject"))) {
-            return type.testFlag(AllowSelection::SKETCH);
-        }
+    if (Base::Tools::isNullOrEmpty(sSubName)) {
         return type.testFlag(AllowSelection::WHOLE);
     }
 
@@ -297,7 +299,6 @@ bool getReferencedSelection(const App::DocumentObject* thisObj, const Gui::Selec
     if (selObj == thisObj)
         return false;
 
-
     std::string subname = msg.pSubName;
 
     //check if the selection is an external reference and ask the user what to do
@@ -347,7 +348,7 @@ QString getRefStr(const App::DocumentObject* obj, const std::vector<std::string>
         return {};
     }
 
-    if (PartDesign::Feature::isDatum(obj) || obj->isDerivedFrom(Base::Type::fromName("Sketcher::SketchObject"))) {
+    if (PartDesign::Feature::isDatum(obj) || obj->isDerivedFrom<Part::Part2DObject>()) {
         return QString::fromLatin1(obj->getNameInDocument());
     }
     else if (!sub.empty()) {

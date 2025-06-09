@@ -43,13 +43,11 @@
 #endif
 
 #include <App/Datums.h>
-#include <App/Placement.h>
 #include <Base/Console.h>
 #include <Base/Exception.h>
 #include <Base/Tools.h>
 #include <Mod/Part/App/Part2DObject.h>
 #include <Mod/Part/App/TopoShape.h>
-
 
 #include "FeatureDraft.h"
 #include "DatumLine.h"
@@ -217,20 +215,8 @@ App::DocumentObjectExecReturn *Draft::execute()
             Base::Vector3d b = plane->getBasePoint();
             Base::Vector3d n = plane->getNormal();
             neutralPlane = gp_Pln(gp_Pnt(b.x, b.y, b.z), gp_Dir(n.x, n.y, n.z));
-        } else if (refPlane->isDerivedFrom<App::Plane>()) {
+        } else if (refPlane->isDerivedFrom<App::Plane>() || refPlane->isDerivedFrom<Part::Part2DObject>()) {
             neutralPlane = Feature::makePlnFromPlane(refPlane);
-        } else if (refPlane->isDerivedFrom(Base::Type::fromName("Sketcher::SketchObject"))) {
-            Part::Part2DObject* sketch = static_cast<Part::Part2DObject*>(refPlane);
-            const Base::Placement& placement = sketch->Placement.getValue();
-
-            Base::Vector3d pos = placement.getPosition();
-            Base::Rotation rot = placement.getRotation();
-
-            Base::Vector3d normal(0, 0, 1);
-            rot.multVec(normal, normal);
-
-            neutralPlane = gp_Pln(gp_Pnt(pos.x, pos.y, pos.z),
-                                gp_Dir(normal.x, normal.y, normal.z));
         } else if (refPlane->isDerivedFrom<Part::Feature>()) {
             std::vector<std::string> subStrings = NeutralPlane.getSubValues();
             if (subStrings.empty() || subStrings[0].empty())

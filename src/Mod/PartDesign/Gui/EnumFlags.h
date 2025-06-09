@@ -38,8 +38,7 @@ enum class AllowSelection {
     CIRCLE         = 1 << 3, /**< Allow picking circular edges (incl arcs) */
     POINT          = 1 << 4, /**< Allow picking datum points */
     OTHERBODY      = 1 << 5, /**< Allow picking objects from another body in the same part */
-    WHOLE          = 1 << 6,  /**< Allow whole object selection */
-    SKETCH         = 1 << 7  /**< Allow picking sketches */
+    WHOLE          = 1 << 6  /**< Allow whole object selection */
 };
 Q_DECLARE_FLAGS(AllowSelectionFlags, AllowSelection)
 
