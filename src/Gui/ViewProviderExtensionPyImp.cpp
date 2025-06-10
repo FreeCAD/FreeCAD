@@ -20,17 +20,16 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
-
 #ifndef _PreComp_
-# include <sstream>
+#include <sstream>
 #endif
 
-// inclusion of the generated files (generated out of PropertyContainerPy.pyi)
+#include "ViewProviderDocumentObject.h"
+
+// generated out of ViewProviderExtension.pyi
 #include "ViewProviderExtensionPy.h"
 #include "ViewProviderExtensionPy.cpp"
-#include "ViewProviderDocumentObject.h"
 
 using namespace Gui;
 
