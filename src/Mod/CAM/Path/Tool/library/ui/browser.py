@@ -70,6 +70,10 @@ class LibraryBrowserWidget(ToolBitBrowserWidget):
         self.restore_last_sort_order()
         self.load_last_library()
 
+    def setDragEnabled(self, enabled: bool = True):
+        """Enable or disable drag-and-drop support for the tool list."""
+        self._tool_list_widget.setDragEnabled(enabled)
+
     def load_last_library(self):
         """Loads the last selected library from preferences."""
         library_uri = Path.Preferences.getLastToolLibrary()
@@ -83,7 +87,8 @@ class LibraryBrowserWidget(ToolBitBrowserWidget):
     def restore_last_sort_order(self):
         """Sets the sort mode and updates the tool list."""
         last_sort_key = Path.Preferences.getLastToolLibrarySortKey()
-        self.set_sort_order(last_sort_key)
+        if last_sort_key:
+            self.set_sort_order(last_sort_key)
 
     def set_sort_order(self, key: str):
         super().set_sort_order(key)

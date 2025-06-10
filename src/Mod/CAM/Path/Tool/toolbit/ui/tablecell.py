@@ -56,11 +56,13 @@ class TwoLineTableCell(QtGui.QWidget):
         self.vbox = QtGui.QVBoxLayout()
         self.label_upper = QtGui.QLabel()
         self.label_upper.setStyleSheet("margin-top: 8px")
+        self.label_upper.setAttribute(QtCore.Qt.WA_TransparentForMouseEvents)
 
         color = interpolate_colors(bg_color, fg_color, 0.8)
         style = "margin-bottom: 8px; color: {};".format(color.name())
         self.label_lower = QtGui.QLabel()
         self.label_lower.setStyleSheet(style)
+        self.label_lower.setAttribute(QtCore.Qt.WA_TransparentForMouseEvents)
         self.vbox.addWidget(self.label_upper)
         self.vbox.addWidget(self.label_lower)
 
@@ -70,6 +72,7 @@ class TwoLineTableCell(QtGui.QWidget):
         self.label_left.setTextFormat(QtCore.Qt.RichText)
         self.label_left.setAlignment(QtCore.Qt.AlignCenter | QtCore.Qt.AlignVCenter)
         self.label_left.setStyleSheet(style)
+        self.label_left.setAttribute(QtCore.Qt.WA_TransparentForMouseEvents)
 
         ratio = self.devicePixelRatioF()
         self.icon_size = QtCore.QSize(50 * ratio, 60 * ratio)
@@ -81,6 +84,7 @@ class TwoLineTableCell(QtGui.QWidget):
         self.label_right.setTextFormat(QtCore.Qt.RichText)
         self.label_right.setAlignment(QtCore.Qt.AlignCenter)
         self.label_right.setStyleSheet(style)
+        self.label_right.setAttribute(QtCore.Qt.WA_TransparentForMouseEvents)
 
         self.hbox = QtGui.QHBoxLayout()
         self.hbox.addWidget(self.label_left, 0)

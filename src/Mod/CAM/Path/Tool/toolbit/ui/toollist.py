@@ -22,14 +22,19 @@
 
 """Widget for displaying a list of ToolBits using TwoLineTableCell."""
 
+import yaml
+import Path
 from typing import Callable, List
 from PySide import QtGui, QtCore
-from .tablecell import TwoLineTableCell, CompactTwoLineTableCell
+from PySide.QtGui import QDrag
+from PySide.QtCore import QMimeData
 from ..models.base import ToolBit
+from .tablecell import TwoLineTableCell, CompactTwoLineTableCell
 
 
 # Role for storing the ToolBit URI string
 ToolBitUriRole = QtCore.Qt.UserRole + 1
+ToolBitUriListMimeType = "application/x-freecad-toolbit-uri-list-yaml"
 
 
 class ToolBitListWidget(QtGui.QListWidget):
@@ -43,6 +48,39 @@ class ToolBitListWidget(QtGui.QListWidget):
         self._tool_no_factory = tool_no_factory
         self.setAutoScroll(True)
         self.setSelectionMode(QtGui.QAbstractItemView.ExtendedSelection)
+
+    def setDragEnabled(self, enabled: bool = True):
+        """Enable or disable drag-and-drop support for toolbits."""
+        super().setDragEnabled(enabled)
+
+    def startDrag(self, supportedActions):
+        """Initiate drag with selected toolbits serialized as mime data if drag is enabled."""
+        Path.Log.debug("startDrag: Drag initiated.")
+        selected_items = self.selectedItems()
+        if not selected_items:
+            Path.Log.debug("startDrag: No items selected for drag.")
+            return
+
+        uris = [item.data(ToolBitUriRole) for item in selected_items]
+        if not uris:
+            Path.Log.debug("startDrag: No valid URIs found for selected items.")
+            return
+
+        # Create clipboard data
+        clipboard_data = {
+            "toolbits": uris,
+        }
+        yaml_data = yaml.safe_dump(clipboard_data).encode("utf-8")
+
+        # Set mime data
+        mime_data = QMimeData()
+        mime_data.setData(ToolBitUriListMimeType, yaml_data)
+
+        # Start drag
+        drag = QDrag(self)
+        drag.setMimeData(mime_data)
+        drag.exec_(QtCore.Qt.CopyAction | QtCore.Qt.MoveAction)
+        Path.Log.debug("startDrag: Drag executed.")
 
     def _create_toolbit_item(self, toolbit: ToolBit, tool_no: int | None = None):
         """

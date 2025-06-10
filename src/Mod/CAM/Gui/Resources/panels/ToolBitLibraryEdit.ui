@@ -168,6 +168,15 @@
          <verstretch>0</verstretch>
         </sizepolicy>
        </property>
+       <property name="mouseTracking">
+        <bool>true</bool>
+       </property>
+       <property name="focusPolicy">
+        <enum>Qt::StrongFocus</enum>
+       </property>
+       <property name="acceptDrops">
+        <bool>true</bool>
+       </property>
        <property name="frameShape">
         <enum>QFrame::Box</enum>
        </property>
@@ -175,7 +184,13 @@
         <set>QAbstractItemView::NoEditTriggers</set>
        </property>
        <property name="showDropIndicator" stdset="0">
-        <bool>false</bool>
+        <bool>true</bool>
+       </property>
+       <property name="dragDropMode">
+        <enum>QAbstractItemView::DropOnly</enum>
+       </property>
+       <property name="defaultDropAction">
+        <enum>Qt::IgnoreAction</enum>
        </property>
       </widget>
      </item>

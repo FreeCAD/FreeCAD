@@ -21,6 +21,7 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
+import yaml
 import pathlib
 import FreeCAD
 import FreeCADGui
@@ -33,7 +34,7 @@ from PySide.QtGui import (
     QMessageBox,
     QWidget,
 )
-from PySide.QtCore import Qt
+from PySide.QtCore import Qt, QEvent
 from typing import List, cast, Tuple, Optional
 from ...assets import AssetUri
 from ...assets.ui import AssetOpenDialog, AssetSaveDialog
@@ -42,6 +43,7 @@ from ...shape.ui.shapeselector import ShapeSelector
 from ...toolbit import ToolBit
 from ...toolbit.serializers import all_serializers as toolbit_serializers
 from ...toolbit.ui import ToolBitEditor
+from ...toolbit.ui.toollist import ToolBitUriListMimeType
 from ...toolbit.ui.util import natural_sort_key
 from ..serializers import all_serializers as library_serializers
 from ..models import Library
@@ -77,11 +79,15 @@ class LibraryEditor(QWidget):
         self.form.TableList.setModel(self.listModel)
         self.form.TableList.clicked.connect(self._on_library_selected)
 
+        # Enable drop support for the library list
+        self.form.TableList.viewport().installEventFilter(self)  # Also on viewport
+
         # Create the LibraryBrowserWidget
         self.browser = LibraryBrowserWidget(
             asset_manager=cam_assets,
             parent=self,
         )
+        self.browser.setDragEnabled(True)
         self.form.verticalLayout_2.layout().replaceWidget(self.form.toolTable, self.browser)
         self.form.toolTable.hide()
 
@@ -102,6 +108,124 @@ class LibraryEditor(QWidget):
         self._refresh_library_list()
         self._select_last_library()
         self._update_button_states()
+
+    def _highlight_row(self, index):
+        """Highlights the row at the given index using the selection model."""
+        if not index.isValid():
+            return
+        self.form.TableList.setCurrentIndex(index)
+
+    def _clear_highlight(self):
+        """Clears the highlighting from the previously highlighted row."""
+        self.form.TableList.selectionModel().clear()
+
+    def eventFilter(self, obj, event):
+        if obj == self.form.TableList.viewport():
+            if event.type() == QEvent.DragEnter or event.type() == QEvent.DragMove:
+                return self._handle_drag_enter(event)
+            elif event.type() == QEvent.DragLeave:
+                self._handle_drag_leave(event)
+                return True
+            elif event.type() == QEvent.Drop:
+                return self._handle_drop(event)
+        return super().eventFilter(obj, event)
+
+    def _handle_drag_enter(self, event):
+        """Handle drag enter and move events for the library list."""
+        mime_data = event.mimeData()
+        Path.Log.debug(f"_handle_drag_enter: MIME formats: {mime_data.formats()}")
+        if not mime_data.hasFormat(ToolBitUriListMimeType):
+            Path.Log.debug("_handle_drag_enter: Invalid MIME type, ignoring")
+            return True
+
+        # Get the row being hovered.
+        pos = event.pos()
+        event.acceptProposedAction()
+        index = self.form.TableList.indexAt(pos)
+        if not index.isValid():
+            self._clear_highlight()
+            return True
+
+        # Prevent drop into "All Tools"
+        item = self.listModel.itemFromIndex(index)
+        if not item or item.data(_LibraryRole) == "all_tools":
+            self._clear_highlight()
+            return True
+
+        self._highlight_row(index)
+        return True
+
+    def _handle_drag_leave(self, event):
+        """Handle drag leave event for the library list."""
+        self._clear_highlight()
+
+    def _handle_drop(self, event):
+        """Handle drop events to move or copy toolbits to the target library."""
+        mime_data = event.mimeData()
+        if not (mime_data.hasFormat(ToolBitUriListMimeType)):
+            event.ignore()
+            return True
+
+        self._clear_highlight()
+        pos = event.pos()
+        index = self.form.TableList.indexAt(pos)
+        if not index.isValid():
+            event.ignore()
+            return True
+
+        item = self.listModel.itemFromIndex(index)
+        if not item or item.data(_LibraryRole) == "all_tools":
+            event.ignore()
+            return True
+
+        target_library_id = item.data(_LibraryRole)
+        target_library_uri = f"toolbitlibrary://{target_library_id}"
+        target_library = cast(Library, cam_assets.get(target_library_uri, depth=1))
+
+        try:
+            clipboard_content_yaml = mime_data.data(ToolBitUriListMimeType).data().decode("utf-8")
+            clipboard_data_dict = yaml.safe_load(clipboard_content_yaml)
+
+            if not isinstance(clipboard_data_dict, dict) or "toolbits" not in clipboard_data_dict:
+                event.ignore()
+                return True
+
+            uris = clipboard_data_dict["toolbits"]
+            new_uris = set()
+
+            # Get the current library from the browser
+            current_library = self.browser.get_current_library()
+
+            for uri in uris:
+                try:
+                    toolbit = cast(ToolBit, cam_assets.get(AssetUri(uri), depth=0))
+                    if toolbit:
+                        added_toolbit = target_library.add_bit(toolbit)
+                        if added_toolbit:
+                            new_uris.add(str(toolbit.get_uri()))
+
+                            # Remove the toolbit from the current library if it exists and
+                            # it's not "all_tools"
+                            if current_library and current_library.get_id() != "all_tools":
+                                current_library.remove_bit(toolbit)
+                except Exception as e:
+                    Path.Log.error(f"Failed to load toolbit from URI {uri}: {e}")
+                    continue
+
+            if new_uris:
+                cam_assets.add(target_library)
+                # Save the current library if it was modified
+                if current_library and current_library.get_id() != "all_tools":
+                    cam_assets.add(current_library)
+                self.browser.refresh()
+                self.browser.select_by_uri(list(new_uris))
+                self._update_button_states()
+
+            event.acceptProposedAction()
+        except Exception as e:
+            Path.Log.error(f"Failed to process drop event: {e}")
+            event.ignore()
+        return True
 
     def get_selected_library_id(self) -> Optional[str]:
         index = self.form.TableList.currentIndex()
@@ -202,7 +326,7 @@ class LibraryEditor(QWidget):
     def _update_button_states(self):
         """Updates the enabled state of library management buttons."""
         library_selected = self.browser.get_current_library() is not None
-        self.form.addLibraryButton.setEnabled(library_selected)
+        self.form.addLibraryButton.setEnabled(True)
         self.form.removeLibraryButton.setEnabled(library_selected)
         self.form.renameLibraryButton.setEnabled(library_selected)
         self.form.exportLibraryButton.setEnabled(library_selected)
