@@ -446,19 +446,31 @@ private:
 
     std::vector<SbVec3f> computeSymmetricBBox() const
     {
-        // Get the points stored in the pnt field
+        // get the points stored in the pnt field
         const SbVec3f *points = label->pnts.getValues(0);
         if (label->pnts.getNum() < 2) {
             return {};
         }
 
-        SbVec3f p1 = points[0];
-        SbVec3f p2 = points[1];
+        // use shared geometry calculation
+        SoDatumLabel::SymmetricGeometry geom = label->calculateSymmetricGeometry(points);
 
-        // Finds the mins and maxes
+        // include all visual elements in bounding box
         std::vector<SbVec3f> corners;
-        corners.push_back(p1);
-        corners.push_back(p2);
+
+        // main points (existing)
+        corners.push_back(geom.p1);
+        corners.push_back(geom.p2);
+
+        // first arrow triangle points
+        corners.push_back(geom.ar0);  // arrow tip
+        corners.push_back(geom.ar1);  // arrow base point 1
+        corners.push_back(geom.ar2);  // arrow base point 2
+
+        // second arrow triangle points
+        corners.push_back(geom.ar3);  // arrow tip
+        corners.push_back(geom.ar4);  // arrow base point 1
+        corners.push_back(geom.ar5);  // arrow base point 2
 
         return corners;
     }
@@ -904,49 +916,37 @@ void SoDatumLabel::generateAnglePrimitives(SoAction * action, const SbVec3f& p0)
 
 void SoDatumLabel::generateSymmetricPrimitives(SoAction * action, const SbVec3f& p1, const SbVec3f& p2)
 {
-    SbVec3f dir = (p2-p1);
-    dir.normalize();
-    SbVec3f normal (-dir[1],dir[0],0);
+    // use shared geometry calculation
+    SbVec3f points[2] = {p1, p2};
+    SymmetricGeometry geom = calculateSymmetricGeometry(points);
 
-    float margin = this->imgHeight / 4.0F;
+    // generate selectable primitives for lines
+    float lineWidth = geom.margin * 0.8f;
 
-    // Calculate coordinates for the first arrow
-    SbVec3f ar0  = p1 + dir * 5 * margin ;
-    SbVec3f ar1  = ar0 - dir * 0.866F * 2 * margin; // Base Point of Arrow
-    SbVec3f ar2  = ar1 + normal * margin; // Triangular corners
-    ar1 -= normal * margin;
+    // lines from endpoints to arrow tips
+    generateLineSelectionPrimitive(action, geom.p1, geom.ar0, lineWidth);
+    generateLineSelectionPrimitive(action, geom.p2, geom.ar3, lineWidth);
 
-    // Calculate coordinates for the second arrow
-    SbVec3f ar3  = p2 - dir * 5 * margin ;
-    SbVec3f ar4  = ar3 + dir * 0.866F * 2 * margin; // Base Point of 2nd Arrow
-
-    SbVec3f ar5  = ar4 + normal * margin; // Triangular corners
-    ar4 -= normal * margin;
-
+    // generate selectable primitives for arrow heads as triangles
     SoPrimitiveVertex pv;
+    pv.setNormal(SbVec3f(0.F, 0.F, 1.F));
 
     this->beginShape(action, TRIANGLES);
 
-    pv.setNormal( SbVec3f(0.F, 0.F, 1.F) );
-
-    // Set coordinates
-    pv.setPoint( ar0 );
+    // first arrow
+    pv.setPoint(geom.ar0);
+    shapeVertex(&pv);
+    pv.setPoint(geom.ar1);
+    shapeVertex(&pv);
+    pv.setPoint(geom.ar2);
     shapeVertex(&pv);
 
-    pv.setPoint( ar1 );
+    // second arrow
+    pv.setPoint(geom.ar3);
     shapeVertex(&pv);
-
-    pv.setPoint( ar2 );
+    pv.setPoint(geom.ar4);
     shapeVertex(&pv);
-
-    // Set coordinates
-    pv.setPoint( ar3 );
-    shapeVertex(&pv);
-
-    pv.setPoint( ar4 );
-    shapeVertex(&pv);
-
-    pv.setPoint( ar5 );
+    pv.setPoint(geom.ar5);
     shapeVertex(&pv);
 
     this->endShape();
@@ -1340,43 +1340,27 @@ void SoDatumLabel::drawAngle(const SbVec3f* points, float& angle, SbVec3f& textO
 
 void SoDatumLabel::drawSymmetric(const SbVec3f* points)
 {
-    SbVec3f p1 = points[0];
-    SbVec3f p2 = points[1];
+    // use shared geometry calculation
+    SymmetricGeometry geom = calculateSymmetricGeometry(points);
 
-    SbVec3f dir = (p2-p1);
-    dir.normalize();
-    SbVec3f normal (-dir[1],dir[0],0);
-
-    float margin = this->imgHeight / 4.0F;
-
-    // Calculate coordinates for the first arrow
-    SbVec3f ar0  = p1 + dir * 4 * margin; // Tip of Arrow
-    SbVec3f ar1  = ar0 - dir * 0.866F * 2 * margin;
-    SbVec3f ar2  = ar1 + normal * margin;
-    ar1 -= normal * margin;
-
+    // draw first arrow
     glBegin(GL_LINES);
-        glVertex3f(p1[0], p1[1], ZCONSTR);
-        glVertex3f(ar0[0], ar0[1], ZCONSTR);
-        glVertex3f(ar0[0], ar0[1], ZCONSTR);
-        glVertex3f(ar1[0], ar1[1], ZCONSTR);
-        glVertex3f(ar0[0], ar0[1], ZCONSTR);
-        glVertex3f(ar2[0], ar2[1], ZCONSTR);
+        glVertex3f(geom.p1[0], geom.p1[1], ZCONSTR);
+        glVertex3f(geom.ar0[0], geom.ar0[1], ZCONSTR);
+        glVertex3f(geom.ar0[0], geom.ar0[1], ZCONSTR);
+        glVertex3f(geom.ar1[0], geom.ar1[1], ZCONSTR);
+        glVertex3f(geom.ar0[0], geom.ar0[1], ZCONSTR);
+        glVertex3f(geom.ar2[0], geom.ar2[1], ZCONSTR);
     glEnd();
 
-    // Calculate coordinates for the second arrow
-    SbVec3f ar3  = p2 - dir * 4 * margin; // Tip of 2nd Arrow
-    SbVec3f ar4  = ar3 + dir * 0.866F * 2 * margin;
-    SbVec3f ar5  = ar4 + normal * margin;
-    ar4 -= normal * margin;
-
+    // draw second arrow
     glBegin(GL_LINES);
-        glVertex3f(p2[0], p2[1], ZCONSTR);
-        glVertex3f(ar3[0], ar3[1], ZCONSTR);
-        glVertex3f(ar3[0], ar3[1], ZCONSTR);
-        glVertex3f(ar4[0], ar4[1], ZCONSTR);
-        glVertex3f(ar3[0], ar3[1], ZCONSTR);
-        glVertex3f(ar5[0], ar5[1], ZCONSTR);
+        glVertex3f(geom.p2[0], geom.p2[1], ZCONSTR);
+        glVertex3f(geom.ar3[0], geom.ar3[1], ZCONSTR);
+        glVertex3f(geom.ar3[0], geom.ar3[1], ZCONSTR);
+        glVertex3f(geom.ar4[0], geom.ar4[1], ZCONSTR);
+        glVertex3f(geom.ar3[0], geom.ar3[1], ZCONSTR);
+        glVertex3f(geom.ar5[0], geom.ar5[1], ZCONSTR);
     glEnd();
 }
 
@@ -1789,6 +1773,34 @@ SoDatumLabel::AngleGeometry SoDatumLabel::calculateAngleGeometry(const SbVec3f* 
 
     geom.dirEnd = SbVec3f(-geom.v2[1], geom.v2[0], 0);
     geom.endArrowBase = geom.p0 + geom.r * geom.v2;
+
+    return geom;
+}
+
+SoDatumLabel::SymmetricGeometry SoDatumLabel::calculateSymmetricGeometry(const SbVec3f* points) const
+{
+    SymmetricGeometry geom;
+
+    geom.p1 = points[0];
+    geom.p2 = points[1];
+
+    geom.dir = (geom.p2 - geom.p1);
+    geom.dir.normalize();
+    geom.normal = SbVec3f(-geom.dir[1], geom.dir[0], 0);
+
+    geom.margin = this->imgHeight / 4.0F;
+
+    // calculate coordinates for the first arrow
+    geom.ar0 = geom.p1 + geom.dir * 4 * geom.margin; // tip of arrow
+    geom.ar1 = geom.ar0 - geom.dir * 0.866F * 2 * geom.margin;
+    geom.ar2 = geom.ar1 + geom.normal * geom.margin;
+    geom.ar1 -= geom.normal * geom.margin;
+
+    // calculate coordinates for the second arrow
+    geom.ar3 = geom.p2 - geom.dir * 4 * geom.margin; // tip of 2nd arrow
+    geom.ar4 = geom.ar3 + geom.dir * 0.866F * 2 * geom.margin;
+    geom.ar5 = geom.ar4 + geom.normal * geom.margin;
+    geom.ar4 -= geom.normal * geom.margin;
 
     return geom;
 }

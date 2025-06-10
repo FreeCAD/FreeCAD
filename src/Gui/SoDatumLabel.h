@@ -151,6 +151,14 @@ private:
         float endLineLength12, endLineLength22; // extension line lengths (other side)
     };
 
+    struct SymmetricGeometry {
+        SbVec3f p1, p2;                 // main points
+        SbVec3f dir, normal;            // direction and normal vectors
+        SbVec3f ar0, ar1, ar2;          // first arrow triangle points (tip, base1, base2)
+        SbVec3f ar3, ar4, ar5;          // second arrow triangle points (tip, base1, base2)
+        float margin;                   // margin for calculations
+    };
+
     float getScaleFactor(SoState*) const;
     void generateDistancePrimitives(SoAction * action, const SbVec3f&, const SbVec3f&);
     void generateDiameterPrimitives(SoAction * action, const SbVec3f&, const SbVec3f&);
@@ -166,6 +174,7 @@ private:
     DistanceGeometry calculateDistanceGeometry(const SbVec3f* points, float scale, int srch) const;
     DiameterGeometry calculateDiameterGeometry(const SbVec3f* points) const;
     AngleGeometry calculateAngleGeometry(const SbVec3f* points) const;
+    SymmetricGeometry calculateSymmetricGeometry(const SbVec3f* points) const;
     void generateLineSelectionPrimitive(SoAction* action, const SbVec3f& start, const SbVec3f& end, float width);
     void generateArcSelectionPrimitive(SoAction* action, const SbVec3f& center, float radius, float startAngle, float endAngle, float width);
     void generateArrowSelectionPrimitive(SoAction* action, const SbVec3f& base, const SbVec3f& dir, float width, float length);
