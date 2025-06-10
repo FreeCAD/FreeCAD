@@ -71,8 +71,8 @@ class LibraryEditor(QWidget):
         Path.Log.track()
         ensure_assets_initialized(cam_assets)
         self.form = FreeCADGui.PySideUic.loadUi(":/panels/ToolBitLibraryEdit.ui")
-        self.title = self.form.windowTitle()
         self.form.installEventFilter(self)  # to forward keypress events
+        self._base_title = self.form.windowTitle()
 
         # Create the library list.
         self.listModel = QStandardItemModel()
@@ -321,7 +321,17 @@ class LibraryEditor(QWidget):
         else:
             selected_library = self.get_selected_library()
         self.browser.set_current_library(selected_library)
+        self._update_window_title()
         self._update_button_states()
+
+    def _update_window_title(self):
+        """Updates the window title with the current library name."""
+        current_library = self.browser.get_current_library()
+        if current_library:
+            title = f"{self._base_title} - {current_library.label}"
+        else:
+            title = self._base_title
+        self.form.setWindowTitle(title)
 
     def _update_button_states(self):
         """Updates the enabled state of library management buttons."""
