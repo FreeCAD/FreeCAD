@@ -132,6 +132,25 @@ private:
         float endAngle, endRange;       // start parameters
     };
 
+    struct AngleGeometry {
+        SbVec3f p0;                             // angle intersection point
+        SbVec3f v0;                             // vector for text position
+        SbVec3f v1, v2;                         // direction vectors for start and end lines
+        SbVec3f pnt1, pnt2, pnt3, pnt4;         // line endpoints
+        SbVec3f startArrowBase, endArrowBase;   // arrow base points
+        SbVec3f dirStart, dirEnd;               // arrow directions
+        float angle;                            // text angle (always 0 for angles)
+        SbVec3f textOffset;                     // text position
+        float length;                           // length parameter
+        float startangle, endangle, range;      // angle parameters
+        float r;                                // arc radius
+        float margin;                           // margin for calculations
+        float arrowLength, arrowWidth;          // arrow dimensions
+        double textMargin;                      // margin around text in arc
+        float endLineLength1, endLineLength2;   // extension line lengths
+        float endLineLength12, endLineLength22; // extension line lengths (other side)
+    };
+
     float getScaleFactor(SoState*) const;
     void generateDistancePrimitives(SoAction * action, const SbVec3f&, const SbVec3f&);
     void generateDiameterPrimitives(SoAction * action, const SbVec3f&, const SbVec3f&);
@@ -146,7 +165,10 @@ private:
     void getDimension(float scale, int& srcw, int& srch);
     DistanceGeometry calculateDistanceGeometry(const SbVec3f* points, float scale, int srch) const;
     DiameterGeometry calculateDiameterGeometry(const SbVec3f* points) const;
+    AngleGeometry calculateAngleGeometry(const SbVec3f* points) const;
     void generateLineSelectionPrimitive(SoAction* action, const SbVec3f& start, const SbVec3f& end, float width);
+    void generateArcSelectionPrimitive(SoAction* action, const SbVec3f& center, float radius, float startAngle, float endAngle, float width);
+    void generateArrowSelectionPrimitive(SoAction* action, const SbVec3f& base, const SbVec3f& dir, float width, float length);
     void drawDistance(const SbVec3f* points, float scale, int srch, float& angle, SbVec3f& textOffset);
     void drawDistance(const SbVec3f* points);
     void drawRadiusOrDiameter(const SbVec3f* points, float& angle, SbVec3f& textOffset);
