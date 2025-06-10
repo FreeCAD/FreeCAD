@@ -79,17 +79,17 @@
       </layout>
      </item>
      <item>
-      <widget class="Line" name="line">
+      <widget class="QFrame" name="line">
        <property name="sizePolicy">
-        <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+        <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
          <horstretch>0</horstretch>
-         <verstretch>1</verstretch>
+         <verstretch>0</verstretch>
         </sizepolicy>
        </property>
        <property name="minimumSize">
         <size>
-         <width>10</width>
-         <height>10</height>
+         <width>2</width>
+         <height>0</height>
         </size>
        </property>
        <property name="frameShape">
@@ -97,12 +97,6 @@
        </property>
        <property name="frameShadow">
         <enum>QFrame::Sunken</enum>
-       </property>
-       <property name="lineWidth">
-        <number>1</number>
-       </property>
-       <property name="orientation">
-        <enum>Qt::Vertical</enum>
        </property>
       </widget>
      </item>
