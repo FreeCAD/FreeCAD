@@ -10,11 +10,14 @@
 #include <iomanip>
 #include <iostream>
 #include <sstream>
+#include <exception>
+#include <string>
 
 #include "dxf.h"
 #include <App/Application.h>
 #include <Base/Color.h>
 #include <Base/Console.h>
+#include <Base/Exception.h>
 #include <Base/FileInfo.h>
 #include <Base/Interpreter.h>
 #include <Base/Stream.h>
@@ -2629,64 +2632,97 @@ void CDxfRead::DoRead(const bool ignore_errors /* = false */)
         return;
     }
 
-    StartImport();
-    // Loop reading the sections.
-    while (get_next_record()) {
-        if (m_record_type != eObjectType) {
-            ImportError("Found type %d record when expecting start of a SECTION or EOF\n",
-                        (int)m_record_type);
-            continue;
+    try {
+        StartImport();
+        // Loop reading the sections.
+        while (get_next_record()) {
+            if (m_record_type != eObjectType) {
+                ImportError("Found type %d record when expecting start of a SECTION or EOF\n",
+                            (int)m_record_type);
+                continue;
+            }
+            if (IsObjectName("EOF")) {  // TODO: Check for drivel beyond EOF record
+                break;
+            }
+            if (!IsObjectName("SECTION")) {
+                ImportError("Found %s record when expecting start of a SECTION\n",
+                            m_record_data.c_str());
+                continue;
+            }
+            if (!ReadSection()) {
+                throw Base::Exception("Failed to read DXF section (returned false).");
+            }
         }
-        if (IsObjectName("EOF")) {  // TODO: Check for drivel beyond EOF record
-            break;
-        }
-        if (!IsObjectName("SECTION")) {
-            ImportError("Found %s record when expecting start of a SECTION\n",
-                        m_record_data.c_str());
-            continue;
-        }
-        if (!ReadSection()) {
-            return;
+        FinishImport();
+
+        // Flush out any unsupported features messages
+        if (!m_unsupportedFeaturesNoted.empty()) {
+            ImportError("Unsupported DXF features:\n");
+            for (auto& featureInfo : m_unsupportedFeaturesNoted) {
+                ImportError("%s: %d time(s) first at line %d\n",
+                            featureInfo.first,
+                            featureInfo.second.first,
+                            featureInfo.second.second);
+            }
         }
     }
-    FinishImport();
-
-    // FLush out any unsupported features messages
-    if (!m_unsupportedFeaturesNoted.empty()) {
-        ImportError("Unsupported DXF features:\n");
-        for (auto& featureInfo : m_unsupportedFeaturesNoted) {
-            ImportError("%s: %d time(s) first at line %d\n",
-                        featureInfo.first,
-                        featureInfo.second.first,
-                        featureInfo.second.second);
-        }
+    catch (const Base::Exception& e) {
+        // This catches specific FreeCAD exceptions and re-throws them.
+        throw;
+    }
+    catch (const std::exception& e) {
+        // This catches all standard C++ exceptions and converts them
+        // to a FreeCAD exception, which the binding layer can handle.
+        throw Base::Exception(e.what());
+    }
+    catch (...) {
+        // This is a catch-all for any other non-standard C++ exceptions.
+        throw Base::Exception("An unknown, non-standard C++ exception occurred during DXF import.");
     }
 }
 
 bool CDxfRead::ReadSection()
 {
     if (!get_next_record()) {
-        ImportError("Unclosed SECTION at end of file\n");
-        return false;
+        throw Base::Exception("Unexpected end of file after SECTION tag.");
     }
     if (m_record_type != eName) {
         ImportError("Ignored SECTION with no name record\n");
         return ReadIgnoredSection();
     }
+
     if (IsObjectName("HEADER")) {
-        return ReadHeaderSection();
+        if (!ReadHeaderSection()) {
+            throw Base::Exception("Failed while reading HEADER section.");
+        }
+        return true;
     }
     if (IsObjectName("TABLES")) {
-        return ReadTablesSection();
+        if (!ReadTablesSection()) {
+            throw Base::Exception("Failed while reading TABLES section.");
+        }
+        return true;
     }
     if (IsObjectName("BLOCKS")) {
-        return ReadBlocksSection();
+        if (!ReadBlocksSection()) {
+            throw Base::Exception("Failed while reading BLOCKS section.");
+        }
+        return true;
     }
     if (IsObjectName("ENTITIES")) {
-        return ReadEntitiesSection();
+        if (!ReadEntitiesSection()) {
+            throw Base::Exception("Failed while reading ENTITIES section.");
+        }
+        return true;
     }
-    return ReadIgnoredSection();
+
+    if (!ReadIgnoredSection()) {
+        throw Base::Exception("Failed while reading an unknown/ignored section.");
+    }
+
+    return true;
 }
+
 void CDxfRead::ProcessLayerReference(CDxfRead* object, void* target)
 {
     if (!object->Layers.contains(object->m_record_data)) {
