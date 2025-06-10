@@ -2295,6 +2295,11 @@ void Application::runApplication()
     int argc = App::Application::GetARGC();
     GUISingleApplication mainApp(argc, App::Application::GetARGV());
 
+    // If QT is running with native Wayland then inform Coin to use EGL
+    if (QGuiApplication::platformName() == QString::fromStdString("wayland")) {
+        setenv("COIN_EGL", "1", 1);
+    }
+    
     // Make sure that we use '.' as decimal point. See also
     // http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=559846
     // and issue #0002891
