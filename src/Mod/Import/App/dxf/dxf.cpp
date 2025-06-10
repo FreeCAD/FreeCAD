@@ -2811,11 +2811,18 @@ bool CDxfRead::ReadHeaderSection()
         if (m_record_type != eVariableName) {
             continue;  // Quietly ignore unknown record types
         }
+
+        // Store the variable name before we try to read its value.
+        std::string currentVarName = m_record_data;
         if (!ReadVariable()) {
-            return false;
+            // If ReadVariable returns false, throw an exception with the variable name.
+            throw Base::Exception("Failed while reading value for HEADER variable: "
+                                  + currentVarName);
         }
     }
-    return false;
+
+    // If the loop finishes without finding ENDSEC, it's an error.
+    throw Base::Exception("Unexpected end of file inside HEADER section.");
 }
 
 bool CDxfRead::ReadVariable()
