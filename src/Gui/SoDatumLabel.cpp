@@ -205,8 +205,8 @@ void SoDatumLabel::drawImage()
     Gui::BitmapFactory().convert(image, this->image);
 }
 
-namespace {
-// Helper class to determine the bounding box of a datum label
+namespace Gui {
+// helper class to determine the bounding box of a datum label
 class DatumLabelBox
 {
 public:
@@ -279,65 +279,38 @@ private:
         float imgHeight = scale * (float) (srch);
         float imgWidth  = aspectRatio * imgHeight;
 
-        // Get the points stored in the pnt field
+        // get the points stored in the pnt field
         const SbVec3f *points = label->pnts.getValues(0);
         if (label->pnts.getNum() < 2) {
             return {};
         }
 
-        SbVec3f textOffset;
+        // use the shared geometry calculation for consistency
+        SoDatumLabel::DistanceGeometry geom = label->calculateDistanceGeometry(points, scale, srch);
 
-        float length = label->param1.getValue();
-        float length2 = label->param2.getValue();
-
-        SbVec3f p1 = points[0];
-        SbVec3f p2 = points[1];
-
-        SbVec3f dir;
-        SbVec3f normal;
-        constexpr float floatEpsilon = std::numeric_limits<float>::epsilon();
-        if (label->datumtype.getValue() == SoDatumLabel::DISTANCE) {
-            dir = (p2-p1);
-        }
-        else if (label->datumtype.getValue() == SoDatumLabel::DISTANCEX) {
-            dir = SbVec3f( (p2[0] - p1[0] >= floatEpsilon) ? 1 : -1, 0, 0);
-        }
-        else if (label->datumtype.getValue() == SoDatumLabel::DISTANCEY) {
-            dir = SbVec3f(0, (p2[1] - p1[1] >= floatEpsilon) ? 1 : -1, 0);
-        }
-
-        dir.normalize();
-        normal = SbVec3f (-dir[1], dir[0], 0);
-
-        // when the datum line is not parallel to p1-p2 the projection of
-        // p1-p2 on normal is not zero, p2 is considered as reference and p1
-        // is replaced by its projection p1_
-        float normproj12 = (p2 - p1).dot(normal);
-        SbVec3f p1_ = p1 + normproj12 * normal;
-
-        SbVec3f midpos = (p1_ + p2)/2;
-
-        float offset1 = ((length + normproj12 < 0.0F) ? -1.0F  : 1.0F) * float(srch);
-        float offset2 = ((length < 0.0F) ? -1.0F  : 1.0F) * float(srch);
-
-        textOffset = midpos + normal * length + dir * length2;
+        std::vector<SbVec3f> corners;
         float margin = imgHeight / 4.0F;
 
-        SbVec3f perp1 = p1_ + normal * (length + offset1 * scale);
-        SbVec3f perp2 = p2  + normal * (length + offset2 * scale);
+        // include main points and extension line endpoints
+        corners.push_back(geom.p1);
+        corners.push_back(geom.p2);
+        corners.push_back(geom.perp1);
+        corners.push_back(geom.perp2);
 
-        // Finds the mins and maxes
-        std::vector<SbVec3f> corners;
-        corners.push_back(p1);
-        corners.push_back(p2);
-        corners.push_back(perp1);
-        corners.push_back(perp2);
+        // include text label area
+        corners.push_back(geom.textOffset + geom.dir * (imgWidth / 2.0F + margin) + geom.normal * (srch + margin));
+        corners.push_back(geom.textOffset - geom.dir * (imgWidth / 2.0F + margin) + geom.normal * (srch + margin));
+        corners.push_back(geom.textOffset + geom.dir * (imgWidth / 2.0F + margin) - geom.normal * margin);
+        corners.push_back(geom.textOffset - geom.dir * (imgWidth / 2.0F + margin) - geom.normal * margin);
 
-        // Make sure that the label is inside the bounding box
-        corners.push_back(textOffset + dir * (imgWidth / 2.0F + margin) + normal * (srch + margin));
-        corners.push_back(textOffset - dir * (imgWidth / 2.0F + margin) + normal * (srch + margin));
-        corners.push_back(textOffset + dir * (imgWidth / 2.0F + margin) - normal * margin);
-        corners.push_back(textOffset - dir * (imgWidth / 2.0F + margin) - normal * margin);
+        // include arrow head positions for better selection
+        // arrows are positioned at dimension line endpoints (par1, par4)
+        corners.push_back(geom.par1);
+        corners.push_back(geom.par4);
+        corners.push_back(geom.ar1);
+        corners.push_back(geom.ar2);
+        corners.push_back(geom.ar3);
+        corners.push_back(geom.ar4);
 
         return corners;
     }
@@ -583,14 +556,14 @@ private:
     float scale;
     SoDatumLabel* label;
 };
-}
+} // namespace Gui
 
 void SoDatumLabel::computeBBox(SoAction * action, SbBox3f &box, SbVec3f &center)
 {
     SoState *state = action->getState();
     float scale = getScaleFactor(state);
 
-    DatumLabelBox datumBox(scale, this);
+    Gui::DatumLabelBox datumBox(scale, this);
     datumBox.computeBBox(box, center);
 }
 
@@ -718,60 +691,74 @@ SbVec3f SoDatumLabel::getLabelTextCenterArcLength(const SbVec3f& ctr, const SbVe
 
 void SoDatumLabel::generateDistancePrimitives(SoAction * action, const SbVec3f& p1, const SbVec3f& p2)
 {
-    SbVec3f dir;
-    constexpr float floatEpsilon = std::numeric_limits<float>::epsilon();
-    if (this->datumtype.getValue() == DISTANCE) {
-        dir = (p2-p1);
-    } else if (this->datumtype.getValue() == DISTANCEX) {
-        dir = SbVec3f( (p2[0] - p1[0] >= floatEpsilon) ? 1 : -1, 0, 0);
-    } else if (this->datumtype.getValue() == DISTANCEY) {
-        dir = SbVec3f(0, (p2[1] - p1[1] >= floatEpsilon) ? 1 : -1, 0);
-    }
+    SbVec3f points[2] = {p1, p2};
+    float scale = 1.0f;
+    int srch = 1;
+    DistanceGeometry geom = calculateDistanceGeometry(points, scale, srch);
 
-    dir.normalize();
-
-    // Get magnitude of angle between horizontal
-    float angle = atan2f(dir[1],dir[0]);
-
+    // generate selectable primitive for txt label
     SbVec3f img1 = SbVec3f(-this->imgWidth / 2, -this->imgHeight / 2, 0.F);
     SbVec3f img2 = SbVec3f(-this->imgWidth / 2,  this->imgHeight / 2, 0.F);
     SbVec3f img3 = SbVec3f( this->imgWidth / 2, -this->imgHeight / 2, 0.F);
     SbVec3f img4 = SbVec3f( this->imgWidth / 2,  this->imgHeight / 2, 0.F);
 
-    // Rotate through an angle
-    float s = sin(angle);
-    float c = cos(angle);
+    float s = sin(geom.angle);
+    float c = cos(geom.angle);
 
     img1 = SbVec3f((img1[0] * c) - (img1[1] * s), (img1[0] * s) + (img1[1] * c), 0.F);
     img2 = SbVec3f((img2[0] * c) - (img2[1] * s), (img2[0] * s) + (img2[1] * c), 0.F);
     img3 = SbVec3f((img3[0] * c) - (img3[1] * s), (img3[0] * s) + (img3[1] * c), 0.F);
     img4 = SbVec3f((img4[0] * c) - (img4[1] * s), (img4[0] * s) + (img4[1] * c), 0.F);
 
-    SbVec3f textOffset = getLabelTextCenterDistance(p1, p2);
+    img1 += geom.textOffset;
+    img2 += geom.textOffset;
+    img3 += geom.textOffset;
+    img4 += geom.textOffset;
 
-    img1 += textOffset;
-    img2 += textOffset;
-    img3 += textOffset;
-    img4 += textOffset;
-
-    // Primitive Shape is only for text as this should only be selectable
+    // text label selection primitive
     SoPrimitiveVertex pv;
+    pv.setNormal(SbVec3f(0.F, 0.F, 1.F));
 
     this->beginShape(action, TRIANGLE_STRIP);
+    pv.setPoint(img1);
+    shapeVertex(&pv);
+    pv.setPoint(img2);
+    shapeVertex(&pv);
+    pv.setPoint(img3);
+    shapeVertex(&pv);
+    pv.setPoint(img4);
+    shapeVertex(&pv);
+    this->endShape();
 
-    pv.setNormal( SbVec3f(0.F, 0.F, 1.F) );
+    // beginning of generation of selectable primitives for lines
+    float lineWidth = geom.margin * 0.8f; // adjust the width for selection
 
-    // Set coordinates
-    pv.setPoint( img1 );
+    // ext lines
+    generateLineSelectionPrimitive(action, geom.p1, geom.perp1, lineWidth);
+    generateLineSelectionPrimitive(action, geom.p2, geom.perp2, lineWidth);
+
+    // dim lines
+    generateLineSelectionPrimitive(action, geom.par1, geom.par2, lineWidth);
+    generateLineSelectionPrimitive(action, geom.par3, geom.par4, lineWidth);
+
+    // begin generation of selectable primitives for arrow-heads
+    this->beginShape(action, TRIANGLES);
+    pv.setNormal(SbVec3f(0.F, 0.F, 1.F));
+
+    // 1st arrow-head
+    pv.setPoint(geom.par1);
+    shapeVertex(&pv);
+    pv.setPoint(geom.ar1);
+    shapeVertex(&pv);
+    pv.setPoint(geom.ar2);
     shapeVertex(&pv);
 
-    pv.setPoint( img2 );
+    // 2nd arrow-head
+    pv.setPoint(geom.par4);
     shapeVertex(&pv);
-
-    pv.setPoint( img3 );
+    pv.setPoint(geom.ar3);
     shapeVertex(&pv);
-
-    pv.setPoint( img4 );
+    pv.setPoint(geom.ar4);
     shapeVertex(&pv);
 
     this->endShape();
@@ -1173,47 +1160,10 @@ void SoDatumLabel::getDimension(float scale, int& srcw, int& srch)
 
 void SoDatumLabel::drawDistance(const SbVec3f* points, float scale, int srch, float& angle, SbVec3f& textOffset)
 {
-    using std::numbers::pi;
+    SoDatumLabel::DistanceGeometry geom = this->calculateDistanceGeometry(points, scale, srch);
 
-    float length = this->param1.getValue();
-    float length2 = this->param2.getValue();
-
-    SbVec3f p1 = points[0];
-    SbVec3f p2 = points[1];
-
-    SbVec3f dir;
-    constexpr float floatEpsilon = std::numeric_limits<float>::epsilon();
-    if (this->datumtype.getValue() == DISTANCE) {
-        dir = (p2-p1);
-    } else if (this->datumtype.getValue() == DISTANCEX) {
-        dir = SbVec3f( (p2[0] - p1[0] >= floatEpsilon) ? 1 : -1, 0, 0);
-    } else if (this->datumtype.getValue() == DISTANCEY) {
-        dir = SbVec3f(0, (p2[1] - p1[1] >= floatEpsilon) ? 1 : -1, 0);
-    }
-
-    dir.normalize();
-    SbVec3f normal = SbVec3f (-dir[1],dir[0],0);
-
-    // when the datum line is not parallel to p1-p2 the projection of
-    // p1-p2 on normal is not zero, p2 is considered as reference and p1
-    // is replaced by its projection p1_
-    float normproj12 = (p2-p1).dot(normal);
-    SbVec3f p1_ = p1 + normproj12 * normal;
-
-    SbVec3f midpos = (p1_ + p2)/2;
-
-    float offset1 = ((length + normproj12 < 0) ? -1.F  : 1.F) * srch;
-    float offset2 = ((length < 0) ? -1  : 1)*srch;
-
-    // Get magnitude of angle between horizontal
-    angle = atan2f(dir[1],dir[0]);
-    if (angle > pi/2 + pi/12) {
-        angle -= (float)pi;
-    } else if (angle <= -pi/2 + pi/12) {
-        angle += (float)pi;
-    }
-
-    textOffset = midpos + normal * length + dir * length2;
+    angle = geom.angle;
+    textOffset = geom.textOffset;
 
     // Get the colour
     const SbColor& t = textColor.getValue();
@@ -1221,77 +1171,34 @@ void SoDatumLabel::drawDistance(const SbVec3f* points, float scale, int srch, fl
     // Set GL Properties
     glLineWidth(this->lineWidth.getValue());
     glColor3f(t[0], t[1], t[2]);
-    float margin = this->imgHeight / 3.0F;
 
-
-    SbVec3f perp1 = p1_ + normal * (length + offset1 * scale);
-    SbVec3f perp2 = p2  + normal * (length + offset2 * scale);
-
-    // Calculate the coordinates for the parallel datum lines
-    SbVec3f par1 = p1_ + normal * length;
-    SbVec3f par2 = midpos + normal * length + dir * (length2 - this->imgWidth / 2 - margin);
-    SbVec3f par3 = midpos + normal * length + dir * (length2 + this->imgWidth / 2 + margin);
-    SbVec3f par4 = p2  + normal * length;
-
-    bool flipTriang = false;
-
-    if ((par3-par1).dot(dir) > (par4 - par1).length()) {
-        // Increase Margin to improve visibility
-        float tmpMargin = this->imgHeight /0.75F;
-        par3 = par4;
-        if ((par2-par1).dot(dir) > (par4 - par1).length()) {
-            par3 = par2;
-            par2 = par1 - dir * tmpMargin;
-            flipTriang = true;
-        }
-    }
-    else if ((par2-par1).dot(dir) < 0.F) {
-        float tmpMargin = this->imgHeight /0.75F;
-        par2 = par1;
-        if((par3-par1).dot(dir) < 0.F) {
-            par2 = par3;
-            par3 = par4 + dir * tmpMargin;
-            flipTriang = true;
-        }
-    }
     // Perp Lines
     glBegin(GL_LINES);
-        if (length != 0.) {
-            glVertex2f(p1[0], p1[1]);
-            glVertex2f(perp1[0], perp1[1]);
+        if (this->param1.getValue() != 0.) {
+            glVertex2f(geom.p1[0], geom.p1[1]);
+            glVertex2f(geom.perp1[0], geom.perp1[1]);
 
-            glVertex2f(p2[0], p2[1]);
-            glVertex2f(perp2[0], perp2[1]);
+            glVertex2f(geom.p2[0], geom.p2[1]);
+            glVertex2f(geom.perp2[0], geom.perp2[1]);
         }
 
-        glVertex2f(par1[0], par1[1]);
-        glVertex2f(par2[0], par2[1]);
+        glVertex2f(geom.par1[0], geom.par1[1]);
+        glVertex2f(geom.par2[0], geom.par2[1]);
 
-        glVertex2f(par3[0], par3[1]);
-        glVertex2f(par4[0], par4[1]);
+        glVertex2f(geom.par3[0], geom.par3[1]);
+        glVertex2f(geom.par4[0], geom.par4[1]);
     glEnd();
-
-    float arrowWidth = margin * 0.5F;
-
-    SbVec3f ar1 = par1 + ((flipTriang) ? -1 : 1) * dir * 0.866F * 2 * margin;
-    SbVec3f ar2 = ar1 + normal * arrowWidth;
-    ar1 -= normal * arrowWidth;
-
-    SbVec3f ar3 = par4 - ((flipTriang) ? -1 : 1) * dir * 0.866F * 2 * margin;
-    SbVec3f ar4 = ar3 + normal * arrowWidth;
-    ar3 -= normal * arrowWidth;
 
     // Draw the arrowheads
     glBegin(GL_TRIANGLES);
-        glVertex2f(par1[0], par1[1]);
-        glVertex2f(ar1[0], ar1[1]);
-        glVertex2f(ar2[0], ar2[1]);
+        glVertex2f(geom.par1[0], geom.par1[1]);
+        glVertex2f(geom.ar1[0], geom.ar1[1]);
+        glVertex2f(geom.ar2[0], geom.ar2[1]);
 
-        glVertex2f(par4[0], par4[1]);
-        glVertex2f(ar3[0], ar3[1]);
-        glVertex2f(ar4[0], ar4[1]);
+        glVertex2f(geom.par4[0], geom.par4[1]);
+        glVertex2f(geom.ar3[0], geom.ar3[1]);
+        glVertex2f(geom.ar4[0], geom.ar4[1]);
     glEnd();
-
 
     if (this->datumtype.getValue() == DISTANCE) {
         drawDistance(points);
@@ -1710,3 +1617,121 @@ void SoDatumLabel::setPoints(SbVec3f p1, SbVec3f p2)
     pnts.finishEditing();
 }
 // NOLINTEND(readability-magic-numbers,cppcoreguidelines-pro-bounds-pointer-arithmetic)
+
+SoDatumLabel::DistanceGeometry SoDatumLabel::calculateDistanceGeometry(const SbVec3f* points, float scale, int srch) const
+{
+    using std::numbers::pi;
+
+    SoDatumLabel::DistanceGeometry geom;
+
+    float length = this->param1.getValue();
+    float length2 = this->param2.getValue();
+
+    geom.p1 = points[0];
+    geom.p2 = points[1];
+
+    constexpr float floatEpsilon = std::numeric_limits<float>::epsilon();
+    if (this->datumtype.getValue() == DISTANCE) {
+        geom.dir = (geom.p2 - geom.p1);
+    } else if (this->datumtype.getValue() == DISTANCEX) {
+        geom.dir = SbVec3f((geom.p2[0] - geom.p1[0] >= floatEpsilon) ? 1 : -1, 0, 0);
+    } else if (this->datumtype.getValue() == DISTANCEY) {
+        geom.dir = SbVec3f(0, (geom.p2[1] - geom.p1[1] >= floatEpsilon) ? 1 : -1, 0);
+    }
+
+    geom.dir.normalize();
+    geom.normal = SbVec3f(-geom.dir[1], geom.dir[0], 0);
+
+    // when the datum line is not parallel to p1-p2 the projection of
+    // p1-p2 on normal is not zero, p2 is considered as reference and p1
+    // is replaced by its projection p1_
+    float normproj12 = (geom.p2 - geom.p1).dot(geom.normal);
+    SbVec3f p1_ = geom.p1 + normproj12 * geom.normal;
+
+    geom.midpos = (p1_ + geom.p2) / 2;
+
+    float offset1 = ((length + normproj12 < 0) ? -1.F : 1.F) * srch;
+    float offset2 = ((length < 0) ? -1 : 1) * srch;
+
+    // Get magnitude of angle between horizontal
+    geom.angle = atan2f(geom.dir[1], geom.dir[0]);
+    if (geom.angle > pi/2 + pi/12) {
+        geom.angle -= (float)pi;
+    } else if (geom.angle <= -pi/2 + pi/12) {
+        geom.angle += (float)pi;
+    }
+
+    geom.textOffset = geom.midpos + geom.normal * length + geom.dir * length2;
+
+    geom.margin = this->imgHeight / 3.0F;
+
+    geom.perp1 = p1_ + geom.normal * (length + offset1 * scale);
+    geom.perp2 = geom.p2 + geom.normal * (length + offset2 * scale);
+
+    // Calculate the coordinates for the parallel datum lines
+    geom.par1 = p1_ + geom.normal * length;
+    geom.par2 = geom.midpos + geom.normal * length + geom.dir * (length2 - this->imgWidth / 2 - geom.margin);
+    geom.par3 = geom.midpos + geom.normal * length + geom.dir * (length2 + this->imgWidth / 2 + geom.margin);
+    geom.par4 = geom.p2 + geom.normal * length;
+
+    geom.flipTriang = false;
+
+    if ((geom.par3 - geom.par1).dot(geom.dir) > (geom.par4 - geom.par1).length()) {
+        // Increase Margin to improve visibility
+        float tmpMargin = this->imgHeight / 0.75F;
+        geom.par3 = geom.par4;
+        if ((geom.par2 - geom.par1).dot(geom.dir) > (geom.par4 - geom.par1).length()) {
+            geom.par3 = geom.par2;
+            geom.par2 = geom.par1 - geom.dir * tmpMargin;
+            geom.flipTriang = true;
+        }
+    }
+    else if ((geom.par2 - geom.par1).dot(geom.dir) < 0.F) {
+        float tmpMargin = this->imgHeight / 0.75F;
+        geom.par2 = geom.par1;
+        if((geom.par3 - geom.par1).dot(geom.dir) < 0.F) {
+            geom.par2 = geom.par3;
+            geom.par3 = geom.par4 + geom.dir * tmpMargin;
+            geom.flipTriang = true;
+        }
+    }
+
+    geom.arrowWidth = geom.margin * 0.5F;
+
+    geom.ar1 = geom.par1 + ((geom.flipTriang) ? -1 : 1) * geom.dir * 0.866F * 2 * geom.margin;
+    geom.ar2 = geom.ar1 + geom.normal * geom.arrowWidth;
+    geom.ar1 -= geom.normal * geom.arrowWidth;
+
+    geom.ar3 = geom.par4 - ((geom.flipTriang) ? -1 : 1) * geom.dir * 0.866F * 2 * geom.margin;
+    geom.ar4 = geom.ar3 + geom.normal * geom.arrowWidth;
+    geom.ar3 -= geom.normal * geom.arrowWidth;
+
+    return geom;
+}
+
+void SoDatumLabel::generateLineSelectionPrimitive(SoAction* action, const SbVec3f& start, const SbVec3f& end, float width)
+{
+    // create a thicker line used for selection
+    SbVec3f dir = end - start;
+    dir.normalize();
+    SbVec3f perp = SbVec3f(-dir[1], dir[0], 0) * (width / 2.0f);
+
+    SbVec3f p1 = start + perp;
+    SbVec3f p2 = start - perp;
+    SbVec3f p3 = end + perp;
+    SbVec3f p4 = end - perp;
+
+    SoPrimitiveVertex pv;
+    pv.setNormal(SbVec3f(0.F, 0.F, 1.F));
+
+    this->beginShape(action, TRIANGLE_STRIP);
+    pv.setPoint(p1);
+    shapeVertex(&pv);
+    pv.setPoint(p2);
+    shapeVertex(&pv);
+    pv.setPoint(p3);
+    shapeVertex(&pv);
+    pv.setPoint(p4);
+    shapeVertex(&pv);
+    this->endShape();
+}

@@ -45,6 +45,8 @@ class GuiExport SoDatumLabel : public SoShape {
 
     SO_NODE_HEADER(SoDatumLabel);
 
+    friend class DatumLabelBox;
+
 public:
     enum Type
     {
@@ -96,6 +98,21 @@ protected:
     void notify(SoNotList * l) override;
 
 private:
+    struct DistanceGeometry {
+        SbVec3f p1, p2;                 // main points used for measurement
+        SbVec3f dir, normal;            // dir and normal vecs
+        SbVec3f midpos;                 // mid pt
+        SbVec3f perp1, perp2;           // ext line endpts
+        SbVec3f par1, par2, par3, par4; // dim line pts
+        SbVec3f ar1, ar2;               // 1st arrow head triang pts
+        SbVec3f ar3, ar4;               // 2nd arrow head triang pts
+        float angle;                    // text angle
+        SbVec3f textOffset;             // text pos
+        bool flipTriang;                // check for arrow flipping
+        float margin;                   // margin for arrow calcs
+        float arrowWidth;               // width of the arrow
+    };
+
     float getScaleFactor(SoState*) const;
     void generateDistancePrimitives(SoAction * action, const SbVec3f&, const SbVec3f&);
     void generateDiameterPrimitives(SoAction * action, const SbVec3f&, const SbVec3f&);
@@ -108,6 +125,8 @@ private:
     SbVec3f getLabelTextCenterArcLength(const SbVec3f&, const SbVec3f&, const SbVec3f&);
     bool hasDatumText() const;
     void getDimension(float scale, int& srcw, int& srch);
+    DistanceGeometry calculateDistanceGeometry(const SbVec3f* points, float scale, int srch) const;
+    void generateLineSelectionPrimitive(SoAction* action, const SbVec3f& start, const SbVec3f& end, float width);
     void drawDistance(const SbVec3f* points, float scale, int srch, float& angle, SbVec3f& textOffset);
     void drawDistance(const SbVec3f* points);
     void drawRadiusOrDiameter(const SbVec3f* points, float& angle, SbVec3f& textOffset);
