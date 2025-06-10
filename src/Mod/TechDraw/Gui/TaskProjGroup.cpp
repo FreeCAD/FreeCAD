@@ -575,10 +575,13 @@ void TaskProjGroup::spacingChanged()
     if (blockUpdate || !multiView) {
         return;
     }
+
     multiView->spacingX.setValue(ui->sbXSpacing->value().getValue());
     multiView->spacingY.setValue(ui->sbYSpacing->value().getValue());
-    multiView->recomputeFeature();
+
+    multiView->autoPositionChildren();
 }
+
 
 void TaskProjGroup::updateTask()
 {
@@ -846,6 +849,10 @@ bool TaskProjGroup::reject()
         //set the DPG and its views back to entry state.
         if (Gui::Command::hasPendingCommand()) {
             Gui::Command::abortCommand();
+        }
+        // Restore views to initial spacing
+        if (multiView) {
+            multiView->autoPositionChildren();
         }
     }
     Gui::Command::runCommand(Gui::Command::Gui, "Gui.ActiveDocument.resetEdit()");
