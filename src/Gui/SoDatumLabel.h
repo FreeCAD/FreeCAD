@@ -113,6 +113,25 @@ private:
         float arrowWidth;               // width of the arrow
     };
 
+    struct DiameterGeometry {
+        SbVec3f p1, p2;                 // main points (center and edge for radius, endpoints for diameter)
+        SbVec3f center;                 // center point
+        SbVec3f dir, normal;            // direction and normal vectors
+        SbVec3f pos;                    // text position base
+        SbVec3f pnt1, pnt2;             // line segment points around text
+        SbVec3f ar0, ar1, ar2;          // first arrow head triangle points
+        SbVec3f ar0_1, ar1_1, ar2_1;    // second arrow head triangle points (diameter only)
+        float angle;                    // text angle
+        SbVec3f textOffset;             // text position
+        float radius;                   // radius value
+        float margin;                   // margin for calculations
+        float arrowWidth;               // arrow width
+        bool isDiameter;                // true for diameter, false for radius
+        // Arc helper parameters
+        float startAngle, startRange;   // start parameters
+        float endAngle, endRange;       // start parameters
+    };
+
     float getScaleFactor(SoState*) const;
     void generateDistancePrimitives(SoAction * action, const SbVec3f&, const SbVec3f&);
     void generateDiameterPrimitives(SoAction * action, const SbVec3f&, const SbVec3f&);
@@ -126,6 +145,7 @@ private:
     bool hasDatumText() const;
     void getDimension(float scale, int& srcw, int& srch);
     DistanceGeometry calculateDistanceGeometry(const SbVec3f* points, float scale, int srch) const;
+    DiameterGeometry calculateDiameterGeometry(const SbVec3f* points) const;
     void generateLineSelectionPrimitive(SoAction* action, const SbVec3f& start, const SbVec3f& end, float width);
     void drawDistance(const SbVec3f* points, float scale, int srch, float& angle, SbVec3f& textOffset);
     void drawDistance(const SbVec3f* points);
