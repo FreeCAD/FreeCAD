@@ -2568,6 +2568,12 @@ bool CDxfRead::ResolveEncoding()
         // Also some DXF files have the codepage name in uppercase so we lowercase it.
         m_encoding = m_CodePage;
         std::transform(m_encoding.begin(), m_encoding.end(), m_encoding.begin(), ::tolower);
+
+        // Add mapping for common non-standard encoding names.
+        if (m_encoding == "8859_1") {
+            m_encoding = "iso-8859-1";  // Replace with a name Python understands
+        }
+
         // NOLINTNEXTLINE(readability/nolint)
 #define ANSI_ENCODING_PREFIX "ansi_"  // NOLINT(cppcoreguidelines-macro-usage)
         if (m_encoding.rfind(ANSI_ENCODING_PREFIX, 0) == 0 && m_encoding.rfind("ansi_x3", 0) != 0) {
@@ -2583,7 +2589,11 @@ bool CDxfRead::ResolveEncoding()
         Base::PyGILStateLocker lock;
         PyObject* pyDecoder = PyCodec_Decoder(m_encoding.c_str());
         if (pyDecoder == nullptr) {
-            return false;  // A key error exception will have been placed.
+            // PyCodec_Decoder failed, which means Python could not find the encoding.
+            // This sets a Python LookupError. We clear this low-level error because
+            // our caller will throw a more informative, high-level exception.
+            PyErr_Clear();
+            return false;
         }
         PyObject* pyUTF8Decoder = PyCodec_Decoder("utf_8");
         assert(pyUTF8Decoder != nullptr);
