@@ -398,7 +398,7 @@ Note that this can take a while!</string>
 turning the display faster, but making them less easily editable.</string>
           </property>
           <property name="text">
-           <string>Merge layer children into blocks</string>
+           <string>Merge layer contents into blocks</string>
           </property>
           <property name="prefEntry" stdset="0">
            <cstring>groupLayers</cstring>
