@@ -1,9 +1,13 @@
+"""
+AssetManager tests.
+"""
+
 import unittest
 import asyncio
 from unittest.mock import Mock
 import pathlib
 import tempfile
-from typing import Any, Mapping, List, Type, cast
+from typing import Any, Mapping, List, Type, Optional, cast
 from Path.Tool.assets import (
     AssetManager,
     FileStore,
@@ -33,7 +37,7 @@ class MockAsset(Asset):
         cls,
         data: bytes,
         id: str,
-        dependencies: Mapping[AssetUri, Asset] | None,
+        dependencies: Optional[Mapping[AssetUri, Asset]],
         serializer: Type[AssetSerializer],
     ) -> "MockAsset":
         # Create instance with provided id
@@ -58,7 +62,7 @@ class MockAssetWithDeps(Asset):
         self,
         data: Any = None,
         id: str = "mock_id",
-        dependencies: Mapping[AssetUri, Asset] | None = None,
+        dependencies: Optional[Mapping[AssetUri, Asset]] = None,
     ):
         self._data = data
         self._id = id
@@ -82,7 +86,7 @@ class MockAssetWithDeps(Asset):
         cls,
         data: bytes,
         id: str,
-        dependencies: Mapping[AssetUri, Asset] | None,
+        dependencies: Optional[Mapping[AssetUri, Asset]],
         serializer: Type[AssetSerializer],
     ) -> "MockAssetWithDeps":
         # Create instance with provided id and resolved dependencies
@@ -150,7 +154,7 @@ class TestPathToolAssetManager(unittest.TestCase):
                 cls,
                 data: bytes,
                 id: str,
-                dependencies: Mapping[AssetUri, Asset] | None,
+                dependencies: Optional[Mapping[AssetUri, Asset]],
                 serializer: Type[AssetSerializer],
             ) -> "AnotherMockAsset":
                 return cls()

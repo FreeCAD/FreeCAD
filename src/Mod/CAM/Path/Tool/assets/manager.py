@@ -217,7 +217,7 @@ class AssetManager:
     def _build_asset_tree_from_data_sync(
         self,
         construction_data: Optional[_AssetConstructionData],
-    ) -> Asset | None:
+    ) -> Optional[Asset]:
         """
         Synchronously and recursively builds an asset instance.
         Integrates caching logic.
@@ -372,7 +372,7 @@ class AssetManager:
         uri: Union[AssetUri, str],
         store: Union[str, Sequence[str]] = "local",
         depth: Optional[int] = None,
-    ) -> Asset | None:
+    ) -> Optional[Asset]:
         """
         Convenience wrapper for get() that does not raise FileNotFoundError; returns
         None instead
@@ -806,7 +806,7 @@ class AssetManager:
         src: AssetUri,
         dest_store: str,
         store: str = "local",
-        dest: AssetUri | None = None,
+        dest: Optional[AssetUri] = None,
     ) -> AssetUri:
         """
         Copies an asset from one location to another asynchronously.
@@ -831,7 +831,7 @@ class AssetManager:
         src: AssetUri,
         dest_store: str,
         store: str = "local",
-        dest: AssetUri | None = None,
+        dest: Optional[AssetUri] = None,
     ) -> AssetUri:
         """
         Copies an asset from one location to another synchronously.
@@ -849,7 +849,7 @@ class AssetManager:
         src: AssetUri,
         dest_store: str,
         store: str = "local",
-        dest: AssetUri | None = None,
+        dest: Optional[AssetUri] = None,
     ) -> AssetUri:
         """
         Asynchronously deep copies an asset and its dependencies from a source store
@@ -954,7 +954,7 @@ class AssetManager:
         src: AssetUri,
         dest_store: str,
         store: str = "local",
-        dest: AssetUri | None = None,
+        dest: Optional[AssetUri] = None,
     ) -> AssetUri:
         """
         Synchronously deep copies an asset and its dependencies from a source store
@@ -985,7 +985,7 @@ class AssetManager:
         asset_type: str,
         path: pathlib.Path,
         store: str = "local",
-        asset_id: str | None = None,
+        asset_id: Optional[str] = None,
     ) -> AssetUri:
         """
         Convenience wrapper around add_raw().
