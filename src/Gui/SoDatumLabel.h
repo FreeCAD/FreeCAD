@@ -159,6 +159,23 @@ private:
         float margin;                   // margin for calculations
     };
 
+    struct ArcLengthGeometry {
+        SbVec3f ctr, p1, p2;
+        float length;
+        float margin;
+        float startangle, endangle;
+        float range;
+        float radius;
+        SbVec3f vm;                     // middle direction vector
+        SbVec3f pnt1, pnt2, pnt3, pnt4; // line endpoints
+        SbVec3f dirStart, dirEnd;       // arrow directions
+        SbVec3f textOffset;
+        float angle;
+        bool isLargeArc;                // whether range > pi
+        SbVec3f arcCenter;              // center for arc drawing
+        float arcRadius;                // radius for arc drawing
+    };
+
     float getScaleFactor(SoState*) const;
     void generateDistancePrimitives(SoAction * action, const SbVec3f&, const SbVec3f&);
     void generateDiameterPrimitives(SoAction * action, const SbVec3f&, const SbVec3f&);
@@ -168,13 +185,14 @@ private:
     SbVec3f getLabelTextCenterDistance(const SbVec3f&, const SbVec3f&);
     SbVec3f getLabelTextCenterDiameter(const SbVec3f&, const SbVec3f&);
     SbVec3f getLabelTextCenterAngle(const SbVec3f&);
-    SbVec3f getLabelTextCenterArcLength(const SbVec3f&, const SbVec3f&, const SbVec3f&);
+    SbVec3f getLabelTextCenterArcLength(const SbVec3f&, const SbVec3f&, const SbVec3f&) const;
     bool hasDatumText() const;
     void getDimension(float scale, int& srcw, int& srch);
     DistanceGeometry calculateDistanceGeometry(const SbVec3f* points, float scale, int srch) const;
     DiameterGeometry calculateDiameterGeometry(const SbVec3f* points) const;
     AngleGeometry calculateAngleGeometry(const SbVec3f* points) const;
     SymmetricGeometry calculateSymmetricGeometry(const SbVec3f* points) const;
+    ArcLengthGeometry calculateArcLengthGeometry(const SbVec3f* points) const;
     void generateLineSelectionPrimitive(SoAction* action, const SbVec3f& start, const SbVec3f& end, float width);
     void generateArcSelectionPrimitive(SoAction* action, const SbVec3f& center, float radius, float startAngle, float endAngle, float width);
     void generateArrowSelectionPrimitive(SoAction* action, const SbVec3f& base, const SbVec3f& dir, float width, float length);

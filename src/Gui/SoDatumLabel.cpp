@@ -477,6 +477,16 @@ private:
 
     std::vector<SbVec3f> computeArcLengthBBox() const
     {
+        // get the points stored in the pnt field
+        const SbVec3f *points = label->pnts.getValues(0);
+        if (label->pnts.getNum() < 3) {
+            return {};
+        }
+
+        // use shared geometry calculation
+        SoDatumLabel::ArcLengthGeometry geom = label->calculateArcLengthGeometry(points);
+
+        // get text area for existing text coverage
         SbVec2s imgsize;
         int nc {};
         int srcw = 1;
@@ -492,69 +502,42 @@ private:
         float imgHeight = scale * (float) (srch);
         float imgWidth  = aspectRatio * imgHeight;
 
-        // Get the points stored in the pnt field
-        const SbVec3f *points = label->pnts.getValues(0);
-        if (label->pnts.getNum() < 3) {
-            return {};
-        }
-
-        SbVec3f ctr = points[0];
-        SbVec3f p1 = points[1];
-        SbVec3f p2 = points[2];
-
-        SbVec3f img1 = SbVec3f(-imgWidth / 2, -imgHeight / 2, 0.F);
-        SbVec3f img2 = SbVec3f(-imgWidth / 2,  imgHeight / 2, 0.F);
-        SbVec3f img3 = SbVec3f( imgWidth / 2, -imgHeight / 2, 0.F);
-        SbVec3f img4 = SbVec3f( imgWidth / 2,  imgHeight / 2, 0.F);
-
-        //Text orientation
-        SbVec3f dir = (p2 - p1);
+        // text orientation
+        SbVec3f dir = (geom.p2 - geom.p1);
         dir.normalize();
         SbVec3f normal = SbVec3f (-dir[1], dir[0], 0);
-        float angle = atan2f(dir[1],dir[0]);
 
-        // Rotate through an angle
-        float s = sin(angle);
-        float c = cos(angle);
-        img1 = SbVec3f((img1[0] * c) - (img1[1] * s), (img1[0] * s) + (img1[1] * c), 0.F);
-        img2 = SbVec3f((img2[0] * c) - (img2[1] * s), (img2[0] * s) + (img2[1] * c), 0.F);
-        img3 = SbVec3f((img3[0] * c) - (img3[1] * s), (img3[0] * s) + (img3[1] * c), 0.F);
-        img4 = SbVec3f((img4[0] * c) - (img4[1] * s), (img4[0] * s) + (img4[1] * c), 0.F);
-
-        float length = label->param1.getValue();
-
-
-        // Text location
-        SbVec3f vm = (p1+p2)/2 - ctr;
-        vm.normalize();
-
-        SbVec3f vc1 = (p1 - ctr);
-        SbVec3f vc2 = (p2 - ctr);
-
-        float startangle = atan2f(vc1[1], vc1[0]);
-        float endangle = atan2f(vc2[1], vc2[0]);
-        if (endangle < startangle) {
-            endangle += 2.F * std::numbers::pi_v<float>;
-        }
-
-        SbVec3f textCenter;
-        if (endangle - startangle <= std::numbers::pi) {
-            textCenter = ctr + vm * (length + imgHeight);
-        } else {
-            textCenter = ctr - vm * (length + 2. * imgHeight);
-        }
-        img1 += textCenter;
-        img2 += textCenter;
-        img3 += textCenter;
-        img4 += textCenter;
-
-        // Finds the mins and maxes
+        // include all visual elements in bounding box
         std::vector<SbVec3f> corners;
+
+        // text area (existing coverage)
         float margin = imgHeight / 4.0F;
-        corners.push_back(textCenter + dir * (imgWidth / 2.0F + margin) - normal * (imgHeight / 2.0F + margin));
-        corners.push_back(textCenter - dir * (imgWidth / 2.0F + margin) - normal * (imgHeight / 2.0F + margin));
-        corners.push_back(textCenter + dir * (imgWidth / 2.0F + margin) + normal * (imgHeight / 2.0F + margin));
-        corners.push_back(textCenter - dir * (imgWidth / 2.0F + margin) + normal * (imgHeight / 2.0F + margin));
+        corners.push_back(geom.textOffset + dir * (imgWidth / 2.0F + margin) - normal * (imgHeight / 2.0F + margin));
+        corners.push_back(geom.textOffset - dir * (imgWidth / 2.0F + margin) - normal * (imgHeight / 2.0F + margin));
+        corners.push_back(geom.textOffset + dir * (imgWidth / 2.0F + margin) + normal * (imgHeight / 2.0F + margin));
+        corners.push_back(geom.textOffset - dir * (imgWidth / 2.0F + margin) + normal * (imgHeight / 2.0F + margin));
+
+        // extension line endpoints
+        corners.push_back(geom.pnt1);  // start point
+        corners.push_back(geom.pnt2);  // extension end 1
+        corners.push_back(geom.pnt3);  // end point
+        corners.push_back(geom.pnt4);  // extension end 2
+
+        // arc sample points (8 points along the curve for better coverage)
+        int numSamples = 8;
+        for (int i = 0; i < numSamples; i++) {
+            float t = (float)i / (numSamples - 1);
+            float angle = geom.startangle + t * (geom.endangle - geom.startangle);
+            SbVec3f arcPoint = geom.arcCenter + SbVec3f(geom.arcRadius * cos(angle), geom.arcRadius * sin(angle), 0);
+            corners.push_back(arcPoint);
+        }
+
+        // arrow head tips (base + direction * length)
+        float arrowLength = geom.margin * 2;
+        SbVec3f startArrowTip = geom.pnt2 + geom.dirStart * arrowLength;
+        SbVec3f endArrowTip = geom.pnt4 + geom.dirEnd * arrowLength;
+        corners.push_back(startArrowTip);
+        corners.push_back(endArrowTip);
 
         return corners;
     }
@@ -667,7 +650,7 @@ SbVec3f SoDatumLabel::getLabelTextCenterAngle(const SbVec3f& p0)
     return textCenter;
 }
 
-SbVec3f SoDatumLabel::getLabelTextCenterArcLength(const SbVec3f& ctr, const SbVec3f& p1, const SbVec3f& p2)
+SbVec3f SoDatumLabel::getLabelTextCenterArcLength(const SbVec3f& ctr, const SbVec3f& p1, const SbVec3f& p2) const
 {
     float length = this->param1.getValue();
 
@@ -954,52 +937,60 @@ void SoDatumLabel::generateSymmetricPrimitives(SoAction * action, const SbVec3f&
 
 void SoDatumLabel::generateArcLengthPrimitives(SoAction * action, const SbVec3f& ctr, const SbVec3f& p1, const SbVec3f& p2)
 {
+    // use shared geometry calculation
+    SbVec3f points[3] = {ctr, p1, p2};
+    ArcLengthGeometry geom = calculateArcLengthGeometry(points);
+
+    // generate selectable primitive for text label
     SbVec3f img1 = SbVec3f(-this->imgWidth / 2, -this->imgHeight / 2, 0.F);
     SbVec3f img2 = SbVec3f(-this->imgWidth / 2,  this->imgHeight / 2, 0.F);
     SbVec3f img3 = SbVec3f( this->imgWidth / 2, -this->imgHeight / 2, 0.F);
     SbVec3f img4 = SbVec3f( this->imgWidth / 2,  this->imgHeight / 2, 0.F);
 
-    //Text orientation
-    SbVec3f dir = (p2 - p1);
-    dir.normalize();
-    float angle = atan2f(dir[1],dir[0]);
+    float s = sin(geom.angle);
+    float c = cos(geom.angle);
 
-    // Rotate through an angle
-    float s = sin(angle);
-    float c = cos(angle);
     img1 = SbVec3f((img1[0] * c) - (img1[1] * s), (img1[0] * s) + (img1[1] * c), 0.F);
     img2 = SbVec3f((img2[0] * c) - (img2[1] * s), (img2[0] * s) + (img2[1] * c), 0.F);
     img3 = SbVec3f((img3[0] * c) - (img3[1] * s), (img3[0] * s) + (img3[1] * c), 0.F);
     img4 = SbVec3f((img4[0] * c) - (img4[1] * s), (img4[0] * s) + (img4[1] * c), 0.F);
 
-    //Text location
-    SbVec3f textOffset = getLabelTextCenterArcLength(ctr, p1, p2);
-    img1 += textOffset;
-    img2 += textOffset;
-    img3 += textOffset;
-    img4 += textOffset;
+    img1 += geom.textOffset;
+    img2 += geom.textOffset;
+    img3 += geom.textOffset;
+    img4 += geom.textOffset;
 
-    // Primitive Shape is only for text as this should only be selectable
+    // text label selection primitive
     SoPrimitiveVertex pv;
+    pv.setNormal(SbVec3f(0.F, 0.F, 1.F));
 
     this->beginShape(action, TRIANGLE_STRIP);
-
-    pv.setNormal( SbVec3f(0.F, 0.F, 1.F) );
-
-    // Set coordinates
-    pv.setPoint( img1 );
+    pv.setPoint(img1);
     shapeVertex(&pv);
-
-    pv.setPoint( img2 );
+    pv.setPoint(img2);
     shapeVertex(&pv);
-
-    pv.setPoint( img3 );
+    pv.setPoint(img3);
     shapeVertex(&pv);
-
-    pv.setPoint( img4 );
+    pv.setPoint(img4);
     shapeVertex(&pv);
-
     this->endShape();
+
+    // generate selectable primitives for lines
+    float lineWidth = geom.margin * 0.8f;
+
+    // extension lines
+    generateLineSelectionPrimitive(action, geom.pnt1, geom.pnt2, lineWidth);
+    generateLineSelectionPrimitive(action, geom.pnt3, geom.pnt4, lineWidth);
+
+    // generate selectable primitive for arc
+    generateArcSelectionPrimitive(action, geom.arcCenter, geom.arcRadius, geom.startangle, geom.endangle, lineWidth);
+
+    // generate selectable primitives for arrow heads
+    float arrowLength = geom.margin * 2;
+    float arrowWidth = geom.margin * 0.5F;
+
+    generateArrowSelectionPrimitive(action, geom.pnt2, geom.dirStart, arrowWidth, arrowLength);
+    generateArrowSelectionPrimitive(action, geom.pnt4, geom.dirEnd, arrowWidth, arrowLength);
 }
 
 void SoDatumLabel::generatePrimitives(SoAction * action)
@@ -1366,80 +1357,26 @@ void SoDatumLabel::drawSymmetric(const SbVec3f* points)
 
 void SoDatumLabel::drawArcLength(const SbVec3f* points, float& angle, SbVec3f& textOffset)
 {
-    using std::numbers::pi;
+    // use shared geometry calculation
+    ArcLengthGeometry geom = calculateArcLengthGeometry(points);
 
-    SbVec3f ctr = points[0];
-    SbVec3f p1 = points[1];
-    SbVec3f p2 = points[2];
-    float length = this->param1.getValue();
+    // set output parameters
+    angle = geom.angle;
+    textOffset = geom.textOffset;
 
-    float margin = this->imgHeight / 3.0F;
+    // draw arc
+    glDrawArc(geom.arcCenter, geom.arcRadius, geom.startangle, geom.endangle);
 
-    // Angles calculations
-    SbVec3f vc1 = (p1 - ctr);
-    SbVec3f vc2 = (p2 - ctr);
+    // draw lines
+    glDrawLine(geom.pnt1, geom.pnt2);
+    glDrawLine(geom.pnt3, geom.pnt4);
 
-    float startangle = atan2f(vc1[1], vc1[0]);
-    float endangle = atan2f(vc2[1], vc2[0]);
-    if (endangle < startangle) {
-        endangle += 2.0F * (float)pi;
-    }
+    // create the arrowheads
+    float arrowLength = geom.margin * 2;
+    float arrowWidth = geom.margin * 0.5F;
 
-    float range = endangle - startangle;
-
-    float radius = vc1.length();
-
-    //Text orientation
-    SbVec3f dir = (p2 - p1);
-    dir.normalize();
-    // Get magnitude of angle between horizontal
-    angle = atan2f(dir[1],dir[0]);
-    if (angle > pi/2 + pi/12) {
-        angle -= (float)pi;
-    } else if (angle <= -pi/2 + pi/12) {
-        angle += (float)pi;
-    }
-       // Text location
-    textOffset = getLabelTextCenterArcLength(ctr, p1, p2);
-
-    // lines direction
-    SbVec3f vm = (p1+p2)/2 - ctr;
-    vm.normalize();
-
-    // Lines points
-    SbVec3f pnt1 = p1;
-    SbVec3f pnt2 = p1 + (length-radius) * vm;
-    SbVec3f pnt3 = p2;
-    SbVec3f pnt4 = p2 + (length-radius) * vm;
-
-        // Draw arc
-    if (range <= pi) {
-        glDrawArc(ctr + (length-radius)*vm, radius, startangle, endangle);
-    }
-    else {
-        pnt2 = p1 + length * vm;
-        pnt4 = p2 + length * vm;
-        vc1 = (pnt2 - ctr);
-        vc2 = (pnt4 - ctr);
-        startangle = atan2f(vc1[1], vc1[0]);
-        endangle = atan2f(vc2[1], vc2[0]);
-        glDrawArc(ctr, vc1.length(), startangle, endangle);
-    }
-
-    //Draw lines
-    glDrawLine(pnt1, pnt2);
-    glDrawLine(pnt3, pnt4);
-
-    // Create the arrowheads
-    float arrowLength = margin * 2;
-    float arrowWidth = margin * 0.5F;
-
-        // Normals for the arrowheads at arc start and end
-    SbVec3f dirStart(sin(startangle), -cos(startangle), 0);
-    SbVec3f dirEnd(-sin(endangle), cos(endangle), 0);
-
-    glDrawArrow(pnt2, dirStart, arrowWidth, arrowLength);
-    glDrawArrow(pnt4, dirEnd, arrowWidth, arrowLength);
+    glDrawArrow(geom.pnt2, geom.dirStart, arrowWidth, arrowLength);
+    glDrawArrow(geom.pnt4, geom.dirEnd, arrowWidth, arrowLength);
 }
 
 // NOLINTNEXTLINE
@@ -1867,4 +1804,83 @@ void SoDatumLabel::generateArrowSelectionPrimitive(SoAction* action, const SbVec
     pv.setPoint(p2);
     shapeVertex(&pv);
     this->endShape();
+}
+
+SoDatumLabel::ArcLengthGeometry SoDatumLabel::calculateArcLengthGeometry(const SbVec3f* points) const
+{
+    using std::numbers::pi;
+
+    ArcLengthGeometry geom;
+
+    geom.ctr = points[0];
+    geom.p1 = points[1];
+    geom.p2 = points[2];
+    geom.length = this->param1.getValue();
+
+    geom.margin = this->imgHeight / 3.0F;
+
+    // angles calculations
+    SbVec3f vc1 = (geom.p1 - geom.ctr);
+    SbVec3f vc2 = (geom.p2 - geom.ctr);
+
+    geom.startangle = atan2f(vc1[1], vc1[0]);
+    geom.endangle = atan2f(vc2[1], vc2[0]);
+    if (geom.endangle < geom.startangle) {
+        geom.endangle += 2.0F * (float)pi;
+    }
+
+    geom.range = geom.endangle - geom.startangle;
+    geom.radius = vc1.length();
+
+    // text orientation
+    SbVec3f dir = (geom.p2 - geom.p1);
+    dir.normalize();
+    // get magnitude of angle between horizontal
+    geom.angle = atan2f(dir[1],dir[0]);
+    if (geom.angle > pi/2 + pi/12) {
+        geom.angle -= (float)pi;
+    } else if (geom.angle <= -pi/2 + pi/12) {
+        geom.angle += (float)pi;
+    }
+
+    // text location
+    geom.textOffset = getLabelTextCenterArcLength(geom.ctr, geom.p1, geom.p2);
+
+    // lines direction
+    geom.vm = (geom.p1+geom.p2)/2 - geom.ctr;
+    geom.vm.normalize();
+
+    // determine if this is a large arc (> pi)
+    geom.isLargeArc = (geom.range > pi);
+
+    // lines points
+    geom.pnt1 = geom.p1;
+    geom.pnt3 = geom.p2;
+
+    if (geom.isLargeArc) {
+        geom.pnt2 = geom.p1 + geom.length * geom.vm;
+        geom.pnt4 = geom.p2 + geom.length * geom.vm;
+
+        // recalculate angles for the outer arc
+        SbVec3f vc1_outer = (geom.pnt2 - geom.ctr);
+        SbVec3f vc2_outer = (geom.pnt4 - geom.ctr);
+        geom.arcCenter = geom.ctr;
+        geom.arcRadius = vc1_outer.length();
+        // update angles for outer arc
+        geom.startangle = atan2f(vc1_outer[1], vc1_outer[0]);
+        geom.endangle = atan2f(vc2_outer[1], vc2_outer[0]);
+    } else {
+        geom.pnt2 = geom.p1 + (geom.length - geom.radius) * geom.vm;
+        geom.pnt4 = geom.p2 + (geom.length - geom.radius) * geom.vm;
+
+        // arc center and radius for inner arc
+        geom.arcCenter = geom.ctr + (geom.length - geom.radius) * geom.vm;
+        geom.arcRadius = geom.radius;
+    }
+
+    // normals for the arrowheads at arc start and end
+    geom.dirStart = SbVec3f(sin(geom.startangle), -cos(geom.startangle), 0);
+    geom.dirEnd = SbVec3f(-sin(geom.endangle), cos(geom.endangle), 0);
+
+    return geom;
 }
