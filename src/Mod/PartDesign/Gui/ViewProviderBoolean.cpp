@@ -32,6 +32,7 @@
 #include "ViewProviderBoolean.h"
 #include "TaskBooleanParameters.h"
 #include <Mod/PartDesign/App/FeatureBoolean.h>
+#include <App/Document.h>
 #include <Gui/Application.h>
 #include <Gui/Control.h>
 #include <Gui/Command.h>
@@ -93,6 +94,7 @@ bool ViewProviderBoolean::setEdit(int ModNum)
         // always change to PartDesign WB, remember where we come from
         oldWb = Gui::Command::assureWorkbench("PartDesignWorkbench");
 
+        getDocument()->getDocument()->postponeCommit();
         // start the edit dialog
         if (booleanDlg)
             Gui::Control().showDialog(booleanDlg);

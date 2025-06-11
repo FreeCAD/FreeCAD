@@ -412,6 +412,8 @@ public:
     static void openCommand(const char* sName=nullptr);
     static int openCommand(App::Document* doc, std::string name = "", bool tmpName = false, int tid = 0);
     int openSelf(App::Document* doc, const std::string& name = "", bool tmpName = false, int tid = 0);
+    int openSelf(const std::string& name = "", bool tmpName = false, int tid = 0);
+
     void renameSelf(const std::string& name);
     /// Commit the Undo transaction on the active document
     static void commitCommand();
