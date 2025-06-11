@@ -972,7 +972,7 @@ class DraftToolBar:
     #     gui_stretch.py
     def setRelative(self, val=-1):
         if val < 0:
-	    if hasattr(self.isRelative, "checkStateChanged"):
+            if hasattr(self.isRelative, "checkStateChanged"):
                 QtCore.QObject.disconnect(self.isRelative,
                                       QtCore.SIGNAL("checkStateChanged(int)"),
                                       self.setRelative)
