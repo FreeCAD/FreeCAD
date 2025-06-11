@@ -82,6 +82,17 @@ def Startup():
         from Path.Tool import Controller
         from Path.Tool.Gui import Controller
 
+        # Try and import the Turning operations
+        # If liblathe is not installed this will fail
+        try:
+            from Path.TurningOp.Gui import TurnFaceGui
+            from Path.TurningOp.Gui import TurnPartoffGui
+            from Path.TurningOp.Gui import TurnProfileGui
+            from Path.TurningOp.Gui import TurnRoughGui
+            from Path.TurningOp.Gui import TurnToolHelperGui
+        except ImportError:
+            pass
+
         from PathScripts import PathUtilsGui
 
         from packaging.version import Version, parse, InvalidVersion
