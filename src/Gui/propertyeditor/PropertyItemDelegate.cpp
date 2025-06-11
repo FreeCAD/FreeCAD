@@ -163,6 +163,9 @@ void PropertyItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
 bool PropertyItemDelegate::editorEvent (QEvent * event, QAbstractItemModel* model,
                                         const QStyleOptionViewItem& option, const QModelIndex& index)
 {
+    /* with ref to https://github.com/FreeCAD/FreeCAD/issues/21904
+    the no double-click condition is intentional to ensure
+    across platforms the invalid response cannot occur */
     if (event && event->type() == QEvent::MouseButtonPress
         && event->type() != QEvent::MouseButtonDblClick) {
         this->pressed = true;
