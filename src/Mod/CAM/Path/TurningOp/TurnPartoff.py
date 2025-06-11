@@ -41,12 +41,12 @@ def translate(context, text, disambig=None):
 
 
 class ObjectTurnPart(TurnBase.ObjectOp):
-    '''Proxy class for turning Part operations.'''
+    """Proxy class for turning Part operations."""
 
     def opGenerateGCode(self, obj, turnTool):
-        '''
+        """
         Generate GCode for the op
-        '''
+        """
         partOp = LiblatheOp.PartoffOP()
         partOp.setParams(self.getProps(obj))
 
@@ -62,8 +62,9 @@ class ObjectTurnPart(TurnBase.ObjectOp):
             pathCommand = Path.Command(command.get_movement(), command.getParams())
             self.commandlist.append(pathCommand)
 
+
 def SetupProperties():
-    '''SetupProperties() ... Returns a list of properties to be set for the operation.'''
+    """SetupProperties() ... Returns a list of properties to be set for the operation."""
     setup = []
     setup.append("StepOver")
     setup.append("FinishPasses")
@@ -72,7 +73,7 @@ def SetupProperties():
 
 
 def Create(name, obj=None, parentJob=None):
-    '''Create(name) ... Creates and returns a TurnPart operation.'''
+    """Create(name) ... Creates and returns a TurnPart operation."""
     if obj is None:
         obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", name)
     obj.Proxy = ObjectTurnPart(obj, name, parentJob)

@@ -46,19 +46,19 @@ else:
 
 
 class TaskPanelTurnBase(PathOpGui.TaskPanelPage):
-    '''Page controller class for turning operations '''
+    """Page controller class for turning operations"""
 
     def initPage(self, obj):
         self.updating = False  # pylint: disable=attribute-defined-outside-init
 
     def getForm(self):
-        '''getForm() ... return UI'''
+        """getForm() ... return UI"""
         return FreeCADGui.PySideUic.loadUi(":/panels/PageOpTurnBaseEdit.ui")
 
     def getFields(self, obj):
-        '''getFields(obj) ... transfers values from UI to obj's proprties'''
+        """getFields(obj) ... transfers values from UI to obj's proprties"""
         PathLog.track()
-        PathGuiUtil.updateInputField(obj, 'StepOver', self.form.stepOver)
+        PathGuiUtil.updateInputField(obj, "StepOver", self.form.stepOver)
 
         obj.FinishPasses = self.form.finishPasses.value()
         obj.StockToLeave = self.form.stockToLeave.value()
@@ -70,11 +70,12 @@ class TaskPanelTurnBase(PathOpGui.TaskPanelPage):
         self.updateCoolant(obj, self.form.coolantController)
 
     def setFields(self, obj):
-        '''setFields(obj) ... transfers obj's property values to UI'''
+        """setFields(obj) ... transfers obj's property values to UI"""
         PathLog.track()
 
-        self.form.stepOver.setText(FreeCAD.Units.Quantity(obj.StepOver.Value,
-                                                          FreeCAD.Units.Length).UserString)
+        self.form.stepOver.setText(
+            FreeCAD.Units.Quantity(obj.StepOver.Value, FreeCAD.Units.Length).UserString
+        )
         self.form.finishPasses.setValue(obj.FinishPasses)
         self.form.stockToLeave.setValue(obj.StockToLeave)
         self.setupToolController(obj, self.form.toolController)
@@ -88,7 +89,7 @@ class TaskPanelTurnBase(PathOpGui.TaskPanelPage):
         self.setOpFields(obj)
 
     def getSignalsForUpdate(self, obj):
-        '''getSignalsForUpdate(obj) ... return list of signals for updating obj'''
+        """getSignalsForUpdate(obj) ... return list of signals for updating obj"""
         signals = []
 
         signals.append(self.form.stepOver.editingFinished)
@@ -102,6 +103,6 @@ class TaskPanelTurnBase(PathOpGui.TaskPanelPage):
         return signals
 
     def setOpFields(self, obj):
-        '''setOpFields(obj) ... overwrite to set operations specific values.
-        Should be overwritten by subclasses.'''
+        """setOpFields(obj) ... overwrite to set operations specific values.
+        Should be overwritten by subclasses."""
         pass  # pylint: disable=unnecessary-pass

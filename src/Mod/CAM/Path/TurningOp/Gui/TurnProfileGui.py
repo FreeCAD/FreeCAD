@@ -45,20 +45,23 @@ else:
 
 
 class TaskPanelOpPage(TurnBaseGui.TaskPanelTurnBase):
-    '''Page controller class for Turning operations.'''
+    """Page controller class for Turning operations."""
 
     def setOpFields(self, obj):
-        '''setFields(obj) ... transfers obj's property values to UI'''
+        """setFields(obj) ... transfers obj's property values to UI"""
         pass
 
 
-Command = PathOpGui.SetupOperation('TurnProfile',
-                                   TurnProfile.Create,
-                                   TaskPanelOpPage,
-                                   'CAM_TurnProfile',
-                                   QtCore.QT_TRANSLATE_NOOP("TurnProfile", "Turn Profile"),
-                                   QtCore.QT_TRANSLATE_NOOP("TurnProfile",
-                                                            "Creates a CAM Turninging Profile object from a features of a base object"),
-                                   TurnProfile.SetupProperties)
+Command = PathOpGui.SetupOperation(
+    "TurnProfile",
+    TurnProfile.Create,
+    TaskPanelOpPage,
+    "CAM_TurnProfile",
+    QtCore.QT_TRANSLATE_NOOP("TurnProfile", "Turn Profile"),
+    QtCore.QT_TRANSLATE_NOOP(
+        "TurnProfile", "Creates a CAM Turninging Profile object from a features of a base object"
+    ),
+    TurnProfile.SetupProperties,
+)
 
 FreeCAD.Console.PrintLog("Loading TurnProfileGui... done\n")

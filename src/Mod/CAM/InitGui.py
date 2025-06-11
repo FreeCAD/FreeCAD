@@ -92,10 +92,10 @@ class CAMWorkbench(Workbench):
         liblatheInstalled = False
         try:
             import liblathe  # pylint: disable=unused-variable
+
             liblatheInstalled = True
         except ImportError:
             pass
-
 
         FreeCADGui.addPreferencePage(
             PathPreferencesPathJob.JobPreferencesPage,
@@ -190,7 +190,15 @@ class CAMWorkbench(Workbench):
 
             # if a turning library is installed and experimental features are enabled, then add the turning commands
             if liblatheInstalled:
-                turningcmdlist.extend(["CAM_TurnFace", "CAM_TurnPartoff", "CAM_TurnProfile", "CAM_TurnRough", "CAM_TurnToolHelper"])
+                turningcmdlist.extend(
+                    [
+                        "CAM_TurnFace",
+                        "CAM_TurnPartoff",
+                        "CAM_TurnProfile",
+                        "CAM_TurnRough",
+                        "CAM_TurnToolHelper",
+                    ]
+                )
 
         if Path.Preferences.advancedOCLFeaturesEnabled():
             try:
@@ -238,9 +246,7 @@ class CAMWorkbench(Workbench):
             twodopcmdlist + drillingcmdgroup + engravecmdgroup + threedcmdgroup,
         )
         if turningcmdlist:
-            self.appendToolbar(
-                QT_TRANSLATE_NOOP("Workbench", "Turning Operations"), turningcmdlist
-            )
+            self.appendToolbar(QT_TRANSLATE_NOOP("Workbench", "Turning Operations"), turningcmdlist)
         self.appendToolbar(
             QT_TRANSLATE_NOOP("Workbench", "Path Modification"), modcmdlist + dressupcmdgroup
         )

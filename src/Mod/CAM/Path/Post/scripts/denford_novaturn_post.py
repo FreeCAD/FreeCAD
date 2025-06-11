@@ -32,7 +32,7 @@ import Path.Post.Utils as PostUtils
 import PathScripts.PathUtils as PathUtils
 import math
 
-TOOLTIP = '''
+TOOLTIP = """
 This is a postprocessor file for the Path workbench. It is used to
 take a pseudo-gcode fragment outputted by a Path object, and output
 real GCode suitable for a denford_novaturn 3 axis mill. This postprocessor, once placed
@@ -41,23 +41,36 @@ FreeCAD, via the GUI importer or via python scripts with:
 
 import denford_novaturn_post
 denford_novaturn_post.export(object,"/path/to/file.ncc","")
-'''
+"""
 
 now = datetime.datetime.now()
 
-parser = argparse.ArgumentParser(prog='denford_novaturn', add_help=False)
-parser.add_argument('--no-header', action='store_true', help='suppress header output')
-parser.add_argument('--no-comments', action='store_true', help='suppress comment output')
-parser.add_argument('--line-numbers', action='store_true', help='prefix with line numbers')
-parser.add_argument('--no-show-editor', action='store_true', help='don\'t pop up editor before writing output')
-parser.add_argument('--precision', default='3', help='number of digits of precision, default=3')
-parser.add_argument('--preamble', help='set commands to be issued before the first command, default="G17\nG90"')
-parser.add_argument('--postamble', help='set commands to be issued after the last command, default="M05\nG17 G90\nM2"')
-parser.add_argument('--inches', action='store_true', help='Convert output for US imperial mode (G20)')
-parser.add_argument('--modal', action='store_true', help='Output the Same G-command Name USE NonModal Mode')
-parser.add_argument('--axis-modal', action='store_true', help='Output the Same Axis Value Mode')
-parser.add_argument('--no-tlo', action='store_true', help='suppress tool length offset (G43) following tool changes')
-parser.add_argument('--lathe-mode', action='store_true', help='output the path in lathe mode')
+parser = argparse.ArgumentParser(prog="denford_novaturn", add_help=False)
+parser.add_argument("--no-header", action="store_true", help="suppress header output")
+parser.add_argument("--no-comments", action="store_true", help="suppress comment output")
+parser.add_argument("--line-numbers", action="store_true", help="prefix with line numbers")
+parser.add_argument(
+    "--no-show-editor", action="store_true", help="don't pop up editor before writing output"
+)
+parser.add_argument("--precision", default="3", help="number of digits of precision, default=3")
+parser.add_argument(
+    "--preamble", help='set commands to be issued before the first command, default="G17\nG90"'
+)
+parser.add_argument(
+    "--postamble",
+    help='set commands to be issued after the last command, default="M05\nG17 G90\nM2"',
+)
+parser.add_argument(
+    "--inches", action="store_true", help="Convert output for US imperial mode (G20)"
+)
+parser.add_argument(
+    "--modal", action="store_true", help="Output the Same G-command Name USE NonModal Mode"
+)
+parser.add_argument("--axis-modal", action="store_true", help="Output the Same Axis Value Mode")
+parser.add_argument(
+    "--no-tlo", action="store_true", help="suppress tool length offset (G43) following tool changes"
+)
+parser.add_argument("--lathe-mode", action="store_true", help="output the path in lathe mode")
 
 TOOLTIP_ARGS = parser.format_help()
 
@@ -67,49 +80,49 @@ OUTPUT_HEADER = True
 OUTPUT_LINE_NUMBERS = False
 SHOW_EDITOR = True
 MODAL = False  # if true commands are suppressed if the same as previous line.
-USE_TLO = False # if true G43 will be output following tool changes
-LATHE_MODE=False # if true use G18 and omit y parameter from positions
+USE_TLO = False  # if true G43 will be output following tool changes
+LATHE_MODE = False  # if true use G18 and omit y parameter from positions
 OUTPUT_DOUBLES = True  # if false duplicate axis values are suppressed if the same as previous line.
 COMMAND_SPACE = " "
 LINENR = 100  # line number starting value
 
 # These globals will be reflected in the Machine configuration of the project
 UNITS = "G21"  # G21 for metric, G20 for us standard
-UNIT_SPEED_FORMAT = 'mm/min'
-UNIT_FORMAT = 'mm'
+UNIT_SPEED_FORMAT = "mm/min"
+UNIT_FORMAT = "mm"
 
 MACHINE_NAME = "Denford Novaturn"
 PRECISION = 3
 
 # Preamble text will appear at the beginning of the GCODE output file.
-PREAMBLE =  '''G98'''#'''G17 G54 G40 G49 G80 G90'''
+PREAMBLE = """G98"""  #'''G17 G54 G40 G49 G80 G90'''
 
 # Postamble text will appear following the last operation.
-POSTAMBLE = '''G28 U0. W0. 
+POSTAMBLE = """G28 U0. W0.
 M30
-''' #'''M05 G17 G54 G90 G80 G40 M2'''
+"""  #'''M05 G17 G54 G90 G80 G40 M2'''
 
 # Pre operation text will be inserted before every operation
-PRE_OPERATION = ''''''
+PRE_OPERATION = """"""
 
 # Post operation text will be inserted after every operation
-POST_OPERATION = ''''''
+POST_OPERATION = """"""
 
 # Tool Change commands will be inserted before a tool change
-TOOL_CHANGE = ''''''
+TOOL_CHANGE = """"""
 
 # to distinguish python built-in open function from the one declared below
-if open.__module__ in ['__builtin__','io']:
+if open.__module__ in ["__builtin__", "io"]:
     pythonopen = open
 
 
 def RfromIK(command):
     """Returns the radius for an IK arc command"""
-    parameters = command.Parameters 
-    i = parameters['I']
-    k = parameters['K']
+    parameters = command.Parameters
+    i = parameters["I"]
+    k = parameters["K"]
     rad = math.sqrt(math.pow(i, 2) + math.pow(k, 2))
-    
+
     return rad
 
 
@@ -147,9 +160,9 @@ def processArguments(argstring):
         if args.postamble is not None:
             POSTAMBLE = args.postamble
         if args.inches:
-            UNITS = 'G20'
-            UNIT_SPEED_FORMAT = 'in/min'
-            UNIT_FORMAT = 'in'
+            UNITS = "G20"
+            UNIT_SPEED_FORMAT = "in/min"
+            UNIT_FORMAT = "in"
             PRECISION = 4
         if args.modal:
             MODAL = True
@@ -158,13 +171,14 @@ def processArguments(argstring):
         if args.lathe_mode:
             LATHE_MODE = True
         if args.axis_modal:
-            print ('here')
+            print("here")
             OUTPUT_DOUBLES = False
 
-    except Exception: # pylint: disable=broad-except
+    except Exception:  # pylint: disable=broad-except
         return False
 
     return True
+
 
 def export(objectslist, filename, argstring):
     # pylint: disable=global-statement
@@ -176,7 +190,9 @@ def export(objectslist, filename, argstring):
 
     for obj in objectslist:
         if not hasattr(obj, "Path"):
-            print("the object " + obj.Name + " is not a path. Please select only path and Compounds.")
+            print(
+                "the object " + obj.Name + " is not a path. Please select only path and Compounds."
+            )
             return None
 
     print("postprocessing...")
@@ -198,17 +214,17 @@ def export(objectslist, filename, argstring):
     for obj in objectslist:
 
         # Skip inactive operations
-        if hasattr(obj, 'Active'):
+        if hasattr(obj, "Active"):
             if not obj.Active:
                 continue
-        if hasattr(obj, 'Base') and hasattr(obj.Base, 'Active'):
+        if hasattr(obj, "Base") and hasattr(obj.Base, "Active"):
             if not obj.Base.Active:
                 continue
 
         # fetch machine details
         job = PathUtils.findParentJob(obj)
 
-        myMachine = 'not set'
+        myMachine = "not set"
 
         if hasattr(job, "MachineName"):
             myMachine = job.MachineName
@@ -216,12 +232,12 @@ def export(objectslist, filename, argstring):
         if hasattr(job, "MachineUnits"):
             if job.MachineUnits == "Metric":
                 UNITS = "G21"
-                UNIT_FORMAT = 'mm'
-                UNIT_SPEED_FORMAT = 'mm/min'
+                UNIT_FORMAT = "mm"
+                UNIT_SPEED_FORMAT = "mm/min"
             else:
                 UNITS = "G20"
-                UNIT_FORMAT = 'in'
-                UNIT_SPEED_FORMAT = 'in/min'
+                UNIT_FORMAT = "in"
+                UNIT_SPEED_FORMAT = "in/min"
 
         # do the pre_op
         if OUTPUT_COMMENTS:
@@ -231,8 +247,8 @@ def export(objectslist, filename, argstring):
             gcode += linenumber() + line
 
         # get coolant mode
-        coolantMode = 'None'
-        if hasattr(obj, "CoolantMode") or hasattr(obj, 'Base') and  hasattr(obj.Base, "CoolantMode"):
+        coolantMode = "None"
+        if hasattr(obj, "CoolantMode") or hasattr(obj, "Base") and hasattr(obj.Base, "CoolantMode"):
             if hasattr(obj, "CoolantMode"):
                 coolantMode = obj.CoolantMode
             else:
@@ -240,12 +256,12 @@ def export(objectslist, filename, argstring):
 
         # turn coolant on if required
         if OUTPUT_COMMENTS:
-            if not coolantMode == 'None':
-                gcode += linenumber() + '(Coolant On:' + coolantMode + ')\n'
-        if coolantMode == 'Flood':
-            gcode  += linenumber() + 'M8' + '\n'
-        if coolantMode == 'Mist':
-            gcode += linenumber() + 'M7' + '\n'
+            if not coolantMode == "None":
+                gcode += linenumber() + "(Coolant On:" + coolantMode + ")\n"
+        if coolantMode == "Flood":
+            gcode += linenumber() + "M8" + "\n"
+        if coolantMode == "Mist":
+            gcode += linenumber() + "M7" + "\n"
 
         # process the operation gcode
         gcode += parse(obj)
@@ -257,10 +273,10 @@ def export(objectslist, filename, argstring):
             gcode += linenumber() + line
 
         # turn coolant off if required
-        if not coolantMode == 'None':
+        if not coolantMode == "None":
             if OUTPUT_COMMENTS:
-                gcode += linenumber() + '(Coolant Off:' + coolantMode + ')\n'
-            gcode  += linenumber() +'M9' + '\n'
+                gcode += linenumber() + "(Coolant Off:" + coolantMode + ")\n"
+            gcode += linenumber() + "M9" + "\n"
 
     # do the post_amble
     if OUTPUT_COMMENTS:
@@ -283,7 +299,7 @@ def export(objectslist, filename, argstring):
 
     print("done postprocessing.")
 
-    if not filename == '-':
+    if not filename == "-":
         gfile = pythonopen(filename, "w")
         gfile.write(final)
         gfile.close()
@@ -310,11 +326,11 @@ def parse(pathobj):
 
     out = ""
     lastcommand = None
-    precision_string = '.' + str(PRECISION) + 'f'
+    precision_string = "." + str(PRECISION) + "f"
     currLocation = {}  # keep track for no doubles
 
     # the order of parameters
-    params = ['X', 'Y', 'Z', 'A', 'B', 'C', 'F', 'S', 'T', 'Q', 'R', 'L', 'H', 'D', 'P']
+    params = ["X", "Y", "Z", "A", "B", "C", "F", "S", "T", "Q", "R", "L", "H", "D", "P"]
     firstmove = Path.Command("G0", {"X": -1, "Y": -1, "Z": -1, "F": 0.0})
     currLocation.update(firstmove.Parameters)  # set First location Parameters
 
@@ -344,7 +360,7 @@ def parse(pathobj):
                 if command == lastcommand:
                     outstring.pop(0)
 
-            if c.Name[0] == '(' and not OUTPUT_COMMENTS: # command is a comment
+            if c.Name[0] == "(" and not OUTPUT_COMMENTS:  # command is a comment
                 continue
 
             # Don't output G18
@@ -358,39 +374,51 @@ def parse(pathobj):
             # Now add the remaining parameters in order
             for param in params:
                 if param in c.Parameters:
-                    if param == 'F' and (currLocation[param] != c.Parameters[param] or OUTPUT_DOUBLES):
+                    if param == "F" and (
+                        currLocation[param] != c.Parameters[param] or OUTPUT_DOUBLES
+                    ):
                         if c.Name not in ["G0", "G00"]:  # denford_novaturn doesn't use rapid speeds
-                            speed = Units.Quantity(c.Parameters['F'], FreeCAD.Units.Velocity)
+                            speed = Units.Quantity(c.Parameters["F"], FreeCAD.Units.Velocity)
                             if speed.getValueAs(UNIT_SPEED_FORMAT) > 0.0:
-                                outstring.append(param + format(float(speed.getValueAs(UNIT_SPEED_FORMAT)), precision_string))
+                                outstring.append(
+                                    param
+                                    + format(
+                                        float(speed.getValueAs(UNIT_SPEED_FORMAT)), precision_string
+                                    )
+                                )
                         else:
                             continue
-                    elif param == 'T':
-                        outstring.append(param + str(int(c.Parameters['T'])))
-                    elif param == 'H':
-                        outstring.append(param + str(int(c.Parameters['H'])))
-                    elif param == 'D':
-                        outstring.append(param + str(int(c.Parameters['D'])))
-                    elif param == 'S':
-                        outstring.append(param + str(int(c.Parameters['S'])))
+                    elif param == "T":
+                        outstring.append(param + str(int(c.Parameters["T"])))
+                    elif param == "H":
+                        outstring.append(param + str(int(c.Parameters["H"])))
+                    elif param == "D":
+                        outstring.append(param + str(int(c.Parameters["D"])))
+                    elif param == "S":
+                        outstring.append(param + str(int(c.Parameters["S"])))
                     else:
-                        if (not OUTPUT_DOUBLES) and (param in currLocation) and (currLocation[param] == c.Parameters[param]):
+                        if (
+                            (not OUTPUT_DOUBLES)
+                            and (param in currLocation)
+                            and (currLocation[param] == c.Parameters[param])
+                        ):
                             continue
                         else:
                             # omit Y parameters in lathe_mode
-                            if param == 'Y' and LATHE_MODE:
+                            if param == "Y" and LATHE_MODE:
                                 continue
-     
+
                             pos = Units.Quantity(c.Parameters[param], FreeCAD.Units.Length)
                             outstring.append(
-                                param + format(float(pos.getValueAs(UNIT_FORMAT)), precision_string))
+                                param + format(float(pos.getValueAs(UNIT_FORMAT)), precision_string)
+                            )
 
             # store the latest command
             lastcommand = command
             currLocation.update(c.Parameters)
 
             # Check for Tool Change:
-            if command == 'M6':
+            if command == "M6":
                 # stop the spindle
                 out += linenumber() + "M5\n"
                 for line in TOOL_CHANGE.splitlines(True):
@@ -398,7 +426,7 @@ def parse(pathobj):
 
                 # add height offset
                 if USE_TLO:
-                    tool_height = '\nG43 H' + str(int(c.Parameters['T']))
+                    tool_height = "\nG43 H" + str(int(c.Parameters["T"]))
                     outstring.append(tool_height)
 
             if command == "message":
@@ -420,5 +448,6 @@ def parse(pathobj):
                 out += "\n"
 
         return out
+
 
 print(__name__ + " gcode postprocessor loaded.")

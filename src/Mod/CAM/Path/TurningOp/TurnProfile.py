@@ -41,12 +41,12 @@ def translate(context, text, disambig=None):
 
 
 class ObjectTurnProfile(TurnBase.ObjectOp):
-    '''Proxy class for turning profile operations.'''
+    """Proxy class for turning profile operations."""
 
     def opGenerateGCode(self, obj, turnTool):
-        '''
+        """
         Generate GCode for the op
-        '''
+        """
         profileOP = LiblatheOp.ProfileOP()
         profileOP.setParams(self.getProps(obj))
 
@@ -64,7 +64,7 @@ class ObjectTurnProfile(TurnBase.ObjectOp):
 
 
 def SetupProperties():
-    '''SetupProperties() ... Returns a list of properties to be set for the operation.'''
+    """SetupProperties() ... Returns a list of properties to be set for the operation."""
     setup = []
     setup.append("StepOver")
     setup.append("FinishPasses")
@@ -73,7 +73,7 @@ def SetupProperties():
 
 
 def Create(name, obj=None, parentJob=None):
-    '''Create(name) ... Creates and returns a TurnProfile operation.'''
+    """Create(name) ... Creates and returns a TurnProfile operation."""
     if obj is None:
         obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", name)
     obj.Proxy = ObjectTurnProfile(obj, name, parentJob)
