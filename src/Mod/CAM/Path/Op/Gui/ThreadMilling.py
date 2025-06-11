@@ -229,7 +229,10 @@ class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
         signals.append(self.form.threadTPI.editingFinished)
         signals.append(self.form.opDirection.currentIndexChanged)
         signals.append(self.form.opPasses.editingFinished)
-        signals.append(self.form.leadInOut.stateChanged)
+        if hasattr(self.form.leadInOut, "checkStateChanged"):
+            signals.append(self.form.leadInOut.checkStateChanged)
+        else:
+            signals.append(self.form.leadInOut.stateChanged)
 
         signals.append(self.form.toolController.currentIndexChanged)
 

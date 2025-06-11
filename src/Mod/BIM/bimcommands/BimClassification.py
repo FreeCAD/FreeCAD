@@ -159,7 +159,10 @@ class BIM_Classification:
         self.form.treeClass.itemDoubleClicked.connect(self.apply)
         self.form.search.up.connect(self.onUpArrow)
         self.form.search.down.connect(self.onDownArrow)
-        self.form.onlyVisible.stateChanged.connect(self.onVisible)
+        if hasattr(self.form.onlyVisible, "checkStateChanged"):
+            self.form.onlyVisible.checkStateChanged.connect(self.onVisible)
+        else:
+            self.form.onlyVisible.stateChanged.connect(self.onVisible)
 
         # center the dialog over FreeCAD window
         mw = FreeCADGui.getMainWindow()

@@ -95,7 +95,10 @@ class BIM_IfcElements:
                 )
         self.form.groupMode.currentIndexChanged.connect(self.update)
         self.form.tree.clicked.connect(self.onClickTree)
-        self.form.onlyVisible.stateChanged.connect(self.update)
+        if hasattr(self.form.onlyVisible, "checkStateChanged"):
+            self.form.onlyVisible.checkStateChanged.connect(self.update)
+        else:
+            self.form.onlyVisible.stateChanged.connect(self.update)
         self.form.buttonBox.accepted.connect(self.accept)
         self.form.globalMode.currentIndexChanged.connect(self.onObjectTypeChanged)
         self.form.globalMaterial.currentIndexChanged.connect(self.onMaterialChanged)

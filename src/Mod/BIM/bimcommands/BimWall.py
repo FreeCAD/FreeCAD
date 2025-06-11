@@ -358,7 +358,10 @@ class Arch_Wall:
         inputHeight.valueChanged.connect(self.setHeight)
         comboAlignment.currentIndexChanged.connect(self.setAlign)
         inputOffset.valueChanged.connect(self.setOffset)
-        checkboxUseSketches.stateChanged.connect(self.setUseSketch)
+        if hasattr(checkboxUseSketches, "checkStateChanged"):
+            checkboxUseSketches.checkStateChanged.connect(self.setUseSketch)
+        else:
+            checkboxUseSketches.stateChanged.connect(self.setUseSketch)
         comboWallPresets.currentIndexChanged.connect(self.setMat)
 
         # Define the workflow of the input fields:

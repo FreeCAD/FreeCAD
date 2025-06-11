@@ -68,10 +68,16 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         signals.append(self.form.StockToLeave.valueChanged)
         signals.append(self.form.ZStockToLeave.valueChanged)
         signals.append(self.form.coolantController.currentIndexChanged)
-        signals.append(self.form.ForceInsideOut.stateChanged)
-        signals.append(self.form.FinishingProfile.stateChanged)
-        signals.append(self.form.useOutline.stateChanged)
-        signals.append(self.form.orderCutsByRegion.stateChanged)
+        if hasattr(self.form.ForceInsideOut, "checkStateChanged"):
+            signals.append(self.form.ForceInsideOut.checkStateChanged)
+            signals.append(self.form.FinishingProfile.checkStateChanged)
+            signals.append(self.form.useOutline.checkStateChanged)
+            signals.append(self.form.orderCutsByRegion.checkStateChanged)
+        else:
+            signals.append(self.form.ForceInsideOut.stateChanged)
+            signals.append(self.form.FinishingProfile.stateChanged)
+            signals.append(self.form.useOutline.stateChanged)
+            signals.append(self.form.orderCutsByRegion.stateChanged)
         signals.append(self.form.StopButton.toggled)
         return signals
 

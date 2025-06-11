@@ -125,11 +125,18 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         signals.append(self.form.extraOffset.editingFinished)
         signals.append(self.form.numPasses.editingFinished)
         signals.append(self.form.stepover.editingFinished)
-        signals.append(self.form.useCompensation.stateChanged)
-        signals.append(self.form.useStartPoint.stateChanged)
-        signals.append(self.form.processHoles.stateChanged)
-        signals.append(self.form.processPerimeter.stateChanged)
-        signals.append(self.form.processCircles.stateChanged)
+        if hasattr(self.form.useCompensation, "checkStateChanged"):
+            signals.append(self.form.useCompensation.checkStateChanged)
+            signals.append(self.form.useStartPoint.checkStateChanged)
+            signals.append(self.form.processHoles.checkStateChanged)
+            signals.append(self.form.processPerimeter.checkStateChanged)
+            signals.append(self.form.processCircles.checkStateChanged)
+        else:
+            signals.append(self.form.useCompensation.stateChanged)
+            signals.append(self.form.useStartPoint.stateChanged)
+            signals.append(self.form.processHoles.stateChanged)
+            signals.append(self.form.processPerimeter.stateChanged)
+            signals.append(self.form.processCircles.stateChanged)
 
         return signals
 
@@ -159,7 +166,10 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         self.form.stepover.setEnabled(self.obj.NumPasses > 1)
 
     def registerSignalHandlers(self, obj):
-        self.form.useCompensation.stateChanged.connect(self.updateVisibility)
+        if hasattr(self.form.useCompensation, "checkStateChanged"):
+            self.form.useCompensation.checkStateChanged.connect(self.updateVisibility)
+        else:
+            self.form.useCompensation.stateChanged.connect(self.updateVisibility)
         self.form.numPasses.editingFinished.connect(self.updateVisibility)
 
 

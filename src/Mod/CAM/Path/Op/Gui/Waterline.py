@@ -126,7 +126,10 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         signals.append(self.form.boundaryAdjustment.editingFinished)
         signals.append(self.form.stepOver.editingFinished)
         signals.append(self.form.sampleInterval.editingFinished)
-        signals.append(self.form.optimizeEnabled.stateChanged)
+        if hasattr(self.form.optimizeEnabled, "checkStateChanged"):
+            signals.append(self.form.optimizeEnabled.checkStateChanged)
+        else:
+            signals.append(self.form.optimizeEnabled.stateChanged)
 
         return signals
 
