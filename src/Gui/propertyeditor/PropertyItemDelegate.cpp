@@ -163,10 +163,13 @@ void PropertyItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
 bool PropertyItemDelegate::editorEvent (QEvent * event, QAbstractItemModel* model,
                                         const QStyleOptionViewItem& option, const QModelIndex& index)
 {
-    if (event && event->type() == QEvent::MouseButtonPress)
+    if (event && event->type() == QEvent::MouseButtonPress
+        && event->type() != QEvent::MouseButtonDblClick) {
         this->pressed = true;
-    else
+    }
+    else {
         this->pressed = false;
+    }
     return QItemDelegate::editorEvent(event, model, option, index);
 }
 
@@ -186,7 +189,7 @@ bool PropertyItemDelegate::eventFilter(QObject *o, QEvent *ev)
             if (parentEditor && parentEditor->activeEditor == checkBox) {
                 checkBox->toggle();
                 // Delay valueChanged to ensure proper recomputation
-                QTimer::singleShot(0, this, [this]() {
+                QTimer::singleShot(100, this, [this]() {
                     valueChanged();
                 });
             }
