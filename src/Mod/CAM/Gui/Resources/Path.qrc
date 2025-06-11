@@ -62,6 +62,11 @@
         <file>icons/CAM_ToolDuplicate.svg</file>
         <file>icons/CAM_Toolpath.svg</file>
         <file>icons/CAM_ToolTable.svg</file>
+        <file>icons/CAM_TurnFace.svg</file>
+        <file>icons/CAM_TurnPartoff.svg</file>
+        <file>icons/CAM_TurnProfile.svg</file>
+        <file>icons/CAM_TurnRough.svg</file>
+        <file>icons/CAM_TurnToolHelper.svg</file>
         <file>icons/CAM_Vcarve.svg</file>
         <file>icons/CAM_Waterline.svg</file>
         <file>icons/arrow-ccw.svg</file>
@@ -88,6 +93,7 @@
         <file>panels/DlgToolControllerEdit.ui</file>
         <file>panels/DlgToolCopy.ui</file>
         <file>panels/DlgToolEdit.ui</file>
+        <file>panels/DlgTurnToolHelper.ui</file>
         <file>panels/DogboneEdit.ui</file>
         <file>panels/DressupPathBoundary.ui</file>
         <file>panels/DragKnifeEdit.ui</file>
@@ -115,6 +121,7 @@
         <file>panels/PageOpThreadMillingEdit.ui</file>
         <file>panels/PageOpWaterlineEdit.ui</file>
         <file>panels/PageOpVcarveEdit.ui</file>
+        <file>panels/PageOpTurnBaseEdit.ui</file>
         <file>panels/PathEdit.ui</file>
         <file>panels/PointEdit.ui</file>
         <file>panels/PropertyBag.ui</file>
