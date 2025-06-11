@@ -332,7 +332,7 @@ std::vector<std::string> Document::getAvailableRedoNames() const
 
 void Document::openTransaction(const char* name) // NOLINT
 {
-    if (isTransactionLocked()) {
+    if (!canCommit()) {
         if (FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG)) {
             FC_WARN("Transaction locked, ignore new transaction '" << name << "'");
         }
@@ -349,7 +349,7 @@ void Document::openTransaction(const char* name) // NOLINT
 
 int Document::_openTransaction(std::string name, int id)
 {
-    if (isTransactionLocked() && id != d->bookedTransaction) {
+    if (!canCommit() && id != d->bookedTransaction) {
         if (FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG)) {
             FC_WARN("Transaction locked, ignore new transaction '" << name << "'");
         }
@@ -425,6 +425,26 @@ void Document::renameTransaction(const char* name, const int id) const
         d->activeUndoTransaction->Name += name;
     }
 }
+void Document::postponeCommit()
+{
+    d->CommitPostponed++;
+}
+bool Document::isCommitPostponed() const
+{
+    return d->CommitPostponed > 0;
+}
+bool Document::canCommit() const
+{
+    return !isCommitPostponed() && !isTransactionLocked();
+}
+bool Document::decreasePostponeCommit()
+{
+    if (isCommitPostponed()) {
+        d->CommitPostponed --;
+        return true;
+    }
+    return false;
+}
 int Document::setActiveTransaction(const std::string& name, bool tmpName, int tid)
 {
     // Probably a group transaction situation
@@ -447,8 +467,13 @@ int Document::setActiveTransaction(const std::string& name, bool tmpName, int ti
 
     // Rename the transaction if it had a tmp name
     if (d->bookedTransaction && GetApplication().transactionTmpName(d->bookedTransaction)) {
-        GetApplication().setTransactionName(d->bookedTransaction, name, false);
-    } else if (d->bookedTransaction && !_commitTransaction()) {
+        GetApplication().setTransactionName(d->bookedTransaction, name, tmpName);
+        return d->bookedTransaction;
+    }
+    if (d->bookedTransaction && isCommitPostponed()) {
+        return d->bookedTransaction;
+    }
+    if (d->bookedTransaction && !_commitTransaction()) {
         FC_LOG("Could not book transaction for document");
         return 0;
     }
@@ -467,7 +492,7 @@ void Document::unlockTransaction()
         d->TransactionLock--;
     }
 }
-bool Document::isTransactionLocked()
+bool Document::isTransactionLocked() const
 {
     return d->TransactionLock > 0;
 }
@@ -566,6 +591,10 @@ bool Document::_commitTransaction(const bool notify)
         // for a recursive call return without printing a warning
         return false;
     }
+    if (decreasePostponeCommit()) {
+        return false;
+    }
+    
 
     if (d->activeUndoTransaction) {
         Base::FlagToggler<> flag(d->committing);

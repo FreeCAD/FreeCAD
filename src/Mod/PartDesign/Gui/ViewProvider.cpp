@@ -129,7 +129,7 @@ bool ViewProvider::setEdit(int ModNum)
                 throw Base::RuntimeError ("Failed to create new edit dialog.");
             }
         }
-
+        getDocument()->getDocument()->postponeCommit();
         Gui::Control().showDialog(featureDlg);
         return true;
     } else {
