@@ -211,17 +211,21 @@ void Application::setTransactionDescription(int tid, const TransactionDescriptio
         return;
     }
     auto found = _activeTransactionDescriptions.find(tid);
-    if (found == _activeTransactionDescriptions.end() || found->second.tmp) {
-        _activeTransactionDescriptions[tid] = desc;
-        FC_LOG("transaction rename to '" << desc.name << "'");
+    
+    if (found != _activeTransactionDescriptions.end() && found->second.tmp) {
         for (auto& v : DocMap) {
             v.second->renameTransaction(desc.name.c_str(), _activeTransactionID);
         }
     }
+
+    if (found == _activeTransactionDescriptions.end() || found->second.tmp) {
+        _activeTransactionDescriptions[tid] = desc;
+        FC_LOG("transaction rename to '" << desc.name << "'");
+    }
 }
 void Application::setTransactionName(int tid, const std::string& name, bool tmp)
 {
-    if (tid == 0) {
+    if (tid == 0 || !transactionIsActive(tid)) {
         return;
     }
     auto found = _activeTransactionDescriptions.find(tid);
@@ -244,10 +248,10 @@ void Application::closeActiveTransaction(bool abort, int id)
         return;
     }
 
-    if (!transactionIsActive(id)) {
-        FC_WARN("ignore close transaction, is not active");
-        return;        
-    }
+    // if (!transactionIsActive(id)) {
+    //     FC_WARN("ignore close transaction, is not active");
+    //     return;        
+    // }
 
     // if (_activeTransactionGuard > 0 && !abort) {
     //     FC_LOG("ignore close transaction");
@@ -267,6 +271,20 @@ void Application::closeActiveTransaction(bool abort, int id)
         }
         docsToPoke.push_back(v.second);
     }
+
+    // We still want to decrease CommitPostponed counters
+    if (!abort) {
+        bool commitBlocked = false;
+        for (auto& doc : docsToPoke) {
+            commitBlocked &= doc->decreasePostponeCommit();
+        }
+        if (commitBlocked) {
+            std::cerr<<"Commit blocked..\n";
+            FC_LOG("pending " << "close" << " transaction");
+            return;   
+        }
+    }
+
     FC_LOG("close transaction '" << _activeTransactionDescriptions[id].name << "' " << abort);
     _activeTransactionDescriptions.erase(id);
     TransactionSignaller signaller(abort, false);
@@ -328,9 +346,9 @@ void TransactionLocker::activate(bool enable)
     }
 
     doc->unlockTransaction();
-    if (doc->isTransactionLocked()) {
-        return;
-    }
+    // if (doc->isTransactionLocked()) {
+    //     return;
+    // }
 
     // if (_TransactionClosed) {
     //     bool abort = (_TransactionClosed < 0);
