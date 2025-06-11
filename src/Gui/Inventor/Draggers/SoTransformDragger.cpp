@@ -787,12 +787,12 @@ bool SoTransformDragger::isShownRotationZ()
 
 void SoTransformDragger::setupTranslationDraggers()
 {
-    setupTranslationDragger("xTranslatorDragger", &xAxisLabel, translationIncrementCountX, SbVec3d(1.0, 0.0, 0.0));
-    setupTranslationDragger("yTranslatorDragger", &yAxisLabel, translationIncrementCountY, SbVec3d(0.0, 1.0, 0.0));
-    setupTranslationDragger("zTranslatorDragger", &zAxisLabel, translationIncrementCountZ, SbVec3d(0.0, 0.0, 1.0));
+    setupTranslationDragger("xTranslatorDragger", &xAxisLabel, translationIncrementCountX, SbVec3f(1.0, 0.0, 0.0));
+    setupTranslationDragger("yTranslatorDragger", &yAxisLabel, translationIncrementCountY, SbVec3f(0.0, 1.0, 0.0));
+    setupTranslationDragger("zTranslatorDragger", &zAxisLabel, translationIncrementCountZ, SbVec3f(0.0, 0.0, 1.0));
 }
 
-void SoTransformDragger::setupTranslationDragger(const std::string& name, SoSFString* label, SoSFInt32& incrementCount, const SbVec3d& rotDir)
+void SoTransformDragger::setupTranslationDragger(const std::string& name, SoSFString* label, SoSFInt32& incrementCount, const SbVec3f& rotDir)
 {
     SoLinearDraggerContainer* draggerContainer = SO_GET_ANY_PART(this, name.c_str(), SoLinearDraggerContainer);
     SoLinearDragger* dragger = draggerContainer->getDragger();
@@ -802,7 +802,7 @@ void SoTransformDragger::setupTranslationDragger(const std::string& name, SoSFSt
     dragger->label.connectFrom(label);
     incrementCount.connectFrom(&dragger->translationIncrementCount);
 
-    draggerContainer->setPointerDirection(Base::convertTo<Base::Vector3d>(rotDir));
+    draggerContainer->setPointerDirection(rotDir);
 }
 
 void SoTransformDragger::setupRotationDraggers()

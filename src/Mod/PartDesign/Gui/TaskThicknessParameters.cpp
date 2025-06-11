@@ -35,6 +35,7 @@
 #include <Gui/Selection/Selection.h>
 #include <Gui/Command.h>
 #include <Gui/ViewProvider.h>
+#include <Gui/Inventor/Draggers/GizmoHelper.h>
 #include <Mod/PartDesign/App/FeatureThickness.h>
 
 #include "ui_TaskThicknessParameters.h"
@@ -51,6 +52,8 @@ TaskThicknessParameters::TaskThicknessParameters(ViewProviderDressUp* DressUpVie
 {
     addContainerWidget();
     initControls();
+
+    setupGizmos(DressUpView);
 }
 
 void TaskThicknessParameters::addContainerWidget()
@@ -138,6 +141,10 @@ void TaskThicknessParameters::onSelectionChanged(const Gui::SelectionChanges& ms
         if (selectionMode == refSel) {
             referenceSelected(msg, ui->listWidgetReferences);
         }
+    } else if (msg.Type == Gui::SelectionChanges::ClrSelection) {
+        // TODO: the gizmo position should be only recalculated when the feature associated
+        // with the gizmo is removed from the list
+        setGizmoPositions();
     }
 }
 
@@ -200,6 +207,8 @@ void TaskThicknessParameters::onReversedChanged(bool on)
     if (PartDesign::Thickness* thickness = onBeforeChange()) {
         thickness->Reversed.setValue(on);
         onAfterChange(thickness);
+
+        setGizmoPositions();
     }
 }
 
@@ -259,6 +268,47 @@ void TaskThicknessParameters::apply()
     if (ui->listWidgetReferences->count() == 0) {
         Base::Console().warning(tr("Empty thickness created!\n").toStdString().c_str());
     }
+}
+
+void TaskThicknessParameters::setupGizmos(ViewProviderDressUp* vp)
+{
+    if (!GizmoContainer::isEnabled()) {
+        return;
+    }
+
+    linearGizmo = new Gui::LinearGizmo(ui->Value);
+
+    gizmoContainer = GizmoContainer::createGizmo({linearGizmo}, vp);
+
+    setGizmoPositions();
+}
+
+void TaskThicknessParameters::setGizmoPositions()
+{
+    if (!gizmoContainer) {
+        return;
+    }
+
+    auto thickness = getObject<PartDesign::Thickness>();
+    if (!thickness) {
+        gizmoContainer->visible = false;
+        return;
+    }
+    auto baseShape = thickness->getBaseTopoShape();
+    auto shapes = thickness->getContinuousEdges(baseShape);
+    auto faces = thickness->getFaces(baseShape);
+
+    if (shapes.size() == 0 || faces.size() == 0) {
+        gizmoContainer->visible = false;
+        return;
+    }
+    gizmoContainer->visible = true;
+
+    Part::TopoShape edge = shapes[0];
+    DraggerPlacementProps props = getDraggerPlacementFromEdgeAndFace(edge, faces[0]);
+    props.dir *= thickness->Reversed.getValue()? 1 : -1;
+
+    linearGizmo->Gizmo::setDraggerPlacement(props.position, props.dir);
 }
 
 //**************************************************************************
