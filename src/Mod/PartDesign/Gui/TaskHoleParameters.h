@@ -34,6 +34,8 @@ class Property;
 }
 
 namespace Gui {
+class LinearGizmo;
+class GizmoContainer;
 class ViewProvider;
 }
 
@@ -144,6 +146,11 @@ private:
     bool isApplying;
     QWidget* proxy;
     std::unique_ptr<Ui_TaskHoleParameters> ui;
+
+    std::unique_ptr<Gui::GizmoContainer> gizmoContainer;
+    Gui::LinearGizmo* holeDepthGizmo = nullptr;
+    void setupGizmos(ViewProviderHole* vp);
+    void setGizmoPositions();
 };
 
 /// simulation dialog for the TaskView

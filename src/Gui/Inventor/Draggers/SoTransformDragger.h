@@ -186,7 +186,7 @@ private:
     void updateAxisScale();
 
     void setupTranslationDraggers();
-    void setupTranslationDragger(const std::string& name, SoSFString* label, SoSFInt32& incrementCount, const SbVec3d& rotDir);
+    void setupTranslationDragger(const std::string& name, SoSFString* label, SoSFInt32& incrementCount, const SbVec3f& rotDir);
     void setupRotationDraggers();
     void setupRotationDragger(const std::string& name, SoSFInt32& incrementCount);
 
