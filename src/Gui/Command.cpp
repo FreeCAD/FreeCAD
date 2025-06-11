@@ -414,10 +414,10 @@ void Command::_invoke(int id, bool disablelog)
         // Because Transaction now captures ViewObject changes, auto named
         // transaction is disabled here to avoid too many unnecessary transactions.
         //
-        Gui::Document* activeDoc = getGuiApplication()->activeDocument();
-        if (activeDoc) {
-            currentTransactionID = openSelf(activeDoc->getDocument(), "", true);
-        }        
+        // Gui::Document* activeDoc = getGuiApplication()->activeDocument();
+        // if (activeDoc) {
+        //     currentTransactionID = openSelf(activeDoc->getDocument(), "", true);
+        // }
 
         // App::AutoTransaction committer(nullptr, true);
 
@@ -473,11 +473,10 @@ void Command::_invoke(int id, bool disablelog)
         //     committer.setEnable(false);
         // If the document is in editing mode, let the transaction continue,
         // otherwise commit
-        if (!getGuiApplication()->isInEdit(activeDoc)) {
-            commitSelf();
-        }
+        // if (!getGuiApplication()->isInEdit(activeDoc)) {
+        //     commitSelf();
+        // }
         currentTransactionID = 0; // Get ready for next invoke
-    
     }
     catch (const Base::SystemExitException&) {
         throw;
@@ -659,6 +658,14 @@ int Command::openSelf(App::Document* doc, const std::string& name, bool tmpName,
 {
     currentTransactionID = openCommand(doc, name, tmpName, tid);
     return currentTransactionID;
+}
+int Command::openSelf(const std::string& name, bool tmpName, int tid)
+{
+    if (Gui::Document* guidoc = getGuiApplication()->activeDocument()) {
+        currentTransactionID = openCommand(guidoc->getDocument(), name, tmpName, tid);
+        return currentTransactionID;
+    }
+    return 0;
 }
 void Command::renameSelf(const std::string& name)
 {
