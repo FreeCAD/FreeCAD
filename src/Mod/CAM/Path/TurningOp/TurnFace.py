@@ -41,16 +41,22 @@ def translate(context, text, disambig=None):
 
 
 class ObjectTurnFace(TurnBase.ObjectOp):
-    '''Proxy class for turning facing operations.'''
+    """Proxy class for turning facing operations."""
 
     def opFeatures(self, obj):
-        '''opFeatures(obj) ... returns the OR'ed list of features used and supported by the operation.'''
-        return TurnBase.PathOp.FeatureDiameters | TurnBase.PathOp.FeatureTool | TurnBase.PathOp.FeatureDepths | TurnBase.PathOp.FeatureNoFinalDepth | TurnBase.PathOp.FeatureCoolant
+        """opFeatures(obj) ... returns the OR'ed list of features used and supported by the operation."""
+        return (
+            TurnBase.PathOp.FeatureDiameters
+            | TurnBase.PathOp.FeatureTool
+            | TurnBase.PathOp.FeatureDepths
+            | TurnBase.PathOp.FeatureNoFinalDepth
+            | TurnBase.PathOp.FeatureCoolant
+        )
 
     def opGenerateGCode(self, obj, turnTool):
-        '''
+        """
         Generate GCode for the op
-        '''
+        """
         facingOP = LiblatheOp.FaceOP()
         facingOP.setParams(self.getProps(obj))
 
@@ -66,6 +72,7 @@ class ObjectTurnFace(TurnBase.ObjectOp):
             pathCommand = Path.Command(command.get_movement(), command.getParams())
             self.commandlist.append(pathCommand)
 
+
 def SetupProperties():
     setup = []
     setup.append("StepOver")
@@ -75,7 +82,7 @@ def SetupProperties():
 
 
 def Create(name, obj=None, parentJob=None):
-    '''Create(name) ... Creates and returns a TurnFace operation.'''
+    """Create(name) ... Creates and returns a TurnFace operation."""
     if obj is None:
         obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", name)
     obj.Proxy = ObjectTurnFace(obj, name, parentJob)

@@ -27,7 +27,8 @@ from PySide.QtGui import QApplication, QDialog, QMainWindow
 
 import FreeCAD, FreeCADGui
 
-class TurnToolHelperPanel():
+
+class TurnToolHelperPanel:
     def __init__(self):
 
         self.form = self.getForm()
@@ -35,42 +36,97 @@ class TurnToolHelperPanel():
         self.tipAngle = {
             "A": 85,  # Parallelogram (85 degree)
             "B": 82,  # Parallelogram (82 degree)
-            "C": 80,    # Rhombic (80 degree)
-            "D": 55,    # Rhombic (55 degree)
+            "C": 80,  # Rhombic (80 degree)
+            "D": 55,  # Rhombic (55 degree)
             "E": 75,  # Rhombic (75 degree)
             "F": 50,  # Rhombic (50 degree)
             "H": 120,  # Hexagonal
             "K": 55,  # Parallelogram (55 degree)
-            "L": 90, 	# Rectangular
-            "M": 86, 	# Rhombic (86 degree)
-            "O": 135, 	# Octagonal
-            "P": 108, 	# Pentagonal
-            "R": 90, 	# Round
-            "S": 90, 	# Square
-            "T": 60, 	# Triangular
-            "V": 35,    # Rhombic (35 degree)
-            "W": 60, 	# Trigon
-            "X": None   # Special Shape
+            "L": 90,  # Rectangular
+            "M": 86,  # Rhombic (86 degree)
+            "O": 135,  # Octagonal
+            "P": 108,  # Pentagonal
+            "R": 90,  # Round
+            "S": 90,  # Square
+            "T": 60,  # Triangular
+            "V": 35,  # Rhombic (35 degree)
+            "W": 60,  # Trigon
+            "X": None,  # Special Shape
         }
 
         self.shapeSize = {
-            "C": {"03": 3.97, "04": 4.76, "05": 5.56, "06": 6.35, "08": 7.94, \
-            "09": 9.525, "12": 12.7, "16": 15.875, "19": 19.05, "22": 22.225, \
-            "25": 25.4},
-            "D": {"04": 3.97, "05": 4.76, "06": 5.56, "07": 6.35, "09": 7.94, \
-            "11": 9.525, "15": 12.7, "19": 15.875, "23": 19.05},
-            "R": {"06": 6.0, "08": 8.0, "09": 9.525, "10": 10, "12": 12.0, \
-            "16": 16, "20": 20, "25": 25},
-            "S": {"03": 3.97, "04": 4.76, "05": 5.56, "06": 6.35, "08": 7.94, \
-            "09": 9.525, "12": 12.7, "16": 15.875, "19": 19.05, "22": 22.225, \
-            "25": 25.4},
-            "T": {"08": 4.76, "09": 5.56, "11": 6.35, "13": 7.94, "16": 9.525, \
-            "22": 12.7, "27": 15.875, "33": 19.05, "38": 22.225, "44": 25.4},
-            "V": {"08": 4.76, "09": 5.56, "11": 6.35, "13": 7.94, "16": 9.525, \
-            "22": 12.7},
-            "W": {"02": 3.97, "L3": 4.76, "03": 5.56, "04": 6.35, "05": 7.94, \
-            "06": 9.525, "08": 12.7, "10": 15.875, "13": 19.05},
-            "X" : {}
+            "C": {
+                "03": 3.97,
+                "04": 4.76,
+                "05": 5.56,
+                "06": 6.35,
+                "08": 7.94,
+                "09": 9.525,
+                "12": 12.7,
+                "16": 15.875,
+                "19": 19.05,
+                "22": 22.225,
+                "25": 25.4,
+            },
+            "D": {
+                "04": 3.97,
+                "05": 4.76,
+                "06": 5.56,
+                "07": 6.35,
+                "09": 7.94,
+                "11": 9.525,
+                "15": 12.7,
+                "19": 15.875,
+                "23": 19.05,
+            },
+            "R": {
+                "06": 6.0,
+                "08": 8.0,
+                "09": 9.525,
+                "10": 10,
+                "12": 12.0,
+                "16": 16,
+                "20": 20,
+                "25": 25,
+            },
+            "S": {
+                "03": 3.97,
+                "04": 4.76,
+                "05": 5.56,
+                "06": 6.35,
+                "08": 7.94,
+                "09": 9.525,
+                "12": 12.7,
+                "16": 15.875,
+                "19": 19.05,
+                "22": 22.225,
+                "25": 25.4,
+            },
+            "T": {
+                "08": 4.76,
+                "09": 5.56,
+                "11": 6.35,
+                "13": 7.94,
+                "16": 9.525,
+                "22": 12.7,
+                "27": 15.875,
+                "33": 19.05,
+                "38": 22.225,
+                "44": 25.4,
+            },
+            "V": {"08": 4.76, "09": 5.56, "11": 6.35, "13": 7.94, "16": 9.525, "22": 12.7},
+            "W": {
+                "02": 3.97,
+                "L3": 4.76,
+                "03": 5.56,
+                "04": 6.35,
+                "05": 7.94,
+                "06": 9.525,
+                "08": 12.7,
+                "10": 15.875,
+                "13": 19.05,
+            },
+            "X": {},
         }
 
         self.noseRadius = {
@@ -86,7 +142,7 @@ class TurnToolHelperPanel():
             "20": 2.0,
             "24": 2.4,
             "28": 2.8,
-            "32": 3.2
+            "32": 3.2,
         }
 
         # Load UI Components
@@ -103,7 +159,7 @@ class TurnToolHelperPanel():
         # self.directionLabel = self.form.directionLabel
         self.resultLabel = self.form.resultLabel
 
-        #connect
+        # connect
         self.shapeComboBox.currentIndexChanged.connect(self.loadShapeSize)
         self.shapeComboBox.currentIndexChanged.connect(self.loadToolData)
         self.sizeComboBox.currentIndexChanged.connect(self.loadToolData)
@@ -143,11 +199,12 @@ class TurnToolHelperPanel():
                 self.radiusLabel.setText(str(_radiusLabel))
                 # self.directionLabel.setText(_direction)
 
-            toolString  = "{shape}---{size}--{radius}--{direction}".format(shape = _shape, size = _size, \
-                                                                radius = _radius, direction = _direction)
-            self.resultLabel.setText(toolString )
+            toolString = "{shape}---{size}--{radius}--{direction}".format(
+                shape=_shape, size=_size, radius=_radius, direction=_direction
+            )
+            self.resultLabel.setText(toolString)
 
-    def getEdgeLength(self, _shape, _length ):
+    def getEdgeLength(self, _shape, _length):
         """
         Return the edge length for the tool
         """
@@ -155,7 +212,7 @@ class TurnToolHelperPanel():
         try:
             edgeLength = self.shapeSize[_shape][_length]
             return edgeLength
-        except(KeyError):
+        except KeyError:
             return "-"
 
     def getRadiusValue(self, radius):
@@ -166,7 +223,7 @@ class TurnToolHelperPanel():
         try:
             _radius = self.noseRadius[radius]
             return _radius
-        except(KeyError):
+        except KeyError:
             return "-"
 
     def getTipAngle(self, shape):
@@ -177,7 +234,7 @@ class TurnToolHelperPanel():
         try:
             _tip_angle = self.tipAngle[shape]
             return _tip_angle
-        except(KeyError):
+        except KeyError:
             return "-"
 
     def loadShapeSize(self, index):
@@ -218,9 +275,11 @@ class TurnToolHelperPanel():
 class CommandTurnToolHelper:
 
     def GetResources(self):
-        return {'Pixmap': 'CAM_TurnToolHelper',
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("CAM", "Turn Tool Helper"),
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("CAM", "Derive toolbit parameters from isocode")}
+        return {
+            "Pixmap": "CAM_TurnToolHelper",
+            "MenuText": QtCore.QT_TRANSLATE_NOOP("CAM", "Turn Tool Helper"),
+            "ToolTip": QtCore.QT_TRANSLATE_NOOP("CAM", "Derive toolbit parameters from isocode"),
+        }
 
     def Activated(self):
         panel = TurnToolHelperPanel()
@@ -229,7 +288,4 @@ class CommandTurnToolHelper:
 
 if FreeCAD.GuiUp:
     # register the FreeCAD command
-    FreeCADGui.addCommand('CAM_TurnToolHelper', CommandTurnToolHelper())
-
-
-
+    FreeCADGui.addCommand("CAM_TurnToolHelper", CommandTurnToolHelper())

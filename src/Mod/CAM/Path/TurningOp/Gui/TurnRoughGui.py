@@ -45,19 +45,23 @@ else:
 
 
 class TaskPanelOpPage(TurnBaseGui.TaskPanelTurnBase):
-    '''Page controller class for Turning operations.'''
+    """Page controller class for Turning operations."""
 
     def setOpFields(self, obj):
-        '''setFields(obj) ... transfers obj's property values to UI'''
+        """setFields(obj) ... transfers obj's property values to UI"""
         self.form.finishPasses.setEnabled(False)
 
-Command = PathOpGui.SetupOperation('TurnRough',
-                                   TurnRough.Create,
-                                   TaskPanelOpPage,
-                                   'CAM_TurnRough',
-                                   QtCore.QT_TRANSLATE_NOOP("TurnRough", "Turn Rough"),
-                                   QtCore.QT_TRANSLATE_NOOP("TurnRough",
-                                                            "Creates a CAM Turninging Roughing object from a features of a base object"),
-                                   TurnRough.SetupProperties)
+
+Command = PathOpGui.SetupOperation(
+    "TurnRough",
+    TurnRough.Create,
+    TaskPanelOpPage,
+    "CAM_TurnRough",
+    QtCore.QT_TRANSLATE_NOOP("TurnRough", "Turn Rough"),
+    QtCore.QT_TRANSLATE_NOOP(
+        "TurnRough", "Creates a CAM Turninging Roughing object from a features of a base object"
+    ),
+    TurnRough.SetupProperties,
+)
 
 FreeCAD.Console.PrintLog("Loading TurnRoughGui... done\n")

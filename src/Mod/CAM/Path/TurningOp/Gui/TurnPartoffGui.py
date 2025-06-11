@@ -45,10 +45,10 @@ else:
 
 
 class TaskPanelOpPage(TurnBaseGui.TaskPanelTurnBase):
-    '''Page controller class for Turning operations.'''
+    """Page controller class for Turning operations."""
 
     def setOpFields(self, obj):
-        '''setFields(obj) ... transfers obj's property values to UI'''
+        """setFields(obj) ... transfers obj's property values to UI"""
 
         self.form.stepOver.setEnabled(False)
         self.form.finishPasses.setEnabled(False)
@@ -56,13 +56,16 @@ class TaskPanelOpPage(TurnBaseGui.TaskPanelTurnBase):
         self.form.stockToLeave.setEnabled(False)
 
 
-Command = PathOpGui.SetupOperation('TurnPartoff',
-                                   TurnPartoff.Create,
-                                   TaskPanelOpPage,
-                                   'CAM_TurnPartoff',
-                                   QtCore.QT_TRANSLATE_NOOP("TurnPartoff", "Turn Part"),
-                                   QtCore.QT_TRANSLATE_NOOP("TurnPartoff",
-                                                            "Creates a CAM Turninging Part object from a features of a base object"),
-                                   TurnPartoff.SetupProperties)
+Command = PathOpGui.SetupOperation(
+    "TurnPartoff",
+    TurnPartoff.Create,
+    TaskPanelOpPage,
+    "CAM_TurnPartoff",
+    QtCore.QT_TRANSLATE_NOOP("TurnPartoff", "Turn Part"),
+    QtCore.QT_TRANSLATE_NOOP(
+        "TurnPartoff", "Creates a CAM Turninging Part object from a features of a base object"
+    ),
+    TurnPartoff.SetupProperties,
+)
 
 FreeCAD.Console.PrintLog("Loading TurnPartoffGui... done\n")
