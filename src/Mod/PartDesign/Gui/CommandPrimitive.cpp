@@ -100,7 +100,7 @@ void CmdPrimtiveCompAdditive::activated(int iMsg)
 
     std::string shapeType( primitiveIntToName(iMsg) );
 
-    renameSelf("Make additive " + shapeType);
+    openSelf("Make additive " + shapeType);
     if (shouldMakeBody) {
         pcActiveBody = PartDesignGui::makeBody(doc);
     }
@@ -268,7 +268,7 @@ void CmdPrimtiveCompSubtractive::activated(int iMsg)
     std::string shapeType( primitiveIntToName(iMsg) );
     auto FeatName( getUniqueObjectName(shapeType.c_str(), pcActiveBody) );
 
-    renameSelf("Make subtractive " + shapeType);
+    openSelf("Make subtractive " + shapeType);
     FCMD_OBJ_CMD(pcActiveBody,"newObject('PartDesign::Subtractive"<<shapeType<<"','"<<FeatName<<"')");
     Gui::Command::updateActive();
 

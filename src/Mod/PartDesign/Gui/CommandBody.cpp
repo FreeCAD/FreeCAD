@@ -189,8 +189,7 @@ void CmdPartDesignBody::activated(int iMsg)
         }
     }
 
-
-    renameSelf(QT_TRANSLATE_NOOP("Command", "Add a Body"));
+    openSelf(QT_TRANSLATE_NOOP("Command", "Add a Body"));
 
     std::string bodyName = getUniqueObjectName("Body");
     const char* bodyString = bodyName.c_str();
@@ -292,6 +291,7 @@ void CmdPartDesignBody::activated(int iMsg)
                     Gui::TaskView::TaskDialog *dlg = Gui::Control().activeDialog();
                     if (!dlg) {
                         Gui::Selection().clearSelection();
+                        Gui::Application::Instance->getDocument(docname.c_str())->getDocument()->postponeCommit();
                         Gui::Control().showDialog(new PartDesignGui::TaskDlgFeaturePick(planes, status, accepter, worker, true, quitter));
                     }
                 }
@@ -300,6 +300,8 @@ void CmdPartDesignBody::activated(int iMsg)
     }
 
     updateActive();
+
+    commitSelf();
 }
 
 bool CmdPartDesignBody::isActive()
@@ -435,7 +437,7 @@ void CmdPartDesignMigrate::activated(int iMsg)
     }
 
     // do the actual migration
-    renameSelf(QT_TRANSLATE_NOOP("Command", "Migrate legacy Part Design features to bodies"));
+    openSelf(QT_TRANSLATE_NOOP("Command", "Migrate legacy Part Design features to bodies"));
 
     for ( auto chainIt = featureChains.begin(); !featureChains.empty();
             featureChains.erase (chainIt), chainIt = featureChains.begin () ) {
@@ -580,7 +582,7 @@ void CmdPartDesignMoveTip::activated(int iMsg)
         return;
     }
 
-    renameSelf(QT_TRANSLATE_NOOP("Command", "Move tip to selected feature"));
+    openSelf(QT_TRANSLATE_NOOP("Command", "Move tip to selected feature"));
 
     if (selFeature == body) {
         FCMD_OBJ_CMD(body,"Tip = None");
@@ -625,7 +627,7 @@ void CmdPartDesignDuplicateSelection::activated(int iMsg)
 
     std::vector<App::DocumentObject*> beforeFeatures = getDocument()->getObjects();
 
-    renameSelf(QT_TRANSLATE_NOOP("Command", "Duplicate a Part Design object"));
+    openSelf(QT_TRANSLATE_NOOP("Command", "Duplicate a Part Design object"));
     doCommand(Doc,"FreeCADGui.runCommand('Std_DuplicateSelection')");
 
     if (pcActiveBody) {
@@ -654,6 +656,8 @@ void CmdPartDesignDuplicateSelection::activated(int iMsg)
     }
 
     updateActive();
+
+    commitSelf();
 }
 
 bool CmdPartDesignDuplicateSelection::isActive()
@@ -752,7 +756,7 @@ void CmdPartDesignMoveFeature::activated(int iMsg)
 
     PartDesign::Body* target = static_cast<PartDesign::Body*>(target_bodies[index]);
 
-    renameSelf(QT_TRANSLATE_NOOP("Command", "Move an object"));
+    openSelf(QT_TRANSLATE_NOOP("Command", "Move an object"));
 
     std::stringstream stream;
     stream << "features_ = [" << getObjectCmd(features.back());
@@ -825,6 +829,8 @@ void CmdPartDesignMoveFeature::activated(int iMsg)
     }*/
 
     updateActive();
+
+    commitSelf();
 }
 
 bool CmdPartDesignMoveFeature::isActive()
@@ -908,7 +914,7 @@ void CmdPartDesignMoveFeatureInTree::activated(int iMsg)
     // first object is the beginning of the body
     App::DocumentObject* target = index != 0 ? model[index-1] : nullptr;
 
-    renameSelf(QT_TRANSLATE_NOOP("Command", "Move a feature inside body"));
+    openSelf(QT_TRANSLATE_NOOP("Command", "Move a feature inside body"));
 
     App::DocumentObject* lastObject = target;
     for ( auto feat: features ) {
@@ -981,6 +987,8 @@ void CmdPartDesignMoveFeatureInTree::activated(int iMsg)
     }
 
     updateActive();
+
+    commitSelf();
 }
 
 bool CmdPartDesignMoveFeatureInTree::isActive()

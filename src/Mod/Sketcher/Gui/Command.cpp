@@ -245,7 +245,7 @@ void CmdSketcherNewSketch::activated(int iMsg)
         // create Sketch on Face
         std::string FeatName = getUniqueObjectName("Sketch");
 
-        openCommand(QT_TRANSLATE_NOOP("Command", "Create a new sketch on a face"));
+        renameSelf(QT_TRANSLATE_NOOP("Command", "Create a new sketch on a face"));
         doCommand(Doc,
                   "App.activeDocument().addObject('Sketcher::SketchObject', '%s')",
                   FeatName.c_str());
@@ -286,7 +286,7 @@ void CmdSketcherNewSketch::activated(int iMsg)
 
         std::string FeatName = getUniqueObjectName("Sketch");
 
-        openCommand(QT_TRANSLATE_NOOP("Command", "Create a new sketch"));
+        renameSelf(QT_TRANSLATE_NOOP("Command", "Create a new sketch"));
         if (groupSelected) {
             doCommand(Doc,
                     "App.activeDocument().getObject('%s').addObject(App.activeDocument().addObject('Sketcher::SketchObject', '%s'))",
@@ -549,7 +549,7 @@ void CmdSketcherReorientSketch::activated(int iMsg)
             break;
     }
 
-    openCommand(QT_TRANSLATE_NOOP("Command", "Reorient sketch"));
+    renameSelf(QT_TRANSLATE_NOOP("Command", "Reorient sketch"));
     Gui::cmdAppObjectArgs(
         sketch,
         "Placement = App.Placement(App.Vector(%f, %f, %f), App.Rotation(%f, %f, %f, %f))",
@@ -757,19 +757,21 @@ void CmdSketcherMapSketch::activated(int iMsg)
             Gui::Selection().getAsPropertyLinkSubList(support);
             std::string supportString = support.getPyReprString();
 
-            openCommand(QT_TRANSLATE_NOOP("Command", "Attach sketch"));
+            renameSelf(QT_TRANSLATE_NOOP("Command", "Attach sketch"));
             Gui::cmdAppObjectArgs(
                 sketch, "MapMode = \"%s\"", AttachEngine::getModeName(suggMapMode).c_str());
             Gui::cmdAppObjectArgs(sketch, "AttachmentSupport = %s", supportString.c_str());
-            commitCommand();
+            // commitCommand();
+            commitSelf();
             doCommand(Gui, "App.activeDocument().recompute()");
         }
         else {
-            openCommand(QT_TRANSLATE_NOOP("Command", "Detach sketch"));
+            renameSelf(QT_TRANSLATE_NOOP("Command", "Detach sketch"));
             Gui::cmdAppObjectArgs(
                 sketch, "MapMode = \"%s\"", AttachEngine::getModeName(suggMapMode).c_str());
             Gui::cmdAppObjectArgs(sketch, "AttachmentSupport = None");
-            commitCommand();
+            // commitCommand();
+            commitSelf();
             doCommand(Gui, "App.activeDocument().recompute()");
         }
     }
@@ -905,7 +907,7 @@ void CmdSketcherMirrorSketch::activated(int iMsg)
     refposid = smd.RefPosid;
 
     App::Document* doc = App::GetApplication().getActiveDocument();
-    openCommand(QT_TRANSLATE_NOOP("Command", "Create a mirrored sketch for each selected sketch"));
+    renameSelf(QT_TRANSLATE_NOOP("Command", "Create a mirrored sketch for each selected sketch"));
 
     for (std::vector<Gui::SelectionObject>::const_iterator it = selection.begin();
          it != selection.end();
@@ -1024,7 +1026,7 @@ void CmdSketcherMergeSketches::activated(int iMsg)
     // create Sketch
     std::string FeatName = getUniqueObjectName("Sketch");
 
-    openCommand(QT_TRANSLATE_NOOP("Command", "Merge sketches"));
+    renameSelf(QT_TRANSLATE_NOOP("Command", "Merge sketches"));
     doCommand(
         Doc, "App.activeDocument().addObject('Sketcher::SketchObject', '%s')", FeatName.c_str());
 
