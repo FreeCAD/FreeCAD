@@ -1115,8 +1115,25 @@ public:
     }
 
     std::list<Gui::InputHint> getToolHints() const override {
-        return lookupConstraintHints(cmd->getName(), selSeq.size());
+    const std::string commandName = cmd->getName();
+    const int selectionStep = seqIndex;
+
+    // Special case for Sketcher_ConstrainPointOnObject to generate dynamic step hint
+    if (commandName == "Sketcher_ConstrainPointOnObject") {
+        if (selectionStep == 0) {
+            return {{QObject::tr("%1 pick point or edge"), {Gui::InputHint::UserInput::MouseLeft}}};
+        } else if (selectionStep == 1 && !selSeq.empty()) {
+            if (isVertex(selSeq[0].GeoId, selSeq[0].PosId)) {
+                return {{QObject::tr("%1 pick edge"), {Gui::InputHint::UserInput::MouseLeft}}};
+            } else {
+                return {{QObject::tr("%1 pick point"), {Gui::InputHint::UserInput::MouseLeft}}};
+            }
+        }
     }
+
+    // For everything else, use the static table
+    return lookupConstraintHints(commandName, selectionStep);
+}
 
 private:
     struct ConstraintHintEntry {
@@ -1236,7 +1253,6 @@ private:
 
     static std::list<Gui::InputHint> lookupConstraintHints(const std::string& commandName, int selectionStep) {
         const auto constraintHintTable = getConstraintHintTable();
-
         auto it = std::ranges::find_if(constraintHintTable,
                                 [&commandName, selectionStep](const ConstraintHintEntry& entry) {
                                     return entry.commandName == commandName && entry.selectionStep == selectionStep;
