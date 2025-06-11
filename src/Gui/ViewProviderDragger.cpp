@@ -313,6 +313,7 @@ void ViewProviderDragger::updatePlacementFromDragger(DraggerComponents component
     }
 
     placement->setValue((finalDraggerPlacement * getTransformOrigin().inverse()));
+    updateDraggerPosition();
 }
 
 Base::Rotation Gui::ViewProviderDragger::orthonormalize(Base::Vector3d x,
