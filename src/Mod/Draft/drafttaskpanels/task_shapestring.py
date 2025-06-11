@@ -93,7 +93,7 @@ class ShapeStringTaskPanel:
         self.form.sbX.valueChanged.connect(self.set_point_x)
         self.form.sbY.valueChanged.connect(self.set_point_y)
         self.form.sbZ.valueChanged.connect(self.set_point_z)
-	    if hasattr(self.form.cbGlobalMode.checkbox_fuse, "checkStateChanged"):
+        if hasattr(self.form.cbGlobalMode.checkbox_fuse, "checkStateChanged"):
             self.form.cbGlobalMode.checkStateChanged.connect(self.set_global_mode)
         else:
             self.form.cbGlobalMode.stateChanged.connect(self.set_global_mode)
