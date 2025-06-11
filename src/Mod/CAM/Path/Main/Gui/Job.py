@@ -746,7 +746,7 @@ class TaskPanel:
         self.postProcessorArgsDefaultTooltip = self.form.postProcessorArguments.toolTip()
 
         # Populate the other comboboxes with enums from the job class
-        comboToPropertyMap = [("orderBy", "OrderOutputBy")]
+        comboToPropertyMap = [("orderBy", "OrderOutputBy"), ("jobType", "JobType")]
         enumTups = PathJob.ObjectJob.propertyEnumerations(dataType="raw")
         self.populateCombobox(self.form, enumTups, comboToPropertyMap)
 
@@ -864,6 +864,7 @@ class TaskPanel:
             try:
                 self.obj.SplitOutput = self.form.splitOutput.isChecked()
                 self.obj.OrderOutputBy = str(self.form.orderBy.currentData())
+                self.obj.JobType = str(self.form.jobType.currentData())
 
                 flist = []
                 for i in range(self.form.wcslist.count()):
@@ -982,6 +983,8 @@ class TaskPanel:
             self.form.splitOutput.setChecked(self.obj.SplitOutput)
         if hasattr(self.obj, "OrderOutputBy"):
             self.selectComboBoxText(self.form.orderBy, self.obj.OrderOutputBy)
+        if hasattr(self.obj, "JobType"):
+            self.selectComboBoxText(self.form.jobType, self.obj.JobType)
 
         if hasattr(self.obj, "Fixtures"):
             for f in self.obj.Fixtures:
@@ -1531,6 +1534,9 @@ class TaskPanel:
         self.form.postProcessorOutputFile.editingFinished.connect(self.getFields)
         self.form.postProcessorSetOutputFile.clicked.connect(self.setPostProcessorOutputFile)
 
+        # Job Type
+        self.form.jobType.currentIndexChanged.connect(self.getFields)
+
         # Workplan
         self.form.operationsList.itemSelectionChanged.connect(self.operationSelect)
         self.form.operationsList.indexesMoved.connect(self.getFields)
@@ -1661,13 +1667,13 @@ class TaskPanel:
         self.updateSelection()
 
 
-def Create(base, template=None, openTaskPanel=True):
+def Create(base, jobType, template=None, openTaskPanel=True):
     """Create(base, template) ... creates a job instance for the given base object
     using template to configure it."""
     FreeCADGui.addModule("Path.Main.Job")
     FreeCAD.ActiveDocument.openTransaction("Create Job")
     try:
-        obj = PathJob.Create("Job", base, template)
+        obj = PathJob.Create("Job", base, jobType, template)
         obj.ViewObject.Proxy = ViewProvider(obj.ViewObject)
         obj.ViewObject.addExtension("Gui::ViewProviderGroupExtensionPython")
         FreeCAD.ActiveDocument.commitTransaction()
