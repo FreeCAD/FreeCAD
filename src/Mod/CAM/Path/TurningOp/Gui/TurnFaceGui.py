@@ -45,22 +45,25 @@ else:
 
 
 class TaskPanelOpPage(TurnBaseGui.TaskPanelTurnBase):
-    '''Page controller class for Turning operations.'''
+    """Page controller class for Turning operations."""
 
     def setOpFields(self, obj):
-        '''setFields(obj) ... transfers obj's property values to UI'''
+        """setFields(obj) ... transfers obj's property values to UI"""
 
         self.form.finishPasses.setEnabled(False)
         self.form.allowGrooving.setEnabled(False)
 
 
-Command = PathOpGui.SetupOperation('TurnFace',
-                                   TurnFace.Create,
-                                   TaskPanelOpPage,
-                                   'CAM_TurnFace',
-                                   QtCore.QT_TRANSLATE_NOOP("TurnFace", "Turn Face"),
-                                   QtCore.QT_TRANSLATE_NOOP("TurnFace",
-                                                            "Creates a Turning Facing object from a features of a base object"),
-                                   TurnFace.SetupProperties)
+Command = PathOpGui.SetupOperation(
+    "TurnFace",
+    TurnFace.Create,
+    TaskPanelOpPage,
+    "CAM_TurnFace",
+    QtCore.QT_TRANSLATE_NOOP("TurnFace", "Turn Face"),
+    QtCore.QT_TRANSLATE_NOOP(
+        "TurnFace", "Creates a Turning Facing object from a features of a base object"
+    ),
+    TurnFace.SetupProperties,
+)
 
 FreeCAD.Console.PrintLog("Loading TurnFaceGui... done\n")
