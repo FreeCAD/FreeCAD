@@ -200,7 +200,7 @@ private:
 public:
     std::list<Gui::InputHint> getToolHints() const override
     {
-        return {{QObject::tr("%1 pick edge to split", "Sketcher Splitting: hint"),
+        return {{QObject::tr("%1 pick location on edge to split", "Sketcher Splitting: hint"),
                  {Gui::InputHint::UserInput::MouseLeft}}};
     }
 };
