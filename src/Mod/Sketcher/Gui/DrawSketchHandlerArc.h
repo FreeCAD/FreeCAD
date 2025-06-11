@@ -729,7 +729,7 @@ void DSHArcController::doChangeDrawSketchHandlerMode()
             auto& thirdParam = onViewParameters[OnViewParameter::Third];
             auto& fourthParam = onViewParameters[OnViewParameter::Fourth];
 
-            if (thirdParam->hasFinishedEditing || fourthParam->hasFinishedEditing) {
+            if (thirdParam->hasFinishedEditing && fourthParam->hasFinishedEditing) {
                 handler->setState(SelectMode::SeekThird);
             }
         } break;
@@ -745,7 +745,7 @@ void DSHArcController::doChangeDrawSketchHandlerMode()
                 auto& fifthParam = onViewParameters[OnViewParameter::Fifth];
                 auto& sixthParam = onViewParameters[OnViewParameter::Sixth];
 
-                if (fifthParam->hasFinishedEditing || sixthParam->hasFinishedEditing) {
+                if (fifthParam->hasFinishedEditing && sixthParam->hasFinishedEditing) {
                     handler->setState(SelectMode::End);
                 }
             }

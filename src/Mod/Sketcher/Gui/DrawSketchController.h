@@ -365,8 +365,33 @@ public:
         }
     }
 
+    void finishEditingOnAllOVPs()
+    {
+        // we call this on a current OnViewParameter when pressed CTRL+ENTER to accept
+        // input on all visible ovps of current mode
+
+        // we check for initial state, since `onViewValueChanged` can process to next mode
+        // if we set hasFinishedEditing on current mode
+        auto initialState = handler->state();
+        for (size_t i = 0; i < onViewParameters.size(); i++) {
+            if (isOnViewParameterOfCurrentMode(i) && isOnViewParameterVisible(i) && initialState == getState(static_cast<int>(i))) {
+                onViewParameters[i]->isSet = true;
+                onViewParameters[i]->hasFinishedEditing = true;
+
+                double currentValue = onViewParameters[i]->getValue();
+                onViewValueChanged(static_cast<int>(i), currentValue);
+            }
+        }
+    }
+
     void tryViewValueChanged(int onviewparameterindex, double value)
     {
+        // go only to next label if user has currently pressed enter on current one
+        int nextindex = onviewparameterindex + 1;
+        if (onViewParameters[onviewparameterindex]->hasFinishedEditing && isOnViewParameterOfCurrentMode(nextindex)) {
+            setFocusToOnViewParameter(nextindex);
+        }
+
         /* That is not supported with on-view parameters.
         // -> A machine does not forward to a next state when adapting the parameter (though it
         // may forward to
@@ -627,6 +652,13 @@ protected:
                              [this, parameter]() {
                                  unsetOnViewParameter(parameter);
                                  finishControlsChanged();
+                             });
+
+            // Connect Ctrl+Enter signal to apply values to all visible OVPs in current stage
+            QObject::connect(parameter,
+                             &Gui::EditableDatumLabel::finishEditingOnAllOVPs,
+                             [this]() {
+                                 finishEditingOnAllOVPs();
                              });
         }
     }
