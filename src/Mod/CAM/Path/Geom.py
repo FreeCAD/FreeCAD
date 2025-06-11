@@ -472,17 +472,19 @@ def wireForPath(path, startPoint=Vector(0, 0, 0)):
     Returns a wire representing all move commands found in the given path."""
     edges = []
     rapid = []
+    rapid_indexes = set()
     if hasattr(path, "Commands"):
         for cmd in path.Commands:
             edge = edgeForCmd(cmd, startPoint)
             if edge:
                 if cmd.Name in CmdMoveRapid:
                     rapid.append(edge)
+                    rapid_indexes.add(len(edges))
                 edges.append(edge)
                 startPoint = commandEndPoint(cmd, startPoint)
     if not edges:
-        return (None, rapid)
-    return (Part.Wire(edges), rapid)
+        return (None, rapid, rapid_indexes)
+    return (Part.Wire(edges), rapid, rapid_indexes)
 
 
 def wiresForPath(path, startPoint=Vector(0, 0, 0)):
