@@ -37,6 +37,8 @@
 #include <Gui/Command.h>
 #include <Gui/Selection/Selection.h>
 #include <Gui/ViewProvider.h>
+#include <Gui/Inventor/Draggers/Gizmo.h>
+#include <Gui/Inventor/Draggers/GizmoHelper.h>
 #include <Mod/PartDesign/App/FeatureDraft.h>
 #include <Mod/PartDesign/Gui/ReferenceSelection.h>
 
@@ -288,6 +290,47 @@ void TaskDraftParameters::apply()
     }
 
     TaskDressUpParameters::apply();
+}
+
+void TaskDraftParameters::setupGizmos(ViewProviderDressUp* vp)
+{
+    if (!Gizmos::isEnabled()) {
+        return;
+    }
+
+    gizmos = std::make_unique<Gizmos>();
+
+    auto rotationGizmo = new Gui::RotationGizmo(ui->draftAngle);
+
+    gizmos->addGizmo(rotationGizmo);
+    gizmos->initGizmos();
+
+    setGizmoPositions();
+
+    vp->attachGizmos(gizmos.get());
+}
+
+void TaskDraftParameters::setGizmoPositions()
+{
+    if (!gizmos) {
+        return;
+    }
+
+    auto draft = getObject<PartDesign::Draft>();
+    Part::TopoShape baseShape = draft->getBaseTopoShape();
+    std::vector<Part::TopoShape> faces = draft->getFaces(baseShape);
+
+    if (faces.size() != 0) {
+        Part::TopoShape face = faces[0];
+        auto f = TopoDS::Face(face.getShape());
+        auto com = getCentreOfMassFromFace(f);
+
+        // draft->
+
+        gizmos->visible = true;
+    } else {
+        gizmos->visible = false;
+    }
 }
 
 //**************************************************************************

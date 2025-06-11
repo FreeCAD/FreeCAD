@@ -20,19 +20,22 @@
  *                                                                         *
  ***************************************************************************/
 
-
 #include "PreCompiled.h"
 
 #include <App/Document.h>
 #include <App/DocumentObject.h>
 #include <App/Origin.h>
 #include <Base/Console.h>
+#include <Base/Converter.h>
 #include <Base/Tools.h>
 #include <Gui/Application.h>
 #include <Gui/CommandT.h>
 #include <Gui/Selection/Selection.h>
 #include <Gui/ViewProvider.h>
 #include <Gui/ViewProviderCoordinateSystem.h>
+#include <Gui/Inventor/Draggers/Gizmo.h>
+#include <Gui/Utilities.h>
+#include <Gui/Inventor/Draggers/SoRotationDragger.h>
 #include <Mod/PartDesign/App/FeatureRevolution.h>
 #include <Mod/PartDesign/App/FeatureGroove.h>
 #include <Mod/PartDesign/App/Body.h>
@@ -106,6 +109,8 @@ TaskRevolutionParameters::TaskRevolutionParameters(PartDesignGui::ViewProvider* 
     catch (const Base::Exception &ex) {
         ex.reportException();
     }
+
+    setupGizmos(RevolutionView);
 }
 
 Gui::ViewProviderCoordinateSystem* TaskRevolutionParameters::getOriginView() const
@@ -407,6 +412,8 @@ void TaskRevolutionParameters::onSelectionChanged(const Gui::SelectionChanges& m
 
                 recomputeFeature();
                 updateUI(mode);
+
+                setGizmoPositions();
             }
         }
     }
@@ -576,6 +583,10 @@ void TaskRevolutionParameters::onAxisChanged(int num)
         }
 
         recomputeFeature();
+
+        if (gizmos) {
+            setGizmoPositions();
+        }
     }
     catch (const Base::Exception& e) {
         e.reportException();
@@ -587,6 +598,12 @@ void TaskRevolutionParameters::onMidplane(bool on)
     if (getObject()) {
         propMidPlane->setValue(on);
         recomputeFeature();
+
+        if (gizmos) {
+            auto rotationGizmo = gizmos->getGizmo<RadialGizmo>(0);
+            rotationGizmo->multFactor *= on? 0.5: 2;
+            rotationGizmo->setRotAngle(ui->revolveAngle->value().getValue());
+        }
     }
 }
 
@@ -595,6 +612,18 @@ void TaskRevolutionParameters::onReversed(bool on)
     if (getObject()) {
         propReversed->setValue(on);
         recomputeFeature();
+
+        if (gizmos) {
+            auto rotationGizmo = gizmos->getGizmo<RadialGizmo>(0);
+            rotationGizmo->multFactor *= -1;
+            rotationGizmo->flipArrow();
+            rotationGizmo->setRotAngle(ui->revolveAngle->value().getValue());
+
+            rotationGizmo = gizmos->getGizmo<RadialGizmo>(1);
+            rotationGizmo->multFactor *= -1;
+            rotationGizmo->flipArrow();
+            rotationGizmo->setRotAngle(ui->revolveAngle2->value().getValue());
+        }
     }
 }
 
@@ -606,18 +635,31 @@ void TaskRevolutionParameters::onModeChanged(int index)
     switch (static_cast<PartDesign::Revolution::RevolMethod>(index)) {
     case PartDesign::Revolution::RevolMethod::Dimension:
         propEnum->setValue("Angle");
+        if (gizmos) {
+            gizmos->visible = true;
+            gizmos->getGizmo<RadialGizmo>(0)->getDraggerContainer()->visible = true;
+            gizmos->getGizmo<RadialGizmo>(1)->getDraggerContainer()->visible = false;
+        }
         break;
     case PartDesign::Revolution::RevolMethod::ToLast:
         propEnum->setValue(isGroove ? "ThroughAll" : "UpToLast");
+        if (gizmos) { gizmos->visible = false; }
         break;
     case PartDesign::Revolution::RevolMethod::ToFirst:
         propEnum->setValue("UpToFirst");
+        if (gizmos) { gizmos->visible = false; }
         break;
     case PartDesign::Revolution::RevolMethod::ToFace:
         propEnum->setValue("UpToFace");
+        if (gizmos) { gizmos->visible = false; }
         break;
     case PartDesign::Revolution::RevolMethod::TwoDimensions:
         propEnum->setValue("TwoAngles");
+        if (gizmos) {
+            gizmos->visible = true;
+            gizmos->getGizmo<RadialGizmo>(0)->getDraggerContainer()->visible = true;
+            gizmos->getGizmo<RadialGizmo>(1)->getDraggerContainer()->visible = true;
+        }
         break;
     }
 
@@ -702,6 +744,76 @@ void TaskRevolutionParameters::apply()
         facename = getFaceName();
     }
     FCMD_OBJ_CMD(tobj, "UpToFace = " << facename.toLatin1().data());
+}
+
+void TaskRevolutionParameters::setupGizmos(ViewProvider* vp)
+{
+    if (!Gizmos::isEnabled()) {
+        return;
+    }
+
+    gizmos = std::make_unique<Gizmos>();
+
+    auto rotationGizmo = new Gui::RadialGizmo(ui->revolveAngle);
+    auto rotationGizmo2 = new Gui::RadialGizmo(ui->revolveAngle2);
+
+    gizmos->addGizmo(rotationGizmo);
+    gizmos->addGizmo(rotationGizmo2);
+    gizmos->initGizmos();
+
+    setGizmoPositions();
+
+    vp->attachGizmos(gizmos.get());
+
+    rotationGizmo->getDraggerContainer()->visible = true;
+    rotationGizmo2->getDraggerContainer()->visible = false;
+
+    if (getReversed()) {
+        auto rotationGizmo = gizmos->getGizmo<RadialGizmo>(0);
+        rotationGizmo->multFactor *= -1;
+        rotationGizmo->setRotAngle(ui->revolveAngle->value().getValue());
+    }
+}
+
+void TaskRevolutionParameters::setGizmoPositions()
+{
+    if (!gizmos) {
+        return;
+    }
+
+    Base::Vector3d profileCog;
+    Base::Vector3d basePos;
+    Base::Vector3d axisDir;
+
+    if (isGroove) {
+        auto groove = getObject<PartDesign::Groove>();
+        Part::TopoShape profile = groove->getProfileShape();
+        
+        profile.getCenterOfGravity(profileCog);
+        basePos = groove->Base.getValue();
+        axisDir = groove->Axis.getValue();
+    } else {
+        auto revolution = getObject<PartDesign::Revolution>();
+        Part::TopoShape profile = revolution->getProfileShape();
+        
+        profile.getCenterOfGravity(profileCog);
+        basePos = revolution->Base.getValue();
+        axisDir = revolution->Axis.getValue();
+    }
+
+    auto diff = profileCog - basePos;
+    axisDir.Normalize();
+    auto axisComp = axisDir * diff.Dot(axisDir);
+    auto normalComp = diff - axisComp;
+
+    auto rotationGizmo = gizmos->getGizmo<RadialGizmo>(0);
+    rotationGizmo->Gizmo::setDraggerPlacement(basePos + axisComp, normalComp);
+    rotationGizmo->getDraggerContainer()->setArcNormalDirection(Base::convertTo<SbVec3f>(axisDir));
+
+    rotationGizmo = gizmos->getGizmo<RadialGizmo>(1);
+    rotationGizmo->Gizmo::setDraggerPlacement(basePos + axisComp, normalComp);
+    rotationGizmo->getDraggerContainer()->setArcNormalDirection(Base::convertTo<SbVec3f>(axisDir));
+    rotationGizmo->flipArrow();
 }
 
 //**************************************************************************

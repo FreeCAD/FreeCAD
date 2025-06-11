@@ -438,6 +438,17 @@ Vector3<float_type>& Vector3<float_type>::Normalize()
 }
 
 template<class float_type>
+Vector3<float_type> Vector3<float_type>::getNormalized() const
+{
+    float_type fLen = Length();
+    if (fLen != static_cast<float_type>(0.0) && fLen != static_cast<float_type>(1.0)) {
+        return Vector3(x / fLen, y / fLen, z / fLen);
+    }
+
+    return Vector3(x, y, z);
+}
+
+template<class float_type>
 bool Vector3<float_type>::IsNull() const
 {
     float_type n {0.0};
