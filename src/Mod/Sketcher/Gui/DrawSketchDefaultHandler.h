@@ -910,18 +910,18 @@ protected:
         try {
             // add auto-constraints
             if (owncommand) {
-                Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add Auto-Constraints"));
+                openCommand(QT_TRANSLATE_NOOP("Command", "Add Auto-Constraints"));
             }
 
             tryAddAutoConstraints();
 
             if (owncommand) {
-                Gui::Command::commitCommand();
+                commitCommand();
             }
         }
         catch (const Base::PyException&) {
             if (owncommand) {
-                Gui::Command::abortCommand();
+                abortCommand();
             }
         }
     }
@@ -1223,6 +1223,20 @@ protected:
         createShape(true);
         drawEdit(toPointerVector(ShapeGeometry));
     }
+    void openCommand(const std::string& name)
+    {
+        currentTransactionID = Gui::Command::openCommand(sketchgui->getDocument()->getDocument(), name);
+    }
+    void commitCommand()
+    {
+        Gui::Command::commitCommand(currentTransactionID);
+        currentTransactionID = 0;
+    }
+    void abortCommand()
+    {
+        Gui::Command::abortCommand(currentTransactionID);
+        currentTransactionID = 0;
+    }
 
     //@}
 
@@ -1235,6 +1249,7 @@ protected:
 
     bool avoidRedundants;
     bool continuousMode;
+    int currentTransactionID {0};
 };
 
 }  // namespace SketcherGui
