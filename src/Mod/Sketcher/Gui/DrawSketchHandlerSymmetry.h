@@ -220,7 +220,8 @@ public:
     {
         using enum Gui::InputHint::UserInput;
 
-        return {{QObject::tr("%1 pick axis or edge", "Sketcher Symmetry: hint"), {MouseLeft}}};
+        return {
+            {QObject::tr("%1 pick axis, edge, or point", "Sketcher Symmetry: hint"), {MouseLeft}}};
     }
 
     void deleteOriginalGeos()
