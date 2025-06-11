@@ -261,6 +261,7 @@ bool ViewProviderDatum::setEdit(int ModNum)
 
         oldWb = Gui::Command::assureWorkbench("PartDesignWorkbench");
 
+        getDocument()->getDocument()->postponeCommit();
         // start the edit dialog
         if (datumDlg)
             Gui::Control().showDialog(datumDlg);
