@@ -32,7 +32,7 @@ from Path.Tool.ui.property import (
     EnumPropertyEditorWidget,
     LabelPropertyEditorWidget,
 )
-from Path.Tool.toolbit.docobject import DetachedDocumentObject
+from Path.Tool.docobject import DetachedDocumentObject
 
 
 class TestPropertyEditorFactory(unittest.TestCase):

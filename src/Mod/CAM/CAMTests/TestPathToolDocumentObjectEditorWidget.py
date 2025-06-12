@@ -34,8 +34,8 @@ from Path.Tool.ui.property import (
     EnumPropertyEditorWidget,
     LabelPropertyEditorWidget,
 )
+from Path.Tool.docobject import DetachedDocumentObject
 from Path.Tool.ui.docobject import DocumentObjectEditorWidget, _get_label_text
-from Path.Tool.toolbit.docobject import DetachedDocumentObject
 
 
 class TestDocumentObjectEditorWidget(unittest.TestCase):
