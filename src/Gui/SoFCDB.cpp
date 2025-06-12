@@ -143,7 +143,7 @@ void Gui::SoFCDB::init()
     SoFCTransform                   ::initClass();
     SoAutoZoomTranslation           ::initClass();
     MarkerBitmaps                   ::initClass();
-    SoTransformDragger                 ::initClass();
+    SoTransformDragger              ::initClass();
     SmSwitchboard                   ::initClass();
     SoFCSeparator                   ::initClass();
     SoFCSelectionRoot               ::initClass();
