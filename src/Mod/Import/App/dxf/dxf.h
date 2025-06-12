@@ -176,6 +176,18 @@ struct LWPolyDataOut
     point3D Extr;
 };
 
+// Statistics reporting structure
+struct DxfImportStats
+{
+    double importTimeSeconds = 0.0;
+    std::string dxfVersion;
+    std::string dxfEncoding;
+    std::map<std::string, int> entityCounts;
+    std::map<std::string, std::string> importSettings;
+    int totalEntitiesCreated = 0;
+    int unsupportedFeaturesCount = 0;
+};
+
 
 // "using" for enums is not supported by all platforms
 // https://stackoverflow.com/questions/41167119/how-to-fix-a-wsubobject-linkage-warning
@@ -455,6 +467,7 @@ private:
     double m_unitScalingFactor = 0.0;
 
 protected:
+    DxfImportStats m_stats;
     // An additional scaling factor which can be modified before readDXF is called, and will be
     // incorporated into m_unitScalingFactor.
     void SetAdditionalScaling(double scaling)
