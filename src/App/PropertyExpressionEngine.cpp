@@ -21,6 +21,9 @@
  ***************************************************************************/
 
 #include "PreCompiled.h"
+#ifdef _PreComp_
+#include <CXX/Objects.hxx>
+#endif
 
 #include <App/Application.h>
 #include <App/Document.h>
@@ -29,7 +32,6 @@
 #include <Base/Reader.h>
 #include <Base/Tools.h>
 #include <Base/Writer.h>
-#include <CXX/Objects.hxx>
 
 #include "PropertyExpressionEngine.h"
 #include "ExpressionVisitors.h"
