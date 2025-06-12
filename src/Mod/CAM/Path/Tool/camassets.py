@@ -21,7 +21,7 @@
 # ***************************************************************************
 import json
 import pathlib
-from typing import Optional, Union, Sequence
+from typing import List, Optional, Union, Sequence
 import Path
 from Path import Preferences
 from Path.Preferences import addToolPreferenceObserver
@@ -162,7 +162,8 @@ asset_mapping = {
     "toolbitshape": "Shape/{asset_id}.fcstd",
     "toolbitshapesvg": "Shape/{asset_id}",  # Asset ID has ".svg" included
     "toolbitshapepng": "Shape/{asset_id}",  # Asset ID has ".png" included
-    "machine": "Machine/{asset_id}.fcm",
+    "machine": "Machine/{asset_id}.fcmachine",
+    "spindle": "Spindle/{asset_id}.fcspindle",
 }
 
 user_asset_store = FileStore(
@@ -221,6 +222,16 @@ class CamAssetManager(AssetManager):
         store if not found locally.
         """
         return super().get_or_none(uri, store=store, depth=depth)
+
+    def fetch(
+        self,
+        asset_type: Optional[str] = None,
+        limit: Optional[int] = None,
+        offset: Optional[int] = None,
+        store: Union[str, Sequence[str]] = ("local", "builtin"),
+        depth: Optional[int] = None,
+    ) -> List[Asset]:
+        return super().fetch(asset_type, limit=limit, offset=offset, store=store, depth=depth)
 
 
 # Set up the CAM asset manager.

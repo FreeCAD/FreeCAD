@@ -1,205 +1,290 @@
+# -*- coding: utf-8 -*-
+# ***************************************************************************
+# *   Copyright (c) 2025 Samuel Abels <knipknap@gmail.com>                  *
+# *                                                                         *
+# *   This program is free software; you can redistribute it and/or modify  *
+# *   it under the terms of the GNU Lesser General Public License (LGPL)    *
+# *   as published by the Free Software Foundation; either version 2 of     *
+# *   the License, or (at your option) any later version.                   *
+# *   for detail see the LICENCE text file.                                 *
+# *                                                                         *
+# *   This program is distributed in the hope that it will be useful,       *
+# *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+# *   GNU Library General Public License for more details.                  *
+# *                                                                         *
+# *   You should have received a copy of the GNU Library General Public     *
+# *   License along with this program; if not, write to the Free Software   *
+# *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
+# *   USA                                                                   *
+# *                                                                         *
+# ***************************************************************************
 import unittest
 import FreeCAD
 from Path.Tool.machine.models.machine import Machine
+from Path.Tool.machine.models.mill import Mill
+from Path.Tool.machine.models.lathe import Lathe
+from Path.Tool.spindle import Spindle
+
+
+# Mock Spindle for testing
+class MockSpindle(Spindle):
+    def __init__(self, label="Mock Spindle", max_rpm=10000, id="spindle1"):
+        super().__init__(
+            label=label,
+            max_power=2,
+            min_rpm=2000,
+            max_rpm=max_rpm,
+            max_torque=10,
+            peak_torque_rpm=3000,
+            id=id,
+        )
+
+    def validate(self):
+        pass
+
+    def dump(self, do_print=True):
+        return f"MockSpindle: {self.label}"
 
 
 class TestPathToolMachine(unittest.TestCase):
     def setUp(self):
-        self.default_machine = Machine()
+        self.mock_spindle1 = MockSpindle("Spindle 1", 10000)
+        self.mock_spindle2 = MockSpindle("Spindle 2", 20000)
+        self.default_machine = Machine(
+            label="Default Machine", max_feed=FreeCAD.Units.Quantity("2000 mm/min")
+        )
 
     def test_initialization_defaults(self):
-        self.assertEqual(self.default_machine.label, "Machine")
-        self.assertAlmostEqual(self.default_machine.max_power.getValueAs("W").Value, 2000)
-        self.assertAlmostEqual(self.default_machine.get_min_rpm_value(), 3000)
-        self.assertAlmostEqual(self.default_machine.get_max_rpm_value(), 60000)
-        self.assertAlmostEqual(self.default_machine.min_feed.getValueAs("mm/min").Value, 1)
-        self.assertAlmostEqual(self.default_machine.max_feed.getValueAs("mm/min").Value, 2000)
-        expected_peak_torque_rpm = 60000 / 3
-        self.assertAlmostEqual(
-            self.default_machine.get_peak_torque_rpm_value(),
-            expected_peak_torque_rpm,
-        )
-        expected_max_torque_nm = 2000 * 9.5488 / expected_peak_torque_rpm
-        self.assertAlmostEqual(
-            self.default_machine.max_torque.getValueAs("Nm").Value,
-            expected_max_torque_nm,
-        )
-        self.assertIsNotNone(self.default_machine.id)
+        self.assertEqual(self.default_machine.label, "Default Machine")
+        self.assertAlmostEqual(self.default_machine.max_feed.Value, 33.33, 2)
+        self.assertEqual(self.default_machine.post_processor, "generic")
+        self.assertEqual(self.default_machine.post_processor_args, "")
+        self.assertEqual(len(self.default_machine.spindles), 0)
+        self.assertIsNotNone(self.default_machine.get_id())
 
     def test_initialization_custom_values(self):
         custom_machine = Machine(
             label="Custom Machine",
-            max_power=5,
-            min_rpm=1000,
-            max_rpm=20000,
-            max_torque=50,
-            peak_torque_rpm=15000,
-            min_feed=10,
-            max_feed=5000,
+            max_feed=FreeCAD.Units.Quantity(5000, "mm/min"),
+            post_processor="linuxcnc",
+            post_processor_args="--args",
             id="custom-id",
         )
         self.assertEqual(custom_machine.label, "Custom Machine")
-        self.assertAlmostEqual(custom_machine.max_power.getValueAs("W").Value, 5000)
-        self.assertAlmostEqual(custom_machine.get_min_rpm_value(), 1000)
-        self.assertAlmostEqual(custom_machine.get_max_rpm_value(), 20000)
-        self.assertAlmostEqual(custom_machine.max_torque.getValueAs("Nm").Value, 50)
-        self.assertAlmostEqual(custom_machine.get_peak_torque_rpm_value(), 15000)
-        self.assertAlmostEqual(custom_machine.min_feed.getValueAs("mm/min").Value, 10)
-        self.assertAlmostEqual(custom_machine.max_feed.getValueAs("mm/min").Value, 5000)
-        self.assertEqual(custom_machine.id, "custom-id")
+        self.assertAlmostEqual(custom_machine.max_feed.Value, 83.33, 2)
+        self.assertEqual(custom_machine.post_processor, "linuxcnc")
+        self.assertEqual(custom_machine.post_processor_args, "--args")
+        self.assertEqual(custom_machine.get_id(), "custom-id")
+        self.assertEqual(len(custom_machine.spindles), 0)
 
-    def test_initialization_custom_torque_quantity(self):
-        custom_torque_machine = Machine(max_torque=FreeCAD.Units.Quantity(100, "Nm"))
-        self.assertAlmostEqual(custom_torque_machine.max_torque.getValueAs("Nm").Value, 100)
-
-    def test_validate_valid(self):
+    def test_validation_valid(self):
         try:
             self.default_machine.validate()
         except AttributeError as e:
             self.fail(f"Validation failed unexpectedly: {e}")
 
-    def test_validate_missing_label(self):
+    def test_validation_missing_label(self):
         self.default_machine.label = ""
         with self.assertRaisesRegex(AttributeError, "Machine name is required"):
             self.default_machine.validate()
 
-    def test_validate_peak_torque_rpm_greater_than_max_rpm(self):
-        self.default_machine.set_peak_torque_rpm(70000)
-        with self.assertRaisesRegex(AttributeError, "Peak Torque RPM.*must be less than max RPM"):
+    def test_validation_non_positive_max_feed(self):
+        self.default_machine.max_feed = FreeCAD.Units.Quantity("0 mm/min")
+        with self.assertRaisesRegex(AttributeError, "Max feed rate must be positive"):
             self.default_machine.validate()
 
-    def test_validate_max_rpm_less_than_min_rpm(self):
-        self.default_machine = Machine()
-        self.default_machine.set_min_rpm(4000)  # min_rpm = 4000 RPM
-        self.default_machine.set_peak_torque_rpm(1000)  # peak_torque_rpm = 1000 RPM
-        self.default_machine._max_rpm = 2000 / 60.0  # max_rpm = 2000 RPM (33.33 1/s)
-        self.assertLess(
-            self.default_machine.get_max_rpm_value(),
-            self.default_machine.get_min_rpm_value(),
-        )
-        with self.assertRaisesRegex(AttributeError, "Max RPM must be larger than min RPM"):
+    def test_spindle_management(self):
+        # Test adding spindles
+        self.default_machine.add_spindle(self.mock_spindle1)
+        self.assertEqual(len(self.default_machine.spindles), 1)
+        self.assertEqual(self.default_machine.spindles[0], self.mock_spindle1)
+
+        # Test adding another spindle
+        self.default_machine.add_spindle(self.mock_spindle2)
+        self.assertEqual(len(self.default_machine.spindles), 2)
+        self.assertEqual(self.default_machine.spindles[1], self.mock_spindle2)
+
+        # Test validate with spindles
+        try:
             self.default_machine.validate()
+        except AttributeError as e:
+            self.fail(f"Validation failed unexpectedly: {e}")
 
-    def test_validate_max_feed_less_than_min_feed(self):
-        self.default_machine.set_min_feed(1000)
-        self.default_machine._max_feed = 500
-        with self.assertRaisesRegex(AttributeError, "Max feed must be larger than min feed"):
-            self.default_machine.validate()
-
-    def test_get_torque_at_rpm(self):
-        torque_below_peak = self.default_machine.get_torque_at_rpm(10000)
-        expected_peak_torque_rpm = 60000 / 3
-        expected_max_torque_nm = 2000 * 9.5488 / expected_peak_torque_rpm
-        expected_torque_below_peak = expected_max_torque_nm / expected_peak_torque_rpm * 10000
-        self.assertAlmostEqual(torque_below_peak, expected_torque_below_peak)
-
-        torque_at_peak = self.default_machine.get_torque_at_rpm(
-            self.default_machine.get_peak_torque_rpm_value()
-        )
-        self.assertAlmostEqual(
-            torque_at_peak,
-            self.default_machine.max_torque.getValueAs("Nm").Value,
-        )
-
-        torque_above_peak = self.default_machine.get_torque_at_rpm(50000)
-        expected_torque_above_peak = 2000 * 9.5488 / 50000
-        self.assertAlmostEqual(torque_above_peak, expected_torque_above_peak)
-
-    def test_set_label(self):
-        self.default_machine.label = "New Label"
-        self.assertEqual(self.default_machine.label, "New Label")
-
-    def test_set_max_power(self):
-        self.default_machine = Machine()
-        self.default_machine.set_max_power(5, "hp")
-        self.assertAlmostEqual(
-            self.default_machine.max_power.getValueAs("W").Value,
-            5 * 745.7,
-            places=4,
-        )
-        with self.assertRaisesRegex(AttributeError, "Max power must be positive"):
-            self.default_machine.set_max_power(0)
-
-    def test_set_min_rpm(self):
-        self.default_machine = Machine()
-        self.default_machine.set_min_rpm(5000)
-        self.assertAlmostEqual(self.default_machine.get_min_rpm_value(), 5000)
-        with self.assertRaisesRegex(AttributeError, "Min RPM cannot be negative"):
-            self.default_machine.set_min_rpm(-100)
-        self.default_machine = Machine()
-        self.default_machine.set_min_rpm(70000)
-        self.assertAlmostEqual(self.default_machine.get_min_rpm_value(), 70000)
-        self.assertAlmostEqual(self.default_machine.get_max_rpm_value(), 70001)
-
-    def test_set_max_rpm(self):
-        self.default_machine = Machine()
-        self.default_machine.set_max_rpm(50000)
-        self.assertAlmostEqual(self.default_machine.get_max_rpm_value(), 50000)
-        with self.assertRaisesRegex(AttributeError, "Max RPM must be positive"):
-            self.default_machine.set_max_rpm(0)
-        self.default_machine = Machine()
-        self.default_machine.set_max_rpm(2000)
-        self.assertAlmostEqual(self.default_machine.get_max_rpm_value(), 2000)
-        self.assertAlmostEqual(self.default_machine.get_min_rpm_value(), 1999)
-        self.default_machine = Machine()
-        self.default_machine.set_max_rpm(0.5)
-        self.assertAlmostEqual(self.default_machine.get_max_rpm_value(), 0.5)
-        self.assertAlmostEqual(self.default_machine.get_min_rpm_value(), 0)
-
-    def test_set_min_feed(self):
-        self.default_machine = Machine()
-        self.default_machine.set_min_feed(500, "inch/min")
-        self.assertAlmostEqual(
-            self.default_machine.min_feed.getValueAs("mm/min").Value,
-            500 * 25.4,
-            places=4,
-        )
-        with self.assertRaisesRegex(AttributeError, "Min feed cannot be negative"):
-            self.default_machine.set_min_feed(-10)
-        self.default_machine = Machine()
-        self.default_machine.set_min_feed(3000)
-        self.assertAlmostEqual(self.default_machine.min_feed.getValueAs("mm/min").Value, 3000)
-        self.assertAlmostEqual(self.default_machine.max_feed.getValueAs("mm/min").Value, 3001)
-
-    def test_set_max_feed(self):
-        self.default_machine = Machine()
-        self.default_machine.set_max_feed(3000)
-        self.assertAlmostEqual(self.default_machine.max_feed.getValueAs("mm/min").Value, 3000)
-        with self.assertRaisesRegex(AttributeError, "Max feed must be positive"):
-            self.default_machine.set_max_feed(0)
-        self.default_machine = Machine()
-        self.default_machine.set_min_feed(600)
-        self.default_machine.set_max_feed(500)
-        self.assertAlmostEqual(self.default_machine.max_feed.getValueAs("mm/min").Value, 500)
-        self.assertAlmostEqual(self.default_machine.min_feed.getValueAs("mm/min").Value, 499)
-        self.default_machine = Machine()
-        self.default_machine.set_max_feed(0.5)
-        self.assertAlmostEqual(self.default_machine.max_feed.getValueAs("mm/min").Value, 0.5)
-        self.assertAlmostEqual(self.default_machine.min_feed.getValueAs("mm/min").Value, 0)
-
-    def test_set_peak_torque_rpm(self):
-        self.default_machine = Machine()
-        self.default_machine.set_peak_torque_rpm(40000)
-        self.assertAlmostEqual(self.default_machine.get_peak_torque_rpm_value(), 40000)
-        with self.assertRaisesRegex(AttributeError, "Peak torque RPM cannot be negative"):
-            self.default_machine.set_peak_torque_rpm(-100)
-
-    def test_set_max_torque(self):
-        self.default_machine = Machine()
-        self.default_machine.set_max_torque(200, "in-lbf")
-        self.assertAlmostEqual(
-            self.default_machine.max_torque.getValueAs("Nm").Value,
-            200 * 0.112985,
-            places=4,
-        )
-        with self.assertRaisesRegex(AttributeError, "Max torque must be positive"):
-            self.default_machine.set_max_torque(0)
+        # Test dump with spindles
+        output = self.default_machine.dump(False)
+        self.assertIn("Spindle 1", output)
+        self.assertIn("Spindle 2", output)
 
     def test_dump(self):
+        output = self.default_machine.dump(False)
+        self.assertIn("Machine Default Machine", output)
+        self.assertIn("Max Feed Rate: 33.33 mm/s", output)
+
+
+class TestMill(unittest.TestCase):
+    def setUp(self):
+        self.mock_spindle1 = MockSpindle("Mill Spindle 1", 10000)
+        self.mock_spindle2 = MockSpindle("Mill Spindle 2", 20000)
+        self.default_mill = Mill(
+            label="Default Mill",
+            x_extent=(FreeCAD.Units.Quantity(-100, "mm"), FreeCAD.Units.Quantity(100, "mm")),
+            y_extent=(FreeCAD.Units.Quantity(-200, "mm"), FreeCAD.Units.Quantity(200, "mm")),
+            z_extent=(FreeCAD.Units.Quantity(0, "mm"), FreeCAD.Units.Quantity(300, "mm")),
+            max_feed=FreeCAD.Units.Quantity(5000, "mm/min"),
+            rigidity=(
+                FreeCAD.Units.Quantity(0.01, "mm"),
+                FreeCAD.Units.Quantity(0.02, "mm"),
+                FreeCAD.Units.Quantity(0.03, "mm"),
+                FreeCAD.Units.Quantity(0.04, "mm"),
+            ),
+        )
+
+    def test_initialization(self):
+        mill = self.default_mill
+
+        # Check inherited properties
+        self.assertEqual(mill.label, "Default Mill")
+        self.assertAlmostEqual(mill.max_feed.Value, 83.33, 2)
+        self.assertEqual(len(mill.spindles), 1)
+        self.assertEqual(mill.spindles[0].label, "Spindle 1")
+
+        self.default_mill.add_spindle(self.mock_spindle2)
+        self.assertEqual(len(mill.spindles), 2)
+        self.assertEqual(mill.spindles[1].label, "Mill Spindle 2")
+
+        # Check rigidity
+        self.assertEqual(mill.rigidity[0].Value, 0.01)
+        self.assertEqual(mill.rigidity[1].Value, 0.02)
+        self.assertEqual(mill.rigidity[2].Value, 0.03)
+        self.assertEqual(mill.rigidity[3].Value, 0.04)
+
+        # Check axis extents
+        self.assertEqual(mill.x_extent[0].Value, -100)
+        self.assertEqual(mill.x_extent[1].Value, 100)
+        self.assertEqual(mill.y_extent[0].Value, -200)
+        self.assertEqual(mill.y_extent[1].Value, 200)
+        self.assertEqual(mill.z_extent[0].Value, 0)
+        self.assertEqual(mill.z_extent[1].Value, 300)
+
+    def test_validation_valid(self):
+        self.default_mill.validate()
+
+    def test_validation_negative_rigidity(self):
+        self.default_mill.rigidity_x = FreeCAD.Units.Quantity(-0.01, "mm")
+        with self.assertRaisesRegex(AttributeError, "Rigidity values cannot be negative"):
+            self.default_mill.validate()
+
+    def test_validation_invalid_extents(self):
+        # X min >= max
+        self.default_mill.x_min = FreeCAD.Units.Quantity(100, "mm")
+        with self.assertRaisesRegex(AttributeError, "X-axis max must be greater than min"):
+            self.default_mill.validate()
+
+        # Reset and test Y
+        self.default_mill.x_min = FreeCAD.Units.Quantity(-100, "mm")
+        self.default_mill.y_min = FreeCAD.Units.Quantity(200, "mm")
+        with self.assertRaisesRegex(AttributeError, "Y-axis max must be greater than min"):
+            self.default_mill.validate()
+
+        # Reset and test Z
+        self.default_mill.y_min = FreeCAD.Units.Quantity(-200, "mm")
+        self.default_mill.z_min = FreeCAD.Units.Quantity(300, "mm")
+        with self.assertRaisesRegex(AttributeError, "Z-axis max must be greater than min"):
+            self.default_mill.validate()
+
+    def test_dump(self):
+        output = self.default_mill.dump(False)
+        self.assertIn("Mill Default Mill", output)
+        self.assertIn("Max Feed Rate: 83.33 mm/s", output)
+        self.assertIn("Rigidity (deflection):", output)
+        self.assertIn("X=10.00 µm/N", output)
+        self.assertIn("X: -100.00 mm - 100.00 mm", output)
+        self.assertIn("Spindle 1", output)
+
+
+class TestLathe(unittest.TestCase):
+    def setUp(self):
+        self.mock_spindle1 = MockSpindle("Lathe Spindle 1", 5000)
+        self.mock_spindle2 = MockSpindle("Lathe Spindle 2", 8000)
+        self.default_lathe = Lathe(
+            label="Default Lathe",
+            x_extent=(FreeCAD.Units.Quantity(-50, "mm"), FreeCAD.Units.Quantity(50, "mm")),
+            z_extent=(FreeCAD.Units.Quantity(0, "mm"), FreeCAD.Units.Quantity(400, "mm")),
+            max_feed=FreeCAD.Units.Quantity(3000, "mm/min"),
+            max_workpiece_diameter=FreeCAD.Units.Quantity(100, "mm"),
+            rigidity=(
+                FreeCAD.Units.Quantity(0.05, "mm"),
+                FreeCAD.Units.Quantity(0.06, "mm"),
+                FreeCAD.Units.Quantity(0.07, "mm"),
+            ),
+        )
+
+    def test_initialization(self):
+        lathe = self.default_lathe
+
+        # Check inherited properties
+        self.assertEqual(lathe.label, "Default Lathe")
+        self.assertEqual(lathe.max_feed.Value, 50)
+        self.assertEqual(len(lathe.spindles), 1)
+        self.assertEqual(lathe.spindles[0].label, "Lathe spindle")
+
+        # Check multiple spinndles not allowed
+        self.default_lathe.add_spindle(self.mock_spindle2)
+        self.assertEqual(len(lathe.spindles), 1)
+        self.assertEqual(lathe.spindles[0].label, "Lathe Spindle 2")
+
+        # Check rigidity
+        self.assertEqual(lathe.rigidity[0].Value, 0.05)
+        self.assertEqual(lathe.rigidity[1].Value, 0.06)
+        self.assertEqual(lathe.rigidity[2].Value, 0.07)
+
+        # Check axis extents
+        self.assertEqual(lathe.x_extent[0].Value, -50)
+        self.assertEqual(lathe.x_extent[1].Value, 50)
+        self.assertEqual(lathe.z_extent[0].Value, 0)
+        self.assertEqual(lathe.z_extent[1].Value, 400)
+
+        # Check workpiece diameter
+        self.assertEqual(lathe.max_workpiece_diameter.Value, 100)
+
+    def test_validation_valid(self):
         try:
-            self.default_machine.dump(False)
-        except Exception as e:
-            self.fail(f"dump() method failed unexpectedly: {e}")
+            self.default_lathe.validate()
+        except AttributeError as e:
+            self.fail(f"Validation failed unexpectedly: {e}")
+
+    def test_validation_negative_rigidity(self):
+        self.default_lathe.rigidity_x = FreeCAD.Units.Quantity(-0.01, "mm")
+        with self.assertRaisesRegex(AttributeError, "Rigidity values cannot be negative"):
+            self.default_lathe.validate()
+
+    def test_validation_invalid_extents(self):
+        # X min >= max
+        self.default_lathe.x_min = FreeCAD.Units.Quantity(50, "mm")
+        with self.assertRaisesRegex(AttributeError, "X-axis max must be greater than min"):
+            self.default_lathe.validate()
+
+        # Reset and test Z
+        self.default_lathe.x_min = FreeCAD.Units.Quantity(-50, "mm")
+        self.default_lathe.z_min = FreeCAD.Units.Quantity(400, "mm")
+        with self.assertRaisesRegex(AttributeError, "Z-axis max must be greater than min"):
+            self.default_lathe.validate()
+
+    def test_validation_invalid_diameter(self):
+        self.default_lathe.max_workpiece_diameter = FreeCAD.Units.Quantity(0, "mm")
+        with self.assertRaisesRegex(AttributeError, "Maximum workpiece diameter must be positive"):
+            self.default_lathe.validate()
+
+    def test_dump(self):
+        output = self.default_lathe.dump(False)
+        self.assertIn("Lathe Default Lathe", output)
+        self.assertIn("Max Feed Rate: 50.00 mm/s", output)
+        self.assertIn("Rigidity (deflection):", output)
+        self.assertIn("X=50.00 µm/N", output)
+        self.assertIn("X: -50.00 mm - 50.00 mm", output)
+        self.assertIn("Max Workpiece Diameter: 100.00 mm", output)
+        self.assertIn("Lathe spindle", output)
 
 
 if __name__ == "__main__":

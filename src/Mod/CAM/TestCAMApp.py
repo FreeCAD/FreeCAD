@@ -90,7 +90,9 @@ from CAMTests.TestPathToolLibrarySerializer import (
 )
 from CAMTests.TestPathToolChangeGenerator import TestPathToolChangeGenerator
 from CAMTests.TestPathToolController import TestPathToolController
-from CAMTests.TestPathToolMachine import TestPathToolMachine
+from CAMTests.TestPathToolMachine import TestPathToolMachine, TestMill, TestLathe
+from CAMTests.TestPathToolMachineSerializer import TestPathToolMachineSerializer
+from CAMTests.TestPathToolSpindleSerializer import TestPathToolSpindleSerializer
 from CAMTests.TestPathUtil import TestPathUtil
 from CAMTests.TestPathVcarve import TestPathVcarve
 from CAMTests.TestPathVoronoi import TestPathVoronoi
