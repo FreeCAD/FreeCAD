@@ -121,11 +121,24 @@ void StdCmdGroup::activated(int iMsg)
     std::string GroupName;
     GroupName = getUniqueObjectName("Group");
     QString label = QApplication::translate("Std_Group", "Group");
-    doCommand(Doc,"App.activeDocument().Tip = App.activeDocument().addObject('App::DocumentObjectGroup','%s')",GroupName.c_str());
-    doCommand(Doc,"App.activeDocument().%s.Label = '%s'", GroupName.c_str(),
-              label.toUtf8().data());
+
+    // create a group
+    doCommand(Doc,"group = App.activeDocument().addObject('App::DocumentObjectGroup','%s')",GroupName.c_str());
+    doCommand(Doc,"group.Label = '%s'", label.toUtf8().data());
+    doCommand(Doc,"App.activeDocument().Tip = group");
+
+    // draft has autogroup functionality which allows grouping for ArchIFC, Arch and
+    // Part based on priority, refer to this function -> gui_utils.py/def autogroup
+    doCommand(Doc,
+        "try:\n"
+        "    import Draft\n"
+        "    Draft.autogroup(group)\n"
+        "except:\n"
+        "    pass  # If Draft is not available, group stays at document root\n");
+
     commitCommand();
 
+    // Scroll to the newly created group
     Gui::Document* gui = Application::Instance->activeDocument();
     App::Document* app = gui->getDocument();
     ViewProvider* vp = gui->getViewProvider(app->getActiveObject());
