@@ -426,7 +426,7 @@ private:
     // of the scale operation
     int offsetGeoID(int id, int firstCurveCreated)
     {
-        if (id < 0) { // Covers external geometry, origin and undef
+        if (id < 0) {  // Covers external geometry, origin and undef
             return id;
         }
         return indexOfGeoId(listOfGeoIds, id) + firstCurveCreated;
