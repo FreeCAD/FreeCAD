@@ -562,15 +562,8 @@ SET(PathImages_Ops
     Images/Ops/chamfer.svg
 )
 
-SET(PathImages_Tools
-    Images/Tools/drill.svg
-    Images/Tools/endmill.svg
-    Images/Tools/v-bit.svg
-)
-
 SET(Path_Images
     ${PathImages_Ops}
-    ${PathImages_Tools}
 )
 
 SET(PathData_Threads
@@ -961,13 +954,6 @@ INSTALL(
         ${PathImages_Ops}
     DESTINATION
         Mod/CAM/Images/Ops
-)
-
-INSTALL(
-    FILES
-        ${PathImages_Tools}
-    DESTINATION
-        Mod/CAM/Images/Tools
 )
 
 INSTALL(
