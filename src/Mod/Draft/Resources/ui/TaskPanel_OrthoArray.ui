@@ -62,7 +62,7 @@
            <item row="0" column="0">
             <widget class="QRadioButton" name="radiobutton_x_axis">
              <property name="text">
-              <string>X Axis</string>
+              <string>X axis</string>
              </property>
              <property name="checked">
               <bool>true</bool>
@@ -72,7 +72,7 @@
            <item row="1" column="0">
             <widget class="QRadioButton" name="radiobutton_y_axis">
              <property name="text">
-              <string>Y Axis</string>
+              <string>Y axis</string>
              </property>
              <property name="checked">
               <bool>false</bool>
@@ -82,7 +82,7 @@
            <item row="2" column="0">
             <widget class="QRadioButton" name="radiobutton_z_axis">
              <property name="text">
-              <string>Z Axis</string>
+              <string>Z axis</string>
              </property>
              <property name="checked">
               <bool>false</bool>
