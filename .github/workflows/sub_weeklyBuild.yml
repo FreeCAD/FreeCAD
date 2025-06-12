@@ -104,7 +104,7 @@ jobs:
           fetch-tags: true
           submodules: 'recursive'
 
-      - uses: prefix-dev/setup-pixi@19eac09b398e3d0c747adc7921926a6d802df4da # v0.8.8
+      - uses: prefix-dev/setup-pixi@97359467eae22a2d994114fe900db762fea86261 # v0.8.9
         with:
           pixi-version: v0.46.0
           cache: false
