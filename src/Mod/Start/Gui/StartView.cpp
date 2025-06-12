@@ -441,7 +441,18 @@ void StartView::retranslateUi()
     _newFileLabel->setText(h1Start + tr("New File") + h1End);
     _examplesLabel->setText(h1Start + tr("Examples") + h1End);
     _recentFilesLabel->setText(h1Start + tr("Recent Files") + h1End);
-    _customFolderLabel->setText(h1Start + tr("Custom Folder") + h1End);
+
+    auto hGrp = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/Mod/Start");
+    std::string customFolder(hGrp->GetASCII("CustomFolder", ""));
+    bool shortCustomFolder = hGrp->GetBool("ShortCustomFolder", true);  // false shows full path
+    if (!customFolder.empty()) {
+        if (shortCustomFolder) {
+            _customFolderLabel->setToolTip(QString::fromUtf8(customFolder.c_str()));
+            customFolder = customFolder.substr(customFolder.find_last_of("/\\") + 1);
+        }
+        _customFolderLabel->setText(h1Start + QString::fromUtf8(customFolder.c_str()) + h1End);
+    }
 
     QString application = QString::fromUtf8(App::Application::Config()["ExeName"].c_str());
     _openFirstStart->setText(tr("Open first start setup"));

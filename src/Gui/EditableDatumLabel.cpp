@@ -186,9 +186,16 @@ void EditableDatumLabel::startEdit(double val, QObject* eventFilteringObj, bool 
             return;
         }
 
-        isSet = true;
+        if (!spinBox->hasValidInput()) {
+            // unset parameters in DrawSketchController, this is needed in a case
+            // when user removes values we reset state of the OVP
+            Q_EMIT this->parameterUnset();
+            return;
+        }
+
         value = spinBox->rawValue();
 
+        isSet = true;
         Q_EMIT this->valueChanged(value);
     };
 

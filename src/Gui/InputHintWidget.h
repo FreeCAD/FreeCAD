@@ -46,7 +46,7 @@ public:
 private:
     static std::optional<const char*> getCustomIconPath(InputHint::UserInput key);
     static QString inputRepresentation(InputHint::UserInput key);
-    QPixmap generateKeyIcon(InputHint::UserInput key, QColor color);
+    QPixmap generateKeyIcon(InputHint::UserInput key, QColor color, int height = 24);
 };
 
 } // Namespace Gui

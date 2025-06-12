@@ -886,6 +886,13 @@ int SketchObject::setDatum(int ConstrId, double Datum)
 
     return err;
 }
+double SketchObject::getDatum(int ConstrId) const
+{
+    if (!this->Constraints[ConstrId]->isDimensional()) {
+        return 0.0;
+    }
+    return this->Constraints[ConstrId]->getValue();
+}
 
 int SketchObject::setDriving(int ConstrId, bool isdriving)
 {
@@ -7595,6 +7602,22 @@ int SketchObject::getGeoIdFromCompleteGeometryIndex(int completeGeometryIndex) c
         return completeGeometryIndex;
     else
         return (completeGeometryIndex - completeGeometryCount);
+}
+bool SketchObject::hasSingleScaleDefiningConstraint() const
+{
+    const std::vector<Constraint*>& vals = this->Constraints.getValues();
+
+    bool foundOne = false;
+    for (auto val : vals) {
+        // An angle does not define scale
+        if (val->isDimensional() && val->Type != Angle) {
+            if (foundOne) {
+                return false;
+            }
+            foundOne = true;
+        }
+    }
+    return foundOne;
 }
 
 std::unique_ptr<const GeometryFacade> SketchObject::getGeometryFacade(int GeoId) const

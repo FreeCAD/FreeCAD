@@ -72,7 +72,7 @@ ViewProviderCoordinateSystem::~ViewProviderCoordinateSystem() {
 
 std::vector<App::DocumentObject*> ViewProviderCoordinateSystem::claimChildren() const
 {
-    auto obj = getObject<App::Origin>();
+    auto obj = getObject<App::LocalCoordinateSystem>();
     std::vector<App::DocumentObject*> childs = obj->OriginFeatures.getValues();
     auto it = std::find(childs.begin(), childs.end(), obj);
     if (it != childs.end()) {

@@ -1189,11 +1189,13 @@ void DSHOffsetController::adaptParameters(Base::Vector2d onSketchPos)
 
     switch (handler->state()) {
         case SelectMode::SeekFirst: {
-            if (!onViewParameters[OnViewParameter::First]->isSet) {
+            auto& firstParam = onViewParameters[OnViewParameter::First];
+
+            if (!firstParam->isSet) {
                 setOnViewParameterValue(OnViewParameter::First, handler->offsetLength);
             }
 
-            onViewParameters[OnViewParameter::First]->setPoints(
+            firstParam->setPoints(
                 Base::Vector3d(handler->endpoint.x, handler->endpoint.y, 0.),
                 Base::Vector3d(handler->pointOnSourceWire.x, handler->pointOnSourceWire.y, 0.));
         } break;
@@ -1207,7 +1209,9 @@ void DSHOffsetController::doChangeDrawSketchHandlerMode()
 {
     switch (handler->state()) {
         case SelectMode::SeekFirst: {
-            if (onViewParameters[OnViewParameter::First]->hasFinishedEditing) {
+            auto& firstParam = onViewParameters[OnViewParameter::First];
+
+            if (firstParam->hasFinishedEditing) {
                 handler->setState(SelectMode::End);
             }
         } break;
