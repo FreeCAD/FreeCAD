@@ -556,7 +556,6 @@ void DSHEllipseControllerBase::doEnforceControlParameters(Base::Vector2d& onSket
         } break;
         case SelectMode::SeekThird: {
             auto& fifthParam = onViewParameters[OnViewParameter::Fifth];
-            auto& sixthParam = onViewParameters[OnViewParameter::Sixth];
 
             if (handler->constructionMethod()
                 == DrawSketchHandlerEllipse::ConstructionMethod::Center) {
@@ -570,6 +569,7 @@ void DSHEllipseControllerBase::doEnforceControlParameters(Base::Vector2d& onSket
                 }
             }
             else {
+                auto& sixthParam = onViewParameters[OnViewParameter::Sixth];
                 if (fifthParam->isSet) {
                     onSketchPos.x = fifthParam->getValue();
                 }
@@ -655,7 +655,6 @@ void DSHEllipseController::adaptParameters(Base::Vector2d onSketchPos)
         } break;
         case SelectMode::SeekThird: {
             auto& fifthParam = onViewParameters[OnViewParameter::Fifth];
-            auto& sixthParam = onViewParameters[OnViewParameter::Sixth];
 
             if (handler->constructionMethod()
                 == DrawSketchHandlerEllipse::ConstructionMethod::Center) {
@@ -669,6 +668,7 @@ void DSHEllipseController::adaptParameters(Base::Vector2d onSketchPos)
                 fifthParam->setPoints(start, end);
             }
             else {
+                auto& sixthParam = onViewParameters[OnViewParameter::Sixth];
                 if (!fifthParam->isSet) {
                     setOnViewParameterValue(OnViewParameter::Fifth, onSketchPos.x);
                 }
@@ -711,7 +711,6 @@ void DSHEllipseController::doChangeDrawSketchHandlerMode()
         } break;
         case SelectMode::SeekThird: {
             auto& fifthParam = onViewParameters[OnViewParameter::Fifth];
-            auto& sixthParam = onViewParameters[OnViewParameter::Sixth];
 
             if (handler->constructionMethod()
                 == DrawSketchHandlerEllipse::ConstructionMethod::Center) {
@@ -720,6 +719,7 @@ void DSHEllipseController::doChangeDrawSketchHandlerMode()
                 }
             }
             else {
+                auto& sixthParam = onViewParameters[OnViewParameter::Sixth];
                 if (fifthParam->hasFinishedEditing || sixthParam->hasFinishedEditing) {
                     handler->setState(SelectMode::End);
                 }

@@ -451,7 +451,6 @@ void DSHCircleControllerBase::doEnforceControlParameters(Base::Vector2d& onSketc
         } break;
         case SelectMode::SeekSecond: {
             auto& thirdParam = onViewParameters[OnViewParameter::Third];
-            auto& fourthParam = onViewParameters[OnViewParameter::Fourth];
 
             if (handler->constructionMethod()
                 == DrawSketchHandlerCircle::ConstructionMethod::Center) {
@@ -472,6 +471,7 @@ void DSHCircleControllerBase::doEnforceControlParameters(Base::Vector2d& onSketc
                 }
             }
             else {
+                auto& fourthParam = onViewParameters[OnViewParameter::Fourth];
                 if (thirdParam->isSet) {
                     onSketchPos.x = thirdParam->getValue();
                 }
@@ -533,7 +533,6 @@ void DSHCircleController::adaptParameters(Base::Vector2d onSketchPos)
         } break;
         case SelectMode::SeekSecond: {
             auto& thirdParam = onViewParameters[OnViewParameter::Third];
-            auto& fourthParam = onViewParameters[OnViewParameter::Fourth];
 
             if (handler->constructionMethod()
                 == DrawSketchHandlerCircle::ConstructionMethod::Center) {
@@ -557,6 +556,7 @@ void DSHCircleController::adaptParameters(Base::Vector2d onSketchPos)
                 thirdParam->setPoints(start, end);
             }
             else {
+                auto& fourthParam = onViewParameters[OnViewParameter::Fourth];
                 if (!thirdParam->isSet) {
                     setOnViewParameterValue(OnViewParameter::Third, onSketchPos.x);
                 }
@@ -609,7 +609,6 @@ void DSHCircleController::doChangeDrawSketchHandlerMode()
         } break;
         case SelectMode::SeekSecond: {
             auto& thirdParam = onViewParameters[OnViewParameter::Third];
-            auto& fourthParam = onViewParameters[OnViewParameter::Fourth];
 
             if (thirdParam->hasFinishedEditing
                 && handler->constructionMethod()
@@ -617,11 +616,14 @@ void DSHCircleController::doChangeDrawSketchHandlerMode()
 
                 handler->setState(SelectMode::End);
             }
-            else if (onViewParameters.size() > 3 && thirdParam->isSet && fourthParam->isSet
-                     && handler->constructionMethod()
-                         == DrawSketchHandlerCircle::ConstructionMethod::ThreeRim) {
+            else if (onViewParameters.size() > 3) {
+                auto& fourthParam = onViewParameters[OnViewParameter::Fourth];
+                if (thirdParam->isSet && fourthParam->isSet
+                    && handler->constructionMethod()
+                        == DrawSketchHandlerCircle::ConstructionMethod::ThreeRim) {
 
-                handler->setState(SelectMode::SeekThird);
+                    handler->setState(SelectMode::SeekThird);
+                }
             }
         } break;
         case SelectMode::SeekThird: {

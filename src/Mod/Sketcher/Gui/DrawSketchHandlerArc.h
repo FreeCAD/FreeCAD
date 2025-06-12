@@ -587,7 +587,6 @@ void DSHArcControllerBase::doEnforceControlParameters(Base::Vector2d& onSketchPo
         } break;
         case SelectMode::SeekThird: {
             auto& fifthParam = onViewParameters[OnViewParameter::Fifth];
-            auto& sixthParam = onViewParameters[OnViewParameter::Sixth];
 
             if (handler->constructionMethod() == DrawSketchHandlerArc::ConstructionMethod::Center) {
                 if (fifthParam->isSet) {
@@ -602,6 +601,7 @@ void DSHArcControllerBase::doEnforceControlParameters(Base::Vector2d& onSketchPo
                 }
             }
             else {
+                auto& sixthParam = onViewParameters[OnViewParameter::Sixth];
                 if (fifthParam->isSet) {
                     onSketchPos.x = fifthParam->getValue();
                 }
@@ -677,7 +677,6 @@ void DSHArcController::adaptParameters(Base::Vector2d onSketchPos)
         } break;
         case SelectMode::SeekThird: {
             auto& fifthParam = onViewParameters[OnViewParameter::Fifth];
-            auto& sixthParam = onViewParameters[OnViewParameter::Sixth];
 
             if (handler->constructionMethod() == DrawSketchHandlerArc::ConstructionMethod::Center) {
                 double range = Base::toDegrees(handler->arcAngle);
@@ -693,6 +692,7 @@ void DSHArcController::adaptParameters(Base::Vector2d onSketchPos)
                 fifthParam->setLabelRange(handler->arcAngle);
             }
             else {
+                auto& sixthParam = onViewParameters[OnViewParameter::Sixth];
                 if (!fifthParam->isSet) {
                     setOnViewParameterValue(OnViewParameter::Fifth, onSketchPos.x);
                 }
@@ -734,15 +734,13 @@ void DSHArcController::doChangeDrawSketchHandlerMode()
             }
         } break;
         case SelectMode::SeekThird: {
+            auto& fifthParam = onViewParameters[OnViewParameter::Fifth];
             if (handler->constructionMethod() == DrawSketchHandlerArc::ConstructionMethod::Center) {
-                auto& fifthParam = onViewParameters[OnViewParameter::Fifth];
-
                 if (fifthParam->hasFinishedEditing) {
                     handler->setState(SelectMode::End);
                 }
             }
             else {
-                auto& fifthParam = onViewParameters[OnViewParameter::Fifth];
                 auto& sixthParam = onViewParameters[OnViewParameter::Sixth];
 
                 if (fifthParam->hasFinishedEditing || sixthParam->hasFinishedEditing) {
