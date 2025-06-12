@@ -2342,6 +2342,7 @@ bool CDxfRead::SkipBlockContents()
 template<typename... args>
 void CDxfRead::UnsupportedFeature(const char* format, args&&... argValuess)
 {
+    m_stats.unsupportedFeaturesCount++;
     // NOLINTNEXTLINE(runtime/printf)
     std::string formattedMessage = fmt::sprintf(format, std::forward<args>(argValuess)...);
     // We place these formatted messages in a map, count their occurrences and not their first
@@ -2538,6 +2539,8 @@ bool CDxfRead::ReadVersion()
         m_version = RUnknown;
     }
 
+    m_stats.dxfVersion = m_record_data;
+
     return ResolveEncoding();
 }
 
@@ -2606,6 +2609,9 @@ bool CDxfRead::ResolveEncoding()
         Py_DECREF(pyDecoder);
         Py_DECREF(pyUTF8Decoder);
     }
+
+    m_stats.dxfEncoding = m_encoding;
+
     return !m_encoding.empty();
 }
 
@@ -2759,6 +2765,9 @@ bool CDxfRead::ReadEntity()
         m_entityAttributes.m_paperSpace);  // TODO: Ensure the stream is noboolalpha (for that
                                            // matter ensure the stream has the "C" locale
     SetupValueAttribute(eColor, m_entityAttributes.m_Color);
+
+    m_stats.entityCounts[m_record_data]++;
+
     // The entity record is already the current record and is already checked as a type 0 record
     if (IsObjectName("LINE")) {
         return ReadLine();
