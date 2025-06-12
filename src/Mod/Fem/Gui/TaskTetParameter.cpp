@@ -69,7 +69,7 @@ TaskTetParameter::TaskTetParameter(Fem::FemMeshShapeNetgenObject* pcObject, QWid
                      qOverload<int>(&QComboBox::activated),
                      this,
                      &TaskTetParameter::SwitchMethod);
-#if QT_VERSION >= QT_VERSION_CHECK(6,7,0)
+#if QT_VERSION >= QT_VERSION_CHECK(6, 7, 0)
     QObject::connect(ui->checkBox_SecondOrder,
                      &QCheckBox::checkStateChanged,
                      this,
@@ -92,7 +92,7 @@ TaskTetParameter::TaskTetParameter(Fem::FemMeshShapeNetgenObject* pcObject, QWid
                      qOverload<int>(&QSpinBox::valueChanged),
                      this,
                      &TaskTetParameter::setSegsPerRadius);
-#if QT_VERSION >= QT_VERSION_CHECK(6,7,0)
+#if QT_VERSION >= QT_VERSION_CHECK(6, 7, 0)
     QObject::connect(ui->checkBox_Optimize,
                      &QCheckBox::checkStateChanged,
                      this,

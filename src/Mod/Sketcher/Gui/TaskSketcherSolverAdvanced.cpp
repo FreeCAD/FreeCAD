@@ -101,7 +101,7 @@ void TaskSketcherSolverAdvanced::setupConnections()
             qOverload<int>(&QSpinBox::valueChanged),
             this,
             &TaskSketcherSolverAdvanced::onSpinBoxMaxIterValueChanged);
-#if QT_VERSION >= QT_VERSION_CHECK(6,7,0)
+#if QT_VERSION >= QT_VERSION_CHECK(6, 7, 0)
     connect(ui->checkBoxSketchSizeMultiplier,
             &QCheckBox::checkStateChanged,
             this,
@@ -136,7 +136,7 @@ void TaskSketcherSolverAdvanced::setupConnections()
             qOverload<int>(&QSpinBox::valueChanged),
             this,
             &TaskSketcherSolverAdvanced::onSpinBoxRedundantSolverMaxIterationsValueChanged);
-#if QT_VERSION >= QT_VERSION_CHECK(6,7,0)
+#if QT_VERSION >= QT_VERSION_CHECK(6, 7, 0)
     connect(ui->checkBoxRedundantSketchSizeMultiplier,
             &QCheckBox::checkStateChanged,
             this,
