@@ -141,22 +141,32 @@ void ImpExpDxfRead::setOptions()
 {
     ParameterGrp::handle hGrp =
         App::GetApplication().GetParameterGroupByPath(getOptionSource().c_str());
+    m_stats.importSettings.clear();
+
     m_preserveLayers = hGrp->GetBool("dxfUseDraftVisGroups", true);
+    m_stats.importSettings["Use layers"] = m_preserveLayers ? "Yes" : "No";
+
     m_preserveColors = hGrp->GetBool("dxfGetOriginalColors", true);
+    m_stats.importSettings["Use colors from the DXF file"] = m_preserveColors ? "Yes" : "No";
+
     // Default for creation type is to create draft objects.
     // The radio-button structure of the options dialog should generally prevent this condition.
     m_mergeOption = DraftObjects;
+    m_stats.importSettings["Merge option"] = "Create Draft objects";  // Default
     if (hGrp->GetBool("groupLayers", true)) {
         // Group all compatible objects together
         m_mergeOption = MergeShapes;
+        m_stats.importSettings["Merge option"] = "Group layers into blocks";
     }
     else if (hGrp->GetBool("dxfCreatePart", true)) {
         // Create (non-draft) Shape objects when possible
         m_mergeOption = SingleShapes;
+        m_stats.importSettings["Merge option"] = "Create Part shapes";
     }
     else if (hGrp->GetBool("dxfCreateDraft", true)) {
         // Create only Draft objects, making the result closest to drawn-from-scratch
         m_mergeOption = DraftObjects;
+        m_stats.importSettings["Merge option"] = "Create Draft objects";
     }
     // TODO: joingeometry should give an intermediate between MergeShapes and SingleShapes which
     // will merge shapes that happen to join end-to-end. As such it should be in the radio button
@@ -164,12 +174,25 @@ void ImpExpDxfRead::setOptions()
     // this really means is there should be an "Import as sketch" checkbox, and only the
     // MergeShapes, JoinShapes, and SingleShapes radio buttons should be allowed, i.e. Draft Objects
     // would be ignored.
-    SetAdditionalScaling(hGrp->GetFloat("dxfScaling", 1.0));
+    bool joinGeometry = hGrp->GetBool("joingeometry", false);
+    m_stats.importSettings["Join geometry"] = joinGeometry ? "Yes" : "No";
+
+    double scaling = hGrp->GetFloat("dxfScaling", 1.0);
+    SetAdditionalScaling(scaling);
+    m_stats.importSettings["Manual scaling factor"] = std::to_string(scaling);
 
     m_importAnnotations = hGrp->GetBool("dxftext", false);
+    m_stats.importSettings["Import texts and dimensions"] = m_importAnnotations ? "Yes" : "No";
+
     m_importPoints = hGrp->GetBool("dxfImportPoints", true);
+    m_stats.importSettings["Import points"] = m_importPoints ? "Yes" : "No";
+
     m_importPaperSpaceEntities = hGrp->GetBool("dxflayout", false);
+    m_stats.importSettings["Import layout objects"] = m_importPaperSpaceEntities ? "Yes" : "No";
+
     m_importHiddenBlocks = hGrp->GetBool("dxfstarblocks", false);
+    m_stats.importSettings["Import hidden blocks"] = m_importHiddenBlocks ? "Yes" : "No";
+
     // TODO: There is currently no option for this: m_importFrozenLayers =
     // hGrp->GetBool("dxffrozenLayers", false);
     // TODO: There is currently no option for this: m_importHiddenLayers =
@@ -771,6 +794,7 @@ std::string ImpExpDxfRead::Deformat(const char* text)
 void ImpExpDxfRead::DrawingEntityCollector::AddObject(const TopoDS_Shape& shape,
                                                       const char* nameBase)
 {
+    Reader.IncrementCreatedObjectCount();
     auto pcFeature = Reader.document->addObject<Part::Feature>(nameBase);
     pcFeature->Shape.setValue(shape);
     Reader.MoveToLayer(pcFeature);
@@ -778,6 +802,7 @@ void ImpExpDxfRead::DrawingEntityCollector::AddObject(const TopoDS_Shape& shape,
 }
 void ImpExpDxfRead::DrawingEntityCollector::AddObject(FeaturePythonBuilder shapeBuilder)
 {
+    Reader.IncrementCreatedObjectCount();
     App::FeaturePython* shape = shapeBuilder(Reader.OCSOrientationTransform);
     if (shape != nullptr) {
         Reader.MoveToLayer(shape);
