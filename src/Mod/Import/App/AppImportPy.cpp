@@ -415,6 +415,7 @@ private:
             dxf_file.setOptions();
             dxf_file.DoRead(IgnoreErrors);
             pcDoc->recompute();
+            return dxf_file.getStatsAsPyObject();
         }
         catch (const Standard_Failure& e) {
             throw Py::RuntimeError(e.GetMessageString());

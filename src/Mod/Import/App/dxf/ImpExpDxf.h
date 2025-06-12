@@ -50,6 +50,8 @@ public:
         Py_XDECREF(DraftModule);
     }
 
+    Py::Object getStatsAsPyObject();
+
     bool ReadEntitiesSection() override;
 
     // CDxfRead's virtual functions
