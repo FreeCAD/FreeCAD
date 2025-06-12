@@ -255,11 +255,11 @@ class ObjectDressup:
                     projectionlen = plungelen * math.tan(
                         math.radians(rampangle)
                     )  # length of the forthcoming ramp projected to XY plane
-                    Path.Log.debug(
-                        "Found plunge move at X:{} Y:{} From Z:{} to Z{}, length of ramp: {}".format(
-                            p0.x, p0.y, p0.z, p1.z, projectionlen
-                        )
-                    )
+                    # Path.Log.debug(
+                    #    "Found plunge move at X:{} Y:{} From Z:{} to Z{}, length of ramp: {}".format(
+                    #        p0.x, p0.y, p0.z, p1.z, projectionlen
+                    #    )
+                    # )
                     if self.method == "RampMethod3":
                         projectionlen = projectionlen / 2
 
@@ -509,12 +509,12 @@ class ObjectDressup:
                     # will reach end of ramp within this edge, needs to be split
                     p1 = self.getSplitPoint(redge, rampremaining)
                     splitEdge = Path.Geom.splitEdgeAt(redge, p1)
-                    Path.Log.debug("Ramp remaining: {}".format(rampremaining))
-                    Path.Log.debug(
-                        "Got split edge (index: {}) (total len: {}) with lengths: {}, {}".format(
-                            i, redge.Length, splitEdge[0].Length, splitEdge[1].Length
-                        )
-                    )
+                    # Path.Log.debug("Ramp remaining: {}".format(rampremaining))
+                    # Path.Log.debug(
+                    #    "Got split edge (index: {}) (total len: {}) with lengths: {}, {}".format(
+                    #        i, redge.Length, splitEdge[0].Length, splitEdge[1].Length
+                    #    )
+                    # )
                     # ramp ends to the last point of first edge
                     p1 = splitEdge[0].valueAt(splitEdge[0].LastParameter)
                     outedges.append(self.createRampEdge(splitEdge[0], curPoint, p1))
@@ -549,7 +549,7 @@ class ObjectDressup:
             if not done:
                 # we did not reach the end of the ramp going this direction, lets reverse.
                 rampedges = self.getreversed(rampedges)
-                Path.Log.debug("Reversing")
+                # Path.Log.debug("Reversing")
                 if goingForward:
                     goingForward = False
                 else:
