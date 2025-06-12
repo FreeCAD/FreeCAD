@@ -204,6 +204,11 @@ private:
     std::string m_optionSource;
 
 protected:
+    friend class DrawingEntityCollector;
+    void IncrementCreatedObjectCount()
+    {
+        m_stats.totalEntitiesCreated++;
+    }
     virtual void ApplyGuiStyles(Part::Feature* /*object*/) const
     {}
     virtual void ApplyGuiStyles(App::FeaturePython* /*object*/) const
