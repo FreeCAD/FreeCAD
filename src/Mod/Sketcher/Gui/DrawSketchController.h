@@ -374,7 +374,8 @@ public:
         // if we set hasFinishedEditing on current mode
         auto initialState = handler->state();
         for (size_t i = 0; i < onViewParameters.size(); i++) {
-            if (isOnViewParameterOfCurrentMode(i) && isOnViewParameterVisible(i) && initialState == getState(static_cast<int>(i))) {
+            if (isOnViewParameterOfCurrentMode(i) && isOnViewParameterVisible(i)
+                && initialState == getState(static_cast<int>(i))) {
                 onViewParameters[i]->isSet = true;
                 onViewParameters[i]->hasFinishedEditing = true;
 
@@ -388,7 +389,8 @@ public:
     {
         // go only to next label if user has currently pressed enter on current one
         int nextindex = onviewparameterindex + 1;
-        if (onViewParameters[onviewparameterindex]->hasFinishedEditing && isOnViewParameterOfCurrentMode(nextindex)) {
+        if (onViewParameters[onviewparameterindex]->hasFinishedEditing
+            && isOnViewParameterOfCurrentMode(nextindex)) {
             setFocusToOnViewParameter(nextindex);
         }
 
@@ -655,11 +657,9 @@ protected:
                              });
 
             // Connect Ctrl+Enter signal to apply values to all visible OVPs in current stage
-            QObject::connect(parameter,
-                             &Gui::EditableDatumLabel::finishEditingOnAllOVPs,
-                             [this]() {
-                                 finishEditingOnAllOVPs();
-                             });
+            QObject::connect(parameter, &Gui::EditableDatumLabel::finishEditingOnAllOVPs, [this]() {
+                finishEditingOnAllOVPs();
+            });
         }
     }
 
