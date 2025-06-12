@@ -403,6 +403,7 @@ private:
             dxf_file.setOptions();
             dxf_file.DoRead(IgnoreErrors);
             pcDoc->recompute();
+            return dxf_file.getStatsAsPyObject();
         }
         catch (const Standard_Failure& e) {
             throw Py::RuntimeError(e.GetMessageString());
@@ -410,7 +411,6 @@ private:
         catch (const Base::Exception& e) {
             throw Py::RuntimeError(e.what());
         }
-        return Py::None();
     }
 
     Py::Object exportOptions(const Py::Tuple& args)

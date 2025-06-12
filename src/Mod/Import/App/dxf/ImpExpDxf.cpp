@@ -1372,3 +1372,27 @@ void ImpExpDxfWrite::exportDiametricDim(Base::Vector3d textLocn,
     arc2[2] = arcPoint2.z;
     writeDiametricDim(text, arc1, arc2, dimText);
 }
+
+Py::Object ImpExpDxfRead::getStatsAsPyObject()
+{
+    Py::Dict statsDict;
+
+    statsDict.setItem("dxfVersion", Py::String(m_stats.dxfVersion));
+    statsDict.setItem("dxfEncoding", Py::String(m_stats.dxfEncoding));
+    statsDict.setItem("totalEntitiesCreated", Py::Long(m_stats.totalEntitiesCreated));
+    statsDict.setItem("unsupportedFeaturesCount", Py::Long(m_stats.unsupportedFeaturesCount));
+
+    Py::Dict entityCountsDict;
+    for (const auto& pair : m_stats.entityCounts) {
+        entityCountsDict.setItem(pair.first.c_str(), Py::Long(pair.second));
+    }
+    statsDict.setItem("entityCounts", entityCountsDict);
+
+    Py::Dict importSettingsDict;
+    for (const auto& pair : m_stats.importSettings) {
+        importSettingsDict.setItem(pair.first.c_str(), Py::String(pair.second));
+    }
+    statsDict.setItem("importSettings", importSettingsDict);
+
+    return statsDict;
+}
