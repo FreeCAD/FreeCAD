@@ -72,6 +72,7 @@ void SheetViewHeader::mouseMoveEvent(QMouseEvent* e)
 void SheetViewHeader::mouseReleaseEvent(QMouseEvent* event)
 {
     QHeaderView::mouseReleaseEvent(event);
+    qApp->setOverrideCursor(Qt::ArrowCursor);
     Q_EMIT resizeFinished();
 }
 
