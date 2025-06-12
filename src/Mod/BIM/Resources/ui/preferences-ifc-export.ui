@@ -407,7 +407,7 @@ However, at FreeCAD, we believe having a building should not be mandatory, and t
        </widget>
       </item>
       <item>
-       <widget class="QGroupBox" name="groupBox_ExportFreeCADGroups">
+       <widget class="Gui::PrefCheckableGroupBox" name="groupBox_ExportFreeCADGroups">
         <property name="toolTip">
          <string>If not checked, standard FreeCAD groups (App::DocumentObjectGroup) will not be exported as IfcGroup or IfcElementAssembly.\nTheir children will be re-parented to the container of the skipped group in the IFC structure.</string>
         </property>

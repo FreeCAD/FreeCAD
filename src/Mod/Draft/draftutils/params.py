@@ -696,6 +696,11 @@ def _get_param_dictionary():
                 elif att_class == "Gui::PrefFontBox":
                     path, entry, value = _param_from_PrefFontBox(widget)
                     typ = "string"
+                elif att_class == "Gui::PrefCheckableGroupBox":
+                    # It's a boolean preference, so we can reuse the parsing logic
+                    # from _param_from_PrefCheckBox, which looks for <property name="checked">.
+                    path, entry, value = _param_from_PrefCheckBox(widget)
+                    typ = "bool"
 
                 if path is not None:
                     if path in param_dict:
