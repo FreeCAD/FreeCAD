@@ -125,7 +125,8 @@ private:
     void resetReferencePlacement();
     void resetReferenceRotation();
 
-    void moveObjectToDragger();
+    ViewProviderDragger::DraggerComponents getRelevantComponents();
+    void moveObjectToDragger(ViewProviderDragger::DraggerComponents components = ViewProviderDragger::DraggerComponent::All);
 
     bool isDraggerAlignedToCoordinateSystem() const;
 
@@ -166,6 +167,12 @@ public:
     void open() override;
     bool accept() override;
     bool reject() override;
+    void onUndo() override;
+    void onRedo() override;
+
+private:
+    void openCommand();
+    void updateDraggerPlacement();
 
 private:
     ViewProviderDragger* vp;

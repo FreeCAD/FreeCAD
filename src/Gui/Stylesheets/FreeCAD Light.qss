@@ -2271,6 +2271,8 @@ QListView::indicator,
 QTableView::indicator,
 QColumnView::indicator {
   border: 1px solid #1c1c1c;
+  width: 12px;
+  height: 12px;
 }
 
 QTreeView::indicator:unchecked:disabled,

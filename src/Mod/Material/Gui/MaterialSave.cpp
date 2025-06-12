@@ -29,6 +29,7 @@
 #include <Gui/Application.h>
 #include <Gui/Command.h>
 #include <Gui/MainWindow.h>
+#include <Gui/Tools.h>
 
 #include <Mod/Material/App/MaterialLibrary.h>
 
@@ -90,11 +91,8 @@ MaterialSave::MaterialSave(const std::shared_ptr<Materials::Material>& material,
             &MaterialSave::onContextMenu);
 
     _deleteAction.setText(tr("Delete"));
-    {
-        auto& rcCmdMgr = Gui::Application::Instance->commandManager();
-        auto shortcut = rcCmdMgr.getCommandByName("Std_Delete")->getShortcut();
-        _deleteAction.setShortcut(QKeySequence(shortcut));
-    }
+    _deleteAction.setShortcut(Gui::QtTools::deleteKeySequence());
+
     connect(&_deleteAction, &QAction::triggered, this, &MaterialSave::onDelete);
     ui->treeMaterials->addAction(&_deleteAction);
 
@@ -154,7 +152,7 @@ void MaterialSave::onOk(bool checked)
     bool saveAsCopy = false;
     if (Materials::MaterialManager::getManager().exists(_material->getUUID())) {
         // Does it already exist in this library?
-        if (Materials::MaterialManager::getManager().exists(library, _material->getUUID())) {
+        if (Materials::MaterialManager::getManager().exists(*library, _material->getUUID())) {
             // Confirm saving a new material
             auto res = confirmNewMaterial();
             if (res == QMessageBox::Cancel) {
@@ -371,7 +369,7 @@ void MaterialSave::showSelectedTree()
         lib->setFlags(Qt::ItemIsEnabled | Qt::ItemIsDragEnabled | Qt::ItemIsDropEnabled);
         addExpanded(tree, model, lib);
 
-        auto modelTree = Materials::MaterialManager::getManager().getMaterialTree(library);
+        auto modelTree = Materials::MaterialManager::getManager().getMaterialTree(*library);
         addMaterials(*lib, modelTree, folderIcon, icon);
     }
     else {

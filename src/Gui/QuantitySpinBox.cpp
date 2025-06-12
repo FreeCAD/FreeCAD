@@ -224,7 +224,7 @@ public:
         ok = parseString(copy, res, value, path);
 
         // If result does not have unit: add default unit
-        if (res.getUnit().isEmpty()){
+        if (res.isDimensionless()) {
             res.setUnit(unit);
         }
 
@@ -571,6 +571,11 @@ void QuantitySpinBox::userInput(const QString & text)
     }
     else {
         d->validInput = false;
+
+        // we have to emit here signal explicitly as validator will not pass
+        // this value further but we want to check it to disable isSet flag if
+        // it has been set previously
+        Q_EMIT valueChanged(d->quantity.getValue());
         return;
     }
 

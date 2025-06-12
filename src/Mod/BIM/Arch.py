@@ -52,6 +52,7 @@ __author__ = "Yorik van Havre"
 __url__    = "https://www.freecad.org"
 
 import FreeCAD
+from typing import Optional
 
 if FreeCAD.GuiUp:
     import FreeCADGui
@@ -299,7 +300,9 @@ def convertFloors(floor=None):
                 nobj.IfcType = "Building"
                 nobj.CompositionType = "ELEMENT"
                 t = QT_TRANSLATE_NOOP("App::Property", "The type of this building")
-                nobj.addProperty("App::PropertyEnumeration", "BuildingType", "Building", t, locked=True)
+                nobj.addProperty(
+                    "App::PropertyEnumeration", "BuildingType", "Building", t, locked=True
+                )
                 nobj.BuildingType = ArchBuildingPart.BuildingTypes
             label = obj.Label
             for parent in obj.InList:
@@ -362,7 +365,7 @@ def makeEquipment(baseobj=None, placement=None, name=None):
     ----------
     baseobj : Part::FeaturePython or Mesh::Feature, optional
         The base object for the equipment. Defaults to None.
-    placement : Placement, optional
+    placement : FreeCAD.Placement, optional
         The placement of the equipment. Defaults to None.
     name : str, optional
         The name to assign to the created equipment. Defaults to None.
@@ -622,7 +625,7 @@ def makePanel(baseobj=None, length=0, width=0, thickness=0, placement=None, name
         The width of the panel. Defaults to 0.
     thickness : float, optional
         The thickness of the panel. Defaults to 0.
-    placement : Placement, optional
+    placement : FreeCAD.Placement, optional
         The placement of the panel. Defaults to None.
     name : str, optional
         The name to assign to the created panel. Defaults to None.
@@ -723,7 +726,7 @@ def makePipe(baseobj=None, diameter=0, length=0, placement=None, name=None):
         The diameter of the pipe. Defaults to 0.
     length : float, optional
         The length of the pipe. Defaults to 0.
-    placement : Placement, optional
+    placement : FreeCAD.Placement, optional
         The placement of the pipe. Defaults to None.
     name : str, optional
         The name to assign to the created pipe. Defaults to None.
@@ -769,7 +772,8 @@ def makePipeConnector(pipes, radius=0, name=None):
     pipes : list of Part::FeaturePython
         A list of pipe objects to connect.
     radius : float, optional
-        The curvature radius of the connector. Defaults to 0, which uses the diameter of the first pipe.
+        The curvature radius of the connector. Defaults to 0, which uses the diameter of the first
+        pipe.
     name : str, optional
         The name to assign to the created connector. Defaults to None.
 
@@ -803,9 +807,10 @@ def makeProfile(profile=[0, 'REC', 'REC100x100', 'R', 100, 100]):
     profile : list, optional
         A list defining the profile data. Defaults to [0, 'REC', 'REC100x100', 'R', 100, 100].
         The list should contain the following elements:
+
         0. listOrder: str
             The order of the profile data. Currently not used.
-        1, profileSubClass: str
+        1. profileSubClass: str
             The subclass of a given profile class (e.g. 'REC' for the 'C' class).
         2. profileName: str
             The name of the profile (e.g., 'REC100x100').
@@ -864,6 +869,8 @@ def makeProject(sites=None, name=None):
 
     If sites are provided, add them as children of the new project.
 
+    .. deprecated:: 1.0.0
+
     Parameters
     ----------
     sites: list of <Part::FeaturePython>, optional
@@ -895,44 +902,100 @@ def makeProject(sites=None, name=None):
 
     return project
 
-
-def makeRebar(baseobj=None, sketch=None, diameter=None, amount=1, offset=None, name=None):
+def makeRebar(
+    baseobj: Optional[FreeCAD.DocumentObject] = None,
+    sketch: Optional[FreeCAD.DocumentObject] = None,
+    diameter: Optional[float] = None,
+    amount: int = 1,
+    offset: Optional[float] = None,
+    name: Optional[str] = None
+) -> Optional[FreeCAD.DocumentObject]:
     """
-    Creates a reinforcement bar object.
+    Creates a reinforcement bar (rebar) object.
+
+    The rebar's geometry is typically defined by a `sketch` object (e.g., a Sketcher::SketchObject
+    or a Draft.Wire). This sketch represents the path of a single bar. The `amount` and `spacing`
+    (calculated by the object) properties then determine how many such bars are created and
+    distributed.
+
+    The `baseobj` usually acts as the structural host for the rebar. The rebar's distribution (e.g.,
+    spacing, direction) can be calculated relative to this host object's dimensions if a `Host` is
+    assigned and the rebar logic uses it.
 
     Parameters
     ----------
-    baseobj : Part::FeaturePython, optional
-        The structural object to host the rebar. Defaults to None.
-    sketch : Part::FeaturePython, optional
-        The sketch defining the rebar profile. Defaults to None.
+    baseobj : FreeCAD.DocumentObject, optional
+        The structural object to host the rebar (e.g., an ArchStructure._Structure created with
+        `Arch.makeStructure()`). If provided with `sketch`, it's set as `rebar.Host`. If provided
+        *without* a `sketch`, `rebar.Shape` is set from `baseobj.Shape`, and `rebar.Host` remains
+        None. Defaults to None.
+    sketch : FreeCAD.DocumentObject, optional
+        An object (e.g., "Sketcher::SketchObject") whose shape defines the rebar's path. Assigned to
+        `rebar.Base`. If the sketch is attached to `baseobj` before calling this function (e.g. for
+        positioning purposes), this function may clear that specific attachment to avoid conflicts,
+        as the rebar itself will be hosted. Defaults to None.
     diameter : float, optional
-        The diameter of the rebar. Defaults to None.
+        The diameter of the rebar. If None, uses Arch preferences ("RebarDiameter"). Defaults to
+        None.
     amount : int, optional
-        The number of rebars. Defaults to 1.
+        The number of rebar instances. Defaults to 1.
     offset : float, optional
-        The offset distance for the rebar. Defaults to None.
+        Concrete cover distance, sets `rebar.OffsetStart` and `rebar.OffsetEnd`. If None, uses Arch
+        preferences ("RebarOffset"). Defaults to None.
     name : str, optional
-        The name to assign to the created rebar. Defaults to None.
+        The user-visible name (Label) for the rebar. If None, defaults to "Rebar". Defaults to None.
 
     Returns
     -------
-    Part::FeaturePython
-        The created rebar object.
+    FreeCAD.DocumentObject or None
+        The created rebar object, or None if creation fails.
+
+    Examples
+    --------
+    >>> import FreeCAD, Arch, Part, Sketcher
+    >>> doc = FreeCAD.newDocument()
+    >>> # Create a host structure (e.g., a concrete beam)
+    >>> beam = Arch.makeStructure(length=2000, width=200, height=300)
+    >>> doc.recompute() # Ensure beam's shape is ready
+    >>>
+    >>> # Create a sketch for the rebar path
+    >>> rebar_sketch = doc.addObject('Sketcher::SketchObject')
+    >>> # For positioning, attach the sketch to a face of the beam *before* makeRebar
+    >>> # Programmatically select a face (e.g., the first one)
+    >>> # For stable scripts, select faces by more reliable means
+    >>> rebar_sketch.AttachmentSupport = (beam, ['Face1']) # Faces are 1-indexed
+    >>> rebar_sketch.MapMode = "FlatFace"
+    >>> # Define sketch geometry relative to the attached face's plane
+    >>> rebar_sketch.addGeometry(Part.LineSegment(FreeCAD.Vector(25, 25, 0),
+    ...                                         FreeCAD.Vector(1975, 25, 0)), False)
+    >>> doc.recompute() # Recompute sketch after geometry and attachment
+    >>>
+    >>> # Create the rebar object, linking it to the beam and using the sketch
+    >>> rebar_obj = Arch.makeRebar(baseobj=beam, sketch=rebar_sketch, diameter=12,
+    ...                            amount=4, offset=25)
+    >>> doc.recompute() # Trigger rebar's geometry calculation
     """
     rebar = _initializeArchObject(
         "Part::FeaturePython",
         baseClassName="_Rebar",
         internalName="Rebar",
-        defaultLabel=name if name else translate("Arch", "Project"),
+        defaultLabel=name if name else translate("Arch", "Rebar"),
         moduleName="ArchRebar",
         viewProviderName="_ViewProviderRebar",
     )
 
     # Initialize all relevant properties
     if baseobj and sketch:
+        # Case 1: both the structural element (base object) and a sketch defining the shape and path
+        # of a single rebar strand are provided. This is the most common scenario.
         if hasattr(sketch, "AttachmentSupport"):
             if sketch.AttachmentSupport:
+                # If the sketch is already attached to the base object, remove that attachment.
+                # Support two AttachmentSupport (PropertyLinkList) formats:
+                # 1. Tuple: (baseobj, subelement)
+                # 2. Direct object: baseobj
+                # TODO: why is the list format not checked for here?
+                # ~ 3. List: [baseobj, subelement] ~
                 if isinstance(sketch.AttachmentSupport, tuple):
                     if sketch.AttachmentSupport[0] == baseobj:
                         sketch.AttachmentSupport = None
@@ -943,12 +1006,15 @@ def makeRebar(baseobj=None, sketch=None, diameter=None, amount=1, offset=None, n
             sketch.ViewObject.hide()
         rebar.Host = baseobj
     elif not baseobj and sketch:
-        # A obj could be based on a wire without the existence of a Structure
+        # Case 2: standalone rebar strand defined by a sketch, not attached to any structural
+        # element.
         rebar.Base = sketch
         if FreeCAD.GuiUp:
             sketch.ViewObject.hide()
         rebar.Host = None
     elif baseobj and not sketch:
+        # Case 3: rebar strand defined by the shape of a structural element (base object). The
+        # base object becomes the rebar.
         rebar.Shape = baseobj.Shape
     rebar.Diameter = diameter if diameter else params.get_param_arch("RebarDiameter")
     rebar.Amount = amount
@@ -1218,6 +1284,7 @@ def makeSpace(objects=None, baseobj=None, name=None):
     Notes
     -----
     The objects parameter can be passed using either of these different formats:
+
     1. Single object (e.g. a Part::Feature document object). Will be used as the space's base
        shape.::
             objects = <Part::Feature>
@@ -1228,8 +1295,8 @@ def makeSpace(objects=None, baseobj=None, name=None):
        the base shape.::
             objects = [<SelectionObject>, ...]
     3. A list of tuples that can be assigned to an ``App::PropertyLinkSubList`` property. Each
-       tuple contains a document object and a nested tuple of subobjects that define the boundaries. If
-       the list contains a single tuple without a nested subobjects tuple, or a subobjects tuple
+       tuple contains a document object and a nested tuple of subobjects that define the boundaries.
+       If the list contains a single tuple without a nested subobjects tuple, or a subobjects tuple
        with only one subobject, the object in the tuple is used as the base shape.::
             objects = [(obj1, ("Face1")), (obj2, ("Face1")), ...]
             objects = [(obj, ("Face1", "Face2", "Face3", "Face4"))]
@@ -1297,6 +1364,7 @@ def addSpaceBoundaries(space, subobjects):
     Notes
     -----
     The subobjects parameter can be passed using either of these different formats:
+
     1. List of selection objects, as provided by ``Gui.Selection.getSelectionEx()``. This
        requires the GUI to be active. The `SubObjects` property of each selection object in the
        list defines the boundaries to add to the space.::
@@ -1324,6 +1392,7 @@ def removeSpaceBoundaries(space, subobjects):
     Notes
     -----
     The subobjects parameter can be passed using either of these different formats:
+
     1. List of selection objects, as provided by ``Gui.Selection.getSelectionEx()``. This
        requires the GUI to be active. The `SubObjects` property of each selection object in the
        list defines the boundaries to remove from the space.::
@@ -1372,7 +1441,8 @@ def makeStairs(baseobj=None, length=None, width=None, height=None, steps=None, n
     label = name if name else translate("Arch", "Stairs")
 
     def setProperty(obj, length, width, height, steps):
-        """setProperty(obj,length,width,height,steps): sets up the basic properties for this stair"""
+        """setProperty(obj,length,width,height,steps): sets up the basic properties for this stair
+        """
         obj.Length = length if length else params.get_param_arch("StairsLength")
         obj.Width = width if width else params.get_param_arch("StairsWidth")
         obj.Height = height if height else params.get_param_arch("StairsHeight")
@@ -1416,7 +1486,7 @@ def makeStairs(baseobj=None, length=None, width=None, height=None, steps=None, n
                 additions.append(stairs[i])
                 stairs[i].LastSegment = stairs[i - 1]
             else:
-                if len(stairs) > 1:                     # i.e. length >1, have a 'master' staircase created
+                if len(stairs) > 1: # i.e. length >1, have a 'master' staircase created
                     stairs[0].Base = stairs[1]
             i += 1
         if lenSelection > 1:
@@ -1458,7 +1528,8 @@ def makeRailing(stairs):
     None
     """
     def makeRailingLorR(stairs, side="L"):
-        """makeRailingLorR(stairs,side="L"): Creates a railing on the given side of the stairs, L or R"""
+        """makeRailingLorR(stairs,side="L"): Creates a railing on the given side of the stairs, L or
+        R"""
         for stair in reversed(stairs):
             if side == "L":
                 outlineLR = stair.OutlineLeft
@@ -1469,7 +1540,10 @@ def makeRailing(stairs):
                 outlineLRAll = stair.OutlineRightAll
                 stairRailingLR = "RailingRight"
             if outlineLR or outlineLRAll:
-                lrRail = makePipe(baseobj=None, diameter=0, length=0, placement=None, name=translate("Arch", "Railing"))
+                lrRail = makePipe(
+                    baseobj=None, diameter=0, length=0, placement=None,
+                    name=translate("Arch", "Railing")
+                )
                 if outlineLRAll:
                     setattr(stair, stairRailingLR, lrRail)
                     break
@@ -1533,7 +1607,10 @@ def makeTruss(baseobj=None, name=None):
     return truss
 
 
-def makeWall(baseobj=None, height=None, length=None, width=None, align=None, offset=None, face=None, name=None):
+def makeWall(
+        baseobj=None, height=None, length=None, width=None, align=None, offset=None,
+        face=None, name=None
+):
     """Create a wall based on a given object, and returns the generated wall.
 
     TODO: It is unclear what defines which units this function uses.
@@ -1588,14 +1665,18 @@ def makeWall(baseobj=None, height=None, length=None, width=None, align=None, off
         if hasattr(baseobj, 'Shape') or baseobj.isDerivedFrom("Mesh::Feature"):
             wall.Base = baseobj
         else:
-            FreeCAD.Console.PrintWarning(str(translate("Arch", "Walls can only be based on Part or Mesh objects")))
+            FreeCAD.Console.PrintWarning(
+                str(translate("Arch", "Walls can only be based on Part or Mesh objects"))
+            )
     if face:
         wall.Face = face
     if length:
         wall.Length = length
     wall.Width = width if width else params.get_param_arch("WallWidth")
     wall.Height = height if height else params.get_param_arch("WallHeight")
-    wall.Align = align if align else ["Center", "Left", "Right"][params.get_param_arch("WallAlignment")]
+    wall.Align = (
+        align if align else ["Center", "Left", "Right"][params.get_param_arch("WallAlignment")]
+    )
 
     if wall.Base and FreeCAD.GuiUp:
         if Draft.getType(wall.Base) != "Space":
@@ -1725,7 +1806,14 @@ def makeWindow(baseobj=None, width=None, height=None, parts=None, name=None):
     if height:
         window.Height = height
     if baseobj:
-        window.Normal = baseobj.Placement.Rotation.multVec(FreeCAD.Vector(0, 0, -1))
+        # 2025.5.25
+        # Historically, this normal was deduced by the orientation of the Base Sketch and hardcoded
+        # in the Normal property. Now with the new AutoNormalReversed property/flag, set True as
+        # default, the auto Normal previously in opposite direction to is now consistent with that
+        # previously hardcoded. With the normal set to 'auto', window object would not suffer weird
+        # shape if the Base Sketch is rotated by some reason. Keep the property be 'auto' (0,0,0)
+        # here.
+        #obj.Normal = baseobj.Placement.Rotation.multVec(FreeCAD.Vector(0, 0, -1))
         window.Base = baseobj
     if parts is not None:
         window.WindowParts = parts
@@ -1735,8 +1823,8 @@ def makeWindow(baseobj=None, width=None, height=None, parts=None, name=None):
             if (linked_obj.isDerivedFrom("Part::Part2DObject")
                 or Draft.getType(linked_obj) in ["BezCurve", "BSpline", "Wire"]) \
                     and DraftGeomUtils.isPlanar(baseobj.Shape):
-                # "BezCurve", "BSpline" and "Wire" objects created with < v1.1 are "Part::Part2DObject" objects.
-                # In all versions these objects need not be planar.
+                # "BezCurve", "BSpline" and "Wire" objects created with < v1.1 are
+                # "Part::Part2DObject" objects. In all versions these objects need not be planar.
                 if baseobj.Shape.Wires:
                     part_type = "Frame"
                     if len(baseobj.Shape.Wires) == 1:
@@ -1749,7 +1837,9 @@ def makeWindow(baseobj=None, width=None, height=None, parts=None, name=None):
                     part_name = "Default"
                     part_frame_thickness = "1" # mm
                     part_offset = "0" # mm
-                    window.WindowParts = [part_name, part_type, wires_str, part_frame_thickness, part_offset]
+                    window.WindowParts = [
+                        part_name, part_type, wires_str, part_frame_thickness, part_offset
+                    ]
             else:
                 # bind properties from base obj if existing
                 for prop in ["Height", "Width", "Subvolume", "Tag", "Description", "Material"]:

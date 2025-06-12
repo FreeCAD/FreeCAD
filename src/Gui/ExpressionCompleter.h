@@ -27,6 +27,7 @@
 #include <QLineEdit>
 #include <QObject>
 #include <QPlainTextEdit>
+#include <QValidator>
 #include <App/DocumentObserver.h>
 #include <App/ExpressionTokenizer.h>
 
@@ -40,6 +41,16 @@ class ObjectIdentifier;
 }
 
 namespace Gui {
+
+class GuiExport ExpressionValidator : public QValidator
+{
+    Q_OBJECT
+
+public:
+    explicit ExpressionValidator(QObject* parent = nullptr);
+    void fixup(QString &input) const override;
+    QValidator::State validate(QString &input, int &pos) const override;
+};
 
 /**
  * @brief The ExpressionCompleter class extends the QCompleter class to provide a completer model of documentobject names and properties.

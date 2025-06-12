@@ -30,9 +30,13 @@
 
 #include "Dialogs/DlgUnitsCalculatorImp.h"
 #include "ui_DlgUnitsCalculator.h"
+#include <Base/Quantity.h>
 #include <Base/UnitsApi.h>
 
 using namespace Gui::Dialog;
+using Base::Quantity;
+using Base::Unit;
+using Base::UnitsApi;
 
 /* TRANSLATOR Gui::Dialog::DlgUnitsCalculator */
 
@@ -55,7 +59,7 @@ DlgUnitsCalculator::DlgUnitsCalculator(QWidget* parent, Qt::WindowFlags fl)
     auto addItem = [&, index {0}](const auto& item) mutable {
         ui->comboBoxScheme->addItem(QString::fromStdString(item), index++);
     };
-    auto descriptions = Base::UnitsApi::getDescriptions();
+    auto descriptions = UnitsApi::getDescriptions();
     std::for_each(descriptions.begin(), descriptions.end(), addItem);
 
     // clang-format off
@@ -65,7 +69,7 @@ DlgUnitsCalculator::DlgUnitsCalculator(QWidget* parent, Qt::WindowFlags fl)
             this, &DlgUnitsCalculator::onComboBoxSchemeActivated);
     connect(ui->spinBoxDecimals, qOverload<int>(&QSpinBox::valueChanged),
             this, &DlgUnitsCalculator::onSpinBoxDecimalsValueChanged);
-    connect(ui->ValueInput, qOverload<const Base::Quantity&>(&InputField::valueChanged),
+    connect(ui->ValueInput, qOverload<const Quantity&>(&InputField::valueChanged),
             this, &DlgUnitsCalculator::valueChanged);
     connect(ui->ValueInput, &InputField::returnPressed,
             this, &DlgUnitsCalculator::returnPressed);
@@ -86,31 +90,27 @@ DlgUnitsCalculator::DlgUnitsCalculator(QWidget* parent, Qt::WindowFlags fl)
     ui->ValueInput->setText(QStringLiteral("1 cm"));
     ui->UnitInput->setText(QStringLiteral("in"));
 
-    units << Base::Unit::Acceleration << Base::Unit::AmountOfSubstance << Base::Unit::Angle
-          << Base::Unit::Area << Base::Unit::Density << Base::Unit::CurrentDensity
-          << Base::Unit::DissipationRate << Base::Unit::DynamicViscosity
-          << Base::Unit::ElectricalCapacitance << Base::Unit::ElectricalInductance
-          << Base::Unit::ElectricalConductance << Base::Unit::ElectricalResistance
-          << Base::Unit::ElectricalConductivity << Base::Unit::ElectricCharge
-          << Base::Unit::ElectricCurrent << Base::Unit::ElectricPotential << Base::Unit::Force
-          << Base::Unit::Frequency << Base::Unit::HeatFlux << Base::Unit::InverseArea
-          << Base::Unit::InverseLength << Base::Unit::InverseVolume
-          << Base::Unit::KinematicViscosity << Base::Unit::Length << Base::Unit::LuminousIntensity
-          << Base::Unit::Mass << Base::Unit::MagneticFieldStrength << Base::Unit::MagneticFlux
-          << Base::Unit::MagneticFluxDensity << Base::Unit::Magnetization << Base::Unit::Power
-          << Base::Unit::Pressure << Base::Unit::SpecificEnergy << Base::Unit::SpecificHeat
-          << Base::Unit::Stiffness << Base::Unit::Temperature << Base::Unit::ThermalConductivity
-          << Base::Unit::ThermalExpansionCoefficient << Base::Unit::ThermalTransferCoefficient
-          << Base::Unit::TimeSpan << Base::Unit::VacuumPermittivity << Base::Unit::Velocity
-          << Base::Unit::Volume << Base::Unit::VolumeFlowRate
-          << Base::Unit::VolumetricThermalExpansionCoefficient << Base::Unit::Work;
-    for (const Base::Unit& it : units) {
+    units << Unit::Acceleration << Unit::AmountOfSubstance << Unit::Angle << Unit::Area
+          << Unit::Density << Unit::CurrentDensity << Unit::DissipationRate
+          << Unit::DynamicViscosity << Unit::ElectricalCapacitance << Unit::ElectricalInductance
+          << Unit::ElectricalConductance << Unit::ElectricalResistance
+          << Unit::ElectricalConductivity << Unit::ElectricCharge << Unit::ElectricCurrent
+          << Unit::ElectricPotential << Unit::Force << Unit::Frequency << Unit::HeatFlux
+          << Unit::InverseArea << Unit::InverseLength << Unit::InverseVolume
+          << Unit::KinematicViscosity << Unit::Length << Unit::LuminousIntensity << Unit::Mass
+          << Unit::MagneticFieldStrength << Unit::MagneticFlux << Unit::MagneticFluxDensity
+          << Unit::Magnetization << Unit::Power << Unit::Pressure << Unit::SpecificEnergy
+          << Unit::SpecificHeat << Unit::Stiffness << Unit::Temperature << Unit::ThermalConductivity
+          << Unit::ThermalExpansionCoefficient << Unit::ThermalTransferCoefficient << Unit::TimeSpan
+          << Unit::VacuumPermittivity << Unit::Velocity << Unit::Volume << Unit::VolumeFlowRate
+          << Unit::VolumetricThermalExpansionCoefficient << Unit::Work;
+    for (const Unit& it : units) {
         ui->unitsBox->addItem(QString::fromStdString(it.getTypeString()));
     }
 
     ui->quantitySpinBox->setValue(1.0);
     ui->quantitySpinBox->setUnit(units.front());
-    ui->spinBoxDecimals->setValue(Base::UnitsApi::getDecimals());
+    ui->spinBoxDecimals->setValue(UnitsApi::getDecimals());
 }
 
 /** Destroys the object and frees any allocated resources */
@@ -132,27 +132,32 @@ void DlgUnitsCalculator::textChanged(QString unit)
     valueChanged(actValue);
 }
 
-void DlgUnitsCalculator::valueChanged(const Base::Quantity& quant)
+void DlgUnitsCalculator::valueChanged(const Quantity& quant)
 {
+    std::string unitTypeStr;
+    try {
+        unitTypeStr =
+            Quantity::parse(ui->UnitInput->text().toStdString()).getUnit().getTypeString();
+    }
+    catch (const Base::ParserError&) {
+    }
     // first check the unit, if it is invalid, getTypeString() outputs an empty string
-    // explicitly check for "ee" like in "eeV" because this would trigger an exception in Base::Unit
+    // explicitly check for "ee" like in "eeV" because this would trigger an exception in Unit
     // since it expects then a scientific notation number like "1e3"
-    if ((ui->UnitInput->text().mid(0, 2) == QStringLiteral("ee"))
-        || Base::Unit(ui->UnitInput->text().toStdString()).getTypeString().empty()) {
+    if ((ui->UnitInput->text().mid(0, 2) == QStringLiteral("ee")) || unitTypeStr.empty()) {
         ui->ValueOutput->setText(
             QStringLiteral("%1 %2").arg(tr("unknown unit:"), ui->UnitInput->text()));
         ui->pushButton_Copy->setEnabled(false);
     }
     else {  // the unit is valid
         // we can only convert units of the same type, thus check
-        if (Base::Unit(ui->UnitInput->text().toStdString()).getTypeString()
-            != quant.getUnit().getTypeString()) {
+        if (unitTypeStr != quant.getUnit().getTypeString()) {
             ui->ValueOutput->setText(tr("unit mismatch"));
             ui->pushButton_Copy->setEnabled(false);
         }
         else {  // the unit is valid and has the same type
             double convertValue =
-                Base::Quantity::parse("1" + ui->UnitInput->text().toStdString()).getValue();
+                Quantity::parse("1" + ui->UnitInput->text().toStdString()).getValue();
             // we got now e.g. for "1 in" the value '25.4' because 1 in = 25.4 mm
             // the result is now just quant / convertValue because the input is always in a base
             // unit (an input of "1 cm" will immediately be converted to "10 mm" by Gui::InputField
@@ -164,7 +169,7 @@ void DlgUnitsCalculator::valueChanged(const Base::Quantity& quant)
             // "10 um" in "in", thus only if value > 0.005 because FC's default are 2 decimals
             QString val = QLocale().toString(value, 'g');
             if (!val.contains(QChar::fromLatin1('e')) && (value > 0.005)) {
-                val = QLocale().toString(value, 'f', Base::UnitsApi::getDecimals());
+                val = QLocale().toString(value, 'f', UnitsApi::getDecimals());
             }
             // create the output string
             QString out = QStringLiteral("%1 %2").arg(val, ui->UnitInput->text());
@@ -201,13 +206,13 @@ void DlgUnitsCalculator::onUnitsBoxActivated(int index)
 {
     // SI units use [m], not [mm] for lengths
     //
-    Base::Quantity q = ui->quantitySpinBox->value();
+    Quantity q = ui->quantitySpinBox->value();
     int32_t old = q.getUnit().length();
     double value = q.getValue();
 
-    Base::Unit unit = units[index];
+    Unit unit = units[index];
     int32_t len = unit.length();
-    ui->quantitySpinBox->setValue(Base::Quantity(value * std::pow(10.0, 3 * (len - old)), unit));
+    ui->quantitySpinBox->setValue(Quantity(value * std::pow(10.0, 3 * (len - old)), unit));
 }
 
 void DlgUnitsCalculator::onComboBoxSchemeActivated(int index)

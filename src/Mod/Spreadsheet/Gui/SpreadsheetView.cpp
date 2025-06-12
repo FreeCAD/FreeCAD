@@ -74,9 +74,15 @@ SheetView::SheetView(Gui::Document* pcDocument, App::DocumentObject* docObj, QWi
     ui = new Ui::Sheet();
     QWidget* w = new QWidget(this);
     ui->setupUi(w);
+    ui->zoomMinus->hide();
+    ui->zoomPlus->hide();
+    ui->zoomSlider->hide();
+    ui->zoomTB->hide();
+    ui->realSB_h->hide();
+    ui->realSB_v->hide();
     setCentralWidget(w);
 
-    new ZoomableView(ui);
+    // new ZoomableView(ui);
 
     delegate = new SpreadsheetDelegate(sheet);
     ui->cells->setModel(model);

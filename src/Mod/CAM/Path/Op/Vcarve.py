@@ -204,8 +204,8 @@ class _Geometry(object):
         return _Geometry(zStart + zOff, max(zStop + zOff, zFinal), zScale, zStepDown)
 
     @classmethod
-    def FromObj(cls, obj, model):
-        zStart = model.Shape.BoundBox.ZMax
+    def FromObj(cls, obj):
+        zStart = obj.BaseShapes[0].Shape.BoundBox.ZMax
         finalDepth = obj.FinalDepth.Value
         stepDown = abs(obj.StepDown.Value)
 
@@ -500,7 +500,7 @@ class ObjectVcarve(PathEngraveBase.ObjectOp):
         # iterate over each face separately
         for face, wires in self.buildMedialWires(obj, faces).items():
 
-            geom = _Geometry.FromObj(obj, self.model[0])
+            geom = _Geometry.FromObj(obj)
 
             # If using depth step-down, calculate maximum usable depth for current face.
             # This is done to avoid adding additional step-down engraving passes when it

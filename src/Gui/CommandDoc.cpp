@@ -63,6 +63,7 @@
 #include "MergeDocuments.h"
 #include "Navigation/NavigationStyle.h"
 #include "Placement.h"
+#include "Tools.h"
 #include "Transform.h"
 #include "View3DInventor.h"
 #include "View3DInventorViewer.h"
@@ -1320,11 +1321,7 @@ StdCmdDelete::StdCmdDelete()
   sWhatsThis    = "Std_Delete";
   sStatusTip    = QT_TR_NOOP("Deletes the selected objects");
   sPixmap       = "edit-delete";
-#ifdef FC_OS_MACOSX
-  sAccel        = "Backspace";
-#else
-  sAccel        = keySequenceToAccel(QKeySequence::Delete);
-#endif
+  sAccel        = keySequenceToAccel(QtTools::deleteKeySequence());
   eType         = ForEdit;
 }
 
@@ -1752,12 +1749,14 @@ StdCmdProperties::StdCmdProperties()
 void StdCmdProperties::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    QWidget* propertyView = Gui::DockWindowManager::instance()->getDockWindow("Property view");
-    if (propertyView) {
-        QWidget* parent = propertyView->parentWidget();
-        if (parent && !parent->isVisible()) {
-            parent->show();
-        }
+    auto dw = Gui::DockWindowManager::instance();
+    if (auto propertyView = dw->getDockWindow("Property view")) {
+        dw->activate(propertyView);
+        return;
+    }
+    if (auto comboView = dw->getDockWindow("Model")) {
+        dw->activate(comboView);
+        return;
     }
 }
 

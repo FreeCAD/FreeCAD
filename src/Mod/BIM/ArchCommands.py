@@ -40,6 +40,7 @@ import DraftVecUtils
 
 from FreeCAD import Vector
 from draftutils import params
+from draftutils.groups import is_group
 
 if FreeCAD.GuiUp:
     from PySide import QtGui,QtCore
@@ -822,6 +823,140 @@ def getAllChildren(objectlist):
                     obs.append(c)
     return obs
 
+def get_architectural_contents(
+    initial_objects,
+    recursive=True,
+    discover_hosted_elements=True,
+    include_components_from_additions=False,
+    include_initial_objects_in_result=True
+):
+    """
+    Retrieves a flat list of unique architectural objects that are considered "contents" of or are
+    related to the given initial_objects.
+
+    This includes:
+    - Children from .Group properties (hierarchical traversal if recursive=True).
+    - Architecturally hosted elements (e.g., windows in walls, rebars in structures)
+      if discover_hosted_elements=True.
+    - Optionally, components from .Additions properties.
+
+    The traversal uses a queue and ensures objects are processed only once.
+
+    Parameters:
+    -----------
+    initial_objects : App::DocumentObject or list of App::DocumentObject
+        The starting object(s) from which to discover contents.
+    recursive : bool, optional
+        If True (default), recursively find contents of discovered group-like
+        objects (those with a .Group property and identified by draftutils.groups.is_group()).
+    discover_hosted_elements : bool, optional
+        If True (default), try to find elements like windows, doors, rebars
+        that are architecturally hosted by other elements encountered during traversal.
+        This relies on Draft.getType() and common Arch properties like .Hosts or .Host.
+    include_components_from_additions : bool, optional
+        If False (default), objects found in .Additions lists are not added.
+        Set to True if these components should be part of the discovered contents.
+    include_initial_objects_in_result : bool, optional
+        If True (default), the objects in initial_objects themselves will be
+        included in the output list (if not already discovered as a child of another).
+        If False, only their "descendant" contents are returned.
+
+    Returns:
+    --------
+    list of App::DocumentObject
+        A flat list of unique architectural document objects.
+    """
+
+    final_contents_list = []
+    queue = []
+
+    if not isinstance(initial_objects, list):
+        initial_objects_list = [initial_objects]
+    else:
+        initial_objects_list = list(initial_objects) # Make a copy
+
+    queue.extend(initial_objects_list)
+
+    # Set to keep track of object names already added to the queue or fully processed
+    # This prevents duplicates in the queue and reprocessing.
+    processed_or_queued_names = set()
+    for item in initial_objects_list: # Pre-populate for initial items if they are to be added later
+        processed_or_queued_names.add(item.Name)
+
+
+    idx = 0 # Use an index for iterating the queue, as it can grow
+    while idx < len(queue):
+        obj = queue[idx]
+        idx += 1
+
+        # Add the current object to the final list if it's not already there.
+        # The decision to include initial_objects is handled by how they are first added to queue
+        # and this check.
+        if obj not in final_contents_list:
+            is_initial = obj in initial_objects_list
+            if (is_initial and include_initial_objects_in_result) or not is_initial:
+                final_contents_list.append(obj)
+
+        children_to_add_to_queue_next = []
+
+        # 1. Hierarchical children from .Group (if recursive)
+        if recursive and is_group(obj) and hasattr(obj, "Group") and obj.Group:
+            for child in obj.Group:
+                if child.Name not in processed_or_queued_names:
+                    children_to_add_to_queue_next.append(child)
+                    processed_or_queued_names.add(child.Name) # Mark as queued
+
+        # 2. Architecturally-hosted elements (if discover_hosted_elements)
+        if discover_hosted_elements:
+            host_types = ["Wall", "Structure", "CurtainWall", "Precast", "Panel", "Roof"]
+            if Draft.getType(obj) in host_types:
+                # Hosted elements are typically in the host's InList
+                for item_in_inlist in obj.InList:
+                    element_to_check = item_in_inlist
+                    if hasattr(item_in_inlist, "getLinkedObject"): # Resolve App::Link
+                        linked = item_in_inlist.getLinkedObject()
+                        if linked:
+                            element_to_check = linked
+
+                    if element_to_check.Name in processed_or_queued_names:
+                        continue
+
+                    is_confirmed_hosted = False
+                    element_type = Draft.getType(element_to_check)
+
+                    if element_type == "Window": # This covers Arch Windows and Arch Doors
+                        if hasattr(element_to_check, "Hosts") and obj in element_to_check.Hosts:
+                            is_confirmed_hosted = True
+                    elif element_type == "Rebar":
+                        if hasattr(element_to_check, "Host") and obj == element_to_check.Host:
+                            is_confirmed_hosted = True
+
+                    if is_confirmed_hosted:
+                        children_to_add_to_queue_next.append(element_to_check)
+                        processed_or_queued_names.add(element_to_check.Name) # Mark as queued
+
+        # 3. Components from .Additions list (e.g., walls added to a main wall)
+        if include_components_from_additions and hasattr(obj, "Additions") and obj.Additions:
+            for addition_comp in obj.Additions:
+                actual_addition = addition_comp
+                if hasattr(addition_comp, "getLinkedObject"): # Resolve if Addition is an App::Link
+                    linked_add = addition_comp.getLinkedObject()
+                    if linked_add:
+                        actual_addition = linked_add
+
+                if actual_addition.Name not in processed_or_queued_names:
+                    children_to_add_to_queue_next.append(actual_addition)
+                    processed_or_queued_names.add(actual_addition.Name) # Mark as queued
+
+        if children_to_add_to_queue_next:
+            # Add newly-discovered children to the end of the queue. This function uses an index
+            # (idx) to iterate through the queue, and queue.extend() adds new items to the end. This
+            # results in a breadth-first-like traversal for objects discovered at the same "depth"
+            # from different parent branches. Children of the current 'obj' will be processed after
+            # 'obj's current siblings in the queue.
+            queue.extend(children_to_add_to_queue_next)
+
+    return final_contents_list
 
 def survey(callback=False):
     """survey(): starts survey mode, where you can click edges and faces to get their lengths or area.

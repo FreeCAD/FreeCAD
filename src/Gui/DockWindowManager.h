@@ -24,12 +24,25 @@
 #define GUI_DOCKWINDOWMANAGER_H
 
 #include <QObject>
+#include <Base/Bitmask.h>
 #include <FCGlobal.h>
 
 class QDockWidget;
 class QWidget;
 
 namespace Gui {
+
+enum class DockWindowOption
+{
+    // clang-format off
+    Hidden = 0,
+    Visible = 1,
+    HiddenTabbed = 2,
+    VisibleTabbed = 3
+    // clang-format on
+};
+
+using DockWindowOptions = Base::Flags<DockWindowOption>;
 
 struct DockWindowItem {
     QString name;
@@ -44,7 +57,7 @@ public:
     DockWindowItems();
     ~DockWindowItems();
 
-    void addDockWidget(const char* name, Qt::DockWidgetArea pos, bool visibility, bool tabbed);
+    void addDockWidget(const char* name, Qt::DockWidgetArea pos, DockWindowOptions option);
     void setDockingArea(const char* name, Qt::DockWidgetArea pos);
     void setVisibility(const char* name, bool v);
     void setVisibility(bool v);
@@ -121,5 +134,7 @@ private:
 };
 
 } // namespace Gui
+
+ENABLE_BITMASK_OPERATORS(Gui::DockWindowOption)
 
 #endif // GUI_DOCKWINDOWMANAGER_H
