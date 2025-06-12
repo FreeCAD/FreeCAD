@@ -576,8 +576,7 @@ class ObjectSlot(PathOp.ObjectOp):
     def _clearDebugGroups(self):
         doc = FreeCAD.ActiveDocument
         for name in ["tmpDebugGrp", "tmpDebugGrp001"]:
-            grp = getattr(doc, name, None)
-            if grp:
+            if grp := getattr(doc, name, None):
                 for obj in grp.Group:
                     doc.removeObject(obj.Name)
                 doc.removeObject(name)
