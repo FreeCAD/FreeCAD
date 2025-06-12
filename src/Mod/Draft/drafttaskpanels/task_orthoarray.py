@@ -78,20 +78,10 @@ class TaskPanelOrthoArray:
     """
 
     def __init__(self):
-        self.name = "Orthogonal array"
-        _log(translate("draft","Task panel:") + " {}".format(translate("draft","Orthogonal array")))
 
-        # The .ui file must be loaded into an attribute
-        # called `self.form` so that it is displayed in the task panel.
-        ui_file = ":/ui/TaskPanel_OrthoArray.ui"
-        self.form = Gui.PySideUic.loadUi(ui_file)
-
-        icon_name = "Draft_Array"
-        svg = ":/icons/" + icon_name
-        pix = QtGui.QPixmap(svg)
-        icon = QtGui.QIcon.fromTheme(icon_name, QtGui.QIcon(svg))
-        self.form.setWindowIcon(icon)
-        self.form.setWindowTitle(translate("draft","Orthogonal array"))
+        self.form = Gui.PySideUic.loadUi(":/ui/TaskPanel_OrthoArray.ui")
+        self.form.setWindowTitle(translate("draft", "Orthogonal array"))
+        self.form.setWindowIcon(QtGui.QIcon(":/icons/Draft_Array.svg"))
 
         # -------------------------------------------------------------------
         # Default values for the internal function,
@@ -100,32 +90,21 @@ class TaskPanelOrthoArray:
         start_y = params.get_param("YInterval", "Mod/Draft/OrthoArrayLinearMode")
         start_z = params.get_param("ZInterval", "Mod/Draft/OrthoArrayLinearMode")
 
-        length_unit = App.Units.Quantity(0.0, App.Units.Length).getUserPreferred()[2]
-
         self.v_x = App.Vector(start_x, 0, 0)
         self.v_y = App.Vector(0, start_y, 0)
         self.v_z = App.Vector(0, 0, start_z)
 
         self.form.input_X_x.setProperty('rawValue', self.v_x.x)
-        self.form.input_X_x.setProperty('unit', length_unit)
         self.form.input_X_y.setProperty('rawValue', self.v_x.y)
-        self.form.input_X_y.setProperty('unit', length_unit)
         self.form.input_X_z.setProperty('rawValue', self.v_x.z)
-        self.form.input_X_z.setProperty('unit', length_unit)
 
         self.form.input_Y_x.setProperty('rawValue', self.v_y.x)
-        self.form.input_Y_x.setProperty('unit', length_unit)
         self.form.input_Y_y.setProperty('rawValue', self.v_y.y)
-        self.form.input_Y_y.setProperty('unit', length_unit)
         self.form.input_Y_z.setProperty('rawValue', self.v_y.z)
-        self.form.input_Y_z.setProperty('unit', length_unit)
 
         self.form.input_Z_x.setProperty('rawValue', self.v_z.x)
-        self.form.input_Z_x.setProperty('unit', length_unit)
         self.form.input_Z_y.setProperty('rawValue', self.v_z.y)
-        self.form.input_Z_y.setProperty('unit', length_unit)
         self.form.input_Z_z.setProperty('rawValue', self.v_z.z)
-        self.form.input_Z_z.setProperty('unit', length_unit)
 
         self.n_x = params.get_param("XNumOfElements", "Mod/Draft/OrthoArrayLinearMode")
         self.n_y = params.get_param("YNumOfElements", "Mod/Draft/OrthoArrayLinearMode")
@@ -245,8 +224,8 @@ class TaskPanelOrthoArray:
 
         # we should not ever do this but maybe a sanity check here?
         if self.linear_mode:
-            if not (self.form.radiobutton_x_axis.isChecked() or 
-                    self.form.radiobutton_y_axis.isChecked() or 
+            if not (self.form.radiobutton_x_axis.isChecked() or
+                    self.form.radiobutton_y_axis.isChecked() or
                     self.form.radiobutton_z_axis.isChecked()):
                 _err(translate("draft","In Linear mode, at least one axis must be selected."))
                 return False
@@ -442,7 +421,7 @@ class TaskPanelOrthoArray:
 
         if self.linear_mode:
             self.form.button_linear_mode.setText(translate("draft", "Switch to ortho mode"))
-            
+
             # check radiobutton based on current cfg
             self.update_axis_ui()
 

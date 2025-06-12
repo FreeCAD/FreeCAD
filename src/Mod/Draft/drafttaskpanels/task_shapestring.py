@@ -51,15 +51,8 @@ class ShapeStringTaskPanel:
     def __init__(self, point=None, size=None, string="", font=""):
 
         self.form = Gui.PySideUic.loadUi(":/ui/TaskShapeString.ui")
-        self.form.setObjectName("ShapeStringTaskPanel")
         self.form.setWindowTitle(translate("draft", "ShapeString"))
         self.form.setWindowIcon(QtGui.QIcon(":/icons/Draft_ShapeString.svg"))
-
-        unit_length = App.Units.Quantity(0.0, App.Units.Length).getUserPreferred()[2]
-        self.form.sbX.setProperty("unit", unit_length)
-        self.form.sbY.setProperty("unit", unit_length)
-        self.form.sbZ.setProperty("unit", unit_length)
-        self.form.sbHeight.setProperty("unit", unit_length)
 
         self.global_mode = params.get_param("GlobalMode")
         self.form.cbGlobalMode.setChecked(self.global_mode)
