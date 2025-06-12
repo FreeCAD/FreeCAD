@@ -2827,10 +2827,15 @@ def open(filename):
         FreeCAD.setActiveDocument(doc.Name)
         if gui:
             import ImportGui
-            ImportGui.readDXF(filename)
+            stats = ImportGui.readDXF(filename)
         else:
             import Import
-            Import.readDXF(filename)
+            stats = Import.readDXF(filename)
+
+        if stats:
+            reporter = DxfImportReporter(stats)
+            reporter.report_to_console()
+
         Draft.convert_draft_texts() # convert annotations to Draft texts
         doc.recompute()
 
@@ -2869,10 +2874,15 @@ def insert(filename, docname):
     else:
         if gui:
             import ImportGui
-            ImportGui.readDXF(filename)
+            stats = ImportGui.readDXF(filename)
         else:
             import Import
-            Import.readDXF(filename)
+            stats = Import.readDXF(filename)
+
+        if stats:
+            reporter = DxfImportReporter(stats)
+            reporter.report_to_console()
+
         Draft.convert_draft_texts() # convert annotations to Draft texts
         doc.recompute()
 
@@ -4197,3 +4207,60 @@ def readPreferences():
     dxfDefaultColor = getColor()
     dxfExportBlocks = params.get_param("dxfExportBlocks")
     dxfScaling = params.get_param("dxfScaling")
+
+
+class DxfImportReporter:
+    """Formats and reports statistics from a DXF import process."""
+    def __init__(self, stats_dict):
+        self.stats = stats_dict
+
+    def to_console_string(self):
+        """Formats the statistics into a human-readable string for console output."""
+        if not self.stats:
+            return "DXF Import: No statistics were returned from the importer.\n"
+
+        lines = ["\n--- DXF Import Summary ---"]
+
+        # General Info
+        lines.append(f"DXF Version: {self.stats.get('dxfVersion', 'Unknown')}")
+        lines.append(f"File Encoding: {self.stats.get('dxfEncoding', 'Unknown')}")
+        # Timing will be 0.0 for now, but the line is ready for when it's fixed.
+        import_time = self.stats.get('importTimeSeconds', 0.0)
+        lines.append(f"Import Time: {import_time:.4f} seconds")
+        lines.append("")
+
+        # Settings
+        lines.append("Import Settings:")
+        settings = self.stats.get('importSettings', {})
+        if settings:
+            for key, value in sorted(settings.items()):
+                lines.append(f"  - {key}: {value}")
+        else:
+            lines.append("  (No settings recorded)")
+        lines.append("")
+
+        # Counts
+        lines.append("Entity Counts:")
+        total_read = 0
+        entities = self.stats.get('entityCounts', {})
+        if entities:
+            for key, value in sorted(entities.items()):
+                lines.append(f"  - {key}: {value}")
+                total_read += value
+            lines.append("----------------------------")
+            lines.append(f"  Total entities read: {total_read}")
+        else:
+            lines.append("  (No entities recorded)")
+
+        lines.append(f"FreeCAD objects created: {self.stats.get('totalEntitiesCreated', 0)}")
+        lines.append(f"Unsupported features: {self.stats.get('unsupportedFeaturesCount', 0)}")
+
+        lines.append("--- End of Summary ---\n")
+        return "\n".join(lines)
+
+    def report_to_console(self):
+        """
+        Prints the formatted statistics string to the FreeCAD console.
+        """
+        output_string = self.to_console_string()
+        FCC.PrintMessage(output_string)
