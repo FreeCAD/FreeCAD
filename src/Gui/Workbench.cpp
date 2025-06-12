@@ -718,24 +718,25 @@ MenuItem* StdWorkbench::setupMenuBar() const
     // Tools
     auto tool = new MenuItem( menuBar );
     tool->setCommand("&Tools");
-    *tool << "Std_DlgParameter"
+#ifdef BUILD_ADDONMGR
+    *tool << "Std_AddonMgr"
+          << "Separator";
+#endif
+    *tool << "Std_Measure"
+          << "Std_UnitsCalculator"
           << "Separator"
-          << "Std_ViewScreenShot"
           << "Std_ViewLoadImage"
+          << "Std_ViewScreenShot"
+          << "Std_TextDocument"
+          << "Std_DemoMode"
+          << "Separator"
           << "Std_SceneInspector"
           << "Std_DependencyGraph"
           << "Std_ExportDependencyGraph"
+          << "Separator"
           << "Std_ProjectUtil"
-          << "Separator"
-          << "Std_TextDocument"
-          << "Separator"
-          << "Std_DemoMode"
-          << "Std_UnitsCalculator"
-          << "Separator"
+          << "Std_DlgParameter"
           << "Std_DlgCustomize";
-#ifdef BUILD_ADDONMGR
-    *tool << "Std_AddonMgr";
-#endif
 
     // Macro
     auto macro = new MenuItem( menuBar );
@@ -811,7 +812,7 @@ ToolBarItem* StdWorkbench::setupToolBars() const
     auto view = new ToolBarItem( root );
     view->setCommand("View");
     *view << "Std_ViewFitAll" << "Std_ViewFitSelection" << "Std_ViewGroup" << "Std_AlignToSelection"
-          << "Separator" << "Std_DrawStyle" << "Std_TreeViewActions";
+          << "Separator" << "Std_DrawStyle" << "Std_TreeViewActions" << "Std_Measure";
 
     // Individual views
     auto individualViews = new ToolBarItem(root, ToolBarItem::DefaultVisibility::Hidden);
