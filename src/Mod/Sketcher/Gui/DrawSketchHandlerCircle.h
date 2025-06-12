@@ -603,7 +603,7 @@ void DSHCircleController::doChangeDrawSketchHandlerMode()
             auto& firstParam = onViewParameters[OnViewParameter::First];
             auto& secondParam = onViewParameters[OnViewParameter::Second];
 
-            if (firstParam->isSet && secondParam->isSet) {
+            if (firstParam->hasFinishedEditing || secondParam->hasFinishedEditing) {
                 handler->setState(SelectMode::SeekSecond);
             }
         } break;
@@ -618,7 +618,7 @@ void DSHCircleController::doChangeDrawSketchHandlerMode()
             }
             else if (onViewParameters.size() > 3) {
                 auto& fourthParam = onViewParameters[OnViewParameter::Fourth];
-                if (thirdParam->isSet && fourthParam->isSet
+                if ((thirdParam->hasFinishedEditing || fourthParam->hasFinishedEditing)
                     && handler->constructionMethod()
                         == DrawSketchHandlerCircle::ConstructionMethod::ThreeRim) {
 

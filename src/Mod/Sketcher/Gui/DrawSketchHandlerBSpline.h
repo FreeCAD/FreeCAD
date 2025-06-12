@@ -1086,7 +1086,7 @@ void DSHBSplineController::doChangeDrawSketchHandlerMode()
             auto& firstParam = onViewParameters[OnViewParameter::First];
             auto& secondParam = onViewParameters[OnViewParameter::Second];
 
-            if (firstParam->isSet && secondParam->isSet) {
+            if (firstParam->hasFinishedEditing || secondParam->hasFinishedEditing) {
                 double x = firstParam->getValue();
                 double y = secondParam->getValue();
                 handler->onButtonPressed(Base::Vector2d(x, y));
