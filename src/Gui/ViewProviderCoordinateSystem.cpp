@@ -227,7 +227,7 @@ bool ViewProviderCoordinateSystem::onDelete(const std::vector<std::string> &)
         return false;
     }
 
-    if (lcs && !lcs->getInList().empty()) {
+    if (lcs->is<App::Origin>() && !lcs->getInList().empty()) {
         // Do not allow deletion of origin objects that are not lost.
         return false;
     }
