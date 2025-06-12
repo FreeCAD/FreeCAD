@@ -33,6 +33,7 @@
 #include "ViewProviderSketchGeometryExtension.h"
 #include "GeometryCreationMode.h"
 
+#include <optional>
 
 namespace App
 {
@@ -209,6 +210,7 @@ std::string angleToDisplayFormat(double value, int digits);
 
 bool areCollinear(const Base::Vector2d& p1, const Base::Vector2d& p2, const Base::Vector2d& p3);
 
+// Returns the index of the element in the vector, GeoUndef if the element is GeoUndef and -1 if not found
 int indexOfGeoId(const std::vector<int>& vec, int elem);
 
 inline void scrollTo(QListWidget* list, int i, bool select)
