@@ -109,6 +109,10 @@ static bool isSelectionCheckBoxesEnabled() {
     return TreeParams::getCheckBoxesSelection();
 }
 
+static bool isAutoRelabelNewEnabled() {
+    return TreeParams::getAutoRelabelNew();
+}
+
 void TreeParams::onItemBackgroundChanged()
 {
     if (getItemBackground()) {
@@ -3039,6 +3043,7 @@ void TreeWidget::onUpdateStatus()
     UpdateDisabler disabler(*this, updateBlocked);
 
     std::vector<App::DocumentObject*> errors;
+    App::DocumentObject* relabelCandidate;
 
     // Use a local copy in case of nested calls
     auto localNewObjects = NewObjects;
@@ -3066,6 +3071,13 @@ void TreeWidget::onUpdateStatus()
             auto vpd = freecad_cast<ViewProviderDocumentObject*>(gdoc->getViewProvider(obj));
             if (vpd)
                 docItem->createNewItem(*vpd);
+
+            if (obj->getParents().empty() && obj->getOutList().empty()) {
+                relabelCandidate = obj;
+            }
+            else {
+                RelabelQueue.insert(obj);
+            }
         }
     }
 
@@ -3076,6 +3088,10 @@ void TreeWidget::onUpdateStatus()
     // Update children of changed objects
     for (auto& v : localChangedObjects) {
         auto obj = v.first;
+
+        if (RelabelQueue.find(obj) != RelabelQueue.end()) {
+            relabelCandidate = obj;
+        }
 
         auto iter = ObjectTable.find(obj);
         if (iter == ObjectTable.end())
@@ -3195,9 +3211,29 @@ void TreeWidget::onUpdateStatus()
         scrollToItem(errItem);
 
     updateGeometries();
+
+    tryOfferRelabel(relabelCandidate);
+
     statusTimer->stop();
 
     FC_LOG("done update status");
+}
+
+void TreeWidget::tryOfferRelabel(App::DocumentObject* object)
+{
+    if (!isAutoRelabelNewEnabled() || !object) {
+        RelabelQueue.clear();
+        return;
+    }
+
+    auto iter = ObjectTable.find(object);
+    if (iter != ObjectTable.end() && !iter->second.empty()) {
+        auto& data = *iter->second.begin();
+        if (data && data->rootItem) {
+            editItem(data->rootItem);
+            RelabelQueue.clear();
+        }
+    }
 }
 
 void TreeWidget::onItemEntered(QTreeWidgetItem* item)
