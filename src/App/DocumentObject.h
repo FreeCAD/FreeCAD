@@ -568,6 +568,8 @@ public:
 
     bool removeDynamicProperty(const char* prop) override;
 
+    bool renameDynamicProperty(Property *prop, const char *name) override;
+
     App::Property* addDynamicProperty(const char* type,
                                       const char* name = nullptr,
                                       const char* group = nullptr,
