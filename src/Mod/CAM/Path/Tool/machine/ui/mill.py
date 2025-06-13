@@ -86,6 +86,7 @@ class MillPropertiesDialog(MachinePropertiesDialog):
         self.layout.insertWidget(3, rigidity_group)  # Insert after extents group
 
     def update_machine(self):
+        assert isinstance(self.machine, Mill)
         x_min = self.x_min_edit.property("value")
         x_max = self.x_max_edit.property("value")
         y_min = self.y_min_edit.property("value")
