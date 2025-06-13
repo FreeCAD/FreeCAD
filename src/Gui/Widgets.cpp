@@ -1606,6 +1606,7 @@ void ExpLineEdit::openFormulaDialog()
     QPoint pos = mapToGlobal(QPoint(0,0));
     box->move(pos-box->expressionPosition());
     box->setExpressionInputSize(width(), height());
+    box->adjustDialogPos();
 }
 
 void ExpLineEdit::finishFormulaDialog()

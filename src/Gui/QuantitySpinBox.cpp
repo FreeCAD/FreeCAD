@@ -618,6 +618,7 @@ void QuantitySpinBox::openFormulaDialog()
     QPoint pos = mapToGlobal(QPoint(0,0));
     box->move(pos-box->expressionPosition());
     box->setExpressionInputSize(width(), height());
+    box->adjustDialogPos();
 
     Q_EMIT showFormulaDialog(true);
 }
