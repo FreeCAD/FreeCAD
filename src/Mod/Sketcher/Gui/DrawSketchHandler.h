@@ -310,6 +310,10 @@ protected:
                                    const Base::Vector2d& Pos,
                                    const Base::Vector2d& Dir);
 
+    void openCommand(const std::string& name);
+    void commitCommand();
+    void abortCommand();
+
 protected:
     /**
      * Returns constraints icons scaled to width.
@@ -320,6 +324,7 @@ protected:
     ViewProviderSketch* sketchgui;
 
     QWidget* toolwidget;
+    int currentTransactionID {0};
 };
 
 

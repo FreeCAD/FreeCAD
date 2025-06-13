@@ -829,6 +829,7 @@ protected:
                         //     geoId1,
                         //     geoId2);
                         // NOTE: Temporarily deactivated
+                        // TODO-theo-vt check for transaction shenanigans
                         return false;
                     }
                 }
@@ -1226,20 +1227,6 @@ protected:
         createShape(true);
         drawEdit(toPointerVector(ShapeGeometry));
     }
-    void openCommand(const std::string& name)
-    {
-        currentTransactionID = Gui::Command::openCommand(sketchgui->getDocument()->getDocument(), name);
-    }
-    void commitCommand()
-    {
-        Gui::Command::commitCommand(currentTransactionID);
-        currentTransactionID = 0;
-    }
-    void abortCommand()
-    {
-        Gui::Command::abortCommand(currentTransactionID);
-        currentTransactionID = 0;
-    }
 
     //@}
 
@@ -1285,7 +1272,6 @@ protected:
 
     bool avoidRedundants;
     bool continuousMode;
-    int currentTransactionID {0};
 };
 
 }  // namespace SketcherGui
