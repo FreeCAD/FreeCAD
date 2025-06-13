@@ -54,6 +54,7 @@ import sys
 import os
 import math
 import re
+import time
 import FreeCAD
 import Part
 import Draft
@@ -2810,6 +2811,8 @@ def open(filename):
     Use local variables, not global variables.
     """
     readPreferences()
+    total_start_time = time.perf_counter()
+
     if dxfUseLegacyImporter:
         getDXFlibs()
         if dxfReader:
@@ -2825,6 +2828,7 @@ def open(filename):
         doc = FreeCAD.newDocument(docname)
         doc.Label = docname
         FreeCAD.setActiveDocument(doc.Name)
+        stats = None
         if gui:
             import ImportGui
             stats = ImportGui.readDXF(filename)
@@ -2832,8 +2836,9 @@ def open(filename):
             import Import
             stats = Import.readDXF(filename)
 
+        total_end_time = time.perf_counter()
         if stats:
-            reporter = DxfImportReporter(stats)
+            reporter = DxfImportReporter(stats, total_end_time - total_start_time)
             reporter.report_to_console()
 
         Draft.convert_draft_texts() # convert annotations to Draft texts
@@ -2860,6 +2865,7 @@ def insert(filename, docname):
     Use local variables, not global variables.
     """
     readPreferences()
+    total_start_time = time.perf_counter()
     try:
         doc = FreeCAD.getDocument(docname)
     except NameError:
@@ -2872,6 +2878,7 @@ def insert(filename, docname):
         else:
             errorDXFLib(gui)
     else:
+        stats = None
         if gui:
             import ImportGui
             stats = ImportGui.readDXF(filename)
@@ -2879,8 +2886,9 @@ def insert(filename, docname):
             import Import
             stats = Import.readDXF(filename)
 
+        total_end_time = time.perf_counter()
         if stats:
-            reporter = DxfImportReporter(stats)
+            reporter = DxfImportReporter(stats, total_end_time - total_start_time)
             reporter.report_to_console()
 
         Draft.convert_draft_texts() # convert annotations to Draft texts
@@ -4211,8 +4219,9 @@ def readPreferences():
 
 class DxfImportReporter:
     """Formats and reports statistics from a DXF import process."""
-    def __init__(self, stats_dict):
+    def __init__(self, stats_dict, total_time=0.0):
         self.stats = stats_dict
+        self.total_time = total_time
 
     def to_console_string(self):
         """
@@ -4223,11 +4232,11 @@ class DxfImportReporter:
 
         lines = ["\n--- DXF Import Summary ---"]
 
-        # General Info
+        # General info
         lines.append(f"DXF Version: {self.stats.get('dxfVersion', 'Unknown')}")
         lines.append(f"File Encoding: {self.stats.get('dxfEncoding', 'Unknown')}")
 
-        # Scaling Info
+        # Scaling info
         file_units = self.stats.get('fileUnits', 'Not specified')
         source = self.stats.get('scalingSource', '')
         if source:
@@ -4240,9 +4249,13 @@ class DxfImportReporter:
 
         final_scaling = self.stats.get('finalScalingFactor', 1.0)
         lines.append(f"Final Scaling: 1 DXF unit = {final_scaling:.4f} mm")
+        lines.append("")
 
-        import_time = self.stats.get('importTimeSeconds', 0.0)
-        lines.append(f"Import Time: {import_time:.4f} seconds")
+        # Timing
+        lines.append("Performance:")
+        cpp_time = self.stats.get('importTimeSeconds', 0.0)
+        lines.append(f"  - C++ Import Time: {cpp_time:.4f} seconds")
+        lines.append(f"  - Total Import Time: {self.total_time:.4f} seconds")
         lines.append("")
 
         # Settings
