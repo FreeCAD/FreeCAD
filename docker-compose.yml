@@ -1,0 +1,20 @@
+services:
+  freecad:
+    build:
+      context: ./tools/build/Docker
+      dockerfile: Dockerfile
+    image: freecad-test-image
+    container_name: freecad-test
+    ports:
+      - "5000:5000"
+      - "5100:5100"
+    environment:
+      - "DISPLAY"
+      - "QT_X11_NO_MITSHM=1"
+      - "XDG_RUNTIME_DIR=/tmp"
+    volumes:
+      - ".:/mnt/source"
+      - "./build:/mnt/build"
+      - "~/.config/FreeCAD:/root/.local/FreeCAD"
+      - "~/:/mnt/files"
+      - "/tmp/.X11-unix:/tmp/.X11-unix:ro"
