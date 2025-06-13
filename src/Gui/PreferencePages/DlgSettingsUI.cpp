@@ -62,6 +62,8 @@ void DlgSettingsUI::saveSettings()
     ui->OverlayStyleSheets->onSave();
 
     // Tree View
+    ui->itemBackgroundPaddingSpinBox->onSave();
+    ui->fontSizeSpinBox->onSave();
     ui->iconSizeSpinBox->onSave();
     ui->rowSpacingSpinBox->onSave();
     ui->resizableColumnsCheckBox->onSave();
@@ -88,6 +90,8 @@ void DlgSettingsUI::loadSettings()
     ui->ThemeAccentColor3->onRestore();
 
     // Tree View
+    ui->itemBackgroundPaddingSpinBox->onRestore();
+    ui->fontSizeSpinBox->onRestore();
     ui->iconSizeSpinBox->onRestore();
     ui->rowSpacingSpinBox->onRestore();
     ui->resizableColumnsCheckBox->onRestore();
