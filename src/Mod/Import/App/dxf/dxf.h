@@ -862,6 +862,10 @@ public:
     {
         return m_fail;
     }
+    void setImportTime(double seconds)
+    {
+        m_stats.importTimeSeconds = seconds;
+    }
     void
     DoRead(bool ignore_errors = false);  // this reads the file and calls the following functions
     virtual void StartImport()
