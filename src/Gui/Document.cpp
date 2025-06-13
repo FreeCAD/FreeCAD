@@ -2520,7 +2520,7 @@ Gui::MDIView* Document::getEditingViewOfViewProvider(Gui::ViewProvider* vp) cons
  *  operation default is the command name.
  *  @see CommitCommand(),AbortCommand()
  */
-void Document::openCommand(const char* sName)
+int Document::openCommand(const char* sName)
 {
     getDocument()->openTransaction(sName);
 }

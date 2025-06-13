@@ -279,7 +279,7 @@ public:
     /** @name methods for the UNDO REDO handling */
     //@{
     /// Open a new Undo transaction on the document
-    void openCommand(const char* sName=nullptr);
+    int openCommand(const char* sName=nullptr);
     /// Commit the Undo transaction on the document
     void commitCommand();
     /// Abort the Undo transaction on the document
