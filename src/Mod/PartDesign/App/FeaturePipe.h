@@ -54,6 +54,7 @@ public:
     const char* getViewProviderName() const override {
         return "PartDesignGui::ViewProviderPipe";
     }
+    const char* getPropertyLabel(const App::Property* prop) const override;
     App::DocumentObjectExecReturn *_execute(ProfileBased *feat,
                                                    const TopoShape &path,
                                                    const TopLoc_Location &invObjLoc = TopLoc_Location(),
