@@ -81,9 +81,10 @@ class FemWorkbench(Workbench):
         False if femcommands.commands.__name__ else True
 
         # check vtk version to potentially find missmatchs
-        from femguiutils.vtk_module_handling import vtk_module_handling
+        if "BUILD_FEM_VTK_PYTHON" in FreeCAD.__cmake__:
+            from femguiutils.vtk_module_handling import vtk_module_handling
 
-        vtk_module_handling()
+            vtk_module_handling()
 
     def GetClassName(self):
         # see https://forum.freecad.org/viewtopic.php?f=10&t=43300
