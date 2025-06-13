@@ -93,8 +93,6 @@ class TaskPanelPolarArray:
         self.form.setWindowIcon(icon)
         self.form.setWindowTitle(translate("draft","Polar array"))
 
-        self.form.label_icon.setPixmap(pix.scaled(32, 32))
-
         # -------------------------------------------------------------------
         # Default values for the internal function,
         # and for the task panel interface

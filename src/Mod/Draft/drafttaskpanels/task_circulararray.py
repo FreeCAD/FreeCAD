@@ -79,7 +79,7 @@ class TaskPanelCircularArray:
 
     def __init__(self):
         self.name = "Circular array"
-        _log(translate("draft","Task panel:") + " {}".format(translate("draft","Circular array")))
+        _log(translate("draft","Task panel:") + " {}".format(self.name))
 
         # The .ui file must be loaded into an attribute
         # called `self.form` so that it is displayed in the task panel.
@@ -92,8 +92,6 @@ class TaskPanelCircularArray:
         icon = QtGui.QIcon.fromTheme(icon_name, QtGui.QIcon(svg))
         self.form.setWindowIcon(icon)
         self.form.setWindowTitle(translate("draft","Circular array"))
-
-        self.form.label_icon.setPixmap(pix.scaled(32, 32))
 
         # -------------------------------------------------------------------
         # Default values for the internal function,
