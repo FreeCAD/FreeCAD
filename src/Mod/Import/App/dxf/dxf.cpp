@@ -10,11 +10,14 @@
 #include <iomanip>
 #include <iostream>
 #include <sstream>
+#include <exception>
+#include <string>
 
 #include "dxf.h"
 #include <App/Application.h>
 #include <Base/Color.h>
 #include <Base/Console.h>
+#include <Base/Exception.h>
 #include <Base/FileInfo.h>
 #include <Base/Interpreter.h>
 #include <Base/Stream.h>
@@ -2565,6 +2568,12 @@ bool CDxfRead::ResolveEncoding()
         // Also some DXF files have the codepage name in uppercase so we lowercase it.
         m_encoding = m_CodePage;
         std::transform(m_encoding.begin(), m_encoding.end(), m_encoding.begin(), ::tolower);
+
+        // Add mapping for common non-standard encoding names.
+        if (m_encoding == "8859_1") {
+            m_encoding = "iso-8859-1";  // Replace with a name Python understands
+        }
+
         // NOLINTNEXTLINE(readability/nolint)
 #define ANSI_ENCODING_PREFIX "ansi_"  // NOLINT(cppcoreguidelines-macro-usage)
         if (m_encoding.rfind(ANSI_ENCODING_PREFIX, 0) == 0 && m_encoding.rfind("ansi_x3", 0) != 0) {
@@ -2580,7 +2589,11 @@ bool CDxfRead::ResolveEncoding()
         Base::PyGILStateLocker lock;
         PyObject* pyDecoder = PyCodec_Decoder(m_encoding.c_str());
         if (pyDecoder == nullptr) {
-            return false;  // A key error exception will have been placed.
+            // PyCodec_Decoder failed, which means Python could not find the encoding.
+            // This sets a Python LookupError. We clear this low-level error because
+            // our caller will throw a more informative, high-level exception.
+            PyErr_Clear();
+            return false;
         }
         PyObject* pyUTF8Decoder = PyCodec_Decoder("utf_8");
         assert(pyUTF8Decoder != nullptr);
@@ -2629,64 +2642,97 @@ void CDxfRead::DoRead(const bool ignore_errors /* = false */)
         return;
     }
 
-    StartImport();
-    // Loop reading the sections.
-    while (get_next_record()) {
-        if (m_record_type != eObjectType) {
-            ImportError("Found type %d record when expecting start of a SECTION or EOF\n",
-                        (int)m_record_type);
-            continue;
+    try {
+        StartImport();
+        // Loop reading the sections.
+        while (get_next_record()) {
+            if (m_record_type != eObjectType) {
+                ImportError("Found type %d record when expecting start of a SECTION or EOF\n",
+                            (int)m_record_type);
+                continue;
+            }
+            if (IsObjectName("EOF")) {  // TODO: Check for drivel beyond EOF record
+                break;
+            }
+            if (!IsObjectName("SECTION")) {
+                ImportError("Found %s record when expecting start of a SECTION\n",
+                            m_record_data.c_str());
+                continue;
+            }
+            if (!ReadSection()) {
+                throw Base::Exception("Failed to read DXF section (returned false).");
+            }
         }
-        if (IsObjectName("EOF")) {  // TODO: Check for drivel beyond EOF record
-            break;
-        }
-        if (!IsObjectName("SECTION")) {
-            ImportError("Found %s record when expecting start of a SECTION\n",
-                        m_record_data.c_str());
-            continue;
-        }
-        if (!ReadSection()) {
-            return;
+        FinishImport();
+
+        // Flush out any unsupported features messages
+        if (!m_unsupportedFeaturesNoted.empty()) {
+            ImportError("Unsupported DXF features:\n");
+            for (auto& featureInfo : m_unsupportedFeaturesNoted) {
+                ImportError("%s: %d time(s) first at line %d\n",
+                            featureInfo.first,
+                            featureInfo.second.first,
+                            featureInfo.second.second);
+            }
         }
     }
-    FinishImport();
-
-    // FLush out any unsupported features messages
-    if (!m_unsupportedFeaturesNoted.empty()) {
-        ImportError("Unsupported DXF features:\n");
-        for (auto& featureInfo : m_unsupportedFeaturesNoted) {
-            ImportError("%s: %d time(s) first at line %d\n",
-                        featureInfo.first,
-                        featureInfo.second.first,
-                        featureInfo.second.second);
-        }
+    catch (const Base::Exception& e) {
+        // This catches specific FreeCAD exceptions and re-throws them.
+        throw;
+    }
+    catch (const std::exception& e) {
+        // This catches all standard C++ exceptions and converts them
+        // to a FreeCAD exception, which the binding layer can handle.
+        throw Base::Exception(e.what());
+    }
+    catch (...) {
+        // This is a catch-all for any other non-standard C++ exceptions.
+        throw Base::Exception("An unknown, non-standard C++ exception occurred during DXF import.");
     }
 }
 
 bool CDxfRead::ReadSection()
 {
     if (!get_next_record()) {
-        ImportError("Unclosed SECTION at end of file\n");
-        return false;
+        throw Base::Exception("Unexpected end of file after SECTION tag.");
     }
     if (m_record_type != eName) {
         ImportError("Ignored SECTION with no name record\n");
         return ReadIgnoredSection();
     }
+
     if (IsObjectName("HEADER")) {
-        return ReadHeaderSection();
+        if (!ReadHeaderSection()) {
+            throw Base::Exception("Failed while reading HEADER section.");
+        }
+        return true;
     }
     if (IsObjectName("TABLES")) {
-        return ReadTablesSection();
+        if (!ReadTablesSection()) {
+            throw Base::Exception("Failed while reading TABLES section.");
+        }
+        return true;
     }
     if (IsObjectName("BLOCKS")) {
-        return ReadBlocksSection();
+        if (!ReadBlocksSection()) {
+            throw Base::Exception("Failed while reading BLOCKS section.");
+        }
+        return true;
     }
     if (IsObjectName("ENTITIES")) {
-        return ReadEntitiesSection();
+        if (!ReadEntitiesSection()) {
+            throw Base::Exception("Failed while reading ENTITIES section.");
+        }
+        return true;
     }
-    return ReadIgnoredSection();
+
+    if (!ReadIgnoredSection()) {
+        throw Base::Exception("Failed while reading an unknown/ignored section.");
+    }
+
+    return true;
 }
+
 void CDxfRead::ProcessLayerReference(CDxfRead* object, void* target)
 {
     if (!object->Layers.contains(object->m_record_data)) {
@@ -2775,11 +2821,18 @@ bool CDxfRead::ReadHeaderSection()
         if (m_record_type != eVariableName) {
             continue;  // Quietly ignore unknown record types
         }
+
+        // Store the variable name before we try to read its value.
+        std::string currentVarName = m_record_data;
         if (!ReadVariable()) {
-            return false;
+            // If ReadVariable returns false, throw an exception with the variable name.
+            throw Base::Exception("Failed while reading value for HEADER variable: "
+                                  + currentVarName);
         }
     }
-    return false;
+
+    // If the loop finishes without finding ENDSEC, it's an error.
+    throw Base::Exception("Unexpected end of file inside HEADER section.");
 }
 
 bool CDxfRead::ReadVariable()
