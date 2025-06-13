@@ -494,7 +494,7 @@ private:
             firstCurve = getHighestCurveIndex() + 1;
 
             createShape(false);
-            
+
             openCommand(QT_TRANSLATE_NOOP("Command", "Add sketch box"));
 
             commandAddShapeGeometryAndConstraints();
