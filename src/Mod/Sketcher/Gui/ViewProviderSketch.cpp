@@ -54,6 +54,7 @@
 #include <Gui/Selection/Selection.h>
 #include <Gui/Selection/SelectionObject.h>
 #include <Gui/Selection/SoFCUnifiedSelection.h>
+//#include <Gui/Inventor/SoFCSwitch.h>
 #include <Gui/Utilities.h>
 #include <Gui/View3DInventor.h>
 #include <Gui/View3DInventorViewer.h>
@@ -148,6 +149,20 @@ void ViewProviderSketch::ParameterObserver::updateColorProperty(const std::strin
     color = hGrp->GetUnsigned(string.c_str(), color);
     elementAppColor.setPackedValue((uint32_t)color);
     colorprop->setValue(elementAppColor);
+}
+
+void ViewProviderSketch::ParameterObserver::updateShapeAppearanceProperty(const std::string& string, App::Property* property)
+{
+    auto matProp = static_cast<App::PropertyMaterialList*>(property);
+
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher/General");
+    unsigned long shcol = hGrp->GetUnsigned(string.c_str(), 0x54abff40);
+    float r = ((shcol >> 24) & 0xff) / 255.0;
+    float g = ((shcol >> 16) & 0xff) / 255.0;
+    float b = ((shcol >> 8) & 0xff) / 255.0;
+    float a = (shcol & 0xff) / 255.0;
+    matProp->setDiffuseColor(r, g, b);
+    matProp->setTransparency(1 - a);
 }
 
 void ViewProviderSketch::ParameterObserver::updateGridSize(const std::string& string,
@@ -380,6 +395,13 @@ void ViewProviderSketch::ParameterObserver::initParameters()
               }
           },
           &Client.PointColor}},
+        {"SketchFaceColor",
+         {[this](const std::string& string, App::Property* property) {
+              if (Client.AutoColor.getValue()) {
+                  updateShapeAppearanceProperty(string, property);
+              }
+          },
+          &Client.ShapeAppearance}},
     };
 
     for (auto& val : parameterMap) {
@@ -588,6 +610,8 @@ ViewProviderSketch::ViewProviderSketch()
     rubberband = std::make_unique<Gui::Rubberband>();
 
     cameraSensor.setFunction(&ViewProviderSketch::camSensCB);
+
+    updateColorPropertiesVisibility();
 }
 
 ViewProviderSketch::~ViewProviderSketch()
@@ -1320,6 +1344,50 @@ void ViewProviderSketch::toggleWireSelelection(int clickedGeoId)
         }
     }
 
+}
+
+
+
+bool ViewProviderSketch::getElementPicked(const SoPickedPoint *pp, std::string &subname) const
+{
+    if (pInternalView && pp->getPath()->containsNode(pInternalView->getRoot()) && !isInEditMode()) {
+        if(pInternalView->getElementPicked(pp, subname)) {
+            subname = SketchObject::internalPrefix() + subname;
+            auto &elementMap = getSketchObject()->getInternalElementMap();
+            auto it = elementMap.find(subname);
+            if (it != elementMap.end()) {
+                subname = it->second;
+            }
+            return true;
+        }
+    }
+    return ViewProvider2DObject::getElementPicked(pp, subname);
+}
+
+bool ViewProviderSketch::getDetailPath(
+        const char *subname, SoFullPath *pPath, bool append, SoDetail *&det) const
+{
+    if (!isInEditMode() && pInternalView && subname) {
+        const char *realName = strrchr(subname, '.');
+        if (realName)
+            ++realName;
+        else
+            realName = subname;
+        realName = SketchObject::convertInternalName(realName);
+        if (realName) {
+            auto len = pPath->getLength();
+            if(append) {
+                pPath->append(pcRoot);
+                pPath->append(pcModeSwitch);
+            }
+            if (!pInternalView->getDetailPath(realName, pPath, false, det)) {
+                pPath->truncate(len);
+                return false;
+            }
+            return true;
+        }
+    }
+    return ViewProvider2DObject::getDetailPath(subname, pPath, append, det);
 }
 
 bool ViewProviderSketch::mouseMove(const SbVec2s& cursorPos, Gui::View3DInventorViewer* viewer)
@@ -2863,10 +2931,20 @@ void ViewProviderSketch::drawEditMarkers(const std::vector<Base::Vector2d>& Edit
 }
 
 void ViewProviderSketch::updateData(const App::Property* prop) {
-    ViewProvider2DObject::updateData(prop);
+    if (std::string(prop->getName()) != "ShapeMaterial") {
+        // We don't want material to override the colors of sketches.
+        ViewProvider2DObject::updateData(prop);
+    }
 
-    if (prop != &getSketchObject()->Constraints)
+    if (prop == &getSketchObject()->InternalShape) {
+        if (pInternalView) {
+            pInternalView->updateVisual();
+        }
+    }
+    else if (prop != &getSketchObject()->Constraints) {
         signalElementsChanged();
+    }
+     
 }
 
 void ViewProviderSketch::slotSolverUpdate()
@@ -2908,23 +2986,39 @@ void ViewProviderSketch::onChanged(const App::Property* prop)
     }
 
     if (prop == &AutoColor) {
-        auto usesAutomaticColors = AutoColor.getValue();
-
-        // when auto color is enabled don't save color information in the document
-        // so it does not cause unnecessary updates if multiple users use different colors
-        LineColor.setStatus(App::Property::Transient, usesAutomaticColors);
-        PointColor.setStatus(App::Property::Transient, usesAutomaticColors);
-
-        // and mark this property as read-only hidden so it's not possible to change manually
-        LineColor.setStatus(App::Property::ReadOnly, usesAutomaticColors);
-        LineColor.setStatus(App::Property::Hidden, usesAutomaticColors);
-        PointColor.setStatus(App::Property::ReadOnly, usesAutomaticColors);
-        PointColor.setStatus(App::Property::Hidden, usesAutomaticColors);
-
+        updateColorPropertiesVisibility();
         return;
     }
 
     ViewProvider2DObject::onChanged(prop);
+    
+    if (pInternalView) {
+        if (prop == &Transparency) {
+            pInternalView->Transparency.setValue(Transparency.getValue());
+        }
+        else if (prop == &ShapeAppearance) {
+            pInternalView->ShapeAppearance.setValue(ShapeAppearance.getValue());
+        }
+    }
+}
+
+void SketcherGui::ViewProviderSketch::updateColorPropertiesVisibility()
+{
+    auto usesAutomaticColors = AutoColor.getValue();
+
+    // when auto color is enabled don't save color information in the document
+    // so it does not cause unnecessary updates if multiple users use different colors
+    LineColor.setStatus(App::Property::Transient, usesAutomaticColors);
+    PointColor.setStatus(App::Property::Transient, usesAutomaticColors);
+    ShapeAppearance.setStatus(App::Property::Transient, usesAutomaticColors);
+
+    // and mark this property as read-only hidden so it's not possible to change manually
+    LineColor.setStatus(App::Property::ReadOnly, usesAutomaticColors);
+    LineColor.setStatus(App::Property::Hidden, usesAutomaticColors);
+    PointColor.setStatus(App::Property::ReadOnly, usesAutomaticColors);
+    PointColor.setStatus(App::Property::Hidden, usesAutomaticColors);
+    ShapeAppearance.setStatus(App::Property::ReadOnly, usesAutomaticColors);
+    ShapeAppearance.setStatus(App::Property::Hidden, usesAutomaticColors);
 }
 
 void SketcherGui::ViewProviderSketch::startRestoring()
@@ -2955,12 +3049,64 @@ void SketcherGui::ViewProviderSketch::finishRestoring()
         // update colors according to current user preferences
         pObserver->updateFromParameter("SketchEdgeColor");
         pObserver->updateFromParameter("SketchVertexColor");
+        pObserver->updateFromParameter("SketchFaceColor");
+        
+        updateColorPropertiesVisibility();
+    }
+
+    if (pInternalView && getSketchObject()->MakeInternals.getValue()) {
+        pInternalView->updateVisual();
     }
 }
 
 void ViewProviderSketch::attach(App::DocumentObject* pcFeat)
 {
     ViewProvider2DObject::attach(pcFeat);
+
+    if (pFaceRoot) {
+        // Commented lines are from RealThunder's branch, but they are 
+        // not implemented in main. It may be interesting to look into those later.
+        pInternalView.reset(new PartGui::ViewProviderPart);
+        pInternalView->setShapePropertyName("InternalShape");
+        pInternalView->forceUpdate();
+        //pInternalView->MapFaceColor.setValue(false);
+        //pInternalView->MapLineColor.setValue(false);
+        //pInternalView->MapPointColor.setValue(false);
+        //pInternalView->MapTransparency.setValue(false);
+        //pInternalView->ForceMapColors.setValue(false);
+        pInternalView->ShapeAppearance.setValue(ShapeAppearance.getValue());
+        pInternalView->Lighting.setValue(1);
+        //pInternalView->enableFullSelectionHighlight(false, false, false);
+        pInternalView->setStatus(Gui::SecondaryView, true);
+        pInternalView->attach(getObject());
+        pInternalView->setDefaultMode(1);
+        //if (pInternalView->getModeSwitch()->isOfType(SoFCSwitch::getClassTypeId())) {
+        //    static_cast<SoFCSwitch*>(pInternalView->getModeSwitch())->defaultChild = 0;
+        //}
+        pInternalView->show();
+        pFaceRoot->addChild(pInternalView->getRoot());
+    }
+}
+
+const char* ViewProviderSketch::getDefaultDisplayMode() const
+{
+    return "Flat Lines";
+}
+
+void ViewProviderSketch::beforeDelete()
+{
+    ViewProvider2DObject::beforeDelete();
+    if (pInternalView) {
+        pInternalView->beforeDelete();
+    }
+}
+
+void ViewProviderSketch::reattach(App::DocumentObject *obj)
+{
+    ViewProvider2DObject::reattach(obj);
+    if (pInternalView) {
+        pInternalView->reattach(obj);
+    }
 }
 
 void ViewProviderSketch::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
