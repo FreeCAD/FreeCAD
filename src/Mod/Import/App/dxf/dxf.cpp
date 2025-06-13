@@ -2002,6 +2002,9 @@ void CDxfRead::ProcessAllEntityAttributes()
 void CDxfRead::ResolveEntityAttributes()
 {
     m_entityAttributes.ResolveBylayerAttributes(*this);
+    if (m_entityAttributes.m_paperSpace) {
+        m_stats.entityCounts["ENTITIES_IN_PAPERSPACE"]++;
+    }
     // TODO: Look at the space and layer (hidden/frozen?) and options and return false if the entity
     // is not needed.
     // TODO: INSERT must not call this because an INSERT on a hidden layer should always be
