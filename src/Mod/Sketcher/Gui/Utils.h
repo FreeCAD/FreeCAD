@@ -33,8 +33,6 @@
 #include "ViewProviderSketchGeometryExtension.h"
 #include "GeometryCreationMode.h"
 
-#include <optional>
-
 namespace App
 {
 class DocumentObject;
