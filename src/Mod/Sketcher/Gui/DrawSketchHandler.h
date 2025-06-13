@@ -32,6 +32,8 @@
 #include <Base/Tools2D.h>
 #include <Gui/Selection/Selection.h>
 #include <Gui/ToolHandler.h>
+#include <Gui/InputHint.h>
+
 #include <Mod/Part/App/Geometry.h>
 #include <Mod/Sketcher/App/Constraint.h>
 
@@ -160,6 +162,10 @@ public:
         return false;
     }
 
+    virtual std::list<Gui::InputHint> getToolHints() const
+    {
+        return {};
+    }
     void quit() override;
 
     friend class ViewProviderSketch;
