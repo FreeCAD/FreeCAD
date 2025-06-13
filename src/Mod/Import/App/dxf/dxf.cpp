@@ -2349,6 +2349,7 @@ bool CDxfRead::ReadBlockInfo()
     int blockType = 0;
     std::string blockName;
     InitializeAttributes();
+    m_stats.entityCounts["BLOCK"]++;
     // Both 2 and 3 are the block name.
     SetupStringAttribute(eName, blockName);
     SetupStringAttribute(eExtraText, blockName);
