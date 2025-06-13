@@ -1255,9 +1255,9 @@ void ViewProviderSketch::editDoubleClicked()
 
             // if its the right constraint
             if (Constr->isDimensional()) {
-                Gui::Command::openCommand(
+                int tid = getDocument()->openCommand(
                     QT_TRANSLATE_NOOP("Command", "Modify sketch constraints"));
-                EditDatumDialog editDatumDialog(this, id);
+                EditDatumDialog editDatumDialog(tid, this, id);
                 editDatumDialog.exec();
             }
         }

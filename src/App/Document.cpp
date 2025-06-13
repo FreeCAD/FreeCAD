@@ -330,20 +330,21 @@ std::vector<std::string> Document::getAvailableRedoNames() const
     return vList;
 }
 
-void Document::openTransaction(const char* name) // NOLINT
+int Document::openTransaction(const char* name) // NOLINT
 {
     if (!canCommit()) {
         if (FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG)) {
             FC_WARN("Transaction locked, ignore new transaction '" << name << "'");
         }
+        return 0;
     }
     if (isPerformingTransaction() || d->committing) {
         if (FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG)) {
             FC_WARN("Cannot open transaction while transacting");
         }
-        return;
+        return 0;
     }
-    setActiveTransaction(name ? name : "<empty>");
+    return setActiveTransaction(name ? name : "<empty>");
     // GetApplication().setActiveTransaction(name ? name : "<empty>");
 }
 

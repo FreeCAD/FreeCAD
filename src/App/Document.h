@@ -480,7 +480,7 @@ public:
      * to setup a potential transaction which will only be created if there is
      * actual changes.
      */
-    void openTransaction(const char* name = nullptr);
+    int openTransaction(const char* name = nullptr);
     /// Rename the current transaction if the id matches
     void renameTransaction(const char* name, int id) const;
     /// Commit the Command transaction. Do nothing If there is no Command transaction open.
