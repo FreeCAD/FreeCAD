@@ -68,12 +68,12 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         signals.append(self.form.StockToLeave.valueChanged)
         signals.append(self.form.ZStockToLeave.valueChanged)
         signals.append(self.form.coolantController.currentIndexChanged)
-        if hasattr(self.form.ForceInsideOut, "checkStateChanged"): # Qt version >= 6.7.0
+        if hasattr(self.form.ForceInsideOut, "checkStateChanged"):  # Qt version >= 6.7.0
             signals.append(self.form.ForceInsideOut.checkStateChanged)
             signals.append(self.form.FinishingProfile.checkStateChanged)
             signals.append(self.form.useOutline.checkStateChanged)
             signals.append(self.form.orderCutsByRegion.checkStateChanged)
-        else: # Qt version < 6.7.0
+        else:  # Qt version < 6.7.0
             signals.append(self.form.ForceInsideOut.stateChanged)
             signals.append(self.form.FinishingProfile.stateChanged)
             signals.append(self.form.useOutline.stateChanged)

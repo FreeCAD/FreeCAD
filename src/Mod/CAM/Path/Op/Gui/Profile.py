@@ -125,13 +125,13 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         signals.append(self.form.extraOffset.editingFinished)
         signals.append(self.form.numPasses.editingFinished)
         signals.append(self.form.stepover.editingFinished)
-        if hasattr(self.form.useCompensation, "checkStateChanged"): # Qt version >= 6.7.0
+        if hasattr(self.form.useCompensation, "checkStateChanged"):  # Qt version >= 6.7.0
             signals.append(self.form.useCompensation.checkStateChanged)
             signals.append(self.form.useStartPoint.checkStateChanged)
             signals.append(self.form.processHoles.checkStateChanged)
             signals.append(self.form.processPerimeter.checkStateChanged)
             signals.append(self.form.processCircles.checkStateChanged)
-        else: # Qt version < 6.7.0
+        else:  # Qt version < 6.7.0
             signals.append(self.form.useCompensation.stateChanged)
             signals.append(self.form.useStartPoint.stateChanged)
             signals.append(self.form.processHoles.stateChanged)
@@ -166,9 +166,9 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         self.form.stepover.setEnabled(self.obj.NumPasses > 1)
 
     def registerSignalHandlers(self, obj):
-        if hasattr(self.form.useCompensation, "checkStateChanged"): # Qt version >= 6.7.0
+        if hasattr(self.form.useCompensation, "checkStateChanged"):  # Qt version >= 6.7.0
             self.form.useCompensation.checkStateChanged.connect(self.updateVisibility)
-        else: # Qt version < 6.7.0
+        else:  # Qt version < 6.7.0
             self.form.useCompensation.stateChanged.connect(self.updateVisibility)
         self.form.numPasses.editingFinished.connect(self.updateVisibility)
 

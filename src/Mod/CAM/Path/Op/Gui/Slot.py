@@ -142,9 +142,9 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         signals.append(self.form.geo2Reference.currentIndexChanged)
         signals.append(self.form.layerMode.currentIndexChanged)
         signals.append(self.form.pathOrientation.currentIndexChanged)
-        if hasattr(self.form.reverseDirection, "checkStateChanged"): # Qt version >= 6.7.0
+        if hasattr(self.form.reverseDirection, "checkStateChanged"):  # Qt version >= 6.7.0
             signals.append(self.form.reverseDirection.checkStateChanged)
-        else: # Qt version < 6.7.0
+        else:  # Qt version < 6.7.0
             signals.append(self.form.reverseDirection.stateChanged)
         return signals
 

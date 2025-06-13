@@ -126,9 +126,9 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         signals.append(self.form.boundaryAdjustment.editingFinished)
         signals.append(self.form.stepOver.editingFinished)
         signals.append(self.form.sampleInterval.editingFinished)
-        if hasattr(self.form.optimizeEnabled, "checkStateChanged"): # Qt version >= 6.7.0
+        if hasattr(self.form.optimizeEnabled, "checkStateChanged"):  # Qt version >= 6.7.0
             signals.append(self.form.optimizeEnabled.checkStateChanged)
-        else: # Qt version < 6.7.0
+        else:  # Qt version < 6.7.0
             signals.append(self.form.optimizeEnabled.stateChanged)
 
         return signals

@@ -188,21 +188,21 @@ class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
         signals.append(self.form.peckRetractHeight.editingFinished)
         signals.append(self.form.peckDepth.editingFinished)
         signals.append(self.form.dwellTime.editingFinished)
-        if hasattr(self.form.dwellEnabled, "checkStateChanged"): # Qt version >= 6.7.0
+        if hasattr(self.form.dwellEnabled, "checkStateChanged"):  # Qt version >= 6.7.0
             signals.append(self.form.dwellEnabled.checkStateChanged)
             signals.append(self.form.peckEnabled.checkStateChanged)
             signals.append(self.form.chipBreakEnabled.checkStateChanged)
-        else: # Qt version < 6.7.0
+        else:  # Qt version < 6.7.0
             signals.append(self.form.dwellEnabled.stateChanged)
             signals.append(self.form.peckEnabled.stateChanged)
             signals.append(self.form.chipBreakEnabled.stateChanged)
         signals.append(self.form.toolController.currentIndexChanged)
         signals.append(self.form.coolantController.currentIndexChanged)
         signals.append(self.form.ExtraOffset.currentIndexChanged)
-        if hasattr(self.form.KeepToolDownEnabled, "checkStateChanged"): # Qt version >= 6.7.0
+        if hasattr(self.form.KeepToolDownEnabled, "checkStateChanged"):  # Qt version >= 6.7.0
             signals.append(self.form.KeepToolDownEnabled.checkStateChanged)
             signals.append(self.form.feedRetractEnabled.checkStateChanged)
-        else: # Qt version < 6.7.0
+        else:  # Qt version < 6.7.0
             signals.append(self.form.KeepToolDownEnabled.stateChanged)
             signals.append(self.form.feedRetractEnabled.stateChanged)
         return signals
