@@ -44,7 +44,7 @@ def generate(
     step_down,
     step_over,
     tool_diameter,
-    inner_radius=0.0,
+    inner_radius,
     direction="CW",
     startAt="Outside",
 ):
@@ -70,9 +70,6 @@ def generate(
             startAt,
         )
     )
-
-    # inner_radius contains not a radius but the value from Extra Offset, which is the distance between the hole radius as designed and the hole radius to be cut.
-    # hole_radius contains the designed hole radius - inner_radius.
 
     if type(hole_radius) not in [float, int]:
         raise TypeError("Invalid type for hole radius")
@@ -129,12 +126,13 @@ def generate(
     else:
         Path.Log.debug("(annulus mode / full hole)\n")
         outer_radius = hole_radius - tool_diameter / 2
-        step_radius = inner_radius + tool_diameter / 2
-        if abs((outer_radius - step_radius) / step_over_distance) < 1e-5:
-            radii = [(outer_radius + inner_radius) / 2]
+        if (outer_radius - inner_radius) / step_over_distance < 0.1:
+            # Do not overlap outer and inner helix
+            radii = [outer_radius]
         else:
-            nr = max(int(ceil((outer_radius - inner_radius) / step_over_distance)), 2)
-            radii = linspace(outer_radius, step_radius, nr)
+            work_distance = outer_radius - inner_radius + tool_diameter / 2
+            nr = max(int(ceil(work_distance / step_over_distance)), 2)
+            radii = linspace(outer_radius, inner_radius, nr)
 
     Path.Log.debug("Radii: {}".format(radii))
     # calculate the number of full and partial turns required
@@ -206,8 +204,7 @@ def generate(
         # Calculate retraction
         if hole_radius <= tool_diameter:  # simple case where center is clear
             center_clear = True
-
-        elif startAt == "Inside" and inner_radius == 0.0:  # middle is clear
+        elif startAt == "Inside":  # middle is clear
             center_clear = True
         else:
             center_clear = False
@@ -218,8 +215,8 @@ def generate(
             )
 
         # Technical Debt.
-        # If the operation is clearing multiple passes in annulus mode (inner
-        # radius > 0.0 and len(radii) > 1) then there is a derivable
+        # If the operation is clearing multiple passes in annulus mode
+        # (inner_radius > 0.0 and len(radii) > 1) then there is a derivable
         # safe place which does not touch the inner or outer wall on all radii except
         # the first.  This is left as a future improvement.
 
@@ -234,5 +231,4 @@ def generate(
     for r in radii:
         commands.extend(helix_cut_r(r))
         commands.extend(retract())
-
     return commands
