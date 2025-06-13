@@ -116,7 +116,7 @@ private:
     void executeCommands() override
     {
         try {
-            Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Rotate geometries"));
+            openCommand(QT_TRANSLATE_NOOP("Command", "Rotate geometries"));
 
             createShape(false);
 
@@ -126,7 +126,7 @@ private:
                 deleteOriginalGeos();
             }
 
-            Gui::Command::commitCommand();
+            commitCommand();
         }
         catch (const Base::Exception& e) {
             e.reportException();
@@ -134,7 +134,7 @@ private:
                              QT_TRANSLATE_NOOP("Notifications", "Error"),
                              QT_TRANSLATE_NOOP("Notifications", "Failed to rotate"));
 
-            Gui::Command::abortCommand();
+            abortCommand();
             THROWM(Base::RuntimeError,
                    QT_TRANSLATE_NOOP(
                        "Notifications",

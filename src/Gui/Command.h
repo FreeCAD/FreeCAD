@@ -425,6 +425,9 @@ public:
     static void abortCommand(int tid);
     void abortSelf();
 
+    int transactionID() const;
+    void resetTransactionID();
+
     /// Check if an Undo transaction is open on the active document
     static bool hasPendingCommand();
     /// Updates the (active) document (propagate changes)
