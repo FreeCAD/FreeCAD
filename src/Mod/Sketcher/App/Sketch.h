@@ -448,6 +448,10 @@ public:
                                PointPos pos2,
                                int geoId3,
                                PointPos pos3);
+    /// add a symmetric constraint between two geometries with respect to a line
+    int addSymmetricConstraint(int geoId1, int geoId2, int geoId3);
+    /// add a symmetric constraint between two geometries with respect to a point
+    int addSymmetricConstraint(int geoId1, int geoId2, int geoId3, PointPos pos3);
     /**
      *   add a snell's law constraint
      *
