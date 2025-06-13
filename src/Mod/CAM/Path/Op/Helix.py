@@ -194,6 +194,15 @@ class ObjectHelix(PathCircularHoleBase.ObjectOp):
                 "Create Helix only in the center of the profile",
             ),
         )
+        obj.addProperty(
+            "App::PropertyBool",
+            "RetractCenter",
+            "Helix Drill",
+            QT_TRANSLATE_NOOP(
+                "App::Property",
+                "Retract in the center of hole if possible",
+            ),
+        )
 
         ENUMS = self.helixOpPropertyEnumerations()
         for n in ENUMS:
@@ -238,6 +247,16 @@ class ObjectHelix(PathCircularHoleBase.ObjectOp):
                     "Create Helix only in the center of the profile",
                 ),
             )
+        if not hasattr(obj, "RetractCenter"):
+            obj.addProperty(
+                "App::PropertyBool",
+                "RetractCenter",
+                "Helix Drill",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "Retract in the center of the hole if possible",
+                ),
+            )
 
         if not hasattr(obj, "CutMode"):
             # TODO: consolidate the duplicate definitions from opOnDocumentRestored and
@@ -269,8 +288,6 @@ class ObjectHelix(PathCircularHoleBase.ObjectOp):
 
         self.commandlist.append(Path.Command("(helix cut operation)"))
 
-        self.commandlist.append(Path.Command("G0", {"Z": obj.ClearanceHeight.Value}))
-
         tool = obj.ToolController.Tool
         tooldiameter = tool.Diameter.Value if hasattr(tool.Diameter, "Value") else tool.Diameter
 
@@ -285,11 +302,13 @@ class ObjectHelix(PathCircularHoleBase.ObjectOp):
             "step_over": obj.StepOver / 100,
             "tool_diameter": tooldiameter,
             "inner_radius": tooldiameter / 2 + obj.OffsetInnerRadius.Value,
+            "safe_height": obj.SafeHeight.Value,
+            "retract_center": obj.RetractCenter,
             "direction": obj.Direction,
             "startAt": obj.StartSide,
         }
 
-        for hole in holes:
+        for counter, hole in enumerate(holes):
             if obj.OnlyCenter:
                 args["hole_radius"] = tooldiameter + obj.OffsetInnerRadius.Value
             else:
@@ -298,21 +317,8 @@ class ObjectHelix(PathCircularHoleBase.ObjectOp):
             endPoint = FreeCAD.Vector(hole["x"], hole["y"], obj.FinalDepth.Value)
             args["edge"] = Part.makeLine(startPoint, endPoint)
 
-            # move to starting position
+            self.commandlist.append(Path.Command(f"(hole {counter + 1})"))
             self.commandlist.append(Path.Command("G0", {"Z": obj.ClearanceHeight.Value}))
-            self.commandlist.append(
-                Path.Command(
-                    "G0",
-                    {
-                        "X": startPoint.x,
-                        "Y": startPoint.y,
-                        "Z": obj.ClearanceHeight.Value,
-                    },
-                )
-            )
-            self.commandlist.append(
-                Path.Command("G0", {"X": startPoint.x, "Y": startPoint.y, "Z": startPoint.z})
-            )
 
             results = helix.generate(**args)
 

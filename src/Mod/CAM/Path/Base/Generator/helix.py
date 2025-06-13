@@ -45,6 +45,8 @@ def generate(
     step_over,
     tool_diameter,
     inner_radius,
+    safe_height,
+    retract_center,
     direction="CW",
     startAt="Outside",
 ):
@@ -56,11 +58,12 @@ def generate(
     endPoint = edge.Vertexes[1].Point
 
     Path.Log.track(
-        "(helix: <{}, {}>\n hole radius {}\n inner radius {}\n step over {}\n start point {}\n end point {}\n step_down {}\n tool diameter {}\n direction {}\n startAt {})".format(
+        "(helix: <{}, {}>\n hole radius {}\n inner radius {}\n safe height {}\n step over {}\n start point {}\n end point {}\n step_down {}\n tool diameter {}\n direction {}\n startAt {})".format(
             startPoint.x,
             startPoint.y,
             hole_radius,
             inner_radius,
+            safe_height,
             step_over,
             startPoint.z,
             endPoint.z,
@@ -145,6 +148,7 @@ def generate(
         commandlist = []
         arc_cmd = "G2" if direction == "CW" else "G3"
         commandlist.append(Path.Command("G0", {"X": startPoint.x + r, "Y": startPoint.y}))
+        commandlist.append(Path.Command("G0", {"Z": safe_height}))
         commandlist.append(Path.Command("G1", {"Z": startPoint.z}))
         for i in range(1, turncount + 1):
             commandlist.append(
@@ -209,7 +213,7 @@ def generate(
         else:
             center_clear = False
 
-        if center_clear:
+        if center_clear and retract_center:
             retractcommands.append(
                 Path.Command("G0", {"X": endPoint.x, "Y": endPoint.y, "Z": endPoint.z})
             )
@@ -220,7 +224,7 @@ def generate(
         # safe place which does not touch the inner or outer wall on all radii except
         # the first.  This is left as a future improvement.
 
-        retractcommands.append(Path.Command("G0", {"Z": startPoint.z}))
+        retractcommands.append(Path.Command("G0", {"Z": safe_height}))
 
         return retractcommands
 
