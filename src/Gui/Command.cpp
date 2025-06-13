@@ -688,7 +688,14 @@ void Command::commitSelf()
     commitCommand(currentTransactionID);
     currentTransactionID = 0;
 }
-
+int Command::transactionID() const
+{
+    return currentTransactionID;
+}
+void Command::resetTransactionID()
+{
+    currentTransactionID = 0;
+}
 void Command::abortCommand()
 {
     App::GetApplication().closeActiveTransaction(true);
