@@ -2708,6 +2708,7 @@ class DocumentAutoCreatedCases(unittest.TestCase):
         self.assertIn("TestDoc", FreeCAD.listDocuments())
         self.assertIn("SavedDoc", FreeCAD.listDocuments())
 
+
 # Test if actions done on two documents are undone together
 # (working toward making this test pass)
 class MultiDocumentUndo(unittest.TestCase):
@@ -2724,7 +2725,9 @@ class MultiDocumentUndo(unittest.TestCase):
         obj1 = self.Doc1.addObject("App::DocumentObject", "Obj1Name")
         obj2 = self.Doc2.addObject("App::DocumentObject", "Obj2Name")
 
-        self.assertNotEqual(self.Doc1.getCurrentTransactionID(), self.Doc2.getCurrentTransactionID())
+        self.assertNotEqual(
+            self.Doc1.getCurrentTransactionID(), self.Doc2.getCurrentTransactionID()
+        )
 
         self.Doc1.commitTransaction()
         self.Doc2.commitTransaction()
@@ -2732,7 +2735,6 @@ class MultiDocumentUndo(unittest.TestCase):
         with self.assertRaises(TypeError):
             self.Doc1.getObject([1])
             self.Doc2.getObject([1])
-
 
         self.assertEqual(self.Doc1.getObject("Obj1Name"), obj1)
         self.assertEqual(self.Doc2.getObject("Obj2Name"), obj2)
@@ -2753,4 +2755,3 @@ class MultiDocumentUndo(unittest.TestCase):
         # closing doc
         FreeCAD.closeDocument("Doc1")
         FreeCAD.closeDocument("Doc2")
-
