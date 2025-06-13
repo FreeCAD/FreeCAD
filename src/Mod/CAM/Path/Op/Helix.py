@@ -187,11 +187,11 @@ class ObjectHelix(PathCircularHoleBase.ObjectOp):
         )
         obj.addProperty(
             "App::PropertyBool",
-            "OnlyCenter",
+            "SingleHelix",
             "Helix Drill",
             QT_TRANSLATE_NOOP(
                 "App::Property",
-                "Create Helix only in the center of the profile",
+                "Create only one Helix",
             ),
         )
         obj.addProperty(
@@ -237,14 +237,14 @@ class ObjectHelix(PathCircularHoleBase.ObjectOp):
         if hasattr(obj, "OffsetExtra"):
             obj.OffsetHole = obj.OffsetExtra
             obj.removeProperty("OffsetExtra")
-        if not hasattr(obj, "OnlyCenter"):
+        if not hasattr(obj, "SingleHelix"):
             obj.addProperty(
                 "App::PropertyBool",
-                "OnlyCenter",
+                "SingleHelix",
                 "Helix Drill",
                 QT_TRANSLATE_NOOP(
                     "App::Property",
-                    "Create Helix only in the center of the profile",
+                    "Create only one Helix",
                 ),
             )
         if not hasattr(obj, "RetractCenter"):
@@ -301,7 +301,7 @@ class ObjectHelix(PathCircularHoleBase.ObjectOp):
             "step_down": obj.StepDown.Value,
             "step_over": obj.StepOver / 100,
             "tool_diameter": tooldiameter,
-            "inner_radius": tooldiameter / 2 + obj.OffsetInnerRadius.Value,
+            "inner_radius": None,
             "safe_height": obj.SafeHeight.Value,
             "retract_center": obj.RetractCenter,
             "direction": obj.Direction,
@@ -309,10 +309,16 @@ class ObjectHelix(PathCircularHoleBase.ObjectOp):
         }
 
         for counter, hole in enumerate(holes):
-            if obj.OnlyCenter:
-                args["hole_radius"] = tooldiameter + obj.OffsetInnerRadius.Value
-            else:
+            if obj.SingleHelix and obj.StartSide == "Inside":
+                args["inner_radius"] = tooldiameter / 2 + obj.OffsetInnerRadius.Value
+                args["hole_radius"] = args["inner_radius"] + tooldiameter / 2
+            elif obj.SingleHelix and obj.StartSide == "Outside":
                 args["hole_radius"] = (hole["r"] / 2) - (obj.OffsetHole.Value)
+                args["inner_radius"] = args["hole_radius"]
+            else:
+                args["inner_radius"] = tooldiameter / 2 + obj.OffsetInnerRadius.Value
+                args["hole_radius"] = (hole["r"] / 2) - (obj.OffsetHole.Value)
+
             startPoint = FreeCAD.Vector(hole["x"], hole["y"], obj.StartDepth.Value)
             endPoint = FreeCAD.Vector(hole["x"], hole["y"], obj.FinalDepth.Value)
             args["edge"] = Part.makeLine(startPoint, endPoint)
