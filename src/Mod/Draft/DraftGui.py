@@ -432,9 +432,9 @@ class DraftToolBar:
         QtCore.QObject.connect(self.zValue,QtCore.SIGNAL("valueChanged(double)"),self.changeZValue)
         QtCore.QObject.connect(self.lengthValue,QtCore.SIGNAL("valueChanged(double)"),self.changeLengthValue)
         QtCore.QObject.connect(self.angleValue,QtCore.SIGNAL("valueChanged(double)"),self.changeAngleValue)
-        if hasattr(self.angleLock, "checkStateChanged"):
+        if hasattr(self.angleLock, "checkStateChanged"): # Qt version >= 6.7.0
             QtCore.QObject.connect(self.angleLock,QtCore.SIGNAL("checkStateChanged(int)"),self.toggleAngle)
-        else:
+        else: # Qt version < 6.7.0
             QtCore.QObject.connect(self.angleLock,QtCore.SIGNAL("stateChanged(int)"),self.toggleAngle)
         QtCore.QObject.connect(self.radiusValue,QtCore.SIGNAL("valueChanged(double)"),self.changeRadiusValue)
         QtCore.QObject.connect(self.xValue,QtCore.SIGNAL("returnPressed()"),self.checkx)
@@ -460,7 +460,7 @@ class DraftToolBar:
         QtCore.QObject.connect(self.orientWPButton,QtCore.SIGNAL("pressed()"),self.orientWP)
         QtCore.QObject.connect(self.undoButton,QtCore.SIGNAL("pressed()"),self.undoSegment)
         QtCore.QObject.connect(self.selectButton,QtCore.SIGNAL("pressed()"),self.selectEdge)
-        if hasattr(self.continueCmd, "checkStateChanged"):
+        if hasattr(self.continueCmd, "checkStateChanged"): # Qt version >= 6.7.0
             QtCore.QObject.connect(self.continueCmd,QtCore.SIGNAL("checkStateChanged(int)"),self.setContinue)
             QtCore.QObject.connect(self.chainedModeCmd,QtCore.SIGNAL("checkStateChanged(int)"),self.setChainedMode)
             QtCore.QObject.connect(self.isCopy,QtCore.SIGNAL("checkStateChanged(int)"),self.setCopymode)
@@ -468,7 +468,7 @@ class DraftToolBar:
             QtCore.QObject.connect(self.isRelative,QtCore.SIGNAL("checkStateChanged(int)"),self.setRelative)
             QtCore.QObject.connect(self.isGlobal,QtCore.SIGNAL("checkStateChanged(int)"),self.setGlobal)
             QtCore.QObject.connect(self.makeFace,QtCore.SIGNAL("checkStateChanged(int)"),self.setMakeFace)
-        else:
+        else: # Qt version < 6.7.0
             QtCore.QObject.connect(self.continueCmd,QtCore.SIGNAL("stateChanged(int)"),self.setContinue)
             QtCore.QObject.connect(self.chainedModeCmd,QtCore.SIGNAL("stateChanged(int)"),self.setChainedMode)
             QtCore.QObject.connect(self.isCopy,QtCore.SIGNAL("stateChanged(int)"),self.setCopymode)
@@ -972,11 +972,11 @@ class DraftToolBar:
     #     gui_stretch.py
     def setRelative(self, val=-1):
         if val < 0:
-            if hasattr(self.isRelative, "checkStateChanged"):
+            if hasattr(self.isRelative, "checkStateChanged"): # Qt version >= 6.7.0
                 QtCore.QObject.disconnect(self.isRelative,
                                       QtCore.SIGNAL("checkStateChanged(int)"),
                                       self.setRelative)
-            else:
+            else: # Qt version < 6.7.0
                 QtCore.QObject.disconnect(self.isRelative,
                                       QtCore.SIGNAL("stateChanged(int)"),
                                       self.setRelative)
@@ -987,11 +987,11 @@ class DraftToolBar:
                 val = params.get_param("RelativeMode")
                 self.isRelative.setChecked(val)
                 self.relativeMode = val
-            if hasattr(self.isRelative, "checkStateChanged"):
+            if hasattr(self.isRelative, "checkStateChanged"): # Qt version >= 6.7.0
                 QtCore.QObject.disconnect(self.isRelative,
                                       QtCore.SIGNAL("checkStateChanged(int)"),
                                       self.setRelative)
-            else:
+            else: # Qt version < 6.7.0
                 QtCore.QObject.disconnect(self.isRelative,
                                       QtCore.SIGNAL("stateChanged(int)"),
                                       self.setRelative)

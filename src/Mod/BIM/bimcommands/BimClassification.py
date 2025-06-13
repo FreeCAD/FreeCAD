@@ -159,9 +159,9 @@ class BIM_Classification:
         self.form.treeClass.itemDoubleClicked.connect(self.apply)
         self.form.search.up.connect(self.onUpArrow)
         self.form.search.down.connect(self.onDownArrow)
-        if hasattr(self.form.onlyVisible, "checkStateChanged"):
+        if hasattr(self.form.onlyVisible, "checkStateChanged"): # Qt version >= 6.7.0
             self.form.onlyVisible.checkStateChanged.connect(self.onVisible)
-        else:
+        else: # Qt version < 6.7.0
             self.form.onlyVisible.stateChanged.connect(self.onVisible)
 
         # center the dialog over FreeCAD window

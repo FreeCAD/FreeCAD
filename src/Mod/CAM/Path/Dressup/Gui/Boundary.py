@@ -182,9 +182,9 @@ class TaskPanel(object):
         self.form.stockInside.setChecked(self.obj.Inside)
 
         self.form.stock.currentIndexChanged.connect(self.updateStockEditor)
-        if hasattr(self.form.stockInside, "checkStateChanged"):
+        if hasattr(self.form.stockInside, "checkStateChanged"): # Qt version >= 6.7.0
             self.form.stockInside.checkStateChanged.connect(self.setDirty)
-        else:
+        else: # Qt version < 6.7.0
             self.form.stockInside.stateChanged.connect(self.setDirty)
         self.form.stockExtXneg.textChanged.connect(self.setDirty)
         self.form.stockExtXpos.textChanged.connect(self.setDirty)

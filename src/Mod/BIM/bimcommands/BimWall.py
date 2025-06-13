@@ -358,9 +358,9 @@ class Arch_Wall:
         inputHeight.valueChanged.connect(self.setHeight)
         comboAlignment.currentIndexChanged.connect(self.setAlign)
         inputOffset.valueChanged.connect(self.setOffset)
-        if hasattr(checkboxUseSketches, "checkStateChanged"):
+        if hasattr(checkboxUseSketches, "checkStateChanged"): # Qt version >= 6.7.0
             checkboxUseSketches.checkStateChanged.connect(self.setUseSketch)
-        else:
+        else: # Qt version < 6.7.0
             checkboxUseSketches.stateChanged.connect(self.setUseSketch)
         comboWallPresets.currentIndexChanged.connect(self.setMat)
 

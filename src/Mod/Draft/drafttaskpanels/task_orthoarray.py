@@ -175,10 +175,10 @@ class TaskPanelOrthoArray:
         self.form.button_reset_Z.clicked.connect(lambda: self.reset_v("Z"))
 
         # When the checkbox changes, change the internal value
-        if hasattr(self.form.checkbox_fuse, "checkStateChanged"):
+        if hasattr(self.form.checkbox_fuse, "checkStateChanged"): # Qt version >= 6.7.0
             self.form.checkbox_fuse.checkStateChanged.connect(self.set_fuse)
             self.form.checkbox_link.checkStateChanged.connect(self.set_link)
-        else:
+        else: # Qt version < 6.7.0
             self.form.checkbox_fuse.stateChanged.connect(self.set_fuse)
             self.form.checkbox_link.stateChanged.connect(self.set_link)
 

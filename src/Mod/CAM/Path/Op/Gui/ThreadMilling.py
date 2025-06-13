@@ -229,9 +229,9 @@ class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
         signals.append(self.form.threadTPI.editingFinished)
         signals.append(self.form.opDirection.currentIndexChanged)
         signals.append(self.form.opPasses.editingFinished)
-        if hasattr(self.form.leadInOut, "checkStateChanged"):
+        if hasattr(self.form.leadInOut, "checkStateChanged"): # Qt version >= 6.7.0
             signals.append(self.form.leadInOut.checkStateChanged)
-        else:
+        else: # Qt version < 6.7.0
             signals.append(self.form.leadInOut.stateChanged)
 
         signals.append(self.form.toolController.currentIndexChanged)
