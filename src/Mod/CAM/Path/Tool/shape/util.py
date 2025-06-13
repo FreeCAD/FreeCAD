@@ -24,10 +24,7 @@ from typing import Optional
 import FreeCAD
 import tempfile
 import os
-from .doc import ShapeDocFromBytes
-
-
-_svg_ns = {"s": "http://www.w3.org/2000/svg"}
+from ..docobject.util import DocFromBytes
 
 
 def file_is_newer(reference: pathlib.Path, file: pathlib.Path):
@@ -74,15 +71,10 @@ def create_thumbnail_from_data(shape_data: bytes, w: int = 200, h: int = 200) ->
     if not FreeCAD.GuiUp:
         return None
 
-    try:
-        import FreeCADGui
-    except ImportError:
-        raise RuntimeError("Error: Could not load UI - is it up?")
-
     temp_png_path = None
     try:
-        with ShapeDocFromBytes(shape_data) as doc:
-            view = FreeCADGui.activeDocument().ActiveView
+        with DocFromBytes(shape_data) as doc:
+            view = doc.ActiveView
 
             if not view:
                 print("No view active, cannot make thumbnail from data")

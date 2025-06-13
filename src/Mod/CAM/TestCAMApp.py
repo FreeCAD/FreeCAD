@@ -71,6 +71,7 @@ from CAMTests.TestPathToolAssetManager import TestPathToolAssetManager
 from CAMTests.TestPathToolAssetStore import TestPathToolFileStore, TestPathToolMemoryStore
 from CAMTests.TestPathToolAssetUri import TestPathToolAssetUri
 from CAMTests.TestPathToolBit import TestPathToolBit
+from CAMTests.TestPathToolDocObject import TestPathToolDocObject
 from CAMTests.TestPathToolShapeClasses import TestPathToolShapeClasses
 from CAMTests.TestPathToolShapeDoc import TestPathToolShapeDoc
 from CAMTests.TestPathToolShapeIcon import (
