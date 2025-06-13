@@ -139,10 +139,15 @@ class BIM_IfcProperties:
         # connect signals
         self.form.tree.selectionModel().selectionChanged.connect(self.updateProperties)
         self.form.groupMode.currentIndexChanged.connect(self.update)
-        self.form.onlyVisible.stateChanged.connect(self.onVisible)
-        self.form.onlySelected.stateChanged.connect(self.onSelected)
+        if hasattr(self.form.onlyVisible, "checkStateChanged"): # Qt version >= 6.7.0
+            self.form.onlyVisible.checkStateChanged.connect(self.update)
+            self.form.onlySelected.checkStateChanged.connect(self.onSelected)
+            self.form.onlyMatches.checkStateChanged.connect(self.update)
+        else: # Qt version < 6.7.0
+            self.form.onlyVisible.stateChanged.connect(self.update)
+            self.form.onlySelected.stateChanged.connect(self.onSelected)
+            self.form.onlyMatches.stateChanged.connect(self.update)
         self.form.buttonBox.accepted.connect(self.accept)
-        self.form.onlyMatches.stateChanged.connect(self.update)
         self.form.searchField.currentIndexChanged.connect(self.update)
         self.form.searchField.editTextChanged.connect(self.update)
         self.form.comboProperty.currentIndexChanged.connect(self.addProperty)

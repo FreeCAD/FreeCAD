@@ -126,7 +126,10 @@ class Draft_SelectPlane:
         form.buttonPrevious.clicked.connect(self.on_click_previous)
         form.buttonNext.clicked.connect(self.on_click_next)
         form.fieldOffset.textEdited.connect(self.on_set_offset)
-        form.checkCenter.stateChanged.connect(self.on_set_center)
+        if hasattr(form.checkCenter, "checkStateChanged"): # Qt version >= 6.7.0
+            form.checkCenter.checkStateChanged.connect(self.on_set_center)
+        else: # Qt version < 6.7.0
+            form.checkCenter.stateChanged.connect(self.on_set_center)
         form.fieldGridSpacing.textEdited.connect(self.on_set_grid_size)
         form.fieldGridMainLine.valueChanged.connect(self.on_set_main_line)
         form.fieldGridExtension.valueChanged.connect(self.on_set_extension)

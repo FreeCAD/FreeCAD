@@ -315,7 +315,10 @@ class Arch_Window:
         include = QtGui.QCheckBox(translate("Arch","Auto include in host object"))
         include.setChecked(True)
         grid.addWidget(include,0,0,1,2)
-        include.stateChanged.connect(self.setInclude)
+        if hasattr(include, "checkStateChanged"): # Qt version >= 6.7.0
+            include.checkStateChanged.connect(self.setInclude)
+        else: # Qt version < 6.7.0
+            include.stateChanged.connect(self.setInclude)
 
         # sill height
         labels = QtGui.QLabel(translate("Arch","Sill height"))
