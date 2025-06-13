@@ -26,15 +26,20 @@
 #ifndef _PreComp_
 # include <limits>
 # include <Mod/Part/App/FCBRepAlgoAPI_Fuse.h>
+# include <Mod/Part/App/FCBRepAlgoAPI_Common.h>
+# include <BRepAdaptor_Surface.hxx>
 # include <BRep_Builder.hxx>
+# include <BRepBuilderAPI_MakeFace.hxx>
 # include <BRepFeat_MakePrism.hxx>
 # include <BRepPrimAPI_MakePrism.hxx>
 # include <gp_Dir.hxx>
+# include <gp_Pln.hxx>
 # include <Precision.hxx>
 # include <TopExp_Explorer.hxx>
 # include <TopoDS_Compound.hxx>
 # include <TopoDS_Face.hxx>
 # include <TopoDS_Shape.hxx>
+# include <TopoDS.hxx>
 #endif
 
 #include <App/Document.h>
@@ -44,6 +49,7 @@
 #include <Mod/Part/App/PartFeature.h>
 
 #include "FeatureExtrude.h"
+#include "FeatureAddSub.h"
 
 FC_LOG_LEVEL_INIT("PartDesign", true, true)
 
@@ -94,13 +100,10 @@ Base::Vector3d FeatureExtrude::computeDirection(const Base::Vector3d& sketchVect
             Base::Vector3d base;
             Base::Vector3d dir;
             getAxis(pcReferenceAxis, subReferenceAxis, base, dir, ForbiddenAxis::NotPerpendicularWithNormal);
-            switch (addSubType) {
-                case Type::Additive:
-                    extrudeDirection = dir;
-                    break;
-                case Type::Subtractive:
-                    extrudeDirection = -dir;
-                    break;
+            if (isAdditive()) {
+                extrudeDirection = dir;
+            } else {
+                extrudeDirection = -dir;
             }
         }
     }
@@ -127,6 +130,22 @@ Base::Vector3d FeatureExtrude::computeDirection(const Base::Vector3d& sketchVect
     Direction.setValue(extrudeDirection);
     return extrudeDirection;
 }
+
+void FeatureExtrude::extendFace(TopoDS_Face& face, const TopoDS_Shape bounds) {
+    if ( ! face.IsNull() ) {
+        BRepAdaptor_Surface adapt = BRepAdaptor_Surface(face);
+        // adapt.Initialize(face);
+        TopoDS_Face plane = BRepBuilderAPI_MakeFace(adapt.Plane());
+        if ( ! bounds.IsNull() ) {
+            BRepAlgoAPI_Common mkCom(bounds, plane);
+            // Protect if a compound with one entry is returned
+            TopExp_Explorer xp = TopExp_Explorer(mkCom.Shape(),TopAbs_FACE);
+            face = TopoDS::Face(xp.Current());
+        } else
+            face = TopoDS::Face(plane);
+    }
+}
+
 
 bool FeatureExtrude::hasTaperedAngle() const
 {
@@ -686,7 +705,7 @@ App::DocumentObjectExecReturn* FeatureExtrude::buildExtrusion(ExtrudeOptions opt
                         QT_TRANSLATE_NOOP("Exception", "Up to face: Could not get SubShape!"));
                 }
 
-                if (getAddSubType() == Additive) {
+                if ( isAdditive() ) {
                     prism = base.makeElementFuse(this->AddSubShape.getShape());
                 }
                 else {
@@ -701,7 +720,7 @@ App::DocumentObjectExecReturn* FeatureExtrude::buildExtrusion(ExtrudeOptions opt
             }
             try {
                 TopoShape _base;
-                if (addSubType!=FeatureAddSub::Subtractive) {
+                if (! isAdditive()) {
                     _base=base; // avoid issue #16690
                 }
                 prism.makeElementPrismUntil(_base,
@@ -786,12 +805,10 @@ App::DocumentObjectExecReturn* FeatureExtrude::buildExtrusion(ExtrudeOptions opt
             TopoShape result(0, getDocument()->getStringHasher());
             try {
                 const char* maker;
-                switch (getAddSubType()) {
-                    case Subtractive:
-                        maker = Part::OpCodes::Cut;
-                        break;
-                    default:
-                        maker = Part::OpCodes::Fuse;
+                if ( isSubtractive() ) {
+                    maker = Part::OpCodes::Cut;
+                } else {
+                    maker = Part::OpCodes::Fuse;
                 }
                 result.makeElementBoolean(maker, {base, prism});
             }
