@@ -223,6 +223,7 @@
         <file>Std_ToggleClipPlane.svg</file>
         <file>Std_ToggleNavigation.svg</file>
         <file>Std_ToggleObjects.svg</file>
+        <file>Std_ToggleSkipRecompute.svg</file>
         <file>Std_ToggleVisibility.svg</file>
         <file>Std_ToggleTransparency.svg</file>
         <file>Std_Tool1.svg</file>
