@@ -25,6 +25,7 @@ import FreeCAD
 from PySide.QtCore import QT_TRANSLATE_NOOP
 import Path.Dressup.Gui.Preferences as PathPreferencesPathDressup
 import Path.Tool.assets.ui.preferences as AssetPreferences
+import Path.Tool.machine.ui.prefs as MachinePreferences
 import Path.Main.Gui.PreferencesJob as PathPreferencesPathJob
 import Path.Base.Gui.PreferencesAdvanced as PathPreferencesAdvanced
 import Path.Op.Base
@@ -43,6 +44,10 @@ if FreeCAD.GuiUp:
     )
     FreeCADGui.addPreferencePage(
         AssetPreferences.AssetPreferencesPage,
+        QT_TRANSLATE_NOOP("QObject", "CAM"),
+    )
+    FreeCADGui.addPreferencePage(
+        MachinePreferences.MachinePreferencesPage,
         QT_TRANSLATE_NOOP("QObject", "CAM"),
     )
     FreeCADGui.addPreferencePage(
@@ -88,11 +93,6 @@ class CAMWorkbench(Workbench):
 
     def Initialize(self):
         global PathCommandGroup
-
-        # Add preferences pages - before loading PathGui to properly order pages of Path group
-        import Path.Dressup.Gui.Preferences as PathPreferencesPathDressup
-        import Path.Tool.assets.ui.preferences as AssetPreferences
-        import Path.Main.Gui.PreferencesJob as PathPreferencesPathJob
 
         # load the builtin modules
         import Path

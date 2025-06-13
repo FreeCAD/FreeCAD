@@ -254,6 +254,14 @@ SET(PathPythonToolsMachineSerializers_SRCS
     Path/Tool/machine/serializers/fcmachine.py
 )
 
+SET(PathPythonToolsMachineUi_SRCS
+    Path/Tool/machine/ui/__init__.py
+    Path/Tool/machine/ui/lathe.py
+    Path/Tool/machine/ui/machine.py
+    Path/Tool/machine/ui/mill.py
+    Path/Tool/machine/ui/prefs.py
+)
+
 SET(PathPythonToolsShape_SRCS
     Path/Tool/shape/__init__.py
     Path/Tool/shape/util.py
@@ -292,6 +300,12 @@ SET(PathPythonToolsSpindleModels_SRCS
 SET(PathPythonToolsSpindleSerializers_SRCS
     Path/Tool/spindle/serializers/__init__.py
     Path/Tool/spindle/serializers/fcspindle.py
+)
+
+SET(PathPythonToolsSpindleUi_SRCS
+    Path/Tool/spindle/ui/__init__.py
+    Path/Tool/spindle/ui/editor.py
+    Path/Tool/spindle/ui/properties.py
 )
 
 SET(PathPythonToolsShapeUi_SRCS
@@ -635,6 +649,7 @@ SET(all_files
     ${PathPythonToolsSpindle_SRCS}
     ${PathPythonToolsSpindleModels_SRCS}
     ${PathPythonToolsSpindleSerializers_SRCS}
+    ${PathPythonToolsSpindleUi_SRCS}
     ${PathPythonToolsToolBit_SRCS}
     ${PathPythonToolsToolBitMixins_SRCS}
     ${PathPythonToolsToolBitModels_SRCS}
@@ -647,6 +662,7 @@ SET(all_files
     ${PathPythonToolsMachine_SRCS}
     ${PathPythonToolsMachineModels_SRCS}
     ${PathPythonToolsMachineSerializers_SRCS}
+    ${PathPythonToolsMachineUi_SRCS}
     ${PathPythonGui_SRCS}
     ${Tools_SRCS}
     ${Tools_Bit_SRCS}
@@ -931,6 +947,13 @@ INSTALL(
 
 INSTALL(
     FILES
+        ${PathPythonToolsMachineUi_SRCS}
+    DESTINATION
+        Mod/CAM/Path/Tool/machine/ui
+)
+
+INSTALL(
+    FILES
         ${PathPythonToolsSpindle_SRCS}
     DESTINATION
         Mod/CAM/Path/Tool/spindle
@@ -948,6 +971,13 @@ INSTALL(
         ${PathPythonToolsSpindleSerializers_SRCS}
     DESTINATION
         Mod/CAM/Path/Tool/spindle/serializers
+)
+
+INSTALL(
+    FILES
+        ${PathPythonToolsSpindleUi_SRCS}
+    DESTINATION
+        Mod/CAM/Path/Tool/spindle/ui
 )
 
 INSTALL(
