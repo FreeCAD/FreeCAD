@@ -2518,7 +2518,7 @@ Gui::MDIView* Document::getEditingViewOfViewProvider(Gui::ViewProvider* vp) cons
  */
 int Document::openCommand(const char* sName)
 {
-    getDocument()->openTransaction(sName);
+    return getDocument()->openTransaction(sName);
 }
 
 void Document::commitCommand()
