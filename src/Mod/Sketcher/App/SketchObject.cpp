@@ -2869,7 +2869,7 @@ int SketchObject::fillet(int GeoId1, int GeoId2, const Base::Vector3d& refPnt1,
             line2ToCornerConstraint->FirstPos = PointPos::start;
             line2ToCornerConstraint->Second = constLine2Id;
             line2ToCornerConstraint->SecondPos = PosId2;
-            addConstraint(std::move(line2ToCornerConstraint)); 
+            addConstraint(std::move(line2ToCornerConstraint));
 
             ConstraintType line1ToConstLine1ShapeConstraintType = constLine1->is<Part::GeomLineSegment>() ? ConstraintType::Parallel : ConstraintType::Equal;
             auto line1ToConstLine1ShapeConstraint = std::make_unique<Sketcher::Constraint>();
@@ -2879,7 +2879,7 @@ int SketchObject::fillet(int GeoId1, int GeoId2, const Base::Vector3d& refPnt1,
             line1ToConstLine1ShapeConstraint->Second = constLine1Id;
             line1ToConstLine1ShapeConstraint->SecondPos = PointPos::none;
             addConstraint(std::move(line1ToConstLine1ShapeConstraint));
-            
+
             ConstraintType line2ToConstLine2ShapeConstraintType = constLine2->is<Part::GeomLineSegment>() ? ConstraintType::Parallel : ConstraintType::Equal;
             auto line2ToConstLine2ShapeConstraint = std::make_unique<Sketcher::Constraint>();
             line2ToConstLine2ShapeConstraint->Type = line2ToConstLine2ShapeConstraintType;
