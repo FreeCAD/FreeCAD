@@ -426,7 +426,50 @@ private:
             }
         }
     }
+
+    struct HintEntry
+    {
+        SelectMode state;
+        std::list<Gui::InputHint> hints;
+    };
+
+    using HintTable = std::vector<HintEntry>;
+
+    static HintTable getTranslateHintTable();
+    static std::list<Gui::InputHint> lookupTranslateHints(SelectMode state);
+
+public:
+    std::list<Gui::InputHint> getToolHints() const override
+    {
+        return lookupTranslateHints(state());
+    }
 };
+
+DrawSketchHandlerTranslate::HintTable DrawSketchHandlerTranslate::getTranslateHintTable()
+{
+    using enum Gui::InputHint::UserInput;
+
+    return {{.state = SelectMode::SeekFirst,
+             .hints = {{QObject::tr("%1 pick reference point", "Sketcher Translate: hint"),
+                        {MouseLeft}}}},
+            {.state = SelectMode::SeekSecond,
+             .hints = {{QObject::tr("%1 set translation vector", "Sketcher Translate: hint"),
+                        {MouseLeft}}}},
+            {.state = SelectMode::SeekThird,
+             .hints = {{QObject::tr("%1 set second translation vector", "Sketcher Translate: hint"),
+                        {MouseLeft}}}}};
+}
+
+std::list<Gui::InputHint> DrawSketchHandlerTranslate::lookupTranslateHints(SelectMode state)
+{
+    const auto translateHintTable = getTranslateHintTable();
+
+    auto it = std::ranges::find_if(translateHintTable, [state](const HintEntry& entry) {
+        return entry.state == state;
+    });
+
+    return (it != translateHintTable.end()) ? it->hints : std::list<Gui::InputHint> {};
+}
 
 template<>
 auto DSHTranslateControllerBase::getState(int labelindex) const
