@@ -46,7 +46,7 @@ def generate(
     tool_diameter,
     inner_radius,
     safe_height,
-    retract_center,
+    retract_center=False,
     direction="CW",
     startAt="Outside",
 ):
@@ -144,11 +144,12 @@ def generate(
     turncount = max(int(ceil((startPoint.z - endPoint.z) / step_down)), 2)
     zsteps = linspace(startPoint.z, endPoint.z, 2 * turncount + 1)
 
-    def helix_cut_r(r):
+    def helix_cut_r(r, helixNum=0):
         commandlist = []
         arc_cmd = "G2" if direction == "CW" else "G3"
         commandlist.append(Path.Command("G0", {"X": startPoint.x + r, "Y": startPoint.y}))
-        commandlist.append(Path.Command("G0", {"Z": safe_height}))
+        if helixNum == 0:
+            commandlist.append(Path.Command("G0", {"Z": safe_height}))
         commandlist.append(Path.Command("G1", {"Z": startPoint.z}))
         for i in range(1, turncount + 1):
             commandlist.append(
@@ -208,7 +209,7 @@ def generate(
         # Calculate retraction
         if hole_radius <= tool_diameter:  # simple case where center is clear
             center_clear = True
-        elif startAt == "Inside":  # middle is clear
+        elif startAt == "Inside" and inner_radius <= tool_diameter / 2:  # middle is clear
             center_clear = True
         else:
             center_clear = False
@@ -232,7 +233,7 @@ def generate(
         radii = radii[::-1]
 
     commands = []
-    for r in radii:
-        commands.extend(helix_cut_r(r))
+    for i, r in enumerate(radii):
+        commands.extend(helix_cut_r(r, i))
         commands.extend(retract())
     return commands
