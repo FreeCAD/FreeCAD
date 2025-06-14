@@ -486,7 +486,7 @@ void ToolBarManager::setupConnection()
                     || hParam == hMenuBarLeft) {
                 timer.start(100);
             }
-        });
+        }, fastsignals::advanced_tag());
 }
 
 void ToolBarManager::setupTimer()
