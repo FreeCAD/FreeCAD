@@ -133,6 +133,7 @@ SOURCE_GROUP("Pyi" FILES ${FreeCADApp_Pyi_SRCS})
 # The document stuff
 SET(Document_CPP_SRCS
     Annotation.cpp
+    BackupPolicy.cpp
     Document.cpp
     DocumentObject.cpp
     Extension.cpp
@@ -187,6 +188,7 @@ SET(Document_CPP_SRCS
 
 SET(Document_HPP_SRCS
     Annotation.h
+    BackupPolicy.h
     Document.h
     DocumentObject.h
     Extension.h
