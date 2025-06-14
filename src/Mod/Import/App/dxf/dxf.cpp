@@ -2400,11 +2400,12 @@ void CDxfRead::UnsupportedFeature(const char* format, args&&... argValuess)
     // NOLINTNEXTLINE(runtime/printf)
     std::string formattedMessage = fmt::sprintf(format, std::forward<args>(argValuess)...);
     m_stats.unsupportedFeatures[formattedMessage]++;
+    // *** This message is now disabled here because we use the stats reporter instead ***
     // We place these formatted messages in a map, count their occurrences and not their first
     // occurrence.
-    if (m_unsupportedFeaturesNoted[formattedMessage].first++ == 0) {
-        m_unsupportedFeaturesNoted[formattedMessage].second = m_line;
-    }
+    // if (m_unsupportedFeaturesNoted[formattedMessage].first++ == 0) {
+    //    m_unsupportedFeaturesNoted[formattedMessage].second = m_line;
+    // }
 }
 
 bool CDxfRead::get_next_record()
