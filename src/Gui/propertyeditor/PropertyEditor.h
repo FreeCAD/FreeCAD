@@ -78,6 +78,7 @@ public:
                  bool checkDocument = false);
     void updateProperty(const App::Property&);
     void removeProperty(const App::Property&);
+    void renameProperty(const App::Property&, const char* oldName);
     void setAutomaticExpand(bool);
     bool isAutomaticExpand(bool) const;
     void setAutomaticDocumentUpdate(bool);
