@@ -2,7 +2,7 @@
 #include <fastsignals/function.h>
 #include <array>
 
-using namespace is::signals;
+using namespace fastsignals;
 
 namespace
 {
