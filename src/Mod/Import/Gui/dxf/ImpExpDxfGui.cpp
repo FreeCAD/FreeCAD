@@ -52,6 +52,8 @@
 #endif
 #include <regex>
 
+#include <App/Link.h>
+
 #include <Gui/Application.h>
 #include <Gui/ViewProvider.h>
 #include <Gui/ViewProviderDocumentObject.h>
@@ -75,6 +77,30 @@ void ImpExpDxfReadGui::ApplyGuiStyles(Part::Feature* object) const
     view->ShapeAppearance.setDiffuseColor(color);
     view->DrawStyle.setValue(GetDrawStyle());
     view->Transparency.setValue(0);
+}
+
+void ImpExpDxfReadGui::ApplyGuiStyles(App::Link* object) const
+{
+    // For App::Link, we get its ViewProvider directly.
+    // It's a generic ViewProvider, not a specific PartGui one.
+    auto view = GuiDocument->getViewProvider(object);
+    if (!view) {
+        return;
+    }
+    Base::Color color = ObjectColor(m_entityAttributes.m_Color);
+
+    // Links have LineColor and PointColor properties that affect their appearance
+    // when not in "UseOriginalColor" mode.
+    if (auto prop = view->getPropertyByName("LineColor")) {
+        if (prop->getTypeId().isDerivedFrom(App::PropertyColor::getClassTypeId())) {
+            static_cast<App::PropertyColor*>(prop)->setValue(color);
+        }
+    }
+    if (auto prop = view->getPropertyByName("PointColor")) {
+        if (prop->getTypeId().isDerivedFrom(App::PropertyColor::getClassTypeId())) {
+            static_cast<App::PropertyColor*>(prop)->setValue(color);
+        }
+    }
 }
 
 void ImpExpDxfReadGui::ApplyGuiStyles(App::FeaturePython* object) const
