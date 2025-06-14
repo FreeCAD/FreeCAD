@@ -183,8 +183,8 @@ class TestToolBitShapeSvgIcon(TestToolBitShapeIconBase):
         svg_content = self.test_svg.data
         abbr = ToolBitShapeSvgIcon.get_abbreviations_from_svg(svg_content)
         # Assuming the test_svg data has 'diameter' and 'length' ids
-        self.assertIn("diameter", abbr)
-        self.assertIn("length", abbr)
+        self.assertIn("Diameter", abbr)
+        self.assertIn("Length", abbr)
 
         # Test with invalid SVG
         invalid_svg = b"<svg><text id='param1'>A1</text>"  # Missing closing tag
