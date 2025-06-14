@@ -11,7 +11,7 @@
 #	include "msvc_autolink.h"
 #endif
 
-namespace is::signals
+namespace fastsignals
 {
 template <class Signature, template <class T> class Combiner = optional_last_value>
 class signal;
@@ -136,7 +136,7 @@ private:
 	detail::signal_impl_ptr m_slots;
 };
 
-} // namespace is::signals
+} // namespace fastsignals
 
 namespace std
 {
@@ -144,8 +144,8 @@ namespace std
 // free swap function, findable by ADL
 template <class Signature, template <class T> class Combiner>
 void swap(
-	::is::signals::signal<Signature, Combiner>& sig1,
-	::is::signals::signal<Signature, Combiner>& sig2)
+	::fastsignals::signal<Signature, Combiner>& sig1,
+	::fastsignals::signal<Signature, Combiner>& sig2)
 {
 	sig1.swap(sig2);
 }
