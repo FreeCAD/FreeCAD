@@ -4,6 +4,7 @@
 #include <mutex>
 #include <random>
 #include <vector>
+#include <thread>
 
 using namespace fastsignals;
 
