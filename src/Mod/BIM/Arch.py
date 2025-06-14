@@ -1200,7 +1200,7 @@ def makeSectionPlane(objectslist=None, name=None):
     from WorkingPlane import get_working_plane
 
     sectionPlane = _initializeArchObject(
-        "Part::FeaturePython",
+        "App::FeaturePython",
         baseClassName="_SectionPlane",
         internalName="Section",
         defaultLabel=name if name else translate("Arch", "Section"),
