@@ -1,4 +1,4 @@
-#include "../include/connection.h"
+#include "../include/fastsignals/connection.h"
 
 namespace is::signals
 {
