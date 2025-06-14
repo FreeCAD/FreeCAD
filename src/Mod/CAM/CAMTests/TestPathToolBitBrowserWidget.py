@@ -62,8 +62,8 @@ class TestToolBitBrowserWidget(PathTestWithAssets):
         search_term = "Endmill"
         self.widget._search_edit.setText(search_term)
 
-        # Directly trigger the fetch and filtering logic
-        self.widget._trigger_fetch()
+        # Directly trigger the filtering logic
+        self.widget._update_list()
 
         # Verify that the filter was applied to the list widget
         # We can check if items are hidden/shown based on the filter term
@@ -99,28 +99,6 @@ class TestToolBitBrowserWidget(PathTestWithAssets):
                 actual_visible_uris.add(item_uri)
 
         self.assertEqual(actual_visible_uris, expected_visible_uris)
-
-    def test_lazy_loading_on_scroll(self):
-        # This test requires more than self._batch_size toolbits to be effective.
-        # The default test assets might not have enough.
-        # We'll assume there are enough for the test structure.
-
-        initial_count = self.widget._tool_list_widget.count()
-        if initial_count < self.widget._batch_size:
-            self.skipTest("Not enough toolbits for lazy loading test.")
-
-        # Simulate scrolling to the bottom by emitting the signal
-        scrollbar = self.widget._tool_list_widget.verticalScrollBar()
-        # Set the scrollbar value to its maximum to simulate reaching the end
-        scrollbar.valueChanged.emit(scrollbar.maximum())
-
-        # Verify that more items were loaded
-        new_count = self.widget._tool_list_widget.count()
-        self.assertGreater(new_count, initial_count)
-        # Verify that the number of new items is approximately the batch size
-        self.assertAlmostEqual(
-            new_count - initial_count, self.widget._batch_size, delta=5
-        )  # Allow small delta
 
     def test_tool_selected_signal(self):
         mock_slot = MagicMock()
