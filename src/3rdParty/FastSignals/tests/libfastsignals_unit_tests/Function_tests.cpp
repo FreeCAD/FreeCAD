@@ -1,5 +1,5 @@
 #include "catch2/catch.hpp"
-#include "libfastsignals/include/function.h"
+#include <fastsignals/function.h>
 #include <array>
 
 using namespace is::signals;
