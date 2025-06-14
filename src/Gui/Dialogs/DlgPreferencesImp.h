@@ -29,6 +29,8 @@
 #include <QDialog>
 #include <QStandardItemModel>
 #include <QStackedWidget>
+#include <QPointer>
+#include <QListWidget>
 #include <memory>
 #include <FCGlobal.h>
 
@@ -134,6 +136,20 @@ class GuiExport DlgPreferencesImp : public QDialog
     static constexpr int minVerticalEmptySpace = 100;            // px of vertical space to leave
 
 public:
+    // Search results navigation
+    struct SearchResult {
+        QString groupName;
+        QString pageName;
+        QPointer<QWidget> widget;
+        QString matchText;
+        QString groupBoxName;
+        QString tabName; // The tab name (like "Display")
+        QString pageDisplayName; // The page display name (like "3D View")
+        QString displayText;
+        bool isPageLevelMatch = false; // True if this is a page title match
+        int score = 0; // Fuzzy search score for sorting
+    };
+
     static void addPage(const std::string& className, const std::string& group);
     static void removePage(const std::string& className, const std::string& group);
     static void setGroupData(const std::string& group, const std::string& icon, const QString& tip);
@@ -155,6 +171,7 @@ public:
 protected:
     void changeEvent(QEvent *e) override;
     void showEvent(QShowEvent*) override;
+    bool eventFilter(QObject* obj, QEvent* event) override;
 
 protected Q_SLOTS:
     void onButtonBoxClicked(QAbstractButton*);
@@ -163,6 +180,11 @@ protected Q_SLOTS:
 
     void onGroupExpanded(const QModelIndex &index);
     void onGroupCollapsed(const QModelIndex &index);
+    
+    void onSearchTextChanged(const QString& text);
+    void onSearchResultSelected();
+    void onSearchResultClicked();
+    void onSearchResultDoubleClicked();
 
 private:
     /** @name for internal use only */
@@ -190,6 +212,38 @@ private:
     int minimumPageWidth() const;
     int minimumDialogWidth(int) const;
     void expandToMinimumDialogWidth();
+    
+    // Search functionality
+    void performSearch(const QString& searchText);
+    void clearSearchHighlights();
+    void navigateToSearchResult(const QString& groupName, const QString& pageName);
+    void collectSearchResults(QWidget* widget, const QString& searchText, const QString& groupName, const QString& pageName, const QString& pageDisplayName, const QString& tabName);
+
+    void populateSearchResultsList();
+    void hideSearchResultsList();
+    void showSearchResultsList();
+    void navigateToCurrentSearchResult(bool closePopup);
+    QString findGroupBoxForWidget(QWidget* widget);
+    QString formatSearchResultText(const SearchResult& result);
+    
+    void createSearchResult(QWidget* widget, const QString& matchText, const QString& groupName, 
+                           const QString& pageName, const QString& pageDisplayName, const QString& tabName);
+    template<typename WidgetType>
+    void searchWidgetType(QWidget* parentWidget, const QString& searchText, const QString& groupName,
+                         const QString& pageName, const QString& pageDisplayName, const QString& tabName);
+    int calculatePopupHeight(int popupWidth);
+    void configurePopupSize();
+    
+    // Fuzzy search helpers (for search box inside preferences))
+    bool fuzzyMatch(const QString& searchText, const QString& targetText, int& score);
+    bool isExactMatch(const QString& searchText, const QString& targetText);
+    
+    void ensureSearchBoxFocus();
+    void applyHighlightToWidget(QWidget* widget);
+    QString getHighlightStyleForWidget(QWidget* widget);
+    bool handleSearchBoxKeyPress(QKeyEvent* keyEvent);
+    bool handlePopupKeyPress(QKeyEvent* keyEvent);
+    bool isClickOutsidePopup(QMouseEvent* mouseEvent);
     //@}
 
 private:
@@ -210,6 +264,14 @@ private:
     bool invalidParameter;
     bool canEmbedScrollArea;
     bool restartRequired;
+    
+    // Search state
+    QList<QWidget*> highlightedWidgets;
+    QMap<QWidget*, QString> originalStyles;
+    
+    QList<SearchResult> searchResults;
+    QString lastSearchText;
+    QListWidget* searchResultsList;
 
     /**< A name for our Qt::UserRole, used when storing user data in a list item */
     static const int GroupNameRole;
