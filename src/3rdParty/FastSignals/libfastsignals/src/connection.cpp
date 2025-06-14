@@ -1,6 +1,6 @@
 #include "../include/fastsignals/connection.h"
 
-namespace is::signals
+namespace fastsignals
 {
 namespace
 {
@@ -248,4 +248,4 @@ advanced_connection advanced_scoped_connection::release() noexcept
 	return conn;
 }
 
-} // namespace is::signals
+} // namespace fastsignals

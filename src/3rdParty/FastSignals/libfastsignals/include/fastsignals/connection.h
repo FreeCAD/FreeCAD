@@ -2,7 +2,7 @@
 
 #include "signal_impl.h"
 
-namespace is::signals
+namespace fastsignals
 {
 
 // Connection keeps link between signal and slot and can disconnect them.
@@ -111,4 +111,4 @@ public:
 	advanced_connection release() noexcept;
 };
 
-} // namespace is::signals
+} // namespace fastsignals
