@@ -117,7 +117,7 @@ int main()
 FastSignals uses another approach: `bind_weak` function:
 
 ```cpp
-#include "fastsignals/bind_weak.h"
+#include <fastsignals/bind_weak.h>
 #include <iostream>
 
 using VoidSignal = is::signals::signal<void()>;

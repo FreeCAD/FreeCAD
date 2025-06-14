@@ -54,8 +54,8 @@ int main()
 In the following example, `Entity::print()` method connected to the signal. Signal emmited once before and once after the `Entity` instance destroyed. However, no memory access violation happens: once `Entity` destoryed, no slot will be called because `bind_weak` doesn't call binded method if it cannot lock `std::weak_ptr` to binded object. The second `event()` expression just does nothing.
 
 ```cpp
-#include "fastsignals/signal.h"
-#include "fastsignals/bind_weak.h"
+#include <fastsignals/signal.h>
+#include <fastsignals/bind_weak.h>
 #include <iostream>
 
 using VoidSignal = is::signals::signal<void()>;

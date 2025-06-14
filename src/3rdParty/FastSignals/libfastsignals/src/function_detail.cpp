@@ -1,4 +1,4 @@
-#include "../include/function_detail.h"
+#include "../include/fastsignals/function_detail.h"
 #include <cstddef>
 #include <functional>
 
