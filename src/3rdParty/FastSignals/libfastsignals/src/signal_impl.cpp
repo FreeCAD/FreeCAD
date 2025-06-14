@@ -2,7 +2,7 @@
 #include <algorithm>
 #include <mutex>
 
-namespace is::signals::detail
+namespace fastsignals::detail
 {
 
 uint64_t signal_impl::add(packed_function fn)
@@ -81,4 +81,4 @@ size_t signal_impl::count() const noexcept
 	return m_functions.size();
 }
 
-} // namespace is::signals::detail
+} // namespace fastsignals::detail

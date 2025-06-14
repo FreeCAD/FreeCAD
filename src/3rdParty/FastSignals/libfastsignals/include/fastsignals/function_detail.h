@@ -6,7 +6,7 @@
 #include <type_traits>
 #include <utility>
 
-namespace is::signals::detail
+namespace fastsignals::detail
 {
 /// Buffer for callable object in-place construction,
 /// helps to implement Small Buffer Optimization.
@@ -161,4 +161,4 @@ private:
 	base_function_proxy* m_proxy = nullptr;
 };
 
-} // namespace is::signals::detail
+} // namespace fastsignals::detail

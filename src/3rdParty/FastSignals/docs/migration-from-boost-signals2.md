@@ -120,7 +120,7 @@ FastSignals uses another approach: `bind_weak` function:
 #include <fastsignals/bind_weak.h>
 #include <iostream>
 
-using VoidSignal = is::signals::signal<void()>;
+using VoidSignal = fastsignals::signal<void()>;
 using VoidSlot = VoidSignal::slot_type;
 
 struct Entity : std::enable_shared_from_this<Entity>
@@ -129,8 +129,8 @@ struct Entity : std::enable_shared_from_this<Entity>
 
 	VoidSlot get_print_slot()
 	{
-		// Here is::signals::bind_weak() used instead of std::bind.
-		return is::signals::bind_weak(&Entity::print, weak_from_this());
+		// Here fastsignals::bind_weak() used instead of std::bind.
+		return fastsignals::bind_weak(&Entity::print, weak_from_this());
 	}
 
 	void print()

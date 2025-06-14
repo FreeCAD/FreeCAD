@@ -5,7 +5,7 @@
 #include <random>
 #include <vector>
 
-using namespace is::signals;
+using namespace fastsignals;
 
 namespace
 {

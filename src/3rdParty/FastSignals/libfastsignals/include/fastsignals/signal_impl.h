@@ -5,7 +5,7 @@
 #include <memory>
 #include <vector>
 
-namespace is::signals::detail
+namespace fastsignals::detail
 {
 
 class signal_impl
@@ -56,4 +56,4 @@ private:
 using signal_impl_ptr = std::shared_ptr<signal_impl>;
 using signal_impl_weak_ptr = std::weak_ptr<signal_impl>;
 
-} // namespace is::signals::detail
+} // namespace fastsignals::detail

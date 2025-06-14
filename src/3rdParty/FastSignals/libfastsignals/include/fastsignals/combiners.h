@@ -2,7 +2,7 @@
 
 #include <optional>
 
-namespace is::signals
+namespace fastsignals
 {
 
 /**
@@ -37,4 +37,4 @@ public:
 	using result_type = void;
 };
 
-} // namespace is::signals
+} // namespace fastsignals
