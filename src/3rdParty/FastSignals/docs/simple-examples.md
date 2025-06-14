@@ -11,7 +11,7 @@
 //  17
 #include "libfastsignals/signal.h"
 
-using namespace is::signals;
+using namespace fastsignals;
 
 int main()
 {
@@ -37,7 +37,7 @@ int main()
 //  17
 #include "libfastsignals/signal.h"
 
-using namespace is::signals;
+using namespace fastsignals;
 
 int main()
 {

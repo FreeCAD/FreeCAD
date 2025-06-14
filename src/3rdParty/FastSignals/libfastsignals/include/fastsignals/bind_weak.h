@@ -1,6 +1,6 @@
 #pragma once
 
-namespace is::signals
+namespace fastsignals
 {
 namespace detail
 {
@@ -72,4 +72,4 @@ decltype(auto) bind_weak(ReturnType (ClassType::*memberFn)(Params... args) const
 	return std::bind(invoker, args...);
 }
 
-} // namespace is::signals
+} // namespace fastsignals

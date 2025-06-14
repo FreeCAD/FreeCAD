@@ -2,7 +2,7 @@
 
 #include "function_detail.h"
 
-namespace is::signals
+namespace fastsignals
 {
 // Derive your class from not_directly_callable to prevent function from wrapping it using its template constructor
 // Useful if your class provides custom operator for casting to function
@@ -51,4 +51,4 @@ private:
 	detail::packed_function m_packed;
 };
 
-} // namespace is::signals
+} // namespace fastsignals
