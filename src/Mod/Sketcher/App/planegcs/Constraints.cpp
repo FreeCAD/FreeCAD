@@ -212,7 +212,7 @@ double ConstraintWeightedLinearCombination::grad(double* param)
 ConstraintCenterOfGravity::ConstraintCenterOfGravity(const std::vector<double*>& givenpvec,
                                                      const std::vector<double>& givenweights)
     : weights(givenweights)
-    , numpoints(pvec.size() - 1)
+    , numpoints(givenpvec.size() - 1)
 {
     pvec = givenpvec;
 
@@ -2005,14 +2005,14 @@ void ConstraintEqualFocalDistance::errorgrad(double* err, double* grad, double* 
 
 // --------------------------------------------------------
 // ConstraintCurveValue
-ConstraintCurveValue::ConstraintCurveValue(Point& p, double* pcoord, Curve& crv, double* u)
-    : crv(crv.Copy())
+ConstraintCurveValue::ConstraintCurveValue(Point& p, double* pcoord, Curve& c, double* u)
+    : crv(c.Copy())
 {
     pvec.push_back(p.x);
     pvec.push_back(p.y);
     pvec.push_back(pcoord);
     pvec.push_back(u);
-    crv.PushOwnParams(pvec);
+    crv->PushOwnParams(pvec);
     pvecChangedFlag = true;
     origpvec = pvec;
     rescale();
@@ -2205,22 +2205,22 @@ double ConstraintPointOnHyperbola::grad(double* param)
 // --------------------------------------------------------
 // ConstraintPointOnParabola
 ConstraintPointOnParabola::ConstraintPointOnParabola(Point& p, Parabola& e)
+    : parab(e.Copy())
 {
     pvec.push_back(p.x);
     pvec.push_back(p.y);
-    e.PushOwnParams(pvec);
-    this->parab = e.Copy();
+    parab->PushOwnParams(pvec);
     pvecChangedFlag = true;
     origpvec = pvec;
     rescale();
 }
 
 ConstraintPointOnParabola::ConstraintPointOnParabola(Point& p, ArcOfParabola& e)
+    : parab(e.Copy())
 {
     pvec.push_back(p.x);
     pvec.push_back(p.y);
-    e.PushOwnParams(pvec);
-    this->parab = e.Copy();
+    parab->PushOwnParams(pvec);
     pvecChangedFlag = true;
     origpvec = pvec;
     rescale();
@@ -2295,8 +2295,8 @@ ConstraintAngleViaPoint::ConstraintAngleViaPoint(Curve& acrv1, Curve& acrv2, Poi
     pvec.push_back(angle);
     pvec.push_back(p.x);
     pvec.push_back(p.y);
-    acrv1.PushOwnParams(pvec);
-    acrv2.PushOwnParams(pvec);
+    crv1->PushOwnParams(pvec);
+    crv2->PushOwnParams(pvec);
     origpvec = pvec;
     pvecChangedFlag = true;
     rescale();
@@ -2388,8 +2388,8 @@ ConstraintAngleViaTwoPoints::ConstraintAngleViaTwoPoints(Curve& acrv1,
     pvec.push_back(p1.y);
     pvec.push_back(p2.x);
     pvec.push_back(p2.y);
-    acrv1.PushOwnParams(pvec);
-    acrv2.PushOwnParams(pvec);
+    crv1->PushOwnParams(pvec);
+    crv2->PushOwnParams(pvec);
     origpvec = pvec;
     pvecChangedFlag = true;
     rescale();
@@ -2484,8 +2484,8 @@ ConstraintAngleViaPointAndParam::ConstraintAngleViaPointAndParam(Curve& acrv1,
     pvec.push_back(p.x);
     pvec.push_back(p.y);
     pvec.push_back(cparam);
-    acrv1.PushOwnParams(pvec);
-    acrv2.PushOwnParams(pvec);
+    crv1->PushOwnParams(pvec);
+    crv2->PushOwnParams(pvec);
     origpvec = pvec;
     pvecChangedFlag = true;
     rescale();
@@ -2579,8 +2579,8 @@ ConstraintAngleViaPointAndTwoParams::ConstraintAngleViaPointAndTwoParams(Curve& 
     pvec.push_back(p.y);
     pvec.push_back(cparam1);
     pvec.push_back(cparam2);
-    acrv1.PushOwnParams(pvec);
-    acrv2.PushOwnParams(pvec);
+    crv1->PushOwnParams(pvec);
+    crv2->PushOwnParams(pvec);
     origpvec = pvec;
     pvecChangedFlag = true;
     rescale();
@@ -2662,17 +2662,17 @@ double ConstraintAngleViaPointAndTwoParams::grad(double* param)
 
 // --------------------------------------------------------
 // ConstraintSnell
-ConstraintSnell::ConstraintSnell(Curve& ray1,
-                                 Curve& ray2,
-                                 Curve& boundary,
+ConstraintSnell::ConstraintSnell(Curve& r1,
+                                 Curve& r2,
+                                 Curve& b,
                                  Point p,
                                  double* n1,
                                  double* n2,
                                  bool flipn1,
                                  bool flipn2)
-    : ray1(ray1.Copy())
-    , ray2(ray2.Copy())
-    , boundary(boundary.Copy())
+    : ray1(r1.Copy())
+    , ray2(r2.Copy())
+    , boundary(b.Copy())
     , flipn1(flipn1)
     , flipn2(flipn2)
 {
@@ -2680,9 +2680,9 @@ ConstraintSnell::ConstraintSnell(Curve& ray1,
     pvec.push_back(n2);
     pvec.push_back(p.x);
     pvec.push_back(p.y);
-    ray1.PushOwnParams(pvec);
-    ray2.PushOwnParams(pvec);
-    boundary.PushOwnParams(pvec);
+    ray1->PushOwnParams(pvec);
+    ray2->PushOwnParams(pvec);
+    boundary->PushOwnParams(pvec);
     origpvec = pvec;
     pvecChangedFlag = true;
 
