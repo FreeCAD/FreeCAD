@@ -176,6 +176,21 @@ struct LWPolyDataOut
     point3D Extr;
 };
 
+// Statistics reporting structure
+struct DxfImportStats
+{
+    double importTimeSeconds = 0.0;
+    std::string dxfVersion;
+    std::string dxfEncoding;
+    std::string scalingSource;
+    std::string fileUnits;
+    double finalScalingFactor = 1.0;
+    std::map<std::string, int> entityCounts;
+    std::map<std::string, std::string> importSettings;
+    std::map<std::string, int> unsupportedFeatures;
+    int totalEntitiesCreated = 0;
+};
+
 
 // "using" for enums is not supported by all platforms
 // https://stackoverflow.com/questions/41167119/how-to-fix-a-wsubobject-linkage-warning
@@ -455,6 +470,7 @@ private:
     double m_unitScalingFactor = 0.0;
 
 protected:
+    DxfImportStats m_stats;
     // An additional scaling factor which can be modified before readDXF is called, and will be
     // incorporated into m_unitScalingFactor.
     void SetAdditionalScaling(double scaling)
@@ -845,6 +861,10 @@ public:
     bool Failed() const
     {
         return m_fail;
+    }
+    void setImportTime(double seconds)
+    {
+        m_stats.importTimeSeconds = seconds;
     }
     void
     DoRead(bool ignore_errors = false);  // this reads the file and calls the following functions
