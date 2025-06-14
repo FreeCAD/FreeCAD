@@ -2806,7 +2806,7 @@ int SketchObject::fillet(int GeoId1, int GeoId2, const Base::Vector3d& refPnt1,
                     }
                 }
                 delConstraints(std::move(deleteme), false);
-            } 
+            }
             else {
                 // Add construction geometry
                 const Part::Geometry* constLine1 = getGeometry(GeoId1)->copy();
