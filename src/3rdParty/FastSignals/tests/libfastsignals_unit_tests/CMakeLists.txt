@@ -1,0 +1,4 @@
+
+custom_add_test_from_dir(libfastsignals_unit_tests libfastsignals)
+custom_enable_cxx17(libfastsignals_unit_tests)
+target_include_directories(libfastsignals_unit_tests PRIVATE "${CMAKE_SOURCE_DIR}/tests")
