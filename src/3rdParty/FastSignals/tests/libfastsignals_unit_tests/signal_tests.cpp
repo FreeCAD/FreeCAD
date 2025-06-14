@@ -2,7 +2,7 @@
 #include <fastsignals/signal.h>
 #include <string>
 
-using namespace is::signals;
+using namespace fastsignals;
 using namespace std::literals;
 
 namespace

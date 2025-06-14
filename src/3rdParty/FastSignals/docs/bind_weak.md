@@ -2,13 +2,13 @@
 
 ## Usage
 
-* Use `is::signals::bind_weak` instead of `std::bind` to ensure that nothing happens if method called when binded object already destroyed
+* Use `fastsignals::bind_weak` instead of `std::bind` to ensure that nothing happens if method called when binded object already destroyed
 * Pass pointer to T class method as first argument, `shared_ptr<T>` or `weak_ptr<T>` as second argument
 * Example: `bind_weak(&Document::save(), document, std::placeholders::_1)`, where `document` is a `weak_ptr<Document>` or `shared_ptr<Document>`
 
 ## Weak this idiom
 
-The `is::signals::bind_weak(...)` function implements "weak this" idiom. This idiom helps to avoid dangling pointers and memory access wiolations in asynchronous and/or multithreaded programs.
+The `fastsignals::bind_weak(...)` function implements "weak this" idiom. This idiom helps to avoid dangling pointers and memory access wiolations in asynchronous and/or multithreaded programs.
 
 In the following example, we use weak this idiom to avoid using dangling pointer wehn calling `print()` method of the `Enityt`:
 
@@ -58,7 +58,7 @@ In the following example, `Entity::print()` method connected to the signal. Sign
 #include <fastsignals/bind_weak.h>
 #include <iostream>
 
-using VoidSignal = is::signals::signal<void()>;
+using VoidSignal = fastsignals::signal<void()>;
 using VoidSlot = VoidSignal::slot_type;
 
 struct Entity : std::enable_shared_from_this<Entity>
@@ -67,8 +67,8 @@ struct Entity : std::enable_shared_from_this<Entity>
 
     VoidSlot get_print_slot()
     {
-        // Here is::signals::bind_weak() used instead of std::bind.
-        return is::signals::bind_weak(&Entity::print, weak_from_this());
+        // Here fastsignals::bind_weak() used instead of std::bind.
+        return fastsignals::bind_weak(&Entity::print, weak_from_this());
     }
 
     void print()

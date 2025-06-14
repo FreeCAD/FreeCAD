@@ -2,7 +2,7 @@
 #include <cstddef>
 #include <functional>
 
-namespace is::signals::detail
+namespace fastsignals::detail
 {
 
 packed_function::packed_function(packed_function&& other) noexcept
@@ -93,4 +93,4 @@ bool packed_function::is_buffer_allocated() const noexcept
 		&& std::less<const void*>()(m_proxy, &m_buffer[1]);
 }
 
-} // namespace is::signals::detail
+} // namespace fastsignals::detail
