@@ -4215,7 +4215,9 @@ class DxfImportReporter:
         self.stats = stats_dict
 
     def to_console_string(self):
-        """Formats the statistics into a human-readable string for console output."""
+        """
+        Formats the statistics into a human-readable string for console output.
+        """
         if not self.stats:
             return "DXF Import: No statistics were returned from the importer.\n"
 
@@ -4224,7 +4226,21 @@ class DxfImportReporter:
         # General Info
         lines.append(f"DXF Version: {self.stats.get('dxfVersion', 'Unknown')}")
         lines.append(f"File Encoding: {self.stats.get('dxfEncoding', 'Unknown')}")
-        # Timing will be 0.0 for now, but the line is ready for when it's fixed.
+
+        # Scaling Info
+        file_units = self.stats.get('fileUnits', 'Not specified')
+        source = self.stats.get('scalingSource', '')
+        if source:
+            lines.append(f"File Units: {file_units} (from {source})")
+        else:
+            lines.append(f"File Units: {file_units}")
+
+        manual_scaling = self.stats.get('importSettings', {}).get('Manual scaling factor', '1.0')
+        lines.append(f"Manual Scaling Factor: {manual_scaling}")
+
+        final_scaling = self.stats.get('finalScalingFactor', 1.0)
+        lines.append(f"Final Scaling: 1 DXF unit = {final_scaling:.4f} mm")
+
         import_time = self.stats.get('importTimeSeconds', 0.0)
         lines.append(f"Import Time: {import_time:.4f} seconds")
         lines.append("")
@@ -4251,9 +4267,16 @@ class DxfImportReporter:
             lines.append(f"  Total entities read: {total_read}")
         else:
             lines.append("  (No entities recorded)")
-
         lines.append(f"FreeCAD objects created: {self.stats.get('totalEntitiesCreated', 0)}")
-        lines.append(f"Unsupported features: {self.stats.get('unsupportedFeaturesCount', 0)}")
+        lines.append("")
+
+        lines.append("Unsupported Features:")
+        unsupported = self.stats.get('unsupportedFeatures', {})
+        if unsupported:
+            for key, value in sorted(unsupported.items()):
+                lines.append(f"  - {key}: {value} time(s)")
+        else:
+            lines.append("  (None)")
 
         lines.append("--- End of Summary ---\n")
         return "\n".join(lines)
