@@ -2531,7 +2531,7 @@ int SketchObject::transferFilletConstraints(int geoId1, PointPos posId1, int geo
     int originalCornerId = addGeometry(originalCorner, true);
     delete originalCorner;
 
-     // Constrain the vertex to the two lines
+    // Constrain the vertex to the two lines
     Sketcher::Constraint* cornerToLine1 = new Sketcher::Constraint();
     cornerToLine1->Type = Sketcher::PointOnObject;
     cornerToLine1->First = originalCornerId;
@@ -2844,8 +2844,6 @@ int SketchObject::fillet(int GeoId1, int GeoId2, const Base::Vector3d& refPnt1,
 
         addConstraint(std::move(tangent1));
         addConstraint(std::move(tangent2));
-<<<<<<< HEAD
-=======
 
         if (createCorner) {
             // Add construction geometry
@@ -2912,7 +2910,6 @@ int SketchObject::fillet(int GeoId1, int GeoId2, const Base::Vector3d& refPnt1,
             delete constLine1;
             delete constLine2;
         }
->>>>>>> 12b28876214cda46021aa2e4dc17cad9de522c78
     }
     if (chamfer) {
         auto line = std::make_unique<Part::GeomLineSegment>();
