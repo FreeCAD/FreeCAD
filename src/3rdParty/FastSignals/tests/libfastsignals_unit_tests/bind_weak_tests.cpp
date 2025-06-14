@@ -1,5 +1,5 @@
 #include "catch2/catch.hpp"
-#include "libfastsignals/include/bind_weak.h"
+#include <fastsignals/bind_weak.h>
 
 using namespace is::signals;
 
