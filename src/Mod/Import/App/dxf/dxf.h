@@ -182,10 +182,13 @@ struct DxfImportStats
     double importTimeSeconds = 0.0;
     std::string dxfVersion;
     std::string dxfEncoding;
+    std::string scalingSource;
+    std::string fileUnits;
+    double finalScalingFactor = 1.0;
     std::map<std::string, int> entityCounts;
     std::map<std::string, std::string> importSettings;
+    std::map<std::string, int> unsupportedFeatures;
     int totalEntitiesCreated = 0;
-    int unsupportedFeaturesCount = 0;
 };
 
 

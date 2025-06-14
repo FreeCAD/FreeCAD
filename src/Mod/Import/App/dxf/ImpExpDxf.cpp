@@ -1343,8 +1343,11 @@ Py::Object ImpExpDxfRead::getStatsAsPyObject()
 
     statsDict.setItem("dxfVersion", Py::String(m_stats.dxfVersion));
     statsDict.setItem("dxfEncoding", Py::String(m_stats.dxfEncoding));
+    statsDict.setItem("scalingSource", Py::String(m_stats.scalingSource));
+    statsDict.setItem("fileUnits", Py::String(m_stats.fileUnits));
+    statsDict.setItem("finalScalingFactor", Py::Float(m_stats.finalScalingFactor));
+    statsDict.setItem("importTimeSeconds", Py::Float(m_stats.importTimeSeconds));
     statsDict.setItem("totalEntitiesCreated", Py::Long(m_stats.totalEntitiesCreated));
-    statsDict.setItem("unsupportedFeaturesCount", Py::Long(m_stats.unsupportedFeaturesCount));
 
     Py::Dict entityCountsDict;
     for (const auto& pair : m_stats.entityCounts) {
@@ -1357,6 +1360,12 @@ Py::Object ImpExpDxfRead::getStatsAsPyObject()
         importSettingsDict.setItem(pair.first.c_str(), Py::String(pair.second));
     }
     statsDict.setItem("importSettings", importSettingsDict);
+
+    Py::Dict unsupportedFeaturesDict;
+    for (const auto& pair : m_stats.unsupportedFeatures) {
+        unsupportedFeaturesDict.setItem(pair.first.c_str(), Py::Long(pair.second));
+    }
+    statsDict.setItem("unsupportedFeatures", unsupportedFeaturesDict);
 
     return statsDict;
 }
