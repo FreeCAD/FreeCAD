@@ -474,16 +474,18 @@ Part::TopoShape SketchObject::buildInternals(const Part::TopoShape &edges) const
             joiner.getResultWires(result, "SKF");
             result = result.makeElementFace(result.getSubTopoShapes(TopAbs_WIRE),
                     /*op*/"",
-                    /*maker*/"Part::FaceMakerBullseye",
+                    /*maker*/"Part::FaceMakerRing",
                     /*pln*/nullptr
             );
         }
         Part::TopoShape openWires(getID(), getDocument()->getStringHasher());
         joiner.getOpenWires(openWires, "SKF");
-        if (openWires.isNull())
+        if (openWires.isNull()) {
             return result;  // No open wires, return either face or empty toposhape
-        if (result.isNull())
+        }
+        if (result.isNull()) {
             return openWires;   // No face, but we have open wires to return as a shape
+        }
         return result.makeElementCompound({result, openWires}); // Compound and return both
     } catch (Base::Exception &e) {
         FC_WARN("Failed to make face for sketch: " << e.what());
