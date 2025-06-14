@@ -7,9 +7,6 @@
 #include "type_traits.h"
 #include <type_traits>
 
-#if defined(_MSC_VER)
-#	include "msvc_autolink.h"
-#endif
 
 namespace fastsignals
 {
