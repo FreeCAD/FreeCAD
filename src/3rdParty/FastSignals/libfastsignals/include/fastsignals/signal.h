@@ -68,6 +68,7 @@ public:
 		static_assert(std::is_void_v<Return>, "Advanced connect can only be used with slots returning void (implementation limitation)");
 		auto conn_impl = std::make_shared<advanced_connection::advanced_connection_impl>();
 		slot_type slot_impl = [this, slot, weak_conn_impl = std::weak_ptr(conn_impl)](signal_arg_t<Arguments>... args) {
+			(void)this;
 			auto conn_impl = weak_conn_impl.lock();
 			if (!conn_impl || !conn_impl->is_blocked())
 			{
