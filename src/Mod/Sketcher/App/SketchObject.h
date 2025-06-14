@@ -946,7 +946,7 @@ protected:
 
      \param geoId1, podId1, geoId2, posId2 - The two lines that have just been filleted
      */
-    int transferFilletConstraints(int geoId1, PointPos posId1, int geoId2, PointPos posId2);
+    void transferFilletConstraints(int geoId1, PointPos posId1, int geoId2, PointPos posId2, int cornerId, PointPos cornerPos);
 
     // refactoring functions
     // check whether constraint may be changed driving status
