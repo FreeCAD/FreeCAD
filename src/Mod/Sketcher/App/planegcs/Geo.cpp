@@ -128,6 +128,25 @@ DeriVector2 Curve::Value(double /*u*/, double /*du*/, const double* /*derivparam
     return DeriVector2();
 }
 
+//----------------Note
+int Note::PushOwnParams(VEC_pD& pvec)
+{
+    int cnt = 0;
+    pvec.push_back(x);
+    cnt++;
+    pvec.push_back(y);
+    cnt++;
+    return cnt;
+}
+
+void Note::ReconstructOnNewPvec(VEC_pD& pvec, int& cnt)
+{
+    x = pvec[cnt];
+    cnt++;
+    y = pvec[cnt];
+    cnt++;
+}
+
 //----------------Line
 
 DeriVector2 Line::CalculateNormal(const Point& p, const double* derivparam) const

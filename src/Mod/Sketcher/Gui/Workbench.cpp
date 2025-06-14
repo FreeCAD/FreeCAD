@@ -428,6 +428,21 @@ inline void SketcherAddWorkspaceCurveEdition<Gui::ToolBarItem>(Gui::ToolBarItem&
 }
 
 template<typename T>
+void SketcherAddWorkspaceNotes(T& geom);
+
+template<>
+inline void SketcherAddWorkspaceNotes<Gui::MenuItem>(Gui::MenuItem& geom)
+{
+    geom << "Sketcher_CreateNote";
+}
+
+template<>
+inline void SketcherAddWorkspaceNotes<Gui::ToolBarItem>(Gui::ToolBarItem& geom)
+{
+    geom << "Sketcher_CreateNote";
+}
+
+template<typename T>
 inline void SketcherAddWorkbenchGeometries(T& geom)
 {
     geom << "Sketcher_CreatePoint";
@@ -436,6 +451,7 @@ inline void SketcherAddWorkbenchGeometries(T& geom)
     SketcherAddWorkspaceRectangles(geom);
     SketcherAddWorkspaceRegularPolygon(geom);
     SketcherAddWorkspaceslots(geom);
+    SketcherAddWorkspaceNotes(geom);
     geom << "Separator"
          << "Sketcher_ToggleConstruction";
     /*<< "Sketcher_CreateText"*/
