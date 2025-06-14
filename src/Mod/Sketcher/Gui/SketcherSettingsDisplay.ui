@@ -100,6 +100,9 @@
         <property name="prefPath" stdset="0">
          <cstring>Mod/Sketcher</cstring>
         </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
        </widget>
       </item>
       <item row="9" column="1">

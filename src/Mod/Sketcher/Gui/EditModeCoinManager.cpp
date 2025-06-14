@@ -317,7 +317,7 @@ void EditModeCoinManager::ParameterObserver::updateConstraintPresentationParamet
 
     Client.constraintParameters.bHideUnits = hGrpskg->GetBool("HideUnits", false);
     Client.constraintParameters.bShowDimensionalName =
-        hGrpskg->GetBool("ShowDimensionalName", false);
+        hGrpskg->GetBool("ShowDimensionalName", true);
     Client.constraintParameters.sDimensionalStringFormat =
         QString::fromStdString(hGrpskg->GetASCII("DimensionalStringFormat", "%N = %V"));
 }
