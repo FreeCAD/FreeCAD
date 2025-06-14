@@ -1,0 +1,27 @@
+dist: trusty
+sudo: required
+language: cpp
+
+os:
+  - linux
+
+compiler:
+  - gcc
+  # TODO: - clang
+
+env:
+  - TARGET_CPU=amd64 BUILD_CONFIGURATION=Release CI_NAME=TRAVIS
+  # TODO: - TARGET_CPU=x86 BUILD_CONFIGURATION=Release
+
+before_install:
+  # build environment setup script
+  - source build/travis-install-env-$TRAVIS_OS_NAME.sh
+
+script:
+  # Build project
+  - mkdir -p build && cd build
+  - cmake .. -DCMAKE_BUILD_TYPE=$BUILD_CONFIGURATION -DTARGET_CPU=$TARGET_CPU -DBUILD_TESTING=ON
+  - cmake --build .
+
+  # Run tests
+  - tests/libfastsignals_unit_tests/libfastsignals_unit_tests
