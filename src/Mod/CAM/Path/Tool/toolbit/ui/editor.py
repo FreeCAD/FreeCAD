@@ -22,13 +22,12 @@
 
 """Widget for editing a ToolBit object."""
 
-from functools import partial
 import FreeCAD
 import FreeCADGui
 from PySide import QtGui, QtCore
-from ..models.base import ToolBit
 from ...shape.ui.shapewidget import ShapeWidget
-from ...ui.docobject import DocumentObjectEditorWidget
+from ...docobject.ui import DocumentObjectEditorWidget
+from ..models.base import ToolBit
 
 
 class ToolBitPropertiesWidget(QtGui.QWidget):
