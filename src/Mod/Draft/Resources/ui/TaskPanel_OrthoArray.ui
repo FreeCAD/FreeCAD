@@ -26,7 +26,7 @@
    <string>Orthogonal array</string>
   </property>
   <layout class="QGridLayout" name="gridLayout_3">
-   <item row="1" column="0">
+   <item row="0" column="0">
     <widget class="QGroupBox" name="main_group">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
@@ -183,7 +183,7 @@ The number must be at least 1 in each direction.</string>
         </layout>
        </widget>
       </item>
-     <item row="4" column="0">
+      <item row="3" column="0">
        <widget class="QGroupBox" name="group_X">
         <property name="toolTip">
          <string>Distance between the elements in the X direction.
@@ -212,7 +212,7 @@ Negative values will result in copies produced in the negative direction.</strin
               </sizepolicy>
              </property>
              <property name="unit" stdset="0">
-              <string notr="true"/>
+              <string notr="true">mm</string>
              </property>
              <property name="quantity" stdset="0">
               <double>100.000000000000000</double>
@@ -226,7 +226,7 @@ Negative values will result in copies produced in the negative direction.</strin
              </property>
             </widget>
            </item>
-          <item row="1" column="1">
+           <item row="1" column="1">
             <widget class="Gui::InputField" name="input_X_y">
              <property name="sizePolicy">
               <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
@@ -235,7 +235,7 @@ Negative values will result in copies produced in the negative direction.</strin
               </sizepolicy>
              </property>
              <property name="unit" stdset="0">
-              <string notr="true"/>
+              <string notr="true">mm</string>
              </property>
             </widget>
            </item>
@@ -255,7 +255,7 @@ Negative values will result in copies produced in the negative direction.</strin
               </sizepolicy>
              </property>
              <property name="unit" stdset="0">
-              <string notr="true"/>
+              <string notr="true">mm</string>
              </property>
             </widget>
            </item>
@@ -274,7 +274,7 @@ Negative values will result in copies produced in the negative direction.</strin
         </layout>
        </widget>
       </item>
-      <item row="5" column="0">
+      <item row="4" column="0">
        <widget class="QGroupBox" name="group_Y">
         <property name="toolTip">
          <string>Distance between the elements in the Y direction.
@@ -303,7 +303,7 @@ Negative values will result in copies produced in the negative direction.</strin
               </sizepolicy>
              </property>
              <property name="unit" stdset="0">
-              <string notr="true"/>
+              <string notr="true">mm</string>
              </property>
             </widget>
            </item>
@@ -323,7 +323,7 @@ Negative values will result in copies produced in the negative direction.</strin
               </sizepolicy>
              </property>
              <property name="unit" stdset="0">
-              <string notr="true"/>
+              <string notr="true">mm</string>
              </property>
              <property name="quantity" stdset="0">
               <double>100.000000000000000</double>
@@ -346,7 +346,7 @@ Negative values will result in copies produced in the negative direction.</strin
               </sizepolicy>
              </property>
              <property name="unit" stdset="0">
-              <string notr="true"/>
+              <string notr="true">mm</string>
              </property>
             </widget>
            </item>
@@ -365,7 +365,7 @@ Negative values will result in copies produced in the negative direction.</strin
         </layout>
        </widget>
       </item>
-      <item row="6" column="0">
+      <item row="5" column="0">
        <widget class="QGroupBox" name="group_Z">
         <property name="toolTip">
          <string>Distance between the elements in the Z direction.
@@ -394,7 +394,7 @@ Negative values will result in copies produced in the negative direction.</strin
               </sizepolicy>
              </property>
              <property name="unit" stdset="0">
-              <string notr="true"/>
+              <string notr="true">mm</string>
              </property>
             </widget>
            </item>
@@ -414,7 +414,7 @@ Negative values will result in copies produced in the negative direction.</strin
               </sizepolicy>
              </property>
              <property name="unit" stdset="0">
-              <string notr="true"/>
+              <string notr="true">mm</string>
              </property>
             </widget>
            </item>
@@ -434,7 +434,7 @@ Negative values will result in copies produced in the negative direction.</strin
               </sizepolicy>
              </property>
              <property name="unit" stdset="0">
-              <string notr="true"/>
+              <string notr="true">mm</string>
              </property>
              <property name="quantity" stdset="0">
               <double>100.000000000000000</double>
@@ -456,7 +456,7 @@ Negative values will result in copies produced in the negative direction.</strin
         </layout>
        </widget>
       </item>
-      <item row="8" column="0">
+      <item row="6" column="0">
        <layout class="QVBoxLayout" name="vertical_layout">
         <item>
          <widget class="QCheckBox" name="checkbox_fuse">
@@ -485,7 +485,7 @@ A Link array is more efficient when creating multiple copies, but it cannot be f
         </item>
        </layout>
       </item>
-      <item row="11" column="0">
+      <item row="7" column="0">
        <spacer name="verticalSpacer">
         <property name="orientation">
          <enum>Qt::Vertical</enum>
