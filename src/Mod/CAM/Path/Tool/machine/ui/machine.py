@@ -91,6 +91,7 @@ class MachinePropertiesDialog(QtGui.QDialog):
         self.spindle_list.setShowGrid(False)
         self.spindle_list.setEditTriggers(QtGui.QAbstractItemView.NoEditTriggers)
         self.spindle_list.doubleClicked.connect(self.edit_spindle)
+        self.spindle_list.itemSelectionChanged.connect(self._update_button_states)
 
         for spindle in machine.spindles:
             self._add_spindle_to_list(spindle)
@@ -106,7 +107,7 @@ class MachinePropertiesDialog(QtGui.QDialog):
         spindle_buttons.addWidget(self.edit_spindle_btn)
         spindle_buttons.addWidget(self.remove_spindle_btn)
         spindles_layout.addLayout(spindle_buttons)
-        self.update_spindle_buttons_state()
+        self._update_button_states()
 
         self.spindles_group.setLayout(spindles_layout)
         self.layout.addWidget(self.spindles_group)
@@ -150,7 +151,7 @@ class MachinePropertiesDialog(QtGui.QDialog):
             self.machine.add_spindle(new_spindle)
             self._add_spindle_to_list(new_spindle)
             self.spindle_list.setCurrentCell(self.spindle_list.rowCount() - 1, 0)
-            self.update_spindle_buttons_state()
+            self._update_button_states()
 
     def edit_spindle(self):
         current_row = self.spindle_list.currentRow()
@@ -170,7 +171,7 @@ class MachinePropertiesDialog(QtGui.QDialog):
         if current_row >= 0 and self.spindle_list.rowCount() > 0:
             self.spindle_list.removeRow(current_row)
             del self.machine.spindles[current_row]
-            self.update_spindle_buttons_state()
+            self._update_button_states()
 
     def accept(self):
         # Check the label
@@ -221,5 +222,7 @@ class MachinePropertiesDialog(QtGui.QDialog):
         """Subclasses must implement this to update the specific machine."""
         raise NotImplementedError("Subclasses must implement update_machine()")
 
-    def update_spindle_buttons_state(self):
-        self.remove_spindle_btn.setEnabled(self.spindle_list.rowCount() > 1)
+    def _update_button_states(self):
+        spindle_selected = self.spindle_list.currentRow() >= 0
+        self.edit_spindle_btn.setEnabled(spindle_selected)
+        self.remove_spindle_btn.setEnabled(spindle_selected)
