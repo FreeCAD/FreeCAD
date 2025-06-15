@@ -762,17 +762,29 @@ class _Roof(ArchComponent.Component):
             # a Wall, but all portion of the wall above the roof solid would be
             # subtracted as well.
             #
-            # FC forum discussion : Sketch based Arch_Roof and wall substraction
+
+            # FC forum discussion, 2024.1.15 :
+            # Sketch based Arch_Roof and wall substraction
             # - https://forum.freecad.org/viewtopic.php?t=84389
             #
+            # Github issue #21633, 2025.5.29 :
+            # BIM: Holes in roof are causing troubles
+            # - https://github.com/FreeCAD/FreeCAD/issues/21633#issuecomment-2969640142
+
+
             faces = []
             solids = []
             for f in obj.Base.Shape.Faces:  # obj.Base.Shape.Solids.Faces
                 p = f.findPlane()  # Curve face (surface) seems return no Plane
                 if p:
-                    if p.Axis[2] < -1e-7:  # i.e. normal pointing below horizon
-                        faces.append(f)
+                    # See github issue #21633, all planes are added for safety
+                    #if p.Axis[2] < -1e-7:  # i.e. normal pointing below horizon
+                    faces.append(f)
                 else:
+                    # TODO 2025.6.15: See github issue #21633: Find better way
+                    #      to test and maybe to split suface point up and down
+                    #      and extrude separately
+                    
                     # Not sure if it is pointing towards and/or above horizon
                     # (upward or downward), or it is curve surface, just add.
                     faces.append(f)
@@ -785,6 +797,11 @@ class _Roof(ArchComponent.Component):
                 solid = f.extrude(Vector(0.0, 0.0, 1000000.0))
                 if not solid.isNull() and solid.isValid() and solid.Volume > 1e-3:
                     solids.append(solid)
+
+            # See github issue #21633: Solids are added for safety
+            for s in obj.Base.Shape.Solids:
+                solids.append(s)
+
             compound = Part.Compound(solids)
             compound.Placement = obj.Placement
             return compound
