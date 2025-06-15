@@ -28,18 +28,35 @@
 # include <cstring>
 # include <QAbstractButton>
 # include <QApplication>
+# include <QCheckBox>
 # include <QCursor>
 # include <QDebug>
+# include <QFrame>
+# include <QGroupBox>
+# include <QLabel>
+# include <QLineEdit>
+# include <QListWidget>
+# include <QMap>
 # include <QMenu>
 # include <QMessageBox>
+# include <QRadioButton>
 # include <QScreen>
 # include <QScrollArea>
 # include <QScrollBar>
+# include <QTabWidget>
 # include <QTimer>
+# include <QToolButton>
 # include <QToolTip>
 # include <QProcess>
 # include <QPushButton>
 # include <QWindow>
+# include <QKeyEvent>
+# include <QFocusEvent>
+# include <QMouseEvent>
+# include <QPointer>
+# include <QSet>
+# include <QStyledItemDelegate>
+# include <QPainter>
 #endif
 
 #include <App/Application.h>
@@ -55,6 +72,123 @@
 #include "WidgetFactory.h"
 
 using namespace Gui::Dialog;
+
+// Simple delegate to render first line bold, second line normal
+// used by search box
+class MixedFontDelegate : public QStyledItemDelegate
+{
+public:
+    explicit MixedFontDelegate(QObject* parent = nullptr) : QStyledItemDelegate(parent) {}
+    
+    void paint(QPainter* painter, const QStyleOptionViewItem& option, const QModelIndex& index) const override
+    {
+        if (!index.isValid()) {
+            QStyledItemDelegate::paint(painter, option, index);
+            return;
+        }
+        
+        QString text = index.data(Qt::DisplayRole).toString();
+        QStringList lines = text.split(QLatin1Char('\n'));
+        
+        if (lines.isEmpty()) {
+            QStyledItemDelegate::paint(painter, option, index);
+            return;
+        }
+        
+        painter->save();
+        
+        // draw selection background if selected
+        if (option.state & QStyle::State_Selected) {
+            painter->fillRect(option.rect, option.palette.highlight());
+        }
+        
+        // Set text color based on selection
+        QColor textColor = (option.state & QStyle::State_Selected) 
+                          ? option.palette.highlightedText().color() 
+                          : option.palette.text().color();
+        painter->setPen(textColor);
+        
+        // Set up fonts
+        QFont boldFont = option.font;
+        boldFont.setBold(true);
+        QFont normalFont = option.font;
+        normalFont.setPointSize(normalFont.pointSize() + 2); // make lower text 2 pixels bigger
+        
+        QFontMetrics boldFm(boldFont);
+        QFontMetrics normalFm(normalFont);
+        
+        int y = option.rect.top() + 4; // start 4px from top
+        int x = option.rect.left() + 12; // +12 horizontal padding
+        int availableWidth = option.rect.width() - 24; // account for left and right padding
+        
+        // draw first line in bold (Tab/Page) with wrapping
+        painter->setFont(boldFont);
+        QRect boldBoundingRect = boldFm.boundingRect(QRect(0, 0, availableWidth, 0), Qt::TextWordWrap, lines.first());
+        QRect boldRect(x, y, availableWidth, boldBoundingRect.height());
+        painter->drawText(boldRect, Qt::TextWordWrap | Qt::AlignTop, lines.first());
+        
+        // move y position after the bold text
+        y += boldBoundingRect.height();
+        
+        // draw remaining lines in normal font with wrapping
+        if (lines.size() > 1) {
+            painter->setFont(normalFont);
+            
+            for (int i = 1; i < lines.size(); ++i) {
+                QRect normalBoundingRect = normalFm.boundingRect(QRect(0, 0, availableWidth, 0), Qt::TextWordWrap, lines.at(i));
+                QRect normalRect(x, y, availableWidth, normalBoundingRect.height());
+                painter->drawText(normalRect, Qt::TextWordWrap | Qt::AlignTop, lines.at(i));
+                y += normalBoundingRect.height();
+            }
+        }
+        
+        painter->restore();
+    }
+    
+    QSize sizeHint(const QStyleOptionViewItem& option, const QModelIndex& index) const override
+    {
+        if (!index.isValid()) {
+            return QStyledItemDelegate::sizeHint(option, index);
+        }
+        
+        QString text = index.data(Qt::DisplayRole).toString();
+        QStringList lines = text.split(QLatin1Char('\n'));
+        
+        if (lines.isEmpty()) {
+            return QStyledItemDelegate::sizeHint(option, index);
+        }
+        
+        QFont boldFont = option.font;
+        boldFont.setBold(true);
+        QFont normalFont = option.font;
+        normalFont.setPointSize(normalFont.pointSize() + 2); // Make lower text 2 pixels bigger to match paint method
+        
+        QFontMetrics boldFm(boldFont);
+        QFontMetrics normalFm(normalFont);
+        
+        int availableWidth = option.rect.width() - 24; // Account for left and right padding
+        if (availableWidth <= 0) {
+            availableWidth = 300 - 24; // Fallback to popup width minus padding
+        }
+        
+        int width = 0;
+        int height = 8; // Start with 8 vertical padding (4 top + 4 bottom)
+        
+        // Calculate height for first line (bold) with wrapping
+        QRect boldBoundingRect = boldFm.boundingRect(QRect(0, 0, availableWidth, 0), Qt::TextWordWrap, lines.first());
+        height += boldBoundingRect.height();
+        width = qMax(width, boldBoundingRect.width() + 24); // +24 horizontal padding
+        
+        // Calculate height for remaining lines (normal font) with wrapping
+        for (int i = 1; i < lines.size(); ++i) {
+            QRect normalBoundingRect = normalFm.boundingRect(QRect(0, 0, availableWidth, 0), Qt::TextWordWrap, lines.at(i));
+            height += normalBoundingRect.height();
+            width = qMax(width, normalBoundingRect.width() + 24);
+        }
+        
+        return QSize(width, height);
+    }
+};
 
 bool isParentOf(const QModelIndex& parent, const QModelIndex& child)
 {
@@ -126,12 +260,32 @@ DlgPreferencesImp* DlgPreferencesImp::_activeDialog = nullptr;
  */
 DlgPreferencesImp::DlgPreferencesImp(QWidget* parent, Qt::WindowFlags fl)
     : QDialog(parent, fl), ui(new Ui_DlgPreferences),
-      invalidParameter(false), canEmbedScrollArea(true), restartRequired(false)
+      invalidParameter(false), canEmbedScrollArea(true), restartRequired(false),
+      searchResultsList(nullptr)
 {
     ui->setupUi(this);
 
     // remove unused help button
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
+
+    // Create the search results popup list
+    searchResultsList = new QListWidget(this);
+    searchResultsList->setWindowFlags(Qt::Tool | Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint);
+    searchResultsList->setVisible(false);
+    searchResultsList->setMinimumWidth(300);
+    searchResultsList->setMaximumHeight(400); // Increased max height
+    searchResultsList->setFrameStyle(QFrame::Box | QFrame::Raised);
+    searchResultsList->setLineWidth(1);
+    searchResultsList->setFocusPolicy(Qt::NoFocus); // Don't steal focus from search box
+    searchResultsList->setAttribute(Qt::WA_ShowWithoutActivating); // Show without activating/stealing focus
+    searchResultsList->setWordWrap(true); // Enable word wrapping
+    searchResultsList->setTextElideMode(Qt::ElideNone); // Don't elide text, let it wrap instead
+    searchResultsList->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff); // Disable horizontal scrollbar
+    searchResultsList->setSpacing(0); // Remove spacing between items
+    searchResultsList->setContentsMargins(0, 0, 0, 0); // Remove margins
+    
+    // Set custom delegate for mixed font rendering (bold first line, normal second line)
+    searchResultsList->setItemDelegate(new MixedFontDelegate(searchResultsList));
 
     setupConnections();
 
@@ -150,6 +304,9 @@ DlgPreferencesImp::DlgPreferencesImp(QWidget* parent, Qt::WindowFlags fl)
  */
 DlgPreferencesImp::~DlgPreferencesImp()
 {
+    // Remove global event filter
+    qApp->removeEventFilter(this);
+    
     if (DlgPreferencesImp::_activeDialog == this) {
         DlgPreferencesImp::_activeDialog = nullptr;
     }
@@ -185,6 +342,35 @@ void DlgPreferencesImp::setupConnections()
             &QStackedWidget::currentChanged,
             this,
             &DlgPreferencesImp::onStackWidgetChange);
+    connect(ui->searchBox,
+            &QLineEdit::textChanged,
+            this,
+            &DlgPreferencesImp::onSearchTextChanged);
+    
+    // Install event filter on search box for arrow key navigation
+    ui->searchBox->installEventFilter(this);
+    
+    // Install global event filter to handle clicks outside popup
+    qApp->installEventFilter(this);
+    
+    // Connect search results list
+    connect(searchResultsList,
+            &QListWidget::itemSelectionChanged,
+            this,
+            &DlgPreferencesImp::onSearchResultSelected);
+    connect(searchResultsList,
+            &QListWidget::itemDoubleClicked,
+            this,
+            &DlgPreferencesImp::onSearchResultDoubleClicked);
+    connect(searchResultsList,
+            &QListWidget::itemClicked,
+            this,
+            &DlgPreferencesImp::onSearchResultClicked);
+    
+    // Install event filter for keyboard navigation in search results
+    searchResultsList->installEventFilter(this);
+    
+
 }
 
 void DlgPreferencesImp::setupPages()
@@ -1005,6 +1191,664 @@ PreferencesPageItem* DlgPreferencesImp::getCurrentPage() const
     }
 
     return pageWidget->property(PreferencesPageItem::PropertyName).value<PreferencesPageItem*>();
+}
+
+void DlgPreferencesImp::onSearchTextChanged(const QString& text)
+{
+    if (text.isEmpty()) {
+        clearSearchHighlights();
+        searchResults.clear();
+        lastSearchText.clear();
+        hideSearchResultsList();
+        return;
+    }
+    
+    // Only perform new search if text changed
+    if (text != lastSearchText) {
+        performSearch(text);
+        lastSearchText = text;
+    }
+}
+
+void DlgPreferencesImp::performSearch(const QString& searchText)
+{
+    clearSearchHighlights();
+    searchResults.clear();
+    
+    if (searchText.length() < 2) {
+        hideSearchResultsList();
+        return;
+    }
+    
+    // Search through all groups and pages to collect ALL results
+    auto root = _model.invisibleRootItem();
+    for (int i = 0; i < root->rowCount(); i++) {
+        auto groupItem = static_cast<PreferencesPageItem*>(root->child(i));
+        auto groupName = groupItem->data(GroupNameRole).toString();
+        auto groupStack = qobject_cast<QStackedWidget*>(groupItem->getWidget());
+        
+        if (!groupStack) continue;
+        
+        // Search in each page of the group
+        for (int j = 0; j < groupItem->rowCount(); j++) {
+            auto pageItem = static_cast<PreferencesPageItem*>(groupItem->child(j));
+            auto pageName = pageItem->data(PageNameRole).toString();
+            auto pageWidget = qobject_cast<PreferencePage*>(pageItem->getWidget());
+            
+            if (!pageWidget) continue;
+            
+            // Collect all matching widgets in this page
+            collectSearchResults(pageWidget, searchText, groupName, pageName, pageItem->text(), groupItem->text());
+        }
+    }
+    
+    // Sort results by score (highest first)
+    std::sort(searchResults.begin(), searchResults.end(), 
+              [](const SearchResult& a, const SearchResult& b) {
+                  return a.score > b.score;
+              });
+    
+    // Update UI with search results
+    if (!searchResults.isEmpty()) {
+        populateSearchResultsList();
+        showSearchResultsList();
+    } else {
+        hideSearchResultsList();
+    }
+}
+
+
+
+void DlgPreferencesImp::clearSearchHighlights()
+{
+    // Restore original styles for all highlighted widgets
+    for (int i = 0; i < highlightedWidgets.size(); ++i) {
+        QWidget* widget = highlightedWidgets.at(i);
+        if (widget && originalStyles.contains(widget)) {
+            widget->setStyleSheet(originalStyles[widget]);
+        }
+    }
+    highlightedWidgets.clear();
+    originalStyles.clear();
+}
+
+
+
+void DlgPreferencesImp::collectSearchResults(QWidget* widget, const QString& searchText, const QString& groupName, const QString& pageName, const QString& pageDisplayName, const QString& tabName)
+{
+    if (!widget) return;
+    
+    const QString lowerSearchText = searchText.toLower();
+    
+    // First, check if the page display name itself matches (highest priority)
+    int pageScore = 0;
+    if (fuzzyMatch(searchText, pageDisplayName, pageScore)) {
+        SearchResult result;
+        result.groupName = groupName;
+        result.pageName = pageName;
+        result.widget = widget; // Use the page widget itself
+        result.matchText = pageDisplayName; // Use display name, not internal name
+        result.groupBoxName = QString(); // No groupbox for page-level match
+        result.tabName = tabName;
+        result.pageDisplayName = pageDisplayName;
+        result.isPageLevelMatch = true; // Mark as page-level match
+        result.score = pageScore + 2000; // Boost page-level matches
+        result.displayText = formatSearchResultText(result);
+        searchResults.append(result);
+        // Continue searching for individual items even if page matches
+    }
+    
+    // Search different widget types using the template method
+    searchWidgetType<QLabel>(widget, searchText, groupName, pageName, pageDisplayName, tabName);
+    searchWidgetType<QCheckBox>(widget, searchText, groupName, pageName, pageDisplayName, tabName);
+    searchWidgetType<QRadioButton>(widget, searchText, groupName, pageName, pageDisplayName, tabName);
+    searchWidgetType<QPushButton>(widget, searchText, groupName, pageName, pageDisplayName, tabName);
+}
+
+void DlgPreferencesImp::navigateToSearchResult(const QString& groupName, const QString& pageName)
+{
+    // Find the group and page items
+    auto root = _model.invisibleRootItem();
+    for (int i = 0; i < root->rowCount(); i++) {
+        auto groupItem = static_cast<PreferencesPageItem*>(root->child(i));
+        if (groupItem->data(GroupNameRole).toString() == groupName) {
+            
+            // Find the specific page
+            for (int j = 0; j < groupItem->rowCount(); j++) {
+                auto pageItem = static_cast<PreferencesPageItem*>(groupItem->child(j));
+                if (pageItem->data(PageNameRole).toString() == pageName) {
+                    
+                    // Expand the group if needed
+                    ui->groupsTreeView->expand(groupItem->index());
+                    
+                    // Select the page
+                    ui->groupsTreeView->selectionModel()->select(pageItem->index(), QItemSelectionModel::ClearAndSelect);
+                    
+                    // Navigate to the page
+                    onPageSelected(pageItem->index());
+                    
+                    return;
+                }
+            }
+            
+            // If no specific page found, just navigate to the group
+            ui->groupsTreeView->selectionModel()->select(groupItem->index(), QItemSelectionModel::ClearAndSelect);
+            onPageSelected(groupItem->index());
+            return;
+        }
+    }
+}
+
+bool DlgPreferencesImp::eventFilter(QObject* obj, QEvent* event)
+{
+    // Handle search box key presses
+    if (obj == ui->searchBox && event->type() == QEvent::KeyPress) {
+        QKeyEvent* keyEvent = static_cast<QKeyEvent*>(event);
+        return handleSearchBoxKeyPress(keyEvent);
+    }
+    
+    // Handle popup key presses
+    if (obj == searchResultsList && event->type() == QEvent::KeyPress) {
+        QKeyEvent* keyEvent = static_cast<QKeyEvent*>(event);
+        return handlePopupKeyPress(keyEvent);
+    }
+    
+    // Prevent popup from stealing focus
+    if (obj == searchResultsList && event->type() == QEvent::FocusIn) {
+        ensureSearchBoxFocus();
+            return true;
+    }
+    
+    // Handle search box focus loss
+    if (obj == ui->searchBox && event->type() == QEvent::FocusOut) {
+        QFocusEvent* focusEvent = static_cast<QFocusEvent*>(event);
+        if (focusEvent->reason() != Qt::PopupFocusReason && 
+            focusEvent->reason() != Qt::MouseFocusReason) {
+            // Only hide if focus is going somewhere else, not due to popup interaction
+            QTimer::singleShot(100, this, [this]() {
+                if (!ui->searchBox->hasFocus() && !searchResultsList->underMouse()) {
+                    hideSearchResultsList();
+                }
+            });
+        }
+    }
+    
+    // Handle clicks outside popup
+    if (event->type() == QEvent::MouseButtonPress) {
+        QMouseEvent* mouseEvent = static_cast<QMouseEvent*>(event);
+        QWidget* widget = qobject_cast<QWidget*>(obj);
+        
+        // Check if click is outside search area
+        if (searchResultsList->isVisible() && 
+            obj != searchResultsList && 
+            obj != ui->searchBox &&
+            widget && // Only check if obj is actually a QWidget
+            !searchResultsList->isAncestorOf(widget) &&
+            !ui->searchBox->isAncestorOf(widget)) {
+            
+            if (isClickOutsidePopup(mouseEvent)) {
+                hideSearchResultsList();
+            }
+        }
+    }
+    
+    return QDialog::eventFilter(obj, event);
+}
+
+void DlgPreferencesImp::onSearchResultSelected()
+{
+    // This method is called when a search result is selected (arrow keys or single click)
+    // Navigate immediately but keep popup open
+    if (searchResultsList && searchResultsList->currentItem()) {
+        navigateToCurrentSearchResult(false); // false = don't close popup
+    }
+    
+    ensureSearchBoxFocus();
+}
+
+void DlgPreferencesImp::onSearchResultClicked()
+{
+    // Handle single click - navigate immediately but keep popup open
+    if (searchResultsList && searchResultsList->currentItem()) {
+        navigateToCurrentSearchResult(false); // false = don't close popup
+    }
+    
+    ensureSearchBoxFocus();
+}
+
+void DlgPreferencesImp::onSearchResultDoubleClicked()
+{
+    // Handle double click - navigate and close popup
+    if (searchResultsList && searchResultsList->currentItem()) {
+        navigateToCurrentSearchResult(true); // true = close popup
+    }
+}
+
+void DlgPreferencesImp::navigateToCurrentSearchResult(bool closePopup)
+{
+    QListWidgetItem* currentItem = searchResultsList->currentItem();
+    
+    // Skip if it's a separator (non-selectable item) or no item selected
+    if (!currentItem || !(currentItem->flags() & Qt::ItemIsSelectable)) {
+        return;
+    }
+    
+    // Get the result index directly from the item data
+    bool ok;
+    int resultIndex = currentItem->data(Qt::UserRole).toInt(&ok);
+    
+    if (ok && resultIndex >= 0 && resultIndex < searchResults.size()) {
+        const SearchResult& result = searchResults.at(resultIndex);
+        
+        // Navigate to the result
+        navigateToSearchResult(result.groupName, result.pageName);
+        
+        // Clear any existing highlights
+        clearSearchHighlights();
+        
+        // Only highlight specific widgets for non-page-level matches
+        if (!result.isPageLevelMatch && !result.widget.isNull()) {
+            applyHighlightToWidget(result.widget);
+        }
+        // For page-level matches, we just navigate without highlighting anything
+        
+        // Close popup only if requested (double-click or Enter)
+        if (closePopup) {
+            hideSearchResultsList();
+        }
+    }
+}
+
+void DlgPreferencesImp::populateSearchResultsList()
+{
+    searchResultsList->clear();
+    
+    for (int i = 0; i < searchResults.size(); ++i) {
+        const SearchResult& result = searchResults.at(i);
+        QListWidgetItem* item = new QListWidgetItem(result.displayText);
+        item->setData(Qt::UserRole, i); // Store the index instead of pointer
+        searchResultsList->addItem(item);
+    }
+    
+    // Select first actual item (not separator)
+    if (!searchResults.isEmpty()) {
+        searchResultsList->setCurrentRow(0);
+    }
+}
+
+void DlgPreferencesImp::hideSearchResultsList()
+{
+    searchResultsList->setVisible(false);
+}
+
+void DlgPreferencesImp::showSearchResultsList()
+{
+    // Configure popup size and position
+    configurePopupSize();
+    
+    // Show the popup
+    searchResultsList->setVisible(true);
+    searchResultsList->raise();
+    
+    // Use QTimer to ensure focus returns to search box after Qt finishes processing the popup show event
+    QTimer::singleShot(0, this, [this]() {
+        if (ui->searchBox) {
+            ui->searchBox->setFocus();
+            ui->searchBox->activateWindow();
+        }
+    });
+}
+
+QString DlgPreferencesImp::findGroupBoxForWidget(QWidget* widget)
+{
+    if (!widget) return QString();
+    
+    // Walk up the parent hierarchy to find a QGroupBox
+    QWidget* parent = widget->parentWidget();
+    while (parent) {
+        QGroupBox* groupBox = qobject_cast<QGroupBox*>(parent);
+        if (groupBox) {
+            return groupBox->title();
+        }
+        parent = parent->parentWidget();
+    }
+    
+    return QString();
+}
+
+QString DlgPreferencesImp::formatSearchResultText(const SearchResult& result)
+{
+    // Format for MixedFontDelegate: First line will be bold, subsequent lines normal
+    QString text = result.tabName + QStringLiteral("/") + result.pageDisplayName;
+    
+    if (!result.isPageLevelMatch) {
+        // Add the actual finding on the second line
+        text += QStringLiteral("\n") + result.matchText;
+    }
+    
+    return text;
+}
+
+void DlgPreferencesImp::createSearchResult(QWidget* widget, const QString& matchText, const QString& groupName, 
+                                          const QString& pageName, const QString& pageDisplayName, const QString& tabName)
+{
+    SearchResult result;
+    result.groupName = groupName;
+    result.pageName = pageName;
+    result.widget = widget;
+    result.matchText = matchText;
+    result.groupBoxName = findGroupBoxForWidget(widget);
+    result.tabName = tabName;
+    result.pageDisplayName = pageDisplayName;
+    result.isPageLevelMatch = false;
+    result.score = 0; // Will be set by the caller
+    result.displayText = formatSearchResultText(result);
+    searchResults.append(result);
+}
+
+template<typename WidgetType>
+void DlgPreferencesImp::searchWidgetType(QWidget* parentWidget, const QString& searchText, const QString& groupName,
+                                        const QString& pageName, const QString& pageDisplayName, const QString& tabName)
+{
+    const QList<WidgetType*> widgets = parentWidget->findChildren<WidgetType*>();
+    
+    for (WidgetType* widget : widgets) {
+        QString widgetText;
+        
+        // Get text based on widget type
+        if constexpr (std::is_same_v<WidgetType, QLabel>) {
+            widgetText = widget->text();
+        } else if constexpr (std::is_same_v<WidgetType, QCheckBox>) {
+            widgetText = widget->text();
+        } else if constexpr (std::is_same_v<WidgetType, QRadioButton>) {
+            widgetText = widget->text();
+        } else if constexpr (std::is_same_v<WidgetType, QPushButton>) {
+            widgetText = widget->text();
+        }
+        
+        // Use fuzzy matching instead of simple contains
+        int score = 0;
+        if (fuzzyMatch(searchText, widgetText, score)) {
+            createSearchResult(widget, widgetText, groupName, pageName, pageDisplayName, tabName);
+            // Update the score of the last added result
+            if (!searchResults.isEmpty()) {
+                searchResults.last().score = score;
+            }
+        }
+    }
+}
+
+int DlgPreferencesImp::calculatePopupHeight(int popupWidth)
+{
+    int totalHeight = 0;
+    int itemCount = searchResultsList->count();
+    int visibleItemCount = 0;
+    const int maxVisibleItems = 4;
+    
+    for (int i = 0; i < itemCount && visibleItemCount < maxVisibleItems; ++i) {
+        QListWidgetItem* item = searchResultsList->item(i);
+        if (!item) continue;
+        
+        // For separator items, use their widget height
+        if (searchResultsList->itemWidget(item)) {
+            totalHeight += searchResultsList->itemWidget(item)->sizeHint().height();
+        } else {
+            // For text items, use the delegate's size hint instead of calculating manually
+            QStyleOptionViewItem option;
+            option.rect = QRect(0, 0, popupWidth, 100); // Temporary rect for calculation
+            option.font = searchResultsList->font();
+            
+            QSize delegateSize = searchResultsList->itemDelegate()->sizeHint(option, searchResultsList->model()->index(i, 0));
+            totalHeight += delegateSize.height();
+            
+            visibleItemCount++; // Only count actual items, not separators
+        }
+    }
+    
+    return qMax(50, totalHeight); // Minimum 50px height
+}
+
+void DlgPreferencesImp::configurePopupSize()
+{
+    if (searchResults.isEmpty()) {
+        hideSearchResultsList();
+        return;
+    }
+    
+    // Set a fixed width to prevent flashing when content changes
+    int popupWidth = 300; // Fixed width for consistent appearance
+    searchResultsList->setFixedWidth(popupWidth);
+    
+    // Calculate and set the height
+    int finalHeight = calculatePopupHeight(popupWidth);
+    searchResultsList->setFixedHeight(finalHeight);
+    
+    // Position the popup's upper-left corner at the upper-right corner of the search box
+    QPoint globalPos = ui->searchBox->mapToGlobal(QPoint(ui->searchBox->width(), 0));
+    
+    // Check if popup would go off-screen to the right
+    QScreen* screen = QApplication::screenAt(globalPos);
+    if (!screen) {
+        screen = QApplication::primaryScreen();
+    }
+    QRect screenGeometry = screen->availableGeometry();
+    
+    // If popup would extend beyond right edge of screen, position it below the search box instead
+    if (globalPos.x() + popupWidth > screenGeometry.right()) {
+        globalPos = ui->searchBox->mapToGlobal(QPoint(0, ui->searchBox->height()));
+    }
+    
+    searchResultsList->move(globalPos);
+}
+
+// Fuzzy search implementation
+
+bool DlgPreferencesImp::isExactMatch(const QString& searchText, const QString& targetText)
+{
+    return targetText.toLower().contains(searchText.toLower());
+}
+
+bool DlgPreferencesImp::fuzzyMatch(const QString& searchText, const QString& targetText, int& score)
+{
+    if (searchText.isEmpty()) {
+        score = 0;
+        return true;
+    }
+    
+    const QString lowerSearch = searchText.toLower();
+    const QString lowerTarget = targetText.toLower();
+    
+    // First check for exact substring match (highest score)
+    if (lowerTarget.contains(lowerSearch)) {
+        // Score based on how early the match appears and how much of the string it covers
+        int matchIndex = lowerTarget.indexOf(lowerSearch);
+        int coverage = (lowerSearch.length() * 100) / lowerTarget.length(); // Percentage coverage
+        score = 1000 - matchIndex + coverage; // Higher score for earlier matches and better coverage
+        return true;
+    }
+    
+    // For fuzzy matching, require minimum search length to avoid too many false positives
+    if (lowerSearch.length() < 3) {
+        score = 0;
+        return false;
+    }
+    
+    // Fuzzy matching: check if all characters appear in order
+    int searchIndex = 0;
+    int targetIndex = 0;
+    int consecutiveMatches = 0;
+    int maxConsecutive = 0;
+    int totalMatches = 0;
+    int firstMatchIndex = -1;
+    int lastMatchIndex = -1;
+    
+    while (searchIndex < lowerSearch.length() && targetIndex < lowerTarget.length()) {
+        if (lowerSearch[searchIndex] == lowerTarget[targetIndex]) {
+            if (firstMatchIndex == -1) {
+                firstMatchIndex = targetIndex;
+            }
+            lastMatchIndex = targetIndex;
+            searchIndex++;
+            totalMatches++;
+            consecutiveMatches++;
+            maxConsecutive = qMax(maxConsecutive, consecutiveMatches);
+    } else {
+            consecutiveMatches = 0;
+        }
+        targetIndex++;
+    }
+    
+    // Check if all search characters were found
+    if (searchIndex == lowerSearch.length()) {
+        // Calculate match density - how spread out are the matches?
+        int matchSpan = lastMatchIndex - firstMatchIndex + 1;
+        int density = (lowerSearch.length() * 100) / matchSpan; // Characters per span
+        
+        // Require minimum density - matches shouldn't be too spread out
+        if (density < 20) { // Less than 20% density is too sparse
+            score = 0;
+            return false;
+        }
+        
+        // Require minimum coverage of search term
+        int coverage = (lowerSearch.length() * 100) / lowerTarget.length();
+        if (coverage < 15 && lowerTarget.length() > 20) { // For long strings, require better coverage
+            score = 0;
+            return false;
+        }
+        
+        // Calculate score based on:
+        // - Match density (how compact the matches are)
+        // - Consecutive matches bonus
+        // - Coverage (how much of target string is the search term)
+        // - Position bonus (earlier matches are better)
+        int densityScore = qMin(density, 100); // Cap at 100
+        int consecutiveBonus = (maxConsecutive * 30) / lowerSearch.length();
+        int coverageScore = qMin(coverage * 2, 100); // Coverage is important
+        int positionBonus = qMax(0, 50 - firstMatchIndex); // Earlier is better
+        
+        score = densityScore + consecutiveBonus + coverageScore + positionBonus;
+        
+        // Minimum score threshold for fuzzy matches
+        if (score < 80) {
+            score = 0;
+            return false;
+        }
+        
+        return true;
+    }
+    
+    score = 0;
+    return false;
+}
+
+void DlgPreferencesImp::ensureSearchBoxFocus()
+{
+    if (ui->searchBox && !ui->searchBox->hasFocus()) {
+        ui->searchBox->setFocus();
+    }
+}
+
+QString DlgPreferencesImp::getHighlightStyleForWidget(QWidget* widget)
+{
+    const QString baseStyle = QStringLiteral("background-color: #E3F2FD; color: #1565C0; border: 2px solid #2196F3; border-radius: 3px;");
+    
+    if (qobject_cast<QLabel*>(widget)) {
+        return QStringLiteral("QLabel { ") + baseStyle + QStringLiteral(" padding: 2px; }");
+    } else if (qobject_cast<QCheckBox*>(widget)) {
+        return QStringLiteral("QCheckBox { ") + baseStyle + QStringLiteral(" padding: 2px; }");
+    } else if (qobject_cast<QRadioButton*>(widget)) {
+        return QStringLiteral("QRadioButton { ") + baseStyle + QStringLiteral(" padding: 2px; }");
+    } else if (qobject_cast<QGroupBox*>(widget)) {
+        return QStringLiteral("QGroupBox::title { ") + baseStyle + QStringLiteral(" padding: 2px; }");
+    } else if (qobject_cast<QPushButton*>(widget)) {
+        return QStringLiteral("QPushButton { ") + baseStyle + QStringLiteral(" }");
+    } else {
+        return QStringLiteral("QWidget { ") + baseStyle + QStringLiteral(" padding: 2px; }");
+    }
+}
+
+void DlgPreferencesImp::applyHighlightToWidget(QWidget* widget)
+{
+    if (!widget) return;
+    
+    originalStyles[widget] = widget->styleSheet();
+    widget->setStyleSheet(getHighlightStyleForWidget(widget));
+    highlightedWidgets.append(widget);
+}
+
+
+
+bool DlgPreferencesImp::handleSearchBoxKeyPress(QKeyEvent* keyEvent)
+{
+    if (!searchResultsList->isVisible() || searchResults.isEmpty()) {
+        return false;
+    }
+    
+    switch (keyEvent->key()) {
+        case Qt::Key_Down: {
+            // Move selection down in popup, skipping separators
+            int currentRow = searchResultsList->currentRow();
+            int totalItems = searchResultsList->count();
+            for (int i = 1; i < totalItems; ++i) {
+                int nextRow = (currentRow + i) % totalItems;
+                QListWidgetItem* item = searchResultsList->item(nextRow);
+                if (item && (item->flags() & Qt::ItemIsSelectable)) {
+                    searchResultsList->setCurrentRow(nextRow);
+                    break;
+                }
+            }
+            return true;
+        }
+        case Qt::Key_Up: {
+            // Move selection up in popup, skipping separators
+            int currentRow = searchResultsList->currentRow();
+            int totalItems = searchResultsList->count();
+            for (int i = 1; i < totalItems; ++i) {
+                int prevRow = (currentRow - i + totalItems) % totalItems;
+                QListWidgetItem* item = searchResultsList->item(prevRow);
+                if (item && (item->flags() & Qt::ItemIsSelectable)) {
+                    searchResultsList->setCurrentRow(prevRow);
+                    break;
+                }
+            }
+            return true;
+        }
+        case Qt::Key_Return:
+        case Qt::Key_Enter:
+            navigateToCurrentSearchResult(true); // true = close popup
+            return true;
+        case Qt::Key_Escape:
+            hideSearchResultsList();
+            return true;
+        default:
+            return false;
+    }
+}
+
+bool DlgPreferencesImp::handlePopupKeyPress(QKeyEvent* keyEvent)
+{
+    switch (keyEvent->key()) {
+        case Qt::Key_Return:
+        case Qt::Key_Enter:
+            navigateToCurrentSearchResult(true); // true = close popup
+            return true;
+        case Qt::Key_Escape:
+            hideSearchResultsList();
+            ensureSearchBoxFocus();
+            return true;
+        default:
+            return false;
+    }
+}
+
+bool DlgPreferencesImp::isClickOutsidePopup(QMouseEvent* mouseEvent)
+{
+    QPoint globalPos = mouseEvent->globalPos();
+    QRect searchBoxRect = QRect(ui->searchBox->mapToGlobal(QPoint(0, 0)), ui->searchBox->size());
+    QRect popupRect = QRect(searchResultsList->mapToGlobal(QPoint(0, 0)), searchResultsList->size());
+    
+    return !searchBoxRect.contains(globalPos) && !popupRect.contains(globalPos);
 }
 
 #include "moc_DlgPreferencesImp.cpp"
