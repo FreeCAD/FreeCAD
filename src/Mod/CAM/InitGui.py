@@ -89,6 +89,14 @@ class CAMWorkbench(Workbench):
         import subprocess
         from packaging.version import Version, parse
 
+        liblatheInstalled = False
+        try:
+            import liblathe  # pylint: disable=unused-variable
+
+            liblatheInstalled = True
+        except ImportError:
+            pass
+
         FreeCADGui.addPreferencePage(
             PathPreferencesPathJob.JobPreferencesPage,
             QT_TRANSLATE_NOOP("QObject", "CAM"),
@@ -127,6 +135,7 @@ class CAMWorkbench(Workbench):
             "CAM_Helix",
             "CAM_Adaptive",
         ]
+        turningcmdlist = []
         threedopcmdlist = ["CAM_Pocket3D"]
         engravecmdlist = ["CAM_Engrave", "CAM_Deburr", "CAM_Vcarve"]
         drillingcmdlist = ["CAM_Drilling", "CAM_Tapping"]
@@ -179,6 +188,18 @@ class CAMWorkbench(Workbench):
             specialcmdlist.append("CAM_ThreadMilling")
             twodopcmdlist.append("CAM_Slot")
 
+            # if a turning library is installed and experimental features are enabled, then add the turning commands
+            if liblatheInstalled:
+                turningcmdlist.extend(
+                    [
+                        "CAM_TurnFace",
+                        "CAM_TurnPartoff",
+                        "CAM_TurnProfile",
+                        "CAM_TurnRough",
+                        "CAM_TurnToolHelper",
+                    ]
+                )
+
         if Path.Preferences.advancedOCLFeaturesEnabled():
             try:
                 r = subprocess.run(
@@ -224,6 +245,8 @@ class CAMWorkbench(Workbench):
             QT_TRANSLATE_NOOP("Workbench", "New Operations"),
             twodopcmdlist + drillingcmdgroup + engravecmdgroup + threedcmdgroup,
         )
+        if turningcmdlist:
+            self.appendToolbar(QT_TRANSLATE_NOOP("Workbench", "Turning Operations"), turningcmdlist)
         self.appendToolbar(
             QT_TRANSLATE_NOOP("Workbench", "Path Modification"), modcmdlist + dressupcmdgroup
         )
@@ -273,6 +296,15 @@ class CAMWorkbench(Workbench):
                 ],
                 specialcmdlist,
             )
+        if turningcmdlist:
+            self.appendMenu(
+                [
+                    QT_TRANSLATE_NOOP("Workbench", "&CAM"),
+                    QT_TRANSLATE_NOOP("Workbench", "Turning Operations"),
+                ],
+                turningcmdlist,
+            )
+
         if extracmdlist:
             self.appendMenu([QT_TRANSLATE_NOOP("Workbench", "&CAM")], extracmdlist)
 
