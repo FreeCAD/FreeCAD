@@ -376,6 +376,7 @@ const std::vector<Hole::ThreadDescription> Hole::threadDescription[] =
         { "7/8",        22.225, 1.814,    20.40 },
         { "1",          25.400, 2.117,    23.25 },
         { "1 1/8",      28.575, 2.117,    26.50 },
+        { "1 3/16",     30.163, 1.588,    28.58 },
         { "1 1/4",      31.750, 2.117,    29.50 },
         { "1 3/8",      34.925, 2.117,    32.75 },
         { "1 1/2",      38.100, 2.117,    36.00 },
@@ -613,7 +614,7 @@ const double Hole::metricHoleDiameters[51][4] =
         { 150.0,  155.0,  158.0,  165.0}
 };
 
-const Hole::UTSClearanceDefinition Hole::UTSHoleDiameters[22] =
+const Hole::UTSClearanceDefinition Hole::UTSHoleDiameters[23] =
 {
     /* UTS clearance hole diameters according to ASME B18.2.8 */
     // for information: the norm defines a drill bit number (that is in turn standardized in another ASME norm).
@@ -641,6 +642,7 @@ const Hole::UTSClearanceDefinition Hole::UTSHoleDiameters[22] =
         { "7/8",   23.0, 23.8, 26.2 },
         { "1",     26.2, 27.8, 29.4 },
         { "1 1/8", 29.4, 31.0, 33.3 },
+        { "1 3/16", 31.0, 32.5, 34.9 },
         { "1 1/4", 32.5, 34.1, 36.5 },
         { "1 3/8", 36.5, 38.1, 40.9 },
         { "1 1/2", 39.7, 41.3, 44.0 }
