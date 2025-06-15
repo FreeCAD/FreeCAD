@@ -136,6 +136,7 @@
 #include "HyperbolaPy.h"
 #include "LinePy.h"
 #include "LineSegmentPy.h"
+#include "NotePy.h"
 #include "OffsetCurvePy.h"
 #include "OffsetSurfacePy.h"
 #include "ParabolaPy.h"
@@ -551,6 +552,178 @@ void Geometry::translate(const Base::Vector3d& vec) const
     handle()->Translate(trl);
 }
 
+// -------------------------------------------------
+
+TYPESYSTEM_SOURCE(Part::GeomNote, Part::Geometry)
+
+GeomNote::GeomNote()
+    : position(0, 0, 0), text(""), fontSize(12.0), color{0.0f, 0.0f, 0.0f, 1.0f} {}
+
+GeomNote::GeomNote(const Base::Vector3d& p)
+    : position(p)  {}
+
+GeomNote::~GeomNote() = default;
+
+GeomNote::GeomNote(const Base::Vector3d& p, const std::string& txt)
+    : position(p), text(txt), fontSize(12.0), color{0.0f, 0.0f, 0.0f, 1.0f} {}
+
+Base::Vector3d GeomNote::getPosition() const 
+{ 
+    return position; 
+}
+
+std::string GeomNote::getText() const 
+{ 
+    return text; 
+}
+
+double GeomNote::getFontSize() const 
+{ 
+    return fontSize; 
+}
+
+const float* GeomNote::getColor() const 
+{ 
+    return color; 
+}
+
+void GeomNote::setPosition(const Base::Vector3d& p) 
+{ 
+    position = p; 
+}
+
+void GeomNote::setText(const std::string& t) 
+{ 
+    text = t; 
+}
+
+void GeomNote::setFontSize(double fs) 
+{ 
+    fontSize = fs; 
+}
+
+void GeomNote::setColor(const float rgba[4]) 
+{
+    std::copy(rgba, rgba + 4, color);
+}
+
+GeomNote::GeomNote(const GeomNote& other)
+    : Geometry() 
+{
+    this->position = other.position;
+    this->text = other.text;
+    this->fontSize = other.fontSize;
+    for (int i = 0; i < 4; ++i)
+        this->color[i] = other.color[i];
+
+    if (!other.myNote.IsNull())
+        this->myNote = other.myNote->Copy();
+    else
+        this->myNote.Nullify();
+}
+
+Geometry* GeomNote::copy() const
+{
+    return new GeomNote(*this); 
+}
+
+void GeomNote::copyFrom(const GeomNote& other)
+{
+    position = other.position;
+    text = other.text;
+    fontSize = other.fontSize;
+    std::copy(other.color, other.color + 4, color);
+
+    if (!other.myNote.IsNull())
+        myNote = other.myNote->Copy();
+    else
+        myNote.Nullify();
+}
+
+TopoDS_Shape GeomNote::toShape() const
+{
+    gp_Pnt p(position.x, position.y, position.z);
+    return BRepBuilderAPI_MakeVertex(p);
+}
+
+const Handle(Geom_Geometry)& GeomNote::handle() const
+{
+    return myNote;
+}
+
+void GeomNote::Save(Base::Writer& writer) const 
+{
+    Geometry::Save(writer);
+    writer.Stream() << writer.ind() << "<GeomNote "
+                    << "X=\"" << position.x << "\" "
+                    << "Y=\"" << position.y << "\" "
+                    << "Z=\"" << position.z << "\" "
+                    << "Text=\"" << text << "\" "
+                    << "FontSize=\"" << fontSize << "\" "
+                    << "R=\"" << color[0] << "\" "
+                    << "G=\"" << color[1] << "\" "
+                    << "B=\"" << color[2] << "\" "
+                    << "A=\"" << color[3] << "\"/>" << std::endl;
+}
+
+void GeomNote::Restore(Base::XMLReader& reader) 
+{
+    Geometry::Restore(reader);
+    reader.readElement("GeomNote");
+    double x = reader.getAttribute<double>("X");
+    double y = reader.getAttribute<double>("Y");
+    double z = reader.getAttribute<double>("Z");
+
+    std::string txt = reader.getAttribute<std::string>("Text");
+    double fs = reader.getAttribute<double>("FontSize");
+
+    std::string rStr = reader.getAttribute<std::string>("R");
+    std::string gStr = reader.getAttribute<std::string>("G");
+    std::string bStr = reader.getAttribute<std::string>("B");
+    std::string aStr = reader.getAttribute<std::string>("A");
+
+    float rgba[4];
+    rgba[0] = std::stof(rStr);
+    rgba[1] = std::stof(gStr);
+    rgba[2] = std::stof(bStr);
+    rgba[3] = std::stof(aStr);
+
+    setPosition(Base::Vector3d(x, y, z));
+    setText(txt);
+    setFontSize(fs);
+    setColor(rgba);
+}
+
+PyObject *GeomNote::getPyObject()
+{
+    return new NotePy(new GeomNote(*this));  
+}
+
+bool GeomNote::isSame(const Geometry& other, double tol, double) const
+{
+    if (other.getTypeId() != getTypeId())
+        return false;
+
+    const GeomNote& o = static_cast<const GeomNote&>(other);
+
+    if (Base::DistanceP2(o.getPosition(), getPosition()) > tol * tol)
+        return false;
+
+    if (o.getText() != getText())
+        return false;
+
+    if (std::abs(o.getFontSize() - getFontSize()) > tol)
+        return false;
+
+    const float* c1 = getColor();
+    const float* c2 = o.getColor();
+    for (int i = 0; i < 4; ++i) {
+        if (std::abs(c1[i] - c2[i]) > tol)
+            return false;
+    }
+
+    return true;
+}
 
 // -------------------------------------------------
 
