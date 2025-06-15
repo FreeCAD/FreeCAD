@@ -197,6 +197,11 @@ class PostIndexOverFrames2D(base_fempostextractors.Extractor2D):
                 algo.UpdateTimeStep(timestep)
                 dataset = algo.GetOutputDataObject(0)
                 array = self._y_array_from_dataset(obj, dataset, copy=False)
+
+                # safeguard for invalid access
+                if idx < 0 or array.GetNumberOfTuples()-1 < idx:
+                    raise Exception(f"Invalid index: {idx} is not in range 0 - {array.GetNumberOfTuples()-1}")
+
                 if not setup:
                     frame_y_array.SetNumberOfComponents(array.GetNumberOfComponents())
                     frame_y_array.SetNumberOfTuples(len(timesteps))
@@ -212,6 +217,10 @@ class PostIndexOverFrames2D(base_fempostextractors.Extractor2D):
             algo.Update()
             dataset = algo.GetOutputDataObject(0)
             array = self._y_array_from_dataset(obj, dataset, copy=False)
+
+            # safeguard for invalid access
+            if idx < 0 or array.GetNumberOfTuples()-1 < idx:
+                raise Exception(f"Invalid index: {idx} is not in range 0 - {array.GetNumberOfTuples()-1}")
 
             frame_y_array.SetNumberOfComponents(array.GetNumberOfComponents())
             frame_y_array.SetNumberOfTuples(1)
