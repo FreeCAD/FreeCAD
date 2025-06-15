@@ -614,7 +614,7 @@ const double Hole::metricHoleDiameters[51][4] =
         { 150.0,  155.0,  158.0,  165.0}
 };
 
-const Hole::UTSClearanceDefinition Hole::UTSHoleDiameters[22] =
+const Hole::UTSClearanceDefinition Hole::UTSHoleDiameters[23] =
 {
     /* UTS clearance hole diameters according to ASME B18.2.8 */
     // for information: the norm defines a drill bit number (that is in turn standardized in another ASME norm).
