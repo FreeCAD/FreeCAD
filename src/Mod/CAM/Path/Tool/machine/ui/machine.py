@@ -27,6 +27,7 @@ import Path
 from ...spindle import Spindle
 from ...spindle.ui.editor import SpindleEditorDialog
 from ..models.machine import Machine, LinearAxis, AngularAxis
+from .rigidity import RigidityWizard
 
 
 translate = FreeCAD.Qt.translate
@@ -72,8 +73,8 @@ class MachinePropertiesDialog(QtGui.QDialog):
         self.supported_args.setMinimumHeight(200)
         general_layout.addRow(translate("CAM", "Supported Args:"), self.supported_args)
 
-        self.post_processor_combo.currentIndexChanged.connect(self.update_post_processor_args)
-        self.update_post_processor_args(self.post_processor_combo.currentIndex())
+        self.post_processor_combo.currentIndexChanged.connect(self._update_post_processor_args)
+        self._update_post_processor_args(self.post_processor_combo.currentIndex())
 
         general_group.setLayout(general_layout)
         self.layout.addWidget(general_group)
@@ -115,18 +116,18 @@ class MachinePropertiesDialog(QtGui.QDialog):
             if not isinstance(axis, AngularAxis):
                 continue
 
-            # Use FreeCAD.Units.Quantity does not support rad/N, so
+            # Use FreeCAD.Units.Quantity does not support °/N, so
             # we use QDoubleSpinBox for rigidity to avoid unit issues
             rigidity_x_edit = QtGui.QDoubleSpinBox()
             rigidity_x_edit.setDecimals(6)
             rigidity_x_edit.setMinimum(0.0)
             rigidity_x_edit.setValue(axis.rigidity_x.Value)
-            rigidity_x_edit.setSuffix(" rad/N")
+            rigidity_x_edit.setSuffix("°/N")
             rigidity_y_edit = QtGui.QDoubleSpinBox()
             rigidity_y_edit.setDecimals(6)
             rigidity_y_edit.setMinimum(0.0)
             rigidity_y_edit.setValue(axis.rigidity_y.Value)
-            rigidity_y_edit.setSuffix(" rad/N")
+            rigidity_y_edit.setSuffix("°/N")
 
             axis_layout = QtGui.QHBoxLayout()
             axis_layout.addWidget(rigidity_x_edit)
@@ -137,6 +138,12 @@ class MachinePropertiesDialog(QtGui.QDialog):
             self.axis_edits[axis_name] = rigidity_x_edit, rigidity_y_edit
 
         axis_properties_group.setLayout(axis_properties_layout)
+
+        # Add Configure Rigidities button
+        self.configure_rigidities_btn = QtGui.QPushButton(translate("CAM", "Rigidity wizard..."))
+        self.configure_rigidities_btn.clicked.connect(self.launch_rigidity_wizard)
+        axis_properties_layout.addRow(self.configure_rigidities_btn)
+
         self.layout.addWidget(axis_properties_group)
 
         # Spindles group
@@ -183,7 +190,7 @@ class MachinePropertiesDialog(QtGui.QDialog):
 
         self.resize(750, self.sizeHint().height())
 
-    def update_post_processor_args(self, index):
+    def _update_post_processor_args(self, index):
         post_processor_name = self.post_processor_combo.itemText(index)
         post = Path.Post.Processor.PostProcessorFactory.get_post_processor(
             None, post_processor_name
@@ -234,6 +241,29 @@ class MachinePropertiesDialog(QtGui.QDialog):
             del self.machine.spindles[current_row]
             self._update_button_states()
 
+    def launch_rigidity_wizard(self):
+        wizard = RigidityWizard(self.machine, self)
+        if not wizard.exec_():
+            return
+
+        rigidities = wizard.get_rigidities()
+        for axis_name, edits in self.axis_edits.items():
+            axis = self.machine.axes[axis_name]
+            if isinstance(axis, LinearAxis):
+                rigidity, unit = rigidities.get(axis_name, (None, None))
+                if rigidity:
+                    rigidity_edit = edits[2]  # Third item is rigidity_edit
+                    rigidity_edit.setValue(rigidity.Value)
+            elif isinstance(axis, AngularAxis):
+                rigidity_x, unit = rigidities.get(f"{axis_name}_x", (None, None))
+                rigidity_y, unit = rigidities.get(f"{axis_name}_y", (None, None))
+                if rigidity_x:
+                    rigidity_x_edit = edits[0]
+                    rigidity_x_edit.setValue(rigidity_x.Value)
+                if rigidity_y:
+                    rigidity_y_edit = edits[1]
+                    rigidity_y_edit.setValue(rigidity_y.Value)
+
     def accept(self):
         # Check the label
         label = self.label_edit.text()
@@ -268,7 +298,7 @@ class MachinePropertiesDialog(QtGui.QDialog):
                 start_val = start_edit.property("value")
                 end_val = end_edit.property("value")
                 rigidity_val = rigidity_edit.value()
-                rigidity_quantity = FreeCAD.Units.Quantity(f"{rigidity_val} mm/N")
+                rigidity_quantity = FreeCAD.Units.Quantity(f"{rigidity_val} mm")
                 if start_val.Value < 0:
                     QtGui.QMessageBox.warning(
                         self,
@@ -297,8 +327,8 @@ class MachinePropertiesDialog(QtGui.QDialog):
                 rigidity_x_edit, rigidity_y_edit = edits
                 rigidity_x_val = rigidity_x_edit.value()
                 rigidity_y_val = rigidity_y_edit.value()
-                rigidity_x_quantity = FreeCAD.Units.Quantity(f"{rigidity_x_val} rad/N")
-                rigidity_y_quantity = FreeCAD.Units.Quantity(f"{rigidity_y_val} rad/N")
+                rigidity_x_quantity = FreeCAD.Units.Quantity(f"{rigidity_x_val} °")
+                rigidity_y_quantity = FreeCAD.Units.Quantity(f"{rigidity_y_val} °")
                 if rigidity_x_val < 0:
                     QtGui.QMessageBox.warning(
                         self,
