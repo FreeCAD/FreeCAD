@@ -1023,12 +1023,12 @@ bool ViewProviderFemPostObject::setEdit(int ModNum)
 void ViewProviderFemPostObject::setupTaskDialog(TaskDlgPost* dlg)
 {
     assert(dlg->getView() == this);
-    auto disp_panel = new TaskPostDisplay(this);
-    dlg->addTaskBox(disp_panel->windowIcon().pixmap(32), disp_panel);
+    auto dispPanel = new TaskPostDisplay(this);
+    dlg->addTaskBox(dispPanel->windowIcon().pixmap(32), dispPanel);
 
 #ifdef FC_USE_VTK_PYTHON
-    auto extr_panel = new TaskPostExtraction(this);
-    dlg->addTaskBox(extr_panel->windowIcon().pixmap(32), extr_panel);
+    auto extrPanel = new TaskPostExtraction(this);
+    dlg->addTaskBox(extrPanel->windowIcon().pixmap(32), extrPanel);
 #endif
 }
 

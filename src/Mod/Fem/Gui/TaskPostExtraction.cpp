@@ -82,17 +82,13 @@ TaskPostExtraction::TaskPostExtraction(ViewProviderFemPostObject* view, QWidget*
 
         Gui::PythonWrapper wrap;
         if (wrap.loadCoreModule()) {
-            QObject* object = wrap.toQObject(pywidget);
-            if (object) {
-                QWidget* widget = qobject_cast<QWidget*>(object);
-                if (widget) {
-                    // finally we have the usable QWidget. Add to us!
+            if (auto* widget = qobject_cast<QWidget*>(wrap.toQObject(pywidget))) {
+                // finally we have the usable QWidget. Add to us!
 
-                    auto layout = new QVBoxLayout();
-                    layout->addWidget(widget);
-                    setLayout(layout);
-                    return;
-                }
+                auto layout = new QVBoxLayout();
+                layout->addWidget(widget);
+                setLayout(layout);
+                return;
             }
         }
     }

@@ -407,16 +407,18 @@ void TaskDlgPost::modifyStandardButtons(QDialogButtonBox* box)
 void TaskDlgPost::processCollapsedWidgets() {
 
     for (auto& widget : Content) {
-        if(auto task_box = dynamic_cast<Gui::TaskView::TaskBox*>(widget)) {
-            // get the task widget and check if it is a post widget
-            auto widget = task_box->groupLayout()->itemAt(0)->widget();
-            if(auto post_widget = dynamic_cast<TaskPostWidget*>(widget)) {
-                if(post_widget->initiallyCollapsed()) {
-                    post_widget->setGeometry(QRect(QPoint(0,0), post_widget->sizeHint()));
-                    task_box->hideGroupBox();
-                }
-            }
+        auto* task_box = dynamic_cast<Gui::TaskView::TaskBox*>(widget);
+        if (!task_box) {
+            continue;
         }
+        // get the task widget and check if it is a post widget
+        auto* taskwidget = task_box->groupLayout()->itemAt(0)->widget();
+        auto* post_widget = dynamic_cast<TaskPostWidget*>(taskwidget);
+        if (!post_widget || !post_widget->initiallyCollapsed()) {
+            continue;
+        }
+        post_widget->setGeometry(QRect(QPoint(0,0), post_widget->sizeHint()));
+        task_box->hideGroupBox();
     }
 }
 
