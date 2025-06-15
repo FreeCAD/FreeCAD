@@ -44,7 +44,9 @@ def generate(
     step_down,
     step_over,
     tool_diameter,
-    inner_radius=0.0,
+    inner_radius,
+    safe_height,
+    retract_center=False,
     direction="CW",
     startAt="Outside",
 ):
@@ -56,11 +58,12 @@ def generate(
     endPoint = edge.Vertexes[1].Point
 
     Path.Log.track(
-        "(helix: <{}, {}>\n hole radius {}\n inner radius {}\n step over {}\n start point {}\n end point {}\n step_down {}\n tool diameter {}\n direction {}\n startAt {})".format(
+        "(helix: <{}, {}>\n hole radius {}\n inner radius {}\n safe height {}\n step over {}\n start point {}\n end point {}\n step_down {}\n tool diameter {}\n direction {}\n startAt {})".format(
             startPoint.x,
             startPoint.y,
             hole_radius,
             inner_radius,
+            safe_height,
             step_over,
             startPoint.z,
             endPoint.z,
@@ -70,9 +73,6 @@ def generate(
             startAt,
         )
     )
-
-    # inner_radius contains not a radius but the value from Extra Offset, which is the distance between the hole radius as designed and the hole radius to be cut.
-    # hole_radius contains the designed hole radius - inner_radius.
 
     if type(hole_radius) not in [float, int]:
         raise TypeError("Invalid type for hole radius")
@@ -129,12 +129,13 @@ def generate(
     else:
         Path.Log.debug("(annulus mode / full hole)\n")
         outer_radius = hole_radius - tool_diameter / 2
-        step_radius = inner_radius + tool_diameter / 2
-        if abs((outer_radius - step_radius) / step_over_distance) < 1e-5:
-            radii = [(outer_radius + inner_radius) / 2]
+        if (outer_radius - inner_radius) / step_over_distance < 0.1:
+            # Do not overlap outer and inner helix
+            radii = [outer_radius]
         else:
-            nr = max(int(ceil((outer_radius - inner_radius) / step_over_distance)), 2)
-            radii = linspace(outer_radius, step_radius, nr)
+            work_distance = outer_radius - inner_radius + tool_diameter / 2
+            nr = max(int(ceil(work_distance / step_over_distance)), 2)
+            radii = linspace(outer_radius, inner_radius, nr)
 
     Path.Log.debug("Radii: {}".format(radii))
     # calculate the number of full and partial turns required
@@ -143,10 +144,12 @@ def generate(
     turncount = max(int(ceil((startPoint.z - endPoint.z) / step_down)), 2)
     zsteps = linspace(startPoint.z, endPoint.z, 2 * turncount + 1)
 
-    def helix_cut_r(r):
+    def helix_cut_r(r, helixNum=0):
         commandlist = []
         arc_cmd = "G2" if direction == "CW" else "G3"
         commandlist.append(Path.Command("G0", {"X": startPoint.x + r, "Y": startPoint.y}))
+        if helixNum == 0:
+            commandlist.append(Path.Command("G0", {"Z": safe_height}))
         commandlist.append(Path.Command("G1", {"Z": startPoint.z}))
         for i in range(1, turncount + 1):
             commandlist.append(
@@ -206,24 +209,23 @@ def generate(
         # Calculate retraction
         if hole_radius <= tool_diameter:  # simple case where center is clear
             center_clear = True
-
-        elif startAt == "Inside" and inner_radius == 0.0:  # middle is clear
+        elif startAt == "Inside" and inner_radius <= tool_diameter / 2:  # middle is clear
             center_clear = True
         else:
             center_clear = False
 
-        if center_clear:
+        if center_clear and retract_center:
             retractcommands.append(
                 Path.Command("G0", {"X": endPoint.x, "Y": endPoint.y, "Z": endPoint.z})
             )
 
         # Technical Debt.
-        # If the operation is clearing multiple passes in annulus mode (inner
-        # radius > 0.0 and len(radii) > 1) then there is a derivable
+        # If the operation is clearing multiple passes in annulus mode
+        # (inner_radius > 0.0 and len(radii) > 1) then there is a derivable
         # safe place which does not touch the inner or outer wall on all radii except
         # the first.  This is left as a future improvement.
 
-        retractcommands.append(Path.Command("G0", {"Z": startPoint.z}))
+        retractcommands.append(Path.Command("G0", {"Z": safe_height}))
 
         return retractcommands
 
@@ -231,8 +233,7 @@ def generate(
         radii = radii[::-1]
 
     commands = []
-    for r in radii:
-        commands.extend(helix_cut_r(r))
+    for i, r in enumerate(radii):
+        commands.extend(helix_cut_r(r, i))
         commands.extend(retract())
-
     return commands

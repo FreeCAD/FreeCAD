@@ -21,7 +21,6 @@
 # ***************************************************************************
 
 import Path.Base.Generator.helix as helix
-from PathScripts.PathUtils import fmt
 from PySide.QtCore import QT_TRANSLATE_NOOP
 import FreeCAD
 import Part
@@ -169,18 +168,39 @@ class ObjectHelix(PathCircularHoleBase.ObjectOp):
             ),
         )
         obj.addProperty(
-            "App::PropertyLength",
-            "StartRadius",
-            "Helix Drill",
-            QT_TRANSLATE_NOOP("App::Property", "Starting Radius"),
-        )
-        obj.addProperty(
             "App::PropertyDistance",
-            "OffsetExtra",
+            "OffsetInnerRadius",
             "Helix Drill",
             QT_TRANSLATE_NOOP(
                 "App::Property",
-                "Extra value to stay away from final profile- good for roughing toolpath",
+                "Offset inner radius\nDefault inner radius is Tool radius\nCan not be less than -(ToolRadius)",
+            ),
+        )
+        obj.addProperty(
+            "App::PropertyDistance",
+            "OffsetHole",
+            "Helix Drill",
+            QT_TRANSLATE_NOOP(
+                "App::Property",
+                "Extra offset from the profile",
+            ),
+        )
+        obj.addProperty(
+            "App::PropertyBool",
+            "SingleHelix",
+            "Helix Drill",
+            QT_TRANSLATE_NOOP(
+                "App::Property",
+                "Create only one Helix",
+            ),
+        )
+        obj.addProperty(
+            "App::PropertyBool",
+            "RetractCenter",
+            "Helix Drill",
+            QT_TRANSLATE_NOOP(
+                "App::Property",
+                "Retract in the center of hole if possible",
             ),
         )
 
@@ -190,22 +210,51 @@ class ObjectHelix(PathCircularHoleBase.ObjectOp):
         obj.StepOver = 50
 
     def opOnDocumentRestored(self, obj):
-        if not hasattr(obj, "StartRadius"):
-            obj.addProperty(
-                "App::PropertyLength",
-                "StartRadius",
-                "Helix Drill",
-                QT_TRANSLATE_NOOP("App::Property", "Starting Radius"),
-            )
-
-        if not hasattr(obj, "OffsetExtra"):
+        if not hasattr(obj, "OffsetInnerRadius"):
             obj.addProperty(
                 "App::PropertyDistance",
-                "OffsetExtra",
+                "OffsetInnerRadius",
                 "Helix Drill",
                 QT_TRANSLATE_NOOP(
                     "App::Property",
-                    "Extra value to stay away from final profile- good for roughing toolpath",
+                    "Offset inner radius\nDefault inner radius is Tool radius\nCan not be less than -(ToolRadius)",
+                ),
+            )
+        if hasattr(obj, "StartRadius"):
+            obj.OffsetInnerRadius = obj.StartRadius
+            obj.removeProperty("StartRadius")
+
+        if not hasattr(obj, "OffsetHole"):
+            obj.addProperty(
+                "App::PropertyDistance",
+                "OffsetHole",
+                "Helix Drill",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "Extra offset from the profile",
+                ),
+            )
+        if hasattr(obj, "OffsetExtra"):
+            obj.OffsetHole = obj.OffsetExtra
+            obj.removeProperty("OffsetExtra")
+        if not hasattr(obj, "SingleHelix"):
+            obj.addProperty(
+                "App::PropertyBool",
+                "SingleHelix",
+                "Helix Drill",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "Create only one Helix",
+                ),
+            )
+        if not hasattr(obj, "RetractCenter"):
+            obj.addProperty(
+                "App::PropertyBool",
+                "RetractCenter",
+                "Helix Drill",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "Retract in the center of the hole if possible",
                 ),
             )
 
@@ -239,43 +288,43 @@ class ObjectHelix(PathCircularHoleBase.ObjectOp):
 
         self.commandlist.append(Path.Command("(helix cut operation)"))
 
-        self.commandlist.append(Path.Command("G0", {"Z": obj.ClearanceHeight.Value}))
-
         tool = obj.ToolController.Tool
-        tooldiamter = tool.Diameter.Value if hasattr(tool.Diameter, "Value") else tool.Diameter
+        tooldiameter = tool.Diameter.Value if hasattr(tool.Diameter, "Value") else tool.Diameter
+
+        # Inner radius can not be less than 10% of the tool radius
+        if obj.OffsetInnerRadius.Value <= -tooldiameter / 2 * 0.9:
+            obj.OffsetInnerRadius = 0
 
         args = {
             "edge": None,
             "hole_radius": None,
             "step_down": obj.StepDown.Value,
             "step_over": obj.StepOver / 100,
-            "tool_diameter": tooldiamter,
-            "inner_radius": obj.StartRadius.Value + obj.OffsetExtra.Value,
+            "tool_diameter": tooldiameter,
+            "inner_radius": None,
+            "safe_height": obj.SafeHeight.Value,
+            "retract_center": obj.RetractCenter,
             "direction": obj.Direction,
             "startAt": obj.StartSide,
         }
 
-        for hole in holes:
-            args["hole_radius"] = (hole["r"] / 2) - (obj.OffsetExtra.Value)
+        for counter, hole in enumerate(holes):
+            if obj.SingleHelix and obj.StartSide == "Inside":
+                args["inner_radius"] = tooldiameter / 2 + obj.OffsetInnerRadius.Value
+                args["hole_radius"] = args["inner_radius"] + tooldiameter / 2
+            elif obj.SingleHelix and obj.StartSide == "Outside":
+                args["hole_radius"] = (hole["r"] / 2) - (obj.OffsetHole.Value)
+                args["inner_radius"] = args["hole_radius"]
+            else:
+                args["inner_radius"] = tooldiameter / 2 + obj.OffsetInnerRadius.Value
+                args["hole_radius"] = (hole["r"] / 2) - (obj.OffsetHole.Value)
+
             startPoint = FreeCAD.Vector(hole["x"], hole["y"], obj.StartDepth.Value)
             endPoint = FreeCAD.Vector(hole["x"], hole["y"], obj.FinalDepth.Value)
             args["edge"] = Part.makeLine(startPoint, endPoint)
 
-            # move to starting position
+            self.commandlist.append(Path.Command(f"(hole {counter + 1})"))
             self.commandlist.append(Path.Command("G0", {"Z": obj.ClearanceHeight.Value}))
-            self.commandlist.append(
-                Path.Command(
-                    "G0",
-                    {
-                        "X": startPoint.x,
-                        "Y": startPoint.y,
-                        "Z": obj.ClearanceHeight.Value,
-                    },
-                )
-            )
-            self.commandlist.append(
-                Path.Command("G0", {"X": startPoint.x, "Y": startPoint.y, "Z": startPoint.z})
-            )
 
             results = helix.generate(**args)
 
@@ -291,7 +340,7 @@ def SetupProperties():
     setup.append("CutMode")
     setup.append("StartSide")
     setup.append("StepOver")
-    setup.append("StartRadius")
+    setup.append("OffsetInnerRadius")
     return setup
 
 
