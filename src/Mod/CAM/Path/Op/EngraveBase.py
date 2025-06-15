@@ -24,6 +24,7 @@ from lazy_loader.lazy_loader import LazyLoader
 import Path
 import Path.Op.Base as PathOp
 import Path.Op.Util as PathOpUtil
+import PathScripts.PathUtils as PathUtils
 import copy
 
 __doc__ = "Base class for all ops in the engrave family."
@@ -60,6 +61,15 @@ class ObjectOp(PathOp.ObjectOp):
     def buildpathocc(self, obj, wires, zValues, relZ=False, forward=True, start_idx=0):
         """buildpathocc(obj, wires, zValues, relZ=False) ... internal helper function to generate engraving commands."""
         Path.Log.track(obj.Label, len(wires), zValues)
+
+        # sort wires, adapted from Area.py
+        if len(wires) > 1:
+            locations = []
+            for w in wires:
+                locations.append({"x": w.BoundBox.Center.x, "y": w.BoundBox.Center.y, "wire": w})
+
+            locations = PathUtils.sort_locations(locations, ["x", "y"])
+            wires = [j["wire"] for j in locations]
 
         decomposewires = []
         for wire in wires:
