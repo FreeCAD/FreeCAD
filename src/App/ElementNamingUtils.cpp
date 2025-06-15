@@ -1,7 +1,9 @@
 #include "PreCompiled.h"
+#ifdef _PreComp_
+#include <boost/algorithm/string/predicate.hpp>
+#endif
 
 #include "ElementNamingUtils.h"
-#include <boost/algorithm/string/predicate.hpp>
 
 
 const char* Data::isMappedElement(const char* name)

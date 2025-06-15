@@ -21,8 +21,9 @@
  ***************************************************************************/
 
 #include "PreCompiled.h"
-
+#ifndef _PreComp_
 #include <fmt/format.h>
+#endif
 
 #include "Placement.h"
 #include "Matrix.h"
