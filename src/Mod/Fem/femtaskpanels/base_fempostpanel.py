@@ -32,9 +32,7 @@ __url__ = "https://www.freecad.org"
 from PySide import QtCore, QtGui
 
 import FreeCAD
-import FreeCADGui
 
-from femguiutils import selection_widgets
 from . import base_femtaskpanel
 
 translate = FreeCAD.Qt.translate

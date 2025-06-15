@@ -83,6 +83,8 @@ class VtkTableModel(QtCore.QAbstractTableModel):
             col = self._table.GetColumn(index.column())
             return col.GetTuple(index.row())[0]
 
+        return None
+
     def headerData(self, section, orientation, role):
 
         if orientation == QtCore.Qt.Horizontal and role == QtCore.Qt.DisplayRole:
@@ -97,6 +99,8 @@ class VtkTableModel(QtCore.QAbstractTableModel):
 
         if orientation == QtCore.Qt.Vertical and role == QtCore.Qt.DisplayRole:
             return section
+
+        return None
 
     def getTable(self):
         return self._table
@@ -134,6 +138,8 @@ class VtkTableSummaryModel(QtCore.QAbstractTableModel):
             range = col.GetRange()
             return range[index.column()]
 
+        return None
+
     def headerData(self, section, orientation, role):
 
         if orientation == QtCore.Qt.Horizontal and role == QtCore.Qt.DisplayRole:
@@ -141,6 +147,8 @@ class VtkTableSummaryModel(QtCore.QAbstractTableModel):
 
         if orientation == QtCore.Qt.Vertical and role == QtCore.Qt.DisplayRole:
             return self._table.GetColumnName(section)
+
+        return None
 
     def getTable(self):
         return self._table

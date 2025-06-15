@@ -77,17 +77,16 @@ class PostFieldData1D(base_fempostextractors.Extractor1D):
             obj.Table = table
             return
 
-        frames = False
+        timesteps=[]
         if obj.ExtractFrames:
             # check if we have timesteps
             info = obj.Source.getOutputAlgorithm().GetOutputInformation(0)
             if info.Has(vtkStreamingDemandDrivenPipeline.TIME_STEPS()):
                 timesteps = info.Get(vtkStreamingDemandDrivenPipeline.TIME_STEPS())
-                frames = True
             else:
                 FreeCAD.Console.PrintWarning("No frames available in data, ignoring \"ExtractFrames\" property")
 
-        if not frames:
+        if not timesteps:
             # get the dataset and extract the correct array
             array = self._x_array_from_dataset(obj, dataset)
             if array.GetNumberOfComponents() > 1:

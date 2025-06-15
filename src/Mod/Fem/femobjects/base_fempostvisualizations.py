@@ -160,8 +160,8 @@ class PostVisualization(base_fempythonobject.BaseFemPythonObject):
                     array.SetNumberOfComponents(c_array.GetNumberOfComponents())
                     array.SetNumberOfTuples(rows)
                     array.Fill(0) # so that all non-used entries are set to 0
-                    for i in range(c_array.GetNumberOfTuples()):
-                        array.SetTuple(i, c_array.GetTuple(i))
+                    for j in range(c_array.GetNumberOfTuples()):
+                        array.SetTuple(j, c_array.GetTuple(j))
 
                 array.SetName(f"{child.Source.Name}: {c_array.GetName()}")
                 table.AddColumn(array)

@@ -40,8 +40,8 @@ from PySide import QtCore
 import FreeCAD
 
 
-# Registry to handle visulization commands
-# ########################################
+# Registry to handle visualization commands
+# #########################################
 
 _registry = {}
 

@@ -36,7 +36,6 @@ import FreeCADGui
 
 from . import base_fempostpanel
 from femguiutils import extract_link_view as elv
-from femguiutils import vtk_table_view
 
 translate = FreeCAD.Qt.translate
 
@@ -77,9 +76,6 @@ class _TaskPanel(base_fempostpanel._BasePostTaskPanel):
 
         # connect data widget
         self.data_widget.show_table.clicked.connect(self.showTable)
-
-        # set current values to view widget
-        viewObj = self.obj.ViewObject
 
 
     @QtCore.Slot()

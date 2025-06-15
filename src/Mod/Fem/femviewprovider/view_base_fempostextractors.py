@@ -33,7 +33,6 @@ __url__ = "https://www.freecad.org"
 import FreeCAD
 import FreeCADGui
 
-import FemGui
 from PySide import QtGui
 
 import femobjects.base_fempostextractors as fpe

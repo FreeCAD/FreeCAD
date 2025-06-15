@@ -590,7 +590,6 @@ class ExtractLinkView(QtGui.QWidget):
             candidates = self._object.OutList
 
         # get all widgets from the candidates
-        extractors = []
         for candidate in candidates:
             if extr.is_extractor_object(candidate):
                 summary = self._build_summary_widget(candidate)
@@ -619,8 +618,6 @@ class ExtractLinkView(QtGui.QWidget):
 
     QtCore.Slot(object, object) # visualization data, extraction data
     def newVisualization(self, vis_data, ext_data):
-
-        doc = self._object.Document
 
         FreeCADGui.addModule(vis_data.module)
         FreeCADGui.addModule(ext_data.module)

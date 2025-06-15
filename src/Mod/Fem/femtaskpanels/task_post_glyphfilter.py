@@ -56,49 +56,6 @@ class _TaskPanel(base_fempostpanel._BasePostTaskPanel):
         # form made from param and selection widget
         self.form = [self.widget, vobj.createDisplayTaskWidget()]
 
-        # get the settings group
-        self.__settings_grp = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem")
-
-    # Implement parent functions
-    # ##########################
-
-    def getStandardButtons(self):
-        return (
-            QtGui.QDialogButtonBox.Apply | QtGui.QDialogButtonBox.Ok | QtGui.QDialogButtonBox.Cancel
-        )
-
-    def clicked(self, button):
-        # apply button hit?
-        if button == QtGui.QDialogButtonBox.Apply:
-            self.obj.Document.recompute()
-
-    def accept(self):
-        # self.obj.CharacteristicLength = self.elelen
-        # self.obj.References = self.selection_widget.references
-        # self.selection_widget.finish_selection()
-        return super().accept()
-
-    def reject(self):
-        # self.selection_widget.finish_selection()
-        return super().reject()
-
-    # Helper functions
-    # ##################
-
-    def _recompute(self):
-        # only recompute if the user wants automatic recompute
-        if self.__settings_grp.GetBool("PostAutoRecompute", True):
-            self.obj.Document.recompute()
-
-    def _enumPropertyToCombobox(self, obj, prop, cbox):
-        cbox.blockSignals(True)
-        cbox.clear()
-        entries = obj.getEnumerationsOfProperty(prop)
-        for entry in entries:
-            cbox.addItem(entry)
-
-        cbox.setCurrentText(getattr(obj, prop))
-        cbox.blockSignals(False)
 
     # Setup functions
     # ###############

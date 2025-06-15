@@ -123,7 +123,7 @@ class Extractor(base_fempythonobject.BaseFemPythonObject):
             case _:
                 return ["Not a vector"]
 
-    def get_representive_fieldname(self):
+    def get_representive_fieldname(self, obj):
         # should return the representive field name, e.g. Position (X)
         return ""
 
