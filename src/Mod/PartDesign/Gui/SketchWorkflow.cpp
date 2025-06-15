@@ -627,9 +627,9 @@ private:
         // Called by dialog for "Cancel", or "OK" if accepter returns false
         std::string docname = documentOfBody->getName();
         auto rejectFunction = [docname]() {
-            Gui::Document* document = Gui::Application::Instance->getDocument(docname.c_str());
-            if (document)
+            if (Gui::Document* document = Gui::Application::Instance->getDocument(docname.c_str())) {
                 document->abortCommand();
+            }
         };
 
         //
@@ -647,6 +647,7 @@ private:
             Gui::Selection().clearSelection();
 
             // Show dialog and let user pick plane
+            guidocument->getDocument()->postponeCommit();
             Gui::Control().showDialog(new PartDesignGui::TaskDlgFeaturePick(planes, status, acceptFunction,
                                                                             processFunction, true, rejectFunction));
         }

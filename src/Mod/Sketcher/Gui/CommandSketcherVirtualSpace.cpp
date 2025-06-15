@@ -163,7 +163,7 @@ void CmdSketcherSwitchVirtualSpace::activated(int iMsg)
         Sketcher::SketchObject* Obj = sketchgui->getSketchObject();
 
         // undo command open
-        openCommand(QT_TRANSLATE_NOOP("Command", "Toggle constraints to the other virtual space"));
+        openSelf(QT_TRANSLATE_NOOP("Command", "Toggle constraints to the other virtual space"));
 
         int successful = SubNames.size();
         // go through the selected subelements
@@ -172,8 +172,8 @@ void CmdSketcherSwitchVirtualSpace::activated(int iMsg)
             // only handle constraints
             if (it->size() > 10 && it->substr(0, 10) == "Constraint") {
                 int ConstrId = Sketcher::PropertyConstraintList::getIndexFromConstraintName(*it);
-                Gui::Command::openCommand(
-                    QT_TRANSLATE_NOOP("Command", "Update constraint's virtual space"));
+                openSelf(QT_TRANSLATE_NOOP("Command", "Update constraint's virtual space"));
+                // TODO-theo-vt is this a mistake or a nested transaction type deal?
                 try {
                     Gui::cmdAppObjectArgs(Obj, "toggleVirtualSpace(%d)", ConstrId);
                 }
@@ -184,10 +184,10 @@ void CmdSketcherSwitchVirtualSpace::activated(int iMsg)
         }
 
         if (successful > 0) {
-            commitCommand();
+            commitSelf();
         }
         else {
-            abortCommand();
+            abortSelf();
         }
 
         // recomputer and clear the selection (convenience)

@@ -151,13 +151,13 @@ public:
 
         if (GeoId >= 0) {
             try {
-                Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Split edge"));
+                openCommand(QT_TRANSLATE_NOOP("Command", "Split edge"));
                 Gui::cmdAppObjectArgs(sketchgui->getObject(),
                                       "split(%d,App.Vector(%f,%f,0))",
                                       GeoId,
                                       onSketchPos.x,
                                       onSketchPos.y);
-                Gui::Command::commitCommand();
+                commitCommand();
                 tryAutoRecompute(sketchgui->getObject<Sketcher::SketchObject>());
             }
             catch (const Base::Exception&) {
@@ -165,7 +165,7 @@ public:
                                  QT_TRANSLATE_NOOP("Notifications", "Error"),
                                  QT_TRANSLATE_NOOP("Notifications", "Failed to add edge"));
 
-                Gui::Command::abortCommand();
+                abortCommand();
             }
         }
         else {
