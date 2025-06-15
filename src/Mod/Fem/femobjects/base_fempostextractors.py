@@ -36,10 +36,12 @@ from vtkmodules.vtkCommonDataModel import vtkTable
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
 from . import base_fempythonobject
+
 _PropHelper = base_fempythonobject._PropHelper
 
 # helper functions
 # ################
+
 
 def is_extractor_object(obj):
     if not hasattr(obj, "Proxy"):
@@ -47,10 +49,12 @@ def is_extractor_object(obj):
 
     return hasattr(obj.Proxy, "ExtractionType")
 
+
 def get_extraction_type(obj):
     # returns the extractor type string, or throws exception if
     # not a extractor
     return obj.Proxy.ExtractionType
+
 
 def get_extraction_dimension(obj):
     # returns the extractor dimension string, or throws exception if
@@ -104,7 +108,6 @@ class Extractor(base_fempythonobject.BaseFemPythonObject):
                 FreeCAD.Console.PrintWarning("Invalid object: Line source must be FemPostObject")
                 obj.Source = None
 
-
     def get_vtk_table(self, obj):
         if not obj.DataTable:
             obj.DataTable = vtkTable()
@@ -135,7 +138,6 @@ class Extractor1D(Extractor):
     def __init__(self, obj):
         super().__init__(obj)
 
-
     def _get_properties(self):
         prop = [
             _PropHelper(
@@ -149,13 +151,14 @@ class Extractor1D(Extractor):
                 type="App::PropertyEnumeration",
                 name="XComponent",
                 group="X Data",
-                doc=QT_TRANSLATE_NOOP("FEM", "Which part of the X field vector to use for the X axis"),
+                doc=QT_TRANSLATE_NOOP(
+                    "FEM", "Which part of the X field vector to use for the X axis"
+                ),
                 value=[],
             ),
         ]
 
         return super()._get_properties() + prop
-
 
     def onChanged(self, obj, prop):
 
@@ -213,7 +216,7 @@ class Extractor1D(Extractor):
         if array.GetNumberOfComponents() == 1:
             table.AddColumn(array)
         else:
-            component_array = vtkDoubleArray();
+            component_array = vtkDoubleArray()
             component_array.SetNumberOfComponents(1)
             component_array.SetNumberOfTuples(array.GetNumberOfTuples())
             c_idx = obj.getEnumerationsOfProperty("XComponent").index(obj.XComponent)
@@ -233,7 +236,7 @@ class Extractor1D(Extractor):
                 array.SetNumberOfTuples(num)
                 array.SetNumberOfComponents(1)
                 for i in range(num):
-                    array.SetValue(i,i)
+                    array.SetValue(i, i)
 
             case "Position":
 
@@ -266,13 +269,13 @@ class Extractor1D(Extractor):
 
         return label
 
+
 class Extractor2D(Extractor1D):
 
     ExtractionDimension = "2D"
 
     def __init__(self, obj):
         super().__init__(obj)
-
 
     def _get_properties(self):
         prop = [
@@ -287,13 +290,14 @@ class Extractor2D(Extractor1D):
                 type="App::PropertyEnumeration",
                 name="YComponent",
                 group="Y Data",
-                doc=QT_TRANSLATE_NOOP("FEM", "Which part of the Y field vector to use for the Y axis"),
+                doc=QT_TRANSLATE_NOOP(
+                    "FEM", "Which part of the Y field vector to use for the Y axis"
+                ),
                 value=[],
             ),
         ]
 
         return super()._get_properties() + prop
-
 
     def onChanged(self, obj, prop):
 
@@ -348,7 +352,7 @@ class Extractor2D(Extractor1D):
         if array.GetNumberOfComponents() == 1:
             table.AddColumn(array)
         else:
-            component_array = vtkDoubleArray();
+            component_array = vtkDoubleArray()
             component_array.SetNumberOfComponents(1)
             component_array.SetNumberOfTuples(array.GetNumberOfTuples())
             c_idx = obj.getEnumerationsOfProperty("YComponent").index(obj.YComponent)

@@ -213,7 +213,11 @@ TaskPostWidget::TaskPostWidget(Gui::ViewProviderDocumentObject* view,
     setWindowIcon(icon);
     m_icon = icon;
 
-    m_connection = m_object->signalChanged.connect(boost::bind(&TaskPostWidget::handlePropertyChange, this, boost::placeholders::_1, boost::placeholders::_2));
+    m_connection =
+        m_object->signalChanged.connect(boost::bind(&TaskPostWidget::handlePropertyChange,
+                                                    this,
+                                                    boost::placeholders::_1,
+                                                    boost::placeholders::_2));
 }
 
 TaskPostWidget::~TaskPostWidget()
@@ -404,7 +408,8 @@ void TaskDlgPost::modifyStandardButtons(QDialogButtonBox* box)
     }
 }
 
-void TaskDlgPost::processCollapsedWidgets() {
+void TaskDlgPost::processCollapsedWidgets()
+{
 
     for (auto& widget : Content) {
         auto* task_box = dynamic_cast<Gui::TaskView::TaskBox*>(widget);
@@ -417,7 +422,7 @@ void TaskDlgPost::processCollapsedWidgets() {
         if (!post_widget || !post_widget->initiallyCollapsed()) {
             continue;
         }
-        post_widget->setGeometry(QRect(QPoint(0,0), post_widget->sizeHint()));
+        post_widget->setGeometry(QRect(QPoint(0, 0), post_widget->sizeHint()));
         task_box->hideGroupBox();
     }
 }
@@ -584,7 +589,8 @@ void TaskPostFrames::applyPythonCode()
     // we apply the views widgets python code
 }
 
-bool TaskPostFrames::initiallyCollapsed() {
+bool TaskPostFrames::initiallyCollapsed()
+{
 
     return (ui->FrameTable->rowCount() == 0);
 }

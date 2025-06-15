@@ -30,9 +30,9 @@
 #include "FemPostObjectPy.cpp"
 
 #ifdef FC_USE_VTK_PYTHON
-    #include <vtkDataSet.h>
-    #include <vtkPythonUtil.h>
-#endif //BUILD_FEM_VTK
+#include <vtkDataSet.h>
+#include <vtkPythonUtil.h>
+#endif  // BUILD_FEM_VTK
 
 using namespace Fem;
 
@@ -71,7 +71,7 @@ PyObject* FemPostObjectPy::getDataSet(PyObject* args)
     auto dataset = getFemPostObjectPtr()->getDataSet();
     if (dataset) {
         PyObject* py_algorithm = vtkPythonUtil::GetObjectFromPointer(dataset);
-        return  Py::new_reference_to(py_algorithm);
+        return Py::new_reference_to(py_algorithm);
     }
     return Py_None;
 #else

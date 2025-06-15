@@ -37,8 +37,7 @@ from vtkmodules.vtkCommonCore import vtkVersion
 from vtkmodules.vtkCommonDataModel import vtkTable
 from vtkmodules.vtkFiltersGeneral import vtkSplitColumnComponents
 
-if vtkVersion.GetVTKMajorVersion() > 9 and \
-   vtkVersion.GetVTKMinorVersion() > 3:
+if vtkVersion.GetVTKMajorVersion() > 9 and vtkVersion.GetVTKMinorVersion() > 3:
     from vtkmodules.vtkFiltersCore import vtkAttributeDataToTableFilter
 else:
     from vtkmodules.vtkInfovisCore import vtkDataObjectToTable
@@ -51,6 +50,7 @@ import femobjects.base_fempostextractors as extr
 from femtaskpanels.base_fempostpanel import _BasePostTaskPanel
 
 from . import extract_link_view
+
 ExtractLinkView = extract_link_view.ExtractLinkView
 
 
@@ -83,10 +83,9 @@ class DataExtraction(_BasePostTaskPanel):
 
         # setup the extraction widget
         self._extraction_view = ExtractLinkView(self.Object, True, self)
-        self.widget.layout().addSpacing(self.widget.Data.size().height()/3)
+        self.widget.layout().addSpacing(self.widget.Data.size().height() / 3)
         self.widget.layout().addWidget(self._extraction_view)
         self._extraction_view.repopulate()
-
 
     @QtCore.Slot()
     def showData(self):
@@ -96,7 +95,7 @@ class DataExtraction(_BasePostTaskPanel):
         widget = vtk_table_view.VtkTableView(self.data_model)
         layout = QtGui.QVBoxLayout()
         layout.addWidget(widget)
-        layout.setContentsMargins(0,0,0,0)
+        layout.setContentsMargins(0, 0, 0, 0)
 
         dialog.setLayout(layout)
         dialog.resize(1500, 900)
@@ -110,7 +109,7 @@ class DataExtraction(_BasePostTaskPanel):
         widget = vtk_table_view.VtkTableView(self.summary_model)
         layout = QtGui.QVBoxLayout()
         layout.addWidget(widget)
-        layout.setContentsMargins(0,0,0,0)
+        layout.setContentsMargins(0, 0, 0, 0)
 
         dialog.setLayout(layout)
         dialog.resize(600, 900)
@@ -126,8 +125,7 @@ class DataExtraction(_BasePostTaskPanel):
         if not algo:
             self.data_model.setTable(vtkTable())
 
-        if vtkVersion.GetVTKMajorVersion() > 9 and \
-            vtkVersion.GetVTKMinorVersion() > 3:
+        if vtkVersion.GetVTKMajorVersion() > 9 and vtkVersion.GetVTKMinorVersion() > 3:
             filter = vtkAttributeDataToTableFilter()
         else:
             filter = vtkDataObjectToTable()

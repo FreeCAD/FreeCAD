@@ -39,6 +39,7 @@ from femguiutils import extract_link_view as elv
 
 translate = FreeCAD.Qt.translate
 
+
 class _TaskPanel(base_fempostpanel._BasePostTaskPanel):
     """
     The TaskPanel for editing properties of glyph filter
@@ -68,7 +69,6 @@ class _TaskPanel(base_fempostpanel._BasePostTaskPanel):
         # form made from param and selection widget
         self.form = [self.data_widget]
 
-
     # Setup functions
     # ###############
 
@@ -77,8 +77,6 @@ class _TaskPanel(base_fempostpanel._BasePostTaskPanel):
         # connect data widget
         self.data_widget.show_table.clicked.connect(self.showTable)
 
-
     @QtCore.Slot()
     def showTable(self):
         self.obj.ViewObject.Proxy.show_visualization()
-

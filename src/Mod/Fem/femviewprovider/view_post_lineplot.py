@@ -51,6 +51,7 @@ from femguiutils import post_visualization as pv
 
 _GuiPropHelper = view_base_fempostvisualization._GuiPropHelper
 
+
 class EditViewWidget(QtGui.QWidget):
 
     def __init__(self, obj, post_dialog):
@@ -92,9 +93,9 @@ class EditViewWidget(QtGui.QWidget):
 
     def _setup_color_button(self, button, fcColor, callback):
 
-        barColor = QtGui.QColor(*[v*255 for v in fcColor])
+        barColor = QtGui.QColor(*[v * 255 for v in fcColor])
         icon_size = button.iconSize()
-        icon_size.setWidth(icon_size.width()*2)
+        icon_size.setWidth(icon_size.width() * 2)
         button.setIconSize(icon_size)
         pixmap = QtGui.QPixmap(icon_size)
         pixmap.fill(barColor)
@@ -110,7 +111,6 @@ class EditViewWidget(QtGui.QWidget):
         action.setDefaultWidget(diag)
         button.addAction(action)
         button.setPopupMode(QtGui.QToolButton.InstantPopup)
-
 
     @QtCore.Slot(QtGui.QColor)
     def colorChanged(self, color):
@@ -164,9 +164,13 @@ class EditFieldAppWidget(QtGui.QWidget):
         # set the other properties
 
         self._post_dialog._enumPropertyToCombobox(self._object, "XField", self.widget.XField)
-        self._post_dialog._enumPropertyToCombobox(self._object, "XComponent", self.widget.XComponent)
+        self._post_dialog._enumPropertyToCombobox(
+            self._object, "XComponent", self.widget.XComponent
+        )
         self._post_dialog._enumPropertyToCombobox(self._object, "YField", self.widget.YField)
-        self._post_dialog._enumPropertyToCombobox(self._object, "YComponent", self.widget.YComponent)
+        self._post_dialog._enumPropertyToCombobox(
+            self._object, "YComponent", self.widget.YComponent
+        )
         self.widget.Extract.setChecked(self._object.ExtractFrames)
 
         self.widget.XField.activated.connect(self.xFieldChanged)
@@ -178,7 +182,9 @@ class EditFieldAppWidget(QtGui.QWidget):
     @QtCore.Slot(int)
     def xFieldChanged(self, index):
         self._object.XField = index
-        self._post_dialog._enumPropertyToCombobox(self._object, "XComponent", self.widget.XComponent)
+        self._post_dialog._enumPropertyToCombobox(
+            self._object, "XComponent", self.widget.XComponent
+        )
         self._post_dialog._recompute()
 
     @QtCore.Slot(int)
@@ -189,7 +195,9 @@ class EditFieldAppWidget(QtGui.QWidget):
     @QtCore.Slot(int)
     def yFieldChanged(self, index):
         self._object.YField = index
-        self._post_dialog._enumPropertyToCombobox(self._object, "YComponent", self.widget.YComponent)
+        self._post_dialog._enumPropertyToCombobox(
+            self._object, "YComponent", self.widget.YComponent
+        )
         self._post_dialog._recompute()
 
     @QtCore.Slot(int)
@@ -226,7 +234,9 @@ class EditIndexAppWidget(QtGui.QWidget):
 
         self.widget.Index.setValue(self._object.Index)
         self._post_dialog._enumPropertyToCombobox(self._object, "YField", self.widget.YField)
-        self._post_dialog._enumPropertyToCombobox(self._object, "YComponent", self.widget.YComponent)
+        self._post_dialog._enumPropertyToCombobox(
+            self._object, "YComponent", self.widget.YComponent
+        )
 
         self.widget.Index.valueChanged.connect(self.indexChanged)
         self.widget.YField.activated.connect(self.yFieldChanged)
@@ -243,7 +253,9 @@ class EditIndexAppWidget(QtGui.QWidget):
     @QtCore.Slot(int)
     def yFieldChanged(self, index):
         self._object.YField = index
-        self._post_dialog._enumPropertyToCombobox(self._object, "YComponent", self.widget.YComponent)
+        self._post_dialog._enumPropertyToCombobox(
+            self._object, "YComponent", self.widget.YComponent
+        )
         self._post_dialog._recompute()
 
     @QtCore.Slot(int)
@@ -283,7 +295,7 @@ class VPPostLineplotFieldData(view_base_fempostextractors.VPPostExtractor):
                 name="LineStyle",
                 group="Lineplot",
                 doc=QT_TRANSLATE_NOOP("FEM", "The style the line is drawn in"),
-                value=['-', '--', '-.', ':', 'None'],
+                value=["-", "--", "-.", ":", "None"],
             ),
             _GuiPropHelper(
                 type="App::PropertyFloatConstraint",
@@ -297,7 +309,7 @@ class VPPostLineplotFieldData(view_base_fempostextractors.VPPostExtractor):
                 name="MarkerStyle",
                 group="Lineplot",
                 doc=QT_TRANSLATE_NOOP("FEM", "The style the data markers are drawn with"),
-                value=['None', '*', '+', 's', '.', 'o', 'x'],
+                value=["None", "*", "+", "s", ".", "o", "x"],
             ),
             _GuiPropHelper(
                 type="App::PropertyFloatConstraint",
@@ -326,13 +338,13 @@ class VPPostLineplotFieldData(view_base_fempostextractors.VPPostExtractor):
         # Returns the preview tuple of icon and label: (QPixmap, str)
         # Note: QPixmap in ratio 2:1
 
-        fig = mpl.pyplot.figure(figsize=(0.2,0.1), dpi=1000)
-        ax = mpl.pyplot.Axes(fig, [0., 0., 1., 1.])
+        fig = mpl.pyplot.figure(figsize=(0.2, 0.1), dpi=1000)
+        ax = mpl.pyplot.Axes(fig, [0.0, 0.0, 1.0, 1.0])
         ax.set_axis_off()
         fig.add_axes(ax)
         kwargs = self.get_kw_args()
         kwargs["markevery"] = [1]
-        ax.plot([0,0.5,1],[0.5,0.5,0.5], **kwargs)
+        ax.plot([0, 0.5, 1], [0.5, 0.5, 0.5], **kwargs)
         data = io.BytesIO()
         mpl.pyplot.savefig(data, bbox_inches=0, transparent=True)
         mpl.pyplot.close()
@@ -341,7 +353,6 @@ class VPPostLineplotFieldData(view_base_fempostextractors.VPPostExtractor):
         pixmap.loadFromData(data.getvalue())
 
         return (pixmap, self.ViewObject.Legend)
-
 
     def get_kw_args(self):
         # builds kw args from the properties
@@ -384,7 +395,6 @@ class VPPostLineplot(view_base_fempostvisualization.VPPostVisualization):
     def __init__(self, vobj):
         super().__init__(vobj)
 
-
     def _get_properties(self):
 
         prop = [
@@ -392,7 +402,9 @@ class VPPostLineplot(view_base_fempostvisualization.VPPostVisualization):
                 type="App::PropertyBool",
                 name="Grid",
                 group="Lineplot",
-                doc=QT_TRANSLATE_NOOP("FEM", "If be the bars shoud show the cumulative sum left to rigth"),
+                doc=QT_TRANSLATE_NOOP(
+                    "FEM", "If be the bars shoud show the cumulative sum left to rigth"
+                ),
                 value=True,
             ),
             _GuiPropHelper(
@@ -400,9 +412,9 @@ class VPPostLineplot(view_base_fempostvisualization.VPPostVisualization):
                 name="Scale",
                 group="Lineplot",
                 doc=QT_TRANSLATE_NOOP("FEM", "The scale the axis are drawn in"),
-                value=["linear","semi-log x", "semi-log y", "log"],
+                value=["linear", "semi-log x", "semi-log y", "log"],
             ),
-             _GuiPropHelper(
+            _GuiPropHelper(
                 type="App::PropertyString",
                 name="Title",
                 group="Plot",
@@ -435,28 +447,35 @@ class VPPostLineplot(view_base_fempostvisualization.VPPostVisualization):
                 name="LegendLocation",
                 group="Plot",
                 doc=QT_TRANSLATE_NOOP("FEM", "Determines if the legend is plotted"),
-                value=['best','upper right','upper left','lower left','lower right','right',
-                       'center left','center right','lower center','upper center','center'],
+                value=[
+                    "best",
+                    "upper right",
+                    "upper left",
+                    "lower left",
+                    "lower right",
+                    "right",
+                    "center left",
+                    "center right",
+                    "lower center",
+                    "upper center",
+                    "center",
+                ],
             ),
-
         ]
         return prop
 
-
     def getIcon(self):
         return ":/icons/FEM_PostLineplot.svg"
-
 
     def setEdit(self, vobj, mode):
 
         # build up the task panel
         taskd = task_post_lineplot._TaskPanel(vobj)
 
-        #show it
+        # show it
         FreeCADGui.Control.showDialog(taskd)
 
         return True
-
 
     def show_visualization(self):
 
@@ -466,11 +485,12 @@ class VPPostLineplot(view_base_fempostvisualization.VPPostVisualization):
             self._plot.setWindowTitle(self.Object.Label)
             self._plot.setParent(main)
             self._plot.setWindowFlags(QtGui.Qt.Dialog)
-            self._plot.resize(main.size().height()/2, main.size().height()/3) # keep the aspect ratio
+            self._plot.resize(
+                main.size().height() / 2, main.size().height() / 3
+            )  # keep the aspect ratio
             self.update_visualization()
 
         self._plot.show()
-
 
     def get_kw_args(self, obj):
         view = obj.ViewObject
@@ -479,7 +499,6 @@ class VPPostLineplot(view_base_fempostvisualization.VPPostVisualization):
         if not hasattr(view.Proxy, "get_kw_args"):
             return {}
         return view.Proxy.get_kw_args()
-
 
     def update_visualization(self):
 
@@ -497,10 +516,10 @@ class VPPostLineplot(view_base_fempostvisualization.VPPostVisualization):
             kwargs = self.get_kw_args(child)
 
             # iterate over the table and plot all (note: column 0 is always X!)
-            color_factor = np.linspace(1,0.5,int(table.GetNumberOfColumns()/2))
+            color_factor = np.linspace(1, 0.5, int(table.GetNumberOfColumns() / 2))
             legend_multiframe = table.GetNumberOfColumns() > 2
 
-            for i in range(0,table.GetNumberOfColumns(),2):
+            for i in range(0, table.GetNumberOfColumns(), 2):
 
                 plotted = True
 
@@ -508,13 +527,13 @@ class VPPostLineplot(view_base_fempostvisualization.VPPostVisualization):
                 tmp_args = {}
                 for key in kwargs:
                     if "color" in key:
-                        value = np.array(kwargs[key])*color_factor[int(i/2)]
+                        value = np.array(kwargs[key]) * color_factor[int(i / 2)]
                         tmp_args[key] = mpl.colors.to_hex(value)
                     else:
                         tmp_args[key] = kwargs[key]
 
                 xdata = VTKArray(table.GetColumn(i))
-                ydata = VTKArray(table.GetColumn(i+1))
+                ydata = VTKArray(table.GetColumn(i + 1))
 
                 # ensure points are visible if it is a single datapoint
                 if len(xdata) == 1 and tmp_args["marker"] == "None":
@@ -525,13 +544,13 @@ class VPPostLineplot(view_base_fempostvisualization.VPPostVisualization):
                     if not legend_multiframe:
                         label = child.ViewObject.Legend
                     else:
-                        postfix = table.GetColumnName(i+1).split("-")[-1]
+                        postfix = table.GetColumnName(i + 1).split("-")[-1]
                         label = child.ViewObject.Legend + " - " + postfix
                 else:
                     legend_prefix = ""
                     if len(self.Object.Group) > 1:
                         legend_prefix = child.Source.Label + ": "
-                    label = legend_prefix + table.GetColumnName(i+1)
+                    label = legend_prefix + table.GetColumnName(i + 1)
 
                 match self.ViewObject.Scale:
                     case "log":
@@ -551,7 +570,7 @@ class VPPostLineplot(view_base_fempostvisualization.VPPostVisualization):
             self._plot.axes.set_ylabel(self.ViewObject.YLabel)
 
         if self.ViewObject.Legend and plotted:
-            self._plot.axes.legend(loc = self.ViewObject.LegendLocation)
+            self._plot.axes.legend(loc=self.ViewObject.LegendLocation)
 
         self._plot.axes.grid(self.ViewObject.Grid)
         self._plot.update()
@@ -562,4 +581,3 @@ class VPPostLineplot(view_base_fempostvisualization.VPPostVisualization):
         i = len(self.Object.Group)
         cmap = mpl.pyplot.get_cmap("tab10")
         return cmap(i)
-

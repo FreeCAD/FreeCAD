@@ -56,7 +56,6 @@ class _TaskPanel(base_fempostpanel._BasePostTaskPanel):
         # form made from param and selection widget
         self.form = [self.widget, vobj.createDisplayTaskWidget()]
 
-
     # Setup functions
     # ###############
 

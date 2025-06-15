@@ -48,9 +48,7 @@ using namespace Gui;
 // box to handle data extractions
 
 TaskPostExtraction::TaskPostExtraction(ViewProviderFemPostObject* view, QWidget* parent)
-    : TaskPostWidget(view,
-                  Gui::BitmapFactory().pixmap("FEM_PostHistogram"), QString(),
-                  parent)
+    : TaskPostWidget(view, Gui::BitmapFactory().pixmap("FEM_PostHistogram"), QString(), parent)
 {
     // we load the python implementation, and try to get the widget from it, to add
     // directly our widget
@@ -73,7 +71,7 @@ TaskPostExtraction::TaskPostExtraction(ViewProviderFemPostObject* view, QWidget*
         m_panel = Py::Object(method.apply(args));
     }
     catch (Py::Exception&) {
-        Base::PyException e; // extract the Python error text
+        Base::PyException e;  // extract the Python error text
         e.reportException();
     }
 
@@ -97,7 +95,8 @@ TaskPostExtraction::TaskPostExtraction(ViewProviderFemPostObject* view, QWidget*
     Base::Console().error("Unable to import data extraction widget\n");
 };
 
-TaskPostExtraction::~TaskPostExtraction() {
+TaskPostExtraction::~TaskPostExtraction()
+{
 
     Base::PyGILStateLocker lock;
     try {
@@ -123,7 +122,7 @@ void TaskPostExtraction::onPostDataChanged(Fem::FemPostObject* obj)
         }
     }
     catch (Py::Exception&) {
-        Base::PyException e; // extract the Python error text
+        Base::PyException e;  // extract the Python error text
         e.reportException();
     }
 };
@@ -139,7 +138,7 @@ bool TaskPostExtraction::isGuiTaskOnly()
         }
     }
     catch (Py::Exception&) {
-        Base::PyException e; // extract the Python error text
+        Base::PyException e;  // extract the Python error text
         e.reportException();
     }
 
@@ -156,7 +155,7 @@ void TaskPostExtraction::apply()
         }
     }
     catch (Py::Exception&) {
-        Base::PyException e; // extract the Python error text
+        Base::PyException e;  // extract the Python error text
         e.reportException();
     }
 }
@@ -172,7 +171,7 @@ bool TaskPostExtraction::initiallyCollapsed()
         }
     }
     catch (Py::Exception&) {
-        Base::PyException e; // extract the Python error text
+        Base::PyException e;  // extract the Python error text
         e.reportException();
     }
 
