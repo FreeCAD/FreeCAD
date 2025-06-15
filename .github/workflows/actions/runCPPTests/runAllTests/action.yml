@@ -47,13 +47,27 @@ runs:
           testCommand: ${{ inputs.builddir }}/tests/Assembly_tests_run --gtest_output=json:${{ inputs.reportdir }}assembly_gtest_results.json
           testLogFile: ${{ inputs.reportdir }}assembly_gtest_test_log.txt
           testName: Assembly
-      - name: C++ core tests
-        id: core
+      - name: C++ app tests
+        id: app
         uses: ./.github/workflows/actions/runCPPTests/runSingleTest
         with:
-          testCommand: ${{ inputs.builddir }}/tests/Tests_run --gtest_output=json:${{ inputs.reportdir }}core_gtest_results.json
-          testLogFile: ${{ inputs.reportdir }}core_gtest_test_log.txt
-          testName: Core
+          testCommand: ${{ inputs.builddir }}/tests/App_tests_run --gtest_output=json:${{ inputs.reportdir }}app_gtest_results.json
+          testLogFile: ${{ inputs.reportdir }}app_gtest_test_log.txt
+          testName: App
+      - name: C++ base tests
+        id: base
+        uses: ./.github/workflows/actions/runCPPTests/runSingleTest
+        with:
+          testCommand: ${{ inputs.builddir }}/tests/Base_tests_run --gtest_output=json:${{ inputs.reportdir }}base_gtest_results.json
+          testLogFile: ${{ inputs.reportdir }}base_gtest_test_log.txt
+          testName: Base
+      - name: C++ Gui tests
+        id: gui
+        uses: ./.github/workflows/actions/runCPPTests/runSingleTest
+        with:
+          testCommand: ${{ inputs.builddir }}/tests/Gui_tests_run --gtest_output=json:${{ inputs.reportdir }}gui_gtest_results.json
+          testLogFile: ${{ inputs.reportdir }}gui_gtest_test_log.txt
+          testName: Gui
       - name: C++ Material tests
         id: material
         uses: ./.github/workflows/actions/runCPPTests/runSingleTest
@@ -82,6 +96,13 @@ runs:
           testCommand: ${{ inputs.builddir }}/tests/Mesh_tests_run --gtest_output=json:${{ inputs.reportdir }}meshpart_gtest_results.json
           testLogFile: ${{ inputs.reportdir }}meshpart_gtest_test_log.txt
           testName: MeshPart
+      - name: C++ Misc tests
+        id: misc
+        uses: ./.github/workflows/actions/runCPPTests/runSingleTest
+        with:
+          testCommand: ${{ inputs.builddir }}/tests/Misc_tests_run --gtest_output=json:${{ inputs.reportdir }}misc_gtest_results.json
+          testLogFile: ${{ inputs.reportdir }}misc_gtest_test_log.txt
+          testName: Misc
       - name: C++ Part tests
         id: part
         uses: ./.github/workflows/actions/runCPPTests/runSingleTest
