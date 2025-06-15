@@ -23,8 +23,6 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <Mod/Part/App/FCBRepAlgoAPI_Cut.h>
-# include <Mod/Part/App/FCBRepAlgoAPI_Fuse.h>
 # include <BRepBndLib.hxx>
 # include <BRepBuilderAPI_Sewing.hxx>
 # include <BRepBuilderAPI_MakeSolid.hxx>
@@ -42,6 +40,7 @@
 # include <TopTools_HSequenceOfShape.hxx>
 #endif
 
+#include <App/Document.h>
 #include <App/DocumentObject.h>
 #include <Base/Exception.h>
 #include <Base/Reader.h>
@@ -102,6 +101,21 @@ short Pipe::mustExecute() const
     return ProfileBased::mustExecute();
 }
 
+const char* Pipe::getPropertyLabel(const App::Property* prop) const
+{
+    if (prop == &AuxiliarySpine) {
+        return "Auxiliary Spine";
+    }
+    if (prop == &AuxiliarySpineTangent) {
+        return "Auxiliary Spine Tangent";
+    }
+    if (prop == &AuxiliaryCurvilinear) {
+        return "Auxiliary Curvilinear";
+    }
+
+    return ProfileBased::getPropertyLabel(prop);
+}
+
 App::DocumentObjectExecReturn *Pipe::execute()
 {
     if (onlyHaveRefined()) { return App::DocumentObject::StdReturn; }
@@ -153,7 +167,6 @@ App::DocumentObjectExecReturn *Pipe::execute()
     // As the shell begins always at the spine and not the profile, the sketchshape
     // cannot be used directly as front face. We would need a method to translate
     // the front shape to match the shell starting position somehow...
-    std::vector<TopoDS_Wire> wires;
     TopoDS_Shape profilePoint;
 
     // if the Base property has a valid shape, fuse the pipe into it
@@ -163,6 +176,8 @@ App::DocumentObjectExecReturn *Pipe::execute()
     } catch (const Base::Exception&) {
         base = TopoShape();
     }
+
+    auto hasher = getDocument()->getStringHasher();
 
     try {
         // setup the location
@@ -289,7 +304,7 @@ App::DocumentObjectExecReturn *Pipe::execute()
                 "Exception", "Path must not be a null shape"));
 
         // build all shells
-        std::vector<TopoDS_Shape> shells;
+        std::vector<TopoShape> shells;
 
         TopoDS_Shape copyProfilePoint(profilePoint);
         if (!profilePoint.IsNull())
@@ -322,7 +337,7 @@ App::DocumentObjectExecReturn *Pipe::execute()
             if (!mkPS.IsReady())
                 return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Pipe could not be built"));
 
-            shells.push_back(mkPS.Shape());
+            shells.emplace_back(mkPS.Shape());
 
             if (!mkPS.Shape().Closed()) {
                 // shell is not closed - use simulate to get the end wires
@@ -338,8 +353,7 @@ App::DocumentObjectExecReturn *Pipe::execute()
             }
         }
 
-        BRepBuilderAPI_MakeSolid mkSolid;
-
+        TopoShape result(0, hasher);
         if (!frontwires.empty() || !backwires.empty()) {
             BRepBuilderAPI_Sewing sewer;
             sewer.SetTolerance(Precision::Confusion());
@@ -348,92 +362,99 @@ App::DocumentObjectExecReturn *Pipe::execute()
             if (!frontwires.empty()) {
                 TopoDS_Shape front = Part::FaceMakerCheese::makeFace(frontwires);
                 sewer.Add(front);
+                shells.emplace_back(front);
             }
             if (!backwires.empty()) {
                 TopoDS_Shape back  = Part::FaceMakerCheese::makeFace(backwires);
                 sewer.Add(back);
+                shells.emplace_back(back);
             }
-            for (TopoDS_Shape& s : shells)
-                sewer.Add(s);
+            for (TopoShape& s : shells)
+                sewer.Add(s.getShape());
 
             sewer.Perform();
-            mkSolid.Add(TopoDS::Shell(sewer.SewedShape()));        } else {
+            result = result.makeShapeWithElementMap(sewer.SewedShape(), Part::MapperSewing(sewer), shells, Part::OpCodes::Sewing);
+        } else {
             // shells are already closed - add them directly
-            for (TopoDS_Shape& s : shells) {
-                mkSolid.Add(TopoDS::Shell(s));
+            BRepBuilderAPI_MakeSolid mkSolid;
+            for (TopoShape& s : shells) {
+                mkSolid.Add(TopoDS::Shell(s.getShape()));
             }
+
+            if (!mkSolid.IsDone())
+                return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Result is not a solid"));
+            result.setShape(mkSolid.Shape());
         }
 
-        if (!mkSolid.IsDone())
-            return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Result is not a solid"));
+        if(!result.countSubShapes(TopAbs_SHELL))
+            return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Loft: Failed to create shell"));
 
-        TopoDS_Shape result = mkSolid.Shape();
-        BRepClass3d_SolidClassifier SC(result);
-        SC.PerformInfinitePoint(Precision::Confusion());
-        if (SC.State() == TopAbs_IN) {
-            result.Reverse();
+        auto shapes = result.getSubTopoShapes(TopAbs_SHELL);
+        for (auto &s : shapes) {
+            // build the solid
+            s = s.makeElementSolid();
+            BRepClass3d_SolidClassifier SC(s.getShape());
+            SC.PerformInfinitePoint(Precision::Confusion());
+            if ( SC.State() == TopAbs_IN)
+                s.setShape(s.getShape().Reversed(),false);
         }
 
-        //result.Move(invObjLoc);
-        AddSubShape.setValue(result); // Converts result to a TopoShape, but no tag.
+        AddSubShape.setValue(result.makeElementCompound(shapes, nullptr, Part::TopoShape::SingleShapeCompoundCreationPolicy::returnShape));
 
-        if (base.isNull()) {
+        if (shapes.size() > 1)
+            result.makeElementFuse(shapes);
+        else
+            result = shapes.front();
+
+        if(base.isNull()) {
             if (getAddSubType() == FeatureAddSub::Subtractive)
                 return new App::DocumentObjectExecReturn(
                     QT_TRANSLATE_NOOP("Exception", "Pipe: There is nothing to subtract from"));
 
+            if (!isSingleSolidRuleSatisfied(result.getShape())) {
+                return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Result has multiple solids: that is not currently supported."));
+            }
+
             // store shape before refinement
             this->rawShape = result;
-            auto ts_result = refineShapeIfActive(result);
-            Shape.setValue(getSolid(ts_result));
+
+            result = refineShapeIfActive(result);
+            Shape.setValue(getSolid(result));
             return App::DocumentObject::StdReturn;
         }
 
-        if (getAddSubType() == FeatureAddSub::Additive) {
-
-            FCBRepAlgoAPI_Fuse mkFuse(base.getShape(), result);
-            if (!mkFuse.IsDone())
-                return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Adding the pipe failed"));
-            // we have to get the solids (fuse sometimes creates compounds)
-            TopoShape boolOp = this->getSolid(mkFuse.Shape());
-            // lets check if the result is a solid
-            if (boolOp.isNull())
-                return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Resulting shape is not a solid"));
-
-            int solidCount = countSolids(boolOp.getShape());
-            if (solidCount > 1) {
-                return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception",
-                                                                           "Result has multiple solids: that is not currently supported."));
-            }
-
-            // store shape before refinement
-            this->rawShape = boolOp;
-            boolOp = refineShapeIfActive(boolOp);
-            Shape.setValue(getSolid(boolOp));
+        TopoShape boolOp(0, getDocument()->getStringHasher());
+        const char *maker;
+        switch(getAddSubType()) {
+            case Additive:
+                maker = Part::OpCodes::Fuse;
+                break;
+            case Subtractive:
+                maker = Part::OpCodes::Cut;
+                break;
+            default:
+                return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Unknown operation type"));
         }
-        else if (getAddSubType() == FeatureAddSub::Subtractive) {
-
-            FCBRepAlgoAPI_Cut mkCut(base.getShape(), result);
-            if (!mkCut.IsDone())
-                return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Subtracting the pipe failed"));
-            // we have to get the solids (fuse sometimes creates compounds)
-            TopoShape boolOp = this->getSolid(mkCut.Shape());
-            // lets check if the result is a solid
-            if (boolOp.isNull())
-                return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Resulting shape is not a solid"));
-
-            int solidCount = countSolids(boolOp.getShape());
-            if (solidCount > 1) {
-                return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception",
-                                                                           "Result has multiple solids: that is not currently supported."));
-            }
-
-            // store shape before refinement
-            this->rawShape = boolOp;
-            boolOp = refineShapeIfActive(boolOp);
-            Shape.setValue(getSolid(boolOp));
+        try {
+            boolOp.makeElementBoolean(maker, {base,result});
+        }
+        catch(Standard_Failure&) {
+            return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Failed to perform boolean operation"));
         }
 
+        TopoShape solid = this->getSolid(boolOp);
+        // lets check if the result is a solid
+        if (solid.isNull())
+            return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Resulting shape is not a solid"));
+
+        // store shape before refinement
+        this->rawShape = boolOp;
+        boolOp = refineShapeIfActive(boolOp);
+        if (!isSingleSolidRuleSatisfied(boolOp.getShape())) {
+            return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Result has multiple solids: that is not currently supported."));
+        }
+        boolOp = getSolid(boolOp);
+        Shape.setValue(boolOp);
         return App::DocumentObject::StdReturn;
     }
     catch (Standard_Failure& e) {
