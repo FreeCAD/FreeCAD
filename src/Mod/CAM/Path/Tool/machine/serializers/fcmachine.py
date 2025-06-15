@@ -25,7 +25,7 @@ import FreeCAD
 import Path
 from ...spindle import Spindle
 from ...assets import Asset, AssetUri, AssetSerializer
-from ..models import Machine, Lathe, Mill
+from ..models import Machine, Lathe, Mill, LinearAxis, AngularAxis
 
 
 class MachineSerializer(AssetSerializer):
@@ -56,6 +56,7 @@ class MachineSerializer(AssetSerializer):
         if not isinstance(asset, Machine):
             raise TypeError(f"Expected Machine instance, got {type(asset).__name__}")
 
+        # Serialize common base attributes.
         attrs = {
             "id": asset.get_id(),
             "label": asset.label,
@@ -65,31 +66,34 @@ class MachineSerializer(AssetSerializer):
             "spindles": [spindle.get_id() for spindle in asset.spindles],
         }
 
+        # Serialize axis parameters.
+        axis_data = {}
+        for name, axis in asset.axes.items():
+            if isinstance(axis, LinearAxis):
+                axis_data[name] = {
+                    "type": "linear",
+                    "start": axis.start.UserString if axis.start is not None else "",
+                    "end": axis.end.UserString if axis.end is not None else "",
+                    "rigidity": axis.rigidity.UserString + "/N",
+                }
+            elif isinstance(axis, AngularAxis):
+                axis_data[name] = {
+                    "type": "angular",
+                    "rigidity-x": axis.rigidity_x.UserString + "/N",
+                    "rigidity-y": axis.rigidity_y.UserString + "/N",
+                }
+            else:
+                raise TypeError(f"Unknown axis type for {name}")
+        attrs["axes"] = axis_data
+
+        # Serialize subclass-specific attributes.
         if isinstance(asset, Lathe):
             attrs["type"] = "Lathe"
-            attrs["x_extent"] = [asset.x_min.UserString, asset.x_max.UserString]
-            attrs["z_extent"] = [asset.z_min.UserString, asset.z_max.UserString]
             attrs["max_workpiece_diameter"] = asset.max_workpiece_diameter.UserString
-            rigidity = asset.rigidity
-            attrs["rigidity"] = {
-                "x": rigidity[0].UserString,
-                "z": rigidity[1].UserString,
-                "rotational": rigidity[2].UserString,
-            }
         elif isinstance(asset, Mill):
             attrs["type"] = "Mill"
-            attrs["x_extent"] = [asset.x_min.UserString, asset.x_max.UserString]
-            attrs["y_extent"] = [asset.y_min.UserString, asset.y_max.UserString]
-            attrs["z_extent"] = [asset.z_min.UserString, asset.z_max.UserString]
-            rigidity = asset.rigidity
-            attrs["rigidity"] = {
-                "x": rigidity[0].UserString,
-                "y": rigidity[1].UserString,
-                "z": rigidity[2].UserString,
-                "rotational": rigidity[3].UserString,
-            }
         else:
-            attrs["type"] = "Machine"
+            raise AttributeError(f"unsupported machine type {asset.__class__}")
 
         return yaml.dump(attrs, sort_keys=True, indent=2).encode("utf-8")
 
@@ -121,64 +125,55 @@ class MachineSerializer(AssetSerializer):
         post_processor = attrs.get("post_processor", "")
         post_processor_args = attrs.get("post_processor_args", "")
 
+        axes = {}
+        for name, axis_attrs in attrs.get("axes", {}).items():
+            axis_type = axis_attrs.get("type", "linear")
+            if axis_type == "linear":
+                start = axis_attrs.get("start")
+                end = axis_attrs.get("end")
+                start = FreeCAD.Units.Quantity(start) if start else None
+                end = FreeCAD.Units.Quantity(end) if end else None
+                rigidity_str = axis_attrs.get("rigidity", "0.001 mm/N")
+                if rigidity_str.endswith("/N"):
+                    rigidity_str = rigidity_str[:-2]
+                rigidity = FreeCAD.Units.Quantity(rigidity_str)
+                axes[name] = LinearAxis(start=start, end=end, rigidity=rigidity)
+            elif axis_type == "angular":
+                rigidity_x_str = axis_attrs.get("rigidity-x", "0.001 °/N")
+                rigidity_y_str = axis_attrs.get("rigidity-y", "0.001 °/N")
+                if rigidity_x_str.endswith("/N"):
+                    rigidity_x_str = rigidity_x_str[:-2]
+                if rigidity_y_str.endswith("/N"):
+                    rigidity_y_str = rigidity_y_str[:-2]
+                rigidity_x = FreeCAD.Units.Quantity(rigidity_x_str)
+                rigidity_y = FreeCAD.Units.Quantity(rigidity_y_str)
+                print(f"Creating AngularAxis with rigidity_x={rigidity_x}, rigidity_y={rigidity_y}")
+                axes[name] = AngularAxis(rigidity_x=rigidity_x, rigidity_y=rigidity_y)
+            else:
+                raise AttributeError(f"Unknown axis type: {axis_type}")
+
         if machine_type == "Lathe":
-            x_extent = (
-                FreeCAD.Units.Quantity(attrs["x_extent"][0]),
-                FreeCAD.Units.Quantity(attrs["x_extent"][1]),
-            )
-            z_extent = (
-                FreeCAD.Units.Quantity(attrs["z_extent"][0]),
-                FreeCAD.Units.Quantity(attrs["z_extent"][1]),
-            )
             max_workpiece_diameter = FreeCAD.Units.Quantity(attrs["max_workpiece_diameter"])
-            rigidity = (
-                FreeCAD.Units.Quantity(attrs["rigidity"]["x"]),
-                FreeCAD.Units.Quantity(attrs["rigidity"]["z"]),
-                FreeCAD.Units.Quantity(attrs["rigidity"]["rotational"]),
-            )
             instance = Lathe(
                 label,
-                x_extent,
-                z_extent,
-                max_feed,
-                max_workpiece_diameter,
-                rigidity,
-                post_processor,
-                post_processor_args,
-                id,
+                axes=axes,
+                max_feed=max_feed,
+                max_workpiece_diameter=max_workpiece_diameter,
+                post_processor=post_processor,
+                post_processor_args=post_processor_args,
+                id=id,
             )
         elif machine_type == "Mill":
-            x_extent = (
-                FreeCAD.Units.Quantity(attrs["x_extent"][0]),
-                FreeCAD.Units.Quantity(attrs["x_extent"][1]),
-            )
-            y_extent = (
-                FreeCAD.Units.Quantity(attrs["y_extent"][0]),
-                FreeCAD.Units.Quantity(attrs["y_extent"][1]),
-            )
-            z_extent = (
-                FreeCAD.Units.Quantity(attrs["z_extent"][0]),
-                FreeCAD.Units.Quantity(attrs["z_extent"][1]),
-            )
-            rigidity = (
-                FreeCAD.Units.Quantity(attrs["rigidity"]["x"]),
-                FreeCAD.Units.Quantity(attrs["rigidity"]["y"]),
-                FreeCAD.Units.Quantity(attrs["rigidity"]["z"]),
-                FreeCAD.Units.Quantity(attrs["rigidity"]["rotational"]),
-            )
             instance = Mill(
                 label,
-                x_extent,
-                y_extent,
-                z_extent,
-                max_feed,
-                rigidity,
-                post_processor,
-                post_processor_args,
-                id,
+                axes=axes,
+                max_feed=max_feed,
+                post_processor=post_processor,
+                post_processor_args=post_processor_args,
+                id=id,
             )
         else:
-            instance = Machine(label, max_feed, post_processor, post_processor_args, id)
+            raise AttributeError(f"unsupported machine type {machine_type}")
 
         instance.spindles = spindles
         return instance

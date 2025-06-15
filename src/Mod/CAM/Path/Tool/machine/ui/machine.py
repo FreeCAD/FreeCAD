@@ -26,7 +26,7 @@ import FreeCADGui
 import Path
 from ...spindle import Spindle
 from ...spindle.ui.editor import SpindleEditorDialog
-from ..models.machine import Machine
+from ..models.machine import Machine, LinearAxis, AngularAxis
 
 
 translate = FreeCAD.Qt.translate
@@ -77,6 +77,67 @@ class MachinePropertiesDialog(QtGui.QDialog):
 
         general_group.setLayout(general_layout)
         self.layout.addWidget(general_group)
+
+        # Axis Properties group
+        axis_properties_group = QtGui.QGroupBox(translate("CAM", "Axis Properties"))
+        axis_properties_layout = QtGui.QFormLayout()
+        self.axis_edits = {}
+
+        # Linear Axes
+        for axis_name, axis in sorted(machine.axes.items()):
+            if not isinstance(axis, LinearAxis):
+                continue
+            start_edit = ui.createWidget("Gui::QuantitySpinBox")
+            start_edit.setProperty("value", axis.start)
+            end_edit = ui.createWidget("Gui::QuantitySpinBox")
+            end_edit.setProperty("unit", "mm")
+            end_edit.setProperty("value", axis.end or FreeCAD.Units.Quantity("0 mm"))
+
+            # Use FreeCAD.Units.Quantity does not support distance/N, so
+            # we use QDoubleSpinBox for rigidity to avoid unit issues
+            rigidity_edit = QtGui.QDoubleSpinBox()
+            rigidity_edit.setDecimals(6)
+            rigidity_edit.setMinimum(0.0)
+            rigidity_edit.setValue(axis.rigidity.Value)
+            rigidity_edit.setSuffix(" mm/N")
+
+            axis_layout = QtGui.QHBoxLayout()
+            axis_layout.addWidget(start_edit)
+            axis_layout.addWidget(end_edit)
+            axis_layout.addWidget(rigidity_edit)
+            axis_properties_layout.addRow(
+                f"{axis_name.capitalize()}-Axis (min, max, rigidity):", axis_layout
+            )
+            self.axis_edits[axis_name] = start_edit, end_edit, rigidity_edit
+
+        # Angular axis
+        for axis_name, axis in sorted(machine.axes.items()):
+            if not isinstance(axis, AngularAxis):
+                continue
+
+            # Use FreeCAD.Units.Quantity does not support rad/N, so
+            # we use QDoubleSpinBox for rigidity to avoid unit issues
+            rigidity_x_edit = QtGui.QDoubleSpinBox()
+            rigidity_x_edit.setDecimals(6)
+            rigidity_x_edit.setMinimum(0.0)
+            rigidity_x_edit.setValue(axis.rigidity_x.Value)
+            rigidity_x_edit.setSuffix(" rad/N")
+            rigidity_y_edit = QtGui.QDoubleSpinBox()
+            rigidity_y_edit.setDecimals(6)
+            rigidity_y_edit.setMinimum(0.0)
+            rigidity_y_edit.setValue(axis.rigidity_y.Value)
+            rigidity_y_edit.setSuffix(" rad/N")
+
+            axis_layout = QtGui.QHBoxLayout()
+            axis_layout.addWidget(rigidity_x_edit)
+            axis_layout.addWidget(rigidity_y_edit)
+            axis_properties_layout.addRow(
+                f"{axis_name.capitalize()}-Axis (rigidity X/Y):", axis_layout
+            )
+            self.axis_edits[axis_name] = rigidity_x_edit, rigidity_y_edit
+
+        axis_properties_group.setLayout(axis_properties_layout)
+        self.layout.addWidget(axis_properties_group)
 
         # Spindles group
         self.spindles_group = QtGui.QGroupBox(translate("CAM", "Spindles"))
@@ -199,6 +260,62 @@ class MachinePropertiesDialog(QtGui.QDialog):
         self.machine.post_processor = self.post_processor_combo.currentText()
         self.machine.post_processor_args = self.post_processor_args.text()
 
+        # Update axis properties
+        for axis_name, edits in self.axis_edits.items():
+            axis = self.machine.axes[axis_name]
+            if isinstance(axis, LinearAxis):
+                start_edit, end_edit, rigidity_edit = edits
+                start_val = start_edit.property("value")
+                end_val = end_edit.property("value")
+                rigidity_val = rigidity_edit.value()
+                rigidity_quantity = FreeCAD.Units.Quantity(f"{rigidity_val} mm/N")
+                if start_val.Value < 0:
+                    QtGui.QMessageBox.warning(
+                        self,
+                        translate("CAM", "Warning"),
+                        translate("CAM", f"{axis_name}-axis min cannot be negative."),
+                    )
+                    return
+                if end_val.Value <= start_val.Value:
+                    QtGui.QMessageBox.warning(
+                        self,
+                        translate("CAM", "Warning"),
+                        translate("CAM", f"{axis_name}-axis max must be greater than min."),
+                    )
+                    return
+                if rigidity_val < 0:
+                    QtGui.QMessageBox.warning(
+                        self,
+                        translate("CAM", "Warning"),
+                        translate("CAM", f"{axis_name}-axis rigidity cannot be negative."),
+                    )
+                    return
+                axis.start = start_val
+                axis.end = end_val
+                axis.rigidity = rigidity_quantity
+            elif isinstance(axis, AngularAxis):
+                rigidity_x_edit, rigidity_y_edit = edits
+                rigidity_x_val = rigidity_x_edit.value()
+                rigidity_y_val = rigidity_y_edit.value()
+                rigidity_x_quantity = FreeCAD.Units.Quantity(f"{rigidity_x_val} rad/N")
+                rigidity_y_quantity = FreeCAD.Units.Quantity(f"{rigidity_y_val} rad/N")
+                if rigidity_x_val < 0:
+                    QtGui.QMessageBox.warning(
+                        self,
+                        translate("CAM", "Warning"),
+                        translate("CAM", f"{axis_name}-axis rigidity X cannot be negative."),
+                    )
+                    return
+                if rigidity_y_val < 0:
+                    QtGui.QMessageBox.warning(
+                        self,
+                        translate("CAM", "Warning"),
+                        translate("CAM", f"{axis_name}-axis rigidity Y cannot be negative."),
+                    )
+                    return
+                axis.rigidity_x = rigidity_x_quantity
+                axis.rigidity_y = rigidity_y_quantity
+
         # Get spindles from list
         spindles = []
         for i in range(self.spindle_list.rowCount()):
@@ -213,7 +330,6 @@ class MachinePropertiesDialog(QtGui.QDialog):
             self.machine.validate()
         except AttributeError as e:
             QtGui.QMessageBox.warning(self, translate("CAM", "Warning"), str(e))
-            raise
             return
 
         super().accept()
