@@ -78,66 +78,31 @@ class TaskPanelCircularArray:
     """
 
     def __init__(self):
-        self.name = "Circular array"
-        _log(translate("draft","Task panel:") + " {}".format(translate("draft","Circular array")))
 
-        # The .ui file must be loaded into an attribute
-        # called `self.form` so that it is displayed in the task panel.
-        ui_file = ":/ui/TaskPanel_CircularArray.ui"
-        self.form = Gui.PySideUic.loadUi(ui_file)
-
-        icon_name = "Draft_CircularArray"
-        svg = ":/icons/" + icon_name
-        pix = QtGui.QPixmap(svg)
-        icon = QtGui.QIcon.fromTheme(icon_name, QtGui.QIcon(svg))
-        self.form.setWindowIcon(icon)
-        self.form.setWindowTitle(translate("draft","Circular array"))
-
-        self.form.label_icon.setPixmap(pix.scaled(32, 32))
+        self.form = Gui.PySideUic.loadUi(":/ui/TaskPanel_CircularArray.ui")
+        self.form.setWindowTitle(translate("draft", "Circular array"))
+        self.form.setWindowIcon(QtGui.QIcon(":/icons/Draft_CircularArray.svg"))
 
         # -------------------------------------------------------------------
-        # Default values for the internal function,
-        # and for the task panel interface
-        start_distance = U.Quantity(50.0, App.Units.Length)
-        length_unit = start_distance.getUserPreferred()[2]
-
-        self.r_distance = 2 * start_distance.Value
-        self.tan_distance = start_distance.Value
-
-        self.form.spinbox_r_distance.setProperty('rawValue',
-                                                 self.r_distance)
-        self.form.spinbox_r_distance.setProperty('unit', length_unit)
-        self.form.spinbox_tan_distance.setProperty('rawValue',
-                                                   self.tan_distance)
-        self.form.spinbox_tan_distance.setProperty('unit', length_unit)
-
-        self.number = 3
-        self.symmetry = 1
-
-        self.form.spinbox_number.setValue(self.number)
-        self.form.spinbox_symmetry.setValue(self.symmetry)
-
+        # Default values for the internal function, and for the task panel interface
+        self.center = App.Vector()
         # TODO: the axis is currently fixed, it should be editable
         # or selectable from the task panel
         self.axis = App.Vector(0, 0, 1)
-
-        start_point = U.Quantity(0.0, App.Units.Length)
-        length_unit = start_point.getUserPreferred()[2]
-
-        self.center = App.Vector(start_point.Value,
-                                 start_point.Value,
-                                 start_point.Value)
-
-        self.form.input_c_x.setProperty('rawValue', self.center.x)
-        self.form.input_c_x.setProperty('unit', length_unit)
-        self.form.input_c_y.setProperty('rawValue', self.center.y)
-        self.form.input_c_y.setProperty('unit', length_unit)
-        self.form.input_c_z.setProperty('rawValue', self.center.z)
-        self.form.input_c_z.setProperty('unit', length_unit)
-
+        self.r_distance = 100
+        self.tan_distance = 50
+        self.number = 3
+        self.symmetry = 1
         self.fuse = params.get_param("Draft_array_fuse")
         self.use_link = params.get_param("Draft_array_Link")
 
+        self.form.input_c_x.setProperty('rawValue', self.center.x)
+        self.form.input_c_y.setProperty('rawValue', self.center.y)
+        self.form.input_c_z.setProperty('rawValue', self.center.z)
+        self.form.spinbox_r_distance.setProperty('rawValue', self.r_distance)
+        self.form.spinbox_tan_distance.setProperty('rawValue', self.tan_distance)
+        self.form.spinbox_number.setValue(self.number)
+        self.form.spinbox_symmetry.setValue(self.symmetry)
         self.form.checkbox_fuse.setChecked(self.fuse)
         self.form.checkbox_link.setChecked(self.use_link)
         # -------------------------------------------------------------------
