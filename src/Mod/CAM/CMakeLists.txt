@@ -293,7 +293,6 @@ SET(PathPythonPostScripts_SRCS
     Path/Post/scripts/__init__.py
     Path/Post/scripts/centroid_post.py
     Path/Post/scripts/comparams_post.py
-    Path/Post/scripts/denford_novaturn_post.py
     Path/Post/scripts/dxf_post.py
     Path/Post/scripts/dynapath_post.py
     Path/Post/scripts/dynapath_4060_post.py
