@@ -1,5 +1,5 @@
-#include "fmt/format.h"
-#include "fmt/printf.h"
+#include <fmt/format.h>
+#include <fmt/printf.h>
 #include <gtest/gtest.h>
 #include <stdexcept>
 

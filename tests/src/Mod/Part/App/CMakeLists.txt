@@ -1,4 +1,4 @@
-target_sources(Part_tests_run PRIVATE
+add_executable(Part_tests_run
         Attacher.cpp
         AttachExtension.cpp
         BRepMesh.cpp

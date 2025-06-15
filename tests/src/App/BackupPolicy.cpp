@@ -44,7 +44,8 @@ protected:
 
     void SetUp() override
     {
-        _tempDir = std::filesystem::temp_directory_path() / ("fc_backup_policy-" + randomString(16));
+        _tempDir =
+            std::filesystem::temp_directory_path() / ("fc_backup_policy-" + randomString(16));
         std::filesystem::create_directory(_tempDir);
     }
 
@@ -79,13 +80,11 @@ protected:
 
 
 private:
-
     std::string randomString(size_t length)
     {
-        static constexpr std::string_view chars =
-            "0123456789"
-            "abcdefghijklmnopqrstuvwxyz"
-            "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        static constexpr std::string_view chars = "0123456789"
+                                                  "abcdefghijklmnopqrstuvwxyz"
+                                                  "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
         std::random_device rd;
         std::mt19937 gen(rd());
@@ -103,7 +102,6 @@ private:
 
     App::BackupPolicy _policy;
     std::filesystem::path _tempDir;
-
 };
 
 TEST_F(BackupPolicyTest, StandardSourceDoesNotExist)

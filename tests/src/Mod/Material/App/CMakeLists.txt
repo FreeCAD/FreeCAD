@@ -1,4 +1,4 @@
-target_sources(Material_tests_run PRIVATE
+add_executable(Material_tests_run
         TestMaterialCards.cpp
         TestMaterialFilter.cpp
         TestMaterialProperties.cpp

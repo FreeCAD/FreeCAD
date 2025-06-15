@@ -1,3 +1,3 @@
-target_sources(Assembly_tests_run PRIVATE
+add_executable(Assembly_tests_run
         AssemblyObject.cpp
 )

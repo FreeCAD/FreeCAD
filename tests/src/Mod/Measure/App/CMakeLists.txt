@@ -1,4 +1,4 @@
-target_sources(Measure_tests_run PRIVATE
+add_executable(Measure_tests_run
         MeasureDistance.cpp
 )
 
