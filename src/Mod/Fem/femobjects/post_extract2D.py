@@ -174,41 +174,49 @@ class PostIndexOverFrames2D(base_fempostextractors.Extractor2D):
             return
 
         # check if we have timesteps (required!)
-        abort = True
+        timesteps = []
         info = obj.Source.getOutputAlgorithm().GetOutputInformation(0)
         if info.Has(vtkStreamingDemandDrivenPipeline.TIME_STEPS()):
             timesteps = info.Get(vtkStreamingDemandDrivenPipeline.TIME_STEPS())
-            if len(timesteps) > 1:
-                abort = False
 
-        if abort:
-            FreeCAD.Console.PrintWarning("Not sufficient frames available in data, cannot extract data")
-            obj.Table = table
-            return
 
         algo = obj.Source.getOutputAlgorithm()
 
         frame_x_array = vtkDoubleArray()
-        frame_x_array.SetNumberOfTuples(len(timesteps))
-        frame_x_array.SetNumberOfComponents(1)
-
-
         frame_y_array = vtkDoubleArray()
         idx = obj.Index
-        setup = False
-        for i, timestep in enumerate(timesteps):
 
-            frame_x_array.SetTuple1(i, timestep)
+        if timesteps:
+            setup = False
+            frame_x_array.SetNumberOfTuples(len(timesteps))
+            frame_x_array.SetNumberOfComponents(1)
+            for i, timestep in enumerate(timesteps):
 
-            algo.UpdateTimeStep(timestep)
+                frame_x_array.SetTuple1(i, timestep)
+
+                algo.UpdateTimeStep(timestep)
+                dataset = algo.GetOutputDataObject(0)
+                array = self._y_array_from_dataset(obj, dataset, copy=False)
+                if not setup:
+                    frame_y_array.SetNumberOfComponents(array.GetNumberOfComponents())
+                    frame_y_array.SetNumberOfTuples(len(timesteps))
+                    setup = True
+
+                frame_y_array.SetTuple(i, idx, array)
+
+        else:
+            frame_x_array.SetNumberOfTuples(1)
+            frame_x_array.SetNumberOfComponents(1)
+            frame_x_array.SetTuple1(0,0)
+
+            algo.Update()
             dataset = algo.GetOutputDataObject(0)
             array = self._y_array_from_dataset(obj, dataset, copy=False)
-            if not setup:
-                frame_y_array.SetNumberOfComponents(array.GetNumberOfComponents())
-                frame_y_array.SetNumberOfTuples(len(timesteps))
-                setup = True
 
-            frame_y_array.SetTuple(i, idx, array)
+            frame_y_array.SetNumberOfComponents(array.GetNumberOfComponents())
+            frame_y_array.SetNumberOfTuples(1)
+            frame_y_array.SetTuple(0, idx, array)
+
 
         frame_x_array.SetName("Frames")
         if frame_y_array.GetNumberOfComponents() > 1:

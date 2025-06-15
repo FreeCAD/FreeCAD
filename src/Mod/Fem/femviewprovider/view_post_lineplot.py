@@ -516,6 +516,10 @@ class VPPostLineplot(view_base_fempostvisualization.VPPostVisualization):
                 xdata = VTKArray(table.GetColumn(i))
                 ydata = VTKArray(table.GetColumn(i+1))
 
+                # ensure points are visible if it is a single datapoint
+                if len(xdata) == 1 and tmp_args["marker"] == "None":
+                    tmp_args["marker"] = "o"
+
                 # legend labels
                 if child.ViewObject.Legend:
                     if not legend_multiframe:

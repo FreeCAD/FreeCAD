@@ -149,36 +149,40 @@ class PostIndexOverFrames1D(base_fempostextractors.Extractor1D):
             obj.Table = table
             return
 
-        # check if we have timesteps (required!)
-        abort = True
+        # check if we have timesteps
+        timesteps = []
         info = obj.Source.getOutputAlgorithm().GetOutputInformation(0)
         if info.Has(vtkStreamingDemandDrivenPipeline.TIME_STEPS()):
             timesteps = info.Get(vtkStreamingDemandDrivenPipeline.TIME_STEPS())
-            if len(timesteps) > 1:
-                abort = False
 
-        if abort:
-            FreeCAD.Console.PrintWarning("Not sufficient frames available in data, cannot extract data")
-            obj.Table = table
-            return
 
         algo = obj.Source.getOutputAlgorithm()
-        setup = False
         frame_array = vtkDoubleArray()
-
         idx = obj.Index
-        for i, timestep in enumerate(timesteps):
 
-            algo.UpdateTimeStep(timestep)
+        if timesteps:
+            setup = False
+            for i, timestep in enumerate(timesteps):
+
+                algo.UpdateTimeStep(timestep)
+                dataset = algo.GetOutputDataObject(0)
+                array = self._x_array_from_dataset(obj, dataset, copy=False)
+
+                if not setup:
+                    frame_array.SetNumberOfComponents(array.GetNumberOfComponents())
+                    frame_array.SetNumberOfTuples(len(timesteps))
+                    setup = True
+
+                frame_array.SetTuple(i, idx, array)
+        else:
+            algo.Update()
             dataset = algo.GetOutputDataObject(0)
             array = self._x_array_from_dataset(obj, dataset, copy=False)
 
-            if not setup:
-                frame_array.SetNumberOfComponents(array.GetNumberOfComponents())
-                frame_array.SetNumberOfTuples(len(timesteps))
-                setup = True
+            frame_array.SetNumberOfComponents(array.GetNumberOfComponents())
+            frame_array.SetNumberOfTuples(1)
+            frame_array.SetTuple(0, idx, array)
 
-            frame_array.SetTuple(i, idx, array)
 
         if frame_array.GetNumberOfComponents() > 1:
             frame_array.SetName(f"{obj.XField} ({obj.XComponent}) @Idx {obj.Index}")
