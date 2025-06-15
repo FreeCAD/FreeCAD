@@ -389,6 +389,9 @@ SET(PathScripts_SRCS
     PathScripts/PathPropertyBag.py
     PathScripts/PathPropertyBagGui.py
     PathScripts/__init__.py
+    PathScripts/PathContourMap.py
+    PathScripts/PathLevelMap.py
+    PathScripts/PathLevelMapOp.py
 )
 
 SET(PathPythonBaseGenerator_SRCS
