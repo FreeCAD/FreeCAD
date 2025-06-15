@@ -393,20 +393,10 @@ PyMethodDef ApplicationPy::Methods[] = {
    "Remove an added workbench manipulator.\n"
    "\n"
    "obj : object"},
-  {"listUserEditModes", (PyCFunction) ApplicationPy::sListUserEditModes, METH_VARARGS,
-   "listUserEditModes() -> list\n"
-   "\n"
-   "List available user edit modes."},
   {"getUserEditMode", (PyCFunction) ApplicationPy::sGetUserEditMode, METH_VARARGS,
    "getUserEditMode() -> str\n"
    "\n"
    "Get current user edit mode."},
-  {"setUserEditMode", (PyCFunction) ApplicationPy::sSetUserEditMode, METH_VARARGS,
-   "setUserEditMode(mode) -> bool\n"
-   "\n"
-   "Set user edit mode. Returns True if exists, False otherwise.\n"
-   "\n"
-   "mode : str"},
   {"reload",                    (PyCFunction) ApplicationPy::sReload, METH_VARARGS,
    "reload(name) -> App.Document or None\n"
    "\n"
@@ -1767,37 +1757,11 @@ PyObject* ApplicationPy::sCoinRemoveAllChildren(PyObject * /*self*/, PyObject *a
     PY_CATCH;
 }
 
-PyObject* ApplicationPy::sListUserEditModes(PyObject * /*self*/, PyObject *args)
-{
-    Py::List ret;
-    if (!PyArg_ParseTuple(args, "")) {
-        return nullptr;
-    }
-
-    for (auto const &uem : Application::Instance->listUserEditModes()) {
-        ret.append(Py::String(uem.second.first));
-    }
-
-    return Py::new_reference_to(ret);
-}
-
 PyObject* ApplicationPy::sGetUserEditMode(PyObject * /*self*/, PyObject *args)
 {
     if (!PyArg_ParseTuple(args, "")) {
         return nullptr;
     }
 
-    return Py::new_reference_to(Py::String(Application::Instance->getUserEditModeUIStrings().first));
-}
-
-PyObject* ApplicationPy::sSetUserEditMode(PyObject * /*self*/, PyObject *args)
-{
-    const char *mode = "";
-    if (!PyArg_ParseTuple(args, "s", &mode)) {
-        return nullptr;
-    }
-
-    bool ok = Application::Instance->setUserEditMode(std::string(mode));
-
-    return Py::new_reference_to(Py::Boolean(ok));
+    return Py::new_reference_to(Py::String("Default"));
 }
