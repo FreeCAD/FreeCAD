@@ -148,12 +148,11 @@ bool ViewProviderDragger::forwardToLink()
     ViewProviderDocumentObject* vpParent = nullptr;
     std::string subname;
 
-    auto doc = Application::Instance->editDocument();
-    if (!doc) {
+    if (!Application::Instance->isInEdit(getDocument())) {
         return false;
     }
 
-    doc->getInEdit(&vpParent, &subname);
+    getDocument()->getInEdit(&vpParent, &subname);
     if (!vpParent) {
         return false;
     }

@@ -659,7 +659,13 @@ void ViewProviderSketch::purgeHandler()
     Gui::Selection().clearSelection();
 
     // ensure that we are in sketch only selection mode
-    auto* view = dynamic_cast<Gui::View3DInventor*>(Gui::Application::Instance->editDocument()->getActiveView());
+    auto editDoc = Gui::Application::Instance->editDocument([this](Gui::Document* editdoc) {
+        return editdoc->getEditViewProvider() == this;
+    });
+    Gui::View3DInventor* view = nullptr;
+    if (!editDoc) {
+        view = dynamic_cast<Gui::View3DInventor*>(editDoc->getActiveView());
+    }
 
     if(view) {
         Gui::View3DInventorViewer* viewer;
@@ -838,12 +844,15 @@ void ViewProviderSketch::getProjectingLine(const SbVec2s& pnt,
 
 Base::Placement ViewProviderSketch::getEditingPlacement() const
 {
-    auto doc = Gui::Application::Instance->editDocument();
-    if (!doc || doc->getInEdit() != this)
+    auto editDoc = Gui::Application::Instance->editDocument([this](Gui::Document* editdoc) {
+        return editdoc->getInEdit() == this;
+    });
+    if (!editDoc) {
         return getSketchObject()->globalPlacement();
+    }
 
     // TODO: won't work if there is scale. Hmm... what to do...
-    return Base::Placement(doc->getEditingTransform());
+    return Base::Placement(editDoc->getEditingTransform());
 }
 
 void ViewProviderSketch::getCoordsOnSketchPlane(const SbVec3f& point, const SbVec3f& normal,
@@ -2871,8 +2880,9 @@ void ViewProviderSketch::updateData(const App::Property* prop) {
 
 void ViewProviderSketch::slotSolverUpdate()
 {
-    if (!isInEditMode() )
+    if (!isInEditMode()) {
         return;
+    }
 
     // At this point, we do not need to solve the Sketch
     // If we are adding geometry an update can be triggered before the sketch is actually
@@ -2889,9 +2899,19 @@ void ViewProviderSketch::slotSolverUpdate()
     if (getSketchObject()->getExternalGeometryCount()
             + getSketchObject()->getHighestCurveIndex() + 1
         == getSolvedSketch().getGeometrySize()) {
-        Gui::MDIView* mdi = Gui::Application::Instance->editDocument()->getActiveView();
-        if (mdi->isDerivedFrom<Gui::View3DInventor>())
+
+        auto editDoc = Gui::Application::Instance->editDocument([this](Gui::Document* editdoc) {
+            return editdoc->getEditViewProvider() == this;
+        });
+
+        Gui::MDIView* mdi = nullptr;
+
+        if (editDoc) {
+            mdi = editDoc->getActiveView();
+        }
+        if (mdi->isDerivedFrom<Gui::View3DInventor>()) {
             draw(false, true);
+        }
 
         signalConstraintsChanged();
     }
@@ -3027,7 +3047,6 @@ bool ViewProviderSketch::setEdit(int ModNum)
     Base::Placement plm = getEditingPlacement();
     setGridOrientation(plm.getPosition(), plm.getRotation());
     addNodeToRoot(gridnode);
-    setGridEnabled(true);
 
     // create the container for the additional edit data
     assert(!isInEditMode());
@@ -3036,14 +3055,20 @@ bool ViewProviderSketch::setEdit(int ModNum)
     editCoinManager = std::make_unique<EditModeCoinManager>(*this);
     snapManager = std::make_unique<SnapManager>(*this);
 
-    auto editDoc = Gui::Application::Instance->editDocument();
+
     App::DocumentObject* editObj = getSketchObject();
     std::string editSubName;
     ViewProviderDocumentObject* editVp = nullptr;
+
+    auto editDoc = Gui::Application::Instance->editDocument([this](Gui::Document* editdoc) {
+        return editdoc->getEditViewProvider() == this;
+    });
     if (editDoc) {
         editDoc->getInEdit(&editVp, &editSubName);
-        if (editVp)
+        if (editVp) {
             editObj = editVp->getObject();
+        }
+        setGridEnabled(dynamic_cast<Gui::View3DInventor*>(editDoc->getActiveView()));
     }
 
     // visibility automation
@@ -3280,7 +3305,7 @@ void ViewProviderSketch::unsetEdit(int ModNum)
 {
     Q_UNUSED(ModNum);
 
-    setGridEnabled(false);
+    setGridEnabled(nullptr);
     auto gridnode = getGridNode();
     pcRoot->removeChild(gridnode);
 
@@ -3373,7 +3398,9 @@ void ViewProviderSketch::setEditViewer(Gui::View3DInventorViewer* viewer, int Mo
         }
     }
 
-    auto editDoc = Gui::Application::Instance->editDocument();
+    auto editDoc = Gui::Application::Instance->editDocument([this](Gui::Document* editdoc) {
+        return editdoc->getEditViewProvider() == this;
+    });
     editDocName.clear();
     if (editDoc) {
         ViewProviderDocumentObject* parent = nullptr;
