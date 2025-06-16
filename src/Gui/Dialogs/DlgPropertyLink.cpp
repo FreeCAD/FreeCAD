@@ -173,8 +173,8 @@ DlgPropertyLink::formatObject(App::Document* ownerDoc, App::DocumentObject* obj,
         if (obj->Label.getStrValue() == obj->getNameInDocument()) {
             return QLatin1String(objName);
         }
-        return QStringLiteral("%1 (%2)").arg(QLatin1String(objName),
-                                                  QString::fromUtf8(obj->Label.getValue()));
+        return QStringLiteral("%1 (%2)").arg(QString::fromUtf8(obj->Label.getValue()),
+                                                  QLatin1String(objName));
     }
 
     auto sobj = obj->getSubObject(sub);
@@ -182,10 +182,10 @@ DlgPropertyLink::formatObject(App::Document* ownerDoc, App::DocumentObject* obj,
         return QStringLiteral("%1.%2").arg(QLatin1String(objName), QString::fromUtf8(sub));
     }
 
-    return QStringLiteral("%1.%2 (%3)")
-        .arg(QLatin1String(objName),
-             QString::fromUtf8(sub),
-             QString::fromUtf8(sobj->Label.getValue()));
+    return QStringLiteral("%1 (%2.%3)")
+        .arg(QString::fromUtf8(sobj->Label.getValue()),
+             QLatin1String(objName),
+             QString::fromUtf8(sub));
 }
 
 static inline bool isLinkSub(const QList<App::SubObjectT>& links)
