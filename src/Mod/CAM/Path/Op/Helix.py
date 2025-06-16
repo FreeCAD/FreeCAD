@@ -21,7 +21,6 @@
 # ***************************************************************************
 
 import Path.Base.Generator.helix as helix
-from PathScripts.PathUtils import fmt
 from PySide.QtCore import QT_TRANSLATE_NOOP
 import FreeCAD
 import Part
@@ -30,6 +29,7 @@ import Path.Base.FeedRate as PathFeedRate
 import Path.Op.Base as PathOp
 import Path.Op.CircularHoleBase as PathCircularHoleBase
 
+import math
 
 __title__ = "CAM Helix Operation"
 __author__ = "Lorenz Hüdepohl"
@@ -169,18 +169,66 @@ class ObjectHelix(PathCircularHoleBase.ObjectOp):
             ),
         )
         obj.addProperty(
-            "App::PropertyLength",
-            "StartRadius",
-            "Helix Drill",
-            QT_TRANSLATE_NOOP("App::Property", "Starting Radius"),
-        )
-        obj.addProperty(
             "App::PropertyDistance",
-            "OffsetExtra",
+            "OffsetInnerRadius",
             "Helix Drill",
             QT_TRANSLATE_NOOP(
                 "App::Property",
-                "Extra value to stay away from final profile- good for roughing toolpath",
+                "Offset inner radius\nDefault inner radius is Tool radius\nCan not be less than -(ToolRadius)",
+            ),
+        )
+        obj.addProperty(
+            "App::PropertyDistance",
+            "OffsetHole",
+            "Helix Drill",
+            QT_TRANSLATE_NOOP(
+                "App::Property",
+                "Extra offset from the profile",
+            ),
+        )
+        obj.addProperty(
+            "App::PropertyBool",
+            "SingleHelix",
+            "Helix Drill",
+            QT_TRANSLATE_NOOP(
+                "App::Property",
+                "Create only one Helix",
+            ),
+        )
+        obj.addProperty(
+            "App::PropertyBool",
+            "RetractCenter",
+            "Helix Drill",
+            QT_TRANSLATE_NOOP(
+                "App::Property",
+                "Retract in the center of hole if possible",
+            ),
+        )
+        obj.addProperty(
+            "App::PropertyBool",
+            "SpiralMill",
+            "Helix Drill",
+            QT_TRANSLATE_NOOP(
+                "App::Property",
+                "Create one helix and spiral mill",
+            ),
+        )
+        obj.addProperty(
+            "App::PropertyBool",
+            "FinishHelixCircle",
+            "Helix Drill",
+            QT_TRANSLATE_NOOP(
+                "App::Property",
+                "Create finish full circle for helix",
+            ),
+        )
+        obj.addProperty(
+            "App::PropertyBool",
+            "FinishSpiralCircle",
+            "Helix Drill",
+            QT_TRANSLATE_NOOP(
+                "App::Property",
+                "Create finish full circle for spiral",
             ),
         )
 
@@ -188,26 +236,90 @@ class ObjectHelix(PathCircularHoleBase.ObjectOp):
         for n in ENUMS:
             setattr(obj, n[0], n[1])
         obj.StepOver = 50
+        obj.FinishHelixCircle = True
+        obj.FinishSpiralCircle = True
+        obj.setEditorMode("FinishSpiralCircle", 2)  # hide
 
     def opOnDocumentRestored(self, obj):
-        if not hasattr(obj, "StartRadius"):
-            obj.addProperty(
-                "App::PropertyLength",
-                "StartRadius",
-                "Helix Drill",
-                QT_TRANSLATE_NOOP("App::Property", "Starting Radius"),
-            )
-
-        if not hasattr(obj, "OffsetExtra"):
+        if not hasattr(obj, "OffsetInnerRadius"):
             obj.addProperty(
                 "App::PropertyDistance",
-                "OffsetExtra",
+                "OffsetInnerRadius",
                 "Helix Drill",
                 QT_TRANSLATE_NOOP(
                     "App::Property",
-                    "Extra value to stay away from final profile- good for roughing toolpath",
+                    "Offset inner radius\nDefault inner radius is Tool radius\nCan not be less than -(ToolRadius)",
                 ),
             )
+        if hasattr(obj, "StartRadius"):
+            obj.OffsetInnerRadius = obj.StartRadius
+            obj.removeProperty("StartRadius")
+
+        if not hasattr(obj, "OffsetHole"):
+            obj.addProperty(
+                "App::PropertyDistance",
+                "OffsetHole",
+                "Helix Drill",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "Extra offset from the profile",
+                ),
+            )
+        if hasattr(obj, "OffsetExtra"):
+            obj.OffsetHole = obj.OffsetExtra
+            obj.removeProperty("OffsetExtra")
+        if not hasattr(obj, "SingleHelix"):
+            obj.addProperty(
+                "App::PropertyBool",
+                "SingleHelix",
+                "Helix Drill",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "Create only one Helix",
+                ),
+            )
+        if not hasattr(obj, "SpiralMill"):
+            obj.addProperty(
+                "App::PropertyBool",
+                "SpiralMill",
+                "Helix Drill",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "Create one helix and spiral mill",
+                ),
+            )
+        if not hasattr(obj, "RetractCenter"):
+            obj.addProperty(
+                "App::PropertyBool",
+                "RetractCenter",
+                "Helix Drill",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "Retract in the center of the hole if possible",
+                ),
+            )
+        if not hasattr(obj, "FinishHelixCircle"):
+            obj.addProperty(
+                "App::PropertyBool",
+                "FinishHelixCircle",
+                "Helix Drill",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "Create finish full circle for helix",
+                ),
+            )
+            obj.FinishHelixCircle = True
+        if not hasattr(obj, "FinishSpiralCircle"):
+            obj.addProperty(
+                "App::PropertyBool",
+                "FinishSpiralCircle",
+                "Helix Drill",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "Create finish full circle for spiral",
+                ),
+            )
+            obj.FinishSpiralCircle = True
 
         if not hasattr(obj, "CutMode"):
             # TODO: consolidate the duplicate definitions from opOnDocumentRestored and
@@ -239,50 +351,153 @@ class ObjectHelix(PathCircularHoleBase.ObjectOp):
 
         self.commandlist.append(Path.Command("(helix cut operation)"))
 
-        self.commandlist.append(Path.Command("G0", {"Z": obj.ClearanceHeight.Value}))
-
         tool = obj.ToolController.Tool
-        tooldiamter = tool.Diameter.Value if hasattr(tool.Diameter, "Value") else tool.Diameter
+        tooldiameter = tool.Diameter.Value if hasattr(tool.Diameter, "Value") else tool.Diameter
+
+        if obj.SpiralMill:
+            obj.setEditorMode("FinishSpiralCircle", 0)  # unhide
+        else:
+            obj.setEditorMode("FinishSpiralCircle", 2)  # hide
+
+        # Inner radius can not be less than 10% of the tool radius
+        if obj.OffsetInnerRadius.Value <= -tooldiameter / 2 * 0.9:
+            obj.OffsetInnerRadius = 0
 
         args = {
             "edge": None,
             "hole_radius": None,
             "step_down": obj.StepDown.Value,
             "step_over": obj.StepOver / 100,
-            "tool_diameter": tooldiamter,
-            "inner_radius": obj.StartRadius.Value + obj.OffsetExtra.Value,
+            "tool_diameter": tooldiameter,
+            "inner_radius": None,
+            "safe_height": obj.SafeHeight.Value,
+            "retract_center": obj.RetractCenter,
+            "finish_circle": obj.FinishHelixCircle,
             "direction": obj.Direction,
             "startAt": obj.StartSide,
         }
 
-        for hole in holes:
-            args["hole_radius"] = (hole["r"] / 2) - (obj.OffsetExtra.Value)
+        for counter, hole in enumerate(holes):
+            if obj.SingleHelix and obj.StartSide == "Inside":
+                args["inner_radius"] = tooldiameter / 2 + obj.OffsetInnerRadius.Value
+                args["hole_radius"] = args["inner_radius"] + tooldiameter / 2
+            elif obj.SingleHelix and obj.StartSide == "Outside":
+                args["hole_radius"] = (hole["r"] / 2) - (obj.OffsetHole.Value)
+                args["inner_radius"] = args["hole_radius"]
+            else:
+                args["inner_radius"] = tooldiameter / 2 + obj.OffsetInnerRadius.Value
+                args["hole_radius"] = (hole["r"] / 2) - (obj.OffsetHole.Value)
+
             startPoint = FreeCAD.Vector(hole["x"], hole["y"], obj.StartDepth.Value)
             endPoint = FreeCAD.Vector(hole["x"], hole["y"], obj.FinalDepth.Value)
             args["edge"] = Part.makeLine(startPoint, endPoint)
 
-            # move to starting position
+            self.commandlist.append(Path.Command(f"(hole {counter + 1})"))
             self.commandlist.append(Path.Command("G0", {"Z": obj.ClearanceHeight.Value}))
-            self.commandlist.append(
-                Path.Command(
-                    "G0",
-                    {
-                        "X": startPoint.x,
-                        "Y": startPoint.y,
-                        "Z": obj.ClearanceHeight.Value,
-                    },
-                )
-            )
-            self.commandlist.append(
-                Path.Command("G0", {"X": startPoint.x, "Y": startPoint.y, "Z": startPoint.z})
-            )
 
             results = helix.generate(**args)
-
             for command in results:
                 self.commandlist.append(command)
 
+            if obj.SpiralMill:
+                spiralInnerRadius = obj.OffsetInnerRadius.Value + tooldiameter / 2
+                spiralOuterRadius = hole["r"] / 2 - obj.OffsetHole.Value - tooldiameter / 2
+                if (spiralOuterRadius - spiralInnerRadius) <= 0:
+                    Path.Log.warning(
+                        translate(
+                            "PathHelix", "Spiral outer radius %.3f is equal or less than inner %.3f"
+                        )
+                        % (spiralOuterRadius, spiralInnerRadius)
+                    )
+                else:
+                    while self.commandlist[-1].Name == "G0":
+                        # Remove last retract movements
+                        self.commandlist.pop()
+                    increment = obj.StepOver * tooldiameter / 100
+                    spiralCommands = self.createSpiral(
+                        startPoint,
+                        spiralInnerRadius,
+                        spiralOuterRadius,
+                        increment,
+                        obj.StartSide,
+                        obj.Direction,
+                        obj.FinishSpiralCircle,
+                    )
+                    for command in spiralCommands:
+                        self.commandlist.append(command)
+                    if obj.RetractCenter:
+                        # Add move to center after spiral
+                        center_clear = False
+                        if args["hole_radius"] <= tooldiameter:  # simple case where center is clear
+                            center_clear = True
+                        elif (
+                            obj.StartSide == "Inside" and args["inner_radius"] <= tooldiameter / 2
+                        ):  # middle is clear
+                            center_clear = True
+                        if center_clear:
+                            self.commandlist.append(
+                                Path.Command("G0", {"X": hole["x"], "Y": hole["y"]})
+                            )
+
         PathFeedRate.setFeedRate(self.commandlist, obj.ToolController)
+
+    def createSpiral(self, center, innerR, outerR, increment, startSide, direction, finish):
+        # Create spiral Path
+        # stepRotate = math.radians(10)  # step size for rotate (for spiral with linear movements)
+        stepRotate = math.pi / 3  # step size for rotate
+        stepRotate = -stepRotate if direction == "CCW" else stepRotate
+        turns = math.ceil((outerR - innerR) / increment)  # amount spiral turns
+        iters = int(2 * math.pi * turns / abs(stepRotate))
+        stepRadius = (outerR - innerR) / iters  # step size for spiral radius
+        stepRadius = -stepRadius if startSide == "Outside" else stepRadius
+        count = 0
+        angle = math.pi / 2
+        spiralR = outerR if startSide == "Outside" else innerR
+        commandlist = []
+        arcPoints = [FreeCAD.Vector(center.x + spiralR, center.y, 0)]
+        while count < iters:
+            angle += stepRotate
+            spiralR += stepRadius
+            x = center.x + spiralR * math.sin(angle)
+            y = center.y + spiralR * math.cos(angle)
+            arcPoints.append(FreeCAD.Vector(x, y, 0))  # Get all points of arcs
+            # commandlist.append(Path.Command(f"G1 X{x} Y{y}"))  # for spiral with linear movements
+            count += 1
+
+        arcCmdName = "G2" if direction == "CW" else "G3"
+
+        i = 0
+        while i <= len(arcPoints) - 3:
+            arcEnd = arcPoints[i + 2]
+            arcCenter = self.getArcCenter(arcPoints[i], arcPoints[i + 1], arcPoints[i + 2])
+            offset = arcCenter - arcPoints[i]
+            commandlist.append(
+                Path.Command(f"{arcCmdName} X{arcEnd.x} Y{arcEnd.y} I{offset.x} J{offset.y}")
+            )
+            i += 2
+
+        # Add last full circle
+        if finish:
+            commandlist.append(
+                Path.Command(f"{arcCmdName} X{center.x - spiralR} Y{center.y} I{-spiralR} J0")
+            )
+            commandlist.append(
+                Path.Command(f"{arcCmdName} X{center.x + spiralR} Y{center.y} I{spiralR} J0")
+            )
+
+        return commandlist
+
+    def getArcCenter(self, p1, p2, p3):
+        # Calculate arc center point by three points on arc
+        # https://paulbourke.net/geometry/circlesphere/
+        ma = (p2.y - p1.y) / (p2.x - p1.x)
+        mb = (p3.y - p2.y) / (p3.x - p2.x)
+        arcCenter = FreeCAD.Vector()
+        arcCenter.x = (ma * mb * (p1.y - p3.y) + mb * (p1.x + p2.x) - ma * (p2.x + p3.x)) / (
+            2 * (mb - ma)
+        )
+        arcCenter.y = -1 * (arcCenter.x - (p1.x + p2.x) / 2) / ma + (p1.y + p2.y) / 2
+        return arcCenter
 
 
 def SetupProperties():
@@ -291,7 +506,7 @@ def SetupProperties():
     setup.append("CutMode")
     setup.append("StartSide")
     setup.append("StepOver")
-    setup.append("StartRadius")
+    setup.append("OffsetInnerRadius")
     return setup
 
 
