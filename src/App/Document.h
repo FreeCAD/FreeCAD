@@ -488,14 +488,6 @@ public:
     /// Abort the actually running transaction.
     void abortTransaction() const;
 
-    // Used by gui when setting up dialogs,
-    // prevents one (1) commit call to pass through per call
-    // to postponeCommit, works to replace AutoTransaction::setEnable(false)
-    void postponeCommit();
-    bool isCommitPostponed() const;
-    bool canCommit() const;
-    bool decreasePostponeCommit(); // truly poetic name, return true if CommitPostponed was > 0 before the call
-
     // If the tid != 0, it will take the transaction id if it exists
     int setActiveTransaction(const std::string& name, bool tmpName = false, int tid = 0);
 

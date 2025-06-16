@@ -87,6 +87,30 @@ private:
     int tid = 0;
 };
 
+/// Helper class to manage the lifetime of a transaction
+/// for as long as a TransactionToken holds a specific transaction
+/// it cannot be commited (but it can be aborted)
+/// Pass an instance of this to dialogs to avoid early commits
+/// on command activation
+class TransactionToken {
+public:
+    explicit TransactionToken(int tid_);
+    ~TransactionToken();
+    TransactionToken(TransactionToken&& token) noexcept;
+    TransactionToken& operator=(TransactionToken&& token) noexcept;
+    TransactionToken(const TransactionToken& token);
+    TransactionToken& operator=(const TransactionToken& token);
+
+    // Convenience function to abort the transaction
+    // no such function is available for commit
+    void abort();
+
+    void takeToken(int tid_);
+    void returnToken();
+private:
+    int tid { -1 };
+};
+
 
 /** Helper class to lock a transaction from being closed or aborted.
  *
