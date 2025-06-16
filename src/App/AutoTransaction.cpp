@@ -126,6 +126,58 @@ void AutoTransaction::setEnable(bool enable)
         }
     }
 }
+TransactionToken::TransactionToken(int tid_)
+{
+    takeToken(tid_);
+}
+TransactionToken::~TransactionToken()
+{
+    returnToken();
+}
+
+TransactionToken::TransactionToken(TransactionToken&& token) noexcept
+{
+    tid = token.tid;
+    token.tid = -1; // Ensures that the token is not returned twice
+}
+TransactionToken& TransactionToken::operator=(TransactionToken&& token) noexcept
+{
+    tid = token.tid;
+    token.tid = 0;
+    return *this;
+}
+TransactionToken::TransactionToken(const TransactionToken& token)
+{
+    takeToken(token.tid);
+}
+TransactionToken& TransactionToken::operator=(const TransactionToken& token)
+{
+    takeToken(token.tid);
+    return *this;
+}
+void TransactionToken::abort()
+{
+    if (tid != -1) {
+        GetApplication().closeActiveTransaction(true, tid);
+    }
+}
+void TransactionToken::takeToken(int tid_)
+{
+    if (tid_ == tid) {
+        return; // No change
+    }
+    returnToken();
+
+    // Take a new token
+    tid = tid_;
+    GetApplication().takeToken(tid);
+}
+void TransactionToken::returnToken()
+{
+    if (tid != -1) { // This is a valid token that must be dealt with
+        GetApplication().returnToken(tid);
+    }
+}
 
 int Application::setActiveTransaction(const char* name, bool persist)
 {
@@ -210,6 +262,10 @@ void Application::setTransactionDescription(int tid, const TransactionDescriptio
     if (tid == 0) {
         return;
     }
+    if (desc.numTokens < 0) {
+        FC_ERR("setting transaction #"<<tid<<" description with numToken < 0");
+        return;
+    }
     auto found = _activeTransactionDescriptions.find(tid);
     
     if (found != _activeTransactionDescriptions.end() && found->second.tmp) {
@@ -238,26 +294,54 @@ void Application::setTransactionName(int tid, const std::string& name, bool tmp)
         }
     } 
 }
+void Application::takeToken(int tid)
+{
+    auto found = _activeTransactionDescriptions.find(tid);
+    if (found == _activeTransactionDescriptions.end()) {
+        FC_WARN("Taking token for transaction #" << tid << " but it is not active");
+        return;
+    }
+    found->second.numTokens++;
+}
+
+void Application::returnToken(int tid)
+{
+    auto found = _activeTransactionDescriptions.find(tid);
+    if (found == _activeTransactionDescriptions.end()) {
+        // Might happen if a transaction was aborted
+        return;
+    }
+    if (found->second.numTokens == 0) {
+        FC_WARN("Returning token for transaction #" << tid << " but does not have token");
+        return;
+    }
+    found->second.numTokens--;
+    if (found->second.numTokens == 0) {
+        closeActiveTransaction(false, tid);
+    }
+}
+
 
 void Application::closeActiveTransaction(bool abort, int id)
 {
     if (!id) {
         id = _globalTransactionID;
     }
-    if (!id) {
+    if (!id || id == currentlyClosingId) {
         return;
     }
+    currentlyClosingId = id;
 
     // if (!transactionIsActive(id)) {
     //     FC_WARN("ignore close transaction, is not active");
     //     return;        
     // }
 
-    // if (_activeTransactionGuard > 0 && !abort) {
-    //     FC_LOG("ignore close transaction");
-    //     return;
-    // }
-
+    auto foundDesc = _activeTransactionDescriptions.find(id);
+    if (!abort && foundDesc != _activeTransactionDescriptions.end() && foundDesc->second.numTokens != 0) {
+        std::cerr << "Commit blocked by token on transaction #" << id << "\n";
+        return;
+    }
 
     std::vector<Document*> docsToPoke;
     for (auto& v : DocMap) {
@@ -267,22 +351,10 @@ void Application::closeActiveTransaction(bool abort, int id)
         if(v.second->isTransactionLocked()) {
             std::cerr<<"Transaction locked..\n";
             FC_LOG("pending " << (abort ? "abort" : "close") << " transaction");
-            return;          
+            currentlyClosingId = 0;
+            return;
         }
         docsToPoke.push_back(v.second);
-    }
-
-    // We still want to decrease CommitPostponed counters
-    if (!abort) {
-        bool commitBlocked = false;
-        for (auto& doc : docsToPoke) {
-            commitBlocked &= doc->decreasePostponeCommit();
-        }
-        if (commitBlocked) {
-            std::cerr<<"Commit blocked..\n";
-            FC_LOG("pending " << "close" << " transaction");
-            return;   
-        }
     }
 
     FC_LOG("close transaction '" << _activeTransactionDescriptions[id].name << "' " << abort);
@@ -297,6 +369,7 @@ void Application::closeActiveTransaction(bool abort, int id)
             doc->_commitTransaction();
         }
     }
+    currentlyClosingId = 0;
 }
 
 ////////////////////////////////////////////////////////////////////////

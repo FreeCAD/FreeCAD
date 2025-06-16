@@ -1035,7 +1035,6 @@ void prepareProfileBased(PartDesign::Body *pcActiveBody, Gui::Command* cmd, cons
         //if (!bNoSketchWasSelected && extReference)
         //    pickDlg->showExternal(true);
 
-        pcActiveBody->getDocument()->postponeCommit();
         Gui::Control().showDialog(pickDlg);
     }
     else {
