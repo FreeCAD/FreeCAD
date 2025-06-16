@@ -519,6 +519,7 @@ void TreeWidgetItemDelegate::initStyleOption(QStyleOptionViewItem *option,
         return;
     }
 
+    option->textElideMode = Qt::ElideMiddle;
     auto mousePos = option->widget->mapFromGlobal(QCursor::pos());
     auto isHovered = option->rect.contains(mousePos);
     if (!isHovered) {
