@@ -1203,7 +1203,11 @@ protected:
 
         languageChange();
 
+#if QT_VERSION >= QT_VERSION_CHECK(6,7,0)
+        QObject::connect(gridAutoSpacing, &QCheckBox::checkStateChanged, [this](int state) {
+#else
         QObject::connect(gridAutoSpacing, &QCheckBox::stateChanged, [this](int state) {
+#endif
             auto* sketchView = getView();
 
             if (sketchView) {
@@ -1459,12 +1463,19 @@ protected:
 
         languageChange();
 
+#if QT_VERSION >= QT_VERSION_CHECK(6,7,0)
+        QObject::connect(snapToObjects, &QCheckBox::checkStateChanged, [this](int state) {
+#else
         QObject::connect(snapToObjects, &QCheckBox::stateChanged, [this](int state) {
+#endif
             ParameterGrp::handle hGrp = this->getParameterPath();
             hGrp->SetBool("SnapToObjects", state == Qt::Checked);
         });
-
+#if QT_VERSION >= QT_VERSION_CHECK(6,7,0)
+        QObject::connect(snapToGrid, &QCheckBox::checkStateChanged, [this](int state) {
+#else
         QObject::connect(snapToGrid, &QCheckBox::stateChanged, [this](int state) {
+#endif
             ParameterGrp::handle hGrp = this->getParameterPath();
             hGrp->SetBool("SnapToGrid", state == Qt::Checked);
         });

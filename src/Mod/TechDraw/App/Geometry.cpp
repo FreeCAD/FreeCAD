@@ -1338,7 +1338,7 @@ void Vertex::Restore(Base::XMLReader &reader)
 
     reader.readElement("Extract");
     extractType = reader.getAttribute<ExtractionType>("value");
-    reader.readElement("Visible");
+    reader.readElement("HLRVisible");
     hlrVisible = reader.getAttribute<bool>("value");
     reader.readElement("Ref3D");
     ref3D = reader.getAttribute<int>("value");
