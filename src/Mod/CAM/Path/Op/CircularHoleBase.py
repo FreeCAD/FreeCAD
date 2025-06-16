@@ -95,13 +95,13 @@ class ObjectOp(PathOp.ObjectOp):
             if shape.ShapeType == "Vertex":
                 return 0
 
-            if shape.ShapeType == "Edge" and type(shape.Curve) == Part.Circle:
+            if shape.ShapeType == "Edge" and isinstance(shape.Curve, Part.Circle):
                 return shape.Curve.Radius * 2
 
             if shape.ShapeType == "Face":
                 for i in range(len(shape.Edges)):
                     if (
-                        type(shape.Edges[i].Curve) == Part.Circle
+                        isinstance(shape.Edges[i].Curve, Part.Circle)
                         and shape.Edges[i].Curve.Radius * 2 < shape.BoundBox.XLength * 1.1
                         and shape.Edges[i].Curve.Radius * 2 > shape.BoundBox.XLength * 0.9
                     ):
@@ -136,7 +136,7 @@ class ObjectOp(PathOp.ObjectOp):
             if shape.ShapeType == "Face":
                 if hasattr(shape.Surface, "Center"):
                     return FreeCAD.Vector(shape.Surface.Center.x, shape.Surface.Center.y, 0)
-                if len(shape.Edges) == 1 and type(shape.Edges[0].Curve) == Part.Circle:
+                if len(shape.Edges) == 1 and isinstance(shape.Edges[0].Curve, Part.Circle):
                     return shape.Edges[0].Curve.Center
         except Part.OCCError as e:
             Path.Log.error(e)
@@ -180,13 +180,13 @@ class ObjectOp(PathOp.ObjectOp):
                             {
                                 "x": pos.x,
                                 "y": pos.y,
-                                "r": self.holeDiameter(obj, base, sub),
+                                "d": self.holeDiameter(obj, base, sub),
                             }
                         )
 
         if haveLocations(self, obj):
             for location in obj.Locations:
-                holes.append({"x": location.x, "y": location.y, "r": 0})
+                holes.append({"x": location.x, "y": location.y, "d": 0})
 
         if len(holes) > 0:
             holes = PathUtils.sort_locations(holes, ["x", "y"])

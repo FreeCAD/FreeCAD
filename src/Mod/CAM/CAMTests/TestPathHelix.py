@@ -26,6 +26,7 @@ import pathlib
 import Draft
 import FreeCAD
 import Path
+
 import Path.Base.SetupSheetOpPrototype as PathSetupSheetOpPrototype
 import Path.Main.Job as PathJob
 import Path.Op.Helix as PathHelix
@@ -154,12 +155,12 @@ class TestPathHelix(PathTestUtils.PathTestBase):
                 self.assertEqual(
                     helix.Direction,
                     expected_direction,
-                    msg=f"Direction was not correctly determined",
+                    msg="Direction was not correctly determined",
                 )
                 self.assertPathDirection(
                     helix.Path,
                     expected_direction,
-                    msg=f"Path with wrong direction generated",
+                    msg="Path with wrong direction generated",
                 )
 
         check("Inside", "Conventional", "CW")
