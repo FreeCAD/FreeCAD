@@ -154,12 +154,12 @@ class TestPathHelix(PathTestUtils.PathTestBase):
                 self.assertEqual(
                     helix.Direction,
                     expected_direction,
-                    msg=f"Direction was not correctly determined",
+                    msg="Direction was not correctly determined",
                 )
                 self.assertPathDirection(
                     helix.Path,
                     expected_direction,
-                    msg=f"Path with wrong direction generated",
+                    msg="Path with wrong direction generated",
                 )
 
         check("Inside", "Conventional", "CW")
