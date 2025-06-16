@@ -190,6 +190,7 @@ bool Document::undo(const int id)
             mRedoMap[d->activeUndoTransaction->getID()] = d->activeUndoTransaction;
             mRedoTransactions.push_back(d->activeUndoTransaction);
             d->activeUndoTransaction = nullptr;
+            d->bookedTransaction = 0;
 
             mUndoMap.erase(mUndoTransactions.back()->getID());
             delete mUndoTransactions.back();
@@ -242,6 +243,7 @@ bool Document::redo(const int id)
             mUndoMap[d->activeUndoTransaction->getID()] = d->activeUndoTransaction;
             mUndoTransactions.push_back(d->activeUndoTransaction);
             d->activeUndoTransaction = nullptr;
+            d->bookedTransaction = 0;   
 
             mRedoMap.erase(mRedoTransactions.back()->getID());
             delete mRedoTransactions.back();
