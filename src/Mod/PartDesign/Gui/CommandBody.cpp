@@ -188,6 +188,7 @@ void CmdPartDesignBody::activated(int iMsg)
     }
 
     openSelf(QT_TRANSLATE_NOOP("Command", "Add a Body"));
+    bool openedModal = false;
 
     std::string bodyName = getUniqueObjectName("Body");
     const char* bodyString = bodyName.c_str();
@@ -289,8 +290,13 @@ void CmdPartDesignBody::activated(int iMsg)
                     Gui::TaskView::TaskDialog *dlg = Gui::Control().activeDialog();
                     if (!dlg) {
                         Gui::Selection().clearSelection();
-                        Gui::Application::Instance->getDocument(docname.c_str())->getDocument()->postponeCommit();
-                        Gui::Control().showDialog(new PartDesignGui::TaskDlgFeaturePick(planes, status, accepter, worker, true, quitter));
+                        openedModal = true;
+                        Gui::Control().showDialog(new PartDesignGui::TaskDlgFeaturePick(planes,
+                                                                                        status,
+                                                                                        accepter,
+                                                                                        worker,
+                                                                                        true,
+                                                                                        quitter));
                     }
                 }
             }
@@ -299,7 +305,9 @@ void CmdPartDesignBody::activated(int iMsg)
 
     updateActive();
 
-    commitSelf();
+    if (!openedModal) {
+        commitSelf();
+    }
 }
 
 bool CmdPartDesignBody::isActive()
