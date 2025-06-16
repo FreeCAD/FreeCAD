@@ -1372,26 +1372,59 @@ Gui::Document* Application::editDocument() const
 {
     return d->editDocument;
 }
+Gui::Document* Application::editDocument(const std::function<bool(Gui::Document*)>& eval)
+{
+    if (d->editDocument != nullptr && eval(d->editDocument)) {
+        return d->editDocument;
+    }
+    return nullptr;
+}
+std::vector<Gui::Document*> Application::editDocuments() const
+{
+    if (d->editDocument == nullptr) {
+        return {};
+    }
+    return {d->editDocument};
+}
 bool Application::isInEdit(Gui::Document* pcDocument) const
 {
     return pcDocument != nullptr && d->editDocument == pcDocument;
+}
+void Application::resetEditOf(Gui::Document* pcDocument)
+{
+    if (pcDocument == nullptr || d->editDocument == nullptr) {
+        return;
+    }
+    if (pcDocument == d->editDocument) {
+        d->editDocument = nullptr;
+    }
+    for (auto& v : d->documents) {
+        v.second->_resetEdit();
+    }
+    updateActions();
+}
+void Application::resetEditIf(const std::function<bool(Gui::Document*)>& eval)
+{
+    if (d->editDocument != nullptr && eval(d->editDocument)) {
+        resetEditOf(d->editDocument);
+    }
 }
 Gui::MDIView* Application::editViewOfNode(SoNode* node) const
 {
     return d->editDocument ? d->editDocument->getViewOfNode(node) : nullptr;
 }
 
-void Application::setEditDocument(Gui::Document* doc)
+void Application::setEditDocument(Gui::Document* pcDocument)
 {
-    if (!doc) {
+    if (!pcDocument) {
         d->editDocument = nullptr;
-    } else if (doc == d->editDocument) {
+    } else if (pcDocument == d->editDocument) {
         return;
     }
     for (auto& v : d->documents) {
         v.second->_resetEdit();
     }
-    d->editDocument = doc;
+    d->editDocument = pcDocument;
     updateActions();
 }
 

@@ -155,7 +155,7 @@ bool ViewProviderDragger::forwardToLink()
         std::string subname;
 
         auto doc = Application::Instance->editDocument();
-        if (!doc) {
+        if (!Application::Instance->isInEdit(doc)) {
             return nullptr;
         }
 
