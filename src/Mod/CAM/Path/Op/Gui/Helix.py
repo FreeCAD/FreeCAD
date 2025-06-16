@@ -27,12 +27,10 @@ import Path.Base.Gui.Util as PathGuiUtil
 import Path.Op.Gui.Base as PathOpGui
 import Path.Op.Gui.CircularHoleBase as PathCircularHoleBaseGui
 import Path.Op.Helix as PathHelix
-import PathGui
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
 translate = FreeCAD.Qt.translate
 
-from PySide import QtCore
 
 __doc__ = "Helix operation page controller and command implementation."
 
@@ -68,7 +66,7 @@ class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
             obj.StartSide = str(self.form.startSide.currentData())
         if obj.StepOver != self.form.stepOverPercent.value():
             obj.StepOver = self.form.stepOverPercent.value()
-        PathGuiUtil.updateInputField(obj, "OffsetExtra", self.form.extraOffset)
+        PathGuiUtil.updateInputField(obj, "OffsetProfile", self.form.OffsetProfile)
 
         self.updateToolController(obj, self.form.toolController)
         self.updateCoolant(obj, self.form.coolantController)
@@ -84,8 +82,8 @@ class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
         self.setupToolController(obj, self.form.toolController)
         self.setupCoolant(obj, self.form.coolantController)
 
-        self.form.extraOffset.setText(
-            FreeCAD.Units.Quantity(obj.OffsetExtra.Value, FreeCAD.Units.Length).UserString
+        self.form.OffsetProfile.setText(
+            FreeCAD.Units.Quantity(obj.OffsetProfile.Value, FreeCAD.Units.Length).UserString
         )
 
     def getSignalsForUpdate(self, obj):
@@ -93,7 +91,7 @@ class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
         signals = []
 
         signals.append(self.form.stepOverPercent.editingFinished)
-        signals.append(self.form.extraOffset.editingFinished)
+        signals.append(self.form.OffsetProfile.editingFinished)
         signals.append(self.form.cutMode.currentIndexChanged)
         signals.append(self.form.startSide.currentIndexChanged)
         signals.append(self.form.toolController.currentIndexChanged)
