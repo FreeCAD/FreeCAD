@@ -5360,6 +5360,11 @@ enum Status {
 
 void DocumentObjectItem::testStatus(bool resetStatus, QIcon& icon1, QIcon& icon2)
 {
+    // guard against calling this during destruction when tree widget may be nullptr
+    if (!treeWidget()) {
+        return;
+    }
+
     App::DocumentObject* pObject = object()->getObject();
 
     int visible = -1;
