@@ -79,15 +79,13 @@ public:
         , vpDoc(vp->getDocument())
         , editElement(element)
     {
-        auto doc = Application::Instance->editDocument();
-        if (doc) {
-            auto editVp = doc->getInEdit(&vpParent, &editSub);
-            if (editVp == vp) {
-                auto obj = vpParent->getObject();
-                editDoc = obj->getDocument()->getName();
-                editObj = obj->getNameInDocument();
-                editSub = Data::noElementName(editSub.c_str());
-            }
+        if (auto editDoc = Application::Instance->editDocument([this, &vp](Gui::Document* editDoc) {
+            return editDoc->getInEdit(&vpParent, &editSub) == vp;
+        })) {
+            auto obj = vpParent->getObject();
+            this->editDoc = obj->getDocument()->getName();
+            this->editObj = obj->getNameInDocument();
+            this->editSub = Data::noElementName(editSub.c_str());
         }
         if (editDoc.empty()) {
             vpParent = vp;

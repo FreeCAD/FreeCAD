@@ -1335,12 +1335,13 @@ void StdCmdDelete::activated(int iMsg)
         std::set<App::Document*> docs;
         std::vector<App::TransactionLocker> tlocks;
         auto manage_doc_command = [&tid, &tlocks](App::Document* doc) {
+            // The tid will not be updated if non-zero
             tid = openCommand(doc, QT_TRANSLATE_NOOP("Command", "Delete"), false, tid);
             tlocks.emplace_back(doc);
         };
 
-        // openCommand(QT_TRANSLATE_NOOP("Command", "Delete"));
         if (getGuiApplication()->sendHasMsgToFocusView(getName())) {
+            // no command has been opened yet so we can skip this commit
             // commitCommand();
             return;
         }
@@ -1350,22 +1351,34 @@ void StdCmdDelete::activated(int iMsg)
         manage_doc_command(getActiveGuiDocument()->getDocument());
 
         Gui::getMainWindow()->setUpdatesEnabled(false);
-        auto editDoc = Application::Instance->editDocument();
-        ViewProviderDocumentObject *vpedit = nullptr;
-        if(editDoc)
-            vpedit = freecad_cast<ViewProviderDocumentObject*>(editDoc->getInEdit());
-        if(vpedit && !vpedit->acceptDeletionsInEdit()) {
-            for(auto &sel : Selection().getSelectionEx(editDoc->getDocument()->getName())) {
-                if(sel.getObject() == vpedit->getObject()) {
-                    if (!sel.getSubNames().empty()) {
-                        manage_doc_command(editDoc->getDocument());
-                        vpedit->onDelete(sel.getSubNames());
-                        docs.insert(editDoc->getDocument());
+
+
+        // TODO-theo-vt verrify logic in multiple test cases
+        // in what cases is a delete launched while an edit is going on?
+        // Try to delete selected objects of edit documents first
+        // and delete selection if it does not work
+        bool deletedSelectionOfEditDocument = false;
+        std::vector<Gui::Document*> editDocs = Application::Instance->editDocuments();
+        for (auto& editDoc : editDocs) {
+            auto vpedit = freecad_cast<ViewProviderDocumentObject*>(editDoc->getInEdit());
+
+            // In practice, no ViewProviderDocumentObject accepts deletion in edit - 2025-06-17
+            if (vpedit && !vpedit->acceptDeletionsInEdit()) {
+                deletedSelectionOfEditDocument = true;
+                for (auto& sel : Selection().getSelectionEx(editDoc->getDocument()->getName())) {
+                    if (sel.getObject() == vpedit->getObject()) {
+                        if (!sel.getSubNames().empty()) {
+                            manage_doc_command(editDoc->getDocument());
+                            vpedit->onDelete(sel.getSubNames());
+                            docs.insert(editDoc->getDocument());
+                        }
+                        break;
                     }
-                    break;
                 }
             }
-        } else {
+        }
+
+        if (!deletedSelectionOfEditDocument) {
             std::set<QString> affectedLabels;
             bool more = false;
             auto sels = Selection().getSelectionEx();
