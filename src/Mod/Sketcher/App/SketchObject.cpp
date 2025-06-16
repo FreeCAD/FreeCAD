@@ -614,13 +614,6 @@ int SketchObject::solve(bool updateGeoAfterSolving /*=true*/)
             }
         }
     }
-    else if (err < 0) {
-        // if solver failed, invalid constraints were likely added before solving
-        // (see solve in addConstraint), so solver information is definitely invalid.
-        //
-        // Update: ViewProviderSketch shall now rely on the signalSolverUpdate below for update
-        // this->Constraints.touch();
-    }
 
     signalSolverUpdate();
 
