@@ -98,16 +98,16 @@ App::DocumentObjectExecReturn* MeasurePosition::execute()
     if (subElements.empty()) {
         return {};
     }
-    else {
-        App::SubObjectT subject {object, subElements.front().c_str()};
-        auto info = getMeasureInfo(subject);
-        if (!info || !info->valid) {
-            return new App::DocumentObjectExecReturn("Cannot calculate position");
-        }
-        auto positionInfo = std::dynamic_pointer_cast<Part::MeasurePositionInfo>(info);
-        Position.setValue(positionInfo->position);
-        return DocumentObject::StdReturn;
+    App::SubObjectT subject {object, subElements.front().c_str()};
+    auto info = getMeasureInfo(subject);
+
+    if (!info || !info->valid) {
+        return new App::DocumentObjectExecReturn("Cannot calculate position");
     }
+
+    auto positionInfo = std::dynamic_pointer_cast<Part::MeasurePositionInfo>(info);
+    Position.setValue(positionInfo->position);
+    return DocumentObject::StdReturn;
 }
 
 
