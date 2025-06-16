@@ -720,7 +720,7 @@ void Document::_resetEdit()
         // resetEdit() above calls into Application->setEditDocument(0) which
         // will prevent recursive calling.
 
-        App::GetApplication().closeActiveTransaction();
+        App::GetApplication().closeActiveTransaction(false, getDocument()->getBookedTransactionID());
     }
     d->_editViewProviderParent = nullptr;
     d->_editingViewer = nullptr;
@@ -2561,9 +2561,9 @@ Gui::MDIView* Document::getEditingViewOfViewProvider(Gui::ViewProvider* vp) cons
  *  operation default is the command name.
  *  @see CommitCommand(),AbortCommand()
  */
-void Document::openCommand(const char* sName)
+int Document::openCommand(const char* sName)
 {
-    getDocument()->openTransaction(sName);
+    return getDocument()->openTransaction(sName);
 }
 
 void Document::commitCommand()

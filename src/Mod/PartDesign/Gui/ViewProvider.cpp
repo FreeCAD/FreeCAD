@@ -60,13 +60,14 @@ ViewProvider::~ViewProvider() = default;
 
 bool ViewProvider::doubleClicked()
 {
+    int tid = 0;
     try {
         QString text = QObject::tr("Edit %1").arg(QString::fromUtf8(getObject()->Label.getValue()));
-        Gui::Command::openCommand(text.toUtf8());
+        tid = Gui::Command::openCommand(getDocument()->getDocument(), text.toStdString());
         Gui::cmdSetEdit(pcObject);
     }
     catch (const Base::Exception&) {
-        Gui::Command::abortCommand();
+        Gui::Command::abortCommand(tid);
     }
     return true;
 }
@@ -128,7 +129,7 @@ bool ViewProvider::setEdit(int ModNum)
                 throw Base::RuntimeError ("Failed to create new edit dialog.");
             }
         }
-
+        getDocument()->getDocument()->postponeCommit();
         Gui::Control().showDialog(featureDlg);
         return true;
     } else {
