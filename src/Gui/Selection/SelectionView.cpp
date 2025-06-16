@@ -42,6 +42,7 @@
 #include "BitmapFactory.h"
 #include "Command.h"
 #include "Document.h"
+#include "ViewProvider.h"
 
 
 FC_LOG_LEVEL_INIT("Selection", true, true, true)
@@ -703,5 +704,128 @@ void SelectionView::onEnablePickList()
 }
 
 /// @endcond
+
+// SelectionMenu implementation
+SelectionMenu::SelectionMenu(QWidget *parent)
+    : QMenu(parent)
+{
+}
+
+struct ElementInfo {
+    QMenu *menu = nullptr;
+    QIcon icon;
+    std::vector<int> indices;
+};
+
+struct SubMenuInfo {
+    QMenu *menu = nullptr;
+    // Map from sub-object label to map from object path to element info
+    std::map<std::string, std::map<std::string, ElementInfo> > items;
+};
+
+PickData SelectionMenu::doPick(const std::vector<PickData> &sels)
+{
+    clear();
+
+    std::map<std::string, std::vector<int>> typeGroups;
+    
+    // Group selections by element type
+    for (int i = 0; i < (int)sels.size(); ++i) {
+        const auto &sel = sels[i];
+        std::string elementType = "Other";
+        
+        // Extract element type from element name
+        if (!sel.element.empty()) {
+            if (sel.element.find("Face") == 0) elementType = "Face";
+            else if (sel.element.find("Edge") == 0) elementType = "Edge";
+            else if (sel.element.find("Vertex") == 0) elementType = "Vertex";
+            else if (sel.element.find("Wire") == 0) elementType = "Wire";
+            else if (sel.element.find("Shell") == 0) elementType = "Shell";
+            else if (sel.element.find("Solid") == 0) elementType = "Solid";
+        }
+        
+        typeGroups[elementType].push_back(i);
+    }
+
+    // Create menu structure
+    for (const auto &typeGroup : typeGroups) {
+        const std::string &typeName = typeGroup.first;
+        const std::vector<int> &indices = typeGroup.second;
+        
+        if (indices.empty()) continue;
+        
+        QMenu *typeMenu = nullptr;
+        if (typeGroups.size() > 1) {
+            typeMenu = addMenu(QString::fromUtf8(typeName.c_str()));
+        }
+        
+        for (int idx : indices) {
+            const auto &sel = sels[idx];
+            
+            QString text = QString::fromUtf8(sel.obj->Label.getValue());
+            if (!sel.element.empty()) {
+                text += QString::fromLatin1(" (") + QString::fromUtf8(sel.element.c_str()) + QString::fromLatin1(")");
+            }
+            
+            // Get icon from view provider
+            QIcon icon;
+            auto vp = Application::Instance->getViewProvider(sel.obj);
+            if (vp) {
+                icon = vp->getIcon();
+            }
+            
+            QAction *action;
+            if (typeMenu) {
+                action = typeMenu->addAction(icon, text);
+            } else {
+                action = addAction(icon, text);
+            }
+            action->setData(idx);
+        }
+    }
+
+    QAction* picked = this->exec(QCursor::pos());
+    return onPicked(picked, sels);
+}
+
+PickData SelectionMenu::onPicked(QAction *picked, const std::vector<PickData> &sels)
+{
+    Gui::Selection().rmvPreselect();
+    if (!picked)
+        return PickData{};
+    
+    int index = picked->data().toInt();
+    if (index >= 0 && index < (int)sels.size()) {
+        const auto &sel = sels[index];
+        if (sel.obj) {
+            Gui::Selection().addSelection(sel.docName.c_str(),
+                                          sel.objName.c_str(),
+                                          sel.subName.c_str());
+        }
+        return sel;
+    }
+    return PickData{};
+}
+
+void SelectionMenu::onHover(QAction *action)
+{
+    if (!action)
+        return;
+    
+    // For now, just clear preselection on hover
+    // Could be enhanced to preselect the hovered item
+    Gui::Selection().rmvPreselect();
+}
+
+bool SelectionMenu::eventFilter(QObject *obj, QEvent *event)
+{
+    return QMenu::eventFilter(obj, event);
+}
+
+void SelectionMenu::leaveEvent(QEvent *e)
+{
+    Gui::Selection().rmvPreselect();
+    QMenu::leaveEvent(e);
+}
 
 #include "moc_SelectionView.cpp"

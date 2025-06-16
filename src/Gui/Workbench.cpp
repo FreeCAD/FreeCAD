@@ -737,7 +737,8 @@ MenuItem* StdWorkbench::setupMenuBar() const
           << "Separator"
           << "Std_ProjectUtil"
           << "Std_DlgParameter"
-          << "Std_DlgCustomize";
+          << "Std_DlgCustomize"
+          << "Std_PickGeometry";
 
     // Macro
     auto macro = new MenuItem( menuBar );

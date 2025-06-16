@@ -25,6 +25,8 @@
 
 #include "DockWindow.h"
 #include "Selection.h"
+#include <QMenu>
+#include <QPointer>
 
 
 class QListWidget;
@@ -112,6 +114,44 @@ private:
 };
 
 } // namespace DockWnd
+
+// Simple selection data structure
+struct PickData {
+    App::DocumentObject* obj;
+    std::string element;
+    std::string docName;
+    std::string objName;
+    std::string subName;
+};
+
+// Add SelectionMenu class outside the DockWnd namespace
+class GuiExport SelectionMenu : public QMenu {
+    Q_OBJECT
+public:
+    SelectionMenu(QWidget *parent=nullptr);
+
+    /** Populate and show the menu for picking geometry elements.
+     *
+     * @param sels: a list of geometry element references
+     * @return Return the picked geometry reference
+     *
+     * The menu will be divided into submenus that are grouped by element type.
+     */
+    PickData doPick(const std::vector<PickData> &sels);
+
+public Q_SLOTS:
+    void onHover(QAction *);
+
+protected:
+    bool eventFilter(QObject *, QEvent *) override;
+    void leaveEvent(QEvent *e) override;
+    PickData onPicked(QAction *, const std::vector<PickData> &sels);
+
+private:
+    QPointer<QMenu> activeMenu;
+    QPointer<QAction> activeAction;
+};
+
 } // namespace Gui
 
 #endif // GUI_DOCKWND_SELECTIONVIEW_H
