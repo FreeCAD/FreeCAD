@@ -476,6 +476,7 @@ void Command::_invoke(int id, bool disablelog)
         // if (!getGuiApplication()->isInEdit(activeDoc)) {
         //     commitSelf();
         // }
+        // TODO-theo-vt
         currentTransactionID = 0; // Get ready for next invoke
     }
     catch (const Base::SystemExitException&) {
