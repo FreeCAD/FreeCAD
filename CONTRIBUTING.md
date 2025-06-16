@@ -62,7 +62,7 @@ The FreeCAD Contribution Process is expressed here with the following specific g
     1. the description MUST contain proper attribution as the first line, for example: "This is work of XYZ cherry-picked from <link>";
     2. all commits MUST have proper authorship, i.e. be authored by the original author and commited by the author of the PR;
     3. if changes to cherry-picked commits are necessary they should be done either as follow-up commits, or if not possible they should contain `Co-Authored-By` trailer.
-15. A “Valid PR” is one which satisfies the above requirements.
+14. A “Valid PR” is one which satisfies the above requirements.
 
 ## 6. Process
 
