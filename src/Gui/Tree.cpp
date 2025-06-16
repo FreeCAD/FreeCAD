@@ -1800,7 +1800,7 @@ void TreeWidget::mouseDoubleClickEvent(QMouseEvent* event)
 
             const char* commandText = vp->getTransactionText();
             if (commandText) {
-                auto editDoc = Application::Instance->editDocument();
+                bool inEditInit = Application::Instance->isInEdit(guidoc);
                 // App::AutoTransaction committer(commandText, true);
                 appdoc->setActiveTransaction(commandText);
 
@@ -1812,7 +1812,8 @@ void TreeWidget::mouseDoubleClickEvent(QMouseEvent* event)
                 // If the double click starts an editing, let the transaction persist
                 // if (!editDoc && Application::Instance->editDocument()) 
                 //     committer.setEnable(false);
-                if (editDoc) {
+                // TODO-theo-vt check logic here
+                if (!inEditInit && Application::Instance->isInEdit(guidoc)) {
                     appdoc->commitTransaction();
                 }
             }
@@ -3885,16 +3886,19 @@ void DocumentItem::slotInEdit(const Gui::ViewProviderDocumentObject& v)
     QColor color(Base::Color::fromPackedRGB<QColor>(col));
 
     if (!getTree()->editingItem) {
-        auto doc = Application::Instance->editDocument();
-        if (!doc)
+        // TODO-theo-vt is this really what this was trying to do?
+        if (!Application::Instance->isInEdit(document())) {
             return;
+        }
         ViewProviderDocumentObject* parentVp = nullptr;
         std::string subname;
-        auto vp = doc->getInEdit(&parentVp, &subname);
-        if (!parentVp)
+        auto vp = document()->getInEdit(&parentVp, &subname);
+        if (!parentVp) {
             parentVp = freecad_cast<ViewProviderDocumentObject*>(vp);
-        if (parentVp)
+        }
+        if (parentVp) {
             getTree()->editingItem = findItemByObject(true, parentVp->getObject(), subname.c_str());
+        }
     }
 
     if (getTree()->editingItem)
