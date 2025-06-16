@@ -33,7 +33,6 @@ import FreeCAD
 import FreeCADGui
 
 import Plot
-import FemGui
 from PySide import QtGui, QtCore
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
@@ -47,9 +46,9 @@ from vtkmodules.numpy_interface.dataset_adapter import VTKArray
 from . import view_base_fempostextractors
 from . import view_base_fempostvisualization
 from femtaskpanels import task_post_lineplot
-from femguiutils import post_visualization as pv
 
-_GuiPropHelper = view_base_fempostvisualization._GuiPropHelper
+from . import view_base_femobject
+_GuiPropHelper = view_base_femobject._GuiPropHelper
 
 class EditViewWidget(QtGui.QWidget):
 

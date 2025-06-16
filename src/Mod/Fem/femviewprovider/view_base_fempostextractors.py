@@ -35,7 +35,6 @@ import FreeCADGui
 
 from PySide import QtGui
 
-import femobjects.base_fempostextractors as fpe
 from femtaskpanels import task_post_extractor
 
 class VPPostExtractor:

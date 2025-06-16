@@ -29,14 +29,8 @@ __url__ = "https://www.freecad.org"
 #  \ingroup FEM
 #  \brief view provider for post visualization object
 
-from PySide import QtGui, QtCore
-
-import Plot
 import FreeCAD
 import FreeCADGui
-
-from . import view_base_femobject
-_GuiPropHelper = view_base_femobject._GuiPropHelper
 
 class VPPostVisualization:
     """
