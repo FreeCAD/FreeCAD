@@ -496,37 +496,31 @@ void EditableDatumLabel::setLockedAppearance(bool locked)
                 lockIconLabel = new QLabel(spinBox);
                 lockIconLabel->setAttribute(Qt::WA_TransparentForMouseEvents, true);
                 lockIconLabel->setAlignment(Qt::AlignRight | Qt::AlignVCenter);
+
+                // load icon and scale it to fit in spinbox
+                QPixmap lockIcon = Gui::BitmapFactory().pixmap("Constraint_Lock");
+                QPixmap scaledIcon =
+                    lockIcon.scaled(14, 14, Qt::KeepAspectRatio, Qt::SmoothTransformation);
+                lockIconLabel->setPixmap(scaledIcon);
+
+                // position lock icon inside the spinbox
+                int iconSize = 14;
+                int padding = 4;
+                QSize spinboxSize = spinBox->size();
+                lockIconLabel->setGeometry(spinboxSize.width() - iconSize - padding,
+                                           (spinboxSize.height() - iconSize) / 2,
+                                           iconSize,
+                                           iconSize);
+                // style spinbox and add padding for lock
+                QString styleSheet = QString::fromLatin1("QSpinBox { "
+                                                         "padding-right: %1px; "
+                                                         "}")
+                                         .arg(iconSize + padding + 2);
+
+                spinBox->setStyleSheet(styleSheet);
             }
-            else
-            {
-                lockIconLabel->show();
-            }
-            
-            // load icon and scale it to fit in spinbox
-            QPixmap lockIcon = Gui::BitmapFactory().pixmap("Constraint_Lock");
-            QPixmap scaledIcon = lockIcon.scaled(14, 14, Qt::KeepAspectRatio, Qt::SmoothTransformation);
-            lockIconLabel->setPixmap(scaledIcon);
-            
-            // position lock icon inside the spinbox
-            int iconSize = 14;
-            int padding = 4;
-            QSize spinboxSize = spinBox->size();
-            lockIconLabel->setGeometry(
-                spinboxSize.width() - iconSize - padding,
-                (spinboxSize.height() - iconSize) / 2,
-                iconSize,
-                iconSize
-            );
+
             lockIconLabel->show();
-            
-            // style spinbox and add padding for lock
-            QString styleSheet = QString::fromLatin1(
-                "QSpinBox { "
-                "padding-right: %1px; "
-                "}"
-            ).arg(iconSize + padding + 2);
-            
-            spinBox->setStyleSheet(styleSheet);
         }
     } else {
         this->hasFinishedEditing = false;
