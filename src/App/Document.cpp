@@ -243,7 +243,7 @@ bool Document::redo(const int id)
             mUndoMap[d->activeUndoTransaction->getID()] = d->activeUndoTransaction;
             mUndoTransactions.push_back(d->activeUndoTransaction);
             d->activeUndoTransaction = nullptr;
-            d->bookedTransaction = 0;   
+            d->bookedTransaction = 0;
 
             mRedoMap.erase(mRedoTransactions.back()->getID());
             delete mRedoTransactions.back();
@@ -334,7 +334,7 @@ std::vector<std::string> Document::getAvailableRedoNames() const
 
 int Document::openTransaction(const char* name) // NOLINT
 {
-    if (!canCommit()) {
+    if (isTransactionLocked()) {
         if (FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG)) {
             FC_WARN("Transaction locked, ignore new transaction '" << name << "'");
         }
@@ -352,7 +352,7 @@ int Document::openTransaction(const char* name) // NOLINT
 
 int Document::_openTransaction(std::string name, int id)
 {
-    if (!canCommit() && id != d->bookedTransaction) {
+    if (isTransactionLocked() && id != d->bookedTransaction) {
         if (FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG)) {
             FC_WARN("Transaction locked, ignore new transaction '" << name << "'");
         }
@@ -428,26 +428,6 @@ void Document::renameTransaction(const char* name, const int id) const
         d->activeUndoTransaction->Name += name;
     }
 }
-void Document::postponeCommit()
-{
-    d->CommitPostponed++;
-}
-bool Document::isCommitPostponed() const
-{
-    return d->CommitPostponed > 0;
-}
-bool Document::canCommit() const
-{
-    return !isCommitPostponed() && !isTransactionLocked();
-}
-bool Document::decreasePostponeCommit()
-{
-    if (isCommitPostponed()) {
-        d->CommitPostponed --;
-        return true;
-    }
-    return false;
-}
 int Document::setActiveTransaction(const std::string& name, bool tmpName, int tid)
 {
     // Probably a group transaction situation
@@ -462,6 +442,7 @@ int Document::setActiveTransaction(const std::string& name, bool tmpName, int ti
             return 0;
         }
         d->bookedTransaction = tid;
+        std::cerr << "Sticking to group transaction " << name << "\n";
         if (GetApplication().transactionTmpName(d->bookedTransaction)) {
             GetApplication().setTransactionName(d->bookedTransaction, name, tmpName);
         }
@@ -473,14 +454,12 @@ int Document::setActiveTransaction(const std::string& name, bool tmpName, int ti
         GetApplication().setTransactionName(d->bookedTransaction, name, tmpName);
         return d->bookedTransaction;
     }
-    if (d->bookedTransaction && isCommitPostponed()) {
-        return d->bookedTransaction;
-    }
     if (d->bookedTransaction && !_commitTransaction()) {
         FC_LOG("Could not book transaction for document");
         return 0;
     }
     d->bookedTransaction = Transaction::getNewID();
+    std::cerr << "Created transaction " << name << "\n";
     GetApplication().setTransactionDescription(d->bookedTransaction, TransactionDescription {.initiator = this, .name = name, .tmp = tmpName});
     return d->bookedTransaction;
 }
@@ -593,11 +572,7 @@ bool Document::_commitTransaction(const bool notify)
     if (d->committing) {
         // for a recursive call return without printing a warning
         return false;
-    }
-    if (decreasePostponeCommit()) {
-        return false;
-    }
-    
+    }    
 
     if (d->activeUndoTransaction) {
         Base::FlagToggler<> flag(d->committing);

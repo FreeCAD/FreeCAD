@@ -84,7 +84,6 @@ bool ViewProviderPrimitive::setEdit(int ModNum)
         // always change to PartDesign WB, remember where we come from
         oldWb = Gui::Command::assureWorkbench("PartDesignWorkbench");
 
-        getDocument()->getDocument()->postponeCommit();
         // start the edit dialog
         // another pad left open its task panel
         if (primitiveDlg)

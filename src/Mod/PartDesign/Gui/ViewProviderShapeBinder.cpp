@@ -109,7 +109,6 @@ bool ViewProviderShapeBinder::setEdit(int ModNum) {
 
         // start the edit dialog
         // another pad left open its task panel
-        getDocument()->getDocument()->postponeCommit();
         if (sbDlg)
             Gui::Control().showDialog(sbDlg);
         else
