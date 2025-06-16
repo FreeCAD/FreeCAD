@@ -4281,6 +4281,18 @@ class DxfImportReporter:
         else:
             lines.append("  (No entities recorded)")
         lines.append(f"FreeCAD objects created: {self.stats.get('totalEntitiesCreated', 0)}")
+
+        lines.append("")
+
+        # System Blocks
+        lines.append("System Blocks:")
+        system_blocks = self.stats.get('systemBlockCounts', {})
+        if system_blocks:
+            for key, value in sorted(system_blocks.items()):
+                lines.append(f"  - {key}: {value}")
+        else:
+            lines.append("  (None found or imported)")
+
         lines.append("")
 
         lines.append("Unsupported Features:")
