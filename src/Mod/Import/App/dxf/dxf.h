@@ -188,6 +188,8 @@ struct DxfImportStats
     std::map<std::string, int> entityCounts;
     std::map<std::string, std::string> importSettings;
     std::map<std::string, std::vector<std::pair<int, std::string>>> unsupportedFeatures;
+    std::map<std::string, int> systemBlockCounts;
+
     int totalEntitiesCreated = 0;
 };
 
