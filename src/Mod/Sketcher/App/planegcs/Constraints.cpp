@@ -3374,11 +3374,21 @@ void ConstraintC2LDistance::errorgrad(double* err, double* grad, double* param)
     double dh = (darea - h * dlength) / length;
 
     if (err) {
-        *err = *distance() + *circle.rad - h;
+        if (h < *circle.rad) {
+            *err = *circle.rad - *distance() - h;
+        }
+        else {
+            *err = *circle.rad + *distance() - h;
+        }
     }
     else if (grad) {
         if (param == distance() || param == circle.rad) {
-            *grad = 1.0;
+            if (h < *circle.rad) {
+                *grad = -1.0;
+            }
+            else {
+                *grad = 1.0;
+            }
         }
         else {
             *grad = -dh;
