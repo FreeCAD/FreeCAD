@@ -284,9 +284,9 @@ class CurtainWall(ArchComponent.Component):
             # Fix issue in 'Curtain wall vertical/horizontal mullion mix-up'
             # https://github.com/FreeCAD/FreeCAD/issues/21845
             #
-            p = face.findPlane()  # Curve face (surface) seems return no Plane
-            if p:
-                if -0.001 < p.Axis[2] < 0.001:  # i.e. face is vertical (normal pointing horizon)
+            face_plane = face.findPlane()  # Curve face (surface) seems return no Plane
+            if face_plane:
+                if -0.001 < face_plane.Axis[2] < 0.001:  # i.e. face is vertical (normal pointing horizon)
                     faceVert = True
                     # Support 'Swap Horizontal Vertical'
                     # See issue 'Swap Horizontal Vertical does not work'
@@ -308,8 +308,8 @@ class CurtainWall(ArchComponent.Component):
                 # Partially improved by checking 'if face is vertical' above
                 #
                 basevector = face.valueAt(fp[1],fp[3]).sub(face.valueAt(fp[0],fp[2]))
-                a = basevector.getAngle(vdir)
-                if (a <= math.pi/2+ANGLETOLERANCE) and (a >= math.pi/2-ANGLETOLERANCE):
+                bv_angle = basevector.getAngle(vdir)
+                if (bv_angle <= math.pi/2+ANGLETOLERANCE) and (bv_angle >= math.pi/2-ANGLETOLERANCE):
                     facedir = True
                     if obj.SwapHorizontalVertical:
                         vertsec = obj.HorizontalSections
