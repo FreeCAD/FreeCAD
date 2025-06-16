@@ -1,25 +1,23 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
+# SPDX-FileNotice: Part of the FreeCAD project.
 
-# ***************************************************************************
-# *   Copyright (c) 2017 sliptonic <shopinthewoods@gmail.com>               *
-# *                                                                         *
-# *   This program is free software; you can redistribute it and/or modify  *
-# *   it under the terms of the GNU Lesser General Public License (LGPL)    *
-# *   as published by the Free Software Foundation; either version 2 of     *
-# *   the License, or (at your option) any later version.                   *
-# *   for detail see the LICENCE text file.                                 *
-# *                                                                         *
-# *   This program is distributed in the hope that it will be useful,       *
-# *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-# *   GNU Library General Public License for more details.                  *
-# *                                                                         *
-# *   You should have received a copy of the GNU Library General Public     *
-# *   License along with this program; if not, write to the Free Software   *
-# *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
-# *   USA                                                                   *
-# *                                                                         *
-# ***************************************************************************
+################################################################################
+#                                                                              #
+#   FreeCAD is free software: you can redistribute it and/or modify            #
+#   it under the terms of the GNU Lesser General Public License as             #
+#   published by the Free Software Foundation, either version 2.1              #
+#   of the License, or (at your option) any later version.                     #
+#                                                                              #
+#   FreeCAD is distributed in the hope that it will be useful,                 #
+#   but WITHOUT ANY WARRANTY; without even the implied warranty                #
+#   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                    #
+#   See the GNU Lesser General Public License for more details.                #
+#                                                                              #
+#   You should have received a copy of the GNU Lesser General Public           #
+#   License along with FreeCAD. If not, see https://www.gnu.org/licenses       #
+#                                                                              #
+################################################################################
+
 
 import FreeCAD
 import FreeCADGui
@@ -28,12 +26,10 @@ import Path.Base.Gui.Util as PathGuiUtil
 import Path.Op.Gui.Base as PathOpGui
 import Path.Op.Gui.CircularHoleBase as PathCircularHoleBaseGui
 import Path.Op.Helix as PathHelix
-import PathGui
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
 translate = FreeCAD.Qt.translate
 
-from PySide import QtCore
 
 __doc__ = "Helix operation page controller and command implementation."
 
@@ -69,7 +65,9 @@ class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
             obj.StartSide = str(self.form.startSide.currentData())
         if obj.StepOver != self.form.stepOverPercent.value():
             obj.StepOver = self.form.stepOverPercent.value()
-        PathGuiUtil.updateInputField(obj, "OffsetExtra", self.form.extraOffset)
+        PathGuiUtil.updateInputField(
+            obj, "RadialStockToLeaveOuter", self.form.RadialStockToLeaveOuter
+        )
 
         self.updateToolController(obj, self.form.toolController)
         self.updateCoolant(obj, self.form.coolantController)
@@ -85,8 +83,10 @@ class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
         self.setupToolController(obj, self.form.toolController)
         self.setupCoolant(obj, self.form.coolantController)
 
-        self.form.extraOffset.setText(
-            FreeCAD.Units.Quantity(obj.OffsetExtra.Value, FreeCAD.Units.Length).UserString
+        self.form.RadialStockToLeaveOuter.setText(
+            FreeCAD.Units.Quantity(
+                obj.RadialStockToLeaveOuter.Value, FreeCAD.Units.Length
+            ).UserString
         )
 
     def getSignalsForUpdate(self, obj):
@@ -94,7 +94,7 @@ class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
         signals = []
 
         signals.append(self.form.stepOverPercent.editingFinished)
-        signals.append(self.form.extraOffset.editingFinished)
+        signals.append(self.form.RadialStockToLeaveOuter.editingFinished)
         signals.append(self.form.cutMode.currentIndexChanged)
         signals.append(self.form.startSide.currentIndexChanged)
         signals.append(self.form.toolController.currentIndexChanged)
@@ -111,6 +111,7 @@ Command = PathOpGui.SetupOperation(
     QT_TRANSLATE_NOOP("CAM_Helix", "Helix"),
     QT_TRANSLATE_NOOP("CAM_Helix", "Creates a Helical toolpath from the features of a base object"),
     PathHelix.SetupProperties,
+    commandClass=PathCircularHoleBaseGui.CircularHoleCommand,
 )
 
 FreeCAD.Console.PrintLog("Loading PathHelixGui... done\n")

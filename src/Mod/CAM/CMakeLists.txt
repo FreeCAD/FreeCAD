@@ -431,6 +431,7 @@ SET(PathPythonBaseGenerator_SRCS
     Path/Base/Generator/helix.py
     Path/Base/Generator/linking.py
     Path/Base/Generator/rotation.py
+    Path/Base/Generator/spiral.py
     Path/Base/Generator/tapping.py
     Path/Base/Generator/threadmilling.py
     Path/Base/Generator/toolchange.py
