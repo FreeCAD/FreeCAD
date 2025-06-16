@@ -386,10 +386,32 @@ public:
 
     void tryViewValueChanged(int onviewparameterindex, double value)
     {
-        // go only to next label if user has currently pressed enter on current one
-        int nextindex = onviewparameterindex + 1;
-        if (onViewParameters[onviewparameterindex]->hasFinishedEditing && isOnViewParameterOfCurrentMode(nextindex)) {
-            setFocusToOnViewParameter(nextindex);
+        // go to next label in circular manner if user has currently pressed enter on current one
+        if (onViewParameters[onviewparameterindex]->hasFinishedEditing) {
+            // find the first parameter of the current mode that is not locked to start the cycle
+            auto findNextUnlockedParameter = [this](size_t startIndex) -> int {
+                for (size_t i = startIndex; i < onViewParameters.size(); i++) {
+                    if (isOnViewParameterOfCurrentMode(i)
+                        && !onViewParameters[i]->hasFinishedEditing) {
+                        return static_cast<int>(i);
+                    }
+                }
+                return -1;
+            };
+
+            // find first unlocked parameter (for cycling back)
+            int firstOfCurrentMode = findNextUnlockedParameter(0);
+
+            // find next unlocked parameter after current one
+            int nextUnlockedIndex = findNextUnlockedParameter(onviewparameterindex + 1);
+
+            // if no next parameter found, cycle back to first of current mode
+            if (nextUnlockedIndex != -1) {
+                setFocusToOnViewParameter(nextUnlockedIndex);
+            }
+            else if (firstOfCurrentMode != -1) {
+                setFocusToOnViewParameter(firstOfCurrentMode);
+            }
         }
 
         /* That is not supported with on-view parameters.
