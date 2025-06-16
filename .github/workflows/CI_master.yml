@@ -57,11 +57,11 @@ jobs:
     with:
       artifactBasename: Ubuntu_20-04-${{ github.run_id }}
 
-  Ubuntu_22-04_Conda:
+  Ubuntu_24-04_Conda:
     needs: [Prepare]
-    uses: ./.github/workflows/sub_buildUbuntu2204Conda.yml
+    uses: ./.github/workflows/sub_buildUbuntu2404Conda.yml
     with:
-      artifactBasename: Ubuntu_22-04_Conda-${{ github.run_id }}
+      artifactBasename: Ubuntu_24-04_Conda-${{ github.run_id }}
 
   Windows:
     needs: [Prepare]
@@ -84,7 +84,7 @@ jobs:
         Pixi,
         MacOS_13_Conda_Apple,
         Ubuntu_20-04,
-        Ubuntu_22-04_Conda,
+        Ubuntu_24-04_Conda,
         Windows,
         Lint
       ]
