@@ -1,25 +1,23 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
+# SPDX-FileCopyrightText: 2017 sliptonic <shopinthewoods@gmail.com>
+# SPDX-FileNotice: Part of the FreeCAD project.
 
-# ***************************************************************************
-# *   Copyright (c) 2017 sliptonic <shopinthewoods@gmail.com>               *
-# *                                                                         *
-# *   This program is free software; you can redistribute it and/or modify  *
-# *   it under the terms of the GNU Lesser General Public License (LGPL)    *
-# *   as published by the Free Software Foundation; either version 2 of     *
-# *   the License, or (at your option) any later version.                   *
-# *   for detail see the LICENCE text file.                                 *
-# *                                                                         *
-# *   This program is distributed in the hope that it will be useful,       *
-# *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-# *   GNU Library General Public License for more details.                  *
-# *                                                                         *
-# *   You should have received a copy of the GNU Library General Public     *
-# *   License along with this program; if not, write to the Free Software   *
-# *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
-# *   USA                                                                   *
-# *                                                                         *
-# ***************************************************************************
+################################################################################
+#                                                                              #
+#   FreeCAD is free software: you can redistribute it and/or modify            #
+#   it under the terms of the GNU Lesser General Public License as             #
+#   published by the Free Software Foundation, either version 2.1              #
+#   of the License, or (at your option) any later version.                     #
+#                                                                              #
+#   FreeCAD is distributed in the hope that it will be useful,                 #
+#   but WITHOUT ANY WARRANTY; without even the implied warranty                #
+#   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                    #
+#   See the GNU Lesser General Public License for more details.                #
+#                                                                              #
+#   You should have received a copy of the GNU Lesser General Public           #
+#   License along with FreeCAD. If not, see https://www.gnu.org/licenses       #
+#                                                                              #
+################################################################################
 
 import FreeCAD
 import FreeCADGui
@@ -33,7 +31,6 @@ from PySide.QtCore import QT_TRANSLATE_NOOP
 
 translate = FreeCAD.Qt.translate
 
-from PySide import QtCore
 
 __doc__ = "Helix operation page controller and command implementation."
 
@@ -53,7 +50,7 @@ class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
         """getForm() ... return UI"""
 
         form = FreeCADGui.PySideUic.loadUi(":/panels/PageOpHelixEdit.ui")
-        comboToPropertyMap = [("startSide", "StartSide"), ("cutMode", "CutMode")]
+        comboToPropertyMap = [("startAt", "StartAt"), ("cutMode", "CutMode")]
 
         enumTups = PathHelix.ObjectHelix.helixOpPropertyEnumerations(dataType="raw")
 
@@ -65,11 +62,14 @@ class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
         Path.Log.track()
         if obj.CutMode != str(self.form.cutMode.currentData()):
             obj.CutMode = str(self.form.cutMode.currentData())
-        if obj.StartSide != str(self.form.startSide.currentData()):
-            obj.StartSide = str(self.form.startSide.currentData())
+        if obj.StartAt != str(self.form.startAt.currentData()):
+            obj.StartAt = str(self.form.startAt.currentData())
         if obj.StepOver != self.form.stepOverPercent.value():
             obj.StepOver = self.form.stepOverPercent.value()
-        PathGuiUtil.updateInputField(obj, "OffsetExtra", self.form.extraOffset)
+        PathGuiUtil.updateInputField(obj, "HelixPitch", self.form.helixPitch)
+        PathGuiUtil.updateInputField(
+            obj, "RadialStockToLeaveOuter", self.form.radialStockToLeaveOuter
+        )
 
         self.updateToolController(obj, self.form.toolController)
         self.updateCoolant(obj, self.form.coolantController)
@@ -80,23 +80,30 @@ class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
 
         self.form.stepOverPercent.setValue(obj.StepOver)
         self.selectInComboBox(obj.CutMode, self.form.cutMode)
-        self.selectInComboBox(obj.StartSide, self.form.startSide)
+        self.selectInComboBox(obj.StartAt, self.form.startAt)
 
         self.setupToolController(obj, self.form.toolController)
         self.setupCoolant(obj, self.form.coolantController)
 
-        self.form.extraOffset.setText(
-            FreeCAD.Units.Quantity(obj.OffsetExtra.Value, FreeCAD.Units.Length).UserString
+        self.form.helixPitch.setText(
+            FreeCAD.Units.Quantity(obj.HelixPitch.Value, FreeCAD.Units.Length).UserString
+        )
+        self.form.radialStockToLeaveOuter.setText(
+            FreeCAD.Units.Quantity(
+                obj.RadialStockToLeaveOuter.Value, FreeCAD.Units.Length
+            ).UserString
         )
 
     def getSignalsForUpdate(self, obj):
         """getSignalsForUpdate(obj) ... return list of signals for updating obj"""
         signals = []
 
+        signals.append(self.form.helixPitch.editingFinished)
         signals.append(self.form.stepOverPercent.editingFinished)
-        signals.append(self.form.extraOffset.editingFinished)
+        signals.append(self.form.radialStockToLeaveOuter.editingFinished)
+        signals.append(self.form.radialStockToLeaveOuter.editingFinished)
         signals.append(self.form.cutMode.currentIndexChanged)
-        signals.append(self.form.startSide.currentIndexChanged)
+        signals.append(self.form.startAt.currentIndexChanged)
         signals.append(self.form.toolController.currentIndexChanged)
         signals.append(self.form.coolantController.currentIndexChanged)
 
