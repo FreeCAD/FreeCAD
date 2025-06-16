@@ -29,6 +29,7 @@
 #include <App/GroupExtension.h>
 #include <App/Part.h>
 #include "Application.h"
+#include "Action.h"
 #include "cet_lut.hpp"
 #include "CommandT.h"
 #include "DockWindowManager.h"
@@ -298,6 +299,58 @@ void StdCmdSendToPythonConsole::activated(int iMsg)
 
 }
 
+//===========================================================================
+// Std_ToggleSkipRecompute
+//===========================================================================
+
+DEF_STD_CMD_AC(StdCmdToggleSkipRecompute)
+
+StdCmdToggleSkipRecompute::StdCmdToggleSkipRecompute()
+    : Command("Std_ToggleSkipRecompute")
+{
+    sGroup = "File";
+    sMenuText = QT_TR_NOOP("Skip recomputes");
+    static std::string toolTip = QT_TR_NOOP("Enable or disable recomputations of document");
+    sToolTipText = toolTip.c_str();
+    sStatusTip = sToolTipText;
+    sWhatsThis = "Std_ToggleSkipRecompute";
+    sPixmap = "Std_ToggleSkipRecompute"; 
+    eType = AlterDoc;
+}
+
+Gui::Action* StdCmdToggleSkipRecompute::createAction(void)
+{
+    Action* pcAction = Command::createAction();
+    pcAction->setCheckable(true);
+    _pcAction = pcAction;
+    isActive();
+    return pcAction;
+}
+
+void StdCmdToggleSkipRecompute::activated(int iMsg)
+{
+    const auto doc = this->getDocument();
+    if (doc == nullptr) 
+        return;
+
+    Command::openCommand(QT_TRANSLATE_NOOP("Command", "Skip recomputes"));
+    doc->setStatus(App::Document::SkipRecompute, (bool) iMsg);
+    if (_pcAction) 
+        _pcAction->setChecked((bool) iMsg, true);
+    Command::commitCommand();    
+}
+
+bool StdCmdToggleSkipRecompute::isActive()
+{
+    const auto doc = this->getDocument();
+    if (doc == nullptr) 
+        return false;
+
+    const bool skipRecomputeStatus = doc->testStatus(App::Document::SkipRecompute);
+    if (_pcAction && _pcAction->isChecked() != skipRecomputeStatus)
+        _pcAction->setChecked(skipRecomputeStatus, true);
+    return true;
+}
 
 namespace Gui {
 
@@ -309,6 +362,7 @@ void CreateFeatCommands()
     rcCmdMgr.addCommand(new StdCmdToggleFreeze());
     rcCmdMgr.addCommand(new StdCmdRandomColor());
     rcCmdMgr.addCommand(new StdCmdSendToPythonConsole());
+    rcCmdMgr.addCommand(new StdCmdToggleSkipRecompute());
 }
 
 } // namespace Gui
