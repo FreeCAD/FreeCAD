@@ -237,15 +237,34 @@ bool ImpExpDxfRead::OnReadBlock(const std::string& name, int flags)
         return SkipBlockContents();
     }
 
-    // Step 2: Decide if we should skip this block based on its name and user settings.
+    // Step 2: Check if the block is anonymous/system.
+    // Also, categorize and count them for the report.
     bool isAnonymous = (name.find('*') == 0);
-    if (isAnonymous && !m_importHiddenBlocks) {
-        // It is an anonymous block used to build dimensions, hatches, etc.
-        return SkipBlockContents();
-    }
+    if (isAnonymous) {
+        // First, count and categorize the system block we found.
+        if (name.size() > 1) {
+            char type = std::toupper(name[1]);
+            if (type == 'D') {
+                m_stats.systemBlockCounts["Dimension-related (*D)"]++;
+            }
+            else if (type == 'H' || type == 'X') {
+                m_stats.systemBlockCounts["Hatch-related (*H, *X)"]++;
+            }
+            else {
+                m_stats.systemBlockCounts["Other System Blocks"]++;
+            }
+        }
+        else {
+            m_stats.systemBlockCounts["Other System Blocks"]++;
+        }
 
-    // Step 3: If we are still here, we are processing the block. Now, decide if we should count it.
-    if (!isAnonymous) {
+        // Now, decide if we should skip processing it based on user settings.
+        if (!m_importHiddenBlocks) {
+            return SkipBlockContents();
+        }
+    }
+    else {
+        // Step 3: If not anonymous, count it as a user block.
         m_stats.entityCounts["BLOCK"]++;
     }
 
@@ -1478,6 +1497,13 @@ Py::Object ImpExpDxfRead::getStatsAsPyObject()
         unsupportedFeaturesDict.setItem(pair.first.c_str(), occurrencesList);
     }
     statsDict.setItem("unsupportedFeatures", unsupportedFeaturesDict);
+
+    // Create a nested dictionary for the counts of system blocks encountered.
+    Py::Dict systemBlockCountsDict;
+    for (const auto& pair : m_stats.systemBlockCounts) {
+        systemBlockCountsDict.setItem(pair.first.c_str(), Py::Long(pair.second));
+    }
+    statsDict.setItem("systemBlockCounts", systemBlockCountsDict);
 
     // Return the fully populated statistics dictionary to the Python caller.
     return statsDict;
