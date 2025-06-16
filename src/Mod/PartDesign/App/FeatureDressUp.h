@@ -65,6 +65,7 @@ public:
 
     std::vector<TopoShape> getFaces(const TopoShape &shape);
     void getAddSubShape(Part::TopoShape &addShape, Part::TopoShape &subShape) override;
+    void updatePreviewShape() override;
 
 protected:
     void onChanged(const App::Property* prop) override;
