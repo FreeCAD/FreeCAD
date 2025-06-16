@@ -26,6 +26,7 @@
 
 #include <QObject>
 #include <QPointer>
+#include <QLabel>
 #include <Gui/QuantitySpinBox.h>
 
 #include "SoDatumLabel.h"
