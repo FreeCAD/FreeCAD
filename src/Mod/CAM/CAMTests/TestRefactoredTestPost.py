@@ -882,6 +882,52 @@ G54
 
     #############################################################################
 
+    def test00145(self) -> None:
+        """Test the finish label argument."""
+        # test the default finish label
+        self.multi_compare(
+            [],
+            """(Begin preamble)
+G90
+G21
+(Begin operation)
+G54
+(Finish operation)
+(Begin operation)
+(TC: Default Tool)
+(Begin toolchange)
+(M6 T1)
+(Finish operation)
+(Begin operation)
+(Finish operation)
+(Begin postamble)
+""",
+            "--comments",
+        )
+
+        # test a changed finish label
+        self.multi_compare(
+            [],
+            """(Begin preamble)
+G90
+G21
+(Begin operation)
+G54
+(End operation)
+(Begin operation)
+(TC: Default Tool)
+(Begin toolchange)
+(M6 T1)
+(End operation)
+(Begin operation)
+(End operation)
+(Begin postamble)
+""",
+            "--finish_label='End' --comments",
+        )
+
+    #############################################################################
+
     def test00150(self):
         """Test output with an empty path.
 
@@ -1178,6 +1224,9 @@ G0 Z8.000
   --feed-precision FEED_PRECISION
                         Number of digits of precision for feed rate, default
                         is 3
+  --finish_label FINISH_LABEL
+                        The characters to use in the 'Finish operation'
+                        comment, default is "Finish"
   --header              Output headers (default)
   --no-header           Suppress header output
   --line_number_increment LINE_NUMBER_INCREMENT
@@ -1198,12 +1247,25 @@ G0 Z8.000
                         Output all of the available arguments
   --no-output_all_arguments
                         Don't output all of the available arguments (default)
+  --output_machine_name
+                        Output the machine name in the pre-operation
+                        information
+  --no-output_machine_name
+                        Don't output the machine name in the pre-operation
+                        information (default)
+  --output_path_labels  Output Path labels at the beginning of each Path
+  --no-output_path_labels
+                        Don't output Path labels at the beginning of each Path
+                        (default)
   --output_visible_arguments
                         Output all of the visible arguments
   --no-output_visible_arguments
                         Don't output the visible arguments (default)
   --postamble POSTAMBLE
                         Set commands to be issued after the last command,
+                        default is ""
+  --post_operation POST_OPERATION
+                        Set commands to be issued after every operation,
                         default is ""
   --preamble PREAMBLE   Set commands to be issued before the first command,
                         default is ""
@@ -1293,6 +1355,146 @@ G0 X2.000
 
     #############################################################################
 
+    def test00205(self) -> None:
+        """Test output_machine_name argument."""
+        # test the default behavior
+        self.multi_compare(
+            [],
+            """(Begin preamble)
+G90
+G21
+(Begin operation)
+G54
+(Finish operation)
+(Begin operation)
+(TC: Default Tool)
+(Begin toolchange)
+(M6 T1)
+(Finish operation)
+(Begin operation)
+(Finish operation)
+(Begin postamble)
+""",
+            "--comments",
+        )
+
+        # test outputting the machine name
+        self.multi_compare(
+            [],
+            """(Begin preamble)
+G90
+G21
+(Begin operation)
+(Machine: test, mm/min)
+G54
+(Finish operation)
+(Begin operation)
+(Machine: test, mm/min)
+(TC: Default Tool)
+(Begin toolchange)
+(M6 T1)
+(Finish operation)
+(Begin operation)
+(Machine: test, mm/min)
+(Finish operation)
+(Begin postamble)
+""",
+            "--output_machine_name --comments",
+        )
+
+        # test not outputting the machine name
+        self.multi_compare(
+            [],
+            """(Begin preamble)
+G90
+G21
+(Begin operation)
+G54
+(Finish operation)
+(Begin operation)
+(TC: Default Tool)
+(Begin toolchange)
+(M6 T1)
+(Finish operation)
+(Begin operation)
+(Finish operation)
+(Begin postamble)
+""",
+            "--no-output_machine_name --comments",
+        )
+
+    #############################################################################
+
+    def test00206(self) -> None:
+        """Test output_path_labels argument."""
+        # test the default behavior
+        self.multi_compare(
+            [],
+            """(Begin preamble)
+G90
+G21
+(Begin operation)
+G54
+(Finish operation)
+(Begin operation)
+(TC: Default Tool)
+(Begin toolchange)
+(M6 T1)
+(Finish operation)
+(Begin operation)
+(Finish operation)
+(Begin postamble)
+""",
+            "--comments",
+        )
+
+        # test outputting the path labels
+        self.multi_compare(
+            [],
+            """(Begin preamble)
+G90
+G21
+(Begin operation)
+(Path: Fixture)
+G54
+(Finish operation)
+(Begin operation)
+(Path: TC: Default Tool)
+(TC: Default Tool)
+(Begin toolchange)
+(M6 T1)
+(Finish operation)
+(Begin operation)
+(Path: Profile)
+(Finish operation)
+(Begin postamble)
+""",
+            "--output_path_labels --comments",
+        )
+
+        # test not outputting the path labels
+        self.multi_compare(
+            [],
+            """(Begin preamble)
+G90
+G21
+(Begin operation)
+G54
+(Finish operation)
+(Begin operation)
+(TC: Default Tool)
+(Begin toolchange)
+(M6 T1)
+(Finish operation)
+(Begin operation)
+(Finish operation)
+(Begin postamble)
+""",
+            "--no-output_path_labels --comments",
+        )
+
+    #############################################################################
+
     def test00210(self):
         """Test Post-amble."""
         nl = "\n"
@@ -1304,6 +1506,36 @@ G0 X2.000
         # print(f"--------{nl}{gcode}--------{nl}")
         self.assertEqual(split_gcode[-2], "G0 Z50")
         self.assertEqual(split_gcode[-1], "M2")
+
+    #############################################################################
+
+    def test00215(self) -> None:
+        """Test the post_operation argument."""
+        self.multi_compare(
+            [],
+            """(Begin preamble)
+G90
+G21
+(Begin operation)
+G54
+(Finish operation)
+G90 G80
+G40 G49
+(Begin operation)
+(TC: Default Tool)
+(Begin toolchange)
+(M6 T1)
+(Finish operation)
+G90 G80
+G40 G49
+(Begin operation)
+(Finish operation)
+G90 G80
+G40 G49
+(Begin postamble)
+""",
+            "--comments --post_operation='G90 G80\nG40 G49'",
+        )
 
     #############################################################################
 
