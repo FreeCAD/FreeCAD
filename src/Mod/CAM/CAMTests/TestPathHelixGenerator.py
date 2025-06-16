@@ -43,7 +43,9 @@ def _resetArgs():
         "step_down": 1.0,
         "step_over": 0.5,
         "tool_diameter": 5.0,
-        "inner_radius": 0.0,
+        "inner_radius": 2.5,
+        "retract_height": 23,
+        "retract_center": True,
         "direction": "CW",
         "startAt": "Inside",
     }
@@ -52,6 +54,7 @@ def _resetArgs():
 class TestPathHelixGenerator(PathTestUtils.PathTestBase):
 
     expectedHelixGCode = "G0 X7.500000 Y5.000000\
+G0 Z23.000000\
 G1 Z20.000000\
 G2 I-2.500000 J0.000000 X2.500000 Y5.000000 Z19.500000\
 G2 I2.500000 J0.000000 X7.500000 Y5.000000 Z19.000000\
@@ -60,7 +63,8 @@ G2 I2.500000 J0.000000 X7.500000 Y5.000000 Z18.000000\
 G2 I-2.500000 J0.000000 X2.500000 Y5.000000 Z18.000000\
 G2 I2.500000 J0.000000 X7.500000 Y5.000000 Z18.000000\
 G0 X5.000000 Y5.000000 Z18.000000\
-G0 Z20.000000G0 X10.000000 Y5.000000\
+G0 Z23.000000\
+G0 X10.000000 Y5.000000\
 G1 Z20.000000\
 G2 I-5.000000 J0.000000 X0.000000 Y5.000000 Z19.500000\
 G2 I5.000000 J0.000000 X10.000000 Y5.000000 Z19.000000\
@@ -69,7 +73,8 @@ G2 I5.000000 J0.000000 X10.000000 Y5.000000 Z18.000000\
 G2 I-5.000000 J0.000000 X0.000000 Y5.000000 Z18.000000\
 G2 I5.000000 J0.000000 X10.000000 Y5.000000 Z18.000000\
 G0 X5.000000 Y5.000000 Z18.000000\
-G0 Z20.000000G0 X12.500000 Y5.000000\
+G0 Z23.000000\
+G0 X12.500000 Y5.000000\
 G1 Z20.000000\
 G2 I-7.500000 J0.000000 X-2.500000 Y5.000000 Z19.500000\
 G2 I7.500000 J0.000000 X12.500000 Y5.000000 Z19.000000\
@@ -77,7 +82,8 @@ G2 I-7.500000 J0.000000 X-2.500000 Y5.000000 Z18.500000\
 G2 I7.500000 J0.000000 X12.500000 Y5.000000 Z18.000000\
 G2 I-7.500000 J0.000000 X-2.500000 Y5.000000 Z18.000000\
 G2 I7.500000 J0.000000 X12.500000 Y5.000000 Z18.000000\
-G0 X5.000000 Y5.000000 Z18.000000G0 Z20.000000"
+G0 X5.000000 Y5.000000 Z18.000000\
+G0 Z23.000000"
 
     def test00(self):
         """Test Basic Helix Generator Return"""
@@ -198,13 +204,15 @@ G0 X5.000000 Y5.000000 Z18.000000G0 Z20.000000"
         v2 = FreeCAD.Vector(0, 0, 18)
         edg = Part.makeLine(v1, v2)
         args["edge"] = edg
-        args["inner_radius"] = 0.0
+        args["inner_radius"] = 2.5
         args["tool_diameter"] = 5.0
+        args["retract_center"] = True
         result = generator.generate(**args)
         self.assertTrue(result[-2].Name == "G0")
 
         # if center is not clear, retraction is one straight up on the last
         # move. the second to last move should be a G2
-        args["inner_radius"] = 2.0
+        args["inner_radius"] = 3.0
+        args["retract_center"] = True
         result = generator.generate(**args)
         self.assertTrue(result[-2].Name == "G2")
