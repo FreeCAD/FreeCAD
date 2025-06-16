@@ -4016,6 +4016,9 @@ void TreeWidget::_slotDeleteObject(const Gui::ViewProviderDocumentObject& view, 
 
     TREE_LOG("delete object " << obj->getFullName());
 
+    // Block all selection signals during deletion to prevent cascading selection change events
+    // during item creation or deletion
+    bool lock = blockSelection(true);
     bool needUpdate = false;
 
     for (const auto& data : itEntry->second) {
@@ -4029,13 +4032,11 @@ void TreeWidget::_slotDeleteObject(const Gui::ViewProviderDocumentObject& view, 
         if (obj->getDocument() == doc)
             docItem->_ParentMap.erase(obj);
 
-        bool lock = blockSelection(true);
         for (auto cit = items.begin(), citNext = cit; cit != items.end(); cit = citNext) {
             ++citNext;
             (*cit)->myOwner = nullptr;
             delete* cit;
         }
-        blockSelection(lock);
 
         // Check for any child of the deleted object that is not in the tree, and put it
         // under document item.
@@ -4061,6 +4062,9 @@ void TreeWidget::_slotDeleteObject(const Gui::ViewProviderDocumentObject& view, 
         docItem->ObjectMap.erase(obj);
     }
     ObjectTable.erase(itEntry);
+
+    // Restore signal state
+    blockSelection(lock);
 
     if (needUpdate)
         _updateStatus();
@@ -5356,6 +5360,11 @@ enum Status {
 
 void DocumentObjectItem::testStatus(bool resetStatus, QIcon& icon1, QIcon& icon2)
 {
+    // guard against calling this during destruction when tree widget may be nullptr
+    if (!treeWidget()) {
+        return;
+    }
+
     App::DocumentObject* pObject = object()->getObject();
 
     int visible = -1;
