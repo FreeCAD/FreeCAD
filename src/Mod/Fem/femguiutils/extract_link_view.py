@@ -44,6 +44,7 @@ translate = FreeCAD.Qt.translate
 # a model showing available visualizations and possible extractions
 # #################################################################
 
+
 def build_new_visualization_tree_model():
     # model that shows all options to create new visualizations
 
@@ -66,6 +67,7 @@ def build_new_visualization_tree_model():
         model.appendRow(vis_item)
 
     return model
+
 
 def build_add_to_visualization_tree_model():
     # model that shows all possible visualization objects to add data to
@@ -92,7 +94,9 @@ def build_add_to_visualization_tree_model():
                     for ext in visualizations[vis_type].extractions:
                         icon = FreeCADGui.getIcon(ext.icon)
                         name = ext.name.removeprefix(vis_type)
-                        ext_item = QtGui.QStandardItem(icon, translate("FEM", "Add {}").format(name))
+                        ext_item = QtGui.QStandardItem(
+                            icon, translate("FEM", "Add {}").format(name)
+                        )
                         ext_item.setFlags(QtGui.Qt.ItemIsEnabled)
                         ext_item.setData(ext)
                         vis_item.appendRow(ext_item)
@@ -102,10 +106,13 @@ def build_add_to_visualization_tree_model():
 
     return model
 
+
 def build_post_object_item(post_object, extractions, vis_type):
 
     # definitely build a item and add the extractions
-    post_item = QtGui.QStandardItem(post_object.ViewObject.Icon, translate("FEM", "From {}").format(post_object.Label))
+    post_item = QtGui.QStandardItem(
+        post_object.ViewObject.Icon, translate("FEM", "From {}").format(post_object.Label)
+    )
     post_item.setFlags(QtGui.Qt.ItemIsEnabled)
     post_item.setData(post_object)
 
@@ -150,8 +157,10 @@ def build_add_from_data_tree_model(vis_type):
 
     return model
 
+
 # implementation of GUI and its functionality
 # ###########################################
+
 
 class _ElideToolButton(QtGui.QToolButton):
     # tool button that elides its text, and left align icon and text
@@ -174,7 +183,7 @@ class _ElideToolButton(QtGui.QToolButton):
         button_size = super().sizeHint()
         icn_size = self.iconSize()
         min_margin = max((button_size - icn_size).height(), 6)
-        return QtCore.QSize(self.iconSize().width()+10, icn_size.height() + min_margin)
+        return QtCore.QSize(self.iconSize().width() + 10, icn_size.height() + min_margin)
 
     def paintEvent(self, event):
 
@@ -190,11 +199,10 @@ class _ElideToolButton(QtGui.QToolButton):
         margin = (self.height() - self.iconSize().height()) / 2
         icn_width = self.iconSize().width()
         if self._icon.isNull():
-            icn_width = 0;
-
+            icn_width = 0
 
         fm = self.fontMetrics()
-        txt_size = self.width() - icn_width - 2*margin
+        txt_size = self.width() - icn_width - 2 * margin
         if not self._icon.isNull():
             # we add the margin between icon and text
             txt_size -= margin
@@ -205,7 +213,7 @@ class _ElideToolButton(QtGui.QToolButton):
         xpos = margin
         if not self._icon.isNull() and txt_size < txt_min:
             # center icon
-            xpos = self.width()/2 - self.iconSize().width()/2
+            xpos = self.width() / 2 - self.iconSize().width() / 2
 
         if not self._icon.isNull():
             match type(self._icon):
@@ -213,10 +221,12 @@ class _ElideToolButton(QtGui.QToolButton):
                     painter.drawPixmap(xpos, margin, self._icon.scaled(self.iconSize()))
                     xpos += self.iconSize().width()
                 case QtGui.QIcon:
-                    self._icon.paint(painter, QtCore.QRect(QtCore.QPoint(margin, margin), self.iconSize()))
+                    self._icon.paint(
+                        painter, QtCore.QRect(QtCore.QPoint(margin, margin), self.iconSize())
+                    )
                     xpos += self.iconSize().width()
 
-            xpos += margin # the margin to the text
+            xpos += margin  # the margin to the text
 
         if txt_size >= txt_min:
             text = fm.elidedText(self._text, QtGui.Qt.ElideMiddle, txt_size)
@@ -227,7 +237,7 @@ class _ElideToolButton(QtGui.QToolButton):
 
 class _TreeChoiceButton(QtGui.QToolButton):
 
-    selection = QtCore.Signal(object,object)
+    selection = QtCore.Signal(object, object)
 
     def __init__(self, model):
         super().__init__()
@@ -254,9 +264,10 @@ class _TreeChoiceButton(QtGui.QToolButton):
         self.popup = QtGui.QWidgetAction(self)
         self.popup.setDefaultWidget(self.tree_view)
         self.setPopupMode(QtGui.QToolButton.InstantPopup)
-        self.addAction(self.popup);
+        self.addAction(self.popup)
 
     QtCore.Slot(QtCore.QModelIndex)
+
     def selectIndex(self, index):
         item = self.model.itemFromIndex(index)
 
@@ -273,6 +284,7 @@ class _TreeChoiceButton(QtGui.QToolButton):
 
         # check if we should be disabled
         self.setEnabled(bool(model.rowCount()))
+
 
 class _SettingsPopup(QtGui.QMenu):
 
@@ -297,7 +309,7 @@ class _SettingsPopup(QtGui.QMenu):
         widget.setLayout(vbox)
 
         vbox2 = QtGui.QVBoxLayout()
-        vbox2.setContentsMargins(0,0,0,0)
+        vbox2.setContentsMargins(0, 0, 0, 0)
         vbox2.addWidget(widget)
         self.setLayout(vbox2)
 
@@ -321,7 +333,7 @@ class _SettingsPopup(QtGui.QMenu):
 
 class _SummaryWidget(QtGui.QWidget):
 
-    delete = QtCore.Signal(object, object) # to delete: document object, summary widget
+    delete = QtCore.Signal(object, object)  # to delete: document object, summary widget
 
     def __init__(self, st_object, extractor, post_dialog):
         super().__init__()
@@ -335,16 +347,15 @@ class _SummaryWidget(QtGui.QWidget):
 
         # build the UI
         hbox = QtGui.QHBoxLayout()
-        hbox.setContentsMargins(6,0,6,0)
+        hbox.setContentsMargins(6, 0, 6, 0)
         hbox.setSpacing(2)
 
         self.extrButton = self._button(extractor.ViewObject.Icon, extr_label)
         self.viewButton = self._button(extr_repr[0], extr_repr[1], 1)
 
         size = self.viewButton.iconSize()
-        size.setWidth(size.width()*2)
+        size.setWidth(size.width() * 2)
         self.viewButton.setIconSize(size)
-
 
         if st_object:
             self.stButton = self._button(st_object.ViewObject.Icon, st_object.Label)
@@ -357,7 +368,9 @@ class _SummaryWidget(QtGui.QWidget):
             self.viewButton.hide()
 
             self.warning = QtGui.QLabel(self)
-            self.warning.full_text = translate("FEM", "{}: Data source not available").format(extractor.Label)
+            self.warning.full_text = translate("FEM", "{}: Data source not available").format(
+                extractor.Label
+            )
             hbox.addWidget(self.warning)
 
         self.rmButton = QtGui.QToolButton(self)
@@ -371,16 +384,16 @@ class _SummaryWidget(QtGui.QWidget):
 
         # add the separation line
         vbox = QtGui.QVBoxLayout()
-        vbox.setContentsMargins(0,0,0,0)
+        vbox.setContentsMargins(0, 0, 0, 0)
         vbox.setSpacing(5)
         vbox.addItem(hbox)
         self.frame = QtGui.QFrame(self)
-        self.frame.setFrameShape(QtGui.QFrame.HLine);
+        self.frame.setFrameShape(QtGui.QFrame.HLine)
         vbox.addWidget(self.frame)
 
         policy = QtGui.QSizePolicy(QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Preferred)
         self.setSizePolicy(policy)
-        #self.setMinimumSize(self.extrButton.sizeHint()+self.frame.sizeHint()*3)
+        # self.setMinimumSize(self.extrButton.sizeHint()+self.frame.sizeHint()*3)
         self.setLayout(vbox)
 
         # connect actions. We add functions to widget, as well as the data we need,
@@ -393,8 +406,7 @@ class _SummaryWidget(QtGui.QWidget):
         self.rmButton.clicked.connect(self.deleteTriggered)
 
         # make sure initial drawing happened
-        #self._redraw()
-
+        # self._redraw()
 
     def _button(self, icon, text, stretch=2):
 
@@ -407,7 +419,6 @@ class _SummaryWidget(QtGui.QWidget):
         policy.setHorizontalStretch(stretch)
         btn.setSizePolicy(policy)
         return btn
-
 
     @QtCore.Slot()
     def showVisualization(self):
@@ -426,14 +437,18 @@ class _SummaryWidget(QtGui.QWidget):
         # very weird values. Hence we build the coords of the widget
         # ourself
 
-        summary = dialog.parent() # == self
+        summary = dialog.parent()  # == self
         base_widget = summary.parent()
         viewport = summary.parent()
         scroll = viewport.parent()
 
-        top_left = summary.geometry().topLeft() + base_widget.geometry().topLeft() + viewport.geometry().topLeft()
-        delta = (summary.width() - dialog.size().width())/2
-        local_point = QtCore.QPoint(top_left.x()+delta, top_left.y()+summary.height())
+        top_left = (
+            summary.geometry().topLeft()
+            + base_widget.geometry().topLeft()
+            + viewport.geometry().topLeft()
+        )
+        delta = (summary.width() - dialog.size().width()) / 2
+        local_point = QtCore.QPoint(top_left.x() + delta, top_left.y() + summary.height())
         global_point = scroll.mapToGlobal(local_point)
 
         dialog.setGeometry(QtCore.QRect(global_point, dialog.sizeHint()))
@@ -485,7 +500,6 @@ class _SummaryWidget(QtGui.QWidget):
         self.extrButton.setToolTip(extr_label)
 
 
-
 class ExtractLinkView(QtGui.QWidget):
 
     def __init__(self, obj, is_source, post_dialog):
@@ -506,7 +520,7 @@ class ExtractLinkView(QtGui.QWidget):
         self._scroll_view.setWidgetResizable(True)
         self._scroll_widget = QtGui.QWidget(self._scroll_view)
         vbox = QtGui.QVBoxLayout()
-        vbox.setContentsMargins(0,6,0,0)
+        vbox.setContentsMargins(0, 6, 0, 0)
         vbox.addStretch()
         self._scroll_widget.setLayout(vbox)
         self._scroll_view.setWidget(self._scroll_widget)
@@ -541,7 +555,7 @@ class ExtractLinkView(QtGui.QWidget):
             hbox.addWidget(self._add)
 
         vbox = QtGui.QVBoxLayout()
-        vbox.setContentsMargins(0,0,0,0)
+        vbox.setContentsMargins(0, 0, 0, 0)
         vbox.addItem(hbox)
         vbox.addWidget(self._scroll_view)
 
@@ -616,7 +630,8 @@ class ExtractLinkView(QtGui.QWidget):
 
         return None
 
-    QtCore.Slot(object, object) # visualization data, extraction data
+    QtCore.Slot(object, object)  # visualization data, extraction data
+
     def newVisualization(self, vis_data, ext_data):
 
         FreeCADGui.addModule(vis_data.module)
@@ -630,17 +645,13 @@ class ExtractLinkView(QtGui.QWidget):
 
         analysis = self._find_parent_analysis(self._object)
         if analysis:
-            FreeCADGui.doCommand(
-                f"FreeCAD.ActiveDocument.{analysis.Name}.addObject(visualization)"
-            )
+            FreeCADGui.doCommand(f"FreeCAD.ActiveDocument.{analysis.Name}.addObject(visualization)")
 
         # create extraction and add it
         FreeCADGui.doCommand(
             f"extraction = {ext_data.module}.{ext_data.factory}(FreeCAD.ActiveDocument)"
         )
-        FreeCADGui.doCommand(
-            f"extraction.Source = FreeCAD.ActiveDocument.{self._object.Name}"
-        )
+        FreeCADGui.doCommand(f"extraction.Source = FreeCAD.ActiveDocument.{self._object.Name}")
         # default values: color
         color_prop = FreeCADGui.ActiveDocument.ActiveObject.Proxy.get_default_color_property()
         if color_prop:
@@ -648,15 +659,13 @@ class ExtractLinkView(QtGui.QWidget):
                 f"extraction.ViewObject.{color_prop} = visualization.ViewObject.Proxy.get_next_default_color()"
             )
 
-        FreeCADGui.doCommand(
-            f"visualization.addObject(extraction)"
-        )
-
+        FreeCADGui.doCommand(f"visualization.addObject(extraction)")
 
         self._post_dialog._recompute()
         self.repopulate()
 
-    QtCore.Slot(object, object) # visualization object, extraction data
+    QtCore.Slot(object, object)  # visualization object, extraction data
+
     def addExtractionToVisualization(self, vis_obj, ext_data):
 
         FreeCADGui.addModule(ext_data.module)
@@ -666,9 +675,7 @@ class ExtractLinkView(QtGui.QWidget):
         FreeCADGui.doCommand(
             f"extraction = {ext_data.module}.{ext_data.factory}(FreeCAD.ActiveDocument)"
         )
-        FreeCADGui.doCommand(
-            f"extraction.Source = FreeCAD.ActiveDocument.{self._object.Name}"
-        )
+        FreeCADGui.doCommand(f"extraction.Source = FreeCAD.ActiveDocument.{self._object.Name}")
 
         # default values: color
         color_prop = FreeCADGui.ActiveDocument.ActiveObject.Proxy.get_default_color_property()
@@ -677,14 +684,13 @@ class ExtractLinkView(QtGui.QWidget):
                 f"extraction.ViewObject.{color_prop} = (Gui.ActiveDocument.{vis_obj.Name}.Proxy.get_next_default_color())"
             )
 
-        FreeCADGui.doCommand(
-            f"App.ActiveDocument.{vis_obj.Name}.addObject(extraction)"
-        )
+        FreeCADGui.doCommand(f"App.ActiveDocument.{vis_obj.Name}.addObject(extraction)")
 
         self._post_dialog._recompute()
         self.repopulate()
 
-    QtCore.Slot(object, object) # post object, extraction data
+    QtCore.Slot(object, object)  # post object, extraction data
+
     def addExtractionToPostObject(self, post_obj, ext_data):
 
         FreeCADGui.addModule(ext_data.module)
@@ -694,9 +700,7 @@ class ExtractLinkView(QtGui.QWidget):
         FreeCADGui.doCommand(
             f"extraction = {ext_data.module}.{ext_data.factory}(FreeCAD.ActiveDocument)"
         )
-        FreeCADGui.doCommand(
-            f"extraction.Source = FreeCAD.ActiveDocument.{post_obj.Name}"
-        )
+        FreeCADGui.doCommand(f"extraction.Source = FreeCAD.ActiveDocument.{post_obj.Name}")
 
         # default values for color
         color_prop = FreeCADGui.ActiveDocument.ActiveObject.Proxy.get_default_color_property()
@@ -705,10 +709,7 @@ class ExtractLinkView(QtGui.QWidget):
                 f"extraction.ViewObject.{color_prop} = Gui.ActiveDocument.{self._object.Name}.Proxy.get_next_default_color()"
             )
 
-        FreeCADGui.doCommand(
-            f"App.ActiveDocument.{self._object.Name}.addObject(extraction)"
-        )
+        FreeCADGui.doCommand(f"App.ActiveDocument.{self._object.Name}.addObject(extraction)")
 
         self._post_dialog._recompute()
         self.repopulate()
-

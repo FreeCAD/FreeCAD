@@ -38,6 +38,7 @@ from . import base_fempostextractors
 # helper functions
 # ################
 
+
 def is_visualization_object(obj):
     if not obj:
         return False
@@ -71,26 +72,22 @@ def is_visualization_extractor_type(obj, vistype):
     return True
 
 
-
 # Base class for all visualizations
 # It collects all data from its extraction objects into a table.
 # Note: Never use directly, always subclass! This class does not create a
 #       Visualization variable, hence will not work correctly.
 class PostVisualization(base_fempythonobject.BaseFemPythonObject):
 
-
     def __init__(self, obj):
         super().__init__(obj)
         obj.addExtension("App::GroupExtensionPython")
         self._setup_properties(obj)
-
 
     def _setup_properties(self, obj):
         pl = obj.PropertiesList
         for prop in self._get_properties():
             if not prop.name in pl:
                 prop.add_to_object(obj)
-
 
     def _get_properties(self):
         # override if subclass wants to add additional properties
@@ -106,13 +103,11 @@ class PostVisualization(base_fempythonobject.BaseFemPythonObject):
         ]
         return prop
 
-
     def onDocumentRestored(self, obj):
         # if a new property was added we handle it by setup
         # Override if subclass needs to handle changed property type
 
         self._setup_properties(obj)
-
 
     def onChanged(self, obj, prop):
         # Ensure only correct child object types are in the group
@@ -123,12 +118,13 @@ class PostVisualization(base_fempythonobject.BaseFemPythonObject):
             children = obj.Group
             for child in obj.Group:
                 if not is_visualization_extractor_type(child, self.VisualizationType):
-                    FreeCAD.Console.PrintWarning(f"{child.Label} is not a {self.VisualizationType} extraction object, cannot be added")
+                    FreeCAD.Console.PrintWarning(
+                        f"{child.Label} is not a {self.VisualizationType} extraction object, cannot be added"
+                    )
                     children.remove(child)
 
             if len(obj.Group) != len(children):
                 obj.Group = children
-
 
     def execute(self, obj):
         # Collect all extractor child data into our table
@@ -144,7 +140,9 @@ class PostVisualization(base_fempythonobject.BaseFemPythonObject):
             # to none without recompute, and the visualization was manually
             # recomputed afterwards
             if not child.Source and (child.Table.GetNumberOfColumns() > 0):
-                FreeCAD.Console.PrintWarning(f"{child.Label} has data, but no Source object. Will be ignored")
+                FreeCAD.Console.PrintWarning(
+                    f"{child.Label} has data, but no Source object. Will be ignored"
+                )
                 continue
 
             c_table = child.Table
@@ -159,17 +157,15 @@ class PostVisualization(base_fempythonobject.BaseFemPythonObject):
                 else:
                     array.SetNumberOfComponents(c_array.GetNumberOfComponents())
                     array.SetNumberOfTuples(rows)
-                    array.Fill(0) # so that all non-used entries are set to 0
+                    array.Fill(0)  # so that all non-used entries are set to 0
                     for j in range(c_array.GetNumberOfTuples()):
                         array.SetTuple(j, c_array.GetTuple(j))
 
                 array.SetName(f"{child.Source.Name}: {c_array.GetName()}")
                 table.AddColumn(array)
 
-
         obj.Table = table
         return False
-
 
     def getLongestColumnLength(self, obj):
         # iterate all extractor children and get the column lengths

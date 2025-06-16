@@ -381,6 +381,7 @@ class CommandManager:
 
         # check if we should use python filter
         from femguiutils.vtk_module_handling import vtk_compatibility_abort
+
         if vtk_compatibility_abort(True):
             return
 

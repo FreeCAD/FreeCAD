@@ -31,6 +31,7 @@ __url__ = "https://www.freecad.org"
 
 # check vtk version to potentially find missmatchs
 from femguiutils.vtk_module_handling import vtk_module_handling
+
 vtk_module_handling()
 
 from . import base_fempostextractors
@@ -40,30 +41,34 @@ from . import post_extract1D
 from femguiutils import post_visualization
 
 # register visualization and extractors
-post_visualization.register_visualization("Histogram",
-                                          ":/icons/FEM_PostHistogram.svg",
-                                          "ObjectsFem",
-                                          "makePostHistogram")
+post_visualization.register_visualization(
+    "Histogram", ":/icons/FEM_PostHistogram.svg", "ObjectsFem", "makePostHistogram"
+)
 
-post_visualization.register_extractor("Histogram",
-                                      "HistogramFieldData",
-                                      ":/icons/FEM_PostField.svg",
-                                      "1D",
-                                      "Field",
-                                      "ObjectsFem",
-                                      "makePostHistogramFieldData")
+post_visualization.register_extractor(
+    "Histogram",
+    "HistogramFieldData",
+    ":/icons/FEM_PostField.svg",
+    "1D",
+    "Field",
+    "ObjectsFem",
+    "makePostHistogramFieldData",
+)
 
 
-post_visualization.register_extractor("Histogram",
-                                      "HistogramIndexOverFrames",
-                                      ":/icons/FEM_PostIndex.svg",
-                                      "1D",
-                                      "Index",
-                                      "ObjectsFem",
-                                      "makePostHistogramIndexOverFrames")
+post_visualization.register_extractor(
+    "Histogram",
+    "HistogramIndexOverFrames",
+    ":/icons/FEM_PostIndex.svg",
+    "1D",
+    "Index",
+    "ObjectsFem",
+    "makePostHistogramIndexOverFrames",
+)
 
 # Implementation
 # ##############
+
 
 def is_histogram_extractor(obj):
 
@@ -80,6 +85,7 @@ class PostHistogramFieldData(post_extract1D.PostFieldData1D):
     """
     A 1D Field extraction for histograms.
     """
+
     VisualizationType = "Histogram"
 
 
@@ -87,6 +93,7 @@ class PostHistogramIndexOverFrames(post_extract1D.PostIndexOverFrames1D):
     """
     A 1D index extraction for histogram.
     """
+
     VisualizationType = "Histogram"
 
 
@@ -94,13 +101,5 @@ class PostHistogram(base_fempostvisualizations.PostVisualization):
     """
     A post processing plot for showing extracted data as histograms
     """
+
     VisualizationType = "Histogram"
-
-
-
-
-
-
-
-
-

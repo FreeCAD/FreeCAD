@@ -31,6 +31,7 @@ __url__ = "https://www.freecad.org"
 
 # check vtk version to potentially find missmatchs
 from femguiutils.vtk_module_handling import vtk_module_handling
+
 vtk_module_handling()
 
 from . import base_fempostextractors
@@ -40,30 +41,34 @@ from . import post_extract1D
 from femguiutils import post_visualization
 
 # register visualization and extractors
-post_visualization.register_visualization("Table",
-                                          ":/icons/FEM_PostSpreadsheet.svg",
-                                          "ObjectsFem",
-                                          "makePostTable")
+post_visualization.register_visualization(
+    "Table", ":/icons/FEM_PostSpreadsheet.svg", "ObjectsFem", "makePostTable"
+)
 
-post_visualization.register_extractor("Table",
-                                      "TableFieldData",
-                                      ":/icons/FEM_PostField.svg",
-                                      "1D",
-                                      "Field",
-                                      "ObjectsFem",
-                                      "makePostTableFieldData")
+post_visualization.register_extractor(
+    "Table",
+    "TableFieldData",
+    ":/icons/FEM_PostField.svg",
+    "1D",
+    "Field",
+    "ObjectsFem",
+    "makePostTableFieldData",
+)
 
 
-post_visualization.register_extractor("Table",
-                                      "TableIndexOverFrames",
-                                      ":/icons/FEM_PostIndex.svg",
-                                      "1D",
-                                      "Index",
-                                      "ObjectsFem",
-                                      "makePostTableIndexOverFrames")
+post_visualization.register_extractor(
+    "Table",
+    "TableIndexOverFrames",
+    ":/icons/FEM_PostIndex.svg",
+    "1D",
+    "Index",
+    "ObjectsFem",
+    "makePostTableIndexOverFrames",
+)
 
 # Implementation
 # ##############
+
 
 def is_table_extractor(obj):
 
@@ -80,6 +85,7 @@ class PostTableFieldData(post_extract1D.PostFieldData1D):
     """
     A 1D Field extraction for tables.
     """
+
     VisualizationType = "Table"
 
 
@@ -87,6 +93,7 @@ class PostTableIndexOverFrames(post_extract1D.PostIndexOverFrames1D):
     """
     A 1D index extraction for table.
     """
+
     VisualizationType = "Table"
 
 
@@ -94,6 +101,5 @@ class PostTable(base_fempostvisualizations.PostVisualization):
     """
     A post processing plot for showing extracted data as tables
     """
+
     VisualizationType = "Table"
-
-

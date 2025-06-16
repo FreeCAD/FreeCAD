@@ -39,13 +39,14 @@ from vtkmodules.vtkIOCore import vtkDelimitedTextWriter
 
 translate = FreeCAD.Qt.translate
 
+
 class VtkTableModel(QtCore.QAbstractTableModel):
     # Simple table model. Only supports single component columns
     # One can supply a header_names dict to replace the table column names
     # in the header. It is a dict "column_idx (int)" to "new name"" or
     # "orig_name (str)" to "new name"
 
-    def __init__(self, header_names = None):
+    def __init__(self, header_names=None):
         super().__init__()
         self._table = None
         if header_names:
@@ -53,7 +54,7 @@ class VtkTableModel(QtCore.QAbstractTableModel):
         else:
             self._header = {}
 
-    def setTable(self, table, header_names = None):
+    def setTable(self, table, header_names=None):
         self.beginResetModel()
         self._table = table
         if header_names:
@@ -105,6 +106,7 @@ class VtkTableModel(QtCore.QAbstractTableModel):
     def getTable(self):
         return self._table
 
+
 class VtkTableSummaryModel(QtCore.QAbstractTableModel):
     # Simple model showing a summary of the table.
     # Only supports single component columns
@@ -126,7 +128,7 @@ class VtkTableSummaryModel(QtCore.QAbstractTableModel):
         return self._table.GetNumberOfColumns()
 
     def columnCount(self, index):
-        return 2 # min, max
+        return 2  # min, max
 
     def data(self, index, role):
 
@@ -143,7 +145,7 @@ class VtkTableSummaryModel(QtCore.QAbstractTableModel):
     def headerData(self, section, orientation, role):
 
         if orientation == QtCore.Qt.Horizontal and role == QtCore.Qt.DisplayRole:
-            return ["Min","Max"][section]
+            return ["Min", "Max"][section]
 
         if orientation == QtCore.Qt.Vertical and role == QtCore.Qt.DisplayRole:
             return self._table.GetColumnName(section)
@@ -162,7 +164,7 @@ class VtkTableView(QtGui.QWidget):
         self.model = model
 
         layout = QtGui.QVBoxLayout()
-        layout.setContentsMargins(0,0,0,0)
+        layout.setContentsMargins(0, 0, 0, 0)
         layout.setSpacing(0)
 
         # start with the toolbar
@@ -177,7 +179,9 @@ class VtkTableView(QtGui.QWidget):
         copy_action.triggered.connect(self.copyToClipboard)
         copy_action.setIcon(FreeCADGui.getIcon("edit-copy"))
         shortcut = QtGui.QKeySequence(QtGui.QKeySequence.Copy)
-        copy_action.setToolTip(translate("FEM", "Copy selection to clipboard ({})".format(shortcut.toString())))
+        copy_action.setToolTip(
+            translate("FEM", "Copy selection to clipboard ({})".format(shortcut.toString()))
+        )
         copy_action.setShortcut(shortcut)
         self.toolbar.addAction(copy_action)
 
@@ -205,15 +209,19 @@ class VtkTableView(QtGui.QWidget):
     @QtCore.Slot(bool)
     def exportCsv(self, state):
 
-        file_path, filter = QtGui.QFileDialog.getSaveFileName(None, translate("FEM", "Save as csv file"), "", "CSV (*.csv)")
+        file_path, filter = QtGui.QFileDialog.getSaveFileName(
+            None, translate("FEM", "Save as csv file"), "", "CSV (*.csv)"
+        )
         if not file_path:
-            FreeCAD.Console.PrintMessage(translate("FEM", "CSV file export aborted: no filename selected"))
+            FreeCAD.Console.PrintMessage(
+                translate("FEM", "CSV file export aborted: no filename selected")
+            )
             return
 
         writer = vtkDelimitedTextWriter()
         writer.SetFileName(file_path)
-        writer.SetInputData(self.model.getTable());
-        writer.Write();
+        writer.SetInputData(self.model.getTable())
+        writer.Write()
 
     @QtCore.Slot()
     def copyToClipboard(self):
@@ -228,19 +236,18 @@ class VtkTableView(QtGui.QWidget):
         previous = selection.pop(0)
         for current in selection:
 
-            data = self.model.data(previous, QtCore.Qt.DisplayRole);
+            data = self.model.data(previous, QtCore.Qt.DisplayRole)
             copy_table += str(data)
 
             if current.row() != previous.row():
-                copy_table += '\n'
+                copy_table += "\n"
             else:
-                copy_table += '\t'
+                copy_table += "\t"
 
             previous = current
 
         copy_table += str(self.model.data(selection[-1], QtCore.Qt.DisplayRole))
-        copy_table += '\n'
+        copy_table += "\n"
 
         clipboard = QtGui.QApplication.instance().clipboard()
         clipboard.setText(copy_table)
-

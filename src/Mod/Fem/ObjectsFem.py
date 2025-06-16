@@ -696,6 +696,7 @@ def makePostLineplot(doc, name="Lineplot"):
     post_lineplot.PostLineplot(obj)
     if FreeCAD.GuiUp:
         from femviewprovider import view_post_lineplot
+
         view_post_lineplot.VPPostLineplot(obj.ViewObject)
     return obj
 
@@ -710,6 +711,7 @@ def makePostLineplotFieldData(doc, name="FieldData2D"):
     post_lineplot.PostLineplotFieldData(obj)
     if FreeCAD.GuiUp:
         from femviewprovider import view_post_lineplot
+
         view_post_lineplot.VPPostLineplotFieldData(obj.ViewObject)
     return obj
 
@@ -724,6 +726,7 @@ def makePostLineplotIndexOverFrames(doc, name="IndexOverFrames2D"):
     post_lineplot.PostLineplotIndexOverFrames(obj)
     if FreeCAD.GuiUp:
         from femviewprovider import view_post_lineplot
+
         view_post_lineplot.VPPostLineplotIndexOverFrames(obj.ViewObject)
     return obj
 
@@ -738,6 +741,7 @@ def makePostHistogram(doc, name="Histogram"):
     post_histogram.PostHistogram(obj)
     if FreeCAD.GuiUp:
         from femviewprovider import view_post_histogram
+
         view_post_histogram.VPPostHistogram(obj.ViewObject)
     return obj
 
@@ -752,6 +756,7 @@ def makePostHistogramFieldData(doc, name="FieldData1D"):
     post_histogram.PostHistogramFieldData(obj)
     if FreeCAD.GuiUp:
         from femviewprovider import view_post_histogram
+
         view_post_histogram.VPPostHistogramFieldData(obj.ViewObject)
     return obj
 
@@ -766,6 +771,7 @@ def makePostHistogramIndexOverFrames(doc, name="IndexOverFrames1D"):
     post_histogram.PostHistogramIndexOverFrames(obj)
     if FreeCAD.GuiUp:
         from femviewprovider import view_post_histogram
+
         view_post_histogram.VPPostHistogramIndexOverFrames(obj.ViewObject)
     return obj
 
@@ -780,6 +786,7 @@ def makePostTable(doc, name="Table"):
     post_table.PostTable(obj)
     if FreeCAD.GuiUp:
         from femviewprovider import view_post_table
+
         view_post_table.VPPostTable(obj.ViewObject)
     return obj
 
@@ -794,6 +801,7 @@ def makePostTableFieldData(doc, name="FieldData1D"):
     post_table.PostTableFieldData(obj)
     if FreeCAD.GuiUp:
         from femviewprovider import view_post_table
+
         view_post_table.VPPostTableFieldData(obj.ViewObject)
     return obj
 
@@ -808,6 +816,7 @@ def makePostTableIndexOverFrames(doc, name="IndexOverFrames1D"):
     post_table.PostTableIndexOverFrames(obj)
     if FreeCAD.GuiUp:
         from femviewprovider import view_post_table
+
         view_post_table.VPPostTableIndexOverFrames(obj.ViewObject)
     return obj
 

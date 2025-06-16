@@ -48,6 +48,7 @@ from . import view_base_fempostvisualization
 from femtaskpanels import task_post_histogram
 
 from . import view_base_femobject
+
 _GuiPropHelper = view_base_femobject._GuiPropHelper
 
 
@@ -92,12 +93,11 @@ class EditViewWidget(QtGui.QWidget):
         self.widget.HatchDensity.setMaximumHeight(self.widget.Hatch.sizeHint().height())
         self.widget.LineWidth.setMaximumHeight(self.widget.LineStyle.sizeHint().height())
 
-
     def _setup_color_button(self, button, fcColor, callback):
 
-        barColor = QtGui.QColor(*[v*255 for v in fcColor])
+        barColor = QtGui.QColor(*[v * 255 for v in fcColor])
         icon_size = button.iconSize()
-        icon_size.setWidth(icon_size.width()*2)
+        icon_size.setWidth(icon_size.width() * 2)
         button.setIconSize(icon_size)
         pixmap = QtGui.QPixmap(icon_size)
         pixmap.fill(barColor)
@@ -113,7 +113,6 @@ class EditViewWidget(QtGui.QWidget):
         action.setDefaultWidget(diag)
         button.addAction(action)
         button.setPopupMode(QtGui.QToolButton.InstantPopup)
-
 
     @QtCore.Slot(QtGui.QColor)
     def lineColorChanged(self, color):
@@ -199,6 +198,7 @@ class EditFieldAppWidget(QtGui.QWidget):
         self._object.ExtractFrames = extract
         self._post_dialog._recompute()
 
+
 class EditIndexAppWidget(QtGui.QWidget):
 
     def __init__(self, obj, post_dialog):
@@ -279,7 +279,7 @@ class VPPostHistogramFieldData(view_base_fempostextractors.VPPostExtractor):
                 name="Hatch",
                 group="HistogramBar",
                 doc=QT_TRANSLATE_NOOP("FEM", "The hatch pattern drawn in the bar"),
-                value=['None', '/', '\\', '|', '-', '+', 'x', 'o', 'O', '.', '*'],
+                value=["None", "/", "\\", "|", "-", "+", "x", "o", "O", ".", "*"],
             ),
             _GuiPropHelper(
                 type="App::PropertyIntegerConstraint",
@@ -293,13 +293,15 @@ class VPPostHistogramFieldData(view_base_fempostextractors.VPPostExtractor):
                 name="LineColor",
                 group="HistogramLine",
                 doc=QT_TRANSLATE_NOOP("FEM", "The color the data bin area is drawn with"),
-                value=(0, 0, 0, 1), # black
+                value=(0, 0, 0, 1),  # black
             ),
             _GuiPropHelper(
                 type="App::PropertyFloatConstraint",
                 name="LineWidth",
                 group="HistogramLine",
-                doc=QT_TRANSLATE_NOOP("FEM", "The width of the bar, between 0 and 1 (1 being without gaps)"),
+                doc=QT_TRANSLATE_NOOP(
+                    "FEM", "The width of the bar, between 0 and 1 (1 being without gaps)"
+                ),
                 value=(1, 0, 99, 0.1),
             ),
             _GuiPropHelper(
@@ -307,7 +309,7 @@ class VPPostHistogramFieldData(view_base_fempostextractors.VPPostExtractor):
                 name="LineStyle",
                 group="HistogramLine",
                 doc=QT_TRANSLATE_NOOP("FEM", "The style the line is drawn in"),
-                value=['None', '-', '--', '-.', ':'],
+                value=["None", "-", "--", "-.", ":"],
             ),
         ]
         return super()._get_properties() + prop
@@ -327,13 +329,13 @@ class VPPostHistogramFieldData(view_base_fempostextractors.VPPostExtractor):
 
     def get_preview(self):
 
-        fig = mpl.pyplot.figure(figsize=(0.4,0.2), dpi=500)
-        ax = mpl.pyplot.Axes(fig, [0., 0., 2, 1])
+        fig = mpl.pyplot.figure(figsize=(0.4, 0.2), dpi=500)
+        ax = mpl.pyplot.Axes(fig, [0.0, 0.0, 2, 1])
         ax.set_axis_off()
         fig.add_axes(ax)
 
         kwargs = self.get_kw_args()
-        patch = mpl.patches.Rectangle(xy=(0,0), width=2, height=1, **kwargs)
+        patch = mpl.patches.Rectangle(xy=(0, 0), width=2, height=1, **kwargs)
         ax.add_patch(patch)
 
         data = io.BytesIO()
@@ -355,7 +357,7 @@ class VPPostHistogramFieldData(view_base_fempostextractors.VPPostExtractor):
         kwargs["linestyle"] = self.ViewObject.LineStyle
         kwargs["linewidth"] = self.ViewObject.LineWidth
         if self.ViewObject.Hatch != "None":
-            kwargs["hatch"] = self.ViewObject.Hatch*self.ViewObject.HatchDensity
+            kwargs["hatch"] = self.ViewObject.Hatch * self.ViewObject.HatchDensity
 
         return kwargs
 
@@ -386,7 +388,6 @@ class VPPostHistogram(view_base_fempostvisualization.VPPostVisualization):
     def __init__(self, vobj):
         super().__init__(vobj)
 
-
     def _get_properties(self):
 
         prop = [
@@ -394,7 +395,9 @@ class VPPostHistogram(view_base_fempostvisualization.VPPostVisualization):
                 type="App::PropertyBool",
                 name="Cumulative",
                 group="Histogram",
-                doc=QT_TRANSLATE_NOOP("FEM", "If be the bars shoud show the cumulative sum left to rigth"),
+                doc=QT_TRANSLATE_NOOP(
+                    "FEM", "If be the bars shoud show the cumulative sum left to rigth"
+                ),
                 value=False,
             ),
             _GuiPropHelper(
@@ -402,13 +405,15 @@ class VPPostHistogram(view_base_fempostvisualization.VPPostVisualization):
                 name="Type",
                 group="Histogram",
                 doc=QT_TRANSLATE_NOOP("FEM", "The type of histogram plotted"),
-                value=["bar","barstacked", "step", "stepfilled"],
+                value=["bar", "barstacked", "step", "stepfilled"],
             ),
             _GuiPropHelper(
                 type="App::PropertyFloatConstraint",
                 name="BarWidth",
                 group="Histogram",
-                doc=QT_TRANSLATE_NOOP("FEM", "The width of the bar, between 0 and 1 (1 being without gaps)"),
+                doc=QT_TRANSLATE_NOOP(
+                    "FEM", "The width of the bar, between 0 and 1 (1 being without gaps)"
+                ),
                 value=(0.9, 0, 1, 0.05),
             ),
             _GuiPropHelper(
@@ -458,28 +463,35 @@ class VPPostHistogram(view_base_fempostvisualization.VPPostVisualization):
                 name="LegendLocation",
                 group="Plot",
                 doc=QT_TRANSLATE_NOOP("FEM", "Determines if the legend is plotted"),
-                value=['best','upper right','upper left','lower left','lower right','right',
-                       'center left','center right','lower center','upper center','center'],
+                value=[
+                    "best",
+                    "upper right",
+                    "upper left",
+                    "lower left",
+                    "lower right",
+                    "right",
+                    "center left",
+                    "center right",
+                    "lower center",
+                    "upper center",
+                    "center",
+                ],
             ),
-
         ]
         return prop
 
-
     def getIcon(self):
         return ":/icons/FEM_PostHistogram.svg"
-
 
     def setEdit(self, vobj, mode):
 
         # build up the task panel
         taskd = task_post_histogram._TaskPanel(vobj)
 
-        #show it
+        # show it
         FreeCADGui.Control.showDialog(taskd)
 
         return True
-
 
     def show_visualization(self):
 
@@ -489,11 +501,10 @@ class VPPostHistogram(view_base_fempostvisualization.VPPostVisualization):
             self._plot.setWindowTitle(self.Object.Label)
             self._plot.setParent(main)
             self._plot.setWindowFlags(QtGui.Qt.Dialog)
-            self._plot.resize(main.size().height()/2, main.size().height()/3) # keep it square
+            self._plot.resize(main.size().height() / 2, main.size().height() / 3)  # keep it square
             self.update_visualization()
 
         self._plot.show()
-
 
     def get_kw_args(self, obj):
         view = obj.ViewObject
@@ -502,7 +513,6 @@ class VPPostHistogram(view_base_fempostvisualization.VPPostVisualization):
         if not hasattr(view.Proxy, "get_kw_args"):
             return {}
         return view.Proxy.get_kw_args()
-
 
     def update_visualization(self):
 
@@ -523,7 +533,7 @@ class VPPostHistogram(view_base_fempostvisualization.VPPostVisualization):
             kwargs = self.get_kw_args(child)
 
             # iterate over the table and plot all
-            color_factor = np.linspace(1,0.5,table.GetNumberOfColumns())
+            color_factor = np.linspace(1, 0.5, table.GetNumberOfColumns())
             legend_multiframe = table.GetNumberOfColumns() > 1
             for i in range(table.GetNumberOfColumns()):
 
@@ -532,7 +542,7 @@ class VPPostHistogram(view_base_fempostvisualization.VPPostVisualization):
                 for key in kwargs:
 
                     if "color" in key:
-                        value = np.array(kwargs[key])*color_factor[i]
+                        value = np.array(kwargs[key]) * color_factor[i]
                         args[key] = mpl.colors.to_hex(value)
 
                 full_args.append(args)
@@ -581,7 +591,7 @@ class VPPostHistogram(view_base_fempostvisualization.VPPostVisualization):
             self._plot.axes.set_ylabel(self.ViewObject.YLabel)
 
         if self.ViewObject.Legend and labels:
-            self._plot.axes.legend(loc = self.ViewObject.LegendLocation)
+            self._plot.axes.legend(loc=self.ViewObject.LegendLocation)
 
         self._plot.update()
 

@@ -31,6 +31,7 @@ __url__ = "https://www.freecad.org"
 
 # check vtk version to potentially find missmatchs
 from femguiutils.vtk_module_handling import vtk_module_handling
+
 vtk_module_handling()
 
 from . import base_fempostextractors
@@ -40,30 +41,34 @@ from . import post_extract2D
 from femguiutils import post_visualization
 
 # register visualization and extractors
-post_visualization.register_visualization("Lineplot",
-                                          ":/icons/FEM_PostLineplot.svg",
-                                          "ObjectsFem",
-                                          "makePostLineplot")
+post_visualization.register_visualization(
+    "Lineplot", ":/icons/FEM_PostLineplot.svg", "ObjectsFem", "makePostLineplot"
+)
 
-post_visualization.register_extractor("Lineplot",
-                                      "LineplotFieldData",
-                                      ":/icons/FEM_PostField.svg",
-                                      "2D",
-                                      "Field",
-                                      "ObjectsFem",
-                                      "makePostLineplotFieldData")
+post_visualization.register_extractor(
+    "Lineplot",
+    "LineplotFieldData",
+    ":/icons/FEM_PostField.svg",
+    "2D",
+    "Field",
+    "ObjectsFem",
+    "makePostLineplotFieldData",
+)
 
-post_visualization.register_extractor("Lineplot",
-                                      "LineplotIndexOverFrames",
-                                      ":/icons/FEM_PostIndex.svg",
-                                      "2D",
-                                      "Index",
-                                      "ObjectsFem",
-                                      "makePostLineplotIndexOverFrames")
+post_visualization.register_extractor(
+    "Lineplot",
+    "LineplotIndexOverFrames",
+    ":/icons/FEM_PostIndex.svg",
+    "2D",
+    "Index",
+    "ObjectsFem",
+    "makePostLineplotIndexOverFrames",
+)
 
 
 # Implementation
 # ##############
+
 
 def is_lineplot_extractor(obj):
 
@@ -80,6 +85,7 @@ class PostLineplotFieldData(post_extract2D.PostFieldData2D):
     """
     A 2D Field extraction for lineplot.
     """
+
     VisualizationType = "Lineplot"
 
 
@@ -87,15 +93,13 @@ class PostLineplotIndexOverFrames(post_extract2D.PostIndexOverFrames2D):
     """
     A 2D index extraction for lineplot.
     """
-    VisualizationType = "Lineplot"
 
+    VisualizationType = "Lineplot"
 
 
 class PostLineplot(base_fempostvisualizations.PostVisualization):
     """
     A post processing plot for showing extracted data as line plots
     """
+
     VisualizationType = "Lineplot"
-
-
-

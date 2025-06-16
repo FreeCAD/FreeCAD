@@ -32,6 +32,7 @@ __url__ = "https://www.freecad.org"
 import FreeCAD
 import FreeCADGui
 
+
 class VPPostVisualization:
     """
     A View Provider for visualization objects
@@ -42,22 +43,18 @@ class VPPostVisualization:
         self._setup_properties(vobj)
         vobj.addExtension("Gui::ViewProviderGroupExtensionPython")
 
-
     def _setup_properties(self, vobj):
         pl = vobj.PropertiesList
         for prop in self._get_properties():
             if not prop.name in pl:
                 prop.add_to_object(vobj)
 
-
     def _get_properties(self):
         return []
-
 
     def attach(self, vobj):
         self.Object = vobj.Object
         self.ViewObject = vobj
-
 
     def isShow(self):
         # Mark ourself as visible in the tree
@@ -66,7 +63,7 @@ class VPPostVisualization:
     def getDisplayModes(self, obj):
         return ["Dialog"]
 
-    def doubleClicked(self,vobj):
+    def doubleClicked(self, vobj):
 
         guidoc = FreeCADGui.getDocument(vobj.Object.Document)
 
@@ -106,7 +103,6 @@ class VPPostVisualization:
 
     def loads(self, state):
         return None
-
 
     # To be implemented by subclasses:
     # ################################

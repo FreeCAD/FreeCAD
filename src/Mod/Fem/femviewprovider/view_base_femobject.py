@@ -40,6 +40,7 @@ from femobjects.base_fempythonobject import _PropHelper
 
 False if FemGui.__name__ else True  # flake8, dummy FemGui usage
 
+
 class _GuiPropHelper(_PropHelper):
     """
     Helper class to manage property data inside proxy objects.

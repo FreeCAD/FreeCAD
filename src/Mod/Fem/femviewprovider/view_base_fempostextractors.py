@@ -1,4 +1,3 @@
-
 # ***************************************************************************
 # *   Copyright (c) 2025 Stefan Tröger <stefantroeger@gmx.net>              *
 # *                                                                         *
@@ -37,6 +36,7 @@ from PySide import QtGui
 
 from femtaskpanels import task_post_extractor
 
+
 class VPPostExtractor:
     """
     A View Provider for extraction of data
@@ -74,18 +74,18 @@ class VPPostExtractor:
         if not group:
             return
 
-        if (hasattr(group.ViewObject, "Proxy") and
-            hasattr(group.ViewObject.Proxy, "childViewPropertyChanged")):
+        if hasattr(group.ViewObject, "Proxy") and hasattr(
+            group.ViewObject.Proxy, "childViewPropertyChanged"
+        ):
 
             group.ViewObject.Proxy.childViewPropertyChanged(vobj, prop)
-
 
     def setEdit(self, vobj, mode):
 
         # build up the task panel
         taskd = task_post_extractor._ExtractorTaskPanel(vobj.Object)
 
-        #show it
+        # show it
         FreeCADGui.Control.showDialog(taskd)
 
         return True
@@ -111,7 +111,6 @@ class VPPostExtractor:
 
     def loads(self, state):
         return None
-
 
     # To be implemented by subclasses:
     # ################################

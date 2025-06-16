@@ -33,6 +33,7 @@ import FreeCAD
 
 from . import base_fempostextractors
 from . import base_fempythonobject
+
 _PropHelper = base_fempythonobject._PropHelper
 
 from vtkmodules.vtkCommonCore import vtkDoubleArray
@@ -53,11 +54,14 @@ class PostFieldData1D(base_fempostextractors.Extractor1D):
         super().__init__(obj)
 
     def _get_properties(self):
-        prop =[ _PropHelper(
+        prop = [
+            _PropHelper(
                 type="App::PropertyBool",
                 name="ExtractFrames",
                 group="Multiframe",
-                doc=QT_TRANSLATE_NOOP("FEM", "Specify if the field shall be extracted for every available frame"),
+                doc=QT_TRANSLATE_NOOP(
+                    "FEM", "Specify if the field shall be extracted for every available frame"
+                ),
                 value=False,
             ),
         ]
@@ -77,14 +81,16 @@ class PostFieldData1D(base_fempostextractors.Extractor1D):
             obj.Table = table
             return
 
-        timesteps=[]
+        timesteps = []
         if obj.ExtractFrames:
             # check if we have timesteps
             info = obj.Source.getOutputAlgorithm().GetOutputInformation(0)
             if info.Has(vtkStreamingDemandDrivenPipeline.TIME_STEPS()):
                 timesteps = info.Get(vtkStreamingDemandDrivenPipeline.TIME_STEPS())
             else:
-                FreeCAD.Console.PrintWarning("No frames available in data, ignoring \"ExtractFrames\" property")
+                FreeCAD.Console.PrintWarning(
+                    'No frames available in data, ignoring "ExtractFrames" property'
+                )
 
         if not timesteps:
             # get the dataset and extract the correct array
@@ -124,11 +130,14 @@ class PostIndexOverFrames1D(base_fempostextractors.Extractor1D):
         super().__init__(obj)
 
     def _get_properties(self):
-        prop =[_PropHelper(
+        prop = [
+            _PropHelper(
                 type="App::PropertyInteger",
                 name="Index",
                 group="X Data",
-                doc=QT_TRANSLATE_NOOP("FEM", "Specify for which index the data should be extracted"),
+                doc=QT_TRANSLATE_NOOP(
+                    "FEM", "Specify for which index the data should be extracted"
+                ),
                 value=0,
             ),
         ]
@@ -154,7 +163,6 @@ class PostIndexOverFrames1D(base_fempostextractors.Extractor1D):
         if info.Has(vtkStreamingDemandDrivenPipeline.TIME_STEPS()):
             timesteps = info.Get(vtkStreamingDemandDrivenPipeline.TIME_STEPS())
 
-
         algo = obj.Source.getOutputAlgorithm()
         frame_array = vtkDoubleArray()
         idx = obj.Index
@@ -168,8 +176,10 @@ class PostIndexOverFrames1D(base_fempostextractors.Extractor1D):
                 array = self._x_array_from_dataset(obj, dataset, copy=False)
 
                 # safeguard for invalid access
-                if idx < 0 or array.GetNumberOfTuples()-1 < idx:
-                    raise Exception(f"Invalid index: {idx} is not in range 0 - {array.GetNumberOfTuples()-1}")
+                if idx < 0 or array.GetNumberOfTuples() - 1 < idx:
+                    raise Exception(
+                        f"Invalid index: {idx} is not in range 0 - {array.GetNumberOfTuples()-1}"
+                    )
 
                 if not setup:
                     frame_array.SetNumberOfComponents(array.GetNumberOfComponents())
@@ -183,13 +193,14 @@ class PostIndexOverFrames1D(base_fempostextractors.Extractor1D):
             array = self._x_array_from_dataset(obj, dataset, copy=False)
 
             # safeguard for invalid access
-            if idx < 0 or array.GetNumberOfTuples()-1 < idx:
-                raise Exception(f"Invalid index: {idx} is not in range 0 - {array.GetNumberOfTuples()-1}")
+            if idx < 0 or array.GetNumberOfTuples() - 1 < idx:
+                raise Exception(
+                    f"Invalid index: {idx} is not in range 0 - {array.GetNumberOfTuples()-1}"
+                )
 
             frame_array.SetNumberOfComponents(array.GetNumberOfComponents())
             frame_array.SetNumberOfTuples(1)
             frame_array.SetTuple(0, idx, array)
-
 
         if frame_array.GetNumberOfComponents() > 1:
             frame_array.SetName(f"{obj.XField} ({obj.XComponent}) @Idx {obj.Index}")

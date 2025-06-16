@@ -45,6 +45,7 @@ import FreeCAD
 
 _registry = {}
 
+
 @dataclass
 class _Extraction:
 
@@ -55,6 +56,7 @@ class _Extraction:
     module: str
     factory: str
 
+
 @dataclass
 class _Visualization:
 
@@ -64,6 +66,7 @@ class _Visualization:
     factory: str
     extractions: list[_Extraction]
 
+
 # Register a visualization by type, icon and factory function
 def register_visualization(visualization_type, icon, module, factory):
     if visualization_type in _registry:
@@ -71,7 +74,10 @@ def register_visualization(visualization_type, icon, module, factory):
 
     _registry[visualization_type] = _Visualization(visualization_type, icon, module, factory, [])
 
-def register_extractor(visualization_type, extraction_type, icon, dimension, etype, module, factory):
+
+def register_extractor(
+    visualization_type, extraction_type, icon, dimension, etype, module, factory
+):
 
     if not visualization_type in _registry:
         raise ValueError("visualization not registered yet")
@@ -79,12 +85,14 @@ def register_extractor(visualization_type, extraction_type, icon, dimension, ety
     extraction = _Extraction(extraction_type, icon, dimension, etype, module, factory)
     _registry[visualization_type].extractions.append(extraction)
 
+
 def get_registered_visualizations():
     return copy.deepcopy(_registry)
 
 
 def _to_command_name(name):
     return "FEM_PostVisualization" + name
+
 
 class _VisualizationGroupCommand:
 
@@ -97,14 +105,19 @@ class _VisualizationGroupCommand:
         return 0
 
     def GetResources(self):
-        return { 'MenuText': QtCore.QT_TRANSLATE_NOOP("FEM", 'Data Visualizations'),
-                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("FEM", 'Different visualizations to show post processing data in')}
+        return {
+            "MenuText": QtCore.QT_TRANSLATE_NOOP("FEM", "Data Visualizations"),
+            "ToolTip": QtCore.QT_TRANSLATE_NOOP(
+                "FEM", "Different visualizations to show post processing data in"
+            ),
+        }
 
     def IsActive(self):
         if not FreeCAD.ActiveDocument:
             return False
 
         import FemGui
+
         return bool(FemGui.getActiveAnalysis())
 
 
@@ -120,12 +133,12 @@ class _VisualizationCommand:
         tooltip = f"Create a {self._visualization_type} post processing data visualization"
 
         return {
-                "Pixmap": vis.icon,
-                "MenuText": QtCore.QT_TRANSLATE_NOOP(cmd, "Create {}".format(self._visualization_type)),
-                "Accel": "",
-                "ToolTip": QtCore.QT_TRANSLATE_NOOP(cmd, tooltip),
-                "CmdType": "AlterDoc"
-            }
+            "Pixmap": vis.icon,
+            "MenuText": QtCore.QT_TRANSLATE_NOOP(cmd, "Create {}".format(self._visualization_type)),
+            "Accel": "",
+            "ToolTip": QtCore.QT_TRANSLATE_NOOP(cmd, tooltip),
+            "CmdType": "AlterDoc",
+        }
 
     def IsActive(self):
         # active analysis available
@@ -133,6 +146,7 @@ class _VisualizationCommand:
             return False
 
         import FemGui
+
         return bool(FemGui.getActiveAnalysis())
 
     def Activated(self):
@@ -144,17 +158,12 @@ class _VisualizationCommand:
         FreeCADGui.addModule(vis.module)
         FreeCADGui.addModule("FemGui")
 
-        FreeCADGui.doCommand(
-            f"obj = {vis.module}.{vis.factory}(FreeCAD.ActiveDocument)"
-        )
-        FreeCADGui.doCommand(
-            f"FemGui.getActiveAnalysis().addObject(obj)"
-        )
+        FreeCADGui.doCommand(f"obj = {vis.module}.{vis.factory}(FreeCAD.ActiveDocument)")
+        FreeCADGui.doCommand(f"FemGui.getActiveAnalysis().addObject(obj)")
 
         FreeCADGui.Selection.clearSelection()
-        FreeCADGui.doCommand(
-            "FreeCADGui.ActiveDocument.setEdit(obj)"
-        )
+        FreeCADGui.doCommand("FreeCADGui.ActiveDocument.setEdit(obj)")
+
 
 def setup_commands(toplevel_name):
     # creates all visualization commands and registers them. The

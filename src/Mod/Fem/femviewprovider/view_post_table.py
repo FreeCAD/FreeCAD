@@ -41,7 +41,9 @@ from femtaskpanels import task_post_table
 from femguiutils import vtk_table_view as vtv
 
 from . import view_base_femobject
+
 _GuiPropHelper = view_base_femobject._GuiPropHelper
+
 
 class EditViewWidget(QtGui.QWidget):
 
@@ -116,6 +118,7 @@ class EditFieldAppWidget(QtGui.QWidget):
         self._object.ExtractFrames = extract
         self._post_dialog._recompute()
 
+
 class EditIndexAppWidget(QtGui.QWidget):
 
     def __init__(self, obj, post_dialog):
@@ -180,7 +183,9 @@ class VPPostTableFieldData(view_base_fempostextractors.VPPostExtractor):
                 type="App::PropertyString",
                 name="Name",
                 group="Table",
-                doc=QT_TRANSLATE_NOOP("FEM", "The name used in the table header. Default name is used if empty"),
+                doc=QT_TRANSLATE_NOOP(
+                    "FEM", "The name used in the table header. Default name is used if empty"
+                ),
                 value="",
             ),
         ]
@@ -232,21 +237,18 @@ class VPPostTable(view_base_fempostvisualization.VPPostVisualization):
     def __init__(self, vobj):
         super().__init__(vobj)
 
-
     def getIcon(self):
         return ":/icons/FEM_PostSpreadsheet.svg"
-
 
     def setEdit(self, vobj, mode):
 
         # build up the task panel
         taskd = task_post_table._TaskPanel(vobj)
 
-        #show it
+        # show it
         FreeCADGui.Control.showDialog(taskd)
 
         return True
-
 
     def show_visualization(self):
 
@@ -257,12 +259,13 @@ class VPPostTable(view_base_fempostvisualization.VPPostVisualization):
             self._tableview.setWindowTitle(self.Object.Label)
             self._tableview.setParent(main)
             self._tableview.setWindowFlags(QtGui.Qt.Dialog)
-            self._tableview.resize(main.size().height()/2, main.size().height()/3) # keep the aspect ratio
+            self._tableview.resize(
+                main.size().height() / 2, main.size().height() / 3
+            )  # keep the aspect ratio
 
             self.update_visualization()
 
         self._tableview.show()
-
 
     def update_visualization(self):
 
@@ -286,5 +289,3 @@ class VPPostTable(view_base_fempostvisualization.VPPostVisualization):
                         header[table.GetColumnName(i)] = new_name
 
         self._tableModel.setTable(self.Object.Table, header)
-
-

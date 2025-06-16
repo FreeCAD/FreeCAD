@@ -40,6 +40,7 @@ from femguiutils import vtk_table_view
 
 translate = FreeCAD.Qt.translate
 
+
 class _TaskPanel(base_fempostpanel._BasePostTaskPanel):
     """
     The TaskPanel for editing properties of glyph filter
@@ -68,7 +69,6 @@ class _TaskPanel(base_fempostpanel._BasePostTaskPanel):
         self.data_widget.setWindowTitle(translate("FEM", "Lineplot data"))
         self.data_widget.setWindowIcon(FreeCADGui.getIcon(":/icons/FEM_PostLineplot.svg"))
 
-
         # lineplot parameter widget
         self.view_widget = FreeCADGui.PySideUic.loadUi(
             FreeCAD.getHomePath() + "Mod/Fem/Resources/ui/TaskPostLineplot.ui"
@@ -80,7 +80,6 @@ class _TaskPanel(base_fempostpanel._BasePostTaskPanel):
 
         # form made from param and selection widget
         self.form = [self.data_widget, self.view_widget]
-
 
     # Setup functions
     # ###############
@@ -104,7 +103,6 @@ class _TaskPanel(base_fempostpanel._BasePostTaskPanel):
         self.view_widget.LegendShow.setChecked(viewObj.Legend)
         self._enumPropertyToCombobox(viewObj, "LegendLocation", self.view_widget.LegendPos)
 
-
         # connect callbacks
         self.view_widget.Scale.activated.connect(self.scaleChanged)
         self.view_widget.Grid.toggled.connect(self.gridChanged)
@@ -116,12 +114,13 @@ class _TaskPanel(base_fempostpanel._BasePostTaskPanel):
         self.view_widget.LegendShow.toggled.connect(self.legendShowChanged)
         self.view_widget.LegendPos.activated.connect(self.legendPosChanged)
 
-
     QtCore.Slot()
+
     def showPlot(self):
         self.obj.ViewObject.Proxy.show_visualization()
 
     QtCore.Slot()
+
     def showTable(self):
 
         # TODO: make data model update when object is recomputed
@@ -132,37 +131,43 @@ class _TaskPanel(base_fempostpanel._BasePostTaskPanel):
         widget = vtk_table_view.VtkTableView(data_model)
         layout = QtGui.QVBoxLayout()
         layout.addWidget(widget)
-        layout.setContentsMargins(0,0,0,0)
+        layout.setContentsMargins(0, 0, 0, 0)
 
         dialog.setLayout(layout)
         dialog.resize(1500, 900)
         dialog.show()
 
-
     QtCore.Slot(int)
+
     def scaleChanged(self, idx):
         self.obj.ViewObject.Scale = idx
 
     QtCore.Slot(bool)
+
     def gridChanged(self, state):
         self.obj.ViewObject.Grid = state
 
     QtCore.Slot()
+
     def titleChanged(self):
         self.obj.ViewObject.Title = self.view_widget.Title.text()
 
     QtCore.Slot()
+
     def xLabelChanged(self):
         self.obj.ViewObject.XLabel = self.view_widget.XLabel.text()
 
     QtCore.Slot()
+
     def yLabelChanged(self):
         self.obj.ViewObject.YLabel = self.view_widget.YLabel.text()
 
     QtCore.Slot(int)
+
     def legendPosChanged(self, idx):
         self.obj.ViewObject.LegendLocation = idx
 
     QtCore.Slot(bool)
+
     def legendShowChanged(self, state):
         self.obj.ViewObject.Legend = state
