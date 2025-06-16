@@ -96,7 +96,6 @@ struct DocumentP
 
 
     unsigned int TransactionLock {0};
-    int CommitPostponed { 0 }; // When 0, commits are accepted, when > 0, each commit call decrements
 
     // Id and name that the next transaction will take
     // as soon as there is a change to the document

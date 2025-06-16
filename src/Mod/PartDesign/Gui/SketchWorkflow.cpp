@@ -691,7 +691,6 @@ private:
             Gui::Selection().clearSelection();
 
             // Show dialog and let user pick plane
-            guidocument->getDocument()->postponeCommit();
             Gui::Control().showDialog(new PartDesignGui::TaskDlgFeaturePick(planes, status, acceptFunction,
                                                                             processFunction, true, rejectFunction));
         }
