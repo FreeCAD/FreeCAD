@@ -114,10 +114,10 @@ jobs:
         # tools: https://github.com/github/codeql-action/releases/download/codeql-bundle-v2.20.7/codeql-bundle-linux64.tar.gz
 
         # Add exclusions
-        # config: |
-        #   query-filters:
-        #   - exclude:
-        #       id: py/file-not-closed
+        config: |
+          paths-ignore:
+            - src/3rdParty/**
+            - '**/ui_*.h'
 
     # If the analyze step fails for one of the languages you are analyzing with
     # "We were unable to automatically build your code", modify the matrix above
