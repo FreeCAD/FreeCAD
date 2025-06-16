@@ -38,6 +38,7 @@
 #include <Gui/Command.h>
 #include <Gui/Control.h>
 #include <Gui/Selection/SelectionObject.h>
+#include <Gui/Tools.h>
 #include <Gui/Widgets.h>
 #include <Mod/Part/Gui/ViewProvider.h>
 
@@ -281,11 +282,8 @@ SectionsPanel::SectionsPanel(ViewProviderSections* vp, Surface::Sections* obj)
 
     // Create context menu
     QAction* action = new QAction(tr("Remove"), this);
-    {
-        auto& rcCmdMgr = Gui::Application::Instance->commandManager();
-        auto shortcut = rcCmdMgr.getCommandByName("Std_Delete")->getShortcut();
-        action->setShortcut(QKeySequence(shortcut));
-    }
+    action->setShortcut(Gui::QtTools::deleteKeySequence());
+
     ui->listSections->addAction(action);
     connect(action, &QAction::triggered, this, &SectionsPanel::onDeleteEdge);
     ui->listSections->setContextMenuPolicy(Qt::ActionsContextMenu);

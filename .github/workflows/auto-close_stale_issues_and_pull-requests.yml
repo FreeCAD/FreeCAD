@@ -30,11 +30,10 @@ jobs:
         uses: actions/stale@5bef64f19d7facfb25b37b414482c7164d639639 # v9.1.0
         with:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
-          days-before-stale: -1
-          days-before-issue-stale: 90
-          days-before-issue-close: 20
+          days-before-issue-stale: 60
+          days-before-issue-close: 14
           days-before-pr-stale: -1
-          day-before-pr-close: -1
+          days-before-pr-close: -1
           operations-per-run: 100  # max num of ops per run
           stale-issue-label: 'Status: Stale'
           close-issue-label: 'Status: Auto-closing'
@@ -44,7 +43,7 @@ jobs:
           stale-issue-message: |
             Hi! This issue hasn’t seen activity in a while. If it’s still relevant, please update to the latest FreeCAD weekly build [download here](https://github.com/FreeCAD/FreeCAD-Bundle/releases/tag/weekly-builds) to see if the problem is resolved.
 
-            If the issue persists, let us know by adding a comment with any updates or details. Otherwise, we’ll close this issue automatically in 20 days to keep our backlog tidy. Feel free to comment anytime to keep it open. Closed issues can always be reopened.
+            If the issue persists, let us know by adding a comment with any updates or details. Otherwise, we’ll close this issue automatically in 14 days to keep our backlog tidy. Feel free to comment anytime to keep it open. Closed issues can always be reopened.
             Thanks for helping improve FreeCAD!
 
             Access additional [FreeCAD](https://freecad.org) resources:
@@ -57,12 +56,11 @@ jobs:
         uses: actions/stale@5bef64f19d7facfb25b37b414482c7164d639639 # v9.1.0
         with:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
-          days-before-stale: -1
           days-before-issue-stale: 20
-          days-before-issue-close: 20
+          days-before-issue-close: 14
           days-before-pr-stale: -1
-          day-before-pr-close: -1
-          operations-per-run: 30  # max num of ops per run
+          days-before-pr-close: -1
+          operations-per-run: 100  # max num of ops per run
           stale-issue-label: 'Status: Stale'
           close-issue-label: 'Status: Auto-closing'
           only-labels: 'Status: Needs feedback,Status: Needs test on dev version,Status: Needs steps to reproduce'
@@ -72,7 +70,7 @@ jobs:
             Hi! This issue hasn’t seen activity in a while despite the need for further feedback.
             If it’s still relevant, please update to the latest FreeCAD weekly build [download here](https://github.com/FreeCAD/FreeCAD-Bundle/releases/tag/weekly-builds) to see if the problem is resolved.
 
-            If the issue persists, let us know by adding a comment with any updates or details. Otherwise, we’ll close this issue automatically in 20 days to keep our backlog tidy. Feel free to comment anytime to keep it open. Closed issues can always be reopened.
+            If the issue persists, let us know by adding a comment with any updates or details. Otherwise, we’ll close this issue automatically in 14 days to keep our backlog tidy. Feel free to comment anytime to keep it open. Closed issues can always be reopened.
             Thanks for helping improve FreeCAD!
 
             Access additional [FreeCAD](https://freecad.org) resources:
@@ -85,12 +83,11 @@ jobs:
         uses: actions/stale@5bef64f19d7facfb25b37b414482c7164d639639 # v9.1.0
         with:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
-          days-before-stale: -1
           days-before-issue-stale: 190
           days-before-issue-close: 60
           days-before-pr-stale: -1
-          day-before-pr-close: -1
-          operations-per-run: 30  # max num of ops per run
+          days-before-pr-close: -1
+          operations-per-run: 50  # max num of ops per run
           stale-issue-label: 'Status: Stale'
           close-issue-label: 'Status: Auto-closing'
           exempt-issue-labels: 'Priority: High,Priority: Critical,Blocker,Type: Feature,no-auto-close'
@@ -116,11 +113,10 @@ jobs:
         uses: actions/stale@5bef64f19d7facfb25b37b414482c7164d639639 # v9.1.0
         with:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
-          days-before-stale: -1
           days-before-issue-stale: -1
           days-before-issue-close: -1
-          days-before-pr-stale: 150
-          days-before-pr-close: 90
+          days-before-pr-stale: 120
+          days-before-pr-close: 60
           operations-per-run: 30  # max num of ops per run
           stale-pr-label: 'Status: Stale'
           close-pr-label: 'Status: Auto-closing'
@@ -129,9 +125,9 @@ jobs:
           ascending: true
           stale-pr-message: |
             Thanks for helping improve FreeCAD!
-            This pull request hasn’t seen activity in a while. We automatically check each PR after 160 days without activity to keep the repository tidy.
+            This pull request hasn’t seen activity in a while. We automatically check each PR after 120 days without activity to keep the repository tidy.
 
             If the PR is still relevant, let us know by adding a comment.
-            Otherwise, we’ll close this PR automatically in 90 days.
+            Otherwise, we’ll close this PR automatically in 60 days.
 
             If you would like to keep working on this pull request, we advice to rebase it on current main branch, ask feedback from users or maintainers and engage with the community to get it forward.

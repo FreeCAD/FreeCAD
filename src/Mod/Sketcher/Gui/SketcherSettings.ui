@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>500</width>
-    <height>536</height>
+    <height>592</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -250,14 +250,17 @@ Requires to re-enter edit mode to take effect.</string>
       <string>Dimension constraint</string>
      </property>
      <layout class="QGridLayout" name="gridLayout_general">
-      <item row="0" column="0">
-       <widget class="QLabel" name="dimensioningLabel">
-        <property name="text">
-         <string>Dimensioning constraints:</string>
+      <item row="1" column="1">
+       <widget class="QComboBox" name="radiusDiameterMode">
+        <property name="toolTip">
+         <string>While using the Dimension tool you may choose how to handle circles and arcs:
+'Auto': The tool will apply radius to arcs and diameter to circles.
+'Diameter': The tool will apply diameter to both arcs and circles.
+'Radius': The tool will apply radius to both arcs and circles.</string>
         </property>
        </widget>
       </item>
-	  <item row="0" column="1">
+      <item row="0" column="1">
        <widget class="QComboBox" name="dimensioningMode">
         <property name="toolTip">
          <string>Select the type of dimensioning constraints for your toolbar:
@@ -275,14 +278,37 @@ This setting is only for the toolbar. Whichever you choose, all tools are always
         </property>
        </widget>
       </item>
-	  <item row="1" column="1">
-       <widget class="QComboBox" name="radiusDiameterMode">
-        <property name="toolTip">
-         <string>While using the Dimension tool you may choose how to handle circles and arcs:
-'Auto': The tool will apply radius to arcs and diameter to circles.
-'Diameter': The tool will apply diameter to both arcs and circles.
-'Radius': The tool will apply radius to both arcs and circles.</string>
+      <item row="0" column="0">
+       <widget class="QLabel" name="dimensioningLabel">
+        <property name="text">
+         <string>Dimensioning constraints:</string>
         </property>
+       </widget>
+      </item>
+      <item row="2" column="0">
+       <widget class="QLabel" name="autoScaleModeLabel">
+        <property name="text">
+         <string>Scale upon first constraint</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="1">
+       <widget class="QComboBox" name="autoScaleMode">
+        <item>
+         <property name="text">
+          <string>Always</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Never</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Only if there is no visual scale indicator</string>
+         </property>
+        </item>
        </widget>
       </item>
      </layout>
@@ -307,7 +333,7 @@ This setting is only for the toolbar. Whichever you choose, all tools are always
         </property>
        </widget>
       </item>
-	  <item row="0" column="1">
+      <item row="0" column="1">
        <widget class="QComboBox" name="ovpVisibility">
         <property name="toolTip">
          <string>Choose a visibility mode for the On-View-Parameters:
