@@ -180,11 +180,21 @@ public:
     Gui::Document* activeDocument() const;
     /// Set the active document
     void setActiveDocument(Gui::Document* pcDocument);
-    /// Getter for the editing document
+
+    /// Getter for the editing document, will be removed soon
     Gui::Document* editDocument() const;
+    /// Getter for the first editing document that matches a functor
+    Gui::Document* editDocument(const std::function<bool(Gui::Document*)>& eval);
+    /// Getter for all currently editing documents, all pointers are guaranteed to be non-null
+    std::vector<Gui::Document*> editDocuments() const;
+
     // Returns true if the document is in edit (will make more sense once the edit document it is a vector)
     bool isInEdit(Gui::Document* pcDocument) const;
-    
+    // After this, isInEdit(pcDocument) returns false
+    void resetEditOf(Gui::Document* pcDocument);
+    // Reset edit if eval returns true for a document in edit
+    void resetEditIf(const std::function<bool(Gui::Document*)>& eval);
+
     Gui::MDIView* editViewOfNode(SoNode *node) const;
     /// Set editing document, which will reset editing of all other document
     void setEditDocument(Gui::Document* pcDocument);

@@ -2708,16 +2708,18 @@ bool ViewProviderLink::initDraggingPlacement() {
         FC_ERR("no placement");
         return false;
     }
-    auto doc = Application::Instance->editDocument();
-    if(!doc) {
-        FC_ERR("no editing document");
+
+    // TODO-theo-vt is it really equivalent in the context
+    // of a link in a multi-edit scenario?
+    if (!Application::Instance->isInEdit(getDocument())) {
+        FC_ERR("document is not in edit");
         return false;
     }
 
     dragCtx = std::make_unique<DraggerContext>();
 
-    dragCtx->preTransform = doc->getEditingTransform();
-    doc->setEditingTransform(dragCtx->preTransform);
+    dragCtx->preTransform = getDocument()->getEditingTransform();
+    getDocument()->setEditingTransform(dragCtx->preTransform);
 
     const auto &pla = ext->getPlacementProperty()?
         ext->getPlacementValue():ext->getLinkPlacementValue();
@@ -2784,7 +2786,8 @@ ViewProvider *ViewProviderLink::startEditing(int mode) {
     static thread_local bool _pendingTransform;
     static thread_local Matrix4D _editingTransform;
 
-    auto doc = Application::Instance->editDocument();
+    // TODO-theo-vt can a link can/should provider edit another document?
+    Gui::Document* doc = Application::Instance->isInEdit(getDocument()) ? getDocument() : nullptr;
 
     if (mode == ViewProvider::Transform) {
         if (_pendingTransform && doc) {
