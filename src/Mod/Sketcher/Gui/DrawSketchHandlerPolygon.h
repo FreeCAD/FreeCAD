@@ -455,7 +455,7 @@ void DSHPolygonController::doChangeDrawSketchHandlerMode()
             auto& firstParam = onViewParameters[OnViewParameter::First];
             auto& secondParam = onViewParameters[OnViewParameter::Second];
 
-            if (firstParam->hasFinishedEditing || secondParam->hasFinishedEditing) {
+            if (firstParam->hasFinishedEditing && secondParam->hasFinishedEditing) {
                 handler->setState(SelectMode::SeekSecond);
             }
         } break;
