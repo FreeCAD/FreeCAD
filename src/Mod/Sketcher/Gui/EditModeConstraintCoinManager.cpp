@@ -1975,11 +1975,6 @@ void EditModeConstraintCoinManager::rebuildConstraintNodes(
                 text->size.setValue(drawingParameters.labelFontSize);
                 text->lineWidth = 2 * drawingParameters.pixelScalingFactor;
                 text->useAntialiasing = false;
-                // Remove SoAnnotation wrapper to allow proper depth testing
-                // SoAnnotation* anno = new SoAnnotation();
-                // anno->renderCaching = SoSeparator::OFF;
-                // anno->addChild(text);
-                // #define CONSTRAINT_SEPARATOR_INDEX_MATERIAL_OR_DATUMLABEL 0
                 sep->addChild(text);
                 editModeScenegraphNodes.constrGroup->addChild(sep);
                 vConstrType.push_back((*it)->Type);
