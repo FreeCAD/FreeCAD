@@ -2259,10 +2259,10 @@ protected:
                 Base::Vector3d pnt1 = lineSeg->getStartPoint();
                 Base::Vector3d pnt2 = lineSeg->getEndPoint();
                 Base::Vector3d d = pnt2 - pnt1;
-                double ActDist =
-                    std::abs(-center1.x * d.y + center1.y * d.x + pnt1.x * pnt2.y - pnt2.x * pnt1.y)
-                        / d.Length()
-                    - radius1;
+                double ActDist = std::abs(
+                            std::abs(-center1.x * d.y + center1.y * d.x + pnt1.x * pnt2.y - pnt2.x * pnt1.y)
+                            / d.Length()
+                            - radius1);
 
                 Gui::cmdAppObjectArgs(Obj,
                                       "addConstraint(Sketcher.Constraint('Distance',%d,%d,%f))",
