@@ -63,12 +63,12 @@ using ExtensionPython = ExtensionPythonT<App::Extension>;
     Base::PyGILStateLocker lock;                                                                   \
     Py::Object result;                                                                             \
     try {                                                                                          \
-        Property* proxy = this->getExtendedContainer()->getPropertyByName("Proxy");                \
-        if (proxy && proxy->is<PropertyPythonObject>()) {                                          \
-            Py::Object feature = static_cast<PropertyPythonObject*>(proxy)->getValue();            \
-            if (feature.hasAttr(std::string("function"))) {                                        \
+        App::Property* proxy = this->getExtendedContainer()->getPropertyByName("Proxy");           \
+        if (proxy && proxy->is<App::PropertyPythonObject>()) {                                     \
+            Py::Object feature = static_cast<App::PropertyPythonObject*>(proxy)->getValue();       \
+            if (feature.hasAttr(std::string(#function))) {                                         \
                 if (feature.hasAttr("__object__")) {                                               \
-                    Py::Callable method(feature.getAttr(std::string("function")));
+                    Py::Callable method(feature.getAttr(std::string(#function)));
 
 
 #define EXTENSION_PROXY_SECOND(function)                                                           \
@@ -76,7 +76,7 @@ using ExtensionPython = ExtensionPythonT<App::Extension>;
     }                                                                                              \
     else                                                                                           \
     {                                                                                              \
-        Py::Callable method(feature.getAttr(std::string("function")));
+        Py::Callable method(feature.getAttr(std::string(#function)));
 
 #define EXTENSION_PROXY_THIRD()                                                                    \
     result = method.apply(args);                                                                   \
@@ -95,27 +95,27 @@ using ExtensionPython = ExtensionPythonT<App::Extension>;
     Py::Tuple args;                                                                                \
     EXTENSION_PROXY_SECOND(function)                                                               \
     Py::Tuple args(1);                                                                             \
-    args.setItem(0, Py::Object(this->getExtensionPyObject(), true));                               \
+    args.setItem(0, Py::Object(this->getExtendedContainer()->getPyObject(), true));                \
     EXTENSION_PROXY_THIRD()
 
 #define EXTENSION_PROXY_ONEARG(function, arg)                                                      \
     EXTENSION_PROXY_FIRST(function)                                                                \
-    Py::Tuple args;                                                                                \
+    Py::Tuple args(1);                                                                             \
     args.setItem(0, arg);                                                                          \
     EXTENSION_PROXY_SECOND(function)                                                               \
     Py::Tuple args(2);                                                                             \
-    args.setItem(0, Py::Object(this->getExtensionPyObject(), true));                               \
+    args.setItem(0, Py::Object(this->getExtendedContainer()->getPyObject(), true));                \
     args.setItem(1, arg);                                                                          \
     EXTENSION_PROXY_THIRD()
 
 #define EXTENSION_PYTHON_OVERRIDE_VOID_NOARGS(function)                                            \
-    virtual void function() override { EXTENSION_PROXY_NOARGS(function) };
+    virtual void function() override { EXTENSION_PROXY_NOARG(function) };
 
 #define EXTENSION_PYTHON_OVERRIDE_OBJECT_NOARGS(function)                                          \
     virtual PyObject* function() override                                                          \
     {                                                                                              \
-        EXTENSION_PROXY_NOARGS(function)                                                           \
-        return res.ptr();                                                                          \
+        EXTENSION_PROXY_NOARG(function)                                                            \
+        return result.ptr();                                                                       \
     };
 
 }  // namespace App
