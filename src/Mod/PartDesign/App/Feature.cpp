@@ -180,7 +180,7 @@ void Feature::onChanged(const App::Property *prop)
                     int idx = -1;
                     body->Group.find(this->getNameInDocument(), &idx);
                     int baseidx = -1;
-                    body->Group.find(BaseFeature.getValue()->getNameInDocument(), &idx);
+                    body->Group.find(BaseFeature.getValue()->getNameInDocument(), &baseidx);
                     if (idx >= 0 && baseidx >= 0 && baseidx+1 != idx)
                         body->insertObject(BaseFeature.getValue(), this);
                 }
