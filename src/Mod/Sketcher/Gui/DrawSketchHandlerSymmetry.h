@@ -55,10 +55,11 @@ using DSHSymmetryController = DrawSketchDefaultWidgetController<
     DrawSketchHandlerSymmetry,
     StateMachines::OneSeekEnd,
     /*PAutoConstraintSize =*/0,
-    /*OnViewParametersT =*/OnViewParameters<0>,
-    /*WidgetParametersT =*/WidgetParameters<0>,
-    /*WidgetCheckboxesT =*/WidgetCheckboxes<2>,
-    /*WidgetComboboxesT =*/WidgetComboboxes<0>>;
+    /*OnViewParametersT =*/OnViewParameters<0>,  // NOLINT
+    /*WidgetParametersT =*/WidgetParameters<0>,  // NOLINT
+    /*WidgetCheckboxesT =*/WidgetCheckboxes<2>,  // NOLINT
+    /*WidgetComboboxesT =*/WidgetComboboxes<0>,  // NOLINT
+    /*WidgetLineEditsT =*/WidgetLineEdits<0>>;   // NOLINT
 
 using DSHSymmetryControllerBase = DSHSymmetryController::ControllerBase;
 

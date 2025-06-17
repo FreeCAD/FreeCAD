@@ -106,6 +106,7 @@ using DSHOffsetController = DrawSketchDefaultWidgetController<
     /*WidgetParametersT =*/WidgetParameters<0, 0>,
     /*WidgetCheckboxesT =*/WidgetCheckboxes<2, 2>,
     /*WidgetComboboxesT =*/WidgetComboboxes<1, 1>,
+    /*WidgetLineEditsT =*/WidgetLineEdits<0, 0>,
     ConstructionMethods::OffsetConstructionMethod,
     /*bool PFirstComboboxIsConstructionMethod =*/true>;
 

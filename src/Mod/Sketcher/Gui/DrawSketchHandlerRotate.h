@@ -54,7 +54,8 @@ using DSHRotateController = DrawSketchDefaultWidgetController<
     /*OnViewParametersT =*/OnViewParameters<4>,
     /*WidgetParametersT =*/WidgetParameters<1>,
     /*WidgetCheckboxesT =*/WidgetCheckboxes<1>,
-    /*WidgetComboboxesT =*/WidgetComboboxes<0>>;
+    /*WidgetComboboxesT =*/WidgetComboboxes<0>,
+    /*WidgetLineEditsT =*/WidgetLineEdits<0>>;
 
 using DSHRotateControllerBase = DSHRotateController::ControllerBase;
 
