@@ -293,8 +293,62 @@ void ImpExpDxfRead::ComposeSingleBlock(const std::string& blockName,
         // Then, iterate through each shape in that group and create a separate feature for it.
         for (const auto& shape : shapeList) {
             if (!shape.IsNull()) {
+                std::string cleanPrefix = blockName;
+                if (!cleanPrefix.empty() && std::isdigit(cleanPrefix[0])) {
+                    // Workaround for FreeCAD's unique name generator, which prepends an underscore
+                    // to names that start with a digit. We add our own prefix.
+                    cleanPrefix.insert(0, "B_");
+                }
+                // Determine a more descriptive name for the primitive feature.
+                std::string type_suffix = "Shape";
+                if (shape.ShapeType() == TopAbs_EDGE) {
+                    BRepAdaptor_Curve adaptor(TopoDS::Edge(shape));
+                    switch (adaptor.GetType()) {
+                        case GeomAbs_Line:
+                            type_suffix = "Line";
+                            break;
+                        case GeomAbs_Circle:
+                            type_suffix = "Circle";
+                            break;
+                        case GeomAbs_Ellipse:
+                            type_suffix = "Ellipse";
+                            break;
+                        case GeomAbs_BSplineCurve:
+                            type_suffix = "BSpline";
+                            break;
+                        case GeomAbs_BezierCurve:
+                            type_suffix = "Bezier";
+                            break;
+                        default:
+                            type_suffix = "Edge";
+                            break;
+                    }
+                }
+                else if (shape.ShapeType() == TopAbs_VERTEX) {
+                    type_suffix = "Vertex";
+                }
+                else if (shape.ShapeType() == TopAbs_WIRE) {
+                    type_suffix = "Wire";
+                }
+                else if (shape.ShapeType() == TopAbs_FACE) {
+                    type_suffix = "Face";
+                }
+                else if (shape.ShapeType() == TopAbs_SHELL) {
+                    type_suffix = "Shell";
+                }
+                else if (shape.ShapeType() == TopAbs_SOLID) {
+                    type_suffix = "Solid";
+                }
+                else if (shape.ShapeType() == TopAbs_COMPOUND) {
+                    type_suffix = "Compound";
+                }
+
+                std::string primitive_base_label = cleanPrefix + "_" + type_suffix;
+                // Use getStandardObjectLabel to get a unique user-facing label (e.g.,
+                // "block01_Line001") while keeping the internal object name clean.
                 auto geomFeature = document->addObject<Part::Feature>(
-                    (blockCompound->getNameInDocument() + std::string("_geom")).c_str());
+                    document->getStandardObjectLabel(primitive_base_label.c_str(), 3).c_str());
+
                 geomFeature->Shape.setValue(shape);
                 geomFeature->Visibility.setValue(false);
 
