@@ -69,6 +69,8 @@ enum ConstraintType : int
     Block = 17,
     Diameter = 18,
     Weight = 19,
+    Group = 20,
+    Text = 21,
     NumConstraintTypes  // must be the last item!
 };
 
@@ -189,7 +191,9 @@ private:
          "SnellsLaw",
          "Block",
          "Diameter",
-         "Weight"}};
+         "Weight",
+         "Group",
+         "Text"}};
     // clang-format on
 
     constexpr static std::array<const char*, InternalAlignmentType::NumInternalAlignmentType>
@@ -212,6 +216,8 @@ public:
     ConstraintType Type {None};
     InternalAlignmentType AlignmentType {Undef};
     std::string Name;
+    std::string Text;
+    std::string Font;
     float LabelDistance {10.F};
     float LabelPosition {0.F};
     bool isDriving {true};
@@ -222,11 +228,23 @@ public:
     bool isVisible {true};
 
     bool isActive {true};
+    bool isTextHeight {true};
 
     GeoElementId getElement(size_t index) const;
     void setElement(size_t index, GeoElementId element);
-    size_t getElementsSize() const;
     void addElement(GeoElementId element);
+    bool hasElement(int index) const;
+    size_t getElementsSize() const;
+    bool isElementsEmpty() const;
+    void truncateElements(size_t newSize);
+    int getGeoId(int index) const;
+    PointPos getPosId(int index) const;
+    int getPosIdAsInt(int index) const;
+    void setGeoId(int index, int geoId);
+    void setPosId(int index, PointPos pos);
+    void setPosId(int index, int pos);
+    void swapElements(int index1, int index2);
+    bool ensureElementExists(int index);
 
 #ifdef SKETCHER_CONSTRAINT_USE_LEGACY_ELEMENTS
     // Deprecated, use getElement/setElement instead
