@@ -67,6 +67,7 @@
 #include <Base/PlacementPy.h>
 #include <Base/VectorPy.h>
 #include <Mod/Part/App/PartFeature.h>
+#include <Mod/Part/App/FeatureCompound.h>
 #include <App/Link.h>
 #include <Base/Tools.h>
 
@@ -101,6 +102,10 @@ void ImpExpDxfRead::StartImport()
 
 bool ImpExpDxfRead::ReadEntitiesSection()
 {
+    // After parsing the BLOCKS section, compose all block definitions
+    // into FreeCAD objects before processing the ENTITIES section.
+    ComposeBlocks();
+
     DrawingEntityCollector collector(*this);
     if (m_mergeOption < SingleShapes) {
         std::map<CDxfRead::CommonEntityAttributes, std::list<TopoDS_Shape>> ShapesToCombine;
@@ -227,9 +232,135 @@ void ImpExpDxfRead::setOptions()
     // hGrp->GetBool("dxfhiddenLayers", true);
 }
 
+void ImpExpDxfRead::ComposeSingleBlock(const std::string& blockName,
+                                       std::set<std::string>& composed)
+{
+    // 1. Base Case: If this block has already been composed, we're done.
+    if (composed.count(blockName)) {
+        return;
+    }
+
+    // 2. Find the raw block data from the parsing phase.
+    auto it = this->Blocks.find(blockName);
+    if (it == this->Blocks.end()) {
+        ImportError("Block '%s' is referenced but not defined. Skipping.", blockName.c_str());
+        return;
+    }
+    const Block& blockData = it->second;
+
+    // 3. Create the master Part::Compound for this block definition.
+    std::string compName = "BLOCK_";
+    compName += blockName;
+    auto blockCompound = document->addObject<Part::Compound>(
+        document->getUniqueObjectName(compName.c_str()).c_str());
+    m_blockDefinitionGroup->addObject(blockCompound);
+    IncrementCreatedObjectCount();
+    blockCompound->Visibility.setValue(false);
+    this->m_blockDefinitions[blockName] = blockCompound;
+
+    std::vector<App::DocumentObject*> linkedObjects;
+
+    // 4. Recursively Compose and Link Nested Inserts.
+    for (const auto& insertAttrPair : blockData.Inserts) {
+        for (const auto& nestedInsert : insertAttrPair.second) {
+            // Ensure the dependency is composed before we try to link to it.
+            ComposeSingleBlock(nestedInsert.Name, composed);
+
+            // Create the App::Link for this nested insert.
+            auto baseObjIt = m_blockDefinitions.find(nestedInsert.Name);
+            if (baseObjIt != m_blockDefinitions.end()) {
+                auto link = document->addObject<App::Link>(
+                    (blockCompound->getNameInDocument() + std::string("_insert")).c_str());
+                link->setLink(-1, baseObjIt->second);
+                link->LinkTransform.setValue(false);
+
+                // Apply placement and scale to the link itself.
+                Base::Placement pl(nestedInsert.Point,
+                                   Base::Rotation(Base::Vector3d(0, 0, 1), nestedInsert.Rotation));
+                link->Placement.setValue(pl);
+                link->ScaleVector.setValue(nestedInsert.Scale);
+                link->Visibility.setValue(false);
+                IncrementCreatedObjectCount();
+                m_blockDefinitionGroup->addObject(link);
+                linkedObjects.push_back(link);
+            }
+        }
+    }
+
+    // 5. Create and Link Primitive Geometry.
+    // Iterate through each attribute group (e.g., each layer within the block).
+    for (const auto& [attributes, shapeList] : blockData.Shapes) {
+        // Then, iterate through each shape in that group and create a separate feature for it.
+        for (const auto& shape : shapeList) {
+            if (!shape.IsNull()) {
+                auto geomFeature = document->addObject<Part::Feature>(
+                    (blockCompound->getNameInDocument() + std::string("_geom")).c_str());
+                geomFeature->Shape.setValue(shape);
+                geomFeature->Visibility.setValue(false);
+
+                // Apply styling to this primitive feature using its original attributes.
+                this->m_entityAttributes = attributes;
+                this->ApplyGuiStyles(geomFeature);
+
+                linkedObjects.push_back(geomFeature);
+            }
+        }
+    }
+
+    // TODO: Add similar logic for blockData.FeatureBuildersList if needed.
+
+    // 6. Finalize the Part::Compound.
+    if (!linkedObjects.empty()) {
+        blockCompound->Links.setValues(linkedObjects);
+    }
+
+    // 7. Mark this block as composed.
+    composed.insert(blockName);
+}
+
+void ImpExpDxfRead::ComposeBlocks()
+{
+    std::set<std::string> composedBlocks;
+    for (const auto& pair : this->Blocks) {
+        if (composedBlocks.find(pair.first) == composedBlocks.end()) {
+            ComposeSingleBlock(pair.first, composedBlocks);
+        }
+    }
+}
+
+void ImpExpDxfRead::FinishImport()
+{
+    // Check a user preference to see if we should show unreferenced blocks.
+    // Using m_importHiddenBlocks for now, but a dedicated option would be better.
+    if (m_importHiddenBlocks) {
+        for (const auto& pair : m_blockDefinitions) {
+            const std::string& blockName = pair.first;
+            App::DocumentObject* blockObj = pair.second;
+
+            // Don't unhide system blocks (like those for dimensions).
+            if (blockName.rfind('*', 0) == 0) {
+                continue;
+            }
+
+            if (m_referencedBlocks.find(blockName) == m_referencedBlocks.end()) {
+                blockObj->Visibility.setValue(true);
+                // Move the unreferenced block out of the hidden definitions group
+                // to the main document body for better user visibility.
+                m_blockDefinitionGroup->removeObject(blockObj);
+                document->addObject(blockObj);
+                ImportObservation("DXF: Made unreferenced block '%s' visible.\n",
+                                  blockName.c_str());
+            }
+        }
+    }
+
+    // call the base class implementation if it has one
+    CDxfRead::FinishImport();
+}
+
 bool ImpExpDxfRead::OnReadBlock(const std::string& name, int flags)
 {
-    ImportObservation("DEBUG: OnReadBlock entered for block: '%s'\n", name.c_str());
+    ImportObservation("DEBUG: OnReadBlock parsing block: '%s'\n", name.c_str());
 
     // Step 1: Check for external references first. This is a critical check.
     if ((flags & 0x04) != 0) {  // Block is an Xref
@@ -238,10 +369,8 @@ bool ImpExpDxfRead::OnReadBlock(const std::string& name, int flags)
     }
 
     // Step 2: Check if the block is anonymous/system.
-    // Also, categorize and count them for the report.
     bool isAnonymous = (name.find('*') == 0);
     if (isAnonymous) {
-        // First, count and categorize the system block we found.
         if (name.size() > 1) {
             char type = std::toupper(name[1]);
             if (type == 'D') {
@@ -258,24 +387,24 @@ bool ImpExpDxfRead::OnReadBlock(const std::string& name, int flags)
             m_stats.systemBlockCounts["Other System Blocks"]++;
         }
 
-        // Now, decide if we should skip processing it based on user settings.
         if (!m_importHiddenBlocks) {
             return SkipBlockContents();
         }
     }
     else {
-        // Step 3: If not anonymous, count it as a user block.
         m_stats.entityCounts["BLOCK"]++;
     }
 
-    // Step 4: Check for duplicates to prevent errors.
-    if (m_blockDefinitions.count(name)) {
-        ImportError("Duplicate block name '%s'", name.c_str());
+    // Step 3: Check for duplicates to prevent errors.
+    if (this->Blocks.count(name)) {
+        ImportError("Duplicate block name '%s' found. Ignoring subsequent definition.",
+                    name.c_str());
         return SkipBlockContents();
     }
 
-    // Step 5: Use the temporary Block struct and Collector to parse all contents into memory.
-    Block& temporaryBlock = Blocks.insert(std::make_pair(name, Block(name, flags))).first->second;
+    // Step 4: Use the temporary Block struct and Collector to parse all contents into memory.
+    // The .emplace method is slightly more efficient here.
+    auto& temporaryBlock = Blocks.emplace(std::make_pair(name, Block(name, flags))).first->second;
     BlockDefinitionCollector blockCollector(*this,
                                             temporaryBlock.Shapes,
                                             temporaryBlock.FeatureBuildersList,
@@ -284,38 +413,8 @@ bool ImpExpDxfRead::OnReadBlock(const std::string& name, int flags)
         return false;  // Abort on parsing error
     }
 
-    // Step 6: Combine all collected primitive shapes into a single compound.
-    std::list<TopoDS_Shape> allShapes;
-    for (auto const& [attr, shapeList] : temporaryBlock.Shapes) {
-        allShapes.insert(allShapes.end(), shapeList.begin(), shapeList.end());
-    }
-
-    // TODO: This logic does not handle nested
-    // INSERTs or FeatureBuilders within the block definition. We must add
-    // logic to recursively expand these into the 'allShapes' list.
-
-    if (allShapes.empty()) {
-        // For now, do not create a FreeCAD object for blocks that contain no
-        // primitive geometry. This avoids creating empty base objects.
-        return true;
-    }
-
-    // Step 7: Create the final FreeCAD object.
-    TopoDS_Shape finalShape = CombineShapesToCompound(allShapes);
-
-    if (!finalShape.IsNull()) {
-        std::string objName = "BLOCK_";
-        objName += name;
-        auto pcFeature = document->addObject<Part::Feature>(objName.c_str());
-        pcFeature->Shape.setValue(finalShape);
-
-        m_blockDefinitionGroup->addObject(pcFeature);
-        pcFeature->Visibility.setValue(false);
-        m_blockDefinitions[name] = pcFeature;
-
-        m_stats.totalEntitiesCreated++;
-    }
-
+    // That's it. The block is now parsed into this->Blocks.
+    // Composition will happen later in ComposeBlocks().
     return true;
 }
 
@@ -607,6 +706,9 @@ void ImpExpDxfRead::OnReadInsert(const Base::Vector3d& point,
         // Also, xrefs will be reported as unsupported but still trigger OnReadInsert.
         return;
     }
+
+    m_referencedBlocks.insert(name);
+
     App::DocumentObject* baseObject = it->second;
 
     // Create a unique name for the link
