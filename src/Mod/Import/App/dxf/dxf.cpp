@@ -3161,7 +3161,10 @@ Base::Color CDxfRead::ObjectColor(ColorIndex_t index)
         result = wheel((index - 1) * 4, 0x00);
     }
     else if (index == 7) {
-        result = Base::Color(1, 1, 1);
+        // DXF color 7 is "black/white" and should adapt to the background.
+        // Since we cannot easily query the background theme from here, we will use a
+        // neutral mid-gray, which is visible on both light and dark themes.
+        result = Base::Color(0.5f, 0.5f, 0.5f);
     }
     else if (index == 8) {
         result = Base::Color(0.5, 0.5, 0.5);
