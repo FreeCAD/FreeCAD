@@ -27,6 +27,7 @@
 #include <gp_Pnt.hxx>
 
 #include <App/Document.h>
+#include <App/Link.h>
 #include <TopoDS_Shape.hxx>
 #include <Mod/Part/App/TopoShape.h>
 #include <Mod/Part/App/PartFeature.h>
@@ -36,11 +37,6 @@
 
 
 class BRepAdaptor_Curve;
-
-namespace App
-{
-class Link;
-}
 
 namespace Import
 {
@@ -286,13 +282,38 @@ protected:
                        const std::string& name,
                        double rotation) override
         {
-            // OnReadInsert now directly creates the App::Link and calls the DocumentObject
-            // overload. This AddInsert is now only called from inside a block collector and should
-            // do nothing.
-            (void)point;
-            (void)scale;
-            (void)name;
-            (void)rotation;
+            // This is the correct place to create top-level App::Link objects for INSERTs.
+
+            // Find the base object from our map of stored block definitions.
+            auto it = Reader.m_blockDefinitions.find(name);
+            if (it == Reader.m_blockDefinitions.end()) {
+                return;
+            }
+            Reader.m_referencedBlocks.insert(name);
+            App::DocumentObject* baseObject = it->second;
+
+            // Create a unique name for the link
+            std::string linkName = "Link_";
+            linkName += name;
+            linkName = Reader.document->getUniqueObjectName(linkName.c_str());
+
+            // Create the App::Link object directly in C++
+            App::Link* link = Reader.document->addObject<App::Link>(linkName.c_str());
+            Reader.IncrementCreatedObjectCount();
+            if (!link) {
+                Reader.ImportError("Failed to create App::Link for block '%s'", name.c_str());
+                return;
+            }
+
+            // Configure the link
+            link->setLink(-1, baseObject);
+            link->LinkTransform.setValue(false);
+            link->Label.setValue(name.c_str());
+            Base::Placement pl(point, Base::Rotation(Base::Vector3d(0, 0, 1), rotation));
+            link->Placement.setValue(pl);
+            link->ScaleVector.setValue(scale);
+
+            this->AddObject(link, "Link");
         }
     };
     class ShapeSavingEntityCollector: public DrawingEntityCollector

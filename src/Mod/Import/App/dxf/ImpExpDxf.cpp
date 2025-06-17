@@ -281,7 +281,6 @@ void ImpExpDxfRead::ComposeSingleBlock(const std::string& blockName,
                 link->ScaleVector.setValue(nestedInsert.Scale);
                 link->Visibility.setValue(false);
                 IncrementCreatedObjectCount();
-                m_blockDefinitionGroup->addObject(link);
                 linkedObjects.push_back(link);
             }
         }
@@ -749,50 +748,10 @@ void ImpExpDxfRead::OnReadInsert(const Base::Vector3d& point,
         return;
     }
 
-    // Find the base object from our map of stored block definitions.
-    auto it = this->m_blockDefinitions.find(name);
-    if (it == m_blockDefinitions.end()) {
-        // This can happen if the block is defined but contains no geometry,
-        // so we didn't create a base object for it. We can safely skip it.
-        // A more robust solution might create an empty placeholder object.
-        // Also, xrefs will be reported as unsupported but still trigger OnReadInsert.
-        return;
-    }
-
-    m_referencedBlocks.insert(name);
-
-    App::DocumentObject* baseObject = it->second;
-
-    // Create a unique name for the link
-    std::string linkName = "Link_";
-    linkName += name;
-    linkName = document->getUniqueObjectName(linkName.c_str());
-
-    // Create the App::Link object directly in C++
-    App::Link* link = document->addObject<App::Link>(linkName.c_str());
-    if (!link) {
-        ImportError("Failed to create App::Link for block '%s'", name.c_str());
-        return;
-    }
-
-    m_stats.totalEntitiesCreated++;  // Increment counter for the created App::Link
-
-    // Configure the link
-    link->setLink(-1, baseObject);
-    link->LinkTransform.setValue(false);  // The link's placement will override the base's
-    link->Label.setValue(name.c_str());
-
-    // Calculate and set the placement
-    // The 'rotation' parameter from OnReadInsert is already in radians.
-    Base::Placement pl(point, Base::Rotation(Base::Vector3d(0, 0, 1), rotation));
-    link->Placement.setValue(pl);
-
-    // Set non-uniform scale if applicable
-    link->Scale.setValue(1.0);  // Default uniform scale
-    link->ScaleVector.setValue(scale);
-
-    // Add to the correct layer and apply styles
-    Collector->AddObject(link, "Link");
+    // Delegate the action to the currently active collector.
+    // If the BlockDefinitionCollector is active, it will just store the data.
+    // If the DrawingEntityCollector is active, it will create the App::Link.
+    Collector->AddInsert(point, scale, name, rotation);
 }
 
 
