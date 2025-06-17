@@ -23,12 +23,14 @@
 #ifndef IMPEXPDXF_H
 #define IMPEXPDXF_H
 
+#include <set>
 #include <gp_Pnt.hxx>
 
 #include <App/Document.h>
 #include <TopoDS_Shape.hxx>
 #include <Mod/Part/App/TopoShape.h>
 #include <Mod/Part/App/PartFeature.h>
+#include <Mod/Part/App/FeatureCompound.h>
 
 #include "dxf.h"
 
@@ -107,6 +109,7 @@ public:
         m_optionSource = sourceName;
     }
     void setOptions();
+    void FinishImport() override;
 
 private:
     bool shouldSkipEntity() const
@@ -124,6 +127,9 @@ private:
     void CombineShapes(std::list<TopoDS_Shape>& shapes, const char* nameBase) const;
     TopoDS_Shape CombineShapesToCompound(const std::list<TopoDS_Shape>& shapes) const;
     PyObject* DraftModule = nullptr;
+    std::set<std::string> m_referencedBlocks;
+    void ComposeBlocks();
+    void ComposeSingleBlock(const std::string& blockName, std::set<std::string>& composed);
 
 protected:
     PyObject* getDraftModule()

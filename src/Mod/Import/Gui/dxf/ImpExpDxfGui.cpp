@@ -81,26 +81,24 @@ void ImpExpDxfReadGui::ApplyGuiStyles(Part::Feature* object) const
 
 void ImpExpDxfReadGui::ApplyGuiStyles(App::Link* object) const
 {
-    // For App::Link, we get its ViewProvider directly.
-    // It's a generic ViewProvider, not a specific PartGui one.
     auto view = GuiDocument->getViewProvider(object);
     if (!view) {
         return;
     }
-    Base::Color color = ObjectColor(m_entityAttributes.m_Color);
 
-    // Links have LineColor and PointColor properties that affect their appearance
-    // when not in "UseOriginalColor" mode.
-    if (auto prop = view->getPropertyByName("LineColor")) {
-        if (prop->getTypeId().isDerivedFrom(App::PropertyColor::getClassTypeId())) {
-            static_cast<App::PropertyColor*>(prop)->setValue(color);
+    // Setting DrawStyle to "Original" tells the link's ViewProvider to
+    // use the appearance of the linked object. This is the correct
+    // way to handle visual instancing.
+    if (auto* prop = view->getPropertyByName("DrawStyle")) {
+        if (auto* penum = dynamic_cast<App::PropertyEnumeration*>(prop)) {
+            penum->setValue("Original");
         }
     }
-    if (auto prop = view->getPropertyByName("PointColor")) {
-        if (prop->getTypeId().isDerivedFrom(App::PropertyColor::getClassTypeId())) {
-            static_cast<App::PropertyColor*>(prop)->setValue(color);
-        }
-    }
+
+    // TODO: The link's view provider may still have color properties set,
+    // which can override the "Original" draw style. The C++ API does not appear
+    // to expose a way to reset these properties to their default state. This is
+    // a known limitation and can be addressed in the future if a method is found.
 }
 
 void ImpExpDxfReadGui::ApplyGuiStyles(App::FeaturePython* object) const
