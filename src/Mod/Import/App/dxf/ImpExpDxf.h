@@ -294,7 +294,13 @@ protected:
 
             // Create a unique name for the link
             std::string linkName = "Link_";
-            linkName += name;
+            std::string cleanName = name;
+            if (!cleanName.empty() && std::isdigit(cleanName.back())) {
+                // Add a trailing underscore to prevent the unique name generator
+                // from incrementing the number in the block's name.
+                cleanName += "_";
+            }
+            linkName += cleanName;
             linkName = Reader.document->getUniqueObjectName(linkName.c_str());
 
             // Create the App::Link object directly in C++

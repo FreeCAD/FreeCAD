@@ -292,11 +292,16 @@ void ImpExpDxfRead::ComposeSingleBlock(const std::string& blockName,
         // Then, iterate through each shape in that group and create a separate feature for it.
         for (const auto& shape : shapeList) {
             if (!shape.IsNull()) {
-                std::string cleanPrefix = blockName;
-                if (!cleanPrefix.empty() && std::isdigit(cleanPrefix[0])) {
+                std::string cleanBlockLabel = blockName;
+                if (!cleanBlockLabel.empty() && std::isdigit(cleanBlockLabel[0])) {
                     // Workaround for FreeCAD's unique name generator, which prepends an underscore
                     // to names that start with a digit. We add our own prefix.
-                    cleanPrefix.insert(0, "B_");
+                    cleanBlockLabel.insert(0, "_");
+                }
+                else if (!cleanBlockLabel.empty() && std::isdigit(cleanBlockLabel.back())) {
+                    // Add a trailing underscore to prevent the unique name generator
+                    // from incrementing the number in the block's name.
+                    cleanBlockLabel += "_";
                 }
                 // Determine a more descriptive name for the primitive feature.
                 std::string type_suffix = "Shape";
@@ -342,7 +347,7 @@ void ImpExpDxfRead::ComposeSingleBlock(const std::string& blockName,
                     type_suffix = "Compound";
                 }
 
-                std::string primitive_base_label = cleanPrefix + "_" + type_suffix;
+                std::string primitive_base_label = cleanBlockLabel + "_" + type_suffix;
                 // Use getStandardObjectLabel to get a unique user-facing label (e.g.,
                 // "block01_Line001") while keeping the internal object name clean.
                 auto geomFeature = document->addObject<Part::Feature>(
