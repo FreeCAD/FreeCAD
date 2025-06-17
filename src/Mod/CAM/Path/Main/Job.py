@@ -60,6 +60,7 @@ class JobTemplate:
     Fixtures = "Fixtures"
     OrderOutputBy = "OrderOutputBy"
     SplitOutput = "SplitOutput"
+    JobType = "JobType"
     SetupSheet = "SetupSheet"
     Stock = "Stock"
     # TCs are grouped under Tools in a job, the template refers to them directly though
@@ -102,7 +103,7 @@ Notification = NotificationClass()
 
 
 class ObjectJob:
-    def __init__(self, obj, models, templateFile=None):
+    def __init__(self, obj, models, jobType, templateFile=None):
         self.obj = obj
         self.tooltip = None
         self.tooltipArgs = None
@@ -215,6 +216,7 @@ class ObjectJob:
         for n in self.propertyEnumerations():
             setattr(obj, n[0], n[1])
 
+        obj.JobType = jobType
         obj.PostProcessorOutputFile = Path.Preferences.defaultOutputFile()
         obj.PostProcessor = postProcessors = Path.Preferences.allEnabledPostProcessors()
         defaultPostProcessor = Path.Preferences.defaultPostProcessor()
@@ -251,10 +253,9 @@ class ObjectJob:
                 (translate("CAM_Job", "Operation"), "Operation"),
             ],
             "JobType": [
-                (translate("CAM_Job", "2D"), "2D"),
-                (translate("CAM_Job", "2.5D"), "2.5D"),
-                (translate("CAM_Job", "Lathe"), "Lathe"),
-                (translate("CAM_Job", "Multiaxis"), "Multiaxis"),
+                (translate("CAM_Job", "Milling"), "Milling"),
+                (translate("CAM_Job", "Turning"), "Turning"),
+                (translate("CAM_Job", "Cutting"), "Cutting"),
             ],
         }
 
@@ -589,6 +590,9 @@ class ObjectJob:
                 if attrs.get(JobTemplate.SplitOutput):
                     obj.SplitOutput = attrs.get(JobTemplate.SplitOutput)
 
+                if attrs.get(JobTemplate.JobType):
+                    obj.JobType = attrs.get(JobTemplate.JobType)
+
                 Path.Log.debug("setting tool controllers (%d)" % len(tcs))
                 if tcs:
                     obj.Tools.Group = tcs
@@ -615,6 +619,8 @@ class ObjectJob:
         attrs[JobTemplate.GeometryTolerance] = str(obj.GeometryTolerance.Value)
         if obj.Description:
             attrs[JobTemplate.Description] = obj.Description
+        if obj.JobType:
+            attrs[JobTemplate.JobType] = obj.JobType
         return attrs
 
     def dumps(self):
@@ -805,7 +811,7 @@ def Instances():
     return []
 
 
-def Create(name, base, templateFile=None):
+def Create(name, base, jobType, templateFile=None):
     """Create(name, base, templateFile=None) ... creates a new job and all it's resources.
     If a template file is specified the new job is initialized with the values from the template."""
     if isinstance(base[0], str):
@@ -816,5 +822,5 @@ def Create(name, base, templateFile=None):
         models = base
     obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", name)
     obj.addExtension("App::GroupExtensionPython")
-    obj.Proxy = ObjectJob(obj, models, templateFile)
+    obj.Proxy = ObjectJob(obj, models, jobType, templateFile)
     return obj
