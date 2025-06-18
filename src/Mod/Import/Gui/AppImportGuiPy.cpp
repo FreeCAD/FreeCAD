@@ -359,6 +359,7 @@ private:
     // both places could include a declaration.
     Py::Object readDXF(const Py::Tuple& args)
     {
+        Base::Console().message("DEBUG: C++ readDXF function in AppImportGuiPy.cpp entered.\n");
         char* Name = nullptr;
         const char* DocName = nullptr;
         const char* optionSource = nullptr;
