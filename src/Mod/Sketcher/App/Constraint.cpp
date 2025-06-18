@@ -182,7 +182,7 @@ void Constraint::Restore(XMLReader& reader)
     Type = reader.getAttribute<ConstraintType>("Type");
     Value = reader.getAttribute<double>("Value");
 
-    
+
     elements.clear();
 
     // --- FORWARD COMPATIBILITY: Check for the new attribute first ---

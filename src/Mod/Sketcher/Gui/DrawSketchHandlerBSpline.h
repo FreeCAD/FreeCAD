@@ -162,9 +162,8 @@ private:
                         }
                         else if (constr->getGeoId(0) == geoIds.back()
                                  && constr->getPosId(0) == Sketcher::PointPos::mid) {
-                            constr->setElement(
-                                0,
-                                GeoElementId(currentgeoid, Sketcher::PointPos::end));
+                            constr->setElement(0,
+                                               GeoElementId(currentgeoid, Sketcher::PointPos::end));
                         }
                     }
                 }
@@ -324,9 +323,8 @@ private:
                         }
                         else if (constr->getGeoId(0) == geoIds.back()
                                  && constr->getPosId(0) == Sketcher::PointPos::start) {
-                            constr->setElement(
-                                0,
-                                GeoElementId(currentgeoid, Sketcher::PointPos::end));
+                            constr->setElement(0,
+                                               GeoElementId(currentgeoid, Sketcher::PointPos::end));
                         }
                     }
                 }

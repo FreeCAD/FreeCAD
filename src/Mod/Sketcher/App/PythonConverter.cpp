@@ -377,9 +377,12 @@ std::string PythonConverter::process(const Sketcher::Constraint* constraint, Geo
     bool addLastIdVar2 = constraint->getGeoId(1) >= 0 && addLastIdVar;
     bool addLastIdVar3 = constraint->getGeoId(2) >= 0 && addLastIdVar;
 
-    std::string geoId1 = (addLastIdVar1 ? "lastGeoId + " : "") + std::to_string(constraint->getGeoId(0));
-    std::string geoId2 = (addLastIdVar2 ? "lastGeoId + " : "") + std::to_string(constraint->getGeoId(1));
-    std::string geoId3 = (addLastIdVar3 ? "lastGeoId + " : "") + std::to_string(constraint->getGeoId(2));
+    std::string geoId1 =
+        (addLastIdVar1 ? "lastGeoId + " : "") + std::to_string(constraint->getGeoId(0));
+    std::string geoId2 =
+        (addLastIdVar2 ? "lastGeoId + " : "") + std::to_string(constraint->getGeoId(1));
+    std::string geoId3 =
+        (addLastIdVar3 ? "lastGeoId + " : "") + std::to_string(constraint->getGeoId(2));
 
 
     static std::map<

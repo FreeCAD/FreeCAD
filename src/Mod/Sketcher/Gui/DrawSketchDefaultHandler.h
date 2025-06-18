@@ -656,9 +656,8 @@ protected:
     //@{
 
     // TODO: Figure out and explain what it actually returns
-    bool generateOneAutoConstraintFromSuggestion(const AutoConstraint& ac,
-                                                 int geoId1,
-                                                 PointPos posId1)
+    bool
+    generateOneAutoConstraintFromSuggestion(const AutoConstraint& ac, int geoId1, PointPos posId1)
     {
         int geoId2 = ac.GeoId;
         PointPos posId2 = ac.PosId;
@@ -707,11 +706,10 @@ protected:
 
                 auto itTangent = AutoConstraints.end();
                 if (isStartOrEnd(posId1)) {
-                    itTangent =
-                        std::ranges::find_if(AutoConstraints, [&](const auto& ace) {
-                            return ace->Type == Sketcher::Tangent && ace->involvesGeoId(geoId1)
-                                && ace->involvesGeoId(geoId2);
-                        });
+                    itTangent = std::ranges::find_if(AutoConstraints, [&](const auto& ace) {
+                        return ace->Type == Sketcher::Tangent && ace->involvesGeoId(geoId1)
+                            && ace->involvesGeoId(geoId2);
+                    });
                 }
 
                 // if tangency, convert to point-to-edge tangency
@@ -833,8 +831,7 @@ protected:
                 }
                 else if (resultCoincident != AutoConstraints.end()
                          && (*resultCoincident)->getPosId(0) == PointPos::mid
-                         && (*resultCoincident)->getPosId(1) == PointPos::mid && geom1
-                         && geom2
+                         && (*resultCoincident)->getPosId(1) == PointPos::mid && geom1 && geom2
                          && (geom1->is<Part::GeomCircle>() || geom1->is<Part::GeomArcOfCircle>())
                          && (geom2->is<Part::GeomCircle>() || geom2->is<Part::GeomArcOfCircle>())) {
                     // equality
@@ -1046,8 +1043,7 @@ protected:
     /** @brief Function to obtain detailed DoFs of one line type geometric element.*/
     int getLineDoFs(int geoid)
     {
-        auto startpointinfo =
-            getPointInfo(Sketcher::GeoElementId(geoid, PointPos::start));
+        auto startpointinfo = getPointInfo(Sketcher::GeoElementId(geoid, PointPos::start));
 
         auto endpointinfo = getPointInfo(Sketcher::GeoElementId(geoid, PointPos::end));
 
