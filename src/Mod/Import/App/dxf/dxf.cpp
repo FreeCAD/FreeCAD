@@ -26,6 +26,61 @@
 
 
 using namespace std;
+
+namespace
+{
+
+std::string DxfUnitToString(DxfUnits::eDxfUnits_t unit)
+{
+    switch (unit) {
+        case DxfUnits::eInches:
+            return "Inches";
+        case DxfUnits::eFeet:
+            return "Feet";
+        case DxfUnits::eMiles:
+            return "Miles";
+        case DxfUnits::eMillimeters:
+            return "Millimeters";
+        case DxfUnits::eCentimeters:
+            return "Centimeters";
+        case DxfUnits::eMeters:
+            return "Meters";
+        case DxfUnits::eKilometers:
+            return "Kilometers";
+        case DxfUnits::eMicroinches:
+            return "Microinches";
+        case DxfUnits::eMils:
+            return "Mils";
+        case DxfUnits::eYards:
+            return "Yards";
+        case DxfUnits::eAngstroms:
+            return "Angstroms";
+        case DxfUnits::eNanometers:
+            return "Nanometers";
+        case DxfUnits::eMicrons:
+            return "Microns";
+        case DxfUnits::eDecimeters:
+            return "Decimeters";
+        case DxfUnits::eDekameters:
+            return "Dekameters";
+        case DxfUnits::eHectometers:
+            return "Hectometers";
+        case DxfUnits::eGigameters:
+            return "Gigameters";
+        case DxfUnits::eAstronomicalUnits:
+            return "Astronomical Units";
+        case DxfUnits::eLightYears:
+            return "Light Years";
+        case DxfUnits::eParsecs:
+            return "Parsecs";
+        case DxfUnits::eUnspecified:
+        default:
+            return "Unspecified";
+    }
+}
+
+}  // namespace
+
 static Base::Vector3d MakeVector3d(const double coordinates[3])
 {
     // NOLINTNEXTLINE(readability/nolint)
@@ -2818,13 +2873,11 @@ bool CDxfRead::ReadHeaderSection()
         if (m_record_type == eObjectType && IsObjectName("ENDSEC")) {
             if (m_unitScalingFactor == 0.0) {
                 // Neither INSUNITS nor MEASUREMENT found, assume 1 DXF unit = 1mm
-                // TODO: Perhaps this default should depend on the current measuring units of the
-                // app.
+                // TODO: Perhaps this default should depend on the current project's unit system
                 m_unitScalingFactor = m_additionalScaling;
-                ImportObservation("No INSUNITS or MEASUREMENT; setting scaling to 1 DXF unit = "
-                                  "%gmm based on DXF scaling option\n",
-                                  m_unitScalingFactor);
+                m_stats.fileUnits = "Unspecified (Defaulting to 1:1)";
             }
+            m_stats.finalScalingFactor = m_unitScalingFactor;
             return true;
         }
         if (m_record_type != eVariableName) {
@@ -2852,14 +2905,14 @@ bool CDxfRead::ReadVariable()
         if (!ParseValue<int>(this, &varValue)) {
             ImportError("Failed to get integer from INSUNITS value '%s'\n", m_record_data);
         }
-        else if (auto units = DxfUnits::eDxfUnits_t(varValue); !DxfUnits::IsValid(units)) {
-            ImportError("Unknown value '%d' for INSUNITS\n", varValue);
-        }
         else {
+            auto units = DxfUnits::eDxfUnits_t(varValue);
+            if (!DxfUnits::IsValid(units)) {
+                units = DxfUnits::eUnspecified;
+            }
             m_unitScalingFactor = DxfUnits::Factor(units) * m_additionalScaling;
-            ImportObservation("Setting scaling to 1 DXF unit = %gmm based on INSUNITS and "
-                              "DXF scaling option\n",
-                              m_unitScalingFactor);
+            m_stats.scalingSource = "$INSUNITS";
+            m_stats.fileUnits = DxfUnitToString(units);
         }
         return true;
     }
@@ -2867,12 +2920,10 @@ bool CDxfRead::ReadVariable()
         get_next_record();
         int varValue = 1;
         if (m_unitScalingFactor == 0.0 && ParseValue<int>(this, &varValue)) {
-            m_unitScalingFactor =
-                DxfUnits::Factor(varValue != 0 ? DxfUnits::eMillimeters : DxfUnits::eInches)
-                * m_additionalScaling;
-            ImportObservation("Setting scaling to 1 DXF unit = %gmm based on MEASUREMENT and "
-                              "DXF scaling option\n",
-                              m_unitScalingFactor);
+            auto units = (varValue != 0 ? DxfUnits::eMillimeters : DxfUnits::eInches);
+            m_unitScalingFactor = DxfUnits::Factor(units) * m_additionalScaling;
+            m_stats.scalingSource = "$MEASUREMENT";
+            m_stats.fileUnits = DxfUnitToString(units);
         }
         return true;
     }
