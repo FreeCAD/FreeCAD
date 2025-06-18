@@ -1390,7 +1390,7 @@ bool Application::isInEdit(Gui::Document* pcDocument) const
 {
     return pcDocument != nullptr && d->editDocument == pcDocument;
 }
-void Application::resetEditOf(Gui::Document* pcDocument)
+void Application::unsetEditDocument(Gui::Document* pcDocument)
 {
     if (pcDocument == nullptr || d->editDocument == nullptr) {
         return;
@@ -1403,10 +1403,10 @@ void Application::resetEditOf(Gui::Document* pcDocument)
     }
     updateActions();
 }
-void Application::resetEditIf(const std::function<bool(Gui::Document*)>& eval)
+void Application::unsetEditDocumentIf(const std::function<bool(Gui::Document*)>& eval)
 {
     if (d->editDocument != nullptr && eval(d->editDocument)) {
-        resetEditOf(d->editDocument);
+        unsetEditDocument(d->editDocument);
     }
 }
 Gui::MDIView* Application::editViewOfNode(SoNode* node) const
