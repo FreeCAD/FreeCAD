@@ -2397,9 +2397,9 @@ bool CDxfRead::SkipBlockContents()
 template<typename... args>
 void CDxfRead::UnsupportedFeature(const char* format, args&&... argValuess)
 {
-    m_stats.unsupportedFeaturesCount++;
     // NOLINTNEXTLINE(runtime/printf)
     std::string formattedMessage = fmt::sprintf(format, std::forward<args>(argValuess)...);
+    m_stats.unsupportedFeatures[formattedMessage]++;
     // We place these formatted messages in a map, count their occurrences and not their first
     // occurrence.
     if (m_unsupportedFeaturesNoted[formattedMessage].first++ == 0) {
