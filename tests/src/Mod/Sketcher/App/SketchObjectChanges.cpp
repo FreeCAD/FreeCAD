@@ -652,8 +652,7 @@ TEST_F(SketchObjectTest, testTrimEndEffectOnFullLengthConstraints)
     int geoId = getObject()->addGeometry(&lineSeg);
     auto constr = new Sketcher::Constraint();  // Ownership will be transferred to the sketch
     constr->Type = Sketcher::ConstraintType::Distance;
-    constr->First = geoId;
-    constr->FirstPos = Sketcher::PointPos::none;
+    constr->setElement(0, GeoElementId(geoId, Sketcher::PointPos::none));
     constr->setValue((getObject()->getPoint(geoId, Sketcher::PointPos::end)
                       - getObject()->getPoint(geoId, Sketcher::PointPos::start))
                          .Length());
@@ -687,12 +686,9 @@ TEST_F(SketchObjectTest, testTrimEndEffectOnSymmetricConstraints)
     int geoId = getObject()->addGeometry(&lineSeg);
     auto constr = new Sketcher::Constraint();  // Ownership will be transferred to the sketch
     constr->Type = Sketcher::ConstraintType::Symmetric;
-    constr->First = geoId;
-    constr->FirstPos = Sketcher::PointPos::start;
-    constr->Second = geoId;
-    constr->SecondPos = Sketcher::PointPos::end;
-    constr->Third = geoIdOfCutting;
-    constr->ThirdPos = Sketcher::PointPos::start;
+    constr->setElement(0, GeoElementId(geoId, Sketcher::PointPos::start));
+    constr->setElement(1, GeoElementId(geoId, Sketcher::PointPos::end));
+    constr->setElement(2, GeoElementId(geoIdOfCutting, Sketcher::PointPos::start));
     getObject()->addConstraint(constr);
 
     // Assert
@@ -726,10 +722,8 @@ TEST_F(SketchObjectTest, testTrimEndEffectOnUnrelatedTangent)
     // TODO: add tangent and confirm
     auto constraint = new Sketcher::Constraint();  // Ownership will be transferred to the sketch
     constraint->Type = Sketcher::ConstraintType::Tangent;
-    constraint->First = geoId;
-    constraint->FirstPos = Sketcher::PointPos::none;
-    constraint->Second = geoIdInnerCircle;
-    constraint->SecondPos = Sketcher::PointPos::none;
+    constraint->setElement(0, GeoElementId(geoId, Sketcher::PointPos::none));
+    constraint->setElement(1, GeoElementId(geoIdInnerCircle, Sketcher::PointPos::none));
     getObject()->addConstraint(constraint);
     EXPECT_EQ(countConstraintsOfType(getObject(), Sketcher::ConstraintType::Tangent), 1);
 
@@ -744,8 +738,8 @@ TEST_F(SketchObjectTest, testTrimEndEffectOnUnrelatedTangent)
                                     Sketcher::ConstraintType::Tangent,
                                     &Sketcher::Constraint::Type);
     EXPECT_NE(tangIt, constraints.end());
-    EXPECT_EQ((*tangIt)->FirstPos, Sketcher::PointPos::none);
-    EXPECT_EQ((*tangIt)->SecondPos, Sketcher::PointPos::none);
+    EXPECT_EQ((*tangIt)->getPosId(0), Sketcher::PointPos::none);
+    EXPECT_EQ((*tangIt)->getPosId(1), Sketcher::PointPos::none);
 }
 
 // TODO: Ensure endpoint constraints go to the appropriate new geometry
@@ -1048,10 +1042,8 @@ TEST_F(SketchObjectTest, testJoinCurvesWhenTangent)
     // Add end-to-end tangent between these
     auto constraint = new Sketcher::Constraint();  // Ownership will be transferred to the sketch
     constraint->Type = Sketcher::ConstraintType::Tangent;
-    constraint->First = geoId1;
-    constraint->FirstPos = Sketcher::PointPos::start;
-    constraint->Second = geoId2;
-    constraint->SecondPos = Sketcher::PointPos::start;
+    constraint->setElement(0, GeoElementId(geoId1, Sketcher::PointPos::start));
+    constraint->setElement(1, GeoElementId(geoId2, Sketcher::PointPos::start));
     getObject()->addConstraint(constraint);
 
     // Act

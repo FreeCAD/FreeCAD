@@ -1559,9 +1559,9 @@ void ViewProviderSketch::initDragging(int geoId, Sketcher::PointPos pos, Gui::Vi
                 for (auto c : getSketchObject()->Constraints.getValues()) {
                     if (c->Type == Sketcher::InternalAlignment
                         && c->AlignmentType == BSplineControlPoint
-                        && c->First == geoId) {
+                        && c->getGeoId(0) == geoId) {
 
-                        bsplinegeoid = c->Second;
+                        bsplinegeoid = c->getGeoId(1);
                         break;
                     }
                 }
@@ -1574,9 +1574,9 @@ void ViewProviderSketch::initDragging(int geoId, Sketcher::PointPos pos, Gui::Vi
                 for (auto c : getSketchObject()->Constraints.getValues()) {
                     if (c->Type == Sketcher::InternalAlignment
                         && c->AlignmentType == BSplineControlPoint
-                        && c->Second == bsplinegeoid) {
+                        && c->getGeoId(1) == bsplinegeoid) {
 
-                        polegeoids.push_back(c->First);
+                        polegeoids.push_back(c->getGeoId(0));
                     }
                 }
 
@@ -1783,8 +1783,8 @@ void ViewProviderSketch::moveConstraint(Sketcher::Constraint* Constr, int constN
 
 #ifdef FC_DEBUG
     assert(int(geomlist.size()) == extGeoCount + intGeoCount);
-    assert((Constr->First >= -extGeoCount && Constr->First < intGeoCount)
-           || Constr->First != GeoEnum::GeoUndef);
+    assert((Constr->getGeoId(0) >= -extGeoCount && Constr->getGeoId(0) < intGeoCount)
+           || Constr->getGeoId(0) != GeoEnum::GeoUndef);
     boost::ignore_unused(intGeoCount);
     boost::ignore_unused(extGeoCount);
 #endif
@@ -1793,17 +1793,17 @@ void ViewProviderSketch::moveConstraint(Sketcher::Constraint* Constr, int constN
         || Constr->Type == Radius || Constr->Type == Diameter || Constr->Type == Weight) {
 
         Base::Vector3d p1(0., 0., 0.), p2(0., 0., 0.);
-        if (Constr->SecondPos != Sketcher::PointPos::none) {// point to point distance
-            p1 = getSolvedSketch().getPoint(Constr->First, Constr->FirstPos);
-            p2 = getSolvedSketch().getPoint(Constr->Second, Constr->SecondPos);
+        if (Constr->getPosId(1) != Sketcher::PointPos::none) {// point to point distance
+            p1 = getSolvedSketch().getPoint(Constr->getGeoId(0), Constr->getPosId(0));
+            p2 = getSolvedSketch().getPoint(Constr->getGeoId(1), Constr->getPosId(1));
         }
-        else if (Constr->Second != GeoEnum::GeoUndef) {
-            p1 = getSolvedSketch().getPoint(Constr->First, Constr->FirstPos);
-            const Part::Geometry *geo1 = GeoList::getGeometryFromGeoId (geomlist, Constr->First);
-            const Part::Geometry *geo2 = GeoList::getGeometryFromGeoId (geomlist, Constr->Second);
+        else if (Constr->getGeoId(1) != GeoEnum::GeoUndef) {
+            p1 = getSolvedSketch().getPoint(Constr->getGeoId(0), Constr->getPosId(0));
+            const Part::Geometry *geo1 = GeoList::getGeometryFromGeoId (geomlist, Constr->getGeoId(0));
+            const Part::Geometry *geo2 = GeoList::getGeometryFromGeoId (geomlist, Constr->getGeoId(1));
 
             if (isLineSegment(*geo2)) {
-                if (isCircleOrArc(*geo1) && Constr->FirstPos == Sketcher::PointPos::none){
+                if (isCircleOrArc(*geo1) && Constr->getPosId(0) == Sketcher::PointPos::none){
                     std::swap(geo1, geo2); // see below
                 }
                 else {
@@ -1818,7 +1818,7 @@ void ViewProviderSketch::moveConstraint(Sketcher::Constraint* Constr, int constN
             }
 
             if (isCircleOrArc(*geo2)) {
-                if (Constr->FirstPos != Sketcher::PointPos::none){ // circular to point distance
+                if (Constr->getPosId(0) != Sketcher::PointPos::none){ // circular to point distance
                     auto [rad, ct] = getRadiusCenterCircleArc(geo2);
 
                     Base::Vector3d v = p1 - ct;
@@ -1843,11 +1843,11 @@ void ViewProviderSketch::moveConstraint(Sketcher::Constraint* Constr, int constN
                 }
             }
         }
-        else if (Constr->FirstPos != Sketcher::PointPos::none) {
-            p2 = getSolvedSketch().getPoint(Constr->First, Constr->FirstPos);
+        else if (Constr->getPosId(0) != Sketcher::PointPos::none) {
+            p2 = getSolvedSketch().getPoint(Constr->getGeoId(0), Constr->getPosId(0));
         }
-        else if (Constr->First != GeoEnum::GeoUndef) {
-            const Part::Geometry* geo = GeoList::getGeometryFromGeoId(geomlist, Constr->First);
+        else if (Constr->getGeoId(0) != GeoEnum::GeoUndef) {
+            const Part::Geometry* geo = GeoList::getGeometryFromGeoId(geomlist, Constr->getGeoId(0));
             if (geo->is<Part::GeomLineSegment>()) {
                 const Part::GeomLineSegment* lineSeg =
                     static_cast<const Part::GeomLineSegment*>(geo);
@@ -1861,7 +1861,7 @@ void ViewProviderSketch::moveConstraint(Sketcher::Constraint* Constr, int constN
                 double startangle, endangle;
                 arc->getRange(startangle, endangle, /*emulateCCW=*/true);
 
-                if (Constr->Type == Distance && Constr->Second == GeoEnum::GeoUndef){
+                if (Constr->Type == Distance && Constr->getGeoId(1) == GeoEnum::GeoUndef){
                     //arc length
                     Base::Vector3d dir = Base::Vector3d(toPos.x, toPos.y, 0.) - arc->getCenter();
                     Constr->LabelDistance = dir.Length();
@@ -1962,10 +1962,10 @@ void ViewProviderSketch::moveAngleConstraint(Sketcher::Constraint* constr, int c
     Sketcher::SketchObject* obj = getSketchObject();
     Base::Vector3d p0(0., 0., 0.);
     double factor = 0.5;
-    if (constr->Second != GeoEnum::GeoUndef) {// line to line angle
-        if (constr->Third == GeoEnum::GeoUndef) {// angle between two lines
-            const Part::Geometry* geo1 = obj->getGeometry(constr->First);
-            const Part::Geometry* geo2 = obj->getGeometry(constr->Second);
+    if (constr->getGeoId(1) != GeoEnum::GeoUndef) {// line to line angle
+        if (constr->getGeoId(2) == GeoEnum::GeoUndef) {// angle between two lines
+            const Part::Geometry* geo1 = obj->getGeometry(constr->getGeoId(0));
+            const Part::Geometry* geo2 = obj->getGeometry(constr->getGeoId(1));
 
             if (!isLineSegment(*geo1) || !isLineSegment(*geo2)) {
                 return;
@@ -1980,8 +1980,8 @@ void ViewProviderSketch::moveAngleConstraint(Sketcher::Constraint* constr, int c
             l2[1] = Base::Vector2d(lineSeg2->getEndPoint().x, lineSeg2->getEndPoint().y);
 
             // First we will check if the angle needs to be reversed to its supplementary
-            bool flip1 = (constr->FirstPos == Sketcher::PointPos::end);
-            bool flip2 = (constr->SecondPos == Sketcher::PointPos::end);
+            bool flip1 = (constr->getPosId(0) == Sketcher::PointPos::end);
+            bool flip2 = (constr->getPosId(1) == Sketcher::PointPos::end);
             Base::Vector2d p11 = flip1 ? l1[1] : l1[0];
             Base::Vector2d p12 = flip1 ? l1[0] : l1[1];
             Base::Vector2d p21 = flip2 ? l2[1] : l2[0];
@@ -2028,19 +2028,19 @@ void ViewProviderSketch::moveAngleConstraint(Sketcher::Constraint* constr, int c
             p0 = Base::Vector3d(intersection.x, intersection.y, 0.);
         }
         else {// angle-via-point
-            Base::Vector3d p = getSolvedSketch().getPoint(constr->Third, constr->ThirdPos);
+            Base::Vector3d p = getSolvedSketch().getPoint(constr->getGeoId(2), constr->getPosId(2));
             p0 = Base::Vector3d(p.x, p.y, 0);
-            Base::Vector3d dir1 = getSolvedSketch().calculateNormalAtPoint(constr->First, p.x, p.y);
+            Base::Vector3d dir1 = getSolvedSketch().calculateNormalAtPoint(constr->getGeoId(0), p.x, p.y);
             dir1.RotateZ(-std::numbers::pi / 2);// convert to vector of tangency by rotating
-            Base::Vector3d dir2 = getSolvedSketch().calculateNormalAtPoint(constr->Second, p.x, p.y);
+            Base::Vector3d dir2 = getSolvedSketch().calculateNormalAtPoint(constr->getGeoId(1), p.x, p.y);
             dir2.RotateZ(-std::numbers::pi / 2);
 
             Base::Vector3d vec = Base::Vector3d(toPos.x, toPos.y, 0) - p0;
             factor = factor * Base::sgn<double>((dir1 + dir2) * vec);
         }
     }
-    else if (constr->First != GeoEnum::GeoUndef) {// line/arc angle
-        const Part::Geometry* geo = obj->getGeometry(constr->First);
+    else if (constr->getGeoId(0) != GeoEnum::GeoUndef) {// line/arc angle
+        const Part::Geometry* geo = obj->getGeometry(constr->getGeoId(0));
 
         if (isLineSegment(*geo)) {
             const auto* lineSeg = static_cast<const Part::GeomLineSegment*>(geo);
@@ -2676,9 +2676,9 @@ void ViewProviderSketch::scaleBSplinePoleCirclesAndUpdateSolverAndSketchObjectGe
             if (gf->getInternalType() == InternalType::BSplineControlPoint) {
                 for (auto c : getSketchObject()->Constraints.getValues()) {
                     if (c->Type == InternalAlignment && c->AlignmentType == BSplineControlPoint
-                        && c->First == GeoId) {
+                        && c->getGeoId(0) == GeoId) {
                         auto bspline = dynamic_cast<const Part::GeomBSplineCurve*>(
-                            tempGeo[c->Second]->getGeometry());
+                            tempGeo[c->getGeoId(1)]->getGeometry());
 
                         if (bspline) {
                             auto weights = bspline->getWeights();
@@ -2706,15 +2706,15 @@ void ViewProviderSketch::scaleBSplinePoleCirclesAndUpdateSolverAndSketchObjectGe
                                 for (auto ic : getSketchObject()->Constraints.getValues()) {
                                     if (ic->Type == InternalAlignment
                                         && ic->AlignmentType == BSplineControlPoint
-                                        && ic->Second == c->Second) {
-                                        polegeoids.push_back(ic->First);
+                                        && ic->getGeoId(1) == c->getGeoId(1)) {
+                                        polegeoids.push_back(ic->getGeoId(0));
                                     }
                                 }
 
                                 for (auto ic : getSketchObject()->Constraints.getValues()) {
                                     if (ic->Type == Weight) {
 
-                                        if (auto pos = std::ranges::find(polegeoids, ic->First);
+                                        if (auto pos = std::ranges::find(polegeoids, ic->getGeoId(0));
                                             pos != polegeoids.end()) {
                                             vradius = ic->getValue() * scalefactor;
                                             break;// one is enough, otherwise it would not be
@@ -3654,8 +3654,8 @@ bool ViewProviderSketch::onDelete(const std::vector<std::string>& subList)
                      it != vals.end();
                      ++it) {
                     if (((*it)->Type == Sketcher::Coincident)
-                        && (((*it)->First == GeoId && (*it)->FirstPos == PosId)
-                            || ((*it)->Second == GeoId && (*it)->SecondPos == PosId))) {
+                        && (((*it)->getGeoId(0) == GeoId && (*it)->getPosId(0) == PosId)
+                            || ((*it)->getGeoId(1) == GeoId && (*it)->getPosId(1) == PosId))) {
                         try {
                             Gui::cmdAppObjectArgs(
                                 getObject(), "delConstraintOnPoint(%d,%d)", GeoId, (int)PosId);

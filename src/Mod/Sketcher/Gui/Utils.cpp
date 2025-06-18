@@ -379,7 +379,7 @@ bool SketcherGui::IsPointAlreadyOnCurve(int GeoIdCurve,
             const std::vector<Constraint*>& constraints = Obj->Constraints.getValues();
             for (const auto& constraint : constraints) {
                 if (constraint->Type == Sketcher::ConstraintType::InternalAlignment
-                    && constraint->First == GeoIdPoint && constraint->Second == GeoIdCurve) {
+                    && constraint->getGeoId(0) == GeoIdPoint && constraint->getGeoId(1) == GeoIdCurve) {
                     return true;
                 }
             }
@@ -416,7 +416,7 @@ bool SketcherGui::checkConstraint(const std::vector<Sketcher::Constraint*>& vals
 {
     for (std::vector<Sketcher::Constraint*>::const_iterator itc = vals.begin(); itc != vals.end();
          ++itc) {
-        if ((*itc)->Type == type && (*itc)->First == geoid && (*itc)->FirstPos == pos) {
+        if ((*itc)->Type == type && (*itc)->getGeoId(0) == geoid && (*itc)->getPosId(0) == pos) {
             return true;
         }
     }
