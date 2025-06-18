@@ -1379,6 +1379,10 @@ Py::Object ImpExpDxfRead::getStatsAsPyObject()
 
     statsDict.setItem("dxfVersion", Py::String(m_stats.dxfVersion));
     statsDict.setItem("dxfEncoding", Py::String(m_stats.dxfEncoding));
+    statsDict.setItem("scalingSource", Py::String(m_stats.scalingSource));
+    statsDict.setItem("fileUnits", Py::String(m_stats.fileUnits));
+    statsDict.setItem("finalScalingFactor", Py::Float(m_stats.finalScalingFactor));
+    statsDict.setItem("importTimeSeconds", Py::Float(m_stats.importTimeSeconds));
     statsDict.setItem("totalEntitiesCreated", Py::Long(m_stats.totalEntitiesCreated));
     statsDict.setItem("unsupportedFeaturesCount", Py::Long(m_stats.unsupportedFeaturesCount));
 
