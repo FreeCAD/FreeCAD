@@ -90,14 +90,6 @@ void ImpExpDxfReadGui::ApplyGuiStyles(App::Link* object) const
         return;
     }
 
-    // --- TEMPORARY DEBUGGING ---
-    const auto& attrs = m_entityAttributes;
-    Base::Console().log("Applying style for Link '%s'. Layer: '%s', DXF Color Index: %d\n",
-                        object->getNameInDocument(),
-                        attrs.m_Layer ? attrs.m_Layer->Name.c_str() : "None",
-                        attrs.m_Color);
-    // ---------------------------
-
     if (m_preserveColors) {
         // The user wants to see colors from the DXF file.
         // We style the link by setting its ViewProvider's properties directly,
