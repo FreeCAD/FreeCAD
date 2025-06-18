@@ -227,7 +227,7 @@ struct ApplicationP
     std::map<const App::Document*, Gui::Document*> documents;
     /// Active document
     Gui::Document* activeDocument {nullptr};
-    Gui::Document* editDocument {nullptr};
+    std::vector<Gui::Document*> editDocuments;
 
     MacroManager* macroMngr;
     PreferencePackManager* prefPackManager;
@@ -1370,61 +1370,72 @@ Gui::Document* Application::activeDocument() const
 
 Gui::Document* Application::editDocument() const
 {
-    return d->editDocument;
+    if (d->editDocuments.empty()) {
+        return nullptr;
+    }
+    return d->editDocuments[0];
 }
 Gui::Document* Application::editDocument(const std::function<bool(Gui::Document*)>& eval)
 {
-    if (d->editDocument != nullptr && eval(d->editDocument)) {
-        return d->editDocument;
-    }
-    return nullptr;
+    auto found = std::ranges::find_if(d->editDocuments.begin(), d->editDocuments.end(), eval);
+
+    return found == d->editDocuments.end() ? nullptr : *found;
 }
 std::vector<Gui::Document*> Application::editDocuments() const
 {
-    if (d->editDocument == nullptr) {
-        return {};
-    }
-    return {d->editDocument};
+    return d->editDocuments;
 }
 bool Application::isInEdit(Gui::Document* pcDocument) const
 {
-    return pcDocument != nullptr && d->editDocument == pcDocument;
+    return std::ranges::find(d->editDocuments.begin(), d->editDocuments.end(), pcDocument)
+        != d->editDocuments.end();
 }
 void Application::unsetEditDocument(Gui::Document* pcDocument)
 {
-    if (pcDocument == nullptr || d->editDocument == nullptr) {
+    auto rem = std::remove(d->editDocuments.begin(), d->editDocuments.end(), pcDocument);
+    bool found = rem != d->editDocuments.end();
+    if (!found) {
         return;
     }
-    if (pcDocument == d->editDocument) {
-        d->editDocument = nullptr;
-    }
-    for (auto& v : d->documents) {
-        v.second->_resetEdit();
-    }
+
+    d->editDocuments.erase(rem, d->editDocuments.end());
+    pcDocument->_resetEdit();
+
     updateActions();
 }
 void Application::unsetEditDocumentIf(const std::function<bool(Gui::Document*)>& eval)
 {
-    if (d->editDocument != nullptr && eval(d->editDocument)) {
-        unsetEditDocument(d->editDocument);
+    for (auto editDoc : d->editDocuments) {
+        if (eval(editDoc)) {
+            unsetEditDocument(editDoc);
+        }
     }
 }
 Gui::MDIView* Application::editViewOfNode(SoNode* node) const
 {
-    return d->editDocument ? d->editDocument->getViewOfNode(node) : nullptr;
+    for (auto editDoc : d->editDocuments) {
+        Gui::MDIView* view = editDoc->getViewOfNode(node);
+        if (view) {
+            return view;
+        }
+    }
+    return nullptr;
 }
 
 void Application::setEditDocument(Gui::Document* pcDocument)
 {
-    if (!pcDocument) {
-        d->editDocument = nullptr;
-    } else if (pcDocument == d->editDocument) {
+    if (pcDocument == nullptr) {
         return;
     }
-    for (auto& v : d->documents) {
-        v.second->_resetEdit();
+    if (std::ranges::find(d->editDocuments.begin(), d->editDocuments.end(), pcDocument) != d->editDocuments.end()) {
+        return;
     }
-    d->editDocument = pcDocument;
+    d->editDocuments.push_back(pcDocument);
+
+    // TODO-theo-vt remove this when it is no longer useful
+    if (d->editDocuments.size() > 1) {
+        std::cerr<<"More than one document in edit!\n";
+    }
     updateActions();
 }
 
