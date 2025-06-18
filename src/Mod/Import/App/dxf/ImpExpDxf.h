@@ -125,7 +125,8 @@ private:
     PyObject* DraftModule = nullptr;
     std::set<std::string> m_referencedBlocks;
     void ComposeBlocks();
-    void ComposeSingleBlock(const std::string& blockName, std::set<std::string>& composed);
+    void ComposeParametricBlock(const std::string& blockName, std::set<std::string>& composed);
+    void ComposeFlattenedBlock(const std::string& blockName, std::set<std::string>& composed);
 
 protected:
     PyObject* getDraftModule()
@@ -204,6 +205,7 @@ protected:
 
 private:
     std::map<std::string, Block> Blocks;
+    std::map<std::string, TopoDS_Shape> m_flattenedBlockShapes;
     std::map<std::string, App::DocumentObject*> m_blockDefinitions;
     App::DocumentObjectGroup* m_blockDefinitionGroup = nullptr;
     App::Document* document;
