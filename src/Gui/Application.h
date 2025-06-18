@@ -190,14 +190,15 @@ public:
 
     // Returns true if the document is in edit (will make more sense once the edit document it is a vector)
     bool isInEdit(Gui::Document* pcDocument) const;
-    // After this, isInEdit(pcDocument) returns false
-    void resetEditOf(Gui::Document* pcDocument);
     // Reset edit if eval returns true for a document in edit
-    void resetEditIf(const std::function<bool(Gui::Document*)>& eval);
 
     Gui::MDIView* editViewOfNode(SoNode *node) const;
     /// Set editing document, which will reset editing of all other document
     void setEditDocument(Gui::Document* pcDocument);
+    // After this, isInEdit(pcDocument) returns false
+    void unsetEditDocument(Gui::Document* pcDocument);
+    void unsetEditDocumentIf(const std::function<bool(Gui::Document*)>& eval);
+
     /** Retrieves a pointer to the Gui::Document whose App::Document has the name \a name.
     * If no such document exists 0 is returned.
     */
