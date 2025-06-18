@@ -187,8 +187,8 @@ struct DxfImportStats
     double finalScalingFactor = 1.0;
     std::map<std::string, int> entityCounts;
     std::map<std::string, std::string> importSettings;
+    std::map<std::string, int> unsupportedFeatures;
     int totalEntitiesCreated = 0;
-    int unsupportedFeaturesCount = 0;
 };
 
 
