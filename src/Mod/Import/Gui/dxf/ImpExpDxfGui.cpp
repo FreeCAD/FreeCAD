@@ -57,6 +57,7 @@
 #include <Gui/Application.h>
 #include <Gui/ViewProvider.h>
 #include <Gui/ViewProviderDocumentObject.h>
+#include <Gui/ViewProviderLink.h>
 #include <Mod/Part/Gui/ViewProvider.h>
 
 #include "ImpExpDxfGui.h"
@@ -82,23 +83,38 @@ void ImpExpDxfReadGui::ApplyGuiStyles(Part::Feature* object) const
 void ImpExpDxfReadGui::ApplyGuiStyles(App::Link* object) const
 {
     auto view = GuiDocument->getViewProvider(object);
-    if (!view) {
+
+    // The ViewProvider for an App::Link is a ViewProviderLink
+    auto* vpLink = dynamic_cast<Gui::ViewProviderLink*>(view);
+    if (!vpLink) {
         return;
     }
 
-    // Setting DrawStyle to "Original" tells the link's ViewProvider to
-    // use the appearance of the linked object. This is the correct
-    // way to handle visual instancing.
-    if (auto* prop = view->getPropertyByName("DrawStyle")) {
-        if (auto* penum = dynamic_cast<App::PropertyEnumeration*>(prop)) {
-            penum->setValue("Original");
+    if (m_preserveColors) {
+        // The user wants to see colors from the DXF file.
+        // We style the link by setting its ViewProvider's properties directly,
+        // which is the same mechanism used for standard Part::Features.
+        Base::Color color = ObjectColor(m_entityAttributes.m_Color);
+
+        // The ViewProviderLink does not have LineColor/PointColor properties itself,
+        // but setting them on the base ViewProvider seems to be respected by the renderer.
+        // If this does not work, the properties would need to be added to ViewProviderLink.
+        if (auto* prop = view->getPropertyByName("LineColor")) {
+            static_cast<App::PropertyColor*>(prop)->setValue(color);
+        }
+        if (auto* prop = view->getPropertyByName("PointColor")) {
+            static_cast<App::PropertyColor*>(prop)->setValue(color);
+        }
+        if (auto* prop = view->getPropertyByName("ShapeColor")) {
+            static_cast<App::PropertyColor*>(prop)->setValue(color);
+        }
+        if (auto* prop = view->getPropertyByName("DrawStyle")) {
+            static_cast<App::PropertyEnumeration*>(prop)->setValue(GetDrawStyle());
+        }
+        if (auto* prop = view->getPropertyByName("Transparency")) {
+            static_cast<App::PropertyInteger*>(prop)->setValue(0);
         }
     }
-
-    // TODO: The link's view provider may still have color properties set,
-    // which can override the "Original" draw style. The C++ API does not appear
-    // to expose a way to reset these properties to their default state. This is
-    // a known limitation and can be addressed in the future if a method is found.
 }
 
 void ImpExpDxfReadGui::ApplyGuiStyles(App::FeaturePython* object) const
