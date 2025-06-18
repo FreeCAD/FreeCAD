@@ -54,6 +54,7 @@ Constraint::Constraint()
     , InternalAlignmentIndex(-1)
     , isInVirtualSpace(false)
     , isActive(true)
+    , elements(3)
 {
     // Initialize a random number generator, to avoid Valgrind false positives.
     // The random number generator is not threadsafe so we guard it.  See
