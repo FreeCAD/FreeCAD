@@ -229,6 +229,7 @@ void ImpExpDxfRead::setOptions()
 
 bool ImpExpDxfRead::OnReadBlock(const std::string& name, int flags)
 {
+    ImportObservation("DEBUG: OnReadBlock entered for block: '%s'\n", name.c_str());
     if ((flags & 0x04) != 0) {  // Block is an Xref
         UnsupportedFeature("External (xref) BLOCK");
         return SkipBlockContents();
@@ -581,6 +582,7 @@ void ImpExpDxfRead::OnReadInsert(const Base::Vector3d& point,
 
     // Create the App::Link object directly in C++
     App::Link* link = document->addObject<App::Link>(linkName.c_str());
+    ImportObservation("DEBUG: Creating App::Link for block '%s'\n", name.c_str());
     if (!link) {
         ImportError("Failed to create App::Link for block '%s'", name.c_str());
         return;
