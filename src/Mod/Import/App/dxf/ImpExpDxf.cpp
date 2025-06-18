@@ -1375,8 +1375,10 @@ void ImpExpDxfWrite::exportDiametricDim(Base::Vector3d textLocn,
 
 Py::Object ImpExpDxfRead::getStatsAsPyObject()
 {
+    // Create a Python dictionary to hold all import statistics.
     Py::Dict statsDict;
 
+    // Populate the dictionary with general information about the import.
     statsDict.setItem("dxfVersion", Py::String(m_stats.dxfVersion));
     statsDict.setItem("dxfEncoding", Py::String(m_stats.dxfEncoding));
     statsDict.setItem("scalingSource", Py::String(m_stats.scalingSource));
@@ -1385,23 +1387,27 @@ Py::Object ImpExpDxfRead::getStatsAsPyObject()
     statsDict.setItem("importTimeSeconds", Py::Float(m_stats.importTimeSeconds));
     statsDict.setItem("totalEntitiesCreated", Py::Long(m_stats.totalEntitiesCreated));
 
+    // Create a nested dictionary for the counts of each DXF entity type read.
     Py::Dict entityCountsDict;
     for (const auto& pair : m_stats.entityCounts) {
         entityCountsDict.setItem(pair.first.c_str(), Py::Long(pair.second));
     }
     statsDict.setItem("entityCounts", entityCountsDict);
 
+    // Create a nested dictionary for the import settings used for this session.
     Py::Dict importSettingsDict;
     for (const auto& pair : m_stats.importSettings) {
         importSettingsDict.setItem(pair.first.c_str(), Py::String(pair.second));
     }
     statsDict.setItem("importSettings", importSettingsDict);
 
+    // Create a nested dictionary for any unsupported DXF features encountered.
     Py::Dict unsupportedFeaturesDict;
     for (const auto& pair : m_stats.unsupportedFeatures) {
         unsupportedFeaturesDict.setItem(pair.first.c_str(), Py::Long(pair.second));
     }
     statsDict.setItem("unsupportedFeatures", unsupportedFeaturesDict);
 
+    // Return the fully populated statistics dictionary to the Python caller.
     return statsDict;
 }
