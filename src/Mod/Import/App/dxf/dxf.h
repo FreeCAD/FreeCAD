@@ -716,7 +716,6 @@ protected:
     void UnsupportedFeature(const char* format, args&&... argValues);
 
 private:
-    std::map<std::string, std::pair<int, int>> m_unsupportedFeaturesNoted;
     std::string m_CodePage;  // Code Page name from $DWGCODEPAGE or null if none/not read yet
     // The following was going to be python's canonical name for the encoding, but this is (a) not
     // easily found and (b) does not speed up finding the encoding object.
