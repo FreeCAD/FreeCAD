@@ -57,8 +57,9 @@ class ClipPlane(SceneDetail):
             self._viewer().toggleClippingPlane(enable)
 
     def _viewer(self):
+        # TODO-theo-vt is the active document a good substitution for editDocument()?
         if self.doc is None:
-            gdoc = Gui.editDocument()
+            gdoc = Gui.ActiveDocument
         else:
             gdoc = Gui.getDocument(self.doc.Name)
         v = gdoc.activeView()
