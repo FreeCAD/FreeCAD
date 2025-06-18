@@ -122,8 +122,12 @@ class TaskPanelPolarArray:
         self.form.button_reset.clicked.connect(self.reset_point)
 
         # When the checkbox changes, change the internal value
-        self.form.checkbox_fuse.stateChanged.connect(self.set_fuse)
-        self.form.checkbox_link.stateChanged.connect(self.set_link)
+        if hasattr(self.form.checkbox_fuse, "checkStateChanged"): # Qt version >= 6.7.0
+            self.form.checkbox_fuse.checkStateChanged.connect(self.set_fuse)
+            self.form.checkbox_link.checkStateChanged.connect(self.set_link)
+        else: # Qt version < 6.7.0
+            self.form.checkbox_fuse.stateChanged.connect(self.set_fuse)
+            self.form.checkbox_link.stateChanged.connect(self.set_link)
 
 
     def accept(self):

@@ -154,8 +154,12 @@ class TaskPanelOrthoArray:
         self.form.button_reset_Z.clicked.connect(lambda: self.reset_v("Z"))
 
         # When the checkbox changes, change the internal value
-        self.form.checkbox_fuse.stateChanged.connect(self.set_fuse)
-        self.form.checkbox_link.stateChanged.connect(self.set_link)
+        if hasattr(self.form.checkbox_fuse, "checkStateChanged"): # Qt version >= 6.7.0
+            self.form.checkbox_fuse.checkStateChanged.connect(self.set_fuse)
+            self.form.checkbox_link.checkStateChanged.connect(self.set_link)
+        else: # Qt version < 6.7.0
+            self.form.checkbox_fuse.stateChanged.connect(self.set_fuse)
+            self.form.checkbox_link.stateChanged.connect(self.set_link)
 
         # Linear mode callbacks - only set up if the UI elements exist
         self.form.button_linear_mode.clicked.connect(self.toggle_linear_mode)

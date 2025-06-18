@@ -100,8 +100,12 @@ class Fillet(gui_base_original.Creator):
                                                     "Create chamfer"))
             self.ui.check_chamfer.show()
 
-            self.ui.check_delete.stateChanged.connect(self.set_delete)
-            self.ui.check_chamfer.stateChanged.connect(self.set_chamfer)
+            if hasattr(self.ui.check_delete, "checkStateChanged"): # Qt version >= 6.7.0
+                self.ui.check_delete.checkStateChanged.connect(self.set_delete)
+                self.ui.check_chamfer.checkStateChanged.connect(self.set_chamfer)
+            else: # Qt version < 6.7.0
+                self.ui.check_delete.stateChanged.connect(self.set_delete)
+                self.ui.check_chamfer.stateChanged.connect(self.set_chamfer)
 
             # TODO: somehow we need to set up the trackers
             # to show a preview of the fillet.
