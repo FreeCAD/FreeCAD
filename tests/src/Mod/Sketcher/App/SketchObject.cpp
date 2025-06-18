@@ -441,19 +441,14 @@ TEST_F(SketchObjectTest, testConstraintAfterDeletingGeo)
 
     Sketcher::Constraint constr1;
     constr1.Type = Sketcher::ConstraintType::Coincident;
-    constr1.First = geoId1;
-    constr1.FirstPos = Sketcher::PointPos::start;
-    constr1.Second = geoId2;
-    constr1.SecondPos = Sketcher::PointPos::end;
+    constr1.setElement(0, GeoElementId(geoId1, PointPos::start));
+    constr1.setElement(1, GeoElementId(geoId2, PointPos::end));
 
     Sketcher::Constraint constr2;
     constr2.Type = Sketcher::ConstraintType::Tangent;
-    constr2.First = geoId4;
-    constr2.FirstPos = Sketcher::PointPos::none;
-    constr2.Second = geoId3;
-    constr2.SecondPos = Sketcher::PointPos::none;
-    constr2.Third = geoId1;
-    constr2.ThirdPos = Sketcher::PointPos::start;
+    constr2.setElement(0, GeoElementId(geoId4, PointPos::none));
+    constr2.setElement(1, GeoElementId(geoId3, PointPos::none));
+    constr2.setElement(2, GeoElementId(geoId1, PointPos::start));
 
     // Act
     auto nullConstrAfter = getObject()->getConstraintAfterDeletingGeo(nullConstr, 5);
@@ -477,11 +472,11 @@ TEST_F(SketchObjectTest, testConstraintAfterDeletingGeo)
 
     // Assert
     EXPECT_EQ(constr1.Type, Sketcher::ConstraintType::Coincident);
-    EXPECT_EQ(constr1.First, geoId1);
-    EXPECT_EQ(constr1.Second, geoId2);
-    EXPECT_EQ(constr1PtrAfter1->First, geoId1 - 1);
-    EXPECT_EQ(constr1PtrAfter1->Second, geoId2 - 1);
-    EXPECT_EQ(constr1PtrAfter2->Third, Sketcher::GeoEnum::GeoUndef);
+    EXPECT_EQ(constr1.getGeoId(0), geoId1);
+    EXPECT_EQ(constr1.getGeoId(1), geoId2);
+    EXPECT_EQ(constr1PtrAfter1->getGeoId(0), geoId1 - 1);
+    EXPECT_EQ(constr1PtrAfter1->getGeoId(1), geoId2 - 1);
+    EXPECT_EQ(constr1PtrAfter2->getGeoId(2), Sketcher::GeoEnum::GeoUndef);
     EXPECT_EQ(constr1PtrAfter3.get(), nullptr);
 
     // Act
@@ -489,9 +484,9 @@ TEST_F(SketchObjectTest, testConstraintAfterDeletingGeo)
 
     // Assert
     EXPECT_EQ(constr2.Type, Sketcher::ConstraintType::Tangent);
-    EXPECT_EQ(constr2.First, geoId4 + 1);
-    EXPECT_EQ(constr2.Second, geoId3);
-    EXPECT_EQ(constr2.Third, geoId1);
+    EXPECT_EQ(constr2.getGeoId(0), geoId4 + 1);
+    EXPECT_EQ(constr2.getGeoId(1), geoId3);
+    EXPECT_EQ(constr2.getGeoId(2), geoId1);
 
     // Act
     // Delete a geo involved in the constraint
@@ -534,7 +529,7 @@ TEST_F(SketchObjectTest, testDeleteExposeInternalGeometryOfEllipse)
                           [&geoId, &alignmentType](const auto* constr) {
                               return constr->Type == Sketcher::ConstraintType::InternalAlignment
                                   && constr->AlignmentType == alignmentType
-                                  && constr->Second == geoId;
+                                  && constr->getGeoId(1) == geoId;
                           });
         EXPECT_EQ(numConstraintsOfThisType, 1);
     }
@@ -580,7 +575,7 @@ TEST_F(SketchObjectTest, testDeleteExposeInternalGeometryOfHyperbola)
                           [&geoId, &alignmentType](const auto* constr) {
                               return constr->Type == Sketcher::ConstraintType::InternalAlignment
                                   && constr->AlignmentType == alignmentType
-                                  && constr->Second == geoId;
+                                  && constr->getGeoId(1) == geoId;
                           });
         EXPECT_EQ(numConstraintsOfThisType, 1);
     }
@@ -625,7 +620,7 @@ TEST_F(SketchObjectTest, testDeleteExposeInternalGeometryOfParabola)
                           [&geoId, &alignmentType](const auto* constr) {
                               return constr->Type == Sketcher::ConstraintType::InternalAlignment
                                   && constr->AlignmentType == alignmentType
-                                  && constr->Second == geoId;
+                                  && constr->getGeoId(1) == geoId;
                           });
         EXPECT_EQ(numConstraintsOfThisType, 1);
     }
@@ -673,7 +668,7 @@ TEST_F(SketchObjectTest, testDeleteExposeInternalGeometryOfBSpline)
                           [&geoId, &alignmentType](const auto* constr) {
                               return constr->Type == Sketcher::ConstraintType::InternalAlignment
                                   && constr->AlignmentType == alignmentType
-                                  && constr->Second == geoId;
+                                  && constr->getGeoId(1) == geoId;
                           });
     }
     EXPECT_EQ(numConstraintsOfThisType[Sketcher::InternalAlignmentType::BSplineControlPoint],
@@ -708,16 +703,14 @@ TEST_F(SketchObjectTest, testDeleteOnlyUnusedInternalGeometryOfBSpline)
     auto it = std::find_if(constraints.begin(), constraints.end(), [&geoIdBsp](const auto* constr) {
         return constr->Type == Sketcher::ConstraintType::InternalAlignment
             && constr->AlignmentType == Sketcher::InternalAlignmentType::BSplineControlPoint
-            && constr->Second == geoIdBsp && constr->InternalAlignmentIndex == 1;
+            && constr->getGeoId(1) == geoIdBsp && constr->InternalAlignmentIndex == 1;
     });
     // One Assert to avoid
     EXPECT_NE(it, constraints.end());
     auto constraint = new Sketcher::Constraint();  // Ownership will be transferred to the sketch
     constraint->Type = Sketcher::ConstraintType::Coincident;
-    constraint->First = geoIdPnt;
-    constraint->FirstPos = Sketcher::PointPos::start;
-    constraint->Second = (*it)->First;
-    constraint->SecondPos = Sketcher::PointPos::mid;
+    constraint->setElement(0, GeoElementId(geoIdPnt, Sketcher::PointPos::start));
+    constraint->setElement(1, GeoElementId((*it)->getGeoId(0), Sketcher::PointPos::mid));
     getObject()->addConstraint(constraint);
 
     // Act
