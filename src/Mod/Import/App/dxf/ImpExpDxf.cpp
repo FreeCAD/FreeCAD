@@ -797,7 +797,7 @@ void ImpExpDxfRead::OnReadText(const Base::Vector3d& point,
             PyObject* draftModule = getDraftModule();
             if (draftModule != nullptr) {
                 Base::Matrix4D localTransform;
-                localTransform.rotZ(rotation);
+                localTransform.rotZ(Base::toRadians(rotation));
                 localTransform.move(point);
                 PyObject* placement =
                     new Base::PlacementPy(Base::Placement(transform * localTransform));
