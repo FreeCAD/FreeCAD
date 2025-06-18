@@ -2163,11 +2163,7 @@ void CmdSketcherDeleteAllConstraints::activated(int iMsg)
         Sketcher::SketchObject* Obj = getSketchObject();
 
         try {
-<<<<<<< HEAD
-            Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Delete all constraints"));
-=======
-            openSelf(QT_TRANSLATE_NOOP("Command", "Delete All Constraints"));
->>>>>>> 215f441f9c (prehook was not commited)
+            openSelf(QT_TRANSLATE_NOOP("Command", "Delete all constraints"));
             Gui::cmdAppObjectArgs(Obj, "deleteAllConstraints()");
             commitSelf();
         }
