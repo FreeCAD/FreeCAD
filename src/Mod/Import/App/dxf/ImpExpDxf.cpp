@@ -730,6 +730,10 @@ void ImpExpDxfRead::OnReadSpline(struct SplineData& sd)
     // Flags:
     // 1: Closed, 2: Periodic, 4: Rational, 8: Planar, 16: Linear
 
+    if (shouldSkipEntity()) {
+        return;
+    }
+
     try {
         Handle(Geom_BSplineCurve) geom;
         if (sd.control_points > 0) {
