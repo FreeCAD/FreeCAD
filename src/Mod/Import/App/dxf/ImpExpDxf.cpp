@@ -230,21 +230,32 @@ void ImpExpDxfRead::setOptions()
 bool ImpExpDxfRead::OnReadBlock(const std::string& name, int flags)
 {
     ImportObservation("DEBUG: OnReadBlock entered for block: '%s'\n", name.c_str());
+
+    // Step 1: Check for external references first. This is a critical check.
     if ((flags & 0x04) != 0) {  // Block is an Xref
         UnsupportedFeature("External (xref) BLOCK");
         return SkipBlockContents();
     }
-    if (!m_importHiddenBlocks && (name.find('*') == 0)) {
+
+    // Step 2: Decide if we should skip this block based on its name and user settings.
+    bool isAnonymous = (name.find('*') == 0);
+    if (isAnonymous && !m_importHiddenBlocks) {
         // It is an anonymous block used to build dimensions, hatches, etc.
         return SkipBlockContents();
     }
+
+    // Step 3: If we are still here, we are processing the block. Now, decide if we should count it.
+    if (!isAnonymous) {
+        m_stats.entityCounts["BLOCK"]++;
+    }
+
+    // Step 4: Check for duplicates to prevent errors.
     if (m_blockDefinitions.count(name)) {
         ImportError("Duplicate block name '%s'", name.c_str());
         return SkipBlockContents();
     }
 
-    // Use the temporary Block struct and Collector to parse all contents into memory.
-    // We use the old 'Blocks' map for temporary storage during parsing.
+    // Step 5: Use the temporary Block struct and Collector to parse all contents into memory.
     Block& temporaryBlock = Blocks.insert(std::make_pair(name, Block(name, flags))).first->second;
     BlockDefinitionCollector blockCollector(*this,
                                             temporaryBlock.Shapes,
@@ -254,13 +265,13 @@ bool ImpExpDxfRead::OnReadBlock(const std::string& name, int flags)
         return false;  // Abort on parsing error
     }
 
-    // Now, combine all collected primitive shapes into a single compound.
+    // Step 6: Combine all collected primitive shapes into a single compound.
     std::list<TopoDS_Shape> allShapes;
     for (auto const& [attr, shapeList] : temporaryBlock.Shapes) {
         allShapes.insert(allShapes.end(), shapeList.begin(), shapeList.end());
     }
 
-    // TODO: The major regression is here. This logic does not handle nested
+    // TODO: This logic does not handle nested
     // INSERTs or FeatureBuilders within the block definition. We must add
     // logic to recursively expand these into the 'allShapes' list.
 
@@ -270,6 +281,7 @@ bool ImpExpDxfRead::OnReadBlock(const std::string& name, int flags)
         return true;
     }
 
+    // Step 7: Create the final FreeCAD object.
     TopoDS_Shape finalShape = CombineShapesToCompound(allShapes);
 
     if (!finalShape.IsNull()) {
@@ -279,7 +291,10 @@ bool ImpExpDxfRead::OnReadBlock(const std::string& name, int flags)
         pcFeature->Shape.setValue(finalShape);
 
         m_blockDefinitionGroup->addObject(pcFeature);
+        pcFeature->Visibility.setValue(false);
         m_blockDefinitions[name] = pcFeature;
+
+        m_stats.totalEntitiesCreated++;
     }
 
     return true;
@@ -587,6 +602,8 @@ void ImpExpDxfRead::OnReadInsert(const Base::Vector3d& point,
         ImportError("Failed to create App::Link for block '%s'", name.c_str());
         return;
     }
+
+    m_stats.totalEntitiesCreated++;  // Increment counter for the created App::Link
 
     // Configure the link
     link->setLink(-1, baseObject);
