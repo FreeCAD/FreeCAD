@@ -682,7 +682,7 @@ void Document::resetEdit() {
     Gui::ViewProvider* vpToRestore = d->_editViewProviderPrevious;
     bool shouldRestorePrevious = d->_editWantsRestorePrevious;
 
-    Application::Instance->setEditDocument(nullptr);
+    Application::Instance->unsetEditDocument(this);
 
     if (vpIsNotNull && vpHasChanged && shouldRestorePrevious) {
         setEdit(vpToRestore, modeToRestore);
@@ -718,7 +718,7 @@ void Document::_resetEdit()
 
         // The logic below is not necessary anymore, because this method is
         // changed into a private one,  _resetEdit(). And the exposed
-        // resetEdit() above calls into Application->setEditDocument(0) which
+        // resetEdit() above calls into Application->unsetEditDocument() which
         // will prevent recursive calling.
 
         App::GetApplication().closeActiveTransaction(false, getDocument()->getBookedTransactionID());
@@ -727,7 +727,7 @@ void Document::_resetEdit()
     d->_editingViewer = nullptr;
     d->_editObjs.clear();
     d->_editingObject = nullptr;
-    Application::Instance->resetEditOf(this);
+    Application::Instance->unsetEditDocument(this);
 }
 
 ViewProvider *Document::getInEdit(ViewProviderDocumentObject **parentVp,
@@ -1003,7 +1003,7 @@ void Document::slotDeletedObject(const App::DocumentObject& Obj)
     if (d->_editViewProvider==viewProvider || d->_editViewProviderParent==viewProvider) {
         _resetEdit();
     } else {
-        Application::Instance->resetEditIf([&viewProvider](Gui::Document* editdoc) {
+        Application::Instance->unsetEditDocumentIf([&viewProvider](Gui::Document* editdoc) {
             return editdoc->d->_editViewProvider == viewProvider
                 || editdoc->d->_editViewProviderParent == viewProvider;
         });
@@ -1029,7 +1029,7 @@ void Document::slotDeletedObject(const App::DocumentObject& Obj)
 
 void Document::beforeDelete() 
 {
-    Application::Instance->resetEditIf([this](Gui::Document* editDoc) {
+    Application::Instance->unsetEditDocumentIf([this](Gui::Document* editDoc) {
         auto vp = freecad_cast<ViewProviderDocumentObject*>(editDoc->d->_editViewProvider);
         auto vpp = freecad_cast<ViewProviderDocumentObject*>(editDoc->d->_editViewProviderParent);
         

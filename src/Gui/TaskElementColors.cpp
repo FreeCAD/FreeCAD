@@ -66,6 +66,7 @@ public:
     bool busy;
     long onTopMode;
     bool touched;
+    int tid {0}; // Transaction id
 
     std::string editDoc;
     std::string editObj;
@@ -196,8 +197,8 @@ public:
             std::string sub = qPrintable(item->data(Qt::UserRole + 1).value<QString>());
             info.emplace(sub, Base::Color::fromValue<QColor>(col));
         }
-        if (!App::GetApplication().getActiveTransaction()) {
-            App::GetApplication().setActiveTransaction("Set colors");
+        if (tid == 0) {
+            tid = Gui::Command::openCommand(vpDoc->getDocument(), "Set colors");
         }
         vp->setElementColors(info);
         touched = true;
@@ -207,8 +208,13 @@ public:
     void reset()
     {
         touched = false;
-        App::GetApplication().closeActiveTransaction(true);
+        Gui::Command::abortCommand(tid);
+        tid = 0;
         Selection().clearSelection();
+
+        Application::Instance->unsetEditDocumentIf([this](Gui::Document* editdoc) {
+            return editdoc->getEditViewProvider() == vp;
+        });
     }
 
     void accept()
@@ -219,7 +225,12 @@ public:
             obj->getDocument()->recompute(obj->getInListRecursive());
             touched = false;
         }
-        App::GetApplication().closeActiveTransaction();
+        Gui::Command::commitCommand(tid);
+        tid = 0;
+
+        Application::Instance->unsetEditDocumentIf([this](Gui::Document* editdoc) {
+            return editdoc->getEditViewProvider() == vp;
+        });
     }
 
     void removeAll()
@@ -535,14 +546,12 @@ void ElementColors::onRemoveAllClicked()
 bool ElementColors::accept()
 {
     d->accept();
-    Application::Instance->setEditDocument(nullptr);
     return true;
 }
 
 bool ElementColors::reject()
 {
     d->reset();
-    Application::Instance->setEditDocument(nullptr);
     return true;
 }
 
