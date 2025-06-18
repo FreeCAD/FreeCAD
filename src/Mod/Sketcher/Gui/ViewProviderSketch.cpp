@@ -3063,6 +3063,7 @@ bool ViewProviderSketch::setEdit(int ModNum)
     auto editDoc = Gui::Application::Instance->editDocument([this](Gui::Document* editdoc) {
         return editdoc->getEditViewProvider() == this;
     });
+
     if (editDoc) {
         editDoc->getInEdit(&editVp, &editSubName);
         if (editVp) {
@@ -3089,7 +3090,7 @@ bool ViewProviderSketch::setEdit(int ModNum)
                     "ref[0].isDerivedFrom(\"PartDesign::Plane\")])\n"
                     "if ActiveSketch.ViewObject.ShowLinks:\n"
                     "  tv.show([ref[0] for ref in ActiveSketch.ExternalGeometry])\n"
-                    "tv.sketchClipPlane(ActiveSketch, ActiveSketch.ViewObject.SectionView)\n"
+                    "tv.sketchClipPlane(ActiveSketch, Gui.ActiveDocument, ActiveSketch.ViewObject.SectionView)\n"
                     "tv.hide(ActiveSketch)\n"
                     "del(tv)\n"
                     "del(ActiveSketch)\n")
@@ -3526,7 +3527,7 @@ void ViewProviderSketch::onCameraChanged(SoCamera* cam)
         draw();
 
         QString cmdStr = QStringLiteral("ActiveSketch.ViewObject.TempoVis.sketchClipPlane("
-                                        "ActiveSketch, ActiveSketch.ViewObject.SectionView, %1)\n")
+                                        "ActiveSketch, Gui.ActiveDocument, ActiveSketch.ViewObject.SectionView, %1)\n")
                              .arg(tmpFactor < 0 ? QLatin1String("True") : QLatin1String("False"));
         Base::Interpreter().runStringObject(cmdStr.toLatin1());
     }
