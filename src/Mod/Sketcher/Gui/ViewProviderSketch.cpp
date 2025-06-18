@@ -292,7 +292,7 @@ void ViewProviderSketch::ParameterObserver::initParameters()
               updateBoolProperty(string, property, true);
           },
           &Client.AvoidRedundant}},
-        {"updateEscapeKeyBehaviour",
+        {"LeaveSketchWithEscape",
          {[this](const std::string& string, App::Property* property) {
               updateEscapeKeyBehaviour(string, property);
           },
