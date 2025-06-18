@@ -232,8 +232,76 @@ void ImpExpDxfRead::setOptions()
     // hGrp->GetBool("dxfhiddenLayers", true);
 }
 
-void ImpExpDxfRead::ComposeSingleBlock(const std::string& blockName,
-                                       std::set<std::string>& composed)
+void ImpExpDxfRead::ComposeFlattenedBlock(const std::string& blockName,
+                                          std::set<std::string>& composed)
+{
+    // 1. Base Case: If already composed, do nothing.
+    if (composed.count(blockName)) {
+        return;
+    }
+
+    // 2. Find the raw block data.
+    auto it = this->Blocks.find(blockName);
+    if (it == this->Blocks.end()) {
+        ImportError("Block '%s' is referenced but not defined. Skipping.", blockName.c_str());
+        return;
+    }
+    const Block& blockData = it->second;
+
+    // 3. Collect all geometry shapes for this block.
+    std::list<TopoDS_Shape> shapeCollection;
+
+    // 4. Process primitive geometry.
+    for (const auto& [attributes, shapeList] : blockData.Shapes) {
+        shapeCollection.insert(shapeCollection.end(), shapeList.begin(), shapeList.end());
+    }
+
+    // 5. Process nested inserts recursively.
+    for (const auto& insertAttrPair : blockData.Inserts) {
+        for (const auto& nestedInsert : insertAttrPair.second) {
+            // Ensure the nested block is composed first.
+            ComposeFlattenedBlock(nestedInsert.Name, composed);
+
+            // Retrieve the final, flattened shape of the nested block.
+            auto shape_it = m_flattenedBlockShapes.find(nestedInsert.Name);
+            if (shape_it != m_flattenedBlockShapes.end()) {
+                if (!shape_it->second.IsNull()) {
+                    // Use the Part::TopoShape wrapper to access the transformShape method.
+                    Part::TopoShape nestedShape(shape_it->second);
+                    // Apply the insert's transformation.
+                    Base::Placement pl(
+                        nestedInsert.Point,
+                        Base::Rotation(Base::Vector3d(0, 0, 1), nestedInsert.Rotation));
+                    Base::Matrix4D transform = pl.toMatrix();
+                    transform.scale(nestedInsert.Scale);
+                    nestedShape.transformShape(transform, true, true);  // Use copy=true
+                    shapeCollection.push_back(nestedShape.getShape());
+                }
+            }
+        }
+    }
+
+    // 6. Build the final merged shape.
+    TopoDS_Shape finalShape = CombineShapesToCompound(shapeCollection);
+    m_flattenedBlockShapes[blockName] = finalShape;  // Cache the result.
+
+    // 7. Create the final Part::Feature object.
+    if (!finalShape.IsNull()) {
+        std::string featureName = "BLOCK_" + blockName;
+        auto blockFeature = document->addObject<Part::Feature>(
+            document->getUniqueObjectName(featureName.c_str()).c_str());
+        blockFeature->Shape.setValue(finalShape);
+        blockFeature->Visibility.setValue(false);
+        m_blockDefinitionGroup->addObject(blockFeature);
+        this->m_blockDefinitions[blockName] = blockFeature;
+    }
+
+    // 8. Mark this block as composed.
+    composed.insert(blockName);
+}
+
+void ImpExpDxfRead::ComposeParametricBlock(const std::string& blockName,
+                                           std::set<std::string>& composed)
 {
     // 1. Base Case: If this block has already been composed, we're done.
     if (composed.count(blockName)) {
@@ -264,7 +332,7 @@ void ImpExpDxfRead::ComposeSingleBlock(const std::string& blockName,
     for (const auto& insertAttrPair : blockData.Inserts) {
         for (const auto& nestedInsert : insertAttrPair.second) {
             // Ensure the dependency is composed before we try to link to it.
-            ComposeSingleBlock(nestedInsert.Name, composed);
+            ComposeParametricBlock(nestedInsert.Name, composed);
 
             // Create the App::Link for this nested insert.
             auto baseObjIt = m_blockDefinitions.find(nestedInsert.Name);
@@ -379,9 +447,21 @@ void ImpExpDxfRead::ComposeSingleBlock(const std::string& blockName,
 void ImpExpDxfRead::ComposeBlocks()
 {
     std::set<std::string> composedBlocks;
-    for (const auto& pair : this->Blocks) {
-        if (composedBlocks.find(pair.first) == composedBlocks.end()) {
-            ComposeSingleBlock(pair.first, composedBlocks);
+
+    if (m_mergeOption == MergeShapes) {
+        // User wants flattened geometry for performance.
+        for (const auto& pair : this->Blocks) {
+            if (composedBlocks.find(pair.first) == composedBlocks.end()) {
+                ComposeFlattenedBlock(pair.first, composedBlocks);
+            }
+        }
+    }
+    else {
+        // User wants a parametric, editable structure.
+        for (const auto& pair : this->Blocks) {
+            if (composedBlocks.find(pair.first) == composedBlocks.end()) {
+                ComposeParametricBlock(pair.first, composedBlocks);
+            }
         }
     }
 }
