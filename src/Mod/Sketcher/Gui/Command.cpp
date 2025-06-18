@@ -813,9 +813,11 @@ void CmdSketcherViewSketch::activated(int iMsg)
     SketcherGui::ViewProviderSketch* vp =
         dynamic_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit());
     if (vp) {
+        // TODO-theo-vt is active document always editing?
+        // seems so -- the vp is in edit,,
         runCommand(Gui,
                    "Gui.ActiveDocument.ActiveView.setCameraOrientation("
-                   "App.Placement(Gui.editDocument().EditingTransform).Rotation.Q)");
+                   "App.Placement(Gui.ActiveDocument.EditingTransform).Rotation.Q)");
     }
 }
 
@@ -1111,8 +1113,9 @@ void CmdSketcherViewSection::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     QString cmdStr =
-        QLatin1String("ActiveSketch.ViewObject.TempoVis.sketchClipPlane(ActiveSketch, None, %1)\n");
+        QLatin1String("ActiveSketch.ViewObject.TempoVis.sketchClipPlane(ActiveSketch, Gui.ActiveDocument, None, %1)\n");
     Gui::Document* doc = getActiveGuiDocument();
+
     bool revert = false;
     if (doc) {
         SketcherGui::ViewProviderSketch* vp =
