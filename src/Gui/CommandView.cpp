@@ -3710,7 +3710,7 @@ StdCmdDockOverlayToggleLeft::StdCmdDockOverlayToggleLeft()
     sWhatsThis    = "Std_DockOverlayToggleLeft";
     sStatusTip    = sToolTipText;
     sAccel        = "Ctrl+Left";
-    sPixmap       = "qss:overlay/icons/close.svg";
+    sPixmap       = "Std_DockOverlayToggleLeft";
     eType         = 0;
 }
 
@@ -3735,7 +3735,7 @@ StdCmdDockOverlayToggleRight::StdCmdDockOverlayToggleRight()
     sWhatsThis    = "Std_DockOverlayToggleRight";
     sStatusTip    = sToolTipText;
     sAccel        = "Ctrl+Right";
-    sPixmap       = "qss:overlay/icons/close.svg";
+    sPixmap       = "Std_DockOverlayToggleRight";
     eType         = 0;
 }
 
@@ -3760,7 +3760,7 @@ StdCmdDockOverlayToggleTop::StdCmdDockOverlayToggleTop()
     sWhatsThis    = "Std_DockOverlayToggleTop";
     sStatusTip    = sToolTipText;
     sAccel        = "Ctrl+Up";
-    sPixmap       = "qss:overlay/icons/close.svg";
+    sPixmap       = "Std_DockOverlayToggleTop";
     eType         = 0;
 }
 
@@ -3785,7 +3785,7 @@ StdCmdDockOverlayToggleBottom::StdCmdDockOverlayToggleBottom()
     sWhatsThis    = "Std_DockOverlayToggleBottom";
     sStatusTip    = sToolTipText;
     sAccel        = "Ctrl+Down";
-    sPixmap       = "qss:overlay/icons/close.svg";
+    sPixmap       = "Std_DockOverlayToggleBottom";
     eType         = 0;
 }
 
@@ -3847,8 +3847,8 @@ public:
         :GroupCommand("Std_DockOverlay")
     {
         sGroup        = "View";
-        sMenuText     = QT_TR_NOOP("Dock window overlay");
-        sToolTipText  = QT_TR_NOOP("Setting docked window overlay mode");
+        sMenuText     = QT_TR_NOOP("Dock panel overlay");
+        sToolTipText  = QT_TR_NOOP("Setting docked panel overlay mode");
         sWhatsThis    = "Std_DockOverlay";
         sStatusTip    = sToolTipText;
         eType         = 0;
