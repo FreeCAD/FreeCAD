@@ -266,7 +266,8 @@ void TaskDetail::setUiFromFeat()
     ui->cbScaleType->setCurrentIndex(ScaleType);
     if (ui->cbScaleType->currentIndex() == 2) { // only if custom scale
         ui->qsbScale->setEnabled(true);
-    } else {
+    }
+    else {
         ui->qsbScale->setEnabled(false);
     }
     ui->qsbScale->setValue(scale);
