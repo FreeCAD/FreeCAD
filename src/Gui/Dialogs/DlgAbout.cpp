@@ -164,7 +164,11 @@ QPixmap AboutDialog::aboutImage() const
         about_image.load(fi.filePath(), "PNG");
     }
 
-    std::string about_path = App::Application::Config()["AboutImage"];
+    // Use dev or generic version of image depending on current build version.
+    const auto& suffix = App::Application::Config()["BuildVersionSuffix"];
+    const auto about_path_key = (suffix == "dev") ? "AboutImageDev" : "AboutImage";
+    const auto& about_path = App::Application::Config()[about_path_key];
+
     if (!about_path.empty() && about_image.isNull()) {
         QString path = QString::fromStdString(about_path);
         if (QDir(path).isRelative()) {
