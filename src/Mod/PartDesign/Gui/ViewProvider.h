@@ -127,11 +127,11 @@ protected:
     virtual TaskDlgFeatureParameters *getEditDialog();
 
     std::string oldWb;
-    App::DocumentObject* oldTip{nullptr};
+    ViewProvider* previouslyShownViewProvider { nullptr };
 
     Gui::CoinPtr<SoPreviewShape> previewShape;
 
-    bool isSetTipIcon{false};
+    bool isSetTipIcon { false };
 };
 
 using ViewProviderPython = Gui::ViewProviderFeaturePythonT<ViewProvider>;
