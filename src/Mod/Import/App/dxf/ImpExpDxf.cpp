@@ -98,6 +98,10 @@ void ImpExpDxfRead::StartImport()
     m_blockDefinitionGroup = static_cast<App::DocumentObjectGroup*>(
         document->addObject("App::DocumentObjectGroup", "_BlockDefinitions"));
     m_blockDefinitionGroup->Visibility.setValue(false);
+    // Create a hidden group to store unreferenced blocks
+    m_unreferencedBlocksGroup = static_cast<App::DocumentObjectGroup*>(
+        document->addObject("App::DocumentObjectGroup", "_UnreferencedBlocks"));
+    m_unreferencedBlocksGroup->Visibility.setValue(false);
 }
 
 bool ImpExpDxfRead::ReadEntitiesSection()
@@ -261,6 +265,8 @@ void ImpExpDxfRead::ComposeFlattenedBlock(const std::string& blockName,
         for (const auto& nestedInsert : insertAttrPair.second) {
             // Ensure the nested block is composed first.
             ComposeFlattenedBlock(nestedInsert.Name, composed);
+            // Mark the nested block as referenced so it's not moved to the "Unreferenced" group.
+            m_referencedBlocks.insert(nestedInsert.Name);
 
             // Retrieve the final, flattened shape of the nested block.
             auto shape_it = m_flattenedBlockShapes.find(nestedInsert.Name);
@@ -333,12 +339,16 @@ void ImpExpDxfRead::ComposeParametricBlock(const std::string& blockName,
         for (const auto& nestedInsert : insertAttrPair.second) {
             // Ensure the dependency is composed before we try to link to it.
             ComposeParametricBlock(nestedInsert.Name, composed);
+            // Mark the nested block as referenced so it's not moved to the "Unreferenced" group.
+            m_referencedBlocks.insert(nestedInsert.Name);
 
             // Create the App::Link for this nested insert.
             auto baseObjIt = m_blockDefinitions.find(nestedInsert.Name);
             if (baseObjIt != m_blockDefinitions.end()) {
+                // The link's name should be based on the block it is inserting, not the parent.
+                std::string linkName = "Link_" + nestedInsert.Name;
                 auto link = document->addObject<App::Link>(
-                    (blockCompound->getNameInDocument() + std::string("_insert")).c_str());
+                    document->getUniqueObjectName(linkName.c_str()).c_str());
                 link->setLink(-1, baseObjIt->second);
                 link->LinkTransform.setValue(false);
 
@@ -468,28 +478,48 @@ void ImpExpDxfRead::ComposeBlocks()
 
 void ImpExpDxfRead::FinishImport()
 {
-    // Check a user preference to see if we should show unreferenced blocks.
-    // Using m_importHiddenBlocks for now, but a dedicated option would be better.
-    if (m_importHiddenBlocks) {
-        for (const auto& pair : m_blockDefinitions) {
-            const std::string& blockName = pair.first;
-            App::DocumentObject* blockObj = pair.second;
+    // This function runs after all blocks have been parsed and composed.
+    // It sorts all created block definitions into two groups: those that are
+    // actively referenced in the drawing, and those that are not.
 
-            // Don't unhide system blocks (like those for dimensions).
-            if (blockName.rfind('*', 0) == 0) {
-                continue;
-            }
+    std::vector<App::DocumentObject*> referenced;
+    std::vector<App::DocumentObject*> unreferenced;
 
-            if (m_referencedBlocks.find(blockName) == m_referencedBlocks.end()) {
-                blockObj->Visibility.setValue(true);
-                // Move the unreferenced block out of the hidden definitions group
-                // to the main document body for better user visibility.
-                m_blockDefinitionGroup->removeObject(blockObj);
-                document->addObject(blockObj);
-                ImportObservation("DXF: Made unreferenced block '%s' visible.\n",
-                                  blockName.c_str());
-            }
+    for (const auto& pair : m_blockDefinitions) {
+        const std::string& blockName = pair.first;
+        App::DocumentObject* blockObj = pair.second;
+
+        bool is_referenced = (m_referencedBlocks.find(blockName) != m_referencedBlocks.end());
+
+        // A block is considered "referenced" if it was explicitly inserted
+        // or if it is an anonymous system block (e.g., for dimensions).
+        // All other named blocks are considered unreferenced if not found in the set.
+        if (is_referenced || (blockName.rfind('*', 0) == 0)) {
+            referenced.push_back(blockObj);
         }
+        else {
+            unreferenced.push_back(blockObj);
+        }
+    }
+
+    // Re-assign the group contents by setting the PropertyLinkList for each group.
+    // This correctly re-parents the objects in the document's dependency graph.
+    m_blockDefinitionGroup->Group.setValues(referenced);
+    m_unreferencedBlocksGroup->Group.setValues(unreferenced);
+
+    // Final cleanup: If the unreferenced group is empty, remove it to avoid
+    // unnecessary clutter in the document tree. Otherwise, ensure it's hidden.
+    if (unreferenced.empty()) {
+        try {
+            document->removeObject(m_unreferencedBlocksGroup->getNameInDocument());
+        }
+        catch (const Base::Exception& e) {
+            // It's not critical if removal fails, but we should log it.
+            e.reportException();
+        }
+    }
+    else {
+        m_unreferencedBlocksGroup->Visibility.setValue(false);
     }
 
     // call the base class implementation if it has one
