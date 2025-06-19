@@ -25,47 +25,27 @@
 #define PARTGUI_ViewProvider_H
 
 #include <App/DocumentObject.h>
-#include <Mod/Part/Gui/ViewProvider.h>
-#include <Mod/Part/Gui/ViewProviderExt.h>
 #include <Gui/ViewProviderFeaturePython.h>
-#include "Gui/ViewProviderSuppressibleExtension.h"
-
+#include <Gui/ViewProviderSuppressibleExtension.h>
+#include <Mod/Part/Gui/ViewProvider.h>
 #include <Mod/Part/Gui/ViewProviderAttachExtension.h>
+#include <Mod/Part/Gui/ViewProviderPreviewExtension.h>
 #include <Mod/PartDesign/App/Feature.h>
 
-#include <Gui/Selection/SoFCUnifiedSelection.h>
-
 #include "ViewProviderBody.h"
+
 
 namespace PartDesignGui {
 
 class TaskDlgFeatureParameters;
-
-class PartDesignGuiExport SoPreviewShape : public SoSeparator {
-    using inherited = SoSeparator;
-    SO_NODE_HEADER(SoPreviewShape);
-
-public:
-    SoPreviewShape();
-
-    SoSFColor color;
-    SoSFFloat transparency;
-    SoSFFloat lineWidth;
-
-    SoCoordinate3* coords;
-    SoNormal* norm;
-
-    PartGui::SoBrepFaceSet* faceset;
-    PartGui::SoBrepEdgeSet* lineset;
-    PartGui::SoBrepPointSet* nodeset;
-};
 
 /**
  * A common base class for all part design features view providers
  */
 class PartDesignGuiExport ViewProvider : public PartGui::ViewProviderPart,
                                          Gui::ViewProviderSuppressibleExtension,
-                                         PartGui::ViewProviderAttachExtension
+                                         PartGui::ViewProviderAttachExtension,
+                                         public PartGui::ViewProviderPreviewExtension
 {
     using inherited = PartGui::ViewProviderPart;
     PROPERTY_HEADER_WITH_OVERRIDE(PartDesignGui::ViewProvider);
@@ -100,7 +80,9 @@ public:
     //Returns the ViewProvider of the body the feature belongs to, or NULL, if not in a body
     ViewProviderBody* getBodyViewProvider();
 
-    //Toggles visibility of the preview
+    /// Provides preview shape
+    Part::TopoShape getPreviewShape() const override;
+    /// Toggles visibility of the preview
     void makePreviewVisible(bool);
 
     PyObject* getPyObject() override;
@@ -115,11 +97,6 @@ protected:
 
     bool onDelete(const std::vector<std::string> &) override;
 
-    /// Returns shape that should be used as the preview
-    virtual Part::TopoShape getPreviewShape() const;
-    /// Updates preview visuals
-    void updatePreviewShape();
-
     /**
      * Returns a newly create dialog for the part to be placed in the task view
      * Must be reimplemented in subclasses.
@@ -128,8 +105,6 @@ protected:
 
     std::string oldWb;
     ViewProvider* previouslyShownViewProvider { nullptr };
-
-    Gui::CoinPtr<SoPreviewShape> previewShape;
 
     bool isSetTipIcon { false };
 };

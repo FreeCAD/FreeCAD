@@ -160,6 +160,17 @@ public:
     /// Get the python wrapper for that ViewProvider
     PyObject* getPyObject() override;
 
+    /// configures Coin nodes so they render given toposhape
+    static void setupCoinGeometry(TopoDS_Shape shape,
+                                  SoCoordinate3* coords,
+                                  SoBrepFaceSet* faceset,
+                                  SoNormal* norm,
+                                  SoBrepEdgeSet* lineset,
+                                  SoBrepPointSet* nodeset,
+                                  double deviation,
+                                  double angularDeflection,
+                                  bool normalsFromUV);
+
 protected:
     bool setEdit(int ModNum) override;
     void unsetEdit(int ModNum) override;
@@ -173,13 +184,6 @@ protected:
     void handleChangedPropertyName(Base::XMLReader& reader,
                                    const char* TypeName,
                                    const char* PropName) override;
-
-    void setupCoinGeometry(TopoDS_Shape shape,
-                           SoCoordinate3* coords,
-                           SoBrepFaceSet* faceset,
-                           SoNormal* norm,
-                           SoBrepEdgeSet* lineset,
-                           SoBrepPointSet* nodeset);
 
     // nodes for the data representation
     SoMaterialBinding * pcFaceBind;

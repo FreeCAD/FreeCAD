@@ -931,7 +931,10 @@ void ViewProviderPartExt::setupCoinGeometry(TopoDS_Shape shape,
                            SoBrepFaceSet* faceset,
                            SoNormal* norm,
                            SoBrepEdgeSet* lineset,
-                           SoBrepPointSet* nodeset)
+                           SoBrepPointSet* nodeset,
+                           double deviation,
+                           double angularDeflection,
+                           bool normalsFromUV)
 {
     if (shape.IsNull()) {
         coords->point.setNum(0);
@@ -955,7 +958,7 @@ void ViewProviderPartExt::setupCoinGeometry(TopoDS_Shape shape,
     Standard_Real xMin, yMin, zMin, xMax, yMax, zMax;
     bounds.Get(xMin, yMin, zMin, xMax, yMax, zMax);
     Standard_Real deflection =
-        ((xMax - xMin) + (yMax - yMin) + (zMax - zMin)) / 300.0 * Deviation.getValue();
+        ((xMax - xMin) + (yMax - yMin) + (zMax - zMin)) / 300.0 * deviation;
 
     // Since OCCT 7.6 a value of equal 0 is not allowed any more, this can happen if a single
     // vertex should be displayed.
@@ -969,7 +972,7 @@ void ViewProviderPartExt::setupCoinGeometry(TopoDS_Shape shape,
     // deflection = std::min(deflection, 20.0);
 
     // create or use the mesh on the data structure
-    Standard_Real AngDeflectionRads = Base::toRadians(AngularDeflection.getValue());
+    Standard_Real AngDeflectionRads = Base::toRadians(angularDeflection);
 
     IMeshTools_Parameters meshParams;
     meshParams.Deflection = deflection;
@@ -1102,7 +1105,7 @@ void ViewProviderPartExt::setupCoinGeometry(TopoDS_Shape shape,
         int numNodes = mesh->NbNodes();
         TColgp_Array1OfDir Normals(1, numNodes);
 #endif
-        if (NormalsFromUV) {
+        if (normalsFromUV) {
             Part::Tools::getPointNormals(actFace, mesh, Normals);
         }
 
@@ -1131,7 +1134,7 @@ void ViewProviderPartExt::setupCoinGeometry(TopoDS_Shape shape,
 
             // get the 3 normals of this triangle
             gp_Vec NV1, NV2, NV3;
-            if (NormalsFromUV) {
+            if (normalsFromUV) {
                 NV1.SetXYZ(Normals(N1).XYZ());
                 NV2.SetXYZ(Normals(N2).XYZ());
                 NV3.SetXYZ(Normals(N3).XYZ());
@@ -1150,7 +1153,7 @@ void ViewProviderPartExt::setupCoinGeometry(TopoDS_Shape shape,
                 V1.Transform(myTransf);
                 V2.Transform(myTransf);
                 V3.Transform(myTransf);
-                if (NormalsFromUV) {
+                if (normalsFromUV) {
                     NV1.Transform(myTransf);
                     NV2.Transform(myTransf);
                     NV3.Transform(myTransf);
@@ -1338,7 +1341,16 @@ void ViewProviderPartExt::updateVisual()
     try {
         TopoDS_Shape cShape = getRenderedShape().getShape();
 
-        setupCoinGeometry(cShape, coords, faceset, norm, lineset, nodeset);
+        setupCoinGeometry(cShape,
+                          coords,
+                          faceset,
+                          norm,
+                          lineset,
+                          nodeset,
+                          Deviation.getValue(),
+                          AngularDeflection.getValue(),
+                          NormalsFromUV);
+
         VisualTouched = false;
     }
     catch (const Standard_Failure& e) {

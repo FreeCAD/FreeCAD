@@ -64,6 +64,7 @@
 #include <Mod/Part/Gui/SoBrepEdgeSet.h>
 #include <Mod/Part/Gui/SoBrepFaceSet.h>
 #include <Mod/Part/Gui/SoBrepPointSet.h>
+#include <Mod/Part/Gui/ViewProviderPreviewExtension.h>
 #include <Mod/PartDesign/App/FeatureAddSub.h>
 #include <Mod/PartDesign/App/FeatureDressUp.h>
 
@@ -72,77 +73,11 @@ using namespace PartDesignGui;
 
 PROPERTY_SOURCE_WITH_EXTENSIONS(PartDesignGui::ViewProvider, PartGui::ViewProviderPart)
 
-SO_NODE_SOURCE(SoPreviewShape);
-
-SoPreviewShape::SoPreviewShape()
-    : coords(new SoCoordinate3)
-    , norm(new SoNormal)
-    , faceset(new PartGui::SoBrepFaceSet)
-    , lineset(new PartGui::SoBrepEdgeSet)
-    , nodeset(new PartGui::SoBrepPointSet)
-{
-    SO_NODE_CONSTRUCTOR(SoPreviewShape);
-
-    SO_NODE_ADD_FIELD(color, (1.f, 0.f, 1.f));
-    SO_NODE_ADD_FIELD(transparency, (0.85f));
-    SO_NODE_ADD_FIELD(lineWidth, (2.f));
-
-    SoDrawStyle* solidLineStyle = new SoDrawStyle();
-    solidLineStyle->lineWidth.connectFrom(&lineWidth);
-
-    SoDrawStyle* hiddenLineStyle = new SoDrawStyle();
-    hiddenLineStyle->lineWidth.connectFrom(&lineWidth);
-    hiddenLineStyle->linePattern = 0xF0F0;
-
-    SoLightModel* solidColorLightModel = new SoLightModel();
-    solidColorLightModel->model = SoLightModel::BASE_COLOR;
-
-    SoNormalBinding* normalBinding = new SoNormalBinding();
-    normalBinding->value = SoNormalBinding::PER_VERTEX_INDEXED;
-
-    // This should be OVERALL but then line pattern does not work correctly
-    // Probably a bug in coin to be investigated.
-    SoMaterialBinding* materialBinding = new SoMaterialBinding();
-    materialBinding->value = SoMaterialBinding::PER_FACE_INDEXED;
-
-    SoMaterial* material = new SoMaterial;
-    material->diffuseColor.connectFrom(&color);
-    material->transparency.connectFrom(&transparency);
-
-    SoPolygonOffset* polygonOffset = new SoPolygonOffset;
-
-    SoMaterial* lineMaterial = new SoMaterial;
-    lineMaterial->diffuseColor.connectFrom(&color);
-    lineMaterial->transparency = 0.0f;
-
-    SoSeparator* lineSep = new SoSeparator;
-    lineSep->addChild(normalBinding);
-    lineSep->addChild(materialBinding);
-    lineSep->addChild(solidColorLightModel);
-    lineSep->addChild(lineMaterial);
-    lineSep->addChild(lineset);
-
-    SoSeparator* annotation = new Gui::So3DAnnotation;
-    annotation->addChild(hiddenLineStyle);
-    annotation->addChild(material);
-    annotation->addChild(lineSep);
-    annotation->addChild(polygonOffset);
-    annotation->addChild(faceset);
-
-    SoSeparator::addChild(solidLineStyle);
-    SoSeparator::addChild(material);
-    SoSeparator::addChild(coords);
-    SoSeparator::addChild(norm);
-    SoSeparator::addChild(lineSep);
-    SoSeparator::addChild(polygonOffset);
-    SoSeparator::addChild(faceset);
-    SoSeparator::addChild(annotation);
-}
-
 ViewProvider::ViewProvider()
 {
     ViewProviderSuppressibleExtension::initExtension(this);
     ViewProviderAttachExtension::initExtension(this);
+    ViewProviderPreviewExtension::initExtension(this);
 }
 
 ViewProvider::~ViewProvider() = default;
@@ -157,20 +92,13 @@ void ViewProvider::attach(App::DocumentObject* pcObject)
 {
     ViewProviderPart::attach(pcObject);
 
-    previewShape = new SoPreviewShape;
-    updatePreviewShape();
+    if (auto addSubFeature = getObject<PartDesign::FeatureAddSub>()) {
+        const Base::Color green(0.0F, 1.0F, 0.6F);
+        const Base::Color red(1.0F, 0.0F, 0.0F);
 
-    if (getObject()->isDerivedFrom<PartDesign::DressUp>()) {
-        previewShape->color.setValue(1.f, 0.f, 1.f);
-    }
-    else if (auto featureAddSub = getObject<PartDesign::FeatureAddSub>()) {
-        if (featureAddSub->getAddSubType() == PartDesign::FeatureAddSub::Subtractive) {
-            previewShape->color.setValue(1.f, 0.f, 0.f);
-        } else {
-            previewShape->color.setValue(0.f, 1.f, 6.f);
-        }
-    } else {
-        previewShape->color.setValue(1.f, 0.f, 1.f);
+        bool isAdditive = addSubFeature->getAddSubType() == PartDesign::FeatureAddSub::Additive;
+
+        PreviewColor.setValue(isAdditive ? green : red);
     }
 }
 
@@ -400,33 +328,6 @@ Part::TopoShape ViewProvider::getPreviewShape() const
     return {};
 }
 
-void ViewProvider::updatePreviewShape()
-{
-    setupCoinGeometry(getPreviewShape().getShape(),
-                      previewShape->coords,
-                      previewShape->faceset,
-                      previewShape->norm,
-                      previewShape->lineset,
-                      previewShape->nodeset);
-
-    // For some reason line patterns are not rendered correctly if material binding is set to
-    // anything other than PER_FACE. PER_FACE material binding seems to require materialIndex per
-    // each distinct edge. Until that is fixed, this code forces each edge to use the first material.
-    unsigned lineCoordsCount = previewShape->lineset->coordIndex.getNum();
-    unsigned lineCount = 1;
-
-    for (unsigned i = 0; i < lineCoordsCount; ++i) {
-        if (previewShape->lineset->coordIndex[i] < 0) {
-            lineCount++;
-        }
-    }
-
-    previewShape->lineset->materialIndex.setNum(lineCount);
-    for (unsigned i = 0; i < lineCount; ++i) {
-        previewShape->lineset->materialIndex.set1Value(i, 0);
-    }
-}
-
 void ViewProvider::setBodyMode(bool bodymode) {
 
     std::vector<App::Property*> props;
@@ -516,12 +417,12 @@ void ViewProvider::makePreviewVisible(bool enable)
         baseFeatureViewProvider->show();
         hide();
 
-        bodyViewProvider->getAnnotation()->addChild(previewShape);
+        bodyViewProvider->getAnnotation()->addChild(pcPreviewRoot);
     } else {
         baseFeatureViewProvider->hide();
         show();
 
-        bodyViewProvider->getAnnotation()->removeChild(previewShape);
+        bodyViewProvider->getAnnotation()->removeChild(pcPreviewRoot);
     }
 }
 
