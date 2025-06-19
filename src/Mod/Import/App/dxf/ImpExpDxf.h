@@ -208,6 +208,7 @@ private:
     std::map<std::string, TopoDS_Shape> m_flattenedBlockShapes;
     std::map<std::string, App::DocumentObject*> m_blockDefinitions;
     App::DocumentObjectGroup* m_blockDefinitionGroup = nullptr;
+    App::DocumentObjectGroup* m_unreferencedBlocksGroup = nullptr;
     App::Document* document;
     std::string m_optionSource;
 
