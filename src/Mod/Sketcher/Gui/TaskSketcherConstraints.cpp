@@ -719,15 +719,19 @@ void ConstraintView::swapNamedOfSelectedItems()
 ConstraintFilterList::ConstraintFilterList(QWidget* parent)
     : QListWidget(parent)
 {
-    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
-        "User parameter:BaseApp/Preferences/Mod/Sketcher/General");
-    int filterState = hGrp->GetInt(
-        "ConstraintFilterState",
-        std::numeric_limits<int>::max()); // INT_MAX = 01111111111111111111111111111111 in binary.
-
     normalFilterCount = filterItems.size() - 2;// All filter but selected and associated
     selectedFilterIndex = normalFilterCount;
     associatedFilterIndex = normalFilterCount + 1;
+
+    // default filters are all except for special filters
+    int defaultFilter = 0; 
+    for (int i = 0; i < normalFilterCount; i++) {
+        defaultFilter |= 1 << i;
+    }
+
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/Mod/Sketcher/General");
+    int filterState = hGrp->GetInt("ConstraintFilterState", defaultFilter);
 
     for (auto const& filterItem : filterItems) {
         Q_UNUSED(filterItem);
@@ -972,11 +976,13 @@ TaskSketcherConstraints::TaskSketcherConstraints(ViewProviderSketch* sketchView)
         std::bind(&TaskSketcherConstraints::onChangedSketchView, this, sp::_1, sp::_2));
     //NOLINTEND
 
-    slotConstraintsChanged();// Populate constraints list
     // Initialize special filters
     for (int i = filterList->normalFilterCount; i < filterList->count(); i++) {
-        onFilterListItemChanged(filterList->item(i));
+        if (filterList->item(i)->checkState() == Qt::Checked) {
+            onFilterListItemChanged(filterList->item(i));
+        }
     }
+    slotConstraintsChanged();// Populate constraints list
 }
 
 TaskSketcherConstraints::~TaskSketcherConstraints()
@@ -1022,9 +1028,7 @@ void TaskSketcherConstraints::onSettingsRestrictVisibilityChanged(bool value)
         hGrp->SetBool("VisualisationTrackingFilter", value);
     }
 
-    // Act
-    if (value)
-        change3DViewVisibilityToTrackFilter();
+    change3DViewVisibilityToTrackFilter(value);
 }
 
 void TaskSketcherConstraints::onSettingsAutoConstraintsChanged(bool value)
@@ -1330,11 +1334,13 @@ void TaskSketcherConstraints::updateList()
         "User parameter:BaseApp/Preferences/Mod/Sketcher");
     bool visibilityTracksFilter = hGrp->GetBool("VisualisationTrackingFilter", false);
 
-    if (visibilityTracksFilter)
-        change3DViewVisibilityToTrackFilter();// it will call slotConstraintChanged via update
-                                              // mechanism
-    else
+    if (visibilityTracksFilter) {
+        // it will call slotConstraintChanged via update mechanism
+        change3DViewVisibilityToTrackFilter(visibilityTracksFilter);
+    }
+    else {
         slotConstraintsChanged();
+    }
 }
 
 void TaskSketcherConstraints::onSelectionChanged(const Gui::SelectionChanges& msg)
@@ -1501,7 +1507,7 @@ void TaskSketcherConstraints::onListWidgetConstraintsItemSelectionChanged()
     this->blockSelection(block);
 }
 
-void TaskSketcherConstraints::change3DViewVisibilityToTrackFilter()
+void TaskSketcherConstraints::change3DViewVisibilityToTrackFilter(bool filterEnabled)
 {
     assert(sketchView);
     // Build up ListView with the constraints
@@ -1514,7 +1520,7 @@ void TaskSketcherConstraints::change3DViewVisibilityToTrackFilter()
     for (std::size_t i = 0; i < vals.size(); ++i) {
         ConstraintItem* it = static_cast<ConstraintItem*>(ui->listWidgetConstraints->item(i));
 
-        bool visible = !isConstraintFiltered(it);
+        bool visible = !filterEnabled || !isConstraintFiltered(it);
 
         // If the constraint is filteredout and it was previously shown in 3D view
         if (!visible && it->isInVirtualSpace() == sketchView->getIsShownVirtualSpace()) {
@@ -1760,22 +1766,24 @@ void TaskSketcherConstraints::onFilterListItemChanged(QListWidgetItem* item)
     else if (filterindex == filterList->selectedFilterIndex) {// Selected constraints
         if (item->checkState() == Qt::Checked) {
             specialFilterMode = SpecialFilterType::Selected;
-            filterList->item(filterList->associatedFilterIndex)
-                ->setCheckState(Qt::Unchecked);// Disable 'associated'
             updateSelectionFilter();
         }
-        else
+        else {
             specialFilterMode = SpecialFilterType::None;
+        }
+        filterList->item(filterList->associatedFilterIndex)
+                ->setCheckState(Qt::Unchecked); // Disable 'associated'
     }
     else {// Associated constraints
         if (item->checkState() == Qt::Checked) {
             specialFilterMode = SpecialFilterType::Associated;
-            filterList->item(filterList->selectedFilterIndex)
-                ->setCheckState(Qt::Unchecked);// Disable 'selected'
             updateAssociatedConstraintsFilter();
         }
-        else
+        else {
             specialFilterMode = SpecialFilterType::None;
+        }
+        filterList->item(filterList->selectedFilterIndex)
+                ->setCheckState(Qt::Unchecked); // Disable 'selected'
     }
 
     filterList->blockSignals(tmpBlock);
