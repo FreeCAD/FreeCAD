@@ -436,7 +436,7 @@ void StdCmdExport::activated(int iMsg)
     QString selectedFilter;
 
     if (!exportInfo.filter.empty()) {
-        selectedFilter = QString::fromUtf8(exportInfo.filter);
+        selectedFilter = QString::fromStdString(exportInfo.filter);
     } else {
         selectedFilter = QString::fromStdString(hPath->GetASCII("FileExportFilter"));
     }
@@ -451,12 +451,12 @@ void StdCmdExport::activated(int iMsg)
     QString defaultFilename;
     if (exportInfo.filename.empty() || exportInfo.generatedName || exportInfo.object != toExport) {
         // First, get the name and path of the current .FCStd file, if there is one:
-        QString docFilename = QString::fromUtf8(doc->getFileName());
+        QString docFilename = QString::fromStdString(doc->getFileName());
 
         // Find the default location for our exported file. Three possibilities:
         QString exportPath;
         if (!exportInfo.filename.empty()) {
-            QFileInfo fi(QString::fromUtf8(exportInfo.filename));
+            QFileInfo fi(QString::fromStdString(exportInfo.filename));
             exportPath = fi.path();
         }
         else if (!docFilename.isEmpty()) {
@@ -472,14 +472,14 @@ void StdCmdExport::activated(int iMsg)
 
             // Append the last extension used, if there is one.
             if (!exportInfo.filename.empty()) {
-                QFileInfo lastExportFile(QString::fromUtf8(exportInfo.filename));
+                QFileInfo lastExportFile(QString::fromStdString(exportInfo.filename));
                 if (!lastExportFile.suffix().isEmpty())
                     defaultFilename += QLatin1String(".") + lastExportFile.suffix();
             }
             filenameWasGenerated = true;
         }
     } else {
-        defaultFilename = QString::fromUtf8(exportInfo.filename);
+        defaultFilename = QString::fromStdString(exportInfo.filename);
     }
         // Launch the file selection modal dialog
     QString filename = FileDialog::getSaveFileName(getMainWindow(),
