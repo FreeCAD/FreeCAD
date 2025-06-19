@@ -91,8 +91,8 @@ protected:
     virtual TaskDlgFeatureParameters *getEditDialog();
 
     std::string oldWb;
-    App::DocumentObject* oldTip{nullptr};
-    bool isSetTipIcon{false};
+    ViewProvider* previouslyShownViewProvider { nullptr };
+    bool isSetTipIcon { false };
 };
 
 using ViewProviderPython = Gui::ViewProviderFeaturePythonT<ViewProvider>;
