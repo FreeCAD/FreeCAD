@@ -1,4 +1,4 @@
-target_sources(Sketcher_tests_run PRIVATE
+add_executable(Sketcher_tests_run
         SketcherTestHelpers.cpp
         SketchObject.cpp
         SketchObjectChanges.cpp
