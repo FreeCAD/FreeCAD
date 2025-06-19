@@ -330,13 +330,41 @@ void ViewProviderBody::setVisualBodyMode(bool bodymode) {
     }
 }
 
-std::vector< std::string > ViewProviderBody::getDisplayModes() const {
+std::vector<std::string> ViewProviderBody::getDisplayModes() const
+{
 
-    //we get all display modes and remove the "Group" mode, as this is what we use for "Through"
-    //body display mode
-    std::vector< std::string > modes = ViewProviderPart::getDisplayModes();
+    // we get all display modes and remove the "Group" mode, as this is what we use for "Through"
+    // body display mode
+    std::vector<std::string> modes = ViewProviderPart::getDisplayModes();
     modes.erase(modes.begin());
     return modes;
+}
+
+PartDesign::Feature* ViewProviderBody::getShownFeature() const
+{
+    auto body = static_cast<PartDesign::Body*>(getObject());
+    auto features = body->Group.getValues();
+
+    for (auto feature : features) {
+        if (!feature->isDerivedFrom<PartDesign::Feature>()) {
+            continue;
+        }
+
+        if (feature->Visibility.getValue()) {
+            return static_cast<PartDesign::Feature*>(feature);
+        }
+    }
+
+    return nullptr;
+}
+
+Gui::ViewProvider* ViewProviderBody::getShownViewProvider() const
+{
+    if (const auto* feature = getShownFeature()) {
+        return Gui::Application::Instance->getViewProvider(feature);
+    }
+
+    return nullptr;
 }
 
 bool ViewProviderBody::canDropObjects() const

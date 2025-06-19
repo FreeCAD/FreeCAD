@@ -107,13 +107,17 @@ bool ViewProvider::setEdit(int ModNum)
             msgBox.setInformativeText(QObject::tr("Do you want to close this dialog?"));
             msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
             msgBox.setDefaultButton(QMessageBox::Yes);
-            int ret = msgBox.exec();
-            if (ret == QMessageBox::Yes) {
+
+            if (msgBox.exec() == QMessageBox::Yes) {
                 Gui::Control().reject();
             } else {
                 return false;
             }
         }
+
+        previouslyShownViewProvider = dynamic_cast<ViewProvider*>(
+            Gui::Application::Instance->getViewProvider(getBodyViewProvider()->getShownFeature())
+        );
 
         // clear the selection (convenience)
         Gui::Selection().clearSelection();
@@ -145,27 +149,21 @@ TaskDlgFeatureParameters *ViewProvider::getEditDialog() {
 void ViewProvider::unsetEdit(int ModNum)
 {
     // return to the WB we were in before editing the PartDesign feature
-    if (!oldWb.empty())
+    if (!oldWb.empty()) {
         Gui::Command::assureWorkbench(oldWb.c_str());
+    }
+
+    // ensure that after edit we still show the same feature
+    if (previouslyShownViewProvider) {
+        previouslyShownViewProvider->show();
+    }
 
     if (ModNum == ViewProvider::Default) {
         // when pressing ESC make sure to close the dialog
-#if 0
-        PartDesign::Body* activeBody = Gui::Application::Instance->activeView()->getActiveObject<PartDesign::Body*>(PDBODYKEY);
-#endif
         Gui::Control().closeDialog();
-#if 0
-        if ((activeBody != NULL) && (oldTip != NULL)) {
-            Gui::Selection().clearSelection();
-            Gui::Selection().addSelection(oldTip->getDocument()->getName(), oldTip->getNameInDocument());
-            Gui::Command::doCommand(Gui::Command::Gui,"FreeCADGui.runCommand('PartDesign_MoveTip')");
-        }
-#endif
-        oldTip = nullptr;
     }
     else {
         PartGui::ViewProviderPart::unsetEdit(ModNum);
-        oldTip = nullptr;
     }
 }
 
