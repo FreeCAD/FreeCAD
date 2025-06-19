@@ -117,6 +117,11 @@ Gui::ViewProviderCoordinateSystem* TaskRevolutionParameters::getOriginView() con
         return freecad_cast<ViewProviderCoordinateSystem*>(
             Gui::Application::Instance->getViewProvider(origin));
      }
+    bool outside = enableOutside();
+    ui->checkBoxOutside->setEnabled(outside);
+    ui->checkBoxOutside->setVisible(outside);
+    PartDesign::ProfileBased* pcRevolution = getObject<PartDesign::ProfileBased>();
+    ui->checkBoxOutside->setChecked(pcRevolution->Outside.getValue());
 
     return nullptr;
 }
@@ -366,6 +371,8 @@ void TaskRevolutionParameters::connectSignals()
             this, &TaskRevolutionParameters::onButtonFace);
     connect(ui->lineFaceName, &QLineEdit::textEdited,
             this, &TaskRevolutionParameters::onFaceName);
+    connect(ui->checkBoxOutside, &QCheckBox::toggled,
+            this, &TaskRevolutionParameters::onOutsideChanged);
     // clang-format on
 }
 

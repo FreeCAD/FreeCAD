@@ -247,6 +247,8 @@ void TaskExtrudeParameters::connectSlots()
             this, &TaskExtrudeParameters::onSelectShapeToggle);
     connect(ui->lineFaceName, &QLineEdit::textEdited,
             this, &TaskExtrudeParameters::onFaceName);
+    connect(ui->checkBoxOutside, &QCheckBox::toggled,
+        this, &TaskExtrudeParameters::onOutsideChanged);
     connect(ui->checkBoxUpdateView, &QCheckBox::toggled,
             this, &TaskExtrudeParameters::onUpdateView);
     connect(ui->buttonShapeFace, &QToolButton::toggled,
@@ -685,6 +687,7 @@ void TaskExtrudeParameters::setCheckboxes(Mode mode, Type type)
     bool isShapeEditVisible = false;
     bool isTaperEditVisible = false;
     bool isTaperEdit2Visible = false;
+    bool outside = enableOutside();
 
     if (mode == Mode::Dimension) {
         isLengthEditVisible = true;
@@ -771,6 +774,8 @@ void TaskExtrudeParameters::setCheckboxes(Mode mode, Type type)
     }
 
     ui->upToShapeList->setVisible(isShapeEditVisible);
+    ui->checkBoxOutside->setEnabled(outside);
+    ui->checkBoxOutside->setVisible(outside);
 }
 
 void TaskExtrudeParameters::onDirectionCBChanged(int num)

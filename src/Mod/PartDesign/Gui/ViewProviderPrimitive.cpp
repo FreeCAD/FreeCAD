@@ -117,10 +117,10 @@ QIcon ViewProviderPrimitive::getIcon() const {
 
     QString str = QStringLiteral("PartDesign_");
     auto* prim = getObject<PartDesign::FeaturePrimitive>();
-    if(prim->getAddSubType() == PartDesign::FeatureAddSub::Additive)
+    if(prim->isAdditive())
         str += QStringLiteral("Additive");
     else
-        str += QStringLiteral("Subtractive");
+        str += QString::fromLatin1("Subtractive");
 
     switch(prim->getPrimitiveType()) {
     case PartDesign::FeaturePrimitive::Box:
