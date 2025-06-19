@@ -3226,20 +3226,22 @@ void ViewProviderSketch::UpdateSolverInformation()
     bool hasRedundancies = getSketchObject()->getLastHasRedundancies();
     bool hasPartiallyRedundant = getSketchObject()->getLastHasPartialRedundancies();
     bool hasMalformed = getSketchObject()->getLastHasMalformedConstraints();
+    QString sketchLabel = QString::fromUtf8(getSketchObject()->Label.getValue());
+    QString prefix = sketchLabel + QStringLiteral(":\n");
 
     if (getSketchObject()->Geometry.getSize() == 0) {
-        signalSetUp(QStringLiteral("empty_sketch"), tr("Empty sketch"), QString(), QString());
+        signalSetUp(QStringLiteral("empty_sketch"), prefix + tr("Empty sketch"), QString(), QString());
     }
     else if (dofs < 0 || hasConflicts) {// over-constrained sketch
         signalSetUp(
             QStringLiteral("conflicting_constraints"),
-            tr("Over-constrained:") + QLatin1String(" "),
+            prefix + tr("Over-constrained:") + QLatin1String(" "),
             QStringLiteral("#conflicting"),
             QStringLiteral("(%1)").arg(intListHelper(getSketchObject()->getLastConflicting())));
     }
     else if (hasMalformed) {// malformed constraints
         signalSetUp(QStringLiteral("malformed_constraints"),
-                    tr("Malformed constraints:") + QLatin1String(" "),
+                    prefix + tr("Malformed constraints:") + QLatin1String(" "),
                     QStringLiteral("#malformed"),
                     QStringLiteral("(%1)").arg(
                         intListHelper(getSketchObject()->getLastMalformedConstraints())));
@@ -3247,32 +3249,32 @@ void ViewProviderSketch::UpdateSolverInformation()
     else if (hasRedundancies) {
         signalSetUp(
             QStringLiteral("redundant_constraints"),
-            tr("Redundant constraints:") + QLatin1String(" "),
+            prefix + tr("Redundant constraints:") + QLatin1String(" "),
             QStringLiteral("#redundant"),
             QStringLiteral("(%1)").arg(intListHelper(getSketchObject()->getLastRedundant())));
     }
     else if (hasPartiallyRedundant) {
         signalSetUp(QStringLiteral("partially_redundant_constraints"),
-                    tr("Partially redundant:") + QLatin1String(" "),
+                    prefix + tr("Partially redundant:") + QLatin1String(" "),
                     QStringLiteral("#partiallyredundant"),
                     QStringLiteral("(%1)").arg(
                         intListHelper(getSketchObject()->getLastPartiallyRedundant())));
     }
     else if (getSketchObject()->getLastSolverStatus() != 0) {
         signalSetUp(QStringLiteral("solver_failed"),
-                    tr("Solver failed to converge"),
+                    prefix + tr("Solver failed to converge"),
                     QStringLiteral(""),
                     QStringLiteral(""));
     }
     else if (dofs > 0) {
         signalSetUp(QStringLiteral("under_constrained"),
-                    tr("Under-constrained:") + QLatin1String(" "),
+                    prefix + tr("Under-constrained:") + QLatin1String(" "),
                     QStringLiteral("#dofs"),
                     tr("%n DoF(s)", "", dofs));
     }
     else {
         signalSetUp(
-            QStringLiteral("fully_constrained"), tr("Fully constrained"), QString(), QString());
+            QStringLiteral("fully_constrained"), prefix + tr("Fully constrained"), QString(), QString());
     }
 }
 
