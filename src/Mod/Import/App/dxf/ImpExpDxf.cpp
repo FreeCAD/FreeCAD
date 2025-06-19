@@ -431,6 +431,7 @@ void ImpExpDxfRead::ComposeParametricBlock(const std::string& blockName,
                 auto geomFeature = document->addObject<Part::Feature>(
                     document->getStandardObjectLabel(primitive_base_label.c_str(), 3).c_str());
 
+                IncrementCreatedObjectCount();
                 geomFeature->Shape.setValue(shape);
                 geomFeature->Visibility.setValue(false);
 
