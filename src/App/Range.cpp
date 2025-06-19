@@ -26,11 +26,11 @@
 #include <cassert>
 #include <sstream>
 #include <string>
+#include <string_view>
 #include <cmath>
 #include <regex>
 #endif
 
-#include <string_view>
 #include <Base/Exception.h>
 #include "Range.h"
 
