@@ -103,6 +103,7 @@ void DlgSettingsDocumentImp::saveSettings()
     ui->prefAutoSaveEnabled->onSave();
     ui->prefAutoSaveTimeout->onSave();
     ui->prefCanAbortRecompute->onSave();
+    ui->prefOneExportPerDoc->onSave();
 
     int timeout = ui->prefAutoSaveTimeout->value();
     if (!ui->prefAutoSaveEnabled->isChecked())
@@ -137,6 +138,7 @@ void DlgSettingsDocumentImp::loadSettings()
     ui->prefAutoSaveEnabled->onRestore();
     ui->prefAutoSaveTimeout->onRestore();
     ui->prefCanAbortRecompute->onRestore();
+    ui->prefOneExportPerDoc->onRestore();
 }
 
 /**

@@ -37,6 +37,7 @@
 #include <Base/Observer.h>
 #include <Base/Parameter.h>
 #include <Base/ProgressIndicator.h>
+#include "ExportInfo.h"
 
 // forward declarations
 using PyObject = struct _object;
@@ -398,6 +399,8 @@ public:
     std::map<std::string, std::string> getExportFilters(const char* Type) const;
     /// Return a list of all export filters.
     std::map<std::string, std::string> getExportFilters() const;
+    ExportInfo exportInfo() const;
+    void setExportInfo(const ExportInfo& info);
     //@}
 
     /** @name Init, Destruct an Access methods */
@@ -665,6 +668,8 @@ private:
     int _activeTransactionID{0};
     int _activeTransactionGuard{0};
     bool _activeTransactionTmpName{false};
+
+    ExportInfo _exportInfo {};
 
     Base::ProgressIndicator _progressIndicator;
 
