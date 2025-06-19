@@ -724,7 +724,7 @@ ConstraintFilterList::ConstraintFilterList(QWidget* parent)
     associatedFilterIndex = normalFilterCount + 1;
 
     // default filters are all except for special filters
-    int defaultFilter = 0; 
+    int defaultFilter = 0;
     for (int i = 0; i < normalFilterCount; i++) {
         defaultFilter |= 1 << i;
     }
