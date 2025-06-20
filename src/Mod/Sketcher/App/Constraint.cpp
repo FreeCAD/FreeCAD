@@ -44,21 +44,6 @@ using namespace Base;
 TYPESYSTEM_SOURCE(Sketcher::Constraint, Base::Persistence)
 
 Constraint::Constraint()
-    : Value(0.0)
-    , Type(None)
-    , AlignmentType(Undef)
-    , First(GeoEnum::GeoUndef)
-    , FirstPos(PointPos::none)
-    , Second(GeoEnum::GeoUndef)
-    , SecondPos(PointPos::none)
-    , Third(GeoEnum::GeoUndef)
-    , ThirdPos(PointPos::none)
-    , LabelDistance(10.f)
-    , LabelPosition(0.f)
-    , isDriving(true)
-    , InternalAlignmentIndex(-1)
-    , isInVirtualSpace(false)
-    , isActive(true)
 {
     // Initialize a random number generator, to avoid Valgrind false positives.
     // The random number generator is not threadsafe so we guard it.  See
