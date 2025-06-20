@@ -22,6 +22,7 @@
 
 from PathScripts import PathUtils
 from PySide.QtCore import QT_TRANSLATE_NOOP
+import copy
 import FreeCAD
 import Path
 import Path.Dressup.Utils as PathDressup
@@ -45,6 +46,117 @@ if False:
     Path.Log.trackModule(Path.Log.thisModule())
 else:
     Path.Log.setLevel(Path.Log.Level.INFO, Path.Log.thisModule())
+
+
+class AnnotatedGCode:
+    def __init__(self, command, start_point):
+        self.start_point = start_point
+        self.command = command
+        self.end_point = (
+            command.Parameters.get("X", start_point[0]),
+            command.Parameters.get("Y", start_point[1]),
+            command.Parameters.get("Z", start_point[2]),
+        )
+        self.is_line = command.Name in Path.Geom.CmdMoveStraight
+        self.is_arc = command.Name in Path.Geom.CmdMoveArc
+        self.xy_length = None
+        if self.is_line:
+            self.xy_length = (
+                (start_point[0] - self.end_point[0]) ** 2
+                + (start_point[1] - self.end_point[1]) ** 2
+            ) ** 0.5
+        elif self.is_arc:
+            self.center_xy = (
+                start_point[0] + command.Parameters.get("I", 0),
+                start_point[1] + command.Parameters.get("J", 0),
+            )
+            self.start_angle = math.atan2(
+                start_point[1] - self.center_xy[1],
+                start_point[0] - self.center_xy[0],
+            )
+            self.end_angle = math.atan2(
+                self.end_point[1] - self.center_xy[1],
+                self.end_point[0] - self.center_xy[0],
+            )
+            if self.command.Name in Path.Geom.CmdMoveCCW and self.end_angle < self.start_angle:
+                self.end_angle += 2 * math.pi
+            if self.command.Name in Path.Geom.CmdMoveCW and self.end_angle > self.start_angle:
+                self.end_angle -= 2 * math.pi
+            self.radius = (
+                (start_point[0] - self.center_xy[0]) ** 2
+                + (start_point[1] - self.center_xy[1]) ** 2
+            ) ** 0.5
+            self.xy_length = self.radius * abs(self.end_angle - self.start_angle)
+
+    """Makes a copy of this annotated gcode at the given z height"""
+
+    def clone(self, z_start=None, z_end=None, reverse=False):
+        z_start = z_start if z_start is not None else self.start_point[2]
+        z_end = z_end if z_end is not None else self.end_point[2]
+
+        other = copy.copy(self)
+        otherParams = copy.copy(self.command.Parameters)
+        otherCommandName = self.command.Name
+        other.start_point = (self.start_point[0], self.start_point[1], z_start)
+        other.end_point = (self.end_point[0], self.end_point[1], z_end)
+        otherParams.update({"Z": z_end})
+        if reverse:
+            other.start_point, other.end_point = other.end_point, other.start_point
+            otherParams.update(
+                {"X": other.end_point[0], "Y": other.end_point[1], "Z": other.end_point[2]}
+            )
+            if other.is_arc:
+                other.start_angle, other.end_angle = other.end_angle, other.start_angle
+                otherCommandName = (
+                    Path.Geom.CmdMoveCW[0]
+                    if self.command.Name in Path.Geom.CmdMoveCCW
+                    else Path.Geom.CmdMoveCCW[0]
+                )
+                otherParams.update(
+                    {
+                        "I": other.center_xy[0] - other.start_point[0],
+                        "J": other.center_xy[1] - other.start_point[1],
+                    }
+                )
+        other.command = Path.Command(otherCommandName, otherParams)
+        return other
+
+    """Splits the edge into two parts, the first split_length (if less than xy_length) long. Only supported for lines and arcs (no rapids)"""
+
+    def split(self, split_length):
+        split_length = min(split_length, self.xy_length)
+        p = split_length / self.xy_length
+        firstParams = copy.copy(self.command.Parameters)
+        secondParams = copy.copy(self.command.Parameters)
+        split_point = None
+        if self.is_line:
+            split_point = (
+                self.start_point[0] * (1 - p) + self.end_point[0] * p,
+                self.start_point[1] * (1 - p) + self.end_point[1] * p,
+                self.start_point[2] * (1 - p) + self.end_point[2] * p,
+            )
+        elif self.is_arc:
+            angle = self.start_angle * (1 - p) + self.end_angle * p
+            split_point = (
+                self.center_xy[0] + self.radius * math.cos(angle),
+                self.center_xy[1] + self.radius * math.sin(angle),
+                self.start_point[2] * (1 - p) + self.end_point[2] * p,
+            )
+            secondParams.update(
+                {
+                    "I": self.center_xy[0] - split_point[0],
+                    "J": self.center_xy[1] - split_point[1],
+                }
+            )
+        else:
+            raise Exception("Invalid type, can only split (non-rapid) lines and arcs")
+
+        firstParams.update({"X": split_point[0], "Y": split_point[1], "Z": split_point[2]})
+        first_command = Path.Command(self.command.Name, firstParams)
+        second_command = Path.Command(self.command.Name, secondParams)
+        return AnnotatedGCode(first_command, self.start_point), AnnotatedGCode(
+            second_command, split_point
+        )
 
 
 class ObjectDressup:
@@ -222,9 +334,16 @@ class ObjectDressup:
 
         self.angle = obj.Angle
         self.method = obj.Method
-        self.wire, self.rapids, self.rapid_indexes = Path.Geom.wireForPath(
-            PathUtils.getPathWithPlacement(obj.Base)
-        )
+        positioned_path = PathUtils.getPathWithPlacement(obj.Base)
+        cmds = positioned_path.Commands if hasattr(positioned_path, "Commands") else []
+        self.edges = []
+        start_point = (0, 0, 0)
+        for cmd in cmds:
+            annotated = AnnotatedGCode(cmd, start_point)
+            self.edges.append(annotated)
+            start_point = annotated.end_point
+        # TODO combine all ramp methods? Or else rewrite the others
+        # TODO rewrite helix
         if self.method in ["RampMethod1", "RampMethod2", "RampMethod3"]:
             self.outedges = self.generateRamps()
         else:
@@ -232,26 +351,22 @@ class ObjectDressup:
         obj.Path = self.createCommands(obj, self.outedges)
 
     def generateRamps(self, allowBounce=True):
-        edges = self.wire.Edges
+        edges = self.edges
         outedges = []
         for edgei, edge in enumerate(edges):
-            israpid = edgei in self.rapid_indexes
-            if not israpid:
-                bb = edge.BoundBox
-                p0 = edge.Vertexes[0].Point
-                p1 = edge.Vertexes[1].Point
+            if edge.is_line or edge.is_arc:
                 rampangle = self.angle
-                if bb.XLength < 1e-6 and bb.YLength < 1e-6 and bb.ZLength > 0 and p0.z > p1.z:
-
+                # check for plunge
+                if edge.xy_length < 1e-6 and edge.end_point[2] < edge.start_point[2]:
                     # check if above ignoreAbove parameter - do not generate ramp if it is
-                    newEdge, cont = self.checkIgnoreAbove(edge)
-                    if newEdge is not None:
-                        outedges.append((newEdge, israpid))
-                        p0.z = self.ignoreAbove
-                    if cont:
+                    orig_edge = edge
+                    noramp_edge, edge = self.processIgnoreAbove(edge)
+                    if noramp_edge is not None:
+                        outedges.append(noramp_edge)
+                    if edge is None:
                         continue
 
-                    plungelen = abs(p0.z - p1.z)
+                    plungelen = abs(edge.start_point[2] - edge.end_point[2])
                     projectionlen = plungelen * math.tan(
                         math.radians(rampangle)
                     )  # length of the forthcoming ramp projected to XY plane
@@ -269,35 +384,32 @@ class ObjectDressup:
                     coveredlen = 0
                     rampedges = []
                     i = edgei + 1
-                    while not covered:
+                    while not covered and i < len(edges):
                         candidate = edges[i]
-                        cp0 = candidate.Vertexes[0].Point
-                        cp1 = candidate.Vertexes[1].Point
-                        if abs(cp0.z - cp1.z) > 1e-6:
-                            # this edge is not parallel to XY plane, not qualified for ramping.
+                        if abs(candidate.start_point[2] - candidate.end_point[2]) > 1e-6 or (
+                            not candidate.is_line and not candidate.is_arc
+                        ):
+                            # this edge is not an edge/arc in the XY plane; not qualified for ramping
                             break
                         # Path.Log.debug("Next edge length {}".format(candidate.Length))
                         rampedges.append(candidate)
-                        coveredlen = coveredlen + candidate.Length
+                        coveredlen = coveredlen + candidate.xy_length
 
                         if coveredlen > projectionlen:
                             covered = True
                         i = i + 1
-                        if i >= len(edges):
-                            break
                     if len(rampedges) == 0:
                         Path.Log.debug("No suitable edges for ramping, plunge will remain as such")
-                        outedges.append((edge, israpid))
+                        outedges.append(edge)
                     else:
                         if not covered:
                             if (not allowBounce) or self.method == "RampMethod2":
-                                l = 0
-                                for redge in rampedges:
-                                    l = l + redge.Length
                                 if self.method == "RampMethod3":
-                                    rampangle = math.degrees(math.atan(l / (plungelen / 2)))
+                                    rampangle = math.degrees(
+                                        math.atan(coveredlen / (plungelen / 2))
+                                    )
                                 else:
-                                    rampangle = math.degrees(math.atan(l / plungelen))
+                                    rampangle = math.degrees(math.atan(coveredlen / plungelen))
                                 Path.Log.warning(
                                     "Cannot cover with desired angle, tightening angle to: {}".format(
                                         rampangle
@@ -307,11 +419,15 @@ class ObjectDressup:
                         # Path.Log.debug("Doing ramp to edges: {}".format(rampedges))
                         if self.method == "RampMethod1":
                             outedges.extend(
-                                self.createRampMethod1(rampedges, p0, projectionlen, rampangle)
+                                self.createRampMethod1(
+                                    rampedges, edge.start_point, projectionlen, rampangle
+                                )
                             )
                         elif self.method == "RampMethod2":
                             outedges.extend(
-                                self.createRampMethod2(rampedges, p0, projectionlen, rampangle)
+                                self.createRampMethod2(
+                                    rampedges, edge.start_point, projectionlen, rampangle
+                                )
                             )
                         else:
                             # if the ramp cannot be covered with Method3, revert to Method1
@@ -320,16 +436,20 @@ class ObjectDressup:
                             if (not covered) and allowBounce:
                                 projectionlen = projectionlen * 2
                                 outedges.extend(
-                                    self.createRampMethod1(rampedges, p0, projectionlen, rampangle)
+                                    self.createRampMethod1(
+                                        rampedges, edge.start_point, projectionlen, rampangle
+                                    )
                                 )
                             else:
                                 outedges.extend(
-                                    self.createRampMethod3(rampedges, p0, projectionlen, rampangle)
+                                    self.createRampMethod3(
+                                        rampedges, edge.start_point, projectionlen, rampangle
+                                    )
                                 )
                 else:
-                    outedges.append((edge, israpid))
+                    outedges.append(edge)
             else:
-                outedges.append((edge, israpid))
+                outedges.append(edge)
         return outedges
 
     def generateHelix(self):
@@ -397,6 +517,31 @@ class ObjectDressup:
                 outedges.append((edge, israpid))
             i = i + 1
         return outedges
+
+    """
+    Edges, or parts of edges, above self.ignoreAbove should not be ramped.
+    This method is a helper for splitting edges into a portion that should be
+    ramped and a portion that should not be ramped.
+
+    Returns (noramp_edge, ramp_edge). Either of these variables may be None
+    """
+
+    def processIgnoreAbove(self, edge):
+        if not self.ignoreAboveEnabled:
+            return None, edge
+        z0, z1 = edge.start_point[2], edge.end_point[2]
+        if z0 > self.ignoreAbove.Value:
+            if z1 > self.ignoreAbove.Value or Path.Geom.isRoughly(z1, self.ignoreAbove.Value):
+                # Entire plunge is above ignoreAbove
+                return edge, None
+            elif not Path.Geom.isRoughly(z0, self.ignoreAbove.Value):
+                # Split the edge into regions above and below
+                return (
+                    edge.clone(z0, self.ignoreAbove.Value),
+                    edge.clone(self.ignoreAbove.Value, z1),
+                )
+        # Entire plunge is below ignoreAbove
+        return None, edge
 
     def checkIgnoreAbove(self, edge):
         if self.ignoreAboveEnabled:
@@ -498,76 +643,46 @@ class ObjectDressup:
         This method causes many unnecessary moves with tool down.
         """
         outedges = []
+        reversed_edges = [redge.clone(reverse=True) for redge in rampedges]
         rampremaining = projectionlen
-        curPoint = p0  # start from the upper point of plunge
-        done = False
+        z = p0[2]  # start from the upper point of plunge
         goingForward = True
-        i = 0
-        while not done:
-            for i, redge in enumerate(rampedges):
-                if redge.Length >= rampremaining:
-                    # will reach end of ramp within this edge, needs to be split
-                    p1 = self.getSplitPoint(redge, rampremaining)
-                    splitEdge = Path.Geom.splitEdgeAt(redge, p1)
-                    # Path.Log.debug("Ramp remaining: {}".format(rampremaining))
-                    # Path.Log.debug(
-                    #    "Got split edge (index: {}) (total len: {}) with lengths: {}, {}".format(
-                    #        i, redge.Length, splitEdge[0].Length, splitEdge[1].Length
-                    #    )
-                    # )
-                    # ramp ends to the last point of first edge
-                    p1 = splitEdge[0].valueAt(splitEdge[0].LastParameter)
-                    outedges.append(self.createRampEdge(splitEdge[0], curPoint, p1))
-                    # now we have reached the end of the ramp. Go back to plunge position with constant Z
-                    # start that by going to the beginning of this splitEdge
-                    if goingForward:
-                        outedges.append(
-                            self.createRampEdge(
-                                splitEdge[0], p1, redge.valueAt(redge.FirstParameter)
-                            )
-                        )
-                    else:
-                        # if we were reversing, we continue to the same direction as the ramp
-                        outedges.append(
-                            self.createRampEdge(
-                                splitEdge[0], p1, redge.valueAt(redge.LastParameter)
-                            )
-                        )
-                    done = True
-                    break
-                else:
-                    deltaZ = redge.Length / math.tan(math.radians(rampangle))
-                    newPoint = FreeCAD.Base.Vector(
-                        redge.valueAt(redge.LastParameter).x,
-                        redge.valueAt(redge.LastParameter).y,
-                        curPoint.z - deltaZ,
-                    )
-                    outedges.append(self.createRampEdge(redge, curPoint, newPoint))
-                    curPoint = newPoint
-                    rampremaining = rampremaining - redge.Length
-
-            if not done:
-                # we did not reach the end of the ramp going this direction, lets reverse.
-                rampedges = self.getreversed(rampedges)
-                # Path.Log.debug("Reversing")
+        i = 0  # current position = start of this edge. May be len(rampremaining) if going backwards
+        while rampremaining > 0:
+            redge = rampedges[i] if goingForward else reversed_edges[i - 1]
+            # for i, redge in enumerate(rampedges):
+            if redge.xy_length > rampremaining:
+                # will reach end of ramp within this edge, needs to be split
+                split_first, split_remaining = redge.split(rampremaining)
+                outedges.append(split_first.clone(z_start=z))
+                # now we have reached the end of the ramp. Go back to plunge position with constant Z
+                # start that by going to the beginning of this splitEdge
                 if goingForward:
-                    goingForward = False
+                    outedges.append(split_first.clone(reverse=True))
                 else:
+                    # if we were reversing, we continue to the same direction as the ramp
+                    outedges.append(split_remaining)
+                    i = i - 1
+                rampremaining = 0
+                break
+            else:
+                deltaZ = redge.xy_length / math.tan(math.radians(rampangle))
+                new_z = z - deltaZ
+                outedges.append(redge.clone(z, new_z))
+                z = new_z
+                rampremaining = rampremaining - redge.xy_length
+                i = i + 1 if goingForward else i - 1
+                if i == 0:
                     goingForward = True
+                if i == len(rampedges):
+                    goingForward = False
+
         # now we need to return to original position.
-        if goingForward:
-            # if the ramp was going forward, the return edges are the edges we already covered in ramping,
-            # except the last one, which was already covered inside for loop. Direction needs to be reversed also
-            returnedges = self.getreversed(rampedges[:i])
-        else:
-            # if the ramp was already reversing, the edges needed for return are the ones
-            # which were not covered in ramp
-            returnedges = rampedges[(i + 1) :]
+        while i >= 1:
+            outedges.append(reversed_edges[i - 1])
+            i = i - 1
 
-        # add the return edges:
-        outedges.extend(returnedges)
-
-        return [(e, False) for e in outedges]
+        return outedges
 
     def createRampMethod3(self, rampedges, p0, projectionlen, rampangle):
         """
@@ -744,13 +859,7 @@ class ObjectDressup:
         return [(e, False) for e in outedges]
 
     def createCommands(self, obj, edges):
-        commands = []
-        for edgei, (edge, israpid) in enumerate(edges):
-            if israpid:
-                v = edge.valueAt(edge.LastParameter)
-                commands.append(Path.Command("G0", {"X": v.x, "Y": v.y, "Z": v.z}))
-            else:
-                commands.extend(Path.Geom.cmdsForEdge(edge))
+        commands = [edge.command for edge in edges]
 
         lastCmd = Path.Command("G0", {"X": 0.0, "Y": 0.0, "Z": 0.0})
 
