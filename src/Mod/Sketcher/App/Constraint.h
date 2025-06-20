@@ -166,7 +166,7 @@ private:
     Constraint(const Constraint&) = default;  // only for internal use
 
 private:
-    double Value;
+    double Value {0.0};
 
     // clang-format off
     constexpr static std::array<const char*, ConstraintType::NumConstraintTypes> type2str {
@@ -207,24 +207,25 @@ private:
                                     "ParabolaFocalAxis"}};
 
 public:
-    ConstraintType Type;
-    InternalAlignmentType AlignmentType;
+    ConstraintType Type {None};
+    InternalAlignmentType AlignmentType {Undef};
     std::string Name;
-    int First;
-    PointPos FirstPos;
-    int Second;
-    PointPos SecondPos;
-    int Third;
-    PointPos ThirdPos;
-    float LabelDistance;
-    float LabelPosition;
-    bool isDriving;
+    int First {GeoEnum::GeoUndef};
+    PointPos FirstPos {PointPos::none};
+    int Second {GeoEnum::GeoUndef};
+    PointPos SecondPos {PointPos::none};
+    int Third {GeoEnum::GeoUndef};
+    PointPos ThirdPos {PointPos::none};
+    float LabelDistance {10.F};
+    float LabelPosition {0.F};
+    bool isDriving {true};
     // Note: for InternalAlignment Type this index indexes equal internal geometry elements (e.g.
     // index of pole in a bspline). It is not a GeoId!!
-    int InternalAlignmentIndex;
-    bool isInVirtualSpace;
+    int InternalAlignmentIndex {-1};
+    bool isInVirtualSpace {false};
 
-    bool isActive;
+    bool isActive {true};
+
 
 protected:
     boost::uuids::uuid tag;
