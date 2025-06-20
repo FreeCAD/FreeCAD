@@ -460,7 +460,7 @@ int Document::setActiveTransaction(const std::string& name, bool tmpName, int ti
         return 0;
     }
     d->bookedTransaction = Transaction::getNewID();
-    std::cerr << "Created transaction " << name << "\n";
+    std::cerr << "Created transaction " << name <<" #"<<d->bookedTransaction<< "\n";
     GetApplication().setTransactionDescription(d->bookedTransaction, TransactionDescription {.initiator = this, .name = name, .tmp = tmpName});
     return d->bookedTransaction;
 }
@@ -478,6 +478,10 @@ void Document::unlockTransaction()
 bool Document::isTransactionLocked() const
 {
     return d->TransactionLock > 0;
+}
+bool Document::transacting() const
+{
+    return isPerformingTransaction() || d->committing;
 }
 
 void Document::_checkTransaction(DocumentObject* pcDelObj, const Property* What, int line)
@@ -579,6 +583,7 @@ bool Document::_commitTransaction(const bool notify)
         Base::FlagToggler<> flag(d->committing);
         Application::TransactionSignaller signaller(false, true);
         const int id = d->activeUndoTransaction->getID();
+        std::cerr<<"Close transaction #"<<id<<"\n";
         mUndoTransactions.push_back(d->activeUndoTransaction);
         d->activeUndoTransaction = nullptr;
 
