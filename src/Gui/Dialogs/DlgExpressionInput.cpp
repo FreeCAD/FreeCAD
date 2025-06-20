@@ -771,37 +771,4 @@ void DlgExpressionInput::updateVarSetInfo(bool checkExpr)
     }
 }
 
-void DlgExpressionInput::adjustDialogPos()
-{
-    if (this->adjustingPosition)
-        return;
-    auto parent = parentWidget();
-    if (!parent)
-        return;
-    Base::StateLocker lock(adjustingPosition);
-
-    QPoint dialogPos = this->mapToGlobal(QPoint(0,0));
-
-    const MainWindow* mw = getMainWindow();
-    const QRect mainWindowRect = QRect(mw->mapToGlobal(QPoint(0, 0)), mw->size());
-    const QRect parentRect = QRect(parent->mapToGlobal(QPoint(0, 0)), parent->size());
-    const QRect dialogRect = QRect(dialogPos, this->frameGeometry().size());
-    const int margin = 5;
-    if (parentRect.intersects(mainWindowRect) && dialogRect.intersects(mainWindowRect) && (!mainWindowRect.contains(dialogRect.topLeft()) || !mainWindowRect.contains(dialogRect.bottomRight()))) {
-        if (dialogRect.right() > mainWindowRect.right()) {
-            dialogPos.setX(mainWindowRect.right() - dialogRect.width() - margin);
-        }
-        if (dialogRect.left() < mainWindowRect.left()) {
-            dialogPos.setX(mainWindowRect.left() + margin);
-        }
-        if (dialogRect.top() < mainWindowRect.top()) {
-            dialogPos.setY(mainWindowRect.top() + margin);
-        }
-        if (dialogRect.bottom() > mainWindowRect.bottom()) {
-            dialogPos.setY(mainWindowRect.bottom() - dialogRect.height() - margin);
-        }
-    }
-     this->move(dialogPos);
-}
-
 #include "moc_DlgExpressionInput.cpp"

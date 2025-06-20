@@ -55,6 +55,7 @@
 #include "QuantitySpinBox_p.h"
 #include "Tools.h"
 #include "Dialogs/ui_DlgTreeWidget.h"
+#include "MainWindow.h"
 
 using namespace Gui;
 using namespace App;
@@ -1606,7 +1607,7 @@ void ExpLineEdit::openFormulaDialog()
     QPoint pos = mapToGlobal(QPoint(0,0));
     box->move(pos-box->expressionPosition());
     box->setExpressionInputSize(width(), height());
-    box->adjustDialogPos();
+    Gui::adjustDialogPosition(box);
 }
 
 void ExpLineEdit::finishFormulaDialog()
@@ -1664,5 +1665,43 @@ bool ButtonGroup::exclusive() const
     return _exclusive;
 }
 
+namespace Gui {
+
+void adjustDialogPosition(QDialog* dialog) {
+    if (!dialog) {
+        return;
+    }
+    const MainWindow* mw = getMainWindow();
+    if (!mw) {
+        return;
+    }
+    dialog->adjustSize(); // needed for modal dialogs to ensure the size is correct
+    const auto mainWindowRect = QRect(mw->mapToGlobal(QPoint(0, 0)), mw->size());
+    const auto initialDialogPos = dialog->mapToGlobal(QPoint(0, 0));
+    const auto dialogRect = QRect(initialDialogPos, dialog->frameGeometry().size());
+    if (mainWindowRect.contains(dialogRect)) {
+        return;
+    }
+
+    QPoint adjustedDialogPos = initialDialogPos;
+    const int margin = 5;
+    if (dialogRect.intersects(mainWindowRect) && mainWindowRect.united(dialogRect) != mainWindowRect) {
+        if (dialogRect.right() > mainWindowRect.right()) {
+            adjustedDialogPos.setX(std::max(mainWindowRect.left() + margin, mainWindowRect.right() - dialogRect.width() - margin));
+        }
+        if (dialogRect.left() < mainWindowRect.left()) {
+            adjustedDialogPos.setX(mainWindowRect.left() + margin);
+        }
+        if (dialogRect.top() < mainWindowRect.top()) {
+            adjustedDialogPos.setY(mainWindowRect.top() + margin);
+        }
+        if (dialogRect.bottom() > mainWindowRect.bottom()) {
+            adjustedDialogPos.setY(mainWindowRect.bottom() - dialogRect.height() - margin);
+        }
+    }
+    dialog->move(adjustedDialogPos);
+}
+
+}
 
 #include "moc_Widgets.cpp"
