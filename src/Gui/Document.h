@@ -87,6 +87,7 @@ protected:
     void slotFinishRestoreDocument(const App::Document&);
     void slotUndoDocument(const App::Document&);
     void slotRedoDocument(const App::Document&);
+    void slotCommitTransaction(const App::Document&);
     void slotShowHidden(const App::Document&);
     void slotFinishImportObjects(const std::vector<App::DocumentObject*> &);
     void slotFinishRestoreObject(const App::DocumentObject &obj);
@@ -290,6 +291,12 @@ public:
     void undo(int iSteps);
     /// Will REDO one or more steps
     void redo(int iSteps) ;
+
+    /// Set the number of transactions away
+    /// we currently are from the saved state
+    /// if it is 0, it will call setIsModified(false);
+    void setAwayFromSaved(int away);
+
     /** Check if the document is performing undo/redo transaction
      *
      * Unlike App::Document::isPerformingTransaction(), Gui::Document will

@@ -92,6 +92,7 @@ struct DocumentP
     int        _iDocId;
     bool       _isClosing;
     bool       _isModified;
+    int        _awayFromSavedState; // How many transactions away are we from the saved state
     bool       _isTransacting;
     bool       _changeViewTouchDocument;
     bool                        _editWantsRestore;
@@ -138,6 +139,7 @@ struct DocumentP
     Connection connectFinishImportObjects;
     Connection connectUndoDocument;
     Connection connectRedoDocument;
+    Connection connectCommitTransaction;
     Connection connectRecomputed;
     Connection connectSkipRecompute;
     Connection connectTransactionAppend;
@@ -436,6 +438,7 @@ Document::Document(App::Document* pcDocument,Application * app)
     d->_iDocId = (++_iDocCount);
     d->_isClosing = false;
     d->_isModified = false;
+    d->_awayFromSavedState = 0;
     d->_isTransacting = false;
     d->_pcAppWnd = app;
     d->_pcDocument = pcDocument;
@@ -493,6 +496,8 @@ Document::Document(App::Document* pcDocument,Application * app)
         (std::bind(&Gui::Document::slotUndoDocument, this, sp::_1));
     d->connectRedoDocument = pcDocument->signalRedo.connect
         (std::bind(&Gui::Document::slotRedoDocument, this, sp::_1));
+    d->connectCommitTransaction = pcDocument->signalCommitTransaction.connect
+        (std::bind(&Gui::Document::slotCommitTransaction, this, sp::_1));
     d->connectRecomputed = pcDocument->signalRecomputed.connect
         (std::bind(&Gui::Document::slotRecomputed, this, sp::_1));
     d->connectSkipRecompute = pcDocument->signalSkipRecompute.connect
@@ -544,6 +549,7 @@ Document::~Document()
     d->connectFinishImportObjects.disconnect();
     d->connectUndoDocument.disconnect();
     d->connectRedoDocument.disconnect();
+    d->connectCommitTransaction.disconnect();
     d->connectRecomputed.disconnect();
     d->connectSkipRecompute.disconnect();
     d->connectTransactionAppend.disconnect();
@@ -556,15 +562,18 @@ Document::~Document()
     d->_isClosing = true;
     // calls Document::detachView() and alter the view list
     std::list<Gui::BaseView*> temp = d->baseViews;
-    for(auto & it : temp)
+    for(auto & it : temp) {
         it->deleteSelf();
+    }
 
     std::map<const App::DocumentObject*,ViewProviderDocumentObject*>::iterator jt;
-    for (jt = d->_ViewProviderMap.begin();jt != d->_ViewProviderMap.end(); ++jt)
+    for (jt = d->_ViewProviderMap.begin();jt != d->_ViewProviderMap.end(); ++jt) {
         delete jt->second;
+    }
     std::map<std::string,ViewProvider*>::iterator it2;
-    for (it2 = d->_ViewProviderMapAnnotation.begin();it2 != d->_ViewProviderMapAnnotation.end(); ++it2)
+    for (it2 = d->_ViewProviderMapAnnotation.begin();it2 != d->_ViewProviderMapAnnotation.end(); ++it2) {
         delete it2->second;
+    }
 
     // remove the reference from the object
     Base::PyGILStateLocker lock;
@@ -934,7 +943,6 @@ void Document::slotNewObject(const App::DocumentObject& Obj)
             }
         }
 
-        setModified(true);
         d->_ViewProviderMap[&Obj] = pcProvider;
         d->_CoinMap[pcProvider->getRoot()] = pcProvider;
         pcProvider->setStatus(Gui::ViewStatus::TouchDocument, d->_changeViewTouchDocument);
@@ -1081,12 +1089,6 @@ void Document::slotChangedObject(const App::DocumentObject& Obj, const App::Prop
             signalChangedObject(static_cast<ViewProviderDocumentObject&>(*viewProvider), Prop);
     }
 
-    // a property of an object has changed
-    if(!Prop.testStatus(App::Property::NoModify) && !isModified()) {
-        FC_LOG(Prop.getFullName() << " modified");
-        setModified(true);
-    }
-
     getMainWindow()->updateActions(true);
 }
 
@@ -1152,7 +1154,13 @@ void Document::slotRedoDocument(const App::Document& doc)
     signalRedoDocument(*this);
     getMainWindow()->updateActions();
 }
-
+void Document::slotCommitTransaction(const App::Document& doc)
+{
+    if (d->_pcDocument != &doc) {
+        return;
+    }
+    setAwayFromSaved(d->_awayFromSavedState + 1);
+}
 void Document::slotRecomputed(const App::Document& doc)
 {
     if (d->_pcDocument != &doc)
@@ -1191,10 +1199,6 @@ void Document::slotSkipRecompute(const App::Document& doc, const std::vector<App
 void Document::slotTouchedObject(const App::DocumentObject &Obj)
 {
     getMainWindow()->updateActions(true);
-    if(!isModified()) {
-        FC_LOG(Obj.getFullName() << " touched");
-        setModified(true);
-    }
 }
 
 // helper that guarantees signalBeforeRecompute call is executed in the GUI thread and
@@ -1445,8 +1449,9 @@ bool Document::save()
                 }
             }
 
-            if (!checkCanonicalPath(dmap))
+            if (!checkCanonicalPath(dmap)) {
                 return false;
+            }
 
             Gui::WaitCursor wc;
             // save all documents
@@ -1459,8 +1464,9 @@ bool Document::save()
 
                 Command::doCommand(Command::Doc,"App.getDocument(\"%s\").save()",doc->getName());
                 auto gdoc = Application::Instance->getDocument(doc);
-                if (gdoc)
-                    gdoc->setModified(false);
+                if (gdoc) {
+                    gdoc->setAwayFromSaved(0);
+                }
             }
         }
         catch (const Base::FileException& e) {
@@ -1508,7 +1514,7 @@ bool Document::saveAs()
                                            , DocName, escapedstr.c_str());
             // App::Document::saveAs() may modify the passed file name
             fi.setFile(QString::fromUtf8(d->_pcDocument->FileName.getValue()));
-            setModified(false);
+            setAwayFromSaved(0);
             getMainWindow()->appendRecentFile(fi.filePath());
         }
         catch (const Base::FileException& e) {
@@ -1572,7 +1578,7 @@ void Document::saveAll()
                 Command::doCommand(Command::Doc,"App.getDocument('%s').recompute()",doc->getName());
             }
             Command::doCommand(Command::Doc,"App.getDocument('%s').save()",doc->getName());
-            gdoc->setModified(false);
+            gdoc->setAwayFromSaved(0);
         }
         catch (const Base::Exception& e) {
             QMessageBox::critical(getMainWindow(),
@@ -1751,9 +1757,7 @@ void Document::RestoreDocFile(Base::Reader &reader)
     }
 
     reader.initLocalReader(localreader);
-
-    // reset modified flag
-    setModified(false);
+    setAwayFromSaved(0);
 }
 
 void Document::slotStartRestoreDocument(const App::Document& doc)
@@ -2667,6 +2671,7 @@ void Document::undo(int iSteps)
 
     for (int i=0;i<iSteps;i++) {
         getDocument()->undo();
+        setAwayFromSaved(d->_awayFromSavedState-1);
     }
     App::GetApplication().signalUndo();
 }
@@ -2681,6 +2686,7 @@ void Document::redo(int iSteps)
 
     for (int i=0;i<iSteps;i++) {
         getDocument()->redo();
+        setAwayFromSaved(d->_awayFromSavedState+1);
     }
     App::GetApplication().signalRedo();
 
@@ -2688,7 +2694,11 @@ void Document::redo(int iSteps)
         handleChildren3D(it);
     d->_redoViewProviders.clear();
 }
-
+void Document::setAwayFromSaved(int away)
+{
+    d->_awayFromSavedState = away;
+    setModified(d->_awayFromSavedState != 0);
+}
 PyObject* Document::getPyObject()
 {
     _pcDocPy->IncRef();
@@ -2832,7 +2842,6 @@ void Document::toggleInSceneGraph(ViewProvider *vp)
 void Document::slotChangePropertyEditor(const App::Document &doc, const App::Property &Prop) {
     if(getDocument() == &doc) {
         FC_LOG(Prop.getFullName() << " editor changed");
-        setModified(true);
         getMainWindow()->setUserSchema(doc.UnitSystem.getValue());
     }
 }
