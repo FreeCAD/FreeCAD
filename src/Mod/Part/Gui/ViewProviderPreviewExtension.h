@@ -43,6 +43,7 @@
 #include <Gui/ViewProviderExtension.h>
 #include <Gui/ViewProviderExtensionPython.h>
 #include <Mod/Part/App/TopoShape.h>
+#include <Mod/PartDesign/App/Feature.h>
 
 namespace PartGui {
 
@@ -92,8 +93,12 @@ public:
 protected:
     void extensionOnChanged(const App::Property* prop) override;
 
+    /// attaches preview to the scene graph
+    virtual void attachPreview();
+    /// updates preview
+    virtual void updatePreview();
     /// updates geometry of the preview shape
-    void updatePreviewShape();
+    void updatePreviewShape(Part::TopoShape shape, SoPreviewShape* preview);
 
     Gui::CoinPtr<SoSeparator> pcPreviewRoot;
     Gui::CoinPtr<SoPreviewShape> pcPreviewShape;
