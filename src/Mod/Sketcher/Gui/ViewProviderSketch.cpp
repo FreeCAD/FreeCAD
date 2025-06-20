@@ -3973,10 +3973,9 @@ qreal ViewProviderSketch::getDevicePixelRatio() const
 {
     if (auto activeView = qobject_cast<Gui::View3DInventor*>(this->getActiveView())) {
         auto glWidget = activeView->getViewer()->getGLWidget();
-        return glWidget->devicePixelRatio();
+        return glWidget->physicalDpiX() / glWidget->logicalDpiX();
     }
-
-    return QApplication::primaryScreen()->devicePixelRatio();
+    return QApplication::primaryScreen()->physicalDotsPerInch() / QApplication::primaryScreen()->logicalDotsPerInch();
 }
 
 int ViewProviderSketch::getApplicationLogicalDPIX() const
