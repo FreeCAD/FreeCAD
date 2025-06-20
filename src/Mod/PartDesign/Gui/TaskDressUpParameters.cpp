@@ -86,9 +86,10 @@ void TaskDressUpParameters::setupTransaction()
     }
 
     // open a transaction if none is active
+    // TODO-theo-vt where is this transaction commited?
     std::string n("Edit ");
     n += DressUpView->getObject()->Label.getValue();
-    transactionID = DressUpView->getObject()->getDocument()->setActiveTransaction(n);
+    transactionID = DressUpView->getObject()->getDocument()->openTransaction(n.c_str());
 }
 
 void TaskDressUpParameters::referenceSelected(const Gui::SelectionChanges& msg, QListWidget* widget)
