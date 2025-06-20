@@ -5090,3 +5090,78 @@ def _get_aci_color(obj):
     Called from C++.
     """
     return getACI(obj)
+
+# ... (at the end of the file, with other helpers)
+
+def _get_text_data(obj):
+    """
+    Internal helper to extract all necessary data for a DXF TEXT entity.
+    Called from C++. Returns a tuple of data.
+    """
+    if not hasattr(obj, "ViewObject"):
+        return None
+
+    # For multi-line text, we export each line as a separate TEXT entity
+    # This tuple structure will be handled line-by-line in C++
+    text_data_list = []
+    height = float(obj.ViewObject.FontSize)
+    justify_map = {"Left": 0, "Center": 1, "Right": 2}
+    justification = justify_map.get(obj.ViewObject.Justification, 0)
+
+    # Base position and rotation
+    placement = obj.Placement
+    rotation = placement.Rotation.Angle * 180 / math.pi
+    
+    # Handle multi-line text by adjusting position for each line
+    for i, text_line in enumerate(obj.Text):
+        # Y-offset for subsequent lines. DXF text origin is bottom-left.
+        # FreeCAD's text position is top-left, so we adjust.
+        # A line height of 1.2 * font size is a reasonable approximation.
+        y_offset = -height * 1.2 * i
+        
+        # Create a vector for the offset and rotate it
+        offset_vec = FreeCAD.Vector(0, y_offset, 0)
+        rotated_offset = placement.Rotation.multVec(offset_vec)
+        
+        pos = placement.Base + rotated_offset
+
+        # The second alignment point is needed for certain justifications
+        # For simplicity, we can often reuse the insertion point
+        p1 = (pos.x, pos.y, pos.z)
+        p2 = p1 # Simplification for now
+
+        text_data_list.append((text_line, p1, p2, height * 0.8, justification, rotation))
+
+    return text_data_list
+
+
+def _get_dimension_data(obj):
+    """
+    Internal helper to extract data for a DXF DIMENSION entity.
+    Called from C++. Returns a tuple of data.
+    """
+    # Using properties directly
+    p1 = obj.Start
+    p2 = obj.End
+    dim_line_pt = obj.Dimline
+
+    # The text is implicitly calculated by the DIMENSION entity in DXF,
+    # but we can provide an override. "<>" is the code for the measurement.
+    dim_text = "<>"
+
+    # Determine dimension type (simplified)
+    # 0=Aligned, 1=Horizontal, 2=Vertical in our C++ writer
+    # A more robust check would analyze the vectors, but this is a start.
+    if abs(p1.x - p2.x) < 1e-7:
+        dim_type = 2 # Vertical
+    elif abs(p1.y - p2.y) < 1e-7:
+        dim_type = 1 # Horizontal
+    else:
+        dim_type = 0 # Aligned
+
+    # Package the data to be returned to C++
+    text_mid_point = (dim_line_pt.x, dim_line_pt.y, dim_line_pt.z)
+    p1_tuple = (p1.x, p1.y, p1.z)
+    p2_tuple = (p2.x, p2.y, p2.z)
+
+    return (text_mid_point, dim_line_pt, p1_tuple, p2_tuple, dim_text, dim_type)

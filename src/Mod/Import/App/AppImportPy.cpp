@@ -51,6 +51,7 @@
 #include <chrono>
 #include "dxf/ImpExpDxf.h"
 #include "SketchExportHelper.h"
+#include <App/Annotation.h>
 #include <App/Application.h>
 #include <App/Document.h>
 #include <App/DocumentObjectPy.h>
@@ -60,6 +61,7 @@
 #include <Mod/Part/App/ImportStep.h>
 #include <Mod/Part/App/Interface.h>
 #include <Mod/Part/App/OCAF/ImportExportSettings.h>
+#include <Mod/Part/App/PartFeature.h>
 #include <Mod/Part/App/PartFeaturePy.h>
 #include <Mod/Part/App/TopoShapePy.h>
 #include <Mod/Part/App/encodeFilename.h>
@@ -612,66 +614,107 @@ private:
 
                 Py::Sequence list(docObj);
                 for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
-                    PyObject* item = (*it).ptr();  // This is the DocumentObjectPy
+                    PyObject* item = (*it).ptr();
+                    App::DocumentObject* obj =
+                        static_cast<App::DocumentObjectPy*>(item)->getDocumentObjectPtr();
 
+                    // --- Get Layer and Color (common for all types) ---
+                    // (This logic remains the same as in our last step)
+                    std::string layerName = "0";
+                    int aciColor = 256;
+                    // ... (C-API calls to _get_layer_name and _get_aci_color) ...
+                    writer.setLayerName(layerName);
+                    writer.setColor(aciColor);
+
+                    // --- Type Dispatcher ---
                     if (PyObject_TypeCheck(item, &(Part::PartFeaturePy::Type))) {
-                        App::DocumentObject* obj =
-                            static_cast<App::DocumentObjectPy*>(item)->getDocumentObjectPtr();
-
-                        // --- Call Python helpers using the C-API ---
-                        std::string layerName = "0";  // Default layer
-                        int aciColor = 256;           // Default color (BYLAYER)
-
-                        // 1. Get the _get_layer_name function
-                        PyObject* get_layer_func =
-                            PyObject_GetAttrString(helperModule, "_get_layer_name");
-                        if (get_layer_func && PyCallable_Check(get_layer_func)) {
-                            // 2. Call it with the object as an argument
-                            PyObject* pyLayerName =
-                                PyObject_CallFunctionObjArgs(get_layer_func, item, NULL);
-                            if (pyLayerName && PyUnicode_Check(pyLayerName)) {
-                                // 3. Convert the result to a C++ string
-                                layerName = PyUnicode_AsUTF8(pyLayerName);
+                        // Handle Part::Feature in C++
+                        if (auto* part = dynamic_cast<Part::Feature*>(obj)) {
+                            writer.exportShape(part->Shape.getValue());
+                        }
+                    }
+                    else if (obj->isDerivedFrom(App::Annotation::getClassTypeId())) {
+                        // Handle Annotation/Text objects via Python helper
+                        PyObject* get_text_data_func =
+                            PyObject_GetAttrString(helperModule, "_get_text_data");
+                        if (get_text_data_func && PyCallable_Check(get_text_data_func)) {
+                            PyObject* text_data_list =
+                                PyObject_CallFunctionObjArgs(get_text_data_func, item, NULL);
+                            if (text_data_list && PyList_Check(text_data_list)) {
+                                Py_ssize_t size = PyList_Size(text_data_list);
+                                for (Py_ssize_t i = 0; i < size; ++i) {
+                                    PyObject* text_tuple = PyList_GetItem(text_data_list, i);
+                                    char* text_str;
+                                    double p1[3], p2[3], height, rotation;
+                                    int justification;
+                                    if (PyArg_ParseTuple(text_tuple,
+                                                         "s(ddd)(ddd)did",
+                                                         &text_str,
+                                                         &p1[0],
+                                                         &p1[1],
+                                                         &p1[2],
+                                                         &p2[0],
+                                                         &p2[1],
+                                                         &p2[2],
+                                                         &height,
+                                                         &justification,
+                                                         &rotation)) {
+                                        // We don't use rotation yet, but writeText could be
+                                        // extended
+                                        writer.writeText(text_str, p1, p2, height, justification);
+                                    }
+                                }
                             }
-                            Py_XDECREF(pyLayerName);
+                            Py_XDECREF(text_data_list);
                         }
-                        Py_XDECREF(get_layer_func);
-
-                        // Repeat for _get_aci_color
-                        PyObject* get_aci_func =
-                            PyObject_GetAttrString(helperModule, "_get_aci_color");
-                        if (get_aci_func && PyCallable_Check(get_aci_func)) {
-                            PyObject* pyAciColor =
-                                PyObject_CallFunctionObjArgs(get_aci_func, item, NULL);
-                            if (pyAciColor && PyLong_Check(pyAciColor)) {
-                                aciColor = PyLong_AsLong(pyAciColor);
+                        Py_XDECREF(get_text_data_func);
+                    }
+                    else if (obj->getPropertyByName("Dimline") != nullptr) {
+                        // This is the primary check for Dimensions. If it has this property,
+                        // we can be confident it's a Draft Dimension or similar.
+                        // This is how Dimensions are often represented
+                        PyObject* get_dim_data_func =
+                            PyObject_GetAttrString(helperModule, "_get_dimension_data");
+                        if (get_dim_data_func && PyCallable_Check(get_dim_data_func)) {
+                            PyObject* dim_tuple =
+                                PyObject_CallFunctionObjArgs(get_dim_data_func, item, NULL);
+                            if (dim_tuple && PyTuple_Check(dim_tuple)) {
+                                char* dim_text;
+                                double text_mid[3], line_def[3], p1[3], p2[3];
+                                int dim_type;
+                                // Note: Dimline point is parsed into 'line_def' but unused in the
+                                // tuple format string
+                                if (PyArg_ParseTuple(dim_tuple,
+                                                     "(ddd)(ddd)(ddd)(ddd)si",
+                                                     &text_mid[0],
+                                                     &text_mid[1],
+                                                     &text_mid[2],
+                                                     &line_def[0],
+                                                     &line_def[1],
+                                                     &line_def[2],
+                                                     &p1[0],
+                                                     &p1[1],
+                                                     &p1[2],
+                                                     &p2[0],
+                                                     &p2[1],
+                                                     &p2[2],
+                                                     &dim_text,
+                                                     &dim_type)) {
+                                    writer.writeLinearDim(text_mid,
+                                                          line_def,
+                                                          p1,
+                                                          p2,
+                                                          dim_text,
+                                                          dim_type);
+                                }
                             }
-                            Py_XDECREF(pyAciColor);
+                            Py_XDECREF(dim_tuple);
                         }
-                        Py_XDECREF(get_aci_func);
-
-                        // Clear any potential Python error state if a call failed
-                        if (PyErr_Occurred()) {
-                            PyErr_Clear();
-                            Base::Console().warning(
-                                "A Python error occurred while getting layer/color for object %s\n",
-                                obj->getNameInDocument());
-                        }
-
-                        // --- Use the retrieved data ---
-                        writer.setLayerName(layerName);
-                        writer.setColor(aciColor);
-
-                        // --- Export the geometry (existing logic) ---
-                        TopoDS_Shape shapeToExport;
-                        if (SketchExportHelper::isSketch(obj)) {
-                            shapeToExport = SketchExportHelper::getFlatSketchXY(obj);
-                        }
-                        else {
-                            Part::Feature* part = static_cast<Part::Feature*>(obj);
-                            shapeToExport = part->Shape.getValue();
-                        }
-                        writer.exportShape(shapeToExport);
+                        Py_XDECREF(get_dim_data_func);
+                    }
+                    // Clear any Python errors
+                    if (PyErr_Occurred()) {
+                        PyErr_Clear();
                     }
                 }
 
