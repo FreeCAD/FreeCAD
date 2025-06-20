@@ -36,95 +36,95 @@ using namespace App;
 
 AutoTransaction::AutoTransaction(const char* name, bool tmpName)
 {
-    auto& app = GetApplication();
-    if (name && app._activeTransactionGuard >= 0) {
-        if (!app.getActiveTransaction() || (!tmpName && app._activeTransactionTmpName)) {
-            FC_LOG("auto transaction '" << name << "', " << tmpName);
-            tid = app.setActiveTransaction(name);
-            app._activeTransactionTmpName = tmpName;
-        }
-    }
-    // We use negative transaction guard to disable auto transaction from here
-    // and any stack below. This is to support user setting active transaction
-    // before having any existing AutoTransaction on stack, or 'persist'
-    // transaction that can out live AutoTransaction.
-    if (app._activeTransactionGuard < 0) {
-        --app._activeTransactionGuard;
-    }
-    else if (tid || app._activeTransactionGuard > 0) {
-        ++app._activeTransactionGuard;
-    }
-    else if (app.getActiveTransaction()) {
-        FC_LOG("auto transaction disabled because of '" << app._activeTransactionName << "'");
-        --app._activeTransactionGuard;
-    }
-    else {
-        ++app._activeTransactionGuard;
-    }
-    FC_TRACE("construct auto Transaction " << app._activeTransactionGuard);
+    // auto& app = GetApplication();
+    // if (name && app._activeTransactionGuard >= 0) {
+    //     if (!app.getActiveTransaction() || (!tmpName && app._activeTransactionTmpName)) {
+    //         FC_LOG("auto transaction '" << name << "', " << tmpName);
+    //         tid = app.setActiveTransaction(name);
+    //         app._activeTransactionTmpName = tmpName;
+    //     }
+    // }
+    // // We use negative transaction guard to disable auto transaction from here
+    // // and any stack below. This is to support user setting active transaction
+    // // before having any existing AutoTransaction on stack, or 'persist'
+    // // transaction that can out live AutoTransaction.
+    // if (app._activeTransactionGuard < 0) {
+    //     --app._activeTransactionGuard;
+    // }
+    // else if (tid || app._activeTransactionGuard > 0) {
+    //     ++app._activeTransactionGuard;
+    // }
+    // else if (app.getActiveTransaction()) {
+    //     FC_LOG("auto transaction disabled because of '" << app._activeTransactionName << "'");
+    //     --app._activeTransactionGuard;
+    // }
+    // else {
+    //     ++app._activeTransactionGuard;
+    // }
+    // FC_TRACE("construct auto Transaction " << app._activeTransactionGuard);
 }
 
 AutoTransaction::~AutoTransaction()
 {
-    auto& app = GetApplication();
-    FC_TRACE("before destruct auto Transaction " << app._activeTransactionGuard);
-    if (app._activeTransactionGuard < 0) {
-        ++app._activeTransactionGuard;
-    }
-    else if (!app._activeTransactionGuard) {
-#ifdef FC_DEBUG
-        FC_ERR("Transaction guard error");
-#endif
-    }
-    else if (--app._activeTransactionGuard == 0) {
-        try {
-            // We don't call close() here, because close() only closes
-            // transaction that we opened during construction time. However,
-            // when _activeTransactionGuard reaches zero here, we are supposed
-            // to close any transaction opened.
-            app.closeActiveTransaction();
-        }
-        catch (Base::Exception& e) {
-            e.reportException();
-        }
-        catch (...) {
-        }
-    }
-    FC_TRACE("destruct auto Transaction " << app._activeTransactionGuard);
+//     auto& app = GetApplication();
+//     FC_TRACE("before destruct auto Transaction " << app._activeTransactionGuard);
+//     if (app._activeTransactionGuard < 0) {
+//         ++app._activeTransactionGuard;
+//     }
+//     else if (!app._activeTransactionGuard) {
+// #ifdef FC_DEBUG
+//         FC_ERR("Transaction guard error");
+// #endif
+//     }
+//     else if (--app._activeTransactionGuard == 0) {
+//         try {
+//             // We don't call close() here, because close() only closes
+//             // transaction that we opened during construction time. However,
+//             // when _activeTransactionGuard reaches zero here, we are supposed
+//             // to close any transaction opened.
+//             app.closeActiveTransaction();
+//         }
+//         catch (Base::Exception& e) {
+//             e.reportException();
+//         }
+//         catch (...) {
+//         }
+//     }
+//     FC_TRACE("destruct auto Transaction " << app._activeTransactionGuard);
 }
 
 void AutoTransaction::close(bool abort)
 {
-    if (tid || abort) {
-        GetApplication().closeActiveTransaction(abort, abort ? 0 : tid);
-        tid = 0;
-    }
+    // if (tid || abort) {
+    //     GetApplication().closeActiveTransaction(abort, abort ? 0 : tid);
+    //     tid = 0;
+    // }
 }
 
 void AutoTransaction::setEnable(bool enable)
 {
-    auto& app = GetApplication();
-    if (!app._activeTransactionGuard) {
-        return;
-    }
-    if ((enable && app._activeTransactionGuard > 0)
-        || (!enable && app._activeTransactionGuard < 0)) {
-        return;
-    }
-    app._activeTransactionGuard = -app._activeTransactionGuard;
-    FC_TRACE("toggle auto Transaction " << app._activeTransactionGuard);
-    if (!enable && app._activeTransactionTmpName) {
-        bool close = true;
-        for (auto& v : app.DocMap) {
-            if (v.second->hasPendingTransaction()) {
-                close = false;
-                break;
-            }
-        }
-        if (close) {
-            app.closeActiveTransaction();
-        }
-    }
+    // auto& app = GetApplication();
+    // if (!app._activeTransactionGuard) {
+    //     return;
+    // }
+    // if ((enable && app._activeTransactionGuard > 0)
+    //     || (!enable && app._activeTransactionGuard < 0)) {
+    //     return;
+    // }
+    // app._activeTransactionGuard = -app._activeTransactionGuard;
+    // FC_TRACE("toggle auto Transaction " << app._activeTransactionGuard);
+    // if (!enable && app._activeTransactionTmpName) {
+    //     bool close = true;
+    //     for (auto& v : app.DocMap) {
+    //         if (v.second->hasPendingTransaction()) {
+    //             close = false;
+    //             break;
+    //         }
+    //     }
+    //     if (close) {
+    //         app.closeActiveTransaction();
+    //     }
+    // }
 }
 TransactionToken::TransactionToken(int tid_)
 {
@@ -326,6 +326,9 @@ void Application::closeActiveTransaction(bool abort, int id)
 {
     if (!id) {
         id = _globalTransactionID;
+        if (id) {
+            std::cerr<<"Close global transaction #"<<id<<"\n";
+        }
     }
     if (!id || id == currentlyClosingId) {
         return;
@@ -348,8 +351,14 @@ void Application::closeActiveTransaction(bool abort, int id)
         if (v.second->getBookedTransactionID() != id) {
             continue;
         }
-        if(v.second->isTransactionLocked()) {
+        if(v.second->isTransactionLocked() || v.second->transacting()) {
             std::cerr<<"Transaction locked..\n";
+            FC_LOG("pending " << (abort ? "abort" : "close") << " transaction");
+            currentlyClosingId = 0;
+            return;
+        }
+        if(v.second->transacting()) {
+            std::cerr<<"Transaction blocked..\n";
             FC_LOG("pending " << (abort ? "abort" : "close") << " transaction");
             currentlyClosingId = 0;
             return;
@@ -428,4 +437,4 @@ void TransactionLocker::activate(bool enable)
     //     _TransactionClosed = 0;
     //     GetApplication().closeActiveTransaction(abort);
     // }
-}
+}      
