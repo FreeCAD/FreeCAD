@@ -339,6 +339,9 @@ If both lengths are zero, magnitude of direction is used.</string>
      <property name="text">
       <string>Create solid</string>
      </property>
+     <property name="checked">
+      <bool>true</bool>
+     </property>
     </widget>
    </item>
    <item>
