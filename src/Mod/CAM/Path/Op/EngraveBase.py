@@ -137,7 +137,7 @@ class ObjectOp(PathOp.ObjectOp):
                             self.appendCommand(cmd, z, relZ, self.horizFeed)
                         last = edge.Vertexes[-1].Point
                     else:
-                        for cmd in Path.Geom.cmdsForEdge(edge, True):
+                        for cmd in Path.Geom.cmdsForEdge(edge, flip=True):
                             self.appendCommand(cmd, z, relZ, self.horizFeed)
                         last = edge.Vertexes[0].Point
             self.commandlist.append(
