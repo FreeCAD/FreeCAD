@@ -495,6 +495,8 @@ public:
     void unlockTransaction();
     bool isTransactionLocked() const;
 
+    bool transacting() const;
+
     /// Check if a transaction is open
     bool hasPendingTransaction() const;
     /// Return the undo/redo transaction ID starting from the back
