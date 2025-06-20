@@ -126,13 +126,13 @@ void ViewProviderPreviewExtension::extensionAttach(App::DocumentObject* document
 {
     ViewProviderExtension::extensionAttach(documentObject);
 
+    pcPreviewRoot = new SoSeparator;
     pcPreviewShape = new SoPreviewShape;
 
-    pcPreviewRoot = new SoSeparator;
-    pcPreviewRoot->addChild(pcPreviewShape);
-
-    updatePreviewShape();
+    attachPreview();
+    updatePreview();
 }
+
 void ViewProviderPreviewExtension::extensionOnChanged(const App::Property* prop)
 {
     if (prop == &PreviewColor) {
@@ -142,39 +142,55 @@ void ViewProviderPreviewExtension::extensionOnChanged(const App::Property* prop)
     ViewProviderExtension::extensionOnChanged(prop);
 }
 
-void ViewProviderPreviewExtension::updatePreviewShape()
+void ViewProviderPreviewExtension::attachPreview()
 {
+    pcPreviewRoot->addChild(pcPreviewShape);
+}
+
+void ViewProviderPreviewExtension::updatePreview()
+{
+    updatePreviewShape(getPreviewShape(), pcPreviewShape);
+}
+
+void ViewProviderPreviewExtension::updatePreviewShape(Part::TopoShape shape,
+                                                      SoPreviewShape* preview)
+{
+    if (shape.isNull() || preview == nullptr) {
+        return;
+    }
+
     auto vp = freecad_cast<ViewProviderPartExt*>(getExtendedViewProvider());
 
     if (!vp) {
         return;
     }
 
-    ViewProviderPartExt::setupCoinGeometry(getPreviewShape().getShape(),
-                                           pcPreviewShape->coords,
-                                           pcPreviewShape->faceset,
-                                           pcPreviewShape->norm,
-                                           pcPreviewShape->lineset,
-                                           pcPreviewShape->nodeset,
+    ViewProviderPartExt::setupCoinGeometry(shape.getShape(),
+                                           preview->coords,
+                                           preview->faceset,
+                                           preview->norm,
+                                           preview->lineset,
+                                           preview->nodeset,
                                            vp->Deviation.getValue(),
                                            vp->AngularDeflection.getValue(),
                                            false);
 
     // For some reason line patterns are not rendered correctly if material binding is set to
     // anything other than PER_FACE. PER_FACE material binding seems to require materialIndex per
-    // each distinct edge. Until that is fixed, this code forces each edge to use the first material.
-    unsigned lineCoordsCount = pcPreviewShape->lineset->coordIndex.getNum();
+    // each distinct edge. Until that is fixed, this code forces each edge to use the first
+    // material.
+    unsigned lineCoordsCount = preview->lineset->coordIndex.getNum();
     unsigned lineCount = 1;
 
     for (unsigned i = 0; i < lineCoordsCount; ++i) {
-        if (pcPreviewShape->lineset->coordIndex[i] < 0) {
+        if (preview->lineset->coordIndex[i] < 0) {
             lineCount++;
         }
     }
 
-    pcPreviewShape->lineset->materialIndex.setNum(lineCount);
+    preview->lineset->materialIndex.setNum(lineCount);
     for (unsigned i = 0; i < lineCount; ++i) {
-        pcPreviewShape->lineset->materialIndex.set1Value(i, 0);
+        preview->lineset->materialIndex.set1Value(i, 0);
     }
 }
 
