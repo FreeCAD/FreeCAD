@@ -203,7 +203,11 @@ void ViewProvider::unsetEdit(int ModNum)
 void ViewProvider::updateData(const App::Property* prop)
 {
     if (strcmp(prop->getName(), "PreviewShape") == 0) {
-        updatePreviewShape();
+        updatePreview();
+    } else if (auto* previewExtension = getObject()->getExtensionByType<Part::PreviewExtension>(true)) {
+        if (!previewExtension->isPreviewFresh() && isEditing()) {
+            previewExtension->updatePreview();
+        }
     }
 
     inherited::updateData(prop);
@@ -284,11 +288,11 @@ void ViewProvider::setTipIcon(bool onoff) {
     signalChangeIcon();
 }
 
-QIcon ViewProvider::mergeColorfulOverlayIcons (const QIcon & orig) const
+QIcon ViewProvider::mergeColorfulOverlayIcons(const QIcon& orig) const
 {
     QIcon mergedicon = orig;
 
-    if(isSetTipIcon) {
+    if (isSetTipIcon) {
         static QPixmap px(Gui::BitmapFactory().pixmapFromSvg("PartDesign_Overlay_Tip", QSize(10, 10)));
         mergedicon = Gui::BitmapFactoryInst::mergePixmap(mergedicon, px, Gui::BitmapFactoryInst::BottomRight);
     }
