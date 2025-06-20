@@ -146,7 +146,7 @@ jobs:
           commitCnt=$(jq -re '.ahead_by' ${{ env.logdir }}compare.json)
           echo "Changeset is composed of $commitCnt commit(s)" | tee -a ${{env.reportdir}}${{ env.reportfilename }}
       - name: Get files modified in changeset #TODO check what happens with deleted file in the subsequent process
-        if: env.isPR == 'true' || env.isPush == 'true'
+        if: env.isPR == 'true'
         env:
           API_URL: ${{ github.api_url }}
           TOKEN: ${{ github.token }}
