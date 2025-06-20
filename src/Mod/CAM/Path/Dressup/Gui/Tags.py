@@ -28,7 +28,6 @@ import FreeCADGui
 import Path
 import Path.Base.Gui.GetPoint as PathGetPoint
 import Path.Dressup.Tags as PathDressupTag
-import PathGui
 import PathScripts.PathUtils as PathUtils
 
 
@@ -63,6 +62,7 @@ class PathDressupTagTaskPanel:
             self.jvoVisible = self.jvo.isVisible()
             if self.jvoVisible:
                 self.jvo.hide()
+                self.obj.ViewObject.show()
         else:
             self.jvoVisible = jvoVisibility
         self.pt = FreeCAD.Vector(0, 0, 0)
@@ -452,7 +452,7 @@ class PathDressupTagViewProvider:
         tags = []
         for i, p in enumerate(positions):
             tag = HoldingTagMarker(self.obj.Proxy.pointAtBottom(self.obj, p), self.colors)
-            tag.setEnabled(not i in disabled)
+            tag.setEnabled(i not in disabled)
             tags.append(tag)
             self.switch.addChild(tag.sep)
         self.tags = tags
@@ -524,7 +524,7 @@ class PathDressupTagViewProvider:
 
     def addSelection(self, doc, obj, sub, point):
         Path.Log.track(doc, obj, sub, point)
-        if self.panel:
+        if hasattr(self, "panel") and self.panel:
             i = self.tagAtPoint(point, sub is None)
             self.panel.selectTagWithId(i)
         FreeCADGui.updateGui()
