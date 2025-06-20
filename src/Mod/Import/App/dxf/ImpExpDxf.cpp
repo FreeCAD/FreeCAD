@@ -523,6 +523,17 @@ void ImpExpDxfRead::FinishImport()
         m_unreferencedBlocksGroup->Visibility.setValue(false);
     }
 
+    // If no blocks were defined in the file at all, remove the main definitions
+    // group as well to keep the document clean.
+    if (m_blockDefinitionGroup && m_blockDefinitionGroup->Group.getValues().empty()) {
+        try {
+            document->removeObject(m_blockDefinitionGroup->getNameInDocument());
+        }
+        catch (const Base::Exception& e) {
+            e.reportException();
+        }
+    }
+
     // call the base class implementation if it has one
     CDxfRead::FinishImport();
 }
