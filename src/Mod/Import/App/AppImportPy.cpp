@@ -51,6 +51,7 @@
 #include <chrono>
 #include "dxf/ImpExpDxf.h"
 #include "SketchExportHelper.h"
+#include "dxf/DxfWriterProxy.h"  // The new proxy header
 #include <App/Annotation.h>
 #include <App/Application.h>
 #include <App/Document.h>
@@ -65,7 +66,6 @@
 #include <Mod/Part/App/PartFeaturePy.h>
 #include <Mod/Part/App/TopoShapePy.h>
 #include <Mod/Part/App/encodeFilename.h>
-#include <Mod/TechDraw/App/DrawPage.h>
 
 #include "ImportOCAF2.h"
 #include "ReaderGltf.h"
@@ -117,9 +117,22 @@ public:
             "writeDXFObject",
             &Module::writeDXFObject,
             "writeDXFObject([objects],filename [,version,usePolyline,optionSource]): Exports "
-            "DocumentObject(s) to a DXF file."
-        );
-        initialize("This module is the Import module.");  // register with Python
+            "DocumentObject(s) to a DXF file.");
+
+        // Call initialize() first, as it creates the module object.
+        initialize("This module is the Import module.");
+
+        // 1. Finalize the custom type
+        if (PyType_Ready(&Import::DxfWriterProxy_Type) < 0) {
+            throw Py::Exception();  // PyType_Ready will set a Python exception
+        }
+
+        // 2. Add the finalized type to the module using the interpreter singleton.
+        //    this->module() returns the Py::Object wrapper for the module.
+        //    this->module().ptr() gets the raw PyObject* pointer.
+        Base::Interpreter().addType(&Import::DxfWriterProxy_Type,
+                                    this->module().ptr(),
+                                    "DxfWriterProxy");
     }
 
     ~Module() override = default;
@@ -614,25 +627,33 @@ private:
 
                 Py::Sequence list(docObj);
 
-                // Special case: If the list contains exactly one TechDraw Page, use a dedicated
-                // exporter.
                 bool pageExported = false;
                 if (list.size() == 1) {
                     PyObject* item = list.getItem(0).ptr();
                     App::DocumentObject* obj =
                         static_cast<App::DocumentObjectPy*>(item)->getDocumentObjectPtr();
-                    if (obj->isDerivedFrom(TechDraw::DrawPage::getClassTypeId())) {
+                    if (strcmp(obj->getTypeId().getName(), "TechDraw::DrawPage") == 0) {
+
                         PyObject* export_page_func =
                             PyObject_GetAttrString(helperModule, "_export_techdraw_page");
                         if (export_page_func && PyCallable_Check(export_page_func)) {
-                            // The implementation of the proxy and the Python helper is the next
-                            // step. This structure prepares the C++ side for that implementation.
-                            Base::Console().message("TechDraw Page detected, handing off to Python "
-                                                    "helper (implementation pending).\n");
-                            // Example of future call:
-                            // PyObject* writerProxy = ... create proxy ...
-                            // PyObject_CallFunctionObjArgs(export_page_func, item, writerProxy,
-                            // NULL); Py_DECREF(writerProxy);
+
+                            // Create an instance of our proxy
+                            PyObject* writerProxyObj =
+                                DxfWriterProxy_Type.tp_new(&Import::DxfWriterProxy_Type,
+                                                           nullptr,
+                                                           nullptr);
+                            ((Import::DxfWriterProxy*)writerProxyObj)->writer_inst = &writer;
+
+                            // Call the Python helper with the page and the proxy
+                            PyObject* result = PyObject_CallFunctionObjArgs(export_page_func,
+                                                                            item,
+                                                                            writerProxyObj,
+                                                                            NULL);
+
+                            // Clean up references
+                            Py_XDECREF(result);
+                            Py_DECREF(writerProxyObj);
                         }
                         Py_XDECREF(export_page_func);
                         if (PyErr_Occurred()) {
@@ -643,8 +664,7 @@ private:
                 }
 
                 if (!pageExported) {
-                    // If it wasn't a page, or if there were multiple objects, process the list
-                    // normally.
+                    // --- EXISTING LOGIC FOR OTHER OBJECTS ---
                     for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
                         PyObject* item = (*it).ptr();
                         App::DocumentObject* obj =
@@ -775,6 +795,7 @@ private:
                         }
                     }
                 }
+                // --- END OF EXISTING LOGIC ---
 
                 Py_DECREF(helperModule);
                 writer.endRun();
@@ -786,17 +807,16 @@ private:
         }
 
         PyErr_Clear();
-        if (PyArg_ParseTuple(
-                args.ptr(),
-                "O!et|iOs",
-                &(App::DocumentObjectPy::Type),
-                &docObj,
-                "utf-8",
-                &fname,
-                &versionParm,
-                &usePolyline,
-                &optionSource
-            )) {
+        // This is the beginning of the single-object export logic from your file
+        if (PyArg_ParseTuple(args.ptr(),
+                             "O!et|iOs",
+                             &(App::DocumentObjectPy::Type),
+                             &docObj,
+                             "utf-8",
+                             &fname,
+                             &versionParm,
+                             &usePolyline,
+                             &optionSource)) {
             filePath = std::string(fname);
             PyMem_Free(fname);
             App::DocumentObject* obj
@@ -825,9 +845,8 @@ private:
                 writer.init();
 
                 PyObject* item = docObj;
-                // --- Call Python helpers using the C-API ---
-                std::string layerName = "0";  // Default layer
-                int aciColor = 256;           // Default color (BYLAYER)
+                std::string layerName = "0";
+                int aciColor = 256;
 
                 PyObject* helperModule = PyImport_ImportModule("Draft.importDXF");
                 if (!helperModule) {
@@ -857,9 +876,6 @@ private:
 
                 if (PyErr_Occurred()) {
                     PyErr_Clear();
-                    Base::Console().warning(
-                        "A Python error occurred while getting layer/color for object %s\n",
-                        obj->getNameInDocument());
                 }
                 Py_DECREF(helperModule);
 
@@ -870,8 +886,7 @@ private:
                 if (SketchExportHelper::isSketch(obj)) {
                     shapeToExport = SketchExportHelper::getFlatSketchXY(obj);
                 }
-                else {
-                    Part::Feature* part = static_cast<Part::Feature*>(obj);
+                else if (auto* part = dynamic_cast<Part::Feature*>(obj)) {
                     shapeToExport = part->Shape.getValue();
                 }
                 writer.exportShape(shapeToExport);

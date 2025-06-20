@@ -5091,7 +5091,6 @@ def _get_aci_color(obj):
     """
     return getACI(obj)
 
-# ... (at the end of the file, with other helpers)
 
 def _get_text_data(obj):
     """
@@ -5111,18 +5110,18 @@ def _get_text_data(obj):
     # Base position and rotation
     placement = obj.Placement
     rotation = placement.Rotation.Angle * 180 / math.pi
-    
+
     # Handle multi-line text by adjusting position for each line
     for i, text_line in enumerate(obj.Text):
         # Y-offset for subsequent lines. DXF text origin is bottom-left.
         # FreeCAD's text position is top-left, so we adjust.
         # A line height of 1.2 * font size is a reasonable approximation.
         y_offset = -height * 1.2 * i
-        
+
         # Create a vector for the offset and rotate it
         offset_vec = FreeCAD.Vector(0, y_offset, 0)
         rotated_offset = placement.Rotation.multVec(offset_vec)
-        
+
         pos = placement.Base + rotated_offset
 
         # The second alignment point is needed for certain justifications
@@ -5165,3 +5164,52 @@ def _get_dimension_data(obj):
     p2_tuple = (p2.x, p2.y, p2.z)
 
     return (text_mid_point, dim_line_pt, p1_tuple, p2_tuple, dim_text, dim_type)
+
+
+def _export_techdraw_page(page, writer_proxy):
+    """
+    Internal helper for the C++ exporter to handle TechDraw::DrawPage objects.
+    """
+    # This logic is adapted from the legacy exportPage function
+    import TechDraw
+
+    # First, define all views as blocks
+    for view in page.Views:
+        view_name = view.Name
+        # All block definitions are relative to (0,0,0)
+        base_point = (0.0, 0.0, 0.0)
+
+        writer_proxy.writeBlock(view_name, base_point)
+
+        # Set layer and color for the geometry inside the block
+        # Blocks typically define geometry on layer "0" with color BYBLOCK
+        writer_proxy.setLayerName("0")
+        writer_proxy.setColor(0) # 0 = BYBLOCK
+
+        # Project the source shapes for this view
+        if hasattr(TechDraw, "projectToDXF"): # Check for modern TechDraw API
+            for source_obj in view.Source:
+                # projectToDXF returns a TopoShape, which we can export
+                projected_shape = TechDraw.projectToDXF(source_obj.Shape, view.Direction)
+                if projected_shape:
+                    writer_proxy.exportShape(projected_shape)
+        # Note: Add handlers for Draft, Arch views if needed, similar to legacy exporter
+
+        writer_proxy.writeEndBlock(view_name)
+
+    # Second, insert all the created blocks into the model space
+    for view in page.Views:
+        # Set the layer and color for the INSERT entity itself
+        layer_name = getGroup(view) # Use the view's layer
+        aci_color = 256 # 256 = BYLAYER for inserts
+        writer_proxy.setLayerName(layer_name)
+        writer_proxy.setColor(aci_color)
+
+        # Get placement info
+        insertion_point = (view.X, view.Y, 0.0)
+        scale = view.Scale
+        rotation = view.Rotation
+
+        writer_proxy.writeInsert(view.Name, insertion_point, scale, rotation)
+
+    FreeCAD.Console.PrintMessage(f"Exported TechDraw page '{page.Label}' to DXF.\n")
