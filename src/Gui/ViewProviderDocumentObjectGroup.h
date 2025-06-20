@@ -48,6 +48,9 @@ public:
     /// deliver the icon shown in the tree view
     QIcon getIcon() const override;
 
+    // Set up the context menu with the supported edit modes
+    void setupContextMenu(QMenu* menu, QObject* receiver, const char* member) override;
+
     /* Check whether the object accept reordering of its children during drop.*/
     bool acceptReorderingObjects() const override { return true; };
 
