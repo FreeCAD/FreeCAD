@@ -359,7 +359,6 @@ class ObjectDressup:
                 # check for plunge
                 if edge.xy_length < 1e-6 and edge.end_point[2] < edge.start_point[2]:
                     # check if above ignoreAbove parameter - do not generate ramp if it is
-                    orig_edge = edge
                     noramp_edge, edge = self.processIgnoreAbove(edge)
                     if noramp_edge is not None:
                         outedges.append(noramp_edge)
@@ -399,7 +398,7 @@ class ObjectDressup:
                             covered = True
                         i = i + 1
                     if len(rampedges) == 0:
-                        Path.Log.debug("No suitable edges for ramping, plunge will remain as such")
+                        Path.Log.warn("No suitable edges for ramping, plunge will remain as such")
                         outedges.append(edge)
                     else:
                         if not covered:
@@ -408,8 +407,10 @@ class ObjectDressup:
                                     rampangle = math.degrees(
                                         math.atan(coveredlen / (plungelen / 2))
                                     )
+                                    projectionlen = coveredlen
                                 else:
                                     rampangle = math.degrees(math.atan(coveredlen / plungelen))
+                                    projectionlen = coveredlen
                                 Path.Log.warning(
                                     "Cannot cover with desired angle, tightening angle to: {}".format(
                                         rampangle
@@ -453,68 +454,54 @@ class ObjectDressup:
         return outedges
 
     def generateHelix(self):
-        edges = self.wire.Edges
+        edges = self.edges
         minZ = self.findMinZ(edges)
         Path.Log.debug("Minimum Z in this path is {}".format(minZ))
         outedges = []
         i = 0
         while i < len(edges):
             edge = edges[i]
-            israpid = i in self.rapid_indexes
-            if not israpid:
-                bb = edge.BoundBox
-                p0 = edge.Vertexes[0].Point
-                p1 = edge.Vertexes[1].Point
-                if bb.XLength < 1e-6 and bb.YLength < 1e-6 and bb.ZLength > 0 and p0.z > p1.z:
-                    # plungelen = abs(p0.z-p1.z)
-                    Path.Log.debug(
-                        "Found plunge move at X:{} Y:{} From Z:{} to Z{}, Searching for closed loop".format(
-                            p0.x, p0.y, p0.z, p1.z
-                        )
-                    )
-                    # check if above ignoreAbove parameter - do not generate helix if it is
-                    newEdge, cont = self.checkIgnoreAbove(edge)
-                    if newEdge is not None:
-                        outedges.append((newEdge, israpid))
-                        p0.z = self.ignoreAbove
-                    if cont:
+            if edge.is_line or edge.is_arc:
+                if edge.xy_length < 1e-6 and edge.end_point[2] < edge.start_point[2]:
+                    noramp_edge, edge = self.processIgnoreAbove(edge)
+                    if noramp_edge is not None:
+                        outedges.append(noramp_edge)
+                    if edge is None:
                         i = i + 1
                         continue
-                    # next need to determine how many edges in the path after plunge are needed to cover the length:
+
+                    # next need to find a loop
                     loopFound = False
                     rampedges = []
                     j = i + 1
-                    while not loopFound:
+                    while j < len(edges) and not loopFound:
                         candidate = edges[j]
-                        cp0 = candidate.Vertexes[0].Point
-                        cp1 = candidate.Vertexes[1].Point
-                        if Path.Geom.pointsCoincide(p1, cp1):
-                            # found closed loop
-                            loopFound = True
-                            rampedges.append(candidate)
-                            break
-                        if abs(cp0.z - cp1.z) > 1e-6:
+                        if abs(candidate.start_point[2] - candidate.end_point[2]) > 1e-6:
                             # this edge is not parallel to XY plane, not qualified for ramping.
+                            # exit early, no loop found
                             break
-                        # Path.Log.debug("Next edge length {}".format(candidate.Length))
+                        if (
+                            Path.Geom.isRoughly(edge.end_point[0], candidate.end_point[0])
+                            and Path.Geom.isRoughly(edge.end_point[1], candidate.end_point[1])
+                            and Path.Geom.isRoughly(edge.end_point[2], candidate.end_point[2])
+                        ):
+                            loopFound = True
                         rampedges.append(candidate)
                         j = j + 1
-                        if j >= len(edges):
-                            break
-                    if len(rampedges) == 0 or not loopFound:
-                        Path.Log.debug("No suitable helix found")
-                        outedges.append((edge, israpid))
+                    if not loopFound:
+                        Path.Log.warn("No suitable helix found, leaving as a plunge")
+                        outedges.append(edge)
                     else:
-                        outedges.extend(self.createHelix(rampedges, p0, p1))
-                        if not Path.Geom.isRoughly(p1.z, minZ):
+                        outedges.extend(self.createHelix(rampedges, edge.start_point[2]))
+                        if not Path.Geom.isRoughly(edge.end_point[2], minZ):
                             # the edges covered by the helix not handled again,
                             # unless reached the bottom height
-                            i = j
+                            i = j - 1
 
                 else:
-                    outedges.append((edge, israpid))
+                    outedges.append(edge)
             else:
-                outedges.append((edge, israpid))
+                outedges.append(edge)
             i = i + 1
         return outedges
 
@@ -561,29 +548,27 @@ class ObjectDressup:
         else:
             return None, False
 
-    def createHelix(self, rampedges, startPoint, endPoint):
+    def createHelix(self, rampedges, startZ):
         outedges = []
         ramplen = 0
         for redge in rampedges:
-            ramplen = ramplen + redge.Length
-        rampheight = abs(endPoint.z - startPoint.z)
+            ramplen = ramplen + redge.xy_length
+        rampheight = abs(startZ - rampedges[-1].end_point[2])
+
+        max_rise_over_run = 1 / math.tan(math.radians(self.angle))
+        num_loops = math.ceil(rampheight / ramplen / max_rise_over_run)
+        rampedges *= num_loops
+        ramplen *= num_loops
+
         rampangle_rad = math.atan(ramplen / rampheight)
-        curPoint = startPoint
+        curZ = startZ
         for i, redge in enumerate(rampedges):
-            if i < len(rampedges) - 1:
-                deltaZ = redge.Length / math.tan(rampangle_rad)
-                newPoint = FreeCAD.Base.Vector(
-                    redge.valueAt(redge.LastParameter).x,
-                    redge.valueAt(redge.LastParameter).y,
-                    curPoint.z - deltaZ,
-                )
-                outedges.append(self.createRampEdge(redge, curPoint, newPoint))
-                curPoint = newPoint
-            else:
-                # on the last edge, force it to end to the endPoint
-                # this should happen automatically, but this avoids any rounding error
-                outedges.append(self.createRampEdge(redge, curPoint, endPoint))
-        return [(e, False) for e in outedges]
+            deltaZ = redge.xy_length / math.tan(rampangle_rad)
+            # compute new z, or clamp to end segment to avoid rounding error
+            newZ = curZ - deltaZ if i < len(rampedges) - 1 else rampedges[-1].end_point[2]
+            outedges.append(redge.clone(curZ, newZ))
+            curZ = newZ
+        return outedges
 
     def createRampEdge(self, originalEdge, startPoint, endPoint):
         # Path.Log.debug("Create edge from [{},{},{}] to [{},{},{}]".format(startPoint.x,startPoint.y, startPoint.z, endPoint.x, endPoint.y, endPoint.z))
@@ -618,10 +603,9 @@ class ObjectDressup:
 
     def findMinZ(self, edges):
         minZ = 99999999999
-        for edge in edges[1:]:
-            for v in edge.Vertexes:
-                if v.Point.z < minZ:
-                    minZ = v.Point.z
+        for edge in edges:
+            if edge.end_point[2] < minZ:
+                minZ = edge.end_point[2]
         return minZ
 
     def getSplitPoint(self, edge, remaining):
@@ -637,12 +621,21 @@ class ObjectDressup:
         1. Start from the original startpoint of the plunge
         2. Ramp down along the path that comes after the plunge
         3. When reaching the Z level of the original plunge, return back to the beginning
-           by going the path backwards until the original plunge end point is reached
+            by going the path backwards until the original plunge end point is reached
         4. Continue with the original path
-
-        This method causes many unnecessary moves with tool down.
         """
-        outedges = []
+        ramp, reset = self._createRampMethod1(rampedges, p0, projectionlen, rampangle)
+        return ramp + reset
+
+    def _createRampMethod1(self, rampedges, p0, projectionlen, rampangle):
+        """
+        Helper method for generating ramps. Computes ramp method 1, but returns the result in pieces to allow for implementing the other ramp methods.
+        Returns (ramp, reset)
+        - ramp: array of commands ramping down
+        - reset: array of commands returning from the bottom of the ramp to the bottom of the original plunge
+        """
+        ramp = []
+        reset = []
         reversed_edges = [redge.clone(reverse=True) for redge in rampedges]
         rampremaining = projectionlen
         z = p0[2]  # start from the upper point of plunge
@@ -654,21 +647,21 @@ class ObjectDressup:
             if redge.xy_length > rampremaining:
                 # will reach end of ramp within this edge, needs to be split
                 split_first, split_remaining = redge.split(rampremaining)
-                outedges.append(split_first.clone(z_start=z))
+                ramp.append(split_first.clone(z_start=z))
                 # now we have reached the end of the ramp. Go back to plunge position with constant Z
                 # start that by going to the beginning of this splitEdge
                 if goingForward:
-                    outedges.append(split_first.clone(reverse=True))
+                    reset.append(split_first.clone(reverse=True))
                 else:
                     # if we were reversing, we continue to the same direction as the ramp
-                    outedges.append(split_remaining)
+                    reset.append(split_remaining)
                     i = i - 1
                 rampremaining = 0
                 break
             else:
                 deltaZ = redge.xy_length / math.tan(math.radians(rampangle))
                 new_z = z - deltaZ
-                outedges.append(redge.clone(z, new_z))
+                ramp.append(redge.clone(z, new_z))
                 z = new_z
                 rampremaining = rampremaining - redge.xy_length
                 i = i + 1 if goingForward else i - 1
@@ -679,10 +672,10 @@ class ObjectDressup:
 
         # now we need to return to original position.
         while i >= 1:
-            outedges.append(reversed_edges[i - 1])
+            reset.append(reversed_edges[i - 1])
             i = i - 1
 
-        return outedges
+        return ramp, reset
 
     def createRampMethod3(self, rampedges, p0, projectionlen, rampangle):
         """
@@ -693,227 +686,83 @@ class ObjectDressup:
         3. Change direction and ramp backwards to the original plunge end point
         4. Continue with the original path
 
-        This method causes many unnecessary moves with tool down.
+        This path is computed using ramp method 1.
         """
-        outedges = []
-        rampremaining = projectionlen
-        curPoint = p0  # start from the upper point of plunge
-        done = False
-
-        i = 0
-        while not done:
-            for i, redge in enumerate(rampedges):
-                if redge.Length >= rampremaining:
-                    # will reach end of ramp within this edge, needs to be split
-                    p1 = self.getSplitPoint(redge, rampremaining)
-                    splitEdge = Path.Geom.splitEdgeAt(redge, p1)
-                    Path.Log.debug(
-                        "Got split edge (index: {}) with lengths: {}, {}".format(
-                            i, splitEdge[0].Length, splitEdge[1].Length
-                        )
-                    )
-                    # ramp ends to the last point of first edge
-                    p1 = splitEdge[0].valueAt(splitEdge[0].LastParameter)
-                    deltaZ = splitEdge[0].Length / math.tan(math.radians(rampangle))
-                    p1.z = curPoint.z - deltaZ
-                    outedges.append(self.createRampEdge(splitEdge[0], curPoint, p1))
-                    curPoint.z = p1.z - deltaZ
-                    # now we have reached the end of the ramp. Reverse direction of ramp
-                    # start that by going back to the beginning of this splitEdge
-                    outedges.append(self.createRampEdge(splitEdge[0], p1, curPoint))
-
-                    done = True
-                    break
-                elif i == len(rampedges) - 1:
-                    # last ramp element but still did not reach the full length?
-                    # Probably a rounding issue on floats.
-                    p1 = redge.valueAt(redge.LastParameter)
-                    deltaZ = redge.Length / math.tan(math.radians(rampangle))
-                    p1.z = curPoint.z - deltaZ
-                    outedges.append(self.createRampEdge(redge, curPoint, p1))
-                    # and go back that edge
-                    newPoint = FreeCAD.Base.Vector(
-                        redge.valueAt(redge.FirstParameter).x,
-                        redge.valueAt(redge.FirstParameter).y,
-                        p1.z - deltaZ,
-                    )
-                    outedges.append(self.createRampEdge(redge, p1, newPoint))
-                    curPoint = newPoint
-                    done = True
-                else:
-                    deltaZ = redge.Length / math.tan(math.radians(rampangle))
-                    newPoint = FreeCAD.Base.Vector(
-                        redge.valueAt(redge.LastParameter).x,
-                        redge.valueAt(redge.LastParameter).y,
-                        curPoint.z - deltaZ,
-                    )
-                    outedges.append(self.createRampEdge(redge, curPoint, newPoint))
-                    curPoint = newPoint
-                    rampremaining = rampremaining - redge.Length
-
-        returnedges = self.getreversed(rampedges[:i])
-
-        # ramp backwards to the plunge position
-        for i, redge in enumerate(returnedges):
-            deltaZ = redge.Length / math.tan(math.radians(rampangle))
-            newPoint = FreeCAD.Base.Vector(
-                redge.valueAt(redge.LastParameter).x,
-                redge.valueAt(redge.LastParameter).y,
-                curPoint.z - deltaZ,
+        z_half = (p0[2] + rampedges[0].start_point[2]) / 2
+        r1_rampedges = [redge.clone(z_half, z_half) for redge in rampedges]
+        ramp, _ = self._createRampMethod1(r1_rampedges, p0, projectionlen, rampangle)
+        ramp_back = [
+            redge.clone(
+                2 * z_half - redge.start_point[2], 2 * z_half - redge.end_point[2], reverse=True
             )
-            if i == len(rampedges) - 1:
-                # make sure that the last point of the ramps ends to the original position
-                newPoint = redge.valueAt(redge.LastParameter)
-            outedges.append(self.createRampEdge(redge, curPoint, newPoint))
-            curPoint = newPoint
-
-        return [(e, False) for e in outedges]
+            for redge in ramp[::-1]
+        ]
+        return ramp + ramp_back
 
     def createRampMethod2(self, rampedges, p0, projectionlen, rampangle):
         """
         This method generates ramp with following pattern:
         1. Start from the original startpoint of the plunge
-        2. Calculate the distance on the path which is needed to implement the ramp
-           and travel that distance while maintaining start depth
-        3. Start ramping while traveling the original path backwards until reaching the
-           original plunge end point
+        2. Travel at start depth along the path, for a distance required for step 3
+        3. Ramp backwards along the path at rampangle, arriving exactly at the bottom of the plunge
         4. Continue with the original path
+
+        This path is computed using ramp method 1:
+        1. Move all edges up to the start height
+        2. Perform ramp method 1 from the bottom of the plunge *up* to the relocated path
+        3. Reverse the resulting path (both edge order and direction)
         """
-        outedges = []
-        rampremaining = projectionlen
-        curPoint = p0  # start from the upper point of plunge
-        if Path.Geom.pointsCoincide(
-            Path.Geom.xy(p0),
-            Path.Geom.xy(rampedges[-1].valueAt(rampedges[-1].LastParameter)),
-        ):
-            Path.Log.debug("The ramp forms a closed wire, needless to move on original Z height")
-        else:
-            for i, redge in enumerate(rampedges):
-                if redge.Length >= rampremaining:
-                    # this edge needs to be split
-                    p1 = self.getSplitPoint(redge, rampremaining)
-                    splitEdge = Path.Geom.splitEdgeAt(redge, p1)
-                    Path.Log.debug(
-                        "Got split edges with lengths: {}, {}".format(
-                            splitEdge[0].Length, splitEdge[1].Length
-                        )
-                    )
-                    # ramp starts at the last point of first edge
-                    p1 = splitEdge[0].valueAt(splitEdge[0].LastParameter)
-                    p1.z = p0.z
-                    outedges.append(self.createRampEdge(splitEdge[0], curPoint, p1))
-                    # now we have reached the beginning of the ramp.
-                    # start that by going to the beginning of this splitEdge
-                    deltaZ = splitEdge[0].Length / math.tan(math.radians(rampangle))
-                    newPoint = FreeCAD.Base.Vector(
-                        splitEdge[0].valueAt(splitEdge[0].FirstParameter).x,
-                        splitEdge[0].valueAt(splitEdge[0].FirstParameter).y,
-                        p1.z - deltaZ,
-                    )
-                    outedges.append(self.createRampEdge(splitEdge[0], p1, newPoint))
-                    curPoint = newPoint
-                elif i == len(rampedges) - 1:
-                    # last ramp element but still did not reach the full length?
-                    # Probably a rounding issue on floats.
-                    # Lets start the ramp anyway
-                    p1 = redge.valueAt(redge.LastParameter)
-                    p1.z = p0.z
-                    outedges.append(self.createRampEdge(redge, curPoint, p1))
-                    # and go back that edge
-                    deltaZ = redge.Length / math.tan(math.radians(rampangle))
-                    newPoint = FreeCAD.Base.Vector(
-                        redge.valueAt(redge.FirstParameter).x,
-                        redge.valueAt(redge.FirstParameter).y,
-                        p1.z - deltaZ,
-                    )
-                    outedges.append(self.createRampEdge(redge, p1, newPoint))
-                    curPoint = newPoint
-
-                else:
-                    # we are traveling on start depth
-                    newPoint = FreeCAD.Base.Vector(
-                        redge.valueAt(redge.LastParameter).x,
-                        redge.valueAt(redge.LastParameter).y,
-                        p0.z,
-                    )
-                    outedges.append(self.createRampEdge(redge, curPoint, newPoint))
-                    curPoint = newPoint
-                    rampremaining = rampremaining - redge.Length
-
-            # the last edge got handled previously
-            rampedges.pop()
-        # ramp backwards to the plunge position
-        for i, redge in enumerate(reversed(rampedges)):
-            deltaZ = redge.Length / math.tan(math.radians(rampangle))
-            newPoint = FreeCAD.Base.Vector(
-                redge.valueAt(redge.FirstParameter).x,
-                redge.valueAt(redge.FirstParameter).y,
-                curPoint.z - deltaZ,
-            )
-            if i == len(rampedges) - 1:
-                # make sure that the last point of the ramps ends to the original position
-                newPoint = redge.valueAt(redge.FirstParameter)
-            outedges.append(self.createRampEdge(redge, curPoint, newPoint))
-            curPoint = newPoint
-
-        return [(e, False) for e in outedges]
+        r1_rampedges = [redge.clone(p0[2], p0[2]) for redge in rampedges]
+        r1_p0 = rampedges[0].start_point
+        r1_rampangle = -rampangle
+        r1_result = self.createRampMethod1(r1_rampedges, r1_p0, projectionlen, r1_rampangle)
+        outedges = [redge.clone(reverse=True) for redge in r1_result[::-1]]
+        return outedges
 
     def createCommands(self, obj, edges):
         commands = [edge.command for edge in edges]
-
-        lastCmd = Path.Command("G0", {"X": 0.0, "Y": 0.0, "Z": 0.0})
-
         outCommands = []
 
         tc = PathDressup.toolController(obj.Base)
-
         horizFeed = tc.HorizFeed.Value
         vertFeed = tc.VertFeed.Value
-
-        if obj.RampFeedRate == "Horizontal Feed Rate":
-            rampFeed = tc.HorizFeed.Value
-        elif obj.RampFeedRate == "Vertical Feed Rate":
-            rampFeed = tc.VertFeed.Value
-        elif obj.RampFeedRate == "Ramp Feed Rate":
-            rampFeed = math.sqrt(pow(tc.VertFeed.Value, 2) + pow(tc.HorizFeed.Value, 2))
-        else:
-            rampFeed = obj.CustomFeedRate.Value
-
         horizRapid = tc.HorizRapid.Value
         vertRapid = tc.VertRapid.Value
 
+        if obj.RampFeedRate == "Horizontal Feed Rate":
+            rampFeed = horizFeed
+        elif obj.RampFeedRate == "Vertical Feed Rate":
+            rampFeed = vertFeed
+        elif obj.RampFeedRate == "Ramp Feed Rate":
+            rampFeed = math.sqrt(pow(vertFeed, 2) + pow(horizFeed, 2))
+        else:
+            rampFeed = obj.CustomFeedRate.Value
+
+        lastX = lastY = lastZ = 0
         for cmd in commands:
             params = cmd.Parameters
-            zVal = params.get("Z", None)
-            zVal2 = lastCmd.Parameters.get("Z", None)
+            x = params.get("X", lastX)
+            y = params.get("Y", lastY)
+            z = params.get("Z", lastZ)
 
-            xVal = params.get("X", None)
-            xVal2 = lastCmd.Parameters.get("X", None)
-
-            yVal2 = lastCmd.Parameters.get("Y", None)
-            yVal = params.get("Y", None)
-
-            zVal = zVal and round(zVal, 8)
-            zVal2 = zVal2 and round(zVal2, 8)
+            z = z and round(z, 8)
 
             if cmd.Name in ["G1", "G2", "G3", "G01", "G02", "G03"]:
-                if zVal is not None and zVal2 != zVal:
-                    if Path.Geom.isRoughly(xVal, xVal2) and Path.Geom.isRoughly(yVal, yVal2):
-                        # this is a straight plunge
+                if lastZ != z:
+                    if Path.Geom.isRoughly(x, lastX) and Path.Geom.isRoughly(y, lastY):
                         params["F"] = vertFeed
                     else:
-                        # this is a ramp
                         params["F"] = rampFeed
                 else:
                     params["F"] = horizFeed
-                lastCmd = cmd
 
             elif cmd.Name in ["G0", "G00"]:
-                if zVal is not None and zVal2 != zVal:
+                if lastZ != z:
                     params["F"] = vertRapid
                 else:
                     params["F"] = horizRapid
-                lastCmd = cmd
+
+            lastX, lastY, lastZ = x, y, z
 
             outCommands.append(Path.Command(cmd.Name, params))
 
