@@ -1489,10 +1489,10 @@ void TaskSketcherConstraints::change3DViewVisibilityToTrackFilter(bool filterEna
             return;
         }
     }
-    
+
     if (!constrIdsToCurrentSpace.empty()) {
         bool ret = doSetVirtualSpace(constrIdsToCurrentSpace, false);
-        
+
         if (!ret) {
             return;
         }
@@ -1515,7 +1515,7 @@ bool TaskSketcherConstraints::doSetVirtualSpace(const std::vector<int>& constrId
         stream << constrIds[i] << ",";
     }
     stream << constrIds[constrIds.size() - 1] << ']';
-    
+
     std::string constrIdList = stream.str();
 
     Gui::Command::openCommand(
@@ -1529,7 +1529,7 @@ bool TaskSketcherConstraints::doSetVirtualSpace(const std::vector<int>& constrId
     }
     catch (const Base::Exception& e) {
         Gui::Command::abortCommand();
-        
+
         Gui::TranslatedUserError(
             sketch, tr("Error"), tr("Impossible to update visibility tracking:") + QLatin1String(" ") + QLatin1String(e.what()));
         return false;
