@@ -222,7 +222,9 @@ class ObjectDressup:
 
         self.angle = obj.Angle
         self.method = obj.Method
-        self.wire, self.rapids = Path.Geom.wireForPath(PathUtils.getPathWithPlacement(obj.Base))
+        self.wire, self.rapids, self.rapid_indexes = Path.Geom.wireForPath(
+            PathUtils.getPathWithPlacement(obj.Base)
+        )
         if self.method in ["RampMethod1", "RampMethod2", "RampMethod3"]:
             self.outedges = self.generateRamps()
         else:
@@ -232,11 +234,8 @@ class ObjectDressup:
     def generateRamps(self, allowBounce=True):
         edges = self.wire.Edges
         outedges = []
-        for edge in edges:
-            israpid = False
-            for redge in self.rapids:
-                if Path.Geom.edgesMatch(edge, redge):
-                    israpid = True
+        for edgei, edge in enumerate(edges):
+            israpid = edgei in self.rapid_indexes
             if not israpid:
                 bb = edge.BoundBox
                 p0 = edge.Vertexes[0].Point
@@ -247,7 +246,7 @@ class ObjectDressup:
                     # check if above ignoreAbove parameter - do not generate ramp if it is
                     newEdge, cont = self.checkIgnoreAbove(edge)
                     if newEdge is not None:
-                        outedges.append(newEdge)
+                        outedges.append((newEdge, israpid))
                         p0.z = self.ignoreAbove
                     if cont:
                         continue
@@ -256,11 +255,11 @@ class ObjectDressup:
                     projectionlen = plungelen * math.tan(
                         math.radians(rampangle)
                     )  # length of the forthcoming ramp projected to XY plane
-                    Path.Log.debug(
-                        "Found plunge move at X:{} Y:{} From Z:{} to Z{}, length of ramp: {}".format(
-                            p0.x, p0.y, p0.z, p1.z, projectionlen
-                        )
-                    )
+                    # Path.Log.debug(
+                    #    "Found plunge move at X:{} Y:{} From Z:{} to Z{}, length of ramp: {}".format(
+                    #        p0.x, p0.y, p0.z, p1.z, projectionlen
+                    #    )
+                    # )
                     if self.method == "RampMethod3":
                         projectionlen = projectionlen / 2
 
@@ -269,7 +268,7 @@ class ObjectDressup:
                     covered = False
                     coveredlen = 0
                     rampedges = []
-                    i = edges.index(edge) + 1
+                    i = edgei + 1
                     while not covered:
                         candidate = edges[i]
                         cp0 = candidate.Vertexes[0].Point
@@ -288,7 +287,7 @@ class ObjectDressup:
                             break
                     if len(rampedges) == 0:
                         Path.Log.debug("No suitable edges for ramping, plunge will remain as such")
-                        outedges.append(edge)
+                        outedges.append((edge, israpid))
                     else:
                         if not covered:
                             if (not allowBounce) or self.method == "RampMethod2":
@@ -328,9 +327,9 @@ class ObjectDressup:
                                     self.createRampMethod3(rampedges, p0, projectionlen, rampangle)
                                 )
                 else:
-                    outedges.append(edge)
+                    outedges.append((edge, israpid))
             else:
-                outedges.append(edge)
+                outedges.append((edge, israpid))
         return outedges
 
     def generateHelix(self):
@@ -341,10 +340,7 @@ class ObjectDressup:
         i = 0
         while i < len(edges):
             edge = edges[i]
-            israpid = False
-            for redge in self.rapids:
-                if Path.Geom.edgesMatch(edge, redge):
-                    israpid = True
+            israpid = i in self.rapid_indexes
             if not israpid:
                 bb = edge.BoundBox
                 p0 = edge.Vertexes[0].Point
@@ -359,7 +355,7 @@ class ObjectDressup:
                     # check if above ignoreAbove parameter - do not generate helix if it is
                     newEdge, cont = self.checkIgnoreAbove(edge)
                     if newEdge is not None:
-                        outedges.append(newEdge)
+                        outedges.append((newEdge, israpid))
                         p0.z = self.ignoreAbove
                     if cont:
                         i = i + 1
@@ -387,7 +383,7 @@ class ObjectDressup:
                             break
                     if len(rampedges) == 0 or not loopFound:
                         Path.Log.debug("No suitable helix found")
-                        outedges.append(edge)
+                        outedges.append((edge, israpid))
                     else:
                         outedges.extend(self.createHelix(rampedges, p0, p1))
                         if not Path.Geom.isRoughly(p1.z, minZ):
@@ -396,9 +392,9 @@ class ObjectDressup:
                             i = j
 
                 else:
-                    outedges.append(edge)
+                    outedges.append((edge, israpid))
             else:
-                outedges.append(edge)
+                outedges.append((edge, israpid))
             i = i + 1
         return outedges
 
@@ -442,7 +438,7 @@ class ObjectDressup:
                 # on the last edge, force it to end to the endPoint
                 # this should happen automatically, but this avoids any rounding error
                 outedges.append(self.createRampEdge(redge, curPoint, endPoint))
-        return outedges
+        return [(e, False) for e in outedges]
 
     def createRampEdge(self, originalEdge, startPoint, endPoint):
         # Path.Log.debug("Create edge from [{},{},{}] to [{},{},{}]".format(startPoint.x,startPoint.y, startPoint.z, endPoint.x, endPoint.y, endPoint.z))
@@ -513,12 +509,12 @@ class ObjectDressup:
                     # will reach end of ramp within this edge, needs to be split
                     p1 = self.getSplitPoint(redge, rampremaining)
                     splitEdge = Path.Geom.splitEdgeAt(redge, p1)
-                    Path.Log.debug("Ramp remaining: {}".format(rampremaining))
-                    Path.Log.debug(
-                        "Got split edge (index: {}) (total len: {}) with lengths: {}, {}".format(
-                            i, redge.Length, splitEdge[0].Length, splitEdge[1].Length
-                        )
-                    )
+                    # Path.Log.debug("Ramp remaining: {}".format(rampremaining))
+                    # Path.Log.debug(
+                    #    "Got split edge (index: {}) (total len: {}) with lengths: {}, {}".format(
+                    #        i, redge.Length, splitEdge[0].Length, splitEdge[1].Length
+                    #    )
+                    # )
                     # ramp ends to the last point of first edge
                     p1 = splitEdge[0].valueAt(splitEdge[0].LastParameter)
                     outedges.append(self.createRampEdge(splitEdge[0], curPoint, p1))
@@ -553,7 +549,7 @@ class ObjectDressup:
             if not done:
                 # we did not reach the end of the ramp going this direction, lets reverse.
                 rampedges = self.getreversed(rampedges)
-                Path.Log.debug("Reversing")
+                # Path.Log.debug("Reversing")
                 if goingForward:
                     goingForward = False
                 else:
@@ -571,7 +567,7 @@ class ObjectDressup:
         # add the return edges:
         outedges.extend(returnedges)
 
-        return outedges
+        return [(e, False) for e in outedges]
 
     def createRampMethod3(self, rampedges, p0, projectionlen, rampangle):
         """
@@ -656,7 +652,7 @@ class ObjectDressup:
             outedges.append(self.createRampEdge(redge, curPoint, newPoint))
             curPoint = newPoint
 
-        return outedges
+        return [(e, False) for e in outedges]
 
     def createRampMethod2(self, rampedges, p0, projectionlen, rampangle):
         """
@@ -745,15 +741,11 @@ class ObjectDressup:
             outedges.append(self.createRampEdge(redge, curPoint, newPoint))
             curPoint = newPoint
 
-        return outedges
+        return [(e, False) for e in outedges]
 
     def createCommands(self, obj, edges):
         commands = []
-        for edge in edges:
-            israpid = False
-            for redge in self.rapids:
-                if Path.Geom.edgesMatch(edge, redge):
-                    israpid = True
+        for edgei, (edge, israpid) in enumerate(edges):
             if israpid:
                 v = edge.valueAt(edge.LastParameter)
                 commands.append(Path.Command("G0", {"X": v.x, "Y": v.y, "Z": v.z}))
