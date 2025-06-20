@@ -582,8 +582,7 @@ QWidget* TreeWidgetItemDelegate::createEditor(
 
     std::ostringstream str;
     str << "Change " << obj->getNameInDocument() << '.' << prop.getName();
-    App::GetApplication().setActiveTransaction(str.str().c_str());
-    FC_LOG("create editor transaction " << App::GetApplication().getActiveTransaction());
+    obj->getDocument()->openTransaction(str.str().c_str());
 
     DynamicQLineEdit *editor;
     if(TreeParams::getLabelExpression()) {
@@ -1795,7 +1794,7 @@ void TreeWidget::mouseDoubleClickEvent(QMouseEvent* event)
             if (commandText) {
                 bool inEditInit = Application::Instance->isInEdit(guidoc);
                 // App::AutoTransaction committer(commandText, true);
-                appdoc->setActiveTransaction(commandText);
+                appdoc->openTransaction(commandText);
 
                 if (!vp->doubleClicked())
                     QTreeWidget::mouseDoubleClickEvent(event);
