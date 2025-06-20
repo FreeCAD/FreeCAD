@@ -2996,7 +2996,7 @@ bool ViewProviderSketch::setEdit(int ModNum)
     // When double-clicking on the item for this sketch the
     // object unsets and sets its edit mode without closing
     // the task panel
-    Gui::TaskView::TaskDialog* dlg = Gui::Control().activeDialog();
+    Gui::TaskView::TaskDialog* dlg = Gui::Control().activeDialog(getDocument()->getDocument());
     TaskDlgEditSketch* sketchDlg = qobject_cast<TaskDlgEditSketch*>(dlg);
     if (sketchDlg && sketchDlg->getSketchView() != this)
         sketchDlg = nullptr;// another sketch left open its task panel
@@ -3008,7 +3008,7 @@ bool ViewProviderSketch::setEdit(int ModNum)
         msgBox.setDefaultButton(QMessageBox::Yes);
         int ret = msgBox.exec();
         if (ret == QMessageBox::Yes)
-            Gui::Control().closeDialog();
+            Gui::Control().closeDialog(getDocument()->getDocument());
         else
             return false;
     }
@@ -3346,7 +3346,7 @@ void ViewProviderSketch::unsetEdit(int ModNum)
     connectSolverUpdate.disconnect();
 
     // when pressing ESC make sure to close the dialog
-    Gui::Control().closeDialog();
+    Gui::Control().closeDialog(getDocument()->getDocument());
 
     // visibility automation
     try {
