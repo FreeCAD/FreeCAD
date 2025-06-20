@@ -522,9 +522,9 @@ void Command::testActive()
 
     if (!(eType & ForEdit)) { // special case for commands which are only in some edit modes active
 
-        if ((!Gui::Control().isAllowedAlterDocument()  && eType & AlterDoc)    ||
-            (!Gui::Control().isAllowedAlterView()      && eType & Alter3DView) ||
-            (!Gui::Control().isAllowedAlterSelection() && eType & AlterSelection)) {
+        if ((!Gui::Control().isAllowedAlterDocument(getDocument())  && eType & AlterDoc)    ||
+            (!Gui::Control().isAllowedAlterView(getDocument())      && eType & Alter3DView) ||
+            (!Gui::Control().isAllowedAlterSelection(getDocument()) && eType & AlterSelection)) {
              _pcAction->setEnabled(false);
             return;
         }

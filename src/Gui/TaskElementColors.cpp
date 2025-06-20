@@ -442,14 +442,14 @@ void ElementColors::onTopClicked(bool checked)
 void ElementColors::slotDeleteDocument(const Document& Doc)
 {
     if (d->vpDoc == &Doc || d->editDoc == Doc.getDocument()->getName()) {
-        Control().closeDialog();
+        Control().closeDialog(Doc.getDocument());
     }
 }
 
 void ElementColors::slotDeleteObject(const ViewProvider& obj)
 {
     if (d->vp == &obj) {
-        Control().closeDialog();
+        Control().closeDialog(d->vpDoc->getDocument());
     }
 }
 
