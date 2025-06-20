@@ -562,17 +562,21 @@ void TaskFeaturePick::slotDeletedObject(const Gui::ViewProviderDocumentObject& O
     }
 }
 
-void TaskFeaturePick::slotUndoDocument(const Gui::Document&)
+void TaskFeaturePick::slotUndoDocument(const Gui::Document& doc)
 {
     if (origins.empty()) {
-        QTimer::singleShot(100, &Gui::Control(), &Gui::ControlSingleton::closeDialog);
+        QTimer::singleShot(100, [&doc]() {
+            Gui::Control().closeDialog(doc.getDocument());
+        });
     }
 }
 
-void TaskFeaturePick::slotDeleteDocument(const Gui::Document&)
+void TaskFeaturePick::slotDeleteDocument(const Gui::Document& doc)
 {
     origins.clear();
-    QTimer::singleShot(100, &Gui::Control(), &Gui::ControlSingleton::closeDialog);
+    QTimer::singleShot(100, [&doc]() {
+        Gui::Control().closeDialog(doc.getDocument());
+    });
 }
 
 void TaskFeaturePick::showExternal(bool val)
