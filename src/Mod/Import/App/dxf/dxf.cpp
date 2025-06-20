@@ -489,6 +489,105 @@ void CDxfWrite::makeBlockSectionHead()
     }
 }
 
+// Add these new methods to the CDxfWrite implementation
+void CDxfWrite::writeBlock(const std::string& blockName, const double basePoint[3])
+{
+    if (m_version > 12) {
+        std::string blkRecordHandle = getBlkRecordHandle();
+        addBlockName(blockName, blkRecordHandle);
+    }
+
+    (*m_ssBlock) << "  0" << endl;
+    (*m_ssBlock) << "BLOCK" << endl;
+    (*m_ssBlock) << "  5" << endl;
+    m_currentBlock = getBlockHandle();
+    (*m_ssBlock) << m_currentBlock << endl;
+    if (m_version > 12) {
+        (*m_ssBlock) << "330" << endl;
+        (*m_ssBlock) << m_blkRecordList.back() << endl;  // Use the handle we just added
+        (*m_ssBlock) << "100" << endl;
+        (*m_ssBlock) << "AcDbEntity" << endl;
+    }
+    (*m_ssBlock) << "  8" << endl;
+    (*m_ssBlock) << "0" << endl;  // Blocks are defined on layer 0
+    if (m_version > 12) {
+        (*m_ssBlock) << "100" << endl;
+        (*m_ssBlock) << "AcDbBlockBegin" << endl;
+    }
+    (*m_ssBlock) << "  2" << endl;
+    (*m_ssBlock) << blockName << endl;
+    (*m_ssBlock) << " 70" << endl;
+    (*m_ssBlock) << "   0" << endl;  // Flags
+    (*m_ssBlock) << " 10" << endl;
+    (*m_ssBlock) << basePoint[0] << endl;
+    (*m_ssBlock) << " 20" << endl;
+    (*m_ssBlock) << basePoint[1] << endl;
+    (*m_ssBlock) << " 30" << endl;
+    (*m_ssBlock) << basePoint[2] << endl;
+    (*m_ssBlock) << "  3" << endl;
+    (*m_ssBlock) << blockName << endl;
+    (*m_ssBlock) << "  1" << endl;
+    (*m_ssBlock) << "" << endl;  // Path name (empty)
+}
+
+void CDxfWrite::writeEndBlock(const std::string& blockName)
+{
+    std::string endBlkHandle = getBlockHandle();
+    (*m_ssBlock) << "  0" << endl;
+    (*m_ssBlock) << "ENDBLK" << endl;
+    (*m_ssBlock) << "  5" << endl;
+    (*m_ssBlock) << endBlkHandle << endl;
+    if (m_version > 12) {
+        (*m_ssBlock) << "330" << endl;
+        (*m_ssBlock) << m_blkRecordList.back() << endl;  // Corresponds to the last BLOCK
+        (*m_ssBlock) << "100" << endl;
+        (*m_ssBlock) << "AcDbEntity" << endl;
+        (*m_ssBlock) << "100" << endl;
+        (*m_ssBlock) << "AcDbBlockEnd" << endl;
+    }
+}
+
+void CDxfWrite::writeInsert(const std::string& blockName,
+                            const double insertionPoint[3],
+                            double scale,
+                            double rotation)
+{
+    (*m_ssEntity) << "  0" << endl;
+    (*m_ssEntity) << "INSERT" << endl;
+    (*m_ssEntity) << "  5" << endl;
+    (*m_ssEntity) << getEntityHandle() << endl;
+    if (m_version > 12) {
+        (*m_ssEntity) << "330" << endl;
+        (*m_ssEntity) << m_saveModelSpaceHandle << endl;
+        (*m_ssEntity) << "100" << endl;
+        (*m_ssEntity) << "AcDbEntity" << endl;
+    }
+    (*m_ssEntity) << "  8" << endl;
+    (*m_ssEntity) << getLayerName() << endl;
+    (*m_ssEntity) << " 62" << endl;
+    (*m_ssEntity) << m_currentColor << endl;
+    if (m_version > 12) {
+        (*m_ssEntity) << "100" << endl;
+        (*m_ssEntity) << "AcDbBlockReference" << endl;
+    }
+    (*m_ssEntity) << "  2" << endl;
+    (*m_ssEntity) << blockName << endl;
+    (*m_ssEntity) << " 10" << endl;
+    (*m_ssEntity) << insertionPoint[0] << endl;
+    (*m_ssEntity) << " 20" << endl;
+    (*m_ssEntity) << insertionPoint[1] << endl;
+    (*m_ssEntity) << " 30" << endl;
+    (*m_ssEntity) << insertionPoint[2] << endl;
+    (*m_ssEntity) << " 41" << endl;
+    (*m_ssEntity) << scale << endl;  // X scale factor
+    (*m_ssEntity) << " 42" << endl;
+    (*m_ssEntity) << scale << endl;  // Y scale factor
+    (*m_ssEntity) << " 43" << endl;
+    (*m_ssEntity) << scale << endl;  // Z scale factor
+    (*m_ssEntity) << " 50" << endl;
+    (*m_ssEntity) << rotation << endl;  // Rotation angle
+}
+
 std::string CDxfWrite::getPlateFile(std::string fileSpec)
 {
     std::stringstream outString;
