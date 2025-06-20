@@ -54,9 +54,6 @@ else:
         return text
     # \endcond
 
-DEBUG = True
-
-
 def xml_escape(text: str, entities: dict[str, str] = None) -> str:
     """Escape text for XML.
 
