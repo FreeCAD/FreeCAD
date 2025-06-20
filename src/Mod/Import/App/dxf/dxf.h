@@ -477,6 +477,13 @@ public:
     void writeObjectsSection();
     void writeClassesSection();
 
+    void writeBlock(const std::string& blockName, const double basePoint[3]);
+    void writeEndBlock(const std::string& blockName);
+    void writeInsert(const std::string& blockName,
+                     const double insertionPoint[3],
+                     double scale,
+                     double rotation);
+
     void makeLayerTable();
     void makeBlockRecordTableHead();
     void makeBlockRecordTableBody();
