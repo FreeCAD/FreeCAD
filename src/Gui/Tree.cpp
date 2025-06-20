@@ -1833,7 +1833,7 @@ void TreeWidget::mouseDoubleClickEvent(QMouseEvent* event)
             if (commandText) {
                 bool inEditInit = Application::Instance->isInEdit(guidoc);
                 // App::AutoTransaction committer(commandText, true);
-                appdoc->setActiveTransaction(commandText);
+                appdoc->openTransaction(commandText);
 
                 if (!vp->doubleClicked())
                     QTreeWidget::mouseDoubleClickEvent(event);

@@ -387,12 +387,13 @@ void ViewProviderSubShapeBinder::updatePlacement(bool transaction) {
         return;
     }
 
-    App::GetApplication().setActiveTransaction("Sync binder");
+
+    getDocument()->openCommand("Sync binder");
     try {
         if (relative)
             self->Context.setValue(parent, parentSub.c_str());
         self->update(PartDesign::SubShapeBinder::UpdateForced);
-        App::GetApplication().closeActiveTransaction();
+        getDocument()->commitCommand();
         return;
     }
     catch (Base::Exception& e) {
@@ -406,7 +407,7 @@ void ViewProviderSubShapeBinder::updatePlacement(bool transaction) {
         else { str << "No OCCT Exception Message"; }
         FC_ERR(str.str());
     }
-    App::GetApplication().closeActiveTransaction(true);
+    getDocument()->abortCommand();
 }
 
 std::vector<App::DocumentObject*> ViewProviderSubShapeBinder::claimChildren() const {
