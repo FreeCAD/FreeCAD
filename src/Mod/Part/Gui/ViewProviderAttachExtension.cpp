@@ -26,6 +26,7 @@
 #include <Gui/ActionFunction.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/Control.h>
+#include <Gui/Document.h>
 #include <Mod/Part/App/AttachExtension.h>
 
 #include "ViewProviderAttachExtension.h"
@@ -105,12 +106,11 @@ void ViewProviderAttachExtension::extensionSetupContextMenu(QMenu* menu, QObject
 
 void ViewProviderAttachExtension::showAttachmentEditor(std::function<void()> onAccept, std::function<void()> onReject)
 {
-    if (Gui::Control().activeDialog()) {
-        Gui::Control().closeDialog();
+    if (Gui::Control().activeDialog(getExtendedViewProvider()->getDocument()->getDocument())) {
+        Gui::Control().closeDialog(getExtendedViewProvider()->getDocument()->getDocument());
     }
-
-    TaskDlgAttacher* task = new TaskDlgAttacher(getExtendedViewProvider(), true, onAccept, onReject);
-    Gui::Control().showDialog(task);
+    auto* task = new TaskDlgAttacher(getExtendedViewProvider(), true, onAccept, onReject);
+    Gui::Control().showDialog(task, getExtendedViewProvider()->getDocument()->getDocument());
 }
 
 namespace Gui {

@@ -224,7 +224,7 @@ bool ViewProviderDragger::setEdit(int ModNum)
     transformDragger->addFinishCallback(dragFinishCallback, this);
     transformDragger->addMotionCallback(dragMotionCallback, this);
 
-    Gui::Control().showDialog(getTransformDialog());
+    Gui::Control().showDialog(getTransformDialog(), getDocument()->getDocument());
 
     updateDraggerPosition();
 
@@ -237,7 +237,7 @@ void ViewProviderDragger::unsetEdit(int ModNum)
 
     transformDragger.reset();
 
-    Gui::Control().closeDialog();
+    Gui::Control().closeDialog(getDocument()->getDocument());
 }
 
 void ViewProviderDragger::setEditViewer(Gui::View3DInventorViewer* viewer, int ModNum)
