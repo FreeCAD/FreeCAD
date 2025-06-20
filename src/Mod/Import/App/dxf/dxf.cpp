@@ -1048,8 +1048,10 @@ void CDxfWrite::putText(const char* text,
         (*outStream) << "100" << endl;
         (*outStream) << "AcDbEntity" << endl;
     }
-    (*outStream) << "  8" << endl;
+    (*outStream) << "  8" << endl;  // Group code for layer name
     (*outStream) << getLayerName() << endl;
+    (*outStream) << " 62" << endl;  // Group code for color
+    (*outStream) << m_currentColor << endl;
     if (m_version > 12) {
         (*outStream) << "100" << endl;
         (*outStream) << "AcDbText" << endl;
@@ -1173,8 +1175,10 @@ void CDxfWrite::writeLinearDim(const double* textMidPoint,
         (*m_ssEntity) << "100" << endl;
         (*m_ssEntity) << "AcDbEntity" << endl;
     }
-    (*m_ssEntity) << "  8" << endl;
+    (*m_ssEntity) << "  8" << endl;  // Group code for layer name
     (*m_ssEntity) << getLayerName() << endl;
+    (*m_ssEntity) << " 62" << endl;  // Group code for color
+    (*m_ssEntity) << m_currentColor << endl;
     if (m_version > 12) {
         (*m_ssEntity) << "100" << endl;
         (*m_ssEntity) << "AcDbDimension" << endl;
