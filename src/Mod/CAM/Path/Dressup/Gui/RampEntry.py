@@ -339,6 +339,37 @@ class ObjectDressup:
         self.edges = []
         start_point = (0, 0, 0)
         for cmd in cmds:
+            # The previous implementation suppresses comments. I've mirrored this
+            # functionality to minimize the diff in output of this change
+            if cmd.Name.startswith("("):
+                continue
+
+            # The previous implementation skips repeat move commands. I've mirrored
+            # this functionaility to minimize the diff in output
+            params = cmd.Parameters
+            if (
+                cmd.Name in Path.Geom.CmdMoveAll
+                and len(self.edges) > 0
+                and cmd.Name == self.edges[-1].command.Name
+            ):
+                found_diff = False
+                last_params = self.edges[-1].command.Parameters
+                for k, v in params.items():
+                    if last_params.get(k, None) != v:
+                        found_diff = True
+                        break
+                if not found_diff:
+                    continue
+
+            # The previous implementation unnecessarily populates missing X/Y/Z
+            # values with the default values (i.e. the values from the previous
+            # command). I've mirrored this functionality to minimize the diff in
+            # output
+            if not "X" in params or not "Y" in params or not "Z" in params:
+                params["X"] = params.get("X", start_point[0])
+                params["Y"] = params.get("Y", start_point[1])
+                params["Z"] = params.get("Z", start_point[2])
+                cmd = Path.Command(cmd.Name, params)
             annotated = AnnotatedGCode(cmd, start_point)
             self.edges.append(annotated)
             start_point = annotated.end_point
@@ -349,6 +380,38 @@ class ObjectDressup:
         else:
             self.outedges = self.generateHelix()
         obj.Path = self.createCommands(obj, self.outedges)
+
+    def discretize(self, cmds):
+        out = []
+        for cmd in cmds:
+            if cmd.is_arc and cmd.end_point[2] != cmd.start_point[2]:
+                # In the previous implementation, createRampEdge constructs an off-axis arc as the ramp edge
+                # instead of a proper helix, then cmdsForEdge approximates the off-axis arc with line segments.
+                # I have temporarily reproduced code to implement this in order to make my output match
+                flat_edge = Path.Geom.edgeForCmd(
+                    cmd.command,
+                    FreeCAD.Base.Vector(
+                        cmd.start_point[0],
+                        cmd.start_point[1],
+                        cmd.command.Parameters["Z"],
+                    ),
+                )
+                edge = self.createRampEdge(
+                    flat_edge,
+                    FreeCAD.Base.Vector(cmd.start_point),
+                    FreeCAD.Base.Vector(cmd.end_point),
+                )
+                out_cmds = Path.Geom.cmdsForEdge(edge)
+                for out_cmd in out_cmds:
+                    out.append(
+                        AnnotatedGCode(
+                            out_cmd,
+                            out[-1].end_point if out else cmd.start_point,
+                        )
+                    )
+            else:
+                out.append(cmd)
+        return out
 
     def generateRamps(self, allowBounce=True):
         edges = self.edges
@@ -420,14 +483,22 @@ class ObjectDressup:
                         # Path.Log.debug("Doing ramp to edges: {}".format(rampedges))
                         if self.method == "RampMethod1":
                             outedges.extend(
-                                self.createRampMethod1(
-                                    rampedges, edge.start_point, projectionlen, rampangle
+                                self.discretize(
+                                    self.createRampMethod1(
+                                        rampedges, edge.start_point, projectionlen, rampangle
+                                    )
                                 )
                             )
                         elif self.method == "RampMethod2":
                             outedges.extend(
-                                self.createRampMethod2(
-                                    rampedges, edge.start_point, projectionlen, rampangle
+                                self.discretize(
+                                    self.createRampMethod2(
+                                        rampedges,
+                                        edge.start_point,
+                                        projectionlen,
+                                        rampangle,
+                                        not covered,
+                                    )
                                 )
                             )
                         else:
@@ -437,14 +508,18 @@ class ObjectDressup:
                             if (not covered) and allowBounce:
                                 projectionlen = projectionlen * 2
                                 outedges.extend(
-                                    self.createRampMethod1(
-                                        rampedges, edge.start_point, projectionlen, rampangle
+                                    self.discretize(
+                                        self.createRampMethod1(
+                                            rampedges, edge.start_point, projectionlen, rampangle
+                                        )
                                     )
                                 )
                             else:
                                 outedges.extend(
-                                    self.createRampMethod3(
-                                        rampedges, edge.start_point, projectionlen, rampangle
+                                    self.discretize(
+                                        self.createRampMethod3(
+                                            rampedges, edge.start_point, projectionlen, rampangle
+                                        )
                                     )
                                 )
                 else:
@@ -492,7 +567,9 @@ class ObjectDressup:
                         Path.Log.warn("No suitable helix found, leaving as a plunge")
                         outedges.append(edge)
                     else:
-                        outedges.extend(self.createHelix(rampedges, edge.start_point[2]))
+                        outedges.extend(
+                            self.discretize(self.createHelix(rampedges, edge.start_point[2]))
+                        )
                         if not Path.Geom.isRoughly(edge.end_point[2], minZ):
                             # the edges covered by the helix not handled again,
                             # unless reached the bottom height
@@ -557,6 +634,7 @@ class ObjectDressup:
 
         max_rise_over_run = 1 / math.tan(math.radians(self.angle))
         num_loops = math.ceil(rampheight / ramplen / max_rise_over_run)
+        num_loops = 1  # override computation to match behavior with previous implementation
         rampedges *= num_loops
         ramplen *= num_loops
 
@@ -627,7 +705,7 @@ class ObjectDressup:
         ramp, reset = self._createRampMethod1(rampedges, p0, projectionlen, rampangle)
         return ramp + reset
 
-    def _createRampMethod1(self, rampedges, p0, projectionlen, rampangle):
+    def _createRampMethod1(self, rampedges, p0, projectionlen, rampangle, force_loop=False):
         """
         Helper method for generating ramps. Computes ramp method 1, but returns the result in pieces to allow for implementing the other ramp methods.
         Returns (ramp, reset)
@@ -643,6 +721,11 @@ class ObjectDressup:
         i = 0  # current position = start of this edge. May be len(rampremaining) if going backwards
         while rampremaining > 0:
             redge = rampedges[i] if goingForward else reversed_edges[i - 1]
+            if force_loop and i == len(rampedges) - 1:
+                ramp.append(redge.clone(z))
+                i += 1
+                break
+
             # for i, redge in enumerate(rampedges):
             if redge.xy_length > rampremaining:
                 # will reach end of ramp within this edge, needs to be split
@@ -699,7 +782,7 @@ class ObjectDressup:
         ]
         return ramp + ramp_back
 
-    def createRampMethod2(self, rampedges, p0, projectionlen, rampangle):
+    def createRampMethod2(self, rampedges, p0, projectionlen, rampangle, force_loop):
         """
         This method generates ramp with following pattern:
         1. Start from the original startpoint of the plunge
@@ -715,7 +798,14 @@ class ObjectDressup:
         r1_rampedges = [redge.clone(p0[2], p0[2]) for redge in rampedges]
         r1_p0 = rampedges[0].start_point
         r1_rampangle = -rampangle
-        r1_result = self.createRampMethod1(r1_rampedges, r1_p0, projectionlen, r1_rampangle)
+        ramp, reset = self._createRampMethod1(
+            r1_rampedges, r1_p0, projectionlen, r1_rampangle, force_loop
+        )
+        reset_is_loop = (
+            abs(reset[0].start_point[0] - reset[-1].end_point[0]) < 1e-6
+            and abs(reset[0].start_point[1] - reset[-1].end_point[1]) < 1e-6
+        )
+        r1_result = ramp if reset_is_loop else ramp + reset
         outedges = [redge.clone(reverse=True) for redge in r1_result[::-1]]
         return outedges
 
