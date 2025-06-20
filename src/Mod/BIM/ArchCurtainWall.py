@@ -279,16 +279,52 @@ class CurtainWall(ArchComponent.Component):
             if not vdir.Length:
                 vdir = FreeCAD.Vector(0,0,1)
             vdir.normalize()
-            basevector = face.valueAt(fp[1],fp[3]).sub(face.valueAt(fp[0],fp[2]))
-            a = basevector.getAngle(vdir)
-            if (a <= math.pi/2+ANGLETOLERANCE) and (a >= math.pi/2-ANGLETOLERANCE):
-                facedir = True
-                vertsec = obj.VerticalSections
-                horizsec = obj.HorizontalSections
-            else:
-                facedir = False
-                vertsec = obj.HorizontalSections
-                horizsec = obj.VerticalSections
+
+            # Check if face if vertical in the first place
+            # Fix issue in 'Curtain wall vertical/horizontal mullion mix-up'
+            # https://github.com/FreeCAD/FreeCAD/issues/21845
+            #
+            face_plane = face.findPlane()  # Curve face (surface) seems return no Plane
+            if face_plane:
+                if -0.001 < face_plane.Axis[2] < 0.001:  # i.e. face is vertical (normal pointing horizon)
+                    faceVert = True
+                    # Support 'Swap Horizontal Vertical'
+                    # See issue 'Swap Horizontal Vertical does not work'
+                    # https://github.com/FreeCAD/FreeCAD/issues/21866
+                    if obj.SwapHorizontalVertical:
+                        vertsec = obj.HorizontalSections
+                        horizsec = obj.VerticalSections
+                    else:
+                        vertsec = obj.VerticalSections
+                        horizsec = obj.HorizontalSections
+                else:
+                    faceVert = False
+
+            # Guess algorithm if face is not vertical
+            if not faceVert:
+                # TODO 2025.6.15 : Need a more robust algorithm below
+                # See issue 'Curtain wall vertical/horizontal mullion mix-up'
+                # https://github.com/FreeCAD/FreeCAD/issues/21845
+                # Partially improved by checking 'if face is vertical' above
+                #
+                basevector = face.valueAt(fp[1],fp[3]).sub(face.valueAt(fp[0],fp[2]))
+                bv_angle = basevector.getAngle(vdir)
+                if (bv_angle <= math.pi/2+ANGLETOLERANCE) and (bv_angle >= math.pi/2-ANGLETOLERANCE):
+                    facedir = True
+                    if obj.SwapHorizontalVertical:
+                        vertsec = obj.HorizontalSections
+                        horizsec = obj.VerticalSections
+                    else:
+                        vertsec = obj.VerticalSections
+                        horizsec = obj.HorizontalSections
+                else:
+                    facedir = False
+                    if obj.SwapHorizontalVertical:
+                        vertsec = obj.VerticalSections
+                        horizsec = obj.HorizontalSections
+                    else:
+                        vertsec = obj.HorizontalSections
+                        horizsec = obj.VerticalSections
 
             hstep = (fp[1]-fp[0])
             if vertsec:
