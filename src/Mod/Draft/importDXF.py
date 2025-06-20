@@ -54,6 +54,7 @@ import sys
 import os
 import math
 import re
+import time
 import FreeCAD
 import Part
 import Draft
@@ -2810,6 +2811,8 @@ def open(filename):
     Use local variables, not global variables.
     """
     readPreferences()
+    total_start_time = time.perf_counter()
+
     if dxfUseLegacyImporter:
         getDXFlibs()
         if dxfReader:
@@ -2825,12 +2828,19 @@ def open(filename):
         doc = FreeCAD.newDocument(docname)
         doc.Label = docname
         FreeCAD.setActiveDocument(doc.Name)
+        stats = None
         if gui:
             import ImportGui
-            ImportGui.readDXF(filename)
+            stats = ImportGui.readDXF(filename)
         else:
             import Import
-            Import.readDXF(filename)
+            stats = Import.readDXF(filename)
+
+        total_end_time = time.perf_counter()
+        if stats:
+            reporter = DxfImportReporter(stats, total_end_time - total_start_time)
+            reporter.report_to_console()
+
         Draft.convert_draft_texts() # convert annotations to Draft texts
         doc.recompute()
 
@@ -2855,6 +2865,7 @@ def insert(filename, docname):
     Use local variables, not global variables.
     """
     readPreferences()
+    total_start_time = time.perf_counter()
     try:
         doc = FreeCAD.getDocument(docname)
     except NameError:
@@ -2867,12 +2878,19 @@ def insert(filename, docname):
         else:
             errorDXFLib(gui)
     else:
+        stats = None
         if gui:
             import ImportGui
-            ImportGui.readDXF(filename)
+            stats = ImportGui.readDXF(filename)
         else:
             import Import
-            Import.readDXF(filename)
+            stats = Import.readDXF(filename)
+
+        total_end_time = time.perf_counter()
+        if stats:
+            reporter = DxfImportReporter(stats, total_end_time - total_start_time)
+            reporter.report_to_console()
+
         Draft.convert_draft_texts() # convert annotations to Draft texts
         doc.recompute()
 
@@ -4197,3 +4215,88 @@ def readPreferences():
     dxfDefaultColor = getColor()
     dxfExportBlocks = params.get_param("dxfExportBlocks")
     dxfScaling = params.get_param("dxfScaling")
+
+
+class DxfImportReporter:
+    """Formats and reports statistics from a DXF import process."""
+    def __init__(self, stats_dict, total_time=0.0):
+        self.stats = stats_dict
+        self.total_time = total_time
+
+    def to_console_string(self):
+        """
+        Formats the statistics into a human-readable string for console output.
+        """
+        if not self.stats:
+            return "DXF Import: No statistics were returned from the importer.\n"
+
+        lines = ["\n--- DXF Import Summary ---"]
+
+        # General info
+        lines.append(f"DXF Version: {self.stats.get('dxfVersion', 'Unknown')}")
+        lines.append(f"File Encoding: {self.stats.get('dxfEncoding', 'Unknown')}")
+
+        # Scaling info
+        file_units = self.stats.get('fileUnits', 'Not specified')
+        source = self.stats.get('scalingSource', '')
+        if source:
+            lines.append(f"File Units: {file_units} (from {source})")
+        else:
+            lines.append(f"File Units: {file_units}")
+
+        manual_scaling = self.stats.get('importSettings', {}).get('Manual scaling factor', '1.0')
+        lines.append(f"Manual Scaling Factor: {manual_scaling}")
+
+        final_scaling = self.stats.get('finalScalingFactor', 1.0)
+        lines.append(f"Final Scaling: 1 DXF unit = {final_scaling:.4f} mm")
+        lines.append("")
+
+        # Timing
+        lines.append("Performance:")
+        cpp_time = self.stats.get('importTimeSeconds', 0.0)
+        lines.append(f"  - C++ Import Time: {cpp_time:.4f} seconds")
+        lines.append(f"  - Total Import Time: {self.total_time:.4f} seconds")
+        lines.append("")
+
+        # Settings
+        lines.append("Import Settings:")
+        settings = self.stats.get('importSettings', {})
+        if settings:
+            for key, value in sorted(settings.items()):
+                lines.append(f"  - {key}: {value}")
+        else:
+            lines.append("  (No settings recorded)")
+        lines.append("")
+
+        # Counts
+        lines.append("Entity Counts:")
+        total_read = 0
+        entities = self.stats.get('entityCounts', {})
+        if entities:
+            for key, value in sorted(entities.items()):
+                lines.append(f"  - {key}: {value}")
+                total_read += value
+            lines.append("----------------------------")
+            lines.append(f"  Total entities read: {total_read}")
+        else:
+            lines.append("  (No entities recorded)")
+        lines.append(f"FreeCAD objects created: {self.stats.get('totalEntitiesCreated', 0)}")
+        lines.append("")
+
+        lines.append("Unsupported Features:")
+        unsupported = self.stats.get('unsupportedFeatures', {})
+        if unsupported:
+            for key, value in sorted(unsupported.items()):
+                lines.append(f"  - {key}: {value} time(s)")
+        else:
+            lines.append("  (None)")
+
+        lines.append("--- End of Summary ---\n")
+        return "\n".join(lines)
+
+    def report_to_console(self):
+        """
+        Prints the formatted statistics string to the FreeCAD console.
+        """
+        output_string = self.to_console_string()
+        FCC.PrintMessage(output_string)
