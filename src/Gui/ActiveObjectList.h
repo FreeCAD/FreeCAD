@@ -27,6 +27,7 @@
 
 #include <map>
 #include <string>
+#include <optional>
 #include <Base/Type.h>
 #include <Gui/TreeItemMode.h>
 #include <FCGlobal.h>

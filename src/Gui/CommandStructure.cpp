@@ -128,32 +128,25 @@ void StdCmdGroup::activated(int iMsg)
     doCommand(Doc,"group.Label = '%s'", label.toUtf8().data());
     doCommand(Doc,"App.activeDocument().Tip = group");
 
-    // Get the currently active object in C++
+    // try to add the group to any active object that supports grouping (has GroupExtension)
     auto activeDoc = Gui::Application::Instance->activeDocument();
     if (activeDoc) {
         auto activeView = activeDoc->getActiveView();
         if (activeView) {
-            // Check for active objects in same priority order as Draft autogroup: NativeIFC -> Arch-> part
-            App::DocumentObject* activeObj = activeView->getActiveObject<App::DocumentObject*>("NativeIFC");
-            if (!activeObj) {
-                activeObj = activeView->getActiveObject<App::DocumentObject*>("Arch");
-            }
-            if (!activeObj) {
-                activeObj = activeView->getActiveObject<App::DocumentObject*>("part");
-            }
+            // find the first active object with GroupExtension
+            auto activeObjOpt = activeView->findActiveObjectWithExtension(
+                App::GroupExtension::getExtensionClassTypeId());
 
-            if (activeObj && activeObj->hasExtension(App::GroupExtension::getExtensionClassTypeId())) {
-                // Add the group to the active object if it supports grouping
+            if (activeObjOpt.has_value()) {
+                auto activeObj = activeObjOpt.value();
                 doCommand(Doc,
                     "active_obj = App.activeDocument().getObject('%s')\n"
-                    "if hasattr(active_obj, 'Group'):\n"
+                    "if active_obj and hasattr(active_obj, 'Group'):\n"
                     "    active_obj.Group = active_obj.Group + [group]",
                     activeObj->getNameInDocument());
             }
-            // If no active object or active object doesn't support grouping, 
-            // the group just stays at document root level
         }
-    }
+    } // if we have no active object, group will be added to root doc
 
     commitCommand();
 
