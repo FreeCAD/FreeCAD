@@ -1645,6 +1645,7 @@ void VectorListWidget::buttonClicked()
         setValue(data);
     });
 
+    Gui::adjustDialogPosition(dlg);
     dlg->exec();
 }
 

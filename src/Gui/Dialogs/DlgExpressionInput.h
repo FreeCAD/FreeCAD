@@ -77,7 +77,6 @@ public:
 
     QPoint expressionPosition() const;
     void   setExpressionInputSize(int width, int height);
-    void adjustDialogPos();
 
 public Q_SLOTS:
     void show();
@@ -123,8 +122,6 @@ private:
     std::unique_ptr<QTreeWidget> treeWidget;
     QPushButton* okBtn = nullptr;
     QPushButton* discardBtn = nullptr;
-
-    bool adjustingPosition = false;
 };
 
 }
