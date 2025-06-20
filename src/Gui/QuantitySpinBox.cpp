@@ -572,10 +572,17 @@ void QuantitySpinBox::userInput(const QString & text)
     else {
         d->validInput = false;
 
-        // we have to emit here signal explicitly as validator will not pass
-        // this value further but we want to check it to disable isSet flag if
-        // it has been set previously
-        Q_EMIT valueChanged(d->quantity.getValue());
+        // only emit signal to reset EditableDatumLabel if the input is truly empty or has
+        // no meaningful number don't emit for partially typed numbers like "71." which are
+        // temporarily invalid
+        const QString trimmedText = text.trimmed();
+        static const QRegularExpression partialNumberRegex(QStringLiteral(R"([+-]?(\d+)?(\.,\d*)?)"));
+        if (trimmedText.isEmpty() || !trimmedText.contains(partialNumberRegex)) {
+            // we have to emit here signal explicitly as validator will not pass
+            // this value further but we want to check it to disable isSet flag if
+            // it has been set previously
+            Q_EMIT valueChanged(d->quantity.getValue());
+        }
         return;
     }
 
