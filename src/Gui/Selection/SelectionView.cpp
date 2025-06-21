@@ -707,8 +707,9 @@ void SelectionView::onEnablePickList()
 
 // SelectionMenu implementation
 SelectionMenu::SelectionMenu(QWidget *parent)
-    : QMenu(parent)
+    : QMenu(parent), currentSelections(nullptr)
 {
+    connect(this, &QMenu::hovered, this, &SelectionMenu::onHover);
 }
 
 struct ElementInfo {
@@ -726,6 +727,9 @@ struct SubMenuInfo {
 PickData SelectionMenu::doPick(const std::vector<PickData> &sels)
 {
     clear();
+
+    // store reference to selections for use in onHover
+    currentSelections = &sels;
 
     std::map<std::string, std::vector<int>> typeGroups;
     
@@ -777,6 +781,8 @@ PickData SelectionMenu::doPick(const std::vector<PickData> &sels)
             QAction *action;
             if (typeMenu) {
                 action = typeMenu->addAction(icon, text);
+                // Connect submenu hovered signals as well
+                connect(typeMenu, &QMenu::hovered, this, &SelectionMenu::onHover);
             } else {
                 action = addAction(icon, text);
             }
@@ -809,12 +815,32 @@ PickData SelectionMenu::onPicked(QAction *picked, const std::vector<PickData> &s
 
 void SelectionMenu::onHover(QAction *action)
 {
-    if (!action)
+    if (!action || !currentSelections)
         return;
     
-    // For now, just clear preselection on hover
-    // Could be enhanced to preselect the hovered item
+    // Clear previous preselection
     Gui::Selection().rmvPreselect();
+
+    // Get the selection index from the action data
+    bool ok;
+    int index = action->data().toInt(&ok);
+    if (!ok || index < 0 || index >= (int)currentSelections->size())
+        return;
+
+    const auto &sel = (*currentSelections)[index];
+    if (!sel.obj)
+        return;
+
+    // extract just the element name (e.g., "Face1") from subName for preselection
+    std::string elementName = sel.element;
+    if (!elementName.empty()) {
+        // use TreeView as message source for menu hover
+        Gui::Selection().setPreselect(sel.docName.c_str(), 
+                                      sel.objName.c_str(), 
+                                      elementName.c_str(),
+                                      0, 0, 0, 
+                                      SelectionChanges::MsgSource::TreeView);
+    }
 }
 
 bool SelectionMenu::eventFilter(QObject *obj, QEvent *event)
