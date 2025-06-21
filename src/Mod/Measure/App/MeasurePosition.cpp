@@ -96,6 +96,14 @@ App::DocumentObjectExecReturn* MeasurePosition::execute()
     const App::DocumentObject* object = Element.getValue();
     const std::vector<std::string>& subElements = Element.getSubValues();
 
+    if (!object || !object->isValid()) {
+        return new App::DocumentObjectExecReturn("Submitted object is not valid");
+    }
+
+    if (subElements.empty()) {
+        return new App::DocumentObjectExecReturn("No geometry element picked");
+    }
+
     App::SubObjectT subject {object, subElements.front().c_str()};
     auto info = getMeasureInfo(subject);
 
