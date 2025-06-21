@@ -369,8 +369,6 @@ void DlgPreferencesImp::setupConnections()
     
     // Install event filter for keyboard navigation in search results
     searchResultsList->installEventFilter(this);
-    
-
 }
 
 void DlgPreferencesImp::setupPages()
@@ -1257,8 +1255,6 @@ void DlgPreferencesImp::performSearch(const QString& searchText)
     }
 }
 
-
-
 void DlgPreferencesImp::clearSearchHighlights()
 {
     // Restore original styles for all highlighted widgets
@@ -1271,8 +1267,6 @@ void DlgPreferencesImp::clearSearchHighlights()
     highlightedWidgets.clear();
     originalStyles.clear();
 }
-
-
 
 void DlgPreferencesImp::collectSearchResults(QWidget* widget, const QString& searchText, const QString& groupName, const QString& pageName, const QString& pageDisplayName, const QString& tabName)
 {
@@ -1501,7 +1495,9 @@ void DlgPreferencesImp::showSearchResultsList()
 
 QString DlgPreferencesImp::findGroupBoxForWidget(QWidget* widget)
 {
-    if (!widget) return QString();
+    if (!widget) {
+        return QString();
+    }
     
     // Walk up the parent hierarchy to find a QGroupBox
     QWidget* parent = widget->parentWidget();
@@ -1844,11 +1840,11 @@ bool DlgPreferencesImp::handlePopupKeyPress(QKeyEvent* keyEvent)
 
 bool DlgPreferencesImp::isClickOutsidePopup(QMouseEvent* mouseEvent)
 {
-    QPoint globalPos = mouseEvent->globalPos();
+    QPointF globalPos = mouseEvent->globalPosition();
     QRect searchBoxRect = QRect(ui->searchBox->mapToGlobal(QPoint(0, 0)), ui->searchBox->size());
     QRect popupRect = QRect(searchResultsList->mapToGlobal(QPoint(0, 0)), searchResultsList->size());
     
-    return !searchBoxRect.contains(globalPos) && !popupRect.contains(globalPos);
+    return !searchBoxRect.contains(globalPos.x(), globalPos.y()) && !popupRect.contains(globalPos.x(), globalPos.y());
 }
 
 #include "moc_DlgPreferencesImp.cpp"
