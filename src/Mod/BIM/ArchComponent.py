@@ -1353,19 +1353,16 @@ class ViewProviderComponent:
 
         #print(obj.Name," : updating ",prop)
         if prop == "Material":
-            if obj.Material and ( (not hasattr(obj.ViewObject,"UseMaterialColor")) or obj.ViewObject.UseMaterialColor):
+            if obj.Material and getattr(obj.ViewObject,"UseMaterialColor",True):
                 if hasattr(obj.Material,"Material"):
-                    if 'DiffuseColor' in obj.Material.Material:
-                        if "(" in obj.Material.Material['DiffuseColor']:
-                            c = tuple([float(f) for f in obj.Material.Material['DiffuseColor'].strip("()").split(",")])
-                            if obj.ViewObject:
-                                if obj.ViewObject.ShapeColor != c:
-                                    obj.ViewObject.ShapeColor = c
-                    if 'Transparency' in obj.Material.Material:
-                        t = int(obj.Material.Material['Transparency'])
-                        if obj.ViewObject:
-                            if obj.ViewObject.Transparency != t:
-                                obj.ViewObject.Transparency = t
+                    if "DiffuseColor" in obj.Material.Material:
+                        c = tuple([float(f) for f in obj.Material.Material["DiffuseColor"].strip("()").strip("[]").split(",")])
+                        if obj.ViewObject.ShapeColor != c:
+                            obj.ViewObject.ShapeColor = c
+                    if "Transparency" in obj.Material.Material:
+                        t = int(obj.Material.Material["Transparency"])
+                        if obj.ViewObject.Transparency != t:
+                            obj.ViewObject.Transparency = t
         elif prop == "Shape":
             if obj.Base:
                 if obj.Base.isDerivedFrom("Part::Compound"):
@@ -1375,11 +1372,7 @@ class ViewProviderComponent:
                             obj.ViewObject.update()
         elif prop == "CloneOf":
             if obj.CloneOf:
-                mat = None
-                if hasattr(obj,"Material"):
-                    if obj.Material:
-                        mat = obj.Material
-                if (not mat) and hasattr(obj.CloneOf.ViewObject,"DiffuseColor"):
+                if (not getattr(obj,"Material",None)) and hasattr(obj.CloneOf.ViewObject,"DiffuseColor"):
                     if obj.ViewObject.DiffuseColor != obj.CloneOf.ViewObject.DiffuseColor:
                         if len(obj.CloneOf.ViewObject.DiffuseColor) > 1:
                             obj.ViewObject.DiffuseColor = obj.CloneOf.ViewObject.DiffuseColor
