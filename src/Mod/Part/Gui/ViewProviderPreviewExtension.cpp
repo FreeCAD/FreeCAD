@@ -31,6 +31,7 @@
 #include <Inventor/nodes/SoDrawStyle.h>
 #include <Inventor/nodes/SoLightModel.h>
 #include <Inventor/nodes/SoMaterial.h>
+#include <Inventor/nodes/SoPickStyle.h>
 #include <Inventor/nodes/SoPolygonOffset.h>
 
 using namespace PartGui;
@@ -49,6 +50,10 @@ SoPreviewShape::SoPreviewShape()
     SO_NODE_ADD_FIELD(color, (1.f, 0.f, 1.f));
     SO_NODE_ADD_FIELD(transparency, (0.85f));
     SO_NODE_ADD_FIELD(lineWidth, (2.f));
+
+
+    auto pickStyle = new SoPickStyle;
+    pickStyle->style = SoPickStyle::UNPICKABLE;
 
     SoDrawStyle* solidLineStyle = new SoDrawStyle();
     solidLineStyle->lineWidth.connectFrom(&lineWidth);
@@ -96,6 +101,7 @@ SoPreviewShape::SoPreviewShape()
     annotation->addChild(polygonOffset);
     annotation->addChild(faceset);
 
+    SoSeparator::addChild(pickStyle);
     SoSeparator::addChild(solidLineStyle);
     SoSeparator::addChild(material);
     SoSeparator::addChild(coords);
