@@ -65,7 +65,7 @@ class CommandCreateSimulation:
         return {
             "Pixmap": "Assembly_CreateSimulation",
             "MenuText": QT_TRANSLATE_NOOP("Assembly_CreateSimulation", "Create Simulation"),
-            "Accel": "S",
+            "Accel": "V",
             "ToolTip": "<p>"
             + QT_TRANSLATE_NOOP(
                 "Assembly_CreateSimulation",
