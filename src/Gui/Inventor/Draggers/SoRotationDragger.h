@@ -33,6 +33,11 @@
 #include <Inventor/projectors/SbLineProjector.h>
 #include <Inventor/projectors/SbPlaneProjector.h>
 #include <Inventor/nodes/SoBaseColor.h>
+#include <Base/Vector3D.h>
+
+class SoTransform;
+class SoCalculator;
+class SoCoordinate3;
 
 namespace Gui
 {
@@ -46,16 +51,22 @@ namespace Gui
 class SoRotationDragger : public SoDragger
 {
     SO_KIT_HEADER(SoRotationDragger);
-    SO_KIT_CATALOG_ENTRY_HEADER(rotatorSwitch);
     SO_KIT_CATALOG_ENTRY_HEADER(rotator);
-    SO_KIT_CATALOG_ENTRY_HEADER(rotatorActive);
+    SO_KIT_CATALOG_ENTRY_HEADER(activeSwitch);
+    SO_KIT_CATALOG_ENTRY_HEADER(secondaryColor);
+
 public:
     static void initClass();
     SoRotationDragger();
+
     SoSFRotation rotation; //!< set from outside and used from outside for single precision.
     SoSFDouble rotationIncrement; //!< set from outside and used for rounding.
     SoSFInt32 rotationIncrementCount; //!< number of steps. used from outside.
-    SoSFColor color; //!< set from outside. non-active color.
+    SoSFColor activeColor;
+    SoSFFloat arcRadius;
+    SoSFFloat arcAngle; //!< in radians
+    SoSFFloat sphereRadius;
+    SoSFFloat arcThickness;
 
 protected:
     ~SoRotationDragger() override;
@@ -73,13 +84,51 @@ protected:
 
     SoFieldSensor fieldSensor;
     SbPlaneProjector projector;
-    float arcRadius;
 
 private:
-    void buildFirstInstance();
+    SoCalculator* calculator;
+    SoCoordinate3* coordinates = nullptr;
+    SoFieldSensor arcRadiusSensor;
+    SoFieldSensor arcAngleSensor;
+    constexpr static int segments = 10; //!< segments of the arc per arcAngle
+
     int roundIncrement(const float &radiansIn);
-    SoGroup* buildGeometry();
+    SoSeparator* buildGeometry();
+    static void arcSensorCB(void* userdata, SoSensor*);
+    SoBaseColor* buildActiveColor();
+    void setupGeometryCalculator();
+    void setupArcSensors();
+
     using inherited = SoDragger;
+};
+
+class SoRotationDraggerContainer: public SoInteractionKit
+{
+    SO_KIT_HEADER(SoRotationDraggerContainer);
+    SO_KIT_CATALOG_ENTRY_HEADER(draggerSwitch);
+    SO_KIT_CATALOG_ENTRY_HEADER(baseColor);
+    SO_KIT_CATALOG_ENTRY_HEADER(transform);
+    SO_KIT_CATALOG_ENTRY_HEADER(dragger);
+
+public:
+    static void initClass();
+    SoRotationDraggerContainer();
+
+    SoSFRotation rotation;
+    SoSFColor color;
+    SoSFVec3f translation;
+
+    void setVisibility(bool visible);
+    bool isVisible();
+    void setPointerDirection(const Base::Vector3d& dir);
+
+    SoRotationDragger* getDragger();
+
+private:
+    SoBaseColor* buildColor();
+    SoTransform* buildTransform();
+
+    using inherited = SoInteractionKit;
 };
 
 }

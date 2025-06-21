@@ -82,18 +82,6 @@ class GuiExport SoTransformDragger : public SoDragger
     SO_KIT_CATALOG_ENTRY_HEADER(yzPlanarTranslatorDragger);
     SO_KIT_CATALOG_ENTRY_HEADER(zxPlanarTranslatorDragger);
     // Rotator
-    SO_KIT_CATALOG_ENTRY_HEADER(xRotatorSwitch);
-    SO_KIT_CATALOG_ENTRY_HEADER(yRotatorSwitch);
-    SO_KIT_CATALOG_ENTRY_HEADER(zRotatorSwitch);
-    SO_KIT_CATALOG_ENTRY_HEADER(xRotatorSeparator);
-    SO_KIT_CATALOG_ENTRY_HEADER(yRotatorSeparator);
-    SO_KIT_CATALOG_ENTRY_HEADER(zRotatorSeparator);
-    SO_KIT_CATALOG_ENTRY_HEADER(xRotatorColor);
-    SO_KIT_CATALOG_ENTRY_HEADER(yRotatorColor);
-    SO_KIT_CATALOG_ENTRY_HEADER(zRotatorColor);
-    SO_KIT_CATALOG_ENTRY_HEADER(xRotatorRotation);
-    SO_KIT_CATALOG_ENTRY_HEADER(yRotatorRotation);
-    SO_KIT_CATALOG_ENTRY_HEADER(zRotatorRotation);
     SO_KIT_CATALOG_ENTRY_HEADER(xRotatorDragger);
     SO_KIT_CATALOG_ENTRY_HEADER(yRotatorDragger);
     SO_KIT_CATALOG_ENTRY_HEADER(zRotatorDragger);
@@ -168,9 +156,6 @@ public:
     bool isShownRotationX(); //!< is x rotation dragger shown.
     bool isShownRotationY(); //!< is x rotation dragger shown.
     bool isShownRotationZ(); //!< is x rotation dragger shown.
-    bool isHiddenRotationX(); //!< is x rotation dragger hidden.
-    bool isHiddenRotationY(); //!< is x rotation dragger hidden.
-    bool isHiddenRotationZ(); //!< is x rotation dragger hidden.
     //@}
 
     void GLRender(SoGLRenderAction * action) override;
@@ -202,6 +187,8 @@ private:
 
     void setupTranslationDraggers();
     void setupTranslationDragger(const std::string& name, SoSFString* label, SoSFInt32& incrementCount, const SbVec3d& rotDir);
+    void setupRotationDraggers();
+    void setupRotationDragger(const std::string& name, SoSFInt32& incrementCount);
 
     using inherited = SoDragger;
 };

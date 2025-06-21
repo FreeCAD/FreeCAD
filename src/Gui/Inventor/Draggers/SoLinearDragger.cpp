@@ -84,7 +84,6 @@ SoLinearDragger::SoLinearDragger()
     FC_ADD_CATALOG_ENTRY(secondaryColor, SoBaseColor, activeSwitch);
     FC_ADD_CATALOG_ENTRY(coneSeparator, SoSeparator, translator);
     FC_ADD_CATALOG_ENTRY(cylinderSeparator, SoSeparator, translator);
-    // For some reason changing the whichChild parameter of this switch doesn't hide the label
     FC_ADD_CATALOG_ENTRY(labelSwitch, SoSwitch, translator);
     FC_ADD_CATALOG_ENTRY(labelSeparator, SoSeparator, labelSwitch);
 
@@ -101,10 +100,10 @@ SoLinearDragger::SoLinearDragger()
     SO_KIT_INIT_INSTANCE();
 
     setupGeometryCalculator();
-    SoInteractionKit::setPart("cylinderSeparator", buildCylinderGeometry());
-    SoInteractionKit::setPart("coneSeparator", buildConeGeometry());
-    SoInteractionKit::setPart("labelSeparator", buildLabelGeometry());
-    SoInteractionKit::setPart("secondaryColor", buildActiveColor());
+    setPart("cylinderSeparator", buildCylinderGeometry());
+    setPart("coneSeparator", buildConeGeometry());
+    setPart("labelSeparator", buildLabelGeometry());
+    setPart("secondaryColor", buildActiveColor());
 
     FC_SET_SWITCH("activeSwitch", SO_SWITCH_NONE);
     setLabelVisibility(true);
@@ -427,8 +426,8 @@ SoLinearDraggerContainer::SoLinearDraggerContainer()
 
     SO_KIT_INIT_INSTANCE();
 
-    SoInteractionKit::setPart("baseColor", buildColor());
-    SoInteractionKit::setPart("transform", buildTransform());
+    setPart("baseColor", buildColor());
+    setPart("transform", buildTransform());
 
     setVisibility(true);
 }
