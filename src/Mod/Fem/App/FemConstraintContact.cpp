@@ -64,7 +64,7 @@ ConstraintContact::ConstraintContact()
                       App::PropertyType(App::Prop_None),
                       "Enable thermal contact");
     ADD_PROPERTY_TYPE(ThermalContactConductance,
-                      (std::vector<std::string>{}),
+                      (std::vector<std::string> {}),
                       "ConstraintContact",
                       App::PropertyType(App::Prop_None),
                       "Thermal contact conductance");

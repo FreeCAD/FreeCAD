@@ -92,5 +92,5 @@ def write_constraint(f, femobj, contact_obj, ccxwriter):
     if contact_obj.EnableThermalContact:
         f.write("*GAP CONDUCTANCE\n")
         for value in contact_obj.ThermalContactConductance:
-        	f.write(f"{value}\n")
+            f.write(f"{value}\n")
         f.write("\n")
