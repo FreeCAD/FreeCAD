@@ -983,30 +983,34 @@ class ObjectSlot(PathOp.ObjectOp):
         last_edge_index = len(shape.Edges) - 1
 
         for i in range(len(shape.Edges)):
-            if i < last_edge_index:
-                next_i = i + 1
-                edge_a_info = edge_info_list[i]
-                edge_b_info = edge_info_list[next_i]
-                angle_a = edge_a_info[2]
-                angle_b = edge_b_info[2]
+            if i >= last_edge_index:
+                continue
 
-                if abs(angle_a - angle_b) < 1e-8:  # consider improving with normalized angle diff
-                    edge_a = shape.Edges[edge_a_info[0]]
-                    edge_b = shape.Edges[edge_b_info[0]]
+            next_i = i + 1
+            edge_a_info = edge_info_list[i]
+            edge_b_info = edge_info_list[next_i]
+            angle_a = edge_a_info[2]
+            angle_b = edge_b_info[2]
 
-                    debug_type_id = None
-                    if edge_a.Curve.TypeId not in line_types:
-                        debug_type_id = edge_a.Curve.TypeId
-                    elif edge_b.Curve.TypeId not in line_types:
-                        debug_type_id = edge_b.Curve.TypeId
+            if abs(angle_a - angle_b) >= 1e-6:  # consider improving with normalized angle diff
+                continue
 
-                    if debug_type_id:
-                        Path.Log.debug(f"Erroneous Curve.TypeId: {debug_type_id}")
-                    else:
-                        parallel_pairs.append((edge_a, edge_b))
-                        parallel_flags[edge_a_info[0]] = current_flag
-                        parallel_flags[edge_b_info[0]] = current_flag
-                        current_flag += 1
+            edge_a = shape.Edges[edge_a_info[0]]
+            edge_b = shape.Edges[edge_b_info[0]]
+
+            debug_type_id = None
+            if edge_a.Curve.TypeId not in line_types:
+                debug_type_id = edge_a.Curve.TypeId
+            elif edge_b.Curve.TypeId not in line_types:
+                debug_type_id = edge_b.Curve.TypeId
+
+            if debug_type_id:
+                Path.Log.debug(f"Erroneous Curve.TypeId: {debug_type_id}")
+            else:
+                parallel_pairs.append((edge_a, edge_b))
+                parallel_flags[edge_a_info[0]] = current_flag
+                parallel_flags[edge_b_info[0]] = current_flag
+                current_flag += 1
 
         pair_count = len(parallel_pairs)
         if pair_count > 1:
@@ -1252,32 +1256,24 @@ class ObjectSlot(PathOp.ObjectOp):
         return FreeCAD.Vector(snap(V.x), snap(V.y), snap(V.z))
 
     def _getLowestPoint(self, shape):
-        """Return the average XY of the lowest Z vertices in the shape."""
-        verts = shape.Vertexes
-        zmin = min(v.Z for v in verts)
-        lowest = [v for v in verts if v.Z == zmin]
+        """Return the average XY of the vertices with the lowest Z value."""
+        vertices = shape.Vertexes
+        lowest_z = min(v.Z for v in vertices)
+        lowest_vertices = [v for v in vertices if v.Z == lowest_z]
 
-        if len(lowest) > 1:
-            avgX = sum(v.X for v in lowest) / len(lowest)
-            avgY = sum(v.Y for v in lowest) / len(lowest)
-            return FreeCAD.Vector(avgX, avgY, zmin)
-        else:
-            v = lowest[0]
-            return FreeCAD.Vector(v.X, v.Y, v.Z)
+        avg_x = sum(v.X for v in lowest_vertices) / len(lowest_vertices)
+        avg_y = sum(v.Y for v in lowest_vertices) / len(lowest_vertices)
+        return FreeCAD.Vector(avg_x, avg_y, lowest_z)
 
     def _getHighestPoint(self, shape):
-        """Return the average XY of the highest Z vertices in the shape."""
-        verts = shape.Vertexes
-        zmax = max(v.Z for v in verts)
-        highest = [v for v in verts if v.Z == zmax]
+        """Return the average XY of the vertices with the highest Z value."""
+        vertices = shape.Vertexes
+        highest_z = max(v.Z for v in vertices)
+        highest_vertices = [v for v in vertices if v.Z == highest_z]
 
-        if len(highest) > 1:
-            avgX = sum(v.X for v in highest) / len(highest)
-            avgY = sum(v.Y for v in highest) / len(highest)
-            return FreeCAD.Vector(avgX, avgY, zmax)
-        else:
-            v = highest[0]
-            return FreeCAD.Vector(v.X, v.Y, v.Z)
+        avg_x = sum(v.X for v in highest_vertices) / len(highest_vertices)
+        avg_y = sum(v.Y for v in highest_vertices) / len(highest_vertices)
+        return FreeCAD.Vector(avg_x, avg_y, highest_z)
 
     def _processFeature(self, obj, shape, sub, pNum):
         """Analyze a shape and return a tuple: (working point, slope, category)."""
@@ -1611,13 +1607,11 @@ class ObjectSlot(PathOp.ObjectOp):
             return False
 
         wire = slices[0]
-        if wire.isClosed():
-            face = Part.Face(wire)
-            if face.Area > 0:
-                # Align face Z with original shape
-                z_offset = shape.BoundBox.ZMin - face.BoundBox.ZMin
-                face.translate(FreeCAD.Vector(0, 0, z_offset))
-                return ("Face", face)
+        if (wire := slices[0]).isClosed() and (face := Part.Face(wire)) > 0:
+            # Align face Z with original shape
+            z_offset = shape.BoundBox.ZMin - face.BoundBox.ZMin
+            face.translate(FreeCAD.Vector(0, 0, z_offset))
+            return ("Face", face)
         return ("Wire", wire)
 
     def _makeReference1Enumerations(self, sub, single=False):
