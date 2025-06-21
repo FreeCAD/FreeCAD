@@ -54,7 +54,13 @@ class CommandVertexCreationGroup:
         return 0
 
     def GetResources(self):
-        return {'Pixmap':'TechDraw_ExtensionVertexAtIntersection'}
+        """Return a dictionary with data that will be used by the button or menu item."""
+        return {'Pixmap': 'TechDraw_ExtensionVertexAtIntersection.svg',
+                'Accel': "",
+                'MenuText': QT_TRANSLATE_NOOP("TechDraw_ExtensionVertexAtIntersection","Add Cosmetic Intersection Vertex(es)"),
+                'ToolTip': QT_TRANSLATE_NOOP("TechDraw_ExtensionVertexAtIntersection", "Add cosmetic vertex(es) at the intersection(s) of selected edges:<br>\
+                        - Select two edges<br>\
+                        - Click this tool")}
 
     def IsActive(self):
         """Return True when the command should be active or False when it should be disabled (greyed)."""
