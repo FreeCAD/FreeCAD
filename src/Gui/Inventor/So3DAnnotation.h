@@ -26,6 +26,7 @@
 #include <Inventor/nodes/SoSeparator.h>
 #include <Inventor/elements/SoElement.h>
 #include <FCGlobal.h>
+#include <queue>
 
 namespace Gui
 {

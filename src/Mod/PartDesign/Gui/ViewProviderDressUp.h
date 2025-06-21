@@ -40,7 +40,9 @@ public:
     /// constructor
     ViewProviderDressUp()  = default;
     /// destructor
-    ~ViewProviderDressUp() override         = default;
+    ~ViewProviderDressUp() override = default;
+
+    void attach(App::DocumentObject* pcObject) override;
 
     /// grouping handling
     void setupContextMenu(QMenu*, QObject*, const char*) override;

@@ -28,6 +28,10 @@
 # include <QAction>
 # include <QApplication>
 # include <QMenu>
+# include <Inventor/nodes/SoSeparator.h>
+# include <Inventor/nodes/SoPickStyle.h>
+# include <Inventor/nodes/SoTransform.h>
+# include <BRep_Builder.hxx>
 #endif
 
 #include <Base/Exception.h>
@@ -37,14 +41,33 @@
 #include <Gui/CommandT.h>
 #include <Gui/Control.h>
 #include <Gui/Document.h>
+#include <Gui/Selection/SoFCUnifiedSelection.h>
+#include <Gui/Inventor/So3DAnnotation.h>
 #include <Gui/MainWindow.h>
 #include <Mod/PartDesign/App/Body.h>
-#include <Mod/PartDesign/App/Feature.h>
+#include <Mod/Part/Gui/ViewProvider.h>
+#include <Mod/Part/Gui/ViewProviderExt.h>
 
 #include "TaskFeatureParameters.h"
 
 #include "ViewProvider.h"
 #include "ViewProviderPy.h"
+
+#include <Inventor/nodes/SoCoordinate3.h>
+#include <Inventor/nodes/SoDepthBuffer.h>
+#include <Inventor/nodes/SoDrawStyle.h>
+#include <Inventor/nodes/SoLightModel.h>
+#include <Inventor/nodes/SoMaterial.h>
+#include <Inventor/nodes/SoMaterialBinding.h>
+#include <Inventor/nodes/SoNormal.h>
+#include <Inventor/nodes/SoPolygonOffset.h>
+#include <Mod/Part/Gui/SoBrepEdgeSet.h>
+#include <Mod/Part/Gui/SoBrepFaceSet.h>
+#include <Mod/Part/Gui/SoBrepPointSet.h>
+#include <Mod/Part/Gui/ViewProviderPreviewExtension.h>
+#include <Mod/PartDesign/App/FeatureAddSub.h>
+#include <Mod/PartDesign/App/FeatureDressUp.h>
+
 
 using namespace PartDesignGui;
 
@@ -53,10 +76,31 @@ PROPERTY_SOURCE_WITH_EXTENSIONS(PartDesignGui::ViewProvider, PartGui::ViewProvid
 ViewProvider::ViewProvider()
 {
     ViewProviderSuppressibleExtension::initExtension(this);
-    PartGui::ViewProviderAttachExtension::initExtension(this);
+    ViewProviderAttachExtension::initExtension(this);
+    ViewProviderPreviewExtension::initExtension(this);
 }
 
 ViewProvider::~ViewProvider() = default;
+
+void ViewProvider::beforeDelete()
+{
+    makePreviewVisible(false);
+    ViewProviderPart::beforeDelete();
+}
+
+void ViewProvider::attach(App::DocumentObject* pcObject)
+{
+    ViewProviderPart::attach(pcObject);
+
+    if (auto addSubFeature = getObject<PartDesign::FeatureAddSub>()) {
+        const Base::Color green(0.0F, 1.0F, 0.6F);
+        const Base::Color red(1.0F, 0.0F, 0.0F);
+
+        bool isAdditive = addSubFeature->getAddSubType() == PartDesign::FeatureAddSub::Additive;
+
+        PreviewColor.setValue(isAdditive ? green : red);
+    }
+}
 
 bool ViewProvider::doubleClicked()
 {
@@ -107,13 +151,17 @@ bool ViewProvider::setEdit(int ModNum)
             msgBox.setInformativeText(QObject::tr("Do you want to close this dialog?"));
             msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
             msgBox.setDefaultButton(QMessageBox::Yes);
-            int ret = msgBox.exec();
-            if (ret == QMessageBox::Yes) {
+
+            if (msgBox.exec() == QMessageBox::Yes) {
                 Gui::Control().reject();
             } else {
                 return false;
             }
         }
+
+        previouslyShownViewProvider = dynamic_cast<ViewProvider*>(
+            Gui::Application::Instance->getViewProvider(getBodyViewProvider()->getShownFeature())
+        );
 
         // clear the selection (convenience)
         Gui::Selection().clearSelection();
@@ -129,6 +177,7 @@ bool ViewProvider::setEdit(int ModNum)
             }
         }
 
+        makePreviewVisible(true);
         Gui::Control().showDialog(featureDlg);
         return true;
     } else {
@@ -144,37 +193,31 @@ TaskDlgFeatureParameters *ViewProvider::getEditDialog() {
 
 void ViewProvider::unsetEdit(int ModNum)
 {
+    makePreviewVisible(false);
+
     // return to the WB we were in before editing the PartDesign feature
-    if (!oldWb.empty())
+    if (!oldWb.empty()) {
         Gui::Command::assureWorkbench(oldWb.c_str());
+    }
+
+    // ensure that after edit we still show the same feature
+    if (previouslyShownViewProvider) {
+        previouslyShownViewProvider->show();
+    }
 
     if (ModNum == ViewProvider::Default) {
         // when pressing ESC make sure to close the dialog
-#if 0
-        PartDesign::Body* activeBody = Gui::Application::Instance->activeView()->getActiveObject<PartDesign::Body*>(PDBODYKEY);
-#endif
         Gui::Control().closeDialog();
-#if 0
-        if ((activeBody != NULL) && (oldTip != NULL)) {
-            Gui::Selection().clearSelection();
-            Gui::Selection().addSelection(oldTip->getDocument()->getName(), oldTip->getNameInDocument());
-            Gui::Command::doCommand(Gui::Command::Gui,"FreeCADGui.runCommand('PartDesign_MoveTip')");
-        }
-#endif
-        oldTip = nullptr;
     }
     else {
         PartGui::ViewProviderPart::unsetEdit(ModNum);
-        oldTip = nullptr;
     }
 }
 
 void ViewProvider::updateData(const App::Property* prop)
 {
-    // TODO What's that? (2015-07-24, Fat-Zer)
-    if (prop->is<Part::PropertyPartShape>() &&
-        strcmp(prop->getName(),"AddSubShape") == 0) {
-        return;
+    if (strcmp(prop->getName(), "PreviewShape") == 0) {
+        updatePreview();
     }
 
     inherited::updateData(prop);
@@ -226,11 +269,11 @@ void ViewProvider::setTipIcon(bool onoff) {
     signalChangeIcon();
 }
 
-QIcon ViewProvider::mergeColorfulOverlayIcons (const QIcon & orig) const
+QIcon ViewProvider::mergeColorfulOverlayIcons(const QIcon& orig) const
 {
     QIcon mergedicon = orig;
 
-    if(isSetTipIcon) {
+    if (isSetTipIcon) {
         static QPixmap px(Gui::BitmapFactory().pixmapFromSvg("PartDesign_Overlay_Tip", QSize(10, 10)));
         mergedicon = Gui::BitmapFactoryInst::mergePixmap(mergedicon, px, Gui::BitmapFactoryInst::BottomRight);
     }
@@ -268,10 +311,21 @@ bool ViewProvider::onDelete(const std::vector<std::string>&)
         //
         // fixes (#3084)
 
-        FCMD_OBJ_CMD(body,"removeObject(" << Gui::Command::getObjectCmd(feature) << ')');
+        FCMD_OBJ_CMD(body, "removeObject(" << Gui::Command::getObjectCmd(feature) << ')');
     }
 
     return true;
+}
+
+Part::TopoShape ViewProvider::getPreviewShape() const
+{
+    if (auto feature = dynamic_cast<PartDesign::Feature*>(getObject())) {
+        // Feature is responsible for generating proper shape and this ViewProvider
+        // is using it instead of more normal `Shape` property.
+        return feature->PreviewShape.getShape();
+    }
+
+    return {};
 }
 
 void ViewProvider::setBodyMode(bool bodymode) {
@@ -332,7 +386,41 @@ ViewProviderBody* ViewProvider::getBodyViewProvider() {
     return nullptr;
 }
 
+void ViewProvider::makePreviewVisible(bool enable)
+{
+    PartDesign::Feature* feature {getObject<PartDesign::Feature>()};
+    PartDesign::Feature* baseFeature { nullptr };
 
+    ViewProvider* baseFeatureViewProvider { nullptr };
+
+    if (!feature) {
+        return;
+    }
+
+    baseFeature = dynamic_cast<PartDesign::Feature*>(feature->BaseFeature.getValue());
+    if (baseFeature) {
+        baseFeatureViewProvider = freecad_cast<ViewProvider*>(Gui::Application::Instance->getViewProvider(baseFeature));
+    }
+
+    if (!baseFeatureViewProvider) {
+        baseFeatureViewProvider = this;
+    }
+
+    if (enable) {
+        feature->updatePreviewShape();
+
+        baseFeatureViewProvider->show();
+        hide();
+
+        if (getAnnotation()->findChild(pcPreviewRoot) < 0) {
+            getAnnotation()->addChild(pcPreviewRoot);
+        }
+    } else {
+        baseFeatureViewProvider->hide();
+        show();
+        getAnnotation()->removeChild(pcPreviewRoot);
+    }
+}
 
 namespace Gui {
 /// @cond DOXERR
