@@ -34,6 +34,8 @@
 #include <Inventor/projectors/SbPlaneProjector.h>
 #include <Inventor/nodes/SoBaseColor.h>
 
+class SoTransform;
+
 namespace Gui
 {
 /*! @brief Rotation Dragger.
@@ -46,16 +48,18 @@ namespace Gui
 class SoRotationDragger : public SoDragger
 {
     SO_KIT_HEADER(SoRotationDragger);
-    SO_KIT_CATALOG_ENTRY_HEADER(rotatorSwitch);
     SO_KIT_CATALOG_ENTRY_HEADER(rotator);
-    SO_KIT_CATALOG_ENTRY_HEADER(rotatorActive);
+    SO_KIT_CATALOG_ENTRY_HEADER(activeSwitch);
+    SO_KIT_CATALOG_ENTRY_HEADER(secondaryColor);
+
 public:
     static void initClass();
     SoRotationDragger();
     SoSFRotation rotation; //!< set from outside and used from outside for single precision.
     SoSFDouble rotationIncrement; //!< set from outside and used for rounding.
     SoSFInt32 rotationIncrementCount; //!< number of steps. used from outside.
-    SoSFColor color; //!< set from outside. non-active color.
+    SoSFFloat arcRadius;
+    SoSFColor activeColor;
 
 protected:
     ~SoRotationDragger() override;
@@ -73,13 +77,42 @@ protected:
 
     SoFieldSensor fieldSensor;
     SbPlaneProjector projector;
-    float arcRadius;
 
 private:
     void buildFirstInstance();
     int roundIncrement(const float &radiansIn);
-    SoGroup* buildGeometry();
+    SoSeparator* buildGeometry();
+    SoBaseColor* buildActiveColor();
+
     using inherited = SoDragger;
+};
+
+class SoRotationDraggerContainer: public SoInteractionKit
+{
+    SO_KIT_HEADER(SoRotationDraggerContainer);
+    SO_KIT_CATALOG_ENTRY_HEADER(draggerSwitch);
+    SO_KIT_CATALOG_ENTRY_HEADER(baseColor);
+    SO_KIT_CATALOG_ENTRY_HEADER(transform);
+    SO_KIT_CATALOG_ENTRY_HEADER(dragger);
+
+public:
+    static void initClass();
+    SoRotationDraggerContainer();
+
+    SoSFRotation rotation;
+    SoSFColor color;
+    SoSFVec3f translation;
+
+    void setVisibility(bool visible);
+    bool isVisible();
+
+    SoRotationDragger* getDragger();
+
+private:
+    SoBaseColor* buildColor();
+    SoTransform* buildTransform();
+
+    using inherited = SoInteractionKit;
 };
 
 }
