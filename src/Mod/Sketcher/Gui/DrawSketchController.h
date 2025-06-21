@@ -385,7 +385,6 @@ public:
 
         adaptDrawingToOnViewParameterChange(onviewparameterindex,
                                             value);  // specialisation interface
-
         finishControlsChanged();
     }
 
