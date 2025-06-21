@@ -336,6 +336,7 @@ protected:
     int m_blockHandle;
     int m_blkRecordHandle;
     bool m_polyOverride;
+    std::string m_layerName;
     int m_currentColor;
 
     std::string m_saveModelSpaceHandle;
@@ -344,7 +345,6 @@ protected:
     std::string m_saveBlkRecordHandle;
     std::string m_currentBlock;
     std::string m_dataDir;
-    std::string m_layerName;
     std::vector<std::string> m_layerList;
     std::vector<std::string> m_blockList;
     std::vector<std::string> m_blkRecordList;

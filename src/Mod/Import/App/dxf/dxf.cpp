@@ -530,7 +530,7 @@ void CDxfWrite::writeBlock(const std::string& blockName, const double basePoint[
     (*m_ssBlock) << "" << endl;  // Path name (empty)
 }
 
-void CDxfWrite::writeEndBlock(const std::string& blockName)
+void CDxfWrite::writeEndBlock(const std::string& /*blockName*/)
 {
     std::string endBlkHandle = getBlockHandle();
     (*m_ssBlock) << "  0" << endl;

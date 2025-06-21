@@ -5242,3 +5242,210 @@ def _project_shape(shape, direction):
     except Exception as e:
         FreeCAD.Console.PrintError(f"DXF Projection failed: {e}\n")
         return None
+
+def _export_special_object(obj, writer_proxy):
+    """
+    Master dispatcher for special (FeaturePython) objects.
+    This function is called from C++ and uses Draft.getType() to route
+    to the correct specific export helper.
+    """
+    obj_type = Draft.getType(obj)
+
+    try:
+        if obj_type == 'AxisSystem':
+            _export_arch_axis(obj, writer_proxy)
+        elif obj_type == 'Space':
+            _export_arch_space(obj, writer_proxy)
+        elif obj_type == 'PanelCut':
+            _export_arch_panel_cut(obj, writer_proxy)
+        elif obj_type == 'PanelSheet':
+            _export_arch_panel_sheet(obj, writer_proxy)
+        else:
+            # Fallback for unhandled FeaturePython objects: export their shape.
+            if hasattr(obj, "Shape"):
+                writer_proxy.exportShape(obj.Shape)
+
+    except Exception as e:
+        FreeCAD.Console.PrintError(f"Error exporting special object {obj.Name} of type {obj_type}: {e}\n")
+
+
+def _export_arch_axis(obj, writer_proxy):
+    """
+    Specific helper to export an Arch::AxisSystem object.
+    This is called by the master dispatcher.
+    """
+    if not hasattr(obj, "Proxy") or not hasattr(obj, "ViewObject"):
+        return
+
+    try:
+        # Set the layer and color for all parts of this object
+        layer_name = getGroup(obj)
+        aci_color = getACI(obj)
+        writer_proxy.setLayerName(layer_name)
+        writer_proxy.setColor(aci_color)
+
+        # 1. Export the axis lines
+        axis_data = obj.Proxy.getAxisData(obj)
+        if not axis_data:
+            return
+
+        for axis_line in axis_data:
+            start_point = axis_line[0]
+            end_point = axis_line[1]
+            writer_proxy.addLine(start_point, end_point)
+
+        # 2. Export the text labels and bubbles
+        vobj = obj.ViewObject
+        if hasattr(vobj, "Proxy"):
+            font_size = float(vobj.FontSize)
+
+            for text_info in vobj.Proxy.getTextData():
+                text_string = text_info[0]
+                pos = text_info[1] + FreeCAD.Vector(0, -font_size / 2, 0)
+                p1 = (pos.x, pos.y, pos.z)
+                p2 = p1
+                writer_proxy.addText(text_string, p1, p2, font_size * 0.8, 1)
+
+            for shape in vobj.Proxy.getShapeData():
+                writer_proxy.exportShape(shape)
+
+    except Exception as e:
+        FreeCAD.Console.PrintError(f"Error exporting Arch AxisSystem {obj.Name}: {e}\n")
+
+def _export_arch_space(obj, writer_proxy):
+    """
+    Specific helper to export an Arch::Space object.
+    Exports the space's label and area as text.
+    """
+    if not hasattr(obj, "ViewObject"):
+        return
+
+    try:
+        # This logic is adapted from the legacy exporter
+        vobj = obj.ViewObject
+        if not hasattr(vobj, "Proxy"):
+            return
+
+        # Set layer and color
+        layer_name = getGroup(obj)
+        aci_color = getACI(obj, text=True) # Get text color
+        writer_proxy.setLayerName(layer_name)
+        writer_proxy.setColor(aci_color)
+
+        # Get all the text data from the Space's ViewObject proxy
+        rotation = obj.Placement.Rotation.Angle * 180.0 / math.pi
+        text1 = "".join(vobj.Proxy.text1.string.getValues())
+        text2 = "".join(vobj.Proxy.text2.string.getValues())
+        h1 = vobj.FirstLine.Value
+        h2 = vobj.FontSize.Value
+
+        # Calculate text positions
+        p2 = obj.Placement.multVec(vobj.Proxy.coords.translation.getValue())
+        lspc = obj.Placement.multVec(vobj.Proxy.header.translation.getValue())
+        p1 = p2 + lspc
+
+        # Write the first line of text (e.g., "Room")
+        writer_proxy.addText(text1, (p1.x, p1.y, p1.z), (p1.x, p1.y, p1.z), h1 * 0.8, 1, rotation)
+
+        # Write the second line of text (e.g., "12.34 m2")
+        if text2:
+            ofs = obj.Placement.Rotation.multVec(FreeCAD.Vector(0, -lspc.Length, 0))
+            p2_pos = p1 + ofs
+            writer_proxy.addText(text2, (p2_pos.x, p2_pos.y, p2_pos.z), (p2_pos.x, p2_pos.y, p2_pos.z), h2 * 0.8, 1, rotation)
+
+    except Exception as e:
+        FreeCAD.Console.PrintError(f"Error exporting Arch Space {obj.Name}: {e}\n")
+
+def _export_arch_panel_cut(obj, writer_proxy):
+    """
+    Specific helper for Arch::PanelCut objects.
+    Exports the panel's outline and cuts on specific layers.
+    """
+    if not hasattr(obj, "Proxy") or not hasattr(obj.Proxy, "outline"):
+        return
+
+    try:
+        # The outline shape is stored in the object's proxy
+        outline_shape = obj.Proxy.outline.copy()
+        outline_shape.Placement = obj.Placement.multiply(outline_shape.Placement)
+
+        # In a Panel, the outline is the largest wire, inner shapes are cuts.
+        # This logic finds the main outline and separates it from the cutouts.
+        outline_wire = None
+        cut_wires = []
+        max_diag = 0
+
+        if len(outline_shape.Wires) > 0:
+            for w in outline_shape.Wires:
+                if w.BoundBox.DiagonalLength > max_diag:
+                    max_diag = w.BoundBox.DiagonalLength
+                    if outline_wire:
+                        cut_wires.append(outline_wire)
+                    outline_wire = w
+                else:
+                    cut_wires.append(w)
+
+        # Export the main outline on the "Outlines" layer in blue
+        if outline_wire:
+            writer_proxy.setLayerName("Outlines")
+            writer_proxy.setColor(5) # ACI color 5 = blue
+            writer_proxy.exportShape(outline_wire)
+
+        # Export the cutouts on the "Cuts" layer in cyan
+        if cut_wires:
+            writer_proxy.setLayerName("Cuts")
+            writer_proxy.setColor(4) # ACI color 4 = cyan
+            for cut in cut_wires:
+                writer_proxy.exportShape(cut)
+
+    except Exception as e:
+        FreeCAD.Console.PrintError(f"Error exporting Arch PanelCut {obj.Name}: {e}\n")
+
+def _export_arch_panel_sheet(obj, writer_proxy):
+    """
+    Specific helper for Arch::PanelSheet objects.
+    Exports the sheet's border and tag, then processes its child PanelCut objects.
+    """
+    if not hasattr(obj, "Proxy"):
+        return
+
+    try:
+        # Execute the object if needed to generate its geometry
+        if not hasattr(obj.Proxy, "sheetborder"):
+            obj.Proxy.execute(obj)
+
+        # 1. Export the sheet's own border geometry
+        if hasattr(obj.Proxy, "sheetborder") and obj.Proxy.sheetborder:
+            border_shape = obj.Proxy.sheetborder.copy()
+            border_shape.Placement = obj.Placement
+            writer_proxy.setLayerName("Sheets")
+            writer_proxy.setColor(1) # ACI color 1 = red
+            writer_proxy.exportShape(border_shape)
+
+        # 2. Export the sheet's tag
+        if hasattr(obj.Proxy, "sheettag") and obj.Proxy.sheettag:
+            tag_shape = obj.Proxy.sheettag.copy()
+            tag_shape.Placement = obj.Placement.multiply(tag_shape.Placement)
+            writer_proxy.setLayerName("SheetTags")
+            writer_proxy.setColor(1) # ACI color 1 = red
+            writer_proxy.exportShape(tag_shape)
+
+        # 3. Process all child objects of the PanelSheet
+        for child in obj.Group:
+            if Draft.getType(child) == "PanelCut":
+                # Call the existing handler for PanelCut objects
+                _export_arch_panel_cut(child, writer_proxy)
+            elif child.isDerivedFrom("Part::Feature"):
+                # Handle other generic Part features within the sheet
+                layer_name = getGroup(child)
+                aci_color = getACI(child)
+                writer_proxy.setLayerName(layer_name)
+                writer_proxy.setColor(aci_color)
+
+                shape_copy = child.Shape.copy()
+                shape_copy.Placement = obj.Placement.multiply(shape_copy.Placement)
+                writer_proxy.exportShape(shape_copy)
+
+    except Exception as e:
+        FreeCAD.Console.PrintError(f"Error exporting Arch PanelSheet {obj.Name}: {e}\n")
+
