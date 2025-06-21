@@ -400,6 +400,13 @@ void DrawViewDetail::postHlrTasks(void)
         Scale.purgeTouched();
         detailExec(m_saveShape, m_saveDvp, m_saveDvs);
     }
+
+    auto* baseView = freecad_cast<DrawViewPart*>(BaseView.getValue());
+    if (!baseView) {
+        throw Base::RuntimeError("Detail has no base view!");
+    }
+    baseView->requestPaint();   // repaint the highlight on the base view.
+
     overrideKeepUpdated(false);
 }
 

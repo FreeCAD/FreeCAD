@@ -243,6 +243,9 @@ public:
     bool isCosmeticEdge(const std::string& element);
     bool isCenterLine(const std::string& element);
 
+    Base::Vector3d snapHighlightToVertex(Base::Vector3d newAnchorPoint, double radius) const;
+
+
 public Q_SLOTS:
     void onHlrFinished(void);
     void onFacesFinished(void);

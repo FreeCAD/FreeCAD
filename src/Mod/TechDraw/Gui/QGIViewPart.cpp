@@ -930,7 +930,7 @@ void QGIViewPart::drawAllHighlights()
 
 void QGIViewPart::drawHighlight(TechDraw::DrawViewDetail* viewDetail, bool b)
 {
-    TechDraw::DrawViewPart* viewPart = static_cast<TechDraw::DrawViewPart*>(getViewObject());
+    auto* viewPart = static_cast<TechDraw::DrawViewPart*>(getViewObject());
     if (!viewPart || !viewDetail) {
         return;
     }
@@ -950,14 +950,16 @@ void QGIViewPart::drawHighlight(TechDraw::DrawViewDetail* viewDetail, bool b)
 
     if (b) {
         double fontSize = Preferences::labelFontSizeMM();
-        QGIHighlight* highlight = new QGIHighlight();
+        auto* highlight = new QGIHighlight();
+
         scene()->addItem(highlight);
         highlight->setReference(viewDetail->Reference.getValue());
 
         Base::Color color = Preferences::getAccessibleColor(vp->HighlightLineColor.getValue());
         highlight->setColor(color.asValue<QColor>());
         highlight->setFeatureName(viewDetail->getNameInDocument());
-        highlight->setInteractive(true);
+
+        highlight->setInteractive(false);
 
         addToGroup(highlight);
         highlight->setPos(0.0, 0.0);//sb setPos(center.x, center.y)?
@@ -986,19 +988,25 @@ void QGIViewPart::drawHighlight(TechDraw::DrawViewDetail* viewDetail, bool b)
     }
 }
 
+//! this method is no longer used due to conflicts with TaskDetail dialog highlight drag
 void QGIViewPart::highlightMoved(QGIHighlight* highlight, QPointF newPos)
 {
     std::string highlightName = highlight->getFeatureName();
     App::Document* doc = getViewObject()->getDocument();
     App::DocumentObject* docObj = doc->getObject(highlightName.c_str());
     auto detail = freecad_cast<DrawViewDetail*>(docObj);
-    if (detail) {
+    auto baseView = freecad_cast<DrawViewPart*>(getViewObject());
+    if (detail && baseView) {
         auto oldAnchor = detail->AnchorPoint.getValue();
         Base::Vector3d delta = Rez::appX(DrawUtil::toVector3d(newPos)) / getViewObject()->getScale();
         delta = DrawUtil::invertY(delta);
-        detail->AnchorPoint.setValue(oldAnchor + delta);
+        Base::Vector3d newAnchorPoint = oldAnchor + delta;
+                newAnchorPoint = baseView->snapHighlightToVertex(newAnchorPoint,
+                                                                 detail->Radius.getValue());
+        detail->AnchorPoint.setValue(newAnchorPoint);
     }
 }
+
 
 void QGIViewPart::drawMatting()
 {
