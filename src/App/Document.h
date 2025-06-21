@@ -518,6 +518,7 @@ public:
     bool isPerformingTransaction() const;
     /// \internal add or remove property from a transactional object
     void addOrRemovePropertyOfObject(TransactionalObject*, const Property* prop, bool add);
+    void renamePropertyOfObject(TransactionalObject*, const Property* prop, const char* newName);
     //@}
 
     /** @name dependency stuff */
@@ -698,6 +699,10 @@ protected:
     void _commitTransaction(bool notify = false);
     /// Internally called by Application to abort the running transaction.
     void _abortTransaction();
+
+private:
+    void changePropertyOfObject(TransactionalObject* obj, const Property* prop,
+                                const std::function<void()>& changeFunc);
 
 private:
     // # Data Member of the document
