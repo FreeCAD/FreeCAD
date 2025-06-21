@@ -722,7 +722,7 @@ void Application::importFrom(const char* FileName, const char* DocName, const ch
                 checkRestoreError(doc);
                 checkForRecomputes();
                 if (activeDocument()) {
-                    activeDocument()->setModified(false);
+                    activeDocument()->setAwayFromSaved(0);
                 }
             }
             else {
@@ -2630,7 +2630,7 @@ App::Document* Application::reopen(App::Document* doc)
             }
             if (reset) {
                 v.second->getDocument()->purgeTouched();
-                v.second->setModified(false);
+                v.second->setAwayFromSaved(0);
             }
         }
     }

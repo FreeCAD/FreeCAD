@@ -997,7 +997,6 @@ void Document::slotNewObject(const App::DocumentObject& Obj)
 void Document::slotDeletedObject(const App::DocumentObject& Obj)
 {
     std::list<Gui::BaseView*>::iterator vIt;
-    setModified(true);
 
     // cycling to all views of the document
     ViewProvider* viewProvider = getViewProvider(&Obj);
