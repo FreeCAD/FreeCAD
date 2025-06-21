@@ -34,6 +34,7 @@ __url__    = "https://www.freecad.org"
 
 import os
 from typing import Optional
+from xml.sax.saxutils import escape as sax_escape
 
 import numpy as np
 
@@ -53,29 +54,34 @@ else:
         return text
     # \endcond
 
-DEBUG = True
+def xml_escape(text: str, entities: dict[str, str] = None) -> str:
+    """Escape text for XML.
+
+    This is a wrapper around xml.sax.saxutils.escape that replaces also
+    `"` with `&quot;` by default.
+    """
+    if entities is None:
+        entities = {'"': "&quot;"}
+    return sax_escape(text, entities=entities)
 
 
-def check_collada_import() -> bool:
+def import_collada() -> bool:
     """Return True if the `collada` module is available.
 
     Also imports the module.
 
     """
-
     global collada
     try:
         import collada
     except ImportError:
         FreeCAD.Console.PrintError(translate("BIM", "pycollada not found, collada support is disabled.") + "\n")
         return False
-    else:
-        return True
+    return True
 
 
 def triangulate(shape):
     """Triangulate the given shape."""
-
     mesher = params.get_param_arch("ColladaMesher")
     tessellation = params.get_param_arch("ColladaTessellation")
     grading = params.get_param_arch("ColladaGrading")
@@ -102,8 +108,7 @@ def triangulate(shape):
 
 def open(filename):
     """Called when FreeCAD wants to open a file."""
-
-    if not check_collada_import():
+    if not import_collada():
         return
     docname = os.path.splitext(os.path.basename(filename))[0]
     doc = FreeCAD.newDocument(docname)
@@ -115,8 +120,7 @@ def open(filename):
 
 def insert(filename, docname):
     """Called when FreeCAD wants to import a file."""
-
-    if not check_collada_import():
+    if not import_collada():
         return
     try:
         doc = FreeCAD.getDocument(docname)
@@ -129,10 +133,9 @@ def insert(filename, docname):
 
 def read(filename):
     """Read a DAE file."""
-
     col = collada.Collada(filename, ignore=[collada.common.DaeUnsupportedError])
     # Read the unitmeter info from DAE file and compute unit to convert to mm.
-    unitmeter = col.assetInfo.unitmeter or 1
+    unitmeter = col.assetInfo.unitmeter or 1.0
     unit = unitmeter / 0.001
     # for geom in col.geometries:
     # for geom in col.scene.objects("geometry"):
@@ -191,8 +194,7 @@ def export(
              mode if you want to be able to export colors.
 
     """
-
-    if not check_collada_import():
+    if not import_collada():
         return
     if colors is None:
         colors = {}
@@ -207,12 +209,13 @@ def export(
         author = FreeCAD.ActiveDocument.CreatedBy
     except UnicodeEncodeError:
         author = FreeCAD.ActiveDocument.CreatedBy.encode("utf8")
-    author = author.replace("<", "")
-    author = author.replace(">", "")
+    author = xml_escape(author)
     col_contributor.author = author
     ver = FreeCAD.Version()
     appli = f"FreeCAD v{ver[0]}.{ver[1]} build {ver[2]}"
     col_contributor.authoring_tool = appli
+    # Bug in collada from 0.4 to 0.9, contributors are not written to file.
+    # Set it anyway for future versions.
     col_mesh.assetInfo.contributors.append(col_contributor)
     col_mesh.assetInfo.unitname = "meter"
     col_mesh.assetInfo.unitmeter = 1.0
@@ -269,7 +272,7 @@ def export(
         geom = collada.geometry.Geometry(
                 collada=col_mesh,
                 id=f"geometry{obj_ind}",
-                name=obj.Name,
+                name=xml_escape(obj.Label),
                 sourcebyid=[vert_src, normal_src],
         )
         input_list = collada.source.InputList()
@@ -327,7 +330,7 @@ def export(
                     )
                     col_mesh.effects.append(effect)
                     col_mesh.materials.append(mat)
-                    mat_ref = "ref_" + obj.Name
+                    mat_ref = f"ref_{obj.Name}"
                     mat_node = collada.scene.MaterialNode(
                             symbol=mat_ref,
                             target=mat,
