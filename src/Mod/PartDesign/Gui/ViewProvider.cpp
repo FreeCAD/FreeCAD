@@ -411,7 +411,10 @@ void ViewProvider::makePreviewVisible(bool enable)
 
         baseFeatureViewProvider->show();
         hide();
-        getAnnotation()->addChild(pcPreviewRoot);
+
+        if (getAnnotation()->findChild(pcPreviewRoot) < 0) {
+            getAnnotation()->addChild(pcPreviewRoot);
+        }
     } else {
         baseFeatureViewProvider->hide();
         show();

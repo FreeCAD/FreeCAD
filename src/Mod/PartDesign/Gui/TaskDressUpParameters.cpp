@@ -368,10 +368,12 @@ void TaskDressUpParameters::removeItemFromListWidget(QListWidget* widget, const 
 void TaskDressUpParameters::hideOnError()
 {
     App::DocumentObject* dressup = DressUpView->getObject();
+
+    // fixme: find a better way to preview errors
     if (dressup->isError())
-        hideObject();
+        DressUpView->PreviewColor.setValue(1.0F, 0.0F, 0.0F);
     else
-        showObject();
+        DressUpView->PreviewColor.setValue(1.0F, 0.0F, 1.0F);
 }
 
 void TaskDressUpParameters::setDressUpVisibility(bool visible)
