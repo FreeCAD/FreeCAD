@@ -74,7 +74,7 @@ class CommandAddOffsetVertex:
         """Return a dictionary with data that will be used by the button or menu item."""
         return {'Pixmap': 'actions/TechDraw_AddOffsetVertex.svg',
                 'Accel': "",
-                'MenuText': QT_TRANSLATE_NOOP("TechDraw_AddOffsetVertex", "Add an offset vertex"),
+                'MenuText': QT_TRANSLATE_NOOP("TechDraw_AddOffsetVertex", "Add An Offset Vertex"),
                 'ToolTip': QT_TRANSLATE_NOOP("TechDraw_AddOffsetVertex", "Create an offset vertex<br>\
                 - select one vertex<br>\
                 - start the tool<br>\
