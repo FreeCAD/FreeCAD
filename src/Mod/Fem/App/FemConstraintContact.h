@@ -51,6 +51,8 @@ public:
     App::PropertyBool Friction;
     App::PropertyFloat FrictionCoefficient;
     App::PropertyStiffnessDensity StickSlope;
+    App::PropertyBool EnableThermalContact;
+    App::PropertyStringList ThermalContactConductance;
 
     // etc
     /* */
