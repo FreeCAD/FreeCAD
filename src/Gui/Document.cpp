@@ -289,6 +289,7 @@ struct DocumentP
     {
         _editingObject = sobj;
         _editMode = ModNum;
+        _editViewProvider = svp; // Helps the viewprovider find the correct in editDocument
         _editViewProvider = svp->startEditing(ModNum);
         if (!_editViewProvider) {
             _editViewProviderParent = nullptr;
@@ -681,7 +682,7 @@ void Document::resetEdit() {
     Gui::ViewProvider* vpToRestore = d->_editViewProviderPrevious;
     bool shouldRestorePrevious = d->_editWantsRestorePrevious;
 
-    Application::Instance->setEditDocument(nullptr);
+    Application::Instance->unsetEditDocument(this);
 
     if (vpIsNotNull && vpHasChanged && shouldRestorePrevious) {
         setEdit(vpToRestore, modeToRestore);
@@ -717,18 +718,16 @@ void Document::_resetEdit()
 
         // The logic below is not necessary anymore, because this method is
         // changed into a private one,  _resetEdit(). And the exposed
-        // resetEdit() above calls into Application->setEditDocument(0) which
+        // resetEdit() above calls into Application->unsetEditDocument() which
         // will prevent recursive calling.
 
-        App::GetApplication().closeActiveTransaction();
+        App::GetApplication().closeActiveTransaction(false, getDocument()->getBookedTransactionID());
     }
     d->_editViewProviderParent = nullptr;
     d->_editingViewer = nullptr;
     d->_editObjs.clear();
     d->_editingObject = nullptr;
-    if (Application::Instance->editDocument() == this) {
-        Application::Instance->setEditDocument(nullptr);
-    }
+    Application::Instance->unsetEditDocument(this);
 }
 
 ViewProvider *Document::getInEdit(ViewProviderDocumentObject **parentVp,
@@ -747,6 +746,10 @@ ViewProvider *Document::getInEdit(ViewProviderDocumentObject **parentVp,
     }
 
     return nullptr;
+}
+ViewProvider *Document::getEditViewProvider() const
+{
+    return d->_editViewProvider;
 }
 
 void Document::setInEdit(ViewProviderDocumentObject *parentVp, const char *subname) {
@@ -993,16 +996,17 @@ void Document::slotDeletedObject(const App::DocumentObject& Obj)
 
     // cycling to all views of the document
     ViewProvider* viewProvider = getViewProvider(&Obj);
-    if(!viewProvider)
+    if(!viewProvider) {
         return;
+    }
 
-    if (d->_editViewProvider==viewProvider || d->_editViewProviderParent==viewProvider)
+    if (d->_editViewProvider==viewProvider || d->_editViewProviderParent==viewProvider) {
         _resetEdit();
-    else if(Application::Instance->editDocument()) {
-        auto editDoc = Application::Instance->editDocument();
-        if(editDoc->d->_editViewProvider==viewProvider ||
-           editDoc->d->_editViewProviderParent==viewProvider)
-            Application::Instance->setEditDocument(nullptr);
+    } else {
+        Application::Instance->unsetEditDocumentIf([&viewProvider](Gui::Document* editdoc) {
+            return editdoc->d->_editViewProvider == viewProvider
+                || editdoc->d->_editViewProviderParent == viewProvider;
+        });
     }
 
     handleChildren3D(viewProvider,true);
@@ -1023,18 +1027,15 @@ void Document::slotDeletedObject(const App::DocumentObject& Obj)
     viewProvider->beforeDelete();
 }
 
-void Document::beforeDelete() {
-    auto editDoc = Application::Instance->editDocument();
-    if(editDoc) {
+void Document::beforeDelete() 
+{
+    Application::Instance->unsetEditDocumentIf([this](Gui::Document* editDoc) {
         auto vp = freecad_cast<ViewProviderDocumentObject*>(editDoc->d->_editViewProvider);
         auto vpp = freecad_cast<ViewProviderDocumentObject*>(editDoc->d->_editViewProviderParent);
-        if(editDoc == this ||
-           (vp && vp->getDocument()==this) ||
-           (vpp && vpp->getDocument()==this))
-        {
-            Application::Instance->setEditDocument(nullptr);
-        }
-    }
+        
+        return editDoc == this || (vp && vp->getDocument() == this)
+            || (vpp && vpp->getDocument() == this);
+    });
     for(auto &v : d->_ViewProviderMap)
         v.second->beforeDelete();
 }
@@ -1175,9 +1176,10 @@ void Document::slotSkipRecompute(const App::Document& doc, const std::vector<App
        !doc.testStatus(App::Document::AllowPartialRecompute))
         return;
     App::DocumentObject *obj = nullptr;
-    auto editDoc = Application::Instance->editDocument();
-    if(editDoc) {
-        auto vp = freecad_cast<ViewProviderDocumentObject*>(editDoc->getInEdit());
+
+    // TODO-theo-vt could this be called when the document is not in edit?
+    if(Gui::Application::Instance->isInEdit(this)) {
+        auto vp = freecad_cast<ViewProviderDocumentObject*>(getInEdit());
         if(vp)
             obj = vp->getObject();
     }
@@ -2561,9 +2563,9 @@ Gui::MDIView* Document::getEditingViewOfViewProvider(Gui::ViewProvider* vp) cons
  *  operation default is the command name.
  *  @see CommitCommand(),AbortCommand()
  */
-void Document::openCommand(const char* sName)
+int Document::openCommand(const char* sName)
 {
-    getDocument()->openTransaction(sName);
+    return getDocument()->openTransaction(sName);
 }
 
 void Document::commitCommand()

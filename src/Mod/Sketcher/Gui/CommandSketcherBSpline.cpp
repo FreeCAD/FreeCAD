@@ -137,7 +137,7 @@ void CmdSketcherConvertToNURBS::activated(int iMsg)
     const std::vector<std::string>& SubNames = selection[0].getSubNames();
     Sketcher::SketchObject* Obj = static_cast<Sketcher::SketchObject*>(selection[0].getObject());
 
-    openCommand(QT_TRANSLATE_NOOP("Command", "Convert to NURBS"));
+    openSelf(QT_TRANSLATE_NOOP("Command", "Convert to NURBS"));
 
     std::vector<int> GeoIdList;
 
@@ -162,14 +162,14 @@ void CmdSketcherConvertToNURBS::activated(int iMsg)
     }
 
     if (GeoIdList.empty()) {
-        abortCommand();
+        abortSelf();
 
         Gui::TranslatedUserWarning(Obj,
                                    QObject::tr("Wrong selection"),
                                    QObject::tr("None of the selected elements is an edge."));
     }
     else {
-        commitCommand();
+        commitSelf();
     }
     tryAutoRecomputeIfNotSolve(Obj);
 }
@@ -213,7 +213,7 @@ void CmdSketcherIncreaseDegree::activated(int iMsg)
     const std::vector<std::string>& SubNames = selection[0].getSubNames();
     Sketcher::SketchObject* Obj = static_cast<Sketcher::SketchObject*>(selection[0].getObject());
 
-    openCommand(QT_TRANSLATE_NOOP("Command", "Increase B-spline degree"));
+    openSelf(QT_TRANSLATE_NOOP("Command", "Increase B-spline degree"));
 
     bool ignored = false;
 
@@ -245,7 +245,7 @@ void CmdSketcherIncreaseDegree::activated(int iMsg)
                                                "objects was not a B-spline and was ignored."));
     }
 
-    commitCommand();
+    commitSelf();
     tryAutoRecomputeIfNotSolve(Obj);
     getSelection().clearSelection();
 }
@@ -292,7 +292,7 @@ void CmdSketcherDecreaseDegree::activated(int iMsg)
     const std::vector<std::string>& SubNames = selection[0].getSubNames();
     Sketcher::SketchObject* Obj = static_cast<Sketcher::SketchObject*>(selection[0].getObject());
 
-    openCommand(QT_TRANSLATE_NOOP("Command", "Decrease B-spline degree"));
+    openSelf(QT_TRANSLATE_NOOP("Command", "Decrease B-spline degree"));
 
     bool ignored = false;
 
@@ -328,7 +328,7 @@ void CmdSketcherDecreaseDegree::activated(int iMsg)
                                                "objects was not a B-spline and was ignored."));
     }
 
-    commitCommand();
+    commitSelf();
     tryAutoRecomputeIfNotSolve(Obj);
     getSelection().clearSelection();
 }
@@ -384,7 +384,7 @@ void CmdSketcherIncreaseKnotMultiplicity::activated(int iMsg)
 
     Sketcher::SketchObject* Obj = static_cast<Sketcher::SketchObject*>(selection[0].getObject());
 
-    openCommand(QT_TRANSLATE_NOOP("Command", "Increase knot multiplicity"));
+    openSelf(QT_TRANSLATE_NOOP("Command", "Increase knot multiplicity"));
 
     int GeoId;
     Sketcher::PointPos PosId;
@@ -472,10 +472,10 @@ void CmdSketcherIncreaseKnotMultiplicity::activated(int iMsg)
     }
 
     if (!applied) {
-        abortCommand();
+        abortSelf();
     }
     else {
-        commitCommand();
+        commitSelf();
     }
 
     tryAutoRecomputeIfNotSolve(Obj);
@@ -532,7 +532,7 @@ void CmdSketcherDecreaseKnotMultiplicity::activated(int iMsg)
 
     Sketcher::SketchObject* Obj = static_cast<Sketcher::SketchObject*>(selection[0].getObject());
 
-    openCommand(QT_TRANSLATE_NOOP("Command", "Decrease knot multiplicity"));
+    openSelf(QT_TRANSLATE_NOOP("Command", "Decrease knot multiplicity"));
 
     int GeoId;
     Sketcher::PointPos PosId;
@@ -608,10 +608,10 @@ void CmdSketcherDecreaseKnotMultiplicity::activated(int iMsg)
     }
 
     if (!applied) {
-        abortCommand();
+        abortSelf();
     }
     else {
-        commitCommand();
+        commitSelf();
     }
 
     tryAutoRecomputeIfNotSolve(Obj);
@@ -775,7 +775,7 @@ public:
     {
         Q_UNUSED(onSketchPos);
 
-        Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Insert knot"));
+        openCommand(QT_TRANSLATE_NOOP("Command", "Insert knot"));
 
         bool applied = false;
         boost::uuids::uuid bsplinetag = Obj->getGeometry(GeoId)->getTag();
@@ -835,10 +835,10 @@ public:
         }
 
         if (applied) {
-            Gui::Command::commitCommand();
+            commitCommand();
         }
         else {
-            Gui::Command::abortCommand();
+            abortCommand();
         }
 
         tryAutoRecomputeIfNotSolve(Obj);
@@ -1064,7 +1064,7 @@ void CmdSketcherJoinCurves::activated(int iMsg)
         }
     }
 
-    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Join Curves"));
+    openSelf(QT_TRANSLATE_NOOP("Command", "Join Curves"));
     bool applied = false;
 
     try {
@@ -1088,10 +1088,10 @@ void CmdSketcherJoinCurves::activated(int iMsg)
     }
 
     if (applied) {
-        Gui::Command::commitCommand();
+        commitSelf();
     }
     else {
-        Gui::Command::abortCommand();
+        abortSelf();
     }
 
     tryAutoRecomputeIfNotSolve(Obj);

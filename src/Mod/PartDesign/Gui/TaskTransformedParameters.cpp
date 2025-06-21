@@ -273,16 +273,16 @@ void TaskTransformedParameters::setupTransaction()
         return;
     }
 
-    int tid = 0;
-    App::GetApplication().getActiveTransaction(&tid);
+    int tid = obj->getDocument()->getBookedTransactionID();
     if (tid != 0 && tid == transactionID) {
         return;
     }
 
     // open a transaction if none is active
+    // TODO-theo-vt where is this transaction commited?
     std::string name("Edit ");
     name += obj->Label.getValue();
-    transactionID = App::GetApplication().setActiveTransaction(name.c_str());
+    transactionID = obj->getDocument()->openTransaction(name.c_str());
 }
 
 void TaskTransformedParameters::setEnabledTransaction(bool on)

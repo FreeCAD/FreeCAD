@@ -705,14 +705,16 @@ void ConstraintView::swapNamedOfSelectedItems()
     ss << "DummyConstraint" << rand();
     std::string tmpname = ss.str();
 
-    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Swap constraint names"));
+
+
+    int tid = Gui::Command::openCommand(item1->sketch->getDocument(), QT_TRANSLATE_NOOP("Command", "Swap constraint names"));
     Gui::cmdAppObjectArgs(
         item1->sketch, "renameConstraint(%d, u'%s')", item1->ConstraintNbr, tmpname.c_str());
     Gui::cmdAppObjectArgs(
         item2->sketch, "renameConstraint(%d, u'%s')", item2->ConstraintNbr, escapedstr1.c_str());
     Gui::cmdAppObjectArgs(
         item1->sketch, "renameConstraint(%d, u'%s')", item1->ConstraintNbr, escapedstr2.c_str());
-    Gui::Command::commitCommand();
+    Gui::Command::commitCommand(tid);
 }
 
 /* Filter constraints list widget ----------------------*/
@@ -1134,7 +1136,7 @@ void TaskSketcherConstraints::changeFilteredVisibility(bool show, ActionTarget t
 
     if (!constrIds.empty()) {
 
-        Gui::Command::openCommand(
+        sketchView->getDocument()->openCommand(
             QT_TRANSLATE_NOOP("Command", "Update constraint's virtual space"));
 
         std::stringstream stream;
@@ -1153,7 +1155,7 @@ void TaskSketcherConstraints::changeFilteredVisibility(bool show, ActionTarget t
                 sketch, "setVirtualSpace(%s, %s)", constrIdList, show ? "False" : "True");
         }
         catch (const Base::Exception&) {
-            Gui::Command::abortCommand();
+            sketchView->getDocument()->abortCommand();
 
             Gui::TranslatedUserError(
                 sketch, tr("Error"), tr("Impossible to update visibility tracking"));
@@ -1161,7 +1163,7 @@ void TaskSketcherConstraints::changeFilteredVisibility(bool show, ActionTarget t
             return;
         }
 
-        Gui::Command::commitCommand();
+        sketchView->getDocument()->commitCommand();
     }
 }
 
@@ -1199,7 +1201,8 @@ void TaskSketcherConstraints::onListWidgetConstraintsItemActivated(QListWidgetIt
 
     // if its the right constraint
     if (it->isDimensional()) {
-        EditDatumDialog* editDatumDialog = new EditDatumDialog(this->sketchView, it->ConstraintNbr);
+        // TODO-theo-vt what is the transaction id??
+        EditDatumDialog* editDatumDialog = new EditDatumDialog(0, this->sketchView, it->ConstraintNbr);
         editDatumDialog->exec(false);
         delete editDatumDialog;
     }
@@ -1235,14 +1238,14 @@ void TaskSketcherConstraints::onListWidgetConstraintsItemChanged(QListWidgetItem
             newName = currConstraintName;
         }
 
-        Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Rename sketch constraint"));
+        sketchView->getDocument()->openCommand(QT_TRANSLATE_NOOP("Command", "Rename sketch constraint"));
         try {
             Gui::cmdAppObjectArgs(
                 sketch, "renameConstraint(%d, u'%s')", it->ConstraintNbr, newName.c_str());
-            Gui::Command::commitCommand();
+            sketchView->getDocument()->commitCommand();
         }
         catch (const Base::Exception& e) {
-            Gui::Command::abortCommand();
+            sketchView->getDocument()->abortCommand();
 
             Gui::NotifyUserError(
                 sketch, QT_TRANSLATE_NOOP("Notifications", "Value Error"), e.what());
@@ -1250,7 +1253,7 @@ void TaskSketcherConstraints::onListWidgetConstraintsItemChanged(QListWidgetItem
     }
 
     // update constraint virtual space status
-    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Update constraint's virtual space"));
+    sketchView->getDocument()->openCommand(QT_TRANSLATE_NOOP("Command", "Update constraint's virtual space"));
     try {
         Gui::cmdAppObjectArgs(
             sketch,
@@ -1258,10 +1261,10 @@ void TaskSketcherConstraints::onListWidgetConstraintsItemChanged(QListWidgetItem
             it->ConstraintNbr,
             ((item->checkState() == Qt::Checked) != sketchView->getIsShownVirtualSpace()) ? "False"
                                                                                           : "True");
-        Gui::Command::commitCommand();
+        sketchView->getDocument()->commitCommand();
     }
     catch (const Base::Exception& e) {
-        Gui::Command::abortCommand();
+        sketchView->getDocument()->abortCommand();
 
         Gui::NotifyUserError(sketch, QT_TRANSLATE_NOOP("Notifications", "Value Error"), e.what());
     }
@@ -1527,10 +1530,10 @@ void TaskSketcherConstraints::change3DViewVisibilityToTrackFilter()
 
     if (!constrIdsToVirtualSpace.empty() || !constrIdsToCurrentSpace.empty()) {
 
-        Gui::Command::openCommand(
+        int tid = sketchView->getDocument()->openCommand(
             QT_TRANSLATE_NOOP("Command", "Update constraint's virtual space"));
 
-        auto doSetVirtualSpace = [&sketch](const std::vector<int>& constrIds, bool isvirtualspace) {
+        auto doSetVirtualSpace = [tid, &sketch](const std::vector<int>& constrIds, bool isvirtualspace) {
             std::stringstream stream;
 
             stream << '[';
@@ -1549,7 +1552,7 @@ void TaskSketcherConstraints::change3DViewVisibilityToTrackFilter()
                                       isvirtualspace ? "True" : "False");
             }
             catch (const Base::Exception&) {
-                Gui::Command::abortCommand();
+                Gui::Command::abortCommand(tid);
 
                 Gui::TranslatedUserError(
                     sketch, tr("Error"), tr("Impossible to update visibility tracking:") + QLatin1String(" "));
@@ -1574,7 +1577,7 @@ void TaskSketcherConstraints::change3DViewVisibilityToTrackFilter()
                 return;
         }
 
-        Gui::Command::commitCommand();
+        sketchView->getDocument()->commitCommand();
     }
 }
 

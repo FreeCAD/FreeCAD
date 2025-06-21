@@ -218,7 +218,8 @@ struct ApplicationP
     std::map<const App::Document*, Gui::Document*> documents;
     /// Active document
     Gui::Document* activeDocument {nullptr};
-    Gui::Document* editDocument {nullptr};
+    std::vector<Gui::Document*> editDocuments;
+
     MacroManager* macroMngr;
     PreferencePackManager* prefPackManager;
     /// List of all registered views
@@ -1271,26 +1272,72 @@ Gui::Document* Application::activeDocument() const
 
 Gui::Document* Application::editDocument() const
 {
-    return d->editDocument;
+    if (d->editDocuments.empty()) {
+        return nullptr;
+    }
+    return d->editDocuments[0];
 }
-
-Gui::MDIView* Application::editViewOfNode(SoNode* node) const
+Gui::Document* Application::editDocument(const std::function<bool(Gui::Document*)>& eval)
 {
-    return d->editDocument ? d->editDocument->getViewOfNode(node) : nullptr;
+    auto found = std::ranges::find_if(d->editDocuments.begin(), d->editDocuments.end(), eval);
+
+    return found == d->editDocuments.end() ? nullptr : *found;
 }
-
-void Application::setEditDocument(Gui::Document* doc)
+std::vector<Gui::Document*> Application::editDocuments() const
 {
-    if (doc == d->editDocument) {
+    return d->editDocuments;
+}
+bool Application::isInEdit(Gui::Document* pcDocument) const
+{
+    return std::ranges::find(d->editDocuments.begin(), d->editDocuments.end(), pcDocument)
+        != d->editDocuments.end();
+}
+void Application::unsetEditDocument(Gui::Document* pcDocument)
+{
+    auto rem = std::remove(d->editDocuments.begin(), d->editDocuments.end(), pcDocument);
+    bool found = rem != d->editDocuments.end();
+    if (!found) {
         return;
     }
-    if (!doc) {
-        d->editDocument = nullptr;
+
+    d->editDocuments.erase(rem, d->editDocuments.end());
+    pcDocument->_resetEdit();
+
+    updateActions();
+}
+void Application::unsetEditDocumentIf(const std::function<bool(Gui::Document*)>& eval)
+{
+    for (auto editDoc : d->editDocuments) {
+        if (eval(editDoc)) {
+            unsetEditDocument(editDoc);
+        }
     }
-    for (auto& v : d->documents) {
-        v.second->_resetEdit();
+}
+Gui::MDIView* Application::editViewOfNode(SoNode* node) const
+{
+    for (auto editDoc : d->editDocuments) {
+        Gui::MDIView* view = editDoc->getViewOfNode(node);
+        if (view) {
+            return view;
+        }
     }
-    d->editDocument = doc;
+    return nullptr;
+}
+
+void Application::setEditDocument(Gui::Document* pcDocument)
+{
+    if (pcDocument == nullptr) {
+        return;
+    }
+    if (std::ranges::find(d->editDocuments.begin(), d->editDocuments.end(), pcDocument) != d->editDocuments.end()) {
+        return;
+    }
+    d->editDocuments.push_back(pcDocument);
+
+    // TODO-theo-vt remove this when it is no longer useful
+    if (d->editDocuments.size() > 1) {
+        std::cerr<<"More than one document in edit!\n";
+    }
     updateActions();
 }
 
