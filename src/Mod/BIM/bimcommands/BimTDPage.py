@@ -102,6 +102,7 @@ class BIM_TDPage:
                 page.Scale = FreeCAD.ParamGet(
                     "User parameter:BaseApp/Preferences/Mod/BIM"
                 ).GetFloat("DefaultPageScale", 0.01)
+            page.ViewObject.show()
             FreeCAD.ActiveDocument.recompute()
 
 
