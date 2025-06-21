@@ -105,6 +105,10 @@ void ViewProviderTransformed::updatePreview()
             auto originals = feature->getOriginals();
             auto transforms = feature->getTransformations(originals);
 
+            if (transforms.empty()) {
+                return;
+            }
+
             transforms.pop_front();
 
             Gui::coinRemoveAllChildren(pcPreviewRoot);

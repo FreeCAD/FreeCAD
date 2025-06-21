@@ -80,6 +80,7 @@ public:
     SbBox3f getBoundBox ();
 
     PartDesign::Feature* getShownFeature() const;
+    ViewProvider* getShownViewProvider() const;
 
     /** Check whether objects can be added to the view provider by drag and drop */
     bool canDropObjects() const override;

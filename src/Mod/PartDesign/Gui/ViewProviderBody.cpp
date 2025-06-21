@@ -358,6 +358,15 @@ PartDesign::Feature* ViewProviderBody::getShownFeature() const
     return nullptr;
 }
 
+Gui::ViewProvider* ViewProviderBody::getShownViewProvider() const
+{
+    if (const auto* feature = getShownFeature()) {
+        return Gui::Application::Instance->getViewProvider(feature);
+    }
+
+    return nullptr;
+}
+
 bool ViewProviderBody::canDropObjects() const
 {
     // if the BaseFeature property is marked as hidden or read-only then

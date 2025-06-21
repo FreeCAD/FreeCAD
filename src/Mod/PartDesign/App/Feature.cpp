@@ -395,8 +395,8 @@ void Feature::getGeneratedShapes(std::vector<int>& faces,
         }
     }
 
-    std::copy(edgeSet.begin(), edgeSet.end(), std::back_inserter(edges));
-    std::copy(vertexSet.begin(), vertexSet.end(), std::back_inserter(vertices));
+    std::ranges::copy(edgeSet, std::back_inserter(edges));
+    std::ranges::copy(vertexSet, std::back_inserter(vertices));
 }
 
 void Feature::updatePreviewShape()
