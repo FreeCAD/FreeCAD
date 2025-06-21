@@ -48,6 +48,8 @@
 #include "Navigation/NavigationStyle.h"
 #include "Navigation/NavigationStylePy.h"
 #include "Application.h"
+#include "Command.h"
+#include "Action.h"
 #include "Inventor/SoMouseWheelEvent.h"
 #include "MenuManager.h"
 #include "MouseSelection.h"
@@ -1930,6 +1932,8 @@ void NavigationStyle::openPopupMenu(const SbVec2s& position)
         QAction *item = navMenuGroup->addAction(name);
         navMenu->addAction(item);
         item->setCheckable(true);
+        QByteArray data(style.first.getName());
+        item->setData(data);
 
         if (const Base::Type item_style = style.first; item_style != this->getTypeId()) {
             auto triggeredFun = [this, item_style](){
@@ -1947,7 +1951,64 @@ void NavigationStyle::openPopupMenu(const SbVec2s& position)
             item->setChecked(true);
     }
 
-    contextMenu->popup(QCursor::pos());
+    // Add Pick Geometry option if there are objects under cursor
+    bool separator = false;
+    auto posAction = !contextMenu->actions().empty() ? contextMenu->actions().front() : nullptr;
+
+    // Get picked objects at position
+    SoRayPickAction rp(viewer->getSoRenderManager()->getViewportRegion());
+    rp.setPoint(position);
+    rp.setRadius(viewer->getPickRadius());
+    rp.setPickAll(true);
+    rp.apply(viewer->getSoRenderManager()->getSceneGraph());
+    
+    const SoPickedPointList& pplist = rp.getPickedPointList();
+    QAction *pickAction = nullptr;
+    
+    if (pplist.getLength() > 0) {
+        separator = true;
+        auto cmd = Application::Instance->commandManager().getCommandByName("Std_PickGeometry");
+        if (cmd) {
+            pickAction = new QAction(cmd->getAction()->text(), contextMenu);
+            pickAction->setShortcut(cmd->getAction()->shortcut());
+        } else {
+            pickAction = new QAction(QObject::tr("Pick geometry"), contextMenu);
+        }
+        if (posAction) {
+            contextMenu->insertAction(posAction, pickAction);
+            contextMenu->insertSeparator(posAction);
+        } else {
+            contextMenu->addAction(pickAction);
+        }
+    }
+
+    if (separator && posAction)
+        contextMenu->insertSeparator(posAction);
+
+    QAction* used = contextMenu->exec(QCursor::pos());
+    if (used && navMenuGroup->actions().indexOf(used) >= 0 && used->isChecked()) {
+        QByteArray type = used->data().toByteArray();
+        QWidget* widget = viewer->getWidget();
+        while (widget && !widget->inherits("Gui::View3DInventor"))
+            widget = widget->parentWidget();
+        if (widget) {
+            // this is the widget where the viewer is embedded
+            Base::Type style = Base::Type::fromName((const char*)type);
+            if (style != this->getTypeId()) {
+                QEvent* event = new NavigationStyleEvent(style);
+                QApplication::postEvent(widget, event);
+            }
+        }
+        return;
+    }
+
+    if (pickAction && used == pickAction) {
+        // Execute the Pick Geometry command at this position
+        auto cmd = Application::Instance->commandManager().getCommandByName("Std_PickGeometry");
+        if (cmd && cmd->isActive()) {
+            cmd->invoke(0);
+        }
+    }
 }
 
 PyObject* NavigationStyle::getPyObject()
