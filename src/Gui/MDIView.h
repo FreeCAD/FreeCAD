@@ -24,6 +24,7 @@
 #define GUI_MDIVIEW_H
 
 #include <boost/signals2.hpp>
+#include <optional>
 #include <QMainWindow>
 #include <Gui/ActiveObjectList.h>
 #include <Gui/View.h>
@@ -145,6 +146,11 @@ public:
     bool isActiveObject(App::DocumentObject*o, const char*n, const char *subname=nullptr) const
     {
         return ActiveObjects.hasObject(o,n,subname);
+    }
+
+    std::optional<App::DocumentObject*> findActiveObjectWithExtension(const Base::Type& extensionTypeId) const
+    {
+        return ActiveObjects.findActiveObjectWithExtension(extensionTypeId);
     }
 
     /*!

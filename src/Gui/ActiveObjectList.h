@@ -27,6 +27,8 @@
 
 #include <map>
 #include <string>
+#include <optional>
+#include <Base/Type.h>
 #include <Gui/TreeItemMode.h>
 #include <FCGlobal.h>
 
@@ -66,6 +68,8 @@ namespace Gui
         bool hasObject(const char*)const;
         void objectDeleted(const ViewProviderDocumentObject& viewProviderIn);
         bool hasObject(App::DocumentObject *obj, const char *, const char *subname=nullptr) const;
+
+        std::optional<App::DocumentObject*> findActiveObjectWithExtension(const Base::Type& extensionTypeId) const;
 
     private:
         struct ObjectInfo;

@@ -32,6 +32,7 @@
 #include "ActiveObjectList.h"
 #include "Application.h"
 #include "Document.h"
+#include "MDIView.h"
 #include "ViewProviderDocumentObject.h"
 #include "Selection.h"
 
@@ -121,11 +122,35 @@ void StdCmdGroup::activated(int iMsg)
     std::string GroupName;
     GroupName = getUniqueObjectName("Group");
     QString label = QApplication::translate("Std_Group", "Group");
-    doCommand(Doc,"App.activeDocument().Tip = App.activeDocument().addObject('App::DocumentObjectGroup','%s')",GroupName.c_str());
-    doCommand(Doc,"App.activeDocument().%s.Label = '%s'", GroupName.c_str(),
-              label.toUtf8().data());
+
+    // create a group
+    doCommand(Doc,"group = App.activeDocument().addObject('App::DocumentObjectGroup','%s')",GroupName.c_str());
+    doCommand(Doc,"group.Label = '%s'", label.toUtf8().data());
+    doCommand(Doc,"App.activeDocument().Tip = group");
+
+    // try to add the group to any active object that supports grouping (has GroupExtension)
+    auto activeDoc = Gui::Application::Instance->activeDocument();
+    if (activeDoc) {
+        auto activeView = activeDoc->getActiveView();
+        if (activeView) {
+            // find the first active object with GroupExtension
+            auto activeObjOpt = activeView->findActiveObjectWithExtension(
+                App::GroupExtension::getExtensionClassTypeId());
+
+            if (activeObjOpt.has_value()) {
+                auto activeObj = activeObjOpt.value();
+                doCommand(Doc,
+                    "active_obj = App.activeDocument().getObject('%s')\n"
+                    "if active_obj and hasattr(active_obj, 'Group'):\n"
+                    "    active_obj.Group = active_obj.Group + [group]",
+                    activeObj->getNameInDocument());
+            }
+        }
+    } // if we have no active object, group will be added to root doc
+
     commitCommand();
 
+    // Scroll to the newly created group
     Gui::Document* gui = Application::Instance->activeDocument();
     App::Document* app = gui->getDocument();
     ViewProvider* vp = gui->getViewProvider(app->getActiveObject());
