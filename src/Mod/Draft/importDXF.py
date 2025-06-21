@@ -5080,27 +5080,8 @@ class DxfDraftPostProcessor:
 # ## C++ Exporter Helper Functions
 # #####################################################################
 
-def _get_layer_name(obj):
-    """
-    Internal helper to get the layer/group name for an object.
-    Called from C++.
-    """
-    return getGroup(obj)
-
-
-def _get_aci_color(obj):
-    """
-    Internal helper to get the ACI color for an object.
-    Called from C++.
-    """
-    return getACI(obj)
-
-
-def _get_text_data(obj):
-    """
-    Internal helper to extract all necessary data for a DXF TEXT entity.
-    Called from C++. Returns a tuple of data.
-    """
+def _write_text_entities(obj, writer_proxy):
+    """Writes DXF TEXT entities for an Annotation object."""
     if not hasattr(obj, "ViewObject"):
         return None
 
@@ -5133,12 +5114,10 @@ def _get_text_data(obj):
         p1 = (pos.x, pos.y, pos.z)
         p2 = p1 # Simplification for now
 
-        text_data_list.append((text_line, p1, p2, height * 0.8, justification, rotation))
-
-    return text_data_list
+        writer_proxy.addText(text_line, p1_tuple, p2_tuple, dxf_height, justification, rotation)
 
 
-def _get_dimension_data(obj):
+def _write_dimension_entity(obj, writer_proxy):
     """
     Internal helper to extract data for a DXF DIMENSION entity.
     Called from C++. Returns a tuple of data.
@@ -5150,7 +5129,7 @@ def _get_dimension_data(obj):
 
     # The text is implicitly calculated by the DIMENSION entity in DXF,
     # but we can provide an override. "<>" is the code for the measurement.
-    dim_text = "<>"
+    dim_text_override = "<>"
 
     # Determine dimension type (simplified)
     # 0=Aligned, 1=Horizontal, 2=Vertical in our C++ writer
@@ -5167,7 +5146,12 @@ def _get_dimension_data(obj):
     p1_tuple = (p1.x, p1.y, p1.z)
     p2_tuple = (p2.x, p2.y, p2.z)
 
-    return (text_mid_point, dim_line_pt, p1_tuple, p2_tuple, dim_text, dim_type)
+    writer_proxy.writeLinearDim(text_mid_point,
+                                dim_line_pt,
+                                p1_tuple,
+                                p2_tuple,
+                                dim_text_override,
+                                dim_type)
 
 
 def _export_techdraw_page(page, writer_proxy):
@@ -5218,58 +5202,8 @@ def _export_techdraw_page(page, writer_proxy):
 
     FreeCAD.Console.PrintMessage(f"Exported TechDraw page '{page.Label}' to DXF.\n")
 
-def _project_shape(shape, direction):
-    """
-    Internal helper for the C++ exporter. Projects a shape along a vector
-    and returns the flattened 2D result.
-    """
-    try:
-        import TechDraw
-        # projectToDXF already returns a flattened 2D shape, so no extra work is needed.
-        # This function was added in later versions, so we check for projectEx as a fallback.
-        if hasattr(TechDraw, "projectToDXF"):
-            # The modern API returns a ready-to-use shape
-            return TechDraw.projectToDXF(shape, direction)
-        elif hasattr(TechDraw, "projectEx"):
-            # Fallback for older versions
-            proj = TechDraw.projectEx(shape, direction, True)
-            # This old version might not be flat, so we should flatten it here
-            # ... (flattening logic) ...
-            return proj.result
-        else:
-            FreeCAD.Console.PrintError("TechDraw projection API not found.\n")
-            return None
-    except Exception as e:
-        FreeCAD.Console.PrintError(f"DXF Projection failed: {e}\n")
-        return None
 
-def _export_special_object(obj, writer_proxy):
-    """
-    Master dispatcher for special (FeaturePython) objects.
-    This function is called from C++ and uses Draft.getType() to route
-    to the correct specific export helper.
-    """
-    obj_type = Draft.getType(obj)
-
-    try:
-        if obj_type == 'AxisSystem':
-            _export_arch_axis(obj, writer_proxy)
-        elif obj_type == 'Space':
-            _export_arch_space(obj, writer_proxy)
-        elif obj_type == 'PanelCut':
-            _export_arch_panel_cut(obj, writer_proxy)
-        elif obj_type == 'PanelSheet':
-            _export_arch_panel_sheet(obj, writer_proxy)
-        else:
-            # Fallback for unhandled FeaturePython objects: export their shape.
-            if hasattr(obj, "Shape"):
-                writer_proxy.exportShape(obj.Shape)
-
-    except Exception as e:
-        FreeCAD.Console.PrintError(f"Error exporting special object {obj.Name} of type {obj_type}: {e}\n")
-
-
-def _export_arch_axis(obj, writer_proxy):
+def _write_arch_axis_entities(obj, writer_proxy):
     """
     Specific helper to export an Arch::AxisSystem object.
     This is called by the master dispatcher.
@@ -5312,7 +5246,7 @@ def _export_arch_axis(obj, writer_proxy):
     except Exception as e:
         FreeCAD.Console.PrintError(f"Error exporting Arch AxisSystem {obj.Name}: {e}\n")
 
-def _export_arch_space(obj, writer_proxy):
+def _write_arch_space_entities(obj, writer_proxy):
     """
     Specific helper to export an Arch::Space object.
     Exports the space's label and area as text.
@@ -5356,7 +5290,7 @@ def _export_arch_space(obj, writer_proxy):
     except Exception as e:
         FreeCAD.Console.PrintError(f"Error exporting Arch Space {obj.Name}: {e}\n")
 
-def _export_arch_panel_cut(obj, writer_proxy):
+def _write_arch_panel_cut_entities(obj, writer_proxy):
     """
     Specific helper for Arch::PanelCut objects.
     Exports the panel's outline and cuts on specific layers.
@@ -5401,7 +5335,7 @@ def _export_arch_panel_cut(obj, writer_proxy):
     except Exception as e:
         FreeCAD.Console.PrintError(f"Error exporting Arch PanelCut {obj.Name}: {e}\n")
 
-def _export_arch_panel_sheet(obj, writer_proxy):
+def _write_arch_panel_sheet_entities(obj, writer_proxy):
     """
     Specific helper for Arch::PanelSheet objects.
     Exports the sheet's border and tag, then processes its child PanelCut objects.
@@ -5449,3 +5383,64 @@ def _export_arch_panel_sheet(obj, writer_proxy):
     except Exception as e:
         FreeCAD.Console.PrintError(f"Error exporting Arch PanelSheet {obj.Name}: {e}\n")
 
+
+def _write_generic_shape_entity(obj, writer_proxy):
+    """
+    Handles the export of any object with a .Shape property.
+    This includes Part::Feature, Sketcher::Sketch, etc.
+    It also handles the projection and meshing options.
+    """
+    shape_to_export = obj.Shape
+
+    # Check for sketches, which need special handling to be flattened
+    if Draft.getType(obj) == 'Sketch':
+        # This assumes a helper exists to correctly get a flat shape from a sketch
+        # In a real implementation, we might need Sketcher.getExportShape(obj)
+        pass # For now, we just use the default shape
+
+    # The projection/meshing options are checked in C++, but we could
+    # also check them here if needed. The C++ check is more efficient.
+    # The C++ side will have already processed the projection if the option was set.
+
+    writer_proxy.exportShape(shape_to_export)
+
+
+def _export_object(obj, writer_proxy):
+    """
+    Master dispatcher for all objects. Called once per object from C++.
+    It identifies the object type and calls the appropriate writing logic.
+    """
+    # 1. Set Layer and Color for the object
+    # For text-based objects (Annotations, Dimensions), we get the text color
+    is_text_obj = hasattr(obj, 'ViewObject') and hasattr(obj.ViewObject, 'TextColor')
+    layer_name = getGroup(obj)
+    aci_color = getACI(obj, text=is_text_obj)
+    writer_proxy.setLayerName(layer_name)
+    writer_proxy.setColor(aci_color)
+
+    # 2. Get the object's type
+    obj_type = Draft.getType(obj)
+
+    # 3. Dispatch to the correct handler
+    try:
+        if obj_type == 'Annotation':
+            _write_text_entities(obj, writer_proxy)
+        elif obj_type == 'Dimension':
+            _write_dimension_entity(obj, writer_proxy)
+        elif obj_type == 'AxisSystem':
+            _write_arch_axis_entities(obj, writer_proxy)
+        elif obj_type == 'Space':
+            _write_arch_space_entities(obj, writer_proxy)
+        elif obj_type == 'PanelCut':
+            _write_arch_panel_cut_entities(obj, writer_proxy)
+        elif obj_type == 'PanelSheet':
+            _write_arch_panel_sheet_entities(obj, writer_proxy)
+        elif hasattr(obj, "Shape") and obj.Shape.isValid():
+            # This is the fallback for any other object with a valid Shape property
+            _write_generic_shape_entity(obj, writer_proxy)
+        else:
+            # Object has no shape and no special handler, so we skip it.
+            pass
+
+    except Exception as e:
+        FreeCAD.Console.PrintError(f"Error exporting object {obj.Name} of type {obj_type}: {e}\n")
