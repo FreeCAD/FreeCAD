@@ -392,7 +392,6 @@ void ViewProvider::makePreviewVisible(bool enable)
     PartDesign::Feature* baseFeature { nullptr };
 
     ViewProvider* baseFeatureViewProvider { nullptr };
-    Gui::ViewProvider* bodyViewProvider {getBodyViewProvider()};
 
     if (!feature) {
         return;
@@ -407,22 +406,16 @@ void ViewProvider::makePreviewVisible(bool enable)
         baseFeatureViewProvider = this;
     }
 
-    if (!bodyViewProvider) {
-        bodyViewProvider = baseFeatureViewProvider->getBodyViewProvider();
-    }
-
     if (enable) {
         feature->updatePreviewShape();
 
         baseFeatureViewProvider->show();
         hide();
-
-        bodyViewProvider->getAnnotation()->addChild(pcPreviewRoot);
+        getAnnotation()->addChild(pcPreviewRoot);
     } else {
         baseFeatureViewProvider->hide();
         show();
-
-        bodyViewProvider->getAnnotation()->removeChild(pcPreviewRoot);
+        getAnnotation()->removeChild(pcPreviewRoot);
     }
 }
 
