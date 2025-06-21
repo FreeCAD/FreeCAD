@@ -132,6 +132,11 @@ public:
     }
 
 
+    std::list<Gui::InputHint> getToolHints() const override
+    {
+        return lookupScaleHints(state());
+    }
+
 private:
     void updateDataAndDrawToPosition(Base::Vector2d onSketchPos) override
     {
@@ -227,6 +232,17 @@ private:
                        // to continue even if the scaling failed
     bool allowOriginConstraint;  // Conserve constraints with origin
     double refLength, length, scaleFactor;
+
+    struct HintEntry
+    {
+        SelectMode state;
+        std::list<Gui::InputHint> hints;
+    };
+
+    using HintTable = std::vector<HintEntry>;
+
+    static HintTable getScaleHintTable();
+    static std::list<Gui::InputHint> lookupScaleHints(SelectMode state);
 
 
     void deleteOriginalGeos()
@@ -446,6 +462,30 @@ private:
         return pointToScale;
     }
 };
+
+DrawSketchHandlerScale::HintTable DrawSketchHandlerScale::getScaleHintTable()
+{
+    using enum Gui::InputHint::UserInput;
+
+    return {
+        {.state = SelectMode::SeekFirst,
+         .hints = {{QObject::tr("%1 pick reference point", "Sketcher Scale: hint"), {MouseLeft}}}},
+        {.state = SelectMode::SeekSecond,
+         .hints = {{QObject::tr("%1 set reference length", "Sketcher Scale: hint"), {MouseLeft}}}},
+        {.state = SelectMode::SeekThird,
+         .hints = {{QObject::tr("%1 set scale factor", "Sketcher Scale: hint"), {MouseLeft}}}}};
+}
+
+std::list<Gui::InputHint> DrawSketchHandlerScale::lookupScaleHints(SelectMode state)
+{
+    const auto scaleHintTable = getScaleHintTable();
+
+    auto it = std::ranges::find_if(scaleHintTable, [state](const HintEntry& entry) {
+        return entry.state == state;
+    });
+
+    return (it != scaleHintTable.end()) ? it->hints : std::list<Gui::InputHint> {};
+}
 
 template<>
 auto DSHScaleControllerBase::getState(int labelindex) const
