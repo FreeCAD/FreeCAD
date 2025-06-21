@@ -134,6 +134,7 @@ SoDatumLabel::SoDatumLabel()
     SO_NODE_ADD_FIELD(name, ("Helvetica"));
     SO_NODE_ADD_FIELD(size, (10.F));
     SO_NODE_ADD_FIELD(lineWidth, (2.F));
+    SO_NODE_ADD_FIELD(sampling, (2.F));
 
     SO_NODE_ADD_FIELD(datumtype, (SoDatumLabel::DISTANCE));
 
@@ -187,7 +188,8 @@ void SoDatumLabel::drawImage()
     QColor front;
     front.setRgbF(t[0],t[1], t[2]);
 
-    QImage image(w, h,QImage::Format_ARGB32_Premultiplied);
+    QImage image(w * sampling.getValue(), h * sampling.getValue(), QImage::Format_ARGB32_Premultiplied);
+    image.setDevicePixelRatio(sampling.getValue());
     image.fill(0x00000000);
 
     QPainter painter(&image);
@@ -1165,7 +1167,7 @@ void SoDatumLabel::getDimension(float scale, int& srcw, int& srch)
     srch = imgsize[1];
 
     float aspectRatio =  (float) srcw / (float) srch;
-    this->imgHeight = scale * (float) (srch);
+    this->imgHeight = scale * (float) (srch) / sampling.getValue();
     this->imgWidth  = aspectRatio * (float) this->imgHeight;
 }
 
