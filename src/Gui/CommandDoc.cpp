@@ -408,17 +408,9 @@ void StdCmdExport::activated(int iMsg)
         return;
     }
 
-    // Use an export info specific to the document or to the application instance
-    bool useDocExportInfo = App::GetApplication()
-                                .GetUserParameter()
-                                .GetGroup("BaseApp")
-                                ->GetGroup("Preferences")
-                                ->GetGroup("Document")
-                                ->GetBool("OneExportPerDoc", true);
-
     App::DocumentObject* toExport = selection.front();
     App::Document* doc = toExport->getDocument();
-    App::ExportInfo exportInfo = useDocExportInfo ? doc->exportInfo() : App::GetApplication().exportInfo();
+    App::ExportInfo exportInfo = doc->exportInfo();
     bool filenameWasGenerated = false;
 
     // fill the list of registered suffixes
@@ -510,11 +502,7 @@ void StdCmdExport::activated(int iMsg)
         exportInfo.filter = selectedFilter.toStdString();
         exportInfo.generatedName = filenameWasGenerated;
 
-        if (useDocExportInfo) {
-            doc->setExportInfo(exportInfo);
-        } else {
-            App::GetApplication().setExportInfo(exportInfo);
-        }
+        doc->setExportInfo(exportInfo);
     }
 }
 

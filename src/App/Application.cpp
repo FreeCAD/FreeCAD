@@ -1570,14 +1570,6 @@ std::map<std::string, std::string> Application::getExportFilters() const
 
     return filter;
 }
-ExportInfo Application::exportInfo() const
-{
-    return _exportInfo;
-}
-void Application::setExportInfo(const ExportInfo& info)
-{
-    _exportInfo = info;
-}
 
 //**************************************************************************
 // signaling
