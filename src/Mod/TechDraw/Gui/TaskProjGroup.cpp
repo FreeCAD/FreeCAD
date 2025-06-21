@@ -777,12 +777,10 @@ QString TaskProjGroup::formatVector(Base::Vector3d vec)
 }
 
 void TaskProjGroup::saveButtons(QPushButton* btnOK,
-                             QPushButton* btnCancel,
-                             QPushButton* btnApply)
+                             QPushButton* btnCancel)
 {
     m_btnOK = btnOK;
     m_btnCancel = btnCancel;
-    m_btnApply = btnApply;
 }
 
 
@@ -887,8 +885,7 @@ void TaskDlgProjGroup::modifyStandardButtons(QDialogButtonBox* box)
 {
     QPushButton* btnOK = box->button(QDialogButtonBox::Ok);
     QPushButton* btnCancel = box->button(QDialogButtonBox::Cancel);
-    QPushButton* btnApply = box->button(QDialogButtonBox::Apply);
-    widget->saveButtons(btnOK, btnCancel, btnApply);
+    widget->saveButtons(btnOK, btnCancel);
 }
 
 //==== calls from the TaskView ===============================================================
