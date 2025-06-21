@@ -5,6 +5,7 @@
 #include "SketchExportHelper.h"
 
 #include <App/Annotation.h>
+#include <App/FeaturePython.h>
 #include <App/DocumentObjectPy.h>
 #include <Mod/Part/App/PartFeature.h>
 #include <Mod/Part/App/PartFeaturePy.h>
@@ -158,6 +159,23 @@ void executeDxfExport(PyObject* objectList, ImpExpDxfWrite& writer)
                     Py_XDECREF(dim_tuple);
                 }
                 Py_XDECREF(get_dim_data_func);
+            }
+            else if (obj->isDerivedFrom(App::FeaturePython::getClassTypeId())) {
+                // It's a FeaturePython object. Let the master Python dispatcher handle it.
+                PyObject* export_func =
+                    PyObject_GetAttrString(helperModule, "_export_special_object");
+                if (export_func && PyCallable_Check(export_func)) {
+                    PyObject* writerProxyObj =
+                        DxfWriterProxy_Type.tp_new(&Import::DxfWriterProxy_Type, nullptr, nullptr);
+                    ((Import::DxfWriterProxy*)writerProxyObj)->writer_inst = &writer;
+
+                    PyObject* result =
+                        PyObject_CallFunctionObjArgs(export_func, item, writerProxyObj, NULL);
+
+                    Py_XDECREF(result);
+                    Py_DECREF(writerProxyObj);
+                }
+                Py_XDECREF(export_func);
             }
             else if (auto* part = dynamic_cast<Part::Feature*>(obj)) {
                 TopoDS_Shape shapeToExport = part->Shape.getValue();
