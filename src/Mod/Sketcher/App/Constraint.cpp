@@ -24,7 +24,12 @@
 #ifndef _PreComp_
 #include <QDateTime>
 #include <boost/random.hpp>
+#include <algorithm>
 #include <cmath>
+#include <ranges>
+#include <stdexcept>
+#include <string>
+#include <vector>
 #endif
 
 #include <Base/Reader.h>
@@ -44,21 +49,6 @@ using namespace Base;
 TYPESYSTEM_SOURCE(Sketcher::Constraint, Base::Persistence)
 
 Constraint::Constraint()
-    : Value(0.0)
-    , Type(None)
-    , AlignmentType(Undef)
-    , First(GeoEnum::GeoUndef)
-    , FirstPos(PointPos::none)
-    , Second(GeoEnum::GeoUndef)
-    , SecondPos(PointPos::none)
-    , Third(GeoEnum::GeoUndef)
-    , ThirdPos(PointPos::none)
-    , LabelDistance(10.f)
-    , LabelPosition(0.f)
-    , isDriving(true)
-    , InternalAlignmentIndex(-1)
-    , isInVirtualSpace(false)
-    , isActive(true)
 {
     // Initialize a random number generator, to avoid Valgrind false positives.
     // The random number generator is not threadsafe so we guard it.  See
@@ -102,6 +92,7 @@ Constraint* Constraint::copy() const
     temp->InternalAlignmentIndex = this->InternalAlignmentIndex;
     temp->isInVirtualSpace = this->isInVirtualSpace;
     temp->isActive = this->isActive;
+    temp->elements = this->elements;
     // Do not copy tag, otherwise it is considered a clone, and a "rename" by the expression engine.
     return temp;
 }
@@ -160,19 +151,57 @@ void Constraint::Save(Writer& writer) const
                         << "InternalAlignmentIndex=\"" << InternalAlignmentIndex << "\" ";
     }
     writer.Stream() << "Value=\"" << Value << "\" "
-                    << "First=\"" << First << "\" "
-                    << "FirstPos=\"" << (int)FirstPos << "\" "
-                    << "Second=\"" << Second << "\" "
-                    << "SecondPos=\"" << (int)SecondPos << "\" "
-                    << "Third=\"" << Third << "\" "
-                    << "ThirdPos=\"" << (int)ThirdPos << "\" "
                     << "LabelDistance=\"" << LabelDistance << "\" "
                     << "LabelPosition=\"" << LabelPosition << "\" "
                     << "IsDriving=\"" << (int)isDriving << "\" "
                     << "IsInVirtualSpace=\"" << (int)isInVirtualSpace << "\" "
-                    << "IsActive=\"" << (int)isActive << "\" />"
+                    << "IsActive=\"" << (int)isActive << "\" ";
 
-                    << std::endl;
+    // Save elements
+    {
+        // Ensure backwards compatibility with old versions
+        writer.Stream() << "First=\"" << First << "\" "
+                        << "FirstPos=\"" << (int)FirstPos << "\" "
+                        << "Second=\"" << Second << "\" "
+                        << "SecondPos=\"" << (int)SecondPos << "\" "
+                        << "Third=\"" << Third << "\" "
+                        << "ThirdPos=\"" << (int)ThirdPos << "\" ";
+
+
+        std::stringstream ssIds;
+        std::stringstream ssPositions;
+        for (size_t i = 0; i < elements.size(); ++i) {
+            GeoElementId element = elements[i];
+            // Old way takes precedence for the first three elements.
+            switch (i) {
+                case 0:
+                    element = GeoElementId(First, FirstPos);
+                    break;
+                case 1:
+                    element = GeoElementId(Second, SecondPos);
+                    break;
+                case 2:
+                    element = GeoElementId(Third, ThirdPos);
+                    break;
+            }
+
+            ssIds << element.GeoId << " ";
+            ssPositions << element.posIdAsInt() << " ";
+        }
+        std::string ids = ssIds.str();
+        std::string positions = ssPositions.str();
+
+        // Remove trailing spaces
+        if (!ids.empty() && ids.back() == ' ') {
+            ids.pop_back();
+            positions.pop_back();
+        }
+
+        writer.Stream() << "ElementIds=\"" << ids << "\" "
+                        << "ElementPositions=\"" << positions << "\" ";
+    }
+
+    writer.Stream() << "/>\n";
 }
 
 void Constraint::Restore(XMLReader& reader)
@@ -181,10 +210,6 @@ void Constraint::Restore(XMLReader& reader)
     Name = reader.getAttribute<const char*>("Name");
     Type = reader.getAttribute<ConstraintType>("Type");
     Value = reader.getAttribute<double>("Value");
-    First = reader.getAttribute<long>("First");
-    FirstPos = reader.getAttribute<PointPos>("FirstPos");
-    Second = reader.getAttribute<long>("Second");
-    SecondPos = reader.getAttribute<PointPos>("SecondPos");
 
     if (this->Type == InternalAlignment) {
         AlignmentType = reader.getAttribute<InternalAlignmentType>("InternalAlignmentType");
@@ -195,12 +220,6 @@ void Constraint::Restore(XMLReader& reader)
     }
     else {
         AlignmentType = Undef;
-    }
-
-    // read the third geo group if present
-    if (reader.hasAttribute("Third")) {
-        Third = reader.getAttribute<long>("Third");
-        ThirdPos = reader.getAttribute<PointPos>("ThirdPos");
     }
 
     // Read the distance a constraint label has been moved
@@ -223,18 +242,103 @@ void Constraint::Restore(XMLReader& reader)
     if (reader.hasAttribute("IsActive")) {
         isActive = reader.getAttribute<bool>("IsActive");
     }
+
+    if (reader.hasAttribute("ElementIds") && reader.hasAttribute("ElementPositions")) {
+        auto splitAndClean = [](const std::string& input) {
+            const char delimiter = ' ';
+            auto tokens =
+                input | std::views::split(delimiter) | std::views::transform([](auto&& subrange) {
+                    return std::string(std::ranges::begin(subrange), std::ranges::end(subrange));
+                })
+                | std::views::filter([](const std::string& s) {
+                      return !s.empty();
+                  });
+
+            // C++20 does not have std::ranges::to, so we need to convert the view to a vector
+            // manually. This is a workaround until C++23 is supported.
+            std::vector<std::string> result;
+            for (const auto& token : tokens) {
+                result.push_back(token);
+            }
+            return result;
+        };
+
+        const std::string elementIds = reader.getAttribute<const char*>("ElementIds");
+        const std::string elementPositions = reader.getAttribute<const char*>("ElementPositions");
+
+        const auto ids = splitAndClean(elementIds);
+        const auto positions = splitAndClean(elementPositions);
+
+        if (ids.size() != positions.size()) {
+            throw Base::ParserError("ElementIds and ElementPositions do not match in size. Got "
+                                    + std::to_string(ids.size()) + " ids and "
+                                    + std::to_string(positions.size()) + " positions.");
+        }
+
+        elements.clear();
+
+        std::ranges::transform(ids,
+                               positions,
+                               std::back_inserter(elements),
+                               [](const std::string& id, const std::string& pos) {
+                                   return GeoElementId(std::stoi(id),
+                                                       static_cast<PointPos>(std::stoi(pos)));
+                               });
+
+        while (elements.size() < 3) {
+            // Ensure we have at least 3 elements
+            elements.emplace_back(GeoEnum::GeoUndef, PointPos::none);
+        }
+    }
+    else {
+        // Fallback: default to 3 empty elements
+        elements = {GeoElementId(), GeoElementId(), GeoElementId()};
+    }
+
+    // Load deprecated First, Second, Third elements
+    // These take precedence over the new elements
+    // Even though these are deprecated, we still need to read them
+    // for compatibility with old files.
+    {
+        if (reader.hasAttribute("First")) {
+            setElement(0,
+                       GeoElementId(reader.getAttribute<long>("First"),
+                                    reader.getAttribute<PointPos>("FirstPos")));
+        }
+        else {
+            const auto& element = elements[0];
+            First = element.GeoId;
+            FirstPos = element.Pos;
+        }
+        if (reader.hasAttribute("Second")) {
+            setElement(1,
+                       GeoElementId(reader.getAttribute<long>("Second"),
+                                    reader.getAttribute<PointPos>("SecondPos")));
+        }
+        else {
+            const auto& element = elements[1];
+            Second = element.GeoId;
+            SecondPos = element.Pos;
+        }
+        if (reader.hasAttribute("Third")) {
+            setElement(2,
+                       GeoElementId(reader.getAttribute<long>("Third"),
+                                    reader.getAttribute<PointPos>("ThirdPos")));
+        }
+        else {
+            const auto& element = elements[2];
+            Third = element.GeoId;
+            ThirdPos = element.Pos;
+        }
+    }
 }
 
 void Constraint::substituteIndex(int fromGeoId, int toGeoId)
 {
-    if (this->First == fromGeoId) {
-        this->First = toGeoId;
-    }
-    if (this->Second == fromGeoId) {
-        this->Second = toGeoId;
-    }
-    if (this->Third == fromGeoId) {
-        this->Third = toGeoId;
+    for (size_t i = 0; i < elements.size(); ++i) {
+        if (elements[i].GeoId == fromGeoId) {
+            setElement(i, GeoElementId(toGeoId, elements[i].Pos));
+        }
     }
 }
 
@@ -243,17 +347,10 @@ void Constraint::substituteIndexAndPos(int fromGeoId,
                                        int toGeoId,
                                        PointPos toPosId)
 {
-    if (this->First == fromGeoId && this->FirstPos == fromPosId) {
-        this->First = toGeoId;
-        this->FirstPos = toPosId;
-    }
-    if (this->Second == fromGeoId && this->SecondPos == fromPosId) {
-        this->Second = toGeoId;
-        this->SecondPos = toPosId;
-    }
-    if (this->Third == fromGeoId && this->ThirdPos == fromPosId) {
-        this->Third = toGeoId;
-        this->ThirdPos = toPosId;
+    for (size_t i = 0; i < elements.size(); ++i) {
+        if (elements[i].GeoId == fromGeoId && elements[i].Pos == fromPosId) {
+            setElement(i, GeoElementId(toGeoId, toPosId));
+        }
     }
 }
 
@@ -265,4 +362,72 @@ std::string Constraint::typeToString(ConstraintType type)
 std::string Constraint::internalAlignmentTypeToString(InternalAlignmentType alignment)
 {
     return internalAlignmentType2str[alignment];
+}
+
+bool Constraint::involvesGeoId(int geoId) const
+{
+    bool foundInElements = std::ranges::any_of(elements, [geoId](const auto& element) {
+        return element.GeoId == geoId;
+    });
+
+    // Old way, deprecated - can be removed in the future
+    foundInElements = foundInElements || First == geoId || Second == geoId || Third == geoId;
+
+    return foundInElements;
+}
+/// utility function to check if (`geoId`, `posId`) is one of the points/curves
+bool Constraint::involvesGeoIdAndPosId(int geoId, PointPos posId) const
+{
+    bool foundInElements =
+        std::ranges::find(elements, GeoElementId(geoId, posId)) != elements.end();
+
+    // Old way, deprecated - can be removed in the future
+    foundInElements = foundInElements || (First == geoId && FirstPos == posId)
+        || (Second == geoId && SecondPos == posId) || (Third == geoId && ThirdPos == posId);
+
+    return foundInElements;
+}
+
+
+GeoElementId Constraint::getElement(size_t index)  // const
+{
+    {
+        // Support for old code that uses First, Second, Third directly.
+        // Can be made const when the old code is removed.
+        elements[0] = GeoElementId(First, FirstPos);
+        elements[1] = GeoElementId(Second, SecondPos);
+        elements[2] = GeoElementId(Third, ThirdPos);
+    }
+    return elements[index];
+}
+void Constraint::setElement(size_t index, GeoElementId element)
+{
+    {
+        // Support for old code that uses First, Second, Third directly.
+        switch (index) {
+            case 0:
+                First = element.GeoId;
+                FirstPos = element.Pos;
+                break;
+            case 1:
+                Second = element.GeoId;
+                SecondPos = element.Pos;
+                break;
+            case 2:
+                Third = element.GeoId;
+                ThirdPos = element.Pos;
+                break;
+        }
+    }
+    elements[index] = element;
+}
+
+size_t Constraint::getElementsSize() const
+{
+    return elements.size();
+}
+
+void Constraint::addElement(GeoElementId element)
+{
+    elements.push_back(element);
 }
