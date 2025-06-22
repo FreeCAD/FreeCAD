@@ -87,10 +87,22 @@ public:
             return;
         }
         
-        QString text = index.data(Qt::DisplayRole).toString();
-        QStringList lines = text.split(QLatin1Char('\n'));
+        // Use separate roles instead of parsing mixed string
+        QString pathText = index.data(PreferencesSearchController::PathRole).toString();
+        QString widgetText = index.data(PreferencesSearchController::WidgetTextRole).toString();
+
+        if (pathText.isEmpty()) {
+            QString text = index.data(Qt::DisplayRole).toString();
+            QStringList lines = text.split(QLatin1Char('\n'));
+            if (!lines.isEmpty()) {
+                pathText = lines.first();
+                if (lines.size() > 1) {
+                    widgetText = lines.at(1);
+                }
+            }
+        }
         
-        if (lines.isEmpty()) {
+        if (pathText.isEmpty()) {
             QStyledItemDelegate::paint(painter, option, index);
             return;
         }
@@ -121,25 +133,21 @@ public:
         int x = option.rect.left() + 12; // +12 horizontal padding
         int availableWidth = option.rect.width() - 24; // account for left and right padding
         
-        // draw first line in bold (Tab/Page) with wrapping
+        // draw path in bold (Tab/Page) with wrapping
         painter->setFont(boldFont);
-        QRect boldBoundingRect = boldFm.boundingRect(QRect(0, 0, availableWidth, 0), Qt::TextWordWrap, lines.first());
+        QRect boldBoundingRect = boldFm.boundingRect(QRect(0, 0, availableWidth, 0), Qt::TextWordWrap, pathText);
         QRect boldRect(x, y, availableWidth, boldBoundingRect.height());
-        painter->drawText(boldRect, Qt::TextWordWrap | Qt::AlignTop, lines.first());
+        painter->drawText(boldRect, Qt::TextWordWrap | Qt::AlignTop, pathText);
         
         // move y position after the bold text
         y += boldBoundingRect.height();
         
-        // draw remaining lines in normal font with wrapping
-        if (lines.size() > 1) {
+        // draw widget text in normal font (if present)
+        if (!widgetText.isEmpty()) {
             painter->setFont(normalFont);
-            
-            for (int i = 1; i < lines.size(); ++i) {
-                QRect normalBoundingRect = normalFm.boundingRect(QRect(0, 0, availableWidth, 0), Qt::TextWordWrap, lines.at(i));
-                QRect normalRect(x, y, availableWidth, normalBoundingRect.height());
-                painter->drawText(normalRect, Qt::TextWordWrap | Qt::AlignTop, lines.at(i));
-                y += normalBoundingRect.height();
-            }
+            QRect normalBoundingRect = normalFm.boundingRect(QRect(0, 0, availableWidth, 0), Qt::TextWordWrap, widgetText);
+            QRect normalRect(x, y, availableWidth, normalBoundingRect.height());
+            painter->drawText(normalRect, Qt::TextWordWrap | Qt::AlignTop, widgetText);
         }
         
         painter->restore();
@@ -151,10 +159,23 @@ public:
             return QStyledItemDelegate::sizeHint(option, index);
         }
         
-        QString text = index.data(Qt::DisplayRole).toString();
-        QStringList lines = text.split(QLatin1Char('\n'));
+        // Use separate roles instead of parsing mixed string
+        QString pathText = index.data(PreferencesSearchController::PathRole).toString();
+        QString widgetText = index.data(PreferencesSearchController::WidgetTextRole).toString();
         
-        if (lines.isEmpty()) {
+        // Fallback to old method if roles are empty (for compatibility)
+        if (pathText.isEmpty()) {
+            QString text = index.data(Qt::DisplayRole).toString();
+            QStringList lines = text.split(QLatin1Char('\n'));
+            if (!lines.isEmpty()) {
+                pathText = lines.first();
+                if (lines.size() > 1) {
+                    widgetText = lines.at(1);
+                }
+            }
+        }
+
+        if (pathText.isEmpty()) {
             return QStyledItemDelegate::sizeHint(option, index);
         }
         
@@ -174,14 +195,14 @@ public:
         int width = 0;
         int height = 8; // Start with 8 vertical padding (4 top + 4 bottom)
         
-        // Calculate height for first line (bold) with wrapping
-        QRect boldBoundingRect = boldFm.boundingRect(QRect(0, 0, availableWidth, 0), Qt::TextWordWrap, lines.first());
+        // Calculate height for path text (bold) with wrapping
+        QRect boldBoundingRect = boldFm.boundingRect(QRect(0, 0, availableWidth, 0), Qt::TextWordWrap, pathText);
         height += boldBoundingRect.height();
         width = qMax(width, boldBoundingRect.width() + 24); // +24 horizontal padding
         
-        // Calculate height for remaining lines (normal font) with wrapping
-        for (int i = 1; i < lines.size(); ++i) {
-            QRect normalBoundingRect = normalFm.boundingRect(QRect(0, 0, availableWidth, 0), Qt::TextWordWrap, lines.at(i));
+        // Calculate height for widget text (normal font) with wrapping (if present)
+        if (!widgetText.isEmpty()) {
+            QRect normalBoundingRect = normalFm.boundingRect(QRect(0, 0, availableWidth, 0), Qt::TextWordWrap, widgetText);
             height += normalBoundingRect.height();
             width = qMax(width, normalBoundingRect.width() + 24);
         }
@@ -1374,7 +1395,8 @@ void PreferencesSearchController::clearHighlights()
     m_originalStyles.clear();
 }
 
-void PreferencesSearchController::collectSearchResults(QWidget* widget, const QString& searchText, const QString& groupName, const QString& pageName, const QString& pageDisplayName, const QString& tabName)
+void PreferencesSearchController::collectSearchResults(QWidget* widget, const QString& searchText, const QString& groupName,
+                                        const QString& pageName, const QString& pageDisplayName, const QString& tabName)
 {
     if (!widget) {
         return;
@@ -1479,8 +1501,18 @@ void PreferencesSearchController::populateSearchResultsList()
     
     for (int i = 0; i < m_searchResults.size(); ++i) {
         const SearchResult& result = m_searchResults.at(i);
+
+        // Create path string
+        QString pathText = result.tabName + QStringLiteral("/") + result.pageDisplayName;
+
+        // Create item - keep displayText for fallback compatibility
         QListWidgetItem* item = new QListWidgetItem(result.displayText);
-        item->setData(Qt::UserRole, i); // Store the index instead of pointer
+
+        // Store path and widget text in separate roles
+        item->setData(PathRole, pathText);
+        item->setData(WidgetTextRole, result.matchText);
+        item->setData(Qt::UserRole, i); // Keep existing index storage
+
         m_searchResultsList->addItem(item);
     }
     

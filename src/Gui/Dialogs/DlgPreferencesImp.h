@@ -57,6 +57,12 @@ private:
     };
 
 public:
+    // Custom data roles for separating path and widget text
+    enum SearchDataRole {
+        PathRole = Qt::UserRole + 10,        // Path to page (e.g., "Display/3D View")
+        WidgetTextRole = Qt::UserRole + 11   // Text from the widget (e.g., "Enable anti-aliasing")
+    };
+
     // Search results structure
     struct SearchResult {
         QString groupName;
