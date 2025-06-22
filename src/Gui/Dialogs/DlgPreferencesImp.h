@@ -72,7 +72,6 @@ public:
         QString groupBoxName;
         QString tabName; // The tab name (like "Display")
         QString pageDisplayName; // The page display name (like "3D View")
-        QString displayText;
         bool isPageLevelMatch = false; // True if this is a page title match
         int score = 0; // Fuzzy search score for sorting
     };
@@ -139,7 +138,6 @@ private:
     
     // Utility methods
     QString findGroupBoxForWidget(QWidget* widget);
-    QString formatSearchResultText(const SearchResult& result);
     bool fuzzyMatch(const QString& searchText, const QString& targetText, int& score);
     bool isExactMatch(const QString& searchText, const QString& targetText);
 

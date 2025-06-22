@@ -167,21 +167,9 @@ private:
 
     void extractTextData(const QModelIndex& index, QString& pathText, QString& widgetText) const
     {
-        // Use separate roles instead of parsing mixed string
+        // Use separate roles - all items should have proper role data
         pathText = index.data(PreferencesSearchController::PathRole).toString();
         widgetText = index.data(PreferencesSearchController::WidgetTextRole).toString();
-
-        // Fallback to old method if roles are empty (for compatibility)
-        if (pathText.isEmpty()) {
-            QString text = index.data(Qt::DisplayRole).toString();
-            QStringList lines = text.split(QLatin1Char('\n'));
-            if (!lines.isEmpty()) {
-                pathText = lines.first();
-                if (lines.size() > 1) {
-                    widgetText = lines.at(1);
-                }
-            }
-        }
     }
 
     void createFonts(const QFont& baseFont, QFont& boldFont, QFont& normalFont) const
@@ -1438,7 +1426,6 @@ void PreferencesSearchController::collectSearchResults(QWidget* widget, const QS
             .groupBoxName = QString(),     // No groupbox for page-level match
             .tabName = tabName,
             .pageDisplayName = pageDisplayName,
-            .displayText = formatSearchResultText(result),
             .isPageLevelMatch = true,   // Mark as page-level match
             .score = pageScore + 2000  // Boost page-level matches
         };
@@ -1524,15 +1511,20 @@ void PreferencesSearchController::populateSearchResultsList()
     for (int i = 0; i < m_searchResults.size(); ++i) {
         const SearchResult& result = m_searchResults.at(i);
 
-        // Create path string
-        QString pathText = result.tabName + QStringLiteral("/") + result.pageDisplayName;
-
-        // Create item - keep displayText for fallback compatibility
-        QListWidgetItem* item = new QListWidgetItem(result.displayText);
+        // Create item without setting DisplayRole
+        QListWidgetItem* item = new QListWidgetItem();
 
         // Store path and widget text in separate roles
-        item->setData(PathRole, pathText);
-        item->setData(WidgetTextRole, result.matchText);
+        if (result.isPageLevelMatch) {
+            // For page matches: parent group as header, page name as content
+            item->setData(PathRole, result.tabName);
+            item->setData(WidgetTextRole, result.pageDisplayName);
+        } else {
+            // For widget matches: full path as header, widget text as content
+            QString pathText = result.tabName + QStringLiteral("/") + result.pageDisplayName;
+            item->setData(PathRole, pathText);
+            item->setData(WidgetTextRole, result.matchText);
+        }
         item->setData(Qt::UserRole, i); // Keep existing index storage
 
         m_searchResultsList->addItem(item);
@@ -1586,18 +1578,7 @@ QString PreferencesSearchController::findGroupBoxForWidget(QWidget* widget)
     return QString();
 }
 
-QString PreferencesSearchController::formatSearchResultText(const SearchResult& result)
-{
-    // Format for MixedFontDelegate: First line will be bold, subsequent lines normal
-    QString text = result.tabName + QStringLiteral("/") + result.pageDisplayName;
-    
-    if (!result.isPageLevelMatch) {
-        // Add the actual finding on the second line
-        text += QStringLiteral("\n") + result.matchText;
-    }
-    
-    return text;
-}
+
 
 template<typename WidgetType>
 void PreferencesSearchController::searchWidgetType(QWidget* parentWidget, const QString& searchText, const QString& groupName,
@@ -1631,7 +1612,6 @@ void PreferencesSearchController::searchWidgetType(QWidget* parentWidget, const 
                 .groupBoxName = findGroupBoxForWidget(widget),
                 .tabName = tabName,
                 .pageDisplayName = pageDisplayName,
-                .displayText = formatSearchResultText(result),
                 .isPageLevelMatch = false,
                 .score = score
             };
