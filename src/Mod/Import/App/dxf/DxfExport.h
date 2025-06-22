@@ -1,5 +1,5 @@
-#ifndef DXFEXECUTE_H
-#define DXFEXECUTE_H
+#ifndef DXFEXPORT_H
+#define DXFEXPORT_H
 
 #include <Mod/Import/ImportGlobal.h>  // For the ImportExport macro
 #include <Base/PyObjectBase.h>        // For PyObject
@@ -16,7 +16,8 @@ namespace Import
  * The core, non-GUI DXF export logic. This function is exported from the
  * App module to be shared with the Gui module.
  */
-ImportExport void executeDxfExport(PyObject* objectList, ImpExpDxfWrite& writer);
+ImportExport void
+executeDxfExport(PyObject* objectList, ImpExpDxfWrite& writer, PyObject* helperModule);
 }  // namespace Import
 
-#endif  // DXFEXECUTE_H
+#endif  // DXFEXPORT_H

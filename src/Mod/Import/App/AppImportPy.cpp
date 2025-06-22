@@ -569,22 +569,25 @@ private:
         char* filename = nullptr;
         int version = 14;
         PyObject* use_lwpolyline = Py_False;
+        PyObject* helperModule = nullptr;
 
-        static const std::array<const char*, 5> kwd_list {"obj",
+        static const std::array<const char*, 6> kwd_list {"obj",
                                                           "name",
                                                           "version",
                                                           "lwPoly",
+                                                          "helpers",
                                                           nullptr};
         if (!Base::Wrapped_ParseTupleAndKeywords(args.ptr(),
                                                  kwds.ptr(),
-                                                 "Oet|iO!",
+                                                 "Oet|iO!O",
                                                  kwd_list,
                                                  &objectList,
                                                  "utf-8",
                                                  &filename,
                                                  &version,
                                                  &PyBool_Type,
-                                                 &use_lwpolyline)) {
+                                                 &use_lwpolyline,
+                                                 &helperModule)) {  // No type check for the module
             throw Py::Exception();
         }
 
@@ -602,7 +605,8 @@ private:
             writer.setVersion(version);
             writer.setPolyOverride(use_lwpolyline == Py_True);
 
-            executeDxfExport(objectList, writer);
+            writer.init();
+            Import::executeDxfExport(objectList, writer, helperModule);
 
             writer.endRun();
         }

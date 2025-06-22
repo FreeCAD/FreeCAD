@@ -25,11 +25,10 @@
 namespace Import
 {
 
-void executeDxfExport(PyObject* objectList, ImpExpDxfWrite& writer)
+void executeDxfExport(PyObject* objectList, ImpExpDxfWrite& writer, PyObject* helperModule)
 {
-    PyObject* helperModule = PyImport_ImportModule("Draft.importDXF");
     if (!helperModule) {
-        throw Py::ImportError("Could not import Draft.importDXF module.");
+        throw Py::RuntimeError("A valid helper module was not provided to the DXF exporter.");
     }
 
     // Get the single master dispatcher function from Python
@@ -66,7 +65,6 @@ void executeDxfExport(PyObject* objectList, ImpExpDxfWrite& writer)
     // Clean up
     Py_DECREF(writerProxyObj);
     Py_DECREF(export_object_func);
-    Py_DECREF(helperModule);
 }
 
 }  // namespace Import

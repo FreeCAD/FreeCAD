@@ -32,10 +32,15 @@
 #include <Mod/Part/App/TopoShape.h>
 
 #include <Mod/Import/App/dxf/ImpExpDxf.h>
+#include <App/DocumentObject.h>
+#include <Base/Color.h>
 
 
 namespace ImportGui
 {
+// Function to find the closest ACI color for a given FreeCAD object.
+int getAciForObject(App::DocumentObject* obj, bool isText);
+
 class ImpExpDxfReadGui: public Import::ImpExpDxfRead
 {
 public:

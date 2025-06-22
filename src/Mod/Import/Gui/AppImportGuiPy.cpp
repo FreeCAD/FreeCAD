@@ -140,6 +140,11 @@ public:
                            &Module::exportDxf,
                            "exportDxf(obj=list, name=string, version=14, lwPoly=False): Exports "
                            "objects to a DXF file with GUI-awareness.");
+
+        add_varargs_method("getDXFAci",
+                           &Module::getDXFAci,
+                           "getDXFAci(object, is_text) -- Returns the closest ACI color index for "
+                           "a given object.");
         initialize("This module is the ImportGui module.");  // register with Python
     }
 
@@ -676,22 +681,25 @@ private:
         char* filename = nullptr;
         int version = 14;
         PyObject* use_lwpolyline = Py_False;
+        PyObject* helperModule = nullptr;
 
-        static const std::array<const char*, 5> kwd_list {"obj",
+        static const std::array<const char*, 6> kwd_list {"obj",
                                                           "name",
                                                           "version",
                                                           "lwPoly",
+                                                          "helpers",
                                                           nullptr};
         if (!Base::Wrapped_ParseTupleAndKeywords(args.ptr(),
                                                  kwds.ptr(),
-                                                 "Oet|iO!",
+                                                 "Oet|iO!O",
                                                  kwd_list,
                                                  &objectList,
                                                  "utf-8",
                                                  &filename,
                                                  &version,
                                                  &PyBool_Type,
-                                                 &use_lwpolyline)) {
+                                                 &use_lwpolyline,
+                                                 &helperModule)) {  // No type check for the module
             throw Py::Exception();
         }
 
@@ -726,7 +734,9 @@ private:
                 }
             }
 
-            Import::executeDxfExport(objectList, writer);
+            writer.init();
+
+            Import::executeDxfExport(objectList, writer, helperModule);
 
             writer.endRun();
         }
@@ -739,6 +749,29 @@ private:
         }
 
         return Py::None();
+    }
+
+    Py::Object getDXFAci(const Py::Tuple& args)
+    {
+        PyObject* obj_py;
+        PyObject* is_text_py;
+        if (!PyArg_ParseTuple(args.ptr(),
+                              "O!O!",
+                              &(App::DocumentObjectPy::Type),
+                              &obj_py,
+                              &PyBool_Type,
+                              &is_text_py)) {
+            throw Py::Exception();
+        }
+
+        auto* pydoc = static_cast<App::DocumentObjectPy*>(obj_py);
+        App::DocumentObject* obj = pydoc->getDocumentObjectPtr();
+        bool isText = (is_text_py == Py_True);
+
+        // Call our new C++ function from the other file
+        int aci = ImportGui::getAciForObject(obj, isText);
+
+        return Py::Long(aci);
     }
 };
 

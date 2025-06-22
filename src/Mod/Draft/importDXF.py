@@ -480,29 +480,49 @@ def getACI(ob, text=False):
         It returns 256 (`BYLAYER`) if `ob` is inside a Draft Layer,
         and the layer's `OverrideChildren` view property is `True`.
     """
-    if not gui:
-        return 0
+    _ensure_helpers_initialized()
+
+    # Check which exporter is active
+    if not dxfUseLegacyExporter:
+        try:
+            import ImportGui
+            # Delegate to the C++ implementation
+            return ImportGui.getDXFAci(ob, text)
+        except Exception as e:
+            # Fallback if C++ call fails for any reason
+            FCC.PrintError(f"Call to C++ ACI color helper failed: {e}\n")
+            return 0
     else:
-        # detect if we need to set "BYLAYER"
-        for parent in ob.InList:
-            if Draft.getType(parent) == "Layer":
-                if ob in parent.Group:
-                    if hasattr(parent, "ViewObject") and hasattr(
-                        parent.ViewObject, "OverrideChildren"
-                    ):
-                        if parent.ViewObject.OverrideChildren:
-                            return 256  # BYLAYER
-        if text:
-            col = ob.ViewObject.TextColor
+        if dxfColorMap is None:
+            # The legacy path is responsible for loading its own libraries
+            getDXFlibs()
+            if dxfColorMap is None:
+                FCC.PrintError("Legacy DXF libraries (dxfColorMap) could not be loaded.\n")
+                return 0
+
+        if not gui:
+            return 0
         else:
-            col = ob.ViewObject.LineColor
-        aci = [0, 442]
-        for i in range(255, -1, -1):
-            ref = dxfColorMap.color_map[i]
-            dist = (ref[0] - col[0]) ** 2 + (ref[1] - col[1]) ** 2 + (ref[2] - col[2]) ** 2
-            if dist <= aci[1]:
-                aci = [i, dist]
-        return aci[0]
+            # detect if we need to set "BYLAYER"
+            for parent in ob.InList:
+                if Draft.getType(parent) == "Layer":
+                    if ob in parent.Group:
+                        if hasattr(parent, "ViewObject") and hasattr(parent.ViewObject, "OverrideChildren"):
+                            if parent.ViewObject.OverrideChildren:
+                                return 256  # BYLAYER
+            if text:
+                col = ob.ViewObject.TextColor
+            else:
+                col = ob.ViewObject.LineColor
+            aci = [0, 442]
+            for i in range(255, -1, -1):
+                ref = dxfColorMap.color_map[i]
+                dist = ((ref[0]-col[0])**2
+                        + (ref[1]-col[1])**2
+                        + (ref[2]-col[2])**2)
+                if dist <= aci[1]:
+                    aci = [i, dist]
+            return aci[0]
 
 
 def rawValue(entity, code):
@@ -623,6 +643,7 @@ def getGroupColor(dxfobj, index=False):
     -----
     Use local variables, not global variables.
     """
+    _ensure_helpers_initialized()
     name = dxfobj.layer
     for table in drawing.tables.get_type("table"):
         if table.name == "layer":
@@ -3103,6 +3124,7 @@ def getSplineSegs(edge):
         If the `segmentlength` variable is zero in the parameters database,
         then it only returns the first and the last point of the `edge`.
     """
+    _ensure_helpers_initialized()
     seglength = params.get_param("maxsegmentlength")
     points = []
     if seglength == 0:
@@ -3688,12 +3710,17 @@ def export(objectslist, filename, nospline=False, lwPoly=False):
     if not dxfUseLegacyExporter:
         version = 12 if nospline else 14
 
+        # Get a handle to the current module (importDXF)
+        import sys
+        helpers = sys.modules[__name__]
+
         if gui:
             import ImportGui as DxfExporterModule
         else:
             import Import as DxfExporterModule
 
-        DxfExporterModule.exportDxf(obj=objectslist, name=filename, version=version, lwPoly=lwPoly)
+        DxfExporterModule.exportDxf(obj=objectslist, name=filename, version=version, lwPoly=lwPoly,
+                                    helpers=helpers)
         return
 
     getDXFlibs()
@@ -5444,3 +5471,19 @@ def _export_object(obj, writer_proxy):
 
     except Exception as e:
         FreeCAD.Console.PrintError(f"Error exporting object {obj.Name} of type {obj_type}: {e}\n")
+
+def _ensure_helpers_initialized():
+    """
+    Initializes global resources needed by helper functions (getACI, getGroup)
+    when they are called from either the legacy or the C++ exporter.
+    This function is idempotent and safe to call multiple times.
+    """
+    # 1. Load preferences if they haven't been loaded yet.
+    # We check for a variable that is guaranteed to be set by readPreferences.
+    if "dxfUseLegacyExporter" not in globals():
+        readPreferences()
+
+    # 2. If using the legacy exporter, ensure its libraries are loaded.
+    # This is not needed for the new C++ exporter.
+    if dxfUseLegacyExporter and (dxfColorMap is None):
+        getDXFlibs()
