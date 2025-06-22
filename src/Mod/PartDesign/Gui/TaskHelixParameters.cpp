@@ -53,7 +53,7 @@ TaskHelixParameters::TaskHelixParameters(PartDesignGui::ViewProviderHelix* Helix
     : TaskSketchBasedParameters(HelixView,
                                 parent,
                                 "PartDesign_AdditiveHelix",
-                                tr("Helix parameters"))
+                                tr("Helix Parameters"))
     , ui(new Ui_TaskHelixParameters)
 {
     // we need a separate container widget to add all controls to
@@ -201,7 +201,7 @@ void TaskHelixParameters::fillAxisCombo(bool forceRefill)
         addPartAxes();
 
         // add "Select reference"
-        addAxisToCombo(nullptr, std::string(), tr("Select reference..."));
+        addAxisToCombo(nullptr, std::string(), tr("Select reference…"));
     }
 
     // add current link, if not in list and highlight it
@@ -234,9 +234,9 @@ void TaskHelixParameters::addPartAxes()
     if (PartDesign::Body* body = PartDesign::Body::findBodyOf(profile)) {
         try {
             App::Origin* orig = body->getOrigin();
-            addAxisToCombo(orig->getX(), "", tr("Base X axis"));
-            addAxisToCombo(orig->getY(), "", tr("Base Y axis"));
-            addAxisToCombo(orig->getZ(), "", tr("Base Z axis"));
+            addAxisToCombo(orig->getX(), "", tr("Base x-axis"));
+            addAxisToCombo(orig->getY(), "", tr("Base y-axis"));
+            addAxisToCombo(orig->getZ(), "", tr("Base z-axis"));
         }
         catch (const Base::Exception& ex) {
             ex.reportException();
@@ -625,7 +625,7 @@ void TaskHelixParameters::getReferenceAxis(App::DocumentObject*& obj,
     const App::PropertyLinkSub& lnk = *(axesInList.at(num));
     if (!lnk.getValue()) {
         throw Base::RuntimeError(
-            "Still in reference selection mode; reference wasn't selected yet");
+            "Still in reference selection mode; reference was not selected yet");
     }
     else {
         auto revolution = getObject<PartDesign::ProfileBased>();

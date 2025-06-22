@@ -2147,10 +2147,10 @@ App::DocumentObjectExecReturn* Hole::execute()
             retry = false;
         } catch (Standard_Failure & e) {
             FC_WARN(getFullName() << ": boolean operation with compound failed ("
-                                  << e.GetMessageString() << "), retry...");
+                                  << e.GetMessageString() << "), retry…");
         } catch (Base::Exception & e)  {
-            FC_WARN(getFullName() << ": boolean operation with compound failed ("
-                                  << e.what() << "), retry...");
+            FC_WARN(getFullName() << ": boolean operation with compound failed (" << e.what()
+                                  << "), retry…");
         }
 
         if (retry) {

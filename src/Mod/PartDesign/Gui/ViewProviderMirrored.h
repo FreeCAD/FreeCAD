@@ -34,7 +34,7 @@ class PartDesignGuiExport ViewProviderMirrored : public ViewProviderTransformed
     PROPERTY_HEADER_WITH_OVERRIDE(PartDesignGui::ViewProviderMirrored);
 public:
     ViewProviderMirrored() {
-        menuName = tr("Mirrored parameters");
+        menuName = tr("Mirror Parameters");
         sPixmap = "PartDesign_Mirrored.svg";
     }
 

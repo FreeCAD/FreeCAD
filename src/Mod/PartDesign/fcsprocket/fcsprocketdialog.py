@@ -44,7 +44,7 @@ class SprocketDialog(qt.QDialog):
         l = qt.QVBoxLayout(self)
         l.addWidget(self.gc)
         l.addWidget(buttonBox)
-        self.setWindowTitle('Sprocket creation dialog')
+        self.setWindowTitle('Sprocket Creation Dialog')
 
     def accept(self):
         if FreeCAD.ActiveDocument is None:
