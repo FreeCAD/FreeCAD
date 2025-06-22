@@ -101,7 +101,7 @@ void DlgSettings3DViewPart::onMaxAngularDeflectionValueChanged(double vMaxAngle)
         checkValue = true;
         QMessageBox::warning(
             this,
-            tr("Angle Deflection"),
+            tr("Angle deflection"),
             tr("Setting a too small angle deviation causes the tessellation to take longer"
                " and thus freezes or slows down the GUI."));
     }

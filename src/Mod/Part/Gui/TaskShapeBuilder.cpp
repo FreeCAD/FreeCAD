@@ -271,7 +271,7 @@ void ShapeBuilderWidget::createWireFromEdge()
     Gui::SelectionFilter edgeFilter  ("SELECT Part::Feature SUBELEMENT Edge COUNT 1..");
     bool matchEdge = edgeFilter.match();
     if (!matchEdge) {
-        QMessageBox::critical(this, tr("Wrong selection"), tr("Select one or more edges"));
+        QMessageBox::critical(this, tr("Wrong selection"), tr("Select at least 1 edge"));
         return;
     }
 
@@ -364,7 +364,7 @@ void ShapeBuilderWidget::createFaceFromEdge()
     Gui::SelectionFilter edgeFilter  ("SELECT Part::Feature SUBELEMENT Edge COUNT 1..");
     bool matchEdge = edgeFilter.match();
     if (!matchEdge) {
-        QMessageBox::critical(this, tr("Wrong selection"), tr("Select one or more edges"));
+        QMessageBox::critical(this, tr("Wrong selection"), tr("Select at least 1 edge"));
         return;
     }
 
@@ -416,7 +416,7 @@ void ShapeBuilderWidget::createShellFromFace()
     Gui::SelectionFilter faceFilter  ("SELECT Part::Feature SUBELEMENT Face COUNT 2..");
     bool matchFace = faceFilter.match();
     if (!matchFace) {
-        QMessageBox::critical(this, tr("Wrong selection"), tr("Select two or more faces"));
+        QMessageBox::critical(this, tr("Wrong selection"), tr("Select at least 2 faces"));
         return;
     }
 
@@ -477,7 +477,7 @@ void ShapeBuilderWidget::createSolidFromShell()
     Gui::SelectionFilter partFilter  ("SELECT Part::Feature COUNT 1");
     bool matchPart = partFilter.match();
     if (!matchPart) {
-        QMessageBox::critical(this, tr("Wrong selection"), tr("Select only one part object"));
+        QMessageBox::critical(this, tr("Wrong selection"), tr("Select only 1 shape object"));
         return;
     }
 
@@ -543,14 +543,14 @@ void ShapeBuilderWidget::switchMode(int mode)
     }
     else if (mode == 2) {
         d->gate->setMode(ShapeSelection::VERTEX);
-        d->ui.label->setText(tr("Select a list of vertices"));
+        d->ui.label->setText(tr("Select vertices"));
         d->ui.checkPlanar->setEnabled(true);
         d->ui.checkFaces->setEnabled(false);
         d->ui.checkRefine->setEnabled(false);
     }
     else if (mode == 3) {
         d->gate->setMode(ShapeSelection::EDGE);
-        d->ui.label->setText(tr("Select a closed set of edges"));
+        d->ui.label->setText(tr("Select a closed loop of edges"));
         d->ui.checkPlanar->setEnabled(true);
         d->ui.checkFaces->setEnabled(false);
         d->ui.checkRefine->setEnabled(false);
