@@ -197,3 +197,15 @@ void ActiveObjectList::objectDeleted(const ViewProviderDocumentObject &vp)
         }
     }
 }
+
+App::DocumentObject* ActiveObjectList::getObjectWithExtension(const Base::Type extensionTypeId) const
+{
+    for (const auto& pair : _ObjectMap) {
+        App::DocumentObject* obj = getObject(pair.second, true);
+        if (obj && obj->hasExtension(extensionTypeId)) {
+            return obj;
+        }
+    }
+
+    return nullptr;
+}
