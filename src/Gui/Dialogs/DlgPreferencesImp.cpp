@@ -77,6 +77,9 @@ using namespace Gui::Dialog;
 // used by search box
 class MixedFontDelegate : public QStyledItemDelegate
 {
+    static constexpr int horizontalPadding = 12;
+    static constexpr int verticalPadding = 4;
+
 public:
     explicit MixedFontDelegate(QObject* parent = nullptr) : QStyledItemDelegate(parent) {}
     
@@ -87,26 +90,19 @@ public:
             return;
         }
         
-        // Use separate roles instead of parsing mixed string
-        QString pathText = index.data(PreferencesSearchController::PathRole).toString();
-        QString widgetText = index.data(PreferencesSearchController::WidgetTextRole).toString();
-
-        if (pathText.isEmpty()) {
-            QString text = index.data(Qt::DisplayRole).toString();
-            QStringList lines = text.split(QLatin1Char('\n'));
-            if (!lines.isEmpty()) {
-                pathText = lines.first();
-                if (lines.size() > 1) {
-                    widgetText = lines.at(1);
-                }
-            }
-        }
+        QString pathText, widgetText;
+        extractTextData(index, pathText, widgetText);
         
         if (pathText.isEmpty()) {
             QStyledItemDelegate::paint(painter, option, index);
             return;
         }
         
+        QFont boldFont, normalFont;
+        createFonts(option.font, boldFont, normalFont);
+
+        LayoutInfo layout = calculateLayout(pathText, widgetText, boldFont, normalFont, option.rect.width());
+
         painter->save();
         
         // draw selection background if selected
@@ -120,33 +116,19 @@ public:
                           : option.palette.text().color();
         painter->setPen(textColor);
         
-        // Set up fonts
-        QFont boldFont = option.font;
-        boldFont.setBold(true);
-        QFont normalFont = option.font;
-        normalFont.setPointSize(normalFont.pointSize() + 2); // make lower text 2 pixels bigger
-        
-        QFontMetrics boldFm(boldFont);
-        QFontMetrics normalFm(normalFont);
-        
-        int y = option.rect.top() + 4; // start 4px from top
-        int x = option.rect.left() + 12; // +12 horizontal padding
-        int availableWidth = option.rect.width() - 24; // account for left and right padding
-        
         // draw path in bold (Tab/Page) with wrapping
         painter->setFont(boldFont);
-        QRect boldBoundingRect = boldFm.boundingRect(QRect(0, 0, availableWidth, 0), Qt::TextWordWrap, pathText);
-        QRect boldRect(x, y, availableWidth, boldBoundingRect.height());
+        QRect boldRect(option.rect.left() + horizontalPadding, option.rect.top() + verticalPadding,
+                      layout.availableWidth, layout.pathHeight);
         painter->drawText(boldRect, Qt::TextWordWrap | Qt::AlignTop, pathText);
-        
-        // move y position after the bold text
-        y += boldBoundingRect.height();
         
         // draw widget text in normal font (if present)
         if (!widgetText.isEmpty()) {
             painter->setFont(normalFont);
-            QRect normalBoundingRect = normalFm.boundingRect(QRect(0, 0, availableWidth, 0), Qt::TextWordWrap, widgetText);
-            QRect normalRect(x, y, availableWidth, normalBoundingRect.height());
+            QRect normalRect(option.rect.left() + horizontalPadding,
+                             option.rect.top() + verticalPadding + layout.pathHeight,
+                             layout.availableWidth,
+                             layout.widgetHeight);
             painter->drawText(normalRect, Qt::TextWordWrap | Qt::AlignTop, widgetText);
         }
         
@@ -158,11 +140,37 @@ public:
         if (!index.isValid()) {
             return QStyledItemDelegate::sizeHint(option, index);
         }
+
+        QString pathText, widgetText;
+        extractTextData(index, pathText, widgetText);
         
+        if (pathText.isEmpty()) {
+            return QStyledItemDelegate::sizeHint(option, index);
+        }
+
+        QFont boldFont, normalFont;
+        createFonts(option.font, boldFont, normalFont);
+
+        LayoutInfo layout = calculateLayout(pathText, widgetText, boldFont, normalFont, option.rect.width());
+
+        return {layout.totalWidth, layout.totalHeight};
+    }
+
+private:
+    struct LayoutInfo {
+        int availableWidth;
+        int pathHeight;
+        int widgetHeight;
+        int totalWidth;
+        int totalHeight;
+    };
+
+    void extractTextData(const QModelIndex& index, QString& pathText, QString& widgetText) const
+    {
         // Use separate roles instead of parsing mixed string
-        QString pathText = index.data(PreferencesSearchController::PathRole).toString();
-        QString widgetText = index.data(PreferencesSearchController::WidgetTextRole).toString();
-        
+        pathText = index.data(PreferencesSearchController::PathRole).toString();
+        widgetText = index.data(PreferencesSearchController::WidgetTextRole).toString();
+
         // Fallback to old method if roles are empty (for compatibility)
         if (pathText.isEmpty()) {
             QString text = index.data(Qt::DisplayRole).toString();
@@ -174,40 +182,54 @@ public:
                 }
             }
         }
+    }
 
-        if (pathText.isEmpty()) {
-            return QStyledItemDelegate::sizeHint(option, index);
-        }
-        
-        QFont boldFont = option.font;
+    void createFonts(const QFont& baseFont, QFont& boldFont, QFont& normalFont) const
+    {
+        boldFont = baseFont;
         boldFont.setBold(true);
-        QFont normalFont = option.font;
-        normalFont.setPointSize(normalFont.pointSize() + 2); // Make lower text 2 pixels bigger to match paint method
         
+        normalFont = baseFont;
+        normalFont.setPointSize(normalFont.pointSize() + 2); // make lower text 2 pixels bigger
+    }
+
+    LayoutInfo calculateLayout(const QString& pathText, const QString& widgetText,
+                              const QFont& boldFont, const QFont& normalFont, int containerWidth) const
+    {
+
         QFontMetrics boldFm(boldFont);
         QFontMetrics normalFm(normalFont);
         
-        int availableWidth = option.rect.width() - 24; // Account for left and right padding
+        int availableWidth = containerWidth - horizontalPadding * 2; // account for left and right padding
         if (availableWidth <= 0) {
-            availableWidth = 300 - 24; // Fallback to popup width minus padding
+            constexpr int defaultPopupWidth = 300;
+            availableWidth = defaultPopupWidth - horizontalPadding * 2; // Fallback to popup width minus padding
         }
         
-        int width = 0;
-        int height = 8; // Start with 8 vertical padding (4 top + 4 bottom)
+        // Calculate dimensions for path text (bold)
+        QRect pathBoundingRect = boldFm.boundingRect(QRect(0, 0, availableWidth, 0), Qt::TextWordWrap, pathText);
+        int pathHeight = pathBoundingRect.height();
+        int pathWidth = pathBoundingRect.width();
         
-        // Calculate height for path text (bold) with wrapping
-        QRect boldBoundingRect = boldFm.boundingRect(QRect(0, 0, availableWidth, 0), Qt::TextWordWrap, pathText);
-        height += boldBoundingRect.height();
-        width = qMax(width, boldBoundingRect.width() + 24); // +24 horizontal padding
-        
-        // Calculate height for widget text (normal font) with wrapping (if present)
+        // Calculate dimensions for widget text (normal font, if present)
+        int widgetHeight = 0;
+        int widgetWidth = 0;
         if (!widgetText.isEmpty()) {
-            QRect normalBoundingRect = normalFm.boundingRect(QRect(0, 0, availableWidth, 0), Qt::TextWordWrap, widgetText);
-            height += normalBoundingRect.height();
-            width = qMax(width, normalBoundingRect.width() + 24);
+            QRect widgetBoundingRect = normalFm.boundingRect(QRect(0, 0, availableWidth, 0), Qt::TextWordWrap, widgetText);
+            widgetHeight = widgetBoundingRect.height();
+            widgetWidth = widgetBoundingRect.width();
         }
         
-        return QSize(width, height);
+        int totalWidth = qMax(pathWidth, widgetWidth) + horizontalPadding * 2; // +24 horizontal padding
+        int totalHeight = verticalPadding * 2 + pathHeight + widgetHeight; // 8 vertical padding + content heights
+
+        LayoutInfo layout;
+        layout.availableWidth = availableWidth;
+        layout.pathHeight = pathHeight;
+        layout.widgetHeight = widgetHeight;
+        layout.totalWidth = totalWidth;
+        layout.totalHeight = totalHeight;
+        return layout;
     }
 };
 
