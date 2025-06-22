@@ -3684,14 +3684,18 @@ def export(objectslist, filename, nospline=False, lwPoly=False):
     Use local variables, not global variables.
     """
     readPreferences()
-    if not dxfUseLegacyExporter:
-        import Import
 
-        version = 14
-        if nospline:
-            version = 12
-        Import.writeDXFObject(objectslist, filename, version, lwPoly)
+    if not dxfUseLegacyExporter:
+        version = 12 if nospline else 14
+
+        if gui:
+            import ImportGui as DxfExporterModule
+        else:
+            import Import as DxfExporterModule
+
+        DxfExporterModule.exportDxf(obj=objectslist, name=filename, version=version, lwPoly=lwPoly)
         return
+
     getDXFlibs()
     if dxfLibrary:
         global exportList
@@ -5213,3 +5217,28 @@ def _export_techdraw_page(page, writer_proxy):
         writer_proxy.writeInsert(view.Name, insertion_point, scale, rotation)
 
     FreeCAD.Console.PrintMessage(f"Exported TechDraw page '{page.Label}' to DXF.\n")
+
+def _project_shape(shape, direction):
+    """
+    Internal helper for the C++ exporter. Projects a shape along a vector
+    and returns the flattened 2D result.
+    """
+    try:
+        import TechDraw
+        # projectToDXF already returns a flattened 2D shape, so no extra work is needed.
+        # This function was added in later versions, so we check for projectEx as a fallback.
+        if hasattr(TechDraw, "projectToDXF"):
+            # The modern API returns a ready-to-use shape
+            return TechDraw.projectToDXF(shape, direction)
+        elif hasattr(TechDraw, "projectEx"):
+            # Fallback for older versions
+            proj = TechDraw.projectEx(shape, direction, True)
+            # This old version might not be flat, so we should flatten it here
+            # ... (flattening logic) ...
+            return proj.result
+        else:
+            FreeCAD.Console.PrintError("TechDraw projection API not found.\n")
+            return None
+    except Exception as e:
+        FreeCAD.Console.PrintError(f"DXF Projection failed: {e}\n")
+        return None

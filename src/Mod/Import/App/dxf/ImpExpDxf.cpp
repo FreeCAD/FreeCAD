@@ -64,6 +64,11 @@
 #include <gp_Vec.hxx>
 
 #include <fstream>
+#include <BRepMesh_IncrementalMesh.hxx>
+#include <BRep_Tool.hxx>
+#include <Poly_Triangulation.hxx>
+#include <Poly_Array1OfTriangle.hxx>
+#include <TColgp_Array1OfPnt.hxx>
 #include <App/Annotation.h>
 #include <App/Application.h>
 #include <App/Document.h>
@@ -1684,6 +1689,61 @@ void ImpExpDxfWrite::setOptions()
     optionPolyLine = hGrp->GetBool("DiscretizeEllipses", false);
     m_polyOverride = hGrp->GetBool("DiscretizeEllipses", false);
     setDataDir(App::Application::getResourceDir() + "Mod/Import/DxfPlate/");
+    optionProject = hGrp->GetBool("dxfproject", false);
+    optionMesh = hGrp->GetBool("dxfmesh", false);
+}
+
+void ImpExpDxfWrite::writePolyFaceMesh(const TopoDS_Shape& shape)
+{
+    TopoDS_Shape aShape = shape;  // Work on a copy
+    // Note: The BRepMesh_IncrementalMesh call itself performs the triangulation.
+    // The subsequent exploration is to extract that data.
+    BRepMesh_IncrementalMesh M(aShape, 0.5, Standard_False);
+    if (!M.IsDone()) {
+        Base::Console().warning("DXF Exporter: Tessellation for polyface mesh failed.\n");
+        return;
+    }
+
+    LWPolyDataOut pd;
+    pd.Flag = 64;  // Flag for polyface mesh
+
+    std::vector<point3D> vertices;
+    std::vector<std::vector<int>> faces;
+
+    TopExp_Explorer ex(aShape, TopAbs_FACE);
+    for (; ex.More(); ex.Next()) {
+        const TopoDS_Face& face = TopoDS::Face(ex.Current());
+        TopLoc_Location loc;
+        Handle(Poly_Triangulation) triangulation = BRep_Tool::Triangulation(face, loc);
+        if (triangulation.IsNull()) {
+            continue;
+        }
+
+        std::map<int, int> node_map;  // Map from old OCCT node index to new DXF vertex index
+
+        // Use modern, non-deprecated API to iterate through triangles
+        for (int i = 1; i <= triangulation->NbTriangles(); ++i) {
+            const Poly_Triangle& tri = triangulation->Triangle(i);
+            std::vector<int> face_indices;
+
+            for (int j = 1; j <= 3; ++j) {
+                int node_index = tri(j);
+
+                // If we haven't seen this node before, add it to our vertex list
+                if (node_map.find(node_index) == node_map.end()) {
+                    // Get the node coordinate using the correct API
+                    gp_Pnt p = triangulation->Node(node_index).Transformed(loc);
+                    vertices.push_back({p.X(), p.Y(), p.Z()});
+                    // Our new DXF vertex index is the current size of the list (1-based)
+                    node_map[node_index] = vertices.size();
+                }
+                face_indices.push_back(node_map[node_index]);
+            }
+            faces.push_back(face_indices);
+        }
+    }
+
+    writePolyFace(vertices, faces);
 }
 
 void ImpExpDxfWrite::exportShape(const TopoDS_Shape input)

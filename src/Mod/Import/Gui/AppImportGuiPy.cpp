@@ -51,7 +51,7 @@
 #include "ImportOCAFGui.h"
 #include "OCAFBrowser.h"
 
-#include "dxf/ImpExpDxfGui.h"
+#include <Inventor/nodes/SoCamera.h>
 #include <App/Document.h>
 #include <App/DocumentObjectPy.h>
 #include <Base/Console.h>
@@ -60,6 +60,8 @@
 #include <Gui/Command.h>
 #include <Gui/Document.h>
 #include <Gui/MainWindow.h>
+#include <Gui/MDIView.h>
+#include <Gui/View.h>
 #include <Gui/ViewProviderLink.h>
 #include <Mod/Import/App/ReaderGltf.h>
 #include <Mod/Import/App/ReaderIges.h>
@@ -67,6 +69,9 @@
 #include <Mod/Import/App/WriterGltf.h>
 #include <Mod/Import/App/WriterIges.h>
 #include <Mod/Import/App/WriterStep.h>
+#include <Mod/Import/App/dxf/ImpExpDxf.h>
+#include <Mod/Import/Gui/dxf/ImpExpDxfGui.h>
+#include <Mod/Import/App/dxf/DxfExport.h>
 #include <Mod/Part/App/ImportIges.h>
 #include <Mod/Part/App/ImportStep.h>
 #include <Mod/Part/App/Interface.h>
@@ -76,6 +81,16 @@
 #include <Mod/Part/Gui/DlgImportStep.h>
 #include <Mod/Part/Gui/ViewProvider.h>
 
+#include <Gui/View3DInventor.h>        // For View3DInventor
+#include <Gui/View3DInventorViewer.h>  // For View3DInventorViewer
+#include <Inventor/nodes/SoCamera.h>   // For SoCamera and SbRotation
+
+// Forward declaration for the core export function that lives in the App module.
+// This allows the Gui module to call it without creating a circular dependency.
+namespace Import
+{
+void executeDxfExport(PyObject* objectList, ImpExpDxfWrite& writer);
+}
 
 FC_LOG_LEVEL_INIT("Import", true, true)
 
@@ -121,6 +136,10 @@ public:
             "export(list,string) -- Export a list of objects into a single file."
         );
         add_varargs_method("ocaf", &Module::ocaf, "ocaf(string) -- Browse the ocaf structure.");
+        add_keyword_method("exportDxf",
+                           &Module::exportDxf,
+                           "exportDxf(obj=list, name=string, version=14, lwPoly=False): Exports "
+                           "objects to a DXF file with GUI-awareness.");
         initialize("This module is the ImportGui module.");  // register with Python
     }
 
@@ -646,6 +665,77 @@ private:
         catch (const Base::Exception& e) {
             e.setPyException();
             throw Py::Exception();
+        }
+
+        return Py::None();
+    }
+
+    Py::Object exportDxf(const Py::Tuple& args, const Py::Dict& kwds)
+    {
+        PyObject* objectList = nullptr;
+        char* filename = nullptr;
+        int version = 14;
+        PyObject* use_lwpolyline = Py_False;
+
+        static const std::array<const char*, 5> kwd_list {"obj",
+                                                          "name",
+                                                          "version",
+                                                          "lwPoly",
+                                                          nullptr};
+        if (!Base::Wrapped_ParseTupleAndKeywords(args.ptr(),
+                                                 kwds.ptr(),
+                                                 "Oet|iO!",
+                                                 kwd_list,
+                                                 &objectList,
+                                                 "utf-8",
+                                                 &filename,
+                                                 &version,
+                                                 &PyBool_Type,
+                                                 &use_lwpolyline)) {
+            throw Py::Exception();
+        }
+
+        std::string utf8_filename = std::string(filename);
+        PyMem_Free(filename);
+
+        if (!PyList_Check(objectList)) {
+            PyErr_SetString(PyExc_TypeError, "First argument ('obj') must be a list of objects.");
+            throw Py::Exception();
+        }
+
+        try {
+            Import::ImpExpDxfWrite writer(utf8_filename);
+            writer.setOptions();
+            writer.setVersion(version);
+            writer.setPolyOverride(use_lwpolyline == Py_True);
+
+            ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
+                "User parameter:BaseApp/Preferences/Mod/Draft");
+            if (hGrp->GetBool("dxfproject", false)) {
+                if (Gui::MDIView* genericView = Gui::Application::Instance->activeView()) {
+                    if (auto* view3D = dynamic_cast<Gui::View3DInventor*>(genericView)) {
+                        if (SoCamera* camera =
+                                view3D->getViewer()->getSoRenderManager()->getCamera()) {
+                            const SbRotation& rot = camera->orientation.getValue();
+                            SbVec3f dir;
+                            rot.multVec(SbVec3f(0, 0, -1), dir);
+                            Base::Vector3d projectionDir(dir[0], dir[1], dir[2]);
+                            writer.setProjectionDir(-projectionDir);
+                        }
+                    }
+                }
+            }
+
+            Import::executeDxfExport(objectList, writer);
+
+            writer.endRun();
+        }
+        catch (const Base::Exception& e) {
+            e.setPyException();
+            throw Py::Exception();
+        }
+        catch (const Standard_Failure& e) {
+            throw Py::Exception(Base::PyExc_FC_GeneralError, e.GetMessageString());
         }
 
         return Py::None();

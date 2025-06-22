@@ -50,14 +50,16 @@
 
 #include <chrono>
 #include "dxf/ImpExpDxf.h"
+#include "dxf/DxfExport.h"
 #include "SketchExportHelper.h"
-#include "dxf/DxfWriterProxy.h"  // The new proxy header
+#include "dxf/DxfWriterProxy.h"
 #include <App/Annotation.h>
 #include <App/Application.h>
 #include <App/Document.h>
 #include <App/DocumentObjectPy.h>
 #include <Base/Console.h>
 #include <Base/PyWrapParseTupleAndKeywords.h>
+#include <Base/VectorPy.h>
 #include <Mod/Part/App/ImportIges.h>
 #include <Mod/Part/App/ImportStep.h>
 #include <Mod/Part/App/Interface.h>
@@ -79,45 +81,33 @@
 
 namespace Import
 {
-
 class Module: public Py::ExtensionModule<Module>
 {
 public:
     Module()
         : Py::ExtensionModule<Module>("Import")
     {
-        add_keyword_method(
-            "open",
-            &Module::importer,
-            "open(string) -- Open the file and create a new document."
-        );
-        add_keyword_method(
-            "insert",
-            &Module::importer,
-            "insert(string,string) -- Insert the file into the given document."
-        );
-        add_keyword_method(
-            "export",
-            &Module::exporter,
-            "export(list,string) -- Export a list of objects into a single file."
-        );
-        add_varargs_method(
-            "readDXF",
-            &Module::readDXF,
-            "readDXF(filename,[document,ignore_errors,option_source]): Imports a "
-            "DXF file into the given document. ignore_errors is True by default."
-        );
-        add_varargs_method(
-            "writeDXFShape",
-            &Module::writeDXFShape,
-            "writeDXFShape([shape],filename [version,usePolyline,optionSource]): "
-            "Exports Shape(s) to a DXF file."
-        );
-        add_varargs_method(
-            "writeDXFObject",
-            &Module::writeDXFObject,
-            "writeDXFObject([objects],filename [,version,usePolyline,optionSource]): Exports "
-            "DocumentObject(s) to a DXF file.");
+        add_keyword_method("open",
+                           &Module::importer,
+                           "open(string) -- Open the file and create a new document.");
+        add_keyword_method("insert",
+                           &Module::importer,
+                           "insert(string,string) -- Insert the file into the given document.");
+        add_keyword_method("export",
+                           &Module::exporter,
+                           "export(list,string) -- Export a list of objects into a single file.");
+        add_varargs_method("readDXF",
+                           &Module::readDXF,
+                           "readDXF(filename,[document,ignore_errors,option_source]): Imports a "
+                           "DXF file into the given document. ignore_errors is True by default.");
+        add_varargs_method("writeDXFShape",
+                           &Module::writeDXFShape,
+                           "writeDXFShape([shape],filename [version,usePolyline,optionSource]): "
+                           "Exports Shape(s) to a DXF file.");
+        add_keyword_method("exportDxf",
+                           &Module::exportDxf,
+                           "exportDxf(obj=list, name=string, version=14, lwPoly=False): Exports "
+                           "DocumentObject(s) to a DXF file.");
 
         // Call initialize() first, as it creates the module object.
         initialize("This module is the Import module.");
@@ -573,332 +563,55 @@ private:
         throw Py::TypeError("expected ([Shape],path");
     }
 
-    Py::Object writeDXFObject(const Py::Tuple& args)
+    Py::Object exportDxf(const Py::Tuple& args, const Py::Dict& kwds)
     {
-        PyObject* docObj = nullptr;
-        char* fname = nullptr;
-        std::string filePath;
-        const char* optionSource = nullptr;
-        std::string defaultOptions = "User parameter:BaseApp/Preferences/Mod/Draft";
-        int versionParm = -1;
-        bool versionOverride = false;
-        bool polyOverride = false;
-        PyObject* usePolyline = Py_False;
+        PyObject* objectList = nullptr;
+        char* filename = nullptr;
+        int version = 14;
+        PyObject* use_lwpolyline = Py_False;
 
-        if (PyArg_ParseTuple(
-                args.ptr(),
-                "O!et|iOs",
-                &(PyList_Type),
-                &docObj,
-                "utf-8",
-                &fname,
-                &versionParm,
-                &usePolyline,
-                &optionSource
-            )) {
-            filePath = std::string(fname);
-            PyMem_Free(fname);
-
-            if ((versionParm == 12) || (versionParm == 14)) {
-                versionOverride = true;
-            }
-            if (usePolyline == Py_True) {
-                polyOverride = true;
-            }
-
-            if (optionSource) {
-                defaultOptions = optionSource;
-            }
-
-            try {
-                ImpExpDxfWrite writer(filePath);
-                writer.setOptionSource(defaultOptions);
-                writer.setOptions();
-                if (versionOverride) {
-                    writer.setVersion(versionParm);
-                }
-                writer.setPolyOverride(polyOverride);
-                writer.init();
-
-                PyObject* helperModule = PyImport_ImportModule("Draft.importDXF");
-                if (!helperModule) {
-                    throw Py::ImportError("Could not import Draft.importDXF module.");
-                }
-
-                Py::Sequence list(docObj);
-
-                bool pageExported = false;
-                if (list.size() == 1) {
-                    PyObject* item = list.getItem(0).ptr();
-                    App::DocumentObject* obj =
-                        static_cast<App::DocumentObjectPy*>(item)->getDocumentObjectPtr();
-                    if (strcmp(obj->getTypeId().getName(), "TechDraw::DrawPage") == 0) {
-
-                        PyObject* export_page_func =
-                            PyObject_GetAttrString(helperModule, "_export_techdraw_page");
-                        if (export_page_func && PyCallable_Check(export_page_func)) {
-
-                            // Create an instance of our proxy
-                            PyObject* writerProxyObj =
-                                DxfWriterProxy_Type.tp_new(&Import::DxfWriterProxy_Type,
-                                                           nullptr,
-                                                           nullptr);
-                            ((Import::DxfWriterProxy*)writerProxyObj)->writer_inst = &writer;
-
-                            // Call the Python helper with the page and the proxy
-                            PyObject* result = PyObject_CallFunctionObjArgs(export_page_func,
-                                                                            item,
-                                                                            writerProxyObj,
-                                                                            NULL);
-
-                            // Clean up references
-                            Py_XDECREF(result);
-                            Py_DECREF(writerProxyObj);
-                        }
-                        Py_XDECREF(export_page_func);
-                        if (PyErr_Occurred()) {
-                            PyErr_Clear();
-                        }
-                        pageExported = true;
-                    }
-                }
-
-                if (!pageExported) {
-                    // --- EXISTING LOGIC FOR OTHER OBJECTS ---
-                    for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
-                        PyObject* item = (*it).ptr();
-                        App::DocumentObject* obj =
-                            static_cast<App::DocumentObjectPy*>(item)->getDocumentObjectPtr();
-
-                        // --- Get Layer and Color (common for all types) ---
-                        std::string layerName = "0";
-                        int aciColor = 256;
-
-                        PyObject* get_layer_func =
-                            PyObject_GetAttrString(helperModule, "_get_layer_name");
-                        if (get_layer_func && PyCallable_Check(get_layer_func)) {
-                            PyObject* pyLayerName =
-                                PyObject_CallFunctionObjArgs(get_layer_func, item, NULL);
-                            if (pyLayerName && PyUnicode_Check(pyLayerName)) {
-                                layerName = PyUnicode_AsUTF8(pyLayerName);
-                            }
-                            Py_XDECREF(pyLayerName);
-                        }
-                        Py_XDECREF(get_layer_func);
-
-                        PyObject* get_aci_func =
-                            PyObject_GetAttrString(helperModule, "_get_aci_color");
-                        if (get_aci_func && PyCallable_Check(get_aci_func)) {
-                            PyObject* pyAciColor =
-                                PyObject_CallFunctionObjArgs(get_aci_func, item, NULL);
-                            if (pyAciColor && PyLong_Check(pyAciColor)) {
-                                aciColor = PyLong_AsLong(pyAciColor);
-                            }
-                            Py_XDECREF(pyAciColor);
-                        }
-                        Py_XDECREF(get_aci_func);
-
-                        if (PyErr_Occurred()) {
-                            PyErr_Clear();
-                        }
-
-                        writer.setLayerName(layerName);
-                        writer.setColor(aciColor);
-
-                        // --- Type Dispatcher ---
-                        if (obj->isDerivedFrom(App::Annotation::getClassTypeId())) {
-                            PyObject* get_text_data_func =
-                                PyObject_GetAttrString(helperModule, "_get_text_data");
-                            if (get_text_data_func && PyCallable_Check(get_text_data_func)) {
-                                PyObject* text_data_list =
-                                    PyObject_CallFunctionObjArgs(get_text_data_func, item, NULL);
-                                if (text_data_list && PyList_Check(text_data_list)) {
-                                    Py_ssize_t size = PyList_Size(text_data_list);
-                                    for (Py_ssize_t i = 0; i < size; ++i) {
-                                        PyObject* text_tuple = PyList_GetItem(text_data_list, i);
-                                        char* text_str;
-                                        double p1[3], p2[3], height, rotation;
-                                        int justification;
-                                        if (PyArg_ParseTuple(text_tuple,
-                                                             "s(ddd)(ddd)did",
-                                                             &text_str,
-                                                             &p1[0],
-                                                             &p1[1],
-                                                             &p1[2],
-                                                             &p2[0],
-                                                             &p2[1],
-                                                             &p2[2],
-                                                             &height,
-                                                             &justification,
-                                                             &rotation)) {
-                                            writer.writeText(text_str,
-                                                             p1,
-                                                             p2,
-                                                             height,
-                                                             justification);
-                                        }
-                                    }
-                                }
-                                Py_XDECREF(text_data_list);
-                            }
-                            Py_XDECREF(get_text_data_func);
-                        }
-                        else if (obj->getPropertyByName("Dimline") != nullptr) {
-                            PyObject* get_dim_data_func =
-                                PyObject_GetAttrString(helperModule, "_get_dimension_data");
-                            if (get_dim_data_func && PyCallable_Check(get_dim_data_func)) {
-                                PyObject* dim_tuple =
-                                    PyObject_CallFunctionObjArgs(get_dim_data_func, item, NULL);
-                                if (dim_tuple && PyTuple_Check(dim_tuple)) {
-                                    const char* dim_text;
-                                    double text_mid[3], line_def[3], p1[3], p2[3];
-                                    int dim_type;
-                                    if (PyArg_ParseTuple(dim_tuple,
-                                                         "(ddd)(ddd)(ddd)(ddd)si",
-                                                         &text_mid[0],
-                                                         &text_mid[1],
-                                                         &text_mid[2],
-                                                         &line_def[0],
-                                                         &line_def[1],
-                                                         &line_def[2],
-                                                         &p1[0],
-                                                         &p1[1],
-                                                         &p1[2],
-                                                         &p2[0],
-                                                         &p2[1],
-                                                         &p2[2],
-                                                         &dim_text,
-                                                         &dim_type)) {
-                                        writer.writeLinearDim(text_mid,
-                                                              line_def,
-                                                              p1,
-                                                              p2,
-                                                              dim_text,
-                                                              dim_type);
-                                    }
-                                }
-                                Py_XDECREF(dim_tuple);
-                            }
-                            Py_XDECREF(get_dim_data_func);
-                        }
-                        else if (auto* part = dynamic_cast<Part::Feature*>(obj)) {
-                            if (SketchExportHelper::isSketch(obj)) {
-                                writer.exportShape(SketchExportHelper::getFlatSketchXY(obj));
-                            }
-                            else {
-                                writer.exportShape(part->Shape.getValue());
-                            }
-                        }
-
-                        if (PyErr_Occurred()) {
-                            PyErr_Clear();
-                        }
-                    }
-                }
-                // --- END OF EXISTING LOGIC ---
-
-                Py_DECREF(helperModule);
-                writer.endRun();
-                return Py::None();
-            }
-            catch (const Base::Exception& e) {
-                throw Py::RuntimeError(e.what());
-            }
+        static const std::array<const char*, 5> kwd_list {"obj",
+                                                          "name",
+                                                          "version",
+                                                          "lwPoly",
+                                                          nullptr};
+        if (!Base::Wrapped_ParseTupleAndKeywords(args.ptr(),
+                                                 kwds.ptr(),
+                                                 "Oet|iO!",
+                                                 kwd_list,
+                                                 &objectList,
+                                                 "utf-8",
+                                                 &filename,
+                                                 &version,
+                                                 &PyBool_Type,
+                                                 &use_lwpolyline)) {
+            throw Py::Exception();
         }
 
-        PyErr_Clear();
-        // This is the beginning of the single-object export logic from your file
-        if (PyArg_ParseTuple(args.ptr(),
-                             "O!et|iOs",
-                             &(App::DocumentObjectPy::Type),
-                             &docObj,
-                             "utf-8",
-                             &fname,
-                             &versionParm,
-                             &usePolyline,
-                             &optionSource)) {
-            filePath = std::string(fname);
-            PyMem_Free(fname);
-            App::DocumentObject* obj
-                = static_cast<App::DocumentObjectPy*>(docObj)->getDocumentObjectPtr();
-            Base::Console().message("Imp:writeDXFObject - docObj: %s\n", obj->getNameInDocument());
+        std::string utf8_filename = std::string(filename);
+        PyMem_Free(filename);
 
-            if ((versionParm == 12) || (versionParm == 14)) {
-                versionOverride = true;
-            }
-            if (usePolyline == Py_True) {
-                polyOverride = true;
-            }
-
-            if (optionSource) {
-                defaultOptions = optionSource;
-            }
-
-            try {
-                ImpExpDxfWrite writer(filePath);
-                writer.setOptionSource(defaultOptions);
-                writer.setOptions();
-                if (versionOverride) {
-                    writer.setVersion(versionParm);
-                }
-                writer.setPolyOverride(polyOverride);
-                writer.init();
-
-                PyObject* item = docObj;
-                std::string layerName = "0";
-                int aciColor = 256;
-
-                PyObject* helperModule = PyImport_ImportModule("Draft.importDXF");
-                if (!helperModule) {
-                    throw Py::ImportError("Could not import Draft.importDXF module.");
-                }
-
-                PyObject* get_layer_func = PyObject_GetAttrString(helperModule, "_get_layer_name");
-                if (get_layer_func && PyCallable_Check(get_layer_func)) {
-                    PyObject* pyLayerName =
-                        PyObject_CallFunctionObjArgs(get_layer_func, item, NULL);
-                    if (pyLayerName && PyUnicode_Check(pyLayerName)) {
-                        layerName = PyUnicode_AsUTF8(pyLayerName);
-                    }
-                    Py_XDECREF(pyLayerName);
-                }
-                Py_XDECREF(get_layer_func);
-
-                PyObject* get_aci_func = PyObject_GetAttrString(helperModule, "_get_aci_color");
-                if (get_aci_func && PyCallable_Check(get_aci_func)) {
-                    PyObject* pyAciColor = PyObject_CallFunctionObjArgs(get_aci_func, item, NULL);
-                    if (pyAciColor && PyLong_Check(pyAciColor)) {
-                        aciColor = PyLong_AsLong(pyAciColor);
-                    }
-                    Py_XDECREF(pyAciColor);
-                }
-                Py_XDECREF(get_aci_func);
-
-                if (PyErr_Occurred()) {
-                    PyErr_Clear();
-                }
-                Py_DECREF(helperModule);
-
-                writer.setLayerName(layerName);
-                writer.setColor(aciColor);
-
-                TopoDS_Shape shapeToExport;
-                if (SketchExportHelper::isSketch(obj)) {
-                    shapeToExport = SketchExportHelper::getFlatSketchXY(obj);
-                }
-                else if (auto* part = dynamic_cast<Part::Feature*>(obj)) {
-                    shapeToExport = part->Shape.getValue();
-                }
-                writer.exportShape(shapeToExport);
-                writer.endRun();
-                return Py::None();
-            }
-            catch (const Base::Exception& e) {
-                throw Py::RuntimeError(e.what());
-            }
+        if (!PyList_Check(objectList)) {
+            PyErr_SetString(PyExc_TypeError, "First argument ('obj') must be a list of objects.");
+            throw Py::Exception();
         }
 
-        throw Py::TypeError("expected ([DocObject],path) or (DocObject,path)");
+        try {
+            ImpExpDxfWrite writer(utf8_filename);
+            writer.setOptions();
+            writer.setVersion(version);
+            writer.setPolyOverride(use_lwpolyline == Py_True);
+
+            executeDxfExport(objectList, writer);
+
+            writer.endRun();
+        }
+        catch (const Base::Exception& e) {
+            e.setPyException();
+            throw Py::Exception();
+        }
+
+        return Py::None();
     }
 };
 

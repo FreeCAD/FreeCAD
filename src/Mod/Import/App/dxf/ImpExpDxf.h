@@ -522,42 +522,45 @@ public:
     }
     void setOptions();
 
-    void exportText(
-        const char* text,
-        Base::Vector3d position1,
-        Base::Vector3d position2,
-        double size,
-        int just
-    );
-    void exportLinearDim(
-        Base::Vector3d textLocn,
-        Base::Vector3d lineLocn,
-        Base::Vector3d extLine1Start,
-        Base::Vector3d extLine2Start,
-        char* dimText,
-        int type
-    );
-    void exportAngularDim(
-        Base::Vector3d textLocn,
-        Base::Vector3d lineLocn,
-        Base::Vector3d extLine1End,
-        Base::Vector3d extLine2End,
-        Base::Vector3d apexPoint,
-        char* dimText
-    );
-    void exportRadialDim(
-        Base::Vector3d centerPoint,
-        Base::Vector3d textLocn,
-        Base::Vector3d arcPoint,
-        char* dimText
-    );
-    void exportDiametricDim(
-        Base::Vector3d textLocn,
-        Base::Vector3d arcPoint1,
-        Base::Vector3d arcPoint2,
-        char* dimText
-    );
+    const Base::Vector3d& getProjectionDir() const
+    {
+        return m_projectionDir;
+    }
+    // To accept the projection direction from the Gui module
+    void setProjectionDir(const Base::Vector3d& dir)
+    {
+        m_projectionDir = dir;
+        optionProject = true;  // Enable projection if a direction is set
+    }
+    void writePolyFaceMesh(const TopoDS_Shape& shape);
+    bool optionProject;
+    bool optionMesh;
 
+    void exportText(const char* text,
+                    Base::Vector3d position1,
+                    Base::Vector3d position2,
+                    double size,
+                    int just);
+    void exportLinearDim(Base::Vector3d textLocn,
+                         Base::Vector3d lineLocn,
+                         Base::Vector3d extLine1Start,
+                         Base::Vector3d extLine2Start,
+                         char* dimText,
+                         int type);
+    void exportAngularDim(Base::Vector3d textLocn,
+                          Base::Vector3d lineLocn,
+                          Base::Vector3d extLine1End,
+                          Base::Vector3d extLine2End,
+                          Base::Vector3d apexPoint,
+                          char* dimText);
+    void exportRadialDim(Base::Vector3d centerPoint,
+                         Base::Vector3d textLocn,
+                         Base::Vector3d arcPoint,
+                         char* dimText);
+    void exportDiametricDim(Base::Vector3d textLocn,
+                            Base::Vector3d arcPoint1,
+                            Base::Vector3d arcPoint2,
+                            char* dimText);
 
     static bool gp_PntEqual(gp_Pnt p1, gp_Pnt p2);
     static bool gp_PntCompare(gp_Pnt p1, gp_Pnt p2);
@@ -580,6 +583,8 @@ protected:
     double optionMaxLength;
     bool optionPolyLine;
     bool optionExpPoints;
+
+    Base::Vector3d m_projectionDir;
 };
 
 }  // namespace Import

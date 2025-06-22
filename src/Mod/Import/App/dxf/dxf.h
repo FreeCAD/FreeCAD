@@ -483,7 +483,8 @@ public:
                      const double insertionPoint[3],
                      double scale,
                      double rotation);
-
+    void writePolyFace(const std::vector<point3D>& vertices,
+                       const std::vector<std::vector<int>>& faces);
     void makeLayerTable();
     void makeBlockRecordTableHead();
     void makeBlockRecordTableBody();
