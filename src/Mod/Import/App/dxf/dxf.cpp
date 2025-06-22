@@ -827,6 +827,119 @@ void CDxfWrite::writePolyline(const LWPolyDataOut& pd)
     (*m_ssEntity) << getLayerName() << endl;
 }
 
+void CDxfWrite::writePolyFace(const std::vector<point3D>& vertices,
+                              const std::vector<std::vector<int>>& faces)
+{
+    // A Polyface Mesh is a POLYLINE entity with bit 6 (64) set in its flags (group 70).
+    (*m_ssEntity) << "  0" << endl;
+    (*m_ssEntity) << "POLYLINE" << endl;
+    (*m_ssEntity) << "  5" << endl;
+    (*m_ssEntity) << getEntityHandle() << endl;
+    if (m_version > 12) {
+        (*m_ssEntity) << "330" << endl;
+        (*m_ssEntity) << m_saveModelSpaceHandle << endl;
+        (*m_ssEntity) << "100" << endl;
+        (*m_ssEntity) << "AcDbEntity" << endl;
+    }
+    (*m_ssEntity) << "  8" << endl;
+    (*m_ssEntity) << getLayerName() << endl;
+    (*m_ssEntity) << " 62" << endl;
+    (*m_ssEntity) << m_currentColor << endl;
+    if (m_version > 12) {
+        (*m_ssEntity) << "100" << endl;
+        (*m_ssEntity) << "AcDb3dPolyline" << endl;
+    }
+    (*m_ssEntity) << " 66" << endl;
+    (*m_ssEntity) << "     1" << endl;  // Vertices follow flag
+    (*m_ssEntity) << " 10" << endl;
+    (*m_ssEntity) << "0.0" << endl;
+    (*m_ssEntity) << " 20" << endl;
+    (*m_ssEntity) << "0.0" << endl;
+    (*m_ssEntity) << " 30" << endl;
+    (*m_ssEntity) << "0.0" << endl;
+    (*m_ssEntity) << " 70" << endl;
+    (*m_ssEntity) << "    64" << endl;  // Flag for Polyface Mesh
+
+    // Write all the unique vertices first
+    for (const auto& v : vertices) {
+        (*m_ssEntity) << "  0" << endl;
+        (*m_ssEntity) << "VERTEX" << endl;
+        (*m_ssEntity) << "  5" << endl;
+        (*m_ssEntity) << getEntityHandle() << endl;
+        if (m_version > 12) {
+            (*m_ssEntity) << "330" << endl;
+            (*m_ssEntity) << m_saveModelSpaceHandle << endl;
+            (*m_ssEntity) << "100" << endl;
+            (*m_ssEntity) << "AcDbEntity" << endl;
+            (*m_ssEntity) << "100" << endl;
+            (*m_ssEntity) << "AcDbVertex" << endl;
+            (*m_ssEntity) << "100" << endl;
+            (*m_ssEntity) << "AcDb3dPolylineVertex" << endl;
+        }
+        (*m_ssEntity) << "  8" << endl;
+        (*m_ssEntity) << getLayerName() << endl;
+        (*m_ssEntity) << " 10" << endl;
+        (*m_ssEntity) << v.x << endl;
+        (*m_ssEntity) << " 20" << endl;
+        (*m_ssEntity) << v.y << endl;
+        (*m_ssEntity) << " 30" << endl;
+        (*m_ssEntity) << v.z << endl;
+        (*m_ssEntity) << " 70" << endl;
+        (*m_ssEntity) << "    32" << endl;  // Polyface mesh vertex flag
+    }
+
+    // Write the face definitions
+    for (const auto& f : faces) {
+        (*m_ssEntity) << "  0" << endl;
+        (*m_ssEntity) << "VERTEX" << endl;
+        (*m_ssEntity) << "  5" << endl;
+        (*m_ssEntity) << getEntityHandle() << endl;
+        if (m_version > 12) {
+            (*m_ssEntity) << "330" << endl;
+            (*m_ssEntity) << m_saveModelSpaceHandle << endl;
+            (*m_ssEntity) << "100" << endl;
+            (*m_ssEntity) << "AcDbEntity" << endl;
+            (*m_ssEntity) << "100" << endl;
+            (*m_ssEntity) << "AcDbVertex" << endl;
+            (*m_ssEntity) << "100" << endl;
+            (*m_ssEntity) << "AcDbFaceRecord" << endl;
+        }
+        (*m_ssEntity) << "  8" << endl;
+        (*m_ssEntity) << getLayerName() << endl;
+        (*m_ssEntity) << " 10" << endl;
+        (*m_ssEntity) << "0.0" << endl;
+        (*m_ssEntity) << " 20" << endl;
+        (*m_ssEntity) << "0.0" << endl;
+        (*m_ssEntity) << " 30" << endl;
+        (*m_ssEntity) << "0.0" << endl;
+        (*m_ssEntity) << " 70" << endl;
+        (*m_ssEntity) << "   128" << endl;  // Polyface mesh face flag
+
+        // The vertex indices for the face
+        // DXF uses 1-based indices
+        if (f.size() >= 1) {
+            (*m_ssEntity) << " 71" << endl << f[0] << endl;
+        }
+        if (f.size() >= 2) {
+            (*m_ssEntity) << " 72" << endl << f[1] << endl;
+        }
+        if (f.size() >= 3) {
+            (*m_ssEntity) << " 73" << endl << f[2] << endl;
+        }
+        if (f.size() >= 4) {
+            (*m_ssEntity) << " 74" << endl << f[3] << endl;
+        }
+    }
+
+    // End the sequence
+    (*m_ssEntity) << "  0" << endl;
+    (*m_ssEntity) << "SEQEND" << endl;
+    (*m_ssEntity) << "  5" << endl;
+    (*m_ssEntity) << getEntityHandle() << endl;
+    (*m_ssEntity) << "  8" << endl;
+    (*m_ssEntity) << getLayerName() << endl;
+}
+
 void CDxfWrite::writePoint(const double* point)
 {
     (*m_ssEntity) << "  0" << endl;
