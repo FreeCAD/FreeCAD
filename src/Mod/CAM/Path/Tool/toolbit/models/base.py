@@ -288,6 +288,9 @@ class ToolBit(Asset, ABC):
         """Returns the unique ID of the tool bit."""
         return self.id
 
+    def set_id(self, id: str = None):
+        self.id = id if id is not None else str(uuid.uuid4())
+
     def _promote_toolbit(self):
         """
         Updates the toolbit properties for backward compatibility.
@@ -735,6 +738,7 @@ class ToolBit(Asset, ABC):
         Path.Log.track(self.obj.Label)
         attrs = {}
         attrs["version"] = 2
+        attrs["id"] = self.id
         attrs["name"] = self.obj.Label
         attrs["shape"] = self._tool_bit_shape.get_id() + ".fcstd"
         attrs["shape-type"] = self._tool_bit_shape.name
