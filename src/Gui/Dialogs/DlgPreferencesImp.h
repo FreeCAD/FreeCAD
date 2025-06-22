@@ -49,6 +49,13 @@ class DlgPreferencesImp;
 class GuiExport PreferencesSearchController : public QObject
 {
     Q_OBJECT
+
+private:
+    enum class PopupAction {
+        KeepOpen,    // don't close popup (used for keyboard navigation)
+        CloseAfter   // close popup (used for mouse clicks and Enter/Return)
+    };
+
 public:
     // Search results structure
     struct SearchResult {
@@ -65,7 +72,7 @@ public:
     };
 
     explicit PreferencesSearchController(DlgPreferencesImp* parentDialog, QObject* parent = nullptr);
-    ~PreferencesSearchController();
+    ~PreferencesSearchController() = default;
 
     // Setup methods
     void setPreferencesModel(QStandardItemModel* model);
@@ -93,7 +100,7 @@ public:
     void showSearchResultsList();
 
     // Navigation
-    void navigateToCurrentSearchResult(bool closePopup);
+    void navigateToCurrentSearchResult(PopupAction action);
 
 Q_SIGNALS:
     void navigationRequested(const QString& groupName, const QString& pageName);

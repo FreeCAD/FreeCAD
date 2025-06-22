@@ -1258,11 +1258,6 @@ PreferencesSearchController::PreferencesSearchController(DlgPreferencesImp* pare
     m_searchResultsList->installEventFilter(m_parentDialog);
 }
 
-PreferencesSearchController::~PreferencesSearchController()
-{
-    // Destructor - cleanup handled by Qt's object system
-}
-
 void PreferencesSearchController::setPreferencesModel(QStandardItemModel* model)
 {
     m_preferencesModel = model;
@@ -1381,7 +1376,9 @@ void PreferencesSearchController::clearHighlights()
 
 void PreferencesSearchController::collectSearchResults(QWidget* widget, const QString& searchText, const QString& groupName, const QString& pageName, const QString& pageDisplayName, const QString& tabName)
 {
-    if (!widget) return;
+    if (!widget) {
+        return;
+    }
     
     const QString lowerSearchText = searchText.toLower();
     
@@ -1415,7 +1412,7 @@ void PreferencesSearchController::onSearchResultSelected()
     // This method is called when a search result is selected (arrow keys or single click)
     // Navigate immediately but keep popup open
     if (m_searchResultsList && m_searchResultsList->currentItem()) {
-        navigateToCurrentSearchResult(false); // false = don't close popup
+        navigateToCurrentSearchResult(PopupAction::KeepOpen);
     }
     
     ensureSearchBoxFocus();
@@ -1425,7 +1422,7 @@ void PreferencesSearchController::onSearchResultClicked()
 {
     // Handle single click - navigate immediately but keep popup open
     if (m_searchResultsList && m_searchResultsList->currentItem()) {
-        navigateToCurrentSearchResult(false); // false = don't close popup
+        navigateToCurrentSearchResult(PopupAction::KeepOpen);
     }
     
     ensureSearchBoxFocus();
@@ -1435,11 +1432,11 @@ void PreferencesSearchController::onSearchResultDoubleClicked()
 {
     // Handle double click - navigate and close popup
     if (m_searchResultsList && m_searchResultsList->currentItem()) {
-        navigateToCurrentSearchResult(true); // true = close popup
+        navigateToCurrentSearchResult(PopupAction::CloseAfter);
     }
 }
 
-void PreferencesSearchController::navigateToCurrentSearchResult(bool closePopup)
+void PreferencesSearchController::navigateToCurrentSearchResult(PopupAction action)
 {
     QListWidgetItem* currentItem = m_searchResultsList->currentItem();
     
@@ -1468,7 +1465,7 @@ void PreferencesSearchController::navigateToCurrentSearchResult(bool closePopup)
         // For page-level matches, we just navigate without highlighting anything
         
         // Close popup only if requested (double-click or Enter)
-        if (closePopup) {
+        if (action == PopupAction::CloseAfter) {
             hideSearchResultsList();
         }
     }
@@ -1831,7 +1828,7 @@ bool PreferencesSearchController::handleSearchBoxKeyPress(QKeyEvent* keyEvent)
         }
         case Qt::Key_Return:
         case Qt::Key_Enter:
-            navigateToCurrentSearchResult(true); // true = close popup
+            navigateToCurrentSearchResult(PopupAction::CloseAfter);
             return true;
         case Qt::Key_Escape:
             hideSearchResultsList();
@@ -1846,7 +1843,7 @@ bool PreferencesSearchController::handlePopupKeyPress(QKeyEvent* keyEvent)
     switch (keyEvent->key()) {
         case Qt::Key_Return:
         case Qt::Key_Enter:
-            navigateToCurrentSearchResult(true); // true = close popup
+            navigateToCurrentSearchResult(PopupAction::CloseAfter);
             return true;
         case Qt::Key_Escape:
             hideSearchResultsList();
