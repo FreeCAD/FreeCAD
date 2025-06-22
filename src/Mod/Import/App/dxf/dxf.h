@@ -336,6 +336,7 @@ protected:
     int m_blockHandle;
     int m_blkRecordHandle;
     bool m_polyOverride;
+    int m_currentColor;
 
     std::string m_saveModelSpaceHandle;
     std::string m_savePaperSpaceHandle;
@@ -480,6 +481,10 @@ public:
     void makeBlockRecordTableHead();
     void makeBlockRecordTableBody();
     void makeBlockSectionHead();
+    void setColor(int aci)
+    {
+        m_currentColor = aci;
+    }
 };
 
 // derive a class from this and implement it's virtual functions
