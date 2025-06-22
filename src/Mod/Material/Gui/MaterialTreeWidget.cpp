@@ -137,7 +137,7 @@ void MaterialTreeWidget::createLayout()
     m_expand->setIcon(style()->standardIcon(QStyle::SP_TitleBarUnshadeButton));
     m_materialTree = new QTreeView(this);
     m_filterCombo = new QComboBox(this);
-    m_editor = new QPushButton(tr("Launch editor"), this);
+    m_editor = new QPushButton(tr("Launch Editor"), this);
 
     m_materialTree->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding);
     m_materialTree->setMinimumSize(m_treeSizeHint);
