@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Object selection</string>
+   <string>Object Selection</string>
   </property>
   <property name="sizeGripEnabled">
    <bool>true</bool>
@@ -29,7 +29,7 @@
       </sizepolicy>
      </property>
      <property name="text">
-      <string>The selected objects contain other dependencies. Please select which objects to export. All dependencies are auto selected by default.</string>
+      <string>The selected objects contain other dependencies. Select which objects to export. All dependencies are auto-selected by default.</string>
      </property>
      <property name="wordWrap">
       <bool>true</bool>

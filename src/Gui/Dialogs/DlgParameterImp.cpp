@@ -124,7 +124,7 @@ DlgParameterImp::DlgParameterImp(QWidget* parent, Qt::WindowFlags fl)
     boldFont.setBold(true);
     defaultColor = paramGroup->topLevelItem(0)->foreground(0);
 
-    ui->findGroupLE->setPlaceholderText(tr("Search Group"));
+    ui->findGroupLE->setPlaceholderText(tr("Search group"));
 }
 
 /**
@@ -491,15 +491,15 @@ ParameterGroup::ParameterGroup(QWidget* parent)
     menuEdit = new QMenu(this);
     expandAct = menuEdit->addAction(tr("Expand"), this, &ParameterGroup::onToggleSelectedItem);
     menuEdit->addSeparator();
-    subGrpAct = menuEdit->addAction(tr("Add sub-group"), this, &ParameterGroup::onCreateSubgroup);
+    subGrpAct = menuEdit->addAction(tr("Add Sub-Group"), this, &ParameterGroup::onCreateSubgroup);
     removeAct =
-        menuEdit->addAction(tr("Remove group"), this, &ParameterGroup::onDeleteSelectedItem);
+        menuEdit->addAction(tr("Remove Group"), this, &ParameterGroup::onDeleteSelectedItem);
     renameAct =
-        menuEdit->addAction(tr("Rename group"), this, &ParameterGroup::onRenameSelectedItem);
+        menuEdit->addAction(tr("Rename Group"), this, &ParameterGroup::onRenameSelectedItem);
     menuEdit->addSeparator();
-    exportAct = menuEdit->addAction(tr("Export parameter"), this, &ParameterGroup::onExportToFile);
+    exportAct = menuEdit->addAction(tr("Export Parameter"), this, &ParameterGroup::onExportToFile);
     importAct =
-        menuEdit->addAction(tr("Import parameter"), this, &ParameterGroup::onImportFromFile);
+        menuEdit->addAction(tr("Import Parameter"), this, &ParameterGroup::onImportFromFile);
     menuEdit->setDefaultAction(expandAct);
 }
 
@@ -539,7 +539,7 @@ void ParameterGroup::onDeleteSelectedItem()
     if (sel && sel->isSelected() && sel->parent()) {
         if (QMessageBox::question(this,
                                   tr("Remove group"),
-                                  tr("Do you really want to remove this parameter group?"),
+                                  tr("Remove this parameter group?"),
                                   QMessageBox::Yes | QMessageBox::No,
                                   QMessageBox::No)
             == QMessageBox::Yes) {
@@ -647,7 +647,7 @@ void ParameterGroup::onImportFromFile()
             }
             catch (const Base::Exception&) {
                 QMessageBox::critical(this,
-                                      tr("Import Error"),
+                                      tr("Import error"),
                                       tr("Reading from '%1' failed.").arg(file));
             }
         }
@@ -685,22 +685,22 @@ ParameterValue::ParameterValue(QWidget* parent)
     : QTreeWidget(parent)
 {
     menuEdit = new QMenu(this);
-    changeAct = menuEdit->addAction(tr("Change value"),
+    changeAct = menuEdit->addAction(tr("Change Value"),
                                     this,
                                     qOverload<>(&ParameterValue::onChangeSelectedItem));
     menuEdit->addSeparator();
-    removeAct = menuEdit->addAction(tr("Remove key"), this, &ParameterValue::onDeleteSelectedItem);
-    renameAct = menuEdit->addAction(tr("Rename key"), this, &ParameterValue::onRenameSelectedItem);
+    removeAct = menuEdit->addAction(tr("Remove Key"), this, &ParameterValue::onDeleteSelectedItem);
+    renameAct = menuEdit->addAction(tr("Rename Key"), this, &ParameterValue::onRenameSelectedItem);
     menuEdit->setDefaultAction(changeAct);
 
     menuEdit->addSeparator();
     menuNew = menuEdit->addMenu(tr("New"));
-    newStrAct = menuNew->addAction(tr("New string item"), this, &ParameterValue::onCreateTextItem);
-    newFltAct = menuNew->addAction(tr("New float item"), this, &ParameterValue::onCreateFloatItem);
-    newIntAct = menuNew->addAction(tr("New integer item"), this, &ParameterValue::onCreateIntItem);
+    newStrAct = menuNew->addAction(tr("New String Item"), this, &ParameterValue::onCreateTextItem);
+    newFltAct = menuNew->addAction(tr("New Float Item"), this, &ParameterValue::onCreateFloatItem);
+    newIntAct = menuNew->addAction(tr("New Integer Item"), this, &ParameterValue::onCreateIntItem);
     newUlgAct =
-        menuNew->addAction(tr("New unsigned item"), this, &ParameterValue::onCreateUIntItem);
-    newBlnAct = menuNew->addAction(tr("New Boolean item"), this, &ParameterValue::onCreateBoolItem);
+        menuNew->addAction(tr("New Unsigned Item"), this, &ParameterValue::onCreateUIntItem);
+    newBlnAct = menuNew->addAction(tr("New Boolean Item"), this, &ParameterValue::onCreateBoolItem);
 
     connect(this,
             &ParameterValue::itemDoubleClicked,
@@ -821,7 +821,7 @@ void ParameterValue::onCreateTextItem()
 
     QString val = QInputDialog::getText(this,
                                         QObject::tr("New text item"),
-                                        QObject::tr("Enter your text:"),
+                                        QObject::tr("Enter text:"),
                                         QLineEdit::Normal,
                                         QString(),
                                         &ok,
@@ -860,7 +860,7 @@ void ParameterValue::onCreateIntItem()
 
     int val = QInputDialog::getInt(this,
                                    QObject::tr("New integer item"),
-                                   QObject::tr("Enter your number:"),
+                                   QObject::tr("Enter number:"),
                                    0,
                                    -2147483647,
                                    2147483647,
@@ -900,11 +900,11 @@ void ParameterValue::onCreateUIntItem()
         }
     }
 
-    DlgInputDialogImp dlg(QObject::tr("Enter your number:"),
+    DlgInputDialogImp dlg(QObject::tr("Enter number:"),
                           this,
                           true,
                           DlgInputDialogImp::UIntBox);
-    dlg.setWindowTitle(QObject::tr("New unsigned item"));
+    dlg.setWindowTitle(QObject::tr("New Unsigned Item"));
     UIntSpinBox* edit = dlg.getUIntBox();
     edit->setRange(0, std::numeric_limits<unsigned>::max());
     if (dlg.exec() == QDialog::Accepted) {
@@ -946,7 +946,7 @@ void ParameterValue::onCreateFloatItem()
 
     double val = QInputDialog::getDouble(this,
                                          QObject::tr("New float item"),
-                                         QObject::tr("Enter your number:"),
+                                         QObject::tr("Enter number:"),
                                          0,
                                          -2147483647,
                                          2147483647,
@@ -964,7 +964,7 @@ void ParameterValue::onCreateBoolItem()
 {
     bool ok;
     QString name = QInputDialog::getText(this,
-                                         QObject::tr("New Boolean item"),
+                                         QObject::tr("New boolean item"),
                                          QObject::tr("Enter the name:"),
                                          QLineEdit::Normal,
                                          QString(),
@@ -1146,7 +1146,7 @@ void ParameterText::changeValue()
     bool ok;
     QString txt = QInputDialog::getText(treeWidget(),
                                         QObject::tr("Change value"),
-                                        QObject::tr("Enter your text:"),
+                                        QObject::tr("Enter text:"),
                                         QLineEdit::Normal,
                                         text(2),
                                         &ok,
@@ -1195,7 +1195,7 @@ void ParameterInt::changeValue()
     bool ok;
     int num = QInputDialog::getInt(treeWidget(),
                                    QObject::tr("Change value"),
-                                   QObject::tr("Enter your number:"),
+                                   QObject::tr("Enter number:"),
                                    text(2).toInt(),
                                    -2147483647,
                                    2147483647,
@@ -1244,11 +1244,11 @@ ParameterUInt::~ParameterUInt() = default;
 void ParameterUInt::changeValue()
 {
     bool ok;
-    DlgInputDialogImp dlg(QObject::tr("Enter your number:"),
+    DlgInputDialogImp dlg(QObject::tr("Enter number:"),
                           treeWidget(),
                           true,
                           DlgInputDialogImp::UIntBox);
-    dlg.setWindowTitle(QObject::tr("Change value"));
+    dlg.setWindowTitle(QObject::tr("Change Value"));
     UIntSpinBox* edit = dlg.getUIntBox();
     edit->setRange(0, std::numeric_limits<unsigned>::max());
     edit->setValue(text(2).toULong());
@@ -1301,7 +1301,7 @@ void ParameterFloat::changeValue()
     bool ok;
     double num = QInputDialog::getDouble(treeWidget(),
                                          QObject::tr("Change value"),
-                                         QObject::tr("Enter your number:"),
+                                         QObject::tr("Enter number:"),
                                          text(2).toDouble(),
                                          -2147483647,
                                          2147483647,
