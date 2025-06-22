@@ -72,6 +72,8 @@
 #include "WriterIges.h"
 #include "WriterStep.h"
 
+#include <Python.h>  // For direct C-API calls
+
 namespace Import
 {
 
@@ -560,7 +562,6 @@ private:
         PyObject* docObj = nullptr;
         char* fname = nullptr;
         std::string filePath;
-        std::string layerName;
         const char* optionSource = nullptr;
         std::string defaultOptions = "User parameter:BaseApp/Preferences/Mod/Draft";
         int versionParm = -1;
@@ -580,7 +581,6 @@ private:
                 &optionSource
             )) {
             filePath = std::string(fname);
-            layerName = "none";
             PyMem_Free(fname);
 
             if ((versionParm == 12) || (versionParm == 14)) {
@@ -602,31 +602,80 @@ private:
                     writer.setVersion(versionParm);
                 }
                 writer.setPolyOverride(polyOverride);
-                writer.setLayerName(layerName);
                 writer.init();
+
+                // Get the Python helper module using the low-level C-API
+                PyObject* helperModule = PyImport_ImportModule("Draft.importDXF");
+                if (!helperModule) {
+                    throw Py::ImportError("Could not import Draft.importDXF module.");
+                }
+
                 Py::Sequence list(docObj);
                 for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
-                    if (PyObject_TypeCheck((*it).ptr(), &(Part::PartFeaturePy::Type))) {
-                        PyObject* item = (*it).ptr();
-                        App::DocumentObject* obj
-                            = static_cast<App::DocumentObjectPy*>(item)->getDocumentObjectPtr();
-                        layerName = obj->getNameInDocument();
+                    PyObject* item = (*it).ptr();  // This is the DocumentObjectPy
+
+                    if (PyObject_TypeCheck(item, &(Part::PartFeaturePy::Type))) {
+                        App::DocumentObject* obj =
+                            static_cast<App::DocumentObjectPy*>(item)->getDocumentObjectPtr();
+
+                        // --- Call Python helpers using the C-API ---
+                        std::string layerName = "0";  // Default layer
+                        int aciColor = 256;           // Default color (BYLAYER)
+
+                        // 1. Get the _get_layer_name function
+                        PyObject* get_layer_func =
+                            PyObject_GetAttrString(helperModule, "_get_layer_name");
+                        if (get_layer_func && PyCallable_Check(get_layer_func)) {
+                            // 2. Call it with the object as an argument
+                            PyObject* pyLayerName =
+                                PyObject_CallFunctionObjArgs(get_layer_func, item, NULL);
+                            if (pyLayerName && PyUnicode_Check(pyLayerName)) {
+                                // 3. Convert the result to a C++ string
+                                layerName = PyUnicode_AsUTF8(pyLayerName);
+                            }
+                            Py_XDECREF(pyLayerName);
+                        }
+                        Py_XDECREF(get_layer_func);
+
+                        // Repeat for _get_aci_color
+                        PyObject* get_aci_func =
+                            PyObject_GetAttrString(helperModule, "_get_aci_color");
+                        if (get_aci_func && PyCallable_Check(get_aci_func)) {
+                            PyObject* pyAciColor =
+                                PyObject_CallFunctionObjArgs(get_aci_func, item, NULL);
+                            if (pyAciColor && PyLong_Check(pyAciColor)) {
+                                aciColor = PyLong_AsLong(pyAciColor);
+                            }
+                            Py_XDECREF(pyAciColor);
+                        }
+                        Py_XDECREF(get_aci_func);
+
+                        // Clear any potential Python error state if a call failed
+                        if (PyErr_Occurred()) {
+                            PyErr_Clear();
+                            Base::Console().warning(
+                                "A Python error occurred while getting layer/color for object %s\n",
+                                obj->getNameInDocument());
+                        }
+
+                        // --- Use the retrieved data ---
                         writer.setLayerName(layerName);
+                        writer.setColor(aciColor);
+
+                        // --- Export the geometry (existing logic) ---
                         TopoDS_Shape shapeToExport;
                         if (SketchExportHelper::isSketch(obj)) {
-                            // project sketch along sketch Z via hlrProjector to get geometry on XY
-                            // plane
                             shapeToExport = SketchExportHelper::getFlatSketchXY(obj);
                         }
                         else {
-                            // do we know that obj is a Part::Feature? is this checked somewhere
-                            // before this? this should be a located shape??
                             Part::Feature* part = static_cast<Part::Feature*>(obj);
                             shapeToExport = part->Shape.getValue();
                         }
                         writer.exportShape(shapeToExport);
                     }
                 }
+
+                Py_DECREF(helperModule);  // Clean up the module reference
                 writer.endRun();
                 return Py::None();
             }
@@ -648,7 +697,6 @@ private:
                 &optionSource
             )) {
             filePath = std::string(fname);
-            layerName = "none";
             PyMem_Free(fname);
             App::DocumentObject* obj
                 = static_cast<App::DocumentObjectPy*>(docObj)->getDocumentObjectPtr();
@@ -673,21 +721,55 @@ private:
                     writer.setVersion(versionParm);
                 }
                 writer.setPolyOverride(polyOverride);
-                writer.setLayerName(layerName);
                 writer.init();
-                App::DocumentObject* obj
-                    = static_cast<App::DocumentObjectPy*>(docObj)->getDocumentObjectPtr();
-                layerName = obj->getNameInDocument();
+
+                PyObject* item = docObj;
+                // --- Call Python helpers using the C-API ---
+                std::string layerName = "0";  // Default layer
+                int aciColor = 256;           // Default color (BYLAYER)
+
+                PyObject* helperModule = PyImport_ImportModule("Draft.importDXF");
+                if (!helperModule) {
+                    throw Py::ImportError("Could not import Draft.importDXF module.");
+                }
+
+                PyObject* get_layer_func = PyObject_GetAttrString(helperModule, "_get_layer_name");
+                if (get_layer_func && PyCallable_Check(get_layer_func)) {
+                    PyObject* pyLayerName =
+                        PyObject_CallFunctionObjArgs(get_layer_func, item, NULL);
+                    if (pyLayerName && PyUnicode_Check(pyLayerName)) {
+                        layerName = PyUnicode_AsUTF8(pyLayerName);
+                    }
+                    Py_XDECREF(pyLayerName);
+                }
+                Py_XDECREF(get_layer_func);
+
+                PyObject* get_aci_func = PyObject_GetAttrString(helperModule, "_get_aci_color");
+                if (get_aci_func && PyCallable_Check(get_aci_func)) {
+                    PyObject* pyAciColor = PyObject_CallFunctionObjArgs(get_aci_func, item, NULL);
+                    if (pyAciColor && PyLong_Check(pyAciColor)) {
+                        aciColor = PyLong_AsLong(pyAciColor);
+                    }
+                    Py_XDECREF(pyAciColor);
+                }
+                Py_XDECREF(get_aci_func);
+
+                if (PyErr_Occurred()) {
+                    PyErr_Clear();
+                    Base::Console().warning(
+                        "A Python error occurred while getting layer/color for object %s\n",
+                        obj->getNameInDocument());
+                }
+                Py_DECREF(helperModule);
+
                 writer.setLayerName(layerName);
+                writer.setColor(aciColor);
+
                 TopoDS_Shape shapeToExport;
                 if (SketchExportHelper::isSketch(obj)) {
-                    // project sketch along sketch Z via hlrProjector to get geometry on XY plane
                     shapeToExport = SketchExportHelper::getFlatSketchXY(obj);
                 }
                 else {
-                    // TODO: do we know that obj is a Part::Feature? is this checked somewhere
-                    // before this?
-                    // TODO: this should be a located shape??
                     Part::Feature* part = static_cast<Part::Feature*>(obj);
                     shapeToExport = part->Shape.getValue();
                 }
@@ -700,7 +782,7 @@ private:
             }
         }
 
-        throw Py::TypeError("expected ([DocObject],path");
+        throw Py::TypeError("expected ([DocObject],path) or (DocObject,path)");
     }
 };
 

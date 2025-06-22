@@ -110,6 +110,7 @@ CDxfWrite::CDxfWrite(const char* filepath)
     // m_blkRecordHandle(0x110),
     m_polyOverride(false)
     , m_layerName("none")
+    , m_currentColor(256)  // default color is "by layer" (256)
 {
     // start the file
     Base::FileInfo fi(filepath);
@@ -595,6 +596,8 @@ void CDxfWrite::putLine(
     }
     (*outStream) << "  8" << endl;           // Group code for layer name
     (*outStream) << getLayerName() << endl;  // Layer number
+    (*outStream) << " 62" << endl;           // Group code for color
+    (*outStream) << m_currentColor << endl;  // Color index
     if (m_version > 12) {
         (*outStream) << "100" << endl;
         (*outStream) << "AcDbLine" << endl;
