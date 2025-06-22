@@ -96,7 +96,7 @@ DlgMaterialImp::DlgMaterialImp(bool floating, QWidget* parent, Qt::WindowFlags f
     if (floating) {
         Gui::DockWindowManager* pDockMgr = Gui::DockWindowManager::instance();
         QDockWidget* dw =
-            pDockMgr->addDockWindow("Display properties", this, Qt::AllDockWidgetAreas);
+            pDockMgr->addDockWindow("Display Properties", this, Qt::AllDockWidgetAreas);
         dw->setFeatures(QDockWidget::DockWidgetMovable | QDockWidget::DockWidgetFloatable);
         dw->setFloating(true);
         dw->show();

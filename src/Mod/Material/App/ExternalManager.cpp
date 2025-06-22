@@ -100,7 +100,7 @@ void ExternalManager::getConfiguration()
 void ExternalManager::instantiate()
 {
     _instantiated = false;
-    Base::Console().log("Loading external manager...\n");
+    Base::Console().log("Loading external manager…\n");
 
     if (_moduleName.empty() || _className.empty()) {
         Base::Console().log("External module not defined\n");

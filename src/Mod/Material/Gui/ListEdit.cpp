@@ -141,7 +141,7 @@ int ListEdit::confirmDelete()
     box.setIcon(QMessageBox::Question);
     box.setWindowTitle(QObject::tr("Confirm Delete"));
 
-    QString prompt = QObject::tr("Are you sure you want to delete the row?");
+    QString prompt = QObject::tr("Delete the row?");
     box.setText(prompt);
 
     box.setStandardButtons(QMessageBox::Ok | QMessageBox::Cancel);

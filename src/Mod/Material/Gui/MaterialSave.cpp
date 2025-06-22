@@ -190,7 +190,7 @@ int MaterialSave::confirmOverwrite(const QString& filename)
     box.setWindowTitle(QObject::tr("Confirm Overwrite"));
 
     QFileInfo info(_selectedFull);
-    QString prompt = tr("Are you sure you want to save over '%1'?").arg(filename);
+    QString prompt = tr("Save over '%1'?").arg(filename);
     box.setText(prompt);
 
     box.setInformativeText(tr("Saving over the original file may cause other documents to break. "
@@ -215,13 +215,13 @@ int MaterialSave::confirmNewMaterial()
 {
     QMessageBox box(this);
     box.setIcon(QMessageBox::Question);
-    box.setWindowTitle(tr("Confirm Save As New Material"));
+    box.setWindowTitle(tr("Confirm Save as New Material"));
 
     QString prompt = tr("Save as new material");
     box.setText(prompt);
 
     box.setInformativeText(tr(
-        "This material already exists in this library. Would you like to save as a new material?"));
+        "This material already exists in this library. Save as a new material?"));
 
     box.setStandardButtons(QMessageBox::Ok | QMessageBox::Cancel);
     box.setDefaultButton(QMessageBox::Cancel);
@@ -242,13 +242,13 @@ int MaterialSave::confirmCopy()
 {
     QMessageBox box(this);
     box.setIcon(QMessageBox::Question);
-    box.setWindowTitle(tr("Confirm Save As Copy"));
+    box.setWindowTitle(tr("Confirm Save as Copy"));
 
-    QString prompt = tr("Save as Copy");
+    QString prompt = tr("Save as copy");
     box.setText(prompt);
 
     box.setInformativeText(tr("Saving a copy is not recommended as it can break other documents. "
-                              "We recommend you save as a new material."));
+                              "It is recommended to save as a new material."));
 
     QPushButton* duplicateButton = box.addButton(tr("Save Copy"), QMessageBox::AcceptRole);
     QPushButton* newButton = box.addButton(tr("Save As New"), QMessageBox::ActionRole);
@@ -483,7 +483,7 @@ void MaterialSave::onNewFolder(bool checked)
     if (item->hasChildren()) {
         for (auto i = 0; i < item->rowCount(); i++) {
             auto child = item->child(i);
-            if (child->text().startsWith(tr("New Folder"))) {
+            if (child->text().startsWith(tr("New folder"))) {
                 newCount++;
             }
         }
@@ -493,7 +493,7 @@ void MaterialSave::onNewFolder(bool checked)
     if (item->data(Qt::UserRole).isNull()) {
         QIcon folderIcon(QStringLiteral(":/icons/folder.svg"));
 
-        QString folderName = tr("New Folder");
+        QString folderName = tr("New folder");
         if (newCount > 0) {
             folderName += QString::number(newCount);
         }
@@ -533,7 +533,7 @@ QString MaterialSave::pathFromIndex(const QModelIndex& index) const
 
 void MaterialSave::onContextMenu(const QPoint& pos)
 {
-    QMenu contextMenu(tr("Context menu"), this);
+    QMenu contextMenu(tr("Context Menu"), this);
 
     contextMenu.addAction(&_deleteAction);
 
@@ -565,7 +565,7 @@ int MaterialSave::confirmDelete(QWidget* parent)
     box.setWindowTitle(QObject::tr("Confirm Delete"));
 
     QFileInfo info(_selectedFull);
-    QString prompt = QObject::tr("Are you sure you want to delete '%1'?").arg(info.fileName());
+    QString prompt = QObject::tr("Delete '%1'?").arg(info.fileName());
     box.setText(prompt);
 
     if (selectedHasChildren()) {

@@ -26,7 +26,7 @@
       <item row="0" column="0">
        <widget class="QLabel" name="label">
         <property name="text">
-         <string>External Interface</string>
+         <string>External interface</string>
         </property>
        </widget>
       </item>
@@ -88,14 +88,14 @@
       <item row="0" column="0">
        <widget class="QLabel" name="label_7">
         <property name="text">
-         <string>Model Cache Size</string>
+         <string>Model cache size</string>
         </property>
        </widget>
       </item>
       <item row="3" column="0">
        <widget class="QLabel" name="label_10">
         <property name="text">
-         <string>Hit Rate</string>
+         <string>Hit rate</string>
         </property>
         <property name="alignment">
          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -121,7 +121,7 @@
       <item row="1" column="0">
        <widget class="QLabel" name="label_9">
         <property name="text">
-         <string>Hit Rate</string>
+         <string>Hit rate</string>
         </property>
         <property name="alignment">
          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -131,7 +131,7 @@
       <item row="2" column="0">
        <widget class="QLabel" name="label_8">
         <property name="text">
-         <string>Material Cache Size</string>
+         <string>Material cache size</string>
         </property>
        </widget>
       </item>
