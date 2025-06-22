@@ -112,7 +112,6 @@ void QGIViewSection::drawSectionFace()
             newFace->setLineWeight(sectionVp->WeightPattern.getValue());
             std::vector<TechDraw::LineSet> lineSets = section->getDrawableLines(i);
             if (!lineSets.empty()) {
-                newFace->clearLineSets();
                 for (auto& ls: lineSets) {
                     newFace->addLineSet(ls);
                 }
