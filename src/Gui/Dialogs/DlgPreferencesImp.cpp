@@ -1886,11 +1886,15 @@ bool PreferencesSearchController::handlePopupKeyPress(QKeyEvent* keyEvent)
 
 bool PreferencesSearchController::isClickOutsidePopup(QMouseEvent* mouseEvent)
 {
-    QPointF globalPos = mouseEvent->globalPosition();
+#if QT_VERSION < QT_VERSION_CHECK(6,0,0)
+    QPoint globalPos = mouseEvent->globalPos();
+#else
+    QPoint globalPos = mouseEvent->globalPosition().toPoint();
+#endif
     QRect searchBoxRect = QRect(m_searchBox->mapToGlobal(QPoint(0, 0)), m_searchBox->size());
     QRect popupRect = QRect(m_searchResultsList->mapToGlobal(QPoint(0, 0)), m_searchResultsList->size());
     
-    return !searchBoxRect.contains(globalPos.x(), globalPos.y()) && !popupRect.contains(globalPos.x(), globalPos.y());
+    return !searchBoxRect.contains(globalPos) && !popupRect.contains(globalPos);
 }
 
 bool DlgPreferencesImp::eventFilter(QObject* obj, QEvent* event)
