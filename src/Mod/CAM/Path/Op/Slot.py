@@ -1606,7 +1606,6 @@ class ObjectSlot(PathOp.ObjectOp):
         if not slices:
             return False
 
-        wire = slices[0]
         if (wire := slices[0]).isClosed() and (face := Part.Face(wire)) > 0:
             # Align face Z with original shape
             z_offset = shape.BoundBox.ZMin - face.BoundBox.ZMin
