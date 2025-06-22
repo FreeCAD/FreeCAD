@@ -60,7 +60,7 @@ class _CommandExplodeCompound:
             mb = QtGui.QMessageBox()
             mb.setIcon(mb.Icon.Warning)
             mb.setText(translate("Part_ExplodeCompound", "First select a shape that is a compound.", None))
-            mb.setWindowTitle(translate("Part_ExplodeCompound", "Bad selection", None))
+            mb.setWindowTitle(translate("Part_ExplodeCompound", "Bad Selection", None))
             mb.exec_()
 
     def IsActive(self):

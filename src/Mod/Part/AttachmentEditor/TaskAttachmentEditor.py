@@ -554,7 +554,7 @@ class AttachmentEditorTaskPanel(FrozenClass):
                     typestr = self.last_sugr['references_Types']
                     if i < len(typestr):
                         typ = self.attacher.getRefTypeInfo(typestr[i])['UserFriendlyName']
-                btn.setText(translate('AttachmentEditor',"Selecting...",None) if self.i_active_ref == i else typ)
+                btn.setText(translate('AttachmentEditor',"Selecting…",None) if self.i_active_ref == i else typ)
         finally:
             self.block = old_selfblock
 

@@ -26,11 +26,10 @@
       <item>
        <widget class="Gui::PrefCheckBox" name="checkBoxMergeCompound">
         <property name="toolTip">
-         <string>If checked, Compound merge will be done
-during file reading (slower but higher details).</string>
+         <string>Merges compounds during file reading (slower but higher details)</string>
         </property>
         <property name="text">
-         <string>Enable STEP Compound merge</string>
+         <string>Enable STEP compound merge</string>
         </property>
         <property name="prefEntry" stdset="0">
          <cstring>ReadShapeCompoundMode</cstring>
@@ -43,7 +42,7 @@ during file reading (slower but higher details).</string>
       <item>
        <widget class="Gui::PrefCheckBox" name="checkBoxUseLinkGroup">
         <property name="toolTip">
-         <string>Select this to use App::LinkGroup as group container, or else use App::Part.</string>
+         <string>Select this to use App::LinkGroup as group container, or else use App::Part</string>
         </property>
         <property name="text">
          <string>Use LinkGroup</string>
@@ -59,7 +58,7 @@ during file reading (slower but higher details).</string>
       <item>
        <widget class="Gui::PrefCheckBox" name="checkBoxImportHiddenObj">
         <property name="toolTip">
-         <string>Select this to import invisible objects.</string>
+         <string>Select this to import invisible objects</string>
         </property>
         <property name="text">
          <string>Import invisible objects</string>
