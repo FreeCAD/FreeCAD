@@ -76,7 +76,7 @@ PyTypeObject DxfWriterProxy_Type = {
     nullptr,                                                   /* tp_descr_set */
     0,                                                         /* tp_dictoffset */
     (initproc) nullptr,                                        /* tp_init */
-    nullptr,                                                   /* tp_alloc */
+    PyType_GenericAlloc,                                       /* tp_alloc */
     DxfWriterProxy_new,                                        /* tp_new */
     nullptr,                                                   /* tp_free */
     nullptr,                                                   /* tp_is_gc */
