@@ -17,7 +17,7 @@
    <item row="0" column="0">
     <widget class="QGroupBox" name="groupBox">
      <property name="title">
-      <string>General macro settings</string>
+      <string>General Macro Settings</string>
      </property>
      <layout class="QGridLayout" name="gridLayout">
       <item row="0" column="0">
@@ -45,7 +45,7 @@
    <item row="1" column="0">
     <widget class="QGroupBox" name="GroupBox6">
      <property name="title">
-      <string>Macro recording settings</string>
+      <string>Macro Recording Settings</string>
      </property>
      <layout class="QGridLayout">
       <property name="leftMargin">
@@ -66,7 +66,7 @@
       <item row="0" column="0">
        <widget class="QGroupBox" name="GroupBox8">
         <property name="title">
-         <string>Macro path</string>
+         <string>Macro Path</string>
         </property>
         <layout class="QGridLayout">
          <property name="leftMargin">
@@ -106,7 +106,7 @@
      <item row="1" column="0">
        <widget class="QGroupBox" name="GroupBox7">
         <property name="title">
-         <string>Gui commands</string>
+         <string>Gui Commands</string>
         </property>
         <layout class="QGridLayout">
          <property name="leftMargin">
@@ -208,7 +208,7 @@
          <item>
           <widget class="Gui::PrefCheckBox" name="FileLogCheckBox">
            <property name="text">
-            <string>Log all commands issued by menus to file:</string>
+            <string>Log all commands issued by menus to file</string>
            </property>
            <property name="prefEntry" stdset="0">
             <cstring>ScriptToFile</cstring>
@@ -240,7 +240,7 @@
    <item row="2" column="0">
    <widget class="QGroupBox" name="recentmacrosgroupBox">
     <property name="title">
-     <string>Recent macros menu</string>
+     <string>Recent Macros Menu</string>
     </property>
     <layout class="QGridLayout" name="recentmacrosgridLayout">
      <item row="0" column="0">

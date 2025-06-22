@@ -23,7 +23,7 @@
    </size>
   </property>
   <property name="windowTitle">
-   <string>Expression editor</string>
+   <string>Expression Editor</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <property name="spacing">
@@ -46,7 +46,7 @@
         <item row="1" column="0">
          <widget class="QLabel" name="labelGroup">
           <property name="text">
-           <string>Group:</string>
+           <string>Group</string>
           </property>
          </widget>
         </item>
@@ -72,7 +72,7 @@
         <item row="0" column="0">
          <widget class="QLabel" name="labelVarSet">
           <property name="text">
-           <string>Variable Set:</string>
+           <string>Variable set</string>
           </property>
          </widget>
         </item>
@@ -82,14 +82,14 @@
         <item row="3" column="0">
          <widget class="QLabel" name="labelInfo">
           <property name="text">
-           <string>Info:</string>
+           <string>Info</string>
           </property>
          </widget>
         </item>
         <item row="2" column="0">
          <widget class="QLabel" name="LabelPropNew">
           <property name="text">
-           <string>New Property:</string>
+           <string>New property</string>
           </property>
          </widget>
         </item>
@@ -146,7 +146,7 @@
           <item>
            <widget class="QLabel" name="label">
             <property name="text">
-             <string>Result:</string>
+             <string>Result</string>
             </property>
            </widget>
           </item>

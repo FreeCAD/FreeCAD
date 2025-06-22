@@ -448,7 +448,7 @@ void DlgMacroExecuteImp::onEditButtonClicked()
     if (mitem->systemWide) {
         editor->setReadOnly(true);
         QString shownName;
-        shownName = QStringLiteral("%1[*] - [%2]").arg(item->text(0), tr("Read-only"));
+        shownName = QStringLiteral("%1[*] - [%2]").arg(item->text(0), tr("Read-Only"));
         edit->setWindowTitle(shownName);
     }
     close();
@@ -467,7 +467,7 @@ void DlgMacroExecuteImp::onCreateButtonClicked()
 
     QString fn = QInputDialog::getText(this,
                                        tr("Macro file"),
-                                       tr("Enter a file name, please:"),
+                                       tr("Enter a file name:"),
                                        QLineEdit::Normal,
                                        QString(),
                                        nullptr,
@@ -537,7 +537,7 @@ void DlgMacroExecuteImp::onDeleteButtonClicked()
     QString fn = item->text(0);
     auto ret = QMessageBox::question(this,
                                      tr("Delete macro"),
-                                     tr("Do you really want to delete the macro '%1'?").arg(fn),
+                                     tr("Delete the macro '%1'?").arg(fn),
                                      QMessageBox::Yes | QMessageBox::No,
                                      QMessageBox::No);
     if (ret == QMessageBox::Yes) {
@@ -628,7 +628,7 @@ Note: your changes will be applied when you next switch workbenches\n"));
         Gui::Dialog::DlgCustomizeImp dlg(this);
 
         /** title is normally "Customize" **/
-        dlg.setWindowTitle(tr("Walkthrough, dialog 1 of 2"));
+        dlg.setWindowTitle(tr("Walkthrough, Dialog 1 of 2"));
 
         tabWidget = dlg.findChild<QTabWidget*>(QStringLiteral("Gui__Dialog__TabWidget"));
         if (!tabWidget) {
@@ -693,8 +693,8 @@ Note: your changes will be applied when you next switch workbenches\n"));
     /** now for the toolbar selection dialog **/
 
     Gui::Dialog::DlgCustomizeImp dlg(this);
-    dlg.setWindowTitle(hasMacroCommand ? tr("Walkthrough, dialog 1 of 1")
-                                       : tr("Walkthrough, dialog 2 of 2"));
+    dlg.setWindowTitle(hasMacroCommand ? tr("Walkthrough, Dialog 1 of 1")
+                                       : tr("Walkthrough, Dialog 2 of 2"));
 
     tabWidget = nullptr;
     tabWidget = dlg.findChild<QTabWidget*>(QStringLiteral("Gui__Dialog__TabWidget"));

@@ -20,7 +20,7 @@
       <string>Background color for the model view</string>
      </property>
      <property name="title">
-      <string>Background color</string>
+      <string>Background Color</string>
      </property>
      <layout class="QGridLayout">
       <property name="leftMargin">
@@ -58,7 +58,7 @@
           <item>
            <widget class="Gui::PrefRadioButton" name="radioButtonSimple">
             <property name="toolTip">
-             <string>Background will have selected color</string>
+             <string>Background will have the selected color</string>
             </property>
             <property name="text">
              <string>Simple color</string>
@@ -74,7 +74,7 @@
           <item>
            <widget class="Gui::PrefRadioButton" name="radioButtonGradient">
             <property name="toolTip">
-             <string>Background will have selected color gradient</string>
+             <string>Background will have the selected color gradient</string>
             </property>
             <property name="text">
              <string>Linear gradient</string>
@@ -93,7 +93,7 @@
           <item>
            <widget class="Gui::PrefRadioButton" name="rbRadialGradient">
             <property name="toolTip">
-             <string>Background will have selected color gradient</string>
+             <string>Background will have the selected color gradient</string>
             </property>
             <property name="text">
              <string>Radial gradient</string>
@@ -120,7 +120,7 @@
            </sizepolicy>
           </property>
           <property name="toolTip">
-           <string>Background will have selected color</string>
+           <string>Background will have the selected color</string>
           </property>
           <property name="text">
            <string/>
@@ -174,7 +174,7 @@
           <item row="0" column="1">
            <widget class="QLabel" name="color1Label">
             <property name="text">
-             <string>Top:</string>
+             <string>Top</string>
             </property>
            </widget>
           </item>
@@ -201,7 +201,7 @@
           <item row="1" column="1">
            <widget class="QLabel" name="color2Label">
             <property name="text">
-             <string>Middle:</string>
+             <string>Middle</string>
             </property>
            </widget>
           </item>
@@ -228,7 +228,7 @@
           <item row="1" column="3">
            <widget class="Gui::PrefCheckBox" name="checkMidColor">
             <property name="toolTip">
-             <string>Color gradient will get selected color as middle color</string>
+             <string>Color gradient will get the selected color as middle color</string>
             </property>
             <property name="text">
              <string>Middle color</string>
@@ -244,7 +244,7 @@
           <item row="2" column="1">
            <widget class="QLabel" name="color3Label">
             <property name="text">
-             <string>Bottom:</string>
+             <string>Bottom</string>
             </property>
            </widget>
           </item>
@@ -278,7 +278,7 @@
    <item>
     <widget class="QGroupBox" name="groupBoxTree">
      <property name="title">
-      <string>Tree view</string>
+      <string>Tree View</string>
      </property>
      <layout class="QGridLayout">
       <property name="leftMargin">
@@ -338,7 +338,7 @@
            </sizepolicy>
           </property>
           <property name="toolTip">
-           <string>Background color for objects in tree view that are currently edited</string>
+           <string>Background color for objects in the tree view that are currently edited</string>
           </property>
           <property name="color" stdset="0">
            <color>
@@ -358,7 +358,7 @@
         <item row="1" column="0">
          <widget class="QLabel" name="label_3">
           <property name="text">
-           <string>Active container</string>
+           <string>Active container object</string>
           </property>
          </widget>
         </item>
@@ -371,7 +371,7 @@
            </sizepolicy>
           </property>
           <property name="toolTip">
-           <string>Background color for active containers in tree view</string>
+           <string>Background color for active containers (e.g. part or body) in the tree view</string>
           </property>
           <property name="color" stdset="0">rgb(60, 145, 252)
            <color>
@@ -472,7 +472,7 @@
            </sizepolicy>
           </property>
           <property name="toolTip">
-           <string>Color Bar (used in Mesh and FEM Wbs) Label text color</string>
+           <string>Color bar label text color (e.g. in Mesh and FEM)</string>
           </property>
           <property name="color" stdset="0">
            <color>
@@ -499,7 +499,7 @@
         <item row="1" column="1">
          <widget class="Gui::PrefSpinBox" name="CbLabelTextSize">
           <property name="toolTip">
-           <string>Color Bar (used in Mesh and FEM Wbs) Label Text Size</string>
+           <string>Color bar label text size (e.g. in Mesh and FEM)</string>
           </property>
           <property name="alignment">
            <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>

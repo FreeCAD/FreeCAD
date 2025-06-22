@@ -56,9 +56,9 @@ StdCmdFeatRecompute::StdCmdFeatRecompute()
     // setting the
     sGroup        = "File";
     sMenuText     = QT_TR_NOOP("&Recompute");
-    sToolTipText  = QT_TR_NOOP("Recompute feature or document");
+    sToolTipText  = QT_TR_NOOP("Recomputes a feature or document");
     sWhatsThis    = "Std_Recompute";
-    sStatusTip    = QT_TR_NOOP("Recompute feature or document");
+    sStatusTip    = sToolTipText;
     sPixmap       = "view-refresh";
     sAccel        = "Ctrl+R";
 }
@@ -78,10 +78,10 @@ StdCmdRandomColor::StdCmdRandomColor()
   :Command("Std_RandomColor")
 {
     sGroup        = "File";
-    sMenuText     = QT_TR_NOOP("Random &color");
-    sToolTipText  = QT_TR_NOOP("Set each selected object to a randomly-selected color");
+    sMenuText     = QT_TR_NOOP("Random &Color");
+    sToolTipText  = QT_TR_NOOP("Assigns random diffuse colors for the selected objects");
     sWhatsThis    = "Std_RandomColor";
-    sStatusTip    = QT_TR_NOOP("Set each selected object to a randomly-selected color");
+    sStatusTip    = sToolTipText;
     sPixmap       = "Std_RandomColor";
 }
 
@@ -158,7 +158,7 @@ StdCmdToggleFreeze::StdCmdToggleFreeze()
     : Command("Std_ToggleFreeze")
 {
     sGroup = "File";
-    sMenuText = QT_TR_NOOP("Toggle freeze");
+    sMenuText = QT_TR_NOOP("Toggle Freeze");
     static std::string toolTip = std::string("<p>")
         + QT_TR_NOOP("Toggles freeze state of the selected objects. A frozen object is not recomputed when its parents change.")
         + "</p>";
@@ -220,7 +220,7 @@ StdCmdSendToPythonConsole::StdCmdSendToPythonConsole()
     sMenuText     = QT_TR_NOOP("&Send to Python Console");
     sToolTipText  = QT_TR_NOOP("Sends the selected object to the Python console");
     sWhatsThis    = "Std_SendToPythonConsole";
-    sStatusTip    = QT_TR_NOOP("Sends the selected object to the Python console");
+    sStatusTip    = sToolTipText;
     sPixmap       = "applications-python";
     sAccel        = "Ctrl+Shift+P";
 }

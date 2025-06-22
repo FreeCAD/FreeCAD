@@ -873,7 +873,7 @@ void DlgCustomToolbarsImp::changeEvent(QEvent* e)
 DlgCustomToolBoxbarsImp::DlgCustomToolBoxbarsImp(QWidget* parent)
     : DlgCustomToolbars(DlgCustomToolbars::Toolboxbar, parent)
 {
-    setWindowTitle(tr("Toolbox bars"));
+    setWindowTitle(tr("Toolbox Bars"));
 }
 
 /** Destroys the object and frees any allocated resources */
@@ -882,7 +882,7 @@ DlgCustomToolBoxbarsImp::~DlgCustomToolBoxbarsImp() = default;
 void DlgCustomToolBoxbarsImp::changeEvent(QEvent* e)
 {
     if (e->type() == QEvent::LanguageChange) {
-        setWindowTitle(tr("Toolbox bars"));
+        setWindowTitle(tr("Toolbox Bars"));
     }
     DlgCustomToolbars::changeEvent(e);
 }

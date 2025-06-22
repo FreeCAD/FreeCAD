@@ -86,10 +86,10 @@ StdCmdOpen::StdCmdOpen()
 {
     // setting the
     sGroup        = "File";
-    sMenuText     = QT_TR_NOOP("&Open...");
-    sToolTipText  = QT_TR_NOOP("Open a document or import files");
+    sMenuText     = QT_TR_NOOP("&Open…");
+    sToolTipText  = QT_TR_NOOP("Opens a document or imports files");
     sWhatsThis    = "Std_Open";
-    sStatusTip    = QT_TR_NOOP("Open a document or import files");
+    sStatusTip    = sToolTipText;
     sPixmap       = "document-open";
     sAccel        = keySequenceToAccel(QKeySequence::Open);
     eType         = NoTransaction;
@@ -180,10 +180,10 @@ StdCmdImport::StdCmdImport()
 {
     // setting the
     sGroup        = "File";
-    sMenuText     = QT_TR_NOOP("&Import...");
-    sToolTipText  = QT_TR_NOOP("Import a file in the active document");
+    sMenuText     = QT_TR_NOOP("&Import…");
+    sToolTipText  = QT_TR_NOOP("Imports a file in the active document");
     sWhatsThis    = "Std_Import";
-    sStatusTip    = QT_TR_NOOP("Import a file in the active document");
+    sStatusTip    = sToolTipText;
     sPixmap       = "Std_Import";
     sAccel        = "Ctrl+Shift+I";
 }
@@ -266,11 +266,10 @@ StdCmdExport::StdCmdExport()
 {
     // setting the
     sGroup        = "File";
-    sMenuText     = QT_TR_NOOP("&Export...");
-    sToolTipText  = QT_TR_NOOP("Export an object in the active document");
+    sMenuText     = QT_TR_NOOP("&Export…");
+    sToolTipText  = QT_TR_NOOP("Exports an object in the active document");
     sWhatsThis    = "Std_Export";
-    sStatusTip    = QT_TR_NOOP("Export an object in the active document");
-    //sPixmap       = "Open";
+    sStatusTip    = sToolTipText;
     sAccel        = "Ctrl+E";
     sPixmap       = "Std_Export";
     eType         = 0;
@@ -410,7 +409,7 @@ void StdCmdExport::activated(int iMsg)
     if (selection.empty()) {
         QMessageBox::warning(Gui::getMainWindow(),
             QCoreApplication::translate("StdCmdExport", "No selection"),
-            QCoreApplication::translate("StdCmdExport", "Select the objects to export before choosing Export."));
+            QCoreApplication::translate("StdCmdExport", "Select the objects to export before choosing export."));
         return;
     }
 
@@ -521,10 +520,10 @@ StdCmdMergeProjects::StdCmdMergeProjects()
 {
     sAppModule    = "File";
     sGroup        = "File";
-    sMenuText     = QT_TR_NOOP("&Merge document...");
-    sToolTipText  = QT_TR_NOOP("Merge document");
+    sMenuText     = QT_TR_NOOP("&Merge Document…");
+    sToolTipText  = QT_TR_NOOP("Merges multiple documents");
     sWhatsThis    = "Std_MergeProjects";
-    sStatusTip    = QT_TR_NOOP("Merge document");
+    sStatusTip    = sToolTipText;
     sPixmap       = "Std_MergeProjects";
 }
 
@@ -574,9 +573,9 @@ StdCmdDependencyGraph::StdCmdDependencyGraph()
 {
     // setting the
     sGroup        = "Tools";
-    sMenuText     = QT_TR_NOOP("Dependency gra&ph...");
-    sToolTipText  = QT_TR_NOOP("Show the dependency graph of the objects in the active document");
-    sStatusTip    = QT_TR_NOOP("Show the dependency graph of the objects in the active document");
+    sMenuText     = QT_TR_NOOP("Dependency Gra&ph…");
+    sToolTipText  = QT_TR_NOOP("Shows the dependency graph of the objects in the active document");
+    sStatusTip    = sToolTipText;
     sWhatsThis    = "Std_DependencyGraph";
     eType         = 0;
     sPixmap       = "Std_DependencyGraph";
@@ -587,7 +586,7 @@ void StdCmdDependencyGraph::activated(int iMsg)
     Q_UNUSED(iMsg);
     App::Document* doc = App::GetApplication().getActiveDocument();
     auto view = new Gui::GraphvizView(*doc);
-    view->setWindowTitle(qApp->translate("Std_DependencyGraph","Dependency graph"));
+    view->setWindowTitle(qApp->translate("Std_DependencyGraph","Dependency Graph"));
     getMainWindow()->addWindow(view);
 }
 
@@ -606,9 +605,9 @@ StdCmdExportDependencyGraph::StdCmdExportDependencyGraph()
   : Command("Std_ExportDependencyGraph")
 {
     sGroup        = "Tools";
-    sMenuText     = QT_TR_NOOP("Export dependency &graph...");
-    sToolTipText  = QT_TR_NOOP("Export the dependency graph to a file");
-    sStatusTip    = QT_TR_NOOP("Export the dependency graph to a file");
+    sMenuText     = QT_TR_NOOP("Export Dependency &Graph…");
+    sToolTipText  = QT_TR_NOOP("Exports the dependency graph to a file");
+    sStatusTip    = sToolTipText;
     sWhatsThis    = "Std_ExportDependencyGraph";
     eType         = 0;
   //sPixmap       = "Std_ExportDependencyGraph";
@@ -648,9 +647,9 @@ StdCmdNew::StdCmdNew()
 {
     sGroup        = "File";
     sMenuText     = QT_TR_NOOP("&New");
-    sToolTipText  = QT_TR_NOOP("Create a new empty document");
+    sToolTipText  = QT_TR_NOOP("Creates a new empty document");
     sWhatsThis    = "Std_New";
-    sStatusTip    = QT_TR_NOOP("Create a new empty document");
+    sStatusTip    = sToolTipText;
     sPixmap       = "document-new";
     sAccel        = keySequenceToAccel(QKeySequence::New);
 }
@@ -678,9 +677,9 @@ StdCmdSave::StdCmdSave()
 {
   sGroup        = "File";
   sMenuText     = QT_TR_NOOP("&Save");
-  sToolTipText  = QT_TR_NOOP("Save the active document");
+  sToolTipText  = QT_TR_NOOP("Saves the active document");
   sWhatsThis    = "Std_Save";
-  sStatusTip    = QT_TR_NOOP("Save the active document");
+  sStatusTip    = sToolTipText;
   sPixmap       = "document-save";
   sAccel        = keySequenceToAccel(QKeySequence::Save);
   eType         = 0;
@@ -706,10 +705,10 @@ StdCmdSaveAs::StdCmdSaveAs()
   :Command("Std_SaveAs")
 {
   sGroup        = "File";
-  sMenuText     = QT_TR_NOOP("Save &As...");
-  sToolTipText  = QT_TR_NOOP("Save the active document under a new file name");
+  sMenuText     = QT_TR_NOOP("Save &As…");
+  sToolTipText  = QT_TR_NOOP("Saves the active document under a new file name");
   sWhatsThis    = "Std_SaveAs";
-  sStatusTip    = QT_TR_NOOP("Save the active document under a new file name");
+  sStatusTip    = sToolTipText;
   sPixmap       = "document-save-as";
   sAccel        = keySequenceToAccel(QKeySequence::SaveAs);
   eType         = 0;
@@ -735,10 +734,10 @@ StdCmdSaveCopy::StdCmdSaveCopy()
   :Command("Std_SaveCopy")
 {
   sGroup        = "File";
-  sMenuText     = QT_TR_NOOP("Save a Cop&y...");
-  sToolTipText  = QT_TR_NOOP("Save a copy of the active document under a new file name");
+  sMenuText     = QT_TR_NOOP("Save Cop&y…");
+  sToolTipText  = QT_TR_NOOP("Saves a copy of the active document under a new file name");
   sWhatsThis    = "Std_SaveCopy";
-  sStatusTip    = QT_TR_NOOP("Save a copy of the active document under a new file name");
+  sStatusTip    = sToolTipText;
   sPixmap       = "Std_SaveCopy";
 }
 
@@ -763,9 +762,9 @@ StdCmdSaveAll::StdCmdSaveAll()
 {
   sGroup        = "File";
   sMenuText     = QT_TR_NOOP("Sa&ve All");
-  sToolTipText  = QT_TR_NOOP("Save all opened document");
+  sToolTipText  = QT_TR_NOOP("Saves all open documents");
   sWhatsThis    = "Std_SaveAll";
-  sStatusTip    = QT_TR_NOOP("Save all opened document");
+  sStatusTip    = sToolTipText;
   sPixmap       = "Std_SaveAll";
 }
 
@@ -793,7 +792,7 @@ StdCmdRevert::StdCmdRevert()
     sMenuText     = QT_TR_NOOP("Rever&t");
     sToolTipText  = QT_TR_NOOP("Reverts to the saved version of this file");
     sWhatsThis    = "Std_Revert";
-    sStatusTip    = QT_TR_NOOP("Reverts to the saved version of this file");
+    sStatusTip    = sToolTipText;
     sPixmap       = "Std_Revert";
     eType         = NoTransaction;
 }
@@ -803,9 +802,9 @@ void StdCmdRevert::activated(int iMsg)
     Q_UNUSED(iMsg);
     QMessageBox msgBox(Gui::getMainWindow());
     msgBox.setIcon(QMessageBox::Question);
-    msgBox.setWindowTitle(qApp->translate("Std_Revert","Revert document"));
-    msgBox.setText(qApp->translate("Std_Revert","This will discard all the changes since last file save."));
-    msgBox.setInformativeText(qApp->translate("Std_Revert","Do you want to continue?"));
+    msgBox.setWindowTitle(qApp->translate("Std_Revert","Revert Document"));
+    msgBox.setText(qApp->translate("Std_Revert","This will discard all the changes since the last file save."));
+    msgBox.setInformativeText(qApp->translate("Std_Revert","Continue?"));
     msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
     msgBox.setDefaultButton(QMessageBox::No);
     int ret = msgBox.exec();
@@ -829,10 +828,10 @@ StdCmdProjectInfo::StdCmdProjectInfo()
 {
   // setting the
   sGroup        = "File";
-  sMenuText     = QT_TR_NOOP("Doc&ument information...");
-  sToolTipText  = QT_TR_NOOP("Show details of the currently active document");
+  sMenuText     = QT_TR_NOOP("Doc&ument Information…");
+  sToolTipText  = QT_TR_NOOP("Shows details of the currently active document");
   sWhatsThis    = "Std_ProjectInfo";
-  sStatusTip    = QT_TR_NOOP("Show details of the currently active document");
+  sStatusTip    = sToolTipText;
   sPixmap       = "document-properties";
 }
 
@@ -860,9 +859,9 @@ StdCmdProjectUtil::StdCmdProjectUtil()
     // setting the
     sGroup        = "Tools";
     sWhatsThis    = "Std_ProjectUtil";
-    sMenuText     = QT_TR_NOOP("Do&cument utility...");
+    sMenuText     = QT_TR_NOOP("Do&cument Utility…");
     sToolTipText  = QT_TR_NOOP("Utility to extract or create document files");
-    sStatusTip    = QT_TR_NOOP("Utility to extract or create document files");
+    sStatusTip    = sToolTipText;
     sPixmap       = "Std_ProjectUtil";
 }
 
@@ -887,10 +886,10 @@ StdCmdPrint::StdCmdPrint()
   :Command("Std_Print")
 {
     sGroup        = "File";
-    sMenuText     = QT_TR_NOOP("&Print...");
-    sToolTipText  = QT_TR_NOOP("Print the document");
+    sMenuText     = QT_TR_NOOP("&Print…");
+    sToolTipText  = QT_TR_NOOP("Prints the document");
     sWhatsThis    = "Std_Print";
-    sStatusTip    = QT_TR_NOOP("Print the document");
+    sStatusTip    = sToolTipText;
     sPixmap       = "document-print";
     sAccel        = keySequenceToAccel(QKeySequence::Print);
     eType         = 0;
@@ -900,7 +899,7 @@ void StdCmdPrint::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     if (getMainWindow()->activeWindow()) {
-        getMainWindow()->showMessage(QObject::tr("Printing..."));
+        getMainWindow()->showMessage(QObject::tr("Printing…"));
         getMainWindow()->activeWindow()->print();
     }
 }
@@ -919,10 +918,10 @@ StdCmdPrintPreview::StdCmdPrintPreview()
   :Command("Std_PrintPreview")
 {
     sGroup        = "File";
-    sMenuText     = QT_TR_NOOP("Print previe&w...");
-    sToolTipText  = QT_TR_NOOP("Print the document");
+    sMenuText     = QT_TR_NOOP("Print Previe&w…");
+    sToolTipText  = QT_TR_NOOP("Previews the printed document");
     sWhatsThis    = "Std_PrintPreview";
-    sStatusTip    = QT_TR_NOOP("Print preview");
+    sStatusTip    = sToolTipText;
     sPixmap       = "document-print-preview";
     eType         = 0;
 }
@@ -949,10 +948,10 @@ StdCmdPrintPdf::StdCmdPrintPdf()
   :Command("Std_PrintPdf")
 {
     sGroup        = "File";
-    sMenuText     = QT_TR_NOOP("Export P&DF...");
-    sToolTipText  = QT_TR_NOOP("Export the document as PDF");
+    sMenuText     = QT_TR_NOOP("Export P&DF…");
+    sToolTipText  = QT_TR_NOOP("Exports the document as PDF");
     sWhatsThis    = "Std_PrintPdf";
-    sStatusTip    = QT_TR_NOOP("Export the document as PDF");
+    sStatusTip    = sToolTipText;
     sPixmap       = "Std_PrintPdf";
     eType         = 0;
 }
@@ -961,7 +960,7 @@ void StdCmdPrintPdf::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     if (getMainWindow()->activeWindow()) {
-        getMainWindow()->showMessage(QObject::tr("Exporting PDF..."));
+        getMainWindow()->showMessage(QObject::tr("Exporting PDF…"));
         getMainWindow()->activeWindow()->printPdf();
     }
 }
@@ -984,7 +983,7 @@ StdCmdQuit::StdCmdQuit()
   sMenuText     = QT_TR_NOOP("E&xit");
   sToolTipText  = QT_TR_NOOP("Quits the application");
   sWhatsThis    = "Std_Quit";
-  sStatusTip    = QT_TR_NOOP("Quits the application");
+  sStatusTip    = sToolTipText;
   sPixmap       = "application-exit";
   sAccel        = keySequenceToAccel(QKeySequence::Quit);
   eType         = NoTransaction;
@@ -1008,9 +1007,9 @@ StdCmdUndo::StdCmdUndo()
 {
   sGroup        = "Edit";
   sMenuText     = QT_TR_NOOP("&Undo");
-  sToolTipText  = QT_TR_NOOP("Undo exactly one action");
+  sToolTipText  = QT_TR_NOOP("Undoes one action");
   sWhatsThis    = "Std_Undo";
-  sStatusTip    = QT_TR_NOOP("Undo exactly one action");
+  sStatusTip    = sToolTipText;
   sPixmap       = "edit-undo";
   sAccel        = keySequenceToAccel(QKeySequence::Undo);
   eType         = ForEdit|NoTransaction;
@@ -1054,7 +1053,7 @@ StdCmdRedo::StdCmdRedo()
   sMenuText     = QT_TR_NOOP("&Redo");
   sToolTipText  = QT_TR_NOOP("Redoes a previously undone action");
   sWhatsThis    = "Std_Redo";
-  sStatusTip    = QT_TR_NOOP("Redoes a previously undone action");
+  sStatusTip    = sToolTipText;
   sPixmap       = "edit-redo";
   sAccel        = keySequenceToAccel(QKeySequence::Redo);
   eType         = ForEdit|NoTransaction;
@@ -1095,9 +1094,9 @@ StdCmdCut::StdCmdCut()
 {
     sGroup        = "Edit";
     sMenuText     = QT_TR_NOOP("Cu&t");
-    sToolTipText  = QT_TR_NOOP("Cut out");
+    sToolTipText  = QT_TR_NOOP("Cuts out the selection");
     sWhatsThis    = "Std_Cut";
-    sStatusTip    = QT_TR_NOOP("Cut out");
+    sStatusTip    = sToolTipText;
     sPixmap       = "edit-cut";
     sAccel        = keySequenceToAccel(QKeySequence::Cut);
 }
@@ -1123,9 +1122,9 @@ StdCmdCopy::StdCmdCopy()
 {
     sGroup        = "Edit";
     sMenuText     = QT_TR_NOOP("&Copy");
-    sToolTipText  = QT_TR_NOOP("Copy operation");
+    sToolTipText  = QT_TR_NOOP("Copies the selection");
     sWhatsThis    = "Std_Copy";
-    sStatusTip    = QT_TR_NOOP("Copy operation");
+    sStatusTip    = sToolTipText;
     sPixmap       = "edit-copy";
     sAccel        = keySequenceToAccel(QKeySequence::Copy);
 }
@@ -1158,9 +1157,9 @@ StdCmdPaste::StdCmdPaste()
 {
     sGroup        = "Edit";
     sMenuText     = QT_TR_NOOP("&Paste");
-    sToolTipText  = QT_TR_NOOP("Paste operation");
+    sToolTipText  = QT_TR_NOOP("Pastes the clipboard");
     sWhatsThis    = "Std_Paste";
-    sStatusTip    = QT_TR_NOOP("Paste operation");
+    sStatusTip    = sToolTipText;
     sPixmap       = "edit-paste";
     sAccel        = keySequenceToAccel(QKeySequence::Paste);
 }
@@ -1197,10 +1196,10 @@ StdCmdDuplicateSelection::StdCmdDuplicateSelection()
 {
     sAppModule    = "Edit";
     sGroup        = "Edit";
-    sMenuText     = QT_TR_NOOP("Duplicate selecti&on");
-    sToolTipText  = QT_TR_NOOP("Put duplicates of the selected objects to the active document");
+    sMenuText     = QT_TR_NOOP("Duplicate Selecti&on");
+    sToolTipText  = QT_TR_NOOP("Duplicates the selected objects to the active document");
     sWhatsThis    = "Std_DuplicateSelection";
-    sStatusTip    = QT_TR_NOOP("Put duplicates of the selected objects to the active document");
+    sStatusTip    = sToolTipText;
     sPixmap       = "Std_DuplicateSelection";
 }
 
@@ -1232,7 +1231,7 @@ void StdCmdDuplicateSelection::activated(int iMsg)
         hasXLink = App::PropertyXLink::hasXLink(sel,&unsaved);
         if(!unsaved.empty()) {
             QMessageBox::critical(getMainWindow(), QObject::tr("Unsaved document"),
-                QObject::tr("The exported object contains external link. Please save the document"
+                QObject::tr("The exported object contains external link. Save the document"
                    "at least once before exporting."));
             return;
         }
@@ -1252,7 +1251,7 @@ void StdCmdDuplicateSelection::activated(int iMsg)
                 qApp->translate("Std_DuplicateSelection","Object dependencies"),
                 qApp->translate("Std_DuplicateSelection",
                 "To link to external objects, the document must be saved at least once.\n"
-                "Do you want to save the document now?"),
+                "Save the document now?"),
                 QMessageBox::Yes,QMessageBox::No);
             if(ret == QMessageBox::Yes)
                 proceed = Application::Instance->getDocument(doc)->saveAs();
@@ -1286,9 +1285,9 @@ StdCmdSelectAll::StdCmdSelectAll()
 {
     sGroup        = "Edit";
     sMenuText     = QT_TR_NOOP("Select &All");
-    sToolTipText  = QT_TR_NOOP("Select all");
+    sToolTipText  = QT_TR_NOOP("Selects all objects in the document");
     sWhatsThis    = "Std_SelectAll";
-    sStatusTip    = QT_TR_NOOP("Select all");
+    sStatusTip    = sToolTipText;
     sPixmap       = "edit-select-all";
     //sAccel        = "Ctrl+A"; // supersedes shortcuts for text edits
 }
@@ -1319,7 +1318,7 @@ StdCmdDelete::StdCmdDelete()
   sMenuText     = QT_TR_NOOP("&Delete");
   sToolTipText  = QT_TR_NOOP("Deletes the selected objects");
   sWhatsThis    = "Std_Delete";
-  sStatusTip    = QT_TR_NOOP("Deletes the selected objects");
+  sStatusTip    = sToolTipText;
   sPixmap       = "edit-delete";
   sAccel        = keySequenceToAccel(QtTools::deleteKeySequence());
   eType         = ForEdit;
@@ -1396,7 +1395,7 @@ void StdCmdDelete::activated(int iMsg)
                 QTextStream bodyMessageStream(&bodyMessage);
                 bodyMessageStream << qApp->translate("Std_Delete",
                                                      "The following referencing objects might break.\n\n"
-                                                     "Are you sure you want to continue?\n");
+                                                     "Continue?\n");
                 for (const auto &currentLabel : affectedLabels)
                     bodyMessageStream << '\n' << currentLabel;
                 if(more)
@@ -1464,10 +1463,10 @@ StdCmdRefresh::StdCmdRefresh()
   : Command("Std_Refresh")
 {
     sGroup        = "Edit";
-    sMenuText     = QT_TR_NOOP("Refres&h");
-    sToolTipText  = QT_TR_NOOP("Recomputes the current active document");
+    sMenuText     = QT_TR_NOOP("Recompute");
+    sToolTipText  = QT_TR_NOOP("Recomputes the active document");
     sWhatsThis    = "Std_Refresh";
-    sStatusTip    = QT_TR_NOOP("Recomputes the current active document");
+    sStatusTip    = sToolTipText;
     sPixmap       = "view-refresh";
     sAccel        = keySequenceToAccel(QKeySequence::Refresh);
     eType         = AlterDoc | Alter3DView | AlterSelection | ForEdit;
@@ -1496,7 +1495,7 @@ void StdCmdRefresh::activated([[maybe_unused]] int iMsg)
     catch (Base::Exception& /*e*/) {
         auto ret = QMessageBox::warning(getMainWindow(), QObject::tr("Dependency error"),
             qApp->translate("Std_Refresh", "The document contains dependency cycles.\n"
-                        "Please check the Report View for more details.\n\n"
+                        "Check the report view for more details.\n\n"
                         "Do you still want to proceed?"),
                 QMessageBox::Yes, QMessageBox::No);
         if(ret == QMessageBox::No)
@@ -1519,9 +1518,9 @@ StdCmdTransform::StdCmdTransform()
   : Command("Std_Transform")
 {
     sGroup        = "Edit";
-    sMenuText     = QT_TR_NOOP("Transform...");
-    sToolTipText  = QT_TR_NOOP("Transform the geometry of selected objects");
-    sStatusTip    = QT_TR_NOOP("Transform the geometry of selected objects");
+    sMenuText     = QT_TR_NOOP("Transform…");
+    sToolTipText  = QT_TR_NOOP("Transforms the selected object");
+    sStatusTip    = sToolTipText;
     sWhatsThis    = "Std_Transform";
 }
 
@@ -1545,9 +1544,9 @@ StdCmdPlacement::StdCmdPlacement()
   : Command("Std_Placement")
 {
     sGroup        = "Edit";
-    sMenuText     = QT_TR_NOOP("P&lacement...");
-    sToolTipText  = QT_TR_NOOP("Place the selected objects");
-    sStatusTip    = QT_TR_NOOP("Place the selected objects");
+    sMenuText     = QT_TR_NOOP("P&lacement…");
+    sToolTipText  = QT_TR_NOOP("Adjusts the placement of the selected object");
+    sStatusTip    = sToolTipText;
     sWhatsThis    = "Std_Placement";
     sPixmap       = "Std_Placement";
 }
@@ -1593,8 +1592,8 @@ StdCmdTransformManip::StdCmdTransformManip()
 {
     sGroup        = "Edit";
     sMenuText     = QT_TR_NOOP("Trans&form");
-    sToolTipText  = QT_TR_NOOP("Transform the selected object in the 3D view");
-    sStatusTip    = QT_TR_NOOP("Transform the selected object in the 3D view");
+    sToolTipText  = QT_TR_NOOP("Transforms the selected object in the 3D view");
+    sStatusTip    = sToolTipText;
     sWhatsThis    = "Std_TransformManip";
     sPixmap       = "Std_TransformManip";
 }
@@ -1627,9 +1626,9 @@ StdCmdAlignment::StdCmdAlignment()
   : Command("Std_Alignment")
 {
     sGroup        = "Edit";
-    sMenuText     = QT_TR_NOOP("Ali&gnment...");
-    sToolTipText  = QT_TR_NOOP("Align the selected objects");
-    sStatusTip    = QT_TR_NOOP("Align the selected objects");
+    sMenuText     = QT_TR_NOOP("Ali&gn…");
+    sToolTipText  = QT_TR_NOOP("Aligns the selected objects");
+    sStatusTip    = sToolTipText;
     sWhatsThis    = "Std_Alignment";
     sPixmap       = "Std_Alignment";
 }
@@ -1697,10 +1696,10 @@ StdCmdEdit::StdCmdEdit()
   : Command("Std_Edit")
 {
     sGroup        = "Edit";
-    sMenuText     = QT_TR_NOOP("Toggle &Edit mode");
+    sMenuText     = QT_TR_NOOP("Toggle &Edit Mode");
     sToolTipText  = QT_TR_NOOP("Toggles the selected object's edit mode");
     sWhatsThis    = "Std_Edit";
-    sStatusTip    = QT_TR_NOOP("Activates or Deactivates the selected object's edit mode");
+    sStatusTip    = sToolTipText;
     sAccel        = "";
     sPixmap       = "edit-edit";
     eType         = ForEdit;
@@ -1736,14 +1735,14 @@ DEF_STD_CMD_A(StdCmdProperties)
 StdCmdProperties::StdCmdProperties()
     : Command("Std_Properties")
 {
-    sGroup = "Edit";
-    sMenuText = QT_TR_NOOP("Propert&ies");
-    sToolTipText = QT_TR_NOOP("Show the property view, which displays the properties of the selected object.");
-    sWhatsThis = "Std_Properties";
-    sStatusTip = sToolTipText;
-    sAccel = "Alt+Return";
-    sPixmap = "document-properties";
-    eType = Alter3DView;
+    sGroup       = "Edit";
+    sMenuText    = QT_TR_NOOP("Propert&ies");
+    sToolTipText = QT_TR_NOOP("Shows the property view, which displays the properties of the selected object.");
+    sWhatsThis   = "Std_Properties";
+    sStatusTip   = sToolTipText;
+    sAccel       = "Alt+Return";
+    sPixmap      = "document-properties";
+    eType        = Alter3DView;
 }
 
 void StdCmdProperties::activated(int iMsg)
@@ -1774,10 +1773,10 @@ public:
     StdCmdExpression() : Command("Std_Expressions")
     {
         sGroup        = "Edit";
-        sMenuText     = QT_TR_NOOP("Expression actions");
+        sMenuText     = QT_TR_NOOP("Expression Actions");
         sToolTipText  = QT_TR_NOOP("Actions that apply to expressions");
         sWhatsThis    = "Std_Expressions";
-        sStatusTip    = QT_TR_NOOP("Actions that apply to expressions");
+        sStatusTip    = sToolTipText;
         eType         = ForEdit;
     }
 
@@ -1818,9 +1817,9 @@ protected:
         pcAction->setDropDownMenu(true);
         applyCommandData(this->className(), pcAction);
 
-        pcActionCopySel = pcAction->addAction(QObject::tr("Copy selected"));
-        pcActionCopyActive = pcAction->addAction(QObject::tr("Copy active document"));
-        pcActionCopyAll = pcAction->addAction(QObject::tr("Copy all documents"));
+        pcActionCopySel = pcAction->addAction(QObject::tr("Copy Selected"));
+        pcActionCopyActive = pcAction->addAction(QObject::tr("Copy Active Document"));
+        pcActionCopyAll = pcAction->addAction(QObject::tr("Copy All Documents"));
         pcActionPaste = pcAction->addAction(QObject::tr("Paste"));
 
         return pcAction;
@@ -1928,7 +1927,7 @@ protected:
         if(failed) {
             QMessageBox::critical(getMainWindow(), QObject::tr("Expression error"),
                 QObject::tr("Failed to parse some of the expressions.\n"
-                            "Please check the Report View for more details."));
+                            "Check the Report View for more details."));
             return;
         }
 

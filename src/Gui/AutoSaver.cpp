@@ -171,7 +171,7 @@ void AutoSaver::saveDocument(const std::string& name, AutoSaveProperty& saver)
         bool save = hGrp->GetBool("SaveThumbnail",true);
         hGrp->SetBool("SaveThumbnail",false);
 
-        getMainWindow()->showMessage(tr("Please wait until the AutoRecovery file has been saved..."), 5000);
+        getMainWindow()->showMessage(tr("Wait until the auto-recovery file has been saved…"), 5000);
         //qApp->processEvents();
 
         Base::TimeElapsed startTime;
@@ -222,7 +222,7 @@ void AutoSaver::saveDocument(const std::string& name, AutoSaveProperty& saver)
             }
         }
 
-        Base::Console().log("Save AutoRecovery file in %fs\n", Base::TimeElapsed::diffTimeF(startTime,Base::TimeElapsed()));
+        Base::Console().log("Save auto-recovery file in %fs\n", Base::TimeElapsed::diffTimeF(startTime,Base::TimeElapsed()));
         hGrp->SetBool("SaveThumbnail",save);
     }
 }

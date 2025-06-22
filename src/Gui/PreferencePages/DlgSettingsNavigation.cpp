@@ -358,7 +358,7 @@ void DlgSettingsNavigation::onNewDocViewChanged(int index)
 CameraDialog::CameraDialog(QWidget* parent)
     : QDialog(parent)
 {
-    this->setWindowTitle(tr("Camera settings"));
+    this->setWindowTitle(tr("Camera Settings"));
 
     QGridLayout *gridLayout;
     gridLayout = new QGridLayout(this);
@@ -418,7 +418,7 @@ CameraDialog::CameraDialog(QWidget* parent)
     layout->addWidget(sb3, 3, 1, 1, 1);
 
     auto currentViewButton = new QPushButton(this);
-    currentViewButton->setText(tr("Current view"));
+    currentViewButton->setText(tr("Current View"));
     currentViewButton->setObjectName(QStringLiteral("currentView"));
     layout->addWidget(currentViewButton, 4, 1, 2, 1);
 

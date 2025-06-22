@@ -158,13 +158,13 @@ void Flag::contextMenuEvent(QContextMenuEvent * e)
 {
     QMenu menu(this);
 
-    QAction* topleft = menu.addAction(tr("Top left"));
+    QAction* topleft = menu.addAction(tr("Top Left"));
     topleft->setCheckable(true);
-    QAction* botleft = menu.addAction(tr("Bottom left"));
+    QAction* botleft = menu.addAction(tr("Bottom Left"));
     botleft->setCheckable(true);
-    QAction* topright = menu.addAction(tr("Top right"));
+    QAction* topright = menu.addAction(tr("Top Right"));
     topright->setCheckable(true);
-    QAction* botright = menu.addAction(tr("Bottom right"));
+    QAction* botright = menu.addAction(tr("Bottom Right"));
     botright->setCheckable(true);
     menu.addSeparator();
     QAction* remove = menu.addAction(tr("Remove"));

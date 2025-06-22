@@ -179,7 +179,7 @@ DocumentRecovery::DocumentRecovery(const QList<QFileInfo>& dirs, QWidget* parent
     d_ptr->ui.setupUi(this);
     connect(d_ptr->ui.buttonCleanup, &QPushButton::clicked,
             this, &DocumentRecovery::onButtonCleanupClicked);
-    d_ptr->ui.buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Start Recovery"));
+    d_ptr->ui.buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Start recovery"));
     d_ptr->ui.treeWidget->header()->setSectionResizeMode(QHeaderView::Stretch);
 
     d_ptr->recovered = false;
@@ -520,8 +520,8 @@ void DocumentRecovery::onDeleteSection()
     QMessageBox msgBox(this);
     msgBox.setIcon(QMessageBox::Warning);
     msgBox.setWindowTitle(tr("Cleanup"));
-    msgBox.setText(tr("Are you sure you want to delete the selected transient directories?"));
-    msgBox.setInformativeText(tr("When deleting the selected transient directory you won't be able to recover any files afterwards."));
+    msgBox.setText(tr("Delete the selected transient directories?"));
+    msgBox.setInformativeText(tr("When deleting the selected transient directory it is not possible to recover any files afterwards."));
     msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
     msgBox.setDefaultButton(QMessageBox::No);
     int ret = msgBox.exec();
@@ -552,8 +552,8 @@ void DocumentRecovery::onButtonCleanupClicked()
     QMessageBox msgBox(this);
     msgBox.setIcon(QMessageBox::Warning);
     msgBox.setWindowTitle(tr("Cleanup"));
-    msgBox.setText(tr("Are you sure you want to delete all transient directories?"));
-    msgBox.setInformativeText(tr("When deleting all transient directories you won't be able to recover any files afterwards."));
+    msgBox.setText(tr("Delete all transient directories?"));
+    msgBox.setInformativeText(tr("When deleting all transient directories it is not possible to recover any files afterwards."));
     msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
     msgBox.setDefaultButton(QMessageBox::No);
     int ret = msgBox.exec();

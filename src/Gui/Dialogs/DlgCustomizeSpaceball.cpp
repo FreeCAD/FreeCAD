@@ -285,7 +285,7 @@ QString ButtonModel::getLabel(const int &number) const
             desc = QStringLiteral(" \"") + desc + QStringLiteral("\"");
         return tr("Button %1").arg(number + 1) + desc;
     } else
-        return tr("Out Of Range");
+        return tr("Out of range");
 }
 
 void ButtonModel::loadConfig(const char *RequiredDeviceName)
@@ -675,7 +675,7 @@ DlgCustomizeSpaceball::DlgCustomizeSpaceball(QWidget *parent)
         return;
     if (!app->isSpaceballPresent())
     {
-        this->setMessage(tr("No Spaceball Present"));
+        this->setMessage(tr("No Spaceball present"));
         return;
     }
 

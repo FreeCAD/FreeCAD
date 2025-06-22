@@ -332,7 +332,7 @@ void StartupPostProcess::checkOpenGL()
             auto message =
                 QObject::tr("This system is running OpenGL %1.%2. "
                             "FreeCAD requires OpenGL 2.0 or above. "
-                            "Please upgrade your graphics driver and/or card as required.")
+                            "Upgrade the graphics driver and/or card as required.")
                     .arg(major)
                     .arg(minor)
                 + QStringLiteral("\n");

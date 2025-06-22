@@ -29,7 +29,7 @@
          </sizepolicy>
         </property>
         <property name="text">
-         <string>Find what:</string>
+         <string>Find What</string>
         </property>
        </widget>
       </item>
@@ -52,7 +52,7 @@
       <item row="2" column="0" colspan="3">
        <widget class="QGroupBox" name="groupBox">
         <property name="title">
-         <string>Look at</string>
+         <string>Look At</string>
         </property>
         <layout class="QGridLayout" name="gridLayout">
          <item row="0" column="0">
@@ -91,7 +91,7 @@
       <item row="3" column="0" colspan="2">
        <widget class="QCheckBox" name="checkMatch">
         <property name="text">
-         <string>Match whole string only</string>
+         <string>Match exact string</string>
         </property>
         <property name="checked">
          <bool>true</bool>

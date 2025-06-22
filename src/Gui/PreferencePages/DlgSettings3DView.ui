@@ -61,7 +61,7 @@ lower right corner within opened files</string>
         <item row="0" column="2">
          <widget class="QLabel" name="labelCoordSize">
           <property name="text">
-           <string>Relative size:</string>
+           <string>Relative size</string>
           </property>
           <property name="alignment">
            <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
@@ -72,7 +72,7 @@ lower right corner within opened files</string>
          <widget class="Gui::PrefSpinBox" name="SpinBox_CornerCoordSystemSize">
           <property name="toolTip">
            <string>Size of main coordinate system representation
-in the corner -- in % of height/width of viewport</string>
+in the corner in % of height/width of the viewport</string>
           </property>
           <property name="suffix">
            <string notr="true">%</string>
@@ -97,7 +97,7 @@ in the corner -- in % of height/width of viewport</string>
         <item row="1" column="2">
          <widget class="QLabel" name="axisLetterColorLabel">
           <property name="text">
-           <string>Letter color:</string>
+           <string>Letter color</string>
           </property>
          </widget>
         </item>
@@ -284,7 +284,6 @@ will be shown at the lower left corner in opened files</string>
        <widget class="Gui::PrefCheckBox" name="CheckBox_use_SW_OpenGL">
         <property name="toolTip">
          <string>This option is useful for troubleshooting graphics card and driver problems.
-
 Changing this option requires a restart of the application.</string>
         </property>
         <property name="text">
@@ -306,11 +305,11 @@ A VBO is an OpenGL feature that provides methods for uploading
 vertex data (position, normal vector, color, etc.) to the graphics card.
 VBOs offer substantial performance gains because the data resides
 in the graphics memory rather than the system memory and so it
-can be rendered directly by GPU.
+can be rendered directly by the GPU.
 
 Note: Sometimes this feature may lead to a host of different
 issues ranging from graphical anomalies to GPU crash bugs. Remember to
-report this setting as enabled when seeking support on the FreeCAD forums</string>
+report this setting as enabled when seeking support.</string>
         </property>
         <property name="text">
          <string>Use OpenGL VBO (Vertex Buffer Object)</string>
@@ -334,7 +333,7 @@ report this setting as enabled when seeking support on the FreeCAD forums</strin
            </size>
           </property>
           <property name="toolTip">
-           <string>What kind of multisample anti-aliasing is used</string>
+           <string>Method of multisample anti-aliasing</string>
           </property>
          </widget>
         </item>
@@ -344,14 +343,14 @@ report this setting as enabled when seeking support on the FreeCAD forums</strin
            <string/>
           </property>
           <property name="text">
-           <string>Marker size:</string>
+           <string>Marker size</string>
           </property>
          </widget>
         </item>
         <item row="1" column="0">
          <widget class="QLabel" name="aliasingLAbel">
           <property name="text">
-           <string>Anti-Aliasing</string>
+           <string>Anti-aliasing</string>
           </property>
          </widget>
         </item>
@@ -361,7 +360,7 @@ report this setting as enabled when seeking support on the FreeCAD forums</strin
            <string/>
           </property>
           <property name="text">
-           <string>Transparent objects:</string>
+           <string>Transparent objects</string>
           </property>
          </widget>
         </item>
@@ -403,7 +402,7 @@ report this setting as enabled when seeking support on the FreeCAD forums</strin
            </size>
           </property>
           <property name="toolTip">
-           <string>'Render Caching' is another way to say 'Rendering Acceleration'.
+           <string>'Render caching' is another way to say 'Rendering acceleration'.
 There are 3 options available to achieve this:
 1) 'Auto' (default), let Coin3D decide where to cache.
 2) 'Distributed', manually turn on cache for all view provider root node.
@@ -502,7 +501,7 @@ bounding box size of the 3D object that is currently displayed.</string>
    <item>
     <widget class="QGroupBox" name="groupBoxCamera">
      <property name="title">
-      <string>Camera type</string>
+      <string>Camera Type</string>
      </property>
      <layout class="QGridLayout" name="gridLayout1">
       <property name="leftMargin">
@@ -539,7 +538,7 @@ bounding box size of the 3D object that is currently displayed.</string>
       <item row="0" column="1">
        <widget class="Gui::PrefRadioButton" name="radioOrthographic">
         <property name="toolTip">
-         <string>Objects will be projected in orthographic projection</string>
+         <string>Objects will be in orthographic projection</string>
         </property>
         <property name="text">
          <string>Or&amp;thographic rendering</string>

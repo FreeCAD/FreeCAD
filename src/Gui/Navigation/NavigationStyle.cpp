@@ -120,13 +120,13 @@ public:
             if (!tolPlane.intersect(projectLine, planeIntersection)) {
 #ifdef FC_DEBUG
                 SoDebugError::post("SbSphereSheetProjector::project",
-                                   "Couldn't intersect working line with plane");
+                                   "Could not intersect working line with plane");
 #endif
             }
         }
         else if (!tolPlane.intersect(workingLine, planeIntersection)) {
 #ifdef FC_DEBUG
-            SoDebugError::post("SbSphereSheetProjector::project", "Couldn't intersect with plane");
+            SoDebugError::post("SbSphereSheetProjector::project", "Could not intersect with plane");
 #endif
         }
 

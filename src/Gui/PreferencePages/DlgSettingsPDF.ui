@@ -31,14 +31,14 @@
         <item>
          <widget class="QLabel" name="label_2">
           <property name="text">
-           <string>PDF Version:</string>
+           <string>PDF version</string>
           </property>
          </widget>
         </item>
         <item>
          <widget class="Gui::PrefComboBox" name="comboBox">
           <property name="toolTip">
-           <string>This is the PDF Version FreeCAD will use to export to PDF.</string>
+           <string>This is the PDF Version FreeCAD will use to export to PDF</string>
           </property>
           <property name="prefEntry" stdset="0">
            <cstring>PDFVersion</cstring>

@@ -1055,7 +1055,7 @@ void ExpressionLineEdit::contextMenuEvent(QContextMenuEvent* event)
 
     if (completer) {
         menu->addSeparator();
-        QAction* match = menu->addAction(tr("Exact match"));
+        QAction* match = menu->addAction(tr("Exact Match"));
         match->setCheckable(true);
         match->setChecked(completer->filterMode() == Qt::MatchStartsWith);
         QObject::connect(match, &QAction::toggled, this, &Gui::ExpressionLineEdit::setExactMatch);
@@ -1159,7 +1159,7 @@ void ExpressionTextEdit::contextMenuEvent(QContextMenuEvent* event)
 {
     QMenu* menu = createStandardContextMenu();
     menu->addSeparator();
-    QAction* match = menu->addAction(tr("Exact match"));
+    QAction* match = menu->addAction(tr("Exact Match"));
 
     if (completer) {
         match->setCheckable(true);
