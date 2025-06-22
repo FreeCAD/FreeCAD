@@ -116,8 +116,6 @@ private:
     void collectSearchResults(QWidget* widget, const QString& searchText, const QString& groupName, 
                              const QString& pageName, const QString& pageDisplayName, const QString& tabName);
     void populateSearchResultsList();
-    void createSearchResult(QWidget* widget, const QString& matchText, const QString& groupName, 
-                           const QString& pageName, const QString& pageDisplayName, const QString& tabName);
     
     template<typename WidgetType>
     void searchWidgetType(QWidget* parentWidget, const QString& searchText, const QString& groupName,

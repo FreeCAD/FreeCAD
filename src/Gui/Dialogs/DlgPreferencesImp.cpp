@@ -1385,17 +1385,19 @@ void PreferencesSearchController::collectSearchResults(QWidget* widget, const QS
     // First, check if the page display name itself matches (highest priority)
     int pageScore = 0;
     if (fuzzyMatch(searchText, pageDisplayName, pageScore)) {
-        SearchResult result;
-        result.groupName = groupName;
-        result.pageName = pageName;
-        result.widget = widget; // Use the page widget itself
-        result.matchText = pageDisplayName; // Use display name, not internal name
-        result.groupBoxName = QString(); // No groupbox for page-level match
-        result.tabName = tabName;
-        result.pageDisplayName = pageDisplayName;
-        result.isPageLevelMatch = true; // Mark as page-level match
-        result.score = pageScore + 2000; // Boost page-level matches
-        result.displayText = formatSearchResultText(result);
+        SearchResult result
+        {
+            .groupName = groupName,
+            .pageName = pageName,
+            .widget = widget,              // Use the page widget itself
+            .matchText = pageDisplayName,  // Use display name, not internal name
+            .groupBoxName = QString(),     // No groupbox for page-level match
+            .tabName = tabName,
+            .pageDisplayName = pageDisplayName,
+            .displayText = formatSearchResultText(result),
+            .isPageLevelMatch = true,   // Mark as page-level match
+            .score = pageScore + 2000  // Boost page-level matches
+        };
         m_searchResults.append(result);
         // Continue searching for individual items even if page matches
     }
@@ -1543,23 +1545,6 @@ QString PreferencesSearchController::formatSearchResultText(const SearchResult& 
     return text;
 }
 
-void PreferencesSearchController::createSearchResult(QWidget* widget, const QString& matchText, const QString& groupName,
-                                          const QString& pageName, const QString& pageDisplayName, const QString& tabName)
-{
-    SearchResult result;
-    result.groupName = groupName;
-    result.pageName = pageName;
-    result.widget = widget;
-    result.matchText = matchText;
-    result.groupBoxName = findGroupBoxForWidget(widget);
-    result.tabName = tabName;
-    result.pageDisplayName = pageDisplayName;
-    result.isPageLevelMatch = false;
-    result.score = 0; // Will be set by the caller
-    result.displayText = formatSearchResultText(result);
-    m_searchResults.append(result);
-}
-
 template<typename WidgetType>
 void PreferencesSearchController::searchWidgetType(QWidget* parentWidget, const QString& searchText, const QString& groupName,
                                         const QString& pageName, const QString& pageDisplayName, const QString& tabName)
@@ -1583,11 +1568,20 @@ void PreferencesSearchController::searchWidgetType(QWidget* parentWidget, const 
         // Use fuzzy matching instead of simple contains
         int score = 0;
         if (fuzzyMatch(searchText, widgetText, score)) {
-            createSearchResult(widget, widgetText, groupName, pageName, pageDisplayName, tabName);
-            // Update the score of the last added result
-            if (!m_searchResults.isEmpty()) {
-                m_searchResults.last().score = score;
-            }
+            SearchResult result
+            {
+                .groupName = groupName,
+                .pageName = pageName,
+                .widget = widget,
+                .matchText = widgetText,
+                .groupBoxName = findGroupBoxForWidget(widget),
+                .tabName = tabName,
+                .pageDisplayName = pageDisplayName,
+                .displayText = formatSearchResultText(result),
+                .isPageLevelMatch = false,
+                .score = score
+            };
+            m_searchResults.append(result);
         }
     }
 }
