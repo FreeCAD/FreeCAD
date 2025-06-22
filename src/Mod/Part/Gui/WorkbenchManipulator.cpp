@@ -31,7 +31,6 @@ using namespace PartGui;
 
 void WorkbenchManipulator::modifyMenuBar([[maybe_unused]] Gui::MenuItem* menuBar)
 {
-    addSectionCut(menuBar);
 }
 
 void WorkbenchManipulator::modifyToolBars(Gui::ToolBarItem* toolBar)
@@ -42,20 +41,6 @@ void WorkbenchManipulator::modifyToolBars(Gui::ToolBarItem* toolBar)
 
 void WorkbenchManipulator::modifyDockWindows([[maybe_unused]] Gui::DockWindowItems* dockWindow)
 {
-}
-
-void WorkbenchManipulator::addSectionCut(Gui::MenuItem* menuBar)
-{
-    const char* toggleClipPlane = "Std_ToggleClipPlane";
-    auto par = menuBar->findParentOf(toggleClipPlane);
-    if (par) {
-        auto item = par->findItem(toggleClipPlane);
-        item = par->afterItem(item);
-
-        auto add = new Gui::MenuItem(); // NOLINT
-        add->setCommand("Part_SectionCut");
-        par->insertItem(item, add);
-    }
 }
 
 void WorkbenchManipulator::addSelectionFilter(Gui::ToolBarItem* toolBar)
