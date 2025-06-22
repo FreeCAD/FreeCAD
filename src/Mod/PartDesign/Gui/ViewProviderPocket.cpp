@@ -45,7 +45,7 @@ ViewProviderPocket::~ViewProviderPocket() = default;
 
 void ViewProviderPocket::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
 {
-    addDefaultAction(menu, QObject::tr("Edit pocket"));
+    addDefaultAction(menu, QObject::tr("Edit Pocket"));
     PartDesignGui::ViewProviderSketchBased::setupContextMenu(menu, receiver, member);
 }
 

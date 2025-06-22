@@ -19,7 +19,7 @@
      <item>
       <widget class="QToolButton" name="buttonBodyAdd">
        <property name="text">
-        <string>Add body</string>
+        <string>Add Body</string>
        </property>
        <property name="checkable">
         <bool>true</bool>
@@ -29,7 +29,7 @@
      <item>
       <widget class="QToolButton" name="buttonBodyRemove">
        <property name="text">
-        <string>Remove body</string>
+        <string>Remove Body</string>
        </property>
        <property name="checkable">
         <bool>true</bool>

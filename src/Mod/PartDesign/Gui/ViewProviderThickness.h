@@ -38,7 +38,7 @@ public:
     /// constructor
     ViewProviderThickness()
         { sPixmap = "PartDesign_Thickness.svg";
-          menuName = tr("Thickness parameters"); }
+          menuName = tr("Thickness Parameters"); }
 
     /// return "Thickness"
     const std::string & featureName() const override;

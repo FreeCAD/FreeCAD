@@ -39,7 +39,7 @@ public:
     /// constructor
     ViewProviderDraft()
         { sPixmap = "PartDesign_Draft.svg";
-          menuName = tr("Draft parameters"); }
+          menuName = tr("Draft Parameters"); }
 
     /// return "Draft"
     const std::string & featureName() const override;

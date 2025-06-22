@@ -38,7 +38,7 @@ const std::string & ViewProviderThickness::featureName() const {
 
 void ViewProviderThickness::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
 {
-    addDefaultAction(menu, QObject::tr("Edit thickness"));
+    addDefaultAction(menu, QObject::tr("Edit Thickness"));
     PartDesignGui::ViewProvider::setupContextMenu(menu, receiver, member);
 }
 

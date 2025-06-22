@@ -38,7 +38,7 @@ const std::string & ViewProviderFillet::featureName() const {
 
 void ViewProviderFillet::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
 {
-    addDefaultAction(menu, QObject::tr("Edit fillet"));
+    addDefaultAction(menu, QObject::tr("Edit Fillet"));
     PartDesignGui::ViewProvider::setupContextMenu(menu, receiver, member);
 }
 

@@ -291,12 +291,12 @@ void TaskDressUpParameters::createAddAllEdgesAction(QListWidget* parentList)
 {
     // creates a context menu, a shortcut for it and connects it to a slot function
 
-    addAllEdgesAction = new QAction(tr("Add all edges"), this);
+    addAllEdgesAction = new QAction(tr("Add All Edges"), this);
     addAllEdgesAction->setShortcut(QKeySequence(QStringLiteral("Ctrl+Shift+A")));
     // display shortcut behind the context menu entry
     addAllEdgesAction->setShortcutVisibleInContextMenu(true);
     parentList->addAction(addAllEdgesAction);
-    addAllEdgesAction->setStatusTip(tr("Adds all edges to the list box (active only when in add selection mode)."));
+    addAllEdgesAction->setStatusTip(tr("Adds all edges to the list box (only when in add selection mode)"));
     parentList->setContextMenuPolicy(Qt::ActionsContextMenu);
 }
 

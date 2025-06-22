@@ -160,7 +160,7 @@ class Shaft:
         return self.segments[index].constraint
 
     def updateEdge(self, column, start):
-        App.Console.PrintMessage("Not implemented yet - waiting for robust references...")
+        App.Console.PrintMessage("Not implemented yet - waiting for robust references…")
         return
         """
         if self.sketchClosed is not True:

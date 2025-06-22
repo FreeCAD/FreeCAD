@@ -17,7 +17,7 @@
    </sizepolicy>
   </property>
   <property name="windowTitle">
-   <string>Task Hole Parameters</string>
+   <string>Hole Parameters</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_2">
    <property name="leftMargin">
@@ -75,7 +75,7 @@
         <enum>Qt::LayoutDirection::RightToLeft</enum>
        </property>
        <property name="text">
-        <string>Head Type</string>
+        <string>Head type</string>
        </property>
       </widget>
      </item>
@@ -114,7 +114,7 @@
         <enum>Qt::LayoutDirection::LeftToRight</enum>
        </property>
        <property name="text">
-        <string>Depth Type</string>
+        <string>Depth type</string>
        </property>
       </widget>
      </item>
@@ -196,7 +196,7 @@
               </sizepolicy>
              </property>
              <property name="text">
-              <string>Head Diameter</string>
+              <string>Head diameter</string>
              </property>
             </widget>
            </item>
@@ -244,7 +244,7 @@
               </sizepolicy>
              </property>
              <property name="text">
-              <string>Head Depth</string>
+              <string>Head depth</string>
              </property>
             </widget>
            </item>
@@ -670,12 +670,12 @@ over 90: larger hole radius at the bottom</string>
        </item>
        <item>
         <property name="text">
-         <string>Tap Drill (To Be Threaded)</string>
+         <string>Tap drill (to be threaded)</string>
         </property>
        </item>
        <item>
         <property name="text">
-         <string>Modeled Thread</string>
+         <string>Modeled thread</string>
         </property>
        </item>
       </widget>
@@ -683,7 +683,7 @@ over 90: larger hole radius at the bottom</string>
      <item row="2" column="0">
       <widget class="Gui::ElideLabel" name="labelHoleType">
        <property name="text">
-        <string>Hole Type</string>
+        <string>Hole type</string>
        </property>
       </widget>
      </item>

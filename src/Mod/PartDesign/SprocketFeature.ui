@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Sprocket parameters</string>
+   <string>Sprocket Parameters</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
    <item row="0" column="0">
@@ -23,7 +23,7 @@
       </sizepolicy>
      </property>
      <property name="text">
-      <string>Number of teeth:</string>
+      <string>Number of teeth</string>
      </property>
     </widget>
    </item>
@@ -49,7 +49,7 @@
    <item row="1" column="0">
     <widget class="QLabel" name="label_10">
      <property name="text">
-      <string>Sprocket Reference</string>
+      <string>Sprocket reference</string>
      </property>
     </widget>
    </item>
@@ -133,12 +133,12 @@
      </item>
      <item>
       <property name="text">
-       <string>Bicycle with Derailleur</string>
+       <string>Bicycle with derailleur</string>
       </property>
      </item>
      <item>
       <property name="text">
-       <string>Bicycle without Derailleur</string>
+       <string>Bicycle without derailleur</string>
       </property>
      </item>
      <item>
@@ -216,7 +216,7 @@
    <item row="2" column="0">
     <widget class="QLabel" name="label_8">
      <property name="text">
-      <string>Chain Pitch:</string>
+      <string>Chain pitch</string>
      </property>
     </widget>
    </item>
@@ -263,7 +263,7 @@
    <item row="3" column="0">
     <widget class="QLabel" name="label_6">
      <property name="text">
-      <string>Chain Roller Diameter:</string>
+      <string>Chain roller diameter</string>
      </property>
     </widget>
    </item>
@@ -307,7 +307,7 @@
    <item row="4" column="0">
     <widget class="QLabel" name="label_7">
      <property name="text">
-      <string>Tooth Width:</string>
+      <string>Tooth width</string>
      </property>
     </widget>
    </item>

@@ -34,7 +34,7 @@ class PartDesignGuiExport ViewProviderScaled : public ViewProviderTransformed
     PROPERTY_HEADER_WITH_OVERRIDE(PartDesignGui::ViewProviderScaled);
 public:
     ViewProviderScaled() {
-        menuName = tr("Scaled parameters");
+        menuName = tr("Scale Parameters");
         sPixmap = "PartDesign_Scaled.svg";
     }
 

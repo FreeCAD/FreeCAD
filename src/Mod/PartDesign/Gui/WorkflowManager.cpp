@@ -138,16 +138,16 @@ Workflow WorkflowManager::determineWorkflow(App::Document *doc) {
 
         if ( rv == Workflow::Legacy ) { // legacy messages
             msgBox.setText( QObject::tr( "The document \"%1\" you are editing was designed with an old version of "
-                            "PartDesign workbench." ).arg( QString::fromStdString ( doc->getName()) ) );
+                            "Part Design workbench." ).arg( QString::fromStdString ( doc->getName()) ) );
             msgBox.setInformativeText (
-                    QObject::tr( "Do you want to migrate in order to use modern PartDesign features?" ) );
+                    QObject::tr( "Migrate in order to use modern Part Design features?" ) );
         }
         else { // The document is already in the middle of migration
             msgBox.setText( QObject::tr( "The document \"%1\" seems to be either in the middle of"
-                        " the migration process from legacy PartDesign or have a slightly broken structure."
+                        " the migration process from legacy Part Design or have a slightly broken structure."
                         ).arg( QString::fromStdString ( doc->getName()) ) );
             msgBox.setInformativeText (
-                    QObject::tr( "Do you want to make the migration automatically?" ) );
+                    QObject::tr( "Make the migration automatically?" ) );
         }
         msgBox.setDetailedText( QObject::tr( "Note: If you choose to migrate you won't be able to edit"
                     " the file with an older FreeCAD version.\n"
@@ -158,7 +158,7 @@ Workflow WorkflowManager::determineWorkflow(App::Document *doc) {
         msgBox.setIcon( QMessageBox::Question );
         QPushButton * yesBtn      = msgBox.addButton ( QMessageBox::Yes );
         QPushButton * manuallyBtn = msgBox.addButton (
-                QObject::tr ( "Migrate manually" ), QMessageBox::YesRole );
+                QObject::tr ( "Migrate Manually" ), QMessageBox::YesRole );
 
         // If it is already a document in the middle of the migration the user shouldn't refuse to migrate
         if ( rv != Workflow::Undetermined ) {

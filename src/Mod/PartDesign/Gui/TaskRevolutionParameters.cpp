@@ -86,7 +86,7 @@ TaskRevolutionParameters::TaskRevolutionParameters(PartDesignGui::ViewProvider* 
         ui->revolveAngle2->bind(rev->Angle2);
     }
     else {
-        throw Base::TypeError("The object is neither a Groove nor a Revolution.");
+        throw Base::TypeError("The object is neither a groove nor a revolution.");
     }
 
     setupDialog();
@@ -213,7 +213,7 @@ void TaskRevolutionParameters::fillAxisCombo(bool forceRefill)
 
         auto *pcFeat = getObject<PartDesign::ProfileBased>();
         if (!pcFeat) {
-            throw Base::TypeError("The object is not ProfileBased.");
+            throw Base::TypeError("The object is not profile-based.");
         }
 
         //add sketch axes
@@ -232,16 +232,16 @@ void TaskRevolutionParameters::fillAxisCombo(bool forceRefill)
         if (PartDesign::Body * body = PartDesign::Body::findBodyOf(pcFeat)) {
             try {
                 App::Origin* orig = body->getOrigin();
-                addAxisToCombo(orig->getX(), std::string(), tr("Base X axis"));
-                addAxisToCombo(orig->getY(), std::string(), tr("Base Y axis"));
-                addAxisToCombo(orig->getZ(), std::string(), tr("Base Z axis"));
+                addAxisToCombo(orig->getX(), std::string(), tr("Base x-axis"));
+                addAxisToCombo(orig->getY(), std::string(), tr("Base y-axis"));
+                addAxisToCombo(orig->getZ(), std::string(), tr("Base z-axis"));
             } catch (const Base::Exception &ex) {
                 ex.reportException();
             }
         }
 
         //add "Select reference"
-        addAxisToCombo(nullptr, std::string(), tr("Select reference..."));
+        addAxisToCombo(nullptr, std::string(), tr("Select reference…"));
     }//endif forceRefill
 
     //add current link, if not in list
@@ -712,14 +712,14 @@ TaskDlgRevolutionParameters::TaskDlgRevolutionParameters(ViewProviderRevolution 
     : TaskDlgSketchBasedParameters(RevolutionView)
 {
     assert(RevolutionView);
-    Content.push_back(new TaskRevolutionParameters(RevolutionView, "PartDesign_Revolution", tr("Revolution parameters")));
+    Content.push_back(new TaskRevolutionParameters(RevolutionView, "PartDesign_Revolution", tr("Revolution Parameters")));
 }
 
 TaskDlgGrooveParameters::TaskDlgGrooveParameters(ViewProviderGroove *GrooveView)
     : TaskDlgSketchBasedParameters(GrooveView)
 {
     assert(GrooveView);
-    Content.push_back(new TaskRevolutionParameters(GrooveView, "PartDesign_Groove", tr("Groove parameters")));
+    Content.push_back(new TaskRevolutionParameters(GrooveView, "PartDesign_Groove", tr("Groove Parameters")));
 }
 
 

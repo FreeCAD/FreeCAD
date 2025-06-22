@@ -63,7 +63,7 @@ std::vector<App::DocumentObject*> ViewProviderLoft::claimChildren()const
 
 void ViewProviderLoft::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
 {
-    addDefaultAction(menu, QObject::tr("Edit loft"));
+    addDefaultAction(menu, QObject::tr("Edit Loft"));
     PartDesignGui::ViewProvider::setupContextMenu(menu, receiver, member);
 }
 

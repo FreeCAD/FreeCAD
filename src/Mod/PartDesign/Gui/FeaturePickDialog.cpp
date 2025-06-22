@@ -43,9 +43,9 @@ const QString FeaturePickDialog::getFeatureStatusString(const featureStatus st)
         case invalidShape: return tr("Invalid shape");
         case noWire: return tr("No wire in sketch");
         case isUsed: return tr("Sketch already used by other feature");
-        case otherBody: return tr("Sketch belongs to another Body feature");
+        case otherBody: return tr("Sketch belongs to another body feature");
         case basePlane: return tr("Base plane");
-        case afterTip: return tr("Feature is located after the Tip feature");
+        case afterTip: return tr("Feature is located after the tip of the body");
     }
 
     return tr("");
