@@ -1376,9 +1376,11 @@ void PropertyBoolItem::setValue(const QVariant& value)
 }
 
 QWidget* PropertyBoolItem::createEditor(QWidget* parent,
-                                        const std::function<void()>& method,
+                                        const std::function<void()>& /*method*/,
                                         FrameOption /*frameOption*/) const
 {
+    // The checkbox is basically artificial (it is not rendered). Other code handles the callback,
+    // etc.
     auto checkbox = new QCheckBox(parent);
     return checkbox;
 }
