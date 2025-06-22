@@ -1,0 +1,21 @@
+macro(SetupLibharu)
+    # -------------------------------- libharu --------------------------------
+    if(BUILD_PDF_EXPORT_3D)
+        if(FREECAD_USE_EXTERNAL_LIBHARU)
+            find_package(libharu REQUIRED)
+        else()
+            # Using bundled libharu
+            set(libharu_FOUND TRUE)
+            set(libharu_INCLUDE_DIRS ${CMAKE_SOURCE_DIR}/src/3rdParty/libharu/include)
+            set(libharu_LIBRARIES haru)
+        endif()
+        
+        if(libharu_FOUND)
+            message(STATUS "Found libharu")
+        else()
+            message(FATAL_ERROR "libharu not found")
+        endif()
+    else()
+        message(STATUS "PDF export disabled, skipping libharu setup")
+    endif()
+endmacro(SetupLibharu) 
