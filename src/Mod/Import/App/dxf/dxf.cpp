@@ -3179,3 +3179,5 @@ Base::Color CDxfRead::ObjectColor(ColorIndex_t index)
     return result;
 }
 // NOLINTEND(cppcoreguidelines-avoid-magic-numbers, readability-magic-numbers)
+
+template void CDxfRead::UnsupportedFeature<>(const char*);
