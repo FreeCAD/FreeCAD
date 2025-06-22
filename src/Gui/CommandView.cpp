@@ -2686,7 +2686,7 @@ public:
         currentSelectionHandler = nullptr;
     }
 
-    static QCursor makeCursor(QWidget* widget, const QSize& size, const char* svgFile, int hotX, int hotY)
+    static QCursor makeCursor([[maybe_unused]] QWidget* widget, const QSize& size, const char* svgFile, int hotX, int hotY)
     {
         qreal hotXF = hotX;
         qreal hotYF = hotY;
