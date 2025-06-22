@@ -2698,7 +2698,7 @@ public:
         }
 #endif
         QPixmap px(Gui::BitmapFactory().pixmapFromSvg(svgFile, size));
-        return QCursor(px, hotXF, hotYF);
+        return QCursor(px, static_cast<int>(hotXF), static_cast<int>(hotYF));
     }
 };
 }
