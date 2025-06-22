@@ -176,9 +176,9 @@ private:
     {
         boldFont = baseFont;
         boldFont.setBold(true);
+        boldFont.setPointSize(boldFont.pointSize() - 1); // make header smaller like a subtitle
         
-        normalFont = baseFont;
-        normalFont.setPointSize(normalFont.pointSize() + 2); // make lower text 2 pixels bigger
+        normalFont = baseFont; // keep widget text at normal size
     }
 
     LayoutInfo calculateLayout(const QString& pathText, const QString& widgetText,
@@ -1812,7 +1812,9 @@ QString PreferencesSearchController::getHighlightStyleForWidget(QWidget* widget)
 
 void PreferencesSearchController::applyHighlightToWidget(QWidget* widget)
 {
-    if (!widget) return;
+    if (!widget) {
+        return;
+    }
     
     m_originalStyles[widget] = widget->styleSheet();
     widget->setStyleSheet(getHighlightStyleForWidget(widget));
