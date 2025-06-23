@@ -63,7 +63,7 @@ CmdTechDrawStackGroup::CmdTechDrawStackGroup()
     sAppModule      = "TechDraw";
     sGroup          = QT_TR_NOOP("TechDraw");
     sMenuText       = QT_TR_NOOP("Adjust stacking order of views");
-    sToolTipText    = sMenuText;
+    sToolTipText    = QT_TR_NOOP("Adjusts the stacking order of the selected views");
     sWhatsThis      = "TechDraw_StackGroup";
     sStatusTip      = sToolTipText;
 }
@@ -72,8 +72,8 @@ void CmdTechDrawStackGroup::activated(int iMsg)
 {
     Gui::TaskView::TaskDialog *dlg = Gui::Control().activeDialog();
     if (dlg) {
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Task In Progress"),
-            QObject::tr("Close active task dialog and try again."));
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Task in progress"),
+            QObject::tr("Close the active task dialog and try again."));
         return;
     }
 
@@ -176,7 +176,7 @@ CmdTechDrawStackTop::CmdTechDrawStackTop()
     sAppModule      = "TechDraw";
     sGroup          = QT_TR_NOOP("TechDraw");
     sMenuText       = QT_TR_NOOP("Move view to top of stack");
-    sToolTipText    = sMenuText;
+    sToolTipText    = QT_TR_NOOP("Moves the selected view to the top of the stack");
     sWhatsThis      = "TechDraw_StackTop";
     sStatusTip      = sToolTipText;
     sPixmap         = "actions/TechDraw_StackTop";
@@ -188,8 +188,8 @@ void CmdTechDrawStackTop::activated(int iMsg)
 
     Gui::TaskView::TaskDialog *dlg = Gui::Control().activeDialog();
     if (dlg) {
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Task In Progress"),
-            QObject::tr("Close active task dialog and try again."));
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Task in progress"),
+            QObject::tr("Close the active task dialog and try again."));
         return;
     }
 
@@ -236,7 +236,7 @@ CmdTechDrawStackBottom::CmdTechDrawStackBottom()
     sAppModule      = "TechDraw";
     sGroup          = QT_TR_NOOP("TechDraw");
     sMenuText       = QT_TR_NOOP("Move view to bottom of stack");
-    sToolTipText    = sMenuText;
+    sToolTipText    = QT_TR_NOOP("Moves the selected view to the bottom of the stack");
     sWhatsThis      = "TechDraw_StackBottom";
     sStatusTip      = sToolTipText;
     sPixmap         = "actions/TechDraw_StackBottom";
@@ -248,8 +248,8 @@ void CmdTechDrawStackBottom::activated(int iMsg)
 
     Gui::TaskView::TaskDialog *dlg = Gui::Control().activeDialog();
     if (dlg) {
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Task In Progress"),
-            QObject::tr("Close active task dialog and try again."));
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Task in progress"),
+            QObject::tr("Close the active task dialog and try again."));
         return;
     }
 
@@ -295,8 +295,8 @@ CmdTechDrawStackUp::CmdTechDrawStackUp()
 {
     sAppModule      = "TechDraw";
     sGroup          = QT_TR_NOOP("TechDraw");
-    sMenuText       = QT_TR_NOOP("Move view up one level");
-    sToolTipText    = sMenuText;
+    sMenuText       = QT_TR_NOOP("Move view up 1 level");
+    sToolTipText    = QT_TR_NOOP("Moves the selected view up 1 level in the stack stack");
     sWhatsThis      = "TechDraw_StackUp";
     sStatusTip      = sToolTipText;
     sPixmap         = "actions/TechDraw_StackUp";
@@ -308,8 +308,8 @@ void CmdTechDrawStackUp::activated(int iMsg)
 
     Gui::TaskView::TaskDialog *dlg = Gui::Control().activeDialog();
     if (dlg) {
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Task In Progress"),
-            QObject::tr("Close active task dialog and try again."));
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Task in progress"),
+            QObject::tr("Close the active task dialog and try again."));
         return;
     }
 
@@ -355,8 +355,8 @@ CmdTechDrawStackDown::CmdTechDrawStackDown()
 {
     sAppModule      = "TechDraw";
     sGroup          = QT_TR_NOOP("TechDraw");
-    sMenuText       = QT_TR_NOOP("Move view down one level");
-    sToolTipText    = sMenuText;
+    sMenuText       = QT_TR_NOOP("Move view down 1 level");
+    sToolTipText    = QT_TR_NOOP("Moves the selected view down 1 level in the stack stack");
     sWhatsThis      = "TechDraw_StackDown";
     sStatusTip      = sToolTipText;
     sPixmap         = "actions/TechDraw_StackDown";
