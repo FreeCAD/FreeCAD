@@ -558,7 +558,7 @@ void DrawViewSection::makeSectionCut(const TopoDS_Shape& baseShape)
     testBox.SetGap(0.0);
     if (testBox.IsVoid()) {// prism & input don't intersect.  rawShape is
                            // garbage, don't bother.
-        Base::Console().warning("DVS::makeSectionCut - prism & input don't intersect - %s\n",
+        Base::Console().warning("DVS::makeSectionCut - prism & input don not intersect - %s\n",
                                 Label.getValue());
         return;
     }

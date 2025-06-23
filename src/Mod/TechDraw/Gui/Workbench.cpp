@@ -234,6 +234,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     // views from other workbenches
     Gui::MenuItem* other = new Gui::MenuItem;
     other->setCommand("Views From Other Workbenches");
+
     *other << "TechDraw_ActiveView";
     *other << "TechDraw_DraftView";
     *other << "TechDraw_ArchView";

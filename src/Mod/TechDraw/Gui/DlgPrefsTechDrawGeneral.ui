@@ -49,7 +49,7 @@
            <string>Whether or not pages are updated every time the 3D model is changed</string>
           </property>
           <property name="text">
-           <string>Update With 3D (global policy)</string>
+           <string>Update with 3D (global policy)</string>
           </property>
           <property name="checked">
            <bool>true</bool>
@@ -71,11 +71,11 @@
            </sizepolicy>
           </property>
           <property name="toolTip">
-           <string>Whether or not a page's 'Keep Updated' property
-can override the global 'Update With 3D' parameter</string>
+           <string>Controls whether or not a page's 'Keep Updated' property
+can override the global 'Update with 3D' parameter</string>
           </property>
           <property name="text">
-           <string>Allow Page Override (global policy)</string>
+           <string>Allow page override (global policy)</string>
           </property>
           <property name="checked">
            <bool>true</bool>
@@ -106,7 +106,7 @@ can override the global 'Update With 3D' parameter</string>
 This can slow down the response time.</string>
           </property>
           <property name="text">
-           <string>Keep Page Up To Date</string>
+           <string>Keep page up to date</string>
           </property>
           <property name="checked">
            <bool>true</bool>
@@ -137,7 +137,7 @@ This can slow down the response time.</string>
 for ProjectionGroups</string>
           </property>
           <property name="text">
-           <string>Auto-distribute Secondary Views</string>
+           <string>Auto-distribute secondary views</string>
           </property>
           <property name="checked">
            <bool>true</bool>
@@ -178,11 +178,11 @@ for ProjectionGroups</string>
            </size>
           </property>
           <property name="toolTip">
-           <string>* this font is also used for dimensions
+           <string>* This font is also used for dimensions.
    Changes have no effect on existing dimensions.</string>
           </property>
           <property name="text">
-           <string>Label Font*</string>
+           <string>Label font*</string>
           </property>
          </widget>
         </item>
@@ -236,7 +236,7 @@ for ProjectionGroups</string>
         <item row="1" column="0">
          <widget class="QLabel" name="label_6">
           <property name="text">
-           <string>Label Size</string>
+           <string>Label size</string>
           </property>
          </widget>
         </item>
@@ -316,7 +316,7 @@ for ProjectionGroups</string>
         <item row="0" column="0">
          <widget class="QLabel" name="label_7">
           <property name="text">
-           <string>Projection Group Angle</string>
+           <string>Projection group angle</string>
           </property>
          </widget>
         </item>
@@ -329,7 +329,7 @@ for ProjectionGroups</string>
            </sizepolicy>
           </property>
           <property name="toolTip">
-           <string>Use first- or third-angle multiview projection convention</string>
+           <string>Use first or third-angle multiview projection convention</string>
           </property>
           <property name="sizeAdjustPolicy">
            <enum>QComboBox::AdjustToContents</enum>
@@ -366,7 +366,7 @@ for ProjectionGroups</string>
            </sizepolicy>
           </property>
           <property name="toolTip">
-           <string>Standard to be used to draw section lines.  This affects the position of arrows and symbol.</string>
+           <string>Standard to be used to draw section lines. This affects the position of arrows and symbol.</string>
           </property>
           <property name="currentIndex">
            <number>0</number>
@@ -397,7 +397,7 @@ for ProjectionGroups</string>
            </font>
           </property>
           <property name="text">
-           <string>Section Line Convention</string>
+           <string>Section line convention</string>
           </property>
          </widget>
         </item>
@@ -441,7 +441,7 @@ for ProjectionGroups</string>
            </font>
           </property>
           <property name="text">
-           <string>PAT File</string>
+           <string>PAT file</string>
           </property>
          </widget>
         </item>
@@ -454,7 +454,7 @@ for ProjectionGroups</string>
            </sizepolicy>
           </property>
           <property name="toolTip">
-           <string>Preferred SVG or bitmap file for hatching.  This value will also control the initial directory for choosing hatch patterns.  You can use this to get hatch files from a local directory.</string>
+           <string>Preferred SVG or bitmap file for hatching. This value will also control the initial directory for choosing hatch patterns. You can use this to get hatch files from a local directory.</string>
           </property>
           <property name="prefEntry" stdset="0">
            <cstring>FileHatch</cstring>
@@ -510,7 +510,7 @@ for ProjectionGroups</string>
            </font>
           </property>
           <property name="text">
-           <string>Welding Directory</string>
+           <string>Welding directory</string>
           </property>
          </widget>
         </item>
@@ -561,7 +561,7 @@ for ProjectionGroups</string>
            </sizepolicy>
           </property>
           <property name="toolTip">
-           <string>Starting directory for menu 'Insert Page using Template'</string>
+           <string>Starting directory for 'Insert Page From Template' tool</string>
           </property>
           <property name="prefEntry" stdset="0">
            <cstring>TemplateDir</cstring>
@@ -574,7 +574,7 @@ for ProjectionGroups</string>
         <item row="1" column="0">
          <widget class="QLabel" name="label_2">
           <property name="text">
-           <string>Template Directory</string>
+           <string>Template directory</string>
           </property>
          </widget>
         </item>
@@ -605,14 +605,14 @@ for ProjectionGroups</string>
            </font>
           </property>
           <property name="text">
-           <string>Hatch Pattern File</string>
+           <string>Hatch pattern file</string>
           </property>
          </widget>
         </item>
         <item row="0" column="0">
          <widget class="QLabel" name="label">
           <property name="text">
-           <string>Default Template</string>
+           <string>Default template</string>
           </property>
          </widget>
         </item>
@@ -624,7 +624,7 @@ for ProjectionGroups</string>
            </font>
           </property>
           <property name="text">
-           <string>Symbol Directory</string>
+           <string>Symbol directory</string>
           </property>
          </widget>
         </item>
@@ -661,7 +661,7 @@ for ProjectionGroups</string>
            </font>
           </property>
           <property name="text">
-           <string>Line Group File</string>
+           <string>Line group file</string>
           </property>
          </widget>
         </item>
@@ -673,7 +673,7 @@ for ProjectionGroups</string>
            </font>
           </property>
           <property name="text">
-           <string>Pattern Name</string>
+           <string>Pattern name</string>
           </property>
          </widget>
         </item>
@@ -711,10 +711,10 @@ for ProjectionGroups</string>
            </font>
           </property>
           <property name="toolTip">
-           <string>Set ShowGrid property to true on new Pages.</string>
+           <string>Set 'Show grid' property to true on new pages</string>
           </property>
           <property name="text">
-           <string>Show Grid</string>
+           <string>Show grid</string>
           </property>
           <property name="checked">
            <bool>true</bool>
@@ -735,14 +735,14 @@ for ProjectionGroups</string>
            </font>
           </property>
           <property name="text">
-           <string>Grid Spacing</string>
+           <string>Grid spacing</string>
           </property>
          </widget>
         </item>
         <item row="1" column="2">
          <widget class="Gui::PrefUnitSpinBox" name="psb_GridSpacing" native="true">
           <property name="toolTip">
-           <string>Distance between Page grid lines.</string>
+           <string>Distance between page grid lines</string>
           </property>
           <property name="value" stdset="0">
            <double>10.000000000000000</double>
@@ -786,7 +786,7 @@ for ProjectionGroups</string>
            <string>If enabled, clicking without Ctrl does not clear existing vertex/edge/face selection</string>
           </property>
           <property name="text">
-           <string>Enable Multiselection Mode</string>
+           <string>Enable multi-selection mode</string>
           </property>
           <property name="checked">
            <bool>false</bool>
@@ -832,10 +832,10 @@ for ProjectionGroups</string>
            </font>
           </property>
           <property name="toolTip">
-           <string>If checked, the 3D camera direction (or normal of a selected face) will be used as the view direction. If not checked, Views will be created as Front Views.</string>
+           <string>Uses the 3D camera direction (or normal of a selected face) as the view direction. Otherwise, views will be created as front views.</string>
           </property>
           <property name="text">
-           <string>Use 3D Camera Direction</string>
+           <string>Use 3D camera direction</string>
           </property>
           <property name="prefEntry" stdset="0">
            <cstring>UseCameraDirection</cstring>
@@ -853,7 +853,7 @@ for ProjectionGroups</string>
            </font>
           </property>
           <property name="toolTip">
-           <string>If checked, view labels will be displayed even when frames are suppressed.</string>
+           <string>Displays view labels even when frames are suppressed</string>
           </property>
           <property name="text">
            <string>Always Show Label</string>
@@ -888,10 +888,10 @@ for ProjectionGroups</string>
         <item row="0" column="0">
          <widget class="Gui::PrefCheckBox" name="cb_SnapViews">
           <property name="toolTip">
-           <string>Check this box if you want views to snap into alignment when being dragged.</string>
+           <string>Snaps views into alignment when being dragged</string>
           </property>
           <property name="text">
-           <string>Snap View Alignment</string>
+           <string>Snap view alignment</string>
           </property>
           <property name="checked">
            <bool>true</bool>
@@ -910,7 +910,7 @@ for ProjectionGroups</string>
            <string>Check this box if you want detail view highlights to snap to the nearest vertex when dragging in TaskDetail.</string>
           </property>
           <property name="text">
-           <string>Snap Detail Highlights</string>
+           <string>Snap detail highlights</string>
           </property>
           <property name="checked">
            <bool>true</bool>
@@ -958,14 +958,14 @@ for ProjectionGroups</string>
         <item row="1" column="0">
          <widget class="QLabel" name="label_3">
           <property name="text">
-           <string>View Snapping Factor</string>
+           <string>View snapping factor</string>
           </property>
          </widget>
         </item>
         <item row="3" column="0">
          <widget class="QLabel" name="label_14">
           <property name="text">
-           <string>Highlight SnappingFactor</string>
+           <string>Highlight snapping factor</string>
           </property>
          </widget>
         </item>

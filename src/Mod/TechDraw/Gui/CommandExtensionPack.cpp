@@ -103,7 +103,7 @@ void execHoleCircle(Gui::Command* cmd)
     //create centerlines of a hole/bolt circle
     std::vector<Gui::SelectionObject> selection;
     TechDraw::DrawViewPart* objFeat{nullptr};
-    if (!_checkSel(cmd, selection, objFeat, QT_TRANSLATE_NOOP("Command","TechDraw Hole Circle"))) {
+    if (!_checkSel(cmd, selection, objFeat, QT_TRANSLATE_NOOP("Command","TechDraw hole circle"))) {
         return;
     }
     const std::vector<std::string> SubNames = selection[0].getSubNames();
@@ -120,11 +120,11 @@ void execHoleCircle(Gui::Command* cmd)
         }
     }
     if (Circles.size() <= 2) {
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("TechDraw Hole Circle"),
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("TechDraw hole circle"),
                              QObject::tr("Fewer than three circles selected"));
         return;
     }
-    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Bolt Circle Centerlines"));
+    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Bolt circle centerlines"));
 
     // make the bolt hole circle from 3 scaled and rotated points
     Base::Vector3d bigCenter =
@@ -169,11 +169,8 @@ CmdTechDrawExtensionHoleCircle::CmdTechDrawExtensionHoleCircle()
 {
     sAppModule = "TechDraw";
     sGroup = QT_TR_NOOP("TechDraw");
-    sMenuText = QT_TR_NOOP("Add Bolt Circle Centerlines");
-    sToolTipText = QT_TR_NOOP("Add centerlines to a circular pattern of circles:<br>\
-- Specify the line attributes (optional)<br>\
-- Select three or more circles forming a circular pattern<br>\
-- Click this tool");
+    sMenuText = QT_TR_NOOP("Bolt Circle Centerlines");
+    sToolTipText = QT_TR_NOOP("Adds centerlines to a circular pattern of three or more selected circles");
     sWhatsThis = "TechDraw_ExtensionHoleCircle";
     sStatusTip = sMenuText;
     sPixmap = "TechDraw_ExtensionHoleCircle";
@@ -202,7 +199,7 @@ void execCircleCenterLines(Gui::Command* cmd)
     // create circle centerlines
     std::vector<Gui::SelectionObject> selection;
     TechDraw::DrawViewPart* objFeat{nullptr};
-    if (!_checkSel(cmd, selection, objFeat, QT_TRANSLATE_NOOP("Command","TechDraw Circle Centerlines"))) {
+    if (!_checkSel(cmd, selection, objFeat, QT_TRANSLATE_NOOP("Command","TechDraw circle centerlines"))) {
         return;
     }
     Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Circle Centerlines"));
@@ -245,11 +242,8 @@ CmdTechDrawExtensionCircleCenterLines::CmdTechDrawExtensionCircleCenterLines()
 {
     sAppModule = "TechDraw";
     sGroup = QT_TR_NOOP("TechDraw");
-    sMenuText = QT_TR_NOOP("Add Circle Centerlines");
-    sToolTipText = QT_TR_NOOP("Add centerlines to circles and arcs:<br>\
-- Specify the line attributes (optional)<br>\
-- Select one or more circles or arcs<br>\
-- Click this tool");
+    sMenuText = QT_TR_NOOP("Circle Centerlines");
+    sToolTipText = QT_TR_NOOP("Adds centerlines to the selected circles and arcs");
     sWhatsThis = "TechDraw_ExtensionCircleCenterLines";
     sStatusTip = sMenuText;
     sPixmap = "TechDraw_ExtensionCircleCenterLines";
@@ -279,11 +273,8 @@ CmdTechDrawExtensionCircleCenterLinesGroup::CmdTechDrawExtensionCircleCenterLine
 {
     sAppModule = "TechDraw";
     sGroup = QT_TR_NOOP("TechDraw");
-    sMenuText = QT_TR_NOOP("Add Circle Centerlines");
-    sToolTipText = QT_TR_NOOP("Add centerlines to circles and arcs:<br>\
-- Specify the line attributes (optional)<br>\
-- Select one or more circles or arcs<br>\
-- Click this tool");
+    sMenuText = QT_TR_NOOP("Circle Centerlines");
+    sToolTipText = QT_TR_NOOP("Adds centerlines to selected circles and arcs");
     sWhatsThis = "TechDraw_ExtensionCircleCenterLinesGroup";
     sStatusTip = sMenuText;
 }
@@ -292,7 +283,7 @@ void CmdTechDrawExtensionCircleCenterLinesGroup::activated(int iMsg)
 {
     Gui::TaskView::TaskDialog* dlg = Gui::Control().activeDialog();
     if (dlg) {
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Task In Progress"),
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Task in progress"),
                              QObject::tr("Close active task dialog and try again."));
         return;
     }
@@ -348,21 +339,15 @@ void CmdTechDrawExtensionCircleCenterLinesGroup::languageChange()
 
     QAction* arc1 = action[0];
     arc1->setText(
-        QApplication::translate("CmdTechDrawExtensionCircleCenterLines", "Add Circle Centerlines"));
+        QApplication::translate("CmdTechDrawExtensionCircleCenterLines", "Circle Centerlines"));
     arc1->setToolTip(QApplication::translate("CmdTechDrawExtensionCircleCenterLines",
-                                             "Add centerlines to circles and arcs:<br>\
-- Specify the line attributes (optional)<br>\
-- Select one or more circles or arcs<br>\
-- Click this tool"));
+                                             "Adds centerlines to selected circles and arcs:"));
     arc1->setStatusTip(arc1->text());
     QAction* arc2 = action[1];
     arc2->setText(
-        QApplication::translate("CmdTechDrawExtensionHoleCircle", "Add Bolt Circle Centerlines"));
+        QApplication::translate("CmdTechDrawExtensionHoleCircle", "Bolt Circle Centerlines"));
     arc2->setToolTip(QApplication::translate("CmdTechDrawExtensionHoleCircle",
-                                             "Add centerlines to a circular pattern of circles:<br>\
-- Specify the line attributes (optional)<br>\
-- Select three or more circles forming a circular pattern<br>\
-- Click this tool"));
+                                             "Adds centerlines to a circular pattern of selected circles"));
     arc2->setStatusTip(arc2->text());
 }
 
@@ -404,11 +389,8 @@ CmdTechDrawExtensionThreadHoleSide::CmdTechDrawExtensionThreadHoleSide()
 {
     sAppModule = "TechDraw";
     sGroup = QT_TR_NOOP("TechDraw");
-    sMenuText = QT_TR_NOOP("Add Cosmetic Thread Hole Side View");
-    sToolTipText = QT_TR_NOOP("Add a cosmetic thread to the side view of a hole:<br>\
-- Specify the line attributes (optional)<br>\
-- Select two parallel lines<br>\
-- Click this tool");
+    sMenuText = QT_TR_NOOP("Cosmetic Thread Hole Side View");
+    sToolTipText = QT_TR_NOOP("Adds a cosmetic thread to the side view of a hole or circle");
     sWhatsThis = "TechDraw_ExtensionThreadHoleSide";
     sStatusTip = sMenuText;
     sPixmap = "TechDraw_ExtensionThreadHoleSide";
@@ -458,11 +440,9 @@ CmdTechDrawExtensionThreadBoltSide::CmdTechDrawExtensionThreadBoltSide()
 {
     sAppModule = "TechDraw";
     sGroup = QT_TR_NOOP("TechDraw");
-    sMenuText = QT_TR_NOOP("Add Cosmetic Thread Bolt Side View");
-    sToolTipText = QT_TR_NOOP("Add a cosmetic thread to the side view of a bolt/screw/rod:<br>\
-- Specify the line attributes (optional)<br>\
-- Select two parallel lines<br>\
-- Click this tool");
+    sMenuText = QT_TR_NOOP("Cosmetic Thread Bolt Side View");
+    sToolTipText = QT_TR_NOOP("Adds a cosmetic thread to the side view of a "
+            "bolt/screw/rod between two selected parallel lines");
     sWhatsThis = "TechDraw_ExtensionThreadBoltSide";
     sStatusTip = sMenuText;
     sPixmap = "TechDraw_ExtensionThreadBoltSide";
@@ -494,7 +474,7 @@ void execThreadHoleBottom(Gui::Command* cmd)
     if (!_checkSel(cmd, selection, objFeat, QT_TRANSLATE_NOOP("Command","TechDraw Thread Hole Bottom"))) {
         return;
     }
-    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Cosmetic Thread Hole Bottom"));
+    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Cosmetic thread hole bottom"));
     const std::vector<std::string> SubNames = selection[0].getSubNames();
     for (const std::string& Name : SubNames) {
         _createThreadCircle(Name, objFeat, ThreadFactor);
@@ -512,11 +492,8 @@ CmdTechDrawExtensionThreadHoleBottom::CmdTechDrawExtensionThreadHoleBottom()
 {
     sAppModule = "TechDraw";
     sGroup = QT_TR_NOOP("TechDraw");
-    sMenuText = QT_TR_NOOP("Add Cosmetic Thread Hole Bottom View");
-    sToolTipText = QT_TR_NOOP("Add a cosmetic thread to the top or bottom view of holes:<br>\
-- Specify the line attributes (optional)<br>\
-- Select one or more circles<br>\
-- Click this tool");
+    sMenuText = QT_TR_NOOP("Cosmetic Thread Hole Bottom View");
+    sToolTipText = QT_TR_NOOP("Adds a cosmetic thread to the top or bottom view of selected holes or circles");
     sWhatsThis = "TechDraw_ExtensionThreadHoleBottom";
     sStatusTip = sMenuText;
     sPixmap = "TechDraw_ExtensionThreadHoleBottom";
@@ -566,12 +543,9 @@ CmdTechDrawExtensionThreadBoltBottom::CmdTechDrawExtensionThreadBoltBottom()
 {
     sAppModule = "TechDraw";
     sGroup = QT_TR_NOOP("TechDraw");
-    sMenuText = QT_TR_NOOP("Add Cosmetic Thread Bolt Bottom View");
+    sMenuText = QT_TR_NOOP("Cosmetic Thread Bolt Bottom View");
     sToolTipText =
-        QT_TR_NOOP("Add a cosmetic thread to the top or bottom view of bolts/screws/rods:<br>\
-- Specify the line attributes (optional)<br>\
-- Select one or more circles<br>\
-- Click this tool");
+        QT_TR_NOOP("Adds a cosmetic thread to the top or bottom view of the selected bolts/screws/rods");
     sWhatsThis = "TechDraw_ExtensionThreadBoltBottom";
     sStatusTip = sMenuText;
     sPixmap = "TechDraw_ExtensionThreadBoltBottom";
@@ -601,11 +575,8 @@ CmdTechDrawExtensionThreadsGroup::CmdTechDrawExtensionThreadsGroup()
 {
     sAppModule = "TechDraw";
     sGroup = QT_TR_NOOP("TechDraw");
-    sMenuText = QT_TR_NOOP("Add Cosmetic Thread Hole Side View");
-    sToolTipText = QT_TR_NOOP("Add a cosmetic thread to the side view of a hole:<br>\
-- Specify the line attributes (optional)<br>\
-- Select two parallel lines<br>\
-- Click this tool");
+    sMenuText = QT_TR_NOOP("Cosmetic Thread Hole Side View");
+    sToolTipText = QT_TR_NOOP("Add a cosmetic thread to the side view of a selected hole between two selected parallel lines");
     sWhatsThis = "TechDraw_ExtensionThreadsGroup";
     sStatusTip = sMenuText;
 }
@@ -615,7 +586,7 @@ void CmdTechDrawExtensionThreadsGroup::activated(int iMsg)
     //    Base::Console().message("CMD::TechDrawExtensionThreadsGroup - activated(%d)\n", iMsg);
     Gui::TaskView::TaskDialog* dlg = Gui::Control().activeDialog();
     if (dlg) {
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Task In Progress"),
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Task in progress"),
                              QObject::tr("Close active task dialog and try again."));
         return;
     }
@@ -685,42 +656,32 @@ void CmdTechDrawExtensionThreadsGroup::languageChange()
 
     QAction* arc1 = action[0];
     arc1->setText(QApplication::translate("CmdTechDrawExtensionThreadHoleSide",
-                                          "Add Cosmetic Thread Hole Side View"));
+                                          "Cosmetic Thread Hole Side View"));
     arc1->setToolTip(QApplication::translate("CmdTechDrawExtensionThreadHoleSide",
-                                             "Add a cosmetic thread to the side view of a hole:<br>\
-- Specify the line attributes (optional)<br>\
-- Select two parallel lines<br>\
-- Click this tool"));
+                                             "Adds a cosmetic thread to the side view of a "
+                                             "selected hole between two selected parallel lines"));
     arc1->setStatusTip(arc1->text());
     QAction* arc2 = action[1];
     arc2->setText(QApplication::translate("CmdTechDrawExtensionThreadHoleBottom",
-                                          "Add Cosmetic Thread Hole Bottom View"));
+                                          "Cosmetic Thread Hole Bottom View"));
     arc2->setToolTip(
         QApplication::translate("CmdTechDrawExtensionThreadHoleBottom",
-                                "Add a cosmetic thread to the top or bottom view of holes:<br>\
-- Specify the line attributes (optional)<br>\
-- Select one or more circles<br>\
-- Click this tool"));
+                                "Adds a cosmetic thread to the top or bottom view of holes or circles"));
     arc2->setStatusTip(arc2->text());
     QAction* arc3 = action[2];
     arc3->setText(QApplication::translate("CmdTechDrawExtensionThreadBoltSide",
-                                          "Add Cosmetic Thread Bolt Side View"));
+                                          "Cosmetic Thread Bolt Side View"));
     arc3->setToolTip(
         QApplication::translate("CmdTechDrawExtensionThreadBoltSide",
-                                "Add a cosmetic thread to the side view of a bolt/screw/rod:<br>\
-- Specify the line attributes (optional)<br>\
-- Select two parallel lines<br>\
-- Click this tool"));
+                                "Adds a cosmetic thread to the side view of a bolt/screw/rod "
+                                "between two selected parallel lines"));
     arc3->setStatusTip(arc3->text());
     QAction* arc4 = action[3];
     arc4->setText(QApplication::translate("CmdTechDrawExtensionThreadBoltBottom",
-                                          "Add Cosmetic Thread Bolt Bottom View"));
+                                          "Cosmetic Thread Bolt Bottom View"));
     arc4->setToolTip(QApplication::translate(
         "CmdTechDrawExtensionThreadBoltBottom",
-        "Add a cosmetic thread to the top or bottom view of bolts/screws/rods:<br>\
-- Specify the line attributes (optional)<br>\
-- Select one or more circles<br>\
-- Click this tool"));
+        "Adds a cosmetic thread to the top or bottom view of the selected bolts/screws/rods"));
     arc4->setStatusTip(arc4->text());
 }
 
@@ -744,10 +705,7 @@ CmdTechDrawExtensionSelectLineAttributes::CmdTechDrawExtensionSelectLineAttribut
     sGroup = QT_TR_NOOP("TechDraw");
     sMenuText = QT_TR_NOOP("Select Line Attributes, Cascade Spacing and Delta Distance");
     sToolTipText = QT_TR_NOOP(
-        "Select the attributes for new cosmetic lines and centerlines, and specify the cascade spacing and delta distance:<br>\
-- Click this tool<br>\
-- Specify the attributes, spacing and distance in the dialog box<br>\
-- Press OK");
+        "Configures the default attributes for cosmetic lines and centerlines, including cascade spacing and delta distance");
     sWhatsThis = "TechDraw_ExtensionSelectLineAttributes";
     sStatusTip = sMenuText;
     sPixmap = "TechDraw_ExtensionSelectLineAttributes";
@@ -778,10 +736,7 @@ CmdTechDrawExtensionChangeLineAttributes::CmdTechDrawExtensionChangeLineAttribut
     sAppModule = "TechDraw";
     sGroup = QT_TR_NOOP("TechDraw");
     sMenuText = QT_TR_NOOP("Change Line Attributes");
-    sToolTipText = QT_TR_NOOP("Change the attributes of cosmetic lines and centerlines:<br>\
-- Specify the line attributes (optional)<br>\
-- Select one or more lines<br>\
-- Click this tool");
+    sToolTipText = QT_TR_NOOP("Changes the selected cosmetic lines and centerlines to the specified attributes");
     sWhatsThis = "TechDraw_ExtensionChangeLineAttributes";
     sStatusTip = sMenuText;
     sPixmap = "TechDraw_ExtensionChangeLineAttributes";
@@ -793,10 +748,10 @@ void CmdTechDrawExtensionChangeLineAttributes::activated(int iMsg)
     Q_UNUSED(iMsg);
     std::vector<Gui::SelectionObject> selection;
     TechDraw::DrawViewPart* objFeat{nullptr};
-    if (!_checkSel(this, selection, objFeat, QT_TRANSLATE_NOOP("Command","TechDraw Change Line Attributes"))) {
+    if (!_checkSel(this, selection, objFeat, QT_TRANSLATE_NOOP("Command","TechDraw change line attributes"))) {
         return;
     }
-    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Change Line Attributes"));
+    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Change line attributes"));
     const std::vector<std::string> subNames = selection[0].getSubNames();
     for (const std::string& name : subNames) {
         int num = DrawUtil::getIndexFromName(name);
@@ -838,11 +793,9 @@ CmdTechDrawExtensionVertexAtIntersection::CmdTechDrawExtensionVertexAtIntersecti
 {
     sAppModule = "TechDraw";
     sGroup = QT_TR_NOOP("TechDraw");
-    sMenuText = QT_TR_NOOP("Add Cosmetic Intersection Vertex(es)");
+    sMenuText = QT_TR_NOOP("Cosmetic Intersection Vertices");
     sToolTipText =
-        QT_TR_NOOP("Add cosmetic vertex(es) at the intersection(s) of selected edges:<br>\
-- Select two edges<br>\
-- Click this tool");
+        QT_TR_NOOP("Adds cosmetic vertices at the intersections of selected edges");
     sWhatsThis = "TechDraw_ExtensionVertexAtIntersection";
     sStatusTip = sMenuText;
     sPixmap = "TechDraw_ExtensionVertexAtIntersection";
@@ -854,10 +807,10 @@ void CmdTechDrawExtensionVertexAtIntersection::activated(int iMsg)
     //Base::Console().message("VertexAtIntersection started\n");
     std::vector<Gui::SelectionObject> selection;
     TechDraw::DrawViewPart* objFeat{nullptr};
-    if (!_checkSel(this, selection, objFeat, QT_TRANSLATE_NOOP("Command","TechDraw Cosmetic Intersection Vertex(es)")))  {
+    if (!_checkSel(this, selection, objFeat, QT_TRANSLATE_NOOP("Command","TechDraw cosmetic intersection vertices")))  {
         return;
     }
-    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Cosmetic Intersection Vertex(es)"));
+    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Cosmetic intersection vertices"));
     const std::vector<std::string> SubNames = selection[0].getSubNames();
     if (SubNames.size() >= 2) {
         std::string GeoType1 = TechDraw::DrawUtil::getGeomTypeFromName(SubNames[0]);
@@ -900,10 +853,10 @@ void execDrawCosmArc(Gui::Command* cmd)
     //draw a cosmetic arc of circle
     std::vector<Gui::SelectionObject> selection;
     TechDraw::DrawViewPart* objFeat{nullptr};
-    if (!_checkSel(cmd, selection, objFeat, QT_TRANSLATE_NOOP("Command","TechDraw Cosmetic Arc")))  {
+    if (!_checkSel(cmd, selection, objFeat, QT_TRANSLATE_NOOP("Command","TechDraw cosmetic arc")))  {
         return;
     }
-    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Cosmetic Arc"));
+    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Cosmetic arc"));
     const std::vector<std::string> SubNames = selection[0].getSubNames();
     std::vector<Base::Vector3d> vertexPoints;
     vertexPoints = _getVertexPoints(SubNames, objFeat);
@@ -938,13 +891,9 @@ CmdTechDrawExtensionDrawCosmArc::CmdTechDrawExtensionDrawCosmArc()
 {
     sAppModule = "TechDraw";
     sGroup = QT_TR_NOOP("TechDraw");
-    sMenuText = QT_TR_NOOP("Add Cosmetic Arc");
-    sToolTipText = QT_TR_NOOP("Add a cosmetic counter clockwise arc based on three vertexes:<br>\
-- Specify the line attributes (optional)<br>\
-- Select vertex 1 (center point)<br>\
-- Select vertex 2 (radius and start angle)<br>\
-- Select vertex 3 (end angle)<br>\
-- Click this tool");
+    sMenuText = QT_TR_NOOP("Cosmetic Arc");
+    sToolTipText = QT_TR_NOOP("Adds a cosmetic counter clockwise arc based on three vertices, "
+            "where the first selection is the center point and the second is the radius and start point");
     sWhatsThis = "TechDraw_ExtensionDrawCosmArc";
     sStatusTip = sMenuText;
     sPixmap = "TechDraw_ExtensionDrawCosmArc";
@@ -973,7 +922,7 @@ void execDrawCosmCircle(Gui::Command* cmd)
     //draw a cosmetic circle
     std::vector<Gui::SelectionObject> selection;
     TechDraw::DrawViewPart* objFeat{nullptr};
-    if (!_checkSel(cmd, selection, objFeat, QT_TRANSLATE_NOOP("Command","TechDraw Cosmetic Circle"))) {
+    if (!_checkSel(cmd, selection, objFeat, QT_TRANSLATE_NOOP("Command","TechDraw cosmetic circle"))) {
         return;
     }
     Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Cosmetic Circle"));
@@ -1002,12 +951,9 @@ CmdTechDrawExtensionDrawCosmCircle::CmdTechDrawExtensionDrawCosmCircle()
 {
     sAppModule = "TechDraw";
     sGroup = QT_TR_NOOP("TechDraw");
-    sMenuText = QT_TR_NOOP("Add Cosmetic Circle");
-    sToolTipText = QT_TR_NOOP("Add a cosmetic circle based on two vertexes:<br>\
-- Specify the line attributes (optional)<br>\
-- Select vertex 1 (center point)<br>\
-- Select vertex 2 (radius)<br>\
-- Click this tool");
+    sMenuText = QT_TR_NOOP("Cosmetic Circle");
+    sToolTipText = QT_TR_NOOP("Adds a cosmetic circle based on two selected vertices, where the "
+            "first is the ceneter point and the second is the radius");
     sWhatsThis = "TechDraw_ExtensionDrawCosmCircle";
     sStatusTip = sMenuText;
     sPixmap = "TechDraw_ExtensionDrawCosmCircle";
@@ -1068,11 +1014,8 @@ CmdTechDrawExtensionDrawCosmCircle3Points::CmdTechDrawExtensionDrawCosmCircle3Po
 {
     sAppModule = "TechDraw";
     sGroup = QT_TR_NOOP("TechDraw");
-    sMenuText = QT_TR_NOOP("Add Cosmetic Circle 3 Points");
-    sToolTipText = QT_TR_NOOP("Add a cosmetic circle based on three vertexes:<br>\
-- Specify the line attributes (optional)<br>\
-- Select 3 vertexes<br>\
-- Click this tool");
+    sMenuText = QT_TR_NOOP("Cosmetic Circle 3 Points");
+    sToolTipText = QT_TR_NOOP("Adds a cosmetic circle to three selected vertices");
     sWhatsThis = "TechDraw_ExtensionDrawCosmCircle3Points";
     sStatusTip = sMenuText;
     sPixmap = "TechDraw_ExtensionDrawCosmCircle3Points";
@@ -1103,12 +1046,8 @@ CmdTechDrawExtensionDrawCirclesGroup::CmdTechDrawExtensionDrawCirclesGroup()
 {
     sAppModule = "TechDraw";
     sGroup = QT_TR_NOOP("TechDraw");
-    sMenuText = QT_TR_NOOP("Add Cosmetic Circle");
-    sToolTipText = QT_TR_NOOP("Add a cosmetic circle based on two vertexes:<br>\
-- Specify the line attributes (optional)<br>\
-- Select vertex 1 (center point)<br>\
-- Select vertex 2 (radius)<br>\
-- Click this tool");
+    sMenuText = QT_TR_NOOP("Cosmetic Circle");
+    sToolTipText = QT_TR_NOOP("Adds a cosmetic circle based on two vertices, where the first selection is the centerpoint and the second is the radius");
     sWhatsThis = "TechDraw_ExtensionDrawCirclesGroup";
     sStatusTip = sMenuText;
 }
@@ -1118,7 +1057,7 @@ void CmdTechDrawExtensionDrawCirclesGroup::activated(int iMsg)
     //    Base::Console().message("CMD::ExtensionDrawCirclesGroup - activated(%d)\n", iMsg);
     Gui::TaskView::TaskDialog* dlg = Gui::Control().activeDialog();
     if (dlg) {
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Task In Progress"),
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Task in progress"),
                              QObject::tr("Close active task dialog and try again."));
         return;
     }
@@ -1181,33 +1120,23 @@ void CmdTechDrawExtensionDrawCirclesGroup::languageChange()
 
     QAction* arc1 = action[0];
     arc1->setText(
-        QApplication::translate("CmdTechDrawExtensionDrawCosmCircle", "Add Cosmetic Circle"));
+        QApplication::translate("CmdTechDrawExtensionDrawCosmCircle", "Cosmetic Circle"));
     arc1->setToolTip(QApplication::translate("CmdTechDrawExtensionDrawCosmCircle",
-                                             "Add a cosmetic circle based on two vertexes:<br>\
-- Specify the line attributes (optional)<br>\
-- Select vertex 1 (center point)<br>\
-- Select vertex 2 (radius)<br>\
-- Click this tool"));
+                                             "Adds a cosmetic circle based on two vertices, where "
+                                             "the first selection is the centerpoint and the second is the radius"));
     arc1->setStatusTip(arc1->text());
     QAction* arc2 = action[1];
-    arc2->setText(QApplication::translate("CmdTechDrawExtensionDrawCosmArc", "Add Cosmetic Arc"));
+    arc2->setText(QApplication::translate("CmdTechDrawExtensionDrawCosmArc", "Cosmetic Arc"));
     arc2->setToolTip(
         QApplication::translate("CmdTechDrawExtensionDrawCosmArc",
-                                "Add a cosmetic counter clockwise arc based on three vertexes:<br>\
-- Specify the line attributes (optional)<br>\
-- Select vertex 1 (center point)<br>\
-- Select vertex 2 (radius and start angle)<br>\
-- Select vertex 3 (end angle)<br>\
-- Click this tool"));
+                                "Adds a cosmetic counter clockwise arc based on three vertices, "
+            "where the first selection is the center point and the second is the radius and start point."));
     arc2->setStatusTip(arc2->text());
     QAction* arc3 = action[2];
     arc3->setText(QApplication::translate("CmdTechDrawExtensionDrawCosmCircle3Points",
-                                          "Add Cosmetic Circle 3 Points"));
+                                          "Cosmetic 3 Point Circle"));
     arc3->setToolTip(QApplication::translate("CmdTechDrawExtensionDrawCosmCircle3Points",
-                                             "Add a cosmetic circle based on three vertexes:<br>\
-- Specify the line attributes (optional)<br>\
-- Select three vertexes<br>\
-- Click this tool"));
+                                             "Adds a cosmetic circle to 3 selected vertices"));
     arc3->setStatusTip(arc3->text());
 }
 
@@ -1284,11 +1213,8 @@ CmdTechDrawExtensionLineParallel::CmdTechDrawExtensionLineParallel()
 {
     sAppModule = "TechDraw";
     sGroup = QT_TR_NOOP("TechDraw");
-    sMenuText = QT_TR_NOOP("Add Cosmetic Parallel Line");
-    sToolTipText = QT_TR_NOOP("Add a cosmetic line parallel to another line through a vertex:<br>\
-- Select a line<br>\
-- Select a vertex<br>\
-- Click this tool");
+    sMenuText = QT_TR_NOOP("Cosmetic Parallel Line");
+    sToolTipText = QT_TR_NOOP("Adds a cosmetic circle to 3 selected vertices");
     sWhatsThis = "TechDraw_ExtensionLineParallel";
     sStatusTip = sMenuText;
     sPixmap = "TechDraw_ExtensionLineParallel";
@@ -1318,12 +1244,9 @@ CmdTechDrawExtensionLinePerpendicular::CmdTechDrawExtensionLinePerpendicular()
 {
     sAppModule = "TechDraw";
     sGroup = QT_TR_NOOP("TechDraw");
-    sMenuText = QT_TR_NOOP("Add Cosmetic Perpendicular Line");
+    sMenuText = QT_TR_NOOP("Cosmetic Perpendicular Line");
     sToolTipText =
-        QT_TR_NOOP("Add a cosmetic line perpendicular to another line through a vertex:<br>\
-- Select a line<br>\
-- Select a vertex<br>\
-- Click this tool");
+        QT_TR_NOOP("Adds a cosmetic line perpendicular to the selected line through the selected vertex");
     sWhatsThis = "TechDraw_ExtensionLinePerpendicular";
     sStatusTip = sMenuText;
     sPixmap = "TechDraw_ExtensionLinePerpendicular";
@@ -1353,11 +1276,8 @@ CmdTechDrawExtensionLinePPGroup::CmdTechDrawExtensionLinePPGroup()
 {
     sAppModule = "TechDraw";
     sGroup = QT_TR_NOOP("TechDraw");
-    sMenuText = QT_TR_NOOP("Add Cosmetic Parallel Line");
-    sToolTipText = QT_TR_NOOP("Add a cosmetic line parallel to another line through a vertex:<br>\
-- Select a line<br>\
-- Select a vertex<br>\
-- Click this tool");
+    sMenuText = QT_TR_NOOP("Cosmetic Parallel Line");
+    sToolTipText = QT_TR_NOOP("Adds a cosmetic line parallel to the selected line through the selected vertex");
     sWhatsThis = "TechDraw_ExtensionLinePPGroup";
     sStatusTip = sMenuText;
 }
@@ -1367,7 +1287,7 @@ void CmdTechDrawExtensionLinePPGroup::activated(int iMsg)
     //    Base::Console().message("CMD::ExtensionLinePPGroup - activated(%d)\n", iMsg);
     Gui::TaskView::TaskDialog* dlg = Gui::Control().activeDialog();
     if (dlg) {
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Task In Progress"),
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Task in progress"),
                              QObject::tr("Close active task dialog and try again."));
         return;
     }
@@ -1423,23 +1343,17 @@ void CmdTechDrawExtensionLinePPGroup::languageChange()
 
     QAction* arc1 = action[0];
     arc1->setText(
-        QApplication::translate("CmdTechDrawExtensionLineParallel", "Add Cosmetic Parallel Line"));
+        QApplication::translate("CmdTechDrawExtensionLineParallel", "Cosmetic Parallel Line"));
     arc1->setToolTip(
         QApplication::translate("CmdTechDrawExtensionLineParallel",
-                                "Add a cosmetic line parallel to another line through a vertex:<br>\
-- Select a line<br>\
-- Select a vertex<br>\
-- Click this tool"));
+                                "Adds a cosmetic line parallel to the selected line through the selected vertex"));
     arc1->setStatusTip(arc1->text());
     QAction* arc2 = action[1];
     arc2->setText(QApplication::translate("CmdTechDrawExtensionLinePerpendicular",
-                                          "Add Cosmetic Perpendicular Line"));
+                                          "Cosmetic Perpendicular Line"));
     arc2->setToolTip(QApplication::translate(
         "CmdTechDrawExtensionLinePerpendicular",
-        "Add a cosmetic line perpendicular to another line through a vertex:<br>\
-- Select a line<br>\
-- Select a vertex<br>\
-- Click this tool"));
+        "Adds a cosmetic line perpendicular to the selected line through the selected vertex"));
     arc2->setStatusTip(arc2->text());
 }
 
@@ -1461,10 +1375,8 @@ CmdTechDrawExtensionLockUnlockView::CmdTechDrawExtensionLockUnlockView()
 {
     sAppModule = "TechDraw";
     sGroup = QT_TR_NOOP("TechDraw");
-    sMenuText = QT_TR_NOOP("Lock/Unlock View");
-    sToolTipText = QT_TR_NOOP("Lock or unlock the position of a view:<br>\
-- Select view(s)<br>\
-- Click this tool");
+    sMenuText = QT_TR_NOOP("Toggle View Lock");
+    sToolTipText = QT_TR_NOOP("Locks or unlocks the position of the selected views");
     sWhatsThis = "TechDraw_ExtensionLockUnlockView";
     sStatusTip = sMenuText;
     sPixmap = "TechDraw_ExtensionLockUnlockView";
@@ -1511,7 +1423,7 @@ void execExtendShortenLine(Gui::Command* cmd, bool extend)
     if (!_checkSel(cmd, selection, objFeat, QT_TRANSLATE_NOOP("Command","TechDraw Extend/Shorten Line"))) {
         return;
     }
-    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Extend/Shorten Line"));
+    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Extend/shorten line"));
     const std::vector<std::string> subNames = selection[0].getSubNames();
     if (!subNames.empty()) {
         std::string name = subNames[0];
@@ -1594,12 +1506,9 @@ CmdTechDrawExtensionExtendLine::CmdTechDrawExtensionExtendLine()
     sAppModule = "TechDraw";
     sGroup = QT_TR_NOOP("TechDraw");
     sMenuText = QT_TR_NOOP("Extend Line");
-    sToolTipText = QT_TR_NOOP("Extend a cosmetic line or centerline at both ends:<br>\
-- Specify the delta distance (optional)<br>\
-- Select a single line<br>\
-- Click this tool");
+    sToolTipText = QT_TR_NOOP("Extends a selected cosmetic line or centerline at both ends by the specified delta distance");
     sWhatsThis = "TechDraw_ExtensionExtendLine";
-    sStatusTip = sMenuText;
+    sStatusTip = sToolTipText;
     sPixmap = "TechDraw_ExtensionExtendLine";
 }
 
@@ -1629,10 +1538,7 @@ CmdTechDrawExtensionShortenLine::CmdTechDrawExtensionShortenLine()
     sAppModule = "TechDraw";
     sGroup = QT_TR_NOOP("TechDraw");
     sMenuText = QT_TR_NOOP("Shorten Line");
-    sToolTipText = QT_TR_NOOP("Shorten a cosmetic line or centerline at both ends:<br>\
-- Specify the delta distance (optional)<br>\
-- Select a single line<br>\
-- Click this tool");
+    sToolTipText = QT_TR_NOOP("Shortens a selected cosmetic line or centerline at both ends by the specified delta distance");
     sWhatsThis = "TechDraw_ExtensionShortenLine";
     sStatusTip = sMenuText;
     sPixmap = "TechDraw_ExtensionShortenLine";
@@ -1664,10 +1570,7 @@ CmdTechDrawExtendShortenLineGroup::CmdTechDrawExtendShortenLineGroup()
     sAppModule = "TechDraw";
     sGroup = QT_TR_NOOP("TechDraw");
     sMenuText = QT_TR_NOOP("Extend Line");
-    sToolTipText = QT_TR_NOOP("Extend a cosmetic line or centerline at both ends:<br>\
-- Specify the delta distance (optional)<br>\
-- Select a single line<br>\
-- Click this tool");
+    sToolTipText = QT_TR_NOOP("Extends a selected cosmetic line or centerline at both ends by the specified delta distance");
     sWhatsThis = "TechDraw_ExtensionExtendShortenLineGroup";
     sStatusTip = sMenuText;
 }
@@ -1677,7 +1580,7 @@ void CmdTechDrawExtendShortenLineGroup::activated(int iMsg)
     // Base::Console().message("CMD::ExtendShortenLineGroup - activated(%d)\n", iMsg);
     Gui::TaskView::TaskDialog* dlg = Gui::Control().activeDialog();
     if (dlg) {
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Task In Progress"),
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Task in progress"),
                              QObject::tr("Close active task dialog and try again."));
         return;
     }
@@ -1734,18 +1637,12 @@ void CmdTechDrawExtendShortenLineGroup::languageChange()
     QAction* arc1 = action[0];
     arc1->setText(QApplication::translate("CmdTechDrawExtensionExtendLine", "Extend Line"));
     arc1->setToolTip(QApplication::translate(
-        "CmdTechDrawExtensionExtendLine", "Extend a cosmetic line or centerline at both ends:<br>\
-- Specify the delta distance (optional)<br>\
-- Select a single line<br>\
-- Click this tool"));
+        "CmdTechDrawExtensionExtendLine", "Extends a selected cosmetic line or centerline at both ends by the specified delta distance"));
     arc1->setStatusTip(arc1->text());
     QAction* arc2 = action[1];
     arc2->setText(QApplication::translate("CmdTechDrawExtensionShortenLine", "Shorten Line"));
     arc2->setToolTip(QApplication::translate(
-        "CmdTechDrawExtensionShortenLine", "Shorten a cosmetic line or centerline at both ends:<br>\
-- Specify the delta distance (optional)<br>\
-- Select a single line<br>\
-- Click this tool"));
+        "CmdTechDrawExtensionShortenLine", "Shortens a selected cosmetic line or centerline at both ends by the specified delta distance"));
     arc2->setStatusTip(arc2->text());
 }
 
@@ -1767,8 +1664,8 @@ CmdTechDrawExtensionAreaAnnotation::CmdTechDrawExtensionAreaAnnotation()
 {
     sAppModule = "TechDraw";
     sGroup = QT_TR_NOOP("TechDraw");
-    sMenuText = QT_TR_NOOP("Calculate the area of selected faces");
-    sToolTipText = QT_TR_NOOP("Select several faces then click this tool");
+    sMenuText = QT_TR_NOOP("Area Annotation");
+    sToolTipText = QT_TR_NOOP("Calculates the area of multiple selected faces");
     sWhatsThis = "TechDraw_ExtensionAreaAnnotation";
     sStatusTip = sToolTipText;
     sPixmap = "TechDraw_ExtensionAreaAnnotation";
@@ -1780,7 +1677,7 @@ void CmdTechDrawExtensionAreaAnnotation::activated(int iMsg)
     Q_UNUSED(iMsg);
     std::vector<Gui::SelectionObject> selection;
     TechDraw::DrawViewPart* objFeat{nullptr};
-    if (!_checkSel(this, selection, objFeat, QT_TRANSLATE_NOOP("Command","TechDraw calculate selected area")))  {
+    if (!_checkSel(this, selection, objFeat, QT_TRANSLATE_NOOP("Command","TechDraw Calculate Selected Area")))  {
         return;
     }
 
@@ -1797,7 +1694,7 @@ void CmdTechDrawExtensionAreaAnnotation::activated(int iMsg)
     if (subNames.empty()) {
         QMessageBox::warning(Gui::getMainWindow(),
                              QObject::tr("Incorrect selection"),
-                             QObject::tr("No faces in selection."));
+                             QObject::tr("No faces in selection"));
         return;
     }
 
@@ -1897,9 +1794,8 @@ CmdTechDrawExtensionArcLengthAnnotation::CmdTechDrawExtensionArcLengthAnnotation
 {
     sAppModule = "TechDraw";
     sGroup = QT_TR_NOOP("TechDraw");
-    sMenuText = QT_TR_NOOP("Calculate the arc length of selected edges");
-    sToolTipText = QT_TR_NOOP("Select several edges<br>\
-    - click this tool");
+    sMenuText = QT_TR_NOOP("Arc Length Annotation");
+    sToolTipText = QT_TR_NOOP("Inserts an annotation with the calculated arc length of the selected edges");
     sWhatsThis = "TechDraw_ExtensionArcLengthAnnotation";
     sStatusTip = sToolTipText;
     sPixmap = "TechDraw_ExtensionArcLengthAnnotation";
@@ -1912,7 +1808,7 @@ void CmdTechDrawExtensionArcLengthAnnotation::activated(int iMsg)
 
     std::vector<Gui::SelectionObject> selection;
     TechDraw::DrawViewPart *objFeat{nullptr};
-    if (!_checkSel(this, selection, objFeat, QT_TRANSLATE_NOOP("Command", "TechDraw calculate selected arc length"))) {
+    if (!_checkSel(this, selection, objFeat, QT_TRANSLATE_NOOP("Command", "TechDraw Calculate Selected Arc Length"))) {
         return;
     }
 
@@ -1927,7 +1823,7 @@ void CmdTechDrawExtensionArcLengthAnnotation::activated(int iMsg)
     if (subNames.empty()) {
         QMessageBox::warning(Gui::getMainWindow(),
                              QObject::tr("Incorrect selection"),
-                             QObject::tr("No edges in selection."));
+                             QObject::tr("No edges in selection"));
         return;
     }
 
@@ -2152,8 +2048,8 @@ void _createThreadLines(const std::vector<std::string>& SubNames, TechDraw::Draw
         TechDraw::BaseGeomPtr geom0 = objFeat->getGeomByIndex(GeoId0);
         TechDraw::BaseGeomPtr geom1 = objFeat->getGeomByIndex(GeoId1);
         if (geom0->getGeomType() != GeomType::GENERIC || geom1->getGeomType() != GeomType::GENERIC) {
-            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("TechDraw Thread Hole Side"),
-                                 QObject::tr("Please select two straight lines"));
+            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("TechDraw thread hole side"),
+                                 QObject::tr("Select 2 straight lines"));
             return;
         }
 
