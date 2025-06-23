@@ -329,7 +329,7 @@
          <string>Strikethrough</string>
         </property>
         <property name="text">
-         <string>Strike Out</string>
+         <string>Strike out</string>
         </property>
         <property name="icon">
          <iconset resource="Resources/TechDraw.qrc">

@@ -96,7 +96,7 @@ TaskWeldingSymbol::TaskWeldingSymbol(TechDraw::DrawWeldSymbol* weld) :
     App::DocumentObject* obj = m_weldFeat->Leader.getValue();
     if (!obj ||
         !obj->isDerivedFrom<TechDraw::DrawLeaderLine>() )  {
-        Base::Console().error("TaskWeldingSymbol - no leader for welding symbol.  Can not proceed.\n");
+        Base::Console().error("TaskWeldingSymbol - no leader for welding symbol.  Cannot proceed.\n");
         return;
     }
 
@@ -163,7 +163,7 @@ void TaskWeldingSymbol::changeEvent(QEvent *event)
 void TaskWeldingSymbol::setUiPrimary()
 {
 //    Base::Console().message("TWS::setUiPrimary()\n");
-    setWindowTitle(QObject::tr("Create Welding Symbol"));
+    setWindowTitle(QObject::tr("Create welding symbol"));
     m_currDir = PreferencesGui::weldingDirectory();
     ui->fcSymbolDir->setFileName(m_currDir);
 
@@ -182,7 +182,7 @@ void TaskWeldingSymbol::setUiPrimary()
 void TaskWeldingSymbol::setUiEdit()
 {
 //    Base::Console().message("TWS::setUiEdit()\n");
-    setWindowTitle(QObject::tr("Edit Welding Symbol"));
+    setWindowTitle(QObject::tr("Edit welding symbol"));
 
     m_currDir = PreferencesGui::weldingDirectory();
     ui->fcSymbolDir->setFileName(m_currDir);
@@ -558,7 +558,7 @@ bool TaskWeldingSymbol::accept()
 {
 //    Base::Console().message("TWS::accept()\n");
     if (m_createMode) {
-        Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Create WeldSymbol"));
+        Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Create weld symbol"));
         m_weldFeat = createWeldingSymbol();
         updateTiles();
         Gui::Command::updateActive();
@@ -566,7 +566,7 @@ bool TaskWeldingSymbol::accept()
         m_weldFeat->recomputeFeature();
     //    m_weldFeat->requestPaint();    //not a dv!
     } else {
-        Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Edit WeldSymbol"));
+        Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Edit weld symbol"));
         try {
             updateWeldingSymbol();
             updateTiles();

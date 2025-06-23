@@ -105,7 +105,7 @@ void TaskCosVertex::changeEvent(QEvent* event)
 void TaskCosVertex::setUiPrimary()
 {
 //    Base::Console().message("TCV::setUiPrimary()\n");
-    setWindowTitle(QObject::tr("New Cosmetic Vertex"));
+    setWindowTitle(QObject::tr("New cosmetic vertex"));
 
     if (m_baseFeat) {
         std::string baseName = m_baseFeat->getNameInDocument();
@@ -134,7 +134,7 @@ void TaskCosVertex::updateUi()
 //! create the cv as entered, addCosmeticVertex will invert it
 void TaskCosVertex::addCosVertex(QPointF qPos)
 {
-    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add Cosmetic Vertex"));
+    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add cosmetic vertex"));
 
 //    Base::Vector3d pos = DU::invertY(DU::toVector3d(qPos));
 //    int idx =
@@ -156,7 +156,7 @@ void TaskCosVertex::onTrackerClicked(bool clicked)
 
     if (m_pbTrackerState == TrackerAction::CANCEL) {
         m_pbTrackerState = TrackerAction::PICK;
-        ui->pbTracker->setText(tr("Pick Points"));
+        ui->pbTracker->setText(tr("Pick points"));
         enableTaskButtons(true);
 
         setEditCursor(Qt::ArrowCursor);
@@ -245,7 +245,7 @@ void TaskCosVertex::onTrackerFinished(std::vector<QPointF> pts, QGIView* qgParen
     m_tracker->sleep(true);
     m_inProgressLock = false;
     m_pbTrackerState = TrackerAction::PICK;
-    ui->pbTracker->setText(tr("Pick Points"));
+    ui->pbTracker->setText(tr("Pick points"));
     ui->pbTracker->setEnabled(true);
     enableTaskButtons(true);
     setEditCursor(Qt::ArrowCursor);

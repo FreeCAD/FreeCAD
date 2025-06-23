@@ -59,7 +59,7 @@ TaskCosmeticLine::TaskCosmeticLine(TechDraw::DrawViewPart* partFeat,
 
     m_ce = m_partFeat->getCosmeticEdgeBySelection(m_edgeName);
     if (!m_ce) {
-        Base::Console().error("TaskCosmeticLine - bad parameters.  Can not proceed.\n");
+        Base::Console().error("TaskCosmeticLine - bad parameters.  Cannot proceed.\n");
         return;
     }
 
@@ -110,7 +110,7 @@ void TaskCosmeticLine::changeEvent(QEvent *e)
 
 void TaskCosmeticLine::setUiPrimary()
 {
-    setWindowTitle(QObject::tr("Create Cosmetic Line"));
+    setWindowTitle(QObject::tr("Create cosmetic line"));
 
     // double rotDeg = m_partFeat->Rotation.getValue();
     // double rotRad = Base::toRadians(rotDeg);
@@ -152,7 +152,7 @@ void TaskCosmeticLine::setUiPrimary()
 
 void TaskCosmeticLine::setUiEdit()
 {
-    setWindowTitle(QObject::tr("Edit Cosmetic Line"));
+    setWindowTitle(QObject::tr("Edit cosmetic line"));
 
     ui->rb2d1->setChecked(true);
     ui->rb3d1->setChecked(false);
@@ -174,7 +174,7 @@ void TaskCosmeticLine::setUiEdit()
 void TaskCosmeticLine::createCosmeticLine()
 {
 //    Base::Console().message("TCL::createCosmeticLine()\n");
-    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Create Cosmetic Line"));
+    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Create cosmetic line"));
 
     // ui 2d points are interpreted as unscaled, unrotated, uninverted
     double x = ui->qsbx1->value().getValue();

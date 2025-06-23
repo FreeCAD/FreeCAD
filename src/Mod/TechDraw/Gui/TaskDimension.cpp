@@ -165,8 +165,8 @@ TaskDimension::~TaskDimension()
 bool TaskDimension::accept()
 {
     if (m_dimensionVP.expired()) {
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Missing Dimension"),
-                                               QObject::tr("Dimension not found. Was it deleted? Can not continue."));
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Missing dimension"),
+                                               QObject::tr("Dimension not found. Was it deleted? Cannot continue."));
         return true;
     }
     Gui::Document* doc = m_dimensionVP->getDocument();
@@ -180,8 +180,8 @@ bool TaskDimension::accept()
 bool TaskDimension::reject()
 {
     if (m_dimensionVP.expired()) {
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Missing Dimension"),
-                                               QObject::tr("Dimension not found. Was it deleted? Can not continue."));
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Missing dimension"),
+                                               QObject::tr("Dimension not found. Was it deleted? Cannot continue."));
         return true;
     }
     Gui::Document* doc = m_dimensionVP->getDocument();
@@ -461,8 +461,8 @@ std::pair<double, bool> TaskDimension::getAngleFromSelection()
         }
     }
 
-    QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Incorrect Selection"),
-                                               QObject::tr("Select 2 Vertexes or 1 Edge"));
+    QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Incorrect selection"),
+                                               QObject::tr("Select 2 vertices or 1 edge"));
     result.second = false;
     return result;
 }

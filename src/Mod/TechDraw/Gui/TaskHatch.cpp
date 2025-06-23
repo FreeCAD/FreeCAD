@@ -94,7 +94,7 @@ TaskHatch::~TaskHatch()
 
 void TaskHatch::setUiPrimary()
 {
-    setWindowTitle(QObject::tr("Create Face Hatch"));
+    setWindowTitle(QObject::tr("Create face hatch"));
     ui->fcFile->setFileName(QString::fromStdString(DrawHatch::prefSvgHatch()));
     ui->fcFile->setFilter(QStringLiteral(
             "SVG files (*.svg *.SVG);;Bitmap files(*.jpg *.jpeg *.png *.bmp);;All files (*)"));
@@ -106,7 +106,7 @@ void TaskHatch::setUiPrimary()
 
 void TaskHatch::setUiEdit()
 {
-    setWindowTitle(QObject::tr("Edit Face Hatch"));
+    setWindowTitle(QObject::tr("Edit face hatch"));
     ui->fcFile->setFileName(QString::fromStdString(m_saveFile));
     ui->fcFile->setFilter(QStringLiteral(
             "SVG files (*.svg *.SVG);;Bitmap files(*.jpg *.jpeg *.png *.bmp);;All files (*)"));
@@ -200,7 +200,7 @@ void TaskHatch::createHatch()
     const std::string objectName("Hatch");
     std::string FeatName = doc->getUniqueObjectName(objectName.c_str());
 
-    Command::openCommand(QT_TRANSLATE_NOOP("Command", "Create Hatch"));
+    Command::openCommand(QT_TRANSLATE_NOOP("Command", "Create hatch"));
 
     Command::doCommand(Command::Doc, "App.activeDocument().addObject('TechDraw::DrawHatch', '%s')", FeatName.c_str());
     Command::doCommand(Command::Doc, "App.activeDocument().%s.translateLabel('DrawHatch', 'Hatch', '%s')",
@@ -227,7 +227,7 @@ void TaskHatch::createHatch()
         Base::Vector3d offset(ui->dsbOffsetX->value(), ui->dsbOffsetY->value(), 0.0);
         m_vp->HatchOffset.setValue(offset);
     } else {
-        Base::Console().error("TaskHatch - Hatch has no ViewProvider\n");
+        Base::Console().error("TaskHatch - hatch has no ViewProvider\n");
     }
     Command::commitCommand();
 }
@@ -237,7 +237,7 @@ void TaskHatch::updateHatch()
 //    Base::Console().message("TH::updateHatch()\n");
     std::string FeatName = m_hatch->getNameInDocument();
 
-    Command::openCommand(QT_TRANSLATE_NOOP("Command", "Update Hatch"));
+    Command::openCommand(QT_TRANSLATE_NOOP("Command", "Update hatch"));
 
     auto filespec = ui->fcFile->fileName().toStdString();
     filespec = DU::cleanFilespecBackslash(filespec);

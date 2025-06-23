@@ -136,7 +136,7 @@ TaskComplexSection::TaskComplexSection(TechDraw::DrawComplexSection* complexSect
 
 void TaskComplexSection::setUiPrimary()
 {
-    setWindowTitle(QObject::tr("New Complex Section"));
+    setWindowTitle(QObject::tr("New complex section"));
     if (m_baseView) {
         ui->sbScale->setValue(m_baseView->getScale());
         ui->cmbScaleType->setCurrentIndex(m_baseView->getScaleType());
@@ -177,7 +177,7 @@ void TaskComplexSection::setUiPrimary()
 
 void TaskComplexSection::setUiEdit()
 {
-    setWindowTitle(QObject::tr("Edit Complex Section"));
+    setWindowTitle(QObject::tr("Edit complex section"));
 
     if (m_baseView) {
         ui->leBaseView->setText(QString::fromStdString(m_baseView->getNameInDocument()));
@@ -215,7 +215,7 @@ void TaskComplexSection::setUiCommon()
     layout->addWidget(m_compass);
 
     m_viewDirectionWidget = new VectorEditWidget(this);
-    m_viewDirectionWidget->setLabel(QObject::tr("Current View Direction"));
+    m_viewDirectionWidget->setLabel(QObject::tr("Current view direction"));
     m_viewDirectionWidget->setToolTip(QObject::tr("The view direction in BaseView coordinates"));
     auto editLayout = ui->viewDirectionLayout;
     editLayout->addWidget(m_viewDirectionWidget);
@@ -487,7 +487,7 @@ bool TaskComplexSection::apply(bool forceUpdate)
         if (!DrawComplexSection::canBuild(m_baseView->localVectorToCS(localUnit),
                                           m_profileObject)) {
             Base::Console().error(
-                "Can not build Complex Section with this profile and direction (1)\n");
+                "Cannot build complex section with this profile and direction (1)\n");
             return false;
         }
     }
@@ -497,7 +497,7 @@ bool TaskComplexSection::apply(bool forceUpdate)
                          Base::convertTo<gp_Dir>(m_saveXDir));
         if (!DrawComplexSection::canBuild(sectionCS, m_profileObject)) {
             Base::Console().error(
-                "Can not build Complex Section with this profile and direction (2)\n");
+                "Cannot build complex section with this profile and direction (2)\n");
             return false;
         }
     }
@@ -524,7 +524,7 @@ bool TaskComplexSection::apply(bool forceUpdate)
         m_baseView->requestPaint();
     }
     if (!m_section->checkSectionCS()) {
-            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Possible Coordinate System Error"),
+            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Possible coordinate system error"),
                                                QObject::tr("Check SectionNormal, Direction and/or XDirection."));
     }
 
@@ -553,7 +553,7 @@ void TaskComplexSection::applyAligned()
 //pointer to created view is not returned, but stored in m_section
 void TaskComplexSection::createComplexSection()
 {
-    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Create ComplexSection"));
+    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Create complex section"));
     if (!m_section) {
         const std::string objectName{QT_TR_NOOP("ComplexSection")};
         m_sectionName = m_page->getDocument()->getUniqueObjectName(objectName.c_str());
@@ -648,7 +648,7 @@ void TaskComplexSection::updateComplexSection()
         return;
     }
 
-    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Edit Section View"));
+    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Edit section view"));
     if (m_section) {
         QString qTemp = ui->leSymbol->text();
         std::string temp = qTemp.toStdString();

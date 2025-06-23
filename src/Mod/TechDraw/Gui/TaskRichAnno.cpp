@@ -75,7 +75,7 @@ TaskRichAnno::TaskRichAnno(TechDrawGui::ViewProviderRichAnno* annoVP) :
 
     m_basePage = m_annoFeat->findParentPage();
     if (!m_basePage) {
-        Base::Console().error("TaskRichAnno - bad parameters (2).  Can not proceed.\n");
+        Base::Console().error("TaskRichAnno - bad parameters (2).  Cannot proceed.\n");
         return;
     }
 
@@ -286,7 +286,7 @@ void TaskRichAnno::createAnnoFeature()
 
     std::string PageName = m_basePage->getNameInDocument();
 
-    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Create Anno"));
+    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Create anno"));
     Command::doCommand(Command::Doc, "App.activeDocument().addObject('%s', '%s')",
                        annoType.c_str(), annoName.c_str());
     Command::doCommand(Command::Doc, "App.activeDocument().%s.addView(App.activeDocument().%s)",
@@ -348,7 +348,7 @@ void TaskRichAnno::createAnnoFeature()
 void TaskRichAnno::updateAnnoFeature()
 {
 //    Base::Console().message("TRA::updateAnnoFeature()\n");
-    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Edit Anno"));
+    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Edit anno"));
     commonFeatureUpdate();
     Base::Color ac;
     ac.setValue<QColor>(ui->cpFrameColor->color());

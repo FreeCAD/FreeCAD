@@ -14,7 +14,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Symbol Chooser</string>
+   <string>Symbol chooser</string>
   </property>
   <property name="modal">
    <bool>true</bool>

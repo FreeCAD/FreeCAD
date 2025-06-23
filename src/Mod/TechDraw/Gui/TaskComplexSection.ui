@@ -17,7 +17,7 @@
    </sizepolicy>
   </property>
   <property name="windowTitle">
-   <string>Complex Section</string>
+   <string>Complex section</string>
   </property>
   <property name="windowIcon">
    <iconset resource="Resources/TechDraw.qrc">
@@ -33,7 +33,7 @@
       </sizepolicy>
      </property>
      <property name="title">
-      <string>Object Selection</string>
+      <string>Object selection</string>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout">
       <item>
@@ -48,7 +48,7 @@
         <item row="1" column="0">
          <widget class="QPushButton" name="pbSectionObjects">
           <property name="text">
-           <string>Use Selection</string>
+           <string>Use selection</string>
           </property>
          </widget>
         </item>
@@ -76,7 +76,7 @@
         <item row="3" column="0">
          <widget class="QPushButton" name="pbProfileObject">
           <property name="text">
-           <string>Use Selection</string>
+           <string>Use selection</string>
           </property>
          </widget>
         </item>
@@ -88,7 +88,7 @@
    <item>
     <widget class="QGroupBox" name="groupBox_2">
      <property name="title">
-      <string>Section Parameters</string>
+      <string>Section parameters</string>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_2">
       <item>
@@ -131,7 +131,7 @@
         <item row="3" column="0">
          <widget class="QLabel" name="label_3">
           <property name="text">
-           <string>Scale Type</string>
+           <string>Scale type</string>
           </property>
          </widget>
         </item>
@@ -157,7 +157,7 @@
         <item row="1" column="0">
          <widget class="QLabel" name="label_7">
           <property name="text">
-           <string>Projection Strategy</string>
+           <string>Projection strategy</string>
           </property>
          </widget>
         </item>
@@ -252,7 +252,7 @@
       </sizepolicy>
      </property>
      <property name="title">
-      <string>Set View Direction</string>
+      <string>Set view direction</string>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_4">
       <item>
@@ -269,7 +269,7 @@
            </size>
           </property>
           <property name="toolTip">
-           <string>Preset view direction looking up.</string>
+           <string>Preset view direction looking up</string>
           </property>
           <property name="text">
            <string/>
@@ -299,7 +299,7 @@
            </size>
           </property>
           <property name="toolTip">
-           <string>Preset view direction looking down.</string>
+           <string>Preset view direction looking down</string>
           </property>
           <property name="text">
            <string/>
@@ -326,7 +326,7 @@
            </size>
           </property>
           <property name="toolTip">
-           <string>Preset view direction looking left.</string>
+           <string>Preset view direction looking left</string>
           </property>
           <property name="text">
            <string/>
@@ -353,7 +353,7 @@
            </size>
           </property>
           <property name="toolTip">
-           <string>Preset view direction looking right.</string>
+           <string>Preset view direction looking right</string>
           </property>
           <property name="text">
            <string/>
@@ -390,7 +390,7 @@
         <item row="0" column="0">
          <widget class="QCheckBox" name="cbLiveUpdate">
           <property name="toolTip">
-           <string>Check to update display after every property change.</string>
+           <string>Check to update display after every property change</string>
           </property>
           <property name="text">
            <string>Live Update</string>
@@ -400,10 +400,10 @@
         <item row="0" column="1">
          <widget class="QPushButton" name="pbUpdateNow">
           <property name="toolTip">
-           <string>Rebuild display now. May be slow for complex models.</string>
+           <string>Rebuild display now. May be slow for complex models</string>
           </property>
           <property name="text">
-           <string>Update Now</string>
+           <string>Update now</string>
           </property>
          </widget>
         </item>

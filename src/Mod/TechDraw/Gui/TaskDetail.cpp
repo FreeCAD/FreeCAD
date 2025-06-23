@@ -79,7 +79,7 @@ TaskDetail::TaskDetail(TechDraw::DrawViewPart* baseFeat):
     m_basePage = m_baseFeat->findParentPage();
     //it is possible that the basePage could be unparented and have no corresponding Page
     if (!m_basePage) {
-        Base::Console().error("TaskDetail - bad parameters - base page.  Can not proceed.\n");
+        Base::Console().error("TaskDetail - bad parameters - base page.  Cannot proceed.\n");
         return;
     }
 
@@ -95,7 +95,7 @@ TaskDetail::TaskDetail(TechDraw::DrawViewPart* baseFeat):
 
     createDetail();
     setUiFromFeat();
-    setWindowTitle(QObject::tr("New Detail View"));
+    setWindowTitle(QObject::tr("New detail view"));
 
     connect(ui->pbDragger, &QPushButton::clicked,
             this, &TaskDetail::onDraggerClicked);
@@ -146,7 +146,7 @@ TaskDetail::TaskDetail(TechDraw::DrawViewDetail* detailFeat):
 {
     if (!m_detailFeat)  {
         //should be caught in CMD caller
-        Base::Console().error("TaskDetail - bad parameters.  Can not proceed.\n");
+        Base::Console().error("TaskDetail - bad parameters.  Cannot proceed.\n");
         return;
     }
 
@@ -163,7 +163,7 @@ TaskDetail::TaskDetail(TechDraw::DrawViewDetail* detailFeat):
     if (m_baseFeat) {
         m_baseName = m_baseFeat->getNameInDocument();
     } else {
-        Base::Console().error("TaskDetail - no BaseView.  Can not proceed.\n");
+        Base::Console().error("TaskDetail - no base view.  Cannot proceed.\n");
         return;
     }
 
@@ -175,7 +175,7 @@ TaskDetail::TaskDetail(TechDraw::DrawViewDetail* detailFeat):
 
     saveDetailState();
     setUiFromFeat();
-    setWindowTitle(QObject::tr("Edit Detail View"));
+    setWindowTitle(QObject::tr("Edit detail view"));
 
     connect(ui->pbDragger, &QPushButton::clicked,
             this, &TaskDetail::onDraggerClicked);
@@ -257,7 +257,7 @@ void TaskDetail::setUiFromFeat()
     double scale = detailFeat->Scale.getValue();
     QString ref = QString::fromUtf8(detailFeat->Reference.getValue());
 
-    ui->pbDragger->setText(tr("Drag Highlight"));
+    ui->pbDragger->setText(tr("Drag highlight"));
     ui->pbDragger->setEnabled(true);
     int decimals = Base::UnitsApi::getDecimals();
     ui->qsbX->setUnit(Base::Unit::Length);
@@ -431,7 +431,7 @@ void TaskDetail::enableTaskButtons(bool button)
 void TaskDetail::createDetail()
 {
 //    Base::Console().message("TD::createDetail()\n");
-    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Create Detail View"));
+    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Create detail view"));
 
     const std::string objectName{"Detail"};
     m_detailName = m_doc->getUniqueObjectName(objectName.c_str());
@@ -473,7 +473,7 @@ void TaskDetail::updateDetail()
 {
 //    Base::Console().message("TD::updateDetail()\n");
     try {
-        Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Update Detail"));
+        Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Update detail"));
         double x = ui->qsbX->rawValue();
         double y = ui->qsbY->rawValue();
         Base::Vector3d temp(x, y, 0.0);
@@ -494,7 +494,7 @@ void TaskDetail::updateDetail()
     }
     catch (...) {
         //this is probably due to appl closing while dialog is still open
-        Base::Console().error("Task Detail - detail feature update failed.\n");
+        Base::Console().error("Task detail - detail feature update failed.\n");
     }
 }
 

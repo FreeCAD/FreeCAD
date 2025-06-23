@@ -48,12 +48,12 @@ class CommandPositionSectionView:
         """Return a dictionary with data that will be used by the button or menu item."""
         return {'Pixmap': 'TechDraw_ExtensionPositionSectionView.svg',
                 'Accel': "",
-                'MenuText': QT_TRANSLATE_NOOP("TechDraw_PositionSectionView", "Position Section View"),
+                'MenuText': QT_TRANSLATE_NOOP("TechDraw_PositionSectionView", "Position section view"),
                 'ToolTip': QT_TRANSLATE_NOOP("TechDraw_PositionSectionView",
                   "Orthogonally align a section view with its source view:<br>\
                 - Select a single section view<br>\
                 - Click this tool<br>\
-                - optional: select one edge in the section view and it's corresponding vertex in the base view<br>\
+                - optional: select one edge in the section view and its corresponding vertex in the base view<br>\
                   Click this tool")}
 
     def Activated(self):
@@ -113,8 +113,14 @@ class CommandPositionSectionView:
 
     def getTrianglePoint(self,p1,dir,p2):
         '''
-        Get third point of a perpendicular triangle
-        p1, p2 ...vertexes of hypothenusis, dir ...direction of one kathete, p3 ...3rd vertex
+        Calculate the third vertex of a right triangle.
+
+        Parameters:
+        p1, p2 : vertices of the hypotenuse
+        dir    : direction vector of one leg (kathete)
+        
+        Returns:
+        p3 : the third vertex completing the right triangle
         '''
         a = -dir.y
         b = dir.x

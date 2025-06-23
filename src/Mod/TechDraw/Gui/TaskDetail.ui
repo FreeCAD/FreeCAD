@@ -17,7 +17,7 @@
    </sizepolicy>
   </property>
   <property name="windowTitle">
-   <string>Detail Anchor</string>
+   <string>Detail anchor</string>
   </property>
   <property name="windowIcon">
    <iconset resource="Resources/TechDraw.qrc">
@@ -52,7 +52,7 @@
      <item row="1" column="0">
       <widget class="QLabel" name="label">
        <property name="text">
-        <string>Detail View</string>
+        <string>Detail view</string>
        </property>
       </widget>
      </item>
@@ -86,7 +86,7 @@
         <string>Click to drag detail highlight to new position</string>
        </property>
        <property name="text">
-        <string>Drag Highlight</string>
+        <string>Drag highlight</string>
        </property>
       </widget>
      </item>
@@ -117,7 +117,7 @@
      <item row="3" column="0">
       <widget class="QLabel" name="label_9">
        <property name="text">
-        <string>Scale Type</string>
+        <string>Scale type</string>
        </property>
       </widget>
      </item>
@@ -137,7 +137,7 @@
         <bool>false</bool>
        </property>
        <property name="toolTip">
-        <string>scale factor for detail view</string>
+        <string>Scale factor for detail view</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -165,7 +165,7 @@
         </sizepolicy>
        </property>
        <property name="toolTip">
-        <string>y position of detail highlight within view</string>
+        <string>Y position of detail highlight within view</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -181,7 +181,7 @@
      <item row="4" column="0">
       <widget class="QLabel" name="label_8">
        <property name="text">
-        <string>Scale Factor</string>
+        <string>Scale factor</string>
        </property>
       </widget>
      </item>
@@ -194,7 +194,7 @@
         </sizepolicy>
        </property>
        <property name="toolTip">
-        <string>size of detail view</string>
+        <string>Size of detail view</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -226,7 +226,7 @@
         </sizepolicy>
        </property>
        <property name="toolTip">
-        <string>x position of detail highlight within view</string>
+        <string>X position of detail highlight within view</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>

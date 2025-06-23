@@ -77,7 +77,7 @@ void TaskCustomizeFormat::changeEvent(QEvent *e)
 
 void TaskCustomizeFormat::setUiEdit()
 {
-    setWindowTitle(tr("Customize Format"));
+    setWindowTitle(tr("Customize format"));
     if (auto dim = dynamic_cast<TechDraw::DrawViewDimension*>(selectedObject))
     {
         isDimension = true;
@@ -183,7 +183,7 @@ bool TaskCustomizeFormat::accept()
     // Slot: the OK button has been pressed
     QString formatPreview = ui->leFormat->text();
     std::string formatString = formatPreview.toUtf8().constData();
-    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Customize Format"));
+    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Customize format"));
     if (isDimension)
     {
         auto dim = dynamic_cast<TechDraw::DrawViewDimension*>(selectedObject);

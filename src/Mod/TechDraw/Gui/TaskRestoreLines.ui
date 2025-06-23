@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Restore Invisible Lines</string>
+   <string>Restore invisible lines</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
@@ -70,7 +70,7 @@
      <item row="3" column="0">
       <widget class="QPushButton" name="pb_Center">
        <property name="text">
-        <string>CenterLine</string>
+        <string>Centerline</string>
        </property>
       </widget>
      </item>

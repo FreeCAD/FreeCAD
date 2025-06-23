@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Move View</string>
+   <string>Move view</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
@@ -40,7 +40,7 @@
      <item row="1" column="0">
       <widget class="QLabel" name="lFromPage">
        <property name="text">
-        <string>From Page</string>
+        <string>From page</string>
        </property>
       </widget>
      </item>
@@ -61,7 +61,7 @@
      <item row="2" column="0">
       <widget class="QLabel" name="lToPage">
        <property name="text">
-        <string>To Page</string>
+        <string>To page</string>
        </property>
       </widget>
      </item>

@@ -125,7 +125,7 @@ TaskSectionView::TaskSectionView(TechDraw::DrawViewSection* section) :
 
 void TaskSectionView::setUiPrimary()
 {
-    setWindowTitle(QObject::tr("Create Section View"));
+    setWindowTitle(QObject::tr("Create section view"));
 
     // note DPGI will have a custom scale type and scale = 1.0.  In this case,
     // we need the values from the parent DPG!
@@ -157,7 +157,7 @@ void TaskSectionView::setUiPrimary()
 
 void TaskSectionView::setUiEdit()
 {
-    setWindowTitle(QObject::tr("Edit Section View"));
+    setWindowTitle(QObject::tr("Edit section view"));
     std::string temp = m_section->SectionSymbol.getValue();
     QString qTemp = QString::fromStdString(temp);
     ui->leSymbol->setText(qTemp);
@@ -228,7 +228,7 @@ void TaskSectionView::setUiCommon(Base::Vector3d origin)
     connect(m_compass, &CompassWidget::angleChanged, this, &TaskSectionView::slotChangeAngle);
 
     m_viewDirectionWidget = new VectorEditWidget(this);
-    m_viewDirectionWidget->setLabel(QObject::tr("Current View Direction"));
+    m_viewDirectionWidget->setLabel(QObject::tr("Current view direction"));
     m_viewDirectionWidget->setToolTip(QObject::tr("The view direction in BaseView coordinates"));
     auto editLayout = ui->viewDirectionLayout;
     editLayout->addWidget(m_viewDirectionWidget);
@@ -493,7 +493,7 @@ TechDraw::DrawViewSection* TaskSectionView::createSectionView(void)
 
     std::string baseName = m_base->getNameInDocument();
 
-    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Create SectionView"));
+    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Create section view"));
     if (!m_section) {
         const std::string objectName("SectionView");
         m_sectionName = m_base->getDocument()->getUniqueObjectName(objectName.c_str());

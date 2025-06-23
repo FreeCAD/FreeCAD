@@ -23,7 +23,7 @@
    </size>
   </property>
   <property name="windowTitle">
-   <string>Line Decoration</string>
+   <string>Line decoration</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
@@ -142,7 +142,7 @@
      <item row="6" column="2">
       <widget class="Gui::QuantitySpinBox" name="dsb_Weight">
        <property name="toolTip">
-        <string>Thickness of pattern lines.</string>
+        <string>Thickness of pattern lines</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>

@@ -23,7 +23,7 @@
    </size>
   </property>
   <property name="windowTitle">
-   <string>Rich Text Annotation Block</string>
+   <string>Rich text annotation block</string>
   </property>
   <property name="windowIcon">
    <iconset resource="Resources/TechDraw.qrc">
@@ -50,7 +50,7 @@
         <item row="0" column="0">
          <widget class="QLabel" name="label">
           <property name="text">
-           <string>Base Feature</string>
+           <string>Base feature</string>
           </property>
          </widget>
         </item>
@@ -64,7 +64,7 @@
         <item row="1" column="0">
          <widget class="QLabel" name="label_2">
           <property name="text">
-           <string>Max Width</string>
+           <string>Max width</string>
           </property>
          </widget>
         </item>
@@ -99,7 +99,7 @@
          <bool>true</bool>
         </property>
         <property name="text">
-         <string>Start Rich Text Editor</string>
+         <string>Start rich text editor</string>
         </property>
        </widget>
       </item>
@@ -118,7 +118,7 @@
         <item row="0" column="0">
          <widget class="QLabel" name="label_3">
           <property name="text">
-           <string>Show Frame</string>
+           <string>Show frame</string>
           </property>
          </widget>
         </item>

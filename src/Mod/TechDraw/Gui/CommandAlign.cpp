@@ -54,7 +54,7 @@ void incorrectSelection()
     QMessageBox::warning(
         Gui::getMainWindow(),
         QObject::tr("Incorrect Selection"),
-        QObject::tr("You must select 2 vertexes or 1 edge\n")
+        QObject::tr("You must select 2 vertices or 1 edge\n")
     );
 }
 
@@ -122,7 +122,7 @@ CmdTechDrawAlignVertexesVertically::CmdTechDrawAlignVertexesVertically()
 {
     sAppModule      = "TechDraw";
     sGroup          = QT_TR_NOOP("TechDraw");
-    sMenuText       = QT_TR_NOOP("Align vertexes/edge vertically by view rotation");
+    sMenuText       = QT_TR_NOOP("Align vertices/edge vertically by view rotation");
     sToolTipText    = sMenuText;
     sWhatsThis      = "TechDraw_AlignGroup";
     sStatusTip      = sToolTipText;
@@ -155,7 +155,7 @@ CmdTechDrawAlignVertexesHorizontally::CmdTechDrawAlignVertexesHorizontally()
 {
     sAppModule      = "TechDraw";
     sGroup          = QT_TR_NOOP("TechDraw");
-    sMenuText       = QT_TR_NOOP("Align vertexes/edge horizontally by view rotation");
+    sMenuText       = QT_TR_NOOP("Align vertices/edge horizontally by view rotation");
     sToolTipText    = sMenuText;
     sWhatsThis      = "TechDraw_AlignGroup";
     sStatusTip      = sToolTipText;

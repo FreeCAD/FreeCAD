@@ -23,7 +23,7 @@
    </size>
   </property>
   <property name="windowTitle">
-   <string>Projection Group</string>
+   <string>Projection group</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
@@ -73,7 +73,7 @@
      <item>
       <widget class="QSpinBox" name="sbScaleNum">
        <property name="toolTip">
-        <string>Scale Numerator</string>
+        <string>Scale numerator</string>
        </property>
        <property name="keyboardTracking">
         <bool>false</bool>
@@ -96,7 +96,7 @@
      <item>
       <widget class="QSpinBox" name="sbScaleDen">
        <property name="toolTip">
-        <string>Scale Denominator</string>
+        <string>Scale denominator</string>
        </property>
        <property name="keyboardTracking">
         <bool>false</bool>
@@ -330,7 +330,7 @@
    <item>
     <widget class="QGroupBox" name="secondaryProjGroupbox">
      <property name="title">
-      <string>Secondary Projections</string>
+      <string>Secondary projections</string>
      </property>
      <layout class="QGridLayout" name="gridLayout_2">
       <item row="2" column="1">
@@ -556,16 +556,16 @@ height: 24px;
         <item>
          <widget class="QComboBox" name="projection">
           <property name="toolTip">
-           <string>First or Third Angle</string>
+           <string>First or third angle</string>
           </property>
           <item>
            <property name="text">
-            <string>First Angle</string>
+            <string>First angle</string>
            </property>
           </item>
           <item>
            <property name="text">
-            <string>Third Angle</string>
+            <string>Third angle</string>
            </property>
           </item>
           <item>
@@ -581,10 +581,10 @@ height: 24px;
        <widget class="QCheckBox" name="cbAutoDistribute">
         <property name="toolTip">
          <string>Distributes projections automatically
-using the given X/Y Spacing</string>
+using the given X/Y spacings</string>
         </property>
         <property name="text">
-         <string>Auto Distribute</string>
+         <string>Auto distribute</string>
         </property>
        </widget>
       </item>
@@ -605,7 +605,7 @@ using the given X/Y Spacing</string>
            </size>
           </property>
           <property name="text">
-           <string>X Spacing</string>
+           <string>X spacing</string>
           </property>
          </widget>
         </item>
@@ -665,7 +665,7 @@ using the given X/Y Spacing</string>
            </size>
           </property>
           <property name="text">
-           <string>Y Spacing</string>
+           <string>Y spacing</string>
           </property>
          </widget>
         </item>

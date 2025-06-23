@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Cosmetic Vertex</string>
+   <string>Cosmetic vertex</string>
   </property>
   <property name="windowIcon">
    <iconset resource="Resources/TechDraw.qrc">
@@ -23,7 +23,7 @@
      <item row="0" column="0">
       <widget class="QLabel" name="label_4">
        <property name="text">
-        <string>Base View</string>
+        <string>Base view</string>
        </property>
       </widget>
      </item>
@@ -63,7 +63,7 @@
      <item>
       <widget class="QPushButton" name="pbTracker">
        <property name="text">
-        <string>Point Picker</string>
+        <string>Point picker</string>
        </property>
       </widget>
      </item>

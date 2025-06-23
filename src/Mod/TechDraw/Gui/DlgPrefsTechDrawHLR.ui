@@ -44,7 +44,7 @@
       </size>
      </property>
      <property name="title">
-      <string>Hidden Line Removal</string>
+      <string>Hidden line removal</string>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout">
       <item>
@@ -67,7 +67,7 @@
 Fast, but result is a collection of short straight lines.</string>
           </property>
           <property name="text">
-           <string>Use Polygon Approximation</string>
+           <string>Use polygon approximation</string>
           </property>
           <property name="prefEntry" stdset="0">
            <cstring>UsePolygon</cstring>
@@ -140,7 +140,7 @@ Fast, but result is a collection of short straight lines.</string>
            <string>Show hard and outline edges (always shown)</string>
           </property>
           <property name="text">
-           <string>Show Hard Lines</string>
+           <string>Show hard lines</string>
           </property>
           <property name="checkable">
            <bool>true</bool>
@@ -173,7 +173,7 @@ Fast, but result is a collection of short straight lines.</string>
            <string>Show hidden hard and outline edges</string>
           </property>
           <property name="text">
-           <string>Show Hard Lines</string>
+           <string>Show hard lines</string>
           </property>
           <property name="prefEntry" stdset="0">
            <cstring>HardHid</cstring>
@@ -200,7 +200,7 @@ Fast, but result is a collection of short straight lines.</string>
            <string>Show smooth lines</string>
           </property>
           <property name="text">
-           <string>Show Smooth Lines</string>
+           <string>Show smooth lines</string>
           </property>
           <property name="checked">
            <bool>true</bool>
@@ -230,7 +230,7 @@ Fast, but result is a collection of short straight lines.</string>
            <string>Show hidden smooth edges</string>
           </property>
           <property name="text">
-           <string>Show Smooth Lines</string>
+           <string>Show smooth lines</string>
           </property>
           <property name="prefEntry" stdset="0">
            <cstring>SmoothHid</cstring>
@@ -257,7 +257,7 @@ Fast, but result is a collection of short straight lines.</string>
            <string>Show seam lines</string>
           </property>
           <property name="text">
-           <string>Show Seam Lines</string>
+           <string>Show seam lines</string>
           </property>
           <property name="checked">
            <bool>false</bool>
@@ -287,7 +287,7 @@ Fast, but result is a collection of short straight lines.</string>
            <string>Show hidden seam lines</string>
           </property>
           <property name="text">
-           <string>Show Seam Lines</string>
+           <string>Show seam lines</string>
           </property>
           <property name="prefEntry" stdset="0">
            <cstring>SeamHid</cstring>
@@ -314,7 +314,7 @@ Fast, but result is a collection of short straight lines.</string>
            <string>Make lines of equal parameterization</string>
           </property>
           <property name="text">
-           <string>Show UV ISO Lines</string>
+           <string>Show UV ISO lines</string>
           </property>
           <property name="prefEntry" stdset="0">
            <cstring>IsoViz</cstring>
@@ -341,7 +341,7 @@ Fast, but result is a collection of short straight lines.</string>
            <string>Show hidden equal parameterization lines</string>
           </property>
           <property name="text">
-           <string>Show UV ISO Lines</string>
+           <string>Show UV ISO lines</string>
           </property>
           <property name="prefEntry" stdset="0">
            <cstring>IsoHid</cstring>
@@ -365,7 +365,7 @@ Fast, but result is a collection of short straight lines.</string>
            </font>
           </property>
           <property name="text">
-           <string>ISO Count</string>
+           <string>ISO count</string>
           </property>
          </widget>
         </item>

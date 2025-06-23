@@ -89,7 +89,7 @@ void TaskActiveView::changeEvent(QEvent* e)
 void TaskActiveView::setUiPrimary()
 {
     //    Base::Console().message("TAV::setUiPrimary()\n");
-    setWindowTitle(QObject::tr("ActiveView to TD View"));
+    setWindowTitle(QObject::tr("Insert active view"));
     ui->cbCrop->setChecked(false);
     enableCrop(false);
     // cropping is in mm, but image size is in pixels/scene units
@@ -105,8 +105,8 @@ TechDraw::DrawViewImage* TaskActiveView::createActiveView()
 
     //make sure there is an 3D MDI to grab!!
     if (!Gui::getMainWindow()) {
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("No Main Window"),
-                             QObject::tr("Can not find the main window"));
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("No main window"),
+                             QObject::tr("Cannot find the main window"));
         return nullptr;
     }
 
@@ -140,8 +140,8 @@ TechDraw::DrawViewImage* TaskActiveView::createActiveView()
         }
     }
     if (!view3d) {
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("No 3D Viewer"),
-                             QObject::tr("Can not find a 3D viewer"));
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("No 3D viewer"),
+                             QObject::tr("Cannot find a 3D viewer"));
         return nullptr;
     }
 
