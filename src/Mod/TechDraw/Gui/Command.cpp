@@ -979,7 +979,7 @@ void execComplexSection(Gui::Command* cmd)
     if (shapes.empty() && xShapes.empty() && !baseView) {
         QMessageBox::warning(
             Gui::getMainWindow(), QObject::tr("Wrong selection"),
-            QObject::tr("No base view, shapes, groups or links in this selection"));
+            QObject::tr("No base view, shapes, groups, or links in this selection"));
         return;
     }
     if (!profileObject) {
