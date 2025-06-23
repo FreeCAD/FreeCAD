@@ -75,7 +75,7 @@ CmdTechDrawHatch::CmdTechDrawHatch()
     sAppModule      = "TechDraw";
     sGroup          = QT_TR_NOOP("TechDraw");
     sMenuText       = QT_TR_NOOP("Hatch face from image file");
-    sToolTipText    = QT_TR_NOOP("Apply a hatch pattern to a selected face using an image file");
+    sToolTipText    = QT_TR_NOOP("Applies a hatch pattern to a selected face using an image file");
     sWhatsThis      = "TechDraw_Hatch";
     sStatusTip      = sToolTipText;
     sPixmap         = "actions/TechDraw_Hatch";
@@ -109,7 +109,7 @@ void CmdTechDrawHatch::activated(int iMsg)
         if (TechDraw::DrawHatch::faceIsHatched(face, hatchObjs)) {
             QMessageBox::StandardButton rc =
                     QMessageBox::question(Gui::getMainWindow(), QObject::tr("Replace hatch?"),
-                            QObject::tr("Some faces in selection are already hatched. Replace?"));
+                            QObject::tr("Some faces in the selection are already hatched. Replace?"));
             if (rc == QMessageBox::StandardButton::NoButton) {
                 return;
             }
@@ -170,7 +170,7 @@ CmdTechDrawGeometricHatch::CmdTechDrawGeometricHatch()
     sAppModule      = "TechDraw";
     sGroup          = QT_TR_NOOP("TechDraw");
     sMenuText       = QT_TR_NOOP("Apply geometric hatch to face");
-    sToolTipText    = sMenuText;
+    sToolTipText    = QT_TR_NOOP("Applies a geometric hatch pattern to a selected face");
     sWhatsThis      = "TechDraw_GeometricHatch";
     sStatusTip      = sToolTipText;
     sPixmap         = "actions/TechDraw_GeometricHatch";
@@ -241,7 +241,7 @@ CmdTechDrawImage::CmdTechDrawImage()
     // setting the Gui eye-candy
     sGroup        = QT_TR_NOOP("TechDraw");
     sMenuText     = QT_TR_NOOP("Insert bitmap image");
-    sToolTipText  = QT_TR_NOOP("Insert bitmap from a file into a page");
+    sToolTipText  = QT_TR_NOOP("Inserts a bitmap from a file into the current page");
     sWhatsThis    = "TechDraw_Image";
     sStatusTip    = QT_TR_NOOP("Insert bitmap from a file into a page");
     sPixmap       = "actions/TechDraw_Image";
@@ -304,7 +304,7 @@ CmdTechDrawToggleFrame::CmdTechDrawToggleFrame()
     sAppModule      = "TechDraw";
     sGroup          = QT_TR_NOOP("TechDraw");
     sMenuText       = QT_TR_NOOP("Turn view frames on/off");
-    sToolTipText    = QT_TR_NOOP("Turn view frames on/off");
+    sToolTipText    = QT_TR_NOOP("Toggles the view frames on/off");
     sWhatsThis      = "TechDraw_Toggle";
     sStatusTip      = sToolTipText;
     sPixmap         = "actions/TechDraw_ToggleFrame";
@@ -332,7 +332,7 @@ void CmdTechDrawToggleFrame::activated(int iMsg)
 
     if (!vpPage) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("No TechDraw page"),
-            QObject::tr("Need a TechDraw page for this command"));
+            QObject::tr("A TechDraw page is required for this command"));
         return;
     }
 
@@ -384,7 +384,7 @@ bool _checkSelectionHatch(Gui::Command* cmd) {
     std::vector<Gui::SelectionObject> selection = cmd->getSelection().getSelectionEx();
     if (selection.empty()) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Incorrect selection"),
-                             QObject::tr("Select a Face first"));
+                             QObject::tr("Select a face first"));
         return false;
     }
 
