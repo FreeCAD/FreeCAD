@@ -4228,38 +4228,38 @@ class DxfImportReporter:
         Formats the statistics into a human-readable string for console output.
         """
         if not self.stats:
-            return "DXF Import: No statistics were returned from the importer.\n"
+            return "DXF Import: no statistics were returned from the importer.\n"
 
-        lines = ["\n--- DXF Import Summary ---"]
+        lines = ["\n--- DXF import summary ---"]
 
         # General info
-        lines.append(f"DXF Version: {self.stats.get('dxfVersion', 'Unknown')}")
-        lines.append(f"File Encoding: {self.stats.get('dxfEncoding', 'Unknown')}")
+        lines.append(f"DXF version: {self.stats.get('dxfVersion', 'Unknown')}")
+        lines.append(f"File encoding: {self.stats.get('dxfEncoding', 'Unknown')}")
 
         # Scaling info
         file_units = self.stats.get('fileUnits', 'Not specified')
         source = self.stats.get('scalingSource', '')
         if source:
-            lines.append(f"File Units: {file_units} (from {source})")
+            lines.append(f"File units: {file_units} (from {source})")
         else:
-            lines.append(f"File Units: {file_units}")
+            lines.append(f"File units: {file_units}")
 
         manual_scaling = self.stats.get('importSettings', {}).get('Manual scaling factor', '1.0')
-        lines.append(f"Manual Scaling Factor: {manual_scaling}")
+        lines.append(f"Manual scaling factor: {manual_scaling}")
 
         final_scaling = self.stats.get('finalScalingFactor', 1.0)
-        lines.append(f"Final Scaling: 1 DXF unit = {final_scaling:.4f} mm")
+        lines.append(f"Final scaling: 1 DXF unit = {final_scaling:.4f} mm")
         lines.append("")
 
         # Timing
         lines.append("Performance:")
         cpp_time = self.stats.get('importTimeSeconds', 0.0)
-        lines.append(f"  - C++ Import Time: {cpp_time:.4f} seconds")
-        lines.append(f"  - Total Import Time: {self.total_time:.4f} seconds")
+        lines.append(f"  - C++ import time: {cpp_time:.4f} seconds")
+        lines.append(f"  - Total import time: {self.total_time:.4f} seconds")
         lines.append("")
 
         # Settings
-        lines.append("Import Settings:")
+        lines.append("Import settings:")
         settings = self.stats.get('importSettings', {})
         if settings:
             for key, value in sorted(settings.items()):
@@ -4269,7 +4269,7 @@ class DxfImportReporter:
         lines.append("")
 
         # Counts
-        lines.append("Entity Counts:")
+        lines.append("Entity counts:")
         total_read = 0
         entities = self.stats.get('entityCounts', {})
         if entities:
@@ -4283,15 +4283,31 @@ class DxfImportReporter:
         lines.append(f"FreeCAD objects created: {self.stats.get('totalEntitiesCreated', 0)}")
         lines.append("")
 
-        lines.append("Unsupported Features:")
+        lines.append("Import issues and unsupported features:")
         unsupported = self.stats.get('unsupportedFeatures', {})
         if unsupported:
-            for key, value in sorted(unsupported.items()):
-                lines.append(f"  - {key}: {value} time(s)")
-        else:
-            lines.append("  (None)")
+            for key, occurrences in sorted(unsupported.items()):
+                count = len(occurrences)
+                max_details_to_show = 5
 
-        lines.append("--- End of Summary ---\n")
+                details_list = []
+                for i, (line, handle) in enumerate(occurrences):
+                    if i >= max_details_to_show:
+                        break
+                    if handle:
+                        details_list.append(f"line {line} (handle {handle})")
+                    else:
+                        details_list.append(f"line {line} (no handle available)")
+
+                details_str = ", ".join(details_list)
+                if count > max_details_to_show:
+                    lines.append(f"  - {key}: {count} time(s). Examples: {details_str}, ...")
+                else:
+                    lines.append(f"  - {key}: {count} time(s) at {details_str}")
+        else:
+            lines.append("  (none)")
+
+        lines.append("--- End of summary ---\n")
         return "\n".join(lines)
 
     def report_to_console(self):

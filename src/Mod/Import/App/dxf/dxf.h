@@ -187,7 +187,7 @@ struct DxfImportStats
     double finalScalingFactor = 1.0;
     std::map<std::string, int> entityCounts;
     std::map<std::string, std::string> importSettings;
-    std::map<std::string, int> unsupportedFeatures;
+    std::map<std::string, std::vector<std::pair<int, std::string>>> unsupportedFeatures;
     int totalEntitiesCreated = 0;
 };
 
@@ -200,6 +200,7 @@ enum eDXFGroupCode_t
     ePrimaryText = 1,
     eName = 2,
     eExtraText = 3,
+    eHandle = 5,
     eLinetypeName = 6,
     eTextStyleName = 7,
     eLayerName = 8,
@@ -462,6 +463,7 @@ private:
     bool m_not_eof = true;
     int m_line = 0;
     bool m_repeat_last_record = false;
+    std::string m_current_entity_handle;
 
     // The scaling from DXF units to millimetres.
     // This does not include the dxfScaling option

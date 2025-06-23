@@ -2342,8 +2342,8 @@ bool CDxfRead::ReadDimension()
 
 bool CDxfRead::ReadUnknownEntity()
 {
-    UnsupportedFeature("Entity type '%s'", m_record_data);
     ProcessAllEntityAttributes();
+    UnsupportedFeature("Entity type '%s'", m_record_data);
     return true;
 }
 
@@ -2403,7 +2403,7 @@ void CDxfRead::UnsupportedFeature(const char* format, args&&... argValuess)
 {
     // NOLINTNEXTLINE(runtime/printf)
     std::string formattedMessage = fmt::sprintf(format, std::forward<args>(argValuess)...);
-    m_stats.unsupportedFeatures[formattedMessage]++;
+    m_stats.unsupportedFeatures[formattedMessage].emplace_back(m_line, m_current_entity_handle);
 }
 
 bool CDxfRead::get_next_record()
@@ -2798,6 +2798,8 @@ bool CDxfRead::ReadEntity()
 {
     InitializeAttributes();
     m_entityAttributes.SetDefaults();
+    m_current_entity_handle.clear();
+    SetupStringAttribute(eHandle, m_current_entity_handle);
     EntityNormalVector.Set(0, 0, 1);
     Setup3DVectorAttribute(eExtrusionDirection, EntityNormalVector);
     SetupStringAttribute(eLinetypeName, m_entityAttributes.m_LineType);
