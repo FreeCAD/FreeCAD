@@ -170,6 +170,20 @@ bool ViewProviderDragger::forwardToLink()
 
     return forwardedViewProvider != nullptr;
 }
+App::PropertyPlacement* ViewProviderDragger::getPlacementProperty() const
+{
+    auto object = getObject();
+
+    if (auto linkExtension = object->getExtensionByType<App::LinkBaseExtension>()) {
+        if (auto linkPlacementProp = linkExtension->getLinkPlacementProperty()) {
+            return linkPlacementProp;
+        }
+
+        return linkExtension->getPlacementProperty();
+    }
+
+    return getObject()->getPropertyByName<App::PropertyPlacement>("Placement");
+}
 
 bool ViewProviderDragger::setEdit(int ModNum)
 {
@@ -254,7 +268,7 @@ void ViewProviderDragger::dragMotionCallback(void* data, [[maybe_unused]] SoDrag
 
 void ViewProviderDragger::updatePlacementFromDragger(DraggerComponents components)
 {
-    const auto placement = getObject()->getPropertyByName<App::PropertyPlacement>("Placement");
+    const auto placement = getPlacementProperty();
 
     if (!placement) {
         return;
@@ -379,7 +393,7 @@ void ViewProviderDragger::updateTransformFromDragger()
 
 Base::Placement ViewProviderDragger::getObjectPlacement() const
 {
-    if (auto placement = getObject()->getPropertyByName<App::PropertyPlacement>("Placement")) {
+    if (auto placement = getPlacementProperty()) {
         return placement->getValue();
     }
 
