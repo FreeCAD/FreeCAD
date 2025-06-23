@@ -28,7 +28,7 @@
          </property>
          <property name="icon">
           <iconset resource="../Path.qrc">
-           <normaloff>:/icons/CAM_ToolTable.svg</normaloff>:/icons/CAM_ToolTable.svg</iconset>
+           <normaloff>:/icons/CAM_ToolTableAdd.svg</normaloff>:/icons/CAM_ToolTableAdd.svg</iconset>
          </property>
         </widget>
        </item>
@@ -39,7 +39,7 @@
          </property>
          <property name="icon">
           <iconset resource="../../../../../Gui/Icons/resource.qrc">
-           <normaloff>:/icons/list-remove.svg</normaloff>:/icons/list-remove.svg</iconset>
+           <normaloff>:/icons/CAM_ToolTableRemove.svg</normaloff>:/icons/CAM_ToolTableRemove.svg</iconset>
          </property>
         </widget>
        </item>
