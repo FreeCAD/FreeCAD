@@ -1121,7 +1121,7 @@ void CmdTechDrawProjectionGroup::activated(int iMsg)
     }
     if (shapes.empty() && xShapes.empty()) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-                             QObject::tr("No shapes, groups or links in this selection"));
+                             QObject::tr("No shapes, groups, or links in this selection"));
         return;
     }
 
