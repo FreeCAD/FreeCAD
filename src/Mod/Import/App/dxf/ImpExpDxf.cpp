@@ -1404,7 +1404,14 @@ Py::Object ImpExpDxfRead::getStatsAsPyObject()
     // Create a nested dictionary for any unsupported DXF features encountered.
     Py::Dict unsupportedFeaturesDict;
     for (const auto& pair : m_stats.unsupportedFeatures) {
-        unsupportedFeaturesDict.setItem(pair.first.c_str(), Py::Long(pair.second));
+        Py::List occurrencesList;
+        for (const auto& occurrence : pair.second) {
+            Py::Tuple infoTuple(2);
+            infoTuple.setItem(0, Py::Long(occurrence.first));
+            infoTuple.setItem(1, Py::String(occurrence.second));
+            occurrencesList.append(infoTuple);
+        }
+        unsupportedFeaturesDict.setItem(pair.first.c_str(), occurrencesList);
     }
     statsDict.setItem("unsupportedFeatures", unsupportedFeaturesDict);
 
