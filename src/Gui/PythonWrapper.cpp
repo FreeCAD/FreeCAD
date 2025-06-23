@@ -392,7 +392,7 @@ public:
      */
     void addQObject(QObject* obj, PyObject* pyobj)
     {
-        // static array to contain created connetions so they can be safely disconnected later
+        // static array to contain created connections so they can be safely disconnected later
         static std::map<QObject*, QMetaObject::Connection> connections = {};
 
         const auto PyW_uniqueName = QString::number(reinterpret_cast<quintptr>(pyobj));
