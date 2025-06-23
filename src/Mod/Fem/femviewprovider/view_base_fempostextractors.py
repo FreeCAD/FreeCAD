@@ -65,7 +65,7 @@ class VPPostExtractor:
     def onChanged(self, vobj, prop):
 
         # one of our view properties was changed. Lets inform our parent visualization
-        # that this happend, as this is the one that needs to redraw
+        # that this happened, as this is the one that needs to redraw
 
         if prop == "Proxy":
             return

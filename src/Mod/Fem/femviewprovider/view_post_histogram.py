@@ -89,7 +89,7 @@ class EditViewWidget(QtGui.QWidget):
         self.widget.HatchDensity.valueChanged.connect(self.hatchDensityChanged)
         self.widget.LineWidth.valueChanged.connect(self.lineWidthChanged)
 
-        # sometimes wierd sizes occur with spinboxes
+        # sometimes weird sizes occur with spinboxes
         self.widget.HatchDensity.setMaximumHeight(self.widget.Hatch.sizeHint().height())
         self.widget.LineWidth.setMaximumHeight(self.widget.LineStyle.sizeHint().height())
 
@@ -228,7 +228,7 @@ class EditIndexAppWidget(QtGui.QWidget):
         self.widget.Field.activated.connect(self.fieldChanged)
         self.widget.Component.activated.connect(self.componentChanged)
 
-        # sometimes wierd sizes occur with spinboxes
+        # sometimes weird sizes occur with spinboxes
         self.widget.Index.setMaximumHeight(self.widget.Field.sizeHint().height())
 
     @QtCore.Slot(int)
@@ -250,7 +250,7 @@ class EditIndexAppWidget(QtGui.QWidget):
 
 class VPPostHistogramFieldData(view_base_fempostextractors.VPPostExtractor):
     """
-    A View Provider for extraction of 1D field data specialy for histograms
+    A View Provider for extraction of 1D field data specially for histograms
     """
 
     def __init__(self, vobj):
@@ -396,7 +396,7 @@ class VPPostHistogram(view_base_fempostvisualization.VPPostVisualization):
                 name="Cumulative",
                 group="Histogram",
                 doc=QT_TRANSLATE_NOOP(
-                    "FEM", "If be the bars shoud show the cumulative sum left to rigth"
+                    "FEM", "If be the bars should show the cumulative sum left to right"
                 ),
                 value=False,
             ),

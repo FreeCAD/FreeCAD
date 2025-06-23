@@ -40,7 +40,7 @@ translate = FreeCAD.Qt.translate
 
 class _BasePostTaskPanel(base_femtaskpanel._BaseTaskPanel):
     """
-    The TaskPanel for post objects, mimicing the c++ functionality
+    The TaskPanel for post objects, mimicking the c++ functionality
     """
 
     def __init__(self, obj):

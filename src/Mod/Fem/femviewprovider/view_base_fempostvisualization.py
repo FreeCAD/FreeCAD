@@ -118,7 +118,7 @@ class VPPostVisualization:
 
     def get_next_default_color(self):
         # Returns the next default color a new object should use
-        # Returns color in FreeCAD proeprty notation (r,g,b,a)
+        # Returns color in FreeCAD property notation (r,g,b,a)
         # If the relevant extractors do not have color properties, this
         # can stay unimplemented
         raise FreeCAD.Base.FreeCADError("Not implemented")

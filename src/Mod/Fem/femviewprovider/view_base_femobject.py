@@ -44,7 +44,7 @@ False if FemGui.__name__ else True  # flake8, dummy FemGui usage
 class _GuiPropHelper(_PropHelper):
     """
     Helper class to manage property data inside proxy objects.
-    Based on the App verison, but viewprovider addProperty does
+    Based on the App version, but viewprovider addProperty does
     not take keyword args, hence we use positional arguments here
     """
 
