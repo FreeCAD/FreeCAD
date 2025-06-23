@@ -120,6 +120,11 @@ class LibraryEditor(QWidget):
         self.form.TableList.selectionModel().clear()
 
     def eventFilter(self, obj, event):
+        if event.type() == QEvent.KeyPress and event.key() == Qt.Key_F2:
+            if self.form.TableList.hasFocus():
+                Path.Log.debug("F2 pressed on library list.")
+                self._on_rename_library_requested()
+                return True
         if obj == self.form.TableList.viewport():
             if event.type() == QEvent.DragEnter or event.type() == QEvent.DragMove:
                 return self._handle_drag_enter(event)

@@ -313,6 +313,11 @@ class ToolBitBrowserWidget(QtGui.QWidget):
         delete_action.triggered.connect(self._on_delete_requested)
         self.addAction(delete_action)
 
+        edit_action = QAction(self)
+        edit_action.setShortcut(QKeySequence("F2"))
+        edit_action.triggered.connect(self._on_edit_requested)
+        self.addAction(edit_action)
+
     def _create_base_context_menu(self):
         """Creates the base context menu with Edit, Copy, and Delete actions."""
         selected_items = self._tool_list_widget.selectedItems()
