@@ -139,7 +139,7 @@ TaskFemConstraintFluidBoundary::TaskFemConstraintFluidBoundary(
     QMetaObject::connectSlotsByName(this);
 
     // create a context menu for the listview of the references
-    createDeleteAction(ui->listReferences);
+    createActions(ui->listReferences);
     connect(deleteAction,
             &QAction::triggered,
             this,

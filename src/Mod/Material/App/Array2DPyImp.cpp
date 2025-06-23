@@ -159,7 +159,9 @@ PyObject* Array2DPy::setValue(PyObject* args)
     if (PyArg_ParseTuple(args, "iiO!", &row, &column, &PyUnicode_Type, &valueObj)) {
         Py::String item(valueObj);
         try {
-            QVariant variant = QVariant::fromValue(Base::Quantity::parse(item.as_string()));
+            auto quantity = Base::Quantity::parse(item.as_string());
+            quantity.setFormat(MaterialValue::getQuantityFormat());
+            QVariant variant = QVariant::fromValue(quantity);
             getArray2DPtr()->setValue(row, column, variant);
         }
         catch (const InvalidIndex&) {

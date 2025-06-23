@@ -237,6 +237,12 @@ QStatusBar QLabel {
   background-color: transparent;
 }
 
+QStatusBar QPushButton {
+    min-width: 0;
+    padding-left: 8px;
+    padding-right: 8px;
+}
+
 /* QCheckBox --------------------------------------------------------------
 
 https://doc.qt.io/qt-5/stylesheet-examples.html#customizing-qcheckbox
@@ -2271,6 +2277,8 @@ QListView::indicator,
 QTableView::indicator,
 QColumnView::indicator {
   border: 1px solid #1c1c1c;
+  width: 12px;
+  height: 12px;
 }
 
 QTreeView::indicator:unchecked:disabled,

@@ -84,6 +84,24 @@ public:
     ~DrawSketchHandlerEllipse() override = default;
 
 private:
+    struct HintEntry
+    {
+        ConstructionMethod method;
+        SelectMode state;
+        std::list<Gui::InputHint> hints;
+    };
+
+    using HintTable = std::vector<HintEntry>;
+
+    static HintTable getEllipseHintTable();
+    static std::list<Gui::InputHint> lookupEllipseHints(ConstructionMethod method,
+                                                        SelectMode state);
+
+    std::list<Gui::InputHint> getToolHints() const override
+    {
+        return lookupEllipseHints(constructionMethod(), state());
+    }
+
     void updateDataAndDrawToPosition(Base::Vector2d onSketchPos) override
     {
         switch (state()) {
@@ -481,15 +499,21 @@ void DSHEllipseControllerBase::doEnforceControlParameters(Base::Vector2d& onSket
 
     switch (handler->state()) {
         case SelectMode::SeekFirst: {
-            if (onViewParameters[OnViewParameter::First]->isSet) {
-                onSketchPos.x = onViewParameters[OnViewParameter::First]->getValue();
+            auto& firstParam = onViewParameters[OnViewParameter::First];
+            auto& secondParam = onViewParameters[OnViewParameter::Second];
+
+            if (firstParam->isSet) {
+                onSketchPos.x = firstParam->getValue();
             }
 
-            if (onViewParameters[OnViewParameter::Second]->isSet) {
-                onSketchPos.y = onViewParameters[OnViewParameter::Second]->getValue();
+            if (secondParam->isSet) {
+                onSketchPos.y = secondParam->getValue();
             }
         } break;
         case SelectMode::SeekSecond: {
+            auto& thirdParam = onViewParameters[OnViewParameter::Third];
+            auto& fourthParam = onViewParameters[OnViewParameter::Fourth];
+
             if (handler->constructionMethod()
                 == DrawSketchHandlerEllipse::ConstructionMethod::Center) {
                 Base::Vector2d dir = onSketchPos - handler->centerPoint;
@@ -498,45 +522,45 @@ void DSHEllipseControllerBase::doEnforceControlParameters(Base::Vector2d& onSket
                 }
                 double length = dir.Length();
 
-                if (onViewParameters[OnViewParameter::Third]->isSet) {
-                    length = onViewParameters[OnViewParameter::Third]->getValue();
+                if (thirdParam->isSet) {
+                    length = thirdParam->getValue();
                     if (length < Precision::Confusion()) {
-                        unsetOnViewParameter(onViewParameters[OnViewParameter::Third].get());
+                        unsetOnViewParameter(thirdParam.get());
                         return;
                     }
 
                     onSketchPos = handler->centerPoint + length * dir.Normalize();
                 }
 
-                if (onViewParameters[OnViewParameter::Fourth]->isSet) {
-                    double angle =
-                        Base::toRadians(onViewParameters[OnViewParameter::Fourth]->getValue());
+                if (fourthParam->isSet) {
+                    double angle = Base::toRadians(fourthParam->getValue());
                     onSketchPos.x = handler->centerPoint.x + cos(angle) * length;
                     onSketchPos.y = handler->centerPoint.y + sin(angle) * length;
                 }
             }
             else {
-                if (onViewParameters[OnViewParameter::Third]->isSet) {
-                    onSketchPos.x = onViewParameters[OnViewParameter::Third]->getValue();
+                if (thirdParam->isSet) {
+                    onSketchPos.x = thirdParam->getValue();
                 }
 
-                if (onViewParameters[OnViewParameter::Fourth]->isSet) {
-                    onSketchPos.y = onViewParameters[OnViewParameter::Fourth]->getValue();
+                if (fourthParam->isSet) {
+                    onSketchPos.y = fourthParam->getValue();
                 }
 
-                if (onViewParameters[OnViewParameter::Third]->isSet
-                    && onViewParameters[OnViewParameter::Fourth]->isSet
+                if (thirdParam->isSet && fourthParam->isSet
                     && (onSketchPos - handler->apoapsis).Length() < Precision::Confusion()) {
-                    unsetOnViewParameter(onViewParameters[OnViewParameter::Third].get());
-                    unsetOnViewParameter(onViewParameters[OnViewParameter::Fourth].get());
+                    unsetOnViewParameter(thirdParam.get());
+                    unsetOnViewParameter(fourthParam.get());
                 }
             }
         } break;
         case SelectMode::SeekThird: {
+            auto& fifthParam = onViewParameters[OnViewParameter::Fifth];
+
             if (handler->constructionMethod()
                 == DrawSketchHandlerEllipse::ConstructionMethod::Center) {
-                if (onViewParameters[OnViewParameter::Fifth]->isSet) {
-                    auto minorradius = onViewParameters[OnViewParameter::Fifth]->getValue();
+                if (fifthParam->isSet) {
+                    auto minorradius = fifthParam->getValue();
                     onSketchPos = handler->centerPoint
                         + (handler->periapsis - handler->centerPoint)
                                 .Perpendicular(true)
@@ -545,19 +569,19 @@ void DSHEllipseControllerBase::doEnforceControlParameters(Base::Vector2d& onSket
                 }
             }
             else {
-                if (onViewParameters[OnViewParameter::Fifth]->isSet) {
-                    onSketchPos.x = onViewParameters[OnViewParameter::Fifth]->getValue();
+                auto& sixthParam = onViewParameters[OnViewParameter::Sixth];
+                if (fifthParam->isSet) {
+                    onSketchPos.x = fifthParam->getValue();
                 }
 
-                if (onViewParameters[OnViewParameter::Sixth]->isSet) {
-                    onSketchPos.y = onViewParameters[OnViewParameter::Sixth]->getValue();
+                if (sixthParam->isSet) {
+                    onSketchPos.y = sixthParam->getValue();
                 }
 
-                if (onViewParameters[OnViewParameter::Fifth]->isSet
-                    && onViewParameters[OnViewParameter::Sixth]->isSet
+                if (fifthParam->isSet && sixthParam->isSet
                     && areCollinear(handler->apoapsis, handler->periapsis, onSketchPos)) {
-                    unsetOnViewParameter(onViewParameters[OnViewParameter::Fifth].get());
-                    unsetOnViewParameter(onViewParameters[OnViewParameter::Sixth].get());
+                    unsetOnViewParameter(fifthParam.get());
+                    unsetOnViewParameter(sixthParam.get());
                 }
             }
         } break;
@@ -571,32 +595,36 @@ void DSHEllipseController::adaptParameters(Base::Vector2d onSketchPos)
 {
     switch (handler->state()) {
         case SelectMode::SeekFirst: {
-            if (!onViewParameters[OnViewParameter::First]->isSet) {
+            auto& firstParam = onViewParameters[OnViewParameter::First];
+            auto& secondParam = onViewParameters[OnViewParameter::Second];
+
+            if (!firstParam->isSet) {
                 setOnViewParameterValue(OnViewParameter::First, onSketchPos.x);
             }
 
-            if (!onViewParameters[OnViewParameter::Second]->isSet) {
+            if (!secondParam->isSet) {
                 setOnViewParameterValue(OnViewParameter::Second, onSketchPos.y);
             }
 
             bool sameSign = onSketchPos.x * onSketchPos.y > 0.;
-            onViewParameters[OnViewParameter::First]->setLabelAutoDistanceReverse(!sameSign);
-            onViewParameters[OnViewParameter::Second]->setLabelAutoDistanceReverse(sameSign);
-            onViewParameters[OnViewParameter::First]->setPoints(Base::Vector3d(),
-                                                                toVector3d(onSketchPos));
-            onViewParameters[OnViewParameter::Second]->setPoints(Base::Vector3d(),
-                                                                 toVector3d(onSketchPos));
+            firstParam->setLabelAutoDistanceReverse(!sameSign);
+            secondParam->setLabelAutoDistanceReverse(sameSign);
+            firstParam->setPoints(Base::Vector3d(), toVector3d(onSketchPos));
+            secondParam->setPoints(Base::Vector3d(), toVector3d(onSketchPos));
         } break;
         case SelectMode::SeekSecond: {
+            auto& thirdParam = onViewParameters[OnViewParameter::Third];
+            auto& fourthParam = onViewParameters[OnViewParameter::Fourth];
+
             if (handler->constructionMethod()
                 == DrawSketchHandlerEllipse::ConstructionMethod::Center) {
 
                 auto vec = onSketchPos - handler->centerPoint;
-                if (!onViewParameters[OnViewParameter::Third]->isSet) {
+                if (!thirdParam->isSet) {
                     setOnViewParameterValue(OnViewParameter::Third, vec.Length());
                 }
 
-                if (!onViewParameters[OnViewParameter::Fourth]->isSet) {
+                if (!fourthParam->isSet) {
                     double angle = vec.Length() > 0 ? Base::toDegrees(vec.Angle()) : 0;
                     setOnViewParameterValue(OnViewParameter::Fourth, angle, Base::Unit::Angle);
                 }
@@ -604,59 +632,56 @@ void DSHEllipseController::adaptParameters(Base::Vector2d onSketchPos)
                 Base::Vector3d start = toVector3d(handler->centerPoint);
                 Base::Vector3d end = toVector3d(onSketchPos);
 
-                onViewParameters[OnViewParameter::Third]->setPoints(start, end);
+                thirdParam->setPoints(start, end);
 
-
-                onViewParameters[OnViewParameter::Fourth]->setPoints(start, Base::Vector3d());
-                onViewParameters[OnViewParameter::Fourth]->setLabelRange(
-                    (onSketchPos - handler->centerPoint).Angle());
+                fourthParam->setPoints(start, Base::Vector3d());
+                fourthParam->setLabelRange((onSketchPos - handler->centerPoint).Angle());
             }
             else {
-                if (!onViewParameters[OnViewParameter::Third]->isSet) {
+                if (!thirdParam->isSet) {
                     setOnViewParameterValue(OnViewParameter::Third, onSketchPos.x);
                 }
 
-                if (!onViewParameters[OnViewParameter::Fourth]->isSet) {
+                if (!fourthParam->isSet) {
                     setOnViewParameterValue(OnViewParameter::Fourth, onSketchPos.y);
                 }
 
                 bool sameSign = onSketchPos.x * onSketchPos.y > 0.;
-                onViewParameters[OnViewParameter::Third]->setLabelAutoDistanceReverse(!sameSign);
-                onViewParameters[OnViewParameter::Fourth]->setLabelAutoDistanceReverse(sameSign);
-                onViewParameters[OnViewParameter::Third]->setPoints(Base::Vector3d(),
-                                                                    toVector3d(onSketchPos));
-                onViewParameters[OnViewParameter::Fourth]->setPoints(Base::Vector3d(),
-                                                                     toVector3d(onSketchPos));
+                thirdParam->setLabelAutoDistanceReverse(!sameSign);
+                fourthParam->setLabelAutoDistanceReverse(sameSign);
+                thirdParam->setPoints(Base::Vector3d(), toVector3d(onSketchPos));
+                fourthParam->setPoints(Base::Vector3d(), toVector3d(onSketchPos));
             }
         } break;
         case SelectMode::SeekThird: {
+            auto& fifthParam = onViewParameters[OnViewParameter::Fifth];
+
             if (handler->constructionMethod()
                 == DrawSketchHandlerEllipse::ConstructionMethod::Center) {
-                if (!onViewParameters[OnViewParameter::Fifth]->isSet) {
+                if (!fifthParam->isSet) {
                     setOnViewParameterValue(OnViewParameter::Fifth, handler->secondAxis.Length());
                 }
 
                 Base::Vector3d start = toVector3d(handler->centerPoint);
                 Base::Vector3d end = toVector3d(handler->centerPoint + handler->secondAxis);
 
-                onViewParameters[OnViewParameter::Fifth]->setPoints(start, end);
+                fifthParam->setPoints(start, end);
             }
             else {
-                if (!onViewParameters[OnViewParameter::Fifth]->isSet) {
+                auto& sixthParam = onViewParameters[OnViewParameter::Sixth];
+                if (!fifthParam->isSet) {
                     setOnViewParameterValue(OnViewParameter::Fifth, onSketchPos.x);
                 }
 
-                if (!onViewParameters[OnViewParameter::Sixth]->isSet) {
+                if (!sixthParam->isSet) {
                     setOnViewParameterValue(OnViewParameter::Sixth, onSketchPos.y);
                 }
 
                 bool sameSign = onSketchPos.x * onSketchPos.y > 0.;
-                onViewParameters[OnViewParameter::Fifth]->setLabelAutoDistanceReverse(!sameSign);
-                onViewParameters[OnViewParameter::Sixth]->setLabelAutoDistanceReverse(sameSign);
-                onViewParameters[OnViewParameter::Fifth]->setPoints(Base::Vector3d(),
-                                                                    toVector3d(onSketchPos));
-                onViewParameters[OnViewParameter::Sixth]->setPoints(Base::Vector3d(),
-                                                                    toVector3d(onSketchPos));
+                fifthParam->setLabelAutoDistanceReverse(!sameSign);
+                sixthParam->setLabelAutoDistanceReverse(sameSign);
+                fifthParam->setPoints(Base::Vector3d(), toVector3d(onSketchPos));
+                sixthParam->setPoints(Base::Vector3d(), toVector3d(onSketchPos));
             }
         } break;
         default:
@@ -669,31 +694,33 @@ void DSHEllipseController::doChangeDrawSketchHandlerMode()
 {
     switch (handler->state()) {
         case SelectMode::SeekFirst: {
-            if (onViewParameters[OnViewParameter::First]->isSet
-                && onViewParameters[OnViewParameter::Second]->isSet) {
+            auto& firstParam = onViewParameters[OnViewParameter::First];
+            auto& secondParam = onViewParameters[OnViewParameter::Second];
 
+            if (firstParam->hasFinishedEditing || secondParam->hasFinishedEditing) {
                 handler->setState(SelectMode::SeekSecond);
             }
         } break;
         case SelectMode::SeekSecond: {
-            if (onViewParameters[OnViewParameter::Third]->isSet
-                && onViewParameters[OnViewParameter::Fourth]->isSet) {
+            auto& thirdParam = onViewParameters[OnViewParameter::Third];
+            auto& fourthParam = onViewParameters[OnViewParameter::Fourth];
 
+            if (thirdParam->hasFinishedEditing || fourthParam->hasFinishedEditing) {
                 handler->setState(SelectMode::SeekThird);
             }
         } break;
         case SelectMode::SeekThird: {
+            auto& fifthParam = onViewParameters[OnViewParameter::Fifth];
+
             if (handler->constructionMethod()
                 == DrawSketchHandlerEllipse::ConstructionMethod::Center) {
-                if (onViewParameters[OnViewParameter::Fifth]->isSet) {
-
+                if (fifthParam->hasFinishedEditing) {
                     handler->setState(SelectMode::End);
                 }
             }
             else {
-                if (onViewParameters[OnViewParameter::Fifth]->isSet
-                    && onViewParameters[OnViewParameter::Sixth]->isSet) {
-
+                auto& sixthParam = onViewParameters[OnViewParameter::Sixth];
+                if (fifthParam->hasFinishedEditing || sixthParam->hasFinishedEditing) {
                     handler->setState(SelectMode::End);
                 }
             }
@@ -952,7 +979,47 @@ void DSHEllipseController::addConstraints()
     // No constraint possible for 3 rim ellipse.
 }
 
+DrawSketchHandlerEllipse::HintTable DrawSketchHandlerEllipse::getEllipseHintTable()
+{
+    return {
+        // Structure: {ConstructionMethod, SelectMode, {hints...}}
 
+        // Center method
+        {ConstructionMethod::Center,
+         SelectMode::SeekFirst,
+         {{QObject::tr("%1 pick ellipse center"), {Gui::InputHint::UserInput::MouseLeft}}}},
+        {ConstructionMethod::Center,
+         SelectMode::SeekSecond,
+         {{QObject::tr("%1 pick axis endpoint"), {Gui::InputHint::UserInput::MouseLeft}}}},
+        {ConstructionMethod::Center,
+         SelectMode::SeekThird,
+         {{QObject::tr("%1 pick minor axis endpoint"), {Gui::InputHint::UserInput::MouseLeft}}}},
+
+        // ThreeRim method
+        {ConstructionMethod::ThreeRim,
+         SelectMode::SeekFirst,
+         {{QObject::tr("%1 pick first rim point"), {Gui::InputHint::UserInput::MouseLeft}}}},
+        {ConstructionMethod::ThreeRim,
+         SelectMode::SeekSecond,
+         {{QObject::tr("%1 pick second rim point"), {Gui::InputHint::UserInput::MouseLeft}}}},
+        {ConstructionMethod::ThreeRim,
+         SelectMode::SeekThird,
+         {{QObject::tr("%1 pick third rim point"), {Gui::InputHint::UserInput::MouseLeft}}}}};
+}
+
+std::list<Gui::InputHint> DrawSketchHandlerEllipse::lookupEllipseHints(ConstructionMethod method,
+                                                                       SelectMode state)
+{
+    const auto ellipseHintTable = getEllipseHintTable();
+
+    auto it = std::find_if(ellipseHintTable.begin(),
+                           ellipseHintTable.end(),
+                           [method, state](const HintEntry& entry) {
+                               return entry.method == method && entry.state == state;
+                           });
+
+    return (it != ellipseHintTable.end()) ? it->hints : std::list<Gui::InputHint> {};
+}
 }  // namespace SketcherGui
 
 

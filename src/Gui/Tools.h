@@ -47,6 +47,13 @@ public:
         uint searchkey = (ke->modifiers() | ke->key()) & ~(Qt::KeypadModifier | Qt::GroupSwitchModifier);
         return ks == QKeySequence(searchkey);
     }
+    static QKeySequence::StandardKey deleteKeySequence() {
+#ifdef FC_OS_MACOSX
+        return QKeySequence::Backspace;
+#else
+        return QKeySequence::Delete;
+#endif
+    }
 };
 
 } // namespace Gui

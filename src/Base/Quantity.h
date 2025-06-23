@@ -191,12 +191,10 @@ public:
     double getValueAs(const Quantity&) const;
 
 
-    /// true if it has a number without a unit
+    /// true if it has no unit
     bool isDimensionless() const;
     /// true if it has a specific unit or no dimension.
     bool isDimensionlessOrUnit(const Unit& unit) const;
-    /// true if it has a number and a valid unit
-    bool isQuantity() const;
     /// true if it has a number with or without a unit
     bool isValid() const;
     /// sets the quantity invalid
