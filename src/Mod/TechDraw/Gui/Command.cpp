@@ -882,7 +882,7 @@ CmdTechDrawComplexSection::CmdTechDrawComplexSection() : Command("TechDraw_Compl
     sAppModule = "TechDraw";
     sGroup = QT_TR_NOOP("TechDraw");
     sMenuText = QT_TR_NOOP("Insert complex section view");
-    sToolTipText = QT_TR_NOOP("Insert a complex section view");
+    sToolTipText = QT_TR_NOOP("Inserts a complex section view based on the selected view in the current page");
     sWhatsThis = "TechDraw_ComplexSection";
     sStatusTip = sToolTipText;
     sPixmap = "actions/TechDraw_ComplexSection";
