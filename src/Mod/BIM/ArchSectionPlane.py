@@ -577,7 +577,16 @@ def getDXF(obj):
         return result
     if not allOn:
             objs = Draft.removeHidden(objs)
-    objs = [o for o in objs if ((not(Draft.getType(o) in ["Space","Dimension","Annotation"])) and (not (o.isDerivedFrom("Part::Part2DObject"))))]
+    objs = [
+        obj
+        for obj in objs
+        if (
+            not obj.isDerivedFrom("Part::Part2DObject")
+            and Draft.getType(obj) not in [
+                "BezCurve", "BSpline", "Wire", "Annotation", "Dimension", "Space"
+            ]
+        )
+    ]
     vshapes,hshapes,sshapes,cutface,cutvolume,invcutvolume = getCutShapes(objs,cutplane,onlySolids,clip,False,showHidden)
     if vshapes:
         result.append(TechDraw.projectToDXF(Part.makeCompound(vshapes),direction))

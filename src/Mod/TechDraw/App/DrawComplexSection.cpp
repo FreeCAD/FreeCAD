@@ -594,7 +594,7 @@ TopoDS_Wire DrawComplexSection::makeProfileWire(App::DocumentObject* toolObj)
         return {};
     }
 
-    TopoDS_Shape toolShape = Part::Feature::getShape(toolObj);
+    TopoDS_Shape toolShape = Part::Feature::getShape(toolObj, Part::ShapeOption::ResolveLink | Part::ShapeOption::Transform);
     if (toolShape.IsNull()) {
         return {};
     }
@@ -709,7 +709,7 @@ TopoDS_Wire DrawComplexSection::makeSectionLineWire()
     App::DocumentObject* toolObj = CuttingToolWireObject.getValue();
     DrawViewPart* baseDvp = freecad_cast<DrawViewPart*>(BaseView.getValue());
     if (baseDvp) {
-        TopoDS_Shape toolShape = Part::Feature::getShape(toolObj);
+        TopoDS_Shape toolShape = Part::Feature::getShape(toolObj, Part::ShapeOption::ResolveLink | Part::ShapeOption::Transform);
         if (toolShape.IsNull()) {
             // CuttingToolWireObject is likely still restoring and has no shape yet
             return {};
@@ -968,7 +968,7 @@ bool DrawComplexSection::canBuild(gp_Ax2 sectionCS, App::DocumentObject* profile
         return false;
     }
 
-    TopoDS_Shape shape = Part::Feature::getShape(profileObject);
+    TopoDS_Shape shape = Part::Feature::getShape(profileObject, Part::ShapeOption::ResolveLink | Part::ShapeOption::Transform);
     if (BRep_Tool::IsClosed(shape)) {
         //closed profiles don't have a profile vector but should always make a section?
         return true;
@@ -1090,7 +1090,7 @@ TopoDS_Wire DrawComplexSection::makeNoseToTailWire(const TopoDS_Wire& inWire)
 bool DrawComplexSection::isProfileObject(App::DocumentObject* obj)
 {
     //if the object's shape is a wire or an edge, then it can be a profile object
-    TopoDS_Shape shape = Part::Feature::getShape(obj);
+    TopoDS_Shape shape = Part::Feature::getShape(obj, Part::ShapeOption::ResolveLink | Part::ShapeOption::Transform);
     if (shape.IsNull()) {
         return false;
     }
@@ -1104,7 +1104,7 @@ bool DrawComplexSection::isProfileObject(App::DocumentObject* obj)
 bool DrawComplexSection::isMultiSegmentProfile(App::DocumentObject* obj)
 {
     //if the object's shape is a wire or an edge, then it can be a profile object
-    TopoDS_Shape shape = Part::Feature::getShape(obj);
+    TopoDS_Shape shape = Part::Feature::getShape(obj, Part::ShapeOption::ResolveLink | Part::ShapeOption::Transform);
     if (shape.IsNull()) {
         return false;
     }
@@ -1132,7 +1132,7 @@ bool DrawComplexSection::isMultiSegmentProfile(App::DocumentObject* obj)
 //check if the profile has curves in it
 bool DrawComplexSection::isLinearProfile(App::DocumentObject* obj)
 {
-    TopoDS_Shape shape = Part::Feature::getShape(obj);
+    TopoDS_Shape shape = Part::Feature::getShape(obj, Part::ShapeOption::ResolveLink | Part::ShapeOption::Transform);
     if (shape.IsNull()) {
         return false;
     }

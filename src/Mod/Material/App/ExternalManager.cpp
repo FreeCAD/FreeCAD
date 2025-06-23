@@ -519,7 +519,7 @@ ExternalManager::libraryMaterials(const QString& libraryName)
 
 std::shared_ptr<std::vector<LibraryObject>>
 ExternalManager::libraryMaterials(const QString& libraryName,
-                                  const std::shared_ptr<MaterialFilter>& filter,
+                                  const MaterialFilter& filter,
                                   const MaterialFilterOptions& options)
 {
     auto materialList = std::make_shared<std::vector<LibraryObject>>();
@@ -532,13 +532,7 @@ ExternalManager::libraryMaterials(const QString& libraryName,
             Py::Callable libraries(_managerObject.getAttr("libraryMaterials"));
             Py::Tuple args(3);
             args.setItem(0, Py::String(libraryName.toStdString()));
-            if (filter) {
-                args.setItem(1,
-                             Py::Object(new MaterialFilterPy(new MaterialFilter(*filter)), true));
-            }
-            else {
-                args.setItem(1, Py::None());
-            }
+            args.setItem(1, Py::Object(new MaterialFilterPy(new MaterialFilter(filter)), true));
             args.setItem(
                 2,
                 Py::Object(new MaterialFilterOptionsPy(new MaterialFilterOptions(options)), true));
@@ -750,7 +744,7 @@ std::shared_ptr<Model> ExternalManager::getModel(const QString& uuid)
 
 void ExternalManager::addModel(const QString& libraryName,
                                const QString& path,
-                               const std::shared_ptr<Model>& model)
+                               const Model& model)
 {
     connect();
 
@@ -761,7 +755,7 @@ void ExternalManager::addModel(const QString& libraryName,
             Py::Tuple args(3);
             args.setItem(0, Py::String(libraryName.toStdString()));
             args.setItem(1, Py::String(path.toStdString()));
-            args.setItem(2, Py::Object(new ModelPy(new Model(*model)), true));
+            args.setItem(2, Py::Object(new ModelPy(new Model(model)), true));
             libraries.apply(args);  // No return expected
         }
         else {
@@ -777,7 +771,7 @@ void ExternalManager::addModel(const QString& libraryName,
 
 void ExternalManager::migrateModel(const QString& libraryName,
                                    const QString& path,
-                                   const std::shared_ptr<Model>& model)
+                                   const Model& model)
 {
     connect();
 
@@ -788,7 +782,7 @@ void ExternalManager::migrateModel(const QString& libraryName,
             Py::Tuple args(3);
             args.setItem(0, Py::String(libraryName.toStdString()));
             args.setItem(1, Py::String(path.toStdString()));
-            args.setItem(2, Py::Object(new ModelPy(new Model(*model)), true));
+            args.setItem(2, Py::Object(new ModelPy(new Model(model)), true));
             libraries.apply(args);  // No return expected
         }
         else {
@@ -804,7 +798,7 @@ void ExternalManager::migrateModel(const QString& libraryName,
 
 void ExternalManager::updateModel(const QString& libraryName,
                                   const QString& path,
-                                  const std::shared_ptr<Model>& model)
+                                  const Model& model)
 {
     connect();
 
@@ -815,7 +809,7 @@ void ExternalManager::updateModel(const QString& libraryName,
             Py::Tuple args(3);
             args.setItem(0, Py::String(libraryName.toStdString()));
             args.setItem(1, Py::String(path.toStdString()));
-            args.setItem(2, Py::Object(new ModelPy(new Model(*model)), true));
+            args.setItem(2, Py::Object(new ModelPy(new Model(model)), true));
             libraries.apply(args);  // No return expected
         }
         else {
@@ -999,7 +993,7 @@ std::shared_ptr<Material> ExternalManager::getMaterial(const QString& uuid)
 
 void ExternalManager::addMaterial(const QString& libraryName,
                                   const QString& path,
-                                  const std::shared_ptr<Material>& material)
+                                  const Material& material)
 {
     connect();
 
@@ -1010,7 +1004,7 @@ void ExternalManager::addMaterial(const QString& libraryName,
             Py::Tuple args(3);
             args.setItem(0, Py::String(libraryName.toStdString()));
             args.setItem(1, Py::String(path.toStdString()));
-            args.setItem(2, Py::Object(new MaterialPy(new Material(*material)), true));
+            args.setItem(2, Py::Object(new MaterialPy(new Material(material)), true));
             libraries.apply(args);  // No return expected
         }
         else {
@@ -1026,7 +1020,7 @@ void ExternalManager::addMaterial(const QString& libraryName,
 
 void ExternalManager::migrateMaterial(const QString& libraryName,
                                       const QString& path,
-                                      const std::shared_ptr<Material>& material)
+                                      const Material& material)
 {
     connect();
 
@@ -1037,7 +1031,7 @@ void ExternalManager::migrateMaterial(const QString& libraryName,
             Py::Tuple args(3);
             args.setItem(0, Py::String(libraryName.toStdString()));
             args.setItem(1, Py::String(path.toStdString()));
-            auto mat = new Material(*material);
+            auto mat = new Material(material);
             args.setItem(2, Py::Object(new MaterialPy(mat), true));
             libraries.apply(args);  // No return expected
         }
@@ -1054,7 +1048,7 @@ void ExternalManager::migrateMaterial(const QString& libraryName,
 
 void ExternalManager::updateMaterial(const QString& libraryName,
                     const QString& path,
-                    const std::shared_ptr<Material>& material)
+                    const Material& material)
 {
     connect();
 
@@ -1065,7 +1059,7 @@ void ExternalManager::updateMaterial(const QString& libraryName,
             Py::Tuple args(3);
             args.setItem(0, Py::String(libraryName.toStdString()));
             args.setItem(1, Py::String(path.toStdString()));
-            args.setItem(2, Py::Object(new MaterialPy(new Material(*material)), true));
+            args.setItem(2, Py::Object(new MaterialPy(new Material(material)), true));
             libraries.apply(args);  // No return expected
         }
         else {

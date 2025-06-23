@@ -59,7 +59,7 @@ MaterialLibrary::MaterialLibrary(const Library& library)
 {}
 
 std::shared_ptr<std::map<QString, std::shared_ptr<MaterialTreeNode>>>
-MaterialLibrary::getMaterialTree(const std::shared_ptr<Materials::MaterialFilter>& filter,
+MaterialLibrary::getMaterialTree(const Materials::MaterialFilter& filter,
                                  const Materials::MaterialFilterOptions& options) const
 {
     std::shared_ptr<std::map<QString, std::shared_ptr<MaterialTreeNode>>> materialTree =

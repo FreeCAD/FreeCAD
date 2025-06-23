@@ -60,12 +60,12 @@ using namespace App;
 void SheetViewHeader::mouseMoveEvent(QMouseEvent* e)
 {
     // for some reason QWidget::setCursor() has no effect in QGraphicsView
-    // therefore we resort to override cursor
+    // therefore we resort to QGraphicsItem::setCursor
     const QCursor currentCursor = this->cursor();
     QHeaderView::mouseMoveEvent(e);
     const QCursor newerCursor = this->cursor();
     if (newerCursor != currentCursor) {
-        qApp->setOverrideCursor(newerCursor);
+        Q_EMIT cursorChanged(newerCursor);
     }
 }
 

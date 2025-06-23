@@ -49,6 +49,11 @@ if FreeCAD.GuiUp:
     from PySide.QtCore import QT_TRANSLATE_NOOP
     import FreeCADGui
     from draftutils.translate import translate
+    # TODO: check if this import is still needed, and if so, whether
+    # it can be moved made conditional on the GUI being loaded
+    # for Rebar addon compatibility
+    from bimcommands import BimRebar
+    _CommandRebar = BimRebar.Arch_Rebar
 else:
     # \cond
     def translate(ctxt,txt):
@@ -56,10 +61,6 @@ else:
     def QT_TRANSLATE_NOOP(ctxt,txt):
         return txt
     # \endcond
-
-# for Rebar addon compatibility
-from bimcommands import BimRebar
-_CommandRebar = BimRebar.Arch_Rebar
 
 
 class _Rebar(ArchComponent.Component):

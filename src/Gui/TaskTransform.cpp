@@ -242,6 +242,21 @@ void TaskTransform::setupGui()
             &QPushButton::clicked,
             this,
             &TaskTransform::onAlignToOtherObject);
+    connect(ui->moveOptionsButton,
+            &QPushButton::toggled,
+            ui->frameMoveOptions,
+            &QWidget::setVisible);
+    connect(ui->translateCheckbox, &QCheckBox::toggled, this, [this](bool translateChecked) {
+        ui->matchXcheckbox->setEnabled(translateChecked);
+        ui->matchYcheckbox->setEnabled(translateChecked);
+        ui->matchZcheckbox->setEnabled(translateChecked);
+    });
+    connect(ui->rotateCheckbox, &QCheckBox::toggled, this, [this](bool rotateChecked) {
+        ui->alignXcheckbox->setEnabled(rotateChecked);
+        ui->alignYcheckbox->setEnabled(rotateChecked);
+        ui->alignZcheckbox->setEnabled(rotateChecked);
+    });
+
     connect(ui->flipPartButton, &QPushButton::clicked, this, &TaskTransform::onFlip);
 
     connect(ui->alignRotationCheckBox,
@@ -289,6 +304,7 @@ void TaskTransform::loadPreferences()
 
     ui->translationIncrementSpinBox->setValue(lastTranslationIncrement);
     ui->rotationIncrementSpinBox->setValue(lastRotationIncrement);
+    ui->moveOptionsButton->setIcon(Gui::BitmapFactory().pixmap("Std_DlgParameter"));
 }
 
 void TaskTransform::savePreferences()
@@ -499,7 +515,7 @@ void TaskTransform::onSelectionChanged(const SelectionChanges& msg)
             vp->setDraggerPlacement(vp->getObjectPlacement() * selectedObjectPlacement);
 
             if (msg.Type == SelectionChanges::AddSelection) {
-                moveObjectToDragger();
+                moveObjectToDragger(getRelevantComponents());
 
                 setSelectionMode(SelectionMode::None);
             }
@@ -529,10 +545,47 @@ void TaskTransform::onAlignToOtherObject()
     setSelectionMode(SelectionMode::SelectAlignTarget);
 }
 
-void TaskTransform::moveObjectToDragger()
+ViewProviderDragger::DraggerComponents TaskTransform::getRelevantComponents()
+{
+    // Check which dragger components should be considered
+    ViewProviderDragger::DraggerComponents components;
+
+    if (ui->matchXcheckbox->isChecked()) {
+        components |= ViewProviderDragger::DraggerComponent::XPos;
+    }
+    if (ui->matchYcheckbox->isChecked()) {
+        components |= ViewProviderDragger::DraggerComponent::YPos;
+    }
+    if (ui->matchZcheckbox->isChecked()) {
+        components |= ViewProviderDragger::DraggerComponent::ZPos;
+    }
+    if (ui->alignXcheckbox->isChecked()) {
+        components |= ViewProviderDragger::DraggerComponent::XRot;
+    }
+    if (ui->alignYcheckbox->isChecked()) {
+        components |= ViewProviderDragger::DraggerComponent::YRot;
+    }
+    if (ui->alignZcheckbox->isChecked()) {
+        components |= ViewProviderDragger::DraggerComponent::ZRot;
+    }
+    if (!ui->translateCheckbox->isChecked()) {
+        components &= ~ViewProviderDragger::DraggerComponent::XPos;
+        components &= ~ViewProviderDragger::DraggerComponent::YPos;
+        components &= ~ViewProviderDragger::DraggerComponent::ZPos;
+    }
+    if (!ui->rotateCheckbox->isChecked()) {
+        components &= ~ViewProviderDragger::DraggerComponent::XRot;
+        components &= ~ViewProviderDragger::DraggerComponent::YRot;
+        components &= ~ViewProviderDragger::DraggerComponent::ZRot;
+    }
+
+    return components;
+}
+
+void TaskTransform::moveObjectToDragger(ViewProviderDragger::DraggerComponents components)
 {
     vp->updateTransformFromDragger();
-    vp->updatePlacementFromDragger();
+    vp->updatePlacementFromDragger(components);
 
     resetReferenceRotation();
     resetReferencePlacement();
@@ -728,16 +781,39 @@ void TaskTransformDialog::open()
 
     Gui::TaskView::TaskDialog::open();
 
-    Gui::Application::Instance->activeDocument()->openCommand(
-        QT_TRANSLATE_NOOP("Command", "Transform"));
+    openCommand();
+}
+
+void TaskTransformDialog::openCommand()
+{
+    if (auto document = vp->getDocument()) {
+        if (!document->hasPendingCommand()) {
+            document->openCommand(QT_TRANSLATE_NOOP("Command", "Transform"));
+        }
+    }
+}
+
+void TaskTransformDialog::updateDraggerPlacement()
+{
+    const auto placement = vp->getObjectPlacement();
+    vp->setDraggerPlacement(placement);
+}
+
+void TaskTransformDialog::onUndo()
+{
+    updateDraggerPlacement();
+    openCommand();
+}
+
+void TaskTransformDialog::onRedo()
+{
+    updateDraggerPlacement();
+    openCommand();
 }
 
 bool TaskTransformDialog::accept()
 {
-    if (auto documentObject = vp->getObject()) {
-        Gui::Document* document =
-            Gui::Application::Instance->getDocument(documentObject->getDocument());
-        assert(document);
+    if (auto document = vp->getDocument()) {
         document->commitCommand();
         document->resetEdit();
         document->getDocument()->recompute();
@@ -748,10 +824,7 @@ bool TaskTransformDialog::accept()
 
 bool TaskTransformDialog::reject()
 {
-    if (auto documentObject = vp->getObject()) {
-        Gui::Document* document =
-            Gui::Application::Instance->getDocument(documentObject->getDocument());
-        assert(document);
+    if (auto document = vp->getDocument()) {
         document->abortCommand();
         document->resetEdit();
         document->getDocument()->recompute();

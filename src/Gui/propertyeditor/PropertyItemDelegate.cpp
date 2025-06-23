@@ -25,8 +25,11 @@
 
 #ifndef _PreComp_
 # include <QApplication>
+# include <QCheckBox>
+# include <QComboBox>
 # include <QModelIndex>
 # include <QPainter>
+# include <QTimer>
 #endif
 
 #include <Base/Tools.h>
@@ -102,7 +105,49 @@ void PropertyItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
 
     QPen savedPen = painter->pen();
 
-    QItemDelegate::paint(painter, option, index);
+    if (index.column() == 1 && property && dynamic_cast<PropertyBoolItem*>(property)) {
+        bool checked = index.data(Qt::EditRole).toBool();
+        bool readonly = property->isReadOnly();
+
+        QStyle* style = option.widget ? option.widget->style() : QApplication::style();
+        QPalette palette = option.widget ? option.widget->palette() : QApplication::palette();
+
+        QStyleOptionButton checkboxOption;
+
+        checkboxOption.state |= readonly ? QStyle::State_ReadOnly : QStyle::State_Enabled;
+        checkboxOption.state |= checked ? QStyle::State_On : QStyle::State_Off;
+
+        // draw the item (background etc.)
+        style->drawPrimitive(QStyle::PE_PanelItemViewItem, &option, painter, option.widget);
+
+        // Draw the checkbox
+        checkboxOption.rect = style->subElementRect(QStyle::SE_CheckBoxIndicator, &checkboxOption, option.widget);
+        int leftSpacing = style->pixelMetric(QStyle::PM_FocusFrameHMargin, nullptr, option.widget);
+
+        QRect checkboxRect = QStyle::alignedRect(
+            option.direction, Qt::AlignVCenter,
+            checkboxOption.rect.size(),
+            option.rect.adjusted(leftSpacing, 0, -leftSpacing, 0)
+        );
+        checkboxOption.rect = checkboxRect;
+
+        style->drawPrimitive(QStyle::PE_IndicatorCheckBox, &checkboxOption, painter, option.widget);
+
+        // Draw the label of the checkbox
+        QString labelText = checked ? tr("Yes") : tr("No");
+        int spacing = style->pixelMetric(QStyle::PM_CheckBoxLabelSpacing, nullptr, option.widget);
+        QRect textRect(
+            checkboxOption.rect.right() + spacing,
+            checkboxOption.rect.top(),
+            option.rect.right() - (checkboxOption.rect.right() + spacing),
+            checkboxOption.rect.height()
+        );
+        painter->setPen(palette.color(QPalette::Text));
+        painter->drawText(textRect, Qt::AlignVCenter | Qt::AlignLeft, labelText);
+    }
+    else {
+        QItemDelegate::paint(painter, option, index);
+    }
 
     QColor color = static_cast<QRgb>(QApplication::style()->styleHint(QStyle::SH_Table_GridLineColor, &opt, qobject_cast<QWidget*>(parent())));
     painter->setPen(QPen(color));
@@ -118,17 +163,45 @@ void PropertyItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
 bool PropertyItemDelegate::editorEvent (QEvent * event, QAbstractItemModel* model,
                                         const QStyleOptionViewItem& option, const QModelIndex& index)
 {
-    if (event && event->type() == QEvent::MouseButtonPress)
-        this->pressed = true;
-    else
-        this->pressed = false;
+    if (!event || event->type() == QEvent::MouseButtonDblClick) {
+        // ignore double click, as it could cause editor lock with checkboxes
+        // due to the editor being close immediately after toggling the checkbox
+        // which is currently done on first click
+        return true;
+    }
+    this->pressed = event->type() == QEvent::MouseButtonPress;
     return QItemDelegate::editorEvent(event, model, option, index);
 }
 
 bool PropertyItemDelegate::eventFilter(QObject *o, QEvent *ev)
 {
-    if (ev->type() == QEvent::FocusOut) {
+    if (ev->type() == QEvent::FocusIn) {
+        auto *comboBox = qobject_cast<QComboBox*>(o);
+        if (comboBox) {
+            auto parentEditor = qobject_cast<PropertyEditor*>(this->parent());
+            if (parentEditor && parentEditor->activeEditor == comboBox) {
+                comboBox->showPopup();
+            }
+        }
+        auto *checkBox = qobject_cast<QCheckBox*>(o);
+        if (checkBox) {
+            auto parentEditor = qobject_cast<PropertyEditor*>(this->parent());
+            if (parentEditor && parentEditor->activeEditor == checkBox) {
+                checkBox->toggle();
+                // Delay valueChanged to ensure proper recomputation
+                QTimer::singleShot(0, this, [this]() {
+                    valueChanged();
+                });
+            }
+        }
+    }
+    else if (ev->type() == QEvent::FocusOut) {
         auto parentEditor = qobject_cast<PropertyEditor*>(this->parent());
+        if (auto* comboBox = qobject_cast<QComboBox*>(o)) {
+            if (parentEditor && parentEditor->activeEditor == comboBox) {
+                parentEditor->activeEditor = nullptr;
+            }
+        }
         auto widget = qobject_cast<QWidget*>(o);
         if (widget && parentEditor && parentEditor->activeEditor
                    && widget != parentEditor->activeEditor) {
@@ -218,6 +291,12 @@ void PropertyItemDelegate::valueChanged()
     if (propertyEditor) {
         Base::FlagToggler<> flag(changed);
         Q_EMIT commitData(propertyEditor);
+        if (qobject_cast<QComboBox*>(propertyEditor)
+            || qobject_cast<QCheckBox*>(propertyEditor))
+        {
+            Q_EMIT closeEditor(propertyEditor);
+            return;
+        }
     }
 }
 

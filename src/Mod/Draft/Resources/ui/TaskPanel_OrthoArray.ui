@@ -26,7 +26,7 @@
    <string>Orthogonal array</string>
   </property>
   <layout class="QGridLayout" name="gridLayout_3">
-   <item row="1" column="0">
+   <item row="0" column="0">
     <widget class="QGroupBox" name="main_group">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
@@ -39,10 +39,59 @@
      </property>
      <layout class="QGridLayout" name="gridLayout_4">
       <item row="0" column="0">
-       <widget class="QLabel" name="label_icon">
-        <property name="text">
-         <string notr="true">(Placeholder for the icon)</string>
+       <widget class="QGroupBox" name="group_axis_mode">
+        <property name="toolTip">
+         <string>Toggle between Orthogonal mode and Linear mode. In Linear mode, you can select which axis to use.</string>
         </property>
+        <property name="title">
+         <string>Axis mode</string>
+        </property>
+        <layout class="QGridLayout" name="gridLayout_axis_mode">
+         <item row="0" column="0">
+          <widget class="QPushButton" name="button_linear_mode">
+           <property name="text">
+            <string>Switch to linear mode</string>
+           </property>
+           <property name="checkable">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="0">
+          <layout class="QGridLayout" name="grid_axis_select">
+           <item row="0" column="0">
+            <widget class="QRadioButton" name="radiobutton_x_axis">
+             <property name="text">
+              <string>X axis</string>
+             </property>
+             <property name="checked">
+              <bool>true</bool>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="0">
+            <widget class="QRadioButton" name="radiobutton_y_axis">
+             <property name="text">
+              <string>Y axis</string>
+             </property>
+             <property name="checked">
+              <bool>false</bool>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="0">
+            <widget class="QRadioButton" name="radiobutton_z_axis">
+             <property name="text">
+              <string>Z axis</string>
+             </property>
+             <property name="checked">
+              <bool>false</bool>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+        </layout>
        </widget>
       </item>
       <item row="1" column="0">
@@ -122,7 +171,19 @@ The number must be at least 1 in each direction.</string>
         </layout>
        </widget>
       </item>
-     <item row="4" column="0">
+      <item row="2" column="0">
+       <widget class="QGroupBox" name="group_linearmode">
+        <property name="toolTip">
+         <string>Currently selected axis</string>
+        </property>
+        <property name="title">
+         <string></string>
+        </property>
+        <layout class="QGridLayout" name="gridLayout_5">
+        </layout>
+       </widget>
+      </item>
+      <item row="3" column="0">
        <widget class="QGroupBox" name="group_X">
         <property name="toolTip">
          <string>Distance between the elements in the X direction.
@@ -151,7 +212,7 @@ Negative values will result in copies produced in the negative direction.</strin
               </sizepolicy>
              </property>
              <property name="unit" stdset="0">
-              <string notr="true"/>
+              <string notr="true">mm</string>
              </property>
              <property name="quantity" stdset="0">
               <double>100.000000000000000</double>
@@ -165,7 +226,7 @@ Negative values will result in copies produced in the negative direction.</strin
              </property>
             </widget>
            </item>
-          <item row="1" column="1">
+           <item row="1" column="1">
             <widget class="Gui::InputField" name="input_X_y">
              <property name="sizePolicy">
               <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
@@ -174,7 +235,7 @@ Negative values will result in copies produced in the negative direction.</strin
               </sizepolicy>
              </property>
              <property name="unit" stdset="0">
-              <string notr="true"/>
+              <string notr="true">mm</string>
              </property>
             </widget>
            </item>
@@ -194,7 +255,7 @@ Negative values will result in copies produced in the negative direction.</strin
               </sizepolicy>
              </property>
              <property name="unit" stdset="0">
-              <string notr="true"/>
+              <string notr="true">mm</string>
              </property>
             </widget>
            </item>
@@ -213,7 +274,7 @@ Negative values will result in copies produced in the negative direction.</strin
         </layout>
        </widget>
       </item>
-      <item row="5" column="0">
+      <item row="4" column="0">
        <widget class="QGroupBox" name="group_Y">
         <property name="toolTip">
          <string>Distance between the elements in the Y direction.
@@ -242,7 +303,7 @@ Negative values will result in copies produced in the negative direction.</strin
               </sizepolicy>
              </property>
              <property name="unit" stdset="0">
-              <string notr="true"/>
+              <string notr="true">mm</string>
              </property>
             </widget>
            </item>
@@ -262,7 +323,7 @@ Negative values will result in copies produced in the negative direction.</strin
               </sizepolicy>
              </property>
              <property name="unit" stdset="0">
-              <string notr="true"/>
+              <string notr="true">mm</string>
              </property>
              <property name="quantity" stdset="0">
               <double>100.000000000000000</double>
@@ -285,7 +346,7 @@ Negative values will result in copies produced in the negative direction.</strin
               </sizepolicy>
              </property>
              <property name="unit" stdset="0">
-              <string notr="true"/>
+              <string notr="true">mm</string>
              </property>
             </widget>
            </item>
@@ -304,7 +365,7 @@ Negative values will result in copies produced in the negative direction.</strin
         </layout>
        </widget>
       </item>
-      <item row="6" column="0">
+      <item row="5" column="0">
        <widget class="QGroupBox" name="group_Z">
         <property name="toolTip">
          <string>Distance between the elements in the Z direction.
@@ -333,7 +394,7 @@ Negative values will result in copies produced in the negative direction.</strin
               </sizepolicy>
              </property>
              <property name="unit" stdset="0">
-              <string notr="true"/>
+              <string notr="true">mm</string>
              </property>
             </widget>
            </item>
@@ -353,7 +414,7 @@ Negative values will result in copies produced in the negative direction.</strin
               </sizepolicy>
              </property>
              <property name="unit" stdset="0">
-              <string notr="true"/>
+              <string notr="true">mm</string>
              </property>
             </widget>
            </item>
@@ -373,7 +434,7 @@ Negative values will result in copies produced in the negative direction.</strin
               </sizepolicy>
              </property>
              <property name="unit" stdset="0">
-              <string notr="true"/>
+              <string notr="true">mm</string>
              </property>
              <property name="quantity" stdset="0">
               <double>100.000000000000000</double>
@@ -395,7 +456,7 @@ Negative values will result in copies produced in the negative direction.</strin
         </layout>
        </widget>
       </item>
-      <item row="8" column="0">
+      <item row="6" column="0">
        <layout class="QVBoxLayout" name="vertical_layout">
         <item>
          <widget class="QCheckBox" name="checkbox_fuse">
@@ -424,7 +485,7 @@ A Link array is more efficient when creating multiple copies, but it cannot be f
         </item>
        </layout>
       </item>
-      <item row="11" column="0">
+      <item row="7" column="0">
        <spacer name="verticalSpacer">
         <property name="orientation">
          <enum>Qt::Vertical</enum>

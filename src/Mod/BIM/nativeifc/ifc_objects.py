@@ -65,6 +65,7 @@ class ifc_object:
         elif prop == "Schema":
             self.edit_schema(obj, obj.Schema)
         elif prop == "Type":
+            self.edit_type(obj)
             self.assign_classification(obj)
         elif prop == "Classification":
             self.edit_classification(obj)

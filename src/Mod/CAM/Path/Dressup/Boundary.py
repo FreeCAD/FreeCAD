@@ -210,7 +210,12 @@ class PathBoundary:
                 if bogusY:
                     bogusY = "Y" not in cmd.Parameters
                 edge = Path.Geom.edgeForCmd(cmd, pos)
-                if edge:
+                if edge and cmd.Name in Path.Geom.CmdMoveDrill:
+                    inside = edge.common(self.boundary).Edges
+                    outside = edge.cut(self.boundary).Edges
+                    if 1 == len(inside) and 0 == len(outside):
+                        commands.append(cmd)
+                if edge and not cmd.Name in Path.Geom.CmdMoveDrill:
                     inside = edge.common(self.boundary).Edges
                     outside = edge.cut(self.boundary).Edges
                     if not self.inside:  # UI "inside boundary" param

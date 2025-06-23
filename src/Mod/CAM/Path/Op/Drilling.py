@@ -160,7 +160,7 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
             "Drill",
             QT_TRANSLATE_NOOP(
                 "App::Property",
-                "Controls tool retract height between holes in same op, Default=G98: safety height",
+                "Controls tool retract height between holes in same op, Default=G98: safety height\nUse property KeepToolDown to change this",
             ),
         )
         obj.addProperty(
@@ -193,6 +193,8 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
             "Drill",
             QT_TRANSLATE_NOOP("App::Property", "Use G85 boring cycle with feed out"),
         )
+
+        obj.setEditorMode("RetractMode", 1)  # Set property read-only
 
         for n in self.propertyEnumerations():
             setattr(obj, n[0], n[1])
@@ -236,9 +238,10 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
                 "Drill",
                 QT_TRANSLATE_NOOP(
                     "App::Property",
-                    "Controls tool retract height between holes in same op, Default=G98: safety height",
+                    "Controls tool retract height between holes in same op, Default=G98: safety height\nUse property KeepToolDown to change this",
                 ),
             )
+            obj.setEditorMode("RetractMode", 1)  # Set property read-only
             # ensure new enums exist in old class
             for n in self.propertyEnumerations():
                 setattr(obj, n[0], n[1])
@@ -249,8 +252,6 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
         else:
             obj.RetractMode = "G98"
         self.commandlist.append(Path.Command(obj.RetractMode))
-
-        holes = PathUtils.sort_locations(holes, ["x", "y"])
 
         # This section is technical debt. The computation of the
         # target shapes should be factored out for reuse.

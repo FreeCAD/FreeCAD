@@ -116,7 +116,7 @@ public:
         double normal;
         double loose;
     };
-    static const UTSClearanceDefinition UTSHoleDiameters[22];
+    static const UTSClearanceDefinition UTSHoleDiameters[23];
 
     void Restore(Base::XMLReader & reader) override;
 
@@ -239,6 +239,8 @@ private:
 
     void addCutType(const CutDimensionSet& dimensions);
     void updateHoleCutParams();
+    void calculateAndSetCounterbore();
+    void calculateAndSetCountersink();
     std::optional<double> determineDiameter() const;
     void updateDiameterParam();
     void updateThreadDepthParam();

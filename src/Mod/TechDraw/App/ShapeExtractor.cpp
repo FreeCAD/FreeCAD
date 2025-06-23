@@ -135,7 +135,7 @@ TopoDS_Shape ShapeExtractor::getShapes(const std::vector<App::DocumentObject*> l
             }
         }
         else {
-            auto shape = Part::Feature::getShape(obj);
+            auto shape = Part::Feature::getShape(obj, Part::ShapeOption::ResolveLink | Part::ShapeOption::Transform);
             // if source obj has a shape, we use that shape.
             if(!SU::isShapeReallyNull(shape)) {
                 if (checkShape(obj, shape)) {
@@ -225,7 +225,8 @@ std::vector<TopoDS_Shape> ShapeExtractor::getXShapes(const App::Link* xLink)
                     childNeedsTransform = true;
                 }
             }
-            auto shape = Part::Feature::getShape(l);    // TODO:  getTopoShape() ?
+            // TODO:  getTopoShape() ?
+            auto shape = Part::Feature::getShape(l, Part::ShapeOption::ResolveLink | Part::ShapeOption::Transform);
             Part::TopoShape ts(shape);
             if (ts.isInfinite()) {
                 shape = ShapeFinder::stripInfiniteShapes(shape);
@@ -280,7 +281,7 @@ TopoDS_Shape ShapeExtractor::getShapeFromXLink(const App::Link* xLink)
     App::DocumentObject* linkedObject = xLink->getLink(depth);
     if (linkedObject) {
         // have a linked object, get the shape
-        TopoDS_Shape shape = Part::Feature::getShape(linkedObject);
+        TopoDS_Shape shape = Part::Feature::getShape(linkedObject, Part::ShapeOption::ResolveLink | Part::ShapeOption::Transform);
         if (shape.IsNull()) {
             // this is where we need to parse the target for objects with a shape??
             return TopoDS_Shape();
@@ -465,7 +466,7 @@ Base::Vector3d ShapeExtractor::getLocation3dFromFeat(const App::DocumentObject* 
 //! get the located and oriented version of docObj shape
 TopoDS_Shape ShapeExtractor::getLocatedShape(const App::DocumentObject* docObj)
 {
-        Part::TopoShape shape = Part::Feature::getTopoShape(docObj);
+        Part::TopoShape shape = Part::Feature::getTopoShape(docObj, Part::ShapeOption::ResolveLink | Part::ShapeOption::Transform);
         const Part::Feature* pf = dynamic_cast<const Part::Feature*>(docObj);
         if (pf) {
             shape.setPlacement(pf->globalPlacement());

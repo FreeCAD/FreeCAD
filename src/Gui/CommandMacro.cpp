@@ -23,6 +23,8 @@
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <QApplication>
+# include <QDesktopServices>
+# include <QUrl>
 #endif
 
 #include "Command.h"
@@ -302,6 +304,35 @@ bool StdCmdToggleBreakpoint::isActive()
     return getGuiApplication()->sendHasMsgToActiveView("ToggleBreakpoint");
 }
 
+DEF_STD_CMD_A(StdCmdMacrosFolder)
+
+StdCmdMacrosFolder::StdCmdMacrosFolder()
+: Command("Std_OpenMacrosFolder")
+{
+    sGroup        = "Macro";
+    sMenuText     = QT_TR_NOOP("Open macros containing folder");
+    sToolTipText  = QT_TR_NOOP("Open macros containing folder by default system file manager");
+    sWhatsThis    = "Std_OpenMacrosFolder";
+    sStatusTip    = QT_TR_NOOP("Open macros containing folder by default system file manager");
+    sPixmap       = "MacroFolder";
+    sAccel        = "";
+    eType         = 0;
+}
+
+void StdCmdMacrosFolder::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+
+    QString path = QString::fromStdString(App::Application::getUserMacroDir());
+    QUrl url = QUrl::fromLocalFile(path);
+    QDesktopServices::openUrl(url);
+}
+
+bool StdCmdMacrosFolder::isActive()
+{
+    return true;
+}
+
 namespace Gui {
 
 void CreateMacroCommands()
@@ -309,6 +340,7 @@ void CreateMacroCommands()
     CommandManager &rcCmdMgr = Application::Instance->commandManager();
     rcCmdMgr.addCommand(new StdCmdDlgMacroRecord());
     rcCmdMgr.addCommand(new StdCmdDlgMacroExecute());
+    rcCmdMgr.addCommand(new StdCmdMacrosFolder());
     rcCmdMgr.addCommand(new StdCmdDlgMacroExecuteDirect());
     rcCmdMgr.addCommand(new StdCmdMacroAttachDebugger());
     rcCmdMgr.addCommand(new StdCmdMacroStartDebug());

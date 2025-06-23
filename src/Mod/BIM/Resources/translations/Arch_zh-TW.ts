@@ -250,13 +250,13 @@ to count the objects, or property names like 'Length' or
 When used with native IFC objects, this can be used to
 retrieve any attribute or custom properties of the elements
 retrieved.</source>
-      <translation type="unfinished">The property to retrieve from each object.Can be 'Count'
-to count the objects, or property names like 'Length' or
-'Shape.Volume' to retrieve a certain property.
+      <translation>從每個物件中檢索的屬性。可以是“Count”
+計算物件的數量，或屬性名稱，例如“長度”或
+“Shape.Volume” 來檢索某個屬性。
 
-When used with native IFC objects, this can be used to
-retrieve any attribute or custom properties of the elements
-retrieved.</translation>
+與原生 IFC 物件一起使用時，可用於
+檢索元素的任何屬性或自訂屬性
+檢索到。</translation>
     </message>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="93"/>
@@ -272,18 +272,18 @@ in FreeCAD or not.
 
 Use the name of the IFC project to get all the IFC entities
 of that project, no matter if they are expanded or not.</source>
-      <translation type="unfinished">An optional semicolon (;) separated list of object names
-(internal names, not labels), to be considered by this operation.
-If the list contains groups, children will be added.
+      <translation>可選的分號 (;) 分隔的物件名稱列表
+（內部名稱，而非標籤），將由此操作考慮。
+如果清單包含群組，則會新增子群組。
 
-Leave blank to use all objects from the document.
+留空則使用文件中的所有物件。
 
-If the document is an IFC project, all IFC entities of the
-document will be used, no matter if they are expanded
-in FreeCAD or not.
+如果文件是 IFC 項目，則
+文件將被使用，無論它們是否已擴展
+是否在 FreeCAD 中。
 
-Use the name of the IFC project to get all the IFC entities
-of that project, no matter if they are expanded or not.</translation>
+使用 IFC 專案的名稱取得所有 IFC 實體
+該項目，無論是否擴大。</translation>
     </message>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="112"/>
@@ -292,11 +292,17 @@ of that project, no matter if they are expanded or not.</translation>
 Examples of valid filters (everything is case-insensitive): Name:Wall - Will only consider objects with 'wall' in their name (internal name); !Name:Wall - Will only consider objects which DON'T have 'wall' in their name (internal name); Description:Win - Will only consider objects with 'win' in their description; !Label:Win - Will only consider objects which DO NOT have 'win' in their label; IfcType:Wall - Will only consider objects which Ifc Type is 'Wall'; !Tag:Wall - Will only consider objects which tag is NOT 'Wall'. If you leave this field empty, no filtering is applied
 
 When dealing with native IFC objects, you can use FreeCAD properties name, ex: 'Class:IfcWall' or any other IFC attribute (ex. 'IsTypedBy:#455'). If the 'Objects' column has been set to an IFC project or document, all the IFC entities of that project will be considered.</source>
-      <translation type="unfinished">An optional semicolon (;) separated list of property:value filters. Prepend ! to a property name to invert the effect of the filter (exclude objects that match the filter). Objects whose property contains the value will be matched.
+      <translation>可選的以分號 (;) 分隔的property:value (屬性：值) 過濾器清單。新增 !到屬性名稱以反轉篩選器的效果（排除與篩選器相符的物件）。屬性包含該值的物件將被匹配。
 
-Examples of valid filters (everything is case-insensitive): Name:Wall - Will only consider objects with 'wall' in their name (internal name); !Name:Wall - Will only consider objects which DON'T have 'wall' in their name (internal name); Description:Win - Will only consider objects with 'win' in their description; !Label:Win - Will only consider objects which DO NOT have 'win' in their label; IfcType:Wall - Will only consider objects which Ifc Type is 'Wall'; !Tag:Wall - Will only consider objects which tag is NOT 'Wall'. If you leave this field empty, no filtering is applied
+有效過濾器的範例（所有內容不區分大小寫）：
+Name:Wall - 僅考慮名稱中帶有「wall」的物件（內部名稱）； 
+!Name:Wall - 只考慮名稱中不包含「wall」的物件（內部名稱）；
+Description:Win - 只會考慮描述中帶有「win」的物件； 
+!Label:Win – 只考慮標籤中沒有「win」的物件；
+IfcType:Wall - 只考慮 Ifc 類型為「Wall」的物件； 
+!Tag:Wall – 只考慮標籤不是「Wall」的物件。如果將此欄位留空，則不套用任何篩選
 
-When dealing with native IFC objects, you can use FreeCAD properties name, ex: 'Class:IfcWall' or any other IFC attribute (ex. 'IsTypedBy:#455'). If the 'Objects' column has been set to an IFC project or document, all the IFC entities of that project will be considered.</translation>
+當處理原生 IFC 物件時，您可以使用 FreeCAD 屬性名稱，例如：「Class:IfcWall」或任何其他 IFC 屬性（例如「IsTypedBy:#455」）。如果「物件」列已設定為 IFC 項目或文件，則會考慮該項目的所有 IFC 實體。</translation>
     </message>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="126"/>
@@ -626,10 +632,10 @@ When dealing with native IFC objects, you can use FreeCAD properties name, ex: '
 and that document won't be turned into an IFC document automatically.
 You can still turn a FreeCAD document into an IFC document manually, using
 Utils -&gt; Make IFC project</source>
-      <translation type="unfinished">If this is checked, you won't be asked again when creating a new FreeCAD document,
-and that document won't be turned into an IFC document automatically.
-You can still turn a FreeCAD document into an IFC document manually, using
-Utils -&gt; Make IFC project</translation>
+      <translation>若此被勾選，則在建立新的 FreeCAD 文件時不會再詢問您，
+且該文件不會自動轉換為 IFC 文件。
+您仍然可以手動將 FreeCAD 文檔轉換為 IFC 文件，使用
+實用程式 -&gt; 製作 IFC 專案</translation>
     </message>
     <message>
       <location filename="../ui/dialogConvertDocument.ui" line="46"/>
@@ -1023,7 +1029,7 @@ Utils -&gt; Make IFC project</translation>
     <message>
       <location filename="../ui/dialogAddPSet.ui" line="14"/>
       <source>Add standard IFC PSet</source>
-      <translation type="unfinished">Add standard IFC PSet</translation>
+      <translation>添加標準 IFC PSet</translation>
     </message>
     <message>
       <location filename="../ui/dialogAddPSet.ui" line="43"/>
@@ -1376,52 +1382,52 @@ Utils -&gt; Make IFC project</translation>
     <message>
       <location filename="../ui/dialogConvertType.ui" line="14"/>
       <source>Convert to IFC type</source>
-      <translation type="unfinished">Convert to IFC type</translation>
+      <translation>轉換到IFC類型</translation>
     </message>
     <message>
       <location filename="../ui/dialogConvertType.ui" line="26"/>
       <source>This object will be converted to a %1 type. Types can be used to give common attributes and properties to several objects at once.</source>
-      <translation type="unfinished">This object will be converted to a %1 type. Types can be used to give common attributes and properties to several objects at once.</translation>
+      <translation>該物件將轉換為 %1 類型。類型可用於同時為多個物件賦予共同的屬性和特性。</translation>
     </message>
     <message>
       <location filename="../ui/dialogConvertType.ui" line="36"/>
       <source>Keep original object. The object will adopt the new type</source>
-      <translation type="unfinished">Keep original object. The object will adopt the new type</translation>
+      <translation>保留原始物件。該物件將採用新類型</translation>
     </message>
     <message>
       <location filename="../ui/dialogAddProperty.ui" line="14"/>
       <source>Add IFC property</source>
-      <translation type="unfinished">Add IFC property</translation>
+      <translation>添加IFC屬性</translation>
     </message>
     <message>
       <location filename="../ui/dialogAddProperty.ui" line="44"/>
       <source>IfcLabel</source>
-      <translation type="unfinished">IfcLabel</translation>
+      <translation>IfcLabel</translation>
     </message>
     <message>
       <location filename="../ui/dialogAddProperty.ui" line="49"/>
       <source>IfcBoolean</source>
-      <translation type="unfinished">IfcBoolean</translation>
+      <translation>IfcBoolean</translation>
     </message>
     <message>
       <location filename="../ui/dialogAddProperty.ui" line="54"/>
       <source>IfcInteger</source>
-      <translation type="unfinished">IfcInteger</translation>
+      <translation>IfcInteger</translation>
     </message>
     <message>
       <location filename="../ui/dialogAddProperty.ui" line="59"/>
       <source>IfcReal</source>
-      <translation type="unfinished">IfcReal</translation>
+      <translation>IfcReal</translation>
     </message>
     <message>
       <location filename="../ui/dialogAddProperty.ui" line="64"/>
       <source>IfcLengthMeasure</source>
-      <translation type="unfinished">IfcLengthMeasure</translation>
+      <translation>IfcLengthMeasure</translation>
     </message>
     <message>
       <location filename="../ui/dialogAddProperty.ui" line="69"/>
       <source>IfcAreaMeasure</source>
-      <translation type="unfinished">IfcAreaMeasure</translation>
+      <translation>IfcAreaMeasure</translation>
     </message>
     <message>
       <location filename="../ui/dialogAddProperty.ui" line="80"/>
@@ -1431,7 +1437,7 @@ Utils -&gt; Make IFC project</translation>
     <message>
       <location filename="../ui/dialogAddProperty.ui" line="94"/>
       <source>PSet</source>
-      <translation type="unfinished">PSet</translation>
+      <translation>PSet</translation>
     </message>
   </context>
   <context>
@@ -1454,7 +1460,7 @@ Utils -&gt; Make IFC project</translation>
     <message>
       <location filename="../ui/GitTaskPanel.ui" line="55"/>
       <source>Refresh</source>
-      <translation>重新整理</translation>
+      <translation>重新運算</translation>
     </message>
     <message>
       <location filename="../ui/GitTaskPanel.ui" line="64"/>
@@ -2771,12 +2777,12 @@ instead of the FreeCAD web workbench</source>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="525"/>
       <source>When clicking a view or level in the BIM views manager, this switches the background to plain color when activating a 2D view, and to gradient color when activating a level</source>
-      <translation type="unfinished">When clicking a view or level in the BIM views manager, this switches the background to plain color when activating a 2D view, and to gradient color when activating a level</translation>
+      <translation>在 BIM 視圖管理員中按一下視圖或級別時，啟動 2D 視圖時將背景切換為純色，並在啟動等級時將背景切換為漸層色</translation>
     </message>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="528"/>
       <source>Switch backgrounds</source>
-      <translation type="unfinished">Switch backgrounds</translation>
+      <translation>切換背景</translation>
     </message>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="314"/>
@@ -2811,7 +2817,7 @@ instead of the FreeCAD web workbench</source>
     <message>
       <location filename="../ui/preferences-sh3d-import.ui" line="14"/>
       <source>SH3D import</source>
-      <translation type="unfinished">SH3D import</translation>
+      <translation>匯入 SH3D</translation>
     </message>
     <message>
       <location filename="../ui/preferences-sh3d-import.ui" line="32"/>
@@ -2823,121 +2829,121 @@ instead of the FreeCAD web workbench</source>
       <location filename="../ui/preferences-sh3d-import.ui" line="45"/>
       <source>Shows verbose debug messages during import of SH3D files in the Report
                     view panel. Log level message must be allowed for this setting to have an effect.</source>
-      <translation type="unfinished">Shows verbose debug messages during import of SH3D files in the Report
-                    view panel. Log level message must be allowed for this setting to have an effect.</translation>
+      <translation>在報告中匯入 SH3D 檔案時顯示詳細的偵錯訊息
+                    查看面板。必須允許日誌等級訊息才能使此設定生效。</translation>
     </message>
     <message>
       <location filename="../ui/preferences-sh3d-import.ui" line="71"/>
       <source>Whether to import the model's doors and windows</source>
-      <translation type="unfinished">Whether to import the model's doors and windows</translation>
+      <translation>是否匯入該模型的門與窗</translation>
     </message>
     <message>
       <location filename="../ui/preferences-sh3d-import.ui" line="74"/>
       <source>Doors and Windows</source>
-      <translation type="unfinished">Doors and Windows</translation>
+      <translation>門窗</translation>
     </message>
     <message>
       <location filename="../ui/preferences-sh3d-import.ui" line="87"/>
       <source>Whether to import the model's furnitures</source>
-      <translation type="unfinished">Whether to import the model's furnitures</translation>
+      <translation>是否匯入該模型的家具</translation>
     </message>
     <message>
       <location filename="../ui/preferences-sh3d-import.ui" line="90"/>
       <source>Furnitures</source>
-      <translation type="unfinished">Furnitures</translation>
+      <translation>家具</translation>
     </message>
     <message>
       <location filename="../ui/preferences-sh3d-import.ui" line="103"/>
       <source>Whether to create Arch::Equipment for each furniture defined in the model (NOTE: this can negatively impact the import process speed)</source>
-      <translation type="unfinished">Whether to create Arch::Equipment for each furniture defined in the model (NOTE: this can negatively impact the import process speed)</translation>
+      <translation>是否為模型中定義的每個家具建立 Arch::Equipment（注意：這可能會對匯入過程速度產生負面影響）</translation>
     </message>
     <message>
       <location filename="../ui/preferences-sh3d-import.ui" line="106"/>
       <source>Create Arch::Equipment</source>
-      <translation type="unfinished">Create Arch::Equipment</translation>
+      <translation>建立 Arch::Equipment</translation>
     </message>
     <message>
       <location filename="../ui/preferences-sh3d-import.ui" line="119"/>
       <source>Whether to join the different Arch::Wall together</source>
-      <translation type="unfinished">Whether to join the different Arch::Wall together</translation>
+      <translation>是否將不同的 Arch::Wall 連接在一起</translation>
     </message>
     <message>
       <location filename="../ui/preferences-sh3d-import.ui" line="122"/>
       <source>Join Arch::Wall</source>
-      <translation type="unfinished">Join Arch::Wall</translation>
+      <translation>加入 Arch::Wall</translation>
     </message>
     <message>
       <location filename="../ui/preferences-sh3d-import.ui" line="135"/>
       <source>Whether to import the model's lights. Note that you also need to import
                     the model's furnitures.</source>
-      <translation type="unfinished">Whether to import the model's lights. Note that you also need to import
-                    the model's furnitures.</translation>
+      <translation>是否匯入模型的燈光。請注意，您還需要匯入
+                    模型的家具。</translation>
     </message>
     <message>
       <location filename="../ui/preferences-sh3d-import.ui" line="139"/>
       <source>Lights (requires Render)</source>
-      <translation type="unfinished">Lights (requires Render)</translation>
+      <translation>光線(需要算繪)</translation>
     </message>
     <message>
       <location filename="../ui/preferences-sh3d-import.ui" line="152"/>
       <source>Whether to import the model's cameras</source>
-      <translation type="unfinished">Whether to import the model's cameras</translation>
+      <translation>是否匯入該模型的相機</translation>
     </message>
     <message>
       <location filename="../ui/preferences-sh3d-import.ui" line="155"/>
       <source>Cameras (requires Render)</source>
-      <translation type="unfinished">Cameras (requires Render)</translation>
+      <translation>相機(需要算繪)</translation>
     </message>
     <message>
       <location filename="../ui/preferences-sh3d-import.ui" line="168"/>
       <source>Merge imported element with existing FC object</source>
-      <translation type="unfinished">Merge imported element with existing FC object</translation>
+      <translation>將匯入的元件與現有的 FC 物件合併</translation>
     </message>
     <message>
       <location filename="../ui/preferences-sh3d-import.ui" line="171"/>
       <source>Merge into existing document</source>
-      <translation type="unfinished">Merge into existing document</translation>
+      <translation>合併到現有文件</translation>
     </message>
     <message>
       <location filename="../ui/preferences-sh3d-import.ui" line="186"/>
       <source>Default Floor Color</source>
-      <translation type="unfinished">Default Floor Color</translation>
+      <translation>預設樓板顏色</translation>
     </message>
     <message>
       <location filename="../ui/preferences-sh3d-import.ui" line="202"/>
       <location filename="../ui/preferences-sh3d-import.ui" line="242"/>
       <source>This color might be used when a room does not define its own color.</source>
-      <translation type="unfinished">This color might be used when a room does not define its own color.</translation>
+      <translation>當房間沒有定義自己的顏色時，可能會使用這種顏色。</translation>
     </message>
     <message>
       <location filename="../ui/preferences-sh3d-import.ui" line="226"/>
       <source>Default Ceiling Color</source>
-      <translation type="unfinished">Default Ceiling Color</translation>
+      <translation>預設天花板顏色</translation>
     </message>
     <message>
       <location filename="../ui/preferences-sh3d-import.ui" line="264"/>
       <source>Create a default Render project with the newly created Site</source>
-      <translation type="unfinished">Create a default Render project with the newly created Site</translation>
+      <translation>使用新建立的網站建立預設算繪專案</translation>
     </message>
     <message>
       <location filename="../ui/preferences-sh3d-import.ui" line="267"/>
       <source>Create Render Project (requires Render)</source>
-      <translation type="unfinished">Create Render Project (requires Render)</translation>
+      <translation>建立算繪專案(需要算繪)</translation>
     </message>
     <message>
       <location filename="../ui/preferences-sh3d-import.ui" line="280"/>
       <source>Fit view while importing.</source>
-      <translation type="unfinished">Fit view while importing.</translation>
+      <translation>匯入時符合視圖大小。</translation>
     </message>
     <message>
       <location filename="../ui/preferences-sh3d-import.ui" line="296"/>
       <source>Create a default IFC project with the newly created Site.</source>
-      <translation type="unfinished">Create a default IFC project with the newly created Site.</translation>
+      <translation>使用新建立的網站建立預設的 IFC 專案。</translation>
     </message>
     <message>
       <location filename="../ui/preferences-sh3d-import.ui" line="299"/>
       <source>Create IFC Project</source>
-      <translation type="unfinished">Create IFC Project</translation>
+      <translation>建立 IFC 專案</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc.ui" line="45"/>
@@ -5057,7 +5063,7 @@ IdRel：用於自動計算的相對輪廓的 ID。
     <message>
       <location filename="../../ArchSchedule.py" line="102"/>
       <source>renamed property 'Description' to 'Operation'</source>
-      <translation type="unfinished">renamed property 'Description' to 'Operation'</translation>
+      <translation>將屬性“Description”重新命名為“Operation”</translation>
     </message>
     <message>
       <location filename="../../ArchSchedule.py" line="103"/>
@@ -5242,7 +5248,7 @@ Floor creation aborted.</source>
     <message>
       <location filename="../../ArchComponent.py" line="1164"/>
       <source>Wrong base type</source>
-      <translation type="unfinished">Wrong base type</translation>
+      <translation>錯誤基礎類型</translation>
     </message>
     <message>
       <location filename="../../ArchComponent.py" line="1653"/>
@@ -5760,7 +5766,7 @@ Building creation aborted.</source>
     <message>
       <location filename="../../bimcommands/BimDrawingView.py" line="55"/>
       <source>Create 2D View</source>
-      <translation type="unfinished">Create 2D View</translation>
+      <translation>建立 2D 視圖</translation>
     </message>
   </context>
   <context>
@@ -5905,7 +5911,7 @@ Building creation aborted.</source>
     <message>
       <location filename="../../ArchStructure.py" line="733"/>
       <source>Select User Defined PropertySet to use in creating variant shape, with same ArchSketch </source>
-      <translation type="unfinished">Select User Defined PropertySet to use in creating variant shape, with same ArchSketch </translation>
+      <translation>選擇使用者定義 PropertySet 來建立變體形狀，使用相同的 ArchSketch</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="1195"/>
@@ -7165,7 +7171,7 @@ Building creation aborted.</source>
       <location filename="../../ArchPanel.py" line="521"/>
       <location filename="../../ArchPanel.py" line="810"/>
       <source>If True, the object is rendered as a face, if possible.</source>
-      <translation>如果為真，在可能的情況下將物件算縮為面。</translation>
+      <translation>如果為真，在可能的情況下將物件算繪為面。</translation>
     </message>
     <message>
       <location filename="../../ArchPanel.py" line="523"/>
@@ -7417,7 +7423,7 @@ Building creation aborted.</source>
     <message>
       <location filename="../../ArchSchedule.py" line="110"/>
       <source>The operation column</source>
-      <translation type="unfinished">The operation column</translation>
+      <translation>操作欄</translation>
     </message>
     <message>
       <location filename="../../ArchSchedule.py" line="112"/>
@@ -7896,7 +7902,7 @@ Building creation aborted.</source>
     <message>
       <location filename="../../ArchWall.py" line="160"/>
       <source>The length of this wall. Read-only if this wall is not based on an unconstrained sketch with a single edge, or on a Draft Wire with a single edge. Refer to wiki for details how length is deduced.</source>
-      <translation type="unfinished">The length of this wall. Read-only if this wall is not based on an unconstrained sketch with a single edge, or on a Draft Wire with a single edge. Refer to wiki for details how length is deduced.</translation>
+      <translation>這堵牆的長度。如果此牆不是基於具有單一邊緣的不受約束的草圖，或基於具有單一邊緣的繪製線，則為唯讀。有關如何推斷長度的詳細信息，請參閱 wiki。</translation>
     </message>
     <message>
       <location filename="../../ArchWall.py" line="166"/>
@@ -7966,12 +7972,12 @@ Building creation aborted.</source>
     <message>
       <location filename="../../ArchWall.py" line="214"/>
       <source>Selected edges (or group of edges) of the base Sketch/ArchSketch, to use in creating the shape of this Arch Wall (instead of using all the Base Sketch/ArchSketch's edges by default).  Input are index numbers of edges or groups.  Disabled and ignored if Base object (ArchSketch) provides selected edges (as Wall Axis) information, with getWallBaseShapeEdgesInfo() method.  [ENHANCEMENT by ArchSketch] GUI 'Edit Wall Segment' Tool is provided in external SketchArch Add-on to let users to (de)select the edges interactively.  'Toponaming-Tolerant' if ArchSketch is used in Base (and SketchArch Add-on is installed).  Warning : Not 'Toponaming-Tolerant' if just Sketch is used.</source>
-      <translation type="unfinished">Selected edges (or group of edges) of the base Sketch/ArchSketch, to use in creating the shape of this Arch Wall (instead of using all the Base Sketch/ArchSketch's edges by default).  Input are index numbers of edges or groups.  Disabled and ignored if Base object (ArchSketch) provides selected edges (as Wall Axis) information, with getWallBaseShapeEdgesInfo() method.  [ENHANCEMENT by ArchSketch] GUI 'Edit Wall Segment' Tool is provided in external SketchArch Add-on to let users to (de)select the edges interactively.  'Toponaming-Tolerant' if ArchSketch is used in Base (and SketchArch Add-on is installed).  Warning : Not 'Toponaming-Tolerant' if just Sketch is used.</translation>
+      <translation>基礎草圖/ArchSketch 的選取邊（或邊緣群組），用於建立此拱牆的形狀（而不是預設使用所有基礎草圖/ArchSketch 的邊緣）。  輸入是邊或群組的索引號碼。  如果基礎物件（ArchSketch）使用 getWallBaseShapeEdgesInfo() 方法提供選定邊緣（作為牆軸）訊息，則停用並忽略。  [ArchSketch 增強功能] 外部 SketchArch 插件提供了 GUI「編輯牆段」工具，讓使用者能夠以互動方式選擇（取消）邊緣。  如果在 Base 中使用 ArchSketch（並且安裝了 SketchArch 附加元件），則為「Toponaming-Tolerant」。  警告：如果僅使用 Sketch，則不具備「Toponaming-Tolerant」功能。</translation>
     </message>
     <message>
       <location filename="../../ArchWall.py" line="216"/>
       <source>Select User Defined PropertySet to use in creating variant shape, layers of the Arch Wall with same ArchSketch </source>
-      <translation type="unfinished">Select User Defined PropertySet to use in creating variant shape, layers of the Arch Wall with same ArchSketch </translation>
+      <translation>選擇使用者定義 PropertySet 來建立具有相同 ArchSketch 的拱牆變體形狀和圖層</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="719"/>
@@ -9158,12 +9164,12 @@ CTRL+/ 在自動和手動模式之間切換</translation>
     <message>
       <location filename="../../bimcommands/BimIfcQuantities.py" line="177"/>
       <source>Add quantity set...</source>
-      <translation type="unfinished">Add quantity set...</translation>
+      <translation>添加數量設定...</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimIfcQuantities.py" line="193"/>
       <source>Adding quantity set</source>
-      <translation type="unfinished">Adding quantity set</translation>
+      <translation>添加數量設定</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimIfcQuantities.py" line="440"/>
@@ -9857,7 +9863,7 @@ CTRL+/ 在自動和手動模式之間切換</translation>
     <message>
       <location filename="../../nativeifc/ifc_diff.py" line="66"/>
       <source>The IFC file is not saved. Please save once to have an existing IFC file to compare with. Then, run this command again.</source>
-      <translation type="unfinished">The IFC file is not saved. Please save once to have an existing IFC file to compare with. Then, run this command again.</translation>
+      <translation>IFC 檔案未儲存。請儲存一次以便與現有的 IFC 檔案進行比較。然後，再次運行此命令。</translation>
     </message>
     <message>
       <location filename="../../nativeifc/ifc_diff.py" line="77"/>
@@ -9927,37 +9933,37 @@ CTRL+/ 在自動和手動模式之間切換</translation>
     <message>
       <location filename="../../nativeifc/ifc_status.py" line="78"/>
       <source>Add IFC property...</source>
-      <translation type="unfinished">Add IFC property...</translation>
+      <translation>添加IFC屬性...</translation>
     </message>
     <message>
       <location filename="../../nativeifc/ifc_status.py" line="83"/>
       <source>Add standard IFC Property Set...</source>
-      <translation type="unfinished">Add standard IFC Property Set...</translation>
+      <translation>添加標準 IFC 屬性設定...</translation>
     </message>
     <message>
       <location filename="../../nativeifc/ifc_status.py" line="139"/>
       <source>No Property set provided</source>
-      <translation type="unfinished">No Property set provided</translation>
+      <translation>未提供屬性設定</translation>
     </message>
     <message>
       <location filename="../../nativeifc/ifc_status.py" line="145"/>
       <source>add property</source>
-      <translation type="unfinished">add property</translation>
+      <translation>添加屬性</translation>
     </message>
     <message>
       <location filename="../../nativeifc/ifc_status.py" line="208"/>
       <source>Property set already exists</source>
-      <translation type="unfinished">Property set already exists</translation>
+      <translation>已存在屬性設定</translation>
     </message>
     <message>
       <location filename="../../nativeifc/ifc_status.py" line="212"/>
       <source>add property set</source>
-      <translation type="unfinished">add property set</translation>
+      <translation>添加屬性設定</translation>
     </message>
     <message>
       <location filename="../../nativeifc/ifc_status.py" line="220"/>
       <source>Property already exists</source>
-      <translation type="unfinished">Property already exists</translation>
+      <translation>已存在屬性</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimTDView.py" line="74"/>
@@ -9967,27 +9973,27 @@ CTRL+/ 在自動和手動模式之間切換</translation>
     <message>
       <location filename="../../bimcommands/BimDrawingView.py" line="66"/>
       <source>Viewed lines</source>
-      <translation type="unfinished">Viewed lines</translation>
+      <translation>已檢視線條</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimDrawingView.py" line="75"/>
       <source>Cut lines</source>
-      <translation type="unfinished">Cut lines</translation>
+      <translation>切割線條</translation>
     </message>
     <message>
       <location filename="../../nativeifc/ifc_psets.py" line="376"/>
       <source>Removing property</source>
-      <translation type="unfinished">Removing property</translation>
+      <translation>移除屬性</translation>
     </message>
     <message>
       <location filename="../../nativeifc/ifc_psets.py" line="380"/>
       <source>Removing property set</source>
-      <translation type="unfinished">Removing property set</translation>
+      <translation>移除屬性設定</translation>
     </message>
     <message>
       <location filename="../../nativeifc/ifc_types.py" line="109"/>
       <source>Error: Incompatible type</source>
-      <translation type="unfinished">Error: Incompatible type</translation>
+      <translation>錯誤：不相容類型</translation>
     </message>
   </context>
   <context>
@@ -11404,12 +11410,12 @@ CTRL+/ 在自動和手動模式之間切換</translation>
     <message>
       <location filename="../../bimcommands/BimDrawingView.py" line="43"/>
       <source>2D Drawing</source>
-      <translation type="unfinished">2D Drawing</translation>
+      <translation>2D 繪圖</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimDrawingView.py" line="47"/>
       <source>Creates a drawing container to contain elements of a 2D view</source>
-      <translation type="unfinished">Creates a drawing container to contain elements of a 2D view</translation>
+      <translation>建立一個繪圖容器來包含 2D 視圖的元件</translation>
     </message>
   </context>
   <context>
@@ -11417,12 +11423,12 @@ CTRL+/ 在自動和手動模式之間切換</translation>
     <message>
       <location filename="../../bimcommands/BimShape2DView.py" line="42"/>
       <source>Section view</source>
-      <translation type="unfinished">Section view</translation>
+      <translation>剖面視圖</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimShape2DView.py" line="97"/>
       <source>Section cut</source>
-      <translation type="unfinished">Section cut</translation>
+      <translation>剖面切割</translation>
     </message>
   </context>
   <context>
@@ -11430,12 +11436,12 @@ CTRL+/ 在自動和手動模式之間切換</translation>
     <message>
       <location filename="../../bimcommands/BimTDView.py" line="39"/>
       <source>Insert view</source>
-      <translation type="unfinished">Insert view</translation>
+      <translation>插入視圖</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimTDView.py" line="43"/>
       <source>Inserts a drawing view on a page</source>
-      <translation type="unfinished">Inserts a drawing view on a page</translation>
+      <translation>在頁面上插入工程圖視圖</translation>
     </message>
   </context>
 </TS>

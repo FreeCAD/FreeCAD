@@ -3301,7 +3301,7 @@ bool StdCmdSelForward::isActive()
 DEF_STD_CMD_AC(StdTree##_name) \
 void StdTree##_name::activated(int){ \
     TreeParams::setDocumentMode(_v);\
-    if(_pcAction) _pcAction->setChecked(true,true);\
+    if(_pcAction) _pcAction->setBlockedChecked(true);\
 }\
 Action * StdTree##_name::createAction(void) {\
     Action *pcAction = Command::createAction();\
@@ -3314,7 +3314,7 @@ Action * StdTree##_name::createAction(void) {\
 bool StdTree##_name::isActive() {\
     bool checked = TreeParams::getDocumentMode()==_v;\
     if(_pcAction && _pcAction->isChecked()!=checked)\
-        _pcAction->setChecked(checked,true);\
+        _pcAction->setBlockedChecked(checked);\
     return true;\
 }
 
@@ -3374,9 +3374,9 @@ DEF_STD_CMD_AC(StdTree##_name) \
 void StdTree##_name::activated(int){ \
     auto checked = !TreeParams::get##_name();\
     TreeParams::set##_name(checked);\
-    if(_pcAction) _pcAction->setChecked(checked,true);\
+    if(_pcAction) _pcAction->setBlockedChecked(checked);\
 }\
-Action * StdTree##_name::createAction(void) {\
+Action * StdTree##_name::createAction() {\
     Action *pcAction = Command::createAction();\
     pcAction->setCheckable(true);\
     pcAction->setIcon(QIcon());\
@@ -3387,7 +3387,7 @@ Action * StdTree##_name::createAction(void) {\
 bool StdTree##_name::isActive() {\
     bool checked = TreeParams::get##_name();\
     if(_pcAction && _pcAction->isChecked()!=checked)\
-        _pcAction->setChecked(checked,true);\
+        _pcAction->setBlockedChecked(checked);\
     return true;\
 }
 
@@ -3576,7 +3576,7 @@ void StdCmdSelBoundingBox::activated(int iMsg)
     if(checked != ViewParams::instance()->getShowSelectionBoundingBox()) {
         ViewParams::instance()->setShowSelectionBoundingBox(checked);
         if(_pcAction)
-            _pcAction->setChecked(checked,true);
+            _pcAction->setBlockedChecked(checked);
     }
 }
 
@@ -3585,7 +3585,7 @@ bool StdCmdSelBoundingBox::isActive()
     if(_pcAction) {
         bool checked = _pcAction->isChecked();
         if(checked != ViewParams::instance()->getShowSelectionBoundingBox())
-            _pcAction->setChecked(!checked,true);
+            _pcAction->setBlockedChecked(!checked);
     }
     return true;
 }
@@ -3710,7 +3710,7 @@ StdCmdDockOverlayToggleLeft::StdCmdDockOverlayToggleLeft()
     sWhatsThis    = "Std_DockOverlayToggleLeft";
     sStatusTip    = sToolTipText;
     sAccel        = "Ctrl+Left";
-    sPixmap       = "qss:overlay/icons/close.svg";
+    sPixmap       = "Std_DockOverlayToggleLeft";
     eType         = 0;
 }
 
@@ -3735,7 +3735,7 @@ StdCmdDockOverlayToggleRight::StdCmdDockOverlayToggleRight()
     sWhatsThis    = "Std_DockOverlayToggleRight";
     sStatusTip    = sToolTipText;
     sAccel        = "Ctrl+Right";
-    sPixmap       = "qss:overlay/icons/close.svg";
+    sPixmap       = "Std_DockOverlayToggleRight";
     eType         = 0;
 }
 
@@ -3760,7 +3760,7 @@ StdCmdDockOverlayToggleTop::StdCmdDockOverlayToggleTop()
     sWhatsThis    = "Std_DockOverlayToggleTop";
     sStatusTip    = sToolTipText;
     sAccel        = "Ctrl+Up";
-    sPixmap       = "qss:overlay/icons/close.svg";
+    sPixmap       = "Std_DockOverlayToggleTop";
     eType         = 0;
 }
 
@@ -3785,7 +3785,7 @@ StdCmdDockOverlayToggleBottom::StdCmdDockOverlayToggleBottom()
     sWhatsThis    = "Std_DockOverlayToggleBottom";
     sStatusTip    = sToolTipText;
     sAccel        = "Ctrl+Down";
-    sPixmap       = "qss:overlay/icons/close.svg";
+    sPixmap       = "Std_DockOverlayToggleBottom";
     eType         = 0;
 }
 
@@ -3819,10 +3819,10 @@ void StdCmdDockOverlayMouseTransparent::activated(int iMsg)
     bool checked = !OverlayManager::instance()->isMouseTransparent();
     OverlayManager::instance()->setMouseTransparent(checked);
     if(_pcAction)
-        _pcAction->setChecked(checked,true);
+        _pcAction->setBlockedChecked(checked);
 }
 
-Action * StdCmdDockOverlayMouseTransparent::createAction(void) {
+Action * StdCmdDockOverlayMouseTransparent::createAction() {
     Action *pcAction = Command::createAction();
     pcAction->setCheckable(true);
     pcAction->setIcon(QIcon());
@@ -3834,7 +3834,7 @@ Action * StdCmdDockOverlayMouseTransparent::createAction(void) {
 bool StdCmdDockOverlayMouseTransparent::isActive() {
     bool checked = OverlayManager::instance()->isMouseTransparent();
     if(_pcAction && _pcAction->isChecked()!=checked)
-        _pcAction->setChecked(checked,true);
+        _pcAction->setBlockedChecked(checked);
     return true;
 }
 
@@ -3847,8 +3847,8 @@ public:
         :GroupCommand("Std_DockOverlay")
     {
         sGroup        = "View";
-        sMenuText     = QT_TR_NOOP("Dock window overlay");
-        sToolTipText  = QT_TR_NOOP("Setting docked window overlay mode");
+        sMenuText     = QT_TR_NOOP("Dock panel overlay");
+        sToolTipText  = QT_TR_NOOP("Setting docked panel overlay mode");
         sWhatsThis    = "Std_DockOverlay";
         sStatusTip    = sToolTipText;
         eType         = 0;

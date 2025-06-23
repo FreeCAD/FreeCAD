@@ -215,7 +215,10 @@ def is_annotation(obj):
         return True
     elif obj.isDerivedFrom("App::Annotation"):
         return True
-    elif Draft.getType(obj) in ["DraftText",
+    elif Draft.getType(obj) in ["BezCurve",
+                                "BSpline",
+                                "Wire",
+                                "DraftText",
                                 "Text",
                                 "Dimension",
                                 "LinearDimension",

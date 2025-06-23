@@ -1003,7 +1003,7 @@ Utils -&gt; Make IFC project</translation>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="154"/>
       <source> E</source>
-      <translation type="unfinished"> E</translation>
+      <translation> E</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="170"/>
@@ -1036,7 +1036,7 @@ Utils -&gt; Make IFC project</translation>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="198"/>
       <source> °</source>
-      <translation type="unfinished"> °</translation>
+      <translation> °</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="208"/>
@@ -1056,7 +1056,7 @@ Utils -&gt; Make IFC project</translation>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="239"/>
       <source> N</source>
-      <translation type="unfinished"> N</translation>
+      <translation> N</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="260"/>
@@ -1115,7 +1115,7 @@ Utils -&gt; Make IFC project</translation>
       <location filename="../ui/dialogProjectManager.ui" line="414"/>
       <location filename="../ui/dialogProjectManager.ui" line="479"/>
       <source>0 </source>
-      <translation type="unfinished">0 </translation>
+      <translation>0 </translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="424"/>
@@ -1276,12 +1276,12 @@ Utils -&gt; Make IFC project</translation>
     <message>
       <location filename="../ui/dialogSpaces.ui" line="92"/>
       <source>0</source>
-      <translation type="unfinished">0</translation>
+      <translation>0</translation>
     </message>
     <message>
       <location filename="../ui/dialogSpaces.ui" line="102"/>
       <source>0 W</source>
-      <translation type="unfinished">0 W</translation>
+      <translation>0 W</translation>
     </message>
     <message>
       <location filename="../ui/dialogSpaces.ui" line="115"/>
@@ -1306,7 +1306,7 @@ Utils -&gt; Make IFC project</translation>
     <message>
       <location filename="../ui/dialogSpaces.ui" line="205"/>
       <source> W</source>
-      <translation type="unfinished"> W</translation>
+      <translation> W</translation>
     </message>
     <message>
       <location filename="../ui/dialogSpaces.ui" line="212"/>
@@ -1730,7 +1730,7 @@ Utils -&gt; Make IFC project</translation>
     <message>
       <location filename="../ui/dialogLibrary.ui" line="39"/>
       <source>or</source>
-      <translation type="unfinished">or</translation>
+      <translation>or</translation>
     </message>
     <message>
       <location filename="../ui/dialogLibrary.ui" line="49"/>
@@ -1755,7 +1755,7 @@ Utils -&gt; Make IFC project</translation>
     <message>
       <location filename="../ui/dialogLibrary.ui" line="83"/>
       <source>...</source>
-      <translation type="unfinished">...</translation>
+      <translation>...</translation>
     </message>
     <message>
       <location filename="../ui/dialogLibrary.ui" line="153"/>
@@ -1895,7 +1895,7 @@ Utils -&gt; Make IFC project</translation>
       <location filename="../ui/dialogPreflight.ui" line="408"/>
       <location filename="../ui/dialogPreflight.ui" line="428"/>
       <source>Test</source>
-      <translation>Denetim</translation>
+      <translation>Test</translation>
     </message>
     <message>
       <location filename="../ui/dialogPreflight.ui" line="102"/>
@@ -2206,7 +2206,7 @@ p, li { white-space: pre-wrap; }
       <location filename="../ui/dialogWindows.ui" line="111"/>
       <location filename="../ui/dialogWindows.ui" line="121"/>
       <source>0</source>
-      <translation type="unfinished">0</translation>
+      <translation>0</translation>
     </message>
     <message>
       <location filename="../ui/dialogWindows.ui" line="161"/>
@@ -2378,7 +2378,7 @@ p, li { white-space: pre-wrap; }
       <location filename="../ui/preferencesNativeIFC.ui" line="249"/>
       <location filename="../ui/preferencesNativeIFC.ui" line="293"/>
       <source>Ask every time</source>
-      <translation>Her seferinde sor</translation>
+      <translation>Her zaman sor</translation>
     </message>
     <message>
       <location filename="../ui/preferencesNativeIFC.ui" line="268"/>
@@ -5745,7 +5745,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchCommands.py" line="1365"/>
       <source>Key</source>
-      <translation type="unfinished">Key</translation>
+      <translation>Anahtar</translation>
     </message>
     <message>
       <location filename="../../ArchCommands.py" line="1375"/>
@@ -8805,7 +8805,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../InitGui.py" line="450"/>
       <source>BIM</source>
-      <translation type="unfinished">BIM</translation>
+      <translation>BIM</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="451"/>
@@ -9205,7 +9205,7 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
     <message>
       <location filename="../../bimcommands/BimLayers.py" line="320"/>
       <source>On</source>
-      <translation type="unfinished">On</translation>
+      <translation>On</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimLayers.py" line="321"/>
@@ -9215,7 +9215,7 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
     <message>
       <location filename="../../bimcommands/BimLayers.py" line="322"/>
       <source>Line width</source>
-      <translation>Çizgi Kalınlığı</translation>
+      <translation>Çizgi kalınlığı</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimLayers.py" line="323"/>
@@ -9479,7 +9479,7 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
     <message>
       <location filename="../../bimcommands/BimPreflight.py" line="198"/>
       <source>Test</source>
-      <translation>Denetim</translation>
+      <translation>Test</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimPreflight.py" line="327"/>
@@ -11022,7 +11022,7 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
       <location filename="../ui/dialogSetup.ui" line="489"/>
       <location filename="../ui/dialogSetup.ui" line="546"/>
       <source>0 </source>
-      <translation type="unfinished">0 </translation>
+      <translation>0 </translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="152"/>

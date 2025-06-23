@@ -32,6 +32,7 @@
 # include <QPointer>
 # include <QPushButton>
 # include <QTimer>
+# include <QVBoxLayout>
 #endif
 
 #include <App/Document.h>
@@ -268,9 +269,15 @@ QSize TaskPanel::minimumSizeHint() const
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 TaskView::TaskView(QWidget *parent)
-    : QScrollArea(parent),ActiveDialog(nullptr),ActiveCtrl(nullptr)
+    : QWidget(parent),ActiveDialog(nullptr),ActiveCtrl(nullptr)
 {
-    taskPanel = new TaskPanel(this);
+    mainLayout = new QVBoxLayout(this);
+    mainLayout->setContentsMargins(0, 0, 0, 0);
+    mainLayout->setSpacing(0);
+    this->setLayout(mainLayout);
+    scrollArea = new QScrollArea(this);
+
+    taskPanel = new TaskPanel(scrollArea);
     QSizePolicy sizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
     sizePolicy.setHorizontalStretch(0);
     sizePolicy.setVerticalStretch(0);
@@ -278,10 +285,11 @@ TaskView::TaskView(QWidget *parent)
     taskPanel->setSizePolicy(sizePolicy);
     taskPanel->setScheme(QSint::ActionPanelScheme::defaultScheme());
 
-    this->setWidget(taskPanel);
-    setWidgetResizable(true);
-    setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-    this->setMinimumWidth(200);
+    scrollArea->setWidget(taskPanel);
+    scrollArea->setWidgetResizable(true);
+    scrollArea->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    scrollArea->setMinimumWidth(200);
+    mainLayout->addWidget(scrollArea, 1);
 
     Gui::Selection().Attach(this);
 
@@ -361,7 +369,7 @@ bool TaskView::event(QEvent* event)
             }
         }
     }
-    return QScrollArea::event(event);
+    return QWidget::event(event);
 }
 
 void TaskView::keyPressEvent(QKeyEvent* ke)
@@ -423,7 +431,7 @@ void TaskView::keyPressEvent(QKeyEvent* ke)
         }
     }
     else {
-        QScrollArea::keyPressEvent(ke);
+        QWidget::keyPressEvent(ke);
     }
 }
 
@@ -441,7 +449,7 @@ void TaskView::adjustMinimumSizeHint()
 
 QSize TaskView::minimumSizeHint() const
 {
-    QSize ms = QScrollArea::minimumSizeHint();
+    QSize ms = QWidget::minimumSizeHint();
     int spacing = 0;
     if (QLayout* layout = taskPanel->layout()) {
         spacing = 2 * layout->spacing();
@@ -503,11 +511,15 @@ void TaskView::slotViewClosed(const Gui::MDIView* view)
     }
 }
 
-void TaskView::transactionChangeOnDocument(const App::Document& doc)
+void TaskView::transactionChangeOnDocument(const App::Document& doc, bool undo)
 {
     if (ActiveDialog) {
+        std::string name = ActiveDialog->getDocumentName();
+        if (name == doc.getName()) {
+            undo ? ActiveDialog->onUndo() : ActiveDialog->onRedo();
+        }
+
         if (ActiveDialog->isAutoCloseOnTransactionChange()) {
-            std::string name = ActiveDialog->getDocumentName();
             if (name.empty()) {
                 Base::Console().warning(std::string("TaskView::transactionChangeOnDocument"),
                                         "No document name set\n");
@@ -527,12 +539,12 @@ void TaskView::transactionChangeOnDocument(const App::Document& doc)
 
 void TaskView::slotUndoDocument(const App::Document& doc)
 {
-    transactionChangeOnDocument(doc);
+    transactionChangeOnDocument(doc, true);
 }
 
 void TaskView::slotRedoDocument(const App::Document& doc)
 {
-    transactionChangeOnDocument(doc);
+    transactionChangeOnDocument(doc, false);
 }
 
 /// @cond DOXERR
@@ -588,7 +600,8 @@ void TaskView::showDialog(TaskDialog *dlg)
     dlg->modifyStandardButtons(ActiveCtrl->buttonBox);
 
     if (dlg->buttonPosition() == TaskDialog::North) {
-        taskPanel->addWidget(ActiveCtrl);
+        // Add button box to the top of the main layout
+        mainLayout->insertWidget(0, ActiveCtrl);
         for (const auto & it : cont){
             taskPanel->addWidget(it);
         }
@@ -597,7 +610,8 @@ void TaskView::showDialog(TaskDialog *dlg)
         for (const auto & it : cont){
             taskPanel->addWidget(it);
         }
-        taskPanel->addWidget(ActiveCtrl);
+        // Add button box to the bottom of the main layout
+        mainLayout->addWidget(ActiveCtrl);
     }
 
     taskPanel->setScheme(QSint::ActionPanelScheme::defaultScheme());
@@ -623,7 +637,7 @@ void TaskView::removeDialog()
     getMainWindow()->updateActions();
 
     if (ActiveCtrl) {
-        taskPanel->removeWidget(ActiveCtrl);
+        mainLayout->removeWidget(ActiveCtrl);
         delete ActiveCtrl;
         ActiveCtrl = nullptr;
     }

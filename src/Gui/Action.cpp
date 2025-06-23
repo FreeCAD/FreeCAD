@@ -137,16 +137,21 @@ void Action::setCheckable(bool check)
     }
 }
 
-void Action::setChecked(bool check, bool no_signal)
+void Action::setChecked(bool check)
 {
-    bool blocked = false;
-    if (no_signal) {
-        blocked = _action->blockSignals(true);
-    }
     _action->setChecked(check);
-    if (no_signal) {
-        _action->blockSignals(blocked);
-    }
+}
+
+/*!
+ * \brief Action::setBlockedChecked
+ * \param check
+ * Does the same as \ref setChecked but additionally blocks
+ * any signals.
+ */
+void Action::setBlockedChecked(bool check)
+{
+    QSignalBlocker block(_action);
+    _action->setChecked(check);
 }
 
 bool Action::isChecked() const

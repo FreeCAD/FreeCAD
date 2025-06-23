@@ -367,11 +367,6 @@ public:
 
     void tryViewValueChanged(int onviewparameterindex, double value)
     {
-        int nextindex = onviewparameterindex + 1;
-        if (isOnViewParameterOfCurrentMode(nextindex)) {
-            setFocusToOnViewParameter(nextindex);
-        }
-
         /* That is not supported with on-view parameters.
         // -> A machine does not forward to a next state when adapting the parameter (though it
         // may forward to
@@ -623,6 +618,16 @@ protected:
                                  parameter->setColor(colorManager.dimConstrColor);
                                  onViewValueChanged(i, value);
                              });
+
+            // this gets triggered whenever user deletes content in OVP, we remove the
+            // constraints and unset everything to give user another change to select stuff
+            // with mouse
+            QObject::connect(parameter,
+                             &Gui::EditableDatumLabel::parameterUnset,
+                             [this, parameter]() {
+                                 unsetOnViewParameter(parameter);
+                                 finishControlsChanged();
+                             });
         }
     }
 
@@ -630,6 +635,7 @@ protected:
     void unsetOnViewParameter(Gui::EditableDatumLabel* onViewParameter)
     {
         onViewParameter->isSet = false;
+        onViewParameter->hasFinishedEditing = false;
         onViewParameter->setColor(colorManager.dimConstrDeactivatedColor);
     }
 

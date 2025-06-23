@@ -85,7 +85,7 @@ App::DocumentObjectExecReturn *Offset::execute()
     bool self = SelfIntersection.getValue();
     short mode = (short)Mode.getValue();
     bool fill = Fill.getValue();
-    auto shape = Feature::getTopoShape(source);
+    auto shape = Feature::getTopoShape(source, ShapeOption::ResolveLink | ShapeOption::Transform);
     if(shape.isNull())
         return new App::DocumentObjectExecReturn("Invalid source link");
     auto join = static_cast<JoinType>(Join.getValue());
@@ -132,7 +132,7 @@ App::DocumentObjectExecReturn *Offset2D::execute()
     if (!source) {
        return new App::DocumentObjectExecReturn("No source shape linked.");
     }
-    const TopoShape shape = Part::Feature::getTopoShape(source);
+    const TopoShape shape = Part::Feature::getTopoShape(source, ShapeOption::ResolveLink | ShapeOption::Transform);
     if (shape.isNull()) {
         return new App::DocumentObjectExecReturn("No source shape linked.");
     }

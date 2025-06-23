@@ -28,7 +28,8 @@
 #include <Gui/BitmapFactory.h>
 #include <Gui/Notifications.h>
 #include <Gui/CommandT.h>
-
+#include <Gui/MainWindow.h>
+#include <Gui/InputHint.h>
 #include <Mod/Part/App/Geometry2d.h>
 
 #include <Mod/Sketcher/App/SketchObject.h>
@@ -40,6 +41,9 @@
 #include "ViewProviderSketch.h"
 
 #include "CircleEllipseConstructionMethod.h"
+
+#include <vector>
+#include <algorithm>
 
 using namespace std;
 
@@ -84,6 +88,11 @@ public:
     ~DrawSketchHandlerArc() override = default;
 
 private:
+    std::list<Gui::InputHint> getToolHints() const override
+    {
+        return lookupArcHints(constructionMethod(), state());
+    }
+
     void updateDataAndDrawToPosition(Base::Vector2d onSketchPos) override
     {
         switch (state()) {
@@ -423,6 +432,21 @@ private:
         }
     }
 
+    // Hint table structures
+    struct HintEntry
+    {
+        ConstructionMethod method;
+        SelectMode state;
+        std::list<Gui::InputHint> hints;
+    };
+
+    using HintTable = std::vector<HintEntry>;
+
+    // Static declaration
+    static Gui::InputHint switchModeHint();
+    static HintTable getArcHintTable();
+    static std::list<Gui::InputHint> lookupArcHints(ConstructionMethod method, SelectMode state);
+
 private:
     Base::Vector2d centerPoint, firstPoint, secondPoint;
     double radius, startAngle, endAngle, arcAngle;
@@ -508,15 +532,21 @@ void DSHArcControllerBase::doEnforceControlParameters(Base::Vector2d& onSketchPo
 {
     switch (handler->state()) {
         case SelectMode::SeekFirst: {
-            if (onViewParameters[OnViewParameter::First]->isSet) {
-                onSketchPos.x = onViewParameters[OnViewParameter::First]->getValue();
+            auto& firstParam = onViewParameters[OnViewParameter::First];
+            auto& secondParam = onViewParameters[OnViewParameter::Second];
+
+            if (firstParam->isSet) {
+                onSketchPos.x = firstParam->getValue();
             }
 
-            if (onViewParameters[OnViewParameter::Second]->isSet) {
-                onSketchPos.y = onViewParameters[OnViewParameter::Second]->getValue();
+            if (secondParam->isSet) {
+                onSketchPos.y = secondParam->getValue();
             }
         } break;
         case SelectMode::SeekSecond: {
+            auto& thirdParam = onViewParameters[OnViewParameter::Third];
+            auto& fourthParam = onViewParameters[OnViewParameter::Fourth];
+
             if (handler->constructionMethod() == DrawSketchHandlerArc::ConstructionMethod::Center) {
                 Base::Vector2d dir = onSketchPos - handler->centerPoint;
                 if (dir.Length() < Precision::Confusion()) {
@@ -524,46 +554,45 @@ void DSHArcControllerBase::doEnforceControlParameters(Base::Vector2d& onSketchPo
                 }
                 double radius = dir.Length();
 
-                if (onViewParameters[OnViewParameter::Third]->isSet) {
-                    radius = onViewParameters[OnViewParameter::Third]->getValue();
+                if (thirdParam->isSet) {
+                    radius = thirdParam->getValue();
                     if (radius < Precision::Confusion()) {
-                        unsetOnViewParameter(onViewParameters[OnViewParameter::Third].get());
+                        unsetOnViewParameter(thirdParam.get());
                         return;
                     }
 
                     onSketchPos = handler->centerPoint + radius * dir.Normalize();
                 }
 
-                if (onViewParameters[OnViewParameter::Fourth]->isSet) {
-                    double angle =
-                        Base::toRadians(onViewParameters[OnViewParameter::Fourth]->getValue());
+                if (fourthParam->isSet) {
+                    double angle = Base::toRadians(fourthParam->getValue());
                     onSketchPos.x = handler->centerPoint.x + cos(angle) * radius;
                     onSketchPos.y = handler->centerPoint.y + sin(angle) * radius;
                 }
             }
             else {
-                if (onViewParameters[OnViewParameter::Third]->isSet) {
-                    onSketchPos.x = onViewParameters[OnViewParameter::Third]->getValue();
+                if (thirdParam->isSet) {
+                    onSketchPos.x = thirdParam->getValue();
                 }
 
-                if (onViewParameters[OnViewParameter::Fourth]->isSet) {
-                    onSketchPos.y = onViewParameters[OnViewParameter::Fourth]->getValue();
+                if (fourthParam->isSet) {
+                    onSketchPos.y = fourthParam->getValue();
                 }
-                if (onViewParameters[OnViewParameter::Third]->isSet
-                    && onViewParameters[OnViewParameter::Fourth]->isSet
+                if (thirdParam->isSet && fourthParam->isSet
                     && (onSketchPos - handler->firstPoint).Length() < Precision::Confusion()) {
-                    unsetOnViewParameter(onViewParameters[OnViewParameter::Third].get());
-                    unsetOnViewParameter(onViewParameters[OnViewParameter::Fourth].get());
+                    unsetOnViewParameter(thirdParam.get());
+                    unsetOnViewParameter(fourthParam.get());
                 }
             }
         } break;
         case SelectMode::SeekThird: {
+            auto& fifthParam = onViewParameters[OnViewParameter::Fifth];
+
             if (handler->constructionMethod() == DrawSketchHandlerArc::ConstructionMethod::Center) {
-                if (onViewParameters[OnViewParameter::Fifth]->isSet) {
-                    double arcAngle =
-                        Base::toRadians(onViewParameters[OnViewParameter::Fifth]->getValue());
+                if (fifthParam->isSet) {
+                    double arcAngle = Base::toRadians(fifthParam->getValue());
                     if (fmod(fabs(arcAngle), 2 * std::numbers::pi) < Precision::Confusion()) {
-                        unsetOnViewParameter(onViewParameters[OnViewParameter::Fifth].get());
+                        unsetOnViewParameter(fifthParam.get());
                         return;
                     }
                     double angle = handler->startAngle + arcAngle;
@@ -572,12 +601,13 @@ void DSHArcControllerBase::doEnforceControlParameters(Base::Vector2d& onSketchPo
                 }
             }
             else {
-                if (onViewParameters[OnViewParameter::Fifth]->isSet) {
-                    onSketchPos.x = onViewParameters[OnViewParameter::Fifth]->getValue();
+                auto& sixthParam = onViewParameters[OnViewParameter::Sixth];
+                if (fifthParam->isSet) {
+                    onSketchPos.x = fifthParam->getValue();
                 }
 
-                if (onViewParameters[OnViewParameter::Sixth]->isSet) {
-                    onSketchPos.y = onViewParameters[OnViewParameter::Sixth]->getValue();
+                if (sixthParam->isSet) {
+                    onSketchPos.y = sixthParam->getValue();
                 }
             }
         } break;
@@ -591,88 +621,91 @@ void DSHArcController::adaptParameters(Base::Vector2d onSketchPos)
 {
     switch (handler->state()) {
         case SelectMode::SeekFirst: {
-            if (!onViewParameters[OnViewParameter::First]->isSet) {
+            auto& firstParam = onViewParameters[OnViewParameter::First];
+            auto& secondParam = onViewParameters[OnViewParameter::Second];
+
+            if (!firstParam->isSet) {
                 setOnViewParameterValue(OnViewParameter::First, onSketchPos.x);
             }
 
-            if (!onViewParameters[OnViewParameter::Second]->isSet) {
+            if (!secondParam->isSet) {
                 setOnViewParameterValue(OnViewParameter::Second, onSketchPos.y);
             }
 
             bool sameSign = onSketchPos.x * onSketchPos.y > 0.;
-            onViewParameters[OnViewParameter::First]->setLabelAutoDistanceReverse(!sameSign);
-            onViewParameters[OnViewParameter::Second]->setLabelAutoDistanceReverse(sameSign);
-            onViewParameters[OnViewParameter::First]->setPoints(Base::Vector3d(),
-                                                                toVector3d(onSketchPos));
-            onViewParameters[OnViewParameter::Second]->setPoints(Base::Vector3d(),
-                                                                 toVector3d(onSketchPos));
+            firstParam->setLabelAutoDistanceReverse(!sameSign);
+            secondParam->setLabelAutoDistanceReverse(sameSign);
+            firstParam->setPoints(Base::Vector3d(), toVector3d(onSketchPos));
+            secondParam->setPoints(Base::Vector3d(), toVector3d(onSketchPos));
         } break;
         case SelectMode::SeekSecond: {
+            auto& thirdParam = onViewParameters[OnViewParameter::Third];
+            auto& fourthParam = onViewParameters[OnViewParameter::Fourth];
+
             if (handler->constructionMethod() == DrawSketchHandlerArc::ConstructionMethod::Center) {
 
-                if (!onViewParameters[OnViewParameter::Third]->isSet) {
+                if (!thirdParam->isSet) {
                     setOnViewParameterValue(OnViewParameter::Third, handler->radius);
                 }
                 double range = Base::toDegrees(handler->startAngle);
-                if (!onViewParameters[OnViewParameter::Fourth]->isSet) {
+                if (!fourthParam->isSet) {
                     setOnViewParameterValue(OnViewParameter::Fourth, range, Base::Unit::Angle);
                 }
 
                 Base::Vector3d start = toVector3d(handler->centerPoint);
                 Base::Vector3d end = toVector3d(onSketchPos);
 
-                onViewParameters[OnViewParameter::Third]->setPoints(start, end);
-                onViewParameters[OnViewParameter::Fourth]->setPoints(start, Base::Vector3d());
-                onViewParameters[OnViewParameter::Fourth]->setLabelRange(handler->startAngle);
+                thirdParam->setPoints(start, end);
+                fourthParam->setPoints(start, Base::Vector3d());
+                fourthParam->setLabelRange(handler->startAngle);
             }
             else {
-                if (!onViewParameters[OnViewParameter::Third]->isSet) {
+                if (!thirdParam->isSet) {
                     setOnViewParameterValue(OnViewParameter::Third, onSketchPos.x);
                 }
 
-                if (!onViewParameters[OnViewParameter::Fourth]->isSet) {
+                if (!fourthParam->isSet) {
                     setOnViewParameterValue(OnViewParameter::Fourth, onSketchPos.y);
                 }
 
                 bool sameSign = onSketchPos.x * onSketchPos.y > 0.;
-                onViewParameters[OnViewParameter::Third]->setLabelAutoDistanceReverse(!sameSign);
-                onViewParameters[OnViewParameter::Fourth]->setLabelAutoDistanceReverse(sameSign);
-                onViewParameters[OnViewParameter::Third]->setPoints(Base::Vector3d(),
-                                                                    toVector3d(onSketchPos));
-                onViewParameters[OnViewParameter::Fourth]->setPoints(Base::Vector3d(),
-                                                                     toVector3d(onSketchPos));
+                thirdParam->setLabelAutoDistanceReverse(!sameSign);
+                fourthParam->setLabelAutoDistanceReverse(sameSign);
+                thirdParam->setPoints(Base::Vector3d(), toVector3d(onSketchPos));
+                fourthParam->setPoints(Base::Vector3d(), toVector3d(onSketchPos));
             }
         } break;
         case SelectMode::SeekThird: {
+            auto& fifthParam = onViewParameters[OnViewParameter::Fifth];
+
             if (handler->constructionMethod() == DrawSketchHandlerArc::ConstructionMethod::Center) {
                 double range = Base::toDegrees(handler->arcAngle);
 
-                if (!onViewParameters[OnViewParameter::Fifth]->isSet) {
+                if (!fifthParam->isSet) {
                     setOnViewParameterValue(OnViewParameter::Fifth, range, Base::Unit::Angle);
                 }
 
                 Base::Vector3d start = toVector3d(handler->centerPoint);
-                onViewParameters[OnViewParameter::Fifth]->setPoints(start, Base::Vector3d());
+                fifthParam->setPoints(start, Base::Vector3d());
 
-                onViewParameters[OnViewParameter::Fifth]->setLabelStartAngle(handler->startAngle);
-                onViewParameters[OnViewParameter::Fifth]->setLabelRange(handler->arcAngle);
+                fifthParam->setLabelStartAngle(handler->startAngle);
+                fifthParam->setLabelRange(handler->arcAngle);
             }
             else {
-                if (!onViewParameters[OnViewParameter::Fifth]->isSet) {
+                auto& sixthParam = onViewParameters[OnViewParameter::Sixth];
+                if (!fifthParam->isSet) {
                     setOnViewParameterValue(OnViewParameter::Fifth, onSketchPos.x);
                 }
 
-                if (!onViewParameters[OnViewParameter::Sixth]->isSet) {
+                if (!sixthParam->isSet) {
                     setOnViewParameterValue(OnViewParameter::Sixth, onSketchPos.y);
                 }
 
                 bool sameSign = onSketchPos.x * onSketchPos.y > 0.;
-                onViewParameters[OnViewParameter::Fifth]->setLabelAutoDistanceReverse(!sameSign);
-                onViewParameters[OnViewParameter::Sixth]->setLabelAutoDistanceReverse(sameSign);
-                onViewParameters[OnViewParameter::Fifth]->setPoints(Base::Vector3d(),
-                                                                    toVector3d(onSketchPos));
-                onViewParameters[OnViewParameter::Sixth]->setPoints(Base::Vector3d(),
-                                                                    toVector3d(onSketchPos));
+                fifthParam->setLabelAutoDistanceReverse(!sameSign);
+                sixthParam->setLabelAutoDistanceReverse(sameSign);
+                fifthParam->setPoints(Base::Vector3d(), toVector3d(onSketchPos));
+                sixthParam->setPoints(Base::Vector3d(), toVector3d(onSketchPos));
             }
         } break;
         default:
@@ -685,30 +718,32 @@ void DSHArcController::doChangeDrawSketchHandlerMode()
 {
     switch (handler->state()) {
         case SelectMode::SeekFirst: {
-            if (onViewParameters[OnViewParameter::First]->isSet
-                && onViewParameters[OnViewParameter::Second]->isSet) {
+            auto& firstParam = onViewParameters[OnViewParameter::First];
+            auto& secondParam = onViewParameters[OnViewParameter::Second];
 
+            if (firstParam->hasFinishedEditing || secondParam->hasFinishedEditing) {
                 handler->setState(SelectMode::SeekSecond);
             }
         } break;
         case SelectMode::SeekSecond: {
-            if (onViewParameters[OnViewParameter::Third]->isSet
-                && onViewParameters[OnViewParameter::Fourth]->isSet) {
+            auto& thirdParam = onViewParameters[OnViewParameter::Third];
+            auto& fourthParam = onViewParameters[OnViewParameter::Fourth];
 
+            if (thirdParam->hasFinishedEditing || fourthParam->hasFinishedEditing) {
                 handler->setState(SelectMode::SeekThird);
             }
         } break;
         case SelectMode::SeekThird: {
+            auto& fifthParam = onViewParameters[OnViewParameter::Fifth];
             if (handler->constructionMethod() == DrawSketchHandlerArc::ConstructionMethod::Center) {
-                if (onViewParameters[OnViewParameter::Fifth]->isSet) {
-
+                if (fifthParam->hasFinishedEditing) {
                     handler->setState(SelectMode::End);
                 }
             }
             else {
-                if (onViewParameters[OnViewParameter::Fifth]->isSet
-                    && onViewParameters[OnViewParameter::Sixth]->isSet) {
+                auto& sixthParam = onViewParameters[OnViewParameter::Sixth];
 
+                if (fifthParam->hasFinishedEditing || sixthParam->hasFinishedEditing) {
                     handler->setState(SelectMode::End);
                 }
             }
@@ -885,6 +920,66 @@ void DSHArcController::addConstraints()
             }
         }
     }
+}
+
+template<>
+void DSHArcController::doConstructionMethodChanged()
+{
+    handler->updateHint();
+}
+
+// Static member definitions
+Gui::InputHint DrawSketchHandlerArc::switchModeHint()
+{
+    return {QObject::tr("%1 switch mode"), {Gui::InputHint::UserInput::KeyM}};
+}
+
+DrawSketchHandlerArc::HintTable DrawSketchHandlerArc::getArcHintTable()
+{
+    const auto switchHint = switchModeHint();
+    return {
+        // Structure: {ConstructionMethod, SelectMode, {hints...}}
+
+        // Center method
+        {ConstructionMethod::Center,
+         SelectMode::SeekFirst,
+         {{QObject::tr("%1 pick arc center"), {Gui::InputHint::UserInput::MouseLeft}}, switchHint}},
+        {ConstructionMethod::Center,
+         SelectMode::SeekSecond,
+         {{QObject::tr("%1 pick arc start point"), {Gui::InputHint::UserInput::MouseLeft}},
+          switchHint}},
+        {ConstructionMethod::Center,
+         SelectMode::SeekThird,
+         {{QObject::tr("%1 pick arc end point"), {Gui::InputHint::UserInput::MouseLeft}},
+          switchHint}},
+
+        // ThreeRim method
+        {ConstructionMethod::ThreeRim,
+         SelectMode::SeekFirst,
+         {{QObject::tr("%1 pick first arc point"), {Gui::InputHint::UserInput::MouseLeft}},
+          switchHint}},
+        {ConstructionMethod::ThreeRim,
+         SelectMode::SeekSecond,
+         {{QObject::tr("%1 pick second arc point"), {Gui::InputHint::UserInput::MouseLeft}},
+          switchHint}},
+        {ConstructionMethod::ThreeRim,
+         SelectMode::SeekThird,
+         {{QObject::tr("%1 pick third arc point"), {Gui::InputHint::UserInput::MouseLeft}},
+          switchHint}}};
+}
+
+std::list<Gui::InputHint> DrawSketchHandlerArc::lookupArcHints(ConstructionMethod method,
+                                                               SelectMode state)
+{
+    const auto arcHintTable = getArcHintTable();
+
+    auto it = std::find_if(arcHintTable.begin(),
+                           arcHintTable.end(),
+                           [method, state](const HintEntry& entry) {
+                               return entry.method == method && entry.state == state;
+                           });
+
+    return (it != arcHintTable.end()) ? it->hints : std::list<Gui::InputHint> {};
 }
 
 }  // namespace SketcherGui
