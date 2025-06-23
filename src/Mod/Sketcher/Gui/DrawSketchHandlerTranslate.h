@@ -756,7 +756,7 @@ void DSHTranslateController::doChangeDrawSketchHandlerMode()
             auto& firstParam = onViewParameters[OnViewParameter::First];
             auto& secondParam = onViewParameters[OnViewParameter::Second];
 
-            if (firstParam->hasFinishedEditing || secondParam->hasFinishedEditing) {
+            if (firstParam->hasFinishedEditing && secondParam->hasFinishedEditing) {
                 handler->setState(SelectMode::SeekSecond);
             }
         } break;
@@ -764,7 +764,7 @@ void DSHTranslateController::doChangeDrawSketchHandlerMode()
             auto& thirdParam = onViewParameters[OnViewParameter::Third];
             auto& fourthParam = onViewParameters[OnViewParameter::Fourth];
 
-            if (thirdParam->hasFinishedEditing || fourthParam->hasFinishedEditing) {
+            if (thirdParam->hasFinishedEditing && fourthParam->hasFinishedEditing) {
                 if (handler->secondNumberOfCopies == 1) {
                     handler->setState(SelectMode::End);
                 }
@@ -777,7 +777,7 @@ void DSHTranslateController::doChangeDrawSketchHandlerMode()
             auto& fifthParam = onViewParameters[OnViewParameter::Fifth];
             auto& sixthParam = onViewParameters[OnViewParameter::Sixth];
 
-            if (fifthParam->hasFinishedEditing || sixthParam->hasFinishedEditing) {
+            if (fifthParam->hasFinishedEditing && sixthParam->hasFinishedEditing) {
                 handler->setState(SelectMode::End);
             }
         } break;
