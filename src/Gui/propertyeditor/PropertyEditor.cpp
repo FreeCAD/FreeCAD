@@ -38,6 +38,7 @@
 #include <App/Document.h>
 #include <Base/Console.h>
 #include <Base/Tools.h>
+#include <Gui/Command.h>
 
 #include "PropertyEditor.h"
 #include "Dialogs/DlgAddProperty.h"
@@ -896,19 +897,19 @@ void PropertyEditor::contextMenuEvent(QContextMenuEvent*)
             }
             break;
         case MA_AddProp: {
-            App::AutoTransaction committer("Add property");
-            std::unordered_set<App::PropertyContainer*> containers;
             auto sels = Gui::Selection().getSelection("*");
             if (sels.size() == 1) {
+                App::AutoTransaction committer("Add property");
+                std::unordered_set<App::PropertyContainer*> containers;
                 containers.insert(sels[0].pObject);
+                Gui::Dialog::DlgAddProperty dlg(Gui::getMainWindow(), std::move(containers));
+                dlg.exec();
             }
-            else {
-                for (auto prop : props) {
-                    containers.insert(prop->getContainer());
-                }
+            else if (sels.size() > 1) {
+                CommandManager& rcCmdMgr = Application::Instance->commandManager();
+                rcCmdMgr.runCommandByName("Std_AddPropertyToObjects");
             }
-            Gui::Dialog::DlgAddProperty dlg(Gui::getMainWindow(), std::move(containers));
-            dlg.exec();
+            
             return;
         }
         case MA_EditPropGroup: {
