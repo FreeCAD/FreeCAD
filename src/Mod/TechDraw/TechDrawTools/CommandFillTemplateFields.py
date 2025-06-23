@@ -50,7 +50,7 @@ class CommandFillTemplateFields:
             ),
             "ToolTip": QT_TRANSLATE_NOOP(
                 "TechDraw_FillTemplateFields",
-                "Use document info to populate the template fields",
+                "Uses document info to populate the template fields",
             ),
         }
 

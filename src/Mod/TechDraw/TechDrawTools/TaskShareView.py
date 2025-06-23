@@ -44,7 +44,7 @@ class TaskShareView:
         self._uiPath = os.path.join(self._uiPath, "Mod/TechDraw/TechDrawTools/Gui/TaskMoveView.ui")
         self.form = Gui.PySideUic.loadUi(self._uiPath)
 
-        self.form.setWindowTitle(translate("TechDraw_ShareView", "Share View with another Page"))
+        self.form.setWindowTitle(translate("TechDraw_ShareView", "Share view with another page"))
         self.form.lViewName.setText(translate("TechDraw_ShareView", "View to share"))
 
         self.form.pbView.clicked.connect(self.pickView)
@@ -77,8 +77,8 @@ class TaskShareView:
         _dlgPath = os.path.join(_dlgPath, "Mod/TechDraw/TechDrawTools/Gui/DlgPageChooser.ui")
         dlg = Gui.PySideUic.loadUi(_dlgPath)
         self.dialogOpen = True
-        dlg.lPrompt.setText(translate("TechDraw_ShareView", "Select View to share from list."))
-        dlg.setWindowTitle(translate("TechDraw_ShareView", "Select View"))
+        dlg.lPrompt.setText(translate("TechDraw_ShareView", "Select view to share from list."))
+        dlg.setWindowTitle(translate("TechDraw_ShareView", "Select view"))
 
         views = [x for x in App.ActiveDocument.Objects if x.isDerivedFrom("TechDraw::DrawView")]
         for v in views:
@@ -100,8 +100,8 @@ class TaskShareView:
         _dlgPath = os.path.join(_dlgPath, "Mod/TechDraw/TechDrawTools/Gui/DlgPageChooser.ui")
         dlg = Gui.PySideUic.loadUi(_dlgPath)
         self.dialogOpen = True
-        dlg.lPrompt.setText(translate("TechDraw_ShareView", "Select From Page."))
-        dlg.setWindowTitle(translate("TechDraw_ShareView", "Select Page"))
+        dlg.lPrompt.setText(translate("TechDraw_ShareView", "Select from page."))
+        dlg.setWindowTitle(translate("TechDraw_ShareView", "Select page"))
 
         pages = [x for x in App.ActiveDocument.Objects if x.isDerivedFrom("TechDraw::DrawPage")]
         for p in pages:
@@ -124,8 +124,8 @@ class TaskShareView:
         _dlgPath = os.path.join(_dlgPath, "Mod/TechDraw/TechDrawTools/Gui/DlgPageChooser.ui")
         dlg = Gui.PySideUic.loadUi(_dlgPath)
         self.dialogOpen = True
-        dlg.lPrompt.setText(translate("TechDraw_ShareView", "Select To Page."))
-        dlg.setWindowTitle(translate("TechDraw_ShareView", "Select Page"))
+        dlg.lPrompt.setText(translate("TechDraw_ShareView", "Select to page."))
+        dlg.setWindowTitle(translate("TechDraw_ShareView", "Select page"))
 
         pages = [x for x in App.ActiveDocument.Objects if x.isDerivedFrom("TechDraw::DrawPage")]
         for p in pages:
