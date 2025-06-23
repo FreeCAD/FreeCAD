@@ -103,7 +103,7 @@ void ViewProviderDocumentObjectGroup::setupContextMenu(QMenu* menu, QObject* rec
         // Only add the action if the group actually contains objects.
         if (group && !group->getObjects().empty()) {
             // Add the custom action.
-            QIcon icon = BitmapFactory().iconFromTheme("Draft_SelectGroup");
+            QIcon icon = BitmapFactory().iconFromTheme("Std_SelectGroupContents");
             QAction* selectAction = new QAction(icon, QObject::tr("Select group contents"), menu);
             selectAction->setToolTip(QObject::tr("Selects all objects that are children of this group."));
 
