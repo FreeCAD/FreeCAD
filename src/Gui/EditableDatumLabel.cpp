@@ -221,6 +221,10 @@ bool EditableDatumLabel::eventFilter(QObject* watched, QEvent* event)
                 // if tab has been pressed and user did not type anything previously,
                 // then just cycle but don't lock anything, otherwise we lock the label
                 if (keyEvent->key() == Qt::Key_Tab && !this->isSet) {
+                    if (!this->spinBox->hasValidInput()) {
+                        Q_EMIT this->spinBox->valueChanged(this->value);
+                        return true;
+                    }
                     return false;
                 }
 
