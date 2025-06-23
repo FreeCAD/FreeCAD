@@ -2208,7 +2208,7 @@ CmdTechDrawDimensionRepair::CmdTechDrawDimensionRepair()
     sAppModule = "TechDraw";
     sGroup = QT_TR_NOOP("TechDraw");
     sMenuText = QT_TR_NOOP("Repair dimension references");
-    sToolTipText = sMenuText;
+    sToolTipText = QT_TR_NOOP("Repairs broken or incorrect dimension references");
     sWhatsThis = "TechDraw_DimensionRepair";
     sStatusTip = sToolTipText;
     sPixmap = "TechDraw_DimensionRepair";
