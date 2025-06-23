@@ -47,6 +47,10 @@ __title__ = "FEM GUI vtk python module check"
 __author__ = "Stefan Tröger"
 __url__ = "https://www.freecad.org"
 
+
+# Note: This file is imported from FreeCAD App files. Do not import any FreeCADGui
+#       directly to support cmd line use.
+
 __user_input_received = False
 
 
@@ -178,7 +182,7 @@ def vtk_module_handling():
         message = translate(
             "FEM",
             (
-                "FreeCAD is linked to a different VTK library then the imported "
+                "FreeCAD is linked to a different VTK library than the imported "
                 "VTK python module. This is incompatible and will lead to errors."
                 "\n\nWrong python module is imported from: \n{}"
             ),

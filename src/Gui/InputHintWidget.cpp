@@ -42,6 +42,9 @@ void Gui::InputHintWidget::showHints(const std::list<InputHint>& hints)
         return;
     }
 
+    constexpr int iconSize = 22;
+    constexpr int iconMargin = 2;
+
     const auto getKeyImage = [this](InputHint::UserInput key) {
         const auto& factory = BitmapFactory();
 
@@ -50,20 +53,20 @@ void Gui::InputHintWidget::showHints(const std::list<InputHint>& hints)
 
             if (auto iconPath = getCustomIconPath(key)) {
                 return factory.pixmapFromSvg(*iconPath,
-                                             QSize(24, 24),
+                                             QSize(iconSize, iconSize),
                                              {{0xFFFFFF, color.rgb() & RGB_MASK}});
             }
 
-            return generateKeyIcon(key, color);
+            return generateKeyIcon(key, color, iconSize);
         }();
 
 
         QBuffer buffer;
         image.save(&buffer, "png");
 
-        return QStringLiteral("<img src=\"data:image/png;base64,%1\" width=%2 height=24 />")
-            .arg(QLatin1String(buffer.data().toBase64()))
-            .arg(image.width());
+        return QStringLiteral("<img src=\"data:image/png;base64,%1\" height=%2 />")
+            .arg(QString::fromLatin1(buffer.data().toBase64()))
+            .arg(iconSize);
     };
 
     const auto getHintHTML = [&](const InputHint& hint) {
@@ -87,9 +90,10 @@ void Gui::InputHintWidget::showHints(const std::list<InputHint>& hints)
         messages.append(getHintHTML(hint));
     }
 
-    QString html = QStringLiteral("<table style=\"line-height: 28px\" height=28>"
-                                  "<tr>%1</tr>"
-                                  "</table>");
+    QString html = QStringLiteral("<table style=\"line-height: %1px\" height=%1>"
+                                  "<tr>%2</tr>"
+                                  "</table>")
+                       .arg(iconSize + iconMargin * 2);
 
     setText(html.arg(messages.join(QStringLiteral("<td width=10></td>"))));
 }
@@ -121,13 +125,12 @@ std::optional<const char*> Gui::InputHintWidget::getCustomIconPath(const InputHi
     }
 }
 
-QPixmap Gui::InputHintWidget::generateKeyIcon(const InputHint::UserInput key, const QColor color)
+QPixmap Gui::InputHintWidget::generateKeyIcon(const InputHint::UserInput key, const QColor color, int height)
 {
     constexpr int margin = 3;
     constexpr int padding = 4;
     constexpr int radius = 2;
-    constexpr int iconTotalHeight = 24;
-    constexpr int iconSymbolHeight = iconTotalHeight - 2 * margin;
+    const int iconSymbolHeight = height - 2 * margin;
 
     const QFont font(QStringLiteral("sans"), 10, QFont::Bold);
     const QFontMetrics fm(font);
@@ -136,10 +139,9 @@ QPixmap Gui::InputHintWidget::generateKeyIcon(const InputHint::UserInput key, co
 
     const int symbolWidth = std::max(textBoundingRect.width() + padding * 2, iconSymbolHeight);
 
-    const QRect keyRect(margin, margin, symbolWidth, 18);
+    const QRect keyRect(margin, margin, symbolWidth, iconSymbolHeight);
 
-    QPixmap pixmap(symbolWidth + margin * 2, iconTotalHeight);
-    pixmap.fill(Qt::transparent);
+    QPixmap pixmap = BitmapFactory().empty({ symbolWidth + margin * 2, height });
 
     QPainter painter(&pixmap);
     painter.setRenderHint(QPainter::Antialiasing);
@@ -163,7 +165,7 @@ QString Gui::InputHintWidget::inputRepresentation(const InputHint::UserInput key
     // clang-format off
     switch (key) {
         // Keyboard Keys
-        case KeySpace: return tr("Space");
+        case KeySpace: return QStringLiteral("  ␣  ");
         case KeyExclam: return QStringLiteral("!");
         case KeyQuoteDbl: return QStringLiteral("\"");
         case KeyNumberSign: return QStringLiteral("-/+");
@@ -233,27 +235,41 @@ QString Gui::InputHintWidget::inputRepresentation(const InputHint::UserInput key
         case KeyAsciiTilde: return QStringLiteral("~");
 
         // misc keys
-        case KeyEscape: return tr("Escape");
-        case KeyTab: return tr("tab ⭾");
+        /*: Keyboard key for Escape */
+        case KeyEscape: return tr("Esc");
+        /*: Keyboard key for Tab */
+        case KeyTab: return tr("Tab ⭾");
+        /*: Keyboard key for Backtab */
         case KeyBacktab: return tr("Backtab");
-        case KeyBackspace: return tr("⌫");
-        case KeyReturn: return tr("↵ Enter");
+        case KeyBackspace: return QStringLiteral("⌫");
+        case KeyReturn: return QStringLiteral("↵");
+        /*: Keyboard key for numpad Enter */
         case KeyEnter: return tr("Enter");
+        /*: Keyboard key for Insert */
         case KeyInsert: return tr("Insert");
-        case KeyDelete: return tr("Delete");
+        /*: Keyboard key for Delete */
+        case KeyDelete: return tr("Del");
+        /*: Keyboard key for Pause */
         case KeyPause: return tr("Pause");
+        /*: Keyboard key for Print */
         case KeyPrintScr: return tr("Print");
+        /*: Keyboard key for SysReq */
         case KeySysReq: return tr("SysReq");
+        /*: Keyboard key for Clear */
         case KeyClear: return tr("Clear");
 
         // cursor movement
+        /*: Keyboard key for Home */
         case KeyHome: return tr("Home");
+        /*: Keyboard key for End */
         case KeyEnd: return tr("End");
         case KeyLeft: return QStringLiteral("←");
         case KeyUp: return QStringLiteral("↑");
         case KeyRight: return QStringLiteral("→");
         case KeyDown: return QStringLiteral("↓");
+        /*: Keyboard key for Page Down */
         case KeyPageUp: return tr("PgDown");
+        /*: Keyboard key for Page Up */
         case KeyPageDown: return tr("PgUp");
 
         // modifiers
@@ -263,17 +279,23 @@ QString Gui::InputHintWidget::inputRepresentation(const InputHint::UserInput key
         case KeyMeta: return QStringLiteral("⌃");
         case KeyAlt: return QStringLiteral("⌥");
 #else
-        case KeyShift: return tr("Shift");
+        /*: Keyboard key for Shift on Windows & Linux */
+        case KeyShift: return tr("⇧ Shift");
+        /*: Keyboard key for Control on Windows & Linux */
         case KeyControl: return tr("Ctrl");
 #ifdef FC_OS_WIN32
-        case KeyMeta: return tr("⊞ Win");
+        case KeyMeta: return QStringLiteral("⊞ Win");
 #else
-        case KeyMeta: return tr("❖ Meta");
+        case KeyMeta: return QStringLiteral("❖ Meta");
 #endif
+        /*: Keyboard key for Alt on Windows & Linux */
         case KeyAlt: return tr("Alt");
 #endif
+        /*: Keyboard key for Caps Lock */
         case KeyCapsLock: return tr("Caps Lock");
+        /*: Keyboard key for Num Lock */
         case KeyNumLock: return tr("Num Lock");
+        /*: Keyboard key for Scroll Lock */
         case KeyScrollLock: return tr("Scroll Lock");
 
         // function
@@ -313,7 +335,30 @@ QString Gui::InputHintWidget::inputRepresentation(const InputHint::UserInput key
         case KeyF34: return QStringLiteral("F34");
         case KeyF35: return QStringLiteral("F35");
 
-        default: return tr("???");
+        // numpad
+        /*: Keyboard key for numpad 0 */
+        case KeyNum0: return tr("Num0");
+        /*: Keyboard key for numpad 1 */
+        case KeyNum1: return tr("Num1");
+        /*: Keyboard key for numpad 2 */
+        case KeyNum2: return tr("Num2");
+        /*: Keyboard key for numpad 3 */
+        case KeyNum3: return tr("Num3");
+        /*: Keyboard key for numpad 4 */
+        case KeyNum4: return tr("Num4");
+        /*: Keyboard key for numpad 5 */
+        case KeyNum5: return tr("Num5");
+        /*: Keyboard key for numpad 6 */
+        case KeyNum6: return tr("Num6");
+        /*: Keyboard key for numpad 7 */
+        case KeyNum7: return tr("Num7");
+        /*: Keyboard key for numpad 8 */
+        case KeyNum8: return tr("Num8");
+        /*: Keyboard key for numpad 9 */
+        case KeyNum9: return tr("Num9");
+
+
+        default: return QStringLiteral("???");
     }
     // clang-format on
 }

@@ -1,5 +1,7 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
- *   Copyright (c) 2024 David Friedli <david[at]friedli-be.ch>             *
+ *   Copyright (c) 2025 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
  *   This file is part of FreeCAD.                                         *
  *                                                                         *
@@ -20,32 +22,42 @@
  **************************************************************************/
 
 
-#include "PreCompiled.h"
-#include "WorkbenchManipulator.h"
-#include <Gui/MenuManager.h>
-#include <Gui/ToolBarManager.h>
+#ifndef GUI_SIEMENSNXNAVIGATIONSTYLE_H
+#define GUI_SIEMENSNXNAVIGATIONSTYLE_H
 
-using namespace MeasureGui;
+#include <Gui/Navigation/NavigationStateChart.h>
 
-void WorkbenchManipulator::modifyMenuBar([[maybe_unused]] Gui::MenuItem* menuBar)
+// NOLINTBEGIN(cppcoreguidelines-avoid*, readability-avoid-const-params-in-decls)
+namespace Gui
 {
-    auto menuTools = menuBar->findItem("&Tools");
-    if (!menuTools) {
-        return;
-    }
-    auto itemMeasure = new Gui::MenuItem();
-    itemMeasure->setCommand("Std_Measure");
-    menuTools->appendItem(itemMeasure);
-}
 
-void WorkbenchManipulator::modifyToolBars(Gui::ToolBarItem* toolBar)
-{
-    auto tbView = toolBar->findItem("View");
-    if (!tbView) {
-        return;
-    }
+class GuiExport SiemensNXNavigationStyle : public NavigationStateChart {
+    using inherited = NavigationStateChart;
 
-    auto itemMeasure = new Gui::ToolBarItem();
-    itemMeasure->setCommand("Std_Measure");
-    tbView->appendItem(itemMeasure);
-}
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
+
+public:
+    SiemensNXNavigationStyle();
+    ~SiemensNXNavigationStyle() override;
+    const char* mouseButtons(ViewerMode mode) override;
+    std::string userFriendlyName() const override;
+
+protected:
+    SbBool processKeyboardEvent(const SoKeyboardEvent * const event) override;
+
+private:
+    struct NaviMachine;
+    struct IdleState;
+    struct AwaitingReleaseState;
+    struct AwaitingMoveState;
+    struct InteractState;
+    struct RotateState;
+    struct PanState;
+    struct ZoomState;
+    struct SelectionState;
+};
+
+}  // namespace Gui
+// NOLINTEND(cppcoreguidelines-avoid*, readability-avoid-const-params-in-decls)
+
+#endif  // GUI_SIEMENSNXNAVIGATIONSTYLE_H

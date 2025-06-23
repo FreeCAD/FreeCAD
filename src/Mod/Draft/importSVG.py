@@ -65,6 +65,8 @@ from draftutils.translate import translate
 from draftutils.messages import _err, _msg, _wrn
 from draftutils.utils import pyopen
 from SVGPath import SvgPathParser
+import xml.etree.ElementTree as ET
+from copy import deepcopy
 
 if FreeCAD.GuiUp:
     from PySide import QtWidgets
@@ -466,8 +468,6 @@ class svgHandler(xml.sax.ContentHandler):
         self.groupstyles = []
         self.lastdim = None
         self.viewbox = None
-        self.symbols = {}
-        self.currentsymbol = None
         self.svgdpi = 1.0
 
         global Part
@@ -515,9 +515,6 @@ class svgHandler(xml.sax.ContentHandler):
         obj = self.doc.addObject("Part::Feature", name)
         obj.Shape = face
         self.format(obj)
-        if self.currentsymbol:
-            self.symbols[self.currentsymbol].append(obj)
-            
 
     def startElement(self, name, attrs):
         """Re-organize data into a nice clean dictionary.
@@ -606,7 +603,7 @@ class svgHandler(xml.sax.ContentHandler):
                      "the dpi could not be determined; "
                      "assuming 96 dpi")
                 self.svgdpi = 96.0
-
+            
         if 'style' in data:
             if not data['style']:
                 # Empty style attribute stops inheriting from parent
@@ -686,13 +683,21 @@ class svgHandler(xml.sax.ContentHandler):
                                      'css' + str(self.svgdpi))
         if 'transform' in data:
             m = self.getMatrix(attrs.getValue('transform'))
-            if name == "g":
-                self.grouptransform.append(m)
-            else:
-                self.transform = m
         else:
-            if name == "g":
-                self.grouptransform.append(FreeCAD.Matrix())
+            m = FreeCAD.Matrix()
+        if name == "g" or name == "a":
+            self.grouptransform.append(m)
+        elif name == "freecad:used":
+            #use tag acts as g tag but has x,y attribute
+            x = data.get("x", 0)
+            y = data.get("y", 0)
+            if x != 0 or y != 0:
+                xy = FreeCAD.Matrix()
+                xy.move(Vector(x, -y, 0))
+                m = m.multiply(xy)
+            self.grouptransform.append(m)
+        elif 'transform' in data:
+            self.transform = m
 
         if self.style == 0:
             if self.fill is not None:
@@ -701,7 +706,7 @@ class svgHandler(xml.sax.ContentHandler):
             self.width = self.width_default
 
         # apply group styles
-        if name == "g":
+        if name == "g" or name == "a" or name == "freecad:used":
             self.groupstyles.append([self.fill, self.color, self.width])
         if self.fill is None:
             if "fill" not in data:
@@ -853,8 +858,6 @@ class svgHandler(xml.sax.ContentHandler):
             obj = self.doc.addObject("Part::Feature", pathname)
             obj.Shape = sh
             self.format(obj)
-            if self.currentsymbol:
-                self.symbols[self.currentsymbol].append(obj)
 
         # Process lines
         if name == "line":
@@ -867,8 +870,6 @@ class svgHandler(xml.sax.ContentHandler):
             obj = self.doc.addObject("Part::Feature", pathname)
             obj.Shape = sh
             self.format(obj)
-            if self.currentsymbol:
-                self.symbols[self.currentsymbol].append(obj)
 
         # Process polylines and polygons
         if name == "polyline" or name == "polygon":
@@ -904,8 +905,6 @@ class svgHandler(xml.sax.ContentHandler):
                     obj = self.doc.addObject("Part::Feature", pathname)
                     obj.Shape = sh
                     self.format(obj)
-                    if self.currentsymbol:
-                        self.symbols[self.currentsymbol].append(obj)
 
         # Process ellipses
         if name == "ellipse":
@@ -930,8 +929,6 @@ class svgHandler(xml.sax.ContentHandler):
             obj = self.doc.addObject("Part::Feature", pathname)
             obj.Shape = sh
             self.format(obj)
-            if self.currentsymbol:
-                self.symbols[self.currentsymbol].append(obj)
 
         # Process circles
         if name == "circle" and "freecad:skip" not in data:
@@ -948,8 +945,6 @@ class svgHandler(xml.sax.ContentHandler):
             obj = self.doc.addObject("Part::Feature", pathname)
             obj.Shape = sh
             self.format(obj)
-            if self.currentsymbol:
-                self.symbols[self.currentsymbol].append(obj)
 
         # Process texts
         if name in ["text", "tspan"]:
@@ -974,30 +969,7 @@ class svgHandler(xml.sax.ContentHandler):
                     _font_size = int(getsize(data['font-size']))
                     self.lastdim.ViewObject.FontSize = _font_size
 
-        # Process symbols
-        if name == "symbol":
-            self.symbols[pathname] = []
-            self.currentsymbol = pathname
 
-        if name == "use":
-            if "xlink:href" in data:
-                symbol = data["xlink:href"][0][1:]
-                if symbol in self.symbols:
-                    _msg("using symbol " + symbol)
-                    shapes = []
-                    for o in self.symbols[symbol]:
-                        if o.isDerivedFrom("Part::Feature"):
-                            shapes.append(o.Shape)
-                    if shapes:
-                        sh = Part.makeCompound(shapes)
-                        v = Vector(float(data['x']), -float(data['y']), 0)
-                        sh.translate(v)
-                        sh = self.applyTrans(sh)
-                        obj = self.doc.addObject("Part::Feature", symbol)
-                        obj.Shape = sh
-                        self.format(obj)
-                else:
-                    _msg("no symbol data")
 
         _msg("done processing element {}".format(self.count))
     # startElement()
@@ -1009,8 +981,6 @@ class svgHandler(xml.sax.ContentHandler):
             obj = self.doc.addObject("App::Annotation", 'Text')
             # use ignore to not break import if char is not found in latin1
             obj.LabelText = content.encode('latin1', 'ignore')
-            if self.currentsymbol:
-                self.symbols[self.currentsymbol].append(obj)
             vec = Vector(self.x, -self.y, 0)
             if self.transform:
                 vec = self.translateVec(vec, self.transform)
@@ -1038,20 +1008,11 @@ class svgHandler(xml.sax.ContentHandler):
         if name not in ["tspan"]:
             self.transform = None
             self.text = None
-        if name == "g" or name == "svg":
+        if name == "g" or name == "a" or name == "svg" or name == "freecad:used":
             _msg("closing group")
             self.grouptransform.pop()
             if self.groupstyles:
                 self.groupstyles.pop()
-        if name == "symbol":
-            if self.doc.getObject("svgsymbols"):
-                group = self.doc.getObject("svgsymbols")
-            else:
-                group = self.doc.addObject("App::DocumentObjectGroup",
-                                           "svgsymbols")
-            for o in self.symbols[self.currentsymbol]:
-                group.addObject(o)
-            self.currentsymbol = None
 
     def applyTrans(self, sh):
         """Apply transformation to the shape and return the new shape.
@@ -1239,13 +1200,13 @@ def open(filename):
     # Set up the parser
     parser = xml.sax.make_parser()
     parser.setFeature(xml.sax.handler.feature_external_ges, False)
-    parser.setContentHandler(svgHandler())
+    handler = svgHandler()
+    parser.setContentHandler(handler)
     parser._cont_handler.doc = doc
 
-    # Use the native Python open which was saved as `pyopen`
-    f = pyopen(filename)
-    parser.parse(f)
-    f.close()
+    #preprocess file to replace use tag to it's referenced object
+    new_svg_content = replace_use_with_reference(filename)
+    xml.sax.parseString(new_svg_content,handler)
     doc.recompute()
     return doc
 
@@ -1278,11 +1239,13 @@ def insert(filename, docname):
     # Set up the parser
     parser = xml.sax.make_parser()
     parser.setFeature(xml.sax.handler.feature_external_ges, False)
-    parser.setContentHandler(svgHandler())
+    handler = svgHandler()
+    parser.setContentHandler(handler)
     parser._cont_handler.doc = doc
 
-    # Use the native Python open which was saved as `pyopen`
-    parser.parse(pyopen(filename))
+    #preprocess file to replace use tag to it's referenced object
+    new_svg_content = replace_use_with_reference(filename)
+    xml.sax.parseString(new_svg_content,handler)
     doc.recompute()
 
 
@@ -1424,3 +1387,85 @@ def export(exportList, filename):
             App.closeDocument(hidden_doc.Name)
         except:
             pass
+
+# function to replace use tag to it's referenced object
+def replace_use_with_reference(file_path):
+    #function that replace use tag to freecad:used
+    def register_svg_namespaces(svg_content):
+        # register namespaces
+        xmlns_attrs = re.findall(r'\s+xmlns(?::([a-zA-Z0-9_]+))?="([^"]+)"', svg_content)
+        for prefix, uri in xmlns_attrs:
+            ns_prefix = '' if prefix is None or prefix == 'svg' else prefix
+            ET.register_namespace(ns_prefix, uri)
+
+    def replace_use(element, tree):
+        while True:
+            uses = element.findall(".//{http://www.w3.org/2000/svg}use")
+            if uses == []:
+                break   
+            # create parent map
+            parent_map = {child: parent for parent in tree.iter() for child in parent}
+            for use in uses:
+                parent = parent_map[use]
+                href = use.attrib.get("href", "")
+                # if href is empty, try to get xlink:href.
+                if not href:
+                    href = use.attrib.get("{http://www.w3.org/1999/xlink}href", "")
+                if href.startswith("#"):
+                    ref_id = href[1:]
+                    ref_element = id_map.get(ref_id)
+                    if ref_element is not None:
+                        # defs tag could not be referenced by use tag.
+                        if ref_element.tag.endswith("defs"):
+                            continue
+                        # make new element named freecad:used because use tag may have it own transform.
+                        new_element = ET.Element("freecad:used")
+                        for attr in use.attrib:
+                            # copy attribute to new one except href attribute
+                            if attr not in {"href", "{http://www.w3.org/1999/xlink}href"} and attr not in new_element.attrib:
+                                new_element.set(attr, use.attrib[attr])
+                        ref_element=deepcopy(ref_element)
+                        # change referenced symbol tag to g tag, because symbol tag will be ignored when importing.
+                        if ref_element.tag.endswith("symbol"):
+                            ref_element.tag="g"
+                        # remove id from referenced element.(without this multiple same id problem)
+                        if "id" in ref_element.attrib:
+                            del ref_element.attrib["id"]
+                        for child in list(ref_element):
+                            # remove id from child of referenced element.(without this multiple same id problem)
+                            if "id" in child.attrib:
+                                del child.attrib["id"]
+                        new_element.append(ref_element)
+                        # replace use tag by freecad:used tag. 
+                        parent.append(new_element)
+                #remove use when referenced element is not found.
+                parent.remove(use)
+        #now all use tag processd
+        #remove symbol and defs tag from tree.
+        parent_map = {child: parent for parent in tree.iter() for child in parent}
+        symbols = element.findall(".//{http://www.w3.org/2000/svg}symbol")
+        for symbol in symbols:
+            parent = parent_map[symbol]
+            parent.remove(symbol)
+        deftags = element.findall(".//{http://www.w3.org/2000/svg}defs")
+        for deftag in deftags:
+            parent = parent_map[deftag]
+            parent.remove(deftag)
+
+    # open file and read
+    svg_content = pyopen(file_path).read()
+    #register namespace before parsing
+    register_svg_namespaces(svg_content)
+    # parse as xml.
+    tree = ET.ElementTree(ET.fromstring(svg_content))
+    root = tree.getroot()
+
+    # create id dictionary.
+    id_map = {}
+    for elem in root.findall(".//*[@id]"):
+        id_map[elem.attrib["id"]] = elem
+
+    replace_use(root, tree)
+    
+    # return tree as xml string with namespace declaration.
+    return ET.tostring(root, encoding='unicode',xml_declaration=True)

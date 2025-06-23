@@ -80,7 +80,7 @@ void ActionLabel::paintEvent(QPaintEvent *event)
     QIcon icon = this->icon();
     QString text = this->text();
 
-    QRect contentRect = rect().adjusted(elementSpacing, elementSpacing, -elementSpacing, -elementSpacing); // Apply margins
+    QRect contentRect = rect().adjusted(elementSpacing, 0, -elementSpacing, 0); // Apply margins
 
     int currentX = contentRect.left();
 

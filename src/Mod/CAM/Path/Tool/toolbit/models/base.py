@@ -33,10 +33,10 @@ from lazy_loader.lazy_loader import LazyLoader
 from typing import Any, List, Optional, Tuple, Type, Union, Mapping, cast
 from PySide.QtCore import QT_TRANSLATE_NOOP
 from Path.Base.Generator import toolchange
-from ...assets import Asset
+from ...docobject import DetachedDocumentObject
+from ...assets.asset import Asset
 from ...camassets import cam_assets
 from ...shape import ToolBitShape, ToolBitShapeCustom, ToolBitShapeIcon
-from ..docobject import DetachedDocumentObject
 from ..util import to_json, format_value
 
 

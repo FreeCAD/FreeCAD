@@ -86,7 +86,7 @@
 
 "Mod: Surface":
 - changed-files:
-  - any-glob-to-any-file:  ['src/Mod/Surface/**/*/']
+  - any-glob-to-any-file:  ['src/Mod/Surface/**/*']
 
 "Mod: TechDraw":
 - changed-files:
@@ -101,6 +101,10 @@
 "Packaging/building":
 - changed-files:
   - any-glob-to-any-file:  ['cMake/**/*']
+
+"3rd party component":
+- changed-files:
+  - any-glob-to-any-file:  ['src/3rdParty/**/*']
 
 # 'Topic' related labels
 

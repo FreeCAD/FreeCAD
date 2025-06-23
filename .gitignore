@@ -25,6 +25,8 @@
 *.o
 *.orig
 *.output
+# Ignore .db files created by Qt Designer when editing .ui files
+*.db
 qrc_*.cpp
 BuildLog.htm
 cmake_install.cmake

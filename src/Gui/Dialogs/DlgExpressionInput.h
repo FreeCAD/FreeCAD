@@ -120,6 +120,8 @@ private:
 
     static bool varSetsVisible;
     std::unique_ptr<QTreeWidget> treeWidget;
+    QPushButton* okBtn = nullptr;
+    QPushButton* discardBtn = nullptr;
 };
 
 }

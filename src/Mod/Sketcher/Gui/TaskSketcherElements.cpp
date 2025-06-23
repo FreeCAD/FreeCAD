@@ -1250,10 +1250,17 @@ void TaskSketcherElements::connectSignals()
                      &QListWidget::itemChanged,
                      this,
                      &TaskSketcherElements::onListMultiFilterItemChanged);
+#if QT_VERSION >= QT_VERSION_CHECK(6,7,0)
+    QObject::connect(ui->filterBox,
+                     &QCheckBox::checkStateChanged,
+                     this,
+                     &TaskSketcherElements::onFilterBoxStateChanged);
+#else
     QObject::connect(ui->filterBox,
                      &QCheckBox::stateChanged,
                      this,
                      &TaskSketcherElements::onFilterBoxStateChanged);
+#endif
     QObject::connect(
         ui->settingsButton, &QToolButton::clicked, ui->settingsButton, &QToolButton::showMenu);
     QObject::connect(std::as_const(ui->settingsButton)->actions()[0],

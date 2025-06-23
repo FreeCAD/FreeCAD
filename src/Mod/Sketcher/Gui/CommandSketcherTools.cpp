@@ -42,16 +42,23 @@
 #include <Gui/Document.h>
 #include <Gui/MainWindow.h>
 #include <Gui/Notifications.h>
+#include <Gui/View3DInventor.h>
 #include <Gui/Selection/Selection.h>
 #include <Gui/Selection/SelectionObject.h>
 #include <Mod/Sketcher/App/PythonConverter.h>
 #include <Mod/Sketcher/App/SketchObject.h>
 #include <Mod/Sketcher/App/SolverGeometryExtension.h>
+#include <Gui/Application.h>
+#include <Base/ServiceProvider.h>
+#include <App/Services.h>
 
+#include "CommandSketcherTools.h"
 #include "DrawSketchHandler.h"
 #include "SketchRectangularArrayDialog.h"
 #include "Utils.h"
 #include "ViewProviderSketch.h"
+#include <Inventor/actions/SoGetBoundingBoxAction.h>
+
 
 #include "DrawSketchHandlerTranslate.h"
 #include "DrawSketchHandlerOffset.h"
@@ -368,7 +375,7 @@ void CmdSketcherSelectConstraints::activated(int iMsg)
     // get the needed lists and objects
     const std::vector<std::string>& SubNames = selection[0].getSubNames();
     Sketcher::SketchObject* Obj = static_cast<Sketcher::SketchObject*>(selection[0].getObject());
-    const std::vector<Sketcher::Constraint*>& vals = Obj->Constraints.getValues();
+    const std::vector<Sketcher::Constraint*>& constraints = Obj->Constraints.getValues();
 
     std::string doc_name = Obj->getDocument()->getName();
     std::string obj_name = Obj->getNameInDocument();
@@ -377,23 +384,26 @@ void CmdSketcherSelectConstraints::activated(int iMsg)
 
     std::vector<std::string> constraintSubNames;
     // go through the selected subelements
-    for (std::vector<std::string>::const_iterator it = SubNames.begin(); it != SubNames.end();
-         ++it) {
-        // only handle edges
-        if (it->size() > 4 && it->substr(0, 4) == "Edge") {
-            int GeoId = std::atoi(it->substr(4, 4000).c_str()) - 1;
-
-            // push all the constraints
-            int i = 0;
-            for (std::vector<Sketcher::Constraint*>::const_iterator it = vals.begin();
-                 it != vals.end();
-                 ++it, ++i) {
-                if ((*it)->First == GeoId || (*it)->Second == GeoId || (*it)->Third == GeoId) {
-                    constraintSubNames.push_back(
-                        Sketcher::PropertyConstraintList::getConstraintName(i));
-                }
+    int i = 0;
+    for (auto const& constraint : constraints) {
+        auto isRelated = [&] (const std::string& subName){
+            int geoId;
+            PointPos pointPos;
+            Data::IndexedName name = Obj->checkSubName(subName.c_str());
+            if (!Obj->geoIdFromShapeType(name, geoId, pointPos)) {
+                return false;
             }
+            if (pointPos != PointPos::none) {
+                return constraint->involvesGeoIdAndPosId(geoId, pointPos);
+            } else {
+                return constraint->involvesGeoId(geoId);
+            }
+        };
+
+        if (std::ranges::any_of(SubNames, isRelated)) {
+            constraintSubNames.push_back(PropertyConstraintList::getConstraintName(i));
         }
+        ++i;
     }
 
     if (!constraintSubNames.empty())
@@ -2522,3 +2532,24 @@ void CreateSketcherCommandsConstraintAccel()
     rcCmdMgr.addCommand(new CmdSketcherPaste());
 }
 // clang-format on
+
+void SketcherGui::centerScale(Sketcher::SketchObject* Obj, double scaleFactor)
+{
+    std::vector<int> allGeoIds(Obj->Geometry.getValues().size());
+    std::iota(allGeoIds.begin(), allGeoIds.end(), 0);
+
+    Gui::Document* doc = Gui::Application::Instance->activeDocument();
+    auto* vp = static_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit());
+    auto scaler = DrawSketchHandlerScale::make_centerScale(allGeoIds, scaleFactor, false);
+    scaler->setSketchGui(vp);
+    scaler->executeCommands();
+
+    if (auto* view3d = dynamic_cast<Gui::View3DInventor*>(doc->getActiveView())) {
+        auto viewer = view3d->getViewer();
+        bool isAnimating = viewer->isAnimationEnabled();
+
+        viewer->setAnimationEnabled(false);
+        viewer->scale(scaleFactor);
+        viewer->setAnimationEnabled(isAnimating);
+    }
+}

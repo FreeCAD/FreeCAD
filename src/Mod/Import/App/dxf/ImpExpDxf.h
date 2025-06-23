@@ -108,6 +108,11 @@ public:
     void setOptions();
 
 private:
+    bool shouldSkipEntity() const
+    {
+        // This entity is in paper space, and the user setting says to ignore it.
+        return !m_importPaperSpaceEntities && m_entityAttributes.m_paperSpace;
+    }
     static gp_Pnt makePoint(const Base::Vector3d& point3d)
     {
         return {point3d.x, point3d.y, point3d.z};

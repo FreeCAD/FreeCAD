@@ -142,20 +142,28 @@ SET(PathPythonToolsAssetsUi_SRCS
     Path/Tool/assets/ui/util.py
 )
 
+SET(PathPythonToolsDocObject_SRCS
+    Path/Tool/docobject/__init__.py
+)
+
+SET(PathPythonToolsDocObjectModels_SRCS
+    Path/Tool/docobject/models/__init__.py
+    Path/Tool/docobject/models/docobject.py
+)
+
+SET(PathPythonToolsDocObjectUi_SRCS
+    Path/Tool/docobject/ui/__init__.py
+    Path/Tool/docobject/ui/docobject.py
+    Path/Tool/docobject/ui/property.py
+)
+
 SET(PathPythonToolsGui_SRCS
     Path/Tool/Gui/__init__.py
     Path/Tool/Gui/Controller.py
 )
 
-SET(PathPythonToolsUi_SRCS
-    Path/Tool/ui/__init__.py
-    Path/Tool/ui/docobject.py
-    Path/Tool/ui/property.py
-)
-
 SET(PathPythonToolsToolBit_SRCS
     Path/Tool/toolbit/__init__.py
-    Path/Tool/toolbit/docobject.py
     Path/Tool/toolbit/util.py
 )
 
@@ -320,6 +328,7 @@ SET(PathPythonPostScripts_SRCS
     Path/Post/scripts/slic3r_pre.py
     Path/Post/scripts/smoothie_post.py
     Path/Post/scripts/snapmaker_post.py
+    Path/Post/scripts/svg_post.py
     Path/Post/scripts/uccnc_post.py
     Path/Post/scripts/wedm_post.py
 )
@@ -414,6 +423,7 @@ SET(Tools_SRCS
 
 SET(Tools_Bit_SRCS
     Tools/Bit/30degree_Vbit.fctb
+    Tools/Bit/3.175mm_Endmill.fctb
     Tools/Bit/375-16_Tap.fctb
     Tools/Bit/45degree_chamfer.fctb
     Tools/Bit/45degree_Vbit.fctb
@@ -555,15 +565,8 @@ SET(PathImages_Ops
     Images/Ops/chamfer.svg
 )
 
-SET(PathImages_Tools
-    Images/Tools/drill.svg
-    Images/Tools/endmill.svg
-    Images/Tools/v-bit.svg
-)
-
 SET(Path_Images
     ${PathImages_Ops}
-    ${PathImages_Tools}
 )
 
 SET(PathData_Threads
@@ -599,8 +602,10 @@ SET(all_files
     ${PathPythonToolsAssets_SRCS}
     ${PathPythonToolsAssetsStore_SRCS}
     ${PathPythonToolsAssetsUi_SRCS}
+    ${PathPythonToolsDocObject_SRCS}
+    ${PathPythonToolsDocObjectModels_SRCS}
+    ${PathPythonToolsDocObjectUi_SRCS}
     ${PathPythonToolsGui_SRCS}
-    ${PathPythonToolsUi_SRCS}
     ${PathPythonToolsShape_SRCS}
     ${PathPythonToolsShapeModels_SRCS}
     ${PathPythonToolsShapeUi_SRCS}
@@ -773,9 +778,23 @@ INSTALL(
 
 INSTALL(
     FILES
-        ${PathPythonToolsUi_SRCS}
+        ${PathPythonToolsDocObject_SRCS}
     DESTINATION
-        Mod/CAM/Path/Tool/ui
+        Mod/CAM/Path/Tool/docobject
+)
+
+INSTALL(
+    FILES
+        ${PathPythonToolsDocObjectModels_SRCS}
+    DESTINATION
+        Mod/CAM/Path/Tool/docobject/models
+)
+
+INSTALL(
+    FILES
+        ${PathPythonToolsDocObjectUi_SRCS}
+    DESTINATION
+        Mod/CAM/Path/Tool/docobject/ui
 )
 
 INSTALL(
@@ -938,13 +957,6 @@ INSTALL(
         ${PathImages_Ops}
     DESTINATION
         Mod/CAM/Images/Ops
-)
-
-INSTALL(
-    FILES
-        ${PathImages_Tools}
-    DESTINATION
-        Mod/CAM/Images/Tools
 )
 
 INSTALL(

@@ -114,12 +114,10 @@ void PyException::raiseException()
         Base::ExceptionFactory::Instance().raiseException(edict.ptr());
     }
 
-    if (_exceptionType == PyExc_FC_FreeCADAbort) {
-        AbortException exc(getMessage());
-        exc.setReported(getReported());
-        throw exc;
-    }
+    PyExceptionData data {_exceptionType, getMessage(), getReported()};
+    Base::ExceptionFactory::Instance().raiseExceptionByType(data);
 
+    // Fallback
     throw *this;
 }
 
@@ -306,7 +304,7 @@ std::string InterpreterSingleton::runStringWithKey(const char* psCmd,
         key_return_value = key_return_value.str();  // NOLINT
     }
 
-    Py::Bytes str = Py::String(key_return_value).encode("utf-8", "~E~");
+    Py::Bytes str = Py::String(key_return_value).encode("utf-8");
     std::string result = static_cast<std::string>(str);
     return result;
 }
