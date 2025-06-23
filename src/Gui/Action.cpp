@@ -624,8 +624,10 @@ void ActionGroup::onHovered(QAction *act)
             }
         }
 
-        if (foundMenu)
+        if (foundMenu) {
             break;
+        }
+
     }
 
     if (foundMenu) {
