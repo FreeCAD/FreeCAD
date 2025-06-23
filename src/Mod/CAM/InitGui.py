@@ -138,6 +138,7 @@ class CAMWorkbench(Workbench):
             "CAM_MillFace",
             "CAM_Helix",
             "CAM_Adaptive",
+            "CAM_Slot",
         ]
         threedopcmdlist = ["CAM_Pocket3D"]
         engravecmdlist = ["CAM_Engrave", "CAM_Deburr", "CAM_Vcarve"]
@@ -189,7 +190,6 @@ class CAMWorkbench(Workbench):
             prepcmdlist.append("CAM_PathShapeTC")
             extracmdlist.extend(["CAM_Area", "CAM_Area_Workplane"])
             specialcmdlist.append("CAM_ThreadMilling")
-            twodopcmdlist.append("CAM_Slot")
 
         if Path.Preferences.advancedOCLFeaturesEnabled():
             try:
