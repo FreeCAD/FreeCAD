@@ -134,6 +134,8 @@ class ToolBitBrowserWidget(QtGui.QWidget):
         # Fetch all assets the first time the widget is shown
         if not self._all_assets and not self._is_fetching:
             self.refresh()
+        # Set focus to the search field
+        self._search_edit.setFocus()
 
     def _tool_fetcher(self) -> Sequence[ToolBit]:
         return cast(
