@@ -696,7 +696,7 @@ CmdTechDrawActiveView::CmdTechDrawActiveView() : Command("TechDraw_ActiveView")
     sAppModule = "TechDraw";
     sGroup = QT_TR_NOOP("TechDraw");
     sMenuText = QT_TR_NOOP("Insert active view");
-    sToolTipText = "Insert an image of the active 3D model in current page.\n"
+    sToolTipText = "Inserts a rendered image of the active 3D view in the current page.\n"
                "If multiple 3D models are active, a selection dialog will be shown.";
     sWhatsThis = "TechDraw_ActiveView";
     sStatusTip = sToolTipText;
