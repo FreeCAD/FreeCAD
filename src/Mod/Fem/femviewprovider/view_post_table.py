@@ -148,7 +148,7 @@ class EditIndexAppWidget(QtGui.QWidget):
         self.widget.Field.activated.connect(self.fieldChanged)
         self.widget.Component.activated.connect(self.componentChanged)
 
-        # sometimes wierd sizes occur with spinboxes
+        # sometimes weird sizes occur with spinboxes
         self.widget.Index.setMaximumHeight(self.widget.Field.sizeHint().height())
 
     @QtCore.Slot(int)
@@ -170,7 +170,7 @@ class EditIndexAppWidget(QtGui.QWidget):
 
 class VPPostTableFieldData(view_base_fempostextractors.VPPostExtractor):
     """
-    A View Provider for extraction of 1D field data specialy for tables
+    A View Provider for extraction of 1D field data specially for tables
     """
 
     def __init__(self, vobj):

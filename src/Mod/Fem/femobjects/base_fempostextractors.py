@@ -21,7 +21,7 @@
 # *                                                                         *
 # ***************************************************************************
 
-__title__ = "FreeCAD FEM postprocessing data exxtractor base objcts"
+__title__ = "FreeCAD FEM postprocessing data exxtractor base objects"
 __author__ = "Stefan Tröger"
 __url__ = "https://www.freecad.org"
 
@@ -127,7 +127,7 @@ class Extractor(base_fempythonobject.BaseFemPythonObject):
                 return ["Not a vector"]
 
     def get_representive_fieldname(self, obj):
-        # should return the representive field name, e.g. Position (X)
+        # should return the representative field name, e.g. Position (X)
         return ""
 
 
@@ -259,7 +259,7 @@ class Extractor1D(Extractor):
         return array
 
     def get_representive_fieldname(self, obj):
-        # representive field is the x field
+        # representative field is the x field
         label = obj.XField
         if not label:
             return ""
@@ -387,7 +387,7 @@ class Extractor2D(Extractor1D):
         return array
 
     def get_representive_fieldname(self, obj):
-        # representive field is the y field
+        # representative field is the y field
         label = obj.YField
         if not label:
             return ""

@@ -87,7 +87,7 @@ class EditViewWidget(QtGui.QWidget):
         self.widget.MarkerSize.valueChanged.connect(self.markerSizeChanged)
         self.widget.LineWidth.valueChanged.connect(self.lineWidthChanged)
 
-        # sometimes wierd sizes occur with spinboxes
+        # sometimes weird sizes occur with spinboxes
         self.widget.MarkerSize.setMaximumHeight(self.widget.MarkerStyle.sizeHint().height())
         self.widget.LineWidth.setMaximumHeight(self.widget.LineStyle.sizeHint().height())
 
@@ -242,7 +242,7 @@ class EditIndexAppWidget(QtGui.QWidget):
         self.widget.YField.activated.connect(self.yFieldChanged)
         self.widget.YComponent.activated.connect(self.yComponentChanged)
 
-        # sometimes wierd sizes occur with spinboxes
+        # sometimes weird sizes occur with spinboxes
         self.widget.Index.setMaximumHeight(self.widget.YField.sizeHint().height())
 
     @QtCore.Slot(int)
@@ -266,7 +266,7 @@ class EditIndexAppWidget(QtGui.QWidget):
 
 class VPPostLineplotFieldData(view_base_fempostextractors.VPPostExtractor):
     """
-    A View Provider for extraction of 2D field data specialy for histograms
+    A View Provider for extraction of 2D field data specially for histograms
     """
 
     def __init__(self, vobj):
@@ -403,7 +403,7 @@ class VPPostLineplot(view_base_fempostvisualization.VPPostVisualization):
                 name="Grid",
                 group="Lineplot",
                 doc=QT_TRANSLATE_NOOP(
-                    "FEM", "If be the bars shoud show the cumulative sum left to rigth"
+                    "FEM", "If be the bars should show the cumulative sum left to right"
                 ),
                 value=True,
             ),
