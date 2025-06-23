@@ -792,7 +792,7 @@ void CmdTechDrawSectionGroup::languageChange()
 
     QAction* arc1 = a[0];
     arc1->setText(QApplication::translate("CmdTechDrawSectionGroup", "Section view"));
-    arc1->setToolTip(QApplication::translate("TechDraw_SectionView", "Insert simple section view"));
+    arc1->setToolTip(QApplication::translate("TechDraw_SectionView", "Inserts a simple section view"));
     arc1->setStatusTip(arc1->toolTip());
     QAction* arc2 = a[1];
     arc2->setText(QApplication::translate("CmdTechDrawSectionGroup", "Complex section"));
