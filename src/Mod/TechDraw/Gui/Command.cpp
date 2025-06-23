@@ -1660,7 +1660,7 @@ CmdTechDrawArchView::CmdTechDrawArchView() : Command("TechDraw_ArchView")
     // setting the Gui eye-candy
     sGroup = QT_TR_NOOP("TechDraw");
     sMenuText = QT_TR_NOOP("Insert BIM workbench object");
-    sToolTipText = QT_TR_NOOP("Insert a view of a BIM Workbench section plane");
+    sToolTipText = QT_TR_NOOP("Inserts a view of a BIM section plane");
     sWhatsThis = "TechDraw_NewArch";
     sStatusTip = sToolTipText;
     sPixmap = "actions/TechDraw_ArchView";
