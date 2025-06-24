@@ -49,7 +49,7 @@
      <item row="2" column="0">
       <widget class="QCheckBox" name="cbAutofill">
        <property name="toolTip">
-        <string>Check this box to reapply autofill to this field</string>
+        <string>Reapplies auto-fill to this field</string>
        </property>
        <property name="text">
         <string>Autofill</string>
