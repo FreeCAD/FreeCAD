@@ -296,7 +296,7 @@ CmdTechDrawStackUp::CmdTechDrawStackUp()
     sAppModule      = "TechDraw";
     sGroup          = QT_TR_NOOP("TechDraw");
     sMenuText       = QT_TR_NOOP("Move view up 1 level");
-    sToolTipText    = QT_TR_NOOP("Moves the selected view up 1 level in the stack stack");
+    sToolTipText    = QT_TR_NOOP("Moves the selected view up 1 level in the view stack");
     sWhatsThis      = "TechDraw_StackUp";
     sStatusTip      = sToolTipText;
     sPixmap         = "actions/TechDraw_StackUp";
