@@ -71,8 +71,8 @@ class LinearAxesPage(QtGui.QWizardPage):
                 deflection_edit.setProperty("value", FreeCAD.Units.Quantity("0 mm"))
                 deflection_edit.valueChanged.connect(self.check_completeness)
 
-                layout.addRow(f"{axis_name.capitalize()}-axis Force (N):", force_edit)
-                layout.addRow(f"{axis_name.capitalize()}-axis Deflection (mm):", deflection_edit)
+                layout.addRow(f"{axis_name.capitalize()}-axis Force:", force_edit)
+                layout.addRow(f"{axis_name.capitalize()}-axis Deflection:", deflection_edit)
                 self.inputs[axis_name] = (force_edit, deflection_edit)
 
         if not self.inputs:
@@ -162,18 +162,14 @@ class AngularAxesPage(QtGui.QWizardPage):
                 deflection_y_edit.setProperty("value", FreeCAD.Units.Quantity("0 deg"))
                 deflection_y_edit.valueChanged.connect(self.check_completeness)
 
+                layout.addRow(f"{axis_name.capitalize()}-axis Force in X direction:", force_x_edit)
                 layout.addRow(
-                    f"{axis_name.capitalize()}-axis Force in X direction (N):", force_x_edit
-                )
-                layout.addRow(
-                    f"{axis_name.capitalize()}-axis Angular Deflection for X force (deg):",
+                    f"{axis_name.capitalize()}-axis Angular Deflection for X force:",
                     deflection_x_edit,
                 )
+                layout.addRow(f"{axis_name.capitalize()}-axis Force in Y direction:", force_y_edit)
                 layout.addRow(
-                    f"{axis_name.capitalize()}-axis Force in Y direction (N):", force_y_edit
-                )
-                layout.addRow(
-                    f"{axis_name.capitalize()}-axis Angular Deflection for Y force (deg):",
+                    f"{axis_name.capitalize()}-axis Angular Deflection for Y force:",
                     deflection_y_edit,
                 )
                 self.inputs[axis_name] = (
