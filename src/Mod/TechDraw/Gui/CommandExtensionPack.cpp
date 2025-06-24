@@ -1318,7 +1318,7 @@ CmdTechDrawExtensionLinePerpendicular::CmdTechDrawExtensionLinePerpendicular()
 {
     sAppModule = "TechDraw";
     sGroup = QT_TR_NOOP("TechDraw");
-    sMenuText = QT_TR_NOOP("Add cosmetic perpendicular line");
+    sMenuText = QT_TR_NOOP("Cosmetic perpendicular line");
     sToolTipText =
         QT_TR_NOOP("Adds a cosmetic line perpendicular to another line through a vertex:<br>\
 - Select a line<br>\
