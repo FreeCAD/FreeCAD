@@ -169,7 +169,7 @@ CmdTechDrawExtensionHoleCircle::CmdTechDrawExtensionHoleCircle()
 {
     sAppModule = "TechDraw";
     sGroup = QT_TR_NOOP("TechDraw");
-    sMenuText = QT_TR_NOOP("Add bolt circle centerlines");
+    sMenuText = QT_TR_NOOP("Bolt circle centerlines");
     sToolTipText = QT_TR_NOOP("Adds centerlines to a circular pattern of selected circles:<br>\
 - Specify the line attributes (optional)<br>\
 - Select three or more circles forming a circular pattern<br>\
