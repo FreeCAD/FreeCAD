@@ -197,7 +197,7 @@ Fast, but result is a collection of short straight lines.</string>
            </font>
           </property>
           <property name="toolTip">
-           <string>Show smooth lines</string>
+           <string>Shows smooth lines</string>
           </property>
           <property name="text">
            <string>Show smooth lines</string>
