@@ -59,9 +59,9 @@ The FreeCAD Contribution Process is expressed here with the following specific g
 11. Each commit message in a PR MUST succinctly explain what the commit achieves. The commit message SHALL follow the suggestions in the `git commit --help` documentation, section DISCUSSION.
 12. The PR message MUST consist of a single short line, the PR Title, summarizing the problem being solved, followed by a blank line and then the proposed solution in the Body. If a PR consists of more than one commit, the PR Title MUST succinctly explain what the PR achieves. The Body MAY be as detailed as needed. If a PR changes the user interface (UI), the body of the text MUST include a presentation of these UI changes, preferably with screenshots of the previous and revised state.
 13. If PR contains work of another author, for example is cherry-picked from some fork by non-author:
-    1. the description MUST contain proper attribution as the first line, for example: "This is work of XYZ cherry-picked from <link>";
+    1. the PR description MUST contain proper attribution as the first line, for example: "This is work of XYZ cherry-picked from <link>";
     2. all commits MUST have proper authorship, i.e. be authored by the original author and commited by the author of the PR;
-    3. if changes to cherry-picked commits are necessary they should be done either as follow-up commits, or if not possible they should contain `Co-Authored-By` trailer.
+    3. if changes to cherry-picked commits are necessary they should be done either as follow-up commits, or if not possible their messages should contain `Co-Authored-By` trailer.
 14. A “Valid PR” is one which satisfies the above requirements.
 
 ## 6. Process
