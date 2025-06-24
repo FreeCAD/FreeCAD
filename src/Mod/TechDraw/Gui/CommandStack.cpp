@@ -62,7 +62,7 @@ CmdTechDrawStackGroup::CmdTechDrawStackGroup()
 {
     sAppModule      = "TechDraw";
     sGroup          = QT_TR_NOOP("TechDraw");
-    sMenuText       = QT_TR_NOOP("Adjust stacking order of views");
+    sMenuText       = QT_TR_NOOP("Change view stacking order");
     sToolTipText    = QT_TR_NOOP("Adjusts the stacking order of the selected views");
     sWhatsThis      = "TechDraw_StackGroup";
     sStatusTip      = sToolTipText;
