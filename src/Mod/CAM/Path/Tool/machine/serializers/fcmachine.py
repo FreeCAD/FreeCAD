@@ -60,7 +60,6 @@ class MachineSerializer(AssetSerializer):
         attrs = {
             "id": asset.get_id(),
             "label": asset.label,
-            "max_feed": asset.max_feed.UserString,
             "post_processor": asset.post_processor,
             "post_processor_args": asset.post_processor_args,
             "spindles": [spindle.get_id() for spindle in asset.spindles],
@@ -75,6 +74,7 @@ class MachineSerializer(AssetSerializer):
                     "start": axis.start.UserString if axis.start is not None else "",
                     "end": axis.end.UserString if axis.end is not None else "",
                     "rigidity": axis.rigidity.UserString + "/N",
+                    "max_feed": axis.max_feed.UserString,
                 }
             elif isinstance(axis, AngularAxis):
                 axis_data[name] = {
@@ -121,7 +121,6 @@ class MachineSerializer(AssetSerializer):
 
         machine_type = attrs.get("type", "Machine")
         label = attrs["label"]
-        max_feed = FreeCAD.Units.Quantity(attrs["max_feed"])
         post_processor = attrs.get("post_processor", "")
         post_processor_args = attrs.get("post_processor_args", "")
 
@@ -137,7 +136,8 @@ class MachineSerializer(AssetSerializer):
                 if rigidity_str.endswith("/N"):
                     rigidity_str = rigidity_str[:-2]
                 rigidity = FreeCAD.Units.Quantity(rigidity_str)
-                axes[name] = LinearAxis(start=start, end=end, rigidity=rigidity)
+                max_feed = FreeCAD.Units.Quantity(axis_attrs.get("max_feed", "0 mm/s"))
+                axes[name] = LinearAxis(start=start, end=end, rigidity=rigidity, max_feed=max_feed)
             elif axis_type == "angular":
                 rigidity_x_str = axis_attrs.get("rigidity-x", "0.001 °/N")
                 rigidity_y_str = axis_attrs.get("rigidity-y", "0.001 °/N")
@@ -147,7 +147,6 @@ class MachineSerializer(AssetSerializer):
                     rigidity_y_str = rigidity_y_str[:-2]
                 rigidity_x = FreeCAD.Units.Quantity(rigidity_x_str)
                 rigidity_y = FreeCAD.Units.Quantity(rigidity_y_str)
-                print(f"Creating AngularAxis with rigidity_x={rigidity_x}, rigidity_y={rigidity_y}")
                 axes[name] = AngularAxis(rigidity_x=rigidity_x, rigidity_y=rigidity_y)
             else:
                 raise AttributeError(f"Unknown axis type: {axis_type}")
@@ -157,7 +156,6 @@ class MachineSerializer(AssetSerializer):
             instance = Lathe(
                 label,
                 axes=axes,
-                max_feed=max_feed,
                 max_workpiece_diameter=max_workpiece_diameter,
                 post_processor=post_processor,
                 post_processor_args=post_processor_args,
@@ -167,7 +165,6 @@ class MachineSerializer(AssetSerializer):
             instance = Mill(
                 label,
                 axes=axes,
-                max_feed=max_feed,
                 post_processor=post_processor,
                 post_processor_args=post_processor_args,
                 id=id,

@@ -36,7 +36,6 @@ class Lathe(Machine):
         self,
         label: str,
         axes: Optional[Dict[str, Axis]] = None,
-        max_feed: FreeCAD.Units.Quantity = FreeCAD.Units.Quantity("2000 mm/min"),
         max_workpiece_diameter: FreeCAD.Units.Quantity = FreeCAD.Units.Quantity("200 mm"),
         post_processor: str = "generic",
         post_processor_args: str = "",
@@ -48,7 +47,6 @@ class Lathe(Machine):
         Args:
             label: Machine label.
             axes: E.g. {"x": Axis(), "z": Axis()}
-            max_feed: Maximum feed rate (e.g., '2000 mm/min').
             max_workpiece_diameter: Maximum diameter of the workpiece (e.g., swing over bed).
             post_processor: Name of the FreeCAD post processor.
             post_processor_args: Arguments for the post processor.
@@ -65,7 +63,6 @@ class Lathe(Machine):
         super().__init__(
             label=label,
             axes=axes,
-            max_feed=max_feed,
             post_processor=post_processor,
             post_processor_args=post_processor_args,
             id=id or str(uuid.uuid1()),
@@ -142,7 +139,6 @@ class Lathe(Machine):
         for name, axis in sorted(self.axes.items()):
             output += f"  {name}-Axis:\n"
             output += axis.dump(do_print=False, indent=2)
-        output += f"  Max Feed Rate: {self.max_feed.UserString}\n"
         output += f"  Max Workpiece Diameter: {self.max_workpiece_diameter.UserString}\n"
         output += f"  Post Processor: {self.post_processor or 'None'}\n"
         output += f"  Post Processor Args: {self.post_processor_args or 'None'}\n"

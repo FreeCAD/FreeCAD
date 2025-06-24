@@ -50,9 +50,6 @@ class MachinePropertiesDialog(QtGui.QDialog):
         general_layout.addRow(translate("CAM", "Label:"), self.label_edit)
 
         ui = FreeCADGui.UiLoader()
-        self.max_feed_edit = ui.createWidget("Gui::QuantitySpinBox")
-        self.max_feed_edit.setProperty("value", machine.max_feed)
-        general_layout.addRow(translate("CAM", "Max Feed Rate:"), self.max_feed_edit)
 
         self.post_processor_combo = QComboBox()
         available_post_processors = Path.Preferences.allAvailablePostProcessors()
@@ -81,18 +78,33 @@ class MachinePropertiesDialog(QtGui.QDialog):
 
         # Axis Properties group
         axis_properties_group = QtGui.QGroupBox(translate("CAM", "Axis Properties"))
-        axis_properties_layout = QtGui.QFormLayout()
+        axis_properties_layout = QtGui.QGridLayout()
         self.axis_edits = {}
 
+        # Add column headers for the grid
+        axis_properties_layout.addWidget(QtGui.QLabel(translate("CAM", "Min")), 0, 1)
+        axis_properties_layout.addWidget(QtGui.QLabel(translate("CAM", "Max")), 0, 2)
+        axis_properties_layout.addWidget(QtGui.QLabel(translate("CAM", "Rigidity")), 0, 3)
+        axis_properties_layout.addWidget(QtGui.QLabel(translate("CAM", "Max Feed")), 0, 4)
+
         # Linear Axes
-        for axis_name, axis in sorted(machine.axes.items()):
+        for i, (axis_name, axis) in enumerate(sorted(machine.axes.items())):
             if not isinstance(axis, LinearAxis):
                 continue
+            row = i + 1  # Start from row 1 after headers
+
+            axis_properties_layout.addWidget(
+                QtGui.QLabel(f"{axis_name.capitalize()}-Axis:"), row, 0
+            )
+
             start_edit = ui.createWidget("Gui::QuantitySpinBox")
             start_edit.setProperty("value", axis.start)
+            axis_properties_layout.addWidget(start_edit, row, 1)
+
             end_edit = ui.createWidget("Gui::QuantitySpinBox")
             end_edit.setProperty("unit", "mm")
             end_edit.setProperty("value", axis.end or FreeCAD.Units.Quantity("0 mm"))
+            axis_properties_layout.addWidget(end_edit, row, 2)
 
             # Use FreeCAD.Units.Quantity does not support distance/N, so
             # we use QDoubleSpinBox for rigidity to avoid unit issues
@@ -101,20 +113,32 @@ class MachinePropertiesDialog(QtGui.QDialog):
             rigidity_edit.setMinimum(0.0)
             rigidity_edit.setValue(axis.rigidity.Value)
             rigidity_edit.setSuffix(" mm/N")
+            axis_properties_layout.addWidget(rigidity_edit, row, 3)
 
-            axis_layout = QtGui.QHBoxLayout()
-            axis_layout.addWidget(start_edit)
-            axis_layout.addWidget(end_edit)
-            axis_layout.addWidget(rigidity_edit)
-            axis_properties_layout.addRow(
-                f"{axis_name.capitalize()}-Axis (min, max, rigidity):", axis_layout
+            max_feed_edit = ui.createWidget("Gui::QuantitySpinBox")
+            max_feed_edit.setProperty("value", axis.max_feed)
+            axis_properties_layout.addWidget(max_feed_edit, row, 4)
+
+            self.axis_edits[axis_name] = (
+                start_edit,
+                end_edit,
+                rigidity_edit,
+                max_feed_edit,
             )
-            self.axis_edits[axis_name] = start_edit, end_edit, rigidity_edit
 
         # Angular axis
-        for axis_name, axis in sorted(machine.axes.items()):
+        # Determine the starting row for angular axes based on the number of linear axes
+        angular_axis_start_row = (
+            len([a for a in machine.axes.values() if isinstance(a, LinearAxis)]) + 1
+        )
+        for i, (axis_name, axis) in enumerate(sorted(machine.axes.items())):
             if not isinstance(axis, AngularAxis):
                 continue
+            row = angular_axis_start_row + i
+
+            axis_properties_layout.addWidget(
+                QtGui.QLabel(f"{axis_name.capitalize()}-Axis:"), row, 0
+            )
 
             # Use FreeCAD.Units.Quantity does not support °/N, so
             # we use QDoubleSpinBox for rigidity to avoid unit issues
@@ -123,18 +147,15 @@ class MachinePropertiesDialog(QtGui.QDialog):
             rigidity_x_edit.setMinimum(0.0)
             rigidity_x_edit.setValue(axis.rigidity_x.Value)
             rigidity_x_edit.setSuffix("°/N")
+            axis_properties_layout.addWidget(rigidity_x_edit, row, 3)
+
             rigidity_y_edit = QtGui.QDoubleSpinBox()
             rigidity_y_edit.setDecimals(6)
             rigidity_y_edit.setMinimum(0.0)
             rigidity_y_edit.setValue(axis.rigidity_y.Value)
             rigidity_y_edit.setSuffix("°/N")
+            axis_properties_layout.addWidget(rigidity_y_edit, row, 4)
 
-            axis_layout = QtGui.QHBoxLayout()
-            axis_layout.addWidget(rigidity_x_edit)
-            axis_layout.addWidget(rigidity_y_edit)
-            axis_properties_layout.addRow(
-                f"{axis_name.capitalize()}-Axis (rigidity X/Y):", axis_layout
-            )
             self.axis_edits[axis_name] = rigidity_x_edit, rigidity_y_edit
 
         axis_properties_group.setLayout(axis_properties_layout)
@@ -142,7 +163,7 @@ class MachinePropertiesDialog(QtGui.QDialog):
         # Add Configure Rigidities button
         self.configure_rigidities_btn = QtGui.QPushButton(translate("CAM", "Rigidity wizard..."))
         self.configure_rigidities_btn.clicked.connect(self.launch_rigidity_wizard)
-        axis_properties_layout.addRow(self.configure_rigidities_btn)
+        axis_properties_layout.addWidget(self.configure_rigidities_btn, row + 1, 0, 1, 5)
 
         self.layout.addWidget(axis_properties_group)
 
@@ -276,17 +297,6 @@ class MachinePropertiesDialog(QtGui.QDialog):
             return
         self.machine.label = label
 
-        # Check max feed
-        max_feed = self.max_feed_edit.property("value")
-        if max_feed.Value <= 0:
-            QtGui.QMessageBox.warning(
-                self,
-                translate("CAM", "Warning"),
-                translate("CAM", "Max feed rate must be positive."),
-            )
-            return
-        self.machine.max_feed = max_feed
-
         self.machine.post_processor = self.post_processor_combo.currentText()
         self.machine.post_processor_args = self.post_processor_args.text()
 
@@ -294,11 +304,13 @@ class MachinePropertiesDialog(QtGui.QDialog):
         for axis_name, edits in self.axis_edits.items():
             axis = self.machine.axes[axis_name]
             if isinstance(axis, LinearAxis):
-                start_edit, end_edit, rigidity_edit = edits
+                start_edit, end_edit, rigidity_edit, max_feed_edit = edits
                 start_val = start_edit.property("value")
                 end_val = end_edit.property("value")
                 rigidity_val = rigidity_edit.value()
                 rigidity_quantity = FreeCAD.Units.Quantity(f"{rigidity_val} mm")
+                max_feed_val = max_feed_edit.property("value")
+
                 if start_val.Value < 0:
                     QtGui.QMessageBox.warning(
                         self,
@@ -320,9 +332,18 @@ class MachinePropertiesDialog(QtGui.QDialog):
                         translate("CAM", f"{axis_name}-axis rigidity cannot be negative."),
                     )
                     return
+                if max_feed_val.Value <= 0:
+                    QtGui.QMessageBox.warning(
+                        self,
+                        translate("CAM", "Warning"),
+                        translate("CAM", f"{axis_name}-axis max feed rate must be positive."),
+                    )
+                    return
+
                 axis.start = start_val
                 axis.end = end_val
                 axis.rigidity = rigidity_quantity
+                axis.max_feed = max_feed_val
             elif isinstance(axis, AngularAxis):
                 rigidity_x_edit, rigidity_y_edit = edits
                 rigidity_x_val = rigidity_x_edit.value()

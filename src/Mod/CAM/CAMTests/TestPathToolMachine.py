@@ -54,12 +54,10 @@ class TestPathToolMachine(unittest.TestCase):
         self.default_machine = Machine(
             label="Default Machine",
             axes={},
-            max_feed=FreeCAD.Units.Quantity("2000 mm/min"),
         )
 
     def test_initialization_defaults(self):
         self.assertEqual(self.default_machine.label, "Default Machine")
-        self.assertAlmostEqual(self.default_machine.max_feed.Value, 33.33, 2)
         self.assertEqual(self.default_machine.post_processor, "generic")
         self.assertEqual(self.default_machine.post_processor_args, "")
         self.assertEqual(len(self.default_machine.spindles), 0)
@@ -70,13 +68,11 @@ class TestPathToolMachine(unittest.TestCase):
         custom_machine = Machine(
             label="Custom Machine",
             axes={"x": LinearAxis()},
-            max_feed=FreeCAD.Units.Quantity(5000, "mm/min"),
             post_processor="linuxcnc",
             post_processor_args="--args",
             id="custom-id",
         )
         self.assertEqual(custom_machine.label, "Custom Machine")
-        self.assertAlmostEqual(custom_machine.max_feed.Value, 83.33, 2)
         self.assertEqual(custom_machine.post_processor, "linuxcnc")
         self.assertEqual(custom_machine.post_processor_args, "--args")
         self.assertEqual(custom_machine.get_id(), "custom-id")
@@ -92,11 +88,6 @@ class TestPathToolMachine(unittest.TestCase):
     def test_validation_missing_label(self):
         self.default_machine.label = ""
         with self.assertRaisesRegex(AttributeError, "Machine name is required"):
-            self.default_machine.validate()
-
-    def test_validation_non_positive_max_feed(self):
-        self.default_machine.max_feed = FreeCAD.Units.Quantity("0 mm/min")
-        with self.assertRaisesRegex(AttributeError, "Max feed rate must be positive"):
             self.default_machine.validate()
 
     def test_spindle_management(self):
@@ -124,7 +115,6 @@ class TestPathToolMachine(unittest.TestCase):
     def test_dump(self):
         output = self.default_machine.dump(False)
         self.assertIn("Machine Default Machine", output)
-        self.assertIn("Max Feed Rate: 33.33 mm/s", output)
 
 
 class TestMill(unittest.TestCase):
@@ -138,23 +128,25 @@ class TestMill(unittest.TestCase):
                     start=FreeCAD.Units.Quantity(1, "mm"),
                     end=FreeCAD.Units.Quantity(100, "mm"),
                     rigidity=FreeCAD.Units.Quantity(0.01, "mm"),
+                    max_feed=FreeCAD.Units.Quantity(1000, "mm/min"),
                 ),
                 "Y": LinearAxis(
                     start=FreeCAD.Units.Quantity(2, "mm"),
                     end=FreeCAD.Units.Quantity(200, "mm"),
                     rigidity=FreeCAD.Units.Quantity(0.02, "mm"),
+                    max_feed=FreeCAD.Units.Quantity(1200, "mm/min"),
                 ),
                 "Z": LinearAxis(
                     start=FreeCAD.Units.Quantity(3, "mm"),
                     end=FreeCAD.Units.Quantity(300, "mm"),
                     rigidity=FreeCAD.Units.Quantity("0.03 mm"),
+                    max_feed=FreeCAD.Units.Quantity(800, "mm/min"),
                 ),
                 "spindle": AngularAxis(
                     rigidity_x=FreeCAD.Units.Quantity("0.04 °"),
                     rigidity_y=FreeCAD.Units.Quantity("0.05 °"),
                 ),
             },
-            max_feed=FreeCAD.Units.Quantity(5000, "mm/min"),
         )
 
     def test_initialization(self):
@@ -162,7 +154,6 @@ class TestMill(unittest.TestCase):
 
         # Check inherited properties
         self.assertEqual(mill.label, "Default Mill")
-        self.assertAlmostEqual(mill.max_feed.Value, 83.33, 2)
         self.assertEqual(len(mill.spindles), 1)
         self.assertEqual(mill.spindles[0].label, "Spindle 1")
         self.assertEqual(len(mill.axes), 4)
@@ -171,10 +162,13 @@ class TestMill(unittest.TestCase):
         self.assertEqual(len(mill.spindles), 2)
         self.assertEqual(mill.spindles[1].label, "Mill Spindle 2")
 
-        # Check rigidity
+        # Check rigidity and feed rates
         self.assertEqual(mill.x_axis.rigidity.Value, 0.01)
+        self.assertAlmostEqual(mill.x_axis.max_feed.Value, 1000 / 60, 2)
         self.assertEqual(mill.y_axis.rigidity.Value, 0.02)
+        self.assertAlmostEqual(mill.y_axis.max_feed.Value, 1200 / 60, 2)
         self.assertEqual(mill.z_axis.rigidity.Value, 0.03)
+        self.assertAlmostEqual(mill.z_axis.max_feed.Value, 800 / 60, 2)
         self.assertEqual(mill.spindle_axis.rigidity_x.Value, 0.04, mill.spindle_axis.rigidity_x)
         self.assertEqual(mill.spindle_axis.rigidity_y.Value, 0.05)
 
@@ -223,7 +217,6 @@ class TestMill(unittest.TestCase):
     def test_dump(self):
         output = self.default_mill.dump(False)
         self.assertIn("Mill Default Mill", output)
-        self.assertIn("Max Feed Rate: 83.33 mm/s", output)
         self.assertIn("X-Axis:", output)
         self.assertIn("Start=1.00 mm", output)
         self.assertIn("End=100.00 mm", output)
@@ -242,18 +235,19 @@ class TestLathe(unittest.TestCase):
                     start=FreeCAD.Units.Quantity(1, "mm"),
                     end=FreeCAD.Units.Quantity(50, "mm"),
                     rigidity=FreeCAD.Units.Quantity(0.05, "mm"),
+                    max_feed=FreeCAD.Units.Quantity(1500, "mm/min"),
                 ),
                 "Z": LinearAxis(
                     start=FreeCAD.Units.Quantity(0, "mm"),
                     end=FreeCAD.Units.Quantity(400, "mm"),
                     rigidity=FreeCAD.Units.Quantity(0.06, "mm"),
+                    max_feed=FreeCAD.Units.Quantity(1800, "mm/min"),
                 ),
                 "spindle": AngularAxis(
                     rigidity_x=FreeCAD.Units.Quantity(0.07, "°"),
                     rigidity_y=FreeCAD.Units.Quantity(0.08, "°"),
                 ),
             },
-            max_feed=FreeCAD.Units.Quantity(3000, "mm/min"),
             max_workpiece_diameter=FreeCAD.Units.Quantity(100, "mm"),
         )
 
@@ -262,7 +256,6 @@ class TestLathe(unittest.TestCase):
 
         # Check inherited properties
         self.assertEqual(lathe.label, "Default Lathe")
-        self.assertEqual(lathe.max_feed.Value, 50)
         self.assertEqual(len(lathe.spindles), 1)
         self.assertEqual(lathe.spindles[0].label, "Lathe spindle")
         self.assertEqual(len(lathe.axes), 3)
@@ -272,9 +265,11 @@ class TestLathe(unittest.TestCase):
         self.assertEqual(len(lathe.spindles), 1)
         self.assertEqual(lathe.spindles[0].label, "Lathe Spindle 2")
 
-        # Check rigidity
+        # Check rigidity and feed rates
         self.assertEqual(lathe.x_axis.rigidity.Value, 0.05)
+        self.assertAlmostEqual(lathe.x_axis.max_feed.Value, 1500 / 60, 2)
         self.assertEqual(lathe.z_axis.rigidity.Value, 0.06)
+        self.assertAlmostEqual(lathe.z_axis.max_feed.Value, 1800 / 60, 2)
         self.assertEqual(lathe.spindle_axis.rigidity_x.Value, 0.07)
         self.assertEqual(lathe.spindle_axis.rigidity_y.Value, 0.08)
 
@@ -324,7 +319,6 @@ class TestLathe(unittest.TestCase):
     def test_dump(self):
         output = self.default_lathe.dump(False)
         self.assertIn("Lathe Default Lathe", output)
-        self.assertIn("Max Feed Rate: 50.00 mm/s", output)
         self.assertIn("X-Axis:", output)
         self.assertIn("Start=1.00 mm", output)
         self.assertIn("End=50.00 mm", output)

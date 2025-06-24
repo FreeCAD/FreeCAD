@@ -36,7 +36,6 @@ class Mill(Machine):
         self,
         label: str,
         axes: Optional[Dict[str, Axis]] = None,
-        max_feed: FreeCAD.Units.Quantity = FreeCAD.Units.Quantity("2000 mm/min"),
         post_processor: str = "generic",
         post_processor_args: str = "",
         id: Optional[str] = None,
@@ -47,7 +46,6 @@ class Mill(Machine):
         Args:
             label: Machine label.
             axes: E.g. {"x": Axis(), "y": Axis(), "z": Axis()}
-            max_feed: Maximum feed rate (e.g., '2000 mm/min').
             post_processor: Name of the FreeCAD post processor.
             post_processor_args: Arguments for the post processor.
             id: Unique identifier (optional).
@@ -63,7 +61,6 @@ class Mill(Machine):
         super().__init__(
             label=label,
             axes=axes,
-            max_feed=max_feed,
             post_processor=post_processor,
             post_processor_args=post_processor_args,
             id=id or str(uuid.uuid1()),
@@ -118,7 +115,6 @@ class Mill(Machine):
         for name, axis in sorted(self.axes.items()):
             output += f"  {name}-Axis:\n"
             output += axis.dump(do_print=False, indent=2)
-        output += f"  Max Feed Rate: {self.max_feed.UserString}\n"
         output += f"  Post Processor: {self._post_processor or 'None'}\n"
         output += f"  Post Processor Args: {self._post_processor_args or 'None'}\n"
         for spindle in self.spindles:
