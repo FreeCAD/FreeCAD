@@ -88,7 +88,7 @@
            </font>
           </property>
           <property name="toolTip">
-           <string>If checked, the section annotation will be drawn on the source view.  If unchecked, no section line, arrows or symbol will be shown in the source view.</string>
+           <string>Draws the section annotation on the source view.  Otherwise, no section line, arrows or symbol will be shown in the source view.</string>
           </property>
           <property name="text">
            <string>Show section line in source view</string>
