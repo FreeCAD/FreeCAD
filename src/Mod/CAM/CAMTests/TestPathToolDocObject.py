@@ -150,8 +150,6 @@ class TestPathToolDocObject(unittest.TestCase):
                 self.assertTrue(os.path.exists(temp_file_path))
                 with open(temp_file_path, "rb") as f:
                     self.assertEqual(f.read(), content)
-                # No assertions on the returned doc here, focus is on cleanup
-                pass  # Exit the context
 
             # Verify cleanup after exiting the context
             mock_close_doc.assert_called_once_with(mock_open_doc.return_value.Name)

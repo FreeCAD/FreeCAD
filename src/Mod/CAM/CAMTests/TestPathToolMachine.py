@@ -21,7 +21,7 @@
 # ***************************************************************************
 import unittest
 import FreeCAD
-from Path.Tool.machine.models.machine import Machine, Axis, LinearAxis, AngularAxis
+from Path.Tool.machine.models.machine import Machine, LinearAxis, AngularAxis
 from Path.Tool.machine.models.mill import Mill
 from Path.Tool.machine.models.lathe import Lathe
 from Path.Tool.spindle import Spindle
