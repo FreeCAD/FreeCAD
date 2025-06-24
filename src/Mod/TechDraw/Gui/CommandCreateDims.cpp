@@ -1689,7 +1689,7 @@ CmdTechDrawVerticalDimension::CmdTechDrawVerticalDimension()
 {
     sAppModule = "TechDraw";
     sGroup = QT_TR_NOOP("TechDraw");
-    sMenuText = QT_TR_NOOP("Vertical dimension");
+    sMenuText = QT_TR_NOOP("Vertical length dimension");
     sToolTipText = QT_TR_NOOP("Inserts a dimension showing the vertical length of an edge");
     sWhatsThis = "TechDraw_VerticalDimension";
     sStatusTip = sToolTipText;
