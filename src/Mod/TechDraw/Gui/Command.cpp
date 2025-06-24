@@ -297,7 +297,7 @@ CmdTechDrawView::CmdTechDrawView() : Command("TechDraw_View")
 {
     sAppModule = "TechDraw";
     sGroup = QT_TR_NOOP("TechDraw");
-    sMenuText = QT_TR_NOOP("Insert view");
+    sMenuText = QT_TR_NOOP("New view");
     sToolTipText = QT_TR_NOOP("Inserts a view in the current page.\n"
         "Selected objects, spreadsheets or BIM section planes will be added.\n"
         "Without a selection, a file browser lets you select a SVG or image file.");
