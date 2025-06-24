@@ -602,7 +602,7 @@ CmdTechDrawExtensionThreadsGroup::CmdTechDrawExtensionThreadsGroup()
     sAppModule = "TechDraw";
     sGroup = QT_TR_NOOP("TechDraw");
     sMenuText = QT_TR_NOOP("Cosmetic thread hole side view");
-    sToolTipText = QT_TR_NOOP("Add a cosmetic thread to the side view of a selected hole:<br>\
+    sToolTipText = QT_TR_NOOP("Add a cosmetic thread to the side view of a selected hole between two selected parallel lines")
 - Specify the line attributes (optional)<br>\
 - Select two parallel lines<br>\
 - Click this tool");
