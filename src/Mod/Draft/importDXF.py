@@ -4273,10 +4273,23 @@ class DxfImportReporter:
         # Counts
         lines.append("Entity counts:")
         total_read = 0
+        unsupported_keys = self.stats.get('unsupportedFeatures', {}).keys()
+        unsupported_entity_names = set()
+        for key in unsupported_keys:
+            # Extract the entity name from the key string, e.g., 'HATCH' from "Entity type 'HATCH'"
+            entity_name_match = re.search(r"\'(.*?)\'", key)
+            if entity_name_match:
+                unsupported_entity_names.add(entity_name_match.group(1))
+
+        has_unsupported_indicator = False
         entities = self.stats.get('entityCounts', {})
         if entities:
             for key, value in sorted(entities.items()):
-                lines.append(f"  - {key}: {value}")
+                indicator = ""
+                if key in unsupported_entity_names:
+                    indicator = " (*)"
+                    has_unsupported_indicator = True
+                lines.append(f"  - {key}: {value}{indicator}")
                 total_read += value
             lines.append("----------------------------")
             lines.append(f"  Total entities read: {total_read}")
@@ -4284,6 +4297,9 @@ class DxfImportReporter:
             lines.append("  (No entities recorded)")
         lines.append(f"FreeCAD objects created: {self.stats.get('totalEntitiesCreated', 0)}")
         lines.append("")
+        if has_unsupported_indicator:
+            lines.append("(*) Entity type not supported by importer.")
+            lines.append("")
 
         lines.append("Unsupported features:")
         unsupported = self.stats.get('unsupportedFeatures', {})
