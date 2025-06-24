@@ -148,6 +148,8 @@ SheetView::SheetView(Gui::Document* pcDocument, App::DocumentObject* docObj, QWi
     // Set document object to create auto completer
     ui->cellContent->setDocumentObject(sheet);
     ui->cellAlias->setDocumentObject(sheet);
+
+    ui->cellContent->setPrefix('=');
 }
 
 SheetView::~SheetView()

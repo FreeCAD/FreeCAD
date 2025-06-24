@@ -426,7 +426,50 @@ private:
             }
         }
     }
+
+    struct HintEntry
+    {
+        SelectMode state;
+        std::list<Gui::InputHint> hints;
+    };
+
+    using HintTable = std::vector<HintEntry>;
+
+    static HintTable getTranslateHintTable();
+    static std::list<Gui::InputHint> lookupTranslateHints(SelectMode state);
+
+public:
+    std::list<Gui::InputHint> getToolHints() const override
+    {
+        return lookupTranslateHints(state());
+    }
 };
+
+DrawSketchHandlerTranslate::HintTable DrawSketchHandlerTranslate::getTranslateHintTable()
+{
+    using enum Gui::InputHint::UserInput;
+
+    return {{.state = SelectMode::SeekFirst,
+             .hints = {{QObject::tr("%1 pick reference point", "Sketcher Translate: hint"),
+                        {MouseLeft}}}},
+            {.state = SelectMode::SeekSecond,
+             .hints = {{QObject::tr("%1 set translation vector", "Sketcher Translate: hint"),
+                        {MouseLeft}}}},
+            {.state = SelectMode::SeekThird,
+             .hints = {{QObject::tr("%1 set second translation vector", "Sketcher Translate: hint"),
+                        {MouseLeft}}}}};
+}
+
+std::list<Gui::InputHint> DrawSketchHandlerTranslate::lookupTranslateHints(SelectMode state)
+{
+    const auto translateHintTable = getTranslateHintTable();
+
+    auto it = std::ranges::find_if(translateHintTable, [state](const HintEntry& entry) {
+        return entry.state == state;
+    });
+
+    return (it != translateHintTable.end()) ? it->hints : std::list<Gui::InputHint> {};
+}
 
 template<>
 auto DSHTranslateControllerBase::getState(int labelindex) const
@@ -713,7 +756,7 @@ void DSHTranslateController::doChangeDrawSketchHandlerMode()
             auto& firstParam = onViewParameters[OnViewParameter::First];
             auto& secondParam = onViewParameters[OnViewParameter::Second];
 
-            if (firstParam->hasFinishedEditing || secondParam->hasFinishedEditing) {
+            if (firstParam->hasFinishedEditing && secondParam->hasFinishedEditing) {
                 handler->setState(SelectMode::SeekSecond);
             }
         } break;
@@ -721,7 +764,7 @@ void DSHTranslateController::doChangeDrawSketchHandlerMode()
             auto& thirdParam = onViewParameters[OnViewParameter::Third];
             auto& fourthParam = onViewParameters[OnViewParameter::Fourth];
 
-            if (thirdParam->hasFinishedEditing || fourthParam->hasFinishedEditing) {
+            if (thirdParam->hasFinishedEditing && fourthParam->hasFinishedEditing) {
                 if (handler->secondNumberOfCopies == 1) {
                     handler->setState(SelectMode::End);
                 }
@@ -734,7 +777,7 @@ void DSHTranslateController::doChangeDrawSketchHandlerMode()
             auto& fifthParam = onViewParameters[OnViewParameter::Fifth];
             auto& sixthParam = onViewParameters[OnViewParameter::Sixth];
 
-            if (fifthParam->hasFinishedEditing || sixthParam->hasFinishedEditing) {
+            if (fifthParam->hasFinishedEditing && sixthParam->hasFinishedEditing) {
                 handler->setState(SelectMode::End);
             }
         } break;

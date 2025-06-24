@@ -686,6 +686,141 @@ def makePostVtkResult(doc, result_data, name="VtkResult"):
     return obj
 
 
+def makePostLineplot(doc, name="Lineplot"):
+    """makePostLineplot(document, [name]):
+    creates a FEM post processing line plot
+    """
+    obj = doc.addObject("Fem::FeaturePython", name)
+    from femobjects import post_lineplot
+
+    post_lineplot.PostLineplot(obj)
+    if FreeCAD.GuiUp:
+        from femviewprovider import view_post_lineplot
+
+        view_post_lineplot.VPPostLineplot(obj.ViewObject)
+    return obj
+
+
+def makePostLineplotFieldData(doc, name="FieldData2D"):
+    """makePostLineplotFieldData(document, [name]):
+    creates a FEM post processing data extractor for 2D Field data
+    """
+    obj = doc.addObject("Fem::FeaturePython", name)
+    from femobjects import post_lineplot
+
+    post_lineplot.PostLineplotFieldData(obj)
+    if FreeCAD.GuiUp:
+        from femviewprovider import view_post_lineplot
+
+        view_post_lineplot.VPPostLineplotFieldData(obj.ViewObject)
+    return obj
+
+
+def makePostLineplotIndexOverFrames(doc, name="IndexOverFrames2D"):
+    """makePostLineplotIndexOverFrames(document, [name]):
+    creates a FEM post processing data extractor for 2D index data
+    """
+    obj = doc.addObject("Fem::FeaturePython", name)
+    from femobjects import post_lineplot
+
+    post_lineplot.PostLineplotIndexOverFrames(obj)
+    if FreeCAD.GuiUp:
+        from femviewprovider import view_post_lineplot
+
+        view_post_lineplot.VPPostLineplotIndexOverFrames(obj.ViewObject)
+    return obj
+
+
+def makePostHistogram(doc, name="Histogram"):
+    """makePostHistogram(document, [name]):
+    creates a FEM post processing histogram plot
+    """
+    obj = doc.addObject("Fem::FeaturePython", name)
+    from femobjects import post_histogram
+
+    post_histogram.PostHistogram(obj)
+    if FreeCAD.GuiUp:
+        from femviewprovider import view_post_histogram
+
+        view_post_histogram.VPPostHistogram(obj.ViewObject)
+    return obj
+
+
+def makePostHistogramFieldData(doc, name="FieldData1D"):
+    """makePostHistogramFieldData(document, [name]):
+    creates a FEM post processing data extractor for 1D Field data
+    """
+    obj = doc.addObject("Fem::FeaturePython", name)
+    from femobjects import post_histogram
+
+    post_histogram.PostHistogramFieldData(obj)
+    if FreeCAD.GuiUp:
+        from femviewprovider import view_post_histogram
+
+        view_post_histogram.VPPostHistogramFieldData(obj.ViewObject)
+    return obj
+
+
+def makePostHistogramIndexOverFrames(doc, name="IndexOverFrames1D"):
+    """makePostHistogramIndexOverFrames(document, [name]):
+    creates a FEM post processing data extractor for 1D Field data
+    """
+    obj = doc.addObject("Fem::FeaturePython", name)
+    from femobjects import post_histogram
+
+    post_histogram.PostHistogramIndexOverFrames(obj)
+    if FreeCAD.GuiUp:
+        from femviewprovider import view_post_histogram
+
+        view_post_histogram.VPPostHistogramIndexOverFrames(obj.ViewObject)
+    return obj
+
+
+def makePostTable(doc, name="Table"):
+    """makePostTable(document, [name]):
+    creates a FEM post processing histogram plot
+    """
+    obj = doc.addObject("Fem::FeaturePython", name)
+    from femobjects import post_table
+
+    post_table.PostTable(obj)
+    if FreeCAD.GuiUp:
+        from femviewprovider import view_post_table
+
+        view_post_table.VPPostTable(obj.ViewObject)
+    return obj
+
+
+def makePostTableFieldData(doc, name="FieldData1D"):
+    """makePostTableFieldData(document, [name]):
+    creates a FEM post processing data extractor for 1D Field data
+    """
+    obj = doc.addObject("Fem::FeaturePython", name)
+    from femobjects import post_table
+
+    post_table.PostTableFieldData(obj)
+    if FreeCAD.GuiUp:
+        from femviewprovider import view_post_table
+
+        view_post_table.VPPostTableFieldData(obj.ViewObject)
+    return obj
+
+
+def makePostTableIndexOverFrames(doc, name="IndexOverFrames1D"):
+    """makePostTableIndexOverFrames(document, [name]):
+    creates a FEM post processing data extractor for 1D Field data
+    """
+    obj = doc.addObject("Fem::FeaturePython", name)
+    from femobjects import post_table
+
+    post_table.PostTableIndexOverFrames(obj)
+    if FreeCAD.GuiUp:
+        from femviewprovider import view_post_table
+
+        view_post_table.VPPostTableIndexOverFrames(obj.ViewObject)
+    return obj
+
+
 # ********* solver objects ***********************************************************************
 def makeEquationDeformation(doc, base_solver=None, name="Deformation"):
     """makeEquationDeformation(document, [base_solver], [name]):
