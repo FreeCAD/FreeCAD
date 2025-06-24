@@ -1069,7 +1069,7 @@ CmdTechDrawExtensionDrawCosmCircle3Points::CmdTechDrawExtensionDrawCosmCircle3Po
     sAppModule = "TechDraw";
     sGroup = QT_TR_NOOP("TechDraw");
     sMenuText = QT_TR_NOOP("Add cosmetic circle 3 points");
-    sToolTipText = QT_TR_NOOP("Adds a cosmetic circle based on three vertices:<br>\
+    sToolTipText = QT_TR_NOOP("Adds a cosmetic circle to three selected vertices")
 - Specify the line attributes (optional)<br>\
 - Select 3 vertexes<br>\
 - Click this tool");
