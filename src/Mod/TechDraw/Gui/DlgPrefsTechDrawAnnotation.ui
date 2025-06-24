@@ -257,7 +257,7 @@
         <item row="5" column="0">
          <widget class="Gui::PrefCheckBox" name="pcbDetailMatting">
           <property name="toolTip">
-           <string>This checkbox controls whether or not to display the outline around a detail view.</string>
+           <string>Displays the outline around a detail view</string>
           </property>
           <property name="text">
            <string>Detail view show matting</string>
