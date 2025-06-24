@@ -757,7 +757,7 @@ CmdTechDrawExtensionPosObliqueChainDimension::CmdTechDrawExtensionPosObliqueChai
 {
     sAppModule      = "TechDraw";
     sGroup          = QT_TR_NOOP("TechDraw");
-    sMenuText       = QT_TR_NOOP("Position oblique chain dimensions");
+    sMenuText       = QT_TR_NOOP("Align oblique chain dimensions");
     sToolTipText    = QT_TR_NOOP("Aligns the oblique dimensions to create a chain dimension:<br>\
 - Select two or more parallel oblique dimensions<br>\
 - The first dimension defines the position<br>\
