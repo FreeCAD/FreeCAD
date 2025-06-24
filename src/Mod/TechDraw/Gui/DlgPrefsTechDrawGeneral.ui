@@ -723,7 +723,7 @@ for ProjectionGroups</string>
            </font>
           </property>
           <property name="toolTip">
-           <string>Set ShowGrid property to true on new Pages.</string>
+           <string>Set ShowGrid property to true on new Pages</string>
           </property>
           <property name="text">
            <string>Show grid</string>
