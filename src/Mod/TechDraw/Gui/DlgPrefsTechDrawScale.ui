@@ -223,7 +223,7 @@
            </font>
           </property>
           <property name="toolTip">
-           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If checked, SVG symbols, spreadsheet views and draft views will use the original (incorrect) scaling method as used in v1.0 and earlier.  If unchecked, a more accurate method will be used.  &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+           <string>Uses the original (incorrect) scaling method for SVG symbols, Spreadsheet views and Draft views as used in v1.0 and earlier. Otherwise, a more accurate method will be used.</string>
           </property>
           <property name="text">
            <string>Legacy symbol scaling</string>
