@@ -137,7 +137,7 @@ Fast, but result is a collection of short straight lines.</string>
            <enum>Qt::NoFocus</enum>
           </property>
           <property name="toolTip">
-           <string>Show hard and outline edges (always shown)</string>
+           <string>Shows hard and outline edges (always shown)</string>
           </property>
           <property name="text">
            <string>Show hard lines</string>
