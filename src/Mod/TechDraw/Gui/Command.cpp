@@ -695,7 +695,7 @@ CmdTechDrawActiveView::CmdTechDrawActiveView() : Command("TechDraw_ActiveView")
 {
     sAppModule = "TechDraw";
     sGroup = QT_TR_NOOP("TechDraw");
-    sMenuText = QT_TR_NOOP("Insert active view");
+    sMenuText = QT_TR_NOOP("Active view");
     sToolTipText = "Inserts an image of the open 3D view in the current page.\n"
                "If multiple 3D views are open, a selection dialog will be shown.";
     sWhatsThis = "TechDraw_ActiveView";
@@ -818,7 +818,7 @@ CmdTechDrawSectionView::CmdTechDrawSectionView() : Command("TechDraw_SectionView
 {
     sAppModule = "TechDraw";
     sGroup = QT_TR_NOOP("TechDraw");
-    sMenuText = QT_TR_NOOP("Insert section view");
+    sMenuText = QT_TR_NOOP("Section view");
     sToolTipText = QT_TR_NOOP("Inserts a new section view based on the selected view in the current page");
     sWhatsThis = "TechDraw_SectionView";
     sStatusTip = sToolTipText;
@@ -881,7 +881,7 @@ CmdTechDrawComplexSection::CmdTechDrawComplexSection() : Command("TechDraw_Compl
 {
     sAppModule = "TechDraw";
     sGroup = QT_TR_NOOP("TechDraw");
-    sMenuText = QT_TR_NOOP("Insert complex section view");
+    sMenuText = QT_TR_NOOP("Complex section view");
     sToolTipText = QT_TR_NOOP("Inserts a complex section view based on the selected view in the current page");
     sWhatsThis = "TechDraw_ComplexSection";
     sStatusTip = sToolTipText;
@@ -1007,7 +1007,7 @@ CmdTechDrawDetailView::CmdTechDrawDetailView() : Command("TechDraw_DetailView")
 {
     sAppModule = "TechDraw";
     sGroup = QT_TR_NOOP("TechDraw");
-    sMenuText = QT_TR_NOOP("Insert detail view");
+    sMenuText = QT_TR_NOOP("Detail view");
     sToolTipText = QT_TR_NOOP("Inserts a new detail view based on the selected view in the current page");
     sWhatsThis = "TechDraw_DetailView";
     sStatusTip = sToolTipText;
@@ -1051,7 +1051,7 @@ CmdTechDrawProjectionGroup::CmdTechDrawProjectionGroup() : Command("TechDraw_Pro
 {
     sAppModule = "TechDraw";
     sGroup = QT_TR_NOOP("TechDraw");
-    sMenuText = QT_TR_NOOP("Insert projection group");
+    sMenuText = QT_TR_NOOP("Projection group");
     sToolTipText = QT_TR_NOOP("Inserts multiple new linked views of the selected objects in the current page");
     sWhatsThis = "TechDraw_ProjectionGroup";
     sStatusTip = sToolTipText;
@@ -1596,8 +1596,10 @@ CmdTechDrawDraftView::CmdTechDrawDraftView() : Command("TechDraw_DraftView")
 {
     // setting the Gui eye-candy
     sGroup = QT_TR_NOOP("TechDraw");
-    sMenuText = QT_TR_NOOP("Insert draft workbench object");
-    sToolTipText = QT_TR_NOOP("Inserts a view of a draft object");
+    //: "Draft" is a workbench and should not be translated
+    sMenuText = QT_TR_NOOP("Insert Draft workbench object");
+    //: "Draft" is a workbench and should not be translated
+    sToolTipText = QT_TR_NOOP("Inserts a view of a Draft object");
     sWhatsThis = "TechDraw_NewDraft";
     sStatusTip = sToolTipText;
     sPixmap = "actions/TechDraw_DraftView";
