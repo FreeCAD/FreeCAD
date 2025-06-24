@@ -1499,7 +1499,7 @@ CmdTechDrawRadiusDimension::CmdTechDrawRadiusDimension()
     sAppModule = "TechDraw";
     sGroup = QT_TR_NOOP("TechDraw");
     sMenuText = QT_TR_NOOP("Radius dimension");
-    sToolTipText = QT_TR_NOOP("Inserts a dimension showing the radius of a circular edge or arc");
+    sToolTipText = QT_TR_NOOP("Inserts a radius dimension of a circular edge or arc");
     sWhatsThis = "TechDraw_RadiusDimension";
     sStatusTip = sToolTipText;
     sPixmap = "TechDraw_RadiusDimension";
