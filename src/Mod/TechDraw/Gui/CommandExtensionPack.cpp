@@ -744,7 +744,7 @@ CmdTechDrawExtensionSelectLineAttributes::CmdTechDrawExtensionSelectLineAttribut
     sGroup = QT_TR_NOOP("TechDraw");
     sMenuText = QT_TR_NOOP("Select line attributes, cascade spacing and delta distance");
     sToolTipText = QT_TR_NOOP(
-        "Configures the default attributes for cosmetic lines and centerlines, including cascade spacing and delta distance:<br>\
+        "Configures the default attributes for cosmetic lines and centerlines, including cascade spacing and delta distance")
 - Click this tool<br>\
 - Specify the attributes, spacing and distance in the dialog box<br>\
 - Press OK");
