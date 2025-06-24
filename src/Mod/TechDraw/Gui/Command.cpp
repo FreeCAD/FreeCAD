@@ -726,7 +726,7 @@ CmdTechDrawSectionGroup::CmdTechDrawSectionGroup() : Command("TechDraw_SectionGr
 {
     sAppModule = "TechDraw";
     sGroup = QT_TR_NOOP("TechDraw");
-    sMenuText = QT_TR_NOOP("Insert section (simple or complex)");
+    sMenuText = QT_TR_NOOP("Section view (simple or complex)");
     sToolTipText = QT_TR_NOOP("Inserts a simple or complex section view in the current page");
     sWhatsThis = "TechDraw_SectionGroup";
     sStatusTip = sToolTipText;
