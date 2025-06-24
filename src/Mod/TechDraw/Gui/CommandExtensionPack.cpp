@@ -1898,7 +1898,7 @@ CmdTechDrawExtensionArcLengthAnnotation::CmdTechDrawExtensionArcLengthAnnotation
     sAppModule = "TechDraw";
     sGroup = QT_TR_NOOP("TechDraw");
     sMenuText = QT_TR_NOOP("Calculate the arc length of selected edges");
-    sToolTipText = QT_TR_NOOP("Calculates the arc length of the selected edge(s)");
+    sToolTipText = QT_TR_NOOP("Calculates the arc length of the selected edges");
     sWhatsThis = "TechDraw_ExtensionArcLengthAnnotation";
     sStatusTip = sToolTipText;
     sPixmap = "TechDraw_ExtensionArcLengthAnnotation";
