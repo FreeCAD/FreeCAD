@@ -1103,7 +1103,7 @@ CmdTechDrawExtensionDrawCirclesGroup::CmdTechDrawExtensionDrawCirclesGroup()
 {
     sAppModule = "TechDraw";
     sGroup = QT_TR_NOOP("TechDraw");
-    sMenuText = QT_TR_NOOP("Add cosmetic circle");
+    sMenuText = QT_TR_NOOP("Cosmetic circle");
     sToolTipText = QT_TR_NOOP("Adds a cosmetic circle based on two vertices:<br>\
 - Specify the line attributes (optional)<br>\
 - Select vertex 1 (center point)<br>\
