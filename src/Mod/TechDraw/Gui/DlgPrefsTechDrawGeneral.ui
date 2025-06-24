@@ -868,7 +868,7 @@ for ProjectionGroups</string>
            </font>
           </property>
           <property name="toolTip">
-           <string>If checked, view labels will be displayed even when frames are suppressed</string>
+           <string>Displays view labels even when frames are suppressed</string>
           </property>
           <property name="text">
            <string>Always Show Label</string>
