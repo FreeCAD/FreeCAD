@@ -1285,7 +1285,7 @@ CmdTechDrawExtensionLineParallel::CmdTechDrawExtensionLineParallel()
     sAppModule = "TechDraw";
     sGroup = QT_TR_NOOP("TechDraw");
     sMenuText = QT_TR_NOOP("Add cosmetic parallel line");
-    sToolTipText = QT_TR_NOOP("Adds a cosmetic line parallel to another line through a vertex:<br>\
+    sToolTipText = QT_TR_NOOP("Adds a cosmetic line parallel to the selected line through the selected vertex")
 - Select a line<br>\
 - Select a vertex<br>\
 - Click this tool");
