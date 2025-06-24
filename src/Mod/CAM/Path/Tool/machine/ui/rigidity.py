@@ -31,7 +31,7 @@ class LinearAxesPage(QtGui.QWizardPage):
         super().__init__()
         self.machine = machine
         self.setTitle(translate("CAM", "Linear Axes Measurements"))
-        self.setSubTitle(translate("CAM", "Enter measurements for linear axes or skip."))
+        self.setSubTitle(translate("CAM", "Enter measurements for linear axes."))
         layout = QtGui.QFormLayout()
 
         steps = translate(
@@ -111,7 +111,7 @@ class AngularAxesPage(QtGui.QWizardPage):
         super().__init__()
         self.machine = machine
         self.setTitle(translate("CAM", "Angular Axes Measurements"))
-        self.setSubTitle(translate("CAM", "Enter measurements for angular axes or skip."))
+        self.setSubTitle(translate("CAM", "Enter measurements for angular axes."))
 
         layout = QtGui.QFormLayout()
         instructions = QtGui.QLabel(
@@ -222,7 +222,7 @@ class SummaryPage(QtGui.QWizardPage):
         super().__init__()
         self.setTitle(translate("CAM", "Summary"))
         self.setSubTitle(translate("CAM", "Review calculated rigidities."))
-        self.setButtonText(QtGui.QWizard.FinishButton, translate("CAM", "Finish"))
+        self.setButtonText(QtGui.QWizard.FinishButton, translate("CAM", "Apply and Close"))
 
         layout = QtGui.QVBoxLayout()
         self.summary_label = QtGui.QLabel()
