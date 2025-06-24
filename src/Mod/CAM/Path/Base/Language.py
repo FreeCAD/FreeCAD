@@ -37,7 +37,7 @@ class Instruction(object):
 
     def __init__(self, begin, cmd, param=None):
         self.begin = begin
-        if type(cmd) == Path.Command:
+        if isinstance(cmd, Path.Command):
             self.cmd = Path.Name
             self.param = Path.Parameters
         else:
@@ -72,8 +72,15 @@ class Instruction(object):
         return False
 
     def isPlunge(self):
-        """isPlunge() ... return true if this moves up or down"""
-        return self.isMove() and not Path.Geom.isRoughly(self.begin.z, self.z(self.begin.z))
+        """isPlunge() ... return true if this moves is vertical"""
+        if self.isMove():
+            if (
+                Path.Geom.isRoughly(self.begin.x, self.x(self.begin.x))
+                and Path.Geom.isRoughly(self.begin.y, self.y(self.begin.y))
+                and not Path.Geom.isRoughly(self.begin.z, self.z(self.begin.z))
+            ):
+                return True
+        return False
 
     def leadsInto(self, instr):
         """leadsInto(instr) ... return true if instr is a continuation of self"""
@@ -130,6 +137,12 @@ class MoveStraight(Instruction):
     def isMove(self):
         return True
 
+    def isStraight(self):
+        return True
+
+    def isArc(self):
+        return False
+
     def isRapid(self):
         return self.cmd in Path.Geom.CmdMoveRapid
 
@@ -158,6 +171,9 @@ class MoveArc(Instruction):
 
     def isArc(self):
         return True
+
+    def isStraight(self):
+        return False
 
     def isCW(self):
         return self.arcDirection() < 0
