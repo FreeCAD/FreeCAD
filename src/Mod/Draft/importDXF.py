@@ -2838,7 +2838,7 @@ def open(filename):
 
         total_end_time = time.perf_counter()
         if stats:
-            reporter = DxfImportReporter(stats, total_end_time - total_start_time)
+            reporter = DxfImportReporter(filename, stats, total_end_time - total_start_time)
             reporter.report_to_console()
 
         Draft.convert_draft_texts() # convert annotations to Draft texts
@@ -2888,7 +2888,7 @@ def insert(filename, docname):
 
         total_end_time = time.perf_counter()
         if stats:
-            reporter = DxfImportReporter(stats, total_end_time - total_start_time)
+            reporter = DxfImportReporter(filename, stats, total_end_time - total_start_time)
             reporter.report_to_console()
 
         Draft.convert_draft_texts() # convert annotations to Draft texts
@@ -4219,7 +4219,8 @@ def readPreferences():
 
 class DxfImportReporter:
     """Formats and reports statistics from a DXF import process."""
-    def __init__(self, stats_dict, total_time=0.0):
+    def __init__(self, filename, stats_dict, total_time=0.0):
+        self.filename = filename
         self.stats = stats_dict
         self.total_time = total_time
 
@@ -4231,6 +4232,7 @@ class DxfImportReporter:
             return "DXF Import: no statistics were returned from the importer.\n"
 
         lines = ["\n--- DXF import summary ---"]
+        lines.append(f"Import of file: '{self.filename}'\n")
 
         # General info
         lines.append(f"DXF version: {self.stats.get('dxfVersion', 'Unknown')}")
@@ -4283,7 +4285,7 @@ class DxfImportReporter:
         lines.append(f"FreeCAD objects created: {self.stats.get('totalEntitiesCreated', 0)}")
         lines.append("")
 
-        lines.append("Import issues and unsupported features:")
+        lines.append("Unsupported features:")
         unsupported = self.stats.get('unsupportedFeatures', {})
         if unsupported:
             for key, occurrences in sorted(unsupported.items()):
