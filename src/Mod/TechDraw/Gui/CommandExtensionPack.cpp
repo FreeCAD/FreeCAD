@@ -1462,7 +1462,7 @@ CmdTechDrawExtensionLockUnlockView::CmdTechDrawExtensionLockUnlockView()
     sAppModule = "TechDraw";
     sGroup = QT_TR_NOOP("TechDraw");
     sMenuText = QT_TR_NOOP("Toggle view lock");
-    sToolTipText = QT_TR_NOOP("Locks or unlocks the position of a view:<br>\
+    sToolTipText = QT_TR_NOOP("Locks or unlocks the position of the selected views")
 - Select view(s)<br>\
 - Click this tool");
     sWhatsThis = "TechDraw_ExtensionLockUnlockView";
