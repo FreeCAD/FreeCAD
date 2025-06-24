@@ -422,7 +422,7 @@
         <item row="10" column="0">
          <widget class="Gui::PrefCheckBox" name="pcbLightOnDark">
           <property name="toolTip">
-           <string>Check this to use light text and lines on dark backgrounds. Set page color to a dark color. Transparent or light color faces are recommended with this option.</string>
+           <string>Uses light text and lines on dark backgrounds and sets page color to a dark color. Transparent or light color faces are recommended with this option.</string>
           </property>
           <property name="text">
            <string>Light on dark</string>
