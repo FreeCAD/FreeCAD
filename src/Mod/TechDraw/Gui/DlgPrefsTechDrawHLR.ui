@@ -284,7 +284,7 @@ Fast, but result is a collection of short straight lines.</string>
            </font>
           </property>
           <property name="toolTip">
-           <string>Show hidden seam lines</string>
+           <string>Shows hidden seam lines</string>
           </property>
           <property name="text">
            <string>Show seam lines</string>
