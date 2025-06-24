@@ -1738,7 +1738,7 @@ CmdTechDrawAngleDimension::CmdTechDrawAngleDimension()
     sAppModule = "TechDraw";
     sGroup = QT_TR_NOOP("TechDraw");
     sMenuText = QT_TR_NOOP("Angle dimension");
-    sToolTipText = QT_TR_NOOP("Inserts a dimension showing the angle between two edges");
+    sToolTipText = QT_TR_NOOP("Inserts an angle dimension between two edges");
     sWhatsThis = "TechDraw_AngleDimension";
     sStatusTip = sToolTipText;
     sPixmap = "TechDraw_AngleDimension";
