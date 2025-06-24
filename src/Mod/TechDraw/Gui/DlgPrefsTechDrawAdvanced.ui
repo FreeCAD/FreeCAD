@@ -332,7 +332,7 @@ when hatching a face with a PAT pattern</string>
            </font>
           </property>
           <property name="toolTip">
-           <string>Perform a fuse operation on input shape(s) before section view processing</string>
+           <string>Perform a fuse operation on input shapes before section view processing</string>
           </property>
           <property name="text">
            <string>Fuse Before Section</string>
