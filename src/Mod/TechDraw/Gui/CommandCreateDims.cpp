@@ -1547,7 +1547,7 @@ CmdTechDrawDiameterDimension::CmdTechDrawDiameterDimension()
     sAppModule = "TechDraw";
     sGroup = QT_TR_NOOP("TechDraw");
     sMenuText = QT_TR_NOOP("Diameter dimension");
-    sToolTipText = QT_TR_NOOP("Inserts a dimension showing the diameter of a circular edge or arc");
+    sToolTipText = QT_TR_NOOP("Inserts a diameter dimension of a circular edge or arc");
     sWhatsThis = "TechDraw_DiameterDimension";
     sStatusTip = sToolTipText;
     sPixmap = "TechDraw_DiameterDimension";
