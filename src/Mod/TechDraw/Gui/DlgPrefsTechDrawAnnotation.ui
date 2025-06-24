@@ -479,7 +479,7 @@
         <item row="13" column="0">
          <widget class="Gui::PrefCheckBox" name="cbISODates">
           <property name="toolTip">
-           <string>If this box is checked, templates will auto fill date fields using ccyy-mm-dd format even if that is not the standard format for the current locale.</string>
+           <string>Fills out template date fields using ccyy-mm-dd format automatically, even if that is not the standard format for the current locale.</string>
           </property>
           <property name="text">
            <string>Enforce ISO 8601 date format</string>
