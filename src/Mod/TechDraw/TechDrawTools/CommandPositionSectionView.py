@@ -50,7 +50,7 @@ class CommandPositionSectionView:
                 'Accel': "",
                 'MenuText': QT_TRANSLATE_NOOP("TechDraw_PositionSectionView", "Position section view"),
                 'ToolTip': QT_TRANSLATE_NOOP("TechDraw_PositionSectionView",
-                  "Orthogonally align a section view with its source view:<br>\
+                  "Aligns the selected section view with its source view orthogonally or the selected edge in the section view to the selected vertex in the base view")}
                 - Select a single section view<br>\
                 - Click this tool<br>\
                 - optional: select one edge in the section view and its corresponding vertex in the base view<br>\
