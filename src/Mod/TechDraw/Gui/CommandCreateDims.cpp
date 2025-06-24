@@ -1641,7 +1641,7 @@ CmdTechDrawHorizontalDimension::CmdTechDrawHorizontalDimension()
 {
     sAppModule = "TechDraw";
     sGroup = QT_TR_NOOP("TechDraw");
-    sMenuText = QT_TR_NOOP("Horizontal dimension");
+    sMenuText = QT_TR_NOOP("Horizontal length dimension");
     sToolTipText = QT_TR_NOOP("Inserts a dimension showing the horizontal length of an edge");
     sWhatsThis = "TechDraw_HorizontalDimension";
     sStatusTip = sToolTipText;
