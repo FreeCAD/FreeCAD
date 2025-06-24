@@ -546,7 +546,7 @@ CmdTechDrawBrokenView::CmdTechDrawBrokenView()
 {
     sAppModule      = "TechDraw";
     sGroup          = QT_TR_NOOP("TechDraw");
-    sMenuText       = QT_TR_NOOP("Insert broken view");
+    sMenuText       = QT_TR_NOOP("Broken view");
     sToolTipText    = QT_TR_NOOP("Inserts a new broken view for the selected objects or base view and break definition objects");
     sWhatsThis      = "TechDraw_BrokenView";
     sStatusTip      = sToolTipText;
