@@ -459,7 +459,7 @@ CmdTechDrawExtensionThreadBoltSide::CmdTechDrawExtensionThreadBoltSide()
     sAppModule = "TechDraw";
     sGroup = QT_TR_NOOP("TechDraw");
     sMenuText = QT_TR_NOOP("Add cosmetic thread bolt side view");
-    sToolTipText = QT_TR_NOOP("Adds a cosmetic thread to the side view of a bolt/screw/rod:<br>\
+    sToolTipText = QT_TR_NOOP("Adds a cosmetic thread to the side view of a bolt/screw/rod between two selected parallel lines")
 - Specify the line attributes (optional)<br>\
 - Select two parallel lines<br>\
 - Click this tool");
