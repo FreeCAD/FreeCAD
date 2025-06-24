@@ -513,7 +513,7 @@ CmdTechDrawExtensionThreadHoleBottom::CmdTechDrawExtensionThreadHoleBottom()
     sAppModule = "TechDraw";
     sGroup = QT_TR_NOOP("TechDraw");
     sMenuText = QT_TR_NOOP("Add cosmetic thread hole bottom view");
-    sToolTipText = QT_TR_NOOP("Adds a cosmetic thread to the top or bottom view of selected holes:<br>\
+    sToolTipText = QT_TR_NOOP("Adds a cosmetic thread to the top or bottom view of selected holes or circles")
 - Specify the line attributes (optional)<br>\
 - Select one or more circles<br>\
 - Click this tool");
