@@ -778,7 +778,7 @@ CmdTechDrawExtensionChangeLineAttributes::CmdTechDrawExtensionChangeLineAttribut
     sAppModule = "TechDraw";
     sGroup = QT_TR_NOOP("TechDraw");
     sMenuText = QT_TR_NOOP("Change line attributes");
-    sToolTipText = QT_TR_NOOP("Changes the attributes of the selected cosmetic lines and centerlines:<br>\
+    sToolTipText = QT_TR_NOOP("Changes the selected cosmetic lines and centerlines to the specified attributes")
 - Specify the line attributes (optional)<br>\
 - Select one or more lines<br>\
 - Click this tool");
