@@ -122,7 +122,7 @@ CmdTechDrawAlignVertexesVertically::CmdTechDrawAlignVertexesVertically()
 {
     sAppModule      = "TechDraw";
     sGroup          = QT_TR_NOOP("TechDraw");
-    sMenuText       = QT_TR_NOOP("Align vertices/edge vertically by view rotation");
+    sMenuText       = QT_TR_NOOP("Align vertices/edge vertically");
     sToolTipText    = QT_TR_NOOP("Aligns the selected vertices or edges vertically to the view rotation");
     sWhatsThis      = "TechDraw_AlignGroup";
     sStatusTip      = sToolTipText;
