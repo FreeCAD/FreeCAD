@@ -155,7 +155,7 @@ CmdTechDrawAlignVertexesHorizontally::CmdTechDrawAlignVertexesHorizontally()
 {
     sAppModule      = "TechDraw";
     sGroup          = QT_TR_NOOP("TechDraw");
-    sMenuText       = QT_TR_NOOP("Align vertices/edge horizontally by view rotation");
+    sMenuText       = QT_TR_NOOP("Align vertices/edge horizontally");
     sToolTipText    = QT_TR_NOOP("Aligns the selected vertices or edges horizontally to the view rotation");
     sWhatsThis      = "TechDraw_AlignGroup";
     sStatusTip      = sToolTipText;
