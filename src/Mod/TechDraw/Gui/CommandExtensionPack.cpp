@@ -1594,7 +1594,7 @@ CmdTechDrawExtensionExtendLine::CmdTechDrawExtensionExtendLine()
     sAppModule = "TechDraw";
     sGroup = QT_TR_NOOP("TechDraw");
     sMenuText = QT_TR_NOOP("Extend line");
-    sToolTipText = QT_TR_NOOP("Extends a selected cosmetic line or centerline at both ends:<br>\
+    sToolTipText = QT_TR_NOOP("Extends a selected cosmetic line or centerline at both ends by the specified delta distance")
 - Specify the delta distance (optional)<br>\
 - Select a single line<br>\
 - Click this tool");
