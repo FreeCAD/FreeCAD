@@ -107,8 +107,8 @@ CmdTechDrawPageDefault::CmdTechDrawPageDefault() : Command("TechDraw_PageDefault
 {
     sAppModule = "TechDraw";
     sGroup = QT_TR_NOOP("TechDraw");
-    sMenuText = QT_TR_NOOP("Insert default page");
-    sToolTipText = QT_TR_NOOP("Inserts a new page with the default template");
+    sMenuText = QT_TR_NOOP("New default page");
+    sToolTipText = QT_TR_NOOP("Creates a new page with the default template");
     sWhatsThis = "TechDraw_PageDefault";
     sStatusTip = sToolTipText;
     sPixmap = "actions/TechDraw_PageDefault";
@@ -167,8 +167,8 @@ CmdTechDrawPageTemplate::CmdTechDrawPageTemplate() : Command("TechDraw_PageTempl
 {
     sAppModule = "TechDraw";
     sGroup = QT_TR_NOOP("TechDraw");
-    sMenuText = QT_TR_NOOP("Insert page using template");
-    sToolTipText = QT_TR_NOOP("Inserts a new page with using a custom template");
+    sMenuText = QT_TR_NOOP("New page from template");
+    sToolTipText = QT_TR_NOOP("Creates a new page with using a custom template");
     sWhatsThis = "TechDraw_PageTemplate";
     sStatusTip = sToolTipText;
     sPixmap = "actions/TechDraw_PageTemplate";
