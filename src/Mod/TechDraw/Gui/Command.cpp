@@ -1273,7 +1273,7 @@ CmdTechDrawBalloon::CmdTechDrawBalloon() : Command("TechDraw_Balloon")
 {
     sAppModule = "TechDraw";
     sGroup = QT_TR_NOOP("TechDraw");
-    sMenuText = QT_TR_NOOP("Insert balloon annotation");
+    sMenuText = QT_TR_NOOP("Balloon annotation");
     sToolTipText = QT_TR_NOOP("Inserts a new balloon annotation in the selected view");
     sWhatsThis = "TechDraw_Balloon";
     sStatusTip = sToolTipText;

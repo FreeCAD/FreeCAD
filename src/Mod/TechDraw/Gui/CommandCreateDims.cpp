@@ -1498,7 +1498,7 @@ CmdTechDrawRadiusDimension::CmdTechDrawRadiusDimension()
 {
     sAppModule = "TechDraw";
     sGroup = QT_TR_NOOP("TechDraw");
-    sMenuText = QT_TR_NOOP("Insert radius dimension");
+    sMenuText = QT_TR_NOOP("Radius dimension");
     sToolTipText = QT_TR_NOOP("Inserts a dimension showing the radius of a circular edge or arc");
     sWhatsThis = "TechDraw_RadiusDimension";
     sStatusTip = sToolTipText;
@@ -1546,7 +1546,7 @@ CmdTechDrawDiameterDimension::CmdTechDrawDiameterDimension()
 {
     sAppModule = "TechDraw";
     sGroup = QT_TR_NOOP("TechDraw");
-    sMenuText = QT_TR_NOOP("Insert diameter dimension");
+    sMenuText = QT_TR_NOOP("Diameter dimension");
     sToolTipText = QT_TR_NOOP("Inserts a dimension showing the diameter of a circular edge or arc");
     sWhatsThis = "TechDraw_DiameterDimension";
     sStatusTip = sToolTipText;
@@ -1594,7 +1594,7 @@ CmdTechDrawLengthDimension::CmdTechDrawLengthDimension()
 {
     sAppModule = "TechDraw";
     sGroup = QT_TR_NOOP("TechDraw");
-    sMenuText = QT_TR_NOOP("Insert length dimension");
+    sMenuText = QT_TR_NOOP("Length dimension");
     sToolTipText = QT_TR_NOOP("Inserts a dimension showing the length of an edge");
     sWhatsThis = "TechDraw_LengthDimension";
     sStatusTip = sToolTipText;
@@ -1641,7 +1641,7 @@ CmdTechDrawHorizontalDimension::CmdTechDrawHorizontalDimension()
 {
     sAppModule = "TechDraw";
     sGroup = QT_TR_NOOP("TechDraw");
-    sMenuText = QT_TR_NOOP("Insert horizontal dimension");
+    sMenuText = QT_TR_NOOP("Horizontal dimension");
     sToolTipText = QT_TR_NOOP("Inserts a dimension showing the horizontal length of an edge");
     sWhatsThis = "TechDraw_HorizontalDimension";
     sStatusTip = sToolTipText;
@@ -1689,7 +1689,7 @@ CmdTechDrawVerticalDimension::CmdTechDrawVerticalDimension()
 {
     sAppModule = "TechDraw";
     sGroup = QT_TR_NOOP("TechDraw");
-    sMenuText = QT_TR_NOOP("Insert vertical dimension");
+    sMenuText = QT_TR_NOOP("Vertical dimension");
     sToolTipText = QT_TR_NOOP("Inserts a dimension showing the vertical length of an edge");
     sWhatsThis = "TechDraw_VerticalDimension";
     sStatusTip = sToolTipText;
@@ -1737,7 +1737,7 @@ CmdTechDrawAngleDimension::CmdTechDrawAngleDimension()
 {
     sAppModule = "TechDraw";
     sGroup = QT_TR_NOOP("TechDraw");
-    sMenuText = QT_TR_NOOP("Insert angle dimension");
+    sMenuText = QT_TR_NOOP("Angle dimension");
     sToolTipText = QT_TR_NOOP("Inserts a dimension showing the angle between two edges");
     sWhatsThis = "TechDraw_AngleDimension";
     sStatusTip = sToolTipText;
@@ -1784,7 +1784,7 @@ CmdTechDraw3PtAngleDimension::CmdTechDraw3PtAngleDimension()
 {
     sAppModule = "TechDraw";
     sGroup = QT_TR_NOOP("TechDraw");
-    sMenuText = QT_TR_NOOP("Insert 3-point angle dimension");
+    sMenuText = QT_TR_NOOP("3-point angle dimension");
     sToolTipText = QT_TR_NOOP("Inserts an angle dimension using 3 selected points");
     sWhatsThis = "TechDraw_3PtAngleDimension";
     sStatusTip = sToolTipText;
@@ -1831,7 +1831,7 @@ CmdTechDrawAreaDimension::CmdTechDrawAreaDimension()
 {
     sAppModule = "TechDraw";
     sGroup = QT_TR_NOOP("TechDraw");
-    sMenuText = QT_TR_NOOP("Insert area annotation");
+    sMenuText = QT_TR_NOOP("Area annotation");
     sToolTipText = QT_TR_NOOP("Inserts an annotation showing the area of a selected face");
     sWhatsThis = "TechDraw_AreaDimension";
     sStatusTip = sToolTipText;
@@ -1921,14 +1921,14 @@ void CmdTechDrawLinkDimension::activated(int iMsg)
 
     if (!obj3D) {
         QMessageBox::warning(Gui::getMainWindow(),
-                             QObject::tr("Incorrect Selection"),
+                             QObject::tr("Incorrect selection"),
                              QObject::tr("There is no 3D object in your selection"));
         return;
     }
 
     if (subs.empty()) {
         QMessageBox::warning(Gui::getMainWindow(),
-                             QObject::tr("Incorrect Selection"),
+                             QObject::tr("Incorrect selection"),
                              QObject::tr("There are no 3D edges or vertices in your selection"));
         return;
     }
@@ -1962,7 +1962,7 @@ CmdTechDrawExtentGroup::CmdTechDrawExtentGroup()
 {
     sAppModule = "TechDraw";
     sGroup = QT_TR_NOOP("TechDraw");
-    sMenuText = QT_TR_NOOP("Insert extent dimension");
+    sMenuText = QT_TR_NOOP("Extent dimension");
     sToolTipText = QT_TR_NOOP("Inserts a dimension showing the extent (overall length) of an object or feature");
     sWhatsThis = "TechDraw_ExtentGroup";
     sStatusTip = sToolTipText;
@@ -2057,7 +2057,7 @@ CmdTechDrawHorizontalExtentDimension::CmdTechDrawHorizontalExtentDimension()
 {
     sAppModule = "TechDraw";
     sGroup = QT_TR_NOOP("TechDraw");
-    sMenuText = QT_TR_NOOP("Insert horizontal extent dimension");
+    sMenuText = QT_TR_NOOP("Horizontal extent dimension");
     sToolTipText = QT_TR_NOOP("Inserts a dimension showing the horizontal extent (overall length) of an object or feature.");
     sWhatsThis = "TechDraw_HorizontalExtentDimension";
     sStatusTip = sToolTipText;
@@ -2169,7 +2169,7 @@ CmdTechDrawVerticalExtentDimension::CmdTechDrawVerticalExtentDimension()
 {
     sAppModule = "TechDraw";
     sGroup = QT_TR_NOOP("TechDraw");
-    sMenuText = QT_TR_NOOP("Insert vertical extent dimension");
+    sMenuText = QT_TR_NOOP("Vertical extent dimension");
     sToolTipText = QT_TR_NOOP("Inserts a dimension showing the vertical extent (overall length) of an object or feature.");
     sWhatsThis = "TechDraw_VerticalExtentDimension";
     sStatusTip = sToolTipText;
@@ -2256,7 +2256,7 @@ CmdTechDrawLandmarkDimension::CmdTechDrawLandmarkDimension()
 {
     sAppModule = "TechDraw";
     sGroup = QT_TR_NOOP("TechDraw");
-    sMenuText = QT_TR_NOOP("Insert landmark dimension - EXPERIMENTAL");
+    sMenuText = QT_TR_NOOP("Landmark dimension - EXPERIMENTAL");
     sToolTipText = QT_TR_NOOP("Inserts a landmark dimension (experimental feature). Use with caution.");
     sWhatsThis = "TechDraw_LandmarkDimension";
     sStatusTip = sToolTipText;
@@ -2428,7 +2428,7 @@ void execDim(Gui::Command* cmd, std::string type, StringVector acceptableGeometr
         if (geometryRefs2d == DimensionGeometry::isEllipse || geometryRefs3d == DimensionGeometry::isEllipse) {
             QMessageBox::StandardButton result = QMessageBox::warning(
                 Gui::getMainWindow(),
-                QObject::tr("Ellipse Curve Warning"),
+                QObject::tr("Ellipse curve warning"),
                 QObject::tr("Selected edge is an Ellipse. Value will be approximate. Continue?"),
                 QMessageBox::Ok | QMessageBox::Cancel,
                 QMessageBox::Cancel);
@@ -2439,7 +2439,7 @@ void execDim(Gui::Command* cmd, std::string type, StringVector acceptableGeometr
         if (geometryRefs2d == DimensionGeometry::isBSplineCircle || geometryRefs3d == DimensionGeometry::isBSplineCircle) {
             QMessageBox::StandardButton result = QMessageBox::warning(
                 Gui::getMainWindow(),
-                QObject::tr("B-spline Curve Warning"),
+                QObject::tr("B-spline curve warning"),
                 QObject::tr("Selected edge is a B-spline. Value will be approximate. Continue?"),
                 QMessageBox::Ok | QMessageBox::Cancel,
                 QMessageBox::Cancel);
@@ -2450,7 +2450,7 @@ void execDim(Gui::Command* cmd, std::string type, StringVector acceptableGeometr
         if (geometryRefs2d == DimensionGeometry::isBSpline || geometryRefs3d == DimensionGeometry::isBSpline) {
             QMessageBox::critical(
                 Gui::getMainWindow(),
-                QObject::tr("B-spline Curve Error"),
+                QObject::tr("B-spline curve error"),
                 QObject::tr("Selected edge is a B-spline and a radius/diameter cannot be calculated."));
             return;
         }
