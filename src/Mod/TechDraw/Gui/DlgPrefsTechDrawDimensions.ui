@@ -407,7 +407,7 @@ Multiplier of 'Font size'</string>
            </font>
           </property>
           <property name="toolTip">
-           <string>Controls the gap size between the dimension point and the start of the extension line for ISO dimensions.</string>
+           <string>Controls the gap size between the dimension point and the start of the extension line for ISO dimensions</string>
           </property>
           <property name="text">
            <string>Extension gap factor - ISO</string>
