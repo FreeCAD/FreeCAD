@@ -133,49 +133,83 @@ def insert(filename, docname):
 
 def read(filename):
     """Read a DAE file."""
+    doc = FreeCAD.activeDocument()
+    if not doc:
+        return
     col = collada.Collada(filename, ignore=[collada.common.DaeUnsupportedError])
     # Read the unitmeter info from DAE file and compute unit to convert to mm.
-    unitmeter = col.assetInfo.unitmeter or 1.0
-    unit = unitmeter / 0.001
-    # for geom in col.geometries:
-    # for geom in col.scene.objects("geometry"):
-    for node in col.scene.nodes:
-        for child in node.children:
-            if not isinstance(child, collada.scene.GeometryNode):
+    unit_meter = col.assetInfo.unitmeter or 1.0
+    unit = unit_meter / 0.001
+    bound_geom: collada.geometry.BoundGeometry
+    # Implementation note: there's also `col.geometries` but when using them,
+    # the materials are string and Gaël didn't find a way to get the material
+    # node from this string.
+    for bound_geom in col.scene.objects('geometry'):
+        prim: collada.primitive.BoundPrimitive
+        for prim in bound_geom.primitives():
+            if not isinstance(prim, collada.triangleset.BoundTriangleSet):
+                # e.g. a BoundLineSet, which is not supported yet.
                 continue
-            geom: collada.scenes.GeometryNode = child.geometry
-            mat_symbols: list[str] = [m.symbol for m in child.materials]
-            for prim in geom.primitives:
-                meshdata = []
-                for tri in prim:
-                    # tri.vertices is a numpy array.
-                    meshdata.append((tri.vertices * unit).tolist())
-                mesh = Mesh.Mesh(meshdata)
-                try:
-                    name = geom.name
-                except AttributeError:
-                    name = geom.id
-                obj = FreeCAD.ActiveDocument.addObject("Mesh::Feature", name)
+            # Get the materials and associated vertices.
+            meshes: dict[collada.scene.MaterialNode, list] = {}
+            tri: collada.triangleset.Triangle
+            for tri in prim:
+                material_node: collada.material.Material = tri.material
+                if material_node not in meshes:
+                    # Not yet in the dict, create a new entry.
+                    meshes[material_node] = []
+                if len(tri.vertices) != 3:
+                    msg = (
+                            f"Warning: triangle with {len(tri.vertices)} vertices found"
+                            f" in {bound_geom.original.name}, expected 3. Skipping this triangle."
+                    )
+                    FreeCAD.Console.PrintWarning(msg + "\n")
+                    continue
+                # tri.vertices is a numpy array.
+                meshes[material_node].append((tri.vertices * unit).tolist())
+            # Create a mesh for each material node.
+            for material_node, vertices in meshes.items():
+                mesh = Mesh.Mesh(vertices)
+                name = bound_geom.original.name
+                if not name:
+                    name = bound_geom.original.id
+                obj = doc.addObject("Mesh::Feature", name)
                 obj.Label = name
                 obj.Mesh = mesh
+                if not material_node:
+                    continue
                 if FreeCAD.GuiUp:
-                    try:
-                        mat_index = mat_symbols.index(prim.material)
-                        material = child.materials[mat_index].target
-                        color = material.effect.diffuse
-                        obj.ViewObject.ShapeColor = color
-                    except ValueError:
-                        # Material not found.
-                        pass
-                    except TypeError:
-                        # color is not a tuple but a texture.
-                        pass
+                    fc_mat = FreeCAD.Material()
+                    # We do not import transparency because it is often set
+                    # wrongly (transparency mistaken for opacity).
+                    # TODO: Ask whether to import transparency.
+                    field_map = {
+                            "ambient": "AmbientColor",
+                            "diffuse": "DiffuseColor",
+                            "emission": "EmissiveColor",
+                            "specular": "SpecularColor",
+                            "shininess": "Shininess",
+                            # "transparency": "Transparency",
+                    }
+                    for col_field, fc_field in field_map.items():
+                        try:
+                            # Implementation note: using floats, so values must
+                            # be within [0, 1]. OK.
+                            setattr(fc_mat, fc_field, getattr(material_node.effect, col_field))
+                        except ValueError:
+                            pass
+                        except TypeError:
+                            # color is not a tuple but a texture.
+                            pass
+                    obj.ViewObject.ShapeAppearance = (fc_mat,)
 
     # Print the errors that occurred during reading.
     if col.errors:
         FreeCAD.Console.PrintWarning(translate("BIM", "File was read but some errors occurred:") + "\n")
     for e in col.errors:
         FreeCAD.Console.PrintWarning(str(e) + "\n")
+    if FreeCAD.GuiUp:
+        FreeCAD.Gui.SendMsgToActiveView("ViewFit")
 
 
 def export(
