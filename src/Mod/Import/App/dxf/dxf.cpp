@@ -2343,7 +2343,7 @@ bool CDxfRead::ReadDimension()
 bool CDxfRead::ReadUnknownEntity()
 {
     ProcessAllEntityAttributes();
-    UnsupportedFeature("Entity type '%s'", m_record_data);
+    UnsupportedFeature("Entity type '%s'", m_current_entity_name.c_str());
     return true;
 }
 
@@ -2403,7 +2403,8 @@ void CDxfRead::UnsupportedFeature(const char* format, args&&... argValuess)
 {
     // NOLINTNEXTLINE(runtime/printf)
     std::string formattedMessage = fmt::sprintf(format, std::forward<args>(argValuess)...);
-    m_stats.unsupportedFeatures[formattedMessage].emplace_back(m_line, m_current_entity_handle);
+    m_stats.unsupportedFeatures[formattedMessage].emplace_back(m_current_entity_line_number,
+                                                               m_current_entity_handle);
 }
 
 bool CDxfRead::get_next_record()
@@ -2796,6 +2797,8 @@ void CDxfRead::ProcessLayerReference(CDxfRead* object, void* target)
 }
 bool CDxfRead::ReadEntity()
 {
+    m_current_entity_line_number = m_line;
+    m_current_entity_name = m_record_data;
     InitializeAttributes();
     m_entityAttributes.SetDefaults();
     m_current_entity_handle.clear();

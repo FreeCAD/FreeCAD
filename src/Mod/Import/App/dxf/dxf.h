@@ -463,6 +463,8 @@ private:
     bool m_not_eof = true;
     int m_line = 0;
     bool m_repeat_last_record = false;
+    int m_current_entity_line_number = 0;
+    std::string m_current_entity_name;
     std::string m_current_entity_handle;
 
     // The scaling from DXF units to millimetres.
