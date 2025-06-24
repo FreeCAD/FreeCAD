@@ -438,7 +438,7 @@
            </font>
           </property>
           <property name="toolTip">
-           <string>Show or hide marks at direction changes on complex section lines</string>
+           <string>Shows markers at direction changes on complex section lines</string>
           </property>
           <property name="text">
            <string>Complex section line marks</string>
