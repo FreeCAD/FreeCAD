@@ -41,7 +41,8 @@
         </sizepolicy>
        </property>
        <property name="toolTip">
-        <string>If crop image is checked, crop captured image to this width.</string>
+        <string>Crops captured image to this width</string>
+
        </property>
        <property name="alignment">
         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
