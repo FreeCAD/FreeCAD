@@ -74,7 +74,7 @@
      <item row="1" column="1">
       <widget class="QRadioButton" name="rb3d1">
        <property name="toolTip">
-        <string>Treat the center point as a 3D point and project it onto the parent view</string>
+        <string>Treats the center point as a 3D point and project it onto the parent view</string>
        </property>
        <property name="text">
         <string>3D point</string>
