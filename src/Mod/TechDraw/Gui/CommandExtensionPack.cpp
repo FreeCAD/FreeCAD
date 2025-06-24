@@ -273,7 +273,7 @@ CmdTechDrawExtensionCircleCenterLinesGroup::CmdTechDrawExtensionCircleCenterLine
 {
     sAppModule = "TechDraw";
     sGroup = QT_TR_NOOP("TechDraw");
-    sMenuText = QT_TR_NOOP("Add circle centerlines");
+    sMenuText = QT_TR_NOOP("Circle centerlines");
     sToolTipText = QT_TR_NOOP("Adds centerlines to selected circles and arcs:");
     sWhatsThis = "TechDraw_ExtensionCircleCenterLinesGroup";
     sStatusTip = sMenuText;
@@ -339,13 +339,13 @@ void CmdTechDrawExtensionCircleCenterLinesGroup::languageChange()
 
     QAction* arc1 = action[0];
     arc1->setText(
-        QApplication::translate("CmdTechDrawExtensionCircleCenterLines", "Add circle centerlines"));
+        QApplication::translate("CmdTechDrawExtensionCircleCenterLines", "Circle centerlines"));
     arc1->setToolTip(QApplication::translate("CmdTechDrawExtensionCircleCenterLines",
                                              "Add centerlines to selected circles and arcs:"));
     arc1->setStatusTip(arc1->text());
     QAction* arc2 = action[1];
     arc2->setText(
-        QApplication::translate("CmdTechDrawExtensionHoleCircle", "Add bolt circle centerlines"));
+        QApplication::translate("CmdTechDrawExtensionHoleCircle", "Bolt circle centerlines"));
     arc2->setToolTip(QApplication::translate("CmdTechDrawExtensionHoleCircle",
                                              "Add centerlines to a circular pattern of selected circles"));
     arc2->setStatusTip(arc2->text());
@@ -440,7 +440,7 @@ CmdTechDrawExtensionThreadBoltSide::CmdTechDrawExtensionThreadBoltSide()
 {
     sAppModule = "TechDraw";
     sGroup = QT_TR_NOOP("TechDraw");
-    sMenuText = QT_TR_NOOP("Add cosmetic thread bolt side view");
+    sMenuText = QT_TR_NOOP("Cosmetic thread bolt side view");
     sToolTipText = QT_TR_NOOP("Adds a cosmetic thread to the side view of a "
             "bolt/screw/rod between two selected parallel lines");
     sWhatsThis = "TechDraw_ExtensionThreadBoltSide";
@@ -492,7 +492,7 @@ CmdTechDrawExtensionThreadHoleBottom::CmdTechDrawExtensionThreadHoleBottom()
 {
     sAppModule = "TechDraw";
     sGroup = QT_TR_NOOP("TechDraw");
-    sMenuText = QT_TR_NOOP("Add cosmetic thread hole bottom view");
+    sMenuText = QT_TR_NOOP("Cosmetic thread hole bottom view");
     sToolTipText = QT_TR_NOOP("Adds a cosmetic thread to the top or bottom view of selected holes or circles");
     sWhatsThis = "TechDraw_ExtensionThreadHoleBottom";
     sStatusTip = sMenuText;
@@ -543,7 +543,7 @@ CmdTechDrawExtensionThreadBoltBottom::CmdTechDrawExtensionThreadBoltBottom()
 {
     sAppModule = "TechDraw";
     sGroup = QT_TR_NOOP("TechDraw");
-    sMenuText = QT_TR_NOOP("Add cosmetic thread bolt bottom view");
+    sMenuText = QT_TR_NOOP("Cosmetic thread bolt bottom view");
     sToolTipText =
         QT_TR_NOOP("Adds a cosmetic thread to the top or bottom view of the selected bolts/screws/rods");
     sWhatsThis = "TechDraw_ExtensionThreadBoltBottom";
@@ -656,21 +656,21 @@ void CmdTechDrawExtensionThreadsGroup::languageChange()
 
     QAction* arc1 = action[0];
     arc1->setText(QApplication::translate("CmdTechDrawExtensionThreadHoleSide",
-                                          "Add cosmetic thread hole side view"));
+                                          "Cosmetic thread hole side view"));
     arc1->setToolTip(QApplication::translate("CmdTechDrawExtensionThreadHoleSide",
                                              "Adds a cosmetic thread to the side view of a "
                                              "selected hole between two selected parallel lines"));
     arc1->setStatusTip(arc1->text());
     QAction* arc2 = action[1];
     arc2->setText(QApplication::translate("CmdTechDrawExtensionThreadHoleBottom",
-                                          "Adds a cosmetic thread hole bottom view"));
+                                          "Cosmetic thread hole bottom view"));
     arc2->setToolTip(
         QApplication::translate("CmdTechDrawExtensionThreadHoleBottom",
                                 "Adds a cosmetic thread to the top or bottom view of holes or circles"));
     arc2->setStatusTip(arc2->text());
     QAction* arc3 = action[2];
     arc3->setText(QApplication::translate("CmdTechDrawExtensionThreadBoltSide",
-                                          "Adds a cosmetic thread bolt side view"));
+                                          "Cosmetic thread bolt side view"));
     arc3->setToolTip(
         QApplication::translate("CmdTechDrawExtensionThreadBoltSide",
                                 "Adds a cosmetic thread to the side view of a bolt/screw/rod "
@@ -678,7 +678,7 @@ void CmdTechDrawExtensionThreadsGroup::languageChange()
     arc3->setStatusTip(arc3->text());
     QAction* arc4 = action[3];
     arc4->setText(QApplication::translate("CmdTechDrawExtensionThreadBoltBottom",
-                                          "Adds cosmetic thread bolt bottom view"));
+                                          "Cosmetic thread bolt bottom view"));
     arc4->setToolTip(QApplication::translate(
         "CmdTechDrawExtensionThreadBoltBottom",
         "Adds a cosmetic thread to the top or bottom view of the selected bolts/screws/rods"));
@@ -1120,13 +1120,13 @@ void CmdTechDrawExtensionDrawCirclesGroup::languageChange()
 
     QAction* arc1 = action[0];
     arc1->setText(
-        QApplication::translate("CmdTechDrawExtensionDrawCosmCircle", "Add cosmetic circle"));
+        QApplication::translate("CmdTechDrawExtensionDrawCosmCircle", "Cosmetic circle"));
     arc1->setToolTip(QApplication::translate("CmdTechDrawExtensionDrawCosmCircle",
                                              "Adds a cosmetic circle based on two vertices, where "
                                              "the first selection is the centerpoint and the second is the radius"));
     arc1->setStatusTip(arc1->text());
     QAction* arc2 = action[1];
-    arc2->setText(QApplication::translate("CmdTechDrawExtensionDrawCosmArc", "Add cosmetic arc"));
+    arc2->setText(QApplication::translate("CmdTechDrawExtensionDrawCosmArc", "Cosmetic arc"));
     arc2->setToolTip(
         QApplication::translate("CmdTechDrawExtensionDrawCosmArc",
                                 "Adds a cosmetic counter clockwise arc based on three vertices, "
@@ -1134,7 +1134,7 @@ void CmdTechDrawExtensionDrawCirclesGroup::languageChange()
     arc2->setStatusTip(arc2->text());
     QAction* arc3 = action[2];
     arc3->setText(QApplication::translate("CmdTechDrawExtensionDrawCosmCircle3Points",
-                                          "Add cosmetic circle 3 points"));
+                                          "Cosmetic 3 point circle"));
     arc3->setToolTip(QApplication::translate("CmdTechDrawExtensionDrawCosmCircle3Points",
                                              "Adds a cosmetic circle based on three vertices:<br>\
 - Specify the line attributes (optional)<br>\

@@ -89,7 +89,7 @@ CmdTechDrawLeaderLine::CmdTechDrawLeaderLine()
 {
     sAppModule      = "TechDraw";
     sGroup          = QT_TR_NOOP("TechDraw");
-    sMenuText       = QT_TR_NOOP("Add leader line to view");
+    sMenuText       = QT_TR_NOOP("Leader line");
     sToolTipText    = QT_TR_NOOP("Adds a leader line to the selected view");
     sWhatsThis      = "TechDraw_LeaderLine";
     sStatusTip      = sToolTipText;
@@ -151,7 +151,7 @@ CmdTechDrawRichTextAnnotation::CmdTechDrawRichTextAnnotation()
 {
     sAppModule      = "TechDraw";
     sGroup          = QT_TR_NOOP("TechDraw");
-    sMenuText       = QT_TR_NOOP("Insert rich text annotation");
+    sMenuText       = QT_TR_NOOP("Rich text annotation");
     sToolTipText    = QT_TR_NOOP("Inserts a rich text annotation in the current page");
     sWhatsThis      = "TechDraw_RichTextAnnotation";
     sStatusTip      = sToolTipText;
@@ -203,7 +203,7 @@ CmdTechDrawCosmeticVertexGroup::CmdTechDrawCosmeticVertexGroup()
 {
     sAppModule      = "TechDraw";
     sGroup          = QT_TR_NOOP("TechDraw");
-    sMenuText       = QT_TR_NOOP("Insert cosmetic vertex");
+    sMenuText       = QT_TR_NOOP("Cosmetic vertex");
     sToolTipText    = QT_TR_NOOP("Inserts a cosmetic vertex into the selected view");
     sWhatsThis      = "TechDraw_CosmeticVertexGroup";
     sStatusTip      = sToolTipText;
@@ -278,15 +278,15 @@ void CmdTechDrawCosmeticVertexGroup::languageChange()
     QList<QAction*> a = pcAction->actions();
 
     QAction* arc1 = a[0];
-    arc1->setText(QApplication::translate("CmdTechDrawCosmeticVertexGroup", "Add cosmetic vertex"));
+    arc1->setText(QApplication::translate("CmdTechDrawCosmeticVertexGroup", "Cosmetic vertex"));
     arc1->setToolTip(QApplication::translate("TechDraw_CosmeticVertex", "Inserts a cosmetic vertex into a view"));
     arc1->setStatusTip(arc1->toolTip());
     QAction* arc2 = a[1];
-    arc2->setText(QApplication::translate("CmdMidpoints", "Add midpoint vertices"));
+    arc2->setText(QApplication::translate("CmdMidpoints", "Midpoint vertices"));
     arc2->setToolTip(QApplication::translate("TechDraw_Midpoints", "Inserts cosmetic vertices at the midpoint of the selected edges"));
     arc2->setStatusTip(arc2->toolTip());
     QAction* arc3 = a[2];
-    arc3->setText(QApplication::translate("CmdQuadrants", "Add quadrant vertices"));
+    arc3->setText(QApplication::translate("CmdQuadrants", "Quadrant vertices"));
     arc3->setToolTip(QApplication::translate("TechDraw_Quadrants", "Inserts cosmetic vertices at the quadrant points of the selected circles"));
     arc3->setStatusTip(arc3->toolTip());
 }
@@ -363,7 +363,7 @@ void execQuadrants(Gui::Command* cmd)
     if (!dvp || selectedEdges.empty())
         return;
 
-    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add quadrant vertices"));
+    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Quadrant vertices"));
 
     const TechDraw::BaseGeomPtrVector edges = dvp->getEdgeGeometry();
     for (auto& s: selectedEdges) {
@@ -390,7 +390,7 @@ CmdTechDrawCosmeticVertex::CmdTechDrawCosmeticVertex()
 {
     sAppModule      = "TechDraw";
     sGroup          = QT_TR_NOOP("TechDraw");
-    sMenuText       = QT_TR_NOOP("Add cosmetic vertex");
+    sMenuText       = QT_TR_NOOP("Cosmetic vertex");
     sToolTipText    = QT_TR_NOOP("Adds a cosmetic vertex into the selected view");
     sWhatsThis      = "TechDraw_CosmeticVertex";
     sStatusTip      = sToolTipText;
@@ -451,7 +451,7 @@ CmdTechDrawMidpoints::CmdTechDrawMidpoints()
 {
     sAppModule      = "TechDraw";
     sGroup          = QT_TR_NOOP("TechDraw");
-    sMenuText       = QT_TR_NOOP("Add midpoint vertices");
+    sMenuText       = QT_TR_NOOP("Midpoint vertices");
     sToolTipText    = QT_TR_NOOP("Adds cosmetic vertices at the midpoint of the selected edges");
     sWhatsThis      = "TechDraw_Midpoints";
     sStatusTip      = sToolTipText;
@@ -490,7 +490,7 @@ CmdTechDrawQuadrants::CmdTechDrawQuadrants()
 {
     sAppModule      = "TechDraw";
     sGroup          = QT_TR_NOOP("TechDraw");
-    sMenuText       = QT_TR_NOOP("Add quadrant vertices");
+    sMenuText       = QT_TR_NOOP("Quadrant vertices");
     sToolTipText    = QT_TR_NOOP("Adds cosmetic vertices at the quadrant points of the selected circles");
     sWhatsThis      = "TechDraw_Quadrants";
     sStatusTip      = sToolTipText;
@@ -529,7 +529,7 @@ CmdTechDrawAnnotation::CmdTechDrawAnnotation()
 {
     // setting the Gui eye-candy
     sGroup        = QT_TR_NOOP("TechDraw");
-    sMenuText     = QT_TR_NOOP("Insert annotation");
+    sMenuText     = QT_TR_NOOP("Text annotation");
     sToolTipText  = QT_TR_NOOP("Inserts a text block to the current page");
     sWhatsThis    = "TechDraw_NewAnnotation";
     sStatusTip    = sToolTipText;
@@ -579,7 +579,7 @@ CmdTechDrawCenterLineGroup::CmdTechDrawCenterLineGroup()
 {
     sAppModule      = "TechDraw";
     sGroup          = QT_TR_NOOP("TechDraw");
-    sMenuText       = QT_TR_NOOP("Insert centerline");
+    sMenuText       = QT_TR_NOOP("Centerline");
     sToolTipText    = QT_TR_NOOP("Inserts a centerline to a face, or between 2 lines or edges");
     sWhatsThis      = "TechDraw_CenterLineGroup";
     sStatusTip      = sToolTipText;
@@ -652,15 +652,15 @@ void CmdTechDrawCenterLineGroup::languageChange()
     QList<QAction*> a = pcAction->actions();
 
     QAction* arc1 = a[0];
-    arc1->setText(QApplication::translate("CmdTechDrawCenterLineGroup", "Add centerline to faces"));
+    arc1->setText(QApplication::translate("CmdTechDrawCenterLineGroup", "Centerline faces"));
     arc1->setToolTip(QApplication::translate("TechDraw_FaceCenterLine", "Adds a centerline to selected faces"));
     arc1->setStatusTip(arc1->toolTip());
     QAction* arc2 = a[1];
-    arc2->setText(QApplication::translate("Cmd2LineCenterLine", "Add centerline between 2 lines"));
+    arc2->setText(QApplication::translate("Cmd2LineCenterLine", "Centerline 2 lines"));
     arc2->setToolTip(QApplication::translate("TechDraw_2LineCenterLine", "Adds a centerline between 2 selected lines"));
     arc2->setStatusTip(arc2->toolTip());
     QAction* arc3 = a[2];
-    arc3->setText(QApplication::translate("Cmd2PointCenterLine", "Add centerline between 2 points"));
+    arc3->setText(QApplication::translate("Cmd2PointCenterLine", "Centerline 2 points"));
     arc3->setToolTip(QApplication::translate("TechDraw_2PointCenterLine", "Adds a centerline between 2 selected points"));
     arc3->setStatusTip(arc3->toolTip());
 }
@@ -682,7 +682,7 @@ CmdTechDrawFaceCenterLine::CmdTechDrawFaceCenterLine()
 {
     sAppModule      = "TechDraw";
     sGroup          = QT_TR_NOOP("TechDraw");
-    sMenuText       = QT_TR_NOOP("Add centerline to faces");
+    sMenuText       = QT_TR_NOOP("Centerline between 2 faces");
     sToolTipText    = QT_TR_NOOP("Adds a centerline to selected faces");
     sWhatsThis      = "TechDraw_FaceCenterLine";
     sStatusTip      = sToolTipText;
@@ -729,7 +729,7 @@ void execCenterLine(Gui::Command* cmd)
     }
     else {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-                             QObject::tr("You must select a base View for the line"));
+                             QObject::tr("You must select a base view for the line"));
         return;
     }
 
@@ -756,7 +756,7 @@ void execCenterLine(Gui::Command* cmd)
     if ( (faceNames.empty()) &&
          (edgeNames.empty()) ) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-                             QObject::tr("You must select faces or an existing CenterLine"));
+                             QObject::tr("You must select faces or an existing centerline"));
         return;
     }
     if (!faceNames.empty()) {
@@ -772,7 +772,7 @@ void execCenterLine(Gui::Command* cmd)
         TechDraw::CenterLine* cl = baseFeat->getCenterLineBySelection(edgeNames.front());
         if (!cl) {
             QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong Selection"),
-                             QObject::tr("Selection is not a CenterLine"));
+                             QObject::tr("Selection is not a centerline"));
             return;
         }
         Gui::Control().showDialog(new TaskDlgCenterLine(baseFeat,
@@ -793,7 +793,7 @@ CmdTechDraw2LineCenterLine::CmdTechDraw2LineCenterLine()
 {
     sAppModule      = "TechDraw";
     sGroup          = QT_TR_NOOP("TechDraw");
-    sMenuText       = QT_TR_NOOP("Add centerline between 2 lines");
+    sMenuText       = QT_TR_NOOP("Centerline between 2 lines");
     sToolTipText    = QT_TR_NOOP("Adds a centerline between 2 selected lines");
     sWhatsThis      = "TechDraw_2LineCenterLine";
     sStatusTip      = sToolTipText;
@@ -868,7 +868,7 @@ CmdTechDraw2PointCenterLine::CmdTechDraw2PointCenterLine()
 {
     sAppModule      = "TechDraw";
     sGroup          = QT_TR_NOOP("TechDraw");
-    sMenuText       = QT_TR_NOOP("Add centerline between 2 points");
+    sMenuText       = QT_TR_NOOP("Centerline between 2 points");
     sToolTipText    = QT_TR_NOOP("Adds a centerline between 2 selected points");
     sWhatsThis      = "TechDraw_2PointCenterLine";
     sStatusTip      = sToolTipText;
@@ -981,7 +981,7 @@ CmdTechDraw2PointCosmeticLine::CmdTechDraw2PointCosmeticLine()
 {
     sAppModule      = "TechDraw";
     sGroup          = QT_TR_NOOP("TechDraw");
-    sMenuText       = QT_TR_NOOP("Add cosmetic line through 2 points");
+    sMenuText       = QT_TR_NOOP("Cosmetic line through 2 points");
     sToolTipText    = QT_TR_NOOP("Add a cosmetic line that passes through 2 selected points");
     sWhatsThis      = "TechDraw_2PointCosmeticLine";
     sStatusTip      = sToolTipText;
@@ -1132,7 +1132,7 @@ CmdTechDrawCosmeticCircle::CmdTechDrawCosmeticCircle()
 {
     sAppModule      = "TechDraw";
     sGroup          = QT_TR_NOOP("TechDraw");
-    sMenuText       = QT_TR_NOOP("Add cosmetic circle");
+    sMenuText       = QT_TR_NOOP("Cosmetic circle");
     sToolTipText    = QT_TR_NOOP("Adds a cosmetic circle to the current page");
     sWhatsThis      = "TechDraw_CosmeticCircle";
     sStatusTip      = sToolTipText;
@@ -1400,8 +1400,8 @@ CmdTechDrawDecorateLine::CmdTechDrawDecorateLine()
 {
     sAppModule      = "TechDraw";
     sGroup          = QT_TR_NOOP("TechDraw");
-    sMenuText       = QT_TR_NOOP("Change appearance of lines");
-    sToolTipText    = QT_TR_NOOP("Changes the appearance of the selected lines");
+    sMenuText       = QT_TR_NOOP("Edit line appearance");
+    sToolTipText    = QT_TR_NOOP("Opens the 'Line decoration' dialog to edit the selected lines");
     sWhatsThis      = "TechDraw_DecorateLine";
     sStatusTip      = sToolTipText;
     sPixmap         = "actions/TechDraw_DecorateLine";
@@ -1482,7 +1482,7 @@ CmdTechDrawShowAll::CmdTechDrawShowAll()
 {
     sAppModule      = "TechDraw";
     sGroup          = QT_TR_NOOP("TechDraw");
-    sMenuText       = QT_TR_NOOP("Show/hide invisible edges");
+    sMenuText       = QT_TR_NOOP("Toggle edge visibilty");
     sToolTipText    = QT_TR_NOOP("Toggles the visibility of the selected edges");
     sWhatsThis      = "TechDraw_ShowAll";
     sStatusTip      = sToolTipText;
@@ -1547,7 +1547,7 @@ CmdTechDrawWeldSymbol::CmdTechDrawWeldSymbol()
 {
     sAppModule      = "TechDraw";
     sGroup          = QT_TR_NOOP("TechDraw");
-    sMenuText       = QT_TR_NOOP("Add welding information to leader line");
+    sMenuText       = QT_TR_NOOP("Weld symbol");
     sToolTipText    = QT_TR_NOOP("Adds welding information to the selected leader line");
     sWhatsThis      = "TechDraw_WeldSymbol";
     sStatusTip      = sToolTipText;
@@ -1611,7 +1611,7 @@ CmdTechDrawSurfaceFinishSymbols::CmdTechDrawSurfaceFinishSymbols()
 {
     sAppModule      = "TechDraw";
     sGroup          = QT_TR_NOOP("TechDraw");
-    sMenuText       = QT_TR_NOOP("Create a surface finish symbol");
+    sMenuText       = QT_TR_NOOP("Surface finish symbol");
     sToolTipText    = QT_TR_NOOP("Adds a surface finish symbol in the selected view");
     sWhatsThis      = "TechDraw_SurfaceFinishSymbols";
     sStatusTip      = sToolTipText;

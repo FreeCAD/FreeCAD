@@ -51,10 +51,6 @@ class CommandPositionSectionView:
                 'MenuText': QT_TRANSLATE_NOOP("TechDraw_PositionSectionView", "Position section view"),
                 'ToolTip': QT_TRANSLATE_NOOP("TechDraw_PositionSectionView",
                   "Aligns the selected section view with its source view orthogonally or the selected edge in the section view to the selected vertex in the base view")}
-                - Select a single section view<br>\
-                - Click this tool<br>\
-                - optional: select one edge in the section view and its corresponding vertex in the base view<br>\
-                  Click this tool")}
 
     def Activated(self):
         """Run the following code when the command is activated (button pressed)."""
