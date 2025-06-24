@@ -847,7 +847,7 @@ for ProjectionGroups</string>
            </font>
           </property>
           <property name="toolTip">
-           <string>If checked, the 3D camera direction (or normal of a selected face) will be used as the view direction. If not checked, views will be created as front views.</string>
+           <string>Uses the 3D camera direction (or normal of a selected face) as the view direction. Otherwise, views will be created as front views.</string>
           </property>
           <property name="text">
            <string>Use 3D Camera Direction</string>
