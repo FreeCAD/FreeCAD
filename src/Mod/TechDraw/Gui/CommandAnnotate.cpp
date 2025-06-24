@@ -530,7 +530,7 @@ CmdTechDrawAnnotation::CmdTechDrawAnnotation()
     // setting the Gui eye-candy
     sGroup        = QT_TR_NOOP("TechDraw");
     sMenuText     = QT_TR_NOOP("Text annotation");
-    sToolTipText  = QT_TR_NOOP("Inserts a text block to the current page");
+    sToolTipText  = QT_TR_NOOP("Inserts an editable text block annotation to the current page");
     sWhatsThis    = "TechDraw_NewAnnotation";
     sStatusTip    = sToolTipText;
     sPixmap       = "actions/TechDraw_Annotation";
