@@ -2967,7 +2967,7 @@ int Sketch::addTangentLineAtBSplineKnotConstraint(int checkedlinegeoId,
             // For now we just throw an error.
             Base::Console().error(
                 "addTangentLineAtBSplineKnotConstraint: This method cannot set tangent constraint "
-                "at end knots of a B-spline. Please constrain the start/end points instead.\n");
+                "at end knots of a B-spline. Constrain the start/end points instead.\n");
             return -1;
         }
     }
@@ -3020,7 +3020,7 @@ int Sketch::addTangentLineEndpointAtBSplineKnotConstraint(int checkedlinegeoId,
             // For now we just throw an error.
             Base::Console().error("addTangentLineEndpointAtBSplineKnotConstraint: This method "
                                   "cannot set tangent constraint at end knots of a B-spline. "
-                                  "Please constrain the start/end points instead.\n");
+                                  "Constrain the start/end points instead.\n");
             return -1;
         }
     }
