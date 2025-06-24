@@ -601,7 +601,7 @@ CmdTechDrawExtensionThreadsGroup::CmdTechDrawExtensionThreadsGroup()
 {
     sAppModule = "TechDraw";
     sGroup = QT_TR_NOOP("TechDraw");
-    sMenuText = QT_TR_NOOP("Adds a cosmetic thread hole side view");
+    sMenuText = QT_TR_NOOP("Cosmetic thread hole side view");
     sToolTipText = QT_TR_NOOP("Add a cosmetic thread to the side view of a selected hole:<br>\
 - Specify the line attributes (optional)<br>\
 - Select two parallel lines<br>\
