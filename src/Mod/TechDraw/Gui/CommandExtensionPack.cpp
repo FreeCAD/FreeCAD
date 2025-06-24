@@ -341,13 +341,13 @@ void CmdTechDrawExtensionCircleCenterLinesGroup::languageChange()
     arc1->setText(
         QApplication::translate("CmdTechDrawExtensionCircleCenterLines", "Circle centerlines"));
     arc1->setToolTip(QApplication::translate("CmdTechDrawExtensionCircleCenterLines",
-                                             "Add centerlines to selected circles and arcs:"));
+                                             "Adds centerlines to selected circles and arcs:"));
     arc1->setStatusTip(arc1->text());
     QAction* arc2 = action[1];
     arc2->setText(
         QApplication::translate("CmdTechDrawExtensionHoleCircle", "Bolt circle centerlines"));
     arc2->setToolTip(QApplication::translate("CmdTechDrawExtensionHoleCircle",
-                                             "Add centerlines to a circular pattern of selected circles"));
+                                             "Adds centerlines to a circular pattern of selected circles"));
     arc2->setStatusTip(arc2->text());
 }
 
