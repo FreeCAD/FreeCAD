@@ -75,7 +75,7 @@ struct DrawingParameters
     const float zMidLines = 0.006f;    // Height used for in-the-middle rendered lines
     const float zHighLines = 0.007f;   // Height used for on top rendered lines
     const float zHighLine = 0.008f;    // Height for highlighted lines (selected/preselected)
-    const float zConstr = 0.009f;      // Height for rendering constraints
+    const float zConstr = 0.004f;      // Height for rendering constraints
     const float zRootPoint = 0.010f;   // Height used for rendering the root point
     const float zLowPoints = 0.011f;   // Height used for bottom rendered points
     const float zMidPoints = 0.012f;   // Height used for mid rendered points

@@ -365,8 +365,56 @@ public:
         }
     }
 
+    void finishEditingOnAllOVPs()
+    {
+        // we call this on a current OnViewParameter when pressed CTRL+ENTER to accept
+        // input on all visible ovps of current mode
+
+        // we check for initial state, since `onViewValueChanged` can process to next mode
+        // if we set hasFinishedEditing on current mode
+        auto initialState = handler->state();
+        for (size_t i = 0; i < onViewParameters.size(); i++) {
+            if (isOnViewParameterOfCurrentMode(i) && isOnViewParameterVisible(i)
+                && initialState == getState(static_cast<int>(i))) {
+                onViewParameters[i]->isSet = true;
+                onViewParameters[i]->hasFinishedEditing = true;
+
+                double currentValue = onViewParameters[i]->getValue();
+                onViewValueChanged(static_cast<int>(i), currentValue);
+            }
+        }
+    }
+
     void tryViewValueChanged(int onviewparameterindex, double value)
     {
+        // go to next label in circular manner if user has currently pressed enter on current one
+        if (onViewParameters[onviewparameterindex]->hasFinishedEditing) {
+            // find the first parameter of the current mode that is not locked to start the cycle
+            auto findNextUnlockedParameter = [this](size_t startIndex) -> int {
+                for (size_t i = startIndex; i < onViewParameters.size(); i++) {
+                    if (isOnViewParameterOfCurrentMode(i)
+                        && !onViewParameters[i]->hasFinishedEditing) {
+                        return static_cast<int>(i);
+                    }
+                }
+                return -1;
+            };
+
+            // find first unlocked parameter (for cycling back)
+            int firstOfCurrentMode = findNextUnlockedParameter(0);
+
+            // find next unlocked parameter after current one
+            int nextUnlockedIndex = findNextUnlockedParameter(onviewparameterindex + 1);
+
+            // if no next parameter found, cycle back to first of current mode
+            if (nextUnlockedIndex != -1) {
+                setFocusToOnViewParameter(nextUnlockedIndex);
+            }
+            else if (firstOfCurrentMode != -1) {
+                setFocusToOnViewParameter(firstOfCurrentMode);
+            }
+        }
+
         /* That is not supported with on-view parameters.
         // -> A machine does not forward to a next state when adapting the parameter (though it
         // may forward to
@@ -628,6 +676,11 @@ protected:
                                  unsetOnViewParameter(parameter);
                                  finishControlsChanged();
                              });
+
+            // Connect Ctrl+Enter signal to apply values to all visible OVPs in current stage
+            QObject::connect(parameter, &Gui::EditableDatumLabel::finishEditingOnAllOVPs, [this]() {
+                finishEditingOnAllOVPs();
+            });
         }
     }
 

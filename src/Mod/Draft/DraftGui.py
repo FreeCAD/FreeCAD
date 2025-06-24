@@ -432,7 +432,10 @@ class DraftToolBar:
         QtCore.QObject.connect(self.zValue,QtCore.SIGNAL("valueChanged(double)"),self.changeZValue)
         QtCore.QObject.connect(self.lengthValue,QtCore.SIGNAL("valueChanged(double)"),self.changeLengthValue)
         QtCore.QObject.connect(self.angleValue,QtCore.SIGNAL("valueChanged(double)"),self.changeAngleValue)
-        QtCore.QObject.connect(self.angleLock,QtCore.SIGNAL("stateChanged(int)"),self.toggleAngle)
+        if hasattr(self.angleLock, "checkStateChanged"): # Qt version >= 6.7.0
+            QtCore.QObject.connect(self.angleLock,QtCore.SIGNAL("checkStateChanged(int)"),self.toggleAngle)
+        else: # Qt version < 6.7.0
+            QtCore.QObject.connect(self.angleLock,QtCore.SIGNAL("stateChanged(int)"),self.toggleAngle)
         QtCore.QObject.connect(self.radiusValue,QtCore.SIGNAL("valueChanged(double)"),self.changeRadiusValue)
         QtCore.QObject.connect(self.xValue,QtCore.SIGNAL("returnPressed()"),self.checkx)
         QtCore.QObject.connect(self.yValue,QtCore.SIGNAL("returnPressed()"),self.checky)
@@ -457,15 +460,22 @@ class DraftToolBar:
         QtCore.QObject.connect(self.orientWPButton,QtCore.SIGNAL("pressed()"),self.orientWP)
         QtCore.QObject.connect(self.undoButton,QtCore.SIGNAL("pressed()"),self.undoSegment)
         QtCore.QObject.connect(self.selectButton,QtCore.SIGNAL("pressed()"),self.selectEdge)
-        QtCore.QObject.connect(self.continueCmd,QtCore.SIGNAL("stateChanged(int)"),self.setContinue)
-        QtCore.QObject.connect(self.chainedModeCmd,QtCore.SIGNAL("stateChanged(int)"),self.setChainedMode)
-
-        QtCore.QObject.connect(self.isCopy,QtCore.SIGNAL("stateChanged(int)"),self.setCopymode)
-        QtCore.QObject.connect(self.isSubelementMode, QtCore.SIGNAL("stateChanged(int)"), self.setSubelementMode)
-
-        QtCore.QObject.connect(self.isRelative,QtCore.SIGNAL("stateChanged(int)"),self.setRelative)
-        QtCore.QObject.connect(self.isGlobal,QtCore.SIGNAL("stateChanged(int)"),self.setGlobal)
-        QtCore.QObject.connect(self.makeFace,QtCore.SIGNAL("stateChanged(int)"),self.setMakeFace)
+        if hasattr(self.continueCmd, "checkStateChanged"): # Qt version >= 6.7.0
+            QtCore.QObject.connect(self.continueCmd,QtCore.SIGNAL("checkStateChanged(int)"),self.setContinue)
+            QtCore.QObject.connect(self.chainedModeCmd,QtCore.SIGNAL("checkStateChanged(int)"),self.setChainedMode)
+            QtCore.QObject.connect(self.isCopy,QtCore.SIGNAL("checkStateChanged(int)"),self.setCopymode)
+            QtCore.QObject.connect(self.isSubelementMode, QtCore.SIGNAL("checkStateChanged(int)"), self.setSubelementMode)
+            QtCore.QObject.connect(self.isRelative,QtCore.SIGNAL("checkStateChanged(int)"),self.setRelative)
+            QtCore.QObject.connect(self.isGlobal,QtCore.SIGNAL("checkStateChanged(int)"),self.setGlobal)
+            QtCore.QObject.connect(self.makeFace,QtCore.SIGNAL("checkStateChanged(int)"),self.setMakeFace)
+        else: # Qt version < 6.7.0
+            QtCore.QObject.connect(self.continueCmd,QtCore.SIGNAL("stateChanged(int)"),self.setContinue)
+            QtCore.QObject.connect(self.chainedModeCmd,QtCore.SIGNAL("stateChanged(int)"),self.setChainedMode)
+            QtCore.QObject.connect(self.isCopy,QtCore.SIGNAL("stateChanged(int)"),self.setCopymode)
+            QtCore.QObject.connect(self.isSubelementMode, QtCore.SIGNAL("stateChanged(int)"), self.setSubelementMode)
+            QtCore.QObject.connect(self.isRelative,QtCore.SIGNAL("stateChanged(int)"),self.setRelative)
+            QtCore.QObject.connect(self.isGlobal,QtCore.SIGNAL("stateChanged(int)"),self.setGlobal)
+            QtCore.QObject.connect(self.makeFace,QtCore.SIGNAL("stateChanged(int)"),self.setMakeFace)
         QtCore.QObject.connect(self.baseWidget,QtCore.SIGNAL("resized()"),self.relocate)
         QtCore.QObject.connect(self.baseWidget,QtCore.SIGNAL("retranslate()"),self.retranslateUi)
 
@@ -962,7 +972,12 @@ class DraftToolBar:
     #     gui_stretch.py
     def setRelative(self, val=-1):
         if val < 0:
-            QtCore.QObject.disconnect(self.isRelative,
+            if hasattr(self.isRelative, "checkStateChanged"): # Qt version >= 6.7.0
+                QtCore.QObject.disconnect(self.isRelative,
+                                      QtCore.SIGNAL("checkStateChanged(int)"),
+                                      self.setRelative)
+            else: # Qt version < 6.7.0
+                QtCore.QObject.disconnect(self.isRelative,
                                       QtCore.SIGNAL("stateChanged(int)"),
                                       self.setRelative)
             if val == -1:
@@ -972,9 +987,14 @@ class DraftToolBar:
                 val = params.get_param("RelativeMode")
                 self.isRelative.setChecked(val)
                 self.relativeMode = val
-            QtCore.QObject.connect(self.isRelative,
-                                   QtCore.SIGNAL("stateChanged(int)"),
-                                   self.setRelative)
+            if hasattr(self.isRelative, "checkStateChanged"): # Qt version >= 6.7.0
+                QtCore.QObject.disconnect(self.isRelative,
+                                      QtCore.SIGNAL("checkStateChanged(int)"),
+                                      self.setRelative)
+            else: # Qt version < 6.7.0
+                QtCore.QObject.disconnect(self.isRelative,
+                                      QtCore.SIGNAL("stateChanged(int)"),
+                                      self.setRelative)
         else:
             params.set_param("RelativeMode", bool(val))
             self.relativeMode = bool(val)
