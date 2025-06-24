@@ -131,7 +131,7 @@
            </font>
           </property>
           <property name="toolTip">
-           <string>If checked, the cut line will be drawn on the source view. If unchecked, only the change marks, arrows and symbols will be displayed.</string>
+           <string>Draws cut line on the source view. Otherwise, only the change marks, arrows and symbols will be displayed.</string>
           </property>
           <property name="text">
            <string>Include cut line in section annotation</string>
