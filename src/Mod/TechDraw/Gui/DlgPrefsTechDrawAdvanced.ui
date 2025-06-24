@@ -498,7 +498,7 @@ Then you need to increase the tile limit.</string>
    <item>
     <widget class="QGroupBox" name="gbBehaviour">
      <property name="toolTip">
-      <string>Some combinations of OS and navigation style key bindings may conflict with the default modifier keys for balloon dragging and view snapping override. You can make adjustments here to find a non-conflicting key binding.</string>
+      <string>Choose non-conflicting key bindings as some combinations of OS and navigation style key bindings may conflict with the default modifier keys for balloon dragging and view snapping override.</string>
      </property>
      <property name="title">
       <string>Behaviour Overrides</string>
