@@ -338,7 +338,7 @@ Fast, but result is a collection of short straight lines.</string>
            </font>
           </property>
           <property name="toolTip">
-           <string>Show hidden equal parameterization lines</string>
+           <string>Shows hidden equal parameterization lines</string>
           </property>
           <property name="text">
            <string>Show UV ISO lines</string>
