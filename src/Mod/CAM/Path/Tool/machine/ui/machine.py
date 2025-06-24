@@ -46,6 +46,10 @@ class MachinePropertiesDialog(QtGui.QDialog):
         general_group = QtGui.QGroupBox(translate("CAM", "General"))
         general_layout = QtGui.QFormLayout()
 
+        self.machine_id_label = QtGui.QLabel(machine.get_id())
+        self.machine_id_label.setTextInteractionFlags(QtCore.Qt.TextSelectableByMouse)
+        general_layout.addRow(translate("CAM", "ID:"), self.machine_id_label)
+
         self.label_edit = QtGui.QLineEdit(machine.label)
         general_layout.addRow(translate("CAM", "Label:"), self.label_edit)
 

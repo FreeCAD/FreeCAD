@@ -26,6 +26,7 @@ from ...camassets import cam_assets
 from ..models import Machine, Lathe, Mill
 from .lathe import LathePropertiesDialog
 from .mill import MillPropertiesDialog
+from ...toolbit.ui.tablecell import CompactTwoLineTableCell
 
 
 translate = FreeCAD.Qt.translate
@@ -41,22 +42,9 @@ class MachinePreferencesPage(QtGui.QWidget):
         self.layout = QtGui.QVBoxLayout(self)
 
         # Machine list
-        self.machine_list = QtGui.QTableWidget()
-        self.machine_list.setColumnCount(3)
-        self.machine_list.setHorizontalHeaderLabels(
-            [
-                translate("CAM_PreferencesMachine", "Type"),
-                translate("CAM_PreferencesMachine", "Label"),
-                translate("CAM_PreferencesMachine", "ID"),
-            ]
-        )
-        self.machine_list.horizontalHeader().setStretchLastSection(True)
-        self.machine_list.setSelectionBehavior(QtGui.QAbstractItemView.SelectRows)
+        self.machine_list = QtGui.QListWidget()
         self.machine_list.setSelectionMode(QtGui.QAbstractItemView.SingleSelection)
-        self.machine_list.verticalHeader().setVisible(False)
-        self.machine_list.setShowGrid(False)
-        self.machine_list.setEditTriggers(QtGui.QAbstractItemView.NoEditTriggers)
-        self.machine_list.cellDoubleClicked.connect(self.edit_machine)
+        self.machine_list.itemDoubleClicked.connect(self.edit_machine)
         self.machine_list.itemSelectionChanged.connect(self._update_button_states)
         self.layout.addWidget(self.machine_list)
 
@@ -82,25 +70,30 @@ class MachinePreferencesPage(QtGui.QWidget):
 
     def _update_button_states(self):
         """Update the enabled state of the edit and remove buttons."""
-        row_selected = self.machine_list.currentRow() >= 0
-        self.edit_btn.setEnabled(row_selected)
-        self.remove_btn.setEnabled(row_selected)
+        item_selected = self.machine_list.currentItem() is not None
+        self.edit_btn.setEnabled(item_selected)
+        self.remove_btn.setEnabled(item_selected)
 
     def populate_machine_list(self):
         """Update the machine list display."""
-        selected_row = self.machine_list.currentRow()
+        selected_item = self.machine_list.currentItem()
 
-        self.machine_list.setRowCount(0)
-        for row, machine in enumerate(self.machines):
-            self.machine_list.insertRow(row)
-            self.machine_list.setItem(row, 0, QtGui.QTableWidgetItem(machine.get_type()))
-            self.machine_list.setItem(row, 1, QtGui.QTableWidgetItem(machine.label))
-            self.machine_list.setItem(row, 2, QtGui.QTableWidgetItem(machine.get_id()))
+        self.machine_list.clear()
+        for machine in self.machines:
+            item = QtGui.QListWidgetItem(self.machine_list)
+            cell = CompactTwoLineTableCell()
+            cell.set_upper_text(machine.label)
+            cell.set_lower_text(machine.summary)
+            item.setSizeHint(cell.sizeHint())
+            self.machine_list.addItem(item)
+            self.machine_list.setItemWidget(item, cell)
 
-        if selected_row <= self.machine_list.rowCount() - 1:
-            self.machine_list.selectRow(selected_row)
-        elif self.machine_list.rowCount():
-            self.machine_list.selectRow(0)
+        if selected_item and selected_item in [
+            self.machine_list.item(i) for i in range(self.machine_list.count())
+        ]:
+            self.machine_list.setCurrentItem(selected_item)
+        elif self.machine_list.count():
+            self.machine_list.setCurrentRow(0)
         self._update_button_states()
 
     def add_machine(self):
@@ -142,10 +135,11 @@ class MachinePreferencesPage(QtGui.QWidget):
 
     def edit_machine(self):
         """Edit the selected machine using its corresponding dialog."""
-        current_row = self.machine_list.currentRow()
-        if current_row < 0:
+        current_item = self.machine_list.currentItem()
+        if not current_item:
             return
 
+        current_row = self.machine_list.row(current_item)
         machine = self.machines[current_row]
         machine_type = machine.get_type()
         if machine_type == "Lathe":
@@ -159,9 +153,11 @@ class MachinePreferencesPage(QtGui.QWidget):
 
     def remove_machine(self):
         """Remove the selected machine after confirmation."""
-        current_row = self.machine_list.currentRow()
-        if current_row < 0:
+        current_item = self.machine_list.currentItem()
+        if not current_item:
             return
+
+        current_row = self.machine_list.row(current_item)
 
         reply = QtGui.QMessageBox.question(
             self,

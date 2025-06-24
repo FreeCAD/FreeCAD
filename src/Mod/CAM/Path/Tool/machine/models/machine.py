@@ -176,6 +176,19 @@ class Machine(Asset, ABC):
         self._label = value
 
     @property
+    def summary(self) -> str:
+        """
+        Returns a summary of the machine parameters for display in the UI.
+
+        Returns:
+            Summary string.
+        """
+        return FreeCAD.Qt.translate(
+            "CAM",
+            f"{len(self._axes)}-axis {self.get_type()} with " f"{len(self._spindles)} spindles",
+        )
+
+    @property
     def axes(self) -> Dict[str, Axis]:
         """Returns the machine's axes."""
         return self._axes
