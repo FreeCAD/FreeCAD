@@ -840,7 +840,7 @@ CmdTechDrawExtensionVertexAtIntersection::CmdTechDrawExtensionVertexAtIntersecti
     sGroup = QT_TR_NOOP("TechDraw");
     sMenuText = QT_TR_NOOP("Add cosmetic intersection vertices");
     sToolTipText =
-        QT_TR_NOOP("Adds cosmetic vertices at the intersection(s) of selected edges:<br>\
+        QT_TR_NOOP("Adds cosmetic vertices at the intersections of selected edges")
 - Select two edges<br>\
 - Click this tool");
     sWhatsThis = "TechDraw_ExtensionVertexAtIntersection";
