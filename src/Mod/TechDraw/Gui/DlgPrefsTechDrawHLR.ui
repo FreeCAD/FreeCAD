@@ -311,7 +311,7 @@ Fast, but result is a collection of short straight lines.</string>
            </font>
           </property>
           <property name="toolTip">
-           <string>Make lines of equal parameterization</string>
+           <string>Makes lines of equal parameterization</string>
           </property>
           <property name="text">
            <string>Show UV ISO lines</string>
