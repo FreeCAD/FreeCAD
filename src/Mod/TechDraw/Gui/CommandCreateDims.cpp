@@ -1405,7 +1405,7 @@ CmdTechDrawDimension::CmdTechDrawDimension()
 {
     sAppModule = "TechDraw";
     sGroup = QT_TR_NOOP("TechDraw");
-    sMenuText = QT_TR_NOOP("Insert dimension");
+    sMenuText = QT_TR_NOOP("Dimension");
     sToolTipText = QT_TR_NOOP("Dimensions contextually based on your selection.\n"
         "Depending on your selection you might have several dimensions available. You can cycle through them using the M key.\n"
         "Left clicking on empty space will validate the current dimension. Right clicking or pressing Esc will cancel.");
