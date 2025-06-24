@@ -75,7 +75,7 @@ CmdTechDrawHatch::CmdTechDrawHatch()
     sAppModule      = "TechDraw";
     sGroup          = QT_TR_NOOP("TechDraw");
     sMenuText       = QT_TR_NOOP("Image hatch");
-    sToolTipText    = QT_TR_NOOP("Applies a hatch pattern to a selected face using an image file");
+    sToolTipText    = QT_TR_NOOP("Applies a hatch pattern to the selected faces using an image file");
     sWhatsThis      = "TechDraw_Hatch";
     sStatusTip      = sToolTipText;
     sPixmap         = "actions/TechDraw_Hatch";
@@ -170,7 +170,7 @@ CmdTechDrawGeometricHatch::CmdTechDrawGeometricHatch()
     sAppModule      = "TechDraw";
     sGroup          = QT_TR_NOOP("TechDraw");
     sMenuText       = QT_TR_NOOP("Geometric hatch");
-    sToolTipText    = QT_TR_NOOP("Applies a geometric hatch pattern to a selected face");
+    sToolTipText    = QT_TR_NOOP("Applies a geometric hatch pattern to the selected faces");
     sWhatsThis      = "TechDraw_GeometricHatch";
     sStatusTip      = sToolTipText;
     sPixmap         = "actions/TechDraw_GeometricHatch";
