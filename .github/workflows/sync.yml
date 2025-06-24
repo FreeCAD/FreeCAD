@@ -1,0 +1,31 @@
+name: Rebase Upstream
+on:
+  schedule:
+  - cron: "0 23 * * *"  # run once a a day
+  workflow_dispatch:   # run manually
+
+jobs:
+  rebase:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout your repo
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GH_PAT }}
+          fetch-depth: 50  # Necessario per il rebase
+          ref: main
+
+      - name: Add upstream remote
+        run: |
+          git remote add upstream https://github.com/FreeCAD/FreeCAD.git
+          git fetch --shallow-since="2025-05-30" upstream main
+      - name: Rebase your branch onto upstream
+        run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+          git checkout main
+          git rebase upstream/main
+      - name: Push rebased branch
+        run: |
+          git push origin main --force-with-lease --tags
