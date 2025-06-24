@@ -2256,7 +2256,7 @@ CmdTechDrawLandmarkDimension::CmdTechDrawLandmarkDimension()
 {
     sAppModule = "TechDraw";
     sGroup = QT_TR_NOOP("TechDraw");
-    sMenuText = QT_TR_NOOP("Landmark dimension - EXPERIMENTAL");
+    sMenuText = QT_TR_NOOP("Landmark dimension");
     sToolTipText = QT_TR_NOOP("Inserts a landmark dimension (experimental feature). Use with caution.");
     sWhatsThis = "TechDraw_LandmarkDimension";
     sStatusTip = sToolTipText;
