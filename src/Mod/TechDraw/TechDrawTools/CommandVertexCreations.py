@@ -58,7 +58,7 @@ class CommandVertexCreationGroup:
         return {'Pixmap': 'TechDraw_ExtensionVertexAtIntersection.svg',
                 'Accel': "",
                 'MenuText': QT_TRANSLATE_NOOP("TechDraw_ExtensionVertexAtIntersection","Add cosmetic intersection vertices"),
-                'ToolTip': QT_TRANSLATE_NOOP("TechDraw_ExtensionVertexAtIntersection", "Add cosmetic vertices at the intersection(s) of selected edges:<br>\
+                'ToolTip': QT_TRANSLATE_NOOP("TechDraw_ExtensionVertexAtIntersection", "Adds cosmetic vertices at the intersectionss of selected edges")}
                         - Select two edges<br>\
                         - Click this tool")}
 
