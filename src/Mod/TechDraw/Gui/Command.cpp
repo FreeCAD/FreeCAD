@@ -1337,7 +1337,7 @@ CmdTechDrawClipGroup::CmdTechDrawClipGroup() : Command("TechDraw_ClipGroup")
 {
     // setting the
     sGroup = QT_TR_NOOP("TechDraw");
-    sMenuText = QT_TR_NOOP("Insert clip group");
+    sMenuText = QT_TR_NOOP("Clip group");
     sToolTipText = QT_TR_NOOP("Inserts a new clip group for the selected view");
     sWhatsThis = "TechDraw_ClipGroup";
     sStatusTip = sToolTipText;
