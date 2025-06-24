@@ -690,7 +690,7 @@ CmdTechDrawExtensionPosVertChainDimension::CmdTechDrawExtensionPosVertChainDimen
 {
     sAppModule      = "TechDraw";
     sGroup          = QT_TR_NOOP("TechDraw");
-    sMenuText       = QT_TR_NOOP("Position vertical chain dimensions");
+    sMenuText       = QT_TR_NOOP("Align chain dimensions vertically");
     sToolTipText    = QT_TR_NOOP("Aligns the vertical dimensions to create a chain dimension:<br>\
 - Select two or more vertical dimensions<br>\
 - The first dimension defines the position<br>\
