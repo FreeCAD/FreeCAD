@@ -113,7 +113,8 @@
         </sizepolicy>
        </property>
        <property name="toolTip">
-        <string>If crop image is checked, crop captured image to this height.</string>
+        <string>Crops captured image to this height</string>
+
        </property>
        <property name="alignment">
         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
