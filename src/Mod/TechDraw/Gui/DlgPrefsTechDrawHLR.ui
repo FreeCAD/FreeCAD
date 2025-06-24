@@ -170,7 +170,7 @@ Fast, but result is a collection of short straight lines.</string>
            </font>
           </property>
           <property name="toolTip">
-           <string>Show hidden hard and outline edges</string>
+           <string>Shows hidden hard and outline edges</string>
           </property>
           <property name="text">
            <string>Show hard lines</string>
