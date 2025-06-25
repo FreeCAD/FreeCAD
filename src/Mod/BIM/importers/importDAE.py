@@ -54,6 +54,7 @@ else:
         return text
     # \endcond
 
+
 def xml_escape(text: str, entities: dict[str, str] = None) -> str:
     """Escape text for XML.
 
@@ -197,6 +198,7 @@ def read(filename):
                             # be within [0, 1]. OK.
                             setattr(fc_mat, fc_field, getattr(material_node.effect, col_field))
                         except ValueError:
+                            # The collada value is not compatible with FreeCAD.
                             pass
                         except TypeError:
                             # color is not a tuple but a texture.
