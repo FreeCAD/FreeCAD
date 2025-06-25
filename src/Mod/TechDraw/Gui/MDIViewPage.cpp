@@ -87,10 +87,10 @@ MDIViewPage::MDIViewPage(ViewProviderPage* pageVp, Gui::Document* doc, QWidget* 
 {
     setMouseTracking(true);
 
-    m_toggleKeepUpdatedAction = new QAction(tr("Toggle &Keep Updated"), this);
+    m_toggleKeepUpdatedAction = new QAction(tr("Toggle &keep updated"), this);
     connect(m_toggleKeepUpdatedAction, &QAction::triggered, this, &MDIViewPage::toggleKeepUpdated);
 
-    m_toggleFrameAction = new QAction(tr("Toggle &Frames"), this);
+    m_toggleFrameAction = new QAction(tr("Toggle &frames"), this);
     connect(m_toggleFrameAction, &QAction::triggered, this, &MDIViewPage::toggleFrame);
 
     m_exportSVGAction = new QAction(tr("&Export SVG"), this);
@@ -102,7 +102,7 @@ MDIViewPage::MDIViewPage(ViewProviderPage* pageVp, Gui::Document* doc, QWidget* 
     m_exportPDFAction = new QAction(tr("Export PDF"), this);
     connect(m_exportPDFAction, &QAction::triggered, this, qOverload<>(&MDIViewPage::savePDF));
 
-    m_printAllAction = new QAction(tr("Print All Pages"), this);
+    m_printAllAction = new QAction(tr("Print all pages"), this);
     connect(m_printAllAction, &QAction::triggered, this, qOverload<>(&MDIViewPage::printAllPages));
 
     isSelectionBlocked = false;
@@ -488,7 +488,7 @@ void MDIViewPage::saveSVG()
 {
     QStringList filter;
     filter << QStringLiteral("SVG (*.svg)");
-    filter << QObject::tr("All Files (*.*)");
+    filter << QObject::tr("All files (*.*)");
     QString fn =
         Gui::FileDialog::getSaveFileName(Gui::getMainWindow(), QObject::tr("Export page as SVG"),
                                          defaultFileName(), filter.join(QLatin1String(";;")));
@@ -509,7 +509,7 @@ void MDIViewPage::saveDXF()
 {
     QStringList filter;
     filter << QStringLiteral("DXF (*.dxf)");
-    filter << QObject::tr("All Files (*.*)");
+    filter << QObject::tr("All files (*.*)");
     QString fn =
         Gui::FileDialog::getSaveFileName(Gui::getMainWindow(), QObject::tr("Export page as DXF"),
                                          defaultFileName(), filter.join(QLatin1String(";;")));
