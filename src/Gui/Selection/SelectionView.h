@@ -27,6 +27,10 @@
 #include "Selection.h"
 #include <QMenu>
 #include <QPointer>
+#include <map>
+#include <set>
+#include <string>
+#include <vector>
 
 
 class QListWidget;
@@ -37,6 +41,9 @@ class QLabel;
 namespace App {
 class DocumentObject;
 }
+
+struct ElementInfo;
+struct SubMenuInfo;
 
 namespace Gui {
 namespace DockWnd {
@@ -148,6 +155,22 @@ protected:
     PickData onPicked(QAction *, const std::vector<PickData> &sels);
 
 private:
+    void processSelections(std::vector<PickData> &selections, std::map<std::string, SubMenuInfo> &menus);
+    void buildMenuStructure(std::map<std::string, SubMenuInfo> &menus, const std::vector<PickData> &selections);
+    
+    App::DocumentObject* getSubObject(const PickData &sel);
+    std::string extractElementType(const PickData &sel);
+    std::string createObjectKey(const PickData &sel);
+    QIcon getOrCreateIcon(App::DocumentObject* sobj, std::map<App::DocumentObject*, QIcon> &icons);
+    void addGeoFeatureTypes(App::DocumentObject* sobj, std::map<std::string, SubMenuInfo> &menus, std::set<std::string> &createdTypes);
+    void addWholeObjectSelection(const PickData &sel, App::DocumentObject* sobj, std::vector<PickData> &selections, 
+                               std::map<std::string, SubMenuInfo> &menus, const QIcon &icon);
+    bool shouldGroupMenu(const SubMenuInfo &info);
+    void createFlatMenu(ElementInfo &elementInfo, QMenu *parentMenu, const std::string &label, 
+                       const std::string &elementType, const std::vector<PickData> &selections);
+    void createGroupedMenu(ElementInfo &elementInfo, QMenu *parentMenu, const std::string &label, 
+                          const std::string &elementType, const std::vector<PickData> &selections);
+
     QPointer<QMenu> activeMenu;
     QPointer<QAction> activeAction;
     const std::vector<PickData>* currentSelections;

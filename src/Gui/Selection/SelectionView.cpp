@@ -31,11 +31,15 @@
 #include <QTextStream>
 #include <QToolButton>
 #include <QVBoxLayout>
+#include <set>
 #endif
 
 #include <App/ComplexGeoData.h>
 #include <App/Document.h>
+#include <App/ElementNamingUtils.h>
 #include <App/GeoFeature.h>
+#include <App/IndexedName.h>
+#include <Base/Console.h>
 
 #include "SelectionView.h"
 #include "Application.h"
@@ -727,75 +731,100 @@ struct SubMenuInfo {
 PickData SelectionMenu::doPick(const std::vector<PickData> &sels)
 {
     clear();
+    Gui::Selection().setPickGeometryActive(true);
 
-    // store reference to selections for use in onHover
-    currentSelections = &sels;
+    std::vector<PickData> selsCopy = sels;
+    currentSelections = &selsCopy;
 
-    std::map<std::string, std::vector<int>> typeGroups;
-    
-    // Group selections by element type
-    for (int i = 0; i < (int)sels.size(); ++i) {
-        const auto &sel = sels[i];
-        std::string elementType = "Other";
-        
-        // Extract element type from element name
-        if (!sel.element.empty()) {
-            if (sel.element.find("Face") == 0) elementType = "Face";
-            else if (sel.element.find("Edge") == 0) elementType = "Edge";
-            else if (sel.element.find("Vertex") == 0) elementType = "Vertex";
-            else if (sel.element.find("Wire") == 0) elementType = "Wire";
-            else if (sel.element.find("Shell") == 0) elementType = "Shell";
-            else if (sel.element.find("Solid") == 0) elementType = "Solid";
-        }
-        
-        typeGroups[elementType].push_back(i);
-    }
-
-    // Create menu structure
-    for (const auto &typeGroup : typeGroups) {
-        const std::string &typeName = typeGroup.first;
-        const std::vector<int> &indices = typeGroup.second;
-        
-        if (indices.empty()) continue;
-        
-        QMenu *typeMenu = nullptr;
-        if (typeGroups.size() > 1) {
-            typeMenu = addMenu(QString::fromUtf8(typeName.c_str()));
-        }
-        
-        for (int idx : indices) {
-            const auto &sel = sels[idx];
-            
-            QString text = QString::fromUtf8(sel.obj->Label.getValue());
-            if (!sel.element.empty()) {
-                text += QString::fromLatin1(" (") + QString::fromUtf8(sel.element.c_str()) + QString::fromLatin1(")");
-            }
-            
-            // Get icon from view provider
-            QIcon icon;
-            auto vp = Application::Instance->getViewProvider(sel.obj);
-            if (vp) {
-                icon = vp->getIcon();
-            }
-            
-            QAction *action;
-            if (typeMenu) {
-                action = typeMenu->addAction(icon, text);
-                // Connect submenu hovered signals as well
-                connect(typeMenu, &QMenu::hovered, this, &SelectionMenu::onHover);
-            } else {
-                action = addAction(icon, text);
-            }
-            action->setData(idx);
-        }
-    }
+    std::map<std::string, SubMenuInfo> menus;
+    processSelections(selsCopy, menus);
+    buildMenuStructure(menus, selsCopy);
 
     QAction* picked = this->exec(QCursor::pos());
-    return onPicked(picked, sels);
+    return onPicked(picked, selsCopy);
+}
+
+void SelectionMenu::processSelections(std::vector<PickData> &selections, std::map<std::string, SubMenuInfo> &menus)
+{
+    std::map<App::DocumentObject*, QIcon> icons;
+    std::set<std::string> createdElementTypes;
+    std::set<std::string> processedItems;
+    
+    for (int i = 0; i < (int)selections.size(); ++i) {
+        const auto &sel = selections[i];
+        
+        App::DocumentObject* sobj = getSubObject(sel);
+        std::string elementType = extractElementType(sel);
+        std::string objKey = createObjectKey(sel);
+        std::string itemId = elementType + "|" + std::string(sobj->Label.getValue()) + "|" + sel.subName;
+        
+        if (processedItems.find(itemId) != processedItems.end()) {
+            continue;
+        }
+        processedItems.insert(itemId);
+        
+        QIcon icon = getOrCreateIcon(sobj, icons);
+        
+        auto &elementInfo = menus[elementType].items[sobj->Label.getValue()][objKey];
+        elementInfo.icon = icon;
+        elementInfo.indices.push_back(i);
+        
+        addGeoFeatureTypes(sobj, menus, createdElementTypes);
+        addWholeObjectSelection(sel, sobj, selections, menus, icon);
+    }
+}
+
+void SelectionMenu::buildMenuStructure(std::map<std::string, SubMenuInfo> &menus, const std::vector<PickData> &selections)
+{
+    std::vector<std::string> preferredOrder = {"Object", "Solid", "Face", "Edge", "Vertex", "Wire", "Shell", "Compound", "CompSolid"};
+    std::vector<std::map<std::string, SubMenuInfo>::iterator> menuArray;
+    menuArray.reserve(menus.size());
+    
+    for (const auto& category : preferredOrder) {
+        auto it = menus.find(category);
+        if (it != menus.end()) {
+            menuArray.push_back(it);
+        }
+    }
+    
+    for (auto it = menus.begin(); it != menus.end(); ++it) {
+        if (std::find(preferredOrder.begin(), preferredOrder.end(), it->first) == preferredOrder.end()) {
+            menuArray.push_back(it);
+        }
+    }
+        
+    for (auto it : menuArray) {
+        auto &v = *it;
+        auto &info = v.second;
+        
+        if (info.items.empty()) {
+            continue;
+        }
+
+        info.menu = addMenu(QString::fromUtf8(v.first.c_str()));
+        bool groupMenu = shouldGroupMenu(info);
+
+        for (auto &vv : info.items) {
+            const std::string &label = vv.first;
+
+            for (auto &vvv : vv.second) {
+                auto &elementInfo = vvv.second;
+                
+                if (!groupMenu) {
+                    createFlatMenu(elementInfo, info.menu, label, v.first, selections);
+                } else {
+                    createGroupedMenu(elementInfo, info.menu, label, v.first, selections);
+                }
+            }
+        }
+    }
 }
 
 PickData SelectionMenu::onPicked(QAction *picked, const std::vector<PickData> &sels)
 {
+    // Clear the PickGeometry active flag when menu is done
+    Gui::Selection().setPickGeometryActive(false);
+    
     Gui::Selection().rmvPreselect();
     if (!picked)
         return PickData{};
@@ -831,13 +860,14 @@ void SelectionMenu::onHover(QAction *action)
     if (!sel.obj)
         return;
 
-    // extract just the element name (e.g., "Face1") from subName for preselection
-    std::string elementName = sel.element;
-    if (!elementName.empty()) {
-        // use TreeView as message source for menu hover
+    // For hover preselection, use the whole object path like solids do
+    // This provides consistent behavior and better highlighting for assembly elements
+    if (!sel.subName.empty()) {
+        // Always use the full original path for consistent behavior
+        // This matches how solids behave and provides better highlighting
         Gui::Selection().setPreselect(sel.docName.c_str(), 
                                       sel.objName.c_str(), 
-                                      elementName.c_str(),
+                                      sel.subName.c_str(),
                                       0, 0, 0, 
                                       SelectionChanges::MsgSource::TreeView);
     }
@@ -852,6 +882,207 @@ void SelectionMenu::leaveEvent(QEvent *e)
 {
     Gui::Selection().rmvPreselect();
     QMenu::leaveEvent(e);
+}
+
+App::DocumentObject* SelectionMenu::getSubObject(const PickData &sel)
+{
+    App::DocumentObject* sobj = sel.obj;
+    if (!sel.subName.empty()) {
+        sobj = sel.obj->getSubObject(sel.subName.c_str());
+        if (!sobj) {
+            sobj = sel.obj;
+        }
+    }
+    return sobj;
+}
+
+std::string SelectionMenu::extractElementType(const PickData &sel)
+{
+    std::string actualElement;
+    
+    if (!sel.element.empty()) {
+        actualElement = sel.element;
+    } else if (!sel.subName.empty()) {
+        const char *elementName = Data::findElementName(sel.subName.c_str());
+        if (elementName && elementName[0]) {
+            actualElement = elementName;
+        }
+    }
+    
+    if (!actualElement.empty()) {
+        std::size_t pos = actualElement.find_first_of("0123456789");
+        if (pos != std::string::npos) {
+            return actualElement.substr(0, pos);
+        }
+        return actualElement;
+    }
+    
+    return "Other";
+}
+
+std::string SelectionMenu::createObjectKey(const PickData &sel)
+{
+    std::string objKey = std::string(sel.objName);
+    if (!sel.subName.empty()) {
+        std::string subNameNoElement = sel.subName;
+        const char *elementName = Data::findElementName(sel.subName.c_str());
+        if (elementName && elementName[0]) {
+            std::string elementStr = elementName;
+            std::size_t elementPos = subNameNoElement.rfind(elementStr);
+            if (elementPos != std::string::npos) {
+                subNameNoElement = subNameNoElement.substr(0, elementPos);
+            }
+        }
+        objKey += "." + subNameNoElement;
+    }
+    return objKey;
+}
+
+QIcon SelectionMenu::getOrCreateIcon(App::DocumentObject* sobj, std::map<App::DocumentObject*, QIcon> &icons)
+{
+    auto &icon = icons[sobj];
+    if (icon.isNull()) {
+        auto vp = Application::Instance->getViewProvider(sobj);
+        if (vp)
+            icon = vp->getIcon();
+    }
+    return icon;
+}
+
+void SelectionMenu::addGeoFeatureTypes(App::DocumentObject* sobj, std::map<std::string, SubMenuInfo> &menus, std::set<std::string> &createdTypes)
+{
+    auto geoFeature = dynamic_cast<App::GeoFeature*>(sobj->getLinkedObject(true));
+    if (geoFeature) {
+        std::vector<const char*> types = geoFeature->getElementTypes(true);
+        for (const char* type : types) {
+            if (type && type[0] && createdTypes.find(type) == createdTypes.end()) {
+                menus[type];
+                createdTypes.insert(type);
+            }
+        }
+    }
+}
+
+void SelectionMenu::addWholeObjectSelection(const PickData &sel, App::DocumentObject* sobj, 
+                                          std::vector<PickData> &selections, std::map<std::string, SubMenuInfo> &menus, const QIcon &icon)
+{
+    if (sel.subName.empty()) return;
+    
+    std::string actualElement = extractElementType(sel) != "Other" ? sel.element : "";
+    if (actualElement.empty() && !sel.subName.empty()) {
+        const char *elementName = Data::findElementName(sel.subName.c_str());
+        if (elementName) actualElement = elementName;
+    }
+    if (actualElement.empty()) return;
+    
+    bool shouldAdd = false;
+    if (sobj && sobj != sel.obj) {
+        std::string typeName = sobj->getTypeId().getName();
+        if (typeName == "App::Part" || typeName == "PartDesign::Body") {
+            shouldAdd = true;
+        } else {
+            auto geoFeature = dynamic_cast<App::GeoFeature*>(sobj->getLinkedObject(true));
+            if (geoFeature) {
+                std::vector<const char*> types = geoFeature->getElementTypes(true);
+                if (types.size() > 1) {
+                    shouldAdd = true;
+                }
+            }
+        }
+    }
+    
+    if (shouldAdd) {
+        std::string subNameStr = sel.subName;
+        std::size_t lastDot = subNameStr.find_last_of('.');
+        if (lastDot != std::string::npos && lastDot > 0) {
+            std::size_t prevDot = subNameStr.find_last_of('.', lastDot - 1);
+            std::string subObjName;
+            if (prevDot != std::string::npos) {
+                subObjName = subNameStr.substr(prevDot + 1, lastDot - prevDot - 1);
+            } else {
+                subObjName = subNameStr.substr(0, lastDot);
+            }
+            
+            if (!subObjName.empty()) {
+                std::string wholeObjKey = std::string(sel.objName) + "." + subObjName + ".";
+                auto &objItems = menus["Object"].items[sobj->Label.getValue()];
+                if (objItems.find(wholeObjKey) == objItems.end()) {
+                    PickData wholeObjSel = sel;
+                    wholeObjSel.subName = subObjName + ".";
+                    wholeObjSel.element = "";
+                    
+                    selections.push_back(wholeObjSel);
+                    
+                    auto &wholeObjInfo = objItems[wholeObjKey];
+                    wholeObjInfo.icon = icon;
+                    wholeObjInfo.indices.push_back(selections.size() - 1);
+                }
+            }
+        }
+    }
+}
+
+bool SelectionMenu::shouldGroupMenu(const SubMenuInfo &info)
+{
+    if (info.items.size() > 20) {
+        return true;
+    }
+    
+    std::size_t objCount = 0;
+    std::size_t count = 0;
+    for (auto &vv : info.items) {
+        objCount += vv.second.size();
+        for (auto &vvv : vv.second) 
+            count += vvv.second.indices.size();
+        if (count > 5 && objCount > 1) {
+            return true;
+        }
+    }
+    return false;
+}
+
+void SelectionMenu::createFlatMenu(ElementInfo &elementInfo, QMenu *parentMenu, const std::string &label, 
+                                 const std::string &elementType, const std::vector<PickData> &selections)
+{
+    for (int idx : elementInfo.indices) {
+        const auto &sel = selections[idx];
+        QString text = QString::fromUtf8(label.c_str());
+        if (!sel.element.empty()) {
+            text += QString::fromLatin1(" (") + QString::fromUtf8(sel.element.c_str()) + QString::fromLatin1(")");
+        } else if (elementType == "Object" && !sel.subName.empty() && sel.subName.back() == '.') {
+            text += QString::fromLatin1(" (Whole Object)");
+        }
+        QAction *action = parentMenu->addAction(elementInfo.icon, text);
+        action->setData(idx);
+        connect(action, &QAction::hovered, this, [this, action]() {
+            onHover(action);
+        });
+    }
+}
+
+void SelectionMenu::createGroupedMenu(ElementInfo &elementInfo, QMenu *parentMenu, const std::string &label, 
+                                    const std::string &elementType, const std::vector<PickData> &selections)
+{
+    if (!elementInfo.menu) {
+        elementInfo.menu = parentMenu->addMenu(elementInfo.icon, QString::fromUtf8(label.c_str()));
+    }
+    
+    for (int idx : elementInfo.indices) {
+        const auto &sel = selections[idx];
+        QString text;
+        if (!sel.element.empty()) {
+            text = QString::fromUtf8(sel.element.c_str());
+        } else if (elementType == "Object" && !sel.subName.empty() && sel.subName.back() == '.') {
+            text = QString::fromLatin1("Whole Object");
+        } else {
+            text = QString::fromUtf8(sel.subName.c_str());
+        }
+        QAction *action = elementInfo.menu->addAction(text);
+        action->setData(idx);
+        connect(action, &QAction::hovered, this, [this, action]() {
+            onHover(action);
+        });
+    }
 }
 
 #include "moc_SelectionView.cpp"

@@ -2473,7 +2473,15 @@ void View3DInventorViewer::renderScene()
 
         So3DAnnotation::render = true;
         glClear(GL_DEPTH_BUFFER_BIT);
-        glra->apply(SoDelayedAnnotationsElement::getDelayedPaths(state));
+        
+        // process delayed paths with priority support
+        if (Gui::Selection().isPickGeometryActive()) {
+            Gui::SoDelayedAnnotationsElement::processDelayedPathsWithPriority(state, glra);
+        } else {
+            // standard processing for normal delayed annotations
+            glra->apply(Gui::SoDelayedAnnotationsElement::getDelayedPaths(state));
+        }
+        
         So3DAnnotation::render = false;
     }
     catch (const Base::MemoryException&) {

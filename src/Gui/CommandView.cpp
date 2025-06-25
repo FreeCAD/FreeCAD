@@ -4036,7 +4036,15 @@ void StdCmdPickGeometry::activated(int iMsg)
         if (!obj)
             continue;
             
+        // Get element information - handle sub-objects like Assembly parts
         std::string elementName = vp->getElement(pp->getDetail());
+        std::string subName;
+        
+        // Try to get more detailed sub-object information
+        bool hasSubObject = false;
+        if (vp->getElementPicked(pp, subName)) {
+            hasSubObject = true;
+        }
         
         // Create PickData with selection information
         PickData pickData;
@@ -4044,7 +4052,7 @@ void StdCmdPickGeometry::activated(int iMsg)
         pickData.element = elementName;
         pickData.docName = obj->getDocument()->getName();
         pickData.objName = obj->getNameInDocument();
-        pickData.subName = elementName;
+        pickData.subName = hasSubObject ? subName : elementName;
         
         selections.push_back(pickData);
     }

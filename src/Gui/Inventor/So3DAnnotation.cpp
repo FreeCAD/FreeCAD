@@ -29,17 +29,23 @@
 #include <GL/gl.h>
 #endif
 #include <Inventor/elements/SoCacheElement.h>
+#include <algorithm>
 #endif
 
 #include "So3DAnnotation.h"
+#include <Gui/Selection/Selection.h>
 
 using namespace Gui;
 
 SO_ELEMENT_SOURCE(SoDelayedAnnotationsElement);
 
+bool SoDelayedAnnotationsElement::isProcessingDelayedPaths = false;
+
 void SoDelayedAnnotationsElement::init(SoState* state)
 {
     SoElement::init(state);
+    priorityPaths.clear();
+    paths.truncate(0);
 }
 
 void SoDelayedAnnotationsElement::initClass()
@@ -49,21 +55,72 @@ void SoDelayedAnnotationsElement::initClass()
     SO_ENABLE(SoGLRenderAction, SoDelayedAnnotationsElement);
 }
 
-void SoDelayedAnnotationsElement::addDelayedPath(SoState* state, SoPath* path)
+void SoDelayedAnnotationsElement::addDelayedPath(SoState* state, SoPath* path, int priority)
 {
     auto elt = static_cast<SoDelayedAnnotationsElement*>(state->getElementNoPush(classStackIndex));
 
+    // add to priority-aware storage if priority has been specified
+    if (priority > 0) {
+        elt->priorityPaths.emplace_back(path, priority);
+        return;
+    }
+    
     elt->paths.append(path);
 }
 
 SoPathList SoDelayedAnnotationsElement::getDelayedPaths(SoState* state)
 {
     auto elt = static_cast<SoDelayedAnnotationsElement*>(state->getElementNoPush(classStackIndex));
-    auto copy = elt->paths;
-
+    
+    // if we don't have priority paths, just return normal delayed paths
+    if (elt->priorityPaths.empty()) {
+        auto copy = elt->paths;
+        elt->paths.truncate(0);
+        return copy;
+    }
+    
+    // sort by priority (lower numbers render first)
+    std::stable_sort(elt->priorityPaths.begin(), elt->priorityPaths.end(),
+        [](const PriorityPath& a, const PriorityPath& b) {
+            return a.priority < b.priority;
+        });
+    
+    SoPathList sortedPaths;
+    for (const auto& priorityPath : elt->priorityPaths) {
+        sortedPaths.append(priorityPath.path);
+    }
+    
+    // Clear storage
+    elt->priorityPaths.clear();
     elt->paths.truncate(0);
+    
+    return sortedPaths;
+}
 
-    return copy;
+void SoDelayedAnnotationsElement::processDelayedPathsWithPriority(SoState* state, SoGLRenderAction* action)
+{
+    auto elt = static_cast<SoDelayedAnnotationsElement*>(state->getElementNoPush(classStackIndex));
+    
+    if (elt->priorityPaths.empty()) return;
+    
+    std::stable_sort(elt->priorityPaths.begin(), elt->priorityPaths.end(),
+        [](const PriorityPath& a, const PriorityPath& b) {
+            return a.priority < b.priority;
+        });
+    
+    isProcessingDelayedPaths = true;
+    
+    for (const auto& priorityPath : elt->priorityPaths) {
+        SoPathList singlePath;
+        singlePath.append(priorityPath.path);
+        
+        action->apply(singlePath, TRUE);
+    }
+    
+    isProcessingDelayedPaths = false;
+    
+    elt->priorityPaths.clear();
+    elt->paths.truncate(0);
 }
 
 SO_NODE_SOURCE(So3DAnnotation);

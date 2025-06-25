@@ -38,6 +38,8 @@ class SoTextureCoordinateBundle;
 
 namespace PartGui {
 
+class ViewProviderPartExt;
+
 /**
  * First some words to the history and the reason why we have this class:
  * In older FreeCAD versions we had an own Inventor node for each sub-element of a shape with its own highlight node.
@@ -79,6 +81,8 @@ class PartGuiExport SoBrepFaceSet : public SoIndexedFaceSet {
 public:
     static void initClass();
     SoBrepFaceSet();
+    
+    void setViewProvider(ViewProviderPartExt* vp) { viewProvider = vp; }
 
     SoMFInt32 partIndex;
 
@@ -154,6 +158,9 @@ private:
     // Define some VBO pointer for the current mesh
     class VBO;
     std::unique_ptr<VBO> pimpl;
+    
+    // backreference to viewprovider that owns this node
+    ViewProviderPartExt* viewProvider = nullptr;
 };
 
 } // namespace PartGui

@@ -291,6 +291,8 @@ private:
 class GuiExport SelectionSingleton : public Base::Subject<const SelectionChanges&>
 {
 public:
+    static bool pickGeometryActive;
+
     struct SelObj {
         const char* DocName;
         const char* FeatName;
@@ -408,6 +410,9 @@ public:
      * @param visible: see VisibleState
      */
     void setVisible(VisibleState visible);
+
+    static bool isPickGeometryActive();
+    static void setPickGeometryActive(bool active);
 
     /// signal on new object
     boost::signals2::signal<void (const SelectionChanges& msg)> signalSelectionChanged;

@@ -2604,3 +2604,13 @@ PyObject *SelectionSingleton::sGetSelectionFromStack(PyObject * /*self*/, PyObje
     }
     PY_CATCH;
 }
+
+bool SelectionSingleton::pickGeometryActive = false;
+
+bool SelectionSingleton::isPickGeometryActive() {
+    return pickGeometryActive;
+}
+
+void SelectionSingleton::setPickGeometryActive(bool active) {
+    pickGeometryActive = active;
+}
