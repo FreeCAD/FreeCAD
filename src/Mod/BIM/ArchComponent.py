@@ -786,7 +786,7 @@ class Component(ArchIFC.IfcProduct):
                     subvolume = o.getLinkedObject().Proxy.getSubVolume(o,host=obj)  # pass host obj (mostly Wall)
                 elif (Draft.getType(o) == "Roof") or (Draft.isClone(o,"Roof")):
                     # roofs define their own special subtraction volume
-                    subvolume = o.Proxy.getSubVolume(o)
+                    subvolume = o.Proxy.getSubVolume(o).copy()
                 elif hasattr(o,"Subvolume") and hasattr(o.Subvolume,"Shape"):
                     # Any other object with a Subvolume property
                     ## TODO - Part.Shape() instead?
