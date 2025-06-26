@@ -94,7 +94,7 @@ TaskHatch::~TaskHatch()
 
 void TaskHatch::setUiPrimary()
 {
-    setWindowTitle(QObject::tr("Create face hatch"));
+    setWindowTitle(QObject::tr("Create Face Hatch"));
     ui->fcFile->setFileName(QString::fromStdString(DrawHatch::prefSvgHatch()));
     ui->fcFile->setFilter(QStringLiteral(
             "SVG files (*.svg *.SVG);;Bitmap files(*.jpg *.jpeg *.png *.bmp);;All files (*)"));
@@ -200,7 +200,7 @@ void TaskHatch::createHatch()
     const std::string objectName("Hatch");
     std::string FeatName = doc->getUniqueObjectName(objectName.c_str());
 
-    Command::openCommand(QT_TRANSLATE_NOOP("Command", "Create hatch"));
+    Command::openCommand(QT_TRANSLATE_NOOP("Command", "Create Hatch"));
 
     Command::doCommand(Command::Doc, "App.activeDocument().addObject('TechDraw::DrawHatch', '%s')", FeatName.c_str());
     Command::doCommand(Command::Doc, "App.activeDocument().%s.translateLabel('DrawHatch', 'Hatch', '%s')",
@@ -237,7 +237,7 @@ void TaskHatch::updateHatch()
 //    Base::Console().message("TH::updateHatch()\n");
     std::string FeatName = m_hatch->getNameInDocument();
 
-    Command::openCommand(QT_TRANSLATE_NOOP("Command", "Update hatch"));
+    Command::openCommand(QT_TRANSLATE_NOOP("Command", "Update Hatch"));
 
     auto filespec = ui->fcFile->fileName().toStdString();
     filespec = DU::cleanFilespecBackslash(filespec);

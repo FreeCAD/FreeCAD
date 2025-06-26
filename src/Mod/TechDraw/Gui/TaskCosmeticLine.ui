@@ -23,7 +23,7 @@
    </size>
   </property>
   <property name="windowTitle">
-   <string>Cosmetic line</string>
+   <string>Cosmetic Line</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>

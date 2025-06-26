@@ -17,7 +17,7 @@
    </sizepolicy>
   </property>
   <property name="windowTitle">
-   <string>Detail anchor</string>
+   <string>Detail Anchor</string>
   </property>
   <property name="windowIcon">
    <iconset resource="Resources/TechDraw.qrc">

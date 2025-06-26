@@ -17,7 +17,7 @@
    </sizepolicy>
   </property>
   <property name="windowTitle">
-   <string>Section parameters</string>
+   <string>Section Parameters</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_3">
    <item>
@@ -147,7 +147,7 @@
       </sizepolicy>
      </property>
      <property name="title">
-      <string>Set view direction</string>
+      <string>Set View Direction</string>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_2">
       <item>
@@ -295,7 +295,7 @@
       <string>Position from the 3D origin of the object in the view</string>
      </property>
      <property name="title">
-      <string>Section plane location</string>
+      <string>Section Plane Location</string>
      </property>
      <layout class="QVBoxLayout" name="verticalLayoutPlane">
       <item>

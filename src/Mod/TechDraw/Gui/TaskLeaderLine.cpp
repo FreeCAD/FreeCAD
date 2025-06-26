@@ -216,7 +216,7 @@ void TaskLeaderLine::changeEvent(QEvent *event)
 void TaskLeaderLine::setUiPrimary()
 {
     enableVPUi(true);
-    setWindowTitle(QObject::tr("New leader line"));
+    setWindowTitle(QObject::tr("New Leader Line"));
 
     if (m_baseFeat) {
         std::string baseName = m_baseFeat->getNameInDocument();
@@ -258,7 +258,7 @@ void TaskLeaderLine::enableVPUi(bool enable)
 void TaskLeaderLine::setUiEdit()
 {
     enableVPUi(true);
-    setWindowTitle(QObject::tr("Edit leader line"));
+    setWindowTitle(QObject::tr("Edit Leader Line"));
 
     if (m_lineFeat) {
         std::string baseName = m_lineFeat->LeaderParent.getValue()->getNameInDocument();
@@ -343,7 +343,7 @@ void TaskLeaderLine::createLeaderFeature(std::vector<Base::Vector3d> sceneDeltas
 
     std::string PageName = m_basePage->getNameInDocument();
 
-    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Create leader"));
+    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Create Leader"));
     Command::doCommand(Command::Doc, "App.activeDocument().addObject('%s', '%s')",
                        m_leaderType.c_str(), m_leaderName.c_str());
     Command::doCommand(Command::Doc, "App.activeDocument().%s.translateLabel('DrawLeaderLine', 'LeaderLine', '%s')",
@@ -430,7 +430,7 @@ void TaskLeaderLine::dumpTrackerPoints(std::vector<Base::Vector3d>& tPoints) con
 void TaskLeaderLine::updateLeaderFeature()
 {
 //    Base::Console().message("TTL::updateLeaderFeature()\n");
-    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Edit leader"));
+    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Edit Leader"));
     //waypoints & x, y are updated by QGILeaderLine (for edits only!)
     commonFeatureUpdate();
     Base::Color ac;

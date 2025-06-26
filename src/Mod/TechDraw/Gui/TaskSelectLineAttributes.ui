@@ -23,7 +23,7 @@
    </size>
   </property>
   <property name="windowTitle">
-   <string>Line attributes</string>
+   <string>Line Attributes</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>

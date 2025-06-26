@@ -23,7 +23,7 @@
    </size>
   </property>
   <property name="windowTitle">
-   <string>Surface finish symbols</string>
+   <string>Surface Finish Symbols</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>

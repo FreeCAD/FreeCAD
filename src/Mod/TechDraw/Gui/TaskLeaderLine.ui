@@ -23,7 +23,7 @@
    </size>
   </property>
   <property name="windowTitle">
-   <string>Leader line</string>
+   <string>Leader Line</string>
   </property>
   <property name="windowIcon">
    <iconset resource="Resources/TechDraw.qrc">

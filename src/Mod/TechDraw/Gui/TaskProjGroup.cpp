@@ -176,7 +176,7 @@ void TaskProjGroup::initializeUi()
 void TaskProjGroup::updateUi()
 {
     if (multiView) {
-        setWindowTitle(QObject::tr("Projection group"));
+        setWindowTitle(QObject::tr("Projection Group"));
         ui->projection->show();
         ui->cbAutoDistribute->show();
         ui->sbXSpacing->show();
@@ -186,7 +186,7 @@ void TaskProjGroup::updateUi()
         ui->label_11->show();
     }
     else {
-        setWindowTitle(QObject::tr("New view"));
+        setWindowTitle(QObject::tr("New View"));
         ui->projection->hide();
         ui->cbAutoDistribute->hide();
         ui->sbXSpacing->hide();
@@ -893,10 +893,10 @@ void TaskDlgProjGroup::open()
 {
     if (!widget->getCreateMode())  {    //this is an edit session, start a transaction
         if (dynamic_cast<TechDraw::DrawProjGroup*>(view)) {
-            App::GetApplication().setActiveTransaction("Edit projection group", true);
+            App::GetApplication().setActiveTransaction("Edit Projection Group", true);
         }
         else {
-            App::GetApplication().setActiveTransaction("Edit part view", true);
+            App::GetApplication().setActiveTransaction("Edit Part View", true);
         }
     }
 }

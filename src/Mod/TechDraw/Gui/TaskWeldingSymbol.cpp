@@ -163,7 +163,7 @@ void TaskWeldingSymbol::changeEvent(QEvent *event)
 void TaskWeldingSymbol::setUiPrimary()
 {
 //    Base::Console().message("TWS::setUiPrimary()\n");
-    setWindowTitle(QObject::tr("Create welding symbol"));
+    setWindowTitle(QObject::tr("Create Welding Symbol"));
     m_currDir = PreferencesGui::weldingDirectory();
     ui->fcSymbolDir->setFileName(m_currDir);
 
@@ -182,7 +182,7 @@ void TaskWeldingSymbol::setUiPrimary()
 void TaskWeldingSymbol::setUiEdit()
 {
 //    Base::Console().message("TWS::setUiEdit()\n");
-    setWindowTitle(QObject::tr("Edit welding symbol"));
+    setWindowTitle(QObject::tr("Edit Welding Symbol"));
 
     m_currDir = PreferencesGui::weldingDirectory();
     ui->fcSymbolDir->setFileName(m_currDir);
@@ -558,7 +558,7 @@ bool TaskWeldingSymbol::accept()
 {
 //    Base::Console().message("TWS::accept()\n");
     if (m_createMode) {
-        Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Create weld symbol"));
+        Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Create Weld Symbol"));
         m_weldFeat = createWeldingSymbol();
         updateTiles();
         Gui::Command::updateActive();
@@ -566,7 +566,7 @@ bool TaskWeldingSymbol::accept()
         m_weldFeat->recomputeFeature();
     //    m_weldFeat->requestPaint();    //not a dv!
     } else {
-        Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Edit weld symbol"));
+        Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Edit Weld Symbol"));
         try {
             updateWeldingSymbol();
             updateTiles();

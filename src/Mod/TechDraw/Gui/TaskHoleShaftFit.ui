@@ -26,7 +26,7 @@
    </size>
   </property>
   <property name="windowTitle">
-   <string>Hole/shaft fit ISO 286</string>
+   <string>Hole/Shaft Fit ISO 286</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>

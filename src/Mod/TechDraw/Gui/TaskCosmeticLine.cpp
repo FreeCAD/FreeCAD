@@ -110,7 +110,7 @@ void TaskCosmeticLine::changeEvent(QEvent *e)
 
 void TaskCosmeticLine::setUiPrimary()
 {
-    setWindowTitle(QObject::tr("Create cosmetic line"));
+    setWindowTitle(QObject::tr("Create Cosmetic Line"));
 
     // double rotDeg = m_partFeat->Rotation.getValue();
     // double rotRad = Base::toRadians(rotDeg);
@@ -152,7 +152,7 @@ void TaskCosmeticLine::setUiPrimary()
 
 void TaskCosmeticLine::setUiEdit()
 {
-    setWindowTitle(QObject::tr("Edit cosmetic line"));
+    setWindowTitle(QObject::tr("Edit Cosmetic Line"));
 
     ui->rb2d1->setChecked(true);
     ui->rb3d1->setChecked(false);
@@ -174,7 +174,7 @@ void TaskCosmeticLine::setUiEdit()
 void TaskCosmeticLine::createCosmeticLine()
 {
 //    Base::Console().message("TCL::createCosmeticLine()\n");
-    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Create cosmetic line"));
+    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Create Cosmetic Line"));
 
     // ui 2d points are interpreted as unscaled, unrotated, uninverted
     double x = ui->qsbx1->value().getValue();
@@ -250,7 +250,7 @@ bool TaskCosmeticLine::accept()
         m_partFeat->requestPaint();
     } else {
         //update mode
-        Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Update CosmeticLine"));
+        Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Update Cosmetic Line"));
         updateCosmeticLine();
         m_partFeat->refreshCEGeoms();
         m_partFeat->requestPaint();

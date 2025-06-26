@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Cosmetic vertex</string>
+   <string>Cosmetic Vertex</string>
   </property>
   <property name="windowIcon">
    <iconset resource="Resources/TechDraw.qrc">

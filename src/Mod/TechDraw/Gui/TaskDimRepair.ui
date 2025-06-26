@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Dimension repair</string>
+   <string>Dimension Repair</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>

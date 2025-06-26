@@ -23,7 +23,7 @@
    </size>
   </property>
   <property name="windowTitle">
-   <string>Projection group</string>
+   <string>Projection Group</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>

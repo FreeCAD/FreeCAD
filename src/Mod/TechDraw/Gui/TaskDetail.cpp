@@ -174,7 +174,7 @@ TaskDetail::TaskDetail(TechDraw::DrawViewDetail* detailFeat):
 
     saveDetailState();
     setUiFromFeat();
-    setWindowTitle(QObject::tr("Edit detail view"));
+    setWindowTitle(QObject::tr("Edit Detail View"));
 
     connect(ui->pbDragger, &QPushButton::clicked,
             this, &TaskDetail::onDraggerClicked);
@@ -435,7 +435,7 @@ void TaskDetail::enableTaskButtons(bool button)
 void TaskDetail::createDetail()
 {
 //    Base::Console().message("TD::createDetail()\n");
-    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Create detail View"));
+    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Create Detail view"));
 
     const std::string objectName{"Detail"};
     m_detailName = m_doc->getUniqueObjectName(objectName.c_str());
@@ -477,7 +477,7 @@ void TaskDetail::updateDetail()
 {
     TechDraw::DrawViewDetail* detailFeat = getDetailFeat();
     try {
-        Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Update detail"));
+        Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Update Detail"));
         double x = ui->qsbX->rawValue();
         double y = ui->qsbY->rawValue();
         Base::Vector3d temp(x, y, 0.0);

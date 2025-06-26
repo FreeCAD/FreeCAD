@@ -98,7 +98,7 @@ TaskRichAnno::TaskRichAnno(TechDrawGui::ViewProviderRichAnno* annoVP) :
 
     ui->setupUi(this);
 
-    m_title = QObject::tr("Rich text editor");
+    m_title = QObject::tr("Rich Text Editor");
     setUiEdit();
 
     m_attachPoint = Rez::guiX(Base::Vector3d(m_annoFeat->X.getValue(),
@@ -136,7 +136,7 @@ TaskRichAnno::TaskRichAnno(TechDraw::DrawView* baseFeat,
     }
 
     ui->setupUi(this);
-    m_title = QObject::tr("Rich text creator");
+    m_title = QObject::tr("Rich Text Creator");
 
     setUiPrimary();
 
@@ -286,7 +286,7 @@ void TaskRichAnno::createAnnoFeature()
 
     std::string PageName = m_basePage->getNameInDocument();
 
-    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Create anno"));
+    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Create Anno"));
     Command::doCommand(Command::Doc, "App.activeDocument().addObject('%s', '%s')",
                        annoType.c_str(), annoName.c_str());
     Command::doCommand(Command::Doc, "App.activeDocument().%s.addView(App.activeDocument().%s)",
@@ -348,7 +348,7 @@ void TaskRichAnno::createAnnoFeature()
 void TaskRichAnno::updateAnnoFeature()
 {
 //    Base::Console().message("TRA::updateAnnoFeature()\n");
-    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Edit anno"));
+    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Edit Anno"));
     commonFeatureUpdate();
     Base::Color ac;
     ac.setValue<QColor>(ui->cpFrameColor->color());

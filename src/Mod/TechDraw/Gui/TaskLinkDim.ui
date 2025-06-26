@@ -23,7 +23,7 @@
    </size>
   </property>
   <property name="windowTitle">
-   <string>Link dimension</string>
+   <string>Link Dimension</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_2">
    <item>

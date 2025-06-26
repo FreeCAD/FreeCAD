@@ -23,7 +23,7 @@
    </size>
   </property>
   <property name="windowTitle">
-   <string>Format symbols</string>
+   <string>Format Symbols</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>

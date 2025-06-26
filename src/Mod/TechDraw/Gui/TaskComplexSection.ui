@@ -17,7 +17,7 @@
    </sizepolicy>
   </property>
   <property name="windowTitle">
-   <string>Complex section</string>
+   <string>Complex Section</string>
   </property>
   <property name="windowIcon">
    <iconset resource="Resources/TechDraw.qrc">
@@ -33,7 +33,7 @@
       </sizepolicy>
      </property>
      <property name="title">
-      <string>Object selection</string>
+      <string>Object Selection</string>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout">
       <item>
@@ -88,7 +88,7 @@
    <item>
     <widget class="QGroupBox" name="groupBox_2">
      <property name="title">
-      <string>Section parameters</string>
+      <string>Section Parameters</string>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_2">
       <item>
@@ -252,7 +252,7 @@
       </sizepolicy>
      </property>
      <property name="title">
-      <string>Set view direction</string>
+      <string>Set View Direction</string>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_4">
       <item>

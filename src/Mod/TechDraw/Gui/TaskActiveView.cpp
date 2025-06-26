@@ -89,7 +89,7 @@ void TaskActiveView::changeEvent(QEvent* e)
 void TaskActiveView::setUiPrimary()
 {
     //    Base::Console().message("TAV::setUiPrimary()\n");
-    setWindowTitle(QObject::tr("Active view"));
+    setWindowTitle(QObject::tr("Insert Active view"));
     ui->cbCrop->setChecked(false);
     enableCrop(false);
     // cropping is in mm, but image size is in pixels/scene units

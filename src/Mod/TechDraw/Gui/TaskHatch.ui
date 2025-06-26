@@ -23,7 +23,7 @@
    </size>
   </property>
   <property name="windowTitle">
-   <string>Apply hatch to face</string>
+   <string>Apply Hatch to Face</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_2">
    <item>
@@ -38,7 +38,7 @@
       <string>Select an SVG or bitmap file</string>
      </property>
      <property name="title">
-      <string>Pattern parameters</string>
+      <string>Pattern Parameters</string>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout">
       <item>

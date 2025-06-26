@@ -399,7 +399,7 @@ void TaskSurfaceFinishSymbols::onASME()
 bool TaskSurfaceFinishSymbols::accept()
 // Slot: dialog finished using OK
 {
-    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Surface finish symbols"));
+    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Surface Finish Symbols"));
     App::Document *doc = Application::Instance->activeDocument()->getDocument();
     auto* surfaceSymbol = doc->addObject<TechDraw::DrawViewSymbol>("SurfaceSymbol");
     surfaceSymbol->Symbol.setValue(completeSymbol());

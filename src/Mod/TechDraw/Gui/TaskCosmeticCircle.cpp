@@ -62,7 +62,7 @@ TaskCosmeticCircle::TaskCosmeticCircle(TechDraw::DrawViewPart* partFeat,
 
     m_ce = m_partFeat->getCosmeticEdgeBySelection(m_circleName);
     if (!m_ce) {
-        Base::Console().error("TaskCosmeticCircle - bad parameters. Can not proceed.\n");
+        Base::Console().error("TaskCosmeticCircle - bad parameters. Cannot proceed.\n");
         return;
     }
 
@@ -123,7 +123,7 @@ void TaskCosmeticCircle::changeEvent(QEvent *e)
 
 void TaskCosmeticCircle::setUiPrimary()
 {
-    setWindowTitle(QObject::tr("Create cosmetic circle"));
+    setWindowTitle(QObject::tr("Create Cosmetic Circle"));
     std::vector<Base::Vector3d> displayPoints;
     std::vector<Base::Vector3d> mathPoints;
     for (auto& point : m_points) {
@@ -172,7 +172,7 @@ void TaskCosmeticCircle::setUiPrimary()
 
 void TaskCosmeticCircle::setUiEdit()
 {
-    setWindowTitle(QObject::tr("Edit cosmetic circle"));
+    setWindowTitle(QObject::tr("Edit Cosmetic Circle"));
 
     ui->rb2d1->setChecked(true);
     ui->rb3d1->setChecked(false);
@@ -228,7 +228,7 @@ void TaskCosmeticCircle::createCosmeticCircle(void)
 {
 //    Base::Console().message("TCL::createCosmeticCircle()\n");
 
-    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Create cosmetic circle"));
+    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Create Cosmetic Circle"));
 
     // point from Page/View is conventional coordinates (Y+ up), unscaled, unrotated, but centered (Csriz)
     // this is Canonical form with out inversion.
@@ -300,7 +300,7 @@ bool TaskCosmeticCircle::accept()
         m_partFeat->requestPaint();
     } else {
         //update mode
-        Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Update CosmeticCircle"));
+        Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Update Cosmetic Circle"));
         updateCosmeticCircle();
         m_partFeat->refreshCEGeoms();
         m_partFeat->requestPaint();

@@ -136,7 +136,7 @@ TaskComplexSection::TaskComplexSection(TechDraw::DrawComplexSection* complexSect
 
 void TaskComplexSection::setUiPrimary()
 {
-    setWindowTitle(QObject::tr("New complex section"));
+    setWindowTitle(QObject::tr("New Complex Section"));
     if (m_baseView) {
         ui->sbScale->setValue(m_baseView->getScale());
         ui->cmbScaleType->setCurrentIndex(m_baseView->getScaleType());
@@ -177,7 +177,7 @@ void TaskComplexSection::setUiPrimary()
 
 void TaskComplexSection::setUiEdit()
 {
-    setWindowTitle(QObject::tr("Edit complex section"));
+    setWindowTitle(QObject::tr("Edit Complex Section"));
 
     if (m_baseView) {
         ui->leBaseView->setText(QString::fromStdString(m_baseView->getNameInDocument()));
@@ -215,7 +215,7 @@ void TaskComplexSection::setUiCommon()
     layout->addWidget(m_compass);
 
     m_viewDirectionWidget = new VectorEditWidget(this);
-    m_viewDirectionWidget->setLabel(QObject::tr("Current view direction"));
+    m_viewDirectionWidget->setLabel(QObject::tr("Current View Direction"));
     m_viewDirectionWidget->setToolTip(QObject::tr("The view direction in BaseView coordinates"));
     auto editLayout = ui->viewDirectionLayout;
     editLayout->addWidget(m_viewDirectionWidget);
@@ -553,7 +553,7 @@ void TaskComplexSection::applyAligned()
 //pointer to created view is not returned, but stored in m_section
 void TaskComplexSection::createComplexSection()
 {
-    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Create complex section"));
+    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Create Complex Section"));
     if (!m_section) {
         const std::string objectName{QT_TR_NOOP("ComplexSection")};
         m_sectionName = m_page->getDocument()->getUniqueObjectName(objectName.c_str());
@@ -648,7 +648,7 @@ void TaskComplexSection::updateComplexSection()
         return;
     }
 
-    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Edit section view"));
+    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Edit Section View"));
     if (m_section) {
         QString qTemp = ui->leSymbol->text();
         std::string temp = qTemp.toStdString();
