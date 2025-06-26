@@ -22,8 +22,10 @@
 
 #include "PreCompiled.h"
 
+#include <QApplication>
 #include <QDialogButtonBox>
 #include <QHBoxLayout>
+#include <QStyle>
 
 #include "TaskEditControl.h"
 
@@ -31,13 +33,16 @@
 using namespace Gui::TaskView;
 
 TaskEditControl::TaskEditControl(QWidget *parent)
-    : TaskWidget(parent)
+    : TaskWidget(parent), hboxLayout(new QHBoxLayout(this))
+    , buttonBox(new QDialogButtonBox(this))
 {
-    hboxLayout = new QHBoxLayout(this);
-    buttonBox = new QDialogButtonBox(this);
+    int topMargin = QApplication::style()->pixelMetric(QStyle::PM_FocusFrameVMargin);
+    hboxLayout->setContentsMargins(0,topMargin,0,0);
     buttonBox->setStandardButtons(QDialogButtonBox::Cancel|QDialogButtonBox::Ok);
     buttonBox->setCenterButtons(true);
-
+    if (QLayout* layout = buttonBox->layout()) {
+        layout->setSpacing(0);
+    }
     hboxLayout->addWidget(buttonBox);
 }
 

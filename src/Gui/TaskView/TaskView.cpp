@@ -269,15 +269,15 @@ QSize TaskPanel::minimumSizeHint() const
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 TaskView::TaskView(QWidget *parent)
-    : QWidget(parent),ActiveDialog(nullptr),ActiveCtrl(nullptr)
+    : QWidget(parent),mainLayout(new QVBoxLayout(this))
+    , scrollArea(new QScrollArea(this))
+    , taskPanel(new TaskPanel(scrollArea))
+    , ActiveDialog(nullptr),ActiveCtrl(nullptr)
 {
-    mainLayout = new QVBoxLayout(this);
     mainLayout->setContentsMargins(0, 0, 0, 0);
     mainLayout->setSpacing(0);
     this->setLayout(mainLayout);
-    scrollArea = new QScrollArea(this);
 
-    taskPanel = new TaskPanel(scrollArea);
     QSizePolicy sizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
     sizePolicy.setHorizontalStretch(0);
     sizePolicy.setVerticalStretch(0);
