@@ -731,7 +731,7 @@ ConstraintFilterList::ConstraintFilterList(QWidget* parent)
 
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/Mod/Sketcher/General");
-    int filterState = hGrp->GetInt("ConstraintFilterState", defaultFilter);
+    int filterState = hGrp->GetInt("SelectedConstraintFilters", defaultFilter);
 
     for (auto const& filterItem : filterItems) {
         Q_UNUSED(filterItem);
@@ -1750,7 +1750,7 @@ void TaskSketcherConstraints::onFilterListItemChanged(QListWidgetItem* item)
     }
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/Mod/Sketcher/General");
-    hGrp->SetInt("ConstraintFilterState", filterState);
+    hGrp->SetInt("SelectedConstraintFilters", filterState);
 
     // if tracking, it will call slotConstraintChanged via update mechanism as Multi Filter affects
     // not only visibility, but also filtered list content, if not tracking will still update the
