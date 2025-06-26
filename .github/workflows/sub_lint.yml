@@ -34,12 +34,21 @@ on:
       changedFiles:
         type: string
         required: true
+      changedLines:
+        type: string
+        required: false
       changedCppFiles:
         type: string
         required: true
+      changedCppLines:
+        type: string
+        required: false
       changedPythonFiles:
         type: string
         required: true
+      changedPythonLines:
+        type: string
+        required: false
       checkLineendings:
         default: false
         type: boolean
@@ -317,6 +326,7 @@ jobs:
         run: |
           python3 tools/lint/clang_tidy.py \
             --files "${{ inputs.changedCppFiles }}" \
+            --line-filter '${{ inputs.changedCppLines }}' \
             --clang-style "${{ inputs.clangStyle }}" \
             --log-dir "${{ env.logdir }}" \
             --report-file "${{ env.reportdir }}${{ env.reportfilename }}"

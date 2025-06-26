@@ -122,6 +122,18 @@ ZoomableView::ZoomableView(Ui::Sheet* ui)
     });
 
     resetZoom();
+
+    auto connectCursorChangedSignal = [this](QHeaderView* hv) {
+        auto header = qobject_cast<SpreadsheetGui::SheetViewHeader*>(hv);
+        connect(header,
+                &SpreadsheetGui::SheetViewHeader::cursorChanged,
+                this,
+                [this](const QCursor& newerCursor) {
+                    qpw->setCursor(newerCursor);
+                });
+    };
+    connectCursorChangedSignal(stv->horizontalHeader());
+    connectCursorChangedSignal(stv->verticalHeader());
 }
 
 int ZoomableView::zoomLevel() const

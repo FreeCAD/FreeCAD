@@ -391,8 +391,13 @@ class CommandCreateJointGears:
 
         return {
             "Pixmap": "Assembly_CreateJointGears",
+<<<<<<< assembly-ui-strings
             "MenuText": QT_TRANSLATE_NOOP("Assembly_CreateJointGears", "Gears Joint"),
             "Accel": "X",
+=======
+            "MenuText": QT_TRANSLATE_NOOP("Assembly_CreateJointGears", "Create Gears Joint"),
+            "Accel": "T",
+>>>>>>> main
             "ToolTip": "<p>"
             + QT_TRANSLATE_NOOP(
                 "Assembly_CreateJointGears",
@@ -422,8 +427,13 @@ class CommandCreateJointBelt:
 
         return {
             "Pixmap": "Assembly_CreateJointPulleys",
+<<<<<<< assembly-ui-strings
             "MenuText": QT_TRANSLATE_NOOP("Assembly_CreateJointBelt", "Belt Joint"),
             "Accel": "P",
+=======
+            "MenuText": QT_TRANSLATE_NOOP("Assembly_CreateJointBelt", "Create Belt Joint"),
+            "Accel": "L",
+>>>>>>> main
             "ToolTip": "<p>"
             + QT_TRANSLATE_NOOP(
                 "Assembly_CreateJointBelt",

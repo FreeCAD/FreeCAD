@@ -46,10 +46,16 @@ on:
         value: ${{ jobs.Prepare.outputs.reportFile }}
       changedFiles:
         value: ${{ jobs.Prepare.outputs.changedFiles }}
+      changedLines:
+        value: ${{ jobs.Prepare.outputs.changedLines }}
       changedPythonFiles:
         value: ${{ jobs.Prepare.outputs.changedPythonFiles }}
+      changedPythonLines:
+        value: ${{ jobs.Prepare.outputs.changedPythonLines }}
       changedCppFiles:
         value: ${{ jobs.Prepare.outputs.changedCppFiles }}
+      changedCppLines:
+        value: ${{ jobs.Prepare.outputs.changedCppLines }}
 
 jobs:
 
@@ -67,8 +73,11 @@ jobs:
     outputs:
       reportFile: ${{ steps.Init.outputs.reportFile }}
       changedFiles: ${{ steps.Output.outputs.changedFiles }}
+      changedLines: ${{ steps.Output.outputs.changedLines }}
       changedPythonFiles: ${{ steps.Output.outputs.changedPythonFiles }}
+      changedPythonLines: ${{ steps.Output.outputs.changedPythonLines }}
       changedCppFiles: ${{ steps.Output.outputs.changedCppFiles }}
+      changedCppLines: ${{ steps.Output.outputs.changedCppLines }}
 
     steps:
       - name: Harden the runner (Audit all outbound calls)
@@ -84,6 +93,10 @@ jobs:
           commitCnt=0
           touch ${{ env.logdir }}changedFiles.lst ${{ env.logdir }}changedCppFiles.lst ${{ env.logdir }}changedPythonFiles.lst
           echo "reportFile=${{ env.reportfilename }}" >> $GITHUB_OUTPUT
+      - name: Check out code
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          submodules: true
       - name: Determine base and head SHA in case of PR
         if: env.isPR == 'true'
         run: |
@@ -133,11 +146,22 @@ jobs:
           commitCnt=$(jq -re '.ahead_by' ${{ env.logdir }}compare.json)
           echo "Changeset is composed of $commitCnt commit(s)" | tee -a ${{env.reportdir}}${{ env.reportfilename }}
       - name: Get files modified in changeset #TODO check what happens with deleted file in the subsequent process
-        if: env.isPR == 'true' || env.isPush == 'true'
+        if: env.isPR == 'true'
+        env:
+          API_URL: ${{ github.api_url }}
+          TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+          REF: ${{ github.ref_name }}
+          PR: ${{ github.event.number }}
         run: |
-          jq '.files[] | if .status != "removed" then .filename else empty end' ${{ env.logdir }}compare.json > ${{ env.logdir }}changedFiles.lst
-          grep -E '\.(py|py3)"' ${{ env.logdir }}changedFiles.lst > ${{ env.logdir }}changedPythonFiles.lst || true
-          grep -E '\.(c|c\+\+|cc|cpp|cu|cuh|cxx|h|h\+\+|hh|hpp|hxx)"' ${{ env.logdir }}changedFiles.lst > ${{ env.logdir }}changedCppFiles.lst || true
+          # could reduce this to a single
+          python3 tools/lint/changed_lines.py --api-url ${API_URL} --token ${TOKEN} --repo ${REPO} --ref=${REF} --pr=${PR} > ${{ env.logdir }}changedLines.lst
+          cat ${{ env.logdir }}changedLines.lst | jq '.[].name' > ${{ env.logdir }}changedFiles.lst
+          python3 tools/lint/changed_lines.py --api-url ${API_URL} --token ${TOKEN} --repo ${REPO} --ref=${REF} --pr=${PR} --file-filter '.py, .pyi' > ${{ env.logdir }}changedPythonLines.lst
+          cat ${{ env.logdir }}changedPythonLines.lst | jq '.[].name' > ${{ env.logdir }}changedPythonFiles.lst
+          python3 tools/lint/changed_lines.py --api-url ${API_URL} --token ${TOKEN} --repo ${REPO} --ref=${REF} --pr=${PR} --file-filter '.c, .cc, .cu, .cuh, .c++, .cpp, .cxx, .h, .hh, .h++, .hpp, .hxx' > ${{ env.logdir }}changedCppLines.lst
+          cat ${{ env.logdir }}changedCppLines.lst | jq '.[].name' > ${{ env.logdir }}changedCppFiles.lst
+
           # Write the report
           echo "::group::Modified files in changeset (removed files are ignored) :" ; cat ${{ env.logdir }}changedFiles.lst ; echo "::endgroup::"
           echo "<details><summary>Modified files (removed files are ignored):</summary>" >> ${{env.reportdir}}${{ env.reportfilename }}
@@ -148,8 +172,11 @@ jobs:
         id: Output
         run: |
           echo "changedFiles=$(cat ${{ env.logdir }}changedFiles.lst | tr '\n' ' ')" >> $GITHUB_OUTPUT
+          echo "changedLines=$(cat ${{ env.logdir }}changedLines.lst | tr '\n' ' ')" >> $GITHUB_OUTPUT
           echo "changedPythonFiles=$(cat ${{ env.logdir }}changedPythonFiles.lst | tr '\n' ' ')" >> $GITHUB_OUTPUT
+          echo "changedPythonLines=$(cat ${{ env.logdir }}changedPythonLines.lst | tr '\n' ' ')" >> $GITHUB_OUTPUT
           echo "changedCppFiles=$(cat ${{ env.logdir }}changedCppFiles.lst | tr '\n' ' ')" >> $GITHUB_OUTPUT
+          echo "changedCppLines=$(cat ${{ env.logdir }}changedCppLines.lst | tr '\n' ' ')" >> $GITHUB_OUTPUT
           echo "" >> $GITHUB_OUTPUT
       - name: Upload logs
         if: always()

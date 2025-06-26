@@ -27,6 +27,7 @@
 #include <QButtonGroup>
 #include <QCheckBox>
 #include <QComboBox>
+#include <QCompleter>
 #include <QDoubleSpinBox>
 #include <QFontComboBox>
 #include <QGridLayout>
@@ -382,6 +383,33 @@ private:
     double Minimum;
     double StepSize;
     int HistorySize;
+};
+
+// ------------------------------------------------------------------------------
+
+class ExpressionLineEdit: public QLineEdit
+{
+    Q_OBJECT
+public:
+    ExpressionLineEdit(QWidget* parent = nullptr);
+
+public Q_SLOTS:
+    void slotTextChanged(const QString& text);
+    void slotCompleteText(const QString& completionPrefix, bool isActivated);
+    void slotCompleteTextHighlighted(const QString& completionPrefix);
+    void slotCompleteTextSelected(const QString& completionPrefix);
+    void setExactMatch(bool enabled = true);
+
+protected:
+    void keyPressEvent(QKeyEvent* event) override;
+    void contextMenuEvent(QContextMenuEvent* event) override;
+
+Q_SIGNALS:
+    void textChanged2(QString text, int pos);
+
+private:
+    QCompleter* completer;
+    bool exactMatch;
 };
 
 // ------------------------------------------------------------------------------
