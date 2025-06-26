@@ -151,6 +151,11 @@ void ControlSingleton::showModelView()
 
 void ControlSingleton::showDialog(Gui::TaskView::TaskDialog *dlg, App::Document* attachTo)
 {
+    if (!attachTo) {
+        // TODO-theo-vt remove when no longer useful
+        std::cerr << "No document to attach dialog to :(\n";
+    }
+
     Gui::TaskView::TaskView* taskView = taskPanel();
     // should return the pointer to combo view
     if (!taskView) {
