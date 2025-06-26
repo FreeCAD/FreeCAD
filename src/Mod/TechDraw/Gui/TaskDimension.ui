@@ -28,7 +28,7 @@
            <string>If theoretical exact (basic) dimension</string>
           </property>
           <property name="text">
-           <string>Theoretically Exact</string>
+           <string>Theoretically exact</string>
           </property>
          </widget>
         </item>
@@ -38,7 +38,7 @@
            <string>Assign same value to over and under tolerance</string>
           </property>
           <property name="text">
-           <string>Equal Tolerance</string>
+           <string>Equal tolerance</string>
           </property>
          </widget>
         </item>
