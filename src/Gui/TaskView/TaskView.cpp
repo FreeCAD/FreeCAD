@@ -269,7 +269,9 @@ QSize TaskPanel::minimumSizeHint() const
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 TaskView::TaskView(QWidget *parent)
-    : QWidget(parent),mainLayout(new QVBoxLayout(this))
+    : QWidget(parent)
+    , mainLayout(new QVBoxLayout(this))
+
     , scrollArea(new QScrollArea(this))
     , taskPanel(new TaskPanel(scrollArea))
     , ActiveDialog(nullptr),ActiveCtrl(nullptr)

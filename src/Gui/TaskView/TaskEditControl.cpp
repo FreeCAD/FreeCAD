@@ -33,11 +33,14 @@
 using namespace Gui::TaskView;
 
 TaskEditControl::TaskEditControl(QWidget *parent)
-    : TaskWidget(parent), hboxLayout(new QHBoxLayout(this))
+    : TaskWidget(parent)
+    , hboxLayout(new QHBoxLayout(this))
+
     , buttonBox(new QDialogButtonBox(this))
 {
     int topMargin = QApplication::style()->pixelMetric(QStyle::PM_FocusFrameVMargin);
-    hboxLayout->setContentsMargins(0,topMargin,0,0);
+    hboxLayout->setContentsMargins(0, topMargin, 0, 0);
+
     buttonBox->setStandardButtons(QDialogButtonBox::Cancel|QDialogButtonBox::Ok);
     buttonBox->setCenterButtons(true);
     if (QLayout* layout = buttonBox->layout()) {
