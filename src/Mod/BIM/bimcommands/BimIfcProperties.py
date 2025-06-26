@@ -205,8 +205,6 @@ class BIM_IfcProperties:
     def update(self, index=None):
         "updates the tree widgets in all tabs"
 
-        index = getattr(index, "value", index)
-
         self.model.clear()
         self.model.setHorizontalHeaderLabels(
             [

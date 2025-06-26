@@ -117,8 +117,6 @@ class BIM_IfcElements:
     def update(self, index=None):
         "updates the tree widgets in all tabs"
 
-        index = getattr(index, "value", index)
-
         # store current state of tree into self.objectslist before redrawing
         for row in range(self.model.rowCount()):
             name = self.model.item(row, 0).toolTip()
