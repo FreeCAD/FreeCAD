@@ -40,6 +40,15 @@ class BRepAdaptor_Curve;
 
 namespace Import
 {
+
+enum class ImportMode
+{
+    EditableDraft,
+    EditablePrimitives,
+    IndividualShapes,
+    FusedShapes
+};
+
 class ImportExport ImpExpDxfRead: public CDxfRead
 {
 public:
@@ -108,6 +117,7 @@ public:
     void FinishImport() override;
 
 private:
+    ImportMode m_importMode = ImportMode::IndividualShapes;
     bool shouldSkipEntity() const
     {
         // This entity is in paper space, and the user setting says to ignore it.
@@ -370,7 +380,6 @@ protected:
 
     private:
         const EntityCollector* previousEntityCollector;
-        const eEntityMergeType_t previousMmergeOption;
     };
 #endif
     class BlockDefinitionCollector: public EntityCollector
