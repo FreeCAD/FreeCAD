@@ -277,8 +277,9 @@ void CmdPartDesignBody::activated(int iMsg)
                     std::string docname = getDocument()->getName();
                     auto quitter = [docname]() {
                         Gui::Document* document = Gui::Application::Instance->getDocument(docname.c_str());
-                        if (document)
+                        if (document) {
                             document->abortCommand();
+                        }
                     };
 
                     // Show dialog and let user pick plane
@@ -291,7 +292,7 @@ void CmdPartDesignBody::activated(int iMsg)
                                                                                         accepter,
                                                                                         worker,
                                                                                         true,
-                                                                                        quitter));
+                                                                                        quitter), getDocument());
                     }
                 }
             }

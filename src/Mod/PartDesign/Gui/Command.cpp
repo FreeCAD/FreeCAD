@@ -1035,7 +1035,7 @@ void prepareProfileBased(PartDesign::Body *pcActiveBody, Gui::Command* cmd, cons
         //if (!bNoSketchWasSelected && extReference)
         //    pickDlg->showExternal(true);
 
-        Gui::Control().showDialog(pickDlg);
+        Gui::Control().showDialog(pickDlg, cmd->getDocument());
     }
     else {
         std::vector<App::DocumentObject*> theSketch;
