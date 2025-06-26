@@ -151,14 +151,20 @@ void ControlSingleton::showModelView()
 
 void ControlSingleton::showDialog(Gui::TaskView::TaskDialog *dlg, App::Document* attachTo)
 {
+    Gui::TaskView::TaskView* taskView = taskPanel();
+    // should return the pointer to combo view
+    if (!taskView) {
+        return;
+    }
+
     // only one dialog at a time, print a warning instead of raising an assert
-    auto foundDialog = ActiveDialogs.find(attachTo);
-    if (foundDialog != ActiveDialogs.end() && foundDialog->second != dlg) {
+    TaskView::TaskDialog* foundDialog = taskView->dialog(attachTo);
+    if (!dlg || foundDialog == dlg) {
         if (dlg) {
             qWarning() << "ControlSingleton::showDialog: Can't show "
                        << dlg->metaObject()->className()
                        << " since there is already an active task dialog in Document "
-                       << (attachTo ? attachTo->getName() : "''z");
+                       << (attachTo ? attachTo->getName() : "''");
         }
         else {
             qWarning() << "ControlSingleton::showDialog: Task dialog is null";
@@ -166,49 +172,41 @@ void ControlSingleton::showDialog(Gui::TaskView::TaskDialog *dlg, App::Document*
         return;
     }
 
-    // Since the caller sets up a modeless task panel, it indicates intention
-    // for prolonged editing. So disable auto transaction in the current call
-    // stack.
-    // Do this before showing the dialog because its open() function is called
-    // which may open a transaction but fails when auto transaction is still active.
-    // App::AutoTransaction::setEnable(false);
+    bool addedDialog = taskView->showDialog(dlg, attachTo);
 
-    Gui::TaskView::TaskView* taskView = taskPanel();
-    // should return the pointer to combo view
-    if (taskView) {
-        taskView->showDialog(dlg);
-
-        // make sure that the combo view is shown
-        auto dw = qobject_cast<QDockWidget*>(taskView->parentWidget());
-        if (dw) {
-            aboutToShowDialog(dw);
-            dw->setVisible(true);
-            dw->toggleViewAction()->setVisible(true);
-            dw->setFeatures(QDockWidget::DockWidgetMovable|QDockWidget::DockWidgetFloatable);
-        }
-
-        if (foundDialog != ActiveDialogs.end() && foundDialog->second == dlg) {
-            return; // dialog is already defined
-        }
-
-        ActiveDialogs[attachTo] = dlg;
-        connect(dlg, &TaskView::TaskDialog::aboutToBeDestroyed, this, [this, attachTo] {
-            closedDialog(attachTo);
-        });
+    // make sure that the combo view is shown
+    auto dw = qobject_cast<QDockWidget*>(taskView->parentWidget());
+    if (dw) {
+        aboutToShowDialog(dw);
+        dw->setVisible(true);
+        dw->toggleViewAction()->setVisible(true);
+        dw->setFeatures(QDockWidget::DockWidgetMovable|QDockWidget::DockWidgetFloatable);
     }
+
+    if (!addedDialog) {
+        return; // dialog is already defined
+    }
+
+    connect(dlg, &TaskView::TaskDialog::aboutToBeDestroyed, this, [this, attachTo] {
+        closedDialog(attachTo);
+    });
 }
 
 Gui::TaskView::TaskDialog* ControlSingleton::activeDialog(App::Document* attachedTo) const
 {
-    auto foundDialog = ActiveDialogs.find(attachedTo);
-    return foundDialog == ActiveDialogs.end() ? nullptr : foundDialog->second;
+    Gui::TaskView::TaskView* taskView = taskPanel();
+
+    if (taskView && attachedTo) {
+        return taskView->dialog(attachedTo);
+    }
+    return nullptr;
 }
 
 void ControlSingleton::accept(App::Document* attachedTo)
 {
     Gui::TaskView::TaskView* taskView = taskPanel();
     if (taskView) {
-        taskView->accept();
+        taskView->accept(attachedTo);
         qApp->processEvents(QEventLoop::ExcludeUserInputEvents |
                             QEventLoop::ExcludeSocketNotifiers);
     }
@@ -218,7 +216,7 @@ void ControlSingleton::reject(App::Document* attachedTo)
 {
     Gui::TaskView::TaskView* taskView = taskPanel();
     if (taskView) {
-        taskView->reject();
+        taskView->reject(attachedTo);
         qApp->processEvents(QEventLoop::ExcludeUserInputEvents |
                             QEventLoop::ExcludeSocketNotifiers);
     }
@@ -228,13 +226,12 @@ void ControlSingleton::closeDialog(App::Document* attachedTo)
 {
     Gui::TaskView::TaskView* taskView = taskPanel();
     if (taskView) {
-        taskView->removeDialog();
+        taskView->removeDialog(attachedTo);
     }
 }
 
 void ControlSingleton::closedDialog(App::Document* attachedTo)
 {
-    ActiveDialogs.erase(attachedTo);
     Gui::TaskView::TaskView* taskView = taskPanel();
     assert(taskView);
 

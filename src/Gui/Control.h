@@ -115,7 +115,6 @@ private:
 
     std::stack<status> StatusStack;
 
-    // Gui::TaskView::TaskDialog *ActiveDialog;
     std::map<App::Document*, Gui::TaskView::TaskDialog*> ActiveDialogs;
     int oldTabIndex;
 
