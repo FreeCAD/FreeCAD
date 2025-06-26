@@ -94,7 +94,7 @@ dependencies:
 - qt6-main
 - smesh
 - swig
-- vtk==9.2.6
+- vtk==9.3.0
 - xerces-c
 - yaml-cpp
 - zlib
