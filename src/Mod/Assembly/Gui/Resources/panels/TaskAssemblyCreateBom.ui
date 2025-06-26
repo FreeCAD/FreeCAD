@@ -17,7 +17,7 @@
    <item row="0" column="0" colspan="2">
     <widget class="Gui::PrefCheckBox" name="CheckBox_detailSubAssemblies">
      <property name="toolTip">
-      <string>If checked, Sub assemblies children will be added to the bill of materials.</string>
+      <string>If checked, sub-assemblies children will be added to the bill of materials</string>
      </property>
      <property name="text">
       <string>Sub-assemblies children</string>
@@ -36,7 +36,7 @@
    <item row="1" column="0" colspan="2">
     <widget class="Gui::PrefCheckBox" name="CheckBox_detailParts">
      <property name="toolTip">
-      <string>If checked, Parts children will be added to the bill of materials.</string>
+      <string>If checked, parts children will be added to the bill of materials</string>
      </property>
      <property name="text">
       <string>Parts children</string>
@@ -55,7 +55,7 @@
    <item row="2" column="0" colspan="2">
     <widget class="Gui::PrefCheckBox" name="CheckBox_onlyParts">
      <property name="toolTip">
-      <string>If checked, only Part containers and sub-assemblies will be added to the bill of materials. Solids like PartDesign Bodies, fasteners or Part workbench primitives will be ignored.</string>
+      <string>If checked, only part containers and sub-assemblies will be added to the bill of materials. Solids like PartDesign bodies, fasteners or Part workbench primitives will be ignored.</string>
      </property>
      <property name="text">
       <string>Only parts</string>

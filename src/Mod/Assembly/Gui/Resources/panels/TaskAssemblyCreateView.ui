@@ -17,7 +17,7 @@
    <item row="0" column="0">
     <widget class="Gui::PrefCheckBox" name="CheckBox_PartsAsSingleSolid">
      <property name="toolTip">
-      <string>If checked, Parts will be selected as a single solid.</string>
+      <string>If checked, parts will be selected as a single solid</string>
      </property>
      <property name="text">
       <string>Parts as single solid</string>
@@ -48,7 +48,7 @@
      <property name="text">
       <string>Aligning dragger:
 Select a feature.
-Press ESC to cancel.</string>
+Press Esc to cancel.</string>
      </property>
     </widget>
    </item>

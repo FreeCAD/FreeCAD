@@ -1,0 +1,13 @@
+##[pylyzer] failed /home/Ryan/documents/git/FreeCAD/src/Mod/Assembly/Preferences.py 1748993977 2885
+.FreeCAD: Never
+
+.FreeCADGui: Never
+
+.translate: Never
+.preferences: () -> Never
+.PreferencesPage: ClassType
+.PreferencesPage.form: Never
+.PreferencesPage.__call__: (parent: Obj := Obj) -> Preferences.PreferencesPage
+.PreferencesPage.saveSettings: (self: Preferences.PreferencesPage) -> NoneType
+.PreferencesPage.loadSettings: (self: Preferences.PreferencesPage) -> NoneType
+

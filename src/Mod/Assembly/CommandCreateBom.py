@@ -66,12 +66,12 @@ class CommandCreateBom:
     def GetResources(self):
         return {
             "Pixmap": "Assembly_BillOfMaterials",
-            "MenuText": QT_TRANSLATE_NOOP("Assembly_CreateBom", "Create Bill of Materials"),
+            "MenuText": QT_TRANSLATE_NOOP("Assembly_CreateBom", "Bill of Materials"),
             "Accel": "O",
             "ToolTip": "<p>"
             + QT_TRANSLATE_NOOP(
                 "Assembly_CreateBom",
-                "Create a bill of materials of the current assembly. If an assembly is active, it will be a BOM of this assembly. Else it will be a BOM of the whole document.",
+                "Creates a bill of materials of the current assembly. If an assembly is active, it will be a BOM of this assembly. Else it will be a BOM of the whole document.",
             )
             + "</p><p>"
             + QT_TRANSLATE_NOOP(
@@ -375,19 +375,19 @@ class TaskAssemblyCreateBom(QtCore.QObject):
             " - "
             + translate(
                 "Assembly",
-                "Sub-assemblies children : If checked, Sub assemblies children will be added to the bill of materials.",
+                "Sub-assembly children: If checked, the children of sub-assemblies will be included in the bill of materials.",
             )
             + "\n"
             " - "
             + translate(
                 "Assembly",
-                "Parts children : If checked, Parts children will be added to the bill of materials.",
+                "Parts children: If checked, parts children will be added to the bill of materials.",
             )
             + "\n"
             " - "
             + translate(
                 "Assembly",
-                "Only parts : If checked, only Part containers and sub-assemblies will be added to the bill of materials. Solids like PartDesign Bodies, fasteners or Part workbench primitives will be ignored.",
+                "Only parts: If checked, only part containers and sub-assemblies will be added to the bill of materials. Solids like PartDesign bodies, fasteners or Part workbench primitives will be ignored.",
             )
             + "\n"
         )
@@ -402,13 +402,13 @@ class TaskAssemblyCreateBom(QtCore.QObject):
             " - "
             + translate(
                 "Assembly",
-                "Custom columns : 'Description' and other custom columns you add by clicking on 'Add column' will not have their data overwritten. If a column name starts with '.' followed by a property name (e.g. '.Length'), it will be auto-populated with that property value. These columns can be renamed by double-clicking or pressing F2 (Renaming a column will currently lose its data).",
+                "Custom columns : 'Description' and other custom columns you add by clicking on 'Add column' will not have their data overwritten. If a column name starts with '.' followed by a property name (e.g. '.Length'), it will be auto-populated with that property value. These columns can be renamed by double-clicking or pressing F2 (renaming a column will currently lose its data).",
             )
             + "\n"
             "\n"
             + translate(
                 "Assembly",
-                "Any column (custom or not) can be deleted by pressing Del.",
+                "Any column (custom or not), can be deleted by pressing the Delete key",
             )
             + "\n"
         )
