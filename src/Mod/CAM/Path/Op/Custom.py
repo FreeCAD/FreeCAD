@@ -163,11 +163,26 @@ class ObjectCustom(PathOp.ObjectOp):
 
     def opExecute(self, obj):
         self.commandlist.append(Path.Command("(Begin Custom)"))
+        errorNumLines = []
+        errorLines = []
+        counter = 0
 
         if obj.Source == "Text" and obj.Gcode:
             for l in obj.Gcode:
-                newcommand = Path.Command(str(l))
-                self.commandlist.append(newcommand)
+                counter += 1
+                try:
+                    newcommand = Path.Command(str(l))
+                    self.commandlist.append(newcommand)
+                except ValueError:
+                    errorNumLines.append(counter)
+                    if len(errorLines) < 7:
+                        errorLines.append(f"{counter}: {str(l).strip()}")
+            if errorLines:
+                Path.Log.warning(
+                    translate("PathCustom", "Total invalid lines in Custom Text G-code: %s")
+                    % len(errorNumLines)
+                )
+
         elif obj.Source == "File" and len(obj.GcodeFile) > 0:
             gcode_file = self.findGcodeFile(obj.GcodeFile)
 
@@ -176,15 +191,33 @@ class ObjectCustom(PathOp.ObjectOp):
                 Path.Log.error(
                     translate("PathCustom", "Custom file %s could not be found.") % obj.GcodeFile
                 )
+            else:
+                with open(gcode_file) as fd:
+                    for l in fd.readlines():
+                        counter += 1
+                        try:
+                            newcommand = Path.Command(str(l))
+                            self.commandlist.append(newcommand)
+                        except ValueError:
+                            errorNumLines.append(counter)
+                            if len(errorLines) < 7:
+                                errorLines.append(f"{counter}: {str(l).strip()}")
+                if errorLines:
+                    Path.Log.warning(f'"{gcode_file}"')
+                    Path.Log.warning(
+                        translate("PathCustom", "Total invalid lines in Custom File G-code: %s")
+                        % len(errorNumLines)
+                    )
 
-            with open(gcode_file) as fd:
-                for l in fd.readlines():
-                    try:
-                        newcommand = Path.Command(str(l))
-                        self.commandlist.append(newcommand)
-                    except ValueError:
-                        Path.Log.warning(translate("PathCustom", "Invalid G-code line: %s") % l)
-                        continue
+        if errorNumLines:
+            Path.Log.warning(
+                translate("PathCustom", "Please check lines: %s")
+                % ", ".join(map(str, errorNumLines))
+            )
+
+            if len(errorLines) > 7:
+                errorLines.append("...")
+            Path.Log.warning("\n" + "\n".join(errorLines))
 
         self.commandlist.append(Path.Command("(End Custom)"))
 
