@@ -158,7 +158,8 @@ void TaskActiveView::updatePreview()
     QColor bg = ui->ccBgColor->color();
     if (ui->cbUse3d->isChecked()) {
         bg = QColor();
-    } else if (ui->cbNoBG->isChecked()) {
+    }
+    else if (ui->cbNoBG->isChecked()) {
         bg = QColor(Qt::transparent);
     }
 
