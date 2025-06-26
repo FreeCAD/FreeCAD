@@ -505,6 +505,8 @@ void TaskView::slotActiveDocument(const App::Document& doc)
     if (foundTaskInfo != taskInfos.end()) {
         // +1 because the first widget of the stack is the taskwatcher panel
         setCurrentIndex((foundTaskInfo - taskInfos.begin()) + 1);
+    } else {
+        setCurrentIndex(0);
     }
 
     if (foundTaskInfo == taskInfos.end()) {
@@ -700,6 +702,9 @@ bool TaskView::showDialog(TaskDialog *dlg, App::Document* doc)
     connect(outInfo.ActiveCtrl->buttonBox, &QDialogButtonBox::clicked,
             this, [doc, this](QAbstractButton *button) { clicked(button, doc); });
     // clang-format on
+
+    taskInfos.push_back(outInfo);
+    setCurrentIndex(addWidget(outInfo.taskPanel));
 
     saveCurrentWidth();
     getMainWindow()->updateActions();
@@ -928,9 +933,9 @@ std::optional<TaskInfo> TaskView::currentTaskInfo() const
 {
     // Index 0 is taskWatcher's panel
     if (currentIndex() <= 0) {
-        return taskInfos[currentIndex() - 1];
+        return std::nullopt;
     }
-    return std::nullopt;
+    return taskInfos[currentIndex() - 1];
 }
 TaskDialog* TaskView::dialog(App::Document* doc)
 {
