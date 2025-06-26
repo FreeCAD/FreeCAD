@@ -2991,10 +2991,10 @@ void ConstraintC2LDistance::errorgrad(double* err, double* grad, double* param)
 
     if (err) {
         if (h < *circle.rad) {
-            *err = *circle.rad - *distance() - h;
+            *err = *circle.rad - std::abs(*distance()) - h;
         }
         else {
-            *err = *circle.rad + *distance() - h;
+            *err = *circle.rad + std::abs(*distance()) - h;
         }
     }
     else if (grad) {
