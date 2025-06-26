@@ -40,4 +40,3 @@ pivy = pyimport "pivy"
 .SoSwitchMarker.onChanged: |V: Type, K: Type, Type_60700 <: Structural({.getPropertyByName = (self: Obj, ?60836) -> ?Self and (self: Obj, ?60894) -> ?Self}), Type_60836: Type, Type_60894: Type, Self <: global::Indexable(?K, ?V)|(self: SoSwitchMarker.SoSwitchMarker, vp: Type_60700, prop: {"color_X_axis"}) -> NoneType
 
  vp: Type_60700, prop: {"color_X_axis"}) -> NoneType
-
