@@ -205,6 +205,8 @@ class BIM_IfcProperties:
     def update(self, index=None):
         "updates the tree widgets in all tabs"
 
+        index = getattr(index, "value", index)
+
         self.model.clear()
         self.model.setHorizontalHeaderLabels(
             [
@@ -760,14 +762,14 @@ class BIM_IfcProperties:
             self.updateDicts(remove=remove)
 
     def onSelected(self, index):
-        PARAMS.SetInt("IfcPropertiesSelectedState", index)
+        PARAMS.SetInt("IfcPropertiesSelectedState", getattr(index, "value", index))
         self.objectslist, searchterms = self.rebuildObjectsList()
         self.form.searchField.clear()
         self.form.searchField.addItems(searchterms)
         self.update()
 
     def onVisible(self, index):
-        PARAMS.SetInt("IfcPropertiesVisibleState", index)
+        PARAMS.SetInt("IfcPropertiesVisibleState", getattr(index, "value", index))
         self.update()
 
 

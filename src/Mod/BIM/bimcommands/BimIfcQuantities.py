@@ -232,6 +232,8 @@ class BIM_IfcQuantities:
         """updates the tree widgets in all tabs. Index is not used,
         it is just there to match a qt slot requirement"""
 
+        index = getattr(index, "value", index)
+
         from PySide import QtCore, QtGui
         import Draft
 
