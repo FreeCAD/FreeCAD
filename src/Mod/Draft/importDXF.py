@@ -4163,6 +4163,8 @@ def getViewDXF(view):
     return block, insert
 
 
+# In src/Mod/Draft/importDXF.py
+
 def readPreferences():
     """Read the preferences of the this module from the parameter database.
 
@@ -4184,6 +4186,7 @@ def readPreferences():
     # reading parameters
     if gui and params.get_param("dxfShowDialog"):
         FreeCADGui.showPreferencesByName("Import-Export", ":/ui/preferences-dxf.ui")
+
     global dxfCreatePart, dxfCreateDraft, dxfCreateSketch
     global dxfDiscretizeCurves, dxfStarBlocks
     global dxfMakeBlocks, dxfJoin, dxfRenderPolylineWidth
@@ -4193,28 +4196,66 @@ def readPreferences():
     global dxfMakeFaceMode, dxfBrightBackground, dxfDefaultColor
     global dxfUseLegacyImporter, dxfExportBlocks, dxfScaling
     global dxfUseLegacyExporter
-    dxfCreatePart = params.get_param("dxfCreatePart")
-    dxfCreateDraft = params.get_param("dxfCreateDraft")
-    dxfCreateSketch = params.get_param("dxfCreateSketch")
-    dxfDiscretizeCurves = params.get_param("DiscretizeEllipses")
-    dxfStarBlocks = params.get_param("dxfstarblocks")
-    dxfMakeBlocks = params.get_param("groupLayers")
-    dxfJoin = params.get_param("joingeometry")
-    dxfRenderPolylineWidth = params.get_param("renderPolylineWidth")
-    dxfImportTexts = params.get_param("dxftext")
-    dxfImportLayouts = params.get_param("dxflayout")
-    dxfImportPoints = params.get_param("dxfImportPoints")
-    dxfImportHatches = params.get_param("importDxfHatches")
-    dxfUseStandardSize = params.get_param("dxfStdSize")
-    dxfGetColors = params.get_param("dxfGetOriginalColors")
-    dxfUseDraftVisGroups = params.get_param("dxfUseDraftVisGroups")
-    dxfMakeFaceMode = params.get_param("MakeFaceMode")
-    dxfUseLegacyImporter = params.get_param("dxfUseLegacyImporter")
-    dxfUseLegacyExporter = params.get_param("dxfUseLegacyExporter")
+
+    # --- Read all feature and appearance toggles ---
+    # These are independent settings and can be read directly.
+    dxfDiscretizeCurves = params.get_param("DiscretizeEllipses", False)
+    dxfStarBlocks = params.get_param("dxfstarblocks", False)
+    dxfJoin = params.get_param("joingeometry", False)
+    dxfRenderPolylineWidth = params.get_param("renderPolylineWidth", False)
+    dxfImportTexts = params.get_param("dxftext", True)
+    dxfImportLayouts = params.get_param("dxflayout", False)
+    dxfImportPoints = params.get_param("dxfImportPoints", True)
+    dxfImportHatches = params.get_param("importDxfHatches", True)
+    dxfUseStandardSize = params.get_param("dxfStdSize", False)
+    dxfGetColors = params.get_param("dxfGetOriginalColors", True)
+    dxfUseDraftVisGroups = params.get_param("dxfUseDraftVisGroups", True)
+    dxfMakeFaceMode = params.get_param("MakeFaceMode", False)
+    dxfExportBlocks = params.get_param("dxfExportBlocks", True)
+    dxfScaling = params.get_param("dxfScaling", 1.0)
+
+    # These control which importer is used. The script should only proceed if
+    # the legacy importer is selected.
+    dxfUseLegacyImporter = params.get_param("dxfUseLegacyImporter", False)
+    dxfUseLegacyExporter = params.get_param("dxfUseLegacyExporter", False)
+
+    if not dxfUseLegacyImporter:
+        # If the legacy importer is called when not selected, exit.
+        # This prevents accidental execution.
+        return
+
+    # --- New, Centralized Logic for Structural Mode ---
+
+    # Read the legacy-specific override for sketch creation.
+    dxfCreateSketch = params.get_param("dxfCreateSketch", False)
+
+    if dxfCreateSketch:
+        # Sketch mode takes highest priority, other modes are irrelevant.
+        dxfCreatePart = False
+        dxfCreateDraft = False
+        dxfMakeBlocks = False
+    else:
+        # Not in sketch mode, so determine structure from DxfImportMode.
+        # This is where the new parameter is read, with its default value defined.
+        # 0=Draft, 1=Primitives, 2=Shapes, 3=Fused
+        import_mode = params.get_param("DxfImportMode", 2) # Default to "Individual part shapes"
+
+        if import_mode == 3:  # Fused part shapes
+            dxfMakeBlocks = True  # 'groupLayers' is the legacy equivalent
+            dxfCreatePart = False # In legacy, dxfMakeBlocks overrides these
+            dxfCreateDraft = False
+        elif import_mode == 0:  # Editable draft objects
+            dxfMakeBlocks = False
+            dxfCreatePart = False
+            dxfCreateDraft = True
+        else:  # Covers modes 1 (Primitives) and 2 (Shapes). Legacy maps both to "Simple part shapes"
+            dxfMakeBlocks = False
+            dxfCreatePart = True
+            dxfCreateDraft = False
+
+    # --- Other settings that are not checkboxes ---
     dxfBrightBackground = isBrightBackground()
     dxfDefaultColor = getColor()
-    dxfExportBlocks = params.get_param("dxfExportBlocks")
-    dxfScaling = params.get_param("dxfScaling")
 
 
 class DxfImportReporter:
