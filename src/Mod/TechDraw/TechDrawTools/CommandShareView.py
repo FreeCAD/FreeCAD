@@ -44,7 +44,7 @@ class CommandShareView:
         """Return a dictionary with data that will be used by the button or menu item."""
         return {'Pixmap': 'actions/TechDraw_ShareView.svg',
                 'Accel': "",
-                'MenuText': QT_TRANSLATE_NOOP("TechDraw_ShareView", "Share view"),
+                'MenuText': QT_TRANSLATE_NOOP("TechDraw_ShareView", "Share View"),
                 'ToolTip': QT_TRANSLATE_NOOP("TechDraw_ShareView", "Shares a view on a second page")}
 
     def Activated(self):

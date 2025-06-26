@@ -1498,7 +1498,7 @@ CmdTechDrawRadiusDimension::CmdTechDrawRadiusDimension()
 {
     sAppModule = "TechDraw";
     sGroup = QT_TR_NOOP("TechDraw");
-    sMenuText = QT_TR_NOOP("Radius dimension");
+    sMenuText = QT_TR_NOOP("Radius Dimension");
     sToolTipText = QT_TR_NOOP("Inserts a radius dimension of a circular edge or arc");
     sWhatsThis = "TechDraw_RadiusDimension";
     sStatusTip = sToolTipText;
@@ -1546,7 +1546,7 @@ CmdTechDrawDiameterDimension::CmdTechDrawDiameterDimension()
 {
     sAppModule = "TechDraw";
     sGroup = QT_TR_NOOP("TechDraw");
-    sMenuText = QT_TR_NOOP("Diameter dimension");
+    sMenuText = QT_TR_NOOP("Diameter Dimension");
     sToolTipText = QT_TR_NOOP("Inserts a diameter dimension of a circular edge or arc");
     sWhatsThis = "TechDraw_DiameterDimension";
     sStatusTip = sToolTipText;
@@ -1594,7 +1594,7 @@ CmdTechDrawLengthDimension::CmdTechDrawLengthDimension()
 {
     sAppModule = "TechDraw";
     sGroup = QT_TR_NOOP("TechDraw");
-    sMenuText = QT_TR_NOOP("Length dimension");
+    sMenuText = QT_TR_NOOP("Length Dimension");
     sToolTipText = QT_TR_NOOP("Inserts a length dimension of an edge or distance between two points");
     sWhatsThis = "TechDraw_LengthDimension";
     sStatusTip = sToolTipText;
@@ -1641,7 +1641,7 @@ CmdTechDrawHorizontalDimension::CmdTechDrawHorizontalDimension()
 {
     sAppModule = "TechDraw";
     sGroup = QT_TR_NOOP("TechDraw");
-    sMenuText = QT_TR_NOOP("Horizontal length dimension");
+    sMenuText = QT_TR_NOOP("Horizontal Length Dimension");
     sToolTipText = QT_TR_NOOP("Inserts a horizontal length dimension of an edge or distance between two points");
     sWhatsThis = "TechDraw_HorizontalDimension";
     sStatusTip = sToolTipText;
@@ -1689,7 +1689,7 @@ CmdTechDrawVerticalDimension::CmdTechDrawVerticalDimension()
 {
     sAppModule = "TechDraw";
     sGroup = QT_TR_NOOP("TechDraw");
-    sMenuText = QT_TR_NOOP("Vertical length dimension");
+    sMenuText = QT_TR_NOOP("Vertical Length Dimension");
     sToolTipText = QT_TR_NOOP("Inserts a vertical length dimension of an edge or distance between two points");
     sWhatsThis = "TechDraw_VerticalDimension";
     sStatusTip = sToolTipText;
@@ -1737,7 +1737,7 @@ CmdTechDrawAngleDimension::CmdTechDrawAngleDimension()
 {
     sAppModule = "TechDraw";
     sGroup = QT_TR_NOOP("TechDraw");
-    sMenuText = QT_TR_NOOP("Angle dimension");
+    sMenuText = QT_TR_NOOP("Angle Dimension");
     sToolTipText = QT_TR_NOOP("Inserts an angle dimension between two edges");
     sWhatsThis = "TechDraw_AngleDimension";
     sStatusTip = sToolTipText;
@@ -1784,7 +1784,7 @@ CmdTechDraw3PtAngleDimension::CmdTechDraw3PtAngleDimension()
 {
     sAppModule = "TechDraw";
     sGroup = QT_TR_NOOP("TechDraw");
-    sMenuText = QT_TR_NOOP("3-point angle dimension");
+    sMenuText = QT_TR_NOOP("3-point Angle Dimension");
     sToolTipText = QT_TR_NOOP("Inserts an angle dimension between 3 selected points");
     sWhatsThis = "TechDraw_3PtAngleDimension";
     sStatusTip = sToolTipText;
@@ -1831,7 +1831,7 @@ CmdTechDrawAreaDimension::CmdTechDrawAreaDimension()
 {
     sAppModule = "TechDraw";
     sGroup = QT_TR_NOOP("TechDraw");
-    sMenuText = QT_TR_NOOP("Area annotation");
+    sMenuText = QT_TR_NOOP("Area Annotation");
     sToolTipText = QT_TR_NOOP("Inserts an annotation showing the area of a selected face");
     sWhatsThis = "TechDraw_AreaDimension";
     sStatusTip = sToolTipText;
@@ -1882,7 +1882,7 @@ CmdTechDrawLinkDimension::CmdTechDrawLinkDimension()
 {
     sAppModule = "TechDraw";
     sGroup = QT_TR_NOOP("TechDraw");
-    sMenuText = QT_TR_NOOP("Link dimension to 3D geometry");
+    sMenuText = QT_TR_NOOP("Link Dimension To 3d Geometry");
     sToolTipText = QT_TR_NOOP("Links the selected TechDraw dimension to its corresponding 3D geometry");
     sWhatsThis = "TechDraw_LinkDimension";
     sStatusTip = sToolTipText;
@@ -1962,7 +1962,7 @@ CmdTechDrawExtentGroup::CmdTechDrawExtentGroup()
 {
     sAppModule = "TechDraw";
     sGroup = QT_TR_NOOP("TechDraw");
-    sMenuText = QT_TR_NOOP("Extent dimension");
+    sMenuText = QT_TR_NOOP("Extent Dimension");
     sToolTipText = QT_TR_NOOP("Inserts a dimension showing the extent (overall length) of an object or feature");
     sWhatsThis = "TechDraw_ExtentGroup";
     sStatusTip = sToolTipText;
@@ -2057,7 +2057,7 @@ CmdTechDrawHorizontalExtentDimension::CmdTechDrawHorizontalExtentDimension()
 {
     sAppModule = "TechDraw";
     sGroup = QT_TR_NOOP("TechDraw");
-    sMenuText = QT_TR_NOOP("Horizontal extent dimension");
+    sMenuText = QT_TR_NOOP("Horizontal Extent Dimension");
     sToolTipText = QT_TR_NOOP("Inserts a dimension showing the horizontal extent (overall length) of an object or feature.");
     sWhatsThis = "TechDraw_HorizontalExtentDimension";
     sStatusTip = sToolTipText;
@@ -2169,7 +2169,7 @@ CmdTechDrawVerticalExtentDimension::CmdTechDrawVerticalExtentDimension()
 {
     sAppModule = "TechDraw";
     sGroup = QT_TR_NOOP("TechDraw");
-    sMenuText = QT_TR_NOOP("Vertical extent dimension");
+    sMenuText = QT_TR_NOOP("Vertical Extent Dimension");
     sToolTipText = QT_TR_NOOP("Inserts a dimension showing the vertical extent (overall length) of an object or feature.");
     sWhatsThis = "TechDraw_VerticalExtentDimension";
     sStatusTip = sToolTipText;
@@ -2207,7 +2207,7 @@ CmdTechDrawDimensionRepair::CmdTechDrawDimensionRepair()
 {
     sAppModule = "TechDraw";
     sGroup = QT_TR_NOOP("TechDraw");
-    sMenuText = QT_TR_NOOP("Repair dimension references");
+    sMenuText = QT_TR_NOOP("Repair Dimension References");
     sToolTipText = QT_TR_NOOP("Repairs broken or incorrect dimension references");
     sWhatsThis = "TechDraw_DimensionRepair";
     sStatusTip = sToolTipText;
@@ -2256,7 +2256,7 @@ CmdTechDrawLandmarkDimension::CmdTechDrawLandmarkDimension()
 {
     sAppModule = "TechDraw";
     sGroup = QT_TR_NOOP("TechDraw");
-    sMenuText = QT_TR_NOOP("Landmark dimension");
+    sMenuText = QT_TR_NOOP("Landmark Dimension");
     sToolTipText = QT_TR_NOOP("Inserts a landmark dimension (experimental feature). Use with caution.");
     sWhatsThis = "TechDraw_LandmarkDimension";
     sStatusTip = sToolTipText;

@@ -47,7 +47,7 @@ class CommandHoleShaftFit:
             "Pixmap": "actions/TechDraw_HoleShaftFit.svg",
             "Accel": "",
             "MenuText": QT_TRANSLATE_NOOP(
-                "TechDraw_HoleShaftFit", "Hole/shaft fit"
+                "TechDraw_HoleShaftFit", "Hole/Shaft Fit"
             ),
             "ToolTip": QT_TRANSLATE_NOOP(
                 "TechDraw_HoleShaftFit",

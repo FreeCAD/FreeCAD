@@ -48,7 +48,7 @@ class CommandPositionSectionView:
         """Return a dictionary with data that will be used by the button or menu item."""
         return {'Pixmap': 'TechDraw_ExtensionPositionSectionView.svg',
                 'Accel': "",
-                'MenuText': QT_TRANSLATE_NOOP("TechDraw_PositionSectionView", "Position section view"),
+                'MenuText': QT_TRANSLATE_NOOP("TechDraw_PositionSectionView", "Position Section View"),
                 'ToolTip': QT_TRANSLATE_NOOP("TechDraw_PositionSectionView",
                   "Aligns the selected section view with its source view orthogonally or the selected edge in the section view to the selected vertex in the base view")}
 

@@ -37,29 +37,29 @@ using namespace TechDrawGui;
 
 #if 0// needed for Qt's lupdate utility
     qApp->translate("Workbench", "Dimensions");
-    qApp->translate("Workbench", "Extensions: attributes/modifications");
-    qApp->translate("Workbench", "Extensions: centerlines/threading");
-    qApp->translate("Workbench", "Extensions: dimensions");
+    qApp->translate("Workbench", "Extensions: Attributes/Modifications");
+    qApp->translate("Workbench", "Extensions: Centerlines/Threading");
+    qApp->translate("Workbench", "Extensions: Dimensions");
     qApp->translate("Workbench", "Annotations");
     qApp->translate("Workbench", "Stacking");
-    qApp->translate("Workbench", "Add lines");
-    qApp->translate("Workbench", "Add vertices");
+    qApp->translate("Workbench", "Add Lines");
+    qApp->translate("Workbench", "Add Vertices");
     qApp->translate("Workbench", "Page");
     qApp->translate("Workbench", "TechDraw");
     // Translations for View > Toolbars
-    qApp->translate("Workbench", "TechDraw annotation");
-    qApp->translate("Workbench", "TechDraw attributes");
-    qApp->translate("Workbench", "TechDraw centerlines");
-    qApp->translate("Workbench", "TechDraw decoration");
-    qApp->translate("Workbench", "TechDraw dimensions");
-    qApp->translate("Workbench", "TechDraw extend dimensions");
-    qApp->translate("Workbench", "TechDraw file access");
-    qApp->translate("Workbench", "TechDraw pages");
-    qApp->translate("Workbench", "TechDraw stacking");
-    qApp->translate("Workbench", "TechDraw tool attributes");
-    qApp->translate("Workbench", "TechDraw views");
-    qApp->translate("Workbench", "Views from other workbenches");
-    qApp->translate("Workbench", "Clipped views");
+    qApp->translate("Workbench", "TechDraw Annotation");
+    qApp->translate("Workbench", "TechDraw Attributes");
+    qApp->translate("Workbench", "TechDraw Centerlines");
+    qApp->translate("Workbench", "TechDraw Decoration");
+    qApp->translate("Workbench", "TechDraw Dimensions");
+    qApp->translate("Workbench", "TechDraw Extend Dimensions");
+    qApp->translate("Workbench", "TechDraw File Access");
+    qApp->translate("Workbench", "TechDraw Pages");
+    qApp->translate("Workbench", "TechDraw Stacking");
+    qApp->translate("Workbench", "TechDraw Tool Attributes");
+    qApp->translate("Workbench", "TechDraw Views");
+    qApp->translate("Workbench", "Views From Other Workbenches");
+    qApp->translate("Workbench", "Clipped Views");
     qApp->translate("Workbench", "Hatching");
     qApp->translate("Workbench", "Symbols");
     qApp->translate("Workbench", "Views");
@@ -101,7 +101,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
 
     // extension: attributes and modifications
     Gui::MenuItem* toolattrib = new Gui::MenuItem;
-    toolattrib->setCommand("Extensions: attributes/modifications");
+    toolattrib->setCommand("Extensions: Attributes/Modifications");
     *toolattrib << "TechDraw_ExtensionSelectLineAttributes";
     *toolattrib << "TechDraw_ExtensionChangeLineAttributes";
     *toolattrib << "Separator";
@@ -124,7 +124,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
 
     // extension: centerlines and threading
     Gui::MenuItem* toolcenter = new Gui::MenuItem;
-    toolcenter->setCommand("Extensions: centerlines/threading");
+    toolcenter->setCommand("Extensions: Centerlines/Threading");
     *toolcenter << "TechDraw_ExtensionCircleCenterLines";
     *toolcenter << "TechDraw_ExtensionHoleCircle";
     *toolcenter << "Separator";
@@ -144,7 +144,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
 
     // extension: dimensions
     Gui::MenuItem* tooldimensions = new Gui::MenuItem;
-    tooldimensions->setCommand("Extensions: dimensions");
+    tooldimensions->setCommand("Extensions: Dimensions");
     *tooldimensions << "TechDraw_ExtensionCreateHorizChainDimension";
     *tooldimensions << "TechDraw_ExtensionCreateVertChainDimension";
     *tooldimensions << "TechDraw_ExtensionCreateObliqueChainDimension";
@@ -181,7 +181,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
 
     // lines
     Gui::MenuItem* lines = new Gui::MenuItem;
-    lines->setCommand("Add lines");
+    lines->setCommand("Add Lines");
     *lines << "TechDraw_LeaderLine";
     *lines << "TechDraw_FaceCenterLine";
     *lines << "TechDraw_2LineCenterLine";
@@ -194,7 +194,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
 
     // vertices
     Gui::MenuItem* vertices = new Gui::MenuItem;
-    vertices->setCommand("Add vertices");
+    vertices->setCommand("Add Vertices");
     *vertices << "TechDraw_CosmeticVertex";
     *vertices << "TechDraw_Midpoints";
     *vertices << "TechDraw_Quadrants";
@@ -213,7 +213,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
 
     // views
     Gui::MenuItem* views = new Gui::MenuItem;
-    views->setCommand("TechDraw views");
+    views->setCommand("TechDraw Views");
     *views << "TechDraw_View";
     *views << "TechDraw_BrokenView";
     *views << "TechDraw_SectionView";
@@ -233,7 +233,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
 
     // views from other workbenches
     Gui::MenuItem* other = new Gui::MenuItem;
-    other->setCommand("Views from other workbenches");
+    other->setCommand("Views from Other Workbenches");
     *other << "TechDraw_ActiveView";
     *other << "TechDraw_DraftView";
     *other << "TechDraw_ArchView";
@@ -292,7 +292,7 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
 {
     Gui::ToolBarItem* root = StdWorkbench::setupToolBars();
     Gui::ToolBarItem* pages = new Gui::ToolBarItem(root);
-    pages->setCommand("TechDraw pages");
+    pages->setCommand("TechDraw Pages");
     *pages << "TechDraw_PageDefault";
     *pages << "TechDraw_PageTemplate";
     *pages << "TechDraw_FillTemplateFields";
@@ -300,7 +300,7 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
     *pages << "TechDraw_PrintAll";
 
     Gui::ToolBarItem* views = new Gui::ToolBarItem(root);
-    views->setCommand("TechDraw views");
+    views->setCommand("TechDraw Views");
     *views << "TechDraw_View";
     *views << "TechDraw_BrokenView";
     *views << "TechDraw_ActiveView";
@@ -310,11 +310,11 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
     *views << "TechDraw_ClipGroup";
 
     Gui::ToolBarItem* stacking = new Gui::ToolBarItem(root);
-    stacking->setCommand("TechDraw stacking");
+    stacking->setCommand("TechDraw Stacking");
     *stacking << "TechDraw_StackGroup";
 
     Gui::ToolBarItem* dims = new Gui::ToolBarItem(root);
-    dims->setCommand("TechDraw dimensions");
+    dims->setCommand("TechDraw Dimensions");
 
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/Mod/TechDraw/dimensioning");
@@ -347,7 +347,7 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
     *dims << "TechDraw_DimensionRepair";
 
     Gui::ToolBarItem* extattribs = new Gui::ToolBarItem(root);
-    extattribs->setCommand("TechDraw attributes");
+    extattribs->setCommand("TechDraw Attributes");
     *extattribs << "TechDraw_ExtensionSelectLineAttributes";
     *extattribs << "TechDraw_ExtensionChangeLineAttributes";
     *extattribs << "TechDraw_ExtensionExtendShortenLineGroup";
@@ -360,7 +360,7 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
     *extattribs << "TechDraw_ExtensionCustomizeFormat";
 
     Gui::ToolBarItem* extcenter = new Gui::ToolBarItem(root);
-    extcenter->setCommand("TechDraw centerlines");
+    extcenter->setCommand("TechDraw Centerlines");
     *extcenter << "TechDraw_ExtensionCircleCenterLinesGroup";
     *extcenter << "TechDraw_ExtensionThreadsGroup";
     *extcenter << "TechDraw_CommandVertexCreationGroup";
@@ -369,7 +369,7 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
     *extcenter << "TechDraw_ExtensionLinePPGroup";
 
     Gui::ToolBarItem* extdimensions = new Gui::ToolBarItem(root);
-    extdimensions->setCommand("TechDraw extend dimensions");
+    extdimensions->setCommand("TechDraw Extend Dimensions");
     if (separatedTools) {
         *extdimensions << "TechDraw_ExtensionCreateChainDimensionGroup";
         *extdimensions << "TechDraw_ExtensionCreateCoordDimensionGroup";
@@ -380,18 +380,18 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
     *extdimensions << "TechDraw_ExtensionIncreaseDecreaseGroup";
 
     Gui::ToolBarItem* file = new Gui::ToolBarItem(root);
-    file->setCommand("TechDraw file access");
+    file->setCommand("TechDraw File Access");
     *file << "TechDraw_ExportPageSVG";
     *file << "TechDraw_ExportPageDXF";
 
     Gui::ToolBarItem* decor = new Gui::ToolBarItem(root);
-    decor->setCommand("TechDraw decoration");
+    decor->setCommand("TechDraw Decoration");
     *decor << "TechDraw_Hatch";
     *decor << "TechDraw_GeometricHatch";
     *decor << "TechDraw_ToggleFrame";
 
     Gui::ToolBarItem* anno = new Gui::ToolBarItem(root);
-    anno->setCommand("TechDraw annotation");
+    anno->setCommand("TechDraw Annotation");
     *anno << "TechDraw_Annotation";
     *anno << "TechDraw_LeaderLine";
     *anno << "TechDraw_RichTextAnnotation";
@@ -411,7 +411,7 @@ Gui::ToolBarItem* Workbench::setupCommandBars() const
 {
     Gui::ToolBarItem* root = new Gui::ToolBarItem;
     Gui::ToolBarItem* pages = new Gui::ToolBarItem(root);
-    pages->setCommand("TechDraw pages");
+    pages->setCommand("TechDraw Pages");
     *pages << "TechDraw_PageDefault";
     *pages << "TechDraw_PageTemplate";
     *pages << "TechDraw_FillTemplateFields";
@@ -429,11 +429,11 @@ Gui::ToolBarItem* Workbench::setupCommandBars() const
     *views << "TechDraw_ClipGroup";
 
     Gui::ToolBarItem* stacking = new Gui::ToolBarItem(root);
-    stacking->setCommand("TechDraw stacking");
+    stacking->setCommand("TechDraw Stacking");
     *stacking << "TechDraw_StackGroup";
 
     Gui::ToolBarItem* dims = new Gui::ToolBarItem(root);
-    dims->setCommand("TechDraw dimensions");
+    dims->setCommand("TechDraw Dimensions");
     *dims << "TechDraw_Dimension";
     *dims << "TechDraw_LengthDimension";
     *dims << "TechDraw_HorizontalDimension";
@@ -451,7 +451,7 @@ Gui::ToolBarItem* Workbench::setupCommandBars() const
     *dims << "TechDraw_DimensionRepair";
 
     Gui::ToolBarItem* extattribs = new Gui::ToolBarItem(root);
-    extattribs->setCommand("TechDraw attributes");
+    extattribs->setCommand("TechDraw Attributes");
     *extattribs << "TechDraw_ExtensionSelectLineAttributes";
     *extattribs << "TechDraw_ExtensionChangeLineAttributes";
     *extattribs << "TechDraw_ExtensionExtendShortenLineGroup";
@@ -462,7 +462,7 @@ Gui::ToolBarItem* Workbench::setupCommandBars() const
     *extattribs << "TechDraw_ExtensionCustomizeFormat";
 
     Gui::ToolBarItem* extcenter = new Gui::ToolBarItem(root);
-    extcenter->setCommand("TechDraw centerlines");
+    extcenter->setCommand("TechDraw Centerlines");
     *extcenter << "TechDraw_ExtensionCircleCenterLinesGroup";
     *extcenter << "TechDraw_ExtensionThreadsGroup";
     *extcenter << "TechDraw_CommandVertexCreationGroup";
@@ -471,7 +471,7 @@ Gui::ToolBarItem* Workbench::setupCommandBars() const
     *extcenter << "TechDraw_ExtensionLinePPGroup";
 
     Gui::ToolBarItem* extdimensions = new Gui::ToolBarItem(root);
-    extdimensions->setCommand("TechDraw extend dimensions");
+    extdimensions->setCommand("TechDraw Extend Dimensions");
     *extdimensions << "TechDraw_ExtensionCreateChainDimensionGroup";
     *extdimensions << "TechDraw_ExtensionCreateCoordDimensionGroup";
     *extdimensions << "TechDraw_ExtensionChamferDimensionGroup";
@@ -480,18 +480,18 @@ Gui::ToolBarItem* Workbench::setupCommandBars() const
     *extdimensions << "TechDraw_ExtensionIncreaseDecreaseGroup";
 
     Gui::ToolBarItem* file = new Gui::ToolBarItem(root);
-    file->setCommand("TechDraw file access");
+    file->setCommand("TechDraw File Access");
     *file << "TechDraw_ExportPageSVG";
     *file << "TechDraw_ExportPageDXF";
 
     Gui::ToolBarItem* decor = new Gui::ToolBarItem(root);
-    decor->setCommand("TechDraw decoration");
+    decor->setCommand("TechDraw Decoration");
     *decor << "TechDraw_Hatch";
     *decor << "TechDraw_GeometricHatch";
     *decor << "TechDraw_ToggleFrame";
 
     Gui::ToolBarItem* anno = new Gui::ToolBarItem(root);
-    anno->setCommand("TechDraw annotation");
+    anno->setCommand("TechDraw Annotation");
     *anno << "TechDraw_Annotation";
     *anno << "TechDraw_LeaderLine";
     *anno << "TechDraw_RichTextAnnotation";

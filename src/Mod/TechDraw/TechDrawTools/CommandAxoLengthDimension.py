@@ -51,7 +51,7 @@ class CommandAxoLengthDimension:
         """Return a dictionary with data that will be used by the button or menu item."""
         return {'Pixmap': 'actions/TechDraw_AxoLengthDimension.svg',
                 'Accel': "",
-                'MenuText': QT_TRANSLATE_NOOP("TechDraw_AxoLengthDimension", "Axonometric length dimension"),
+                'MenuText': QT_TRANSLATE_NOOP("TechDraw_AxoLengthDimension", "Axonometric Length Dimension"),
                 'ToolTip': QT_TRANSLATE_NOOP("TechDraw_AxoLengthDimension", "Creates an axonometric length dimension:<br>\
                 - select first edge to define direction and length of the dimension line<br>\
                 - select second edge to define the direction of the extension lines<br>\
