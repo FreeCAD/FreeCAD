@@ -68,7 +68,6 @@ class CommandCreateJointFixed:
         pass
 
     def GetResources(self):
-
         return {
             "Pixmap": "Assembly_CreateJointFixed",
             "MenuText": QT_TRANSLATE_NOOP(
@@ -106,7 +105,6 @@ class CommandCreateJointRevolute:
         pass
 
     def GetResources(self):
-
         return {
             "Pixmap": "Assembly_CreateJointRevolute",
             "MenuText": QT_TRANSLATE_NOOP("Assembly_CreateJointRevolute", "Revolute Joint"),
@@ -132,7 +130,6 @@ class CommandCreateJointCylindrical:
         pass
 
     def GetResources(self):
-
         return {
             "Pixmap": "Assembly_CreateJointCylindrical",
             "MenuText": QT_TRANSLATE_NOOP(
@@ -160,7 +157,6 @@ class CommandCreateJointSlider:
         pass
 
     def GetResources(self):
-
         return {
             "Pixmap": "Assembly_CreateJointSlider",
             "MenuText": QT_TRANSLATE_NOOP("Assembly_CreateJointSlider", "Slider Joint"),
@@ -186,7 +182,6 @@ class CommandCreateJointBall:
         pass
 
     def GetResources(self):
-
         return {
             "Pixmap": "Assembly_CreateJointBall",
             "MenuText": QT_TRANSLATE_NOOP("Assembly_CreateJointBall", "Ball Joint"),
@@ -212,7 +207,6 @@ class CommandCreateJointDistance:
         pass
 
     def GetResources(self):
-
         return {
             "Pixmap": "Assembly_CreateJointDistance",
             "MenuText": QT_TRANSLATE_NOOP("Assembly_CreateJointDistance", "Distance Joint"),
@@ -244,7 +238,6 @@ class CommandCreateJointParallel:
         pass
 
     def GetResources(self):
-
         return {
             "Pixmap": "Assembly_CreateJointParallel",
             "MenuText": QT_TRANSLATE_NOOP("Assembly_CreateJointParallel", "Parallel Joint"),
@@ -270,7 +263,6 @@ class CommandCreateJointPerpendicular:
         pass
 
     def GetResources(self):
-
         return {
             "Pixmap": "Assembly_CreateJointPerpendicular",
             "MenuText": QT_TRANSLATE_NOOP(
@@ -298,7 +290,6 @@ class CommandCreateJointAngle:
         pass
 
     def GetResources(self):
-
         return {
             "Pixmap": "Assembly_CreateJointAngle",
             "MenuText": QT_TRANSLATE_NOOP("Assembly_CreateJointAngle", "Angle Joint"),
@@ -324,7 +315,6 @@ class CommandCreateJointRackPinion:
         pass
 
     def GetResources(self):
-
         return {
             "Pixmap": "Assembly_CreateJointRackPinion",
             "MenuText": QT_TRANSLATE_NOOP(
@@ -357,7 +347,6 @@ class CommandCreateJointScrew:
         pass
 
     def GetResources(self):
-
         return {
             "Pixmap": "Assembly_CreateJointScrew",
             "MenuText": QT_TRANSLATE_NOOP("Assembly_CreateJointScrew", "Screw Joint"),
@@ -388,7 +377,6 @@ class CommandCreateJointGears:
         pass
 
     def GetResources(self):
-
         return {
             "Pixmap": "Assembly_CreateJointGears",
             "MenuText": QT_TRANSLATE_NOOP("Assembly_CreateJointGears", "Gears Joint"),
@@ -419,7 +407,6 @@ class CommandCreateJointBelt:
         pass
 
     def GetResources(self):
-
         return {
             "Pixmap": "Assembly_CreateJointPulleys",
             "MenuText": QT_TRANSLATE_NOOP("Assembly_CreateJointBelt", "Belt Joint"),
@@ -451,7 +438,6 @@ class CommandGroupGearBelt:
 
     def GetResources(self):
         """Set icon, menu and tooltip."""
-
         return {
             "Pixmap": "Assembly_CreateJointGears",
             "MenuText": QT_TRANSLATE_NOOP("Assembly_CreateJointGearBelt", "Gears/Belt Joint"),
@@ -496,7 +482,6 @@ class CommandToggleGrounded:
         pass
 
     def GetResources(self):
-
         return {
             "Pixmap": "Assembly_ToggleGrounded",
             "MenuText": QT_TRANSLATE_NOOP("Assembly_ToggleGrounded", "Toggle Grounded"),
