@@ -605,7 +605,7 @@ private:
 
     QString getToolWidgetText() const override
     {
-        return QString(QObject::tr("Rectangle parameters"));
+        return QObject::tr("Rectangle parameters");
     }
 
     void angleSnappingControl() override

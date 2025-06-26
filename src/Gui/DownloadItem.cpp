@@ -196,8 +196,8 @@ void NetworkAccessManager::authenticationRequired(QNetworkReply* reply, QAuthent
     dialog.adjustSize();
 
     QString introMessage = tr("<qt>Enter username and password for \"%1\" at %2</qt>");
-    introMessage = introMessage.arg(QString(reply->url().toString()).toHtmlEscaped(),
-                                    QString(reply->url().toString()).toHtmlEscaped());
+    introMessage = introMessage.arg(reply->url().toString().toHtmlEscaped(),
+                                    reply->url().toString().toHtmlEscaped());
     passwordDialog.siteDescription->setText(introMessage);
     passwordDialog.siteDescription->setWordWrap(true);
 
@@ -220,7 +220,7 @@ void NetworkAccessManager::proxyAuthenticationRequired(const QNetworkProxy& prox
     dialog.adjustSize();
 
     QString introMessage = tr("<qt>Connect to proxy \"%1\" using:</qt>");
-    introMessage = introMessage.arg(QString(proxy.hostName()).toHtmlEscaped());
+    introMessage = introMessage.arg(proxy.hostName().toHtmlEscaped());
     proxyDialog.siteDescription->setText(introMessage);
     proxyDialog.siteDescription->setWordWrap(true);
 
@@ -590,7 +590,7 @@ void DownloadItem::updateInfoLabel()
         if (bytesTotal != 0) {
             remaining = tr("- %4 %5 remaining").arg(timeRemaining).arg(timeRemainingString);
         }
-        info = QString(tr("%1 of %2 (%3/sec) %4"))
+        info = tr("%1 of %2 (%3/sec) %4")
                    .arg(dataString(m_bytesReceived),
                         bytesTotal == 0 ? tr("?") : dataString(bytesTotal),
                         dataString((int)speed),
@@ -622,7 +622,7 @@ QString DownloadItem::dataString(int size) const
         size /= 1024 * 1024;
         unit = tr("MB");
     }
-    return QString(QLatin1String("%1 %2")).arg(size).arg(unit);
+    return QStringLiteral("%1 %2").arg(size).arg(unit);
 }
 
 bool DownloadItem::downloading() const

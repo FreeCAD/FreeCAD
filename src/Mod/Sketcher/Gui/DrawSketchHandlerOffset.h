@@ -179,7 +179,7 @@ private:
 
     QString getToolWidgetText() const override
     {
-        return QString(QObject::tr("Offset parameters"));
+        return QObject::tr("Offset parameters");
     }
 
     void activated() override
