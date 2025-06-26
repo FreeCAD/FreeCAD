@@ -106,12 +106,23 @@ void ImpExpDxfRead::StartImport()
 
 bool ImpExpDxfRead::ReadEntitiesSection()
 {
+    // TODO: remove this once the unsupported modes have been implemented.
+    // Perform a one-time check for unsupported modes
+    if (m_importMode == ImportMode::EditableDraft) {
+        UnsupportedFeature("Import as 'Editable draft objects' is not yet implemented.");
+        // We can continue, and the switch statements below will do nothing,
+        // resulting in an empty import for geometry, which is correct behavior.
+    }
+    else if (m_importMode == ImportMode::EditablePrimitives) {
+        UnsupportedFeature("Import as 'Editable part primitives' is not yet implemented.");
+    }
+
     // After parsing the BLOCKS section, compose all block definitions
     // into FreeCAD objects before processing the ENTITIES section.
     ComposeBlocks();
 
     DrawingEntityCollector collector(*this);
-    if (m_mergeOption < SingleShapes) {
+    if (m_importMode == ImportMode::FusedShapes) {
         std::map<CDxfRead::CommonEntityAttributes, std::list<TopoDS_Shape>> ShapesToCombine;
         {
             ShapeSavingEntityCollector savingCollector(*this, ShapesToCombine);
@@ -186,31 +197,18 @@ void ImpExpDxfRead::setOptions()
     m_preserveColors = hGrp->GetBool("dxfGetOriginalColors", true);
     m_stats.importSettings["Use colors from the DXF file"] = m_preserveColors ? "Yes" : "No";
 
-    // Default for creation type is to create draft objects.
-    // The radio-button structure of the options dialog should generally prevent this condition.
-    m_mergeOption = DraftObjects;
-    m_stats.importSettings["Merge option"] = "Create Draft objects";  // Default
-    if (hGrp->GetBool("groupLayers", true)) {
-        // Group all compatible objects together
-        m_mergeOption = MergeShapes;
-        m_stats.importSettings["Merge option"] = "Group layers into blocks";
-    }
-    else if (hGrp->GetBool("dxfCreatePart", true)) {
-        // Create (non-draft) Shape objects when possible
-        m_mergeOption = SingleShapes;
-        m_stats.importSettings["Merge option"] = "Create Part shapes";
-    }
-    else if (hGrp->GetBool("dxfCreateDraft", true)) {
-        // Create only Draft objects, making the result closest to drawn-from-scratch
-        m_mergeOption = DraftObjects;
-        m_stats.importSettings["Merge option"] = "Create Draft objects";
-    }
+    // Read the new master import mode parameter, set the default.
+    int mode = hGrp->GetInt("DxfImportMode", static_cast<int>(ImportMode::IndividualShapes));
+    m_importMode = static_cast<ImportMode>(mode);
+
     // TODO: joingeometry should give an intermediate between MergeShapes and SingleShapes which
     // will merge shapes that happen to join end-to-end. As such it should be in the radio button
     // set, except that the legacy importer can do joining either for sketches or for shapes. What
     // this really means is there should be an "Import as sketch" checkbox, and only the
     // MergeShapes, JoinShapes, and SingleShapes radio buttons should be allowed, i.e. Draft Objects
     // would be ignored.
+    // Update: The "Join geometry" option is now a checkbox that is only enabled for the legacy
+    // importer. Whether the modern importer should support this is still up for debate.
     bool joinGeometry = hGrp->GetBool("joingeometry", false);
     m_stats.importSettings["Join geometry"] = joinGeometry ? "Yes" : "No";
 
@@ -604,13 +602,24 @@ void ImpExpDxfRead::OnReadLine(const Base::Vector3d& start,
         return;
     }
 
-    gp_Pnt p0 = makePoint(start);
-    gp_Pnt p1 = makePoint(end);
-    if (p0.IsEqual(p1, 0.00000001)) {
-        // TODO: Really?? What about the people designing integrated circuits?
-        return;
+    switch (m_importMode) {
+        case ImportMode::IndividualShapes:
+        case ImportMode::FusedShapes: {
+            gp_Pnt p0 = makePoint(start);
+            gp_Pnt p1 = makePoint(end);
+            // TODO: Really?? What about the people designing integrated circuits?
+            if (p0.IsEqual(p1, 1e-8)) {
+                return;
+            }
+            Collector->AddObject(BRepBuilderAPI_MakeEdge(p0, p1).Edge(), "Line");
+            break;
+        }
+        case ImportMode::EditableDraft:
+        case ImportMode::EditablePrimitives:
+            // Do nothing until these modes have been implemented, the one-time warning has already
+            // been issued.
+            break;
     }
-    Collector->AddObject(BRepBuilderAPI_MakeEdge(p0, p1).Edge(), "Line");
 }
 
 
@@ -620,7 +629,19 @@ void ImpExpDxfRead::OnReadPoint(const Base::Vector3d& start)
         return;
     }
 
-    Collector->AddObject(BRepBuilderAPI_MakeVertex(makePoint(start)).Vertex(), "Point");
+    switch (m_importMode) {
+        case ImportMode::IndividualShapes:
+        case ImportMode::FusedShapes: {
+            // For non-parametric modes, create a Part::Feature with a Vertex shape.
+            Collector->AddObject(BRepBuilderAPI_MakeVertex(makePoint(start)).Vertex(), "Point");
+            break;
+        }
+        case ImportMode::EditableDraft:
+        case ImportMode::EditablePrimitives:
+            // Do nothing until these modes have been implemented, the one-time warning has already
+            // been issued.
+            break;
+    }
 }
 
 
@@ -634,19 +655,30 @@ void ImpExpDxfRead::OnReadArc(const Base::Vector3d& start,
         return;
     }
 
-    gp_Pnt p0 = makePoint(start);
-    gp_Pnt p1 = makePoint(end);
-    gp_Dir up(0, 0, 1);
-    if (!dir) {
-        up = -up;
-    }
-    gp_Pnt pc = makePoint(center);
-    gp_Circ circle(gp_Ax2(pc, up), p0.Distance(pc));
-    if (circle.Radius() > 0) {
-        Collector->AddObject(BRepBuilderAPI_MakeEdge(circle, p0, p1).Edge(), "Arc");
-    }
-    else {
-        Base::Console().warning("ImpExpDxf - ignore degenerate arc of circle\n");
+    switch (m_importMode) {
+        case ImportMode::IndividualShapes:
+        case ImportMode::FusedShapes: {
+            gp_Pnt p0 = makePoint(start);
+            gp_Pnt p1 = makePoint(end);
+            gp_Dir up(0, 0, 1);
+            if (!dir) {
+                up.Reverse();
+            }
+            gp_Pnt pc = makePoint(center);
+            gp_Circ circle(gp_Ax2(pc, up), p0.Distance(pc));
+            if (circle.Radius() > 1e-9) {
+                Collector->AddObject(BRepBuilderAPI_MakeEdge(circle, p0, p1).Edge(), "Arc");
+            }
+            else {
+                Base::Console().warning("ImpExpDxf - ignore degenerate arc of circle\n");
+            }
+            break;
+        }
+        case ImportMode::EditableDraft:
+        case ImportMode::EditablePrimitives:
+            // Do nothing until these modes have been implemented, the one-time warning has already
+            // been issued.
+            break;
     }
 }
 
@@ -660,18 +692,27 @@ void ImpExpDxfRead::OnReadCircle(const Base::Vector3d& start,
         return;
     }
 
-    gp_Pnt p0 = makePoint(start);
-    gp_Dir up(0, 0, 1);
-    if (!dir) {
-        up = -up;
-    }
-    gp_Pnt pc = makePoint(center);
-    gp_Circ circle(gp_Ax2(pc, up), p0.Distance(pc));
-    if (circle.Radius() > 0) {
-        Collector->AddObject(BRepBuilderAPI_MakeEdge(circle).Edge(), "Circle");
-    }
-    else {
-        Base::Console().warning("ImpExpDxf - ignore degenerate circle\n");
+    switch (m_importMode) {
+        case ImportMode::IndividualShapes:
+        case ImportMode::FusedShapes: {
+            gp_Pnt p0 = makePoint(start);
+            gp_Dir up(0, 0, 1);
+            if (!dir) {
+                up.Reverse();
+            }
+            gp_Pnt pc = makePoint(center);
+            gp_Circ circle(gp_Ax2(pc, up), p0.Distance(pc));
+            if (circle.Radius() > 1e-9) {
+                Collector->AddObject(BRepBuilderAPI_MakeEdge(circle).Edge(), "Circle");
+            }
+            else {
+                Base::Console().warning("ImpExpDxf - ignore degenerate circle\n");
+            }
+            break;
+        }
+        case ImportMode::EditableDraft:
+        case ImportMode::EditablePrimitives:
+            break;
     }
 }
 
@@ -776,23 +817,32 @@ void ImpExpDxfRead::OnReadSpline(struct SplineData& sd)
         return;
     }
 
-    try {
-        Handle(Geom_BSplineCurve) geom;
-        if (sd.control_points > 0) {
-            geom = getSplineFromPolesAndKnots(sd);
-        }
-        else if (sd.fit_points > 0) {
-            geom = getInterpolationSpline(sd);
-        }
+    switch (m_importMode) {
+        case ImportMode::IndividualShapes:
+        case ImportMode::FusedShapes: {
+            try {
+                Handle(Geom_BSplineCurve) geom;
+                if (sd.control_points > 0) {
+                    geom = getSplineFromPolesAndKnots(sd);
+                }
+                else if (sd.fit_points > 0) {
+                    geom = getInterpolationSpline(sd);
+                }
 
-        if (geom.IsNull()) {
-            throw Standard_Failure();
-        }
+                if (geom.IsNull()) {
+                    throw Standard_Failure();
+                }
 
-        Collector->AddObject(BRepBuilderAPI_MakeEdge(geom).Edge(), "Spline");
-    }
-    catch (const Standard_Failure&) {
-        Base::Console().warning("ImpExpDxf - failed to create bspline\n");
+                Collector->AddObject(BRepBuilderAPI_MakeEdge(geom).Edge(), "Spline");
+            }
+            catch (const Standard_Failure&) {
+                Base::Console().warning("ImpExpDxf - failed to create bspline\n");
+            }
+            break;
+        }
+        case ImportMode::EditableDraft:
+        case ImportMode::EditablePrimitives:
+            break;
     }
 }
 
@@ -810,21 +860,29 @@ void ImpExpDxfRead::OnReadEllipse(const Base::Vector3d& center,
         return;
     }
 
-    gp_Dir up(0, 0, 1);
-    if (!dir) {
-        up = -up;
-    }
-    gp_Pnt pc = makePoint(center);
-    gp_Elips ellipse(gp_Ax2(pc, up), major_radius, minor_radius);
-    ellipse.Rotate(gp_Ax1(pc, up), rotation);
-    if (ellipse.MinorRadius() > 0) {
-        Collector->AddObject(BRepBuilderAPI_MakeEdge(ellipse).Edge(), "Ellipse");
-    }
-    else {
-        Base::Console().warning("ImpExpDxf - ignore degenerate ellipse\n");
+    switch (m_importMode) {
+        case ImportMode::IndividualShapes:
+        case ImportMode::FusedShapes: {
+            gp_Dir up(0, 0, 1);
+            if (!dir) {
+                up.Reverse();
+            }
+            gp_Pnt pc = makePoint(center);
+            gp_Elips ellipse(gp_Ax2(pc, up), major_radius, minor_radius);
+            ellipse.Rotate(gp_Ax1(pc, up), rotation);
+            if (ellipse.MinorRadius() > 1e-9) {
+                Collector->AddObject(BRepBuilderAPI_MakeEdge(ellipse).Edge(), "Ellipse");
+            }
+            else {
+                Base::Console().warning("ImpExpDxf - ignore degenerate ellipse\n");
+            }
+            break;
+        }
+        case ImportMode::EditableDraft:
+        case ImportMode::EditablePrimitives:
+            break;
     }
 }
-
 
 void ImpExpDxfRead::OnReadText(const Base::Vector3d& point,
                                const double height,
@@ -901,10 +959,10 @@ void ImpExpDxfRead::OnReadDimension(const Base::Vector3d& start,
             PyObject* draftModule = getDraftModule();
             if (draftModule != nullptr) {
                 // TODO: Capture and apply OCSOrientationTransform to OCS coordinates
-                // Note, some of the locations in the DXF are OCS and some are UCS, but UCS doesn't
-                // mean UCS when in a block expansion, it means 'transform'
-                // So we want transform*vector for "UCS" coordinates and transform*ocdCapture*vector
-                // for "OCS" coordinates
+                // Note, some of the locations in the DXF are OCS and some are UCS, but UCS
+                // doesn't mean UCS when in a block expansion, it means 'transform' So we want
+                // transform*vector for "UCS" coordinates and transform*ocdCapture*vector for
+                // "OCS" coordinates
                 //
                 // We implement the transform by mapping all the points from OCS to UCS
                 // TODO: Set the Normal property to transform*(0,0,1,0)
@@ -941,6 +999,11 @@ void ImpExpDxfRead::OnReadPolyline(std::list<VertexInfo>& vertices, int flags)
         return;
     }
 
+    // Polyline explosion logic is complex and calls back to other OnRead... handlers.
+    // The mode switch should happen inside the final geometry creation handlers
+    // (OnReadLine, OnReadArc), so this function doesn't need its own switch statement.
+    // It simply acts as a dispatcher.
+
     std::map<CDxfRead::CommonEntityAttributes, std::list<TopoDS_Shape>> ShapesToCombine;
     {
         // TODO: Currently ExpandPolyline calls OnReadArc etc to generate the pieces, and these
@@ -948,20 +1011,19 @@ void ImpExpDxfRead::OnReadPolyline(std::list<VertexInfo>& vertices, int flags)
         // Eventually when m_mergeOption being DraftObjects is implemented OnReadArc etc might
         // generate Draft objects which ShapeSavingEntityCollector does not save.
         // We need either a collector that collects everything (and we have to figure out
-        // how to join Draft objects) or we need to temporarily set m_mergeOption to SingleShapes
-        // if it is set to DraftObjects (and safely restore it on exceptions)
-        // A clean way would be to give the collector a "makeDraftObjects" property,
-        // and our special collector could give this the value 'false' whereas the main
-        // collector would base this on the option setting.
-        // Also ShapeSavingEntityCollector classifies by entityAttributes which is not needed here
-        // because they are constant throughout.
+        // how to join Draft objects) or we need to temporarily set m_mergeOption to
+        // SingleShapes if it is set to DraftObjects (and safely restore it on exceptions) A
+        // clean way would be to give the collector a "makeDraftObjects" property, and our
+        // special collector could give this the value 'false' whereas the main collector would
+        // base this on the option setting. Also ShapeSavingEntityCollector classifies by
+        // entityAttributes which is not needed here because they are constant throughout.
         ShapeSavingEntityCollector savingCollector(*this, ShapesToCombine);
         ExplodePolyline(vertices, flags);
     }
     // Join the shapes.
     if (!ShapesToCombine.empty()) {
-        // TODO: If we want Draft objects and all segments are straight lines we can make a draft
-        // wire.
+        // TODO: If we want Draft objects and all segments are straight lines we can make a
+        // draft wire.
         CombineShapes(ShapesToCombine.begin()->second, "Polyline");
     }
 }
@@ -1013,12 +1075,12 @@ ImpExpDxfRead::MakeLayer(const std::string& name, ColorIndex_t color, std::strin
         PyObject* layer = nullptr;
         draftModule = getDraftModule();
         if (draftModule != nullptr) {
-            // After the colours, I also want to pass the draw_style, but there is an intervening
-            // line-width parameter. It is easier to just pass that parameter's default value than
-            // to do the handstands to pass a named parameter.
+            // After the colours, I also want to pass the draw_style, but there is an
+            // intervening line-width parameter. It is easier to just pass that parameter's
+            // default value than to do the handstands to pass a named parameter.
             // TODO: Pass the appropriate draw_style (from "Solid" "Dashed" "Dotted" "DashDot")
-            // This needs an ObjectDrawStyleName analogous to ObjectColor but at the ImpExpDxfGui
-            // level.
+            // This needs an ObjectDrawStyleName analogous to ObjectColor but at the
+            // ImpExpDxfGui level.
             layer =
                 // NOLINTNEXTLINE(readability/nolint)
                 // NOLINTNEXTLINE(cppcoreguidelines-pro-type-cstyle-cast)
@@ -1043,9 +1105,9 @@ ImpExpDxfRead::MakeLayer(const std::string& name, ColorIndex_t color, std::strin
                                    Py_False);
         }
 
-        // We make our own layer class even if we could not make a layer. MoveToLayer will ignore
-        // such layers but we have to do this because it is not a polymorphic type so we can't tell
-        // what we pull out of m_entityAttributes.m_Layer.
+        // We make our own layer class even if we could not make a layer. MoveToLayer will
+        // ignore such layers but we have to do this because it is not a polymorphic type so we
+        // can't tell what we pull out of m_entityAttributes.m_Layer.
         return result;
     }
     return CDxfRead::MakeLayer(name, color, std::move(lineType));
@@ -1055,8 +1117,8 @@ void ImpExpDxfRead::MoveToLayer(App::DocumentObject* object) const
     if (m_preserveLayers) {
         static_cast<Layer*>(m_entityAttributes.m_Layer)->Contents.push_back(object);
     }
-    // TODO: else Hide the object if it is in a Hidden layer? That won't work because we've cleared
-    // out m_entityAttributes.m_Layer
+    // TODO: else Hide the object if it is in a Hidden layer? That won't work because we've
+    // cleared out m_entityAttributes.m_Layer
 }
 
 
@@ -1111,7 +1173,8 @@ void ImpExpDxfRead::DrawingEntityCollector::AddObject(App::DocumentObject* obj,
                                                       const char* /*nameBase*/)
 {
     // This overload is for C++ created objects like App::Link
-    // The object is already in the document, so we just need to style it and move it to a layer.
+    // The object is already in the document, so we just need to style it and move it to a
+    // layer.
     Reader.MoveToLayer(obj);
 
     // Safely apply styles by checking the object's actual type
