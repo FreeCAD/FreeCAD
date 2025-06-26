@@ -97,6 +97,12 @@ protected:
 
 private:
     static const char* BodyModeEnum[];
+    std::vector<SoSeparator*> threadTextures;
+    std::vector<SoSeparator*> m_threadOverlays;
+    void clearThreadTextures();
+    void applyThreadTextures();
+    void afterRecompute(const App::Document&, const std::vector<App::DocumentObject*>&);
+    boost::signals2::scoped_connection m_RecomputedConn;
 };
 
 

@@ -33,6 +33,7 @@
 
 #include "ViewProviderTextureExtension.h"
 #include <Gui/BitmapFactory.h>
+#include <App/Application.h>
 #include <App/Material.h>
 
 
@@ -93,7 +94,6 @@ SoGroup* ViewProviderTextureExtension::getTextureGroup3D() const
 
 void ViewProviderTextureExtension::setCoinAppearance(SoMaterial* pcShapeMaterial, const App::Material& source)
 {
-#if 0
     if (!source.image.empty()) {
         Base::Console().log("setCoinAppearance(Texture)\n");
         activateTexture2D();
@@ -108,8 +108,6 @@ void ViewProviderTextureExtension::setCoinAppearance(SoMaterial* pcShapeMaterial
         Base::Console().log("setCoinAppearance(Material)\n");
         activateMaterial();
     }
-#endif
-    activateMaterial();
 
     // Always set the material for items such as lines that don't support textures
     pcShapeMaterial->ambientColor.setValue(source.ambientColor.r,

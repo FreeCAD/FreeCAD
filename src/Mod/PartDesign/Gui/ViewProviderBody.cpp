@@ -24,6 +24,8 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+# include <TopoDS.hxx>
+# include <TopExp_Explorer.hxx>
 # include <Inventor/actions/SoGetBoundingBoxAction.h>
 # include <Inventor/nodes/SoSeparator.h>
 # include <Precision.hxx>
@@ -48,11 +50,13 @@
 #include <Mod/PartDesign/App/DatumCS.h>
 #include <Mod/PartDesign/App/FeatureSketchBased.h>
 #include <Mod/PartDesign/App/FeatureBase.h>
+#include "Mod/PartDesign/App/FeatureHole.h"
 
 #include "ViewProviderBody.h"
 #include "Utils.h"
 #include "ViewProvider.h"
 #include "ViewProviderDatum.h"
+#include "ViewProviderHole.h"
 
 
 using namespace PartDesignGui;
@@ -74,6 +78,51 @@ ViewProviderBody::ViewProviderBody()
 
 ViewProviderBody::~ViewProviderBody()
 {
+    clearThreadTextures();
+}
+
+void ViewProviderBody::clearThreadTextures()
+{
+    SoSeparator* root = this->getRoot();
+    if (root) {
+        for (SoSeparator* sep : m_threadOverlays) {
+            root->removeChild(sep);
+        }
+    }
+    for (SoSeparator* sep : m_threadOverlays) {
+        if (sep->getRefCount() > 0) {
+            sep->unref();
+        }
+    }
+    m_threadOverlays.clear();
+}
+
+void ViewProviderBody::applyThreadTextures()
+{
+    clearThreadTextures();
+    auto body = dynamic_cast<PartDesign::Body*>(this->getObject());
+    if (!body) {return;}
+
+    const TopoDS_Shape& bodyShape = body->Shape.getValue();
+    if (bodyShape.IsNull()) {return;}
+
+    const std::vector<App::DocumentObject*>& features = body->Group.getValues();
+    for (App::DocumentObject* feature : features) {
+        auto hole = dynamic_cast<PartDesign::Hole*>(feature);
+        if (!hole) {continue;}
+
+        auto holeVP = dynamic_cast<ViewProviderHole*>(
+            Gui::Application::Instance->getViewProvider(hole)
+        );
+        if (!holeVP) {continue;}
+
+        SoSeparator* sep = holeVP->createThreadTextureSeparator(bodyShape);
+        if (sep) {
+            getRoot()->addChild(sep);
+            m_threadOverlays.push_back(sep);
+            sep->unrefNoDelete();
+        }
+    }
 }
 
 void ViewProviderBody::attach(App::DocumentObject *pcFeat)
@@ -83,6 +132,19 @@ void ViewProviderBody::attach(App::DocumentObject *pcFeat)
 
     //set default display mode
     onChanged(&DisplayModeBody);
+
+    if (App::Document* doc = pcFeat->getDocument()) {
+        m_RecomputedConn = doc->signalRecomputed.connect(
+            [this](const App::Document& doc, const std::vector<App::DocumentObject*>& recomputedObjs) {
+                this->afterRecompute(doc, recomputedObjs);
+            }
+        );
+    }
+}
+
+void ViewProviderBody::afterRecompute(const App::Document&, const std::vector<App::DocumentObject*>&)
+{
+    applyThreadTextures();
 }
 
 // TODO on activating the body switch to the "Through" mode (2015-09-05, Fat-Zer)
@@ -230,7 +292,6 @@ void ViewProviderBody::updateData(const App::Property* prop)
             }
         }
     }
-
     PartGui::ViewProviderPart::updateData(prop);
 }
 
