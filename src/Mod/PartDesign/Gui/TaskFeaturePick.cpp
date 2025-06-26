@@ -508,11 +508,14 @@ void TaskFeaturePick::onSelectionChanged(const Gui::SelectionChanges& msg)
                 item->setSelected(true);
 
                 if (msg.Type == Gui::SelectionChanges::AddSelection) {
+                    std::string docNameCopy = documentName;
                     if (isSingleSelectionEnabled()) {
                         QMetaObject::invokeMethod(
                             qobject_cast<Gui::ControlSingleton*>(&Gui::Control()),
-                            "accept",
-                            Qt::QueuedConnection);
+                            [docNameCopy] {
+                                Gui::Control().accept(
+                                    Gui::Application::Instance->getDocument(docNameCopy.c_str())->getDocument());
+                            }, Qt::QueuedConnection);
                     }
                 }
             }
@@ -549,10 +552,14 @@ void TaskFeaturePick::onDoubleClick(QListWidgetItem* item)
     QString t = item->data(Qt::UserRole).toString();
     Gui::Selection().addSelection(documentName.c_str(), t.toLatin1());
     doSelection = false;
-
+    
+    std::string docNameCopy = documentName;
     QMetaObject::invokeMethod(qobject_cast<Gui::ControlSingleton*>(&Gui::Control()),
-                              "accept",
-                              Qt::QueuedConnection);
+                                [docNameCopy] {
+                                    Gui::Control().accept(
+                                        Gui::Application::Instance->getDocument(docNameCopy.c_str())->getDocument());
+                                },
+                                Qt::QueuedConnection);
 }
 
 void TaskFeaturePick::slotDeletedObject(const Gui::ViewProviderDocumentObject& Obj)
