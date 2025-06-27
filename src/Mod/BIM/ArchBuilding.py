@@ -197,10 +197,10 @@ BuildingTypes = ["Undefined",
 
 
 def makeBuilding(objectslist=None,name=None):
-    '''Obsolete, superseded by ArchBuildingPart.makeBuilding.
+    """Obsolete, superseded by ArchBuildingPart.makeBuilding.
 
     makeBuilding([objectslist],[name]): creates a building including the
-    objects from the given list.'''
+    objects from the given list."""
 
     if not FreeCAD.ActiveDocument:
         FreeCAD.Console.PrintError("No active document. Aborting\n")

@@ -859,7 +859,7 @@ class ViewProviderArchReference:
 class ArchReferenceTaskPanel:
 
 
-    '''The editmode TaskPanel for Reference objects'''
+    """The editmode TaskPanel for Reference objects"""
 
     def __init__(self,obj):
 
