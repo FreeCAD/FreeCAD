@@ -1771,12 +1771,12 @@ class IfcDocument:
         return l
 
     def find(self,pat1,pat2=None,pat3=None):
-        '''finds objects in the current IFC document.
+        """finds objects in the current IFC document.
         arguments can be of the following form:
         - (pattern): returns object types matching the given pattern (same as search)
         - (type,property,value): finds, in all objects of type "type", those whose
           property "property" has the given value
-        '''
+        """
         if pat3:
             bobs = self.getEnt(pat1)
             obs = []

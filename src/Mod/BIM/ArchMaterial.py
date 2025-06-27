@@ -413,7 +413,7 @@ class _ViewProviderArchMaterial:
 
 class _ArchMaterialTaskPanel:
 
-    '''The editmode TaskPanel for Arch Material objects'''
+    """The editmode TaskPanel for Arch Material objects"""
 
     def __init__(self,obj=None):
         self.cards = None
@@ -751,7 +751,7 @@ if FreeCAD.GuiUp:
 
 class _ArchMultiMaterialTaskPanel:
 
-    '''The editmode TaskPanel for MultiMaterial objects'''
+    """The editmode TaskPanel for MultiMaterial objects"""
 
     def __init__(self,obj=None):
         self.obj = obj

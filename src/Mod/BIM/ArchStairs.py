@@ -337,7 +337,7 @@ class _Stairs(ArchComponent.Component):
 
         self.pseudosteps = []
         self.pseudorisers = []
-        
+
         self.structures = []
         pl = obj.Placement
         landings = 0 # TODO Any use? 2018.7.15
@@ -693,9 +693,9 @@ class _Stairs(ArchComponent.Component):
     def returnOutlines(stairsObj, edges, align="Left", mode=None, widthFirstSegment=zeroMM, widthOtherSegments=[], treadThickness=zeroMM,
                        railStartRiser=zeroMM, offsetHLeft=zeroMM, offsetHRight=zeroMM, offsetVLeft=zeroMM, offsetVRight=zeroMM, widthFirstSegmentDefault=False):
 
-        ''' Construct outline of stairs landing or the like from Edges - Side effect is vertexes are 'ordered' in series of findIntersection() functions '''
+        """ Construct outline of stairs landing or the like from Edges - Side effect is vertexes are 'ordered' in series of findIntersection() functions """
 
-        ''' outlineP1P2Ordered seem no use at the moment '''
+        """ outlineP1P2Ordered seem no use at the moment """
 
         #import DraftGeomUtils
 
@@ -713,11 +713,11 @@ class _Stairs(ArchComponent.Component):
             isLine = isinstance(edge.Curve,(Part.Line, Part.LineSegment))
             isArc = isinstance(edge.Curve,Part.Circle)                # why it is Part.Circle for an Arc Edge? - why Part.ArcOfCircle Not Working?
 
-            ''' (1) append v (vec) '''
+            """ (1) append v (vec) """
             v.append(DraftGeomUtils.vec(edge))    # TODO check all function below ok with curve?
 
 
-            ''' (2) get netWidthI '''
+            """ (2) get netWidthI """
             netWidthI = 0
             if i > 0:
                 try:
@@ -733,18 +733,18 @@ class _Stairs(ArchComponent.Component):
                 netWidthI = widthFirstSegment.Value - offsetHLeft.Value - offsetHRight.Value  #2*offsetH
 
 
-            ''' (3) append vBase '''
+            """ (3) append vBase """
             vBase.append(edges[i].Vertexes[0].Point)
             if isArc:
                 vBase1 = edge.Vertexes[1].Point
                 vBase2 = (edge.valueAt((edge.LastParameter+edge.FirstParameter)/2))
                 #vBase2vec = (vBase2-vBase[i]) # - would not be correct if Align is not Left
 
-            ''' (1a) calc & append vLength - Need v (vec) '''
+            """ (1a) calc & append vLength - Need v (vec) """
             vLength.append(Vector(v[i].x,v[i].y,v[i].z))    # TODO check all function below ok with curve? # TODO vLength in this f() is 3d
 
 
-            ''' (1b, 2a) calc & append vWidth - Need vLength, netWidthI '''
+            """ (1b, 2a) calc & append vWidth - Need vLength, netWidthI """
 
             #vWidth.append(DraftVecUtils.scaleTo(vLength[i].cross(Vector(0,0,1)),netWidthI))
 
@@ -763,7 +763,7 @@ class _Stairs(ArchComponent.Component):
                 vWidth1=DraftVecUtils.scaleTo(dvec1,netWidthI)
                 vWidth2=DraftVecUtils.scaleTo(dvec2,netWidthI)
 
-            ''' (3a) alter vBase '''
+            """ (3a) alter vBase """
             if stairsObj:
                 vBase[i] = stairsObj.Proxy.vbaseFollowLastSegment(stairsObj, vBase[i])
                 if isArc:
@@ -796,7 +796,7 @@ class _Stairs(ArchComponent.Component):
                     vBase2 = _Stairs.align(vBase2, "Right", vOffsetH2)
 
 
-            ''' (3b, 2b/1c) get + alter [p1, p2, p3, p4] - Need vBase '''
+            """ (3b, 2b/1c) get + alter [p1, p2, p3, p4] - Need vBase """
 
             p1.append(_Stairs.align(vBase[i], align, vWidth[i]).add(Vector(0,0,-abs(treadThickness.Value)))) # vWidth already calculated above against arc geometry
             if isLine:
@@ -812,7 +812,7 @@ class _Stairs(ArchComponent.Component):
                 pArc1.append(_Stairs.align(vBase2, align, vWidth2).add(Vector(0,0,-abs(treadThickness.Value))).add(Vector(0,0,-railStartRiser.Value)))
                 pArc2.append(pArc1[i].add(vWidth2.add(Vector(0,0,(offsetVRight-offsetVLeft).Value))))
 
-            ''' (3c, 2c/2d) from [p1, p2, p3, p4] - calc outlineP1P2, outlineP3P4 '''
+            """ (3c, 2c/2d) from [p1, p2, p3, p4] - calc outlineP1P2, outlineP3P4 """
 
             if i > 0:
                 lastEdge = edges[i-1]    # thisEdge = edge
@@ -877,14 +877,14 @@ class _Stairs(ArchComponent.Component):
 
                 outlineP1P2Ordered = list(outlineP1P2)
 
-                ''' Guessing the 1st Start Point based on Intersection '''
+                """ Guessing the 1st Start Point based on Intersection """
                 vx1 = Vector(outlineP1P2[1].x, outlineP1P2[1].y, 0)
                 l0 = Part.LineSegment(edges[0].Vertexes[0].Point, edges[0].Vertexes[1].Point)
                 try:
                     distFrom1stParameter = l0.parameter(vx1)
                     distFrom2ndParameter = l0.length()-distFrom1stParameter
 
-                    ''' Further point of this line from intersection '''
+                    """ Further point of this line from intersection """
                     if distFrom2ndParameter > distFrom1stParameter:
                         foundStart = edges[0].Vertexes[1].Point
                     else: # if distFrom2ndParameter = / < distFrom1stParameter (i.e. if equal, Vertexes[0].Point is taken ?)
@@ -892,7 +892,7 @@ class _Stairs(ArchComponent.Component):
                 except Exception:
                     print("Intersection point Not on this edge")
 
-                ''' Guessing the last End Point based on Intersection '''
+                """ Guessing the last End Point based on Intersection """
                 vx99 = Vector(outlineP1P2[i].x, outlineP1P2[i].y, 0)
                 l99 = Part.LineSegment(edges[i].Vertexes[0].Point, edges[i].Vertexes[1].Point)
                 try:
@@ -1136,7 +1136,7 @@ class _Stairs(ArchComponent.Component):
 
         "builds a simple, straight staircase from a straight edge"
 
-        '''
+        """
         edge                  : Edge defining the flight/landing like stairs' direction, run, rise/height etc. (mandatory)
 
         Below parameters, if provided, would overrides information derived from the edge and/or Stairs' built-in properties -
@@ -1163,7 +1163,7 @@ class _Stairs(ArchComponent.Component):
 
         (TODO : To support custom input of tread, riser, structure, stringer etc.
                 and output of these parts individually)
-        '''
+        """
 
         # Upgrade obj if it is from an older version of FreeCAD
         if not hasattr(obj, "StringerOverlap"):
@@ -1255,7 +1255,7 @@ class _Stairs(ArchComponent.Component):
                 self.pseudosteps.append(step)
 
             # TODO 2025.4.20 To Review
-            ''' risers - add to steps or pseudosteps in the meantime before adding self.risers / self.pseudorisers '''
+            """ risers - add to steps or pseudosteps in the meantime before adding self.risers / self.pseudorisers """
 
             r2 = r1.add(-vHeight)    #vResHeight  # TODO 2025.4.20 Tested: Seems DraftVecUtils.neg(x) == -x
             if i == 0:
@@ -1306,7 +1306,7 @@ class _Stairs(ArchComponent.Component):
                 lProfile[-1] = lProfile[-1].add(-vRiserThickness)
                 resHeight1 = structureThickness/math.cos(ang)
                 dh = s2 - float(hgt)/numOfSteps
-                
+
                 resHeight2 = ((numOfSteps-1)*vHeight.Length) - dh
 
                 if endstairsup == "toFlightThickness":
@@ -1362,7 +1362,7 @@ class _Stairs(ArchComponent.Component):
                 struct = struct.extrude(evec)
 
         elif structure in ["One stringer","Two stringers"]:
-            # setup stringerWidth 
+            # setup stringerWidth
             if not stringerWidth:
                 stringerWidth = obj.StringerWidth.Value
 
@@ -1426,7 +1426,7 @@ class _Stairs(ArchComponent.Component):
 
         "builds a straight staircase with/without a landing in the middle"
 
-        '''
+        """
         edge                : Edge defining the flight/landing like stairs' direction, run, rise/height etc. (mandatory)
 
         Below parameters are optional, and if provided, would overrides information derived from the edge and/or Stairs' built-in properties -
@@ -1442,7 +1442,7 @@ class _Stairs(ArchComponent.Component):
 
         (TODO : To support custom input of tread, riser, structure, stringer etc.
                 and output of these parts individually)
-        '''
+        """
 
         v = DraftGeomUtils.vec(edge)
         v_proj = Vector(v.x, v.y, 0) # Projected on XY plane.
@@ -1706,5 +1706,3 @@ class _ViewProviderStairs(ArchComponent.ViewProviderComponent):
                 lst.extend(obj.Subtractions)
             return lst
         return []
-
-

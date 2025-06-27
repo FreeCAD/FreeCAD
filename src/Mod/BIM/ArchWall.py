@@ -1212,12 +1212,12 @@ class _Wall(ArchComponent.Component):
 
                                     baseface.append(face)
                                     # The above make Refine methods below (in else) useless, regardless removeSpitters yet to be improved for cases do not work well
-                                    '''  Whether layers or not, all baseface.append(face) '''
+                                    """  Whether layers or not, all baseface.append(face) """
 
                                 else:
                                     baseface = [face]
 
-                                    '''  Whether layers or not, all baseface = [face] '''
+                                    """  Whether layers or not, all baseface = [face] """
 
                         if baseface:
                             base,placement = self.rebase(baseface)

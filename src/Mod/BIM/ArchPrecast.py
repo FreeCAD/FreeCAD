@@ -780,7 +780,7 @@ class _ViewProviderPrecast(ArchComponent.ViewProviderComponent):
 
 class _PrecastTaskPanel:
 
-    '''The TaskPanel for precast creation'''
+    """The TaskPanel for precast creation"""
 
     def __init__(self):
 
@@ -1266,7 +1266,7 @@ class _PrecastTaskPanel:
 
 class _DentsTaskPanel:
 
-    '''The TaskPanel for dent creation'''
+    """The TaskPanel for dent creation"""
 
     def __init__(self):
 
