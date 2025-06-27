@@ -41,7 +41,7 @@ else:
 
 
 def uncamel(t):
-    return ''.join(map(lambda x: x if x.islower() else " "+x, t[3:]))[1:]
+    return "".join(map(lambda x: x if x.islower() else " "+x, t[3:]))[1:]
 
 IfcTypes = [uncamel(t) for t in ArchIFCSchema.IfcProducts.keys()]
 
@@ -198,7 +198,7 @@ class IfcRoot:
 
         """
         schema = self.getIfcSchema()
-        return [''.join(map(lambda x: x if x.islower() else " "+x, t[3:]))[1:] for t in schema.keys()]
+        return ["".join(map(lambda x: x if x.islower() else " "+x, t[3:]))[1:] for t in schema.keys()]
 
     def getIfcAttributeSchema(self, ifcTypeSchema, name):
         """Get the schema of an IFC attribute with the given name.
@@ -224,7 +224,7 @@ class IfcRoot:
         """
 
         for attribute in ifcTypeSchema["attributes"]:
-            if attribute["name"].replace(' ', '') == name:
+            if attribute["name"].replace(" ", "") == name:
                 return attribute
         return None
 

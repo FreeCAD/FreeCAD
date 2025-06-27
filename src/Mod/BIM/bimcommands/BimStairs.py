@@ -39,10 +39,10 @@ class Arch_Stairs:
 
     def GetResources(self):
 
-        return {'Pixmap'  : 'Arch_Stairs',
-                'MenuText': QT_TRANSLATE_NOOP("Arch_Stairs","Stairs"),
-                'Accel': "S, R",
-                'ToolTip': QT_TRANSLATE_NOOP("Arch_Stairs","Creates a flight of stairs")}
+        return {"Pixmap"  : "Arch_Stairs",
+                "MenuText": QT_TRANSLATE_NOOP("Arch_Stairs","Stairs"),
+                "Accel": "S, R",
+                "ToolTip": QT_TRANSLATE_NOOP("Arch_Stairs","Creates a flight of stairs")}
 
     def IsActive(self):
 
@@ -98,4 +98,4 @@ class Arch_Stairs:
         print(" ActiveDocument.recompute, done ")
 
 
-FreeCADGui.addCommand('Arch_Stairs', Arch_Stairs())
+FreeCADGui.addCommand("Arch_Stairs", Arch_Stairs())

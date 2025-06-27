@@ -64,30 +64,30 @@ class ArchGrid:
 
         pl = obj.PropertiesList
         if not "Rows" in pl:
-            obj.addProperty("App::PropertyInteger","Rows","Grid",QT_TRANSLATE_NOOP("Arch_Grid",'The number of rows'), locked=True)
+            obj.addProperty("App::PropertyInteger","Rows","Grid",QT_TRANSLATE_NOOP("Arch_Grid","The number of rows"), locked=True)
         if not "Columns" in pl:
-            obj.addProperty("App::PropertyInteger","Columns","Grid",QT_TRANSLATE_NOOP("Arch_Grid",'The number of columns'), locked=True)
+            obj.addProperty("App::PropertyInteger","Columns","Grid",QT_TRANSLATE_NOOP("Arch_Grid","The number of columns"), locked=True)
         if not "RowSize" in pl:
-            obj.addProperty("App::PropertyFloatList","RowSize","Grid",QT_TRANSLATE_NOOP("Arch_Grid",'The sizes of rows'), locked=True)
+            obj.addProperty("App::PropertyFloatList","RowSize","Grid",QT_TRANSLATE_NOOP("Arch_Grid","The sizes of rows"), locked=True)
         if not "ColumnSize" in pl:
-            obj.addProperty("App::PropertyFloatList","ColumnSize","Grid",QT_TRANSLATE_NOOP("Arch_Grid",'The sizes of columns'), locked=True)
+            obj.addProperty("App::PropertyFloatList","ColumnSize","Grid",QT_TRANSLATE_NOOP("Arch_Grid","The sizes of columns"), locked=True)
         if not "Spans" in pl:
-            obj.addProperty("App::PropertyStringList","Spans","Grid",QT_TRANSLATE_NOOP("Arch_Grid",'The span ranges of cells that are merged together'), locked=True)
+            obj.addProperty("App::PropertyStringList","Spans","Grid",QT_TRANSLATE_NOOP("Arch_Grid","The span ranges of cells that are merged together"), locked=True)
         if not "PointsOutput" in pl:
-            obj.addProperty("App::PropertyEnumeration","PointsOutput","Grid",QT_TRANSLATE_NOOP("Arch_Grid",'The type of 3D points produced by this grid object'), locked=True)
+            obj.addProperty("App::PropertyEnumeration","PointsOutput","Grid",QT_TRANSLATE_NOOP("Arch_Grid","The type of 3D points produced by this grid object"), locked=True)
             obj.PointsOutput = ["Vertices","Edges","Vertical Edges","Horizontal Edges","Faces"]
         if not "Width" in pl:
-            obj.addProperty("App::PropertyLength","Width","Grid",QT_TRANSLATE_NOOP("Arch_Grid",'The total width of this grid'), locked=True)
+            obj.addProperty("App::PropertyLength","Width","Grid",QT_TRANSLATE_NOOP("Arch_Grid","The total width of this grid"), locked=True)
         if not "Height" in pl:
-            obj.addProperty("App::PropertyLength","Height","Grid",QT_TRANSLATE_NOOP("Arch_Grid",'The total height of this grid'), locked=True)
+            obj.addProperty("App::PropertyLength","Height","Grid",QT_TRANSLATE_NOOP("Arch_Grid","The total height of this grid"), locked=True)
         if not "AutoWidth" in pl:
-            obj.addProperty("App::PropertyLength","AutoWidth","Grid",QT_TRANSLATE_NOOP("Arch_Grid",'Creates automatic column divisions (set to 0 to disable)'), locked=True)
+            obj.addProperty("App::PropertyLength","AutoWidth","Grid",QT_TRANSLATE_NOOP("Arch_Grid","Creates automatic column divisions (set to 0 to disable)"), locked=True)
         if not "AutoHeight" in pl:
-            obj.addProperty("App::PropertyLength","AutoHeight","Grid",QT_TRANSLATE_NOOP("Arch_Grid",'Creates automatic row divisions (set to 0 to disable)'), locked=True)
+            obj.addProperty("App::PropertyLength","AutoHeight","Grid",QT_TRANSLATE_NOOP("Arch_Grid","Creates automatic row divisions (set to 0 to disable)"), locked=True)
         if not "Reorient" in pl:
-            obj.addProperty("App::PropertyBool","Reorient","Grid",QT_TRANSLATE_NOOP("Arch_Grid",'When in edge midpoint mode, if this grid must reorient its children along edge normals or not'), locked=True)
+            obj.addProperty("App::PropertyBool","Reorient","Grid",QT_TRANSLATE_NOOP("Arch_Grid","When in edge midpoint mode, if this grid must reorient its children along edge normals or not"), locked=True)
         if not "HiddenFaces" in pl:
-            obj.addProperty("App::PropertyIntegerList","HiddenFaces","Grid",QT_TRANSLATE_NOOP("Arch_Grid",'The indices of faces to hide'), locked=True)
+            obj.addProperty("App::PropertyIntegerList","HiddenFaces","Grid",QT_TRANSLATE_NOOP("Arch_Grid","The indices of faces to hide"), locked=True)
         self.Type = "Grid"
 
     def onDocumentRestored(self,obj):
@@ -286,7 +286,7 @@ class ViewProviderArchGrid:
         return True
 
     def setupContextMenu(self, vobj, menu):
-        if FreeCADGui.activeWorkbench().name() != 'BIMWorkbench':
+        if FreeCADGui.activeWorkbench().name() != "BIMWorkbench":
             return
         actionEdit = QtGui.QAction(translate("Arch", "Edit"),
                                    menu)
@@ -511,13 +511,13 @@ class ArchGridTaskPanel:
 
     def editHorizontalHeader(self, index):
 
-        val,ok = QtGui.QInputDialog.getText(None,'Edit size','New size')
+        val,ok = QtGui.QInputDialog.getText(None,"Edit size","New size")
         if ok:
             self.table.setHorizontalHeaderItem(index,QtGui.QTableWidgetItem(val))
 
     def editVerticalHeader(self, index):
 
-        val,ok = QtGui.QInputDialog.getText(None,'Edit size','New size')
+        val,ok = QtGui.QInputDialog.getText(None,"Edit size","New size")
         if ok:
             self.table.setVerticalHeaderItem(index,QtGui.QTableWidgetItem(val))
 

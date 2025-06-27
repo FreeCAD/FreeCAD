@@ -331,7 +331,7 @@ class BIM_Preflight_TaskPanel:
                         if "-" in ifcopenshell.version:
                             # Prebuild version have a version like 'v0.7.0-<GIT_COMMIT_ID>,
                             # trying to remove the commit id.
-                            cur_version = version.parse(ifcopenshell.version.split('-')[0])
+                            cur_version = version.parse(ifcopenshell.version.split("-")[0])
                         else:
                             cur_version = version.parse(ifcopenshell.version)
                         min_version = version.parse("0.6")

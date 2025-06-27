@@ -405,7 +405,7 @@ def buildScene(objects,colors=None):
     root = coin.SoSeparator()
     for o in objects:
         buf = None
-        if hasattr(o,'Shape') and o.Shape and (not o.Shape.isNull()):
+        if hasattr(o,"Shape") and o.Shape and (not o.Shape.isNull()):
             # writeInventor of shapes needs tessellation values
             buf = o.Shape.writeInventor(2,0.01)
         elif o.isDerivedFrom("Mesh::Feature"):
@@ -588,7 +588,7 @@ def save(document,filename=None,guidata=None,colors=None,camera=None):
     if guidata:
         guidocs = buildGuiDocumentFromGuiData(document,guidata)
         if guidocs:
-            zf = zipfile.ZipFile(filename, mode='a')
+            zf = zipfile.ZipFile(filename, mode="a")
             for guidoc in guidocs:
                 zf.write(guidoc[0],guidoc[1])
             zf.close()
@@ -598,8 +598,8 @@ def save(document,filename=None,guidata=None,colors=None,camera=None):
     elif colors:
         guidoc = buildGuiDocumentFromColors(document,colors,camera)
         if guidoc:
-            zf = zipfile.ZipFile(filename, mode='a')
-            zf.write(guidoc[0],'GuiDocument.xml')
+            zf = zipfile.ZipFile(filename, mode="a")
+            zf.write(guidoc[0],"GuiDocument.xml")
             for colorfile in guidoc[1:]:
                 zf.write(colorfile,os.path.basename(colorfile))
             zf.close()

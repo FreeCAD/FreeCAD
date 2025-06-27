@@ -541,9 +541,9 @@ class _ViewProviderAxis:
     def getNumber(self,vobj,num):
 
         chars = "abcdefghijklmnopqrstuvwxyz"
-        roman=(('M',1000),('CM',900),('D',500),('CD',400),
-               ('C',100),('XC',90),('L',50),('XL',40),
-               ('X',10),('IX',9),('V',5),('IV',4),('I',1))
+        roman=(("M",1000),("CM",900),("D",500),("CD",400),
+               ("C",100),("XC",90),("L",50),("XL",40),
+               ("X",10),("IX",9),("V",5),("IV",4),("I",1))
         if hasattr(vobj.Object,"CustomNumber") and vobj.Object.CustomNumber:
             return vobj.Object.CustomNumber
         elif hasattr(vobj,"NumberingStyle"):
@@ -609,7 +609,7 @@ class _ViewProviderAxis:
         return True
 
     def setupContextMenu(self, vobj, menu):
-        if FreeCADGui.activeWorkbench().name() != 'BIMWorkbench':
+        if FreeCADGui.activeWorkbench().name() != "BIMWorkbench":
             return
         actionEdit = QtGui.QAction(translate("Arch", "Edit"),
                                    menu)
