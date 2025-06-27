@@ -3411,8 +3411,9 @@ bool ViewProviderSketch::setEdit(int ModNum)
     }
 
     // start the edit dialog
-    if (!sketchDlg)
+    if (!sketchDlg) {
         sketchDlg = new TaskDlgEditSketch(this);
+    }
 
     connectionToolWidget = sketchDlg->registerToolWidgetChanged(std::bind(&SketcherGui::ViewProviderSketch::slotToolWidgetChanged, this, sp::_1));
 

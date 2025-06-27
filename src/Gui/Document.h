@@ -177,6 +177,10 @@ public:
     void setModified(bool);
     bool isModified() const;
 
+    /// getter-setter for workbench name
+    void setWorkbench(const std::string& name);
+    std::string workbench() const;
+
     /// Returns true if the document is about to be closed, false otherwise
     bool isAboutToClose() const;
 

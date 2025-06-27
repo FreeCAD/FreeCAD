@@ -997,6 +997,11 @@ void Application::slotNewDocument(const App::Document& Doc, bool isMainDoc)
     pDoc->signalResetEdit.connect(std::bind(&Gui::Application::slotResetEdit, this, sp::_1));
     // NOLINTEND
 
+    Workbench* currWb = WorkbenchManager::instance()->active();
+    if (currWb) {
+        pDoc->setWorkbench(currWb->name());
+    }
+
     signalNewDocument(*pDoc, isMainDoc);
     if (isMainDoc) {
         pDoc->createView(View3DInventor::getClassTypeId());
@@ -1155,6 +1160,9 @@ void Application::slotActiveDocument(const App::Document& Doc)
                 Base::PyGILStateLocker lock;
                 Py::Module("FreeCADGui").setAttr(std::string("ActiveDocument"), Py::None());
             }
+        }
+        if (!d->activeDocument->workbench().empty()) {
+            activateWorkbench(d->activeDocument->workbench().c_str());
         }
 
         // Update the application to show the unit change
@@ -1805,6 +1813,9 @@ bool Application::activateWorkbench(const char* name)
                     ->SetASCII("LastModule", nameWb.c_str());
             }
             newWb->activated();
+        }
+        if (activeDocument()) {
+            activeDocument()->setWorkbench(name);
         }
     }
     catch (Py::Exception&) {
