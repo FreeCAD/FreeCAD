@@ -116,7 +116,7 @@ print("Reading xml definitions...")
 psets = []
 qtos = []
 
-with ZipFile("psd.zip", 'r') as z:
+with ZipFile("psd.zip", "r") as z:
     for entry in z.namelist():
         print("Parsing",entry)
         xml_data = z.read(entry).decode(encoding="utf-8")

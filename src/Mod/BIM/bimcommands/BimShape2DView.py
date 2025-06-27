@@ -39,7 +39,7 @@ class BIM_Shape2DView(gui_shape2dview.Shape2DView):
         d = super().GetResources()
         d["Pixmap"] = "Arch_BuildingPart_Tree"
         d["MenuText"] = QT_TRANSLATE_NOOP("BIM_Shape2DView", "Section view")
-        d['Accel'] = "V, V"
+        d["Accel"] = "V, V"
         return d
 
     def proceed(self):
@@ -111,7 +111,7 @@ class BIM_Shape2DCut(BIM_Shape2DView):
         d = super().GetResources()
         d["Pixmap"] = "Arch_View_Cut"
         d["MenuText"] = QT_TRANSLATE_NOOP("BIM_Shape2DView", "Section cut")
-        d['Accel'] = "V, C"
+        d["Accel"] = "V, C"
         return d
 
     def proceed(self):

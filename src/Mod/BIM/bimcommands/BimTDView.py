@@ -42,7 +42,7 @@ class BIM_TDView:
                 "To choose where to insert the view when multiple pages are available,\n"
                 "select both the view and the page before you execute the command.",
             ),
-            'Accel': "V, I",
+            "Accel": "V, I",
         }
 
     def IsActive(self):

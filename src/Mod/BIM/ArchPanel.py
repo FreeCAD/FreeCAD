@@ -127,7 +127,7 @@ class _Panel(ArchComponent.Component):
 
         # base tests
         if obj.Base:
-            if hasattr(obj.Base,'Shape'):
+            if hasattr(obj.Base,"Shape"):
                 if obj.Base.Shape.isNull():
                     return
             elif obj.Base.isDerivedFrom("Mesh::Feature"):
@@ -147,7 +147,7 @@ class _Panel(ArchComponent.Component):
         else:
             if not obj.Base:
                 return
-            elif hasattr(obj.Base,'Shape'):
+            elif hasattr(obj.Base,"Shape"):
                 if not obj.Base.Shape.Solids:
                     return
         if hasattr(obj,"Material"):
@@ -476,11 +476,11 @@ class _ViewProviderPanel(ArchComponent.ViewProviderComponent):
                             for i,mat in enumerate(activematerials):
                                 c = obj.ViewObject.ShapeColor
                                 c = (c[0],c[1],c[2],1.0-obj.ViewObject.Transparency/100.0)
-                                if 'DiffuseColor' in mat.Material:
-                                    if "(" in mat.Material['DiffuseColor']:
-                                        c = tuple([float(f) for f in mat.Material['DiffuseColor'].strip("()").split(",")])
-                                if 'Transparency' in mat.Material:
-                                    c = (c[0],c[1],c[2],1.0-float(mat.Material['Transparency']))
+                                if "DiffuseColor" in mat.Material:
+                                    if "(" in mat.Material["DiffuseColor"]:
+                                        c = tuple([float(f) for f in mat.Material["DiffuseColor"].strip("()").split(",")])
+                                if "Transparency" in mat.Material:
+                                    c = (c[0],c[1],c[2],1.0-float(mat.Material["Transparency"]))
                                 cols.extend([c for j in range(len(obj.Shape.Solids[i].Faces))])
                             if obj.ViewObject.DiffuseColor != cols:
                                 obj.ViewObject.DiffuseColor = cols
@@ -546,7 +546,7 @@ class PanelCut(Draft.DraftObject):
                 if obj.Source.Base:
                     baseobj = obj.Source.Base
                 if baseobj:
-                    if hasattr(baseobj,'Shape'):
+                    if hasattr(baseobj,"Shape"):
                         if baseobj.Shape.Solids:
                             center = baseobj.Shape.BoundBox.Center
                             diag = baseobj.Shape.BoundBox.DiagonalLength
@@ -845,7 +845,7 @@ class PanelSheet(Draft.DraftObject):
             area = obj.Width.Value * obj.Height.Value
             subarea = 0
             for v in obj.Group:
-                if hasattr(v,'Shape'):
+                if hasattr(v,"Shape"):
                     wires.extend(v.Shape.Wires)
                     if Draft.getType(v) == "PanelCut":
                         if v.Source:
@@ -891,7 +891,7 @@ class PanelSheet(Draft.DraftObject):
                             w.Placement = obj.Placement.multiply(w.Placement)
                         outp.append(w)
             if not ispanel:
-                if hasattr(p,'Shape'):
+                if hasattr(p,"Shape"):
                     for w in p.Shape.Wires:
                         w.scale(obj.Scale, FreeCAD.Vector())
                         if transform:

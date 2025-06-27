@@ -41,7 +41,7 @@ class BIM_TDPage:
             "ToolTip": QT_TRANSLATE_NOOP(
                 "BIM_TDPage", "Creates a new TechDraw page from a template"
             ),
-            'Accel': "T, P",
+            "Accel": "T, P",
         }
 
     def IsActive(self):

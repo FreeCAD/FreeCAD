@@ -49,10 +49,10 @@ class Arch_Wall:
     def GetResources(self):
         """Returns a dictionary with the visual aspects of the Arch Wall tool."""
 
-        return {'Pixmap'  : 'Arch_Wall',
-                'MenuText': QT_TRANSLATE_NOOP("Arch_Wall","Wall"),
-                'Accel': "W, A",
-                'ToolTip': QT_TRANSLATE_NOOP("Arch_Wall","Creates a wall object from scratch or from a selected object (wire, face or solid)")}
+        return {"Pixmap"  : "Arch_Wall",
+                "MenuText": QT_TRANSLATE_NOOP("Arch_Wall","Wall"),
+                "Accel": "W, A",
+                "ToolTip": QT_TRANSLATE_NOOP("Arch_Wall","Creates a wall object from scratch or from a selected object (wire, face or solid)")}
 
     def IsActive(self):
 
@@ -164,8 +164,8 @@ class Arch_Wall:
                                  self.wp.get_local_coords(self.points[1]))
             self.doc.openTransaction(translate("Arch","Create Wall"))
             FreeCADGui.addModule("Arch")
-            FreeCADGui.doCommand('import Part')
-            FreeCADGui.doCommand('trace=Part.LineSegment(FreeCAD.'+str(l.StartPoint)+',FreeCAD.'+str(l.EndPoint)+')')
+            FreeCADGui.doCommand("import Part")
+            FreeCADGui.doCommand("trace=Part.LineSegment(FreeCAD."+str(l.StartPoint)+",FreeCAD."+str(l.EndPoint)+")")
             if not self.existing:
                 # no existing wall snapped, just add a default wall
                 self.addDefault()
@@ -175,19 +175,19 @@ class Arch_Wall:
                     w = Arch.joinWalls(self.existing)
                     if w:
                         if ArchWall.areSameWallTypes([w,self]):
-                            FreeCADGui.doCommand('FreeCAD.ActiveDocument.'+w.Name+'.Base.addGeometry(trace)')
+                            FreeCADGui.doCommand("FreeCAD.ActiveDocument."+w.Name+".Base.addGeometry(trace)")
                         else:
                             # if not possible, add new wall as addition to the existing one
                             self.addDefault()
                             if self.AUTOJOIN:
-                                FreeCADGui.doCommand('Arch.addComponents(FreeCAD.ActiveDocument.'+self.doc.Objects[-1].Name+',FreeCAD.ActiveDocument.'+w.Name+')')
+                                FreeCADGui.doCommand("Arch.addComponents(FreeCAD.ActiveDocument."+self.doc.Objects[-1].Name+",FreeCAD.ActiveDocument."+w.Name+")")
                     else:
                         self.addDefault()
                 else:
                     # add new wall as addition to the first existing one
                     self.addDefault()
                     if self.AUTOJOIN:
-                        FreeCADGui.doCommand('Arch.addComponents(FreeCAD.ActiveDocument.'+self.doc.Objects[-1].Name+',FreeCAD.ActiveDocument.'+self.existing[0].Name+')')
+                        FreeCADGui.doCommand("Arch.addComponents(FreeCAD.ActiveDocument."+self.doc.Objects[-1].Name+",FreeCAD.ActiveDocument."+self.existing[0].Name+")")
             self.doc.commitTransaction()
             self.doc.recompute()
             # gui_utils.end_all_events()  # Causes a crash on Linux.
@@ -213,21 +213,21 @@ class Arch_Wall:
             # Use ArchSketch if SketchArch add-on is present
             try:
                 import ArchSketchObject
-                FreeCADGui.doCommand('import ArchSketchObject')
-                FreeCADGui.doCommand('base=ArchSketchObject.makeArchSketch()')
+                FreeCADGui.doCommand("import ArchSketchObject")
+                FreeCADGui.doCommand("base=ArchSketchObject.makeArchSketch()")
             except:
                 FreeCADGui.doCommand('base=FreeCAD.ActiveDocument.addObject("Sketcher::SketchObject","WallTrace")')
-            FreeCADGui.doCommand('base.Placement = wp.get_placement()')
-            FreeCADGui.doCommand('base.addGeometry(trace)')
+            FreeCADGui.doCommand("base.Placement = wp.get_placement()")
+            FreeCADGui.doCommand("base.addGeometry(trace)")
         else:
-            FreeCADGui.doCommand('base=Draft.make_line(trace)')
+            FreeCADGui.doCommand("base=Draft.make_line(trace)")
             # The created line should not stay selected as this causes an issue in continue mode.
             # Two walls would then be created based on the same line.
             FreeCADGui.Selection.clearSelection()
-            FreeCADGui.doCommand('base.Placement = wp.get_placement()')
-            FreeCADGui.doCommand('FreeCAD.ActiveDocument.recompute()')
-        FreeCADGui.doCommand('wall = Arch.makeWall(base,width='+str(self.Width)+',height='+str(self.Height)+',align="'+str(self.Align)+'")')
-        FreeCADGui.doCommand('wall.Normal = wp.axis')
+            FreeCADGui.doCommand("base.Placement = wp.get_placement()")
+            FreeCADGui.doCommand("FreeCAD.ActiveDocument.recompute()")
+        FreeCADGui.doCommand("wall = Arch.makeWall(base,width="+str(self.Width)+",height="+str(self.Height)+',align="'+str(self.Align)+'")')
+        FreeCADGui.doCommand("wall.Normal = wp.axis")
         if self.MultiMat:
             FreeCADGui.doCommand("wall.Material = FreeCAD.ActiveDocument."+self.MultiMat.Name)
         FreeCADGui.doCommand("Draft.autogroup(wall)")
@@ -441,7 +441,7 @@ class Arch_Wall:
 
         self.doc.openTransaction(translate("Arch","Create Wall"))
         FreeCADGui.addModule("Arch")
-        FreeCADGui.doCommand('wall = Arch.makeWall(length='+str(self.lengthValue)+',width='+str(self.Width)+',height='+str(self.Height)+',align="'+str(self.Align)+'")')
+        FreeCADGui.doCommand("wall = Arch.makeWall(length="+str(self.lengthValue)+",width="+str(self.Width)+",height="+str(self.Height)+',align="'+str(self.Align)+'")')
         if self.MultiMat:
             FreeCADGui.doCommand("wall.Material = FreeCAD.ActiveDocument."+self.MultiMat.Name)
         self.doc.commitTransaction()
@@ -450,4 +450,4 @@ class Arch_Wall:
             FreeCADGui.draftToolBar.escape()
 
 
-FreeCADGui.addCommand('Arch_Wall', Arch_Wall())
+FreeCADGui.addCommand("Arch_Wall", Arch_Wall())

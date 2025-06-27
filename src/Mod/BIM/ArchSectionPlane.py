@@ -116,7 +116,7 @@ def getCutShapes(objs,cutplane,onlySolids,clip,joinArch,showHidden,groupSshapesB
                     shtypes.setdefault(o.Material.Name if (hasattr(o,"Material") and o.Material) else "None",[]).extend(o.Shape.Solids)
                 else:
                     shtypes.setdefault(o.Material.Name if (hasattr(o,"Material") and o.Material) else "None",[]).append(o.Shape.copy())
-            elif hasattr(o,'Shape'):
+            elif hasattr(o,"Shape"):
                 if o.Shape.isNull():
                     pass
                 elif onlySolids:
@@ -139,7 +139,7 @@ def getCutShapes(objs,cutplane,onlySolids,clip,joinArch,showHidden,groupSshapesB
                 objectShapes.append((k,[v1]))
     else:
         for o in objs:
-            if hasattr(o,'Shape'):
+            if hasattr(o,"Shape"):
                 if o.Shape.isNull():
                     pass
                 elif onlySolids:
@@ -192,16 +192,16 @@ def getFillForObject(o, defaultFill, source):
 
     """returns a color tuple from an object's material"""
 
-    if hasattr(source, 'UseMaterialColorForFill') and source.UseMaterialColorForFill:
+    if hasattr(source, "UseMaterialColorForFill") and source.UseMaterialColorForFill:
         material = None
-        if hasattr(o, 'Material') and o.Material:
+        if hasattr(o, "Material") and o.Material:
             material = o.Material
         elif isinstance(o,str):
             material = FreeCAD.ActiveDocument.getObject(o)
         if material:
-            if hasattr(material, 'SectionColor') and material.SectionColor:
+            if hasattr(material, "SectionColor") and material.SectionColor:
                 return material.SectionColor
-            elif hasattr(material, 'Color') and material.Color:
+            elif hasattr(material, "Color") and material.Color:
                 return material.Color
         elif hasattr(o,"ViewObject") and hasattr(o.ViewObject,"ShapeColor"):
             return o.ViewObject.ShapeColor
@@ -328,15 +328,15 @@ def getSVG(source,
     scaledLineWidth = linewidth/scale
     if renderMode in ["Coin",2,"Coin mono",3]:
         # don't scale linewidths in coin mode
-        svgLineWidth = str(linewidth) + 'px'
+        svgLineWidth = str(linewidth) + "px"
     else:
-        svgLineWidth = str(scaledLineWidth) + 'px'
+        svgLineWidth = str(scaledLineWidth) + "px"
     if cutlinewidth:
         scaledCutLineWidth = cutlinewidth/scale
-        svgCutLineWidth = str(scaledCutLineWidth) + 'px'
+        svgCutLineWidth = str(scaledCutLineWidth) + "px"
     else:
         st = params.get_param_arch("CutLineThickness")
-        svgCutLineWidth = str(scaledLineWidth * st) + 'px'
+        svgCutLineWidth = str(scaledLineWidth * st) + "px"
     yt = params.get_param_arch("SymbolLineThickness")
     svgSymbolLineWidth = str(linewidth * yt)
     hiddenPattern = params.get_param_arch("archHiddenPattern")
@@ -346,7 +346,7 @@ def getSVG(source,
     #fillpattern += '<g>'
     #fillpattern += '<rect width="10" height="10" style="stroke:none; fill:#ffffff" /><path style="stroke:#000000; stroke-width:1" d="M0,0 l10,10" /></g></pattern>'
     svgLineColor = Draft.getrgb(lineColor)
-    svg = ''
+    svg = ""
     # reading cached version
     svgcache = update_svg_cache(source, renderMode, showHidden, showFill, fillSpaces, joinArch, allOn, objs)
     should_update_svg_cache = False
@@ -367,7 +367,7 @@ def getSVG(source,
                 svgcache = getCoinSVG(cutplane,objs,cameradata,linewidth="SVGLINEWIDTH")
     elif renderMode in ["Solid",1]:
         if should_update_svg_cache:
-            svgcache = ''
+            svgcache = ""
             # render using the Arch Vector Renderer
             import ArchVRM
             import WorkingPlane
@@ -398,7 +398,7 @@ def getSVG(source,
             svgcache += render.getSectionSVG(linewidth="SVGCUTLINEWIDTH",fillpattern="#ffffff")
             if showHidden:
                 svgcache += render.getHiddenSVG(linewidth="SVGLINEWIDTH")
-            svgcache += '</g>\n'
+            svgcache += "</g>\n"
             # print(render.info())
     else:
         # Wireframe (0) mode
@@ -426,17 +426,17 @@ def getSVG(source,
             import Part
             if vshapes:
                 baseshape = Part.makeCompound(vshapes)
-                style = {'stroke':       "SVGLINECOLOR",
-                         'stroke-width': "SVGLINEWIDTH"}
+                style = {"stroke":       "SVGLINECOLOR",
+                         "stroke-width": "SVGLINEWIDTH"}
                 svgcache += TechDraw.projectToSVG(
                     baseshape, direction,
                     hStyle=style, h0Style=style, h1Style=style,
                     vStyle=style, v0Style=style, v1Style=style)
             if hshapes:
                 hshapes = Part.makeCompound(hshapes)
-                style = {'stroke':           "SVGLINECOLOR",
-                         'stroke-width':     "SVGLINEWIDTH",
-                         'stroke-dasharray': "SVGHIDDENPATTERN"}
+                style = {"stroke":           "SVGLINECOLOR",
+                         "stroke-width":     "SVGLINEWIDTH",
+                         "stroke-dasharray": "SVGHIDDENPATTERN"}
                 svgcache += TechDraw.projectToSVG(
                     hshapes, direction,
                     hStyle=style, h0Style=style, h1Style=style,
@@ -462,8 +462,8 @@ def getSVG(source,
                                                           color=lineColor)
                     svgcache += "</g>\n"
                 sshapes = Part.makeCompound(sshapes)
-                style = {'stroke':       "SVGLINECOLOR",
-                         'stroke-width': "SVGCUTLINEWIDTH"}
+                style = {"stroke":       "SVGLINECOLOR",
+                         "stroke-width": "SVGCUTLINEWIDTH"}
                 svgcache += TechDraw.projectToSVG(
                     sshapes, direction,
                     hStyle=style, h0Style=style, h1Style=style,
@@ -493,7 +493,7 @@ def getSVG(source,
                                  rotation=rotation,
                                  override=False)
         if not techdraw:
-            svg += '</g>'
+            svg += "</g>"
 
     if not cutface:
         # if we didn't calculate anything better, use the cutplane...
@@ -517,7 +517,7 @@ def getSVG(source,
                                  rotation=rotation,
                                  fillspaces=fillSpaces)
         if not techdraw:
-            svg += '</g>'
+            svg += "</g>"
 
     # add additional edge symbols from windows
     cutwindows = []
@@ -552,7 +552,7 @@ def getSVG(source,
                                      techdraw=techdraw,
                                      rotation=rotation)
             if not techdraw:
-                svg += '</g>'
+                svg += "</g>"
 
     return svg
 
@@ -1160,7 +1160,7 @@ class _ViewProviderSectionPlane:
         self.edit()
 
     def setupContextMenu(self, vobj, menu):
-        if FreeCADGui.activeWorkbench().name() != 'BIMWorkbench':
+        if FreeCADGui.activeWorkbench().name() != "BIMWorkbench":
             return
 
         actionEdit = QtGui.QAction(translate("Arch", "Edit"),

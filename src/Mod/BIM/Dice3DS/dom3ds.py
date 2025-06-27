@@ -40,19 +40,19 @@ class FBufError(Exception):
 def string_to_array(s,typ):
     """Convert data block from a 3DS file to a numpy array."""
     a = numpy.fromstring(s,typ)
-    if sys.byteorder == 'big':
+    if sys.byteorder == "big":
         a.byteswap(True)
     return a
 
 def array_to_string(a):
     """Convert a numpy array to data block for a 3DS file."""
-    if sys.byteorder == 'big':
+    if sys.byteorder == "big":
         a = a.byteswap()
     return a.tostring()
 
 def array_to_string_destructive(a):
     """Destructively convert a numpy array to data block for a 3DS file."""
-    if sys.byteorder == 'big':
+    if sys.byteorder == "big":
         a.byteswap(True)
     return a.tostring()
 
@@ -99,7 +99,7 @@ class FileLikeBuffer(object):
         return r
     def read_to_nul(self):
         try:
-            i = self.buf.index('\0',self.index,self.end)
+            i = self.buf.index("\0",self.index,self.end)
         except IndexError:
             raise FBufError("End of fbuf reached in string")
         r = self.buf[self.index:i]
@@ -116,13 +116,13 @@ class FileLikeBuffer(object):
 # Utility functions
 
 def _decls_to_list(decls):
-    decllist = [ tuple(x.strip().split()) for x in decls.split(',') ]
+    decllist = [ tuple(x.strip().split()) for x in decls.split(",") ]
     return decllist
 
 def _decls_to_vars(decls):
     if not decls:
         return ()
-    vars = [ x.strip().split(None,1)[1] for x in decls.split(',') ]
+    vars = [ x.strip().split(None,1)[1] for x in decls.split(",") ]
     return vars
 
 
@@ -142,24 +142,24 @@ class ChunkMetaclass(type):
 
     def __new__(metatype,name,bases,clsdict):
         vars = []
-        vars.extend(_decls_to_vars(clsdict.get('struct','')))
-        vars.extend(_decls_to_vars(clsdict.get('single','')))
-        vars.extend(_decls_to_vars(clsdict.get('multiple','')))
-        if clsdict.get('freechunks',False):
-            vars.append('subchunks')
-        clsdict.setdefault('__slots__',[]).extend(vars)
+        vars.extend(_decls_to_vars(clsdict.get("struct","")))
+        vars.extend(_decls_to_vars(clsdict.get("single","")))
+        vars.extend(_decls_to_vars(clsdict.get("multiple","")))
+        if clsdict.get("freechunks",False):
+            vars.append("subchunks")
+        clsdict.setdefault("__slots__",[]).extend(vars)
 
         return type.__new__(metatype,name,bases,clsdict)
 
     def __init__(self,name,bases,clsdict):
-        if hasattr(self,'struct'):
+        if hasattr(self,"struct"):
             self.struct_fields = _decls_to_list(self.struct)
         else:
             self.struct_fields = []
 
         self.single_types = {}
         self.single_order = []
-        if hasattr(self,'single'):
+        if hasattr(self,"single"):
             attrs = {}
             for typ,attr in _decls_to_list(self.single):
                 self.single_types[typ] = attr
@@ -169,7 +169,7 @@ class ChunkMetaclass(type):
 
         self.multiple_types = {}
         self.multiple_order = []
-        if hasattr(self,'multiple'):
+        if hasattr(self,"multiple"):
             attrs = {}
             for typ,attr in _decls_to_list(self.multiple):
                 self.multiple_types[typ] = attr
@@ -177,23 +177,23 @@ class ChunkMetaclass(type):
                     attrs[attr] = 1
                     self.multiple_order.append(attr)
 
-        if hasattr(self,'keyframe'):
+        if hasattr(self,"keyframe"):
             self.keyframe_fields = _decls_to_list(self.keyframe)
-            slots = ['frameno','flags','tension',
-                     'continuity','bias','ease_to','ease_from']
+            slots = ["frameno","flags","tension",
+                     "continuity","bias","ease_to","ease_from"]
             for typ,attr in self.keyframe_fields:
                 slots.append(attr)
-            kfdict = { '__slots__': slots }
+            kfdict = { "__slots__": slots }
             kfbases = (object,)
             kfname = "%s.Key" % name
             self.Key = type(kfname,kfbases,kfdict)
         else:
             self.keyframe_fields = []
 
-        if hasattr(self,'tag'):
+        if hasattr(self,"tag"):
             self.chunk_taghash[self.tag] = self
             self.chunk_labelhash[name] = self
-            if not hasattr(self,'label'):
+            if not hasattr(self,"label"):
                 self.label = name
 
         type.__init__(self,name,bases,clsdict)
@@ -209,11 +209,11 @@ class UndefinedChunkMetaclass(ChunkMetaclass):
     """
 
     def __new__(metatype,name,bases,clsdict):
-        if '__slots__' in clsdict:
-            if 'data' not in clsdict['__slots__']:
-                clsdict['__slots__'].append('data')
+        if "__slots__" in clsdict:
+            if "data" not in clsdict["__slots__"]:
+                clsdict["__slots__"].append("data")
         else:
-            clsdict['__slots__'] = ['data']
+            clsdict["__slots__"] = ["data"]
         return ChunkMetaclass.__new__(metatype,name,bases,clsdict)
 
 
@@ -294,7 +294,7 @@ class ChunkBase(object):
                 ch = UnknownChunk(tag)
             ch.read(fbuf.read_fbuf(length-6),flags)
         except (File3dsFormatError, FBufError) as fe:
-            if flags['recover']:
+            if flags["recover"]:
                 if cls is not None:
                     label = cls.label
                 else:
@@ -329,18 +329,18 @@ class ChunkBase(object):
                     label = "ERROR"
             if label in self.single_types:
                 attr = self.single_types[label]
-                if flags['tight'] and getattr(self,attr) is not None:
+                if flags["tight"] and getattr(self,attr) is not None:
                     raise File3dsFormatError(
                         "Chunk %s appeared twice" % label,True)
                 setattr(self,attr,ch)
             elif label in self.multiple_types:
                 attr = self.multiple_types[label]
                 getattr(self,attr).append(ch)
-            elif label == 'DUMMY':
+            elif label == "DUMMY":
                 pass
             elif self.freechunks:
                 self.subchunks.append(ch)
-            elif flags['tight']:
+            elif flags["tight"]:
                 raise File3dsFormatError(
                     "Illegal context for chunk %s" % label,True)
 
@@ -400,7 +400,7 @@ class ChunkBase(object):
     # Dump self to stream flo at a certain indentation
 
     def dump(self,flo,indent,flags):
-        indent += '    '
+        indent += "    "
         self.dump_header(flo,flags)
         self.dump_struct(flo,indent,flags)
         self.dump_array(flo,indent,flags)
@@ -443,15 +443,15 @@ class ChunkBase(object):
         s = []
         for typ,attr in self.struct_fields:
             s.append(getattr(self,"set_"+typ)(getattr(self,attr)))
-        return ''.join(s)
+        return "".join(s)
 
     def write_array(self):
         # Expect subclass to override this
-        return ''
+        return ""
 
     def write_chunks(self):
         if self.swallow:
-            return ''
+            return ""
         s = []
         for attr in self.single_order:
             v = getattr(self,attr)
@@ -463,7 +463,7 @@ class ChunkBase(object):
         if self.freechunks:
             for v in self.subchunks:
                 s.append(self.set_chunk(v))
-        return ''.join(s)
+        return "".join(s)
 
     # Write out contents (but not header) to chunk
 
@@ -472,7 +472,7 @@ class ChunkBase(object):
         s.append(self.write_struct())
         s.append(self.write_array())
         s.append(self.write_chunks())
-        return ''.join(s)
+        return "".join(s)
 
 
     # -------- SECTION #4: OUTPUT DOCUMENTATION --------
@@ -482,12 +482,12 @@ class ChunkBase(object):
             return
         flo.write('<dt>\n<a name="%s"></a><b><tt>%s (0x%04X)</tt></b></dt>\n'
                   % (cls.label,cls.label,cls.tag))
-        flo.write('<dd>\n')
+        flo.write("<dd>\n")
 
         i = 0
 
         for typ,attr in cls.struct_fields:
-            flo.write('<tt>%s %s</tt><br>\n' % (typ,attr))
+            flo.write("<tt>%s %s</tt><br>\n" % (typ,attr))
             i += 1
 
         tagorder = []
@@ -519,9 +519,9 @@ class ChunkBase(object):
                 i += 1
 
         if not i:
-            flo.write('No fields<br>\n')
+            flo.write("No fields<br>\n")
 
-        flo.write('&nbsp;</dd>\n')
+        flo.write("&nbsp;</dd>\n")
         done[cls.label] = 1
 
         for typ in tagorder:
@@ -543,14 +543,14 @@ class UndefinedChunk(ChunkBase):
 
 
 class UnknownChunk(UndefinedChunk):
-    __slots__ = ['tag']
+    __slots__ = ["tag"]
     label = "UNKNOWN"
     def __init__(self,tag):
         super().__init__(tag=tag)
 
 
 class ErrorChunk(UndefinedChunk):
-    __slots__ = ['intended_tag','intended_label','error_msg']
+    __slots__ = ["intended_tag","intended_label","error_msg"]
     label = "ERROR"
     tag = 0xEEEE
     def __init__(self,intended_tag=None,intended_label=None,error_msg=None):
@@ -614,7 +614,7 @@ class TextureMaskChunk(ChunkBase):
               "MAT_MAP_ANG angle")
 
 class ArrayChunk(ChunkBase):
-    __slots__ = ['array']
+    __slots__ = ["array"]
     def dump_array(self,flo,indent,flags):
         flo.write("%s%s = <array data %s>\n"
                   % (indent,"array",repr(self.array.shape)))
@@ -630,7 +630,7 @@ class MatrixChunk(ArrayChunk):
         self.array = numpy.array(numpy.transpose(m))
     def dump_array(self,flo,indent,flags):
         super(MatrixChunk,self).dump_array(flo,indent,flags)
-        if flags['arraylines'] == 0:
+        if flags["arraylines"] == 0:
             return
         for i in range(4):
             flo.write("%s    %12.4g%12.4g%12.4g%12.4g\n"
@@ -642,7 +642,7 @@ class MatrixChunk(ArrayChunk):
         return array_to_string_destructive(a)
 
 class TrackChunk(ChunkBase):
-    __slots__ = ['keys']
+    __slots__ = ["keys"]
     struct = "short flags, long unused1, long unused2, long nkeys"
     def read_array(self,fbuf,flags):
         self.keys = []
@@ -683,12 +683,12 @@ class TrackChunk(ChunkBase):
         return "".join(s)
     def dump_array(self,flo,indent,flags):
         super(TrackChunk,self).dump_array(flo,indent,flags)
-        if flags['arraylines'] == 0:
+        if flags["arraylines"] == 0:
             return
-        if flags['arraylines'] < 0:
+        if flags["arraylines"] < 0:
             n = self.nkeys
         else:
-            n = min(flags['arraylines'],self.nkeys)
+            n = min(flags["arraylines"],self.nkeys)
         for i in range(n):
             kf = self.keys[i]
             flo.write("%skeys[0] = %s.Key\n" % (indent,self.label))
@@ -800,7 +800,7 @@ class MASTER_SCALE(OneFloatValueChunk):
 
 class BIT_MAP(ChunkBase):
     tag = 0x1100
-    struct = 'string filename'
+    struct = "string filename"
     swallow = True
 
 class USE_BIT_MAP(ChunkBase):
@@ -889,9 +889,9 @@ class DCUE_BGND(ChunkBase):
 
 class DEFAULT_VIEW(ChunkBase):
     tag = 0x3000
-    single = ('VIEW_TOP view, VIEW_BOTTOM view, VIEW_LEFT view,'
-              'VIEW_RIGHT view, VIEW_FRONT view, VIEW_BACK view,'
-              'VIEW_USER view, VIEW_CAMERA camera')
+    single = ("VIEW_TOP view, VIEW_BOTTOM view, VIEW_LEFT view,"
+              "VIEW_RIGHT view, VIEW_FRONT view, VIEW_BACK view,"
+              "VIEW_USER view, VIEW_CAMERA camera")
 
 class ViewChunk(ChunkBase):
     struct = ("float target_x, float target_y,"
@@ -997,12 +997,12 @@ class POINT_ARRAY(ArrayChunk):
         self.array = numpy.array(a)
     def dump_array(self,flo,indent,flags):
         super(POINT_ARRAY,self).dump_array(flo,indent,flags)
-        if flags['arraylines'] == 0:
+        if flags["arraylines"] == 0:
             return
-        if flags['arraylines'] < 0:
+        if flags["arraylines"] < 0:
             n = self.npoints
         else:
-            n = min(flags['arraylines'],self.npoints)
+            n = min(flags["arraylines"],self.npoints)
         for i in range(n):
             flo.write("%s    %12.4g%12.4g%12.4g\n"
                       % (indent,self.array[i,0],self.array[i,1],
@@ -1028,8 +1028,8 @@ class POINT_FLAG_ARRAY(ArrayChunk):
 class FACE_ARRAY(ArrayChunk):
     tag = 0x4120
     struct = "short nfaces"
-    multiple = 'MSH_MAT_GROUP materials'
-    single = 'SMOOTH_GROUP smoothing, MSH_BOXMAP box'
+    multiple = "MSH_MAT_GROUP materials"
+    single = "SMOOTH_GROUP smoothing, MSH_BOXMAP box"
     def read_array(self,fbuf,flags):
         size = 8*self.nfaces
         a = string_to_array(fbuf.read(size),numpy.uint16)
@@ -1037,12 +1037,12 @@ class FACE_ARRAY(ArrayChunk):
         self.array = numpy.array(a)
     def dump_array(self,flo,indent,flags):
         super(FACE_ARRAY,self).dump_array(flo,indent,flags)
-        if flags['arraylines'] == 0:
+        if flags["arraylines"] == 0:
             return
-        if flags['arraylines'] < 0:
+        if flags["arraylines"] < 0:
             n = self.nfaces
         else:
-            n = min(flags['arraylines'],self.nfaces)
+            n = min(flags["arraylines"],self.nfaces)
         for i in range(n):
             flo.write("%s    %10d%10d%10d%10d\n"
                       % (indent,self.array[i,0],self.array[i,1],
@@ -1061,12 +1061,12 @@ class MSH_MAT_GROUP(ArrayChunk):
         self.array = string_to_array(fbuf.read(size),numpy.uint16)
     def dump_array(self,flo,indent,flags):
         super(MSH_MAT_GROUP,self).dump_array(flo,indent,flags)
-        if flags['arraylines'] == 0:
+        if flags["arraylines"] == 0:
             return
-        if flags['arraylines'] < 0:
+        if flags["arraylines"] < 0:
             n = self.mfaces
         else:
-            n = min(flags['arraylines'],self.mfaces)
+            n = min(flags["arraylines"],self.mfaces)
         for i in range(n):
             flo.write("%s    %10d\n" % (indent,self.array[i]))
         if n < self.mfaces:
@@ -1086,12 +1086,12 @@ class TEX_VERTS(ArrayChunk):
         self.array = numpy.array(a)
     def dump_array(self,flo,indent,flags):
         super(TEX_VERTS,self).dump_array(flo,indent,flags)
-        if flags['arraylines'] == 0:
+        if flags["arraylines"] == 0:
             return
-        if flags['arraylines'] < 0:
+        if flags["arraylines"] < 0:
             n = self.npoints
         else:
-            n = min(flags['arraylines'],self.npoints)
+            n = min(flags["arraylines"],self.npoints)
         for i in range(n):
             flo.write("%s    %12.4g%12.4g\n"
                       % (indent,self.array[i,0],self.array[i,1]))
@@ -1108,12 +1108,12 @@ class SMOOTH_GROUP(ArrayChunk):
         self.array = string_to_array(fbuf.read_rest(),numpy.uint32)
     def dump_array(self,flo,indent,flags):
         super(SMOOTH_GROUP,self).dump_array(flo,indent,flags)
-        if flags['arraylines'] == 0:
+        if flags["arraylines"] == 0:
             return
-        if flags['arraylines'] < 0:
+        if flags["arraylines"] < 0:
             n = len(self.array)
         else:
-            n = min(flags['arraylines'],len(self.array))
+            n = min(flags["arraylines"],len(self.array))
         for i in range(n):
             flo.write("%s    %10d\n" % (indent,self.array[i]))
         if n < len(self.array):
@@ -1132,7 +1132,7 @@ class MESH_COLOR(ChunkBase):
 
 class MESH_TEXTURE_INFO(MatrixChunk):
     tag = 0x4170
-    __slots__ = [ 'icon_width', 'icon_height', 'cyl_height' ]
+    __slots__ = [ "icon_width", "icon_height", "cyl_height" ]
     struct = ("float x_tiling, float y_tiling, float icon_x,"
               "float icon_y, float icon_z, float scaling")
     def read(self,fbuf,flags):
@@ -1143,13 +1143,13 @@ class MESH_TEXTURE_INFO(MatrixChunk):
         self.cyl_height = self.get_float(fbuf,flags)
         self.read_chunks(fbuf,flags)
     def dump(self,flo,indent,flags):
-        indent += '    '
+        indent += "    "
         self.dump_header(flo,flags)
         self.dump_struct(flo,indent,flags)
         self.dump_array(flo,indent,flags)
-        self.out_attr('icon_width',flo,indent,flags)
-        self.out_attr('icon_height',flo,indent,flags)
-        self.out_attr('cyl_height',flo,indent,flags)
+        self.out_attr("icon_width",flo,indent,flags)
+        self.out_attr("icon_height",flo,indent,flags)
+        self.out_attr("cyl_height",flo,indent,flags)
         self.dump_chunks(flo,indent,flags)
     def write(self):
         s = []
@@ -1159,7 +1159,7 @@ class MESH_TEXTURE_INFO(MatrixChunk):
         s.append(self.out_float(self.icon_height))
         s.append(self.out_float(self.cyl_height))
         s.append(self.write_chunks())
-        return ''.join(s)
+        return "".join(s)
 
 class PROC_NAME(ChunkBase):
     tag = 0x4181
@@ -1279,19 +1279,19 @@ class CAM_RANGES(ChunkBase):
 
 class VIEWPORT_LAYOUT(ChunkBase):
     tag = 0x7001
-    struct = ('short form, short top, short ready,'
-              'short wstate, short swapws, short swapport,'
-              'short swapcur')
-    single = 'VIEWPORT_SIZE size'
-    multiple = 'VIEWPORT_DATA data, VIEWPORT_DATA_3 data'
+    struct = ("short form, short top, short ready,"
+              "short wstate, short swapws, short swapport,"
+              "short swapcur")
+    single = "VIEWPORT_SIZE size"
+    multiple = "VIEWPORT_DATA data, VIEWPORT_DATA_3 data"
 
 class ViewportDataChunk(ChunkBase):
-    struct = ('short flags, short axis_lockout, short win_x,'
-              'short win_y, short win_w, short win_h,'
-              'short win_view, float zoom, float worldcenter_x,'
-              'float worldcenter_y, float worldcenter_z,'
-              'float horiz_ang, float vert_ang,'
-              'string cameraname')
+    struct = ("short flags, short axis_lockout, short win_x,"
+              "short win_y, short win_w, short win_h,"
+              "short win_view, float zoom, float worldcenter_x,"
+              "float worldcenter_y, float worldcenter_z,"
+              "float horiz_ang, float vert_ang,"
+              "string cameraname")
     swallow = True
 
 class VIEWPORT_DATA(ViewportDataChunk):
@@ -1302,7 +1302,7 @@ class VIEWPORT_DATA_3(ViewportDataChunk):
 
 class VIEWPORT_SIZE(ChunkBase):
     tag = 0x7020
-    struct = 'short x, short y, short w, short h'
+    struct = "short x, short y, short w, short h"
 
 class NETWORK_VIEW(UndefinedChunk):
     tag = 0x7030
@@ -1313,7 +1313,7 @@ class NETWORK_VIEW(UndefinedChunk):
 
 class MAT_NAME(ChunkBase):
     tag = 0xA000
-    struct = 'string value'
+    struct = "string value"
     swallow = True
 
 class MAT_AMBIENT(OneColorChunk):
@@ -1755,7 +1755,7 @@ def read_3ds_mem(membuf,check_magic=True,tight=False,recover=True):
         if tag != 0x4D4D:
             raise File3dsFormatError("Not a 3D Studio file.")
     fbuf = FileLikeBuffer(membuf,0,len(membuf))
-    flags = { 'tight': tight, 'recover': recover }
+    flags = { "tight": tight, "recover": recover }
     return ChunkBase.get_chunk(fbuf,flags)
 
 
@@ -1779,7 +1779,7 @@ def read_3ds_file(filename,check_magic=True,tight=False,recover=True):
 
     """
 
-    with open(filename,'rb') as flo:
+    with open(filename,"rb") as flo:
         return read_3ds_mem(flo.read(),check_magic,tight,recover)
 
 
@@ -1820,11 +1820,11 @@ def write_3ds_file(filename,dom,check_magic=True):
 
     if check_magic and dom.tag != 0x4D4D:
         raise File3dsFormatError("Not a 3D Studio file.")
-    with open(filename,'wb') as flo:
+    with open(filename,"wb") as flo:
         flo.write(write_3ds_mem(dom,False))
 
 
-def dump_3ds_chunk(chunk,flo,arraylines=10,indent=''):
+def dump_3ds_chunk(chunk,flo,arraylines=10,indent=""):
     """Dump a 3DS DOM to a file stream.
 
         dump_3ds_chunk(filename,flo,arraylines=10,indent='')
@@ -1840,7 +1840,7 @@ def dump_3ds_chunk(chunk,flo,arraylines=10,indent=''):
 
     """
 
-    flags = { 'arraylines': arraylines }
+    flags = { "arraylines": arraylines }
     chunk.dump(flo,indent,flags)
 
 
@@ -1888,7 +1888,7 @@ def remove_errant_chunks(chunk):
             remove_errant_chunks(c)
     mchunks = chunk.multiple_order[:]
     if chunk.freechunks:
-        mchunks.append('subchunks')
+        mchunks.append("subchunks")
     for attr in mchunks:
         cl = [ x for x in getattr(chunk,attr) if not isinstance(x,ErrorChunk) ]
         setattr(chunk,attr,cl)

@@ -746,7 +746,7 @@ class _Roof(ArchComponent.Component):
 
     def getSubVolume(self, obj):
         '''returns a volume to be subtracted'''
-        custom_subvolume = getattr(obj, 'Subvolume', None)
+        custom_subvolume = getattr(obj, "Subvolume", None)
         if custom_subvolume:
             return custom_subvolume.Shape
 
@@ -806,7 +806,7 @@ class _Roof(ArchComponent.Component):
             compound.Placement = obj.Placement
             return compound
 
-        sub_field = getattr(self, 'sub', None)
+        sub_field = getattr(self, "sub", None)
         if not sub_field:
             self.execute(obj)
         return self.sub
