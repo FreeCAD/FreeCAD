@@ -49,6 +49,7 @@ class BIM_Sketch:
     def Activated(self):
         import WorkingPlane
         from draftutils import params
+
         issnap = False
         if hasattr(FreeCAD, "DraftWorkingPlane"):
             FreeCAD.DraftWorkingPlane.setup()

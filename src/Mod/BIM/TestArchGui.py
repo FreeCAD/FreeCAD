@@ -42,6 +42,7 @@ from draftutils.messages import _msg
 if App.GuiUp:
     import FreeCADGui
 
+
 class ArchTest(unittest.TestCase):
 
     def setUp(self):
@@ -54,24 +55,23 @@ class ArchTest(unittest.TestCase):
         App.setActiveDocument("ArchTest")
 
     def testRebar(self):
-        App.Console.PrintLog ("Checking Arch Rebar...\n")
-        s = Arch.makeStructure(length=2,width=3,height=5)
-        sk = App.ActiveDocument.addObject("Sketcher::SketchObject","Sketch")
-        sk.AttachmentSupport = (s,["Face6"])
-        sk.addGeometry(Part.LineSegment(App.Vector(-0.85,1.25,0),App.Vector(0.75,1.25,0)))
-        sk.addGeometry(Part.LineSegment(App.Vector(0.75,1.25,0),App.Vector(0.75,-1.20,0)))
-        sk.addGeometry(Part.LineSegment(App.Vector(0.75,-1.20,0),App.Vector(-0.85,-1.20,0)))
-        sk.addGeometry(Part.LineSegment(App.Vector(-0.85,-1.20,0),App.Vector(-0.85,1.25,0)))
-        sk.addConstraint(Sketcher.Constraint("Coincident",0,2,1,1))
-        sk.addConstraint(Sketcher.Constraint("Coincident",1,2,2,1))
-        sk.addConstraint(Sketcher.Constraint("Coincident",2,2,3,1))
-        sk.addConstraint(Sketcher.Constraint("Coincident",3,2,0,1))
-        r = Arch.makeRebar(s,sk,diameter=.1,amount=2)
-        self.assertTrue(r,"Arch Rebar failed")
+        App.Console.PrintLog("Checking Arch Rebar...\n")
+        s = Arch.makeStructure(length=2, width=3, height=5)
+        sk = App.ActiveDocument.addObject("Sketcher::SketchObject", "Sketch")
+        sk.AttachmentSupport = (s, ["Face6"])
+        sk.addGeometry(Part.LineSegment(App.Vector(-0.85, 1.25, 0), App.Vector(0.75, 1.25, 0)))
+        sk.addGeometry(Part.LineSegment(App.Vector(0.75, 1.25, 0), App.Vector(0.75, -1.20, 0)))
+        sk.addGeometry(Part.LineSegment(App.Vector(0.75, -1.20, 0), App.Vector(-0.85, -1.20, 0)))
+        sk.addGeometry(Part.LineSegment(App.Vector(-0.85, -1.20, 0), App.Vector(-0.85, 1.25, 0)))
+        sk.addConstraint(Sketcher.Constraint("Coincident", 0, 2, 1, 1))
+        sk.addConstraint(Sketcher.Constraint("Coincident", 1, 2, 2, 1))
+        sk.addConstraint(Sketcher.Constraint("Coincident", 2, 2, 3, 1))
+        sk.addConstraint(Sketcher.Constraint("Coincident", 3, 2, 0, 1))
+        r = Arch.makeRebar(s, sk, diameter=0.1, amount=2)
+        self.assertTrue(r, "Arch Rebar failed")
 
     def testBuildingPart(self):
-        """Create a BuildingPart from a wall with a window and check its shape.
-        """
+        """Create a BuildingPart from a wall with a window and check its shape."""
         # Also regression test for:
         # https://github.com/FreeCAD/FreeCAD/issues/6178
         operation = "Arch BuildingPart"
@@ -81,10 +81,10 @@ class ArchTest(unittest.TestCase):
         wall = Arch.makeWall(line)
         sk = App.ActiveDocument.addObject("Sketcher::SketchObject", "Sketch001")
         sk.Placement.Rotation = App.Rotation(App.Vector(1, 0, 0), 90)
-        sk.addGeometry(Part.LineSegment(App.Vector( 500,  800, 0), App.Vector(1500,  800, 0)))
-        sk.addGeometry(Part.LineSegment(App.Vector(1500,  800, 0), App.Vector(1500, 2000, 0)))
-        sk.addGeometry(Part.LineSegment(App.Vector(1500, 2000, 0), App.Vector( 500, 2000, 0)))
-        sk.addGeometry(Part.LineSegment(App.Vector( 500, 2000, 0), App.Vector( 500,  800, 0)))
+        sk.addGeometry(Part.LineSegment(App.Vector(500, 800, 0), App.Vector(1500, 800, 0)))
+        sk.addGeometry(Part.LineSegment(App.Vector(1500, 800, 0), App.Vector(1500, 2000, 0)))
+        sk.addGeometry(Part.LineSegment(App.Vector(1500, 2000, 0), App.Vector(500, 2000, 0)))
+        sk.addGeometry(Part.LineSegment(App.Vector(500, 2000, 0), App.Vector(500, 800, 0)))
         sk.addConstraint(Sketcher.Constraint("Coincident", 0, 2, 1, 1))
         sk.addConstraint(Sketcher.Constraint("Coincident", 1, 2, 2, 1))
         sk.addConstraint(Sketcher.Constraint("Coincident", 2, 2, 3, 1))
@@ -97,12 +97,12 @@ class ArchTest(unittest.TestCase):
 
         # Wall visibility works when standalone
         FreeCADGui.Selection.clearSelection()
-        FreeCADGui.Selection.addSelection("ArchTest",wall.Name)
+        FreeCADGui.Selection.addSelection("ArchTest", wall.Name)
         assert wall.Visibility
-        FreeCADGui.runCommand("Std_ToggleVisibility",0)
+        FreeCADGui.runCommand("Std_ToggleVisibility", 0)
         App.ActiveDocument.recompute()
         assert not wall.Visibility
-        FreeCADGui.runCommand("Std_ToggleVisibility",0)
+        FreeCADGui.runCommand("Std_ToggleVisibility", 0)
         assert wall.Visibility
 
         bp.Group = [wall]
@@ -111,40 +111,40 @@ class ArchTest(unittest.TestCase):
         # self.assertTrue(len(bp.Shape.Faces) == 16, "'{}' failed".format(operation))
 
         # Wall visibility works when inside a BuildingPart
-        FreeCADGui.runCommand("Std_ToggleVisibility",0)
+        FreeCADGui.runCommand("Std_ToggleVisibility", 0)
         App.ActiveDocument.recompute()
         assert not wall.Visibility
-        FreeCADGui.runCommand("Std_ToggleVisibility",0)
+        FreeCADGui.runCommand("Std_ToggleVisibility", 0)
         assert wall.Visibility
 
         # Wall visibility works when BuildingPart Toggled
         FreeCADGui.Selection.clearSelection()
-        FreeCADGui.Selection.addSelection("ArchTest",bp.Name)
-        FreeCADGui.runCommand("Std_ToggleVisibility",0)
+        FreeCADGui.Selection.addSelection("ArchTest", bp.Name)
+        FreeCADGui.runCommand("Std_ToggleVisibility", 0)
         assert not wall.Visibility
-        FreeCADGui.runCommand("Std_ToggleVisibility",0)
+        FreeCADGui.runCommand("Std_ToggleVisibility", 0)
         assert wall.Visibility
 
         # Wall visibiity works inside group inside BuildingPart Toggled
-        grp = App.ActiveDocument.addObject("App::DocumentObjectGroup","Group")
-        grp.Label="Group"
+        grp = App.ActiveDocument.addObject("App::DocumentObjectGroup", "Group")
+        grp.Label = "Group"
         grp.Group = [wall]
         bp.Group = [grp]
         App.ActiveDocument.recompute()
         assert wall.Visibility
-        FreeCADGui.runCommand("Std_ToggleVisibility",0)
+        FreeCADGui.runCommand("Std_ToggleVisibility", 0)
         App.ActiveDocument.recompute()
         assert not wall.Visibility
-        FreeCADGui.runCommand("Std_ToggleVisibility",0)
+        FreeCADGui.runCommand("Std_ToggleVisibility", 0)
         App.ActiveDocument.recompute()
         assert wall.Visibility
 
     def testImportSH3D(self):
-        """Import a SweetHome 3D file
-        """
+        """Import a SweetHome 3D file"""
         operation = "importers.importSH3D"
         _msg("  Test '{}'".format(operation))
         import BIM.importers.importSH3DHelper
+
         importer = BIM.importers.importSH3DHelper.SH3DImporter(None)
         importer.import_sh3d_from_string(SH3D_HOME)
         assert App.ActiveDocument.Site

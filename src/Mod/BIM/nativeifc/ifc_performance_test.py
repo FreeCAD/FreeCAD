@@ -132,12 +132,8 @@ class NativeIFCTest(unittest.TestCase):
     #    self.results.append(register(n, t, "shape"))
 
     def testfinal(self):
-        print(
-            "| File | File size | Import time (coin) | Import time (shape) | BlenderBIM |"
-        )
-        print(
-            "| ---- | --------- | ------------------- | ------------------ | ---------- |"
-        )
+        print("| File | File size | Import time (coin) | Import time (shape) | BlenderBIM |")
+        print("| ---- | --------- | ------------------- | ------------------ | ---------- |")
         for i in range(len(self.results)):
             if self.results[i][0] == "coin":
                 l = [
@@ -150,8 +146,7 @@ class NativeIFCTest(unittest.TestCase):
                 b = [
                     j
                     for j in range(len(self.results))
-                    if self.results[j][0] == "shape"
-                    and self.results[j][1] == self.results[i][1]
+                    if self.results[j][0] == "shape" and self.results[j][1] == self.results[i][1]
                 ]
                 if b:
                     l[3] = self.results[b[0]][3]
@@ -181,9 +176,7 @@ def import_file(n, shape=False):
         shapemode = 1
     stime = time.time()
     f = os.path.join(os.path.expanduser("~"), FILES[n])
-    ifc_import.insert(
-        f, "IfcTest", strategy=0, shapemode=shapemode, switchwb=0, silent=True
-    )
+    ifc_import.insert(f, "IfcTest", strategy=0, shapemode=shapemode, switchwb=0, silent=True)
     return "%02d:%02d" % (divmod(round(time.time() - stime, 1), 60))
 
 

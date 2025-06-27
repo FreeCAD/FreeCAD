@@ -41,20 +41,21 @@ class BIM_Copy(DraftTools.Move):
         return {
             "Pixmap": "BIM_Copy",
             "MenuText": QT_TRANSLATE_NOOP("BIM_Copy", "Copy"),
-            "ToolTip": QT_TRANSLATE_NOOP(
-                "BIM_Copy", "Copies selected objects to another location"
-            ),
+            "ToolTip": QT_TRANSLATE_NOOP("BIM_Copy", "Copies selected objects to another location"),
             "Accel": "C,P",
         }
 
     def Activated(self):
         from draftutils import params
+
         self.cmode = params.get_param("CopyMode")
         DraftTools.Move.Activated(self)
 
     def finish(self, cont=False):
         from draftutils import params
+
         DraftTools.Move.finish(self, cont)
         params.set_param("CopyMode", self.cmode)
+
 
 FreeCADGui.addCommand("BIM_Copy", BIM_Copy())

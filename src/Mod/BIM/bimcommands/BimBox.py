@@ -79,7 +79,7 @@ class BIM_Box:
             # we have the base point already
             self.Length.setText(
                 FreeCAD.Units.Quantity(
-                    self.points[-1].sub(point).Length,  FreeCAD.Units.Length
+                    self.points[-1].sub(point).Length, FreeCAD.Units.Length
                 ).UserString
             )
             self.Length.selectAll()
@@ -277,7 +277,7 @@ class BIM_Box:
             if self.HeightValue > 0.0:
                 pla = DraftGeomUtils.placement_from_points(p1, p3, p2)
                 self.LengthValue, self.WidthValue = self.WidthValue, self.LengthValue
-        self.doc.openTransaction(translate("Arch","Create Box"))
+        self.doc.openTransaction(translate("Arch", "Create Box"))
         cube = self.doc.addObject("Part::Box", "Box")
         cube.Placement = pla
         cube.Length = self.LengthValue

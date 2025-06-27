@@ -77,7 +77,8 @@ threejs_version = "0.172.0"
 
 
 def getHTMLTemplate():
-    return textwrap.dedent("""\
+    return textwrap.dedent(
+        """\
     <!DOCTYPE html>
     <html lang="en">
         <head>
@@ -730,7 +731,8 @@ def getHTMLTemplate():
             </script>
         </body>
     </html>
-    """)
+    """
+    )
 
 
 def export(

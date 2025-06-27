@@ -38,7 +38,9 @@ if FreeCAD.GuiUp:
 
 else:
     FreeCADGui = None
-    def translate(ctxt, txt): return txt
+
+    def translate(ctxt, txt):
+        return txt
 
 
 def export(exportList, filename):
@@ -48,26 +50,25 @@ def export(exportList, filename):
     data = {
         "version": "0.0.1",
         "description": "Mesh data exported from FreeCAD",
-        "objects": [getObjectData(obj) for obj in exportList]
-        }
+        "objects": [getObjectData(obj) for obj in exportList],
+    }
 
     # Write file
     outfile = pyopen(filename, "w")
-    json.dump(data, outfile, separators = (",", ":"))
+    json.dump(data, outfile, separators=(",", ":"))
     outfile.close()
 
     # Success
-    FreeCAD.Console.PrintMessage(
-        translate("Arch", "Successfully written") + " " + filename + "\n")
+    FreeCAD.Console.PrintMessage(translate("Arch", "Successfully written") + " " + filename + "\n")
 
 
 def getObjectData(obj):
     result = {"name": str(obj.Label.encode("utf8"))}
-    if hasattr(obj, "Description"): result["description"] = str(obj.Description)
+    if hasattr(obj, "Description"):
+        result["description"] = str(obj.Description)
 
     if FreeCADGui:
-        result["color"] = \
-            Draft.getrgb(obj.ViewObject.ShapeColor, testbw = False)
+        result["color"] = Draft.getrgb(obj.ViewObject.ShapeColor, testbw=False)
 
     if obj.isDerivedFrom("Part::Feature"):
         mesh = Mesh.Mesh(obj.Shape.tessellate(0.1))
@@ -77,12 +78,12 @@ def getObjectData(obj):
         for f in obj.Shape.Faces:
             for w in f.Wires:
                 wo = Part.Wire(Part.__sortEdges__(w.Edges))
-                wires.append([[v.x, v.y, v.z]
-                              for v in wo.discretize(QuasiDeflection = 0.1)])
+                wires.append([[v.x, v.y, v.z] for v in wo.discretize(QuasiDeflection=0.1)])
 
         result["wires"] = wires
 
-    elif obj.isDerivedFrom("Mesh::Feature"): mesh = obj.Mesh
+    elif obj.isDerivedFrom("Mesh::Feature"):
+        mesh = obj.Mesh
 
     # Add vertices
     count = 0

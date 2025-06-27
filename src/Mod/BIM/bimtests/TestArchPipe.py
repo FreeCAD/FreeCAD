@@ -25,6 +25,7 @@
 import Arch
 from bimtests import TestArchBase
 
+
 class TestArchPipe(TestArchBase.TestArchBase):
 
     def test_makePipe(self):
@@ -44,5 +45,7 @@ class TestArchPipe(TestArchBase.TestArchBase):
         pipe1 = Arch.makePipe(diameter=200, length=1000, name="Pipe1")
         pipe2 = Arch.makePipe(diameter=200, length=1000, name="Pipe2")
         connector = Arch.makePipeConnector([pipe1, pipe2], radius=100, name="TestConnector")
-        self.assertIsNotNone(connector, "makePipeConnector failed to create a pipe connector object.")
+        self.assertIsNotNone(
+            connector, "makePipeConnector failed to create a pipe connector object."
+        )
         self.assertEqual(connector.Label, "TestConnector", "Pipe connector label is incorrect.")

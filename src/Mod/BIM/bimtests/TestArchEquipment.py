@@ -25,6 +25,7 @@
 import Arch
 from bimtests import TestArchBase
 
+
 class TestArchEquipment(TestArchBase.TestArchBase):
 
     def test_makeEquipment(self):

@@ -25,6 +25,7 @@
 import Arch
 from bimtests import TestArchBase
 
+
 class TestArchProfile(TestArchBase.TestArchBase):
 
     def test_makeProfile(self):

@@ -51,6 +51,7 @@ class BIM_TDView:
 
     def Activated(self):
         import Draft
+
         sections = []
         page = None
         drafts = []
@@ -77,18 +78,14 @@ class BIM_TDView:
             return
         FreeCAD.ActiveDocument.openTransaction("Create view")
         for section in sections:
-            view = FreeCAD.ActiveDocument.addObject(
-                "TechDraw::DrawViewArch", "BIM view"
-            )
+            view = FreeCAD.ActiveDocument.addObject("TechDraw::DrawViewArch", "BIM view")
             view.Label = section.Label
             view.Source = section
             page.addView(view)
             if page.Scale:
                 view.Scale = page.Scale
         for draft in drafts:
-            view = FreeCAD.ActiveDocument.addObject(
-                "TechDraw::DrawViewDraft", "DraftView"
-            )
+            view = FreeCAD.ActiveDocument.addObject("TechDraw::DrawViewDraft", "DraftView")
             view.Label = draft.Label
             view.Source = draft
             page.addView(view)

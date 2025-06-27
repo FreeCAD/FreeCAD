@@ -22,9 +22,9 @@
 # *                                                                         *
 # ***************************************************************************
 
-__title__  = "FreeCAD 3DS importer"
+__title__ = "FreeCAD 3DS importer"
 __author__ = "Yorik van Havre"
-__url__    = "https://www.freecad.org"
+__url__ = "https://www.freecad.org"
 
 ## @package import3DS
 #  \ingroup ARCH
@@ -65,7 +65,7 @@ def open(filename):
     return doc
 
 
-def insert(filename,docname):
+def insert(filename, docname):
     "called when freecad wants to import a file"
     if not check3DS():
         return
@@ -79,15 +79,15 @@ def insert(filename,docname):
 
 
 def read(filename):
-    dom = dom3ds.read_3ds_file(filename,tight=False)
+    dom = dom3ds.read_3ds_file(filename, tight=False)
 
-    for j,d_nobj in enumerate(dom.mdata.objects):
+    for j, d_nobj in enumerate(dom.mdata.objects):
         if type(d_nobj.obj) != dom3ds.N_TRI_OBJECT:
             continue
         verts = []
         if d_nobj.obj.points:
             for d_point in d_nobj.obj.points.array:
-                verts.append([d_point[0],d_point[1],d_point[2]])
+                verts.append([d_point[0], d_point[1], d_point[2]])
             meshdata = []
             for d_face in d_nobj.obj.faces.array:
                 meshdata.append([verts[int(d_face[i])] for i in range(3)])
@@ -95,8 +95,8 @@ def read(filename):
             m = m[0] + m[1] + m[2] + m[3]
             placement = FreeCAD.Placement(FreeCAD.Matrix(*m))
             mesh = Mesh.Mesh(meshdata)
-            obj = FreeCAD.ActiveDocument.addObject("Mesh::Feature","Mesh")
+            obj = FreeCAD.ActiveDocument.addObject("Mesh::Feature", "Mesh")
             obj.Mesh = mesh
             obj.Placement = placement
         else:
-            print("Skipping object without vertices array: ",d_nobj.obj)
+            print("Skipping object without vertices array: ", d_nobj.obj)

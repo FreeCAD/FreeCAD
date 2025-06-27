@@ -46,9 +46,7 @@ class BIM_Column(ArchStructure._CommandStructure):
         return {
             "Pixmap": "BIM_Column",
             "MenuText": QT_TRANSLATE_NOOP("BIM_Column", "Column"),
-            "ToolTip": QT_TRANSLATE_NOOP(
-                "BIM_Column", "Creates a column at a specified location"
-            ),
+            "ToolTip": QT_TRANSLATE_NOOP("BIM_Column", "Creates a column at a specified location"),
             "Accel": "C,O",
         }
 

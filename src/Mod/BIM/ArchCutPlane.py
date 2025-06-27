@@ -24,7 +24,7 @@
 # *                                                                           *
 # *****************************************************************************
 
-__title__="FreeCAD CutPlane"
+__title__ = "FreeCAD CutPlane"
 __author__ = "Jonathan Wiedemann"
 __url__ = "https://www.freecad.org"
 
@@ -47,6 +47,7 @@ else:
     # \cond
     def translate(ctxt, txt):
         return txt
+
     # \endcond
 
 
@@ -101,16 +102,17 @@ def _getShapes(sels):
             pt_v = mtx.col(1) + pt_main
             cutterShp = Part.Face(Part.makePolygon([pt_main, pt_u, pt_v, pt_main]))
     # _extrudeEdge can create a face with a zero area (if the edge is parallel to the WP normal):
-    if not cutterShp.Faces \
-            or cutterShp.Faces[0].Area < 1e-6 \
-            or cutterShp.findPlane() is None:
+    if not cutterShp.Faces or cutterShp.Faces[0].Area < 1e-6 or cutterShp.findPlane() is None:
         return baseObj, baseShp, None
     return baseObj, baseShp, cutterShp.Faces[0]
+
 
 def _extrudeEdge(edge):
     """Exrude an edge along the WP normal"""
     import WorkingPlane
+
     return edge.extrude(WorkingPlane.get_working_plane().axis)
+
 
 def cutComponentwithPlane(baseObj, cutterShp=None, side=0):
     """cut an object with a plane defined by a face.
@@ -130,9 +132,11 @@ def cutComponentwithPlane(baseObj, cutterShp=None, side=0):
         Defaults to 0.
         Behind = 0, front = 1.
     """
-    if isinstance(baseObj, list) \
-            and len(baseObj) >= 1 \
-            and baseObj[0].isDerivedFrom("Gui::SelectionObject"):
+    if (
+        isinstance(baseObj, list)
+        and len(baseObj) >= 1
+        and baseObj[0].isDerivedFrom("Gui::SelectionObject")
+    ):
         baseObj, baseShp, cutterShp = _getShapes(baseObj)
         baseParent = baseObj.getParentGeoFeatureGroup()
     else:
@@ -154,7 +158,7 @@ def cutComponentwithPlane(baseObj, cutterShp=None, side=0):
         if baseParent is not None:
             baseParent.addObject(obj)
         if "Additions" in baseObj.PropertiesList:
-            ArchCommands.removeComponents(obj, baseObj) # Also changes the obj colors.
+            ArchCommands.removeComponents(obj, baseObj)  # Also changes the obj colors.
         else:
             Draft.format_object(obj, baseObj)
             cutObj = FreeCAD.ActiveDocument.addObject("Part::Cut", "CutPlane")
