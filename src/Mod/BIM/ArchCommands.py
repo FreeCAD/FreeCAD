@@ -56,8 +56,8 @@ else:
 # module functions ###############################################
 
 def getStringList(objects):
-    '''getStringList(objects): returns a string defining a list
-    of objects'''
+    """getStringList(objects): returns a string defining a list
+    of objects"""
     result = "["
     for o in objects:
         if len(result) > 1:
@@ -67,8 +67,8 @@ def getStringList(objects):
     return result
 
 def getDefaultColor(objectType):
-    '''getDefaultColor(string): returns a color value for the given object
-    type (Wall, Structure, Window, WindowGlass)'''
+    """getDefaultColor(string): returns a color value for the given object
+    type (Wall, Structure, Window, WindowGlass)"""
     alpha = 1.0
     if objectType == "Wall":
         c = params.get_param_arch("WallColor")
@@ -94,9 +94,9 @@ def getDefaultColor(objectType):
     return (r, g, b, alpha)
 
 def addComponents(objectsList,host):
-    '''addComponents(objectsList,hostObject): adds the given object or the objects
+    """addComponents(objectsList,hostObject): adds the given object or the objects
     from the given list as components to the given host Object. Use this for
-    example to add windows to a wall, or to add walls to a cell or floor.'''
+    example to add windows to a wall, or to add walls to a cell or floor."""
     if not isinstance(objectsList,list):
         objectsList = [objectsList]
     hostType = Draft.getType(host)
@@ -140,10 +140,10 @@ def addComponents(objectsList,host):
             host.addObject(o)
 
 def removeComponents(objectsList,host=None):
-    '''removeComponents(objectsList,[hostObject]): removes the given component or
+    """removeComponents(objectsList,[hostObject]): removes the given component or
     the components from the given list from their parents. If a host object is
     specified, this function will try adding the components as holes to the host
-    object instead.'''
+    object instead."""
     if not isinstance(objectsList,list):
         objectsList = [objectsList]
     if host:
@@ -237,8 +237,8 @@ def removeComponents(objectsList,host=None):
                 o.Hosts = []
 
 def makeComponent(baseobj=None,name=None,delete=False):
-    '''makeComponent([baseobj],[name],[delete]): creates an undefined, non-parametric BIM
-    component from the given base object'''
+    """makeComponent([baseobj],[name],[delete]): creates an undefined, non-parametric BIM
+    component from the given base object"""
     if not FreeCAD.ActiveDocument:
         FreeCAD.Console.PrintError("No active document. Aborting\n")
         return
@@ -264,7 +264,7 @@ def makeComponent(baseobj=None,name=None,delete=False):
     return obj
 
 def cloneComponent(obj):
-    '''cloneComponent(obj): Creates a clone of an object as an undefined component'''
+    """cloneComponent(obj): Creates a clone of an object as an undefined component"""
     c = makeComponent()
     c.CloneOf = obj
     c.Placement = obj.Placement
@@ -279,8 +279,8 @@ def cloneComponent(obj):
     return c
 
 def setAsSubcomponent(obj):
-    '''Sets the given object properly to become a subcomponent (addition, subtraction)
-    of an Arch component'''
+    """Sets the given object properly to become a subcomponent (addition, subtraction)
+    of an Arch component"""
     Draft.ungroup(obj)
     if params.get_param_arch("applyConstructionStyle"):
         if FreeCAD.GuiUp:
@@ -296,8 +296,8 @@ def setAsSubcomponent(obj):
             obj.ViewObject.hide()
 
 def copyProperties(obj1,obj2):
-    '''copyProperties(obj1,obj2): Copies properties values from obj1 to obj2,
-    when that property exists in both objects'''
+    """copyProperties(obj1,obj2): Copies properties values from obj1 to obj2,
+    when that property exists in both objects"""
     for prop in obj1.PropertiesList:
         if prop in obj2.PropertiesList:
             if not prop in ["Proxy","Shape"]:
@@ -309,9 +309,9 @@ def copyProperties(obj1,obj2):
                     setattr(obj2.ViewObject,prop,getattr(obj1.ViewObject,prop))
 
 def splitMesh(obj,mark=True):
-    '''splitMesh(object,[mark]): splits the given mesh object into separated components.
+    """splitMesh(object,[mark]): splits the given mesh object into separated components.
     If mark is False, nothing else is done. If True (default), non-manifold components
-    will be painted in red.'''
+    will be painted in red."""
     if not obj.isDerivedFrom("Mesh::Feature"): return []
     basemesh = obj.Mesh
     comps = basemesh.getSeparateComponents()
@@ -329,7 +329,7 @@ def splitMesh(obj,mark=True):
     return [obj]
 
 def makeFace(wires,method=2,cleanup=False):
-    '''makeFace(wires): makes a face from a list of wires, finding which ones are holes'''
+    """makeFace(wires): makes a face from a list of wires, finding which ones are holes"""
     #print("makeFace: start:", wires)
     import Part
 
@@ -386,7 +386,7 @@ def makeFace(wires,method=2,cleanup=False):
         return mf.Faces[0]
 
 def closeHole(shape):
-    '''closeHole(shape): closes a hole in an open shape'''
+    """closeHole(shape): closes a hole in an open shape"""
     import DraftGeomUtils
     import Part
     # creating an edges lookup table
@@ -571,8 +571,8 @@ def getShapeFromMesh(mesh,fast=True,tolerance=0.001,flat=False,cut=True):
                 return se
 
 def projectToVector(shape,vector):
-    '''projectToVector(shape,vector): projects the given shape on the given
-    vector'''
+    """projectToVector(shape,vector): projects the given shape on the given
+    vector"""
     projpoints = []
     minl = 10000000000
     maxl = -10000000000
@@ -589,12 +589,12 @@ def projectToVector(shape,vector):
     return DraftVecUtils.scaleTo(vector,maxl-minl)
 
 def meshToShape(obj,mark=True,fast=True,tol=0.001,flat=False,cut=True):
-    '''meshToShape(object,[mark,fast,tol,flat,cut]): turns a mesh into a shape, joining coplanar facets. If
+    """meshToShape(object,[mark,fast,tol,flat,cut]): turns a mesh into a shape, joining coplanar facets. If
     mark is True (default), non-solid objects will be marked in red. Fast uses a faster algorithm by
     building a shell from the facets then removing splitter, tol is the tolerance used when converting
     mesh segments to wires, flat will force the wires to be perfectly planar, to be sure they can be
     turned into faces, but this might leave gaps in the final shell. If cut is true, holes in faces are
-    made by subtraction (default)'''
+    made by subtraction (default)"""
 
     name = obj.Name
     if "Mesh" in obj.PropertiesList:
@@ -614,8 +614,8 @@ def meshToShape(obj,mark=True,fast=True,tol=0.001,flat=False,cut=True):
     return None
 
 def removeCurves(shape,dae=False,tolerance=5):
-    '''removeCurves(shape,dae,tolerance=5): replaces curved faces in a shape
-    with faceted segments. If dae is True, DAE triangulation options are used'''
+    """removeCurves(shape,dae,tolerance=5): replaces curved faces in a shape
+    with faceted segments. If dae is True, DAE triangulation options are used"""
     import Mesh
     if dae:
         from importers import importDAE
@@ -626,9 +626,9 @@ def removeCurves(shape,dae=False,tolerance=5):
     return getShapeFromMesh(m)
 
 def removeShape(objs,mark=True):
-    '''removeShape(objs,mark=True): takes an arch object (wall or structure) built on a cubic shape, and removes
+    """removeShape(objs,mark=True): takes an arch object (wall or structure) built on a cubic shape, and removes
     the inner shape, keeping its length, width and height as parameters. If mark is True, objects that cannot
-    be processed by this function will become red.'''
+    be processed by this function will become red."""
     import DraftGeomUtils
     if not isinstance(objs,list):
         objs = [objs]
@@ -660,9 +660,9 @@ def removeShape(objs,mark=True):
                 obj.ViewObject.ShapeColor = (1.0,0.0,0.0,1.0)
 
 def mergeCells(objectslist):
-    '''mergeCells(objectslist): merges the objects in the given list
+    """mergeCells(objectslist): merges the objects in the given list
     into one. All objects must be of the same type and based on the Cell
-    object (cells, floors, buildings, or sites).'''
+    object (cells, floors, buildings, or sites)."""
     if not objectslist:
         return None
     if not isinstance(objectslist,list):
@@ -687,9 +687,9 @@ def mergeCells(objectslist):
     return base
 
 def download(url,force=False):
-    '''download(url,force=False): downloads a file from the given URL and saves it in the
+    """download(url,force=False): downloads a file from the given URL and saves it in the
     macro path. Returns the path to the saved file. If force is True, the file will be
-    downloaded again evn if it already exists.'''
+    downloaded again evn if it already exists."""
     try:
         from urllib.request import urlopen
     except ImportError:

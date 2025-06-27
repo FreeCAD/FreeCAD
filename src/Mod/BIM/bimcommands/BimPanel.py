@@ -326,7 +326,7 @@ class Arch_Nest:
 class NestTaskPanel:
 
 
-    '''The TaskPanel for Arch Nest'''
+    """The TaskPanel for Arch Nest"""
 
     def __init__(self,obj=None):
 
