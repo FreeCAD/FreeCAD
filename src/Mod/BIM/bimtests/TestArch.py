@@ -37,7 +37,7 @@ from draftutils.messages import _msg
 class TestArch(TestArchBase.TestArchBase):
 
     def testStructure(self):
-        App.Console.PrintLog ('Checking BIM Structure...\n')
+        App.Console.PrintLog ("Checking BIM Structure...\n")
         s = Arch.makeStructure(length=2,width=3,height=5)
         self.assertTrue(s,"BIM Structure failed")
 
@@ -52,10 +52,10 @@ class TestArch(TestArchBase.TestArchBase):
         sk.addGeometry(Part.LineSegment(App.Vector(1500,  800, 0), App.Vector(1500, 2000, 0)))
         sk.addGeometry(Part.LineSegment(App.Vector(1500, 2000, 0), App.Vector( 500, 2000, 0)))
         sk.addGeometry(Part.LineSegment(App.Vector( 500, 2000, 0), App.Vector( 500,  800, 0)))
-        sk.addConstraint(Sketcher.Constraint('Coincident', 0, 2, 1, 1))
-        sk.addConstraint(Sketcher.Constraint('Coincident', 1, 2, 2, 1))
-        sk.addConstraint(Sketcher.Constraint('Coincident', 2, 2, 3, 1))
-        sk.addConstraint(Sketcher.Constraint('Coincident', 3, 2, 0, 1))
+        sk.addConstraint(Sketcher.Constraint("Coincident", 0, 2, 1, 1))
+        sk.addConstraint(Sketcher.Constraint("Coincident", 1, 2, 2, 1))
+        sk.addConstraint(Sketcher.Constraint("Coincident", 2, 2, 3, 1))
+        sk.addConstraint(Sketcher.Constraint("Coincident", 3, 2, 0, 1))
         App.ActiveDocument.recompute()
         win = Arch.makeWindow(sk)
         Arch.removeComponents(win, host=wall)
@@ -63,29 +63,29 @@ class TestArch(TestArchBase.TestArchBase):
         self.assertTrue(win, "'{}' failed".format(operation))
 
     def testAxis(self):
-        App.Console.PrintLog ('Checking Arch Axis...\n')
+        App.Console.PrintLog ("Checking Arch Axis...\n")
         a = Arch.makeAxis()
         self.assertTrue(a,"Arch Axis failed")
 
     def testSection(self):
-        App.Console.PrintLog ('Checking Arch Section...\n')
+        App.Console.PrintLog ("Checking Arch Section...\n")
         s = Arch.makeSectionPlane([])
         self.assertTrue(s,"Arch Section failed")
 
     def testStairs(self):
-        App.Console.PrintLog ('Checking Arch Stairs...\n')
+        App.Console.PrintLog ("Checking Arch Stairs...\n")
         s = Arch.makeStairs()
         self.assertTrue(s,"Arch Stairs failed")
 
     def testFrame(self):
-        App.Console.PrintLog ('Checking Arch Frame...\n')
+        App.Console.PrintLog ("Checking Arch Frame...\n")
         l=Draft.makeLine(App.Vector(0,0,0),App.Vector(-2,0,0))
         p = Draft.makeRectangle(length=.5,height=.5)
         f = Arch.makeFrame(l,p)
         self.assertTrue(f,"Arch Frame failed")
 
     def testEquipment(self):
-        App.Console.PrintLog ('Checking Arch Equipment...\n')
+        App.Console.PrintLog ("Checking Arch Equipment...\n")
         box = App.ActiveDocument.addObject("Part::Box", "Box")
         box.Length = 500
         box.Width = 2000
@@ -94,16 +94,16 @@ class TestArch(TestArchBase.TestArchBase):
         self.assertTrue(equip,"Arch Equipment failed")
 
     def testPipe(self):
-        App.Console.PrintLog ('Checking Arch Pipe...\n')
+        App.Console.PrintLog ("Checking Arch Pipe...\n")
         pipe = Arch.makePipe(diameter=120, length=3000)
         self.assertTrue(pipe,"Arch Pipe failed")
 
     def testAdd(self):
-        App.Console.PrintLog ('Checking Arch Add...\n')
+        App.Console.PrintLog ("Checking Arch Add...\n")
         l=Draft.makeLine(App.Vector(0,0,0),App.Vector(2,0,0))
         w = Arch.makeWall(l,width=0.2,height=2)
         sb = Part.makeBox(1,1,1)
-        b = App.ActiveDocument.addObject('Part::Feature','Box')
+        b = App.ActiveDocument.addObject("Part::Feature","Box")
         b.Shape = sb
         App.ActiveDocument.recompute()
         Arch.addComponents(b,w)
@@ -112,11 +112,11 @@ class TestArch(TestArchBase.TestArchBase):
         self.assertTrue(r,"Arch Add failed")
 
     def testRemove(self):
-        App.Console.PrintLog ('Checking Arch Remove...\n')
+        App.Console.PrintLog ("Checking Arch Remove...\n")
         l=Draft.makeLine(App.Vector(0,0,0),App.Vector(2,0,0))
         w = Arch.makeWall(l,width=0.2,height=2,align="Right")
         sb = Part.makeBox(1,1,1)
-        b = App.ActiveDocument.addObject('Part::Feature','Box')
+        b = App.ActiveDocument.addObject("Part::Feature","Box")
         b.Shape = sb
         App.ActiveDocument.recompute()
         Arch.removeComponents(b,w)
@@ -135,9 +135,9 @@ class TestArch(TestArchBase.TestArchBase):
         line = Draft.make_wire(points)
         wall = Arch.makeWall(line, height=2000)
         wpl = App.Placement(App.Vector(500,0,1500), App.Vector(1,0,0),-90)
-        win = Arch.makeWindowPreset('Fixed', width=1000.0, height=1000.0, h1=50.0, h2=50.0, h3=50.0, w1=100.0, w2=50.0, o1=0.0, o2=50.0, placement=wpl)
+        win = Arch.makeWindowPreset("Fixed", width=1000.0, height=1000.0, h1=50.0, h2=50.0, h3=50.0, w1=100.0, w2=50.0, o1=0.0, o2=50.0, placement=wpl)
         win.Hosts = [wall]
-        profile = Arch.makeProfile([169, 'HEA', 'HEA100', 'H', 100.0, 96.0, 5.0, 8.0])
+        profile = Arch.makeProfile([169, "HEA", "HEA100", "H", 100.0, 96.0, 5.0, 8.0])
         column = Arch.makeStructure(profile, height=2000.0)
         column.Profile = "HEA100"
         column.Placement.Base = App.Vector(500.0, 600.0, 0.0)

@@ -208,7 +208,7 @@ def read(filename,skip=None):
                             objparentid.append(int(str(getAttr(r,"RelatingBuildingElement")).split("=")[0].strip("#")))
 
             else:
-                if hasattr(IfcImport, 'GetBrepData'):
+                if hasattr(IfcImport, "GetBrepData"):
                     obj = IfcImport.GetBrepData()
                 else:
                     obj = IfcImport.Get()
@@ -292,7 +292,7 @@ def read(filename,skip=None):
                     # treat as meshes
                     if DEBUG: print("Warning: Object without shape: ",objid, " ", objtype)
                     if hasattr(obj,"mesh"):
-                        if not hasattr(obj.mesh, 'verts'):
+                        if not hasattr(obj.mesh, "verts"):
                             obj = IfcImport.Get() # Get triangulated rep of same product
                         me,pl = getMesh(obj)
                         nobj = FreeCAD.ActiveDocument.addObject("Mesh::Feature",n)
@@ -865,12 +865,12 @@ def group(entity,ifc,mode=None):
                 elts.extend(s)
         print("found dependent elements: ",elts)
 
-        groups = [['Wall',['IfcWallStandardCase'],[]],
-                  ['Window',['IfcWindow','IfcDoor'],[]],
-                  ['Structure',['IfcSlab','IfcFooting','IfcBeam','IfcColumn'],[]],
-                  ['Floor',['IfcBuildingStorey'],[]],
-                  ['Building',['IfcBuilding'],[]],
-                  ['Furniture',['IfcFurnishingElement'],[]]]
+        groups = [["Wall",["IfcWallStandardCase"],[]],
+                  ["Window",["IfcWindow","IfcDoor"],[]],
+                  ["Structure",["IfcSlab","IfcFooting","IfcBeam","IfcColumn"],[]],
+                  ["Floor",["IfcBuildingStorey"],[]],
+                  ["Building",["IfcBuilding"],[]],
+                  ["Furniture",["IfcFurnishingElement"],[]]]
 
         for e in elts:
             for g in groups:
@@ -885,7 +885,7 @@ def group(entity,ifc,mode=None):
             if DEBUG:wprint("creating subgroups")
             for g in groups:
                 if g[2]:
-                    if g[0] in ['Building','Floor']:
+                    if g[0] in ["Building","Floor"]:
                         comps.extend(g[2])
                     else:
                         fcg = FreeCAD.ActiveDocument.addObject("App::DocumentObjectGroup",g[0]+"s")
@@ -1388,7 +1388,7 @@ def explore(filename=None):
     "explore the contents of an ifc file in a Qt dialog"
     if not filename:
         from PySide import QtGui
-        filename = QtGui.QFileDialog.getOpenFileName(QtGui.QApplication.activeWindow(),'Open IFC file',None,'IFC files (*.ifc *.IFC)')
+        filename = QtGui.QFileDialog.getOpenFileName(QtGui.QApplication.activeWindow(),"Open IFC file",None,"IFC files (*.ifc *.IFC)")
         if filename:
             filename = filename[0]
     if filename:
@@ -1523,7 +1523,7 @@ class IfcFile:
         """
         entById = {}
         entsByName = {}
-        header = 'HEADER '
+        header = "HEADER "
         readheader = False
         for line in self.file:
             e = self.parseLine(line)
@@ -1532,10 +1532,10 @@ class IfcFile:
                 ids = e.get(e["name"],[])
                 ids.append(e["id"])
                 entsByName[e["name"]] = list(set(ids))
-            elif 'HEADER' in line:
+            elif "HEADER" in line:
                 readheader = True
             elif readheader:
-                if 'ENDSEC' in line:
+                if "ENDSEC" in line:
                     readheader = False
                 else:
                     header += line
@@ -1632,20 +1632,20 @@ class IfcEntity:
     "a container for an IFC entity"
     def __init__(self,ent,doc=None):
         self.data = ent
-        self.id = int(ent['id'])
-        self.type = ent['name'].upper().strip(",[]()")
-        self.attributes = ent['attributes']
+        self.id = int(ent["id"])
+        self.type = ent["name"].upper().strip(",[]()")
+        self.attributes = ent["attributes"]
         self.doc = doc
 
     def __repr__(self):
-        return str(self.id) + ' : ' + self.type + ' ' + str(self.attributes)
+        return str(self.id) + " : " + self.type + " " + str(self.attributes)
 
     def getProperties(self):
-        return self.doc.find('IFCRELDEFINESBYPROPERTIES','RelatedObjects',self)
+        return self.doc.find("IFCRELDEFINESBYPROPERTIES","RelatedObjects",self)
 
     def getProperty(self,propName):
         "finds the value of the given property or quantity in this object, if exists"
-        propsets = self.doc.find('IFCRELDEFINESBYPROPERTIES','RelatedObjects',self)
+        propsets = self.doc.find("IFCRELDEFINESBYPROPERTIES","RelatedObjects",self)
         if not propsets: return None
         propset = []
         for p in propsets:
@@ -1680,7 +1680,7 @@ class IfcDocument:
         self.data = f.entById
         self.Entities = {0:f.header}
         for k,e in self.data.items():
-            eid = int(e['id'])
+            eid = int(e["id"])
             self.Entities[eid] = IfcEntity(e,self)
         if DEBUG: print(len(self.Entities),"entities created. Creating attributes...")
         for k,ent in self.Entities.items():
@@ -1719,12 +1719,12 @@ class IfcDocument:
                     l = val.split("(")
                     if len(l) == 2: val = float(l[1].strip(")"))
             else:
-                if '#' in val:
+                if "#" in val:
                     if "," in val:
                         val = val.split(",")
                         l = []
                         for subval in val:
-                            if '#' in subval:
+                            if "#" in subval:
                                 s = subval.strip(" #")
                                 if DEBUG: print("referencing ",s," : ",self.getEnt(int(s)))
                                 l.append(self.getEnt(int(s)))
@@ -1742,7 +1742,7 @@ class IfcDocument:
         return val
 
     def __repr__(self):
-        return "IFC Document: " + self.filename + ', ' + str(len(self.Entities)) + " entities "
+        return "IFC Document: " + self.filename + ", " + str(len(self.Entities)) + " entities "
 
     def getEnt(self,ref):
         "gets an entity by id number, or a list of entities by type"
@@ -1978,7 +1978,7 @@ class IfcWriter(object):
         self._owner = create(self._fileobject,"IfcOwnerHistory",[pno,app,None,"ADDED",None,pno,app,now()])
         axp = self.addPlacement(local=False)
         dim0 = create(self._fileobject,"IfcDirection",getTuple((0,1,0)))
-        self._repcontext = create(self._fileobject,"IfcGeometricRepresentationContext",['Plan','Model',3,1.E-05,axp,dim0])
+        self._repcontext = create(self._fileobject,"IfcGeometricRepresentationContext",["Plan","Model",3,1.E-05,axp,dim0])
         dim1 = create(self._fileobject,"IfcDimensionalExponents",[0,0,0,0,0,0,0])
         dim2 = create(self._fileobject,"IfcSIUnit",[dim1,"LENGTHUNIT","MILLI","METRE"])
         dim3 = create(self._fileobject,"IfcSIUnit",[dim1,"AREAUNIT",None,"SQUARE_METRE"])
@@ -2150,13 +2150,13 @@ class IfcWriter(object):
                 prods = self._storeyRelations[sid].get_argument(4)
                 self._storeyRelations[sid].set_argument(4,prods+entities)
             else:
-                rel = create(self._fileobject,"IfcRelContainedInSpatialStructure",[uid(),self._owner,'StoreyLink','',entities,container])
+                rel = create(self._fileobject,"IfcRelContainedInSpatialStructure",[uid(),self._owner,"StoreyLink","",entities,container])
                 self._storeyRelations[sid] = rel
         else:
             if entities[0].is_a("IfcOpeningElement"):
-                create(self._fileobject,"IfcRelVoidsElement",[uid(),self._owner,'Opening','',container,entities[0]])
+                create(self._fileobject,"IfcRelVoidsElement",[uid(),self._owner,"Opening","",container,entities[0]])
             else:
-                create(self._fileobject,"IfcRelAggregates",[uid(),self._owner,'Relationship','',container,entities])
+                create(self._fileobject,"IfcRelAggregates",[uid(),self._owner,"Relationship","",container,entities])
 
     def addProduct(self,elttype,shapes,storey=None,placement=None,name="Unnamed element",description=None,extra=None):
         """addProduct(elttype,representations,[storey,placement,name,description,extra]): creates an element of the given type
@@ -2201,7 +2201,7 @@ class IfcWriter(object):
             if shapes.is_a("IfcExtrudedAreaSolid"):
                 solidType = "SweptSolid"
             shapes = [shapes]
-        reps = [create(self._fileobject,"IfcShapeRepresentation",[self._repcontext,'Body',solidType,[shape for shape in shapes]])]
+        reps = [create(self._fileobject,"IfcShapeRepresentation",[self._repcontext,"Body",solidType,[shape for shape in shapes]])]
         return reps
 
     def addColor(self,rgb,rep):

@@ -39,10 +39,10 @@ class BIM_DrawingView:
 
     def GetResources(self):
 
-        return {'Pixmap'  : 'BIM_ArchView',
-                'MenuText': QT_TRANSLATE_NOOP("BIM_DrawingView","2D Drawing"),
-                'Accel': "V, D",
-                'ToolTip': QT_TRANSLATE_NOOP("BIM_DrawingView","Creates a drawing container to contain elements of a 2D view")}
+        return {"Pixmap"  : "BIM_ArchView",
+                "MenuText": QT_TRANSLATE_NOOP("BIM_DrawingView","2D Drawing"),
+                "Accel": "V, D",
+                "ToolTip": QT_TRANSLATE_NOOP("BIM_DrawingView","Creates a drawing container to contain elements of a 2D view")}
 
     def IsActive(self):
 
@@ -80,4 +80,4 @@ class BIM_DrawingView:
         FreeCAD.ActiveDocument.recompute()
 
 
-FreeCADGui.addCommand('BIM_DrawingView', BIM_DrawingView())
+FreeCADGui.addCommand("BIM_DrawingView", BIM_DrawingView())

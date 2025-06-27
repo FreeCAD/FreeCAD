@@ -39,10 +39,10 @@ class Arch_Profile:
 
     def GetResources(self):
 
-        return {'Pixmap'  : 'Arch_Profile',
-                'MenuText': QT_TRANSLATE_NOOP("Arch_Profile","Profile"),
-                'Accel': "P, F",
-                'ToolTip': QT_TRANSLATE_NOOP("Arch_Profile","Creates a profile")}
+        return {"Pixmap"  : "Arch_Profile",
+                "MenuText": QT_TRANSLATE_NOOP("Arch_Profile","Profile"),
+                "Accel": "P, F",
+                "ToolTip": QT_TRANSLATE_NOOP("Arch_Profile","Creates a profile")}
 
     def IsActive(self):
 
@@ -121,10 +121,10 @@ class Arch_Profile:
         pt = "FreeCAD.Vector("+str(point.x)+","+str(point.y)+","+str(point.z)+")"
         self.doc.openTransaction(translate("Arch","Create Profile"))
         FreeCADGui.addModule("Arch")
-        FreeCADGui.doCommand('p = Arch.makeProfile('+str(self.Profile)+')')
-        FreeCADGui.addModule('WorkingPlane')
-        FreeCADGui.doCommand('p.Placement = WorkingPlane.get_working_plane().get_placement()')
-        FreeCADGui.doCommand('p.Placement.Base = ' + pt)
+        FreeCADGui.doCommand("p = Arch.makeProfile("+str(self.Profile)+")")
+        FreeCADGui.addModule("WorkingPlane")
+        FreeCADGui.doCommand("p.Placement = WorkingPlane.get_working_plane().get_placement()")
+        FreeCADGui.doCommand("p.Placement.Base = " + pt)
         FreeCADGui.addModule("Draft")
         FreeCADGui.doCommand("Draft.autogroup(p)")
         self.doc.commitTransaction()
@@ -162,4 +162,4 @@ class Arch_Profile:
             params.set_param_arch("StructurePreset",";".join([str(i) for i in self.Profile]))
 
 
-FreeCADGui.addCommand('Arch_Profile',Arch_Profile())
+FreeCADGui.addCommand("Arch_Profile",Arch_Profile())

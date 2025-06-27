@@ -42,10 +42,10 @@ class Arch_Level:
 
     def GetResources(self):
 
-        return {'Pixmap'  : 'Arch_Floor',
-                'MenuText': QT_TRANSLATE_NOOP("Arch_Level","Level"),
-                'Accel': "L, V",
-                'ToolTip': QT_TRANSLATE_NOOP("Arch_Level","Creates a Building Part object that represents a level.")}
+        return {"Pixmap"  : "Arch_Floor",
+                "MenuText": QT_TRANSLATE_NOOP("Arch_Level","Level"),
+                "Accel": "L, V",
+                "ToolTip": QT_TRANSLATE_NOOP("Arch_Level","Creates a Building Part object that represents a level.")}
 
     def IsActive(self):
 
@@ -71,10 +71,10 @@ class Arch_Building:
 
     def GetResources(self):
 
-        return {'Pixmap'  : 'Arch_Building',
-                'MenuText': QT_TRANSLATE_NOOP("Arch_Building","Building"),
-                'Accel': "B, U",
-                'ToolTip': QT_TRANSLATE_NOOP("Arch_Building","Creates a building object.")}
+        return {"Pixmap"  : "Arch_Building",
+                "MenuText": QT_TRANSLATE_NOOP("Arch_Building","Building"),
+                "Accel": "B, U",
+                "ToolTip": QT_TRANSLATE_NOOP("Arch_Building","Creates a building object.")}
 
     def IsActive(self):
 
@@ -92,5 +92,5 @@ class Arch_Building:
         FreeCAD.ActiveDocument.recompute()
 
 
-FreeCADGui.addCommand('Arch_Building', Arch_Building())
-FreeCADGui.addCommand('Arch_Level', Arch_Level())
+FreeCADGui.addCommand("Arch_Building", Arch_Building())
+FreeCADGui.addCommand("Arch_Level", Arch_Level())

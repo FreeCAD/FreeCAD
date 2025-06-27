@@ -201,9 +201,9 @@ class CommandStructuresFromSelection:
         pass
 
     def GetResources(self):
-        return {'Pixmap': 'Arch_MultipleStructures',
-                'MenuText': QT_TRANSLATE_NOOP("Arch_StructuresFromSelection", "Multiple Structures"),
-                'ToolTip': QT_TRANSLATE_NOOP("Arch_StructuresFromSelection", "Create multiple BIM Structures from a selected base, using each selected edge as an extrusion path")}
+        return {"Pixmap": "Arch_MultipleStructures",
+                "MenuText": QT_TRANSLATE_NOOP("Arch_StructuresFromSelection", "Multiple Structures"),
+                "ToolTip": QT_TRANSLATE_NOOP("Arch_StructuresFromSelection", "Create multiple BIM Structures from a selected base, using each selected edge as an extrusion path")}
 
     def IsActive(self):
         v = hasattr(FreeCADGui.getMainWindow().getActiveWindow(), "getSceneGraph")
@@ -239,9 +239,9 @@ class CommandStructuralSystem:
         pass
 
     def GetResources(self):
-        return {'Pixmap': 'Arch_StructuralSystem',
-                'MenuText': QT_TRANSLATE_NOOP("Arch_StructuralSystem", "Structural System"),
-                'ToolTip': QT_TRANSLATE_NOOP("Arch_StructuralSystem", "Create a structural system from a selected structure and axis")}
+        return {"Pixmap": "Arch_StructuralSystem",
+                "MenuText": QT_TRANSLATE_NOOP("Arch_StructuralSystem", "Structural System"),
+                "ToolTip": QT_TRANSLATE_NOOP("Arch_StructuralSystem", "Create a structural system from a selected structure and axis")}
 
     def IsActive(self):
         return not FreeCAD.ActiveDocument is None
@@ -276,10 +276,10 @@ class _CommandStructure:
 
     def GetResources(self):
 
-        return {'Pixmap'  : 'Arch_Structure',
-                'MenuText': QT_TRANSLATE_NOOP("Arch_Structure","Structure"),
-                'Accel': "S, T",
-                'ToolTip': QT_TRANSLATE_NOOP("Arch_Structure","Creates a structure from scratch or from a selected object (sketch, wire, face or solid)")}
+        return {"Pixmap"  : "Arch_Structure",
+                "MenuText": QT_TRANSLATE_NOOP("Arch_Structure","Structure"),
+                "Accel": "S, T",
+                "ToolTip": QT_TRANSLATE_NOOP("Arch_Structure","Creates a structure from scratch or from a selected object (sketch, wire, face or solid)")}
 
     def IsActive(self):
 
@@ -396,27 +396,27 @@ class _CommandStructure:
                 FreeCADGui.doCommand("s = ArchPrecast.makePrecast("+argstring+")")
             else:
                 # metal profile
-                FreeCADGui.doCommand('p = Arch.makeProfile('+str(self.Profile)+')')
+                FreeCADGui.doCommand("p = Arch.makeProfile("+str(self.Profile)+")")
                 if (abs(self.Length - self.Profile[4]) >= 0.1) or self.bmode: # forgive rounding errors
                     # horizontal
-                    FreeCADGui.doCommand('s = Arch.makeStructure(p,length='+str(self.Length)+')')
+                    FreeCADGui.doCommand("s = Arch.makeStructure(p,length="+str(self.Length)+")")
                     horiz = False
                 else:
                     # vertical
-                    FreeCADGui.doCommand('s = Arch.makeStructure(p,height='+str(self.Height)+')')
+                    FreeCADGui.doCommand("s = Arch.makeStructure(p,height="+str(self.Height)+")")
                     #if not self.bmode:
                     #    FreeCADGui.doCommand('s.Placement.Rotation = FreeCAD.Rotation(-0.5,0.5,-0.5,0.5)')
                 FreeCADGui.doCommand('s.Profile = "'+self.Profile[2]+'"')
         else :
-            FreeCADGui.doCommand('s = Arch.makeStructure(length='+str(self.Length)+',width='+str(self.Width)+',height='+str(self.Height)+')')
+            FreeCADGui.doCommand("s = Arch.makeStructure(length="+str(self.Length)+",width="+str(self.Width)+",height="+str(self.Height)+")")
 
         # calculate rotation
         if self.bmode and self.bpoint:
-            FreeCADGui.doCommand('s.Placement = Arch.placeAlongEdge('+DraftVecUtils.toString(self.bpoint)+","+DraftVecUtils.toString(point)+","+str(horiz)+")")
+            FreeCADGui.doCommand("s.Placement = Arch.placeAlongEdge("+DraftVecUtils.toString(self.bpoint)+","+DraftVecUtils.toString(point)+","+str(horiz)+")")
         else:
-            FreeCADGui.doCommand('s.Placement.Base = '+DraftVecUtils.toString(point))
-            FreeCADGui.doCommand('wp = WorkingPlane.get_working_plane()')
-            FreeCADGui.doCommand('s.Placement.Rotation = s.Placement.Rotation.multiply(wp.get_placement().Rotation)')
+            FreeCADGui.doCommand("s.Placement.Base = "+DraftVecUtils.toString(point))
+            FreeCADGui.doCommand("wp = WorkingPlane.get_working_plane()")
+            FreeCADGui.doCommand("s.Placement.Rotation = s.Placement.Rotation.multiply(wp.get_placement().Rotation)")
 
         FreeCADGui.addModule("Draft")
         FreeCADGui.doCommand("Draft.autogroup(s)")
@@ -715,7 +715,7 @@ class _Structure(ArchComponent.Component):
             obj.addProperty("App::PropertyStringList","ArchSketchEdges","Structure",QT_TRANSLATE_NOOP("App::Property","Selected edges (or group of edges) of the base ArchSketch, to use in creating the shape of this BIM Structure (instead of using all the Base shape's edges by default).  Input are index numbers of edges or groups."), locked=True)
         else:
             # test if the property was added but as IntegerList, then update;
-            type = obj.getTypeIdOfProperty('ArchSketchEdges')
+            type = obj.getTypeIdOfProperty("ArchSketchEdges")
             if type == "App::PropertyIntegerList":
                 oldIntValue = obj.ArchSketchEdges
                 newStrValue = [str(x) for x in oldIntValue]
@@ -724,9 +724,9 @@ class _Structure(ArchComponent.Component):
                 obj.ArchSketchEdges = newStrValue
         if not hasattr(obj,"ArchSketchPropertySet"):
             obj.addProperty("App::PropertyEnumeration","ArchSketchPropertySet","Structure",QT_TRANSLATE_NOOP("App::Property","Select User Defined PropertySet to use in creating variant shape, with same ArchSketch "), locked=True)
-            obj.ArchSketchPropertySet = ['Default']
+            obj.ArchSketchPropertySet = ["Default"]
         if not hasattr(self,"ArchSkPropSetPickedUuid"):
-            self.ArchSkPropSetPickedUuid = ''
+            self.ArchSkPropSetPickedUuid = ""
         if not hasattr(self,"ArchSkPropSetListPrev"):
             self.ArchSkPropSetListPrev = []
 
@@ -745,12 +745,12 @@ class _Structure(ArchComponent.Component):
         super().loads(state)  # do nothing as of 2024.11.28
         if state == None:
             return
-        elif state[0] == 'S':  # state[1] == 't', behaviour before 2024.11.28
+        elif state[0] == "S":  # state[1] == 't', behaviour before 2024.11.28
             return
-        elif state[0] == 'Structure':
+        elif state[0] == "Structure":
             self.ArchSkPropSetPickedUuid = state[1]
             self.ArchSkPropSetListPrev = state[2]
-        elif state[0] != 'Structure':  # model before merging super.dumps/loads()
+        elif state[0] != "Structure":  # model before merging super.dumps/loads()
             self.ArchSkPropSetPickedUuid = state[0]
             self.ArchSkPropSetListPrev = state[1]
 
@@ -817,7 +817,7 @@ class _Structure(ArchComponent.Component):
             if propSetListCur:
                 if propSetListPrev != propSetListCur:
                     obj.ArchSketchPropertySet = propSetListCur
-                    obj.ArchSketchPropertySet = 'Default'
+                    obj.ArchSketchPropertySet = "Default"
                 #else:  # Seems no need ...
                     #obj.PropertySet = 'Default'
 
@@ -867,7 +867,7 @@ class _Structure(ArchComponent.Component):
                 base = Part.makeCompound(base)
             obj.ComputedLength = FreeCAD.Units.Quantity(extrusion_length, FreeCAD.Units.Length)
         if obj.Base:
-            if hasattr(obj.Base,'Shape'):
+            if hasattr(obj.Base,"Shape"):
                 if obj.Base.Shape.isNull():
                     return
                 if not obj.Base.Shape.isValid():
@@ -914,7 +914,7 @@ class _Structure(ArchComponent.Component):
         extrusion = None
         normal = None
         if obj.Base:
-            if hasattr(obj.Base,'Shape'):
+            if hasattr(obj.Base,"Shape"):
                 if obj.Base.Shape:
                     if obj.Base.Shape.Solids:
                         return None
@@ -931,8 +931,8 @@ class _Structure(ArchComponent.Component):
                         baseShapeWires = []                   #baseSlabWires / baseSlabOpeningWires = None
                         faceMaker = None
 
-                        if hasattr(obj.Base, 'Proxy') and obj.ArchSketchData and \
-                        hasattr(obj.Base.Proxy, 'getStructureBaseShapeWires'):
+                        if hasattr(obj.Base, "Proxy") and obj.ArchSketchData and \
+                        hasattr(obj.Base.Proxy, "getStructureBaseShapeWires"):
                             propSetUuid = self.ArchSkPropSetPickedUuid
 
                             # provide selected edges, or groups, in obj.ArchSketchEdges for processing in getStructureBaseShapeWires() (getSortedClusters) as override
@@ -941,8 +941,8 @@ class _Structure(ArchComponent.Component):
                             # get slab wires; use original wires if structureBaseShapeWires() provided none
                             if structureBaseShapeWires:  # would be false (none) if both base ArchSketch and obj do not have the edges stored / inputted by user
                                 # if structureBaseShapeWires is {dict}
-                                baseShapeWires = structureBaseShapeWires.get('slabWires')
-                                faceMaker = structureBaseShapeWires.get('faceMaker')
+                                baseShapeWires = structureBaseShapeWires.get("slabWires")
+                                faceMaker = structureBaseShapeWires.get("faceMaker")
                         elif obj.Base.isDerivedFrom("Sketcher::SketchObject"):
                             skGeom = obj.Base.GeometryFacadeList
                             skGeomEdges = []
@@ -971,7 +971,7 @@ class _Structure(ArchComponent.Component):
                                 clusterTransformed.append(edgesTransformed)
                             for clusterT in clusterTransformed:
                                 baseShapeWires.append(Part.Wire(clusterT))
-                            faceMaker = 'Bullseye'
+                            faceMaker = "Bullseye"
 
                         if not baseShapeWires:
                             baseShapeWires = obj.Base.Shape.Wires
@@ -1544,7 +1544,7 @@ class _StructuralSystem(ArchComponent.Component): # OBSOLETE - All Arch objects 
         # creating base shape
         pl = obj.Placement
         if obj.Base:
-            if hasattr(obj.Base,'Shape'):
+            if hasattr(obj.Base,"Shape"):
                 if obj.Base.Shape.isNull():
                     return
                 if not obj.Base.Shape.Solids:

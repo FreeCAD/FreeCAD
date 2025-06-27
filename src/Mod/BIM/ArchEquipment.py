@@ -223,7 +223,7 @@ class _Equipment(ArchComponent.Component):
         pl = obj.Placement
         if obj.Base:
             base = None
-            if hasattr(obj.Base,'Shape'):
+            if hasattr(obj.Base,"Shape"):
                 base = obj.Base.Shape.copy()
                 base = self.processSubShapes(obj,base,pl)
                 self.applyShape(obj,base,pl,allowinvalid=False,allownosolid=True)

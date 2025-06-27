@@ -37,9 +37,9 @@ class Arch_Add:
     "the Arch Add command definition"
 
     def GetResources(self):
-        return {'Pixmap'  : 'Arch_Add',
-                'MenuText': QT_TRANSLATE_NOOP("Arch_Add","Add component"),
-                'ToolTip': QT_TRANSLATE_NOOP("Arch_Add","Adds the selected components to the active object")}
+        return {"Pixmap"  : "Arch_Add",
+                "MenuText": QT_TRANSLATE_NOOP("Arch_Add","Add component"),
+                "ToolTip": QT_TRANSLATE_NOOP("Arch_Add","Adds the selected components to the active object")}
 
     def IsActive(self):
         v = hasattr(FreeCADGui.getMainWindow().getActiveWindow(), "getSceneGraph")
@@ -77,9 +77,9 @@ class Arch_Remove:
     "the Arch Add command definition"
 
     def GetResources(self):
-        return {'Pixmap'  : 'Arch_Remove',
-                'MenuText': QT_TRANSLATE_NOOP("Arch_Remove","Remove component"),
-                'ToolTip': QT_TRANSLATE_NOOP("Arch_Remove","Remove the selected components from their parents, or create a hole in a component")}
+        return {"Pixmap"  : "Arch_Remove",
+                "MenuText": QT_TRANSLATE_NOOP("Arch_Remove","Remove component"),
+                "ToolTip": QT_TRANSLATE_NOOP("Arch_Remove","Remove the selected components from their parents, or create a hole in a component")}
 
     def IsActive(self):
         v = hasattr(FreeCADGui.getMainWindow().getActiveWindow(), "getSceneGraph")
@@ -119,9 +119,9 @@ class Arch_SplitMesh:
     "the Arch SplitMesh command definition"
 
     def GetResources(self):
-        return {'Pixmap'  : 'Arch_SplitMesh',
-                'MenuText': QT_TRANSLATE_NOOP("Arch_SplitMesh","Split Mesh"),
-                'ToolTip': QT_TRANSLATE_NOOP("Arch_SplitMesh","Splits selected meshes into independent components")}
+        return {"Pixmap"  : "Arch_SplitMesh",
+                "MenuText": QT_TRANSLATE_NOOP("Arch_SplitMesh","Split Mesh"),
+                "ToolTip": QT_TRANSLATE_NOOP("Arch_SplitMesh","Splits selected meshes into independent components")}
 
     def IsActive(self):
         v = hasattr(FreeCADGui.getMainWindow().getActiveWindow(), "getSceneGraph")
@@ -147,9 +147,9 @@ class Arch_MeshToShape:
     "the Arch MeshToShape command definition"
 
     def GetResources(self):
-        return {'Pixmap'  : 'Arch_MeshToShape',
-                'MenuText': QT_TRANSLATE_NOOP("Arch_MeshToShape","Mesh to Shape"),
-                'ToolTip': QT_TRANSLATE_NOOP("Arch_MeshToShape","Turns selected meshes into Part Shape objects")}
+        return {"Pixmap"  : "Arch_MeshToShape",
+                "MenuText": QT_TRANSLATE_NOOP("Arch_MeshToShape","Mesh to Shape"),
+                "ToolTip": QT_TRANSLATE_NOOP("Arch_MeshToShape","Turns selected meshes into Part Shape objects")}
 
     def IsActive(self):
         v = hasattr(FreeCADGui.getMainWindow().getActiveWindow(), "getSceneGraph")
@@ -185,9 +185,9 @@ class Arch_SelectNonSolidMeshes:
     "the Arch SelectNonSolidMeshes command definition"
 
     def GetResources(self):
-        return {'Pixmap': 'Arch_SelectNonManifold.svg',
-                'MenuText': QT_TRANSLATE_NOOP("Arch_SelectNonSolidMeshes","Select non-manifold meshes"),
-                'ToolTip': QT_TRANSLATE_NOOP("Arch_SelectNonSolidMeshes","Selects all non-manifold meshes from the document or from the selected groups")}
+        return {"Pixmap": "Arch_SelectNonManifold.svg",
+                "MenuText": QT_TRANSLATE_NOOP("Arch_SelectNonSolidMeshes","Select non-manifold meshes"),
+                "ToolTip": QT_TRANSLATE_NOOP("Arch_SelectNonSolidMeshes","Selects all non-manifold meshes from the document or from the selected groups")}
 
     def IsActive(self):
         v = hasattr(FreeCADGui.getMainWindow().getActiveWindow(), "getSceneGraph")
@@ -215,9 +215,9 @@ class Arch_SelectNonSolidMeshes:
 class Arch_RemoveShape:
     "the Arch RemoveShape command definition"
     def GetResources(self):
-        return {'Pixmap'  : 'Arch_RemoveShape',
-                'MenuText': QT_TRANSLATE_NOOP("Arch_RemoveShape","Remove Shape from BIM"),
-                'ToolTip': QT_TRANSLATE_NOOP("Arch_RemoveShape","Removes cubic shapes from BIM components")}
+        return {"Pixmap"  : "Arch_RemoveShape",
+                "MenuText": QT_TRANSLATE_NOOP("Arch_RemoveShape","Remove Shape from BIM"),
+                "ToolTip": QT_TRANSLATE_NOOP("Arch_RemoveShape","Removes cubic shapes from BIM components")}
 
     def IsActive(self):
         v = hasattr(FreeCADGui.getMainWindow().getActiveWindow(), "getSceneGraph")
@@ -233,9 +233,9 @@ class Arch_CloseHoles:
     "the Arch CloseHoles command definition"
 
     def GetResources(self):
-        return {'Pixmap'  : 'Arch_CloseHoles',
-                'MenuText': QT_TRANSLATE_NOOP("Arch_CloseHoles","Close holes"),
-                'ToolTip': QT_TRANSLATE_NOOP("Arch_CloseHoles","Closes holes in open shapes, turning them solids")}
+        return {"Pixmap"  : "Arch_CloseHoles",
+                "MenuText": QT_TRANSLATE_NOOP("Arch_CloseHoles","Close holes"),
+                "ToolTip": QT_TRANSLATE_NOOP("Arch_CloseHoles","Closes holes in open shapes, turning them solids")}
 
     def IsActive(self):
         v = hasattr(FreeCADGui.getMainWindow().getActiveWindow(), "getSceneGraph")
@@ -252,9 +252,9 @@ class Arch_CloseHoles:
 class Arch_Check:
     "the Arch Check command definition"
     def GetResources(self):
-        return {'Pixmap'  : 'Arch_Check',
-                'MenuText': QT_TRANSLATE_NOOP("Arch_Check","Check"),
-                'ToolTip': QT_TRANSLATE_NOOP("Arch_Check","Checks the selected objects for problems")}
+        return {"Pixmap"  : "Arch_Check",
+                "MenuText": QT_TRANSLATE_NOOP("Arch_Check","Check"),
+                "ToolTip": QT_TRANSLATE_NOOP("Arch_Check","Checks the selected objects for problems")}
 
     def IsActive(self):
         v = hasattr(FreeCADGui.getMainWindow().getActiveWindow(), "getSceneGraph")
@@ -276,9 +276,9 @@ class Arch_Survey:
     "the Arch Survey command definition"
 
     def GetResources(self):
-        return {'Pixmap'  : 'Arch_Survey',
-                'MenuText': QT_TRANSLATE_NOOP("Arch_Survey","Survey"),
-                'ToolTip': QT_TRANSLATE_NOOP("Arch_Survey","Starts survey")}
+        return {"Pixmap"  : "Arch_Survey",
+                "MenuText": QT_TRANSLATE_NOOP("Arch_Survey","Survey"),
+                "ToolTip": QT_TRANSLATE_NOOP("Arch_Survey","Starts survey")}
 
     def IsActive(self):
         v = hasattr(FreeCADGui.getMainWindow().getActiveWindow(), "getSceneGraph")
@@ -293,9 +293,9 @@ class Arch_ToggleIfcBrepFlag:
     "the Toggle IFC B-rep flag command definition"
 
     def GetResources(self):
-        return {'Pixmap'  : 'Arch_ToggleIfcBrepFlag',
-                'MenuText': QT_TRANSLATE_NOOP("Arch_ToggleIfcBrepFlag","Toggle IFC B-rep flag"),
-                'ToolTip': QT_TRANSLATE_NOOP("Arch_ToggleIfcBrepFlag","Force an object to be exported as B-rep or not")}
+        return {"Pixmap"  : "Arch_ToggleIfcBrepFlag",
+                "MenuText": QT_TRANSLATE_NOOP("Arch_ToggleIfcBrepFlag","Toggle IFC B-rep flag"),
+                "ToolTip": QT_TRANSLATE_NOOP("Arch_ToggleIfcBrepFlag","Force an object to be exported as B-rep or not")}
 
     def IsActive(self):
         v = hasattr(FreeCADGui.getMainWindow().getActiveWindow(), "getSceneGraph")
@@ -311,10 +311,10 @@ class Arch_Component:
     "the Arch Component command definition"
 
     def GetResources(self):
-        return {'Pixmap'  : 'Arch_Component',
-                'MenuText': QT_TRANSLATE_NOOP("Arch_Component","Component"),
-                'Accel': "C, M",
-                'ToolTip': QT_TRANSLATE_NOOP("Arch_Component","Creates an undefined architectural component")}
+        return {"Pixmap"  : "Arch_Component",
+                "MenuText": QT_TRANSLATE_NOOP("Arch_Component","Component"),
+                "Accel": "C, M",
+                "ToolTip": QT_TRANSLATE_NOOP("Arch_Component","Creates an undefined architectural component")}
 
     def IsActive(self):
         v = hasattr(FreeCADGui.getMainWindow().getActiveWindow(), "getSceneGraph")
@@ -338,10 +338,10 @@ class Arch_CloneComponent:
     "the Arch Clone Component command definition"
 
     def GetResources(self):
-        return {'Pixmap'  : 'Arch_Component_Clone',
-                'MenuText': QT_TRANSLATE_NOOP("Arch_CloneComponent","Clone component"),
-                'Accel': "C, C",
-                'ToolTip': QT_TRANSLATE_NOOP("Arch_CloneComponent","Clones an object as an undefined architectural component")}
+        return {"Pixmap"  : "Arch_Component_Clone",
+                "MenuText": QT_TRANSLATE_NOOP("Arch_CloneComponent","Clone component"),
+                "Accel": "C, C",
+                "ToolTip": QT_TRANSLATE_NOOP("Arch_CloneComponent","Clones an object as an undefined architectural component")}
 
     def IsActive(self):
         v = hasattr(FreeCADGui.getMainWindow().getActiveWindow(), "getSceneGraph")
@@ -365,10 +365,10 @@ class Arch_IfcSpreadsheet:
     "the Arch Schedule command definition"
 
     def GetResources(self):
-        return {'Pixmap': 'Arch_Schedule',
-                'MenuText': QT_TRANSLATE_NOOP("Arch_IfcSpreadsheet","Create IFC spreadsheet..."),
-                'Accel': "I, P",
-                'ToolTip': QT_TRANSLATE_NOOP("Arch_IfcSpreadsheet","Creates a spreadsheet to store IFC properties of an object.")}
+        return {"Pixmap": "Arch_Schedule",
+                "MenuText": QT_TRANSLATE_NOOP("Arch_IfcSpreadsheet","Create IFC spreadsheet..."),
+                "Accel": "I, P",
+                "ToolTip": QT_TRANSLATE_NOOP("Arch_IfcSpreadsheet","Creates a spreadsheet to store IFC properties of an object.")}
 
     def IsActive(self):
         v = hasattr(FreeCADGui.getMainWindow().getActiveWindow(), "getSceneGraph")
@@ -392,10 +392,10 @@ class Arch_ToggleSubs:
     "the ToggleSubs command definition"
 
     def GetResources(self):
-        return {'Pixmap'  : 'Arch_ToggleSubs',
-                'Accel'   : 'Ctrl+Space',
-                'MenuText': QT_TRANSLATE_NOOP("Arch_ToggleSubs","Toggle subcomponents"),
-                'ToolTip' : QT_TRANSLATE_NOOP("Arch_ToggleSubs","Shows or hides the subcomponents of this object")}
+        return {"Pixmap"  : "Arch_ToggleSubs",
+                "Accel"   : "Ctrl+Space",
+                "MenuText": QT_TRANSLATE_NOOP("Arch_ToggleSubs","Toggle subcomponents"),
+                "ToolTip" : QT_TRANSLATE_NOOP("Arch_ToggleSubs","Shows or hides the subcomponents of this object")}
 
     def IsActive(self):
         v = hasattr(FreeCADGui.getMainWindow().getActiveWindow(), "getSceneGraph")
@@ -431,9 +431,9 @@ class Arch_MergeWalls:
     def GetResources(self):
         """Returns a dictionary with the visual aspects of the Arch MergeWalls tool."""
 
-        return {'Pixmap'  : 'Arch_MergeWalls',
-                'MenuText': QT_TRANSLATE_NOOP("Arch_MergeWalls","Merge Walls"),
-                'ToolTip': QT_TRANSLATE_NOOP("Arch_MergeWalls","Merges the selected walls, if possible")}
+        return {"Pixmap"  : "Arch_MergeWalls",
+                "MenuText": QT_TRANSLATE_NOOP("Arch_MergeWalls","Merge Walls"),
+                "ToolTip": QT_TRANSLATE_NOOP("Arch_MergeWalls","Merges the selected walls, if possible")}
 
     def IsActive(self):
         """Determines whether or not the Arch MergeWalls tool is active.
@@ -486,18 +486,18 @@ class Arch_MergeWalls:
         FreeCAD.ActiveDocument.commitTransaction()
 
 
-FreeCADGui.addCommand('Arch_Add',Arch_Add())
-FreeCADGui.addCommand('Arch_Remove',Arch_Remove())
-FreeCADGui.addCommand('Arch_SplitMesh',Arch_SplitMesh())
-FreeCADGui.addCommand('Arch_MeshToShape',Arch_MeshToShape())
-FreeCADGui.addCommand('Arch_SelectNonSolidMeshes',Arch_SelectNonSolidMeshes())
-FreeCADGui.addCommand('Arch_RemoveShape',Arch_RemoveShape())
-FreeCADGui.addCommand('Arch_CloseHoles',Arch_CloseHoles())
-FreeCADGui.addCommand('Arch_Check',Arch_Check())
-FreeCADGui.addCommand('Arch_Survey',Arch_Survey())
-FreeCADGui.addCommand('Arch_ToggleIfcBrepFlag',Arch_ToggleIfcBrepFlag())
-FreeCADGui.addCommand('Arch_Component',Arch_Component())
-FreeCADGui.addCommand('Arch_CloneComponent',Arch_CloneComponent())
-FreeCADGui.addCommand('Arch_IfcSpreadsheet',Arch_IfcSpreadsheet())
-FreeCADGui.addCommand('Arch_ToggleSubs',Arch_ToggleSubs())
-FreeCADGui.addCommand('Arch_MergeWalls',Arch_MergeWalls())
+FreeCADGui.addCommand("Arch_Add",Arch_Add())
+FreeCADGui.addCommand("Arch_Remove",Arch_Remove())
+FreeCADGui.addCommand("Arch_SplitMesh",Arch_SplitMesh())
+FreeCADGui.addCommand("Arch_MeshToShape",Arch_MeshToShape())
+FreeCADGui.addCommand("Arch_SelectNonSolidMeshes",Arch_SelectNonSolidMeshes())
+FreeCADGui.addCommand("Arch_RemoveShape",Arch_RemoveShape())
+FreeCADGui.addCommand("Arch_CloseHoles",Arch_CloseHoles())
+FreeCADGui.addCommand("Arch_Check",Arch_Check())
+FreeCADGui.addCommand("Arch_Survey",Arch_Survey())
+FreeCADGui.addCommand("Arch_ToggleIfcBrepFlag",Arch_ToggleIfcBrepFlag())
+FreeCADGui.addCommand("Arch_Component",Arch_Component())
+FreeCADGui.addCommand("Arch_CloneComponent",Arch_CloneComponent())
+FreeCADGui.addCommand("Arch_IfcSpreadsheet",Arch_IfcSpreadsheet())
+FreeCADGui.addCommand("Arch_ToggleSubs",Arch_ToggleSubs())
+FreeCADGui.addCommand("Arch_MergeWalls",Arch_MergeWalls())
