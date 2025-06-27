@@ -31,14 +31,11 @@ QT_TRANSLATE_NOOP = FreeCAD.Qt.QT_TRANSLATE_NOOP
 
 
 class BIM_Common:
-
     def GetResources(self):
         return {
             "Pixmap": "Part_Common",
             "MenuText": QT_TRANSLATE_NOOP("Part_Common", "Intersection"),
-            "ToolTip": QT_TRANSLATE_NOOP(
-                "Part_Common", "Make an intersection of two shapes"
-            ),
+            "ToolTip": QT_TRANSLATE_NOOP("Part_Common", "Make an intersection of two shapes"),
         }
 
     def IsActive(self):

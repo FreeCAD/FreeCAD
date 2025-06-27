@@ -48,9 +48,9 @@ class BIM_Nudge:
                 nudgeValue = statuswidget.nudge.text().replace("&", "")
                 dist = 0
                 if "auto" in nudgeValue.lower():
-                    unit = FreeCAD.ParamGet(
-                        "User parameter:BaseApp/Preferences/Units"
-                    ).GetInt("UserSchema", 0)
+                    unit = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Units").GetInt(
+                        "UserSchema", 0
+                    )
                     if unit in [2, 3, 5, 7]:
                         scale = [1.5875, 3.175, 6.35, 25.4, 152.4, 304.8]
                     else:
@@ -102,9 +102,7 @@ class BIM_Nudge:
     def toStr(self, objs):
         "builds a string which is a list of objects"
 
-        return (
-            "[" + ",".join(["FreeCAD.ActiveDocument." + obj.Name for obj in objs]) + "]"
-        )
+        return "[" + ",".join(["FreeCAD.ActiveDocument." + obj.Name for obj in objs]) + "]"
 
     def getCenter(self, objs):
         "returns the center point of a group of objects"
@@ -123,7 +121,6 @@ class BIM_Nudge:
 
 
 class BIM_Nudge_Switch(BIM_Nudge):
-
     def GetResources(self):
         return {
             "MenuText": QT_TRANSLATE_NOOP("BIM_Nudge_Switch", "Nudge Switch"),
@@ -149,7 +146,6 @@ class BIM_Nudge_Switch(BIM_Nudge):
 
 
 class BIM_Nudge_Up(BIM_Nudge):
-
     def GetResources(self):
         return {
             "MenuText": QT_TRANSLATE_NOOP("BIM_Nudge_Up", "Nudge Up"),
@@ -169,7 +165,6 @@ class BIM_Nudge_Up(BIM_Nudge):
 
 
 class BIM_Nudge_Down(BIM_Nudge):
-
     def GetResources(self):
         return {
             "MenuText": QT_TRANSLATE_NOOP("BIM_Nudge_Down", "Nudge Down"),
@@ -189,7 +184,6 @@ class BIM_Nudge_Down(BIM_Nudge):
 
 
 class BIM_Nudge_Left(BIM_Nudge):
-
     def GetResources(self):
         return {
             "MenuText": QT_TRANSLATE_NOOP("BIM_Nudge_Left", "Nudge Left"),
@@ -209,7 +203,6 @@ class BIM_Nudge_Left(BIM_Nudge):
 
 
 class BIM_Nudge_Right(BIM_Nudge):
-
     def GetResources(self):
         return {
             "MenuText": QT_TRANSLATE_NOOP("BIM_Nudge_Right", "Nudge Right"),
@@ -229,7 +222,6 @@ class BIM_Nudge_Right(BIM_Nudge):
 
 
 class BIM_Nudge_Extend(BIM_Nudge):
-
     def GetResources(self):
         return {
             "MenuText": QT_TRANSLATE_NOOP("BIM_Nudge_Extend", "Nudge Extend"),
@@ -253,7 +245,6 @@ class BIM_Nudge_Extend(BIM_Nudge):
 
 
 class BIM_Nudge_Shrink(BIM_Nudge):
-
     def GetResources(self):
         return {
             "MenuText": QT_TRANSLATE_NOOP("BIM_Nudge_Shrink", "Nudge Shrink"),
@@ -277,7 +268,6 @@ class BIM_Nudge_Shrink(BIM_Nudge):
 
 
 class BIM_Nudge_RotateLeft(BIM_Nudge):
-
     def GetResources(self):
         return {
             "MenuText": QT_TRANSLATE_NOOP("BIM_Nudge_RotateLeft", "Nudge Rotate Left"),
@@ -285,7 +275,6 @@ class BIM_Nudge_RotateLeft(BIM_Nudge):
         }
 
     def Activated(self):
-
         import WorkingPlane
 
         sel = FreeCADGui.Selection.getSelection()
@@ -306,17 +295,13 @@ class BIM_Nudge_RotateLeft(BIM_Nudge):
 
 
 class BIM_Nudge_RotateRight(BIM_Nudge):
-
     def GetResources(self):
         return {
-            "MenuText": QT_TRANSLATE_NOOP(
-                "BIM_Nudge_RotateRight", "Nudge Rotate Right"
-            ),
+            "MenuText": QT_TRANSLATE_NOOP("BIM_Nudge_RotateRight", "Nudge Rotate Right"),
             "Accel": "Ctrl+.",
         }
 
     def Activated(self):
-
         import WorkingPlane
 
         sel = FreeCADGui.Selection.getSelection()

@@ -86,9 +86,7 @@ class BIM_Diff:
                     if hasattr(obj, "IfcData") and obj.ViewObject.Visibility:
                         if "IfcUID" in obj.IfcData:
                             activedocids[obj.IfcData["IfcUID"]] = obj
-                        elif obj.isDerivedFrom(
-                            "Part::Feature"
-                        ):  # discard BuildingParts
+                        elif obj.isDerivedFrom("Part::Feature"):  # discard BuildingParts
                             objswithoutid.append(obj)
 
                 otherdocids = {}  # other doc to be merged to the main one
@@ -103,9 +101,7 @@ class BIM_Diff:
                 modified = []  # objects modified
                 moved = []  # objects moved
                 matchanged = []  # object is same, but material changed
-                matchangedghost = (
-                    []
-                )  # store shapes of objects whose material has changed to print a blue ghost later on
+                matchangedghost = []  # store shapes of objects whose material has changed to print a blue ghost later on
                 renamed = {}  # object label changes
                 propertieschanged = {}  # objects whose IFC properties are different
 
@@ -116,9 +112,7 @@ class BIM_Diff:
                         if obj.Label != mainobj.Label:
                             # object has a different name
                             renamed[mainobj.Name] = obj.Label
-                        if obj.IfcProperties and (
-                            obj.IfcProperties != mainobj.IfcProperties
-                        ):
+                        if obj.IfcProperties and (obj.IfcProperties != mainobj.IfcProperties):
                             # properties have changed
                             propertieschanged[id] = obj.IfcProperties
                         if hasattr(obj, "Shape") and hasattr(mainobj, "Shape"):
@@ -126,26 +120,19 @@ class BIM_Diff:
                             if v < VOL_TOLERANCE:
                                 # identical volume
                                 l = (
-                                    obj.Shape.BoundBox.Center.sub(
-                                        mainobj.Shape.BoundBox.Center
-                                    )
+                                    obj.Shape.BoundBox.Center.sub(mainobj.Shape.BoundBox.Center)
                                 ).Length
                                 if l < MOVE_TOLERANCE:
                                     # identical position
                                     if (
-                                        abs(
-                                            obj.Shape.BoundBox.XMin
-                                            - mainobj.Shape.BoundBox.XMin
+                                        abs(obj.Shape.BoundBox.XMin - mainobj.Shape.BoundBox.XMin)
+                                        < MOVE_TOLERANCE
+                                        and abs(
+                                            obj.Shape.BoundBox.YMin - mainobj.Shape.BoundBox.YMin
                                         )
                                         < MOVE_TOLERANCE
                                         and abs(
-                                            obj.Shape.BoundBox.YMin
-                                            - mainobj.Shape.BoundBox.YMin
-                                        )
-                                        < MOVE_TOLERANCE
-                                        and abs(
-                                            obj.Shape.BoundBox.YMin
-                                            - mainobj.Shape.BoundBox.YMin
+                                            obj.Shape.BoundBox.YMin - mainobj.Shape.BoundBox.YMin
                                         )
                                         < MOVE_TOLERANCE
                                     ):
@@ -156,10 +143,7 @@ class BIM_Diff:
                                             and (
                                                 obj.Material
                                                 and mainobj.Material
-                                                and (
-                                                    obj.Material.Label
-                                                    == mainobj.Material.Label
-                                                )
+                                                and (obj.Material.Label == mainobj.Material.Label)
                                             )
                                             or (obj.Material == mainobj.Material)
                                         ):
@@ -215,43 +199,29 @@ class BIM_Diff:
                         additions.append(obj)
 
                 for id, obj in activedocids.items():
-                    if not id in otherdocids:
-                        if obj.isDerivedFrom(
-                            "Part::Feature"
-                        ):  # don't count building parts
-                            print(
-                                "Object", obj.Label, "doesn't exist anymore in new doc"
-                            )
+                    if id not in otherdocids:
+                        if obj.isDerivedFrom("Part::Feature"):  # don't count building parts
+                            print("Object", obj.Label, "doesn't exist anymore in new doc")
                             subtractions.append(obj)
 
                 # try to find our objects without ID
                 newids = {}
                 for obj in objswithoutid:
                     for id, otherobj in otherdocids.items():
-                        if not id in activedocids:
-                            if (
-                                abs(otherobj.Shape.Volume - obj.Shape.Volume)
-                                < VOL_TOLERANCE
-                            ):
+                        if id not in activedocids:
+                            if abs(otherobj.Shape.Volume - obj.Shape.Volume) < VOL_TOLERANCE:
                                 if (
-                                    otherobj.Shape.BoundBox.Center.sub(
-                                        obj.Shape.BoundBox.Center
-                                    )
+                                    otherobj.Shape.BoundBox.Center.sub(obj.Shape.BoundBox.Center)
                                 ).Length < MOVE_TOLERANCE:
                                     if (
-                                        abs(
-                                            obj.Shape.BoundBox.XMin
-                                            - otherobj.Shape.BoundBox.XMin
+                                        abs(obj.Shape.BoundBox.XMin - otherobj.Shape.BoundBox.XMin)
+                                        < MOVE_TOLERANCE
+                                        and abs(
+                                            obj.Shape.BoundBox.YMin - otherobj.Shape.BoundBox.YMin
                                         )
                                         < MOVE_TOLERANCE
                                         and abs(
-                                            obj.Shape.BoundBox.YMin
-                                            - otherobj.Shape.BoundBox.YMin
-                                        )
-                                        < MOVE_TOLERANCE
-                                        and abs(
-                                            obj.Shape.BoundBox.YMin
-                                            - otherobj.Shape.BoundBox.YMin
+                                            obj.Shape.BoundBox.YMin - otherobj.Shape.BoundBox.YMin
                                         )
                                         < MOVE_TOLERANCE
                                     ):
@@ -274,15 +244,13 @@ class BIM_Diff:
                 newmats = {}  # new materials
                 for obj in otherdoc.Objects:
                     if Draft.getType(obj) == "Material":
-                        if not obj.Label in matnames:
+                        if obj.Label not in matnames:
                             print("Material", obj.Label, "doesn't exist in main doc")
                             toselect.append(obj)
                             newmats[obj.Label] = obj
 
                 if newmats:
-                    group = otherdoc.addObject(
-                        "App::DocumentObjectGroup", "New_materials"
-                    )
+                    group = otherdoc.addObject("App::DocumentObjectGroup", "New_materials")
                     for newmat in newmats.values():
                         group.addObject(newmat)
 
@@ -381,9 +349,7 @@ class BIM_Diff:
                                     import ArchMaterial
 
                                     ArchMaterial._ArchMaterial(newmat)
-                                    ArchMaterial._ViewProviderArchMaterial(
-                                        newmat.ViewObject
-                                    )
+                                    ArchMaterial._ViewProviderArchMaterial(newmat.ViewObject)
                                     newmat.Material = mat.Material
                                     print(
                                         "Changing material of",
@@ -424,9 +390,7 @@ class BIM_Diff:
                         "",
                         str(len(renamed))
                         + " "
-                        + translate(
-                            "BIM", "objects had their name changed. Rename them?"
-                        ),
+                        + translate("BIM", "objects had their name changed. Rename them?"),
                         QtGui.QMessageBox.Yes | QtGui.QMessageBox.No,
                         QtGui.QMessageBox.No,
                     )
@@ -443,9 +407,7 @@ class BIM_Diff:
                         "",
                         str(len(propertieschanged))
                         + " "
-                        + translate(
-                            "BIM", "objects had their properties changed. Update?"
-                        ),
+                        + translate("BIM", "objects had their properties changed. Update?"),
                         QtGui.QMessageBox.Yes | QtGui.QMessageBox.No,
                         QtGui.QMessageBox.No,
                     )
@@ -532,9 +494,7 @@ class BIM_Diff:
                         QtGui.QMessageBox.No,
                     )
                     if reply == QtGui.QMessageBox.Yes:
-                        group = activedoc.addObject(
-                            "App::DocumentObjectGroup", "ToDelete"
-                        )
+                        group = activedoc.addObject("App::DocumentObjectGroup", "ToDelete")
                         group.Label = "To Delete"
                         for obj in subtractions:
                             group.addObject(obj)

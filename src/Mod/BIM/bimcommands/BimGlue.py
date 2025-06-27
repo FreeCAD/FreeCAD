@@ -31,7 +31,6 @@ QT_TRANSLATE_NOOP = FreeCAD.Qt.QT_TRANSLATE_NOOP
 
 
 class BIM_Glue:
-
     def GetResources(self):
         return {
             "Pixmap": "BIM_Glue",
@@ -47,6 +46,7 @@ class BIM_Glue:
 
     def Activated(self):
         import Part
+
         sel = FreeCADGui.Selection.getSelection()
         if sel:
             rem = []

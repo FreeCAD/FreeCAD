@@ -31,14 +31,11 @@ QT_TRANSLATE_NOOP = FreeCAD.Qt.QT_TRANSLATE_NOOP
 
 
 class BIM_Compound:
-
     def GetResources(self):
         return {
             "Pixmap": "Part_Compound",
             "MenuText": QT_TRANSLATE_NOOP("BIM_Compound", "Make compound"),
-            "ToolTip": QT_TRANSLATE_NOOP(
-                "BIM_Compound", "Make a compound of several shapes"
-            ),
+            "ToolTip": QT_TRANSLATE_NOOP("BIM_Compound", "Make a compound of several shapes"),
         }
 
     def IsActive(self):

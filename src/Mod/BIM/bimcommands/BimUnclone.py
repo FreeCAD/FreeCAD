@@ -32,7 +32,6 @@ translate = FreeCAD.Qt.translate
 
 
 class BIM_Unclone:
-
     def GetResources(self):
         return {
             "Pixmap": "BIM_Unclone",
@@ -72,7 +71,7 @@ class BIM_Unclone:
 
                 # copy properties over, except special ones
                 for prop in cloned.PropertiesList:
-                    if not prop in [
+                    if prop not in [
                         "Objects",
                         "CloneOf",
                         "ExpressionEngine",
@@ -138,9 +137,7 @@ class BIM_Unclone:
                     translate("BIM", "The selected object is not a clone") + "\n"
                 )
         else:
-            FreeCAD.Console.PrintError(
-                translate("BIM", "Please select exactly one object") + "\n"
-            )
+            FreeCAD.Console.PrintError(translate("BIM", "Please select exactly one object") + "\n")
 
 
 FreeCADGui.addCommand("BIM_Unclone", BIM_Unclone())

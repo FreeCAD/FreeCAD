@@ -35,7 +35,6 @@ from . import ifc_status
 
 if FreeCAD.GuiUp:
     import FreeCADGui
-    import Arch_rc  # needed to load the Arch icons, noqa: F401
 
 
 PARAMS = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/NativeIFC")
@@ -89,9 +88,7 @@ def insert(
         prj_obj = ifc_tools.convert_document(document, filename, shapemode, strategy)
         QtCore.QTimer.singleShot(100, toggle_lock_on)
     else:
-        prj_obj = ifc_tools.create_document_object(
-            document, filename, shapemode, strategy
-        )
+        prj_obj = ifc_tools.create_document_object(document, filename, shapemode, strategy)
         QtCore.QTimer.singleShot(100, toggle_lock_off)
     if PARAMS.GetBool("LoadOrphans", True):
         ifc_tools.load_orphans(prj_obj)
@@ -200,6 +197,7 @@ def get_project_type(silent=False):
 
 
 # convenience functions
+
 
 def toggle_lock_on():
     ifc_status.on_toggle_lock(True, noconvert=True, setchecked=True)

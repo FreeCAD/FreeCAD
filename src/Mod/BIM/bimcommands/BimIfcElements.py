@@ -32,7 +32,6 @@ translate = FreeCAD.Qt.translate
 
 
 class BIM_IfcElements:
-
     def GetResources(self):
         return {
             "Pixmap": "BIM_IfcElements",
@@ -86,18 +85,14 @@ class BIM_IfcElements:
         self.form.globalMaterial.addItem(translate("BIM", "Create new multi-material"))
         self.materials = []
         for o in FreeCAD.ActiveDocument.Objects:
-            if o.isDerivedFrom("App::MaterialObject") or (
-                Draft.getType(o) == "MultiMaterial"
-            ):
+            if o.isDerivedFrom("App::MaterialObject") or (Draft.getType(o) == "MultiMaterial"):
                 self.materials.append(o.Name)
-                self.form.globalMaterial.addItem(
-                    o.Label, QtGui.QIcon(":/icons/Arch_Material.svg")
-                )
+                self.form.globalMaterial.addItem(o.Label, QtGui.QIcon(":/icons/Arch_Material.svg"))
         self.form.groupMode.currentIndexChanged.connect(self.update)
         self.form.tree.clicked.connect(self.onClickTree)
-        if hasattr(self.form.onlyVisible, "checkStateChanged"): # Qt version >= 6.7.0
+        if hasattr(self.form.onlyVisible, "checkStateChanged"):  # Qt version >= 6.7.0
             self.form.onlyVisible.checkStateChanged.connect(self.update)
-        else: # Qt version < 6.7.0
+        else:  # Qt version < 6.7.0
             self.form.onlyVisible.stateChanged.connect(self.update)
         self.form.buttonBox.accepted.connect(self.accept)
         self.form.globalMode.currentIndexChanged.connect(self.onObjectTypeChanged)
@@ -106,9 +101,7 @@ class BIM_IfcElements:
         # center the dialog over FreeCAD window
         mw = FreeCADGui.getMainWindow()
         self.form.move(
-            mw.frameGeometry().topLeft()
-            + mw.rect().center()
-            - self.form.rect().center()
+            mw.frameGeometry().topLeft() + mw.rect().center() - self.form.rect().center()
         )
 
         self.update()
@@ -164,9 +157,7 @@ class BIM_IfcElements:
             mat = rolemat[1]
             obj = FreeCAD.ActiveDocument.getObject(name)
             if obj:
-                if (
-                    not self.form.onlyVisible.isChecked()
-                ) or obj.ViewObject.isVisible():
+                if (not self.form.onlyVisible.isChecked()) or obj.ViewObject.isVisible():
                     groups.setdefault(role, []).append([name, mat])
         for group in groups.keys():
             s1 = group + " (" + str(len(groups[group])) + ")"
@@ -207,9 +198,7 @@ class BIM_IfcElements:
                 mat = "Undefined"
             obj = FreeCAD.ActiveDocument.getObject(name)
             if obj:
-                if (
-                    not self.form.onlyVisible.isChecked()
-                ) or obj.ViewObject.isVisible():
+                if (not self.form.onlyVisible.isChecked()) or obj.ViewObject.isVisible():
                     groups.setdefault(mat, []).append([name, role])
 
         for group in groups.keys():
@@ -326,9 +315,7 @@ class BIM_IfcElements:
             mat = rolemat[1]
             obj = FreeCAD.ActiveDocument.getObject(name)
             if obj:
-                if (
-                    not self.form.onlyVisible.isChecked()
-                ) or obj.ViewObject.isVisible():
+                if (not self.form.onlyVisible.isChecked()) or obj.ViewObject.isVisible():
                     it1 = QtGui.QStandardItem(obj.Label)
                     it1.setIcon(getIcon(obj))
                     it1.setToolTip(obj.Name)
@@ -373,9 +360,7 @@ class BIM_IfcElements:
         mat = None
         for index in sel:
             if index.column() == 0:
-                obj = FreeCAD.ActiveDocument.getObject(
-                    self.model.itemFromIndex(index).toolTip()
-                )
+                obj = FreeCAD.ActiveDocument.getObject(self.model.itemFromIndex(index).toolTip())
                 if obj:
                     FreeCADGui.Selection.addSelection(obj)
 
@@ -455,22 +440,15 @@ class BIM_IfcElements:
             mats = [
                 o.Name
                 for o in FreeCAD.ActiveDocument.Objects
-                if (
-                    o.isDerivedFrom("App::MaterialObject")
-                    or (Draft.getType(o) == "MultiMaterial")
-                )
+                if (o.isDerivedFrom("App::MaterialObject") or (Draft.getType(o) == "MultiMaterial"))
             ]
             if len(mats) != len(self.materials):
-                newmats = [m for m in mats if not m in self.materials]
+                newmats = [m for m in mats if m not in self.materials]
                 self.materials = mats
                 self.form.globalMaterial.clear()
                 self.form.globalMaterial.addItem(" ")
-                self.form.globalMaterial.addItem(
-                    translate("BIM", "Create new material")
-                )
-                self.form.globalMaterial.addItem(
-                    translate("BIM", "Create new multi-material")
-                )
+                self.form.globalMaterial.addItem(translate("BIM", "Create new material"))
+                self.form.globalMaterial.addItem(translate("BIM", "Create new multi-material"))
                 for m in self.materials:
                     o = FreeCAD.ActiveDocument.getObject(m)
                     if o:
@@ -532,16 +510,12 @@ class BIM_IfcElements:
                         if obj.Material:
                             if obj.Material.Name != mat:
                                 if not changed:
-                                    FreeCAD.ActiveDocument.openTransaction(
-                                        "Change material"
-                                    )
+                                    FreeCAD.ActiveDocument.openTransaction("Change material")
                                     changed = True
                                 obj.Material = mobj
                         else:
                             if not changed:
-                                FreeCAD.ActiveDocument.openTransaction(
-                                    "Change material"
-                                )
+                                FreeCAD.ActiveDocument.openTransaction("Change material")
                                 changed = True
                             obj.Material = mobj
 
@@ -555,8 +529,6 @@ if FreeCAD.GuiUp:
 
     class IfcElementsDelegate(QtGui.QStyledItemDelegate):
         def __init__(self, parent=None, dialog=None, *args):
-            import Arch_rc
-
             try:
                 import ArchIFC
 
@@ -637,7 +609,6 @@ def getIcon(obj):
     """returns a QIcon for an object"""
 
     from PySide import QtGui
-    import Arch_rc
 
     if hasattr(obj.ViewObject, "Icon"):
         return obj.ViewObject.Icon

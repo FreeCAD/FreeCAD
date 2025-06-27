@@ -27,8 +27,8 @@
 import unittest
 import FreeCAD
 
-class TestArchBase(unittest.TestCase):
 
+class TestArchBase(unittest.TestCase):
     def setUp(self):
         print(f"Initializing: {self.__class__.__name__}")
         self.document = FreeCAD.newDocument(self.__class__.__name__)

@@ -97,7 +97,7 @@ def add_layers(obj, element=None, ifcfile=None, proj=None):
     layers = ifcopenshell.util.element.get_layers(ifcfile, element)
     for layer in layers:
         lay = get_layer(layer, proj)
-        if lay and not obj in lay.Group:
+        if lay and obj not in lay.Group:
             lay.Proxy.addObject(lay, obj)
 
 
@@ -124,11 +124,11 @@ def add_to_layer(obj, layer):
     items = ()
     if layer_element.AssignedItems:
         items = layer_element.AssignedItems
-    if not obj_element in items:
+    if obj_element not in items:
         cmd = "attribute.edit_attributes"
         attribs = {"AssignedItems": items + (obj_element,)}
         ifc_tools.api_run(cmd, ifcfile, product=layer_element, attributes=attribs)
-    if not obj in layer.Group:
+    if obj not in layer.Group:
         layer.Proxy.addObject(layer, obj)
 
 

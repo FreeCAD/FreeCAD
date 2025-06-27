@@ -33,109 +33,105 @@ translate = FreeCAD.Qt.translate
 PARAMS = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/BIM")
 
 
-
 class Arch_Axis:
-
     "the Arch Axis command definition"
 
     def GetResources(self):
-
-        return {"Pixmap"  : "Arch_Axis",
-                "MenuText": QT_TRANSLATE_NOOP("Arch_Axis","Axis"),
-                "Accel": "A, X",
-                "ToolTip": QT_TRANSLATE_NOOP("Arch_Axis","Creates a set of axes")}
+        return {
+            "Pixmap": "Arch_Axis",
+            "MenuText": QT_TRANSLATE_NOOP("Arch_Axis", "Axis"),
+            "Accel": "A, X",
+            "ToolTip": QT_TRANSLATE_NOOP("Arch_Axis", "Creates a set of axes"),
+        }
 
     def Activated(self):
-
-        FreeCAD.ActiveDocument.openTransaction(translate("Arch","Create Axis"))
+        FreeCAD.ActiveDocument.openTransaction(translate("Arch", "Create Axis"))
         FreeCADGui.addModule("Arch")
 
         FreeCADGui.doCommand("Arch.makeAxis()")
         FreeCAD.ActiveDocument.commitTransaction()
 
     def IsActive(self):
-
         v = hasattr(FreeCADGui.getMainWindow().getActiveWindow(), "getSceneGraph")
         return v
 
 
-
 class Arch_AxisSystem:
-
     "the Arch Axis System command definition"
 
     def GetResources(self):
-
-        return {"Pixmap"  : "Arch_Axis_System",
-                "MenuText": QT_TRANSLATE_NOOP("Arch_AxisSystem","Axis System"),
-                "Accel": "X, S",
-                "ToolTip": QT_TRANSLATE_NOOP("Arch_AxisSystem","Creates an axis system from a set of axes")}
+        return {
+            "Pixmap": "Arch_Axis_System",
+            "MenuText": QT_TRANSLATE_NOOP("Arch_AxisSystem", "Axis System"),
+            "Accel": "X, S",
+            "ToolTip": QT_TRANSLATE_NOOP(
+                "Arch_AxisSystem", "Creates an axis system from a set of axes"
+            ),
+        }
 
     def Activated(self):
-
         import Draft
+
         if FreeCADGui.Selection.getSelection():
             s = "["
             for o in FreeCADGui.Selection.getSelection():
                 if Draft.getType(o) != "Axis":
-                    FreeCAD.Console.PrintError(translate("Arch","Only axes must be selected")+"\n")
+                    FreeCAD.Console.PrintError(
+                        translate("Arch", "Only axes must be selected") + "\n"
+                    )
                     return
-                s += "FreeCAD.ActiveDocument."+o.Name+","
+                s += "FreeCAD.ActiveDocument." + o.Name + ","
             s += "]"
-            FreeCAD.ActiveDocument.openTransaction(translate("Arch","Create Axis System"))
+            FreeCAD.ActiveDocument.openTransaction(translate("Arch", "Create Axis System"))
             FreeCADGui.addModule("Arch")
-            FreeCADGui.doCommand("Arch.makeAxisSystem("+s+")")
+            FreeCADGui.doCommand("Arch.makeAxisSystem(" + s + ")")
             FreeCAD.ActiveDocument.commitTransaction()
         else:
-            FreeCAD.Console.PrintError(translate("Arch","Please select at least one axis")+"\n")
+            FreeCAD.Console.PrintError(translate("Arch", "Please select at least one axis") + "\n")
 
     def IsActive(self):
-
         v = hasattr(FreeCADGui.getMainWindow().getActiveWindow(), "getSceneGraph")
         return v
 
 
 class Arch_Grid:
-
     "the Arch Grid command definition"
 
     def GetResources(self):
-
-        return {"Pixmap"  : "Arch_Grid",
-                "MenuText": QT_TRANSLATE_NOOP("Arch_Grid","Grid"),
-                "Accel": "A, X",
-                "ToolTip": QT_TRANSLATE_NOOP("Arch_Grid","Creates a customizable grid object")}
+        return {
+            "Pixmap": "Arch_Grid",
+            "MenuText": QT_TRANSLATE_NOOP("Arch_Grid", "Grid"),
+            "Accel": "A, X",
+            "ToolTip": QT_TRANSLATE_NOOP("Arch_Grid", "Creates a customizable grid object"),
+        }
 
     def Activated(self):
-
-        FreeCAD.ActiveDocument.openTransaction(translate("Arch","Create Grid"))
+        FreeCAD.ActiveDocument.openTransaction(translate("Arch", "Create Grid"))
         FreeCADGui.addModule("Arch")
 
         FreeCADGui.doCommand("Arch.makeGrid()")
         FreeCAD.ActiveDocument.commitTransaction()
 
     def IsActive(self):
-
         v = hasattr(FreeCADGui.getMainWindow().getActiveWindow(), "getSceneGraph")
         return v
 
 
 class Arch_AxisTools:
-
     """The Axis tools group command"""
 
     def GetCommands(self):
-        return tuple(["Arch_Axis","Arch_AxisSystem","Arch_Grid"])
+        return tuple(["Arch_Axis", "Arch_AxisSystem", "Arch_Grid"])
 
     def GetResources(self):
-        return { "MenuText": QT_TRANSLATE_NOOP("Arch_AxisTools","Axis tools"),
-                 "ToolTip": QT_TRANSLATE_NOOP("Arch_AxisTools","Axis tools")
-               }
+        return {
+            "MenuText": QT_TRANSLATE_NOOP("Arch_AxisTools", "Axis tools"),
+            "ToolTip": QT_TRANSLATE_NOOP("Arch_AxisTools", "Axis tools"),
+        }
 
     def IsActive(self):
         v = hasattr(FreeCADGui.getMainWindow().getActiveWindow(), "getSceneGraph")
         return v
-
 
 
 FreeCADGui.addCommand("Arch_Axis", Arch_Axis())

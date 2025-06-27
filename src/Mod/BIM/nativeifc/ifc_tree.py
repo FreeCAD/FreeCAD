@@ -78,7 +78,6 @@ def print_geometry_tree(element):
 def show_geometry_tree(element):
     """Same as get_geometry_tree but in a Qt dialog"""
 
-    import Arch_rc
     import FreeCADGui  # lazy import
     from . import ifc_tools
     from PySide import QtWidgets
@@ -166,9 +165,7 @@ def show_properties(current, previous):
     # props = [p for p in  props if isfloat(str(getattr(elt,p)))]
     props = [p for p in props if not str(getattr(elt, p)).startswith("#")]
     props = [p for p in props if not str(getattr(elt, p)).startswith("(")]
-    props = [
-        p for p in props if p not in ["Position", "LayerAssignments", "StyledByItem"]
-    ]
+    props = [p for p in props if p not in ["Position", "LayerAssignments", "StyledByItem"]]
     proptree = box.children()[0].itemAt(0).widget()
     proptree.clear()
     proptree.setHorizontalHeaderLabels(["Property", "Value"])
@@ -191,9 +188,7 @@ def show_properties(current, previous):
         position = FreeCAD.Vector(elt.Position.Location.Coordinates)
         axis = FreeCAD.Vector(elt.Position.Axis.DirectionRatios)
         xref = FreeCAD.Vector(elt.Position.RefDirection.DirectionRatios)
-        rotation = FreeCAD.Rotation(axis, xref, FreeCAD.Vector(), "ZXY").toEulerAngles(
-            "XYZ"
-        )
+        rotation = FreeCAD.Rotation(axis, xref, FreeCAD.Vector(), "ZXY").toEulerAngles("XYZ")
         rotation = FreeCAD.Vector(rotation)
         for c in ["x", "y", "z"]:
             r1 = QtWidgets.QTableWidgetItem("Position " + c.upper())

@@ -31,7 +31,6 @@ QT_TRANSLATE_NOOP = FreeCAD.Qt.QT_TRANSLATE_NOOP
 
 
 class BIM_Extrude:
-
     def GetResources(self):
         return {
             "Pixmap": "Part_Extrude",

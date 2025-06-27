@@ -23,28 +23,4 @@
 # ***************************************************************************
 
 # Unit test for the Arch module
-from bimtests.TestArchRoof import TestArchRoof
-from bimtests.TestArchSpace import TestArchSpace
-from bimtests.TestArchWall import TestArchWall
-from bimtests.TestArchBuildingPart import TestArchBuildingPart
-from bimtests.TestArchAxis import TestArchAxis
-from bimtests.TestArch import TestArch
-from bimtests.TestArchMaterial import TestArchMaterial
-from bimtests.TestArchPanel import TestArchPanel
-from bimtests.TestArchWindow import TestArchWindow
-from bimtests.TestArchStairs import TestArchStairs
-from bimtests.TestArchPipe import TestArchPipe
-from bimtests.TestArchCurtainWall import TestArchCurtainWall
-from bimtests.TestArchProfile import TestArchProfile
-from bimtests.TestArchProject import TestArchProject
-from bimtests.TestArchSectionPlane import TestArchSectionPlane
-from bimtests.TestArchRebar import TestArchRebar
-from bimtests.TestArchGrid import TestArchGrid
-from bimtests.TestArchFence import TestArchFence
-from bimtests.TestArchEquipment import TestArchEquipment
-from bimtests.TestArchFrame import TestArchFrame
-from bimtests.TestArchReference import TestArchReference
-from bimtests.TestArchSchedule import TestArchSchedule
-from bimtests.TestArchTruss import TestArchTruss
-from bimtests.TestArchComponent import TestArchComponent
 

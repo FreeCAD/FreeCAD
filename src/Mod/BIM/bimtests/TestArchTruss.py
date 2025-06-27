@@ -25,8 +25,8 @@
 import Arch
 from bimtests import TestArchBase
 
-class TestArchTruss(TestArchBase.TestArchBase):
 
+class TestArchTruss(TestArchBase.TestArchBase):
     def test_makeTruss(self):
         """Test the makeTruss function."""
         operation = "Testing makeTruss..."

@@ -33,14 +33,11 @@ PARAMS = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/BIM")
 
 
 class BIM_TogglePanels:
-
     def GetResources(self):
         return {
             "Pixmap": "BIM_TogglePanels",
             "MenuText": QT_TRANSLATE_NOOP("BIM_TogglePanels", "Toggle bottom panels"),
-            "ToolTip": QT_TRANSLATE_NOOP(
-                "BIM_TogglePanels", "Toggle bottom dock panels on/off"
-            ),
+            "ToolTip": QT_TRANSLATE_NOOP("BIM_TogglePanels", "Toggle bottom dock panels on/off"),
             "Accel": "Ctrl+0",
         }
 
@@ -58,10 +55,7 @@ class BIM_TogglePanels:
         bottomwidgets = [
             w
             for w in dockwidgets
-            if (
-                (mw.dockWidgetArea(w) == QtCore.Qt.BottomDockWidgetArea)
-                and w.isVisible()
-            )
+            if ((mw.dockWidgetArea(w) == QtCore.Qt.BottomDockWidgetArea) and w.isVisible())
         ]
         if bottomwidgets:
             hidden = ""
@@ -72,8 +66,8 @@ class BIM_TogglePanels:
             if togglebutton:
                 togglebutton.setChecked(False)
         else:
-            widgets = PARAMS.GetString("HiddenWidgets",
-                "Python console;;Report view;;Selection view;;"
+            widgets = PARAMS.GetString(
+                "HiddenWidgets", "Python console;;Report view;;Selection view;;"
             )
             widgets = [mw.findChild(QtGui.QWidget, w) for w in widgets.split(";;") if w]
             for w in widgets:

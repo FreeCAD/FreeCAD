@@ -25,8 +25,8 @@
 import Arch
 from bimtests import TestArchBase
 
-class TestArchSchedule(TestArchBase.TestArchBase):
 
+class TestArchSchedule(TestArchBase.TestArchBase):
     def test_makeSchedule(self):
         """Test the makeSchedule function."""
         operation = "Testing makeSchedule..."

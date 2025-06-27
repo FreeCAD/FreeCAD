@@ -32,7 +32,6 @@ QT_TRANSLATE_NOOP = FreeCAD.Qt.QT_TRANSLATE_NOOP
 
 
 class BIM_Clone(DraftTools.Draft_Clone):
-
     def __init__(self):
         DraftTools.Draft_Clone.__init__(self)
         self.moveAfterCloning = True

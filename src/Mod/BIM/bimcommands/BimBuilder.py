@@ -31,14 +31,11 @@ QT_TRANSLATE_NOOP = FreeCAD.Qt.QT_TRANSLATE_NOOP
 
 
 class BIM_Builder:
-
     def GetResources(self):
         return {
             "Pixmap": "Part_Shapebuilder",
             "MenuText": QT_TRANSLATE_NOOP("Part_Builder", "Shape builder..."),
-            "ToolTip": QT_TRANSLATE_NOOP(
-                "Part_Builder", "Advanced utility to create shapes"
-            ),
+            "ToolTip": QT_TRANSLATE_NOOP("Part_Builder", "Advanced utility to create shapes"),
         }
 
     def Activated(self):

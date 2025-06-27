@@ -37,13 +37,10 @@ PARAMS = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/BIM")
 
 
 class BIM_IfcProperties:
-
     def GetResources(self):
         return {
             "Pixmap": "BIM_IfcProperties",
-            "MenuText": QT_TRANSLATE_NOOP(
-                "BIM_IfcProperties", "Manage IFC properties..."
-            ),
+            "MenuText": QT_TRANSLATE_NOOP("BIM_IfcProperties", "Manage IFC properties..."),
             "ToolTip": QT_TRANSLATE_NOOP(
                 "BIM_IfcProperties",
                 "Manage the different IFC properties of your BIM objects",
@@ -93,12 +90,9 @@ class BIM_IfcProperties:
         except (ImportError, AttributeError):
             import ArchComponent
 
-            self.ptypes = (
-                ArchComponent.SimplePropertyTypes + ArchComponent.MeasurePropertyTypes
-            )
+            self.ptypes = ArchComponent.SimplePropertyTypes + ArchComponent.MeasurePropertyTypes
         self.plabels = [
-            "".join(map(lambda x: x if x.islower() else " " + x, t[3:]))[1:]
-            for t in self.ptypes
+            "".join(map(lambda x: x if x.islower() else " " + x, t[3:]))[1:] for t in self.ptypes
         ]
         self.psetdefs = {}
         psetpath = os.path.join(
@@ -128,22 +122,19 @@ class BIM_IfcProperties:
         )
 
         # set combos
-        self.form.comboProperty.addItems(
-            [translate("BIM", "Add property...")] + self.plabels
-        )
+        self.form.comboProperty.addItems([translate("BIM", "Add property...")] + self.plabels)
         self.form.comboPset.addItems(
-            [translate("BIM", "Add property set..."), translate("BIM", "New...")]
-            + self.psetkeys
+            [translate("BIM", "Add property set..."), translate("BIM", "New...")] + self.psetkeys
         )
 
         # connect signals
         self.form.tree.selectionModel().selectionChanged.connect(self.updateProperties)
         self.form.groupMode.currentIndexChanged.connect(self.update)
-        if hasattr(self.form.onlyVisible, "checkStateChanged"): # Qt version >= 6.7.0
+        if hasattr(self.form.onlyVisible, "checkStateChanged"):  # Qt version >= 6.7.0
             self.form.onlyVisible.checkStateChanged.connect(self.update)
             self.form.onlySelected.checkStateChanged.connect(self.onSelected)
             self.form.onlyMatches.checkStateChanged.connect(self.update)
-        else: # Qt version < 6.7.0
+        else:  # Qt version < 6.7.0
             self.form.onlyVisible.stateChanged.connect(self.update)
             self.form.onlySelected.stateChanged.connect(self.onSelected)
             self.form.onlyMatches.stateChanged.connect(self.update)
@@ -158,16 +149,13 @@ class BIM_IfcProperties:
         # center the dialog over FreeCAD window
         mw = FreeCADGui.getMainWindow()
         self.form.move(
-            mw.frameGeometry().topLeft()
-            + mw.rect().center()
-            - self.form.rect().center()
+            mw.frameGeometry().topLeft() + mw.rect().center() - self.form.rect().center()
         )
 
         self.update()
         self.form.show()
 
     def rebuildObjectsList(self):
-
         # build objects list and fill search terms
         objectslist = {}
         searchterms = [""]
@@ -178,9 +166,7 @@ class BIM_IfcProperties:
         for obj in objects:
             role = self.getRole(obj)
             if role:
-                if hasattr(obj, "IfcProperties") and isinstance(
-                    obj.IfcProperties, dict
-                ):
+                if hasattr(obj, "IfcProperties") and isinstance(obj.IfcProperties, dict):
                     props = obj.IfcProperties
                 elif hasattr(obj, "IfcClass"):
                     props = self.getNativeIfcProperties(obj)
@@ -195,10 +181,10 @@ class BIM_IfcProperties:
                         key = key.split(";;")
                         val = [key[1]] + val
                         key = key[0]
-                    if not key in searchterms:
+                    if key not in searchterms:
                         searchterms.append(key)
                     if len(val) == 3:
-                        if not val[0] in searchterms:
+                        if val[0] not in searchterms:
                             searchterms.append(val[0])
         return objectslist, searchterms
 
@@ -258,9 +244,7 @@ class BIM_IfcProperties:
             role = role[0]
             obj = FreeCAD.ActiveDocument.getObject(name)
             if obj:
-                if (
-                    not self.form.onlyVisible.isChecked()
-                ) or obj.ViewObject.isVisible():
+                if (not self.form.onlyVisible.isChecked()) or obj.ViewObject.isVisible():
                     groups.setdefault(role, []).append(name)
 
         for group in groups.keys():
@@ -349,9 +333,7 @@ class BIM_IfcProperties:
             role = role[0]
             obj = FreeCAD.ActiveDocument.getObject(name)
             if obj:
-                if (
-                    not self.form.onlyVisible.isChecked()
-                ) or obj.ViewObject.isVisible():
+                if (not self.form.onlyVisible.isChecked()) or obj.ViewObject.isVisible():
                     it1 = QtGui.QStandardItem(obj.Label)
                     icon = obj.ViewObject.Icon
                     it1.setIcon(icon)
@@ -399,16 +381,17 @@ class BIM_IfcProperties:
                     if not changed:
                         FreeCAD.ActiveDocument.openTransaction("Change properties")
                         changed = True
-                    if hasattr(obj,"IfcClass"):
-                        print("props:",props)
-                        for key,value in values[1].items():
+                    if hasattr(obj, "IfcClass"):
+                        print("props:", props)
+                        for key, value in values[1].items():
                             if ";;" in key and ";;" in value:
                                 pname, pset = key.split(";;")
                                 ptype, pvalue = value.split(";;")
                                 from nativeifc import ifc_psets  # lazy loading
+
                                 fctype = ifc_psets.get_freecad_type(ptype)
-                                if not pname in obj.PropertiesList:
-                                    obj.addProperty(fctype, pname, pset, ptype+":"+pname)
+                                if pname not in obj.PropertiesList:
+                                    obj.addProperty(fctype, pname, pset, ptype + ":" + pname)
                                     ifc_psets.edit_pset(obj, pname, force=True)
                                 if pvalue:
                                     setattr(obj, pname, pvalue)
@@ -417,9 +400,7 @@ class BIM_IfcProperties:
                             "App::PropertyMap",
                             "IfcPRoperties",
                             "IFC",
-                            QT_TRANSLATE_NOOP(
-                                "App::Property", "IFC properties of this object"
-                            ),
+                            QT_TRANSLATE_NOOP("App::Property", "IFC properties of this object"),
                             locked=True,
                         )
                     if hasattr(obj, "IfcProperties"):
@@ -436,7 +417,7 @@ class BIM_IfcProperties:
             if ":" in ttip:
                 ptype, pname = ttip.split(":")
                 if pset not in ["Base", "IFC", "Geometry"]:
-                    props[pname+";;"+pset] = ptype+";;"+str(getattr(obj,p))
+                    props[pname + ";;" + pset] = ptype + ";;" + str(getattr(obj, p))
         return props
 
     def getSearchResults(self, obj):
@@ -457,10 +438,10 @@ class BIM_IfcProperties:
                     else:
                         pset = value.split(";;")[0]
                     if text.lower() in key.lower():
-                        if not key in result:
+                        if key not in result:
                             result.append(key)
                     if text.lower() in pset.lower():
-                        if not pset in result:
+                        if pset not in result:
                             result.append(pset)
                 if result:
                     return QtGui.QStandardItem(",".join(result))
@@ -552,9 +533,7 @@ class BIM_IfcProperties:
             top = QtGui.QStandardItem(pset)
             top.setDragEnabled(False)
             top.setToolTip("PropertySet")
-            self.propmodel.appendRow(
-                [top, QtGui.QStandardItem(), QtGui.QStandardItem()]
-            )
+            self.propmodel.appendRow([top, QtGui.QStandardItem(), QtGui.QStandardItem()])
             for plist in plists:
                 pname = plist[0]
                 if ";;" in pname:
@@ -600,31 +579,18 @@ class BIM_IfcProperties:
                             if name in self.objectslist:
                                 # print("object",name,self.objectslist[name][1])
                                 if pvalue == "*VARIES*":
-                                    if not (
-                                        prop + ";;" + pset in self.objectslist[name][1]
-                                    ):
+                                    if prop + ";;" + pset not in self.objectslist[name][1]:
                                         # print("adding",prop)
-                                        self.objectslist[name][1][
-                                            prop + ";;" + pset
-                                        ] = (ptype + ";;")
+                                        self.objectslist[name][1][prop + ";;" + pset] = ptype + ";;"
                                 else:
                                     pval = ptype + ";;" + pvalue
                                     if prop in self.objectslist[name][1]:
-                                        if (
-                                            self.objectslist[name][1][
-                                                prop + ";;" + pset
-                                            ]
-                                            != pval
-                                        ):
+                                        if self.objectslist[name][1][prop + ";;" + pset] != pval:
                                             # print("modifying",prop)
-                                            self.objectslist[name][1][
-                                                prop + ";;" + pset
-                                            ] = pval
+                                            self.objectslist[name][1][prop + ";;" + pset] = pval
                                     else:
                                         # print("adding",prop)
-                                        self.objectslist[name][1][
-                                            prop + ";;" + pset
-                                        ] = pval
+                                        self.objectslist[name][1][prop + ";;" + pset] = pval
         if remove:
             for index in sel:
                 if index.column() == 0:
@@ -711,9 +677,7 @@ class BIM_IfcProperties:
             top = QtGui.QStandardItem(name)
             top.setDragEnabled(False)
             top.setToolTip("PropertySet")
-            self.propmodel.appendRow(
-                [top, QtGui.QStandardItem(), QtGui.QStandardItem()]
-            )
+            self.propmodel.appendRow([top, QtGui.QStandardItem(), QtGui.QStandardItem()])
         elif idx > 1:
             psetlabel = self.psetkeys[idx - 2]
             psetdef = "Pset_" + psetlabel.replace(" ", "")
@@ -721,9 +685,7 @@ class BIM_IfcProperties:
                 top = QtGui.QStandardItem(psetdef)
                 top.setDragEnabled(False)
                 top.setToolTip("PropertySet")
-                self.propmodel.appendRow(
-                    [top, QtGui.QStandardItem(), QtGui.QStandardItem()]
-                )
+                self.propmodel.appendRow([top, QtGui.QStandardItem(), QtGui.QStandardItem()])
                 for i in range(0, len(self.psetdefs[psetdef]), 2):
                     self.addProperty(
                         pset=top,
@@ -795,9 +757,9 @@ if FreeCAD.GuiUp:
                 elif "Real" in ptype:
                     editor = QtGui.QDoubleSpinBox(parent)
                     editor.setDecimals(
-                        FreeCAD.ParamGet(
-                            "User parameter:BaseApp/Preferences/Units"
-                        ).GetInt("Decimals", 2)
+                        FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Units").GetInt(
+                            "Decimals", 2
+                        )
                     )
                 elif ("Boolean" in ptype) or ("Logical" in ptype):
                     editor = QtGui.QComboBox(parent)
@@ -829,13 +791,9 @@ if FreeCAD.GuiUp:
                         editor.setValue(float(index.data()))
                     except (TypeError, ValueError, AttributeError):
                         editor.setValue(0)
-                elif ("Boolean" in editor.objectName()) or (
-                    "Logical" in editor.objectName()
-                ):
+                elif ("Boolean" in editor.objectName()) or ("Logical" in editor.objectName()):
                     try:
-                        editor.setCurrentIndex(
-                            ["true", "false"].index(index.data().lower())
-                        )
+                        editor.setCurrentIndex(["true", "false"].index(index.data().lower()))
                     except (ValueError, AttributeError):
                         editor.setCurrentIndex(1)
                 elif "Measure" in editor.objectName():
@@ -875,13 +833,9 @@ if FreeCAD.GuiUp:
                     data = self.plabels[idx]
                     model.setData(index, data)
             else:
-                if ("Integer" in editor.objectName()) or (
-                    "Real" in editor.objectName()
-                ):
+                if ("Integer" in editor.objectName()) or ("Real" in editor.objectName()):
                     model.setData(index, str(editor.value()))
-                elif ("Boolean" in editor.objectName()) or (
-                    "Logical" in editor.objectName()
-                ):
+                elif ("Boolean" in editor.objectName()) or ("Logical" in editor.objectName()):
                     model.setData(index, editor.currentText())
                 elif "Measure" in editor.objectName():
                     model.setData(index, editor.property("text"))

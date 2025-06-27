@@ -87,7 +87,6 @@ class BIM_Tutorial:
             self.pixempty = QtGui.QPixmap()
 
             # fire the loading after displaying the widget
-            from draftutils import todo
 
             # self.load()
             # todo.ToDo.delay(self.load,None)
@@ -109,9 +108,7 @@ class BIM_Tutorial:
             return
 
         # load tutorial from wiki
-        offlineloc = os.path.join(
-            FreeCAD.getUserAppDataDir(), "BIM", "Tutorial", "Tutorial.html"
-        )
+        offlineloc = os.path.join(FreeCAD.getUserAppDataDir(), "BIM", "Tutorial", "Tutorial.html")
         try:
             u = urllib2.urlopen(URL)
             html = u.read()
@@ -119,9 +116,7 @@ class BIM_Tutorial:
                 html = html.decode("utf8")
             html = html.replace("\n", " ")
             html = html.replace('href="/', 'href="https://wiki.freecad.org/')
-            html = re.sub(
-                '<div id="toc".*?</ul> </div>', "", html
-            )  # remove table of contents
+            html = re.sub('<div id="toc".*?</ul> </div>', "", html)  # remove table of contents
             u.close()
         except:
             # unable to load tutorial. Look for offline version
@@ -195,9 +190,7 @@ class BIM_Tutorial:
                             u.close()
                         # descr = descr.replace(path,"file://"+storename.replace("\\","/"))
                         # fix for windows - seems to work everywhere else too...
-                        descr = descr.replace(
-                            path, "file:///" + storename.replace("\\", "/")
-                        )
+                        descr = descr.replace(path, "file:///" + storename.replace("\\", "/"))
             nd.append(descr)
         self.descriptions = nd
 
@@ -249,11 +242,7 @@ class BIM_Tutorial:
         else:
             self.form.labelTasks.hide()
         self.dock.setWindowTitle(
-            translate("BIM", "BIM Tutorial - step")
-            + " "
-            + str(self.step)
-            + " / "
-            + str(self.steps)
+            translate("BIM", "BIM Tutorial - step") + " " + str(self.step) + " / " + str(self.steps)
         )
         self.form.progressBar.setValue(int((float(self.step) / self.steps) * 100))
 

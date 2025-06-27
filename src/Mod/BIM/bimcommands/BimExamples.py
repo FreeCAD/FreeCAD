@@ -31,7 +31,6 @@ QT_TRANSLATE_NOOP = FreeCAD.Qt.QT_TRANSLATE_NOOP
 
 
 class BIM_Examples:
-
     def GetResources(self):
         return {
             "Pixmap": "BIM_Help",
@@ -44,6 +43,7 @@ class BIM_Examples:
 
     def Activated(self):
         from PySide import QtGui
+
         QtGui.QDesktopServices.openUrl("https://github.com/yorikvanhavre/FreeCAD-BIM-examples")
 
 

@@ -25,7 +25,9 @@
 """This script converts the computer iterpretable listing ifcXML XSD into a list
 of non-abstract children of IfcProduct"""
 
-import xml.sax, json, copy
+import xml.sax
+import json
+import copy
 
 
 class IfcElementHandler(xml.sax.ContentHandler):

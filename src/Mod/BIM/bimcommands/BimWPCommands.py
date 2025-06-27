@@ -31,14 +31,11 @@ QT_TRANSLATE_NOOP = FreeCAD.Qt.QT_TRANSLATE_NOOP
 
 
 class BIM_SetWPFront:
-
     def GetResources(self):
         return {
             "Pixmap": "view-front.svg",
             "MenuText": QT_TRANSLATE_NOOP("BIM_SetWPFront", "Working Plane Front"),
-            "ToolTip": QT_TRANSLATE_NOOP(
-                "BIM_SetWPFront", "Set the working plane to Front"
-            ),
+            "ToolTip": QT_TRANSLATE_NOOP("BIM_SetWPFront", "Set the working plane to Front"),
             "Accel": "W,P,1",
         }
 
@@ -48,14 +45,11 @@ class BIM_SetWPFront:
 
 
 class BIM_SetWPSide:
-
     def GetResources(self):
         return {
             "Pixmap": "view-right.svg",
             "MenuText": QT_TRANSLATE_NOOP("BIM_SetWPSide", "Working Plane Side"),
-            "ToolTip": QT_TRANSLATE_NOOP(
-                "BIM_SetWPSide", "Set the working plane to Side"
-            ),
+            "ToolTip": QT_TRANSLATE_NOOP("BIM_SetWPSide", "Set the working plane to Side"),
             "Accel": "W,P,3",
         }
 
@@ -65,14 +59,11 @@ class BIM_SetWPSide:
 
 
 class BIM_SetWPTop:
-
     def GetResources(self):
         return {
             "Pixmap": "view-top.svg",
             "MenuText": QT_TRANSLATE_NOOP("BIM_SetWPTop", "Working Plane Top"),
-            "ToolTip": QT_TRANSLATE_NOOP(
-                "BIM_SetWPTop", "Set the working plane to Top"
-            ),
+            "ToolTip": QT_TRANSLATE_NOOP("BIM_SetWPTop", "Set the working plane to Top"),
             "Accel": "W,P,2",
         }
 
@@ -82,7 +73,6 @@ class BIM_SetWPTop:
 
 
 class BIM_WPView:
-
     def GetResources(self):
         return {
             "Pixmap": "BIM_WPView",

@@ -25,8 +25,8 @@
 import Arch
 from bimtests import TestArchBase
 
-class TestArchEquipment(TestArchBase.TestArchBase):
 
+class TestArchEquipment(TestArchBase.TestArchBase):
     def test_makeEquipment(self):
         """Test the makeEquipment function."""
         operation = "Testing makeEquipment..."

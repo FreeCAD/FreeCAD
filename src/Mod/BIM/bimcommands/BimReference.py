@@ -34,25 +34,23 @@ PARAMS = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/BIM")
 
 
 class Arch_Reference:
-
     "the Arch Reference command definition"
 
     def GetResources(self):
-
-        return {"Pixmap"  : "Arch_Reference",
-                "MenuText": QT_TRANSLATE_NOOP("Arch_Reference","External reference"),
-                "Accel": "E, X",
-                "ToolTip": QT_TRANSLATE_NOOP("Arch_Reference","Creates an external reference object")}
+        return {
+            "Pixmap": "Arch_Reference",
+            "MenuText": QT_TRANSLATE_NOOP("Arch_Reference", "External reference"),
+            "Accel": "E, X",
+            "ToolTip": QT_TRANSLATE_NOOP("Arch_Reference", "Creates an external reference object"),
+        }
 
     def IsActive(self):
-
         v = hasattr(FreeCADGui.getMainWindow().getActiveWindow(), "getSceneGraph")
         return v
 
     def Activated(self):
-
         FreeCADGui.Control.closeDialog()
-        FreeCAD.ActiveDocument.openTransaction(translate("Arch","Create external reference"))
+        FreeCAD.ActiveDocument.openTransaction(translate("Arch", "Create external reference"))
         FreeCADGui.addModule("Arch")
         FreeCADGui.addModule("Draft")
         FreeCADGui.doCommand("obj = Arch.makeReference()")

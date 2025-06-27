@@ -31,14 +31,11 @@ QT_TRANSLATE_NOOP = FreeCAD.Qt.QT_TRANSLATE_NOOP
 
 
 class BIM_SimpleCopy:
-
     def GetResources(self):
         return {
             "Pixmap": "Tree_Part",
             "MenuText": QT_TRANSLATE_NOOP("BIM_SimpleCopy", "Create simple copy"),
-            "ToolTip": QT_TRANSLATE_NOOP(
-                "BIM_SimpleCopy", "Create a simple non-parametric copy"
-            ),
+            "ToolTip": QT_TRANSLATE_NOOP("BIM_SimpleCopy", "Create a simple non-parametric copy"),
         }
 
     def IsActive(self):

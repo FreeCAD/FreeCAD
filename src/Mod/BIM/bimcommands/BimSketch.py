@@ -31,7 +31,6 @@ QT_TRANSLATE_NOOP = FreeCAD.Qt.QT_TRANSLATE_NOOP
 
 
 class BIM_Sketch:
-
     def GetResources(self):
         return {
             "Pixmap": "Sketch",
@@ -49,6 +48,7 @@ class BIM_Sketch:
     def Activated(self):
         import WorkingPlane
         from draftutils import params
+
         issnap = False
         if hasattr(FreeCAD, "DraftWorkingPlane"):
             FreeCAD.DraftWorkingPlane.setup()

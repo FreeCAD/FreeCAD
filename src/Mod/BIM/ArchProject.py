@@ -22,9 +22,9 @@
 # *                                                                         *
 # ***************************************************************************
 
-__title__  = "FreeCAD Project"
+__title__ = "FreeCAD Project"
 __author__ = "Yorik van Havre"
-__url__    = "https://www.freecad.org"
+__url__ = "https://www.freecad.org"
 
 ## @package ArchProject
 #  \ingroup ARCH
@@ -43,12 +43,13 @@ import ArchIFCView
 
 if FreeCAD.GuiUp:
     from PySide.QtCore import QT_TRANSLATE_NOOP
-    import FreeCADGui
     from draftutils.translate import translate
 else:
-    def translate(ctxt,txt):
+
+    def translate(ctxt, txt):
         return txt
-    def QT_TRANSLATE_NOOP(ctxt,txt):
+
+    def QT_TRANSLATE_NOOP(ctxt, txt):
         return txt
 
 
@@ -78,7 +79,7 @@ class _Project(ArchIFC.IfcContext):
 
         ArchIFC.IfcContext.setProperties(self, obj)
         pl = obj.PropertiesList
-        if not hasattr(obj,"Group"):
+        if not hasattr(obj, "Group"):
             obj.addExtension("App::GroupExtensionPython")
         self.Type = "Project"
 
@@ -86,14 +87,14 @@ class _Project(ArchIFC.IfcContext):
         """Method run when the document is restored. Re-add the properties."""
         self.setProperties(obj)
 
-    def addObject(self,obj,child):
-
+    def addObject(self, obj, child):
         "Adds an object to the group of this BuildingPart"
 
-        if not child in obj.Group:
+        if child not in obj.Group:
             g = obj.Group
             g.append(child)
             obj.Group = g
+
 
 class _ViewProviderProject(ArchIFCView.IfcContextView):
     """A View Provider for the project object.
@@ -104,7 +105,7 @@ class _ViewProviderProject(ArchIFCView.IfcContextView):
         The view provider to turn into a project view provider.
     """
 
-    def __init__(self,vobj):
+    def __init__(self, vobj):
         vobj.Proxy = self
         vobj.addExtension("Gui::ViewProviderGroupExtensionPython")
 
@@ -117,10 +118,9 @@ class _ViewProviderProject(ArchIFCView.IfcContextView):
             Path to the appropriate icon .svg file.
         """
 
-        import Arch_rc
         return ":/icons/Arch_Project_Tree.svg"
 
-    def removeDisplaymodeChildNodes(self,vobj):
+    def removeDisplaymodeChildNodes(self, vobj):
         """Remove all child nodes from the 4 default display modes.
 
         This avoids 'ghosts' of the objects in the Group property.
@@ -132,10 +132,12 @@ class _ViewProviderProject(ArchIFCView.IfcContextView):
         if not hasattr(self, "displaymodes_cleaned"):
             if vobj.RootNode.getNumChildren() > 2:
                 main_switch = vobj.RootNode.getChild(2)  # The display mode switch.
-                if main_switch is not None and main_switch.getNumChildren() == 4:  # Check if all display modes are available.
+                if (
+                    main_switch is not None and main_switch.getNumChildren() == 4
+                ):  # Check if all display modes are available.
                     for node in tuple(main_switch.getChildren()):
                         node.removeAllChildren()
                     self.displaymodes_cleaned = True
 
-    def onChanged(self,vobj,prop):
+    def onChanged(self, vobj, prop):
         self.removeDisplaymodeChildNodes(vobj)

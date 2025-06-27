@@ -51,7 +51,6 @@ class BIM_Windows:
 
 
 class BIM_Windows_TaskPanel:
-
     def __init__(self):
         from PySide import QtGui
 
@@ -80,13 +79,10 @@ class BIM_Windows_TaskPanel:
 
     def update(self, index=None):
         import Draft
-        import Arch_rc
         from PySide import QtGui
 
         self.form.windows.clear()
-        windows = [
-            o for o in FreeCAD.ActiveDocument.Objects if Draft.getType(o) == "Window"
-        ]
+        windows = [o for o in FreeCAD.ActiveDocument.Objects if Draft.getType(o) == "Window"]
         if self.form.groupMode.currentIndex() == 0:
             for window in windows:
                 s1 = window.Label
@@ -147,7 +143,6 @@ class BIM_Windows_TaskPanel:
         self.form.doorsCount.setText(str(dc))
 
     def editWindow(self, item, column):
-
         if len(self.form.windows.selectedItems()) == 1:
             # don't change the contents if we have more than one floor selected
             window = FreeCAD.ActiveDocument.getObject(item.toolTip(0))
@@ -167,7 +162,6 @@ class BIM_Windows_TaskPanel:
                 FreeCADGui.Selection.addSelection(o)
 
     def showWindow(self, item, column):
-
         window = FreeCAD.ActiveDocument.getObject(item.toolTip(0))
         if window:
             FreeCADGui.Selection.clearSelection()
@@ -217,17 +211,12 @@ class BIM_Windows_TaskPanel:
 
     def setMaterial(self):
         import Draft
-        import Arch_rc
         from PySide import QtGui
 
         form = FreeCADGui.PySideUic.loadUi(":/ui/dialogMaterialChooser.ui")
         mw = FreeCADGui.getMainWindow()
-        form.move(
-            mw.frameGeometry().topLeft() + mw.rect().center() - form.rect().center()
-        )
-        materials = [
-            o for o in FreeCAD.ActiveDocument.Objects if Draft.getType(o) == "Material"
-        ]
+        form.move(mw.frameGeometry().topLeft() + mw.rect().center() - form.rect().center())
+        materials = [o for o in FreeCAD.ActiveDocument.Objects if Draft.getType(o) == "Material"]
         it = QtGui.QListWidgetItem(translate("BIM", "None"))
         it.setIcon(QtGui.QIcon(":/icons/button_invalid.svg"))
         it.setToolTip("__None__")

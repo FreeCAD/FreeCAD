@@ -30,7 +30,6 @@ import ifcopenshell
 
 import FreeCAD
 import FreeCADGui
-import Arch_rc
 
 from . import ifc_tools
 
@@ -66,9 +65,15 @@ def htmlize(diff):
 
     html = "<html><body>\n"
     if diff == 1:
-        html += translate("BIM", "The IFC file is not saved. Please save once"
-        " to have an existing IFC file to compare with."
-        " Then, run this command again.") + "<br/>\n"
+        html += (
+            translate(
+                "BIM",
+                "The IFC file is not saved. Please save once"
+                " to have an existing IFC file to compare with."
+                " Then, run this command again.",
+            )
+            + "<br/>\n"
+        )
     elif diff:
         diff = diff.split("\n")
         for l in diff:

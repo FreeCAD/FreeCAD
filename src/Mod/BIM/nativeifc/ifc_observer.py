@@ -98,11 +98,7 @@ class ifc_observer:
                     doc.Proxy.ifcfile = ifcfile
                     # migrate children
                     for old_id, new_id in migration_table.items():
-                        child = [
-                            o
-                            for o in doc.Objects
-                            if getattr(o, "StepId", None) == old_id
-                        ]
+                        child = [o for o in doc.Objects if getattr(o, "StepId", None) == old_id]
                         if len(child) == 1:
                             child[0].StepId = new_id
         elif prop == "Label":
@@ -131,8 +127,8 @@ class ifc_observer:
         ifc_status.on_activate()
 
     def slotRemoveDynamicProperty(self, obj, prop):
-
         from . import ifc_psets
+
         ifc_psets.remove_property(obj, prop)
 
     # implementation methods
@@ -169,7 +165,6 @@ class ifc_observer:
 
             ask = params.GetBool("AskBeforeSaving", True)
             if ask and FreeCAD.GuiUp:
-                import Arch_rc
                 import FreeCADGui
 
                 dlg = FreeCADGui.PySideUic.loadUi(":/ui/dialogExport.ui")
@@ -204,9 +199,11 @@ class ifc_observer:
             return
         del self.docname
         del self.objname
-        if obj.isDerivedFrom("Part::Feature") \
-        or "IfcType" in obj.PropertiesList \
-        or "CreateSpreadsheet" in obj.PropertiesList:
+        if (
+            obj.isDerivedFrom("Part::Feature")
+            or "IfcType" in obj.PropertiesList
+            or "CreateSpreadsheet" in obj.PropertiesList
+        ):
             FreeCAD.Console.PrintLog("Converting " + obj.Label + " to IFC\n")
             from . import ifc_geometry  # lazy loading
             from . import ifc_tools  # lazy loading

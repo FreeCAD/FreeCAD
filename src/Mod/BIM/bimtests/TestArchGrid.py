@@ -22,13 +22,11 @@
 # *                                                                         *
 # ***************************************************************************
 
-import FreeCAD as App
 import Arch
-import Draft
 from bimtests import TestArchBase
 
-class TestArchGrid(TestArchBase.TestArchBase):
 
+class TestArchGrid(TestArchBase.TestArchBase):
     def test_makeGrid(self):
         """Test the makeGrid function."""
         operation = "Testing makeGrid..."

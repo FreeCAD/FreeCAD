@@ -32,13 +32,10 @@ translate = FreeCAD.Qt.translate
 
 
 class BIM_IfcExplorer:
-
     def __init__(self):
         self.tree = None
 
     def GetResources(self):
-        import Arch_rc
-
         return {
             "Pixmap": "IFC",
             "MenuText": QT_TRANSLATE_NOOP("BIM_IfcExplorer", "IFC explorer"),
@@ -46,7 +43,6 @@ class BIM_IfcExplorer:
         }
 
     def Activated(self):
-
         from PySide import QtGui
 
         try:
@@ -163,9 +159,7 @@ class BIM_IfcExplorer:
         # center the dialog over FreeCAD window
         mw = FreeCADGui.getMainWindow()
         self.dialog.move(
-            mw.frameGeometry().topLeft()
-            + mw.rect().center()
-            - self.dialog.rect().center()
+            mw.frameGeometry().topLeft() + mw.rect().center() - self.dialog.rect().center()
         )
 
         # open a file and show the dialog
@@ -180,9 +174,9 @@ class BIM_IfcExplorer:
         from PySide import QtGui
 
         self.filename = ""
-        lastfolder = FreeCAD.ParamGet(
-            "User parameter:BaseApp/Preferences/Mod/BIM"
-        ).GetString("lastIfcExplorerFolder", "")
+        lastfolder = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/BIM").GetString(
+            "lastIfcExplorerFolder", ""
+        )
         filename = QtGui.QFileDialog.getOpenFileName(
             None,
             translate("BIM", "Select an IFC file"),
@@ -227,7 +221,8 @@ class BIM_IfcExplorer:
                     "BIM",
                     "IfcSite element was not found in %s. Unable to explore.",
                 )
-                % self.filename + "\n"
+                % self.filename
+                + "\n"
             )
             return
 
@@ -276,7 +271,6 @@ class BIM_IfcExplorer:
         "turns mesh display on/off"
 
         import Mesh
-        import ifcopenshell
         from ifcopenshell import geom
 
         if not FreeCAD.ActiveDocument:
@@ -309,10 +303,7 @@ class BIM_IfcExplorer:
                             g = m.geometry
                             v = g.verts
                             f = g.faces
-                            verts = [
-                                FreeCAD.Vector(v[i : i + 3])
-                                for i in range(0, len(v), 3)
-                            ]
+                            verts = [FreeCAD.Vector(v[i : i + 3]) for i in range(0, len(v), 3)]
                             faces = [tuple(f[i : i + 3]) for i in range(0, len(f), 3)]
                             omesh = Mesh.Mesh((verts, faces))
                             if trf:
@@ -321,9 +312,7 @@ class BIM_IfcExplorer:
                             basemesh.addMesh(omesh)
                         except:
                             pass
-                    self.mesh = FreeCAD.ActiveDocument.addObject(
-                        "Mesh::Feature", "IFCMesh"
-                    )
+                    self.mesh = FreeCAD.ActiveDocument.addObject("Mesh::Feature", "IFCMesh")
                     self.mesh.Mesh = basemesh
                     self.mesh.ViewObject.Transparency = 85
                     FreeCAD.ActiveDocument.recompute()
@@ -404,7 +393,7 @@ class BIM_IfcExplorer:
             except:
                 return ""
 
-        if not eid in self.done:
+        if eid not in self.done:
             entity = self.ifc[eid]
             item = QtGui.QTreeWidgetItem(parent)
             # item.setText(0,self.tostr(eid))
@@ -414,9 +403,7 @@ class BIM_IfcExplorer:
                 item.setFont(0, self.bold)
                 if isinstance(parent, QtGui.QTreeWidgetItem):
                     parent.setExpanded(True)
-            item.setText(
-                0, "#" + self.tostr(eid) + " : " + self.tostr(entity.is_a()) + name
-            )
+            item.setText(0, "#" + self.tostr(eid) + " : " + self.tostr(entity.is_a()) + name)
             if entity.is_a() in ["IfcWall", "IfcWallStandardCase"]:
                 item.setIcon(0, QtGui.QIcon(":icons/Arch_Wall_Tree.svg"))
             elif entity.is_a() in ["IfcBuildingElementProxy"]:
@@ -490,10 +477,7 @@ class BIM_IfcExplorer:
                     argvalue = getattr(entity, argname)
                 except AttributeError:
                     FreeCAD.Console.PrintError(
-                        translate("BIM", "Error in entity")
-                        + " "
-                        + self.tostr(entity)
-                        + "\n"
+                        translate("BIM", "Error in entity") + " " + self.tostr(entity) + "\n"
                     )
                     break
                 else:
@@ -568,8 +552,7 @@ class BIM_IfcExplorer:
                         item = QtGui.QTreeWidgetItem(parent)
                         item.setText(
                             0,
-                            "PropertySet: "
-                            + self.tostr(rel.RelatingPropertyDefinition.Name),
+                            "PropertySet: " + self.tostr(rel.RelatingPropertyDefinition.Name),
                         )
                         item.setFont(0, self.bold)
                         item.setFirstColumnSpanned(True)

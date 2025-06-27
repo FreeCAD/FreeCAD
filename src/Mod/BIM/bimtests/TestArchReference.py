@@ -25,8 +25,8 @@
 import Arch
 from bimtests import TestArchBase
 
-class TestArchReference(TestArchBase.TestArchBase):
 
+class TestArchReference(TestArchBase.TestArchBase):
     def test_makeReference(self):
         """Test the makeReference function."""
         operation = "Testing makeReference..."

@@ -25,8 +25,8 @@
 import Arch
 from bimtests import TestArchBase
 
-class TestArchFrame(TestArchBase.TestArchBase):
 
+class TestArchFrame(TestArchBase.TestArchBase):
     def test_makeFrame(self):
         """Test the makeFrame function."""
         operation = "Testing makeFrame..."

@@ -27,8 +27,8 @@ import Arch
 import Draft
 from bimtests import TestArchBase
 
-class TestArchFence(TestArchBase.TestArchBase):
 
+class TestArchFence(TestArchBase.TestArchBase):
     def test_makeFence(self):
         # Create section, post, and path objects
         section = Draft.makeRectangle(100, 10)

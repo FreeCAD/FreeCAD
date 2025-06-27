@@ -25,8 +25,8 @@
 import Arch
 from bimtests import TestArchBase
 
-class TestArchWindow(TestArchBase.TestArchBase):
 
+class TestArchWindow(TestArchBase.TestArchBase):
     def test_makeWindow(self):
         """Test the makeWindow function."""
         operation = "Testing makeWindow function"

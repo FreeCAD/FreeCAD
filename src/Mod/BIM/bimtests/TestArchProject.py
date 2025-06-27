@@ -25,8 +25,8 @@
 import Arch
 from bimtests import TestArchBase
 
-class TestArchProject(TestArchBase.TestArchBase):
 
+class TestArchProject(TestArchBase.TestArchBase):
     def test_makeProject(self):
         """Test the makeProject function."""
         operation = "Testing makeProject function"

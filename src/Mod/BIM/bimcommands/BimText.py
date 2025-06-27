@@ -46,8 +46,6 @@ class BIM_Text:
         return hasattr(act_win, "getSceneGraph") or hasattr(act_win, "getPage")
 
     def Activated(self):
-        import draftutils.utils as utils
-
         self.view = FreeCADGui.ActiveDocument.ActiveView
         if hasattr(self.view, "getPage") and self.view.getPage():
             self.text = ""
@@ -58,16 +56,12 @@ class BIM_Text:
             FreeCADGui.runCommand("Draft_Text")
 
     def createObject(self):
-        import TechDraw
-
         if self.text:
             page = self.view.getPage()
             pagescale = page.Scale
             if not pagescale:
                 pagescale = 1
-            anno = FreeCAD.ActiveDocument.addObject(
-                "TechDraw::DrawViewAnnotation", "Annotation"
-            )
+            anno = FreeCAD.ActiveDocument.addObject("TechDraw::DrawViewAnnotation", "Annotation")
             anno.Text = self.text
             page.addView(anno)
             param = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")

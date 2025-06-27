@@ -22,12 +22,11 @@
 # *                                                                         *
 # ***************************************************************************
 
-import FreeCAD as App
 import Arch
 from bimtests import TestArchBase
 
-class TestArchAxis(TestArchBase.TestArchBase):
 
+class TestArchAxis(TestArchBase.TestArchBase):
     def test_make_axis_default(self):
         axis = Arch.makeAxis()
         self.assertIsNotNone(axis, "Failed to create a default axis")

@@ -31,7 +31,6 @@ QT_TRANSLATE_NOOP = FreeCAD.Qt.QT_TRANSLATE_NOOP
 
 
 class BIM_Ungroup:
-
     def GetResources(self):
         return {
             "Pixmap": "Draft_AddToGroup",
@@ -47,9 +46,9 @@ class BIM_Ungroup:
         if sel:
             for obj in sel:
                 for parent in obj.InList:
-                    if parent.isDerivedFrom(
-                        "App::DocumentObjectGroup"
-                    ) or parent.hasExtension("App::GroupExtension"):
+                    if parent.isDerivedFrom("App::DocumentObjectGroup") or parent.hasExtension(
+                        "App::GroupExtension"
+                    ):
                         if obj in parent.Group:
                             if first:
                                 FreeCAD.ActiveDocument.openTransaction("Ungroup")

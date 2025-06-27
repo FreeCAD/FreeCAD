@@ -32,7 +32,6 @@ translate = FreeCAD.Qt.translate
 
 
 class BIM_Slab:
-
     def __init__(self):
         self.callback = None
         self.view = None
@@ -41,9 +40,7 @@ class BIM_Slab:
         return {
             "Pixmap": "BIM_Slab",
             "MenuText": QT_TRANSLATE_NOOP("BIM_Slab", "Slab"),
-            "ToolTip": QT_TRANSLATE_NOOP(
-                "BIM_Slab", "Creates a slab from a planar shape"
-            ),
+            "ToolTip": QT_TRANSLATE_NOOP("BIM_Slab", "Creates a slab from a planar shape"),
             "Accel": "S,B",
         }
 
@@ -61,14 +58,10 @@ class BIM_Slab:
         else:
             if hasattr(FreeCADGui, "draftToolBar"):
                 FreeCADGui.draftToolBar.selectUi()
-            FreeCAD.Console.PrintMessage(
-                translate("BIM", "Select a planar object") + "\n"
-            )
+            FreeCAD.Console.PrintMessage(translate("BIM", "Select a planar object") + "\n")
             FreeCAD.activeDraftCommand = self
             self.view = FreeCADGui.ActiveDocument.ActiveView
-            self.callback = self.view.addEventCallback(
-                "SoEvent", DraftTools.selectObject
-            )
+            self.callback = self.view.addEventCallback("SoEvent", DraftTools.selectObject)
 
     def proceed(self):
         self.removeCallback()
@@ -77,9 +70,7 @@ class BIM_Slab:
             FreeCADGui.addModule("Arch")
             FreeCAD.ActiveDocument.openTransaction("Create Slab")
             FreeCADGui.doCommand(
-                "s = Arch.makeStructure(FreeCAD.ActiveDocument."
-                + sel[0].Name
-                + ",height=200)"
+                "s = Arch.makeStructure(FreeCAD.ActiveDocument." + sel[0].Name + ",height=200)"
             )
             FreeCADGui.doCommand('s.Label = "' + translate("BIM", "Slab") + '"')
             FreeCADGui.doCommand('s.IfcType = "Slab"')

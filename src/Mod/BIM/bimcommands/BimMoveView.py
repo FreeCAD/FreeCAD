@@ -31,14 +31,11 @@ QT_TRANSLATE_NOOP = FreeCAD.Qt.QT_TRANSLATE_NOOP
 
 
 class BIM_MoveView:
-
     def GetResources(self):
         return {
             "Pixmap": "BIM_MoveView",
             "MenuText": QT_TRANSLATE_NOOP("BIM_MoveView", "Move view..."),
-            "ToolTip": QT_TRANSLATE_NOOP(
-                "BIM_MoveView", "Moves this view to an existing page"
-            ),
+            "ToolTip": QT_TRANSLATE_NOOP("BIM_MoveView", "Moves this view to an existing page"),
         }
 
     def Activated(self):
