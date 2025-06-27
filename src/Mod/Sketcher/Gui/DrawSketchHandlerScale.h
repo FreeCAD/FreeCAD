@@ -388,7 +388,8 @@ private:
 
                 if ((cstr->Type == Symmetric || cstr->Type == Tangent || cstr->Type == Perpendicular
                      || cstr->Type == Angle)
-                    && cstr->getGeoId(1) != GeoEnum::GeoUndef && cstr->getGeoId(2) != GeoEnum::GeoUndef) {
+                    && cstr->getGeoId(1) != GeoEnum::GeoUndef
+                    && cstr->getGeoId(2) != GeoEnum::GeoUndef) {
                     newConstr->setGeoId(1, offsetGeoID(cstr->getGeoId(1), firstCurveCreated));
                     newConstr->setGeoId(2, offsetGeoID(cstr->getGeoId(2), firstCurveCreated));
                 }
@@ -396,7 +397,8 @@ private:
                           || cstr->Type == Symmetric || cstr->Type == Perpendicular
                           || cstr->Type == Parallel || cstr->Type == Equal || cstr->Type == Angle
                           || cstr->Type == PointOnObject || cstr->Type == InternalAlignment)
-                         && cstr->getGeoId(1) != GeoEnum::GeoUndef && cstr->getGeoId(2) == GeoEnum::GeoUndef) {
+                         && cstr->getGeoId(1) != GeoEnum::GeoUndef
+                         && cstr->getGeoId(2) == GeoEnum::GeoUndef) {
                     newConstr->setGeoId(1, offsetGeoID(cstr->getGeoId(1), firstCurveCreated));
                 }
                 else if (cstr->Type == Radius || cstr->Type == Diameter) {
@@ -425,8 +427,10 @@ private:
             // the scale center is not the origin
             || (!allowOriginConstraint
                 && (constr->getGeoId(0) == GeoEnum::VAxis || constr->getGeoId(0) == GeoEnum::HAxis
-                    || constr->getGeoId(1) == GeoEnum::VAxis || constr->getGeoId(1) == GeoEnum::HAxis
-                    || constr->getGeoId(2) == GeoEnum::VAxis || constr->getGeoId(2) == GeoEnum::HAxis))
+                    || constr->getGeoId(1) == GeoEnum::VAxis
+                    || constr->getGeoId(1) == GeoEnum::HAxis
+                    || constr->getGeoId(2) == GeoEnum::VAxis
+                    || constr->getGeoId(2) == GeoEnum::HAxis))
 
             // 3. it is linked to an external projected geometry => would be unstable
             || (constr->getGeoId(0) != GeoEnum::GeoUndef && constr->getGeoId(0) <= GeoEnum::RefExt)

@@ -2938,7 +2938,7 @@ std::unique_ptr<Constraint> SketchObject::createConstraint(
     int secondGeoId, Sketcher::PointPos secondPos, int thirdGeoId, Sketcher::PointPos thirdPos)
 {
     auto newConstr = std::make_unique<Sketcher::Constraint>();
-    
+
     newConstr->Type = constrType;
     newConstr->setElement(0, GeoElementId(firstGeoId, firstPos));
     newConstr->setElement(1, GeoElementId(secondGeoId, secondPos));
@@ -7351,7 +7351,8 @@ int SketchObject::delAllExternal()
     for (const auto& constr : constraints) {
         if (constr->getGeoId(0) > GeoEnum::RefExt
             && (constr->getGeoId(1) > GeoEnum::RefExt || constr->getGeoId(1) == GeoEnum::GeoUndef)
-            && (constr->getGeoId(2) > GeoEnum::RefExt || constr->getGeoId(2) == GeoEnum::GeoUndef)) {
+            && (constr->getGeoId(2) > GeoEnum::RefExt
+                || constr->getGeoId(2) == GeoEnum::GeoUndef)) {
             Constraint* copiedConstr = constr->clone();
 
             newConstraints.push_back(copiedConstr);

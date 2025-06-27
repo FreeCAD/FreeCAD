@@ -1023,13 +1023,17 @@ private:
             if ((cstr->getGeoId(0) == geoId1 && cstr->getGeoId(1) == geoId2)
                 || (cstr->getGeoId(0) == geoId2 && cstr->getGeoId(1) == geoId1)) {
                 if (!firstCoincidenceFound) {
-                    positions.firstPos1 = cstr->getGeoId(0) == geoId1 ? cstr->getPosId(0) : cstr->getPosId(1);
-                    positions.secondPos1 = cstr->getGeoId(0) == geoId2 ? cstr->getPosId(0) : cstr->getPosId(1);
+                    positions.firstPos1 =
+                        cstr->getGeoId(0) == geoId1 ? cstr->getPosId(0) : cstr->getPosId(1);
+                    positions.secondPos1 =
+                        cstr->getGeoId(0) == geoId2 ? cstr->getPosId(0) : cstr->getPosId(1);
                     firstCoincidenceFound = true;
                 }
                 else {
-                    positions.firstPos2 = cstr->getGeoId(0) == geoId1 ? cstr->getPosId(0) : cstr->getPosId(1);
-                    positions.secondPos2 = cstr->getGeoId(0) == geoId2 ? cstr->getPosId(0) : cstr->getPosId(1);
+                    positions.firstPos2 =
+                        cstr->getGeoId(0) == geoId1 ? cstr->getPosId(0) : cstr->getPosId(1);
+                    positions.secondPos2 =
+                        cstr->getGeoId(0) == geoId2 ? cstr->getPosId(0) : cstr->getPosId(1);
                     break;
                 }
             }
