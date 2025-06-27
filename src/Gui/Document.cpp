@@ -104,6 +104,7 @@ struct DocumentP
     ViewProviderDocumentObject* _editViewProviderParent;
     std::string                 _editSubname;
     std::string                 _editSubElement;
+    std::string                 _workbenchName; // Name of the workbench acting on this document
     Base::Matrix4D              _editingTransform;
     View3DInventorViewer*       _editingViewer;
     std::set<const App::DocumentObject*> _editObjs;
@@ -1246,6 +1247,14 @@ void Document::setModified(bool b)
 bool Document::isModified() const
 {
     return d->_isModified;
+}
+void Document::setWorkbench(const std::string& name)
+{
+    d->_workbenchName = name;
+}
+std::string Document::workbench() const
+{
+    return d->_workbenchName;
 }
 
 bool Document::isAboutToClose() const
