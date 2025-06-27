@@ -455,7 +455,48 @@ private:
 
         return pointToRotate;
     }
+
+    struct HintEntry
+    {
+        SelectMode state;
+        std::list<Gui::InputHint> hints;
+    };
+
+    using HintTable = std::vector<HintEntry>;
+
+    static HintTable getRotateHintTable();
+    static std::list<Gui::InputHint> lookupRotateHints(SelectMode state);
+
+public:
+    std::list<Gui::InputHint> getToolHints() const override
+    {
+        return lookupRotateHints(state());
+    }
 };
+
+DrawSketchHandlerRotate::HintTable DrawSketchHandlerRotate::getRotateHintTable()
+{
+    using enum Gui::InputHint::UserInput;
+
+    return {
+        {.state = SelectMode::SeekFirst,
+         .hints = {{QObject::tr("%1 pick center point", "Sketcher Rotate: hint"), {MouseLeft}}}},
+        {.state = SelectMode::SeekSecond,
+         .hints = {{QObject::tr("%1 set start angle", "Sketcher Rotate: hint"), {MouseLeft}}}},
+        {.state = SelectMode::SeekThird,
+         .hints = {{QObject::tr("%1 set rotation angle", "Sketcher Rotate: hint"), {MouseLeft}}}}};
+}
+
+std::list<Gui::InputHint> DrawSketchHandlerRotate::lookupRotateHints(SelectMode state)
+{
+    const auto rotateHintTable = getRotateHintTable();
+
+    auto it = std::ranges::find_if(rotateHintTable, [state](const HintEntry& entry) {
+        return entry.state == state;
+    });
+
+    return (it != rotateHintTable.end()) ? it->hints : std::list<Gui::InputHint> {};
+}
 
 template<>
 auto DSHRotateControllerBase::getState(int labelindex) const
@@ -661,7 +702,7 @@ void DSHRotateController::doChangeDrawSketchHandlerMode()
             auto& firstParam = onViewParameters[OnViewParameter::First];
             auto& secondParam = onViewParameters[OnViewParameter::Second];
 
-            if (firstParam->hasFinishedEditing || secondParam->hasFinishedEditing) {
+            if (firstParam->hasFinishedEditing && secondParam->hasFinishedEditing) {
                 handler->setState(SelectMode::SeekSecond);
             }
         } break;

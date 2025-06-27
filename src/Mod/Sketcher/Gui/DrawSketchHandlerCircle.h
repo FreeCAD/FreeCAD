@@ -603,7 +603,7 @@ void DSHCircleController::doChangeDrawSketchHandlerMode()
             auto& firstParam = onViewParameters[OnViewParameter::First];
             auto& secondParam = onViewParameters[OnViewParameter::Second];
 
-            if (firstParam->hasFinishedEditing || secondParam->hasFinishedEditing) {
+            if (firstParam->hasFinishedEditing && secondParam->hasFinishedEditing) {
                 handler->setState(SelectMode::SeekSecond);
             }
         } break;
@@ -630,7 +630,7 @@ void DSHCircleController::doChangeDrawSketchHandlerMode()
             auto& fifthParam = onViewParameters[OnViewParameter::Fifth];
             auto& sixthParam = onViewParameters[OnViewParameter::Sixth];
 
-            if (fifthParam->hasFinishedEditing || sixthParam->hasFinishedEditing) {
+            if (fifthParam->hasFinishedEditing && sixthParam->hasFinishedEditing) {
                 handler->setState(SelectMode::End);
             }
         } break;

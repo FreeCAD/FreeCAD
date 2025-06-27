@@ -424,7 +424,7 @@ class _CommandStructure:
         self.doc.recompute()
         # gui_utils.end_all_events()  # Causes a crash on Linux.
         self.tracker.finalize()
-        if FreeCADGui.draftToolBar.continueCmd.isChecked():
+        if FreeCADGui.draftToolBar.continueMode:
             self.Activated()
 
     def _createItemlist(self, baselist):

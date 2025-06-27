@@ -916,47 +916,6 @@ const char* Command::keySequenceToAccel(int sk) const
     return (strings[sk] = static_cast<const char*>(data)).c_str();
 }
 
-void Command::adjustCameraPosition()
-{
-    Gui::Document* doc = Gui::Application::Instance->activeDocument();
-    if (doc) {
-        auto view = static_cast<Gui::View3DInventor*>(doc->getActiveView());
-        Gui::View3DInventorViewer* viewer = view->getViewer();
-        SoCamera* camera = viewer->getSoRenderManager()->getCamera();
-        if (!camera || !camera->isOfType(SoOrthographicCamera::getClassTypeId()))
-            return;
-
-        // get scene bounding box
-        SoGetBoundingBoxAction action(viewer->getSoRenderManager()->getViewportRegion());
-        action.apply(viewer->getSceneGraph());
-        SbBox3f box = action.getBoundingBox();
-        if (box.isEmpty())
-            return;
-
-        // get cirumscribing sphere and check if camera is inside
-        SbVec3f cam_pos = camera->position.getValue();
-        SbVec3f box_cnt = box.getCenter();
-        SbSphere bs;
-        bs.circumscribe(box);
-        float radius = bs.getRadius();
-        float distance_to_midpoint = (box_cnt-cam_pos).length();
-        if (radius >= distance_to_midpoint) {
-            // Move the camera to the edge of the bounding sphere, while still
-            // pointing at the scene.
-            SbVec3f direction = cam_pos - box_cnt;
-            (void) direction.normalize(); // we know this is not a null vector
-            camera->position.setValue(box_cnt + direction * radius);
-
-            // New distance to mid point
-            distance_to_midpoint =
-                (camera->position.getValue() - box.getCenter()).length();
-            camera->nearDistance = distance_to_midpoint - radius;
-            camera->farDistance = distance_to_midpoint + radius;
-            camera->focalDistance = distance_to_midpoint;
-        }
-    }
-}
-
 void Command::printConflictingAccelerators() const
 {
     auto cmd = Application::Instance->commandManager().checkAcceleratorForConflicts(sAccel, this);
