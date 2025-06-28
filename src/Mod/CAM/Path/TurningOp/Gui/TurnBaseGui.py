@@ -36,14 +36,11 @@ __author__ = "dubstar-04 (Daniel Wood)"
 __url__ = "http://www.freecadweb.org"
 __doc__ = "Base class Gui implementation for turning operations."
 
-LOGLEVEL = False
-
-if LOGLEVEL:
+if False:
     PathLog.setLevel(PathLog.Level.DEBUG, PathLog.thisModule())
     PathLog.trackModule(PathLog.thisModule())
 else:
     PathLog.setLevel(PathLog.Level.NOTICE, PathLog.thisModule())
-
 
 class TaskPanelTurnBase(PathOpGui.TaskPanelPage):
     """Page controller class for turning operations"""
