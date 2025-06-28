@@ -29,6 +29,8 @@ import FreeCAD, FreeCADGui
 
 
 class TurnToolHelperPanel:
+    """TurnToolHelperPanel ... GUI for Turn Tool Helper
+    """
     def __init__(self):
 
         self.form = self.getForm()
@@ -273,6 +275,8 @@ class TurnToolHelperPanel:
 
 
 class CommandTurnToolHelper:
+    """CommandTurnToolHelper ... Command to open Turn Tool Helper GUI
+    """
 
     def GetResources(self):
         return {

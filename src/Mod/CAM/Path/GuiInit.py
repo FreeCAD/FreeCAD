@@ -91,6 +91,7 @@ def Startup():
             from Path.TurningOp.Gui import TurnRoughGui
             from Path.TurningOp.Gui import TurnToolHelperGui
         except ImportError:
+            # liblathe is not installed no errors required.
             pass
 
         from PathScripts import PathUtilsGui
