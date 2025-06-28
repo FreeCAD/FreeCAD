@@ -111,19 +111,19 @@ the 'dxf_library' addon from the Addon Manager.</string>
       <item>
        <widget class="Gui::PrefRadioButton" name="radio_ImportAs_Draft">
         <property name="enabled">
-         <bool>false</bool>
+         <bool>true</bool>
         </property>
         <property name="toolTip">
          <string>Creates fully parametric Draft objects. Block definitions are imported as
 reusable objects (Part Compounds) and instances become `App::Link` objects,
 maintaining the block structure. Best for full integration with the Draft
-Workbench. (Legacy importer only)</string>
+Workbench. </string>
         </property>
         <property name="text">
          <string>Editable draft objects (Highest fidelity, slowest)</string>
         </property>
         <property name="prefEntry" stdset="0">
-         <cstring>DxfImportMode</cstring>
+         <cstring>dxfImportAsDraft</cstring>
         </property>
         <property name="prefPath" stdset="0">
          <cstring>Mod/Draft</cstring>
@@ -139,19 +139,19 @@ Workbench. (Legacy importer only)</string>
       <item>
        <widget class="Gui::PrefRadioButton" name="radio_ImportAs_Primitives">
         <property name="enabled">
-         <bool>false</bool>
+         <bool>true</bool>
         </property>
         <property name="toolTip">
          <string>Creates parametric Part objects (e.g., Part::Line, Part::Circle). Block
 definitions are imported as reusable objects (Part Compounds) and instances
 become `App::Link` objects, maintaining the block structure. Best for
-script-based post-processing. (Not yet implemented)</string>
+script-based post-processing and Part Workbench integration.</string>
         </property>
         <property name="text">
          <string>Editable part primitives (High fidelity, slower)</string>
         </property>
         <property name="prefEntry" stdset="0">
-         <cstring>DxfImportMode</cstring>
+         <cstring>dxfImportAsPrimitives</cstring>
         </property>
         <property name="prefPath" stdset="0">
          <cstring>Mod/Draft</cstring>
@@ -178,7 +178,7 @@ objects, maintaining the block structure. Good for referencing and measuring.</s
          <bool>true</bool>
         </property>
         <property name="prefEntry" stdset="0">
-         <cstring>DxfImportMode</cstring>
+         <cstring>dxfImportAsShapes</cstring>
         </property>
         <property name="prefPath" stdset="0">
          <cstring>Mod/Draft</cstring>
@@ -196,13 +196,13 @@ objects, maintaining the block structure. Good for referencing and measuring.</s
         <property name="toolTip">
          <string>Merges all geometry per layer into a single, non-editable shape. Block
 structures are not preserved; their geometry becomes part of the layer's
-shape. Best for viewing very large files with maximum performance.</string>
+shape. Best for importing and viewing very large files with maximum performance.</string>
         </property>
         <property name="text">
          <string>Fused part shapes (Lowest fidelity, fastest)</string>
         </property>
         <property name="prefEntry" stdset="0">
-         <cstring>DxfImportMode</cstring>
+         <cstring>dxfImportAsFused</cstring>
         </property>
         <property name="prefPath" stdset="0">
          <cstring>Mod/Draft</cstring>

@@ -76,8 +76,8 @@ class DxfImportDialog:
             self.dialog.radio_ImportAs_Shapes.setEnabled(True)
             self.dialog.radio_ImportAs_Fused.setEnabled(True)
         else:
-            self.dialog.radio_ImportAs_Draft.setEnabled(False)
-            self.dialog.radio_ImportAs_Primitives.setEnabled(False)
+            self.dialog.radio_ImportAs_Draft.setEnabled(True)
+            self.dialog.radio_ImportAs_Primitives.setEnabled(True)
             self.dialog.radio_ImportAs_Shapes.setEnabled(True)
             self.dialog.radio_ImportAs_Fused.setEnabled(True)
 
