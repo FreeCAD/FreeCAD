@@ -69,6 +69,8 @@
 #include <Base/VectorPy.h>
 #include <Mod/Part/App/PartFeature.h>
 #include <Mod/Part/App/FeatureCompound.h>
+#include <Mod/Part/App/PrimitiveFeature.h>
+#include <Mod/Part/App/FeaturePartCircle.h>
 #include <App/Link.h>
 #include <Base/Tools.h>
 
@@ -644,8 +646,22 @@ void ImpExpDxfRead::OnReadLine(const Base::Vector3d& start,
             Collector->AddObject(BRepBuilderAPI_MakeEdge(p0, p1).Edge(), "Line");
             break;
         }
+        case ImportMode::EditablePrimitives: {
+            auto* p = static_cast<Part::Line*>(document->addObject("Part::Line", "Line"));
+            if (p) {
+                // Part::Line properties are relative to its placement. We set placement to identity
+                // and use world coordinates for the points.
+                p->X1.setValue(start.x);
+                p->Y1.setValue(start.y);
+                p->Z1.setValue(start.z);
+                p->X2.setValue(end.x);
+                p->Y2.setValue(end.y);
+                p->Z2.setValue(end.z);
+                Collector->AddObject(p, "Line");
+            }
+            break;
+        }
         case ImportMode::EditableDraft:
-        case ImportMode::EditablePrimitives:
             // Do nothing until these modes have been implemented, the one-time warning has already
             // been issued.
             break;
@@ -666,8 +682,17 @@ void ImpExpDxfRead::OnReadPoint(const Base::Vector3d& start)
             Collector->AddObject(BRepBuilderAPI_MakeVertex(makePoint(start)).Vertex(), "Point");
             break;
         }
+        case ImportMode::EditablePrimitives: {
+            auto* p = static_cast<Part::Vertex*>(document->addObject("Part::Vertex", "Point"));
+            if (p) {
+                // The 'start' vector is already in the final world coordinates
+                // after being transformed by the block's placement matrix.
+                p->Placement.setValue(Base::Placement(start, Base::Rotation()));
+                Collector->AddObject(p, "Point");
+            }
+            break;
+        }
         case ImportMode::EditableDraft:
-        case ImportMode::EditablePrimitives:
             // Do nothing until these modes have been implemented, the one-time warning has already
             // been issued.
             break;
@@ -704,8 +729,47 @@ void ImpExpDxfRead::OnReadArc(const Base::Vector3d& start,
             }
             break;
         }
+        case ImportMode::EditablePrimitives: {
+            auto* p = static_cast<Part::Circle*>(document->addObject("Part::Circle", "Arc"));
+            if (p) {
+                double radius = makePoint(start).Distance(makePoint(center));
+                p->Radius.setValue(radius);
+
+                // To get the angles, we need to transform the start/end points
+                // into the local coordinate system of the arc. The inverse of the
+                // OCS transform will do this.
+                Base::Matrix4D invOcs = OCSOrientationTransform;
+                invOcs.inverse();
+
+                // Use the inverted matrix with the multiplication operator.
+                Base::Vector3d local_start = invOcs * (start - center);
+                Base::Vector3d local_end = invOcs * (end - center);
+
+                double start_angle = atan2(local_start.y, local_start.x);
+                double end_angle = atan2(local_end.y, local_end.x);
+
+                if (!dir) {
+                    std::swap(start_angle, end_angle);
+                }
+
+                // Ensure end_angle is greater than start_angle for a CCW arc
+                if (end_angle <= start_angle) {
+                    end_angle += 2 * M_PI;
+                }
+
+                // The Part::Circle execute method expects the angles in degrees.
+                p->Angle1.setValue(Base::toDegrees(start_angle));
+                p->Angle2.setValue(Base::toDegrees(end_angle));
+
+                Base::Placement placement(OCSOrientationTransform);
+                placement.move(center);
+                p->Placement.setValue(placement);
+
+                Collector->AddObject(p, "Arc");
+            }
+            break;
+        }
         case ImportMode::EditableDraft:
-        case ImportMode::EditablePrimitives:
             // Do nothing until these modes have been implemented, the one-time warning has already
             // been issued.
             break;
@@ -740,8 +804,25 @@ void ImpExpDxfRead::OnReadCircle(const Base::Vector3d& start,
             }
             break;
         }
+        case ImportMode::EditablePrimitives: {
+            auto* p = static_cast<Part::Circle*>(document->addObject("Part::Circle", "Circle"));
+            if (p) {
+                double radius = makePoint(start).Distance(makePoint(center));
+                p->Radius.setValue(radius);
+                p->Angle1.setValue(0.0);
+                p->Angle2.setValue(360.0);
+
+                // The Placement property handles the position and orientation of the primitive.
+                // OCSOrientationTransform holds the rotation from the DXF extrusion vector.
+                Base::Placement placement(OCSOrientationTransform);
+                placement.move(center);
+                p->Placement.setValue(placement);
+
+                Collector->AddObject(p, "Circle");
+            }
+            break;
+        }
         case ImportMode::EditableDraft:
-        case ImportMode::EditablePrimitives:
             break;
     }
 }
@@ -1034,27 +1115,196 @@ void ImpExpDxfRead::OnReadPolyline(std::list<VertexInfo>& vertices, int flags)
     // (OnReadLine, OnReadArc), so this function doesn't need its own switch statement.
     // It simply acts as a dispatcher.
 
-    std::map<CDxfRead::CommonEntityAttributes, std::list<TopoDS_Shape>> ShapesToCombine;
-    {
-        // TODO: Currently ExpandPolyline calls OnReadArc etc to generate the pieces, and these
-        // create TopoShape objects which ShapeSavingEntityCollector can gather up.
-        // Eventually when m_mergeOption being DraftObjects is implemented OnReadArc etc might
-        // generate Draft objects which ShapeSavingEntityCollector does not save.
-        // We need either a collector that collects everything (and we have to figure out
-        // how to join Draft objects) or we need to temporarily set m_mergeOption to
-        // SingleShapes if it is set to DraftObjects (and safely restore it on exceptions) A
-        // clean way would be to give the collector a "makeDraftObjects" property, and our
-        // special collector could give this the value 'false' whereas the main collector would
-        // base this on the option setting. Also ShapeSavingEntityCollector classifies by
-        // entityAttributes which is not needed here because they are constant throughout.
-        ShapeSavingEntityCollector savingCollector(*this, ShapesToCombine);
-        ExplodePolyline(vertices, flags);
-    }
-    // Join the shapes.
-    if (!ShapesToCombine.empty()) {
-        // TODO: If we want Draft objects and all segments are straight lines we can make a
-        // draft wire.
-        CombineShapes(ShapesToCombine.begin()->second, "Polyline");
+    switch (m_importMode) {
+        case ImportMode::IndividualShapes:
+        case ImportMode::FusedShapes: {
+            // Existing behavior for non-parametric modes: create a single Part::Feature.
+            std::map<CDxfRead::CommonEntityAttributes, std::list<TopoDS_Shape>> ShapesToCombine;
+            {
+                // TODO: Currently ExpandPolyline calls OnReadArc etc to generate the pieces, and
+                // these create TopoShape objects which ShapeSavingEntityCollector can gather up.
+                // Eventually when m_mergeOption being DraftObjects is implemented OnReadArc etc
+                // might generate Draft objects which ShapeSavingEntityCollector does not save. We
+                // need either a collector that collects everything (and we have to figure out how
+                // to join Draft objects) or we need to temporarily set m_mergeOption to
+                // SingleShapes if it is set to DraftObjects (and safely restore it on exceptions) A
+                // clean way would be to give the collector a "makeDraftObjects" property, and our
+                // special collector could give this the value 'false' whereas the main collector
+                // would base this on the option setting. Also ShapeSavingEntityCollector classifies
+                // by entityAttributes which is not needed here because they are constant
+                // throughout.
+                ShapeSavingEntityCollector savingCollector(*this, ShapesToCombine);
+                ExplodePolyline(vertices, flags);
+            }
+
+            // Join the shapes.
+            if (!ShapesToCombine.empty()) {
+                // TODO: If we want Draft objects and all segments are straight lines we can make a
+                // draft wire.
+                CombineShapes(ShapesToCombine.begin()->second, "Polyline");
+            }
+            break;
+        }
+        case ImportMode::EditablePrimitives: {
+            if (vertices.size() < 2) {
+                return;  // Not enough vertices to form any segments.
+            }
+
+            // 1. Create the Part::Compound container for the polyline.
+            auto* compound =
+                static_cast<Part::Compound*>(document->addObject("Part::Compound", "Polyline"));
+            if (!compound) {
+                return;
+            }
+
+            // The Collector will handle moving the compound to the correct layer and styling it.
+            Collector->AddObject(compound, "Polyline");
+
+            bool is_closed = ((flags & 1) != 0);
+            std::vector<App::DocumentObject*> primitives;
+
+            auto it = vertices.begin();
+            auto prev_it = it++;
+
+            while (it != vertices.end()) {
+                const VertexInfo& start_vertex = *prev_it;
+                const VertexInfo& end_vertex = *it;
+
+                if (start_vertex.bulge == 0.0) {
+                    // --- Create a Part::Line for the straight segment ---
+                    auto* line =
+                        static_cast<Part::Line*>(document->addObject("Part::Line", "Segment"));
+                    if (line) {
+                        // All created primitives are parented to the document root initially.
+                        // We will add them to the compound's Links list at the end.
+                        line->X1.setValue(start_vertex.location.x);
+                        line->Y1.setValue(start_vertex.location.y);
+                        line->Z1.setValue(start_vertex.location.z);
+                        line->X2.setValue(end_vertex.location.x);
+                        line->Y2.setValue(end_vertex.location.y);
+                        line->Z2.setValue(end_vertex.location.z);
+                        primitives.push_back(line);
+                    }
+                }
+                else {
+                    // --- Create a Part::Circle (Arc) for the curved segment ---
+                    double cot = ((1.0 / start_vertex.bulge) - start_vertex.bulge) / 2.0;
+                    double center_x = ((start_vertex.location.x + end_vertex.location.x)
+                                       - (end_vertex.location.y - start_vertex.location.y) * cot)
+                        / 2.0;
+                    double center_y = ((start_vertex.location.y + end_vertex.location.y)
+                                       + (end_vertex.location.x - start_vertex.location.x) * cot)
+                        / 2.0;
+                    double center_z = (start_vertex.location.z + end_vertex.location.z) / 2.0;
+                    Base::Vector3d center(center_x, center_y, center_z);
+
+                    auto* arc =
+                        static_cast<Part::Circle*>(document->addObject("Part::Circle", "Arc"));
+                    if (arc) {
+                        double radius =
+                            makePoint(start_vertex.location).Distance(makePoint(center));
+                        arc->Radius.setValue(radius);
+
+                        Base::Matrix4D invOcs = OCSOrientationTransform;
+                        invOcs.inverse();
+                        Base::Vector3d local_start = invOcs * (start_vertex.location - center);
+                        Base::Vector3d local_end = invOcs * (end_vertex.location - center);
+
+                        double start_angle = atan2(local_start.y, local_start.x);
+                        double end_angle = atan2(local_end.y, local_end.x);
+
+                        if (start_vertex.bulge < 0) {  // Bulge is negative for clockwise arcs
+                            std::swap(start_angle, end_angle);
+                        }
+
+                        if (end_angle <= start_angle) {
+                            end_angle += 2 * M_PI;
+                        }
+
+                        arc->Angle1.setValue(Base::toDegrees(start_angle));
+                        arc->Angle2.setValue(Base::toDegrees(end_angle));
+
+                        Base::Placement placement(OCSOrientationTransform);
+                        placement.move(center);
+                        arc->Placement.setValue(placement);
+
+                        primitives.push_back(arc);
+                    }
+                }
+                prev_it = it++;
+            }
+
+            // Handle the closing segment if the polyline is closed
+            if (is_closed && vertices.size() > 1) {
+                const VertexInfo& start_vertex = vertices.back();
+                const VertexInfo& end_vertex = vertices.front();
+                if (start_vertex.bulge == 0.0) {
+                    auto* line =
+                        static_cast<Part::Line*>(document->addObject("Part::Line", "Segment"));
+                    if (line) {
+                        line->X1.setValue(start_vertex.location.x);
+                        line->Y1.setValue(start_vertex.location.y);
+                        line->Z1.setValue(start_vertex.location.z);
+                        line->X2.setValue(end_vertex.location.x);
+                        line->Y2.setValue(end_vertex.location.y);
+                        line->Z2.setValue(end_vertex.location.z);
+                        primitives.push_back(line);
+                    }
+                }
+                else {
+                    double cot = ((1.0 / start_vertex.bulge) - start_vertex.bulge) / 2.0;
+                    double center_x = ((start_vertex.location.x + end_vertex.location.x)
+                                       - (end_vertex.location.y - start_vertex.location.y) * cot)
+                        / 2.0;
+                    double center_y = ((start_vertex.location.y + end_vertex.location.y)
+                                       + (end_vertex.location.x - start_vertex.location.x) * cot)
+                        / 2.0;
+                    double center_z = (start_vertex.location.z + end_vertex.location.z) / 2.0;
+                    Base::Vector3d center(center_x, center_y, center_z);
+
+                    auto* arc =
+                        static_cast<Part::Circle*>(document->addObject("Part::Circle", "Arc"));
+                    if (arc) {
+                        double radius =
+                            makePoint(start_vertex.location).Distance(makePoint(center));
+                        arc->Radius.setValue(radius);
+
+                        Base::Matrix4D invOcs = OCSOrientationTransform;
+                        invOcs.inverse();
+                        Base::Vector3d local_start = invOcs * (start_vertex.location - center);
+                        Base::Vector3d local_end = invOcs * (end_vertex.location - center);
+
+                        double start_angle = atan2(local_start.y, local_start.x);
+                        double end_angle = atan2(local_end.y, local_end.x);
+
+                        if (start_vertex.bulge < 0) {
+                            std::swap(start_angle, end_angle);
+                        }
+                        if (end_angle <= start_angle) {
+                            end_angle += 2 * M_PI;
+                        }
+
+                        arc->Angle1.setValue(Base::toDegrees(start_angle));
+                        arc->Angle2.setValue(Base::toDegrees(end_angle));
+
+                        Base::Placement placement(OCSOrientationTransform);
+                        placement.move(center);
+                        arc->Placement.setValue(placement);
+
+                        primitives.push_back(arc);
+                    }
+                }
+            }
+
+            // 2. Add all created primitives to the compound's Links property
+            if (!primitives.empty()) {
+                compound->Links.setValues(primitives);
+            }
+            break;
+        }
+        case ImportMode::EditableDraft:
+            // Future implementation
+            break;
     }
 }
 

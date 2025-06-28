@@ -139,7 +139,7 @@ Workbench. (Legacy importer only)</string>
       <item>
        <widget class="Gui::PrefRadioButton" name="radio_ImportAs_Primitives">
         <property name="enabled">
-         <bool>false</bool>
+         <bool>true</bool>
         </property>
         <property name="toolTip">
          <string>Creates parametric Part objects (e.g., Part::Line, Part::Circle). Block
