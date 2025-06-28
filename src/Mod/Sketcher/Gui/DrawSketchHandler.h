@@ -23,8 +23,8 @@
 #ifndef SKETCHERGUI_DrawSketchHandler_H
 #define SKETCHERGUI_DrawSketchHandler_H
 
-#include <QCursor>
 #include <QPixmap>
+#include <QCoreApplication>
 
 #include <Inventor/SbString.h>
 
@@ -142,6 +142,8 @@ private:
  */
 class SketcherGuiExport DrawSketchHandler: public Gui::ToolHandler
 {
+    Q_DECLARE_TR_FUNCTIONS(DrawSketchHandler)
+
 public:
     DrawSketchHandler();
     virtual ~DrawSketchHandler();
@@ -162,10 +164,11 @@ public:
         return false;
     }
 
-    virtual std::list<Gui::InputHint> getToolHints() const
+    std::list<Gui::InputHint> getToolHints() const override
     {
         return {};
     }
+
     void quit() override;
 
     friend class ViewProviderSketch;

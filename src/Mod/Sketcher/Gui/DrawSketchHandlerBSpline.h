@@ -409,8 +409,7 @@ private:
         using State = std::pair<ConstructionMethod, SelectMode>;
         using enum Gui::InputHint::UserInput;
 
-        const auto switchHint =
-            Gui::InputHint {.message = QObject::tr("%1 switch mode"), .sequences = {KeyM}};
+        const Gui::InputHint switchModeHint {tr("%1 switch mode"), {KeyM}};
 
         return Gui::lookupHints<State>(
             {constructionMethod(), state()},
@@ -419,30 +418,30 @@ private:
                 {.state = {ConstructionMethod::ControlPoints, SelectMode::SeekFirst},
                  .hints =
                      {
-                         {QObject::tr("%1 pick first control point"), {MouseLeft}},
-                         switchHint,
+                         {tr("%1 pick first control point"), {MouseLeft}},
+                         switchModeHint,
                      }},
                 {.state = {ConstructionMethod::ControlPoints, SelectMode::SeekSecond},
                  .hints =
                      {
-                         {QObject::tr("%1 pick next control point"), {MouseLeft}},
-                         {QObject::tr("%1 finish B-spline"), {MouseRight}},
-                         switchHint,
+                         {tr("%1 pick next control point"), {MouseLeft}},
+                         {tr("%1 finish B-spline"), {MouseRight}},
+                         switchModeHint,
                      }},
 
                 // Knots method
                 {.state = {ConstructionMethod::Knots, SelectMode::SeekFirst},
                  .hints =
                      {
-                         {QObject::tr("%1 pick first knot"), {MouseLeft}},
-                         switchHint,
+                         {tr("%1 pick first knot"), {MouseLeft}},
+                         switchModeHint,
                      }},
                 {.state = {ConstructionMethod::Knots, SelectMode::SeekSecond},
                  .hints =
                      {
-                         {QObject::tr("%1 pick next knot"), {MouseLeft}},
-                         {QObject::tr("%1 finish B-spline"), {MouseRight}},
-                         switchHint,
+                         {tr("%1 pick next knot"), {MouseLeft}},
+                         {tr("%1 finish B-spline"), {MouseRight}},
+                         switchModeHint,
                      }},
             });
     }
@@ -489,7 +488,7 @@ private:
 
     QString getToolWidgetText() const override
     {
-        return QString(QObject::tr("B-spline parameters"));
+        return QString(tr("B-spline parameters"));
     }
 
     bool canGoToNextMode() override

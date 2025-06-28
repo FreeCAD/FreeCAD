@@ -415,22 +415,22 @@ private:
                 {.state = STATUS_SEEK_First,
                  .hints =
                      {
-                         {QObject::tr("%1 pick ellipse center"), {MouseLeft}},
+                         {tr("%1 pick ellipse center"), {MouseLeft}},
                      }},
                 {.state = STATUS_SEEK_Second,
                  .hints =
                      {
-                         {QObject::tr("%1 pick axis point"), {MouseLeft}},
+                         {tr("%1 pick axis point"), {MouseLeft}},
                      }},
                 {.state = STATUS_SEEK_Third,
                  .hints =
                      {
-                         {QObject::tr("%1 pick arc start point"), {MouseLeft}},
+                         {tr("%1 pick arc start point"), {MouseLeft}},
                      }},
                 {.state = STATUS_SEEK_Fourth,
                  .hints =
                      {
-                         {QObject::tr("%1 pick arc end point"), {MouseLeft}},
+                         {tr("%1 pick arc end point"), {MouseLeft}},
                      }},
             });
     }

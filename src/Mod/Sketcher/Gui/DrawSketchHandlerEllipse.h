@@ -89,7 +89,7 @@ private:
         using State = std::pair<ConstructionMethod, SelectMode>;
         using enum Gui::InputHint::UserInput;
 
-        const Gui::InputHint switchModeHint {QObject::tr("%1 switch mode"), {KeyM}};
+        const Gui::InputHint switchModeHint {tr("%1 switch mode"), {KeyM}};
 
         return Gui::lookupHints<State>(
             {constructionMethod(), state()},
@@ -98,19 +98,19 @@ private:
                 {.state = {ConstructionMethod::Center, SelectMode::SeekFirst},
                  .hints =
                      {
-                         {QObject::tr("%1 pick ellipse center"), {MouseLeft}},
+                         {tr("%1 pick ellipse center"), {MouseLeft}},
                          switchModeHint,
                      }},
                 {.state = {ConstructionMethod::Center, SelectMode::SeekSecond},
                  .hints =
                      {
-                         {QObject::tr("%1 pick axis endpoint"), {MouseLeft}},
+                         {tr("%1 pick axis endpoint"), {MouseLeft}},
                          switchModeHint,
                      }},
                 {.state = {ConstructionMethod::Center, SelectMode::SeekThird},
                  .hints =
                      {
-                         {QObject::tr("%1 pick minor axis endpoint"), {MouseLeft}},
+                         {tr("%1 pick minor axis endpoint"), {MouseLeft}},
                          switchModeHint,
                      }},
 
@@ -118,19 +118,19 @@ private:
                 {.state = {ConstructionMethod::ThreeRim, SelectMode::SeekFirst},
                  .hints =
                      {
-                         {QObject::tr("%1 pick first rim point"), {MouseLeft}},
+                         {tr("%1 pick first rim point"), {MouseLeft}},
                          switchModeHint,
                      }},
                 {.state = {ConstructionMethod::ThreeRim, SelectMode::SeekSecond},
                  .hints =
                      {
-                         {QObject::tr("%1 pick second rim point"), {MouseLeft}},
+                         {tr("%1 pick second rim point"), {MouseLeft}},
                          switchModeHint,
                      }},
                 {.state = {ConstructionMethod::ThreeRim, SelectMode::SeekThird},
                  .hints =
                      {
-                         {QObject::tr("%1 pick third rim point"), {MouseLeft}},
+                         {tr("%1 pick third rim point"), {MouseLeft}},
                          switchModeHint,
                      }},
             });
@@ -325,7 +325,7 @@ private:
 
     QString getToolWidgetText() const override
     {
-        return QString(QObject::tr("Ellipse parameters"));
+        return QString(tr("Ellipse parameters"));
     }
 
     bool canGoToNextMode() override

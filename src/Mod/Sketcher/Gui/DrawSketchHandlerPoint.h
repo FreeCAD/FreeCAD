@@ -66,7 +66,9 @@ private:
     std::list<Gui::InputHint> getToolHints() const override
     {
         using enum Gui::InputHint::UserInput;
-        return {{QObject::tr("%1 place a point", "Sketcher Point: hint"), {MouseLeft}}};
+        return {
+            {tr("%1 place a point", "Sketcher Point: hint"), {MouseLeft}},
+        };
     }
 
     void updateDataAndDrawToPosition(Base::Vector2d onSketchPos) override

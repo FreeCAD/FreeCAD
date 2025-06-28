@@ -214,7 +214,7 @@ private:
 
     QString getToolWidgetText() const override
     {
-        return QString(QObject::tr("Line parameters"));
+        return QString(tr("Line parameters"));
     }
 
     bool canGoToNextMode() override
@@ -261,8 +261,7 @@ private:
         using State = std::pair<ConstructionMethod, SelectMode>;
         using enum Gui::InputHint::UserInput;
 
-        const auto switchHint =
-            Gui::InputHint {.message = QObject::tr("%1 switch mode"), .sequences = {KeyM}};
+        const Gui::InputHint switchModeHint {tr("%1 switch mode"), {KeyM}};
 
         return Gui::lookupHints<State>(
             {constructionMethod(), state()},
@@ -271,42 +270,42 @@ private:
                 {.state = {ConstructionMethod::OnePointLengthAngle, SelectMode::SeekFirst},
                  .hints =
                      {
-                         {QObject::tr("%1 pick first point"), {MouseLeft}},
-                         switchHint,
+                         {tr("%1 pick first point"), {MouseLeft}},
+                         switchModeHint,
                      }},
                 {.state = {ConstructionMethod::OnePointLengthAngle, SelectMode::SeekSecond},
                  .hints =
                      {
-                         {QObject::tr("%1 pick second point"), {MouseLeft}},
-                         switchHint,
+                         {tr("%1 pick second point"), {MouseLeft}},
+                         switchModeHint,
                      }},
 
                 // OnePointWidthHeight method
                 {.state = {ConstructionMethod::OnePointWidthHeight, SelectMode::SeekFirst},
                  .hints =
                      {
-                         {QObject::tr("%1 pick first point"), {MouseLeft}},
-                         switchHint,
+                         {tr("%1 pick first point"), {MouseLeft}},
+                         switchModeHint,
                      }},
                 {.state = {ConstructionMethod::OnePointWidthHeight, SelectMode::SeekSecond},
                  .hints =
                      {
-                         {QObject::tr("%1 pick second point"), {MouseLeft}},
-                         switchHint,
+                         {tr("%1 pick second point"), {MouseLeft}},
+                         switchModeHint,
                      }},
 
                 // TwoPoints method
                 {.state = {ConstructionMethod::TwoPoints, SelectMode::SeekFirst},
                  .hints =
                      {
-                         {QObject::tr("%1 pick first point"), {MouseLeft}},
-                         switchHint,
+                         {tr("%1 pick first point"), {MouseLeft}},
+                         switchModeHint,
                      }},
                 {.state = {ConstructionMethod::TwoPoints, SelectMode::SeekSecond},
                  .hints =
                      {
-                         {QObject::tr("%1 pick second point"), {MouseLeft}},
-                         switchHint,
+                         {tr("%1 pick second point"), {MouseLeft}},
+                         switchModeHint,
                      }},
             });
     }

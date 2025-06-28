@@ -93,19 +93,17 @@ public:
                 {.state = SelectMode::SeekFirst,
                  .hints =
                      {
-                         {QObject::tr("%1 pick center point", "Sketcher Rotate: hint"),
-                          {MouseLeft}},
+                         {tr("%1 pick center point", "Sketcher Rotate: hint"), {MouseLeft}},
                      }},
                 {.state = SelectMode::SeekSecond,
                  .hints =
                      {
-                         {QObject::tr("%1 set start angle", "Sketcher Rotate: hint"), {MouseLeft}},
+                         {tr("%1 set start angle", "Sketcher Rotate: hint"), {MouseLeft}},
                      }},
                 {.state = SelectMode::SeekThird,
                  .hints =
                      {
-                         {QObject::tr("%1 set rotation angle", "Sketcher Rotate: hint"),
-                          {MouseLeft}},
+                         {tr("%1 set rotation angle", "Sketcher Rotate: hint"), {MouseLeft}},
                      }},
             });
     }
@@ -202,7 +200,7 @@ private:
 
     QString getToolWidgetText() const override
     {
-        return QString(QObject::tr("Rotate parameters"));
+        return QString(tr("Rotate parameters"));
     }
 
     void activated() override

@@ -344,22 +344,22 @@ private:
                 {.state = STATUS_SEEK_First,
                  .hints =
                      {
-                         {QObject::tr("%1 pick focus point"), {MouseLeft}},
+                         {tr("%1 pick focus point"), {MouseLeft}},
                      }},
                 {.state = STATUS_SEEK_Second,
                  .hints =
                      {
-                         {QObject::tr("%1 pick axis point"), {MouseLeft}},
+                         {tr("%1 pick axis point"), {MouseLeft}},
                      }},
                 {.state = STATUS_SEEK_Third,
                  .hints =
                      {
-                         {QObject::tr("%1 pick starting point"), {MouseLeft}},
+                         {tr("%1 pick starting point"), {MouseLeft}},
                      }},
                 {.state = STATUS_SEEK_Fourth,
                  .hints =
                      {
-                         {QObject::tr("%1 pick end point"), {MouseLeft}},
+                         {tr("%1 pick end point"), {MouseLeft}},
                      }},
             });
     }

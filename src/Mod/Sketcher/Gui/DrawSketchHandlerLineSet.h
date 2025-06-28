@@ -776,14 +776,14 @@ private:
                 {.state = STATUS_SEEK_First,
                  .hints =
                      {
-                         {QObject::tr("%1 pick first point"), {MouseLeft}},
+                         {tr("%1 pick first point"), {MouseLeft}},
                      }},
                 {.state = STATUS_SEEK_Second,
                  .hints =
                      {
-                         {QObject::tr("%1 pick next point"), {MouseLeft}},
-                         {QObject::tr("%1 finish"), {MouseRight}},
-                         {QObject::tr("%1 switch mode"), {KeyM}},
+                         {tr("%1 pick next point"), {MouseLeft}},
+                         {tr("%1 finish"), {MouseRight}},
+                         {tr("%1 switch mode"), {KeyM}},
                      }},
             });
         // clang-format on

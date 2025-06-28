@@ -91,17 +91,17 @@ private:
                 {.state = SelectMode::SeekFirst,
                  .hints =
                      {
-                         {QObject::tr("%1 pick slot start point"), {MouseLeft}},
+                         {tr("%1 pick slot start point"), {MouseLeft}},
                      }},
                 {.state = SelectMode::SeekSecond,
                  .hints =
                      {
-                         {QObject::tr("%1 pick slot end point"), {MouseLeft}},
+                         {tr("%1 pick slot end point"), {MouseLeft}},
                      }},
                 {.state = SelectMode::SeekThird,
                  .hints =
                      {
-                         {QObject::tr("%1 pick slot width"), {MouseLeft}},
+                         {tr("%1 pick slot width"), {MouseLeft}},
                      }},
             });
     }

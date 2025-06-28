@@ -200,7 +200,7 @@ private:
 
     QString getToolWidgetText() const override
     {
-        return QString(QObject::tr("Polygon parameters"));
+        return QString(tr("Polygon parameters"));
     }
 
     bool canGoToNextMode() override
@@ -273,15 +273,15 @@ private:
                 {.state = SelectMode::SeekFirst,
                  .hints =
                      {
-                         {QObject::tr("%1 pick polygon center"), {MouseLeft}},
-                         {QObject::tr("%1/%2 increase / decrease number of sides"), {KeyU, KeyJ}},
+                         {tr("%1 pick polygon center"), {MouseLeft}},
+                         {tr("%1/%2 increase / decrease number of sides"), {KeyU, KeyJ}},
                      }},
                 {.state = SelectMode::SeekSecond,
                  .hints =
                      {
-                         {QObject::tr("%1 pick rotation and size"), {MouseMove}},
-                         {QObject::tr("%1 confirm"), {MouseLeft}},
-                         {QObject::tr("%1/%2 increase / decrease number of sides"), {KeyU, KeyJ}},
+                         {tr("%1 pick rotation and size"), {MouseMove}},
+                         {tr("%1 confirm"), {MouseLeft}},
+                         {tr("%1/%2 increase / decrease number of sides"), {KeyU, KeyJ}},
                      }},
             });
     }

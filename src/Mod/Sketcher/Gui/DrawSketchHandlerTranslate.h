@@ -172,7 +172,7 @@ private:
 
     QString getToolWidgetText() const override
     {
-        return QString(QObject::tr("Translate parameters"));
+        return QString(tr("Translate parameters"));
     }
 
     void onButtonPressed(Base::Vector2d onSketchPos) override
@@ -435,15 +435,13 @@ public:
         return Gui::lookupHints<SelectMode>(
             state(),
             {{.state = SelectMode::SeekFirst,
-              .hints = {{QObject::tr("%1 pick reference point", "Sketcher Translate: hint"),
-                         {MouseLeft}}}},
+              .hints = {{tr("%1 pick reference point", "Sketcher Translate: hint"), {MouseLeft}}}},
              {.state = SelectMode::SeekSecond,
-              .hints = {{QObject::tr("%1 set translation vector", "Sketcher Translate: hint"),
+              .hints = {{tr("%1 set translation vector", "Sketcher Translate: hint"),
                          {MouseLeft}}}},
              {.state = SelectMode::SeekThird,
-              .hints = {
-                  {QObject::tr("%1 set second translation vector", "Sketcher Translate: hint"),
-                   {MouseLeft}}}}});
+              .hints = {{tr("%1 set second translation vector", "Sketcher Translate: hint"),
+                         {MouseLeft}}}}});
     }
 };
 
