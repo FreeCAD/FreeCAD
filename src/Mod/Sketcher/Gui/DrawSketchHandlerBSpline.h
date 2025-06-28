@@ -414,34 +414,37 @@ private:
 
         return Gui::lookupHints<State>(
             {constructionMethod(), state()},
-            {// ControlPoints method
-             {.state = {ConstructionMethod::ControlPoints, SelectMode::SeekFirst},
-              .hints =
-                  {
-                      {QObject::tr("%1 pick first control point"), {MouseLeft}},
-                      switchHint,
-                  }},
-             {.state = {ConstructionMethod::ControlPoints, SelectMode::SeekSecond},
-              .hints =
-                  {
-                      {QObject::tr("%1 pick next control point"), {MouseLeft}},
-                      {QObject::tr("%1 finish B-spline"), {MouseRight}},
-                      switchHint,
-                  }},
+            {
+                // ControlPoints method
+                {.state = {ConstructionMethod::ControlPoints, SelectMode::SeekFirst},
+                 .hints =
+                     {
+                         {QObject::tr("%1 pick first control point"), {MouseLeft}},
+                         switchHint,
+                     }},
+                {.state = {ConstructionMethod::ControlPoints, SelectMode::SeekSecond},
+                 .hints =
+                     {
+                         {QObject::tr("%1 pick next control point"), {MouseLeft}},
+                         {QObject::tr("%1 finish B-spline"), {MouseRight}},
+                         switchHint,
+                     }},
 
-             // Knots method
-             {.state = {ConstructionMethod::Knots, SelectMode::SeekFirst},
-              .hints =
-                  {
-                      {QObject::tr("%1 pick first knot"), {MouseLeft}},
-                      switchHint,
-                  }},
-             {.state = {ConstructionMethod::Knots, SelectMode::SeekSecond},
-              .hints = {
-                  {QObject::tr("%1 pick next knot"), {MouseLeft}},
-                  {QObject::tr("%1 finish B-spline"), {MouseRight}},
-                  switchHint,
-              }}});
+                // Knots method
+                {.state = {ConstructionMethod::Knots, SelectMode::SeekFirst},
+                 .hints =
+                     {
+                         {QObject::tr("%1 pick first knot"), {MouseLeft}},
+                         switchHint,
+                     }},
+                {.state = {ConstructionMethod::Knots, SelectMode::SeekSecond},
+                 .hints =
+                     {
+                         {QObject::tr("%1 pick next knot"), {MouseLeft}},
+                         {QObject::tr("%1 finish B-spline"), {MouseRight}},
+                         switchHint,
+                     }},
+            });
     }
 
     std::string getToolName() const override
