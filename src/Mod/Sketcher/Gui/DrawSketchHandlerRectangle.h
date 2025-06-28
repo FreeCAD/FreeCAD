@@ -111,7 +111,119 @@ public:
 private:
     std::list<Gui::InputHint> getToolHints() const override
     {
-        return lookupRectangleHints(constructionMethod(), state());
+        using State = std::pair<ConstructionMethod, SelectMode>;
+        using enum Gui::InputHint::UserInput;
+
+        const auto switchHint =
+            Gui::InputHint {.message = QObject::tr("%1 switch mode"), .sequences = {KeyM}};
+
+        return Gui::lookupHints<State>(
+            {constructionMethod(), state()},
+            {
+                // Diagonal method
+                {.state = {ConstructionMethod::Diagonal, SelectMode::SeekFirst},
+                 .hints =
+                     {
+                         {QObject::tr("%1 pick first corner"), {MouseLeft}},
+                         switchHint,
+                     }},
+                {.state = {ConstructionMethod::Diagonal, SelectMode::SeekSecond},
+                 .hints =
+                     {
+                         {QObject::tr("%1 pick opposite corner"), {MouseLeft}},
+                         switchHint,
+                     }},
+                {.state = {ConstructionMethod::Diagonal, SelectMode::SeekThird},
+                 .hints =
+                     {
+                         {QObject::tr("%1 set corner radius or frame thickness"), {MouseMove}},
+                         switchHint,
+                     }},
+                {.state = {ConstructionMethod::Diagonal, SelectMode::SeekFourth},
+                 .hints =
+                     {
+                         {QObject::tr("%1 set frame thickness"), {MouseMove}},
+                         switchHint,
+                     }},
+
+                // CenterAndCorner method
+                {.state = {ConstructionMethod::CenterAndCorner, SelectMode::SeekFirst},
+                 .hints =
+                     {
+                         {QObject::tr("%1 pick center"), {MouseLeft}},
+                         switchHint,
+                     }},
+                {.state = {ConstructionMethod::CenterAndCorner, SelectMode::SeekSecond},
+                 .hints =
+                     {
+                         {QObject::tr("%1 pick corner"), {MouseLeft}},
+                         switchHint,
+                     }},
+                {.state = {ConstructionMethod::CenterAndCorner, SelectMode::SeekThird},
+                 .hints =
+                     {
+                         {QObject::tr("%1 set corner radius or frame thickness"), {MouseMove}},
+                         switchHint,
+                     }},
+                {.state = {ConstructionMethod::CenterAndCorner, SelectMode::SeekFourth},
+                 .hints =
+                     {
+                         {QObject::tr("%1 set frame thickness"), {MouseMove}},
+                         switchHint,
+                     }},
+
+                // ThreePoints method
+                {.state = {ConstructionMethod::ThreePoints, SelectMode::SeekFirst},
+                 .hints =
+                     {
+                         {QObject::tr("%1 pick first corner"), {MouseLeft}},
+                         switchHint,
+                     }},
+                {.state = {ConstructionMethod::ThreePoints, SelectMode::SeekSecond},
+                 .hints =
+                     {
+                         {QObject::tr("%1 pick second corner"), {MouseLeft}},
+                         switchHint,
+                     }},
+                {.state = {ConstructionMethod::ThreePoints, SelectMode::SeekThird},
+                 .hints =
+                     {
+                         {QObject::tr("%1 pick third corner"), {MouseLeft}},
+                         switchHint,
+                     }},
+                {.state = {ConstructionMethod::ThreePoints, SelectMode::SeekFourth},
+                 .hints =
+                     {
+                         {QObject::tr("%1 set corner radius or frame thickness"), {MouseMove}},
+                         switchHint,
+                     }},
+
+                // CenterAnd3Points method
+                {.state = {ConstructionMethod::CenterAnd3Points, SelectMode::SeekFirst},
+                 .hints =
+                     {
+                         {QObject::tr("%1 pick center"), {MouseLeft}},
+                         switchHint,
+                     }},
+                {.state = {ConstructionMethod::CenterAnd3Points, SelectMode::SeekSecond},
+                 .hints =
+                     {
+                         {QObject::tr("%1 pick first corner"), {MouseLeft}},
+                         switchHint,
+                     }},
+                {.state = {ConstructionMethod::CenterAnd3Points, SelectMode::SeekThird},
+                 .hints =
+                     {
+                         {QObject::tr("%1 pick second corner"), {MouseLeft}},
+                         switchHint,
+                     }},
+                {.state = {ConstructionMethod::CenterAnd3Points, SelectMode::SeekFourth},
+                 .hints =
+                     {
+                         {QObject::tr("%1 set corner radius or frame thickness"), {MouseMove}},
+                         switchHint,
+                     }},
+            });
     }
 
 private:
@@ -1690,1108 +1802,9 @@ void DSHRectangleController::configureToolWidget()
             QApplication::translate("TaskSketcherTool_c1_rectangle", "3 corners"),
             QApplication::translate("TaskSketcherTool_c1_rectangle", "Center, 2 corners")};
         toolWidget->setComboboxElements(WCombobox::FirstCombo, names);
-
-        toolWidget->setCheckboxLabel(
-            WCheckbox::FirstBox,
-            QApplication::translate("TaskSketcherTool_c1_rectangle", "Rounded corners (U)"));
-        toolWidget->setCheckboxToolTip(
-            WCheckbox::FirstBox,
-            QApplication::translate("TaskSketcherTool_c1_rectangle",
-                                    "Create a rectangle with rounded corners."));
-        syncCheckboxToHandler(WCheckbox::FirstBox, handler->roundCorners);
-
-        toolWidget->setCheckboxLabel(
-            WCheckbox::SecondBox,
-            QApplication::translate("TaskSketcherTool_c2_rectangle", "Frame (J)"));
-        toolWidget->setCheckboxToolTip(
-            WCheckbox::SecondBox,
-            QApplication::translate("TaskSketcherTool_c2_rectangle",
-                                    "Create two rectangles with a constant offset."));
-        syncCheckboxToHandler(WCheckbox::SecondBox, handler->makeFrame);
-
-        if (isConstructionMode()) {
-            toolWidget->setComboboxItemIcon(
-                WCombobox::FirstCombo,
-                0,
-                Gui::BitmapFactory().iconFromTheme("Sketcher_CreateRectangle_Constr"));
-            toolWidget->setComboboxItemIcon(
-                WCombobox::FirstCombo,
-                1,
-                Gui::BitmapFactory().iconFromTheme("Sketcher_CreateRectangle_Center_Constr"));
-            toolWidget->setComboboxItemIcon(
-                WCombobox::FirstCombo,
-                2,
-                Gui::BitmapFactory().iconFromTheme("Sketcher_CreateRectangle3Points_Constr"));
-            toolWidget->setComboboxItemIcon(WCombobox::FirstCombo,
-                                            3,
-                                            Gui::BitmapFactory().iconFromTheme(
-                                                "Sketcher_CreateRectangle3Points_Center_Constr"));
-
-            toolWidget->setCheckboxIcon(
-                WCheckbox::FirstBox,
-                Gui::BitmapFactory().iconFromTheme("Sketcher_CreateOblong_Constr"));
-            toolWidget->setCheckboxIcon(
-                WCheckbox::SecondBox,
-                Gui::BitmapFactory().iconFromTheme("Sketcher_CreateFrame_Constr"));
-        }
-        else {
-            toolWidget->setComboboxItemIcon(
-                WCombobox::FirstCombo,
-                0,
-                Gui::BitmapFactory().iconFromTheme("Sketcher_CreateRectangle"));
-            toolWidget->setComboboxItemIcon(
-                WCombobox::FirstCombo,
-                1,
-                Gui::BitmapFactory().iconFromTheme("Sketcher_CreateRectangle_Center"));
-            toolWidget->setComboboxItemIcon(
-                WCombobox::FirstCombo,
-                2,
-                Gui::BitmapFactory().iconFromTheme("Sketcher_CreateRectangle3Points"));
-            toolWidget->setComboboxItemIcon(
-                WCombobox::FirstCombo,
-                3,
-                Gui::BitmapFactory().iconFromTheme("Sketcher_CreateRectangle3Points_Center"));
-
-            toolWidget->setCheckboxIcon(
-                WCheckbox::FirstBox,
-                Gui::BitmapFactory().iconFromTheme("Sketcher_CreateOblong"));
-            toolWidget->setCheckboxIcon(WCheckbox::SecondBox,
-                                        Gui::BitmapFactory().iconFromTheme("Sketcher_CreateFrame"));
-        }
-    }
-
-    onViewParameters[OnViewParameter::First]->setLabelType(Gui::SoDatumLabel::DISTANCEX);
-    onViewParameters[OnViewParameter::Second]->setLabelType(Gui::SoDatumLabel::DISTANCEY);
-
-    if (handler->constructionMethod() == ConstructionMethod::Diagonal
-        || handler->constructionMethod() == ConstructionMethod::CenterAndCorner) {
-        onViewParameters[OnViewParameter::Third]->setLabelType(
-            Gui::SoDatumLabel::DISTANCEX,
-            Gui::EditableDatumLabel::Function::Dimensioning);
-        onViewParameters[OnViewParameter::Fourth]->setLabelType(
-            Gui::SoDatumLabel::DISTANCEY,
-            Gui::EditableDatumLabel::Function::Dimensioning);
-        onViewParameters[OnViewParameter::Fifth]->setLabelType(
-            Gui::SoDatumLabel::RADIUS,
-            Gui::EditableDatumLabel::Function::Dimensioning);
-        onViewParameters[OnViewParameter::Sixth]->setLabelType(
-            Gui::SoDatumLabel::DISTANCE,
-            Gui::EditableDatumLabel::Function::Dimensioning);
-    }
-    else if (handler->constructionMethod() == ConstructionMethod::ThreePoints) {
-        onViewParameters[OnViewParameter::Third]->setLabelType(
-            Gui::SoDatumLabel::DISTANCE,
-            Gui::EditableDatumLabel::Function::Dimensioning);
-        onViewParameters[OnViewParameter::Fourth]->setLabelType(
-            Gui::SoDatumLabel::ANGLE,
-            Gui::EditableDatumLabel::Function::Dimensioning);
-        onViewParameters[OnViewParameter::Fifth]->setLabelType(
-            Gui::SoDatumLabel::DISTANCE,
-            Gui::EditableDatumLabel::Function::Dimensioning);
-        onViewParameters[OnViewParameter::Sixth]->setLabelType(
-            Gui::SoDatumLabel::ANGLE,
-            Gui::EditableDatumLabel::Function::Dimensioning);
-        onViewParameters[OnViewParameter::Seventh]->setLabelType(
-            Gui::SoDatumLabel::RADIUS,
-            Gui::EditableDatumLabel::Function::Dimensioning);
-        onViewParameters[OnViewParameter::Eighth]->setLabelType(
-            Gui::SoDatumLabel::DISTANCE,
-            Gui::EditableDatumLabel::Function::Dimensioning);
-    }
-    else if (handler->constructionMethod() == ConstructionMethod::CenterAnd3Points) {
-        onViewParameters[OnViewParameter::Third]->setLabelType(Gui::SoDatumLabel::DISTANCEX);
-        onViewParameters[OnViewParameter::Fourth]->setLabelType(Gui::SoDatumLabel::DISTANCEY);
-        onViewParameters[OnViewParameter::Fifth]->setLabelType(
-            Gui::SoDatumLabel::DISTANCE,
-            Gui::EditableDatumLabel::Function::Dimensioning);
-        onViewParameters[OnViewParameter::Sixth]->setLabelType(
-            Gui::SoDatumLabel::ANGLE,
-            Gui::EditableDatumLabel::Function::Dimensioning);
-        onViewParameters[OnViewParameter::Seventh]->setLabelType(
-            Gui::SoDatumLabel::RADIUS,
-            Gui::EditableDatumLabel::Function::Dimensioning);
-        onViewParameters[OnViewParameter::Eighth]->setLabelType(
-            Gui::SoDatumLabel::DISTANCE,
-            Gui::EditableDatumLabel::Function::Dimensioning);
     }
 }
 
-template<>
-void DSHRectangleController::adaptDrawingToCheckboxChange(int checkboxindex, bool value)
-{
-    Q_UNUSED(checkboxindex);
-
-    switch (checkboxindex) {
-        case WCheckbox::FirstBox:
-            handler->roundCorners = value;
-            break;
-        case WCheckbox::SecondBox:
-            handler->makeFrame = value;
-            break;
-    }
-
-    handler->updateCursor();
-}
-
-template<>
-void DSHRectangleControllerBase::doEnforceControlParameters(Base::Vector2d& onSketchPos)
-{
-    switch (handler->state()) {
-        case SelectMode::SeekFirst: {
-            if (onViewParameters[OnViewParameter::First]->isSet) {
-                onSketchPos.x = onViewParameters[OnViewParameter::First]->getValue();
-            }
-
-            if (onViewParameters[OnViewParameter::Second]->isSet) {
-                onSketchPos.y = onViewParameters[OnViewParameter::Second]->getValue();
-            }
-        } break;
-        case SelectMode::SeekSecond: {
-            if (handler->constructionMethod() == ConstructionMethod::Diagonal
-                || handler->constructionMethod() == ConstructionMethod::CenterAndCorner) {
-                if (onViewParameters[OnViewParameter::Third]->isSet) {
-                    double length = onViewParameters[OnViewParameter::Third]->getValue();
-                    if (fabs(length) < Precision::Confusion()) {
-                        unsetOnViewParameter(onViewParameters[OnViewParameter::Third].get());
-                        return;
-                    }
-
-                    if (handler->constructionMethod() == ConstructionMethod::Diagonal) {
-                        int sign = (onSketchPos.x - handler->corner1.x) >= 0 ? 1 : -1;
-                        onSketchPos.x = handler->corner1.x + sign * length;
-                    }
-                    else {
-                        onSketchPos.x = handler->center.x + length / 2;
-                    }
-                }
-                if (onViewParameters[OnViewParameter::Fourth]->isSet) {
-                    double width = onViewParameters[OnViewParameter::Fourth]->getValue();
-                    if (fabs(width) < Precision::Confusion()) {
-                        unsetOnViewParameter(onViewParameters[OnViewParameter::Fourth].get());
-                        return;
-                    }
-
-                    if (handler->constructionMethod() == ConstructionMethod::Diagonal) {
-                        int sign = (onSketchPos.y - handler->corner1.y) >= 0 ? 1 : -1;
-                        onSketchPos.y = handler->corner1.y + sign * width;
-                    }
-                    else {
-                        onSketchPos.y = handler->center.y + width / 2;
-                    }
-                }
-            }
-            else if (handler->constructionMethod() == ConstructionMethod::ThreePoints) {
-                Base::Vector2d dir = onSketchPos - handler->corner1;
-                if (dir.Length() < Precision::Confusion()) {
-                    dir.x = 1.0;  // if direction null, default to (1,0)
-                }
-                double length = dir.Length();
-
-                if (onViewParameters[OnViewParameter::Third]->isSet) {
-                    length = onViewParameters[OnViewParameter::Third]->getValue();
-                    if (length < Precision::Confusion()) {
-                        unsetOnViewParameter(onViewParameters[OnViewParameter::Third].get());
-                        return;
-                    }
-
-                    onSketchPos = handler->corner1 + length * dir.Normalize();
-                }
-
-                if (onViewParameters[OnViewParameter::Fourth]->isSet) {
-                    double angle =
-                        Base::toRadians(onViewParameters[OnViewParameter::Fourth]->getValue());
-                    onSketchPos.x = handler->corner1.x + cos(angle) * length;
-                    onSketchPos.y = handler->corner1.y + sin(angle) * length;
-                }
-            }
-            else {
-                if (onViewParameters[OnViewParameter::Third]->isSet) {
-                    onSketchPos.x = onViewParameters[OnViewParameter::Third]->getValue();
-                }
-
-                if (onViewParameters[OnViewParameter::Fourth]->isSet) {
-                    onSketchPos.y = onViewParameters[OnViewParameter::Fourth]->getValue();
-                }
-                if (onViewParameters[OnViewParameter::Third]->isSet
-                    && onViewParameters[OnViewParameter::Fourth]->isSet
-                    && (onSketchPos - handler->center).Length() < Precision::Confusion()) {
-                    unsetOnViewParameter(onViewParameters[OnViewParameter::Third].get());
-                    unsetOnViewParameter(onViewParameters[OnViewParameter::Fourth].get());
-                }
-            }
-        } break;
-        case SelectMode::SeekThird: {
-            if (handler->constructionMethod() == ConstructionMethod::Diagonal
-                || handler->constructionMethod() == ConstructionMethod::CenterAndCorner) {
-                if (handler->roundCorners) {
-                    if (onViewParameters[OnViewParameter::Fifth]->isSet) {
-                        Base::Vector2d vecL = (handler->corner2 - handler->corner1).Normalize();
-                        onSketchPos = handler->corner1
-                            + vecL * onViewParameters[OnViewParameter::Fifth]->getValue();
-                    }
-                }
-                else {
-                    if (onViewParameters[OnViewParameter::Sixth]->isSet) {
-                        double thickness = onViewParameters[OnViewParameter::Sixth]->getValue();
-                        if (thickness <= -std::min(handler->width, handler->length) / 2) {
-                            unsetOnViewParameter(onViewParameters[OnViewParameter::Sixth].get());
-                            return;
-                        }
-
-                        Base::Vector2d u = (handler->corner2 - handler->corner1).Normalize();
-                        Base::Vector2d v = (handler->corner4 - handler->corner1).Normalize();
-                        onSketchPos = handler->corner1 - u * thickness - v * thickness;
-                    }
-                }
-            }
-            else if (handler->constructionMethod() == ConstructionMethod::ThreePoints) {
-                Base::Vector2d dir = onSketchPos - handler->corner2Initial;
-                if (dir.Length() < Precision::Confusion()) {
-                    dir.x = 1.0;  // if direction null, default to (1,0)
-                }
-                double width = dir.Length();
-
-                if (onViewParameters[OnViewParameter::Fifth]->isSet) {
-                    width = onViewParameters[OnViewParameter::Fifth]->getValue();
-                    if (width < Precision::Confusion()) {
-                        unsetOnViewParameter(onViewParameters[OnViewParameter::Fifth].get());
-                        return;
-                    }
-
-                    onSketchPos = handler->corner2Initial + width * dir.Normalize();
-                }
-                if (onViewParameters[OnViewParameter::Sixth]->isSet) {
-                    double angle =
-                        Base::toRadians(onViewParameters[OnViewParameter::Sixth]->getValue());
-                    if (fmod(angle, std::numbers::pi) < Precision::Confusion()) {
-                        unsetOnViewParameter(onViewParameters[OnViewParameter::Sixth].get());
-                        return;
-                    }
-
-                    int sign1 =
-                        handler->getPointSideOfVector(onSketchPos,
-                                                      handler->corner2Initial - handler->corner1,
-                                                      handler->corner1);
-
-                    int sign = handler->side != sign1 ? 1 : -1;
-
-                    double angle123 = (handler->corner2Initial - handler->corner1).Angle()
-                        + std::numbers::pi + sign * angle;
-
-                    onSketchPos.x = handler->corner2Initial.x + cos(angle123) * width;
-                    onSketchPos.y = handler->corner2Initial.y + sin(angle123) * width;
-                }
-            }
-            else {
-                Base::Vector2d dir = onSketchPos - handler->corner1;
-                if (dir.Length() < Precision::Confusion()) {
-                    dir.x = 1.0;  // if direction null, default to (1,0)
-                }
-                double width = dir.Length();
-                if (onViewParameters[OnViewParameter::Fifth]->isSet) {
-                    width = onViewParameters[OnViewParameter::Fifth]->getValue();
-                    if (width < Precision::Confusion()) {
-                        unsetOnViewParameter(onViewParameters[OnViewParameter::Fifth].get());
-                        return;
-                    }
-
-                    onSketchPos = handler->corner1 + width * dir.Normalize();
-                }
-                if (onViewParameters[OnViewParameter::Sixth]->isSet) {
-                    double c =
-                        Base::toRadians(onViewParameters[OnViewParameter::Sixth]->getValue());
-                    if (fmod(c, std::numbers::pi) < Precision::Confusion()) {
-                        unsetOnViewParameter(onViewParameters[OnViewParameter::Sixth].get());
-                        return;
-                    }
-
-                    double a = asin(width * sin(std::numbers::pi - c)
-                                    / (handler->corner3 - handler->corner1).Length());
-
-                    int sign1 = handler->getPointSideOfVector(onSketchPos,
-                                                              handler->corner3 - handler->corner1,
-                                                              handler->corner1);
-
-                    int sign = handler->side != sign1 ? 1 : -1;
-
-                    double angle = (handler->center - handler->corner1).Angle() + sign * (c - a);
-
-                    onSketchPos.x = handler->corner1.x + cos(angle) * width;
-                    onSketchPos.y = handler->corner1.y + sin(angle) * width;
-                }
-            }
-        } break;
-        case SelectMode::SeekFourth: {
-            if (handler->constructionMethod() == ConstructionMethod::Diagonal
-                || handler->constructionMethod() == ConstructionMethod::CenterAndCorner) {
-
-                if (onViewParameters[OnViewParameter::Sixth]->isSet) {
-                    double thickness = onViewParameters[OnViewParameter::Sixth]->getValue();
-                    if (thickness <= -std::min(handler->width, handler->length) / 2) {
-                        unsetOnViewParameter(onViewParameters[OnViewParameter::Sixth].get());
-                        return;
-                    }
-
-                    Base::Vector2d u = (handler->corner2 - handler->corner1).Normalize();
-                    Base::Vector2d v = (handler->corner4 - handler->corner1).Normalize();
-                    onSketchPos = handler->corner1 - u * thickness - v * thickness;
-                }
-            }
-            else {
-                if (handler->roundCorners) {
-                    if (onViewParameters[OnViewParameter::Seventh]->isSet) {
-                        double angleToUse = handler->angle412 / 2;
-                        if (handler->constructionMethod() == ConstructionMethod::CenterAnd3Points) {
-                            angleToUse = handler->angle123 / 2;
-                        }
-                        Base::Vector2d vecL =
-                            (handler->corner2Initial - handler->corner1).Normalize();
-                        double L2 = onViewParameters[OnViewParameter::Seventh]->getValue()
-                            / sqrt(1 - cos(angleToUse) * cos(angleToUse));
-                        onSketchPos = handler->corner1 + vecL * L2 * cos(angleToUse);
-                    }
-                }
-                else {
-                    if (onViewParameters[OnViewParameter::Eighth]->isSet) {
-                        double thickness = onViewParameters[OnViewParameter::Eighth]->getValue();
-                        if (thickness <= -std::min(handler->width, handler->length) / 2) {
-                            unsetOnViewParameter(onViewParameters[OnViewParameter::Eighth].get());
-                            return;
-                        }
-
-                        Base::Vector2d u = (handler->corner2 - handler->corner1).Normalize();
-                        Base::Vector2d v = (handler->corner4 - handler->corner1).Normalize();
-                        Base::Vector2d dir = (u + v).Normalize();
-                        double angle = u.GetAngle(v) / 2;
-                        double sinAngle = fabs(sin(angle));
-                        if (sinAngle < Precision::Confusion()) {
-                            sinAngle = 1;  // protection against division by 0
-                        }
-                        double tr = thickness / sinAngle;
-
-                        onSketchPos = handler->corner1 - dir * tr;
-                    }
-                }
-            }
-        } break;
-        case SelectMode::SeekFifth: {
-            if (onViewParameters[OnViewParameter::Eighth]->isSet) {
-                double thickness = onViewParameters[OnViewParameter::Eighth]->getValue();
-                if (thickness <= -std::min(handler->width, handler->length) / 2) {
-                    unsetOnViewParameter(onViewParameters[OnViewParameter::Eighth].get());
-                    return;
-                }
-
-                Base::Vector2d u = (handler->corner2 - handler->corner1).Normalize();
-                Base::Vector2d v = (handler->corner4 - handler->corner1).Normalize();
-                Base::Vector2d dir = (u + v).Normalize();
-                double angle = u.GetAngle(v) / 2;
-                double sinAngle = fabs(sin(angle));
-                if (sinAngle < Precision::Confusion()) {
-                    sinAngle = 1;  // protection against division by 0
-                }
-                double tr = thickness / sinAngle;
-
-                onSketchPos = handler->corner1 - dir * tr;
-            }
-        } break;
-        default:
-            break;
-    }
-}
-
-template<>
-void DSHRectangleController::adaptParameters(Base::Vector2d onSketchPos)
-{
-
-    // If checkboxes need synchronisation (they were changed by the DSH, e.g. by using 'M' to switch
-    // construction method), synchronise them and return.
-    if (syncCheckboxToHandler(WCheckbox::FirstBox, handler->roundCorners)) {
-        return;
-    }
-
-    if (syncCheckboxToHandler(WCheckbox::SecondBox, handler->makeFrame)) {
-        return;
-    }
-
-    switch (handler->state()) {
-        case SelectMode::SeekFirst: {
-            if (!onViewParameters[OnViewParameter::First]->isSet) {
-                setOnViewParameterValue(OnViewParameter::First, onSketchPos.x);
-            }
-
-            if (!onViewParameters[OnViewParameter::Second]->isSet) {
-                setOnViewParameterValue(OnViewParameter::Second, onSketchPos.y);
-            }
-
-            bool sameSign = onSketchPos.x * onSketchPos.y > 0.;
-            onViewParameters[OnViewParameter::First]->setLabelAutoDistanceReverse(!sameSign);
-            onViewParameters[OnViewParameter::Second]->setLabelAutoDistanceReverse(sameSign);
-            onViewParameters[OnViewParameter::First]->setPoints(Base::Vector3d(),
-                                                                toVector3d(onSketchPos));
-            onViewParameters[OnViewParameter::Second]->setPoints(Base::Vector3d(),
-                                                                 toVector3d(onSketchPos));
-        } break;
-        case SelectMode::SeekSecond: {
-            if (handler->constructionMethod() == ConstructionMethod::Diagonal
-                || handler->constructionMethod() == ConstructionMethod::CenterAndCorner) {
-                if (!onViewParameters[OnViewParameter::Third]->isSet) {
-                    double length = handler->cornersReversed ? handler->width : handler->length;
-                    setOnViewParameterValue(OnViewParameter::Third, length);
-                }
-
-                if (!onViewParameters[OnViewParameter::Fourth]->isSet) {
-                    double width = handler->cornersReversed ? handler->length : handler->width;
-                    setOnViewParameterValue(OnViewParameter::Fourth, width);
-                }
-
-                Base::Vector3d start = toVector3d(handler->corner1);
-                Base::Vector3d vec = toVector3d(onSketchPos) - start;
-                bool sameSign = vec.x * vec.y > 0.;
-
-                onViewParameters[OnViewParameter::Third]->setLabelAutoDistanceReverse(sameSign);
-                onViewParameters[OnViewParameter::Fourth]->setLabelAutoDistanceReverse(!sameSign);
-
-                onViewParameters[OnViewParameter::Third]->setPoints(
-                    start,
-                    toVector3d(handler->cornersReversed ? handler->corner4 : handler->corner2));
-                onViewParameters[OnViewParameter::Fourth]->setPoints(
-                    start,
-                    toVector3d(handler->cornersReversed ? handler->corner2 : handler->corner4));
-            }
-            else if (handler->constructionMethod() == ConstructionMethod::ThreePoints) {
-                if (!onViewParameters[OnViewParameter::Third]->isSet) {
-                    setOnViewParameterValue(OnViewParameter::Third, handler->length);
-                }
-
-                onViewParameters[OnViewParameter::Third]->setPoints(toVector3d(handler->corner4),
-                                                                    toVector3d(handler->corner3));
-
-                if (!onViewParameters[OnViewParameter::Fourth]->isSet) {
-                    setOnViewParameterValue(OnViewParameter::Fourth,
-                                            Base::toDegrees(handler->angle),
-                                            Base::Unit::Angle);
-                }
-
-                onViewParameters[OnViewParameter::Fourth]->setPoints(toVector3d(handler->corner1),
-                                                                     Base::Vector3d());
-                onViewParameters[OnViewParameter::Fourth]->setLabelRange(
-                    (handler->corner2 - handler->corner1).Angle());
-            }
-            else {
-                if (!onViewParameters[OnViewParameter::Third]->isSet) {
-                    setOnViewParameterValue(OnViewParameter::Third, onSketchPos.x);
-                }
-
-                if (!onViewParameters[OnViewParameter::Fourth]->isSet) {
-                    setOnViewParameterValue(OnViewParameter::Fourth, onSketchPos.y);
-                }
-
-                bool sameSign = onSketchPos.x * onSketchPos.y > 0.;
-                onViewParameters[OnViewParameter::Third]->setLabelAutoDistanceReverse(!sameSign);
-                onViewParameters[OnViewParameter::Fourth]->setLabelAutoDistanceReverse(sameSign);
-                onViewParameters[OnViewParameter::Third]->setPoints(Base::Vector3d(),
-                                                                    toVector3d(onSketchPos));
-                onViewParameters[OnViewParameter::Fourth]->setPoints(Base::Vector3d(),
-                                                                     toVector3d(onSketchPos));
-            }
-        } break;
-        case SelectMode::SeekThird: {
-            if (handler->constructionMethod() == ConstructionMethod::Diagonal
-                || handler->constructionMethod() == ConstructionMethod::CenterAndCorner) {
-                if (handler->roundCorners) {
-                    if (!onViewParameters[OnViewParameter::Fifth]->isSet) {
-                        setOnViewParameterValue(OnViewParameter::Fifth, handler->radius);
-                    }
-
-                    Base::Vector3d center = handler->center3;
-                    Base::Vector3d end = toVector3d(handler->corner3);
-
-                    if (handler->radius != 0.0) {
-                        Base::Vector3d vec = (end - center).Normalize();
-                        end = center + vec * handler->radius;
-                    }
-
-                    onViewParameters[OnViewParameter::Fifth]->setPoints(center, end);
-                }
-                else {
-                    if (!onViewParameters[OnViewParameter::Sixth]->isSet) {
-                        setOnViewParameterValue(OnViewParameter::Sixth, handler->thickness);
-                    }
-
-                    Base::Vector3d start = toVector3d(handler->corner3);
-                    Base::Vector3d end =
-                        Base::Vector3d(handler->corner3.x, handler->frameCorner3.y, 0.0);
-                    onViewParameters[OnViewParameter::Sixth]->setPoints(start, end);
-                }
-            }
-            else if (handler->constructionMethod() == ConstructionMethod::ThreePoints) {
-                onViewParameters[OnViewParameter::Third]->setPoints(toVector3d(handler->corner4),
-                                                                    toVector3d(handler->corner3));
-
-                bool reversed = handler->cornersReversed;
-
-                if (!onViewParameters[OnViewParameter::Fifth]->isSet) {
-                    setOnViewParameterValue(OnViewParameter::Fifth,
-                                            reversed ? handler->length : handler->width);
-                }
-
-                Base::Vector3d start = toVector3d(handler->corner1);
-                onViewParameters[OnViewParameter::Fifth]->setLabelAutoDistanceReverse(reversed);
-                onViewParameters[OnViewParameter::Fifth]->setPoints(
-                    start,
-                    toVector3d(reversed ? handler->corner2 : handler->corner4));
-
-
-                if (!onViewParameters[OnViewParameter::Sixth]->isSet) {
-                    double val = Base::toDegrees(handler->angle123);
-                    setOnViewParameterValue(OnViewParameter::Sixth, val, Base::Unit::Angle);
-                }
-
-                onViewParameters[OnViewParameter::Sixth]->setPoints(
-                    toVector3d(reversed ? handler->corner4 : handler->corner2),
-                    Base::Vector3d());
-                double startAngle = reversed ? (handler->corner1 - handler->corner4).Angle()
-                                             : (handler->corner3 - handler->corner2).Angle();
-                onViewParameters[OnViewParameter::Sixth]->setLabelStartAngle(startAngle);
-                onViewParameters[OnViewParameter::Sixth]->setLabelRange(handler->angle123);
-            }
-            else {
-                bool reversed = handler->cornersReversed;
-
-                if (!onViewParameters[OnViewParameter::Fifth]->isSet) {
-                    setOnViewParameterValue(OnViewParameter::Fifth,
-                                            reversed ? handler->width : handler->length);
-                }
-
-                Base::Vector3d start = toVector3d(handler->corner1);
-                onViewParameters[OnViewParameter::Fifth]->setLabelAutoDistanceReverse(true);
-                onViewParameters[OnViewParameter::Fifth]->setPoints(
-                    start,
-                    toVector3d(reversed ? handler->corner4 : handler->corner2));
-
-
-                if (!onViewParameters[OnViewParameter::Sixth]->isSet) {
-                    double val = Base::toDegrees(handler->angle412);
-                    setOnViewParameterValue(OnViewParameter::Sixth, val, Base::Unit::Angle);
-                }
-
-                onViewParameters[OnViewParameter::Sixth]->setPoints(toVector3d(handler->corner1),
-                                                                    Base::Vector3d());
-                double startAngle = (handler->corner2 - handler->corner1).Angle();
-                onViewParameters[OnViewParameter::Sixth]->setLabelStartAngle(startAngle);
-                onViewParameters[OnViewParameter::Sixth]->setLabelRange(handler->angle412);
-            }
-
-        } break;
-        case SelectMode::SeekFourth: {
-            if (handler->constructionMethod() == ConstructionMethod::Diagonal
-                || handler->constructionMethod() == ConstructionMethod::CenterAndCorner) {
-                if (!onViewParameters[OnViewParameter::Sixth]->isSet) {
-                    setOnViewParameterValue(OnViewParameter::Sixth, handler->thickness);
-                }
-
-                Base::Vector3d start = toVector3d(handler->corner3);
-                Base::Vector3d end =
-                    Base::Vector3d(handler->corner3.x, handler->frameCorner3.y, 0.0);
-                onViewParameters[OnViewParameter::Sixth]->setPoints(start, end);
-            }
-            else {
-                if (handler->roundCorners) {
-                    if (!onViewParameters[OnViewParameter::Seventh]->isSet) {
-                        setOnViewParameterValue(OnViewParameter::Seventh, handler->radius);
-                    }
-
-                    Base::Vector3d center = handler->center3;
-                    Base::Vector3d end = toVector3d(handler->corner3);
-
-                    if (handler->radius != 0.0) {
-                        Base::Vector3d vec = (end - center).Normalize();
-                        end = center + vec * handler->radius;
-                    }
-
-                    onViewParameters[OnViewParameter::Seventh]->setPoints(center, end);
-                }
-                else {
-                    if (!onViewParameters[OnViewParameter::Eighth]->isSet) {
-                        setOnViewParameterValue(OnViewParameter::Eighth, handler->thickness);
-                    }
-
-                    Base::Vector3d start = toVector3d(handler->corner3);
-                    Base::Vector3d vec =
-                        toVector3d((handler->corner3 - handler->corner2).Normalize());
-                    Base::Vector3d end = start + handler->thickness * vec;
-                    onViewParameters[OnViewParameter::Eighth]->setPoints(start, end);
-                }
-            }
-        } break;
-        case SelectMode::SeekFifth: {
-            if (!onViewParameters[OnViewParameter::Eighth]->isSet) {
-                setOnViewParameterValue(OnViewParameter::Eighth, handler->thickness);
-            }
-
-            Base::Vector3d start = toVector3d(handler->corner3);
-            Base::Vector3d vec = toVector3d((handler->corner3 - handler->corner2).Normalize());
-            Base::Vector3d end = start + handler->thickness * vec;
-            onViewParameters[OnViewParameter::Eighth]->setPoints(start, end);
-        } break;
-        default:
-            break;
-    }
-}
-
-template<>
-void DSHRectangleController::doChangeDrawSketchHandlerMode()
-{
-    switch (handler->state()) {
-        case SelectMode::SeekFirst: {
-            if (onViewParameters[OnViewParameter::First]->hasFinishedEditing
-                && onViewParameters[OnViewParameter::Second]->hasFinishedEditing) {
-
-                handler->setState(SelectMode::SeekSecond);
-            }
-        } break;
-        case SelectMode::SeekSecond: {
-            if (onViewParameters[OnViewParameter::Third]->hasFinishedEditing
-                && onViewParameters[OnViewParameter::Fourth]->hasFinishedEditing) {
-
-                if (handler->roundCorners || handler->makeFrame
-                    || handler->constructionMethod() == ConstructionMethod::ThreePoints
-                    || handler->constructionMethod() == ConstructionMethod::CenterAnd3Points) {
-
-                    handler->setState(SelectMode::SeekThird);
-                }
-                else {
-                    handler->setState(SelectMode::End);
-                }
-            }
-        } break;
-        case SelectMode::SeekThird: {
-            if (handler->constructionMethod() == ConstructionMethod::Diagonal
-                || handler->constructionMethod() == ConstructionMethod::CenterAndCorner) {
-                if (handler->roundCorners
-                    && onViewParameters[OnViewParameter::Fifth]->hasFinishedEditing) {
-
-                    if (handler->makeFrame) {
-                        handler->setState(SelectMode::SeekFourth);
-                    }
-                    else {
-                        handler->setState(SelectMode::End);
-                    }
-                }
-                else if (handler->makeFrame
-                         && onViewParameters[OnViewParameter::Sixth]->hasFinishedEditing) {
-
-                    handler->setState(SelectMode::End);
-                }
-            }
-            else {
-                if (onViewParameters[OnViewParameter::Fifth]->hasFinishedEditing
-                    && onViewParameters[OnViewParameter::Sixth]->hasFinishedEditing) {
-                    if (handler->roundCorners || handler->makeFrame) {
-                        handler->setState(SelectMode::SeekFourth);
-                    }
-                    else {
-                        handler->setState(SelectMode::End);
-                    }
-                }
-            }
-        } break;
-        case SelectMode::SeekFourth: {
-            if (handler->constructionMethod() == ConstructionMethod::Diagonal
-                || handler->constructionMethod() == ConstructionMethod::CenterAndCorner) {
-                if (onViewParameters[OnViewParameter::Sixth]->hasFinishedEditing) {
-                    handler->setState(SelectMode::End);
-                }
-            }
-            else {
-                if (handler->roundCorners
-                    && onViewParameters[OnViewParameter::Seventh]->hasFinishedEditing) {
-
-                    if (handler->makeFrame) {
-                        handler->setState(SelectMode::SeekFifth);
-                    }
-                    else {
-                        handler->setState(SelectMode::End);
-                    }
-                }
-                else if (handler->makeFrame
-                         && onViewParameters[OnViewParameter::Eighth]->hasFinishedEditing) {
-                    handler->setState(SelectMode::End);
-                }
-            }
-        } break;
-        case SelectMode::SeekFifth: {
-            if (handler->makeFrame
-                && onViewParameters[OnViewParameter::Eighth]->hasFinishedEditing) {
-                handler->setState(SelectMode::End);
-            }
-        } break;
-        default:
-            break;
-    }
-}
-
-template<>
-void DSHRectangleController::addConstraints()
-{
-    using std::numbers::pi;
-
-    App::DocumentObject* obj = handler->sketchgui->getObject();
-
-    int firstCurve = handler->firstCurve;
-    bool reverse = handler->cornersReversed;
-    if (handler->constructionMethod() == ConstructionMethod::CenterAnd3Points) {
-        reverse = !reverse;
-    }
-
-    auto x0 = onViewParameters[OnViewParameter::First]->getValue();
-    auto y0 = onViewParameters[OnViewParameter::Second]->getValue();
-    auto length = onViewParameters[OnViewParameter::Third]->getValue();
-    auto width = onViewParameters[OnViewParameter::Fourth]->getValue();
-    auto radius = onViewParameters[OnViewParameter::Fifth]->getValue();
-    auto thickness = onViewParameters[OnViewParameter::Sixth]->getValue();
-
-    auto x0set = onViewParameters[OnViewParameter::First]->isSet;
-    auto y0set = onViewParameters[OnViewParameter::Second]->isSet;
-    auto lengthSet = onViewParameters[OnViewParameter::Third]->isSet;
-    auto widthSet = onViewParameters[OnViewParameter::Fourth]->isSet;
-    auto radiusSet = onViewParameters[OnViewParameter::Fifth]->isSet;
-    auto thicknessSet = onViewParameters[OnViewParameter::Sixth]->isSet;
-
-    auto corner1x = onViewParameters[OnViewParameter::Third]->getValue();
-    auto corner1y = onViewParameters[OnViewParameter::Fourth]->getValue();
-    auto angle = Base::toRadians(onViewParameters[OnViewParameter::Fourth]->getValue());
-    auto innerAngle = Base::toRadians(onViewParameters[OnViewParameter::Sixth]->getValue());
-
-    auto corner1xSet = onViewParameters[OnViewParameter::Third]->isSet;
-    auto corner1ySet = onViewParameters[OnViewParameter::Fourth]->isSet;
-    auto angleSet = onViewParameters[OnViewParameter::Fourth]->isSet;
-    auto innerAngleSet = onViewParameters[OnViewParameter::Sixth]->isSet;
-
-    if (handler->constructionMethod() == ConstructionMethod::CenterAnd3Points) {
-        lengthSet = false;
-    }
-    if (handler->constructionMethod() == ConstructionMethod::ThreePoints
-        || handler->constructionMethod() == ConstructionMethod::CenterAnd3Points) {
-        width = onViewParameters[OnViewParameter::Fifth]->getValue();
-        radius = onViewParameters[OnViewParameter::Seventh]->getValue();
-        thickness = onViewParameters[OnViewParameter::Eighth]->getValue();
-
-        widthSet = onViewParameters[OnViewParameter::Fifth]->isSet;
-        radiusSet = onViewParameters[OnViewParameter::Seventh]->isSet;
-        thicknessSet = onViewParameters[OnViewParameter::Eighth]->isSet;
-    }
-
-    using namespace Sketcher;
-
-    int firstPointId = firstCurve;
-    if (handler->constructionMethod() == ConstructionMethod::Diagonal
-        || handler->constructionMethod() == ConstructionMethod::ThreePoints) {
-        if (handler->radius > Precision::Confusion()) {
-            firstPointId = handler->constructionPointOneId;
-        }
-    }
-    else {
-        firstPointId = handler->centerPointId;
-    }
-
-    auto constraintx0 = [&]() {
-        ConstraintToAttachment(GeoElementId(firstPointId, PointPos::start),
-                               GeoElementId::VAxis,
-                               x0,
-                               obj);
-    };
-
-    auto constrainty0 = [&]() {
-        ConstraintToAttachment(GeoElementId(firstPointId, PointPos::start),
-                               GeoElementId::HAxis,
-                               y0,
-                               obj);
-    };
-
-    auto constraintlength = [&]() {
-        int curveId = reverse ? firstCurve : firstCurve + 1;
-
-        Gui::cmdAppObjectArgs(obj,
-                              "addConstraint(Sketcher.Constraint('Distance',%d,%d,%d,%d,%f)) ",
-                              curveId,
-                              1,
-                              curveId + 2,
-                              2,
-                              fabs(length));
-    };
-
-    auto constraintwidth = [&]() {
-        int curveId = reverse ? firstCurve + 1 : firstCurve;
-
-        Gui::cmdAppObjectArgs(obj,
-                              "addConstraint(Sketcher.Constraint('Distance',%d,%d,%d,%d,%f)) ",
-                              curveId,
-                              1,
-                              curveId + 2,
-                              2,
-                              fabs(width));
-    };
-
-    // NOTE: if AutoConstraints is empty, we can add constraints directly without any diagnose. No
-    // diagnose was run.
-    if (handler->AutoConstraints.empty()) {
-        if (x0set) {
-            constraintx0();
-        }
-
-        if (y0set) {
-            constrainty0();
-        }
-
-        if (lengthSet) {
-            constraintlength();
-        }
-
-        if (widthSet) {
-            constraintwidth();
-        }
-    }
-    else {  // There is a valid diagnose.
-        auto firstpointinfo = handler->getPointInfo(GeoElementId(firstPointId, PointPos::start));
-
-        if (x0set && firstpointinfo.isXDoF()) {
-            constraintx0();
-
-            handler->diagnoseWithAutoConstraints();  // ensure we have recalculated parameters after
-                                                     // each constraint addition
-
-            firstpointinfo = handler->getPointInfo(
-                GeoElementId(firstPointId, PointPos::start));  // get updated point position
-        }
-
-        if (y0set && firstpointinfo.isYDoF()) {
-            constrainty0();
-
-            handler->diagnoseWithAutoConstraints();  // ensure we have recalculated parameters after
-                                                     // each constraint addition
-        }
-
-        if (lengthSet) {
-            int curveId = reverse ? firstCurve : firstCurve + 1;
-            auto startpointinfo = handler->getPointInfo(GeoElementId(curveId, PointPos::start));
-            auto endpointinfo = handler->getPointInfo(GeoElementId(curveId + 2, PointPos::end));
-
-            int DoFs = startpointinfo.getDoFs();
-            DoFs += endpointinfo.getDoFs();
-
-            if (DoFs > 0) {
-                constraintlength();
-            }
-
-            handler->diagnoseWithAutoConstraints();
-        }
-
-        if (widthSet) {
-            int curveId = reverse ? firstCurve + 1 : firstCurve;
-            auto startpointinfo = handler->getPointInfo(GeoElementId(curveId, PointPos::start));
-            auto endpointinfo = handler->getPointInfo(GeoElementId(curveId + 2, PointPos::end));
-
-            int DoFs = startpointinfo.getDoFs();
-            DoFs += endpointinfo.getDoFs();
-
-            if (DoFs > 0) {
-                constraintwidth();
-            }
-        }
-    }
-
-    // NOTE: As of today, there are no autoconstraints on the radius or on the frame thickness,
-    // therefore, they are necessarily constrainable were applicable.
-
-    if (handler->constructionMethod() == ConstructionMethod::ThreePoints) {
-        if (angleSet) {
-            if (fabs(angle - pi) < Precision::Confusion()
-                || fabs(angle + pi) < Precision::Confusion()
-                || fabs(angle) < Precision::Confusion()) {
-                Gui::cmdAppObjectArgs(obj,
-                                      "addConstraint(Sketcher.Constraint('Horizontal',%d)) ",
-                                      firstCurve);
-            }
-            else if (fabs(angle - pi / 2) < Precision::Confusion()
-                     || fabs(angle + pi / 2) < Precision::Confusion()) {
-                Gui::cmdAppObjectArgs(obj,
-                                      "addConstraint(Sketcher.Constraint('Vertical',%d)) ",
-                                      firstCurve);
-            }
-            else {
-                Gui::cmdAppObjectArgs(obj,
-                                      "addConstraint(Sketcher.Constraint('Angle',%d,%d,%f)) ",
-                                      Sketcher::GeoEnum::HAxis,
-                                      firstCurve,
-                                      angle);
-            }
-        }
-        if (innerAngleSet) {
-            if (fabs(innerAngle - pi / 2) > Precision::Confusion()) {
-                // if 90? then perpendicular already created.
-                Gui::cmdAppObjectArgs(obj,
-                                      "addConstraint(Sketcher.Constraint('Angle',%d,%d,%d,%d,%f)) ",
-                                      firstCurve + 1,
-                                      1,
-                                      firstCurve,
-                                      2,
-                                      innerAngle);
-            }
-        }
-    }
-    else if (handler->constructionMethod() == ConstructionMethod::CenterAnd3Points) {
-        if (corner1xSet) {
-            ConstraintToAttachment(GeoElementId(firstCurve, PointPos::start),
-                                   GeoElementId::VAxis,
-                                   corner1x,
-                                   obj);
-        }
-        if (corner1ySet) {
-            ConstraintToAttachment(GeoElementId(firstCurve, PointPos::start),
-                                   GeoElementId::HAxis,
-                                   corner1y,
-                                   obj);
-        }
-        if (innerAngleSet) {
-            if (fabs(innerAngle - pi / 2) > Precision::Confusion()) {
-                // if 90? then perpendicular already created.
-                Gui::cmdAppObjectArgs(obj,
-                                      "addConstraint(Sketcher.Constraint('Angle',%d,%d,%d,%d,%f)) ",
-                                      firstCurve,
-                                      1,
-                                      firstCurve + 3,
-                                      2,
-                                      innerAngle);
-            }
-        }
-    }
-
-    if (radiusSet && radius > Precision::Confusion()) {
-        Gui::cmdAppObjectArgs(obj,
-                              "addConstraint(Sketcher.Constraint('Radius',%d,%f)) ",
-                              firstCurve + 5,  // NOLINT
-                              radius);
-    }
-
-    bool negThicknessEqualRadius = fabs(radius + thickness) < Precision::Confusion();
-    // in the case where negative thickness = radius, the inner rectangle has its corner
-    // constrained to the mid of the arcs of the outer rectangle. So thickness would be redundant
-    if (thicknessSet && !negThicknessEqualRadius) {
-        Gui::cmdAppObjectArgs(obj,
-                              "addConstraint(Sketcher.Constraint('Distance',%d,%d,%d,%f)) ",
-                              firstCurve + (handler->roundCorners == true ? 8 : 4),  // NOLINT
-                              1,
-                              firstCurve,
-                              fabs(thickness));
-    }
-}
-
-template<>
-void DSHRectangleController::doConstructionMethodChanged()
-{
-    handler->updateHint();
-}
-
-Gui::InputHint DrawSketchHandlerRectangle::switchModeHint()
-{
-    return {QObject::tr("%1 switch mode"), {Gui::InputHint::UserInput::KeyM}};
-}
-
-DrawSketchHandlerRectangle::HintTable DrawSketchHandlerRectangle::getRectangleHintTable()
-{
-    const auto switchHint = switchModeHint();
-    return {// Structure: {ConstructionMethod, SelectMode, {hints...}}
-
-            // Diagonal method
-            {ConstructionMethods::RectangleConstructionMethod::Diagonal,
-             SelectMode::SeekFirst,
-             {{QObject::tr("%1 pick first corner"), {Gui::InputHint::UserInput::MouseLeft}},
-              switchHint}},
-            {ConstructionMethods::RectangleConstructionMethod::Diagonal,
-             SelectMode::SeekSecond,
-             {{QObject::tr("%1 pick opposite corner"), {Gui::InputHint::UserInput::MouseLeft}},
-              switchHint}},
-            {ConstructionMethods::RectangleConstructionMethod::Diagonal,
-             SelectMode::SeekThird,
-             {{QObject::tr("%1 set corner radius or frame thickness"),
-               {Gui::InputHint::UserInput::MouseMove}},
-              switchHint}},
-            {ConstructionMethods::RectangleConstructionMethod::Diagonal,
-             SelectMode::SeekFourth,
-             {{QObject::tr("%1 set frame thickness"), {Gui::InputHint::UserInput::MouseMove}},
-              switchHint}},
-
-            // CenterAndCorner method
-            {ConstructionMethods::RectangleConstructionMethod::CenterAndCorner,
-             SelectMode::SeekFirst,
-             {{QObject::tr("%1 pick center"), {Gui::InputHint::UserInput::MouseLeft}}, switchHint}},
-            {ConstructionMethods::RectangleConstructionMethod::CenterAndCorner,
-             SelectMode::SeekSecond,
-             {{QObject::tr("%1 pick corner"), {Gui::InputHint::UserInput::MouseLeft}}, switchHint}},
-            {ConstructionMethods::RectangleConstructionMethod::CenterAndCorner,
-             SelectMode::SeekThird,
-             {{QObject::tr("%1 set corner radius or frame thickness"),
-               {Gui::InputHint::UserInput::MouseMove}},
-              switchHint}},
-            {ConstructionMethods::RectangleConstructionMethod::CenterAndCorner,
-             SelectMode::SeekFourth,
-             {{QObject::tr("%1 set frame thickness"), {Gui::InputHint::UserInput::MouseMove}},
-              switchHint}},
-
-            // ThreePoints method
-            {ConstructionMethods::RectangleConstructionMethod::ThreePoints,
-             SelectMode::SeekFirst,
-             {{QObject::tr("%1 pick first corner"), {Gui::InputHint::UserInput::MouseLeft}},
-              switchHint}},
-            {ConstructionMethods::RectangleConstructionMethod::ThreePoints,
-             SelectMode::SeekSecond,
-             {{QObject::tr("%1 pick second corner"), {Gui::InputHint::UserInput::MouseLeft}},
-              switchHint}},
-            {ConstructionMethods::RectangleConstructionMethod::ThreePoints,
-             SelectMode::SeekThird,
-             {{QObject::tr("%1 pick third corner"), {Gui::InputHint::UserInput::MouseLeft}},
-              switchHint}},
-            {ConstructionMethods::RectangleConstructionMethod::ThreePoints,
-             SelectMode::SeekFourth,
-             {{QObject::tr("%1 set corner radius or frame thickness"),
-               {Gui::InputHint::UserInput::MouseMove}},
-              switchHint}},
-
-            // CenterAnd3Points method
-            {ConstructionMethods::RectangleConstructionMethod::CenterAnd3Points,
-             SelectMode::SeekFirst,
-             {{QObject::tr("%1 pick center"), {Gui::InputHint::UserInput::MouseLeft}}, switchHint}},
-            {ConstructionMethods::RectangleConstructionMethod::CenterAnd3Points,
-             SelectMode::SeekSecond,
-             {{QObject::tr("%1 pick first corner"), {Gui::InputHint::UserInput::MouseLeft}},
-              switchHint}},
-            {ConstructionMethods::RectangleConstructionMethod::CenterAnd3Points,
-             SelectMode::SeekThird,
-             {{QObject::tr("%1 pick second corner"), {Gui::InputHint::UserInput::MouseLeft}},
-              switchHint}},
-            {ConstructionMethods::RectangleConstructionMethod::CenterAnd3Points,
-             SelectMode::SeekFourth,
-             {{QObject::tr("%1 set corner radius or frame thickness"),
-               {Gui::InputHint::UserInput::MouseMove}},
-              switchHint}}};
-}
-
-std::list<Gui::InputHint> DrawSketchHandlerRectangle::lookupRectangleHints(
-    ConstructionMethods::RectangleConstructionMethod method,
-    SelectMode state)
-{
-    const auto rectangleHintTable = getRectangleHintTable();
-
-    auto it = std::find_if(rectangleHintTable.begin(),
-                           rectangleHintTable.end(),
-                           [method, state](const HintEntry& entry) {
-                               return entry.method == method && entry.state == state;
-                           });
-
-    return (it != rectangleHintTable.end()) ? it->hints : std::list<Gui::InputHint> {};
-}
 }  // namespace SketcherGui
 
 
