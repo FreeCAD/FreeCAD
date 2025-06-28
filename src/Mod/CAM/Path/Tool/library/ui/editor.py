@@ -599,33 +599,3 @@ class LibraryEditor(QWidget):
         dialog = AssetSaveDialog(asset_class=ToolBit, serializers=toolbit_serializers, parent=self)
         dialog.exec_(toolbit_to_export)  # This will open the save dialog and handle the export
         self._update_button_states()
-
-    def _on_edit_toolbit_requested(self, selected):
-        """Edit the selected tool bit asset"""
-        Path.Log.track()
-        selected_toolbits = self.browser.get_selected_bits()
-        if not selected_toolbits:
-            return
-        toolbit = selected_toolbits[0]
-        toolbit_uri = toolbit.get_uri()
-
-        # Fetch the toolbit fully for editing
-        try:
-            bit = cast(ToolBit, cam_assets.get(toolbit_uri))
-            editor_dialog = ToolBitEditor(bit, self.form)
-            result = editor_dialog.show()
-
-            if result == QDialog.Accepted:
-                cam_assets.add(bit)
-                self.browser.refresh()
-                self.browser.select_by_uri([str(toolbit.get_uri())])
-                self._update_button_states()
-
-        except Exception as e:
-            Path.Log.error(f"Failed to load or edit toolbit {toolbit_uri}: {e}")
-            QMessageBox.critical(
-                self.form,
-                translate("CAM_ToolBit", "Error Editing Toolbit"),
-                str(e),
-            )
-            raise

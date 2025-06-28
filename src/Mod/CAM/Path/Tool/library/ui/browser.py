@@ -264,7 +264,7 @@ class LibraryBrowserWidget(ToolBitBrowserWidget):
     def _on_edit_requested(self):
         """Opens the ToolBitEditor for the selected toolbit."""
         toolbit = self._get_first_selected_bit()
-        if not toolbit or not self.current_library:
+        if not toolbit:
             return
 
         # Open the editor for the selected toolbit
@@ -279,7 +279,7 @@ class LibraryBrowserWidget(ToolBitBrowserWidget):
         Path.Log.info(f"Toolbit {toolbit.get_id()} saved.")
 
         # Also save the library because the tool number may have changed.
-        if tool_no != editor.tool_no:
+        if self.current_library and tool_no != editor.tool_no:
             self.current_library.assign_new_bit_no(toolbit, editor.tool_no)
             self._asset_manager.add(self.current_library)
 
