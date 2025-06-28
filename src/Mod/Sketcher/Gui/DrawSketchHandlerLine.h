@@ -258,21 +258,58 @@ private:
 
     std::list<Gui::InputHint> getToolHints() const override
     {
-        return lookupLineHints(static_cast<int>(constructionMethod()), static_cast<int>(state()));
+        using State = std::pair<ConstructionMethod, SelectMode>;
+        using enum Gui::InputHint::UserInput;
+
+        const auto switchHint =
+            Gui::InputHint {.message = QObject::tr("%1 switch mode"), .sequences = {KeyM}};
+
+        return Gui::lookupHints<State>(
+            {constructionMethod(), state()},
+            {
+                // OnePointLengthAngle method
+                {.state = {ConstructionMethod::OnePointLengthAngle, SelectMode::SeekFirst},
+                 .hints =
+                     {
+                         {QObject::tr("%1 pick first point"), {MouseLeft}},
+                         switchHint,
+                     }},
+                {.state = {ConstructionMethod::OnePointLengthAngle, SelectMode::SeekSecond},
+                 .hints =
+                     {
+                         {QObject::tr("%1 pick second point"), {MouseLeft}},
+                         switchHint,
+                     }},
+
+                // OnePointWidthHeight method
+                {.state = {ConstructionMethod::OnePointWidthHeight, SelectMode::SeekFirst},
+                 .hints =
+                     {
+                         {QObject::tr("%1 pick first point"), {MouseLeft}},
+                         switchHint,
+                     }},
+                {.state = {ConstructionMethod::OnePointWidthHeight, SelectMode::SeekSecond},
+                 .hints =
+                     {
+                         {QObject::tr("%1 pick second point"), {MouseLeft}},
+                         switchHint,
+                     }},
+
+                // TwoPoints method
+                {.state = {ConstructionMethod::TwoPoints, SelectMode::SeekFirst},
+                 .hints =
+                     {
+                         {QObject::tr("%1 pick first point"), {MouseLeft}},
+                         switchHint,
+                     }},
+                {.state = {ConstructionMethod::TwoPoints, SelectMode::SeekSecond},
+                 .hints =
+                     {
+                         {QObject::tr("%1 pick second point"), {MouseLeft}},
+                         switchHint,
+                     }},
+            });
     }
-
-    struct HintEntry
-    {
-        int constructionMethod;
-        int state;
-        std::list<Gui::InputHint> hints;
-    };
-
-    using HintTable = std::vector<HintEntry>;
-
-    static Gui::InputHint switchModeHint();
-    static HintTable getLineHintTable();
-    static std::list<Gui::InputHint> lookupLineHints(int method, int state);
 };
 
 template<>
@@ -800,66 +837,6 @@ void DSHLineController::addConstraints()
             }
         }
     }
-}
-
-Gui::InputHint DrawSketchHandlerLine::switchModeHint()
-{
-    return {QObject::tr("%1 switch mode"), {Gui::InputHint::UserInput::KeyM}};
-}
-
-DrawSketchHandlerLine::HintTable DrawSketchHandlerLine::getLineHintTable()
-{
-    const auto switchHint = switchModeHint();
-    return {// Structure: {constructionMethod, state, {hints...}}
-
-            // OnePointLengthAngle (0)
-            {0,
-             0,
-             {// SeekFirst
-              {QObject::tr("%1 pick first point"), {Gui::InputHint::UserInput::MouseLeft}},
-              switchHint}},
-            {0,
-             1,
-             {// SeekSecond
-              {QObject::tr("%1 pick second point"), {Gui::InputHint::UserInput::MouseLeft}},
-              switchHint}},
-
-            // OnePointWidthHeight (1)
-            {1,
-             0,
-             {// SeekFirst
-              {QObject::tr("%1 pick first point"), {Gui::InputHint::UserInput::MouseLeft}},
-              switchHint}},
-            {1,
-             1,
-             {// SeekSecond
-              {QObject::tr("%1 pick second point"), {Gui::InputHint::UserInput::MouseLeft}},
-              switchHint}},
-
-            // TwoPoints (2)
-            {2,
-             0,
-             {// SeekFirst
-              {QObject::tr("%1 pick first point"), {Gui::InputHint::UserInput::MouseLeft}},
-              switchHint}},
-            {2,
-             1,
-             {// SeekSecond
-              {QObject::tr("%1 pick second point"), {Gui::InputHint::UserInput::MouseLeft}},
-              switchHint}}};
-}
-
-std::list<Gui::InputHint> DrawSketchHandlerLine::lookupLineHints(int method, int state)
-{
-    const auto lineHintTable = getLineHintTable();
-
-    auto it = std::find_if(lineHintTable.begin(),
-                           lineHintTable.end(),
-                           [method, state](const HintEntry& entry) {
-                               return entry.constructionMethod == method && entry.state == state;
-                           });
-
-    return (it != lineHintTable.end()) ? it->hints : std::list<Gui::InputHint> {};
 }
 
 }  // namespace SketcherGui
