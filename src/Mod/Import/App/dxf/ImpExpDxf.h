@@ -117,6 +117,29 @@ public:
     void FinishImport() override;
 
 private:
+    class GeometryBuilder
+    {
+    public:
+        // The type of primitive that a shape represents. 'None' is used for
+        // non-parametric modes.
+        enum class PrimitiveType
+        {
+            None,
+            Point,
+            Line,
+            Circle,
+            Arc,
+            Ellipse,
+            Spline,
+            PolylineCompound
+        };
+
+        // The raw geometric shape.
+        TopoDS_Shape shape;
+        // The intended parametric type for the shape.
+        PrimitiveType type = PrimitiveType::None;
+    };
+
     ImportMode m_importMode = ImportMode::IndividualShapes;
     bool shouldSkipEntity() const
     {
@@ -207,9 +230,7 @@ protected:
         {}
         const std::string Name;
         const int Flags;
-        std::map<CDxfRead::CommonEntityAttributes, std::list<TopoDS_Shape>> Shapes;
-        std::map<CDxfRead::CommonEntityAttributes, std::list<FeaturePythonBuilder>>
-            FeatureBuildersList;
+        std::map<CDxfRead::CommonEntityAttributes, std::list<GeometryBuilder>> GeometryBuilders;
         std::map<CDxfRead::CommonEntityAttributes, std::list<Insert>> Inserts;
     };
 
@@ -259,6 +280,8 @@ protected:
 
         // Called by OnReadXxxx functions to add Part objects
         virtual void AddObject(const TopoDS_Shape& shape, const char* nameBase) = 0;
+        // Generic method to add a new geometry builder
+        virtual void AddGeometry(const GeometryBuilder& builder) = 0;
         // Called by OnReadInsert to add App::Link or other C++-created objects
         virtual void AddObject(App::DocumentObject* obj, const char* nameBase) = 0;
         // Called by OnReadXxxx functions to add FeaturePython (draft) objects.
@@ -288,6 +311,12 @@ protected:
         {}
 
         void AddObject(const TopoDS_Shape& shape, const char* nameBase) override;
+        void AddGeometry(const GeometryBuilder& builder) override
+        {
+            // In drawing mode, we create objects immediately based on the builder.
+            // For now, this just creates simple shapes. Primitives would need more logic here.
+            AddObject(builder.shape, "Shape");
+        }
         void AddObject(App::DocumentObject* obj, const char* nameBase) override;
         void AddObject(FeaturePythonBuilder shapeBuilder) override;
         void AddInsert(const Base::Vector3d& point,
@@ -351,6 +380,11 @@ protected:
             ShapesList[Reader.m_entityAttributes].push_back(shape);
         }
 
+        void AddGeometry(const GeometryBuilder& builder) override
+        {
+            ShapesList[Reader.m_entityAttributes].push_back(builder.shape);
+        }
+
         void AddObject(App::DocumentObject* obj, const char* nameBase) override
         {
             // A Link is not a shape to be merged, so pass to base class for standard handling.
@@ -388,33 +422,40 @@ protected:
     public:
         BlockDefinitionCollector(
             ImpExpDxfRead& reader,
-            std::map<CDxfRead::CommonEntityAttributes, std::list<TopoDS_Shape>>& shapesList,
-            std::map<CDxfRead::CommonEntityAttributes, std::list<FeaturePythonBuilder>>&
-                featureBuildersList,
+            std::map<CDxfRead::CommonEntityAttributes, std::list<GeometryBuilder>>& buildersList,
             std::map<CDxfRead::CommonEntityAttributes, std::list<Block::Insert>>& insertsList)
             : EntityCollector(reader)
-            , ShapesList(shapesList)
-            , FeatureBuildersList(featureBuildersList)
+            , BuildersList(buildersList)
             , InsertsList(insertsList)
         {}
 
         // TODO: We will want AddAttributeDefinition as well.
         void AddObject(const TopoDS_Shape& shape, const char* /*nameBase*/) override
         {
-            ShapesList[Reader.m_entityAttributes].push_back(shape);
-        }
-        void AddObject(FeaturePythonBuilder shapeBuilder) override
-        {
-            FeatureBuildersList[Reader.m_entityAttributes].push_back(shapeBuilder);
+            // This path should no longer be taken, but is kept for compatibility.
+            BuildersList[Reader.m_entityAttributes].emplace_back(GeometryBuilder(shape));
         }
 
-        void AddObject(App::DocumentObject* /*obj*/, const char* /*nameBase*/) override
+        void AddGeometry(const GeometryBuilder& builder) override
+        {
+            BuildersList[Reader.m_entityAttributes].push_back(builder);
+        }
+
+        void AddObject(App::DocumentObject* /*obj*/, const char* nameBase) override
         {
             // This path should never be executed. Links and other fully-formed DocumentObjects
             // are created from INSERT entities, not as part of a BLOCK *definition*. If this
             // warning ever appears, it indicates a logic error in the importer.
             Reader.ImportError(
-                "Internal logic error: Attempted to add a DocumentObject to a block definition.");
+                "Internal logic error: Attempted to add a DocumentObject ('%s') to a block "
+                "definition.\n",
+                nameBase);
+        }
+
+        void AddObject(FeaturePythonBuilder /*shapeBuilder*/) override
+        {
+            // This path is for Draft/FeaturePython objects and is not used by the
+            // primitives or shapes modes.
         }
 
         void AddInsert(const Base::Vector3d& point,
@@ -427,9 +468,7 @@ protected:
         }
 
     private:
-        std::map<CDxfRead::CommonEntityAttributes, std::list<TopoDS_Shape>>& ShapesList;
-        std::map<CDxfRead::CommonEntityAttributes, std::list<FeaturePythonBuilder>>&
-            FeatureBuildersList;
+        std::map<CDxfRead::CommonEntityAttributes, std::list<GeometryBuilder>>& BuildersList;
         std::map<CDxfRead::CommonEntityAttributes, std::list<Block::Insert>>& InsertsList;
     };
 
@@ -507,4 +546,4 @@ protected:
 
 }  // namespace Import
 
-#endif  // IMPEXPDXF_H
+#endif  // IMPEXPDXFGUI_H

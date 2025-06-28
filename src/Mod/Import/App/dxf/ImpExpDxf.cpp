@@ -28,28 +28,37 @@
 #include <BRepAdaptor_HCurve.hxx>
 #endif
 #include <Approx_Curve3d.hxx>
+#include <BRepAdaptor_CompCurve.hxx>
 #include <BRepAdaptor_Curve.hxx>
 #include <BRepBuilderAPI_MakeEdge.hxx>
 #include <BRepBuilderAPI_MakeVertex.hxx>
+#include <BRepBuilderAPI_MakeWire.hxx>
 #include <BRepBuilderAPI_Transform.hxx>
+#include <BRepBuilderAPI_GTransform.hxx>
+#include <BRep_Tool.hxx>
 #include <BRep_Builder.hxx>
 #include <GCPnts_UniformAbscissa.hxx>
 #include <GeomAPI_Interpolate.hxx>
 #include <GeomAPI_PointsToBSpline.hxx>
+#include <Geom_Circle.hxx>
+#include <Geom_Line.hxx>
 #include <Geom_BSplineCurve.hxx>
 #include <TColgp_Array1OfPnt.hxx>
+#include <TopExp.hxx>
 #include <TopExp_Explorer.hxx>
 #include <TopoDS.hxx>
 #include <TopoDS_Compound.hxx>
 #include <TopoDS_Edge.hxx>
 #include <TopoDS_Shape.hxx>
 #include <TopoDS_Vertex.hxx>
+#include <TopoDS_Wire.hxx>
 #include <gp_Ax1.hxx>
 #include <gp_Ax2.hxx>
 #include <gp_Circ.hxx>
 #include <gp_Dir.hxx>
 #include <gp_Elips.hxx>
 #include <gp_Pnt.hxx>
+#include <gp_Trsf.hxx>
 #include <gp_Vec.hxx>
 #endif
 
@@ -66,10 +75,12 @@
 #include <Base/Parameter.h>
 #include <Base/Vector3D.h>
 #include <Base/PlacementPy.h>
-#include <Base/VectorPy.h>
 #include <Mod/Part/App/PartFeature.h>
 #include <Mod/Part/App/FeatureCompound.h>
+#include <Mod/Part/App/PrimitiveFeature.h>
+#include <Mod/Part/App/FeaturePartCircle.h>
 #include <App/Link.h>
+#include <App/FeaturePython.h>
 #include <Base/Tools.h>
 
 #include "ImpExpDxf.h"
@@ -80,6 +91,81 @@ using namespace Import;
 #if OCC_VERSION_HEX >= 0x070600
 using BRepAdaptor_HCurve = BRepAdaptor_Curve;
 #endif
+
+namespace
+{
+
+Part::Circle* createCirclePrimitive(const TopoDS_Edge& edge, App::Document* doc, const char* name);
+Part::Line* createLinePrimitive(const TopoDS_Edge& edge, App::Document* doc, const char* name);
+
+}  // namespace
+
+namespace
+{
+
+// Helper function to create and configure a Part::Circle primitive from a TopoDS_Edge
+Part::Circle* createCirclePrimitive(const TopoDS_Edge& edge, App::Document* doc, const char* name)
+{
+    auto* p = doc->addObject<Part::Circle>(name);
+    if (!p) {
+        return nullptr;
+    }
+
+    TopLoc_Location loc;
+    Standard_Real first, last;
+    Handle(Geom_Curve) aCurve = BRep_Tool::Curve(edge, loc, first, last);
+
+    if (aCurve->IsInstance(Geom_Circle::get_type_descriptor())) {
+        Handle(Geom_Circle) circle = Handle(Geom_Circle)::DownCast(aCurve);
+        p->Radius.setValue(circle->Radius());
+
+        // The axis contains the full transformation (location and orientation).
+        gp_Ax2 axis = circle->Position().Transformed(loc.Transformation());
+        gp_Pnt center = axis.Location();
+        gp_Dir xDir = axis.XDirection();
+        gp_Dir yDir = axis.YDirection();
+        gp_Dir zDir = axis.Direction();
+
+        Base::Placement plc;
+        plc.setPosition(Base::Vector3d(center.X(), center.Y(), center.Z()));
+        plc.setRotation(
+            Base::Rotation::makeRotationByAxes(Base::Vector3d(xDir.X(), xDir.Y(), xDir.Z()),
+                                               Base::Vector3d(yDir.X(), yDir.Y(), yDir.Z()),
+                                               Base::Vector3d(zDir.X(), zDir.Y(), zDir.Z())));
+        p->Placement.setValue(plc);
+
+        // Set angles for arcs
+        BRep_Tool::Range(edge, first, last);
+        p->Angle1.setValue(Base::toDegrees(first));
+        p->Angle2.setValue(Base::toDegrees(last));
+    }
+    return p;
+}
+
+// Helper function to create and configure a Part::Line primitive from a TopoDS_Edge
+Part::Line* createLinePrimitive(const TopoDS_Edge& edge, App::Document* doc, const char* name)
+{
+    auto* p = doc->addObject<Part::Line>(name);
+    if (!p) {
+        return nullptr;
+    }
+
+    TopoDS_Vertex v1, v2;
+    TopExp::Vertices(edge, v1, v2);
+    gp_Pnt p1 = BRep_Tool::Pnt(v1);
+    gp_Pnt p2 = BRep_Tool::Pnt(v2);
+
+    p->X1.setValue(p1.X());
+    p->Y1.setValue(p1.Y());
+    p->Z1.setValue(p1.Z());
+    p->X2.setValue(p2.X());
+    p->Y2.setValue(p2.Y());
+    p->Z2.setValue(p2.Z());
+
+    return p;
+}
+
+}  // namespace
 
 std::map<std::string, int> ImpExpDxfRead::PreScan(const std::string& filepath)
 {
@@ -136,17 +222,6 @@ void ImpExpDxfRead::StartImport()
 
 bool ImpExpDxfRead::ReadEntitiesSection()
 {
-    // TODO: remove this once the unsupported modes have been implemented.
-    // Perform a one-time check for unsupported modes
-    if (m_importMode == ImportMode::EditableDraft) {
-        UnsupportedFeature("Import as 'Editable draft objects' is not yet implemented.");
-        // We can continue, and the switch statements below will do nothing,
-        // resulting in an empty import for geometry, which is correct behavior.
-    }
-    else if (m_importMode == ImportMode::EditablePrimitives) {
-        UnsupportedFeature("Import as 'Editable part primitives' is not yet implemented.");
-    }
-
     // After parsing the BLOCKS section, compose all block definitions
     // into FreeCAD objects before processing the ENTITIES section.
     ComposeBlocks();
@@ -284,8 +359,10 @@ void ImpExpDxfRead::ComposeFlattenedBlock(const std::string& blockName,
     std::list<TopoDS_Shape> shapeCollection;
 
     // 4. Process primitive geometry.
-    for (const auto& [attributes, shapeList] : blockData.Shapes) {
-        shapeCollection.insert(shapeCollection.end(), shapeList.begin(), shapeList.end());
+    for (const auto& [attributes, builderList] : blockData.GeometryBuilders) {
+        for (const auto& builder : builderList) {
+            shapeCollection.push_back(builder.shape);
+        }
     }
 
     // 5. Process nested inserts recursively.
@@ -351,8 +428,7 @@ void ImpExpDxfRead::ComposeParametricBlock(const std::string& blockName,
     const Block& blockData = it->second;
 
     // 3. Create the master Part::Compound for this block definition.
-    std::string compName = "BLOCK_";
-    compName += blockName;
+    std::string compName = "BLOCK_" + blockName;
     auto blockCompound = document->addObject<Part::Compound>(
         document->getUniqueObjectName(compName.c_str()).c_str());
     m_blockDefinitionGroup->addObject(blockCompound);
@@ -360,7 +436,7 @@ void ImpExpDxfRead::ComposeParametricBlock(const std::string& blockName,
     blockCompound->Visibility.setValue(false);
     this->m_blockDefinitions[blockName] = blockCompound;
 
-    std::vector<App::DocumentObject*> linkedObjects;
+    std::vector<App::DocumentObject*> childObjects;
 
     // 4. Recursively Compose and Link Nested Inserts.
     for (const auto& insertAttrPair : blockData.Inserts) {
@@ -387,96 +463,103 @@ void ImpExpDxfRead::ComposeParametricBlock(const std::string& blockName,
                 link->ScaleVector.setValue(nestedInsert.Scale);
                 link->Visibility.setValue(false);
                 IncrementCreatedObjectCount();
-                linkedObjects.push_back(link);
+                childObjects.push_back(link);
             }
         }
     }
 
-    // 5. Create and Link Primitive Geometry.
-    // Iterate through each attribute group (e.g., each layer within the block).
-    for (const auto& [attributes, shapeList] : blockData.Shapes) {
-        // Then, iterate through each shape in that group and create a separate feature for it.
-        for (const auto& shape : shapeList) {
-            if (!shape.IsNull()) {
-                std::string cleanBlockLabel = blockName;
-                if (!cleanBlockLabel.empty() && std::isdigit(cleanBlockLabel[0])) {
-                    // Workaround for FreeCAD's unique name generator, which prepends an underscore
-                    // to names that start with a digit. We add our own prefix.
-                    cleanBlockLabel.insert(0, "_");
+    // 5. Create and Link Primitive Geometry from the collected builders.
+    for (const auto& [attributes, builderList] : blockData.GeometryBuilders) {
+        this->m_entityAttributes = attributes;
+
+        for (const auto& builder : builderList) {
+            App::DocumentObject* newObject = nullptr;
+            switch (builder.type) {
+                case GeometryBuilder::PrimitiveType::None: {
+                    auto* p = document->addObject<Part::Feature>("Shape");
+                    p->Shape.setValue(builder.shape);
+                    newObject = p;
+                    break;
                 }
-                else if (!cleanBlockLabel.empty() && std::isdigit(cleanBlockLabel.back())) {
-                    // Add a trailing underscore to prevent the unique name generator
-                    // from incrementing the number in the block's name.
-                    cleanBlockLabel += "_";
+                case GeometryBuilder::PrimitiveType::Point: {
+                    auto* p = document->addObject<Part::Vertex>("Point");
+                    TopoDS_Vertex v = TopoDS::Vertex(builder.shape);
+                    gp_Pnt pnt = BRep_Tool::Pnt(v);
+                    p->Placement.setValue(Base::Placement(Base::Vector3d(pnt.X(), pnt.Y(), pnt.Z()),
+                                                          Base::Rotation()));
+                    newObject = p;
+                    break;
                 }
-                // Determine a more descriptive name for the primitive feature.
-                std::string type_suffix = "Shape";
-                if (shape.ShapeType() == TopAbs_EDGE) {
-                    BRepAdaptor_Curve adaptor(TopoDS::Edge(shape));
-                    switch (adaptor.GetType()) {
-                        case GeomAbs_Line:
-                            type_suffix = "Line";
-                            break;
-                        case GeomAbs_Circle:
-                            type_suffix = "Circle";
-                            break;
-                        case GeomAbs_Ellipse:
-                            type_suffix = "Ellipse";
-                            break;
-                        case GeomAbs_BSplineCurve:
-                            type_suffix = "BSpline";
-                            break;
-                        case GeomAbs_BezierCurve:
-                            type_suffix = "Bezier";
-                            break;
-                        default:
-                            type_suffix = "Edge";
-                            break;
+                case GeometryBuilder::PrimitiveType::Line: {
+                    newObject = createLinePrimitive(TopoDS::Edge(builder.shape), document, "Line");
+                    break;
+                }
+                case GeometryBuilder::PrimitiveType::Circle:
+                case GeometryBuilder::PrimitiveType::Arc: {
+                    const char* name =
+                        (builder.type == GeometryBuilder::PrimitiveType::Circle) ? "Circle" : "Arc";
+                    auto* p = createCirclePrimitive(TopoDS::Edge(builder.shape), document, name);
+                    if (!p) {
+                        break;  // Helper function failed
                     }
-                }
-                else if (shape.ShapeType() == TopAbs_VERTEX) {
-                    type_suffix = "Vertex";
-                }
-                else if (shape.ShapeType() == TopAbs_WIRE) {
-                    type_suffix = "Wire";
-                }
-                else if (shape.ShapeType() == TopAbs_FACE) {
-                    type_suffix = "Face";
-                }
-                else if (shape.ShapeType() == TopAbs_SHELL) {
-                    type_suffix = "Shell";
-                }
-                else if (shape.ShapeType() == TopAbs_SOLID) {
-                    type_suffix = "Solid";
-                }
-                else if (shape.ShapeType() == TopAbs_COMPOUND) {
-                    type_suffix = "Compound";
-                }
 
-                std::string primitive_base_label = cleanBlockLabel + "_" + type_suffix;
-                // Use getStandardObjectLabel to get a unique user-facing label (e.g.,
-                // "block01_Line001") while keeping the internal object name clean.
-                auto geomFeature = document->addObject<Part::Feature>(
-                    document->getStandardObjectLabel(primitive_base_label.c_str(), 3).c_str());
+                    // For full circles, ensure the angles span the full 360 degrees
+                    if (builder.type == GeometryBuilder::PrimitiveType::Circle) {
+                        p->Angle1.setValue(0.0);
+                        p->Angle2.setValue(360.0);
+                    }
+                    newObject = p;
+                    break;
+                }
+                case GeometryBuilder::PrimitiveType::PolylineCompound: {
+                    auto* p = document->addObject<Part::Compound>("Polyline");
+                    std::vector<App::DocumentObject*> segments;
+                    TopExp_Explorer explorer(builder.shape, TopAbs_EDGE);
+                    for (; explorer.More(); explorer.Next()) {
+                        TopoDS_Edge edge = TopoDS::Edge(explorer.Current());
+                        BRepAdaptor_Curve adaptor(edge);
+                        App::DocumentObject* segment = nullptr;
+                        if (adaptor.GetType() == GeomAbs_Line) {
+                            segment = createLinePrimitive(edge, document, "Segment");
+                        }
+                        else if (adaptor.GetType() == GeomAbs_Circle) {
+                            auto* arc = createCirclePrimitive(edge, document, "Arc");
+                            segment = arc;
+                        }
 
+                        if (segment) {
+                            IncrementCreatedObjectCount();
+                            segment->Visibility.setValue(false);
+                            ApplyGuiStyles(static_cast<Part::Feature*>(segment));
+                            segments.push_back(segment);
+                        }
+                    }
+                    p->Links.setValues(segments);
+                    newObject = p;
+                    break;
+                }
+                case GeometryBuilder::PrimitiveType::Spline:
+                case GeometryBuilder::PrimitiveType::Ellipse:
+                default:
+                    // Fallback for types without a specific primitive
+                    auto* p = document->addObject<Part::Feature>("Shape");
+                    p->Shape.setValue(builder.shape);
+                    newObject = p;
+                    break;
+            }
+
+            if (newObject) {
                 IncrementCreatedObjectCount();
-                geomFeature->Shape.setValue(shape);
-                geomFeature->Visibility.setValue(false);
-
-                // Apply styling to this primitive feature using its original attributes.
-                this->m_entityAttributes = attributes;
-                this->ApplyGuiStyles(geomFeature);
-
-                linkedObjects.push_back(geomFeature);
+                newObject->Visibility.setValue(false);
+                ApplyGuiStyles(static_cast<Part::Feature*>(newObject));
+                childObjects.push_back(newObject);
             }
         }
     }
-
-    // TODO: Add similar logic for blockData.FeatureBuildersList if needed.
 
     // 6. Finalize the Part::Compound.
-    if (!linkedObjects.empty()) {
-        blockCompound->Links.setValues(linkedObjects);
+    if (!childObjects.empty()) {
+        blockCompound->Links.setValues(childObjects);
     }
 
     // 7. Mark this block as composed.
@@ -487,7 +570,7 @@ void ImpExpDxfRead::ComposeBlocks()
 {
     std::set<std::string> composedBlocks;
 
-    if (m_mergeOption == MergeShapes) {
+    if (m_importMode == ImportMode::FusedShapes) {
         // User wants flattened geometry for performance.
         for (const auto& pair : this->Blocks) {
             if (composedBlocks.find(pair.first) == composedBlocks.end()) {
@@ -612,8 +695,7 @@ bool ImpExpDxfRead::OnReadBlock(const std::string& name, int flags)
     // The .emplace method is slightly more efficient here.
     auto& temporaryBlock = Blocks.emplace(std::make_pair(name, Block(name, flags))).first->second;
     BlockDefinitionCollector blockCollector(*this,
-                                            temporaryBlock.Shapes,
-                                            temporaryBlock.FeatureBuildersList,
+                                            temporaryBlock.GeometryBuilders,
                                             temporaryBlock.Inserts);
     if (!ReadBlockContents()) {
         return false;  // Abort on parsing error
@@ -632,24 +714,17 @@ void ImpExpDxfRead::OnReadLine(const Base::Vector3d& start,
         return;
     }
 
-    switch (m_importMode) {
-        case ImportMode::IndividualShapes:
-        case ImportMode::FusedShapes: {
-            gp_Pnt p0 = makePoint(start);
-            gp_Pnt p1 = makePoint(end);
-            // TODO: Really?? What about the people designing integrated circuits?
-            if (p0.IsEqual(p1, 1e-8)) {
-                return;
-            }
-            Collector->AddObject(BRepBuilderAPI_MakeEdge(p0, p1).Edge(), "Line");
-            break;
-        }
-        case ImportMode::EditableDraft:
-        case ImportMode::EditablePrimitives:
-            // Do nothing until these modes have been implemented, the one-time warning has already
-            // been issued.
-            break;
+    gp_Pnt p0 = makePoint(start);
+    gp_Pnt p1 = makePoint(end);
+    if (p0.IsEqual(p1, 1e-8)) {
+        return;
     }
+    TopoDS_Edge edge = BRepBuilderAPI_MakeEdge(p0, p1).Edge();
+    GeometryBuilder builder(edge);
+    if (m_importMode == ImportMode::EditablePrimitives) {
+        builder.type = GeometryBuilder::PrimitiveType::Line;
+    }
+    Collector->AddGeometry(builder);
 }
 
 
@@ -658,20 +733,13 @@ void ImpExpDxfRead::OnReadPoint(const Base::Vector3d& start)
     if (shouldSkipEntity()) {
         return;
     }
+    TopoDS_Vertex vertex = BRepBuilderAPI_MakeVertex(makePoint(start)).Vertex();
+    GeometryBuilder builder(vertex);
 
-    switch (m_importMode) {
-        case ImportMode::IndividualShapes:
-        case ImportMode::FusedShapes: {
-            // For non-parametric modes, create a Part::Feature with a Vertex shape.
-            Collector->AddObject(BRepBuilderAPI_MakeVertex(makePoint(start)).Vertex(), "Point");
-            break;
-        }
-        case ImportMode::EditableDraft:
-        case ImportMode::EditablePrimitives:
-            // Do nothing until these modes have been implemented, the one-time warning has already
-            // been issued.
-            break;
+    if (m_importMode == ImportMode::EditablePrimitives) {
+        builder.type = GeometryBuilder::PrimitiveType::Point;
     }
+    Collector->AddGeometry(builder);
 }
 
 
@@ -685,31 +753,25 @@ void ImpExpDxfRead::OnReadArc(const Base::Vector3d& start,
         return;
     }
 
-    switch (m_importMode) {
-        case ImportMode::IndividualShapes:
-        case ImportMode::FusedShapes: {
-            gp_Pnt p0 = makePoint(start);
-            gp_Pnt p1 = makePoint(end);
-            gp_Dir up(0, 0, 1);
-            if (!dir) {
-                up.Reverse();
-            }
-            gp_Pnt pc = makePoint(center);
-            gp_Circ circle(gp_Ax2(pc, up), p0.Distance(pc));
-            if (circle.Radius() > 1e-9) {
-                Collector->AddObject(BRepBuilderAPI_MakeEdge(circle, p0, p1).Edge(), "Arc");
-            }
-            else {
-                Base::Console().warning("ImpExpDxf - ignore degenerate arc of circle\n");
-            }
-            break;
-        }
-        case ImportMode::EditableDraft:
-        case ImportMode::EditablePrimitives:
-            // Do nothing until these modes have been implemented, the one-time warning has already
-            // been issued.
-            break;
+    gp_Pnt p0 = makePoint(start);
+    gp_Pnt p1 = makePoint(end);
+    gp_Dir up(0, 0, 1);
+    if (!dir) {
+        up.Reverse();
     }
+    gp_Pnt pc = makePoint(center);
+    gp_Circ circle(gp_Ax2(pc, up), p0.Distance(pc));
+    if (circle.Radius() < 1e-9) {
+        Base::Console().warning("ImpExpDxf - ignore degenerate arc of circle\n");
+        return;
+    }
+
+    TopoDS_Edge edge = BRepBuilderAPI_MakeEdge(circle, p0, p1).Edge();
+    GeometryBuilder builder(edge);
+    if (m_importMode == ImportMode::EditablePrimitives) {
+        builder.type = GeometryBuilder::PrimitiveType::Arc;
+    }
+    Collector->AddGeometry(builder);
 }
 
 
@@ -722,28 +784,24 @@ void ImpExpDxfRead::OnReadCircle(const Base::Vector3d& start,
         return;
     }
 
-    switch (m_importMode) {
-        case ImportMode::IndividualShapes:
-        case ImportMode::FusedShapes: {
-            gp_Pnt p0 = makePoint(start);
-            gp_Dir up(0, 0, 1);
-            if (!dir) {
-                up.Reverse();
-            }
-            gp_Pnt pc = makePoint(center);
-            gp_Circ circle(gp_Ax2(pc, up), p0.Distance(pc));
-            if (circle.Radius() > 1e-9) {
-                Collector->AddObject(BRepBuilderAPI_MakeEdge(circle).Edge(), "Circle");
-            }
-            else {
-                Base::Console().warning("ImpExpDxf - ignore degenerate circle\n");
-            }
-            break;
-        }
-        case ImportMode::EditableDraft:
-        case ImportMode::EditablePrimitives:
-            break;
+    gp_Pnt p0 = makePoint(start);
+    gp_Dir up(0, 0, 1);
+    if (!dir) {
+        up.Reverse();
     }
+    gp_Pnt pc = makePoint(center);
+    gp_Circ circle(gp_Ax2(pc, up), p0.Distance(pc));
+    if (circle.Radius() < 1e-9) {
+        Base::Console().warning("ImpExpDxf - ignore degenerate circle\n");
+        return;
+    }
+
+    TopoDS_Edge edge = BRepBuilderAPI_MakeEdge(circle).Edge();
+    GeometryBuilder builder(edge);
+    if (m_importMode == ImportMode::EditablePrimitives) {
+        builder.type = GeometryBuilder::PrimitiveType::Circle;
+    }
+    Collector->AddGeometry(builder);
 }
 
 
@@ -847,32 +905,25 @@ void ImpExpDxfRead::OnReadSpline(struct SplineData& sd)
         return;
     }
 
-    switch (m_importMode) {
-        case ImportMode::IndividualShapes:
-        case ImportMode::FusedShapes: {
-            try {
-                Handle(Geom_BSplineCurve) geom;
-                if (sd.control_points > 0) {
-                    geom = getSplineFromPolesAndKnots(sd);
-                }
-                else if (sd.fit_points > 0) {
-                    geom = getInterpolationSpline(sd);
-                }
-
-                if (geom.IsNull()) {
-                    throw Standard_Failure();
-                }
-
-                Collector->AddObject(BRepBuilderAPI_MakeEdge(geom).Edge(), "Spline");
-            }
-            catch (const Standard_Failure&) {
-                Base::Console().warning("ImpExpDxf - failed to create bspline\n");
-            }
-            break;
+    try {
+        Handle(Geom_BSplineCurve) geom;
+        if (sd.control_points > 0) {
+            geom = getSplineFromPolesAndKnots(sd);
         }
-        case ImportMode::EditableDraft:
-        case ImportMode::EditablePrimitives:
-            break;
+        else if (sd.fit_points > 0) {
+            geom = getInterpolationSpline(sd);
+        }
+
+        if (!geom.IsNull()) {
+            GeometryBuilder builder(BRepBuilderAPI_MakeEdge(geom).Edge());
+            if (m_importMode == ImportMode::EditablePrimitives) {
+                builder.type = GeometryBuilder::PrimitiveType::Spline;
+            }
+            Collector->AddGeometry(builder);
+        }
+    }
+    catch (const Standard_Failure&) {
+        Base::Console().warning("ImpExpDxf - failed to create bspline\n");
     }
 }
 
@@ -890,28 +941,23 @@ void ImpExpDxfRead::OnReadEllipse(const Base::Vector3d& center,
         return;
     }
 
-    switch (m_importMode) {
-        case ImportMode::IndividualShapes:
-        case ImportMode::FusedShapes: {
-            gp_Dir up(0, 0, 1);
-            if (!dir) {
-                up.Reverse();
-            }
-            gp_Pnt pc = makePoint(center);
-            gp_Elips ellipse(gp_Ax2(pc, up), major_radius, minor_radius);
-            ellipse.Rotate(gp_Ax1(pc, up), rotation);
-            if (ellipse.MinorRadius() > 1e-9) {
-                Collector->AddObject(BRepBuilderAPI_MakeEdge(ellipse).Edge(), "Ellipse");
-            }
-            else {
-                Base::Console().warning("ImpExpDxf - ignore degenerate ellipse\n");
-            }
-            break;
-        }
-        case ImportMode::EditableDraft:
-        case ImportMode::EditablePrimitives:
-            break;
+    gp_Dir up(0, 0, 1);
+    if (!dir) {
+        up.Reverse();
     }
+    gp_Pnt pc = makePoint(center);
+    gp_Elips ellipse(gp_Ax2(pc, up), major_radius, minor_radius);
+    ellipse.Rotate(gp_Ax1(pc, up), rotation);
+    if (ellipse.MinorRadius() < 1e-9) {
+        Base::Console().warning("ImpExpDxf - ignore degenerate ellipse\n");
+        return;
+    }
+
+    GeometryBuilder builder(BRepBuilderAPI_MakeEdge(ellipse).Edge());
+    if (m_importMode == ImportMode::EditablePrimitives) {
+        builder.type = GeometryBuilder::PrimitiveType::Ellipse;
+    }
+    Collector->AddGeometry(builder);
 }
 
 void ImpExpDxfRead::OnReadText(const Base::Vector3d& point,
@@ -919,41 +965,36 @@ void ImpExpDxfRead::OnReadText(const Base::Vector3d& point,
                                const std::string& text,
                                const double rotation)
 {
-    if (shouldSkipEntity()) {
+    if (shouldSkipEntity() || !m_importAnnotations) {
         return;
     }
 
-    // Note that our parameters do not contain all the information needed to properly orient the
-    // text. As a result the text will always appear on the XY plane
-    if (m_importAnnotations) {
-        auto makeText = [this, rotation, point, text, height](
-                            const Base::Matrix4D& transform) -> App::FeaturePython* {
-            PyObject* draftModule = getDraftModule();
-            if (draftModule != nullptr) {
-                Base::Matrix4D localTransform;
-                localTransform.rotZ(Base::toRadians(rotation));
-                localTransform.move(point);
-                PyObject* placement =
-                    new Base::PlacementPy(Base::Placement(transform * localTransform));
-                // returns a wrapped App::FeaturePython
-                auto builtText = dynamic_cast<App::FeaturePythonPyT<App::DocumentObjectPy>*>(
-                    // NOLINTNEXTLINE(readability/nolint)
-                    // NOLINTNEXTLINE(cppcoreguidelines-pro-type-cstyle-cast)
-                    (Base::PyObjectBase*)PyObject_CallMethod(draftModule,
-                                                             "make_text",
-                                                             "sOif",
-                                                             text.c_str(),
-                                                             placement,
-                                                             0,
-                                                             height));
-                Py_DECREF(placement);
-                if (builtText != nullptr) {
-                    return dynamic_cast<App::FeaturePython*>(builtText->getDocumentObjectPtr());
-                }
-            }
-            return nullptr;
-        };
-        Collector->AddObject((FeaturePythonBuilder)makeText);
+    auto* p = static_cast<App::FeaturePython*>(document->addObject("App::FeaturePython", "Text"));
+    if (p) {
+        p->addDynamicProperty("App::PropertyString",
+                              "DxfEntityType",
+                              "Internal",
+                              "DXF entity type");
+        static_cast<App::PropertyString*>(p->getPropertyByName("DxfEntityType"))->setValue("TEXT");
+
+        p->addDynamicProperty("App::PropertyStringList", "Text", "Data", "Text content");
+        // Explicitly create the vector to resolve ambiguity
+        std::vector<std::string> text_values = {text};
+        static_cast<App::PropertyStringList*>(p->getPropertyByName("Text"))->setValues(text_values);
+
+        p->addDynamicProperty("App::PropertyFloat",
+                              "DxfTextHeight",
+                              "Internal",
+                              "Original text height");
+        static_cast<App::PropertyFloat*>(p->getPropertyByName("DxfTextHeight"))->setValue(height);
+
+        p->addDynamicProperty("App::PropertyPlacement", "Placement", "Base", "Object placement");
+        Base::Placement pl;
+        pl.setPosition(point);
+        pl.setRotation(Base::Rotation(Base::Vector3d(0, 0, 1), Base::toRadians(rotation)));
+        static_cast<App::PropertyPlacement*>(p->getPropertyByName("Placement"))->setValue(pl);
+
+        Collector->AddObject(p, "Text");
     }
 }
 
@@ -979,82 +1020,150 @@ void ImpExpDxfRead::OnReadDimension(const Base::Vector3d& start,
                                     const Base::Vector3d& point,
                                     double /*rotation*/)
 {
-    if (shouldSkipEntity()) {
+    if (shouldSkipEntity() || !m_importAnnotations) {
         return;
     }
 
-    if (m_importAnnotations) {
-        auto makeDimension =
-            [this, start, end, point](const Base::Matrix4D& transform) -> App::FeaturePython* {
-            PyObject* draftModule = getDraftModule();
-            if (draftModule != nullptr) {
-                // TODO: Capture and apply OCSOrientationTransform to OCS coordinates
-                // Note, some of the locations in the DXF are OCS and some are UCS, but UCS
-                // doesn't mean UCS when in a block expansion, it means 'transform' So we want
-                // transform*vector for "UCS" coordinates and transform*ocdCapture*vector for
-                // "OCS" coordinates
-                //
-                // We implement the transform by mapping all the points from OCS to UCS
-                // TODO: Set the Normal property to transform*(0,0,1,0)
-                // TODO: Set the Direction property to transform*(the desired direction).
-                // By default this is parallel to (start-end).
-                PyObject* startPy = new Base::VectorPy(transform * start);
-                PyObject* endPy = new Base::VectorPy(transform * end);
-                PyObject* lineLocationPy = new Base::VectorPy(transform * point);
-                // returns a wrapped App::FeaturePython
-                auto builtDim = dynamic_cast<App::FeaturePythonPyT<App::DocumentObjectPy>*>(
-                    // NOLINTNEXTLINE(readability/nolint)
-                    // NOLINTNEXTLINE(cppcoreguidelines-pro-type-cstyle-cast)
-                    (Base::PyObjectBase*)PyObject_CallMethod(draftModule,
-                                                             "make_linear_dimension",
-                                                             "OOO",
-                                                             startPy,
-                                                             endPy,
-                                                             lineLocationPy));
-                Py_DECREF(startPy);
-                Py_DECREF(endPy);
-                Py_DECREF(lineLocationPy);
-                if (builtDim != nullptr) {
-                    return dynamic_cast<App::FeaturePython*>(builtDim->getDocumentObjectPtr());
-                }
-            }
-            return nullptr;
-        };
-        Collector->AddObject((FeaturePythonBuilder)makeDimension);
+    auto* p =
+        static_cast<App::FeaturePython*>(document->addObject("App::FeaturePython", "Dimension"));
+    if (p) {
+        p->addDynamicProperty("App::PropertyString",
+                              "DxfEntityType",
+                              "Internal",
+                              "DXF entity type");
+        static_cast<App::PropertyString*>(p->getPropertyByName("DxfEntityType"))
+            ->setValue("DIMENSION");
+
+        p->addDynamicProperty("App::PropertyVector", "Start", "Data", "Start point of dimension");
+        static_cast<App::PropertyVector*>(p->getPropertyByName("Start"))->setValue(start);
+
+        p->addDynamicProperty("App::PropertyVector", "End", "Data", "End point of dimension");
+        static_cast<App::PropertyVector*>(p->getPropertyByName("End"))->setValue(end);
+
+        p->addDynamicProperty("App::PropertyVector", "Dimline", "Data", "Point on dimension line");
+        static_cast<App::PropertyVector*>(p->getPropertyByName("Dimline"))->setValue(point);
+
+        p->addDynamicProperty("App::PropertyPlacement", "Placement", "Base", "Object placement");
+        Base::Placement pl;
+        // Correctly construct the rotation directly from the 4x4 matrix.
+        // The Base::Rotation constructor will extract the rotational part.
+        pl.setRotation(Base::Rotation(OCSOrientationTransform));
+        static_cast<App::PropertyPlacement*>(p->getPropertyByName("Placement"))->setValue(pl);
+
+        Collector->AddObject(p, "Dimension");
     }
 }
+
 void ImpExpDxfRead::OnReadPolyline(std::list<VertexInfo>& vertices, int flags)
 {
     if (shouldSkipEntity()) {
         return;
     }
 
-    // Polyline explosion logic is complex and calls back to other OnRead... handlers.
-    // The mode switch should happen inside the final geometry creation handlers
-    // (OnReadLine, OnReadArc), so this function doesn't need its own switch statement.
-    // It simply acts as a dispatcher.
-
-    std::map<CDxfRead::CommonEntityAttributes, std::list<TopoDS_Shape>> ShapesToCombine;
-    {
-        // TODO: Currently ExpandPolyline calls OnReadArc etc to generate the pieces, and these
-        // create TopoShape objects which ShapeSavingEntityCollector can gather up.
-        // Eventually when m_mergeOption being DraftObjects is implemented OnReadArc etc might
-        // generate Draft objects which ShapeSavingEntityCollector does not save.
-        // We need either a collector that collects everything (and we have to figure out
-        // how to join Draft objects) or we need to temporarily set m_mergeOption to
-        // SingleShapes if it is set to DraftObjects (and safely restore it on exceptions) A
-        // clean way would be to give the collector a "makeDraftObjects" property, and our
-        // special collector could give this the value 'false' whereas the main collector would
-        // base this on the option setting. Also ShapeSavingEntityCollector classifies by
-        // entityAttributes which is not needed here because they are constant throughout.
-        ShapeSavingEntityCollector savingCollector(*this, ShapesToCombine);
-        ExplodePolyline(vertices, flags);
+    if (vertices.size() < 2 && (flags & 1) == 0) {
+        return;  // Not enough vertices for an open polyline
     }
-    // Join the shapes.
-    if (!ShapesToCombine.empty()) {
-        // TODO: If we want Draft objects and all segments are straight lines we can make a
-        // draft wire.
-        CombineShapes(ShapesToCombine.begin()->second, "Polyline");
+
+    BRepBuilderAPI_MakeWire wireBuilder;
+    bool is_closed = ((flags & 1) != 0);
+    auto it = vertices.begin();
+    auto prev_it = it++;
+
+    while (it != vertices.end()) {
+        const VertexInfo& start_vertex = *prev_it;
+        const VertexInfo& end_vertex = *it;
+        TopoDS_Edge edge;
+
+        if (start_vertex.bulge == 0.0) {
+            edge = BRepBuilderAPI_MakeEdge(makePoint(start_vertex.location),
+                                           makePoint(end_vertex.location))
+                       .Edge();
+        }
+        else {
+            double cot = ((1.0 / start_vertex.bulge) - start_vertex.bulge) / 2.0;
+            double center_x = ((start_vertex.location.x + end_vertex.location.x)
+                               - (end_vertex.location.y - start_vertex.location.y) * cot)
+                / 2.0;
+            double center_y = ((start_vertex.location.y + end_vertex.location.y)
+                               + (end_vertex.location.x - start_vertex.location.x) * cot)
+                / 2.0;
+            double center_z = (start_vertex.location.z + end_vertex.location.z) / 2.0;
+            Base::Vector3d center(center_x, center_y, center_z);
+
+            gp_Pnt p0 = makePoint(start_vertex.location);
+            gp_Pnt p1 = makePoint(end_vertex.location);
+            gp_Dir up(0, 0, 1);
+            if (start_vertex.bulge < 0) {
+                up.Reverse();
+            }
+            gp_Pnt pc = makePoint(center);
+            gp_Circ circle(gp_Ax2(pc, up), p0.Distance(pc));
+            if (circle.Radius() > 1e-9) {
+                edge = BRepBuilderAPI_MakeEdge(circle, p0, p1).Edge();
+            }
+        }
+
+        if (!edge.IsNull()) {
+            wireBuilder.Add(edge);
+        }
+
+        prev_it = it++;
+    }
+
+    if (is_closed && vertices.size() > 1) {
+        const VertexInfo& start_vertex = vertices.back();
+        const VertexInfo& end_vertex = vertices.front();
+        TopoDS_Edge edge;
+
+        if (start_vertex.bulge == 0.0) {
+            edge = BRepBuilderAPI_MakeEdge(makePoint(start_vertex.location),
+                                           makePoint(end_vertex.location))
+                       .Edge();
+        }
+        else {
+            double cot = ((1.0 / start_vertex.bulge) - start_vertex.bulge) / 2.0;
+            double center_x = ((start_vertex.location.x + end_vertex.location.x)
+                               - (end_vertex.location.y - start_vertex.location.y) * cot)
+                / 2.0;
+            double center_y = ((start_vertex.location.y + end_vertex.location.y)
+                               + (end_vertex.location.x - start_vertex.location.x) * cot)
+                / 2.0;
+            double center_z = (start_vertex.location.z + end_vertex.location.z) / 2.0;
+            Base::Vector3d center(center_x, center_y, center_z);
+
+            gp_Pnt p0 = makePoint(start_vertex.location);
+            gp_Pnt p1 = makePoint(end_vertex.location);
+            gp_Dir up(0, 0, 1);
+            if (start_vertex.bulge < 0) {
+                up.Reverse();
+            }
+            gp_Pnt pc = makePoint(center);
+            gp_Circ circle(gp_Ax2(pc, up), p0.Distance(pc));
+            if (circle.Radius() > 1e-9) {
+                edge = BRepBuilderAPI_MakeEdge(circle, p0, p1).Edge();
+            }
+        }
+        if (!edge.IsNull()) {
+            wireBuilder.Add(edge);
+        }
+    }
+
+    if (wireBuilder.IsDone()) {
+        TopoDS_Wire wire = wireBuilder.Wire();
+        GeometryBuilder builder(wire);
+
+        // For FusedShapes mode, we can create the object immediately.
+        // For other modes, we store the builder for later processing.
+        if (m_importMode == ImportMode::FusedShapes) {
+            Collector->AddObject(wire, "Polyline");
+            return;
+        }
+
+        if (m_importMode == ImportMode::EditablePrimitives) {
+            builder.type = GeometryBuilder::PrimitiveType::PolylineCompound;
+        }
+
+        Collector->AddGeometry(builder);
     }
 }
 

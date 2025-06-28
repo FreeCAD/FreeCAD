@@ -2790,12 +2790,117 @@ def warn(dxfobject, num=None):
     badobjects.append(dxfobject)
 
 
+def _import_dxf_file(filename, doc_name=None):
+    """
+    Internal helper to handle the core logic for both open and insert.
+    """
+    hGrp = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
+    use_legacy = hGrp.GetBool("dxfUseLegacyImporter", False)
+    readPreferences()
+
+    # --- Dialog Workflow ---
+    try:
+        if gui:
+            FreeCADGui.suspendWaitCursor()
+
+        if gui and not use_legacy and hGrp.GetBool("dxfShowDialog", True):
+            try:
+                import ImportGui
+                entity_counts = ImportGui.preScanDxf(filename)
+            except Exception:
+                entity_counts = {}
+
+            from DxfImportDialog import DxfImportDialog
+            dlg = DxfImportDialog(entity_counts)
+
+            if dlg.exec_():
+                # Save the integer mode from the pop-up dialog.
+                hGrp.SetInt("DxfImportMode", dlg.get_selected_mode())
+
+                # Keep the main preferences booleans
+                # in sync with the choice just made in the pop-up dialog.
+                mode = dlg.get_selected_mode()
+                params.set_param("dxfImportAsDraft", mode == 0)
+                params.set_param("dxfImportAsPrimitives", mode == 1)
+                params.set_param("dxfImportAsShapes", mode == 2)
+                params.set_param("dxfImportAsFused", mode == 3)
+                hGrp.SetBool("dxfShowDialog", dlg.get_show_dialog_again())
+            else:
+                return None, None, None, None # Return None to indicate cancellation
+    finally:
+        if gui:
+            FreeCADGui.resumeWaitCursor()
+
+    import_mode = hGrp.GetInt("DxfImportMode", 2)
+
+    # --- Document Handling ---
+    if doc_name: # INSERT operation
+        try:
+            doc = FreeCAD.getDocument(doc_name)
+        except NameError:
+            doc = FreeCAD.newDocument(doc_name)
+        FreeCAD.setActiveDocument(doc_name)
+    else: # OPEN operation
+        docname = os.path.splitext(os.path.basename(filename))[0]
+        doc = FreeCAD.newDocument(docname)
+        doc.Label = docname
+        FreeCAD.setActiveDocument(doc.Name)
+
+    # --- Core Import Execution ---
+    processing_start_time = time.perf_counter()
+
+    if is_draft_mode:
+        # For Draft mode, we tell the C++ importer to create Part Primitives first.
+        hGrp.SetInt("DxfImportMode", 1)
+
+    # Take snapshot of objects before import
+    objects_before = set(doc.Objects)
+
+    stats = None # For C++ importer stats
+    if use_legacy:
+        getDXFlibs()
+        if dxfReader:
+            processdxf(doc, filename)
+        else:
+            errorDXFLib(gui)
+            return None, None
+    else: # Modern C++ Importer
+        if gui:
+            import ImportGui
+            stats = ImportGui.readDXF(filename)
+        else:
+            import Import
+            stats = Import.readDXF(filename)
+
+    # Find the newly created objects
+    objects_after = set(doc.Objects)
+    newly_created_objects = objects_after - objects_before
+
+    # Restore the original mode setting if we changed it
+    if is_draft_mode:
+        hGrp.SetInt("DxfImportMode", 0)
+
+    # --- Post-processing step ---
+    if is_draft_mode and newly_created_objects:
+        post_process_to_draft(doc, newly_created_objects)
+
+    Draft.convert_draft_texts() # This is a general utility that should run for both importers
+    doc.recompute()
+
+    processing_end_time = time.perf_counter()
+
+    # Return the results for the reporter
+    return doc, stats, processing_start_time, processing_end_time
+
+# --- REFACTORED open() and insert() functions ---
+
 def open(filename):
     """Open a file and return a new document.
 
-    If the global variable `dxfUseLegacyImporter` exists,
-    it will process `filename` with `processdxf`.
-    Otherwise, it will use the `Import` module, `Import.readDXF(filename)`.
+    This function handles the import of a DXF file into a new document.
+    It shows an import dialog for the modern C++ importer if configured to do so.
+    It manages the import workflow, including pre-processing, calling the
+    correct backend (legacy or modern C++), and post-processing.
 
     Parameters
     ----------
@@ -2804,175 +2909,38 @@ def open(filename):
 
     Returns
     -------
-    App::Document
-        The new document object with objects and shapes built from `filename`.
-
-    To do
-    -----
-    Use local variables, not global variables.
+    App::Document or None
+        The new document object with imported content, or None if the
+        operation was cancelled or failed.
     """
-    hGrp = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
-    use_legacy = hGrp.GetBool("dxfUseLegacyImporter", False)
+    doc, stats, start_time, end_time = _import_dxf_file(filename, doc_name=None)
 
-    # The C++ layer (`Gui::Application::importFrom`) has set the WaitCursor.
-    # We must temporarily suspend it to show our interactive dialog.
-    try:
-        if gui:
-            FreeCADGui.suspendWaitCursor()
+    if doc and stats:
+        reporter = DxfImportReporter(filename, stats, end_time - start_time)
+        reporter.report_to_console()
 
-        # --- Dialog Workflow ---
-        if gui and not use_legacy and hGrp.GetBool("dxfShowDialog", True):
-            try:
-                import ImportGui
-                # This C++ function will need to be created in a later step
-                entity_counts = ImportGui.preScanDxf(filename)
-            except Exception:
-                entity_counts = {}
-
-            from DxfImportDialog import DxfImportDialog
-            dlg = DxfImportDialog(entity_counts)
-
-            if dlg.exec_():
-                # User clicked OK, save settings from the dialog
-                hGrp.SetInt("DxfImportMode", dlg.get_selected_mode())
-                hGrp.SetBool("dxfShowDialog", dlg.get_show_dialog_again())
-            else:
-                # User clicked Cancel, abort the entire operation
-                FCC.PrintLog("DXF import cancelled by user.\n")
-                return
-        else:
-            # If we don't show the dialog, we still need to read preferences
-            # to ensure the correct backend logic is triggered.
-            readPreferences()
-
-    finally:
-        # --- CRITICAL: Always resume the wait state before returning to C++ ---
-        # This restores the wait cursor and event filter so the subsequent
-        # blocking C++ call behaves as expected within the C++ scope.
-        if gui:
-            FreeCADGui.resumeWaitCursor()
-
-    # --- Proceed with the blocking import logic ---
-    total_start_time = time.perf_counter()
-
-    if use_legacy:
-        getDXFlibs()
-        if dxfReader:
-            docname = os.path.splitext(os.path.basename(filename))[0]
-            doc = FreeCAD.newDocument(docname)
-            doc.Label = docname
-            processdxf(doc, filename)
-            return doc
-        else:
-            errorDXFLib(gui)
-            return None
-    else: # Modern C++ Importer
-        docname = os.path.splitext(os.path.basename(filename))[0]
-        doc = FreeCAD.newDocument(docname)
-        doc.Label = docname
-        FreeCAD.setActiveDocument(doc.Name)
-        stats = None
-
-        if gui:
-            import ImportGui
-            stats = ImportGui.readDXF(filename)
-        else:
-            import Import
-            stats = Import.readDXF(filename)
-
-        Draft.convert_draft_texts()
-        doc.recompute()
-
-        total_end_time = time.perf_counter()
-        if stats:
-            # Report PROCESSING time only, not user dialog time.
-            reporter = DxfImportReporter(filename, stats, total_end_time - total_start_time)
-            reporter.report_to_console()
-
-        return doc
-
+    return doc
 
 def insert(filename, docname):
     """Import a file into the specified document.
+
+    This function handles the import of a DXF file into a specified document.
+    If the document does not exist, it will be created. It shows an import
+    dialog for the modern C++ importer if configured to do so.
 
     Parameters
     ----------
     filename : str
         The path to the file to import.
-
     docname : str
-        The name of an `App::Document` instance into which
-        the objects and shapes from `filename` will be imported.
-
-        If the document doesn't exist, it is created
-        and set as the active document.
-
-    To do
-    -----
-    Use local variables, not global variables.
+        The name of an App::Document instance to import the content into.
     """
-    hGrp = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
-    use_legacy = hGrp.GetBool("dxfUseLegacyImporter", False)
+    doc, stats, start_time, end_time = _import_dxf_file(filename, doc_name=docname)
 
-    try:
-        if gui:
-            FreeCADGui.suspendWaitCursor()
+    if doc and stats:
+        reporter = DxfImportReporter(filename, stats, end_time - start_time)
+        reporter.report_to_console()
 
-        # --- Dialog Workflow ---
-        if gui and not use_legacy and hGrp.GetBool("dxfShowDialog", True):
-            try:
-                import ImportGui
-                entity_counts = ImportGui.preScanDxf(filename)
-            except Exception:
-                entity_counts = {}
-
-            from DxfImportDialog import DxfImportDialog
-            dlg = DxfImportDialog(entity_counts)
-
-            if dlg.exec_():
-                hGrp.SetInt("DxfImportMode", dlg.get_selected_mode())
-                hGrp.SetBool("dxfShowDialog", dlg.get_show_dialog_again())
-            else:
-                FCC.PrintLog("DXF insert cancelled by user.\n")
-                return
-        else:
-            readPreferences()
-
-    finally:
-        if gui:
-            FreeCADGui.resumeWaitCursor()
-
-    # --- Proceed with the blocking insert logic ---
-    total_start_time = time.perf_counter()
-
-    try:
-        doc = FreeCAD.getDocument(docname)
-    except NameError:
-        doc = FreeCAD.newDocument(docname)
-    FreeCAD.setActiveDocument(docname)
-
-    if use_legacy:
-        getDXFlibs()
-        if dxfReader:
-            processdxf(doc, filename)
-        else:
-            errorDXFLib(gui)
-    else: # Modern C++ Importer
-        stats = None
-        if gui:
-            import ImportGui
-            stats = ImportGui.readDXF(filename)
-        else:
-            import Import
-            stats = Import.readDXF(filename)
-
-        Draft.convert_draft_texts()
-        doc.recompute()
-
-        total_end_time = time.perf_counter()
-        if stats:
-            reporter = DxfImportReporter(filename, stats, total_end_time - total_start_time)
-            reporter.report_to_console()
 
 def getShapes(filename):
     """Read a DXF file, and return a list of shapes from its contents.
@@ -4274,32 +4242,46 @@ def readPreferences():
 
     dxfUseLegacyImporter = hGrp.GetBool("dxfUseLegacyImporter", False)
 
-    # This logic is now only needed for the legacy importer.
+    # Synchronization Bridge (Booleans -> Integer)
+    # Read the boolean parameters from the main preferences dialog. Based on which one is true, set
+    # the single 'DxfImportMode' integer parameter that the C++ importer and legacy importer logic
+    # rely on. This ensures the setting from the main preferences is always respected at the start
+    # of an import.
+    if hGrp.GetBool("dxfImportAsDraft", False):
+        import_mode = 0
+    elif hGrp.GetBool("dxfImportAsPrimitives", False):
+        import_mode = 1
+    elif hGrp.GetBool("dxfImportAsFused", False):
+        import_mode = 3
+    else: # Default to "Individual part shapes"
+        import_mode = 2
+    hGrp.SetInt("DxfImportMode", import_mode)
+
+    # The legacy importer logic now reads the unified import_mode integer.
     # The modern importer reads its settings directly in C++.
     if dxfUseLegacyImporter:
         # Legacy override for sketch creation takes highest priority
         dxfCreateSketch = hGrp.GetBool("dxfCreateSketch", False)
 
-        if dxfCreateSketch:
+        if dxfCreateSketch: # dxfCreateSketch overrides the import mode for the legacy importer
             dxfCreatePart = False
             dxfCreateDraft = False
             dxfMakeBlocks = False
-        else:
-            # Read the new unified mode parameter and translate it to the old flags
-            # 0=Draft, 1=Primitives, 2=Shapes, 3=Fused
-            import_mode = hGrp.GetInt("DxfImportMode", 2)  # Default to "Individual shapes"
-            if import_mode == 3:  # Fused part shapes
-                dxfMakeBlocks = True
-                dxfCreatePart = False
-                dxfCreateDraft = False
-            elif import_mode == 0:  # Editable draft objects
-                dxfMakeBlocks = False
-                dxfCreatePart = False
-                dxfCreateDraft = True
-            else:  # Individual part shapes or Primitives
-                dxfMakeBlocks = False
-                dxfCreatePart = True
-                dxfCreateDraft = False
+        # The 'import_mode' variable is now set by the UI synchronization bridge that runs just
+        # before this block. We now translate the existing 'import_mode' variable into the old
+        # flags.
+        elif import_mode == 0:  # Editable draft objects
+            dxfMakeBlocks = False
+            dxfCreatePart = False
+            dxfCreateDraft = True
+        elif import_mode == 3:  # Fused part shapes
+            dxfMakeBlocks = True
+            dxfCreatePart = False
+            dxfCreateDraft = False
+        else:  # Individual part shapes or Primitives (modes 1 and 2)
+            dxfMakeBlocks = False
+            dxfCreatePart = True
+            dxfCreateDraft = False
 
     # The legacy importer still uses these global variables, so we read them all.
     dxfDiscretizeCurves = hGrp.GetBool("DiscretizeEllipses", True)
@@ -4320,6 +4302,79 @@ def readPreferences():
 
     dxfBrightBackground = isBrightBackground()
     dxfDefaultColor = getColor()
+
+
+def post_process_to_draft(doc, new_objects):
+    """
+    Converts a list of newly created Part primitives and placeholders
+    into their corresponding Draft objects.
+    """
+    if not new_objects:
+        return
+
+    FCC.PrintMessage("Post-processing {} objects to Draft types...\n".format(len(new_objects)))
+
+    objects_to_delete = []
+
+    for obj in list(new_objects): # Iterate over a copy
+        if App.isdeleted(obj):
+            continue
+
+        if obj.isDerivedFrom("Part::Feature"):
+            # Handles Part::Vertex, Part::Line, Part::Circle, Part::Compound,
+            # and Part::Features containing Ellipses/Splines.
+            try:
+                Draft.upgrade([obj], delete=True)
+            except Exception as e:
+                FCC.PrintWarning("Could not upgrade {} to Draft object: {}\n".format(obj.Label, str(e)))
+
+        elif obj.isDerivedFrom("App::FeaturePython") and hasattr(obj, "DxfEntityType"):
+            # This is one of our placeholders
+            entity_type = obj.DxfEntityType
+
+            if entity_type == "DIMENSION":
+                try:
+                    # 1. Create an empty Draft Dimension
+                    dim = doc.addObject("App::FeaturePython", "Dimension")
+                    Draft.Dimension(dim)
+                    if gui:
+                        from Draft import _ViewProviderDimension
+                        _ViewProviderDimension(dim.ViewObject)
+
+                    # 2. Copy properties directly from the placeholder
+                    dim.Start = obj.Start
+                    dim.End = obj.End
+                    dim.Dimline = obj.Dimline
+                    dim.Placement = obj.Placement
+
+                    objects_to_delete.append(obj)
+                except Exception as e:
+                    FCC.PrintWarning("Could not create Draft Dimension from {}: {}\n".format(obj.Label, str(e)))
+
+            elif entity_type == "TEXT":
+                try:
+                    # 1. Create a Draft Text object
+                    text_obj = Draft.make_text(obj.Text)
+
+                    # 2. Copy properties
+                    text_obj.Placement = obj.Placement
+                    if gui:
+                        # TEXTSCALING is a global defined at the top of importDXF.py
+                        text_obj.ViewObject.FontSize = obj.DxfTextHeight * TEXTSCALING
+
+                    objects_to_delete.append(obj)
+                except Exception as e:
+                    FCC.PrintWarning("Could not create Draft Text from {}: {}\n".format(obj.Label, str(e)))
+
+    # Perform the deletion of placeholders after the loop
+    for obj in objects_to_delete:
+        try:
+            doc.removeObject(obj.Name)
+        except Exception:
+            pass
+
+    doc.recompute()
+
 
 class DxfImportReporter:
     """Formats and reports statistics from a DXF import process."""
