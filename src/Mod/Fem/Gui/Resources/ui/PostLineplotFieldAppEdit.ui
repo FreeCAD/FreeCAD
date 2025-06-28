@@ -90,7 +90,7 @@
    <item row="4" column="1">
     <widget class="QCheckBox" name="Extract">
      <property name="text">
-      <string>One Y field for each frames</string>
+      <string>One Y field for each frame</string>
      </property>
     </widget>
    </item>
