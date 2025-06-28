@@ -143,12 +143,12 @@ public:
                 {.state = SelectMode::SeekFirst,
                  .hints =
                      {
-                         {QObject::tr("%1 pick reference point"), {MouseLeft}},
+                         {tr("%1 pick reference point"), {MouseLeft}},
                      }},
                 {.state = SelectMode::SeekSecond,
                  .hints =
                      {
-                         {QObject::tr("%1 set scale factor"), {MouseLeft}},
+                         {tr("%1 set scale factor"), {MouseLeft}},
                      }},
             });
     }
@@ -211,7 +211,7 @@ private:
 
     QString getToolWidgetText() const override
     {
-        return QString(QObject::tr("Scale parameters"));
+        return QString(tr("Scale parameters"));
     }
 
     void activated() override

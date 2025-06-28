@@ -384,14 +384,12 @@ public:
                 {.state = STATUS_SEEK_First,
                  .hints =
                      {
-                         {QObject::tr("%1 pick edge to extend", "Sketcher Extend: hint"),
-                          {MouseLeft}},
+                         {tr("%1 pick edge to extend", "Sketcher Extend: hint"), {MouseLeft}},
                      }},
                 {.state = STATUS_SEEK_Second,
                  .hints =
                      {
-                         {QObject::tr("%1 set extension length", "Sketcher Extend: hint"),
-                          {MouseLeft}},
+                         {tr("%1 set extension length", "Sketcher Extend: hint"), {MouseLeft}},
                      }},
             });
     }

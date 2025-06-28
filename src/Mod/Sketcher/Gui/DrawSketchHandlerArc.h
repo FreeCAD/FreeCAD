@@ -93,8 +93,7 @@ private:
         using State = std::pair<ConstructionMethod, SelectMode>;
         using enum Gui::InputHint::UserInput;
 
-        const auto switchHint =
-            Gui::InputHint {.message = QObject::tr("%1 switch mode"), .sequences = {KeyM}};
+        const Gui::InputHint switchModeHint {tr("%1 switch mode"), {KeyM}};
 
         return Gui::lookupHints<State>(
             {constructionMethod(), state()},
@@ -103,40 +102,40 @@ private:
                 {.state = {ConstructionMethod::Center, SelectMode::SeekFirst},
                  .hints =
                      {
-                         {QObject::tr("%1 pick arc center"), {MouseLeft}},
-                         switchHint,
+                         {tr("%1 pick arc center"), {MouseLeft}},
+                         switchModeHint,
                      }},
                 {.state = {ConstructionMethod::Center, SelectMode::SeekSecond},
                  .hints =
                      {
-                         {QObject::tr("%1 pick arc start point"), {MouseLeft}},
-                         switchHint,
+                         {tr("%1 pick arc start point"), {MouseLeft}},
+                         switchModeHint,
                      }},
                 {.state = {ConstructionMethod::Center, SelectMode::SeekThird},
                  .hints =
                      {
-                         {QObject::tr("%1 pick arc end point"), {MouseLeft}},
-                         switchHint,
+                         {tr("%1 pick arc end point"), {MouseLeft}},
+                         switchModeHint,
                      }},
 
                 // ThreeRim method
                 {.state = {ConstructionMethod::ThreeRim, SelectMode::SeekFirst},
                  .hints =
                      {
-                         {QObject::tr("%1 pick first arc point"), {MouseLeft}},
-                         switchHint,
+                         {tr("%1 pick first arc point"), {MouseLeft}},
+                         switchModeHint,
                      }},
                 {.state = {ConstructionMethod::ThreeRim, SelectMode::SeekSecond},
                  .hints =
                      {
-                         {QObject::tr("%1 pick second arc point"), {MouseLeft}},
-                         switchHint,
+                         {tr("%1 pick second arc point"), {MouseLeft}},
+                         switchModeHint,
                      }},
                 {.state = {ConstructionMethod::ThreeRim, SelectMode::SeekThird},
                  .hints =
                      {
-                         {QObject::tr("%1 pick third arc point"), {MouseLeft}},
-                         switchHint,
+                         {tr("%1 pick third arc point"), {MouseLeft}},
+                         switchModeHint,
                      }},
             });
     }
@@ -390,7 +389,7 @@ private:
 
     QString getToolWidgetText() const override
     {
-        return QString(QObject::tr("Arc parameters"));
+        return QString(tr("Arc parameters"));
     }
 
     bool canGoToNextMode() override

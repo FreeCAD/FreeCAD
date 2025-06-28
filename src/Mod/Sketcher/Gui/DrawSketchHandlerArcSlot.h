@@ -97,30 +97,29 @@ public:
     {
         using enum Gui::InputHint::UserInput;
 
-        return Gui::lookupHints<SelectMode>(
-            state(),
-            {
-                {.state = SelectMode::SeekFirst,
-                 .hints =
-                     {
-                         {QObject::tr("%1 pick slot center"), {MouseLeft}},
-                     }},
-                {.state = SelectMode::SeekSecond,
-                 .hints =
-                     {
-                         {QObject::tr("%1 pick slot radius"), {MouseLeft}},
-                     }},
-                {.state = SelectMode::SeekThird,
-                 .hints =
-                     {
-                         {QObject::tr("%1 pick slot angle"), {MouseLeft}},
-                     }},
-                {.state = SelectMode::SeekFourth,
-                 .hints =
-                     {
-                         {QObject::tr("%1 pick slot width"), {MouseLeft}},
-                     }},
-            });
+        return Gui::lookupHints<SelectMode>(state(),
+                                            {
+                                                {.state = SelectMode::SeekFirst,
+                                                 .hints =
+                                                     {
+                                                         {tr("%1 pick slot center"), {MouseLeft}},
+                                                     }},
+                                                {.state = SelectMode::SeekSecond,
+                                                 .hints =
+                                                     {
+                                                         {tr("%1 pick slot radius"), {MouseLeft}},
+                                                     }},
+                                                {.state = SelectMode::SeekThird,
+                                                 .hints =
+                                                     {
+                                                         {tr("%1 pick slot angle"), {MouseLeft}},
+                                                     }},
+                                                {.state = SelectMode::SeekFourth,
+                                                 .hints =
+                                                     {
+                                                         {tr("%1 pick slot width"), {MouseLeft}},
+                                                     }},
+                                            });
     }
 
 private:
@@ -297,7 +296,7 @@ private:
 
     QString getToolWidgetText() const override
     {
-        return QString(QObject::tr("Arc Slot parameters"));
+        return QString(tr("Arc Slot parameters"));
     }
 
     bool canGoToNextMode() override
