@@ -77,7 +77,7 @@ class Arch_Profile:
         # categories box
         labelc = QtGui.QLabel(translate("Arch","Category"))
         self.vCategory = QtGui.QComboBox()
-        self.vCategory.addItems([" "] + self.Categories)
+        self.vCategory.addItems(self.Categories)
         grid.addWidget(labelc,1,0,1,1)
         grid.addWidget(self.vCategory,1,1,1,1)
 
@@ -90,22 +90,32 @@ class Arch_Profile:
         grid.addWidget(labelp,2,0,1,1)
         grid.addWidget(self.vPresets,2,1,1,1)
 
+        # restore preset
+        categoryIdx = -1
+        presetIdx = -1
+        stored = params.get_param_arch("ProfilePreset")
+        if stored and ";" in stored and len(stored.split(";")) >= 3:
+            stored = stored.split(";")
+            if stored[1] in self.Categories:
+                categoryIdx = self.Categories.index(stored[1])
+                self.setCategory(categoryIdx)
+                self.vCategory.setCurrentIndex(categoryIdx)
+                ps = [p[2] for p in self.pSelect]
+                if stored[2] in ps:
+                    presetIdx = ps.index(stored[2])
+                    self.setPreset(presetIdx)
+                    self.vPresets.setCurrentIndex(presetIdx)
+        if categoryIdx == -1:
+            self.setCategory(0)
+            self.vCategory.setCurrentIndex(0)
+        if presetIdx == -1:
+            self.setPreset(0)
+            self.vPresets.setCurrentIndex(0)
+
         # connect slots
         self.vCategory.currentIndexChanged.connect(self.setCategory)
         self.vPresets.currentIndexChanged.connect(self.setPreset)
 
-        # restore preset
-        stored = params.get_param_arch("StructurePreset")
-        if stored:
-            if ";" in stored:
-                stored = stored.split(";")
-                if len(stored) >= 3:
-                    if stored[1] in self.Categories:
-                        self.vCategory.setCurrentIndex(1+self.Categories.index(stored[1]))
-                        self.setCategory(1+self.Categories.index(stored[1]))
-                        ps = [p[2] for p in self.pSelect]
-                        if stored[2] in ps:
-                            self.vPresets.setCurrentIndex(ps.index(stored[2]))
         return w
 
     def getPoint(self,point=None,obj=None):
@@ -134,32 +144,23 @@ class Arch_Profile:
 
         from draftutils import params
         self.vPresets.clear()
-        if i == 0:
-            self.pSelect = [None]
-            self.vPresets.addItems([" "])
-            params.set_param_arch("StructurePreset","")
-        else:
-            self.pSelect = [p for p in self.Presets if p[1] == self.Categories[i-1]]
-            fpresets = []
-            for p in self.pSelect:
-                f = FreeCAD.Units.Quantity(p[4],FreeCAD.Units.Length).getUserPreferred()
-                d = params.get_param("Decimals",path="Units")
-                s1 = str(round(p[4]/f[1],d))
-                s2 = str(round(p[5]/f[1],d))
-                s3 = str(f[2])
-                fpresets.append(p[2]+" ("+s1+"x"+s2+s3+")")
-            self.vPresets.addItems(fpresets)
-            self.setPreset(0)
+        self.pSelect = [p for p in self.Presets if p[1] == self.Categories[i]]
+        fpresets = []
+        for p in self.pSelect:
+            f = FreeCAD.Units.Quantity(p[4],FreeCAD.Units.Length).getUserPreferred()
+            d = params.get_param("Decimals",path="Units")
+            s1 = str(round(p[4]/f[1],d))
+            s2 = str(round(p[5]/f[1],d))
+            s3 = str(f[2])
+            fpresets.append(p[2]+" ("+s1+"x"+s2+s3+")")
+        self.vPresets.addItems(fpresets)
+        self.setPreset(0)
 
     def setPreset(self,i):
 
         from draftutils import params
-        self.Profile = None
-        elt = self.pSelect[i]
-        if elt:
-            p=elt[0]-1 # Presets indexes are 1-based
-            self.Profile = self.Presets[p]
-            params.set_param_arch("StructurePreset",";".join([str(i) for i in self.Profile]))
+        self.Profile = self.pSelect[i]
+        params.set_param_arch("ProfilePreset",";".join([str(i) for i in self.Profile]))
 
 
 FreeCADGui.addCommand('Arch_Profile',Arch_Profile())
