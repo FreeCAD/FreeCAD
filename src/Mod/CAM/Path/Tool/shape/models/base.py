@@ -41,6 +41,13 @@ from ..doc import (
 from .icon import ToolBitShapeIcon
 
 
+if False:
+    Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
+    Path.Log.trackModule(Path.Log.thisModule())
+else:
+    Path.Log.setLevel(Path.Log.Level.INFO, Path.Log.thisModule())
+
+
 class ToolBitShape(Asset):
     """Abstract base class for tool bit shapes."""
 
@@ -74,6 +81,9 @@ class ToolBitShape(Asset):
 
         # Stores default parameter values loaded from the FCStd file
         self._defaults: Dict[str, Any] = {}
+
+        # Stores the FreeCAD property types for each parameter
+        self._param_types: Dict[str, str] = {}
 
         # Keeps the loaded FreeCAD document content for this instance
         self._data: Optional[bytes] = None
@@ -321,6 +331,7 @@ class ToolBitShape(Asset):
             Exception: For other potential FreeCAD errors during loading.
         """
         assert serializer == DummyAssetSerializer, "ToolBitShape supports only native import"
+        Path.Log.debug(f"{id}: ToolBitShape.from_bytes called with {len(data)} bytes")
 
         # Open the shape data temporarily to get the Body label and parameters
         with ShapeDocFromBytes(data) as temp_doc:
@@ -335,12 +346,25 @@ class ToolBitShape(Asset):
             except Exception as e:
                 Path.Log.debug(f"{id}: Failed to determine shape class from bytes: {e}")
                 shape_class = ToolBitShape.get_shape_class_from_id("Custom")
+            if shape_class is None:
+                # This should ideally not happen due to get_shape_class_from_bytes fallback
+                # but added for linter satisfaction.
+                raise ValueError("Shape class could not be determined.")
 
             # Load properties from the temporary document
             props_obj = ToolBitShape._find_property_object(temp_doc)
             if not props_obj:
                 raise ValueError("No 'Attributes' PropertyBag object found in document bytes")
-            loaded_params = get_object_properties(props_obj, group="Shape")
+
+            # loaded_raw_params will now be Dict[str, Tuple[Any, str]]
+            loaded_raw_params = get_object_properties(props_obj, group="Shape")
+
+            # Separate values and types, and populate _param_types
+            loaded_params = {}
+            loaded_param_types = {}
+            for name, (value, type_id) in loaded_raw_params.items():
+                loaded_params[name] = value
+                loaded_param_types[name] = type_id
 
             # For now, we log missing parameters, but do not raise an error.
             # This allows for more flexible shape files that may not have all
@@ -362,11 +386,14 @@ class ToolBitShape(Asset):
                 for param in missing_params:
                     param_type = shape_class.get_parameter_property_type(param)
                     loaded_params[param] = get_unset_value_for(param_type)
+                    loaded_param_types[param] = param_type  # Store the type for missing params
 
             # Instantiate the specific subclass with the provided ID
             instance = shape_class(id=id)
             instance._data = data  # Keep the byte content
             instance._defaults = loaded_params
+            instance._param_types = loaded_param_types
+            Path.Log.debug(f"Params: {instance._params} {instance._defaults}")
             instance._params = instance._defaults | instance._params
 
             if dependencies:  # dependencies is None = shallow load
@@ -442,6 +469,7 @@ class ToolBitShape(Asset):
         """
         if not filepath.exists():
             raise FileNotFoundError(f"Shape file not found: {filepath}")
+        Path.Log.debug(f"{id}: ToolBitShape.from_file called with {filepath}")
 
         try:
             data = filepath.read_bytes()
@@ -664,6 +692,13 @@ class ToolBitShape(Asset):
         Retrieves the thumbnail data for the tool bit shape in PNG format.
         """
 
+    def get_parameter_type(self, name: str) -> str:
+        """
+        Get the FreeCAD property type string for a given parameter name,
+        as loaded from the FCStd file.
+        """
+        return self._param_types.get(name, "App::PropertyString")
+
     def get_icon(self) -> Optional[ToolBitShapeIcon]:
         """
         Get the associated ToolBitShapeIcon instance. Tries to load one from
@@ -676,18 +711,26 @@ class ToolBitShape(Asset):
             return self.icon
 
         # Try to get a matching SVG from the asset manager.
-        self.icon = cam_assets.get_or_none(f"toolbitshapesvg://{self.id}.svg")
+        self.icon = cast(
+            ToolBitShapeIcon, cam_assets.get_or_none(f"toolbitshapesvg://{self.id}.svg")
+        )
         if self.icon:
             return self.icon
-        self.icon = cam_assets.get_or_none(f"toolbitshapesvg://{self.name.lower()}.svg")
+        self.icon = cast(
+            ToolBitShapeIcon, cam_assets.get_or_none(f"toolbitshapesvg://{self.name.lower()}.svg")
+        )
         if self.icon:
             return self.icon
 
         # Try to get a matching PNG from the asset manager.
-        self.icon = cam_assets.get_or_none(f"toolbitshapepng://{self.id}.png")
+        self.icon = cast(
+            ToolBitShapeIcon, cam_assets.get_or_none(f"toolbitshapepng://{self.id}.png")
+        )
         if self.icon:
             return self.icon
-        self.icon = cam_assets.get_or_none(f"toolbitshapepng://{self.name.lower()}.png")
+        self.icon = cast(
+            ToolBitShapeIcon, cam_assets.get_or_none(f"toolbitshapepng://{self.name.lower()}.png")
+        )
         if self.icon:
             return self.icon
         return None

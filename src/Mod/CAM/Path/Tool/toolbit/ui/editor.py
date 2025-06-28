@@ -22,9 +22,9 @@
 
 """Widget for editing a ToolBit object."""
 
+from PySide import QtGui, QtCore
 import FreeCAD
 import FreeCADGui
-from PySide import QtGui, QtCore
 from ...shape.ui.shapewidget import ShapeWidget
 from ...docobject.ui import DocumentObjectEditorWidget
 from ..models.base import ToolBit

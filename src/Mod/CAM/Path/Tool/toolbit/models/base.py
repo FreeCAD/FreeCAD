@@ -674,16 +674,19 @@ class ToolBit(Asset, ABC):
             if value is not None and getattr(self.obj, name) != value:
                 setattr(self.obj, name, value)
 
-        # 2. Remove obsolete shape properties
-        # These are properties currently listed AND in the Shape group,
-        # but not required by the new shape.
-        current_shape_prop_names = set(self._get_props("Shape"))
-        new_shape_param_names = self._tool_bit_shape.schema().keys()
-        obsolete = current_shape_prop_names - new_shape_param_names
-        Path.Log.debug(f"Removing obsolete shape properties: {obsolete} from {self.obj.Label}")
-        # Gracefully skipping the deletion for now;
-        # in future releases we may handle schema violations more strictly
-        # self._remove_properties("Shape", obsolete)
+        # 2. Add additional properties that are part of the shape,
+        # but not part of the schema.
+        schema_prop_names = set(self._tool_bit_shape.schema().keys())
+        for name, value in self._tool_bit_shape.get_parameters().items():
+            if name in schema_prop_names:
+                continue
+            prop_type = self._tool_bit_shape.get_parameter_type(name)
+            docstring = QT_TRANSLATE_NOOP("App::Property", f"Custom property from shape: {name}")
+            if not hasattr(self.obj, name):
+                self.obj.addProperty(prop_type, name, PropertyGroupShape, docstring)
+                Path.Log.debug(f"Added custom shape property: {name} ({prop_type})")
+            PathUtil.setProperty(self.obj, name, value)
+            self.obj.setEditorMode(name, 0)
 
     def _update_visual_representation(self):
         """
