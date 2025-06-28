@@ -42,6 +42,7 @@ if False:
 else:
     PathLog.setLevel(PathLog.Level.NOTICE, PathLog.thisModule())
 
+
 class TaskPanelTurnBase(PathOpGui.TaskPanelPage):
     """Page controller class for turning operations"""
 
