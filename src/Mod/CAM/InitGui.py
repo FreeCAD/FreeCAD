@@ -117,6 +117,7 @@ class CAMWorkbench(Workbench):
         liblatheInstalled = False
         try:
             import liblathe  # pylint: disable=unused-variable
+
             liblatheInstalled = True
         except ImportError:
             # liblathe is not installed no errors required.
