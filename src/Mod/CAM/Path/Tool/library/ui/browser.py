@@ -549,6 +549,8 @@ class LibraryBrowserWithCombo(LibraryBrowserWidget):
         finally:
             self._in_refresh = False
 
+        super().refresh()
+
         if not libraries:
             return
         if not self.current_library:

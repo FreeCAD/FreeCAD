@@ -171,6 +171,7 @@ class ToolBitBrowserWidget(QtGui.QWidget):
             self._all_assets = self.tool_fetcher()
         finally:
             self._is_fetching = False
+        Path.Log.debug(f"Loaded {len(self._all_assets)} ToolBits.")
 
         self._sort_assets()
         self._update_list()
