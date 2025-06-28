@@ -72,6 +72,7 @@
 #include <Mod/Part/App/PrimitiveFeature.h>
 #include <Mod/Part/App/FeaturePartCircle.h>
 #include <App/Link.h>
+#include <App/FeaturePython.h>
 #include <Base/Tools.h>
 
 #include "ImpExpDxf.h"
@@ -138,17 +139,6 @@ void ImpExpDxfRead::StartImport()
 
 bool ImpExpDxfRead::ReadEntitiesSection()
 {
-    // TODO: remove this once the unsupported modes have been implemented.
-    // Perform a one-time check for unsupported modes
-    if (m_importMode == ImportMode::EditableDraft) {
-        UnsupportedFeature("Import as 'Editable draft objects' is not yet implemented.");
-        // We can continue, and the switch statements below will do nothing,
-        // resulting in an empty import for geometry, which is correct behavior.
-    }
-    else if (m_importMode == ImportMode::EditablePrimitives) {
-        UnsupportedFeature("Import as 'Editable part primitives' is not yet implemented.");
-    }
-
     // After parsing the BLOCKS section, compose all block definitions
     // into FreeCAD objects before processing the ENTITIES section.
     ComposeBlocks();
@@ -1000,41 +990,36 @@ void ImpExpDxfRead::OnReadText(const Base::Vector3d& point,
                                const std::string& text,
                                const double rotation)
 {
-    if (shouldSkipEntity()) {
+    if (shouldSkipEntity() || !m_importAnnotations) {
         return;
     }
 
-    // Note that our parameters do not contain all the information needed to properly orient the
-    // text. As a result the text will always appear on the XY plane
-    if (m_importAnnotations) {
-        auto makeText = [this, rotation, point, text, height](
-                            const Base::Matrix4D& transform) -> App::FeaturePython* {
-            PyObject* draftModule = getDraftModule();
-            if (draftModule != nullptr) {
-                Base::Matrix4D localTransform;
-                localTransform.rotZ(Base::toRadians(rotation));
-                localTransform.move(point);
-                PyObject* placement =
-                    new Base::PlacementPy(Base::Placement(transform * localTransform));
-                // returns a wrapped App::FeaturePython
-                auto builtText = dynamic_cast<App::FeaturePythonPyT<App::DocumentObjectPy>*>(
-                    // NOLINTNEXTLINE(readability/nolint)
-                    // NOLINTNEXTLINE(cppcoreguidelines-pro-type-cstyle-cast)
-                    (Base::PyObjectBase*)PyObject_CallMethod(draftModule,
-                                                             "make_text",
-                                                             "sOif",
-                                                             text.c_str(),
-                                                             placement,
-                                                             0,
-                                                             height));
-                Py_DECREF(placement);
-                if (builtText != nullptr) {
-                    return dynamic_cast<App::FeaturePython*>(builtText->getDocumentObjectPtr());
-                }
-            }
-            return nullptr;
-        };
-        Collector->AddObject((FeaturePythonBuilder)makeText);
+    auto* p = static_cast<App::FeaturePython*>(document->addObject("App::FeaturePython", "Text"));
+    if (p) {
+        p->addDynamicProperty("App::PropertyString",
+                              "DxfEntityType",
+                              "Internal",
+                              "DXF entity type");
+        static_cast<App::PropertyString*>(p->getPropertyByName("DxfEntityType"))->setValue("TEXT");
+
+        p->addDynamicProperty("App::PropertyStringList", "Text", "Data", "Text content");
+        // Explicitly create the vector to resolve ambiguity
+        std::vector<std::string> text_values = {text};
+        static_cast<App::PropertyStringList*>(p->getPropertyByName("Text"))->setValues(text_values);
+
+        p->addDynamicProperty("App::PropertyFloat",
+                              "DxfTextHeight",
+                              "Internal",
+                              "Original text height");
+        static_cast<App::PropertyFloat*>(p->getPropertyByName("DxfTextHeight"))->setValue(height);
+
+        p->addDynamicProperty("App::PropertyPlacement", "Placement", "Base", "Object placement");
+        Base::Placement pl;
+        pl.setPosition(point);
+        pl.setRotation(Base::Rotation(Base::Vector3d(0, 0, 1), Base::toRadians(rotation)));
+        static_cast<App::PropertyPlacement*>(p->getPropertyByName("Placement"))->setValue(pl);
+
+        Collector->AddObject(p, "Text");
     }
 }
 
@@ -1060,50 +1045,40 @@ void ImpExpDxfRead::OnReadDimension(const Base::Vector3d& start,
                                     const Base::Vector3d& point,
                                     double /*rotation*/)
 {
-    if (shouldSkipEntity()) {
+    if (shouldSkipEntity() || !m_importAnnotations) {
         return;
     }
 
-    if (m_importAnnotations) {
-        auto makeDimension =
-            [this, start, end, point](const Base::Matrix4D& transform) -> App::FeaturePython* {
-            PyObject* draftModule = getDraftModule();
-            if (draftModule != nullptr) {
-                // TODO: Capture and apply OCSOrientationTransform to OCS coordinates
-                // Note, some of the locations in the DXF are OCS and some are UCS, but UCS
-                // doesn't mean UCS when in a block expansion, it means 'transform' So we want
-                // transform*vector for "UCS" coordinates and transform*ocdCapture*vector for
-                // "OCS" coordinates
-                //
-                // We implement the transform by mapping all the points from OCS to UCS
-                // TODO: Set the Normal property to transform*(0,0,1,0)
-                // TODO: Set the Direction property to transform*(the desired direction).
-                // By default this is parallel to (start-end).
-                PyObject* startPy = new Base::VectorPy(transform * start);
-                PyObject* endPy = new Base::VectorPy(transform * end);
-                PyObject* lineLocationPy = new Base::VectorPy(transform * point);
-                // returns a wrapped App::FeaturePython
-                auto builtDim = dynamic_cast<App::FeaturePythonPyT<App::DocumentObjectPy>*>(
-                    // NOLINTNEXTLINE(readability/nolint)
-                    // NOLINTNEXTLINE(cppcoreguidelines-pro-type-cstyle-cast)
-                    (Base::PyObjectBase*)PyObject_CallMethod(draftModule,
-                                                             "make_linear_dimension",
-                                                             "OOO",
-                                                             startPy,
-                                                             endPy,
-                                                             lineLocationPy));
-                Py_DECREF(startPy);
-                Py_DECREF(endPy);
-                Py_DECREF(lineLocationPy);
-                if (builtDim != nullptr) {
-                    return dynamic_cast<App::FeaturePython*>(builtDim->getDocumentObjectPtr());
-                }
-            }
-            return nullptr;
-        };
-        Collector->AddObject((FeaturePythonBuilder)makeDimension);
+    auto* p =
+        static_cast<App::FeaturePython*>(document->addObject("App::FeaturePython", "Dimension"));
+    if (p) {
+        p->addDynamicProperty("App::PropertyString",
+                              "DxfEntityType",
+                              "Internal",
+                              "DXF entity type");
+        static_cast<App::PropertyString*>(p->getPropertyByName("DxfEntityType"))
+            ->setValue("DIMENSION");
+
+        p->addDynamicProperty("App::PropertyVector", "Start", "Data", "Start point of dimension");
+        static_cast<App::PropertyVector*>(p->getPropertyByName("Start"))->setValue(start);
+
+        p->addDynamicProperty("App::PropertyVector", "End", "Data", "End point of dimension");
+        static_cast<App::PropertyVector*>(p->getPropertyByName("End"))->setValue(end);
+
+        p->addDynamicProperty("App::PropertyVector", "Dimline", "Data", "Point on dimension line");
+        static_cast<App::PropertyVector*>(p->getPropertyByName("Dimline"))->setValue(point);
+
+        p->addDynamicProperty("App::PropertyPlacement", "Placement", "Base", "Object placement");
+        Base::Placement pl;
+        // Correctly construct the rotation directly from the 4x4 matrix.
+        // The Base::Rotation constructor will extract the rotational part.
+        pl.setRotation(Base::Rotation(OCSOrientationTransform));
+        static_cast<App::PropertyPlacement*>(p->getPropertyByName("Placement"))->setValue(pl);
+
+        Collector->AddObject(p, "Dimension");
     }
 }
+
 void ImpExpDxfRead::OnReadPolyline(std::list<VertexInfo>& vertices, int flags)
 {
     if (shouldSkipEntity()) {
