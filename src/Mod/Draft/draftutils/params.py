@@ -558,6 +558,7 @@ def _get_param_dictionary():
         "PrecastHoleSpacing":          ("float",     0.0),
         "PrecastRiser":                ("float",     0.0),
         "PrecastTread":                ("float",     0.0),
+        "ProfilePreset":               ("string",    ""),
         "ScheduleColumnWidth0":        ("int",       100),
         "ScheduleColumnWidth1":        ("int",       100),
         "ScheduleColumnWidth2":        ("int",       50),
