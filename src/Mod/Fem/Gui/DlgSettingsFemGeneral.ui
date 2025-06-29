@@ -28,7 +28,7 @@
         </sizepolicy>
        </property>
        <property name="title">
-        <string>Working directory for solving analysis and Gmsh meshing</string>
+        <string>Working Directory for Solving Analysis and Gmsh Meshing</string>
        </property>
        <layout class="QVBoxLayout" name="verticalLayout_3">
         <item>
@@ -184,7 +184,7 @@
             <item>
              <widget class="QLabel" name="l_wd_custom_path">
               <property name="text">
-               <string>Path:</string>
+               <string>Path</string>
               </property>
               <property name="indent">
                <number>10</number>
@@ -276,7 +276,7 @@
              <bool>true</bool>
             </property>
             <property name="text">
-             <string>Create mesh groups for analysis reference shapes (highly experimental)</string>
+             <string>Create mesh groups for analysis reference shapes (experimental)</string>
             </property>
             <property name="checked">
              <bool>false</bool>

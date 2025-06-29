@@ -11,13 +11,13 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Analysis feature properties</string>
+   <string>Analysis Feature Properties</string>
   </property>
   <layout class="QHBoxLayout" name="horizontalLayout">
    <item>
     <widget class="QLabel" name="pressureLbl">
      <property name="text">
-      <string>Pressure:</string>
+      <string>Pressure</string>
      </property>
     </widget>
    </item>
