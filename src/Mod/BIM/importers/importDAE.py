@@ -22,9 +22,9 @@
 # *                                                                         *
 # ***************************************************************************
 
-__title__  = "FreeCAD Collada importer"
+__title__ = "FreeCAD Collada importer"
 __author__ = "Yorik van Havre"
-__url__    = "https://www.freecad.org"
+__url__ = "https://www.freecad.org"
 
 ## @package importDAE
 #  \ingroup ARCH
@@ -51,6 +51,7 @@ else:
     # \cond
     def translate(context, text):
         return text
+
     # \endcond
 
 DEBUG = True
@@ -67,7 +68,9 @@ def check_collada_import() -> bool:
     try:
         import collada
     except ImportError:
-        FreeCAD.Console.PrintError(translate("BIM", "pycollada not found, collada support is disabled.") + "\n")
+        FreeCAD.Console.PrintError(
+            translate("BIM", "pycollada not found, collada support is disabled.") + "\n"
+        )
         return False
     else:
         return True
@@ -90,13 +93,13 @@ def triangulate(shape):
         return MeshPart.meshFromShape(Shape=shape, MaxLength=tessellation).Topology
     else:
         return MeshPart.meshFromShape(
-                Shape=shape,
-                GrowthRate=grading,
-                SegPerEdge=segs_per_edge,
-                SegPerRadius=segs_per_radius,
-                SecondOrder=second_order,
-                Optimize=optimize,
-                AllowQuad=allow_quads,
+            Shape=shape,
+            GrowthRate=grading,
+            SegPerEdge=segs_per_edge,
+            SegPerRadius=segs_per_radius,
+            SecondOrder=second_order,
+            Optimize=optimize,
+            AllowQuad=allow_quads,
         ).Topology
 
 
@@ -170,16 +173,18 @@ def read(filename):
 
     # Print the errors that occurred during reading.
     if col.errors:
-        FreeCAD.Console.PrintWarning(translate("BIM", "File was read but some errors occurred:") + "\n")
+        FreeCAD.Console.PrintWarning(
+            translate("BIM", "File was read but some errors occurred:") + "\n"
+        )
     for e in col.errors:
         FreeCAD.Console.PrintWarning(str(e) + "\n")
 
 
 def export(
-        exports: list[FreeCAD.DocumentObject],
-        filename: str,
-        tessellation: int = 1,
-        colors: Optional[dict[str, tuple]] = None,
+    exports: list[FreeCAD.DocumentObject],
+    filename: str,
+    tessellation: int = 1,
+    colors: Optional[dict[str, tuple]] = None,
 ):
     """Export FreeCAD contents to a DAE file.
 
@@ -220,21 +225,25 @@ def export(
     obj_ind = 0
     scene_nodes = []
     objects = Draft.get_group_contents(
-            exports,
-            walls=True,
-            addgroups=True,
+        exports,
+        walls=True,
+        addgroups=True,
     )
     objects = Arch.pruneIncluded(objects, strict=True)
     for obj in objects:
         findex = np.array([])
         m: Optional[Mesh.Mesh] = None
         if obj.isDerivedFrom("Part::Feature"):
-            FreeCAD.Console.PrintMessage(f"Exporting shape of object {obj.Name} (\"{obj.Label}\")" + "\n")
+            FreeCAD.Console.PrintMessage(
+                f'Exporting shape of object {obj.Name} ("{obj.Label}")' + "\n"
+            )
             new_shape = obj.Shape.copy()
             new_shape.Placement = obj.getGlobalPlacement()
             m = Mesh.Mesh(triangulate(new_shape))
         elif obj.isDerivedFrom("Mesh::Feature"):
-            FreeCAD.Console.PrintMessage(f"Exporting mesh of object {obj.Name} (\"{obj.Label}\")" + "\n")
+            FreeCAD.Console.PrintMessage(
+                f'Exporting mesh of object {obj.Name} ("{obj.Label}")' + "\n"
+            )
             m = obj.Mesh
         elif obj.isDerivedFrom("App::Part"):
             for child in obj.OutList:
@@ -250,27 +259,29 @@ def export(
             vindex = np.empty(len(topology[0]) * 3)
             for i in range(len(topology[0])):
                 v = topology[0][i]
-                vindex[list(range(i*3, i*3+3))] = (v.x*scale, v.y*scale, v.z*scale)
+                vindex[list(range(i * 3, i * 3 + 3))] = (v.x * scale, v.y * scale, v.z * scale)
 
             # Normals.
             nindex = np.empty(len(facets) * 3)
             for i in range(len(facets)):
                 n = facets[i].Normal
-                nindex[list(range(i*3, i*3+3))] = (n.x,n.y,n.z)
+                nindex[list(range(i * 3, i * 3 + 3))] = (n.x, n.y, n.z)
 
             # Face indices.
             findex = np.empty(len(topology[1]) * 6, np.int64)
             for i in range(len(topology[1])):
                 f = topology[1][i]
-                findex[list(range(i*6, i*6+6))] = (f[0], i, f[1], i, f[2], i)
+                findex[list(range(i * 6, i * 6 + 6))] = (f[0], i, f[1], i, f[2], i)
 
         vert_src = collada.source.FloatSource(f"cubeverts-array{obj_ind}", vindex, ("X", "Y", "Z"))
-        normal_src = collada.source.FloatSource(f"cubenormals-array{obj_ind}", nindex, ("X", "Y", "Z"))
+        normal_src = collada.source.FloatSource(
+            f"cubenormals-array{obj_ind}", nindex, ("X", "Y", "Z")
+        )
         geom = collada.geometry.Geometry(
-                collada=col_mesh,
-                id=f"geometry{obj_ind}",
-                name=obj.Name,
-                sourcebyid=[vert_src, normal_src],
+            collada=col_mesh,
+            id=f"geometry{obj_ind}",
+            name=obj.Name,
+            sourcebyid=[vert_src, normal_src],
         )
         input_list = collada.source.InputList()
         input_list.addInput(0, "VERTEX", f"#cubeverts-array{obj_ind}")
@@ -278,31 +289,33 @@ def export(
         mat_node: Optional[collada.scene.MaterialNode] = None
         mat_ref = "materialref"
         if (
-                hasattr(obj, "Material")
+            hasattr(obj, "Material")
             and obj.Material
             and hasattr(obj.Material, "Material")
             and ("DiffuseColor" in obj.Material.Material)
         ):
-            kd = tuple([float(k) for k in obj.Material.Material["DiffuseColor"].strip("()").split(",")])
+            kd = tuple(
+                [float(k) for k in obj.Material.Material["DiffuseColor"].strip("()").split(",")]
+            )
             effect = collada.material.Effect(
-                    id=f"effect_{obj.Material.Name}",
-                    params=[],
-                    shadingtype="phong",
-                    diffuse=kd,
-                    specular=(1, 1, 1),
+                id=f"effect_{obj.Material.Name}",
+                params=[],
+                shadingtype="phong",
+                diffuse=kd,
+                specular=(1, 1, 1),
             )
             mat = collada.material.Material(
-                    id=f"mat_{obj.Material.Name}",
-                    name=obj.Material.Name,
-                    effect=effect,
+                id=f"mat_{obj.Material.Name}",
+                name=obj.Material.Name,
+                effect=effect,
             )
             col_mesh.effects.append(effect)
             col_mesh.materials.append(mat)
             mat_ref = f"ref_{obj.Material.Name}"
             mat_node = collada.scene.MaterialNode(
-                    symbol=mat_ref,
-                    target=mat,
-                    inputs=[],
+                symbol=mat_ref,
+                target=mat,
+                inputs=[],
             )
         if not mat_node:
             if obj.Name in colors:
@@ -314,68 +327,68 @@ def export(
                         color = color[0]
                     kd = color[:3]
                     effect = collada.material.Effect(
-                            id=f"effect_{obj.Name}",
-                            params=[],
-                            shadingtype="phong",
-                            diffuse=kd,
-                            specular=(1, 1, 1),
+                        id=f"effect_{obj.Name}",
+                        params=[],
+                        shadingtype="phong",
+                        diffuse=kd,
+                        specular=(1, 1, 1),
                     )
                     mat = collada.material.Material(
-                            id=f"mat_{obj.Name}",
-                            name=obj.Name,
-                            effect=effect,
+                        id=f"mat_{obj.Name}",
+                        name=obj.Name,
+                        effect=effect,
                     )
                     col_mesh.effects.append(effect)
                     col_mesh.materials.append(mat)
                     mat_ref = "ref_" + obj.Name
                     mat_node = collada.scene.MaterialNode(
-                            symbol=mat_ref,
-                            target=mat,
-                            inputs=[],
+                        symbol=mat_ref,
+                        target=mat,
+                        inputs=[],
                     )
             elif FreeCAD.GuiUp:
                 if hasattr(obj.ViewObject, "ShapeColor"):
                     kd = obj.ViewObject.ShapeColor[:3]
                     effect = collada.material.Effect(
-                            id=f"effect_{obj.Name}",
-                            params=[],
-                            shadingtype="phong",
-                            diffuse=kd,
-                            specular=(1, 1, 1),
+                        id=f"effect_{obj.Name}",
+                        params=[],
+                        shadingtype="phong",
+                        diffuse=kd,
+                        specular=(1, 1, 1),
                     )
                     mat = collada.material.Material(
-                            id=f"mat_{obj.Name}",
-                            name=obj.Name,
-                            effect=effect,
+                        id=f"mat_{obj.Name}",
+                        name=obj.Name,
+                        effect=effect,
                     )
                     col_mesh.effects.append(effect)
                     col_mesh.materials.append(mat)
                     mat_ref = f"ref_{obj.Name}"
                     mat_node = collada.scene.MaterialNode(
-                            symbol=mat_ref,
-                            target=mat,
-                            inputs=[],
+                        symbol=mat_ref,
+                        target=mat,
+                        inputs=[],
                     )
         if not mat_node:
             if not default_mat:
                 effect = collada.material.Effect(
-                        id="effect_default",
-                        params=[],
-                        shadingtype="phong",
-                        diffuse=default_color,
-                        specular=(1, 1, 1),
+                    id="effect_default",
+                    params=[],
+                    shadingtype="phong",
+                    diffuse=default_color,
+                    specular=(1, 1, 1),
                 )
                 default_mat = collada.material.Material(
-                        id="mat_default",
-                        name="default_material",
-                        effect=effect,
+                    id="mat_default",
+                    name="default_material",
+                    effect=effect,
                 )
                 col_mesh.effects.append(effect)
                 col_mesh.materials.append(default_mat)
             mat_node = collada.scene.MaterialNode(
-                    symbol=mat_ref,
-                    target=default_mat,
-                    inputs=[],
+                symbol=mat_ref,
+                target=default_mat,
+                inputs=[],
             )
         triset = geom.createTriangleSet(indices=findex, inputlist=input_list, materialid=mat_ref)
         geom.primitives.append(triset)
@@ -388,4 +401,6 @@ def export(
     col_mesh.scenes.append(scene)
     col_mesh.scene = scene
     col_mesh.write(filename)
-    FreeCAD.Console.PrintMessage(translate("BIM", f'file "{filename}" successfully created.' + "\n"))
+    FreeCAD.Console.PrintMessage(
+        translate("BIM", f'file "{filename}" successfully created.' + "\n")
+    )

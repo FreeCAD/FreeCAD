@@ -25,6 +25,7 @@
 import Arch
 from bimtests import TestArchBase
 
+
 class TestArchWindow(TestArchBase.TestArchBase):
 
     def test_makeWindow(self):

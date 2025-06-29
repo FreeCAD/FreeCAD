@@ -61,9 +61,7 @@ LIBRARYURL = "https://github.com/FreeCAD/FreeCAD-library/tree/master"
 RAWURL = LIBRARYURL.replace("/tree", "/raw")
 LIBINDEXFILE = "OfflineLibrary.py"
 USE_API = True  # True to use github API instead of web fetching... Way faster
-REFRESH_INTERVAL = (
-    3600  # Min seconds between allowing a new API calls (3600 = one hour)
-)
+REFRESH_INTERVAL = 3600  # Min seconds between allowing a new API calls (3600 = one hour)
 
 
 # TODO as https://github.com/yorikvanhavre/BIM_Workbench/pull/77
@@ -121,9 +119,9 @@ class BIM_Library_TaskPanel:
 
         self.linked = False
 
-        self.librarypath = FreeCAD.ParamGet(
-            "User parameter:Plugins/parts_library"
-        ).GetString("destination", "")
+        self.librarypath = FreeCAD.ParamGet("User parameter:Plugins/parts_library").GetString(
+            "destination", ""
+        )
         self.form = FreeCADGui.PySideUic.loadUi(":/ui/dialogLibrary.ui")
         self.form.setWindowIcon(QtGui.QIcon(":/icons/BIM_Library.svg"))
 
@@ -171,14 +169,12 @@ class BIM_Library_TaskPanel:
             ],
         }
         for k, v in sites.items():
-            self.form.comboSearch.addItem(QtGui.QIcon(":/icons/"+v[0]), k, v[1])
+            self.form.comboSearch.addItem(QtGui.QIcon(":/icons/" + v[0]), k, v[1])
         self.form.comboSearch.currentIndexChanged.connect(self.onExternalSearch)
 
         # retrieve preferences
         self.form.checkOnline.toggled.connect(self.onCheckOnline)
-        self.form.checkOnline.setChecked(
-            PARAMS.GetBool("LibraryOnline", not offlinemode)
-        )
+        self.form.checkOnline.setChecked(PARAMS.GetBool("LibraryOnline", not offlinemode))
         self.form.checkFCStdOnly.toggled.connect(self.onCheckFCStdOnly)
         self.form.checkFCStdOnly.setChecked(PARAMS.GetBool("LibraryFCStdOnly", False))
         self.form.checkWebSearch.toggled.connect(self.onCheckWebSearch)
@@ -308,7 +304,9 @@ class BIM_Library_TaskPanel:
         try:
             # check if the working document is saved
             if FreeCAD.getDocument(self.mainDocName).FileName == "":
-                FreeCAD.Console.PrintWarning(translate("BIM","Please save the working file before linking.")+"\n")
+                FreeCAD.Console.PrintWarning(
+                    translate("BIM", "Please save the working file before linking.") + "\n"
+                )
             else:
                 self.previewOn = PARAMS.GetBool("3DPreview", False)
                 self.linked = True
@@ -346,7 +344,9 @@ class BIM_Library_TaskPanel:
                     return self.linked
         except:
             FreeCAD.Console.PrintWarning(
-                translate("BIM","It is not possible to link because the main document is closed.")+"\n")
+                translate("BIM", "It is not possible to link because the main document is closed.")
+                + "\n"
+            )
 
     def addtolibrary(self):
         # DISABLED
@@ -355,10 +355,8 @@ class BIM_Library_TaskPanel:
         import Mesh
         import Part
 
-        self.fileDialog = QtGui.QFileDialog.getSaveFileName(
-            None, "Save As", self.librarypath
-        )
-        #print(self.fileDialog[0])
+        self.fileDialog = QtGui.QFileDialog.getSaveFileName(None, "Save As", self.librarypath)
+        # print(self.fileDialog[0])
         # check if file saving has been canceled and save .fcstd, .step and .stl copies
         if self.fileDialog[0] != "":
             # remove the file extension from the file path
@@ -461,9 +459,7 @@ class BIM_Library_TaskPanel:
                     it.setToolTip(path + "/" + k)
                     if isinstance(v, dict):
                         it.setIcon(
-                            QtGui.QIcon.fromTheme(
-                                "folder", QtGui.QIcon(":/icons/Group.svg")
-                            )
+                            QtGui.QIcon.fromTheme("folder", QtGui.QIcon(":/icons/Group.svg"))
                         )
                         addItems(it, v, path + "/" + k)
                         it.setToolTip("")
@@ -473,6 +469,7 @@ class BIM_Library_TaskPanel:
                         it.setIcon(QtGui.QIcon(":/icons/IFC.svg"))
                     else:
                         it.setIcon(QtGui.QIcon(":/icons/Part_document.svg"))
+
         self.form.tree.setModel(self.filemodel)
         self.filemodel.clear()
         d = self.getOfflineLib()
@@ -517,7 +514,7 @@ class BIM_Library_TaskPanel:
 
     def urlencode(self, text):
 
-        #print(text, type(text))
+        # print(text, type(text))
         if sys.version_info.major < 3:
             import urllib
 
@@ -618,9 +615,7 @@ class BIM_Library_TaskPanel:
                         + "\n"
                     )
                 else:
-                    path = CadExchangerIO.insert(
-                        path, FreeCAD.ActiveDocument.Name, returnpath=True
-                    )
+                    path = CadExchangerIO.insert(path, FreeCAD.ActiveDocument.Name, returnpath=True)
                     self.place(path)
             else:
                 path = importerIL.insert(path, FreeCAD.ActiveDocument.Name)
@@ -686,9 +681,7 @@ class BIM_Library_TaskPanel:
         w = QtGui.QWidget()
         w.setWindowTitle(translate("BIM", "Insertion point"))
         w.setWindowIcon(
-            QtGui.QIcon(
-                os.path.join(os.path.dirname(__file__), "icons", "BIM_Library.svg")
-            )
+            QtGui.QIcon(os.path.join(os.path.dirname(__file__), "icons", "BIM_Library.svg"))
         )
         l = QtGui.QVBoxLayout()
         w.setLayout(l)
@@ -736,17 +729,13 @@ class BIM_Library_TaskPanel:
 
     def getDelta(self):
 
-        d = FreeCAD.Vector(
-            -self.shape.BoundBox.Center.x, -self.shape.BoundBox.Center.y, 0
-        )
+        d = FreeCAD.Vector(-self.shape.BoundBox.Center.x, -self.shape.BoundBox.Center.y, 0)
         idx = self.origin.comboOrigin.currentIndex()
         if idx <= 0:
             return FreeCAD.Vector()
         elif idx == 1:
             return d.add(
-                FreeCAD.Vector(
-                    self.shape.BoundBox.XLength / 2, -self.shape.BoundBox.YLength / 2, 0
-                )
+                FreeCAD.Vector(self.shape.BoundBox.XLength / 2, -self.shape.BoundBox.YLength / 2, 0)
             )
         elif idx == 2:
             return d.add(FreeCAD.Vector(0, -self.shape.BoundBox.YLength / 2, 0))
@@ -766,17 +755,13 @@ class BIM_Library_TaskPanel:
             return d.add(FreeCAD.Vector(-self.shape.BoundBox.XLength / 2, 0, 0))
         elif idx == 7:
             return d.add(
-                FreeCAD.Vector(
-                    self.shape.BoundBox.XLength / 2, self.shape.BoundBox.YLength / 2, 0
-                )
+                FreeCAD.Vector(self.shape.BoundBox.XLength / 2, self.shape.BoundBox.YLength / 2, 0)
             )
         elif idx == 8:
             return d.add(FreeCAD.Vector(0, self.shape.BoundBox.YLength / 2, 0))
         elif idx == 9:
             return d.add(
-                FreeCAD.Vector(
-                    -self.shape.BoundBox.XLength / 2, self.shape.BoundBox.YLength / 2, 0
-                )
+                FreeCAD.Vector(-self.shape.BoundBox.XLength / 2, self.shape.BoundBox.YLength / 2, 0)
             )
 
     def getOnlineContentsAPI(self, url):
@@ -820,9 +805,7 @@ class BIM_Library_TaskPanel:
                     host[name] = name
                     count += 1
         else:
-            FreeCAD.Console.PrintError(
-                translate("BIM", "Could not fetch library contents") + "\n"
-            )
+            FreeCAD.Console.PrintError(translate("BIM", "Could not fetch library contents") + "\n")
         # print("result:",result)
         if not result:
             FreeCAD.Console.PrintError(
@@ -1041,9 +1024,7 @@ if FreeCAD.GuiUp:
                 if index.data().lower().endswith(".fcstd"):
                     return QtGui.QIcon(":icons/freecad-doc.png")
                 elif index.data().lower().endswith(".ifc"):
-                    return QtGui.QIcon(
-                        os.path.join(os.path.dirname(__file__), "icons", "IFC.svg")
-                    )
+                    return QtGui.QIcon(os.path.join(os.path.dirname(__file__), "icons", "IFC.svg"))
                 elif index.data().lower() == "private":
                     return QtGui.QIcon.fromTheme("folder-lock")
             return super(LibraryModel, self).data(index, role)

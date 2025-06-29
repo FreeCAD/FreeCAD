@@ -22,9 +22,9 @@
 # *                                                                         *
 # ***************************************************************************
 
-__title__  = "FreeCAD GbXml exporter"
+__title__ = "FreeCAD GbXml exporter"
 __author__ = "Yorik van Havre"
-__url__    = "https://www.freecad.org"
+__url__ = "https://www.freecad.org"
 
 ## @package importGBXML
 #  \ingroup ARCH
@@ -41,113 +41,168 @@ if FreeCAD.GuiUp:
     from draftutils.translate import translate
 else:
     # \cond
-    def translate(ctx,txt):
+    def translate(ctx, txt):
         return txt
+
     # \endcond
 
 
-def export(objectslist,filename):
+def export(objectslist, filename):
 
     if len(objectslist) != 1:
-        FreeCAD.Console.PrintError(translate("Arch","This exporter can currently only export one site object")+"\n")
+        FreeCAD.Console.PrintError(
+            translate("Arch", "This exporter can currently only export one site object") + "\n"
+        )
         return
     site = objectslist[0]
     if Draft.getType(site) != "Site":
-        FreeCAD.Console.PrintError(translate("Arch","This exporter can currently only export one site object")+"\n")
+        FreeCAD.Console.PrintError(
+            translate("Arch", "This exporter can currently only export one site object") + "\n"
+        )
         return
 
-    filestream = pyopen(filename,"wb")
+    filestream = pyopen(filename, "wb")
 
     # header
-    filestream.write( '<?xml version="1.0"?>\n' )
-    filestream.write( '<!-- Exported by FreeCAD %s -->\n' % FreeCAD.Version()[0]+FreeCAD.Version()[1]+FreeCAD.Version()[2] )
-    filestream.write( '<gbXML\n' )
-    filestream.write( '  xmlns="http://www.gbxml.org/schema"\n' )
-    filestream.write( '  xmlns:xhtml="http://www.w3.org/1999/xhtml"\n' )
-    filestream.write( '  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"\n' )
-    filestream.write( '  xsi:schemaLocation="http://www.gbxml.org/schema"\n ' )
-    filestream.write( '  temperatureUnit="C"\n' )
-    filestream.write( '  lengthUnit="Meters"\n' )
-    filestream.write( '  areaUnit="SquareMeters"\n' )
-    filestream.write( '  volumeUnit="CubicMeters"\n' )
-    filestream.write( '  useSIUnitsForResults="false" >\n' )
-    filestream.write( '\n' )
+    filestream.write('<?xml version="1.0"?>\n')
+    filestream.write(
+        "<!-- Exported by FreeCAD %s -->\n" % FreeCAD.Version()[0]
+        + FreeCAD.Version()[1]
+        + FreeCAD.Version()[2]
+    )
+    filestream.write("<gbXML\n")
+    filestream.write('  xmlns="http://www.gbxml.org/schema"\n')
+    filestream.write('  xmlns:xhtml="http://www.w3.org/1999/xhtml"\n')
+    filestream.write('  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"\n')
+    filestream.write('  xsi:schemaLocation="http://www.gbxml.org/schema"\n ')
+    filestream.write('  temperatureUnit="C"\n')
+    filestream.write('  lengthUnit="Meters"\n')
+    filestream.write('  areaUnit="SquareMeters"\n')
+    filestream.write('  volumeUnit="CubicMeters"\n')
+    filestream.write('  useSIUnitsForResults="false" >\n')
+    filestream.write("\n")
 
     # campus
-    filestream.write( '<Campus id="%s">\n' % site.Name )
-    filestream.write( '<Location>\n' )
-    filestream.write( '    <ZipcodeOrPostalCode>%s</ZipcodeOrPostalCode>\n' % site.PostalCode )
-    filestream.write( '    <Longitude>%f</Longitude>\n' % site.Longitude )
-    filestream.write( '    <Latitude>%f</Latitude>\n' % site.Latitude )
-    filestream.write( '    <Elevation>%f/Elevation>\n' % site.Elevation.Value )
-    filestream.write( '    <Name>%s</Name>\n' % site.Label )
-    #filestream.write( '    <CADModelAzimuth>0</CADModelAzimuth>\n' )
-    #filestream.write( '    <StationId IDType="WMO">53158_2004</StationId>\n' )
-    filestream.write( '</Location>\n' )
+    filestream.write('<Campus id="%s">\n' % site.Name)
+    filestream.write("<Location>\n")
+    filestream.write("    <ZipcodeOrPostalCode>%s</ZipcodeOrPostalCode>\n" % site.PostalCode)
+    filestream.write("    <Longitude>%f</Longitude>\n" % site.Longitude)
+    filestream.write("    <Latitude>%f</Latitude>\n" % site.Latitude)
+    filestream.write("    <Elevation>%f/Elevation>\n" % site.Elevation.Value)
+    filestream.write("    <Name>%s</Name>\n" % site.Label)
+    # filestream.write( '    <CADModelAzimuth>0</CADModelAzimuth>\n' )
+    # filestream.write( '    <StationId IDType="WMO">53158_2004</StationId>\n' )
+    filestream.write("</Location>\n")
 
     # buildings
     for building in site.Group:
         if Draft.getType(building) == "Building":
-            filestream.write( '    <Building id="$s" buildingType="$s">\n' % (building.Name,building.BuildingType) )
-            filestream.write( '        <Area>$f</Area>\n' % str(building.Area.getValueAs("m^2")) )
+            filestream.write(
+                '    <Building id="$s" buildingType="$s">\n'
+                % (building.Name, building.BuildingType)
+            )
+            filestream.write("        <Area>$f</Area>\n" % str(building.Area.getValueAs("m^2")))
 
             # spaces
-            for space in Draft.getObjectsOfType(Draft.get_group_contents(building.Group, addgroups=True),
-                                                "Space"):
+            for space in Draft.getObjectsOfType(
+                Draft.get_group_contents(building.Group, addgroups=True), "Space"
+            ):
                 if not space.Zone:
-                    FreeCAD.Console.PrintError(translate("Arch","Error: Space '%s' has no Zone. Aborting.") % space.Label + "\n")
+                    FreeCAD.Console.PrintError(
+                        translate("Arch", "Error: Space '%s' has no Zone. Aborting.") % space.Label
+                        + "\n"
+                    )
                     return
-                filestream.write( '        <Space id="%s" spaceType="%s" zoneIdRef="%s" conditionType="%f">\n' % (space.Name, space.SpaceType, space.Zone.Name, space.Conditioning) )
-                #filestream.write( '            <CADObjectId>%s</CADObjectId>\n' % space.Name ) # not sure what this is used for?
-                filestream.write( '            <Name>%s</Name>\n' % space.Label )
-                filestream.write( '            <Description>%s</Description>\n' % space.Description )
-                filestream.write( '            <PeopleNumber unit="NumberOfPeople">%i</PeopleNumber>\n' % space.NumberOfPeople)
-                filestream.write( '            <LightPowerPerArea unit="WattPerSquareMeter">%f</LightPowerPerArea>\n' % space.LightingPower/space.Area.getValueAs("m^2") )
-                filestream.write( '            <EquipPowerPerArea unit="WattPerSquareMeter">%f</EquipPowerPerArea>\n' % space.EquipmentPower/space.Area.getValueAs("m^2") )
-                filestream.write( '            <Area>$f</Area>\n' % space.Area.getValueAs("m^2") )
-                filestream.write( '            <Volume>$f</Volume>\n' % FreeCAD.Units.Quantity(space.Shape.Volume,FreeCAD.Units.Volume).getValueAs("m^3") )
-                filestream.write( '            <ShellGeometry id="%s_geometry">\n' % space.Name )
+                filestream.write(
+                    '        <Space id="%s" spaceType="%s" zoneIdRef="%s" conditionType="%f">\n'
+                    % (space.Name, space.SpaceType, space.Zone.Name, space.Conditioning)
+                )
+                # filestream.write( '            <CADObjectId>%s</CADObjectId>\n' % space.Name ) # not sure what this is used for?
+                filestream.write("            <Name>%s</Name>\n" % space.Label)
+                filestream.write("            <Description>%s</Description>\n" % space.Description)
+                filestream.write(
+                    '            <PeopleNumber unit="NumberOfPeople">%i</PeopleNumber>\n'
+                    % space.NumberOfPeople
+                )
+                filestream.write(
+                    '            <LightPowerPerArea unit="WattPerSquareMeter">%f</LightPowerPerArea>\n'
+                    % space.LightingPower
+                    / space.Area.getValueAs("m^2")
+                )
+                filestream.write(
+                    '            <EquipPowerPerArea unit="WattPerSquareMeter">%f</EquipPowerPerArea>\n'
+                    % space.EquipmentPower
+                    / space.Area.getValueAs("m^2")
+                )
+                filestream.write("            <Area>$f</Area>\n" % space.Area.getValueAs("m^2"))
+                filestream.write(
+                    "            <Volume>$f</Volume>\n"
+                    % FreeCAD.Units.Quantity(space.Shape.Volume, FreeCAD.Units.Volume).getValueAs(
+                        "m^3"
+                    )
+                )
+                filestream.write('            <ShellGeometry id="%s_geometry">\n' % space.Name)
 
                 # shells
                 for solid in space.Shape.Solids:
-                    filestream.write( '                <ClosedShell>\n' )
+                    filestream.write("                <ClosedShell>\n")
                     for face in solid.Faces:
-                        filestream.write( '                    <PolyLoop>\n' )
+                        filestream.write("                    <PolyLoop>\n")
                         for v in face.OuterWire.Vertexes:
-                            filestream.write( '                        <CartesianPoint>\n' )
-                            filestream.write( '                            <Coordinate>%f</Coordinate>\n' % v.Point.x )
-                            filestream.write( '                            <Coordinate>%f</Coordinate>\n' % v.Point.y )
-                            filestream.write( '                            <Coordinate>%f</Coordinate>\n' % v.Point.z )
-                            filestream.write( '                        </CartesianPoint>\n' )
-                        filestream.write( '                    </PolyLoop>\n' )
-                    filestream.write( '                </ClosedShell>\n' )
-                filestream.write( '            </ShellGeometry>\n' )
-                filestream.write( '        </Space>\n' )
+                            filestream.write("                        <CartesianPoint>\n")
+                            filestream.write(
+                                "                            <Coordinate>%f</Coordinate>\n"
+                                % v.Point.x
+                            )
+                            filestream.write(
+                                "                            <Coordinate>%f</Coordinate>\n"
+                                % v.Point.y
+                            )
+                            filestream.write(
+                                "                            <Coordinate>%f</Coordinate>\n"
+                                % v.Point.z
+                            )
+                            filestream.write("                        </CartesianPoint>\n")
+                        filestream.write("                    </PolyLoop>\n")
+                    filestream.write("                </ClosedShell>\n")
+                filestream.write("            </ShellGeometry>\n")
+                filestream.write("        </Space>\n")
 
                 # surfaces
-                for i,face in enumerate(space.Shape.Faces):
-                    filestream.write( '            <SpaceBoundary isSecondLevelBoundary="false" surfaceIdRef="%s_Face%i"\n' % space.Name, i )
-                    filestream.write( '                <PlanarGeometry>\n' )
-                    filestream.write( '                    <PolyLoop>\n' )
+                for i, face in enumerate(space.Shape.Faces):
+                    filestream.write(
+                        '            <SpaceBoundary isSecondLevelBoundary="false" surfaceIdRef="%s_Face%i"\n'
+                        % space.Name,
+                        i,
+                    )
+                    filestream.write("                <PlanarGeometry>\n")
+                    filestream.write("                    <PolyLoop>\n")
                     for v in face.OuterWire.Vertexes:
-                        filestream.write( '                        <CartesianPoint>\n' )
-                        filestream.write( '                            <Coordinate>%f</Coordinate>\n' % v.Point.x )
-                        filestream.write( '                            <Coordinate>%f</Coordinate>\n' % v.Point.y )
-                        filestream.write( '                            <Coordinate>%f</Coordinate>\n' % v.Point.z )
-                        filestream.write( '                        </CartesianPoint>\n' )
-                    filestream.write( '                    </PolyLoop>\n' )
-                    filestream.write( '                </PlanarGeometry>\n' )
-                    filestream.write( '            </SpaceBoundary>\n' )
+                        filestream.write("                        <CartesianPoint>\n")
+                        filestream.write(
+                            "                            <Coordinate>%f</Coordinate>\n" % v.Point.x
+                        )
+                        filestream.write(
+                            "                            <Coordinate>%f</Coordinate>\n" % v.Point.y
+                        )
+                        filestream.write(
+                            "                            <Coordinate>%f</Coordinate>\n" % v.Point.z
+                        )
+                        filestream.write("                        </CartesianPoint>\n")
+                    filestream.write("                    </PolyLoop>\n")
+                    filestream.write("                </PlanarGeometry>\n")
+                    filestream.write("            </SpaceBoundary>\n")
 
-                filestream.write( '        </Space>\n' )
+                filestream.write("        </Space>\n")
 
-            filestream.write( '    </Building>\n' )
+            filestream.write("    </Building>\n")
 
-    filestream.write( '</Campus>\n' )
+    filestream.write("</Campus>\n")
 
-    filestream.write( '</gbXML>' )
+    filestream.write("</gbXML>")
 
-'''
+
+"""
         <Area>18000.00000</Area>
         <Space id="sp1_LabandCorridor_Labcorridor" spaceType="LaboratoryOffice" zoneIdRef="z1_LabandCorridor">
             <Name>Lab corridor</Name>
@@ -501,4 +556,4 @@ def export(objectslist,filename):
 
 ... repeat
 
-</gbXML>'''
+</gbXML>"""

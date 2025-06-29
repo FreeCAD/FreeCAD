@@ -41,9 +41,7 @@ class BIM_DimensionAligned(gui_dimensions.Dimension):
         return {
             "Pixmap": "BIM_DimensionAligned",
             "MenuText": QT_TRANSLATE_NOOP("BIM_DimensionAligned", "Aligned dimension"),
-            "ToolTip": QT_TRANSLATE_NOOP(
-                "BIM_DimensionAligned", "Create an aligned dimension"
-            ),
+            "ToolTip": QT_TRANSLATE_NOOP("BIM_DimensionAligned", "Create an aligned dimension"),
             "Accel": "D, I",
         }
 
@@ -56,9 +54,7 @@ class BIM_DimensionHorizontal(gui_dimensions.Dimension):
     def GetResources(self):
         return {
             "Pixmap": "BIM_DimensionHorizontal.svg",
-            "MenuText": QT_TRANSLATE_NOOP(
-                "BIM_DimensionHorizontal", "Horizontal dimension"
-            ),
+            "MenuText": QT_TRANSLATE_NOOP("BIM_DimensionHorizontal", "Horizontal dimension"),
             "ToolTip": QT_TRANSLATE_NOOP(
                 "BIM_DimensionHorizontal", "Create an horizontal dimension"
             ),
@@ -80,12 +76,8 @@ class BIM_DimensionVertical(gui_dimensions.Dimension):
     def GetResources(self):
         return {
             "Pixmap": "BIM_DimensionVertical",
-            "MenuText": QT_TRANSLATE_NOOP(
-                "BIM_DimensionVertical", "Vertical dimension"
-            ),
-            "ToolTip": QT_TRANSLATE_NOOP(
-                "BIM_DimensionVertical", "Create a vertical dimension"
-            ),
+            "MenuText": QT_TRANSLATE_NOOP("BIM_DimensionVertical", "Vertical dimension"),
+            "ToolTip": QT_TRANSLATE_NOOP("BIM_DimensionVertical", "Create a vertical dimension"),
             "Accel": "D, V",
         }
 

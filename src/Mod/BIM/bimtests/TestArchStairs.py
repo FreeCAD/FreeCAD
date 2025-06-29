@@ -25,6 +25,7 @@
 import Arch
 from bimtests import TestArchBase
 
+
 class TestArchStairs(TestArchBase.TestArchBase):
 
     def test_makeStairs(self):
@@ -67,7 +68,8 @@ class TestArchStairs(TestArchBase.TestArchBase):
 
         # Find new railings by name comparison and type checking
         new_railings = [
-            obj for obj in self.document.Objects
+            obj
+            for obj in self.document.Objects
             if obj.Name not in pre_creation_names
             and hasattr(obj, "Proxy")
             and getattr(obj.Proxy, "Type", "") == "Pipe"

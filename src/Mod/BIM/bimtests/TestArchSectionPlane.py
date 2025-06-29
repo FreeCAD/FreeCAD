@@ -25,6 +25,7 @@
 import Arch
 from bimtests import TestArchBase
 
+
 class TestArchSectionPlane(TestArchBase.TestArchBase):
 
     def test_makeSectionPlane(self):
@@ -33,5 +34,9 @@ class TestArchSectionPlane(TestArchBase.TestArchBase):
         self.printTestMessage(operation)
 
         section_plane = Arch.makeSectionPlane(name="TestSectionPlane")
-        self.assertIsNotNone(section_plane, "makeSectionPlane failed to create a section plane object.")
-        self.assertEqual(section_plane.Label, "TestSectionPlane", "Section plane label is incorrect.")
+        self.assertIsNotNone(
+            section_plane, "makeSectionPlane failed to create a section plane object."
+        )
+        self.assertEqual(
+            section_plane.Label, "TestSectionPlane", "Section plane label is incorrect."
+        )

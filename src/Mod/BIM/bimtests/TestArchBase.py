@@ -27,6 +27,7 @@
 import unittest
 import FreeCAD
 
+
 class TestArchBase(unittest.TestCase):
 
     def setUp(self):
