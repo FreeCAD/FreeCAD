@@ -32,6 +32,7 @@
 using namespace MillSim;
 
 // clang-format off
+// NOLINTBEGIN(*-magic-numbers)
 GuiItem guiItems[] = {
     {.name=eGuiItemSlider, .vbo=0, .vao=0, .sx=28, .sy=-80, .actionKey=0, .hidden=false, .flags=0},
     {.name=eGuiItemThumb, .vbo=0, .vao=0, .sx=328, .sy=-94, .actionKey=1, .hidden=false, .flags=0},
@@ -52,6 +53,7 @@ GuiItem guiItems[] = {
     {.name=eGuiItemView, .vbo=0, .vao=0, .sx=-180, .sy=-50, .actionKey='V', .hidden=false, .flags=0},
     {.name=eGuiItemHome, .vbo=0, .vao=0, .sx=-220, .sy=-50, .actionKey='H', .hidden=false, .flags=0},
 };
+// NOLINTEND(*-magic-numbers)
 // clang-format on
 
 #define NUM_GUI_ITEMS (sizeof(guiItems) / sizeof(GuiItem))
