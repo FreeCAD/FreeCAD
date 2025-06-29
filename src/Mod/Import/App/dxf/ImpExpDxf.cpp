@@ -53,6 +53,7 @@
 #include <gp_Vec.hxx>
 #endif
 
+#include <fstream>
 #include <App/Annotation.h>
 #include <App/Application.h>
 #include <App/Document.h>
@@ -80,6 +81,35 @@ using namespace Import;
 using BRepAdaptor_HCurve = BRepAdaptor_Curve;
 #endif
 
+std::map<std::string, int> ImpExpDxfRead::PreScan(const std::string& filepath)
+{
+    std::map<std::string, int> counts;
+    std::ifstream ifs(filepath);
+    if (!ifs) {
+        // Could throw an exception or log an error
+        return counts;
+    }
+
+    std::string line;
+    bool next_is_entity_name = false;
+
+    while (std::getline(ifs, line)) {
+        // Simple trim for Windows-style carriage returns
+        if (!line.empty() && line.back() == '\r') {
+            line.pop_back();
+        }
+
+        if (next_is_entity_name) {
+            // The line after a "  0" group code is the entity type
+            counts[line]++;
+            next_is_entity_name = false;
+        }
+        else if (line == "  0") {
+            next_is_entity_name = true;
+        }
+    }
+    return counts;
+}
 
 //******************************************************************************
 // reading
