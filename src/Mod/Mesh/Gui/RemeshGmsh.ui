@@ -29,7 +29,7 @@
       <item row="0" column="0">
        <widget class="QLabel" name="labelMethod">
         <property name="text">
-         <string>Meshing:</string>
+         <string>Meshing</string>
         </property>
        </widget>
       </item>
@@ -39,7 +39,7 @@
       <item row="1" column="0">
        <widget class="QLabel" name="labelMax">
         <property name="text">
-         <string>Max element size (0.0 = Auto):</string>
+         <string>Max element size (0.0 = Auto)</string>
         </property>
        </widget>
       </item>
@@ -65,7 +65,7 @@
       <item row="2" column="0">
        <widget class="QLabel" name="labelMin">
         <property name="text">
-         <string>Min element size (0.0 = Auto):</string>
+         <string>Min element size (0.0 = Auto)</string>
         </property>
        </widget>
       </item>
@@ -91,7 +91,7 @@
       <item row="3" column="0">
        <widget class="QLabel" name="labelAngle">
         <property name="text">
-         <string>Angle:</string>
+         <string>Angle</string>
         </property>
        </widget>
       </item>
@@ -178,7 +178,7 @@
          </font>
         </property>
         <property name="text">
-         <string>Time:</string>
+         <string>Time</string>
         </property>
        </widget>
       </item>
