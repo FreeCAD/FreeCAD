@@ -716,20 +716,10 @@ class ToolBitShape(Asset):
         )
         if self.icon:
             return self.icon
-        self.icon = cast(
-            ToolBitShapeIcon, cam_assets.get_or_none(f"toolbitshapesvg://{self.name.lower()}.svg")
-        )
-        if self.icon:
-            return self.icon
 
         # Try to get a matching PNG from the asset manager.
         self.icon = cast(
             ToolBitShapeIcon, cam_assets.get_or_none(f"toolbitshapepng://{self.id}.png")
-        )
-        if self.icon:
-            return self.icon
-        self.icon = cast(
-            ToolBitShapeIcon, cam_assets.get_or_none(f"toolbitshapepng://{self.name.lower()}.png")
         )
         if self.icon:
             return self.icon
