@@ -39,10 +39,10 @@ class Arch_SectionPlane:
 
     def GetResources(self):
 
-        return {'Pixmap'  : 'Arch_SectionPlane_Tree',
-                'Accel': "S, E",
-                'MenuText': QT_TRANSLATE_NOOP("Arch_SectionPlane","Section Plane"),
-                'ToolTip': QT_TRANSLATE_NOOP("Arch_SectionPlane","Creates a section plane object, including the selected objects")}
+        return {"Pixmap"  : "Arch_SectionPlane_Tree",
+                "Accel": "S, E",
+                "MenuText": QT_TRANSLATE_NOOP("Arch_SectionPlane","Section Plane"),
+                "ToolTip": QT_TRANSLATE_NOOP("Arch_SectionPlane","Creates a section plane object, including the selected objects")}
 
     def IsActive(self):
 
@@ -72,4 +72,4 @@ class Arch_SectionPlane:
 
 
 
-FreeCADGui.addCommand('Arch_SectionPlane', Arch_SectionPlane())
+FreeCADGui.addCommand("Arch_SectionPlane", Arch_SectionPlane())

@@ -588,18 +588,18 @@ class Renderer:
             return str(round(val,DraftVecUtils.precision()))
         edges = Part.__sortEdges__(w.Edges)
         v = edges[0].Vertexes[0].Point
-        svg = 'M '+ tostr(v.x) +' '+ tostr(v.y) + ' '
+        svg = "M "+ tostr(v.x) +" "+ tostr(v.y) + " "
         for e in edges:
             if (DraftGeomUtils.geomType(e) == "Line") or (DraftGeomUtils.geomType(e) == "BSplineCurve"):
                 v = e.Vertexes[-1].Point
-                svg += 'L '+ tostr(v.x) +' '+ tostr(v.y) + ' '
+                svg += "L "+ tostr(v.x) +" "+ tostr(v.y) + " "
             elif DraftGeomUtils.geomType(e) == "Circle":
                 r = e.Curve.Radius
                 v = e.Vertexes[-1].Point
-                svg += 'A '+ tostr(r) + ' '+ tostr(r) +' 0 0 1 '+ tostr(v.x) +' '
-                svg += tostr(v.y) + ' '
+                svg += "A "+ tostr(r) + " "+ tostr(r) +" 0 0 1 "+ tostr(v.x) +" "
+                svg += tostr(v.y) + " "
         if len(edges) > 1:
-            svg += 'Z '
+            svg += "Z "
         return svg
 
     def getViewSVG(self,linewidth=0.01):
@@ -612,12 +612,12 @@ class Renderer:
         for f in self.faces:
             if f:
                 fill = self.getFill(f[1])
-                svg +='    <path '
+                svg +="    <path "
                 svg += 'd="'
                 for w in f[0].Wires:
                     svg += self.getPathData(w)
                 svg += '" style="fill:' + fill + ';fill-rule: evenodd;"/>\n'
-        svg += '</g>\n'
+        svg += "</g>\n"
         return svg
 
     def getSectionSVG(self,linewidth=0.02,fillpattern=None):
@@ -635,14 +635,14 @@ class Renderer:
                     else:
                         fill="url(#"+fillpattern+")" # pattern name
                 else:
-                    fill = 'none' # none
-                svg +='<path '
+                    fill = "none" # none
+                svg +="<path "
                 svg += 'd="'
                 for w in f[0].Wires:
                     #print("wire with ",len(w.Vertexes)," verts")
                     svg += self.getPathData(w)
                 svg += '" style="fill:' + fill + ';fill-rule: evenodd;"/>\n'
-        svg += '</g>\n'
+        svg += "</g>\n"
         return svg
 
     def getHiddenSVG(self,linewidth=0.02):
@@ -653,9 +653,9 @@ class Renderer:
         svg =  '<g stroke="#000000" stroke-width="' + str(linewidth) + '" style="stroke-width:' + str(linewidth)
         svg += ';stroke-miterlimit:1;stroke-linejoin:round;stroke-dasharray:0.09,0.05;fill:none;">\n'
         for e in self.hiddenEdges:
-            svg +='<path '
+            svg +="<path "
             svg += 'd="'
             svg += self.getPathData(e)
             svg += '"/>\n'
-        svg += '</g>\n'
+        svg += "</g>\n"
         return svg

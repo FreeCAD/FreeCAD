@@ -274,7 +274,7 @@ class _Rebar(ArchComponent.Component):
                     if obj in obj.InList[0].Armatures:
                         father = obj.InList[0]
         if father:
-            if hasattr(father,'Shape'):
+            if hasattr(father,"Shape"):
                 fathershape = father.Shape
 
         import Part
@@ -546,16 +546,16 @@ def strprocessOfCustomSpacing(span_string):
     Output: [100, 100, 100, 200, 200, 100, 100, 100]"""
     # import string
     span_st = span_string.strip()
-    span_sp = span_st.split('+')
+    span_sp = span_st.split("+")
     index = 0
     spacinglist = []
     while index < len(span_sp):
         # Find "@" recursively in span_sp array.
         # If not found, append the index value to "spacinglist" array.
-        if span_sp[index].find('@') == -1:
+        if span_sp[index].find("@") == -1:
             spacinglist.append(float(span_sp[index]))
         else:
-            in_sp = span_sp[index].split('@')
+            in_sp = span_sp[index].split("@")
             count = 0
             while count < int(in_sp[0]):
                 spacinglist.append(float(in_sp[1]))

@@ -84,7 +84,7 @@ class Nester:
         if not self.shapes:
             self.shapes = []
         for obj in objects:
-            if hasattr(obj,'Shape'):
+            if hasattr(obj,"Shape"):
                 h = obj.Shape.hashCode()
                 if not h in self.objects:
                     self.objects[h] = obj
@@ -94,7 +94,7 @@ class Nester:
 
         """addContainer(object): adds a FreeCAD DocumentObject as the container"""
 
-        if hasattr(container,'Shape'):
+        if hasattr(container,"Shape"):
             self.container = container.Shape
 
     def clear(self):

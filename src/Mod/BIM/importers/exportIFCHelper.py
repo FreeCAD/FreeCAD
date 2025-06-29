@@ -50,13 +50,13 @@ def writeUnits(ifcfile,unit="metre"):
     if unit == "foot":
         d1 = ifcfile.createIfcDimensionalExponents(1,0,0,0,0,0,0)
         d2 = ifcfile.createIfcMeasureWithUnit(ifcfile.createIfcRatioMeasure(0.3048),ifcfile[13])
-        d3 = ifcfile.createIfcConversionBasedUnit(d1,'LENGTHUNIT','FOOT',d2)
+        d3 = ifcfile.createIfcConversionBasedUnit(d1,"LENGTHUNIT","FOOT",d2)
         d4 = ifcfile.createIfcDimensionalExponents(2,0,0,0,0,0,0)
         d5 = ifcfile.createIfcMeasureWithUnit(ifcfile.createIfcRatioMeasure(0.09290304000000001),ifcfile[14])
-        d6 = ifcfile.createIfcConversionBasedUnit(d4,'AREAUNIT','SQUARE FOOT',d5)
+        d6 = ifcfile.createIfcConversionBasedUnit(d4,"AREAUNIT","SQUARE FOOT",d5)
         d7 = ifcfile.createIfcDimensionalExponents(3,0,0,0,0,0,0)
         d8 = ifcfile.createIfcMeasureWithUnit(ifcfile.createIfcRatioMeasure(0.028316846592),ifcfile[15])
-        d9 = ifcfile.createIfcConversionBasedUnit(d7,'VOLUMEUNIT','CUBIC FOOT',d8)
+        d9 = ifcfile.createIfcConversionBasedUnit(d7,"VOLUMEUNIT","CUBIC FOOT",d8)
         ifcfile.createIfcUnitAssignment((d3,d6,d9,ifcfile[18]))
     else: # default = metre, no need to add anything
         ifcfile.createIfcUnitAssignment((ifcfile[13],ifcfile[14],ifcfile[15],ifcfile[18]))
@@ -69,17 +69,17 @@ def writeQuantities(ifcfile, obj, product, history, scale):
     if hasattr(obj,"IfcData"):
         quantities = []
         if ("ExportHeight" in obj.IfcData) and obj.IfcData["ExportHeight"] and hasattr(obj,"Height"):
-            quantities.append(ifcfile.createIfcQuantityLength('Height',None,None,obj.Height.Value*scale))
+            quantities.append(ifcfile.createIfcQuantityLength("Height",None,None,obj.Height.Value*scale))
         if ("ExportWidth" in obj.IfcData) and obj.IfcData["ExportWidth"] and hasattr(obj,"Width"):
-            quantities.append(ifcfile.createIfcQuantityLength('Width',None,None,obj.Width.Value*scale))
+            quantities.append(ifcfile.createIfcQuantityLength("Width",None,None,obj.Width.Value*scale))
         if ("ExportLength" in obj.IfcData) and obj.IfcData["ExportLength"] and hasattr(obj,"Length"):
-            quantities.append(ifcfile.createIfcQuantityLength('Length',None,None,obj.Length.Value*scale))
+            quantities.append(ifcfile.createIfcQuantityLength("Length",None,None,obj.Length.Value*scale))
         if ("ExportHorizontalArea" in obj.IfcData) and obj.IfcData["ExportHorizontalArea"] and hasattr(obj,"HorizontalArea"):
-            quantities.append(ifcfile.createIfcQuantityArea('HorizontalArea',None,None,obj.HorizontalArea.Value*(scale**2)))
+            quantities.append(ifcfile.createIfcQuantityArea("HorizontalArea",None,None,obj.HorizontalArea.Value*(scale**2)))
         if ("ExportVerticalArea" in obj.IfcData) and obj.IfcData["ExportVerticalArea"] and hasattr(obj,"VerticalArea"):
-            quantities.append(ifcfile.createIfcQuantityArea('VerticalArea',None,None,obj.VerticalArea.Value*(scale**2)))
+            quantities.append(ifcfile.createIfcQuantityArea("VerticalArea",None,None,obj.VerticalArea.Value*(scale**2)))
         if ("ExportVolume" in obj.IfcData) and obj.IfcData["ExportVolume"] and obj.isDerivedFrom("Part::Feature"):
-            quantities.append(ifcfile.createIfcQuantityVolume('Volume',None,None,obj.Shape.Volume*(scale**3)))
+            quantities.append(ifcfile.createIfcQuantityVolume("Volume",None,None,obj.Shape.Volume*(scale**3)))
         if quantities:
             eltq = ifcfile.createIfcElementQuantity(
                 ifcopenshell.guid.new(),
@@ -232,7 +232,7 @@ class ContextCreator:
     def getProjectObjectData(self):
         if not self.project_object:
             return {}
-        return json.loads(self.project_object.IfcData['complex_attributes'])["RepresentationContexts"]
+        return json.loads(self.project_object.IfcData["complex_attributes"])["RepresentationContexts"]
 
 
 class recycler:
@@ -254,7 +254,7 @@ class recycler:
         if template: # we are using the default template from exportIFC.py
             self.cartesianpoints = {(0,0,0):self.ifcfile[8]} # from template
             self.directions = {(1,0,0):self.ifcfile[6],(0,0,1):self.ifcfile[7],(0,1,0):self.ifcfile[10]} # from template
-            self.axis2placement3ds = {'(0.0, 0.0, 0.0)(0.0, 0.0, 1.0)(1.0, 0.0, 0.0)':self.ifcfile[9]} # from template
+            self.axis2placement3ds = {"(0.0, 0.0, 0.0)(0.0, 0.0, 1.0)(1.0, 0.0, 0.0)":self.ifcfile[9]} # from template
         self.polylines = {}
         self.polyloops = {}
         self.propertysinglevalues = {}

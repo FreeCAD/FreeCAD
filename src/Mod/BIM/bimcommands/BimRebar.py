@@ -39,10 +39,10 @@ class Arch_Rebar:
 
     def GetResources(self):
 
-        return {'Pixmap'  : 'Arch_Rebar',
-                'MenuText': QT_TRANSLATE_NOOP("Arch_Rebar","Custom Rebar"),
-                'Accel': "R, B",
-                'ToolTip': QT_TRANSLATE_NOOP("Arch_Rebar","Creates a Reinforcement bar from the selected face of solid object and/or a sketch")}
+        return {"Pixmap"  : "Arch_Rebar",
+                "MenuText": QT_TRANSLATE_NOOP("Arch_Rebar","Custom Rebar"),
+                "Accel": "R, B",
+                "ToolTip": QT_TRANSLATE_NOOP("Arch_Rebar","Creates a Reinforcement bar from the selected face of solid object and/or a sketch")}
 
     def IsActive(self):
 
@@ -59,7 +59,7 @@ class Arch_Rebar:
                 # this is our host object
                 if len(sel) > 1:
                     sk = sel[1].Object
-                    if hasattr(sk,'Shape'):
+                    if hasattr(sk,"Shape"):
                         if len(sk.Shape.Wires) == 1:
                             # we have a structure and a wire: create the rebar now
                             FreeCAD.ActiveDocument.openTransaction(translate("Arch","Create Rebar"))
@@ -75,7 +75,7 @@ class Arch_Rebar:
                     FreeCAD.ArchObserver = ArchComponent.ArchSelectionObserver(obj,FreeCAD.ActiveDocument.Objects[-1],hide=False,nextCommand="Arch_Rebar")
                     FreeCADGui.Selection.addObserver(FreeCAD.ArchObserver)
                     return
-            elif hasattr(obj,'Shape'):
+            elif hasattr(obj,"Shape"):
                 if len(obj.Shape.Wires) == 1:
                     # we have only a wire: extract its support object, if available, and make the rebar
                     support = "None"
@@ -97,4 +97,4 @@ class Arch_Rebar:
         FreeCADGui.Selection.addObserver(FreeCAD.ArchObserver)
 
 
-FreeCADGui.addCommand('Arch_Rebar',Arch_Rebar())
+FreeCADGui.addCommand("Arch_Rebar",Arch_Rebar())

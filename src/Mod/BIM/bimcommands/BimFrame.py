@@ -39,10 +39,10 @@ class Arch_Frame:
 
     def GetResources(self):
 
-        return {'Pixmap'  : 'Arch_Frame',
-                'MenuText': QT_TRANSLATE_NOOP("Arch_Frame","Frame"),
-                'Accel': "F, R",
-                'ToolTip': QT_TRANSLATE_NOOP("Arch_Frame","Creates a frame object from a planar 2D object (the extrusion path(s)) and a profile. Make sure objects are selected in that order.")}
+        return {"Pixmap"  : "Arch_Frame",
+                "MenuText": QT_TRANSLATE_NOOP("Arch_Frame","Frame"),
+                "Accel": "F, R",
+                "ToolTip": QT_TRANSLATE_NOOP("Arch_Frame","Creates a frame object from a planar 2D object (the extrusion path(s)) and a profile. Make sure objects are selected in that order.")}
 
     def IsActive(self):
 
@@ -62,4 +62,4 @@ class Arch_Frame:
             FreeCAD.ActiveDocument.recompute()
 
 
-FreeCADGui.addCommand('Arch_Frame',Arch_Frame())
+FreeCADGui.addCommand("Arch_Frame",Arch_Frame())

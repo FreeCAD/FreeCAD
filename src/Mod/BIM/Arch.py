@@ -799,7 +799,7 @@ def makePipeConnector(pipes, radius=0, name=None):
     return pipeConnector
 
 
-def makeProfile(profile=[0, 'REC', 'REC100x100', 'R', 100, 100]):
+def makeProfile(profile=[0, "REC", "REC100x100", "R", 100, 100]):
     """
     Creates a profile object based on the given profile data.
 
@@ -1663,7 +1663,7 @@ def makeWall(
 
     # Initialize all relevant properties
     if baseobj:
-        if hasattr(baseobj, 'Shape') or baseobj.isDerivedFrom("Mesh::Feature"):
+        if hasattr(baseobj, "Shape") or baseobj.isDerivedFrom("Mesh::Feature"):
             wall.Base = baseobj
         else:
             FreeCAD.Console.PrintWarning(
