@@ -22,6 +22,7 @@
 
 """Widget for editing a ToolBit object."""
 
+from typing import Optional
 from PySide import QtGui, QtCore
 import FreeCAD
 import FreeCADGui
@@ -38,7 +39,7 @@ class ToolBitPropertiesWidget(QtGui.QWidget):
     # Signal emitted when the toolbit data has been modified
     toolBitChanged = QtCore.Signal()
 
-    def __init__(self, toolbit: ToolBit | None = None, parent=None, icon: bool = True):
+    def __init__(self, toolbit: Optional[ToolBit] = None, parent=None, icon: bool = True):
         super().__init__(parent)
         self._toolbit = None
         self._show_shape = icon

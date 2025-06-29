@@ -67,7 +67,7 @@ def get_unset_value_for(attribute_type: str):
 
 def get_object_properties(
     obj: "FreeCAD.DocumentObject",
-    props: List[str] | None = None,
+    props: Optional[List[str]] = None,
     group: Optional[str] = None,
 ) -> Dict[str, Tuple[Any, str]]:
     """
