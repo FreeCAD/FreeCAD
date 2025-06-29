@@ -325,7 +325,7 @@
       <string>If checked, revolving wires will produce solids. If not, revolving a wire yields a shell.</string>
      </property>
      <property name="text">
-      <string>Create solid</string>
+      <string>Create Solid</string>
      </property>
     </widget>
    </item>
