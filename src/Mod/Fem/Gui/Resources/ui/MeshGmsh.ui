@@ -34,7 +34,7 @@
         <item row="1" column="0">
          <widget class="QLabel" name="l_dimension">
           <property name="text">
-           <string>Element Dimension:</string>
+           <string>Element dimension</string>
           </property>
          </widget>
         </item>
@@ -44,7 +44,7 @@
         <item row="3" column="0">
          <widget class="QLabel" name="l_max">
           <property name="text">
-           <string>Maximum Size:</string>
+           <string>Maximum size</string>
           </property>
          </widget>
         </item>
@@ -82,7 +82,7 @@
         <item row="4" column="0">
          <widget class="QLabel" name="l_min">
           <property name="text">
-           <string>Minimum Size:</string>
+           <string>Minimum size</string>
           </property>
          </widget>
         </item>
@@ -123,7 +123,7 @@
         <item row="2" column="0">
          <widget class="QLabel" name="I_order">
           <property name="text">
-           <string>Element Order:</string>
+           <string>Element order</string>
           </property>
          </widget>
         </item>
@@ -169,7 +169,7 @@
              </font>
             </property>
             <property name="text">
-             <string>Time:</string>
+             <string>Time</string>
             </property>
            </widget>
           </item>
@@ -195,7 +195,7 @@
              </sizepolicy>
             </property>
             <property name="text">
-             <string>Gmsh version</string>
+             <string>Gmsh Version</string>
             </property>
            </widget>
           </item>
