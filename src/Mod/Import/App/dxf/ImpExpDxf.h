@@ -61,7 +61,7 @@ public:
     {
         Py_XDECREF(DraftModule);
     }
-
+    static std::map<std::string, int> PreScan(const std::string& filepath);
     void StartImport() override;
 
     Py::Object getStatsAsPyObject();
