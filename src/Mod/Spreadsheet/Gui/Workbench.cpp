@@ -91,9 +91,9 @@ void Workbench::activated()
                                  workbenchHelper.get(),
                                  &WorkbenchHelper::setForegroundColor);
             }
-            foregroundColor->setToolTip(QObject::tr("Set cell(s) text color"));
-            foregroundColor->setWhatsThis(QObject::tr("Sets the Spreadsheet cell(s) text color"));
-            foregroundColor->setStatusTip(QObject::tr("Set cell(s) text color"));
+            foregroundColor->setToolTip(QObject::tr("Set cells text color"));
+            foregroundColor->setWhatsThis(QObject::tr("Sets the Spreadsheet cells text color"));
+            foregroundColor->setStatusTip(QObject::tr("Set cells text color"));
             bar->addWidget(foregroundColor);
 
             QList<QtColorPicker*> bgList = Gui::getMainWindow()->findChildren<QtColorPicker*>(
@@ -111,10 +111,10 @@ void Workbench::activated()
                                  workbenchHelper.get(),
                                  &WorkbenchHelper::setBackgroundColor);
             }
-            backgroundColor->setToolTip(QObject::tr("Set cell(s) background color"));
+            backgroundColor->setToolTip(QObject::tr("Set cells background color"));
             backgroundColor->setWhatsThis(
-                QObject::tr("Sets the Spreadsheet cell(s) background color"));
-            backgroundColor->setStatusTip(QObject::tr("Set cell(s) background color"));
+                QObject::tr("Sets the Spreadsheet cells background color"));
+            backgroundColor->setStatusTip(QObject::tr("Set cells background color"));
             bar->addWidget(backgroundColor);
 
             initialized = false;
