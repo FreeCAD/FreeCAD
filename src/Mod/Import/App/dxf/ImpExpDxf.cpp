@@ -329,6 +329,8 @@ void ImpExpDxfRead::ComposeFlattenedBlock(const std::string& blockName,
 void ImpExpDxfRead::ComposeParametricBlock(const std::string& blockName,
                                            std::set<std::string>& composed)
 {
+    Base::Console().message("DEBUG: Entering ComposeParametricBlock for block: %s\n",
+                            blockName.c_str());
     // 1. Base Case: If this block has already been composed, we're done.
     if (composed.count(blockName)) {
         return;
@@ -560,6 +562,8 @@ void ImpExpDxfRead::FinishImport()
 
 bool ImpExpDxfRead::OnReadBlock(const std::string& name, int flags)
 {
+    Base::Console().message("DEBUG: Entering OnReadBlock for block: %s\n", name.c_str());
+
     // Step 1: Check for external references first. This is a critical check.
     if ((flags & 0x04) != 0) {  // Block is an Xref
         UnsupportedFeature("External (xref) BLOCK");
@@ -611,6 +615,7 @@ bool ImpExpDxfRead::OnReadBlock(const std::string& name, int flags)
         return false;  // Abort on parsing error
     }
 
+    Base::Console().message("DEBUG: Exiting OnReadBlock for block: %s\n", name.c_str());
     // That's it. The block is now parsed into this->Blocks.
     // Composition will happen later in ComposeBlocks().
     return true;
@@ -1419,6 +1424,8 @@ void ImpExpDxfRead::DrawingEntityCollector::AddObject(const TopoDS_Shape& shape,
 {
     Reader.IncrementCreatedObjectCount();
     auto pcFeature = Reader.document->addObject<Part::Feature>(nameBase);
+    Base::Console().message("DEBUG: DrawingEntityCollector::AddObject(Shape) called for a %s\n",
+                            nameBase);
     pcFeature->Shape.setValue(shape);
     Reader.MoveToLayer(pcFeature);
     Reader.ApplyGuiStyles(pcFeature);

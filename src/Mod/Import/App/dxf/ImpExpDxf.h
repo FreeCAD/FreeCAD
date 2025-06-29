@@ -399,8 +399,9 @@ protected:
         {}
 
         // TODO: We will want AddAttributeDefinition as well.
-        void AddObject(const TopoDS_Shape& shape, const char* /*nameBase*/) override
+        void AddObject(const TopoDS_Shape& shape, const char* nameBase) override
         {
+            Base::Console().message("DEBUG: Block Collector received a SHAPE for a %s\n", nameBase);
             ShapesList[Reader.m_entityAttributes].push_back(shape);
         }
         void AddObject(FeaturePythonBuilder shapeBuilder) override
@@ -408,13 +409,17 @@ protected:
             FeatureBuildersList[Reader.m_entityAttributes].push_back(shapeBuilder);
         }
 
-        void AddObject(App::DocumentObject* /*obj*/, const char* /*nameBase*/) override
+        void AddObject(App::DocumentObject* obj, const char* nameBase) override
         {
+            Base::Console().message(
+                "DEBUG: Block Collector received a DOCUMENT OBJECT for a %s, name: %s\n",
+                nameBase,
+                obj->getNameInDocument());
             // This path should never be executed. Links and other fully-formed DocumentObjects
             // are created from INSERT entities, not as part of a BLOCK *definition*. If this
             // warning ever appears, it indicates a logic error in the importer.
             Reader.ImportError(
-                "Internal logic error: Attempted to add a DocumentObject to a block definition.");
+                "Internal logic error: Attempted to add a DocumentObject to a block definition.\n");
         }
 
         void AddInsert(const Base::Vector3d& point,
