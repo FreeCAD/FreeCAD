@@ -69,6 +69,7 @@ from draftobjects.dimension import _Dimension
 from draftutils import params
 from draftutils import utils
 from draftutils.utils import pyopen
+from PySide import QtCore, QtGui
 
 gui = FreeCAD.GuiUp
 draftui = None
@@ -2810,10 +2811,51 @@ def open(filename):
     -----
     Use local variables, not global variables.
     """
-    readPreferences()
+    hGrp = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
+    use_legacy = hGrp.GetBool("dxfUseLegacyImporter", False)
+
+    # The C++ layer (`Gui::Application::importFrom`) has set the WaitCursor.
+    # We must temporarily suspend it to show our interactive dialog.
+    try:
+        if gui:
+            FreeCADGui.suspendWaitCursor()
+
+        # --- Dialog Workflow ---
+        if gui and not use_legacy and hGrp.GetBool("dxfShowDialog", True):
+            try:
+                import ImportGui
+                # This C++ function will need to be created in a later step
+                entity_counts = ImportGui.preScanDxf(filename)
+            except Exception:
+                entity_counts = {}
+
+            from DxfImportDialog import DxfImportDialog
+            dlg = DxfImportDialog(entity_counts)
+
+            if dlg.exec_():
+                # User clicked OK, save settings from the dialog
+                hGrp.SetInt("DxfImportMode", dlg.get_selected_mode())
+                hGrp.SetBool("dxfShowDialog", dlg.get_show_dialog_again())
+            else:
+                # User clicked Cancel, abort the entire operation
+                FCC.PrintLog("DXF import cancelled by user.\n")
+                return
+        else:
+            # If we don't show the dialog, we still need to read preferences
+            # to ensure the correct backend logic is triggered.
+            readPreferences()
+
+    finally:
+        # --- CRITICAL: Always resume the wait state before returning to C++ ---
+        # This restores the wait cursor and event filter so the subsequent
+        # blocking C++ call behaves as expected within the C++ scope.
+        if gui:
+            FreeCADGui.resumeWaitCursor()
+
+    # --- Proceed with the blocking import logic ---
     total_start_time = time.perf_counter()
 
-    if dxfUseLegacyImporter:
+    if use_legacy:
         getDXFlibs()
         if dxfReader:
             docname = os.path.splitext(os.path.basename(filename))[0]
@@ -2823,12 +2865,14 @@ def open(filename):
             return doc
         else:
             errorDXFLib(gui)
-    else:
+            return None
+    else: # Modern C++ Importer
         docname = os.path.splitext(os.path.basename(filename))[0]
         doc = FreeCAD.newDocument(docname)
         doc.Label = docname
         FreeCAD.setActiveDocument(doc.Name)
         stats = None
+
         if gui:
             import ImportGui
             stats = ImportGui.readDXF(filename)
@@ -2836,13 +2880,16 @@ def open(filename):
             import Import
             stats = Import.readDXF(filename)
 
+        Draft.convert_draft_texts()
+        doc.recompute()
+
         total_end_time = time.perf_counter()
         if stats:
+            # Report PROCESSING time only, not user dialog time.
             reporter = DxfImportReporter(filename, stats, total_end_time - total_start_time)
             reporter.report_to_console()
 
-        Draft.convert_draft_texts() # convert annotations to Draft texts
-        doc.recompute()
+        return doc
 
 
 def insert(filename, docname):
@@ -2864,20 +2911,53 @@ def insert(filename, docname):
     -----
     Use local variables, not global variables.
     """
-    readPreferences()
+    hGrp = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
+    use_legacy = hGrp.GetBool("dxfUseLegacyImporter", False)
+
+    try:
+        if gui:
+            FreeCADGui.suspendWaitCursor()
+
+        # --- Dialog Workflow ---
+        if gui and not use_legacy and hGrp.GetBool("dxfShowDialog", True):
+            try:
+                import ImportGui
+                entity_counts = ImportGui.preScanDxf(filename)
+            except Exception:
+                entity_counts = {}
+
+            from DxfImportDialog import DxfImportDialog
+            dlg = DxfImportDialog(entity_counts)
+
+            if dlg.exec_():
+                hGrp.SetInt("DxfImportMode", dlg.get_selected_mode())
+                hGrp.SetBool("dxfShowDialog", dlg.get_show_dialog_again())
+            else:
+                FCC.PrintLog("DXF insert cancelled by user.\n")
+                return
+        else:
+            readPreferences()
+
+    finally:
+        if gui:
+            FreeCADGui.resumeWaitCursor()
+
+    # --- Proceed with the blocking insert logic ---
     total_start_time = time.perf_counter()
+
     try:
         doc = FreeCAD.getDocument(docname)
     except NameError:
         doc = FreeCAD.newDocument(docname)
     FreeCAD.setActiveDocument(docname)
-    if dxfUseLegacyImporter:
+
+    if use_legacy:
         getDXFlibs()
         if dxfReader:
             processdxf(doc, filename)
         else:
             errorDXFLib(gui)
-    else:
+    else: # Modern C++ Importer
         stats = None
         if gui:
             import ImportGui
@@ -2886,13 +2966,13 @@ def insert(filename, docname):
             import Import
             stats = Import.readDXF(filename)
 
+        Draft.convert_draft_texts()
+        doc.recompute()
+
         total_end_time = time.perf_counter()
         if stats:
             reporter = DxfImportReporter(filename, stats, total_end_time - total_start_time)
             reporter.report_to_console()
-
-        Draft.convert_draft_texts() # convert annotations to Draft texts
-        doc.recompute()
 
 def getShapes(filename):
     """Read a DXF file, and return a list of shapes from its contents.
@@ -4183,80 +4263,63 @@ def readPreferences():
     -----
     Use local variables, not global variables.
     """
-    # reading parameters
-    if gui and params.get_param("dxfShowDialog"):
-        FreeCADGui.showPreferencesByName("Import-Export", ":/ui/preferences-dxf.ui")
-
     global dxfCreatePart, dxfCreateDraft, dxfCreateSketch
-    global dxfDiscretizeCurves, dxfStarBlocks
-    global dxfMakeBlocks, dxfJoin, dxfRenderPolylineWidth
-    global dxfImportTexts, dxfImportLayouts
-    global dxfImportPoints, dxfImportHatches, dxfUseStandardSize
-    global dxfGetColors, dxfUseDraftVisGroups
-    global dxfMakeFaceMode, dxfBrightBackground, dxfDefaultColor
-    global dxfUseLegacyImporter, dxfExportBlocks, dxfScaling
-    global dxfUseLegacyExporter
+    global dxfDiscretizeCurves, dxfStarBlocks, dxfMakeBlocks, dxfJoin, dxfRenderPolylineWidth
+    global dxfImportTexts, dxfImportLayouts, dxfImportPoints, dxfImportHatches, dxfUseStandardSize
+    global dxfGetColors, dxfUseDraftVisGroups, dxfMakeFaceMode, dxfBrightBackground, dxfDefaultColor
+    global dxfUseLegacyImporter, dxfExportBlocks, dxfScaling, dxfUseLegacyExporter
 
-    # --- Read all feature and appearance toggles ---
-    # These are independent settings and can be read directly.
-    dxfDiscretizeCurves = params.get_param("DiscretizeEllipses", False)
-    dxfStarBlocks = params.get_param("dxfstarblocks", False)
-    dxfJoin = params.get_param("joingeometry", False)
-    dxfRenderPolylineWidth = params.get_param("renderPolylineWidth", False)
-    dxfImportTexts = params.get_param("dxftext", True)
-    dxfImportLayouts = params.get_param("dxflayout", False)
-    dxfImportPoints = params.get_param("dxfImportPoints", True)
-    dxfImportHatches = params.get_param("importDxfHatches", True)
-    dxfUseStandardSize = params.get_param("dxfStdSize", False)
-    dxfGetColors = params.get_param("dxfGetOriginalColors", True)
-    dxfUseDraftVisGroups = params.get_param("dxfUseDraftVisGroups", True)
-    dxfMakeFaceMode = params.get_param("MakeFaceMode", False)
-    dxfExportBlocks = params.get_param("dxfExportBlocks", True)
-    dxfScaling = params.get_param("dxfScaling", 1.0)
+    # Use the direct C++ API via Python for all parameter access
+    hGrp = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
 
-    # These control which importer is used. The script should only proceed if
-    # the legacy importer is selected.
-    dxfUseLegacyImporter = params.get_param("dxfUseLegacyImporter", False)
-    dxfUseLegacyExporter = params.get_param("dxfUseLegacyExporter", False)
+    dxfUseLegacyImporter = hGrp.GetBool("dxfUseLegacyImporter", False)
 
-    if not dxfUseLegacyImporter:
-        # If the legacy importer is called when not selected, exit.
-        # This prevents accidental execution.
-        return
+    # This logic is now only needed for the legacy importer.
+    # The modern importer reads its settings directly in C++.
+    if dxfUseLegacyImporter:
+        # Legacy override for sketch creation takes highest priority
+        dxfCreateSketch = hGrp.GetBool("dxfCreateSketch", False)
 
-    # --- New, Centralized Logic for Structural Mode ---
-
-    # Read the legacy-specific override for sketch creation.
-    dxfCreateSketch = params.get_param("dxfCreateSketch", False)
-
-    if dxfCreateSketch:
-        # Sketch mode takes highest priority, other modes are irrelevant.
-        dxfCreatePart = False
-        dxfCreateDraft = False
-        dxfMakeBlocks = False
-    else:
-        # Not in sketch mode, so determine structure from DxfImportMode.
-        # This is where the new parameter is read, with its default value defined.
-        # 0=Draft, 1=Primitives, 2=Shapes, 3=Fused
-        import_mode = params.get_param("DxfImportMode", 2) # Default to "Individual part shapes"
-
-        if import_mode == 3:  # Fused part shapes
-            dxfMakeBlocks = True  # 'groupLayers' is the legacy equivalent
-            dxfCreatePart = False # In legacy, dxfMakeBlocks overrides these
-            dxfCreateDraft = False
-        elif import_mode == 0:  # Editable draft objects
-            dxfMakeBlocks = False
+        if dxfCreateSketch:
             dxfCreatePart = False
-            dxfCreateDraft = True
-        else:  # Covers modes 1 (Primitives) and 2 (Shapes). Legacy maps both to "Simple part shapes"
-            dxfMakeBlocks = False
-            dxfCreatePart = True
             dxfCreateDraft = False
+            dxfMakeBlocks = False
+        else:
+            # Read the new unified mode parameter and translate it to the old flags
+            # 0=Draft, 1=Primitives, 2=Shapes, 3=Fused
+            import_mode = hGrp.GetInt("DxfImportMode", 2)  # Default to "Individual shapes"
+            if import_mode == 3:  # Fused part shapes
+                dxfMakeBlocks = True
+                dxfCreatePart = False
+                dxfCreateDraft = False
+            elif import_mode == 0:  # Editable draft objects
+                dxfMakeBlocks = False
+                dxfCreatePart = False
+                dxfCreateDraft = True
+            else:  # Individual part shapes or Primitives
+                dxfMakeBlocks = False
+                dxfCreatePart = True
+                dxfCreateDraft = False
 
-    # --- Other settings that are not checkboxes ---
+    # The legacy importer still uses these global variables, so we read them all.
+    dxfDiscretizeCurves = hGrp.GetBool("DiscretizeEllipses", True)
+    dxfStarBlocks = hGrp.GetBool("dxfstarblocks", False)
+    dxfJoin = hGrp.GetBool("joingeometry", False)
+    dxfRenderPolylineWidth = hGrp.GetBool("renderPolylineWidth", False)
+    dxfImportTexts = hGrp.GetBool("dxftext", False)
+    dxfImportLayouts = hGrp.GetBool("dxflayout", False)
+    dxfImportPoints = hGrp.GetBool("dxfImportPoints", True)
+    dxfImportHatches = hGrp.GetBool("importDxfHatches", False)
+    dxfUseStandardSize = hGrp.GetBool("dxfStdSize", False)
+    dxfGetColors = hGrp.GetBool("dxfGetOriginalColors", True)
+    dxfUseDraftVisGroups = hGrp.GetBool("dxfUseDraftVisGroups", True)
+    dxfMakeFaceMode = hGrp.GetBool("MakeFaceMode", False)
+    dxfUseLegacyExporter = hGrp.GetBool("dxfUseLegacyExporter", False)
+    dxfExportBlocks = hGrp.GetBool("dxfExportBlocks", True)
+    dxfScaling = hGrp.GetFloat("dxfScaling", 1.0)
+
     dxfBrightBackground = isBrightBackground()
     dxfDefaultColor = getColor()
-
 
 class DxfImportReporter:
     """Formats and reports statistics from a DXF import process."""
