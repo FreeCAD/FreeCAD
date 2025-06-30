@@ -154,8 +154,12 @@ class ToolBit(Asset, ABC):
         for param_name, param_value in params.items():
             tool_bit_shape.set_parameter(param_name, param_value)
 
-        # Update attributes; these are stored in the document model object.
+        # Update attributes; the separation between parameters and attributes
+        # is currently not well defined, so for now we add them to the
+        # ToolBitShape and the DocumentObject.
+        # Discussion: https://github.com/FreeCAD/FreeCAD/issues/21722
         for attr_name, attr_value in attr.items():
+            tool_bit_shape.set_parameter(attr_name, attr_value)
             if hasattr(toolbit.obj, attr_name):
                 PathUtil.setProperty(toolbit.obj, attr_name, attr_value)
             else:

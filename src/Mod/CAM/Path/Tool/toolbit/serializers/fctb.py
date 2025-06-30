@@ -47,7 +47,7 @@ class FCTBSerializer(AssetSerializer):
     @classmethod
     def extract_dependencies(cls, data: bytes) -> List[AssetUri]:
         """Extracts URIs of dependencies from serialized data."""
-        Path.Log.info(f"FCTBSerializer.extract_dependencies: raw data = {data!r}")
+        Path.Log.debug(f"FCTBSerializer.extract_dependencies: raw data = {data!r}")
         data_dict = json.loads(data.decode("utf-8"))
         shape = data_dict["shape"]
         return [ToolBitShape.resolve_name(shape)]
@@ -102,7 +102,8 @@ class FCTBSerializer(AssetSerializer):
 
         # Find the correct ToolBit subclass for the shape
         Path.Log.debug(
-            f"FCTBSerializer.deserialize: shape = {shape!r}, id = {id!r}, params = {shape.get_parameters()}"
+            f"FCTBSerializer.deserialize: shape = {shape!r}, id = {id!r},"
+            f" params = {shape.get_parameters()}, attrs = {attrs!r}"
         )
         return ToolBit.from_shape(shape, attrs, id)
 
