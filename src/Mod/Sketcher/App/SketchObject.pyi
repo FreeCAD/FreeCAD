@@ -868,6 +868,12 @@ class SketchObject(Part2DObject):
         """
         ...
 
+    def setGeometryIds(GeoIdsToIds: List[Tuple[int, int]]):
+        """
+        Sets the GeometryId of the SketchGeometryExtension of the geometries with the provided GeoIds
+        Expects a list of pairs (GeoId, id)
+        """
+
     def getGeometryId():
         """
         Gets the GeometryId of the SketchGeometryExtension of the geometry with the provided GeoId
