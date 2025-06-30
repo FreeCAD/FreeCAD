@@ -451,7 +451,7 @@ CmdSpreadsheetAlignTop::CmdSpreadsheetAlignTop()
     sAppModule = "Spreadsheet";
     sGroup = QT_TR_NOOP("Spreadsheet");
     sMenuText = QT_TR_NOOP("Align &Top");
-    sToolTipText = QT_TR_NOOP("Top-aligns the contents the of selected cells");
+    sToolTipText = QT_TR_NOOP("Aligns cell contents to the top");
     sWhatsThis = "Spreadsheet_AlignTop";
     sStatusTip = sToolTipText;
     sPixmap = "SpreadsheetAlignTop";
