@@ -116,7 +116,7 @@ void CmdPointsImport::activated(int iMsg)
                 msgBox.setIcon(QMessageBox::Question);
                 msgBox.setWindowTitle(QObject::tr("Points not at Origin"));
                 msgBox.setText(QObject::tr(
-                    "The Bounding Box of the imported points does not contain the origin.  "
+                    "The bounding box of the imported points does not contain the origin. "
                     "Translate it to the origin?"));
                 msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
                 msgBox.setDefaultButton(QMessageBox::Yes);
