@@ -113,8 +113,8 @@ CmdSurfaceFilling::CmdSurfaceFilling()
     sGroup = QT_TR_NOOP("Surface");
     sMenuText = QT_TR_NOOP("Filling…");
     sToolTipText = QT_TR_NOOP("Creates a surface from a series of selected boundary edges.\n"
-                              "Additionally, the surface may be constrained by non-boundary edges\n"
-                              "and non-boundary vertices.");
+                              "Additionally, the surface may be constrained by edges and\n"
+                              "vertices that are not on the boundary.");
     sStatusTip = sToolTipText;
     sWhatsThis = "Surface_Filling";
     sPixmap = "Surface_Filling";
