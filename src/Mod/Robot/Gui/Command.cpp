@@ -109,7 +109,7 @@ CmdRobotRestoreHomePos::CmdRobotRestoreHomePos()
     sAppModule = "Robot";
     sGroup = QT_TR_NOOP("Robot");
     sMenuText = QT_TR_NOOP("Move to Home");
-    sToolTipText = QT_TR_NOOP("Moves to home");
+    sToolTipText = QT_TR_NOOP("Moves to the home position");
     sWhatsThis = "Robot_RestoreHomePos";
     sStatusTip = sToolTipText;
     sPixmap = "Robot_RestoreHomePos";
