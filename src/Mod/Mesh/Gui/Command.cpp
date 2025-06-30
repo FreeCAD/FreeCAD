@@ -1780,7 +1780,7 @@ CmdMeshScale::CmdMeshScale()
     sAppModule = "Mesh";
     sGroup = QT_TR_NOOP("Mesh");
     sMenuText = QT_TR_NOOP("Scale…");
-    sToolTipText = QT_TR_NOOP("Scales the selected meshes");
+    sToolTipText = QT_TR_NOOP("Scales the selected mesh objects");
     sWhatsThis = "Mesh_Scale";
     sStatusTip = sToolTipText;
     sPixmap = "Mesh_Scale";
