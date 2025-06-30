@@ -113,7 +113,7 @@ void Workbench::activated()
             }
             backgroundColor->setToolTip(QObject::tr("Set cells background color"));
             backgroundColor->setWhatsThis(
-                QObject::tr("Sets the Spreadsheet cells background color"));
+                QObject::tr("Sets the spreadsheet cells background color"));
             backgroundColor->setStatusTip(QObject::tr("Set cells background color"));
             bar->addWidget(backgroundColor);
 
