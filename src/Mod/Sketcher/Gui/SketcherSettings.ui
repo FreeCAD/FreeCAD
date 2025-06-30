@@ -294,6 +294,12 @@ This setting is only for the toolbar. Whichever you choose, all tools are always
       </item>
       <item row="2" column="1">
        <widget class="QComboBox" name="autoScaleMode">
+        <property name="toolTip">
+         <string>Select the mode of automatic geometry scaling upon first dimension:
+'Always': Automatic scaling upon first dimension is always performed.
+'Never': Automatic scaling upon first dimension is never performed.
+'When no scale feature is visible': Automatic scaling upon first dimension is not performed when there are visible objects in the 3D view.</string>
+        </property>
         <item>
          <property name="text">
           <string>Always</string>
