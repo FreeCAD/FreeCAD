@@ -1517,7 +1517,7 @@ CmdMeshFillupHoles::CmdMeshFillupHoles()
     sAppModule = "Mesh";
     sGroup = QT_TR_NOOP("Mesh");
     sMenuText = QT_TR_NOOP("Fill Holes…");
-    sToolTipText = QT_TR_NOOP("Fills the holes of the mesh");
+    sToolTipText = QT_TR_NOOP("Fills holes in the mesh");
     sWhatsThis = "Mesh_FillupHoles";
     sStatusTip = sToolTipText;
     sPixmap = "Mesh_FillupHoles";
