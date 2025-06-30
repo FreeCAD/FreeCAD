@@ -7,12 +7,32 @@
 namespace Gui {
 
 /**
+ * @brief Structure to hold material properties for an object
+ */
+struct MaterialData {
+    std::string name = "Default";
+    // Color properties (RGBA format: r,g,b,a values between 0.0 and 1.0)
+    double ambientColor[4] = {0.333333, 0.333333, 0.333333, 1.0};   // AmbientColor
+    double diffuseColor[4] = {0.978431, 0.709804, 0.741176, 1.0};   // DiffuseColor
+    double emissiveColor[4] = {0.0, 0.0, 0.0, 1.0};                 // EmissiveColor
+    double specularColor[4] = {0.533333, 0.533333, 0.533333, 1.0};  // SpecularColor
+    double shininess = 0.9;                                          // Shininess
+    double transparency = 0.0;                                       // Transparency
+    
+    // Helper method to get alpha (opacity) from transparency
+    double getAlpha() const {
+        return 1.0 - transparency;  // FreeCAD transparency: 0=opaque, 1=transparent
+    }
+};
+
+/**
  * @brief Structure to hold tessellation data for a single object
  */
 struct TessellationData {
     std::string name;
     std::vector<double> vertices;  // [x,y,z,x,y,z,...]
     std::vector<int> triangles;    // [v1,v2,v3,v1,v2,v3,...]
+    MaterialData material;         // Material properties for this object
 };
 
 /**

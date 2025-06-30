@@ -111,20 +111,47 @@ std::string Export3DPDF::createPRCFile(const std::vector<TessellationData>& tess
                 Base::Console().message("Added tessellation for '%s' at index %u\n", 
                     objData.name.c_str(), tessIndex);
                 
-                // Create a basic material (blue color for now)
-                RGBAColour diffuse(0.2, 0.4, 0.8, 1.0);   // Blue diffuse
-                RGBAColour ambient(0.1, 0.2, 0.4, 1.0);   // Darker blue ambient
-                RGBAColour emissive(0.0, 0.0, 0.0, 1.0);  // No emission
-                RGBAColour specular(0.5, 0.5, 0.5, 1.0);  // White specular
+                // Create material using actual object properties
+                RGBAColour ambient(objData.material.ambientColor[0], 
+                                 objData.material.ambientColor[1], 
+                                 objData.material.ambientColor[2], 
+                                 objData.material.ambientColor[3]);
+                RGBAColour diffuse(objData.material.diffuseColor[0], 
+                                 objData.material.diffuseColor[1], 
+                                 objData.material.diffuseColor[2], 
+                                 objData.material.diffuseColor[3]);
+                RGBAColour emissive(objData.material.emissiveColor[0], 
+                                  objData.material.emissiveColor[1], 
+                                  objData.material.emissiveColor[2], 
+                                  objData.material.emissiveColor[3]);
+                RGBAColour specular(objData.material.specularColor[0], 
+                                  objData.material.specularColor[1], 
+                                  objData.material.specularColor[2], 
+                                  objData.material.specularColor[3]);
+                // Print the material properties
+                Base::Console().message("Material properties: %s\n", objData.material.name.c_str());
+                Base::Console().message("  Ambient: (%.3f, %.3f, %.3f, %.3f)\n", 
+                    ambient.R, ambient.G, ambient.B, ambient.A);
+                Base::Console().message("  Diffuse: (%.3f, %.3f, %.3f, %.3f)\n", 
+                    diffuse.R, diffuse.G, diffuse.B, diffuse.A);
+                Base::Console().message("  Emissive: (%.3f, %.3f, %.3f, %.3f)\n", 
+                    emissive.R, emissive.G, emissive.B, emissive.A);
+                Base::Console().message("  Specular: (%.3f, %.3f, %.3f, %.3f)\n", 
+                    specular.R, specular.G, specular.B, specular.A);
+                Base::Console().message("  Shininess: %.3f\n", objData.material.shininess);
+                Base::Console().message("  Alpha: %.3f\n", objData.material.getAlpha());
                 
                 PRCmaterial material(ambient, diffuse, emissive, specular, 
-                                   1.0,    // alpha (opacity)
-                                   0.5);   // shininess
+                                   objData.material.getAlpha(),    // alpha (opacity)
+                                   objData.material.shininess);   // shininess
                 
                 // Add material and apply it to the tessellation
                 uint32_t materialIndex = prcFile.addMaterial(material);
-                Base::Console().message("Added material for '%s' at index %u\n", 
-                    objData.name.c_str(), materialIndex);
+                Base::Console().message("Added material '%s' for object '%s' at index %u\n", 
+                    objData.material.name.c_str(), objData.name.c_str(), materialIndex);
+                Base::Console().message("  Diffuse: (%.3f, %.3f, %.3f, %.3f), Shininess: %.3f, Alpha: %.3f\n",
+                    diffuse.R, diffuse.G, diffuse.B, diffuse.A, 
+                    objData.material.shininess, objData.material.getAlpha());
                 
                 // Apply material to tessellation (no transformation)
                 prcFile.useMesh(tessIndex, materialIndex, NULL);

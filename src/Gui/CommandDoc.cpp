@@ -31,6 +31,7 @@
 # include <QMessageBox>
 # include <QTextStream>
 # include <QTreeWidgetItem>
+# include <algorithm>
 # include <fstream>
 # include <sstream>
 #endif
@@ -977,6 +978,31 @@ bool StdCmdPrintPdf::isActive()
 //===========================================================================
 // Std_Print3dPdf
 //===========================================================================
+// Helper function to parse FreeCAD color format "(r, g, b, a)" into double array
+static void parseFreeCADColor(const std::string& colorStr, double* rgba) {
+    // Default values if parsing fails
+    rgba[0] = 0.5; rgba[1] = 0.5; rgba[2] = 0.5; rgba[3] = 1.0;
+    
+    // Remove parentheses and spaces
+    std::string cleanStr = colorStr;
+    cleanStr.erase(std::remove(cleanStr.begin(), cleanStr.end(), '('), cleanStr.end());
+    cleanStr.erase(std::remove(cleanStr.begin(), cleanStr.end(), ')'), cleanStr.end());
+    cleanStr.erase(std::remove(cleanStr.begin(), cleanStr.end(), ' '), cleanStr.end());
+    
+    // Split by comma and parse values
+    std::istringstream iss(cleanStr);
+    std::string token;
+    int index = 0;
+    while (std::getline(iss, token, ',') && index < 4) {
+        try {
+            rgba[index] = std::stod(token);
+        } catch (const std::exception&) {
+            // Keep default value if parsing fails
+        }
+        index++;
+    }
+}
+
 DEF_STD_CMD_A(StdCmdPrint3dPdf)
 
 StdCmdPrint3dPdf::StdCmdPrint3dPdf()
@@ -1003,7 +1029,7 @@ void StdCmdPrint3dPdf::activated(int iMsg)
         return;
     }
     
-    Base::Console().message("Extracting tessellation data for %zu selected object(s):\n", selection.size());
+    Base::Console().message("Extracting tessellation and material data for %zu selected object(s):\n", selection.size());
     
     // Collect tessellation data from all selected objects
     std::vector<Gui::TessellationData> tessData;
@@ -1054,16 +1080,71 @@ void StdCmdPrint3dPdf::activated(int iMsg)
                             "    print('TESSELLATION_END')",
                             docName.c_str(), objName.c_str());
                         
-                        // Execute a separate Python command to write tessellation data to a temporary file
+                        // Execute a separate Python command to write tessellation and material data to a temporary file
                         std::string tempFileName = "tessellation_" + objName + ".tmp";
                         doCommand(Doc,
                             "import FreeCAD as App\n"
                             "obj = App.getDocument('%s').getObject('%s')\n"
                             "if hasattr(obj, 'Shape') and obj.Shape:\n"
+                            "    # Extract tessellation data\n"
                             "    mesh_data = obj.Shape.tessellate(0.1)\n"
                             "    vertices = mesh_data[0]\n"
                             "    triangles = mesh_data[1]\n"
+                            "    \n"
+                            "    # Extract material properties\n"
+                            "    material_props = {}\n"
+                            "    if hasattr(obj, 'ShapeMaterial') and obj.ShapeMaterial:\n"
+                            "        try:\n"
+                            "            props = obj.ShapeMaterial.Properties\n"
+                            "            material_props['Name'] = props.get('Name', 'Default')\n"
+                            "            material_props['AmbientColor'] = props.get('AmbientColor', '(0.333333, 0.333333, 0.333333, 1)')\n"
+                            "            material_props['DiffuseColor'] = props.get('DiffuseColor', '(0.678431, 0.709804, 0.741176, 1)')\n"
+                            "            material_props['EmissiveColor'] = props.get('EmissiveColor', '(0, 0, 0, 1)')\n"
+                            "            material_props['SpecularColor'] = props.get('SpecularColor', '(0.533333, 0.533333, 0.533333, 1)')\n"
+                            "            material_props['Shininess'] = props.get('Shininess', '0.9')\n"
+                            "            material_props['Transparency'] = props.get('Transparency', '0')\n"
+                            "            App.Console.PrintMessage('Extracted material: {} (Shininess: {}, Transparency: {})\\n'.format(\n"
+                            "                material_props['Name'], material_props['Shininess'], material_props['Transparency']))\n"
+                            "        except Exception as e:\n"
+                            "            App.Console.PrintWarning('Failed to extract ShapeMaterial properties: {}\\n'.format(str(e)))\n"
+                            "            material_props = {'Name': 'Default'}\n"
+                            "    else:\n"
+                            "        material_props = {'Name': 'Default'}\n"
+                            "    \n"
+                            "    # Try alternative material sources if ShapeMaterial failed\n"
+                            "    if material_props.get('Name') == 'Default' and len(material_props) == 1:\n"
+                            "        try:\n"
+                            "            # Check ViewObject for display properties\n"
+                            "            if hasattr(obj, 'ViewObject') and obj.ViewObject:\n"
+                            "                vo = obj.ViewObject\n"
+                            "                \n"
+                            "                # Check for ShapeColor property\n"
+                            "                if hasattr(vo, 'ShapeColor'):\n"
+                            "                    color = vo.ShapeColor\n"
+                            "                    # Convert FreeCAD color to string format\n"
+                            "                    if hasattr(color, 'r') and hasattr(color, 'g') and hasattr(color, 'b'):\n"
+                            "                        color_str = '({}, {}, {}, 1)'.format(color.r, color.g, color.b)\n"
+                            "                        material_props['DiffuseColor'] = color_str\n"
+                            "                        material_props['Name'] = 'ViewObject'\n"
+                            "                \n"
+                            "                # Check for Transparency property\n"
+                            "                if hasattr(vo, 'Transparency'):\n"
+                            "                    transparency = vo.Transparency / 100.0  # FreeCAD uses 0-100, we need 0-1\n"
+                            "                    material_props['Transparency'] = str(transparency)\n"
+                            "                \n"
+                            "                if material_props.get('Name') == 'ViewObject':\n"
+                            "                    App.Console.PrintMessage('Using ViewObject color properties\\n')\n"
+                            "        except Exception as e:\n"
+                            "            App.Console.PrintWarning('Error checking ViewObject: {}\\n'.format(str(e)))\n"
+                            "    \n"
+                            "    # Write data to temp file\n"
                             "    with open('%s', 'w') as f:\n"
+                            "        # Write material properties first\n"
+                            "        f.write('MATERIAL\\n')\n"
+                            "        for key, value in material_props.items():\n"
+                            "            f.write(f'{key}: {value}\\n')\n"
+                            "        \n"
+                            "        # Write tessellation data\n"
                             "        f.write('VERTICES\\n')\n"
                             "        for v in vertices:\n"
                             "            f.write(f'{v[0]} {v[1]} {v[2]}\\n')\n"
@@ -1073,22 +1154,52 @@ void StdCmdPrint3dPdf::activated(int iMsg)
                             "        f.write('END\\n')",
                             docName.c_str(), objName.c_str(), tempFileName.c_str());
                         
-                        // Read the tessellation data from the temporary file
+                        // Read the tessellation and material data from the temporary file
                         std::ifstream tessFile(tempFileName);
                         if (tessFile.is_open()) {
                             std::string line;
+                            bool readingMaterial = false;
                             bool readingVertices = false;
                             bool readingTriangles = false;
                             
                             while (std::getline(tessFile, line)) {
-                                if (line == "VERTICES") {
+                                if (line == "MATERIAL") {
+                                    readingMaterial = true;
+                                    readingVertices = false;
+                                    readingTriangles = false;
+                                } else if (line == "VERTICES") {
+                                    readingMaterial = false;
                                     readingVertices = true;
                                     readingTriangles = false;
                                 } else if (line == "TRIANGLES") {
+                                    readingMaterial = false;
                                     readingVertices = false;
                                     readingTriangles = true;
                                 } else if (line == "END") {
                                     break;
+                                } else if (readingMaterial) {
+                                    // Parse material properties
+                                    size_t colonPos = line.find(':');
+                                    if (colonPos != std::string::npos) {
+                                        std::string key = line.substr(0, colonPos);
+                                        std::string value = line.substr(colonPos + 2); // Skip ': '
+                                        
+                                        if (key == "Name") {
+                                            tessObj.material.name = value;
+                                        } else if (key == "AmbientColor") {
+                                            parseFreeCADColor(value, tessObj.material.ambientColor);
+                                        } else if (key == "DiffuseColor") {
+                                            parseFreeCADColor(value, tessObj.material.diffuseColor);
+                                        } else if (key == "EmissiveColor") {
+                                            parseFreeCADColor(value, tessObj.material.emissiveColor);
+                                        } else if (key == "SpecularColor") {
+                                            parseFreeCADColor(value, tessObj.material.specularColor);
+                                        } else if (key == "Shininess") {
+                                            tessObj.material.shininess = std::stod(value);
+                                        } else if (key == "Transparency") {
+                                            tessObj.material.transparency = std::stod(value);
+                                        }
+                                    }
                                 } else if (readingVertices) {
                                     std::istringstream iss(line);
                                     double x, y, z;
@@ -1114,6 +1225,8 @@ void StdCmdPrint3dPdf::activated(int iMsg)
                             
                             Base::Console().message("Successfully extracted tessellation: %zu vertices, %zu triangles\n",
                                 tessObj.vertices.size() / 3, tessObj.triangles.size() / 3);
+                            Base::Console().message("Material: %s (Shininess: %.2f, Transparency: %.2f)\n",
+                                tessObj.material.name.c_str(), tessObj.material.shininess, tessObj.material.transparency);
                         } else {
                             Base::Console().warning("Failed to read tessellation data from temp file, using fallback\n");
                             // Fallback to placeholder data
@@ -1126,6 +1239,7 @@ void StdCmdPrint3dPdf::activated(int iMsg)
                                 0, 4, 5,  0, 5, 1,  2, 6, 7,  2, 7, 3,
                                 0, 3, 7,  0, 7, 4,  1, 5, 6,  1, 6, 2
                             };
+                            // Material data remains default
                         }
                     }
                 } catch (const std::exception& e) {
@@ -1140,6 +1254,7 @@ void StdCmdPrint3dPdf::activated(int iMsg)
                         0, 4, 5,  0, 5, 1,  2, 6, 7,  2, 7, 3,
                         0, 3, 7,  0, 7, 4,  1, 5, 6,  1, 6, 2
                     };
+                    // Material data remains default
                 }
                 
                 tessData.push_back(tessObj);
