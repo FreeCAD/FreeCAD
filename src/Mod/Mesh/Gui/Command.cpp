@@ -1568,7 +1568,7 @@ CmdMeshFillInteractiveHole::CmdMeshFillInteractiveHole()
     sAppModule = "Mesh";
     sGroup = QT_TR_NOOP("Mesh");
     sMenuText = QT_TR_NOOP("Close Holes");
-    sToolTipText = QT_TR_NOOP("Closes holes interactively");
+    sToolTipText = QT_TR_NOOP("Closes holes interactively in the mesh");
     sWhatsThis = "Mesh_FillInteractiveHole";
     sStatusTip = sToolTipText;
     sPixmap = "Mesh_FillInteractiveHole";
