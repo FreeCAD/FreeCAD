@@ -633,7 +633,7 @@ CmdViewTriangulation::CmdViewTriangulation()
     sAppModule = "Reen";
     sGroup = QT_TR_NOOP("Reverse Engineering");
     sMenuText = QT_TR_NOOP("Structured Point Clouds");
-    sToolTipText = QT_TR_NOOP("Triangulation of structured point clouds");
+    sToolTipText = QT_TR_NOOP("Triangulates structured point clouds");
     sStatusTip = QT_TR_NOOP("Triangulation of structured point clouds");
     sWhatsThis = "Reen_ViewTriangulation";
 }
