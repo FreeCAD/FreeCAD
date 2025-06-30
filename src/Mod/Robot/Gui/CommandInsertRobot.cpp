@@ -191,7 +191,7 @@ CmdRobotInsertKukaIR125::CmdRobotInsertKukaIR125()
     sAppModule = "Robot";
     sGroup = QT_TR_NOOP("Robot");
     sMenuText = QT_TR_NOOP("Kuka IR125");
-    sToolTipText = QT_TR_NOOP("Inserts a Kuka IR125 into the document");
+    sToolTipText = QT_TR_NOOP("Inserts a Kuka IR125 robot into the scene");
     sWhatsThis = "Robot_InsertKukaIR125";
     sStatusTip = sToolTipText;
     sPixmap = "Robot_CreateRobot";
