@@ -357,7 +357,7 @@ class ToolBitShape(Asset):
                 raise ValueError("No 'Attributes' PropertyBag object found in document bytes")
 
             # loaded_raw_params will now be Dict[str, Tuple[Any, str]]
-            loaded_raw_params = get_object_properties(props_obj, group="Shape")
+            loaded_raw_params = get_object_properties(props_obj, exclude_groups=["", "Base"])
 
             # Separate values and types, and populate _param_types
             loaded_params = {}

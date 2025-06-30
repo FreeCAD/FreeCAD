@@ -69,6 +69,7 @@ def get_object_properties(
     obj: "FreeCAD.DocumentObject",
     props: Optional[List[str]] = None,
     group: Optional[str] = None,
+    exclude_groups: Optional[List[str]] = None,
 ) -> Dict[str, Tuple[Any, str]]:
     """
     Extract properties from a FreeCAD PropertyBag, including their types.
@@ -89,6 +90,8 @@ def get_object_properties(
     properties = {}
     for name in props or obj.PropertiesList:
         if group and not obj.getGroupOfProperty(name) == group:
+            continue
+        if exclude_groups and obj.getGroupOfProperty(name) in exclude_groups:
             continue
         if hasattr(obj, name):
             value = getattr(obj, name)
