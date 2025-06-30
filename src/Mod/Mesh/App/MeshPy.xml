@@ -177,7 +177,6 @@ lines = mesh.section(mesh2, [ConnectLines=True, MinDist=0.0001])
   This method moves the point in the mesh along the
   given vector. This affects the geometry of the mesh.
   Be aware that moving points may cause self-intersections.
-  have self intersections!
                 </UserDocu>
             </Documentation>
         </Methode>
