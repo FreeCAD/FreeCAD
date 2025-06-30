@@ -565,7 +565,7 @@ CmdSpreadsheetAlignVCenter::CmdSpreadsheetAlignVCenter()
     sAppModule = "Spreadsheet";
     sGroup = QT_TR_NOOP("Spreadsheet");
     sMenuText = QT_TR_NOOP("Align &Vertical Center");
-    sToolTipText = QT_TR_NOOP("Vertically center-aligns the contents of the selected cells");
+    sToolTipText = QT_TR_NOOP("Aligns cell contents to the vertical center");
     sWhatsThis = "Spreadsheet_AlignVCenter";
     sStatusTip = sToolTipText;
     sPixmap = "SpreadsheetAlignVCenter";
