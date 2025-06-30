@@ -1615,7 +1615,7 @@ CmdMeshSegmentation::CmdMeshSegmentation()
     sAppModule = "Mesh";
     sGroup = QT_TR_NOOP("Mesh");
     sMenuText = QT_TR_NOOP("Segmentation…");
-    sToolTipText = QT_TR_NOOP("Creates new mesh segments");
+    sToolTipText = QT_TR_NOOP("Creates new mesh segments from the mesh");
     sWhatsThis = "Mesh_Segmentation";
     sStatusTip = sToolTipText;
     sPixmap = "Mesh_Segmentation";
