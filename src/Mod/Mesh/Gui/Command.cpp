@@ -953,7 +953,7 @@ CmdMeshCrossSections::CmdMeshCrossSections()
     sAppModule = "Mesh";
     sGroup = QT_TR_NOOP("Mesh");
     sMenuText = QT_TR_NOOP("Cross-Sections…");
-    sToolTipText = QT_TR_NOOP("Cross-sections the mesh");
+    sToolTipText = QT_TR_NOOP("Creates cross-sections of the mesh");
     sStatusTip = sToolTipText;
     sPixmap = "Mesh_CrossSections";
 }
