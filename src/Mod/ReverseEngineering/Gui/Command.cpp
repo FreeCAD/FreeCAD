@@ -422,7 +422,7 @@ CmdSegmentation::CmdSegmentation()
     sAppModule = "Reen";
     sGroup = QT_TR_NOOP("Reverse Engineering");
     sMenuText = QT_TR_NOOP("Mesh Segmentation…");
-    sToolTipText = QT_TR_NOOP("Creates mesh segments");
+    sToolTipText = QT_TR_NOOP("Creates separate mesh segments based on surface types");
     sWhatsThis = "Reen_Segmentation";
     sStatusTip = sToolTipText;
 }
