@@ -32,7 +32,7 @@
    <item row="0" column="0">
     <widget class="QGroupBox" name="groupBox">
      <property name="title">
-      <string>Default Appearance for new Meshes</string>
+      <string>Default Appearance for New Meshes</string>
      </property>
      <layout class="QGridLayout">
       <property name="leftMargin">
