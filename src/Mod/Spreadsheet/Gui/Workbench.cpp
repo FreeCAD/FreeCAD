@@ -93,7 +93,7 @@ void Workbench::activated()
             }
             foregroundColor->setToolTip(QObject::tr("Sets the text color of cells"));
             foregroundColor->setWhatsThis(QObject::tr("Sets the text color of spreadsheet cells"));
-            foregroundColor->setStatusTip(QObject::tr("Set cells text color"));
+            foregroundColor->setStatusTip(QObject::tr("Sets the text color of spreadsheet cells"));
             bar->addWidget(foregroundColor);
 
             QList<QtColorPicker*> bgList = Gui::getMainWindow()->findChildren<QtColorPicker*>(
