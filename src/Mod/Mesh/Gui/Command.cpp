@@ -895,7 +895,7 @@ CmdMeshTrimByPlane::CmdMeshTrimByPlane()
     sAppModule = "Mesh";
     sGroup = QT_TR_NOOP("Mesh");
     sMenuText = QT_TR_NOOP("Trim With Plane");
-    sToolTipText = QT_TR_NOOP("Trims a mesh with a plane");
+    sToolTipText = QT_TR_NOOP("Trims a mesh by removing faces on one side of a selected plane");
     sStatusTip = sToolTipText;
     sPixmap = "Mesh_TrimByPlane";
 }
