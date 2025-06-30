@@ -88,7 +88,7 @@ CmdRobotInsertWaypoint::CmdRobotInsertWaypoint()
     sAppModule = "Robot";
     sGroup = QT_TR_NOOP("Robot");
     sMenuText = QT_TR_NOOP("Insert in trajectory");
-    sToolTipText = QT_TR_NOOP("Insert robot tool location into the trajectory");
+    sToolTipText = QT_TR_NOOP("Inserts the robot tool location into the trajectory");
     sWhatsThis = "Robot_InsertWaypoint";
     sStatusTip = sToolTipText;
     sPixmap = "Robot_InsertWaypoint";
