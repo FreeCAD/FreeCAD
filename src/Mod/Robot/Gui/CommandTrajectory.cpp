@@ -359,7 +359,7 @@ CmdRobotEdge2Trac::CmdRobotEdge2Trac()
     sAppModule = "Robot";
     sGroup = QT_TR_NOOP("Robot");
     sMenuText = QT_TR_NOOP("Edge to Trajectory…");
-    sToolTipText = QT_TR_NOOP("Generates a trajectory from a set of edges");
+    sToolTipText = QT_TR_NOOP("Generates a trajectory from the selected edges");
     sWhatsThis = "Robot_Edge2Trac";
     sStatusTip = sToolTipText;
     sPixmap = "Robot_Edge2Trac";
