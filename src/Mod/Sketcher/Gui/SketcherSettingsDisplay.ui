@@ -17,7 +17,7 @@
    <item>
     <widget class="QGroupBox" name="groupBox_1">
      <property name="title">
-      <string>Sketch editing</string>
+      <string>Sketch Editing</string>
      </property>
      <layout class="QGridLayout" name="gridLayout_1">
       <item row="1" column="0">
@@ -39,7 +39,7 @@
       <item row="1" column="1">
        <widget class="Gui::PrefDoubleSpinBox" name="viewScalingFactor">
         <property name="toolTip">
-         <string>The 3D view is scaled based on this factor.</string>
+         <string>Scales the 3D view based on this factor</string>
         </property>
         <property name="inputMethodHints">
          <set>Qt::ImhPreferNumbers</set>
@@ -70,7 +70,7 @@
       <item row="2" column="1">
        <widget class="Gui::PrefSpinBox" name="SegmentsPerGeometry">
         <property name="toolTip">
-         <string>The number of polygons used for geometry approximation.</string>
+         <string>The number of polygons used for geometry approximation</string>
         </property>
         <property name="minimum">
          <number>50</number>
@@ -89,7 +89,7 @@
       <item row="9" column="0">
        <widget class="Gui::PrefCheckBox" name="checkBoxShowDimensionalName">
         <property name="toolTip">
-         <string>If checked, displays the name on dimensional constraints (if exists).</string>
+         <string>Displays names of dimensional constraints, if they exist</string>
         </property>
         <property name="text">
          <string>Show dimensional constraint name with format</string>
@@ -141,7 +141,7 @@ Defaults to: %N = %V
       <item row="4" column="0" colspan="2">
        <widget class="Gui::PrefCheckBox" name="continueMode">
         <property name="toolTip">
-         <string>The current sketcher creation tool will remain active after creation.</string>
+         <string>Keeps the current Sketcher tool active after creating geometry</string>
         </property>
         <property name="text">
          <string>Geometry creation &quot;Continue Mode&quot;</string>
@@ -160,7 +160,7 @@ Defaults to: %N = %V
       <item row="0" column="1">
        <widget class="Gui::PrefSpinBox" name="EditSketcherFontSize">
         <property name="toolTip">
-         <string>Font size used for labels and constraints.</string>
+         <string>Font size used for labels and constraints</string>
         </property>
         <property name="suffix">
          <string>px</string>
@@ -218,7 +218,7 @@ Supports all unit systems except 'US customary' and 'Building US/Euro'.</string>
       <item row="5" column="0" colspan="2">
        <widget class="Gui::PrefCheckBox" name="constraintMode">
         <property name="toolTip">
-         <string>The current constraint creation tool will remain active after creation.</string>
+         <string>Keeps the current Sketcher constraint tool active after creating geometry</string>
         </property>
         <property name="text">
          <string>Constraint creation &quot;Continue Mode&quot;</string>
@@ -237,10 +237,10 @@ Supports all unit systems except 'US customary' and 'Building US/Euro'.</string>
       <item row="7" column="0">
        <widget class="Gui::PrefCheckBox" name="checkBoxShowCursorCoords">
         <property name="toolTip">
-         <string>Cursor position coordinates will be displayed beside cursor while editing sketch.</string>
+         <string>Displays cursor position coordinates next to the cursor while editing a sketch</string>
         </property>
         <property name="text">
-         <string>Show coordinates beside cursor while editing</string>
+         <string>Displays coordinates next to the cursor while editing</string>
         </property>
         <property name="checked">
          <bool>true</bool>
@@ -256,7 +256,7 @@ Supports all unit systems except 'US customary' and 'Building US/Euro'.</string>
       <item row="3" column="0" colspan="2">
        <widget class="Gui::PrefCheckBox" name="dialogOnDistanceConstraint">
         <property name="toolTip">
-         <string>A dialog will pop up to input a value for new dimensional constraints.</string>
+         <string>Opens a dialog to input a value for new dimensional constraints after creation</string>
         </property>
         <property name="text">
          <string>Ask for value after creating a dimensional constraint</string>
@@ -275,7 +275,7 @@ Supports all unit systems except 'US customary' and 'Building US/Euro'.</string>
       <item row="8" column="0">
        <widget class="Gui::PrefCheckBox" name="checkBoxUseSystemDecimals">
         <property name="toolTip">
-         <string>Cursor coordinates will use the system decimals setting instead of the short form.</string>
+         <string>Cursor coordinates will use the system decimals setting instead of the short form</string>
         </property>
         <property name="text">
          <string>Use system decimals setting for cursor coordinates</string>
@@ -321,13 +321,13 @@ Supports all unit systems except 'US customary' and 'Building US/Euro'.</string>
       </size>
      </property>
      <property name="title">
-      <string>Visibility automation</string>
+      <string>Visibility Automation</string>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_2">
       <item>
        <widget class="Gui::PrefCheckBox" name="checkBoxTVHideDependent">
         <property name="toolTip">
-         <string>When opening a sketch, hide all features that depend on it.</string>
+         <string>Hides all object features that depend on the opened sketch</string>
         </property>
         <property name="text">
          <string>Hide all objects that depend on the sketch</string>
@@ -346,7 +346,7 @@ Supports all unit systems except 'US customary' and 'Building US/Euro'.</string>
       <item>
        <widget class="Gui::PrefCheckBox" name="checkBoxTVShowLinks">
         <property name="toolTip">
-         <string>When opening a sketch, show sources for external geometry links.</string>
+         <string>Shows source objects which are used for external geometry in the opened sketch</string>
         </property>
         <property name="text">
          <string>Show objects used for external geometry</string>
@@ -365,7 +365,7 @@ Supports all unit systems except 'US customary' and 'Building US/Euro'.</string>
       <item>
        <widget class="Gui::PrefCheckBox" name="checkBoxTVShowSupport">
         <property name="toolTip">
-         <string>When opening a sketch, show objects the sketch is attached to.</string>
+         <string>Shows objects the opened sketch is attached to</string>
         </property>
         <property name="text">
          <string>Show objects that the sketch is attached to</string>
@@ -384,7 +384,7 @@ Supports all unit systems except 'US customary' and 'Building US/Euro'.</string>
       <item>
        <widget class="Gui::PrefCheckBox" name="checkBoxTVRestoreCamera">
         <property name="toolTip">
-         <string>When closing a sketch, move camera back to where it was before the sketch was opened.</string>
+         <string>Restores the camera position after closing the sketch</string>
         </property>
         <property name="text">
          <string>Restore camera position after editing</string>
@@ -403,7 +403,7 @@ Supports all unit systems except 'US customary' and 'Building US/Euro'.</string>
       <item>
        <widget class="Gui::PrefCheckBox" name="checkBoxTVForceOrtho">
         <property name="toolTip">
-         <string>When entering edit mode, force orthographic view of camera.
+         <string>Forces the camera to an orthographic view when editing a sketch.
 Works only when &quot;Restore camera position after editing&quot; is enabled.</string>
         </property>
         <property name="text">
@@ -423,11 +423,10 @@ Works only when &quot;Restore camera position after editing&quot; is enabled.</s
       <item>
        <widget class="Gui::PrefCheckBox" name="checkBoxTVSectionView">
         <property name="toolTip">
-         <string>Open a sketch in Section View mode by default.
-Then objects are only visible behind the sketch plane.</string>
+         <string>Opens a sketch in section view mode, showing only objects behind the sketch plane</string>
         </property>
         <property name="text">
-         <string>Open sketch in Section View mode</string>
+         <string>Open sketch in section view mode</string>
         </property>
         <property name="checked">
          <bool>false</bool>
@@ -468,10 +467,10 @@ Then objects are only visible behind the sketch plane.</string>
          </sizepolicy>
         </property>
         <property name="toolTip">
-         <string>Applies current visibility automation settings to all sketches in open documents.</string>
+         <string>Applies current visibility automation settings to all sketches in the open documents</string>
         </property>
         <property name="text">
-         <string>Apply to existing sketches</string>
+         <string>Apply to Existing Sketches</string>
         </property>
        </widget>
       </item>
