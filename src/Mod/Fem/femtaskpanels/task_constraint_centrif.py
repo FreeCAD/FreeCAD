@@ -126,7 +126,7 @@ class _TaskPanel(base_femtaskpanel._BaseTaskPanel):
             msgBox = QtGui.QMessageBox()
             msgBox.setIcon(QtGui.QMessageBox.Question)
             msgBox.setText("Rotational speed is zero")
-            msgBox.setWindowTitle("FreeCAD FEM Constraint Centrif - Rotational Speed Setting")
+            msgBox.setWindowTitle("FEM Constraint Centrifuge - Rotational Speed Setting")
             retryButton = msgBox.addButton(QtGui.QMessageBox.Retry)
             ignoreButton = msgBox.addButton(QtGui.QMessageBox.Ignore)
             msgBox.exec_()
