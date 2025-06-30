@@ -299,7 +299,7 @@ void CmdPartDesignBody::activated(int iMsg)
                                                                                         accepter,
                                                                                         worker,
                                                                                         true,
-                                                                                        quitter), getDocument());
+                                                                                        quitter));
                     }
                 }
             }
