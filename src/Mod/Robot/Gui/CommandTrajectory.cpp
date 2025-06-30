@@ -426,7 +426,7 @@ CmdRobotTrajectoryDressUp::CmdRobotTrajectoryDressUp()
     sGroup = QT_TR_NOOP("Robot");
     sMenuText = QT_TR_NOOP("Dress-Up Trajectory…");
     sToolTipText =
-        QT_TR_NOOP("Creates a dress-up object which overrides some aspects of a trajectory");
+        QT_TR_NOOP("Creates a dress-up object that overrides aspects of a trajectory");
     sWhatsThis = "Robot_TrajectoryDressUp";
     sStatusTip = sToolTipText;
     sPixmap = "Robot_TrajectoryDressUp";
