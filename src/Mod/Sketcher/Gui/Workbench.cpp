@@ -37,7 +37,8 @@ using namespace SketcherGui;
     qApp->translate("Workbench","P&rofiles");
     qApp->translate("Workbench","S&ketch");
     qApp->translate("Workbench", "Sketcher");
-    qApp->translate("Workbench", "Edit mode");
+    qApp->translate("Workbench", "Sketcher Edit Mode");
+
     qApp->translate("Workbench", "Geometries");
     qApp->translate("Workbench", "Constraints");
     qApp->translate("Workbench", "Sketcher Helpers");
