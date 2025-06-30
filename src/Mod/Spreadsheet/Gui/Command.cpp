@@ -508,7 +508,7 @@ CmdSpreadsheetAlignBottom::CmdSpreadsheetAlignBottom()
     sAppModule = "Spreadsheet";
     sGroup = QT_TR_NOOP("Spreadsheet");
     sMenuText = QT_TR_NOOP("Align &Bottom");
-    sToolTipText = QT_TR_NOOP("Bottom-aligns the contents of the selected cells");
+    sToolTipText = QT_TR_NOOP("Aligns cell contents to the bottom");
     sWhatsThis = "Spreadsheet_AlignBottom";
     sStatusTip = sToolTipText;
     sPixmap = "SpreadsheetAlignBottom";
