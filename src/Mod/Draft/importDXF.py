@@ -2805,7 +2805,6 @@ def _import_dxf_file(filename, doc_name=None):
         if gui and not use_legacy and hGrp.GetBool("dxfShowDialog", True):
             try:
                 import ImportGui
-                # This C++ function will need to be created
                 entity_counts = ImportGui.preScanDxf(filename)
             except Exception:
                 entity_counts = {}
@@ -2817,8 +2816,7 @@ def _import_dxf_file(filename, doc_name=None):
                 hGrp.SetInt("DxfImportMode", dlg.get_selected_mode())
                 hGrp.SetBool("dxfShowDialog", dlg.get_show_dialog_again())
             else:
-                FCC.PrintLog("DXF import cancelled by user.\n")
-                return None, None # Return None to indicate cancellation
+                return None, None, None, None # Return None to indicate cancellation
     finally:
         if gui:
             FreeCADGui.resumeWaitCursor()
