@@ -54,7 +54,7 @@ CmdSurfaceCut::CmdSurfaceCut()
     sAppModule = "Surface";
     sGroup = QT_TR_NOOP("Surface");
     sMenuText = QT_TR_NOOP("Surface Cut Function");
-    sToolTipText = QT_TR_NOOP("Cuts a shape with another shape");
+    sToolTipText = QT_TR_NOOP("Cuts one shape using another");
     sWhatsThis = "Surface_Cut";
     sStatusTip = sToolTipText;
     sPixmap = "Surface_Cut";
