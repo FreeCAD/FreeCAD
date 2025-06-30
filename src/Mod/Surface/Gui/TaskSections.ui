@@ -17,8 +17,7 @@
    <item row="0" column="0">
     <widget class="QGroupBox" name="groupBox">
      <property name="toolTip">
-      <string>Edges that will be sectional cuts of the surface,
-that is, the surface will be forced to pass through these edges.</string>
+      <string>Constrains the surface to follow the selected sectional edges</string>
      </property>
      <property name="title">
       <string>Sectional Edges</string>
