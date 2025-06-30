@@ -151,13 +151,11 @@ class TestPathToolShapeClasses(PathTestWithAssets):
     def test_base_resolve_name(self):
         """Test resolving shape aliases to canonical names."""
         self.assertEqual(ToolBitShape.resolve_name("ballend").asset_id, "ballend")
-        self.assertEqual(ToolBitShape.resolve_name("Ballend").asset_id, "ballend")
-        self.assertEqual(ToolBitShape.resolve_name("v-bit").asset_id, "vbit")
-        self.assertEqual(ToolBitShape.resolve_name("VBit").asset_id, "vbit")
-        self.assertEqual(ToolBitShape.resolve_name("torus").asset_id, "bullnose")
-        self.assertEqual(ToolBitShape.resolve_name("bullnose").asset_id, "bullnose")
-        self.assertEqual(ToolBitShape.resolve_name("slitting-saw").asset_id, "slittingsaw")
-        self.assertEqual(ToolBitShape.resolve_name("SlittingSaw").asset_id, "slittingsaw")
+        self.assertEqual(ToolBitShape.resolve_name("v-bit").asset_id, "v-bit")
+        self.assertEqual(ToolBitShape.resolve_name("vbit").asset_id, "vbit")
+        self.assertEqual(ToolBitShape.resolve_name("torus").asset_id, "torus")
+        self.assertEqual(ToolBitShape.resolve_name("torus.fcstd").asset_id, "torus")
+        self.assertEqual(ToolBitShape.resolve_name("SlittingSaw").asset_id, "SlittingSaw")
         # Test unknown name - should return the input name
         self.assertEqual(ToolBitShape.resolve_name("nonexistent").asset_id, "nonexistent")
         self.assertEqual(ToolBitShape.resolve_name("UnknownShape").asset_id, "UnknownShape")

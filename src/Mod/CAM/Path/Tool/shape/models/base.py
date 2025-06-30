@@ -523,7 +523,7 @@ class ToolBitShape(Asset):
     @classmethod
     def resolve_name(cls, identifier: str) -> AssetUri:
         """
-        Resolves an identifier (alias, name, filename, or URI) to a Uri object.
+        Resolves an identifier (name, filename, or URI) to a Uri object.
         """
         # 1. If the input is a url string, return the AssetUri for it.
         if AssetUri.is_uri(identifier):
@@ -535,13 +535,7 @@ class ToolBitShape(Asset):
         if pathlib.Path(identifier).suffix.lower() == ".fcstd":
             asset_name = os.path.splitext(os.path.basename(identifier))[0]
 
-        # 3. Use get_subclass_by_name to try to resolve alias to a class.
-        #    if one is found, use the class.name.
-        shape_class = cls.get_subclass_by_name(asset_name.lower())
-        if shape_class:
-            asset_name = shape_class.name.lower()
-
-        # 4. Construct the Uri using AssetUri.build() and return it
+        # 3. Construct the Uri using AssetUri.build() and return it
         return AssetUri.build(
             asset_type="toolbitshape",
             asset_id=asset_name,

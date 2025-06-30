@@ -28,6 +28,13 @@ from ...shape import ToolBitShape
 from ..models.base import ToolBit
 
 
+if False:
+    Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
+    Path.Log.trackModule(Path.Log.thisModule())
+else:
+    Path.Log.setLevel(Path.Log.Level.INFO, Path.Log.thisModule())
+
+
 class FCTBSerializer(AssetSerializer):
     for_class = ToolBit
     mime_type = "application/x-freecad-toolbit"
@@ -70,6 +77,7 @@ class FCTBSerializer(AssetSerializer):
         if dependencies is None:
             # Shallow load: dependencies are not resolved.
             # Delegate to from_dict with shallow=True.
+            Path.Log.debug(f"FCTBSerializer.deserialize: shallow. id = {id!r}, attrs = {attrs!r}")
             return ToolBit.from_dict(attrs, shallow=True)
 
         # Full load: dependencies are resolved.
@@ -93,6 +101,9 @@ class FCTBSerializer(AssetSerializer):
             )
 
         # Find the correct ToolBit subclass for the shape
+        Path.Log.debug(
+            f"FCTBSerializer.deserialize: shape = {shape!r}, id = {id!r}, params = {shape.get_parameters()}"
+        )
         return ToolBit.from_shape(shape, attrs, id)
 
     @classmethod
