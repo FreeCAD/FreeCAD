@@ -163,7 +163,7 @@ CmdMeshDifference::CmdMeshDifference()
     sAppModule = "Mesh";
     sGroup = QT_TR_NOOP("Mesh");
     sMenuText = QT_TR_NOOP("Difference");
-    sToolTipText = QT_TR_NOOP("Creates the boolean difference of the selected meshes");
+    sToolTipText = QT_TR_NOOP("Creates a boolean difference of the selected meshes");
     sWhatsThis = "Mesh_Difference";
     sStatusTip = sToolTipText;
     sPixmap = "Mesh_Difference";
