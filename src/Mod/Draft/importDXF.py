@@ -79,6 +79,12 @@ if gui:
         draftui = FreeCADGui.draftToolBar
     except (AttributeError, NameError):
         draftui = None
+    try:
+        from draftviewproviders.view_base import ViewProviderDraft
+        from draftviewproviders.view_wire import ViewProviderWire
+    except ImportError:
+        ViewProviderDraft = None
+        ViewProviderWire = None
     from draftutils.translate import translate
     from PySide import QtWidgets
 else:
@@ -2849,10 +2855,6 @@ def _import_dxf_file(filename, doc_name=None):
     # --- Core Import Execution ---
     processing_start_time = time.perf_counter()
 
-    if is_draft_mode:
-        # For Draft mode, we tell the C++ importer to create Part Primitives first.
-        hGrp.SetInt("DxfImportMode", 1)
-
     # Take snapshot of objects before import
     objects_before = set(doc.Objects)
 
@@ -2876,13 +2878,10 @@ def _import_dxf_file(filename, doc_name=None):
     objects_after = set(doc.Objects)
     newly_created_objects = objects_after - objects_before
 
-    # Restore the original mode setting if we changed it
-    if is_draft_mode:
-        hGrp.SetInt("DxfImportMode", 0)
-
     # --- Post-processing step ---
     if is_draft_mode and newly_created_objects:
-        post_process_to_draft(doc, newly_created_objects)
+        draft_postprocessor = DxfDraftPostProcessor(doc, newly_created_objects)
+        draft_postprocessor.run()
 
     Draft.convert_draft_texts() # This is a general utility that should run for both importers
     doc.recompute()
@@ -2892,7 +2891,6 @@ def _import_dxf_file(filename, doc_name=None):
     # Return the results for the reporter
     return doc, stats, processing_start_time, processing_end_time
 
-# --- REFACTORED open() and insert() functions ---
 
 def open(filename):
     """Open a file and return a new document.
@@ -4211,8 +4209,6 @@ def getViewDXF(view):
     return block, insert
 
 
-# In src/Mod/Draft/importDXF.py
-
 def readPreferences():
     """Read the preferences of the this module from the parameter database.
 
@@ -4302,79 +4298,6 @@ def readPreferences():
 
     dxfBrightBackground = isBrightBackground()
     dxfDefaultColor = getColor()
-
-
-def post_process_to_draft(doc, new_objects):
-    """
-    Converts a list of newly created Part primitives and placeholders
-    into their corresponding Draft objects.
-    """
-    if not new_objects:
-        return
-
-    FCC.PrintMessage("Post-processing {} objects to Draft types...\n".format(len(new_objects)))
-
-    objects_to_delete = []
-
-    for obj in list(new_objects): # Iterate over a copy
-        if App.isdeleted(obj):
-            continue
-
-        if obj.isDerivedFrom("Part::Feature"):
-            # Handles Part::Vertex, Part::Line, Part::Circle, Part::Compound,
-            # and Part::Features containing Ellipses/Splines.
-            try:
-                Draft.upgrade([obj], delete=True)
-            except Exception as e:
-                FCC.PrintWarning("Could not upgrade {} to Draft object: {}\n".format(obj.Label, str(e)))
-
-        elif obj.isDerivedFrom("App::FeaturePython") and hasattr(obj, "DxfEntityType"):
-            # This is one of our placeholders
-            entity_type = obj.DxfEntityType
-
-            if entity_type == "DIMENSION":
-                try:
-                    # 1. Create an empty Draft Dimension
-                    dim = doc.addObject("App::FeaturePython", "Dimension")
-                    Draft.Dimension(dim)
-                    if gui:
-                        from Draft import _ViewProviderDimension
-                        _ViewProviderDimension(dim.ViewObject)
-
-                    # 2. Copy properties directly from the placeholder
-                    dim.Start = obj.Start
-                    dim.End = obj.End
-                    dim.Dimline = obj.Dimline
-                    dim.Placement = obj.Placement
-
-                    objects_to_delete.append(obj)
-                except Exception as e:
-                    FCC.PrintWarning("Could not create Draft Dimension from {}: {}\n".format(obj.Label, str(e)))
-
-            elif entity_type == "TEXT":
-                try:
-                    # 1. Create a Draft Text object
-                    text_obj = Draft.make_text(obj.Text)
-
-                    # 2. Copy properties
-                    text_obj.Placement = obj.Placement
-                    if gui:
-                        # TEXTSCALING is a global defined at the top of importDXF.py
-                        text_obj.ViewObject.FontSize = obj.DxfTextHeight * TEXTSCALING
-
-                    objects_to_delete.append(obj)
-                except Exception as e:
-                    FCC.PrintWarning("Could not create Draft Text from {}: {}\n".format(obj.Label, str(e)))
-
-    # Perform the deletion of placeholders after the loop
-    for obj in objects_to_delete:
-        try:
-            doc.removeObject(obj.Name)
-        except Exception:
-            pass
-
-    doc.recompute()
-
 
 class DxfImportReporter:
     """Formats and reports statistics from a DXF import process."""
@@ -4505,3 +4428,416 @@ class DxfImportReporter:
         """
         output_string = self.to_console_string()
         FCC.PrintMessage(output_string)
+
+
+def post_process_to_draft(doc, new_objects):
+    """
+    Entry point for the DXF post-processing workflow.
+    Instantiates and runs the DxfDraftPostProcessor.
+    """
+    processor = DxfDraftPostProcessor(doc, new_objects)
+    processor.run()
+
+
+class DxfDraftPostProcessor:
+    """
+    Handles the post-processing of DXF files imported as Part objects,
+    converting them into fully parametric Draft objects while preserving
+    the block and layer hierarchy.
+    """
+    def __init__(self, doc, new_objects):
+        self.doc = doc
+        self.all_imported_objects = new_objects
+        self.all_originals_to_delete = set()
+        self.newly_created_draft_objects = []
+
+    def _categorize_objects(self):
+        """
+        Scans newly created objects from the C++ importer and categorizes them.
+        """
+        block_definitions = {}
+        for group_name in ["_BlockDefinitions", "_UnreferencedBlocks"]:
+            block_group = self.doc.getObject(group_name)
+            if block_group:
+                for block_def_obj in block_group.Group:
+                    if block_def_obj.isValid() and block_def_obj.isDerivedFrom("Part::Compound"):
+                        block_definitions[block_def_obj] = [
+                            child for child in block_def_obj.Links
+                            if child.isValid() and child.isDerivedFrom("Part::Feature")
+                        ]
+
+        all_block_internal_objects_set = set()
+        for block_def, children in block_definitions.items():
+            all_block_internal_objects_set.add(block_def)
+            all_block_internal_objects_set.update(children)
+
+        top_level_geometry = []
+        placeholders = []
+        for obj in self.all_imported_objects:
+            if not obj.isValid() or obj in all_block_internal_objects_set:
+                continue
+
+            if obj.isDerivedFrom("App::FeaturePython") and hasattr(obj, "DxfEntityType"):
+                placeholders.append(obj)
+            elif obj.isDerivedFrom("Part::Feature"):
+                top_level_geometry.append(obj)
+
+        return block_definitions, top_level_geometry, placeholders
+
+    def _create_draft_object_from_part(self, part_obj):
+        """
+        Converts an intermediate Part object (from C++ importer) to a final Draft object,
+        ensuring correct underlying C++ object typing and property management.
+        Returns a tuple: (new_draft_object, type_string) or (None, None).
+        """
+        # Skip invalid objects or objects that are block definitions themselves (their
+        # links/children will be converted)
+        if not part_obj.isValid() or \
+           (part_obj.isDerivedFrom("Part::Compound") and hasattr(part_obj, "Links")):
+            return None, None
+
+        new_obj = None
+        obj_type_str = None # Will be set based on converted type
+
+        # Handle specific Part primitives (created directly by C++ importer as Part::Line,
+        # Part::Circle, Part::Vertex) These C++ primitives (Part::Line, Part::Circle) inherently
+        # have Shape and Placement. Part::Vertex is special, handled separately below.
+        if part_obj.isDerivedFrom("Part::Line"):
+            # Input `part_obj` is Part::Line. Create a Part::Part2DObjectPython as the
+            # Python-extensible base for Draft Line. Part::Part2DObjectPython (via Part::Feature)
+            # inherently has Shape and Placement, and supports .Proxy.
+            new_obj = self.doc.addObject("Part::Part2DObjectPython",
+                                         self.doc.getUniqueObjectName("Line"))
+            # Transfer the TopoDS_Shape from the original Part::Line to the new object's Shape
+            # property.
+            new_obj.Shape = part_obj.Shape
+            Draft.Wire(new_obj) # Attach the Python proxy. It will find Shape, Placement.
+            obj_type_str = "Line"
+
+        elif part_obj.isDerivedFrom("Part::Circle"):
+            # Input `part_obj` is Part::Circle. Create a Part::Part2DObjectPython.
+            new_obj = self.doc.addObject("Part::Part2DObjectPython",
+                                         self.doc.getUniqueObjectName("Circle"))
+            # Transfer the TopoDS_Shape from the original Part::Circle. This needs to happen
+            # *before* proxy attach.
+            new_obj.Shape = part_obj.Shape
+
+            # Attach the Python proxy
+            # This call will add properties like Radius, FirstAngle, LastAngle to new_obj.
+            Draft.Circle(new_obj)
+
+            # Transfer  data *after* proxy attachment.
+            # Now that Draft.Circle(new_obj) has run and added the properties, we can assign values
+            # to them.
+            # Part::Circle has Radius, Angle1, Angle2 properties.
+            # Draft.Circle proxy uses FirstAngle and LastAngle instead of Angle1 and Angle2.
+            if hasattr(part_obj, 'Radius'):
+                new_obj.Radius = FreeCAD.Units.Quantity(part_obj.Radius.Value, "mm")
+
+            # Calculate and transfer angles
+            if hasattr(part_obj, 'Angle1') and hasattr(part_obj, 'Angle2'):
+                start_angle, end_angle = self._get_canonical_angles(
+                    part_obj.Angle1.Value,
+                    part_obj.Angle2.Value,
+                    part_obj.Radius.Value
+                )
+
+                new_obj.FirstAngle = FreeCAD.Units.Quantity(start_angle, "deg")
+                new_obj.LastAngle = FreeCAD.Units.Quantity(end_angle, "deg")
+
+                FCC.PrintMessage(f"DEBUG: Final angles after assignment: {new_obj.FirstAngle.Value} deg to {new_obj.LastAngle.Value} deg\n")
+
+            # Determine the final object type string based on the canonical angles
+            is_full_circle = (abs(new_obj.FirstAngle.Value - 0.0) < 1e-7 and
+                              abs(new_obj.LastAngle.Value - 360.0) < 1e-7)
+
+            obj_type_str = "Circle" if is_full_circle else "Arc"
+
+
+        elif part_obj.isDerivedFrom("Part::Vertex"): # Input `part_obj` is Part::Vertex (C++ primitive for a point location).
+            # For Draft.Point, the proxy expects an App::FeaturePython base.
+            new_obj = self.doc.addObject("App::FeaturePython", self.doc.getUniqueObjectName("Point"))
+            new_obj.addExtension("Part::AttachExtensionPython") # Needed to provide Placement for App::FeaturePython.
+            # Transfer Placement explicitly from the original Part::Vertex.
+            if hasattr(part_obj, 'Placement'):
+                new_obj.Placement = part_obj.Placement
+            else:
+                new_obj.Placement = FreeCAD.Placement()
+            Draft.Point(new_obj) # Attach the Python proxy.
+            obj_type_str = "Point"
+
+        # --- Handle generic Part::Feature objects (from C++ importer, wrapping TopoDS_Shapes like Wires, Splines, Ellipses) ---
+        elif part_obj.isDerivedFrom("Part::Feature"): # Input `part_obj` is a generic Part::Feature (from C++ importer).
+            shape = part_obj.Shape # This is the underlying TopoDS_Shape (Wire, Edge, Compound, Face etc.).
+            if not shape.isValid():
+                return None, None
+
+            FCC.PrintMessage(f"DEBUG: Input is Part::Feature (ShapeType: {shape.ShapeType})\n")
+
+            # Determine specific Draft object type based on the ShapeType of the TopoDS_Shape.
+            if shape.ShapeType == "Wire": # If the TopoDS_Shape is a Wire (from DXF POLYLINE).
+                # Create a Part::Part2DObjectPython as the Python-extensible base for Draft Wire.
+                new_obj = self.doc.addObject("Part::Part2DObjectPython", self.doc.getUniqueObjectName("Wire"))
+                new_obj.Shape = shape # Transfer the TopoDS_Wire from the original Part::Feature.
+                Draft.Wire(new_obj) # Attach Python proxy. It will find Shape, Placement.
+                new_obj.Closed = shape.isClosed() # Transfer specific properties expected by Draft.Wire.
+                obj_type_str = "Wire"
+
+            # Fallback for other Part::Feature shapes (e.g., 3DFACE, SOLID, or unsupported Edge types).
+            else: # If the TopoDS_Shape is not a recognized primitive (e.g., Compound, Face, Solid).
+                # Wrap it in a Part::FeaturePython to allow Python property customization if needed.
+                new_obj = self.doc.addObject("Part::FeaturePython", self.doc.getUniqueObjectName("Shape"))
+                new_obj.addExtension("Part::AttachExtensionPython") # Add extension for Placement for App::FeaturePython.
+                new_obj.Shape = shape # Assign the TopoDS_Shape from the original Part::Feature.
+                # Explicitly set Placement for App::FeaturePython.
+                if hasattr(part_obj, 'Placement'):
+                    new_obj.Placement = part_obj.Placement
+                else:
+                    new_obj.Placement = FreeCAD.Placement()
+                # No specific Draft proxy for generic "Shape", but it's Python extensible.
+                obj_type_str = "Shape"
+
+        # --- Handle App::Link objects (block instances from C++ importer) ---
+        elif part_obj.isDerivedFrom("App::Link"): # Input `part_obj` is an App::Link.
+            # App::Link objects are already suitable as a base for Draft.Clone/Array links.
+            # They natively have Placement and Link properties, and support .Proxy.
+            new_obj = part_obj # Reuse the object directly.
+            obj_type_str = "Link"
+
+        # --- Handle App::FeaturePython placeholder objects (Text, Dimension from C++ importer) ---
+        elif part_obj.isDerivedFrom("App::FeaturePython"): # Input `part_obj` is an App::FeaturePython placeholder.
+            # These are specific placeholders the C++ importer created (`DxfEntityType` property).
+            # They are processed later in `_create_from_placeholders` to become proper Draft.Text/Dimension objects.
+            return None, None # Don't process them here; let the dedicated function handle them.
+
+        # --- Final Common Steps for Newly Created Draft Objects ---
+        if new_obj:
+            new_obj.Label = part_obj.Label # Always transfer label.
+
+            # If `new_obj` was freshly created (not `part_obj` reused), and `part_obj` had a Placement,
+            # ensure `new_obj`'s Placement is correctly set from `part_obj`.
+            # For `Part::*` types, Placement is set implicitly by the `addObject` call based on their `Shape`.
+            # For `App::FeaturePython` (like for Point and generic Shape fallback), explicit assignment is needed.
+            if new_obj is not part_obj:
+                if hasattr(part_obj, "Placement") and hasattr(new_obj, "Placement"):
+                    new_obj.Placement = part_obj.Placement
+                elif not hasattr(new_obj, "Placement"):
+                    # This should ideally not happen with the corrected logic above.
+                    FCC.PrintWarning(f"Created object '{new_obj.Label}' of type '{obj_type_str}' does not have a 'Placement' property even after intended setup. This is unexpected.\n")
+
+            # Add the original object (from C++ importer) to the list for deletion.
+            self.all_originals_to_delete.add(part_obj)
+
+            return new_obj, obj_type_str
+
+        # If no conversion could be made (e.g., unsupported DXF entity not falling into a handled case),
+        # mark original for deletion and return None.
+        self.all_originals_to_delete.add(part_obj)
+        FCC.PrintWarning(f"DXF Post-Processor: Failed to convert object '{part_obj.Label}'. Discarding.\n")
+        return None, None
+
+    def _parent_object_to_layer(self, new_obj, original_obj):
+        """Finds the correct layer from the original object and parents the new object to it."""
+        if hasattr(original_obj, "OriginalLayer"):
+            layer_name = original_obj.OriginalLayer
+
+            found_layers = self.doc.getObjectsByLabel(layer_name)
+
+            layer_obj = None
+            if found_layers:
+                for l_obj in found_layers:
+                    if Draft.get_type(l_obj) == 'Layer':
+                        layer_obj = l_obj
+                        break
+
+            if layer_obj:
+                layer_obj.Proxy.addObject(layer_obj, new_obj)
+            else:
+                FCC.PrintWarning(f"DXF Post-Processor: Could not find a valid Draft Layer with label '{layer_name}' for object '{new_obj.Label}'.\n")
+
+    def _create_and_parent_geometry(self, intermediate_obj):
+        """High-level helper to convert, name, and parent a single geometric object."""
+        new_draft_obj, obj_type_str = self._create_draft_object_from_part(intermediate_obj)
+        if new_draft_obj:
+            label = intermediate_obj.Label
+            if not label or "__Feature" in label:
+                label = self.doc.getUniqueObjectName(obj_type_str)
+            new_draft_obj.Label = label
+            self._parent_object_to_layer(new_draft_obj, intermediate_obj)
+            self.newly_created_draft_objects.append(new_draft_obj)
+        else:
+            FCC.PrintWarning(f"DXF Post-Processor: Failed to convert object '{intermediate_obj.Label}'. Discarding.\n")
+        return new_draft_obj
+
+    def _create_from_placeholders(self, placeholders):
+        """Creates final Draft objects from text/dimension placeholders."""
+        if not placeholders:
+            return
+
+        for placeholder in placeholders:
+            if not placeholder.isValid():
+                continue
+            new_obj = None
+            try:
+                if placeholder.DxfEntityType == "DIMENSION":
+                    dim = self.doc.addObject("App::FeaturePython", "Dimension")
+                    _Dimension(dim)
+                    dim.addExtension("Part::AttachExtensionPython")
+                    dim.Start = placeholder.Start
+                    dim.End = placeholder.End
+                    dim.Dimline = placeholder.Dimline
+                    dim.Placement = placeholder.Placement
+                    new_obj = dim
+                elif placeholder.DxfEntityType == "TEXT":
+                    text_obj = Draft.make_text(placeholder.Text)
+                    text_obj.Placement = placeholder.Placement
+                    if FreeCAD.GuiUp:
+                        text_obj.addProperty("App::PropertyFloat", "DxfTextHeight", "Internal")
+                        text_obj.DxfTextHeight = placeholder.DxfTextHeight
+                    new_obj = text_obj
+
+                if new_obj:
+                    new_obj.Label = placeholder.Label
+                    self._parent_object_to_layer(new_obj, placeholder)
+                    self.newly_created_draft_objects.append(new_obj)
+            except Exception as e:
+                FCC.PrintWarning(f"Could not create Draft object from placeholder '{placeholder.Label}': {e}\n")
+
+        self.all_originals_to_delete.update(placeholders)
+
+    def _apply_gui_styles(self):
+        """Attaches correct ViewProviders and styles to new Draft objects."""
+        if not FreeCAD.GuiUp:
+            return
+
+        # We style all newly created Draft objects, which are collected in this list.
+        # This now includes block children, top-level geometry, and placeholders.
+        all_objects_to_style = self.newly_created_draft_objects
+
+        for obj in all_objects_to_style:
+            if obj.isValid() and hasattr(obj, "ViewObject") and hasattr(obj, "Proxy"):
+                try:
+                    proxy_name = obj.Proxy.__class__.__name__
+                    if proxy_name in ("Wire", "Line"):
+                        if ViewProviderWire: ViewProviderWire(obj.ViewObject)
+                    elif proxy_name == "Circle":
+                        if ViewProviderDraft: ViewProviderDraft(obj.ViewObject)
+                    elif proxy_name == "Text":
+                        if hasattr(obj, "DxfTextHeight"):
+                            obj.ViewObject.FontSize = obj.DxfTextHeight * TEXTSCALING
+                except Exception as e:
+                    FCC.PrintWarning(f"Failed to set ViewProvider for {obj.Name}: {e}\n")
+
+    def _delete_objects_in_batch(self):
+        """Safely deletes all objects marked for removal."""
+        if not self.all_originals_to_delete:
+            return
+        for obj in self.all_originals_to_delete:
+            if obj.isValid() and self.doc.getObject(obj.Name) is not None:
+                try:
+                    if not obj.isDerivedFrom("App::DocumentObjectGroup") and not obj.isDerivedFrom("App::Link"):
+                        self.doc.removeObject(obj.Name)
+                except Exception as e:
+                    FCC.PrintWarning(f"Failed to delete object '{getattr(obj, 'Label', obj.Name)}': {e}\n")
+
+    def _cleanup_organizational_groups(self):
+        """Removes empty organizational groups after processing."""
+        for group_name in ["_BlockDefinitions", "_UnreferencedBlocks"]:
+            group = self.doc.getObject(group_name)
+            if group and not group.Group:
+                try:
+                    self.doc.removeObject(group.Name)
+                except Exception:
+                    pass
+
+    def _get_canonical_angles(self, start_angle_deg, end_angle_deg, radius_mm):
+        """
+        Calculates canonical start and end angles for a Draft Arc/Circle that are
+        both geometrically equivalent to the input and syntactically valid for
+        FreeCAD's App::PropertyAngle, which constrains values to [-360, 360].
+
+        This is necessary because the C++ importer may provide angles outside this
+        range (e.g., end_angle > 360) to unambiguously define an arc's span and
+        distinguish between minor and major arcs. This function finds an
+        equivalent angle pair that respects the C++ constraints while preserving
+        the original geometry (span and direction).
+        """
+        # Calculate the original angular span.
+        span = end_angle_deg - start_angle_deg
+
+        # Handle degenerate and full-circle cases first.
+        # Case: A zero-radius, zero-span arc is a point.
+        if abs(radius_mm) < 1e-9 and abs(span) < 1e-9:
+            return 0.0, 0.0
+
+        # A span that is a multiple of 360 degrees is a full circle.
+        # Use a tolerance for floating point inaccuracies.
+        if abs(span % 360.0) < 1e-6 and abs(span) > 1e-7:
+            # Return the canonical representation for a full circle in Draft.
+            return 0.0, 360.0
+
+        # Normalize the start angle to a canonical [0, 360] range.
+        canonical_start = start_angle_deg % 360.0
+        if canonical_start < 0:
+            canonical_start += 360.0
+
+        # Calculate the geometrically correct end angle based on the preserved span.
+        canonical_end = canonical_start + span
+
+        # Find a valid representation within the [-360, 360] constraints.
+        # We can shift both start and end by multiples of 360 without changing the geometry.
+        # This "slides" the angular window until it fits within the allowed range.
+        # This handles cases where the calculated end > 360 or start is very negative.
+        while canonical_start > 360.0 or canonical_end > 360.0:
+            canonical_start -= 360.0
+            canonical_end -= 360.0
+
+        while canonical_start < -360.0 or canonical_end < -360.0:
+            canonical_start += 360.0
+            canonical_end += 360.0
+
+        # At this point, the pair (canonical_start, canonical_end) is both
+        # geometrically correct and should be valid for App::PropertyAngle.
+        return canonical_start, canonical_end
+
+    def run(self):
+        """Executes the entire post-processing workflow."""
+        FCC.PrintMessage("\n--- DXF DRAFT POST-PROCESSING ---\n")
+        if not self.all_imported_objects:
+            return
+
+        self.doc.openTransaction("DXF Post-processing")
+        try:
+            block_defs, top_geo, placeholders = self._categorize_objects()
+
+            # Process geometry inside block definitions
+            for block_def_obj, original_children in block_defs.items():
+                new_draft_children = [self._create_and_parent_geometry(child) for child in original_children]
+                block_def_obj.Links = [obj for obj in new_draft_children if obj]
+                self.all_originals_to_delete.update(original_children)
+
+            # Process top-level geometry
+            for part_obj in top_geo:
+                self._create_and_parent_geometry(part_obj)
+            self.all_originals_to_delete.update(top_geo)
+
+            # Process placeholders like Text and Dimensions
+            self._create_from_placeholders(placeholders)
+
+            # Perform all deletions at once
+            self._delete_objects_in_batch()
+
+        except Exception as e:
+            self.doc.abortTransaction()
+            FCC.PrintError(f"Aborting DXF post-processing due to an error: {e}\n")
+            import traceback
+            traceback.print_exc()
+            return
+        finally:
+            self.doc.commitTransaction()
+
+        self._apply_gui_styles()
+        self._cleanup_organizational_groups()
+
+        self.doc.recompute()
+        FCC.PrintMessage("--- Draft post-processing finished. ---\n")
