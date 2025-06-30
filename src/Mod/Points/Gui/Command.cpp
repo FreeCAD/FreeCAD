@@ -199,7 +199,7 @@ CmdPointsTransform::CmdPointsTransform()
     sAppModule = "Points";
     sGroup = QT_TR_NOOP("Points");
     sMenuText = QT_TR_NOOP("Transform Points");
-    sToolTipText = QT_TR_NOOP("Tests to transform a point cloud");
+    sToolTipText = QT_TR_NOOP("Performs tests to transform a point cloud");
     sWhatsThis = "Points_Transform";
     sStatusTip = sToolTipText;
     sPixmap = "Test1";
