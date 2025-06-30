@@ -482,7 +482,7 @@ CmdRobotTrajectoryCompound::CmdRobotTrajectoryCompound()
     sAppModule = "Robot";
     sGroup = QT_TR_NOOP("Robot");
     sMenuText = QT_TR_NOOP("Trajectory Compound…");
-    sToolTipText = QT_TR_NOOP("Groups and connects some trajectories to one");
+    sToolTipText = QT_TR_NOOP("Groups and connects multiple trajectories into one");
     sWhatsThis = "Robot_TrajectoryCompound";
     sStatusTip = sToolTipText;
     sPixmap = "Robot_TrajectoryCompound";
