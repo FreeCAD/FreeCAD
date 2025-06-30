@@ -23,14 +23,13 @@
    <item>
     <widget class="QGroupBox" name="groupBox_3">
      <property name="title">
-      <string>Export options</string>
+      <string>Export Options</string>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_3">
       <item>
        <widget class="Gui::PrefCheckBox" name="checkBox_useCustomWebGLTemplate">
         <property name="toolTip">
-         <string>Use a custom WebGL HTML template for export. 
-If unchecked, the default template will be used.
+         <string>A custom WebGL HTML template is used for export. Otherwise, the default template will be used.
 
 The default template is located at:
 &lt;FreeCAD installation directory&gt;/Resources/Mod/BIM/templates/webgl_export_template.html </string>
@@ -68,7 +67,7 @@ The default template is located at:
            <bool>false</bool>
           </property>
           <property name="toolTip">
-           <string>The path to your custom WebGL HTML template</string>
+           <string>The path to the custom WebGL HTML template</string>
           </property>
           <property name="prefEntry" stdset="0">
            <cstring>WebGLTemplateCustomPath</cstring>
