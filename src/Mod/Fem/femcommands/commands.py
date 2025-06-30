@@ -731,7 +731,9 @@ class _MeshClear(CommandManager):
     def __init__(self):
         super().__init__()
         self.menutext = Qt.QT_TRANSLATE_NOOP("FEM_MeshClear", "Clear FEM Mesh")
-        self.tooltip = Qt.QT_TRANSLATE_NOOP("FEM_MeshClear", "Clears the mesh of an FEM mesh object")
+        self.tooltip = Qt.QT_TRANSLATE_NOOP(
+            "FEM_MeshClear", "Clears the mesh of an FEM mesh object"
+        )
         self.is_active = "with_femmesh"
 
     def Activated(self):
