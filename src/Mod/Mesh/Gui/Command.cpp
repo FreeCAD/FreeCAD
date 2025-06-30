@@ -242,7 +242,7 @@ CmdMeshIntersection::CmdMeshIntersection()
     sAppModule = "Mesh";
     sGroup = QT_TR_NOOP("Mesh");
     sMenuText = QT_TR_NOOP("Intersection");
-    sToolTipText = QT_TR_NOOP("Intersects the selected meshes");
+    sToolTipText = QT_TR_NOOP("Creates a boolean intersection from the selected meshes");
     sWhatsThis = "Mesh_Intersection";
     sStatusTip = sToolTipText;
     sPixmap = "Mesh_Intersection";
