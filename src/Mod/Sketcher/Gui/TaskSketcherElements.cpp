@@ -61,29 +61,52 @@ using namespace Gui::TaskView;
 
 // Translation block for context menu: do not remove
 #if 0
-QT_TRANSLATE_NOOP("SketcherGui::ElementView", "Point coincidence");
-QT_TRANSLATE_NOOP("SketcherGui::ElementView", "Point on object");
-QT_TRANSLATE_NOOP("SketcherGui::ElementView", "Vertical constraint");
-QT_TRANSLATE_NOOP("SketcherGui::ElementView", "Horizontal constraint");
-QT_TRANSLATE_NOOP("SketcherGui::ElementView", "Parallel constraint");
-QT_TRANSLATE_NOOP("SketcherGui::ElementView", "Perpendicular constraint");
-QT_TRANSLATE_NOOP("SketcherGui::ElementView", "Tangent constraint");
-QT_TRANSLATE_NOOP("SketcherGui::ElementView", "Equal constraint");
-QT_TRANSLATE_NOOP("SketcherGui::ElementView", "Symmetric constraint");
-QT_TRANSLATE_NOOP("SketcherGui::ElementView", "Block constraint");
-QT_TRANSLATE_NOOP("SketcherGui::ElementView", "Lock");
-QT_TRANSLATE_NOOP("SketcherGui::ElementView", "Horizontal dimension");
-QT_TRANSLATE_NOOP("SketcherGui::ElementView", "Vertical dimension");
-QT_TRANSLATE_NOOP("SketcherGui::ElementView", "Length dimension");
-QT_TRANSLATE_NOOP("SketcherGui::ElementView", "Radius");
-QT_TRANSLATE_NOOP("SketcherGui::ElementView", "Diameter");
-QT_TRANSLATE_NOOP("SketcherGui::ElementView", "Radius or diameter");
-QT_TRANSLATE_NOOP("SketcherGui::ElementView", "Angle");
-QT_TRANSLATE_NOOP("SketcherGui::ElementView", "Toggle construction geometry");
-QT_TRANSLATE_NOOP("SketcherGui::ElementView", "Select constraints");
-QT_TRANSLATE_NOOP("SketcherGui::ElementView", "Select origin");
-QT_TRANSLATE_NOOP("SketcherGui::ElementView", "Select horizontal axis");
-QT_TRANSLATE_NOOP("SketcherGui::ElementView", "Select vertical axis");
+QT_TRANSLATE_NOOP("SketcherGui::ElementView", "Point Coincidence");
+
+QT_TRANSLATE_NOOP("SketcherGui::ElementView", "Point on Object");
+
+QT_TRANSLATE_NOOP("SketcherGui::ElementView", "Vertical Constraint");
+
+QT_TRANSLATE_NOOP("SketcherGui::ElementView", "Horizontal Constraint");
+
+QT_TRANSLATE_NOOP("SketcherGui::ElementView", "Parallel Constraint");
+
+QT_TRANSLATE_NOOP("SketcherGui::ElementView", "Perpendicular Constraint");
+
+QT_TRANSLATE_NOOP("SketcherGui::ElementView", "Tangent Constraint");
+
+QT_TRANSLATE_NOOP("SketcherGui::ElementView", "Equal Constraint");
+
+QT_TRANSLATE_NOOP("SketcherGui::ElementView", "Symmetric Constraint");
+
+QT_TRANSLATE_NOOP("SketcherGui::ElementView", "Block Constraint");
+
+QT_TRANSLATE_NOOP("SketcherGui::ElementView", "Lock Position");
+
+QT_TRANSLATE_NOOP("SketcherGui::ElementView", "Horizontal Dimension");
+
+QT_TRANSLATE_NOOP("SketcherGui::ElementView", "Vertical Dimension");
+
+QT_TRANSLATE_NOOP("SketcherGui::ElementView", "Length Dimension");
+
+QT_TRANSLATE_NOOP("SketcherGui::ElementView", "Radius Dimension");
+
+QT_TRANSLATE_NOOP("SketcherGui::ElementView", "Diameter Dimension");
+
+QT_TRANSLATE_NOOP("SketcherGui::ElementView", "Radius or Diameter Dimension");
+
+QT_TRANSLATE_NOOP("SketcherGui::ElementView", "Angle Dimension");
+
+QT_TRANSLATE_NOOP("SketcherGui::ElementView", "Construction Geometry");
+
+QT_TRANSLATE_NOOP("SketcherGui::ElementView", "Select Constraints");
+
+QT_TRANSLATE_NOOP("SketcherGui::ElementView", "Select Origin");
+
+QT_TRANSLATE_NOOP("SketcherGui::ElementView", "Select Horizontal Axis");
+
+QT_TRANSLATE_NOOP("SketcherGui::ElementView", "Select Vertical Axis");
+
 #endif
 
 /// Inserts a QAction into an existing menu

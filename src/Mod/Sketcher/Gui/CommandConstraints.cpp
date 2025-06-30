@@ -3493,7 +3493,7 @@ CmdSketcherConstrainLock::CmdSketcherConstrainLock()
 {
     sAppModule = "Sketcher";
     sGroup = "Sketcher";
-    sMenuText = QT_TR_NOOP("Lock");
+    sMenuText = QT_TR_NOOP("Lock Position");
     sToolTipText = QT_TR_NOOP("Constrains the selected vertices by adding horizontal and vertical distance constraints");
     sWhatsThis = "Sketcher_ConstrainLock";
     sStatusTip = sToolTipText;
