@@ -5964,10 +5964,10 @@ int SketchObject::exposeInternalGeometryForType<Part::GeomBSplineCurve>(const in
             // AND these weights are equal, constrain them to be equal
             Sketcher::Constraint* newConstr2 = new Sketcher::Constraint();
             newConstr2->Type = Sketcher::Equal;
-            newConstr->setGeoId(0, currentgeoid + incrgeo);
-            newConstr->setPosId(0, PointPos::none);
-            newConstr->setGeoId(1, controlpointgeoids[0]);
-            newConstr->setPosId(1, PointPos::none);
+            newConstr2->setGeoId(0, currentgeoid + incrgeo);
+            newConstr2->setPosId(0, PointPos::none);
+            newConstr2->setGeoId(1, controlpointgeoids[0]);
+            newConstr2->setPosId(1, PointPos::none);
 
             icon.push_back(newConstr2);
         }
