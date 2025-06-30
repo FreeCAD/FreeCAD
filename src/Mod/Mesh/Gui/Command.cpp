@@ -982,7 +982,7 @@ CmdMeshPolySplit::CmdMeshPolySplit()
     sAppModule = "Mesh";
     sGroup = QT_TR_NOOP("Mesh");
     sMenuText = QT_TR_NOOP("Split");
-    sToolTipText = QT_TR_NOOP("Splits a mesh into two meshes");
+    sToolTipText = QT_TR_NOOP("Splits a mesh into 2 meshes");
     sWhatsThis = "Mesh_PolySplit";
     sStatusTip = sToolTipText;
 }
