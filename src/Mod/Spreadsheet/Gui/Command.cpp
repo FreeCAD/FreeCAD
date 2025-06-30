@@ -120,7 +120,7 @@ CmdSpreadsheetSplitCell::CmdSpreadsheetSplitCell()
     sAppModule = "Spreadsheet";
     sGroup = QT_TR_NOOP("Spreadsheet");
     sMenuText = QT_TR_NOOP("Sp&lit Cell");
-    sToolTipText = QT_TR_NOOP("Splits the selected and previously merged cell");
+    sToolTipText = QT_TR_NOOP("Splits a previously merged cell");
     sWhatsThis = "Spreadsheet_SplitCell";
     sStatusTip = sToolTipText;
     sPixmap = "SpreadsheetSplitCell";
