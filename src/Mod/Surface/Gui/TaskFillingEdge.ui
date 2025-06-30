@@ -23,8 +23,7 @@
    <item row="0" column="0">
     <widget class="QGroupBox" name="groupBox">
      <property name="toolTip">
-      <string>Edges that will be used to constrain the surface,
-that is, the surface will be forced to pass through these edges</string>
+      <string>Constrains the surface to pass through the selected edges</string>
      </property>
      <property name="title">
       <string>Non-Boundary Edges</string>
