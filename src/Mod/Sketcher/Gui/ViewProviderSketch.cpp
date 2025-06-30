@@ -3268,7 +3268,7 @@ void ViewProviderSketch::UpdateSolverInformation()
         signalSetUp(QStringLiteral("under_constrained"),
                     tr("Under-constrained:") + QLatin1String(" "),
                     QStringLiteral("#dofs"),
-                    tr("%n Degrees-Of-Freedom", "", dofs));
+                    tr("%n Degrees of Freedom", "", dofs));
     }
     else {
         signalSetUp(

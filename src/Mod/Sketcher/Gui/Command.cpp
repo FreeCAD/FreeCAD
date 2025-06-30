@@ -830,7 +830,7 @@ CmdSketcherValidateSketch::CmdSketcherValidateSketch()
     sGroup = "Sketcher";
     sMenuText = QT_TR_NOOP("Validate Sketch…");
     sToolTipText = QT_TR_NOOP("Validates a sketch by checking for missing coincidences,\n"
-                              "invalid constraints and degenerated geometry");
+                              "invalid constraints, and degenerate geometry");
     sWhatsThis = "Sketcher_ValidateSketch";
     sStatusTip = sToolTipText;
     eType = 0;
@@ -996,7 +996,7 @@ CmdSketcherMergeSketches::CmdSketcherMergeSketches()
     sAppModule = "Sketcher";
     sGroup = "Sketcher";
     sMenuText = QT_TR_NOOP("Merge Sketches");
-    sToolTipText = QT_TR_NOOP("Creates a new sketch from merging at least 2 selected sketches");
+    sToolTipText = QT_TR_NOOP("Creates a new sketch by merging at least 2 selected sketches");
     sWhatsThis = "Sketcher_MergeSketches";
     sStatusTip = sToolTipText;
     eType = 0;
@@ -1170,7 +1170,7 @@ public:
     void languageChange()
     {
         gridAutoSpacing->setText(tr("Grid auto spacing"));
-        gridAutoSpacing->setToolTip(tr("Resizes the grid automatically depending on zoom"));
+        gridAutoSpacing->setToolTip(tr("Automatically adjusts the grid spacing based on the zoom level"));
         gridAutoSpacing->setStatusTip(gridAutoSpacing->toolTip());
 
         sizeLabel->setText(tr("Spacing"));
@@ -1276,7 +1276,7 @@ CmdSketcherGrid::CmdSketcherGrid()
     sGroup = "Sketcher";
     sMenuText = QT_TR_NOOP("Toggle Grid");
     sToolTipText =
-        QT_TR_NOOP("Toggles the grid in the active sketch");
+        QT_TR_NOOP("Toggles the grid display in the active sketch");
     sWhatsThis = "Sketcher_Grid";
     sStatusTip = sToolTipText;
     eType = 0;
@@ -1430,7 +1430,7 @@ public:
 
         angleLabel->setText(tr("Snap angle"));
         snapAngle->setToolTip(
-            tr("Angular step for tools that use 'Snap at angle' (line for instance). Hold Ctrl to "
+            tr("Sets the angular step for tools using 'Snap at angle' (e.g., line). Hold Ctrl to "
                "enable 'Snap at angle'. The angle starts from the positive X-axis of the sketch."));
     }
 
@@ -1797,7 +1797,7 @@ CmdRenderingOrder::CmdRenderingOrder()
     sAppModule = "Sketcher";
     sGroup = "Sketcher";
     sMenuText = QT_TR_NOOP("Rendering Order");
-    sToolTipText = QT_TR_NOOP("Reorders the items in the rendering order");
+    sToolTipText = QT_TR_NOOP("Reorders items in the rendering order");
     sWhatsThis = "Sketcher_RenderingOrder";
     sStatusTip = sToolTipText;
     eType = 0;

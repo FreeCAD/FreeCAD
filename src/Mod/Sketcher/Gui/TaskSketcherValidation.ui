@@ -144,7 +144,7 @@ This is done by analyzing the sketch geometries and constraints.</string>
    <item row="3" column="0">
     <widget class="QGroupBox" name="groupBox_6">
      <property name="title">
-      <string>Degenerated Geometry</string>
+      <string>Degenerate Geometry</string>
      </property>
      <layout class="QGridLayout" name="gridLayout_6">
       <item row="0" column="0">

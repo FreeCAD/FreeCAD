@@ -886,8 +886,8 @@ CmdSketcherInsertKnot::CmdSketcherInsertKnot()
     sGroup = "Sketcher";
     sMenuText = QT_TR_NOOP("Insert Knot");
     sToolTipText =
-        QT_TR_NOOP("Inserts a knot ata given parameter. If a knot already exists at that "
-                   "parameter, its multiplicity is increased by one.");
+        QT_TR_NOOP("Inserts a knot at a given parameter. If a knot already exists at that "
+                   "parameter, its multiplicity is increased by 1.");
     sWhatsThis = "Sketcher_BSplineInsertKnot";
     sStatusTip = sToolTipText;
     sPixmap = "Sketcher_BSplineInsertKnot";

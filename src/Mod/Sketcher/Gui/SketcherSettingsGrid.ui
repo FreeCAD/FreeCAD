@@ -32,7 +32,7 @@
          <bool>true</bool>
         </property>
         <property name="toolTip">
-         <string>Shows a grid in an active sketch</string>
+         <string>Displays a grid in the active sketch</string>
         </property>
         <property name="text">
          <string>Grid</string>
@@ -123,7 +123,7 @@ If 'Grid auto-apacing' is enabled, it will be used as the base value</string>
        <widget class="Gui::PrefSpinBox" name="gridSizePixelThreshold">
         <property name="toolTip">
          <string>While using 'Grid auto-spacing', this sets a pixel threshold for grid spacing.
-The grid spacing change if it becomes smaller than this number of pixel.</string>
+The grid spacing changes if it becomes smaller than the specified pixel size.</string>
         </property>
         <property name="suffix">
          <string notr="true"> px</string>
@@ -281,7 +281,7 @@ The grid spacing change if it becomes smaller than this number of pixel.</string
          <item row="0" column="0">
           <widget class="QLabel" name="label_gridNumberSubdivision">
            <property name="text">
-            <string>Major grid line every</string>
+            <string>Major grid line interval</string>
            </property>
            <property name="buddy">
             <cstring>gridNumberSubdivision</cstring>
@@ -291,7 +291,7 @@ The grid spacing change if it becomes smaller than this number of pixel.</string
          <item row="0" column="1">
           <widget class="Gui::PrefSpinBox" name="gridNumberSubdivision">
            <property name="toolTip">
-            <string>Shows a major line every 'n' lines. Enter 1 to disable major lines.</string>
+            <string>Displays a major grid line every 'n' minor lines. Enter 1 to disable major lines</string>
            </property>
            <property name="minimum">
             <number>1</number>

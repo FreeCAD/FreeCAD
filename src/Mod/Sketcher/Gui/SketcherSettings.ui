@@ -104,7 +104,7 @@ Requires to re-enter edit mode to take effect.</string>
       <item>
        <widget class="Gui::PrefCheckBox" name="checkBoxAutoRemoveRedundants">
         <property name="toolTip">
-         <string>Removes new constraints that would be redundant automatically</string>
+         <string>Automatically removes newly added redundant constraints</string>
         </property>
         <property name="text">
          <string>Auto remove redundant constraints</string>
@@ -218,7 +218,7 @@ Requires to re-enter edit mode to take effect.</string>
       <item>
        <widget class="Gui::PrefCheckBox" name="checkBoxAddExtGeo">
         <property name="toolTip">
-         <string>Adds external geometry always as construction geometry. Otherwise it is added according to the current construction mode.</string>
+         <string>Always adds external geometry as construction geometry. Otherwise, it is added according to the current construction mode.</string>
         </property>
         <property name="text">
          <string>Always add external geometry as reference</string>

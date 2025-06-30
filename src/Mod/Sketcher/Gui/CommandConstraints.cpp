@@ -847,7 +847,7 @@ int SketchSelection::setUp()
             SketchObj = static_cast<Sketcher::SketchObject*>(selection[0].getObject());
             // check if the none sketch object is the support of the sketch
             if (selection[1].getObject() != SketchObj->AttachmentSupport.getValue()) {
-                ErrorMsg = QObject::tr("Only the sketch and its support are allowed to be selected");
+                ErrorMsg = QObject::tr("Only the sketch and its support may be selected");
                 return -1;
             }
             // assume always a Part::Feature derived object as support
@@ -859,7 +859,7 @@ int SketchSelection::setUp()
             SketchObj = static_cast<Sketcher::SketchObject*>(selection[1].getObject());
             // check if the none sketch object is the support of the sketch
             if (selection[0].getObject() != SketchObj->AttachmentSupport.getValue()) {
-                ErrorMsg = QObject::tr("Only the sketch and its support are allowed to be selected");
+                ErrorMsg = QObject::tr("Only the sketch and its support  may be selected");
                 return -1;
             }
             // assume always a Part::Feature derived object as support
@@ -3168,7 +3168,7 @@ void horVerActivated(CmdSketcherConstraint* cmd, std::string type)
         Gui::TranslatedUserWarning(
             Obj,
             QObject::tr("Impossible constraint"),
-            QObject::tr("The selected items cannot accept a horizontal or vertical constraint!"));
+            QObject::tr("The selected items cannot be constrained horizontally or vertically!");
         return;
     }
 
@@ -6765,7 +6765,7 @@ CmdSketcherConstrainTangent::CmdSketcherConstrainTangent()
     sAppModule = "Sketcher";
     sGroup = "Sketcher";
     sMenuText = QT_TR_NOOP("Tangent/Collinear Constraint");
-    sToolTipText = QT_TR_NOOP("Constraints the selected elements to be tangent or collinear");
+    sToolTipText = QT_TR_NOOP("Constrains the selected elements to be tangent or collinear");
     sWhatsThis = "Sketcher_ConstrainTangent";
     sStatusTip = sToolTipText;
     sPixmap = "Constraint_Tangent";
@@ -8689,7 +8689,7 @@ CmdSketcherCompConstrainRadDia::CmdSketcherCompConstrainRadDia()
     sAppModule = "Sketcher";
     sGroup = "Sketcher";
     sMenuText = QT_TR_NOOP("Radius/Diameter Dimension");
-    sToolTipText = QT_TR_NOOP("Constrains an arc or a circle");
+    sToolTipText = QT_TR_NOOP("Constrains the radius or diameter of an arc or a circle");
     sWhatsThis = "Sketcher_CompConstrainRadDia";
     sStatusTip = sToolTipText;
     sAccel = "R";

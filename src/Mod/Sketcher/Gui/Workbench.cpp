@@ -40,7 +40,7 @@ using namespace SketcherGui;
     qApp->translate("Workbench", "Edit mode");
     qApp->translate("Workbench", "Geometries");
     qApp->translate("Workbench", "Constraints");
-    qApp->translate("Workbench", "Sketcher Tools");
+    qApp->translate("Workbench", "Sketcher Helpers");
     qApp->translate("Workbench", "B-Spline Tools");
     qApp->translate("Workbench", "Visual Tools");
     qApp->translate("Workbench", "Virtual Space");
@@ -166,7 +166,7 @@ inline const QStringList editModeToolbarNames()
                         QStringLiteral("Sketcher Tools"),
                         QStringLiteral("B-Spline Tools"),
                         QStringLiteral("Visual Helpers"),
-                        QStringLiteral("Edit Tools")};
+                        QStringLiteral("Sketcher Edit Tools")};
 }
 
 inline const QStringList nonEditModeToolbarNames()

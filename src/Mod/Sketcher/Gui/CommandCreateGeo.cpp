@@ -1624,7 +1624,7 @@ CmdSketcherTrimming::CmdSketcherTrimming()
     sAppModule = "Sketcher";
     sGroup = "Sketcher";
     sMenuText = QT_TR_NOOP("Trim Edge");
-    sToolTipText = QT_TR_NOOP("Trims an edge with respect to the picked position");
+    sToolTipText = QT_TR_NOOP("Trims an edge with respect to the selected position");
     sWhatsThis = "Sketcher_Trimming";
     sStatusTip = sToolTipText;
     sPixmap = "Sketcher_Trimming";
@@ -1654,7 +1654,7 @@ CmdSketcherExtend::CmdSketcherExtend()
     sAppModule = "Sketcher";
     sGroup = "Sketcher";
     sMenuText = QT_TR_NOOP("Extend Edge");
-    sToolTipText = QT_TR_NOOP("Extends an edge with respect to the picked position");
+    sToolTipText = QT_TR_NOOP("Extends an edge with respect to the selected position");
     sWhatsThis = "Sketcher_Extend";
     sStatusTip = sToolTipText;
     sPixmap = "Sketcher_Extend";
@@ -1684,7 +1684,7 @@ CmdSketcherSplit::CmdSketcherSplit()
     sAppModule = "Sketcher";
     sGroup = "Sketcher";
     sMenuText = QT_TR_NOOP("Split Edge");
-    sToolTipText = QT_TR_NOOP("Splits an edge into two while preserving constraints");
+    sToolTipText = QT_TR_NOOP("Splits an edge into 2 segements while preserving constraints");
     sWhatsThis = "Sketcher_Split";
     sStatusTip = sToolTipText;
     sPixmap = "Sketcher_Split";
@@ -1716,7 +1716,7 @@ public:
         sGroup = "Sketcher";
         sMenuText = QT_TR_NOOP("External Geometry");
         sToolTipText =
-            QT_TR_NOOP("Creates sketch elements linked to geometries outside the sketch");
+            QT_TR_NOOP("Creates sketch elements linked to geometry defined outside the sketch");
         sWhatsThis = "Sketcher_CompExternal";
         sStatusTip = sToolTipText;
         sAccel = "G, X";

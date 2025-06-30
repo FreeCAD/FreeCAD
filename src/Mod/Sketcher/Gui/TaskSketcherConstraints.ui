@@ -84,7 +84,7 @@
         </size>
        </property>
        <property name="toolTip">
-        <string>Toggles the visibility of all listed constraints from 3D view</string>
+        <string>Toggles the visibility of all listed constraints from the 3D view</string>
        </property>
        <property name="text">
         <string/>

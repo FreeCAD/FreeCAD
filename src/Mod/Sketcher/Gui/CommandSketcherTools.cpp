@@ -2071,7 +2071,7 @@ CmdSketcherDeleteAllGeometry::CmdSketcherDeleteAllGeometry()
 {
     sAppModule = "Sketcher";
     sGroup = "Sketcher";
-    sMenuText = QT_TR_NOOP("Delete all Geometry");
+    sMenuText = QT_TR_NOOP("Delete All Geometry");
     sToolTipText = QT_TR_NOOP("Deletes all geometry and their constraints in the current sketch, "
                               "with the exception of external geometry");
     sWhatsThis = "Sketcher_DeleteAllGeometry";
@@ -2136,7 +2136,7 @@ CmdSketcherDeleteAllConstraints::CmdSketcherDeleteAllConstraints()
 {
     sAppModule = "Sketcher";
     sGroup = "Sketcher";
-    sMenuText = QT_TR_NOOP("Delete all Constraints");
+    sMenuText = QT_TR_NOOP("Delete All Constraints");
     sToolTipText = QT_TR_NOOP("Deletes all constraints in the sketch");
     sWhatsThis = "Sketcher_DeleteAllConstraints";
     sStatusTip = sToolTipText;
@@ -2474,7 +2474,7 @@ CmdSketcherTranslate::CmdSketcherTranslate()
 {
     sAppModule = "Sketcher";
     sGroup = "Sketcher";
-    sMenuText = QT_TR_NOOP("Move/Array Transform");
+    sMenuText = QT_TR_NOOP("Move / Array Transform");
     sToolTipText = QT_TR_NOOP("Translates the selected geometries and enables the creation of 'i' * 'j' copies");
     sWhatsThis = "Sketcher_Translate";
     sStatusTip = sToolTipText;

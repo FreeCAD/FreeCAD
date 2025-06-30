@@ -147,7 +147,7 @@ BFGS solver uses the Broyden–Fletcher–Goldfarb–Shanno algorithm.</string>
      <item>
       <widget class="QLabel" name="labelSketchSizeMultiplier">
        <property name="toolTip">
-        <string>Multiplies the maximum iterations value by the sketch size</string>
+        <string>Scales the maximum iteration count based on the sketch size</string>
        </property>
        <property name="text">
         <string>Sketch size multiplier</string>
@@ -163,7 +163,7 @@ BFGS solver uses the Broyden–Fletcher–Goldfarb–Shanno algorithm.</string>
         </sizepolicy>
        </property>
        <property name="toolTip">
-        <string>Multiplies the maximum iterations by the number of parameters</string>
+        <string>Scales the maximum iteration count based on the number of parameters</string>
        </property>
        <property name="layoutDirection">
         <enum>Qt::RightToLeft</enum>
@@ -367,7 +367,7 @@ Eigen Sparse QR algorithm is optimized for sparse matrices; usually faster</stri
      <item>
       <widget class="QLabel" name="labelRedundantSolver">
        <property name="toolTip">
-        <string>Solving algorithm used for determination of redundant constraints</string>
+        <string>Solving algorithm used to detect redundant constraints</string>
        </property>
        <property name="text">
         <string>Redundant solver</string>
@@ -412,10 +412,10 @@ Eigen Sparse QR algorithm is optimized for sparse matrices; usually faster</stri
      <item>
       <widget class="QLabel" name="labelRedundantSolverMaxIterations">
        <property name="toolTip">
-        <string>Maximum number of iterations of the solver used for determination of redundant constraints</string>
+        <string>Maximum number of iterations of the solver used to detect redundant constraints</string>
        </property>
        <property name="text">
-        <string>Redundant max. iterations</string>
+        <string>Maximum redundant solver iterations</string>
        </property>
       </widget>
      </item>

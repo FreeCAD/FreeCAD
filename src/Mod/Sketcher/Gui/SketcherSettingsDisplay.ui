@@ -89,7 +89,7 @@
       <item row="9" column="0">
        <widget class="Gui::PrefCheckBox" name="checkBoxShowDimensionalName">
         <property name="toolTip">
-         <string>Displays the name on dimensional constraints if they exist</string>
+         <string>Displays names of dimensional constraints, if they exist</string>
         </property>
         <property name="text">
          <string>Show dimensional constraint name with format</string>
@@ -141,7 +141,7 @@ Defaults to: %N = %V
       <item row="4" column="0" colspan="2">
        <widget class="Gui::PrefCheckBox" name="continueMode">
         <property name="toolTip">
-         <string>Keeps the current Sketcher creation active after creation</string>
+         <string>Keeps the current Sketcher tool active after creating geometry</string>
         </property>
         <property name="text">
          <string>Geometry creation &quot;Continue Mode&quot;</string>
@@ -218,7 +218,7 @@ Supports all unit systems except 'US customary' and 'Building US/Euro'.</string>
       <item row="5" column="0" colspan="2">
        <widget class="Gui::PrefCheckBox" name="constraintMode">
         <property name="toolTip">
-         <string>Keeps the current constraint creation tool active after creation</string>
+         <string>Keeps the current Sketcher constraint tool active after creating geometry</string>
         </property>
         <property name="text">
          <string>Constraint creation &quot;Continue Mode&quot;</string>
@@ -240,7 +240,7 @@ Supports all unit systems except 'US customary' and 'Building US/Euro'.</string>
          <string>Displays cursor position coordinates next to the cursor while editing a sketch</string>
         </property>
         <property name="text">
-         <string>Show coordinates next to cursor while editing</string>
+         <string>Displays coordinates next to the cursor while editing</string>
         </property>
         <property name="checked">
          <bool>true</bool>
@@ -384,7 +384,7 @@ Supports all unit systems except 'US customary' and 'Building US/Euro'.</string>
       <item>
        <widget class="Gui::PrefCheckBox" name="checkBoxTVRestoreCamera">
         <property name="toolTip">
-         <string>Moves the camera back to where it was before the sketch was opened on closing</string>
+         <string>Restores the camera position after closing the sketch</string>
         </property>
         <property name="text">
          <string>Restore camera position after editing</string>
@@ -423,7 +423,7 @@ Works only when &quot;Restore camera position after editing&quot; is enabled.</s
       <item>
        <widget class="Gui::PrefCheckBox" name="checkBoxTVSectionView">
         <property name="toolTip">
-         <string>Opens a sketch in section view mode, where only objects behind the sketch plane are visible</string>
+         <string>Opens a sketch in section view mode, showing only objects behind the sketch plane</string>
         </property>
         <property name="text">
          <string>Open sketch in section view mode</string>
