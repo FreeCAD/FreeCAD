@@ -402,7 +402,8 @@ CmdSketcherStopOperation::CmdSketcherStopOperation()
     sGroup = "Sketcher";
     sMenuText = QT_TR_NOOP("Stop Operation");
     sToolTipText = QT_TR_NOOP("Stops the active operation while in edit mode");
-    "(drawing, constraining, etc.)");
+
+
     sWhatsThis = "Sketcher_StopOperation";
     sStatusTip = sToolTipText;
     sPixmap = "process-stop";

@@ -3168,7 +3168,7 @@ void horVerActivated(CmdSketcherConstraint* cmd, std::string type)
         Gui::TranslatedUserWarning(
             Obj,
             QObject::tr("Impossible constraint"),
-            QObject::tr("The selected items cannot be constrained horizontally or vertically!");
+            QObject::tr("The selected items cannot be constrained horizontally or vertically!"));
         return;
     }
 
