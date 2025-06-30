@@ -326,7 +326,7 @@ CmdPointsPolyCut::CmdPointsPolyCut()
     sAppModule = "Points";
     sGroup = QT_TR_NOOP("Points");
     sMenuText = QT_TR_NOOP("Cut Point Cloud");
-    sToolTipText = QT_TR_NOOP("Cuts a point cloud with a picked polygon");
+    sToolTipText = QT_TR_NOOP("Cuts a point cloud with a selected polygon");
     sWhatsThis = "Points_PolyCut";
     sStatusTip = sToolTipText;
     sPixmap = "PolygonPick";
