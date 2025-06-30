@@ -139,13 +139,18 @@ public:
     /// utility function to check if `geoId` is one of the geometries
     bool involvesGeoId(int geoId) const
     {
-        return First == geoId || Second == geoId || Third == geoId;
+        return std::any_of(elements.begin(), elements.end(), [geoId](const GeoElementId& elem) {
+            return elem.GeoId == geoId;
+        });
     }
     /// utility function to check if (`geoId`, `posId`) is one of the points/curves
     bool involvesGeoIdAndPosId(int geoId, PointPos posId) const
     {
-        return (First == geoId && FirstPos == posId) || (Second == geoId && SecondPos == posId)
-            || (Third == geoId && ThirdPos == posId);
+        const GeoElementId target(geoId, posId);
+
+        auto it = std::find(elements.begin(), elements.end(), target);
+
+        return it != elements.end();
     }
 
     std::string typeToString() const
@@ -162,8 +167,20 @@ public:
 
     friend class PropertyConstraintList;
 
+    GeoElementId getElement(int index) const;
+    int getGeoId(int index) const;
+    PointPos getPosId(int index) const;
+    int getPosIdAsInt(int index) const;
+    bool hasElement(int index) const;
+    void setElement(int index, GeoElementId elt);
+    void setGeoId(int index, int geoId);
+    void setPosId(int index, PointPos pos);
+    void setPosId(int index, int pos);
+    void swapElements(int index1, int index2);
+
 private:
     Constraint(const Constraint&) = default;  // only for internal use
+    bool ensureElementExists(int index);
 
 private:
     double Value;
@@ -210,12 +227,6 @@ public:
     ConstraintType Type;
     InternalAlignmentType AlignmentType;
     std::string Name;
-    int First;
-    PointPos FirstPos;
-    int Second;
-    PointPos SecondPos;
-    int Third;
-    PointPos ThirdPos;
     float LabelDistance;
     float LabelPosition;
     bool isDriving;
@@ -228,6 +239,9 @@ public:
 
 protected:
     boost::uuids::uuid tag;
+
+private:
+    std::vector<GeoElementId> elements;
 };
 
 }  // namespace Sketcher
