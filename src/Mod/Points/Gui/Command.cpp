@@ -436,7 +436,7 @@ CmdPointsStructure::CmdPointsStructure()
     sAppModule = "Points";
     sGroup = QT_TR_NOOP("Points");
     sMenuText = QT_TR_NOOP("Structured Point Cloud");
-    sToolTipText = QT_TR_NOOP("Convert points to a structured point cloud");
+    sToolTipText = QT_TR_NOOP("Converts points to a structured point cloud");
     sWhatsThis = "Points_Structure";
     sStatusTip = sToolTipText;
     sPixmap = "Points_Structure";
