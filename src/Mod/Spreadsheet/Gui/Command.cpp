@@ -337,7 +337,7 @@ CmdSpreadsheetAlignCenter::CmdSpreadsheetAlignCenter()
     sAppModule = "Spreadsheet";
     sGroup = QT_TR_NOOP("Spreadsheet");
     sMenuText = QT_TR_NOOP("Align Horizontal &Center");
-    sToolTipText = QT_TR_NOOP("Horizontally center-aligns the contents of the selected cells");
+    sToolTipText = QT_TR_NOOP("Aligns cell contents to the horizontal center");
     sWhatsThis = "Spreadsheet_AlignCenter";
     sStatusTip = sToolTipText;
     sPixmap = "SpreadsheetAlignCenter";
