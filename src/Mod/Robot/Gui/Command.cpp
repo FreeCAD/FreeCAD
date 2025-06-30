@@ -162,7 +162,7 @@ CmdRobotConstraintAxle::CmdRobotConstraintAxle()
     sAppModule = "Robot";
     sGroup = QT_TR_NOOP("Robot");
     sMenuText = QT_TR_NOOP("Place Robot…");
-    sToolTipText = QT_TR_NOOP("Places a robot");
+    sToolTipText = QT_TR_NOOP("Places a robot in the document");
     sWhatsThis = "Robot_Create";
     sStatusTip = sToolTipText;
     sPixmap = "Robot_CreateRobot";
