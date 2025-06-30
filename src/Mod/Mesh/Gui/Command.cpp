@@ -830,7 +830,7 @@ CmdMeshPolyTrim::CmdMeshPolyTrim()
     sAppModule = "Mesh";
     sGroup = QT_TR_NOOP("Mesh");
     sMenuText = QT_TR_NOOP("Trim");
-    sToolTipText = QT_TR_NOOP("Trims a mesh with a picked polygon");
+    sToolTipText = QT_TR_NOOP("Trims a mesh with a selected polygon");
     sWhatsThis = "Mesh_PolyTrim";
     sStatusTip = QT_TR_NOOP("Trims a mesh with a picked polygon");
     sPixmap = "Mesh_PolyTrim";
