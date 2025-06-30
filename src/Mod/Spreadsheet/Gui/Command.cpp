@@ -280,7 +280,7 @@ CmdSpreadsheetAlignLeft::CmdSpreadsheetAlignLeft()
     sAppModule = "Spreadsheet";
     sGroup = QT_TR_NOOP("Spreadsheet");
     sMenuText = QT_TR_NOOP("Align &Left");
-    sToolTipText = QT_TR_NOOP("Left-aligns the contents of the selected cells");
+    sToolTipText = QT_TR_NOOP("Aligns cell contents to the left");
     sWhatsThis = "Spreadsheet_AlignLeft";
     sStatusTip = sToolTipText;
     sPixmap = "SpreadsheetAlignLeft";
