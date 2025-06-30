@@ -607,7 +607,17 @@ class ToolBitShape(Asset):
         prop_type = self.get_parameter_property_type(name)
         if prop_type in ("App::PropertyDistance", "App::PropertyLength", "App::PropertyAngle"):
             return FreeCAD.Units.Quantity(value)
-        return value
+        elif prop_type == "App::PropertyInteger":
+            return int(value)
+        elif prop_type == "App::PropertyFloat":
+            return float(value)
+        elif prop_type == "App::PropertyBool":
+            if value in ("True", "true", "1"):
+                return True
+            elif value in ("False", "false", "0"):
+                return False
+            return bool(value)
+        return str(value)
 
     def get_parameters(self) -> Dict[str, Any]:
         """
