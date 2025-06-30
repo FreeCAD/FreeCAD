@@ -394,7 +394,7 @@ CmdSpreadsheetAlignRight::CmdSpreadsheetAlignRight()
     sAppModule = "Spreadsheet";
     sGroup = QT_TR_NOOP("Spreadsheet");
     sMenuText = QT_TR_NOOP("Align &Right");
-    sToolTipText = QT_TR_NOOP("Right-aligns the contents of the selected cells");
+    sToolTipText = QT_TR_NOOP("Aligns cell contents to the right");
     sWhatsThis = "Spreadsheet_AlignRight";
     sStatusTip = sToolTipText;
     sPixmap = "SpreadsheetAlignRight";
