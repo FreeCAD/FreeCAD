@@ -599,7 +599,7 @@ CmdPoissonReconstruction::CmdPoissonReconstruction()
     sAppModule = "Reen";
     sGroup = QT_TR_NOOP("Reverse Engineering");
     sMenuText = QT_TR_NOOP("Poisson…");
-    sToolTipText = QT_TR_NOOP("Poisson surface reconstruction");
+    sToolTipText = QT_TR_NOOP("Performs Poisson surface reconstruction");
     sWhatsThis = "Reen_PoissonReconstruction";
     sStatusTip = sToolTipText;
 }
