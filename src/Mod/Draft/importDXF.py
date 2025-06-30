@@ -4285,73 +4285,130 @@ def readPreferences():
 
 def post_process_to_draft(doc, new_objects):
     """
-    Converts a list of newly created Part primitives and placeholders
-    into their corresponding Draft objects.
+    Converts newly created objects to Draft types using a multi-pass approach.
+    It reconstructs polyline compounds into non-parametric Part::Features
+    and upgrades standalone primitives to Draft objects.
     """
     if not new_objects:
         return
 
     FCC.PrintMessage("Post-processing {} objects to Draft types...\n".format(len(new_objects)))
 
-    objects_to_delete = []
+    # Data structures for the multi-pass operation
+    parent_to_edges_map = {}
+    objects_to_delete = set()
+    placeholders_to_process = []
+    standalone_primitives = []
 
-    for obj in list(new_objects): # Iterate over a copy
-        if App.isdeleted(obj):
+    # --- Pass 1: Data Collection and Sorting ---
+    #    Ensure an object is only classified into one category.
+    for obj in new_objects:
+        if not obj.isValid():
             continue
 
-        if obj.isDerivedFrom("Part::Feature"):
-            # Handles Part::Vertex, Part::Line, Part::Circle, Part::Compound,
-            # and Part::Features containing Ellipses/Splines.
-            try:
-                Draft.upgrade([obj], delete=True)
-            except Exception as e:
-                FCC.PrintWarning("Could not upgrade {} to Draft object: {}\n".format(obj.Label, str(e)))
+        is_polyline_compound = False
+        if obj.isDerivedFrom("Part::Compound"):
+            if obj.InList and obj.InList[0].isDerivedFrom("Part::Compound"):
+                if hasattr(obj, "Links") and obj.Links and all(c.isDerivedFrom("Part::Feature") and not c.isDerivedFrom("Part::Compound") for c in obj.Links):
+                    is_polyline_compound = True
 
+        if is_polyline_compound:
+            parent_block = obj.InList[0]
+            if parent_block not in parent_to_edges_map:
+                parent_to_edges_map[parent_block] = []
+
+            if hasattr(obj, "Links"):
+                for child in obj.Links:
+                    if hasattr(child, "Shape") and child.Shape.Edges:
+                        parent_to_edges_map[parent_block].extend(child.Shape.Edges)
+                        objects_to_delete.add(child)
+            objects_to_delete.add(obj)
+
+        # An object can only be a placeholder OR a standalone primitive, not both.
+        # This check prevents objects from being added to multiple lists.
         elif obj.isDerivedFrom("App::FeaturePython") and hasattr(obj, "DxfEntityType"):
-            # This is one of our placeholders
-            entity_type = obj.DxfEntityType
+            placeholders_to_process.append(obj)
 
+        # This check ensures that only objects NOT part of a polyline are treated as standalone.
+        # We also check that it's not already marked for deletion.
+        elif obj.isDerivedFrom("Part::Feature") and not obj.isDerivedFrom("Part::Compound"):
+            if obj not in objects_to_delete:
+                 standalone_primitives.append(obj)
+
+    # --- Pass 2: Reconstruct Wires into non-parametric Part::Features ---
+    parent_to_new_features_map = {}
+    if parent_to_edges_map:
+        FCC.PrintMessage("Reconstructing wires for {} block definitions...\n".format(len(parent_to_edges_map)))
+        for parent_block, edges in parent_to_edges_map.items():
+            if not parent_block.isValid() or not edges:
+                continue
+
+            parent_to_new_features_map[parent_block] = []
+            try:
+                sorted_wires = Part.sortEdges(edges)
+                for wire_edges in sorted_wires:
+                    wire_shape = Part.Wire(wire_edges)
+                    new_feature = doc.addObject("Part::Feature", "Wire")
+                    new_feature.Shape = wire_shape
+                    parent_to_new_features_map[parent_block].append(new_feature)
+            except Exception as e:
+                FCC.PrintWarning("Failed to reconstruct wires for block '{}': {}\n".format(parent_block.Label, str(e)))
+
+    # --- Pass 3: Cleanup Old Objects ---
+    if objects_to_delete:
+        FCC.PrintMessage("Cleaning up {} old polyline-related objects...\n".format(len(objects_to_delete)))
+        for obj in objects_to_delete:
+            if obj.isValid():
+                try:
+                    doc.removeObject(obj.Name)
+                except Exception:
+                    pass
+
+    # --- Pass 4: Final Linking ---
+    for parent_block, new_features in parent_to_new_features_map.items():
+        if parent_block.isValid() and new_features:
+            surviving_links = [link for link in parent_block.Links if link.isValid()]
+            parent_block.Links = surviving_links + new_features
+
+    # --- Pass 5: Upgrade Standalone Primitives and Process Placeholders ---
+    # The list is now clean, so no ReferenceError should occur.
+    if standalone_primitives:
+        FCC.PrintMessage("Upgrading {} remaining standalone primitives...\n".format(len(standalone_primitives)))
+        try:
+            Draft.upgrade(standalone_primitives, delete=True)
+        except Exception as e:
+            FCC.PrintWarning("Error upgrading remaining primitives: {}\n".format(str(e)))
+
+    valid_placeholders = [p for p in placeholders_to_process if p.isValid()]
+    if valid_placeholders:
+        FCC.PrintMessage("Processing {} placeholder objects...\n".format(len(valid_placeholders)))
+        for obj in valid_placeholders:
+            entity_type = obj.DxfEntityType
             if entity_type == "DIMENSION":
                 try:
-                    # 1. Create an empty Draft Dimension
                     dim = doc.addObject("App::FeaturePython", "Dimension")
                     Draft.Dimension(dim)
-                    if gui:
+                    if FreeCAD.GuiUp:
                         from Draft import _ViewProviderDimension
                         _ViewProviderDimension(dim.ViewObject)
-
-                    # 2. Copy properties directly from the placeholder
                     dim.Start = obj.Start
                     dim.End = obj.End
                     dim.Dimline = obj.Dimline
                     dim.Placement = obj.Placement
-
-                    objects_to_delete.append(obj)
+                    doc.removeObject(obj.Name)
                 except Exception as e:
                     FCC.PrintWarning("Could not create Draft Dimension from {}: {}\n".format(obj.Label, str(e)))
-
             elif entity_type == "TEXT":
                 try:
-                    # 1. Create a Draft Text object
                     text_obj = Draft.make_text(obj.Text)
-
-                    # 2. Copy properties
                     text_obj.Placement = obj.Placement
-                    if gui:
-                        # TEXTSCALING is a global defined at the top of importDXF.py
+                    if FreeCAD.GuiUp:
                         text_obj.ViewObject.FontSize = obj.DxfTextHeight * TEXTSCALING
-
-                    objects_to_delete.append(obj)
+                    doc.removeObject(obj.Name)
                 except Exception as e:
                     FCC.PrintWarning("Could not create Draft Text from {}: {}\n".format(obj.Label, str(e)))
 
-    # Perform the deletion of placeholders after the loop
-    for obj in objects_to_delete:
-        try:
-            doc.removeObject(obj.Name)
-        except Exception:
-            pass
-
+    FCC.PrintMessage("Draft post-processing finished.\n")
     doc.recompute()
 
 
