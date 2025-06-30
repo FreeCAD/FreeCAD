@@ -210,7 +210,7 @@ CmdRobotSimulate::CmdRobotSimulate()
     sAppModule = "Robot";
     sGroup = QT_TR_NOOP("Robot");
     sMenuText = QT_TR_NOOP("Simulate Trajectory");
-    sToolTipText = QT_TR_NOOP("Runs a simulation on a trajectory");
+    sToolTipText = QT_TR_NOOP("Simulates robot movement along a selected trajectory");
     sWhatsThis = "Robot_Simulate";
     sStatusTip = sToolTipText;
     sPixmap = "Robot_Simulate";
