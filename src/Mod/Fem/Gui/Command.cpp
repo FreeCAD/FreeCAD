@@ -2225,7 +2225,7 @@ void CmdFemPostLinearizedStressesFilter::activated(int)
             Gui::getMainWindow(),
             qApp->translate("CmdFemPostLinearizedStressesFilter", "Wrong selection"),
             qApp->translate("CmdFemPostLinearizedStressesFilter",
-                            "Select a Clip filter which clips a STRESS field along a line."));
+                            "Select a clip filter which clips a stress field along a line."));
     }
 }
 
