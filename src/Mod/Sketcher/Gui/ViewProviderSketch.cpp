@@ -3018,7 +3018,7 @@ bool ViewProviderSketch::setEdit(int ModNum)
     // When double-clicking on the item for this sketch the
     // object unsets and sets its edit mode without closing
     // the task panel
-    Gui::TaskView::TaskDialog* dlg = Gui::Control().activeDialog(getDocument()->getDocument());
+    Gui::TaskView::TaskDialog* dlg = Gui::Control().activeDialog();
     TaskDlgEditSketch* sketchDlg = qobject_cast<TaskDlgEditSketch*>(dlg);
     if (sketchDlg && sketchDlg->getSketchView() != this)
         sketchDlg = nullptr;// another sketch left open its task panel
@@ -3030,7 +3030,7 @@ bool ViewProviderSketch::setEdit(int ModNum)
         msgBox.setDefaultButton(QMessageBox::Yes);
         int ret = msgBox.exec();
         if (ret == QMessageBox::Yes)
-            Gui::Control().closeDialog(getDocument()->getDocument());
+            Gui::Control().closeDialog();
         else
             return false;
     }
@@ -3142,7 +3142,7 @@ bool ViewProviderSketch::setEdit(int ModNum)
 
     connectionToolWidget = sketchDlg->registerToolWidgetChanged(std::bind(&SketcherGui::ViewProviderSketch::slotToolWidgetChanged, this, sp::_1));
 
-    Gui::Control().showDialog(sketchDlg, editDoc->getDocument());
+    Gui::Control().showDialog(sketchDlg);
 
     // This call to the solver is needed to initialize the DoF and solve time controls
     // The false parameter indicates that the geometry of the SketchObject shall not be updateData
@@ -3369,7 +3369,7 @@ void ViewProviderSketch::unsetEdit(int ModNum)
     connectSolverUpdate.disconnect();
 
     // when pressing ESC make sure to close the dialog
-    Gui::Control().closeDialog(getDocument()->getDocument());
+    Gui::Control().closeDialog();
 
     // visibility automation
     try {
