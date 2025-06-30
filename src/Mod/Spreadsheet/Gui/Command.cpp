@@ -182,7 +182,7 @@ CmdSpreadsheetImport::CmdSpreadsheetImport()
     sAppModule = "Spreadsheet";
     sGroup = QT_TR_NOOP("Spreadsheet");
     sMenuText = QT_TR_NOOP("&Import Spreadsheet");
-    sToolTipText = QT_TR_NOOP("Imports a CSV file into the spreadsheet");
+    sToolTipText = QT_TR_NOOP("Imports a CSV file into a new spreadsheet");
     sWhatsThis = "Spreadsheet_Import";
     sStatusTip = sToolTipText;
     sPixmap = "SpreadsheetImport";
