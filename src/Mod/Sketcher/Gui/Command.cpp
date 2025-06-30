@@ -332,7 +332,7 @@ CmdSketcherEditSketch::CmdSketcherEditSketch()
     sAppModule = "Sketcher";
     sGroup = "Sketcher";
     sMenuText = QT_TR_NOOP("Edit Sketch");
-    sToolTipText = QT_TR_NOOP("Edits the selected sketch");
+    sToolTipText = QT_TR_NOOP("Opens the selected sketch for editing");
     sWhatsThis = "Sketcher_EditSketch";
     sStatusTip = sToolTipText;
     sPixmap = "Sketcher_EditSketch";
