@@ -320,13 +320,13 @@ class TestPathToolShapeClasses(PathTestWithAssets):
     def test_toolbitshapethreadmill_defaults(self):
         """Test ToolBitShapeThreadMill default parameters and labels."""
         # Provide a dummy filepath for instantiation.
-        shape = self._test_shape_common("threadmill")
+        shape = self._test_shape_common("thread-mill")
         self.assertEqual(shape["Diameter"].Value, 5.0)
         self.assertEqual(unit(shape["Diameter"]), "mm")
         self.assertEqual(shape["cuttingAngle"].Value, 60.0)
         self.assertEqual(unit(shape["cuttingAngle"]), "°")
         # Need an instance to get parameter labels, get it from the asset manager
-        uri = ToolBitShape.resolve_name("threadmill")
+        uri = ToolBitShape.resolve_name("thread-mill")
         instance = self.assets.get(uri)
         self.assertEqual(instance.get_parameter_label("cuttingAngle"), "Cutting angle")
 
@@ -346,7 +346,7 @@ class TestPathToolShapeClasses(PathTestWithAssets):
     def test_toolbitshapevbit_defaults(self):
         """Test ToolBitShapeVBit default parameters and labels."""
         # Provide a dummy filepath for instantiation.
-        shape = self._test_shape_common("vbit")
+        shape = self._test_shape_common("v-bit")
         self.assertEqual(shape["Diameter"].Value, 10.0)
         self.assertEqual(unit(shape["Diameter"]), "mm")
         self.assertEqual(shape["CuttingEdgeAngle"].Value, 90.0)
@@ -354,7 +354,7 @@ class TestPathToolShapeClasses(PathTestWithAssets):
         self.assertEqual(shape["TipDiameter"].Value, 1.0)
         self.assertEqual(unit(shape["TipDiameter"]), "mm")
         # Need an instance to get parameter labels, get it from the asset manager
-        uri = ToolBitShape.resolve_name("vbit")
+        uri = ToolBitShape.resolve_name("v-bit")
         instance = self.assets.get(uri)
         self.assertEqual(instance.get_parameter_label("CuttingEdgeAngle"), "Cutting edge angle")
 

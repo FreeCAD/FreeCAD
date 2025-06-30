@@ -33,6 +33,7 @@ from ...assets.asset import Asset
 SHAPEMAP = {
     "ballend": "Ballnose",
     "endmill": "Cylindrical",
+    "v-bit": "Conical",
     "vbit": "Conical",
     "chamfer": "Snubnose",
 }
