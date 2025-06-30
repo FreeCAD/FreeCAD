@@ -724,7 +724,7 @@ CmdFemConstraintInitialTemperature::CmdFemConstraintInitialTemperature()
 {
     sAppModule = "Fem";
     sGroup = QT_TR_NOOP("Fem");
-    sMenuText = QT_TR_NOOP("Initial Iemperature");
+    sMenuText = QT_TR_NOOP("Initial Temperature");
     sToolTipText = QT_TR_NOOP("Creates an initial temperature acting on a body");
     sWhatsThis = "FEM_ConstraintInitialTemperature";
     sStatusTip = sToolTipText;
