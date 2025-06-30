@@ -9445,8 +9445,8 @@ void SketchObject::getConstraintIndices(int GeoId, std::vector<int>& constraintL
 void SketchObject::appendConflictMsg(const std::vector<int>& conflicting, std::string& msg)
 {
     appendConstraintsMsg(conflicting,
-                         "Remove the following conflicting constraint:\n",
-                         "Remove at least one of the following conflicting constraints:\n",
+                         "Remove the following conflicting constraint:",
+                         "Remove at least one of the following conflicting constraints:",
                          msg);
 }
 
