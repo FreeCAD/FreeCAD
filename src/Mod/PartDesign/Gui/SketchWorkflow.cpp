@@ -648,14 +648,14 @@ private:
 
             // Show dialog and let user pick plane
             Gui::Control().showDialog(new PartDesignGui::TaskDlgFeaturePick(planes, status, acceptFunction,
-                                                                            processFunction, true, rejectFunction), appdocument);
+                                                                            processFunction, true, rejectFunction));
         }
     }
 
     void checkForShownDialog()
     {
         App::Document* appdocument = guidocument->getDocument();
-        Gui::TaskView::TaskDialog *dlg = Gui::Control().activeDialog(appdocument);
+        Gui::TaskView::TaskDialog *dlg = Gui::Control().activeDialog();
         PartDesignGui::TaskDlgFeaturePick *pickDlg = qobject_cast<PartDesignGui::TaskDlgFeaturePick *>(dlg);
         if (dlg && !pickDlg) {
             QMessageBox msgBox(Gui::getMainWindow());
@@ -673,7 +673,7 @@ private:
         }
 
         if (dlg) {
-            Gui::Control().closeDialog(appdocument);
+            Gui::Control().closeDialog();
         }
     }
 
