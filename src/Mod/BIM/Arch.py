@@ -1740,14 +1740,34 @@ def joinWalls(walls, delete=False):
             else:
                 sk = base.Base
     for w in walls:
-        if w.Base:
-            if not w.Base.Shape.Faces:
-                for e in w.Base.Shape.Edges:
-                    l = e.Curve
-                    if isinstance(l, Part.Line):
-                        l = Part.LineSegment(e.Vertexes[0].Point, e.Vertexes[-1].Point)
-                    sk.addGeometry(l)
-                    deleteList.append(w.Name)
+        if w.Base and not w.Base.Shape.Faces:
+            for hostedObj in w.Proxy.getHosts(w):
+                if hasattr(hostedObj, "Host"):
+                    hostedObj.Host = base
+                else:
+                    tmp = hostedObj.Hosts
+                    tmp.remove(w)
+                    if not base in tmp:
+                        tmp.append(base)
+                    hostedObj.Hosts = tmp
+            tmp = []
+            for add in w.Additions:
+                if not add in base.Additions:
+                    tmp.append(add)
+            w.Additions = None
+            base.Additions += tmp
+            tmp = []
+            for sub in w.Subtractions:
+                if not sub in base.Subtractions:
+                    tmp.append(sub)
+            w.Subtractions = None
+            base.Subtractions += tmp
+            for e in w.Base.Shape.Edges:
+                l = e.Curve
+                if isinstance(l, Part.Line):
+                    l = Part.LineSegment(e.Vertexes[0].Point, e.Vertexes[-1].Point)
+                sk.addGeometry(l)
+                deleteList.append(w.Name)
     if delete:
         for n in deleteList:
             FreeCAD.ActiveDocument.removeObject(n)
