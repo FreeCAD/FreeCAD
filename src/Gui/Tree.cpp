@@ -776,19 +776,53 @@ const char* TreeWidget::getTreeName() const {
     return myName.c_str();
 }
 
-// reimpelement to select only objects in the active document
 void TreeWidget::selectAll() {
-    auto gdoc = Application::Instance->getDocument(
-        App::GetApplication().getActiveDocument());
-    if (!gdoc)
+    auto& selection = Gui::Selection();
+
+    // While multiple selected items are possible, we only select
+    // the items that are children of the first selected item to
+    // simplify the selection logic.
+    const QTreeWidgetItem* selectedItem = currentItem();
+    if (!selectedItem) {
+        return;  // If nothing is selected, not even a document, do nothing
+    }
+
+    const QTreeWidgetItem* targetParent = selectedItem->childCount() > 0
+                                        ? selectedItem
+                                        : selectedItem->parent();
+    if (!targetParent) {
         return;
-    auto itDoc = DocumentMap.find(gdoc);
-    if (itDoc == DocumentMap.end())
-        return;
-    if (TreeParams::getRecordSelection())
-        Gui::Selection().selStackPush();
-    Gui::Selection().clearSelection();
-    Gui::Selection().setSelection(gdoc->getDocument()->getName(), gdoc->getDocument()->getObjects());
+    }
+
+    if (TreeParams::getRecordSelection()) {
+        selection.selStackPush();
+    }
+    selection.clearSelection();
+
+    const int childCount = targetParent->childCount();
+    for (int i = 0; i < childCount; ++i) {
+        QTreeWidgetItem* child = targetParent->child(i);
+        if (child->type() != TreeWidget::ObjectType) {
+            continue;
+        }
+
+        const auto* childItem = static_cast<DocumentObjectItem*>(child);
+        const auto* vp = childItem->object();
+        if (!vp || !vp->isSelectable()) {
+            continue;
+        }
+
+        const auto* obj = vp->getObject();
+        if (!obj || !obj->getDocument()) {
+            continue;
+        }
+        selection.addSelection(obj->getDocument()->getName(), obj->getNameInDocument());
+    }
+    
+    if (targetParent == selectedItem && !targetParent->isExpanded() && selection.size() > 0) {
+        // Expand the parent item if it is already expanded to show the selection
+        expandItem(targetParent);
+    }
 }
 
 bool TreeWidget::isObjectShowable(App::DocumentObject* obj) {
