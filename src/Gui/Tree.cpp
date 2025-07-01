@@ -777,6 +777,11 @@ const char* TreeWidget::getTreeName() const {
 }
 
 void TreeWidget::selectAll() {
+    const bool recursive = false;
+    selectAll(recursive);
+}
+
+void TreeWidget::selectAll(bool recursive) {
     auto& selection = Gui::Selection();
 
     // While multiple selected items are possible, we only select
@@ -796,10 +801,19 @@ void TreeWidget::selectAll() {
         selection.selStackPush();
     }
     selection.clearSelection();
+    selectGroupItems(targetParent, recursive);
+}
 
-    const int childCount = targetParent->childCount();
+void TreeWidget::selectGroupItems(const QTreeWidgetItem* group, bool recursive)
+{
+    auto& selection = Gui::Selection();
+    if (!group) {
+        return;
+    }
+
+    const int childCount = group->childCount();
     for (int i = 0; i < childCount; ++i) {
-        QTreeWidgetItem* child = targetParent->child(i);
+        QTreeWidgetItem* child = group->child(i);
         if (child->type() != TreeWidget::ObjectType) {
             continue;
         }
@@ -815,6 +829,10 @@ void TreeWidget::selectAll() {
             continue;
         }
         selection.addSelection(obj->getDocument()->getName(), obj->getNameInDocument());
+
+        if (recursive && child->childCount() > 0) {
+            selectGroupItems(child, recursive);
+        }
     }
 }
 
