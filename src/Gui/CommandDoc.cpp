@@ -1025,9 +1025,65 @@ void StdCmdPrint3dPdf::activated(int iMsg)
     std::vector<App::DocumentObject*> selection = getSelection().getObjectsOfType(App::DocumentObject::getClassTypeId());
     
     if (selection.empty()) {
-        Base::Console().message("No objects selected. Please select objects with Shape property.\n");
+        QMessageBox::warning(Gui::getMainWindow(),
+            QCoreApplication::translate("StdCmdPrint3dPdf", "No selection"),
+            QCoreApplication::translate("StdCmdPrint3dPdf", "Select the objects to export before choosing 3D PDF Export."));
         return;
     }
+    
+    // Set up file dialog filter for 3D PDF
+    QStringList filterList;
+    filterList << QObject::tr("3D PDF (*.pdf)");
+    filterList << QObject::tr("All Files (*.*)");
+    QString formatList = filterList.join(QLatin1String(";;"));
+    QString selectedFilter;
+    
+    // Create default filename based on document/object names
+    QString defaultFilename;
+    QString docFilename = QString::fromUtf8(App::GetApplication().getActiveDocument()->getFileName());
+    QString defaultPath;
+    QString baseFilename;
+    
+    if (!docFilename.isEmpty()) {
+        QFileInfo fi(docFilename);
+        defaultPath = fi.path();
+        baseFilename = fi.completeBaseName() + QString::fromLatin1("_3D");
+    } else {
+        defaultPath = Gui::FileDialog::getWorkingDirectory();
+        QString docName = QString::fromStdString(App::GetApplication().getActiveDocument()->Label.getStrValue());
+        baseFilename = docName + QString::fromLatin1("_3D");
+    }
+    
+    // Add object names to filename if only a few objects selected
+    if (selection.size() <= 3) {
+        QStringList objectNames;
+        for (const auto& obj : selection) {
+            objectNames << QString::fromStdString(obj->Label.getStrValue());
+        }
+        if (!objectNames.isEmpty()) {
+            baseFilename += QString::fromLatin1("-") + objectNames.join(QString::fromLatin1("-"));
+        }
+    }
+    
+    // Clean only the filename for cross-platform compatibility (not the path!)
+    QString invalidCharacters = QLatin1String("\\?%*:|\"<>");  // Removed forward slash
+    for (const auto &c : invalidCharacters)
+        baseFilename.replace(c, QLatin1String("_"));
+    
+    // Combine path and cleaned filename
+    defaultFilename = QDir(defaultPath).filePath(baseFilename + QString::fromLatin1(".pdf"));
+    
+    // Launch the file selection dialog
+    QString fileName = FileDialog::getSaveFileName(getMainWindow(),
+        QObject::tr("Export 3D PDF"), defaultFilename, formatList, &selectedFilter);
+    
+    if (fileName.isEmpty()) {
+        return; // User cancelled
+    }
+    
+    // Remove extension from fileName as Export3DPDF will add it
+    QFileInfo fileInfo(fileName);
+    std::string outputPath = fileInfo.path().toStdString() + "/" + fileInfo.completeBaseName().toStdString();
     
     Base::Console().message("Extracting tessellation and material data for %zu selected object(s):\n", selection.size());
     
@@ -1271,25 +1327,22 @@ void StdCmdPrint3dPdf::activated(int iMsg)
     Base::Console().message("Converting tessellation data to PRC format...\n");
     
     if (!tessData.empty()) {
-        // Create output filename (without extension - will be added by conversion function)
-        std::string outputPath = "exported_3d_model";  // TODO: Add file dialog
-        
-        // Convert to PRC format
+        // Convert to PRC format using the user-selected path
         bool success = Gui::Export3DPDF::convertTessellationToPRC(tessData, outputPath);
         
         if (success) {
-            Base::Console().message("PRC export completed successfully: %s.prc\n", outputPath.c_str());
+            Base::Console().message("3D PDF export completed successfully: %s.pdf\n", outputPath.c_str());
         } else {
-            Base::Console().error("PRC export failed\n");
+            Base::Console().error("3D PDF export failed\n");
         }
     } else {
-        Base::Console().message("No tessellation data available for PRC conversion\n");
+        Base::Console().message("No tessellation data available for 3D PDF conversion\n");
     }
 }
 
 bool StdCmdPrint3dPdf::isActive()
 {
-    return true; // Always active for now
+    return (getActiveGuiDocument() ? true : false);
 }
 
 //===========================================================================
