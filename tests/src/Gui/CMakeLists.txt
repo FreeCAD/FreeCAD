@@ -1,8 +1,17 @@
 # Standard C++ GTest tests
-target_sources(Tests_run PRIVATE
+add_executable(Gui_tests_run
         Assistant.cpp
         Camera.cpp
 )
 
 # Qt tests
 setup_qt_test(QuantitySpinBox)
+
+
+target_link_libraries(Gui_tests_run PRIVATE
+    GTest::gtest_main
+    GTest::gmock_main
+    ${Google_Tests_LIBS}
+    FreeCADApp
+    FreeCADGui
+)
