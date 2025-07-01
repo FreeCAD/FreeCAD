@@ -32,7 +32,7 @@ class LinearAxesPage(QtGui.QWizardPage):
         self.machine = machine
         self.setTitle(translate("CAM", "Linear Axes Measurements"))
         self.setSubTitle(translate("CAM", "Enter measurements for linear axes"))
-        layout = QtGui.QFormLayout()
+        main_layout = QtGui.QVBoxLayout()
 
         steps = translate(
             "CAM",
@@ -46,16 +46,24 @@ class LinearAxesPage(QtGui.QWizardPage):
         )
 
         instructions = QtGui.QLabel(steps)
-        layout.addRow(instructions)
+        main_layout.addWidget(instructions)
 
         separator = QtGui.QFrame()
         separator.setFrameShape(QtGui.QFrame.HLine)
         separator.setFrameShadow(QtGui.QFrame.Sunken)
-        layout.addRow(separator)
-        layout.setSpacing(6)
+        main_layout.addWidget(separator)
+
+        grid_layout = QtGui.QGridLayout()
+        grid_layout.setSpacing(6)
+
+        # Add column headers
+        grid_layout.addWidget(QtGui.QLabel(translate("CAM", "Axis")), 0, 0)
+        grid_layout.addWidget(QtGui.QLabel(translate("CAM", "Force")), 0, 1)
+        grid_layout.addWidget(QtGui.QLabel(translate("CAM", "Deflection")), 0, 2)
 
         self.inputs = {}
         ui = FreeCADGui.UiLoader()
+        row = 1  # Start from row 1 for data
         for axis_name, axis in sorted(machine.axes.items()):
             if isinstance(axis, LinearAxis):
                 force_edit = ui.createWidget("Gui::QuantitySpinBox")
@@ -71,17 +79,24 @@ class LinearAxesPage(QtGui.QWizardPage):
                 deflection_edit.setProperty("value", FreeCAD.Units.Quantity("0 mm"))
                 deflection_edit.valueChanged.connect(self.check_completeness)
 
-                layout.addRow(translate("CAM", f"{axis_name.capitalize()}-axis force"), force_edit)
-                layout.addRow(
-                    translate("CAM", f"{axis_name.capitalize()}-axis deflection"),
-                    deflection_edit,
+                grid_layout.addWidget(
+                    QtGui.QLabel(translate("CAM", axis_name.capitalize())),
+                    row,
+                    0,
                 )
+                grid_layout.addWidget(force_edit, row, 1)
+                grid_layout.addWidget(deflection_edit, row, 2)
                 self.inputs[axis_name] = (force_edit, deflection_edit)
+                row += 1
 
         if not self.inputs:
-            layout.addRow(QtGui.QLabel(translate("CAM", "No linear axes to configure.")))
+            grid_layout.addWidget(
+                QtGui.QLabel(translate("CAM", "No linear axes to configure.")), row, 0, 1, 3
+            )
 
-        self.setLayout(layout)
+        main_layout.addLayout(grid_layout)
+        main_layout.addStretch()
+        self.setLayout(main_layout)
 
     def initializePage(self):
         super().initializePage()
@@ -116,7 +131,7 @@ class AngularAxesPage(QtGui.QWizardPage):
         self.setTitle(translate("CAM", "Angular Axes Measurements"))
         self.setSubTitle(translate("CAM", "Enter measurements for angular axes"))
 
-        layout = QtGui.QFormLayout()
+        main_layout = QtGui.QVBoxLayout()
         instructions = QtGui.QLabel(
             translate(
                 "CAM",
@@ -127,18 +142,26 @@ class AngularAxesPage(QtGui.QWizardPage):
 """,
             )
         )
-        layout.addRow(instructions)
+        main_layout.addWidget(instructions)
 
         separator = QtGui.QFrame()
         separator.setFrameShape(QtGui.QFrame.HLine)
         separator.setFrameShadow(QtGui.QFrame.Sunken)
-        layout.addRow(separator)
-        layout.setSpacing(6)
+        main_layout.addWidget(separator)
+
+        grid_layout = QtGui.QGridLayout()
+        grid_layout.setSpacing(6)
+
+        # Add column headers
+        grid_layout.addWidget(QtGui.QLabel(translate("CAM", "Force")), 0, 1)
+        grid_layout.addWidget(QtGui.QLabel(translate("CAM", "Deflection")), 0, 2)
 
         self.inputs = {}
         ui = FreeCADGui.UiLoader()
+        row = 1  # Start from row 1 for data
         for axis_name, axis in sorted(machine.axes.items()):
             if isinstance(axis, AngularAxis):
+                # X-direction inputs
                 force_x_edit = ui.createWidget("Gui::QuantitySpinBox")
                 force_x_edit.setProperty("unit", FreeCAD.Units.Unit("N"))
                 force_x_edit.setProperty("minimum", 0.0)
@@ -152,6 +175,7 @@ class AngularAxesPage(QtGui.QWizardPage):
                 deflection_x_edit.setProperty("value", FreeCAD.Units.Quantity("0 deg"))
                 deflection_x_edit.valueChanged.connect(self.check_completeness)
 
+                # Y-direction inputs
                 force_y_edit = ui.createWidget("Gui::QuantitySpinBox")
                 force_y_edit.setProperty("unit", FreeCAD.Units.Unit("N"))
                 force_y_edit.setProperty("minimum", 0.0)
@@ -165,26 +189,26 @@ class AngularAxesPage(QtGui.QWizardPage):
                 deflection_y_edit.setProperty("value", FreeCAD.Units.Quantity("0 deg"))
                 deflection_y_edit.valueChanged.connect(self.check_completeness)
 
-                layout.addRow(
-                    translate("CAM", f"{axis_name.capitalize()}-axis force in X direction"),
-                    force_x_edit,
+                # Add X-direction row
+                grid_layout.addWidget(
+                    QtGui.QLabel(translate("CAM", f"{axis_name.capitalize()}-axis X")),
+                    row,
+                    0,
                 )
-                layout.addRow(
-                    translate(
-                        "CAM", f"{axis_name.capitalize()}-axis angular deflection for X force"
-                    ),
-                    deflection_x_edit,
+                grid_layout.addWidget(force_x_edit, row, 1)
+                grid_layout.addWidget(deflection_x_edit, row, 2)
+                row += 1
+
+                # Add Y-direction row
+                grid_layout.addWidget(
+                    QtGui.QLabel(translate("CAM", f"{axis_name.capitalize()}-axis Y")),
+                    row,
+                    0,
                 )
-                layout.addRow(
-                    translate("CAM", f"{axis_name.capitalize()}-axis force in Y direction"),
-                    force_y_edit,
-                )
-                layout.addRow(
-                    translate(
-                        "CAM", f"{axis_name.capitalize()}-axis angular deflection for Y force"
-                    ),
-                    deflection_y_edit,
-                )
+                grid_layout.addWidget(force_y_edit, row, 1)
+                grid_layout.addWidget(deflection_y_edit, row, 2)
+                row += 1
+
                 self.inputs[axis_name] = (
                     force_x_edit,
                     deflection_x_edit,
@@ -193,9 +217,13 @@ class AngularAxesPage(QtGui.QWizardPage):
                 )
 
         if not self.inputs:
-            layout.addRow(QtGui.QLabel(translate("CAM", "No angular axes to configure.")))
+            grid_layout.addWidget(
+                QtGui.QLabel(translate("CAM", "No angular axes to configure.")), row, 0, 1, 3
+            )
 
-        self.setLayout(layout)
+        main_layout.addLayout(grid_layout)
+        main_layout.addStretch()
+        self.setLayout(main_layout)
 
     def initializePage(self):
         super().initializePage()
