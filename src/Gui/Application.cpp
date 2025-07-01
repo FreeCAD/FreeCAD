@@ -413,9 +413,8 @@ Application::Application(bool GUIenabled)
                 0,
                 QLatin1String("Invalid system settings"),
                 QLatin1String(
-                    "Your system uses the same symbol for decimal point and group separator.\n\n"
-                    "This causes serious problems and makes the application fail to work "
-                    "properly.\n"
+                    "The system locale uses the same symbol for the decimal point and the thousands separator.\n\n"
+                    "This may prevent the application from functioning correctly."
                     "Go to the system configuration panel of the OS and fix this issue."));
             throw Base::RuntimeError("Invalid system settings");
         }

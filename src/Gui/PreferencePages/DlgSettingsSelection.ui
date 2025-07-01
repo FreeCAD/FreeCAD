@@ -90,8 +90,8 @@
            </size>
           </property>
           <property name="toolTip">
-           <string>Area for picking elements in the 3D view.
-Larger value eases to pick things, but can make small features impossible to select.
+           <string>Area for selecting elements in the 3D view.
+A larger value makes it easier to select elements, but may prevent selection of small features.
       </string>
           </property>
           <property name="inputMethodHints">

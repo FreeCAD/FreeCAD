@@ -409,7 +409,7 @@ Common sizes are 128, 256 and 512.</string>
       <item row="2" column="0">
        <widget class="Gui::PrefCheckBox" name="prefRecovery">
         <property name="toolTip">
-         <string>If there is a recovery file available the application will
+         <string>If there is a recovery file available, the application will
 automatically run a file recovery when it is started</string>
         </property>
         <property name="text">

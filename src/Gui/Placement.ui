@@ -228,7 +228,7 @@
         </item>
         <item>
          <property name="text">
-          <string>Euler angles (z y' x'')</string>
+          <string>Euler angles (Z–Y′–X″)</string>
          </property>
         </item>
        </widget>

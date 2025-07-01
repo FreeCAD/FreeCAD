@@ -50,7 +50,7 @@ StdCmdDlgMacroRecord::StdCmdDlgMacroRecord()
   : Command("Std_DlgMacroRecord")
 {
     sGroup        = "Macro";
-    sMenuText     = QT_TR_NOOP("&Macro Recording…");
+    sMenuText     = QT_TR_NOOP("Record &Macro…");
     sToolTipText  = QT_TR_NOOP("Opens a dialog to record a macro");
     sWhatsThis    = "Std_DlgMacroRecord";
     sStatusTip    = sToolTipText;
@@ -94,7 +94,7 @@ StdCmdDlgMacroExecute::StdCmdDlgMacroExecute()
 {
     sGroup        = "Macro";
     sMenuText     = QT_TR_NOOP("Ma&cros…");
-    sToolTipText  = QT_TR_NOOP("Opens a dialog to let you execute a recorded macro");
+    sToolTipText  = QT_TR_NOOP("Opens a dialog to execute a recorded macro");
     sWhatsThis    = "Std_DlgMacroExecute";
     sStatusTip    = sToolTipText;
     sPixmap       = "accessories-text-editor";
@@ -311,7 +311,7 @@ StdCmdMacrosFolder::StdCmdMacrosFolder()
 {
     sGroup        = "Macro";
     sMenuText     = QT_TR_NOOP("Open Macro Folder");
-    sToolTipText  = QT_TR_NOOP("Opens the macros containing folder in the default system file manager");
+    sToolTipText  = QT_TR_NOOP("Opens the macros folder in the system file manager");
     sWhatsThis    = "Std_OpenMacrosFolder";
     sStatusTip    = sToolTipText;
     sPixmap       = "MacroFolder";

@@ -14,7 +14,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Create new Preference Pack</string>
+   <string>Create New Preference Pack</string>
   </property>
   <property name="modal">
    <bool>true</bool>

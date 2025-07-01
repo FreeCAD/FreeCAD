@@ -518,7 +518,7 @@ StdCmdLinkUnlink::StdCmdLinkUnlink()
 {
     sGroup        = "Link";
     sMenuText     = QT_TR_NOOP("Unlink");
-    sToolTipText  = QT_TR_NOOP("Strips on level of link");
+    sToolTipText  = QT_TR_NOOP("Unlinks the object by placing it directly in the container");
     sWhatsThis    = "Std_LinkUnlink";
     sStatusTip    = sToolTipText;
     eType         = AlterDoc;
@@ -605,7 +605,7 @@ StdCmdLinkImportAll::StdCmdLinkImportAll()
   : Command("Std_LinkImportAll")
 {
     sGroup        = "Link";
-    sMenuText     = QT_TR_NOOP("Import all Links");
+    sMenuText     = QT_TR_NOOP("Import All Links");
     sToolTipText  = QT_TR_NOOP("Imports all links of the active document");
     sWhatsThis    = "Std_LinkImportAll";
     sStatusTip    = sToolTipText;
@@ -876,7 +876,7 @@ public:
     {
         sGroup        = "View";
         sMenuText     = QT_TR_NOOP("Link Actions");
-        sToolTipText  = QT_TR_NOOP("Actions that apply to link objects");
+        sToolTipText  = QT_TR_NOOP("Commands that operate on link objects");
         sWhatsThis    = "Std_LinkActions";
         sStatusTip    = sToolTipText;
         eType         = AlterDoc;

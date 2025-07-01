@@ -84,7 +84,7 @@ wbListItem::wbListItem(const QString& wbName, bool enabled, bool startupWb, bool
 
     // 1: Enable checkbox
     enableCheckBox = new QCheckBox(this);
-    enableCheckBox->setToolTip(tr("Toggles the cisibility of %1 in the available workbenches").arg(wbDisplayName));
+    enableCheckBox->setToolTip(tr("Toggles the visibility of %1 in the available workbenches").arg(wbDisplayName));
     enableCheckBox->setChecked(enabled);
     if (startupWb) {
         enableCheckBox->setChecked(true);

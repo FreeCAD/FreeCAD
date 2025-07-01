@@ -709,7 +709,7 @@ void Placement::onSelectedVertexClicked()
     if (!success) {
         Base::Console().warning("Placement selection error.  Select either 1 or 2 points.\n");
         QMessageBox msgBox(this);
-        msgBox.setText(tr("Select 1, 2, or 3 points before clicking this button.  A point may be on a vertex, \
+        msgBox.setText(tr("Select 1, 2, or 3 points before clicking this button. A point may be on a vertex, \
 face, or edge.  If on a face or edge the point used will be the point at the mouse position along \
 face or edge.  If 1 point is selected it will be used as the center of rotation.  If 2 points are \
 selected the midpoint between them will be the center of rotation and a new custom axis will be \

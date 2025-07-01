@@ -138,7 +138,7 @@ StdCmdRecentFiles::StdCmdRecentFiles()
 {
     sGroup        = "File";
     sMenuText     = QT_TR_NOOP("Open &Recent");
-    sToolTipText  = QT_TR_NOOP("Shows the recent file list");
+    sToolTipText  = QT_TR_NOOP("Displays the list of recently opened files");
     sWhatsThis    = "Std_RecentFiles";
     sStatusTip    = sToolTipText;
     sPixmap       = "Std_RecentFiles";
@@ -179,7 +179,7 @@ StdCmdRecentMacros::StdCmdRecentMacros()
 {
     sGroup        = "Macro";
     sMenuText     = QT_TR_NOOP("&Recent Macros");
-    sToolTipText  = QT_TR_NOOP("Shows the recent macro list");
+    sToolTipText  = QT_TR_NOOP("Displays the list of recently used macros");
     sWhatsThis    = "Std_RecentMacros";
     sStatusTip = sToolTipText;
     sPixmap       = "Std_RecentMacros";
@@ -448,7 +448,7 @@ StdCmdDlgCustomize::StdCmdDlgCustomize()
 {
     sGroup        = "Tools";
     sMenuText     = QT_TR_NOOP("Cu&stomize…");
-    sToolTipText  = QT_TR_NOOP("Customize toolbars and command bars");
+    sToolTipText  = QT_TR_NOOP("Opens a dialog to edit toolbars, shortcuts, and macros");
     sWhatsThis    = "Std_DlgCustomize";
     sStatusTip    = sToolTipText;
     sPixmap       = "applications-accessories";
@@ -475,7 +475,7 @@ StdCmdCommandLine::StdCmdCommandLine()
 {
     sGroup        = "Tools";
     sMenuText     = QT_TR_NOOP("Command &Line…");
-    sToolTipText  = QT_TR_NOOP("Opens the command line in the console");
+    sToolTipText  = QT_TR_NOOP("Opens a command line interface in the console");
     sWhatsThis    = "Std_CommandLine";
     sStatusTip    = sToolTipText;
     sPixmap       = "utilities-terminal";
@@ -863,7 +863,7 @@ StdCmdUserEditMode::StdCmdUserEditMode()
 {
     sGroup        = "Edit";
     sMenuText     = QT_TR_NOOP("Edit &Mode");
-    sToolTipText  = QT_TR_NOOP("Defines behavior when editing an object from tree");
+    sToolTipText  = QT_TR_NOOP("Defines behavior when editing an object from the tree view");
     sStatusTip    = sToolTipText;
     sWhatsThis    = "Std_UserEditMode";
     sPixmap       = "Std_UserEditModeDefault";

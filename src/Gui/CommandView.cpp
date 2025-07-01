@@ -1566,7 +1566,7 @@ StdCmdViewFitAll::StdCmdViewFitAll()
 {
     sGroup        = "Standard-View";
     sMenuText     = QT_TR_NOOP("&Fit All");
-    sToolTipText  = QT_TR_NOOP("Fits the whole content on the screen");
+    sToolTipText  = QT_TR_NOOP("Fits all content into the 3D view");
     sWhatsThis    = "Std_ViewFitAll";
     sStatusTip    = sToolTipText;
     sPixmap       = "zoom-all";
@@ -1597,7 +1597,7 @@ StdCmdViewFitSelection::StdCmdViewFitSelection()
 {
     sGroup        = "Standard-View";
     sMenuText     = QT_TR_NOOP("Fit &Selection");
-    sToolTipText  = QT_TR_NOOP("Fits the selected content on the screen");
+    sToolTipText  = QT_TR_NOOP("Fits the selected content into the 3D view");
     sWhatsThis    = "Std_ViewFitSelection";
     sStatusTip    = sToolTipText;
     sAccel        = "V, S";
@@ -2141,8 +2141,8 @@ StdCmdViewCreate::StdCmdViewCreate()
   : Command("Std_ViewCreate")
 {
     sGroup      = "Standard-View";
-    sMenuText   = QT_TR_NOOP("Create new View");
-    sToolTipText= QT_TR_NOOP("Creates a new view window for the active document");
+    sMenuText   = QT_TR_NOOP("New 3D View");
+    sToolTipText= QT_TR_NOOP("Opens a new 3D view window for the active document");
     sWhatsThis  = "Std_ViewCreate";
     sStatusTip  = sToolTipText;
     sPixmap     = "window-new";
@@ -3880,7 +3880,7 @@ StdStoreWorkingView::StdStoreWorkingView()
 {
     sGroup        = "Standard-View";
     sMenuText     = QT_TR_NOOP("St&ore Working View");
-    sToolTipText  = QT_TR_NOOP("Stores a document-specific temporary working view");
+    sToolTipText  = QT_TR_NOOP("Stores a temporary working view for the current document");
     sStatusTip    = sToolTipText;
     sWhatsThis    = "Std_StoreWorkingView";
     sAccel        = "Shift+End";

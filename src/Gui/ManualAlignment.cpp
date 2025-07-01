@@ -801,7 +801,7 @@ void ManualAlignment::startAlignment(Base::Type mousemodel)
     myViewer->showMaximized();
     int n = this->myPickPoints;
     QString msg = n == 1
-        ? tr("Select at least one point in the left and the right view")
+        ? tr("Select at least 1 point in the left and the right view")
         : tr("Select at least %1 points in the left and the right view").arg(n);
     myViewer->myLabel->setText(msg);
 
@@ -857,7 +857,7 @@ void ManualAlignment::continueAlignment()
         grp.addToViewer(myViewer->getViewer(0));
         grp.setAlignable(true);
 
-        Gui::getMainWindow()->showMessage(tr("Pick points in the left and right view"));
+        Gui::getMainWindow()->showMessage(tr("Selected points in the left and right view"));
 
         myViewer->getViewer(0)->setEditingCursor(QCursor(Qt::PointingHandCursor));
         myViewer->getViewer(1)->setEditingCursor(QCursor(Qt::PointingHandCursor));

@@ -451,7 +451,7 @@ void AboutDialog::showPrivacyPolicy()
     auto text = QString::fromUtf8(policyFile.readAll());
     auto tabPrivacyPolicy = new QWidget();
     tabPrivacyPolicy->setObjectName(QStringLiteral("tabPrivacyPolicy"));
-    ui->tabWidget->addTab(tabPrivacyPolicy, tr("Privacy policy"));
+    ui->tabWidget->addTab(tabPrivacyPolicy, tr("Privacy Policy"));
     auto hLayout = new QVBoxLayout(tabPrivacyPolicy);
     auto textField = new QTextBrowser(tabPrivacyPolicy);
     textField->setOpenExternalLinks(true);

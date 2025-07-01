@@ -48,7 +48,7 @@ StdCmdPart::StdCmdPart()
   : Command("Std_Part")
 {
     sGroup        = "Structure";
-    sMenuText     = QT_TR_NOOP("Part");
+    sMenuText     = QT_TR_NOOP("New Part");
     sToolTipText  = QT_TR_NOOP("Creates a part, which is a general-purpose container to group objects so they "
                                "act as a unit in the 3D view. It is intended to arrange objects that have a part "
                                "TopoShape, like part primitives, Part Design bodies, and other parts.");
@@ -103,7 +103,7 @@ StdCmdGroup::StdCmdGroup()
   : Command("Std_Group")
 {
     sGroup        = "Structure";
-    sMenuText     = QT_TR_NOOP("Group");
+    sMenuText     = QT_TR_NOOP("New Group");
     sToolTipText = QT_TR_NOOP("Creates a group, which is a general-purpose container to group objects in the "
                               "tree view, regardless of their data type. It is a simple folder to organize "
                               "the objects in a model.");

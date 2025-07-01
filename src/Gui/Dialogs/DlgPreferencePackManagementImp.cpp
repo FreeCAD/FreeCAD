@@ -142,7 +142,7 @@ void DlgPreferencePackManagementImp::addTreeNode(const std::string &name, const 
                 button->setIcon(iconIsVisible);
             else
                 button->setIcon(iconIsInvisible);
-            button->setToolTip(tr("Toggles the visibility of the addon preference pack '%1' (use Addon Manager to permanently remove)").arg(item->text(0)));
+            button->setToolTip(tr("Toggles the visibility of the addon preference pack '%1' (use the Addon Manager to remove permanently)").arg(item->text(0)));
             connect(button, &QPushButton::clicked, [this, name, item]() {
                 this->hideInstalledPack(name, item->text(0).toStdString());
                 });

@@ -61,7 +61,7 @@ Std_TestQM::Std_TestQM()
 {
     sGroup        = "Standard-Test";
     sMenuText = "Test Translation Files…";
-    sToolTipText  = "Runs a test function to check .qm translation files";
+    sToolTipText  = "Runs a test to verify .qm translation files";
     sWhatsThis    = "Std_TestQM";
     sStatusTip    = sToolTipText;
 }
@@ -99,7 +99,7 @@ Std_TestReloadQM::Std_TestReloadQM()
 {
     sGroup        = "Standard-Test";
     sMenuText     = "Reload Translation Files";
-    sToolTipText  = "Runs a test function to check .qm translation files";
+    sToolTipText  = "Reloads the translation files";
     sWhatsThis    = "Std_TestReloadQM";
     sStatusTip    = sToolTipText;
 }

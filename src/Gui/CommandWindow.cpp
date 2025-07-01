@@ -199,7 +199,7 @@ StdCmdActivatePrevWindow::StdCmdActivatePrevWindow()
 {
     sGroup        = "Window";
     sMenuText     = QT_TR_NOOP("&Previous");
-    sToolTipText  = QT_TR_NOOP("Activates the previous window");
+    sToolTipText  = QT_TR_NOOP("Switches to the previously active window");
     sWhatsThis    = "Std_ActivatePrevWindow";
     sStatusTip    = sToolTipText;
     sPixmap       = "Std_WindowPrev";

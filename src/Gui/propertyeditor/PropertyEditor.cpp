@@ -752,7 +752,7 @@ void PropertyEditor::contextMenuEvent(QContextMenuEvent*)
             return prop->testStatus(App::Property::PropDynamic)
                 && !boost::starts_with(prop->getName(), prop->getGroup());
         })) {
-        menu.addAction(tr("Rename Pproperty Group"))->setData(QVariant(MA_EditPropGroup));
+        menu.addAction(tr("Rename Property Group"))->setData(QVariant(MA_EditPropGroup));
     }
 
     // remove property
