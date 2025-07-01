@@ -44,7 +44,23 @@
 namespace MillSim
 {
 
-class MillSimulation
+struct MillSimulationState
+{
+    int mCurStep = 0;
+    int mNTotalSteps = 0;
+    int mPathStep = -1;
+    int mSubStep = 0;
+    int mNPathSteps = 0;
+    int mSimSpeed = 1;
+    int mViewItems = VIEWITEM_SIMULATION;
+    bool mViewPath = false;
+    bool mViewSSAO = false;
+
+    bool mSimPlaying = false;
+    bool mSingleStep = false;
+};
+
+class MillSimulation: private MillSimulationState
 {
 public:
     MillSimulation();
@@ -55,10 +71,7 @@ public:
     void InitSimulation(float quality);
     void AddTool(EndMill* tool);
     void AddTool(const std::vector<float>& toolProfile, int toolid, float diameter);
-    bool ToolExists(int toolid)
-    {
-        return GetTool(toolid) != nullptr;
-    }
+    bool ToolExists(int toolid);
     void RenderSimulation();
     void RenderTool();
     void RenderPath();
@@ -70,6 +83,8 @@ public:
     bool LoadGCodeFile(const char* fileName);
     bool AddGcodeLine(const char* line);
     void SetSimulationStage(float stage);
+    void SetState(const MillSimulationState& state);
+    const MillSimulationState& GetState() const;
     void SetBoxStock(float x, float y, float z, float l, float w, float h);
     void SetArbitraryStock(const std::vector<Vertex>& verts, const std::vector<GLushort>& indices);
     void SetBaseObject(const std::vector<Vertex>& verts, const std::vector<GLushort>& indices);
@@ -80,7 +95,6 @@ public:
     void MousePress(int button, bool isPressed, int px, int py);
     void Zoom(float factor);
     void UpdateWindowScale(int width, int height);
-
 
 protected:
     void InitDisplay(float quality);
@@ -97,7 +111,6 @@ protected:
     EndMill* GetTool(int tool);
     void RemoveTool(int toolId);
 
-
 protected:
     std::vector<EndMill*> mToolTable;
     GCodeParser mCodeParser;
@@ -106,6 +119,9 @@ protected:
     MillPathLine millPathLine;
     std::vector<MillPathSegment*> MillPathSegments;
     std::ostringstream mFpsStream;
+
+    int mWidth = -1;
+    int mHeight = -1;
 
     MillMotion mZeroPos = {eNop, -1, 0, 0, 100, 0, 0, 0, 0};
     MillMotion mCurMotion = {eNop, -1, 0, 0, 0, 0, 0, 0, 0};
@@ -120,24 +136,15 @@ protected:
     vec3 toolColor = {0.5f, 0.4f, 0.3f};
     vec3 baseShapeColor = {0.7f, 0.6f, 0.5f};
 
-    int mCurStep = 0;
-    int mNTotalSteps = 0;
-    int mPathStep = 0;
-    int mSubStep = 0;
-    int mNPathSteps = 0;
     int mDebug = 0;
     int mDebug1 = 0;
     int mDebug2 = 12;
-    int mSimSpeed = 1;
-    int mViewItems = VIEWITEM_SIMULATION;
 
     int mLastMouseX = 0, mLastMouseY = 0;
     int mMouseButtonState = 0;
     int mLastModifiers = 0;
-
-    bool mIsInStock = false;
-    bool mSimPlaying = false;
-    bool mSingleStep = false;
 };
+
 }  // namespace MillSim
+
 #endif

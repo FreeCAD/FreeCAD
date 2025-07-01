@@ -34,6 +34,7 @@
 #include <QOpenGLWidget>
 #include <QOpenGLExtraFunctions>
 #include <QPainter>
+#include <QTimer>
 #include <QExposeEvent>
 #include <QResizeEvent>
 #include <QMouseEvent>
@@ -43,6 +44,7 @@ namespace MillSim
 {
 // use short declaration as using 'include' causes a header loop
 class MillSimulation;
+class MillSimulationState;
 struct Vertex;
 }  // namespace MillSim
 
@@ -54,15 +56,7 @@ class MDIView;
 namespace CAMSimulator
 {
 
-struct SimStock
-{
-public:
-    SimStock(float px, float py, float pz, float lx, float ly, float lz, float res);
-
-public:
-    float mPx, mPy, mPz;  // stock zero position
-    float mLx, mLy, mLz;  // stock dimensions
-};
+class ViewCAMSimulator;
 
 struct SimShape
 {
@@ -86,8 +80,10 @@ class DlgCAMSimulator: public QOpenGLWidget, public QOpenGLExtraFunctions
     Q_OBJECT
 
 public:
-    explicit DlgCAMSimulator(Gui::MDIView& view, QWidget* parent = nullptr);
+    explicit DlgCAMSimulator(ViewCAMSimulator& view, QWidget* parent = nullptr);
     ~DlgCAMSimulator() override;
+
+    void cloneFrom(const DlgCAMSimulator& from);
 
     static DlgCAMSimulator* instance();
 
@@ -111,25 +107,32 @@ protected:
     void wheelEvent(QWheelEvent* ev) override;
 
     void updateResources();
+    void updateWindowScale();
 
     void initializeGL() override;
     void paintGL() override;
     void resizeGL(int w, int h) override;
 
 private:
-    bool mAnimating = false;
     bool mNeedsInitialize = false;
     bool mNeedsClear = false;
+    bool mAnimating = false;
+    QTimer mAnimatingTimer;
 
     std::unique_ptr<MillSim::MillSimulation> mMillSimulator;
     float mQuality = 10;
 
     std::vector<std::string> mGCode;
+    std::size_t mLastGCode = 0;
+
     std::vector<SimTool> mTools;
+
     SimShape mStock;
     SimShape mBase;
 
-    Gui::MDIView& mView;
+    ViewCAMSimulator& mView;
+
+    std::unique_ptr<MillSim::MillSimulationState> mState;
 };
 
 }  // namespace CAMSimulator
