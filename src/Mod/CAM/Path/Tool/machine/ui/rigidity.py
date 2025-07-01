@@ -31,7 +31,7 @@ class LinearAxesPage(QtGui.QWizardPage):
         super().__init__()
         self.machine = machine
         self.setTitle(translate("CAM", "Linear Axes Measurements"))
-        self.setSubTitle(translate("CAM", "Enter measurements for linear axes."))
+        self.setSubTitle(translate("CAM", "Enter measurements for linear axes"))
         layout = QtGui.QFormLayout()
 
         steps = translate(
@@ -71,8 +71,11 @@ class LinearAxesPage(QtGui.QWizardPage):
                 deflection_edit.setProperty("value", FreeCAD.Units.Quantity("0 mm"))
                 deflection_edit.valueChanged.connect(self.check_completeness)
 
-                layout.addRow(f"{axis_name.capitalize()}-axis Force:", force_edit)
-                layout.addRow(f"{axis_name.capitalize()}-axis Deflection:", deflection_edit)
+                layout.addRow(translate("CAM", f"{axis_name.capitalize()}-axis force"), force_edit)
+                layout.addRow(
+                    translate("CAM", f"{axis_name.capitalize()}-axis deflection"),
+                    deflection_edit,
+                )
                 self.inputs[axis_name] = (force_edit, deflection_edit)
 
         if not self.inputs:
@@ -111,7 +114,7 @@ class AngularAxesPage(QtGui.QWizardPage):
         super().__init__()
         self.machine = machine
         self.setTitle(translate("CAM", "Angular Axes Measurements"))
-        self.setSubTitle(translate("CAM", "Enter measurements for angular axes."))
+        self.setSubTitle(translate("CAM", "Enter measurements for angular axes"))
 
         layout = QtGui.QFormLayout()
         instructions = QtGui.QLabel(
@@ -162,14 +165,24 @@ class AngularAxesPage(QtGui.QWizardPage):
                 deflection_y_edit.setProperty("value", FreeCAD.Units.Quantity("0 deg"))
                 deflection_y_edit.valueChanged.connect(self.check_completeness)
 
-                layout.addRow(f"{axis_name.capitalize()}-axis Force in X direction:", force_x_edit)
                 layout.addRow(
-                    f"{axis_name.capitalize()}-axis Angular Deflection for X force:",
+                    translate("CAM", f"{axis_name.capitalize()}-axis force in X direction"),
+                    force_x_edit,
+                )
+                layout.addRow(
+                    translate(
+                        "CAM", f"{axis_name.capitalize()}-axis angular deflection for X force"
+                    ),
                     deflection_x_edit,
                 )
-                layout.addRow(f"{axis_name.capitalize()}-axis Force in Y direction:", force_y_edit)
                 layout.addRow(
-                    f"{axis_name.capitalize()}-axis Angular Deflection for Y force:",
+                    translate("CAM", f"{axis_name.capitalize()}-axis force in Y direction"),
+                    force_y_edit,
+                )
+                layout.addRow(
+                    translate(
+                        "CAM", f"{axis_name.capitalize()}-axis angular deflection for Y force"
+                    ),
                     deflection_y_edit,
                 )
                 self.inputs[axis_name] = (
@@ -221,7 +234,7 @@ class SummaryPage(QtGui.QWizardPage):
     def __init__(self, wizard):
         super().__init__()
         self.setTitle(translate("CAM", "Summary"))
-        self.setSubTitle(translate("CAM", "Review calculated rigidities."))
+        self.setSubTitle(translate("CAM", "Review calculated rigidities"))
         self.setButtonText(QtGui.QWizard.FinishButton, translate("CAM", "Apply and Close"))
 
         layout = QtGui.QVBoxLayout()

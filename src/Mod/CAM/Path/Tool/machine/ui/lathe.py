@@ -36,19 +36,17 @@ class LathePropertiesDialog(MachinePropertiesDialog):
 
     def __init__(self, machine: Lathe, parent=None):
         super().__init__(machine, parent)
-        self.setWindowTitle(translate("CAM_PreferencesLathe", "Edit Lathe"))
+        self.setWindowTitle(translate("CAM", "Edit Lathe"))
 
         ui = FreeCADGui.UiLoader()
 
         # Add Lathe properties group
-        lathe_properties_group = QtGui.QGroupBox(
-            translate("CAM_PreferencesLathe", "Lathe properties")
-        )
+        lathe_properties_group = QtGui.QGroupBox(translate("CAM", "Lathe Properties"))
         lathe_properties_layout = QtGui.QFormLayout()
         self.max_diameter_edit = ui.createWidget("Gui::QuantitySpinBox")
         self.max_diameter_edit.setProperty("value", machine.max_workpiece_diameter)
         lathe_properties_layout.addRow(
-            translate("CAM_PreferencesLathe", "Max Workpiece Diameter:"),
+            translate("CAM", "Maximum workpiece diameter"),
             self.max_diameter_edit,
         )
         lathe_properties_group.setLayout(lathe_properties_layout)
@@ -57,7 +55,7 @@ class LathePropertiesDialog(MachinePropertiesDialog):
         # Add Spindle editor
         self.spindles_group.hide()
         self.spindle_editor = SpindlePropertiesWidget(machine.spindles[0], parent=self)
-        spindle_group = QtGui.QGroupBox(translate("CAM_PreferencesLathe", "Spindle"))
+        spindle_group = QtGui.QGroupBox(translate("CAM", "Spindle"))
         spindle_layout = QtGui.QVBoxLayout()
         spindle_layout.setContentsMargins(0, 0, 0, 0)
         spindle_layout.addWidget(self.spindle_editor)
@@ -70,8 +68,8 @@ class LathePropertiesDialog(MachinePropertiesDialog):
         if max_diameter.Value <= 0:
             QtGui.QMessageBox.warning(
                 self,
-                translate("CAM_PreferencesLathe", "Warning"),
-                translate("CAM_PreferencesLathe", "Max workpiece diameter must be positive."),
+                translate("CAM", "Warning"),
+                translate("CAM", "Maximum workpiece diameter must be positive."),
             )
             return None
 

@@ -48,10 +48,10 @@ class MachinePropertiesDialog(QtGui.QDialog):
 
         self.machine_id_label = QtGui.QLabel(machine.get_id())
         self.machine_id_label.setTextInteractionFlags(QtCore.Qt.TextSelectableByMouse)
-        general_layout.addRow(translate("CAM", "ID:"), self.machine_id_label)
+        general_layout.addRow(translate("CAM", "ID"), self.machine_id_label)
 
         self.label_edit = QtGui.QLineEdit(machine.label)
-        general_layout.addRow(translate("CAM", "Label:"), self.label_edit)
+        general_layout.addRow(translate("CAM", "Label"), self.label_edit)
 
         ui = FreeCADGui.UiLoader()
 
@@ -62,17 +62,19 @@ class MachinePropertiesDialog(QtGui.QDialog):
             self.post_processor_combo.setCurrentIndex(
                 available_post_processors.index(machine.post_processor)
             )
-        general_layout.addRow(translate("CAM", "Post Processor:"), self.post_processor_combo)
+        general_layout.addRow(translate("CAM", "Post processor"), self.post_processor_combo)
 
         self.post_processor_args = QtGui.QLineEdit(machine.post_processor_args)
-        general_layout.addRow(translate("CAM", "Post Processor Args:"), self.post_processor_args)
+        general_layout.addRow(
+            translate("CAM", "Post processor arguments"), self.post_processor_args
+        )
 
         self.supported_args = QTextEdit()
         self.supported_args.setReadOnly(True)
         font = QtGui.QFont("Courier New")
         self.supported_args.setFont(font)
         self.supported_args.setMinimumHeight(200)
-        general_layout.addRow(translate("CAM", "Supported Args:"), self.supported_args)
+        general_layout.addRow(translate("CAM", "Supported arguments"), self.supported_args)
 
         self.post_processor_combo.currentIndexChanged.connect(self._update_post_processor_args)
         self._update_post_processor_args(self.post_processor_combo.currentIndex())
@@ -86,10 +88,10 @@ class MachinePropertiesDialog(QtGui.QDialog):
         self.axis_edits = {}
 
         # Add column headers for the grid
-        axis_properties_layout.addWidget(QtGui.QLabel(translate("CAM", "Min")), 0, 1)
-        axis_properties_layout.addWidget(QtGui.QLabel(translate("CAM", "Max")), 0, 2)
+        axis_properties_layout.addWidget(QtGui.QLabel(translate("CAM", "Minimum")), 0, 1)
+        axis_properties_layout.addWidget(QtGui.QLabel(translate("CAM", "Maximum")), 0, 2)
         axis_properties_layout.addWidget(QtGui.QLabel(translate("CAM", "Rigidity")), 0, 3)
-        axis_properties_layout.addWidget(QtGui.QLabel(translate("CAM", "Max Feed")), 0, 4)
+        axis_properties_layout.addWidget(QtGui.QLabel(translate("CAM", "Maximum feed")), 0, 4)
 
         # Linear Axes
         for i, (axis_name, axis) in enumerate(sorted(machine.axes.items())):
@@ -97,9 +99,7 @@ class MachinePropertiesDialog(QtGui.QDialog):
                 continue
             row = i + 1  # Start from row 1 after headers
 
-            axis_properties_layout.addWidget(
-                QtGui.QLabel(f"{axis_name.capitalize()}-Axis:"), row, 0
-            )
+            axis_properties_layout.addWidget(QtGui.QLabel(f"{axis_name.capitalize()}-axis"), row, 0)
 
             start_edit = ui.createWidget("Gui::QuantitySpinBox")
             start_edit.setProperty("value", axis.start)
@@ -135,14 +135,13 @@ class MachinePropertiesDialog(QtGui.QDialog):
         angular_axis_start_row = (
             len([a for a in machine.axes.values() if isinstance(a, LinearAxis)]) + 1
         )
+        row = angular_axis_start_row
         for i, (axis_name, axis) in enumerate(sorted(machine.axes.items())):
             if not isinstance(axis, AngularAxis):
                 continue
             row = angular_axis_start_row + i
 
-            axis_properties_layout.addWidget(
-                QtGui.QLabel(f"{axis_name.capitalize()}-Axis:"), row, 0
-            )
+            axis_properties_layout.addWidget(QtGui.QLabel(f"{axis_name.capitalize()}-axis"), row, 0)
 
             # Use FreeCAD.Units.Quantity does not support °/N, so
             # we use QDoubleSpinBox for rigidity to avoid unit issues
@@ -165,7 +164,7 @@ class MachinePropertiesDialog(QtGui.QDialog):
         axis_properties_group.setLayout(axis_properties_layout)
 
         # Add Configure Rigidities button
-        self.configure_rigidities_btn = QtGui.QPushButton(translate("CAM", "Rigidity wizard..."))
+        self.configure_rigidities_btn = QtGui.QPushButton(translate("CAM", "Rigidity Wizard…"))
         self.configure_rigidities_btn.clicked.connect(self.launch_rigidity_wizard)
         axis_properties_layout.addWidget(self.configure_rigidities_btn, row + 1, 0, 1, 5)
 
@@ -237,7 +236,7 @@ class MachinePropertiesDialog(QtGui.QDialog):
         self.spindle_list.setItem(row_position, 1, kw_item)
 
     def add_spindle(self):
-        label = translate("CAM", f"Spindle {self.spindle_list.rowCount()+1}")
+        label = translate("CAM", f"Spindle {self.spindle_list.rowCount() + 1}")
         dialog = SpindleEditorDialog(Spindle(label), parent=self)
         if dialog.exec_():
             new_spindle = dialog.spindle
