@@ -154,7 +154,7 @@ class Incision(object):
 def insertBone(obj, kink):
     """insertBone(kink, side) - return True if a bone should be inserted into the kink"""
     if not kink.isKink():
-        Path.Log.debug(f"not a kink")
+        Path.Log.debug("not a kink")
         return False
 
     if obj.Side == Side.Right and kink.goesRight():
@@ -255,6 +255,12 @@ class Proxy(object):
         )
         obj.BoneBlacklist = []
 
+        obj.addProperty(
+            "App::PropertyBool",
+            "OnlyLastClosedProfile",
+            "Dressup",
+            QT_TRANSLATE_NOOP("App::Property", "Bones only for last closed profile"),
+        )
         self.onDocumentRestored(obj)
 
     def onDocumentRestored(self, obj):
@@ -283,6 +289,26 @@ class Proxy(object):
             return dogboneII.generate(kink, generator, calc_length, nominal, custom)
         return None
 
+    # Get last index of mill command in whole Path
+    def findLastCutIndex(self, source):
+        for i in range(len(source) - 1, -1, -1):
+            if source[i].isMove() and not source[i].isRapid():
+                return i
+        return None
+
+    # Get start index of pocket final closed loop
+    def findStartIndex(self, source, endIndex):
+        points = []
+        for i in range(endIndex, -1, -1):
+            point = source[i].positionEnd()
+            for p in points:
+                # compare this point with all points before
+                if Path.Geom.pointsCoincide(point, p):
+                    return i
+            # collect all points
+            points.append(point)
+        return None
+
     def execute(self, obj):
         Path.Log.track(obj.Label)
         maneuver = PathLanguage.Maneuver()
@@ -290,12 +316,24 @@ class Proxy(object):
         lastMove = None
         moveAfterPlunge = None
         dressingUpDogbone = hasattr(obj.Base, "BoneBlacklist")
+
         if obj.Base and obj.Base.Path and obj.Base.Path.Commands:
-            for i, instr in enumerate(
-                PathLanguage.Maneuver.FromPath(PathUtils.getPathWithPlacement(obj.Base)).instr
-            ):
+            source = PathLanguage.Maneuver.FromPath(PathUtils.getPathWithPlacement(obj.Base)).instr
+
+            startIndex = 0
+            if hasattr(obj, "OnlyLastClosedProfile") and obj.OnlyLastClosedProfile:
+                finishLoopIndex = self.findLastCutIndex(source)
+                startIndex = self.findStartIndex(source, finishLoopIndex)
+                print("finishLoopIndex", finishLoopIndex)
+
+            print()
+            print("startIndex", startIndex)
+            print()
+
+            for i, instr in enumerate(source):
+                print(i, instr)
                 # Path.Log.debug(f"instr: {instr}")
-                if instr.isMove():
+                if instr.isMove() and i >= startIndex:
                     thisMove = instr
                     bone = None
                     if thisMove.isPlunge():
@@ -310,7 +348,7 @@ class Proxy(object):
                             bone = self.createBone(obj, lastMove, thisMove)
                         lastMove = thisMove
                     if bone:
-                        enabled = not len(bones) in obj.BoneBlacklist
+                        enabled = len(bones) not in obj.BoneBlacklist
                         if enabled and not (
                             dressingUpDogbone and obj.Base.Proxy.includesBoneAt(bone.position())
                         ):
@@ -348,7 +386,7 @@ class Proxy(object):
         if hasattr(self, "bones"):
             for nr, bone in enumerate(self.bones):
                 if Path.Geom.pointsCoincide(bone.position(), pos):
-                    return not (nr in self.obj.BoneBlacklist)
+                    return nr not in self.obj.BoneBlacklist
         return False
 
 
