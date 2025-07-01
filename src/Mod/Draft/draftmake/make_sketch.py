@@ -78,11 +78,6 @@ def make_sketch(objects_list, autoconstraints=False, addTo=None,
     import Part
     from Sketcher import Constraint
 
-    if App.GuiUp:
-        v_dir = gui_utils.get_3d_view().getViewDirection()
-    else:
-        v_dir = App.Vector(0, 0, -1)
-
     # lists to accumulate shapes with defined normal and undefined normal
     shape_norm_yes = list()
     shape_norm_no = list()
@@ -127,21 +122,20 @@ def make_sketch(objects_list, autoconstraints=False, addTo=None,
         # suppose all geometries are straight lines or points
         points = [vertex.Point for shape in shapes_list for vertex in shape.Vertexes]
         if len(points) >= 2:
-            poly = Part.makePolygon(points)
-            if not DraftGeomUtils.is_planar(poly, tol):
-                App.Console.PrintError(translate("draft",
-                                       "All Shapes must be coplanar") + "\n")
-                return None
-            normal = DraftGeomUtils.get_normal(poly, tol)
-            if not normal:
-                # all points aligned
-                poly_dir = poly.Edges[0].Curve.Direction
-                normal = (v_dir - v_dir.dot(poly_dir)*poly_dir).normalize()
-                normal = normal.negative()
+            try:
+                poly = Part.makePolygon(points)
+            except Part.OCCError:
+                # all points coincide
+                normal = App.Vector(0, 0, 1)
+            else:
+                if not DraftGeomUtils.is_planar(poly, tol):
+                    App.Console.PrintError(translate("draft",
+                                           "All Shapes must be coplanar") + "\n")
+                    return None
+                normal = DraftGeomUtils.get_shape_normal(poly)
         else:
             # only one point
-            normal = v_dir.negative()
-
+            normal = App.Vector(0, 0, 1)
 
     if addTo:
         nobj = addTo
