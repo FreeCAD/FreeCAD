@@ -104,6 +104,10 @@ class ObjectPocket(PathAreaOp.ObjectOp):
         if len(obj.Base) == 0:
             return
         super().opExecute(obj)
+        if obj.OffsetPattern == "ZigZagOffset":
+            obj.setEditorMode("ExtraOffsetZigZag", 0)  # unhide
+        else:
+            obj.setEditorMode("ExtraOffsetZigZag", 2)  # hide
 
     def areaOpSetDefaultValues(self, obj, job):
         obj.PocketLastStepOver = 0
@@ -135,6 +139,15 @@ class ObjectPocket(PathAreaOp.ObjectOp):
             QT_TRANSLATE_NOOP(
                 "App::Property",
                 "Extra offset to apply to the operation. Direction is operation dependent.",
+            ),
+        )
+        obj.addProperty(
+            "App::PropertyDistance",
+            "ExtraOffsetZigZag",
+            "Pocket",
+            QT_TRANSLATE_NOOP(
+                "App::Property",
+                "Extra offset to apply to the ZigZag path with pattern ZigZagOffset.",
             ),
         )
         obj.addProperty(
@@ -197,6 +210,8 @@ class ObjectPocket(PathAreaOp.ObjectOp):
             ),
         )
 
+        obj.setEditorMode("ExtraOffsetZigZag", 2)  # hide
+
         for n in self.pocketPropertyEnumerations():
             setattr(obj, n[0], n[1])
 
@@ -219,8 +234,9 @@ class ObjectPocket(PathAreaOp.ObjectOp):
         params["PocketStepover"] = (self.radius * 2) * (float(obj.StepOver) / 100)
         extraOffset = obj.ExtraOffset.Value
         if self.pocketInvertExtraOffset():
-            extraOffset = 0 - extraOffset
+            extraOffset = -extraOffset
         params["PocketExtraOffset"] = extraOffset
+        params["PocketExtraOffsetzz"] = obj.ExtraOffsetZigZag.Value
         params["ToolRadius"] = self.radius
         params["PocketLastStepover"] = obj.PocketLastStepOver
 
@@ -274,6 +290,21 @@ class ObjectPocket(PathAreaOp.ObjectOp):
                     "Set distance which will attempts to avoid unnecessary retractions.",
                 ),
             )
+        if not hasattr(obj, "ExtraOffsetZigZag"):
+            obj.addProperty(
+                "App::PropertyDistance",
+                "ExtraOffsetZigZag",
+                "Pocket",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "Extra offset to apply to the ZigZag path with pattern ZigZagOffset.",
+                ),
+            )
+            if obj.OffsetPattern == "ZigZagOffset":
+                obj.setEditorMode("ExtraOffsetZigZag", 1)  # unhide
+            else:
+                obj.setEditorMode("ExtraOffsetZigZag", 2)  # hide
+
         if hasattr(obj, "RestMachiningRegions"):
             obj.removeProperty("RestMachiningRegions")
         if hasattr(obj, "RestMachiningRegionsNeedRecompute"):
