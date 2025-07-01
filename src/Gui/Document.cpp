@@ -91,8 +91,10 @@ struct DocumentP
     int        _iWinCount;
     int        _iDocId;
     bool       _isClosing;
-    bool       _isModified;
-    int        _awayFromSavedState; // How many transactions away are we from the saved state
+    // How many transactions away are we from the saved state. 0 -> current state is saved
+    int        _awayFromSavedState;
+     // Some modifications do not come from a transaction, if this flag is up, no undo/redo can put it down, only a save will do
+    bool       _isModifiedOutOfTransaction;
     bool       _isTransacting;
     bool       _changeViewTouchDocument;
     bool                        _editWantsRestore;
@@ -437,8 +439,8 @@ Document::Document(App::Document* pcDocument,Application * app)
     // new instance
     d->_iDocId = (++_iDocCount);
     d->_isClosing = false;
-    d->_isModified = false;
     d->_awayFromSavedState = 0;
+    d->_isModifiedOutOfTransaction = true;
     d->_isTransacting = false;
     d->_pcAppWnd = app;
     d->_pcDocument = pcDocument;
@@ -1084,9 +1086,16 @@ void Document::slotChangedObject(const App::DocumentObject& Obj, const App::Prop
 
         handleChildren3D(viewProvider);
 
-        if (viewProvider->isDerivedFrom<ViewProviderDocumentObject>())
+        if (viewProvider->isDerivedFrom<ViewProviderDocumentObject>()) {
             signalChangedObject(static_cast<ViewProviderDocumentObject&>(*viewProvider), Prop);
+        }
     }
+
+    // a property of an object has changed
+    // if(!Prop.testStatus(App::Property::NoModify) && !isModified()) {
+    //     FC_LOG(Prop.getFullName() << " modified");
+    //     setModified(ModificationType::OutOfTransaction);
+    // }
 
     getMainWindow()->updateActions(true);
 }
@@ -1158,7 +1167,7 @@ void Document::slotCommitTransaction(const App::Document& doc)
     if (d->_pcDocument != &doc) {
         return;
     }
-    setAwayFromSaved(d->_awayFromSavedState + 1);
+    setModified(ModificationType::TransactionDone);
 }
 void Document::slotRecomputed(const App::Document& doc)
 {
@@ -1232,21 +1241,9 @@ void Document::addViewProvider(Gui::ViewProviderDocumentObject* vp)
     d->_CoinMap[vp->getRoot()] = vp;
 }
 
-void Document::setModified(bool b)
-{
-    if(d->_isModified == b)
-        return;
-    d->_isModified = b;
-
-    std::list<MDIView*> mdis = getMDIViews();
-    for (auto & mdi : mdis) {
-        mdi->setWindowModified(b);
-    }
-}
-
 bool Document::isModified() const
 {
-    return d->_isModified;
+    return d->_awayFromSavedState != 0;
 }
 
 bool Document::isAboutToClose() const
@@ -1464,7 +1461,7 @@ bool Document::save()
                 Command::doCommand(Command::Doc,"App.getDocument(\"%s\").save()",doc->getName());
                 auto gdoc = Application::Instance->getDocument(doc);
                 if (gdoc) {
-                    gdoc->setAwayFromSaved(0);
+                    gdoc->setModified(ModificationType::Reset);
                 }
             }
         }
@@ -1513,7 +1510,7 @@ bool Document::saveAs()
                                            , DocName, escapedstr.c_str());
             // App::Document::saveAs() may modify the passed file name
             fi.setFile(QString::fromUtf8(d->_pcDocument->FileName.getValue()));
-            setAwayFromSaved(0);
+            setModified(ModificationType::Reset);
             getMainWindow()->appendRecentFile(fi.filePath());
         }
         catch (const Base::FileException& e) {
@@ -1577,7 +1574,7 @@ void Document::saveAll()
                 Command::doCommand(Command::Doc,"App.getDocument('%s').recompute()",doc->getName());
             }
             Command::doCommand(Command::Doc,"App.getDocument('%s').save()",doc->getName());
-            gdoc->setAwayFromSaved(0);
+            gdoc->setModified(ModificationType::Reset);
         }
         catch (const Base::Exception& e) {
             QMessageBox::critical(getMainWindow(),
@@ -1756,7 +1753,7 @@ void Document::RestoreDocFile(Base::Reader &reader)
     }
 
     reader.initLocalReader(localreader);
-    setAwayFromSaved(0);
+    setModified(ModificationType::Reset);
 }
 
 void Document::slotStartRestoreDocument(const App::Document& doc)
@@ -1779,8 +1776,9 @@ void Document::slotFinishRestoreObject(const App::DocumentObject &obj) {
 
 void Document::slotFinishRestoreDocument(const App::Document& doc)
 {
-    if (d->_pcDocument != &doc)
+    if (d->_pcDocument != &doc) {
         return;
+    }
     d->connectActObjectBlocker.unblock();
     App::DocumentObject* act = doc.getActiveObject();
     if (act) {
@@ -1791,7 +1789,8 @@ void Document::slotFinishRestoreDocument(const App::Document& doc)
     }
 
     // reset modified flag
-    setModified(doc.testStatus(App::Document::LinkStampChanged));
+    setModified(doc.testStatus(App::Document::LinkStampChanged) ? ModificationType::OutOfTransaction
+                                                                : ModificationType::Reset);
 }
 
 void Document::slotShowHidden(const App::Document& doc)
@@ -2670,7 +2669,7 @@ void Document::undo(int iSteps)
 
     for (int i=0;i<iSteps;i++) {
         getDocument()->undo();
-        setAwayFromSaved(d->_awayFromSavedState-1);
+        setModified(ModificationType::TransactionUndone);
     }
     App::GetApplication().signalUndo();
 }
@@ -2685,18 +2684,50 @@ void Document::redo(int iSteps)
 
     for (int i=0;i<iSteps;i++) {
         getDocument()->redo();
-        setAwayFromSaved(d->_awayFromSavedState+1);
+        setModified(ModificationType::TransactionDone);
     }
     App::GetApplication().signalRedo();
 
-    for (auto it : d->_redoViewProviders)
+    for (auto it : d->_redoViewProviders) {
         handleChildren3D(it);
+    }
     d->_redoViewProviders.clear();
 }
-void Document::setAwayFromSaved(int away)
+void Document::setModified(ModificationType type)
 {
-    d->_awayFromSavedState = away;
-    setModified(d->_awayFromSavedState != 0);
+    if (type == ModificationType::OutOfTransaction && (isPerformingTransaction() || getDocument()->hasPendingTransaction())) {
+        return;
+    }
+
+    int nextAwayFromSavedState = d->_awayFromSavedState;
+    bool nextIsModifiedOutOfTransaction = d->_isModifiedOutOfTransaction;
+    switch (type) {
+    case ModificationType::Reset:
+        nextAwayFromSavedState = 0;
+        nextIsModifiedOutOfTransaction = false;
+        break;
+    case ModificationType::TransactionDone:
+        nextAwayFromSavedState++;
+        break;
+    case ModificationType::TransactionUndone:
+        nextAwayFromSavedState--;
+        break;
+    case ModificationType::OutOfTransaction:
+        nextIsModifiedOutOfTransaction = true;
+        break;
+    }
+
+    bool wasSaved = (d->_awayFromSavedState == 0 && !d->_isModifiedOutOfTransaction);
+    bool isSaved = (nextAwayFromSavedState == 0 && !nextIsModifiedOutOfTransaction);
+
+    if (wasSaved != isSaved) {
+        std::list<MDIView*> mdis = getMDIViews();
+        for (auto & mdi : mdis) {
+            mdi->setWindowModified(!isSaved);
+        }
+    }
+    d->_awayFromSavedState = nextAwayFromSavedState;
+    d->_isModifiedOutOfTransaction = nextIsModifiedOutOfTransaction;
 }
 PyObject* Document::getPyObject()
 {

@@ -143,7 +143,6 @@ void PagePrinter::printAll(QPrinter* printer, App::Document* doc)
     QPainter painter(printer);
 
     auto ourDoc = Gui::Application::Instance->getDocument(doc);
-    auto docModifiedState = ourDoc->isModified();
 
     bool firstTime = true;
     for (auto& obj : docObjs) {
@@ -171,8 +170,6 @@ void PagePrinter::printAll(QPrinter* printer, App::Document* doc)
         renderPage(vpp, painter, sourceRect, targetRect);
         dPage->redrawCommand();
     }
-
-    ourDoc->setModified(docModifiedState);
 }
 
 //! print all pages in a document to pdf
@@ -211,7 +208,6 @@ void PagePrinter::printAllPdf(QPrinter* printer, App::Document* doc)
     QPainter painter(&pdfWriter);
 
     auto ourDoc = Gui::Application::Instance->getDocument(doc);
-    auto docModifiedState = ourDoc->isModified();
 
     bool firstTime = true;
     for (auto& obj : docObjs) {
@@ -244,8 +240,6 @@ void PagePrinter::printAllPdf(QPrinter* printer, App::Document* doc)
 
         ourScene->setExportingPdf(true);
     }
-
-    ourDoc->setModified(docModifiedState);
 }
 
 
@@ -327,14 +321,12 @@ void PagePrinter::print(ViewProviderPage* vpPage, QPrinter* printer)
         ourScene->setExportingPdf(true);
     }
     auto ourDoc = Gui::Application::Instance->getDocument(dPage->getDocument());
-    auto docModifiedState = ourDoc->isModified();
 
     QRect targetRect = printer->pageLayout().fullRectPixels(printer->resolution());
     QRectF sourceRect(0.0, Rez::guiX(-height), Rez::guiX(width), Rez::guiX(height));
     renderPage(vpPage, painter, sourceRect, targetRect);
 
     ourScene->setExportingPdf(false);  // doesn't hurt if not pdf
-    ourDoc->setModified(docModifiedState);
     dPage->redrawCommand();
 }
 
@@ -378,7 +370,6 @@ void PagePrinter::printPdf(ViewProviderPage* vpPage, const std::string& file)
     auto ourScene = vpPage->getQGSPage();
     ourScene->setExportingPdf(true);
     auto ourDoc = Gui::Application::Instance->getDocument(dPage->getDocument());
-    auto docModifiedState = ourDoc->isModified();
 
     // render the page
     QRectF sourceRect(0.0, Rez::guiX(-height), Rez::guiX(width), Rez::guiX(height));
@@ -389,7 +380,6 @@ void PagePrinter::printPdf(ViewProviderPage* vpPage, const std::string& file)
     renderPage(vpPage, painter, sourceRect, targetRect);
 
     ourScene->setExportingPdf(false);
-    ourDoc->setModified(docModifiedState);
     dPage->redrawCommand();
 }
 
@@ -408,12 +398,10 @@ void PagePrinter::saveSVG(ViewProviderPage* vpPage, const std::string& file)
     auto ourScene = vpPage->getQGSPage();
     ourScene->setExportingSvg(true);
     auto ourDoc = vpPage->getDocument();
-    auto docModifiedState = ourDoc->isModified();
 
     ourScene->saveSvg(filename);
 
     ourScene->setExportingSvg(false);
-    ourDoc->setModified(docModifiedState);
 }
 
 

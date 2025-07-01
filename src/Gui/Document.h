@@ -169,7 +169,13 @@ public:
     //@}
 
     /// Observer message from the App doc
-    void setModified(bool);
+    enum class ModificationType {
+        Reset,
+        TransactionDone,
+        TransactionUndone,
+        OutOfTransaction // Modification done 
+    };
+    void setModified(ModificationType type);
     bool isModified() const;
 
     /// Returns true if the document is about to be closed, false otherwise
@@ -291,11 +297,6 @@ public:
     void undo(int iSteps);
     /// Will REDO one or more steps
     void redo(int iSteps) ;
-
-    /// Set the number of transactions away
-    /// we currently are from the saved state
-    /// if it is 0, it will call setIsModified(false);
-    void setAwayFromSaved(int away);
 
     /** Check if the document is performing undo/redo transaction
      *

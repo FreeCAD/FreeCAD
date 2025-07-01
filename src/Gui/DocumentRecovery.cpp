@@ -299,8 +299,9 @@ void DocumentRecovery::accept()
             }
             else {
                 auto gdoc = Application::Instance->getDocument(docs[i]);
-                if (gdoc)
-                    gdoc->setModified(true);
+                if (gdoc) {
+                    gdoc->setModified(Document::ModificationType::OutOfTransaction);
+                }
 
                 info.status = DocumentRecoveryPrivate::Success;
                 if (item) {
