@@ -103,15 +103,9 @@ public:
     /**
      * @brief Selects all selectable objects within the current group.
      *
-     * Clears the current FreeCAD selection and then selects all child items
-     * under the selected item in the tree.
-     * If the selected item is a group (i.e., it has children), its immediate
-     * children are selected.
-     * If the selected item is a child object, the function instead selects all
-     * of its siblings by operating on its parent group.
-     *
-     * If the function operates on the parent of the selected item, it ensures
-     * the parent is expanded so the user can see the newly selected items.
+     * Clears the current FreeCAD selection and then selects all sibling items
+     * of the currently selected object, i.e., all child items of the selected
+     * item's parent in the tree.
      */
     void selectAll() override;
 
