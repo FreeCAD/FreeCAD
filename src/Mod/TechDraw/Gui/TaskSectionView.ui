@@ -292,7 +292,7 @@
    <item>
     <widget class="QGroupBox" name="gbPlane">
      <property name="toolTip">
-      <string>Position from the 3D origin of the object in the view</string>
+      <string>Global 3D coordinates defining the shortest distance from the 3D origin to the section plane</string>
      </property>
      <property name="title">
       <string>Section Plane Location</string>
