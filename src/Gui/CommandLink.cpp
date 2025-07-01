@@ -809,7 +809,7 @@ StdCmdLinkSelectAllLinks::StdCmdLinkSelectAllLinks()
   : Command("Std_LinkSelectAllLinks")
 {
     sGroup        = "Link";
-    sMenuText     = QT_TR_NOOP("Select &all Links");
+    sMenuText     = QT_TR_NOOP("Select &All Links");
     sToolTipText  = QT_TR_NOOP("Selects all links to the current selected object");
     sWhatsThis    = "Std_LinkSelectAllLinks";
     sStatusTip    = sToolTipText;
