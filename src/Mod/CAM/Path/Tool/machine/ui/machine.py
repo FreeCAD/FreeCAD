@@ -20,13 +20,14 @@
 # *                                                                         *
 # ***************************************************************************
 from PySide import QtGui, QtCore
-from PySide.QtGui import QComboBox, QTextEdit
+from PySide.QtGui import QComboBox, QPushButton, QHBoxLayout
 import FreeCAD
 import FreeCADGui
 import Path
 from ...spindle import Spindle
 from ...spindle.ui.editor import SpindleEditorDialog
 from ..models.machine import Machine, LinearAxis, AngularAxis
+from .post import PostProcessorSettingsDialog
 from .rigidity import RigidityWizard
 
 
@@ -62,22 +63,15 @@ class MachinePropertiesDialog(QtGui.QDialog):
             self.post_processor_combo.setCurrentIndex(
                 available_post_processors.index(machine.post_processor)
             )
-        general_layout.addRow(translate("CAM", "Post processor"), self.post_processor_combo)
+        self.post_processor_combo.currentIndexChanged.connect(self._update_machine_post_processor)
 
-        self.post_processor_args = QtGui.QLineEdit(machine.post_processor_args)
-        general_layout.addRow(
-            translate("CAM", "Post processor arguments"), self.post_processor_args
-        )
+        post_processor_layout = QHBoxLayout()
+        post_processor_layout.addWidget(self.post_processor_combo)
 
-        self.supported_args = QTextEdit()
-        self.supported_args.setReadOnly(True)
-        font = QtGui.QFont("Courier New")
-        self.supported_args.setFont(font)
-        self.supported_args.setMinimumHeight(200)
-        general_layout.addRow(translate("CAM", "Supported arguments"), self.supported_args)
-
-        self.post_processor_combo.currentIndexChanged.connect(self._update_post_processor_args)
-        self._update_post_processor_args(self.post_processor_combo.currentIndex())
+        self.configure_post_processor_btn = QPushButton(translate("CAM", "Configure…"))
+        self.configure_post_processor_btn.clicked.connect(self.launch_post_processor_settings)
+        post_processor_layout.addWidget(self.configure_post_processor_btn)
+        general_layout.addRow(translate("CAM", "Post processor"), post_processor_layout)
 
         general_group.setLayout(general_layout)
         self.layout.addWidget(general_group)
@@ -214,15 +208,17 @@ class MachinePropertiesDialog(QtGui.QDialog):
 
         self.resize(750, self.sizeHint().height())
 
-    def _update_post_processor_args(self, index):
-        post_processor_name = self.post_processor_combo.itemText(index)
-        post = Path.Post.Processor.PostProcessorFactory.get_post_processor(
-            None, post_processor_name
-        )
-        if not post:
-            return
-        args = post.tooltipArgs or translate("CAM", "No arguments found")
-        self.supported_args.setText(args)
+    def launch_post_processor_settings(self):
+        dialog = PostProcessorSettingsDialog(self.machine, self)
+        if dialog.exec_():
+            # Update the post processor combo box
+            current_post_processor = self.machine.post_processor
+            index = self.post_processor_combo.findText(current_post_processor)
+            if index != -1:
+                self.post_processor_combo.setCurrentIndex(index)
+
+    def _update_machine_post_processor(self, index):
+        self.machine.post_processor = self.post_processor_combo.itemText(index)
 
     def _add_spindle_to_list(self, spindle: Spindle):
         row_position = self.spindle_list.rowCount()
@@ -301,7 +297,6 @@ class MachinePropertiesDialog(QtGui.QDialog):
         self.machine.label = label
 
         self.machine.post_processor = self.post_processor_combo.currentText()
-        self.machine.post_processor_args = self.post_processor_args.text()
 
         # Update axis properties
         for axis_name, edits in self.axis_edits.items():
