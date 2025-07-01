@@ -162,6 +162,7 @@ class _ToggleOperation:
                     not isinstance(selProxy, Path.Op.Base.ObjectOp)
                     and not isinstance(selProxy, Path.Op.Gui.Array.ObjectArray)
                     and not isinstance(selProxy, Path.Op.Gui.PathCompoundTC.ObjectCompound)
+                    and not isinstance(selProxy, Path.Op.Gui.PathShapeTC.ObjectPathShape)
                 ):
                     return False
             return True
