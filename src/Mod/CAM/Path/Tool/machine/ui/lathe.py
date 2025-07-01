@@ -36,7 +36,6 @@ class LathePropertiesDialog(MachinePropertiesDialog):
 
     def __init__(self, machine: Lathe, parent=None):
         super().__init__(machine, parent)
-        self.setWindowTitle(translate("CAM", "Edit Lathe"))
 
         ui = FreeCADGui.UiLoader()
 

@@ -52,7 +52,9 @@ class MachinePropertiesDialog(QtGui.QDialog):
         general_layout.addRow(translate("CAM", "ID"), self.machine_id_label)
 
         self.label_edit = QtGui.QLineEdit(machine.label)
+        self.label_edit.textChanged.connect(self._update_window_title)
         general_layout.addRow(translate("CAM", "Label"), self.label_edit)
+        self._update_window_title()
 
         ui = FreeCADGui.UiLoader()
 
@@ -382,6 +384,12 @@ class MachinePropertiesDialog(QtGui.QDialog):
             return
 
         super().accept()
+
+    def _update_window_title(self):
+        title = translate("CAM", "Edit Machine")
+        if self.label_edit.text():
+            title = f"{self.label_edit.text()} - {title}"
+        self.setWindowTitle(title)
 
     def update_machine(self):
         """Subclasses must implement this to update the specific machine."""

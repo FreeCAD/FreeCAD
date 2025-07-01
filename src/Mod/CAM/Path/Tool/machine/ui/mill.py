@@ -32,7 +32,6 @@ class MillPropertiesDialog(MachinePropertiesDialog):
 
     def __init__(self, machine: Mill, parent=None):
         super().__init__(machine, parent)
-        self.setWindowTitle(translate("CAM", "Edit Mill"))
 
     def update_machine(self):
         pass  # No mill-specific properties to update
