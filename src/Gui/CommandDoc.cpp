@@ -521,7 +521,8 @@ StdCmdMergeProjects::StdCmdMergeProjects()
     sAppModule    = "File";
     sGroup        = "File";
     sMenuText     = QT_TR_NOOP("&Merge Document…");
-    sToolTipText  = QT_TR_NOOP("Merges another FreeCAD document into the active one")
+    sToolTipText  = QT_TR_NOOP("Merges another FreeCAD document into the active one");
+
     sWhatsThis    = "Std_MergeProjects";
     sStatusTip    = sToolTipText;
     sPixmap       = "Std_MergeProjects";
@@ -606,7 +607,8 @@ StdCmdExportDependencyGraph::StdCmdExportDependencyGraph()
 {
     sGroup        = "Tools";
     sMenuText     = QT_TR_NOOP("Export Dependency &Graph…");
-    QT_TR_NOOP("Exports the dependency graph as a Graphviz (.gv) file")
+    QT_TR_NOOP("Exports the dependency graph as a Graphviz (.gv) file");
+
     sStatusTip    = sToolTipText;
     sWhatsThis    = "Std_ExportDependencyGraph";
     eType         = 0;
