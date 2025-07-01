@@ -85,6 +85,8 @@ public:
     View3DInventor(Gui::Document* pcDocument, QWidget* parent, const QOpenGLWidget* sharewidget = nullptr, Qt::WindowFlags wflags=Qt::WindowFlags());
     ~View3DInventor() override;
 
+    View3DInventor* clone() override;
+
     /// Message handler
     bool onMsg(const char* pMsg, const char** ppReturn) override;
     bool onHasMsg(const char* pMsg) const override;
@@ -131,9 +133,6 @@ public Q_SLOTS:
 
 protected Q_SLOTS:
     void stopAnimating();
-
-public:
-    bool eventFilter(QObject*, QEvent* ) override;
 
 private:
     void applySettings();

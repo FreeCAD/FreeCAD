@@ -1234,6 +1234,7 @@ void MainWindow::removeWindow(Gui::MDIView* view, bool close)
     auto subwindow = qobject_cast<QMdiSubWindow*>(parent);
     if(subwindow && d->mdiArea->subWindowList().contains(subwindow)) {
         subwindow->setParent(nullptr);
+        subwindow->deleteLater();
 
         assert(!d->mdiArea->subWindowList().contains(subwindow));
     }
