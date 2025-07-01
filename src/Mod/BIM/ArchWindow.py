@@ -649,8 +649,8 @@ class _Window(ArchComponent.Component):
                             if hasattr(host.Material,"Materials"):
                                 thicknesses = [abs(t) for t in host.Material.Thicknesses]
                                 totalThk = sum(thicknesses)
-                    # Appended the total thickness to widths, find max below
-                    widths.append(totalThk)
+                                # Append totalThk to widths, find max below
+                                widths.append(totalThk)
 
                 if widths:
                     width = max(widths)
