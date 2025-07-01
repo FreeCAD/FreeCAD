@@ -2468,7 +2468,7 @@ PyObject* SketchObjectPy::setGeometryIds(PyObject* args)
             return nullptr;
         }
 
-        int geoId = PyLong_AsInt(PyTuple_GetItem(pyPair, 0));
+        int geoId = PyLong_AsLong(PyTuple_GetItem(pyPair, 0));
         long id = PyLong_AsLong(PyTuple_GetItem(pyPair, 1));
 
         if (PyErr_Occurred()) {

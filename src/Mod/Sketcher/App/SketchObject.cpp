@@ -11685,8 +11685,7 @@ int SketchObject::setGeometryIds(std::vector<std::pair<int, long>> GeoIdsToIds)
     for (size_t i = 0; i < GeoIdsToIds.size(); ++i) {
         int GeoId = GeoIdsToIds[i].first;
         long id = GeoIdsToIds[i].second;
-        searchOffset = setGeometryIdHelper(GeoId, id, newVals, i != GeoIdsToIds.size()-1);
-
+        searchOffset = setGeometryIdHelper(GeoId, id, newVals, searchOffset, i != GeoIdsToIds.size()-1);
     }
 
     // There is not actual internal transaction going on here, however neither the geometry indices
