@@ -480,6 +480,34 @@ class TestSketcherSolver(unittest.TestCase):
             msg="Reference constraint did not return the expected distance.",
         )
 
+    def testCircleToLineDistance_Legacy_Negative(self):
+        # compare a driving negative distance to an expected positive reference one
+        sketch = self.Doc.addObject("Sketcher::SketchObject", "Sketch")
+        radius = 20
+        c_idx = sketch.addGeometry(Part.Circle(vec(0, 0), xy_normal, radius))
+        l_idx = sketch.addGeometry(
+            Part.LineSegment(vec(-radius, radius / 2), vec(radius, radius / 2))
+        )
+        sketch.addConstraint(
+            [Sketcher.Constraint("Block", c_idx), Sketcher.Constraint("Block", l_idx)]
+        )
+        expected_distance = radius / 2
+        ref_idx = sketch.addConstraint(
+            [
+                Sketcher.Constraint("Distance", c_idx, l_idx, -expected_distance),
+                Sketcher.Constraint("Distance", c_idx, l_idx, 0),
+            ]
+        )[1]
+        sketch.setDriving(ref_idx, False)
+        self.assertSuccessfulSolve(sketch)
+        actual_distance = sketch.Constraints[ref_idx].Value
+        self.assertAlmostEqual(
+            expected_distance,
+            actual_distance,
+            delta=Precision.confusion(),
+            msg="Negative length constraint did not return the expected distance.",
+        )
+
     def testRemovedExternalGeometryReference(self):
         if "BUILD_PARTDESIGN" in FreeCAD.__cmake__:
             body = self.Doc.addObject("PartDesign::Body", "Body")
