@@ -86,10 +86,36 @@ class ObjectEngrave(PathEngraveBase.ObjectOp):
             "Path",
             QT_TRANSLATE_NOOP("App::Property", "The vertex index to start the toolpath from"),
         )
+        obj.addProperty(
+            "App::PropertyEnumeration",
+            "Direction",
+            "Path",
+            QT_TRANSLATE_NOOP("App::Property", "Direction of the path"),
+        )
+        direction = [
+            QT_TRANSLATE_NOOP("CAM_Engrave", "From wire"),
+            QT_TRANSLATE_NOOP("CAM_Engrave", "Reversed"),
+            QT_TRANSLATE_NOOP("CAM_Engrave", "Dual"),
+        ]
+        obj.Direction = direction
         self.setupAdditionalProperties(obj)
 
     def opOnDocumentRestored(self, obj):
         # upgrade ...
+        if not hasattr(obj, "Direction"):
+            direction = [
+                QT_TRANSLATE_NOOP("CAM_Engrave", "From wire"),
+                QT_TRANSLATE_NOOP("CAM_Engrave", "Reversed"),
+                QT_TRANSLATE_NOOP("CAM_Engrave", "Dual"),
+            ]
+            obj.addProperty(
+                "App::PropertyEnumeration",
+                "Direction",
+                "Path",
+                QT_TRANSLATE_NOOP("App::Property", "Direction of the path"),
+            )
+            obj.Direction = direction
+            obj.Direction == "From wire"
         self.setupAdditionalProperties(obj)
 
     def opExecute(self, obj):
@@ -106,7 +132,7 @@ class ObjectEngrave(PathEngraveBase.ObjectOp):
                 basewires = []
                 for feature in subs:
                     sub = base.Shape.getElement(feature)
-                    if type(sub) == Part.Edge:
+                    if type(sub) is Part.Edge:
                         edges.append(sub)
                     elif sub.Wires:
                         basewires.extend(sub.Wires)

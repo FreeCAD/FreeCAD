@@ -26,7 +26,7 @@ import Path.Op.Base as PathOp
 import Path.Op.Util as PathOpUtil
 import PathScripts.PathUtils as PathUtils
 
-# import copy
+import copy
 
 __doc__ = "Base class for all ops in the engrave family."
 
@@ -77,7 +77,12 @@ class ObjectOp(PathOp.ObjectOp):
             decomposewires.extend(PathOpUtil.makeWires(wire.Edges))
 
         wires = decomposewires
+        print()
+        print("Direction", obj.Direction)
+        print("start_idx", start_idx)
+        print(f"wires {wires}")
         for wire in wires:
+            print(f">>> wire {wire}")
             # offset = wire
 
             # reorder the wire
@@ -90,14 +95,33 @@ class ObjectOp(PathOp.ObjectOp):
             # edges = Part.sortEdges(edges)[0]
             # Path.Log.track("edges: {}".format(len(edges)))
 
-            last = None
+            lastPoint = None
+            reverseDir = False
+            dualDir = False
+
+            if hasattr(obj, "Direction"):
+                if obj.Direction == "Reversed":
+                    reverseDir = True
+                if obj.Direction == "Dual":
+                    dualDir = True
 
             for z in zValues:
+
+                def rndv(vector):
+                    if vector:
+                        v = copy.copy(vector)
+                        v.x = round(v.x, 1)
+                        v.y = round(v.y, 1)
+                        v.z = round(v.z, 1)
+                        return (v.x, v.y, v.z)
+
+                print()
+                print(f"  z {z}")
                 Path.Log.debug(z)
-                if last and wire.isClosed():
+                if lastPoint and (wire.isClosed() or dualDir):
                     # Add step down to next Z for closed profile
                     self.appendCommand(
-                        Path.Command("G1", {"X": last.x, "Y": last.y, "Z": last.z}),
+                        Path.Command("G01", {"X": lastPoint.x, "Y": lastPoint.y, "Z": lastPoint.z}),
                         z,
                         relZ,
                         self.vertFeed,
@@ -108,9 +132,28 @@ class ObjectOp(PathOp.ObjectOp):
                     start_idx = len(edges) - 1
 
                 edges = edges[start_idx:] + edges[:start_idx]
-                for edge in edges:
+
+                if reverseDir:
+                    edgesDir = reversed(edges)
+                    sIndex, eIndex = -1, 0
+                else:
+                    edgesDir = edges
+                    sIndex, eIndex = 0, -1
+
+                print(f"    edges {edges}")
+                for i, edge in enumerate(edgesDir):
+                    print()
+                    print(f"      lastPoint {rndv(lastPoint)}")
+                    print(f"      edge {i}  {edge}")
+                    print(
+                        f"      s{rndv(edge.Vertexes[sIndex].Point)} e{rndv(edge.Vertexes[eIndex].Point)}"
+                    )
+                    print(f"      {round(edge.FirstParameter,3)}  {round(edge.LastParameter,3)}")
+
                     Path.Log.debug(
-                        "points: {} -> {}".format(edge.Vertexes[0].Point, edge.Vertexes[-1].Point)
+                        "points: {} -> {}".format(
+                            edge.Vertexes[sIndex].Point, edge.Vertexes[eIndex].Point
+                        )
                     )
                     Path.Log.debug(
                         "valueat {} -> {}".format(
@@ -118,10 +161,10 @@ class ObjectOp(PathOp.ObjectOp):
                             edge.valueAt(edge.LastParameter),
                         )
                     )
-                    if first and (not last or not wire.isClosed()):
+                    if first and (not lastPoint or (not wire.isClosed() and not dualDir)):
                         Path.Log.debug("processing first edge entry")
                         # Add moves to first point of wire
-                        last = edge.Vertexes[0].Point
+                        lastPoint = edge.Vertexes[sIndex].Point
 
                         self.commandlist.append(
                             Path.Command(
@@ -130,32 +173,45 @@ class ObjectOp(PathOp.ObjectOp):
                             )
                         )
                         self.commandlist.append(
-                            Path.Command("G0", {"X": last.x, "Y": last.y, "F": self.horizRapid})
+                            Path.Command(
+                                "G0", {"X": lastPoint.x, "Y": lastPoint.y, "F": self.horizRapid}
+                            )
                         )
                         self.commandlist.append(
                             Path.Command("G0", {"Z": obj.SafeHeight.Value, "F": self.vertRapid})
                         )
                         self.appendCommand(
-                            Path.Command("G1", {"X": last.x, "Y": last.y, "Z": last.z}),
+                            Path.Command(
+                                "G1", {"X": lastPoint.x, "Y": lastPoint.y, "Z": lastPoint.z}
+                            ),
                             z,
                             relZ,
                             self.vertFeed,
                         )
                     first = False
 
-                    if Path.Geom.pointsCoincide(last, edge.valueAt(edge.FirstParameter)):
-                        # if Path.Geom.pointsCoincide(last, edge.Vertexes[0].Point):
-                        # Edge not reversed
-                        for cmd in Path.Geom.cmdsForEdge(edge):
-                            # Add gcode for edge
-                            self.appendCommand(cmd, z, relZ, self.horizFeed)
-                        last = edge.Vertexes[-1].Point
+                    # edgePar = edge.FirstParameter if not reverseDir else edge.LastParameter
+                    # if Path.Geom.pointsCoincide(lastPoint, edge.valueAt(edgePar)):
+                    if Path.Geom.pointsCoincide(lastPoint, edge.Vertexes[sIndex].Point):
+                        print("      pointsCoincide True")
+                        flip = False
+                        lastPoint = edge.Vertexes[eIndex].Point
                     else:
-                        # Edge reversed
-                        for cmd in Path.Geom.cmdsForEdge(edge, True):
-                            # Add gcode for reversed edge
-                            self.appendCommand(cmd, z, relZ, self.horizFeed)
-                        last = edge.Vertexes[0].Point
+                        print("      pointsCoincide False")
+                        flip = True
+                        lastPoint = edge.Vertexes[sIndex].Point
+
+                    if reverseDir:
+                        flip = not flip
+
+                    print(f"      reverseDir {reverseDir}")
+                    print(f"      flip {flip}")
+                    for cmd in Path.Geom.cmdsForEdge(edge, flip):
+                        # Add gcode for edge
+                        self.appendCommand(cmd, z, relZ, self.horizFeed)
+
+                if dualDir:
+                    reverseDir = not reverseDir
 
             self.commandlist.append(
                 Path.Command("G0", {"Z": obj.ClearanceHeight.Value, "F": self.vertRapid})
