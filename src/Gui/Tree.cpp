@@ -656,6 +656,14 @@ TreeWidget::TreeWidget(const char* name, QWidget* parent)
     connect(this->selectDependentsAction, &QAction::triggered,
             this, &TreeWidget::onSelectDependents);
 
+    auto* selectAllRecursiveAction = new QAction(this);
+    selectAllRecursiveAction->setShortcut(QKeySequence(QStringLiteral("Ctrl+Shift+A")));
+    selectAllRecursiveAction->setShortcutContext(Qt::WidgetShortcut);
+    connect(selectAllRecursiveAction, &QAction::triggered, [this]() {
+        this->selectAll(true);
+    });
+    addAction(selectAllRecursiveAction);
+
     this->closeDocAction = new QAction(this);
     connect(this->closeDocAction, &QAction::triggered,
             this, &TreeWidget::onCloseDoc);
