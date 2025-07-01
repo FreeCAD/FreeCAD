@@ -432,7 +432,12 @@ class ObjectHelix(PathCircularHoleBase.ObjectOp):
                                 Path.Command("G0", {"X": hole["x"], "Y": hole["y"]})
                             )
 
-        PathFeedRate.setFeedRate(self.commandlist, obj.ToolController)
+        if hasattr(obj, "HorizFeed") and hasattr(obj, "VertFeed"):
+            PathFeedRate.setFeedRate(
+                self.commandlist, obj.ToolController, obj.HorizFeed, obj.VertFeed
+            )
+        else:
+            PathFeedRate.setFeedRate(self.commandlist, obj.ToolController)
 
     def createSpiral(self, center, innerR, outerR, increment, startSide, direction, finish):
         # Create spiral Path
