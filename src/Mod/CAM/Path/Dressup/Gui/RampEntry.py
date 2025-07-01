@@ -98,6 +98,16 @@ class ObjectDressup:
                 "The depth where the ramp dressup is enabled. Above this ramps are not generated, but motion commands are passed through as is.",
             ),
         )
+        obj.addProperty(
+            "App::PropertyBool",
+            "Approximation",
+            "Path",
+            QT_TRANSLATE_NOOP(
+                "App::Property",
+                "Split B-Spline by arcs and ignore not vertical arcs axis (experimental).",
+            ),
+        )
+        obj.setEditorMode("Approximation", 2)  # hide
 
         # populate the enumerations
         for n in self.propertyEnumerations():
@@ -188,6 +198,17 @@ class ObjectDressup:
 
     def onDocumentRestored(self, obj):
         self.setEditorProperties(obj)
+        if not hasattr(obj, "Approximation"):
+            obj.addProperty(
+                "App::PropertyBool",
+                "Approximation",
+                "Path",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "Split B-Spline by arcs and ignore not vertical arcs axis (experimental).",
+                ),
+            )
+            obj.setEditorMode("Approximation", 2)  # hide
 
     def setup(self, obj):
         obj.Angle = 60
@@ -446,9 +467,9 @@ class ObjectDressup:
 
     def createRampEdge(self, originalEdge, startPoint, endPoint):
         # Path.Log.debug("Create edge from [{},{},{}] to [{},{},{}]".format(startPoint.x,startPoint.y, startPoint.z, endPoint.x, endPoint.y, endPoint.z))
-        if type(originalEdge.Curve) == Part.Line or type(originalEdge.Curve) == Part.LineSegment:
+        if type(originalEdge.Curve) in [Part.Line, Part.LineSegment]:
             return Part.makeLine(startPoint, endPoint)
-        elif type(originalEdge.Curve) == Part.Circle:
+        elif type(originalEdge.Curve) is Part.Circle:
             firstParameter = originalEdge.Curve.parameter(startPoint)
             lastParameter = originalEdge.Curve.parameter(endPoint)
             arcMid = originalEdge.valueAt((firstParameter + lastParameter) / 2)
@@ -466,9 +487,9 @@ class ObjectDressup:
             # reverse the start and end points
             startPoint = edge.valueAt(edge.LastParameter)
             endPoint = edge.valueAt(edge.FirstParameter)
-            if type(edge.Curve) == Part.Line or type(edge.Curve) == Part.LineSegment:
+            if type(edge.Curve) in [Part.Line, Part.LineSegment]:
                 outedges.append(Part.makeLine(startPoint, endPoint))
-            elif type(edge.Curve) == Part.Circle:
+            elif type(edge.Curve) is Part.Circle:
                 arcMid = edge.valueAt((edge.FirstParameter + edge.LastParameter) / 2)
                 outedges.append(Part.Arc(startPoint, arcMid, endPoint).toShape())
             else:
@@ -484,9 +505,9 @@ class ObjectDressup:
         return minZ
 
     def getSplitPoint(self, edge, remaining):
-        if type(edge.Curve) == Part.Line or type(edge.Curve) == Part.LineSegment:
+        if type(edge.Curve) in [Part.Line, Part.LineSegment]:
             return edge.valueAt(remaining)
-        elif type(edge.Curve) == Part.Circle:
+        elif type(edge.Curve) is Part.Circle:
             param = remaining / edge.Curve.Radius
             return edge.valueAt(param)
 
@@ -758,7 +779,7 @@ class ObjectDressup:
                 v = edge.valueAt(edge.LastParameter)
                 commands.append(Path.Command("G0", {"X": v.x, "Y": v.y, "Z": v.z}))
             else:
-                commands.extend(Path.Geom.cmdsForEdge(edge))
+                commands.extend(Path.Geom.cmdsForEdge(edge, approximation=obj.Approximation))
 
         lastCmd = Path.Command("G0", {"X": 0.0, "Y": 0.0, "Z": 0.0})
 
