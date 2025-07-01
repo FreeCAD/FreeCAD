@@ -2607,26 +2607,7 @@ void DSHRectangleController::addConstraints()
 
     if (handler->constructionMethod() == ConstructionMethod::ThreePoints) {
         if (angleSet) {
-            if (fabs(angle - pi) < Precision::Confusion()
-                || fabs(angle + pi) < Precision::Confusion()
-                || fabs(angle) < Precision::Confusion()) {
-                Gui::cmdAppObjectArgs(obj,
-                                      "addConstraint(Sketcher.Constraint('Horizontal',%d)) ",
-                                      firstCurve);
-            }
-            else if (fabs(angle - pi / 2) < Precision::Confusion()
-                     || fabs(angle + pi / 2) < Precision::Confusion()) {
-                Gui::cmdAppObjectArgs(obj,
-                                      "addConstraint(Sketcher.Constraint('Vertical',%d)) ",
-                                      firstCurve);
-            }
-            else {
-                Gui::cmdAppObjectArgs(obj,
-                                      "addConstraint(Sketcher.Constraint('Angle',%d,%d,%f)) ",
-                                      Sketcher::GeoEnum::HAxis,
-                                      firstCurve,
-                                      angle);
-            }
+            ConstraintLineByAngle(firstCurve, angle, obj);
         }
         if (innerAngleSet) {
             if (fabs(innerAngle - pi / 2) > Precision::Confusion()) {
