@@ -435,10 +435,10 @@ Multiplier of 'Font size'</string>
            </font>
           </property>
           <property name="toolTip">
-           <string>Controls the gap size between the dimension point and the start of the extension line for ASME dimensions.</string>
+           <string>Controls the gap size between the dimension point and the start of the extension line for ASME dimensions</string>
           </property>
           <property name="text">
-           <string>Extension Gap Factor - ASME</string>
+           <string>Extension gap factor - ASME</string>
           </property>
          </widget>
         </item>
@@ -545,18 +545,18 @@ Multiplier of 'Font size'</string>
       <item row="0" column="0">
        <widget class="QLabel" name="dimensioningLabel">
         <property name="text">
-         <string>Dimensioning tools:</string>
+         <string>Dimensioning tools</string>
         </property>
        </widget>
       </item>
       <item row="0" column="1">
        <widget class="QComboBox" name="dimensioningMode">
         <property name="toolTip">
-         <string>Select the type of dimensioning tools for your toolbar:
-'Single tool': A single tool for all dimensioning in the toolbar: Distance, distance X/Y, angle, radius. (Others in drop-down)
-'Separated tools': Individual tools for each dimensioning tool.
-'Both': You will have both the dimension tool and the separated tools.
-This setting is only for the toolbar. Whichever you choose, all tools are always available in the menu and through shortcuts.</string>
+         <string>Choose the type of dimensioning tools shown in the toolbar:
+‘Single tool’ provides one unified tool for all dimension types (Distance, X/Y, Angle, Radius) with others in a drop-down.
+‘Separated tools’ displays individual tools for each dimension type.
+‘Both’ enables both the unified tool and the individual tools.
+This affects only the toolbar; all tools remain available via the menu and shortcuts.</string>
         </property>
        </widget>
       </item>

@@ -79,7 +79,7 @@
         <item row="1" column="0">
          <widget class="Gui::PrefCheckBox" name="cbNewFaceFinder">
           <property name="toolTip">
-           <string>If checked, FreeCAD will use the new face finder algorithm.  If not checked, FreeCAD will use the legacy face finder algorithm.</string>
+           <string>If checked, FreeCAD will use the new face finder algorithm. If not checked, FreeCAD will use the legacy face finder algorithm.</string>
           </property>
           <property name="text">
            <string>Use new face finder algorithm</string>
@@ -335,7 +335,7 @@ when hatching a face with a PAT pattern</string>
            <string>Perform a fuse operation on input shapes before section view processing</string>
           </property>
           <property name="text">
-           <string>Fuse Before Section</string>
+           <string>Fuse before section</string>
           </property>
           <property name="prefEntry" stdset="0">
            <cstring>SectionFuseFirst</cstring>
@@ -409,7 +409,7 @@ Each unit is approx. 0.1 mm wide</string>
           </property>
           <property name="toolTip">
            <string>Size of selection area around edges
-Each unit is approximately 0.1 mm wide</string>
+Each unit is approximately 0.1mm wide</string>
           </property>
           <property name="statusTip">
            <string/>
@@ -463,9 +463,9 @@ Each unit is approximately 0.1 mm wide</string>
         <item row="10" column="2">
          <widget class="Gui::PrefSpinBox" name="sbMaxTiles">
           <property name="toolTip">
-           <string>Limit of 64x64 pixel SVG tiles used to hatch a single face.
-For large scalings, you might get an error about too many SVG tiles.
-Then you need to increase the tile limit.</string>
+           <string>Limits the number of 64×64 pixel SVG tiles used to hatch a single face.
+For large scales, errors may occur due to excessive tiling.
+Increase the limit if necessary.</string>
           </property>
           <property name="alignment">
            <set>Qt::AlignmentFlag::AlignRight</set>

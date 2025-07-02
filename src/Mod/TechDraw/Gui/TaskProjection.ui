@@ -97,7 +97,7 @@
      <item>
       <widget class="QCheckBox" name="cbHidIso">
        <property name="text">
-        <string>Hidden isoparameters</string>
+        <string>Hidden iso-parameters</string>
        </property>
       </widget>
      </item>

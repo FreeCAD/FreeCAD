@@ -149,7 +149,7 @@
      <item row="0" column="1">
       <widget class="QLabel" name="lbBaseField">
        <property name="text">
-        <string notr="true">             H11/</string>
+        <string notr="true">H11/</string>
        </property>
       </widget>
      </item>

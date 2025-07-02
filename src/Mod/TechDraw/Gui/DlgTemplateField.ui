@@ -14,7 +14,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Change editable field</string>
+   <string>Change Editable Field</string>
   </property>
   <property name="modal">
    <bool>true</bool>
@@ -25,7 +25,7 @@
      <item row="0" column="0">
       <widget class="QLabel" name="lblMsg">
        <property name="text">
-        <string>Text name:</string>
+        <string>Text name</string>
        </property>
       </widget>
      </item>
@@ -39,7 +39,7 @@
      <item row="1" column="0">
       <widget class="QLabel" name="label">
        <property name="text">
-        <string>Value:</string>
+        <string>Value</string>
        </property>
       </widget>
      </item>

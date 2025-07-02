@@ -25,7 +25,7 @@
      <item row="0" column="0">
       <widget class="QLabel" name="label_7">
        <property name="text">
-        <string>BaseView</string>
+        <string>Base view</string>
        </property>
       </widget>
      </item>
@@ -164,7 +164,7 @@
            </size>
           </property>
           <property name="toolTip">
-           <string>Preset view direction looking up.</string>
+           <string>Preset view direction looking up</string>
           </property>
           <property name="statusTip">
            <string/>
@@ -455,7 +455,7 @@
            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Rebuild display now. May be slow for complex models.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
           <property name="text">
-           <string>Update now</string>
+           <string>Update Now</string>
           </property>
          </widget>
         </item>

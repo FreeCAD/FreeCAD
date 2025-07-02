@@ -86,7 +86,7 @@
         <string>Click to drag detail highlight to new position</string>
        </property>
        <property name="text">
-        <string>Drag highlight</string>
+        <string>Drag Highlight</string>
        </property>
       </widget>
      </item>
@@ -124,7 +124,7 @@
      <item row="5" column="2">
       <widget class="QLineEdit" name="leReference">
        <property name="toolTip">
-        <string>reference label</string>
+        <string>Reference label</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -165,7 +165,7 @@
         </sizepolicy>
        </property>
        <property name="toolTip">
-        <string>Y position of detail highlight within view</string>
+        <string>Y-position of detail highlight within view</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>

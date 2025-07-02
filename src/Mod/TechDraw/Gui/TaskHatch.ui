@@ -23,7 +23,7 @@
    </size>
   </property>
   <property name="windowTitle">
-   <string>Apply Hatch to Face</string>
+   <string>Apply Geometric Hatch</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_2">
    <item>

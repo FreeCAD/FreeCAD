@@ -101,7 +101,7 @@
      <item row="0" column="0">
       <widget class="QLabel" name="label_colors">
        <property name="text">
-        <string>Line color:</string>
+        <string>Line color</string>
        </property>
       </widget>
      </item>

@@ -90,7 +90,7 @@
      <item>
       <widget class="QPushButton" name="pbCancelEdit">
        <property name="text">
-        <string>Discard changes</string>
+        <string>Discard Changes</string>
        </property>
       </widget>
      </item>
@@ -115,7 +115,7 @@ then at least one more point.
 You can pick further points to get line segments.</string>
        </property>
        <property name="text">
-        <string>Pick points</string>
+        <string>Pick Points</string>
        </property>
       </widget>
      </item>
@@ -166,7 +166,7 @@ You can pick further points to get line segments.</string>
      <item row="1" column="0">
       <widget class="QLabel" name="label_3">
        <property name="text">
-        <string>End Symbol</string>
+        <string>End symbol</string>
        </property>
       </widget>
      </item>
@@ -275,7 +275,7 @@ You can pick further points to get line segments.</string>
        </property>
        <item>
         <property name="text">
-         <string>NoLine</string>
+         <string>No line</string>
         </property>
         <property name="icon">
          <iconset resource="Resources/TechDraw.qrc">
@@ -311,7 +311,7 @@ You can pick further points to get line segments.</string>
        </item>
        <item>
         <property name="text">
-         <string>DashDot</string>
+         <string>Dash-dot</string>
         </property>
         <property name="icon">
          <iconset resource="Resources/TechDraw.qrc">
@@ -320,7 +320,7 @@ You can pick further points to get line segments.</string>
        </item>
        <item>
         <property name="text">
-         <string>DashDotDot</string>
+         <string>Dash-dot-dot</string>
         </property>
         <property name="icon">
          <iconset resource="Resources/TechDraw.qrc">

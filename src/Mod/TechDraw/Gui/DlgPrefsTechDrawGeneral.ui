@@ -32,7 +32,7 @@
       </sizepolicy>
      </property>
      <property name="title">
-      <string>Drawing update</string>
+      <string>Drawing Update</string>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_2">
       <item>
@@ -71,7 +71,7 @@
            </sizepolicy>
           </property>
           <property name="toolTip">
-           <string>Whether or not a page's 'Keep Updated' property
+           <string>Controls whether or not a page's 'Keep Updated' property
 can override the global 'Update with 3D' parameter</string>
           </property>
           <property name="text">
@@ -329,7 +329,7 @@ for ProjectionGroups</string>
            </sizepolicy>
           </property>
           <property name="toolTip">
-           <string>Use first- or third-angle multiview projection convention</string>
+           <string>Use first or third-angle multiview projection convention</string>
           </property>
           <property name="sizeAdjustPolicy">
            <enum>QComboBox::AdjustToContents</enum>
@@ -454,7 +454,7 @@ for ProjectionGroups</string>
            </sizepolicy>
           </property>
           <property name="toolTip">
-           <string>Preferred SVG or bitmap file for hatching.  This value will also control the initial directory for choosing hatch patterns.  You can use this to get hatch files from a local directory.</string>
+           <string>Preferred SVG or bitmap file for hatching. This value will also control the initial directory for choosing hatch patterns. You can use this to get hatch files from a local directory.</string>
           </property>
           <property name="prefEntry" stdset="0">
            <cstring>FileHatch</cstring>
@@ -561,7 +561,7 @@ for ProjectionGroups</string>
            </sizepolicy>
           </property>
           <property name="toolTip">
-           <string>Starting directory for menu 'Insert page using template'</string>
+           <string>Starting directory for 'Insert Page From Template' tool</string>
           </property>
           <property name="prefEntry" stdset="0">
            <cstring>TemplateDir</cstring>
@@ -711,7 +711,7 @@ for ProjectionGroups</string>
            </font>
           </property>
           <property name="toolTip">
-           <string>Set ShowGrid property to true on new Pages</string>
+           <string>Set 'Show grid' property to true on new pages</string>
           </property>
           <property name="text">
            <string>Show grid</string>
@@ -742,7 +742,7 @@ for ProjectionGroups</string>
         <item row="1" column="2">
          <widget class="Gui::PrefUnitSpinBox" name="psb_GridSpacing" native="true">
           <property name="toolTip">
-           <string>Distance between page grid lines.</string>
+           <string>Distance between page grid lines</string>
           </property>
           <property name="value" stdset="0">
            <double>10.000000000000000</double>

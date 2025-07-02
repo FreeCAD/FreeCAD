@@ -63,7 +63,7 @@
      <item>
       <widget class="QPushButton" name="pbTracker">
        <property name="text">
-        <string>Point picker</string>
+        <string>Point Picker</string>
        </property>
       </widget>
      </item>

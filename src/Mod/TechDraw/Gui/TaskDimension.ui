@@ -25,7 +25,7 @@
         <item row="0" column="0">
          <widget class="QCheckBox" name="cbTheoreticallyExact">
           <property name="toolTip">
-           <string>If theoretical exact (basic) dimension</string>
+           <string>If theoretically exact (basic) dimension</string>
           </property>
           <property name="text">
            <string>Theoretically exact</string>
@@ -45,7 +45,7 @@
         <item row="2" column="0">
          <widget class="QLabel" name="label_2">
           <property name="text">
-           <string>Overtolerance:</string>
+           <string>Overtolerance</string>
           </property>
          </widget>
         </item>
@@ -120,7 +120,7 @@ by negative value of 'Overtolerance'.</string>
         <item row="0" column="0">
          <widget class="QLabel" name="label_11">
           <property name="text">
-           <string>Format specifier:</string>
+           <string>Format specifier</string>
           </property>
          </widget>
         </item>
@@ -145,7 +145,7 @@ be used instead of the dimension value</string>
         <item row="2" column="0">
          <widget class="QLabel" name="label">
           <property name="text">
-           <string>Overtolerance format specifier:</string>
+           <string>Overtolerance format specifier</string>
           </property>
          </widget>
         </item>
@@ -159,7 +159,7 @@ be used instead of the dimension value</string>
         <item row="3" column="0">
          <widget class="QLabel" name="label_12">
           <property name="text">
-           <string>UnderTolerance Format Specifier:</string>
+           <string>Undertolerance format specifier</string>
           </property>
          </widget>
         </item>
@@ -227,7 +227,7 @@ be used instead of the dimension value</string>
         <item row="2" column="0">
          <widget class="QLabel" name="label_7">
           <property name="text">
-           <string>Font size:</string>
+           <string>Font size</string>
           </property>
          </widget>
         </item>
@@ -246,7 +246,7 @@ be used instead of the dimension value</string>
            </size>
           </property>
           <property name="toolTip">
-           <string>Font size for 'Text'</string>
+           <string>Font size for text</string>
           </property>
           <property name="alignment">
            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -268,7 +268,7 @@ be used instead of the dimension value</string>
         <item row="3" column="0">
          <widget class="QLabel" name="label_4">
           <property name="text">
-           <string>Drawing style:</string>
+           <string>Drawing style</string>
           </property>
          </widget>
         </item>
@@ -351,7 +351,7 @@ be used instead of the dimension value</string>
            <string>Set dimension line angle to default (orthographic view)</string>
           </property>
           <property name="text">
-           <string>Use default</string>
+           <string>Use Default</string>
           </property>
          </widget>
         </item>
@@ -361,7 +361,7 @@ be used instead of the dimension value</string>
            <string>Set dimension line angle to match selected edge or vertices</string>
           </property>
           <property name="text">
-           <string>Use selection</string>
+           <string>Use Selection</string>
           </property>
          </widget>
         </item>
@@ -394,7 +394,7 @@ be used instead of the dimension value</string>
            <string>Set extension line angle to default (orthographic)</string>
           </property>
           <property name="text">
-           <string>Use default</string>
+           <string>Use Default</string>
           </property>
          </widget>
         </item>
@@ -404,7 +404,7 @@ be used instead of the dimension value</string>
            <string>Set extension line angle to match selected edge or vertices</string>
           </property>
           <property name="text">
-           <string>Use selection</string>
+           <string>Use Selection</string>
           </property>
          </widget>
         </item>

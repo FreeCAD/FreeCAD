@@ -705,7 +705,7 @@
      <item row="0" column="0">
       <widget class="QLabel" name="lbFormat">
        <property name="text">
-        <string>Format:</string>
+        <string>Format</string>
        </property>
       </widget>
      </item>
@@ -715,7 +715,7 @@
      <item row="1" column="0">
       <widget class="QLabel" name="lbPreview">
        <property name="text">
-        <string>Preview:</string>
+        <string>Preview</string>
        </property>
       </widget>
      </item>

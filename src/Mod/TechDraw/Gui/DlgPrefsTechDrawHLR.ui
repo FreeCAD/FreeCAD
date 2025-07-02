@@ -44,7 +44,7 @@
       </size>
      </property>
      <property name="title">
-      <string>Hidden line removal</string>
+      <string>Hidden Line Removal</string>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout">
       <item>
