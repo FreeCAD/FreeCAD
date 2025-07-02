@@ -31,7 +31,7 @@ class MillPropertiesDialog(MachinePropertiesDialog):
     """Dialog for adding or editing a mill machine."""
 
     def __init__(self, machine: Mill, parent=None):
-        super().__init__(machine, parent)
+        super().__init__(machine, parent=parent)
 
     def update_machine(self):
         pass  # No mill-specific properties to update

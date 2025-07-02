@@ -33,7 +33,7 @@ class LathePropertiesDialog(MachinePropertiesDialog):
     """Dialog for adding or editing a lathe machine."""
 
     def __init__(self, machine: Lathe, parent=None):
-        super().__init__(machine, parent)
+        super().__init__(machine, parent=parent, has_rigidity=False)
 
         # Add Spindle editor
         self.spindles_group.hide()
