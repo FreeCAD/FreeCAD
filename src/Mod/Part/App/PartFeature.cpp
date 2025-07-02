@@ -1352,7 +1352,7 @@ TopoShape Feature::simplifyCompound(TopoShape compoundShape)
                                             TopAbs_COMPSOLID,
                                             TopAbs_FACE,
                                             TopAbs_SHELL,
-                                            TopAbs_SHELL,
+                                            TopAbs_EDGE,
                                             TopAbs_WIRE,
                                             TopAbs_VERTEX};
 
