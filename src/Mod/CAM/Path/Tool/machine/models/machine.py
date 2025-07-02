@@ -94,30 +94,28 @@ class LinearAxis(Axis):
 class AngularAxis(Axis):
     def __init__(
         self,
-        rigidity_x: FreeCAD.Units.Quantity = FreeCAD.Units.Quantity("0.5 °"),
-        rigidity_y: FreeCAD.Units.Quantity = FreeCAD.Units.Quantity("0.5 °"),
+        rigidity: FreeCAD.Units.Quantity = FreeCAD.Units.Quantity("0.5 °"),
     ):
         """
-        Rigidity is specified as "deg/Newton applied to the spindle nose".
+        Rigidity is specified as "deg/Newton applied to the spindle nose" and
+        specifies the worst-case rigidity. It should be determined by measuring
+        the deflection of the spindle in every direction and choosing the
+        highest value.
         FreeCAD quantities do not support deg/N, so we store it as deg internally.
         """
         super().__init__()
-        self.rigidity_x = rigidity_x
-        self.rigidity_y = rigidity_y
+        self.rigidity = rigidity
 
     def validate(self) -> None:
         """Validate parameters."""
         super().validate()
-        if self.rigidity_x.Value < 0:
-            raise AttributeError("rigidity_x cannot be negative")
-        if self.rigidity_y.Value < 0:
-            raise AttributeError("rigidity_y cannot be negative")
+        if self.rigidity.Value < 0:
+            raise AttributeError("rigidity cannot be negative")
 
     def dump(self, do_print: bool = True, indent: int = 0) -> str:
         prefix = "  " * indent
         output = ""
-        output += f"{prefix}Rigidity X={self.rigidity_x.UserString}/N\n"
-        output += f"{prefix}Rigidity Y={self.rigidity_y.UserString}/N\n"
+        output += f"{prefix}Rigidity={self.rigidity.UserString}/N\n"
         if do_print:
             print(output)
         return output

@@ -79,11 +79,9 @@ class TestPathToolMachineSerializer(unittest.TestCase):
                     rigidity=FreeCAD.Units.Quantity("0.002 mm"),
                 ),
                 "spindle": AngularAxis(
-                    rigidity_x=FreeCAD.Units.Quantity("0.15 deg"),
-                    rigidity_y=FreeCAD.Units.Quantity("0.25 deg"),
+                    rigidity=FreeCAD.Units.Quantity("0.25 deg"),
                 ),
             },
-            max_workpiece_diameter=FreeCAD.Units.Quantity("200 mm"),
             post_processor="linuxcnc",
             id="lathe-test-01",
         )
@@ -112,8 +110,7 @@ class TestPathToolMachineSerializer(unittest.TestCase):
                     max_feed=FreeCAD.Units.Quantity("2000 mm/min"),
                 ),
                 "spindle": AngularAxis(
-                    rigidity_x=FreeCAD.Units.Quantity("0.35 deg"),
-                    rigidity_y=FreeCAD.Units.Quantity("0.45 deg"),
+                    rigidity=FreeCAD.Units.Quantity("0.45 deg"),
                 ),
             },
             post_processor="grbl",
@@ -130,15 +127,13 @@ class TestPathToolMachineSerializer(unittest.TestCase):
         self.assertEqual(data["id"], "lathe-test-01")
         self.assertEqual(data["type"], "Lathe")
         self.assertEqual(data["label"], "MyTestLathe")
-        self.assertEqual(data["max_workpiece_diameter"], "200.00 mm")
         self.assertEqual(data["axes"]["X"]["start"], "0.00 mm")
         self.assertEqual(data["axes"]["X"]["end"], "150.00 mm")
         self.assertEqual(data["axes"]["X"]["rigidity"], "1.00 µm/N")
         self.assertEqual(data["axes"]["Z"]["start"], "-300.00 mm")
         self.assertEqual(data["axes"]["Z"]["end"], "0.00 mm")
         self.assertEqual(data["axes"]["Z"]["rigidity"], "2.00 µm/N")
-        self.assertEqual(data["axes"]["spindle"]["rigidity-x"], "0.15°/N")
-        self.assertEqual(data["axes"]["spindle"]["rigidity-y"], "0.25°/N")
+        self.assertEqual(data["axes"]["spindle"]["rigidity"], "0.25°/N")
         self.assertIn(self.spindle1.get_id(), data["spindles"])
 
     def test_serialize_mill(self):
@@ -162,8 +157,7 @@ class TestPathToolMachineSerializer(unittest.TestCase):
         self.assertEqual(data["axes"]["Z"]["end"], "150.00 mm")
         self.assertEqual(data["axes"]["Z"]["rigidity"], "2.50 µm/N")
         self.assertEqual(data["axes"]["Z"]["max_feed"], "33.33 mm/s")
-        self.assertEqual(data["axes"]["spindle"]["rigidity-x"], "0.35°/N")
-        self.assertEqual(data["axes"]["spindle"]["rigidity-y"], "0.45°/N")
+        self.assertEqual(data["axes"]["spindle"]["rigidity"], "0.45°/N")
         self.assertEqual(len(data["spindles"]), 2)
         self.assertIn(self.spindle1.get_id(), data["spindles"])
         self.assertIn(self.spindle2.get_id(), data["spindles"])
@@ -183,7 +177,6 @@ class TestPathToolMachineSerializer(unittest.TestCase):
         lathe_yaml_str = """
 id: lathe-test-01
 label: MyTestLathe
-max_workpiece_diameter: 200 mm
 post_processor: linuxcnc
 post_processor_args: ''
 axes:
@@ -197,8 +190,7 @@ axes:
     start: -300 mm
   spindle:
     type: angular
-    rigidity-x: 0.0001 deg/N
-    rigidity-y: 0.0001°/N
+    rigidity: 0.0001°/N
 spindles:
 - spindle-001
 type: Lathe
@@ -220,8 +212,7 @@ type: Lathe
         self.assertEqual(deserialized_lathe.label, "MyTestLathe")
         self.assertEqual(str(deserialized_lathe.x_axis.end), "150.0 mm")
         self.assertEqual(str(deserialized_lathe.z_axis.end), "0.0 mm")
-        self.assertEqual(str(deserialized_lathe.spindle_axis.rigidity_x), "0.0001 deg")
-        self.assertEqual(str(deserialized_lathe.spindle_axis.rigidity_y), "0.0001 deg")
+        self.assertEqual(str(deserialized_lathe.spindle_axis.rigidity), "0.0001 deg")
         self.assertEqual(len(deserialized_lathe.spindles), 1)
         self.assertEqual(deserialized_lathe.spindles[0].label, "Main Spindle")
 
@@ -248,8 +239,7 @@ axes:
     max_feed: 2000 mm/min
   spindle:
     type: angular
-    rigidity-x: 0.0002°/N
-    rigidity-y: 0.0002 deg/N
+    rigidity: 0.0002°/N
 spindles:
 - spindle-001
 - spindle-002
@@ -276,8 +266,7 @@ type: Mill
         self.assertEqual(str(deserialized_mill.x_axis.end), "250.0 mm")
         self.assertEqual(str(deserialized_mill.y_axis.end), "200.0 mm")
         self.assertEqual(str(deserialized_mill.z_axis.end), "150.0 mm")
-        self.assertEqual(str(deserialized_mill.spindle_axis.rigidity_x), "0.0002 deg")
-        self.assertEqual(str(deserialized_mill.spindle_axis.rigidity_y), "0.0002 deg")
+        self.assertEqual(str(deserialized_mill.spindle_axis.rigidity), "0.0002 deg")
         self.assertEqual(len(deserialized_mill.spindles), 2)
         spindle_labels = {s.label for s in deserialized_mill.spindles}
         self.assertIn("Main Spindle", spindle_labels)

@@ -79,8 +79,7 @@ class MachineSerializer(AssetSerializer):
             elif isinstance(axis, AngularAxis):
                 axis_data[name] = {
                     "type": "angular",
-                    "rigidity-x": axis.rigidity_x.UserString + "/N",
-                    "rigidity-y": axis.rigidity_y.UserString + "/N",
+                    "rigidity": axis.rigidity.UserString + "/N",
                 }
             else:
                 raise TypeError(f"Unknown axis type for {name}")
@@ -89,7 +88,6 @@ class MachineSerializer(AssetSerializer):
         # Serialize subclass-specific attributes.
         if isinstance(asset, Lathe):
             attrs["type"] = "Lathe"
-            attrs["max_workpiece_diameter"] = asset.max_workpiece_diameter.UserString
         elif isinstance(asset, Mill):
             attrs["type"] = "Mill"
         else:
@@ -139,24 +137,18 @@ class MachineSerializer(AssetSerializer):
                 max_feed = FreeCAD.Units.Quantity(axis_attrs.get("max_feed", "0 mm/s"))
                 axes[name] = LinearAxis(start=start, end=end, rigidity=rigidity, max_feed=max_feed)
             elif axis_type == "angular":
-                rigidity_x_str = axis_attrs.get("rigidity-x", "0.001 °/N")
-                rigidity_y_str = axis_attrs.get("rigidity-y", "0.001 °/N")
-                if rigidity_x_str.endswith("/N"):
-                    rigidity_x_str = rigidity_x_str[:-2]
-                if rigidity_y_str.endswith("/N"):
-                    rigidity_y_str = rigidity_y_str[:-2]
-                rigidity_x = FreeCAD.Units.Quantity(rigidity_x_str)
-                rigidity_y = FreeCAD.Units.Quantity(rigidity_y_str)
-                axes[name] = AngularAxis(rigidity_x=rigidity_x, rigidity_y=rigidity_y)
+                rigidity_str = axis_attrs.get("rigidity", "0.001 °/N")
+                if rigidity_str.endswith("/N"):
+                    rigidity_str = rigidity_str[:-2]
+                rigidity = FreeCAD.Units.Quantity(rigidity_str)
+                axes[name] = AngularAxis(rigidity=rigidity)
             else:
                 raise AttributeError(f"Unknown axis type: {axis_type}")
 
         if machine_type == "Lathe":
-            max_workpiece_diameter = FreeCAD.Units.Quantity(attrs["max_workpiece_diameter"])
             instance = Lathe(
                 label,
                 axes=axes,
-                max_workpiece_diameter=max_workpiece_diameter,
                 post_processor=post_processor,
                 post_processor_args=post_processor_args,
                 id=id,

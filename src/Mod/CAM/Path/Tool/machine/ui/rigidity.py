@@ -395,14 +395,19 @@ class RigidityWizard(QtGui.QWizard):
                 force_y = force_y_edit.property("value")
                 deflection_y_deg = deflection_y_edit.property("value")
 
+                rigidity_x = FreeCAD.Units.Quantity("0 deg")
+                rigidity_y = FreeCAD.Units.Quantity("0 deg")
+
                 if force_x.Value > 0:
                     # normalize to deflection per 1 Newton
                     rigidity_x = deflection_x_deg / force_x * 1000
-                    self.rigidities[f"{axis_name}_x"] = rigidity_x, "deg/N"
 
                 if force_y.Value > 0:
                     rigidity_y = deflection_y_deg / force_y * 1000
-                    self.rigidities[f"{axis_name}_y"] = rigidity_y, "deg/N"
+
+                # Choose the worst-case rigidity (maximum value)
+                rigidity = max(rigidity_x, rigidity_y)
+                self.rigidities[axis_name] = rigidity, "deg/N"
 
         return self.rigidities
 

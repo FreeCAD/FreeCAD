@@ -143,8 +143,7 @@ class TestMill(unittest.TestCase):
                     max_feed=FreeCAD.Units.Quantity(800, "mm/min"),
                 ),
                 "spindle": AngularAxis(
-                    rigidity_x=FreeCAD.Units.Quantity("0.04 °"),
-                    rigidity_y=FreeCAD.Units.Quantity("0.05 °"),
+                    rigidity=FreeCAD.Units.Quantity("0.05 °"),
                 ),
             },
         )
@@ -169,8 +168,7 @@ class TestMill(unittest.TestCase):
         self.assertAlmostEqual(mill.y_axis.max_feed.Value, 1200 / 60, 2)
         self.assertEqual(mill.z_axis.rigidity.Value, 0.03)
         self.assertAlmostEqual(mill.z_axis.max_feed.Value, 800 / 60, 2)
-        self.assertEqual(mill.spindle_axis.rigidity_x.Value, 0.04, mill.spindle_axis.rigidity_x)
-        self.assertEqual(mill.spindle_axis.rigidity_y.Value, 0.05)
+        self.assertEqual(mill.spindle_axis.rigidity.Value, 0.05)
 
         # Check axis extents
         self.assertEqual(mill.x_axis.start.Value, 1)
@@ -244,11 +242,9 @@ class TestLathe(unittest.TestCase):
                     max_feed=FreeCAD.Units.Quantity(1800, "mm/min"),
                 ),
                 "spindle": AngularAxis(
-                    rigidity_x=FreeCAD.Units.Quantity(0.07, "°"),
-                    rigidity_y=FreeCAD.Units.Quantity(0.08, "°"),
+                    rigidity=FreeCAD.Units.Quantity(0.08, "°"),
                 ),
             },
-            max_workpiece_diameter=FreeCAD.Units.Quantity(100, "mm"),
         )
 
     def test_initialization(self):
@@ -270,17 +266,13 @@ class TestLathe(unittest.TestCase):
         self.assertAlmostEqual(lathe.x_axis.max_feed.Value, 1500 / 60, 2)
         self.assertEqual(lathe.z_axis.rigidity.Value, 0.06)
         self.assertAlmostEqual(lathe.z_axis.max_feed.Value, 1800 / 60, 2)
-        self.assertEqual(lathe.spindle_axis.rigidity_x.Value, 0.07)
-        self.assertEqual(lathe.spindle_axis.rigidity_y.Value, 0.08)
+        self.assertEqual(lathe.spindle_axis.rigidity.Value, 0.08)
 
         # Check axis extents
         self.assertEqual(lathe.x_axis.start.Value, 1)
         self.assertEqual(lathe.x_axis.end and lathe.x_axis.end.Value, 50)
         self.assertEqual(lathe.z_axis.start.Value, 0)
         self.assertEqual(lathe.z_axis.end and lathe.z_axis.end.Value, 400)
-
-        # Check workpiece diameter
-        self.assertEqual(lathe.max_workpiece_diameter.Value, 100)
 
     def test_validation_valid(self):
         try:
@@ -311,11 +303,6 @@ class TestLathe(unittest.TestCase):
         ):
             self.default_lathe.validate()
 
-    def test_validation_invalid_diameter(self):
-        self.default_lathe.max_workpiece_diameter = FreeCAD.Units.Quantity(0, "mm")
-        with self.assertRaisesRegex(AttributeError, "Maximum workpiece diameter must be positive"):
-            self.default_lathe.validate()
-
     def test_dump(self):
         output = self.default_lathe.dump(False)
         self.assertIn("Lathe Default Lathe", output)
@@ -323,7 +310,6 @@ class TestLathe(unittest.TestCase):
         self.assertIn("Start=1.00 mm", output)
         self.assertIn("End=50.00 mm", output)
         self.assertIn("Rigidity=50.00 µm/N", output)
-        self.assertIn("Max Workpiece Diameter: 100.00 mm", output)
         self.assertIn("Lathe spindle", output)
 
 
