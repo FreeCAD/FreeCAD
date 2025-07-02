@@ -98,6 +98,7 @@ class _Window(ArchComponent.Component):
     def __init__(self,obj):
 
         ArchComponent.Component.__init__(self,obj)
+        self.Type = "Window"
         self.setProperties(obj)
         obj.IfcType = "Window"
         obj.MoveWithHost = True
@@ -178,7 +179,6 @@ class _Window(ArchComponent.Component):
         obj.setEditorMode("VerticalArea",2)
         obj.setEditorMode("HorizontalArea",2)
         obj.setEditorMode("PerimeterLength",2)
-        self.Type = "Window"
 
     def onDocumentRestored(self,obj):
 
@@ -194,6 +194,10 @@ class _Window(ArchComponent.Component):
         self.atthOff = None
         if hasattr(obj, 'AttachmentOffsetXyzAndRotation'):
             self.atthOff = obj.AttachmentOffsetXyzAndRotation.Base
+
+    def loads(self,state):
+
+        self.Type = "Window"
 
     def onBeforeChange(self,obj,prop):
 

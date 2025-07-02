@@ -820,6 +820,7 @@ class _SectionPlane:
 
     def __init__(self,obj):
         obj.Proxy = self
+        self.Type = "SectionPlane"
         self.setProperties(obj)
 
     def setProperties(self,obj):
@@ -841,7 +842,6 @@ class _SectionPlane:
             obj.UseMaterialColorForFill = False
         if not "Depth" in pl:
             obj.addProperty("App::PropertyLength","Depth","SectionPlane",QT_TRANSLATE_NOOP("App::Property","Geometry further than this value will be cut off. Keep zero for unlimited."), locked=True)
-        self.Type = "SectionPlane"
 
     def onDocumentRestored(self,obj):
 
@@ -883,7 +883,7 @@ class _SectionPlane:
 
     def loads(self,state):
 
-        return None
+        self.Type = "SectionPlane"
 
 
 class _ViewProviderSectionPlane:

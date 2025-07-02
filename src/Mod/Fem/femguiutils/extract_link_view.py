@@ -207,7 +207,7 @@ class _ElideToolButton(QtGui.QToolButton):
             # we add the margin between icon and text
             txt_size -= margin
 
-        txt_min = fm.boundingRect("...").width()
+        txt_min = fm.boundingRect("…").width()
 
         # should we center the icon?
         xpos = margin
