@@ -857,7 +857,7 @@ void ManualAlignment::continueAlignment()
         grp.addToViewer(myViewer->getViewer(0));
         grp.setAlignable(true);
 
-        Gui::getMainWindow()->showMessage(tr("Selected points in the left and right view"));
+        Gui::getMainWindow()->showMessage(tr("Select points in the left and right view"));
 
         myViewer->getViewer(0)->setEditingCursor(QCursor(Qt::PointingHandCursor));
         myViewer->getViewer(1)->setEditingCursor(QCursor(Qt::PointingHandCursor));
