@@ -271,7 +271,7 @@ void ShapeBuilderWidget::createWireFromEdge()
     Gui::SelectionFilter edgeFilter  ("SELECT Part::Feature SUBELEMENT Edge COUNT 1..");
     bool matchEdge = edgeFilter.match();
     if (!matchEdge) {
-        QMessageBox::critical(this, tr("Wrong selection"), tr("Select at least one edge"));
+        QMessageBox::critical(this, tr("Wrong selection"), tr("Select at least 1 edge"));
         return;
     }
 
@@ -364,7 +364,7 @@ void ShapeBuilderWidget::createFaceFromEdge()
     Gui::SelectionFilter edgeFilter  ("SELECT Part::Feature SUBELEMENT Edge COUNT 1..");
     bool matchEdge = edgeFilter.match();
     if (!matchEdge) {
-        QMessageBox::critical(this, tr("Wrong selection"), tr("Select at least one edge"));
+        QMessageBox::critical(this, tr("Wrong selection"), tr("Select at least 1 edge"));
         return;
     }
 
@@ -416,7 +416,7 @@ void ShapeBuilderWidget::createShellFromFace()
     Gui::SelectionFilter faceFilter  ("SELECT Part::Feature SUBELEMENT Face COUNT 2..");
     bool matchFace = faceFilter.match();
     if (!matchFace) {
-        QMessageBox::critical(this, tr("Wrong selection"), tr("Select at least two faces"));
+        QMessageBox::critical(this, tr("Wrong selection"), tr("Select at least 2 faces"));
         return;
     }
 
@@ -477,7 +477,7 @@ void ShapeBuilderWidget::createSolidFromShell()
     Gui::SelectionFilter partFilter  ("SELECT Part::Feature COUNT 1");
     bool matchPart = partFilter.match();
     if (!matchPart) {
-        QMessageBox::critical(this, tr("Wrong selection"), tr("Select only one shape object"));
+        QMessageBox::critical(this, tr("Wrong selection"), tr("Select only 1 shape object"));
         return;
     }
 

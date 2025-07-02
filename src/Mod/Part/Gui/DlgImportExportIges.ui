@@ -84,7 +84,7 @@
             <string>Solids will be exported as manifold solid B-rep object, shells as shell</string>
            </property>
            <property name="text">
-            <string>Solids (type 186) and Shells (type 514) / B-rep mode</string>
+            <string>Solids (type 186) and shells (type 514) / B-rep mode</string>
            </property>
           </widget>
          </item>

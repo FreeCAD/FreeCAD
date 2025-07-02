@@ -172,7 +172,7 @@ CmdPartBox3::CmdPartBox3()
     sAppModule    = "Part";
     sGroup        = QT_TR_NOOP("Part");
     sMenuText     = QT_TR_NOOP("Box Fix 2");
-    sToolTipText  = QT_TR_NOOP("Create a solid box");
+    sToolTipText  = QT_TR_NOOP("Creates a solid box");
     sWhatsThis    = "Part_Box3";
     sStatusTip    = sToolTipText;
     sPixmap       = "Part_Box_Parametric";
@@ -371,7 +371,7 @@ void CmdPartCommon::activated(int iMsg)
 
     if (Sel.empty()) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-            QObject::tr("Select at least two shapes. Alternatively, select one compound containing two or more shapes to compute the intersection between."));
+            QObject::tr("Select at least 2 shapes. Alternatively, select 1 compound containing 2 or more shapes to compute the intersection between."));
         return;
     }
 
@@ -449,7 +449,7 @@ void CmdPartFuse::activated(int iMsg)
     }
     if (numShapes < 2) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-            QObject::tr("Select at least two shapes. Alternatively, select one compound containing two or more shapes to be fused."));
+            QObject::tr("Select at least 2 shapes. Alternatively, select 1 compound containing 2 or more shapes to be fused."));
         return;
     }
 
@@ -1315,7 +1315,7 @@ CmdPartMakeFace::CmdPartMakeFace()
 {
     sAppModule    = "Part";
     sGroup        = QT_TR_NOOP("Part");
-    sMenuText     = QT_TR_NOOP("Face from Wires");
+    sMenuText     = QT_TR_NOOP("Face From Wires");
     sToolTipText  = QT_TR_NOOP("Creates a face from the selected wires (e.g. from a sketch)");
     sWhatsThis    = "Part_MakeFace";
     sStatusTip    = sToolTipText;
@@ -1810,7 +1810,7 @@ CmdPartThickness::CmdPartThickness()
     sAppModule    = "Part";
     sGroup        = QT_TR_NOOP("Part");
     sMenuText     = QT_TR_NOOP("Thickness");
-    sToolTipText  = QT_TR_NOOP("Applies thickness to the solid removing the selected face");
+    sToolTipText  = QT_TR_NOOP("Removes the selected faces and offsets the remaining shape outward to add thickness");
     sWhatsThis    = "Part_Thickness";
     sStatusTip    = sToolTipText;
     sPixmap       = "Part_Thickness";
@@ -1939,7 +1939,7 @@ CmdPartRuledSurface::CmdPartRuledSurface()
     sAppModule      = "Part";
     sGroup          = QT_TR_NOOP("Part");
     sMenuText       = QT_TR_NOOP("Ruled Surface");
-    sToolTipText    = QT_TR_NOOP("Creates a ruled surface between two selected wires");
+    sToolTipText    = QT_TR_NOOP("Creates a ruled surface between 2 selected wires");
     sWhatsThis      = "Part_RuledSurface";
     sStatusTip      = sToolTipText;
     sPixmap         = "Part_RuledSurface";
@@ -2027,7 +2027,7 @@ void CmdPartRuledSurface::activated(int iMsg)
 
     if (!ok) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-                             QObject::tr("Select either two edges or two wires."));
+                             QObject::tr("Select either 2 edges or 2 wires."));
         return;
     }
 
@@ -2128,7 +2128,7 @@ CmdBoxSelection::CmdBoxSelection()
     sAppModule    = "Part";
     sGroup        = QT_TR_NOOP("Part");
     sMenuText     = QT_TR_NOOP("Box Selection");
-    sToolTipText  = QT_TR_NOOP("Box selects elements in the 3D view");
+    sToolTipText  = QT_TR_NOOP("Selects elements in the 3D view using a box selection");
     sWhatsThis    = "Part_BoxSelection";
     sStatusTip    = QT_TR_NOOP("Box selection");
     sPixmap       = "Part_BoxSelection";

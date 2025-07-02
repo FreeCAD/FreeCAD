@@ -45,7 +45,7 @@ PartCmdSelectFilter::PartCmdSelectFilter()
     sGroup        = "Standard-View";
     sMenuText     = QT_TR_NOOP("Selection Filter");
     sToolTipText  = QT_TR_NOOP("Changes the selection filter");
-    sStatusTip    = QT_TR_NOOP("Changes the selection filter");
+    sStatusTip    = sToolTipText;
     sWhatsThis    = "Part_SelectFilter";
     sPixmap       = "clear-selection";
     eType         = Alter3DView;
@@ -173,7 +173,7 @@ PartCmdVertexSelection::PartCmdVertexSelection()
     sMenuText     = QT_TR_NOOP("Vertex Selection");
     sToolTipText  = QT_TR_NOOP("Only allows the selection of vertices");
     sWhatsThis    = "Part_VertexSelection";
-    sStatusTip    = QT_TR_NOOP("Only allows the selection of vertices");
+    sStatusTip    = sToolTipText;
     sPixmap       = "vertex-selection";
     sAccel        = "X, S";
     eType         = Alter3DView;
@@ -198,7 +198,7 @@ PartCmdEdgeSelection::PartCmdEdgeSelection()
     sMenuText     = QT_TR_NOOP("Edge Selection");
     sToolTipText  = QT_TR_NOOP("Only allows the selection of edges");
     sWhatsThis    = "Part_EdgeSelection";
-    sStatusTip    = QT_TR_NOOP("Only allows the selection of edges");
+    sStatusTip    = sToolTipText;
     sPixmap       = "edge-selection";
     sAccel        = "E, S";
     eType         = Alter3DView;
@@ -223,7 +223,7 @@ PartCmdFaceSelection::PartCmdFaceSelection()
     sMenuText     = QT_TR_NOOP("Face Selection");
     sToolTipText  = QT_TR_NOOP("Only allows the selection of faces");
     sWhatsThis    = "Part_FaceSelection";
-    sStatusTip    = QT_TR_NOOP("Only allows the selection of faces");
+    sStatusTip    = sToolTipText;
     sPixmap       = "face-selection";
     sAccel        = "F, S";
     eType         = Alter3DView;
@@ -248,7 +248,7 @@ PartCmdRemoveSelectionGate::PartCmdRemoveSelectionGate()
     sMenuText     = QT_TR_NOOP("No Selection Filters");
     sToolTipText  = QT_TR_NOOP("Clears all selection filters");
     sWhatsThis    = "Part_RemoveSelectionGate";
-    sStatusTip    = QT_TR_NOOP("Clears all selection filters");
+    sStatusTip    = sToolTipText;
     sPixmap       = "clear-selection";
     sAccel        = "C, S";
     eType         = Alter3DView;

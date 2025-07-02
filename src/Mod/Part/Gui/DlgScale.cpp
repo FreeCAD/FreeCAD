@@ -218,7 +218,7 @@ void DlgScale::apply()
 
             if (Part::Feature::getTopoShape(sourceObj, Part::ShapeOption::ResolveLink | Part::ShapeOption::Transform).isNull()){
                 FC_ERR("Object " << sourceObj->getFullName()
-                        << " is not shape object. Cannot scale it.");
+                        << " is not a shape object. Scaling is not possible.");
                 continue;
             }
 

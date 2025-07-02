@@ -100,7 +100,7 @@ QVector<QString> buildCheckStatusStringVector()
     QVector<QString>names;
     names.push_back(QObject::tr("No error"));                           //    BRepCheck_NoError
     names.push_back(QObject::tr("Invalid point on curve"));             //    BRepCheck_InvalidPointOnCurve
-    names.push_back(QObject::tr("Invalid point on curve cn surface"));  //    BRepCheck_InvalidPointOnCurveOnSurface
+    names.push_back(QObject::tr("Invalid point on curve on surface"));  //    BRepCheck_InvalidPointOnCurveOnSurface
     names.push_back(QObject::tr("Invalid point on surface"));           //    BRepCheck_InvalidPointOnSurface
     names.push_back(QObject::tr("No 3D curve"));                        //    BRepCheck_No3DCurve
     names.push_back(QObject::tr("Multiple 3D curves"));                 //    BRepCheck_Multiple3DCurve

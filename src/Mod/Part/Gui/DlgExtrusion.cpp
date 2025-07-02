@@ -474,7 +474,7 @@ void DlgExtrusion::apply()
 
             if (Part::Feature::getTopoShape(sourceObj, Part::ShapeOption::ResolveLink | Part::ShapeOption::Transform).isNull()){
                 FC_ERR("Object " << sourceObj->getFullName()
-                        << " is not Part object (has no OCC shape). Cannot extrude it.");
+                        << " is not a Part object because it has no OCC shape. Extrusion is not possible.";
                 continue;
             }
 
