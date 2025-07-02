@@ -1540,7 +1540,7 @@ CmdFemCompEmEquations::CmdFemCompEmEquations()
 {
     sAppModule = "Fem";
     sGroup = QT_TR_NOOP("Fem");
-    sMenuText = QT_TR_NOOP("Electromagnetic Qquations");
+    sMenuText = QT_TR_NOOP("Electromagnetic Equations");
     sToolTipText = QT_TR_NOOP("Electromagnetic equations for the Elmer solver");
     sWhatsThis = "FEM_CompEmEquations";
     sStatusTip = sToolTipText;
