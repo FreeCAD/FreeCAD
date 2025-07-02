@@ -167,7 +167,7 @@ CmdTechDrawPageTemplate::CmdTechDrawPageTemplate() : Command("TechDraw_PageTempl
 {
     sAppModule = "TechDraw";
     sGroup = QT_TR_NOOP("TechDraw");
-    sMenuText = QT_TR_NOOP("New Page From Template");
+    sMenuText = QT_TR_NOOP("New Page From Template…");
     sToolTipText = QT_TR_NOOP("Creates a new page with a custom template");
     sWhatsThis = "TechDraw_PageTemplate";
     sStatusTip = sToolTipText;
@@ -272,7 +272,7 @@ CmdTechDrawPrintAll::CmdTechDrawPrintAll() : Command("TechDraw_PrintAll")
 {
     sAppModule = "TechDraw";
     sGroup = QT_TR_NOOP("TechDraw");
-    sMenuText = QT_TR_NOOP("Print All Pages");
+    sMenuText = QT_TR_NOOP("Print All Pages…");
     sToolTipText = QT_TR_NOOP("Prints all pages with the print dialog");
     sWhatsThis = "TechDraw_PrintAll";
     sStatusTip = sToolTipText;
@@ -299,7 +299,7 @@ CmdTechDrawView::CmdTechDrawView() : Command("TechDraw_View")
     sGroup = QT_TR_NOOP("TechDraw");
     sMenuText = QT_TR_NOOP("New View");
     sToolTipText = QT_TR_NOOP(
-        "Inserts a new view into the current page based on the selected object in the Tree view "
+        "Inserts a new view into the current page based on the selected object in the tree view "
         "or 3D view.\n"
         "If no object is selected, a file browser opens to select an SVG or image file.");
     sWhatsThis = "TechDraw_View";
@@ -1808,7 +1808,7 @@ DEF_STD_CMD_A(CmdTechDrawExportPageSVG)
 CmdTechDrawExportPageSVG::CmdTechDrawExportPageSVG() : Command("TechDraw_ExportPageSVG")
 {
     sGroup = QT_TR_NOOP("File");
-    sMenuText = QT_TR_NOOP("Export Page as SVG");
+    sMenuText = QT_TR_NOOP("Export Page as SVG…");
     sToolTipText = QT_TR_NOOP("Exports the current page as an SVG");
     sWhatsThis = "TechDraw_ExportPageSVG";
     sStatusTip = sToolTipText;
@@ -1851,7 +1851,7 @@ DEF_STD_CMD_A(CmdTechDrawExportPageDXF)
 CmdTechDrawExportPageDXF::CmdTechDrawExportPageDXF() : Command("TechDraw_ExportPageDXF")
 {
     sGroup = QT_TR_NOOP("File");
-    sMenuText = QT_TR_NOOP("Export Page as DXF");
+    sMenuText = QT_TR_NOOP("Export Page as DXF…");
     sToolTipText = QT_TR_NOOP("Exports the current page as a DXF");
     sWhatsThis = "TechDraw_ExportPageDXF";
     sStatusTip = sToolTipText;
@@ -1893,7 +1893,7 @@ void CmdTechDrawExportPageDXF::activated(int iMsg)
     }
 
     std::string PageName = page->getNameInDocument();
-    openCommand(QT_TRANSLATE_NOOP("Command", "Save page to DXF"));
+    openCommand(QT_TRANSLATE_NOOP("Command", "Save page to DXF…"));
     doCommand(Doc, "import TechDraw");
     fileName = Base::Tools::escapeEncodeFilename(fileName);
     auto filespec = DU::cleanFilespecBackslash(fileName.toStdString());

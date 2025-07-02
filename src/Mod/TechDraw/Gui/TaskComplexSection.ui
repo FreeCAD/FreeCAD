@@ -403,7 +403,7 @@
            <string>Rebuild display now. May be slow for complex models</string>
           </property>
           <property name="text">
-           <string>Update now</string>
+           <string>Update Now</string>
           </property>
          </widget>
         </item>

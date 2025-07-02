@@ -163,7 +163,7 @@ void TaskCenterLine::setUiConnect()
 
 void TaskCenterLine::setUiPrimary()
 {
-    setWindowTitle(QObject::tr("Create Centerline"));
+    setWindowTitle(QObject::tr("Centerline"));
 
     if (m_partFeat) {
         std::string baseName = m_partFeat->getNameInDocument();

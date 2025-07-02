@@ -210,7 +210,7 @@
      <item row="5" column="0">
       <widget class="QLabel" name="label_4">
        <property name="text">
-        <string>End Symbol</string>
+        <string>End symbol</string>
        </property>
       </widget>
      </item>

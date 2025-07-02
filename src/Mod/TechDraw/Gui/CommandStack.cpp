@@ -141,19 +141,19 @@ void CmdTechDrawStackGroup::languageChange()
 
     QAction* arc1 = a[0];
     arc1->setText(QApplication::translate("CmdTechDrawStackGroup","Stack Top"));
-    arc1->setToolTip(QApplication::translate("TechDraw_StackTop","Move view to top of stack"));
+    arc1->setToolTip(QApplication::translate("TechDraw_StackTop","Moves the view to the top of the stack"));
     arc1->setStatusTip(arc1->toolTip());
     QAction* arc2 = a[1];
     arc2->setText(QApplication::translate("CmdTechDrawStackGroup","Stack Bottom"));
-    arc2->setToolTip(QApplication::translate("TechDraw_StackBottom","Move view to bottom of stack"));
+    arc2->setToolTip(QApplication::translate("TechDraw_StackBottom","Moves the view to the bottom of the stack"));
     arc2->setStatusTip(arc2->toolTip());
     QAction* arc3 = a[2];
     arc3->setText(QApplication::translate("CmdTechDrawStackGroup","Stack Up"));
-    arc3->setToolTip(QApplication::translate("TechDraw_StackUp","Move view up one level"));
+    arc3->setToolTip(QApplication::translate("TechDraw_StackUp","Moves the view up one level"));
     arc3->setStatusTip(arc3->toolTip());
     QAction* arc4 = a[3];
     arc4->setText(QApplication::translate("CmdTechDrawStackGroup","Stack Down"));
-    arc4->setToolTip(QApplication::translate("TechDraw_StackDown","Move view down one level"));
+    arc4->setToolTip(QApplication::translate("TechDraw_StackDown","Moves the view down one level"));
     arc4->setStatusTip(arc4->toolTip());
 }
 

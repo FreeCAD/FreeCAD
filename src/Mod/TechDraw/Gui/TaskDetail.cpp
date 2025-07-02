@@ -93,7 +93,7 @@ TaskDetail::TaskDetail(TechDraw::DrawViewPart* baseFeat):
 
     createDetail();
     setUiFromFeat();
-    setWindowTitle(QObject::tr("New detail view"));
+    setWindowTitle(QObject::tr("New Detail View"));
 
     connect(ui->pbDragger, &QPushButton::clicked,
             this, &TaskDetail::onDraggerClicked);
@@ -253,7 +253,7 @@ void TaskDetail::setUiFromFeat()
     double scale = detailFeat->Scale.getValue();
     QString ref = QString::fromUtf8(detailFeat->Reference.getValue());
 
-    ui->pbDragger->setText(tr("Drag highlight"));
+    ui->pbDragger->setText(tr("Drag Highlight"));
     ui->pbDragger->setEnabled(true);
     int decimals = Base::UnitsApi::getDecimals();
     ui->qsbX->setUnit(Base::Unit::Length);

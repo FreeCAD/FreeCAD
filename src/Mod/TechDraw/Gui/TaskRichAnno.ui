@@ -222,12 +222,12 @@
           </item>
           <item>
            <property name="text">
-            <string>Dash-dot</string>
+            <string>DashDot</string>
            </property>
           </item>
           <item>
            <property name="text">
-            <string>Dash-dot-dot</string>
+            <string>DashDotDot</string>
            </property>
           </item>
          </widget>

@@ -106,7 +106,7 @@ can override the global 'Update with 3D' parameter</string>
 This can slow down the response time.</string>
           </property>
           <property name="text">
-           <string>Keep page up To date</string>
+           <string>Keep page up to date</string>
           </property>
           <property name="checked">
            <bool>true</bool>
@@ -441,7 +441,7 @@ for ProjectionGroups</string>
            </font>
           </property>
           <property name="text">
-           <string>PAT File</string>
+           <string>PAT file</string>
           </property>
          </widget>
         </item>
@@ -835,7 +835,7 @@ for ProjectionGroups</string>
            <string>Uses the 3D camera direction (or normal of a selected face) as the view direction. Otherwise, views will be created as front views.</string>
           </property>
           <property name="text">
-           <string>Use 3D Camera Direction</string>
+           <string>Use 3D camera direction</string>
           </property>
           <property name="prefEntry" stdset="0">
            <cstring>UseCameraDirection</cstring>
@@ -910,7 +910,7 @@ for ProjectionGroups</string>
            <string>Check this box if you want detail view highlights to snap to the nearest vertex when dragging in TaskDetail.</string>
           </property>
           <property name="text">
-           <string>Snap Detail Highlights</string>
+           <string>Snap detail highlights</string>
           </property>
           <property name="checked">
            <bool>true</bool>
@@ -965,7 +965,7 @@ for ProjectionGroups</string>
         <item row="3" column="0">
          <widget class="QLabel" name="label_14">
           <property name="text">
-           <string>Highlight SnappingFactor</string>
+           <string>Highlight snapping factor</string>
           </property>
          </widget>
         </item>

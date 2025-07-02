@@ -87,22 +87,22 @@ MDIViewPage::MDIViewPage(ViewProviderPage* pageVp, Gui::Document* doc, QWidget* 
 {
     setMouseTracking(true);
 
-    m_toggleKeepUpdatedAction = new QAction(tr("Toggle &keep updated"), this);
+    m_toggleKeepUpdatedAction = new QAction(tr("Toggle &Keep Updated"), this);
     connect(m_toggleKeepUpdatedAction, &QAction::triggered, this, &MDIViewPage::toggleKeepUpdated);
 
-    m_toggleFrameAction = new QAction(tr("Toggle &frames"), this);
+    m_toggleFrameAction = new QAction(tr("Toggle &Frames"), this);
     connect(m_toggleFrameAction, &QAction::triggered, this, &MDIViewPage::toggleFrame);
 
-    m_exportSVGAction = new QAction(tr("&Export SVG"), this);
+    m_exportSVGAction = new QAction(tr("&Export SVG…"), this);
     connect(m_exportSVGAction, &QAction::triggered, this, qOverload<>(&MDIViewPage::saveSVG));
 
-    m_exportDXFAction = new QAction(tr("Export DXF"), this);
+    m_exportDXFAction = new QAction(tr("Export DXF…"), this);
     connect(m_exportDXFAction, &QAction::triggered, this, qOverload<>(&MDIViewPage::saveDXF));
 
-    m_exportPDFAction = new QAction(tr("Export PDF"), this);
+    m_exportPDFAction = new QAction(tr("Export PDF…"), this);
     connect(m_exportPDFAction, &QAction::triggered, this, qOverload<>(&MDIViewPage::savePDF));
 
-    m_printAllAction = new QAction(tr("Print all pages"), this);
+    m_printAllAction = new QAction(tr("Print All Pages…"), this);
     connect(m_printAllAction, &QAction::triggered, this, qOverload<>(&MDIViewPage::printAllPages));
 
     isSelectionBlocked = false;
@@ -312,7 +312,7 @@ void MDIViewPage::printPdf()
     filter << QObject::tr("PDF (*.pdf)");
     filter << QObject::tr("All Files (*.*)");
     QString fn =
-        Gui::FileDialog::getSaveFileName(Gui::getMainWindow(), QObject::tr("Export Page As PDF"),
+        Gui::FileDialog::getSaveFileName(Gui::getMainWindow(), QObject::tr("Export Page as PDF…"),
                                          QString(), filter.join(QLatin1String(";;")));
     if (fn.isEmpty()) {
         return;
@@ -490,7 +490,7 @@ void MDIViewPage::saveSVG()
     filter << QStringLiteral("SVG (*.svg)");
     filter << QObject::tr("All files (*.*)");
     QString fn =
-        Gui::FileDialog::getSaveFileName(Gui::getMainWindow(), QObject::tr("Export page as SVG"),
+        Gui::FileDialog::getSaveFileName(Gui::getMainWindow(), QObject::tr("Export page as SVG…"),
                                          defaultFileName(), filter.join(QLatin1String(";;")));
     if (fn.isEmpty()) {
         return;
@@ -511,7 +511,7 @@ void MDIViewPage::saveDXF()
     filter << QStringLiteral("DXF (*.dxf)");
     filter << QObject::tr("All files (*.*)");
     QString fn =
-        Gui::FileDialog::getSaveFileName(Gui::getMainWindow(), QObject::tr("Export page as DXF"),
+        Gui::FileDialog::getSaveFileName(Gui::getMainWindow(), QObject::tr("Export page as DXF…"),
                                          defaultFileName(), filter.join(QLatin1String(";;")));
     if (fn.isEmpty()) {
         return;
@@ -535,7 +535,7 @@ void MDIViewPage::savePDF()
     filter << QStringLiteral("PDF (*.pdf)");
     filter << QObject::tr("All Files (*.*)");
     QString fn =
-        Gui::FileDialog::getSaveFileName(Gui::getMainWindow(), QObject::tr("Export page as PDF"),
+        Gui::FileDialog::getSaveFileName(Gui::getMainWindow(), QObject::tr("Export page as PDF…"),
                                          defaultFileName(), filter.join(QLatin1String(";;")));
     if (fn.isEmpty()) {
         return;

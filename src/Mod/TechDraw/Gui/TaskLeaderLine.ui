@@ -311,7 +311,7 @@ You can pick further points to get line segments.</string>
        </item>
        <item>
         <property name="text">
-         <string>Dash-dot</string>
+         <string>DashDot</string>
         </property>
         <property name="icon">
          <iconset resource="Resources/TechDraw.qrc">
@@ -320,7 +320,7 @@ You can pick further points to get line segments.</string>
        </item>
        <item>
         <property name="text">
-         <string>Dash-dot-dot</string>
+         <string>DashDotDot</string>
         </property>
         <property name="icon">
          <iconset resource="Resources/TechDraw.qrc">

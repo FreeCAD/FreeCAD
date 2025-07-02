@@ -330,7 +330,7 @@
    <item>
     <widget class="QGroupBox" name="secondaryProjGroupbox">
      <property name="title">
-      <string>Secondary projections</string>
+      <string>Secondary Projections</string>
      </property>
      <layout class="QGridLayout" name="gridLayout_2">
       <item row="2" column="1">

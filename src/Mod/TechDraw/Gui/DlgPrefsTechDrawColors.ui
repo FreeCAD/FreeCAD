@@ -688,7 +688,7 @@
       <enum>Qt::Vertical</enum>
      </property>
      <property name="sizeHint" stdset="0">
-      <size
+      <size>
        <width>20</width>
        <height>19</height>
       </size>
