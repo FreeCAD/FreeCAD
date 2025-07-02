@@ -4,10 +4,7 @@ SET(Stylesheets_Files
 )
 
 SET(Overlay_Stylesheets_Files
-    "overlay/Dark Theme + Dark Background.qss"
-    "overlay/Dark Theme + Light Background.qss"
-    "overlay/Light Theme + Dark Background.qss"
-    "overlay/Light Theme + Light Background.qss"
+    "overlay/Freecad Overlay.qss"
 )
 
 # Find all the image files
