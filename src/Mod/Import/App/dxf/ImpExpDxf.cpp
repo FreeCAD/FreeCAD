@@ -167,6 +167,137 @@ Part::Line* createLinePrimitive(const TopoDS_Edge& edge, App::Document* doc, con
 
 }  // namespace
 
+TopoDS_Wire ImpExpDxfRead::BuildWireFromPolyline(std::list<VertexInfo>& vertices, int flags)
+{
+    BRepBuilderAPI_MakeWire wireBuilder;
+    bool is_closed = ((flags & 1) != 0);
+    if (vertices.empty()) {
+        return wireBuilder.Wire();
+    }
+
+    auto it = vertices.begin();
+    auto prev_it = it++;
+
+    while (it != vertices.end()) {
+        const VertexInfo& start_vertex = *prev_it;
+        const VertexInfo& end_vertex = *it;
+        TopoDS_Edge edge;
+
+        if (start_vertex.bulge == 0.0) {
+            edge = BRepBuilderAPI_MakeEdge(makePoint(start_vertex.location),
+                                           makePoint(end_vertex.location))
+                       .Edge();
+        }
+        else {
+            double cot = ((1.0 / start_vertex.bulge) - start_vertex.bulge) / 2.0;
+            double center_x = ((start_vertex.location.x + end_vertex.location.x)
+                               - (end_vertex.location.y - start_vertex.location.y) * cot)
+                / 2.0;
+            double center_y = ((start_vertex.location.y + end_vertex.location.y)
+                               + (end_vertex.location.x - start_vertex.location.x) * cot)
+                / 2.0;
+            double center_z = (start_vertex.location.z + end_vertex.location.z) / 2.0;
+            Base::Vector3d center(center_x, center_y, center_z);
+
+            gp_Pnt p0 = makePoint(start_vertex.location);
+            gp_Pnt p1 = makePoint(end_vertex.location);
+            gp_Dir up(0, 0, 1);
+            if (start_vertex.bulge < 0) {
+                up.Reverse();
+            }
+            gp_Pnt pc = makePoint(center);
+            gp_Circ circle(gp_Ax2(pc, up), p0.Distance(pc));
+            if (circle.Radius() > 1e-9) {
+                edge = BRepBuilderAPI_MakeEdge(circle, p0, p1).Edge();
+            }
+        }
+
+        if (!edge.IsNull()) {
+            wireBuilder.Add(edge);
+        }
+        prev_it = it++;
+    }
+
+    if (is_closed && vertices.size() > 1) {
+        const VertexInfo& start_vertex = vertices.back();
+        const VertexInfo& end_vertex = vertices.front();
+        TopoDS_Edge edge;
+
+        if (start_vertex.bulge == 0.0) {
+            edge = BRepBuilderAPI_MakeEdge(makePoint(start_vertex.location),
+                                           makePoint(end_vertex.location))
+                       .Edge();
+        }
+        else {
+            double cot = ((1.0 / start_vertex.bulge) - start_vertex.bulge) / 2.0;
+            double center_x = ((start_vertex.location.x + end_vertex.location.x)
+                               - (end_vertex.location.y - start_vertex.location.y) * cot)
+                / 2.0;
+            double center_y = ((start_vertex.location.y + end_vertex.location.y)
+                               + (end_vertex.location.x - start_vertex.location.x) * cot)
+                / 2.0;
+            double center_z = (start_vertex.location.z + end_vertex.location.z) / 2.0;
+            Base::Vector3d center(center_x, center_y, center_z);
+
+            gp_Pnt p0 = makePoint(start_vertex.location);
+            gp_Pnt p1 = makePoint(end_vertex.location);
+            gp_Dir up(0, 0, 1);
+            if (start_vertex.bulge < 0) {
+                up.Reverse();
+            }
+            gp_Pnt pc = makePoint(center);
+            gp_Circ circle(gp_Ax2(pc, up), p0.Distance(pc));
+            if (circle.Radius() > 1e-9) {
+                edge = BRepBuilderAPI_MakeEdge(circle, p0, p1).Edge();
+            }
+        }
+        if (!edge.IsNull()) {
+            wireBuilder.Add(edge);
+        }
+    }
+
+    return wireBuilder.Wire();
+}
+
+void ImpExpDxfRead::CreateFlattenedPolyline(const TopoDS_Wire& wire, const char* name)
+{
+    auto* p = document->addObject<Part::Feature>(document->getUniqueObjectName(name).c_str());
+    p->Shape.setValue(wire);
+    Collector->AddObject(p, name);
+}
+
+void ImpExpDxfRead::CreateParametricPolyline(const TopoDS_Wire& wire, const char* name)
+{
+    auto* p = document->addObject<Part::Compound>(document->getUniqueObjectName(name).c_str());
+    IncrementCreatedObjectCount();
+
+    std::vector<App::DocumentObject*> segments;
+    TopExp_Explorer explorer(wire, TopAbs_EDGE);
+
+    for (; explorer.More(); explorer.Next()) {
+        TopoDS_Edge edge = TopoDS::Edge(explorer.Current());
+        App::DocumentObject* segment = nullptr;
+        BRepAdaptor_Curve adaptor(edge);
+
+        if (adaptor.GetType() == GeomAbs_Line) {
+            segment = createLinePrimitive(edge, document, "Segment");
+        }
+        else if (adaptor.GetType() == GeomAbs_Circle) {
+            segment = createCirclePrimitive(edge, document, "Arc");
+        }
+
+        if (segment) {
+            IncrementCreatedObjectCount();
+            segment->Visibility.setValue(false);
+            ApplyGuiStyles(static_cast<Part::Feature*>(segment));
+            segments.push_back(segment);
+        }
+    }
+    p->Links.setValues(segments);
+
+    Collector->AddObject(p, name);
+}
+
 std::map<std::string, int> ImpExpDxfRead::PreScan(const std::string& filepath)
 {
     std::map<std::string, int> counts;
@@ -476,7 +607,7 @@ void ImpExpDxfRead::ComposeParametricBlock(const std::string& blockName,
             App::DocumentObject* newObject = nullptr;
             switch (builder.type) {
                 case GeometryBuilder::PrimitiveType::None: {
-                    auto* p = document->addObject<Part::Feature>("Shape");
+                    auto* p = document->addObject<Part::Feature>("Wire");
                     p->Shape.setValue(builder.shape);
                     newObject = p;
                     break;
@@ -513,12 +644,13 @@ void ImpExpDxfRead::ComposeParametricBlock(const std::string& blockName,
                 }
                 case GeometryBuilder::PrimitiveType::PolylineCompound: {
                     auto* p = document->addObject<Part::Compound>("Polyline");
+                    IncrementCreatedObjectCount();
                     std::vector<App::DocumentObject*> segments;
                     TopExp_Explorer explorer(builder.shape, TopAbs_EDGE);
                     for (; explorer.More(); explorer.Next()) {
                         TopoDS_Edge edge = TopoDS::Edge(explorer.Current());
-                        BRepAdaptor_Curve adaptor(edge);
                         App::DocumentObject* segment = nullptr;
+                        BRepAdaptor_Curve adaptor(edge);
                         if (adaptor.GetType() == GeomAbs_Line) {
                             segment = createLinePrimitive(edge, document, "Segment");
                         }
@@ -541,7 +673,6 @@ void ImpExpDxfRead::ComposeParametricBlock(const std::string& blockName,
                 case GeometryBuilder::PrimitiveType::Spline:
                 case GeometryBuilder::PrimitiveType::Ellipse:
                 default:
-                    // Fallback for types without a specific primitive
                     auto* p = document->addObject<Part::Feature>("Shape");
                     p->Shape.setValue(builder.shape);
                     newObject = p;
@@ -1064,109 +1195,42 @@ void ImpExpDxfRead::OnReadPolyline(std::list<VertexInfo>& vertices, int flags)
         return;  // Not enough vertices for an open polyline
     }
 
-    BRepBuilderAPI_MakeWire wireBuilder;
-    bool is_closed = ((flags & 1) != 0);
-    auto it = vertices.begin();
-    auto prev_it = it++;
-
-    while (it != vertices.end()) {
-        const VertexInfo& start_vertex = *prev_it;
-        const VertexInfo& end_vertex = *it;
-        TopoDS_Edge edge;
-
-        if (start_vertex.bulge == 0.0) {
-            edge = BRepBuilderAPI_MakeEdge(makePoint(start_vertex.location),
-                                           makePoint(end_vertex.location))
-                       .Edge();
-        }
-        else {
-            double cot = ((1.0 / start_vertex.bulge) - start_vertex.bulge) / 2.0;
-            double center_x = ((start_vertex.location.x + end_vertex.location.x)
-                               - (end_vertex.location.y - start_vertex.location.y) * cot)
-                / 2.0;
-            double center_y = ((start_vertex.location.y + end_vertex.location.y)
-                               + (end_vertex.location.x - start_vertex.location.x) * cot)
-                / 2.0;
-            double center_z = (start_vertex.location.z + end_vertex.location.z) / 2.0;
-            Base::Vector3d center(center_x, center_y, center_z);
-
-            gp_Pnt p0 = makePoint(start_vertex.location);
-            gp_Pnt p1 = makePoint(end_vertex.location);
-            gp_Dir up(0, 0, 1);
-            if (start_vertex.bulge < 0) {
-                up.Reverse();
-            }
-            gp_Pnt pc = makePoint(center);
-            gp_Circ circle(gp_Ax2(pc, up), p0.Distance(pc));
-            if (circle.Radius() > 1e-9) {
-                edge = BRepBuilderAPI_MakeEdge(circle, p0, p1).Edge();
-            }
-        }
-
-        if (!edge.IsNull()) {
-            wireBuilder.Add(edge);
-        }
-
-        prev_it = it++;
+    TopoDS_Wire wire = BuildWireFromPolyline(vertices, flags);
+    if (wire.IsNull()) {
+        return;
     }
 
-    if (is_closed && vertices.size() > 1) {
-        const VertexInfo& start_vertex = vertices.back();
-        const VertexInfo& end_vertex = vertices.front();
-        TopoDS_Edge edge;
-
-        if (start_vertex.bulge == 0.0) {
-            edge = BRepBuilderAPI_MakeEdge(makePoint(start_vertex.location),
-                                           makePoint(end_vertex.location))
-                       .Edge();
-        }
-        else {
-            double cot = ((1.0 / start_vertex.bulge) - start_vertex.bulge) / 2.0;
-            double center_x = ((start_vertex.location.x + end_vertex.location.x)
-                               - (end_vertex.location.y - start_vertex.location.y) * cot)
-                / 2.0;
-            double center_y = ((start_vertex.location.y + end_vertex.location.y)
-                               + (end_vertex.location.x - start_vertex.location.x) * cot)
-                / 2.0;
-            double center_z = (start_vertex.location.z + end_vertex.location.z) / 2.0;
-            Base::Vector3d center(center_x, center_y, center_z);
-
-            gp_Pnt p0 = makePoint(start_vertex.location);
-            gp_Pnt p1 = makePoint(end_vertex.location);
-            gp_Dir up(0, 0, 1);
-            if (start_vertex.bulge < 0) {
-                up.Reverse();
-            }
-            gp_Pnt pc = makePoint(center);
-            gp_Circ circle(gp_Ax2(pc, up), p0.Distance(pc));
-            if (circle.Radius() > 1e-9) {
-                edge = BRepBuilderAPI_MakeEdge(circle, p0, p1).Edge();
-            }
-        }
-        if (!edge.IsNull()) {
-            wireBuilder.Add(edge);
-        }
-    }
-
-    if (wireBuilder.IsDone()) {
-        TopoDS_Wire wire = wireBuilder.Wire();
+    if (m_importMode == ImportMode::EditableDraft) {
         GeometryBuilder builder(wire);
-
-        // For FusedShapes mode, we can create the object immediately.
-        // For other modes, we store the builder for later processing.
-        if (m_importMode == ImportMode::FusedShapes) {
-            Collector->AddObject(wire, "Polyline");
-            return;
-        }
-
-        if (m_importMode == ImportMode::EditablePrimitives) {
-            builder.type = GeometryBuilder::PrimitiveType::PolylineCompound;
-        }
-
+        builder.type = GeometryBuilder::PrimitiveType::None;
         Collector->AddGeometry(builder);
+    }
+    else if (m_importMode == ImportMode::EditablePrimitives) {
+        GeometryBuilder builder(wire);
+        builder.type = GeometryBuilder::PrimitiveType::PolylineCompound;
+        Collector->AddGeometry(builder);
+    }
+    else {
+        Collector->AddObject(wire, "Polyline");
     }
 }
 
+void ImpExpDxfRead::DrawingEntityCollector::AddGeometry(const GeometryBuilder& builder)
+{
+    switch (builder.type) {
+        case GeometryBuilder::PrimitiveType::PolylineCompound:
+            Reader.CreateParametricPolyline(TopoDS::Wire(builder.shape), "Polyline");
+            break;
+
+        case GeometryBuilder::PrimitiveType::None:
+            this->AddObject(builder.shape, "Wire");
+            break;
+
+        default:
+            this->AddObject(builder.shape, "Shape");
+            break;
+    }
+}
 
 ImpExpDxfRead::Layer::Layer(const std::string& name,
                             ColorIndex_t color,

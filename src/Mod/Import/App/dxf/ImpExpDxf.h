@@ -176,6 +176,10 @@ protected:
     CDxfRead::Layer*
     MakeLayer(const std::string& name, ColorIndex_t color, std::string&& lineType) override;
 
+    TopoDS_Wire BuildWireFromPolyline(std::list<VertexInfo>& vertices, int flags);
+    void CreateFlattenedPolyline(const TopoDS_Wire& wire, const char* name);
+    void CreateParametricPolyline(const TopoDS_Wire& wire, const char* name);
+
     // Overrides for layer management so we can record the layer objects in the FreeCAD drawing that
     // are associated with the layers in the DXF.
     class Layer: public CDxfRead::Layer
@@ -311,12 +315,7 @@ protected:
         {}
 
         void AddObject(const TopoDS_Shape& shape, const char* nameBase) override;
-        void AddGeometry(const GeometryBuilder& builder) override
-        {
-            // In drawing mode, we create objects immediately based on the builder.
-            // For now, this just creates simple shapes. Primitives would need more logic here.
-            AddObject(builder.shape, "Shape");
-        }
+        void AddGeometry(const GeometryBuilder& builder) override;
         void AddObject(App::DocumentObject* obj, const char* nameBase) override;
         void AddObject(FeaturePythonBuilder shapeBuilder) override;
         void AddInsert(const Base::Vector3d& point,
