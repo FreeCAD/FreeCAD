@@ -54,6 +54,7 @@ class ObjectDressup:
             QT_TRANSLATE_NOOP("CAM_DressupLeadInOut", "Arc"),
             QT_TRANSLATE_NOOP("CAM_DressupLeadInOut", "Arc3d"),
             QT_TRANSLATE_NOOP("CAM_DressupLeadInOut", "ArcZ"),
+            QT_TRANSLATE_NOOP("CAM_DressupLeadInOut", "Helix"),
             QT_TRANSLATE_NOOP("CAM_DressupLeadInOut", "Line"),
             QT_TRANSLATE_NOOP("CAM_DressupLeadInOut", "Line3d"),
             QT_TRANSLATE_NOOP("CAM_DressupLeadInOut", "LineZ"),
@@ -187,13 +188,13 @@ class ObjectDressup:
         if obj.PercentageRadiusOut < 1:
             obj.PercentageRadiusOut = 1
 
-        if obj.AngleIn > 90:
-            obj.AngleIn = 90
+        if obj.AngleIn > 180:
+            obj.AngleIn = 180
         if obj.AngleIn < 1:
             obj.AngleIn = 1
 
-        if obj.AngleOut > 90:
-            obj.AngleOut = 90
+        if obj.AngleOut > 180:
+            obj.AngleOut = 180
         if obj.AngleOut < 1:
             obj.AngleOut = 1
 
@@ -246,6 +247,7 @@ class ObjectDressup:
             QT_TRANSLATE_NOOP("CAM_DressupLeadInOut", "Arc"),
             QT_TRANSLATE_NOOP("CAM_DressupLeadInOut", "Arc3d"),
             QT_TRANSLATE_NOOP("CAM_DressupLeadInOut", "ArcZ"),
+            QT_TRANSLATE_NOOP("CAM_DressupLeadInOut", "Helix"),
             QT_TRANSLATE_NOOP("CAM_DressupLeadInOut", "Line"),
             QT_TRANSLATE_NOOP("CAM_DressupLeadInOut", "Line3d"),
             QT_TRANSLATE_NOOP("CAM_DressupLeadInOut", "LineZ"),
@@ -387,29 +389,82 @@ class ObjectDressup:
         return output
 
     # Create safety movements to start point
-    def getTravelStart(self, obj, pos, first, posPrev):
+    def getTravelStart(self, obj, pos, first, inInstrPrev, outInstrPrev):
         op = PathDressup.baseOp(obj.Base)
         vertfeed = PathDressup.toolController(obj.Base).VertFeed.Value
         commands = []
 
-        distance = posPrev.distanceToPoint(App.Vector(pos.x, pos.y, 0))
+        print()
+        print("getTravelStart")
+        print(f" inInstrPrev {inInstrPrev}")
+        print(f" outInstrPrev {outInstrPrev}")
+        print(" pos", pos)
+        posPrev = outInstrPrev.positionEnd() if outInstrPrev else App.Vector()
+        posPrevXY = App.Vector(posPrev.x, posPrev.y, 0)
+        posXY = App.Vector(pos.x, pos.y, 0)
+        distance = posPrevXY.distanceToPoint(posXY)
+
         if first or (distance > obj.RetractThreshold):
             # move to clearance height
             commands.append(PathLanguage.MoveStraight(None, "G00", {"Z": op.ClearanceHeight.Value}))
 
-        # move to mill X/Y-position (without move Z)
-        commands.append(PathLanguage.MoveStraight(None, "G00", {"X": pos.x, "Y": pos.y}))
+            # move to mill X/Y-position (without move Z)
+            commands.append(PathLanguage.MoveStraight(None, "G00", {"X": pos.x, "Y": pos.y}))
 
-        # move vertical down to mill position
-        if obj.RapidPlunge:
-            # move to mill position rapidly
-            commands.append(PathLanguage.MoveStraight(None, "G00", {"Z": pos.z}))
+        if distance > obj.RetractThreshold:
+            # move vertical down to mill position
+            if obj.RapidPlunge:
+                # move to mill position rapidly
+                commands.append(PathLanguage.MoveStraight(None, "G00", {"Z": pos.z}))
+            else:
+                # move to mill position in one or two steps
+                if first:
+                    # move down to SafeHeight
+                    commands.append(
+                        PathLanguage.MoveStraight(None, "G00", {"Z": op.SafeHeight.Value})
+                    )
+                commands.append(PathLanguage.MoveStraight(None, "G01", {"Z": pos.z, "F": vertfeed}))
+
+        elif obj.StyleOut == "Helix":
+            # move by helix to next mill position
+            if obj.StyleIn == "Helix":
+                halfStepZ = (posPrev.z - pos.z) / 2
+                stepOutZ = halfStepZ * outInstrPrev.arcAngle() / math.pi
+                lastZMove = stepOutZ
+            else:
+                stepOutZ = posPrev.z - pos.z
+                lastZMove = 0
+            outInstrPrev.param["Z"] = posPrev.z - stepOutZ
+            if not Path.Geom.pointsCoincide(posPrevXY, posXY):
+                if obj.RapidPlunge:
+                    commands.append(
+                        PathLanguage.MoveStraight(
+                            outInstrPrev.positionEnd(),
+                            "G00",
+                            {"X": pos.x, "Y": pos.y, "Z": pos.z + lastZMove},
+                        )
+                    )
+                else:
+                    commands.append(
+                        PathLanguage.MoveStraight(
+                            outInstrPrev.positionEnd(),
+                            "G01",
+                            {"X": pos.x, "Y": pos.y, "Z": pos.z + lastZMove, "F": vertfeed},
+                        )
+                    )
+
         else:
-            # move to mill position in one or two steps
-            if first or (distance > obj.RetractThreshold):
-                # move down to SafeHeight
-                commands.append(PathLanguage.MoveStraight(None, "G00", {"Z": op.SafeHeight.Value}))
-            commands.append(PathLanguage.MoveStraight(None, "G01", {"Z": pos.z, "F": vertfeed}))
+            # move to next mill position by short path
+            if obj.RapidPlunge:
+                commands.append(
+                    PathLanguage.MoveStraight(None, "G00", {"X": pos.x, "Y": pos.y, "Z": pos.z})
+                )
+            else:
+                commands.append(
+                    PathLanguage.MoveStraight(
+                        None, "G01", {"X": pos.x, "Y": pos.y, "Z": pos.z, "F": vertfeed}
+                    )
+                )
 
         return commands
 
@@ -513,7 +568,7 @@ class ObjectDressup:
 
         return commands
 
-    def getLeadStart(self, obj, move, first, posPrev):
+    def getLeadStart(self, obj, move, first, inInstrPrev, outInstrPrev):
 
         #    tangent  begin      move
         #    <----_-----x-------------------x
@@ -539,7 +594,7 @@ class ObjectDressup:
 
             # prepend "Arc" style lead-in - arc in XY
             # Arc3d the same as Arc, but increased Z start point
-            if obj.StyleIn in ["Arc", "Arc3d"]:
+            if obj.StyleIn in ["Arc", "Arc3d", "Helix"]:
                 # tangent and normal vectors in XY plane
                 arcRadius = length
                 tangentLength = math.sin(angleIn) * arcRadius
@@ -610,12 +665,15 @@ class ObjectDressup:
             if obj.StyleIn in ["Arc3d", "Line3d"]:
                 # up Z start point for Arc3d and Line3d
                 op = PathDressup.baseOp(obj.Base)
-                begin.z = op.SafeHeight.Value
+                if inInstrPrev and inInstrPrev.z() > begin.z:
+                    begin.z = inInstrPrev.z()
+                else:
+                    begin.z = op.StartDepth.Value
                 lead[0].setPositionBegin(begin)
 
         # get complete start travel moves
         if obj.StyleIn != "None":
-            travelToStart = self.getTravelStart(obj, begin, first, posPrev)
+            travelToStart = self.getTravelStart(obj, begin, first, inInstrPrev, outInstrPrev)
         else:
             # exclude any lead-in commands
             horizfeed = PathDressup.toolController(obj.Base).HorizFeed.Value
@@ -626,7 +684,7 @@ class ObjectDressup:
 
         return lead
 
-    def getLeadEnd(self, obj, move, last):
+    def getLeadEnd(self, obj, move, last, inInstrPrev, outInstrPrev):
 
         #            move       end   tangent
         #    x-------------------x-----_---->
@@ -652,7 +710,7 @@ class ObjectDressup:
 
             # append "Arc" style lead-out - arc in XY
             # Arc3d the same as Arc, but increased Z start point
-            if obj.StyleOut in ["Arc", "Arc3d"]:
+            if obj.StyleOut in ["Arc", "Arc3d", "Helix"]:
                 # tangent and normal vectors in XY plane
                 arcRadius = length
                 tangentLength = math.sin(angleOut) * arcRadius
@@ -718,7 +776,15 @@ class ObjectDressup:
         if obj.StyleOut in ["Arc3d", "Line3d"]:
             # Up Z end point for Arc3d and Line3d
             op = PathDressup.baseOp(obj.Base)
-            lead[-1].param["Z"] = op.StartDepth.Value
+            print()
+            print("getLeadEnd")
+            print(f" inInstrPrev {inInstrPrev}")
+            print(f" outInstrPrev {outInstrPrev}")
+            if outInstrPrev and outInstrPrev.positionBegin().z > end.z:
+                print(f"   begin {outInstrPrev.positionBegin()}")
+                lead[-1].param["Z"] = outInstrPrev.positionBegin().z
+            else:
+                lead[-1].param["Z"] = op.StartDepth.Value
 
         # append travel moves to cleareance height after finish all profiles
         if last and obj.StyleOut != "None":
@@ -921,7 +987,8 @@ class ObjectDressup:
         first = True  # prepare first move at cleareance height
         firstMillIndex = None  # Index start mill instruction for one profile
         lastCuttingMoveIndex = self.findLastCuttingMoveIndex(obj, source)
-        posPrev = App.Vector()
+        inInstrPrev = None
+        outInstrPrev = None
         measuredLength = 0
         skipCounter = 0
         commands = []
@@ -968,12 +1035,15 @@ class ObjectDressup:
                         lastMillIndex,
                     )
                 if overtravelIn:
-                    commands.extend(self.getLeadStart(obj, overtravelIn[0], first, posPrev))
+                    commands.extend(
+                        self.getLeadStart(obj, overtravelIn[0], first, inInstrPrev, outInstrPrev)
+                    )
                     commands.extend(overtravelIn)
                 else:
-                    commands.extend(self.getLeadStart(obj, instr, first, posPrev))
+                    commands.extend(self.getLeadStart(obj, instr, first, inInstrPrev, outInstrPrev))
                 first = False
                 firstMillIndex = i if not firstMillIndex else firstMillIndex
+                inInstrPrev = commands[-1]
 
             # Add mill instruction
             commands.append(instr)
@@ -1002,16 +1072,14 @@ class ObjectDressup:
                         commands.extend(overtravelOut)
 
                 # add lead end and travel moves
-                leadEndInstr = self.getLeadEnd(obj, commands[-1], last)
+                leadEndInstr = self.getLeadEnd(obj, commands[-1], last, inInstrPrev, outInstrPrev)
                 commands.extend(leadEndInstr)
 
                 # Last mill position to check RetractThreshold
                 if leadEndInstr:
-                    posPrev.x = leadEndInstr[0].x()
-                    posPrev.y = leadEndInstr[0].y()
+                    outInstrPrev = leadEndInstr[-1]
                 else:
-                    posPrev.x = instr.param["X"]
-                    posPrev.y = instr.param["Y"]
+                    outInstrPrev = instr
 
         maneuver.addInstructions(commands)
         return maneuver.toPath()
