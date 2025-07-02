@@ -549,14 +549,14 @@ class TaskPanelBaseGeometryPage(TaskPanelPage):
         return "nothing"
 
     def selectionSupportedAsBaseGeometry(self, selection, ignoreErrors):
-        if len(selection) != 1:
-            if not ignoreErrors:
-                msg = translate(
-                    "PathOp",
-                    "Please select %s from a single solid" % self.featureName(),
-                )
-                Path.Log.debug(msg)
-            return False
+        # if len(selection) != 1:
+        #     if not ignoreErrors:
+        #         msg = translate(
+        #             "PathOp",
+        #             "Please select %s from a single solid" % self.featureName(),
+        #         )
+        #         Path.Log.debug(msg)
+        #     return False
         sel = selection[0]
         if sel.HasSubObjects:
             if not self.supportsVertexes() and selection[0].SubObjects[0].ShapeType == "Vertex":
@@ -573,9 +573,9 @@ class TaskPanelBaseGeometryPage(TaskPanelPage):
     def addBaseGeometry(self, selection):
         Path.Log.track(selection)
         if self.selectionSupportedAsBaseGeometry(selection, False):
-            sel = selection[0]
-            for sub in sel.SubElementNames:
-                self.obj.Proxy.addBase(self.obj, sel.Object, sub)
+            for sel in selection:
+                for sub in sel.SubElementNames:
+                    self.obj.Proxy.addBase(self.obj, sel.Object, sub)
             return True
         return False
 
