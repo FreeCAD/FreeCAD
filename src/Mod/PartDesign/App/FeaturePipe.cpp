@@ -48,9 +48,8 @@
 #include <Mod/Part/App/FaceMakerCheese.h>
 
 #include "FeaturePipe.h"
-#include "Mod/Part/App/TopoShapeOpCode.h"
+#include "FeatureAddSub.h"
 #include "Mod/Part/App/TopoShapeMapper.h"
-#include "FeatureLoft.h"
 
 FC_LOG_LEVEL_INIT("PartDesign",true,true);
 
@@ -357,7 +356,8 @@ App::DocumentObjectExecReturn *Pipe::execute()
                 sewer.Add(s);
 
             sewer.Perform();
-            mkSolid.Add(TopoDS::Shell(sewer.SewedShape()));        } else {
+            mkSolid.Add(TopoDS::Shell(sewer.SewedShape()));
+        } else {
             // shells are already closed - add them directly
             for (TopoDS_Shape& s : shells) {
                 mkSolid.Add(TopoDS::Shell(s));
@@ -378,7 +378,7 @@ App::DocumentObjectExecReturn *Pipe::execute()
         AddSubShape.setValue(result); // Converts result to a TopoShape, but no tag.
 
         if (base.isNull()) {
-            if (getAddSubType() == FeatureAddSub::Subtractive)
+            if ( isSubtractive() )
                 return new App::DocumentObjectExecReturn(
                     QT_TRANSLATE_NOOP("Exception", "Pipe: There is nothing to subtract from"));
 
@@ -389,7 +389,7 @@ App::DocumentObjectExecReturn *Pipe::execute()
             return App::DocumentObject::StdReturn;
         }
 
-        if (getAddSubType() == FeatureAddSub::Additive) {
+        if ( isAdditive() ) {
 
             FCBRepAlgoAPI_Fuse mkFuse(base.getShape(), result);
             if (!mkFuse.IsDone())
@@ -410,7 +410,7 @@ App::DocumentObjectExecReturn *Pipe::execute()
             boolOp = refineShapeIfActive(boolOp);
             Shape.setValue(getSolid(boolOp));
         }
-        else if (getAddSubType() == FeatureAddSub::Subtractive) {
+        else if ( isSubtractive() ) {
 
             FCBRepAlgoAPI_Cut mkCut(base.getShape(), result);
             if (!mkCut.IsDone())
