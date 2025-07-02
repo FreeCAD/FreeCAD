@@ -173,7 +173,8 @@ class Arch_Wall:
                 oldWall = self.existing[-1]
                 if self.JOIN_WALLS_SKETCHES and ArchWall.areSameWallTypes([wall, oldWall]):
                     FreeCADGui.doCommand(
-                        "Arch.joinWalls([wall, doc." + oldWall.Name + "], delete=True)"
+                        "Arch.joinWalls([wall, doc." + oldWall.Name + "], "
+                        + "delete=True, deletebase=True)"
                     )
                 elif self.AUTOJOIN:
                     if wallGrp is not None:
