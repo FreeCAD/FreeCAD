@@ -19,10 +19,8 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-from typing import cast
 from PySide import QtGui
 import FreeCAD
-import FreeCADGui
 from ...spindle.ui.properties import SpindlePropertiesWidget
 from ..models import Lathe
 from .machine import MachinePropertiesDialog
@@ -37,20 +35,6 @@ class LathePropertiesDialog(MachinePropertiesDialog):
     def __init__(self, machine: Lathe, parent=None):
         super().__init__(machine, parent)
 
-        ui = FreeCADGui.UiLoader()
-
-        # Add Lathe properties group
-        lathe_properties_group = QtGui.QGroupBox(translate("CAM", "Lathe Properties"))
-        lathe_properties_layout = QtGui.QFormLayout()
-        self.max_diameter_edit = ui.createWidget("Gui::QuantitySpinBox")
-        self.max_diameter_edit.setProperty("value", machine.max_workpiece_diameter)
-        lathe_properties_layout.addRow(
-            translate("CAM", "Maximum workpiece diameter"),
-            self.max_diameter_edit,
-        )
-        lathe_properties_group.setLayout(lathe_properties_layout)
-        self.layout.insertWidget(1, lathe_properties_group)  # Insert after general group
-
         # Add Spindle editor
         self.spindles_group.hide()
         self.spindle_editor = SpindlePropertiesWidget(machine.spindles[0], parent=self)
@@ -59,19 +43,7 @@ class LathePropertiesDialog(MachinePropertiesDialog):
         spindle_layout.setContentsMargins(0, 0, 0, 0)
         spindle_layout.addWidget(self.spindle_editor)
         spindle_group.setLayout(spindle_layout)
-        self.layout.insertWidget(3, spindle_group)  # Insert after axis properties group
+        self.layout.insertWidget(2, spindle_group)  # Insert after axis properties group
 
     def update_machine(self):
-        machine = cast(Lathe, self.machine)
-        max_diameter = self.max_diameter_edit.property("value")
-        if max_diameter.Value <= 0:
-            QtGui.QMessageBox.warning(
-                self,
-                translate("CAM", "Warning"),
-                translate("CAM", "Maximum workpiece diameter must be positive."),
-            )
-            return None
-
-        # Update existing machine
-        machine.max_workpiece_diameter = max_diameter
         self.spindle_editor.update_spindle()

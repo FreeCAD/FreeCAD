@@ -36,7 +36,6 @@ class Lathe(Machine):
         self,
         label: str,
         axes: Optional[Dict[str, Axis]] = None,
-        max_workpiece_diameter: FreeCAD.Units.Quantity = FreeCAD.Units.Quantity("200 mm"),
         post_processor: str = "generic",
         post_processor_args: str = "",
         id: Optional[str] = None,
@@ -47,7 +46,6 @@ class Lathe(Machine):
         Args:
             label: Machine label.
             axes: E.g. {"x": Axis(), "z": Axis()}
-            max_workpiece_diameter: Maximum diameter of the workpiece (e.g., swing over bed).
             post_processor: Name of the FreeCAD post processor.
             post_processor_args: Arguments for the post processor.
             id: Unique identifier (optional).
@@ -68,7 +66,6 @@ class Lathe(Machine):
             id=id or str(uuid.uuid1()),
         )
 
-        self._max_workpiece_diameter = max_workpiece_diameter
         self.add_spindle(Spindle(FreeCAD.Qt.translate("CAM", "Lathe spindle")))
 
     @staticmethod
@@ -89,15 +86,6 @@ class Lathe(Machine):
         return cast(AngularAxis, self._axes["spindle"])
 
     @property
-    def max_workpiece_diameter(self) -> FreeCAD.Units.Quantity:
-        """Maximum diameter of the workpiece (e.g., swing over bed)."""
-        return self._max_workpiece_diameter
-
-    @max_workpiece_diameter.setter
-    def max_workpiece_diameter(self, value: FreeCAD.Units.Quantity):
-        self._max_workpiece_diameter = value
-
-    @property
     def spindles(self) -> List[Spindle]:
         return super().spindles
 
@@ -116,8 +104,6 @@ class Lathe(Machine):
     def validate(self) -> None:
         """Validates lathe parameters."""
         super().validate()
-        if self._max_workpiece_diameter.Value <= 0:
-            raise AttributeError("Maximum workpiece diameter must be positive")
         if "X" not in self._axes:
             raise AttributeError("Mill must have an X axis")
         if "Z" not in self._axes:
@@ -139,7 +125,6 @@ class Lathe(Machine):
         for name, axis in sorted(self.axes.items()):
             output += f"  {name}-Axis:\n"
             output += axis.dump(do_print=False, indent=2)
-        output += f"  Max Workpiece Diameter: {self.max_workpiece_diameter.UserString}\n"
         output += f"  Post Processor: {self.post_processor or 'None'}\n"
         output += f"  Post Processor Args: {self.post_processor_args or 'None'}\n"
         for spindle in self.spindles:
