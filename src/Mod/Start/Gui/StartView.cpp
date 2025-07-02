@@ -190,28 +190,28 @@ StartView::StartView(QWidget* parent)
 void StartView::configureNewFileButtons(QLayout* layout) const
 {
     auto newEmptyFile =
-        gsl::owner<NewFileButton*>(new NewFileButton({tr("Empty file"),
-                                                      tr("Create a new empty FreeCAD file"),
+        gsl::owner<NewFileButton*>(new NewFileButton({tr("Empty File"),
+                                                      tr("Creates a new empty FreeCAD file"),
                                                       QLatin1String(":/icons/document-new.svg")}));
     auto openFile =
         gsl::owner<NewFileButton*>(new NewFileButton({tr("Open File"),
-                                                      tr("Open an existing CAD file or 3D model"),
+                                                      tr("Opens an existing CAD file or 3D model"),
                                                       QLatin1String(":/icons/document-open.svg")}));
     auto partDesign = gsl::owner<NewFileButton*>(
-        new NewFileButton({tr("Parametric Part"),
-                           tr("Create a part with the Part Design workbench"),
+        new NewFileButton({tr("Parametric Body"),
+                           tr("Creates a body with the Part Design workbench"),
                            QLatin1String(":/icons/PartDesignWorkbench.svg")}));
     auto assembly = gsl::owner<NewFileButton*>(
         new NewFileButton({tr("Assembly"),
-                           tr("Create an assembly project"),
+                           tr("Creates an assembly project"),
                            QLatin1String(":/icons/AssemblyWorkbench.svg")}));
     auto draft = gsl::owner<NewFileButton*>(
         new NewFileButton({tr("2D Draft"),
-                           tr("Create a 2D Draft with the Draft workbench"),
+                           tr("Creates a 2D draft document"),
                            QLatin1String(":/icons/DraftWorkbench.svg")}));
     auto arch =
         gsl::owner<NewFileButton*>(new NewFileButton({tr("BIM/Architecture"),
-                                                      tr("Create an architectural project"),
+                                                      tr("Creates an architectural project"),
                                                       QLatin1String(":/icons/BIMWorkbench.svg")}));
 
     // TODO: Ensure all of the required WBs are actually available
@@ -455,7 +455,7 @@ void StartView::retranslateUi()
     }
 
     QString application = QString::fromUtf8(App::Application::Config()["ExeName"].c_str());
-    _openFirstStart->setText(tr("Open first start setup"));
+    _openFirstStart->setText(tr("Open First Start Setup"));
     _showOnStartupCheckBox->setText(
-        tr("Don't show this Start page again (start with blank screen)"));
+        tr("Do not show this Start page again (start with blank screen)"));
 }

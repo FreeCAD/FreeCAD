@@ -127,7 +127,15 @@ class Arch_Panel:
             FreeCADGui.doCommand('s.Placement.Rotation = FreeCAD.Rotation(FreeCAD.Vector(1.00,0.00,0.00),90.00)')
         self.doc.commitTransaction()
         self.doc.recompute()
-        if FreeCADGui.draftToolBar.continueCmd.isChecked():
+        from PySide import QtCore
+        QtCore.QTimer.singleShot(100, self.check_continueMode)
+
+
+    def check_continueMode(self):
+
+        "checks if continueMode is true and restarts Panel"
+
+        if FreeCADGui.draftToolBar.continueMode:
             self.Activated()
 
     def taskbox(self):
