@@ -1452,7 +1452,6 @@ CmdPartDesignSubtractiveLoft::CmdPartDesignSubtractiveLoft()
     sGroup        = QT_TR_NOOP("PartDesign");
     sMenuText     = QT_TR_NOOP("Subtractive Loft");
     sToolTipText = QT_TR_NOOP("Lofts the selected sketch or profile along a path and removes it from the body");
-                              "other profile sections");
     sWhatsThis    = "PartDesign_SubtractiveLoft";
     sStatusTip    = sToolTipText;
     sPixmap       = "PartDesign_SubtractiveLoft";
