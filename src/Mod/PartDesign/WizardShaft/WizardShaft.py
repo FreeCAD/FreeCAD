@@ -102,7 +102,7 @@ class TaskWizardShaft:
             msgBox = QtGui.QMessageBox()
             msgBox.setIcon(msgBox.Information)
             msgBox.setWindowTitle(translate("TaskWizardShaft", "Missing Module"))
-            msgBox.setText(translate("TaskWizardShaft", "You may have to install the Plot add-on"))
+            msgBox.setText(translate("TaskWizardShaft", "The Plot add-on is not installed. Install it to enable this feature."))
             msgBox.setDetailedText(traceback.format_exc())
             msgBox.exec_()
     def slotAllx(self):

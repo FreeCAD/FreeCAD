@@ -112,7 +112,7 @@ void CmdPartDesignBody::activated(int iMsg)
                     PartDesign::Body::findBodyOf ( baseFeature ) ) {
                 // Prevent creating bodies based on features already belonging to other bodies
                 QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Bad base feature"),
-                        QObject::tr("Body cannot be based on a Part Design feature."));
+                        QObject::tr("A body cannot be based on a Part Design feature."));
                 baseFeature = nullptr;
             }
             else if (PartDesign::Body::findBodyOf ( baseFeature )){
@@ -343,7 +343,7 @@ void CmdPartDesignMigrate::activated(int iMsg)
         } else {
             // Huh? nothing to migrate?
             QMessageBox::warning ( nullptr, QObject::tr ( "Nothing to migrate" ),
-                    QObject::tr ( "No Part Design features found that don't belong to a body."
+                    QObject::tr ( "No Part Design features found that do not belong to a body."
                         " Nothing to migrate." ) );
         }
         return;

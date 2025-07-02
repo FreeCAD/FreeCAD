@@ -104,7 +104,7 @@ void TaskMultiTransformParameters::setupParameterUI(QWidget* widget)
                     this,
                     &TaskMultiTransformParameters::onTransformAddScaled);
     ui->listTransformFeatures->addAction(action);
-    action = new QAction(tr("Move Ip"), ui->listTransformFeatures);
+    action = new QAction(tr("Move Up"), ui->listTransformFeatures);
     action->connect(action, &QAction::triggered, this, &TaskMultiTransformParameters::onMoveUp);
     ui->listTransformFeatures->addAction(action);
     action = new QAction(tr("Move Down"), ui->listTransformFeatures);
@@ -141,7 +141,7 @@ void TaskMultiTransformParameters::setupParameterUI(QWidget* widget)
         editHint = false;
     }
     else {
-        ui->listTransformFeatures->addItem(tr("Right click to add a transformation"));
+        ui->listTransformFeatures->addItem(tr("Right-click to add a transformation"));
         editHint = true;
     }
 }
@@ -301,7 +301,7 @@ void TaskMultiTransformParameters::onTransformAddLinearPattern()
     }
 
     if (isEnabledTransaction()) {
-        Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Make Linear Pattern"));
+        Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Linear Pattern"));
     }
 
     FCMD_OBJ_CMD(pcBody, "newObject('PartDesign::LinearPattern','"<<newFeatName<<"')");

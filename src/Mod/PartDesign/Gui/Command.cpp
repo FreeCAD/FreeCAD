@@ -2043,7 +2043,7 @@ CmdPartDesignLinearPattern::CmdPartDesignLinearPattern()
     sAppModule    = "PartDesign";
     sGroup        = QT_TR_NOOP("PartDesign");
     sMenuText     = QT_TR_NOOP("Linear Pattern");
-    sToolTipText  = QT_TR_NOOP("Creates a linear pattern of the selected features or the active body");
+    sToolTipText  = QT_TR_NOOP("Duplicates the selected features or the active body in a linear pattern");
     sWhatsThis    = "PartDesign_LinearPattern";
     sStatusTip    = sToolTipText;
     sPixmap       = "PartDesign_LinearPattern";
@@ -2096,7 +2096,7 @@ CmdPartDesignPolarPattern::CmdPartDesignPolarPattern()
     sAppModule    = "PartDesign";
     sGroup        = QT_TR_NOOP("PartDesign");
     sMenuText     = QT_TR_NOOP("Polar Pattern");
-    sToolTipText  = QT_TR_NOOP("Creates a polar pattern of the selected features or the active body");
+    sToolTipText  = QT_TR_NOOP("Duplicates the selected features or the active body in a circular pattern");
     sWhatsThis    = "PartDesign_PolarPattern";
     sStatusTip    = sToolTipText;
     sPixmap       = "PartDesign_PolarPattern";
@@ -2193,7 +2193,7 @@ CmdPartDesignMultiTransform::CmdPartDesignMultiTransform()
     sAppModule    = "PartDesign";
     sGroup        = QT_TR_NOOP("PartDesign");
     sMenuText     = QT_TR_NOOP("Multi-Transform");
-    sToolTipText  = QT_TR_NOOP("Applies multiple transformations of the selected features or the active body");
+    sToolTipText  = QT_TR_NOOP("Applies multiple transformations to the selected features or active body");
     sWhatsThis    = "PartDesign_MultiTransform";
     sStatusTip    = sToolTipText;
     sPixmap       = "PartDesign_MultiTransform";
