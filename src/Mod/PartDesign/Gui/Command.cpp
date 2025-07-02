@@ -343,7 +343,7 @@ CmdPartDesignSubShapeBinder::CmdPartDesignSubShapeBinder()
 {
     sAppModule      = "PartDesign";
     sGroup          = QT_TR_NOOP("PartDesign");
-    sMenuText       = QT_TR_NOOP("Sub-Shape binder");
+    sMenuText       = QT_TR_NOOP("Sub-Shape Binder");
     sToolTipText    = QT_TR_NOOP("Creates a reference to geometry from one or more objects, allowing it to be used inside or outside a body. It tracks relative placements, supports multiple geometry types (solids, faces, edges, vertices), and can work with objects in the same or external documents.");
     sWhatsThis      = "PartDesign_SubShapeBinder";
     sStatusTip      = sToolTipText;
@@ -1091,7 +1091,7 @@ CmdPartDesignPad::CmdPartDesignPad()
     sAppModule    = "PartDesign";
     sGroup        = QT_TR_NOOP("PartDesign");
     sMenuText     = QT_TR_NOOP("Pad");
-    sToolTipText  = QT_TR_NOOP("Adds geometry by extruding the selected sketch or profile");
+    sToolTipText  = QT_TR_NOOP("Extrudes the selected sketch or profile and adds it to the body");
     sWhatsThis    = "PartDesign_Pad";
     sStatusTip    = sToolTipText;
     sPixmap       = "PartDesign_Pad";
@@ -1120,7 +1120,7 @@ CmdPartDesignPocket::CmdPartDesignPocket()
     sAppModule    = "PartDesign";
     sGroup        = QT_TR_NOOP("PartDesign");
     sMenuText     = QT_TR_NOOP("Pocket");
-    sToolTipText  = QT_TR_NOOP("Removes geometry by extruding the selected sketch or profile");
+    sToolTipText  = QT_TR_NOOP("Extrudes the selected sketch or profile and removes it from the body");
     sWhatsThis    = "PartDesign_Pocket";
     sStatusTip    = sToolTipText;
     sPixmap       = "PartDesign_Pocket";
@@ -1149,7 +1149,7 @@ CmdPartDesignHole::CmdPartDesignHole()
     sAppModule    = "PartDesign";
     sGroup        = QT_TR_NOOP("PartDesign");
     sMenuText     = QT_TR_NOOP("Hole");
-    sToolTipText  = QT_TR_NOOP("Removes geometry by creating holes around the center points of the selection");
+    sToolTipText  = QT_TR_NOOP("Creates holes in the active body at the center points of circles or arcs of the selected sketch or profile");
     sWhatsThis    = "PartDesign_Hole";
     sStatusTip    = sToolTipText;
     sPixmap       = "PartDesign_Hole";
@@ -1192,7 +1192,7 @@ CmdPartDesignRevolution::CmdPartDesignRevolution()
     sAppModule    = "PartDesign";
     sGroup        = QT_TR_NOOP("PartDesign");
     sMenuText     = QT_TR_NOOP("Revolution");
-    sToolTipText  = QT_TR_NOOP("Adds geometry by revolving the selected sketch or profile");
+    sToolTipText  = QT_TR_NOOP("Revolves the sketch or profile around a line or axis and adds it to the body");
     sWhatsThis    = "PartDesign_Revolution";
     sStatusTip    = sToolTipText;
     sPixmap       = "PartDesign_Revolution";
@@ -1247,7 +1247,7 @@ CmdPartDesignGroove::CmdPartDesignGroove()
     sAppModule    = "PartDesign";
     sGroup        = QT_TR_NOOP("PartDesign");
     sMenuText     = QT_TR_NOOP("Groove");
-    sToolTipText  = QT_TR_NOOP("Removes geometry by revolving the selected sketch or profile");
+    sToolTipText  = QT_TR_NOOP("Revolves the sketch or profile around a line or axis and removes it from the body");
     sWhatsThis    = "PartDesign_Groove";
     sStatusTip    = sToolTipText;
     sPixmap       = "PartDesign_Groove";
@@ -1310,7 +1310,7 @@ CmdPartDesignAdditivePipe::CmdPartDesignAdditivePipe()
     sAppModule    = "PartDesign";
     sGroup        = QT_TR_NOOP("PartDesign");
     sMenuText     = QT_TR_NOOP("Additive Pipe");
-    sToolTipText  = QT_TR_NOOP("Adds geometry by sweeping the selected sketch or profile along a path or to other profiles");
+    sToolTipText  = QT_TR_NOOP("Sweeps the selected sketch or profile along a path and adds it to the body");
     sWhatsThis    = "PartDesign_AdditivePipe";
     sStatusTip    = sToolTipText;
     sPixmap       = "PartDesign_AdditivePipe";
@@ -1357,7 +1357,7 @@ CmdPartDesignSubtractivePipe::CmdPartDesignSubtractivePipe()
     sAppModule    = "PartDesign";
     sGroup        = QT_TR_NOOP("PartDesign");
     sMenuText     = QT_TR_NOOP("Subtractive Pipe");
-    sToolTipText  = QT_TR_NOOP("Removes geometry by sweeping the selected sketch or profile along a path or to other profiles");
+    sToolTipText  = QT_TR_NOOP("Sweeps the selected sketch or profile along a path and removes it from the body");
     sWhatsThis    = "PartDesign_SubtractivePipe";
     sStatusTip    = sToolTipText;
     sPixmap       = "PartDesign_SubtractivePipe";
@@ -1404,7 +1404,7 @@ CmdPartDesignAdditiveLoft::CmdPartDesignAdditiveLoft()
     sAppModule    = "PartDesign";
     sGroup        = QT_TR_NOOP("PartDesign");
     sMenuText     = QT_TR_NOOP("Additive Loft");
-    sToolTipText  = QT_TR_NOOP("Adds geometry by lofting the selected sketch or profile through other profile sections");
+    sToolTipText = QT_TR_NOOP("Lofts the selected sketch or profile along a path and adds it to the body");
     sWhatsThis    = "PartDesign_AdditiveLoft";
     sStatusTip    = sToolTipText;
     sPixmap       = "PartDesign_AdditiveLoft";
@@ -1451,7 +1451,7 @@ CmdPartDesignSubtractiveLoft::CmdPartDesignSubtractiveLoft()
     sAppModule    = "PartDesign";
     sGroup        = QT_TR_NOOP("PartDesign");
     sMenuText     = QT_TR_NOOP("Subtractive Loft");
-    sToolTipText = QT_TR_NOOP("Removes geometry by lofting the selected sketch or profile through "
+    sToolTipText = QT_TR_NOOP("Lofts the selected sketch or profile along a path and removes it from the body");
                               "other profile sections");
     sWhatsThis    = "PartDesign_SubtractiveLoft";
     sStatusTip    = sToolTipText;
@@ -1498,7 +1498,7 @@ CmdPartDesignAdditiveHelix::CmdPartDesignAdditiveHelix()
     sAppModule    = "PartDesign";
     sGroup        = QT_TR_NOOP("PartDesign");
     sMenuText     = QT_TR_NOOP("Additive Helix");
-    sToolTipText  = QT_TR_NOOP("Adds geometry by sweeping the selected sketch or profile along a helix");
+    sToolTipText = QT_TR_NOOP("Sweeps the selected sketch or profile along a helix and adds it to the body");
     sWhatsThis    = "PartDesign_AdditiveHelix";
     sStatusTip    = sToolTipText;
     sPixmap       = "PartDesign_AdditiveHelix";
@@ -1570,7 +1570,7 @@ CmdPartDesignSubtractiveHelix::CmdPartDesignSubtractiveHelix()
     sAppModule    = "PartDesign";
     sGroup        = QT_TR_NOOP("PartDesign");
     sMenuText     = QT_TR_NOOP("Subtractive Helix");
-    sToolTipText  = QT_TR_NOOP("Removes geometry by sweeping the selected sketch or profile along a helix");
+    sToolTipText  = QT_TR_NOOP("Sweeps the selected sketch or profile along a helix and removes it from the body");
     sWhatsThis    = "PartDesign_SubtractiveHelix";
     sStatusTip    = sToolTipText;
     sPixmap       = "PartDesign_SubtractiveHelix";
