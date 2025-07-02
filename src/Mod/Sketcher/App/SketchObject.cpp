@@ -6960,23 +6960,13 @@ int SketchObject::carbonCopy(App::DocumentObject* pObj, bool construction)
 
     for (auto* constr : scvals) {
         Sketcher::Constraint* newConstr = constr->copy();
-        if (constr->getGeoId(0) >= 0) {
-            newConstr->setGeoId(0, newConstr->getGeoId(0) + nextgeoid);
-        }
-        if (constr->getGeoId(1) >= 0) {
-            newConstr->setGeoId(1, newConstr->getGeoId(1) + nextgeoid);
-        }
-        if (constr->getGeoId(2) >= 0)
-            newConstr->setGeoId(2, newConstr->getGeoId(2) + nextgeoid);
-
-        if (constr->getGeoId(0) < -2 && constr->getGeoId(0) != GeoEnum::GeoUndef) {
-            newConstr->setGeoId(0, newConstr->getGeoId(0) - (nextextgeoid - 2));
-        }
-        if (constr->getGeoId(1) < -2 && constr->getGeoId(1) != GeoEnum::GeoUndef) {
-            newConstr->setGeoId(1, newConstr->getGeoId(1) - (nextextgeoid - 2));
-        }
-        if (constr->getGeoId(2) < -2 && constr->getGeoId(2) != GeoEnum::GeoUndef) {
-            newConstr->setGeoId(2, newConstr->getGeoId(2) - (nextextgeoid - 2));
+        for (int i = 0; constr->hasElement(i); ++i) {
+            if (constr->getGeoId(i) >= 0) {
+                newConstr->setGeoId(i, newConstr->getGeoId(i) + nextgeoid);
+            }
+            else if (constr->getGeoId(i) < -2 && constr->getGeoId(i) != GeoEnum::GeoUndef) {
+                newConstr->setGeoId(i, newConstr->getGeoId(i) - (nextextgeoid - 2));
+            }
         }
 
         newcVals.push_back(newConstr);
