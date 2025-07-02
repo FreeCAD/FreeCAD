@@ -2984,11 +2984,11 @@ void SketchObject::changeConstraintAfterDeletingGeo(Constraint* constr,
         return;
     }
 
-    if (constr->getGeoId(0) == deletedGeoId ||
-        constr->getGeoId(1) == deletedGeoId ||
-        constr->getGeoId(2) == deletedGeoId) {
-        constr->Type = ConstraintType::None;
-        return;
+    for (int i = 0; constr->hasElement(i); ++i) {
+        if (constr->getGeoId(i) == deletedGeoId) {
+            constr->Type = ConstraintType::None;
+            return;
+        }
     }
 
     int step = 1;
@@ -3001,15 +3001,11 @@ void SketchObject::changeConstraintAfterDeletingGeo(Constraint* constr,
             return givenId < deletedGeoId && givenId != GeoEnum::GeoUndef;
         };
     }
-
-    if (needsUpdate(constr->getGeoId(0))) {
-        constr->setGeoId(0, constr->getGeoId(0) - step);
-    }
-    if (needsUpdate(constr->getGeoId(1))) {
-        constr->setGeoId(1, constr->getGeoId(1) - step);
-    }
-    if (needsUpdate(constr->getGeoId(2))) {
-        constr->setGeoId(2, constr->getGeoId(2) - step);
+    
+    for (int i = 0; constr->hasElement(i); ++i) {
+        if (needsUpdate(constr->getGeoId(i))) {
+            constr->setGeoId(i, constr->getGeoId(i) - step);
+        }
     }
 }
 
