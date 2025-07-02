@@ -613,7 +613,8 @@ StdCmdDevHandbook::StdCmdDevHandbook()
     eType = 0;
 }
 
-void StdCmdFreeCADDonation::activated(int iMsg)
+void StdCmdDevHandbook::activated(int iMsg)
+
 {
     Q_UNUSED(iMsg);
     ParameterGrp::handle hURLGrp = App::GetApplication().GetParameterGroupByPath(
