@@ -112,7 +112,7 @@
      <item>
       <widget class="QGroupBox" name="groupBox_2">
        <property name="title">
-        <string>Add / Remove Parameter</string>
+        <string>Add/Remove Parameter</string>
        </property>
        <layout class="QVBoxLayout" name="verticalLayout_3">
         <item>

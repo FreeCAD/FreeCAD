@@ -66,7 +66,7 @@
         <item>
          <widget class="Gui::PrefCheckBox" name="cb_use_mat_from_config_dir">
           <property name="toolTip">
-           <string>Also cards from FreeCAD's preferences directory will be listed as available</string>
+           <string>Cards from FreeCAD’s preferences directory are also listed as available</string>
           </property>
           <property name="text">
            <string>Use materials from the Materials preference directory</string>
@@ -85,8 +85,7 @@
         <item>
          <widget class="Gui::PrefCheckBox" name="cb_use_mat_from_custom_dir">
           <property name="toolTip">
-           <string>Also material cards also from the specified directory
-will be listed as available</string>
+           <string>Material cards from the specified directory will also be listed as available</string>
           </property>
           <property name="text">
            <string>Use materials from user-defined directory</string>

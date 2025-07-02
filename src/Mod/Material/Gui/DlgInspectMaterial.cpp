@@ -273,7 +273,7 @@ void DlgInspectMaterial::addModelDetails(QTreeView* tree,
         clipItem(tr("Library directory: ") + model->getLibrary()->getDirectoryPath());
     addExpanded(tree, parent, libraryPath);
 
-    auto directory = clipItem(tr("Sub directory: ") + model->getDirectory());
+    auto directory = clipItem(tr("Subdirectory: ") + model->getDirectory());
     addExpanded(tree, parent, directory);
 
     auto inherits = clipItem(tr("Inherits:"));
