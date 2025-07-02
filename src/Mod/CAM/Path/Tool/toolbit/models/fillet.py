@@ -36,9 +36,9 @@ class ToolBitFillet(ToolBit, CuttingToolMixin, RotaryToolBitMixin):
 
     @property
     def summary(self) -> str:
-        radius = self.get_property_str("FilletRadius", "?")
+        radius = self.get_property_str("FilletRadius", "?", precision=3)
         flutes = self.get_property("Flutes")
-        diameter = self.get_property_str("ShankDiameter", "?")
+        diameter = self.get_property_str("ShankDiameter", "?", precision=3)
 
         return FreeCAD.Qt.translate(
             "CAM", f"R{radius} fillet bit, {diameter} shank, {flutes}-flute"

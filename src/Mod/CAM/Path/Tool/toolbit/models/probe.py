@@ -36,9 +36,9 @@ class ToolBitProbe(ToolBit):
 
     @property
     def summary(self) -> str:
-        diameter = self.get_property_str("Diameter", "?")
-        length = self.get_property_str("Length", "?")
-        shaft_diameter = self.get_property_str("ShaftDiameter", "?")
+        diameter = self.get_property_str("Diameter", "?", precision=3)
+        length = self.get_property_str("Length", "?", precision=3)
+        shaft_diameter = self.get_property_str("ShaftDiameter", "?", precision=3)
 
         return FreeCAD.Qt.translate(
             "CAM", f"{diameter} probe, {length} length, {shaft_diameter} shaft"

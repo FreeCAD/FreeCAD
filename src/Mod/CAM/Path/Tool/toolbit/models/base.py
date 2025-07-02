@@ -589,9 +589,11 @@ class ToolBit(Asset, ABC):
     def get_property(self, name: str):
         return self.obj.getPropertyByName(name)
 
-    def get_property_str(self, name: str, default: str | None = None) -> str | None:
+    def get_property_str(
+        self, name: str, default: str | None = None, precision: int | None = None
+    ) -> str | None:
         value = self.get_property(name)
-        return format_value(value) if value else default
+        return format_value(value, precision=precision) if value else default
 
     def set_property(self, name: str, value: Any):
         return self.obj.setPropertyByName(name, value)
