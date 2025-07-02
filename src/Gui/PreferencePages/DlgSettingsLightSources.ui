@@ -22,9 +22,6 @@
        <verstretch>2</verstretch>
       </sizepolicy>
      </property>
-     <property name="toolTip">
-      <string>Adjust the orientation of the directional light source by dragging the handle with the mouse or use the spin boxes for fine tuning.</string>
-     </property>
      <property name="title">
       <string>Preview</string>
      </property>
