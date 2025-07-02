@@ -592,17 +592,21 @@ void StdCmdFreeCADDonation::activated(int iMsg)
 }
 
 //===========================================================================
-// Std_FreeCADDonation
+// Std_FreeDevHandbook
+
 //===========================================================================
 
 DEF_STD_CMD(StdCmdDevHandbook)
 
-StdCmdFreeCADDonation::StdCmdDevHandbook()
+StdCmdDevHandbook::StdCmdDevHandbook()
+
     : Command("Std_DevHandbook")
 {
     sGroup = "Help";
-    sMenuText = QT_TR_NOOP("Developers handbook");
-    sToolTipText = QT_TR_NOOP("Support the FreeCAD development");
+    sMenuText = QT_TR_NOOP("Developers Handbook");
+
+    sToolTipText = QT_TR_NOOP("Handbook about FreeCAD development");
+
     sWhatsThis = "Std_DevHandbook";
     sStatusTip = sToolTipText;
     sPixmap = "internet-web-browser";
@@ -614,7 +618,8 @@ void StdCmdFreeCADDonation::activated(int iMsg)
     Q_UNUSED(iMsg);
     ParameterGrp::handle hURLGrp = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/Websites");
-    std::string url = hURLGrp->GetASCII("DonatePage", "https://freecad.github.io/DevelopersHandbook/");
+    std::string url = hURLGrp->GetASCII("DevHandbook", "https://freecad.github.io/DevelopersHandbook/");
+
     hURLGrp->SetASCII("DevHandbook", url.c_str());
     OpenURLInBrowser(url.c_str());
 }
