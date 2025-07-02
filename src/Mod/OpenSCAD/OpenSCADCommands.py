@@ -98,7 +98,7 @@ class ExplodeGroup:
     def GetResources(self):
         return {'Pixmap'  : 'OpenSCAD_Explode_Group',
                 'MenuText': QtCore.QT_TRANSLATE_NOOP('OpenSCAD_ExplodeGroup', 'Explode Group'),
-                'ToolTip':  QtCore.QT_TRANSLATE_NOOP('OpenSCAD_ExplodeGroup', 'Remove fusion, apply placement to children, and color randomly')}
+                'ToolTip':  QtCore.QT_TRANSLATE_NOOP('OpenSCAD_ExplodeGroup', 'Removes fusion and applies placement to children, and color randomly')}
 
 class ColorCodeShape:
     "Change the Color of selected or all Shapes based on their validity"
@@ -114,7 +114,7 @@ class ColorCodeShape:
     def GetResources(self):
         return {'Pixmap'  : 'OpenSCAD_ColorCodeShape',
                 'MenuText': QtCore.QT_TRANSLATE_NOOP('OpenSCAD_ColorCodeShape', 'Color Shapes'),
-                'ToolTip' : QtCore.QT_TRANSLATE_NOOP('OpenSCAD_ColorCodeShape', 'Color Shapes by validity and type')}
+                'ToolTip' : QtCore.QT_TRANSLATE_NOOP('OpenSCAD_ColorCodeShape', 'Colors shapes by validity and type')}
 
 class Edgestofaces:
     def IsActive(self):
@@ -133,8 +133,8 @@ class Edgestofaces:
 
     def GetResources(self):
         return {'Pixmap'  : 'OpenSCAD_Edgestofaces',
-                'MenuText': QtCore.QT_TRANSLATE_NOOP('OpenSCAD_Edgestofaces', 'Convert Edges To Faces'),
-                'ToolTip' : QtCore.QT_TRANSLATE_NOOP('OpenSCAD', 'Convert Edges to Faces')}
+                'MenuText': QtCore.QT_TRANSLATE_NOOP('OpenSCAD_Edgestofaces', 'Convert Edges to Faces'),
+                'ToolTip' : QtCore.QT_TRANSLATE_NOOP('OpenSCAD', 'Converts edges to faces')}
 
 class RefineShapeFeature:
     def IsActive(self):
@@ -154,7 +154,7 @@ class RefineShapeFeature:
     def GetResources(self):
         return {'Pixmap'  : 'OpenSCAD_RefineShapeFeature',
                 'MenuText': QtCore.QT_TRANSLATE_NOOP('OpenSCAD_RefineShapeFeature', 'Refine Shape Feature'),
-                'ToolTip' : QtCore.QT_TRANSLATE_NOOP('OpenSCAD_RefineShapeFeature', 'Create Refine Shape Feature')}
+                'ToolTip' : QtCore.QT_TRANSLATE_NOOP('OpenSCAD_RefineShapeFeature', 'Creates a refined shape')}
 
 class MirrorMeshFeature:
     def IsActive(self):
@@ -184,7 +184,7 @@ class MirrorMeshFeature:
     def GetResources(self):
         return {'Pixmap'  : 'OpenSCAD_MirrorMeshFeature',
                 'MenuText': QtCore.QT_TRANSLATE_NOOP('OpenSCAD_MirrorMeshFeature', 'Mirror Mesh Feature...'),
-                'ToolTip' : QtCore.QT_TRANSLATE_NOOP('OpenSCAD_MirrorMeshFeature', 'Create Mirror Mesh Feature')}
+                'ToolTip' : QtCore.QT_TRANSLATE_NOOP('OpenSCAD_MirrorMeshFeature', 'Mirrors the mesh')}
 
 class ScaleMeshFeature:
     def IsActive(self):
@@ -212,8 +212,8 @@ class ScaleMeshFeature:
         FreeCAD.ActiveDocument.recompute()
     def GetResources(self):
         return {'Pixmap'  : 'OpenSCAD_ScaleMeshFeature',
-                'MenuText': QtCore.QT_TRANSLATE_NOOP('OpenSCAD_ScaleMeshFeature', 'Scale Mesh Feature...'),
-                'ToolTip' : QtCore.QT_TRANSLATE_NOOP('OpenSCAD_ScaleMeshFeature', 'Create Scale Mesh Feature')}
+                'MenuText': QtCore.QT_TRANSLATE_NOOP('OpenSCAD_ScaleMeshFeature', 'Scale Mesh Feature…'),
+                'ToolTip' : QtCore.QT_TRANSLATE_NOOP('OpenSCAD_ScaleMeshFeature', 'Scales the mesh')}
 
 
 class ResizeMeshFeature:
@@ -242,8 +242,8 @@ class ResizeMeshFeature:
         FreeCAD.ActiveDocument.recompute()
     def GetResources(self):
         return {'Pixmap'  : 'OpenSCAD_ResizeMeshFeature',
-                'MenuText': QtCore.QT_TRANSLATE_NOOP('OpenSCAD_ResizeMeshFeature', 'Resize Mesh Feature...'),
-                'ToolTip' : QtCore.QT_TRANSLATE_NOOP('OpenSCAD_ResizeMeshFeature', 'Create Resize Mesh Feature')}
+                'MenuText': QtCore.QT_TRANSLATE_NOOP('OpenSCAD_ResizeMeshFeature', 'Resize Mesh Feature…'),
+                'ToolTip' : QtCore.QT_TRANSLATE_NOOP('OpenSCAD_ResizeMeshFeature', 'Resizes the mesh')}
 
 
 class IncreaseToleranceFeature:
@@ -264,7 +264,7 @@ class IncreaseToleranceFeature:
     def GetResources(self):
         return {'Pixmap'  : 'OpenSCAD_IncreaseToleranceFeature',
                 'MenuText': QtCore.QT_TRANSLATE_NOOP('OpenSCAD_IncreaseToleranceFeature', 'Increase Tolerance Feature'),
-                'ToolTip' : QtCore.QT_TRANSLATE_NOOP('OpenSCAD_IncreaseToleranceFeature', 'Create Feature that allows increasing the tolerance')}
+                'ToolTip' : QtCore.QT_TRANSLATE_NOOP('OpenSCAD_IncreaseToleranceFeature', 'Creates a feature that allows increasing the tolerance')}
 
 class ExpandPlacements:
     '''This should aid interactive repair in the future
@@ -281,7 +281,7 @@ class ExpandPlacements:
     def GetResources(self):
         return {'Pixmap'  : 'OpenSCAD_ExpandPlacements',
                 'MenuText': QtCore.QT_TRANSLATE_NOOP('OpenSCAD_ExpandPlacements', 'Expand Placements'),
-                'ToolTip' : QtCore.QT_TRANSLATE_NOOP('OpenSCAD_ExpandPlacements', 'Expand all placements downwards in the Tree view')}
+                'ToolTip' : QtCore.QT_TRANSLATE_NOOP('OpenSCAD_ExpandPlacements', 'Expands all placements downwards in the tree view')}
 
 class ReplaceObject:
     def IsActive(self):
@@ -298,11 +298,11 @@ class ReplaceObject:
                 tuple((len(obj.InList)) for obj in objs) in ((0,1),(1,0)):
             replaceobj.replaceobjfromselection(objs)
         else:
-            FreeCAD.Console.PrintError(translate('OpenSCAD', 'Please select 3 objects first')+ '\n')
+            FreeCAD.Console.PrintError(translate('OpenSCAD', 'Select 3 objects first')+ '\n')
     def GetResources(self):
         return {'Pixmap'  : 'OpenSCAD_ReplaceObject',
                 'MenuText': QtCore.QT_TRANSLATE_NOOP('OpenSCAD_ReplaceObject', 'Replace Object'),
-                'ToolTip' : QtCore.QT_TRANSLATE_NOOP('OpenSCAD_ReplaceObject', 'Replace an object in the Tree view. Please select old, new, and parent object')}
+                'ToolTip' : QtCore.QT_TRANSLATE_NOOP('OpenSCAD_ReplaceObject', 'Replaces an object in the tree view. Select old, new, and parent object')}
 
 class RemoveSubtree:
     def IsActive(self):
@@ -314,7 +314,7 @@ class RemoveSubtree:
 
     def GetResources(self):
         return {'Pixmap'  : 'OpenSCAD_RemoveSubtree',
-                'MenuText': QtCore.QT_TRANSLATE_NOOP('OpenSCAD_RemoveSubtree', 'Remove Objects and their Children'),
+                'MenuText': QtCore.QT_TRANSLATE_NOOP('OpenSCAD_RemoveSubtree', 'Remove Objects and Children'),
                 'ToolTip' : QtCore.QT_TRANSLATE_NOOP('OpenSCAD_RemoveSubtree', 'Removes the selected objects and all children that are not referenced from other objects')}
 
 class AddSCADWidget(QtGui.QWidget):
@@ -332,10 +332,10 @@ class AddSCADWidget(QtGui.QWidget):
         self.textMsg.resize(self.textMsg.width(),h)
         self.buttonadd = QtGui.QPushButton(translate('OpenSCAD','Add'))
         self.buttonrefresh = QtGui.QPushButton(translate('OpenSCAD','Refresh'))
-        self.buttonclear = QtGui.QPushButton(translate('OpenSCAD','Clear code'))
-        self.buttonload = QtGui.QPushButton(translate('OpenSCAD','Open...'))
-        self.buttonsave = QtGui.QPushButton(translate('OpenSCAD','Save...'))
-        self.checkboxmesh = QtGui.QCheckBox(translate('OpenSCAD','as Mesh'))
+        self.buttonclear = QtGui.QPushButton(translate('OpenSCAD','Clear Code'))
+        self.buttonload = QtGui.QPushButton(translate('OpenSCAD','Open…'))
+        self.buttonsave = QtGui.QPushButton(translate('OpenSCAD','Save…'))
+        self.checkboxmesh = QtGui.QCheckBox(translate('OpenSCAD','as mesh'))
         layouth=QtGui.QHBoxLayout()
         layouth.addWidget(self.buttonadd)
         layouth.addWidget(self.buttonrefresh)
@@ -526,9 +526,9 @@ class AddOpenSCADElement:
 
     def GetResources(self):
         return {'Pixmap'  : 'OpenSCAD_AddOpenSCADElement',
-                'MenuText': QtCore.QT_TRANSLATE_NOOP('OpenSCAD_AddOpenSCADElement', 'Add OpenSCAD Element...'),
+                'MenuText': QtCore.QT_TRANSLATE_NOOP('OpenSCAD_AddOpenSCADElement', 'Add OpenSCAD Element…'),
                 'ToolTip' : QtCore.QT_TRANSLATE_NOOP('OpenSCAD_AddOpenSCADElement',
-                            'Add an OpenSCAD element by entering OpenSCAD code and executing the OpenSCAD binary')}
+                            'Adds an OpenSCAD element by entering OpenSCAD code and executing the OpenSCAD binary')}
 
 class OpenSCADMeshBoolean:
     def IsActive(self):
@@ -541,9 +541,9 @@ class OpenSCADMeshBoolean:
 
     def GetResources(self):
         return {'Pixmap'  : 'OpenSCAD_MeshBooleans',
-                'MenuText': QtCore.QT_TRANSLATE_NOOP('OpenSCAD_MeshBoolean','Mesh Boolean...'),
+                'MenuText': QtCore.QT_TRANSLATE_NOOP('OpenSCAD_MeshBoolean','Mesh Boolean…'),
                 'ToolTip' : QtCore.QT_TRANSLATE_NOOP('OpenSCAD_MeshBoolean',
-                            'Export objects as meshes and use OpenSCAD to perform a boolean operation')}
+                            'Exports objects as meshes and use OpenSCAD to perform a boolean operation')}
 
 class Hull:
     def IsActive(self):
@@ -563,7 +563,7 @@ class Hull:
     def GetResources(self):
         return {'Pixmap'  : 'OpenSCAD_Hull',
                 'MenuText': QtCore.QT_TRANSLATE_NOOP('OpenSCAD_Hull', 'Hull'),
-                'ToolTip' : QtCore.QT_TRANSLATE_NOOP('OpenSCAD_Hull', 'Use OpenSCAD to create a hull')}
+                'ToolTip' : QtCore.QT_TRANSLATE_NOOP('OpenSCAD_Hull', 'Creates a hull')}
 
 class Minkowski:
     def IsActive(self):
@@ -582,8 +582,8 @@ class Minkowski:
         FreeCAD.ActiveDocument.recompute()
     def GetResources(self):
         return {'Pixmap'  : 'OpenSCAD_Minkowski',
-                'MenuText': QtCore.QT_TRANSLATE_NOOP('OpenSCAD_Minkowski', 'Minkowski sum'),
-                'ToolTip' : QtCore.QT_TRANSLATE_NOOP('OpenSCAD_Minkowski', 'Use OpenSCAD to create a Minkowski sum')}
+                'MenuText': QtCore.QT_TRANSLATE_NOOP('OpenSCAD_Minkowski', 'Minkowski Sum'),
+                'ToolTip' : QtCore.QT_TRANSLATE_NOOP('OpenSCAD_Minkowski', 'Creates a Minkowski sum')}
 
 FreeCADGui.addCommand('OpenSCAD_ColorCodeShape',ColorCodeShape())
 FreeCADGui.addCommand('OpenSCAD_ExplodeGroup',ExplodeGroup())

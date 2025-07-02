@@ -499,7 +499,6 @@ void EditableDatumLabel::setLockedAppearance(bool locked)
 {
     if (locked) {
         if (spinBox) {
-            QWidget* mdi = viewer->parentWidget();
             
             // create lock icon label it it doesn't exist, if it does - show it
             if (!lockIconLabel) {

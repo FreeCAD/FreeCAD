@@ -436,7 +436,7 @@ TaskPostDisplay::TaskPostDisplay(ViewProviderFemPostObject* view, QWidget* paren
     // setup the ui
     ui->setupUi(this);
     setWindowTitle(
-        tr("Result display options"));  // set title here as setupUi overrides the constructor title
+        tr("Result Display Options"));  // set title here as setupUi overrides the constructor title
     setupConnections();
 
     // update all fields
@@ -608,7 +608,7 @@ TaskPostBranch::TaskPostBranch(ViewProviderFemPostBranchFilter* view, QWidget* p
 {
     // setup the ui
     ui->setupUi(this);
-    setWindowTitle(tr("Branch behaviour"));
+    setWindowTitle(tr("Branch Behaviour"));
     setupConnections();
 
     // populate the data
@@ -663,7 +663,7 @@ TaskPostDataAlongLine::TaskPostDataAlongLine(ViewProviderFemPostDataAlongLine* v
 {
     // setup the ui
     ui->setupUi(this);
-    setWindowTitle(tr("Data along a line options"));
+    setWindowTitle(tr("Data Along a Line Options"));
     setupConnectionsStep1();
 
     QSize size = ui->point1X->sizeForText(QStringLiteral("000000000000"));
@@ -1084,7 +1084,7 @@ TaskPostDataAtPoint::TaskPostDataAtPoint(ViewProviderFemPostDataAtPoint* view, Q
 {
     // setup the ui
     ui->setupUi(this);
-    setWindowTitle(tr("Data at point options"));
+    setWindowTitle(tr("Data at Point Options"));
     setupConnections();
 
     QSize size = ui->centerX->sizeForText(QStringLiteral("000000000000"));
@@ -1442,7 +1442,7 @@ TaskPostClip::TaskPostClip(ViewProviderFemPostClip* view,
 
     // setup the ui
     ui->setupUi(this);
-    setWindowTitle(tr("Clip region, choose implicit function"));
+    setWindowTitle(tr("Clip Region, Choose Implicit Function"));
     setupConnections();
 
     // the layout for the container widget
@@ -1593,7 +1593,7 @@ TaskPostContours::TaskPostContours(ViewProviderFemPostContours* view, QWidget* p
 {
     // setup the ui
     ui->setupUi(this);
-    setWindowTitle(tr("Contours filter options"));
+    setWindowTitle(tr("Contours Filter Options"));
     QMetaObject::connectSlotsByName(this);
 
     auto obj = getObject<Fem::FemPostContoursFilter>();
@@ -1752,7 +1752,7 @@ TaskPostCut::TaskPostCut(ViewProviderFemPostCut* view, App::PropertyLink* functi
 
     // setup the ui
     ui->setupUi(this);
-    setWindowTitle(tr("Function cut, choose implicit function"));
+    setWindowTitle(tr("Function Cut, Choose Implicit Function"));
     setupConnections();
 
     // the layout for the container widget
@@ -1885,7 +1885,7 @@ TaskPostScalarClip::TaskPostScalarClip(ViewProviderFemPostScalarClip* view, QWid
 {
     // setup the ui
     ui->setupUi(this);
-    setWindowTitle(tr("Scalar clip options"));
+    setWindowTitle(tr("Scalar Clip Options"));
     setupConnections();
 
     // load the default values
@@ -2006,7 +2006,7 @@ TaskPostWarpVector::TaskPostWarpVector(ViewProviderFemPostWarpVector* view, QWid
 {
     // setup the ui
     ui->setupUi(this);
-    setWindowTitle(tr("Warp options"));
+    setWindowTitle(tr("Warp Options"));
     setupConnections();
 
     // load the default values for warp display

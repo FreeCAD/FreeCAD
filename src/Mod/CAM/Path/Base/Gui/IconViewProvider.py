@@ -22,7 +22,6 @@
 
 import FreeCAD
 import Path
-import PathGui
 import importlib
 
 __title__ = "CAM Icon ViewProvider"
