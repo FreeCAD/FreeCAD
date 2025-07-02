@@ -107,7 +107,7 @@ CmdTechDrawPageDefault::CmdTechDrawPageDefault() : Command("TechDraw_PageDefault
 {
     sAppModule = "TechDraw";
     sGroup = QT_TR_NOOP("TechDraw");
-    sMenuText = QT_TR_NOOP("New Default Page");
+    sMenuText = QT_TR_NOOP("New Page");
     sToolTipText = QT_TR_NOOP("Creates a new page with the default template");
     sWhatsThis = "TechDraw_PageDefault";
     sStatusTip = sToolTipText;
