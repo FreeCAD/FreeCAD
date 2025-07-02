@@ -140,8 +140,7 @@ PartDesign::Body *getBody(bool messageIfNot, bool autoActivate, bool assertModer
                     QObject::tr("To use Part Design, an active body object is required in the document. "
                                 "Activate a body (double-click) or create a new one."
                                 "\n\nFor legacy documents with Part Design objects lacking a body, "
-                                "use the migrate function in Part Design to place them into a body.")
-                        ));
+                                "use the migrate function in Part Design to place them into a body.");
                 if (dia.exec() == QDialog::DialogCode::Accepted)
                     activeBody = dia.getActiveBody();
             }
@@ -187,7 +186,7 @@ void needActiveBodyError()
     QMessageBox::warning( Gui::getMainWindow(),
         QObject::tr("Active Body Required"),
         QObject::tr("To create a new Part Design object, an active body is required in the document. "
-            "Activate an existing body (double-click) or create a new one.");
+            "Activate an existing body (double-click) or create a new one."));
 }
 
 PartDesign::Body * makeBody(App::Document *doc)
