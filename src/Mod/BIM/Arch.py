@@ -1686,7 +1686,7 @@ def makeWall(
     return wall
 
 
-def joinWalls(walls, delete=False):
+def joinWalls(walls, delete=False, deletebase=False):
     """Join the given list of walls into one sketch-based wall.
 
     Take the first wall in the list, and adds on the other walls in the list.
@@ -1702,6 +1702,9 @@ def joinWalls(walls, delete=False):
         be based off a base object.
     delete : bool, optional
         If True, deletes the other walls in the list. Defaults to False.
+    deletebase : bool, optional
+        If True, and delete is True, the base of the other walls is also deleted
+        Defaults to False.
 
     Returns
     -------
@@ -1770,7 +1773,9 @@ def joinWalls(walls, delete=False):
                 if isinstance(l, Part.Line):
                     l = Part.LineSegment(e.Vertexes[0].Point, e.Vertexes[-1].Point)
                 sk.addGeometry(l)
-                deleteList.extend([w.Name, w.Base.Name])
+                deleteList.append(w.Name)
+                if deletebase:
+                    deleteList.append(w.Base.Name)
     if delete:
         for n in deleteList:
             FreeCAD.ActiveDocument.removeObject(n)
