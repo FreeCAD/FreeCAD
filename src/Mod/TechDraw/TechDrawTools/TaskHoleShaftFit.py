@@ -88,7 +88,7 @@ class TaskHoleShaftFit:
         self.form = Gui.PySideUic.loadUi(self._uiPath)
 
         self.form.setWindowTitle(
-            translate("TechDraw_HoleShaftFit", "Hole / shaft fit ISO 286")
+            translate("TechDraw_HoleShaftFit", "Hole/Shaft Fit ISO 286")
         )
 
         self.form.rbHoleBase.clicked.connect(partial(self.on_HoleShaftChanged, True))
