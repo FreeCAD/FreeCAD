@@ -181,7 +181,7 @@ class TaskAssemblyNewPart(JointObject.TaskAssemblyCreateJoint):
 
         self.deactivate()
 
-        App.closeActiveTransaction()
+        Gui.ActiveDocument.commitCommand()
 
         return True
 
