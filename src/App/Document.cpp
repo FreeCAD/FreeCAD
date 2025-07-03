@@ -586,6 +586,7 @@ bool Document::_commitTransaction(const bool notify)
         std::cerr<<"Close transaction #"<<id<<"\n";
         mUndoTransactions.push_back(d->activeUndoTransaction);
         d->activeUndoTransaction = nullptr;
+        d->bookedTransaction = 0;
 
         // check the stack for the limits
         if (mUndoTransactions.size() > d->UndoMaxStackSize) {
@@ -600,7 +601,6 @@ bool Document::_commitTransaction(const bool notify)
             GetApplication().closeActiveTransaction(false, id);
         }
     }
-    d->bookedTransaction = 0;
     return true;
 }
 
@@ -636,9 +636,9 @@ void Document::_abortTransaction()
         mUndoMap.erase(d->activeUndoTransaction->getID());
         delete d->activeUndoTransaction;
         d->activeUndoTransaction = nullptr;
+        d->bookedTransaction = 0;
         signalAbortTransaction(*this);
     }
-    d->bookedTransaction = 0;
 }
 
 bool Document::hasPendingTransaction() const
