@@ -1009,7 +1009,7 @@ void ViewProviderAssembly::tryInitMove(const SbVec2s& cursorPos, Gui::View3DInve
     }
 
     if (moveInCommand) {
-        Gui::Command::openCommand(tr("Move part").toStdString().c_str());
+        getDocument()->openCommand(tr("Move part").toStdString().c_str());
     }
     partMoving = true;
 
@@ -1069,7 +1069,7 @@ void ViewProviderAssembly::endMove()
     }
 
     if (moveInCommand) {
-        Gui::Command::commitCommand();
+        getDocument()->commitCommand();
     }
 }
 
