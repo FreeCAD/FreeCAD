@@ -101,7 +101,7 @@ class TaskMoveView:
         dlg = Gui.PySideUic.loadUi(_dlgPath)
         self.dialogOpen = True
         dlg.lPrompt.setText(translate("TechDraw_MoveView", "Select from page."))
-        dlg.setWindowTitle(translate("TechDraw_MoveView", "Select page"))
+        dlg.setWindowTitle(translate("TechDraw_MoveView", "Select Page"))
 
         pages = [x for x in App.ActiveDocument.Objects if x.isDerivedFrom("TechDraw::DrawPage")]
         for p in pages:
