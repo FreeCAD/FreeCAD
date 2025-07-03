@@ -114,7 +114,7 @@ class Arch_Wall:
         self.tracker = DraftTrackers.boxTracker()
         FreeCADGui.Snapper.getPoint(callback=self.getPoint,
                                     extradlg=self.taskbox(),
-                                    title=translate("Arch","First point of wall")+":")
+                                    title=translate("Arch", "First point of wall"))
         FreeCADGui.draftToolBar.continueCmd.show()
 
     def getPoint(self,point=None,obj=None):
@@ -152,7 +152,8 @@ class Arch_Wall:
                                         callback=self.getPoint,
                                         movecallback=self.update,
                                         extradlg=self.taskbox(),
-                                        title=translate("Arch", "Next point") + ":", mode="line")
+                                        title=translate("Arch", "Next point"),
+                                        mode="line")
 
         elif len(self.points) == 2:
             FreeCAD.activeDraftCommand = None
