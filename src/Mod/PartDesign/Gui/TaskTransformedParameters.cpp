@@ -67,8 +67,11 @@ TaskTransformedParameters::TaskTransformedParameters(ViewProviderTransformed* Tr
     Gui::Document* doc = TransformedView->getDocument();
     this->attachDocument(doc);
 
+    // TODO-theo-vt should it try to find the transaction of the document
+    // I think it makes sense to just find-out if the document has a transaction
+    // in setupTransaction()
     // remember initial transaction ID
-    App::GetApplication().getActiveTransaction(&transactionID);
+    // App::GetApplication().getActiveTransaction(&transactionID);
 }
 
 TaskTransformedParameters::TaskTransformedParameters(TaskMultiTransformParameters* parentTask)
@@ -274,7 +277,7 @@ void TaskTransformedParameters::setupTransaction()
     }
 
     int tid = obj->getDocument()->getBookedTransactionID();
-    if (tid != 0 && tid == transactionID) {
+    if (tid != 0) {
         return;
     }
 
