@@ -76,7 +76,8 @@
         <item row="3" column="0">
          <widget class="QPushButton" name="pbProfileObject">
           <property name="text">
-           <string>Use selection</string>
+           <string>Use Selection</string>
+
           </property>
          </widget>
         </item>
