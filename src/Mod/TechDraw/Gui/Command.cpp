@@ -1532,7 +1532,7 @@ CmdTechDrawSymbol::CmdTechDrawSymbol() : Command("TechDraw_Symbol")
 {
     // setting the Gui eye-candy
     sGroup = QT_TR_NOOP("TechDraw");
-    sMenuText = QT_TR_NOOP("Insert SVG Symbol");
+    sMenuText = QT_TR_NOOP("Insert SVG");
     sToolTipText = QT_TR_NOOP("Inserts a symbol from an SVG file");
     sWhatsThis = "TechDraw_Symbol";
     sStatusTip = sToolTipText;
