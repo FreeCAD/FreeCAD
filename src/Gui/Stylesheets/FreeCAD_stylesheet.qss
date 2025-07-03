@@ -24,7 +24,7 @@ INSTALLATION WHEN NECESSARY
 ============================================================================================================
 
 FOLLOWING CODES ARE CHANGED IN THE SETTINGS:
-@PrimaryColorUIColor
+@PrimaryColor
 @UserHighlight1Color
 @UserHighlight2Color
 @GeneralAlternateBackgroundColor
@@ -96,7 +96,7 @@ Gui--PropertyEditor--PropertyEditor > QWidget > QFrame:focus {
 /* hack to hide weird redundant information inside cells with links and no editable data (but editable via "..." button) */
 Gui--PropertyEditor--PropertyEditor > QWidget > QWidget > QLabel {
 	background-color: @TextUrlColor;/* same as focused background color */
-  border-radius: 3px;
+  border-radius: @InputFieldBorderRadius;
 }
 
 /*==================================================================================================
@@ -104,7 +104,7 @@ Main window
 ==================================================================================================*/
 QMainWindow,
 QDockWidget {
-  background-color: @PrimaryColorUIColor;/* main background color */}
+  background-color: @PrimaryColor;/* main background color */}
 QDialog {
   background-color: @DialogBackgroundColor;
 }
@@ -199,7 +199,7 @@ https://doc.qt.io/qt-5/stylesheet-examples.html#customizing-qtooltip
 
 --------------------------------------------------------------------------- */
 QToolTip {
-  background-color: @PrimaryColorUIColor;
+  background-color: @PrimaryColor;
   /* If you remove the border property, background stops working on Windows */
   border: 1.5px solid @GeneralBorderColor;
   font-weight:bolder;
@@ -214,7 +214,7 @@ https://doc.qt.io/qt-5/stylesheet-examples.html#customizing-qstatusbar
 --------------------------------------------------------------------------- */
 QStatusBar {
   border-style: none;
-  background-color: @PrimaryColorUIColor;
+  background-color: @PrimaryColor;
 }
 
 QStatusBar::item {
@@ -222,7 +222,7 @@ QStatusBar::item {
 }
 
 QStatusBar QToolTip {
-  background-color: @PrimaryColorUIColor;
+  background-color: @PrimaryColor;
   border: 1px solid @GeneralBorderColor;
   /* Remove padding, for fix combo box tooltip */
 
@@ -264,58 +264,60 @@ QCheckBox QWidget:disabled {
 
 QCheckBox::indicator {
   color: @StylesheetIconsColor;
-  background-color:  @TextEditFieldBackgroundColor;
+  background-color:  @CheckBoxBackgroundColor;
   width: 12px;
   height: 12px;
-  border: 1px solid @StylesheetIconsColor;
+  border: 1px solid @CheckBoxBorderColor;
+  border-radius: @InputFieldBorderRadius;
+  margin-top: 2px; /* Vertically align the checkbox indicator with the text */
 }
 
 QCheckBox::indicator:unchecked {
-  background-color:  @TextEditFieldBackgroundColor;
-  border: 1px solid @StylesheetIconsColor;
+  background-color:  @CheckBoxBackgroundColor;
+  border: 1px solid @CheckBoxBorderColor;
 }
 
 QCheckBox::indicator:unchecked:hover, QCheckBox::indicator:unchecked:focus, QCheckBox::indicator:unchecked:pressed {
   background-color: @UserHighlight1Color;
-  border: 1px solid @StylesheetIconsColor;
+  border: 1px solid @CheckBoxBorderColor;
 }
 
 QCheckBox::indicator:unchecked:disabled {
   background-color: @GeneralDisabledBackgroundColor;
-  border: 1px solid @StylesheetIconsColor;
+  border: 1px solid @CheckBoxBorderColor;
 }
 
 QCheckBox::indicator:checked {
   image:url(qss:@IconsLocationFolderName/check-mark-@StylesheetIconsColor.svg);
-  border: 1px solid @StylesheetIconsColor;
+  border: 1px solid @CheckBoxBorderColor;
 }
 
 QCheckBox::indicator:checked:hover, QCheckBox::indicator:checked:pressed {
   background-color: @UserHighlight1Color;
-  border: 1px solid @StylesheetIconsColor;
+  border: 1px solid @CheckBoxBorderColor;
 }
 
 QCheckBox::indicator:checked:disabled {
-  /* background-color: @PrimaryColorUIColor; */
-  border: 1px solid @StylesheetIconsColor;
+  /* background-color: @PrimaryColor; */
+  border: 1px solid @CheckBoxBorderColor;
   image: url(qss:@IconsLocationFolderName/check-mark-lightgray.svg);
 }
 
 QCheckBox::indicator:indeterminate {
-  /* background-color: @PrimaryColorUIColor; */
-  border: 1px solid @StylesheetIconsColor;
+  /* background-color: @PrimaryColor; */
+  border: 1px solid @CheckBoxBorderColor;
   image: url(qss:@IconsLocationFolderName/indeterminate-mark-@StylesheetIconsColor.svg);
 }
 
 QCheckBox::indicator:indeterminate:disabled {
-  /* background-color: @PrimaryColorUIColor; */
-  border: 1px solid @StylesheetIconsColor;
+  /* background-color: @PrimaryColor; */
+  border: 1px solid @CheckBoxBorderColor;
   image: url(qss:@IconsLocationFolderName/indeterminate-mark-lightgray.svg);
 }
 
 QCheckBox::indicator:indeterminate:hover, QCheckBox::indicator:indeterminate:pressed {
   background-color: @UserHighlight1Color;
-  border: 1px solid @StylesheetIconsColor;
+  border: 1px solid @CheckBoxBorderColor;
 }
 
 /* QGroupBox --------------------------------------------------------------
@@ -334,20 +336,21 @@ QGroupBox::title {
 }
 
 QGroupBox::indicator {
-  background-color: @PrimaryColorUIColor;
+  background-color: @CheckBoxBackgroundColor;
   width: 12px;
   height: 12px;
   margin: 1px;
-  border: 1px solid @StylesheetIconsColor;
+  border: 1px solid @CheckBoxBorderColor;
+  border-radius: @InputFieldBorderRadius;
 }
 
 QGroupBox::indicator:unchecked {
-  background-color: @PrimaryColorUIColor;
+  background-color: @CheckBoxBackgroundColor;
 }
 
 QGroupBox::indicator:unchecked:hover {
   background-color: @UserHighlight1Color;
-  border: 1px solid @StylesheetIconsColor;
+  border: 1px solid @CheckBoxBorderColor;
 }
 
 QGroupBox::indicator:unchecked:focus {
@@ -356,18 +359,18 @@ QGroupBox::indicator:unchecked:focus {
 
 QGroupBox::indicator:unchecked:disabled {
   background-color: @GeneralDisabledBackgroundColor;
-  border: 1px solid @StylesheetIconsColor;
+  border: 1px solid @CheckBoxBorderColor;
 }
 
 QGroupBox::indicator:checked {
-  background-color: @PrimaryColorUIColor;
-  border: 1px solid @StylesheetIconsColor;
+  background-color: @CheckBoxBackgroundColor;
+  border: 1px solid @CheckBoxBorderColor;
   image:url(qss:@IconsLocationFolderName/check-mark-@StylesheetIconsColor.svg);
 }
 
 QGroupBox::indicator:checked:hover {
   background-color: @UserHighlight1Color;
-  border: 1px solid @StylesheetIconsColor;
+  border: 1px solid @CheckBoxBorderColor;
 }
 
 QGroupBox::indicator:checked:focus {
@@ -377,7 +380,7 @@ QGroupBox::indicator:checked:focus {
 QGroupBox::indicator:checked:disabled {
   background-color: @GeneralDisabledBackgroundColor;
   image:url(qss:@IconsLocationFolderName/check-mark-lightgray.svg);
-  border: 1px solid @StylesheetIconsColor;
+  border: 1px solid @CheckBoxBorderColor;
 }
 
 /* QRadioButton -----------------------------------------------------------
@@ -387,10 +390,11 @@ https://doc.qt.io/qt-5/stylesheet-examples.html#customizing-qradiobutton
 --------------------------------------------------------------------------- */
 QRadioButton {
   background-color: transparent;
-  color:@TextForegroundColor;
+  color: @TextForegroundColor;
   border-style: none;
   spacing: 8px;
   outline: none;
+
 }
 
 QRadioButton:focus {
@@ -398,47 +402,56 @@ QRadioButton:focus {
 }
 
 QRadioButton:disabled {
-  background-color: @GeneralDisabledBackgroundColor;
+  color: @TextDisabledColor;
 }
 
 QRadioButton QWidget {
   background-color: transparent;
-  color: @StylesheetIconsColor;
-  spacing: 0px;
+  color:@TextForegroundColor;
+  /* spacing: 0px; */
   outline: none;
   border-style: none;
 }
 
 QRadioButton::indicator {
   border-image: none;
-  width: 14px;
-  height: 14px;
-  image:url(qss:@IconsLocationFolderName/radio-unchecked-@StylesheetIconsColor.svg);
+  width: 12px;
+  height: 12px;
+  border: 1.1px solid @RadioButtonBorderColor;
+  border-radius: 6.55px;
+  background-color: @RadioButtonBackgroundColor;
+  margin-top: 2px; /* Vertically align the radio button indicator with the text */
 }
 
 QRadioButton::indicator:unchecked {}
 
-QRadioButton::indicator:unchecked:hover, QRadioButton::indicator:unchecked:pressed {}
+QRadioButton::indicator:unchecked:pressed {
+    background-color: @UserHighlight1Color;
+}
+
+QRadioButton::indicator:unchecked:hover {
+  background-color: @UserHighlight1Color;
+}
+
 QRadioButton::indicator:unchecked:disabled {
-  border-image: none;
-  width: 14px;
-  height: 14px;
-  image:url(qss:@IconsLocationFolderName/radio-unchecked-lightgray.svg);
+  background-color: @GeneralDisabledBackgroundColor;
 }
 
 QRadioButton::indicator:checked {
-  border-image: none;
-  width: 14px;
-  height: 14px;
-  image:url(qss:@IconsLocationFolderName/radio-checked-@StylesheetIconsColor.svg);
+  image: url(qss:@IconsLocationFolderName/radio-mark-@StylesheetIconsColor.svg);
 }
 
-QRadioButton::indicator:checked:hover, QRadioButton::indicator:checked:pressed {}
+QRadioButton::indicator:checked:hover {
+  background-color: @UserHighlight1Color;
+}
+
+QRadioButton::indicator:checked:pressed {
+  background-color: @UserHighlight1Color;
+}
+
 QRadioButton::indicator:checked:disabled {
-  border-image: none;
-  width: 14px;
-  height: 14px;
-  image:url(qss:@IconsLocationFolderName/radio-checked-lightgray.svg);
+  background-color: @GeneralDisabledBackgroundColor;
+  image:url(qss:@IconsLocationFolderName/radio-mark-lightgray.svg);
 }
 
 /* QMenuBar ---------------------------------------------------------------
@@ -493,7 +506,7 @@ QMenu::item:disabled {
 
 QMenu::separator {
   height: 2px;
-  background-color: @PrimaryColorUIColor;
+  background-color: @PrimaryColor;
   margin-left: 10%;
   margin-right: 10%;
 }
@@ -590,7 +603,7 @@ QMenu::indicator:exclusive:unchecked:disabled {
 QMenu::indicator:exclusive:checked {
   border-style: none;
   outline: none;
-  image: url(qss:@IconsLocationFolderName/radio-checked-@StylesheetIconsColor.svg);
+  image: url(qss:@IconsLocationFolderName/checkbox-checked-@StylesheetIconsColor.svg);
 }
 
 QMenu::indicator:exclusive:checked:hover, QMenu::indicator:exclusive:checked:focus, QMenu::indicator:exclusive:checked:pressed {
@@ -602,7 +615,7 @@ QMenu::indicator:exclusive:checked:hover, QMenu::indicator:exclusive:checked:foc
 
 QMenu::indicator:exclusive:checked:disabled {
   outline: none;
-  image: url(qss:@IconsLocationFolderName/radio-checked-@StylesheetIconsColor.svg);
+  image: url(qss:@IconsLocationFolderName/checkbox-checked-lightgray.svg);
 }
 
 QMenu::right-arrow {
@@ -779,7 +792,7 @@ https://doc.qt.io/qt-5/stylesheet-examples.html#customizing-specific-widgets
 report view
 --------------------------------------------------------------------------- */
 QTextEdit {
-  background-color: @PrimaryColorUIColor;
+  background-color: @PrimaryColor;
   border-top: 1px solid @GeneralBorderColor;
 }
 
@@ -798,10 +811,11 @@ Python
 QPlainTextEdit {
   background-color: @TextEditFieldBackgroundColor;
   border-top: 1px solid @GeneralBorderColor;
+  border-radius: @InputFieldBorderRadius;
 }
 
 QPlainTextEdit:focus {
-  border: 1.5px solid @UserHighlight2Color;
+  border: 1px solid @UserHighlight2Color;
 }
 
 QPlainTextEdit:selected {
@@ -834,7 +848,7 @@ https://doc.qt.io/qt-5/stylesheet-examples.html#customizing-qtoolbar
 
 --------------------------------------------------------------------------- */
 QToolBar {
-  background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 @GeneralBorderColor, stop:0.01 @PrimaryColorUIColor ,stop:0.97 @PrimaryColorUIColor , stop:1 @GeneralBorderColor);
+  background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 @GeneralBorderColor, stop:0.01 @PrimaryColor ,stop:0.97 @PrimaryColor , stop:1 @GeneralBorderColor);
 }
 
 /* fix background color for toolbars that are the on menubar. */
@@ -846,11 +860,11 @@ QToolBar:only-one {
 QToolBar:horizontal {
   padding-top: 3px;
   padding-left: 3px;
-  background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 @GeneralBorderColor, stop:0.01 @PrimaryColorUIColor ,stop:0.97 @PrimaryColorUIColor , stop:1 @GeneralBorderColor);
+  background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 @GeneralBorderColor, stop:0.01 @PrimaryColor ,stop:0.97 @PrimaryColor , stop:1 @GeneralBorderColor);
 }
 
 QMenu QToolBar:horizontal {
-  background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 @GeneralBorderColor, stop:0.01 @PrimaryColorUIColor ,stop:0.97 @PrimaryColorUIColor , stop:1 @GeneralBorderColor);
+  background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 @GeneralBorderColor, stop:0.01 @PrimaryColor ,stop:0.97 @PrimaryColor , stop:1 @GeneralBorderColor);
 }
 
 /* fix background color for toolbars that are the on menubar. */
@@ -862,7 +876,7 @@ QToolBar:only-one {
 QToolBar:vertical {
   padding-top: 3px;
   padding-left: 3px;
-  background-color: qlineargradient(x1:0, y1:0, x2:1, y2:0, stop:0 @GeneralBorderColor, stop:0.02 @PrimaryColorUIColor ,stop:0.98 @PrimaryColorUIColor , stop:1 @GeneralBorderColor);
+  background-color: qlineargradient(x1:0, y1:0, x2:1, y2:0, stop:0 @GeneralBorderColor, stop:0.02 @PrimaryColor ,stop:0.98 @PrimaryColor , stop:1 @GeneralBorderColor);
 }
 
 QToolBar:disabled {}
@@ -945,7 +959,7 @@ QAbstractSpinBox,
 QSpinBox {
   background-color:  @TextEditFieldBackgroundColor;
   border: 1px solid @GeneralBorderColor;
-  border-radius: 3px;
+  border-radius: @InputFieldBorderRadius;
   padding-left: 4px;
   padding-right: 4px;
 }
@@ -964,7 +978,7 @@ QAbstractSpinBox:up-button {
 }
 
 QAbstractSpinBox:up-button:hover{
-  background-color: @PrimaryColorUIColor;
+  background-color: @PrimaryColor;
 }
 
 QAbstractSpinBox:up-button:disabled {
@@ -1051,7 +1065,7 @@ https://doc.qt.io/qt-5/stylesheet-examples.html#customizing-qabstractscrollarea
 
 --------------------------------------------------------------------------- */
 QTextBrowser {
-  background-color: @PrimaryColorUIColor;
+  background-color: @PrimaryColor;
   border: 1px solid @GeneralBorderColor;
 
 }
@@ -1090,7 +1104,7 @@ QGraphicsView:hover, QGraphicsView:!hover, QGraphicsView:selected, QGraphicsView
 
 QCalendarWidget {
   border: 1px solid @GeneralBorderColor;
-  border-radius: 3px;
+  border-radius: @InputFieldBorderRadius;
 }
 
 QCalendarWidget:disabled {
@@ -1116,9 +1130,9 @@ https://doc.qt.io/qt-5/stylesheet-examples.html#customizing-qprogressbar
 
 --------------------------------------------------------------------------- */
 QProgressBar {
-  background-color: @PrimaryColorUIColor;
+  background-color: @PrimaryColor;
   border: 1px solid @GeneralBorderColor;
-  border-radius: 3px;
+  border-radius: @InputFieldBorderRadius;
   text-align: center;
 }
 
@@ -1126,19 +1140,19 @@ QProgressBar:disabled {
   background-color: @GeneralDisabledBackgroundColor;
   border: 1px solid @GeneralBorderColor;
   color:  @TextDisabledColor;
-  border-radius: 3px;
+  border-radius: @InputFieldBorderRadius;
   text-align: center;
 }
 
 QProgressBar::chunk {
   background-color: @UserHighlight1Color;
-  color: @PrimaryColorUIColor;
-  border-radius: 3px;
+  color: @PrimaryColor;
+  border-radius: @InputFieldBorderRadius;
 }
 
 QProgressBar::chunk:disabled {
   background-color: @GeneralDisabledBackgroundColor;
-  border-radius: 3px;
+  border-radius: @InputFieldBorderRadius;
 }
 
 /* ------------------------------------------------------------------------ */
@@ -1152,13 +1166,14 @@ https://doc.qt.io/qt-5/stylesheet-examples.html#customizing-qpushbutton
 QPushButton {
   background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 @ButtonTopBackgroundColor,stop:1 @ButtonBottomBackgroundColor);
   border: 1px solid @ButtonBorderColor;
-  border-radius: 3px;
-  padding: 4px;
+  border-radius: @InputFieldBorderRadius;
+  padding: 2px;
   /* min-width: 80px;*/}
+
 #CreateNewRow > QPushButton {
   /* Reset min width to default */
   min-width: -1;
-  border-radius: 3px;
+  border-radius: @InputFieldBorderRadius;
 }
 
 QPushButton:disabled {
@@ -1206,13 +1221,13 @@ QPushButton::menu-indicator {
 
 QDialogButtonBox QPushButton {
   min-width: 80px;
-  border-radius: 3px;
+  border-radius: @InputFieldBorderRadius;
 }
 
 QMessageBox[objectName="macroGuideWalkthrough"] QDialogButtonBox QPushButton,
 QMessageBox[objectName="confirmSave"] QDialogButtonBox QPushButton {
   min-width: 20px;
-  border-radius: 3px;
+  border-radius: @InputFieldBorderRadius;
 }
 
 /* QToolButton ------------------------------------------------------------
@@ -1223,7 +1238,7 @@ https://doc.qt.io/qt-5/stylesheet-examples.html#customizing-qtoolbutton
 QToolButton {
   background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 @ButtonTopBackgroundColor,stop:1 @ButtonBottomBackgroundColor);
   border: 1px solid @GeneralBorderColor;
-  border-radius: 3px;
+  border-radius: @InputFieldBorderRadius;
   padding: 2px;
 }
 
@@ -1232,7 +1247,7 @@ QToolBar QToolButton {
   padding: @ToolbarButtonsPadding;
   outline: none;
   border-style: none;
-  border-radius: 3px;
+  border-radius: @InputFieldBorderRadius;
 }
 
 QDialog QToolButton:hover {
@@ -1246,7 +1261,7 @@ QToolButton:disabled {
 
 QToolButton:checked {
   background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 @ButtonBottomBackgroundColor, stop:0.7 @ButtonTopBackgroundColor, stop:1 @ButtonTopBackgroundColor);
-  border-radius: 3px;
+  border-radius: @InputFieldBorderRadius;
   border: 1px solid @UserHighlight2Color;
 }
 
@@ -1283,14 +1298,14 @@ QToolButton:selected {
 
 QToolButton#qt_toolbutton_menubutton {
   padding-right: 15px;/*Hack to add more width to buttons with menu */
-  border-radius: 3px;
+  border-radius: @InputFieldBorderRadius;
  }
 
 QToolButton::menu-button {
   border: 1px solid transparent;
   /* 16px width + 4px for border = 20px allocated above */
   width: 15px;
-  border-radius: 3px;
+  border-radius: @InputFieldBorderRadius;
 }
 
 QToolButton::menu-button:hover {
@@ -1329,7 +1344,7 @@ QToolButton::menu-arrow:hover {
 QCommandLinkButton {
   background-color: transparent;
   border: 1px solid @GeneralBorderColor;
-  border-radius: 3px;
+  border-radius: @InputFieldBorderRadius;
 }
 QCommandLinkButton:disabled {
   background-color: transparent;
@@ -1347,7 +1362,7 @@ https://doc.qt.io/qt-5/stylesheet-examples.html#customizing-qcombobox
 
 QComboBox {
   border: 1px solid @GeneralBorderColor;
-  border-radius: 3px;
+  border-radius: @InputFieldBorderRadius;
   background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 @ButtonTopBackgroundColor,stop:1 @ButtonBottomBackgroundColor );
   selection-background-color: @UserHighlight1Color;
   padding-left: 4px;
@@ -1417,7 +1432,7 @@ QComboBox::item:selected {
 }
 
 QComboBox::item:checked {
-  background-color: @PrimaryColorUIColor;
+  background-color: @PrimaryColor;
 }
 
 QComboBox::drop-down {
@@ -1452,7 +1467,7 @@ QFrame[class="panel"] {}
 QSint--ActionGroup {
 /* if not reset, it might create problems with QPushButtons and other elements */
 /* if not reset, it might create problems with QPushButtons and other elements */
-  border-radius: 3px;
+  border-radius: @InputFieldBorderRadius;
 }
 
 /* QSint--ActionGroup QGroupBox {
@@ -1529,14 +1544,14 @@ QSint--ActionGroup QFrame[class="content"] {
 QSint--ActionGroup QFrame[class="content"] > QWidget > QPushButton {
   padding: 2px;/* bigger padding crops text and icons... */
 
-  border-radius: 3px;
+  border-radius: @InputFieldBorderRadius;
 }
 
 /* Fix for lists inside task panels */ /* sketcher constraints list */
 QSint--ActionGroup QFrame[class="content"] QTreeView,
 QSint--ActionGroup QFrame[class="content"] QListView,
 QSint--ActionGroup QFrame[class="content"] QTableView {
-  background-color: @PrimaryColorUIColor;
+  background-color: @PrimaryColor;
 }
 
 /* found inside Part Design Workbench and "make a draft on a face" Task panel options */
@@ -1547,7 +1562,7 @@ QSint--ActionGroup QFrame[class="content"] QToolButton {
   padding: 1px 1px;/* different than regular QPushButton */
 /* different than regular QPushButton */
   min-height: 16px;/* same as QTabBar QPushButton min-width */
-  border-radius: 3px;
+  border-radius: @InputFieldBorderRadius;
 }
 
 QSint--ActionGroup QFrame[class="content"] QToolButton:checked {
@@ -1571,7 +1586,7 @@ QSint--ActionGroup QToolButton#manualUpdate {
   padding-right: 20px;/* make way for the popup button */}
 /* to give widget inside the menu same look as regular menu */
 QSint--ActionGroup QToolButton#filterButton QListWidget {
-  background-color: @PrimaryColorUIColor;
+  background-color: @PrimaryColor;
   border: 1px solid @GeneralBorderColor;
 }
 
@@ -1608,7 +1623,7 @@ QSlider:disabled {
   /*  background-color: @GeneralDisabledBackgroundColor;disabled because this is the frame of the slider, not the slider itself.*/}
 QSlider:focus {}
 QSlider::groove:horizontal {
-  background-color: @PrimaryColorUIColor;
+  background-color: @PrimaryColor;
   border: 1px solid @GeneralBorderColor;
   height: 4px;
 
@@ -1697,7 +1712,7 @@ QLineEdit {
   padding-right: 4px;
   border-style: solid;
   border: 1px solid @GeneralBorderColor;
-
+  border-radius: @InputFieldBorderRadius;
 }
 
 QLineEdit:disabled {
@@ -1726,7 +1741,7 @@ QTabWidget {
 }
 
 QTabWidget:tab-bar {
-  selection-background-color: @PrimaryColorUIColor;
+  selection-background-color: @PrimaryColor;
 }
 
 QTabWidget QWidget {}
@@ -1735,7 +1750,7 @@ QTabWidget::pane {
 
   /* Fixes double border inside pane with pyqt5 */
 
-  background-color: @PrimaryColorUIColor;
+  background-color: @PrimaryColor;
   border-radius: 3px;
   border: 1px solid @GeneralBorderColor;
 }
@@ -1848,7 +1863,7 @@ QTabBar::tab, QDockWidget QTabBar::tab {
   /* !selected and disabled ----------------------------------------- */
   /* selected ------------------------------------------------------- */
   padding: 4px;
-  background-color: @PrimaryColorUIColor;
+  background-color: @PrimaryColor;
 }
 
 QTabBar::tab:top, QDockWidget QTabBar::tab:top {
@@ -1877,7 +1892,7 @@ QTabBar::tab:top:selected, QDockWidget QTabBar::tab:top:selected {
 }
 
 QTabBar::tab:top:!selected:hover, QDockWidget QTabBar::tab:top:!selected:hover {
-  background-color: @PrimaryColorUIColor;
+  background-color: @PrimaryColor;
   border-bottom: 1px solid @GeneralBorderColor;
   border-top: 1px solid @GeneralBorderColor;
   border-left: 1px solid @GeneralBorderColor;
@@ -1908,7 +1923,7 @@ QTabBar::tab:bottom:selected, QDockWidget QTabBar::tab:bottom:selected {
 }
 
 QTabBar::tab:bottom:!selected:hover, QDockWidget QTabBar::tab:bottom:!selected:hover {
-  background-color: @PrimaryColorUIColor;
+  background-color: @PrimaryColor;
   border-bottom: 1px solid @GeneralBorderColor;
   border-top: 1px solid @GeneralBorderColor;
   border-left: 1px solid @GeneralBorderColor;
@@ -1938,7 +1953,7 @@ QTabBar::tab:left:selected, QDockWidget QTabBar::tab:left:selected {
 }
 
 QTabBar::tab:left:!selected:hover, QDockWidget QTabBar::tab:left:!selected:hover {
-  background-color: @PrimaryColorUIColor;
+  background-color: @PrimaryColor;
   border-bottom: 1px solid @GeneralBorderColor;
   border-top: 1px solid @GeneralBorderColor;
   border-left: 1px solid @GeneralBorderColor;
@@ -1968,7 +1983,7 @@ QTabBar::tab:right:selected, QDockWidget QTabBar::tab:right:selected {
 }
 
 QTabBar::tab:right:!selected:hover, QDockWidget QTabBar::tab:right:!selected:hover {
-  background-color: @PrimaryColorUIColor;
+  background-color: @PrimaryColor;
   border-bottom: 1px solid @GeneralBorderColor;
   border-top: 1px solid @GeneralBorderColor;
   border-left: 1px solid @GeneralBorderColor;
@@ -2191,7 +2206,7 @@ QColumnView::indicator:indeterminate:pressed {
   border: 1px solid @GeneralBorderColor;*/}
 QTableView,
 QColumnView {
-  background-color: @PrimaryColorUIColor;/* background of a lot of stuff including spreadsheets.*/
+  background-color: @PrimaryColor;/* background of a lot of stuff including spreadsheets.*/
   /* gridline-color: @GeneralBorderColor; */
 
   selection-background-color: @UserHighlight1Color;
@@ -2199,7 +2214,7 @@ QColumnView {
 }
 
 QListView {
-  background-color:   @PrimaryColorUIColor;
+  background-color:   @PrimaryColor;
 
   selection-background-color: @UserHighlight1Color;
   border: 1px solid @GeneralBorderColor;
@@ -2277,7 +2292,7 @@ https://doc.qt.io/qt-5/stylesheet-examples.html#customizing-qheaderview
 --------------------------------------------------------------------------- */
 
 QTableCornerButton::section {
-  background-color: @PrimaryColorUIColor;
+  background-color: @PrimaryColor;
   border-radius: 0px;/*if you remove this line it breaks it */}
 QHeaderView {
   background-color: transparent;
@@ -2386,7 +2401,7 @@ QToolBox::tab:selected {
 
 QToolBox::tab:selected:disabled {
   background-color: @GeneralDisabledBackgroundColor;
-  border-bottom: 0px solid @PrimaryColorUIColor;
+  border-bottom: 0px solid @PrimaryColor;
   color: @TextDisabledColor;
 }
 
@@ -2396,13 +2411,13 @@ QToolBox::tab:!selected:disabled {
 }
 
 QToolBox::tab:hover {
-  background-color: @PrimaryColorUIColor;
+  background-color: @PrimaryColor;
 }
 
 QToolBox > QScrollArea > QWidget > QWidget {
 
   border-style: none;
-  background-color: @PrimaryColorUIColor;
+  background-color: @PrimaryColor;
   border-radius: 4px;
 }
 
@@ -2457,7 +2472,7 @@ QDateEdit, QDateTimeEdit {
   selection-background-color: @UserHighlight1Color;
   border-style: solid;
   border: 1px solid @GeneralBorderColor;
-  border-radius: 3px;
+  border-radius: @InputFieldBorderRadius;
   padding-top: 2px;
   padding-bottom: 2px;
   padding-left: 4px;
@@ -2487,8 +2502,8 @@ QDateEdit::down-arrow:on, QDateEdit::down-arrow:hover, QDateEdit::down-arrow:foc
 }
 
 QDateEdit QAbstractItemView, QDateTimeEdit QAbstractItemView {
-  background-color: @PrimaryColorUIColor;
-  border-radius: 3px;
+  background-color: @PrimaryColor;
+  border-radius: @InputFieldBorderRadius;
   border: 1px solid @GeneralBorderColor;
   selection-background-color: @UserHighlight1Color;
 }
@@ -2556,7 +2571,7 @@ Gui--UrlLabel {
 }
 
 Gui--NotificationLabel {
-  background-color: @PrimaryColorUIColor;
+  background-color: @PrimaryColor;
   border: 1px solid @GeneralBorderColor;
   border-radius: 3px;
 }
@@ -2594,7 +2609,7 @@ QMdiSubWindow {
   border-radius: 3px;
   border-top-right-radius: 7px;
   border-top-left-radius: 7px;
-  background-color: @PrimaryColorUIColor;
+  background-color: @PrimaryColor;
 }
 
 QMdiSubWindow:hover {
@@ -2689,12 +2704,12 @@ QTreeView::item:!selected:hover#groupsTreeView {
 }
 
 QMainWindow QTableView {
-  background-color: @PrimaryColorUIColor;/* background of the tables used in the settings*/
+  background-color: @PrimaryColor;/* background of the tables used in the settings*/
   border: 1px solid @GeneralBorderColor;
 
   /* gridline-color: rgb(255, 255, 255); */}
 QMainWindow QListView {
-  background-color: @PrimaryColorUIColor;/* background of the workbenches listview used in the settings*/
+  background-color: @PrimaryColor;/* background of the workbenches listview used in the settings*/
   /* border: 1px solid @GeneralBorderColor; */
   /* border-radius: 3px; */}
 QMainWindow QTableView QPushButton {
