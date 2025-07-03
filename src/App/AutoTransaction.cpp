@@ -186,7 +186,7 @@ int Application::setActiveTransaction(const char* name, bool persist)
     }
 
     FC_WARN("Setting a global transaction with name='" << name << "', persist=" << persist);
-    if (_globalTransactionID != 0) {
+    if (_globalTransactionID != 0 && transactionTmpName(_globalTransactionID)) {
         setTransactionName(_globalTransactionID, name);
     } else {
         FC_LOG("set global transaction '" << name << "'");
@@ -352,6 +352,10 @@ bool Application::closeActiveTransaction(bool abort, int id)
 
     FC_LOG("close transaction '" << _activeTransactionDescriptions[id].name << "' " << abort);
     _activeTransactionDescriptions.erase(id);
+    if (id == _globalTransactionID) {
+        _globalTransactionID = 0;
+    }
+
     TransactionSignaller signaller(abort, false);
 
     for (auto& doc : docsToPoke) {
