@@ -1217,7 +1217,7 @@ CmdTechDrawExtensionLineParallel::CmdTechDrawExtensionLineParallel()
     sAppModule = "TechDraw";
     sGroup = QT_TR_NOOP("TechDraw");
     sMenuText = QT_TR_NOOP("Cosmetic Parallel Line");
-    sToolTipText = QT_TR_NOOP("Adds a cosmetic circle to three selected vertices");
+    sToolTipText = QT_TR_NOOP("Adds a cosmetic circle to 3 selected vertices");
     sWhatsThis = "TechDraw_ExtensionLineParallel";
     sStatusTip = sMenuText;
     sPixmap = "TechDraw_ExtensionLineParallel";
