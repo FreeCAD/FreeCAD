@@ -25,9 +25,9 @@
 
 #ifndef _PreComp_
 #include <QUuid>
+#include <stdexcept>
 #endif
 
-#include <stdexcept>
 
 #include "Uuid.h"
 
