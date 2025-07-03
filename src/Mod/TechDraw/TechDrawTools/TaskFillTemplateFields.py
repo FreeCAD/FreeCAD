@@ -131,7 +131,7 @@ class TaskFillTemplateFields:
                 self.dialog.resize(1050, 400)
                 self.dialog.setWindowTitle(
                     QtCore.QT_TRANSLATE_NOOP(
-                        "TechDraw_FillTemplateFields", "Fill template fields in "
+                        "TechDraw_FillTemplateFields", "Fill Template Fields In "
                     )
                     + self.page.Label
                 )
