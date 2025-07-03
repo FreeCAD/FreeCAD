@@ -1883,7 +1883,7 @@ CmdTechDrawLinkDimension::CmdTechDrawLinkDimension()
     sAppModule = "TechDraw";
     sGroup = QT_TR_NOOP("TechDraw");
     sMenuText = QT_TR_NOOP("Link Dimension to 3D Geometry");
-    sToolTipText = QT_TR_NOOP("Links the selected TechDraw dimension to its corresponding 3D geometry");
+    sToolTipText = QT_TR_NOOP("Links the selected TechDraw dimensions to 3D geometry");
     sWhatsThis = "TechDraw_LinkDimension";
     sStatusTip = sToolTipText;
     sPixmap = "TechDraw_LinkDimension";
