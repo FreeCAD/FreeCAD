@@ -61,7 +61,7 @@
         <string>Treats the center point as a 2D point within the parent view. The Z coordinate is ignored.</string>
        </property>
        <property name="text">
-        <string>2D Point</string>
+        <string>2D point</string>
        </property>
        <property name="checked">
         <bool>true</bool>
