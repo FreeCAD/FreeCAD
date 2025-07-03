@@ -1508,7 +1508,7 @@ CmdTechDrawExtensionExtendLine::CmdTechDrawExtensionExtendLine()
     sMenuText = QT_TR_NOOP("Extend Line");
     sToolTipText = QT_TR_NOOP("Extends a selected cosmetic line or centerline at both ends by the specified delta distance");
     sWhatsThis = "TechDraw_ExtensionExtendLine";
-    sStatusTip = sMenuText;
+    sStatusTip = sToolTipText;
     sPixmap = "TechDraw_ExtensionExtendLine";
 }
 
