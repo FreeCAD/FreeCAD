@@ -145,6 +145,9 @@ sed = "*"
 [target.win-64.dependencies]
 pthreads-win32 = "*"
 
+[pypi-dependencies]
+freecad-stubs = "*"
+
 ## Qt 6 Configuration Presets
 [target.linux-64.tasks]
 configure = { cmd = [ "cmake", "-B", "build", "--preset", "conda-linux-debug", "-DBUILD_REVERSEENGINEERING=OFF" ], depends-on = ["initialize"], env={ CFLAGS="", CXXFLAGS="", DEBUG_CFLAGS="", DEBUG_CXXFLAGS="" }}
