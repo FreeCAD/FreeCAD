@@ -278,6 +278,9 @@ TEST_F(RenameProperty, updateExpressionDifferentContainer)
     EXPECT_EQ(varSet->getDynamicPropertyByName("Variable"), nullptr);
     EXPECT_EQ(varSet->getDynamicPropertyByName("NewName"), prop);
     EXPECT_EQ(prop2->getValue(), Value);
+
+    // Tear down
+    _doc->removeObject(varSet2->getNameInDocument());
 }
 
 // Tests whether we can rename a property that is used in an expression in a different document
@@ -313,6 +316,9 @@ TEST_F(RenameProperty, updateExpressionDifferentDocument)
     EXPECT_EQ(varSet->getDynamicPropertyByName("Variable"), nullptr);
     EXPECT_EQ(varSet->getDynamicPropertyByName("NewName"), prop);
     EXPECT_EQ(prop2->getValue(), Value);
+
+    // Tear down
+    doc->removeObject(varSet2->getNameInDocument());
 }
 
 // Tests whether we can rename a property and undo it
