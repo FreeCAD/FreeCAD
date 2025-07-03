@@ -90,7 +90,7 @@ CmdTechDrawLeaderLine::CmdTechDrawLeaderLine()
     sAppModule      = "TechDraw";
     sGroup          = QT_TR_NOOP("TechDraw");
     sMenuText       = QT_TR_NOOP("Leader Line");
-    sToolTipText    = QT_TR_NOOP("Adds a leader line to the selected view");
+    sToolTipText    = QT_TR_NOOP("Adds a leader line");
     sWhatsThis      = "TechDraw_LeaderLine";
     sStatusTip      = sToolTipText;
     sPixmap         = "actions/TechDraw_LeaderLine";
@@ -204,7 +204,7 @@ CmdTechDrawCosmeticVertexGroup::CmdTechDrawCosmeticVertexGroup()
     sAppModule      = "TechDraw";
     sGroup          = QT_TR_NOOP("TechDraw");
     sMenuText       = QT_TR_NOOP("Cosmetic Vertex");
-    sToolTipText    = QT_TR_NOOP("Inserts a cosmetic vertex into the selected view");
+    sToolTipText    = QT_TR_NOOP("Inserts a cosmetic vertex");
     sWhatsThis      = "TechDraw_CosmeticVertexGroup";
     sStatusTip      = sToolTipText;
 //    eType           = ForEdit;
@@ -391,7 +391,7 @@ CmdTechDrawCosmeticVertex::CmdTechDrawCosmeticVertex()
     sAppModule      = "TechDraw";
     sGroup          = QT_TR_NOOP("TechDraw");
     sMenuText       = QT_TR_NOOP("Cosmetic Vertex");
-    sToolTipText    = QT_TR_NOOP("Adds a cosmetic vertex into the selected view");
+    sToolTipText    = QT_TR_NOOP("Adds a cosmetic vertex");
     sWhatsThis      = "TechDraw_CosmeticVertex";
     sStatusTip      = sToolTipText;
     sPixmap         = "actions/TechDraw_CosmeticVertex";

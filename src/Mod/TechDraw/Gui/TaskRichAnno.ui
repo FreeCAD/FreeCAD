@@ -99,7 +99,7 @@
          <bool>true</bool>
         </property>
         <property name="text">
-         <string>Start rich text editor</string>
+         <string>Start Rich Text Editor</string>
         </property>
        </widget>
       </item>
