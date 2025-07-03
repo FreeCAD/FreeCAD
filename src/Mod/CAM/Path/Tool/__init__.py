@@ -8,8 +8,6 @@ from .library import Library
 from .library.serializers import FCTLSerializer
 from .machine import Machine
 from .machine.serializers import MachineSerializer
-from .spindle import Spindle
-from .spindle.serializers import SpindleSerializer
 from .toolbit import ToolBit
 from .toolbit.serializers import FCTBSerializer
 from .shape import ToolBitShape, ToolBitShapePngIcon, ToolBitShapeSvgIcon
@@ -21,7 +19,6 @@ cam_assets.register_asset(ToolBit, FCTBSerializer)
 cam_assets.register_asset(ToolBitShape, DummyAssetSerializer)
 cam_assets.register_asset(ToolBitShapePngIcon, DummyAssetSerializer)
 cam_assets.register_asset(ToolBitShapeSvgIcon, DummyAssetSerializer)
-cam_assets.register_asset(Spindle, SpindleSerializer)
 cam_assets.setup()
 
 # For backward compatibility with files saved before the toolbit rename

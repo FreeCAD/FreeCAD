@@ -19,10 +19,7 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-from PySide import QtGui
-import FreeCAD
-import FreeCADGui
-from ...spindle import Spindle
+from ..models.spindle import Spindle
 from .component import MachineComponentWidget
 
 
