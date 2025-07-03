@@ -893,7 +893,7 @@ CmdTechDrawExtensionDrawCosmArc::CmdTechDrawExtensionDrawCosmArc()
     sGroup = QT_TR_NOOP("TechDraw");
     sMenuText = QT_TR_NOOP("Cosmetic Arc");
     sToolTipText = QT_TR_NOOP("Adds a cosmetic counter clockwise arc based on three vertices, "
-            "where the first selection is the center point and the second is the radius and start point.");
+            "where the first selection is the center point and the second is the radius and start point");
     sWhatsThis = "TechDraw_ExtensionDrawCosmArc";
     sStatusTip = sMenuText;
     sPixmap = "TechDraw_ExtensionDrawCosmArc";
