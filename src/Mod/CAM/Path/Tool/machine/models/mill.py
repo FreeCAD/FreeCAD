@@ -21,9 +21,12 @@
 # ***************************************************************************
 from typing import List, Optional, cast
 import FreeCAD
-from .machine import Machine, MachineFeatureFlags
+from .machine import Machine, MachineFeature
 from .axis import LinearAxis, AngularAxis
 from .spindle import Spindle
+
+
+translate = FreeCAD.Qt.translate
 
 
 class Mill(Machine):
@@ -39,7 +42,7 @@ class Mill(Machine):
         post_processor: str = "generic",
         post_processor_args: str = "",
         icon: Optional[str] = None,
-        feature_flags: Optional[List[MachineFeatureFlags]] = None,
+        feature_flags: Optional[List[MachineFeature]] = None,
         id: Optional[str] = None,
     ) -> None:
         """
@@ -52,6 +55,8 @@ class Mill(Machine):
             post_processor_args: Arguments for the post processor.
             id: Unique identifier (optional).
         """
+        if feature_flags is None:
+            feature_flags = [MachineFeature.MILLING_3D]
         super().__init__(
             name=name,
             label=label,
@@ -62,17 +67,17 @@ class Mill(Machine):
             id=id,
         )
 
-        x_axis = LinearAxis("X")
-        y_axis = LinearAxis("Y")
-        z_axis = LinearAxis("Z")
-        spindle_axis = AngularAxis("A")
-        main_spindle = Spindle("MainSpindle", FreeCAD.Qt.translate("CAM", "Spindle 1"))
+        x_axis = LinearAxis("X", label=FreeCAD.Qt.translate("CAM", "X-axis"))
+        y_axis = LinearAxis("Y", label=FreeCAD.Qt.translate("CAM", "Y-axis"))
+        z_axis = LinearAxis("Z", label=FreeCAD.Qt.translate("CAM", "Z-axis"))
+        spindle_axis = AngularAxis("A", label=FreeCAD.Qt.translate("CAM", "Spindle-axis"))
+        main_spindle = Spindle("MainSpindle", label=FreeCAD.Qt.translate("CAM", "Main spindle"))
 
         self.add(x_axis)
         x_axis.add(y_axis)
         y_axis.add(z_axis)
-        z_axis.add(spindle_axis)
-        spindle_axis.add(main_spindle)
+        z_axis.add(main_spindle)
+        main_spindle.add(spindle_axis)
 
     @staticmethod
     def get_type() -> str:

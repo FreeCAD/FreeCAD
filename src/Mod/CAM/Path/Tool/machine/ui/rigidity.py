@@ -23,7 +23,6 @@ from PySide import QtGui
 import FreeCAD
 import FreeCADGui
 from ..models.axis import AngularAxis
-from ..models.machine import Machine
 
 translate = FreeCAD.Qt.translate
 
@@ -48,12 +47,12 @@ class PrerequisitesPage(QtGui.QWizardPage):
 
 
 class LinearRigidityPage(QtGui.QWizardPage):
-    def __init__(self, machine: Machine):
+    def __init__(self, angular_axis: AngularAxis):
         super().__init__()
-        self.machine = machine
+        self.angular_axis = angular_axis
         self.setTitle(translate("CAM", "Linear Rigidity Measurements"))
         self.setSubTitle(
-            translate("CAM", "Enter measurements for linear rigidity (X and Y directions)")
+            translate("CAM", f"Enter measurements for linear rigidity of {angular_axis.label}")
         )
         main_layout = QtGui.QVBoxLayout()
 
@@ -65,7 +64,7 @@ class LinearRigidityPage(QtGui.QWizardPage):
 3. Secure a dial indicator to the machine table, contacting the spindle nose.
 4. Apply a known force (e.g., 10 N) in the X direction and record the deflection.
 5. Apply a known force (e.g., 10 N) in the Y direction and record the deflection.
-6. Enter the force and deflection values for each angular axis below.
+6. Enter the force and deflection values for the angular axis below.
 """,
         )
 
@@ -81,67 +80,51 @@ class LinearRigidityPage(QtGui.QWizardPage):
         grid_layout.setSpacing(6)
 
         # Add column headers
-        grid_layout.addWidget(QtGui.QLabel(translate("CAM", "Axis")), 0, 0)
-        grid_layout.addWidget(QtGui.QLabel(translate("CAM", "Force X")), 0, 1)
-        grid_layout.addWidget(QtGui.QLabel(translate("CAM", "Deflection X")), 0, 2)
-        grid_layout.addWidget(QtGui.QLabel(translate("CAM", "Force Y")), 0, 3)
-        grid_layout.addWidget(QtGui.QLabel(translate("CAM", "Deflection Y")), 0, 4)
+        grid_layout.addWidget(QtGui.QLabel(translate("CAM", "Force X")), 0, 0)
+        grid_layout.addWidget(QtGui.QLabel(translate("CAM", "Deflection X")), 0, 1)
+        grid_layout.addWidget(QtGui.QLabel(translate("CAM", "Force Y")), 0, 2)
+        grid_layout.addWidget(QtGui.QLabel(translate("CAM", "Deflection Y")), 0, 3)
 
         self.inputs = {}
         ui = FreeCADGui.UiLoader()
         row = 1  # Start from row 1 for data
-        for axis in sorted(machine.find_children_by_type(AngularAxis), key=lambda a: a.name):
-            force_x_edit = ui.createWidget("Gui::QuantitySpinBox")
-            force_x_edit.setProperty("unit", FreeCAD.Units.Unit("N"))
-            force_x_edit.setProperty("minimum", 0.0)
-            force_x_edit.setProperty("value", FreeCAD.Units.Quantity("10.0 N"))
-            force_x_edit.valueChanged.connect(lambda: self.enforce_unit(force_x_edit, "N"))
-            force_x_edit.valueChanged.connect(self.check_completeness)
 
-            deflection_x_edit = ui.createWidget("Gui::QuantitySpinBox")
-            deflection_x_edit.setProperty("unit", "mm")
-            deflection_x_edit.setProperty("minimum", 0.0)
-            deflection_x_edit.setProperty("value", FreeCAD.Units.Quantity("0 mm"))
-            deflection_x_edit.valueChanged.connect(self.check_completeness)
+        force_x_edit = ui.createWidget("Gui::QuantitySpinBox")
+        force_x_edit.setProperty("unit", FreeCAD.Units.Unit("N"))
+        force_x_edit.setProperty("minimum", 0.0)
+        force_x_edit.setProperty("value", FreeCAD.Units.Quantity("10.0 N"))
+        force_x_edit.valueChanged.connect(lambda: self.enforce_unit(force_x_edit, "N"))
+        force_x_edit.valueChanged.connect(self.check_completeness)
 
-            force_y_edit = ui.createWidget("Gui::QuantitySpinBox")
-            force_y_edit.setProperty("unit", FreeCAD.Units.Unit("N"))
-            force_y_edit.setProperty("minimum", 0.0)
-            force_y_edit.setProperty("value", FreeCAD.Units.Quantity("10.0 N"))
-            force_y_edit.valueChanged.connect(lambda: self.enforce_unit(force_y_edit, "N"))
-            force_y_edit.valueChanged.connect(self.check_completeness)
+        deflection_x_edit = ui.createWidget("Gui::QuantitySpinBox")
+        deflection_x_edit.setProperty("unit", "mm")
+        deflection_x_edit.setProperty("minimum", 0.0)
+        deflection_x_edit.setProperty("value", FreeCAD.Units.Quantity("0 mm"))
+        deflection_x_edit.valueChanged.connect(self.check_completeness)
 
-            deflection_y_edit = ui.createWidget("Gui::QuantitySpinBox")
-            deflection_y_edit.setProperty("unit", "mm")
-            deflection_y_edit.setProperty("minimum", 0.0)
-            deflection_y_edit.setProperty("value", FreeCAD.Units.Quantity("0 mm"))
-            deflection_y_edit.valueChanged.connect(self.check_completeness)
+        force_y_edit = ui.createWidget("Gui::QuantitySpinBox")
+        force_y_edit.setProperty("unit", FreeCAD.Units.Unit("N"))
+        force_y_edit.setProperty("minimum", 0.0)
+        force_y_edit.setProperty("value", FreeCAD.Units.Quantity("10.0 N"))
+        force_y_edit.valueChanged.connect(lambda: self.enforce_unit(force_y_edit, "N"))
+        force_y_edit.valueChanged.connect(self.check_completeness)
 
-            grid_layout.addWidget(
-                QtGui.QLabel(axis.label),
-                row,
-                0,
-            )
-            grid_layout.addWidget(force_x_edit, row, 1)
-            grid_layout.addWidget(deflection_x_edit, row, 2)
-            grid_layout.addWidget(force_y_edit, row, 3)
-            grid_layout.addWidget(deflection_y_edit, row, 4)
-            self.inputs[axis.name] = (
-                force_x_edit,
-                deflection_x_edit,
-                force_y_edit,
-                deflection_y_edit,
-            )
-            row += 1
+        deflection_y_edit = ui.createWidget("Gui::QuantitySpinBox")
+        deflection_y_edit.setProperty("unit", "mm")
+        deflection_y_edit.setProperty("minimum", 0.0)
+        deflection_y_edit.setProperty("value", FreeCAD.Units.Quantity("0 mm"))
+        deflection_y_edit.valueChanged.connect(self.check_completeness)
 
-        if not self.inputs:
-            grid_layout.addWidget(
-                QtGui.QLabel(translate("CAM", "No angular axes to configure linear rigidity.")),
-                row,
-                0,
-                1,
-                5,
-            )
+        grid_layout.addWidget(force_x_edit, row, 0)
+        grid_layout.addWidget(deflection_x_edit, row, 1)
+        grid_layout.addWidget(force_y_edit, row, 2)
+        grid_layout.addWidget(deflection_y_edit, row, 3)
+        self.inputs[self.angular_axis.name] = (
+            force_x_edit,
+            deflection_x_edit,
+            force_y_edit,
+            deflection_y_edit,
+        )
 
         main_layout.addLayout(grid_layout)
         main_layout.addStretch()
@@ -181,11 +164,13 @@ class LinearRigidityPage(QtGui.QWizardPage):
 
 
 class AngularRigidityPage(QtGui.QWizardPage):
-    def __init__(self, machine: Machine):
+    def __init__(self, angular_axis: AngularAxis):
         super().__init__()
-        self.machine = machine
+        self.angular_axis = angular_axis
         self.setTitle(translate("CAM", "Angular Rigidity Measurements"))
-        self.setSubTitle(translate("CAM", "Enter measurements for angular rigidity"))
+        self.setSubTitle(
+            translate("CAM", f"Enter measurements for angular rigidity of {angular_axis.label}")
+        )
 
         main_layout = QtGui.QVBoxLayout()
         instructions = QtGui.QLabel(
@@ -216,38 +201,22 @@ class AngularRigidityPage(QtGui.QWizardPage):
         self.inputs = {}
         ui = FreeCADGui.UiLoader()
         row = 1  # Start from row 1 for data
-        for axis in sorted(machine.find_children_by_type(AngularAxis), key=lambda a: a.name):
-            force_edit = ui.createWidget("Gui::QuantitySpinBox")
-            force_edit.setProperty("unit", FreeCAD.Units.Unit("N"))
-            force_edit.setProperty("minimum", 0.0)
-            force_edit.setProperty("value", FreeCAD.Units.Quantity("10.0 N"))
-            force_edit.valueChanged.connect(lambda: self.enforce_unit(force_edit, "N"))
-            force_edit.valueChanged.connect(self.check_completeness)
+        force_edit = ui.createWidget("Gui::QuantitySpinBox")
+        force_edit.setProperty("unit", FreeCAD.Units.Unit("N"))
+        force_edit.setProperty("minimum", 0.0)
+        force_edit.setProperty("value", FreeCAD.Units.Quantity("10.0 N"))
+        force_edit.valueChanged.connect(lambda: self.enforce_unit(force_edit, "N"))
+        force_edit.valueChanged.connect(self.check_completeness)
 
-            deflection_edit = ui.createWidget("Gui::QuantitySpinBox")
-            deflection_edit.setProperty("unit", "deg")
-            deflection_edit.setProperty("minimum", 0.0)
-            deflection_edit.setProperty("value", FreeCAD.Units.Quantity("0 deg"))
-            deflection_edit.valueChanged.connect(self.check_completeness)
+        deflection_edit = ui.createWidget("Gui::QuantitySpinBox")
+        deflection_edit.setProperty("unit", "deg")
+        deflection_edit.setProperty("minimum", 0.0)
+        deflection_edit.setProperty("value", FreeCAD.Units.Quantity("0 deg"))
+        deflection_edit.valueChanged.connect(self.check_completeness)
 
-            grid_layout.addWidget(
-                QtGui.QLabel(axis.label),
-                row,
-                0,
-            )
-            grid_layout.addWidget(force_edit, row, 1)
-            grid_layout.addWidget(deflection_edit, row, 2)
-            self.inputs[axis.name] = (force_edit, deflection_edit)
-            row += 1
-
-        if not self.inputs:
-            grid_layout.addWidget(
-                QtGui.QLabel(translate("CAM", "No angular axes to configure angular rigidity.")),
-                row,
-                0,
-                1,
-                3,
-            )
+        grid_layout.addWidget(force_edit, row, 1)
+        grid_layout.addWidget(deflection_edit, row, 2)
+        self.inputs[self.angular_axis.name] = (force_edit, deflection_edit)
 
         main_layout.addLayout(grid_layout)
         main_layout.addStretch()
@@ -294,17 +263,18 @@ class SummaryPage(QtGui.QWizardPage):
 
     def initializePage(self):
         super().initializePage()
-        rigidities = self.wizard().calculate_rigidities()
+        self.wizard().calculate_rigidities()  # Calculate rigidities before displaying
+        rigidities = self.wizard().get_rigidities()
         summary_text = "Calculated Rigidities:\n\n"
 
-        if not rigidities:
-            summary_text += "No rigidity values calculated."
-        else:
-            for axis, (angular_rigidity, rigidity_x, rigidity_y) in rigidities.items():
-                summary_text += f"{axis.capitalize()}:\n"
-                summary_text += f"  Angular Rigidity: {angular_rigidity.Value:.6f} deg/N\n"
-                summary_text += f"  Rigidity X: {rigidity_x.Value:.6f} mm/N\n"
-                summary_text += f"  Rigidity Y: {rigidity_y.Value:.6f} mm/N\n"
+        if "rigidity_x" in rigidities:
+            summary_text += f"  Rigidity X: {rigidities['rigidity_x'].getValueAs('mm/N')} mm/N\n"
+        if "rigidity_y" in rigidities:
+            summary_text += f"  Rigidity Y: {rigidities['rigidity_y'].getValueAs('mm/N')} mm/N\n"
+        if "angular_rigidity" in rigidities:
+            summary_text += (
+                f"  Angular Rigidity: {rigidities['angular_rigidity'].Value:.6f} deg/N\n"
+            )
 
         self.summary_label.setText(translate("CAM", summary_text))
         self.check_completeness()
@@ -322,17 +292,17 @@ class SummaryPage(QtGui.QWizardPage):
 
 
 class RigidityWizard(QtGui.QWizard):
-    def __init__(self, machine: Machine, parent=None):
+    def __init__(self, angular_axis: AngularAxis, parent=None):
         super().__init__(parent)
-        self.machine = machine
-        self.setWindowTitle(translate("CAM", "Configure Rigidities"))
+        self.angular_axis = angular_axis
+        self.setWindowTitle(translate("CAM", f"Configure Rigidity for {angular_axis.label}"))
 
         self.setOption(QtGui.QWizard.HaveCustomButton1, True)
         self.setButtonText(QtGui.QWizard.CustomButton1, translate("CAM", "Skip"))
 
         self.prerequisites_page = PrerequisitesPage()
-        self.linear_rigidity_page = LinearRigidityPage(machine)
-        self.angular_rigidity_page = AngularRigidityPage(machine)
+        self.linear_rigidity_page = LinearRigidityPage(angular_axis)
+        self.angular_rigidity_page = AngularRigidityPage(angular_axis)
         self.summary_page = SummaryPage(self)
 
         self.addPage(self.prerequisites_page)
@@ -340,7 +310,7 @@ class RigidityWizard(QtGui.QWizard):
         self.addPage(self.angular_rigidity_page)
         self.addPage(self.summary_page)
 
-        self.rigidities = {}
+        self.calculated_rigidities = {}
 
         self.button(QtGui.QWizard.CustomButton1).clicked.connect(self.handle_skip)
 
@@ -394,64 +364,39 @@ class RigidityWizard(QtGui.QWizard):
         return super().nextId()
 
     def calculate_rigidities(self):
-        self.rigidities = {}
+        axis_name = self.angular_axis.name
+        self.calculated_rigidities = {}
 
         if not self.skip_linear:
-            for axis_name, (
-                force_x_edit,
-                deflection_x_edit,
-                force_y_edit,
-                deflection_y_edit,
-            ) in self.linear_rigidity_page.inputs.items():
-                force_x = force_x_edit.property("value")
-                deflection_x = deflection_x_edit.property("value")
-                force_y = force_y_edit.property("value")
-                deflection_y = deflection_y_edit.property("value")
+            force_x_edit, deflection_x_edit, force_y_edit, deflection_y_edit = (
+                self.linear_rigidity_page.inputs[axis_name]
+            )
 
-                rigidity_x = FreeCAD.Units.Quantity("0 mm/N")
-                rigidity_y = FreeCAD.Units.Quantity("0 mm/N")
+            force_x = force_x_edit.property("value")
+            deflection_x = deflection_x_edit.property("value")
+            force_y = force_y_edit.property("value")
+            deflection_y = deflection_y_edit.property("value")
 
-                if force_x.Value > 0:
-                    rigidity_x = deflection_x / force_x * 1000
+            if force_x.Value > 0:
+                self.calculated_rigidities["rigidity_x"] = deflection_x / force_x
 
-                if force_y.Value > 0:
-                    rigidity_y = deflection_y / force_y * 1000
-
-                # For linear rigidity, we return both X and Y values
-                # Angular rigidity is calculated on the next page
-                self.rigidities[axis_name] = (None, rigidity_x, rigidity_y)
+            if force_y.Value > 0:
+                self.calculated_rigidities["rigidity_y"] = deflection_y / force_y
 
         if not self.skip_angular:
-            for axis_name, (
-                force_edit,
-                deflection_edit,
-            ) in self.angular_rigidity_page.inputs.items():
-                force = force_edit.property("value")
-                deflection = deflection_edit.property("value")
+            force_edit, deflection_edit = self.angular_rigidity_page.inputs[axis_name]
 
-                angular_rigidity = FreeCAD.Units.Quantity("0 deg/N")
+            force = force_edit.property("value")
+            deflection = deflection_edit.property("value")
 
-                if force.Value > 0:
-                    angular_rigidity = deflection / force * 1000
+            if force.Value > 0:
+                self.calculated_rigidities["angular_rigidity"] = deflection / force * 1000
 
-                # Retrieve existing rigidity_x and rigidity_y if they were calculated
-                _, existing_rigidity_x, existing_rigidity_y = self.rigidities.get(
-                    axis_name, (None, None, None)
-                )
-                rigidity_x = (
-                    existing_rigidity_x if existing_rigidity_x else FreeCAD.Units.Quantity("0 mm/N")
-                )
-                rigidity_y = (
-                    existing_rigidity_y if existing_rigidity_y else FreeCAD.Units.Quantity("0 mm/N")
-                )
-
-                self.rigidities[axis_name] = (angular_rigidity, rigidity_x, rigidity_y)
-
-        return self.rigidities
+        return self.calculated_rigidities
 
     def accept(self):
         self.calculate_rigidities()
         super().accept()
 
     def get_rigidities(self):
-        return self.rigidities
+        return self.calculated_rigidities

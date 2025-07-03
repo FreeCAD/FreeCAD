@@ -1,4 +1,38 @@
+# -*- coding: utf-8 -*-
+# ***************************************************************************
+# *   Copyright (c) 2025 Samuel Abels <knipknap@gmail.com>                  *
+# *                                                                         *
+# *   This program is free software; you can redistribute it and/or modify  *
+# *   it under the terms of the GNU Lesser General Public License (LGPL)    *
+# *   as published by the Free Software Foundation; either version 2 of     *
+# *   the License, or (at your option) any later version.                   *
+# *   for detail see the LICENCE text file.                                 *
+# *                                                                         *
+# *   This program is distributed in the hope that it will be useful,       *
+# *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+# *   GNU Library General Public License for more details.                  *
+# *                                                                         *
+# *   You should have received a copy of the GNU Library General Public     *
+# *   License along with this program; if not, write to the Free Software   *
+# *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
+# *   USA                                                                   *
+# *                                                                         *
+# ***************************************************************************
+import FreeCAD
+from dataclasses import dataclass
 from typing import Dict, List, Optional, Type, TypeVar
+
+
+@dataclass
+class AttributeConfig:
+    name: str
+    label: str
+    property_type: str
+    min_value: Optional[float] = None
+    max_value: Optional[float] = None
+    decimals: Optional[int] = None
+    readonly: bool = False
 
 
 T = TypeVar("T", bound="MachineComponent")
@@ -18,6 +52,10 @@ class MachineComponent(object):
         self._icon = icon
 
     @property
+    def type(self):
+        return FreeCAD.Qt.translate("CAM", "Machine Component")
+
+    @property
     def label(self) -> str:
         return self._label
 
@@ -28,6 +66,13 @@ class MachineComponent(object):
     @property
     def parent(self) -> Optional["MachineComponent"]:
         return self._parent
+
+    @property
+    def root(self) -> Optional["MachineComponent"]:
+        node = self
+        while node._parent is not None:
+            node = node._parent
+        return node
 
     @property
     def children(self) -> List["MachineComponent"]:
@@ -192,3 +237,18 @@ class MachineComponent(object):
         instance.label = data.get("label", data["name"])
         instance.icon = data.get("icon")
         return instance
+
+    def get_attribute_configs(self) -> List[AttributeConfig]:
+        """
+        Returns a list of AttributeConfig objects for configurable
+        attributes of this component. Subclasses should override this
+        to add their specific attributes.
+        """
+        return [
+            AttributeConfig(
+                name="name", label="Name", property_type="App::PropertyString", readonly=True
+            ),
+            AttributeConfig(
+                name="label", label="Label", property_type="App::PropertyString", readonly=True
+            ),
+        ]

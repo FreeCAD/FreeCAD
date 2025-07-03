@@ -63,3 +63,107 @@ class VelocitySpinBox(QtGui.QDoubleSpinBox):
         else:
             self._value = FreeCAD.Units.Quantity(f"{value} mm/min")
         super().setValue(self._value.getValueAs(self.display_unit))
+
+
+class AngularRigiditySpinBox(QtGui.QDoubleSpinBox):
+    def __init__(self):
+        super().__init__()
+        self.setDecimals(2)
+        self.setMinimum(0)
+        self.setMaximum(100000)
+        self.setSingleStep(1.0)
+        self.setSuffix(" °/N")
+        self._value = FreeCAD.Units.Quantity("0 deg")
+        self.valueChanged.connect(self._on_input_changed)
+
+    def _on_input_changed(self, value):
+        self._value = FreeCAD.Units.Quantity(f"{value} deg")
+        self.blockSignals(True)
+        self.setValue(self._value)
+        self.blockSignals(False)
+
+    def value(self):
+        return self._value
+
+    def setValue(self, value):
+        # FreeCAD.Units.Quantity does not support deg/N directly, so we use deg
+        if isinstance(value, FreeCAD.Units.Quantity):
+            self._value = value
+        else:
+            self._value = FreeCAD.Units.Quantity(f"{value} deg")
+        super().setValue(self._value)
+
+
+class MmPerNewtonSpinBox(QtGui.QDoubleSpinBox):
+    def __init__(self):
+        super().__init__()
+        self.setDecimals(2)
+        self.setMinimum(0)
+        self.setMaximum(100000)
+        self.setSingleStep(1.0)
+        self.setSuffix(" mm/N")
+        self._value = FreeCAD.Units.Quantity("0 mm/N")
+        self.valueChanged.connect(self._on_input_changed)
+
+    def _on_input_changed(self, value):
+        self._value = FreeCAD.Units.Quantity(f"{value} mm/N")
+        self.blockSignals(True)
+        self.setValue(self._value)
+        self.blockSignals(False)
+
+    def value(self):
+        return self._value
+
+    def setValue(self, value):
+        if isinstance(value, FreeCAD.Units.Quantity):
+            self._value = value
+        else:
+            self._value = FreeCAD.Units.Quantity(f"{value} mm/N")
+        super().setValue(self._value.getValueAs("mm/N"))
+
+
+class PowerSpinBox(QtGui.QDoubleSpinBox):
+    def __init__(self):
+        super().__init__()
+        self.setDecimals(2)
+        self.setMinimum(0)
+        self.setMaximum(100000)
+        self.setSingleStep(1.0)
+        self.setSuffix(" W")
+        self._value = FreeCAD.Units.Quantity("0 W")
+        self.valueChanged.connect(self._on_input_changed)
+
+    def _on_input_changed(self, value):
+        self._value = FreeCAD.Units.Quantity(f"{value} W")
+        self.blockSignals(True)
+        self.setValue(self._value)
+        self.blockSignals(False)
+
+    def value(self):
+        return self._value
+
+    def setValue(self, value):
+        if isinstance(value, FreeCAD.Units.Quantity):
+            self._value = value
+        else:
+            self._value = FreeCAD.Units.Quantity(f"{value} W")
+        super().setValue(self._value.getValueAs("W"))
+
+
+class RPMSpinBox(QtGui.QSpinBox):
+    def __init__(self):
+        super().__init__()
+        self.setMinimum(0)
+        self.setMaximum(200000)
+        self.setSingleStep(1)
+        self.setSuffix(" rpm")
+
+
+class TorqueSpinBox(QtGui.QDoubleSpinBox):
+    def __init__(self):
+        super().__init__()
+        self.setDecimals(2)
+        self.setMinimum(0)
+        self.setMaximum(100000)
+        self.setSingleStep(1.0)
+        self.setSuffix(" Nm")

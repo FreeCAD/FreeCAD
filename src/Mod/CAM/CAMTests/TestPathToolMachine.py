@@ -21,7 +21,7 @@
 # ***************************************************************************
 import unittest
 import FreeCAD
-from Path.Tool.machine.models.machine import Machine, MachineFeatureFlags
+from Path.Tool.machine.models.machine import Machine, MachineFeature
 from Path.Tool.machine.models.axis import LinearAxis, AngularAxis
 from Path.Tool.machine.models.mill import Mill
 from Path.Tool.machine.models.lathe import Lathe
@@ -74,7 +74,7 @@ class TestPathToolMachine(unittest.TestCase):
             post_processor="linuxcnc",
             post_processor_args="--args",
             id="custom-id",
-            feature_flags=[MachineFeatureFlags.MILLING_3D],
+            feature_flags=[MachineFeature.MILLING_3D],
         )
         custom_machine.add(LinearAxis("X"))
         self.assertEqual(custom_machine.name, "CustomMachine")
@@ -84,7 +84,7 @@ class TestPathToolMachine(unittest.TestCase):
         self.assertEqual(custom_machine.get_id(), "custom-id")
         self.assertEqual(len(custom_machine.get_children_by_type(Spindle)), 0)
         self.assertEqual(len(custom_machine.get_children_by_type(LinearAxis)), 1)
-        self.assertEqual(custom_machine.feature_flags, [MachineFeatureFlags.MILLING_3D])
+        self.assertEqual(custom_machine.feature_flags, [MachineFeature.MILLING_3D])
 
     def test_validation_valid(self):
         try:
@@ -121,6 +121,18 @@ class TestPathToolMachine(unittest.TestCase):
     def test_dump(self):
         with self.assertRaises(NotImplementedError):
             self.default_machine.dump(False)
+
+    def test_get_attribute_configs(self):
+        attrs = {a.name: a for a in self.default_machine.get_attribute_configs()}
+        self.assertIn("name", attrs)
+        self.assertEqual(attrs["name"].label, "Name")
+        self.assertEqual(attrs["name"].property_type, "App::PropertyString")
+        self.assertTrue(attrs["name"].readonly)
+
+        self.assertIn("label", attrs)
+        self.assertEqual(attrs["label"].label, "Label")
+        self.assertEqual(attrs["label"].property_type, "App::PropertyString")
+        self.assertTrue(attrs["label"].readonly)
 
 
 class TestMill(unittest.TestCase):
@@ -174,6 +186,43 @@ class TestMill(unittest.TestCase):
         self.assertIn("Rigidity X: 0.001 mm/N", output)
         self.assertIn("Rigidity Y: 0.001 mm/N", output)
         self.assertIn("MainSpindle", output)
+
+    def test_get_attribute_configs(self):
+        attrs = {a.name: a for a in self.default_mill.x_axis.get_attribute_configs()}
+        self.assertIn("name", attrs)
+        self.assertEqual(attrs["name"].label, "Name")
+        self.assertEqual(attrs["name"].property_type, "App::PropertyString")
+        self.assertTrue(attrs["name"].readonly)
+
+        self.assertIn("max_feed", attrs)
+        self.assertEqual(attrs["max_feed"].label, "Max Feed")
+        self.assertEqual(attrs["max_feed"].property_type, "App::PropertyVelocity")
+        self.assertEqual(attrs["max_feed"].min_value, 0.0)
+        self.assertFalse(attrs["max_feed"].readonly)
+
+        attrs = {a.name: a for a in self.default_mill.spindle_axis.get_attribute_configs()}
+        self.assertIn("name", attrs)
+        self.assertEqual(attrs["name"].label, "Name")
+        self.assertEqual(attrs["name"].property_type, "App::PropertyString")
+        self.assertTrue(attrs["name"].readonly)
+
+        self.assertIn("angular_rigidity", attrs)
+        self.assertEqual(attrs["angular_rigidity"].label, "Angular rigidity")
+        self.assertEqual(attrs["angular_rigidity"].property_type, "App::PropertyAngularRigidity")
+        self.assertEqual(attrs["angular_rigidity"].min_value, 0.0)
+        self.assertFalse(attrs["angular_rigidity"].readonly)
+
+        self.assertIn("rigidity_x", attrs)
+        self.assertEqual(attrs["rigidity_x"].label, "Rigidity X")
+        self.assertEqual(attrs["rigidity_x"].property_type, "App::PropertyRigidity")
+        self.assertEqual(attrs["rigidity_x"].min_value, 0.0)
+        self.assertFalse(attrs["rigidity_x"].readonly)
+
+        self.assertIn("rigidity_y", attrs)
+        self.assertEqual(attrs["rigidity_y"].label, "Rigidity Y")
+        self.assertEqual(attrs["rigidity_y"].property_type, "App::PropertyRigidity")
+        self.assertEqual(attrs["rigidity_y"].min_value, 0.0)
+        self.assertFalse(attrs["rigidity_y"].readonly)
 
 
 class TestLathe(unittest.TestCase):
@@ -264,6 +313,43 @@ class TestLathe(unittest.TestCase):
         self.assertIn("Rigidity X: 0.001 mm/N", output)
         self.assertIn("Rigidity Y: 0.001 mm/N", output)
         self.assertIn("MainSpindle", output)
+
+    def test_get_attribute_configs(self):
+        attrs = {a.name: a for a in self.default_lathe.spindles[0].get_attribute_configs()}
+        self.assertIn("name", attrs)
+        self.assertEqual(attrs["name"].label, "Name")
+        self.assertEqual(attrs["name"].property_type, "App::PropertyString")
+        self.assertTrue(attrs["name"].readonly)
+
+        self.assertIn("max_power", attrs)
+        self.assertEqual(attrs["max_power"].label, "Max Power")
+        self.assertEqual(attrs["max_power"].property_type, "App::PropertyPower")
+        self.assertEqual(attrs["max_power"].min_value, 0.0)
+        self.assertFalse(attrs["max_power"].readonly)
+
+        self.assertIn("min_rpm", attrs)
+        self.assertEqual(attrs["min_rpm"].label, "Min RPM")
+        self.assertEqual(attrs["min_rpm"].property_type, "App::PropertyAngularSpeed")
+        self.assertEqual(attrs["min_rpm"].min_value, 0.0)
+        self.assertFalse(attrs["min_rpm"].readonly)
+
+        self.assertIn("max_rpm", attrs)
+        self.assertEqual(attrs["max_rpm"].label, "Max RPM")
+        self.assertEqual(attrs["max_rpm"].property_type, "App::PropertyAngularSpeed")
+        self.assertEqual(attrs["max_rpm"].min_value, 0.0)
+        self.assertFalse(attrs["max_rpm"].readonly)
+
+        self.assertIn("max_torque", attrs)
+        self.assertEqual(attrs["max_torque"].label, "Max Torque")
+        self.assertEqual(attrs["max_torque"].property_type, "App::PropertyTorque")
+        self.assertEqual(attrs["max_torque"].min_value, 0.0)
+        self.assertFalse(attrs["max_torque"].readonly)
+
+        self.assertIn("peak_torque_rpm", attrs)
+        self.assertEqual(attrs["peak_torque_rpm"].label, "Peak Torque RPM")
+        self.assertEqual(attrs["peak_torque_rpm"].property_type, "App::PropertyAngularSpeed")
+        self.assertEqual(attrs["peak_torque_rpm"].min_value, 0.0)
+        self.assertFalse(attrs["peak_torque_rpm"].readonly)
 
 
 if __name__ == "__main__":

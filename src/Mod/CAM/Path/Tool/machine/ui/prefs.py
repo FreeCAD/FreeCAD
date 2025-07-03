@@ -24,8 +24,7 @@ from typing import List, cast
 import FreeCAD
 from ...camassets import cam_assets
 from ..models import Machine, Lathe, Mill
-from .lathe import LathePropertiesDialog
-from .mill import MillPropertiesDialog
+from .machine import MachinePropertiesDialog
 from ...toolbit.ui.tablecell import CompactTwoLineTableCell
 
 
@@ -117,20 +116,17 @@ class MachinePreferencesPage(QtGui.QWidget):
         machine_type = combo.currentText()
         if machine_type == "Lathe":
             machine = Lathe(translate("CAM", "My Lathe"))
-            dialog = LathePropertiesDialog(machine, self)
         elif machine_type == "Mill":
             machine = Mill(translate("CAM", "My 3-Axis CNC"))
-            dialog = MillPropertiesDialog(machine, self)
         else:
             raise AttributeError(f"invalid machine type {machine_type}. registered: {MachineTypes}")
+        dialog = MachinePropertiesDialog(machine, self)
         if not dialog.exec_():
             return
 
         # Save the new machine.
         cam_assets.add(dialog.machine)
         self.machines.append(dialog.machine)
-        for spindle in dialog.machine.spindles:
-            cam_assets.add(spindle)
         self.populate_machine_list()
 
     def edit_machine(self):
@@ -141,13 +137,7 @@ class MachinePreferencesPage(QtGui.QWidget):
 
         current_row = self.machine_list.row(current_item)
         machine = self.machines[current_row]
-        machine_type = machine.get_type()
-        if machine_type == "Lathe":
-            dialog = LathePropertiesDialog(machine, self)
-        elif machine_type == "Mill":
-            dialog = MillPropertiesDialog(machine, self)
-        else:
-            raise AttributeError(f"invalid machine type {machine_type}. registered: {MachineTypes}")
+        dialog = MachinePropertiesDialog(machine, self)
         if dialog.exec_():
             self.populate_machine_list()
 
@@ -177,6 +167,4 @@ class MachinePreferencesPage(QtGui.QWidget):
         """Save machine and spindle configurations to preferences."""
         for machine in self.machines:
             cam_assets.add(machine)
-            for spindle in machine.spindles:
-                cam_assets.add(spindle)
         return True

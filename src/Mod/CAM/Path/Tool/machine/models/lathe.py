@@ -21,10 +21,13 @@
 # ***************************************************************************
 from typing import Optional, cast, List
 import FreeCAD
-from .machine import Machine, MachineFeatureFlags
+from .machine import Machine, MachineFeature
 from .component import MachineComponent
 from .axis import LinearAxis, AngularAxis
 from .spindle import Spindle
+
+
+translate = FreeCAD.Qt.translate
 
 
 class Lathe(Machine):
@@ -40,7 +43,7 @@ class Lathe(Machine):
         post_processor: str = "generic",
         post_processor_args: str = "",
         icon: Optional[str] = None,
-        feature_flags: Optional[List[MachineFeatureFlags]] = None,
+        feature_flags: Optional[List[MachineFeature]] = None,
         id: Optional[str] = None,
     ) -> None:
         """
@@ -53,6 +56,8 @@ class Lathe(Machine):
             post_processor_args: Arguments for the post processor.
             id: Unique identifier (optional).
         """
+        if feature_flags is None:
+            feature_flags = [MachineFeature.TURNING_2D]
         super().__init__(
             name=name,
             label=label,
@@ -63,11 +68,11 @@ class Lathe(Machine):
             id=id,
         )
 
-        x_axis = LinearAxis("X")
-        z_axis = LinearAxis("Z")
-        a_axis = AngularAxis("A")
-        main_spindle = Spindle("MainSpindle", FreeCAD.Qt.translate("CAM", "Main spindle"))
-        tool_holder = MachineComponent("ToolHolder")
+        x_axis = LinearAxis("X", label=FreeCAD.Qt.translate("CAM", "X-axis"))
+        z_axis = LinearAxis("Z", label=translate("CAM", "Z-axis"))
+        a_axis = AngularAxis("A", label=translate("CAM", "A-axis"))
+        main_spindle = Spindle("MainSpindle", label=translate("CAM", "Main spindle"))
+        tool_holder = MachineComponent("ToolHolder", label=translate("CAM", "Tool holder"))
 
         self.add(main_spindle)
         main_spindle.add(a_axis)

@@ -23,66 +23,11 @@ from PySide import QtGui
 import FreeCAD
 import FreeCADGui
 from ...spindle import Spindle
+from .component import MachineComponentWidget
 
 
-translate = FreeCAD.Qt.translate
-
-
-class SpindlePropertiesWidget(QtGui.QWidget):
-    """Widget for editing spindle properties."""
+class SpindleWidget(MachineComponentWidget):
+    """Widget for editing spindle properties using the generic component widget."""
 
     def __init__(self, spindle: Spindle, parent=None):
-        super().__init__(parent)
-        self.spindle = spindle
-        self.layout = QtGui.QFormLayout(self)
-        ui = FreeCADGui.UiLoader()
-
-        # Label
-        self._label_edit = QtGui.QLineEdit(self.spindle.label)
-        self.layout.addRow(translate("CAM", "Label"), self._label_edit)
-
-        # Max Power
-        self._max_power_edit = ui.createWidget("Gui::QuantitySpinBox")
-        self._max_power_edit.setProperty("value", self.spindle.max_power)
-        self.layout.addRow(translate("CAM", "Maximum power"), self._max_power_edit)
-
-        # Min RPM
-        self._min_rpm_edit = QtGui.QDoubleSpinBox()
-        self._min_rpm_edit.setRange(0.0, 1000000.0)
-        self._min_rpm_edit.setDecimals(0)
-        self._min_rpm_edit.setSuffix(" RPM")
-        self._min_rpm_edit.setValue(self.spindle.min_rpm)
-        self.layout.addRow(translate("CAM", "Minimum RPM"), self._min_rpm_edit)
-
-        # Max RPM
-        self._max_rpm_edit = QtGui.QDoubleSpinBox()
-        self._max_rpm_edit.setRange(0.0, 1000000.0)
-        self._max_rpm_edit.setDecimals(0)
-        self._max_rpm_edit.setSuffix(" RPM")
-        self._max_rpm_edit.setValue(self.spindle.max_rpm)
-        self.layout.addRow(translate("CAM", "Maximum RPM"), self._max_rpm_edit)
-
-        # Max Torque
-        self._max_torque_edit = QtGui.QDoubleSpinBox()
-        self._max_torque_edit.setRange(0.0, 1000.0)
-        self._max_torque_edit.setDecimals(2)
-        self._max_torque_edit.setSuffix(" Nm")
-        self._max_torque_edit.setValue(self.spindle.max_torque)
-        self.layout.addRow(translate("CAM", "Maximum torque"), self._max_torque_edit)
-
-        # Peak Torque RPM
-        self._peak_torque_rpm_edit = QtGui.QDoubleSpinBox()
-        self._peak_torque_rpm_edit.setRange(0.0, 1000000.0)
-        self._peak_torque_rpm_edit.setDecimals(0)
-        self._peak_torque_rpm_edit.setSuffix(" RPM")
-        self._peak_torque_rpm_edit.setValue(self.spindle.peak_torque_rpm)
-        self.layout.addRow(translate("CAM", "Peak torque RPM"), self._peak_torque_rpm_edit)
-
-    def update_spindle(self):
-        """Update the spindle object with values from the form fields."""
-        self.spindle.label = self._label_edit.text()
-        self.spindle.max_power = self._max_power_edit.property("value")
-        self.spindle.min_rpm = self._min_rpm_edit.value()
-        self.spindle.max_rpm = self._max_rpm_edit.value()
-        self.spindle.max_torque = self._max_torque_edit.value()
-        self.spindle.peak_torque_rpm = self._peak_torque_rpm_edit.value()
+        super().__init__(spindle, spindle.get_attribute_configs(), parent)

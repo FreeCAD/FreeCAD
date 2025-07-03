@@ -22,7 +22,7 @@
 from PySide import QtGui, QtCore
 import FreeCAD
 from ..models import Spindle
-from .spindle_prop import SpindlePropertiesWidget
+from .spindle_prop import SpindleWidget
 
 
 class SpindleEditorDialog(QtGui.QDialog):
@@ -35,7 +35,7 @@ class SpindleEditorDialog(QtGui.QDialog):
         self.layout = QtGui.QVBoxLayout(self)
 
         # Spindle properties widget
-        self.props_widget = SpindlePropertiesWidget(self.spindle, self)
+        self.props_widget = SpindleWidget(self.spindle, self)
         self.layout.addWidget(self.props_widget)
 
         # Buttons
@@ -47,5 +47,6 @@ class SpindleEditorDialog(QtGui.QDialog):
         self.layout.addWidget(buttons)
 
     def on_accepted(self):
-        self.props_widget.update_spindle()
-        self.accept()
+        if self.props_widget.validate_inputs():
+            self.props_widget.update_component_values()
+            self.accept()

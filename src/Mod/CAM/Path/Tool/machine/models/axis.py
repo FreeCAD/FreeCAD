@@ -1,7 +1,31 @@
+# -*- coding: utf-8 -*-
+# ***************************************************************************
+# *   Copyright (c) 2025 Samuel Abels <knipknap@gmail.com>                  *
+# *                                                                         *
+# *   This program is free software; you can redistribute it and/or modify  *
+# *   it under the terms of the GNU Lesser General Public License (LGPL)    *
+# *   as published by the Free Software Foundation; either version 2 of     *
+# *   the License, or (at your option) any later version.                   *
+# *   for detail see the LICENCE text file.                                 *
+# *                                                                         *
+# *   This program is distributed in the hope that it will be useful,       *
+# *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+# *   GNU Library General Public License for more details.                  *
+# *                                                                         *
+# *   You should have received a copy of the GNU Library General Public     *
+# *   License along with this program; if not, write to the Free Software   *
+# *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
+# *   USA                                                                   *
+# *                                                                         *
+# ***************************************************************************
 import FreeCAD
 from abc import ABC
-from typing import Dict, Optional
-from .component import MachineComponent
+from typing import Dict, List, Optional
+from .component import MachineComponent, AttributeConfig
+
+
+translate = FreeCAD.Qt.translate
 
 
 class Axis(MachineComponent, ABC):
@@ -20,11 +44,16 @@ class LinearAxis(Axis):
     def __init__(
         self,
         name: str,
+        label: Optional[str] = None,
         max_feed: FreeCAD.Units.Quantity = FreeCAD.Units.Quantity("1000 mm/min"),
         icon: Optional[str] = None,
     ):
-        super().__init__(name, icon)
+        super().__init__(name, label=label, icon=icon)
         self.max_feed = max_feed
+
+    @property
+    def type(self):
+        return translate("CAM", "Linear Axis")
 
     def validate(self) -> None:
         """Validate parameters."""
@@ -53,6 +82,16 @@ class LinearAxis(Axis):
             max_feed=FreeCAD.Units.Quantity(data["max_feed"]),
         )
 
+    def get_attribute_configs(self) -> List[AttributeConfig]:
+        return super().get_attribute_configs() + [
+            AttributeConfig(
+                name="max_feed",
+                label="Max Feed",
+                property_type="App::PropertyVelocity",
+                min_value=0.0,
+            )
+        ]
+
 
 class AngularAxis(Axis):
     """
@@ -62,6 +101,7 @@ class AngularAxis(Axis):
     def __init__(
         self,
         name: str,
+        label: Optional[str] = None,
         angular_rigidity: FreeCAD.Units.Quantity = FreeCAD.Units.Quantity("0.5 °"),
         rigidity_x: FreeCAD.Units.Quantity = FreeCAD.Units.Quantity("0.001 mm/N"),
         rigidity_y: FreeCAD.Units.Quantity = FreeCAD.Units.Quantity("0.001 mm/N"),
@@ -74,10 +114,14 @@ class AngularAxis(Axis):
         every direction and choosing the highest value.
         FreeCAD quantities do not support deg/N, so we store it as deg internally.
         """
-        super().__init__(name, icon)
+        super().__init__(name, label=label, icon=icon)
         self.angular_rigidity = angular_rigidity
         self.rigidity_x = rigidity_x
         self.rigidity_y = rigidity_y
+
+    @property
+    def type(self):
+        return translate("CAM", "Angular Axis")
 
     def validate(self) -> None:
         """Validate parameters."""
@@ -115,3 +159,25 @@ class AngularAxis(Axis):
             rigidity_x=FreeCAD.Units.Quantity(data["rigidity_x"]),
             rigidity_y=FreeCAD.Units.Quantity(data["rigidity_y"]),
         )
+
+    def get_attribute_configs(self) -> List[AttributeConfig]:
+        return super().get_attribute_configs() + [
+            AttributeConfig(
+                name="angular_rigidity",
+                label=translate("CAM", "Angular rigidity"),
+                property_type="App::PropertyAngularRigidity",
+                min_value=0.0,
+            ),
+            AttributeConfig(
+                name="rigidity_x",
+                label=translate("CAM", "Rigidity X"),
+                property_type="App::PropertyRigidity",
+                min_value=0.0,
+            ),
+            AttributeConfig(
+                name="rigidity_y",
+                label=translate("CAM", "Rigidity Y"),
+                property_type="App::PropertyRigidity",
+                min_value=0.0,
+            ),
+        ]

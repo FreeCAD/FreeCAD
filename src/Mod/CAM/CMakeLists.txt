@@ -259,15 +259,16 @@ SET(PathPythonToolsMachineSerializers_SRCS
 
 SET(PathPythonToolsMachineUi_SRCS
     Path/Tool/machine/ui/__init__.py
-    Path/Tool/machine/ui/lathe.py
+    Path/Tool/machine/ui/angular_axis.py
+    Path/Tool/machine/ui/component.py
     Path/Tool/machine/ui/machine.py
-    Path/Tool/machine/ui/mill.py
     Path/Tool/machine/ui/post.py
     Path/Tool/machine/ui/prefs.py
     Path/Tool/machine/ui/rigidity.py
     Path/Tool/machine/ui/spinbox.py
     Path/Tool/machine/ui/spindle_edit.py
     Path/Tool/machine/ui/spindle_prop.py
+    Path/Tool/machine/ui/tree.py
 )
 
 SET(PathPythonToolsShape_SRCS

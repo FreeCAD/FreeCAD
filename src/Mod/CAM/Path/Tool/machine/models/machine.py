@@ -31,9 +31,9 @@ from .axis import Axis
 from .spindle import Spindle
 
 
-class MachineFeatureFlags(Enum):
-    TURNING = "TURNING"
-    MILLING_3D = "3DMILLING"
+class MachineFeature(Enum):
+    TURNING_2D = "TURNING_2D"
+    MILLING_3D = "MILLING_3D"
     RIGID_TAPPING = "RIGID_TAPPING"
 
 
@@ -51,7 +51,7 @@ class Machine(MachineComponent, Asset, ABC):
         post_processor: str = "generic",
         post_processor_args: str = "",
         icon: Optional[str] = None,
-        feature_flags: Optional[List[MachineFeatureFlags]] = None,
+        feature_flags: Optional[List[MachineFeature]] = None,
         id: Optional[str] = None,
     ) -> None:
         """
@@ -84,12 +84,12 @@ class Machine(MachineComponent, Asset, ABC):
         raise NotImplementedError
 
     @property
-    def feature_flags(self) -> List[MachineFeatureFlags]:
+    def feature_flags(self) -> List[MachineFeature]:
         """Returns the machine's feature flags."""
         return self._feature_flags
 
     @feature_flags.setter
-    def feature_flags(self, value: List[MachineFeatureFlags]):
+    def feature_flags(self, value: List[MachineFeature]):
         self._feature_flags = value
 
     @property
@@ -161,7 +161,7 @@ class Machine(MachineComponent, Asset, ABC):
     @classmethod
     def _from_dict_self(cls, data: Dict) -> "Machine":
         instance = cls(name=data["name"], label=data.get("label"), id=data["id"])
-        feature_flags = [MachineFeatureFlags(f) for f in data.get("feature_flags", [])]
+        feature_flags = [MachineFeature(f) for f in data.get("feature_flags", [])]
         instance.post_processor = data.get("post_processor", instance.post_processor)
         instance.post_processor_args = (
             data.get("post_processor_args") or instance.post_processor_args

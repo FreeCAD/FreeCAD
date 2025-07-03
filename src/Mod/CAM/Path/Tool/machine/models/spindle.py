@@ -1,7 +1,29 @@
+# -*- coding: utf-8 -*-
+# ***************************************************************************
+# *   Copyright (c) 2025 Samuel Abels <knipknap@gmail.com>                  *
+# *                                                                         *
+# *   This program is free software; you can redistribute it and/or modify  *
+# *   it under the terms of the GNU Lesser General Public License (LGPL)    *
+# *   as published by the Free Software Foundation; either version 2 of     *
+# *   the License, or (at your option) any later version.                   *
+# *   for detail see the LICENCE text file.                                 *
+# *                                                                         *
+# *   This program is distributed in the hope that it will be useful,       *
+# *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+# *   GNU Library General Public License for more details.                  *
+# *                                                                         *
+# *   You should have received a copy of the GNU Library General Public     *
+# *   License along with this program; if not, write to the Free Software   *
+# *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
+# *   USA                                                                   *
+# *                                                                         *
+# ***************************************************************************
 import math
-from typing import Dict, Optional
+from typing import Dict, List, Optional
+import FreeCAD
 from FreeCAD import Units
-from .component import MachineComponent
+from .component import MachineComponent, AttributeConfig
 
 
 class Spindle(MachineComponent):
@@ -26,6 +48,10 @@ class Spindle(MachineComponent):
         self._max_rpm = max_rpm
         self._max_torque = max_torque
         self._peak_torque_rpm = peak_torque_rpm
+
+    @property
+    def type(self):
+        return FreeCAD.Qt.translate("CAM", "Spindle")
 
     @property
     def max_power(self) -> Units.Quantity:
@@ -143,3 +169,37 @@ class Spindle(MachineComponent):
         instance.max_torque = data.get("max_torque", instance.max_torque)
         instance.peak_torque_rpm = data.get("peak_torque_rpm", instance.peak_torque_rpm)
         return instance
+
+    def get_attribute_configs(self) -> List[AttributeConfig]:
+        return super().get_attribute_configs() + [
+            AttributeConfig(
+                name="max_power",
+                label="Max Power",
+                property_type="App::PropertyPower",
+                min_value=0.0,
+            ),
+            AttributeConfig(
+                name="min_rpm",
+                label="Min RPM",
+                property_type="App::PropertyAngularSpeed",
+                min_value=0.0,
+            ),
+            AttributeConfig(
+                name="max_rpm",
+                label="Max RPM",
+                property_type="App::PropertyAngularSpeed",
+                min_value=0.0,
+            ),
+            AttributeConfig(
+                name="max_torque",
+                label="Max Torque",
+                property_type="App::PropertyTorque",
+                min_value=0.0,
+            ),
+            AttributeConfig(
+                name="peak_torque_rpm",
+                label="Peak Torque RPM",
+                property_type="App::PropertyAngularSpeed",
+                min_value=0.0,
+            ),
+        ]

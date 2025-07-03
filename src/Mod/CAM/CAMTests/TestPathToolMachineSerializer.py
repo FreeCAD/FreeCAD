@@ -27,7 +27,7 @@ import FreeCAD
 from Path.Tool.assets.asset import Asset
 from Path.Tool.assets.uri import AssetUri
 from Path.Tool.machine import Lathe, Mill
-from Path.Tool.machine.models.machine import MachineFeatureFlags
+from Path.Tool.machine.models.machine import MachineFeature
 from Path.Tool.machine.serializers import MachineSerializer
 from Path.Tool.machine.models.spindle import Spindle
 
@@ -71,7 +71,7 @@ class TestPathToolMachineSerializer(unittest.TestCase):
             name="MyTestLathe",
             label="My Test Lathe",
             post_processor="linuxcnc",
-            feature_flags=[MachineFeatureFlags.TURNING],
+            feature_flags=[MachineFeature.TURNING_2D],
             id="lathe-test-01",
         )
         self.test_lathe.x_axis.max_feed = FreeCAD.Units.Quantity("1000 mm/min")
@@ -85,7 +85,7 @@ class TestPathToolMachineSerializer(unittest.TestCase):
             name="MyTestMill",
             label="My Test Mill",
             post_processor="grbl",
-            feature_flags=[MachineFeatureFlags.MILLING_3D, MachineFeatureFlags.RIGID_TAPPING],
+            feature_flags=[MachineFeature.MILLING_3D, MachineFeature.RIGID_TAPPING],
             id="mill-test-01",
         )
         self.test_mill.x_axis.max_feed = FreeCAD.Units.Quantity("2000 mm/min")
@@ -101,7 +101,7 @@ name: StandardLathe
 label: Standard Lathe
 icon: lathe
 feature_flags:
-  - TURNING
+  - TURNING_2D
 children:
   - type: Spindle
     name: MainSpindle
@@ -133,7 +133,7 @@ label: Standard 3-Axis Mill
 icon: mill
 post_processor: grbl
 feature_flags:
-  - 3DMILLING
+  - MILLING_3D
   - RIGID_TAPPING
 children:
   - type: LinearAxis
@@ -169,7 +169,7 @@ children:
         data = yaml.safe_load(serialized_data.decode("utf-8"))
         self.assertEqual(data["name"], "MyTestLathe")
         self.assertEqual(data["icon"], None)
-        self.assertIn("TURNING", data["feature_flags"])
+        self.assertIn("TURNING_2D", data["feature_flags"])
         self.assertEqual(data["post_processor"], "linuxcnc")
         self.assertEqual(data["post_processor_args"], "")
 
@@ -201,7 +201,7 @@ children:
         data = yaml.safe_load(serialized_data.decode("utf-8"))
         self.assertEqual(data["name"], "MyTestMill")
         self.assertEqual(data["icon"], None)
-        self.assertIn("3DMILLING", data["feature_flags"])
+        self.assertIn("MILLING_3D", data["feature_flags"])
         self.assertIn("RIGID_TAPPING", data["feature_flags"])
         self.assertEqual(data["post_processor"], "grbl")
         self.assertEqual(data["post_processor_args"], "")
@@ -219,15 +219,16 @@ children:
         self.assertEqual(z_axis["name"], "Z")
         self.assertEqual(z_axis["max_feed"], f"{1500/60:.2f} mm/s")
 
-        spindle_a_axis = z_axis["children"][0]
+        main_spindle = z_axis["children"][0]
+        self.assertEqual(main_spindle["name"], "MainSpindle")
+        self.assertEqual(main_spindle["max_rpm"], 60000.0)
+
+        spindle_a_axis = main_spindle["children"][0]
         self.assertEqual(spindle_a_axis["name"], "A")
+        self.assertEqual(spindle_a_axis["label"], "Spindle-axis")
         self.assertEqual(spindle_a_axis["angular_rigidity"], "0.45°/N")
         self.assertEqual(spindle_a_axis["rigidity_x"], "0.001 mm/N")
         self.assertEqual(spindle_a_axis["rigidity_y"], "0.001 mm/N")
-
-        main_spindle = spindle_a_axis["children"][0]
-        self.assertEqual(main_spindle["name"], "MainSpindle")
-        self.assertEqual(main_spindle["max_rpm"], 60000.0)
 
     def test_extract_dependencies(self):
         """Test dependency extraction for a machine."""
@@ -253,7 +254,7 @@ children:
         self.assertIsInstance(deserialized_lathe, Lathe)
         self.assertEqual(deserialized_lathe.label, "Standard Lathe")
         self.assertEqual(deserialized_lathe.icon, "lathe")
-        self.assertIn(MachineFeatureFlags.TURNING, deserialized_lathe.feature_flags)
+        self.assertIn(MachineFeature.TURNING_2D, deserialized_lathe.feature_flags)
 
         # Check axes properties
         self.assertEqual(deserialized_lathe.x_axis.name, "X")
@@ -288,8 +289,8 @@ children:
         self.assertIsInstance(deserialized_mill, Mill)
         self.assertEqual(deserialized_mill.label, "Standard 3-Axis Mill")
         self.assertEqual(deserialized_mill.icon, "mill")
-        self.assertIn(MachineFeatureFlags.MILLING_3D, deserialized_mill.feature_flags)
-        self.assertIn(MachineFeatureFlags.RIGID_TAPPING, deserialized_mill.feature_flags)
+        self.assertIn(MachineFeature.MILLING_3D, deserialized_mill.feature_flags)
+        self.assertIn(MachineFeature.RIGID_TAPPING, deserialized_mill.feature_flags)
         self.assertEqual(deserialized_mill.post_processor, "grbl")
         self.assertEqual(deserialized_mill.post_processor_args, "")
 
