@@ -1547,7 +1547,8 @@ StdCmdPlacement::StdCmdPlacement()
 {
     sGroup        = "Edit";
     sMenuText     = QT_TR_NOOP("P&lacement…");
-    sToolTipText  = QT_TR_NOOP("Adjusts the placement of the selected object");
+    sToolTipText  = QT_TR_NOOP("Opens the placement editor to adjust the placement of the selected object");
+
     sStatusTip    = sToolTipText;
     sWhatsThis    = "Std_Placement";
     sPixmap       = "Std_Placement";
