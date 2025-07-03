@@ -4,8 +4,8 @@ ABOUT
 Revised stylesheet based on the original from Pablo Gil Fernández made by MisterMaker
 
 KNOWN BUGS and TO DO
-======================================================
-======================================================
+=============================================================================================================
+- The stylesheet is not compatible with older <1.1 versions of FreeCAD.
 Please, follow the link to get updated information:
 https://forum.freecad.org/viewtopic.php?t=78431
 
@@ -16,7 +16,13 @@ INSTALLATION WHEN NECESSARY
   WINDOWS = C:/[INSTALLATION_PATH]/FreeCAD/data/Gui/Stylesheets/
   LINUX = /home/[YOUR_USER_NAME]/.FreeCAD/Gui/Stylesheets/
 
+2) Open FreeCAD and go to Edit > Preferences > General > Appearance > Stylesheet
+3) Select the stylesheet you want to use from the dropdown menu
+4) Click Apply and then OK
+5) You need to set the theme to implement the token system.
+6) Restart FreeCAD to apply the changes.
 ============================================================================================================
+
 FOLLOWING CODES ARE CHANGED IN THE SETTINGS:
 @PrimaryColorUIColor
 @UserHighlight1Color
@@ -49,9 +55,8 @@ FOLLOWING CODES ARE CHANGED IN THE SETTINGS:
 @TextForegroundColor
 @TextUrlColor
 @ToolbarButtonsPadding
+
 ------------------------------------------------------------------------------------------------------
-
-
 
   See Qt documentation:
 
@@ -227,6 +232,12 @@ QStatusBar QToolTip {
 
 QStatusBar QLabel {
   background-color: transparent;
+}
+
+QStatusBar QPushButton {
+    min-width: 0;
+    padding-left: 8px;
+    padding-right: 8px;
 }
 
 /* QCheckBox --------------------------------------------------------------
