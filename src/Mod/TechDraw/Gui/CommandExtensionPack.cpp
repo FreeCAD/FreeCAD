@@ -274,7 +274,7 @@ CmdTechDrawExtensionCircleCenterLinesGroup::CmdTechDrawExtensionCircleCenterLine
     sAppModule = "TechDraw";
     sGroup = QT_TR_NOOP("TechDraw");
     sMenuText = QT_TR_NOOP("Circle Centerlines");
-    sToolTipText = QT_TR_NOOP("Adds centerlines to selected circles and arcs:");
+    sToolTipText = QT_TR_NOOP("Adds centerlines to selected circles and arcs");
     sWhatsThis = "TechDraw_ExtensionCircleCenterLinesGroup";
     sStatusTip = sMenuText;
 }
