@@ -235,8 +235,9 @@ public:
      * if 1) any new transaction is created with a different ID, or 2) any
      * transaction with the current active transaction ID is either committed or
      * aborted
+     * returns true if it succeeded in closing the transaction
      */
-    void closeActiveTransaction(bool abort=false, int id=0);
+    bool closeActiveTransaction(bool abort=false, int id=0);
     //@}
 
     // NOLINTBEGIN
@@ -687,17 +688,19 @@ private:
     friend class AutoTransaction;
 
     std::map<int, TransactionDescription> _activeTransactionDescriptions; // Maps transaction ID to transaction name
-    std::string _activeTransactionName;
-    int _activeTransactionID{0};
-    int _activeTransactionGuard{0};
+    // std::string _activeTransactionName;
+    // int _activeTransactionID{0};
+    // int _activeTransactionGuard{0};
     int currentlyClosingId {0};
 
     // This is the transaction ID for a global transaction
     // Documents will take this ID if it is non-zero
     // and generate their own otherwise
     int _globalTransactionID { 0 };
+    bool _globalTransactionTmpName {false};
+    std::string _globalTransactionName;
 
-    bool _activeTransactionTmpName{false};
+    // bool _activeTransactionTmpName{false};
 
     Base::ProgressIndicator _progressIndicator;
 
