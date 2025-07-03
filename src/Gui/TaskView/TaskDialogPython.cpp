@@ -115,7 +115,7 @@ Py::Object ControlPy::showDialog(const Py::Tuple& args)
 {
     PyObject* arg0 = nullptr;
     PyObject* docPy = nullptr;
-    if (!PyArg_ParseTuple(args.ptr(), "O|O!", &(Gui::DocumentPy::Type),  &docPy)) {
+    if (!PyArg_ParseTuple(args.ptr(), "O|O!", &arg0, &(Gui::DocumentPy::Type),  &docPy)) {
         throw Py::Exception();
     }
 
