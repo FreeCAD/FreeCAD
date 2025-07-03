@@ -1735,7 +1735,7 @@ CmdTechDrawSpreadsheetView::CmdTechDrawSpreadsheetView() : Command("TechDraw_Spr
 {
     // setting the
     sGroup = QT_TR_NOOP("TechDraw");
-    sMenuText = QT_TR_NOOP("Insert Spreadsheet View");
+    sMenuText = QT_TR_NOOP("Spreadsheet View");
     sToolTipText = QT_TR_NOOP("Inserts a view of a spreadsheet in the current page");
     sWhatsThis = "TechDraw_SpreadsheetView";
     sStatusTip = sToolTipText;
