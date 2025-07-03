@@ -74,8 +74,10 @@ ProfileBased::ProfileBased()
     ADD_PROPERTY_TYPE(Profile, (nullptr), "SketchBased", App::Prop_None, "Reference to sketch");
     ADD_PROPERTY_TYPE(Midplane, (0), "SketchBased", App::Prop_None, "Extrude symmetric to sketch face");
     ADD_PROPERTY_TYPE(Reversed, (0), "SketchBased", App::Prop_None, "Reverse extrusion direction");
-    ADD_PROPERTY_TYPE(UpToFace, (nullptr), "SketchBased", (App::PropertyType)(App::Prop_None), "Face where feature will end");
-    ADD_PROPERTY_TYPE(UpToShape, (nullptr), "SketchBased", (App::PropertyType)(App::Prop_None), "Shape where feature will end");
+    ADD_PROPERTY_TYPE(UpToFace, (nullptr), "Side1", (App::PropertyType)(App::Prop_None), "Face where feature will end");
+    ADD_PROPERTY_TYPE(UpToShape, (nullptr), "Side1", (App::PropertyType)(App::Prop_None), "Shape where feature will end");
+    ADD_PROPERTY_TYPE(UpToFace2, (nullptr), "Side2", (App::PropertyType)(App::Prop_None), "Face where feature will end");
+    ADD_PROPERTY_TYPE(UpToShape2, (nullptr), "Side2", (App::PropertyType)(App::Prop_None), "Shape where feature will end");
     ADD_PROPERTY_TYPE(AllowMultiFace, (false), "SketchBased", App::Prop_None, "Allow multiple faces in profile");
 }
 
@@ -84,7 +86,10 @@ short ProfileBased::mustExecute() const
     if (Profile.isTouched() ||
         Midplane.isTouched() ||
         Reversed.isTouched() ||
-        UpToFace.isTouched())
+        UpToFace.isTouched() ||
+        UpToFace2.isTouched() ||
+        UpToShape.isTouched() ||
+        UpToShape2.isTouched())
         return 1;
     return PartDesign::FeatureAddSub::mustExecute();
 }
