@@ -78,7 +78,7 @@ class TaskMoveView:
         dlg = Gui.PySideUic.loadUi(_dlgPath)
         self.dialogOpen = True
         dlg.lPrompt.setText(translate("TechDraw_MoveView", "Select view to move from list."))
-        dlg.setWindowTitle(translate("TechDraw_MoveView", "Select view"))
+        dlg.setWindowTitle(translate("TechDraw_MoveView", "Select View"))
 
         views = [x for x in App.ActiveDocument.Objects if x.isDerivedFrom("TechDraw::DrawView")]
         for v in views:
