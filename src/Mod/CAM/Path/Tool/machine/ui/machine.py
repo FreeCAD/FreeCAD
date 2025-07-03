@@ -23,13 +23,14 @@ import itertools
 from PySide import QtGui, QtCore
 from PySide.QtGui import QComboBox, QPushButton, QHBoxLayout
 import FreeCAD
-import FreeCADGui
 import Path
-from ...spindle import Spindle
-from ...spindle.ui.editor import SpindleEditorDialog
-from ..models.machine import Machine, LinearAxis, AngularAxis
+from ..models.axis import LinearAxis, AngularAxis
+from ..models.machine import Machine
+from ..models.spindle import Spindle
+from .spindle_edit import SpindleEditorDialog
 from .post import PostProcessorSettingsDialog
 from .rigidity import RigidityWizard
+from .spinbox import VelocitySpinBox
 
 
 translate = FreeCAD.Qt.translate
@@ -58,8 +59,6 @@ class MachinePropertiesDialog(QtGui.QDialog):
         general_layout.addRow(translate("CAM", "Label"), self.label_edit)
         self._update_window_title()
 
-        ui = FreeCADGui.UiLoader()
-
         self.post_processor_combo = QComboBox()
         available_post_processors = Path.Preferences.allAvailablePostProcessors()
         self.post_processor_combo.addItems(available_post_processors)
@@ -80,107 +79,89 @@ class MachinePropertiesDialog(QtGui.QDialog):
         general_group.setLayout(general_layout)
         self.layout.addWidget(general_group)
 
-        # Axis Properties group
-        axis_properties_group = QtGui.QGroupBox(translate("CAM", "Axis Properties"))
-        axis_properties_layout = QtGui.QGridLayout()
+        # Linear Axis Properties group
+        linear_axis_group = QtGui.QGroupBox(translate("CAM", "Linear Axis Settings"))
+        linear_axis_layout = QtGui.QGridLayout()
         self.axis_edits = {}
 
         # Add column headers for the grid
         col = itertools.count(1)
-        axis_properties_layout.addWidget(QtGui.QLabel(translate("CAM", "Minimum")), 0, next(col))
-        axis_properties_layout.addWidget(QtGui.QLabel(translate("CAM", "Maximum")), 0, next(col))
-        if self.has_rigidity:
-            axis_properties_layout.addWidget(
-                QtGui.QLabel(translate("CAM", "Rigidity")), 0, next(col)
-            )
-        axis_properties_layout.addWidget(
-            QtGui.QLabel(translate("CAM", "Maximum feed")), 0, next(col)
-        )
+        linear_axis_layout.addWidget(QtGui.QLabel(translate("CAM", "Maximum feed")), 0, next(col))
 
         # Linear Axes
-        for i, (axis_name, axis) in enumerate(sorted(machine.axes.items())):
-            if not isinstance(axis, LinearAxis):
-                continue
+        for i, axis in enumerate(machine.find_children_by_type(LinearAxis)):
             row = i + 1  # Start from row 1 after headers
 
             col = itertools.count(0)
-            axis_properties_layout.addWidget(
-                QtGui.QLabel(f"{axis_name.capitalize()}-axis"), row, next(col)
+            linear_axis_layout.addWidget(
+                QtGui.QLabel(f"{axis.name.capitalize()}-axis"), row, next(col)
             )
 
-            start_edit = ui.createWidget("Gui::QuantitySpinBox")
-            start_edit.setProperty("value", axis.start)
-            axis_properties_layout.addWidget(start_edit, row, next(col))
+            max_feed_edit = VelocitySpinBox()
+            max_feed_edit.setValue(axis.max_feed)
+            linear_axis_layout.addWidget(max_feed_edit, row, next(col))
 
-            end_edit = ui.createWidget("Gui::QuantitySpinBox")
-            end_edit.setProperty("unit", "mm")
-            end_edit.setProperty("value", axis.end or FreeCAD.Units.Quantity("0 mm"))
-            axis_properties_layout.addWidget(end_edit, row, next(col))
+            self.axis_edits[axis.name] = max_feed_edit
+        linear_axis_layout.setColumnStretch(0, 1)
+        linear_axis_layout.setColumnStretch(1, 4)
 
-            rigidity_edit = None
-            if self.has_rigidity:
-                # Use FreeCAD.Units.Quantity does not support distance/N, so
-                # we use QDoubleSpinBox for rigidity to avoid unit issues
-                rigidity_edit = QtGui.QDoubleSpinBox()
-                rigidity_edit.setDecimals(6)
-                rigidity_edit.setMinimum(0.0)
-                rigidity_edit.setValue(axis.rigidity.Value)
-                rigidity_edit.setSuffix(" mm/N")
-                axis_properties_layout.addWidget(rigidity_edit, row, next(col))
+        linear_axis_group.setLayout(linear_axis_layout)
+        self.layout.addWidget(linear_axis_group)
 
-            max_feed_edit = ui.createWidget("Gui::QuantitySpinBox")
-            max_feed_edit.setProperty("value", axis.max_feed)
-            axis_properties_layout.addWidget(max_feed_edit, row, next(col))
-
-            self.axis_edits[axis_name] = (
-                start_edit,
-                end_edit,
-                rigidity_edit,
-                max_feed_edit,
-            )
-
-        # Angular axis
-        # Determine the starting row for angular axes based on the number of linear axes
-        angular_axis_start_row = (
-            len([a for a in machine.axes.values() if isinstance(a, LinearAxis)]) + 1
-        )
-        row = angular_axis_start_row
         if self.has_rigidity:
-            for i, (axis_name, axis) in enumerate(sorted(machine.axes.items())):
-                if not isinstance(axis, AngularAxis):
-                    continue
-                row = angular_axis_start_row + i
+            # Rigidity group
+            rigidity_group = QtGui.QGroupBox(translate("CAM", "Rigidity"))
+            rigidity_layout = QtGui.QGridLayout()
 
+            col = itertools.count(1)
+            rigidity_layout.addWidget(
+                QtGui.QLabel(translate("CAM", "Angular Rigidity")), 0, next(col)
+            )
+            rigidity_layout.addWidget(QtGui.QLabel(translate("CAM", "Rigidity X")), 0, next(col))
+            rigidity_layout.addWidget(QtGui.QLabel(translate("CAM", "Rigidity Y")), 0, next(col))
+
+            # Angular axis
+            for row, axis in enumerate(machine.find_children_by_type(AngularAxis)):
                 col = itertools.count(0)
-                axis_properties_layout.addWidget(
-                    QtGui.QLabel(f"{axis_name.capitalize()}-axis"), row, next(col)
+                rigidity_layout.addWidget(
+                    QtGui.QLabel(f"{axis.name.capitalize()}-axis"), row, next(col)
                 )
 
-                # Add empty widgets for "Minimum" and "Maximum" columns for angular axes
-                axis_properties_layout.addWidget(QtGui.QWidget(), row, next(col))
-                axis_properties_layout.addWidget(QtGui.QWidget(), row, next(col))
+                rigidity_x_edit = QtGui.QDoubleSpinBox()
+                rigidity_x_edit.setDecimals(6)
+                rigidity_x_edit.setMinimum(0.0)
+                rigidity_x_edit.setValue(axis.rigidity_x.Value)
+                rigidity_x_edit.setSuffix(" mm/N")
+                rigidity_layout.addWidget(rigidity_x_edit, row, next(col))
 
-                rigidity_edit = QtGui.QDoubleSpinBox()
-                rigidity_edit.setDecimals(6)
-                rigidity_edit.setMinimum(0.0)
-                rigidity_edit.setValue(axis.rigidity.Value)
-                rigidity_edit.setSuffix("°/N")
-                axis_properties_layout.addWidget(rigidity_edit, row, next(col))
+                rigidity_y_edit = QtGui.QDoubleSpinBox()
+                rigidity_y_edit.setDecimals(6)
+                rigidity_y_edit.setMinimum(0.0)
+                rigidity_y_edit.setValue(axis.rigidity_y.Value)
+                rigidity_y_edit.setSuffix(" mm/N")
+                rigidity_layout.addWidget(rigidity_y_edit, row, next(col))
 
-                # Add an empty widget for the last column
-                axis_properties_layout.addWidget(QtGui.QWidget(), row, next(col))
+                angular_rigidity_edit = QtGui.QDoubleSpinBox()
+                angular_rigidity_edit.setDecimals(6)
+                angular_rigidity_edit.setMinimum(0.0)
+                angular_rigidity_edit.setValue(axis.angular_rigidity.Value)
+                angular_rigidity_edit.setSuffix("°/N")
+                rigidity_layout.addWidget(angular_rigidity_edit, row, next(col))
 
-                self.axis_edits[axis_name] = rigidity_edit
+                self.axis_edits[axis.name] = angular_rigidity_edit, rigidity_x_edit, rigidity_y_edit
 
-        axis_properties_group.setLayout(axis_properties_layout)
+            rigidity_layout.setColumnStretch(0, 1)
+            rigidity_layout.setColumnStretch(1, 4)
+            rigidity_layout.setColumnStretch(2, 4)
+            rigidity_layout.setColumnStretch(3, 4)
 
-        # Add Configure Rigidities button
-        if self.has_rigidity:
+            # Add Configure Rigidities button
             self.configure_rigidities_btn = QtGui.QPushButton(translate("CAM", "Rigidity Wizard…"))
             self.configure_rigidities_btn.clicked.connect(self.launch_rigidity_wizard)
-            axis_properties_layout.addWidget(self.configure_rigidities_btn, row + 1, 0, 1, 5)
+            rigidity_layout.addWidget(self.configure_rigidities_btn, row + 1, 0, 1, 4)
 
-        self.layout.addWidget(axis_properties_group)
+            rigidity_group.setLayout(rigidity_layout)
+            self.layout.addWidget(rigidity_group)
 
         # Spindles group
         self.spindles_group = QtGui.QGroupBox(translate("CAM", "Spindles"))
@@ -197,7 +178,7 @@ class MachinePropertiesDialog(QtGui.QDialog):
         self.spindle_list.doubleClicked.connect(self.edit_spindle)
         self.spindle_list.itemSelectionChanged.connect(self._update_button_states)
 
-        for spindle in machine.spindles:
+        for spindle in machine.find_children_by_type(Spindle):
             self._add_spindle_to_list(spindle)
         spindles_layout.addWidget(self.spindle_list)
         spindle_buttons = QtGui.QHBoxLayout()
@@ -254,7 +235,7 @@ class MachinePropertiesDialog(QtGui.QDialog):
         dialog = SpindleEditorDialog(Spindle(label), parent=self)
         if dialog.exec_():
             new_spindle = dialog.spindle
-            self.machine.add_spindle(new_spindle)
+            self.machine.add(new_spindle)
             self._add_spindle_to_list(new_spindle)
             self.spindle_list.setCurrentCell(self.spindle_list.rowCount() - 1, 0)
             self._update_button_states()
@@ -267,7 +248,10 @@ class MachinePropertiesDialog(QtGui.QDialog):
             if dialog.exec_():
                 updated_spindle = dialog.spindle
                 power = updated_spindle.max_power.UserString
-                self.machine.spindles[current_row] = updated_spindle
+                # Find the old spindle and replace it with the updated one
+                old_spindle = self.spindle_list.item(current_row, 0).data(QtCore.Qt.UserRole)
+                self.machine.remove(old_spindle)
+                self.machine.add(updated_spindle)
                 self.spindle_list.item(current_row, 0).setText(updated_spindle.label)
                 self.spindle_list.item(current_row, 0).setData(QtCore.Qt.UserRole, updated_spindle)
                 self.spindle_list.item(current_row, 1).setText(power)
@@ -275,8 +259,9 @@ class MachinePropertiesDialog(QtGui.QDialog):
     def remove_spindle(self):
         current_row = self.spindle_list.currentRow()
         if current_row >= 0 and self.spindle_list.rowCount() > 0:
+            spindle_to_remove = self.spindle_list.item(current_row, 0).data(QtCore.Qt.UserRole)
+            self.machine.remove(spindle_to_remove)
             self.spindle_list.removeRow(current_row)
-            del self.machine.spindles[current_row]
             self._update_button_states()
 
     def launch_rigidity_wizard(self):
@@ -286,18 +271,19 @@ class MachinePropertiesDialog(QtGui.QDialog):
                 return
 
             rigidities = wizard.get_rigidities()
-            for axis_name, edits in self.axis_edits.items():
-                axis = self.machine.axes[axis_name]
-                if isinstance(axis, LinearAxis):
-                    rigidity, unit = rigidities.get(axis_name, (None, None))
-                    if rigidity:
-                        rigidity_edit = edits[2]  # Third item is rigidity_edit
-                        rigidity_edit.setValue(rigidity.Value)
-                elif isinstance(axis, AngularAxis):
-                    rigidity, unit = rigidities.get(axis_name, (None, None))
-                    if rigidity:
-                        rigidity_edit = edits[0]
-                        rigidity_edit.setValue(rigidity.Value)
+            for axis in self.machine.find_children_by_type(AngularAxis):
+                edits = self.axis_edits.get(axis.name)
+                if edits:
+                    angular_rigidity_edit, rigidity_x_edit, rigidity_y_edit = edits
+                    angular_rigidity, rigidity_x, rigidity_y = rigidities.get(
+                        axis.name, (None, None, None)
+                    )
+                    if angular_rigidity:
+                        angular_rigidity_edit.setValue(angular_rigidity.Value)
+                    if rigidity_x:
+                        rigidity_x_edit.setValue(rigidity_x.Value)
+                    if rigidity_y:
+                        rigidity_y_edit.setValue(rigidity_y.Value)
 
     def accept(self):
         # Check the label
@@ -314,70 +300,61 @@ class MachinePropertiesDialog(QtGui.QDialog):
         self.machine.post_processor = self.post_processor_combo.currentText()
 
         # Update axis properties
-        for axis_name, edits in self.axis_edits.items():
-            axis = self.machine.axes[axis_name]
-            if isinstance(axis, LinearAxis):
-                start_edit, end_edit, rigidity_edit, max_feed_edit = edits
-                start_val = start_edit.property("value")
-                end_val = end_edit.property("value")
+        for axis in self.machine.find_children_by_type(LinearAxis):
+            max_feed_edit = self.axis_edits.get(axis.name)
+            if max_feed_edit:
                 max_feed_val = max_feed_edit.property("value")
 
-                if start_val.Value < 0:
-                    QtGui.QMessageBox.warning(
-                        self,
-                        translate("CAM", "Warning"),
-                        translate("CAM", f"{axis_name}-axis min cannot be negative."),
-                    )
-                    return
-                if end_val.Value <= start_val.Value:
-                    QtGui.QMessageBox.warning(
-                        self,
-                        translate("CAM", "Warning"),
-                        translate("CAM", f"{axis_name}-axis max must be greater than min."),
-                    )
-                    return
                 if max_feed_val.Value <= 0:
                     QtGui.QMessageBox.warning(
                         self,
                         translate("CAM", "Warning"),
-                        translate("CAM", f"{axis_name}-axis max feed rate must be positive."),
+                        translate("CAM", f"{axis.name}-axis max feed rate must be positive."),
                     )
                     return
-
-                axis.start = start_val
-                axis.end = end_val
                 axis.max_feed = max_feed_val
 
-                if self.has_rigidity and rigidity_edit:
-                    rigidity_val = rigidity_edit.value()
-                    rigidity_quantity = FreeCAD.Units.Quantity(f"{rigidity_val} mm")
-                    if rigidity_val < 0:
-                        QtGui.QMessageBox.warning(
-                            self,
-                            translate("CAM", "Warning"),
-                            translate("CAM", f"{axis_name}-axis rigidity cannot be negative."),
-                        )
-                        return
-                    axis.rigidity = rigidity_quantity
-            elif isinstance(axis, AngularAxis):
-                rigidity_edit = edits
-                if self.has_rigidity and rigidity_edit:
-                    rigidity_val = rigidity_edit.value()
-                    rigidity_quantity = FreeCAD.Units.Quantity(f"{rigidity_val} °")
-                    if rigidity_val < 0:
-                        QtGui.QMessageBox.warning(
-                            self,
-                            translate("CAM", "Warning"),
-                            translate("CAM", f"{axis_name}-axis rigidity cannot be negative."),
-                        )
-                        return
-                    axis.rigidity = rigidity_quantity
+        for axis in self.machine.find_children_by_type(AngularAxis):
+            edits = self.axis_edits.get(axis.name)
+            if edits:
+                angular_rigidity_edit, rigidity_x_edit, rigidity_y_edit = edits
+                if self.has_rigidity:
+                    angular_rigidity_val = angular_rigidity_edit.value()
+                    rigidity_x_val = rigidity_x_edit.value()
+                    rigidity_y_val = rigidity_y_edit.value()
 
-        # Get spindles from list
-        spindles = []
-        for i in range(self.spindle_list.rowCount()):
-            spindles.append(self.spindle_list.item(i, 0).data(QtCore.Qt.UserRole))
-        self.machine.spindles = spindles
+                    angular_rigidity_quantity = FreeCAD.Units.Quantity(
+                        f"{angular_rigidity_val} °/N"
+                    )
+                    rigidity_x_quantity = FreeCAD.Units.Quantity(f"{rigidity_x_val} mm/N")
+                    rigidity_y_quantity = FreeCAD.Units.Quantity(f"{rigidity_y_val} mm/N")
+
+                    if angular_rigidity_val < 0:
+                        QtGui.QMessageBox.warning(
+                            self,
+                            translate("CAM", "Warning"),
+                            translate(
+                                "CAM", f"{axis.name}-axis angular rigidity cannot be negative."
+                            ),
+                        )
+                        return
+                    if rigidity_x_val < 0:
+                        QtGui.QMessageBox.warning(
+                            self,
+                            translate("CAM", "Warning"),
+                            translate("CAM", f"{axis.name}-axis rigidity X cannot be negative."),
+                        )
+                        return
+                    if rigidity_y_val < 0:
+                        QtGui.QMessageBox.warning(
+                            self,
+                            translate("CAM", "Warning"),
+                            translate("CAM", f"{axis.name}-axis rigidity Y cannot be negative."),
+                        )
+                        return
+                    axis.angular_rigidity = angular_rigidity_quantity
+                    axis.rigidity_x = rigidity_x_quantity
+                    axis.rigidity_y = rigidity_y_quantity
 
         # Let child classes perform updates.
         self.update_machine()

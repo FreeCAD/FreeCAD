@@ -19,11 +19,12 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-import uuid
-from typing import Dict, Optional, List, cast
+from typing import Optional, cast, List
 import FreeCAD
-from ...spindle import Spindle
-from .machine import Machine, Axis, AngularAxis, LinearAxis
+from .machine import Machine, MachineFeatureFlags
+from .component import MachineComponent
+from .axis import LinearAxis, AngularAxis
+from .spindle import Spindle
 
 
 class Lathe(Machine):
@@ -34,39 +35,45 @@ class Lathe(Machine):
 
     def __init__(
         self,
-        label: str,
-        axes: Optional[Dict[str, Axis]] = None,
+        name: str,
+        label: Optional[str] = None,
         post_processor: str = "generic",
         post_processor_args: str = "",
+        icon: Optional[str] = None,
+        feature_flags: Optional[List[MachineFeatureFlags]] = None,
         id: Optional[str] = None,
     ) -> None:
         """
         Initializes a Lathe object.
 
         Args:
-            label: Machine label.
-            axes: E.g. {"x": Axis(), "z": Axis()}
+            name: Machine name.
+            label: Machine label (optional).
             post_processor: Name of the FreeCAD post processor.
             post_processor_args: Arguments for the post processor.
             id: Unique identifier (optional).
         """
-        # Initialize axis dictionary with default X and Z axes
-        if axes is None:
-            axes = {
-                "X": LinearAxis(),
-                "Z": LinearAxis(),
-                "spindle": AngularAxis(),
-            }
-
         super().__init__(
+            name=name,
             label=label,
-            axes=axes,
             post_processor=post_processor,
             post_processor_args=post_processor_args,
-            id=id or str(uuid.uuid1()),
+            icon=icon,
+            feature_flags=feature_flags,
+            id=id,
         )
 
-        self.add_spindle(Spindle(FreeCAD.Qt.translate("CAM", "Lathe spindle")))
+        x_axis = LinearAxis("X")
+        z_axis = LinearAxis("Z")
+        a_axis = AngularAxis("A")
+        main_spindle = Spindle("MainSpindle", FreeCAD.Qt.translate("CAM", "Main spindle"))
+        tool_holder = MachineComponent("ToolHolder")
+
+        self.add(main_spindle)
+        main_spindle.add(a_axis)
+        self.add(z_axis)
+        z_axis.add(x_axis)
+        x_axis.add(tool_holder)
 
     @staticmethod
     def get_type() -> str:
@@ -75,60 +82,24 @@ class Lathe(Machine):
 
     @property
     def x_axis(self) -> LinearAxis:
-        return cast(LinearAxis, self._axes["X"])
+        return cast(LinearAxis, self.find_child_by_name("X"))
 
     @property
     def z_axis(self) -> LinearAxis:
-        return cast(LinearAxis, self._axes["Z"])
+        return cast(LinearAxis, self.get_child_by_name("Z"))
 
     @property
-    def spindle_axis(self) -> AngularAxis:
-        return cast(AngularAxis, self._axes["spindle"])
-
-    @property
-    def spindles(self) -> List[Spindle]:
-        return super().spindles
-
-    @spindles.setter
-    def spindles(self, value: List[Spindle]):
-        assert len(value) == 1, f"Lathe supports exactly one spindle, not {len(value)}"
-        self._spindles = value
-
-    def add_spindle(self, spindle: Spindle) -> None:
-        assert spindle is not None
-        self._spindles = [spindle]
-
-    def remove_spindle(self, spindle: Spindle) -> None:
-        raise NotImplementedError("Lathes support exactly one spindle.")
+    def a_axis(self) -> AngularAxis:
+        return cast(AngularAxis, self.find_child_by_name("A"))
 
     def validate(self) -> None:
         """Validates lathe parameters."""
         super().validate()
-        if "X" not in self._axes:
-            raise AttributeError("Mill must have an X axis")
-        if "Z" not in self._axes:
-            raise AttributeError("Mill must have an Z axis")
-        if "spindle" not in self._axes:
-            raise AttributeError("Mill must have a spindle axis")
-
-    def dump(self, do_print: bool = True) -> str:
-        """
-        Dumps lathe info to console or as a string.
-
-        Args:
-            do_print: If True, prints; if False, returns string.
-
-        Returns:
-            Formatted string if do_print is False.
-        """
-        output = f"Lathe {self.label}:\n"
-        for name, axis in sorted(self.axes.items()):
-            output += f"  {name}-Axis:\n"
-            output += axis.dump(do_print=False, indent=2)
-        output += f"  Post Processor: {self.post_processor or 'None'}\n"
-        output += f"  Post Processor Args: {self.post_processor_args or 'None'}\n"
-        for spindle in self.spindles:
-            output += spindle.dump(do_print=False)
-        if do_print:
-            print(output)
-        return output
+        if not self.find_child_by_name("X"):
+            raise AttributeError("Lathe must have an X axis")
+        if not self.find_child_by_name("Z"):
+            raise AttributeError("Lathe must have an Z axis")
+        if not self.find_child_by_name("A"):
+            raise AttributeError("Lathe must have an A axis")
+        if not self.find_children_by_type(Spindle):
+            raise AttributeError("Lathe must have a spindle")

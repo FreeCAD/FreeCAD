@@ -21,107 +21,23 @@
 # ***************************************************************************
 import uuid
 from abc import ABC
+from enum import Enum
 from typing import Dict, Optional, List
 import FreeCAD
 import Path
 from ...assets import Asset
-from ...spindle import Spindle
+from .component import MachineComponent
+from .axis import Axis
+from .spindle import Spindle
 
 
-class Axis(ABC):
-    def validate(self) -> None:
-        """Validate parameters."""
-        pass
-
-    def dump(self, do_print: bool = True, indent: int = 0) -> str:
-        """
-        Dumps axis info to console or as a string.
-
-        Args:
-            do_print: If True, prints; if False, returns string.
-
-        Returns:
-            Formatted string if do_print is False.
-        """
-        raise NotImplementedError
+class MachineFeatureFlags(Enum):
+    TURNING = "TURNING"
+    MILLING_3D = "3DMILLING"
+    RIGID_TAPPING = "RIGID_TAPPING"
 
 
-class LinearAxis(Axis):
-    def __init__(
-        self,
-        start: FreeCAD.Units.Quantity = FreeCAD.Units.Quantity("0 mm"),
-        end: Optional[FreeCAD.Units.Quantity] = None,
-        rigidity: FreeCAD.Units.Quantity = FreeCAD.Units.Quantity("0.1 mm"),
-        max_feed: FreeCAD.Units.Quantity = FreeCAD.Units.Quantity("2000 mm/min"),
-    ):
-        """
-        Rigidity is specified in mm/Newton. FreeCAD quantities do not support mm/N,
-        so we store it as mm internally.
-        """
-        super().__init__()
-        self.start = start
-        self.end = end
-        self.rigidity = rigidity
-        self.max_feed = max_feed
-
-    def validate(self) -> None:
-        super().validate()
-        if self.start is None:
-            raise AttributeError("Linear axis start cannot be None")
-        if self.start.Value < 0:
-            raise AttributeError("Linear axis start cannot be negative")
-        if self.end and self.end.Value <= self.start.Value:
-            raise AttributeError("Linear axis end must be larger than axis start")
-        if self.rigidity.Value < 0:
-            raise AttributeError("Linear axis rigidity cannot be negative")
-        if self.max_feed.Value <= 0:
-            raise AttributeError("Linear axis feed rate must be positive")
-
-    def dump(self, do_print: bool = True, indent: int = 0) -> str:
-        prefix = "  " * indent
-        output = ""
-        if self.start is not None:
-            output += f"{prefix}Start={self.start.UserString}\n"
-        if self.end is not None:
-            output += f"{prefix}End={self.end.UserString}\n"
-        output += f"{prefix}Rigidity={self.rigidity.UserString}/N\n"
-        output += f"{prefix}Feed Rate={self.max_feed.UserString}\n"
-        if do_print:
-            print(output)
-        return output
-
-
-class AngularAxis(Axis):
-    def __init__(
-        self,
-        rigidity: FreeCAD.Units.Quantity = FreeCAD.Units.Quantity("0.5 °"),
-    ):
-        """
-        Rigidity is specified as "deg/Newton applied to the spindle nose" and
-        specifies the worst-case rigidity. It should be determined by measuring
-        the deflection of the spindle in every direction and choosing the
-        highest value.
-        FreeCAD quantities do not support deg/N, so we store it as deg internally.
-        """
-        super().__init__()
-        self.rigidity = rigidity
-
-    def validate(self) -> None:
-        """Validate parameters."""
-        super().validate()
-        if self.rigidity.Value < 0:
-            raise AttributeError("rigidity cannot be negative")
-
-    def dump(self, do_print: bool = True, indent: int = 0) -> str:
-        prefix = "  " * indent
-        output = ""
-        output += f"{prefix}Rigidity={self.rigidity.UserString}/N\n"
-        if do_print:
-            print(output)
-        return output
-
-
-class Machine(Asset, ABC):
+class Machine(MachineComponent, Asset, ABC):
     """Represents a machine (e.g. a 3 axis CNC or a lathe)."""
 
     asset_type = "machine"
@@ -130,27 +46,30 @@ class Machine(Asset, ABC):
 
     def __init__(
         self,
-        label: str,
-        axes: Dict[str, Axis],
+        name: str,
+        label: Optional[str] = None,
         post_processor: str = "generic",
         post_processor_args: str = "",
+        icon: Optional[str] = None,
+        feature_flags: Optional[List[MachineFeatureFlags]] = None,
         id: Optional[str] = None,
     ) -> None:
         """
         Initializes a Machine object.
 
         Args:
+            name: Machine name.
             label: Machine label.
-            axes: E.g. {"x": Axis(0, 1000, 0.01)}
             post_processor: Name of the FreeCAD post processor.
             post_processor_args: Arguments for the post processor.
+            icon: Icon name.
+            feature_flags: List of machine feature flags.
             id: Unique identifier (optional).
         """
-        super().__init__()
+        super().__init__(name=name, label=label, icon=icon)
+        Asset.__init__(self)
         self._id = id or str(uuid.uuid1())
-        self._label = label
-        self._axes = axes
-        self._spindles = []
+        self._feature_flags = feature_flags or []
 
         # Set property values
         self.post_processor = post_processor  # property setter below checks validity
@@ -165,13 +84,13 @@ class Machine(Asset, ABC):
         raise NotImplementedError
 
     @property
-    def label(self) -> str:
-        """Returns the machine's label."""
-        return self._label
+    def feature_flags(self) -> List[MachineFeatureFlags]:
+        """Returns the machine's feature flags."""
+        return self._feature_flags
 
-    @label.setter
-    def label(self, value: str):
-        self._label = value
+    @feature_flags.setter
+    def feature_flags(self, value: List[MachineFeatureFlags]):
+        self._feature_flags = value
 
     @property
     def summary(self) -> str:
@@ -181,41 +100,16 @@ class Machine(Asset, ABC):
         Returns:
             Summary string.
         """
-        n_axes = len(self._axes) - len(self._spindles)
+        n_axes = len(self.get_children_by_type(Axis))
+        n_spindles = len(self.get_children_by_type(Spindle))
         return FreeCAD.Qt.translate(
             "CAM",
-            f"{n_axes}-axis {self.get_type()} with " f"{len(self._spindles)} spindles",
+            f"{n_axes}-axis {self.get_type()} with " f"{n_spindles} spindles",
         )
 
     @property
-    def axes(self) -> Dict[str, Axis]:
-        """Returns the machine's axes."""
-        return self._axes
-
-    @axes.setter
-    def axes(self, value: Dict[str, Axis]):
-        self._axes = value
-
-    def set_axis(self, name: str, value: Axis):
-        self._axes[name] = value
-
-    @property
     def spindles(self) -> List[Spindle]:
-        """Gets a list of spindles of the machine."""
-        return self._spindles
-
-    @spindles.setter
-    def spindles(self, value: List[Spindle]):
-        self._spindles = value
-
-    def add_spindle(self, spindle: Spindle) -> None:
-        """Adds a spindle to the machine."""
-        assert spindle is not None
-        self._spindles.append(spindle)
-
-    def remove_spindle(self, spindle: Spindle) -> None:
-        """Removes a spindle from the machine."""
-        self._spindles.remove(spindle)
+        return self.find_children_by_type(Spindle)
 
     @property
     def post_processor(self) -> str:
@@ -240,34 +134,38 @@ class Machine(Asset, ABC):
 
     def validate(self) -> None:
         """Validates machine parameters."""
+        super().validate()
         if not self.label:
             raise AttributeError("Machine name is required")
-        for name, axis in self._axes.items():
-            try:
-                axis.validate()
-            except AttributeError as e:
-                raise AttributeError(f"Axis {name}: {e}")
-        for spindle in self._spindles:
-            spindle.validate()
 
-    def dump(self, do_print: bool = True) -> str:
-        """
-        Dumps machine info to console or as a string.
-
-        Args:
-            do_print: If True, prints; if False, returns string.
-
-        Returns:
-            Formatted string if do_print is False.
-        """
-        output = f"Machine {self.label}:\n"
-        for name, axis in sorted(self._axes.items()):
-            output += f"  {name}-Axis:\n"
-            output += axis.dump(do_print, 2)
-        output += f"  Post Processor: {self._post_processor or 'None'}\n"
-        output += f"  Post Processor Args: {self._post_processor_args or 'None'}\n"
-        for spindle in self.spindles:
-            output += spindle.dump(do_print=False)
-        if do_print:
-            print(output)
+    def _dump_self(self, indent_str="") -> str:
+        output = f"{indent_str}{self.get_type()} {self.label}:\n"
+        output += f"{indent_str}  Feature Flags: {', '.join([f.value for f in self._feature_flags]) or 'None'}\n"
+        output += f"{indent_str}  Post Processor: {self._post_processor or 'None'}\n"
+        output += f"{indent_str}  Post Processor Args: {self._post_processor_args or 'None'}\n"
+        output += super()._dump_self(indent_str)
         return output
+
+    def to_dict(self) -> Dict:
+        data = super().to_dict()
+        data.update(
+            {
+                "id": self.get_id(),
+                "post_processor": self.post_processor,
+                "post_processor_args": self.post_processor_args,
+                "feature_flags": [f.value for f in self.feature_flags],
+            }
+        )
+        return data
+
+    @classmethod
+    def _from_dict_self(cls, data: Dict) -> "Machine":
+        instance = cls(name=data["name"], label=data.get("label"), id=data["id"])
+        feature_flags = [MachineFeatureFlags(f) for f in data.get("feature_flags", [])]
+        instance.post_processor = data.get("post_processor", instance.post_processor)
+        instance.post_processor_args = (
+            data.get("post_processor_args") or instance.post_processor_args
+        )
+        instance.icon = data.get("icon", instance.icon)
+        instance.feature_flags = feature_flags
+        return instance

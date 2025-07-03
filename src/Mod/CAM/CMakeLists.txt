@@ -244,9 +244,12 @@ SET(PathPythonToolsMachine_SRCS
 
 SET(PathPythonToolsMachineModels_SRCS
     Path/Tool/machine/models/__init__.py
+    Path/Tool/machine/models/axis.py
+    Path/Tool/machine/models/component.py
     Path/Tool/machine/models/lathe.py
     Path/Tool/machine/models/machine.py
     Path/Tool/machine/models/mill.py
+    Path/Tool/machine/models/spindle.py
 )
 
 SET(PathPythonToolsMachineSerializers_SRCS
@@ -262,6 +265,9 @@ SET(PathPythonToolsMachineUi_SRCS
     Path/Tool/machine/ui/post.py
     Path/Tool/machine/ui/prefs.py
     Path/Tool/machine/ui/rigidity.py
+    Path/Tool/machine/ui/spinbox.py
+    Path/Tool/machine/ui/spindle_edit.py
+    Path/Tool/machine/ui/spindle_prop.py
 )
 
 SET(PathPythonToolsShape_SRCS
@@ -290,25 +296,6 @@ SET(PathPythonToolsShapeModels_SRCS
     Path/Tool/shape/models/vbit.py
 )
 
-SET(PathPythonToolsSpindle_SRCS
-    Path/Tool/spindle/__init__.py
-)
-
-SET(PathPythonToolsSpindleModels_SRCS
-    Path/Tool/spindle/models/__init__.py
-    Path/Tool/spindle/models/spindle.py
-)
-
-SET(PathPythonToolsSpindleSerializers_SRCS
-    Path/Tool/spindle/serializers/__init__.py
-    Path/Tool/spindle/serializers/fcspindle.py
-)
-
-SET(PathPythonToolsSpindleUi_SRCS
-    Path/Tool/spindle/ui/__init__.py
-    Path/Tool/spindle/ui/editor.py
-    Path/Tool/spindle/ui/properties.py
-)
 
 SET(PathPythonToolsShapeUi_SRCS
     Path/Tool/shape/ui/__init__.py
@@ -576,7 +563,6 @@ SET(Tests_SRCS
     CAMTests/TestPathToolLibrarySerializer.py
     CAMTests/TestPathToolMachine.py
     CAMTests/TestPathToolMachineSerializer.py
-    CAMTests/TestPathToolSpindleSerializer.py
     CAMTests/TestPathToolController.py
     CAMTests/TestPathUtil.py
     CAMTests/TestPathVcarve.py
@@ -648,10 +634,6 @@ SET(all_files
     ${PathPythonToolsShape_SRCS}
     ${PathPythonToolsShapeModels_SRCS}
     ${PathPythonToolsShapeUi_SRCS}
-    ${PathPythonToolsSpindle_SRCS}
-    ${PathPythonToolsSpindleModels_SRCS}
-    ${PathPythonToolsSpindleSerializers_SRCS}
-    ${PathPythonToolsSpindleUi_SRCS}
     ${PathPythonToolsToolBit_SRCS}
     ${PathPythonToolsToolBitMixins_SRCS}
     ${PathPythonToolsToolBitModels_SRCS}
@@ -954,33 +936,6 @@ INSTALL(
         Mod/CAM/Path/Tool/machine/ui
 )
 
-INSTALL(
-    FILES
-        ${PathPythonToolsSpindle_SRCS}
-    DESTINATION
-        Mod/CAM/Path/Tool/spindle
-)
-
-INSTALL(
-    FILES
-        ${PathPythonToolsSpindleModels_SRCS}
-    DESTINATION
-        Mod/CAM/Path/Tool/spindle/models
-)
-
-INSTALL(
-    FILES
-        ${PathPythonToolsSpindleSerializers_SRCS}
-    DESTINATION
-        Mod/CAM/Path/Tool/spindle/serializers
-)
-
-INSTALL(
-    FILES
-        ${PathPythonToolsSpindleUi_SRCS}
-    DESTINATION
-        Mod/CAM/Path/Tool/spindle/ui
-)
 
 INSTALL(
     FILES

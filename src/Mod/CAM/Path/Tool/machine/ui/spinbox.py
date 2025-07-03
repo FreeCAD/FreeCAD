@@ -19,33 +19,47 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-from PySide import QtGui, QtCore
+from PySide import QtGui
 import FreeCAD
-from ..models import Spindle
-from .properties import SpindlePropertiesWidget
 
 
-class SpindleEditorDialog(QtGui.QDialog):
-    """Dialog for adding or editing a spindle's properties."""
+class VelocitySpinBox(QtGui.QDoubleSpinBox):
+    def __init__(self):
+        super().__init__()
 
-    def __init__(self, spindle: Spindle, parent=None):
-        super().__init__(parent)
-        self.setWindowTitle(FreeCAD.Qt.translate("CAM", "Spindle Editor"))
-        self.spindle = spindle
-        self.layout = QtGui.QVBoxLayout(self)
+        # Get user-preferred unit for feed rate
+        _, self.unit_factor, self.preferred_unit = FreeCAD.Units.Quantity(
+            1, FreeCAD.Units.Velocity
+        ).getUserPreferred()
+        self.display_unit = "mm/min" if "mm/" in self.preferred_unit else "ft/min"
 
-        # Spindle properties widget
-        self.props_widget = SpindlePropertiesWidget(self.spindle, self)
-        self.layout.addWidget(self.props_widget)
+        self.setDecimals(2)
+        self.setMinimum(0)
+        self.setMaximum(100000 * self.unit_factor)
+        self.setSingleStep(1.0)
+        self.setSuffix(f" {self.display_unit}")
 
-        # Buttons
-        buttons = QtGui.QDialogButtonBox(
-            QtGui.QDialogButtonBox.Ok | QtGui.QDialogButtonBox.Cancel, QtCore.Qt.Horizontal, self
-        )
-        buttons.accepted.connect(self.on_accepted)
-        buttons.rejected.connect(self.reject)
-        self.layout.addWidget(buttons)
+        # Internal storage (Quantity in mm/min)
+        self._value = FreeCAD.Units.Quantity("0 mm/min")
 
-    def on_accepted(self):
-        self.props_widget.update_spindle()
-        self.accept()
+        # Connections
+        self.valueChanged.connect(self._on_input_changed)
+
+    def _on_input_changed(self, value):
+        # Convert input value (in display_unit) to mm/min
+        self._value = FreeCAD.Units.Quantity(f"{value} {self.display_unit}")
+        self.blockSignals(True)
+        self.setValue(self._value)
+        self.blockSignals(False)
+
+    def value(self):
+        """Return value as Quantity in mm/min"""
+        return self._value
+
+    def setValue(self, value):
+        """Set value as Quantity in mm/min"""
+        if isinstance(value, FreeCAD.Units.Quantity):
+            self._value = value
+        else:
+            self._value = FreeCAD.Units.Quantity(f"{value} mm/min")
+        super().setValue(self._value.getValueAs(self.display_unit))

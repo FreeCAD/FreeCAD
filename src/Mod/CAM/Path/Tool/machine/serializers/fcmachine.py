@@ -20,12 +20,11 @@
 # * *
 # ***************************************************************************
 import yaml
-from typing import Mapping, List, Optional
+from typing import Mapping, Optional, cast
 import FreeCAD
-import Path
-from ...spindle import Spindle
+import yaml
 from ...assets import Asset, AssetUri, AssetSerializer
-from ..models import Machine, Lathe, Mill, LinearAxis, AngularAxis
+from ..models import Machine, Lathe, Mill
 
 
 class MachineSerializer(AssetSerializer):
@@ -42,56 +41,12 @@ class MachineSerializer(AssetSerializer):
         return FreeCAD.Qt.translate("CAM", "FreeCAD Machine")
 
     @classmethod
-    def extract_dependencies(cls, data: bytes) -> List[AssetUri]:
-        """Extracts URIs of dependencies from serialized data."""
-        data_dict = yaml.safe_load(data.decode("utf-8"))
-        spindle_uris = [
-            AssetUri(f"spindle://{spindle_id}") for spindle_id in data_dict.get("spindles", [])
-        ]
-        return spindle_uris
-
-    @classmethod
     def serialize(cls, asset: Asset) -> bytes:
         """Serializes a Machine, Lathe, or Mill object into bytes."""
         if not isinstance(asset, Machine):
             raise TypeError(f"Expected Machine instance, got {type(asset).__name__}")
 
-        # Serialize common base attributes.
-        attrs = {
-            "id": asset.get_id(),
-            "label": asset.label,
-            "post_processor": asset.post_processor,
-            "post_processor_args": asset.post_processor_args,
-            "spindles": [spindle.get_id() for spindle in asset.spindles],
-        }
-
-        # Serialize axis parameters.
-        axis_data = {}
-        for name, axis in asset.axes.items():
-            if isinstance(axis, LinearAxis):
-                axis_data[name] = {
-                    "type": "linear",
-                    "start": axis.start.UserString if axis.start is not None else "",
-                    "end": axis.end.UserString if axis.end is not None else "",
-                    "rigidity": axis.rigidity.UserString + "/N",
-                    "max_feed": axis.max_feed.UserString,
-                }
-            elif isinstance(axis, AngularAxis):
-                axis_data[name] = {
-                    "type": "angular",
-                    "rigidity": axis.rigidity.UserString + "/N",
-                }
-            else:
-                raise TypeError(f"Unknown axis type for {name}")
-        attrs["axes"] = axis_data
-
-        # Serialize subclass-specific attributes.
-        if isinstance(asset, Lathe):
-            attrs["type"] = "Lathe"
-        elif isinstance(asset, Mill):
-            attrs["type"] = "Mill"
-        else:
-            raise AttributeError(f"unsupported machine type {asset.__class__}")
+        attrs = asset.to_dict()
 
         return yaml.dump(attrs, sort_keys=True, indent=2).encode("utf-8")
 
@@ -105,66 +60,13 @@ class MachineSerializer(AssetSerializer):
         """Creates a Machine object from serialized data and resolved dependencies."""
         attrs = yaml.safe_load(data.decode("utf-8", "ignore"))
         attrs["id"] = id
-
-        # Resolve spindle dependencies
-        spindles = []
-        if dependencies:
-            for spindle_id in attrs.get("spindles", []):
-                spindle_uri = AssetUri(f"spindle://{spindle_id}")
-                spindle = dependencies.get(spindle_uri)
-                if spindle and isinstance(spindle, Spindle):
-                    spindles.append(spindle)
-                else:
-                    Path.Log.warning(f"Could not resolve spindle dependency: {spindle_uri}")
-
-        machine_type = attrs.get("type", "Machine")
-        label = attrs["label"]
-        post_processor = attrs.get("post_processor", "")
-        post_processor_args = attrs.get("post_processor_args", "")
-
-        axes = {}
-        for name, axis_attrs in attrs.get("axes", {}).items():
-            axis_type = axis_attrs.get("type", "linear")
-            if axis_type == "linear":
-                start = axis_attrs.get("start")
-                end = axis_attrs.get("end")
-                start = FreeCAD.Units.Quantity(start) if start else None
-                end = FreeCAD.Units.Quantity(end) if end else None
-                rigidity_str = axis_attrs.get("rigidity", "0.001 mm/N")
-                if rigidity_str.endswith("/N"):
-                    rigidity_str = rigidity_str[:-2]
-                rigidity = FreeCAD.Units.Quantity(rigidity_str)
-                max_feed = FreeCAD.Units.Quantity(axis_attrs.get("max_feed", "0 mm/s"))
-                axes[name] = LinearAxis(start=start, end=end, rigidity=rigidity, max_feed=max_feed)
-            elif axis_type == "angular":
-                rigidity_str = axis_attrs.get("rigidity", "0.001 °/N")
-                if rigidity_str.endswith("/N"):
-                    rigidity_str = rigidity_str[:-2]
-                rigidity = FreeCAD.Units.Quantity(rigidity_str)
-                axes[name] = AngularAxis(rigidity=rigidity)
-            else:
-                raise AttributeError(f"Unknown axis type: {axis_type}")
-
+        machine_type = attrs.get("type")
         if machine_type == "Lathe":
-            instance = Lathe(
-                label,
-                axes=axes,
-                post_processor=post_processor,
-                post_processor_args=post_processor_args,
-                id=id,
-            )
+            instance = cast(Lathe, Lathe.from_dict(attrs))
         elif machine_type == "Mill":
-            instance = Mill(
-                label,
-                axes=axes,
-                post_processor=post_processor,
-                post_processor_args=post_processor_args,
-                id=id,
-            )
+            instance = cast(Mill, Mill.from_dict(attrs))
         else:
-            raise AttributeError(f"unsupported machine type {machine_type}")
-
-        instance.spindles = spindles
+            raise ValueError(f"Unknown machine type: {machine_type}")
         return instance
 
     @classmethod

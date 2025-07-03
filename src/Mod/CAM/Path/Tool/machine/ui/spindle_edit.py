@@ -19,33 +19,33 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-from PySide import QtGui
+from PySide import QtGui, QtCore
 import FreeCAD
-from ..ui.spindle_prop import SpindlePropertiesWidget
-from ..models import Lathe, Spindle
-from .machine import MachinePropertiesDialog
+from ..models import Spindle
+from .spindle_prop import SpindlePropertiesWidget
 
 
-translate = FreeCAD.Qt.translate
+class SpindleEditorDialog(QtGui.QDialog):
+    """Dialog for adding or editing a spindle's properties."""
 
+    def __init__(self, spindle: Spindle, parent=None):
+        super().__init__(parent)
+        self.setWindowTitle(FreeCAD.Qt.translate("CAM", "Spindle Editor"))
+        self.spindle = spindle
+        self.layout = QtGui.QVBoxLayout(self)
 
-class LathePropertiesDialog(MachinePropertiesDialog):
-    """Dialog for adding or editing a lathe machine."""
+        # Spindle properties widget
+        self.props_widget = SpindlePropertiesWidget(self.spindle, self)
+        self.layout.addWidget(self.props_widget)
 
-    def __init__(self, machine: Lathe, parent=None):
-        super().__init__(machine, parent=parent, has_rigidity=False)
-
-        # Add Spindle editor
-        self.spindles_group.hide()
-        self.spindle_editor = SpindlePropertiesWidget(
-            machine.find_children_by_type(Spindle)[0], parent=self
+        # Buttons
+        buttons = QtGui.QDialogButtonBox(
+            QtGui.QDialogButtonBox.Ok | QtGui.QDialogButtonBox.Cancel, QtCore.Qt.Horizontal, self
         )
-        spindle_group = QtGui.QGroupBox(translate("CAM", "Spindle"))
-        spindle_layout = QtGui.QVBoxLayout()
-        spindle_layout.setContentsMargins(0, 0, 0, 0)
-        spindle_layout.addWidget(self.spindle_editor)
-        spindle_group.setLayout(spindle_layout)
-        self.layout.insertWidget(2, spindle_group)  # Insert after axis properties group
+        buttons.accepted.connect(self.on_accepted)
+        buttons.rejected.connect(self.reject)
+        self.layout.addWidget(buttons)
 
-    def update_machine(self):
-        self.spindle_editor.update_spindle()
+    def on_accepted(self):
+        self.props_widget.update_spindle()
+        self.accept()

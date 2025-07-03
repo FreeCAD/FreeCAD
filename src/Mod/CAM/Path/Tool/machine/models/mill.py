@@ -19,11 +19,11 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-import uuid
-from typing import Dict, Optional, cast
+from typing import List, Optional, cast
 import FreeCAD
-from ...spindle import Spindle
-from .machine import Machine, Axis, AngularAxis, LinearAxis
+from .machine import Machine, MachineFeatureFlags
+from .axis import LinearAxis, AngularAxis
+from .spindle import Spindle
 
 
 class Mill(Machine):
@@ -34,39 +34,45 @@ class Mill(Machine):
 
     def __init__(
         self,
-        label: str,
-        axes: Optional[Dict[str, Axis]] = None,
+        name: str,
+        label: Optional[str] = None,
         post_processor: str = "generic",
         post_processor_args: str = "",
+        icon: Optional[str] = None,
+        feature_flags: Optional[List[MachineFeatureFlags]] = None,
         id: Optional[str] = None,
     ) -> None:
         """
         Initializes a Mill object.
 
         Args:
-            label: Machine label.
-            axes: E.g. {"x": Axis(), "y": Axis(), "z": Axis()}
+            name: Machine name.
+            label: Machine label (optional).
             post_processor: Name of the FreeCAD post processor.
             post_processor_args: Arguments for the post processor.
             id: Unique identifier (optional).
         """
-        if axes is None:
-            axes = {
-                "X": LinearAxis(),
-                "Y": LinearAxis(),
-                "Z": LinearAxis(),
-                "spindle": AngularAxis(),
-            }
-
         super().__init__(
+            name=name,
             label=label,
-            axes=axes,
             post_processor=post_processor,
             post_processor_args=post_processor_args,
-            id=id or str(uuid.uuid1()),
+            icon=icon,
+            feature_flags=feature_flags,
+            id=id,
         )
 
-        self.add_spindle(Spindle(FreeCAD.Qt.translate("CAM", "Spindle 1")))
+        x_axis = LinearAxis("X")
+        y_axis = LinearAxis("Y")
+        z_axis = LinearAxis("Z")
+        spindle_axis = AngularAxis("A")
+        main_spindle = Spindle("MainSpindle", FreeCAD.Qt.translate("CAM", "Spindle 1"))
+
+        self.add(x_axis)
+        x_axis.add(y_axis)
+        y_axis.add(z_axis)
+        z_axis.add(spindle_axis)
+        spindle_axis.add(main_spindle)
 
     @staticmethod
     def get_type() -> str:
@@ -75,50 +81,28 @@ class Mill(Machine):
 
     @property
     def x_axis(self) -> LinearAxis:
-        return cast(LinearAxis, self._axes["X"])
+        return cast(LinearAxis, self.find_child_by_name("X"))
 
     @property
     def y_axis(self) -> LinearAxis:
-        return cast(LinearAxis, self._axes["Y"])
+        return cast(LinearAxis, self.find_child_by_name("Y"))
 
     @property
     def z_axis(self) -> LinearAxis:
-        return cast(LinearAxis, self._axes["Z"])
+        return cast(LinearAxis, self.find_child_by_name("Z"))
 
     @property
     def spindle_axis(self) -> AngularAxis:
-        return cast(AngularAxis, self._axes["spindle"])
+        return cast(AngularAxis, self.find_child_by_name("A"))
 
     def validate(self) -> None:
         """Validates mill parameters."""
         super().validate()
-        if "X" not in self._axes:
+        if not self.find_child_by_name("X"):
             raise AttributeError("Mill must have an X axis")
-        if "Y" not in self._axes:
+        if not self.find_child_by_name("Y"):
             raise AttributeError("Mill must have an Y axis")
-        if "Z" not in self._axes:
+        if not self.find_child_by_name("Z"):
             raise AttributeError("Mill must have an Z axis")
-        if "spindle" not in self._axes:
+        if not self.find_child_by_name("A"):
             raise AttributeError("Mill must have a spindle axis")
-
-    def dump(self, do_print: bool = True) -> str:
-        """
-        Dumps mill info to console or as a string.
-
-        Args:
-            do_print: If True, prints; if False, returns string.
-
-        Returns:
-            Formatted string if do_print is False.
-        """
-        output = f"Mill {self.label}:\n"
-        for name, axis in sorted(self.axes.items()):
-            output += f"  {name}-Axis:\n"
-            output += axis.dump(do_print=False, indent=2)
-        output += f"  Post Processor: {self._post_processor or 'None'}\n"
-        output += f"  Post Processor Args: {self._post_processor_args or 'None'}\n"
-        for spindle in self.spindles:
-            output += spindle.dump(do_print=False)
-        if do_print:
-            print(output)
-        return output

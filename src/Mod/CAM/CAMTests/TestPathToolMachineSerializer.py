@@ -27,9 +27,9 @@ import FreeCAD
 from Path.Tool.assets.asset import Asset
 from Path.Tool.assets.uri import AssetUri
 from Path.Tool.machine import Lathe, Mill
-from Path.Tool.machine.models.machine import LinearAxis, AngularAxis
+from Path.Tool.machine.models.machine import MachineFeatureFlags
 from Path.Tool.machine.serializers import MachineSerializer
-from Path.Tool.spindle import Spindle
+from Path.Tool.machine.models.spindle import Spindle
 
 
 class TestPathToolMachineSerializer(unittest.TestCase):
@@ -45,78 +45,121 @@ class TestPathToolMachineSerializer(unittest.TestCase):
 
         # Create mock spindle objects
         self.spindle1 = Spindle(
+            name="A",
             label="Main Spindle",
             max_power=FreeCAD.Units.Quantity("2.2 kW"),
-            min_rpm=FreeCAD.Units.Quantity("1000 1/min"),
-            max_rpm=FreeCAD.Units.Quantity("24000 1/min"),
-            max_torque=FreeCAD.Units.Quantity("1.0 N*m"),
-            peak_torque_rpm=FreeCAD.Units.Quantity("12000 1/min"),
-            id="spindle-001",
+            min_rpm=1000.0,
+            max_rpm=24000.0,
+            max_torque=1.0,
+            peak_torque_rpm=12000.0,
+            icon=None,
         )
 
         self.spindle2 = Spindle(
+            name="B",
             label="Secondary Spindle",
             max_power=FreeCAD.Units.Quantity("1.5 kW"),
-            min_rpm=FreeCAD.Units.Quantity("500 1/min"),
-            max_rpm=FreeCAD.Units.Quantity("12000 1/min"),
-            max_torque=FreeCAD.Units.Quantity("0.8 N*m"),
-            peak_torque_rpm=FreeCAD.Units.Quantity("6000 1/min"),
-            id="spindle-002",
+            min_rpm=500.0,
+            max_rpm=12000.0,
+            max_torque=0.8,
+            peak_torque_rpm=6000.0,
+            icon=None,
         )
 
         # Create a test Lathe object
         self.test_lathe = Lathe(
-            label="MyTestLathe",
-            axes={
-                "X": LinearAxis(
-                    start=FreeCAD.Units.Quantity("0 mm"),
-                    end=FreeCAD.Units.Quantity("150 mm"),
-                    rigidity=FreeCAD.Units.Quantity("0.001 mm"),
-                ),
-                "Z": LinearAxis(
-                    start=FreeCAD.Units.Quantity("-300 mm"),
-                    end=FreeCAD.Units.Quantity("0 mm"),
-                    rigidity=FreeCAD.Units.Quantity("0.002 mm"),
-                ),
-                "spindle": AngularAxis(
-                    rigidity=FreeCAD.Units.Quantity("0.25 deg"),
-                ),
-            },
+            name="MyTestLathe",
+            label="My Test Lathe",
             post_processor="linuxcnc",
+            feature_flags=[MachineFeatureFlags.TURNING],
             id="lathe-test-01",
         )
-        self.test_lathe.add_spindle(self.spindle1)
+        self.test_lathe.x_axis.max_feed = FreeCAD.Units.Quantity("1000 mm/min")
+        self.test_lathe.z_axis.max_feed = FreeCAD.Units.Quantity("1000 mm/min")
+        self.test_lathe.a_axis.angular_rigidity = FreeCAD.Units.Quantity("0.25 deg")
+        self.test_lathe.a_axis.rigidity_x = FreeCAD.Units.Quantity("0.001 mm/N")
+        self.test_lathe.a_axis.rigidity_y = FreeCAD.Units.Quantity("0.001 mm/N")
 
         # Create a test Mill object
         self.test_mill = Mill(
-            label="MyTestMill",
-            axes={
-                "X": LinearAxis(
-                    start=FreeCAD.Units.Quantity("-250 mm"),
-                    end=FreeCAD.Units.Quantity("250 mm"),
-                    rigidity=FreeCAD.Units.Quantity("0.0015 mm"),
-                    max_feed=FreeCAD.Units.Quantity("2000 mm/min"),
-                ),
-                "Y": LinearAxis(
-                    start=FreeCAD.Units.Quantity("-200 mm"),
-                    end=FreeCAD.Units.Quantity("200 mm"),
-                    rigidity=FreeCAD.Units.Quantity("0.0015 mm"),
-                    max_feed=FreeCAD.Units.Quantity("2000 mm/min"),
-                ),
-                "Z": LinearAxis(
-                    start=FreeCAD.Units.Quantity("-100 mm"),
-                    end=FreeCAD.Units.Quantity("150 mm"),
-                    rigidity=FreeCAD.Units.Quantity("0.0025 mm"),
-                    max_feed=FreeCAD.Units.Quantity("2000 mm/min"),
-                ),
-                "spindle": AngularAxis(
-                    rigidity=FreeCAD.Units.Quantity("0.45 deg"),
-                ),
-            },
+            name="MyTestMill",
+            label="My Test Mill",
             post_processor="grbl",
+            feature_flags=[MachineFeatureFlags.MILLING_3D, MachineFeatureFlags.RIGID_TAPPING],
             id="mill-test-01",
         )
-        self.test_mill.spindles = [self.spindle1, self.spindle2]
+        self.test_mill.x_axis.max_feed = FreeCAD.Units.Quantity("2000 mm/min")
+        self.test_mill.y_axis.max_feed = FreeCAD.Units.Quantity("2000 mm/min")
+        self.test_mill.z_axis.max_feed = FreeCAD.Units.Quantity("1500 mm/min")
+        self.test_mill.spindle_axis.angular_rigidity = FreeCAD.Units.Quantity("0.45 deg")
+        self.test_mill.spindle_axis.rigidity_x = FreeCAD.Units.Quantity("0.001 mm/N")
+        self.test_mill.spindle_axis.rigidity_y = FreeCAD.Units.Quantity("0.001 mm/N")
+
+        self.lathe_yaml_str = """
+type: Lathe
+name: StandardLathe
+label: Standard Lathe
+icon: lathe
+feature_flags:
+  - TURNING
+children:
+  - type: Spindle
+    name: MainSpindle
+    max_rpm: 5000 rpm
+    max_power: 3 kW
+    children:
+      - type: AngularAxis
+        name: A
+        angular_rigidity: 12 deg/N
+        rigidity_x: 0.001 mm/N
+        rigidity_y: 0.001 mm/N
+        children: []
+  - type: LinearAxis
+    name: Z
+    max_feed: 1000 mm/min
+    children:
+      - type: LinearAxis
+        name: X
+        max_feed: 1000 mm/min
+        children:
+          - type: MachineComponent
+            name: ToolHolder
+"""
+
+        self.mill_yaml_str = """
+type: Mill
+name: Standard3AxisMill
+label: Standard 3-Axis Mill
+icon: mill
+post_processor: grbl
+feature_flags:
+  - 3DMILLING
+  - RIGID_TAPPING
+children:
+  - type: LinearAxis
+    name: X
+    max_feed: 2000 mm/min
+    children:
+      - type: LinearAxis
+        name: Y
+        max_feed: 2000 mm/min
+        children:
+          - type: LinearAxis
+            name: Z
+            max_feed: 1500 mm/min
+            children:
+              - type: Spindle
+                name: MainSpindle
+                max_rpm: 24000 rpm
+                max_power: 5 kW
+                children:
+                  - type: AngularAxis
+                    name: A
+                    angular_rigidity: 12 deg/N
+                    rigidity_x: 0.001 mm/N
+                    rigidity_y: 0.001 mm/N
+                    children: []
+"""
 
     def test_serialize_lathe(self):
         """Test serialization of a Lathe object."""
@@ -124,17 +167,31 @@ class TestPathToolMachineSerializer(unittest.TestCase):
         self.assertIsInstance(serialized_data, bytes)
 
         data = yaml.safe_load(serialized_data.decode("utf-8"))
-        self.assertEqual(data["id"], "lathe-test-01")
-        self.assertEqual(data["type"], "Lathe")
-        self.assertEqual(data["label"], "MyTestLathe")
-        self.assertEqual(data["axes"]["X"]["start"], "0.00 mm")
-        self.assertEqual(data["axes"]["X"]["end"], "150.00 mm")
-        self.assertEqual(data["axes"]["X"]["rigidity"], "1.00 µm/N")
-        self.assertEqual(data["axes"]["Z"]["start"], "-300.00 mm")
-        self.assertEqual(data["axes"]["Z"]["end"], "0.00 mm")
-        self.assertEqual(data["axes"]["Z"]["rigidity"], "2.00 µm/N")
-        self.assertEqual(data["axes"]["spindle"]["rigidity"], "0.25°/N")
-        self.assertIn(self.spindle1.get_id(), data["spindles"])
+        self.assertEqual(data["name"], "MyTestLathe")
+        self.assertEqual(data["icon"], None)
+        self.assertIn("TURNING", data["feature_flags"])
+        self.assertEqual(data["post_processor"], "linuxcnc")
+        self.assertEqual(data["post_processor_args"], "")
+
+        # Check axes properties
+        z_axis = data["children"][1]
+        self.assertEqual(z_axis["name"], "Z")
+        self.assertEqual(z_axis["max_feed"], f"{1000/60:.2f} mm/s")
+
+        x_axis = z_axis["children"][0]
+        self.assertEqual(x_axis["name"], "X")
+        self.assertEqual(x_axis["max_feed"], f"{1000/60:.2f} mm/s")
+
+        spindle_axis = data["children"][0]["children"][0]
+        self.assertEqual(spindle_axis["name"], "A")
+        self.assertEqual(spindle_axis["angular_rigidity"], "0.25°/N")
+        self.assertEqual(spindle_axis["rigidity_x"], "0.001 mm/N")
+        self.assertEqual(spindle_axis["rigidity_y"], "0.001 mm/N")
+
+        # Check spindle properties
+        spindle = data["children"][0]
+        self.assertEqual(spindle["name"], "MainSpindle")
+        self.assertEqual(spindle["max_rpm"], 60000)
 
     def test_serialize_mill(self):
         """Test serialization of a Mill object."""
@@ -142,25 +199,35 @@ class TestPathToolMachineSerializer(unittest.TestCase):
         self.assertIsInstance(serialized_data, bytes)
 
         data = yaml.safe_load(serialized_data.decode("utf-8"))
-        self.assertEqual(data["id"], "mill-test-01")
-        self.assertEqual(data["type"], "Mill")
-        self.assertEqual(data["label"], "MyTestMill")
-        self.assertEqual(data["axes"]["X"]["start"], "-250.00 mm")
-        self.assertEqual(data["axes"]["X"]["end"], "250.00 mm")
-        self.assertEqual(data["axes"]["X"]["rigidity"], "1.50 µm/N")
-        self.assertEqual(data["axes"]["X"]["max_feed"], "33.33 mm/s")
-        self.assertEqual(data["axes"]["Y"]["start"], "-200.00 mm")
-        self.assertEqual(data["axes"]["Y"]["end"], "200.00 mm")
-        self.assertEqual(data["axes"]["Y"]["rigidity"], "1.50 µm/N")
-        self.assertEqual(data["axes"]["Y"]["max_feed"], "33.33 mm/s")
-        self.assertEqual(data["axes"]["Z"]["start"], "-100.00 mm")
-        self.assertEqual(data["axes"]["Z"]["end"], "150.00 mm")
-        self.assertEqual(data["axes"]["Z"]["rigidity"], "2.50 µm/N")
-        self.assertEqual(data["axes"]["Z"]["max_feed"], "33.33 mm/s")
-        self.assertEqual(data["axes"]["spindle"]["rigidity"], "0.45°/N")
-        self.assertEqual(len(data["spindles"]), 2)
-        self.assertIn(self.spindle1.get_id(), data["spindles"])
-        self.assertIn(self.spindle2.get_id(), data["spindles"])
+        self.assertEqual(data["name"], "MyTestMill")
+        self.assertEqual(data["icon"], None)
+        self.assertIn("3DMILLING", data["feature_flags"])
+        self.assertIn("RIGID_TAPPING", data["feature_flags"])
+        self.assertEqual(data["post_processor"], "grbl")
+        self.assertEqual(data["post_processor_args"], "")
+
+        # Check axes properties
+        x_axis = data["children"][0]
+        self.assertEqual(x_axis["name"], "X")
+        self.assertEqual(x_axis["max_feed"], f"{2000/60:.2f} mm/s")
+
+        y_axis = x_axis["children"][0]
+        self.assertEqual(y_axis["name"], "Y")
+        self.assertEqual(y_axis["max_feed"], f"{2000/60:.2f} mm/s")
+
+        z_axis = y_axis["children"][0]
+        self.assertEqual(z_axis["name"], "Z")
+        self.assertEqual(z_axis["max_feed"], f"{1500/60:.2f} mm/s")
+
+        spindle_a_axis = z_axis["children"][0]
+        self.assertEqual(spindle_a_axis["name"], "A")
+        self.assertEqual(spindle_a_axis["angular_rigidity"], "0.45°/N")
+        self.assertEqual(spindle_a_axis["rigidity_x"], "0.001 mm/N")
+        self.assertEqual(spindle_a_axis["rigidity_y"], "0.001 mm/N")
+
+        main_spindle = spindle_a_axis["children"][0]
+        self.assertEqual(main_spindle["name"], "MainSpindle")
+        self.assertEqual(main_spindle["max_rpm"], 60000.0)
 
     def test_extract_dependencies(self):
         """Test dependency extraction for a machine."""
@@ -168,38 +235,13 @@ class TestPathToolMachineSerializer(unittest.TestCase):
         dependencies = self.serializer_class.extract_dependencies(serialized_data)
 
         self.assertIsInstance(dependencies, list)
-        self.assertEqual(len(dependencies), 2)
-        self.assertIn(self.spindle1.get_uri(), dependencies)
-        self.assertIn(self.spindle2.get_uri(), dependencies)
+        self.assertEqual(len(dependencies), 0)
 
     def test_deserialize_lathe(self):
         """Test deserialization of a Lathe object."""
-        lathe_yaml_str = """
-id: lathe-test-01
-label: MyTestLathe
-post_processor: linuxcnc
-post_processor_args: ''
-axes:
-  X:
-    end: 150 mm
-    rigidity: 0.001 mm/N
-    start: 0 mm
-  Z:
-    end: 0 mm
-    rigidity: 0.002 mm/N
-    start: -300 mm
-  spindle:
-    type: angular
-    rigidity: 0.0001°/N
-spindles:
-- spindle-001
-type: Lathe
-"""
-        lathe_data = lathe_yaml_str.encode("utf-8")
+        lathe_data = self.lathe_yaml_str.encode("utf-8")
 
-        dependencies: Mapping[AssetUri, Asset] = {
-            self.spindle1.get_uri(): self.spindle1,
-        }
+        dependencies: Mapping[AssetUri, Asset] = {}
 
         deserialized_lathe = cast(
             Lathe,
@@ -209,48 +251,32 @@ type: Lathe
         )
 
         self.assertIsInstance(deserialized_lathe, Lathe)
-        self.assertEqual(deserialized_lathe.label, "MyTestLathe")
-        self.assertEqual(str(deserialized_lathe.x_axis.end), "150.0 mm")
-        self.assertEqual(str(deserialized_lathe.z_axis.end), "0.0 mm")
-        self.assertEqual(str(deserialized_lathe.spindle_axis.rigidity), "0.0001 deg")
+        self.assertEqual(deserialized_lathe.label, "Standard Lathe")
+        self.assertEqual(deserialized_lathe.icon, "lathe")
+        self.assertIn(MachineFeatureFlags.TURNING, deserialized_lathe.feature_flags)
+
+        # Check axes properties
+        self.assertEqual(deserialized_lathe.x_axis.name, "X")
+        self.assertEqual(str(deserialized_lathe.x_axis.max_feed), f"{1000.0/60} mm/s")
+
+        self.assertEqual(deserialized_lathe.z_axis.name, "Z")
+        self.assertEqual(str(deserialized_lathe.z_axis.max_feed), f"{1000.0/60} mm/s")
+
+        self.assertEqual(deserialized_lathe.a_axis.name, "A")
+        self.assertEqual(str(deserialized_lathe.a_axis.angular_rigidity), "12.0 deg")
+        self.assertEqual(deserialized_lathe.a_axis.rigidity_x.getValueAs("mm/N"), 0.001)
+        self.assertEqual(deserialized_lathe.a_axis.rigidity_y.getValueAs("mm/N"), 0.001)
+
+        # Check spindle properties
         self.assertEqual(len(deserialized_lathe.spindles), 1)
-        self.assertEqual(deserialized_lathe.spindles[0].label, "Main Spindle")
+        self.assertEqual(deserialized_lathe.spindles[0].name, "MainSpindle")
+        self.assertEqual(str(deserialized_lathe.spindles[0].max_rpm), "5000 rpm")
 
     def test_deserialize_mill(self):
         """Test deserialization of a Mill object."""
-        mill_yaml_str = """
-id: mill-test-01
-label: MyTestMill
-post_processor: grbl
-post_processor_args: --option=1
-axes:
-  X:
-    end: 250 mm
-    rigidity: 0.0015 mm/N
-    start: -250 mm
-  Y:
-    end: 200 mm
-    rigidity: 0.0015 mm/N
-    start: -200 mm
-  Z:
-    end: 150 mm
-    rigidity: 0.0025 mm/N
-    start: -100 mm
-    max_feed: 2000 mm/min
-  spindle:
-    type: angular
-    rigidity: 0.0002°/N
-spindles:
-- spindle-001
-- spindle-002
-type: Mill
-"""
-        mill_data = mill_yaml_str.encode("utf-8")
+        mill_data = self.mill_yaml_str.encode("utf-8")
 
-        dependencies: Mapping[AssetUri, Asset] = {
-            self.spindle1.get_uri(): self.spindle1,
-            self.spindle2.get_uri(): self.spindle2,
-        }
+        dependencies: Mapping[AssetUri, Asset] = {}
 
         deserialized_mill = cast(
             Mill,
@@ -260,17 +286,33 @@ type: Mill
         )
 
         self.assertIsInstance(deserialized_mill, Mill)
-        self.assertEqual(deserialized_mill.label, "MyTestMill")
+        self.assertEqual(deserialized_mill.label, "Standard 3-Axis Mill")
+        self.assertEqual(deserialized_mill.icon, "mill")
+        self.assertIn(MachineFeatureFlags.MILLING_3D, deserialized_mill.feature_flags)
+        self.assertIn(MachineFeatureFlags.RIGID_TAPPING, deserialized_mill.feature_flags)
         self.assertEqual(deserialized_mill.post_processor, "grbl")
-        self.assertEqual(deserialized_mill.post_processor_args, "--option=1")
-        self.assertEqual(str(deserialized_mill.x_axis.end), "250.0 mm")
-        self.assertEqual(str(deserialized_mill.y_axis.end), "200.0 mm")
-        self.assertEqual(str(deserialized_mill.z_axis.end), "150.0 mm")
-        self.assertEqual(str(deserialized_mill.spindle_axis.rigidity), "0.0002 deg")
-        self.assertEqual(len(deserialized_mill.spindles), 2)
-        spindle_labels = {s.label for s in deserialized_mill.spindles}
-        self.assertIn("Main Spindle", spindle_labels)
-        self.assertIn("Secondary Spindle", spindle_labels)
+        self.assertEqual(deserialized_mill.post_processor_args, "")
+
+        # Check axes properties
+        self.assertEqual(deserialized_mill.x_axis.name, "X")
+        self.assertEqual(str(deserialized_mill.x_axis.max_feed), f"{2000/60} mm/s")
+
+        self.assertEqual(deserialized_mill.y_axis.name, "Y")
+        self.assertEqual(str(deserialized_mill.y_axis.max_feed), f"{2000/60} mm/s")
+
+        self.assertEqual(deserialized_mill.z_axis.name, "Z")
+        self.assertEqual(str(deserialized_mill.z_axis.max_feed), f"{1500/60} mm/s")
+
+        self.assertEqual(deserialized_mill.spindle_axis.name, "A")
+        self.assertEqual(str(deserialized_mill.spindle_axis.angular_rigidity), "12.0 deg")
+        self.assertEqual(deserialized_mill.spindle_axis.rigidity_x.getValueAs("mm/N"), 0.001)
+        self.assertEqual(deserialized_mill.spindle_axis.rigidity_y.getValueAs("mm/N"), 0.001)
+
+        # Check spindle properties
+        self.assertEqual(len(deserialized_mill.spindle_axis.children), 0)
+        main_spindle = cast(Spindle, deserialized_mill.spindles[0])
+        self.assertEqual(main_spindle.name, "MainSpindle")
+        self.assertEqual(str(main_spindle.max_rpm), "24000 rpm")
 
 
 if __name__ == "__main__":
