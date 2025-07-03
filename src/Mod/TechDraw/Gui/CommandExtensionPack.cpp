@@ -1136,8 +1136,7 @@ void CmdTechDrawExtensionDrawCirclesGroup::languageChange()
     arc3->setText(QApplication::translate("CmdTechDrawExtensionDrawCosmCircle3Points",
                                           "Cosmetic 3 Point Circle"));
     arc3->setToolTip(QApplication::translate("CmdTechDrawExtensionDrawCosmCircle3Points",
-                                             "Adds a cosmetic circle based on three vertices:<br>\
-- Specify the line attributes (optional)<br>\
+                                             "Adds a cosmetic circle to 3 selected vertices""));
 - Select three vertices<br>\
 - Click this tool"));
     arc3->setStatusTip(arc3->text());
