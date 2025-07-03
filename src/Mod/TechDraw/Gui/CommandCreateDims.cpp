@@ -1784,7 +1784,7 @@ CmdTechDraw3PtAngleDimension::CmdTechDraw3PtAngleDimension()
 {
     sAppModule = "TechDraw";
     sGroup = QT_TR_NOOP("TechDraw");
-    sMenuText = QT_TR_NOOP("3-point Angle Dimension");
+    sMenuText = QT_TR_NOOP("3-Point Angle Dimension");
     sToolTipText = QT_TR_NOOP("Inserts an angle dimension between 3 selected points");
     sWhatsThis = "TechDraw_3PtAngleDimension";
     sStatusTip = sToolTipText;
