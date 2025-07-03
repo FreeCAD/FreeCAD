@@ -29,7 +29,7 @@
       <item row="1" column="0">
        <widget class="Gui::PrefCheckBox" name="checkBoxShowAlias">
         <property name="toolTip">
-         <string>If checked, use the custom presentation to display cell string.</string>
+         <string>Uses the custom presentation to display cell string</string>
         </property>
         <property name="text">
          <string>Show alias in cell with format</string>
@@ -45,7 +45,7 @@
       <item row="0" column="2">
        <widget class="Gui::PrefSpinBox" name="dZLSpinBox">
         <property name="toolTip">
-         <string>Set a zoom level for table view from 60% to 160%.</string>
+         <string>Defines a default zoom level for table view from 60% to 160%</string>
         </property>
         <property name="suffix">
          <string>%</string>
@@ -73,7 +73,7 @@
       <item row="0" column="0">
        <widget class="QLabel" name="dZLLabel">
         <property name="text">
-         <string>Default zoom level:</string>
+         <string>Default zoom level</string>
         </property>
        </widget>
       </item>
@@ -128,7 +128,7 @@ Defaults to: %V = %A
          </sizepolicy>
         </property>
         <property name="text">
-         <string>Delimiter Character:</string>
+         <string>Delimiter character</string>
         </property>
        </widget>
       </item>
@@ -188,7 +188,7 @@ Defaults to: %V = %A
          </sizepolicy>
         </property>
         <property name="text">
-         <string>Quote Character:</string>
+         <string>Quote character</string>
         </property>
        </widget>
       </item>
@@ -220,7 +220,7 @@ Defaults to: %V = %A
          </sizepolicy>
         </property>
         <property name="text">
-         <string>Escape Character:</string>
+         <string>Escape character</string>
         </property>
        </widget>
       </item>

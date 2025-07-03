@@ -504,6 +504,7 @@ class _Site(ArchIFC.IfcProduct):
 
     def __init__(self,obj):
         obj.Proxy = self
+        self.Type = "Site"
         self.setProperties(obj)
         obj.IfcType = "Site"
         obj.CompositionType = "ELEMENT"
@@ -576,7 +577,6 @@ class _Site(ArchIFC.IfcProduct):
             obj.addProperty("App::PropertyInteger","TimeZone","Site",QT_TRANSLATE_NOOP("App::Property","The time zone where this site is located"), locked=True)
         if not "EPWFile" in pl:
             obj.addProperty("App::PropertyFileIncluded","EPWFile","Site",QT_TRANSLATE_NOOP("App::Property","An optional EPW File for the location of this site. Refer to the Site documentation to know how to obtain one"), locked=True)
-        self.Type = "Site"
 
     def onDocumentRestored(self,obj):
         """Method run when the document is restored. Re-adds the properties."""
@@ -758,7 +758,7 @@ class _Site(ArchIFC.IfcProduct):
 
     def loads(self,state):
 
-        return None
+        self.Type = "Site"
 
 
 class _ViewProviderSite:

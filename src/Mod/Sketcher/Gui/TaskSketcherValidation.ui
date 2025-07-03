@@ -11,13 +11,13 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Sketcher validation</string>
+   <string>Sketch Validation</string>
   </property>
   <layout class="QGridLayout" name="gridLayout_3">
    <item row="0" column="0">
     <widget class="QGroupBox" name="groupBox_0">
      <property name="title">
-      <string>Open and non-manifold vertexes</string>
+      <string>Open and Non-Manifold Vertices</string>
      </property>
      <layout class="QGridLayout" name="gridLayout_7">
       <property name="leftMargin">
@@ -35,11 +35,10 @@
       <item row="0" column="0">
        <widget class="QPushButton" name="highlightButton">
         <property name="toolTip">
-         <string>Highlights open and non-manifold vertexes that could lead to error if sketch is used to generate solids
-This is purely based on topological shape of the sketch and not on its geometry/constrain set.</string>
+         <string>Highlights open and non-manifold vertices that could lead to errors if the sketch is used to generate solids. This is purely based on the topological shape of the sketch and not on its geometry/constraint set.</string>
         </property>
         <property name="text">
-         <string>Highlight troublesome vertexes</string>
+         <string>Highlight Troublesome Vertices</string>
         </property>
        </widget>
       </item>
@@ -49,30 +48,30 @@ This is purely based on topological shape of the sketch and not on its geometry/
    <item row="1" column="0">
     <widget class="QGroupBox" name="groupBox_1">
      <property name="toolTip">
-      <string>Fixes found missing coincidences by adding extra coincident constrains</string>
+      <string>Fixes missing coincidences by adding extra coincident constraints</string>
      </property>
      <property name="title">
-      <string>Missing coincidences</string>
+      <string>Missing Coincidences</string>
      </property>
      <layout class="QGridLayout" name="gridLayout">
       <item row="0" column="0">
        <widget class="QLabel" name="label">
         <property name="text">
-         <string>Tolerance:</string>
+         <string>Tolerance</string>
         </property>
        </widget>
       </item>
       <item row="0" column="1">
        <widget class="QComboBox" name="comboBoxTolerance">
         <property name="toolTip">
-         <string>Defines the X/Y tolerance inside which missing coincidences are searched.</string>
+         <string>Defines the X/Y tolerance within which missing coincidences are detected</string>
         </property>
        </widget>
       </item>
      <item row="1" column="0" colspan="2">
        <widget class="QCheckBox" name="checkBoxIgnoreConstruction">
         <property name="toolTip">
-         <string>If checked, construction geometries are ignored in the search</string>
+         <string>Ignores construction geometry in the search</string>
         </property>
         <property name="text">
          <string>Ignore construction geometry</string>
@@ -106,7 +105,7 @@ This is done by analyzing the sketch geometries and constraints.</string>
    <item row="2" column="0">
     <widget class="QGroupBox" name="groupBox_2">
      <property name="title">
-      <string>Invalid constraints</string>
+      <string>Invalid Constraints</string>
      </property>
      <layout class="QGridLayout" name="gridLayout_2">
       <item row="0" column="0">
@@ -135,7 +134,7 @@ This is done by analyzing the sketch geometries and constraints.</string>
          <string>Deletes constraints referring to external geometry</string>
         </property>
         <property name="text">
-         <string>Delete constraints to external geom.</string>
+         <string>Delete Constraints Linked to External Geometry</string>
         </property>
        </widget>
       </item>
@@ -145,7 +144,7 @@ This is done by analyzing the sketch geometries and constraints.</string>
    <item row="3" column="0">
     <widget class="QGroupBox" name="groupBox_6">
      <property name="title">
-      <string>Degenerated geometry</string>
+      <string>Degenerate Geometry</string>
      </property>
      <layout class="QGridLayout" name="gridLayout_6">
       <item row="0" column="0">
@@ -174,7 +173,7 @@ This is done by analyzing the sketch geometries and constraints.</string>
    <item row="5" column="0">
     <widget class="QGroupBox" name="groupBox_3">
      <property name="title">
-      <string>Reversed external geometry</string>
+      <string>Reversed External Geometry</string>
      </property>
      <layout class="QGridLayout" name="gridLayout_4">
       <item row="0" column="0">
@@ -193,7 +192,7 @@ This is done by analyzing the sketch geometries and constraints.</string>
          <string>Fixes found reversed external geometries by swapping their endpoints</string>
         </property>
         <property name="text">
-         <string>Swap endpoints in constraints</string>
+         <string>Swap Endpoints in Constraints</string>
         </property>
        </widget>
       </item>
@@ -203,7 +202,7 @@ This is done by analyzing the sketch geometries and constraints.</string>
    <item row="6" column="0">
     <widget class="QGroupBox" name="groupBox_4">
      <property name="title">
-      <string>Constraint orientation locking</string>
+      <string>Constraint Orientation Locking</string>
      </property>
      <layout class="QGridLayout" name="gridLayout_5">
       <item row="0" column="0">

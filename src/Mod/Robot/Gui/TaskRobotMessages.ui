@@ -17,7 +17,7 @@
    <item>
     <widget class="QPushButton" name="pushButtonClear">
      <property name="text">
-      <string>clear</string>
+      <string>Clear</string>
      </property>
     </widget>
    </item>

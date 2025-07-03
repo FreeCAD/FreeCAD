@@ -51,6 +51,13 @@ Returns the names of all scalar fields available on this filter's input.
 Note: Can lead to a full recompute of the whole pipeline, hence best to call this only in "execute", where the user expects long calculation cycles.
 </UserDocu>
             </Documentation>
+        </Methode>
+        <Methode Name="getOutputAlgorithm">
+            <Documentation>
+                <UserDocu>
+Returns the filters vtk algorithm currently used as output (the one generating the Data field). Note that the output algorithm may change depending on filter settings.
+</UserDocu>
+            </Documentation>
         </Methode>"
     </PythonExport>
 </GenerateModel>

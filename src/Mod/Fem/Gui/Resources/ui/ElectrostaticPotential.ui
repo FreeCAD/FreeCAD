@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Analysis feature properties</string>
+   <string>Analysis Feature Properties</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item row="0" column="0">
@@ -23,7 +23,7 @@
       <item row="0" column="0">
        <widget class="QLabel" name="lbl_boundary_condition">
         <property name="text">
-         <string>Boundary Condition:</string>
+         <string>Boundary condition</string>
         </property>
        </widget>
       </item>
@@ -47,7 +47,7 @@
         <item row="0" column="0">
          <widget class="QCheckBox" name="ckb_potential">
           <property name="text">
-           <string>Potential:</string>
+           <string>Potential</string>
           </property>
          </widget>
         </item>
@@ -81,7 +81,7 @@
          <string>To define scalar potential and magnetic vector potential</string>
         </property>
         <property name="text">
-         <string>Electromagnetic Potential</string>
+         <string>Electromagnetic potential</string>
         </property>
         <property name="checked">
          <bool>true</bool>
@@ -191,7 +191,7 @@ with a harmonic/oscillating driving force</string>
             <bool>true</bool>
            </property>
            <property name="text">
-            <string>x</string>
+            <string>X</string>
            </property>
           </widget>
          </item>
@@ -254,7 +254,7 @@ Note: has no effect if a solid was selected</string>
             <bool>true</bool>
            </property>
            <property name="text">
-            <string>y</string>
+            <string>Y</string>
            </property>
           </widget>
          </item>
@@ -317,7 +317,7 @@ Note: has no effect if a solid was selected</string>
             <bool>true</bool>
            </property>
            <property name="text">
-            <string>z</string>
+            <string>Z</string>
            </property>
           </widget>
          </item>
@@ -388,7 +388,7 @@ Note: has no effect if a solid was selected</string>
            <string>Whether the boundary condition defines a farfield potential</string>
           </property>
           <property name="text">
-           <string>Electric Infinity</string>
+           <string>Electric infinity</string>
           </property>
          </widget>
         </item>
@@ -398,7 +398,7 @@ Note: has no effect if a solid was selected</string>
            <string>Whether the boundary condition defines a constant potential</string>
           </property>
           <property name="text">
-           <string>Potential Constant</string>
+           <string>Potential constant</string>
           </property>
          </widget>
         </item>
@@ -416,7 +416,7 @@ Note: has no effect if a solid was selected</string>
       <item row="0" column="0">
        <widget class="QLabel" name="surfacechargedensityLbl">
         <property name="text">
-         <string>Electric Flux Density:</string>
+         <string>Electric flux density</string>
         </property>
        </widget>
       </item>
@@ -442,10 +442,10 @@ Note: has no effect if a solid was selected</string>
       <item row="6" column="0">
        <widget class="QCheckBox" name="ckb_capacitance_body">
         <property name="text">
-         <string>Capacitance Body:</string>
+         <string>Capacitance body</string>
         </property>
         <property name="toolTip">
-         <string>Enabled by 'Calculate Capacity Matrix' in Electrostatic equation</string>
+         <string>Enabled by 'Calculate capacity matrix' in Electrostatic equation</string>
         </property>
        </widget>
       </item>

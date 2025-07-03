@@ -24,7 +24,8 @@
 
 import unittest
 import FreeCAD
-from Path.Tool.ui.property import (
+from Path.Tool.docobject import DetachedDocumentObject
+from Path.Tool.docobject.ui.property import (
     BasePropertyEditorWidget,
     QuantityPropertyEditorWidget,
     BoolPropertyEditorWidget,
@@ -32,7 +33,6 @@ from Path.Tool.ui.property import (
     EnumPropertyEditorWidget,
     LabelPropertyEditorWidget,
 )
-from Path.Tool.toolbit.docobject import DetachedDocumentObject
 
 
 class TestPropertyEditorFactory(unittest.TestCase):

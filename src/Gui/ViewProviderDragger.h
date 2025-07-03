@@ -120,6 +120,9 @@ protected:
 
     bool forwardToLink();
 
+    /// Gets placement property of the object
+    App::PropertyPlacement* getPlacementProperty() const;
+
     /**
      * Returns a newly create dialog for the part to be placed in the task view
      * Must be reimplemented in subclasses.

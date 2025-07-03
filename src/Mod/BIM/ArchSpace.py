@@ -190,6 +190,7 @@ class _Space(ArchComponent.Component):
     def __init__(self,obj):
 
         ArchComponent.Component.__init__(self,obj)
+        self.Type = "Space"
         self.setProperties(obj)
         obj.IfcType = "Space"
         obj.CompositionType = "ELEMENT"
@@ -231,12 +232,15 @@ class _Space(ArchComponent.Component):
         if not "AreaCalculationType" in pl:
             obj.addProperty("App::PropertyEnumeration", "AreaCalculationType",  "Space",QT_TRANSLATE_NOOP("App::Property","Defines the calculation type for the horizontal area and its perimeter length"), locked=True)
             obj.AreaCalculationType = AreaCalculationType
-        self.Type = "Space"
 
     def onDocumentRestored(self,obj):
 
         ArchComponent.Component.onDocumentRestored(self,obj)
         self.setProperties(obj)
+
+    def loads(self,state):
+
+        self.Type = "Space"
 
     def execute(self,obj):
 
