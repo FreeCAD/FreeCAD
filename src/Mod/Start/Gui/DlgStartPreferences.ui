@@ -45,7 +45,7 @@
        <widget class="Gui::PrefFileChooser" name="fileChooserCustomFolder" native="true">
         <property name="toolTip">
          <string>An optional custom folder to be displayed on the Start page.
-By using &quot;;;&quot; to separate paths, you can add several folders here.</string>
+Multiple folders can be added using &quot;;;&quot; to separate paths.</string>
         </property>
         <property name="mode">
          <enum>Gui::FileChooser::Directory</enum>
@@ -61,7 +61,7 @@ By using &quot;;;&quot; to separate paths, you can add several folders here.</st
       <item row="0" column="1">
        <widget class="Gui::PrefCheckBox" name="checkBoxShowExamples">
         <property name="toolTip">
-         <string>If you want the examples to show on the first page</string>
+         <string>Shows example files on the start page</string>
         </property>
         <property name="layoutDirection">
          <enum>Qt::RightToLeft</enum>
@@ -83,7 +83,7 @@ By using &quot;;;&quot; to separate paths, you can add several folders here.</st
       <item row="2" column="1">
        <widget class="Gui::PrefCheckBox" name="checkBoxShowOnlyFCStd">
         <property name="toolTip">
-         <string>If the additional folder contents should include only .FCStd files</string>
+         <string>Show only FreeCAD files in additional folder</string>
         </property>
         <property name="layoutDirection">
          <enum>Qt::RightToLeft</enum>
@@ -111,7 +111,7 @@ By using &quot;;;&quot; to separate paths, you can add several folders here.</st
       <item row="0" column="1">
        <widget class="Gui::PrefCheckBox" name="checkBoxCloseAfterLoading">
         <property name="toolTip">
-         <string>If checked, will automatically close the Start page when FreeCAD launches</string>
+         <string>The start page is closed automatically when FreeCAD launches</string>
         </property>
         <property name="layoutDirection">
          <enum>Qt::RightToLeft</enum>

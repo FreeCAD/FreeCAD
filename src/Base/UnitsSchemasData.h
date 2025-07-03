@@ -121,8 +121,8 @@ inline const UnitsSchemaSpec s3
             { 0               , "kg/mm^3"    , 1.0             }}
         },
         { "ThermalConductivity", {
-            { 1e6             , "W/m/K"      , 1e6             },
-            { 0               , "W/mm/K"     , 1e3             }}
+            { 0               , "W/m/K"      , 1e3             },
+            { 1e6             , "W/mm/K"     , 1e6             }}
         },
         { "ThermalExpansionCoefficient", {
             { 1e-3            , "\xC2\xB5m/m/K" , 1e-6         },
@@ -153,19 +153,19 @@ inline const UnitsSchemaSpec s3
             { 0               , "Pa"         , 1e-3            }}
         },
         { "Stiffness", {
-            { 1e-3            , "Pa/m"       , 1e-6            },
             { 1               , "mN/m"       , 1e-3            },
             { 1e3             , "N/m"        , 1.0             },
             { 1e6             , "kN/m"       , 1e3             },
             { 0               , "MN/m"       , 1e6             }}
         },
         { "StiffnessDensity", {
+            { 1e-3            , "Pa/m"       , 1e-6            },
             { 1               , "kPa/m"      , 1e-3            },
             { 1e3             , "MPa/m"      , 1.0             },
-            { 1e3             , "mN"         , 1.0             },
             { 0               , "GPa/m"      , 1e3             }}
         },
         { "Force", {
+            { 1e3             , "mN"         , 1.0             },
             { 1e6             , "N"          , 1e3             },
             { 1e9             , "kN"         , 1e6             },
             { 0               , "MN"         , 1e9             }}
@@ -733,17 +733,27 @@ inline std::string toDms(const double value)
  * Special functions caller
  */
 
-inline const std::map<std::string, std::function<std::string(double)>> specials  // clang-format off
+// clang-format off
+inline const std::map<std::string, std::function<std::string(double, double&, std::string&)>> specials
 {
     {
-        { "toDMS"        , [](const double val) { return toDms(val);        }},
-        { "toFractional" , [](const double val) { return toFractional(val); }}
+        { "toDMS"        , [](const double val, double& factor, std::string& unitString) {
+            factor = 1.0;
+            unitString = "deg";
+            return toDms(val);
+        }},
+        { "toFractional" , [](const double val, double& factor, std::string& unitString) {
+            factor = 25.4;
+            unitString = "in";
+            return toFractional(val);
+        }}
     }
 };  // clang-format on
 
-inline std::string runSpecial(const std::string& name, const double value)
+inline std::string
+runSpecial(const std::string& name, const double value, double& factor, std::string& unitString)
 {
-    return specials.contains(name) ? specials.at(name)(value) : "";
+    return specials.contains(name) ? specials.at(name)(value, factor, unitString) : "";
 }
 
 

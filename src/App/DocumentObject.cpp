@@ -712,6 +712,16 @@ bool DocumentObject::removeDynamicProperty(const char* name)
     return TransactionalObject::removeDynamicProperty(name);
 }
 
+bool DocumentObject::renameDynamicProperty(Property* prop, const char* name)
+{
+    std::string oldName = prop->getName();
+    bool renamed = TransactionalObject::renameDynamicProperty(prop, name);
+    if (renamed && _pDoc) {
+        _pDoc->renamePropertyOfObject(this, prop, oldName.c_str());
+    }
+    return renamed;
+}
+
 App::Property* DocumentObject::addDynamicProperty(const char* type,
                                                   const char* name,
                                                   const char* group,

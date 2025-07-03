@@ -42,6 +42,7 @@ class Material;
 namespace Materials
 {
 
+class LibraryObject;
 class MaterialLibrary;
 class MaterialLibraryExternal;
 class MaterialFilter;
@@ -64,24 +65,33 @@ public:
     std::shared_ptr<std::list<std::shared_ptr<MaterialLibrary>>> getLibraries();
     std::shared_ptr<std::list<std::shared_ptr<MaterialLibrary>>> getMaterialLibraries();
     std::shared_ptr<MaterialLibrary> getLibrary(const QString& name) const;
-    void createLibrary(const QString& libraryName, const QString& icon, bool readOnly = true);
-    std::shared_ptr<std::vector<std::tuple<QString, QString, QString>>>
+    void createLibrary(const QString& libraryName,
+                       const QByteArray& icon,
+                       bool readOnly = true);
+    void renameLibrary(const QString& libraryName, const QString& newName);
+    void changeIcon(const QString& libraryName, const QByteArray& icon);
+    void removeLibrary(const QString& libraryName);
+    std::shared_ptr<std::vector<LibraryObject>>
     libraryMaterials(const QString& libraryName);
-    std::shared_ptr<std::vector<std::tuple<QString, QString, QString>>>
+    std::shared_ptr<std::vector<LibraryObject>>
     libraryMaterials(const QString& libraryName,
-                     const std::shared_ptr<MaterialFilter>& filter,
+                     const MaterialFilter& filter,
                      const MaterialFilterOptions& options);
 
     // Folder management
+    void createFolder(const MaterialLibrary& library, const QString& path);
+    void
+    renameFolder(const MaterialLibrary& library, const QString& oldPath, const QString& newPath);
+    void deleteRecursive(const MaterialLibrary& library, const QString& path);
 
     // Material management
     std::shared_ptr<Material> getMaterial(const QString& uuid) const;
     void addMaterial(const QString& libraryName,
                      const QString& path,
-                     const std::shared_ptr<Material>& material);
+                     const Material& material);
     void migrateMaterial(const QString& libraryName,
                      const QString& path,
-                     const std::shared_ptr<Material>& material);
+                     const Material& material);
 
     // Cache functions
     void resetCache();
@@ -89,6 +99,7 @@ public:
 
 private:
     static void initCache();
+    std::shared_ptr<Material> materialNotFound(const QString& uuid) const;
 
     static QMutex _mutex;
 

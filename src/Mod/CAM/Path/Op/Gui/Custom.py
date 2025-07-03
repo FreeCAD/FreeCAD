@@ -61,7 +61,7 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         return signals
 
     def setGCode(self):
-        self.obj.Gcode = self.form.txtGCode.toPlainText().splitlines()
+        self.obj.Gcode = self.form.txtGCode.toPlainText().split("\n")
 
 
 Command = PathOpGui.SetupOperation(

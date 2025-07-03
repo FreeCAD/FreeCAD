@@ -4,59 +4,54 @@
   <context>
     <name>UnitsApi</name>
     <message>
-      <location filename="../../UnitsApi.cpp" line="58"/>
+      <location filename="../../UnitsSchemasData.h" line="85"/>
       <source>Standard (mm, kg, s, °)</source>
       <translation>Standardi (mm, kg, s, °)</translation>
     </message>
     <message>
-      <location filename="../../UnitsApi.cpp" line="60"/>
+      <location filename="../../UnitsSchemasData.h" line="315"/>
       <source>MKS (m, kg, s, °)</source>
       <translation>MKS (m, kg, s, °)</translation>
     </message>
     <message>
-      <location filename="../../UnitsApi.cpp" line="62"/>
+      <location filename="../../UnitsSchemasData.h" line="579"/>
       <source>US customary (in, lb)</source>
-      <translation>US tavalla (tuumat/ paunat)</translation>
+      <translation>USA:n yksikköjärjestelmä (tuumat/ paunat)</translation>
     </message>
     <message>
-      <location filename="../../UnitsApi.cpp" line="64"/>
+      <location filename="../../UnitsSchemasData.h" line="70"/>
       <source>Imperial decimal (in, lb)</source>
       <translation>Englantilainen desimaaliluku (tuumat / paunat)</translation>
     </message>
     <message>
-      <location filename="../../UnitsApi.cpp" line="66"/>
+      <location filename="../../UnitsSchemasData.h" line="540"/>
       <source>Building Euro (cm, m², m³)</source>
-      <translation>Rakennus Euro (cm/m²/m³)</translation>
+      <translation>Rakentaminen Euro (cm/m²/m³)</translation>
     </message>
     <message>
-      <location filename="../../UnitsApi.cpp" line="68"/>
+      <location filename="../../UnitsSchemasData.h" line="617"/>
       <source>Building US (ft-in, sqft, cft)</source>
-      <translation>USA:n rakentaminen (ft-in, sqft, cft)</translation>
+      <translation>Rakentaminen USA (ft-in, sqft, cft)</translation>
     </message>
     <message>
-      <location filename="../../UnitsApi.cpp" line="70"/>
+      <location filename="../../UnitsSchemasData.h" line="48"/>
       <source>Metric small parts &amp; CNC (mm, mm/min)</source>
-      <translation>Metriset pienet osat &amp; CNC(mm, mm/min)</translation>
+      <translation>Metrinen, pienet osat &amp; CNC (mm, mm/min)</translation>
     </message>
     <message>
-      <location filename="../../UnitsApi.cpp" line="72"/>
+      <location filename="../../UnitsSchemasData.h" line="628"/>
       <source>Imperial for Civil Eng (ft, ft/s)</source>
-      <translation type="unfinished">Imperial for Civil Eng (ft, ft/s)</translation>
+      <translation>Brittiläinen, maa- ja vesirakentaminen (ft, ft/sec)</translation>
     </message>
     <message>
-      <location filename="../../UnitsApi.cpp" line="74"/>
+      <location filename="../../UnitsSchemasData.h" line="567"/>
       <source>FEM (mm, N, s)</source>
-      <translation type="unfinished">FEM (mm, N, s)</translation>
+      <translation>FEM (mm, N, s)</translation>
     </message>
     <message>
-      <location filename="../../UnitsApi.cpp" line="76"/>
+      <location filename="../../UnitsSchemasData.h" line="57"/>
       <source>Meter decimal (m, m², m³)</source>
-      <translation type="unfinished">Meter decimal (m, m², m³)</translation>
-    </message>
-    <message>
-      <location filename="../../UnitsApi.cpp" line="78"/>
-      <source>Unknown schema</source>
-      <translation type="unfinished">Unknown schema</translation>
+      <translation>Metrinen desimaaliluku (m, m2, m3)</translation>
     </message>
   </context>
 </TS>

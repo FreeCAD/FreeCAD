@@ -28,6 +28,7 @@
 #include <Base/Persistence.h>
 #include <Base/Type.h>
 #include <Base/Handle.h>
+#include <Base/Bitmask.h>
 
 #include "PropertyContainer.h"
 #include "PropertyLinks.h"
@@ -43,6 +44,33 @@ namespace Base
 {
 class Writer;
 }
+
+namespace App 
+{
+enum class AddObjectOption
+{
+    None = 0,
+    SetNewStatus = 1,
+    SetPartialStatus = 2,
+    UnsetPartialStatus = 4,
+    DoSetup = 8,
+    ActivateObject = 16
+};
+using AddObjectOptions = Base::Flags<AddObjectOption>;
+
+enum class RemoveObjectOption
+{
+    None = 0,
+    MayRemoveWhileRecomputing = 1, 
+    MayDestroyOutOfTransaction = 2,
+    DestroyOnRollback = 4, 
+    PreserveChildrenVisibility = 8
+};
+using RemoveObjectOptions = Base::Flags<RemoveObjectOption>;
+
+}
+ENABLE_BITMASK_OPERATORS(App::AddObjectOption)
+ENABLE_BITMASK_OPERATORS(App::RemoveObjectOption)
 
 namespace App
 {
@@ -490,6 +518,7 @@ public:
     bool isPerformingTransaction() const;
     /// \internal add or remove property from a transactional object
     void addOrRemovePropertyOfObject(TransactionalObject*, const Property* prop, bool add);
+    void renamePropertyOfObject(TransactionalObject*, const Property* prop, const char* newName);
     //@}
 
     /** @name dependency stuff */
@@ -627,8 +656,8 @@ protected:
     /// Construction
     explicit Document(const char* documentName = "");
 
-    void _removeObject(DocumentObject* pcObject);
-    void _addObject(DocumentObject* pcObject, const char* pObjectName);
+    void _removeObject(DocumentObject* pcObject, RemoveObjectOptions options = RemoveObjectOption::DestroyOnRollback | RemoveObjectOption::PreserveChildrenVisibility);
+    void _addObject(DocumentObject* pcObject, const char* pObjectName, AddObjectOptions options = AddObjectOption::ActivateObject, const char* viewType = nullptr);
     /// checks if a valid transaction is open
     void _checkTransaction(DocumentObject* pcDelObj, const Property* What, int line);
     void breakDependency(DocumentObject* pcObject, bool clear);
@@ -670,6 +699,10 @@ protected:
     void _commitTransaction(bool notify = false);
     /// Internally called by Application to abort the running transaction.
     void _abortTransaction();
+
+private:
+    void changePropertyOfObject(TransactionalObject* obj, const Property* prop,
+                                const std::function<void()>& changeFunc);
 
 private:
     // # Data Member of the document

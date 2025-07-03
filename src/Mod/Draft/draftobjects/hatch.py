@@ -39,6 +39,7 @@ class Hatch(DraftObject):
     def __init__(self,obj):
 
         obj.Proxy = self
+        self.Type = "Hatch"
         self.setProperties(obj)
 
     def setProperties(self,obj):
@@ -63,7 +64,6 @@ class Hatch(DraftObject):
             obj.addProperty("App::PropertyBool","Translate","Hatch",
                             QT_TRANSLATE_NOOP("App::Property","If set to False, hatch is applied as is to the faces, without translation (this might give wrong results for non-XY faces)"), locked=True)
             obj.Translate = True
-        self.Type = "Hatch"
 
     def onDocumentRestored(self,obj):
         self.setProperties(obj)
@@ -73,12 +73,10 @@ class Hatch(DraftObject):
         )
 
     def dumps(self):
+        return
 
-        return None
-
-    def loads(self,state):
-
-        return None
+    def loads(self, state):
+        self.Type = "Hatch"
 
     def execute(self,obj):
 

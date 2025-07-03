@@ -192,12 +192,6 @@ void QGIViewDimension::setViewPartFeature(TechDraw::DrawViewDimension* obj)
     setViewFeature(static_cast<TechDraw::DrawView*>(obj));
     dvDimension = obj;
 
-    // Set the QGIGroup Properties based on the DrawView
-    float x = Rez::guiX(obj->X.getValue());
-    float y = Rez::guiX(-obj->Y.getValue());
-
-    datumLabel->setPosFromCenter(x, y);
-
     setNormalColorAll();
     setPrettyNormal();
 
@@ -248,22 +242,18 @@ void QGIViewDimension::updateView(bool update)
         return;
     }
 
+    updateDim();
+
     if (update || dim->X.isTouched() || dim->Y.isTouched()) {
         float x = Rez::guiX(dim->X.getValue());
         float y = Rez::guiX(dim->Y.getValue());
         datumLabel->setPosFromCenter(x, -y);
-        updateDim();
     }
-    else if (vp->Fontsize.isTouched() || vp->Font.isTouched()) {
-        updateDim();
+    if (vp->LineWidth.isTouched()) {
+        m_lineWidth = Rez::guiX(vp->LineWidth.getValue());
     }
-    else if (vp->LineWidth.isTouched()) {
-        m_lineWidth = vp->LineWidth.getValue();
-        updateDim();
-    }
-    else {
-        updateDim();
-    }
+
+    updateDim();
 
     // needs Phase 2 of autocorrect to be useful
     // if (dim->hasGoodReferences()) {
@@ -304,7 +294,6 @@ void QGIViewDimension::updateDim()
     prepareGeometryChange();
     datumLabel->setDimString(labelText);
     datumLabel->setToleranceString();
-    datumLabel->setPosFromCenter(datumLabel->X(), datumLabel->Y());
 
     datumLabel->setFramed(dim->TheoreticalExact.getValue());
     datumLabel->setLineWidth(m_lineWidth);
@@ -380,7 +369,6 @@ void QGIViewDimension::draw()
         return;
     }
 
-    m_lineWidth = Rez::guiX(vp->LineWidth.getValue());
     datumLabel->setRotation(0.0);
     datumLabel->show();
 
@@ -1308,7 +1296,6 @@ void QGIViewDimension::drawDistanceExecutive(const Base::Vector2d& startPoint,
         }
     }
 
-    datumLabel->setTransformOriginPoint(datumLabel->boundingRect().center());
     datumLabel->setRotation(toQtDeg(labelAngle));
 
     dimLines->setPath(distancePath);
@@ -1521,7 +1508,6 @@ void QGIViewDimension::drawDistanceOverride(const Base::Vector2d& startPoint,
         }
     }
 
-    datumLabel->setTransformOriginPoint(datumLabel->boundingRect().center());
     datumLabel->setRotation(toQtDeg(labelAngle));
 
     dimLines->setPath(distancePath);
@@ -1733,7 +1719,6 @@ void QGIViewDimension::drawRadiusExecutive(const Base::Vector2d& centerPoint,
             standardStyle);
     }
 
-    datumLabel->setTransformOriginPoint(datumLabel->boundingRect().center());
     datumLabel->setRotation(toQtDeg(labelAngle));
 
     dimLines->setPath(radiusPath);
@@ -1806,7 +1791,6 @@ void QGIViewDimension::drawAreaExecutive(const Base::Vector2d& centerPoint, doub
             standardStyle);
     }
 
-    datumLabel->setTransformOriginPoint(datumLabel->boundingRect().center());
     datumLabel->setRotation(toQtDeg(labelAngle));
 
     dimLines->setPath(areaPath);
@@ -2008,7 +1992,6 @@ void QGIViewDimension::drawDiameter(TechDraw::DrawViewDimension* dimension,
                                   standardStyle);
         }
 
-        datumLabel->setTransformOriginPoint(datumLabel->boundingRect().center());
         datumLabel->setRotation(toQtDeg(labelAngle));
 
         dimLines->setPath(diameterPath);
@@ -2237,7 +2220,6 @@ void QGIViewDimension::drawAngle(TechDraw::DrawViewDimension* dimension,
         }
     }
 
-    datumLabel->setTransformOriginPoint(datumLabel->boundingRect().center());
     datumLabel->setRotation(toQtDeg(labelAngle));
 
     dimLines->setPath(anglePath);

@@ -205,6 +205,7 @@ SET(FreeCADBase_CPP_SRCS
     Placement.cpp
     PlacementPyImp.cpp
     PrecisionPyImp.cpp
+    ProgressIndicator.cpp
     ProgressIndicatorPy.cpp
     PyExport.cpp
     PyObjectBase.cpp
@@ -271,6 +272,7 @@ SET(FreeCADBase_HPP_SRCS
     Placement.h
     Precision.h
     ProgressIndicatorPy.h
+    ProgressIndicator.h
     PyExport.h
     PyObjectBase.h
     PyWrapParseTupleAndKeywords.h

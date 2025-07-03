@@ -181,7 +181,7 @@
     if(__obj && __obj->isAttachedToDocument()) {\
         Gui::Command::doCommand(Gui::Command::Gui,\
             "Gui.ActiveDocument.setEdit(App.getDocument('%s').getObject('%s'), %i)",\
-            __obj->getDocument()->getName(), __obj->getNameInDocument(), Gui::Application::Instance->getUserEditMode());\
+            __obj->getDocument()->getName(), __obj->getNameInDocument(), 0);\
     }\
 }while(0)
 
@@ -574,11 +574,6 @@ public:
     virtual void setShortcut (const QString &);
     /// Obtain the current shortcut of this command
     virtual QString getShortcut() const;
-
-    /** @name arbitrary helper methods */
-    //@{
-    void adjustCameraPosition();
-    //@}
 
     /// Helper class to disable python console log
     class LogDisabler {

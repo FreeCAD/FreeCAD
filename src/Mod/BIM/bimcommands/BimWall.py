@@ -192,7 +192,7 @@ class Arch_Wall:
             self.doc.recompute()
             # gui_utils.end_all_events()  # Causes a crash on Linux.
             self.tracker.finalize()
-            if FreeCADGui.draftToolBar.continueCmd.isChecked():
+            if FreeCADGui.draftToolBar.continueMode:
                 self.Activated()
 
     def addDefault(self):
@@ -358,7 +358,10 @@ class Arch_Wall:
         inputHeight.valueChanged.connect(self.setHeight)
         comboAlignment.currentIndexChanged.connect(self.setAlign)
         inputOffset.valueChanged.connect(self.setOffset)
-        checkboxUseSketches.stateChanged.connect(self.setUseSketch)
+        if hasattr(checkboxUseSketches, "checkStateChanged"): # Qt version >= 6.7.0
+            checkboxUseSketches.checkStateChanged.connect(self.setUseSketch)
+        else: # Qt version < 6.7.0
+            checkboxUseSketches.stateChanged.connect(self.setUseSketch)
         comboWallPresets.currentIndexChanged.connect(self.setMat)
 
         # Define the workflow of the input fields:
@@ -427,11 +430,11 @@ class Arch_Wall:
         self.Offset = d
         params.set_param_arch("WallOffset", d)
 
-    def setUseSketch(self,i):
+    def setUseSketch(self, i):
         """Simple callback to set if walls should based on sketches."""
 
         from draftutils import params
-        params.set_param_arch("WallSketches",bool(i))
+        params.set_param_arch("WallSketches",bool(getattr(i, "value", i)))
 
     def createFromGUI(self):
         """Callback to create wall by using the _CommandWall.taskbox()"""

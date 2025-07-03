@@ -134,6 +134,7 @@ SoDatumLabel::SoDatumLabel()
     SO_NODE_ADD_FIELD(name, ("Helvetica"));
     SO_NODE_ADD_FIELD(size, (10.F));
     SO_NODE_ADD_FIELD(lineWidth, (2.F));
+    SO_NODE_ADD_FIELD(sampling, (2.F));
 
     SO_NODE_ADD_FIELD(datumtype, (SoDatumLabel::DISTANCE));
 
@@ -187,7 +188,8 @@ void SoDatumLabel::drawImage()
     QColor front;
     front.setRgbF(t[0],t[1], t[2]);
 
-    QImage image(w, h,QImage::Format_ARGB32_Premultiplied);
+    QImage image(w * sampling.getValue(), h * sampling.getValue(), QImage::Format_ARGB32_Premultiplied);
+    image.setDevicePixelRatio(sampling.getValue());
     image.fill(0x00000000);
 
     QPainter painter(&image);
@@ -1165,7 +1167,7 @@ void SoDatumLabel::getDimension(float scale, int& srcw, int& srch)
     srch = imgsize[1];
 
     float aspectRatio =  (float) srcw / (float) srch;
-    this->imgHeight = scale * (float) (srch);
+    this->imgHeight = scale * (float) (srch) / sampling.getValue();
     this->imgWidth  = aspectRatio * (float) this->imgHeight;
 }
 
@@ -1456,7 +1458,7 @@ void SoDatumLabel::drawAngle(const SbVec3f* points, float& angle, SbVec3f& textO
     SbVec3f v0(cos(startangle+range/2),sin(startangle+range/2),0);
 
     // leave some space for the text
-    double textMargin = std::min(0.2F*range,  this->imgWidth/(2*r));
+    double textMargin = std::min(0.2F * abs(range), this->imgWidth / (2 * r));
 
     textOffset = p0 + v0 * r;
 
@@ -1465,8 +1467,12 @@ void SoDatumLabel::drawAngle(const SbVec3f* points, float& angle, SbVec3f& textO
     glDrawArc(p0, r, startangle+range/2.+textMargin, endangle);
 
     // Direction vectors for start and end lines
-    SbVec3f v1(cos(startangle),sin(startangle),0);
-    SbVec3f v2(cos(endangle),sin(endangle),0);
+    SbVec3f v1(cos(startangle), sin(startangle), 0);
+    SbVec3f v2(cos(endangle), sin(endangle), 0);
+
+    if (range < 0) {
+        std::swap(v1, v2);
+    }
 
     SbVec3f pnt1 = p0 + (r - endLineLength1) * v1;
     SbVec3f pnt2 = p0 + (r + endLineLength12) * v1;
@@ -1487,7 +1493,6 @@ void SoDatumLabel::drawAngle(const SbVec3f* points, float& angle, SbVec3f& textO
     SbVec3f dirEnd(-v2[1], v2[0], 0);
     SbVec3f endArrowBase = p0 + r * v2;
     glDrawArrow(endArrowBase, dirEnd, arrowWidth, arrowLength);
-
 }
 
 void SoDatumLabel::drawSymmetric(const SbVec3f* points)

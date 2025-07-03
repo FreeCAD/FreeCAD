@@ -115,21 +115,11 @@ App::DocumentObjectExecReturn* FemMeshShapeNetgenObject::execute()
 
     myNetGenMesher.Compute();
 
-    // throw Base::RuntimeError("Compute Done\n");
-
     SMESHDS_Mesh* data = const_cast<SMESH_Mesh*>(newMesh.getSMesh())->GetMeshDS();
     const SMDS_MeshInfo& info = data->GetMeshInfo();
     int numFaces = data->NbFaces();
     int numNode = info.NbNodes();
-    // int numTria = info.NbTriangles();
-    // int numQuad = info.NbQuadrangles();
-    // int numPoly = info.NbPolygons();
     int numVolu = info.NbVolumes();
-    // int numTetr = info.NbTetras();
-    // int numHexa = info.NbHexas();
-    // int numPyrd = info.NbPyramids();
-    // int numPris = info.NbPrisms();
-    // int numHedr = info.NbPolyhedrons();
 
     Base::Console().log("NetgenMesh: %i Nodes, %i Volumes, %i Faces\n", numNode, numVolu, numFaces);
 
@@ -141,22 +131,3 @@ App::DocumentObjectExecReturn* FemMeshShapeNetgenObject::execute()
         this);
 #endif
 }
-
-// short FemMeshShapeNetgenObject::mustExecute(void) const
-//{
-//     return 0;
-// }
-
-// PyObject *FemMeshShapeNetgenObject::getPyObject()
-//{
-//     if (PythonObject.is(Py::_None())){
-//         // ref counter is set to 1
-//         PythonObject = Py::Object(new DocumentObjectPy(this),true);
-//     }
-//     return Py::new_reference_to(PythonObject);
-// }
-
-// void FemMeshShapeNetgenObject::onChanged(const Property* prop)
-//{
-//     Fem::FemMeshShapeObject::onChanged(prop);
-// }

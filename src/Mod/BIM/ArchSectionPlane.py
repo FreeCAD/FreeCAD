@@ -577,7 +577,16 @@ def getDXF(obj):
         return result
     if not allOn:
             objs = Draft.removeHidden(objs)
-    objs = [o for o in objs if ((not(Draft.getType(o) in ["Space","Dimension","Annotation"])) and (not (o.isDerivedFrom("Part::Part2DObject"))))]
+    objs = [
+        obj
+        for obj in objs
+        if (
+            not obj.isDerivedFrom("Part::Part2DObject")
+            and Draft.getType(obj) not in [
+                "BezCurve", "BSpline", "Wire", "Annotation", "Dimension", "Space"
+            ]
+        )
+    ]
     vshapes,hshapes,sshapes,cutface,cutvolume,invcutvolume = getCutShapes(objs,cutplane,onlySolids,clip,False,showHidden)
     if vshapes:
         result.append(TechDraw.projectToDXF(Part.makeCompound(vshapes),direction))
@@ -811,6 +820,7 @@ class _SectionPlane:
 
     def __init__(self,obj):
         obj.Proxy = self
+        self.Type = "SectionPlane"
         self.setProperties(obj)
 
     def setProperties(self,obj):
@@ -832,7 +842,6 @@ class _SectionPlane:
             obj.UseMaterialColorForFill = False
         if not "Depth" in pl:
             obj.addProperty("App::PropertyLength","Depth","SectionPlane",QT_TRANSLATE_NOOP("App::Property","Geometry further than this value will be cut off. Keep zero for unlimited."), locked=True)
-        self.Type = "SectionPlane"
 
     def onDocumentRestored(self,obj):
 
@@ -874,7 +883,7 @@ class _SectionPlane:
 
     def loads(self,state):
 
-        return None
+        self.Type = "SectionPlane"
 
 
 class _ViewProviderSectionPlane:

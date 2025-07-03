@@ -51,15 +51,8 @@ class ShapeStringTaskPanel:
     def __init__(self, point=None, size=None, string="", font=""):
 
         self.form = Gui.PySideUic.loadUi(":/ui/TaskShapeString.ui")
-        self.form.setObjectName("ShapeStringTaskPanel")
         self.form.setWindowTitle(translate("draft", "ShapeString"))
         self.form.setWindowIcon(QtGui.QIcon(":/icons/Draft_ShapeString.svg"))
-
-        unit_length = App.Units.Quantity(0.0, App.Units.Length).getUserPreferred()[2]
-        self.form.sbX.setProperty("unit", unit_length)
-        self.form.sbY.setProperty("unit", unit_length)
-        self.form.sbZ.setProperty("unit", unit_length)
-        self.form.sbHeight.setProperty("unit", unit_length)
 
         self.global_mode = params.get_param("GlobalMode")
         self.form.cbGlobalMode.setChecked(self.global_mode)
@@ -93,7 +86,10 @@ class ShapeStringTaskPanel:
         self.form.sbX.valueChanged.connect(self.set_point_x)
         self.form.sbY.valueChanged.connect(self.set_point_y)
         self.form.sbZ.valueChanged.connect(self.set_point_z)
-        self.form.cbGlobalMode.stateChanged.connect(self.set_global_mode)
+        if hasattr(self.form.cbGlobalMode, "checkStateChanged"): # Qt version >= 6.7.0
+            self.form.cbGlobalMode.checkStateChanged.connect(self.set_global_mode)
+        else: # Qt version < 6.7.0
+            self.form.cbGlobalMode.stateChanged.connect(self.set_global_mode)
         self.form.pbReset.clicked.connect(self.reset_point)
         self.form.sbHeight.valueChanged.connect(self.set_height)
         self.form.leText.textEdited.connect(self.set_text)
@@ -164,7 +160,7 @@ class ShapeStringTaskPanel:
         params.set_param("ShapeStringFontFile", self.font_file)
 
     def set_global_mode(self, val):
-        self.global_mode = bool(val)
+        self.global_mode = bool(getattr(val, "value", val))
         params.set_param("GlobalMode", self.global_mode)
         self.change_coord_labels()
         self.display_point(self.point)

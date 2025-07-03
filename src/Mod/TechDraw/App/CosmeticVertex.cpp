@@ -47,33 +47,36 @@ CosmeticVertex::CosmeticVertex() : TechDraw::Vertex()
     color = Preferences::vertexColor();
     size  = Preferences::vertexScale() *
             LineGroup::getDefaultWidth("Thin");
+
     hlrVisible = true;
     cosmetic = true;
+    cosmeticTag = getTagAsString();
 }
 
-CosmeticVertex::CosmeticVertex(const TechDraw::CosmeticVertex* cv) : TechDraw::Vertex(cv)
+CosmeticVertex::CosmeticVertex(const TechDraw::CosmeticVertex* cv) : TechDraw::Vertex(cv),
+    permaPoint(cv->permaPoint),
+    linkGeom(cv->linkGeom),
+    color(cv->color),
+    size(cv->size),
+    style(cv->style),
+    visible(cv->visible)
 {
-    permaPoint = cv->permaPoint;
-    linkGeom = cv->linkGeom;
-    color = cv->color;
-    size  = cv->size;
-    style = cv->style;
-    visible = cv->visible;
+    // Base fields
     hlrVisible = true;
     cosmetic = true;
+    cosmeticTag = getTagAsString();
 }
 
-CosmeticVertex::CosmeticVertex(const Base::Vector3d& loc) : TechDraw::Vertex(loc)
+CosmeticVertex::CosmeticVertex(const Base::Vector3d& loc) : TechDraw::Vertex(loc),
+    permaPoint(loc),
+    color(Preferences::vertexColor())
 {
-    permaPoint = loc;
-    linkGeom = -1;
-    color = Preferences::vertexColor();
     size  = Preferences::vertexScale() *
             LineGroup::getDefaultWidth("Thick");
-    style = 1;        //TODO: implement styled vertexes
-    visible = true;
+
     hlrVisible = true;
     cosmetic = true;
+    cosmeticTag = getTagAsString();
 }
 
 void CosmeticVertex::move(const Base::Vector3d& newPos)
@@ -119,14 +122,16 @@ void CosmeticVertex::Save(Base::Writer &writer) const
                 << "X=\"" <<  permaPoint.x <<
                 "\" Y=\"" <<  permaPoint.y <<
                 "\" Z=\"" <<  permaPoint.z <<
-                 "\"/>" << endl;
-    writer.Stream() << writer.ind() << "<LinkGeom value=\"" <<  linkGeom << "\"/>" << endl;
-    writer.Stream() << writer.ind() << "<Color value=\"" <<  color.asHexString() << "\"/>" << endl;
-    writer.Stream() << writer.ind() << "<Size value=\"" <<  size << "\"/>" << endl;
-    writer.Stream() << writer.ind() << "<Style value=\"" <<  style << "\"/>" << endl;
+                 "\"/>" << '\n';
+    writer.Stream() << writer.ind() << "<LinkGeom value=\"" <<  linkGeom << "\"/>" << '\n';
+    writer.Stream() << writer.ind() << "<Color value=\"" <<  color.asHexString() << "\"/>" << '\n';
+    writer.Stream() << writer.ind() << "<Size value=\"" <<  size << "\"/>" << '\n';
+    writer.Stream() << writer.ind() << "<Style value=\"" <<  style << "\"/>" << '\n';
     const char v = visible?'1':'0';
-    writer.Stream() << writer.ind() << "<Visible value=\"" <<  v << "\"/>" << endl;
-    Tag::Save(writer);
+    writer.Stream() << writer.ind() << "<Visible value=\"" <<  v << "\"/>" << '\n';
+
+    //NOLINTNEXTLINE
+    Tag::Save(writer);      // as "Tag"
 }
 
 void CosmeticVertex::Restore(Base::XMLReader &reader)
@@ -135,31 +140,36 @@ void CosmeticVertex::Restore(Base::XMLReader &reader)
         return;
     }
     TechDraw::Vertex::Restore(reader);
-    reader.readElement("PermaPoint");
+
+    // Vertex::Restore call to readNextElement may leave us already positioned on the PermaPoint element.
+    if(strcmp(reader.localName(),"PermaPoint") != 0) {
+        reader.readElement("PermaPoint");
+    }
     permaPoint.x = reader.getAttribute<double>("X");
     permaPoint.y = reader.getAttribute<double>("Y");
     permaPoint.z = reader.getAttribute<double>("Z");
     reader.readElement("LinkGeom");
-    linkGeom = reader.getAttribute<long>("value");
+    linkGeom = reader.getAttribute<int>("value");
     reader.readElement("Color");
     std::string temp = reader.getAttribute<const char*>("value");
     color.fromHexString(temp);
     reader.readElement("Size");
     size = reader.getAttribute<double>("value");
     reader.readElement("Style");
-    style = reader.getAttribute<long>("value");
+    style = reader.getAttribute<int>("value");
     reader.readElement("Visible");
     visible = reader.getAttribute<bool>("value");
+
     Tag::Restore(reader);
 }
 
-Base::Vector3d CosmeticVertex::scaled(const double factor)
+Base::Vector3d CosmeticVertex::scaled(const double factor) const
 {
     return permaPoint * factor;
 }
 
 //! returns a transformed version of our coordinates (permaPoint)
-Base::Vector3d CosmeticVertex::rotatedAndScaled(const double scale, const double rotDegrees)
+Base::Vector3d CosmeticVertex::rotatedAndScaled(const double scale, const double rotDegrees) const
 {
     Base::Vector3d scaledPoint = scaled(scale);
     if (rotDegrees != 0.0) {

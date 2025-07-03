@@ -288,7 +288,7 @@ class BIMWorkbench(Workbench):
         FreeCADGui.addCommand("BIM_Create2DViews", BIM_Create2DViews(self.create_2dviews))
         insert_at_index = self.annotationtools.index("BIM_TDPage")
         self.annotationtools.insert(insert_at_index, "BIM_Create2DViews")
-        
+
         # load rebar tools (Reinforcement addon)
 
         try:
@@ -507,7 +507,6 @@ class BIMWorkbench(Workbench):
         import BimStatus
         from nativeifc import ifc_observer
         from draftutils import grid_observer
-        from draftutils import doc_observer
 
         PARAMS = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/BIM")
 
@@ -517,7 +516,6 @@ class BIMWorkbench(Workbench):
             FreeCADGui.Snapper.show()
         WorkingPlane._view_observer_start()
         grid_observer._view_observer_setup()
-        doc_observer._doc_observer_start()
 
         if PARAMS.GetBool("FirstTime", True) and (not hasattr(FreeCAD, "TestEnvironment")):
             todo.ToDo.delay(FreeCADGui.runCommand, "BIM_Welcome")
@@ -574,9 +572,12 @@ class BIMWorkbench(Workbench):
                     {"insert": "BIM_Help", "menuItem": "Std_ReportBug", "after": ""},
                     {"insert": "BIM_Welcome", "menuItem": "Std_ReportBug", "after": ""},
                 ]
-        if not hasattr(Gui, "BIM_WBManipulator"):
+        reload = hasattr(Gui, "BIM_WBManipulator")  # BIM WB has previously been loaded.
+        if not getattr(Gui, "BIM_WBManipulator", None):
             Gui.BIM_WBManipulator = BIM_WBManipulator()
         Gui.addWorkbenchManipulator(Gui.BIM_WBManipulator)
+        if reload:
+            Gui.activeWorkbench().reloadActive()
 
         Log("BIM workbench activated\n")
 
@@ -588,7 +589,6 @@ class BIMWorkbench(Workbench):
         import WorkingPlane
         from nativeifc import ifc_observer
         from draftutils import grid_observer
-        from draftutils import doc_observer
 
         PARAMS = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/BIM")
 
@@ -602,7 +602,6 @@ class BIMWorkbench(Workbench):
             FreeCADGui.Snapper.hide()
         WorkingPlane._view_observer_stop()
         grid_observer._view_observer_setup()
-        doc_observer._doc_observer_stop()
 
         # print("Deactivating status icon")
         todo.ToDo.delay(BimStatus.setStatusIcons, False)
@@ -629,7 +628,7 @@ class BIMWorkbench(Workbench):
         # remove manipulator
         if hasattr(Gui, "BIM_WBManipulator"):
             Gui.removeWorkbenchManipulator(Gui.BIM_WBManipulator)
-            del Gui.BIM_WBManipulator
+            Gui.BIM_WBManipulator = None
             Gui.activeWorkbench().reloadActive()
 
         Log("BIM workbench deactivated\n")

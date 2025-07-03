@@ -26,6 +26,7 @@
 #ifndef _PreComp_
 #include <boost/algorithm/string/predicate.hpp>
 #include <QApplication>
+#include <QClipboard>
 #include <QInputDialog>
 #include <QHeaderView>
 #include <QMenu>
@@ -709,6 +710,7 @@ enum MenuAction
     MA_Touched,
     MA_EvalOnRestore,
     MA_CopyOnChange,
+    MA_Copy,
 };
 
 void PropertyEditor::contextMenuEvent(QContextMenuEvent*)
@@ -732,6 +734,15 @@ void PropertyEditor::contextMenuEvent(QContextMenuEvent*)
                 props.insert(ps.begin(), ps.end());
                 break;
             }
+        }
+        if (index.column() > 0) {
+            continue;
+        }
+        const QVariant valueToCopy = contextIndex.data(Qt::DisplayRole);
+        if (valueToCopy.isValid()) {
+            QAction* copyAction = menu.addAction(tr("Copy"));
+            copyAction->setData(QVariant(MA_Copy));
+            menu.addSeparator();
         }
     }
 
@@ -848,6 +859,14 @@ void PropertyEditor::contextMenuEvent(QContextMenuEvent*)
         case MA_ShowHidden:
             PropertyView::setShowAll(action->isChecked());
             return;
+        case MA_Copy: {
+            const QVariant valueToCopy = contextIndex.data(Qt::DisplayRole);
+            if (valueToCopy.isValid()) {
+                auto *clipboard = QApplication::clipboard();
+                clipboard->setText(valueToCopy.toString());
+            }
+            return;
+        }
 #define ACTION_CHECK(_name)                                                                        \
     case MA_##_name:                                                                               \
         for (auto prop : props)                                                                    \

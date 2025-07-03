@@ -87,15 +87,19 @@ Py::String MaterialPy::getLibraryRoot() const
     return "";
 }
 
-Py::String MaterialPy::getLibraryIcon() const
+Py::Object MaterialPy::getLibraryIcon() const
 {
     auto library = getMaterialPtr()->getLibrary();
     if (library->isLocal()) {
         auto materialLibrary =
             reinterpret_cast<const std::shared_ptr<Materials::MaterialLibraryLocal>&>(library);
-        return {materialLibrary ? materialLibrary->getIconPath().toStdString() : ""};
+        auto icon = materialLibrary->getIcon();
+        if (icon.isNull()) {
+            return Py::Bytes();
+        }
+        return Py::Bytes(icon.data(), icon.size());
     }
-    return "";
+    return Py::Bytes();
 }
 
 Py::String MaterialPy::getName() const

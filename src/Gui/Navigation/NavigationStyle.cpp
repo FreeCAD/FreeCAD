@@ -319,10 +319,10 @@ NavigationStyle::~NavigationStyle()
     finalize();
     delete this->animator;
 
-    if (pythonObject) {
+    if (!pythonObject.is(nullptr)) {
         Base::PyGILStateLocker lock;
-        Py_DECREF(pythonObject);
-        pythonObject = nullptr;
+        Base::PyObjectBase* obj = static_cast<Base::PyObjectBase*>(pythonObject.ptr());
+        obj->setInvalid();
     }
 }
 
@@ -606,16 +606,30 @@ void NavigationStyle::boxZoom(const SbBox2s& box)
     // Set height or height angle of the camera
     float scaleX = (float)sizeX/(float)size[0];
     float scaleY = (float)sizeY/(float)size[1];
-    float scale = std::max<float>(scaleX, scaleY);
-    if (cam->getTypeId() == SoOrthographicCamera::getClassTypeId()) {
-        float height = static_cast<SoOrthographicCamera*>(cam)->height.getValue() * scale;
-        static_cast<SoOrthographicCamera*>(cam)->height = height;
+    float scaleFactor = std::max<float>(scaleX, scaleY);
+
+    doScale(cam, scaleFactor);
+}
+void NavigationStyle::scale(float factor)
+{
+    SoCamera* cam = viewer->getSoRenderManager()->getCamera();
+    if (!cam) { // no camera
+        return;
     }
-    else if (cam->getTypeId() == SoPerspectiveCamera::getClassTypeId()) {
-        float height = static_cast<SoPerspectiveCamera*>(cam)->heightAngle.getValue() / 2.0f;
-        height = 2.0f * atan(tan(height) * scale);
-        static_cast<SoPerspectiveCamera*>(cam)->heightAngle = height;
-    }
+
+    // Find the current center of the screen
+    SbVec3f direction;
+    cam->orientation.getValue().multVec(SbVec3f(0, 0, -1), direction);
+    SbVec3f initCenter = cam->position.getValue() + cam->focalDistance.getValue() * direction;
+
+    // Move the camera to the origin for scaling
+    cam->position = cam->position.getValue() - initCenter;
+
+    // Scale the view
+    doScale(cam, factor);
+    
+    // Move the camera back to it's initial position scaled
+    cam->position = cam->position.getValue() + initCenter * factor;
 }
 
 void NavigationStyle::viewAll()
@@ -700,6 +714,19 @@ void NavigationStyle::reorientCamera(SoCamera* camera, const SbRotation& rotatio
     // Reposition camera so the rotation center stays in the same place
     camera->position = rotationCenter + newRotationCenterDistance;
 
+    if (camera->getTypeId().isDerivedFrom(SoOrthographicCamera::getClassTypeId())) {
+        // Adjust the camera position to keep the focal point in the same place while making sure
+        // the focal distance stays small. This increases rotation stability for small and large
+        // scenes
+
+        SbVec3f direction;
+        camera->orientation.getValue().multVec(SbVec3f(0, 0, -1), direction);
+        
+        constexpr float orthographicFocalDistance = 1;
+        camera->position = getFocalPoint() - orthographicFocalDistance * direction;
+        camera->focalDistance = orthographicFocalDistance;
+    }
+    
 #if (COIN_MAJOR_VERSION * 100 + COIN_MINOR_VERSION * 10 + COIN_MICRO_VERSION < 403)
     // Fix issue with near clipping in orthogonal view
     if (camera->getTypeId().isDerivedFrom(SoOrthographicCamera::getClassTypeId())) {
@@ -941,7 +968,18 @@ void NavigationStyle::doZoom(SoCamera* camera, float logfactor, const SbVec2f& p
         }
     }
 }
-
+void NavigationStyle::doScale(SoCamera * cam, float factor)
+{
+    if (cam->getTypeId() == SoOrthographicCamera::getClassTypeId()) {
+        float height = static_cast<SoOrthographicCamera*>(cam)->height.getValue() * factor;
+        static_cast<SoOrthographicCamera*>(cam)->height = height;
+    }
+    else if (cam->getTypeId() == SoPerspectiveCamera::getClassTypeId()) {
+        float height = static_cast<SoPerspectiveCamera*>(cam)->heightAngle.getValue() / 2.0f;
+        height = 2.0f * atan(tan(height) * factor);
+        static_cast<SoPerspectiveCamera*>(cam)->heightAngle = height;
+    }
+}
 void NavigationStyle::doRotate(SoCamera * camera, float angle, const SbVec2f& pos)
 {
     SbBool zoomAtCur = this->zoomAtCursor;
@@ -1914,11 +1952,11 @@ void NavigationStyle::openPopupMenu(const SbVec2s& position)
 
 PyObject* NavigationStyle::getPyObject()
 {
-    if (!pythonObject)
-        pythonObject = new NavigationStylePy(this);
-
-    Py_INCREF(pythonObject);
-    return pythonObject;
+    if (pythonObject.is(nullptr)) {
+        // ref counter is set to 1
+        pythonObject = Py::asObject(new NavigationStylePy(this));
+    }
+    return Py::new_reference_to(pythonObject);
 }
 
 // ----------------------------------------------------------------------------------

@@ -81,7 +81,7 @@ custom stylesheet below and can look nicer than the wiki option. The &apos;Markd
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="164"/>
       <source>Display</source>
-      <translation>Показ</translation>
+      <translation>Відображення</translation>
     </message>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="170"/>
@@ -148,7 +148,7 @@ Markdown version above.</source>
     <message>
       <location filename="../../Help.py" line="79"/>
       <source>Help files location could not be determined. Please check settings under menu Edit -&gt; Preferences -&gt; General -&gt; Help</source>
-      <translation>Не вдалося визначити розташування файлів довідки. Будь ласка, перевірте налаштування в меню Правка -&gt; Налаштування -&gt; Загальні -&gt; Довідка</translation>
+      <translation>Не вдалося визначити розташування файлів довідки. Будь ласка, перевірте налаштування в меню Зміни -&gt; Налаштування -&gt; Загальні -&gt; Довідка</translation>
     </message>
     <message>
       <location filename="../../Help.py" line="83"/>
