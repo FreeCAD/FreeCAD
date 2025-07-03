@@ -101,7 +101,7 @@ class TaskShareView:
         dlg = Gui.PySideUic.loadUi(_dlgPath)
         self.dialogOpen = True
         dlg.lPrompt.setText(translate("TechDraw_ShareView", "Select from page."))
-        dlg.setWindowTitle(translate("TechDraw_ShareView", "Select page"))
+        dlg.setWindowTitle(translate("TechDraw_ShareView", "Select Page"))
 
         pages = [x for x in App.ActiveDocument.Objects if x.isDerivedFrom("TechDraw::DrawPage")]
         for p in pages:
