@@ -87,6 +87,7 @@ protected:
     void slotFinishRestoreDocument(const App::Document&);
     void slotUndoDocument(const App::Document&);
     void slotRedoDocument(const App::Document&);
+    void slotCommitTransaction(const App::Document&);
     void slotShowHidden(const App::Document&);
     void slotFinishImportObjects(const std::vector<App::DocumentObject*> &);
     void slotFinishRestoreObject(const App::DocumentObject &obj);
@@ -168,7 +169,13 @@ public:
     //@}
 
     /// Observer message from the App doc
-    void setModified(bool);
+    enum class ModificationType {
+        Reset,
+        TransactionDone,
+        TransactionUndone,
+        OutOfTransaction // Modification done 
+    };
+    void setModified(ModificationType type);
     bool isModified() const;
 
     /// Returns true if the document is about to be closed, false otherwise
@@ -290,6 +297,7 @@ public:
     void undo(int iSteps);
     /// Will REDO one or more steps
     void redo(int iSteps) ;
+
     /** Check if the document is performing undo/redo transaction
      *
      * Unlike App::Document::isPerformingTransaction(), Gui::Document will
