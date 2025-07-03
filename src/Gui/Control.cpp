@@ -205,9 +205,17 @@ void ControlSingleton::showDialog(Gui::TaskView::TaskDialog *dlg, App::Document*
 
 Gui::TaskView::TaskDialog* ControlSingleton::activeDialog(App::Document* attachedTo) const
 {
+    if (!attachedTo) {
+        if (Application::Instance->activeDocument()) {
+            attachedTo = Application::Instance->activeDocument()->getDocument();
+        } else {
+            return nullptr;
+        }
+    }
+
     Gui::TaskView::TaskView* taskView = taskPanel();
 
-    if (taskView && attachedTo) {
+    if (taskView) {
         return taskView->dialog(attachedTo);
     }
     return nullptr;
