@@ -1776,11 +1776,19 @@ bool Feature::getCameraAlignmentDirection(Base::Vector3d& directionZ, Base::Vect
 
     // Edge direction
     const size_t edgeCount = topoShape.countSubShapes(TopAbs_EDGE);
-    if (edgeCount == 1 && topoShape.isLinearEdge()) {
-        if (const std::unique_ptr<Geometry> geometry = Geometry::fromShape(topoShape.getSubShape(TopAbs_EDGE, 1), true)) {
-            const std::unique_ptr<GeomLine> geomLine(static_cast<GeomCurve*>(geometry.get())->toLine());
-            if (geomLine) {
-                directionZ = geomLine->getDir().Normalize();
+    if (edgeCount == 1) {
+        if (topoShape.isLinearEdge()) {
+            if (const std::unique_ptr<Geometry> geometry = Geometry::fromShape(topoShape.getSubShape(TopAbs_EDGE, 1), true)) {
+                const std::unique_ptr<GeomLine> geomLine(static_cast<GeomCurve*>(geometry.get())->toLine());
+                if (geomLine) {
+                    directionZ = geomLine->getDir().Normalize();
+                    return true;
+                }
+            }
+        } else {
+            // Planar curves
+            if (gp_Pln plane; topoShape.findPlane(plane)) {
+                directionZ = Base::Vector3d(plane.Axis().Direction().X(), plane.Axis().Direction().Y(), plane.Axis().Direction().Z()).Normalize();
                 return true;
             }
         }

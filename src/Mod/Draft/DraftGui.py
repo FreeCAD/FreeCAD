@@ -433,7 +433,7 @@ class DraftToolBar:
         QtCore.QObject.connect(self.lengthValue,QtCore.SIGNAL("valueChanged(double)"),self.changeLengthValue)
         QtCore.QObject.connect(self.angleValue,QtCore.SIGNAL("valueChanged(double)"),self.changeAngleValue)
         if hasattr(self.angleLock, "checkStateChanged"): # Qt version >= 6.7.0
-            QtCore.QObject.connect(self.angleLock,QtCore.SIGNAL("checkStateChanged(int)"),self.toggleAngle)
+            self.angleLock.checkStateChanged.connect(self.toggleAngle)
         else: # Qt version < 6.7.0
             QtCore.QObject.connect(self.angleLock,QtCore.SIGNAL("stateChanged(int)"),self.toggleAngle)
         QtCore.QObject.connect(self.radiusValue,QtCore.SIGNAL("valueChanged(double)"),self.changeRadiusValue)
@@ -461,13 +461,13 @@ class DraftToolBar:
         QtCore.QObject.connect(self.undoButton,QtCore.SIGNAL("pressed()"),self.undoSegment)
         QtCore.QObject.connect(self.selectButton,QtCore.SIGNAL("pressed()"),self.selectEdge)
         if hasattr(self.continueCmd, "checkStateChanged"): # Qt version >= 6.7.0
-            QtCore.QObject.connect(self.continueCmd,QtCore.SIGNAL("checkStateChanged(int)"),self.setContinue)
-            QtCore.QObject.connect(self.chainedModeCmd,QtCore.SIGNAL("checkStateChanged(int)"),self.setChainedMode)
-            QtCore.QObject.connect(self.isCopy,QtCore.SIGNAL("checkStateChanged(int)"),self.setCopymode)
-            QtCore.QObject.connect(self.isSubelementMode, QtCore.SIGNAL("checkStateChanged(int)"), self.setSubelementMode)
-            QtCore.QObject.connect(self.isRelative,QtCore.SIGNAL("checkStateChanged(int)"),self.setRelative)
-            QtCore.QObject.connect(self.isGlobal,QtCore.SIGNAL("checkStateChanged(int)"),self.setGlobal)
-            QtCore.QObject.connect(self.makeFace,QtCore.SIGNAL("checkStateChanged(int)"),self.setMakeFace)
+            self.continueCmd.checkStateChanged.connect(self.setContinue)
+            self.chainedModeCmd.checkStateChanged.connect(self.setChainedMode)
+            self.isCopy.checkStateChanged.connect(self.setCopymode)
+            self.isSubelementMode.checkStateChanged.connect(self.setSubelementMode)
+            self.isRelative.checkStateChanged.connect(self.setRelative)
+            self.isGlobal.checkStateChanged.connect(self.setGlobal)
+            self.makeFace.checkStateChanged.connect(self.setMakeFace)
         else: # Qt version < 6.7.0
             QtCore.QObject.connect(self.continueCmd,QtCore.SIGNAL("stateChanged(int)"),self.setContinue)
             QtCore.QObject.connect(self.chainedModeCmd,QtCore.SIGNAL("stateChanged(int)"),self.setChainedMode)
@@ -951,15 +951,15 @@ class DraftToolBar:
 #---------------------------------------------------------------------------
 
     def setContinue(self, val):
-        params.set_param(FreeCAD.activeDraftCommand.featureName, bool(val), "Mod/Draft/ContinueMode")
-        self.continueMode = bool(val)
-        self.chainedModeCmd.setEnabled(not val)
+        params.set_param(FreeCAD.activeDraftCommand.featureName, bool(getattr(val, "value", val)), "Mod/Draft/ContinueMode")
+        self.continueMode = bool(getattr(val, "value", val))
+        self.chainedModeCmd.setEnabled(not bool(getattr(val, "value", val)))
 
     def setChainedMode(self, val):
-        params.set_param("ChainedMode", bool(val))
-        self.chainedMode = bool(val)
-        self.continueCmd.setEnabled(not val)
-        if val == False:
+        params.set_param("ChainedMode", bool(getattr(val, "value", val)))
+        self.chainedMode = bool(getattr(val, "value", val))
+        self.continueCmd.setEnabled(not bool(getattr(val, "value", val)))
+        if bool(getattr(val, "value", val)) == False:
             # If user has deselected the checkbox, reactive the command
             # which will result in closing it
             FreeCAD.activeDraftCommand.Activated()
@@ -971,10 +971,11 @@ class DraftToolBar:
     #     gui_rectangles.py
     #     gui_stretch.py
     def setRelative(self, val=-1):
+        val = getattr(val, "value", val)
         if val < 0:
             if hasattr(self.isRelative, "checkStateChanged"): # Qt version >= 6.7.0
                 QtCore.QObject.disconnect(self.isRelative,
-                                      QtCore.SIGNAL("checkStateChanged(int)"),
+                                      QtCore.SIGNAL("checkStateChanged(Qt::CheckState)"),
                                       self.setRelative)
             else: # Qt version < 6.7.0
                 QtCore.QObject.disconnect(self.isRelative,
@@ -989,7 +990,7 @@ class DraftToolBar:
                 self.relativeMode = val
             if hasattr(self.isRelative, "checkStateChanged"): # Qt version >= 6.7.0
                 QtCore.QObject.disconnect(self.isRelative,
-                                      QtCore.SIGNAL("checkStateChanged(int)"),
+                                      QtCore.SIGNAL("checkStateChanged(Qt::CheckState)"),
                                       self.setRelative)
             else: # Qt version < 6.7.0
                 QtCore.QObject.disconnect(self.isRelative,
@@ -1003,28 +1004,28 @@ class DraftToolBar:
         self.updateSnapper()
 
     def setGlobal(self, val):
-        params.set_param("GlobalMode", bool(val))
-        self.globalMode = bool(val)
+        params.set_param("GlobalMode", bool(getattr(val, "value", val)))
+        self.globalMode = bool(getattr(val, "value", val))
         self.checkLocal()
         self.displayPoint(self.new_point, self.get_last_point())
         self.updateSnapper()
 
     def setMakeFace(self, val):
-        params.set_param("MakeFaceMode", bool(val))
-        self.makeFaceMode = bool(val)
+        params.set_param("MakeFaceMode", bool(getattr(val, "value", val)))
+        self.makeFaceMode = bool(getattr(val, "value", val))
 
     def setCopymode(self, val):
         # special value for offset command
         if self.sourceCmd and self.sourceCmd.featureName == "Offset":
-            params.set_param("OffsetCopyMode", bool(val))
+            params.set_param("OffsetCopyMode", bool(getattr(val, "value", val)))
         else:
-            params.set_param("CopyMode", bool(val))
+            params.set_param("CopyMode", bool(getattr(val, "value", val)))
             # if CopyMode is changed ghosts must be updated.
             # Moveable children should not be included if CopyMode is True.
             self.sourceCmd.set_ghosts()
 
     def setSubelementMode(self, val):
-        params.set_param("SubelementMode", bool(val))
+        params.set_param("SubelementMode", bool(getattr(val, "value", val)))
         self.sourceCmd.set_ghosts()
 
     def checkx(self):

@@ -28,6 +28,7 @@
 #include <Gui/TaskView/TaskView.h>
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
+#include "QGIGhostHighlight.h"
 
 namespace TechDraw
 {

@@ -22,9 +22,6 @@
        <verstretch>2</verstretch>
       </sizepolicy>
      </property>
-     <property name="toolTip">
-      <string>Adjust the orientation of the directional light source</string>
-     </property>
      <property name="title">
       <string>Preview</string>
      </property>

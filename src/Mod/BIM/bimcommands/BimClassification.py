@@ -670,7 +670,7 @@ class BIM_Classification:
                 self.form.treeClass.setCurrentItem(self.form.treeClass.itemBelow(i))
 
     def onVisible(self, index):
-        PARAMS.SetInt("BimClassificationVisibleState", index)
+        PARAMS.SetInt("BimClassificationVisibleState", getattr(index, "value", index))
         self.updateObjects()
 
     def getIcon(self,obj):

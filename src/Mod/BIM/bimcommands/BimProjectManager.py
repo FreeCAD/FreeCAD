@@ -469,10 +469,6 @@ class BIM_ProjectManager:
                 + "\n"
             )
             s += "groups=" + ";;".join(groups) + "\n"
-
-            s += "levelsWP=" + str(int(self.form.levelsWP.isChecked())) + "\n"
-            s += "levelsAxis=" + str(int(self.form.levelsAxis.isChecked())) + "\n"
-
             s += (
                 "addHumanFigure="
                 + str(int(self.form.addHumanFigure.isChecked()))
@@ -563,10 +559,6 @@ class BIM_ProjectManager:
                             groups = s[1].split(";;")
                             self.form.groupsList.clear()
                             self.form.groupsList.addItems(groups)
-                        elif s[0] == "levelsWP":
-                            self.form.levelsWP.setChecked(bool(int(s[1])))
-                        elif s[0] == "levelsAxis":
-                            self.form.levelsAxis.setChecked(bool(int(s[1])))
                         elif s[0] == "addHumanFigure":
                             self.form.addHumanFigure.setChecked(bool(int(s[1])))
 

@@ -54,6 +54,7 @@ class _PropHelper:
     Helper class to manage property data inside proxy objects.
     Initialization keywords are the same used with PropertyContainer
     to add dynamics properties plus "value" for the initial value.
+    Note: Is used as base for a GUI version, be aware when refactoring
     """
 
     def __init__(self, **kwds):

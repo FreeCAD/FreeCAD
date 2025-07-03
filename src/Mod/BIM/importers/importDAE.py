@@ -34,6 +34,7 @@ __url__    = "https://www.freecad.org"
 
 import os
 from typing import Optional
+from xml.sax.saxutils import escape as sax_escape
 
 import numpy as np
 
@@ -53,29 +54,35 @@ else:
         return text
     # \endcond
 
-DEBUG = True
+
+def xml_escape(text: str, entities: dict[str, str] = None) -> str:
+    """Escape text for XML.
+
+    This is a wrapper around xml.sax.saxutils.escape that replaces also
+    `"` with `&quot;` by default.
+    """
+    if entities is None:
+        entities = {'"': "&quot;"}
+    return sax_escape(text, entities=entities)
 
 
-def check_collada_import() -> bool:
+def import_collada() -> bool:
     """Return True if the `collada` module is available.
 
     Also imports the module.
 
     """
-
     global collada
     try:
         import collada
     except ImportError:
         FreeCAD.Console.PrintError(translate("BIM", "pycollada not found, collada support is disabled.") + "\n")
         return False
-    else:
-        return True
+    return True
 
 
 def triangulate(shape):
     """Triangulate the given shape."""
-
     mesher = params.get_param_arch("ColladaMesher")
     tessellation = params.get_param_arch("ColladaTessellation")
     grading = params.get_param_arch("ColladaGrading")
@@ -102,8 +109,7 @@ def triangulate(shape):
 
 def open(filename):
     """Called when FreeCAD wants to open a file."""
-
-    if not check_collada_import():
+    if not import_collada():
         return
     docname = os.path.splitext(os.path.basename(filename))[0]
     doc = FreeCAD.newDocument(docname)
@@ -115,8 +121,7 @@ def open(filename):
 
 def insert(filename, docname):
     """Called when FreeCAD wants to import a file."""
-
-    if not check_collada_import():
+    if not import_collada():
         return
     try:
         doc = FreeCAD.getDocument(docname)
@@ -129,50 +134,84 @@ def insert(filename, docname):
 
 def read(filename):
     """Read a DAE file."""
-
+    doc = FreeCAD.activeDocument()
+    if not doc:
+        return
     col = collada.Collada(filename, ignore=[collada.common.DaeUnsupportedError])
     # Read the unitmeter info from DAE file and compute unit to convert to mm.
-    unitmeter = col.assetInfo.unitmeter or 1
-    unit = unitmeter / 0.001
-    # for geom in col.geometries:
-    # for geom in col.scene.objects("geometry"):
-    for node in col.scene.nodes:
-        for child in node.children:
-            if not isinstance(child, collada.scene.GeometryNode):
+    unit_meter = col.assetInfo.unitmeter or 1.0
+    unit = unit_meter / 0.001
+    bound_geom: collada.geometry.BoundGeometry
+    # Implementation note: there's also `col.geometries` but when using them,
+    # the materials are string and Gaël didn't find a way to get the material
+    # node from this string.
+    for bound_geom in col.scene.objects('geometry'):
+        prim: collada.primitive.BoundPrimitive
+        for prim in bound_geom.primitives():
+            if not isinstance(prim, collada.triangleset.BoundTriangleSet):
+                # e.g. a BoundLineSet, which is not supported yet.
                 continue
-            geom: collada.scenes.GeometryNode = child.geometry
-            mat_symbols: list[str] = [m.symbol for m in child.materials]
-            for prim in geom.primitives:
-                meshdata = []
-                for tri in prim:
-                    # tri.vertices is a numpy array.
-                    meshdata.append((tri.vertices * unit).tolist())
-                mesh = Mesh.Mesh(meshdata)
-                try:
-                    name = geom.name
-                except AttributeError:
-                    name = geom.id
-                obj = FreeCAD.ActiveDocument.addObject("Mesh::Feature", name)
+            # Get the materials and associated vertices.
+            meshes: dict[collada.scene.MaterialNode, list] = {}
+            tri: collada.triangleset.Triangle
+            for tri in prim:
+                material_node: collada.material.Material = tri.material
+                if material_node not in meshes:
+                    # Not yet in the dict, create a new entry.
+                    meshes[material_node] = []
+                if len(tri.vertices) != 3:
+                    msg = (
+                            f"Warning: triangle with {len(tri.vertices)} vertices found"
+                            f" in {bound_geom.original.name}, expected 3. Skipping this triangle."
+                    )
+                    FreeCAD.Console.PrintWarning(msg + "\n")
+                    continue
+                # tri.vertices is a numpy array.
+                meshes[material_node].append((tri.vertices * unit).tolist())
+            # Create a mesh for each material node.
+            for material_node, vertices in meshes.items():
+                mesh = Mesh.Mesh(vertices)
+                name = bound_geom.original.name
+                if not name:
+                    name = bound_geom.original.id
+                obj = doc.addObject("Mesh::Feature", name)
                 obj.Label = name
                 obj.Mesh = mesh
+                if not material_node:
+                    continue
                 if FreeCAD.GuiUp:
-                    try:
-                        mat_index = mat_symbols.index(prim.material)
-                        material = child.materials[mat_index].target
-                        color = material.effect.diffuse
-                        obj.ViewObject.ShapeColor = color
-                    except ValueError:
-                        # Material not found.
-                        pass
-                    except TypeError:
-                        # color is not a tuple but a texture.
-                        pass
+                    fc_mat = FreeCAD.Material()
+                    # We do not import transparency because it is often set
+                    # wrongly (transparency mistaken for opacity).
+                    # TODO: Ask whether to import transparency.
+                    field_map = {
+                            "ambient": "AmbientColor",
+                            "diffuse": "DiffuseColor",
+                            "emission": "EmissiveColor",
+                            "specular": "SpecularColor",
+                            "shininess": "Shininess",
+                            # "transparency": "Transparency",
+                    }
+                    for col_field, fc_field in field_map.items():
+                        try:
+                            # Implementation note: using floats, so values must
+                            # be within [0, 1]. OK.
+                            setattr(fc_mat, fc_field, getattr(material_node.effect, col_field))
+                        except ValueError:
+                            # The collada value is not compatible with FreeCAD.
+                            pass
+                        except TypeError:
+                            # color is not a tuple but a texture.
+                            pass
+                    obj.ViewObject.ShapeAppearance = (fc_mat,)
 
     # Print the errors that occurred during reading.
     if col.errors:
         FreeCAD.Console.PrintWarning(translate("BIM", "File was read but some errors occurred:") + "\n")
     for e in col.errors:
         FreeCAD.Console.PrintWarning(str(e) + "\n")
+    if FreeCAD.GuiUp:
+        FreeCAD.Gui.SendMsgToActiveView("ViewFit")
 
 
 def export(
@@ -191,8 +230,7 @@ def export(
              mode if you want to be able to export colors.
 
     """
-
-    if not check_collada_import():
+    if not import_collada():
         return
     if colors is None:
         colors = {}
@@ -207,12 +245,13 @@ def export(
         author = FreeCAD.ActiveDocument.CreatedBy
     except UnicodeEncodeError:
         author = FreeCAD.ActiveDocument.CreatedBy.encode("utf8")
-    author = author.replace("<", "")
-    author = author.replace(">", "")
+    author = xml_escape(author)
     col_contributor.author = author
     ver = FreeCAD.Version()
     appli = f"FreeCAD v{ver[0]}.{ver[1]} build {ver[2]}"
     col_contributor.authoring_tool = appli
+    # Bug in collada from 0.4 to 0.9, contributors are not written to file.
+    # Set it anyway for future versions.
     col_mesh.assetInfo.contributors.append(col_contributor)
     col_mesh.assetInfo.unitname = "meter"
     col_mesh.assetInfo.unitmeter = 1.0
@@ -269,7 +308,7 @@ def export(
         geom = collada.geometry.Geometry(
                 collada=col_mesh,
                 id=f"geometry{obj_ind}",
-                name=obj.Name,
+                name=xml_escape(obj.Label),
                 sourcebyid=[vert_src, normal_src],
         )
         input_list = collada.source.InputList()
@@ -327,7 +366,7 @@ def export(
                     )
                     col_mesh.effects.append(effect)
                     col_mesh.materials.append(mat)
-                    mat_ref = "ref_" + obj.Name
+                    mat_ref = f"ref_{obj.Name}"
                     mat_node = collada.scene.MaterialNode(
                             symbol=mat_ref,
                             target=mat,

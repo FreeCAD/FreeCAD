@@ -22,9 +22,37 @@
 # *                                                                         *
 # ***************************************************************************
 import FreeCAD
+from PySide.QtCore import QT_TRANSLATE_NOOP
+import Path.Dressup.Gui.Preferences as PathPreferencesPathDressup
+import Path.Tool.assets.ui.preferences as AssetPreferences
+import Path.Main.Gui.PreferencesJob as PathPreferencesPathJob
+import Path.Base.Gui.PreferencesAdvanced as PathPreferencesAdvanced
+import Path.Op.Base
+import Path.Tool
 
 
 FreeCAD.__unit_test__ += ["TestCAMGui"]
+
+
+if FreeCAD.GuiUp:
+    import FreeCADGui
+
+    FreeCADGui.addPreferencePage(
+        PathPreferencesPathJob.JobPreferencesPage,
+        QT_TRANSLATE_NOOP("QObject", "CAM"),
+    )
+    FreeCADGui.addPreferencePage(
+        AssetPreferences.AssetPreferencesPage,
+        QT_TRANSLATE_NOOP("QObject", "CAM"),
+    )
+    FreeCADGui.addPreferencePage(
+        PathPreferencesPathDressup.DressupPreferencesPage,
+        QT_TRANSLATE_NOOP("QObject", "CAM"),
+    )
+    FreeCADGui.addPreferencePage(
+        PathPreferencesAdvanced.AdvancedPreferencesPage,
+        QT_TRANSLATE_NOOP("QObject", "CAM"),
+    )
 
 
 class PathCommandGroup:
@@ -66,13 +94,10 @@ class CAMWorkbench(Workbench):
         import Path.Tool.assets.ui.preferences as AssetPreferences
         import Path.Main.Gui.PreferencesJob as PathPreferencesPathJob
 
-        translate = FreeCAD.Qt.translate
-
         # load the builtin modules
         import Path
         import PathScripts
         import PathGui
-        from PySide import QtCore, QtGui
 
         FreeCADGui.addLanguagePath(":/translations")
         FreeCADGui.addIconPath(":/icons")
@@ -88,19 +113,6 @@ class CAMWorkbench(Workbench):
         import PathCommands
         import subprocess
         from packaging.version import Version, parse
-
-        FreeCADGui.addPreferencePage(
-            PathPreferencesPathJob.JobPreferencesPage,
-            QT_TRANSLATE_NOOP("QObject", "CAM"),
-        )
-        FreeCADGui.addPreferencePage(
-            AssetPreferences.AssetPreferencesPage,
-            QT_TRANSLATE_NOOP("QObject", "CAM"),
-        )
-        FreeCADGui.addPreferencePage(
-            PathPreferencesPathDressup.DressupPreferencesPage,
-            QT_TRANSLATE_NOOP("QObject", "CAM"),
-        )
 
         Path.GuiInit.Startup()
 
@@ -126,6 +138,7 @@ class CAMWorkbench(Workbench):
             "CAM_MillFace",
             "CAM_Helix",
             "CAM_Adaptive",
+            "CAM_Slot",
         ]
         threedopcmdlist = ["CAM_Pocket3D"]
         engravecmdlist = ["CAM_Engrave", "CAM_Deburr", "CAM_Vcarve"]
@@ -177,7 +190,6 @@ class CAMWorkbench(Workbench):
             prepcmdlist.append("CAM_PathShapeTC")
             extracmdlist.extend(["CAM_Area", "CAM_Area_Workplane"])
             specialcmdlist.append("CAM_ThreadMilling")
-            twodopcmdlist.append("CAM_Slot")
 
         if Path.Preferences.advancedOCLFeaturesEnabled():
             try:
@@ -291,14 +303,6 @@ class CAMWorkbench(Workbench):
         if curveAccuracy:
             Path.Area.setDefaultParams(Accuracy=curveAccuracy)
 
-        # keep this one the last entry in the preferences
-        import Path.Base.Gui.PreferencesAdvanced as PathPreferencesAdvanced
-        from Path.Preferences import preferences
-
-        FreeCADGui.addPreferencePage(
-            PathPreferencesAdvanced.AdvancedPreferencesPage,
-            QT_TRANSLATE_NOOP("QObject", "CAM"),
-        )
         Log("Loading CAM workbench... done\n")
 
     def GetClassName(self):
@@ -314,8 +318,6 @@ class CAMWorkbench(Workbench):
         pass
 
     def ContextMenu(self, recipient):
-        import PathScripts
-
         menuAppended = False
         if len(FreeCADGui.Selection.getSelection()) == 1:
             obj = FreeCADGui.Selection.getSelection()[0]

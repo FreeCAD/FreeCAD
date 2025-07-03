@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Mesh segmentation</string>
+   <string>Mesh Segmentation</string>
   </property>
   <layout class="QGridLayout" name="gridLayout_4">
    <item row="0" column="0">
@@ -106,7 +106,7 @@
       <item row="1" column="0">
        <widget class="QLabel" name="label_4">
         <property name="text">
-         <string>Tolerance (Flat)</string>
+         <string>Tolerance (flat)</string>
         </property>
        </widget>
       </item>
@@ -123,7 +123,7 @@
       <item row="2" column="0">
        <widget class="QLabel" name="label_9">
         <property name="text">
-         <string>Tolerance (Curved)</string>
+         <string>Tolerance (curved)</string>
         </property>
        </widget>
       </item>
@@ -232,7 +232,7 @@
       <item row="0" column="0">
        <widget class="QLabel" name="label_10">
         <property name="text">
-         <string>Max. Curvature</string>
+         <string>Maximum curvature</string>
         </property>
        </widget>
       </item>
@@ -266,7 +266,7 @@
       <item row="2" column="0">
        <widget class="QLabel" name="label_12">
         <property name="text">
-         <string>Min. Curvature</string>
+         <string>Minimum curvature</string>
         </property>
        </widget>
       </item>

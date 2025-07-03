@@ -11,17 +11,16 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Vertex constraints</string>
+   <string>Vertex Constraints</string>
   </property>
   <layout class="QGridLayout" name="gridLayout_2">
    <item row="0" column="0">
     <widget class="QGroupBox" name="groupBox">
      <property name="toolTip">
-      <string>Add vertices that will be used to constrain the surface,
-that is, the surface will be forced to pass through these points.</string>
+      <string>Constrains the surface to pass through the selected vertices</string>
      </property>
      <property name="title">
-      <string>Non-boundary vertices</string>
+      <string>Non-Boundary Vertices</string>
      </property>
      <layout class="QGridLayout" name="gridLayout">
       <item row="0" column="0">
