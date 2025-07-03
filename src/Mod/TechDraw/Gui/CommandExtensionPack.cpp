@@ -1667,7 +1667,7 @@ CmdTechDrawExtensionAreaAnnotation::CmdTechDrawExtensionAreaAnnotation()
 {
     sAppModule = "TechDraw";
     sGroup = QT_TR_NOOP("TechDraw");
-    sMenuText = QT_TR_NOOP("Calculate the Area of Selected Faces");
+    sMenuText = QT_TR_NOOP("Area Annotation");
     sToolTipText = QT_TR_NOOP("Calculates the area of multiple selected faces");
     sWhatsThis = "TechDraw_ExtensionAreaAnnotation";
     sStatusTip = sToolTipText;
@@ -1797,8 +1797,8 @@ CmdTechDrawExtensionArcLengthAnnotation::CmdTechDrawExtensionArcLengthAnnotation
 {
     sAppModule = "TechDraw";
     sGroup = QT_TR_NOOP("TechDraw");
-    sMenuText = QT_TR_NOOP("Calculate Arc Length");
-    sToolTipText = QT_TR_NOOP("Calculates the arc length of the selected edges");
+    sMenuText = QT_TR_NOOP("Arc Length Annotation");
+    sToolTipText = QT_TR_NOOP("Inserts an annotation with the calculated arc length of the selected edges");
     sWhatsThis = "TechDraw_ExtensionArcLengthAnnotation";
     sStatusTip = sToolTipText;
     sPixmap = "TechDraw_ExtensionArcLengthAnnotation";

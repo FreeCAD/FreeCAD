@@ -456,7 +456,7 @@ Each unit is approximately 0.1mm wide</string>
         <item row="11" column="0">
          <widget class="QLabel" name="label_2">
           <property name="text">
-           <string>Max PAT hatch segments</string>
+           <string>Maximum PAT hatch segments</string>
           </property>
          </widget>
         </item>

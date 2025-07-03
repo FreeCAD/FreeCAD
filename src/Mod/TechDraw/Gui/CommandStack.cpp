@@ -62,7 +62,7 @@ CmdTechDrawStackGroup::CmdTechDrawStackGroup()
 {
     sAppModule      = "TechDraw";
     sGroup          = QT_TR_NOOP("TechDraw");
-    sMenuText       = QT_TR_NOOP("Change View Stacking Order");
+    sMenuText       = QT_TR_NOOP("View Stacking Order");
     sToolTipText    = QT_TR_NOOP("Adjusts the stacking order of the selected views");
     sWhatsThis      = "TechDraw_StackGroup";
     sStatusTip      = sToolTipText;
@@ -175,7 +175,7 @@ CmdTechDrawStackTop::CmdTechDrawStackTop()
 {
     sAppModule      = "TechDraw";
     sGroup          = QT_TR_NOOP("TechDraw");
-    sMenuText       = QT_TR_NOOP("Move View to Top of Stack");
+    sMenuText       = QT_TR_NOOP("View to Front");
     sToolTipText    = QT_TR_NOOP("Moves the selected view to the top of the stack");
     sWhatsThis      = "TechDraw_StackTop";
     sStatusTip      = sToolTipText;
@@ -235,7 +235,7 @@ CmdTechDrawStackBottom::CmdTechDrawStackBottom()
 {
     sAppModule      = "TechDraw";
     sGroup          = QT_TR_NOOP("TechDraw");
-    sMenuText       = QT_TR_NOOP("Move View to Bottom of Stack");
+    sMenuText       = QT_TR_NOOP("View to Background");
     sToolTipText    = QT_TR_NOOP("Moves the selected view to the bottom of the stack");
     sWhatsThis      = "TechDraw_StackBottom";
     sStatusTip      = sToolTipText;
