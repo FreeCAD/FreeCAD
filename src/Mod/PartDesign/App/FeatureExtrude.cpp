@@ -514,7 +514,12 @@ App::DocumentObjectExecReturn* FeatureExtrude::buildExtrusion(ExtrudeOptions opt
                 if (sub.empty() && subs.size() > 1) {
                     continue;
                 }
-                TopoShape shape = Part::Feature::getTopoShape(obj, sub.c_str(), true);
+                TopoShape shape = Part::Feature::getTopoShape(obj,
+                                                                 Part::ShapeOption::NeedSubElement
+                                                               | Part::ShapeOption::ResolveLink
+                                                               | Part::ShapeOption::Transform,
+                                                              sub.c_str());
+
                 if (shape.isNull()) {
                     FC_ERR(getFullName()
                            << ": failed to get profile shape " << obj->getFullName() << "." << sub);
@@ -804,7 +809,7 @@ App::DocumentObjectExecReturn* FeatureExtrude::buildExtrusion(ExtrudeOptions opt
 
             // store shape before refinement
             this->rawShape = result;
-            solRes = refineShapeIfActive(solRes);
+            solRes = refineShapeIfActive(result);
 
             if (!isSingleSolidRuleSatisfied(solRes.getShape())) {
                 return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Result has multiple solids: that is not currently supported."));
@@ -819,10 +824,10 @@ App::DocumentObjectExecReturn* FeatureExtrude::buildExtrusion(ExtrudeOptions opt
             // store shape before refinement
             this->rawShape = prism;
             prism = refineShapeIfActive(prism);
-            prism = getSolid(prism);
             if (!isSingleSolidRuleSatisfied(prism.getShape())) {
                 return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Result has multiple solids: that is not currently supported."));
             }
+            prism = getSolid(prism);
             this->Shape.setValue(prism);
         }
         else {

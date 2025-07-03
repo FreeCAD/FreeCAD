@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+# flake8: noqa import
 # ***************************************************************************
 # *   Copyright (c) 2016 sliptonic <shopinthewoods@gmail.com>               *
 # *                                                                         *
@@ -61,9 +62,34 @@ from CAMTests.TestPathStock import TestPathStock
 from CAMTests.TestPathTapGenerator import TestPathTapGenerator
 from CAMTests.TestPathThreadMilling import TestPathThreadMilling
 from CAMTests.TestPathThreadMillingGenerator import TestPathThreadMillingGenerator
+from CAMTests.TestPathToolAsset import TestPathToolAsset
+from CAMTests.TestPathToolAssetCache import (
+    TestPathToolAssetCache,
+    TestPathToolAssetCacheIntegration,
+)
+from CAMTests.TestPathToolAssetManager import TestPathToolAssetManager
+from CAMTests.TestPathToolAssetStore import TestPathToolFileStore, TestPathToolMemoryStore
+from CAMTests.TestPathToolAssetUri import TestPathToolAssetUri
 from CAMTests.TestPathToolBit import TestPathToolBit
+from CAMTests.TestPathToolShapeClasses import TestPathToolShapeClasses
+from CAMTests.TestPathToolShapeDoc import TestPathToolShapeDoc
+from CAMTests.TestPathToolShapeIcon import (
+    TestToolBitShapeIconBase,
+    TestToolBitShapeSvgIcon,
+    TestToolBitShapePngIcon,
+)
+from CAMTests.TestPathToolBitSerializer import (
+    TestCamoticsToolBitSerializer,
+    TestFCTBSerializer,
+)
+from CAMTests.TestPathToolLibrary import TestPathToolLibrary
+from CAMTests.TestPathToolLibrarySerializer import (
+    TestCamoticsLibrarySerializer,
+    TestLinuxCNCLibrarySerializer,
+)
 from CAMTests.TestPathToolChangeGenerator import TestPathToolChangeGenerator
 from CAMTests.TestPathToolController import TestPathToolController
+from CAMTests.TestPathToolMachine import TestPathToolMachine
 from CAMTests.TestPathUtil import TestPathUtil
 from CAMTests.TestPathVcarve import TestPathVcarve
 from CAMTests.TestPathVoronoi import TestPathVoronoi
@@ -82,61 +108,3 @@ from CAMTests.TestRefactoredTestPost import TestRefactoredTestPost
 from CAMTests.TestRefactoredTestPostGCodes import TestRefactoredTestPostGCodes
 from CAMTests.TestRefactoredTestPostMCodes import TestRefactoredTestPostMCodes
 from CAMTests.TestSnapmakerPost import TestSnapmakerPost
-
-# dummy usage to get flake8 and lgtm quiet
-False if TestCAMSanity.__name__ else True
-False if depthTestCases.__name__ else True
-False if TestApp.__name__ else True
-False if TestBuildPostList.__name__ else True
-False if TestDressupDogbone.__name__ else True
-False if TestDressupDogboneII.__name__ else True
-False if TestFileNameGenerator.__name__ else True
-False if TestGeneratorDogboneII.__name__ else True
-False if TestHoldingTags.__name__ else True
-False if TestPathLanguage.__name__ else True
-# False if TestOutputNameSubstitution.__name__ else True
-False if TestPathAdaptive.__name__ else True
-False if TestPathCore.__name__ else True
-False if TestPathOpDeburr.__name__ else True
-False if TestPathDrillable.__name__ else True
-False if TestPathGeom.__name__ else True
-False if TestPathHelpers.__name__ else True
-False if TestPathHelix.__name__ else True
-False if TestPathLog.__name__ else True
-False if TestPathOpUtil.__name__ else True
-# False if TestPathPost.__name__ else True
-False if TestPostProcessorFactory.__name__ else True
-False if TestResolvingPostProcessorName.__name__ else True
-False if TestPathPostUtils.__name__ else True
-False if TestPathPreferences.__name__ else True
-False if TestPathProfile.__name__ else True
-False if TestPathPropertyBag.__name__ else True
-False if TestPathRotationGenerator.__name__ else True
-False if TestPathSetupSheet.__name__ else True
-False if TestPathStock.__name__ else True
-False if TestPathTapGenerator.__name__ else True
-False if TestPathThreadMilling.__name__ else True
-False if TestPathThreadMillingGenerator.__name__ else True
-False if TestPathToolBit.__name__ else True
-False if TestPathToolChangeGenerator.__name__ else True
-False if TestPathToolController.__name__ else True
-False if TestPathUtil.__name__ else True
-False if TestPathVcarve.__name__ else True
-False if TestPathVoronoi.__name__ else True
-False if TestPathDrillGenerator.__name__ else True
-False if TestPathHelixGenerator.__name__ else True
-
-False if TestCentroidPost.__name__ else True
-False if TestGrblPost.__name__ else True
-False if TestLinuxCNCPost.__name__ else True
-False if TestMach3Mach4Post.__name__ else True
-False if TestRefactoredCentroidPost.__name__ else True
-False if TestRefactoredGrblPost.__name__ else True
-False if TestRefactoredLinuxCNCPost.__name__ else True
-False if TestRefactoredMassoG3Post.__name__ else True
-False if TestRefactoredMach3Mach4Post.__name__ else True
-False if TestRefactoredTestDressupPost.__name__ else True
-False if TestRefactoredTestPost.__name__ else True
-False if TestRefactoredTestPostGCodes.__name__ else True
-False if TestRefactoredTestPostMCodes.__name__ else True
-False if TestSnapmakerPost.__name__ else True

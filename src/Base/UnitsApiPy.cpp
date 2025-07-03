@@ -89,9 +89,7 @@ PyObject* UnitsApi::sParseQuantity(PyObject* /*self*/, PyObject* args)
         return new QuantityPy(new Quantity(Quantity::parse(str)));
     }
     catch (const ParserError&) {
-        PyErr_Format(PyExc_ValueError,
-                     "invalid unit expression: '%s'\n",
-                     std::string {pstr}.c_str());
+        PyErr_Format(PyExc_ValueError, "invalid unit expression: '%s'\n", str.c_str());
         return nullptr;
     }
 }

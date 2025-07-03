@@ -55,7 +55,7 @@ class Polygon(gui_base_original.Creator):
         return {'Pixmap': 'Draft_Polygon',
                 'Accel': "P, G",
                 'MenuText': QT_TRANSLATE_NOOP("Draft_Polygon", "Polygon"),
-                'ToolTip': QT_TRANSLATE_NOOP("Draft_Polygon", "Creates a regular polygon (triangle, square, pentagon, ...), by defining the number of sides and the circumscribed radius.\nCTRL to snap, SHIFT to constrain")}
+                'ToolTip': QT_TRANSLATE_NOOP("Draft_Polygon", "Creates a regular polygon (triangle, square, pentagon, ...).\nSHIFT to constrain")}
 
     def Activated(self, numVertices=None):
         """Execute when the command is called."""

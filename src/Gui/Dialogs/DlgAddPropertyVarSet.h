@@ -121,6 +121,7 @@ private:
     bool areFieldsValid();
 
     void onTextFieldChanged(const QString& text);
+    void showStatusMessage();
 
     void removeEditor();
     void onTypeChanged(const QString& text);

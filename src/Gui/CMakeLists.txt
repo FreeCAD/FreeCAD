@@ -932,12 +932,14 @@ SET(View3D_SRCS
 SOURCE_GROUP("View3D" FILES ${View3D_SRCS})
 
 SET(Navigation_CPP_SRCS
+    Navigation/NavigationStateChart.cpp
     Navigation/NavigationStyle.cpp
     Navigation/NavigationStylePyImp.cpp
     Navigation/InventorNavigationStyle.cpp
     Navigation/CADNavigationStyle.cpp
     Navigation/RevitNavigationStyle.cpp
     Navigation/BlenderNavigationStyle.cpp
+    Navigation/SiemensNXNavigationStyle.cpp
     Navigation/SolidWorksNavigationStyle.cpp
     Navigation/MayaGestureNavigationStyle.cpp
     Navigation/OpenCascadeNavigationStyle.cpp
@@ -950,11 +952,13 @@ SET(Navigation_CPP_SRCS
 )
 SET(Navigation_SRCS
     ${Navigation_CPP_SRCS}
+    Navigation/NavigationStateChart.h
     Navigation/NavigationStyle.h
     Navigation/NavigationStyle.pyi
     Navigation/GestureNavigationStyle.h
     Navigation/NavigationAnimator.h
     Navigation/NavigationAnimation.h
+    Navigation/SiemensNXNavigationStyle.h
 )
 SOURCE_GROUP("Navigation" FILES ${Navigation_SRCS})
 
@@ -1305,6 +1309,8 @@ SET(FreeCADGui_CPP_SRCS
     GuiApplication.cpp
     GuiApplicationNativeEventAware.cpp
     GuiConsole.cpp
+    InputHintWidget.cpp
+    InputHintPy.cpp
     Macro.cpp
     MergeDocuments.cpp
     ModuleIO.cpp
@@ -1340,6 +1346,9 @@ SET(FreeCADGui_SRCS
     3Dconnexion/GuiAbstractNativeEvent.h
     GuiConsole.h
     InventorAll.h
+    InputHint.h
+    InputHintPy.h
+    InputHintWidget.h
     Macro.h
     MergeDocuments.h
     MetaTypes.h

@@ -29,9 +29,11 @@
 #include <Gui/Application.h>
 #include <Gui/Command.h>
 #include <Gui/MainWindow.h>
+#include <Gui/Tools.h>
 
 #include <Mod/Material/App/MaterialLibrary.h>
 
+#include "MaterialsEditor.h"
 #include "MaterialSave.h"
 #include "ui_MaterialSave.h"
 
@@ -64,8 +66,11 @@ MaterialSave::MaterialSave(const std::shared_ptr<Materials::Material>& material,
     _filename = QString(ui->editFilename->text());  // No filename by default
 
     ui->checkDerived->setChecked(_saveInherited);
+#if QT_VERSION >= QT_VERSION_CHECK(6,7,0)
+    connect(ui->checkDerived, &QCheckBox::checkStateChanged, this, &MaterialSave::onInherited);
+#else
     connect(ui->checkDerived, &QCheckBox::stateChanged, this, &MaterialSave::onInherited);
-
+#endif
     connect(ui->standardButtons->button(QDialogButtonBox::Ok),
             &QPushButton::clicked,
             this,
@@ -89,11 +94,8 @@ MaterialSave::MaterialSave(const std::shared_ptr<Materials::Material>& material,
             &MaterialSave::onContextMenu);
 
     _deleteAction.setText(tr("Delete"));
-    {
-        auto& rcCmdMgr = Gui::Application::Instance->commandManager();
-        auto shortcut = rcCmdMgr.getCommandByName("Std_Delete")->getShortcut();
-        _deleteAction.setShortcut(QKeySequence(shortcut));
-    }
+    _deleteAction.setShortcut(Gui::QtTools::deleteKeySequence());
+
     connect(&_deleteAction, &QAction::triggered, this, &MaterialSave::onDelete);
     ui->treeMaterials->addAction(&_deleteAction);
 
@@ -153,7 +155,7 @@ void MaterialSave::onOk(bool checked)
     bool saveAsCopy = false;
     if (Materials::MaterialManager::getManager().exists(_material->getUUID())) {
         // Does it already exist in this library?
-        if (Materials::MaterialManager::getManager().exists(library, _material->getUUID())) {
+        if (Materials::MaterialManager::getManager().exists(*library, _material->getUUID())) {
             // Confirm saving a new material
             auto res = confirmNewMaterial();
             if (res == QMessageBox::Cancel) {
@@ -360,7 +362,7 @@ void MaterialSave::showSelectedTree()
     if (ui->comboLibrary->count() > 0) {
         auto variant = ui->comboLibrary->currentData();
         auto library = variant.value<std::shared_ptr<Materials::MaterialLibrary>>();
-        QIcon icon(library->getIconPath());
+        auto icon = MaterialsEditor::getIcon(library);
         QIcon folderIcon(QStringLiteral(":/icons/folder.svg"));
         _libraryName = library->getName();
         _selectedPath = QStringLiteral("/") + _libraryName;
@@ -370,7 +372,7 @@ void MaterialSave::showSelectedTree()
         lib->setFlags(Qt::ItemIsEnabled | Qt::ItemIsDragEnabled | Qt::ItemIsDropEnabled);
         addExpanded(tree, model, lib);
 
-        auto modelTree = Materials::MaterialManager::getManager().getMaterialTree(library);
+        auto modelTree = Materials::MaterialManager::getManager().getMaterialTree(*library);
         addMaterials(*lib, modelTree, folderIcon, icon);
     }
     else {

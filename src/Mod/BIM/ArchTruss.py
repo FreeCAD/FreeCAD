@@ -62,6 +62,7 @@ class Truss(ArchComponent.Component):
     def __init__(self,obj):
 
         ArchComponent.Component.__init__(self,obj)
+        self.Type = "Truss"
         self.setProperties(obj)
         obj.IfcType = "Beam"
 
@@ -125,12 +126,15 @@ class Truss(ArchComponent.Component):
             obj.addProperty("App::PropertyEnumeration","RodMode","Truss",
                             QT_TRANSLATE_NOOP("App::Property","How to draw the rods"), locked=True)
             obj.RodMode = rodmodes
-        self.Type = "Truss"
 
     def onDocumentRestored(self,obj):
 
         ArchComponent.Component.onDocumentRestored(self,obj)
         self.setProperties(obj)
+
+    def loads(self,state):
+
+        self.Type = "Truss"
 
     def onChanged(self,obj,prop):
 

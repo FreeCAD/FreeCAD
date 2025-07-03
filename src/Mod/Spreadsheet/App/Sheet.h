@@ -290,10 +290,6 @@ protected:
     /* Row heights */
     PropertyRowHeights rowHeights;
 
-    /* Document observers to track changes to external properties */
-    using ObserverMap = std::map<std::string, SheetObserver*>;
-    ObserverMap observers;
-
     int currentRow = -1;
     int currentCol = -1;
 

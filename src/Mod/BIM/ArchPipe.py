@@ -35,6 +35,7 @@ __url__    = "https://www.freecad.org"
 
 import FreeCAD
 import ArchComponent
+import ArchIFC
 
 from draftutils import params
 
@@ -60,6 +61,7 @@ class _ArchPipe(ArchComponent.Component):
     def __init__(self,obj):
 
         ArchComponent.Component.__init__(self,obj)
+        self.Type = "Pipe"
         self.setProperties(obj)
         # IfcPipeSegment is new in IFC4
         from ArchIFC import IfcTypes
@@ -93,15 +95,22 @@ class _ArchPipe(ArchComponent.Component):
         if not "ProfileType" in pl:
             obj.addProperty("App::PropertyEnumeration", "ProfileType", "Pipe", QT_TRANSLATE_NOOP("App::Property","If not based on a profile, this controls the profile of this pipe"), locked=True)
             obj.ProfileType = ["Circle", "Square", "Rectangle"]
-        self.Type = "Pipe"
 
     def onDocumentRestored(self,obj):
 
         ArchComponent.Component.onDocumentRestored(self,obj)
         self.setProperties(obj)
 
+    def loads(self,state):
+
+        self.Type = "Pipe"
+
     def onChanged(self, obj, prop):
-        if prop == "ProfileType":
+        if prop == "IfcType":
+            root = ArchIFC.IfcProduct()
+            root.setupIfcAttributes(obj)
+            root.setupIfcComplexAttributes(obj)
+        elif prop == "ProfileType":
             if obj.ProfileType == "Square":
                 obj.setPropertyStatus("Height", "Hidden")
                 obj.setPropertyStatus("Diameter", "Hidden")

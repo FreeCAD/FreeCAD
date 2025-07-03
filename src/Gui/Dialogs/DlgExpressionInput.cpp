@@ -25,6 +25,7 @@
 #include <QApplication>
 #include <QMenu>
 #include <QMouseEvent>
+#include <QPushButton>
 #include <QTreeWidget>
 #endif
 
@@ -66,13 +67,16 @@ DlgExpressionInput::DlgExpressionInput(const App::ObjectIdentifier & _path,
 
     // Setup UI
     ui->setupUi(this);
+    okBtn = ui->buttonBox->button(QDialogButtonBox::Ok);
+    discardBtn = ui->buttonBox->button(QDialogButtonBox::Reset);
+    discardBtn->setToolTip(tr("Revert to last calculated value (as constant)"));
 
     initializeVarSets();
 
     // Connect signal(s)
     connect(ui->expression, &ExpressionLineEdit::textChanged,
         this, &DlgExpressionInput::textChanged);
-    connect(ui->discardBtn, &QPushButton::clicked,
+    connect(discardBtn, &QPushButton::clicked,
         this, &DlgExpressionInput::setDiscarded);
 
     if (expression) {
@@ -120,8 +124,13 @@ DlgExpressionInput::DlgExpressionInput(const App::ObjectIdentifier & _path,
 
 DlgExpressionInput::~DlgExpressionInput()
 {
+#if QT_VERSION >= QT_VERSION_CHECK(6,7,0)
+    disconnect(ui->checkBoxVarSets, &QCheckBox::checkStateChanged,
+               this, &DlgExpressionInput::onCheckVarSets);
+#else
     disconnect(ui->checkBoxVarSets, &QCheckBox::stateChanged,
                this, &DlgExpressionInput::onCheckVarSets);
+#endif
     disconnect(ui->comboBoxVarSet, qOverload<int>(&QComboBox::currentIndexChanged),
                this, &DlgExpressionInput::onVarSetSelected);
     disconnect(ui->lineEditGroup, &QLineEdit::textChanged,
@@ -198,8 +207,13 @@ void DlgExpressionInput::initializeVarSets()
     ui->labelInfoActive->setAlignment(Qt::AlignTop | Qt::AlignLeft);
     ui->labelInfoActive->setWordWrap(true);
 
+#if QT_VERSION >= QT_VERSION_CHECK(6,7,0)
+    connect(ui->checkBoxVarSets, &QCheckBox::checkStateChanged,
+            this, &DlgExpressionInput::onCheckVarSets);
+#else
     connect(ui->checkBoxVarSets, &QCheckBox::stateChanged,
             this, &DlgExpressionInput::onCheckVarSets);
+#endif
     connect(ui->comboBoxVarSet, qOverload<int>(&QComboBox::currentIndexChanged),
             this, &DlgExpressionInput::onVarSetSelected);
     connect(ui->lineEditGroup, &QLineEdit::textChanged,
@@ -280,11 +294,11 @@ void DlgExpressionInput::checkExpression(const QString& text)
             std::unique_ptr<Expression> result(expr->eval());
 
             expression = expr;
-            ui->okBtn->setEnabled(true);
+            okBtn->setEnabled(true);
             ui->msg->clear();
 
             //set default palette as we may have read text right now
-            ui->msg->setPalette(ui->okBtn->palette());
+            ui->msg->setPalette(okBtn->palette());
 
             auto * n = freecad_cast<NumberExpression*>(result.get());
             if (n) {
@@ -294,14 +308,14 @@ void DlgExpressionInput::checkExpression(const QString& text)
                 }
 
                 auto msg = value.getUserString();
-                if (!impliedUnit.isEmpty()) {
-                    if (!value.getUnit().isEmpty() && value.getUnit() != impliedUnit)
+                if (impliedUnit != Base::Unit::One) {
+                    if (!value.isDimensionless() && value.getUnit() != impliedUnit)
                         throw Base::UnitsMismatchError("Unit mismatch between result and required unit");
 
                     value.setUnit(impliedUnit);
 
                 }
-                else if (!value.getUnit().isEmpty()) {
+                else if (!value.isDimensionless()) {
                     msg += " (Warning: unit discarded)";
 
                     QPalette p(ui->msg->palette());
@@ -325,12 +339,12 @@ static const bool NO_CHECK_EXPR = false;
 void DlgExpressionInput::textChanged(const QString &text)
 {
     if (text.isEmpty()) {
-        ui->okBtn->setDisabled(true);
-        ui->discardBtn->setDefault(true);
+        okBtn->setDisabled(true);
+        discardBtn->setDefault(true);
         return;
     }
 
-    ui->okBtn->setDefault(true);
+    okBtn->setDefault(true);
 
     try {
         //resize the input field according to text size
@@ -357,7 +371,7 @@ void DlgExpressionInput::textChanged(const QString &text)
         QPalette p(ui->msg->palette());
         p.setColor(QPalette::WindowText, Qt::red);
         ui->msg->setPalette(p);
-        ui->okBtn->setDisabled(true);
+        okBtn->setDisabled(true);
     }
 }
 
@@ -614,7 +628,7 @@ void DlgExpressionInput::setupVarSets()
     ui->comboBoxVarSet->setModel(treeWidget->model());
     ui->comboBoxVarSet->setView(treeWidget.get());
 
-    ui->okBtn->setEnabled(false);
+    okBtn->setEnabled(false);
 }
 
 std::string DlgExpressionInput::getType()
@@ -629,7 +643,7 @@ void DlgExpressionInput::onCheckVarSets(int state) {
         setupVarSets();
     }
     else {
-        ui->okBtn->setEnabled(true); // normal expression
+        okBtn->setEnabled(true); // normal expression
     }
 }
 
@@ -719,13 +733,13 @@ void DlgExpressionInput::updateVarSetInfo(bool checkExpr)
         QString nameGroup = ui->lineEditGroup->text();
         if (reportGroup(nameGroup)) {
             // needed to report something about the group, so disable the button
-            ui->okBtn->setEnabled(false);
+            okBtn->setEnabled(false);
             return;
         }
 
         if (reportName(selected)) {
             // needed to report something about the name, so disable the button
-            ui->okBtn->setEnabled(false);
+            okBtn->setEnabled(false);
             return;
         }
 
@@ -744,15 +758,15 @@ void DlgExpressionInput::updateVarSetInfo(bool checkExpr)
             // We have to check the text of the expression as well
             try {
                 checkExpression(ui->expression->text());
-                ui->okBtn->setEnabled(true);
+                okBtn->setEnabled(true);
             }
             catch (Base::Exception&) {
-                ui->okBtn->setDisabled(true);
+                okBtn->setDisabled(true);
             }
         }
     }
     else {
-        ui->okBtn->setEnabled(false);
+        okBtn->setEnabled(false);
         reportVarSetInfo("Please select a variable set.");
     }
 }

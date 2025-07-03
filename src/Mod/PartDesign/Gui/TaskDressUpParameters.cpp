@@ -151,7 +151,8 @@ void TaskDressUpParameters::addAllEdges(QListWidget* widget)
     if (!base) {
         return;
     }
-    int count = Part::Feature::getTopoShape(base).countSubShapes(TopAbs_EDGE);
+    int count = Part::Feature::getTopoShape(base, Part::ShapeOption::ResolveLink 
+                                                | Part::ShapeOption::Transform).countSubShapes(TopAbs_EDGE);
     auto subValues = pcDressUp->Base.getSubValues(false);
     std::size_t len = subValues.size();
     for (int i = 0; i < count; ++i) {
@@ -304,11 +305,8 @@ void TaskDressUpParameters::createDeleteAction(QListWidget* parentList)
     // creates a context menu, a shortcut for it and connects it to a slot function
 
     deleteAction = new QAction(tr("Remove"), this);
-    {
-        auto& rcCmdMgr = Gui::Application::Instance->commandManager();
-        auto shortcut = rcCmdMgr.getCommandByName("Std_Delete")->getShortcut();
-        deleteAction->setShortcut(QKeySequence(shortcut));
-    }
+    deleteAction->setShortcut(Gui::QtTools::deleteKeySequence());
+
     // display shortcut behind the context menu entry
     deleteAction->setShortcutVisibleInContextMenu(true);
     parentList->addAction(deleteAction);

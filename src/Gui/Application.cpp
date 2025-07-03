@@ -77,6 +77,7 @@
 #include "FileDialog.h"
 #include "GuiApplication.h"
 #include "GuiInitScript.h"
+#include "InputHintPy.h"
 #include "LinkViewPy.h"
 #include "MainWindow.h"
 #include "Macro.h"
@@ -136,6 +137,7 @@
 #include "WorkbenchManipulator.h"
 #include "WidgetFactory.h"
 #include "3Dconnexion/navlib/NavlibInterface.h"
+#include "QtWidgets.h"
 
 #ifdef BUILD_TRACY_FRAME_PROFILER
 #include <tracy/Tracy.hpp>
@@ -501,6 +503,8 @@ Application::Application(bool GUIenabled)
         Py::Module(module).setAttr(std::string("Control"),
                                    Py::Object(Gui::TaskView::ControlPy::getInstance(), true));
         Gui::TaskView::TaskDialogPy::init_type();
+
+        registerUserInputEnumInPython(module);
 
         CommandActionPy::init_type();
         Base::Interpreter().addType(CommandActionPy::type_object(), module, "CommandAction");
@@ -2291,6 +2295,13 @@ void Application::runApplication()
     int argc = App::Application::GetARGC();
     GUISingleApplication mainApp(argc, App::Application::GetARGV());
 
+#if defined(FC_OS_LINUX) || defined(FC_OS_BSD)
+    // If QT is running with native Wayland then inform Coin to use EGL
+    if (QGuiApplication::platformName() == QString::fromStdString("wayland")) {
+        setenv("COIN_EGL", "1", 1);
+    }
+#endif
+    
     // Make sure that we use '.' as decimal point. See also
     // http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=559846
     // and issue #0002891

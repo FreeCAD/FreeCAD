@@ -86,15 +86,23 @@ class BIM_Views:
 
             # set button
             self.dialog.menu = QtGui.QMenu()
-            for button in [("AddLevel", translate("BIM","Add level")),
+            for button in [("Active", translate("BIM","Active (default)")),
+                            ("AddLevel", translate("BIM","Add level")),
                             ("AddProxy", translate("BIM","Add proxy")),
                             ("Delete", translate("BIM","Delete")),
                             ("Toggle", translate("BIM","Toggle on/off")),
                             ("Isolate", translate("BIM","Isolate")),
                             ("SaveView", translate("BIM","Save view position")),
-                            ("Rename", translate("BIM","Rename")),
-                            ("Activate", translate("BIM","Activate"))]:
+                            ("Rename", translate("BIM","Rename"))]:
                 action = QtGui.QAction(button[1])
+
+                # Make the "Activate" button bold, as this is the default one
+                if button[0] == "Active":
+                    font = action.font()
+                    font.setBold(True)
+                    action.setFont(font)
+                    action.setCheckable(True)
+
                 self.dialog.menu.addAction(action)
                 setattr(self.dialog,"button"+button[0], action)
 
@@ -108,7 +116,6 @@ class BIM_Views:
             self.dialog.buttonRename.setIcon(
                 QtGui.QIcon(":/icons/accessories-text-editor.svg")
             )
-            self.dialog.buttonActivate.setIcon(QtGui.QIcon(":/icons/edit_OK.svg"))
 
             # set tooltips
             self.dialog.buttonAddLevel.setToolTip(translate("BIM","Creates a new level"))
@@ -118,7 +125,7 @@ class BIM_Views:
             self.dialog.buttonIsolate.setToolTip(translate("BIM","Turns all items off except the selected ones"))
             self.dialog.buttonSaveView.setToolTip(translate("BIM","Saves the current camera position to the selected items"))
             self.dialog.buttonRename.setToolTip(translate("BIM","Renames the selected item"))
-            self.dialog.buttonActivate.setToolTip(translate("BIM","Activates the selected item"))
+            self.dialog.buttonActive.setToolTip(translate("BIM","Activates the selected item"))
 
             # connect signals
             self.dialog.buttonAddLevel.triggered.connect(self.addLevel)
@@ -128,7 +135,7 @@ class BIM_Views:
             self.dialog.buttonIsolate.triggered.connect(self.isolate)
             self.dialog.buttonSaveView.triggered.connect(self.saveView)
             self.dialog.buttonRename.triggered.connect(self.rename)
-            self.dialog.buttonActivate.triggered.connect(self.activate)
+            self.dialog.buttonActive.triggered.connect(lambda: BIM_Views.activate(self.dialog))
             self.dialog.tree.itemClicked.connect(self.select)
             self.dialog.tree.itemDoubleClicked.connect(show)
             self.dialog.viewtree.itemDoubleClicked.connect(show)
@@ -423,15 +430,17 @@ class BIM_Views:
                 if vm.tree.selectedItems():
                     item = vm.tree.selectedItems()[-1]
                     vm.tree.editItem(item, 0)
-    
-    def activate(self, item):
+    @staticmethod
+    def activate(dialog=None):
+        from draftutils.utils import toggle_working_plane
         vm = findWidget()
         if vm:
             if vm.tree.selectedItems():
-                if vm.tree.selectedItems():
-                    item = vm.tree.selectedItems()[-1]
-                    obj = FreeCAD.ActiveDocument.getObject(item.toolTip(0))
-                    obj.ViewObject.Proxy.setWorkingPlane()
+                item = vm.tree.selectedItems()[-1]
+                obj = FreeCAD.ActiveDocument.getObject(item.toolTip(0))
+                if obj:
+                    toggle_working_plane(obj, None, restore=True, dialog=dialog)
+                    FreeCADGui.Selection.clearSelection()
 
     def editObject(self, item, column):
         "renames or edit height of the actual object"
@@ -523,8 +532,10 @@ class BIM_Views:
 
     def onDockLocationChanged(self, area):
         """Saves dock widget size and location"""
-
-        PARAMS.SetInt("BimViewArea", int(area))
+        if hasattr(area, "value"):  # To support Qt5.15
+            PARAMS.SetInt("BimViewArea", area.value)
+        else:
+            PARAMS.SetInt("BimViewArea", int(area))
         mw = FreeCADGui.getMainWindow()
         vm = findWidget()
         if vm:
@@ -558,6 +569,10 @@ class BIM_Views:
             if selobj:
                 if Draft.getType(selobj).startswith("Ifc"):
                     self.dialog.buttonAddProxy.setEnabled(False)
+                if FreeCADGui.ActiveDocument.ActiveView.getActiveObject("Arch") == selobj:
+                    self.dialog.buttonActive.setChecked(True)
+                else:
+                    self.dialog.buttonActive.setChecked(False)
         self.dialog.menu.exec_(self.dialog.tree.mapToGlobal(pos))
 
     def getViews(self):
@@ -596,7 +611,6 @@ def findWidget():
 
 def show(item, column=None):
     "item has been double-clicked"
-
     import Draft
 
     obj = None
@@ -649,55 +663,11 @@ def show(item, column=None):
                 vparam.SetBool("Gradient", False)
                 vparam.SetBool("RadialGradient", False)
         else:
+            # case 3: This is maybe a BuildingPart. Place the WP on it")
+            type = Draft.getType(obj)
+            if type == "BuildingPart" or type == "IfcBuildingStorey":
+                BIM_Views.activate()
 
-            # case 3: This is maybe a BuildingPart. Place the WP on it
-            FreeCADGui.runCommand("Draft_SelectPlane")
-            if PARAMS.GetBool("BimViewsSwitchBackground", False):
-                vparam.SetBool("Simple", False)
-                vparam.SetBool("Gradient", False)
-                vparam.SetBool("RadialGradient", True)
-            if Draft.getType(obj) == "BuildingPart":
-                if obj.IfcType == "Building Storey":
-                    # hide all other storeys
-                    obj.ViewObject.Visibility = True
-                    bldgs = [o for o in obj.InList if Draft.getType(o) == "BuildingPart" and o.IfcType == "Building"]
-                    if len(bldgs) == 1:
-                        bldg = bldgs[0]
-                        storeys = [o for o in bldg.OutList if Draft.getType(o) == "BuildingPart" and o.IfcType == "Building Storey"]
-                        for storey in storeys:
-                            if storey != obj:
-                                storey.ViewObject.Visibility = False
-                elif obj.IfcType == "Building":
-                    # show all storeys
-                    storeys = [o for o in obj.OutList if Draft.getType(o) == "BuildingPart" and o.IfcType == "Building Storey"]
-                    for storey in storeys:
-                        storey.ViewObject.Visibility = True
-            elif Draft.getType(obj) == "IfcBuildingStorey":
-                obj.ViewObject.Visibility = True
-                bldgs = [o for o in obj.InList if Draft.getType(o) == "IfcBuilding"]
-                if len(bldgs) == 1:
-                    bldg = bldgs[0]
-                    storeys = [o for o in bldg.OutList if Draft.getType(o) == "IfcBuildingStorey"]
-                    for storey in storeys:
-                        if storey != obj:
-                            storey.ViewObject.Visibility = False
-            elif hasattr(obj, "IfcType") and obj.IfcType == "IfcBuilding":
-                # show all storeys
-                storeys = [o for o in obj.OutList if Draft.getType(o) == "IfcBuildingStorey"]
-                for storey in storeys:
-                    storey.ViewObject.Visibility = True
-
-        # perform stored interactions
-        if getattr(obj.ViewObject, "SetWorkingPlane", False):
-            obj.ViewObject.Proxy.setWorkingPlane()
-        if getattr(obj.ViewObject, "DoubleClickActivates", True):
-            if Draft.getType(obj) == "BuildingPart":
-                FreeCADGui.ActiveDocument.ActiveView.setActiveObject("Arch", obj)
-            elif Draft.getType(obj) == "IfcBuildingStorey":
-                FreeCADGui.ActiveDocument.ActiveView.setActiveObject("NativeIFC", obj)
-            else:
-                FreeCADGui.ActiveDocument.ActiveView.setActiveObject("Arch", None)
-                FreeCADGui.ActiveDocument.ActiveView.setActiveObject("NativeIFC", None)
     if vm:
         # store the last double-clicked item for the BIM WPView command
         if isinstance(item, str) or (

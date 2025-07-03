@@ -36,6 +36,7 @@
 #include <Mod/TechDraw/App/DrawProjGroupItem.h>
 #include <Mod/TechDraw/App/DrawViewDetail.h>
 #include <Mod/TechDraw/App/DrawViewPart.h>
+#include <Mod/TechDraw/App/DrawUtil.h>
 
 #include "ui_TaskDetail.h"
 #include "TaskDetail.h"
@@ -59,7 +60,7 @@ TaskDetail::TaskDetail(TechDraw::DrawViewPart* baseFeat):
     m_ghost(nullptr),
     m_detailFeat(nullptr),
     m_baseFeat(baseFeat),
-    m_basePage(nullptr),
+    m_basePage(m_baseFeat->findParentPage()),
     m_qgParent(nullptr),
     m_inProgressLock(false),
     m_btnOK(nullptr),
@@ -67,9 +68,6 @@ TaskDetail::TaskDetail(TechDraw::DrawViewPart* baseFeat):
     m_saveAnchor(Base::Vector3d(0.0, 0.0, 0.0)),
     m_saveRadius(0.0),
     m_saved(false),
-    m_baseName(std::string()),
-    m_pageName(std::string()),
-    m_detailName(std::string()),
     m_doc(nullptr),
     m_mode(CREATEMODE),
     m_created(false)
@@ -137,9 +135,6 @@ TaskDetail::TaskDetail(TechDraw::DrawViewDetail* detailFeat):
     m_saveAnchor(Base::Vector3d(0.0, 0.0, 0.0)),
     m_saveRadius(0.0),
     m_saved(false),
-    m_baseName(std::string()),
-    m_pageName(std::string()),
-    m_detailName(std::string()),
     m_doc(nullptr),
     m_mode(EDITMODE),
     m_created(false)
@@ -160,12 +155,13 @@ TaskDetail::TaskDetail(TechDraw::DrawViewDetail* detailFeat):
 
     App::DocumentObject* baseObj = m_detailFeat->BaseView.getValue();
     m_baseFeat = dynamic_cast<TechDraw::DrawViewPart*>(baseObj);
-    if (m_baseFeat) {
-        m_baseName = m_baseFeat->getNameInDocument();
-    } else {
+    if (!m_baseFeat) {
         Base::Console().error("TaskDetail - no BaseView.  Can not proceed.\n");
         return;
     }
+    m_baseName = m_baseFeat->getNameInDocument();
+    // repaint baseObj here to make highlight inactive.
+    m_baseFeat->requestPaint();
 
     ui->setupUi(this);
 
@@ -219,7 +215,6 @@ void TaskDetail::changeEvent(QEvent *e)
 //save the start conditions
 void TaskDetail::saveDetailState()
 {
-//    Base::Console().message("TD::saveDetailState()\n");
     TechDraw::DrawViewDetail* dvd = getDetailFeat();
     m_saveAnchor = dvd->AnchorPoint.getValue();
     m_saveRadius  = dvd->Radius.getValue();
@@ -228,7 +223,6 @@ void TaskDetail::saveDetailState()
 
 void TaskDetail::restoreDetailState()
 {
-//    Base::Console().message("TD::restoreDetailState()\n");
     TechDraw::DrawViewDetail* dvd = getDetailFeat();
     dvd->AnchorPoint.setValue(m_saveAnchor);
     dvd->Radius.setValue(m_saveRadius);
@@ -238,7 +232,6 @@ void TaskDetail::restoreDetailState()
 
 void TaskDetail::setUiFromFeat()
 {
-//    Base::Console().message("TD::setUIFromFeat()\n");
     if (m_baseFeat) {
         std::string baseName = getBaseFeat()->getNameInDocument();
         ui->leBaseView->setText(QString::fromStdString(baseName));
@@ -271,10 +264,12 @@ void TaskDetail::setUiFromFeat()
     ui->qsbRadius->setValue(radius);
     ui->qsbScale->setDecimals(decimals);
     ui->cbScaleType->setCurrentIndex(ScaleType);
-    if (ui->cbScaleType->currentIndex() == 2) // only if custom scale
+    if (ui->cbScaleType->currentIndex() == 2) { // only if custom scale
         ui->qsbScale->setEnabled(true);
-    else
+    }
+    else {
         ui->qsbScale->setEnabled(false);
+    }
     ui->qsbScale->setValue(scale);
     ui->leReference->setText(ref);
 }
@@ -282,16 +277,23 @@ void TaskDetail::setUiFromFeat()
 //update ui point fields after tracker finishes
 void TaskDetail::updateUi(QPointF pos)
 {
+    ui->qsbX->blockSignals(true);
+    ui->qsbY->blockSignals(true);
+
     ui->qsbX->setValue(pos.x());
-    ui->qsbY->setValue(- pos.y());
+    ui->qsbY->setValue(pos.y());
+
+    ui->qsbX->blockSignals(false);
+    ui->qsbY->blockSignals(false);
 }
 
 void TaskDetail::enableInputFields(bool isEnabled)
 {
     ui->qsbX->setEnabled(isEnabled);
     ui->qsbY->setEnabled(isEnabled);
-    if (ui->cbScaleType->currentIndex() == 2) // only if custom scale
+    if (ui->cbScaleType->currentIndex() == 2) {    // only if custom scale
         ui->qsbScale->setEnabled(isEnabled);
+    }
     ui->qsbRadius->setEnabled(isEnabled);
     ui->leReference->setEnabled(isEnabled);
 }
@@ -315,10 +317,10 @@ void TaskDetail::onScaleTypeEdit()
 {
     TechDraw::DrawViewDetail* detailFeat = getDetailFeat();
 
-     if (ui->cbScaleType->currentIndex() == 0) {
+    detailFeat->ScaleType.setValue(ui->cbScaleType->currentIndex());
+    if (ui->cbScaleType->currentIndex() == 0) {
          // page scale
          ui->qsbScale->setEnabled(false);
-         detailFeat->ScaleType.setValue(0.0);
          // set the page scale if there is a valid page
          if (m_basePage) {
              // set the page scale
@@ -331,15 +333,12 @@ void TaskDetail::onScaleTypeEdit()
     else if (ui->cbScaleType->currentIndex() == 1) {
         // automatic scale (if view is too large to fit into page, it will be scaled down)
         ui->qsbScale->setEnabled(false);
-        detailFeat->ScaleType.setValue(1.0);
         // updating the feature will trigger the rescaling
         updateDetail();
     }
     else if (ui->cbScaleType->currentIndex() == 2) {
         // custom scale
         ui->qsbScale->setEnabled(true);
-        detailFeat->ScaleType.setValue(2.0);
-        // no updateDetail() necessary since nothing visibly was changed
     }
 }
 
@@ -359,12 +358,10 @@ void TaskDetail::onDraggerClicked(bool clicked)
     ui->pbDragger->setEnabled(false);
     enableInputFields(false);
     editByHighlight();
-    return;
 }
 
 void TaskDetail::editByHighlight()
 {
-//    Base::Console().message("TD::editByHighlight()\n");
     if (!m_ghost) {
         Base::Console().error("TaskDetail::editByHighlight - no ghost object\n");
         return;
@@ -382,34 +379,38 @@ void TaskDetail::editByHighlight()
 //dragEnd is in scene coords.
 void TaskDetail::onHighlightMoved(QPointF dragEnd)
 {
-//    Base::Console().message("TD::onHighlightMoved(%s) - highlight: %X\n",
-//                            DrawUtil::formatVector(dragEnd).c_str(), m_ghost);
     ui->pbDragger->setEnabled(true);
 
+    double radius = m_detailFeat->Radius.getValue();
     double scale = getBaseFeat()->getScale();
     double x = Rez::guiX(getBaseFeat()->X.getValue());
     double y = Rez::guiX(getBaseFeat()->Y.getValue());
 
     DrawViewPart* dvp = getBaseFeat();
-    DrawProjGroupItem* dpgi = freecad_cast<DrawProjGroupItem*>(dvp);
-    if (dpgi) {
-        DrawProjGroup* dpg = dpgi->getPGroup();
-        if (!dpg) {
-            Base::Console().message("TD::getAnchorScene - projection group is confused\n");
-            //TODO::throw something.
-            return;
-        }
+    auto* dpgi = freecad_cast<DrawProjGroupItem*>(dvp);
+    DrawProjGroup* dpg{nullptr};
+    if (dpgi && DrawView::isProjGroupItem(dpgi)) {
+        dpg = dpgi->getPGroup();
+    }
+
+    if (dpg) {
         x += Rez::guiX(dpg->X.getValue());
         y += Rez::guiX(dpg->Y.getValue());
     }
 
     QPointF basePosScene(x, -y);                 //base position in scene coords
     QPointF anchorDisplace = dragEnd - basePosScene;
-    QPointF newAnchorPos = Rez::appX(anchorDisplace / scale);
+    QPointF newAnchorPosScene = Rez::appX(anchorDisplace / scale);
 
-    updateUi(newAnchorPos);
+
+    Base::Vector3d newAnchorPosPage = DrawUtil::toVector3d(newAnchorPosScene);
+    newAnchorPosPage = DrawUtil::invertY(newAnchorPosPage);
+    Base::Vector3d snappedPos = dvp->snapHighlightToVertex(newAnchorPosPage, radius);
+
+    updateUi(DrawUtil::toQPointF(snappedPos));
     updateDetail();
     enableInputFields(true);
+
     m_ghost->setSelected(false);
     m_ghost->hide();
 }
@@ -430,7 +431,6 @@ void TaskDetail::enableTaskButtons(bool button)
 //***** Feature create & edit stuff *******************************************
 void TaskDetail::createDetail()
 {
-//    Base::Console().message("TD::createDetail()\n");
     Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Create Detail View"));
 
     const std::string objectName{"Detail"};
@@ -471,14 +471,15 @@ void TaskDetail::createDetail()
 
 void TaskDetail::updateDetail()
 {
-//    Base::Console().message("TD::updateDetail()\n");
+    TechDraw::DrawViewDetail* detailFeat = getDetailFeat();
     try {
         Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Update Detail"));
         double x = ui->qsbX->rawValue();
         double y = ui->qsbY->rawValue();
         Base::Vector3d temp(x, y, 0.0);
-        TechDraw::DrawViewDetail* detailFeat = getDetailFeat();
-        detailFeat->AnchorPoint.setValue(temp);
+
+        detailFeat->AnchorPoint.setValue(temp);     // point2d
+
         double scale = ui->qsbScale->rawValue();
         detailFeat->Scale.setValue(scale);
         double radius = ui->qsbRadius->rawValue();
@@ -487,8 +488,6 @@ void TaskDetail::updateDetail()
         std::string ref = qRef.toStdString();
         detailFeat->Reference.setValue(ref);
 
-        detailFeat->recomputeFeature();
-        getBaseFeat()->requestPaint();
         Gui::Command::updateActive();
         Gui::Command::commitCommand();
     }
@@ -496,6 +495,8 @@ void TaskDetail::updateDetail()
         //this is probably due to appl closing while dialog is still open
         Base::Console().error("Task Detail - detail feature update failed.\n");
     }
+
+    detailFeat->recomputeFeature();
 }
 
 //***** Getters ****************************************************************
@@ -504,45 +505,42 @@ void TaskDetail::updateDetail()
 QPointF TaskDetail::getAnchorScene()
 {
     DrawViewPart* dvp = getBaseFeat();
-    DrawProjGroupItem* dpgi = freecad_cast<DrawProjGroupItem*>(dvp);
+    auto* dpgi = freecad_cast<DrawProjGroupItem*>(dvp);
     DrawViewDetail* dvd = getDetailFeat();
     Base::Vector3d anchorPos = dvd->AnchorPoint.getValue();
     anchorPos.y = -anchorPos.y;
     Base::Vector3d basePos;
     double scale = 1;
 
-    if (!dpgi) {          //base is normal view
-        double x = dvp->X.getValue();
-        double y = dvp->Y.getValue();
-        basePos = Base::Vector3d (x, -y, 0.0);
-        scale = dvp->getScale();
-    } else {                       //part of projection group
+    double x = dvp->X.getValue();
+    double y = dvp->Y.getValue();
+    scale = dvp->getScale();
 
-        DrawProjGroup* dpg = dpgi->getPGroup();
-        if (!dpg) {
-            Base::Console().message("TD::getAnchorScene - projection group is confused\n");
-            //TODO::throw something.
-            return QPointF(0.0, 0.0);
-        }
-        double x = dpg->X.getValue();
+    DrawProjGroup* dpg{nullptr};
+    if (dpgi && DrawProjGroup::isProjGroupItem(dpgi)) {
+        dpg = dpgi->getPGroup();
+    }
+
+    if (dpg) {
+        // part of a projection group
+        x = dpg->X.getValue();
         x += dpgi->X.getValue();
-        double y = dpg->Y.getValue();
+        y = dpg->Y.getValue();
         y += dpgi->Y.getValue();
-        basePos = Base::Vector3d(x, -y, 0.0);
         scale = dpgi->getScale();
     }
+
+    basePos = Base::Vector3d (x, -y, 0.0);
 
     Base::Vector3d xyScene = Rez::guiX(basePos);
     Base::Vector3d anchorOffsetScene = Rez::guiX(anchorPos) * scale;
     Base::Vector3d netPos = xyScene + anchorOffsetScene;
-    return QPointF(netPos.x, netPos.y);
+    return {netPos.x, netPos.y};
 }
 
 // protects against stale pointers
 DrawViewPart* TaskDetail::getBaseFeat()
 {
-//    Base::Console().message("TD::getBaseFeat()\n");
-
     if (m_doc) {
         App::DocumentObject* baseObj = m_doc->getObject(m_baseName.c_str());
         if (baseObj) {
@@ -560,8 +558,6 @@ DrawViewPart* TaskDetail::getBaseFeat()
 // protects against stale pointers
 DrawViewDetail* TaskDetail::getDetailFeat()
 {
-//    Base::Console().message("TD::getDetailFeat()\n");
-
     if (m_baseFeat) {
         App::DocumentObject* detailObj = m_baseFeat->getDocument()->getObject(m_detailName.c_str());
         if (detailObj) {
@@ -572,7 +568,6 @@ DrawViewDetail* TaskDetail::getDetailFeat()
     std::string msg = "TaskDetail - detail feature " +
                         m_detailName +
                         " not found \n";
-//        throw Base::TypeError("TaskDetail - detail feature not found\n");
     throw Base::TypeError(msg);
     return nullptr;
 }
@@ -581,15 +576,14 @@ DrawViewDetail* TaskDetail::getDetailFeat()
 
 bool TaskDetail::accept()
 {
-//    Base::Console().message("TD::accept()\n");
-
     Gui::Document* doc = Gui::Application::Instance->getDocument(m_basePage->getDocument());
-    if (!doc)
+    if (!doc) {
         return false;
+    }
 
     m_ghost->hide();
-    getDetailFeat()->requestPaint();
-    getBaseFeat()->requestPaint();
+    getDetailFeat()->recomputeFeature();
+
     Gui::Command::doCommand(Gui::Command::Gui, "Gui.ActiveDocument.resetEdit()");
 
     return true;
@@ -597,10 +591,10 @@ bool TaskDetail::accept()
 
 bool TaskDetail::reject()
 {
-//    Base::Console().message("TD::reject()\n");
     Gui::Document* doc = Gui::Application::Instance->getDocument(m_basePage->getDocument());
-    if (!doc)
+    if (!doc) {
         return false;
+    }
 
     m_ghost->hide();
     if (m_mode == CREATEMODE) {

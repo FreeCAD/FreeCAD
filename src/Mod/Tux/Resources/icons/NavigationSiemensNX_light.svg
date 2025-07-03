@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   id="svg2"
+   height="64"
+   width="64"
+   version="1.1"
+   viewBox="0 0 63.999999 63.999999"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <defs
+     id="defs1" />
+  <metadata
+     id="metadata7">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     id="layer1"
+     transform="translate(0 -988.36)"
+     stroke="#d1cbc9"
+     stroke-width="6"
+     fill="none">
+    <path
+       id="path4144"
+       d="m16 1028.4v-20c0-8 4-12 16-12s16 4 16 12v20c0 8-4 17-16 17s-16-9-16-17z" />
+    <path
+       id="path4209"
+       d="m32 1004.4v12" />
+  </g>
+  <text
+     xml:space="preserve"
+     style="fill:#d1cbc9;stroke:#d1cbc9;stroke-width:1.249;stroke-dasharray:none"
+     x="20.548067"
+     y="42.288612"
+     id="text1"><tspan
+       x="20.548067"
+       y="42.288612"
+       id="tspan2">NX</tspan></text>
+</svg>

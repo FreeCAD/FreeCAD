@@ -535,8 +535,6 @@ protected:
     {
         clearEdit();
 
-        ModeStateMachine::reset();
-
         for (auto& ac : sugConstraints) {
             ac.clear();
         }
@@ -546,6 +544,9 @@ protected:
         ShapeConstraints.clear();
 
         onReset();
+
+        ModeStateMachine::reset();
+
         applyCursor();
     }
 

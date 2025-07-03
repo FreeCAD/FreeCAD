@@ -35,6 +35,7 @@
 
 #include "PATPathMaker.h"
 #include "QGIPrimPath.h"
+#include "QGIUserTypes.h"
 
 
 namespace TechDrawGui
@@ -57,7 +58,7 @@ public:
     explicit QGIFace(int index = -1);
     ~QGIFace() override;
 
-    enum {Type = QGraphicsItem::UserType + 104};
+    enum {Type = UserType::QGIFace};
     int type() const override { return Type;}
     QRectF boundingRect() const override;
     QPainterPath shape() const override;

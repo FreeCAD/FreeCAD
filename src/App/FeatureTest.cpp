@@ -145,7 +145,7 @@ FeatureTest::FeatureTest()
     ADD_PROPERTY(QuantityLength, (1.0));
     QuantityLength.setUnit(Base::Unit::Length);
     ADD_PROPERTY(QuantityOther, (5.0));
-    QuantityOther.setUnit(Base::Unit(-3, 1));
+    QuantityOther.setUnit(Base::Unit::Density);
     // clang-format on
 }
 

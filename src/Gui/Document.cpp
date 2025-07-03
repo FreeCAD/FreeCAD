@@ -648,6 +648,7 @@ bool Document::trySetEdit(Gui::ViewProvider* p, int ModNum, const char *subname)
     Application::Instance->setEditDocument(this);
 
     if (!d->tryStartEditing(vp, obj, _subname.c_str(), ModNum)) {
+        d->setDocumentNameOfTaskDialog(getDocument());
         return false;
     }
 
@@ -2719,21 +2720,42 @@ void Document::handleChildren3D(ViewProvider* viewProvider, bool deleting)
 
             if(!deleting) {
                 for (const auto & it : children) {
-                    ViewProvider* ChildViewProvider = getViewProvider(it);
-                    if (ChildViewProvider) {
-                        auto itOld = oldChildren.find(static_cast<ViewProviderDocumentObject*>(ChildViewProvider));
+                    if (auto ChildViewProvider = dynamic_cast<ViewProviderDocumentObject*>(getViewProvider(it))) {
+                        auto itOld = oldChildren.find(ChildViewProvider);
                         if(itOld!=oldChildren.end()) oldChildren.erase(itOld);
 
-                        SoSeparator* childRootNode =  ChildViewProvider->getRoot();
-                        childGroup->addChild(childRootNode);
+                        if (SoSeparator* childRootNode =  ChildViewProvider->getRoot()) {
+                            if (childRootNode == childGroup) {
+                                Base::Console().warning("Document::handleChildren3D: Do not add "
+                                                        "group of '%s' to itself\n",
+                                                        it->getNameInDocument());
+                            }
+                            else if (childGroup) {
+                                childGroup->addChild(childRootNode);
+                            }
+                        }
 
-                        SoSeparator* childFrontNode = ChildViewProvider->getFrontRoot();
-                        if (frontGroup && childFrontNode)
-                            frontGroup->addChild(childFrontNode);
+                        if (SoSeparator* childFrontNode = ChildViewProvider->getFrontRoot()) {
+                            if (childFrontNode == frontGroup) {
+                                Base::Console().warning("Document::handleChildren3D: Do not add "
+                                                        "foreground group of '%s' to itself\n",
+                                                        it->getNameInDocument());
+                            }
+                            else if (frontGroup) {
+                                frontGroup->addChild(childFrontNode);
+                            }
+                        }
 
-                        SoSeparator* childBackNode = ChildViewProvider->getBackRoot();
-                        if (backGroup && childBackNode)
-                            backGroup->addChild(childBackNode);
+                        if (SoSeparator* childBackNode = ChildViewProvider->getBackRoot()) {
+                            if (childBackNode == backGroup) {
+                                Base::Console().warning("Document::handleChildren3D: Do not add "
+                                                        "background group of '%s' to itself\n",
+                                                        it->getNameInDocument());
+                            }
+                            else if (backGroup) {
+                                backGroup->addChild(childBackNode);
+                            }
+                        }
 
                         // cycling to all views of the document to remove the viewprovider from the viewer itself
                         for (Gui::BaseView* vIt : d->baseViews) {

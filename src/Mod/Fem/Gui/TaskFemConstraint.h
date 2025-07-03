@@ -60,6 +60,7 @@ public:
 protected Q_SLOTS:
     void onReferenceDeleted(const int row);
     void onButtonReference(const bool pressed = true);
+    void onReferenceClearList();
     void setSelection(QListWidgetItem* item);
 
     bool event(QEvent* event) override;
@@ -72,12 +73,16 @@ protected:
     const QString makeRefText(const std::string& objName, const std::string& subName) const;
     const QString makeRefText(const App::DocumentObject* obj, const std::string& subName) const;
     void keyPressEvent(QKeyEvent* ke) override;
+    void createActions(QListWidget* parentList);
+    void createClearListAction(QListWidget* parentList);
     void createDeleteAction(QListWidget* parentList);
     void onSelectionChanged(const Gui::SelectionChanges&) override
     {}
 
 protected:
     QWidget* proxy;
+    QListWidget* actionList;
+    QAction* clearListAction;
     QAction* deleteAction;
     Gui::WeakPtrT<ViewProviderFemConstraint> ConstraintView;
     enum

@@ -29,6 +29,7 @@
 #include <QByteArray>
 
 #include "QGIView.h"
+#include "QGIUserTypes.h"
 
 
 namespace TechDraw {
@@ -46,7 +47,7 @@ public:
     QGIViewSymbol();
     ~QGIViewSymbol() override;
 
-    enum {Type = QGraphicsItem::UserType + 121};
+    enum {Type = UserType::QGIViewSymbol};
     int type() const override { return Type;}
 
     void updateView(bool update = false) override;

@@ -75,12 +75,12 @@
   <context>
     <name>CmdTechDraw3PtAngleDimension</name>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1787"/>
+      <location filename="../../CommandCreateDims.cpp" line="1786"/>
       <source>TechDraw</source>
       <translation>MűszakiRajz</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1788"/>
+      <location filename="../../CommandCreateDims.cpp" line="1787"/>
       <source>Insert 3-Point Angle Dimension</source>
       <translation>3 pontos szögméretvonal beszúrása</translation>
     </message>
@@ -88,12 +88,12 @@
   <context>
     <name>CmdTechDrawActiveView</name>
     <message>
-      <location filename="../../Command.cpp" line="699"/>
+      <location filename="../../Command.cpp" line="695"/>
       <source>TechDraw</source>
       <translation>MűszakiRajz</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="700"/>
+      <location filename="../../Command.cpp" line="696"/>
       <source>Insert Active View (3D View)</source>
       <translation>Aktív nézet beszúrása (3D nézet)</translation>
     </message>
@@ -101,12 +101,12 @@
   <context>
     <name>CmdTechDrawAngleDimension</name>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1740"/>
+      <location filename="../../CommandCreateDims.cpp" line="1739"/>
       <source>TechDraw</source>
       <translation>MűszakiRajz</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1741"/>
+      <location filename="../../CommandCreateDims.cpp" line="1740"/>
       <source>Insert Angle Dimension</source>
       <translation>Szögméretvonal beszúrása</translation>
     </message>
@@ -127,30 +127,30 @@
   <context>
     <name>CmdTechDrawArchView</name>
     <message>
-      <location filename="../../Command.cpp" line="1662"/>
+      <location filename="../../Command.cpp" line="1658"/>
       <source>TechDraw</source>
       <translation>MűszakiRajz</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1663"/>
+      <location filename="../../Command.cpp" line="1659"/>
       <source>Insert BIM Workbench Object</source>
       <translation>BIM munkafelületi objektum beszúrása</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1664"/>
-      <source>Insert a View of a Section Plane from BIM Workbench</source>
-      <translation>Szakaszsík nézetének beszúrása a BIM munkafelületből</translation>
+      <location filename="../../Command.cpp" line="1660"/>
+      <source>Insert a View of a BIM Workbench section plane</source>
+      <translation type="unfinished">Insert a View of a BIM Workbench section plane</translation>
     </message>
   </context>
   <context>
     <name>CmdTechDrawBalloon</name>
     <message>
-      <location filename="../../Command.cpp" line="1276"/>
+      <location filename="../../Command.cpp" line="1272"/>
       <source>TechDraw</source>
       <translation>MűszakiRajz</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1277"/>
+      <location filename="../../Command.cpp" line="1273"/>
       <source>Insert Balloon Annotation</source>
       <translation>Buborékjegyzet beszúrása</translation>
     </message>
@@ -176,12 +176,12 @@
   <context>
     <name>CmdTechDrawClipGroup</name>
     <message>
-      <location filename="../../Command.cpp" line="1340"/>
+      <location filename="../../Command.cpp" line="1336"/>
       <source>TechDraw</source>
       <translation>MűszakiRajz</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1341"/>
+      <location filename="../../Command.cpp" line="1337"/>
       <source>Insert Clip Group</source>
       <translation>Kivágás csoport beszúrása</translation>
     </message>
@@ -189,12 +189,12 @@
   <context>
     <name>CmdTechDrawClipGroupAdd</name>
     <message>
-      <location filename="../../Command.cpp" line="1377"/>
+      <location filename="../../Command.cpp" line="1373"/>
       <source>TechDraw</source>
       <translation>MűszakiRajz</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1378"/>
+      <location filename="../../Command.cpp" line="1374"/>
       <source>Add View to Clip Group</source>
       <translation>Nézet hozzáadása a kivágás csoporthoz</translation>
     </message>
@@ -202,12 +202,12 @@
   <context>
     <name>CmdTechDrawClipGroupRemove</name>
     <message>
-      <location filename="../../Command.cpp" line="1461"/>
+      <location filename="../../Command.cpp" line="1457"/>
       <source>TechDraw</source>
       <translation>MűszakiRajz</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1462"/>
+      <location filename="../../Command.cpp" line="1458"/>
       <source>Remove View from Clip Group</source>
       <translation>Nézet eltávolítása kivágás csoportból</translation>
     </message>
@@ -215,17 +215,17 @@
   <context>
     <name>CmdTechDrawComplexSection</name>
     <message>
-      <location filename="../../Command.cpp" line="884"/>
+      <location filename="../../Command.cpp" line="880"/>
       <source>TechDraw</source>
       <translation>MűszakiRajz</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="885"/>
+      <location filename="../../Command.cpp" line="881"/>
       <source>Insert Complex Section View</source>
       <translation>Komplex szelvény nézet beszúrása</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="886"/>
+      <location filename="../../Command.cpp" line="882"/>
       <source>Insert a Complex Section View</source>
       <translation>Összetett szelvénynézet beszúrása</translation>
     </message>
@@ -233,12 +233,12 @@
   <context>
     <name>CmdTechDrawCosmeticEraser</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1288"/>
+      <location filename="../../CommandAnnotate.cpp" line="1284"/>
       <source>TechDraw</source>
       <translation>MűszakiRajz</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1289"/>
+      <location filename="../../CommandAnnotate.cpp" line="1285"/>
       <source>Remove Cosmetic Object</source>
       <translation>Segéd objektum eltávolítása</translation>
     </message>
@@ -277,17 +277,17 @@
   <context>
     <name>CmdTechDrawDecorateLine</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1406"/>
+      <location filename="../../CommandAnnotate.cpp" line="1402"/>
       <source>TechDraw</source>
       <translation>MűszakiRajz</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1407"/>
+      <location filename="../../CommandAnnotate.cpp" line="1403"/>
       <source>Change Appearance of Lines</source>
       <translation>Egyenesek megjelenésének módosítása</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1408"/>
+      <location filename="../../CommandAnnotate.cpp" line="1404"/>
       <source>Change Appearance of selected Lines</source>
       <translation>Kiválasztott egyenesek megjelenésének módosítása</translation>
     </message>
@@ -295,12 +295,12 @@
   <context>
     <name>CmdTechDrawDetailView</name>
     <message>
-      <location filename="../../Command.cpp" line="1010"/>
+      <location filename="../../Command.cpp" line="1006"/>
       <source>TechDraw</source>
       <translation>MűszakiRajz</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1011"/>
+      <location filename="../../Command.cpp" line="1007"/>
       <source>Insert Detail View</source>
       <translation>Részletnézet beszúrása</translation>
     </message>
@@ -308,12 +308,12 @@
   <context>
     <name>CmdTechDrawDiameterDimension</name>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1549"/>
+      <location filename="../../CommandCreateDims.cpp" line="1548"/>
       <source>TechDraw</source>
       <translation>MűszakiRajz</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1550"/>
+      <location filename="../../CommandCreateDims.cpp" line="1549"/>
       <source>Insert Diameter Dimension</source>
       <translation>Átmérő méretvonalának beszúrása</translation>
     </message>
@@ -321,17 +321,17 @@
   <context>
     <name>CmdTechDrawDimension</name>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1408"/>
+      <location filename="../../CommandCreateDims.cpp" line="1407"/>
       <source>TechDraw</source>
       <translation>MűszakiRajz</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1409"/>
+      <location filename="../../CommandCreateDims.cpp" line="1408"/>
       <source>Insert Dimension</source>
       <translation>Méretvonal beszúrása</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1410"/>
+      <location filename="../../CommandCreateDims.cpp" line="1409"/>
       <source>Dimension contextually based on your selection.
 Depending on your selection you might have several dimensions available. You can cycle through them using the M key.
 Left clicking on empty space will validate the current Dimension. Right clicking or pressing Esc will cancel.</source>
@@ -343,17 +343,17 @@ Az üres helyre való bal egérgombbal kattintással érvényesítheti az aktuá
   <context>
     <name>CmdTechDrawDraftView</name>
     <message>
-      <location filename="../../Command.cpp" line="1599"/>
+      <location filename="../../Command.cpp" line="1595"/>
       <source>TechDraw</source>
       <translation>MűszakiRajz</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1600"/>
+      <location filename="../../Command.cpp" line="1596"/>
       <source>Insert Draft Workbench Object</source>
       <translation>Tervrajz munkafelületi objektum beszúrása</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1601"/>
+      <location filename="../../Command.cpp" line="1597"/>
       <source>Insert a View of a Draft Workbench object</source>
       <translation>Szúrjon be egy nézetet a tervrajz munkafelület objektumából</translation>
     </message>
@@ -361,17 +361,17 @@ Az üres helyre való bal egérgombbal kattintással érvényesítheti az aktuá
   <context>
     <name>CmdTechDrawExportPageDXF</name>
     <message>
-      <location filename="../../Command.cpp" line="1849"/>
+      <location filename="../../Command.cpp" line="1847"/>
       <source>File</source>
       <translation>Fájl</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1850"/>
+      <location filename="../../Command.cpp" line="1848"/>
       <source>Export Page as DXF</source>
       <translation>Oldal exportálása DXF-ként</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1884"/>
+      <location filename="../../Command.cpp" line="1882"/>
       <source>Save DXF file</source>
       <translation>DXF-fájl mentése</translation>
     </message>
@@ -379,12 +379,12 @@ Az üres helyre való bal egérgombbal kattintással érvényesítheti az aktuá
   <context>
     <name>CmdTechDrawExportPageSVG</name>
     <message>
-      <location filename="../../Command.cpp" line="1806"/>
+      <location filename="../../Command.cpp" line="1804"/>
       <source>File</source>
       <translation>Fájl</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1807"/>
+      <location filename="../../Command.cpp" line="1805"/>
       <source>Export Page as SVG</source>
       <translation>Oldal exportálása SVG-ként</translation>
     </message>
@@ -392,17 +392,17 @@ Az üres helyre való bal egérgombbal kattintással érvényesítheti az aktuá
   <context>
     <name>CmdTechDrawExtendShortenLineGroup</name>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1661"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1665"/>
       <source>TechDraw</source>
       <translation>MűszakiRajz</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1662"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1666"/>
       <source>Extend Line</source>
       <translation>Vonal meghosszabbítás</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1663"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1667"/>
       <source>Extend a cosmetic line or centerline at both ends:&lt;br&gt;- Specify the delta distance (optional)&lt;br&gt;- Select a single line&lt;br&gt;- Click this tool</source>
       <translation>Egy segédvonal vagy középvonal meghosszabbítása mindkét végén:&lt;br&gt;- Hosszkülönbség megadása (opcionális)&lt;br&gt;- Egyetlen vonal kiválasztása&lt;br&gt;- Kattintson erre az eszközre</translation>
     </message>
@@ -410,17 +410,17 @@ Az üres helyre való bal egérgombbal kattintással érvényesítheti az aktuá
   <context>
     <name>CmdTechDrawExtensionAreaAnnotation</name>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1765"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1769"/>
       <source>TechDraw</source>
       <translation>MűszakiRajz</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1766"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1770"/>
       <source>Calculate the area of selected faces</source>
       <translation>A kiválasztott felületek területének kiszámítása</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1767"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1771"/>
       <source>Select several faces then click this tool</source>
       <translation>Jelöljön ki több felületet, majd kattintson erre az eszközre</translation>
     </message>
@@ -428,17 +428,17 @@ Az üres helyre való bal egérgombbal kattintással érvényesítheti az aktuá
   <context>
     <name>CmdTechDrawExtensionCascadeDimensionGroup</name>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1154"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1156"/>
       <source>TechDraw</source>
       <translation>MűszakiRajz</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1155"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1157"/>
       <source>Cascade Horizontal Dimensions</source>
       <translation>Vízszintes méretek elrendezése</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1156"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1158"/>
       <source>Evenly space horizontal dimensions:&lt;br&gt;- Specify the cascade spacing (optional)&lt;br&gt;- Select two or more horizontal dimensions&lt;br&gt;- The first dimension defines the position&lt;br&gt;- Click this tool</source>
       <translation>Vízszintes méretek elrendezése egyenlő távolsággal:&lt;br&gt;- Adja meg a sortávolságot (opcionális)&lt;br&gt;- Válasszon ki két vagy több vízszintes méretet&lt;br&gt;- Az első méret határozza meg a pozíciót&lt;br&gt;- Kattintson erre az eszközre</translation>
     </message>
@@ -446,19 +446,19 @@ Az üres helyre való bal egérgombbal kattintással érvényesítheti az aktuá
   <context>
     <name>CmdTechDrawExtensionCascadeHorizDimension</name>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="976"/>
+      <location filename="../../CommandExtensionDims.cpp" line="978"/>
       <source>TechDraw</source>
       <translation>MűszakiRajz</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="977"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1231"/>
+      <location filename="../../CommandExtensionDims.cpp" line="979"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1233"/>
       <source>Cascade Horizontal Dimensions</source>
       <translation>Vízszintes méretek elrendezése</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="978"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1232"/>
+      <location filename="../../CommandExtensionDims.cpp" line="980"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1234"/>
       <source>Evenly space horizontal dimensions:&lt;br&gt;- Specify the cascade spacing (optional)&lt;br&gt;- Select two or more horizontal dimensions&lt;br&gt;- The first dimension defines the position&lt;br&gt;- Click this tool</source>
       <translation>Vízszintes méretek elrendezése egyenlő távolsággal:&lt;br&gt;- Adja meg a sortávolságot (opcionális)&lt;br&gt;- Válasszon ki két vagy több vízszintes méretet&lt;br&gt;- Az első méret határozza meg a pozíciót&lt;br&gt;- Kattintson erre az eszközre</translation>
     </message>
@@ -466,19 +466,19 @@ Az üres helyre való bal egérgombbal kattintással érvényesítheti az aktuá
   <context>
     <name>CmdTechDrawExtensionCascadeObliqueDimension</name>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1118"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1120"/>
       <source>TechDraw</source>
       <translation>MűszakiRajz</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1119"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1249"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1121"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1251"/>
       <source>Cascade Oblique Dimensions</source>
       <translation>Ferde méretek elrendezése</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1120"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1250"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1122"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1252"/>
       <source>Evenly space oblique dimensions:&lt;br&gt;- Specify the cascade spacing (optional)&lt;br&gt;- Select two or more parallel oblique dimensions&lt;br&gt;- The first dimension defines the position&lt;br&gt;- Click this tool</source>
       <translation>Egyenlő távolságban lévő ferde méretek elrendezése:&lt;br&gt;- Adja meg a sortávolságot (opcionális)&lt;br&gt;- Válasszon ki két vagy több párhuzamos ferde méretet&lt;br&gt;- Az első mérés határozza meg a pozíciót&lt;br&gt;- Kattintson erre az eszközre</translation>
     </message>
@@ -486,19 +486,19 @@ Az üres helyre való bal egérgombbal kattintással érvényesítheti az aktuá
   <context>
     <name>CmdTechDrawExtensionCascadeVertDimension</name>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1043"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1045"/>
       <source>TechDraw</source>
       <translation>MűszakiRajz</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1044"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1240"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1046"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1242"/>
       <source>Cascade Vertical Dimensions</source>
       <translation>Vízszintes méretek elrendezése</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1045"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1241"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1047"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1243"/>
       <source>Evenly space vertical dimensions:&lt;br&gt;- Specify the cascade spacing (optional)&lt;br&gt;- Select two or more vertical dimensions&lt;br&gt;- The first dimension defines the position&lt;br&gt;- Click this tool</source>
       <translation>Függőleges méretek elrendezése egyenlő távolsággal:&lt;br&gt;- Adja meg a sortávolságot (opcionális)&lt;br&gt;- Válasszon ki két vagy több függőleges méretet&lt;br&gt;- Az első méret határozza meg a pozíciót&lt;br&gt;- Kattintson erre az eszközre</translation>
     </message>
@@ -580,17 +580,17 @@ Az üres helyre való bal egérgombbal kattintással érvényesítheti az aktuá
   <context>
     <name>CmdTechDrawExtensionCreateChainDimensionGroup</name>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1532"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1534"/>
       <source>TechDraw</source>
       <translation>MűszakiRajz</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1533"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1535"/>
       <source>Create Horizontal Chain Dimensions</source>
       <translation>Vízszintes dimenzióláncok létrehozása</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1534"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1536"/>
       <source>Create a sequence of aligned horizontal dimensions:&lt;br&gt;- Select three or more vertexes&lt;br&gt;- Click this tool</source>
       <translation>Hozzon létre összehangolt vízszintes dimenziók sorozatát:&lt;br&gt;- Válasszon ki három vagy több csúcspontot&lt;br&gt;- Kattintson erre az eszközre</translation>
     </message>
@@ -598,17 +598,17 @@ Az üres helyre való bal egérgombbal kattintással érvényesítheti az aktuá
   <context>
     <name>CmdTechDrawExtensionCreateCoordDimensionGroup</name>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1923"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1925"/>
       <source>TechDraw</source>
       <translation>MűszakiRajz</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1924"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1926"/>
       <source>Create Horizontal Coordinate Dimensions</source>
       <translation>Vízszintes koordinátaméretek létrehozása</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1925"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1927"/>
       <source>Create multiple evenly spaced horizontal dimensions starting from the same baseline:&lt;br&gt;- Specify the cascade spacing (optional)&lt;br&gt;- Select three or more vertexes&lt;br&gt;- The selection order of the first two vertexes determines the position of the baseline&lt;br&gt;- Click this tool</source>
       <translation>Egyenlő távolságban lévő vízszintes méretek létrehozása ugyanazon az alapvonaltl:&lt;br&gt;- Vonaltávolság megadása (opcionális)&lt;br&gt;- Három vagy több csomópont kiválasztása&lt;br&gt;- Az első két csomópont kiválasztási sorrendje adja meg az alapvonal pozícióját&lt;br&gt;- Kattintson erre az eszközre</translation>
     </message>
@@ -616,19 +616,19 @@ Az üres helyre való bal egérgombbal kattintással érvényesítheti az aktuá
   <context>
     <name>CmdTechDrawExtensionCreateHorizChainDimension</name>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1308"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1310"/>
       <source>TechDraw</source>
       <translation>MűszakiRajz</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1309"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1607"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1311"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1609"/>
       <source>Create Horizontal Chain Dimensions</source>
       <translation>Vízszintes dimenzióláncok létrehozása</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1310"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1608"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1312"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1610"/>
       <source>Create a sequence of aligned horizontal dimensions:&lt;br&gt;- Select three or more vertexes&lt;br&gt;- Click this tool</source>
       <translation>Hozzon létre összehangolt vízszintes dimenziók sorozatát:&lt;br&gt;- Válasszon ki három vagy több csúcspontot&lt;br&gt;- Kattintson erre az eszközre</translation>
     </message>
@@ -636,18 +636,18 @@ Az üres helyre való bal egérgombbal kattintással érvényesítheti az aktuá
   <context>
     <name>CmdTechDrawExtensionCreateHorizChamferDimension</name>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="2082"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2083"/>
       <source>TechDraw</source>
       <translation>MűszakiRajz</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="2083"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2084"/>
       <location filename="../../CommandExtensionDims.cpp" line="2252"/>
       <source>Create Horizontal Chamfer Dimension</source>
       <translation>Hozzuk létre a levágás vízszintes méretét</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="2084"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2085"/>
       <location filename="../../CommandExtensionDims.cpp" line="2253"/>
       <source>Create a horizontal size and angle dimension for a chamfer:&lt;br&gt;- Select two vertexes&lt;br&gt;- Click this tool</source>
       <translation>Vízszintes méret- és szögméret létrehozása egy levágáshoz:&lt;br&gt;- Két csúcspont kijelölése&lt;br&gt;- Kattintson erre az eszközre</translation>
@@ -656,19 +656,19 @@ Az üres helyre való bal egérgombbal kattintással érvényesítheti az aktuá
   <context>
     <name>CmdTechDrawExtensionCreateHorizCoordDimension</name>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1685"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1687"/>
       <source>TechDraw</source>
       <translation>MűszakiRajz</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1686"/>
-      <location filename="../../CommandExtensionDims.cpp" line="2000"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1688"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2002"/>
       <source>Create Horizontal Coordinate Dimensions</source>
       <translation>Vízszintes koordinátaméretek létrehozása</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1687"/>
-      <location filename="../../CommandExtensionDims.cpp" line="2001"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1689"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2003"/>
       <source>Create multiple evenly spaced horizontal dimensions starting from the same baseline:&lt;br&gt;- Specify the cascade spacing (optional)&lt;br&gt;- Select three or more vertexes&lt;br&gt;- The selection order of the first two vertexes determines the position of the baseline&lt;br&gt;- Click this tool</source>
       <translation>Egyenlő távolságban lévő vízszintes méretek létrehozása ugyanazon az alapvonaltl:&lt;br&gt;- Vonaltávolság megadása (opcionális)&lt;br&gt;- Három vagy több csomópont kiválasztása&lt;br&gt;- Az első két csomópont kiválasztási sorrendje adja meg az alapvonal pozícióját&lt;br&gt;- Kattintson erre az eszközre</translation>
     </message>
@@ -694,19 +694,19 @@ Az üres helyre való bal egérgombbal kattintással érvényesítheti az aktuá
   <context>
     <name>CmdTechDrawExtensionCreateObliqueChainDimension</name>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1498"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1500"/>
       <source>TechDraw</source>
       <translation>MűszakiRajz</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1499"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1621"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1501"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1623"/>
       <source>Create Oblique Chain Dimensions</source>
       <translation>Ferde dimenzióláncok létrehozása</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1500"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1622"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1502"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1624"/>
       <source>Create a sequence of aligned oblique dimensions:&lt;br&gt;- Select three or more vertexes&lt;br&gt;- The first two vertexes define the direction&lt;br&gt;- Click this tool</source>
       <translation>Ferde méretekláncok létrehozása:&lt;br&gt;- Három vagy több csomópont kiválasztása&lt;br&gt;- Az első két pont határozza meg az irányt&lt;br&gt;- Erre az eszközre kattintva</translation>
     </message>
@@ -714,19 +714,19 @@ Az üres helyre való bal egérgombbal kattintással érvényesítheti az aktuá
   <context>
     <name>CmdTechDrawExtensionCreateObliqueCoordDimension</name>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1887"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1889"/>
       <source>TechDraw</source>
       <translation>MűszakiRajz</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1888"/>
-      <location filename="../../CommandExtensionDims.cpp" line="2018"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1890"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2020"/>
       <source>Create Oblique Coordinate Dimensions</source>
       <translation>Ferde koordináta méretek létrehozása</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1889"/>
-      <location filename="../../CommandExtensionDims.cpp" line="2019"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1891"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2021"/>
       <source>Create multiple evenly spaced oblique dimensions starting from the same baseline:&lt;br&gt;- Specify the cascade spacing (optional)&lt;br&gt;- Select three or more vertexes&lt;br&gt;- The selection order of the first two vertexes determines the position of the baseline&lt;br&gt;- The first two vertexes also define the direction&lt;br&gt;- Click this tool</source>
       <translation>Egyenlő távolságban lévő átlós méretek létrehozása ugyanazon az alapvonaltól kezdve:&lt;br&gt;- Vonaltávolság megadása (opcionális)&lt;br&gt;- Három vagy több csúcspont kiválasztása&lt;br&gt;- Az első két csomópont kiválasztási sorrendje adja meg az alapvonal helyzetét&lt;br&gt;- Az első két csúcspont határozza meg az irányt is&lt;br&gt;- Kattintson erre az eszközre</translation>
     </message>
@@ -734,19 +734,19 @@ Az üres helyre való bal egérgombbal kattintással érvényesítheti az aktuá
   <context>
     <name>CmdTechDrawExtensionCreateVertChainDimension</name>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1375"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1377"/>
       <source>TechDraw</source>
       <translation>MűszakiRajz</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1376"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1614"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1378"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1616"/>
       <source>Create Vertical Chain Dimensions</source>
       <translation>Függőleges dimenzióláncok létrehozása</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1377"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1615"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1379"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1617"/>
       <source>Create a sequence of aligned vertical dimensions:&lt;br&gt;- Select three or more vertexes&lt;br&gt;- Click this tool</source>
       <translation>Hozzon létre összehangolt függőleges méretek sorozatát:&lt;br&gt;- Válasszon ki három vagy több csúcspontot&lt;br&gt;- Kattintson erre az eszközre</translation>
     </message>
@@ -774,19 +774,19 @@ Az üres helyre való bal egérgombbal kattintással érvényesítheti az aktuá
   <context>
     <name>CmdTechDrawExtensionCreateVertCoordDimension</name>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1758"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1760"/>
       <source>TechDraw</source>
       <translation>MűszakiRajz</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1759"/>
-      <location filename="../../CommandExtensionDims.cpp" line="2009"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1761"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2011"/>
       <source>Create Vertical Coordinate Dimensions</source>
       <translation>Függőleges koordinátaméretek létrehozása</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1760"/>
-      <location filename="../../CommandExtensionDims.cpp" line="2010"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1762"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2012"/>
       <source>Create multiple evenly spaced vertical dimensions starting from the same baseline:&lt;br&gt;- Specify the cascade spacing (optional)&lt;br&gt;- Select three or more vertexes&lt;br&gt;- The selection order of the first two vertexes determines the position of the baseline&lt;br&gt;- Click this tool</source>
       <translation>Egyenlő távolságban lévő függőleges méretek létrehozása ugyanazon az alapvonalon:&lt;br&gt;- Vonaltávolság megadása (opcionális)&lt;br&gt;- Három vagy több csomópont kiválasztása&lt;br&gt;- Az első két csomópont kiválasztási sorrendje adja meg az alapvonal pozícióját&lt;br&gt;- Kattintson erre az eszközre</translation>
     </message>
@@ -812,19 +812,19 @@ Az üres helyre való bal egérgombbal kattintással érvényesítheti az aktuá
   <context>
     <name>CmdTechDrawExtensionDecreaseDecimal</name>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="503"/>
+      <location filename="../../CommandExtensionDims.cpp" line="505"/>
       <source>TechDraw</source>
       <translation>MűszakiRajz</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="504"/>
-      <location filename="../../CommandExtensionDims.cpp" line="611"/>
+      <location filename="../../CommandExtensionDims.cpp" line="506"/>
+      <location filename="../../CommandExtensionDims.cpp" line="613"/>
       <source>Decrease Decimal Places</source>
       <translation>Tizedesjegyek csökkentése</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="505"/>
-      <location filename="../../CommandExtensionDims.cpp" line="612"/>
+      <location filename="../../CommandExtensionDims.cpp" line="507"/>
+      <location filename="../../CommandExtensionDims.cpp" line="614"/>
       <source>Decrease the number of decimal places of the dimension text:&lt;br&gt;- Select one or more dimensions&lt;br&gt;- Click this tool</source>
       <translation>A méretszöveg tizedesjegyei számának csökkentése:&lt;br&gt;- Egy vagy több méret kiválasztása&lt;br&gt;- Kattintson erre az eszközre</translation>
     </message>
@@ -914,19 +914,19 @@ Az üres helyre való bal egérgombbal kattintással érvényesítheti az aktuá
   <context>
     <name>CmdTechDrawExtensionExtendLine</name>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1591"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1595"/>
       <source>TechDraw</source>
       <translation>MűszakiRajz</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1592"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1731"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1596"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1735"/>
       <source>Extend Line</source>
       <translation>Vonal meghosszabbítás</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1593"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1732"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1597"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1736"/>
       <source>Extend a cosmetic line or centerline at both ends:&lt;br&gt;- Specify the delta distance (optional)&lt;br&gt;- Select a single line&lt;br&gt;- Click this tool</source>
       <translation>Egy segédvonal vagy középvonal meghosszabbítása mindkét végén:&lt;br&gt;- Hosszkülönbség megadása (opcionális)&lt;br&gt;- Egyetlen vonal kiválasztása&lt;br&gt;- Kattintson erre az eszközre</translation>
     </message>
@@ -954,19 +954,19 @@ Az üres helyre való bal egérgombbal kattintással érvényesítheti az aktuá
   <context>
     <name>CmdTechDrawExtensionIncreaseDecimal</name>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="470"/>
+      <location filename="../../CommandExtensionDims.cpp" line="472"/>
       <source>TechDraw</source>
       <translation>MűszakiRajz</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="471"/>
-      <location filename="../../CommandExtensionDims.cpp" line="604"/>
+      <location filename="../../CommandExtensionDims.cpp" line="473"/>
+      <location filename="../../CommandExtensionDims.cpp" line="606"/>
       <source>Increase Decimal Places</source>
       <translation>Tizedesjegyek növelése</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="472"/>
-      <location filename="../../CommandExtensionDims.cpp" line="605"/>
+      <location filename="../../CommandExtensionDims.cpp" line="474"/>
+      <location filename="../../CommandExtensionDims.cpp" line="607"/>
       <source>Increase the number of decimal places of the dimension text:&lt;br&gt;- Select one or more dimensions&lt;br&gt;- Click this tool</source>
       <translation>A méretszöveg tizedesjegyei számának növelése:&lt;br&gt;- Egy vagy több méret kiválasztása&lt;br&gt;- Kattintson erre az eszközre</translation>
     </message>
@@ -974,17 +974,17 @@ Az üres helyre való bal egérgombbal kattintással érvényesítheti az aktuá
   <context>
     <name>CmdTechDrawExtensionIncreaseDecreaseGroup</name>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="536"/>
+      <location filename="../../CommandExtensionDims.cpp" line="538"/>
       <source>TechDraw</source>
       <translation>MűszakiRajz</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="537"/>
+      <location filename="../../CommandExtensionDims.cpp" line="539"/>
       <source>Increase Decimal Places</source>
       <translation>Tizedesjegyek növelése</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="538"/>
+      <location filename="../../CommandExtensionDims.cpp" line="540"/>
       <source>Increase the number of decimal places of the dimension text:&lt;br&gt;- Select one or more dimensions&lt;br&gt;- Click this tool</source>
       <translation>A méretszöveg tizedesjegyei számának növelése:&lt;br&gt;- Egy vagy több méret kiválasztása&lt;br&gt;- Kattintson erre az eszközre</translation>
     </message>
@@ -992,19 +992,19 @@ Az üres helyre való bal egérgombbal kattintással érvényesítheti az aktuá
   <context>
     <name>CmdTechDrawExtensionInsertDiameter</name>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="155"/>
+      <location filename="../../CommandExtensionDims.cpp" line="157"/>
       <source>TechDraw</source>
       <translation>MűszakiRajz</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="156"/>
-      <location filename="../../CommandExtensionDims.cpp" line="395"/>
+      <location filename="../../CommandExtensionDims.cpp" line="158"/>
+      <location filename="../../CommandExtensionDims.cpp" line="397"/>
       <source>Insert &apos;⌀&apos; Prefix</source>
       <translation>&apos;⌀&apos;-szimbólum beillesztése</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="157"/>
-      <location filename="../../CommandExtensionDims.cpp" line="396"/>
+      <location filename="../../CommandExtensionDims.cpp" line="159"/>
+      <location filename="../../CommandExtensionDims.cpp" line="398"/>
       <source>Insert a &apos;⌀&apos; symbol at the beginning of the dimension text:&lt;br&gt;- Select one or more dimensions&lt;br&gt;- Click this tool</source>
       <translation>Szúrjon be egy &apos;⌀&apos;-szimbólumot a méretszöveg elejére:&lt;br&gt;- Válasszon ki egy vagy több méretet&lt;br&gt;- Kattintson erre az eszközre</translation>
     </message>
@@ -1012,17 +1012,17 @@ Az üres helyre való bal egérgombbal kattintással érvényesítheti az aktuá
   <context>
     <name>CmdTechDrawExtensionInsertPrefixGroup</name>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="313"/>
+      <location filename="../../CommandExtensionDims.cpp" line="315"/>
       <source>TechDraw</source>
       <translation>MűszakiRajz</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="314"/>
+      <location filename="../../CommandExtensionDims.cpp" line="316"/>
       <source>Insert &apos;⌀&apos; Prefix</source>
       <translation>&apos;⌀&apos;-szimbólum beillesztése</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="315"/>
+      <location filename="../../CommandExtensionDims.cpp" line="317"/>
       <source>Insert a &apos;⌀&apos; symbol at the beginning of the dimension text:&lt;br&gt;- Select one or more dimensions&lt;br&gt;- Click this tool</source>
       <translation>Szúrjon be egy &apos;⌀&apos;-szimbólumot a méretszöveg elejére:&lt;br&gt;- Válasszon ki egy vagy több méretet&lt;br&gt;- Kattintson erre az eszközre</translation>
     </message>
@@ -1030,19 +1030,19 @@ Az üres helyre való bal egérgombbal kattintással érvényesítheti az aktuá
   <context>
     <name>CmdTechDrawExtensionInsertSquare</name>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="188"/>
+      <location filename="../../CommandExtensionDims.cpp" line="190"/>
       <source>TechDraw</source>
       <translation>MűszakiRajz</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="189"/>
-      <location filename="../../CommandExtensionDims.cpp" line="402"/>
+      <location filename="../../CommandExtensionDims.cpp" line="191"/>
+      <location filename="../../CommandExtensionDims.cpp" line="404"/>
       <source>Insert &apos;□&apos; Prefix</source>
       <translation>&apos;□&apos;-szimbólum beillesztése</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="190"/>
-      <location filename="../../CommandExtensionDims.cpp" line="403"/>
+      <location filename="../../CommandExtensionDims.cpp" line="192"/>
+      <location filename="../../CommandExtensionDims.cpp" line="405"/>
       <source>Insert a &apos;□&apos; symbol at the beginning of the dimension text:&lt;br&gt;- Select one or more dimensions&lt;br&gt;- Click this tool</source>
       <translation>Szúrjon be egy &apos;□&apos;-szimbólumot a méretszöveg elejére:&lt;br&gt;- Válasszon ki egy vagy több méretet&lt;br&gt;- Kattintson erre az eszközre</translation>
     </message>
@@ -1119,24 +1119,24 @@ Az üres helyre való bal egérgombbal kattintással érvényesítheti az aktuá
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1465"/>
-      <source>Lock or unlock the position of a view:&lt;br&gt;- Select a single view&lt;br&gt;- Click this tool</source>
-      <translation>Egy nézet pozíciójának rögzítése/feloldása:&lt;br&gt;- Válasszon ki egy nézetet&lt;br&gt;- Kattintson erre az eszközre</translation>
+      <source>Lock or unlock the position of a view:&lt;br&gt;- Select view(s)&lt;br&gt;- Click this tool</source>
+      <translation type="unfinished">Lock or unlock the position of a view:&lt;br&gt;- Select view(s)&lt;br&gt;- Click this tool</translation>
     </message>
   </context>
   <context>
     <name>CmdTechDrawExtensionPosChainDimensionGroup</name>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="827"/>
+      <location filename="../../CommandExtensionDims.cpp" line="829"/>
       <source>TechDraw</source>
       <translation>MűszakiRajz</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="828"/>
+      <location filename="../../CommandExtensionDims.cpp" line="830"/>
       <source>Position Horizontal Chain Dimensions</source>
       <translation>Vízszintes láncméretek elrendezése</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="829"/>
+      <location filename="../../CommandExtensionDims.cpp" line="831"/>
       <source>Align horizontal dimensions to create a chain dimension:&lt;br&gt;- Select two or more horizontal dimensions&lt;br&gt;- The first dimension defines the position&lt;br&gt;- Click this tool</source>
       <translation>Vízszintes méretek összehangolása méretlánc létrehozásához:&lt;br&gt;- Válasszon ki két vagy több vízszintes méretet&lt;br&gt;- Az első méret határozza meg a pozíciót&lt;br&gt;- Kattintson erre az eszközre</translation>
     </message>
@@ -1144,19 +1144,19 @@ Az üres helyre való bal egérgombbal kattintással érvényesítheti az aktuá
   <context>
     <name>CmdTechDrawExtensionPosHorizChainDimension</name>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="663"/>
+      <location filename="../../CommandExtensionDims.cpp" line="665"/>
       <source>TechDraw</source>
       <translation>MűszakiRajz</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="664"/>
-      <location filename="../../CommandExtensionDims.cpp" line="903"/>
+      <location filename="../../CommandExtensionDims.cpp" line="666"/>
+      <location filename="../../CommandExtensionDims.cpp" line="905"/>
       <source>Position Horizontal Chain Dimensions</source>
       <translation>Vízszintes láncméretek elrendezése</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="665"/>
-      <location filename="../../CommandExtensionDims.cpp" line="904"/>
+      <location filename="../../CommandExtensionDims.cpp" line="667"/>
+      <location filename="../../CommandExtensionDims.cpp" line="906"/>
       <source>Align horizontal dimensions to create a chain dimension:&lt;br&gt;- Select two or more horizontal dimensions&lt;br&gt;- The first dimension defines the position&lt;br&gt;- Click this tool</source>
       <translation>Vízszintes méretek összehangolása méretlánc létrehozásához:&lt;br&gt;- Válasszon ki két vagy több vízszintes méretet&lt;br&gt;- Az első méret határozza meg a pozíciót&lt;br&gt;- Kattintson erre az eszközre</translation>
     </message>
@@ -1164,19 +1164,19 @@ Az üres helyre való bal egérgombbal kattintással érvényesítheti az aktuá
   <context>
     <name>CmdTechDrawExtensionPosObliqueChainDimension</name>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="792"/>
+      <location filename="../../CommandExtensionDims.cpp" line="794"/>
       <source>TechDraw</source>
       <translation>MűszakiRajz</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="793"/>
-      <location filename="../../CommandExtensionDims.cpp" line="919"/>
+      <location filename="../../CommandExtensionDims.cpp" line="795"/>
+      <location filename="../../CommandExtensionDims.cpp" line="921"/>
       <source>Position Oblique Chain Dimensions</source>
       <translation>Ferde láncméretek elrendezése</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="794"/>
-      <location filename="../../CommandExtensionDims.cpp" line="920"/>
+      <location filename="../../CommandExtensionDims.cpp" line="796"/>
+      <location filename="../../CommandExtensionDims.cpp" line="922"/>
       <source>Align oblique dimensions to create a chain dimension:&lt;br&gt;- Select two or more parallel oblique dimensions&lt;br&gt;- The first dimension defines the position&lt;br&gt;- Click this tool</source>
       <translation>Ferde méretek összehangolása méretlánc létrehozásához:&lt;br&gt;- Válasszon ki két vagy több párhuzamos ferde méretet&lt;br&gt;- Az első méret határozza meg a pozíciót&lt;br&gt;- Kattintson erre az eszközre</translation>
     </message>
@@ -1184,19 +1184,19 @@ Az üres helyre való bal egérgombbal kattintással érvényesítheti az aktuá
   <context>
     <name>CmdTechDrawExtensionPosVertChainDimension</name>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="725"/>
+      <location filename="../../CommandExtensionDims.cpp" line="727"/>
       <source>TechDraw</source>
       <translation>MűszakiRajz</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="726"/>
-      <location filename="../../CommandExtensionDims.cpp" line="911"/>
+      <location filename="../../CommandExtensionDims.cpp" line="728"/>
+      <location filename="../../CommandExtensionDims.cpp" line="913"/>
       <source>Position Vertical Chain Dimensions</source>
       <translation>Függőleges láncméretek elrendezése</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="727"/>
-      <location filename="../../CommandExtensionDims.cpp" line="912"/>
+      <location filename="../../CommandExtensionDims.cpp" line="729"/>
+      <location filename="../../CommandExtensionDims.cpp" line="914"/>
       <source>Align vertical dimensions to create a chain dimension:&lt;br&gt;- Select two or more vertical dimensions&lt;br&gt;- The first dimension defines the position&lt;br&gt;- Click this tool</source>
       <translation>Függőleges méretek összehangolása méretlánc létrehozásához:&lt;br&gt;- Válasszon ki két vagy több függőleges méretet&lt;br&gt;- Az első méret határozza meg a pozíciót&lt;br&gt;- Kattintson erre az eszközre</translation>
     </message>
@@ -1204,17 +1204,17 @@ Az üres helyre való bal egérgombbal kattintással érvényesítheti az aktuá
   <context>
     <name>CmdTechDrawExtensionRemovePrefixChar</name>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="280"/>
+      <location filename="../../CommandExtensionDims.cpp" line="282"/>
       <source>TechDraw</source>
       <translation>MűszakiRajz</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="281"/>
+      <location filename="../../CommandExtensionDims.cpp" line="283"/>
       <source>Remove Prefix</source>
       <translation>Előtag eltávolítása</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="282"/>
+      <location filename="../../CommandExtensionDims.cpp" line="284"/>
       <source>Remove prefix symbols at the beginning of the dimension text:&lt;br&gt;- Select one or more dimensions&lt;br&gt;- Click this tool</source>
       <translation>Előtag-szimbólum eltávolítása a méretszöveg elejéről:&lt;br&gt;- Egy vagy több méret kiválasztása&lt;br&gt;- Kattintson erre az eszközre</translation>
     </message>
@@ -1240,19 +1240,19 @@ Az üres helyre való bal egérgombbal kattintással érvényesítheti az aktuá
   <context>
     <name>CmdTechDrawExtensionShortenLine</name>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1626"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1630"/>
       <source>TechDraw</source>
       <translation>MűszakiRajz</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1627"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1739"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1631"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1743"/>
       <source>Shorten Line</source>
       <translation>Vonal rövidítés</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1628"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1740"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1632"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1744"/>
       <source>Shorten a cosmetic line or centerline at both ends:&lt;br&gt;- Specify the delta distance (optional)&lt;br&gt;- Select a single line&lt;br&gt;- Click this tool</source>
       <translation>A kozmetikai vonal vagy középvonal rövidítése mindkét végén:&lt;br&gt;- Adja meg a különbség hosszát (opcionális)&lt;br&gt;- Válassza ki az egyetlen vonalat&lt;br&gt;- Kattintson erre az eszközre</translation>
     </message>
@@ -1376,22 +1376,22 @@ Az üres helyre való bal egérgombbal kattintással érvényesítheti az aktuá
   <context>
     <name>CmdTechDrawExtentGroup</name>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1965"/>
+      <location filename="../../CommandCreateDims.cpp" line="1964"/>
       <source>TechDraw</source>
       <translation>MűszakiRajz</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1966"/>
+      <location filename="../../CommandCreateDims.cpp" line="1965"/>
       <source>Insert Extent Dimension</source>
       <translation>Határérték méreteinek beszúrása</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="2034"/>
+      <location filename="../../CommandCreateDims.cpp" line="2033"/>
       <source>Horizontal Extent</source>
       <translation>Vízszintes kiterjedés</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="2039"/>
+      <location filename="../../CommandCreateDims.cpp" line="2038"/>
       <source>Vertical Extent</source>
       <translation>Függőleges kiterjedés</translation>
     </message>
@@ -1412,12 +1412,12 @@ Az üres helyre való bal egérgombbal kattintással érvényesítheti az aktuá
   <context>
     <name>CmdTechDrawGeometricHatch</name>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="172"/>
+      <location filename="../../CommandDecorate.cpp" line="171"/>
       <source>TechDraw</source>
       <translation>MűszakiRajz</translation>
     </message>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="173"/>
+      <location filename="../../CommandDecorate.cpp" line="172"/>
       <source>Apply Geometric Hatch to Face</source>
       <translation>Geometriai sraffozó kitöltés alkalmazása a felületre</translation>
     </message>
@@ -1438,12 +1438,12 @@ Az üres helyre való bal egérgombbal kattintással érvényesítheti az aktuá
   <context>
     <name>CmdTechDrawHorizontalDimension</name>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1644"/>
+      <location filename="../../CommandCreateDims.cpp" line="1643"/>
       <source>TechDraw</source>
       <translation>MűszakiRajz</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1645"/>
+      <location filename="../../CommandCreateDims.cpp" line="1644"/>
       <source>Insert Horizontal Dimension</source>
       <translation>Vízszintes méret beszúrása</translation>
     </message>
@@ -1451,12 +1451,12 @@ Az üres helyre való bal egérgombbal kattintással érvényesítheti az aktuá
   <context>
     <name>CmdTechDrawHorizontalExtentDimension</name>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="2060"/>
+      <location filename="../../CommandCreateDims.cpp" line="2059"/>
       <source>TechDraw</source>
       <translation>MűszakiRajz</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="2061"/>
+      <location filename="../../CommandCreateDims.cpp" line="2060"/>
       <source>Insert Horizontal Extent Dimension</source>
       <translation>Vízszintes kiterjedésdimenzió beszúrása</translation>
     </message>
@@ -1464,28 +1464,28 @@ Az üres helyre való bal egérgombbal kattintással érvényesítheti az aktuá
   <context>
     <name>CmdTechDrawImage</name>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="243"/>
+      <location filename="../../CommandDecorate.cpp" line="242"/>
       <source>TechDraw</source>
       <translation>MűszakiRajz</translation>
     </message>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="244"/>
+      <location filename="../../CommandDecorate.cpp" line="243"/>
       <source>Insert Bitmap Image</source>
       <translation>Bitkép beillesztése</translation>
     </message>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="245"/>
-      <location filename="../../CommandDecorate.cpp" line="247"/>
+      <location filename="../../CommandDecorate.cpp" line="244"/>
+      <location filename="../../CommandDecorate.cpp" line="246"/>
       <source>Insert Bitmap from a file into a page</source>
       <translation>Bitkép beszúrása az oldalra egy fájlból</translation>
     </message>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="262"/>
+      <location filename="../../CommandDecorate.cpp" line="261"/>
       <source>Select an Image File</source>
       <translation>Válasszon ki egy kép fájlt</translation>
     </message>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="264"/>
+      <location filename="../../CommandDecorate.cpp" line="263"/>
       <source>Image files (*.jpg *.jpeg *.png *.bmp);;All files (*)</source>
       <translation>Kép fájlok (*.jpg *.jpeg *.png *.bmp);;Összes fájl (*)</translation>
     </message>
@@ -1493,12 +1493,12 @@ Az üres helyre való bal egérgombbal kattintással érvényesítheti az aktuá
   <context>
     <name>CmdTechDrawLandmarkDimension</name>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="2259"/>
+      <location filename="../../CommandCreateDims.cpp" line="2258"/>
       <source>TechDraw</source>
       <translation>MűszakiRajz</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="2260"/>
+      <location filename="../../CommandCreateDims.cpp" line="2259"/>
       <source>Insert Landmark Dimension - EXPERIMENTAL</source>
       <translation>Tájékozódási pontszerű dimenzió beszúrása - KÍSÉRLETI</translation>
     </message>
@@ -1519,12 +1519,12 @@ Az üres helyre való bal egérgombbal kattintással érvényesítheti az aktuá
   <context>
     <name>CmdTechDrawLengthDimension</name>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1597"/>
+      <location filename="../../CommandCreateDims.cpp" line="1596"/>
       <source>TechDraw</source>
       <translation>MűszakiRajz</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1598"/>
+      <location filename="../../CommandCreateDims.cpp" line="1597"/>
       <source>Insert Length Dimension</source>
       <translation>Hosszméret beszúrása</translation>
     </message>
@@ -1532,12 +1532,12 @@ Az üres helyre való bal egérgombbal kattintással érvényesítheti az aktuá
   <context>
     <name>CmdTechDrawLinkDimension</name>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1885"/>
+      <location filename="../../CommandCreateDims.cpp" line="1884"/>
       <source>TechDraw</source>
       <translation>MűszakiRajz</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1886"/>
+      <location filename="../../CommandCreateDims.cpp" line="1885"/>
       <source>Link Dimension to 3D Geometry</source>
       <translation>Dimenzió összekötése 3D geometriához</translation>
     </message>
@@ -1571,22 +1571,22 @@ Az üres helyre való bal egérgombbal kattintással érvényesítheti az aktuá
   <context>
     <name>CmdTechDrawPageTemplate</name>
     <message>
-      <location filename="../../Command.cpp" line="171"/>
+      <location filename="../../Command.cpp" line="169"/>
       <source>TechDraw</source>
       <translation>MűszakiRajz</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="172"/>
+      <location filename="../../Command.cpp" line="170"/>
       <source>Insert Page using Template</source>
       <translation>Oldal beszúrása sablonnal</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="185"/>
+      <location filename="../../Command.cpp" line="183"/>
       <source>Select a Template File</source>
       <translation>Sablonfájl kijelölése</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="186"/>
+      <location filename="../../Command.cpp" line="184"/>
       <source>Template (*.svg)</source>
       <translation>Sablon (*.svg)</translation>
     </message>
@@ -1594,12 +1594,12 @@ Az üres helyre való bal egérgombbal kattintással érvényesítheti az aktuá
   <context>
     <name>CmdTechDrawPrintAll</name>
     <message>
-      <location filename="../../Command.cpp" line="278"/>
+      <location filename="../../Command.cpp" line="274"/>
       <source>TechDraw</source>
       <translation>MűszakiRajz</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="279"/>
+      <location filename="../../Command.cpp" line="275"/>
       <source>Print All Pages</source>
       <translation>Összes oldal nyomtatása</translation>
     </message>
@@ -1607,12 +1607,12 @@ Az üres helyre való bal egérgombbal kattintással érvényesítheti az aktuá
   <context>
     <name>CmdTechDrawProjectShape</name>
     <message>
-      <location filename="../../Command.cpp" line="1913"/>
+      <location filename="../../Command.cpp" line="1911"/>
       <source>TechDraw</source>
       <translation>MűszakiRajz</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1914"/>
+      <location filename="../../Command.cpp" line="1912"/>
       <source>Project shape...</source>
       <translation>Terv formák...</translation>
     </message>
@@ -1620,17 +1620,17 @@ Az üres helyre való bal egérgombbal kattintással érvényesítheti az aktuá
   <context>
     <name>CmdTechDrawProjectionGroup</name>
     <message>
-      <location filename="../../Command.cpp" line="1054"/>
+      <location filename="../../Command.cpp" line="1050"/>
       <source>TechDraw</source>
       <translation>MűszakiRajz</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1055"/>
+      <location filename="../../Command.cpp" line="1051"/>
       <source>Insert Projection Group</source>
       <translation>Vetítés csoport beszúrása</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1056"/>
+      <location filename="../../Command.cpp" line="1052"/>
       <source>Insert multiple linked views of drawable object(s)</source>
       <translation>Rajzolható objektum(ok) több összekapcsolt nézetének beszúrása</translation>
     </message>
@@ -1651,12 +1651,12 @@ Az üres helyre való bal egérgombbal kattintással érvényesítheti az aktuá
   <context>
     <name>CmdTechDrawRadiusDimension</name>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1501"/>
+      <location filename="../../CommandCreateDims.cpp" line="1500"/>
       <source>TechDraw</source>
       <translation>MűszakiRajz</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1502"/>
+      <location filename="../../CommandCreateDims.cpp" line="1501"/>
       <source>Insert Radius Dimension</source>
       <translation>Átmérő méretének beillesztése</translation>
     </message>
@@ -1664,12 +1664,12 @@ Az üres helyre való bal egérgombbal kattintással érvényesítheti az aktuá
   <context>
     <name>CmdTechDrawRedrawPage</name>
     <message>
-      <location filename="../../Command.cpp" line="242"/>
+      <location filename="../../Command.cpp" line="238"/>
       <source>TechDraw</source>
       <translation>MűszakiRajz</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="243"/>
+      <location filename="../../Command.cpp" line="239"/>
       <source>Redraw Page</source>
       <translation>Oldal újrarajzolása</translation>
     </message>
@@ -1690,22 +1690,22 @@ Az üres helyre való bal egérgombbal kattintással érvényesítheti az aktuá
   <context>
     <name>CmdTechDrawSectionGroup</name>
     <message>
-      <location filename="../../Command.cpp" line="729"/>
+      <location filename="../../Command.cpp" line="725"/>
       <source>TechDraw</source>
       <translation>MűszakiRajz</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="730"/>
+      <location filename="../../Command.cpp" line="726"/>
       <source>Insert a simple or complex Section View</source>
       <translation>Egyszerű vagy összetett metszetnézet beszúrása</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="795"/>
+      <location filename="../../Command.cpp" line="791"/>
       <source>Section View</source>
       <translation>Szakasz nézet</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="799"/>
+      <location filename="../../Command.cpp" line="795"/>
       <source>Complex Section</source>
       <translation>Összetett metszetnézet</translation>
     </message>
@@ -1713,12 +1713,12 @@ Az üres helyre való bal egérgombbal kattintással érvényesítheti az aktuá
   <context>
     <name>CmdTechDrawSectionView</name>
     <message>
-      <location filename="../../Command.cpp" line="821"/>
+      <location filename="../../Command.cpp" line="817"/>
       <source>TechDraw</source>
       <translation>MűszakiRajz</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="822"/>
+      <location filename="../../Command.cpp" line="818"/>
       <source>Insert Section View</source>
       <translation>Szakasznézet beszúrása</translation>
     </message>
@@ -1726,12 +1726,12 @@ Az üres helyre való bal egérgombbal kattintással érvényesítheti az aktuá
   <context>
     <name>CmdTechDrawShowAll</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1485"/>
+      <location filename="../../CommandAnnotate.cpp" line="1484"/>
       <source>TechDraw</source>
       <translation>MűszakiRajz</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1486"/>
+      <location filename="../../CommandAnnotate.cpp" line="1485"/>
       <source>Show/Hide Invisible Edges</source>
       <translation>Láthatatlan élek megjelenítése/elrejtése</translation>
     </message>
@@ -1739,17 +1739,17 @@ Az üres helyre való bal egérgombbal kattintással érvényesítheti az aktuá
   <context>
     <name>CmdTechDrawSpreadsheetView</name>
     <message>
-      <location filename="../../Command.cpp" line="1733"/>
+      <location filename="../../Command.cpp" line="1731"/>
       <source>TechDraw</source>
       <translation>MűszakiRajz</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1734"/>
+      <location filename="../../Command.cpp" line="1732"/>
       <source>Insert Spreadsheet View</source>
       <translation>Táblázat nézet beszúrása</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1735"/>
+      <location filename="../../Command.cpp" line="1733"/>
       <source>Insert View to a spreadsheet</source>
       <translation>Nézet beszúrása táblázatba</translation>
     </message>
@@ -1842,17 +1842,17 @@ Az üres helyre való bal egérgombbal kattintással érvényesítheti az aktuá
   <context>
     <name>CmdTechDrawSurfaceFinishSymbols</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1614"/>
+      <location filename="../../CommandAnnotate.cpp" line="1613"/>
       <source>TechDraw</source>
       <translation>MűszakiRajz</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1615"/>
+      <location filename="../../CommandAnnotate.cpp" line="1614"/>
       <source>Create a Surface Finish Symbol</source>
       <translation>Felületkezelési szimbólum létrehozása</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1616"/>
+      <location filename="../../CommandAnnotate.cpp" line="1615"/>
       <source>Select a view&lt;br&gt;    - click this button&lt;br&gt;    - select surface finish symbol attributes in opened panel</source>
       <translation>Válasszon ki egy nézetet&lt;br&gt;    - kattintson erre a gombra&lt;br&gt;    - válassza ki a felületkezelési szimbólum attribútumait a megnyitott panelen</translation>
     </message>
@@ -1860,17 +1860,17 @@ Az üres helyre való bal egérgombbal kattintással érvényesítheti az aktuá
   <context>
     <name>CmdTechDrawSymbol</name>
     <message>
-      <location filename="../../Command.cpp" line="1534"/>
+      <location filename="../../Command.cpp" line="1530"/>
       <source>TechDraw</source>
       <translation>MűszakiRajz</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1535"/>
+      <location filename="../../Command.cpp" line="1531"/>
       <source>Insert SVG Symbol</source>
       <translation>SVG szimbólum beszúrása</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1536"/>
+      <location filename="../../Command.cpp" line="1532"/>
       <source>Insert symbol from an SVG file</source>
       <translation>Szimbólum beszúrása SVG-fájlból</translation>
     </message>
@@ -1878,13 +1878,13 @@ Az üres helyre való bal egérgombbal kattintással érvényesítheti az aktuá
   <context>
     <name>CmdTechDrawToggleFrame</name>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="306"/>
+      <location filename="../../CommandDecorate.cpp" line="305"/>
       <source>TechDraw</source>
       <translation>MűszakiRajz</translation>
     </message>
     <message>
+      <location filename="../../CommandDecorate.cpp" line="306"/>
       <location filename="../../CommandDecorate.cpp" line="307"/>
-      <location filename="../../CommandDecorate.cpp" line="308"/>
       <source>Turn View Frames On/Off</source>
       <translation>Keretek nézetének be-/kikapcsolása</translation>
     </message>
@@ -1892,12 +1892,12 @@ Az üres helyre való bal egérgombbal kattintással érvényesítheti az aktuá
   <context>
     <name>CmdTechDrawVerticalDimension</name>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1692"/>
+      <location filename="../../CommandCreateDims.cpp" line="1691"/>
       <source>TechDraw</source>
       <translation>MűszakiRajz</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1693"/>
+      <location filename="../../CommandCreateDims.cpp" line="1692"/>
       <source>Insert Vertical Dimension</source>
       <translation>Függőleges méret beszúrása</translation>
     </message>
@@ -1905,12 +1905,12 @@ Az üres helyre való bal egérgombbal kattintással érvényesítheti az aktuá
   <context>
     <name>CmdTechDrawVerticalExtentDimension</name>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="2172"/>
+      <location filename="../../CommandCreateDims.cpp" line="2171"/>
       <source>TechDraw</source>
       <translation>MűszakiRajz</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="2173"/>
+      <location filename="../../CommandCreateDims.cpp" line="2172"/>
       <source>Insert Vertical Extent Dimension</source>
       <translation>Függőleges kiterjedés méret beszúrása</translation>
     </message>
@@ -1918,34 +1918,34 @@ Az üres helyre való bal egérgombbal kattintással érvényesítheti az aktuá
   <context>
     <name>CmdTechDrawView</name>
     <message>
-      <location filename="../../Command.cpp" line="303"/>
+      <location filename="../../Command.cpp" line="299"/>
       <source>TechDraw</source>
       <translation>MűszakiRajz</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="304"/>
+      <location filename="../../Command.cpp" line="300"/>
       <source>Insert View</source>
       <translation>Nézet beszúrása</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="305"/>
+      <location filename="../../Command.cpp" line="301"/>
       <source>Insert a View in current page.
-Selected objects, spreadsheets or Arch WB section planes will be added.
+Selected objects, spreadsheets or BIM section planes will be added.
 Without a selection, a file browser lets you select a SVG or image file.</source>
-      <translation>Nézet beillesztése az aktuális oldalra.
-A kiválasztott objektumok, táblázatok vagy Architektúra MF szelvénysíkok hozzáadásra kerülnek.
-Kijelölés nélkül a fájlböngésző lehetővé teszi egy SVG- vagy képfájl kiválasztását.</translation>
+      <translation type="unfinished">Insert a View in current page.
+Selected objects, spreadsheets or BIM section planes will be added.
+Without a selection, a file browser lets you select a SVG or image file.</translation>
     </message>
   </context>
   <context>
     <name>CmdTechDrawWeldSymbol</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1550"/>
+      <location filename="../../CommandAnnotate.cpp" line="1549"/>
       <source>TechDraw</source>
       <translation>MűszakiRajz</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1551"/>
+      <location filename="../../CommandAnnotate.cpp" line="1550"/>
       <source>Add Welding Information to Leaderline</source>
       <translation>Hegesztési információk hozzáadása a referenciavonalhoz</translation>
     </message>
@@ -1954,70 +1954,66 @@ Kijelölés nélkül a fájlböngésző lehetővé teszi egy SVG- vagy képfájl
     <name>Command</name>
     <message>
       <location filename="../../Command.cpp" line="125"/>
-      <location filename="../../Command.cpp" line="196"/>
+      <location filename="../../Command.cpp" line="194"/>
       <source>Drawing create page</source>
       <translation>Rajz létrehozó oldal</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="365"/>
-      <source>Create BIM View</source>
-      <translation>BIM nézet létrehozása</translation>
+      <location filename="../../Command.cpp" line="361"/>
+      <location filename="../../Command.cpp" line="1705"/>
+      <source>Create BIM view</source>
+      <translation type="unfinished">Create BIM view</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="501"/>
+      <location filename="../../Command.cpp" line="497"/>
       <source>Create view</source>
       <translation>Nézet létrehozása</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="648"/>
+      <location filename="../../Command.cpp" line="644"/>
       <source>Create broken view</source>
       <translation>Törött nézet létrehozása</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1138"/>
+      <location filename="../../Command.cpp" line="1134"/>
       <source>Create Projection Group</source>
       <translation>Vetítés csoport létrehozása</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1358"/>
+      <location filename="../../Command.cpp" line="1354"/>
       <source>Create Clip</source>
       <translation>Kivágás létrehozása</translation>
     </message>
     <message>
-      <location filename="../../PagePrinter.cpp" line="422"/>
-      <location filename="../../Command.cpp" line="1892"/>
+      <location filename="../../PagePrinter.cpp" line="429"/>
+      <location filename="../../Command.cpp" line="1890"/>
       <source>Save page to DXF</source>
       <translation>Oldal mentése DXF-be</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="458"/>
-      <location filename="../../Command.cpp" line="1562"/>
+      <location filename="../../Command.cpp" line="454"/>
+      <location filename="../../Command.cpp" line="1558"/>
       <source>Create Symbol</source>
       <translation>Rajzjel létrehozása</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1430"/>
+      <location filename="../../Command.cpp" line="1426"/>
       <source>Add clip group</source>
-      <translation type="unfinished">Add clip group</translation>
+      <translation>Clip csoport hozzáadása</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1501"/>
+      <location filename="../../Command.cpp" line="1497"/>
       <source>Remove clip group</source>
-      <translation type="unfinished">Remove clip group</translation>
+      <translation>Clip csoport törlése</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1635"/>
+      <location filename="../../Command.cpp" line="1631"/>
       <source>Create DraftView</source>
       <translation>Tervrajz nézet létrehozás</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1709"/>
-      <source>Create ArchView</source>
-      <translation>Építészet nézet létrehozásaa</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="347"/>
-      <location filename="../../Command.cpp" line="1759"/>
+      <location filename="../../Command.cpp" line="343"/>
+      <location filename="../../Command.cpp" line="1757"/>
       <source>Create spreadsheet view</source>
       <translation>Számolótábla nézet létrehozása</translation>
     </message>
@@ -2037,192 +2033,192 @@ Kijelölés nélkül a fájlböngésző lehetővé teszi egy SVG- vagy képfájl
       <translation>Széljegyzet létrehozása</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="241"/>
+      <location filename="../../CommandCreateDims.cpp" line="245"/>
       <source>Insert Dimension</source>
       <translation>Méretvonal beszúrása</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="469"/>
-      <location filename="../../CommandCreateDims.cpp" line="887"/>
-      <location filename="../../CommandCreateDims.cpp" line="902"/>
-      <location filename="../../CommandCreateDims.cpp" line="940"/>
-      <location filename="../../CommandCreateDims.cpp" line="955"/>
-      <location filename="../../CommandCreateDims.cpp" line="970"/>
-      <location filename="../../CommandCreateDims.cpp" line="1004"/>
-      <location filename="../../CommandCreateDims.cpp" line="1038"/>
-      <location filename="../../CommandCreateDims.cpp" line="1059"/>
+      <location filename="../../CommandCreateDims.cpp" line="473"/>
+      <location filename="../../CommandCreateDims.cpp" line="891"/>
+      <location filename="../../CommandCreateDims.cpp" line="906"/>
+      <location filename="../../CommandCreateDims.cpp" line="944"/>
+      <location filename="../../CommandCreateDims.cpp" line="959"/>
+      <location filename="../../CommandCreateDims.cpp" line="974"/>
+      <location filename="../../CommandCreateDims.cpp" line="1008"/>
+      <location filename="../../CommandCreateDims.cpp" line="1042"/>
+      <location filename="../../CommandCreateDims.cpp" line="1063"/>
       <source>Add Extent dimension</source>
       <translation>Kiterjedési méret hozzáadása</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="798"/>
+      <location filename="../../CommandCreateDims.cpp" line="802"/>
       <source>Add Area dimension</source>
       <translation>Terület méret hozzáadása</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="809"/>
-      <location filename="../../CommandCreateDims.cpp" line="1104"/>
-      <location filename="../../CommandCreateDims.cpp" line="1205"/>
+      <location filename="../../CommandCreateDims.cpp" line="813"/>
+      <location filename="../../CommandCreateDims.cpp" line="1108"/>
+      <location filename="../../CommandCreateDims.cpp" line="1209"/>
       <source>Add Distance dimension</source>
       <translation>Távolság méret hozzáadása</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="818"/>
-      <location filename="../../CommandCreateDims.cpp" line="924"/>
-      <location filename="../../CommandCreateDims.cpp" line="1185"/>
+      <location filename="../../CommandCreateDims.cpp" line="822"/>
+      <location filename="../../CommandCreateDims.cpp" line="928"/>
+      <location filename="../../CommandCreateDims.cpp" line="1189"/>
       <source>Add DistanceX Chamfer dimension</source>
       <translation>TávolságX ferde méret hozzáadása</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="829"/>
-      <location filename="../../CommandCreateDims.cpp" line="1286"/>
+      <location filename="../../CommandCreateDims.cpp" line="833"/>
+      <location filename="../../CommandCreateDims.cpp" line="1290"/>
       <source>Add horizontal chain dimensions</source>
       <translation>Vízszintes láncméretek hozzáadása</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="834"/>
-      <location filename="../../CommandCreateDims.cpp" line="861"/>
+      <location filename="../../CommandCreateDims.cpp" line="838"/>
+      <location filename="../../CommandCreateDims.cpp" line="865"/>
       <source>Add horizontal coordinate dimensions</source>
       <translation>Vízszintes koordinátaméretek hozzáadása</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="838"/>
       <location filename="../../CommandCreateDims.cpp" line="842"/>
       <location filename="../../CommandCreateDims.cpp" line="846"/>
+      <location filename="../../CommandCreateDims.cpp" line="850"/>
       <source>Add 3-points angle dimension</source>
       <translation>3 pontos szögméret hozzáadása</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="856"/>
+      <location filename="../../CommandCreateDims.cpp" line="860"/>
       <source>Add horizontal chain dimension</source>
       <translation>Vízszintes láncméret hozzáadása</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="871"/>
+      <location filename="../../CommandCreateDims.cpp" line="875"/>
       <source>Add point to line Distance dimension</source>
       <translation>Ponttól a vonalig távolság méretet ad hozzá</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="882"/>
-      <location filename="../../CommandCreateDims.cpp" line="897"/>
-      <location filename="../../CommandCreateDims.cpp" line="912"/>
+      <location filename="../../CommandCreateDims.cpp" line="886"/>
+      <location filename="../../CommandCreateDims.cpp" line="901"/>
+      <location filename="../../CommandCreateDims.cpp" line="916"/>
       <source>Add length dimension</source>
       <translation>Hossz méret hozzáadása</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="935"/>
+      <location filename="../../CommandCreateDims.cpp" line="939"/>
       <source>Add Angle dimension</source>
       <translation>Szög méret hozzáadása</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="950"/>
+      <location filename="../../CommandCreateDims.cpp" line="954"/>
       <source>Add circle to line Distance dimension</source>
       <translation>Körtől a vonalig távolság méretet ad hozzá</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="965"/>
+      <location filename="../../CommandCreateDims.cpp" line="969"/>
       <source>Add ellipse to line Distance dimension</source>
       <translation>Ellipszistől a vonalig távolság méretet ad hozzá</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1089"/>
+      <location filename="../../CommandCreateDims.cpp" line="1093"/>
       <source>Add Radius dimension</source>
       <translation>Sugárméret hozzáadása</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="989"/>
-      <location filename="../../CommandCreateDims.cpp" line="1023"/>
+      <location filename="../../CommandCreateDims.cpp" line="993"/>
+      <location filename="../../CommandCreateDims.cpp" line="1027"/>
       <source>Add Arc Length dimension</source>
       <translation>Ív hossz méret hozzáadása</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="999"/>
+      <location filename="../../CommandCreateDims.cpp" line="1003"/>
       <source>Add circle to circle Distance dimension</source>
       <translation>Körtől a körig távolság méretet ad hozzá</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1033"/>
+      <location filename="../../CommandCreateDims.cpp" line="1037"/>
       <source>Add ellipse to ellipse Distance dimension</source>
       <translation>Ellipszistől az ellipszisig távolság méretet ad hozzá</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1048"/>
+      <location filename="../../CommandCreateDims.cpp" line="1052"/>
       <source>Add edge length dimension</source>
       <translation>Élek hosszméretének hozzáadása</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1093"/>
+      <location filename="../../CommandCreateDims.cpp" line="1097"/>
       <source>Add Diameter dimension</source>
       <translation>Átmérő méret hozzáadása</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1188"/>
+      <location filename="../../CommandCreateDims.cpp" line="1192"/>
       <source>Add DistanceX dimension</source>
       <translation>TávolságX méret hozzáadása</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1195"/>
+      <location filename="../../CommandCreateDims.cpp" line="1199"/>
       <source>Add DistanceY Chamfer dimension</source>
       <translation>TávolságY letörés méret hozzáadása</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1198"/>
+      <location filename="../../CommandCreateDims.cpp" line="1202"/>
       <source>Add DistanceY dimension</source>
       <translation>TávolságY méret hozzáadása</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1243"/>
+      <location filename="../../CommandCreateDims.cpp" line="1247"/>
       <source>Add DistanceX extent dimension</source>
       <translation>TávolságX kiterjedés méret hozzáadása</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1248"/>
+      <location filename="../../CommandCreateDims.cpp" line="1252"/>
       <source>Add DistanceY extent dimension</source>
       <translation>TávolságY kiterjedés méret hozzáadása</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1290"/>
+      <location filename="../../CommandCreateDims.cpp" line="1294"/>
       <source>Add horizontal coord dimensions</source>
       <translation>Vízszintes koordinátaméretek hozzáadása</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1297"/>
+      <location filename="../../CommandCreateDims.cpp" line="1301"/>
       <source>Add vertical chain dimensions</source>
       <translation>Függőleges láncméretek hozzáadása</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1301"/>
+      <location filename="../../CommandCreateDims.cpp" line="1305"/>
       <source>Add vertical coord dimensions</source>
       <translation>Függőleges koordinátaméretek hozzáadása</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1307"/>
+      <location filename="../../CommandCreateDims.cpp" line="1311"/>
       <source>Add oblique chain dimensions</source>
       <translation>Dőlt láncméretek hozzáadása</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1311"/>
+      <location filename="../../CommandCreateDims.cpp" line="1315"/>
       <source>Add oblique coord dimensions</source>
       <translation>Dőlt koordinátaméretek hozzáadása</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1383"/>
+      <location filename="../../CommandCreateDims.cpp" line="1382"/>
       <source>Dimension</source>
       <translation>Dimenzió</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="2307"/>
-      <location filename="../../CommandCreateDims.cpp" line="2472"/>
+      <location filename="../../CommandCreateDims.cpp" line="2306"/>
+      <location filename="../../CommandCreateDims.cpp" line="2471"/>
       <source>Create Dimension</source>
       <translation>Méret létrehozása</translation>
     </message>
     <message>
-      <location filename="../../TaskHatch.cpp" line="202"/>
+      <location filename="../../TaskHatch.cpp" line="203"/>
       <source>Create Hatch</source>
       <translation>Kitöltés létrehozása</translation>
     </message>
     <message>
-      <location filename="../../TaskHatch.cpp" line="239"/>
+      <location filename="../../TaskHatch.cpp" line="240"/>
       <source>Update Hatch</source>
       <translation>Kitöltés frissítése</translation>
     </message>
@@ -2232,28 +2228,28 @@ Kijelölés nélkül a fájlböngésző lehetővé teszi egy SVG- vagy képfájl
       <translation>Régi kitöltés eltávolítása</translation>
     </message>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="202"/>
+      <location filename="../../CommandDecorate.cpp" line="201"/>
       <source>Create GeomHatch</source>
       <translation>Geometriai nyílás létrehozása</translation>
     </message>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="273"/>
-      <location filename="../../Command.cpp" line="483"/>
+      <location filename="../../CommandDecorate.cpp" line="272"/>
+      <location filename="../../Command.cpp" line="479"/>
       <source>Create Image</source>
       <translation>Kép létrehozás</translation>
     </message>
     <message>
-      <location filename="../../QGIViewBalloon.cpp" line="510"/>
+      <location filename="../../QGIViewBalloon.cpp" line="509"/>
       <source>Drag Balloon</source>
       <translation>Léggömb ballon húzása</translation>
     </message>
     <message>
-      <location filename="../../QGIViewDimension.cpp" line="875"/>
+      <location filename="../../QGIViewDimension.cpp" line="317"/>
       <source>Drag Dimension</source>
       <translation>Dimenzió húzása</translation>
     </message>
     <message>
-      <location filename="../../QGSPage.cpp" line="625"/>
+      <location filename="../../QGSPage.cpp" line="616"/>
       <source>Create Balloon</source>
       <translation>Ballon létrehozása</translation>
     </message>
@@ -2268,12 +2264,12 @@ Kijelölés nélkül a fájlböngésző lehetővé teszi egy SVG- vagy képfájl
       <translation>Segédvonal létrehozása</translation>
     </message>
     <message>
-      <location filename="../../TaskCosmeticCircle.cpp" line="193"/>
+      <location filename="../../TaskCosmeticCircle.cpp" line="231"/>
       <source>Create Cosmetic Circle</source>
       <translation>Segéd kör létrehozása</translation>
     </message>
     <message>
-      <location filename="../../TaskCosmeticCircle.cpp" line="267"/>
+      <location filename="../../TaskCosmeticCircle.cpp" line="303"/>
       <source>Update CosmeticCircle</source>
       <translation>Segédkörök aktualizálása</translation>
     </message>
@@ -2313,18 +2309,18 @@ Kijelölés nélkül a fájlböngésző lehetővé teszi egy SVG- vagy képfájl
       <translation>Jegyzet szerkesztése</translation>
     </message>
     <message>
-      <location filename="../../TaskSectionView.cpp" line="495"/>
+      <location filename="../../TaskSectionView.cpp" line="496"/>
       <source>Create SectionView</source>
       <translation>Szakasznézet létrehozása</translation>
     </message>
     <message>
-      <location filename="../../TaskComplexSection.cpp" line="559"/>
+      <location filename="../../TaskComplexSection.cpp" line="556"/>
       <source>Create ComplexSection</source>
       <translation>Összetett szakasz létrehozása</translation>
     </message>
     <message>
-      <location filename="../../TaskComplexSection.cpp" line="652"/>
-      <location filename="../../TaskSectionView.cpp" line="574"/>
+      <location filename="../../TaskComplexSection.cpp" line="651"/>
+      <location filename="../../TaskSectionView.cpp" line="575"/>
       <source>Edit Section View</source>
       <translation>Szakasznézet szerkesztése</translation>
     </message>
@@ -2344,97 +2340,97 @@ Kijelölés nélkül a fájlböngésző lehetővé teszi egy SVG- vagy képfájl
       <translation>Segéd csúcspont hozzáadása</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="110"/>
+      <location filename="../../CommandExtensionDims.cpp" line="112"/>
       <source>TechDraw Insert Prefix</source>
       <translation>Műszakirajz - Előtag beszúrás</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="136"/>
+      <location filename="../../CommandExtensionDims.cpp" line="138"/>
       <source>Insert Prefix</source>
       <translation>Előtag beszúrás</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="252"/>
+      <location filename="../../CommandExtensionDims.cpp" line="254"/>
       <source>TechDraw Remove Prefix</source>
       <translation>Műszakirajz - Előtag eltávolítás</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="256"/>
+      <location filename="../../CommandExtensionDims.cpp" line="258"/>
       <source>Remove Prefix</source>
       <translation>Előtag eltávolítása</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="442"/>
+      <location filename="../../CommandExtensionDims.cpp" line="444"/>
       <source>Increase/Decrease Decimal</source>
       <translation>A tizedesjegyek számának növelése/csökkentése</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="637"/>
+      <location filename="../../CommandExtensionDims.cpp" line="639"/>
       <source>Pos Horiz Chain Dim</source>
       <translation>Vízszintes láncméretek elrendezése</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="698"/>
+      <location filename="../../CommandExtensionDims.cpp" line="700"/>
       <source>Pos Vert Chain Dim</source>
       <translation>Függőleges láncméretek elrendezése</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="760"/>
+      <location filename="../../CommandExtensionDims.cpp" line="762"/>
       <source>Pos Oblique Chain Dim</source>
       <translation>A ferde láncméretek elrendezése</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="946"/>
+      <location filename="../../CommandExtensionDims.cpp" line="948"/>
       <source>Cascade Horiz Dim</source>
       <translation>Kaszkád méretek elrendezése</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1012"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1014"/>
       <source>Cascade Vert Dim</source>
       <translation>Kaszkád függőleges méretek</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1079"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1081"/>
       <source>Cascade Oblique Dim</source>
       <translation>Lépcsőzetes ferde távolság</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1278"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1280"/>
       <source>Create Horiz Chain Dim</source>
       <translation>Vízszintes láncméretek létrehozása</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1344"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1346"/>
       <source>Create Vert Chain Dim</source>
       <translation>Függőleges láncméretek létrehozása</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1410"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1412"/>
       <source>Create Oblique Chain Dim</source>
       <translation>Ferde dimenziólánc létrehozása</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1649"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1651"/>
       <source>Create Horiz Coord Dim</source>
       <translation>Vízszintes koordinátaméretek létrehozása</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1721"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1723"/>
       <source>Create Vert Coord Dim</source>
       <translation>Függőleges koordinátaméretek létrehozása</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1795"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1797"/>
       <source>Create Oblique Coord Dim</source>
       <translation>Ferde koordinátaméretek létrehozása</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="2048"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2050"/>
       <source>Create Horiz Chamfer Dim</source>
       <translation>Vízszintes levágás méretének létrehozása</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="2117"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2118"/>
       <source>Create Vert Chamfer Dim</source>
       <translation>Függőleges levágás méretének létrehozása</translation>
     </message>
@@ -2564,42 +2560,37 @@ Kijelölés nélkül a fájlböngésző lehetővé teszi egy SVG- vagy képfájl
       <translation>Párhuzamos/függőleges segédvonal</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1479"/>
-      <source>TechDraw Lock/Unlock View</source>
-      <translation>Műszakirajz - Nézet zárolás/feloldás</translation>
-    </message>
-    <message>
       <location filename="../../CommandExtensionPack.cpp" line="1482"/>
       <source>Lock/Unlock View</source>
       <translation>Nézet rögzítése/feloldása</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1507"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1511"/>
       <source>TechDraw Extend/Shorten Line</source>
       <translation>Műszakirajz - Vonal nyújtás/rövidítés</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1510"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1514"/>
       <source>Extend/Shorten Line</source>
       <translation>Vonal hosszabbítás/rövidítés</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1779"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1783"/>
       <source>TechDraw calculate selected area</source>
       <translation>Műszakirajz - Kiválasztott terület számolás</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1821"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1825"/>
       <source>Calculate Face Area</source>
       <translation>Felület terület számítás</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1911"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1915"/>
       <source>TechDraw calculate selected arc length</source>
       <translation>Műszakirajz - Kiválasztott ív hossz számolás</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1948"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1952"/>
       <source>Calculate Edge Length</source>
       <translation>Élhossz kiszámítása</translation>
     </message>
@@ -2609,12 +2600,12 @@ Kijelölés nélkül a fájlböngésző lehetővé teszi egy SVG- vagy képfájl
       <translation>Formátum hozzáigazítása</translation>
     </message>
     <message>
-      <location filename="../../TaskSurfaceFinishSymbols.cpp" line="398"/>
+      <location filename="../../TaskSurfaceFinishSymbols.cpp" line="402"/>
       <source>Surface Finish Symbols</source>
       <translation>Felületkijelölő szimbólumok</translation>
     </message>
     <message>
-      <location filename="../../TaskCenterLine.cpp" line="405"/>
+      <location filename="../../TaskCenterLine.cpp" line="402"/>
       <source>Create Centerline</source>
       <translation>Középvonal létrehozása</translation>
     </message>
@@ -2622,22 +2613,22 @@ Kijelölés nélkül a fájlböngésző lehetővé teszi egy SVG- vagy képfájl
   <context>
     <name>CompassWidget</name>
     <message>
-      <location filename="../../Widgets/CompassWidget.cpp" line="158"/>
+      <location filename="../../Widgets/CompassWidget.cpp" line="146"/>
       <source>View Direction as Angle</source>
       <translation>Irány megjelenítése szögként</translation>
     </message>
     <message>
-      <location filename="../../Widgets/CompassWidget.cpp" line="160"/>
+      <location filename="../../Widgets/CompassWidget.cpp" line="148"/>
       <source>The view direction angle relative to +X in the BaseView.</source>
       <translation>Az irányszög a +X-hez képest Egyszerű nézetben.</translation>
     </message>
     <message>
-      <location filename="../../Widgets/CompassWidget.cpp" line="162"/>
+      <location filename="../../Widgets/CompassWidget.cpp" line="150"/>
       <source>Advance the view direction in clockwise direction.</source>
       <translation>Haladjon előre a nézet irányában az óramutató járásával megegyező irányba.</translation>
     </message>
     <message>
-      <location filename="../../Widgets/CompassWidget.cpp" line="164"/>
+      <location filename="../../Widgets/CompassWidget.cpp" line="152"/>
       <source>Advance the view direction in anti-clockwise direction.</source>
       <translation>Haladjon előre a nézet irányában az óramutató járásával ellentétes irányba.</translation>
     </message>
@@ -2807,72 +2798,72 @@ Kijelölés nélkül a fájlböngésző lehetővé teszi egy SVG- vagy képfájl
       <translation>További funkciók</translation>
     </message>
     <message>
-      <location filename="../../mrichtextedit.cpp" line="99"/>
+      <location filename="../../mrichtextedit.cpp" line="94"/>
       <source>Standard</source>
       <translation>Általános</translation>
     </message>
     <message>
-      <location filename="../../mrichtextedit.cpp" line="100"/>
+      <location filename="../../mrichtextedit.cpp" line="95"/>
       <source>Heading 1</source>
       <translation>Címsor 1</translation>
     </message>
     <message>
-      <location filename="../../mrichtextedit.cpp" line="101"/>
+      <location filename="../../mrichtextedit.cpp" line="96"/>
       <source>Heading 2</source>
       <translation>Címsor 2</translation>
     </message>
     <message>
-      <location filename="../../mrichtextedit.cpp" line="102"/>
+      <location filename="../../mrichtextedit.cpp" line="97"/>
       <source>Heading 3</source>
       <translation>Címsor 3</translation>
     </message>
     <message>
-      <location filename="../../mrichtextedit.cpp" line="103"/>
+      <location filename="../../mrichtextedit.cpp" line="98"/>
       <source>Heading 4</source>
       <translation>Címsor 4</translation>
     </message>
     <message>
-      <location filename="../../mrichtextedit.cpp" line="104"/>
+      <location filename="../../mrichtextedit.cpp" line="99"/>
       <source>Monospace</source>
       <translation>Egyterű</translation>
     </message>
     <message>
-      <location filename="../../mrichtextedit.cpp" line="164"/>
+      <location filename="../../mrichtextedit.cpp" line="159"/>
       <source>Remove character formatting</source>
       <translation>Karakter formázás eltávolítása</translation>
     </message>
     <message>
-      <location filename="../../mrichtextedit.cpp" line="169"/>
+      <location filename="../../mrichtextedit.cpp" line="164"/>
       <source>Remove all formatting</source>
       <translation>Minden formázás eltávolítása</translation>
     </message>
     <message>
-      <location filename="../../mrichtextedit.cpp" line="173"/>
+      <location filename="../../mrichtextedit.cpp" line="168"/>
       <source>Edit document source</source>
       <translation>Dokumentumforrás szerkesztése</translation>
     </message>
     <message>
-      <location filename="../../mrichtextedit.cpp" line="267"/>
+      <location filename="../../mrichtextedit.cpp" line="257"/>
       <source>Document source</source>
       <translation>Dokumentumforrás</translation>
     </message>
     <message>
-      <location filename="../../mrichtextedit.cpp" line="370"/>
+      <location filename="../../mrichtextedit.cpp" line="354"/>
       <source>Create a link</source>
       <translation>Létrehoz egy összekötést</translation>
     </message>
     <message>
-      <location filename="../../mrichtextedit.cpp" line="371"/>
+      <location filename="../../mrichtextedit.cpp" line="355"/>
       <source>Link URL:</source>
       <translation>Hivatkozás webcíme:</translation>
     </message>
     <message>
-      <location filename="../../mrichtextedit.cpp" line="704"/>
+      <location filename="../../mrichtextedit.cpp" line="675"/>
       <source>Select an image</source>
       <translation>Válasszon ki egy képet</translation>
     </message>
     <message>
-      <location filename="../../mrichtextedit.cpp" line="706"/>
+      <location filename="../../mrichtextedit.cpp" line="677"/>
       <source>JPEG (*.jpg);; GIF (*.gif);; PNG (*.png);; BMP (*.bmp);; All (*)</source>
       <translation>JPEG (*.jpg);; GIF (*.gif);; PNG (*.png);; BMP (*.bmp);; Összes (*)</translation>
     </message>
@@ -2882,321 +2873,329 @@ Kijelölés nélkül a fájlböngésző lehetővé teszi egy SVG- vagy képfájl
     <message>
       <location filename="../../CommandAnnotate.cpp" line="317"/>
       <location filename="../../CommandAnnotate.cpp" line="418"/>
-      <location filename="../../CommandAnnotate.cpp" line="1314"/>
-      <location filename="../../CommandAnnotate.cpp" line="1322"/>
-      <location filename="../../CommandAnnotate.cpp" line="1369"/>
-      <location filename="../../CommandAnnotate.cpp" line="1511"/>
-      <location filename="../../CommandAnnotate.cpp" line="1518"/>
-      <location filename="../../CommandAnnotate.cpp" line="1582"/>
-      <location filename="../../CommandCreateDims.cpp" line="2279"/>
-      <location filename="../../CommandCreateDims.cpp" line="2288"/>
-      <location filename="../../Command.cpp" line="632"/>
-      <location filename="../../Command.cpp" line="642"/>
-      <location filename="../../Command.cpp" line="858"/>
-      <location filename="../../Command.cpp" line="975"/>
-      <location filename="../../Command.cpp" line="982"/>
-      <location filename="../../Command.cpp" line="987"/>
-      <location filename="../../Command.cpp" line="1025"/>
-      <location filename="../../Command.cpp" line="1124"/>
-      <location filename="../../Command.cpp" line="1390"/>
-      <location filename="../../Command.cpp" line="1407"/>
-      <location filename="../../Command.cpp" line="1412"/>
-      <location filename="../../Command.cpp" line="1421"/>
-      <location filename="../../Command.cpp" line="1474"/>
-      <location filename="../../Command.cpp" line="1493"/>
-      <location filename="../../Command.cpp" line="1615"/>
-      <location filename="../../Command.cpp" line="1690"/>
-      <location filename="../../Command.cpp" line="1696"/>
-      <location filename="../../Command.cpp" line="1753"/>
+      <location filename="../../CommandAnnotate.cpp" line="1310"/>
+      <location filename="../../CommandAnnotate.cpp" line="1318"/>
+      <location filename="../../CommandAnnotate.cpp" line="1365"/>
+      <location filename="../../CommandAnnotate.cpp" line="1510"/>
+      <location filename="../../CommandAnnotate.cpp" line="1517"/>
+      <location filename="../../CommandAnnotate.cpp" line="1581"/>
+      <location filename="../../CommandCreateDims.cpp" line="2278"/>
+      <location filename="../../CommandCreateDims.cpp" line="2287"/>
+      <location filename="../../Command.cpp" line="628"/>
+      <location filename="../../Command.cpp" line="638"/>
+      <location filename="../../Command.cpp" line="854"/>
+      <location filename="../../Command.cpp" line="971"/>
+      <location filename="../../Command.cpp" line="978"/>
+      <location filename="../../Command.cpp" line="983"/>
+      <location filename="../../Command.cpp" line="1021"/>
+      <location filename="../../Command.cpp" line="1120"/>
+      <location filename="../../Command.cpp" line="1386"/>
+      <location filename="../../Command.cpp" line="1403"/>
+      <location filename="../../Command.cpp" line="1408"/>
+      <location filename="../../Command.cpp" line="1417"/>
+      <location filename="../../Command.cpp" line="1470"/>
+      <location filename="../../Command.cpp" line="1489"/>
+      <location filename="../../Command.cpp" line="1611"/>
+      <location filename="../../Command.cpp" line="1686"/>
+      <location filename="../../Command.cpp" line="1692"/>
+      <location filename="../../Command.cpp" line="1751"/>
       <source>Wrong selection</source>
       <translation>Rossz kijelölés</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="643"/>
-      <location filename="../../Command.cpp" line="1125"/>
+      <location filename="../../Command.cpp" line="639"/>
+      <location filename="../../Command.cpp" line="1121"/>
       <source>No Shapes, Groups or Links in this selection</source>
       <translation>Nincsenek formák, csoportok vagy összekötések ebben a kijelölésben</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="593"/>
+      <location filename="../../Command.cpp" line="589"/>
       <source>Empty selection</source>
       <translation>Üres kijelölés</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="430"/>
+      <location filename="../../Command.cpp" line="426"/>
       <source>If you want to insert a view from existing objects, please select them before invoking this tool. Without a selection, a file browser will open, to insert a SVG or image file.</source>
       <translation type="unfinished">If you want to insert a view from existing objects, please select them before invoking this tool. Without a selection, a file browser will open, to insert a SVG or image file.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="433"/>
+      <location filename="../../Command.cpp" line="429"/>
       <source>Do not show this message again</source>
       <translation type="unfinished">Do not show this message again</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="447"/>
+      <location filename="../../Command.cpp" line="443"/>
       <source>Select a SVG or Image file to open</source>
       <translation>Válasszon ki egy SVG- vagy képfájlt a megnyitáshoz</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="450"/>
+      <location filename="../../Command.cpp" line="446"/>
       <source>SVG or Image files</source>
       <translation>SVG vagy képfájlok</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="594"/>
+      <location filename="../../Command.cpp" line="590"/>
       <source>Please select objects to break or a base view and break definition objects.</source>
       <translation>Kérjük, válassza ki a törni kívánt objektumokat vagy egy alapnézet és a törési definíció objektum elemeket.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="633"/>
+      <location filename="../../Command.cpp" line="629"/>
       <source>No Break objects found in this selection</source>
       <translation>Nem található tört objektum a kijelölésben</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="859"/>
-      <location filename="../../Command.cpp" line="1026"/>
+      <location filename="../../Command.cpp" line="855"/>
+      <location filename="../../Command.cpp" line="1022"/>
       <source>Select at least 1 DrawViewPart object as Base.</source>
       <translation>Jelöljön ki legalább 1 AlkatrészRajzNézet objektumot a kiinduláshoz.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="976"/>
+      <location filename="../../Command.cpp" line="972"/>
       <source>I do not know what base view to use.</source>
       <translation>Nem tudom, melyik alapnézetet használjam.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="983"/>
+      <location filename="../../Command.cpp" line="979"/>
       <source>No Base View, Shapes, Groups or Links in this selection</source>
       <translation>Ebben a kijelölésben nincsenek alapnézetek, formák, csoportok vagy összekötések</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="988"/>
+      <location filename="../../Command.cpp" line="984"/>
       <source>No profile object found in selection</source>
       <translation>Nem található szelvény objektum a kijelölésben</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1691"/>
-      <source>Please select only 1 BIM Section.</source>
-      <translation>Kérjük, csak 1 BIM-szakaszt válasszon.</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="1697"/>
-      <source>No BIM Sections in selection.</source>
-      <translation>Nincsenek BIM szakaszok a kiválasztásban.</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="1833"/>
+      <location filename="../../Command.cpp" line="1831"/>
       <source>No Drawing Page</source>
-      <translation type="unfinished">No Drawing Page</translation>
+      <translation>Nincs rajz oldal</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1834"/>
+      <location filename="../../Command.cpp" line="1832"/>
       <source>FreeCAD could not find a page to export</source>
       <translation type="unfinished">FreeCAD could not find a page to export</translation>
     </message>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="387"/>
-      <location filename="../../CommandDecorate.cpp" line="394"/>
-      <location filename="../../CommandDecorate.cpp" line="401"/>
-      <location filename="../../CommandCreateDims.cpp" line="2093"/>
-      <location filename="../../CommandCreateDims.cpp" line="2108"/>
-      <location filename="../../CommandCreateDims.cpp" line="2387"/>
-      <location filename="../../CommandCreateDims.cpp" line="2550"/>
-      <location filename="../../CommandCreateDims.cpp" line="2558"/>
-      <location filename="../../CommandCreateDims.cpp" line="2567"/>
-      <location filename="../../Command.cpp" line="1192"/>
-      <location filename="../../Command.cpp" line="1199"/>
-      <location filename="../../Command.cpp" line="1207"/>
-      <location filename="../../Command.cpp" line="1219"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1795"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1925"/>
+      <location filename="../../CommandDecorate.cpp" line="386"/>
+      <location filename="../../CommandDecorate.cpp" line="393"/>
+      <location filename="../../CommandDecorate.cpp" line="400"/>
+      <location filename="../../CommandCreateDims.cpp" line="2092"/>
+      <location filename="../../CommandCreateDims.cpp" line="2107"/>
+      <location filename="../../CommandCreateDims.cpp" line="2386"/>
+      <location filename="../../CommandCreateDims.cpp" line="2549"/>
+      <location filename="../../CommandCreateDims.cpp" line="2557"/>
+      <location filename="../../CommandCreateDims.cpp" line="2566"/>
+      <location filename="../../Command.cpp" line="1188"/>
+      <location filename="../../Command.cpp" line="1195"/>
+      <location filename="../../Command.cpp" line="1203"/>
+      <location filename="../../Command.cpp" line="1215"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1799"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1929"/>
       <source>Incorrect selection</source>
       <translation>Hibás kijelölés</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="2551"/>
-      <location filename="../../Command.cpp" line="1193"/>
+      <location filename="../../CommandCreateDims.cpp" line="2550"/>
+      <location filename="../../Command.cpp" line="1189"/>
       <source>Select an object first</source>
       <translation>Először válasszon ki egy objektumot</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="2559"/>
-      <location filename="../../Command.cpp" line="1200"/>
+      <location filename="../../CommandCreateDims.cpp" line="2558"/>
+      <location filename="../../Command.cpp" line="1196"/>
       <source>Too many objects selected</source>
       <translation>Túl sok kijelölt objektum</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="2568"/>
-      <location filename="../../Command.cpp" line="1208"/>
+      <location filename="../../CommandCreateDims.cpp" line="2567"/>
+      <location filename="../../Command.cpp" line="1204"/>
       <source>Create a page first.</source>
       <translation>Először hozzon létre egy oldalt.</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="2094"/>
-      <location filename="../../CommandCreateDims.cpp" line="2388"/>
-      <location filename="../../Command.cpp" line="1220"/>
+      <location filename="../../CommandCreateDims.cpp" line="2093"/>
+      <location filename="../../CommandCreateDims.cpp" line="2387"/>
+      <location filename="../../Command.cpp" line="1216"/>
       <source>No View of a Part in selection.</source>
       <translation>Nincs alkatrész nézet ebben a kiválasztásban.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1391"/>
+      <location filename="../../Command.cpp" line="1387"/>
       <source>Select one Clip group and one View.</source>
       <translation>Egy kivágás csoport és egy nézet kiválasztása.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1408"/>
+      <location filename="../../Command.cpp" line="1404"/>
       <source>Select exactly one View to add to group.</source>
       <translation>Válasszon pontosan egy nézetet a csoporthoz adásra.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1413"/>
+      <location filename="../../Command.cpp" line="1409"/>
       <source>Select exactly one Clip group.</source>
       <translation>Jelöljön ki pontosan egy Kivágás csoportot.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1422"/>
+      <location filename="../../Command.cpp" line="1418"/>
       <source>Clip and View must be from same Page.</source>
       <translation>Kivágás és a nézet azonos oldalon legyen.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1475"/>
+      <location filename="../../Command.cpp" line="1471"/>
       <source>Select exactly one View to remove from Group.</source>
       <translation>Válasszon pontosan egy nézetet a csoportból eltávolításra.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1494"/>
+      <location filename="../../Command.cpp" line="1490"/>
       <source>View does not belong to a Clip</source>
       <translation>Nézet nem tartozik egy kivágáshoz</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1553"/>
+      <location filename="../../Command.cpp" line="1549"/>
       <source>Choose an SVG file to open</source>
       <translation>SVG fájl kiválasztása megnyitáshoz</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1556"/>
+      <location filename="../../Command.cpp" line="1552"/>
       <source>Scalable Vector Graphic</source>
       <translation>Méretezhető vektorgrafika</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="450"/>
-      <location filename="../../Command.cpp" line="1556"/>
+      <location filename="../../Command.cpp" line="446"/>
+      <location filename="../../Command.cpp" line="1552"/>
       <source>All Files</source>
       <translation>Összes fájl</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1616"/>
+      <location filename="../../Command.cpp" line="1612"/>
       <source>Select at least one object.</source>
       <translation>Jelöljön ki legalább egy objektumot.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1754"/>
+      <location filename="../../Command.cpp" line="1687"/>
+      <source>Please select only 1 BIM section plane.</source>
+      <translation type="unfinished">Please select only 1 BIM section plane.</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="1693"/>
+      <source>No BIM section plane in selection.</source>
+      <translation type="unfinished">No BIM section plane in selection.</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="1752"/>
       <source>Select exactly one Spreadsheet object.</source>
       <translation>Jelöljön ki pontosan egy táblázat objektumot.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1869"/>
+      <location filename="../../Command.cpp" line="1867"/>
       <source>Can not export selection</source>
       <translation>A kijelölés nem exportálható</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1870"/>
+      <location filename="../../Command.cpp" line="1868"/>
       <source>Page contains DrawViewArch which will not be exported. Continue?</source>
       <translation>Az oldal rajz nézet ívet tartalmaz, amely nem kerül exportálásra. Folytatja?</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="2432"/>
+      <location filename="../../CommandCreateDims.cpp" line="2431"/>
       <source>Ellipse Curve Warning</source>
       <translation>Ellipszis görbe figyelmeztető</translation>
     </message>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="408"/>
-      <location filename="../../CommandDecorate.cpp" line="414"/>
-      <location filename="../../CommandCreateDims.cpp" line="1925"/>
-      <location filename="../../CommandCreateDims.cpp" line="1932"/>
-      <location filename="../../CommandCreateDims.cpp" line="2133"/>
-      <location filename="../../CommandCreateDims.cpp" line="2148"/>
-      <location filename="../../CommandCreateDims.cpp" line="2226"/>
-      <location filename="../../CommandCreateDims.cpp" line="2402"/>
-      <location filename="../../CommandCreateDims.cpp" line="2418"/>
+      <location filename="../../CommandAlign.cpp" line="56"/>
+      <location filename="../../CommandDecorate.cpp" line="407"/>
+      <location filename="../../CommandDecorate.cpp" line="413"/>
+      <location filename="../../CommandCreateDims.cpp" line="1924"/>
+      <location filename="../../CommandCreateDims.cpp" line="1931"/>
+      <location filename="../../CommandCreateDims.cpp" line="2132"/>
+      <location filename="../../CommandCreateDims.cpp" line="2147"/>
+      <location filename="../../CommandCreateDims.cpp" line="2225"/>
+      <location filename="../../CommandCreateDims.cpp" line="2401"/>
+      <location filename="../../CommandCreateDims.cpp" line="2417"/>
       <location filename="../../TaskDimRepair.cpp" line="124"/>
       <location filename="../../TaskDimRepair.cpp" line="136"/>
       <location filename="../../TaskDimRepair.cpp" line="147"/>
-      <location filename="../../TaskDimension.cpp" line="442"/>
+      <location filename="../../TaskDimension.cpp" line="444"/>
       <source>Incorrect Selection</source>
       <translation>Hibás kijelölés</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="2227"/>
+      <location filename="../../CommandAlign.cpp" line="57"/>
+      <source>You must select 2 vertexes or 1 edge
+</source>
+      <translation type="unfinished">You must select 2 vertexes or 1 edge
+</translation>
+    </message>
+    <message>
+      <location filename="../../CommandCreateDims.cpp" line="2226"/>
       <source>There is no Dimension in your selection</source>
       <translation>Nem található méret a kijelölésében</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="2403"/>
+      <location filename="../../CommandCreateDims.cpp" line="2402"/>
       <source>Can not make 2D dimension from selection</source>
       <translation>Nem lehet 2D méretet készíteni a kijelölésből</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="2419"/>
+      <location filename="../../CommandCreateDims.cpp" line="2418"/>
       <source>Can not make 3D dimension from selection</source>
       <translation>Nem lehet 3D méretet készíteni a kijelölésből</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="2433"/>
+      <location filename="../../CommandCreateDims.cpp" line="2432"/>
       <source>Selected edge is an Ellipse. Value will be approximate. Continue?</source>
       <translation>A kiválasztott él egy ellipszis. Az érték hozzávetőleges lesz. Folytatás?</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="2443"/>
+      <location filename="../../CommandCreateDims.cpp" line="2442"/>
       <source>B-spline Curve Warning</source>
-      <translation type="unfinished">B-spline Curve Warning</translation>
+      <translation>Folyamatos ívű görbe figyelmeztetés</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="2444"/>
+      <location filename="../../CommandCreateDims.cpp" line="2443"/>
       <source>Selected edge is a B-spline. Value will be approximate. Continue?</source>
       <translation>A kiválasztott él egy B-görbe. Az érték hozzávetőleges lesz. Folytatás?</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="2454"/>
+      <location filename="../../CommandCreateDims.cpp" line="2453"/>
       <source>B-spline Curve Error</source>
-      <translation type="unfinished">B-spline Curve Error</translation>
+      <translation>Folyamatos ívű görbe hiba</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="2455"/>
+      <location filename="../../CommandCreateDims.cpp" line="2454"/>
       <source>Selected edge is a B-spline and a radius/diameter can not be calculated.</source>
       <translation>A kiválasztott él egy B-görbe, és a sugár/átmérő nem számítható ki.</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1926"/>
+      <location filename="../../CommandCreateDims.cpp" line="1925"/>
       <source>There is no 3D object in your selection</source>
       <translation>Nem található 3D objektum a kijelölésében</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1933"/>
+      <location filename="../../CommandCreateDims.cpp" line="1932"/>
       <source>There are no 3D Edges or Vertices in your selection</source>
       <translation>Nincsenek 3D-s élek vagy csúcspontok a kijelölésében</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="2109"/>
+      <location filename="../../CommandCreateDims.cpp" line="2108"/>
       <source>Selection contains both 2D and 3D geometry</source>
-      <translation type="unfinished">Selection contains both 2D and 3D geometry</translation>
+      <translation>A kiválasztás 2d és 3d geometriát is tartalmaz</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="2134"/>
+      <location filename="../../CommandCreateDims.cpp" line="2133"/>
       <source>Can not make 2D extent dimension from selection</source>
-      <translation type="unfinished">Can not make 2D extent dimension from selection</translation>
+      <translation>2D egyenes méret nem hozható létre kijelöléssel</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="2149"/>
+      <location filename="../../CommandCreateDims.cpp" line="2148"/>
       <source>Can not make 3D extent dimension from selection</source>
-      <translation type="unfinished">Can not make 3D extent dimension from selection</translation>
+      <translation>3D egyenes méret nem hozható létre kijelöléssel</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="2280"/>
+      <location filename="../../CommandCreateDims.cpp" line="2279"/>
       <source>Select 2 point objects and 1 View. (1)</source>
       <translation>Jelöljön ki 2 pontos objektumot és 1 nézetet. (1)</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="2289"/>
+      <location filename="../../CommandCreateDims.cpp" line="2288"/>
       <source>Select 2 point objects and 1 View. (2)</source>
       <translation>Jelöljön ki 2 pontos objektumokat és 1 nézetet. (2)</translation>
     </message>
@@ -3213,41 +3212,41 @@ Kijelölés nélkül a fájlböngésző lehetővé teszi egy SVG- vagy képfájl
       <location filename="../../CommandAnnotate.cpp" line="884"/>
       <location filename="../../CommandAnnotate.cpp" line="997"/>
       <location filename="../../CommandAnnotate.cpp" line="1148"/>
-      <location filename="../../CommandAnnotate.cpp" line="1301"/>
-      <location filename="../../CommandAnnotate.cpp" line="1420"/>
-      <location filename="../../CommandAnnotate.cpp" line="1498"/>
-      <location filename="../../CommandAnnotate.cpp" line="1564"/>
-      <location filename="../../CommandCreateDims.cpp" line="1515"/>
-      <location filename="../../CommandCreateDims.cpp" line="1563"/>
-      <location filename="../../CommandCreateDims.cpp" line="1611"/>
-      <location filename="../../CommandCreateDims.cpp" line="1659"/>
-      <location filename="../../CommandCreateDims.cpp" line="1707"/>
-      <location filename="../../CommandCreateDims.cpp" line="1754"/>
-      <location filename="../../CommandCreateDims.cpp" line="1801"/>
-      <location filename="../../CommandCreateDims.cpp" line="1848"/>
-      <location filename="../../CommandCreateDims.cpp" line="1979"/>
-      <location filename="../../CommandCreateDims.cpp" line="2075"/>
-      <location filename="../../CommandCreateDims.cpp" line="2187"/>
+      <location filename="../../CommandAnnotate.cpp" line="1297"/>
+      <location filename="../../CommandAnnotate.cpp" line="1416"/>
+      <location filename="../../CommandAnnotate.cpp" line="1497"/>
+      <location filename="../../CommandAnnotate.cpp" line="1563"/>
+      <location filename="../../CommandCreateDims.cpp" line="1514"/>
+      <location filename="../../CommandCreateDims.cpp" line="1562"/>
+      <location filename="../../CommandCreateDims.cpp" line="1610"/>
+      <location filename="../../CommandCreateDims.cpp" line="1658"/>
+      <location filename="../../CommandCreateDims.cpp" line="1706"/>
+      <location filename="../../CommandCreateDims.cpp" line="1753"/>
+      <location filename="../../CommandCreateDims.cpp" line="1800"/>
+      <location filename="../../CommandCreateDims.cpp" line="1847"/>
+      <location filename="../../CommandCreateDims.cpp" line="1978"/>
+      <location filename="../../CommandCreateDims.cpp" line="2074"/>
+      <location filename="../../CommandCreateDims.cpp" line="2186"/>
       <location filename="../../CommandStack.cpp" line="75"/>
       <location filename="../../CommandStack.cpp" line="191"/>
       <location filename="../../CommandStack.cpp" line="251"/>
       <location filename="../../CommandStack.cpp" line="311"/>
       <location filename="../../CommandStack.cpp" line="371"/>
-      <location filename="../../CommandExtensionDims.cpp" line="327"/>
-      <location filename="../../CommandExtensionDims.cpp" line="550"/>
-      <location filename="../../CommandExtensionDims.cpp" line="842"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1170"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1546"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1939"/>
+      <location filename="../../CommandExtensionDims.cpp" line="329"/>
+      <location filename="../../CommandExtensionDims.cpp" line="552"/>
+      <location filename="../../CommandExtensionDims.cpp" line="844"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1172"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1548"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1941"/>
       <location filename="../../CommandExtensionDims.cpp" line="2198"/>
-      <location filename="../../Command.cpp" line="741"/>
-      <location filename="../../Command.cpp" line="834"/>
-      <location filename="../../Command.cpp" line="897"/>
+      <location filename="../../Command.cpp" line="737"/>
+      <location filename="../../Command.cpp" line="830"/>
+      <location filename="../../Command.cpp" line="893"/>
       <location filename="../../CommandExtensionPack.cpp" line="295"/>
       <location filename="../../CommandExtensionPack.cpp" line="618"/>
       <location filename="../../CommandExtensionPack.cpp" line="1121"/>
       <location filename="../../CommandExtensionPack.cpp" line="1370"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1676"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1680"/>
       <source>Task In Progress</source>
       <translation>Folyamatban levő feladat</translation>
     </message>
@@ -3264,47 +3263,47 @@ Kijelölés nélkül a fájlböngésző lehetővé teszi egy SVG- vagy képfájl
       <location filename="../../CommandAnnotate.cpp" line="885"/>
       <location filename="../../CommandAnnotate.cpp" line="998"/>
       <location filename="../../CommandAnnotate.cpp" line="1149"/>
-      <location filename="../../CommandAnnotate.cpp" line="1302"/>
-      <location filename="../../CommandAnnotate.cpp" line="1421"/>
-      <location filename="../../CommandAnnotate.cpp" line="1499"/>
-      <location filename="../../CommandAnnotate.cpp" line="1565"/>
-      <location filename="../../CommandCreateDims.cpp" line="1516"/>
-      <location filename="../../CommandCreateDims.cpp" line="1564"/>
-      <location filename="../../CommandCreateDims.cpp" line="1612"/>
-      <location filename="../../CommandCreateDims.cpp" line="1660"/>
-      <location filename="../../CommandCreateDims.cpp" line="1708"/>
-      <location filename="../../CommandCreateDims.cpp" line="1755"/>
-      <location filename="../../CommandCreateDims.cpp" line="1802"/>
-      <location filename="../../CommandCreateDims.cpp" line="1849"/>
-      <location filename="../../CommandCreateDims.cpp" line="1980"/>
-      <location filename="../../CommandCreateDims.cpp" line="2076"/>
-      <location filename="../../CommandCreateDims.cpp" line="2188"/>
+      <location filename="../../CommandAnnotate.cpp" line="1298"/>
+      <location filename="../../CommandAnnotate.cpp" line="1417"/>
+      <location filename="../../CommandAnnotate.cpp" line="1498"/>
+      <location filename="../../CommandAnnotate.cpp" line="1564"/>
+      <location filename="../../CommandCreateDims.cpp" line="1515"/>
+      <location filename="../../CommandCreateDims.cpp" line="1563"/>
+      <location filename="../../CommandCreateDims.cpp" line="1611"/>
+      <location filename="../../CommandCreateDims.cpp" line="1659"/>
+      <location filename="../../CommandCreateDims.cpp" line="1707"/>
+      <location filename="../../CommandCreateDims.cpp" line="1754"/>
+      <location filename="../../CommandCreateDims.cpp" line="1801"/>
+      <location filename="../../CommandCreateDims.cpp" line="1848"/>
+      <location filename="../../CommandCreateDims.cpp" line="1979"/>
+      <location filename="../../CommandCreateDims.cpp" line="2075"/>
+      <location filename="../../CommandCreateDims.cpp" line="2187"/>
       <location filename="../../CommandStack.cpp" line="76"/>
       <location filename="../../CommandStack.cpp" line="192"/>
       <location filename="../../CommandStack.cpp" line="252"/>
       <location filename="../../CommandStack.cpp" line="312"/>
       <location filename="../../CommandStack.cpp" line="372"/>
-      <location filename="../../CommandExtensionDims.cpp" line="328"/>
-      <location filename="../../CommandExtensionDims.cpp" line="551"/>
-      <location filename="../../CommandExtensionDims.cpp" line="843"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1171"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1547"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1940"/>
+      <location filename="../../CommandExtensionDims.cpp" line="330"/>
+      <location filename="../../CommandExtensionDims.cpp" line="553"/>
+      <location filename="../../CommandExtensionDims.cpp" line="845"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1173"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1549"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1942"/>
       <location filename="../../CommandExtensionDims.cpp" line="2199"/>
-      <location filename="../../Command.cpp" line="742"/>
-      <location filename="../../Command.cpp" line="835"/>
-      <location filename="../../Command.cpp" line="898"/>
+      <location filename="../../Command.cpp" line="738"/>
+      <location filename="../../Command.cpp" line="831"/>
+      <location filename="../../Command.cpp" line="894"/>
       <location filename="../../CommandExtensionPack.cpp" line="296"/>
       <location filename="../../CommandExtensionPack.cpp" line="619"/>
       <location filename="../../CommandExtensionPack.cpp" line="1122"/>
       <location filename="../../CommandExtensionPack.cpp" line="1371"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1677"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1681"/>
       <source>Close active task dialog and try again.</source>
       <translation>Zárja be az aktív feladatot és próbálja később.</translation>
     </message>
     <message>
-      <location filename="../../CommandHelpers.cpp" line="110"/>
-      <location filename="../../CommandHelpers.cpp" line="123"/>
+      <location filename="../../CommandHelpers.cpp" line="90"/>
+      <location filename="../../CommandHelpers.cpp" line="103"/>
       <location filename="../../CommandAnnotate.cpp" line="120"/>
       <location filename="../../CommandAnnotate.cpp" line="125"/>
       <location filename="../../CommandAnnotate.cpp" line="725"/>
@@ -3328,8 +3327,8 @@ Kijelölés nélkül a fájlböngésző lehetővé teszi egy SVG- vagy képfájl
       <location filename="../../CommandAnnotate.cpp" line="1201"/>
       <location filename="../../CommandAnnotate.cpp" line="1223"/>
       <location filename="../../CommandAnnotate.cpp" line="1259"/>
-      <location filename="../../CommandAnnotate.cpp" line="1433"/>
-      <location filename="../../CommandAnnotate.cpp" line="1440"/>
+      <location filename="../../CommandAnnotate.cpp" line="1428"/>
+      <location filename="../../CommandAnnotate.cpp" line="1448"/>
       <source>Wrong Selection</source>
       <translation>Hibás kijelölés</translation>
     </message>
@@ -3417,35 +3416,35 @@ Kijelölés nélkül a fájlböngésző lehetővé teszi egy SVG- vagy képfájl
       <translation>Kérjük, válassza ki a kör középpontját.</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1315"/>
-      <location filename="../../CommandAnnotate.cpp" line="1512"/>
+      <location filename="../../CommandAnnotate.cpp" line="1311"/>
+      <location filename="../../CommandAnnotate.cpp" line="1511"/>
       <source>Nothing selected</source>
       <translation>Semmi sincs kiválasztva</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1323"/>
+      <location filename="../../CommandAnnotate.cpp" line="1319"/>
       <source>At least 1 object in selection is not a part view</source>
       <translation>Legalább 1 objektum a kijelölt részen nem egy alkatrész nézet</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1370"/>
+      <location filename="../../CommandAnnotate.cpp" line="1366"/>
       <source>Unknown object type in selection</source>
       <translation>Ismeretlen típusú objektum a kiválasztásban</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1441"/>
+      <location filename="../../CommandAnnotate.cpp" line="1449"/>
       <source>No View in Selection.</source>
       <translation>Nincs nézet a kijelölésben.</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1434"/>
+      <location filename="../../CommandAnnotate.cpp" line="1429"/>
       <source>You must select a View and/or lines.</source>
       <translation>Ki kell jelölnie egy nézetet és/vagy vonalakat.</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="121"/>
       <source>Can not attach leader. No base View selected.</source>
-      <translation type="unfinished">Can not attach leader. No base View selected.</translation>
+      <translation>A vezér egyenest nem tudja csatolni. Nem lett kiválasztva alapértelmezett nézet.</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="1224"/>
@@ -3453,32 +3452,32 @@ Kijelölés nélkül a fájlböngésző lehetővé teszi egy SVG- vagy képfájl
       <translation>A kiválasztás nem segédkör vagy segéd körív.</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1519"/>
+      <location filename="../../CommandAnnotate.cpp" line="1518"/>
       <source>No Part Views in this selection</source>
       <translation>Nincs alkatrész nézet a kijelölésben</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1583"/>
+      <location filename="../../CommandAnnotate.cpp" line="1582"/>
       <source>Select exactly one Leader line or one Weld symbol.</source>
       <translation>Jelöljön ki pontosan egy Vezér vonalat vagy egy Hegesztés szimbólumot.</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1644"/>
+      <location filename="../../CommandAnnotate.cpp" line="1643"/>
       <source>SurfaceFinishSymbols</source>
       <translation>Felületi szimbólumok</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1645"/>
+      <location filename="../../CommandAnnotate.cpp" line="1644"/>
       <source>Selected object is not a part view, nor a leader line</source>
       <translation>A kiválasztott objektum nem egy alkatrész nézet, sem egy vezérvonal</translation>
     </message>
     <message>
-      <location filename="../../CommandHelpers.cpp" line="111"/>
+      <location filename="../../CommandHelpers.cpp" line="91"/>
       <source>No Part View in Selection</source>
       <translation>Nincs alkatrész nézet a kijelölésben</translation>
     </message>
     <message>
-      <location filename="../../CommandHelpers.cpp" line="124"/>
+      <location filename="../../CommandHelpers.cpp" line="104"/>
       <source>No %1 in Selection</source>
       <translation>A %1 nincs a kiválasztásban</translation>
     </message>
@@ -3490,95 +3489,111 @@ Kijelölés nélkül a fájlböngésző lehetővé teszi egy SVG- vagy képfájl
     <message>
       <location filename="../../CommandDecorate.cpp" line="112"/>
       <source>Some Faces in selection are already hatched. Replace?</source>
-      <translation type="unfinished">Some Faces in selection are already hatched. Replace?</translation>
+      <translation>Néhány felület a kijelölésben már ki van vonalkázva. Lecseréli?</translation>
     </message>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="335"/>
+      <location filename="../../CommandDecorate.cpp" line="334"/>
       <source>No TechDraw Page</source>
       <translation>Nincs MűszakiRajz oldal</translation>
     </message>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="336"/>
+      <location filename="../../CommandDecorate.cpp" line="335"/>
       <source>Need a TechDraw Page for this command</source>
       <translation>Szükséges egy MűszakiRajz oldal ehhez a parancshoz</translation>
     </message>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="388"/>
+      <location filename="../../CommandDecorate.cpp" line="387"/>
       <source>Select a Face first</source>
       <translation>Először jelöljön ki egy felületet</translation>
     </message>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="395"/>
+      <location filename="../../CommandDecorate.cpp" line="394"/>
       <source>No TechDraw object in selection</source>
       <translation>Nincs MűszakiRajz objektum a kiválasztásban</translation>
     </message>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="402"/>
+      <location filename="../../CommandDecorate.cpp" line="401"/>
       <source>Create a page to insert.</source>
       <translation>Oldal létrehozása a beillesztéshez.</translation>
     </message>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="409"/>
-      <location filename="../../CommandDecorate.cpp" line="415"/>
+      <location filename="../../CommandDecorate.cpp" line="408"/>
+      <location filename="../../CommandDecorate.cpp" line="414"/>
       <source>No Faces to hatch in this selection</source>
       <translation>Nincs felület a vonalkázáshoz ebben a kijelölésben</translation>
     </message>
     <message>
-      <location filename="../../DrawGuiUtil.cpp" line="306"/>
-      <location filename="../../DrawGuiUtil.cpp" line="340"/>
+      <location filename="../../DrawGuiUtil.cpp" line="310"/>
       <source>No page found</source>
       <translation>Az oldal nem található</translation>
     </message>
     <message>
-      <location filename="../../DrawGuiUtil.cpp" line="307"/>
+      <location filename="../../DrawGuiUtil.cpp" line="311"/>
       <source>No Drawing Pages available.</source>
       <translation>Nincs elérhető rajzlap.</translation>
     </message>
     <message>
-      <location filename="../../DrawGuiUtil.cpp" line="341"/>
-      <source>No Drawing Pages in document.</source>
-      <translation>A dokumentumban nincsenek rajzok.</translation>
+      <location filename="../../DrawGuiUtil.cpp" line="416"/>
+      <source>No page selected</source>
+      <translation type="unfinished">No page selected</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="311"/>
+      <location filename="../../DrawGuiUtil.cpp" line="417"/>
+      <source>This function needs a page.</source>
+      <translation type="unfinished">This function needs a page.</translation>
+    </message>
+    <message>
+      <location filename="../../MDIViewPage.cpp" line="312"/>
       <source>PDF (*.pdf)</source>
       <translation>PDF (*.pdf)</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="312"/>
-      <location filename="../../MDIViewPage.cpp" line="474"/>
+      <location filename="../../MDIViewPage.cpp" line="313"/>
+      <location filename="../../MDIViewPage.cpp" line="491"/>
+      <location filename="../../MDIViewPage.cpp" line="512"/>
+      <location filename="../../MDIViewPage.cpp" line="536"/>
       <source>All Files (*.*)</source>
       <translation>Összes fájl (*.*)</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="314"/>
+      <location filename="../../MDIViewPage.cpp" line="315"/>
       <source>Export Page As PDF</source>
       <translation>Oldal export PDF formában</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="476"/>
+      <location filename="../../MDIViewPage.cpp" line="493"/>
       <source>Export page as SVG</source>
       <translation>Oldal export SVG formában</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderPage.cpp" line="214"/>
+      <location filename="../../MDIViewPage.cpp" line="514"/>
+      <source>Export page as DXF</source>
+      <translation type="unfinished">Export page as DXF</translation>
+    </message>
+    <message>
+      <location filename="../../MDIViewPage.cpp" line="538"/>
+      <source>Export page as PDF</source>
+      <translation type="unfinished">Export page as PDF</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProviderPage.cpp" line="212"/>
       <location filename="../../ViewProviderTemplate.cpp" line="201"/>
-      <location filename="../../ViewProviderProjGroup.cpp" line="157"/>
+      <location filename="../../ViewProviderProjGroup.cpp" line="160"/>
       <source>Are you sure you want to continue?</source>
       <translation>Biztosan folytatja?</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderPage.cpp" line="235"/>
+      <location filename="../../ViewProviderPage.cpp" line="232"/>
       <source>Show drawing</source>
       <translation>Mutasd a rajzot</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderPage.cpp" line="237"/>
+      <location filename="../../ViewProviderPage.cpp" line="234"/>
       <source>Toggle Keep Updated</source>
       <translation>Naprakészen tartás kapcsoló</translation>
     </message>
     <message>
-      <location filename="../../TemplateTextField.cpp" line="50"/>
+      <location filename="../../TemplateTextField.cpp" line="51"/>
       <source>Click to update text</source>
       <translation>Kattintson a szöveg frissítéséhez</translation>
     </message>
@@ -3600,7 +3615,7 @@ Kijelölés nélkül a fájlböngésző lehetővé teszi egy SVG- vagy képfájl
     <message>
       <location filename="../../TaskRichAnno.cpp" line="101"/>
       <location filename="../../TaskRichAnno.cpp" line="239"/>
-      <location filename="../../QGIRichAnno.cpp" line="342"/>
+      <location filename="../../QGIRichAnno.cpp" line="343"/>
       <source>Rich text editor</source>
       <translation>Szöveg szerkesztő</translation>
     </message>
@@ -3640,55 +3655,65 @@ Kijelölés nélkül a fájlböngésző lehetővé teszi egy SVG- vagy képfájl
       <translation>Nem talál 3D megjelenítőt</translation>
     </message>
     <message>
-      <location filename="../../TaskCenterLine.cpp" line="168"/>
+      <location filename="../../TaskCenterLine.cpp" line="166"/>
       <source>Create Center Line</source>
       <translation>Középvonal létrehozása</translation>
     </message>
     <message>
-      <location filename="../../TaskCenterLine.cpp" line="211"/>
+      <location filename="../../TaskCenterLine.cpp" line="209"/>
       <source>Edit Center Line</source>
       <translation>Középvonal szerkesztése</translation>
     </message>
     <message>
-      <location filename="../../TaskSectionView.cpp" line="127"/>
+      <location filename="../../TaskSectionView.cpp" line="128"/>
       <source>Create Section View</source>
       <translation>Szakasznézet létrehozása</translation>
     </message>
     <message>
-      <location filename="../../TaskSectionView.cpp" line="153"/>
+      <location filename="../../TaskSectionView.cpp" line="154"/>
       <source>No direction set</source>
-      <translation type="unfinished">No direction set</translation>
+      <translation>Nincs beállítva irány</translation>
     </message>
     <message>
-      <location filename="../../TaskSectionView.cpp" line="159"/>
+      <location filename="../../TaskSectionView.cpp" line="160"/>
       <source>Edit Section View</source>
       <translation>Szakasznézet szerkesztése</translation>
     </message>
     <message>
-      <location filename="../../TaskComplexSection.cpp" line="137"/>
+      <location filename="../../TaskComplexSection.cpp" line="139"/>
       <source>New Complex Section</source>
       <translation>Új összetett szakasz</translation>
     </message>
     <message>
-      <location filename="../../TaskComplexSection.cpp" line="178"/>
+      <location filename="../../TaskComplexSection.cpp" line="180"/>
       <source>Edit Complex Section</source>
       <translation>Összetett szakasz szerkesztés</translation>
     </message>
     <message>
-      <location filename="../../TaskComplexSection.cpp" line="216"/>
-      <location filename="../../TaskSectionView.cpp" line="230"/>
+      <location filename="../../TaskComplexSection.cpp" line="218"/>
+      <location filename="../../TaskSectionView.cpp" line="231"/>
       <source>Current View Direction</source>
       <translation>Aktuális nézet irány</translation>
     </message>
     <message>
-      <location filename="../../TaskComplexSection.cpp" line="217"/>
-      <location filename="../../TaskSectionView.cpp" line="231"/>
+      <location filename="../../TaskComplexSection.cpp" line="219"/>
+      <location filename="../../TaskSectionView.cpp" line="232"/>
       <source>The view direction in BaseView coordinates</source>
       <translation>Az alapnézet koordinátái által meghatározott irány megtekintése</translation>
     </message>
     <message>
-      <location filename="../../TaskComplexSection.cpp" line="715"/>
-      <location filename="../../TaskSectionView.cpp" line="640"/>
+      <location filename="../../TaskComplexSection.cpp" line="527"/>
+      <source>Possible Coordinate System Error</source>
+      <translation type="unfinished">Possible Coordinate System Error</translation>
+    </message>
+    <message>
+      <location filename="../../TaskComplexSection.cpp" line="528"/>
+      <source>Check SectionNormal, Direction and/or XDirection.</source>
+      <translation type="unfinished">Check SectionNormal, Direction and/or XDirection.</translation>
+    </message>
+    <message>
+      <location filename="../../TaskComplexSection.cpp" line="717"/>
+      <location filename="../../TaskSectionView.cpp" line="641"/>
       <source>Operation Failed</source>
       <translation>Sikertelen művelet</translation>
     </message>
@@ -3723,107 +3748,107 @@ Kijelölés nélkül a fájlböngésző lehetővé teszi egy SVG- vagy képfájl
       <translation>Részletnézet szerkesztése</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderDimension.cpp" line="127"/>
+      <location filename="../../ViewProviderDimension.cpp" line="137"/>
       <location filename="../../ViewProviderBalloon.cpp" line="87"/>
       <source>Edit %1</source>
       <translation>%1 szerkesztése</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="438"/>
+      <location filename="../../CommandExtensionDims.cpp" line="440"/>
       <source>TechDraw Increase/Decrease Decimal</source>
       <translation>Műszakirajz tizedesjegyek számának növelése/csökkentése</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="633"/>
-      <location filename="../../CommandExtensionDims.cpp" line="642"/>
+      <location filename="../../CommandExtensionDims.cpp" line="635"/>
+      <location filename="../../CommandExtensionDims.cpp" line="644"/>
       <source>TechDraw PosHorizChainDimension</source>
       <translation>Műszakirajz a vízszintes méretek sorrendjének összehangolása</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="643"/>
-      <location filename="../../CommandExtensionDims.cpp" line="952"/>
+      <location filename="../../CommandExtensionDims.cpp" line="645"/>
+      <location filename="../../CommandExtensionDims.cpp" line="954"/>
       <source>No horizontal dimensions selected</source>
       <translation>Nincsenek vízszintes méretek kiválasztva</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="694"/>
-      <location filename="../../CommandExtensionDims.cpp" line="703"/>
+      <location filename="../../CommandExtensionDims.cpp" line="696"/>
+      <location filename="../../CommandExtensionDims.cpp" line="705"/>
       <source>TechDraw PosVertChainDimension</source>
       <translation>Műszakirajz függőleges méretek sorrendjének összehangolása</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="704"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1018"/>
+      <location filename="../../CommandExtensionDims.cpp" line="706"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1020"/>
       <source>No vertical dimensions selected</source>
       <translation>Nincsenek függőleges méretek kiválasztva</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="756"/>
-      <location filename="../../CommandExtensionDims.cpp" line="765"/>
+      <location filename="../../CommandExtensionDims.cpp" line="758"/>
+      <location filename="../../CommandExtensionDims.cpp" line="767"/>
       <source>TechDraw PosObliqueChainDimension</source>
       <translation>Műszakirajz, a ferde méretek sorrendjének összehangolása</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="766"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1085"/>
+      <location filename="../../CommandExtensionDims.cpp" line="768"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1087"/>
       <source>No oblique dimensions selected</source>
       <translation>Nincsenek ferde méretek kiválasztva</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="942"/>
-      <location filename="../../CommandExtensionDims.cpp" line="951"/>
+      <location filename="../../CommandExtensionDims.cpp" line="944"/>
+      <location filename="../../CommandExtensionDims.cpp" line="953"/>
       <source>TechDraw CascadeHorizDimension</source>
       <translation>Műszakirajz, Vízszintes lépcsőzetes méret</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1008"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1017"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1010"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1019"/>
       <source>TechDraw CascadeVertDimension</source>
       <translation>Műszakirajz, Függőleges lépcsőzetes méret</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1075"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1084"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1077"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1086"/>
       <source>TechDraw CascadeObliqueDimension</source>
       <translation>Műszakirajz, Ferde lépcsőzetes méret</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1274"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1276"/>
       <source>TechDraw Create Horizontal Chain Dimension</source>
       <translation>Műszakirajz vízszintes méretláncok létrehozása</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1340"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1342"/>
       <source>TechDraw Create Vertical Chain Dimension</source>
       <translation>Műszakirajz függőleges méretláncok létrehozása</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1406"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1408"/>
       <source>TechDraw Create Oblique Chain Dimension</source>
       <translation>Műszakirajz ferde méretláncok létrehozása</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1645"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1647"/>
       <source>TechDraw Create Horizontal Coord Dimension</source>
       <translation>Műszakirajz vízszintes koordináta méret létrehozása</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1718"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1720"/>
       <source>TechDraw Create Vertical Coord Dimension</source>
       <translation>Műszakirajz függőleges koordináta méret létrehozása</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1791"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1793"/>
       <source>TechDraw Create Oblique Coord Dimension</source>
       <translation>Műszakirajz ferde koordináta méret létrehozása</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="2044"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2046"/>
       <source>TechDraw Create Horizontal Chamfer Dimension</source>
       <translation>Műszakirajz vízszintes letörés méret létrehozása</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="2113"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2114"/>
       <source>TechDraw Create Vertical Chamfer Dimension</source>
       <translation>Műszakirajz függőleges letörés méret létrehozása</translation>
     </message>
@@ -3844,13 +3869,13 @@ Kijelölés nélkül a fájlböngésző lehetővé teszi egy SVG- vagy képfájl
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="2422"/>
-      <location filename="../../CommandExtensionPack.cpp" line="2065"/>
+      <location filename="../../CommandExtensionPack.cpp" line="2070"/>
       <source>Selection is empty</source>
       <translation>A kijelölési terület nem tartalmaz objektumokat</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="2438"/>
-      <location filename="../../CommandExtensionPack.cpp" line="2072"/>
+      <location filename="../../CommandExtensionPack.cpp" line="2077"/>
       <source>No object selected</source>
       <translation>Nincs kijelölt objektum</translation>
     </message>
@@ -3865,39 +3890,39 @@ Kijelölés nélkül a fájlböngésző lehetővé teszi egy SVG- vagy képfájl
       <translation>Háromnál kevesebb kiválasztott kör</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1796"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1800"/>
       <source>No faces in selection.</source>
       <translation>Nincsenek felületek a kijelölésben.</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1926"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1930"/>
       <source>No edges in selection.</source>
       <translation>Nincsenek élek a kijelölésben.</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="2150"/>
+      <location filename="../../CommandExtensionPack.cpp" line="2155"/>
       <source>TechDraw Thread Hole Side</source>
       <translation>A menetes furat rajzoló oldala</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="2151"/>
+      <location filename="../../CommandExtensionPack.cpp" line="2156"/>
       <source>Please select two straight lines</source>
       <translation>Válasszon két egyenest</translation>
     </message>
     <message>
-      <location filename="../../TaskDimension.cpp" line="146"/>
-      <location filename="../../TaskDimension.cpp" line="161"/>
+      <location filename="../../TaskDimension.cpp" line="148"/>
+      <location filename="../../TaskDimension.cpp" line="163"/>
       <source>Missing Dimension</source>
       <translation>Hiányzó méret</translation>
     </message>
     <message>
-      <location filename="../../TaskDimension.cpp" line="147"/>
-      <location filename="../../TaskDimension.cpp" line="162"/>
+      <location filename="../../TaskDimension.cpp" line="149"/>
+      <location filename="../../TaskDimension.cpp" line="164"/>
       <source>Dimension not found. Was it deleted? Can not continue.</source>
-      <translation type="unfinished">Dimension not found. Was it deleted? Can not continue.</translation>
+      <translation>Nem talált méret. Törölték? Nem folytatható.</translation>
     </message>
     <message>
-      <location filename="../../TaskDimension.cpp" line="443"/>
+      <location filename="../../TaskDimension.cpp" line="445"/>
       <source>Select 2 Vertexes or 1 Edge</source>
       <translation>2 csúcspont vagy 1 él kiválasztása</translation>
     </message>
@@ -3928,37 +3953,37 @@ Kijelölés nélkül a fájlböngésző lehetővé teszi egy SVG- vagy képfájl
       <translation>Felület kitöltés szerkesztés</translation>
     </message>
     <message>
-      <location filename="../../TaskSurfaceFinishSymbols.cpp" line="277"/>
+      <location filename="../../TaskSurfaceFinishSymbols.cpp" line="281"/>
       <source>Method</source>
       <translation>Módszer</translation>
     </message>
     <message>
-      <location filename="../../TaskSurfaceFinishSymbols.cpp" line="283"/>
+      <location filename="../../TaskSurfaceFinishSymbols.cpp" line="287"/>
       <source>Addition</source>
       <translation>Kiegészítő</translation>
     </message>
     <message>
-      <location filename="../../TaskSurfaceFinishSymbols.cpp" line="292"/>
+      <location filename="../../TaskSurfaceFinishSymbols.cpp" line="296"/>
       <source>Average roughness</source>
       <translation>Átlagos érdesség</translation>
     </message>
     <message>
-      <location filename="../../TaskSurfaceFinishSymbols.cpp" line="298"/>
+      <location filename="../../TaskSurfaceFinishSymbols.cpp" line="302"/>
       <source>Roughness sampling length</source>
       <translation>Érdesség mintavételi hossza</translation>
     </message>
     <message>
-      <location filename="../../TaskSurfaceFinishSymbols.cpp" line="307"/>
+      <location filename="../../TaskSurfaceFinishSymbols.cpp" line="311"/>
       <source>Lay symbol</source>
       <translation>Irányultsági jel</translation>
     </message>
     <message>
-      <location filename="../../TaskSurfaceFinishSymbols.cpp" line="315"/>
+      <location filename="../../TaskSurfaceFinishSymbols.cpp" line="319"/>
       <source>Minimum roughness grade number</source>
       <translation>Minimális érdességi osztályszám</translation>
     </message>
     <message>
-      <location filename="../../TaskSurfaceFinishSymbols.cpp" line="325"/>
+      <location filename="../../TaskSurfaceFinishSymbols.cpp" line="329"/>
       <source>Maximum roughness grade number</source>
       <translation>Maximális érdességi osztályszám</translation>
     </message>
@@ -3979,43 +4004,43 @@ Kijelölés nélkül a fájlböngésző lehetővé teszi egy SVG- vagy képfájl
       <translation>Kijelölésből nem lehet méretet létrehozni</translation>
     </message>
     <message>
-      <location filename="../../AppTechDrawGui.cpp" line="170"/>
-      <location filename="../../AppTechDrawGui.cpp" line="171"/>
       <location filename="../../AppTechDrawGui.cpp" line="172"/>
       <location filename="../../AppTechDrawGui.cpp" line="173"/>
       <location filename="../../AppTechDrawGui.cpp" line="174"/>
       <location filename="../../AppTechDrawGui.cpp" line="175"/>
       <location filename="../../AppTechDrawGui.cpp" line="176"/>
+      <location filename="../../AppTechDrawGui.cpp" line="177"/>
+      <location filename="../../AppTechDrawGui.cpp" line="178"/>
       <source>TechDraw</source>
       <translation>MűszakiRajz</translation>
     </message>
     <message>
-      <location filename="../../TaskCosmeticCircle.cpp" line="119"/>
+      <location filename="../../TaskCosmeticCircle.cpp" line="126"/>
       <source>Create Cosmetic Circle</source>
       <translation>Segéd kör létrehozása</translation>
     </message>
     <message>
-      <location filename="../../TaskCosmeticCircle.cpp" line="163"/>
+      <location filename="../../TaskCosmeticCircle.cpp" line="175"/>
       <source>Edit Cosmetic Circle</source>
       <translation>Segéd kör szerkesztése</translation>
     </message>
     <message>
-      <location filename="../../TaskCosmeticCircle.cpp" line="183"/>
+      <location filename="../../TaskCosmeticCircle.cpp" line="204"/>
       <source>Parameter Error</source>
       <translation>Paraméter hiba</translation>
     </message>
     <message>
-      <location filename="../../PagePrinter.cpp" line="262"/>
+      <location filename="../../PagePrinter.cpp" line="266"/>
       <source>Document Name:</source>
       <translation>Dokumentum neve:</translation>
     </message>
     <message>
-      <location filename="../../TaskProjGroup.cpp" line="181"/>
+      <location filename="../../TaskProjGroup.cpp" line="179"/>
       <source>Projection Group</source>
       <translation>Vetítési csoport</translation>
     </message>
     <message>
-      <location filename="../../TaskProjGroup.cpp" line="191"/>
+      <location filename="../../TaskProjGroup.cpp" line="189"/>
       <source>Part View</source>
       <translation>Alkatrész nézet</translation>
     </message>
@@ -4042,10 +4067,10 @@ olyan hegesztési szimbólummal rendelkezik, amely megtörne.</translation>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="180"/>
       <location filename="../../ViewProviderLeader.cpp" line="214"/>
       <location filename="../../ViewProviderWeld.cpp" line="145"/>
-      <location filename="../../ViewProviderPage.cpp" line="217"/>
+      <location filename="../../ViewProviderPage.cpp" line="215"/>
       <location filename="../../ViewProviderTemplate.cpp" line="205"/>
-      <location filename="../../ViewProviderProjGroup.cpp" line="143"/>
-      <location filename="../../ViewProviderProjGroup.cpp" line="160"/>
+      <location filename="../../ViewProviderProjGroup.cpp" line="146"/>
+      <location filename="../../ViewProviderProjGroup.cpp" line="163"/>
       <source>Object dependencies</source>
       <translation>Objektumfüggőségek</translation>
     </message>
@@ -4070,21 +4095,21 @@ olyan hegesztési szimbólummal rendelkezik, amely megtörne.</translation>
       <translation>Nem törölheti ezt a nézetet, mert van egy referenciavonala, amely megszakadna.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderPage.cpp" line="208"/>
+      <location filename="../../ViewProviderPage.cpp" line="204"/>
       <source>The page is not empty, therefore the
 following referencing objects might be lost:</source>
       <translation>Az oldal nem üres, ezért a
 a következő hivatkozási objektum elemek elveszhetnek:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderProjGroup.cpp" line="136"/>
+      <location filename="../../ViewProviderProjGroup.cpp" line="139"/>
       <source>The group cannot be deleted because its items have the following
 section or detail views, or leader lines that would get broken:</source>
       <translation>A csoport nem törölhető, mert elemei a következő
 szakasz- vagy részletnézeteknek, vagy a megszakadt referenciavonalaknak:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderProjGroup.cpp" line="151"/>
+      <location filename="../../ViewProviderProjGroup.cpp" line="154"/>
       <source>The projection group is not empty, therefore
 the following referencing objects might be lost:</source>
       <translation>A vetítési csoport nem üres, ezért
@@ -4128,7 +4153,7 @@ egy részhegesztése megtörne.</translation>
     <message>
       <location filename="../../TaskActiveView.ui" line="99"/>
       <source>Use 3D Background</source>
-      <translation type="unfinished">Use 3D Background</translation>
+      <translation>3D háttér használata</translation>
     </message>
     <message>
       <location filename="../../TaskActiveView.ui" line="115"/>
@@ -4182,14 +4207,6 @@ egy részhegesztése megtörne.</translation>
       <location filename="../../TaskMoveView.ui" line="64"/>
       <source>To Page</source>
       <translation>Cél oldal</translation>
-    </message>
-  </context>
-  <context>
-    <name>TaskPojGroup</name>
-    <message>
-      <location filename="../../TaskComplexSection.cpp" line="487"/>
-      <source> updates pending</source>
-      <translation> frissítések függőben</translation>
     </message>
   </context>
   <context>
@@ -4344,7 +4361,7 @@ Ezt a könyvtárat használja a szimbólum kiválasztásához.</translation>
     <message>
       <location filename="../../DlgPageChooser.ui" line="29"/>
       <source>FreeCAD could not determine which Page to use. Please select a Page.</source>
-      <translation type="unfinished">FreeCAD could not determine which Page to use. Please select a Page.</translation>
+      <translation>A FreeCAD nem tudta meghatározni, hogy melyik lapot használja. Kérjük, válasszon egy lapot.</translation>
     </message>
     <message>
       <location filename="../../DlgPageChooser.ui" line="39"/>
@@ -4724,7 +4741,7 @@ amikor egy PAT-mintával töltünk ki felületet</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="485"/>
       <source>Enforce ISO 8601 Date Format</source>
-      <translation type="unfinished">Enforce ISO 8601 Date Format</translation>
+      <translation>Használja az ISO 8601 dátumformátumot</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="509"/>
@@ -5109,7 +5126,7 @@ if you are planning to use a drawing as a 1:1 cutting guide.
     <message>
       <location filename="../../DlgPrefsTechDrawColors.ui" line="84"/>
       <source>If checked, FreeCAD will use a single color for all text and lines.</source>
-      <translation type="unfinished">If checked, FreeCAD will use a single color for all text and lines.</translation>
+      <translation>Ha bejelölt, akkor a FreeCAD egy színt fog használni minden szöveghez és vonalhoz.</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawColors.ui" line="87"/>
@@ -5136,7 +5153,7 @@ if you are planning to use a drawing as a 1:1 cutting guide.
       <translation>Méretek</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="181"/>
+      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="186"/>
       <source>Standard and Style</source>
       <translation>Szabvány és stílus</translation>
     </message>
@@ -5166,17 +5183,17 @@ if you are planning to use a drawing as a 1:1 cutting guide.
       <translation>ASME hivatkozás</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="356"/>
+      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="361"/>
       <source>Use system setting for number of decimals</source>
       <translation>A tizedesjegyek számának rendszerbeállítása</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="359"/>
+      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="364"/>
       <source>Use Global Decimals</source>
       <translation>Használja a globális tizedeseket</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="443"/>
+      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="448"/>
       <source>Controls the gap size between the dimension point and the start of the extension line for ISO dimensions.
  Value * linewidth is the gap.
  Normally, no gap is used. If using a gap, the recommended value is 8.</source>
@@ -5185,41 +5202,41 @@ if you are planning to use a drawing as a 1:1 cutting guide.
  Normally, no gap is used. If using a gap, the recommended value is 8.</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="461"/>
+      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="466"/>
       <source>Controls the gap size between the dimension point and the start of the extension line for ASME dimensions. Value * linewidth is the gap.
  Normally, no gap is used. If using a gap, the recommended value is 6.</source>
       <translation type="unfinished">Controls the gap size between the dimension point and the start of the extension line for ASME dimensions. Value * linewidth is the gap.
  Normally, no gap is used. If using a gap, the recommended value is 6.</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="483"/>
+      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="488"/>
       <source>Controls the gap size between dimension line and dimension text for ISO dimensions.</source>
       <translation type="unfinished">Controls the gap size between dimension line and dimension text for ISO dimensions.</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="486"/>
+      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="491"/>
       <source>Line Spacing - ISO</source>
       <translation>Sorköz - ISO</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="493"/>
+      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="498"/>
       <source>Controls the gap size between dimension line and dimension text.
  Value * linewidth is the line spacing.</source>
       <translation type="unfinished">Controls the gap size between dimension line and dimension text.
  Value * linewidth is the line spacing.</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="537"/>
+      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="542"/>
       <source>Tools</source>
       <translation>Eszközök</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="543"/>
+      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="548"/>
       <source>Dimensioning tools:</source>
       <translation>Méretmeghatározó eszközök:</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="550"/>
+      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="555"/>
       <source>Select the type of dimensioning tools for your toolbar:
 &apos;Single tool&apos;: A single tool for all dimensioning in the toolbar: Distance, Distance X / Y, Angle, Radius. (Others in dropdown)
 &apos;Separated tools&apos;: Individual tools for each dimensioning tool.
@@ -5232,12 +5249,12 @@ This setting is only for the toolbar. Whichever you choose, all tools are always
 Ez a beállítás csak az eszköztárra vonatkozik. Bármelyiket is választja, minden eszköz mindig elérhető a menüben és a parancsikonokon keresztül.</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="561"/>
+      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="566"/>
       <source>Dimension tool diameter/radius mode:</source>
       <translation>Méretezés eszköz átmérő/sugár mód:</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="568"/>
+      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="573"/>
       <source>While using the Dimension tool you may choose how to handle circles and arcs:
 &apos;Auto&apos;: The tool will apply radius to arcs and diameter to circles.
 &apos;Diameter&apos;: The tool will apply diameter to all.
@@ -5248,22 +5265,22 @@ Ez a beállítás csak az eszköztárra vonatkozik. Bármelyiket is választja, 
 &apos;Radius&apos;: Az eszköz a sugarat mindenre alkalmazza.</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="160"/>
+      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="165"/>
       <source>Append unit to dimension values</source>
       <translation>Fűzze a mértékegységeket a méret értékeihez</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="163"/>
+      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="168"/>
       <source>Show Units</source>
       <translation>Mértékegységek megjelenítése</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="393"/>
+      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="398"/>
       <source>Alternate Decimals</source>
       <translation>Alternatív tizedesjegyek száma</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="302"/>
+      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="307"/>
       <source>Number of decimals if &apos;Use Global Decimals&apos; is not used</source>
       <translation>A tizedesjegyek száma, ha a &apos;Globális tizedesjegyek használata&apos; nem használt</translation>
     </message>
@@ -5273,12 +5290,12 @@ Ez a beállítás csak az eszköztárra vonatkozik. Bármelyiket is választja, 
       <translation>Méret formátuma</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="405"/>
+      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="410"/>
       <source>Controls the gap size between the dimension point and the start of the extension line for ISO dimensions.</source>
       <translation type="unfinished">Controls the gap size between the dimension point and the start of the extension line for ISO dimensions.</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="408"/>
+      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="413"/>
       <source>Extension Gap Factor - ISO</source>
       <translation>Hosszabbítási rés tényező - ISO</translation>
     </message>
@@ -5288,17 +5305,17 @@ Ez a beállítás csak az eszköztárra vonatkozik. Bármelyiket is választja, 
       <translation>Betűméret</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="194"/>
+      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="199"/>
       <source>Dimension text font size</source>
       <translation>Méretezés szöveg betűméret</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="286"/>
+      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="291"/>
       <source>Tolerance Text Scale</source>
       <translation>Tűréshatár szövegének méretezése</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="252"/>
+      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="257"/>
       <source>Tolerance text scale
 Multiplier of &apos;Font Size&apos;</source>
       <translation>Tűréshatár szöveg méretezés
@@ -5310,12 +5327,12 @@ Multiplier of &apos;Font Size&apos;</source>
       <translation>Átmérőjelzés</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="329"/>
+      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="334"/>
       <source>Character used to indicate diameter dimensions</source>
       <translation>Átmérő méretek jelzésére használandó karakter</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="227"/>
+      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="232"/>
       <source>Arrow Style</source>
       <translation>Nyíl stílusa</translation>
     </message>
@@ -5325,7 +5342,7 @@ Multiplier of &apos;Font Size&apos;</source>
       <translation>Nyílhegy stílusa</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="215"/>
+      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="220"/>
       <source>Arrow Size</source>
       <translation>Nyíl mérete</translation>
     </message>
@@ -5335,22 +5352,22 @@ Multiplier of &apos;Font Size&apos;</source>
       <translation>Nyílhegy mérete</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="415"/>
+      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="420"/>
       <source>Leave blank for automatic dimension format. Use %f, %g or %w specifiers to override.</source>
       <translation>Automatikus méretformátum esetén hagyja üresen. Használja a %f, %g vagy %w specifikátorokat a felülbíráláshoz.</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="433"/>
+      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="438"/>
       <source>Controls the gap size between the dimension point and the start of the extension line for ASME dimensions.</source>
       <translation type="unfinished">Controls the gap size between the dimension point and the start of the extension line for ASME dimensions.</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="436"/>
+      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="441"/>
       <source>Extension Gap Factor - ASME</source>
       <translation>Hosszabbítási rés tényező - ASME</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="521"/>
+      <location filename="../../DlgPrefsTechDrawDimensions.ui" line="526"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Note:&lt;/span&gt; Items in &lt;span style=&quot; font-style:italic;&quot;&gt;italics&lt;/span&gt; are default values for new objects. They have no effect on existing objects.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
       <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Megjegyzés:&lt;/span&gt; A &lt;span style=&quot; font-style:italic;&quot;&gt;dőlt&lt;/span&gt; elemek az új objektumok alapértelmezett értékei. A meglévő objektumokra nincs hatásuk.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
@@ -5503,12 +5520,12 @@ Vetítéscsoportok számára</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="850"/>
       <source>If checked, the 3D camera direction (or normal of a selected face) will be used as the view direction. If not checked, Views will be created as Front Views.</source>
-      <translation type="unfinished">If checked, the 3D camera direction (or normal of a selected face) will be used as the view direction. If not checked, Views will be created as Front Views.</translation>
+      <translation>Ha bejelölt, akkor a 3D kamera iránya (vagy a kiválasztott felület aktuálisa) lesz a nézet iránya. Ha nincs bejelölve, a nézetek elölnézetként jönnek létre.</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="853"/>
       <source>Use 3D Camera Direction</source>
-      <translation type="unfinished">Use 3D Camera Direction</translation>
+      <translation>3D kamera irány használata</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="403"/>
@@ -5824,97 +5841,107 @@ Gyors, de az eredmény rövid egyenesek gyűjteménye.</translation>
       <translation>Méretezés</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawScale.ui" line="60"/>
+      <location filename="../../DlgPrefsTechDrawScale.ui" line="73"/>
       <source>Page Scale</source>
       <translation>Oldal lépték</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawScale.ui" line="79"/>
+      <location filename="../../DlgPrefsTechDrawScale.ui" line="147"/>
       <source>Default scale for new pages</source>
       <translation>Alapértelmezett lépték új oldalakhoz</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawScale.ui" line="106"/>
+      <location filename="../../DlgPrefsTechDrawScale.ui" line="214"/>
       <source>View Scale Type</source>
       <translation>Nézet lépték típusa</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawScale.ui" line="128"/>
+      <location filename="../../DlgPrefsTechDrawScale.ui" line="107"/>
       <source>Default scale for new views</source>
       <translation>Alapértelmezett lépték új nézetekhez</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawScale.ui" line="138"/>
+      <location filename="../../DlgPrefsTechDrawScale.ui" line="117"/>
       <source>Page</source>
       <translation>Oldal</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawScale.ui" line="143"/>
+      <location filename="../../DlgPrefsTechDrawScale.ui" line="122"/>
       <source>Auto</source>
       <translation>Automatikus</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawScale.ui" line="148"/>
+      <location filename="../../DlgPrefsTechDrawScale.ui" line="127"/>
       <source>Custom</source>
       <translation>Egyéni</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawScale.ui" line="161"/>
+      <location filename="../../DlgPrefsTechDrawScale.ui" line="85"/>
       <source>View Custom Scale</source>
       <translation>Egyedi lépték</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawScale.ui" line="196"/>
+      <location filename="../../DlgPrefsTechDrawScale.ui" line="184"/>
       <source>Default scale for views if &apos;View Scale Type&apos; is &apos;Custom&apos;</source>
       <translation>Alapértelmezett lépték, ha &apos;Nézet lépték típusa&apos; &apos;Egyedi&apos;-re van állítva</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawScale.ui" line="238"/>
+      <location filename="../../DlgPrefsTechDrawScale.ui" line="226"/>
+      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If checked, Svg symbols, spreadsheet views and Draft views will use the original (incorrect) scaling method as used in v1.0 and earlier.  If unchecked, a more accurate method will be used.  &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If checked, Svg symbols, spreadsheet views and Draft views will use the original (incorrect) scaling method as used in v1.0 and earlier.  If unchecked, a more accurate method will be used.  &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDrawScale.ui" line="229"/>
+      <source>Legacy Symbol Scaling</source>
+      <translation type="unfinished">Legacy Symbol Scaling</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDrawScale.ui" line="259"/>
       <source>Size Adjustments</source>
       <translation>Méret igazítás</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawScale.ui" line="246"/>
+      <location filename="../../DlgPrefsTechDrawScale.ui" line="267"/>
       <source>Vertex Scale</source>
       <translation>Végpont nagyítás</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawScale.ui" line="265"/>
+      <location filename="../../DlgPrefsTechDrawScale.ui" line="286"/>
       <source>Scale of vertex dots. Multiplier of line width.</source>
       <translation>A csúcspontok méretaránya. A vonalszélesség szorzója.</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawScale.ui" line="292"/>
+      <location filename="../../DlgPrefsTechDrawScale.ui" line="313"/>
       <source>Center Mark Scale</source>
       <translation>Középpont jelölés méretezés</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawScale.ui" line="324"/>
+      <location filename="../../DlgPrefsTechDrawScale.ui" line="345"/>
       <source>Size of center marks. Multiplier of vertex size.</source>
       <translation>A középpont jelek mérete. A csúcspontok méretének szorzója.</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawScale.ui" line="349"/>
+      <location filename="../../DlgPrefsTechDrawScale.ui" line="370"/>
       <source>Template Edit Mark</source>
       <translation>Sablon szerkesztési jel</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawScale.ui" line="368"/>
+      <location filename="../../DlgPrefsTechDrawScale.ui" line="389"/>
       <source>Size of template field click handles</source>
       <translation>A szerkeszthető szövegek kattintási mezőinek mérete a rajzsablonokon mm-ben</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawScale.ui" line="387"/>
+      <location filename="../../DlgPrefsTechDrawScale.ui" line="405"/>
       <source>Welding Symbol Scale</source>
       <translation>Hegesztési szimbólum méretarány</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawScale.ui" line="394"/>
+      <location filename="../../DlgPrefsTechDrawScale.ui" line="412"/>
       <source>Multiplier for size of welding symbols</source>
       <translation>A hegesztési szimbólumok méretének szorzója</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawScale.ui" line="427"/>
+      <location filename="../../DlgPrefsTechDrawScale.ui" line="445"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Note:&lt;/span&gt; Items in &lt;span style=&quot; font-style:italic;&quot;&gt;italics&lt;/span&gt; are default values for new objects. They have no effect on existing objects.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
       <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Megjegyzés:&lt;/span&gt; A &lt;span style=&quot; font-style:italic;&quot;&gt;dőlt&lt;/span&gt; elemek az új objektumok alapértelmezett értékei. A meglévő objektumokra nincs hatásuk.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
@@ -5922,71 +5949,61 @@ Gyors, de az eredmény rövid egyenesek gyűjteménye.</translation>
   <context>
     <name>TechDrawGui::MDIViewPage</name>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="89"/>
+      <location filename="../../MDIViewPage.cpp" line="90"/>
       <source>Toggle &amp;Keep Updated</source>
       <translation>Frissen tartás kapcsolója</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="92"/>
+      <location filename="../../MDIViewPage.cpp" line="93"/>
       <source>Toggle &amp;Frames</source>
       <translation>Keretek kapcsolója</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="95"/>
+      <location filename="../../MDIViewPage.cpp" line="96"/>
       <source>&amp;Export SVG</source>
       <translation>&amp;Exportálás SVG-be</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="98"/>
+      <location filename="../../MDIViewPage.cpp" line="99"/>
       <source>Export DXF</source>
       <translation>DXF export</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="101"/>
+      <location filename="../../MDIViewPage.cpp" line="102"/>
       <source>Export PDF</source>
       <translation>Exportálás PDF-be</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="104"/>
+      <location filename="../../MDIViewPage.cpp" line="105"/>
       <source>Print All Pages</source>
       <translation>Összes oldal nyomtatása</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="393"/>
+      <location filename="../../MDIViewPage.cpp" line="394"/>
       <source>Different orientation</source>
       <translation>Eltérő tájolású</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="394"/>
+      <location filename="../../MDIViewPage.cpp" line="395"/>
       <source>The printer uses a different orientation than the drawing.
 Do you want to continue?</source>
       <translation>A nyomtató a rajztól eltérő tájolást használ. 
 Szeretné folytatni?</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="403"/>
+      <location filename="../../MDIViewPage.cpp" line="404"/>
       <source>Different paper size</source>
       <translation>Eltérő papírméret</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="404"/>
+      <location filename="../../MDIViewPage.cpp" line="405"/>
       <source>The printer uses a different paper size than the drawing.
 Do you want to continue?</source>
       <translation>A nyomtató a rajztól eltérő méretű papír méretet használ. 
 Szeretné folytatni?</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="495"/>
-      <source>Save DXF file</source>
-      <translation>DXF-fájl mentése</translation>
-    </message>
-    <message>
-      <location filename="../../MDIViewPage.cpp" line="518"/>
-      <source>Save PDF file</source>
-      <translation>PDF-fájl mentése</translation>
-    </message>
-    <message>
-      <location filename="../../MDIViewPage.cpp" line="1061"/>
+      <location filename="../../MDIViewPage.cpp" line="1080"/>
       <source>Selected:</source>
       <translation>Kiválasztott:</translation>
     </message>
@@ -6436,18 +6453,18 @@ Szeretné folytatni?</translation>
       <translation>Frissítés most</translation>
     </message>
     <message>
-      <location filename="../../TaskComplexSection.cpp" line="173"/>
+      <location filename="../../TaskComplexSection.cpp" line="175"/>
       <source>No direction set</source>
-      <translation type="unfinished">No direction set</translation>
+      <translation>Nincs beállítva irány</translation>
     </message>
     <message>
-      <location filename="../../TaskComplexSection.cpp" line="561"/>
-      <location filename="../../TaskComplexSection.cpp" line="703"/>
+      <location filename="../../TaskComplexSection.cpp" line="558"/>
+      <location filename="../../TaskComplexSection.cpp" line="705"/>
       <source>ComplexSection</source>
       <translation>Összetett szakasz</translation>
     </message>
     <message>
-      <location filename="../../TaskComplexSection.cpp" line="714"/>
+      <location filename="../../TaskComplexSection.cpp" line="716"/>
       <source>Can not continue. Object * %1 or %2 not found.</source>
       <translation>Nem folytatható. * %1 vagy %2 objektum nem található.</translation>
     </message>
@@ -6523,13 +6540,13 @@ Szeretné folytatni?</translation>
       <location filename="../../TaskCosmeticLine.ui" line="61"/>
       <location filename="../../TaskCosmeticLine.ui" line="140"/>
       <source>2D Point</source>
-      <translation type="unfinished">2D Point</translation>
+      <translation>2D Pont</translation>
     </message>
     <message>
       <location filename="../../TaskCosmeticLine.ui" line="77"/>
       <location filename="../../TaskCosmeticLine.ui" line="156"/>
       <source>3D Point</source>
-      <translation type="unfinished">3D Point</translation>
+      <translation>3D Pont</translation>
     </message>
   </context>
   <context>
@@ -6853,58 +6870,58 @@ Szeretné folytatni?</translation>
   <context>
     <name>TechDrawGui::TaskDetail</name>
     <message>
-      <location filename="../../TaskDetail.ui" line="14"/>
+      <location filename="../../TaskDetail.ui" line="20"/>
       <source>Detail Anchor</source>
       <translation>Részlethorgony</translation>
     </message>
     <message>
-      <location filename="../../TaskDetail.ui" line="26"/>
+      <location filename="../../TaskDetail.ui" line="32"/>
       <source>Base View</source>
       <translation>Alap nézet</translation>
     </message>
     <message>
-      <location filename="../../TaskDetail.ui" line="49"/>
+      <location filename="../../TaskDetail.ui" line="55"/>
       <source>Detail View</source>
       <translation>Részletnézet</translation>
     </message>
     <message>
-      <location filename="../../TaskDetail.ui" line="80"/>
+      <location filename="../../TaskDetail.ui" line="86"/>
       <source>Click to drag detail highlight to new position</source>
       <translation>Kattintson a részletkiemelés új pozícióba húzásához</translation>
     </message>
     <message>
-      <location filename="../../TaskDetail.ui" line="83"/>
+      <location filename="../../TaskDetail.ui" line="89"/>
       <location filename="../../TaskDetail.cpp" line="260"/>
       <source>Drag Highlight</source>
       <translation>Kiemelés húzás</translation>
     </message>
     <message>
-      <location filename="../../TaskDetail.ui" line="134"/>
+      <location filename="../../TaskDetail.ui" line="229"/>
       <source>x position of detail highlight within view</source>
       <translation>x részlet kiemelésének pozíciója a nézetben</translation>
     </message>
     <message>
-      <location filename="../../TaskDetail.ui" line="160"/>
+      <location filename="../../TaskDetail.ui" line="168"/>
       <source>y position of detail highlight within view</source>
       <translation>y részlet kiemelésének pozíciója a nézetben</translation>
     </message>
     <message>
-      <location filename="../../TaskDetail.ui" line="176"/>
+      <location filename="../../TaskDetail.ui" line="242"/>
       <source>Radius</source>
       <translation>Sugár</translation>
     </message>
     <message>
-      <location filename="../../TaskDetail.ui" line="183"/>
+      <location filename="../../TaskDetail.ui" line="197"/>
       <source>size of detail view</source>
       <translation>részletnézet mérete</translation>
     </message>
     <message>
-      <location filename="../../TaskDetail.ui" line="202"/>
+      <location filename="../../TaskDetail.ui" line="120"/>
       <source>Scale Type</source>
       <translation>Lépték típusa</translation>
     </message>
     <message>
-      <location filename="../../TaskDetail.ui" line="209"/>
+      <location filename="../../TaskDetail.ui" line="256"/>
       <source>Page: scale factor of page is used
 Automatic: if the detail view is larger than the page,
                    it will be scaled down to fit into the page
@@ -6915,37 +6932,37 @@ Automatikus: ha a részletnézet nagyobb, mint az oldal,
 Egyedi: egyedi lépték használata</translation>
     </message>
     <message>
-      <location filename="../../TaskDetail.ui" line="216"/>
+      <location filename="../../TaskDetail.ui" line="263"/>
       <source>Page</source>
       <translation>Oldal</translation>
     </message>
     <message>
-      <location filename="../../TaskDetail.ui" line="221"/>
+      <location filename="../../TaskDetail.ui" line="268"/>
       <source>Automatic</source>
       <translation>Automatikus</translation>
     </message>
     <message>
-      <location filename="../../TaskDetail.ui" line="226"/>
+      <location filename="../../TaskDetail.ui" line="273"/>
       <source>Custom</source>
       <translation>Egyéni</translation>
     </message>
     <message>
-      <location filename="../../TaskDetail.ui" line="234"/>
+      <location filename="../../TaskDetail.ui" line="184"/>
       <source>Scale Factor</source>
       <translation>Lépték</translation>
     </message>
     <message>
-      <location filename="../../TaskDetail.ui" line="244"/>
+      <location filename="../../TaskDetail.ui" line="140"/>
       <source>scale factor for detail view</source>
       <translation>részletnézet léptéke</translation>
     </message>
     <message>
-      <location filename="../../TaskDetail.ui" line="266"/>
+      <location filename="../../TaskDetail.ui" line="216"/>
       <source>Reference</source>
       <translation>Referencia</translation>
     </message>
     <message>
-      <location filename="../../TaskDetail.ui" line="273"/>
+      <location filename="../../TaskDetail.ui" line="127"/>
       <source>reference label</source>
       <translation>hivatkozási címke</translation>
     </message>
@@ -7320,7 +7337,7 @@ negatív &apos;felső tűréshatár&apos;értékkel helyettesíti.</translation>
     <message>
       <location filename="../../TaskHatch.ui" line="107"/>
       <source>SVG Line Color</source>
-      <translation type="unfinished">SVG Line Color</translation>
+      <translation>SVG Vonal Színe</translation>
     </message>
     <message>
       <location filename="../../TaskHatch.ui" line="133"/>
@@ -7742,8 +7759,8 @@ További pontokat is választhatsz, hogy vonalszakaszokat kapj.</translation>
     </message>
     <message>
       <location filename="../../TaskProjGroup.ui" line="362"/>
-      <location filename="../../TaskProjGroup.cpp" line="661"/>
-      <location filename="../../TaskProjGroup.cpp" line="668"/>
+      <location filename="../../TaskProjGroup.cpp" line="665"/>
+      <location filename="../../TaskProjGroup.cpp" line="672"/>
       <source>Top</source>
       <translation>Felülnézet</translation>
     </message>
@@ -7754,8 +7771,8 @@ További pontokat is választhatsz, hogy vonalszakaszokat kapj.</translation>
     </message>
     <message>
       <location filename="../../TaskProjGroup.ui" line="409"/>
-      <location filename="../../TaskProjGroup.cpp" line="663"/>
-      <location filename="../../TaskProjGroup.cpp" line="665"/>
+      <location filename="../../TaskProjGroup.cpp" line="667"/>
+      <location filename="../../TaskProjGroup.cpp" line="669"/>
       <source>Left</source>
       <translation>Bal</translation>
     </message>
@@ -7766,14 +7783,14 @@ További pontokat is választhatsz, hogy vonalszakaszokat kapj.</translation>
     </message>
     <message>
       <location filename="../../TaskProjGroup.ui" line="449"/>
-      <location filename="../../TaskProjGroup.cpp" line="663"/>
-      <location filename="../../TaskProjGroup.cpp" line="665"/>
+      <location filename="../../TaskProjGroup.cpp" line="667"/>
+      <location filename="../../TaskProjGroup.cpp" line="669"/>
       <source>Right</source>
       <translation>Jobb oldalnézet</translation>
     </message>
     <message>
       <location filename="../../TaskProjGroup.ui" line="466"/>
-      <location filename="../../TaskProjGroup.cpp" line="666"/>
+      <location filename="../../TaskProjGroup.cpp" line="670"/>
       <source>Rear</source>
       <translation>Hátsó nézet</translation>
     </message>
@@ -7784,8 +7801,8 @@ További pontokat is választhatsz, hogy vonalszakaszokat kapj.</translation>
     </message>
     <message>
       <location filename="../../TaskProjGroup.ui" line="516"/>
-      <location filename="../../TaskProjGroup.cpp" line="661"/>
-      <location filename="../../TaskProjGroup.cpp" line="668"/>
+      <location filename="../../TaskProjGroup.cpp" line="665"/>
+      <location filename="../../TaskProjGroup.cpp" line="672"/>
       <source>Bottom</source>
       <translation>Alsó</translation>
     </message>
@@ -7827,31 +7844,31 @@ a megadott X/Y távolság használatával</translation>
       <translation>Y hézag</translation>
     </message>
     <message>
-      <location filename="../../TaskProjGroup.cpp" line="660"/>
-      <location filename="../../TaskProjGroup.cpp" line="669"/>
+      <location filename="../../TaskProjGroup.cpp" line="664"/>
+      <location filename="../../TaskProjGroup.cpp" line="673"/>
       <source>FrontTopLeft</source>
       <translation>ElölFellülBalra</translation>
     </message>
     <message>
-      <location filename="../../TaskProjGroup.cpp" line="660"/>
-      <location filename="../../TaskProjGroup.cpp" line="669"/>
+      <location filename="../../TaskProjGroup.cpp" line="664"/>
+      <location filename="../../TaskProjGroup.cpp" line="673"/>
       <source>FrontBottomRight</source>
       <translation>ElölAllulJobbra</translation>
     </message>
     <message>
-      <location filename="../../TaskProjGroup.cpp" line="662"/>
-      <location filename="../../TaskProjGroup.cpp" line="667"/>
+      <location filename="../../TaskProjGroup.cpp" line="666"/>
+      <location filename="../../TaskProjGroup.cpp" line="671"/>
       <source>FrontTopRight</source>
       <translation>ElölFellülJobbra</translation>
     </message>
     <message>
-      <location filename="../../TaskProjGroup.cpp" line="662"/>
-      <location filename="../../TaskProjGroup.cpp" line="667"/>
+      <location filename="../../TaskProjGroup.cpp" line="666"/>
+      <location filename="../../TaskProjGroup.cpp" line="671"/>
       <source>FrontBottomLeft</source>
       <translation>ElölAllulBalra</translation>
     </message>
     <message>
-      <location filename="../../TaskProjGroup.cpp" line="664"/>
+      <location filename="../../TaskProjGroup.cpp" line="668"/>
       <source>Front</source>
       <translation>Elölnézet</translation>
     </message>
@@ -8183,7 +8200,7 @@ a megadott X/Y távolság használatával</translation>
       <translation>Szelvénysík elhelyezkedése</translation>
     </message>
     <message numerus="yes">
-      <location filename="../../TaskSectionView.cpp" line="428"/>
+      <location filename="../../TaskSectionView.cpp" line="429"/>
       <source>%n update(s) pending</source>
       <translation>
         <numerusform>%n frissítés(ek) függőben</numerusform>
@@ -8191,12 +8208,12 @@ a megadott X/Y távolság használatával</translation>
       </translation>
     </message>
     <message>
-      <location filename="../../TaskSectionView.cpp" line="438"/>
+      <location filename="../../TaskSectionView.cpp" line="439"/>
       <source>Nothing to apply. No section direction picked yet</source>
       <translation>Nincs mit alkalmazni. Még nincs a szakaszirány kiválasztva</translation>
     </message>
     <message>
-      <location filename="../../TaskSectionView.cpp" line="639"/>
+      <location filename="../../TaskSectionView.cpp" line="640"/>
       <source>Can not continue. Object * %1 or %2 not found.</source>
       <translation>Nem folytatható. * %1 vagy %2 objektum nem található.</translation>
     </message>
@@ -8258,7 +8275,7 @@ a megadott X/Y távolság használatával</translation>
     <name>TechDrawGui::TaskSurfaceFinishSymbols</name>
     <message>
       <location filename="../../TaskSurfaceFinishSymbols.ui" line="26"/>
-      <location filename="../../TaskSurfaceFinishSymbols.cpp" line="246"/>
+      <location filename="../../TaskSurfaceFinishSymbols.cpp" line="250"/>
       <source>Surface Finish Symbols</source>
       <translation>Felületkijelölő szimbólumok</translation>
     </message>
@@ -8411,7 +8428,7 @@ a megadott X/Y távolság használatával</translation>
   <context>
     <name>TechDraw_ComplexSection</name>
     <message>
-      <location filename="../../Command.cpp" line="801"/>
+      <location filename="../../Command.cpp" line="797"/>
       <source>Insert complex Section View</source>
       <translation>Összetett szakasz nézet beszúrása</translation>
     </message>
@@ -8427,12 +8444,12 @@ a megadott X/Y távolság használatával</translation>
   <context>
     <name>TechDraw_ExtensionremovePrefixChar</name>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="416"/>
+      <location filename="../../CommandExtensionDims.cpp" line="418"/>
       <source>Remove Prefix</source>
       <translation>Előtag eltávolítása</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="417"/>
+      <location filename="../../CommandExtensionDims.cpp" line="419"/>
       <source>Remove prefix symbols at the beginning of the dimension text:&lt;br&gt;- Select one or more dimensions&lt;br&gt;- Click this tool</source>
       <translation>Előtag-szimbólum eltávolítása a méretszöveg elejéről:&lt;br&gt;- Egy vagy több méret kiválasztása&lt;br&gt;- Kattintson erre az eszközre</translation>
     </message>
@@ -8448,7 +8465,7 @@ a megadott X/Y távolság használatával</translation>
   <context>
     <name>TechDraw_HorizontalExtent</name>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="2036"/>
+      <location filename="../../CommandCreateDims.cpp" line="2035"/>
       <source>Insert Horizontal Extent Dimension</source>
       <translation>Vízszintes kiterjedésdimenzió beszúrása</translation>
     </message>
@@ -8472,7 +8489,7 @@ a megadott X/Y távolság használatával</translation>
   <context>
     <name>TechDraw_SectionView</name>
     <message>
-      <location filename="../../Command.cpp" line="796"/>
+      <location filename="../../Command.cpp" line="792"/>
       <source>Insert simple Section View</source>
       <translation>Egyszerű szakasz nézet beszúrása</translation>
     </message>
@@ -8512,7 +8529,7 @@ a megadott X/Y távolság használatával</translation>
   <context>
     <name>TechDraw_VerticalExtentDimension</name>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="2040"/>
+      <location filename="../../CommandCreateDims.cpp" line="2039"/>
       <source>Insert Vertical Extent Dimension</source>
       <translation>Függőleges kiterjedés méret beszúrása</translation>
     </message>
@@ -8802,27 +8819,14 @@ a megadott X/Y távolság használatával</translation>
     </message>
   </context>
   <context>
-    <name>TechDrawGui::DlgStringListEditor</name>
-    <message>
-      <location filename="../../DlgStringListEditor.ui" line="17"/>
-      <source>String List Editor</source>
-      <translation>Karakterlista szerkesztő</translation>
-    </message>
-    <message>
-      <location filename="../../DlgStringListEditor.ui" line="31"/>
-      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Double click to edit a line.  New lines are added at the current location in the list.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Kattintson duplán egy sor szerkesztéséhez.  Új sorok kerülnek hozzáadásra a lista aktuális helyén.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
-    </message>
-  </context>
-  <context>
     <name>CmdTechDrawDimensionRepair</name>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="2210"/>
+      <location filename="../../CommandCreateDims.cpp" line="2209"/>
       <source>TechDraw</source>
       <translation>MűszakiRajz</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="2211"/>
+      <location filename="../../CommandCreateDims.cpp" line="2210"/>
       <source>Repair Dimension References</source>
       <translation>Méret referenciák javítása</translation>
     </message>
@@ -9036,7 +9040,7 @@ a feladat párbeszédpanel nyitva van.</translation>
   <context>
     <name>DrawPage</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="57"/>
+      <location filename="../../../App/DrawView.cpp" line="58"/>
       <source>Page</source>
       <translation>Oldal</translation>
     </message>
@@ -9044,7 +9048,7 @@ a feladat párbeszédpanel nyitva van.</translation>
   <context>
     <name>DrawSVGTemplate</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="58"/>
+      <location filename="../../../App/DrawView.cpp" line="59"/>
       <source>Template</source>
       <translation>Sablon</translation>
     </message>
@@ -9052,7 +9056,7 @@ a feladat párbeszédpanel nyitva van.</translation>
   <context>
     <name>DrawView</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="59"/>
+      <location filename="../../../App/DrawView.cpp" line="60"/>
       <source>View</source>
       <translation>Nézet</translation>
     </message>
@@ -9060,7 +9064,7 @@ a feladat párbeszédpanel nyitva van.</translation>
   <context>
     <name>DrawViewPart</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="60"/>
+      <location filename="../../../App/DrawView.cpp" line="61"/>
       <source>View</source>
       <translation>Nézet</translation>
     </message>
@@ -9068,7 +9072,7 @@ a feladat párbeszédpanel nyitva van.</translation>
   <context>
     <name>DrawViewSection</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="61"/>
+      <location filename="../../../App/DrawView.cpp" line="62"/>
       <source>Section</source>
       <translation>Szakasz</translation>
     </message>
@@ -9076,7 +9080,7 @@ a feladat párbeszédpanel nyitva van.</translation>
   <context>
     <name>DrawComplexSection</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="62"/>
+      <location filename="../../../App/DrawView.cpp" line="63"/>
       <source>Section</source>
       <translation>Szakasz</translation>
     </message>
@@ -9084,7 +9088,7 @@ a feladat párbeszédpanel nyitva van.</translation>
   <context>
     <name>DrawViewDetail</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="63"/>
+      <location filename="../../../App/DrawView.cpp" line="64"/>
       <source>Detail</source>
       <translation>Részlet</translation>
     </message>
@@ -9092,7 +9096,7 @@ a feladat párbeszédpanel nyitva van.</translation>
   <context>
     <name>DrawActiveView</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="64"/>
+      <location filename="../../../App/DrawView.cpp" line="65"/>
       <source>ActiveView</source>
       <translation>Aktívnézet</translation>
     </message>
@@ -9100,7 +9104,7 @@ a feladat párbeszédpanel nyitva van.</translation>
   <context>
     <name>DrawViewAnnotation</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="65"/>
+      <location filename="../../../App/DrawView.cpp" line="66"/>
       <source>Annotation</source>
       <translation>Megjegyzés</translation>
     </message>
@@ -9108,7 +9112,7 @@ a feladat párbeszédpanel nyitva van.</translation>
   <context>
     <name>DrawViewImage</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="66"/>
+      <location filename="../../../App/DrawView.cpp" line="67"/>
       <source>Image</source>
       <translation>Kép</translation>
     </message>
@@ -9116,23 +9120,15 @@ a feladat párbeszédpanel nyitva van.</translation>
   <context>
     <name>DrawViewSymbol</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="67"/>
+      <location filename="../../../App/DrawView.cpp" line="68"/>
       <source>Symbol</source>
       <translation>Szimbólum</translation>
     </message>
   </context>
   <context>
-    <name>DrawViewArch</name>
-    <message>
-      <location filename="../../../App/DrawView.cpp" line="68"/>
-      <source>Arch</source>
-      <translation>Architektúra</translation>
-    </message>
-  </context>
-  <context>
     <name>DrawViewDraft</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="69"/>
+      <location filename="../../../App/DrawView.cpp" line="70"/>
       <source>Draft</source>
       <translation>Tervrajz</translation>
     </message>
@@ -9140,7 +9136,7 @@ a feladat párbeszédpanel nyitva van.</translation>
   <context>
     <name>DrawLeaderLine</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="70"/>
+      <location filename="../../../App/DrawView.cpp" line="71"/>
       <source>LeaderLine</source>
       <translation>Referenciavonal</translation>
     </message>
@@ -9148,7 +9144,7 @@ a feladat párbeszédpanel nyitva van.</translation>
   <context>
     <name>DrawViewBalloon</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="71"/>
+      <location filename="../../../App/DrawView.cpp" line="72"/>
       <source>Balloon</source>
       <translation>Ballon</translation>
     </message>
@@ -9156,7 +9152,7 @@ a feladat párbeszédpanel nyitva van.</translation>
   <context>
     <name>DrawViewDimension</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="72"/>
+      <location filename="../../../App/DrawView.cpp" line="73"/>
       <source>Dimension</source>
       <translation>Dimenzió</translation>
     </message>
@@ -9164,7 +9160,7 @@ a feladat párbeszédpanel nyitva van.</translation>
   <context>
     <name>DrawViewDimExtent</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="73"/>
+      <location filename="../../../App/DrawView.cpp" line="74"/>
       <source>Extent</source>
       <translation>Hatókör</translation>
     </message>
@@ -9172,7 +9168,7 @@ a feladat párbeszédpanel nyitva van.</translation>
   <context>
     <name>DrawHatch</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="74"/>
+      <location filename="../../../App/DrawView.cpp" line="75"/>
       <source>Hatch</source>
       <translation>Kitöltés</translation>
     </message>
@@ -9180,7 +9176,7 @@ a feladat párbeszédpanel nyitva van.</translation>
   <context>
     <name>DrawGeomHatch</name>
     <message>
-      <location filename="../../../App/DrawView.cpp" line="75"/>
+      <location filename="../../../App/DrawView.cpp" line="76"/>
       <source>GeomHatch</source>
       <translation>GeomKitölt</translation>
     </message>
@@ -9208,22 +9204,22 @@ a feladat párbeszédpanel nyitva van.</translation>
       <translation>Sugár:</translation>
     </message>
     <message>
-      <location filename="../../TaskCosmeticCircle.ui" line="205"/>
+      <location filename="../../TaskCosmeticCircle.ui" line="208"/>
       <source>Start Angle:</source>
       <translation>Szög kezdete:</translation>
     </message>
     <message>
-      <location filename="../../TaskCosmeticCircle.ui" line="212"/>
+      <location filename="../../TaskCosmeticCircle.ui" line="188"/>
       <source>Check this box to make an arc from start angle to end angle in a clockwise direction.</source>
       <translation>Jelölje be ezt a négyzetet, ha az óramutató járásával megegyező irányban szeretne ívet készíteni a kezdőszögtől a végszögig.</translation>
     </message>
     <message>
-      <location filename="../../TaskCosmeticCircle.ui" line="215"/>
+      <location filename="../../TaskCosmeticCircle.ui" line="191"/>
       <source>Clockwise Angle</source>
       <translation>Óramutató járásával megegyező szög</translation>
     </message>
     <message>
-      <location filename="../../TaskCosmeticCircle.ui" line="195"/>
+      <location filename="../../TaskCosmeticCircle.ui" line="198"/>
       <source>End angle (conventional) of arc in degrees.</source>
       <translation>Az ív végszöge (hagyományos) fokban.</translation>
     </message>
@@ -9235,7 +9231,7 @@ a feladat párbeszédpanel nyitva van.</translation>
     <message>
       <location filename="../../TaskCosmeticCircle.ui" line="64"/>
       <source>2D Point</source>
-      <translation type="unfinished">2D Point</translation>
+      <translation>2D Pont</translation>
     </message>
     <message>
       <location filename="../../TaskCosmeticCircle.ui" line="77"/>
@@ -9245,10 +9241,10 @@ a feladat párbeszédpanel nyitva van.</translation>
     <message>
       <location filename="../../TaskCosmeticCircle.ui" line="80"/>
       <source>3D Point</source>
-      <translation type="unfinished">3D Point</translation>
+      <translation>3D Pont</translation>
     </message>
     <message>
-      <location filename="../../TaskCosmeticCircle.ui" line="188"/>
+      <location filename="../../TaskCosmeticCircle.ui" line="181"/>
       <source>End Angle:</source>
       <translation>Ív vége:</translation>
     </message>
@@ -9258,12 +9254,17 @@ a feladat párbeszédpanel nyitva van.</translation>
       <translation>Az ív kezdőszöge (hagyományos) fokban.</translation>
     </message>
     <message>
-      <location filename="../../TaskCosmeticCircle.ui" line="181"/>
+      <location filename="../../TaskCosmeticCircle.ui" line="215"/>
+      <source>Select to enter angles and create a circular arc.</source>
+      <translation type="unfinished">Select to enter angles and create a circular arc.</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCosmeticCircle.ui" line="218"/>
       <source>Arc of Circle</source>
       <translation>A kör íve</translation>
     </message>
     <message>
-      <location filename="../../TaskCosmeticCircle.cpp" line="182"/>
+      <location filename="../../TaskCosmeticCircle.cpp" line="203"/>
       <source>Radius must be non-zero positive number</source>
       <translation>Sugár nem nulla pozitív szám kell, hogy legyen</translation>
     </message>
@@ -9284,17 +9285,17 @@ a feladat párbeszédpanel nyitva van.</translation>
   <context>
     <name>CmdTechDrawExtensionArcLengthAnnotation</name>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1895"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1899"/>
       <source>TechDraw</source>
       <translation>MűszakiRajz</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1896"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1900"/>
       <source>Calculate the arc length of selected edges</source>
       <translation>A kiválasztott élek ívhosszának kiszámítása</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1897"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1901"/>
       <source>Select several edges&lt;br&gt;    - click this tool</source>
       <translation>Több él kijelölése&lt;br&gt; - kattintson erre az eszközre</translation>
     </message>
@@ -9664,19 +9665,19 @@ a feladat párbeszédpanel nyitva van.</translation>
   <context>
     <name>CmdTechDrawExtensionInsertRepetition</name>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="221"/>
+      <location filename="../../CommandExtensionDims.cpp" line="223"/>
       <source>TechDraw</source>
       <translation>MűszakiRajz</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="222"/>
-      <location filename="../../CommandExtensionDims.cpp" line="409"/>
+      <location filename="../../CommandExtensionDims.cpp" line="224"/>
+      <location filename="../../CommandExtensionDims.cpp" line="411"/>
       <source>Insert &apos;n×&apos; Prefix</source>
       <translation>&apos;n×&apos; előtag beillesztése</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="223"/>
-      <location filename="../../CommandExtensionDims.cpp" line="410"/>
+      <location filename="../../CommandExtensionDims.cpp" line="225"/>
+      <location filename="../../CommandExtensionDims.cpp" line="412"/>
       <source>Insert repeated feature count at the beginning of the dimension text:&lt;br&gt;- Select one or more dimensions&lt;br&gt;- Click this tool</source>
       <translation>Ismételt jellemzőszám beillesztése a dimenziószöveg elejére:&lt;br&gt;- Egy vagy több dimenzió kiválasztása&lt;br&gt;- Erre az eszközre kattintva</translation>
     </message>
@@ -9684,7 +9685,7 @@ a feladat párbeszédpanel nyitva van.</translation>
   <context>
     <name>Preferences</name>
     <message>
-      <location filename="../../../App/Preferences.cpp" line="466"/>
+      <location filename="../../../App/Preferences.cpp" line="468"/>
       <source>The LineStandard parameter is invalid. Using zero instead.</source>
       <translation>A LineStandard paraméter érvénytelen. Használjon helyette nullát.</translation>
     </message>
@@ -9692,14 +9693,14 @@ a feladat párbeszédpanel nyitva van.</translation>
   <context>
     <name>TaskDimension</name>
     <message>
-      <location filename="../../ViewProviderDimension.cpp" line="301"/>
+      <location filename="../../ViewProviderDimension.cpp" line="313"/>
       <source>You cannot delete this dimension now because
 there is an open task dialog.</source>
       <translation>Ezt a méretet most nem törölheti, mert
 van egy nyitott feladat párbeszédpanel.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderDimension.cpp" line="304"/>
+      <location filename="../../ViewProviderDimension.cpp" line="316"/>
       <source>Can Not Delete</source>
       <translation>Nem tudja törölni</translation>
     </message>
@@ -9707,13 +9708,13 @@ van egy nyitott feladat párbeszédpanel.</translation>
   <context>
     <name>CmdTechDrawBrokenView</name>
     <message>
-      <location filename="../../Command.cpp" line="550"/>
+      <location filename="../../Command.cpp" line="546"/>
       <source>TechDraw</source>
       <translation>MűszakiRajz</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="551"/>
-      <location filename="../../Command.cpp" line="552"/>
+      <location filename="../../Command.cpp" line="547"/>
+      <location filename="../../Command.cpp" line="548"/>
       <source>Insert Broken View</source>
       <translation>Törött nézet beillesztése</translation>
     </message>
@@ -9721,22 +9722,22 @@ van egy nyitott feladat párbeszédpanel.</translation>
   <context>
     <name>TechDrawGui::DirectionEditDialog</name>
     <message>
-      <location filename="../../TaskProjGroup.cpp" line="955"/>
+      <location filename="../../TaskProjGroup.cpp" line="970"/>
       <source>Direction</source>
       <translation>Irány</translation>
     </message>
     <message>
-      <location filename="../../TaskProjGroup.cpp" line="992"/>
+      <location filename="../../TaskProjGroup.cpp" line="1007"/>
       <source>OK</source>
       <translation>OK</translation>
     </message>
     <message>
-      <location filename="../../TaskProjGroup.cpp" line="993"/>
+      <location filename="../../TaskProjGroup.cpp" line="1008"/>
       <source>Cancel</source>
       <translation>Mégse</translation>
     </message>
     <message>
-      <location filename="../../TaskProjGroup.cpp" line="999"/>
+      <location filename="../../TaskProjGroup.cpp" line="1014"/>
       <source>Rotate by</source>
       <translation>Forgassa ezzel</translation>
     </message>
@@ -9744,12 +9745,12 @@ van egy nyitott feladat párbeszédpanel.</translation>
   <context>
     <name>CmdTechDrawCompDimensionTools</name>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1448"/>
+      <location filename="../../CommandCreateDims.cpp" line="1447"/>
       <source>Dimension</source>
       <translation>Dimenzió</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1449"/>
+      <location filename="../../CommandCreateDims.cpp" line="1448"/>
       <source>Dimension tools.</source>
       <translation>Méretező eszköz.</translation>
     </message>
@@ -9757,12 +9758,12 @@ van egy nyitott feladat párbeszédpanel.</translation>
   <context>
     <name>CmdTechDrawAreaDimension</name>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1834"/>
+      <location filename="../../CommandCreateDims.cpp" line="1833"/>
       <source>TechDraw</source>
       <translation>MűszakiRajz</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1835"/>
+      <location filename="../../CommandCreateDims.cpp" line="1834"/>
       <source>Insert Area Annotation</source>
       <translation>Terület széljegyzet beillesztése</translation>
     </message>
@@ -9770,17 +9771,17 @@ van egy nyitott feladat párbeszédpanel.</translation>
   <context>
     <name>DrawBrokenView</name>
     <message>
-      <location filename="../../../App/DrawBrokenView.cpp" line="102"/>
+      <location filename="../../../App/DrawBrokenView.cpp" line="103"/>
       <source>None</source>
       <translation>Egyik sem</translation>
     </message>
     <message>
-      <location filename="../../../App/DrawBrokenView.cpp" line="103"/>
+      <location filename="../../../App/DrawBrokenView.cpp" line="104"/>
       <source>ZigZag</source>
       <translation>Cikcakk</translation>
     </message>
     <message>
-      <location filename="../../../App/DrawBrokenView.cpp" line="104"/>
+      <location filename="../../../App/DrawBrokenView.cpp" line="105"/>
       <source>Simple</source>
       <translation>Egyszerű</translation>
     </message>
@@ -9839,6 +9840,48 @@ van egy nyitott feladat párbeszédpanel.</translation>
       <location filename="../../../App/BalloonPropEnum.cpp" line="39"/>
       <source>Line</source>
       <translation>Vonal</translation>
+    </message>
+  </context>
+  <context>
+    <name>DrawViewArch</name>
+    <message>
+      <location filename="../../../App/DrawView.cpp" line="69"/>
+      <source>BIM</source>
+      <translation>BIM</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdTechDrawAlignVertexesVertically</name>
+    <message>
+      <location filename="../../CommandAlign.cpp" line="124"/>
+      <source>TechDraw</source>
+      <translation>MűszakiRajz</translation>
+    </message>
+    <message>
+      <location filename="../../CommandAlign.cpp" line="125"/>
+      <source>Align vertexes/edge vertically by view rotation</source>
+      <translation type="unfinished">Align vertexes/edge vertically by view rotation</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdTechDrawAlignVertexesHorizontally</name>
+    <message>
+      <location filename="../../CommandAlign.cpp" line="157"/>
+      <source>TechDraw</source>
+      <translation>MűszakiRajz</translation>
+    </message>
+    <message>
+      <location filename="../../CommandAlign.cpp" line="158"/>
+      <source>Align vertexes/edge horizontally by view rotation</source>
+      <translation type="unfinished">Align vertexes/edge horizontally by view rotation</translation>
+    </message>
+  </context>
+  <context>
+    <name>TaskComplexSection</name>
+    <message>
+      <location filename="../../TaskComplexSection.cpp" line="479"/>
+      <source> updates pending</source>
+      <translation type="unfinished"> updates pending</translation>
     </message>
   </context>
 </TS>

@@ -195,7 +195,7 @@ void InputField::resizeEvent(QResizeEvent * /*event*/)
 
 void InputField::updateIconLabel(const QString& text)
 {
-    iconLabel->setVisible(!text.isEmpty());
+    iconLabel->setVisible(text.isEmpty());
 }
 
 void InputField::contextMenuEvent(QContextMenuEvent *event)
@@ -278,11 +278,11 @@ void InputField::newInput(const QString & text)
         return;
     }
 
-    if (res.getUnit().isEmpty())
+    if (res.isDimensionless())
         res.setUnit(this->actUnit);
 
     // check if unit fits!
-    if(!actUnit.isEmpty() && !res.getUnit().isEmpty() && actUnit != res.getUnit()){
+    if (actUnit != Unit::One && !res.isDimensionless() && actUnit != res.getUnit()){
         if (iconLabel->isHidden()) {
             iconLabel->setVisible(true);
         }
@@ -644,7 +644,7 @@ void InputField::focusInEvent(QFocusEvent *event)
 void InputField::focusOutEvent(QFocusEvent *event)
 {
     try {
-        if (Quantity::parse(this->text().toStdString()).getUnit().isEmpty()) {
+        if (Quantity::parse(this->text().toStdString()).isDimensionless()) {
             // if user didn't enter a unit, we virtually compensate
             // the multiplication factor induced by user unit system
             double factor;

@@ -538,36 +538,21 @@ private:
     /// container element to store and work with the geometric elements of this sketch
     struct GeoDef
     {
-        GeoDef()
-            : geo(nullptr)
-            , type(None)
-            , external(false)
-            , index(-1)
-            , startPointId(-1)
-            , midPointId(-1)
-            , endPointId(-1)
-        {}
-        Part::Geometry* geo;  // pointer to the geometry
-        GeoType type;         // type of the geometry
-        bool external;        // flag for external geometries
-        int index;         // index in the corresponding storage vector (Lines, Arcs, Circles, ...)
-        int startPointId;  // index in Points of the start point of this geometry
-        int midPointId;    // index in Points of the start point of this geometry
-        int endPointId;    // index in Points of the end point of this geometry
+        Part::Geometry* geo {};  ///< Pointer to the geometry
+        GeoType type = None;     ///< Type of the geometry
+        bool external = false;   ///< Flag for external geometries
+        int index = -1;          ///< Index in the corresponding storage vector (Lines, Arcs, ...)
+        int startPointId = -1;   ///< Index in Points of the start point of this geometry
+        int midPointId = -1;     ///< Index in Points of the mid point of this geometry
+        int endPointId = -1;     ///< Index in Points of the end point of this geometry
     };
     /// container element to store and work with the constraints of this sketch
     struct ConstrDef
     {
-        ConstrDef()
-            : constr(nullptr)
-            , driving(true)
-            , value(nullptr)
-            , secondvalue(nullptr)
-        {}
-        Constraint* constr;  // pointer to the constraint
-        bool driving;
-        double* value;
-        double* secondvalue;  // this is needed for SnellsLaw
+        Constraint* constr {};  ///< Pointer to the constraint
+        bool driving = true;
+        double* value {};
+        double* secondvalue {};  ///< Needed for SnellsLaw
     };
 
     std::vector<GeoDef> Geoms;

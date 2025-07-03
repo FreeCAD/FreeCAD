@@ -141,22 +141,32 @@ void ImpExpDxfRead::setOptions()
 {
     ParameterGrp::handle hGrp =
         App::GetApplication().GetParameterGroupByPath(getOptionSource().c_str());
+    m_stats.importSettings.clear();
+
     m_preserveLayers = hGrp->GetBool("dxfUseDraftVisGroups", true);
+    m_stats.importSettings["Use layers"] = m_preserveLayers ? "Yes" : "No";
+
     m_preserveColors = hGrp->GetBool("dxfGetOriginalColors", true);
+    m_stats.importSettings["Use colors from the DXF file"] = m_preserveColors ? "Yes" : "No";
+
     // Default for creation type is to create draft objects.
     // The radio-button structure of the options dialog should generally prevent this condition.
     m_mergeOption = DraftObjects;
+    m_stats.importSettings["Merge option"] = "Create Draft objects";  // Default
     if (hGrp->GetBool("groupLayers", true)) {
         // Group all compatible objects together
         m_mergeOption = MergeShapes;
+        m_stats.importSettings["Merge option"] = "Group layers into blocks";
     }
     else if (hGrp->GetBool("dxfCreatePart", true)) {
         // Create (non-draft) Shape objects when possible
         m_mergeOption = SingleShapes;
+        m_stats.importSettings["Merge option"] = "Create Part shapes";
     }
     else if (hGrp->GetBool("dxfCreateDraft", true)) {
         // Create only Draft objects, making the result closest to drawn-from-scratch
         m_mergeOption = DraftObjects;
+        m_stats.importSettings["Merge option"] = "Create Draft objects";
     }
     // TODO: joingeometry should give an intermediate between MergeShapes and SingleShapes which
     // will merge shapes that happen to join end-to-end. As such it should be in the radio button
@@ -164,12 +174,25 @@ void ImpExpDxfRead::setOptions()
     // this really means is there should be an "Import as sketch" checkbox, and only the
     // MergeShapes, JoinShapes, and SingleShapes radio buttons should be allowed, i.e. Draft Objects
     // would be ignored.
-    SetAdditionalScaling(hGrp->GetFloat("dxfScaling", 1.0));
+    bool joinGeometry = hGrp->GetBool("joingeometry", false);
+    m_stats.importSettings["Join geometry"] = joinGeometry ? "Yes" : "No";
+
+    double scaling = hGrp->GetFloat("dxfScaling", 1.0);
+    SetAdditionalScaling(scaling);
+    m_stats.importSettings["Manual scaling factor"] = std::to_string(scaling);
 
     m_importAnnotations = hGrp->GetBool("dxftext", false);
+    m_stats.importSettings["Import texts and dimensions"] = m_importAnnotations ? "Yes" : "No";
+
     m_importPoints = hGrp->GetBool("dxfImportPoints", true);
+    m_stats.importSettings["Import points"] = m_importPoints ? "Yes" : "No";
+
     m_importPaperSpaceEntities = hGrp->GetBool("dxflayout", false);
+    m_stats.importSettings["Import layout objects"] = m_importPaperSpaceEntities ? "Yes" : "No";
+
     m_importHiddenBlocks = hGrp->GetBool("dxfstarblocks", false);
+    m_stats.importSettings["Import hidden blocks"] = m_importHiddenBlocks ? "Yes" : "No";
+
     // TODO: There is currently no option for this: m_importFrozenLayers =
     // hGrp->GetBool("dxffrozenLayers", false);
     // TODO: There is currently no option for this: m_importHiddenLayers =
@@ -207,6 +230,10 @@ void ImpExpDxfRead::OnReadLine(const Base::Vector3d& start,
                                const Base::Vector3d& end,
                                bool /*hidden*/)
 {
+    if (shouldSkipEntity()) {
+        return;
+    }
+
     gp_Pnt p0 = makePoint(start);
     gp_Pnt p1 = makePoint(end);
     if (p0.IsEqual(p1, 0.00000001)) {
@@ -219,6 +246,10 @@ void ImpExpDxfRead::OnReadLine(const Base::Vector3d& start,
 
 void ImpExpDxfRead::OnReadPoint(const Base::Vector3d& start)
 {
+    if (shouldSkipEntity()) {
+        return;
+    }
+
     Collector->AddObject(BRepBuilderAPI_MakeVertex(makePoint(start)).Vertex(), "Point");
 }
 
@@ -229,6 +260,10 @@ void ImpExpDxfRead::OnReadArc(const Base::Vector3d& start,
                               bool dir,
                               bool /*hidden*/)
 {
+    if (shouldSkipEntity()) {
+        return;
+    }
+
     gp_Pnt p0 = makePoint(start);
     gp_Pnt p1 = makePoint(end);
     gp_Dir up(0, 0, 1);
@@ -251,6 +286,10 @@ void ImpExpDxfRead::OnReadCircle(const Base::Vector3d& start,
                                  bool dir,
                                  bool /*hidden*/)
 {
+    if (shouldSkipEntity()) {
+        return;
+    }
+
     gp_Pnt p0 = makePoint(start);
     gp_Dir up(0, 0, 1);
     if (!dir) {
@@ -393,6 +432,10 @@ void ImpExpDxfRead::OnReadEllipse(const Base::Vector3d& center,
                                   bool dir)
 // NOLINTEND(bugprone-easily-swappable-parameters)
 {
+    if (shouldSkipEntity()) {
+        return;
+    }
+
     gp_Dir up(0, 0, 1);
     if (!dir) {
         up = -up;
@@ -414,6 +457,10 @@ void ImpExpDxfRead::OnReadText(const Base::Vector3d& point,
                                const std::string& text,
                                const double rotation)
 {
+    if (shouldSkipEntity()) {
+        return;
+    }
+
     // Note that our parameters do not contain all the information needed to properly orient the
     // text. As a result the text will always appear on the XY plane
     if (m_importAnnotations) {
@@ -454,6 +501,10 @@ void ImpExpDxfRead::OnReadInsert(const Base::Vector3d& point,
                                  const std::string& name,
                                  double rotation)
 {
+    if (shouldSkipEntity()) {
+        return;
+    }
+
     Collector->AddInsert(point, scale, name, rotation);
 }
 void ImpExpDxfRead::ExpandInsert(const std::string& name,
@@ -534,6 +585,10 @@ void ImpExpDxfRead::OnReadDimension(const Base::Vector3d& start,
                                     const Base::Vector3d& point,
                                     double /*rotation*/)
 {
+    if (shouldSkipEntity()) {
+        return;
+    }
+
     if (m_importAnnotations) {
         auto makeDimension =
             [this, start, end, point](const Base::Matrix4D& transform) -> App::FeaturePython* {
@@ -576,6 +631,10 @@ void ImpExpDxfRead::OnReadDimension(const Base::Vector3d& start,
 }
 void ImpExpDxfRead::OnReadPolyline(std::list<VertexInfo>& vertices, int flags)
 {
+    if (shouldSkipEntity()) {
+        return;
+    }
+
     std::map<CDxfRead::CommonEntityAttributes, std::list<TopoDS_Shape>> ShapesToCombine;
     {
         // TODO: Currently ExpandPolyline calls OnReadArc etc to generate the pieces, and these
@@ -735,6 +794,7 @@ std::string ImpExpDxfRead::Deformat(const char* text)
 void ImpExpDxfRead::DrawingEntityCollector::AddObject(const TopoDS_Shape& shape,
                                                       const char* nameBase)
 {
+    Reader.IncrementCreatedObjectCount();
     auto pcFeature = Reader.document->addObject<Part::Feature>(nameBase);
     pcFeature->Shape.setValue(shape);
     Reader.MoveToLayer(pcFeature);
@@ -742,6 +802,7 @@ void ImpExpDxfRead::DrawingEntityCollector::AddObject(const TopoDS_Shape& shape,
 }
 void ImpExpDxfRead::DrawingEntityCollector::AddObject(FeaturePythonBuilder shapeBuilder)
 {
+    Reader.IncrementCreatedObjectCount();
     App::FeaturePython* shape = shapeBuilder(Reader.OCSOrientationTransform);
     if (shape != nullptr) {
         Reader.MoveToLayer(shape);
@@ -1310,4 +1371,50 @@ void ImpExpDxfWrite::exportDiametricDim(Base::Vector3d textLocn,
     arc2[1] = arcPoint2.y;
     arc2[2] = arcPoint2.z;
     writeDiametricDim(text, arc1, arc2, dimText);
+}
+
+Py::Object ImpExpDxfRead::getStatsAsPyObject()
+{
+    // Create a Python dictionary to hold all import statistics.
+    Py::Dict statsDict;
+
+    // Populate the dictionary with general information about the import.
+    statsDict.setItem("dxfVersion", Py::String(m_stats.dxfVersion));
+    statsDict.setItem("dxfEncoding", Py::String(m_stats.dxfEncoding));
+    statsDict.setItem("scalingSource", Py::String(m_stats.scalingSource));
+    statsDict.setItem("fileUnits", Py::String(m_stats.fileUnits));
+    statsDict.setItem("finalScalingFactor", Py::Float(m_stats.finalScalingFactor));
+    statsDict.setItem("importTimeSeconds", Py::Float(m_stats.importTimeSeconds));
+    statsDict.setItem("totalEntitiesCreated", Py::Long(m_stats.totalEntitiesCreated));
+
+    // Create a nested dictionary for the counts of each DXF entity type read.
+    Py::Dict entityCountsDict;
+    for (const auto& pair : m_stats.entityCounts) {
+        entityCountsDict.setItem(pair.first.c_str(), Py::Long(pair.second));
+    }
+    statsDict.setItem("entityCounts", entityCountsDict);
+
+    // Create a nested dictionary for the import settings used for this session.
+    Py::Dict importSettingsDict;
+    for (const auto& pair : m_stats.importSettings) {
+        importSettingsDict.setItem(pair.first.c_str(), Py::String(pair.second));
+    }
+    statsDict.setItem("importSettings", importSettingsDict);
+
+    // Create a nested dictionary for any unsupported DXF features encountered.
+    Py::Dict unsupportedFeaturesDict;
+    for (const auto& pair : m_stats.unsupportedFeatures) {
+        Py::List occurrencesList;
+        for (const auto& occurrence : pair.second) {
+            Py::Tuple infoTuple(2);
+            infoTuple.setItem(0, Py::Long(occurrence.first));
+            infoTuple.setItem(1, Py::String(occurrence.second));
+            occurrencesList.append(infoTuple);
+        }
+        unsupportedFeaturesDict.setItem(pair.first.c_str(), occurrencesList);
+    }
+    statsDict.setItem("unsupportedFeatures", unsupportedFeaturesDict);
+
+    // Return the fully populated statistics dictionary to the Python caller.
+    return statsDict;
 }

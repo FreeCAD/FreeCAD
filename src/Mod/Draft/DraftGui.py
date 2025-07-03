@@ -169,8 +169,8 @@ class DraftToolBar:
         self.x = 0  # coord of the point as displayed in the task panel (global/local and relative/absolute)
         self.y = 0  # idem
         self.z = 0  # idem
-        self.new_point = FreeCAD.Vector()   # global point value
-        self.last_point = FreeCAD.Vector()  # idem
+        self.new_point = None   # global point value
+        self.last_point = None  # idem
         self.lvalue = 0
         self.pvalue = 90
         self.avalue = 0
@@ -432,7 +432,10 @@ class DraftToolBar:
         QtCore.QObject.connect(self.zValue,QtCore.SIGNAL("valueChanged(double)"),self.changeZValue)
         QtCore.QObject.connect(self.lengthValue,QtCore.SIGNAL("valueChanged(double)"),self.changeLengthValue)
         QtCore.QObject.connect(self.angleValue,QtCore.SIGNAL("valueChanged(double)"),self.changeAngleValue)
-        QtCore.QObject.connect(self.angleLock,QtCore.SIGNAL("stateChanged(int)"),self.toggleAngle)
+        if hasattr(self.angleLock, "checkStateChanged"): # Qt version >= 6.7.0
+            self.angleLock.checkStateChanged.connect(self.toggleAngle)
+        else: # Qt version < 6.7.0
+            QtCore.QObject.connect(self.angleLock,QtCore.SIGNAL("stateChanged(int)"),self.toggleAngle)
         QtCore.QObject.connect(self.radiusValue,QtCore.SIGNAL("valueChanged(double)"),self.changeRadiusValue)
         QtCore.QObject.connect(self.xValue,QtCore.SIGNAL("returnPressed()"),self.checkx)
         QtCore.QObject.connect(self.yValue,QtCore.SIGNAL("returnPressed()"),self.checky)
@@ -457,15 +460,22 @@ class DraftToolBar:
         QtCore.QObject.connect(self.orientWPButton,QtCore.SIGNAL("pressed()"),self.orientWP)
         QtCore.QObject.connect(self.undoButton,QtCore.SIGNAL("pressed()"),self.undoSegment)
         QtCore.QObject.connect(self.selectButton,QtCore.SIGNAL("pressed()"),self.selectEdge)
-        QtCore.QObject.connect(self.continueCmd,QtCore.SIGNAL("stateChanged(int)"),self.setContinue)
-        QtCore.QObject.connect(self.chainedModeCmd,QtCore.SIGNAL("stateChanged(int)"),self.setChainedMode)
-
-        QtCore.QObject.connect(self.isCopy,QtCore.SIGNAL("stateChanged(int)"),self.setCopymode)
-        QtCore.QObject.connect(self.isSubelementMode, QtCore.SIGNAL("stateChanged(int)"), self.setSubelementMode)
-
-        QtCore.QObject.connect(self.isRelative,QtCore.SIGNAL("stateChanged(int)"),self.setRelative)
-        QtCore.QObject.connect(self.isGlobal,QtCore.SIGNAL("stateChanged(int)"),self.setGlobal)
-        QtCore.QObject.connect(self.makeFace,QtCore.SIGNAL("stateChanged(int)"),self.setMakeFace)
+        if hasattr(self.continueCmd, "checkStateChanged"): # Qt version >= 6.7.0
+            self.continueCmd.checkStateChanged.connect(self.setContinue)
+            self.chainedModeCmd.checkStateChanged.connect(self.setChainedMode)
+            self.isCopy.checkStateChanged.connect(self.setCopymode)
+            self.isSubelementMode.checkStateChanged.connect(self.setSubelementMode)
+            self.isRelative.checkStateChanged.connect(self.setRelative)
+            self.isGlobal.checkStateChanged.connect(self.setGlobal)
+            self.makeFace.checkStateChanged.connect(self.setMakeFace)
+        else: # Qt version < 6.7.0
+            QtCore.QObject.connect(self.continueCmd,QtCore.SIGNAL("stateChanged(int)"),self.setContinue)
+            QtCore.QObject.connect(self.chainedModeCmd,QtCore.SIGNAL("stateChanged(int)"),self.setChainedMode)
+            QtCore.QObject.connect(self.isCopy,QtCore.SIGNAL("stateChanged(int)"),self.setCopymode)
+            QtCore.QObject.connect(self.isSubelementMode, QtCore.SIGNAL("stateChanged(int)"), self.setSubelementMode)
+            QtCore.QObject.connect(self.isRelative,QtCore.SIGNAL("stateChanged(int)"),self.setRelative)
+            QtCore.QObject.connect(self.isGlobal,QtCore.SIGNAL("stateChanged(int)"),self.setGlobal)
+            QtCore.QObject.connect(self.makeFace,QtCore.SIGNAL("stateChanged(int)"),self.setMakeFace)
         QtCore.QObject.connect(self.baseWidget,QtCore.SIGNAL("resized()"),self.relocate)
         QtCore.QObject.connect(self.baseWidget,QtCore.SIGNAL("retranslate()"),self.retranslateUi)
 
@@ -615,31 +625,30 @@ class DraftToolBar:
 # Interface modes
 #---------------------------------------------------------------------------
 
-    def taskUi(self,title="Draft",extra=None,icon="Draft_Draft"):
+    def _show_dialog(self, panel):
+        task = FreeCADGui.Control.showDialog(panel)
+        task.setDocumentName(FreeCADGui.ActiveDocument.Document.Name)
+        task.setAutoCloseOnDeletedDocument(True)
+
+    def taskUi(self,title="Draft", extra=None, icon="Draft_Draft"):
         # reset InputField values
         self.reset_ui_values()
         self.isTaskOn = True
-        todo.delay(FreeCADGui.Control.closeDialog,None)
+        todo.delay(FreeCADGui.Control.closeDialog, None)
         self.baseWidget = DraftBaseWidget()
         self.layout = QtWidgets.QVBoxLayout(self.baseWidget)
         self.setupToolBar(task=True)
         self.retranslateUi(self.baseWidget)
-        self.panel = DraftTaskPanel(self.baseWidget,extra)
-        todo.delay(FreeCADGui.Control.showDialog,self.panel)
-        self.setTitle(title,icon)
+        self.panel = DraftTaskPanel(self.baseWidget, extra)
+        todo.delay(self._show_dialog, self.panel)
+        self.setTitle(title, icon)
 
     def redraw(self):
         """utility function that is performed after each clicked point"""
         self.checkLocal()
 
     def setFocus(self,f=None):
-        if params.get_param("focusOnLength") and self.lengthValue.isVisible():
-            self.lengthValue.setFocus()
-            self.lengthValue.setSelection(0,self.number_length(self.lengthValue.text()))
-        elif self.angleLock.isVisible() and self.angleLock.isChecked():
-            self.lengthValue.setFocus()
-            self.lengthValue.setSelection(0,self.number_length(self.lengthValue.text()))
-        elif (f is None) or (f == "x"):
+        if f == "x":
             self.xValue.setFocus()
             self.xValue.setSelection(0,self.number_length(self.xValue.text()))
         elif f == "y":
@@ -651,6 +660,16 @@ class DraftToolBar:
         elif f == "radius":
             self.radiusValue.setFocus()
             self.radiusValue.setSelection(0,self.number_length(self.radiusValue.text()))
+        elif params.get_param("focusOnLength") and self.lengthValue.isVisible():
+            self.lengthValue.setFocus()
+            self.lengthValue.setSelection(0,self.number_length(self.lengthValue.text()))
+        elif self.angleLock.isVisible() and self.angleLock.isChecked():
+            self.lengthValue.setFocus()
+            self.lengthValue.setSelection(0,self.number_length(self.lengthValue.text()))
+        else:
+            # f is None
+            self.xValue.setFocus()
+            self.xValue.setSelection(0,self.number_length(self.xValue.text()))
 
     def number_length(self, str):
         nl = 0
@@ -748,8 +767,8 @@ class DraftToolBar:
         self.x = 0
         self.y = 0
         self.z = 0
-        self.new_point = FreeCAD.Vector()
-        self.last_point = FreeCAD.Vector()
+        self.new_point = None
+        self.last_point = None
         self.pointButton.show()
         if rel: self.isRelative.show()
         todo.delay(self.setFocus, None)
@@ -922,9 +941,9 @@ class DraftToolBar:
                 if self.callback:
                     self.callback()
                 return True
-        todo.delay(FreeCADGui.Control.closeDialog,None)
+        todo.delay(FreeCADGui.Control.closeDialog, None)
         panel = TaskPanel(extra, on_close_call)
-        todo.delay(FreeCADGui.Control.showDialog,panel)
+        todo.delay(self._show_dialog, panel)
 
 
 #---------------------------------------------------------------------------
@@ -932,15 +951,15 @@ class DraftToolBar:
 #---------------------------------------------------------------------------
 
     def setContinue(self, val):
-        params.set_param(FreeCAD.activeDraftCommand.featureName, bool(val), "Mod/Draft/ContinueMode")
-        self.continueMode = bool(val)
-        self.chainedModeCmd.setEnabled(not val)
+        params.set_param(FreeCAD.activeDraftCommand.featureName, bool(getattr(val, "value", val)), "Mod/Draft/ContinueMode")
+        self.continueMode = bool(getattr(val, "value", val))
+        self.chainedModeCmd.setEnabled(not bool(getattr(val, "value", val)))
 
     def setChainedMode(self, val):
-        params.set_param("ChainedMode", bool(val))
-        self.chainedMode = bool(val)
-        self.continueCmd.setEnabled(not val)
-        if val == False:
+        params.set_param("ChainedMode", bool(getattr(val, "value", val)))
+        self.chainedMode = bool(getattr(val, "value", val))
+        self.continueCmd.setEnabled(not bool(getattr(val, "value", val)))
+        if bool(getattr(val, "value", val)) == False:
             # If user has deselected the checkbox, reactive the command
             # which will result in closing it
             FreeCAD.activeDraftCommand.Activated()
@@ -952,8 +971,14 @@ class DraftToolBar:
     #     gui_rectangles.py
     #     gui_stretch.py
     def setRelative(self, val=-1):
+        val = getattr(val, "value", val)
         if val < 0:
-            QtCore.QObject.disconnect(self.isRelative,
+            if hasattr(self.isRelative, "checkStateChanged"): # Qt version >= 6.7.0
+                QtCore.QObject.disconnect(self.isRelative,
+                                      QtCore.SIGNAL("checkStateChanged(Qt::CheckState)"),
+                                      self.setRelative)
+            else: # Qt version < 6.7.0
+                QtCore.QObject.disconnect(self.isRelative,
                                       QtCore.SIGNAL("stateChanged(int)"),
                                       self.setRelative)
             if val == -1:
@@ -963,9 +988,14 @@ class DraftToolBar:
                 val = params.get_param("RelativeMode")
                 self.isRelative.setChecked(val)
                 self.relativeMode = val
-            QtCore.QObject.connect(self.isRelative,
-                                   QtCore.SIGNAL("stateChanged(int)"),
-                                   self.setRelative)
+            if hasattr(self.isRelative, "checkStateChanged"): # Qt version >= 6.7.0
+                QtCore.QObject.disconnect(self.isRelative,
+                                      QtCore.SIGNAL("checkStateChanged(Qt::CheckState)"),
+                                      self.setRelative)
+            else: # Qt version < 6.7.0
+                QtCore.QObject.disconnect(self.isRelative,
+                                      QtCore.SIGNAL("stateChanged(int)"),
+                                      self.setRelative)
         else:
             params.set_param("RelativeMode", bool(val))
             self.relativeMode = bool(val)
@@ -974,28 +1004,28 @@ class DraftToolBar:
         self.updateSnapper()
 
     def setGlobal(self, val):
-        params.set_param("GlobalMode", bool(val))
-        self.globalMode = bool(val)
+        params.set_param("GlobalMode", bool(getattr(val, "value", val)))
+        self.globalMode = bool(getattr(val, "value", val))
         self.checkLocal()
         self.displayPoint(self.new_point, self.get_last_point())
         self.updateSnapper()
 
     def setMakeFace(self, val):
-        params.set_param("MakeFaceMode", bool(val))
-        self.makeFaceMode = bool(val)
+        params.set_param("MakeFaceMode", bool(getattr(val, "value", val)))
+        self.makeFaceMode = bool(getattr(val, "value", val))
 
     def setCopymode(self, val):
         # special value for offset command
         if self.sourceCmd and self.sourceCmd.featureName == "Offset":
-            params.set_param("OffsetCopyMode", bool(val))
+            params.set_param("OffsetCopyMode", bool(getattr(val, "value", val)))
         else:
-            params.set_param("CopyMode", bool(val))
+            params.set_param("CopyMode", bool(getattr(val, "value", val)))
             # if CopyMode is changed ghosts must be updated.
             # Moveable children should not be included if CopyMode is True.
             self.sourceCmd.set_ghosts()
 
     def setSubelementMode(self, val):
-        params.set_param("SubelementMode", bool(val))
+        params.set_param("SubelementMode", bool(getattr(val, "value", val)))
         self.sourceCmd.set_ghosts()
 
     def checkx(self):
@@ -1150,6 +1180,10 @@ class DraftToolBar:
             if hasattr(FreeCADGui,"Snapper"):
                 FreeCADGui.Snapper.addHoldPoint()
             spec = True
+        elif txt == _get_incmd_shortcut("Recenter"):
+            if hasattr(FreeCADGui,"Snapper"):
+                FreeCADGui.Snapper.recenter_workingplane()
+            spec = True
         elif txt == _get_incmd_shortcut("Snap"):
             self.togglesnap()
             spec = True
@@ -1250,7 +1284,7 @@ class DraftToolBar:
                 plane = WorkingPlane.get_working_plane(update=False)
             if not last:
                 if self.globalMode:
-                    last = FreeCAD.Vector(0,0,0)
+                    last = FreeCAD.Vector()
                 else:
                     last = plane.position
 
@@ -1289,7 +1323,7 @@ class DraftToolBar:
             self.yValue.setEnabled(False)
             self.zValue.setEnabled(False)
             self.angleValue.setEnabled(False)
-            self.setFocus()
+            self.setFocus("x")
         elif (mask == "y") or (self.mask == "y"):
             self.xValue.setEnabled(False)
             self.yValue.setEnabled(True)
@@ -1598,9 +1632,13 @@ class DraftToolBar:
 
     def get_last_point(self):
         """Get the last point in the GCS."""
-        if hasattr(self.sourceCmd, "node") and self.sourceCmd.node:
+        if getattr(self.sourceCmd, "node", []):
             return self.sourceCmd.node[-1]
-        return self.last_point
+        if self.last_point is not None:
+            return self.last_point
+        if self.globalMode:
+            return FreeCAD.Vector()
+        return WorkingPlane.get_working_plane(update=False).position
 
     def get_new_point(self, delta):
         """Get the new point in the GCS.
@@ -1608,9 +1646,10 @@ class DraftToolBar:
         The delta vector (from the task panel) can be global/local
         and relative/absolute.
         """
-        plane = WorkingPlane.get_working_plane(update=False)
-        base_point = FreeCAD.Vector()
-        if plane and not self.globalMode:
+        if self.globalMode:
+            base_point = FreeCAD.Vector()
+        else:
+            plane = WorkingPlane.get_working_plane(update=False)
             delta = plane.get_global_coords(delta, as_vector=True)
             base_point = plane.position
         if self.relativeMode:
@@ -1669,8 +1708,8 @@ class DraftToolBar:
         self.x = 0
         self.y = 0
         self.z = 0
-        self.new_point = FreeCAD.Vector()
-        self.last_point = FreeCAD.Vector()
+        self.new_point = None
+        self.last_point = None
         self.lvalue = 0
         self.pvalue = 90
         self.avalue = 0

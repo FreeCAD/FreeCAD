@@ -43,17 +43,7 @@ public:
 public Q_SLOTS:
   void fold();
 
-protected Q_SLOTS:
-  void animate();
-
 protected:
-  void paintEvent ( QPaintEvent * event ) override;
-#if QT_VERSION < QT_VERSION_CHECK(6,0,0)
-  void enterEvent ( QEvent * event ) override;
-#else
-  void enterEvent ( QEnterEvent * event ) override;
-#endif
-  void leaveEvent ( QEvent * event ) override;
   void mouseReleaseEvent ( QMouseEvent * event ) override;
   void keyPressEvent ( QKeyEvent * event ) override;
   void keyReleaseEvent ( QKeyEvent * event ) override;
@@ -66,7 +56,6 @@ protected:
 
   bool myExpandable;
   bool m_over, m_buttonOver, m_fold;
-  double m_opacity;
 
   ActionLabel *myTitle;
   QLabel *myButton;

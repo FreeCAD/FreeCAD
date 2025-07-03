@@ -56,6 +56,8 @@ void MainWindowPy::init_type()
     add_varargs_method("getActiveWindow", &MainWindowPy::getActiveWindow, "getActiveWindow()");
     add_varargs_method("addWindow", &MainWindowPy::addWindow, "addWindow(MDIView)");
     add_varargs_method("removeWindow", &MainWindowPy::removeWindow, "removeWindow(MDIView)");
+    add_varargs_method("showHint",&MainWindowPy::showHint,"showHint(hint)");
+    add_varargs_method("hideHint",&MainWindowPy::hideHint,"hideHint()");
 }
 
 PyObject *MainWindowPy::extension_object_new(struct _typeobject * /*type*/, PyObject * /*args*/, PyObject * /*kwds*/)
@@ -87,7 +89,16 @@ Py::Object MainWindowPy::createWrapper(MainWindow *mw)
     }
 
     // copy attributes
-    std::list<std::string> attr = {"getWindows", "getWindowsOfType", "setActiveWindow", "getActiveWindow", "addWindow", "removeWindow"};
+    static constexpr std::initializer_list<const char*> attr = {
+        "getWindows",
+        "getWindowsOfType",
+        "setActiveWindow",
+        "getActiveWindow",
+        "addWindow",
+        "removeWindow",
+        "showHint",
+        "hideHint",
+    };
 
     Py::Object py = wrap.fromQWidget(mw, "QMainWindow");
     Py::ExtensionObject<MainWindowPy> inst(create(mw));
@@ -213,5 +224,59 @@ Py::Object MainWindowPy::removeWindow(const Py::Tuple& args)
     if (_mw) {
         _mw->removeWindow(mdi.extensionObject()->getMDIViewPtr());
     }
+    return Py::None();
+}
+
+Py::Object MainWindowPy::showHint(const Py::Tuple& args)
+{
+    static auto userInputFromPyObject = [](const Py::Object& object) -> InputHint::UserInput {
+        Py::Long value(object.getAttr("value"));
+
+        return static_cast<InputHint::UserInput>(value.as_long());
+    };
+
+    static auto inputSequenceFromPyObject = [](const Py::Object& sequence) -> InputHint::InputSequence {
+        if (sequence.isTuple()) {
+            Py::Tuple pyInputs(sequence);
+
+            std::list<InputHint::UserInput> inputs;
+            for (auto pyInput : pyInputs) {
+                inputs.push_back(userInputFromPyObject(pyInput));
+            }
+
+            return InputHint::InputSequence(inputs);
+        }
+
+        return userInputFromPyObject(sequence);
+    };
+
+    static auto hintFromPyObject = [](const Py::Object& object) -> InputHint {
+        Py::List pySequences = object.getAttr("sequences");
+
+        std::list<InputHint::InputSequence> sequences;
+        for (auto pySequence : pySequences) {
+            sequences.push_back(inputSequenceFromPyObject(pySequence));
+        }
+
+        return InputHint {
+            .message = QString::fromStdString(object.getAttr("message").as_string()),
+            .sequences = sequences
+        };
+    };
+
+    std::list<InputHint> hints;
+    for (auto arg : args) {
+        hints.push_back(hintFromPyObject(arg));
+    }
+
+    _mw->showHints(hints);
+
+    return Py::None();
+}
+
+Py::Object MainWindowPy::hideHint(const Py::Tuple&)
+{
+    _mw->hideHints();
+
     return Py::None();
 }

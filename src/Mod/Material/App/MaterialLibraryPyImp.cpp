@@ -72,15 +72,22 @@ void MaterialLibraryPy::setName(const Py::String value)
     getMaterialLibraryPtr()->setName(QString::fromStdString(value));
 }
 
-Py::String MaterialLibraryPy::getIcon() const
+Py::Object MaterialLibraryPy::getIcon() const
 {
-    auto path = getMaterialLibraryPtr()->getIconPath();
-    return {path.toStdString()};
+    auto icon = getMaterialLibraryPtr()->getIcon();
+    return Py::Bytes(icon.data(), icon.size());
 }
 
-void MaterialLibraryPy::setIcon(const Py::String value)
+void MaterialLibraryPy::setIcon(const Py::Object value)
 {
-    getMaterialLibraryPtr()->setIconPath(QString::fromStdString(value));
+    if (value.isNone()) {
+        getMaterialLibraryPtr()->setIcon(QByteArray());
+    }
+    else {
+        auto pyBytes = Py::Bytes(value);
+        getMaterialLibraryPtr()->setIcon(
+            QByteArray(pyBytes.as_std_string().data(), pyBytes.size()));
+    }
 }
 
 Py::String MaterialLibraryPy::getDirectory() const

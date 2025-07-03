@@ -8,6 +8,7 @@
 #include "actionbox.h"
 
 #include <QVariant>
+#include <QStyleOptionFrame>
 
 namespace QSint
 {
@@ -34,6 +35,7 @@ ActionBox::ActionBox(const QPixmap & icon, const QString & headerText, QWidget *
 void ActionBox::init(const QString &headerText)
 {
     setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Maximum);
+    setFrameStyle(QFrame::NoFrame);
 
     auto *mainLayout = new QHBoxLayout(this);
 

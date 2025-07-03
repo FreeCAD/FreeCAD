@@ -61,7 +61,7 @@ using namespace MatGui;
 
 /* TRANSLATOR MatGui::MaterialsEditor */
 
-MaterialsEditor::MaterialsEditor(std::shared_ptr<Materials::MaterialFilter> filter, QWidget* parent)
+MaterialsEditor::MaterialsEditor(Materials::MaterialFilter filter, QWidget* parent)
     : QDialog(parent)
     , ui(new Ui_MaterialsEditor)
     , _material(std::make_shared<Materials::Material>())
@@ -80,7 +80,6 @@ MaterialsEditor::MaterialsEditor(QWidget* parent)
     , _rendered(nullptr)
     , _materialSelected(false)
     , _recentMax(0)
-    , _filter(nullptr)
 {
     setup();
 }
@@ -182,7 +181,7 @@ void MaterialsEditor::getFavorites()
     for (int i = 0; static_cast<long>(i) < count; i++) {
         QString key = QStringLiteral("FAV%1").arg(i);
         QString uuid = QString::fromStdString(param->GetASCII(key.toStdString().c_str(), ""));
-        if (!_filter || _filter->modelIncluded(uuid)) {
+        if (_filter.modelIncluded(uuid)) {
             _favorites.push_back(uuid);
         }
     }
@@ -260,7 +259,7 @@ void MaterialsEditor::getRecents()
     for (int i = 0; static_cast<long>(i) < count; i++) {
         QString key = QStringLiteral("MRU%1").arg(i);
         QString uuid = QString::fromStdString(param->GetASCII(key.toStdString().c_str(), ""));
-        if (!_filter || _filter->modelIncluded(uuid)) {
+        if (_filter.modelIncluded(uuid)) {
             _recents.push_back(uuid);
         }
     }
@@ -801,6 +800,33 @@ void MaterialsEditor::createAppearanceTree()
     connect(delegate, &MaterialDelegate::propertyChange, this, &MaterialsEditor::propertyChange);
 }
 
+QIcon MaterialsEditor::getIcon(const std::shared_ptr<Materials::Library>& library)
+{
+    // Load from the QByteArray if available
+    QIcon icon;
+    if (library->hasIcon()) {
+        QImage image;
+        if (!image.loadFromData(library->getIcon())) {
+            Base::Console().log("Unable to load icon image for library '%s'\n",
+                                library->getName().toStdString().c_str());
+            return QIcon();
+        }
+        icon = QIcon(QPixmap::fromImage(image));
+    }
+
+    return icon;
+}
+
+QIcon MaterialsEditor::getIcon(const std::shared_ptr<Materials::ModelLibrary>& library)
+{
+    return getIcon(std::static_pointer_cast<Materials::Library>(library));
+}
+
+QIcon MaterialsEditor::getIcon(const std::shared_ptr<Materials::MaterialLibrary>& library)
+{
+    return getIcon(std::static_pointer_cast<Materials::Library>(library));
+}
+
 void MaterialsEditor::addRecents(QStandardItem* parent)
 {
     auto tree = ui->treeMaterials;
@@ -808,13 +834,13 @@ void MaterialsEditor::addRecents(QStandardItem* parent)
         try {
             auto material = getMaterialManager().getMaterial(uuid);
             // if (material->getLibrary()->isLocal()) {
-                QIcon icon = QIcon(material->getLibrary()->getIconPath());
-                auto card = new QStandardItem(icon, libraryPath(material));
-                card->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled | Qt::ItemIsDragEnabled
-                               | Qt::ItemIsDropEnabled);
-                card->setData(QVariant(uuid), Qt::UserRole);
+            QIcon icon = getIcon(material->getLibrary());
+            auto card = new QStandardItem(icon, libraryPath(material));
+            card->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled | Qt::ItemIsDragEnabled
+                           | Qt::ItemIsDropEnabled);
+            card->setData(QVariant(uuid), Qt::UserRole);
 
-                addExpanded(tree, parent, card);
+            addExpanded(tree, parent, card);
             // }
         }
         catch (const Materials::MaterialNotFound&) {
@@ -828,7 +854,7 @@ void MaterialsEditor::addFavorites(QStandardItem* parent)
     for (auto& uuid : _favorites) {
         try {
             auto material = getMaterialManager().getMaterial(uuid);
-            QIcon icon = QIcon(material->getLibrary()->getIconPath());
+            QIcon icon = getIcon(material->getLibrary());
             auto card = new QStandardItem(icon, libraryPath(material));
             card->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled | Qt::ItemIsDragEnabled
                             | Qt::ItemIsDropEnabled);
@@ -865,7 +891,7 @@ void MaterialsEditor::fillMaterialTree()
 
     auto libraries = getMaterialManager().getLibraries();
     for (const auto& library : *libraries) {
-        auto materialTree = getMaterialManager().getMaterialTree(library);
+        auto materialTree = getMaterialManager().getMaterialTree(*library);
 
         bool showLibraries = _filterOptions.includeEmptyLibraries();
         if (!_filterOptions.includeEmptyLibraries() && materialTree->size() > 0) {
@@ -877,7 +903,7 @@ void MaterialsEditor::fillMaterialTree()
             lib->setFlags(Qt::ItemIsEnabled | Qt::ItemIsDragEnabled | Qt::ItemIsDropEnabled);
             addExpanded(tree, model, lib, param);
 
-            QIcon icon(library->getIconPath());
+            QIcon icon = getIcon(library);
             QIcon folderIcon(QStringLiteral(":/icons/folder.svg"));
 
             addMaterials(*lib, materialTree, folderIcon, icon, param);
@@ -914,12 +940,11 @@ bool MaterialsEditor::updateTexturePreview() const
         try {
             auto property = _material->getAppearanceProperty(QStringLiteral("TextureImage"));
             if (!property->isNull()) {
-                // Base::Console().log("Has 'TextureImage'\n");
                 auto propertyValue = property->getString();
                 if (!propertyValue.isEmpty()) {
                     QByteArray by = QByteArray::fromBase64(propertyValue.toUtf8());
-                    image = QImage::fromData(by, "PNG");  //.scaled(64, 64, Qt::KeepAspectRatio);
-                    hasImage = true;
+                    image = QImage::fromData(by);
+                    hasImage = !image.isNull();
                 }
             }
         }
@@ -936,9 +961,11 @@ bool MaterialsEditor::updateTexturePreview() const
                     if (!image.load(filePath)) {
                         Base::Console().log("Unable to load image '%s'\n",
                                             filePath.toStdString().c_str());
-                        // return;  // ???
+                        hasImage = false;
                     }
-                    hasImage = true;
+                    else {
+                        hasImage = !image.isNull();
+                    }
                 }
             }
             catch (const Materials::PropertyNotFound&) {

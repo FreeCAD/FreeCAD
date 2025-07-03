@@ -170,10 +170,14 @@ bool Extrusion::fetchAxisLink(const App::PropertyLinkSub& axisLink, Base::Vector
 
     TopoDS_Shape axEdge;
     if (!axisLink.getSubValues().empty() && axisLink.getSubValues()[0].length() > 0) {
-        axEdge = Feature::getTopoShape(linked, axisLink.getSubValues()[0].c_str(), true /*need element*/).getShape();
+        axEdge = Feature::getTopoShape(linked,
+                                          ShapeOption::NeedSubElement
+                                        | ShapeOption::ResolveLink
+                                        | ShapeOption::Transform,
+                                       axisLink.getSubValues()[0].c_str()).getShape();
     }
     else {
-        axEdge = Feature::getShape(linked);
+        axEdge = Feature::getShape(linked, ShapeOption::ResolveLink | ShapeOption::Transform);
     }
 
     if (axEdge.IsNull())
@@ -263,7 +267,12 @@ Base::Vector3d Extrusion::calculateShapeNormal(const App::PropertyLink& shapeLin
 {
     App::DocumentObject* docobj = nullptr;
     Base::Matrix4D mat;
-    TopoDS_Shape sh = Feature::getShape(shapeLink.getValue(), nullptr, false, &mat, &docobj);
+    TopoDS_Shape sh = Feature::getShape(shapeLink.getValue(),
+                                           ShapeOption::ResolveLink 
+                                         | ShapeOption::Transform,
+                                        nullptr,
+                                        &mat,
+                                        &docobj);
 
     if (!docobj)
         throw Base::ValueError("calculateShapeNormal: link is empty");
@@ -366,7 +375,7 @@ App::DocumentObjectExecReturn* Extrusion::execute()
     try {
         ExtrusionParameters params = computeFinalParameters();
         TopoShape result(0);
-        extrudeShape(result, Feature::getTopoShape(link), params);
+        extrudeShape(result, Feature::getTopoShape(link, ShapeOption::ResolveLink | ShapeOption::Transform), params);
         this->Shape.setValue(result);
         return App::DocumentObject::StdReturn;
     }

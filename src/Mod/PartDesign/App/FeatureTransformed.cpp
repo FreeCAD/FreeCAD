@@ -37,6 +37,7 @@
 
 #include <Base/Console.h>
 #include <Base/Exception.h>
+#include <Base/ProgressIndicator.h>
 #include <Base/Reader.h>
 #include <Mod/Part/App/modelRefine.h>
 
@@ -49,12 +50,14 @@
 #include "FeaturePolarPattern.h"
 #include "FeatureSketchBased.h"
 #include "Mod/Part/App/TopoShapeOpCode.h"
+#include "Mod/Part/App/OCCTProgressIndicator.h"
 
 
 using namespace PartDesign;
 
 namespace PartDesign
 {
+using Part::OCCTProgressIndicator;
 extern bool getPDRefineModelParameter();
 
 PROPERTY_SOURCE(PartDesign::Transformed, PartDesign::FeatureRefine)
@@ -279,6 +282,9 @@ App::DocumentObjectExecReturn* Transformed::execute()
         auto transformIter = transformations.cbegin();
         transformIter++;
         for ( ; transformIter != transformations.end(); transformIter++) {
+            if (OCCTProgressIndicator::getAppIndicator().UserBreak()) {
+                return std::vector<TopoShape>();
+            }
             auto opName = Data::indexSuffix(idx++);
             shapes.emplace_back(shape.makeElementTransform(*transformIter, opName.c_str()));
         }
@@ -319,15 +325,27 @@ App::DocumentObjectExecReturn* Transformed::execute()
                     cutShape = cutShape.makeElementTransform(trsf);
                 }
                 if (!fuseShape.isNull()) {
-                    supportShape.makeElementFuse(getTransformedCompShape(supportShape, fuseShape));
+                    auto shapes = getTransformedCompShape(supportShape, fuseShape);
+                    if (OCCTProgressIndicator::getAppIndicator().UserBreak()) {
+                        return new App::DocumentObjectExecReturn("User aborted");
+                    }
+                    supportShape.makeElementFuse(shapes);
                 }
                 if (!cutShape.isNull()) {
-                    supportShape.makeElementCut(getTransformedCompShape(supportShape, cutShape));
+                    auto shapes = getTransformedCompShape(supportShape, cutShape);
+                    if (OCCTProgressIndicator::getAppIndicator().UserBreak()) {
+                        return new App::DocumentObjectExecReturn("User aborted");
+                    }
+                    supportShape.makeElementCut(shapes);
                 }
             }
             break;
         case Mode::TransformBody: {
-            supportShape.makeElementFuse(getTransformedCompShape(supportShape, supportShape));
+            auto shapes = getTransformedCompShape(supportShape, supportShape);
+            if (OCCTProgressIndicator::getAppIndicator().UserBreak()) {
+                return new App::DocumentObjectExecReturn("User aborted");
+            }
+            supportShape.makeElementFuse(shapes);
             break;
         }
     }

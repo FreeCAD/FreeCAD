@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>FEM material reinforcement</string>
+   <string>FEM Material Reinforcement</string>
   </property>
   <property name="layoutDirection">
    <enum>Qt::LeftToRight</enum>

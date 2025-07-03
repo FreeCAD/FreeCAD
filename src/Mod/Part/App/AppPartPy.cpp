@@ -861,7 +861,7 @@ private:
             shape = static_cast<GeometryPy *>(pcObj)->getGeometryPtr()->toShape();
         else if (PyObject_TypeCheck(pcObj, &App::DocumentObjectPy::Type)) {
             auto obj = static_cast<App::DocumentObjectPy *>(pcObj)->getDocumentObjectPtr();
-            shape = Feature::getTopoShape(obj);
+            shape = Feature::getTopoShape(obj, ShapeOption::ResolveLink | ShapeOption::Transform);
         } else {
             throw Py::TypeError("Expects argument of type DocumentObject, Shape, or Geometry");
         }
@@ -2288,9 +2288,17 @@ private:
         Base::Matrix4D mat;
         if(pyMat)
             mat = *static_cast<Base::MatrixPy*>(pyMat)->getMatrixPtr();
-        auto shape = Feature::getTopoShape(obj,subname,Base::asBoolean(needSubElement),
-                &mat,&subObj,retType==2,Base::asBoolean(transform),
-                Base::asBoolean(noElementMap));
+
+        bool resolveLink = (retType == 2);
+        auto shape = Feature::getTopoShape(obj,
+                                             (resolveLink ? ShapeOption::ResolveLink : ShapeOption::NoFlag)
+                                           | (Base::asBoolean(needSubElement) ? ShapeOption::NeedSubElement : ShapeOption::NoFlag)
+                                           | (Base::asBoolean(transform) ? ShapeOption::Transform : ShapeOption::NoFlag)
+                                           | (Base::asBoolean(noElementMap) ? ShapeOption::NoElementMap : ShapeOption::NoFlag),
+                                           subname,
+                                           &mat,
+                                           &subObj);
+
         if (Base::asBoolean(refine)) {
             shape = TopoShape(0, shape.Hasher).makeElementRefine(shape);
         }

@@ -71,7 +71,7 @@ PyMOD_INIT_FUNC(Surface)
     }
 
     PyObject* mod = Surface::initModule();
-    Base::Console().log("Loading Surface module... done\n");
+    Base::Console().log("Loading Surface module… done\n");
     Base::Interpreter().addType(&Surface::BlendPointPy::Type, mod, "BlendPoint");
     Base::Interpreter().addType(&Surface::BlendCurvePy::Type, mod, "BlendCurve");
 

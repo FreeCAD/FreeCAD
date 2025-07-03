@@ -385,7 +385,7 @@ void Command::setupCheckable(int iMsg) {
         action->setChecked(checked);
         action->blockSignals(blocked);
         if(action!=_pcAction->action())
-            _pcAction->setChecked(checked,true);
+            _pcAction->setBlockedChecked(checked);
     }
 
 }
@@ -899,8 +899,14 @@ const char* Command::keySequenceToAccel(int sk) const
     static StringMap strings;
     auto i = strings.find(sk);
 
-    if (i != strings.end())
+    if (i != strings.end()) {
         return i->second.c_str();
+    }
+
+    // In case FreeCAD is loaded without GUI (issue 16407)
+    if (!QApplication::instance()) {
+        return "";
+    }
 
     auto type = static_cast<QKeySequence::StandardKey>(sk);
     QKeySequence ks(type);
@@ -908,47 +914,6 @@ const char* Command::keySequenceToAccel(int sk) const
     QByteArray data = qs.toLatin1();
 
     return (strings[sk] = static_cast<const char*>(data)).c_str();
-}
-
-void Command::adjustCameraPosition()
-{
-    Gui::Document* doc = Gui::Application::Instance->activeDocument();
-    if (doc) {
-        auto view = static_cast<Gui::View3DInventor*>(doc->getActiveView());
-        Gui::View3DInventorViewer* viewer = view->getViewer();
-        SoCamera* camera = viewer->getSoRenderManager()->getCamera();
-        if (!camera || !camera->isOfType(SoOrthographicCamera::getClassTypeId()))
-            return;
-
-        // get scene bounding box
-        SoGetBoundingBoxAction action(viewer->getSoRenderManager()->getViewportRegion());
-        action.apply(viewer->getSceneGraph());
-        SbBox3f box = action.getBoundingBox();
-        if (box.isEmpty())
-            return;
-
-        // get cirumscribing sphere and check if camera is inside
-        SbVec3f cam_pos = camera->position.getValue();
-        SbVec3f box_cnt = box.getCenter();
-        SbSphere bs;
-        bs.circumscribe(box);
-        float radius = bs.getRadius();
-        float distance_to_midpoint = (box_cnt-cam_pos).length();
-        if (radius >= distance_to_midpoint) {
-            // Move the camera to the edge of the bounding sphere, while still
-            // pointing at the scene.
-            SbVec3f direction = cam_pos - box_cnt;
-            (void) direction.normalize(); // we know this is not a null vector
-            camera->position.setValue(box_cnt + direction * radius);
-
-            // New distance to mid point
-            distance_to_midpoint =
-                (camera->position.getValue() - box.getCenter()).length();
-            camera->nearDistance = distance_to_midpoint - radius;
-            camera->farDistance = distance_to_midpoint + radius;
-            camera->focalDistance = distance_to_midpoint;
-        }
-    }
 }
 
 void Command::printConflictingAccelerators() const
@@ -1637,7 +1602,7 @@ Action * PythonGroupCommand::createAction()
                     qtAction->blockSignals(false);
                 }else if(qtAction->isCheckable()){
                     pcAction->setCheckable(true);
-                    pcAction->setChecked(qtAction->isChecked(),true);
+                    pcAction->setBlockedChecked(qtAction->isChecked());
                 }
             }
         }

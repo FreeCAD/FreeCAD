@@ -137,16 +137,21 @@ void Action::setCheckable(bool check)
     }
 }
 
-void Action::setChecked(bool check, bool no_signal)
+void Action::setChecked(bool check)
 {
-    bool blocked = false;
-    if (no_signal) {
-        blocked = _action->blockSignals(true);
-    }
     _action->setChecked(check);
-    if (no_signal) {
-        _action->blockSignals(blocked);
-    }
+}
+
+/*!
+ * \brief Action::setBlockedChecked
+ * \param check
+ * Does the same as \ref setChecked but additionally blocks
+ * any signals.
+ */
+void Action::setBlockedChecked(bool check)
+{
+    QSignalBlocker block(_action);
+    _action->setChecked(check);
 }
 
 bool Action::isChecked() const
@@ -601,9 +606,37 @@ void ActionGroup::onActivated (QAction* act)
     }
 }
 
-void ActionGroup::onHovered (QAction *act)
+/**
+ * Shows tooltip at the right side when hovered.
+ */
+void ActionGroup::onHovered(QAction *act)
 {
-    QToolTip::showText(QCursor::pos(), act->toolTip());
+    const auto topLevelWidgets = QApplication::topLevelWidgets();
+    QMenu* foundMenu = nullptr;
+
+    for (QWidget* widget : topLevelWidgets) {
+        QList<QMenu*> menus = widget->findChildren<QMenu*>();
+
+        for (QMenu* menu : menus) {
+            if (menu->isVisible() && menu->actions().contains(act)) {
+                foundMenu = menu;
+                break;
+            }
+        }
+
+        if (foundMenu) {
+            break;
+        }
+
+    }
+
+    if (foundMenu) {
+        QRect actionRect = foundMenu->actionGeometry(act);
+        QPoint globalPos = foundMenu->mapToGlobal(actionRect.topRight());
+        QToolTip::showText(globalPos, act->toolTip(), foundMenu, actionRect);
+    } else {
+        QToolTip::showText(QCursor::pos(), act->toolTip());
+    }
 }
 
 
