@@ -21,6 +21,7 @@
 # ***************************************************************************
 
 from PySide.QtCore import QT_TRANSLATE_NOOP
+from Path.Op.Gui.Array import ObjectArray
 import FreeCAD
 import Path
 import Path.Base.Util as PathUtil
@@ -189,8 +190,24 @@ class PathBoundary:
 
         tc = PathDressup.toolController(self.baseOp)
 
-        self.safeHeight = float(PathUtil.opProperty(self.baseOp, "SafeHeight"))
-        self.clearanceHeight = float(PathUtil.opProperty(self.baseOp, "ClearanceHeight"))
+        if isinstance(self.baseOp.Proxy, ObjectArray) and isinstance(self.baseOp.Base, list):
+            safeHeight = -1
+            clearanceHeight = -1
+
+            # find the heighest SafeHeight for the most safety.
+            for feature in self.baseOp.Base:
+                if feature.SafeHeight.Value > safeHeight:
+                    safeHeight = feature.SafeHeight.Value
+
+                if feature.ClearanceHeight.Value > clearanceHeight:
+                    clearanceHeight = feature.ClearanceHeight.Value
+
+            self.safeHeight = safeHeight
+            self.clearanceHeight = clearanceHeight
+        else:
+            self.safeHeight = float(PathUtil.opProperty(self.baseOp, "SafeHeight"))
+            self.clearanceHeight = float(PathUtil.opProperty(self.baseOp, "ClearanceHeight"))
+
         self.strG0ZsafeHeight = Path.Command(  # was a Feed rate with G1
             "G0", {"Z": self.safeHeight, "F": tc.VertRapid.Value}
         )
