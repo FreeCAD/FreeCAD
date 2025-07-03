@@ -44,7 +44,7 @@ class TaskShareView:
         self._uiPath = os.path.join(self._uiPath, "Mod/TechDraw/TechDrawTools/Gui/TaskMoveView.ui")
         self.form = Gui.PySideUic.loadUi(self._uiPath)
 
-        self.form.setWindowTitle(translate("TechDraw_ShareView", "Share view with another page"))
+        self.form.setWindowTitle(translate("TechDraw_ShareView", "Share View With Another Page"))
         self.form.lViewName.setText(translate("TechDraw_ShareView", "View to share"))
 
         self.form.pbView.clicked.connect(self.pickView)
