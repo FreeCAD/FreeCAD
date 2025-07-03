@@ -7,7 +7,7 @@ QTabWidget::pane{
   border: transparent;
 }
 QAbstractItemView {
-  alternate-background-color: @UserBackgroundUIColor;
+  alternate-background-color: @PrimaryColorUIColor;
   color: @TextForegroundColor;
   border: 1px solid @GeneralBorderColor
 ;
@@ -15,13 +15,13 @@ QAbstractItemView {
 
 Gui--OverlayTitleBar,
 Gui--OverlaySplitterHandle {
-  background-color: @UserBackgroundUIColor;
+  background-color: @PrimaryColorUIColor;
  }
 
 
 /* Overwrites Properties panel to use white text. */
  Gui--TreePanel QTreeView {
-  background-color: @UserBackgroundUIColor;
+  background-color: @PrimaryColorUIColor;
   border: 0px solid   @TextForegroundColor;
   color: @TextForegroundColor;
   gridline-color: @GeneralGridLinesColor;

@@ -18,7 +18,7 @@ INSTALLATION WHEN NECESSARY
 
 ============================================================================================================
 FOLLOWING CODES ARE CHANGED IN THE SETTINGS:
-@UserBackgroundUIColor
+@PrimaryColorUIColor
 @UserHighlight1Color
 @UserHighlight2Color
 @GeneralAlternateBackgroundColor
@@ -99,7 +99,7 @@ Main window
 ==================================================================================================*/
 QMainWindow,
 QDockWidget {
-  background-color: @UserBackgroundUIColor;/* main background color */}
+  background-color: @PrimaryColorUIColor;/* main background color */}
 QDialog {
   background-color: @DialogBackgroundColor;
 }
@@ -194,7 +194,7 @@ https://doc.qt.io/qt-5/stylesheet-examples.html#customizing-qtooltip
 
 --------------------------------------------------------------------------- */
 QToolTip {
-  background-color: @UserBackgroundUIColor;
+  background-color: @PrimaryColorUIColor;
   /* If you remove the border property, background stops working on Windows */
   border: 1.5px solid @GeneralBorderColor;
   font-weight:bolder;
@@ -209,7 +209,7 @@ https://doc.qt.io/qt-5/stylesheet-examples.html#customizing-qstatusbar
 --------------------------------------------------------------------------- */
 QStatusBar {
   border-style: none;
-  background-color: @UserBackgroundUIColor;
+  background-color: @PrimaryColorUIColor;
 }
 
 QStatusBar::item {
@@ -217,7 +217,7 @@ QStatusBar::item {
 }
 
 QStatusBar QToolTip {
-  background-color: @UserBackgroundUIColor;
+  background-color: @PrimaryColorUIColor;
   border: 1px solid @GeneralBorderColor;
   /* Remove padding, for fix combo box tooltip */
 
@@ -285,19 +285,19 @@ QCheckBox::indicator:checked:hover, QCheckBox::indicator:checked:pressed {
 }
 
 QCheckBox::indicator:checked:disabled {
-  /* background-color: @UserBackgroundUIColor; */
+  /* background-color: @PrimaryColorUIColor; */
   border: 1px solid @StylesheetIconsColor;
   image: url(qss:@IconsLocationFolderName/check-mark-lightgray.svg);
 }
 
 QCheckBox::indicator:indeterminate {
-  /* background-color: @UserBackgroundUIColor; */
+  /* background-color: @PrimaryColorUIColor; */
   border: 1px solid @StylesheetIconsColor;
   image: url(qss:@IconsLocationFolderName/indeterminate-mark-@StylesheetIconsColor.svg);
 }
 
 QCheckBox::indicator:indeterminate:disabled {
-  /* background-color: @UserBackgroundUIColor; */
+  /* background-color: @PrimaryColorUIColor; */
   border: 1px solid @StylesheetIconsColor;
   image: url(qss:@IconsLocationFolderName/indeterminate-mark-lightgray.svg);
 }
@@ -323,7 +323,7 @@ QGroupBox::title {
 }
 
 QGroupBox::indicator {
-  background-color: @UserBackgroundUIColor;
+  background-color: @PrimaryColorUIColor;
   width: 12px;
   height: 12px;
   margin: 1px;
@@ -331,7 +331,7 @@ QGroupBox::indicator {
 }
 
 QGroupBox::indicator:unchecked {
-  background-color: @UserBackgroundUIColor;
+  background-color: @PrimaryColorUIColor;
 }
 
 QGroupBox::indicator:unchecked:hover {
@@ -349,7 +349,7 @@ QGroupBox::indicator:unchecked:disabled {
 }
 
 QGroupBox::indicator:checked {
-  background-color: @UserBackgroundUIColor;
+  background-color: @PrimaryColorUIColor;
   border: 1px solid @StylesheetIconsColor;
   image:url(qss:@IconsLocationFolderName/check-mark-@StylesheetIconsColor.svg);
 }
@@ -482,7 +482,7 @@ QMenu::item:disabled {
 
 QMenu::separator {
   height: 2px;
-  background-color: @UserBackgroundUIColor;
+  background-color: @PrimaryColorUIColor;
   margin-left: 10%;
   margin-right: 10%;
 }
@@ -768,7 +768,7 @@ https://doc.qt.io/qt-5/stylesheet-examples.html#customizing-specific-widgets
 report view
 --------------------------------------------------------------------------- */
 QTextEdit {
-  background-color: @UserBackgroundUIColor;
+  background-color: @PrimaryColorUIColor;
   border-top: 1px solid @GeneralBorderColor;
 }
 
@@ -823,7 +823,7 @@ https://doc.qt.io/qt-5/stylesheet-examples.html#customizing-qtoolbar
 
 --------------------------------------------------------------------------- */
 QToolBar {
-  background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 @GeneralBorderColor, stop:0.01 @UserBackgroundUIColor ,stop:0.97 @UserBackgroundUIColor , stop:1 @GeneralBorderColor);
+  background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 @GeneralBorderColor, stop:0.01 @PrimaryColorUIColor ,stop:0.97 @PrimaryColorUIColor , stop:1 @GeneralBorderColor);
 }
 
 /* fix background color for toolbars that are the on menubar. */
@@ -835,11 +835,11 @@ QToolBar:only-one {
 QToolBar:horizontal {
   padding-top: 3px;
   padding-left: 3px;
-  background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 @GeneralBorderColor, stop:0.01 @UserBackgroundUIColor ,stop:0.97 @UserBackgroundUIColor , stop:1 @GeneralBorderColor);
+  background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 @GeneralBorderColor, stop:0.01 @PrimaryColorUIColor ,stop:0.97 @PrimaryColorUIColor , stop:1 @GeneralBorderColor);
 }
 
 QMenu QToolBar:horizontal {
-  background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 @GeneralBorderColor, stop:0.01 @UserBackgroundUIColor ,stop:0.97 @UserBackgroundUIColor , stop:1 @GeneralBorderColor);
+  background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 @GeneralBorderColor, stop:0.01 @PrimaryColorUIColor ,stop:0.97 @PrimaryColorUIColor , stop:1 @GeneralBorderColor);
 }
 
 /* fix background color for toolbars that are the on menubar. */
@@ -851,7 +851,7 @@ QToolBar:only-one {
 QToolBar:vertical {
   padding-top: 3px;
   padding-left: 3px;
-  background-color: qlineargradient(x1:0, y1:0, x2:1, y2:0, stop:0 @GeneralBorderColor, stop:0.02 @UserBackgroundUIColor ,stop:0.98 @UserBackgroundUIColor , stop:1 @GeneralBorderColor);
+  background-color: qlineargradient(x1:0, y1:0, x2:1, y2:0, stop:0 @GeneralBorderColor, stop:0.02 @PrimaryColorUIColor ,stop:0.98 @PrimaryColorUIColor , stop:1 @GeneralBorderColor);
 }
 
 QToolBar:disabled {}
@@ -953,7 +953,7 @@ QAbstractSpinBox:up-button {
 }
 
 QAbstractSpinBox:up-button:hover{
-  background-color: @UserBackgroundUIColor;
+  background-color: @PrimaryColorUIColor;
 }
 
 QAbstractSpinBox:up-button:disabled {
@@ -1040,7 +1040,7 @@ https://doc.qt.io/qt-5/stylesheet-examples.html#customizing-qabstractscrollarea
 
 --------------------------------------------------------------------------- */
 QTextBrowser {
-  background-color: @UserBackgroundUIColor;
+  background-color: @PrimaryColorUIColor;
   border: 1px solid @GeneralBorderColor;
 
 }
@@ -1105,7 +1105,7 @@ https://doc.qt.io/qt-5/stylesheet-examples.html#customizing-qprogressbar
 
 --------------------------------------------------------------------------- */
 QProgressBar {
-  background-color: @UserBackgroundUIColor;
+  background-color: @PrimaryColorUIColor;
   border: 1px solid @GeneralBorderColor;
   border-radius: 3px;
   text-align: center;
@@ -1121,7 +1121,7 @@ QProgressBar:disabled {
 
 QProgressBar::chunk {
   background-color: @UserHighlight1Color;
-  color: @UserBackgroundUIColor;
+  color: @PrimaryColorUIColor;
   border-radius: 3px;
 }
 
@@ -1406,7 +1406,7 @@ QComboBox::item:selected {
 }
 
 QComboBox::item:checked {
-  background-color: @UserBackgroundUIColor;
+  background-color: @PrimaryColorUIColor;
 }
 
 QComboBox::drop-down {
@@ -1525,7 +1525,7 @@ QSint--ActionGroup QFrame[class="content"] > QWidget > QPushButton {
 QSint--ActionGroup QFrame[class="content"] QTreeView,
 QSint--ActionGroup QFrame[class="content"] QListView,
 QSint--ActionGroup QFrame[class="content"] QTableView {
-  background-color: @UserBackgroundUIColor;
+  background-color: @PrimaryColorUIColor;
 }
 
 /* found inside Part Design Workbench and "make a draft on a face" Task panel options */
@@ -1560,7 +1560,7 @@ QSint--ActionGroup QToolButton#manualUpdate {
   padding-right: 20px;/* make way for the popup button */}
 /* to give widget inside the menu same look as regular menu */
 QSint--ActionGroup QToolButton#filterButton QListWidget {
-  background-color: @UserBackgroundUIColor;
+  background-color: @PrimaryColorUIColor;
   border: 1px solid @GeneralBorderColor;
 }
 
@@ -1597,7 +1597,7 @@ QSlider:disabled {
   /*  background-color: @GeneralDisabledBackgroundColor;disabled because this is the frame of the slider, not the slider itself.*/}
 QSlider:focus {}
 QSlider::groove:horizontal {
-  background-color: @UserBackgroundUIColor;
+  background-color: @PrimaryColorUIColor;
   border: 1px solid @GeneralBorderColor;
   height: 4px;
 
@@ -1715,7 +1715,7 @@ QTabWidget {
 }
 
 QTabWidget:tab-bar {
-  selection-background-color: @UserBackgroundUIColor;
+  selection-background-color: @PrimaryColorUIColor;
 }
 
 QTabWidget QWidget {}
@@ -1724,7 +1724,7 @@ QTabWidget::pane {
 
   /* Fixes double border inside pane with pyqt5 */
 
-  background-color: @UserBackgroundUIColor;
+  background-color: @PrimaryColorUIColor;
   border-radius: 3px;
   border: 1px solid @GeneralBorderColor;
 }
@@ -1837,7 +1837,7 @@ QTabBar::tab, QDockWidget QTabBar::tab {
   /* !selected and disabled ----------------------------------------- */
   /* selected ------------------------------------------------------- */
   padding: 4px;
-  background-color: @UserBackgroundUIColor;
+  background-color: @PrimaryColorUIColor;
 }
 
 QTabBar::tab:top, QDockWidget QTabBar::tab:top {
@@ -1866,7 +1866,7 @@ QTabBar::tab:top:selected, QDockWidget QTabBar::tab:top:selected {
 }
 
 QTabBar::tab:top:!selected:hover, QDockWidget QTabBar::tab:top:!selected:hover {
-  background-color: @UserBackgroundUIColor;
+  background-color: @PrimaryColorUIColor;
   border-bottom: 1px solid @GeneralBorderColor;
   border-top: 1px solid @GeneralBorderColor;
   border-left: 1px solid @GeneralBorderColor;
@@ -1897,7 +1897,7 @@ QTabBar::tab:bottom:selected, QDockWidget QTabBar::tab:bottom:selected {
 }
 
 QTabBar::tab:bottom:!selected:hover, QDockWidget QTabBar::tab:bottom:!selected:hover {
-  background-color: @UserBackgroundUIColor;
+  background-color: @PrimaryColorUIColor;
   border-bottom: 1px solid @GeneralBorderColor;
   border-top: 1px solid @GeneralBorderColor;
   border-left: 1px solid @GeneralBorderColor;
@@ -1927,7 +1927,7 @@ QTabBar::tab:left:selected, QDockWidget QTabBar::tab:left:selected {
 }
 
 QTabBar::tab:left:!selected:hover, QDockWidget QTabBar::tab:left:!selected:hover {
-  background-color: @UserBackgroundUIColor;
+  background-color: @PrimaryColorUIColor;
   border-bottom: 1px solid @GeneralBorderColor;
   border-top: 1px solid @GeneralBorderColor;
   border-left: 1px solid @GeneralBorderColor;
@@ -1957,7 +1957,7 @@ QTabBar::tab:right:selected, QDockWidget QTabBar::tab:right:selected {
 }
 
 QTabBar::tab:right:!selected:hover, QDockWidget QTabBar::tab:right:!selected:hover {
-  background-color: @UserBackgroundUIColor;
+  background-color: @PrimaryColorUIColor;
   border-bottom: 1px solid @GeneralBorderColor;
   border-top: 1px solid @GeneralBorderColor;
   border-left: 1px solid @GeneralBorderColor;
@@ -2180,7 +2180,7 @@ QColumnView::indicator:indeterminate:pressed {
   border: 1px solid @GeneralBorderColor;*/}
 QTableView,
 QColumnView {
-  background-color: @UserBackgroundUIColor;/* background of a lot of stuff including spreadsheets.*/
+  background-color: @PrimaryColorUIColor;/* background of a lot of stuff including spreadsheets.*/
   /* gridline-color: @GeneralBorderColor; */
 
   selection-background-color: @UserHighlight1Color;
@@ -2188,7 +2188,7 @@ QColumnView {
 }
 
 QListView {
-  background-color:   @UserBackgroundUIColor;
+  background-color:   @PrimaryColorUIColor;
 
   selection-background-color: @UserHighlight1Color;
   border: 1px solid @GeneralBorderColor;
@@ -2266,7 +2266,7 @@ https://doc.qt.io/qt-5/stylesheet-examples.html#customizing-qheaderview
 --------------------------------------------------------------------------- */
 
 QTableCornerButton::section {
-  background-color: @UserBackgroundUIColor;
+  background-color: @PrimaryColorUIColor;
   border-radius: 0px;/*if you remove this line it breaks it */}
 QHeaderView {
   background-color: transparent;
@@ -2375,7 +2375,7 @@ QToolBox::tab:selected {
 
 QToolBox::tab:selected:disabled {
   background-color: @GeneralDisabledBackgroundColor;
-  border-bottom: 0px solid @UserBackgroundUIColor;
+  border-bottom: 0px solid @PrimaryColorUIColor;
   color: @TextDisabledColor;
 }
 
@@ -2385,13 +2385,13 @@ QToolBox::tab:!selected:disabled {
 }
 
 QToolBox::tab:hover {
-  background-color: @UserBackgroundUIColor;
+  background-color: @PrimaryColorUIColor;
 }
 
 QToolBox > QScrollArea > QWidget > QWidget {
 
   border-style: none;
-  background-color: @UserBackgroundUIColor;
+  background-color: @PrimaryColorUIColor;
   border-radius: 4px;
 }
 
@@ -2476,7 +2476,7 @@ QDateEdit::down-arrow:on, QDateEdit::down-arrow:hover, QDateEdit::down-arrow:foc
 }
 
 QDateEdit QAbstractItemView, QDateTimeEdit QAbstractItemView {
-  background-color: @UserBackgroundUIColor;
+  background-color: @PrimaryColorUIColor;
   border-radius: 3px;
   border: 1px solid @GeneralBorderColor;
   selection-background-color: @UserHighlight1Color;
@@ -2545,7 +2545,7 @@ Gui--UrlLabel {
 }
 
 Gui--NotificationLabel {
-  background-color: @UserBackgroundUIColor;
+  background-color: @PrimaryColorUIColor;
   border: 1px solid @GeneralBorderColor;
   border-radius: 3px;
 }
@@ -2583,7 +2583,7 @@ QMdiSubWindow {
   border-radius: 3px;
   border-top-right-radius: 7px;
   border-top-left-radius: 7px;
-  background-color: @UserBackgroundUIColor;
+  background-color: @PrimaryColorUIColor;
 }
 
 QMdiSubWindow:hover {
@@ -2678,12 +2678,12 @@ QTreeView::item:!selected:hover#groupsTreeView {
 }
 
 QMainWindow QTableView {
-  background-color: @UserBackgroundUIColor;/* background of the tables used in the settings*/
+  background-color: @PrimaryColorUIColor;/* background of the tables used in the settings*/
   border: 1px solid @GeneralBorderColor;
 
   /* gridline-color: rgb(255, 255, 255); */}
 QMainWindow QListView {
-  background-color: @UserBackgroundUIColor;/* background of the workbenches listview used in the settings*/
+  background-color: @PrimaryColorUIColor;/* background of the workbenches listview used in the settings*/
   /* border: 1px solid @GeneralBorderColor; */
   /* border-radius: 3px; */}
 QMainWindow QTableView QPushButton {
