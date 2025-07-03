@@ -106,7 +106,7 @@ void TaskHatch::setUiPrimary()
 
 void TaskHatch::setUiEdit()
 {
-    setWindowTitle(QObject::tr("Edit face hatch"));
+    setWindowTitle(QObject::tr("Edit Face Hatch"));
     ui->fcFile->setFileName(QString::fromStdString(m_saveFile));
     ui->fcFile->setFilter(QStringLiteral(
             "SVG files (*.svg *.SVG);;Bitmap files(*.jpg *.jpeg *.png *.bmp);;All files (*)"));
