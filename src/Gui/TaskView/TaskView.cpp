@@ -290,7 +290,7 @@ QSize TaskPanel::minimumSizeHint() const
 TaskView::TaskView(QWidget *parent)
     : QStackedWidget(parent)
 {
-    TaskWatcherPanel = new TaskPanel();
+    TaskWatcherPanel = new TaskPanel(this);
     addWidget(TaskWatcherPanel);
 
     Gui::Selection().Attach(this);
@@ -459,7 +459,7 @@ void TaskView::adjustMinimumSizeHint()
 
 QSize TaskView::minimumSizeHint() const
 {
-    QSize ms = QWidget::minimumSizeHint();
+    QSize ms = QStackedWidget::minimumSizeHint();
     int spacing = 0;
 
     if (QLayout* layout = currentWidget()->layout()) {
@@ -591,8 +591,9 @@ void TaskView::OnChange(Gui::SelectionSingleton::SubjectType &rCaller,
         Reason.Type == SelectionChanges::SetSelection ||
         Reason.Type == SelectionChanges::RmvSelection) {
         
-        if (!currentTaskInfo())
+        if (!currentTaskInfo()) {
             updateWatcher();
+        }
     }
 
 }
