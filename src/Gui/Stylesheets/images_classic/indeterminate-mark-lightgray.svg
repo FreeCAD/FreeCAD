@@ -17,7 +17,7 @@
        transform="matrix(1.9080808,0,0,1.9080808,132.17724,-96.136038)"><g
          id="layer1-47-9-4-3"
          transform="matrix(0.11566147,0,0,0.1422392,-113.58621,101.3715)"><path
-           style="fill:none;stroke:#888888;stroke-width:4.42871;stroke-linecap:butt;stroke-linejoin:miter;stroke-dasharray:none;stroke-opacity:1"
+           style="fill:none;stroke:#888888;stroke-width:4.42871;stroke-linecap:round;stroke-linejoin:miter;stroke-dasharray:none;stroke-opacity:1"
            d="m 1079.0667,341.59798 h 19.9992"
            id="path10-5-9" /></g><g
          id="g10-8-2-8-7"

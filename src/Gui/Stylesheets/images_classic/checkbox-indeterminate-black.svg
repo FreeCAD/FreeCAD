@@ -2,9 +2,9 @@
 <!-- Created with Inkscape (http://www.inkscape.org/) -->
 
 <svg
-   width="6.8441591mm"
-   height="6.8441591mm"
-   viewBox="0 0 6.8441591 6.8441591"
+   width="6.8441601mm"
+   height="6.8441601mm"
+   viewBox="0 0 6.8441601 6.8441601"
    version="1.1"
    id="svg1"
    xml:space="preserve"
@@ -12,21 +12,19 @@
    xmlns:svg="http://www.w3.org/2000/svg"><defs
      id="defs1" /><g
      id="layer1"
-     transform="translate(-8.2070204,-142.29739)"><g
+     transform="translate(-8.2070196,-142.29739)"><g
        id="checkbox-indeterminate-black"
-       transform="matrix(1.9080808,0,0,1.9080808,-11.986833,-140.41657)"><g
+       transform="matrix(1.9080808,0,0,1.9080808,-11.986833,-140.41657)"
+       style="stroke-linecap:round;stroke-linejoin:round"><g
          id="layer1-47-9"
-         transform="matrix(0.11566147,0,0,0.1422392,-113.58621,101.3715)"><path
-           style="fill:none;stroke:#000000;stroke-width:4.42871;stroke-linecap:butt;stroke-linejoin:miter;stroke-dasharray:none;stroke-opacity:1"
-           d="m 1079.0667,341.59798 h 19.9992"
+         transform="matrix(0.11164872,0,0,0.1422392,-109.13395,101.3715)"
+         style="stroke-linecap:round;stroke-linejoin:round"><path
+           style="fill:none;stroke:#000000;stroke-width:4.29331;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1"
+           d="m 1078.9334,341.59798 h 18.7949"
            id="path10" /></g><g
          id="g10-8-2"
-         transform="translate(-32.637447,73.48898)"><rect
-           style="fill:none;stroke:#000000;stroke-width:0.25;stroke-linejoin:miter;stroke-dasharray:none;stroke-dashoffset:128.504;stroke-opacity:1"
+         transform="translate(-32.637447,73.48898)"
+         style="stroke-linecap:round;stroke-linejoin:round"><path
            id="rect354-384-9-6-0"
-           width="3.3369336"
-           height="3.3369336"
-           x="43.345779"
-           y="74.802681"
-           ry="0"
-           rx="0" /></g></g></g></svg>
+           style="fill:none;stroke:#000000;stroke-width:0.25;stroke-dashoffset:128.504"
+           d="m 43.869866,74.802681 h 2.28876 c 0.290344,0 0.524087,0.233743 0.524087,0.524087 v 2.28876 c 0,0.290344 -0.233743,0.524087 -0.524087,0.524087 h -2.28876 c -0.290344,0 -0.524087,-0.233743 -0.524087,-0.524087 v -2.28876 c 0,-0.290344 0.233743,-0.524087 0.524087,-0.524087 z" /></g></g></g></svg>

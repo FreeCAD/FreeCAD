@@ -2,9 +2,9 @@
 <!-- Created with Inkscape (http://www.inkscape.org/) -->
 
 <svg
-   width="6.8441591mm"
-   height="6.8441591mm"
-   viewBox="0 0 6.8441591 6.8441591"
+   width="6.8441601mm"
+   height="6.8441601mm"
+   viewBox="0 0 6.8441601 6.8441601"
    version="1.1"
    id="svg1"
    xml:space="preserve"
@@ -12,15 +12,10 @@
    xmlns:svg="http://www.w3.org/2000/svg"><defs
      id="defs1" /><g
      id="layer1"
-     transform="translate(-88.760888,-168.35062)"><g
+     transform="translate(-88.760887,-168.35062)"><g
        id="checkbox-empty-white"
        transform="matrix(1.9080808,0,0,1.9080808,6.2921486,25.859569)"
-       style="stroke:#ffffff;stroke-opacity:1"><rect
-         style="fill:none;stroke:#ffffff;stroke-width:0.25;stroke-linejoin:miter;stroke-dasharray:none;stroke-dashoffset:128.504;stroke-opacity:1"
+       style="stroke:#ffffff;stroke-linejoin:round;stroke-opacity:1"><path
          id="rect354-384-9-6-6"
-         width="3.3369336"
-         height="3.3369336"
-         x="43.345779"
-         y="74.802681"
-         ry="0"
-         rx="0" /></g></g></svg>
+         style="fill:none;stroke-width:0.25;stroke-dashoffset:128.504"
+         d="m 43.869866,74.802681 h 2.28876 c 0.290344,0 0.524087,0.233743 0.524087,0.524087 v 2.28876 c 0,0.290344 -0.233743,0.524087 -0.524087,0.524087 h -2.28876 c -0.290344,0 -0.524087,-0.233743 -0.524087,-0.524087 v -2.28876 c 0,-0.290344 0.233743,-0.524087 0.524087,-0.524087 z" /></g></g></svg>
