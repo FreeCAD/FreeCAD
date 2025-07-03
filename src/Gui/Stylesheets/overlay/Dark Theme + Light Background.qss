@@ -1,0 +1,206 @@
+Gui--DockWnd--ReportOutput,
+Gui--TaskView--TaskView QScrollArea {
+  border: none;
+}
+
+ QTabWidget::pane{
+  background-color: transparent;
+   border: transparent;
+ }
+
+ QAbstractItemView {
+   alternate-background-color: rgba(0, 0, 0, 0.273);
+   color: #ffffff;
+   border: 1px solid #696968;
+ }
+
+ Gui--OverlayTitleBar,
+ Gui--OverlaySplitterHandle {
+   background-color: #252525;
+  }
+
+  Gui--TreePanel QTreeView {
+  background-color: rgba(0, 0, 0, 0.55);
+  border: 0px solid #696968;
+  /* alternate-background-color: rgba(255, 0, 0, 0.611); */
+  color: #fdfdfd;
+  gridline-color: #696968;
+  border-radius: 0px;
+}
+
+ Gui--TreePanel QTreeView::item {
+  color: #ffffff;
+}
+
+ Gui--OverlayTabWidget[transparent="false"] Gui--TreePanel QTreeView::item {
+  color: #ffffff;
+}
+
+Gui--OverlayTabWidget[transparent="true"] Gui--TreePanel QTreeView::item {
+  color: #000000;
+}
+
+/* The OverlayTabWidget is named as OverlayLeft, OverlayRight, OverlayTop, OverlayBottom.
+To customize for each overlay docking site, use the following selector
+
+Gui--OverlayTabWidget#OverlayLeft {}
+*/
+
+Gui--OverlayTabWidget {
+  qproperty-effectColor: rgba(255, 255, 255, 200);
+  qproperty-effectBlurRadius: 0;
+  qproperty-effectOffsetX: 0;
+  qproperty-effectOffsetY: 0;
+  qproperty-effectWidth: 1;
+  qproperty-effectHeight: 1;
+  qproperty-enableEffect: 1;
+}
+ Gui--OverlayTabWidget#OverlayBottom {
+  qproperty-effectColor: rgba(225, 225, 225, 200);
+  qproperty-effectBlurRadius: 0;
+  qproperty-effectOffsetX: 0.0;
+  qproperty-effectOffsetY: 0.0;
+  qproperty-effectWidth: 1;
+  qproperty-effectHeight: 1;
+  qproperty-enableEffect: 1;
+}
+
+Gui--PropertyEditor--PropertyEditor {
+  qproperty-itemBackground: #333333;
+}
+
+ Gui--OverlayTabWidget::pane {
+   background-color: transparent;
+   border: transparent;
+ }
+
+ QSint--ActionGroup QFrame[class="content"] {
+   border-bottom-left-radius: 5px;
+   border-bottom-right-radius: 5px;
+ }
+
+ Gui--OverlayTabWidget::tab-bar:top,
+ Gui--OverlayTabWidget::tab-bar:bottom {
+     left: 10px;
+     alignment: left;
+ }
+
+ Gui--OverlayTabWidget::tab-bar:left,
+ Gui--OverlayTabWidget::tab-bar:right {
+     top: 10px;
+     alignment: top;
+ }
+
+ Gui--OverlayProxyWidget {
+   qproperty-hintColor: rgba(250, 250, 250, 0.6);
+ }
+
+ Gui--OverlayToolButton {
+  border: 1px solid transparent;
+  border-radius: 2px;
+}
+
+Gui--OverlayToolButton:hover {
+  border: 1px solid #000000;
+  background: #000000;
+  border-radius: 2px;
+}
+
+Gui--OverlayToolButton:focus {
+  border: 1px solid #0099ff;
+  border-radius: 2px;
+}
+
+Gui--OverlayToolButton::pressed,
+Gui--OverlayToolButton:checked {
+  border: 1px solid #696969;
+  border-radius: 2px;
+  background-color: #696969;
+}
+
+Gui--OverlayToolButton:checked:hover {
+  border: 1px solid #000000;
+  background: #000000;
+}
+
+Gui--OverlayToolButton{
+  image: url(qss:images_classic/close-lightgray.png) ;
+}
+
+Gui--OverlayToolButton:hover {
+  image: url(qss:images_classic/close-red.png) ;
+}
+
+ Gui--OverlayToolButton[objectName="OBTN Transparent"] {
+   image: url(qss:images_classic/transparent-lightgray.png);
+ }
+
+ Gui--OverlayToolButton[objectName="OBTN Transparent"]:hover {
+   image: url(qss:images_classic/transparent-white.png);
+ }
+
+ Gui--OverlayToolButton[objectName="OBTN Overlay"] {
+    image: url(qss:images_classic/overlay-lightgray.png);
+ }
+
+ Gui--OverlayToolButton[objectName="OBTN Overlay"]:hover {
+   image: url(qss:images_classic/overlay-white.png);
+ }
+
+ Gui--OverlayToolButton[objectName="OBTN AutoMode"] {
+  image: url(qss:images_classic/mode-lightgray.png);
+}
+
+ Gui--OverlayToolButton[objectName="OBTN AutoMode"]:hover {
+    image: url(qss:images_classic/mode-white.png);
+ }
+
+ Gui--OverlaySplitterHandle Gui--OverlayToolButton,
+ Gui--OverlayToolButton[objectName="OBTN Float"] {
+   image: url(qss:images_classic/float-lightgray.png);
+ }
+
+ Gui--OverlaySplitterHandle Gui--OverlayToolButton:hover,
+ Gui--OverlayToolButton[objectName="OBTN Float"]:hover {
+   image: url(qss:images_classic/float-white.png);
+ }
+
+ QTreeView::branch:open:has-children:has-siblings  {
+  border-image: none;
+  image: url(qss:images_classic/Arrow-down-white.png);
+}
+
+ QTreeView::branch:open:has-children:!has-siblings  {
+  border-image: none;
+  image: url(qss:images_classic/Arrow-down-white.png);
+}
+
+QTreeView::branch:closed:has-children:has-siblings  {
+  border-image: none;
+  image: url(qss:images_classic/Arrow-right-white.png);
+}
+
+QTreeView::branch:has-children:!has-siblings:closed  {
+  border-image: none;
+  image: url(qss:images_classic/Arrow-right-white.png);
+}
+
+Gui--TreePanel QTreeView::branch:open:has-children:has-siblings  {
+  border-image: none;
+  image: url(qss:images_classic/Arrow-down-black.png);
+}
+
+Gui--TreePanel QTreeView::branch:open:has-children:!has-siblings  {
+  border-image: none;
+  image: url(qss:images_classic/Arrow-down-black.png);
+}
+
+ Gui--TreePanel QTreeView::branch:closed:has-children:has-siblings  {
+  border-image: none;
+  image: url(qss:images_classic/Arrow-right-black.png);
+}
+
+ Gui--TreePanel QTreeView::branch:has-children:!has-siblings:closed  {
+  border-image: none;
+  image: url(qss:images_classic/Arrow-right-black.png);
+}
