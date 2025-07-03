@@ -45,7 +45,7 @@ class TaskMoveView:
         self._uiPath = os.path.join(self._uiPath, "Mod/TechDraw/TechDrawTools/Gui/TaskMoveView.ui")
         self.form = Gui.PySideUic.loadUi(self._uiPath)
 
-        self.form.setWindowTitle(translate("TechDraw_MoveView", "Move view to a different page"))
+        self.form.setWindowTitle(translate("TechDraw_MoveView", "Move View to Different Page"))
 
         self.form.pbView.clicked.connect(self.pickView)
         self.form.pbFromPage.clicked.connect(self.pickFromPage)
