@@ -2,6 +2,7 @@
 target_sources(Tests_run PRIVATE
         Assistant.cpp
         Camera.cpp
+        InputHintTest.cpp
 )
 
 # Qt tests
