@@ -627,10 +627,9 @@ class _CommandStructure:
                     self.dents.form.hide()
                 params.set_param_arch("StructurePreset",self.Profile)
             else:
-                p=elt[0]-1 # Presets indexes are 1-based
-                self.vLength.setText(FreeCAD.Units.Quantity(float(Presets[p][4]),FreeCAD.Units.Length).UserString)
-                self.vWidth.setText(FreeCAD.Units.Quantity(float(Presets[p][5]),FreeCAD.Units.Length).UserString)
-                self.Profile = Presets[p]
+                self.vLength.setText(FreeCAD.Units.Quantity(float(elt[4]),FreeCAD.Units.Length).UserString)
+                self.vWidth.setText(FreeCAD.Units.Quantity(float(elt[5]),FreeCAD.Units.Length).UserString)
+                self.Profile = elt
                 params.set_param_arch("StructurePreset",";".join([str(i) for i in self.Profile]))
 
     def switchLH(self,bmode):
