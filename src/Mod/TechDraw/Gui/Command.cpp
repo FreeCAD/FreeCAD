@@ -1459,7 +1459,7 @@ DEF_STD_CMD_A(CmdTechDrawClipGroupRemove)
 CmdTechDrawClipGroupRemove::CmdTechDrawClipGroupRemove() : Command("TechDraw_ClipGroupRemove")
 {
     sGroup = QT_TR_NOOP("TechDraw");
-    sMenuText = QT_TR_NOOP("Remove View From Clip Group");
+    sMenuText = QT_TR_NOOP("Remove From Clip Group");
     sToolTipText = QT_TR_NOOP("Removes a view based on the selected clip group");
     sWhatsThis = "TechDraw_ClipGroupRemove";
     sStatusTip = sToolTipText;
