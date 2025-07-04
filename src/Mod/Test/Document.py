@@ -2725,9 +2725,7 @@ class MultiDocumentUndo(unittest.TestCase):
         obj1 = self.Doc1.addObject("App::DocumentObject", "Obj1Name")
         obj2 = self.Doc2.addObject("App::DocumentObject", "Obj2Name")
 
-        self.assertNotEqual(
-            self.Doc1.getCurrentTransactionID(), self.Doc2.getCurrentTransactionID()
-        )
+        self.assertNotEqual(self.Doc1.getBookedTransactionID(), self.Doc2.getBookedTransactionID())
 
         self.Doc1.commitTransaction()
         self.Doc2.commitTransaction()
