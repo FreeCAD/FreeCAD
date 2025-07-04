@@ -25,8 +25,6 @@ import Path.Op.Base as PathOp
 import Path.Op.Util as PathOpUtil
 import PathScripts.PathUtils as PathUtils
 
-import copy
-
 __doc__ = "Base class for all ops in the engrave family."
 
 # lazily loaded modules
@@ -76,12 +74,7 @@ class ObjectOp(PathOp.ObjectOp):
             decomposewires.extend(PathOpUtil.makeWires(wire.Edges))
 
         wires = decomposewires
-        print()
-        print("Direction", obj.Direction)
-        print("start_idx", start_idx)
-        print(f"wires {wires}")
         for wire in wires:
-            print(f">>> wire {wire}")
             # offset = wire
 
             # reorder the wire
@@ -105,17 +98,6 @@ class ObjectOp(PathOp.ObjectOp):
                     dualDir = True
 
             for z in zValues:
-
-                def rndv(vector):
-                    if vector:
-                        v = copy.copy(vector)
-                        v.x = round(v.x, 1)
-                        v.y = round(v.y, 1)
-                        v.z = round(v.z, 1)
-                        return (v.x, v.y, v.z)
-
-                print()
-                print(f"  z {z}")
                 Path.Log.debug(z)
                 if lastPoint and (wire.isClosed() or dualDir):
                     # Add step down to next Z for closed profile
@@ -139,16 +121,7 @@ class ObjectOp(PathOp.ObjectOp):
                     edgesDir = edges
                     sIndex, eIndex = 0, -1
 
-                print(f"    edges {edges}")
                 for i, edge in enumerate(edgesDir):
-                    print()
-                    print(f"      lastPoint {rndv(lastPoint)}")
-                    print(f"      edge {i}  {edge}")
-                    print(
-                        f"      s{rndv(edge.Vertexes[sIndex].Point)} e{rndv(edge.Vertexes[eIndex].Point)}"
-                    )
-                    print(f"      {round(edge.FirstParameter,3)}  {round(edge.LastParameter,3)}")
-
                     Path.Log.debug(
                         "points: {} -> {}".format(
                             edge.Vertexes[sIndex].Point, edge.Vertexes[eIndex].Point
@@ -192,19 +165,15 @@ class ObjectOp(PathOp.ObjectOp):
                     # edgePar = edge.FirstParameter if not reverseDir else edge.LastParameter
                     # if Path.Geom.pointsCoincide(lastPoint, edge.valueAt(edgePar)):
                     if Path.Geom.pointsCoincide(lastPoint, edge.Vertexes[sIndex].Point):
-                        print("      pointsCoincide True")
                         flip = False
                         lastPoint = edge.Vertexes[eIndex].Point
                     else:
-                        print("      pointsCoincide False")
                         flip = True
                         lastPoint = edge.Vertexes[sIndex].Point
 
                     if reverseDir:
                         flip = not flip
 
-                    print(f"      reverseDir {reverseDir}")
-                    print(f"      flip {flip}")
                     for cmd in Path.Geom.cmdsForEdge(edge, flip):
                         # Add gcode for edge
                         self.appendCommand(cmd, z, relZ, self.horizFeed)
