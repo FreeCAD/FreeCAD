@@ -41,8 +41,8 @@ class BIM_IfcExplorer:
 
         return {
             "Pixmap": "IFC",
-            "MenuText": QT_TRANSLATE_NOOP("BIM_IfcExplorer", "IFC explorer"),
-            "ToolTip": QT_TRANSLATE_NOOP("BIM_IfcExplorer", "IFC explorer utility"),
+            "MenuText": QT_TRANSLATE_NOOP("BIM_IfcExplorer", "IFC Explorer"),
+            "ToolTip": QT_TRANSLATE_NOOP("BIM_IfcExplorer", "Opens the IFC explorer utility"),
         }
 
     def Activated(self):
@@ -123,7 +123,7 @@ class BIM_IfcExplorer:
 
         # draw the toolbar buttons
         self.openAction = QtGui.QAction(translate("BIM", "Open"), None)
-        self.openAction.setToolTip(translate("BIM", "Open another IFC file..."))
+        self.openAction.setToolTip(translate("BIM", "Open another IFC file"))
         self.openAction.triggered.connect(self.open)
         self.openAction.setIcon(QtGui.QIcon(":/icons/document-open.svg"))
         toolbar.addAction(self.openAction)

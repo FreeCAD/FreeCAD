@@ -37,7 +37,7 @@ class BIM_SetWPFront:
             "Pixmap": "view-front.svg",
             "MenuText": QT_TRANSLATE_NOOP("BIM_SetWPFront", "Working Plane Front"),
             "ToolTip": QT_TRANSLATE_NOOP(
-                "BIM_SetWPFront", "Set the working plane to Front"
+                "BIM_SetWPFront", "Sets the working plane to Front"
             ),
             "Accel": "W,P,1",
         }
@@ -54,7 +54,7 @@ class BIM_SetWPSide:
             "Pixmap": "view-right.svg",
             "MenuText": QT_TRANSLATE_NOOP("BIM_SetWPSide", "Working Plane Side"),
             "ToolTip": QT_TRANSLATE_NOOP(
-                "BIM_SetWPSide", "Set the working plane to Side"
+                "BIM_SetWPSide", "Sets the working plane to Side"
             ),
             "Accel": "W,P,3",
         }
@@ -71,7 +71,7 @@ class BIM_SetWPTop:
             "Pixmap": "view-top.svg",
             "MenuText": QT_TRANSLATE_NOOP("BIM_SetWPTop", "Working Plane Top"),
             "ToolTip": QT_TRANSLATE_NOOP(
-                "BIM_SetWPTop", "Set the working plane to Top"
+                "BIM_SetWPTop", "Sets the working plane to Top"
             ),
             "Accel": "W,P,2",
         }

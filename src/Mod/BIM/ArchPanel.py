@@ -442,7 +442,7 @@ class _Panel(ArchComponent.Component):
                         if base.Volume < 0:
                             base.reverse()
                         if base.Volume < 0:
-                            FreeCAD.Console.PrintError(translate("Arch","Couldn't compute a shape"))
+                            FreeCAD.Console.PrintError(translate("Arch","Could not compute a shape"))
                             return
                         base = base.removeSplitter()
                     obj.Shape = base

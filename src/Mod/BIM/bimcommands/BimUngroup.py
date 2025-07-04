@@ -35,7 +35,7 @@ class BIM_Ungroup:
     def GetResources(self):
         return {
             "Pixmap": "Draft_AddToGroup",
-            "MenuText": QT_TRANSLATE_NOOP("BIM_Convert", "Remove from group"),
+            "MenuText": QT_TRANSLATE_NOOP("BIM_Convert", "Remove From Group"),
             "ToolTip": QT_TRANSLATE_NOOP(
                 "BIM_Convert", "Removes this object from its parent group"
             ),

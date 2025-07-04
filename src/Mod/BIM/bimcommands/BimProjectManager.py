@@ -40,9 +40,9 @@ class BIM_ProjectManager:
 
         return {
             "Pixmap": "BIM_ProjectManager",
-            "MenuText": QT_TRANSLATE_NOOP("BIM_ProjectManager", "Setup project..."),
+            "MenuText": QT_TRANSLATE_NOOP("BIM_ProjectManager", "Setup Project…"),
             "ToolTip": QT_TRANSLATE_NOOP(
-                "BIM_ProjectManager", "Create or manage a BIM project"
+                "BIM_ProjectManager", "Creates or manages a BIM project"
             ),
         }
 
@@ -482,7 +482,7 @@ class BIM_ProjectManager:
 
     def fillPresets(self):
         self.form.presets.clear()
-        self.form.presets.addItem(translate("BIM", "User preset..."))
+        self.form.presets.addItem(translate("BIM", "User preset"))
         presetdir = os.path.join(FreeCAD.getUserAppDataDir(), "BIM")
         if os.path.isdir(presetdir):
             for f in os.listdir(presetdir):
@@ -793,7 +793,7 @@ class BIM_ProjectManager:
                         )
 
             FreeCAD.Console.PrintMessage(
-                translate("BIM", "Template successfully loaded into current document")
+                translate("BIM", "Template successfully loaded into the current document")
                 + "\n"
             )
             self.reject()
