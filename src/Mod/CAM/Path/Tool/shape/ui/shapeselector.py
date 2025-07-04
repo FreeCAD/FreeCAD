@@ -67,10 +67,16 @@ class ShapeSelector:
         # Retrieve each shape asset
         builtin = cam_assets.fetch(asset_type="toolbitshape", store="builtin")
         builtin = {c.id: c for c in builtin}
+
+        turning = cam_assets.fetch(asset_type="toolbitshape", store="builtin")
+        turning = {c.id: c for c in turning}
+
         custom = cam_assets.fetch(asset_type="toolbitshape", store="local")
         for shape in custom:
             builtin.pop(shape.id, None)
+
         self._add_shapes(self.form.standardTools, builtin.values())
+        self._add_shapes(self.form.turningTools, turning.values())
         self._add_shapes(self.form.customTools, custom)
 
     def on_shape_button_clicked(self, shape):
