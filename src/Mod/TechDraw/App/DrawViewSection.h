@@ -87,8 +87,8 @@ public:
 
 //NOLINTBEGIN
     App::PropertyLink BaseView;
-    App::PropertyDirection SectionNormal;
-    App::PropertyPosition SectionOrigin;
+    App::PropertyVector SectionNormal;
+    App::PropertyVector SectionOrigin;
     App::PropertyString SectionSymbol;
 
 
