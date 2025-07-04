@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>ASCII points import</string>
+   <string>ASCII Points Import</string>
   </property>
   <layout class="QVBoxLayout">
    <property name="spacing">
@@ -31,7 +31,7 @@
      <item>
       <widget class="QLabel" name="textLabel1">
        <property name="text">
-        <string>Template:</string>
+        <string>Template</string>
        </property>
       </widget>
      </item>
@@ -43,7 +43,7 @@
    <item>
     <widget class="QGroupBox" name="groupBox1">
      <property name="title">
-      <string>Special lines</string>
+      <string>Special Lines</string>
      </property>
      <layout class="QGridLayout">
       <property name="margin">
@@ -55,7 +55,7 @@
       <item row="0" column="0">
        <widget class="QGroupBox" name="groupBox">
         <property name="title">
-         <string>First line:</string>
+         <string>First Line</string>
         </property>
         <layout class="QHBoxLayout">
          <property name="spacing">
@@ -98,7 +98,7 @@
         <item row="0" column="0">
          <widget class="QLabel" name="textLabel3">
           <property name="text">
-           <string>Cluster by lines starting with:</string>
+           <string>Cluster by lines starting with</string>
           </property>
          </widget>
         </item>
@@ -108,7 +108,7 @@
         <item row="1" column="0">
          <widget class="QLabel" name="textLabel4">
           <property name="text">
-           <string>Ignore lines starting with:</string>
+           <string>Ignore lines starting with</string>
           </property>
          </widget>
         </item>
@@ -123,7 +123,7 @@
    <item>
     <widget class="QGroupBox" name="groupBox2">
      <property name="title">
-      <string>Point format</string>
+      <string>Point Format</string>
      </property>
      <layout class="QGridLayout">
       <property name="margin">
@@ -143,7 +143,7 @@
         <item row="0" column="0">
          <widget class="QLabel" name="textLabel6">
           <property name="text">
-           <string>Number separator:</string>
+           <string>Number separator</string>
           </property>
          </widget>
         </item>
@@ -177,7 +177,7 @@
         <item row="1" column="0">
          <widget class="QLabel" name="textLabel7">
           <property name="text">
-           <string>Points format:</string>
+           <string>Points format</string>
           </property>
          </widget>
         </item>
@@ -198,7 +198,7 @@
         <item row="2" column="0">
          <widget class="QLabel" name="textLabel8">
           <property name="text">
-           <string>Next block:</string>
+           <string>Next block</string>
           </property>
          </widget>
         </item>
@@ -206,7 +206,7 @@
          <widget class="QComboBox" name="comboBoxNextBlock1">
           <item>
            <property name="text">
-            <string>none</string>
+            <string>None</string>
            </property>
           </item>
           <item>
@@ -226,7 +226,7 @@
           </item>
           <item>
            <property name="text">
-            <string>I (Gray value)</string>
+            <string>I (gray value)</string>
            </property>
           </item>
          </widget>
@@ -234,7 +234,7 @@
         <item row="3" column="0">
          <widget class="QLabel" name="textLabel8_2">
           <property name="text">
-           <string>Next block:</string>
+           <string>Next block</string>
           </property>
          </widget>
         </item>
@@ -242,7 +242,7 @@
          <widget class="QComboBox" name="comboBoxNextBlock2">
           <item>
            <property name="text">
-            <string>none</string>
+            <string>None</string>
            </property>
           </item>
           <item>
@@ -262,7 +262,7 @@
           </item>
           <item>
            <property name="text">
-            <string>I (Gray value)</string>
+            <string>I (gray value)</string>
            </property>
           </item>
          </widget>
@@ -270,7 +270,7 @@
         <item row="4" column="0">
          <widget class="QLabel" name="textLabel8_2_2">
           <property name="text">
-           <string>Next block:</string>
+           <string>Next block</string>
           </property>
          </widget>
         </item>
@@ -278,7 +278,7 @@
          <widget class="QComboBox" name="comboBoxNextBlock3">
           <item>
            <property name="text">
-            <string>none</string>
+            <string>None</string>
            </property>
           </item>
           <item>
@@ -298,7 +298,7 @@
           </item>
           <item>
            <property name="text">
-            <string>I (Gray value)</string>
+            <string>I (gray value)</string>
            </property>
           </item>
          </widget>
@@ -338,7 +338,7 @@
         <item>
          <widget class="QLabel" name="textLabel5">
           <property name="text">
-           <string>Number of previewed lines:</string>
+           <string>Number of previewed lines</string>
           </property>
          </widget>
         </item>

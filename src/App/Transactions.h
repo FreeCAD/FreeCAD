@@ -81,11 +81,16 @@ public:
     bool isEmpty() const;
     /// check if this object is used in a transaction
     bool hasObject(const TransactionalObject* Obj) const;
+    void renameProperty(TransactionalObject* Obj, const Property* pcProp, const char* oldName);
     void addOrRemoveProperty(TransactionalObject* Obj, const Property* pcProp, bool add);
 
     void addObjectNew(TransactionalObject* Obj);
     void addObjectDel(const TransactionalObject* Obj);
     void addObjectChange(const TransactionalObject* Obj, const Property* Prop);
+
+private:
+    void changeProperty(TransactionalObject* Obj,
+                        std::function<void(TransactionObject* to)> changeFunc);
 
 private:
     int transID;
@@ -115,6 +120,7 @@ public:
     virtual void applyChn(Document& Doc, TransactionalObject* pcObj, bool Forward);
 
     void setProperty(const Property* pcProp);
+    void renameProperty(const Property* pcProp, const char* newName);
     void addOrRemoveProperty(const Property* pcProp, bool add);
 
     unsigned int getMemSize() const override;
@@ -136,6 +142,8 @@ protected:
     {
         Base::Type propertyType;
         const Property* propertyOrig = nullptr;
+        // for property renaming
+        std::string nameOrig;
     };
     std::unordered_map<int64_t, PropData> _PropChangeMap;
 

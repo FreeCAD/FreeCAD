@@ -275,7 +275,7 @@ private:
             exporter = std::make_unique<MergeExporter>(outputFileName, exportFormat);
         }
         else {
-            std::string exStr("Can't determine mesh format from file name.\nPlease specify mesh "
+            std::string exStr("Cannot determine the mesh format from the file name.\nSpecify mesh "
                               "format file extension: '");
             exStr += outputFileName + "'";
             throw Py::ValueError(exStr.c_str());

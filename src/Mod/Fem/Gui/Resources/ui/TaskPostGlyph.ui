@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string notr="true">Glyph settings</string>
+   <string notr="true">Glyph Settings</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_2">
    <item>
@@ -308,10 +308,10 @@
          <bool>true</bool>
         </property>
         <property name="toolTip">
-         <string>Defines the maximal number of vertices used for &quot;Uniform Sampling&quot; masking mode</string>
+         <string>Defines the maximum number of vertices used for &quot;Uniform Sampling&quot; masking mode</string>
         </property>
         <property name="text">
-         <string>Max </string>
+         <string>Maximum</string>
         </property>
        </widget>
       </item>

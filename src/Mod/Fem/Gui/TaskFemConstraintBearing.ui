@@ -17,7 +17,7 @@
    <item>
     <widget class="QPushButton" name="buttonReference">
      <property name="text">
-      <string>Add reference</string>
+      <string>Add Reference</string>
      </property>
     </widget>
    </item>

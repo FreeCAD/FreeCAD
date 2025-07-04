@@ -37,7 +37,7 @@
       </sizepolicy>
      </property>
      <property name="toolTip">
-      <string>Forces recomputation of active document</string>
+      <string>Forces the recomputation of the active document</string>
      </property>
      <property name="text">
       <string/>

@@ -59,6 +59,7 @@ class _AxisSystem:
     def __init__(self,obj):
 
         obj.Proxy = self
+        self.Type = "AxisSystem"
         self.setProperties(obj)
 
     def setProperties(self,obj):
@@ -68,7 +69,6 @@ class _AxisSystem:
             obj.addProperty("App::PropertyLinkList","Axes","AxisSystem", QT_TRANSLATE_NOOP("App::Property","The axes this system is made of"), locked=True)
         if not "Placement" in pl:
             obj.addProperty("App::PropertyPlacement","Placement","AxisSystem",QT_TRANSLATE_NOOP("App::Property","The placement of this axis system"), locked=True)
-        self.Type = "AxisSystem"
 
     def onDocumentRestored(self,obj):
 
@@ -97,7 +97,7 @@ class _AxisSystem:
 
     def loads(self,state):
 
-        return None
+        self.Type = "AxisSystem"
 
     def getPoints(self,obj):
 
