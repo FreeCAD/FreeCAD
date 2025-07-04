@@ -1639,11 +1639,7 @@ CmdTechDrawExtensionCreateHorizCoordDimension::CmdTechDrawExtensionCreateHorizCo
     sAppModule      = "TechDraw";
     sGroup          = QT_TR_NOOP("TechDraw");
     sMenuText       = QT_TR_NOOP("Horizontal Coordinate Dimension");
-    sToolTipText    = QT_TR_NOOP("Inserts multiple evenly spaced horizontal dimensions starting from the same baseline:<br>\
-- Specify the cascade spacing (optional)<br>\
-- Select three or more vertices <br>\
-- The selection order of the first two vertices determines the position of the baseline<br>\
-- Click this tool");
+    sToolTipText    = QT_TR_NOOP("Adds evenly spaced horizontal dimensions between 3 or more vertices aligned to a shared baseline");
     sWhatsThis      = "TechDraw_ExtensionCreateHorizCoordDimension";
     sStatusTip      = sMenuText;
     sPixmap         = "TechDraw_ExtensionCreateHorizCoordDimension";
@@ -1712,11 +1708,7 @@ CmdTechDrawExtensionCreateVertCoordDimension::CmdTechDrawExtensionCreateVertCoor
     sAppModule      = "TechDraw";
     sGroup          = QT_TR_NOOP("TechDraw");
     sMenuText       = QT_TR_NOOP("Vertical Coordinate Dimension");
-    sToolTipText    = QT_TR_NOOP("Inserts multiple evenly spaced vertical dimensions starting from the same baseline:<br>\
-- Specify the cascade spacing (optional)<br>\
-- Select three or more vertices <br>\
-- The selection order of the first two vertices determines the position of the baseline<br>\
-- Click this tool");
+    sToolTipText    = QT_TR_NOOP("Adds evenly spaced vertical dimensions between 3 or more vertices aligned to a shared baseline");
     sWhatsThis      = "TechDraw_ExtensionCreateVertCoordDimension";
     sStatusTip      = sMenuText;
     sPixmap         = "TechDraw_ExtensionCreateVertCoordDimension";
@@ -1841,12 +1833,7 @@ CmdTechDrawExtensionCreateObliqueCoordDimension::CmdTechDrawExtensionCreateObliq
     sAppModule      = "TechDraw";
     sGroup          = QT_TR_NOOP("TechDraw");
     sMenuText       = QT_TR_NOOP("Oblique Coordinate Dimension");
-    sToolTipText    = QT_TR_NOOP("Inserts multiple evenly spaced oblique dimensions starting from the same baseline:<br>\
-- Specify the cascade spacing (optional)<br>\
-- Select three or more vertices <br>\
-- The selection order of the first two vertices determines the position of the baseline<br>\
-- The first two vertices also define the direction<br>\
-- Click this tool");
+    sToolTipText    = QT_TR_NOOP("Adds evenly spaced oblique dimensions between 3 or more vertices aligned to a shared baseline");
     sWhatsThis      = "TechDraw_ExtensionCreateObliqueCoordDimension";
     sStatusTip      = sMenuText;
     sPixmap         = "TechDraw_ExtensionCreateObliqueCoordDimension";
@@ -1877,11 +1864,7 @@ CmdTechDrawExtensionCreateCoordDimensionGroup::CmdTechDrawExtensionCreateCoordDi
     sAppModule      = "TechDraw";
     sGroup          = QT_TR_NOOP("TechDraw");
     sMenuText       = QT_TR_NOOP("Horizontal Coordinate Dimension");
-    sToolTipText    = QT_TR_NOOP("Inserts multiple evenly spaced horizontal dimensions starting from the same baseline:<br>\
-- Specify the cascade spacing (optional)<br>\
-- Select three or more vertices <br>\
-- The selection order of the first two vertices determines the position of the baseline<br>\
-- Click this tool");
+    sToolTipText    = QT_TR_NOOP("Adds evenly spaced horizontal dimensions between 3 or more vertices aligned to a shared baseline");
     sWhatsThis      = "TechDraw_ExtensionCreateCoordDimensionGroup";
     sStatusTip      = sMenuText;
 }
@@ -1954,30 +1937,17 @@ void CmdTechDrawExtensionCreateCoordDimensionGroup::languageChange()
     QAction* arc1 = a[0];
     arc1->setText(QApplication::translate("CmdTechDrawExtensionCreateHorizCoordDimension", "Horizontal Coordinate Dimension"));
     arc1->setToolTip(QApplication::translate("CmdTechDrawExtensionCreateHorizCoordDimension",
-"Inserts multiple evenly spaced horizontal dimensions starting from the same baseline:<br>\
-- Specify the cascade spacing (optional)<br>\
-- Select three or more vertices<br>\
-- The selection order of the first two vertices determines the position of the baseline<br>\
-- Click this tool"));
+"Adds evenly spaced horizontal dimensions between 3 or more vertices aligned to a shared baseline"));
     arc1->setStatusTip(arc1->text());
     QAction* arc2 = a[1];
     arc2->setText(QApplication::translate("CmdTechDrawExtensionCreateVertCoordDimension", "Vertical Coordinate Dimension"));
     arc2->setToolTip(QApplication::translate("CmdTechDrawExtensionCreateVertCoordDimension",
-"Inserts multiple evenly spaced vertical dimensions starting from the same baseline:<br>\
-- Specify the cascade spacing (optional)<br>\
-- Select three or more vertices<br>\
-- The selection order of the first two vertices determines the position of the baseline<br>\
-- Click this tool"));
+"Adds evenly spaced vertical dimensions between 3 or more vertices aligned to a shared baseline"));
     arc2->setStatusTip(arc2->text());
     QAction* arc3 = a[2];
     arc3->setText(QApplication::translate("CmdTechDrawExtensionCreateObliqueCoordDimension", "Oblique Coordinate Dimension"));
     arc3->setToolTip(QApplication::translate("CmdTechDrawExtensionCreateObliqueCoordDimension",
-"Inserts  multiple evenly spaced oblique dimensions starting from the same baseline:<br>\
-- Specify the cascade spacing (optional)<br>\
-- Select three or more vertices<br>\
-- The selection order of the first two vertices determines the position of the baseline<br>\
-- The first two vertices also define the direction<br>\
-- Click this tool"));
+"Adds evenly spaced oblique dimensions between 3 or more vertices aligned to a shared baseline"));
     arc3->setStatusTip(arc3->text());
 }
 

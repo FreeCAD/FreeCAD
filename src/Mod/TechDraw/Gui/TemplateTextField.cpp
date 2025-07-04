@@ -48,7 +48,7 @@ TemplateTextField::TemplateTextField(QGraphicsItem *parent,
       tmplte(myTmplte),
       fieldNameStr(myFieldName)
 {
-    setToolTip(QObject::tr("Click to update text"));
+    setToolTip(QObject::tr("Updates text"));
     m_rect = new QGraphicsRectItem();
     addToGroup(m_rect);
     QPen rectPen(Qt::transparent);

@@ -83,7 +83,7 @@
      <item>
       <widget class="QPushButton" name="pbDragger">
        <property name="toolTip">
-        <string>Click to drag detail highlight to new position</string>
+        <string>Enables dragging of the detail highlight to a new position</string>
        </property>
        <property name="text">
         <string>Drag Highlight</string>

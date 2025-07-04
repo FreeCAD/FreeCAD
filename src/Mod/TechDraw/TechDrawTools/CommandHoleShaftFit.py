@@ -69,7 +69,7 @@ class CommandHoleShaftFit:
             )
             msg = translate(
                 "TechDraw_HoleShaftFit",
-                "Please select one length dimension or diameter dimension and retry",
+                "Select one length dimension or diameter dimension and retry",
             )
             msgBox.setText(msg)
             msgBox.setWindowTitle(msgTitle)

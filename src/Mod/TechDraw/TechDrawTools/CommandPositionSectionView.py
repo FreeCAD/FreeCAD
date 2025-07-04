@@ -21,7 +21,7 @@
 """
 Provides the TechDraw PositionSectionView GuiCommand.
 00.01 2021/03/17 C++ Basic version
-00.02 2023/12/21 Option to select an edge and it's corresponding vertex
+00.02 2023/12/21 Option to select an edge and its corresponding vertex
 """
 
 __title__ = "TechDrawTools.CommandPositionSectionView"

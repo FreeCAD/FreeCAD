@@ -424,9 +424,9 @@ void CmdTechDrawView::activated(int iMsg)
             // If nothing was selected, then we offer to insert SVG or Images files.
             bool dontShowAgain = hGrp->GetBool("DontShowInsertFileMessage", false);
             if (!dontShowAgain) {
-                auto msgText = QObject::tr("If you want to insert a view from existing objects, "
-                        "please select them before invoking this tool. Without a selection, a "
-                        "file browser will open, to insert a SVG or image file.");
+                auto msgText = QObject::tr("to insert a view from existing objects, "
+                        "select them before invoking this tool. Without a selection, a "
+                        "file browser will open to insert a SVG or image file.");
                 QMessageBox msgBox(Gui::getMainWindow());
                 msgBox.setText(msgText);
                 auto dontShowMsg = QObject::tr("Do not show this message again");
@@ -590,7 +590,7 @@ void CmdTechDrawBrokenView::activated(int iMsg)
     // we need either a base view (dvp) or some shape objects in the selection
     if (!dvp && (shapes.empty() && xShapes.empty())) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Empty selection"),
-            QObject::tr("Please select objects to break or a base view and break definition objects"));
+            QObject::tr("Select objects to break or a base view and break definition objects"));
         return;
     }
 
@@ -1597,8 +1597,7 @@ CmdTechDrawDraftView::CmdTechDrawDraftView() : Command("TechDraw_DraftView")
 {
     // setting the Gui eye-candy
     sGroup = QT_TR_NOOP("TechDraw");
-    //: "Draft" is a workbench and should not be translated
-    sMenuText = QT_TR_NOOP("Insert Draft Workbench Object");
+    sMenuText = QT_TR_NOOP("Draft View");
     //: "Draft" is a workbench and should not be translated
     sToolTipText = QT_TR_NOOP("Inserts a view of a Draft object");
     sWhatsThis = "TechDraw_NewDraft";
@@ -1690,7 +1689,7 @@ void CmdTechDrawArchView::activated(int iMsg)
     }
     if (archCount > 1) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-                             QObject::tr("Please select only 1 BIM section plane"));
+                             QObject::tr("Select only 1 BIM section plane"));
         return;
     }
 

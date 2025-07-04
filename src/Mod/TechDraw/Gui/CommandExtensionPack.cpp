@@ -2049,7 +2049,7 @@ void _createThreadLines(const std::vector<std::string>& SubNames, TechDraw::Draw
         TechDraw::BaseGeomPtr geom1 = objFeat->getGeomByIndex(GeoId1);
         if (geom0->getGeomType() != GeomType::GENERIC || geom1->getGeomType() != GeomType::GENERIC) {
             QMessageBox::warning(Gui::getMainWindow(), QObject::tr("TechDraw thread hole side"),
-                                 QObject::tr("Please select two straight lines"));
+                                 QObject::tr("Select 2 straight lines"));
             return;
         }
 
