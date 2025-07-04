@@ -39,10 +39,9 @@ class AssetSerializer(ABC):
         pass
 
     @classmethod
-    @abc.abstractmethod
     def extract_dependencies(cls, data: bytes) -> List[AssetUri]:
         """Extracts URIs of dependencies from serialized data."""
-        pass
+        return []
 
     @classmethod
     @abc.abstractmethod

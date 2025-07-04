@@ -19,32 +19,34 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
+from PySide import QtGui, QtCore
 import FreeCAD
-from typing import Optional
+from ..models import Spindle
+from .spindle_prop import SpindleWidget
 
 
-def find_shape_object(doc: "FreeCAD.Document") -> Optional["FreeCAD.DocumentObject"]:
-    """
-    Find the primary object representing the shape in a document.
+class SpindleEditorDialog(QtGui.QDialog):
+    """Dialog for adding or editing a spindle's properties."""
 
-    Looks for PartDesign::Body, then Part::Feature. Falls back to the first
-    object if no better candidate is found.
+    def __init__(self, spindle: Spindle, parent=None):
+        super().__init__(parent)
+        self.setWindowTitle(FreeCAD.Qt.translate("CAM", "Spindle Editor"))
+        self.spindle = spindle
+        self.layout = QtGui.QVBoxLayout(self)
 
-    Args:
-        doc (FreeCAD.Document): The document to search within.
+        # Spindle properties widget
+        self.props_widget = SpindleWidget(self.spindle, self)
+        self.layout.addWidget(self.props_widget)
 
-    Returns:
-        Optional[FreeCAD.DocumentObject]: The found object or None.
-    """
-    obj = None
-    # Prioritize Body
-    for o in doc.Objects:
-        if o.isDerivedFrom("PartDesign::Body"):
-            return o
-        # Keep track of the first Part::Feature found as a fallback
-        if obj is None and o.isDerivedFrom("Part::Feature"):
-            obj = o
-    if obj:
-        return obj
-    # Fallback to the very first object if nothing else suitable found
-    return doc.Objects[0] if doc.Objects else None
+        # Buttons
+        buttons = QtGui.QDialogButtonBox(
+            QtGui.QDialogButtonBox.Ok | QtGui.QDialogButtonBox.Cancel, QtCore.Qt.Horizontal, self
+        )
+        buttons.accepted.connect(self.on_accepted)
+        buttons.rejected.connect(self.reject)
+        self.layout.addWidget(buttons)
+
+    def on_accepted(self):
+        if self.props_widget.validate_inputs():
+            self.props_widget.update_component_values()
+            self.accept()
