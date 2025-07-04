@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "name": "TCMT110204R",
+  "shape": "Iso_shape_T.fcstd",
+  "parameter": {
+    "Diameter": "1.48 mm",
+    "EdgeLength": "6.35 mm",
+    "Rotation": "60.00 \u00b0",
+    "TipAngle": "60.00 \u00b0",
+    "TipRadius": "0.40 mm"
+  },
+  "attribute": {}
+}

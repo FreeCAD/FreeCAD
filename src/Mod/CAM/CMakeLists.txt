@@ -433,6 +433,10 @@ SET(Tools_Bit_SRCS
     Tools/Bit/90degree_Vbit.fctb
     Tools/Bit/probe.fctb
     Tools/Bit/slittingsaw.fctb
+    Tools/Bit/iso_shape_c.fctb
+    Tools/Bit/iso_shape_d.fctb
+    Tools/Bit/iso_shape_s.fctb
+    Tools/Bit/iso_shape_t.fctb
 )
 
 SET(Tools_Library_SRCS
@@ -466,6 +470,10 @@ SET(Tools_Shape_SRCS
     Tools/Shape/threadmill.svg
     Tools/Shape/vbit.fcstd
     Tools/Shape/vbit.svg
+    Tools/Shape/iso_shape_C.fcstd
+    Tools/Shape/iso_shape_D.fcstd
+    Tools/Shape/iso_shape_S.fcstd
+    Tools/Shape/iso_shape_T.fcstd
 )
 
 SET(Tests_SRCS
