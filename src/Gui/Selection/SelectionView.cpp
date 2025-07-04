@@ -638,7 +638,7 @@ void SelectionView::onItemContextMenu(const QPoint& point)
         return;
     }
     QMenu menu;
-    QAction* selectAction = menu.addAction(tr("Select only"), this, [&] {
+    QAction* selectAction = menu.addAction(tr("Select Only"), this, [&] {
         this->select(nullptr);
     });
     selectAction->setIcon(QIcon::fromTheme(QStringLiteral("view-select")));
@@ -648,19 +648,19 @@ void SelectionView::onItemContextMenu(const QPoint& point)
     deselectAction->setIcon(QIcon::fromTheme(QStringLiteral("view-unselectable")));
     deselectAction->setToolTip(tr("Deselects this object"));
 
-    QAction* zoomAction = menu.addAction(tr("Zoom fit"), this, &SelectionView::zoom);
+    QAction* zoomAction = menu.addAction(tr("Zoom Fit"), this, &SelectionView::zoom);
     zoomAction->setIcon(QIcon::fromTheme(QStringLiteral("zoom-fit-best")));
     zoomAction->setToolTip(tr("Selects and fits this object in the 3D window"));
 
-    QAction* gotoAction = menu.addAction(tr("Go to selection"), this, &SelectionView::treeSelect);
+    QAction* gotoAction = menu.addAction(tr("Go to Selection"), this, &SelectionView::treeSelect);
     gotoAction->setToolTip(tr("Selects and locates this object in the tree view"));
 
-    QAction* touchAction = menu.addAction(tr("Mark to recompute"), this, &SelectionView::touch);
+    QAction* touchAction = menu.addAction(tr("Mark to Recompute"), this, &SelectionView::touch);
     touchAction->setIcon(QIcon::fromTheme(QStringLiteral("view-refresh")));
-    touchAction->setToolTip(tr("Mark this object to be recomputed"));
+    touchAction->setToolTip(tr("Marks this object to be recomputed"));
 
     QAction* toPythonAction =
-        menu.addAction(tr("To Python console"), this, &SelectionView::toPython);
+        menu.addAction(tr("To Python Console"), this, &SelectionView::toPython);
     toPythonAction->setIcon(QIcon::fromTheme(QStringLiteral("applications-python")));
     toPythonAction->setToolTip(
         tr("Reveals this object and its subelements in the Python console."));
@@ -669,7 +669,7 @@ void SelectionView::onItemContextMenu(const QPoint& point)
     if (elements.length() > 2) {
         // subshape-specific entries
         QAction* showPart =
-            menu.addAction(tr("Duplicate subshape"), this, &SelectionView::showPart);
+            menu.addAction(tr("Duplicate Subshape"), this, &SelectionView::showPart);
         showPart->setIcon(QIcon(QStringLiteral(":/icons/ClassBrowser/member.svg")));
         showPart->setToolTip(tr("Creates a standalone copy of this subshape in the document"));
     }

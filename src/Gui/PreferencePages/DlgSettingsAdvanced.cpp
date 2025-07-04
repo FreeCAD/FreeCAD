@@ -450,7 +450,7 @@ void DlgSettingsAdvanced::retranslateUi()
     labelDockOverlayAlphaRadius->setText(QObject::tr("Alpha test radius"));
     labelDockOverlayAlphaRadius->setToolTip(DockOverlayAlphaRadius->toolTip());
     DockOverlayCheckNaviCube->setToolTip(QApplication::translate("OverlayParams", Gui::OverlayParams::docDockOverlayCheckNaviCube()));
-    DockOverlayCheckNaviCube->setText(QObject::tr("Check Navigation Cube"));
+    DockOverlayCheckNaviCube->setText(QObject::tr("Check navigation cube"));
     DockOverlayHintTriggerSize->setToolTip(QApplication::translate("OverlayParams", Gui::OverlayParams::docDockOverlayHintTriggerSize()));
     labelDockOverlayHintTriggerSize->setText(QObject::tr("Hint trigger size"));
     labelDockOverlayHintTriggerSize->setToolTip(DockOverlayHintTriggerSize->toolTip());

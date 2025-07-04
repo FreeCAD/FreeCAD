@@ -103,7 +103,7 @@ void DlgMacroRecordImp::onButtonStartClicked()
     if (ui->lineEditPath->text().isEmpty()) {
         QMessageBox::information(getMainWindow(),
                                  tr("Macro recorder"),
-                                 tr("Specify first a place to save."));
+                                 tr("Specify a place to save first."));
         return;
     }
 
@@ -112,7 +112,7 @@ void DlgMacroRecordImp::onButtonStartClicked()
         QMessageBox::information(
             getMainWindow(),
             tr("Macro recorder"),
-            tr("The macro directory doesn't exist. Please, choose another one."));
+            tr("The macro directory does not exist. Choose another one."));
         return;
     }
 
@@ -127,7 +127,7 @@ void DlgMacroRecordImp::onButtonStartClicked()
         if (QMessageBox::question(
                 this,
                 tr("Existing macro"),
-                tr("The macro '%1' already exists. Do you want to overwrite?").arg(fn),
+                tr("The macro '%1' already exists. Overwrite it?").arg(fn),
                 QMessageBox::Yes | QMessageBox::No,
                 QMessageBox::No)
             == QMessageBox::No) {
@@ -140,7 +140,7 @@ void DlgMacroRecordImp::onButtonStartClicked()
         QMessageBox::information(
             getMainWindow(),
             tr("Macro recorder"),
-            tr("You have no write permission for the directory. Please, choose another one."));
+            tr("You have no write permission for the directory. Choose another one."));
         return;
     }
     file.close();
