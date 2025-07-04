@@ -27,7 +27,11 @@ from .base import ToolBitShape
 
 class ToolBitShapeIso(ToolBitShape):
     name = "IsoShape"
-    aliases = "isoshape", "Isoshape", "IsoShape",
+    aliases = (
+        "isoshape",
+        "Isoshape",
+        "IsoShape",
+    )
 
     @classmethod
     def schema(cls) -> Mapping[str, Tuple[str, str]]:
@@ -47,7 +51,8 @@ class ToolBitShapeIso(ToolBitShape):
             "TipRadius": (
                 FreeCAD.Qt.translate("ToolBitShape", "Tip radius"),
                 "App::PropertyLength",
-            )}
+            ),
+        }
 
     @property
     def label(self) -> str:
