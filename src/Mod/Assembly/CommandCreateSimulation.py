@@ -492,13 +492,13 @@ class MotionEditDialog:
         layout = QGridLayout(self.dialog)
 
         # Add labels and widgets to the layout
-        layout.addWidget(QLabel("Joint:"), 0, 0)
+        layout.addWidget(QLabel("Joint"), 0, 0)
         layout.addWidget(self.joint_combo, 0, 1)
 
-        layout.addWidget(QLabel("Motion Type:"), 1, 0)
+        layout.addWidget(QLabel("Motion Type"), 1, 0)
         layout.addWidget(self.motion_type_combo, 1, 1)
 
-        layout.addWidget(QLabel("Formula:"), 2, 0)
+        layout.addWidget(QLabel("Formula"), 2, 0)
         layout.addWidget(formula_edit, 2, 1)
 
         # Add the help label above the buttons

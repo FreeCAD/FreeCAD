@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Create Simulation</string>
+   <string>New Simulation</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_2">
    <item>
@@ -170,7 +170,7 @@
    <item>
     <widget class="QGroupBox" name="groupBox_player">
      <property name="title">
-      <string>Animation player</string>
+      <string>Animation Player</string>
      </property>
      <layout class="QGridLayout" name="gridLayout">
       <item row="0" column="0">

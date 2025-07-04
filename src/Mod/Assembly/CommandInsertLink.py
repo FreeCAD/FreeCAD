@@ -70,7 +70,7 @@ class CommandGroupInsert:
 
         return {
             "Pixmap": "Assembly_InsertLink",
-            "MenuText": QT_TRANSLATE_NOOP("Assembly_Insert", "Insert"),
+            "MenuText": QT_TRANSLATE_NOOP("Assembly_Insert", "Insert Component"),
             "ToolTip": tooltip,
             "CmdType": "ForEdit",
         }

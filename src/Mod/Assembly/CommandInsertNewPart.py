@@ -137,7 +137,7 @@ class TaskAssemblyNewPart(JointObject.TaskAssemblyCreateJoint):
                     translate("Assembly", "Save"), QtWidgets.QMessageBox.AcceptRole
                 )
                 cancelButton = msgBox.addButton(
-                    translate("Assembly", "Don't link"), QtWidgets.QMessageBox.RejectRole
+                    translate("Assembly", "Do not link"), QtWidgets.QMessageBox.RejectRole
                 )
 
                 msgBox.exec_()

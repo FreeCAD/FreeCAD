@@ -1,0 +1,167 @@
+##[pylyzer] failed /home/Ryan/documents/git/FreeCAD/src/Mod/Assembly/JointObject.py 1748993977 70818
+.math: Never
+
+.App: Never
+
+.Part: Never
+
+.___v_desugar_1: Never
+.QtCore: Never
+.___v_desugar_2: Never
+.QT_TRANSLATE_NOOP: Never
+.___v_desugar_3: Never
+.Sequence: Never
+
+.Gui: Never
+
+.___v_desugar_4: Never
+.QtWidgets: Never
+
+
+.__title__: {"Assembly Joint object"}
+.__author__: {"Ondsel"}
+.__url__: {"https:..www.freecad.org"}
+.coin = pyimport "coin"
+
+.UtilsAssembly: Never
+
+.Preferences: Never
+
+.___v_desugar_5 = pyimport "FreeCAD/Mod/Assembly/SoSwitchMarker"
+.FreeCAD/Mod/Assembly/SoSwitchMarker = pyimport "FreeCAD/Mod/Assembly/SoSwitchMarker"
+.SoSwitchMarker: {SoSwitchMarker.SoSwitchMarker}
+.translate: Never
+.TranslatedJointTypes: Never
+.JointTypes: Never
+.JointUsingDistance: Never
+.JointUsingDistance2: Never
+.JointNoNegativeDistance: Never
+.JointUsingOffset: Never
+.JointUsingRotation: Never
+.JointUsingReverse: Never
+.JointUsingLimitLength: Never
+.JointUsingLimitAngle: Never
+.JointUsingPreSolve: Never
+.JointParallelForbidden: Never
+.solveIfAllowed: |E: Type, Type_66593: Type, Type_66591 <: Structural({.solve = (self: Obj, ?66593) -> ?T; .Type = ?E}), T: Type|(assembly: Type_66591, storePrev: Type_66593 := {False} and Type_66593) -> NoneType
+.getContext: (obj: Bool) -> Str
+.Joint: ClassType
+.Joint.__call__: (joint: Obj, type_index: Obj) -> JointObject.Joint
+.Joint.onDocumentRestored: |Type_67109: Type, Type_67122: Type, Type_67281 <: Structural({.Object1 = ?67109; .Object2 = ?67122})|(self: JointObject.Joint, joint: Type_67281) -> NoneType
+.Joint.createProperties: |Type_67109: Type, Type_67122: Type, Type_67281 <: Structural({.Object1 = ?67109; .Object2 = ?67122})|(self: JointObject.Joint, joint: Type_67281) -> NoneType
+.Joint.migrationScript: |Type_67109: Type, Type_67122: Type, Type_67281 <: Structural({.Object1 = ?67109; .Object2 = ?67122})|(self: JointObject.Joint, joint: Type_67281) -> NoneType
+.Joint.migrationScript2: |Type_67109: Type, Type_67122: Type, Type_67281 <: Structural({.Object1 = ?67109; .Object2 = ?67122})|(self: JointObject.Joint, joint: Type_67281) -> NoneType
+.Joint.migrationScript3: |Type_67109: Type, Type_67122: Type, Type_67281 <: Structural({.Object1 = ?67109; .Object2 = ?67122})|(self: JointObject.Joint, joint: Type_67281) -> NoneType
+.Joint.migrationScript4: |Type_67109: Type, Type_67122: Type, Type_67281 <: Structural({.Object1 = ?67109; .Object2 = ?67122})|(self: JointObject.Joint, joint: Type_67281) -> NoneType
+.Joint.dumps: (self: JointObject.Joint) -> {None}
+.Joint.loads: (self: JointObject.Joint, state: Obj) -> {None}
+.Joint.getAssembly: |Type_66616 <: Structural({.InList = ?67383}), Type_67383 <: global::Iterable(?T), T: Type|(self: JointObject.Joint, joint: Type_66616) -> {None}
+.Joint.setJointType: |E: Type, Type_67439: Type, Type_67435: Type, Type_66619 <: Structural({.JointType = ?E; .Label = ?67435 and ?67439})|(self: JointObject.Joint, joint: Type_66619, newType: E) -> NoneType
+.Joint.onChanged: |E: Type, Type_67561: Type, Type_66622 <: Structural({.JointType = Never; .Distance = ?E; .Reference1 = ?67561 and ?67482; .Reference2 = ?67483 and ?67562; .recompute = (self: Obj) -> ?T}), T: Type, Type_67483: Type, Type_67562: Type, T :> NoneType, Type_67482: Type|(self: JointObject.Joint, joint: Type_66622, prop: {"Reference1"}) -> NoneType or T
+.Joint.execute: |Type_67616: Type, Type_66626 <: Structural({.Reference1 = ?67623; .Label = ?67616; .Reference2 = ?67630}), Type_67623: Type, Type_67630: Type|(self: JointObject.Joint, joint: Type_66626) -> NoneType
+.Joint.setJointConnectors: |Type_67387 :> {"Assembly::AssemblyObject"}, Type_68121 <: Structural({.JointType = ?R; .InList = ?Type_67383; .Reference1 = ?67668 and ?67866; .Placement1 = ?66637 and ?67675; .Reference2 = ?67683 and ?67866; .Placement2 = ?66637 and ?67768}), Type_67683: Type, Type_67388 <: Bool, Type_67768: Type, Type_66637: Type, Type_67866: Type, Type_67383 <: global::Iterable(?T), Type_67675: Type, Type_67668: Type, T <: Structural({.isDerivedFrom = (self: Obj, ?Type_67387) -> ?Type_67388}), R: Type|(self: JointObject.Joint, joint: Type_68121, refs: Structural({.__len__ = (self: Never) -> Nat; .__getitem__ = (self: Obj, Obj) -> Type_67668 and (self: Obj, Obj) -> Type_67683})) -> NoneType
+.Joint.updateJCSPlacements: |E: Type, Type_67561: Type, Type_66622 <: Structural({.JointType = Never; .Distance = ?E; .Reference1 = ?67561 and ?67482; .Reference2 = ?67483 and ?67562; .recompute = (self: Obj) -> ?T}), T: Type, Type_67482: Type, Type_67483: Type, Type_67562: Type|(self: JointObject.Joint, joint: Type_66622) -> NoneType
+.Joint.findPlacement: |Type_67387 :> {"Assembly::AssemblyObject"}, Type_67683: Type, Type_67388 <: Bool, Type_67768: Type, Type_67383 <: global::Iterable(?T), Type_66637: Type, Type_67675: Type, Type_67866: Type, Type_67668: Type, T <: Structural({.isDerivedFrom = (self: Obj, ?Type_67387) -> ?Type_67388}), R: Type, Type_68121 <: Structural({.JointType = ?R; .InList = ?Type_67383; .Reference1 = ?67668 and ?67866; .Placement1 = ?66637 and ?67675; .Reference2 = ?67683 and ?67866; .Placement2 = ?66637 and ?67768})|(self: JointObject.Joint, joint: Type_68121, ref: Type_67866, index: Obj := Obj) -> Type_66637
+.Joint.flipOnePart: |Type_67944: Type, T <: Structural({.isDerivedFrom = (self: Obj, ?Type_67387) -> ?Type_67388}), Type_67942: Type, Type_67988: Type, Type_67388 <: Bool, Type_67990: Type, Type_67943: Type, Type_67383 <: global::Iterable(?T), Type_67989: Type, T :> NoneType, Type_67980: Type, Type_67387 :> {"Assembly::AssemblyObject"}, Type_66616 <: Structural({.Placement2 = ?67942 and ?67944; .InList = ?Type_67383; .Reference2 = ?67925 and ?67943; .Reference1 = ?67980 and ?67989; .Placement1 = ?67988 and ?67990}), Type_67925: Type|(self: JointObject.Joint, joint: Type_66616) -> NoneType or T
+.Joint.preSolve: |E: Type, Type_67561: Type, Type_66622 <: Structural({.JointType = Never; .Distance = ?E; .Reference1 = ?67561 and ?67482; .Reference2 = ?67483 and ?67562; .recompute = (self: Obj) -> ?T}), T: Type, Type_66643 :> {False, True}, Type_66643 <: Bool, Type_67483: Type, Type_67562: Type, Type_67482: Type, T :> {False}, T <: Bool|(self: JointObject.Joint, joint: Type_66622, savePlc: Type_66643 := Type_66643 and Type_66643) -> T
+.Joint.undoPreSolve: |Type_68121 <: Structural({.JointType = ?R; .InList = ?Type_67383; .Reference1 = ?67668 and ?67866; .Placement1 = ?66637 and ?67675; .Reference2 = ?67683 and ?67866; .Placement2 = ?66637 and ?67768}), Type_67383 <: global::Iterable(?T), Type_67388 <: Bool, Type_67683: Type, Type_67768: Type, Type_66637: Type, Type_67866: Type, Type_67668: Type, T <: Structural({.isDerivedFrom = (self: Obj, ?Type_67387) -> ?Type_67388}), R: Type, Type_67387 :> {"Assembly::AssemblyObject"}, Type_67675: Type|(self: JointObject.Joint, joint: Type_68121) -> NoneType
+.Joint.preventParallel: |E: Type, Type_67561: Type, Type_66622 <: Structural({.JointType = Never; .Distance = ?E; .Reference1 = ?67561 and ?67482; .Reference2 = ?67483 and ?67562; .recompute = (self: Obj) -> ?T}), T: Type, Type_67483: Type, Type_67562: Type, U: Type, Type_67482: Type, T :> ?U or ?T|(self: JointObject.Joint, joint: Type_66622) -> T
+.Joint.areJcsSameDir: |Type_66616 <: Structural({.InList = ?Type_67383; .Reference2 = ?68046 and ?68070; .Reference1 = ?68045 and ?68072; .Placement2 = ?68069 and ?68095; .Placement1 = ?68071 and ?68093; .Activated = ?68053 and ?68054}), Type_68069: Type, Type_67388 <: Bool, Type_68093: Type, Type_68072: Type, T <: Structural({.isDerivedFrom = (self: Obj, ?Type_67387) -> ?Type_67388}), Type_67383 <: global::Iterable(?T), Type_68070: Type, Type_68071: Type, Type_68054: Type, Type_68046: Type, Type_68045: Type, Type_68095: Type, Type_67387 :> {"Assembly::AssemblyObject"}, Type_68053: Type|(self: JointObject.Joint, joint: Type_66616) -> Bool
+.Joint.areJcsZParallel: |Type_67383 <: global::Iterable(?T), T <: Structural({.isDerivedFrom = (self: Obj, ?Type_67387) -> ?Type_67388}), Type_68174: Type, Type_68231: Type, Type_67388 <: Bool, Type_68234: Type, Type_68232: Type, Type_68233: Type, Type_67387 :> {"Assembly::AssemblyObject"}, Type_68173: Type, Type_66616 <: Structural({.InList = ?Type_67383; .Reference2 = ?68174 and ?68234; .Reference1 = ?68173 and ?68232; .Placement1 = ?68231; .Placement2 = ?68233})|(self: JointObject.Joint, joint: Type_66616) -> Bool
+
+.ViewProviderJoint: ClassType
+.ViewProviderJoint.__call__: (vobj: Obj) -> JointObject.ViewProviderJoint
+.ViewProviderJoint.attach: |Type_66659 <: Structural({.addDisplayMode = (self: Obj, ?68252, ?68253) -> ?68254; .Object = ?68251}), Type_68251: Type, Type_68253: Type, Type_68252: Type, Type_68254: Type|(self: JointObject.ViewProviderJoint, vobj: Type_66659) -> NoneType
+.ViewProviderJoint.updateData: |Type_68280 <: Ref(Obj), Type_68296: Type, Type_66661 <: Structural({.Placement2 = ?68296; .Reference2 = ?R and ?68297; .Placement1 = ?68296; .Reference1 = ?R and ?68280}), R: Type, Type_68297 <: Ref(Obj)|(self: JointObject.ViewProviderJoint, joint: Type_66661, prop: {"Placement1"}) -> NoneType
+.ViewProviderJoint.showPreviewJCS: (self: JointObject.ViewProviderJoint, visible: Bool, placement: Obj := Obj, ref: Obj := Obj) -> NoneType
+.ViewProviderJoint.setPickableState: (self: JointObject.ViewProviderJoint, state: Bool) -> NoneType
+.ViewProviderJoint.getDisplayModes: (self: JointObject.ViewProviderJoint, obj: Obj) -> global::List!(Str, 1)
+.ViewProviderJoint.getDefaultDisplayMode: (self: JointObject.ViewProviderJoint) -> {"Wireframe"}
+.ViewProviderJoint.onChanged: (self: JointObject.ViewProviderJoint, vp: Obj, prop: {"color_X_axis"}) -> NoneType
+.ViewProviderJoint.getIcon: (self: JointObject.ViewProviderJoint) -> {":.icons.Assembly_CreateJoint.svg"}
+.ViewProviderJoint.dumps: (self: JointObject.ViewProviderJoint) -> {None}
+.ViewProviderJoint.loads: (self: JointObject.ViewProviderJoint, state: Obj) -> {None}
+.ViewProviderJoint.doubleClicked: |Type_68445: Type, Type_68447 <: Ref(Obj), Type_66686 <: Structural({.Object = ?68445 and ?68447; .Document = ?68455}), Type_68455: Type|(self: JointObject.ViewProviderJoint, vobj: Type_66686) -> {True}
+.ViewProviderJoint.canDelete: (self: JointObject.ViewProviderJoint, _obj: Obj) -> {True}
+
+.GroundedJoint: ClassType
+.GroundedJoint.joint: Never
+.GroundedJoint.__call__: (joint: Obj, obj_to_ground: Obj) -> JointObject.GroundedJoint
+.GroundedJoint.dumps: (self: JointObject.GroundedJoint) -> {None}
+.GroundedJoint.loads: (self: JointObject.GroundedJoint, state: Obj) -> {None}
+.GroundedJoint.onChanged: (self: JointObject.GroundedJoint, fp: Obj, prop: Obj) -> NoneType
+.GroundedJoint.execute: (self: JointObject.GroundedJoint, fp: Obj) -> NoneType
+
+.ViewProviderGroundedJoint: ClassType
+.ViewProviderGroundedJoint.__call__: (obj: Obj) -> JointObject.ViewProviderGroundedJoint
+.ViewProviderGroundedJoint.attach: |Type_66706 <: Structural({.addDisplayMode = (self: Obj, ?68511, ?68512) -> ?68513; .Object = ?68494 and ?68508}), Type_68511: Type, Type_68513: Type, Type_68508: Type, Type_68494: Type, Type_68512: Type|(self: Never, vobj: Type_66706) -> Type_68513
+.ViewProviderGroundedJoint.create_square: (self: JointObject.ViewProviderGroundedJoint) -> pivy.coin.SoAnnotation
+.ViewProviderGroundedJoint.create_arc: |O <: {?MAX}, O <: Int, R :> {1}, O: Type, MAX: Int, R <: Structural({.__mul__ = (self: Never, ?R) -> ?R}), Type_66711 <: Structural({.__add__ = (self: Never, ?R) -> ?O and (self: Never, ?R) -> ?O}), R: Type|(self: JointObject.ViewProviderGroundedJoint, centerX: Type_66711, centerY: Structural({.__add__ = (self: Never, R) -> O and (self: Never, R) -> O}), radius: R, startAngle: Obj, endAngle: Structural({.__add__ = (self: Never, R) -> O and (self: Never, R) -> O})) -> pivy.coin.SoAnnotation
+.ViewProviderGroundedJoint.set_lock_position: |Type_68661: Type, Type_68666: Type, Type_66718 <: Structural({.Placement = ?68666; .ViewObject = ?68661})|(self: JointObject.ViewProviderGroundedJoint, groundedObj: Type_66718) -> NoneType
+.ViewProviderGroundedJoint.updateData: |Type_68685 <: ?Type_66718, Type_68666: Type, Type_66720 <: Structural({.ObjectToGround = ?R and ?68685}), R: Type, Type_66718 <: Structural({.Placement = ?Type_68666; .ViewObject = ?Type_68661}), Type_68661: Type|(self: JointObject.ViewProviderGroundedJoint, fp: Type_66720, prop: Obj) -> NoneType
+.ViewProviderGroundedJoint.getDisplayModes: (self: JointObject.ViewProviderGroundedJoint, obj: Obj) -> global::List!({"Wireframe"}, 1)
+.ViewProviderGroundedJoint.getDefaultDisplayMode: (self: JointObject.ViewProviderGroundedJoint) -> {"Wireframe"}
+.ViewProviderGroundedJoint.onChanged: (self: JointObject.ViewProviderGroundedJoint, vp: Obj, prop: Obj) -> NoneType
+.ViewProviderGroundedJoint.getIcon: (self: JointObject.ViewProviderGroundedJoint) -> {":.icons.Assembly_ToggleGrounded.svg"}
+.ViewProviderGroundedJoint.dumps: (self: JointObject.ViewProviderGroundedJoint) -> {None}
+.ViewProviderGroundedJoint.loads: (self: JointObject.ViewProviderGroundedJoint, state: Obj) -> {None}
+.ViewProviderGroundedJoint.canDelete: (self: JointObject.ViewProviderGroundedJoint, _obj: Obj) -> {True}
+
+.MakeJointSelGate: ClassType
+.MakeJointSelGate.taskbox: Never
+.MakeJointSelGate.assembly: Never
+.MakeJointSelGate.__call__: (taskbox: Obj, assembly: Obj) -> JointObject.MakeJointSelGate
+.MakeJointSelGate.allow: |Type_66745 <: Structural({.Name = ?68739}), Type_68739: Type|(self: JointObject.MakeJointSelGate, doc: Obj, obj: Type_66745, sub: Bool) -> {False}
+
+.activeTask: {None}
+.TaskAssemblyCreateJoint: ClassType
+.TaskAssemblyCreateJoint <: Never
+.TaskAssemblyCreateJoint.callbackMove: Never
+.TaskAssemblyCreateJoint.jType: Never
+.TaskAssemblyCreateJoint.assembly: Never
+.TaskAssemblyCreateJoint.view: Never
+.TaskAssemblyCreateJoint.refs: Never
+.TaskAssemblyCreateJoint.doc: Never
+.TaskAssemblyCreateJoint.blockOffsetRotation: Never
+.TaskAssemblyCreateJoint.jForm: Never
+.TaskAssemblyCreateJoint.presel_ref: Never
+.TaskAssemblyCreateJoint.gui_doc: Never
+.TaskAssemblyCreateJoint.addition_rejected: Never
+.TaskAssemblyCreateJoint.callbackKey: Never
+.TaskAssemblyCreateJoint.form: Never
+.TaskAssemblyCreateJoint.__call__: |Type_66753 :> {False}|(jointTypeIndex: Obj, jointObj: Obj := Obj, subclass: Type_66753 := Type_66753 and Type_66753) -> JointObject.TaskAssemblyCreateJoint
+.TaskAssemblyCreateJoint.accept: (self: Never) -> {True}
+.TaskAssemblyCreateJoint.reject: (self: Never) -> {True}
+.TaskAssemblyCreateJoint.autoClosedOnTransactionChange: (self: JointObject.TaskAssemblyCreateJoint) -> NoneType
+.TaskAssemblyCreateJoint.deactivate: (self: Never) -> NoneType
+.TaskAssemblyCreateJoint.handleInitialSelection: (self: JointObject.TaskAssemblyCreateJoint) -> NoneType
+.TaskAssemblyCreateJoint.createJointObject: (self: JointObject.TaskAssemblyCreateJoint) -> NoneType
+.TaskAssemblyCreateJoint.onJointTypeChanged: (self: JointObject.TaskAssemblyCreateJoint, index: Obj) -> NoneType
+.TaskAssemblyCreateJoint.onDistanceChanged: (self: JointObject.TaskAssemblyCreateJoint, quantity: Obj) -> NoneType
+.TaskAssemblyCreateJoint.onDistance2Changed: (self: JointObject.TaskAssemblyCreateJoint, quantity: Obj) -> NoneType
+.TaskAssemblyCreateJoint.onOffsetChanged: (self: Never, quantity: Obj) -> NoneType
+.TaskAssemblyCreateJoint.onRotationChanged: (self: Never, quantity: Obj) -> Never
+.TaskAssemblyCreateJoint.onLimitLenMinChanged: (self: JointObject.TaskAssemblyCreateJoint, quantity: Obj) -> NoneType
+.TaskAssemblyCreateJoint.onLimitLenMaxChanged: (self: JointObject.TaskAssemblyCreateJoint, quantity: Obj) -> NoneType
+.TaskAssemblyCreateJoint.onLimitRotMinChanged: (self: JointObject.TaskAssemblyCreateJoint, quantity: Obj) -> NoneType
+.TaskAssemblyCreateJoint.onLimitRotMaxChanged: (self: JointObject.TaskAssemblyCreateJoint, quantity: Obj) -> NoneType
+.TaskAssemblyCreateJoint.onReverseClicked: (self: JointObject.TaskAssemblyCreateJoint) -> NoneType
+.TaskAssemblyCreateJoint.reverseRotToggled: (self: JointObject.TaskAssemblyCreateJoint, val: Bool) -> NoneType
+.TaskAssemblyCreateJoint.adaptUi: (self: JointObject.TaskAssemblyCreateJoint) -> NoneType
+.TaskAssemblyCreateJoint.updateOffsetWidgets: (self: JointObject.TaskAssemblyCreateJoint) -> NoneType
+.TaskAssemblyCreateJoint.advancedOffsetToggled: (self: JointObject.TaskAssemblyCreateJoint, on: Obj) -> NoneType
+.TaskAssemblyCreateJoint.onOffset1Clicked: (self: JointObject.TaskAssemblyCreateJoint) -> NoneType
+.TaskAssemblyCreateJoint.onOffset2Clicked: (self: JointObject.TaskAssemblyCreateJoint) -> NoneType
+.TaskAssemblyCreateJoint.updateTaskboxFromJoint: (self: JointObject.TaskAssemblyCreateJoint) -> NoneType
+.TaskAssemblyCreateJoint.updateJoint: (self: JointObject.TaskAssemblyCreateJoint) -> NoneType
+.TaskAssemblyCreateJoint.updateJointList: (self: JointObject.TaskAssemblyCreateJoint) -> NoneType
+.TaskAssemblyCreateJoint.updateLimits: (self: JointObject.TaskAssemblyCreateJoint) -> NoneType
+.TaskAssemblyCreateJoint.moveMouse: (self: Never, info: Obj) -> NoneType
+.TaskAssemblyCreateJoint.KeyboardEvent: (self: JointObject.TaskAssemblyCreateJoint, info: global::Indexable(Obj, {"UP"})) -> NoneType
+.TaskAssemblyCreateJoint.eventFilter: |E: Type, Type_66804 <: Structural({.key = (self: Obj) -> ?E and (self: Obj) -> ?E; .accept = (self: Obj) -> ?69449; .type = (self: Obj) -> ?E and (self: Obj) -> ?E}), Type_69449: Type|(self: JointObject.TaskAssemblyCreateJoint, watched: E, event: Type_66804) -> Never
+.TaskAssemblyCreateJoint.getMovingPart: (self: JointObject.TaskAssemblyCreateJoint, ref: Obj) -> Never
+.TaskAssemblyCreateJoint.addSelection: (self: Never, doc_name: Obj, obj_name: Obj, sub_name: Obj, mousePos: global::Indexable(Obj, Never)) -> Never
+.TaskAssemblyCreateJoint.removeSelection: (self: JointObject.TaskAssemblyCreateJoint, doc_name: Obj, obj_name: Obj, sub_name: Obj, mousePos: Obj := Obj) -> NoneType
+.TaskAssemblyCreateJoint.setPreselection: (self: JointObject.TaskAssemblyCreateJoint, doc_name: Obj, obj_name: Obj, sub_name: Bool) -> NoneType
+.TaskAssemblyCreateJoint.clearSelection: (self: JointObject.TaskAssemblyCreateJoint, doc_name: Obj) -> NoneType
+

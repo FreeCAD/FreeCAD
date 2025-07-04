@@ -1,0 +1,41 @@
+##[pylyzer] failed /home/Ryan/documents/git/FreeCAD/src/Mod/Assembly/SoSwitchMarker.py 1748993977 7215
+.math: Never
+
+.App: Never
+
+
+.Gui: Never
+
+
+
+.__title__: {"Assembly Marker Inventor object"}
+.__author__: {"Ondsel"}
+.__url__: {"https:..www.freecad.org"}
+.coin = pyimport "coin"
+
+.UtilsAssembly: Never
+
+.Preferences: Never
+
+.SoSwitchMarker: ClassType
+pivy = pyimport "pivy"
+.SoSwitchMarker <: pivy.coin.SoSwitch
+.SoSwitchMarker.draw_style: Never
+.SoSwitchMarker.y_axis_so_color: Never
+.SoSwitchMarker.scaleFactor: Never
+.SoSwitchMarker.x_axis_so_color: Never
+.SoSwitchMarker.axis_thickness: Never
+.SoSwitchMarker.whichChild: Never
+.SoSwitchMarker.gui_doc: Never
+.SoSwitchMarker.z_axis_so_color: Never
+.SoSwitchMarker.transform: Never
+.SoSwitchMarker.pick: Never
+.SoSwitchMarker.app_obj: Never
+.SoSwitchMarker.__call__: (vobj: Obj) -> SoSwitchMarker.SoSwitchMarker
+.SoSwitchMarker.line_sep: (self: SoSwitchMarker.SoSwitchMarker, startPoint: Obj, endPoint: Obj, soColor: Obj) -> Never
+.SoSwitchMarker.plane_sep: |R <: {?MAX}, R: Type, MAX: Int|(self: SoSwitchMarker.SoSwitchMarker, size: R, num_vertices: R) -> Never
+.SoSwitchMarker.set_marker_placement: (self: SoSwitchMarker.SoSwitchMarker, placement: Obj, ref: Obj) -> NoneType
+.SoSwitchMarker.setPickableState: (self: SoSwitchMarker.SoSwitchMarker, state: Bool) -> NoneType
+.SoSwitchMarker.show_marker: (self: SoSwitchMarker.SoSwitchMarker, visible: Bool, placement: Obj := Obj, ref: Obj := Obj) -> NoneType
+.SoSwitchMarker.onChanged: |Self <: global::Indexable(?K, ?V), K: Type, Type_66441: Type, Type_66247 <: Structural({.getPropertyByName = (self: Obj, ?66383) -> ?Self and (self: Obj, ?66441) -> ?Self}), Type_66383: Type, V: Type|(self: SoSwitchMarker.SoSwitchMarker, vp: Type_66247, prop: {"color_X_axis"}) -> NoneType
+
