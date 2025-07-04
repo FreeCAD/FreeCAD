@@ -64,7 +64,7 @@ class CommandCreateSimulation:
     def GetResources(self):
         return {
             "Pixmap": "Assembly_CreateSimulation",
-            "MenuText": QT_TRANSLATE_NOOP("Assembly_CreateSimulation", "New Simulation"),
+            "MenuText": QT_TRANSLATE_NOOP("Assembly_CreateSimulation", "Simulation"),
             "Accel": "V",
             "ToolTip": "<p>"
             + QT_TRANSLATE_NOOP(

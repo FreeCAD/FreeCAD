@@ -375,19 +375,19 @@ class TaskAssemblyCreateBom(QtCore.QObject):
             " - "
             + translate(
                 "Assembly",
-                "Sub-assembly children: The children of sub-assemblies will be included in the bill of materials",
+                "Sub-assembly children: the children of sub-assemblies will be included in the bill of materials",
             )
             + "\n"
             " - "
             + translate(
                 "Assembly",
-                "Parts children: The children of parts will be added to the bill of materials",
+                "Parts children: the children of parts will be added to the bill of materials",
             )
             + "\n"
             " - "
             + translate(
                 "Assembly",
-                "Only parts: Adds only part containers and sub-assemblies to the bill of materials. Solids like Part Design bodies, fasteners, or Part workbench primitives are ignored.",
+                "Only parts: adds only part containers and sub-assemblies to the bill of materials. Solids like Part Design bodies, fasteners, or Part workbench primitives are ignored.",
             )
             + "\n"
         )
