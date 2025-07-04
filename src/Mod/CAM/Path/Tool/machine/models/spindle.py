@@ -26,6 +26,9 @@ from FreeCAD import Units
 from .component import MachineComponent, AttributeConfig
 
 
+translate = FreeCAD.Qt.translate
+
+
 class Spindle(MachineComponent):
     """
     Represents a spindle component in a machine.
@@ -131,9 +134,9 @@ class Spindle(MachineComponent):
         Validate the spindle properties.
         """
         if self.min_rpm >= self.max_rpm:
-            raise AttributeError("Max RPM must be larger than min RPM")
+            raise AttributeError(translate("CAM", "Maximum RPM must be larger than min RPM"))
         if self.peak_torque_rpm > self.max_rpm:
-            raise AttributeError("Peak Torque RPM must be less than max RPM")
+            raise AttributeError(translate("CAM", "Peak torque RPM must be less than max RPM"))
 
         super().validate()
 
@@ -174,31 +177,31 @@ class Spindle(MachineComponent):
         return super().get_attribute_configs() + [
             AttributeConfig(
                 name="max_power",
-                label="Max Power",
+                label=translate("CAM", "Maximum power"),
                 property_type="App::PropertyPower",
                 min_value=0.0,
             ),
             AttributeConfig(
                 name="min_rpm",
-                label="Min RPM",
+                label=translate("CAM", "Minimum RPM"),
                 property_type="App::PropertyAngularSpeed",
                 min_value=0.0,
             ),
             AttributeConfig(
                 name="max_rpm",
-                label="Max RPM",
+                label=translate("CAM", "Maximum RPM"),
                 property_type="App::PropertyAngularSpeed",
                 min_value=0.0,
             ),
             AttributeConfig(
                 name="max_torque",
-                label="Max Torque",
+                label=translate("CAM", "Maximum torque"),
                 property_type="App::PropertyTorque",
                 min_value=0.0,
             ),
             AttributeConfig(
                 name="peak_torque_rpm",
-                label="Peak Torque RPM",
+                label=translate("CAM", "Peak torque RPM"),
                 property_type="App::PropertyAngularSpeed",
                 min_value=0.0,
             ),

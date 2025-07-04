@@ -60,7 +60,8 @@ class LinearRigidityPage(QtGui.QWizardPage):
             "CAM",
             """Measurement Procedure for Linear Rigidity (X and Y directions):
 1. Remove tool and collet from the spindle.
-2. Position the machine at its least rigid configuration (e.g., for gantry-style machines: Z-axis fully extended, X/Y at mid-range).
+2. Position the machine at its least rigid configuration (e.g., for
+   gantry-style machines: Z-axis fully extended, X/Y at mid-range).
 3. Secure a dial indicator to the machine table, contacting the spindle nose.
 4. Apply a known force (e.g., 10 N) in the X direction and record the deflection.
 5. Apply a known force (e.g., 10 N) in the Y direction and record the deflection.

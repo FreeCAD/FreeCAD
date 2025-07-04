@@ -101,10 +101,10 @@ class Lathe(Machine):
         """Validates lathe parameters."""
         super().validate()
         if not self.find_child_by_name("X"):
-            raise AttributeError("Lathe must have an X axis")
+            raise AttributeError(translate("CAM", "Lathe must have an X axis"))
         if not self.find_child_by_name("Z"):
-            raise AttributeError("Lathe must have an Z axis")
+            raise AttributeError(translate("CAM", "Lathe must have a Z axis"))
         if not self.find_child_by_name("A"):
-            raise AttributeError("Lathe must have an A axis")
+            raise AttributeError(translate("CAM", "Lathe must have an A axis"))
         if not self.find_children_by_type(Spindle):
-            raise AttributeError("Lathe must have a spindle")
+            raise AttributeError(translate("CAM", "Lathe must have a spindle"))

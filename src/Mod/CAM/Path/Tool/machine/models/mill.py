@@ -104,10 +104,10 @@ class Mill(Machine):
         """Validates mill parameters."""
         super().validate()
         if not self.find_child_by_name("X"):
-            raise AttributeError("Mill must have an X axis")
+            raise AttributeError(translate("CAM", "Mill must have an X axis"))
         if not self.find_child_by_name("Y"):
-            raise AttributeError("Mill must have an Y axis")
+            raise AttributeError(translate("CAM", "Mill must have a Y axis"))
         if not self.find_child_by_name("Z"):
-            raise AttributeError("Mill must have an Z axis")
+            raise AttributeError(translate("CAM", "Mill must have a Z axis"))
         if not self.find_child_by_name("A"):
-            raise AttributeError("Mill must have a spindle axis")
+            raise AttributeError(translate("CAM", "Mill must have a spindle axis"))

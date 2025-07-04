@@ -58,7 +58,7 @@ class LinearAxis(Axis):
     def validate(self) -> None:
         """Validate parameters."""
         if self.max_feed.Value <= 0:
-            raise AttributeError("Linear axis feed rate must be positive")
+            raise AttributeError(translate("CAM", "Linear axis feed rate must be positive"))
 
     def _dump_self(self, indent_str="") -> str:
         output = f"{indent_str}LinearAxis: {self.name}\n"
@@ -86,7 +86,7 @@ class LinearAxis(Axis):
         return super().get_attribute_configs() + [
             AttributeConfig(
                 name="max_feed",
-                label="Max Feed",
+                label=translate("CAM", "Maximum feed"),
                 property_type="App::PropertyVelocity",
                 min_value=0.0,
             )
@@ -126,11 +126,11 @@ class AngularAxis(Axis):
     def validate(self) -> None:
         """Validate parameters."""
         if self.angular_rigidity.Value < 0:
-            raise AttributeError("Angular axis rigidity cannot be negative")
+            raise AttributeError(translate("CAM", "Angular axis rigidity cannot be negative"))
         if self.rigidity_x.Value < 0:
-            raise AttributeError("Rigidity X cannot be negative")
+            raise AttributeError(translate("CAM", "Rigidity X cannot be negative"))
         if self.rigidity_y.Value < 0:
-            raise AttributeError("Rigidity Y cannot be negative")
+            raise AttributeError(translate("CAM", "Rigidity Y cannot be negative"))
 
     def _dump_self(self, indent_str="") -> str:
         output = f"{indent_str}AngularAxis: {self.name}\n"

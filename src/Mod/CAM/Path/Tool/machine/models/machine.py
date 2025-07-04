@@ -31,6 +31,9 @@ from .axis import Axis
 from .spindle import Spindle
 
 
+translate = FreeCAD.Qt.translate
+
+
 class MachineFeature(Enum):
     TURNING_2D = "TURNING_2D"
     MILLING_3D = "MILLING_3D"
@@ -136,7 +139,7 @@ class Machine(MachineComponent, Asset, ABC):
         """Validates machine parameters."""
         super().validate()
         if not self.label:
-            raise AttributeError("Machine name is required")
+            raise AttributeError(translate("CAM", "Machine name is required"))
 
     def _dump_self(self, indent_str="") -> str:
         output = f"{indent_str}{self.get_type()} {self.label}:\n"

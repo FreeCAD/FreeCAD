@@ -24,6 +24,9 @@ from dataclasses import dataclass
 from typing import Dict, List, Optional, Type, TypeVar
 
 
+translate = FreeCAD.Qt.translate
+
+
 @dataclass
 class AttributeConfig:
     name: str
@@ -246,9 +249,15 @@ class MachineComponent(object):
         """
         return [
             AttributeConfig(
-                name="name", label="Name", property_type="App::PropertyString", readonly=True
+                name="name",
+                label=translate("CAM", "Name"),
+                property_type="App::PropertyString",
+                readonly=True,
             ),
             AttributeConfig(
-                name="label", label="Label", property_type="App::PropertyString", readonly=True
+                name="label",
+                label=translate("CAM", "Label"),
+                property_type="App::PropertyString",
+                readonly=True,
             ),
         ]
