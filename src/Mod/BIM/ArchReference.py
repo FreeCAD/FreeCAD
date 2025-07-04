@@ -884,7 +884,7 @@ class ArchReferenceTaskPanel:
         if self.obj.File:
             self.fileButton.setText(os.path.basename(self.obj.File))
         else:
-            self.fileButton.setText(translate("Arch","Choose file..."))
+            self.fileButton.setText(translate("Arch","Choose File…"))
         self.partCombo = QtGui.QComboBox(self.form)
         self.partCombo.setEnabled(False)
         layout.addWidget(self.partCombo)

@@ -41,7 +41,7 @@ class IFC_UpdateIOS:
         tt = QT_TRANSLATE_NOOP("IFC_UpdateIOS", "Shows a dialog to update IfcOpenShell")
         return {
             "Pixmap": "IFC",
-            "MenuText": QT_TRANSLATE_NOOP("IFC_UpdateIOS", "IfcOpenShell update"),
+            "MenuText": QT_TRANSLATE_NOOP("IFC_UpdateIOS", "IfcOpenShell Update"),
             "ToolTip": tt,
         }
 
@@ -70,7 +70,7 @@ class IFC_UpdateIOS:
 
         from PySide import QtGui
         title = translate("BIM", "IfcOpenShell update")
-        note = translate("BIM", "The update is installed in your FreeCAD's user directory and won't affect the rest of your system.")
+        note = translate("BIM", "The update is installed in your FreeCAD's user directory and will not affect the rest of your system.")
         if mode == "update":
             text = translate("BIM", "An update to your installed IfcOpenShell version is available")
             text += ": " + version + ". "
@@ -127,7 +127,7 @@ class IFC_UpdateIOS:
         except CalledProcessError as pe:
             FreeCAD.Console.PrintError(pe.stderr)
         except Exception as e:
-            text = translate("BIM","Unable to run pip. Please ensure pip is installed on your system.")
+            text = translate("BIM","Unable to run pip. Ensure pip is installed on your system.")
             FreeCAD.Console.PrintError(f"{text} {str(e)}\n")
         return result
 

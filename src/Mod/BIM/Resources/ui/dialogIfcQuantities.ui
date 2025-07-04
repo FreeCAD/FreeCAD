@@ -27,7 +27,7 @@
    <item>
     <widget class="QCheckBox" name="onlyVisible">
      <property name="text">
-      <string>only visible BIM objects</string>
+      <string>Only visible BIM objects</string>
      </property>
     </widget>
    </item>
@@ -77,7 +77,7 @@
      <item>
       <widget class="QPushButton" name="buttonSelectAll">
        <property name="text">
-        <string>Select all</string>
+        <string>Select All</string>
        </property>
        <property name="icon">
         <iconset theme="edit-select-all">

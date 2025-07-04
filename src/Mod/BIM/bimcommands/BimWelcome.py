@@ -36,9 +36,9 @@ class BIM_Welcome:
     def GetResources(self):
         return {
             "Pixmap": "BIM_Welcome.svg",
-            "MenuText": QT_TRANSLATE_NOOP("BIM_Welcome", "BIM Welcome screen"),
+            "MenuText": QT_TRANSLATE_NOOP("BIM_Welcome", "BIM Welcome Screen"),
             "ToolTip": QT_TRANSLATE_NOOP(
-                "BIM_Welcome", "Show the BIM workbench welcome screen"
+                "BIM_Welcome", "Shows the BIM workbench welcome screen"
             ),
         }
 

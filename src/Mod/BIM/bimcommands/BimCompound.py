@@ -35,9 +35,9 @@ class BIM_Compound:
     def GetResources(self):
         return {
             "Pixmap": "Part_Compound",
-            "MenuText": QT_TRANSLATE_NOOP("BIM_Compound", "Make compound"),
+            "MenuText": QT_TRANSLATE_NOOP("BIM_Compound", "Create Compound"),
             "ToolTip": QT_TRANSLATE_NOOP(
-                "BIM_Compound", "Make a compound of several shapes"
+                "BIM_Compound", "Create a compound of several shapes"
             ),
         }
 

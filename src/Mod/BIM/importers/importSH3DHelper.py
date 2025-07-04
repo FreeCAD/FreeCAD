@@ -256,7 +256,7 @@ class SH3DImporter:
         self._setup_handlers()
 
         if self.progress_bar:
-            self.progress_bar.start(f"Importing SweetHome 3D Home. Please wait ...", -1)
+            self.progress_bar.start(f"Importing SweetHome 3D Home. Standby…", -1)
         self._import_home(ET.fromstring(home))
 
     def import_sh3d_from_filename(self, filename:str):
@@ -276,7 +276,7 @@ class SH3DImporter:
         self._setup_handlers()
 
         if self.progress_bar:
-            self.progress_bar.start(f"Importing SweetHome 3D file '{self.filename}'. Please wait ...", -1)
+            self.progress_bar.start(f"Importing SweetHome 3D file '{self.filename}'. Standby…", -1)
         with zipfile.ZipFile(self.filename, 'r') as zip:
             self.zip = zip
             entries = zip.namelist()
@@ -287,7 +287,7 @@ class SH3DImporter:
     def _import_home(self, home):
         doc = App.ActiveDocument
         self.total_object_count = self._get_object_count(home)
-        _msg(f"Importing home '{home.get('name')}' ...")
+        _msg(f"Importing home '{home.get('name')}'…")
         # Create the groups to organize the different resources together
         self._create_groups()
 
@@ -306,7 +306,7 @@ class SH3DImporter:
         else:
             # Has the default floor already been created from a
             # previous import?
-            if self.preferences["DEBUG_GEOMETRY"]: _log("No level defined. Using default level ...")
+            if self.preferences["DEBUG_GEOMETRY"]: _log("No level defined. Using default level…")
             self.default_floor = self.fc_objects.get('Level') if 'Level' in self.fc_objects else self._create_default_floor()
 
         # Importing <room> elements ...
@@ -360,7 +360,7 @@ class SH3DImporter:
             Gui.runCommand('Render_View', 0)
             self._refresh()
 
-        _msg(f"Successfully imported home '{home.get('name')}' ...")
+        _msg(f"Successfully imported home '{home.get('name')}' …")
 
     def _get_object_count(self, home):
         """Get an approximate count of object to be imported
@@ -595,10 +595,10 @@ class SH3DImporter:
         """
         doc = App.ActiveDocument
         if self.preferences["IMPORT_CAMERAS"] and not doc.getObject("Cameras"):
-            _log(f"Creating Cameras group ...")
+            _log(f"Creating Cameras group…")
             doc.addObject("App::DocumentObjectGroup", "Cameras")
         if self.preferences["DEBUG_GEOMETRY"] and not doc.getObject("DEBUG_GEOMETRY"):
-            _log(f"Creating DEBUG_GEOMETRY group ...")
+            _log(f"Creating DEBUG_GEOMETRY group…")
             doc.addObject("App::DocumentObjectGroup", "DEBUG_GEOMETRY")
 
     def _setup_project(self, elm):
@@ -722,12 +722,12 @@ class SH3DImporter:
         total_elements = len(elements)
         if self.progress_bar:
             self.progress_bar.stop()
-            self.progress_bar.start(f"Step {current_step}/{total_steps}: importing {total_elements} '{tag_name}' elements. Please wait ...", total_elements)
-        _msg(f"Importing {total_elements} '{tag_name}' elements ...")
+            self.progress_bar.start(f"Step {current_step}/{total_steps}: importing {total_elements} '{tag_name}' elements. Standby…", total_elements)
+        _msg(f"Importing {total_elements} '{tag_name}' elements…")
         handler = self.handlers[xpath]
         def _process(tuple):
             (i, elm) = tuple
-            _msg(f"Importing {tag_name}#{i} ({self.current_object_count + 1}/{self.total_object_count}) ...")
+            _msg(f"Importing {tag_name}#{i} ({self.current_object_count + 1}/{self.total_object_count})…")
             try:
                 # with Transaction(f"Importing {tag_name}#{i}"):
                     handler.process(parent, i, elm)
@@ -821,13 +821,13 @@ class SH3DImporter:
         total_elements = len(floors)
         if self.progress_bar:
             self.progress_bar.stop()
-            self.progress_bar.start(f"Step {current_step}/{total_steps}: Creating {total_elements} 'slab' elements. Please wait ...", len(all_walls) + len(all_spaces))
+            self.progress_bar.start(f"Step {current_step}/{total_steps}: Creating {total_elements} 'slab' elements. Standby…", len(all_walls) + len(all_spaces))
 
-        _msg(f"Creating {total_elements} 'slab' elements ...")
+        _msg(f"Creating {total_elements} 'slab' elements…")
         handler = self.handlers[ET_XPATH_LEVEL]
         def _create_slab(tuple):
             (i, floor) = tuple
-            _msg(f"Creating slab#{i} for floor '{floor.Label}' ...")
+            _msg(f"Creating slab#{i} for floor '{floor.Label}'…")
             try:
                 # with Transaction(f"Creating slab#{i} for floor '{floor.Label}'"):
                     handler.create_slabs(floor, self.progress_bar)
@@ -846,8 +846,8 @@ class SH3DImporter:
 
         if self.progress_bar:
             self.progress_bar.stop()
-            self.progress_bar.start(f"Decorating {total_elements} elements. Please wait ...", total_elements)
-        _msg(f"Decorating {total_elements} elements ...")
+            self.progress_bar.start(f"Decorating {total_elements} elements. Standby…", total_elements)
+        _msg(f"Decorating {total_elements} elements…")
 
         handler = self.handlers[ET_XPATH_ROOM]
         for i, space in enumerate(all_spaces):
@@ -932,7 +932,7 @@ class BaseHandler:
 
     def get_wall_spine(self, wall):
         if not hasattr(wall, 'BaseObjects'):
-            _err(f"Wall {wall.Label} has no BaseObjects to get the Spine from...")
+            _err(f"Wall {wall.Label} has no BaseObjects to get the Spine from…")
         return wall.BaseObjects[2]
 
     def get_faces(self, wall):
@@ -1180,7 +1180,7 @@ class LevelHandler(BaseHandler):
                 Part.Feature: the extrusion used to later to fuse.
             """
             if self.importer.preferences["DEBUG_GEOMETRY"]:
-                _log(f"Extruding {obj_to_extrude.Label} ...")
+                _log(f"Extruding {obj_to_extrude.Label}…")
             obj_to_extrude.recompute(True)
             projection = TechDraw.project(obj_to_extrude.Shape, Z_NORM)[0]
             face = Part.Face(Part.Wire(projection.Edges))
@@ -1258,7 +1258,7 @@ class RoomHandler(BaseHandler):
 
         level_id = elm.get('level', None)
         floor = self.get_floor(level_id)
-        assert floor != None, f"Missing floor '{level_id}' for <room> '{elm.get('id')}' ..."
+        assert floor != None, f"Missing floor '{level_id}' for <room> '{elm.get('id')}'…"
 
         space = face = None
         if self.importer.preferences["MERGE"]:
@@ -1453,7 +1453,7 @@ class WallHandler(BaseHandler):
         """
         level_id = elm.get('level', None)
         floor = self.get_floor(level_id)
-        assert floor != None, f"Missing floor '{level_id}' for <wall> '{elm.get('id')}' ..."
+        assert floor != None, f"Missing floor '{level_id}' for <wall> '{elm.get('id')}'…"
 
         wall = base_object = None
         if self.importer.preferences["MERGE"]:
@@ -1576,7 +1576,7 @@ class WallHandler(BaseHandler):
         #   ticket
         if sweep.Shape.isNull() or not sweep.Shape.isValid():
             if is_wall_straight:
-                _log(f"Sweep's shape is invalid, using ruled surface instead ...")
+                _log(f"Sweep's shape is invalid, using ruled surface instead…")
                 App.ActiveDocument.removeObject(sweep.Label)
                 compound_solid, base_object = self._make_compound(section_start, section_end, spine)
                 wall = Arch.makeWall(compound_solid)
@@ -2197,7 +2197,7 @@ class DoorOrWindowHandler(BaseFurnitureHandler):
         door_id = f"{elm.get('id', elm.get('name'))}-{i}"
         level_id = elm.get('level', None)
         floor = self.get_floor(level_id)
-        assert floor != None, f"Missing floor '{level_id}' for <doorOrWindow> '{door_id}' ..."
+        assert floor != None, f"Missing floor '{level_id}' for <doorOrWindow> '{door_id}'…"
 
 
         feature = None
@@ -2289,7 +2289,7 @@ class DoorOrWindowHandler(BaseFurnitureHandler):
             main_wall = extra_walls.pop(0)
             wall_width = main_wall.Width.Value
             if len(extra_walls) > 0:
-                _wrn(f"No main hosting wall for doorOrWindow#{elm.get('id')}. Defaulting to first hosting wall#{main_wall.Label} (w/ width {wall_width}) ...")
+                _wrn(f"No main hosting wall for doorOrWindow#{elm.get('id')}. Defaulting to first hosting wall#{main_wall.Label} (w/ width {wall_width})…")
 
         # Get the left and right face for the main_wall
         (_, wall_lface, _, wall_rface) = self.get_faces(main_wall)
@@ -2304,7 +2304,7 @@ class DoorOrWindowHandler(BaseFurnitureHandler):
         # Determine the bounding box face
         bb_face, bb_face_normal = self._get_bb_face(dow_bounding_box, angle, label_prefix)
         if not bb_face:
-            _err(f"Weird: None of BoundingBox's faces for doorOrWindow#{elm.get('id')} has the expected angle ({angle}º). Can't create window.")
+            _err(f"Weird: None of BoundingBox's faces for doorOrWindow#{elm.get('id')} has the expected angle ({angle}º). Cannot create the window.")
             if debug_geometry: self._debug_shape(dow_bounding_box, f"{label_prefix}-missing-bb-face#{main_wall.Label}", RED)
             return None
         elif debug_geometry:
@@ -2326,7 +2326,7 @@ class DoorOrWindowHandler(BaseFurnitureHandler):
             is_on_right = False
             wall_face = wall_lface
             if not self._same_dir(bb_face_normal, wall_lface_normal, 1):
-                _err(f"Weird: the extracted bb_normal {self._pv(bb_face_normal, True)} does not match neither the right face normal ({self._pv(wall_rface_normal, True)}) nor the left face normal ({self._pv(wall_lface_normal, True)}) of the wall {main_wall.Label}... The doorOrWindow might be slightly skewed. Defaulting to left face.")
+                _err(f"Weird: the extracted bb_normal {self._pv(bb_face_normal, True)} does not match neither the right face normal ({self._pv(wall_rface_normal, True)}) nor the left face normal ({self._pv(wall_lface_normal, True)}) of the wall {main_wall.Label}… The doorOrWindow might be slightly skewed. Defaulting to left face.")
 
         # Project the bounding_box face onto the wall
         projected_face = wall_face.makeParallelProjection(bb_face.OuterWire, bb_face_normal)
@@ -2518,7 +2518,7 @@ class FurnitureHandler(BaseFurnitureHandler):
         furniture_id = self._get_furniture_id(i, elm)
         level_id = elm.get('level', None)
         floor = self.get_floor(level_id)
-        assert floor != None, f"Missing floor '{level_id}' for <pieceOfFurniture> '{furniture_id}' ..."
+        assert floor != None, f"Missing floor '{level_id}' for <pieceOfFurniture> '{furniture_id}'…"
 
         furniture = None
         if self.importer.preferences["MERGE"]:
@@ -2719,12 +2719,12 @@ class LightHandler(FurnitureHandler):
         light_id = super()._get_furniture_id(i, elm)
         level_id = elm.get('level', None)
         floor = self.get_floor(level_id)
-        assert floor != None, f"Missing floor '{level_id}' for <doorOrWindow> '{light_id}' ..."
+        assert floor != None, f"Missing floor '{level_id}' for <doorOrWindow> '{light_id}'…"
 
         if self.importer.preferences["IMPORT_FURNITURES"]:
             super().process(parent, i, elm)
             light_apppliance = self.get_fc_object(light_id, 'pieceOfFurniture')
-            assert light_apppliance != None, f"Missing <light> furniture {light_id} ..."
+            assert light_apppliance != None, f"Missing <light> furniture {light_id}…"
             self.setp(light_apppliance, "App::PropertyFloat", "power", "The power of the light. In percent???",  float(elm.get('power', 0.5)))
 
         if self.importer.preferences["IMPORT_LIGHTS"]:

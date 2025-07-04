@@ -35,7 +35,7 @@ class BIM_ImagePlane:
     def GetResources(self):
         return {
             "Pixmap": "BIM_ImagePlane.svg",
-            "MenuText": QT_TRANSLATE_NOOP("BIM_ImagePlane", "Image plane"),
+            "MenuText": QT_TRANSLATE_NOOP("BIM_ImagePlane", "Image Plane"),
             "ToolTip": QT_TRANSLATE_NOOP(
                 "BIM_ImagePlane", "Creates a plane from an image"
             ),
@@ -55,7 +55,7 @@ class BIM_ImagePlane:
         self.opposite = None
         (filename, _filter) = QtGui.QFileDialog.getOpenFileName(
             QtGui.QApplication.activeWindow(),
-            translate("BIM", "Select image"),
+            translate("BIM", "Select Image"),
             None,
             translate("BIM", "Image file (*.png *.jpg *.bmp)"),
         )

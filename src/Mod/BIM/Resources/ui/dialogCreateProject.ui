@@ -11,13 +11,13 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Default structure</string>
+   <string>Default Structure</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
     <widget class="QLabel" name="label">
      <property name="text">
-      <string>Create a default structure (IfcProject, IfcSite, IfcBuilding and IfcBuildingStorey)? Replying &quot;No&quot; will only create an IfcProject. You can then add the structure manually later.</string>
+      <string>Create a default structure (IfcProject, IfcSite, IfcBuilding and IfcBuildingStorey)? Replying &quot;No&quot; will only create an IfcProject. The structure can be added manually later.</string>
      </property>
      <property name="wordWrap">
       <bool>true</bool>

@@ -36,7 +36,7 @@ class BIM_Cut:
             "Pixmap": "Part_Cut",
             "MenuText": QT_TRANSLATE_NOOP("BIM_Cut", "Difference"),
             "ToolTip": QT_TRANSLATE_NOOP(
-                "BIM_Cut", "Make a difference between two shapes"
+                "BIM_Cut", "Creates a difference between two shapes"
             ),
         }
 

@@ -37,9 +37,9 @@ class BIM_TogglePanels:
     def GetResources(self):
         return {
             "Pixmap": "BIM_TogglePanels",
-            "MenuText": QT_TRANSLATE_NOOP("BIM_TogglePanels", "Toggle bottom panels"),
+            "MenuText": QT_TRANSLATE_NOOP("BIM_TogglePanels", "Toggle Bottom Panels"),
             "ToolTip": QT_TRANSLATE_NOOP(
-                "BIM_TogglePanels", "Toggle bottom dock panels on/off"
+                "BIM_TogglePanels", "Toggles bottom dock panels on/off"
             ),
             "Accel": "Ctrl+0",
         }
