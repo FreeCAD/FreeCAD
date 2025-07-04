@@ -19,7 +19,7 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-from PySide import QtGui
+from PySide import QtGui, QtCore
 import FreeCAD
 import FreeCADGui
 from ..models.axis import AngularAxis
@@ -31,19 +31,143 @@ class PrerequisitesPage(QtGui.QWizardPage):
     def __init__(self):
         super().__init__()
         self.setTitle(translate("CAM", "Prerequisites"))
-        label = QtGui.QLabel(
-            translate(
-                "CAM",
-                "You will need:\n"
-                "- A consistent load applicator (e.g., luggage scale)\n"
-                "- A micrometer for deflection measurements\n"
-                "- An inclinometer for angular measurements",
+        layout = QtGui.QGridLayout()
+        layout.setContentsMargins(0, 0, 0, 0)
+        layout.setSpacing(10)
+
+        # Header
+        header_font = QtGui.QFont()
+        header_font.setBold(True)
+        header_label = QtGui.QLabel(translate("CAM", "You will need:"))
+        header_label.setFont(header_font)
+        layout.addWidget(header_label, 0, 0, 1, 2)  # Span two columns
+
+        # Prerequisites items
+        row = 1
+        prerequisites = [
+            translate("CAM", "A consistent load applicator (e.g., luggage scale)"),
+            translate("CAM", "A micrometer for deflection measurements"),
+            translate("CAM", "An inclinometer for angular measurements"),
+        ]
+
+        for item_text in prerequisites:
+            checkmark_label = QtGui.QLabel("✔")  # Placeholder for checkmark icon
+            checkmark_label.setStyleSheet("color: green;")
+            item_label = QtGui.QLabel(item_text)
+            item_label.setWordWrap(True)
+            layout.addWidget(checkmark_label, row, 0, QtCore.Qt.AlignTop)
+            layout.addWidget(item_label, row, 1)
+            row += 1
+
+        layout.setColumnStretch(0, 0)
+        layout.setColumnStretch(1, 1)
+
+        main_layout = QtGui.QVBoxLayout()
+        main_layout.addLayout(layout)
+        main_layout.addStretch()
+        self.setLayout(main_layout)
+
+
+class TimelineVisualItem(QtGui.QWidget):
+    def __init__(self, step_index, total_steps, parent=None):
+        super().__init__(parent)
+        self.step_index = step_index
+        self.total_steps = total_steps
+        self.setFixedWidth(20)
+        self.setSizePolicy(QtGui.QSizePolicy.Fixed, QtGui.QSizePolicy.Expanding)
+
+    def paintEvent(self, event):
+        painter = QtGui.QPainter(self)
+        painter.setRenderHint(QtGui.QPainter.Antialiasing)
+        line_color = self.palette().highlight().color()
+        circle_color = self.palette().highlight().color()
+        line_pen = QtGui.QPen(line_color, 2)
+        painter.setPen(line_pen)
+        circle_brush = QtGui.QBrush(circle_color)
+        timeline_x = self.width() // 2
+        circle_y = self.height() // 2
+        circle_radius = 6
+
+        if self.step_index == 0:  # First step
+            painter.drawLine(timeline_x, circle_y, timeline_x, self.height())
+        elif self.step_index == self.total_steps - 1:  # Last step
+            painter.drawLine(timeline_x, 0, timeline_x, circle_y)
+        else:  # Middle steps
+            painter.drawLine(timeline_x, 0, timeline_x, self.height())
+
+        painter.setBrush(circle_brush)
+        painter.drawEllipse(QtCore.QPoint(timeline_x, circle_y), circle_radius, circle_radius)
+
+
+class StepContainer(QtGui.QWidget):
+    def __init__(self, step_data, input_layout, parent=None):
+        super().__init__(parent)
+        main_h_layout = QtGui.QHBoxLayout(self)
+        main_h_layout.setContentsMargins(0, 0, 0, 0)
+        main_h_layout.setSpacing(10)
+
+        # Left side: Timeline visual
+        timeline_visual_v_layout = QtGui.QVBoxLayout()
+        timeline_visual_v_layout.setContentsMargins(0, 0, 0, 0)
+        timeline_visual_v_layout.setSpacing(0)
+        timeline_visual_v_layout.addWidget(QtGui.QWidget())  # Add a dummy widget for now
+        main_h_layout.addLayout(timeline_visual_v_layout)
+
+        # Right side: Text and Input widgets with margin
+        right_v_layout = QtGui.QVBoxLayout()
+        right_v_layout.setContentsMargins(10, 10, 10, 10)
+
+        # Title and Subtitle
+        text_v_layout = QtGui.QVBoxLayout()
+        text_v_layout.setContentsMargins(0, 0, 0, 0)
+        text_v_layout.setSpacing(2)
+
+        title_label = QtGui.QLabel(step_data["title"])
+        title_font = QtGui.QFont()
+        title_font.setPointSize(10)
+        title_font.setBold(True)
+        title_label.setFont(title_font)
+        title_label.setWordWrap(True)
+        text_v_layout.addWidget(title_label)
+
+        subtitle_label = QtGui.QLabel(step_data["subtitle"])
+        subtitle_font = QtGui.QFont()
+        subtitle_font.setPointSize(9)
+        subtitle_label.setFont(subtitle_font)
+        subtitle_label.setWordWrap(True)
+        text_v_layout.addWidget(subtitle_label)
+
+        right_v_layout.addStretch()
+        right_v_layout.addLayout(text_v_layout)
+
+        # Input widgets
+        if input_layout:
+            right_v_layout.addLayout(input_layout)
+        right_v_layout.addStretch()
+
+        main_h_layout.addLayout(right_v_layout)
+
+        # Ensure the widget can expand vertically
+        self.setSizePolicy(QtGui.QSizePolicy.Preferred, QtGui.QSizePolicy.Preferred)
+
+
+class TimelineWidget(QtGui.QWidget):
+    def __init__(self, step_containers: list[StepContainer], parent=None):
+        super().__init__(parent)
+        main_layout = QtGui.QVBoxLayout(self)
+        main_layout.setContentsMargins(0, 0, 0, 0)
+        main_layout.setSpacing(0)
+
+        total_steps = len(step_containers)
+        for i, container in enumerate(step_containers):
+            timeline_visual_item = TimelineVisualItem(i, total_steps)
+            # Replace the dummy widget with the actual TimelineVisualItem
+            container.layout().itemAt(0).layout().replaceWidget(
+                container.layout().itemAt(0).layout().itemAt(0).widget(), timeline_visual_item
             )
-        )
-        layout = QtGui.QVBoxLayout()
-        layout.addWidget(label)
-        layout.addStretch()
-        self.setLayout(layout)
+            main_layout.addWidget(container)
+
+        self.setLayout(main_layout)
 
 
 class LinearRigidityPage(QtGui.QWizardPage):
@@ -51,49 +175,21 @@ class LinearRigidityPage(QtGui.QWizardPage):
         super().__init__()
         self.angular_axis = angular_axis
         self.setTitle(translate("CAM", "Linear Rigidity Measurements"))
-        self.setSubTitle(
-            translate("CAM", f"Enter measurements for linear rigidity of {angular_axis.label}")
-        )
         main_layout = QtGui.QVBoxLayout()
-
-        steps = translate(
-            "CAM",
-            """Measurement Procedure for Linear Rigidity (X and Y directions):
-1. Remove tool and collet from the spindle.
-2. Position the machine at its least rigid configuration (e.g., for
-   gantry-style machines: Z-axis fully extended, X/Y at mid-range).
-3. Secure a dial indicator to the machine table, contacting the spindle nose.
-4. Apply a known force (e.g., 10 N) in the X direction and record the deflection.
-5. Apply a known force (e.g., 10 N) in the Y direction and record the deflection.
-6. Enter the force and deflection values for the angular axis below.
-""",
+        intro = QtGui.QLabel(
+            translate("CAM", "Enter measurements for the linear rigidity of the axis.")
         )
-
-        instructions = QtGui.QLabel(steps)
-        main_layout.addWidget(instructions)
-
-        separator = QtGui.QFrame()
-        separator.setFrameShape(QtGui.QFrame.HLine)
-        separator.setFrameShadow(QtGui.QFrame.Sunken)
-        main_layout.addWidget(separator)
-
-        grid_layout = QtGui.QGridLayout()
-        grid_layout.setSpacing(6)
-
-        # Add column headers
-        grid_layout.addWidget(QtGui.QLabel(translate("CAM", "Force X")), 0, 0)
-        grid_layout.addWidget(QtGui.QLabel(translate("CAM", "Deflection X")), 0, 1)
-        grid_layout.addWidget(QtGui.QLabel(translate("CAM", "Force Y")), 0, 2)
-        grid_layout.addWidget(QtGui.QLabel(translate("CAM", "Deflection Y")), 0, 3)
+        main_layout.addWidget(intro)
 
         self.inputs = {}
         ui = FreeCADGui.UiLoader()
-        row = 1  # Start from row 1 for data
 
+        # Create input widgets with minimum height
         force_x_edit = ui.createWidget("Gui::QuantitySpinBox")
         force_x_edit.setProperty("unit", FreeCAD.Units.Unit("N"))
         force_x_edit.setProperty("minimum", 0.0)
         force_x_edit.setProperty("value", FreeCAD.Units.Quantity("10.0 N"))
+        force_x_edit.setMinimumHeight(30)
         force_x_edit.valueChanged.connect(lambda: self.enforce_unit(force_x_edit, "N"))
         force_x_edit.valueChanged.connect(self.check_completeness)
 
@@ -101,11 +197,12 @@ class LinearRigidityPage(QtGui.QWizardPage):
         deflection_x_edit.setProperty("unit", "mm")
         deflection_x_edit.setProperty("minimum", 0.0)
         deflection_x_edit.setProperty("value", FreeCAD.Units.Quantity("0 mm"))
+        deflection_x_edit.setMinimumHeight(30)
         deflection_x_edit.valueChanged.connect(self.check_completeness)
 
         force_y_edit = ui.createWidget("Gui::QuantitySpinBox")
         force_y_edit.setProperty("unit", FreeCAD.Units.Unit("N"))
-        force_y_edit.setProperty("minimum", 0.0)
+        force_y_edit.setMinimumHeight(30)
         force_y_edit.setProperty("value", FreeCAD.Units.Quantity("10.0 N"))
         force_y_edit.valueChanged.connect(lambda: self.enforce_unit(force_y_edit, "N"))
         force_y_edit.valueChanged.connect(self.check_completeness)
@@ -114,12 +211,77 @@ class LinearRigidityPage(QtGui.QWizardPage):
         deflection_y_edit.setProperty("unit", "mm")
         deflection_y_edit.setProperty("minimum", 0.0)
         deflection_y_edit.setProperty("value", FreeCAD.Units.Quantity("0 mm"))
+        deflection_y_edit.setMinimumHeight(30)
         deflection_y_edit.valueChanged.connect(self.check_completeness)
 
-        grid_layout.addWidget(force_x_edit, row, 0)
-        grid_layout.addWidget(deflection_x_edit, row, 1)
-        grid_layout.addWidget(force_y_edit, row, 2)
-        grid_layout.addWidget(deflection_y_edit, row, 3)
+        # Create grid layouts for X and Y inputs
+        x_input_grid = QtGui.QGridLayout()
+        x_input_grid.setSpacing(3)
+        x_input_grid.addWidget(QtGui.QLabel(translate("CAM", "Force")), 0, 0)
+        x_input_grid.addWidget(QtGui.QLabel(translate("CAM", "Deflection")), 0, 1)
+        x_input_grid.addWidget(force_x_edit, 1, 0)
+        x_input_grid.addWidget(deflection_x_edit, 1, 1)
+
+        y_input_grid = QtGui.QGridLayout()
+        y_input_grid.setSpacing(3)
+        y_input_grid.addWidget(QtGui.QLabel(translate("CAM", "Force")), 0, 0)
+        y_input_grid.addWidget(QtGui.QLabel(translate("CAM", "Deflection")), 0, 1)
+        y_input_grid.addWidget(force_y_edit, 1, 0)
+        y_input_grid.addWidget(deflection_y_edit, 1, 1)
+
+        # Define steps directly with StepContainer
+        step_containers = [
+            StepContainer(
+                {
+                    "title": translate("CAM", "Step 1: Prepare Spindle"),
+                    "subtitle": translate("CAM", "Remove tool and collet."),
+                },
+                None,
+            ),
+            StepContainer(
+                {
+                    "title": translate("CAM", "Step 2: Position Machine"),
+                    "subtitle": translate(
+                        "CAM",
+                        "Least rigid configuration (e.g., Z-axis fully extended, X/Y at mid-range).",
+                    ),
+                },
+                None,
+            ),
+            StepContainer(
+                {
+                    "title": translate("CAM", "Step 3: Secure Indicator"),
+                    "subtitle": translate(
+                        "CAM",
+                        "Attach dial indicator to the machine table, contacting the spindle nose.",
+                    ),
+                },
+                None,
+            ),
+            StepContainer(
+                {
+                    "title": translate("CAM", "Step 4: Measure X-Deflection"),
+                    "subtitle": translate(
+                        "CAM",
+                        "Apply a known force (e.g., 10 N) in the X direction and record the deflection.",
+                    ),
+                },
+                x_input_grid,
+            ),
+            StepContainer(
+                {
+                    "title": translate("CAM", "Step 5: Measure Y-Deflection"),
+                    "subtitle": translate(
+                        "CAM",
+                        "Apply a known force (e.g., 10 N) in the Y direction and record the deflection.",
+                    ),
+                },
+                y_input_grid,
+            ),
+        ]
+        timeline_widget = TimelineWidget(step_containers)
+        main_layout.addWidget(timeline_widget)
+
         self.inputs[self.angular_axis.name] = (
             force_x_edit,
             deflection_x_edit,
@@ -127,7 +289,6 @@ class LinearRigidityPage(QtGui.QWizardPage):
             deflection_y_edit,
         )
 
-        main_layout.addLayout(grid_layout)
         main_layout.addStretch()
         self.setLayout(main_layout)
 
@@ -168,44 +329,21 @@ class AngularRigidityPage(QtGui.QWizardPage):
     def __init__(self, angular_axis: AngularAxis):
         super().__init__()
         self.angular_axis = angular_axis
-        self.setTitle(translate("CAM", "Angular Rigidity Measurements"))
-        self.setSubTitle(
-            translate("CAM", f"Enter measurements for angular rigidity of {angular_axis.label}")
-        )
-
         main_layout = QtGui.QVBoxLayout()
-        instructions = QtGui.QLabel(
-            translate(
-                "CAM",
-                """Measurement Procedure for Angular Rigidity:
-1. Attach an inclinometer to the spindle.
-2. Apply a known force and measure the angular deflection.
-3. Enter the force and deflection values for each angular axis below.
-""",
-            )
+        self.setTitle(translate("CAM", "Angular Rigidity Measurements"))
+        intro = QtGui.QLabel(
+            translate("CAM", "Enter measurements for the angular rigidity of the axis.")
         )
-        main_layout.addWidget(instructions)
-
-        separator = QtGui.QFrame()
-        separator.setFrameShape(QtGui.QFrame.HLine)
-        separator.setFrameShadow(QtGui.QFrame.Sunken)
-        main_layout.addWidget(separator)
-
-        grid_layout = QtGui.QGridLayout()
-        grid_layout.setSpacing(6)
-
-        # Add column headers
-        grid_layout.addWidget(QtGui.QLabel(translate("CAM", "Axis")), 0, 0)
-        grid_layout.addWidget(QtGui.QLabel(translate("CAM", "Force")), 0, 1)
-        grid_layout.addWidget(QtGui.QLabel(translate("CAM", "Deflection")), 0, 2)
+        main_layout.addWidget(intro)
 
         self.inputs = {}
         ui = FreeCADGui.UiLoader()
-        row = 1  # Start from row 1 for data
+
         force_edit = ui.createWidget("Gui::QuantitySpinBox")
         force_edit.setProperty("unit", FreeCAD.Units.Unit("N"))
         force_edit.setProperty("minimum", 0.0)
         force_edit.setProperty("value", FreeCAD.Units.Quantity("10.0 N"))
+        force_edit.setMinimumHeight(30)
         force_edit.valueChanged.connect(lambda: self.enforce_unit(force_edit, "N"))
         force_edit.valueChanged.connect(self.check_completeness)
 
@@ -213,13 +351,46 @@ class AngularRigidityPage(QtGui.QWizardPage):
         deflection_edit.setProperty("unit", "deg")
         deflection_edit.setProperty("minimum", 0.0)
         deflection_edit.setProperty("value", FreeCAD.Units.Quantity("0 deg"))
+        deflection_edit.setMinimumHeight(30)
         deflection_edit.valueChanged.connect(self.check_completeness)
 
-        grid_layout.addWidget(force_edit, row, 1)
-        grid_layout.addWidget(deflection_edit, row, 2)
+        input_grid = QtGui.QGridLayout()
+        input_grid.setSpacing(3)
+        input_grid.addWidget(QtGui.QLabel(translate("CAM", "Force")), 0, 0)
+        input_grid.addWidget(QtGui.QLabel(translate("CAM", "Deflection")), 0, 1)
+        input_grid.addWidget(force_edit, 1, 0)
+        input_grid.addWidget(deflection_edit, 1, 1)
+
+        step_containers = [
+            StepContainer(
+                {
+                    "title": translate("CAM", "Step 1: Prepare Spindle"),
+                    "subtitle": translate("CAM", "Remove tool and collet."),
+                },
+                None,
+            ),
+            StepContainer(
+                {
+                    "title": translate("CAM", "Step 2: Attach Inclinometer"),
+                    "subtitle": translate("CAM", "Secure an inclinometer to the spindle."),
+                },
+                None,
+            ),
+            StepContainer(
+                {
+                    "title": translate("CAM", "Step 3: Apply Force and Measure Deflection"),
+                    "subtitle": translate(
+                        "CAM", "Apply a known force (e.g., 10 N) and record the angular deflection."
+                    ),
+                },
+                input_grid,
+            ),
+        ]
+        timeline_widget = TimelineWidget(step_containers)
+        main_layout.addWidget(timeline_widget)
+
         self.inputs[self.angular_axis.name] = (force_edit, deflection_edit)
 
-        main_layout.addLayout(grid_layout)
         main_layout.addStretch()
         self.setLayout(main_layout)
 
@@ -252,19 +423,17 @@ class AngularRigidityPage(QtGui.QWizardPage):
 class SummaryPage(QtGui.QWizardPage):
     def __init__(self, wizard):
         super().__init__()
-        self.setTitle(translate("CAM", "Summary"))
-        self.setSubTitle(translate("CAM", "Review calculated rigidities"))
+        self.setTitle(translate("CAM", "Review calculated rigidities"))
+        main_layout = QtGui.QVBoxLayout()
         self.setButtonText(QtGui.QWizard.FinishButton, translate("CAM", "Apply and Close"))
 
-        layout = QtGui.QVBoxLayout()
         self.summary_label = QtGui.QLabel()
-        layout.addWidget(self.summary_label)
-        layout.addStretch()
-        self.setLayout(layout)
+        main_layout.addWidget(self.summary_label)
+        self.setLayout(main_layout)
 
     def initializePage(self):
         super().initializePage()
-        self.wizard().calculate_rigidities()  # Calculate rigidities before displaying
+        self.wizard().calculate_rigidities()
         rigidities = self.wizard().get_rigidities()
         summary_text = "Calculated Rigidities:\n\n"
 
@@ -297,6 +466,7 @@ class RigidityWizard(QtGui.QWizard):
         super().__init__(parent)
         self.angular_axis = angular_axis
         self.setWindowTitle(translate("CAM", f"Configure Rigidity for {angular_axis.label}"))
+        self.setMinimumWidth(600)
 
         self.setOption(QtGui.QWizard.HaveCustomButton1, True)
         self.setButtonText(QtGui.QWizard.CustomButton1, translate("CAM", "Skip"))
@@ -330,7 +500,6 @@ class RigidityWizard(QtGui.QWizard):
             ]
         )
 
-        # Connect currentIdChanged signal explicitly
         self.currentIdChanged.connect(self.update_skip_button_visibility)
         self.update_skip_button_visibility(self.currentId())
 
