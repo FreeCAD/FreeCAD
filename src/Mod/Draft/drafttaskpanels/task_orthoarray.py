@@ -438,7 +438,14 @@ class TaskPanelOrthoArray:
             # Set the appropriate title for the group (we flip it back and forth after changing mode)
             # and show the group
             self.form.group_linearmode.show()
-            self.form.group_linearmode.setTitle(f"{self.active_axis} Axis")
+            match self.active_axis:
+                case "X":
+                    title = translate("draft", "X axis")
+                case "Y":
+                    title = translate("draft", "Y axis")
+                case "Z":
+                    title = translate("draft", "Z axis")
+            self.form.group_linearmode.setTitle(title)
         else: # ortho mode
             self.form.button_linear_mode.setText(translate("draft", "Switch to linear mode"))
 
@@ -467,7 +474,14 @@ class TaskPanelOrthoArray:
                 self.active_axis = axis
                 params.set_param("AxisSelected", self.active_axis, "Mod/Draft/OrthoArrayLinearMode")
                 self._setup_linear_mode_layout()
-                self.form.group_linearmode.setTitle(f"{self.active_axis} Axis")
+                match self.active_axis:
+                    case "X":
+                        title = translate("draft", "X axis")
+                    case "Y":
+                        title = translate("draft", "Y axis")
+                    case "Z":
+                        title = translate("draft", "Z axis")
+                self.form.group_linearmode.setTitle(title)
 
 
     def update_axis_ui(self):
