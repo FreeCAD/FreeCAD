@@ -589,7 +589,7 @@ void MaterialsEditor::saveMaterial()
 void MaterialsEditor::accept()
 {
     if (_material->isOldFormat()) {
-        Base::Console().log("*** Old Format File ***\n");
+        Base::Console().log("*** Old format file ***\n");
         oldFormatError();
 
         return;
@@ -606,7 +606,7 @@ void MaterialsEditor::oldFormatError()
     box.setWindowTitle(tr("Old Format Material"));
 
     box.setText(tr("This file is in the old material card format."));
-    box.setInformativeText(QObject::tr("You must save the material before using it."));
+    box.setInformativeText(QObject::tr("Save the material before using it."));
     box.adjustSize();  // Silence warnings from Qt on Windows
     box.exec();
 }
@@ -1317,13 +1317,13 @@ void MaterialsEditor::onDoubleClick(const QModelIndex& index)
 
 void MaterialsEditor::onContextMenu(const QPoint& pos)
 {
-    QMenu contextMenu(tr("Context menu"), this);
+    QMenu contextMenu(tr("Context Menu"), this);
 
-    QAction action1(tr("Inherit from"), this);
+    QAction action1(tr("Inherit From"), this);
     connect(&action1, &QAction::triggered, this, &MaterialsEditor::onInherit);
     contextMenu.addAction(&action1);
 
-    QAction action2(tr("Inherit new material"), this);
+    QAction action2(tr("Inherit New Material"), this);
     connect(&action2, &QAction::triggered, this, &MaterialsEditor::onInheritNew);
     contextMenu.addAction(&action2);
 
@@ -1345,9 +1345,8 @@ int MaterialsEditor::confirmSave(QWidget* parent)
     QMessageBox box(parent ? parent : this);
     box.setIcon(QMessageBox::Question);
     box.setWindowTitle(QObject::tr("Unsaved Material"));
-    box.setText(QObject::tr("Do you want to save your changes to the material before closing?"));
-
-    box.setInformativeText(QObject::tr("If you don't save, your changes will be lost."));
+    box.setText(QObject::tr("Save changes to the material before closing?"));
+    box.setInformativeText(QObject::tr("Otherwise, all changes will be lost."));
     box.setStandardButtons(QMessageBox::Discard | QMessageBox::Cancel | QMessageBox::Save);
     box.setDefaultButton(QMessageBox::Save);
     box.setEscapeButton(QMessageBox::Cancel);

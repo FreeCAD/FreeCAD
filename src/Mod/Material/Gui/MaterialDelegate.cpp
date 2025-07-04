@@ -158,7 +158,7 @@ void MaterialDelegate::setValue(QAbstractItemModel* model,
                                 property->getUnits().toStdString().c_str());
 
             QMessageBox msgBox;
-            msgBox.setWindowTitle(QStringLiteral("Property units mismatch"));
+            msgBox.setWindowTitle(QStringLiteral("Property Units Mismatch"));
             msgBox.setText(QStringLiteral("Units mismatch '%1' = '%2', "
                            "setting to default property units '%3'\n")
                            .arg(propertyName)
