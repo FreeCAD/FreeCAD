@@ -17,6 +17,7 @@ from .models.slittingsaw import ToolBitShapeSlittingSaw
 from .models.tap import ToolBitShapeTap
 from .models.threadmill import ToolBitShapeThreadMill
 from .models.vbit import ToolBitShapeVBit
+from .models.isoshape import ToolBitShapeIso
 from .models.icon import (
     ToolBitShapeIcon,
     ToolBitShapePngIcon,
@@ -43,6 +44,7 @@ __all__ = [
     "ToolBitShapeTap",
     "ToolBitShapeThreadMill",
     "ToolBitShapeVBit",
+    "ToolBitShapeIso",
     "TOOL_BIT_SHAPE_NAMES",
     "ToolBitShapeIcon",
     "ToolBitShapeSvgIcon",
