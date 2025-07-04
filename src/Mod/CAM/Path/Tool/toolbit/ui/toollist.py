@@ -22,13 +22,19 @@
 
 """Widget for displaying a list of ToolBits using TwoLineTableCell."""
 
+import yaml
+import Path
 from typing import Callable, List
 from PySide import QtGui, QtCore
+from PySide.QtGui import QDrag
+from PySide.QtCore import QMimeData
+from ..models.base import ToolBit
 from .tablecell import TwoLineTableCell, CompactTwoLineTableCell
-from ..models.base import ToolBit  # For type hinting
+
 
 # Role for storing the ToolBit URI string
 ToolBitUriRole = QtCore.Qt.UserRole + 1
+ToolBitUriListMimeType = "application/x-freecad-toolbit-uri-list-yaml"
 
 
 class ToolBitListWidget(QtGui.QListWidget):
@@ -40,22 +46,45 @@ class ToolBitListWidget(QtGui.QListWidget):
     def __init__(self, parent=None, tool_no_factory: Callable | None = None):
         super().__init__(parent)
         self._tool_no_factory = tool_no_factory
-        # Optimize view for custom widgets
-        self.setUniformItemSizes(False)  # Allow different heights if needed
         self.setAutoScroll(True)
         self.setSelectionMode(QtGui.QAbstractItemView.ExtendedSelection)
-        # Consider setting view mode if needed, default is ListMode
-        # self.setViewMode(QtGui.QListView.ListMode)
-        # self.setResizeMode(QtGui.QListView.Adjust) # Adjust items on resize
 
-    def add_toolbit(self, toolbit: ToolBit, tool_no: int | None = None):
+    def setDragEnabled(self, enabled: bool = True):
+        """Enable or disable drag-and-drop support for toolbits."""
+        super().setDragEnabled(enabled)
+
+    def startDrag(self, supportedActions):
+        """Initiate drag with selected toolbits serialized as mime data if drag is enabled."""
+        Path.Log.debug("startDrag: Drag initiated.")
+        selected_items = self.selectedItems()
+        if not selected_items:
+            Path.Log.debug("startDrag: No items selected for drag.")
+            return
+
+        uris = [item.data(ToolBitUriRole) for item in selected_items]
+        if not uris:
+            Path.Log.debug("startDrag: No valid URIs found for selected items.")
+            return
+
+        # Create clipboard data
+        clipboard_data = {
+            "toolbits": uris,
+        }
+        yaml_data = yaml.safe_dump(clipboard_data).encode("utf-8")
+
+        # Set mime data
+        mime_data = QMimeData()
+        mime_data.setData(ToolBitUriListMimeType, yaml_data)
+
+        # Start drag
+        drag = QDrag(self)
+        drag.setMimeData(mime_data)
+        drag.exec_(QtCore.Qt.CopyAction | QtCore.Qt.MoveAction)
+        Path.Log.debug("startDrag: Drag executed.")
+
+    def _create_toolbit_item(self, toolbit: ToolBit, tool_no: int | None = None):
         """
-        Adds a ToolBit to the list.
-
-        Args:
-            toolbit (ToolBit): The ToolBit object to add.
-            tool_no (int | None): The tool number associated with the ToolBit,
-                                  or None if not applicable.
+        Creates a QListWidgetItem and populates it with ToolBit data.
         """
         # Use the factory function if provided, otherwise use the passed tool_no
         final_tool_no = None
@@ -72,6 +101,7 @@ class ToolBitListWidget(QtGui.QListWidget):
         cell.set_tool_no(final_tool_no)
         cell.set_upper_text(toolbit.label)
         cell.set_lower_text(toolbit.summary)
+        cell.set_icon_from_shape(toolbit._tool_bit_shape)
 
         # Set the custom widget for the list item
         item.setSizeHint(cell.sizeHint())
@@ -79,6 +109,33 @@ class ToolBitListWidget(QtGui.QListWidget):
 
         # Store the ToolBit URI for later retrieval
         item.setData(ToolBitUriRole, str(toolbit.get_uri()))
+
+        return item
+
+    def add_toolbit(self, toolbit: ToolBit, tool_no: int | None = None):
+        """
+        Adds a ToolBit to the list.
+
+        Args:
+            toolbit (ToolBit): The ToolBit object to add.
+            tool_no (int | None): The tool number associated with the ToolBit,
+                                  or None if not applicable.
+        """
+        item = self._create_toolbit_item(toolbit, tool_no)
+        self.addItem(item)
+
+    def insert_toolbit(self, row: int, toolbit: ToolBit, tool_no: int | None = None):
+        """
+        Inserts a ToolBit to the list at the specified row.
+
+        Args:
+            row (int): The row index where the item should be inserted.
+            toolbit (ToolBit): The ToolBit object to add.
+            tool_no (int | None): The tool number associated with the ToolBit,
+                                  or None if not applicable.
+        """
+        item = self._create_toolbit_item(toolbit, tool_no)
+        self.insertItem(row, item)
 
     def clear_list(self):
         """Removes all items from the list."""
@@ -147,14 +204,10 @@ class CompactToolBitListWidget(ToolBitListWidget):
     CompactTwoLineTableCell widgets.
     """
 
-    def add_toolbit(self, toolbit: ToolBit, tool_no: int | None = None):
+    def _create_toolbit_item(self, toolbit: ToolBit, tool_no: int | None = None):
         """
-        Adds a ToolBit to the list using CompactTwoLineTableCell.
-
-        Args:
-            toolbit (ToolBit): The ToolBit object to add.
-            tool_no (int | None): The tool number associated with the ToolBit,
-                                  or None if not applicable.
+        Creates a QListWidgetItem and populates it with ToolBit data
+        using CompactTwoLineTableCell.
         """
         # Use the factory function if provided, otherwise use the passed tool_no
         final_tool_no = None
@@ -163,15 +216,14 @@ class CompactToolBitListWidget(ToolBitListWidget):
         elif tool_no is not None:
             final_tool_no = tool_no
 
-        item = QtGui.QListWidgetItem(self)  # Add item to this widget
-        cell = CompactTwoLineTableCell(self)  # Parent the cell to this widget
+        item = QtGui.QListWidgetItem(self)
+        cell = CompactTwoLineTableCell(self)
 
         # Populate the cell widget
         cell.set_tool_no(final_tool_no)
         cell.set_upper_text(toolbit.label)
-        lower_text = toolbit.summary
+        cell.set_lower_text(toolbit.summary)
         cell.set_icon_from_shape(toolbit._tool_bit_shape)
-        cell.set_lower_text(lower_text)
 
         # Set the custom widget for the list item
         item.setSizeHint(cell.sizeHint())
@@ -179,3 +231,5 @@ class CompactToolBitListWidget(ToolBitListWidget):
 
         # Store the ToolBit URI for later retrieval
         item.setData(ToolBitUriRole, str(toolbit.get_uri()))
+
+        return item

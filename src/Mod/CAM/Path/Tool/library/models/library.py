@@ -132,15 +132,15 @@ class Library(Asset):
                 return tool
         return None
 
-    def assign_new_bit_no(self, bit: ToolBit, bit_no: Optional[int] = None) -> Optional[int]:
+    def assign_new_bit_no(self, bit: ToolBit, bit_no: Optional[int] = None) -> int:
         if bit not in self._bits:
-            return
+            raise ValueError(f"given bit {bit} not in library; cannot assign tool number")
 
         # If no specific bit_no was requested, assign a new one.
         if bit_no is None:
             bit_no = self.get_next_bit_no()
         elif self._bit_nos.get(bit_no) == bit:
-            return
+            return bit_no
 
         # Otherwise, add the bit. Since the requested bit_no may already
         # be in use, we need to account for that. In this case, we will
@@ -154,7 +154,7 @@ class Library(Asset):
             self.assign_new_bit_no(old_bit)
         return bit_no
 
-    def add_bit(self, bit: ToolBit, bit_no: Optional[int] = None) -> Optional[int]:
+    def add_bit(self, bit: ToolBit, bit_no: Optional[int] = None) -> int:
         if bit not in self._bits:
             self._bits.append(bit)
         return self.assign_new_bit_no(bit, bit_no)
@@ -171,6 +171,12 @@ class Library(Asset):
     def remove_bit(self, bit: ToolBit):
         self._bits = [t for t in self._bits if t.id != bit.id]
         self._bit_nos = {k: v for (k, v) in self._bit_nos.items() if v.id != bit.id}
+
+    def remove_bit_by_uri(self, uri: AssetUri | str):
+        if isinstance(uri, str):
+            uri = AssetUri(uri)
+        self._bits = [t for t in self._bits if t.get_uri() != uri]
+        self._bit_nos = {k: v for (k, v) in self._bit_nos.items() if v.get_uri() != uri}
 
     def dump(self, summarize: bool = False):
         title = 'Library "{}" ({}) (instance {})'.format(self.label, self.id, id(self))

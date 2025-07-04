@@ -36,10 +36,10 @@ class ToolBitBullnose(ToolBit, CuttingToolMixin, RotaryToolBitMixin):
 
     @property
     def summary(self) -> str:
-        diameter = self.get_property_str("Diameter", "?")
+        diameter = self.get_property_str("Diameter", "?", precision=3)
         flutes = self.get_property("Flutes")
-        cutting_edge_height = self.get_property_str("CuttingEdgeHeight", "?")
-        flat_radius = self.get_property_str("FlatRadius", "?")
+        cutting_edge_height = self.get_property_str("CuttingEdgeHeight", "?", precision=3)
+        flat_radius = self.get_property_str("FlatRadius", "?", precision=3)
 
         return FreeCAD.Qt.translate(
             "CAM",
