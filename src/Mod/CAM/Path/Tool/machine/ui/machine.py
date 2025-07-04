@@ -112,7 +112,7 @@ class MachinePropertiesDialog(QtGui.QDialog):
         buttons.rejected.connect(self.reject)
         self.layout.addWidget(buttons)
 
-        self.resize(750, self.sizeHint().height() + 200)
+        self.resize(600, self.sizeHint().height() + 200)
 
     def launch_post_processor_settings(self):
         dialog = PostProcessorSettingsDialog(self.machine, self)

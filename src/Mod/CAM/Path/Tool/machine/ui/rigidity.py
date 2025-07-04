@@ -73,7 +73,7 @@ class TimelineVisualItem(QtGui.QWidget):
         super().__init__(parent)
         self.step_index = step_index
         self.total_steps = total_steps
-        self.setFixedWidth(20)
+        self.setFixedWidth(40)
         self.setSizePolicy(QtGui.QSizePolicy.Fixed, QtGui.QSizePolicy.Expanding)
 
     def paintEvent(self, event):
@@ -86,7 +86,7 @@ class TimelineVisualItem(QtGui.QWidget):
         circle_brush = QtGui.QBrush(circle_color)
         timeline_x = self.width() // 2
         circle_y = self.height() // 2
-        circle_radius = 6
+        circle_radius = 15
 
         if self.step_index == 0:  # First step
             painter.drawLine(timeline_x, circle_y, timeline_x, self.height())
@@ -97,6 +97,19 @@ class TimelineVisualItem(QtGui.QWidget):
 
         painter.setBrush(circle_brush)
         painter.drawEllipse(QtCore.QPoint(timeline_x, circle_y), circle_radius, circle_radius)
+
+        # Draw step number
+        number_font = QtGui.QFont()
+        number_font.setPointSize(11)
+        painter.setFont(number_font)
+        painter.setPen(QtCore.Qt.white)  # Set text color to white
+        text_rect = QtCore.QRect(
+            timeline_x - circle_radius,
+            circle_y - circle_radius,
+            circle_radius * 2,
+            circle_radius * 2,
+        )
+        painter.drawText(text_rect, QtCore.Qt.AlignCenter, str(self.step_index + 1))
 
 
 class StepContainer(QtGui.QWidget):
@@ -233,14 +246,14 @@ class LinearRigidityPage(QtGui.QWizardPage):
         step_containers = [
             StepContainer(
                 {
-                    "title": translate("CAM", "Step 1: Prepare Spindle"),
+                    "title": translate("CAM", "Prepare Spindle"),
                     "subtitle": translate("CAM", "Remove tool and collet."),
                 },
                 None,
             ),
             StepContainer(
                 {
-                    "title": translate("CAM", "Step 2: Position Machine"),
+                    "title": translate("CAM", "Position Machine"),
                     "subtitle": translate(
                         "CAM",
                         "Least rigid configuration (e.g., Z-axis fully extended, X/Y at mid-range).",
@@ -250,7 +263,7 @@ class LinearRigidityPage(QtGui.QWizardPage):
             ),
             StepContainer(
                 {
-                    "title": translate("CAM", "Step 3: Secure Indicator"),
+                    "title": translate("CAM", "Secure Indicator"),
                     "subtitle": translate(
                         "CAM",
                         "Attach dial indicator to the machine table, contacting the spindle nose.",
@@ -260,7 +273,7 @@ class LinearRigidityPage(QtGui.QWizardPage):
             ),
             StepContainer(
                 {
-                    "title": translate("CAM", "Step 4: Measure X-Deflection"),
+                    "title": translate("CAM", "Measure X-Deflection"),
                     "subtitle": translate(
                         "CAM",
                         "Apply a known force (e.g., 10 N) in the X direction and record the deflection.",
@@ -270,7 +283,7 @@ class LinearRigidityPage(QtGui.QWizardPage):
             ),
             StepContainer(
                 {
-                    "title": translate("CAM", "Step 5: Measure Y-Deflection"),
+                    "title": translate("CAM", "Measure Y-Deflection"),
                     "subtitle": translate(
                         "CAM",
                         "Apply a known force (e.g., 10 N) in the Y direction and record the deflection.",
@@ -364,21 +377,21 @@ class AngularRigidityPage(QtGui.QWizardPage):
         step_containers = [
             StepContainer(
                 {
-                    "title": translate("CAM", "Step 1: Prepare Spindle"),
+                    "title": translate("CAM", "Prepare Spindle"),
                     "subtitle": translate("CAM", "Remove tool and collet."),
                 },
                 None,
             ),
             StepContainer(
                 {
-                    "title": translate("CAM", "Step 2: Attach Inclinometer"),
+                    "title": translate("CAM", "Attach Inclinometer"),
                     "subtitle": translate("CAM", "Secure an inclinometer to the spindle."),
                 },
                 None,
             ),
             StepContainer(
                 {
-                    "title": translate("CAM", "Step 3: Apply Force and Measure Deflection"),
+                    "title": translate("CAM", "Apply Force and Measure Deflection"),
                     "subtitle": translate(
                         "CAM", "Apply a known force (e.g., 10 N) and record the angular deflection."
                     ),
