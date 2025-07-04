@@ -52,16 +52,16 @@ class FlipDimension(gui_base.GuiCommandNeedsSelection):
     """
 
     def __init__(self):
-        super(Draft_FlipDimension, self).__init__(name=translate("draft","Flip dimension"))
+        super(Draft_FlipDimension, self).__init__(name=translate("draft","Flip Dimension"))
 
     def GetResources(self):
         """Set icon, menu and tooltip."""
 
         return {'Pixmap': 'Draft_FlipDimension',
                 'MenuText': QT_TRANSLATE_NOOP("Draft_FlipDimension",
-                                              "Flip dimension"),
+                                              "Flip Dimension"),
                 'ToolTip': QT_TRANSLATE_NOOP("Draft_FlipDimension",
-                                             "Flip the normal direction of the selected dimensions (linear, radial, angular).\nIf other objects are selected they are ignored.")}
+                                             "Flips the normal direction of the selected dimensions (linear, radial, angular).\nIf other objects are selected they are ignored.")}
 
     def Activated(self):
         """Execute when the command is called."""

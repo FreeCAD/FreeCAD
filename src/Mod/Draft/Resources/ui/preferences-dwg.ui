@@ -23,7 +23,7 @@
    <item>
     <widget class="QGroupBox" name="groupBox">
      <property name="title">
-      <string>DWG conversion</string>
+      <string>DWG Conversion</string>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout">
       <item>
@@ -31,7 +31,7 @@
         <item>
          <widget class="QLabel" name="label_2">
           <property name="text">
-           <string>Conversion method:</string>
+           <string>Conversion method</string>
           </property>
          </widget>
         </item>

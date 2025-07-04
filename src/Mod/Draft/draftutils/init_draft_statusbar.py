@@ -149,7 +149,7 @@ def _set_scale(action):
     scale_widget = sb.findChild(QtWidgets.QToolBar,"draft_scale_widget")
 
     if action.text() == translate("draft", "Custom"):
-        title_text = translate("draft", "Set custom scale")
+        title_text = translate("draft", "Set Custom Scale")
         dialog_text = translate("draft",
                                 "Set custom annotation scale in format x:x, x=x")
         custom_scale = QtWidgets.QInputDialog.getText(None, title_text, dialog_text)
@@ -184,7 +184,7 @@ def init_draft_statusbar_scale():
     # prevent the widget from showing up in the toolbar area context menu:
     scale_widget.toggleViewAction().setVisible(False)
     scale_widget.setObjectName("draft_scale_widget")
-    text = translate("draft", "Draft scale widget",
+    text = translate("draft", "Draft Scale Widget",
     "A context menu action used to show or hide this toolbar widget")
     scale_widget.setWindowTitle(text)
 
@@ -246,7 +246,7 @@ def init_draft_statusbar_snap():
     # prevent the widget from showing up in the toolbar area context menu:
     snap_widget.toggleViewAction().setVisible(False)
     snap_widget.setObjectName("draft_snap_widget")
-    text = translate("draft", "Draft snap widget",
+    text = translate("draft", "Draft Snap Widget",
     "A context menu action used to show or hide this toolbar widget")
     snap_widget.setWindowTitle(text)
     snap_widget.setOrientation(QtCore.Qt.Orientation.Horizontal)

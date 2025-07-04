@@ -228,8 +228,8 @@ def build_placements(base_object, pt_list=None, placement=App.Placement()):
     """
     if not pt_list:
         _err(translate("Draft",
-                       "Point object doesn't have a discrete point, "
-                       "it cannot be used for an array."))
+                       "Point object does not have a discrete point, "
+                       "it cannot be used for an array"))
         return []
 
     pls = list()

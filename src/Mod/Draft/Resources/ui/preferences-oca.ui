@@ -23,7 +23,7 @@
    <item>
     <widget class="QGroupBox" name="GroupBox12_3">
      <property name="title">
-      <string>Import options</string>
+      <string>Import Options</string>
      </property>
      <layout class="QVBoxLayout" name="_6">
       <property name="spacing">
@@ -43,7 +43,7 @@
         <item>
          <widget class="Gui::PrefCheckBox" name="gui::prefcheckbox_4">
           <property name="toolTip">
-           <string>Check this if you want the areas (3D faces) to be imported too.</string>
+           <string>Imports the areas (3D faces) too</string>
           </property>
           <property name="text">
            <string>Import OCA areas</string>

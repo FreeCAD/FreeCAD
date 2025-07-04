@@ -125,13 +125,13 @@ class Facebinder(DraftObject):
         self.props_changed_clear()
 
     def _report_build_error(self, obj):
-        _err(obj.Label + ": " + translate("draft", "Unable to build Facebinder"))
+        _err(obj.Label + ": " + translate("draft", "Unable to build facebinder"))
 
     def _report_face_error(self, obj):
-        _wrn(obj.Label + ": " + translate("draft", "No valid faces for Facebinder"))
+        _wrn(obj.Label + ": " + translate("draft", "No valid faces for facebinder"))
 
     def _report_sew_error(self, obj):
-        _wrn(obj.Label + ": " + translate("draft", "Unable to build Facebinder, resuming with Sew disabled"))
+        _wrn(obj.Label + ": " + translate("draft", "Unable to build facebinder, resuming with sew disabled"))
 
     def _build_shape(self, obj, faces, sew=False):
         """returns the built shape and the area of the offset faces"""
@@ -197,7 +197,7 @@ class Facebinder(DraftObject):
         if solid.isValid():
             return solid
         _msg(obj.Label + ": " + translate("draft",
-            "Converting flat B-spline faces of Facebinder to planar faces failed"
+            "Converting flat B-spline faces of facebinder to planar faces failed"
         ))
         return shp
 

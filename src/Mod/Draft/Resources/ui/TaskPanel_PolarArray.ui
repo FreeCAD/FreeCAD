@@ -23,7 +23,7 @@
    </size>
   </property>
   <property name="windowTitle">
-   <string>Polar array</string>
+   <string>Polar Array</string>
   </property>
   <layout class="QGridLayout" name="gridLayout_3">
    <item row="0" column="0">
@@ -98,7 +98,7 @@ It must be at least 2.</string>
 Change the direction of the axis itself in the property editor.</string>
      </property>
      <property name="title">
-      <string>Center of rotation</string>
+      <string>Center of Rotation</string>
      </property>
      <layout class="QGridLayout" name="gridLayout_2">
       <item row="0" column="0">
@@ -168,10 +168,10 @@ Change the direction of the axis itself in the property editor.</string>
       <item row="1" column="0">
        <widget class="QPushButton" name="button_reset">
         <property name="toolTip">
-         <string>Reset the coordinates of the center of rotation.</string>
+         <string>Resets the coordinates of the center of rotation</string>
         </property>
         <property name="text">
-         <string>Reset point</string>
+         <string>Reset Point</string>
         </property>
        </widget>
       </item>

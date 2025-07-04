@@ -51,15 +51,15 @@ class ToggleGrid(gui_base.GuiCommandSimplest):
     """
 
     def __init__(self):
-        super().__init__(name=translate("draft", "Toggle grid"))
+        super().__init__(name=translate("draft", "Toggle Grid"))
 
     def GetResources(self):
         """Set icon, menu and tooltip."""
         return {"Pixmap": "Draft_Grid",
                 "Accel": "G, R",
-                "MenuText": QT_TRANSLATE_NOOP("Draft_ToggleGrid", "Toggle grid"),
+                "MenuText": QT_TRANSLATE_NOOP("Draft_ToggleGrid", "Toggle Grid"),
                 "ToolTip": QT_TRANSLATE_NOOP("Draft_ToggleGrid",
-                                             "Toggles the Draft grid on and off."),
+                                             "Toggles the visibility of the Draft grid"),
                 "CmdType": "ForEdit"}
 
     def IsActive(self):

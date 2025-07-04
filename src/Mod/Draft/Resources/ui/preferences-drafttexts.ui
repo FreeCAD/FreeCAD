@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Texts and dimensions</string>
+   <string>Texts and Dimensions</string>
   </property>
   <layout class="QVBoxLayout">
    <item>
@@ -202,7 +202,7 @@ in the Annotation scale widget. If the scale is 1:100 the multiplier is 100.</st
    <item>
     <widget class="QGroupBox" name="groupBox_3">
      <property name="title">
-      <string>Lines and arrows</string>
+      <string>Lines and Arrows</string>
      </property>
      <layout class="QGridLayout" name="gridLayout_3">
       <item row="0" column="0" colspan="3">
@@ -493,7 +493,7 @@ or cm, leave blank to use the current unit defined in FreeCAD.</string>
    <item>
     <widget class="QGroupBox" name="groupBox_5">
      <property name="title">
-      <string>Dimension details</string>
+      <string>Dimension Details</string>
      </property>
      <layout class="QGridLayout" name="gridLayout_5">
       <item row="0" column="0">

@@ -60,8 +60,8 @@ class Draft_SetStyle:
         return {
             "Pixmap": "Draft_Apply",
             "Accel": "S, S",
-            "MenuText": QT_TRANSLATE_NOOP("Draft_SetStyle", "Set style"),
-            "ToolTip": QT_TRANSLATE_NOOP("Draft_SetStyle", "Sets default styles")
+            "MenuText": QT_TRANSLATE_NOOP("Draft_SetStyle", "Apply Style"),
+            "ToolTip": QT_TRANSLATE_NOOP("Draft_SetStyle", "Applies the current style settings to the selected objects")
         }
 
     def Activated(self):
@@ -419,7 +419,7 @@ class Draft_SetStyle_TaskPanel:
 
         reply = QtWidgets.QInputDialog.getText(None,
                                            translate("Draft", "Save style"),
-                                           translate("Draft", "Name of this new style:"))
+                                           translate("Draft", "Name of this new style"))
         if reply[1]:
             name = reply[0]
             pdict = self.load()

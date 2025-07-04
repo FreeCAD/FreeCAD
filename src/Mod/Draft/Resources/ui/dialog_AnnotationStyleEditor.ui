@@ -17,7 +17,7 @@
    <item>
     <widget class="QGroupBox" name="groupBox_1">
      <property name="title">
-      <string>Style name</string>
+      <string>Style Name</string>
      </property>
      <layout class="QHBoxLayout" name="horizontalLayout_1">
       <item>
@@ -35,7 +35,7 @@
          </size>
         </property>
         <property name="toolTip">
-         <string>The name of your style. Existing style names can be edited.</string>
+         <string>The name of the style. Existing style names can be edited.</string>
         </property>
         <property name="editable">
          <bool>false</bool>
@@ -47,7 +47,7 @@
         </item>
         <item>
          <property name="text">
-          <string>Add new...</string>
+          <string>Add new…</string>
          </property>
         </item>
        </widget>
@@ -297,13 +297,13 @@
        <item>
         <widget class="QGroupBox" name="groupBox_4">
          <property name="title">
-          <string>Lines and arrows</string>
+          <string>Lines and Arrows</string>
          </property>
          <layout class="QGridLayout" name="gridLayout_3">
           <item row="0" column="0">
            <widget class="QLabel" name="label_ShowLine">
             <property name="toolTip">
-             <string>If it is checked it will display the dimension line</string>
+             <string>Displays the dimension line</string>
             </property>
             <property name="text">
              <string>Show dimension line</string>
@@ -313,7 +313,7 @@
           <item row="0" column="1">
            <widget class="QCheckBox" name="ShowLine">
             <property name="toolTip">
-             <string>If it is checked it will display the dimension line</string>
+             <string>Displays the dimension line</string>
             </property>
             <property name="layoutDirection">
              <enum>Qt::LeftToRight</enum>
@@ -459,7 +459,7 @@
           <item row="0" column="1">
            <widget class="QCheckBox" name="ShowUnit">
             <property name="toolTip">
-             <string>If it is checked it will show the unit next to the dimension value</string>
+             <string>Shows the unit next to the dimension value</string>
             </property>
             <property name="layoutDirection">
              <enum>Qt::LeftToRight</enum>
@@ -509,7 +509,7 @@
        <item>
         <widget class="QGroupBox" name="groupBox_6">
          <property name="title">
-          <string>Dimension details</string>
+          <string>Dimension Details</string>
          </property>
          <layout class="QGridLayout" name="gridLayout_5">
           <item row="0" column="0">
