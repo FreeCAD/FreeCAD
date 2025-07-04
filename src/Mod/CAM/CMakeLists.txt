@@ -265,6 +265,7 @@ SET(PathPythonToolsMachineUi_SRCS
     Path/Tool/machine/ui/post.py
     Path/Tool/machine/ui/prefs.py
     Path/Tool/machine/ui/rigidity.py
+    Path/Tool/machine/ui/selector.py
     Path/Tool/machine/ui/spinbox.py
     Path/Tool/machine/ui/spindle_edit.py
     Path/Tool/machine/ui/spindle_prop.py

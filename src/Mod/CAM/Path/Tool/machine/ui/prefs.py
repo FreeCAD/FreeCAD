@@ -25,11 +25,11 @@ import FreeCAD
 from ...camassets import cam_assets
 from ..models import Machine, Lathe, Mill
 from .machine import MachinePropertiesDialog
+from .selector import MachineSelector
 from ...toolbit.ui.tablecell import CompactTwoLineTableCell
 
 
 translate = FreeCAD.Qt.translate
-MachineTypes = [m.get_type() for m in Machine.__subclasses__()]
 
 
 class MachinePreferencesPage(QtGui.QWidget):
@@ -97,29 +97,12 @@ class MachinePreferencesPage(QtGui.QWidget):
 
     def add_machine(self):
         """Add a new machine by selecting its type and opening the appropriate dialog."""
-        # Create a dialog that asks for the machine type.
-        type_dialog = QtGui.QDialog(self)
-        type_dialog.setWindowTitle(translate("CAM_PreferencesMachine", "Select Machine Type"))
-        type_dialog.resize(350, type_dialog.sizeHint().height())
-        layout = QtGui.QVBoxLayout(type_dialog)
-        combo = QtGui.QComboBox()
-        combo.addItems(MachineTypes)
-        layout.addWidget(combo)
-        buttons = QtGui.QDialogButtonBox(QtGui.QDialogButtonBox.Ok | QtGui.QDialogButtonBox.Cancel)
-        buttons.accepted.connect(type_dialog.accept)
-        buttons.rejected.connect(type_dialog.reject)
-        layout.addWidget(buttons)
-        if type_dialog.exec_() != QtGui.QDialog.Accepted:
+        selector = MachineSelector(parent=self)
+        machine = selector.show()
+        if not machine:
             return
 
-        # Open the machine type-specific editor.
-        machine_type = combo.currentText()
-        if machine_type == "Lathe":
-            machine = Lathe(translate("CAM", "My Lathe"))
-        elif machine_type == "Mill":
-            machine = Mill(translate("CAM", "My 3-Axis CNC"))
-        else:
-            raise AttributeError(f"invalid machine type {machine_type}. registered: {MachineTypes}")
+        # Open the machine editor.
         dialog = MachinePropertiesDialog(machine, self)
         if not dialog.exec_():
             return
