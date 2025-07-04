@@ -31,8 +31,8 @@ matplotlib = "*"
 nine = "*"
 ninja = "*"
 noqt5 = "*"
-numpy = "*"
-occt = "*"
+numpy = ">=1.26,<1.27"
+occt = ">=7.8,<7.9"
 opencamlib = "*"
 opencv = "*"
 openssl = "*"
@@ -48,14 +48,14 @@ pyside6 = "*"
 python = ">=3.11,<3.12"
 pythonocc-core = "*"
 pyyaml = "*"
-qt6-main = ">=6.7,<6.8"
+qt6-main = ">=6.8,<6.9"
 requests = "*"
 scipy = "*"
 six = "*"
 smesh = "*"
 swig = "*"
 sympy = "*"
-tbb-devel = "*"
+tbb-devel = ">=2022,<2023"
 vtk = "*"
 xerces-c = "*"
 xlutils = "*"
@@ -144,6 +144,9 @@ sed = "*"
 
 [target.win-64.dependencies]
 pthreads-win32 = "*"
+
+[pypi-dependencies]
+freecad-stubs = "*"
 
 ## Qt 6 Configuration Presets
 [target.linux-64.tasks]
