@@ -509,6 +509,12 @@ class RigidityWizard(QtGui.QWizard):
         is_visible = page_id in [linear_rigidity_page_id, angular_rigidity_page_id]
         self.button(QtGui.QWizard.CustomButton1).setVisible(is_visible)
 
+        # Reset skip flags when entering a page
+        if page_id == linear_rigidity_page_id:
+            self.skip_linear = False
+        elif page_id == angular_rigidity_page_id:
+            self.skip_angular = False
+
     def handle_skip(self):
         current_id = self.currentId()
         linear_rigidity_page_id = self.pageIds()[1]
