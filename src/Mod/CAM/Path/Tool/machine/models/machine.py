@@ -103,11 +103,11 @@ class Machine(MachineComponent, Asset, ABC):
         Returns:
             Summary string.
         """
-        n_axes = len(self.get_children_by_type(Axis))
-        n_spindles = len(self.get_children_by_type(Spindle))
+        n_axes = len(self.find_children_by_type(Axis))
+        n_spindles = len(self.find_children_by_type(Spindle))
         return FreeCAD.Qt.translate(
             "CAM",
-            f"{n_axes}-axis {self.get_type()} with " f"{n_spindles} spindles",
+            f"{n_axes-n_spindles}-axis {self.get_type()} with " f"{n_spindles} spindles",
         )
 
     @property

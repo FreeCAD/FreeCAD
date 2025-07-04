@@ -438,9 +438,13 @@ class SummaryPage(QtGui.QWizardPage):
         summary_text = "Calculated Rigidities:\n\n"
 
         if "rigidity_x" in rigidities:
-            summary_text += f"  Rigidity X: {rigidities['rigidity_x'].getValueAs('mm/N')} mm/N\n"
+            summary_text += (
+                f"  Rigidity X: {rigidities['rigidity_x'].getValueAs('mm/N').Value:.6f} mm/N\n"
+            )
         if "rigidity_y" in rigidities:
-            summary_text += f"  Rigidity Y: {rigidities['rigidity_y'].getValueAs('mm/N')} mm/N\n"
+            summary_text += (
+                f"  Rigidity Y: {rigidities['rigidity_y'].getValueAs('mm/N').Value:.6f} mm/N\n"
+            )
         if "angular_rigidity" in rigidities:
             summary_text += (
                 f"  Angular Rigidity: {rigidities['angular_rigidity'].Value:.6f} deg/N\n"
