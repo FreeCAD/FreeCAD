@@ -197,11 +197,8 @@ View3DInventor* View3DInventor::clone()
     auto mdiView = _pcDocument->createView(getClassTypeId(), CreateViewMode::Clone);
     auto view3D = static_cast<View3DInventor*>(mdiView);
 
+    view3D->cloneFrom(*this);
     view3D->getViewer()->setAxisCross(getViewer()->hasAxisCross());
-
-    view3D->setWindowTitle(windowTitle());
-    view3D->setWindowIcon(windowIcon());
-    view3D->resize(size());
 
     // FIXME: Add parameter to define behaviour by the calling instance
     // View provider editing

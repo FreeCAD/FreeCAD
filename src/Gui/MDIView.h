@@ -185,6 +185,8 @@ protected:
 
     bool eventFilter(QObject* watched, QEvent* e) override;
 
+    void cloneFrom(const MDIView& from);
+
 protected:
     PyObject* pythonObject;
 
