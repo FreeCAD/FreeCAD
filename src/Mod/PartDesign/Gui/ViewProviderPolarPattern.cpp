@@ -35,7 +35,7 @@ TaskDlgFeatureParameters *ViewProviderPolarPattern::getEditDialog() {
 
 void ViewProviderPolarPattern::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
 {
-    addDefaultAction(menu, QObject::tr("Edit polar pattern"));
+    addDefaultAction(menu, QObject::tr("Edit Polar Pattern"));
     PartDesignGui::ViewProvider::setupContextMenu(menu, receiver, member);
 }
 

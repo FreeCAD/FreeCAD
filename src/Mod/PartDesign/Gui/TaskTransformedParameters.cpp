@@ -417,9 +417,9 @@ void TaskTransformedParameters::fillAxisCombo(ComboLinks& combolinks, Part::Part
     if (body) {
         try {
             App::Origin* orig = body->getOrigin();
-            combolinks.addLink(orig->getX(), "", tr("Base X axis"));
-            combolinks.addLink(orig->getY(), "", tr("Base Y axis"));
-            combolinks.addLink(orig->getZ(), "", tr("Base Z axis"));
+            combolinks.addLink(orig->getX(), "", tr("Base x-axis"));
+            combolinks.addLink(orig->getY(), "", tr("Base y-axis"));
+            combolinks.addLink(orig->getZ(), "", tr("Base z-axis"));
         }
         catch (const Base::Exception& ex) {
             Base::Console().error("%s\n", ex.what());
@@ -427,7 +427,7 @@ void TaskTransformedParameters::fillAxisCombo(ComboLinks& combolinks, Part::Part
     }
 
     // add "Select reference"
-    combolinks.addLink(nullptr, std::string(), tr("Select reference..."));
+    combolinks.addLink(nullptr, std::string(), tr("Select reference…"));
 }
 
 void TaskTransformedParameters::fillPlanesCombo(ComboLinks& combolinks, Part::Part2DObject* sketch)
@@ -463,7 +463,7 @@ void TaskTransformedParameters::fillPlanesCombo(ComboLinks& combolinks, Part::Pa
     }
 
     // add "Select reference"
-    combolinks.addLink(nullptr, std::string(), tr("Select reference..."));
+    combolinks.addLink(nullptr, std::string(), tr("Select reference…"));
 }
 
 void TaskTransformedParameters::recomputeFeature()

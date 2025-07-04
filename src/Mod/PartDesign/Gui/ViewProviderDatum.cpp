@@ -112,22 +112,22 @@ void ViewProviderDatum::attach(App::DocumentObject *obj)
     if (o->is<PartDesign::Plane>()) {
         datumType = QStringLiteral("Plane");
         datumText = QObject::tr("Plane");
-        datumMenuText = tr("Datum Plane parameters");
+        datumMenuText = tr("Datum Plane Parameters");
     }
     else if (o->is<PartDesign::Line>()) {
         datumType = QStringLiteral("Line");
         datumText = QObject::tr("Line");
-        datumMenuText = tr("Datum Line parameters");
+        datumMenuText = tr("Datum Line Parameters");
     }
     else if (o->is<PartDesign::Point>()) {
         datumType = QStringLiteral("Point");
         datumText = QObject::tr("Point");
-        datumMenuText = tr("Datum Point parameters");
+        datumMenuText = tr("Datum Point Parameters");
     }
     else if (o->is<PartDesign::CoordinateSystem>()) {
         datumType = QStringLiteral("CoordinateSystem");
         datumText = QObject::tr("Coordinate System");
-        datumMenuText = tr("Local Coordinate System parameters");
+        datumMenuText = tr("Local Coordinate System Parameters");
     }
 
     SoShapeHints* hints = new SoShapeHints();
@@ -226,7 +226,7 @@ bool ViewProviderDatum::isSelectable() const
 void ViewProviderDatum::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
 {
     QAction* act;
-    act = menu->addAction(QObject::tr("Edit datum"), receiver, member);
+    act = menu->addAction(QObject::tr("Edit Datum"), receiver, member);
     act->setData(QVariant((int)ViewProvider::Default));
     // Call the extensions
     Gui::ViewProvider::setupContextMenu(menu, receiver, member);
@@ -248,7 +248,7 @@ bool ViewProviderDatum::setEdit(int ModNum)
         if (dlg && !datumDlg) {
             QMessageBox msgBox(Gui::getMainWindow());
             msgBox.setText(QObject::tr("A dialog is already open in the task panel"));
-            msgBox.setInformativeText(QObject::tr("Do you want to close this dialog?"));
+            msgBox.setInformativeText(QObject::tr("Close this dialog?"));
             msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
             msgBox.setDefaultButton(QMessageBox::Yes);
             int ret = msgBox.exec();

@@ -59,7 +59,7 @@ std::vector<App::DocumentObject*> ViewProviderHole::claimChildren()const
 
 void ViewProviderHole::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
 {
-    addDefaultAction(menu, QObject::tr("Edit hole"));
+    addDefaultAction(menu, QObject::tr("Edit Hole"));
     PartGui::ViewProviderPart::setupContextMenu(menu, receiver, member); // clazy:exclude=skipped-base-method
 }
 
@@ -76,7 +76,7 @@ bool ViewProviderHole::setEdit(int ModNum)
         if (dlg && !holeDlg) {
             QMessageBox msgBox(Gui::getMainWindow());
             msgBox.setText(QObject::tr("A dialog is already open in the task panel"));
-            msgBox.setInformativeText(QObject::tr("Do you want to close this dialog?"));
+            msgBox.setInformativeText(QObject::tr("Close this dialog?"));
             msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
             msgBox.setDefaultButton(QMessageBox::Yes);
             int ret = msgBox.exec();

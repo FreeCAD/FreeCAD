@@ -60,7 +60,7 @@
       <widget class="QComboBox" name="comboMode">
        <item>
         <property name="text">
-         <string>Overall Length</string>
+         <string>Overall length</string>
         </property>
        </item>
        <item>
