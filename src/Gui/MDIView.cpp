@@ -135,6 +135,24 @@ MDIView* MDIView::clone()
     return nullptr;
 }
 
+void MDIView::cloneFrom(const MDIView& from)
+{
+    setWindowTitle(from.windowTitle());
+    setWindowIcon(from.windowIcon());
+    resize(from.size());
+
+    // wstate is updated when changing from top-level mode to something else. This hasn't happened
+    // yet if the original widget is currently in top-level mode. In this case we want to use the
+    // actual windowState of the original widget instead of it's wstate.
+
+    if (from.currentViewMode() == TopLevel) {
+        wstate = from.windowState();
+    }
+    else {
+        wstate = from.wstate;
+    }
+}
+
 PyObject* MDIView::getPyObject()
 {
     if (!pythonObject)
@@ -414,84 +432,60 @@ extern void qt_x11_wait_for_window_manager( QWidget* w ); // defined in qwidget_
 
 void MDIView::setCurrentViewMode(ViewMode mode)
 {
-    ViewMode oldmode = MDIView::currentViewMode();
+    const ViewMode oldmode = MDIView::currentViewMode();
     if (oldmode == mode) {
         return;
+    }
+
+    if (oldmode == Child) {
+        // remove window from MDIArea
+        if (qobject_cast<QMdiSubWindow*>(parentWidget())) {
+            getMainWindow()->removeWindow(this, false);
+            setParent(nullptr);
+        }
+    }
+    else if (oldmode == TopLevel) {
+        // backup maximize state for top-level mode
+        wstate = windowState();
     }
 
     switch (mode) {
         // go to normal mode
         case Child:
-            {
-                if (currentMode == FullScreen) {
-                    showNormal();
-                    setWindowFlags(windowFlags() & ~Qt::Window);
-                }
-                else if (currentMode == TopLevel) {
-                    wstate = windowState();
-                    setWindowFlags( windowFlags() & ~Qt::Window );
-                }
-
-                if (currentMode != Child) {
-                    currentMode = Child;
-                    getMainWindow()->addWindow(this);
-                    getMainWindow()->activateWindow();
-                    update();
-                }
-            }   break;
+            getMainWindow()->addWindow(this);
+            break;
 
         // go to top-level mode
         case TopLevel:
-            {
-                if (currentMode == Child) {
-                    if (qobject_cast<QMdiSubWindow*>(parentWidget()))
-                        getMainWindow()->removeWindow(this, false);
-                    setWindowFlags(windowFlags() | Qt::Window);
-                    setParent(nullptr,
-                              Qt::Window | Qt::WindowTitleHint | Qt::WindowSystemMenuHint
-                                  | Qt::WindowMinMaxButtonsHint);
-                    if (wstate & Qt::WindowMaximized)
-                        showMaximized();
-                    else
-                        showNormal();
+            if (wstate & Qt::WindowMaximized) {
+                // Only calling showMaximized doesn't work when the widget is currently in
+                // full-screen mode. We need to exit full-screen mode first or the widget will end
+                // up in normal mode. Same if the window is in child mode but maximized.
+                setWindowState(windowState() & ~(Qt::WindowMaximized | Qt::WindowFullScreen));
+                showMaximized();
+            }
+            else {
+                showNormal();
+            }
+            break;
 
-#if defined(Q_WS_X11)
-                    //extern void qt_x11_wait_for_window_manager( QWidget* w ); // defined in qwidget_x11.cpp
-                    qt_x11_wait_for_window_manager(this);
-#endif
-                    activateWindow();
-                }
-                else if (currentMode == FullScreen) {
-                    if (wstate & Qt::WindowMaximized)
-                        showMaximized();
-                    else
-                        showNormal();
-                }
-
-                currentMode = TopLevel;
-                update();
-            }   break;
-
-        // go to fullscreen mode
+        // go to full-screen mode
         case FullScreen:
-            {
-                if (currentMode == Child) {
-                    if (qobject_cast<QMdiSubWindow*>(parentWidget()))
-                        getMainWindow()->removeWindow(this, false);
-                    setWindowFlags(windowFlags() | Qt::Window);
-                    setParent(nullptr, Qt::Window);
-                    showFullScreen();
-                }
-                else if (currentMode == TopLevel) {
-                    wstate = windowState();
-                    showFullScreen();
-                }
-
-                currentMode = FullScreen;
-                update();
-            }   break;
+            showFullScreen();
+            break;
     }
 
+    currentMode = mode;
+
+#if defined(Q_WS_X11)
+    if (mode == TopLevel && oldmode == Child) {
+        // extern void qt_x11_wait_for_window_manager( QWidget* w ); // defined in
+        // qwidget_x11.cpp
+        qt_x11_wait_for_window_manager(this);
+    }
+#endif
+
+    activateWindow();
 
     if (oldmode == Child) {
         // To make a global shortcut working from this window we need to add
