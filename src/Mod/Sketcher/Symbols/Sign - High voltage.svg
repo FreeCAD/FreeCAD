@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   version="1.0"
+   width="1280.000000pt"
+   height="1126.000000pt"
+   viewBox="0 0 1280.000000 1126.000000"
+   preserveAspectRatio="xMidYMid meet"
+   id="svg3"
+   sodipodi:docname="Sign - High voltage.svg"
+   inkscape:version="1.4 (86a8ad7, 2024-10-11)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs3" />
+  <sodipodi:namedview
+     id="namedview3"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:document-units="pt"
+     inkscape:zoom="0.45059947"
+     inkscape:cx="464.93619"
+     inkscape:cy="773.41414"
+     inkscape:window-width="3840"
+     inkscape:window-height="1571"
+     inkscape:window-x="-9"
+     inkscape:window-y="-9"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg3" />
+  <metadata
+     id="metadata1">
+Created by potrace 1.15, written by Peter Selinger 2001-2017
+</metadata>
+  <path
+     d="m 620.1,2 c -4.1,1 -11.3,3.7 -16,6.1 -7,3.5 -10.5,6.2 -18.7,14.4 -6.1,6 -12.4,13.4 -15.7,18.5 -8.5,13.2 -68.1,118.2 -296.2,521.5 -79.3,140.2 -171.4,303.2 -204.7,362 -33.3,58.9 -61.7,109.8 -63.1,113.1 -7.9,18.7 -7.2,39.4 1.9,55.9 1.5,2.8 6.4,8.6 10.8,13 9.1,9 17.7,13.9 30.6,17.5 l 7.6,2 587.9,-0.2 588,-0.3 8.1,-2.7 c 36.3,-12.4 49.4,-49.9 30.4,-87.8 -2.1,-4.3 -89.9,-158 -195.1,-341.7 C 970.7,509.7 845.1,290.4 796.8,206 748.4,121.6 705.9,48 702.2,42.5 690.4,24.8 675.4,11.4 660.3,5.2 647.8,0 633.1,-1.2 620.1,2 Z m 160.7,341 c 79.3,138.3 201.9,352.3 272.4,475.5 l 128.3,224 -271.2,0.3 c -149.2,0.1 -393.4,0.1 -542.7,0 L 96.1,1042.5 262.7,748 C 581.5,184.3 635.2,89.7 636.1,90.8 c 0.4,0.4 65.5,113.9 144.7,252.2 z"
+     id="path1"
+     style="fill:#000000;stroke:none;stroke-width:0.1" />
+  <path
+     id="path615"
+     style="stroke-width:2.24963"
+     d="m 699.30055,318.18634 -92.99932,2.65469 -172.72887,422.48087 241.81374,-82.35837 -66.88328,228.1811 -36.75699,-28.90895 c 7.83366,43.26717 14.53041,86.99418 21.25976,130.20939 l 92.99932,-108.94966 -51.07486,13.18838 136.1101,-305.45987 -257.73828,79.70371 z"
+     sodipodi:nodetypes="cccccccccccc" />
+</svg>

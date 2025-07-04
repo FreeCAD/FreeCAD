@@ -251,6 +251,7 @@ inline void scrollTo(QListWidget* list, int i, bool select)
 }
 
 QMap<QString, QString> findAvailableFontFiles();
+QMap<QString, QString> findAvailableSymbolFiles();
 
 }  // namespace SketcherGui
 

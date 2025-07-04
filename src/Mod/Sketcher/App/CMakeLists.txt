@@ -188,4 +188,11 @@ endif ()
 SET_BIN_DIR(Sketcher Sketcher /Mod/Sketcher)
 SET_PYTHON_PREFIX_SUFFIX(Sketcher)
 
+ADD_CUSTOM_COMMAND(TARGET Sketcher
+                   POST_BUILD
+                   COMMAND ${CMAKE_COMMAND} -E copy_directory
+                   ${CMAKE_SOURCE_DIR}/src/Mod/Sketcher/Symbols
+                   ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/Sketcher/Symbols
+)
+
 INSTALL(TARGETS Sketcher DESTINATION ${CMAKE_INSTALL_LIBDIR})
