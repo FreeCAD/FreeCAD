@@ -164,4 +164,3 @@
 .TaskAssemblyCreateJoint.removeSelection: (self: JointObject.TaskAssemblyCreateJoint, doc_name: Obj, obj_name: Obj, sub_name: Obj, mousePos: Obj := Obj) -> NoneType
 .TaskAssemblyCreateJoint.setPreselection: (self: JointObject.TaskAssemblyCreateJoint, doc_name: Obj, obj_name: Obj, sub_name: Bool) -> NoneType
 .TaskAssemblyCreateJoint.clearSelection: (self: JointObject.TaskAssemblyCreateJoint, doc_name: Obj) -> NoneType
-

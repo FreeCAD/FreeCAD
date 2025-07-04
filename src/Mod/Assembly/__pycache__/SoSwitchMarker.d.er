@@ -38,4 +38,3 @@ pivy = pyimport "pivy"
 .SoSwitchMarker.setPickableState: (self: SoSwitchMarker.SoSwitchMarker, state: Bool) -> NoneType
 .SoSwitchMarker.show_marker: (self: SoSwitchMarker.SoSwitchMarker, visible: Bool, placement: Obj := Obj, ref: Obj := Obj) -> NoneType
 .SoSwitchMarker.onChanged: |Self <: global::Indexable(?K, ?V), K: Type, Type_66441: Type, Type_66247 <: Structural({.getPropertyByName = (self: Obj, ?66383) -> ?Self and (self: Obj, ?66441) -> ?Self}), Type_66383: Type, V: Type|(self: SoSwitchMarker.SoSwitchMarker, vp: Type_66247, prop: {"color_X_axis"}) -> NoneType
-

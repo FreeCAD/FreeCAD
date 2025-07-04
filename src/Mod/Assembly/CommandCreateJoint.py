@@ -132,9 +132,7 @@ class CommandCreateJointCylindrical:
     def GetResources(self):
         return {
             "Pixmap": "Assembly_CreateJointCylindrical",
-            "MenuText": QT_TRANSLATE_NOOP(
-                "Assembly_CreateJointCylindrical", "Cylindrical Joint"
-            ),
+            "MenuText": QT_TRANSLATE_NOOP("Assembly_CreateJointCylindrical", "Cylindrical Joint"),
             "Accel": "C",
             "ToolTip": "<p>"
             + QT_TRANSLATE_NOOP(
