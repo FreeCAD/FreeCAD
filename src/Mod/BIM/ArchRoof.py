@@ -784,7 +784,7 @@ class _Roof(ArchComponent.Component):
                     faces.append(f)
                 else:
                     # TODO 2025.6.15: See github issue #21633: Find better way
-                    #      to test and maybe to split suface point up and down
+                    #      to test and maybe to split surface point up and down
                     #      and extrude separately
 
                     # Not sure if it is pointing towards and/or above horizon
