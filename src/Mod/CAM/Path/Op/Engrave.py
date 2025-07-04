@@ -163,7 +163,10 @@ class ObjectEngrave(PathEngraveBase.ObjectOp):
             Path.Log.debug("processing {} jobshapes".format(len(jobshapes)))
             wires = []
             for shape in jobshapes:
-                shapeWires = shape.Wires
+                if type(shape) is Part.Edge:
+                    shapeWires = [Part.Wire(shape)]
+                else:
+                    shapeWires = shape.Wires
                 Path.Log.debug("jobshape has {} edges".format(len(shape.Edges)))
                 self.commandlist.append(
                     Path.Command("G0", {"Z": obj.ClearanceHeight.Value, "F": self.vertRapid})
