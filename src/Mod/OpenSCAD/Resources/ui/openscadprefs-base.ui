@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>General settings</string>
+   <string>General</string>
   </property>
   <layout class="QVBoxLayout">
    <property name="spacing">
@@ -71,7 +71,7 @@
    <item>
     <widget class="QGroupBox" name="groupBox_2">
      <property name="title">
-      <string>OpenSCAD import</string>
+      <string>OpenSCAD Import</string>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout">
       <item>
@@ -179,7 +179,7 @@
         <item>
          <widget class="QLabel" name="label_6">
           <property name="text">
-           <string>Send to OpenSCAD via:</string>
+           <string>Send to OpenSCAD via</string>
           </property>
          </widget>
         </item>
@@ -258,7 +258,7 @@
    <item>
     <widget class="QGroupBox" name="groupBox_3">
      <property name="title">
-      <string>OpenSCAD export</string>
+      <string>OpenSCAD Export</string>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_21">
       <item>

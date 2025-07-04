@@ -89,7 +89,7 @@ void PointsAlgos::LoadAscii(PointKernel& points, const char* FileName)
     // resize the PointKernel
     points.resize(LineCnt);
 
-    Base::SequencerLauncher seq("Loading points...", LineCnt);
+    Base::SequencerLauncher seq("Loading points…", LineCnt);
 
     // again to the beginning
     Base::ifstream file(fi, std::ios::in);

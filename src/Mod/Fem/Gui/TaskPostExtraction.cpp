@@ -53,7 +53,7 @@ TaskPostExtraction::TaskPostExtraction(ViewProviderFemPostObject* view, QWidget*
     // we load the python implementation, and try to get the widget from it, to add
     // directly our widget
 
-    setWindowTitle(tr("Data and extractions"));
+    setWindowTitle(tr("Data and Extractions"));
 
     Base::PyGILStateLocker lock;
 

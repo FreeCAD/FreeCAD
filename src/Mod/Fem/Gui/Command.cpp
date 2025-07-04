@@ -240,7 +240,7 @@ CmdFemConstraintBearing::CmdFemConstraintBearing()
 {
     sAppModule = "Fem";
     sGroup = QT_TR_NOOP("Fem");
-    sMenuText = QT_TR_NOOP("Bearing constraint");
+    sMenuText = QT_TR_NOOP("Bearing Constraint");
     sToolTipText = QT_TR_NOOP("Creates a bearing constraint");
     sWhatsThis = "FEM_ConstraintBearing";
     sStatusTip = sToolTipText;
@@ -288,7 +288,7 @@ CmdFemConstraintContact::CmdFemConstraintContact()
 {
     sAppModule = "Fem";
     sGroup = QT_TR_NOOP("Fem");
-    sMenuText = QT_TR_NOOP("Contact constraint");
+    sMenuText = QT_TR_NOOP("Contact Constraint");
     sToolTipText = QT_TR_NOOP("Creates a contact constraint between faces");
     sWhatsThis = "FEM_ConstraintContact";
     sStatusTip = sToolTipText;
@@ -354,7 +354,7 @@ CmdFemConstraintDisplacement::CmdFemConstraintDisplacement()
 {
     sAppModule = "Fem";
     sGroup = QT_TR_NOOP("Fem");
-    sMenuText = QT_TR_NOOP("Displacement boundary condition");
+    sMenuText = QT_TR_NOOP("Displacement Boundary Condition");
     sToolTipText = QT_TR_NOOP("Creates a displacement boundary condition for a geometric entity");
     sWhatsThis = "FEM_ConstraintDisplacement";
     sStatusTip = sToolTipText;
@@ -404,7 +404,7 @@ CmdFemConstraintFixed::CmdFemConstraintFixed()
 {
     sAppModule = "Fem";
     sGroup = QT_TR_NOOP("Fem");
-    sMenuText = QT_TR_NOOP("Fixed boundary condition");
+    sMenuText = QT_TR_NOOP("Fixed Boundary Condition");
     sToolTipText = QT_TR_NOOP("Creates a fixed boundary condition for a geometric entity");
     sWhatsThis = "FEM_ConstraintFixed";
     sStatusTip = sToolTipText;
@@ -454,7 +454,7 @@ CmdFemConstraintRigidBody::CmdFemConstraintRigidBody()
 {
     sAppModule = "Fem";
     sGroup = QT_TR_NOOP("Fem");
-    sMenuText = QT_TR_NOOP("Rigid body constraint");
+    sMenuText = QT_TR_NOOP("Rigid Body Constraint");
     sToolTipText = QT_TR_NOOP("Creates a rigid body constraint for a geometric entity");
     sWhatsThis = "FEM_ConstraintRigidBody";
     sStatusTip = sToolTipText;
@@ -506,7 +506,7 @@ CmdFemConstraintFluidBoundary::CmdFemConstraintFluidBoundary()
 {
     sAppModule = "Fem";
     sGroup = QT_TR_NOOP("Fem");
-    sMenuText = QT_TR_NOOP("Fluid boundary condition");
+    sMenuText = QT_TR_NOOP("Fluid Boundary Condition");
     sToolTipText =
         QT_TR_NOOP("Create fluid boundary condition on face entity for Computional Fluid Dynamics");
     sWhatsThis = "FEM_ConstraintFluidBoundary";
@@ -558,7 +558,7 @@ CmdFemConstraintForce::CmdFemConstraintForce()
 {
     sAppModule = "Fem";
     sGroup = QT_TR_NOOP("Fem");
-    sMenuText = QT_TR_NOOP("Force load");
+    sMenuText = QT_TR_NOOP("Force Load");
     sToolTipText = QT_TR_NOOP("Creates a force load applied to a geometric entity");
     sWhatsThis = "FEM_ConstraintForce";
     sStatusTip = sToolTipText;
@@ -615,7 +615,7 @@ CmdFemConstraintGear::CmdFemConstraintGear()
 {
     sAppModule = "Fem";
     sGroup = QT_TR_NOOP("Fem");
-    sMenuText = QT_TR_NOOP("Gear constraint");
+    sMenuText = QT_TR_NOOP("Gear Constraint");
     sToolTipText = QT_TR_NOOP("Creates a gear constraint");
     sWhatsThis = "FEM_ConstraintGear";
     sStatusTip = sToolTipText;
@@ -663,7 +663,7 @@ CmdFemConstraintHeatflux::CmdFemConstraintHeatflux()
 {
     sAppModule = "Fem";
     sGroup = QT_TR_NOOP("Fem");
-    sMenuText = QT_TR_NOOP("Heat flux load");
+    sMenuText = QT_TR_NOOP("Heat Flux Load");
     sToolTipText = QT_TR_NOOP("Creates a heat flux load acting on a face");
     sWhatsThis = "FEM_ConstraintHeatflux";
     sStatusTip = sToolTipText;
@@ -724,7 +724,7 @@ CmdFemConstraintInitialTemperature::CmdFemConstraintInitialTemperature()
 {
     sAppModule = "Fem";
     sGroup = QT_TR_NOOP("Fem");
-    sMenuText = QT_TR_NOOP("Initial temperature");
+    sMenuText = QT_TR_NOOP("Initial Temperature");
     sToolTipText = QT_TR_NOOP("Creates an initial temperature acting on a body");
     sWhatsThis = "FEM_ConstraintInitialTemperature";
     sStatusTip = sToolTipText;
@@ -775,7 +775,7 @@ CmdFemConstraintPlaneRotation::CmdFemConstraintPlaneRotation()
 {
     sAppModule = "Fem";
     sGroup = QT_TR_NOOP("Fem");
-    sMenuText = QT_TR_NOOP("Plane multi-point constraint");
+    sMenuText = QT_TR_NOOP("Plane Multi-Point Constraint");
     sToolTipText = QT_TR_NOOP("Creates a plane multi-point constraint for a face");
     sWhatsThis = "FEM_ConstraintPlaneRotation";
     sStatusTip = sToolTipText;
@@ -826,7 +826,7 @@ CmdFemConstraintPressure::CmdFemConstraintPressure()
 {
     sAppModule = "Fem";
     sGroup = QT_TR_NOOP("Fem");
-    sMenuText = QT_TR_NOOP("Pressure load");
+    sMenuText = QT_TR_NOOP("Pressure Load");
     sToolTipText = QT_TR_NOOP("Creates a pressure load acting on a face");
     sWhatsThis = "FEM_ConstraintPressure";
     sStatusTip = sToolTipText;
@@ -882,8 +882,8 @@ CmdFemConstraintSpring::CmdFemConstraintSpring()
 {
     sAppModule = "Fem";
     sGroup = QT_TR_NOOP("Fem");
-    sMenuText = QT_TR_NOOP("Spring");
-    sToolTipText = QT_TR_NOOP("Creates a spring acting on a face");
+    sMenuText = QT_TR_NOOP("Spring Boundary Condition");
+    sToolTipText = QT_TR_NOOP("Creates a spring boundary condition on a face");
     sWhatsThis = "FEM_ConstraintSpring";
     sStatusTip = sToolTipText;
     sPixmap = "FEM_ConstraintSpring";
@@ -937,7 +937,7 @@ CmdFemConstraintPulley::CmdFemConstraintPulley()
 {
     sAppModule = "Fem";
     sGroup = QT_TR_NOOP("Fem");
-    sMenuText = QT_TR_NOOP("Pulley constraint");
+    sMenuText = QT_TR_NOOP("Pulley Constraint");
     sToolTipText = QT_TR_NOOP("Creates a pulley constraint");
     sWhatsThis = "FEM_ConstraintPulley";
     sStatusTip = sToolTipText;
@@ -990,7 +990,7 @@ CmdFemConstraintTemperature::CmdFemConstraintTemperature()
 {
     sAppModule = "Fem";
     sGroup = QT_TR_NOOP("Fem");
-    sMenuText = QT_TR_NOOP("Temperature boundary condition");
+    sMenuText = QT_TR_NOOP("Temperature Boundary Condition");
     sToolTipText = QT_TR_NOOP("Creates a temperature/concentrated heat flux load acting on a face");
     sWhatsThis = "FEM_ConstraintTemperature";
     sStatusTip = sToolTipText;
@@ -1041,8 +1041,8 @@ CmdFemConstraintTransform::CmdFemConstraintTransform()
 {
     sAppModule = "Fem";
     sGroup = QT_TR_NOOP("Fem");
-    sMenuText = QT_TR_NOOP("Local coordinate system");
-    sToolTipText = QT_TR_NOOP("Create a local coordinate system on a face");
+    sMenuText = QT_TR_NOOP("Local Coordinate System");
+    sToolTipText = QT_TR_NOOP("Creates a local coordinate system on a face");
     sWhatsThis = "FEM_ConstraintTransform";
     sStatusTip = sToolTipText;
     sPixmap = "FEM_ConstraintTransform";
@@ -1128,8 +1128,8 @@ CmdFemDefineNodesSet::CmdFemDefineNodesSet()
 {
     sAppModule = "Fem";
     sGroup = QT_TR_NOOP("Fem");
-    sMenuText = QT_TR_NOOP("Node set by poly");
-    sToolTipText = QT_TR_NOOP("Create node set by Poly");
+    sMenuText = QT_TR_NOOP("Node Set by Poly");
+    sToolTipText = QT_TR_NOOP("Creates a node set by poly");
     sWhatsThis = "FEM_DefineNodesSet";
     sStatusTip = QT_TR_NOOP("Create node set by Poly");
     sPixmap = "FEM_CreateNodesSet";
@@ -1187,7 +1187,7 @@ CmdFemCreateNodesSet::CmdFemCreateNodesSet()
 {
     sAppModule = "Fem";
     sGroup = QT_TR_NOOP("Fem");
-    sMenuText = QT_TR_NOOP("Nodes set");
+    sMenuText = QT_TR_NOOP("Nodes Set");
     sToolTipText = QT_TR_NOOP("Creates a FEM mesh nodes set");
     sWhatsThis = "FEM_CreateNodesSet";
     sStatusTip = sToolTipText;
@@ -1222,10 +1222,10 @@ void CmdFemCreateNodesSet::activated(int)
         doCommand(Gui, "Gui.activeDocument().setEdit('%s')", FeatName.c_str());
     }
     else {
-        QMessageBox::warning(Gui::getMainWindow(),
-                             qApp->translate("CmdFemCreateNodesSet", "Wrong selection"),
-                             qApp->translate("CmdFemCreateNodesSet",
-                                             "Select a single FEM mesh or nodes set, please."));
+        QMessageBox::warning(
+            Gui::getMainWindow(),
+            qApp->translate("CmdFemCreateNodesSet", "Wrong selection"),
+            qApp->translate("CmdFemCreateNodesSet", "Select a single FEM mesh or nodes set."));
     }
 }
 
@@ -1280,8 +1280,8 @@ CmdFemDefineElementsSet::CmdFemDefineElementsSet()
 {
     sAppModule = "Fem";
     sGroup = QT_TR_NOOP("Fem");
-    sMenuText = QT_TR_NOOP("Element set by poly");
-    sToolTipText = QT_TR_NOOP("Create Element set by Poly");
+    sMenuText = QT_TR_NOOP("Element Set by Poly");
+    sToolTipText = QT_TR_NOOP("Create element set by poly");
     sWhatsThis = "FEM_DefineElementsSet";
     sStatusTip = QT_TR_NOOP("Create Element set by Poly");
     sPixmap = "FEM_CreateElementsSet";
@@ -1335,7 +1335,7 @@ CmdFemCreateElementsSet::CmdFemCreateElementsSet()
 {
     sAppModule = "Fem";
     sGroup = QT_TR_NOOP("Fem");
-    sMenuText = QT_TR_NOOP("Erase elements");
+    sMenuText = QT_TR_NOOP("Erase Elements");
     sToolTipText = QT_TR_NOOP("Creates a FEM mesh elements set");
     sWhatsThis = "FEM_CreateElementsSet";
     sStatusTip = sToolTipText;
@@ -1372,10 +1372,9 @@ void CmdFemCreateElementsSet::activated(int)
         doCommand(Gui, "Gui.activeDocument().setEdit('%s')", uniqueElementsName.c_str());
     }
     else {
-        QMessageBox::warning(
-            Gui::getMainWindow(),
-            qApp->translate("CmdFemCreateElementsSet", "Wrong selection"),
-            qApp->translate("CmdFemCreateNodesSet", "Select a single FEM Mesh, please."));
+        QMessageBox::warning(Gui::getMainWindow(),
+                             qApp->translate("CmdFemCreateElementsSet", "Wrong selection"),
+                             qApp->translate("CmdFemCreateNodesSet", "Select a single FEM Mesh."));
     }
 }
 
@@ -1398,7 +1397,7 @@ CmdFemCompEmConstraints::CmdFemCompEmConstraints()
 {
     sAppModule = "Fem";
     sGroup = QT_TR_NOOP("Fem");
-    sMenuText = QT_TR_NOOP("Electromagnetic boundary conditions");
+    sMenuText = QT_TR_NOOP("Electromagnetic Boundary Conditions");
     sToolTipText = QT_TR_NOOP("Electromagnetic boundary conditions");
     sWhatsThis = "FEM_CompEmConstraints";
     sStatusTip = sToolTipText;
@@ -1541,7 +1540,7 @@ CmdFemCompEmEquations::CmdFemCompEmEquations()
 {
     sAppModule = "Fem";
     sGroup = QT_TR_NOOP("Fem");
-    sMenuText = QT_TR_NOOP("Electromagnetic equations");
+    sMenuText = QT_TR_NOOP("Electromagnetic Equations");
     sToolTipText = QT_TR_NOOP("Electromagnetic equations for the Elmer solver");
     sWhatsThis = "FEM_CompEmEquations";
     sStatusTip = sToolTipText;
@@ -1709,7 +1708,7 @@ CmdFemCompMechEquations::CmdFemCompMechEquations()
 {
     sAppModule = "Fem";
     sGroup = QT_TR_NOOP("Fem");
-    sMenuText = QT_TR_NOOP("Mechanical equations");
+    sMenuText = QT_TR_NOOP("Mechanical Equations");
     sToolTipText = QT_TR_NOOP("Mechanical equations for the Elmer solver");
     sWhatsThis = "FEM_CompMechEquations";
     sStatusTip = sToolTipText;
@@ -2028,9 +2027,9 @@ CmdFemPostClipFilter::CmdFemPostClipFilter()
 {
     sAppModule = "Fem";
     sGroup = QT_TR_NOOP("Fem");
-    sMenuText = QT_TR_NOOP("Region clip filter");
+    sMenuText = QT_TR_NOOP("Region Clip Filter");
     sToolTipText =
-        QT_TR_NOOP("Define/create a clip filter which uses functions to define the clipped region");
+        QT_TR_NOOP("Defines a clip filter which uses functions to define the clipped region");
     sWhatsThis = "FEM_PostFilterClipRegion";
     sStatusTip = sToolTipText;
     sPixmap = "FEM_PostFilterClipRegion";
@@ -2066,8 +2065,8 @@ CmdFemPostCutFilter::CmdFemPostCutFilter()
 {
     sAppModule = "Fem";
     sGroup = QT_TR_NOOP("Fem");
-    sMenuText = QT_TR_NOOP("Function cut filter");
-    sToolTipText = QT_TR_NOOP("Cut the data along an implicit function");
+    sMenuText = QT_TR_NOOP("Function Cut Filter");
+    sToolTipText = QT_TR_NOOP("Cuts the data along an implicit function");
     sWhatsThis = "FEM_PostFilterCutFunction";
     sStatusTip = sToolTipText;
     sPixmap = "FEM_PostFilterCutFunction";
@@ -2103,8 +2102,8 @@ CmdFemPostDataAlongLineFilter::CmdFemPostDataAlongLineFilter()
 {
     sAppModule = "Fem";
     sGroup = QT_TR_NOOP("Fem");
-    sMenuText = QT_TR_NOOP("Line clip filter");
-    sToolTipText = QT_TR_NOOP("Define/create a clip filter which clips a field along a line");
+    sMenuText = QT_TR_NOOP("Line Clip Filter");
+    sToolTipText = QT_TR_NOOP("Defines a clip filter which clips a field along a line");
     sWhatsThis = "FEM_PostFilterDataAlongLine";
     sStatusTip = sToolTipText;
     sPixmap = "FEM_PostFilterDataAlongLine";
@@ -2140,8 +2139,8 @@ CmdFemPostDataAtPointFilter::CmdFemPostDataAtPointFilter()
 {
     sAppModule = "Fem";
     sGroup = QT_TR_NOOP("Fem");
-    sMenuText = QT_TR_NOOP("Data at point clip filter");
-    sToolTipText = QT_TR_NOOP("Define/create a clip filter which clips a field data at point");
+    sMenuText = QT_TR_NOOP("Data at Point Clip Filter");
+    sToolTipText = QT_TR_NOOP("Defines a clip filter which clips a field data at point");
     sWhatsThis = "FEM_PostFilterDataAtPoint";
     sStatusTip = sToolTipText;
     sPixmap = "FEM_PostFilterDataAtPoint";
@@ -2178,8 +2177,8 @@ CmdFemPostLinearizedStressesFilter::CmdFemPostLinearizedStressesFilter()
 {
     sAppModule = "Fem";
     sGroup = QT_TR_NOOP("Fem");
-    sMenuText = QT_TR_NOOP("Stress linearization plot");
-    sToolTipText = QT_TR_NOOP("Define/create stress linearization plots");
+    sMenuText = QT_TR_NOOP("Stress Linearization Plot");
+    sToolTipText = QT_TR_NOOP("Defines a stress linearization plot");
     sWhatsThis = "FEM_PostFilterLinearizedStresses";
     sStatusTip = sToolTipText;
     sPixmap = "FEM_PostFilterLinearizedStresses";
@@ -2217,18 +2216,16 @@ void CmdFemPostLinearizedStressesFilter::activated(int)
             QMessageBox::warning(
                 Gui::getMainWindow(),
                 qApp->translate("CmdFemPostLinearizedStressesFilter", "Wrong selection"),
-                qApp->translate(
-                    "CmdFemPostLinearizedStressesFilter",
-                    "Select a Clip filter which clips a STRESS field along a line, please."));
+                qApp->translate("CmdFemPostLinearizedStressesFilter",
+                                "Select a Clip filter which clips a STRESS field along a line."));
         }
     }
     else {
         QMessageBox::warning(
             Gui::getMainWindow(),
             qApp->translate("CmdFemPostLinearizedStressesFilter", "Wrong selection"),
-            qApp->translate(
-                "CmdFemPostLinearizedStressesFilter",
-                "Select a Clip filter which clips a STRESS field along a line, please."));
+            qApp->translate("CmdFemPostLinearizedStressesFilter",
+                            "Select a clip filter which clips a stress field along a line."));
     }
 }
 
@@ -2253,9 +2250,8 @@ CmdFemPostScalarClipFilter::CmdFemPostScalarClipFilter()
 {
     sAppModule = "Fem";
     sGroup = QT_TR_NOOP("Fem");
-    sMenuText = QT_TR_NOOP("Scalar clip filter");
-    sToolTipText =
-        QT_TR_NOOP("Define/create a clip filter which clips a field with a scalar value");
+    sMenuText = QT_TR_NOOP("Scalar Clip Filter");
+    sToolTipText = QT_TR_NOOP("Defines a clip filter which clips a field with a scalar value");
     sWhatsThis = "FEM_PostFilterClipScalar";
     sStatusTip = sToolTipText;
     sPixmap = "FEM_PostFilterClipScalar";
@@ -2291,8 +2287,8 @@ CmdFemPostWarpVectorFilter::CmdFemPostWarpVectorFilter()
 {
     sAppModule = "Fem";
     sGroup = QT_TR_NOOP("Fem");
-    sMenuText = QT_TR_NOOP("Warp filter");
-    sToolTipText = QT_TR_NOOP("Warp the geometry along a vector field by a certain factor");
+    sMenuText = QT_TR_NOOP("Warp Filter");
+    sToolTipText = QT_TR_NOOP("Warps the geometry along a vector field by a certain factor");
     sWhatsThis = "FEM_PostFilterWarp";
     sStatusTip = sToolTipText;
     sPixmap = "FEM_PostFilterWarp";
@@ -2328,7 +2324,7 @@ CmdFemPostContoursFilter::CmdFemPostContoursFilter()
 {
     sAppModule = "Fem";
     sGroup = QT_TR_NOOP("Fem");
-    sMenuText = QT_TR_NOOP("Contours filter");
+    sMenuText = QT_TR_NOOP("Contours Filter");
     sToolTipText = QT_TR_NOOP("Define/create a contours filter which displays iso contours");
     sWhatsThis = "FEM_PostFilterContours";
     sStatusTip = sToolTipText;
@@ -2365,8 +2361,8 @@ CmdFemPostCalculatorFilter::CmdFemPostCalculatorFilter()
 {
     sAppModule = "Fem";
     sGroup = QT_TR_NOOP("Fem");
-    sMenuText = QT_TR_NOOP("Calculator filter");
-    sToolTipText = QT_TR_NOOP("Create new fields from current data");
+    sMenuText = QT_TR_NOOP("Calculator Filter");
+    sToolTipText = QT_TR_NOOP("Creates a new field from current data");
     sWhatsThis = "FEM_PostFilterCalculator";
     sStatusTip = sToolTipText;
     sPixmap = "FEM_PostFilterCalculator";
@@ -2401,8 +2397,8 @@ CmdFemPostFunctions::CmdFemPostFunctions()
 {
     sAppModule = "Fem";
     sGroup = QT_TR_NOOP("Fem");
-    sMenuText = QT_TR_NOOP("Filter functions");
-    sToolTipText = QT_TR_NOOP("Functions for use in postprocessing filter...");
+    sMenuText = QT_TR_NOOP("Filter Functions");
+    sToolTipText = QT_TR_NOOP("Functions for use in postprocessing filter");
     sWhatsThis = "FEM_PostCreateFunctions";
     sStatusTip = sToolTipText;
     eType = eType | ForEdit;
@@ -2524,7 +2520,7 @@ void CmdFemPostFunctions::activated(int iMsg)
     else {
         QMessageBox::warning(Gui::getMainWindow(),
                              qApp->translate("CmdFemPostClipFilter", "Wrong selection"),
-                             qApp->translate("CmdFemPostClipFilter", "Select a pipeline, please."));
+                             qApp->translate("CmdFemPostClipFilter", "Select a pipeline."));
     }
 
     // Since the default icon is reset when enabling/disabling the command we have
@@ -2622,8 +2618,8 @@ CmdFemPostApllyChanges::CmdFemPostApllyChanges()
 {
     sAppModule = "Fem";
     sGroup = QT_TR_NOOP("Fem");
-    sMenuText = QT_TR_NOOP("Apply changes to pipeline");
-    sToolTipText = QT_TR_NOOP("Apply changes to parameters directly and not on recompute only...");
+    sMenuText = QT_TR_NOOP("Apply Changes to Pipeline");
+    sToolTipText = QT_TR_NOOP("Applies changes to parameters directly and not on recompute only");
     sWhatsThis = "FEM_PostApplyChanges";
     sStatusTip = sToolTipText;
     sPixmap = "view-refresh";
@@ -2663,7 +2659,7 @@ CmdFemPostPipelineFromResult::CmdFemPostPipelineFromResult()
 {
     sAppModule = "Fem";
     sGroup = QT_TR_NOOP("Fem");
-    sMenuText = QT_TR_NOOP("Post pipeline from result");
+    sMenuText = QT_TR_NOOP("Post Pipeline From Result");
     sToolTipText = QT_TR_NOOP("Creates a post processing pipeline from a result object");
     sWhatsThis = "FEM_PostPipelineFromResult";
     sStatusTip = sToolTipText;
@@ -2743,7 +2739,7 @@ void CmdFemPostPipelineFromResult::activated(int)
         QMessageBox::warning(
             Gui::getMainWindow(),
             qApp->translate("CmdFemPostPipelineFromResult", "Wrong selection type"),
-            qApp->translate("CmdFemPostPipelineFromResult", "Select a result object, please."));
+            qApp->translate("CmdFemPostPipelineFromResult", "Select a result object."));
     }
 }
 
@@ -2763,7 +2759,7 @@ CmdFemPostBranchFilter::CmdFemPostBranchFilter()
 {
     sAppModule = "Fem";
     sGroup = QT_TR_NOOP("Fem");
-    sMenuText = QT_TR_NOOP("Pipeline branch");
+    sMenuText = QT_TR_NOOP("Pipeline Branch");
     sToolTipText = QT_TR_NOOP("Branches the pipeline into a new path");
     sWhatsThis = "FEM_PostBranchFilter";
     sStatusTip = sToolTipText;

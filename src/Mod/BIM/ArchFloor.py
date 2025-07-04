@@ -196,7 +196,9 @@ class _Floor(ArchIFC.IfcProduct):
     """
 
     def __init__(self,obj):
+
         obj.Proxy = self
+        self.Type = "Floor"
         self.Object = obj
         _Floor.setProperties(self,obj)
         self.IfcType = "Building Storey"
@@ -216,7 +218,6 @@ class _Floor(ArchIFC.IfcProduct):
         if not hasattr(obj,"Placement"):
             # obj can be a Part Feature and already has a placement
             obj.addProperty("App::PropertyPlacement","Placement","Base",QT_TRANSLATE_NOOP("App::Property","The placement of this object"), locked=True)
-        self.Type = "Floor"
 
     def onDocumentRestored(self,obj):
         """Method run when the document is restored. Re-adds the properties."""
@@ -229,7 +230,7 @@ class _Floor(ArchIFC.IfcProduct):
 
     def loads(self,state):
 
-        return None
+        self.Type = "Floor"
 
     def onChanged(self,obj,prop):
         """Method called when the object has a property changed.
