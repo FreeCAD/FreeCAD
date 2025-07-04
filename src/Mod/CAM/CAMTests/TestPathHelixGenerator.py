@@ -45,7 +45,6 @@ def _resetArgs():
         "tool_diameter": 5.0,
         "inner_radius": 2.5,
         "retract_height": 23,
-        "retract_center": True,
         "direction": "CW",
         "startAt": "Inside",
     }
@@ -197,8 +196,9 @@ G0 Z23.000000"
     def test10(self):
         """Test Helix Retraction"""
 
-        # if center is clear, the second to last move should be a rapid away
-        # from the wall
+        # if center is clear,
+        # retraction is one straight up on the last move
+        # the second to last move should be a G2
         args = _resetArgs()
         v1 = FreeCAD.Vector(0, 0, 20)
         v2 = FreeCAD.Vector(0, 0, 18)
@@ -206,13 +206,13 @@ G0 Z23.000000"
         args["edge"] = edg
         args["inner_radius"] = 2.5
         args["tool_diameter"] = 5.0
-        args["retract_center"] = True
+        args["startAt"] = "Outside"
         result = generator.generate(**args)
-        self.assertTrue(result[-2].Name == "G0")
+        self.assertEqual(result[-2].Name, "G2")
 
-        # if center is not clear, retraction is one straight up on the last
-        # move. the second to last move should be a G2
+        # center is not clear
+        # retraction is inclined line
+        # the second to last move should be a G2
         args["inner_radius"] = 3.0
-        args["retract_center"] = True
         result = generator.generate(**args)
-        self.assertTrue(result[-2].Name == "G2")
+        self.assertEqual(result[-2].Name, "G0")

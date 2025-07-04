@@ -48,7 +48,6 @@ def generate(
     retract_height=None,
     direction="CW",
     startAt="Outside",
-    retract_center=False,
     finish_circle=True,
 ):
     """generate(edge, hole_radius, inner_radius, step_over) ... generate helix commands.
@@ -57,7 +56,7 @@ def generate(
 
     startPoint = edge.Vertexes[0].Point
     endPoint = edge.Vertexes[1].Point
-    if not retract_height:
+    if not retract_height or retract_height < startPoint.z:
         retract_height = startPoint.z
 
     Path.Log.track(
@@ -134,7 +133,7 @@ def generate(
     else:
         Path.Log.debug("(annulus mode / full hole)\n")
         outer_radius = hole_radius - tool_radius
-        if (outer_radius - inner_radius) < (0.1 * step_over_distance):
+        if (outer_radius - inner_radius) < (0.011 * step_over_distance):
             # Do not overlap outer and inner helix
             radii = [outer_radius]
         else:
@@ -149,12 +148,10 @@ def generate(
     turncount = int(ceil((startPoint.z - endPoint.z) / step_down))
     zsteps = linspace(startPoint.z, endPoint.z, 2 * turncount + 1)
 
-    def helix_cut_r(r, helixNum=0):
+    def helix_cut_r(r):
         commandlist = []
         arc_cmd = "G2" if direction == "CW" else "G3"
         commandlist.append(Path.Command("G0", {"X": startPoint.x + r, "Y": startPoint.y}))
-        if helixNum == 0:
-            commandlist.append(Path.Command("G0", {"Z": retract_height}))
         commandlist.append(Path.Command("G1", {"Z": startPoint.z}))
         for i in range(1, turncount + 1):
             # first half turn arc
@@ -211,33 +208,43 @@ def generate(
             )
         return commandlist
 
-    # move to a safe place to retract without leaving a dwell mark
-    def retract():
+    def retract(r, i):
         retractcommands = []
-        if hole_radius <= tool_diameter:
-            # center of the hole is clear
-            center_clear = True
-        elif startAt == "Inside" and inner_radius <= tool_radius:
-            # middle of the hole is clear
-            center_clear = True
-        else:
-            # center of the hole contain material
-            center_clear = False
+        retract_offset = 0
+        if outer_radius > inner_radius:
+            if startAt == "Inside":
+                if i == 0 and inner_radius <= tool_radius:
+                    retract_offset = -min(tool_radius / 2, r)
+                elif i > 0:
+                    retract_offset = -min(tool_radius / 2, step_over_distance / 2)
 
-        if center_clear and retract_center:
-            retractcommands.append(
-                Path.Command("G0", {"X": endPoint.x, "Y": endPoint.y, "Z": endPoint.z})
-            )
+            elif startAt == "Outside":
+                if i > 0 and r > tool_radius:
+                    retract_offset = min(tool_radius / 2, step_over_distance / 2)
 
-        retractcommands.append(Path.Command("G0", {"Z": retract_height}))
-
+            if retract_offset:
+                # move from wall and to retract height
+                retractcommands.append(
+                    Path.Command(
+                        "G0",
+                        {
+                            "X": endPoint.x + r + retract_offset,
+                            "Y": endPoint.y,
+                            "Z": retract_height,
+                        },
+                    )
+                )
+            else:
+                # move to retract height
+                retractcommands.append(Path.Command("G0", {"Z": retract_height}))
         return retractcommands
 
     if startAt == "Inside":
         radii = radii[::-1]
 
     commands = []
+    commands.append(Path.Command("G0", {"Z": retract_height}))
     for i, r in enumerate(radii):
-        commands.extend(helix_cut_r(r, i))
-        commands.extend(retract())
+        commands.extend(helix_cut_r(r))
+        commands.extend(retract(r, i))
     return commands
