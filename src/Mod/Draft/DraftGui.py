@@ -526,7 +526,7 @@ class DraftToolBar:
     def retranslateUi(self, widget=None):
         self.promptlabel.setText(translate("draft", "active command:"))
         self.cmdlabel.setText(translate("draft", "None"))
-        self.cmdlabel.setToolTip(translate("draft", "Active draft command"))
+        self.cmdlabel.setToolTip(translate("draft", "Active Draft command"))
         self.xValue.setToolTip(translate("draft", "X coordinate of the point"))
         self.labelx.setText(translate("draft", "X"))
         self.labely.setText(translate("draft", "Y"))
@@ -567,7 +567,7 @@ class DraftToolBar:
         self.continueCmd.setText(translate(
             "draft", "Continue") + " (" + _get_incmd_shortcut("Continue") + ")")
         self.continueCmd.setToolTip(translate(
-            "draft", "If checked, command will not finish until pressing "
+            "draft", "If checked, the command will not finish until pressing "
                      + "the command button again"))
         self.chainedModeCmd.setText(translate("draft", "Chained mode"))
         self.chainedModeCmd.setToolTip(translate("draft", "If checked, the next Dimension will be placed in a chain" \
