@@ -174,7 +174,7 @@ App::PropertyPlacement* ViewProviderDragger::getPlacementProperty() const
 {
     auto object = getObject();
 
-    if (auto linkExtension = object->getExtensionByType<App::LinkBaseExtension>()) {
+    if (auto linkExtension = object->getExtensionByType<App::LinkBaseExtension>(true)) {
         if (auto linkPlacementProp = linkExtension->getLinkPlacementProperty()) {
             return linkPlacementProp;
         }

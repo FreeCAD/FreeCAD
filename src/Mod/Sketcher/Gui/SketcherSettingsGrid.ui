@@ -17,7 +17,7 @@
    <item>
     <widget class="QGroupBox" name="groupBox_1">
      <property name="title">
-      <string>Grid settings</string>
+      <string>Grid Settings</string>
      </property>
      <property name="sizePolicy">
       <sizepolicy hsizetype="Expanding" vsizetype="Minimum">
@@ -32,7 +32,7 @@
          <bool>true</bool>
         </property>
         <property name="toolTip">
-         <string>A grid will be shown</string>
+         <string>Displays a grid in the active sketch</string>
         </property>
         <property name="text">
          <string>Grid</string>
@@ -54,10 +54,10 @@
          <bool>true</bool>
         </property>
         <property name="toolTip">
-         <string>Automatically adapt grid spacing based on the viewer dimensions.</string>
+         <string>Automatically adapts grid spacing based on the viewer dimensions</string>
         </property>
         <property name="text">
-         <string>Grid Auto Spacing</string>
+         <string>Grid auto-spacing</string>
         </property>
         <property name="prefEntry" stdset="0">
          <cstring>GridAuto</cstring>
@@ -81,7 +81,7 @@
        <widget class="Gui::PrefQuantitySpinBox" name="gridSize">
         <property name="toolTip">
          <string>Distance between two subsequent grid lines.
-If 'Grid Auto Spacing' is enabled, will be used as base value.</string>
+If 'Grid auto-apacing' is enabled, it will be used as the base value</string>
         </property>
         <property name="unit" stdset="0">
          <string notr="true">mm</string>
@@ -122,8 +122,8 @@ If 'Grid Auto Spacing' is enabled, will be used as base value.</string>
       <item row="3" column="1">
        <widget class="Gui::PrefSpinBox" name="gridSizePixelThreshold">
         <property name="toolTip">
-         <string>While using 'Grid Auto Spacing' this sets a threshold in pixel to the grid spacing.
-The grid spacing change if it becomes smaller than this number of pixel.</string>
+         <string>While using 'Grid auto-spacing', this sets a pixel threshold for grid spacing.
+The grid spacing changes if it becomes smaller than the specified pixel size.</string>
         </property>
         <property name="suffix">
          <string notr="true"> px</string>
@@ -151,7 +151,7 @@ The grid spacing change if it becomes smaller than this number of pixel.</string
    <item>
     <widget class="QGroupBox" name="groupBox_2">
      <property name="title">
-      <string>Grid display</string>
+      <string>Grid Display</string>
      </property>
      <property name="sizePolicy">
       <sizepolicy hsizetype="Expanding" vsizetype="Minimum">
@@ -163,7 +163,7 @@ The grid spacing change if it becomes smaller than this number of pixel.</string
       <item>
        <widget class="QGroupBox" name="groupBox_3">
         <property name="title">
-         <string>Minor grid lines</string>
+         <string>Minor Grid Lines</string>
         </property>
         <property name="sizePolicy">
          <sizepolicy hsizetype="Expanding" vsizetype="Minimum">
@@ -185,7 +185,7 @@ The grid spacing change if it becomes smaller than this number of pixel.</string
          <item row="0" column="1">
           <widget class="QComboBox" name="gridLinePattern">
            <property name="toolTip">
-            <string>Line pattern used for grid lines.</string>
+            <string>Line pattern used for grid lines</string>
            </property>
            <property name="currentIndex">
             <number>-1</number>
@@ -269,7 +269,7 @@ The grid spacing change if it becomes smaller than this number of pixel.</string
       <item>
        <widget class="QGroupBox" name="groupBox_4">
         <property name="title">
-         <string>Major grid lines</string>
+         <string>Major Grid Lines</string>
         </property>
         <property name="sizePolicy">
          <sizepolicy hsizetype="Expanding" vsizetype="Minimum">
@@ -281,7 +281,7 @@ The grid spacing change if it becomes smaller than this number of pixel.</string
          <item row="0" column="0">
           <widget class="QLabel" name="label_gridNumberSubdivision">
            <property name="text">
-            <string>Major grid line every:</string>
+            <string>Major grid line interval</string>
            </property>
            <property name="buddy">
             <cstring>gridNumberSubdivision</cstring>
@@ -291,7 +291,7 @@ The grid spacing change if it becomes smaller than this number of pixel.</string
          <item row="0" column="1">
           <widget class="Gui::PrefSpinBox" name="gridNumberSubdivision">
            <property name="toolTip">
-            <string>Every N lines there will be a major line. Set to 1 to disable major lines.</string>
+            <string>Displays a major grid line every 'n' minor lines. Enter 1 to disable major lines</string>
            </property>
            <property name="minimum">
             <number>1</number>
@@ -323,7 +323,7 @@ The grid spacing change if it becomes smaller than this number of pixel.</string
          <item row="1" column="1">
           <widget class="QComboBox" name="gridDivLinePattern">
            <property name="toolTip">
-            <string>Line pattern used for grid division.</string>
+            <string>Line pattern used for grid division</string>
            </property>
            <property name="currentIndex">
             <number>-1</number>

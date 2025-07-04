@@ -82,6 +82,7 @@ class CurtainWall(ArchComponent.Component):
     def __init__(self,obj):
 
         ArchComponent.Component.__init__(self,obj)
+        self.Type = "CurtainWall"
         self.setProperties(obj)
         obj.IfcType = "Curtain Wall"
 
@@ -184,12 +185,14 @@ class CurtainWall(ArchComponent.Component):
         if not "OverrideEdges" in pl:  # PropertyStringList
             obj.addProperty("App::PropertyStringList","OverrideEdges","CurtainWall",QT_TRANSLATE_NOOP("App::Property","Input are index numbers of edges of Base ArchSketch/Sketch geometries (in Edit mode).  Selected edges are used to create the shape of this Arch Curtain Wall (instead of using all edges by default).  [ENHANCED by ArchSketch] GUI 'Edit Curtain Wall' Tool is provided in external Add-on ('SketchArch') to let users to select the edges interactively.  'Toponaming-Tolerant' if ArchSketch is used in Base (and SketchArch Add-on is installed).  Warning : Not 'Toponaming-Tolerant' if just Sketch is used. Property is ignored if Base ArchSketch provided the selected edges."), locked=True)
 
-        self.Type = "CurtainWall"
-
     def onDocumentRestored(self,obj):
 
         ArchComponent.Component.onDocumentRestored(self,obj)
         self.setProperties(obj)
+
+    def loads(self,state):
+
+        self.Type = "CurtainWall"
 
     def onChanged(self,obj,prop):
 

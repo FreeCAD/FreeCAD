@@ -42,7 +42,7 @@ PyMOD_INIT_FUNC(Points)
 {
     // clang-format off
     PyObject* pointsModule = Points::initModule();
-    Base::Console().log("Loading Points module... done\n");
+    Base::Console().log("Loading Points module… done\n");
 
     // add python types
     Base::Interpreter().addType(&Points::PointsPy::Type, pointsModule, "Points");

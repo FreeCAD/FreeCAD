@@ -37,7 +37,7 @@
         </sizepolicy>
        </property>
        <property name="toolTip">
-        <string>Check to toggle filters</string>
+        <string>Toggles the chosen element filters</string>
        </property>
        <property name="styleSheet">
         <string notr="true">padding-right: 0px; margin-right: 0px</string>
@@ -56,13 +56,13 @@
         </sizepolicy>
        </property>
        <property name="toolTip">
-        <string>Click to show filters</string>
+        <string>Filters elements by type</string>
        </property>
        <property name="styleSheet">
         <string notr="true">padding-left: 0px; margin-left: 0px</string>
        </property>
        <property name="text">
-        <string>Filters</string>
+        <string>Filter</string>
        </property>
        <property name="popupMode">
         <enum>QToolButton::MenuButtonPopup</enum>

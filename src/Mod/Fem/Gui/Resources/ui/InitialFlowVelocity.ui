@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Analysis feature properties</string>
+   <string>Analysis Feature Properties</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
@@ -22,14 +22,14 @@
         <bool>false</bool>
        </property>
        <property name="text">
-        <string>formula</string>
+        <string>Formula</string>
        </property>
       </widget>
      </item>
      <item row="0" column="3">
       <widget class="QCheckBox" name="velocityXBox">
        <property name="text">
-        <string>unspecified</string>
+        <string>Unspecified</string>
        </property>
        <property name="checked">
         <bool>true</bool>
@@ -39,7 +39,7 @@
      <item row="0" column="0">
       <widget class="QLabel" name="volocityXLbl">
        <property name="text">
-        <string>Velocity x:</string>
+        <string>Velocity X</string>
        </property>
       </widget>
      </item>
@@ -70,21 +70,21 @@
         <bool>false</bool>
        </property>
        <property name="text">
-        <string>formula</string>
+        <string>Formula</string>
        </property>
       </widget>
      </item>
      <item row="0" column="0">
       <widget class="QLabel" name="velocityYLbl">
        <property name="text">
-        <string>Velocity y:</string>
+        <string>Velocity Y</string>
        </property>
       </widget>
      </item>
      <item row="0" column="3">
       <widget class="QCheckBox" name="velocityYBox">
        <property name="text">
-        <string>unspecified</string>
+        <string>Unspecified</string>
        </property>
        <property name="checked">
         <bool>true</bool>
@@ -115,7 +115,7 @@
      <item row="0" column="3">
       <widget class="QCheckBox" name="velocityZBox">
        <property name="text">
-        <string>unspecified</string>
+        <string>Unspecified</string>
        </property>
        <property name="checked">
         <bool>true</bool>
@@ -128,14 +128,14 @@
         <bool>false</bool>
        </property>
        <property name="text">
-        <string>formula</string>
+        <string>Formula</string>
        </property>
       </widget>
      </item>
      <item row="0" column="0">
       <widget class="QLabel" name="velocityZLbl">
        <property name="text">
-        <string>Velocity z:</string>
+        <string>Velocity Z</string>
        </property>
       </widget>
      </item>
