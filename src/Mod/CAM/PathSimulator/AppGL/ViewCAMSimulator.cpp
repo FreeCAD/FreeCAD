@@ -23,10 +23,9 @@ ViewCAMSimulator::ViewCAMSimulator(Gui::Document* pcDocument,
 ViewCAMSimulator* ViewCAMSimulator::clone()
 {
     auto viewCam = new ViewCAMSimulator(_pcDocument, nullptr);
-    viewCam->mDlg->cloneFrom(*mDlg);
 
-    viewCam->setWindowTitle(windowTitle());
-    viewCam->resize(size());
+    viewCam->cloneFrom(*this);
+    viewCam->mDlg->cloneFrom(*mDlg);
 
     return viewCam;
 }
