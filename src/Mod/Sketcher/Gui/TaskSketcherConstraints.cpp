@@ -51,6 +51,7 @@
 #include <Mod/Sketcher/App/SketchObject.h>
 
 #include "EditDatumDialog.h"
+#include "EditTextDialog.h"
 #include "TaskSketcherConstraints.h"
 #include "Utils.h"
 #include "ViewProviderSketch.h"
@@ -186,29 +187,29 @@ public:
             bool extended = hGrp->GetBool("ExtendedConstraintInformation", false);
 
             if (extended) {
-                if (constraint->Second == Sketcher::GeoEnum::GeoUndef) {
+                if (constraint->getGeoId(1) == Sketcher::GeoEnum::GeoUndef) {
                     name = QStringLiteral("%1 [(%2,%3)]")
                                .arg(name)
-                               .arg(constraint->First)
-                               .arg(static_cast<int>(constraint->FirstPos));
+                               .arg(constraint->getGeoId(0))
+                               .arg(static_cast<int>(constraint->getPosId(0)));
                 }
-                else if (constraint->Third == Sketcher::GeoEnum::GeoUndef) {
+                else if (constraint->getGeoId(2) == Sketcher::GeoEnum::GeoUndef) {
                     name = QStringLiteral("%1 [(%2,%3),(%4,%5)]")
                                .arg(name)
-                               .arg(constraint->First)
-                               .arg(static_cast<int>(constraint->FirstPos))
-                               .arg(constraint->Second)
-                               .arg(static_cast<int>(constraint->SecondPos));
+                               .arg(constraint->getGeoId(0))
+                               .arg(static_cast<int>(constraint->getPosId(0)))
+                               .arg(constraint->getGeoId(1))
+                               .arg(static_cast<int>(constraint->getPosId(1)));
                 }
                 else {
                     name = QStringLiteral("%1 [(%2,%3),(%4,%5),(%6,%7)]")
                                .arg(name)
-                               .arg(constraint->First)
-                               .arg(static_cast<int>(constraint->FirstPos))
-                               .arg(constraint->Second)
-                               .arg(static_cast<int>(constraint->SecondPos))
-                               .arg(constraint->Third)
-                               .arg(static_cast<int>(constraint->ThirdPos));
+                               .arg(constraint->getGeoId(0))
+                               .arg(static_cast<int>(constraint->getPosId(0)))
+                               .arg(constraint->getGeoId(1))
+                               .arg(static_cast<int>(constraint->getPosId(1)))
+                               .arg(constraint->getGeoId(2))
+                               .arg(static_cast<int>(constraint->getPosId(2)));
                 }
             }
 
@@ -236,6 +237,8 @@ public:
             // Gui::BitmapFactory().iconFromTheme("Constraint_Ellipse_Axis_Angle") );
             static QIcon equal(Gui::BitmapFactory().iconFromTheme("Constraint_EqualLength"));
             static QIcon pntoo(Gui::BitmapFactory().iconFromTheme("Constraint_PointOnObject"));
+            static QIcon group(Gui::BitmapFactory().iconFromTheme("Constraint_Group"));
+            static QIcon text(Gui::BitmapFactory().iconFromTheme("Constraint_Text"));
             static QIcon symm(Gui::BitmapFactory().iconFromTheme("Constraint_Symmetric"));
             static QIcon snell(Gui::BitmapFactory().iconFromTheme("Constraint_SnellsLaw"));
             static QIcon iaellipseminoraxis(Gui::BitmapFactory().iconFromTheme(
@@ -296,6 +299,10 @@ public:
                     return selicon(constraint, block, block);
                 case Sketcher::PointOnObject:
                     return selicon(constraint, pntoo, pntoo);
+                case Sketcher::Group:
+                    return selicon(constraint, group, group);
+                case Sketcher::Text:
+                    return selicon(constraint, text, text);
                 case Sketcher::Parallel:
                     return selicon(constraint, para, para);
                 case Sketcher::Perpendicular:
@@ -379,6 +386,8 @@ public:
             case Sketcher::Tangent:
             case Sketcher::Equal:
             case Sketcher::Symmetric:
+            case Sketcher::Group:
+            case Sketcher::Text:
                 return true;
             case Sketcher::Distance:
             case Sketcher::DistanceX:
@@ -388,8 +397,8 @@ public:
             case Sketcher::Weight:
             case Sketcher::Angle:
             case Sketcher::SnellsLaw:
-                return (constraint->First >= 0 || constraint->Second >= 0
-                        || constraint->Third >= 0);
+                return (constraint->getGeoId(0) >= 0 || constraint->getGeoId(1) >= 0
+                        || constraint->getGeoId(2) >= 0);
             case Sketcher::InternalAlignment:
                 return true;
         }
@@ -1203,6 +1212,11 @@ void TaskSketcherConstraints::onListWidgetConstraintsItemActivated(QListWidgetIt
         editDatumDialog->exec(false);
         delete editDatumDialog;
     }
+    else if (it->constraintType() == Sketcher::Text) {
+        auto* editDialog = new EditTextDialog(this->sketchView, it->ConstraintNbr);
+        editDialog->exec();
+        delete editDialog;
+    }
 }
 
 void TaskSketcherConstraints::onListWidgetConstraintsItemChanged(QListWidgetItem* item)
@@ -1312,7 +1326,7 @@ void TaskSketcherConstraints::updateAssociatedConstraintsFilter()
             for (std::vector<Sketcher::Constraint*>::const_iterator it = vals.begin();
                  it != vals.end();
                  ++it, ++i) {
-                if ((*it)->First == GeoId || (*it)->Second == GeoId || (*it)->Third == GeoId) {
+                if ((*it)->getGeoId(0) == GeoId || (*it)->getGeoId(1) == GeoId || (*it)->getGeoId(2) == GeoId) {
                     associatedConstraintsFilter.push_back(i);
                 }
             }
@@ -1607,6 +1621,12 @@ bool TaskSketcherConstraints::isConstraintFiltered(QListWidgetItem* item)
                 break;
             case Sketcher::PointOnObject:
                 visible = checkFilterBitset(multiFilterStatus, FilterValue::PointOnObject);
+                break;
+            case Sketcher::Group:
+                visible = checkFilterBitset(multiFilterStatus, FilterValue::Group);
+                break;
+            case Sketcher::Text:
+                visible = checkFilterBitset(multiFilterStatus, FilterValue::Text);
                 break;
             case Sketcher::Parallel:
                 visible = checkFilterBitset(multiFilterStatus, FilterValue::Parallel);

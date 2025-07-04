@@ -71,6 +71,7 @@
 #include "DrawSketchHandlerRectangle.h"
 #include "DrawSketchHandlerSlot.h"
 #include "DrawSketchHandlerSplitting.h"
+#include "DrawSketchHandlerText.h"
 #include "DrawSketchHandlerTrimming.h"
 
 
@@ -1334,6 +1335,41 @@ public:
     }
 };
 
+// Text ================================================================
+
+DEF_STD_CMD_AU(CmdSketcherCreateText)
+
+CmdSketcherCreateText::CmdSketcherCreateText()
+    : Command("Sketcher_CreateText")
+{
+    sAppModule = "Sketcher";
+    sGroup = "Sketcher";
+    sMenuText = QT_TR_NOOP("Text");
+    sToolTipText = QT_TR_NOOP(
+        "Creates text geometries that are grouped by a Text constraint.\n"
+        "You can edit the text and font by double-clicking on the Text constraint."
+        "The position and size of the text can be defined by constraining the construction line."
+        "Constraints applied to text edges are ignored as long as the Text constraint is here.");
+    sWhatsThis = "Sketcher_CreateText";
+    sStatusTip = sToolTipText;
+    sPixmap = "Sketcher_CreateText";
+    sAccel = "G, T";
+    eType = ForEdit;
+}
+
+CONSTRUCTION_UPDATE_ACTION(CmdSketcherCreateText, "Sketcher_CreateText")
+
+void CmdSketcherCreateText::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+    ActivateHandler(getActiveGuiDocument(), std::make_unique<DrawSketchHandlerText>());
+}
+
+bool CmdSketcherCreateText::isActive()
+{
+    return isCommandActive(getActiveGuiDocument());
+}
+
 // B-spline ================================================================
 
 DEF_STD_CMD_AU(CmdSketcherCreateBSpline)
@@ -1897,6 +1933,7 @@ void CreateSketcherCommandsCreateGeo()
     rcCmdMgr.addCommand(new CmdSketcherCreateRegularPolygon());
     rcCmdMgr.addCommand(new CmdSketcherCreateSlot());
     rcCmdMgr.addCommand(new CmdSketcherCreateArcSlot());
+    rcCmdMgr.addCommand(new CmdSketcherCreateText());
     rcCmdMgr.addCommand(new CmdSketcherCreateFillet());
     rcCmdMgr.addCommand(new CmdSketcherCreateChamfer());
     // rcCmdMgr.addCommand(new CmdSketcherCreateText());

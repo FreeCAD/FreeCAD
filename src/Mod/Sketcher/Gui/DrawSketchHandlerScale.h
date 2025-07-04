@@ -58,7 +58,8 @@ using DSHScaleController =
                                       /*OnViewParametersT =*/OnViewParameters<3>,
                                       /*WidgetParametersT =*/WidgetParameters<0>,
                                       /*WidgetCheckboxesT =*/WidgetCheckboxes<1>,
-                                      /*WidgetComboboxesT =*/WidgetComboboxes<0>>;
+                                      /*WidgetComboboxesT =*/WidgetComboboxes<0>,
+                                      /*WidgetLineEditsT =*/WidgetLineEdits<0>>;
 
 using DSHScaleControllerBase = DSHScaleController::ControllerBase;
 
@@ -384,28 +385,30 @@ private:
                 }
 
                 auto newConstr = std::unique_ptr<Constraint>(cstr->copy());
-                newConstr->First = offsetGeoID(newConstr->First, firstCurveCreated);
+                newConstr->setGeoId(0, offsetGeoID(newConstr->getGeoId(0), firstCurveCreated));
 
                 if ((cstr->Type == Symmetric || cstr->Type == Tangent || cstr->Type == Perpendicular
                      || cstr->Type == Angle)
-                    && cstr->Second != GeoEnum::GeoUndef && cstr->Third != GeoEnum::GeoUndef) {
-                    newConstr->Second = offsetGeoID(cstr->Second, firstCurveCreated);
-                    newConstr->Third = offsetGeoID(cstr->Third, firstCurveCreated);
+                    && cstr->getGeoId(1) != GeoEnum::GeoUndef
+                    && cstr->getGeoId(2) != GeoEnum::GeoUndef) {
+                    newConstr->setGeoId(1, offsetGeoID(cstr->getGeoId(1), firstCurveCreated));
+                    newConstr->setGeoId(2, offsetGeoID(cstr->getGeoId(2), firstCurveCreated));
                 }
                 else if ((cstr->Type == Coincident || cstr->Type == Tangent
                           || cstr->Type == Symmetric || cstr->Type == Perpendicular
                           || cstr->Type == Parallel || cstr->Type == Equal || cstr->Type == Angle
                           || cstr->Type == PointOnObject || cstr->Type == InternalAlignment)
-                         && cstr->Second != GeoEnum::GeoUndef && cstr->Third == GeoEnum::GeoUndef) {
-                    newConstr->Second = offsetGeoID(cstr->Second, firstCurveCreated);
+                         && cstr->getGeoId(1) != GeoEnum::GeoUndef
+                         && cstr->getGeoId(2) == GeoEnum::GeoUndef) {
+                    newConstr->setGeoId(1, offsetGeoID(cstr->getGeoId(1), firstCurveCreated));
                 }
                 else if (cstr->Type == Radius || cstr->Type == Diameter) {
                     newConstr->setValue(newConstr->getValue() * scaleFactor);
                 }
                 else if ((cstr->Type == Distance || cstr->Type == DistanceX
                           || cstr->Type == DistanceY)
-                         && cstr->Second != GeoEnum::GeoUndef) {
-                    newConstr->Second = offsetGeoID(cstr->Second, firstCurveCreated);
+                         && cstr->getGeoId(1) != GeoEnum::GeoUndef) {
+                    newConstr->setGeoId(1, offsetGeoID(cstr->getGeoId(1), firstCurveCreated));
                     newConstr->setValue(newConstr->getValue() * scaleFactor);
                 }
                 // (cstr->Type == Block || cstr->Type == Weight)
@@ -419,19 +422,21 @@ private:
         // We might want to skip (remove) a constraint if
         return
             // 1. it's first geometry is undefined => not a valid constraint, should not happen
-            (constr->First == GeoEnum::GeoUndef)
+            (constr->getGeoId(0) == GeoEnum::GeoUndef)
 
             // 2. we do not want to have constraints that relate to the origin => it would break if
             // the scale center is not the origin
             || (!allowOriginConstraint
-                && (constr->First == GeoEnum::VAxis || constr->First == GeoEnum::HAxis
-                    || constr->Second == GeoEnum::VAxis || constr->Second == GeoEnum::HAxis
-                    || constr->Third == GeoEnum::VAxis || constr->Third == GeoEnum::HAxis))
+                && (constr->getGeoId(0) == GeoEnum::VAxis || constr->getGeoId(0) == GeoEnum::HAxis
+                    || constr->getGeoId(1) == GeoEnum::VAxis
+                    || constr->getGeoId(1) == GeoEnum::HAxis
+                    || constr->getGeoId(2) == GeoEnum::VAxis
+                    || constr->getGeoId(2) == GeoEnum::HAxis))
 
             // 3. it is linked to an external projected geometry => would be unstable
-            || (constr->First != GeoEnum::GeoUndef && constr->First <= GeoEnum::RefExt)
-            || (constr->Second != GeoEnum::GeoUndef && constr->Second <= GeoEnum::RefExt)
-            || (constr->Third != GeoEnum::GeoUndef && constr->Third <= GeoEnum::RefExt);
+            || (constr->getGeoId(0) != GeoEnum::GeoUndef && constr->getGeoId(0) <= GeoEnum::RefExt)
+            || (constr->getGeoId(1) != GeoEnum::GeoUndef && constr->getGeoId(1) <= GeoEnum::RefExt)
+            || (constr->getGeoId(2) != GeoEnum::GeoUndef && constr->getGeoId(2) <= GeoEnum::RefExt);
     }
 
     // Offset the geom index to match the newly created one

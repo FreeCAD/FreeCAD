@@ -68,6 +68,7 @@ using DSHRectangleController = DrawSketchDefaultWidgetController<
     /*WidgetParametersT =*/WidgetParameters<0, 0, 0, 0>,  // NOLINT
     /*WidgetCheckboxesT =*/WidgetCheckboxes<2, 2, 2, 2>,  // NOLINT
     /*WidgetComboboxesT =*/WidgetComboboxes<1, 1, 1, 1>,  // NOLINT
+    /*WidgetLineEditsT =*/WidgetLineEdits<0, 0, 0, 0>,    // NOLINT
     ConstructionMethods::RectangleConstructionMethod,
     /*bool PFirstComboboxIsConstructionMethod =*/true>;
 
@@ -2607,26 +2608,7 @@ void DSHRectangleController::addConstraints()
 
     if (handler->constructionMethod() == ConstructionMethod::ThreePoints) {
         if (angleSet) {
-            if (fabs(angle - pi) < Precision::Confusion()
-                || fabs(angle + pi) < Precision::Confusion()
-                || fabs(angle) < Precision::Confusion()) {
-                Gui::cmdAppObjectArgs(obj,
-                                      "addConstraint(Sketcher.Constraint('Horizontal',%d)) ",
-                                      firstCurve);
-            }
-            else if (fabs(angle - pi / 2) < Precision::Confusion()
-                     || fabs(angle + pi / 2) < Precision::Confusion()) {
-                Gui::cmdAppObjectArgs(obj,
-                                      "addConstraint(Sketcher.Constraint('Vertical',%d)) ",
-                                      firstCurve);
-            }
-            else {
-                Gui::cmdAppObjectArgs(obj,
-                                      "addConstraint(Sketcher.Constraint('Angle',%d,%d,%f)) ",
-                                      Sketcher::GeoEnum::HAxis,
-                                      firstCurve,
-                                      angle);
-            }
+            ConstraintLineByAngle(firstCurve, angle, obj);
         }
         if (innerAngleSet) {
             if (fabs(innerAngle - pi / 2) > Precision::Confusion()) {

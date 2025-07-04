@@ -26,6 +26,9 @@
 #include <QCursor>
 #include <QLocale>
 #include <QRegularExpression>
+#include <QDir>
+#include <QDirIterator>
+#include <QFileInfo>
 #endif
 
 #include <App/Application.h>
@@ -379,7 +382,8 @@ bool SketcherGui::IsPointAlreadyOnCurve(int GeoIdCurve,
             const std::vector<Constraint*>& constraints = Obj->Constraints.getValues();
             for (const auto& constraint : constraints) {
                 if (constraint->Type == Sketcher::ConstraintType::InternalAlignment
-                    && constraint->First == GeoIdPoint && constraint->Second == GeoIdCurve) {
+                    && constraint->getGeoId(0) == GeoIdPoint
+                    && constraint->getGeoId(1) == GeoIdCurve) {
                     return true;
                 }
             }
@@ -416,7 +420,7 @@ bool SketcherGui::checkConstraint(const std::vector<Sketcher::Constraint*>& vals
 {
     for (std::vector<Sketcher::Constraint*>::const_iterator itc = vals.begin(); itc != vals.end();
          ++itc) {
-        if ((*itc)->Type == type && (*itc)->First == geoid && (*itc)->FirstPos == pos) {
+        if ((*itc)->Type == type && (*itc)->getGeoId(0) == geoid && (*itc)->getPosId(0) == pos) {
             return true;
         }
     }
@@ -668,6 +672,59 @@ void SketcherGui::ConstraintToAttachment(Sketcher::GeoElementId element,
     }
 }
 
+void SketcherGui::ConstraintLineByAngle(int geoId, double angle, App::DocumentObject* obj)
+{
+    using std::numbers::pi;
+    double angleModPi = std::fmod(angle, pi);
+    double angleModHalfPi = std::fmod(angle, 0.5 * pi);
+
+    if (fabs(angleModPi - pi) < Precision::Confusion()
+        || fabs(angleModPi + pi) < Precision::Confusion()
+        || fabs(angleModPi) < Precision::Confusion()) {
+        Gui::cmdAppObjectArgs(obj, "addConstraint(Sketcher.Constraint('Horizontal',%d)) ", geoId);
+    }
+    else if (fabs(angleModHalfPi - pi / 2) < Precision::Confusion()
+             || fabs(angleModHalfPi + pi / 2) < Precision::Confusion()) {
+        Gui::cmdAppObjectArgs(obj, "addConstraint(Sketcher.Constraint('Vertical',%d)) ", geoId);
+    }
+    else {
+        Gui::cmdAppObjectArgs(obj,
+                              "addConstraint(Sketcher.Constraint('Angle',%d,%d,%f)) ",
+                              Sketcher::GeoEnum::HAxis,
+                              geoId,
+                              angle);
+    }
+}
+
+void SketcherGui::Constraint2LinesByAngle(int geoId1,
+                                          int geoId2,
+                                          double angle,
+                                          App::DocumentObject* obj)
+{
+    using std::numbers::pi;
+    double angleModPi = std::fmod(angle, pi);
+    double angleModHalfPi = std::fmod(angle, 0.5 * pi);
+
+    if (fabs(angleModPi) < Precision::Confusion()) {
+        Gui::cmdAppObjectArgs(obj,
+                              "addConstraint(Sketcher.Constraint('Parallel',%d,%d)) ",
+                              geoId1,
+                              geoId2);
+    }
+    else if (fabs(angleModHalfPi) < Precision::Confusion()) {
+        Gui::cmdAppObjectArgs(obj,
+                              "addConstraint(Sketcher.Constraint('Perpendicular',%d,%d)) ",
+                              geoId1,
+                              geoId2);
+    }
+    else {
+        Gui::cmdAppObjectArgs(obj,
+                              "addConstraint(Sketcher.Constraint('Angle',%d,%d,%f)) ",
+                              geoId1,
+                              geoId2,
+                              angle);
+    }
+}
 
 // convenience functions for cursor display
 bool SketcherGui::hideUnits()
@@ -863,4 +920,40 @@ int SketcherGui::indexOfGeoId(const std::vector<int>& vec, int elem)
         }
     }
     return -1;
+}
+
+QMap<QString, QString> SketcherGui::findAvailableFontFiles()
+{
+    QMap<QString, QString> fontMap;
+    QStringList fontPaths;
+
+#if defined(Q_OS_WIN)
+    fontPaths << QString::fromUtf8("C:/Windows/Fonts");
+#elif defined(Q_OS_MACOS)
+    fontPaths << QString::fromUtf8("/System/Library/Fonts") << QString::fromUtf8("/Library/Fonts")
+              << QDir::homePath() + QString::fromUtf8("/Library/Fonts");
+#else  // Linux and other Unix-like systems
+    fontPaths << QString::fromUtf8("/usr/share/fonts")
+              << QString::fromUtf8("/usr/local/share/fonts")
+              << QDir::homePath() + QString::fromUtf8("/.fonts");
+#endif
+
+    for (const QString& path : fontPaths) {
+        if (!QDir(path).exists()) {
+            continue;
+        }
+
+        QDirIterator it(path,
+                        QStringList() << QString::fromUtf8("*.ttf") << QString::fromUtf8("*.otf"),
+                        QDir::Files,
+                        QDirIterator::Subdirectories);
+        while (it.hasNext()) {
+            QString filePath = it.next();
+            QFileInfo fileInfo(filePath);
+            // Use the base name as a "friendly name".
+            // We store in a map to avoid duplicates from different paths (e.g. ttf vs otf).
+            fontMap[fileInfo.baseName()] = filePath;
+        }
+    }
+    return fontMap;
 }

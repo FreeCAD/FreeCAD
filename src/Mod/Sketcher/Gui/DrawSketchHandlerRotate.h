@@ -51,7 +51,8 @@ using DSHRotateController =
                                       /*OnViewParametersT =*/OnViewParameters<4>,
                                       /*WidgetParametersT =*/WidgetParameters<1>,
                                       /*WidgetCheckboxesT =*/WidgetCheckboxes<1>,
-                                      /*WidgetComboboxesT =*/WidgetComboboxes<0>>;
+                                      /*WidgetComboboxesT =*/WidgetComboboxes<0>,
+                                      /*WidgetLineEditsT =*/WidgetLineEdits<0>>;
 
 using DSHRotateControllerBase = DSHRotateController::ControllerBase;
 
@@ -345,9 +346,9 @@ private:
             std::vector<int> geoIdsWhoAlreadyHasEqual = {};
 
             for (auto& cstr : vals) {
-                int firstIndex = indexOfGeoId(listOfGeoIds, cstr->First);
-                int secondIndex = indexOfGeoId(listOfGeoIds, cstr->Second);
-                int thirdIndex = indexOfGeoId(listOfGeoIds, cstr->Third);
+                int firstIndex = indexOfGeoId(listOfGeoIds, cstr->getGeoId(0));
+                int secondIndex = indexOfGeoId(listOfGeoIds, cstr->getGeoId(1));
+                int thirdIndex = indexOfGeoId(listOfGeoIds, cstr->getGeoId(2));
 
                 for (int i = 0; i < numberOfCopiesToMake; i++) {
                     int firstIndexi = firstCurveCreated + firstIndex + static_cast<int>(size) * i;
@@ -355,13 +356,13 @@ private:
                     int thirdIndexi = firstCurveCreated + thirdIndex + static_cast<int>(size) * i;
 
                     auto newConstr = std::unique_ptr<Constraint>(cstr->copy());
-                    newConstr->First = firstIndexi;
+                    newConstr->setGeoId(0, firstIndexi);
 
                     if ((cstr->Type == Symmetric || cstr->Type == Tangent
                          || cstr->Type == Perpendicular || cstr->Type == Angle)
                         && firstIndex >= 0 && secondIndex >= 0 && thirdIndex >= 0) {
-                        newConstr->Second = secondIndexi;
-                        newConstr->Third = thirdIndexi;
+                        newConstr->setGeoId(1, secondIndexi);
+                        newConstr->setGeoId(2, thirdIndexi);
                     }
                     else if ((cstr->Type == Coincident || cstr->Type == Tangent
                               || cstr->Type == Symmetric || cstr->Type == Perpendicular
@@ -370,7 +371,7 @@ private:
                               || cstr->Type == InternalAlignment)
                              && firstIndex >= 0 && secondIndex >= 0
                              && thirdIndex == GeoEnum::GeoUndef) {
-                        newConstr->Second = secondIndexi;
+                        newConstr->setGeoId(1, secondIndexi);
                     }
                     else if ((cstr->Type == Radius || cstr->Type == Diameter
                               || cstr->Type == Weight)
@@ -380,25 +381,25 @@ private:
                         }
                         else {
                             newConstr->Type = Equal;
-                            newConstr->First = cstr->First;
-                            newConstr->Second = firstIndexi;
+                            newConstr->setGeoId(0, cstr->getGeoId(0));
+                            newConstr->setGeoId(1, firstIndexi);
                         }
                     }
                     else if ((cstr->Type == Distance || cstr->Type == DistanceX
                               || cstr->Type == DistanceY)
                              && firstIndex >= 0 && secondIndex >= 0) {
                         if (!deleteOriginal && cloneConstraints
-                            && cstr->First == cstr->Second) {  // only line distances
+                            && cstr->getGeoId(0) == cstr->getGeoId(1)) {  // only line distances
                             if (indexOfGeoId(geoIdsWhoAlreadyHasEqual, secondIndexi) != -1) {
                                 continue;
                             }
                             newConstr->Type = Equal;
-                            newConstr->First = cstr->First;
-                            newConstr->Second = secondIndexi;
+                            newConstr->setGeoId(0, cstr->getGeoId(0));
+                            newConstr->setGeoId(1, secondIndexi);
                             geoIdsWhoAlreadyHasEqual.push_back(secondIndexi);
                         }
                         else if (cstr->Type == Distance) {
-                            newConstr->Second = secondIndexi;
+                            newConstr->setGeoId(1, secondIndexi);
                         }
                         else {
                             // We should be able to handle cases where rotation is 90 or 180, but
@@ -426,7 +427,7 @@ private:
                         }
                     }
                     else if ((cstr->Type == Block) && firstIndex >= 0) {
-                        newConstr->First = firstIndexi;
+                        newConstr->setGeoId(0, firstIndexi);
                     }
                     else {
                         continue;

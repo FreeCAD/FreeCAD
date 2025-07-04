@@ -955,25 +955,23 @@ void CmdSketcherMirrorSketch::activated(int iMsg)
         std::vector<Sketcher::Constraint*> mirrorconstr(tempconstr.begin() + (addedConstraints + 1),
                                                         tempconstr.end());
 
-        for (std::vector<Sketcher::Constraint*>::const_iterator itc = mirrorconstr.begin();
-             itc != mirrorconstr.end();
-             ++itc) {
+        for (auto* cstr : mirrorconstr) {
 
-            if ((*itc)->First != Sketcher::GeoEnum::GeoUndef
-                || (*itc)->First == Sketcher::GeoEnum::HAxis
-                || (*itc)->First == Sketcher::GeoEnum::VAxis)
+            if (cstr->getGeoId(0) != Sketcher::GeoEnum::GeoUndef
+                || cstr->getGeoId(0) == Sketcher::GeoEnum::HAxis
+                || cstr->getGeoId(0) == Sketcher::GeoEnum::VAxis)
                 // not x, y axes or origin
-                (*itc)->First -= (addedGeometries + 1);
-            if ((*itc)->Second != Sketcher::GeoEnum::GeoUndef
-                || (*itc)->Second == Sketcher::GeoEnum::HAxis
-                || (*itc)->Second == Sketcher::GeoEnum::VAxis)
+                cstr->setGeoId(0, cstr->getGeoId(0) - (addedGeometries + 1));
+            if (cstr->getGeoId(1) != Sketcher::GeoEnum::GeoUndef
+                || cstr->getGeoId(1) == Sketcher::GeoEnum::HAxis
+                || cstr->getGeoId(1) == Sketcher::GeoEnum::VAxis)
                 // not x, y axes or origin
-                (*itc)->Second -= (addedGeometries + 1);
-            if ((*itc)->Third != Sketcher::GeoEnum::GeoUndef
-                || (*itc)->Third == Sketcher::GeoEnum::HAxis
-                || (*itc)->Third == Sketcher::GeoEnum::VAxis)
+                cstr->setGeoId(1, cstr->getGeoId(1) - (addedGeometries + 1));
+            if (cstr->getGeoId(2) != Sketcher::GeoEnum::GeoUndef
+                || cstr->getGeoId(2) == Sketcher::GeoEnum::HAxis
+                || cstr->getGeoId(2) == Sketcher::GeoEnum::VAxis)
                 // not x, y axes or origin
-                (*itc)->Third -= (addedGeometries + 1);
+                cstr->setGeoId(2, cstr->getGeoId(2) - (addedGeometries + 1));
         }
 
         mirrorsketch->addGeometry(mirrorgeo);
@@ -1053,21 +1051,21 @@ void CmdSketcherMergeSketches::activated(int iMsg)
             Sketcher::Constraint* constraint =
                 mergesketch->Constraints.getValues()[i + baseConstraints];
 
-            if (constraint->First != Sketcher::GeoEnum::GeoUndef
-                && constraint->First != Sketcher::GeoEnum::HAxis
-                && constraint->First != Sketcher::GeoEnum::VAxis)
+            if (constraint->getGeoId(0) != Sketcher::GeoEnum::GeoUndef
+                && constraint->getGeoId(0) != Sketcher::GeoEnum::HAxis
+                && constraint->getGeoId(0) != Sketcher::GeoEnum::VAxis)
                 // not x, y axes or origin
-                constraint->First += baseGeometry;
-            if (constraint->Second != Sketcher::GeoEnum::GeoUndef
-                && constraint->Second != Sketcher::GeoEnum::HAxis
-                && constraint->Second != Sketcher::GeoEnum::VAxis)
+                constraint->setGeoId(0, constraint->getGeoId(0) + baseGeometry);
+            if (constraint->getGeoId(1) != Sketcher::GeoEnum::GeoUndef
+                && constraint->getGeoId(1) != Sketcher::GeoEnum::HAxis
+                && constraint->getGeoId(1) != Sketcher::GeoEnum::VAxis)
                 // not x, y axes or origin
-                constraint->Second += baseGeometry;
-            if (constraint->Third != Sketcher::GeoEnum::GeoUndef
-                && constraint->Third != Sketcher::GeoEnum::HAxis
-                && constraint->Third != Sketcher::GeoEnum::VAxis)
+                constraint->setGeoId(1, constraint->getGeoId(1) + baseGeometry);
+            if (constraint->getGeoId(2) != Sketcher::GeoEnum::GeoUndef
+                && constraint->getGeoId(2) != Sketcher::GeoEnum::HAxis
+                && constraint->getGeoId(2) != Sketcher::GeoEnum::VAxis)
                 // not x, y axes or origin
-                constraint->Third += baseGeometry;
+                constraint->setGeoId(2, constraint->getGeoId(2) + baseGeometry);
         }
 
         baseGeometry = addedGeometries + 1;
