@@ -50,9 +50,9 @@ class CommandCAMSanity:
     def GetResources(self):
         return {
             "Pixmap": "CAM_Sanity",
-            "MenuText": QT_TRANSLATE_NOOP("CAM_Sanity", "Check the CAM job for common errors"),
+            "MenuText": QT_TRANSLATE_NOOP("CAM_Sanity", "Sanity Check"),
             "Accel": "P, S",
-            "ToolTip": QT_TRANSLATE_NOOP("CAM_Sanity", "Check the CAM job for common errors"),
+            "ToolTip": QT_TRANSLATE_NOOP("CAM_Sanity", "Checks the CAM job for common errors"),
         }
 
     def IsActive(self):

@@ -48,8 +48,8 @@ class CommandToolBitLibraryDockOpen:
     def GetResources(self):
         return {
             "Pixmap": "CAM_ToolTable",
-            "MenuText": QT_TRANSLATE_NOOP("CAM_ToolBitDock", "ToolBit Dock"),
-            "ToolTip": QT_TRANSLATE_NOOP("CAM_ToolBitDock", "Toggle the Toolbit Dock"),
+            "MenuText": QT_TRANSLATE_NOOP("CAM_ToolBitDock", "Toolbit Dock"),
+            "ToolTip": QT_TRANSLATE_NOOP("CAM_ToolBitDock", "Toggles the toolbit dock"),
             "Accel": "P, T",
             "CmdType": "ForEdit",
         }
@@ -73,9 +73,9 @@ class CommandLibraryEditorOpen:
     def GetResources(self):
         return {
             "Pixmap": "CAM_ToolTable",
-            "MenuText": QT_TRANSLATE_NOOP("CAM_ToolBitLibraryOpen", "ToolBit Library editor"),
+            "MenuText": QT_TRANSLATE_NOOP("CAM_ToolBitLibraryOpen", "Toolbit Library Editor"),
             "ToolTip": QT_TRANSLATE_NOOP(
-                "CAM_ToolBitLibraryOpen", "Open an editor to manage ToolBit libraries"
+                "CAM_ToolBitLibraryOpen", "Opens an editor to manage toolbit libraries"
             ),
             "CmdType": "ForEdit",
         }
@@ -95,4 +95,4 @@ if FreeCAD.GuiUp:
 BarList = ["CAM_ToolBitDock"]
 MenuList = ["CAM_ToolBitLibraryOpen", "CAM_ToolBitDock"]
 
-FreeCAD.Console.PrintLog("Loading PathToolBitLibraryCmd... done\n")
+FreeCAD.Console.PrintLog("Loading PathToolBitLibraryCmd… done\n")

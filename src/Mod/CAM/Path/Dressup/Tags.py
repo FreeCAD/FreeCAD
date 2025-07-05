@@ -380,7 +380,7 @@ class MapWireToTag:
         # if there are no edges connected to entry/exit, it means the plunge in/out is vertical
         # we need to add in the missing segment and collect the new entry/exit edges.
         if not self.entryEdges:
-            Path.Log.debug("fill entryEdges ...")
+            Path.Log.debug("fill entryEdges…")
             self.realEntry = sorted(self.edgePoints, key=lambda p: (p - self.entry).Length)[0]
             self.entryEdges = list(
                 [e for e in edges if Path.Geom.edgeConnectsTo(e, self.realEntry)]
@@ -389,7 +389,7 @@ class MapWireToTag:
         else:
             self.realEntry = None
         if not self.exitEdges:
-            Path.Log.debug("fill exitEdges ...")
+            Path.Log.debug("fill exitEdges…")
             self.realExit = sorted(self.edgePoints, key=lambda p: (p - self.exit).Length)[0]
             self.exitEdges = list([e for e in edges if Path.Geom.edgeConnectsTo(e, self.realExit)])
             edges.append(Part.Edge(Part.LineSegment(self.realExit, self.exit)))
@@ -1206,7 +1206,7 @@ class ObjectTagDressup:
         try:
             self.processTags(obj)
         except Exception as e:
-            Path.Log.error("processing tags failed clearing all tags ... '%s'" % (e.args[0]))
+            Path.Log.error("processing tags failed clearing all tags… '%s'" % (e.args[0]))
             obj.Path = PathUtils.getPathWithPlacement(obj.Base)
 
         # update disabled in case there are some additional ones
@@ -1245,7 +1245,7 @@ class ObjectTagDressup:
             Path.Log.error(
                 translate(
                     "CAM_DressupTag",
-                    "Cannot insert holding tags for this path - please select a Profile path",
+                    "Cannot insert holding tags for this path - select a profile path",
                 )
                 + "\n"
             )
@@ -1293,14 +1293,14 @@ class ObjectTagDressup:
 
 def Create(baseObject, name="DressupTag"):
     """
-    Create(basePath, name='DressupTag') ... create tag dressup object for the given base path.
+    Create(basePath, name='DressupTag') … create tag dressup object for the given base path.
     """
     if not baseObject.isDerivedFrom("Path::Feature"):
         Path.Log.error(translate("CAM_DressupTag", "The selected object is not a path") + "\n")
         return None
 
     if baseObject.isDerivedFrom("Path::FeatureCompoundPython"):
-        Path.Log.error(translate("CAM_DressupTag", "Please select a Profile object"))
+        Path.Log.error(translate("CAM_DressupTag", "Select a profile object"))
         return None
 
     obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", name)
@@ -1311,4 +1311,4 @@ def Create(baseObject, name="DressupTag"):
     return obj
 
 
-Path.Log.notice("Loading CAM_DressupTag... done\n")
+Path.Log.notice("Loading CAM_DressupTag… done\n")

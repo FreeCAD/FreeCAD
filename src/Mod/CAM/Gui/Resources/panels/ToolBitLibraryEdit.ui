@@ -49,7 +49,7 @@
         </size>
        </property>
        <property name="toolTip">
-        <string>Add existing Tool Bit to this library.</string>
+        <string>Adds the existing tool bit to the library</string>
        </property>
        <property name="text">
         <string>Add Existing</string>
@@ -69,7 +69,7 @@
         </size>
        </property>
        <property name="toolTip">
-        <string>Delete selected Tool Bit(s) from the library.</string>
+        <string>Deletes the selected tool bits from the library</string>
        </property>
        <property name="text">
         <string>Remove</string>
@@ -96,7 +96,7 @@
            </size>
           </property>
           <property name="toolTip">
-           <string>Add New Tool Table</string>
+           <string>Add new tool table</string>
           </property>
           <property name="text">
            <string/>
@@ -143,7 +143,7 @@
             </size>
           </property>
           <property name="toolTip">
-            <string>Save the current Library</string>
+            <string>Save the current library</string>
           </property>
           <property name="text">
            <string/>
@@ -194,7 +194,7 @@
          <bool>true</bool>
         </property>
         <property name="toolTip">
-         <string>Table of Tool Bits of the library.</string>
+         <string>Table of tool bits of the library</string>
         </property>
         <property name="frameShape">
          <enum>QFrame::Box</enum>
