@@ -334,7 +334,7 @@ class CommandPathDressup:
             "Pixmap": "CAM_Dressup",
             "MenuText": QT_TRANSLATE_NOOP("CAM_DressupZCorrect", "Z Depth Correction"),
             "Accel": "",
-            "ToolTip": QT_TRANSLATE_NOOP("CAM_DressupZCorrect", "Use Probe Map to correct Z depth"),
+            "ToolTip": QT_TRANSLATE_NOOP("CAM_DressupZCorrect", "Corrects Z depth using a probe map"),
         }
 
     def IsActive(self):
@@ -349,7 +349,7 @@ class CommandPathDressup:
         selection = FreeCADGui.Selection.getSelection()
         if len(selection) != 1:
             FreeCAD.Console.PrintError(
-                translate("CAM_Dressup", "Please select one toolpath object\n")
+                translate("CAM_Dressup", "Select one toolpath object\n")
             )
             return
         if not selection[0].isDerivedFrom("Path::Feature"):
@@ -358,7 +358,7 @@ class CommandPathDressup:
             )
             return
         if selection[0].isDerivedFrom("Path::FeatureCompoundPython"):
-            FreeCAD.Console.PrintError(translate("CAM_Dressup", "Please select a toolpath object"))
+            FreeCAD.Console.PrintError(translate("CAM_Dressup", "Select a toolpath object"))
             return
 
         # everything ok!
@@ -382,4 +382,4 @@ if FreeCAD.GuiUp:
     # register the FreeCAD command
     FreeCADGui.addCommand("CAM_DressupZCorrect", CommandPathDressup())
 
-FreeCAD.Console.PrintLog("Loading PathDressup... done\n")
+FreeCAD.Console.PrintLog("Loading PathDressup… done\n")

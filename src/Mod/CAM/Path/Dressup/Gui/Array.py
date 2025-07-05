@@ -73,7 +73,7 @@ class CommandPathDressupArray:
         selection = FreeCADGui.Selection.getSelection()
         if len(selection) != 1:
             Path.Log.error(
-                translate("CAM_DressupArray", "Please select one toolpath object") + "\n"
+                translate("CAM_DressupArray", "Select one toolpath object") + "\n"
             )
             return
         baseObject = selection[0]

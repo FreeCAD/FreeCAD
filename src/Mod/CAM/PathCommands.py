@@ -59,7 +59,7 @@ class _CommandSelectLoop:
             "MenuText": QT_TRANSLATE_NOOP("CAM_SelectLoop", "Finish Selecting Loop"),
             "Accel": "P, L",
             "ToolTip": QT_TRANSLATE_NOOP(
-                "CAM_SelectLoop", "Complete the selection of edges that form a loop"
+                "CAM_SelectLoop", "Completes the selection of edges that form a loop"
             ),
             "CmdType": "ForEdit",
         }
@@ -143,11 +143,11 @@ class _ToggleOperation:
         return {
             "Pixmap": "CAM_OpActive",
             "MenuText": QT_TRANSLATE_NOOP(
-                "CAM_OpActiveToggle", "Toggle the Active State of the Operation"
+                "CAM_OpActiveToggle", "Toggle Operation Active"
             ),
             "Accel": "P, X",
             "ToolTip": QT_TRANSLATE_NOOP(
-                "CAM_OpActiveToggle", "Toggle the Active State of the Operation"
+                "CAM_OpActiveToggle", "Toggles the active state of the operation"
             ),
             "CmdType": "ForEdit",
         }
@@ -185,8 +185,8 @@ class _CopyOperation:
     def GetResources(self):
         return {
             "Pixmap": "CAM_OpCopy",
-            "MenuText": QT_TRANSLATE_NOOP("CAM_OperationCopy", "Copy the operation in the job"),
-            "ToolTip": QT_TRANSLATE_NOOP("CAM_OperationCopy", "Copy the operation in the job"),
+            "MenuText": QT_TRANSLATE_NOOP("CAM_OperationCopy", "Copy Operation"),
+            "ToolTip": QT_TRANSLATE_NOOP("CAM_OperationCopy", "Copies the operation in the job"),
             "CmdType": "ForEdit",
         }
 
