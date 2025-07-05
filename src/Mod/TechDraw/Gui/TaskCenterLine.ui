@@ -14,7 +14,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Center Line</string>
+   <string>Centerline</string>
   </property>
   <property name="windowIcon">
    <iconset resource="Resources/TechDraw.qrc">
@@ -26,7 +26,7 @@
      <item row="0" column="0">
       <widget class="QLabel" name="label_4">
        <property name="text">
-        <string>Base View</string>
+        <string>Base view</string>
        </property>
       </widget>
      </item>
@@ -86,7 +86,7 @@
       <item>
        <widget class="QRadioButton" name="rbVertical">
         <property name="toolTip">
-         <string>Top to Bottom line</string>
+         <string>Top to bottom line</string>
         </property>
         <property name="text">
          <string>Vertical</string>
@@ -105,7 +105,7 @@
          <bool>true</bool>
         </property>
         <property name="toolTip">
-         <string>Left to Right line</string>
+         <string>Left to right line</string>
         </property>
         <property name="text">
          <string>Horizontal</string>
@@ -121,10 +121,11 @@
          <bool>true</bool>
         </property>
         <property name="toolTip">
-         <string>centerline between
-- lines: in equal distance to the lines and with
-  half of the angle the lines have to each other
-- points: in equal distance to the points</string>
+         <string>
+         Centerline between:
+         - Lines: equidistant from both lines and at half the angle between them
+         - Points: equidistant from both points
+         </string>
         </property>
         <property name="text">
          <string>Aligned</string>
@@ -205,7 +206,7 @@
      <item row="0" column="0">
       <widget class="QLabel" name="label_7">
        <property name="text">
-        <string>Shift Horizontal</string>
+        <string>Shift horizontal</string>
        </property>
       </widget>
      </item>
@@ -218,7 +219,7 @@
         </size>
        </property>
        <property name="toolTip">
-        <string>Move line +Up or -Down</string>
+        <string>Move line +up or -down</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -237,7 +238,7 @@
         </size>
        </property>
        <property name="toolTip">
-        <string>Move line -Left or +Right</string>
+        <string>Move line -left or +right</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -250,7 +251,7 @@
      <item row="1" column="0">
       <widget class="QLabel" name="label_8">
        <property name="text">
-        <string>Shift Vertical</string>
+        <string>Shift vertical</string>
        </property>
       </widget>
      </item>
@@ -286,7 +287,7 @@
      <item row="3" column="0">
       <widget class="QLabel" name="label_3">
        <property name="text">
-        <string>Extend By</string>
+        <string>Extend by</string>
        </property>
       </widget>
      </item>

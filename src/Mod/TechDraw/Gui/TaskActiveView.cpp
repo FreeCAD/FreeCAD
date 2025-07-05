@@ -216,7 +216,7 @@ void TaskActiveView::onCropChanged()
 // Private helper methods
 void TaskActiveView::setUiPrimary()
 {
-    setWindowTitle(QObject::tr("Insert Active View"));
+    setWindowTitle(QObject::tr("Active View"));
     ui->cbCrop->setChecked(false);
     enableCrop(false);
     ui->qsbWidth->setValue(Rez::appX(SXGAWidth));

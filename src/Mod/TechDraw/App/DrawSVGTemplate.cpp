@@ -206,7 +206,7 @@ bool DrawSVGTemplate::getTemplateDocument(std::string sourceFile, QDomDocument& 
     }
     QFile templateFile(QString::fromStdString(sourceFile));
     if (!templateFile.open(QIODevice::ReadOnly)) {
-        Base::Console().error("DrawSVGTemplate::processTemplate can't read embedded template %s!\n", PageResult.getValue());
+        Base::Console().error("DrawSVGTemplate::processTemplate cannot read embedded template %s!\n", PageResult.getValue());
         return false;
     }
 

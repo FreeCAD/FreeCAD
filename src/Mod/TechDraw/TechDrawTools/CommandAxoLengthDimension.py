@@ -51,12 +51,9 @@ class CommandAxoLengthDimension:
         """Return a dictionary with data that will be used by the button or menu item."""
         return {'Pixmap': 'actions/TechDraw_AxoLengthDimension.svg',
                 'Accel': "",
-                'MenuText': QT_TRANSLATE_NOOP("TechDraw_AxoLengthDimension", "Axonometric length dimension"),
-                'ToolTip': QT_TRANSLATE_NOOP("TechDraw_AxoLengthDimension", "Create an axonometric length dimension<br>\
-                - select first edge to define direction and length of the dimension line<br>\
-                - select second edge to define the direction of the extension lines<br>\
-                - optional: select two more vertexes which define the measurement instead of the length<br>\
-                  of the first selected edge")}
+                'MenuText': QT_TRANSLATE_NOOP("TechDraw_AxoLengthDimension", "Axonometric Length Dimension"),
+                'ToolTip': QT_TRANSLATE_NOOP("TechDraw_AxoLengthDimension", "Creates a length dimension in with "
+                            "axonometric view, using selected edges or vertex pairs to define direction and measurement")}
 
     def Activated(self):
         """Run the following code when the command is activated (button press)."""
