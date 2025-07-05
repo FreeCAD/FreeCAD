@@ -22,7 +22,7 @@
 import FreeCAD
 import Path
 from ...shape import ToolBitShapeIso
-from ..mixins import RotaryToolBitMixin, CuttingToolMixin, TurningToolMixin
+from ..mixins import TurningToolMixin
 from .base import ToolBit
 
 
