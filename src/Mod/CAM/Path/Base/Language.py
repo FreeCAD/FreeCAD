@@ -37,7 +37,7 @@ class Instruction(object):
 
     def __init__(self, begin, cmd, param=None):
         self.begin = begin
-        if type(cmd) == Path.Command:
+        if type(cmd) is Path.Command:
             self.cmd = Path.Name
             self.param = Path.Parameters
         else:
@@ -130,6 +130,12 @@ class MoveStraight(Instruction):
     def isMove(self):
         return True
 
+    def isStraight(self):
+        return True
+
+    def isArc(self):
+        return False
+
     def isRapid(self):
         return self.cmd in Path.Geom.CmdMoveRapid
 
@@ -158,6 +164,9 @@ class MoveArc(Instruction):
 
     def isArc(self):
         return True
+
+    def isStraight(self):
+        return False
 
     def isCW(self):
         return self.arcDirection() < 0
