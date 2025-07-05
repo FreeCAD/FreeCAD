@@ -69,7 +69,7 @@ def cmdCreateToleranceSetFeature(name, minTolerance=1e-7, maxTolerance=0):
         error_text1 = translate("Part_ToleranceFeatures", "Computing the result failed with an error:")
         error_text2 = translate("Part_ToleranceFeatures", "Click 'Continue' to create the feature anyway, or 'Abort' to cancel.")
         mb.setText(error_text1 + "\n\n" + str(err) + "\n\n" + error_text2)
-        mb.setWindowTitle(translate("Part_ToleranceFeatures","Bad selection", None))
+        mb.setWindowTitle(translate("Part_ToleranceFeatures","Bad Selection", None))
         btnAbort = mb.addButton(QtGui.QMessageBox.StandardButton.Abort)
         btnOK = mb.addButton(translate("Part_ToleranceFeatures","Continue",None),
                              QtGui.QMessageBox.ButtonRole.ActionRole)
@@ -202,7 +202,7 @@ class CommandToleranceSet:
             mb.setIcon(mb.Icon.Warning)
             mb.setText(translate("Part_ToleranceSet",
                                   "Select at least one object or compounds", None))
-            mb.setWindowTitle(translate("Part_ToleranceSet","Bad selection", None))
+            mb.setWindowTitle(translate("Part_ToleranceSet","Bad Selection", None))
             mb.exec_()
 
     def IsActive(self):

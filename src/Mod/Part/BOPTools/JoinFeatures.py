@@ -77,7 +77,7 @@ def cmdCreateJoinFeature(name, mode):
         error_text1 = translate("Part_JoinFeatures", "Computing the result failed with an error:")
         error_text2 = translate("Part_JoinFeatures", "Click 'Continue' to create the feature anyway, or 'Abort' to cancel.")
         mb.setText(error_text1 + "\n\n" + str(err) + "\n\n" + error_text2)
-        mb.setWindowTitle(translate("Part_JoinFeatures","Bad selection", None))
+        mb.setWindowTitle(translate("Part_JoinFeatures","Bad Selection", None))
         btnAbort = mb.addButton(QtGui.QMessageBox.StandardButton.Abort)
         btnOK = mb.addButton(translate("Part_JoinFeatures","Continue",None),
                              QtGui.QMessageBox.ButtonRole.ActionRole)
@@ -196,7 +196,7 @@ class CommandConnect:
             mb.setIcon(mb.Icon.Warning)
             mb.setText(translate("Part_JoinFeatures",
                                   "Select at least two objects, or one or more compounds", None))
-            mb.setWindowTitle(translate("Part_JoinFeatures","Bad selection", None))
+            mb.setWindowTitle(translate("Part_JoinFeatures","Bad Selection", None))
             mb.exec_()
 
     def IsActive(self):
@@ -292,7 +292,7 @@ class CommandEmbed:
             mb.setIcon(mb.Icon.Warning)
             mb.setText(translate("Part_JoinFeatures",
                                  "Select base object, then the object to embed, and then invoke this tool.", None))
-            mb.setWindowTitle(translate("Part_JoinFeatures","Bad selection", None))
+            mb.setWindowTitle(translate("Part_JoinFeatures","Bad Selection", None))
             mb.exec_()
 
     def IsActive(self):
@@ -386,7 +386,7 @@ class CommandCutout:
             mb.setIcon(mb.Icon.Warning)
             mb.setText(translate("Part_JoinFeatures",
                                   "Select the object to make a cutout in, then the object that should fit into the cutout, and then invoke this tool.", None))
-            mb.setWindowTitle(translate("Part_JoinFeatures","Bad selection", None))
+            mb.setWindowTitle(translate("Part_JoinFeatures","Bad Selection", None))
             mb.exec_()
 
     def IsActive(self):
