@@ -166,7 +166,7 @@ void CmdPathAreaWorkplane::activated(int iMsg)
         if (subnames.empty()) {
             if (pcObj->isDerivedFrom<Path::FeatureArea>()) {
                 if (!areaName.empty()) {
-                    Base::Console().error("Select one FeatureArea only\n");
+                    Base::Console().error("Select one feature area only\n");
                     return;
                 }
                 areaName = pcObj->getNameInDocument();
