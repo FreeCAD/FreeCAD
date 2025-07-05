@@ -60,7 +60,7 @@ class Point(gui_base_original.Creator):
 
         return {'Pixmap': 'Draft_Point',
                 'MenuText': QT_TRANSLATE_NOOP("Draft_Point", "Point"),
-                'ToolTip': QT_TRANSLATE_NOOP("Draft_Point", "Creates a point object. Click anywhere on the 3D view.")}
+                'ToolTip': QT_TRANSLATE_NOOP("Draft_Point", "Creates a point")}
 
     def Activated(self):
         """Execute when the command is called."""
