@@ -115,9 +115,33 @@ Part::Feature* Transformed::getBaseObject(bool silent) const
     return rv;
 }
 
+std::vector<App::DocumentObject*> Transformed::getOriginals() const
+{
+    auto const mode = static_cast<Mode>(TransformMode.getValue());
+
+    if (mode == Mode::TransformBody) {
+        return {};
+    }
+
+    std::vector<DocumentObject*> originals = Originals.getValues();
+
+    const auto isSuppressed = [](const DocumentObject* obj) {
+        auto feature = freecad_cast<Feature*>(obj);
+
+        return feature != nullptr && feature->Suppressed.getValue();
+    };
+
+    // Remove suppressed features from the list so the transformations behave as if they are not
+    // there
+    auto [first, last] = std::ranges::remove_if(originals, isSuppressed);
+    originals.erase(first, last);
+
+    return originals;
+}
+
 App::DocumentObject* Transformed::getSketchObject() const
 {
-    std::vector<DocumentObject*> originals = Originals.getValues();
+    std::vector<DocumentObject*> originals = getOriginals();
     DocumentObject const* firstOriginal = !originals.empty() ? originals.front() : nullptr;
 
     if (auto feature = freecad_cast<PartDesign::ProfileBased*>(firstOriginal)) {
@@ -198,6 +222,15 @@ short Transformed::mustExecute() const
     }
     return PartDesign::Feature::mustExecute();
 }
+void Transformed::onChanged(const App::Property* prop)
+{
+    if (prop == &TransformMode) {
+        auto const mode = static_cast<Mode>(TransformMode.getValue());
+        Originals.setStatus(App::Property::Status::Hidden, mode == Mode::TransformBody);
+    }
+
+    FeatureRefine::onChanged(prop);
+}
 
 App::DocumentObjectExecReturn* Transformed::execute()
 {
@@ -205,30 +238,16 @@ App::DocumentObjectExecReturn* Transformed::execute()
         return App::DocumentObject::StdReturn;
     }
 
-    std::vector<App::DocumentObject*> originals;
     auto const mode = static_cast<Mode>(TransformMode.getValue());
-    if (mode == Mode::TransformBody) {
-        Originals.setStatus(App::Property::Status::Hidden, true);
-    } else {
-        Originals.setStatus(App::Property::Status::Hidden, false);
-        originals = Originals.getValues();
-    }
-    // Remove suppressed features from the list so the transformations behave as if they are not
-    // there
-    auto eraseIter =
-        std::remove_if(originals.begin(), originals.end(), [](App::DocumentObject const* obj) {
-            auto feature = freecad_cast<PartDesign::Feature*>(obj);
-            return feature != nullptr && feature->Suppressed.getValue();
-        });
-    originals.erase(eraseIter, originals.end());
+
+    std::vector<DocumentObject*> originals = getOriginals();
 
     if (mode == Mode::TransformToolShapes && originals.empty()) {
         return App::DocumentObject::StdReturn;
     }
 
     if (!this->BaseFeature.getValue()) {
-        auto body = getFeatureBody();
-        if (body) {
+        if (auto body = getFeatureBody()) {
             body->setBaseProperty(this);
         }
     }
