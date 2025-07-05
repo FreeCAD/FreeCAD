@@ -668,6 +668,7 @@ TreeWidget::TreeWidget(const char* name, QWidget* parent)
     this->skipRecomputeAction->setCheckable(true);
     connect(this->skipRecomputeAction, &QAction::toggled,
             this, &TreeWidget::onSkipRecompute);
+    this->skipRecomputeCommand = Gui::Application::Instance->commandManager().getCommandByName("Std_ToggleSkipRecompute");
 
     this->allowPartialRecomputeAction = new QAction(this);
     this->allowPartialRecomputeAction->setCheckable(true);
@@ -1053,8 +1054,14 @@ void TreeWidget::contextMenuEvent(QContextMenuEvent* e)
                 }
             }
             contextMenu.addAction(this->selectDependentsAction);
-            this->skipRecomputeAction->setChecked(doc->testStatus(App::Document::SkipRecompute));
-            contextMenu.addAction(this->skipRecomputeAction);
+            if (doc == App::GetApplication().getActiveDocument() && this->skipRecomputeCommand != nullptr) {
+                // if active document is selected, use Command
+                this->skipRecomputeCommand->addTo(&contextMenu);
+            } else {
+                // if other document is selected or Command load fails, edit selected Document directly
+                this->skipRecomputeAction->setChecked(doc->testStatus(App::Document::SkipRecompute));
+                contextMenu.addAction(this->skipRecomputeAction);
+            }         
             this->allowPartialRecomputeAction->setChecked(doc->testStatus(App::Document::AllowPartialRecompute));
             if (doc->testStatus(App::Document::SkipRecompute))
                 contextMenu.addAction(this->allowPartialRecomputeAction);
