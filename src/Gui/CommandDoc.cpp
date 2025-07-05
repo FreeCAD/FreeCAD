@@ -1329,32 +1329,55 @@ void StdCmdDelete::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
 
-    std::set<App::Document*> docs;
+    int tid = 0;
     try {
-        openCommand(QT_TRANSLATE_NOOP("Command", "Delete"));
+        std::set<App::Document*> docs;
+        std::vector<App::TransactionLocker> tlocks;
+        auto manage_doc_command = [&tid, &tlocks](App::Document* doc) {
+            // The tid will not be updated if non-zero
+            tid = openCommand(doc, QT_TRANSLATE_NOOP("Command", "Delete"), false, tid);
+            tlocks.emplace_back(doc);
+        };
+
         if (getGuiApplication()->sendHasMsgToFocusView(getName())) {
-            commitCommand();
+            // no command has been opened yet so we can skip this commit
+            // commitCommand();
             return;
         }
-
-        App::TransactionLocker tlock;
+        // Ensure that the document from which we send the command
+        // has can undo it (e.g delete a subobject of an assmebly
+        // from the assembly)
+        manage_doc_command(getActiveGuiDocument()->getDocument());
 
         Gui::getMainWindow()->setUpdatesEnabled(false);
-        auto editDoc = Application::Instance->editDocument();
-        ViewProviderDocumentObject *vpedit = nullptr;
-        if(editDoc)
-            vpedit = freecad_cast<ViewProviderDocumentObject*>(editDoc->getInEdit());
-        if(vpedit && !vpedit->acceptDeletionsInEdit()) {
-            for(auto &sel : Selection().getSelectionEx(editDoc->getDocument()->getName())) {
-                if(sel.getObject() == vpedit->getObject()) {
-                    if (!sel.getSubNames().empty()) {
-                        vpedit->onDelete(sel.getSubNames());
-                        docs.insert(editDoc->getDocument());
+
+
+        // TODO-theo-vt verrify logic in multiple test cases
+        // in what cases is a delete launched while an edit is going on?
+        // Try to delete selected objects of edit documents first
+        // and delete selection if it does not work
+        bool deletedSelectionOfEditDocument = false;
+        std::vector<Gui::Document*> editDocs = Application::Instance->editDocuments();
+        for (auto& editDoc : editDocs) {
+            auto vpedit = freecad_cast<ViewProviderDocumentObject*>(editDoc->getInEdit());
+
+            // In practice, no ViewProviderDocumentObject accepts deletion in edit - 2025-06-17
+            if (vpedit && !vpedit->acceptDeletionsInEdit()) {
+                deletedSelectionOfEditDocument = true;
+                for (auto& sel : Selection().getSelectionEx(editDoc->getDocument()->getName())) {
+                    if (sel.getObject() == vpedit->getObject()) {
+                        if (!sel.getSubNames().empty()) {
+                            manage_doc_command(editDoc->getDocument());
+                            vpedit->onDelete(sel.getSubNames());
+                            docs.insert(editDoc->getDocument());
+                        }
+                        break;
                     }
-                    break;
                 }
             }
-        } else {
+        }
+
+        if (!deletedSelectionOfEditDocument) {
             std::set<QString> affectedLabels;
             bool more = false;
             auto sels = Selection().getSelectionEx();
@@ -1413,6 +1436,7 @@ void StdCmdDelete::activated(int iMsg)
                     auto obj = sel.getObject();
                     Gui::ViewProvider* vp = Application::Instance->getViewProvider(obj);
                     if (vp) {
+                        manage_doc_command(obj->getDocument());
                         // ask the ViewProvider if it wants to do some clean up
                         if (vp->onDelete(sel.getSubNames())) {
                             docs.insert(obj->getDocument());
@@ -1445,7 +1469,7 @@ void StdCmdDelete::activated(int iMsg)
         QMessageBox::critical(getMainWindow(), QObject::tr("Delete failed"),
                 QStringLiteral("Unknown error"));
     }
-    commitCommand();
+    commitCommand(tid);
     Gui::getMainWindow()->setUpdatesEnabled(true);
     Gui::getMainWindow()->update();
 }
@@ -1574,7 +1598,7 @@ void StdCmdPlacement::activated(int iMsg)
             plm->clearSelection();
         }
     }
-    Gui::Control().showDialog(plm);
+    Gui::Control().showDialog(plm, getDocument());
 }
 
 bool StdCmdPlacement::isActive()
@@ -1932,9 +1956,11 @@ protected:
             return;
         }
 
-        openCommand(QT_TRANSLATE_NOOP("Command", "Paste expressions"));
+        // openCommand(QT_TRANSLATE_NOOP("Command", "Paste expressions"));
+        int tid = 0;
         try {
             for(auto &v : exprs) {
+                tid = openCommand(v.first, QT_TRANSLATE_NOOP("Command", "Paste expressions"), false, tid);
                 for(auto &v2 : v.second) {
                     auto &expressions = v2.second;
                     auto old = v2.first->getExpressions();
@@ -1948,7 +1974,7 @@ protected:
                         v2.first->setExpressions(std::move(expressions));
                 }
             }
-            commitCommand();
+            commitCommand(tid);
         } catch (const Base::Exception& e) {
             abortCommand();
             QMessageBox::critical(getMainWindow(), QObject::tr("Failed to paste expressions"),

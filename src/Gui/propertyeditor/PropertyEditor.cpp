@@ -353,7 +353,7 @@ void PropertyEditor::openEditor(const QModelIndex& index)
     if (items.size() > 1) {
         str << "...";
     }
-    transactionID = app.setActiveTransaction(str.str().c_str());
+    transactionID = obj->getDocument()->openTransaction(str.str().c_str());
     FC_LOG("editor transaction " << app.getActiveTransaction());
 }
 
@@ -394,13 +394,15 @@ void PropertyEditor::recomputeDocument(App::Document* doc)
 
 void PropertyEditor::closeTransaction()
 {
-    int tid = 0;
-    if (App::GetApplication().getActiveTransaction(&tid) && tid == transactionID) {
+    App::Document* doc = App::GetApplication().getActiveDocument();
+    if (!doc) {
+        return;
+    }
+    if (doc->getBookedTransactionID() == transactionID) {
         if (autoupdate) {
-            App::Document* doc = App::GetApplication().getActiveDocument();
             recomputeDocument(doc);
         }
-        App::GetApplication().closeActiveTransaction();
+        doc->commitTransaction();
     }
 }
 
