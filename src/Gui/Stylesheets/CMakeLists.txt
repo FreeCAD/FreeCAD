@@ -1,14 +1,10 @@
 
 SET(Stylesheets_Files
-    	"FreeCAD Dark.qss"
-	"FreeCAD Light.qss"
+    "FreeCAD_stylesheet.qss"
 )
 
 SET(Overlay_Stylesheets_Files
-    "overlay/Dark Theme + Dark Background.qss"
-    "overlay/Dark Theme + Light Background.qss"
-    "overlay/Light Theme + Dark Background.qss"
-    "overlay/Light Theme + Light Background.qss"
+    "overlay/Freecad Overlay.qss"
 )
 
 # Find all the image files
@@ -18,7 +14,7 @@ FILE(GLOB Images_Files RELATIVE "${CMAKE_CURRENT_SOURCE_DIR}"
 SOURCE_GROUP("Images_dark-light" FILES ${Images_Files})
 
 FILE(GLOB Images_Files2 RELATIVE "${CMAKE_CURRENT_SOURCE_DIR}"
-    "${CMAKE_CURRENT_SOURCE_DIR}/images_classic/*.png")
+    "${CMAKE_CURRENT_SOURCE_DIR}/images_classic/*.svg")
 
 SOURCE_GROUP("images_classic" FILES ${Images_Files2})
 
