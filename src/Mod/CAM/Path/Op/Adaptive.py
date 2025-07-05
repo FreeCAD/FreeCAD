@@ -36,6 +36,9 @@ import time
 import json
 import math
 import area
+import Path.Base.FeedRate as PathFeedRate
+import Path.Base.Generator.helix as helix
+
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
 if FreeCAD.GuiUp:
@@ -181,7 +184,7 @@ def GenerateGCode(op, obj, adaptiveResults, helixDiameter):
                 r = helixRadius - 0.01
                 op.commandlist.append(Path.Command("(Helix to depth: %f)" % passEndDepth))
 
-                if obj.UseHelixArcs is False:
+                if not obj.UseHelixArcs:
                     helix_down_angle = passDepth / depthPerOneCircle * 2 * math.pi
 
                     r_bottom = r - (passStartDepth - passEndDepth) * math.tan(
@@ -281,152 +284,42 @@ def GenerateGCode(op, obj, adaptiveResults, helixDiameter):
                             helix_angular_progress + math.pi / 16, max_angle
                         )
                 else:
-                    # Use arcs for helix - no conical shape support
-                    helixStart = [
-                        region["HelixCenterPoint"][0] + r,
-                        region["HelixCenterPoint"][1],
-                    ]
+                    # Use generator to create helix by arcs
+                    # no conical shape support
+                    args = {
+                        "edge": None,
+                        "hole_radius": None,
+                        "step_down": depthPerOneCircle,
+                        "step_over": obj.StepOver / 100,
+                        "tool_diameter": op.tool.Diameter.Value,
+                        "inner_radius": None,
+                        "retract_height": obj.SafeHeight.Value,
+                        "direction": "CCW",
+                        "startAt": "Inside",
+                        "finish_circle": True,
+                    }
+                    args["inner_radius"] = r
+                    args["hole_radius"] = args["inner_radius"] + op.tool.Diameter.Value / 2
+                    print(args)
+                    centerTop = FreeCAD.Vector(
+                        region["HelixCenterPoint"][0], region["HelixCenterPoint"][1], passStartDepth
+                    )
+                    centerBottom = FreeCAD.Vector(
+                        region["HelixCenterPoint"][0], region["HelixCenterPoint"][1], passEndDepth
+                    )
+                    args["edge"] = Part.makeLine(centerTop, centerBottom)
 
-                    # rapid move to start point
                     op.commandlist.append(Path.Command("G0", {"Z": obj.ClearanceHeight.Value}))
                     op.commandlist.append(
-                        Path.Command(
-                            "G0",
-                            {
-                                "X": helixStart[0],
-                                "Y": helixStart[1],
-                                "Z": obj.ClearanceHeight.Value,
-                            },
-                        )
+                        Path.Command("G0", {"X": centerTop.x + r, "Y": centerTop.y})
                     )
-
-                    # rapid move to safe height
-                    op.commandlist.append(
-                        Path.Command(
-                            "G0",
-                            {
-                                "X": helixStart[0],
-                                "Y": helixStart[1],
-                                "Z": obj.SafeHeight.Value,
-                            },
-                        )
-                    )
-
-                    # move to start depth
-                    op.commandlist.append(
-                        Path.Command(
-                            "G1",
-                            {
-                                "X": helixStart[0],
-                                "Y": helixStart[1],
-                                "Z": passStartDepth,
-                                "F": op.vertFeed,
-                            },
-                        )
-                    )
-
-                    x = region["HelixCenterPoint"][0] + r
-                    y = region["HelixCenterPoint"][1]
-
-                    curDep = passStartDepth
-                    while curDep > (passEndDepth + depthPerOneCircle):
-                        op.commandlist.append(
-                            Path.Command(
-                                "G2",
-                                {
-                                    "X": x - (2 * r),
-                                    "Y": y,
-                                    "Z": curDep - (depthPerOneCircle / 2),
-                                    "I": -r,
-                                    "F": op.vertFeed,
-                                },
-                            )
-                        )
-                        op.commandlist.append(
-                            Path.Command(
-                                "G2",
-                                {
-                                    "X": x,
-                                    "Y": y,
-                                    "Z": curDep - depthPerOneCircle,
-                                    "I": r,
-                                    "F": op.vertFeed,
-                                },
-                            )
-                        )
-                        curDep = curDep - depthPerOneCircle
-
-                    lastStep = curDep - passEndDepth
-                    if lastStep > (depthPerOneCircle / 2):
-                        op.commandlist.append(
-                            Path.Command(
-                                "G2",
-                                {
-                                    "X": x - (2 * r),
-                                    "Y": y,
-                                    "Z": curDep - (lastStep / 2),
-                                    "I": -r,
-                                    "F": op.vertFeed,
-                                },
-                            )
-                        )
-                        op.commandlist.append(
-                            Path.Command(
-                                "G2",
-                                {
-                                    "X": x,
-                                    "Y": y,
-                                    "Z": passEndDepth,
-                                    "I": r,
-                                    "F": op.vertFeed,
-                                },
-                            )
-                        )
-                    else:
-                        op.commandlist.append(
-                            Path.Command(
-                                "G2",
-                                {
-                                    "X": x - (2 * r),
-                                    "Y": y,
-                                    "Z": passEndDepth,
-                                    "I": -r,
-                                    "F": op.vertFeed,
-                                },
-                            )
-                        )
-                        op.commandlist.append(
-                            Path.Command(
-                                "G1",
-                                {"X": x, "Y": y, "Z": passEndDepth, "F": op.vertFeed},
-                            )
-                        )
-
-                    # one more circle at target depth to make sure center is cleared
-                    op.commandlist.append(
-                        Path.Command(
-                            "G2",
-                            {
-                                "X": x - (2 * r),
-                                "Y": y,
-                                "Z": passEndDepth,
-                                "I": -r,
-                                "F": op.horizFeed,
-                            },
-                        )
-                    )
-                    op.commandlist.append(
-                        Path.Command(
-                            "G2",
-                            {
-                                "X": x,
-                                "Y": y,
-                                "Z": passEndDepth,
-                                "I": r,
-                                "F": op.horizFeed,
-                            },
-                        )
-                    )
+                    op.commandlist.append(Path.Command("G0", {"Z": obj.SafeHeight.Value}))
+                    helixCommands = helix.generate(**args)[2:]
+                    while helixCommands[-1].Name == "G0":
+                        # Remove last retract movements
+                        helixCommands.pop()
+                    PathFeedRate.setFeedRate(helixCommands, obj.ToolController)
+                    op.commandlist.extend(helixCommands)
 
             else:  # no helix entry
                 # rapid move to clearance height
