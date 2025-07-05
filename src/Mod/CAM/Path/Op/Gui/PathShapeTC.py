@@ -182,7 +182,8 @@ class CommandPathShapeTC:
             "Pixmap": "CAM_ShapeTC",
             "MenuText": QT_TRANSLATE_NOOP("CAM_PathShapeTC", "Path From Shape TC"),
             "ToolTip": QT_TRANSLATE_NOOP(
-                "CAM_PathShapeTC", "Creates a path from the selected shapes with the tool controller"
+                "CAM_PathShapeTC",
+                "Creates a path from the selected shapes with the tool controller",
             ),
         }
 

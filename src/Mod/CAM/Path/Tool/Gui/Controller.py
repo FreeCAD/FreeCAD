@@ -141,7 +141,9 @@ class CommandPathToolController(object):
         return {
             "Pixmap": "CAM_LengthOffset",
             "MenuText": QT_TRANSLATE_NOOP("CAM_ToolController", "Tool Controller"),
-            "ToolTip": QT_TRANSLATE_NOOP("CAM_ToolController", "Adds a new tool controller to the active job"),
+            "ToolTip": QT_TRANSLATE_NOOP(
+                "CAM_ToolController", "Adds a new tool controller to the active job"
+            ),
         }
 
     def selectedJob(self):
