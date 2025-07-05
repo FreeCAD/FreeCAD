@@ -101,8 +101,7 @@
 #include <Base/Tools2D.h>
 #include <Quarter/devices/InputDevice.h>
 #include <Quarter/eventhandlers/EventFilter.h>
-#include <QSvgRenderer>
-#include <QScreen>
+#include <Gui/BitmapFactory.h>
 
 #include "View3DInventorViewer.h"
 #include "Application.h"
@@ -557,7 +556,7 @@ void View3DInventorViewer::init()
     }
 
     //create the cursors
-    createStandardCursors(devicePixelRatio());
+    createStandardCursors();
     connect(this, &View3DInventorViewer::devicePixelRatioChanged,
             this, &View3DInventorViewer::createStandardCursors);
 
@@ -642,27 +641,15 @@ View3DInventorViewer::~View3DInventorViewer()
     delete glAction;
 }
 
-static QCursor createSvgCursor(const QString& resourcePath, const QSize& logicalSize, const QPoint& hotSpot, qreal dpr)
+void View3DInventorViewer::createStandardCursors()
 {
-    QSize physicalSize = logicalSize * dpr;
+    QPixmap panPixmap = BitmapFactory().pixmapFromSvg("cursor-pan", QSize(16,16));
+    QPixmap spinPixmap = BitmapFactory().pixmapFromSvg("cursor-rotate", QSize(16,16));
+    QPixmap zoomPixmap = BitmapFactory().pixmapFromSvg("cursor-zoom", QSize(16,16));
 
-    QPixmap pixmap(physicalSize);
-    pixmap.fill(Qt::transparent);
-
-    QSvgRenderer renderer(resourcePath);
-    QPainter painter(&pixmap);
-    renderer.render(&painter);
-    painter.end();
-
-    pixmap.setDevicePixelRatio(dpr);
-    return QCursor(pixmap, hotSpot.x(), hotSpot.y());
-}
-
-void View3DInventorViewer::createStandardCursors(double dpr)
-{
-    this->panCursor = createSvgCursor(QStringLiteral(":/icons/cursor-pan.svg"), QSize(16, 16), QPoint(8, 8), dpr);
-    this->spinCursor = createSvgCursor(QStringLiteral(":/icons/cursor-rotate.svg"), QSize(16, 16), QPoint(8, 8), dpr);
-    this->zoomCursor = createSvgCursor(QStringLiteral(":/icons/cursor-zoom.svg"), QSize(16, 16), QPoint(8, 8), dpr);
+    this->panCursor = QCursor(panPixmap, 8, 8);
+    this->spinCursor = QCursor(spinPixmap, 8, 8);
+    this->zoomCursor = QCursor(zoomPixmap, 8, 8);
 }
 
 void View3DInventorViewer::aboutToDestroyGLContext()
