@@ -101,6 +101,8 @@
 #include <Base/Tools2D.h>
 #include <Quarter/devices/InputDevice.h>
 #include <Quarter/eventhandlers/EventFilter.h>
+#include <QSvgRenderer>
+#include <QScreen>
 
 #include "View3DInventorViewer.h"
 #include "Application.h"
@@ -145,81 +147,6 @@ FC_LOG_LEVEL_INIT("3DViewer", true, true)
 // #define FC_LOGGING_CB
 
 using namespace Gui;
-
-// NOLINTBEGIN
-// clang-format off
-/*** zoom-style cursor ******/
-
-#define ZOOM_WIDTH 16
-#define ZOOM_HEIGHT 16
-#define ZOOM_BYTES ((ZOOM_WIDTH + 7) / 8) * ZOOM_HEIGHT
-#define ZOOM_HOT_X 5
-#define ZOOM_HOT_Y 7
-
-static unsigned char zoom_bitmap[ZOOM_BYTES] =
-{
-    0x00, 0x0f, 0x80, 0x1c, 0x40, 0x38, 0x20, 0x70,
-    0x90, 0xe4, 0xc0, 0xcc, 0xf0, 0xfc, 0x00, 0x0c,
-    0x00, 0x0c, 0xf0, 0xfc, 0xc0, 0xcc, 0x90, 0xe4,
-    0x20, 0x70, 0x40, 0x38, 0x80, 0x1c, 0x00, 0x0f
-};
-
-static unsigned char zoom_mask_bitmap[ZOOM_BYTES] =
-{
-    0x00, 0x0f, 0x80, 0x1f, 0xc0, 0x3f, 0xe0, 0x7f,
-    0xf0, 0xff, 0xf0, 0xff, 0xf0, 0xff, 0x00, 0x0f,
-    0x00, 0x0f, 0xf0, 0xff, 0xf0, 0xff, 0xf0, 0xff,
-    0xe0, 0x7f, 0xc0, 0x3f, 0x80, 0x1f, 0x00, 0x0f
-};
-
-/*** pan-style cursor *******/
-
-#define PAN_WIDTH 16
-#define PAN_HEIGHT 16
-#define PAN_BYTES ((PAN_WIDTH + 7) / 8) * PAN_HEIGHT
-#define PAN_HOT_X 7
-#define PAN_HOT_Y 7
-
-static unsigned char pan_bitmap[PAN_BYTES] =
-{
-    0xc0, 0x03, 0x60, 0x02, 0x20, 0x04, 0x10, 0x08,
-    0x68, 0x16, 0x54, 0x2a, 0x73, 0xce, 0x01, 0x80,
-    0x01, 0x80, 0x73, 0xce, 0x54, 0x2a, 0x68, 0x16,
-    0x10, 0x08, 0x20, 0x04, 0x40, 0x02, 0xc0, 0x03
-};
-
-static unsigned char pan_mask_bitmap[PAN_BYTES] =
-{
-    0xc0, 0x03, 0xe0, 0x03, 0xe0, 0x07, 0xf0, 0x0f,
-    0xe8, 0x17, 0xdc, 0x3b, 0xff, 0xff, 0xff, 0xff,
-    0xff, 0xff, 0xff, 0xff, 0xdc, 0x3b, 0xe8, 0x17,
-    0xf0, 0x0f, 0xe0, 0x07, 0xc0, 0x03, 0xc0, 0x03
-};
-
-/*** rotate-style cursor ****/
-
-#define ROTATE_WIDTH 16
-#define ROTATE_HEIGHT 16
-#define ROTATE_BYTES ((ROTATE_WIDTH + 7) / 8) * ROTATE_HEIGHT
-#define ROTATE_HOT_X 6
-#define ROTATE_HOT_Y 8
-
-static unsigned char rotate_bitmap[ROTATE_BYTES] = {
-    0xf0, 0xef, 0x18, 0xb8, 0x0c, 0x90, 0xe4, 0x83,
-    0x34, 0x86, 0x1c, 0x83, 0x00, 0x81, 0x00, 0xff,
-    0xff, 0x00, 0x81, 0x00, 0xc1, 0x38, 0x61, 0x2c,
-    0xc1, 0x27, 0x09, 0x30, 0x1d, 0x18, 0xf7, 0x0f
-};
-
-static unsigned char rotate_mask_bitmap[ROTATE_BYTES] = {
-    0xf0, 0xef, 0xf8, 0xff, 0xfc, 0xff, 0xfc, 0xff,
-    0x3c, 0xfe, 0x1c, 0xff, 0x00, 0xff, 0x00, 0xff,
-    0xff, 0x00, 0xff, 0x00, 0xff, 0x38, 0x7f, 0x3c,
-    0xff, 0x3f, 0xff, 0x3f, 0xff, 0x1f, 0xf7, 0x0f
-};
-// clang-format on
-// NOLINTEND
-
 
 /*!
 As ProgressBar has no chance to control the incoming Qt events of Quarter so we need to stop
@@ -715,40 +642,27 @@ View3DInventorViewer::~View3DInventorViewer()
     delete glAction;
 }
 
-static QCursor createCursor(QBitmap &bitmap, QBitmap &mask, int hotX, int hotY, double dpr)
+static QCursor createSvgCursor(const QString& resourcePath, const QSize& logicalSize, const QPoint& hotSpot, qreal dpr)
 {
-#if defined(Q_OS_WIN32)
-    bitmap.setDevicePixelRatio(dpr);
-    mask.setDevicePixelRatio(dpr);
-#else
-    Q_UNUSED(dpr)
-#endif
-#ifdef HAS_QTBUG_95434
-    if (qGuiApp->platformName() == QLatin1String("wayland")) {
-        QImage img = bitmap.toImage();
-        img.convertTo(QImage::Format_ARGB32);
-        QPixmap pixmap = QPixmap::fromImage(img);
-        pixmap.setMask(mask);
-        return QCursor(pixmap, hotX, hotY);
-    }
-#endif
+    QSize physicalSize = logicalSize * dpr;
 
-    return QCursor(bitmap, mask, hotX, hotY);
+    QPixmap pixmap(physicalSize);
+    pixmap.fill(Qt::transparent);
+
+    QSvgRenderer renderer(resourcePath);
+    QPainter painter(&pixmap);
+    renderer.render(&painter);
+    painter.end();
+
+    pixmap.setDevicePixelRatio(dpr);
+    return QCursor(pixmap, hotSpot.x(), hotSpot.y());
 }
 
 void View3DInventorViewer::createStandardCursors(double dpr)
 {
-    QBitmap cursor = QBitmap::fromData(QSize(ROTATE_WIDTH, ROTATE_HEIGHT), rotate_bitmap);
-    QBitmap mask = QBitmap::fromData(QSize(ROTATE_WIDTH, ROTATE_HEIGHT), rotate_mask_bitmap);
-    spinCursor = createCursor(cursor, mask, ROTATE_HOT_X, ROTATE_HOT_Y, dpr);
-
-    cursor = QBitmap::fromData(QSize(ZOOM_WIDTH, ZOOM_HEIGHT), zoom_bitmap);
-    mask = QBitmap::fromData(QSize(ZOOM_WIDTH, ZOOM_HEIGHT), zoom_mask_bitmap);
-    zoomCursor = createCursor(cursor, mask, ZOOM_HOT_X, ZOOM_HOT_Y, dpr);
-
-    cursor = QBitmap::fromData(QSize(PAN_WIDTH, PAN_HEIGHT), pan_bitmap);
-    mask = QBitmap::fromData(QSize(PAN_WIDTH, PAN_HEIGHT), pan_mask_bitmap);
-    panCursor = createCursor(cursor, mask, PAN_HOT_X, PAN_HOT_Y, dpr);
+    this->panCursor = createSvgCursor(QStringLiteral(":/icons/cursor-pan.svg"), QSize(16, 16), QPoint(8, 8), dpr);
+    this->spinCursor = createSvgCursor(QStringLiteral(":/icons/cursor-rotate.svg"), QSize(16, 16), QPoint(8, 8), dpr);
+    this->zoomCursor = createSvgCursor(QStringLiteral(":/icons/cursor-zoom.svg"), QSize(16, 16), QPoint(8, 8), dpr);
 }
 
 void View3DInventorViewer::aboutToDestroyGLContext()
