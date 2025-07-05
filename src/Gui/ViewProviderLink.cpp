@@ -1731,14 +1731,17 @@ QIcon ViewProviderLink::getIcon() const {
 QPixmap ViewProviderLink::getOverlayPixmap() const {
     auto ext = getLinkExtension();
     constexpr int px = 12;
+    const qreal dpr = qApp->devicePixelRatio();
+    const QSize size = QSize(px * dpr, px * dpr);
+
     if(ext && ext->getLinkedObjectProperty() && ext->_getElementCountValue())
-        return BitmapFactory().pixmapFromSvg("LinkArrayOverlay", QSizeF(px,px));
+        return BitmapFactory().pixmapFromSvg("LinkArrayOverlay", size);
     else if(hasSubElement)
-        return BitmapFactory().pixmapFromSvg("LinkSubElement", QSizeF(px,px));
+        return BitmapFactory().pixmapFromSvg("LinkSubElement", size);
     else if(hasSubName)
-        return BitmapFactory().pixmapFromSvg("LinkSubOverlay", QSizeF(px,px));
+        return BitmapFactory().pixmapFromSvg("LinkSubOverlay", size);
     else
-        return BitmapFactory().pixmapFromSvg("LinkOverlay", QSizeF(px,px));
+        return BitmapFactory().pixmapFromSvg("LinkOverlay", size);
 }
 
 void ViewProviderLink::onChanged(const App::Property* prop) {
