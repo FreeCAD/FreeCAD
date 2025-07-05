@@ -42,13 +42,13 @@
         <normaloff>:/icons/CAM_BaseGeometry.svg</normaloff>:/icons/CAM_BaseGeometry.svg</iconset>
       </attribute>
       <attribute name="label">
-       <string>Base Geometry</string>
+       <string>Base geometry</string>
       </attribute>
       <layout class="QGridLayout" name="gridLayout_2">
        <item row="0" column="0" colspan="3">
         <widget class="QListWidget" name="baseList">
          <property name="toolTip">
-          <string>Drag to reorder, then update.</string>
+          <string>Drag to reorder, then update</string>
          </property>
          <property name="dragDropMode">
           <enum>QAbstractItemView::DragDrop</enum>
@@ -64,17 +64,17 @@
        <item row="1" column="0">
         <widget class="QPushButton" name="addBase">
          <property name="toolTip">
-          <string>Add item selected in window.</string>
+          <string>Add item selected in window</string>
          </property>
          <property name="text">
-          <string>add</string>
+          <string>Add</string>
          </property>
         </widget>
        </item>
        <item row="1" column="1">
         <widget class="QPushButton" name="deleteBase">
          <property name="toolTip">
-          <string>Remove Item selected in list, then update.</string>
+          <string>Remove item selected in list, then update</string>
          </property>
          <property name="text">
           <string>Remove</string>
@@ -84,7 +84,7 @@
        <item row="1" column="2">
         <widget class="QPushButton" name="reorderBase">
          <property name="toolTip">
-          <string>Update the path with the removed and reordered items.</string>
+          <string>Update the path with the removed and reordered items</string>
          </property>
          <property name="text">
           <string>Update</string>
@@ -133,7 +133,7 @@
        <item row="0" column="1">
         <widget class="QLabel" name="label_3">
          <property name="text">
-          <string>Start Depth</string>
+          <string>Start depth</string>
          </property>
         </widget>
        </item>
@@ -147,7 +147,7 @@
        <item row="1" column="1">
         <widget class="QLabel" name="label_4">
          <property name="text">
-          <string>Final Depth</string>
+          <string>Final depth</string>
          </property>
         </widget>
        </item>
@@ -161,7 +161,7 @@
        <item row="2" column="1">
         <widget class="QLabel" name="label_2">
          <property name="text">
-          <string>Step Down</string>
+          <string>Step down</string>
          </property>
         </widget>
        </item>
@@ -175,7 +175,7 @@
        <item row="3" column="1">
         <widget class="QLabel" name="label_13">
          <property name="text">
-          <string>Finish Step Down</string>
+          <string>Finish step down</string>
          </property>
         </widget>
        </item>
@@ -211,7 +211,7 @@
        <item row="0" column="1">
         <widget class="QLabel" name="label_5">
          <property name="text">
-          <string>Safe Height</string>
+          <string>Safe height</string>
          </property>
         </widget>
        </item>
@@ -225,7 +225,7 @@
        <item row="1" column="1">
         <widget class="QLabel" name="label_6">
          <property name="text">
-          <string>Clearance Height</string>
+          <string>Clearance height</string>
          </property>
         </widget>
        </item>
@@ -260,7 +260,7 @@
           <item row="0" column="0">
            <widget class="QLabel" name="label_8">
             <property name="text">
-             <string>Tool Controller</string>
+             <string>Tool controller</string>
             </property>
            </widget>
           </item>
@@ -270,7 +270,7 @@
           <item row="1" column="0">
            <widget class="QLabel" name="label_9">
             <property name="text">
-             <string>Coolant Mode</string>
+             <string>Coolant mode</string>
             </property>
            </widget>
           </item>
@@ -304,12 +304,12 @@
            <widget class="QComboBox" name="algorithmSelect">
             <item>
              <property name="text">
-              <string>OCL Dropcutter</string>
+              <string>OCL dropcutter</string>
              </property>
             </item>
             <item>
              <property name="text">
-              <string>OCL Waterline</string>
+              <string>OCL waterline</string>
              </property>
             </item>
            </widget>

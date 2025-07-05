@@ -82,7 +82,7 @@
       <item row="4" column="0">
        <widget class="QLabel" name="label">
         <property name="text">
-         <string>Major Diameter</string>
+         <string>Major diameter</string>
         </property>
        </widget>
       </item>
@@ -96,7 +96,7 @@
       <item row="5" column="0">
        <widget class="QLabel" name="label_2">
         <property name="text">
-         <string>Minor Diameter</string>
+         <string>Minor diameter</string>
         </property>
        </widget>
       </item>
@@ -174,7 +174,7 @@
       <item row="2" column="0">
        <widget class="QCheckBox" name="leadInOut">
         <property name="text">
-         <string>Lead In/Out</string>
+         <string>Lead in/out</string>
         </property>
        </widget>
       </item>

@@ -19,7 +19,7 @@
      <item>
       <widget class="QCheckBox" name="enableExtensions">
        <property name="text">
-        <string>Enable Extensions</string>
+        <string>Enable extensions</string>
        </property>
        <property name="checkable">
         <bool>true</bool>
@@ -65,7 +65,7 @@
             <string>Extend the corner between two edges of a pocket. Selected adjacent edges are combined.</string>
            </property>
            <property name="text">
-            <string>Extend Corners</string>
+            <string>Extend corners</string>
            </property>
            <property name="checked">
             <bool>true</bool>
@@ -75,14 +75,14 @@
          <item row="3" column="0">
           <widget class="QLabel" name="label">
            <property name="text">
-            <string>Default Length</string>
+            <string>Default length</string>
            </property>
           </widget>
          </item>
          <item row="3" column="1">
           <widget class="Gui::QuantitySpinBox" name="defaultLength">
            <property name="toolTip">
-            <string>Set the extent of the dimension -the default value is half the tool diameter</string>
+            <string>Set the extent of the dimension. The default value is half the tool diameter.</string>
            </property>
            <property name="minimum">
             <double>-999999999.000000000000000</double>

@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Create Job</string>
+   <string>New Job</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_2">
    <item>
@@ -29,7 +29,7 @@
             <bool>true</bool>
            </property>
            <property name="toolTip">
-            <string>Select a template to be used for the job. In case there are no templates you can create one through the popup menu of an existing job. Name the file job_*.json and place it in the macro or the path directory (see preferences) in order to be selectable from this list.</string>
+            <string>Select a template for the job. Templates are creatable from an existing job's context menu. Template files use the `job_*.json` naming convention and are stored in the macro or path directory (path configurable in preferences).</string>
            </property>
           </widget>
          </item>

@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Choose a processor</string>
+   <string>Processor Selection</string>
   </property>
   <layout class="QFormLayout" name="formLayout">
    <item row="0" column="0">

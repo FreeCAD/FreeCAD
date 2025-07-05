@@ -33,7 +33,7 @@
    <item row="0" column="0" colspan="2">
     <widget class="QGroupBox" name="groupBoxDefaultColors">
      <property name="title">
-      <string>Default Path colors</string>
+      <string>Default Path Colors</string>
      </property>
      <layout class="QGridLayout" name="gridLayout">
       <item row="1" column="1">
@@ -323,7 +323,7 @@
       <item row="0" column="0">
        <widget class="QLabel" name="label_12">
         <property name="text">
-         <string>Path Selection Style</string>
+         <string>Path selection style</string>
         </property>
        </widget>
       </item>
@@ -351,7 +351,7 @@
         </item>
         <item>
          <property name="text">
-          <string>Bounding Box</string>
+          <string>Bounding box</string>
          </property>
         </item>
         <item>
@@ -364,7 +364,7 @@
       <item row="1" column="0">
        <widget class="QLabel" name="label_2">
         <property name="text">
-         <string>Task Panel Layout</string>
+         <string>Task panel layout</string>
         </property>
        </widget>
       </item>
@@ -388,12 +388,12 @@
         </item>
         <item>
          <property name="text">
-          <string>Multi Panel</string>
+          <string>Multi-panel</string>
          </property>
         </item>
         <item>
          <property name="text">
-          <string>Multi Panel - reversed</string>
+          <string>Multi-panel - reversed</string>
          </property>
         </item>
        </widget>

@@ -57,7 +57,7 @@ If left empty the macro directory is used.</string>
           <item row="0" column="3">
            <widget class="QToolButton" name="tbDefaultFilePath">
             <property name="text">
-             <string notr="true">...</string>
+             <string notr="true">…</string>
             </property>
            </widget>
           </item>
@@ -71,7 +71,7 @@ If left empty the macro directory is used.</string>
           <item row="1" column="1">
            <widget class="QLineEdit" name="leDefaultJobTemplate">
             <property name="toolTip">
-             <string>The default template to be selected when creating a new Job.
+             <string>The default template to be selected when creating a new job.
 
 This can be helpful when almost all jobs will be processed by the same machine with a similar setup.
 
@@ -82,7 +82,7 @@ If left empty no template will be preselected.</string>
           <item row="1" column="3">
            <widget class="QToolButton" name="tbDefaultJobTemplate">
             <property name="text">
-             <string notr="true">...</string>
+             <string notr="true">…</string>
             </property>
            </widget>
           </item>
@@ -100,21 +100,21 @@ If left empty no template will be preselected.</string>
             <item row="0" column="0">
              <widget class="QLabel" name="label_6">
               <property name="text">
-               <string>Default Geometry Tolerance</string>
+               <string>Default geometry tolerance</string>
               </property>
              </widget>
             </item>
             <item row="0" column="1">
              <widget class="Gui::InputField" name="geometryTolerance">
               <property name="toolTip">
-               <string>Default value for new Jobs, used for computing Paths.  Smaller increases accuracy, but slows down computation</string>
+               <string>Default value for new jobs, used for computing Paths. Smaller increases accuracy, but slows down computation</string>
               </property>
              </widget>
             </item>
             <item row="1" column="0">
              <widget class="QLabel" name="label_12">
               <property name="text">
-               <string>Default Curve Accuracy</string>
+               <string>Default curve accuracy</string>
               </property>
              </widget>
             </item>
@@ -151,7 +151,7 @@ If left empty no template will be preselected.</string>
        </rect>
       </property>
       <attribute name="label">
-       <string>Post Processor</string>
+       <string>Post processor</string>
       </attribute>
       <layout class="QVBoxLayout" name="verticalLayout">
        <item>
@@ -174,7 +174,7 @@ If left empty no template will be preselected.</string>
             <item>
              <widget class="QLabel" name="label_4">
               <property name="text">
-               <string>Default Path</string>
+               <string>Default path</string>
               </property>
              </widget>
             </item>
@@ -216,7 +216,7 @@ See the file save policy below on how to deal with name conflicts.</string>
             <item>
              <widget class="QToolButton" name="tbOutputFile">
               <property name="text">
-               <string notr="true">...</string>
+               <string notr="true">…</string>
               </property>
              </widget>
             </item>
@@ -227,7 +227,7 @@ See the file save policy below on how to deal with name conflicts.</string>
             <item>
              <widget class="QLabel" name="label_5">
               <property name="text">
-               <string>File Save Policy</string>
+               <string>File save policy</string>
               </property>
              </widget>
             </item>
@@ -248,12 +248,12 @@ See the file save policy below on how to deal with name conflicts.</string>
               </property>
               <item>
                <property name="text">
-                <string>Open File Dialog</string>
+                <string>Open file dialog</string>
                </property>
               </item>
               <item>
                <property name="text">
-                <string>Open File Dialog on conflict</string>
+                <string>Open file dialog on conflict</string>
                </property>
               </item>
               <item>
@@ -285,7 +285,7 @@ See the file save policy below on how to deal with name conflicts.</string>
           <item row="0" column="0">
            <widget class="QLabel" name="label_3">
             <property name="text">
-             <string>Post Processors Selection</string>
+             <string>Post processors selection</string>
             </property>
            </widget>
           </item>
@@ -302,14 +302,14 @@ See the file save policy below on how to deal with name conflicts.</string>
           <item row="1" column="0">
            <widget class="QLabel" name="label">
             <property name="text">
-             <string>Default Post Processor</string>
+             <string>Default post processor</string>
             </property>
            </widget>
           </item>
           <item row="1" column="1">
            <widget class="QComboBox" name="defaultPostProcessor">
             <property name="toolTip">
-             <string>Select one of the post processors as the default.</string>
+             <string>Select one of the post processors as the default</string>
             </property>
             <property name="prefEntry" stdset="0">
              <string notr="true">DefaultPostProcessor</string>
@@ -322,14 +322,14 @@ See the file save policy below on how to deal with name conflicts.</string>
           <item row="3" column="0">
            <widget class="QLabel" name="label_2">
             <property name="text">
-             <string>Default Arguments</string>
+             <string>Default arguments</string>
             </property>
            </widget>
           </item>
           <item row="3" column="1">
            <widget class="QLineEdit" name="defaultPostProcessorArgs">
             <property name="toolTip">
-             <string>Optional arguments passed to the default Post Processor specified above. See the Post Processor's documentation for supported arguments.</string>
+             <string>Optional arguments passed to the default post processor specified above. See the post processor's documentation for supported arguments.</string>
             </property>
             <property name="prefEntry" stdset="0">
              <cstring>DefaultPostProcessorArgs</cstring>
@@ -392,17 +392,17 @@ See the file save policy below on how to deal with name conflicts.</string>
             </property>
             <item>
              <property name="text">
-              <string>Create Box</string>
+              <string>Create box</string>
              </property>
             </item>
             <item>
              <property name="text">
-              <string>Create Cylinder</string>
+              <string>Create cylinder</string>
              </property>
             </item>
             <item>
              <property name="text">
-              <string>Extend Model's Bounding Box</string>
+              <string>Extend model's bounding box</string>
              </property>
             </item>
            </widget>
@@ -650,7 +650,7 @@ See the file save policy below on how to deal with name conflicts.</string>
        <item>
         <widget class="QCheckBox" name="toolsAbsolutePaths">
          <property name="toolTip">
-          <string>References to Tool Bits and their shapes can either be stored with an absolute path or with a relative path to the search path.
+          <string>References to tool bits and their shapes can either be stored with an absolute path or with a relative path to the search path.
 Generally it is recommended to use relative paths due to their flexibility and robustness to layout changes.
 Should multiple tools or tool shapes with the same name exist in different directories it can be required to use absolute paths.</string>
          </property>

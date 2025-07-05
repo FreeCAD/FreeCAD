@@ -32,7 +32,7 @@
        <item>
         <widget class="QGroupBox" name="groupBox_4">
          <property name="title">
-          <string>Controller Name /  Tool Number</string>
+          <string>Controller Name / Tool Number</string>
          </property>
          <layout class="QHBoxLayout" name="horizontalLayout">
           <item>
@@ -64,7 +64,7 @@
           <item row="0" column="0">
            <widget class="QLabel" name="label">
             <property name="text">
-             <string>Horiz. Feed</string>
+             <string>Horizontal feed</string>
             </property>
            </widget>
           </item>
@@ -93,7 +93,7 @@
           <item row="1" column="0">
            <widget class="QLabel" name="label_2">
             <property name="text">
-             <string>Vert. Feed</string>
+             <string>Vertical feed</string>
             </property>
            </widget>
           </item>
@@ -122,7 +122,7 @@
           <item row="2" column="0">
            <widget class="QLabel" name="label_5">
             <property name="text">
-             <string>Horiz Rapid</string>
+             <string>Horizontal rapid</string>
             </property>
            </widget>
           </item>
@@ -151,7 +151,7 @@
           <item row="3" column="0">
            <widget class="QLabel" name="label_4">
             <property name="text">
-             <string>Vert Rapid</string>
+             <string>Vertical rapid</string>
             </property>
            </widget>
           </item>

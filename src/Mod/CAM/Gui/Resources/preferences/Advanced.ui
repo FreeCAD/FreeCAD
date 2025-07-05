@@ -61,7 +61,7 @@
       <item>
        <widget class="Gui::PrefCheckBox" name="WarningSuppressVelocity">
         <property name="toolTip">
-         <string>Suppress warning whenever a Path selection mode is activated</string>
+         <string>Suppress warning whenever a path selection mode is activated</string>
         </property>
         <property name="text">
          <string>Suppress feed rate warning</string>
@@ -80,7 +80,7 @@
       <item>
        <widget class="Gui::PrefCheckBox" name="WarningSuppressSelectionMode">
         <property name="toolTip">
-         <string>Suppress warning whenever a Path selection mode is activated</string>
+         <string>Suppress warning whenever a path selection mode is activated</string>
         </property>
         <property name="text">
          <string>Suppress selection mode warning</string>
@@ -114,7 +114,7 @@
       <item>
        <widget class="QLabel" name="label">
         <property name="text">
-         <string>If OpenCAMLib is installed with Python bindings it can be used by some additional 3D operations. NOTE: Enabling OpenCAMLib here requires a restart of FreeCAD to take effect.</string>
+         <string>If OpenCAMLib is installed with Python bindings, it can be used by some additional 3D operations. NOTE: Enabling OpenCAMLib here requires a restart of FreeCAD to take effect.</string>
         </property>
         <property name="wordWrap">
          <bool>true</bool>
