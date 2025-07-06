@@ -105,7 +105,7 @@
       <string>Transfer the Z value of the selected feature as the final depth for the operation</string>
      </property>
      <property name="text">
-      <string notr="true">...</string>
+      <string notr="true">…</string>
      </property>
      <property name="icon">
       <iconset>
