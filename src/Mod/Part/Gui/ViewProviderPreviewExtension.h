@@ -52,6 +52,7 @@ class PartGuiExport SoPreviewShape : public SoSeparator {
 
 public:
     SoPreviewShape();
+    static void initClass();
 
     SoSFColor color;
     SoSFFloat transparency;
