@@ -139,6 +139,8 @@
 #include "3Dconnexion/navlib/NavlibInterface.h"
 #include "QtWidgets.h"
 
+#include <Inventor/SoFCPlacementIndicatorKit.h>
+
 #ifdef BUILD_TRACY_FRAME_PROFILER
 #include <tracy/Tracy.hpp>
 #endif
@@ -505,6 +507,17 @@ Application::Application(bool GUIenabled)
         Gui::TaskView::TaskDialogPy::init_type();
 
         registerUserInputEnumInPython(module);
+        Base::PyRegisterEnum<SoFCPlacementIndicatorKit::Part>(module, "PlacementIndicatorParts", {
+            {"Axes", SoFCPlacementIndicatorKit::Axes},
+            {"ArrowHeads", SoFCPlacementIndicatorKit::ArrowHeads},
+            {"Labels", SoFCPlacementIndicatorKit::Labels},
+            {"PlaneIndicator", SoFCPlacementIndicatorKit::PlaneIndicator},
+            {"OriginIndicator", SoFCPlacementIndicatorKit::OriginIndicator},
+
+            // common configurations
+            {"AllParts", SoFCPlacementIndicatorKit::AllParts},
+            {"AxisCross", SoFCPlacementIndicatorKit::AxisCross},
+        });
 
         CommandActionPy::init_type();
         Base::Interpreter().addType(CommandActionPy::type_object(), module, "CommandAction");
