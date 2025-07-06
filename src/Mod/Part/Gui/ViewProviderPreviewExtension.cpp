@@ -111,6 +111,11 @@ SoPreviewShape::SoPreviewShape()
     SoSeparator::addChild(annotation);
 }
 
+void SoPreviewShape::initClass()
+{
+    SO_NODE_INIT_CLASS(SoPreviewShape, SoSeparator, "Separator");
+}
+
 EXTENSION_PROPERTY_SOURCE(PartGui::ViewProviderPreviewExtension, Gui::ViewProviderExtension)
 
 ViewProviderPreviewExtension::ViewProviderPreviewExtension()
