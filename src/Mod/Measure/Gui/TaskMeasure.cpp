@@ -93,8 +93,9 @@ TaskMeasure::TaskMeasure()
     autoSaveAction = new QAction(tr("Auto Save"));
     autoSaveAction->setCheckable(true);
     autoSaveAction->setChecked(mAutoSave);
-    autoSaveAction->setToolTip(tr("Auto saving of the last measurement when starting a new "
-                                  "measurement. Use the Shift key to temporarily invert the behaviour."));
+    autoSaveAction->setToolTip(
+        tr("Auto saving of the last measurement when starting a new "
+           "measurement. Use the Shift key to temporarily invert the behaviour."));
     connect(autoSaveAction, &QAction::triggered, this, &TaskMeasure::autoSaveChanged);
 
     newMeasurementBehaviourAction = new QAction(tr("Additive Selection"));
@@ -102,7 +103,8 @@ TaskMeasure::TaskMeasure()
     newMeasurementBehaviourAction->setChecked(Gui::Selection().getSelectionStyle()
                                               == SelectionStyle::GreedySelection);
     newMeasurementBehaviourAction->setToolTip(
-        tr("If checked, new selection will be added to the measurement. If unchecked, the Ctrl key must be "
+        tr("If checked, new selection will be added to the measurement. If unchecked, the Ctrl key "
+           "must be "
            "pressed to add a "
            "selection to the current measurement otherwise a new measurement will be started"));
     connect(newMeasurementBehaviourAction,
