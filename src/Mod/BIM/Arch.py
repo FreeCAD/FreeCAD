@@ -794,7 +794,12 @@ def makePipeConnector(pipes, radius=0, name=None):
 
     # Initialize all relevant properties
     pipeConnector.Pipes = pipes
-    pipeConnector.Radius = radius if radius else pipes[0].Diameter
+    if radius:
+        pipeConnector.Radius = radius
+    elif pipes[0].ProfileType == "Circle":
+        pipeConnector.Radius = pipes[0].Diameter
+    else:
+        pipeConnector.Radius = max(pipes[0].Height, pipes[0].Width)
 
     return pipeConnector
 
