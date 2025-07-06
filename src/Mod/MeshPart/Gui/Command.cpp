@@ -91,10 +91,10 @@ void CmdMeshPartTrimByPlane::activated(int)
     Base::Type partType = Base::Type::fromName("Part::Plane");
     std::vector<App::DocumentObject*> plane = getSelection().getObjectsOfType(partType);
     if (plane.empty()) {
-        QMessageBox::warning(Gui::getMainWindow(),
-                             qApp->translate("MeshPart_TrimByPlane", "Select plane"),
-                             qApp->translate("MeshPart_TrimByPlane",
-                                             "Select a plane to trim the mesh with."));
+        QMessageBox::warning(
+            Gui::getMainWindow(),
+            qApp->translate("MeshPart_TrimByPlane", "Select plane"),
+            qApp->translate("MeshPart_TrimByPlane", "Select a plane to trim the mesh with."));
         return;
     }
 
@@ -200,8 +200,7 @@ void CmdMeshPartSection::activated(int)
         QMessageBox::warning(
             Gui::getMainWindow(),
             qApp->translate("MeshPart_Section", "Select plane"),
-            qApp->translate("MeshPart_Section",
-                            "Select a plane to section the mesh with."));
+            qApp->translate("MeshPart_Section", "Select a plane to section the mesh with."));
         return;
     }
 
