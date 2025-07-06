@@ -56,7 +56,7 @@ class CommandCAMSanity:
         }
 
     def IsActive(self):
-        selection = FreeCADGui.Selection.getSelection()
+        selection = FreeCADGui.Selection.getSelectionEx()
         if len(selection) == 0:
             return False
         obj = selection[0].Object

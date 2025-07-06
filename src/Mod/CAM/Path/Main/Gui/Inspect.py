@@ -263,7 +263,7 @@ class CommandPathInspect:
         selection = FreeCADGui.Selection.getSelection()
         if len(selection) == 0:
             return False
-        obj = selection[0].Object
+        obj = selection[0]
         return hasattr(obj, "Path") and len(obj.Path.Commands) > 0
 
     def Activated(self):
