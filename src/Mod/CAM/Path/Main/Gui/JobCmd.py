@@ -54,7 +54,7 @@ class CommandJobCreate:
     def GetResources(self):
         return {
             "Pixmap": "CAM_Job",
-            "MenuText": QT_TRANSLATE_NOOP("CAM_Job", "Job"),
+            "MenuText": QT_TRANSLATE_NOOP("CAM_Job", "New Job"),
             "Accel": "P, J",
             "ToolTip": QT_TRANSLATE_NOOP("CAM_Job", "Creates a CAM job"),
         }
