@@ -42,6 +42,7 @@
 #include "ViewProviderTransformed.h"
 #include "TaskTransformedParameters.h"
 
+#include <BRep_Builder.hxx>
 #include <Inventor/nodes/SoTransform.h>
 
 using namespace PartDesignGui;
@@ -109,8 +110,6 @@ void ViewProviderTransformed::updatePreview()
                 return;
             }
 
-            transforms.pop_front();
-
             Gui::coinRemoveAllChildren(pcPreviewRoot);
 
             for (const auto& transform : transforms) {
@@ -133,23 +132,6 @@ void ViewProviderTransformed::updatePreview()
     }
 
     ViewProvider::updatePreview();
-}
-
-Part::TopoShape ViewProviderTransformed::getPreviewShape() const
-{
-    if (auto feature = getObject<PartDesign::Transformed>()) {
-        auto originals = feature->getOriginals();
-
-        if (originals.empty()) {
-            return {};
-        }
-
-        if (auto first = freecad_cast<PartDesign::Feature*>(originals.front())) {
-            return first->PreviewShape.getShape();
-        }
-    }
-
-    return {};
 }
 
 void ViewProviderTransformed::handleTransformedResult(PartDesign::Transformed* pcTransformed) {

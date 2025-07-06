@@ -57,6 +57,7 @@ public:
     static const SbColor defaultColor;
 
     SoPreviewShape();
+    static void initClass();
 
     SoSFColor color;
     SoSFFloat transparency;

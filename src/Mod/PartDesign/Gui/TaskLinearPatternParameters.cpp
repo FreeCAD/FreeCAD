@@ -432,6 +432,7 @@ TaskDlgLinearPatternParameters::TaskDlgLinearPatternParameters(
     parameter = new TaskLinearPatternParameters(LinearPatternView);
 
     Content.push_back(parameter);
+    Content.push_back(preview);
 }
 
 #include "moc_TaskLinearPatternParameters.cpp"
