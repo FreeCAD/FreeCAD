@@ -80,7 +80,48 @@ public:
 private:
     std::list<Gui::InputHint> getToolHints() const override
     {
-        return lookupCircleHints(constructionMethod(), state());
+        using State = std::pair<ConstructionMethod, SelectMode>;
+        using enum Gui::InputHint::UserInput;
+
+        const Gui::InputHint switchModeHint = {tr("%1 switch mode"), {KeyM}};
+
+        return Gui::lookupHints<State>(
+            {constructionMethod(), state()},
+            {
+                // Center method
+                {.state = {ConstructionMethod::Center, SelectMode::SeekFirst},
+                 .hints =
+                     {
+                         {tr("%1 pick circle center"), {MouseLeft}},
+                         switchModeHint,
+                     }},
+                {.state = {ConstructionMethod::Center, SelectMode::SeekSecond},
+                 .hints =
+                     {
+                         {tr("%1 pick rim point"), {MouseLeft}},
+                         switchModeHint,
+                     }},
+
+                // ThreeRim method
+                {.state = {ConstructionMethod::ThreeRim, SelectMode::SeekFirst},
+                 .hints =
+                     {
+                         {tr("%1 pick first rim point"), {MouseLeft}},
+                         switchModeHint,
+                     }},
+                {.state = {ConstructionMethod::ThreeRim, SelectMode::SeekSecond},
+                 .hints =
+                     {
+                         {tr("%1 pick second rim point"), {MouseLeft}},
+                         switchModeHint,
+                     }},
+                {.state = {ConstructionMethod::ThreeRim, SelectMode::SeekThird},
+                 .hints =
+                     {
+                         {tr("%1 pick third rim point"), {MouseLeft}},
+                         switchModeHint,
+                     }},
+            });
     }
 
     void updateDataAndDrawToPosition(Base::Vector2d onSketchPos) override
@@ -266,7 +307,7 @@ private:
 
     QString getToolWidgetText() const override
     {
-        return QString(QObject::tr("Circle parameters"));
+        return QString(tr("Circle parameters"));
     }
 
     bool canGoToNextMode() override
@@ -308,19 +349,6 @@ private:
     }
 
 private:
-    struct HintEntry
-    {
-        ConstructionMethod method;
-        SelectMode state;
-        std::list<Gui::InputHint> hints;
-    };
-
-    using HintTable = std::vector<HintEntry>;
-
-    static Gui::InputHint switchModeHint();
-    static HintTable getCircleHintTable();
-    static std::list<Gui::InputHint> lookupCircleHints(ConstructionMethod method, SelectMode state);
-
     Base::Vector2d centerPoint, firstPoint, secondPoint;
     double radius;
     bool isDiameter;
@@ -742,54 +770,6 @@ void DSHCircleController::addConstraints()
     // No constraint possible for 3 rim circle.
 }
 
-Gui::InputHint DrawSketchHandlerCircle::switchModeHint()
-{
-    return {QObject::tr("%1 switch mode"), {Gui::InputHint::UserInput::KeyM}};
-}
-
-DrawSketchHandlerCircle::HintTable DrawSketchHandlerCircle::getCircleHintTable()
-{
-    const auto switchHint = switchModeHint();
-    return {
-        // Structure: {ConstructionMethod, SelectMode, {hints...}}
-
-        // Center method
-        {ConstructionMethod::Center,
-         SelectMode::SeekFirst,
-         {{QObject::tr("%1 pick circle center"), {Gui::InputHint::UserInput::MouseLeft}},
-          switchHint}},
-        {ConstructionMethod::Center,
-         SelectMode::SeekSecond,
-         {{QObject::tr("%1 pick rim point"), {Gui::InputHint::UserInput::MouseLeft}}, switchHint}},
-
-        // ThreeRim method
-        {ConstructionMethod::ThreeRim,
-         SelectMode::SeekFirst,
-         {{QObject::tr("%1 pick first rim point"), {Gui::InputHint::UserInput::MouseLeft}},
-          switchHint}},
-        {ConstructionMethod::ThreeRim,
-         SelectMode::SeekSecond,
-         {{QObject::tr("%1 pick second rim point"), {Gui::InputHint::UserInput::MouseLeft}},
-          switchHint}},
-        {ConstructionMethod::ThreeRim,
-         SelectMode::SeekThird,
-         {{QObject::tr("%1 pick third rim point"), {Gui::InputHint::UserInput::MouseLeft}},
-          switchHint}}};
-}
-
-std::list<Gui::InputHint> DrawSketchHandlerCircle::lookupCircleHints(ConstructionMethod method,
-                                                                     SelectMode state)
-{
-    const auto circleHintTable = getCircleHintTable();
-
-    auto it = std::find_if(circleHintTable.begin(),
-                           circleHintTable.end(),
-                           [method, state](const HintEntry& entry) {
-                               return entry.method == method && entry.state == state;
-                           });
-
-    return (it != circleHintTable.end()) ? it->hints : std::list<Gui::InputHint> {};
-}
 }  // namespace SketcherGui
 
 
