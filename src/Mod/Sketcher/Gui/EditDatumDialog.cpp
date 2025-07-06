@@ -418,7 +418,7 @@ void EditDatumDialog::performAutoScale(double newDatum)
             centerScale(sketch, scaleFactor);
             sketch->setLabelDistance(ConstrNbr, initLabelDistance * scaleFactor);
 
-            // Label position or radiuses and diameters represent an angle, so
+            // Label position or radii and diameters represent an angle, so
             // they should not be scaled
             Sketcher::ConstraintType type = sketch->Constraints[ConstrNbr]->Type;
             if (type == Sketcher::ConstraintType::Radius
