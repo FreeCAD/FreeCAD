@@ -675,7 +675,8 @@ public:
         static int iconSize = -1;
         if (iconSize < 0) {
             auto sampleIcon = QApplication::style()->standardPixmap(QStyle::SP_DirClosedIcon);
-            iconSize = sampleIcon.width() / sampleIcon.devicePixelRatio();
+            double pixelRatio = sampleIcon.devicePixelRatio();
+            iconSize = static_cast<int>(sampleIcon.width() / pixelRatio);
         }
 
         if(!isLinked())
