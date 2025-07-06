@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Classification manager</string>
+   <string>Classification Manager</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
@@ -57,7 +57,7 @@
          <item>
           <widget class="QLabel" name="label">
            <property name="text">
-            <string>Sort by:</string>
+            <string>Sort by</string>
            </property>
           </widget>
          </item>
@@ -117,7 +117,7 @@
          </attribute>
          <column>
           <property name="text">
-           <string>Object / Material</string>
+           <string>Object/Material</string>
           </property>
          </column>
          <column>
@@ -176,7 +176,7 @@
             <string>Apply the selected class to selected objects</string>
            </property>
            <property name="text">
-            <string>&lt;&lt; Apply to selected</string>
+            <string>&lt;&lt; Apply to Selected</string>
            </property>
           </widget>
          </item>
@@ -186,7 +186,7 @@
             <string>Use this class as object name</string>
            </property>
            <property name="text">
-            <string>&lt;&lt; Set as name</string>
+            <string>&lt;&lt; Set as Name</string>
            </property>
           </widget>
          </item>

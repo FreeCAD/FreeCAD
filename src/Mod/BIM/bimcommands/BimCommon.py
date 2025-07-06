@@ -37,7 +37,7 @@ class BIM_Common:
             "Pixmap": "Part_Common",
             "MenuText": QT_TRANSLATE_NOOP("Part_Common", "Intersection"),
             "ToolTip": QT_TRANSLATE_NOOP(
-                "Part_Common", "Make an intersection of two shapes"
+                "Part_Common", "Creates an intersection of two shapes"
             ),
         }
 

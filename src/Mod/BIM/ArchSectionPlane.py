@@ -1281,7 +1281,7 @@ class SectionPlaneTaskPanel:
             if added:
                 self.update()
             else:
-                FreeCAD.Console.PrintWarning("Please select objects in the 3D view or in the model tree before pressing the button\n")
+                FreeCAD.Console.PrintWarning("Select objects in the 3D view or in the model tree before pressing the button\n")
 
     def removeElement(self):
         if self.obj:

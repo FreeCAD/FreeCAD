@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Add IFC property</string>
+   <string>Add IFC Property</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
    <item row="5" column="1">

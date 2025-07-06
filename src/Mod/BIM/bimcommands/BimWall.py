@@ -277,7 +277,7 @@ class Arch_Wall:
 
         # Wall presets input
         comboWallPresets = QtGui.QComboBox()
-        comboWallPresets.addItem(translate("Arch","Wall Presets..."))
+        comboWallPresets.addItem(translate("Arch","Wall Presets…"))
         comboWallPresets.setToolTip(translate("Arch","This list shows all the MultiMaterials objects of this document. Create some to define wall types."))
         self.multimats = []
         self.MultiMat = None
