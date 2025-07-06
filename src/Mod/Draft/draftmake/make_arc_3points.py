@@ -122,7 +122,7 @@ def make_arc_3points(points, placement=None, face=False,
         utils.type_check([(points, (list, tuple))], name=_name)
     except TypeError:
         _err(translate("draft","Points:") + " {}".format(points))
-        _err(translate("draft","Wrong input: must be list or tuple of 3 points exactly."))
+        _err(translate("draft","Wrong input: must be a list or tuple of 3 points exactly."))
         return None
 
     if len(points) != 3:

@@ -662,7 +662,7 @@ def placements_on_path(shapeRotation, pathwire, count, xlate, align,
             _wrn(
                 translate(
                     "draft",
-                    "End offset too large for path length minus start offset. Using 0 instead."
+                    "The end offset is too large for  the path length minus the start offset. Using 0 instead."
                 )
             )
         endOffset = 0

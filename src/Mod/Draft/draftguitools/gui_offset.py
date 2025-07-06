@@ -324,7 +324,7 @@ class Offset(gui_base_original.Modifier):
             self.finish()
         else:
             _err(translate("Draft",
-                           "Offset direction is not defined. Move the mouse on either side of the object first to indicate a direction"))
+                           "Offset direction is not defined. Move the mouse on either side of the object first to indicate a direction."))
 
 
 Gui.addCommand('Draft_Offset', Offset())

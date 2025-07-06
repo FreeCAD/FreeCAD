@@ -529,7 +529,7 @@ class Arc_3Points(gui_base.GuiCommandBase):
         Gui.Snapper.getPoint(callback=self.getPoint,
                              movecallback=self.drawArc)
         Gui.Snapper.ui.sourceCmd = self
-        Gui.Snapper.ui.setTitle(title=translate("draft", "Arc From 3 points"),
+        Gui.Snapper.ui.setTitle(title=translate("draft", "Arc From 3 Points"),
                                 icon="Draft_Arc_3Points")
         Gui.Snapper.ui.continueCmd.show()
 
@@ -573,7 +573,7 @@ class Arc_3Points(gui_base.GuiCommandBase):
                                  callback=self.getPoint,
                                  movecallback=self.drawArc)
             Gui.Snapper.ui.sourceCmd = self
-            Gui.Snapper.ui.setTitle(title=translate("draft", "Arc From 3 points"),
+            Gui.Snapper.ui.setTitle(title=translate("draft", "Arc From 3 Points"),
                                     icon="Draft_Arc_3Points")
             Gui.Snapper.ui.continueCmd.show()
 

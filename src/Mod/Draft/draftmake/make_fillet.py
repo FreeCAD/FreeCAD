@@ -71,7 +71,7 @@ def _preprocess(objs, radius, chamfer):
                 edges.append(shape.Edges[0])
 
     if len(edges) != 2:
-        _err(translate("draft", "Two edges are needed"))
+        _err(translate("draft", "2 edges are needed"))
         return None, None
 
     edges = DraftGeomUtils.fillet(edges, radius, chamfer)

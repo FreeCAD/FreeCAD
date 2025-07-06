@@ -17,7 +17,7 @@
    <item>
     <widget class="QLabel" name="label">
      <property name="text">
-      <string>Choose an option below. Otherwise setup working plane by 3 vertices, one or more shapes or a workin plane proxy</string>
+      <string>Choose an option below. Otherwise, define a working plane with 3 vertices, 1 or more shapes, or a working plane proxy.</string>
      </property>
      <property name="wordWrap">
       <bool>true</bool>

@@ -172,7 +172,7 @@ class TaskPanelCircularArray:
         the interface may not allow one to input wrong data.
         """
         if not selection:
-            _err(translate("draft","At least one element must be selected"))
+            _err(translate("draft","At least 1 element must be selected"))
             return False
 
         if number < 2:

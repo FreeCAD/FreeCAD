@@ -839,13 +839,13 @@ class Plane(PlaneBase):
             if not geom_is_shape:
                 _wrn(translate(
                     "draft",
-                    "Object without part.Shape geometry:'{}'".format(
+                    "Object without Part.Shape geometry:'{}'".format(
                         obj.ObjectName)) + "\n")
                 return False
             if geom.isNull():
                 _wrn(translate(
                     "draft",
-                    "Object with null part.Shape geometry:'{}'".format(
+                    "Object with null Part.Shape geometry:'{}'".format(
                         obj.ObjectName)) + "\n")
                 return False
             if obj.HasSubObjects:

@@ -55,7 +55,7 @@ class Draft2Sketch(gui_base_original.Modifier):
 
         return {'Pixmap': 'Draft_Draft2Sketch',
                 'MenuText': QT_TRANSLATE_NOOP("Draft_Draft2Sketch", "Draft to Sketch"),
-                'ToolTip': QT_TRANSLATE_NOOP("Draft_Draft2Sketch", "Converts bidirectionally between Draft objects and sketches.\nMultiple selected Draft objects will be converted into a single, non-constrained, sketch.\nHowever, a single sketch with disconnected traces will be converted into several individual Draft objects.")}
+                'ToolTip': QT_TRANSLATE_NOOP("Draft_Draft2Sketch", "Converts bidirectionally between Draft objects and sketches.\nMultiple selected Draft objects will be converted into a single, non-constrained sketch.\nHowever, a single sketch with disconnected traces will be converted into several individual Draft objects.")}
 
     def Activated(self):
         """Execute when the command is called."""

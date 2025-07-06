@@ -67,7 +67,7 @@ class Fillet(gui_base_original.Creator):
         return {"Pixmap": "Draft_Fillet",
                 "Accel": "F,I",
                 "MenuText": QT_TRANSLATE_NOOP("Draft_Fillet", "Fillet"),
-                "ToolTip": QT_TRANSLATE_NOOP("Draft_Fillet", "Creates a fillet between two selected wires or edges")}
+                "ToolTip": QT_TRANSLATE_NOOP("Draft_Fillet", "Creates a fillet between 2 selected wires or edges")}
 
     def Activated(self, name="Fillet"):
         """Execute when the command is called."""

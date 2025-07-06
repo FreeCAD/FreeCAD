@@ -570,7 +570,7 @@ class DraftToolBar:
             "draft", "If checked, the command will not finish until pressing "
                      + "the command button again"))
         self.chainedModeCmd.setText(translate("draft", "Chained mode"))
-        self.chainedModeCmd.setToolTip(translate("draft", "If checked, the next Dimension will be placed in a chain" \
+        self.chainedModeCmd.setToolTip(translate("draft", "If checked, the next dimension will be placed in a chain" \
                                        " with the previously placed Dimension"))
         self.occOffset.setText(translate("draft", "OCC-style offset"))
         self.occOffset.setToolTip(translate(

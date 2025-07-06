@@ -122,7 +122,7 @@ class Draft_Snap_Intersection(Draft_Snap_Base):
     def GetResources(self):
         return {"Pixmap":    "Draft_Snap_Intersection",
                 "MenuText":  QT_TRANSLATE_NOOP("Draft_Snap_Intersection", "Snap Intersection"),
-                "ToolTip":   QT_TRANSLATE_NOOP("Draft_Snap_Intersection", "Snaps to the intersection of two edges"),
+                "ToolTip":   QT_TRANSLATE_NOOP("Draft_Snap_Intersection", "Snaps to the intersection of 2 edges"),
                 "CmdType":   "NoTransaction",
                 "Checkable": self.isChecked()}
 

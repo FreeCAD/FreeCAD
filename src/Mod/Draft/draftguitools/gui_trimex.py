@@ -525,7 +525,7 @@ class Trimex(gui_base_original.Modifier):
                     edge1 = i1
                     edge2 = i2
         if not ints:
-            _err(translate("draft", "These objects don't intersect"))
+            _err(translate("draft", "These objects do not intersect"))
             return
         if len(ints) != 1:
             _err(translate("draft", "Too many intersection points"))
