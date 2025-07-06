@@ -41,6 +41,59 @@ class SoCoordinate3;
 
 namespace Gui
 {
+class SoRotatorGeometryKit: public SoBaseKit
+{
+    SO_KIT_HEADER(SoLinearGeometryKit);
+
+public:
+    static void initClass();
+
+    SoSFVec3f pivotPosition;
+
+protected:
+    SoRotatorGeometryKit();
+    ~SoRotatorGeometryKit() override = default;
+
+private:
+    using inherited = SoBaseKit;
+};
+
+/*!
+ * @brief Rotator geometry
+ * 
+ * A class to contain the geometry for SoRotationDragger
+ */
+class SoRotatorGeometry: public SoRotatorGeometryKit
+{
+    SO_KIT_HEADER(SoArrowGeometry);
+    SO_KIT_CATALOG_ENTRY_HEADER(lightModel);
+    SO_KIT_CATALOG_ENTRY_HEADER(drawStyle);
+    SO_KIT_CATALOG_ENTRY_HEADER(arcCoords);
+    SO_KIT_CATALOG_ENTRY_HEADER(arc);
+    SO_KIT_CATALOG_ENTRY_HEADER(rotorPivot);
+
+    SO_KIT_CATALOG_ENTRY_HEADER(_rotorPivotTranslation);
+
+public:
+    static void initClass();
+    SoRotatorGeometry();
+
+    SoSFFloat arcAngle; //!< in radians
+    SoSFFloat arcRadius;
+    SoSFFloat sphereRadius;
+    SoSFFloat arcThickness;
+
+protected:
+    ~SoRotatorGeometry() override = default;
+
+    void notify(SoNotList* notList) override;
+
+private:
+    constexpr static int segments = 10; //!< segments of the arc per arcAngle
+
+    using inherited = SoRotatorGeometryKit;
+};
+
 /*! @brief Rotation Dragger.
  *
  * used for rotating around an axis. Set the rotation
@@ -51,9 +104,10 @@ namespace Gui
 class SoRotationDragger : public SoDragger
 {
     SO_KIT_HEADER(SoRotationDragger);
-    SO_KIT_CATALOG_ENTRY_HEADER(rotator);
     SO_KIT_CATALOG_ENTRY_HEADER(activeSwitch);
     SO_KIT_CATALOG_ENTRY_HEADER(secondaryColor);
+    SO_KIT_CATALOG_ENTRY_HEADER(scale);
+    SO_KIT_CATALOG_ENTRY_HEADER(rotator);
 
 public:
     static void initClass();
@@ -62,11 +116,8 @@ public:
     SoSFRotation rotation; //!< set from outside and used from outside for single precision.
     SoSFDouble rotationIncrement; //!< set from outside and used for rounding.
     SoSFInt32 rotationIncrementCount; //!< number of steps. used from outside.
-    SoSFColor activeColor;
-    SoSFFloat arcRadius;
-    SoSFFloat arcAngle; //!< in radians
-    SoSFFloat sphereRadius;
-    SoSFFloat arcThickness;
+    SoSFColor activeColor; //!< colour of the dragger while being dragged.
+    SoSFVec3f geometryScale; //!< the scale of the dragger geometry
 
 protected:
     ~SoRotationDragger() override;
@@ -86,18 +137,8 @@ protected:
     SbPlaneProjector projector;
 
 private:
-    SoCalculator* calculator;
-    SoCoordinate3* coordinates = nullptr;
-    SoFieldSensor arcRadiusSensor;
-    SoFieldSensor arcAngleSensor;
-    constexpr static int segments = 10; //!< segments of the arc per arcAngle
-
     int roundIncrement(const float &radiansIn);
-    SoSeparator* buildGeometry();
-    static void arcSensorCB(void* userdata, SoSensor*);
     SoBaseColor* buildActiveColor();
-    void setupGeometryCalculator();
-    void setupArcSensors();
 
     using inherited = SoDragger;
 };
@@ -117,9 +158,8 @@ public:
     SoSFRotation rotation;
     SoSFColor color;
     SoSFVec3f translation;
+    SoSFBool visible;
 
-    void setVisibility(bool visible);
-    bool isVisible();
     void setPointerDirection(const Base::Vector3d& dir);
 
     SoRotationDragger* getDragger();

@@ -626,49 +626,49 @@ void SoTransformDragger::setAxisColors(unsigned long x, unsigned long y, unsigne
 void SoTransformDragger::showTranslationX()
 {
     auto tDragger = SO_GET_ANY_PART(this, "xTranslatorDragger", SoLinearDraggerContainer);
-    tDragger->setVisibility(true);
+    tDragger->visible = true;
 }
 void SoTransformDragger::showTranslationY()
 {
     auto tDragger = SO_GET_ANY_PART(this, "yTranslatorDragger", SoLinearDraggerContainer);
-    tDragger->setVisibility(true);
+    tDragger->visible = true;
 }
 void SoTransformDragger::showTranslationZ()
 {
     auto tDragger = SO_GET_ANY_PART(this, "zTranslatorDragger", SoLinearDraggerContainer);
-    tDragger->setVisibility(true);
+    tDragger->visible = true;
 }
 
 void SoTransformDragger::hideTranslationX()
 {
     auto tDragger = SO_GET_ANY_PART(this, "xTranslatorDragger", SoLinearDraggerContainer);
-    tDragger->setVisibility(false);
+    tDragger->visible = false;
 }
 void SoTransformDragger::hideTranslationY()
 {
     auto tDragger = SO_GET_ANY_PART(this, "yTranslatorDragger", SoLinearDraggerContainer);
-    tDragger->setVisibility(false);
+    tDragger->visible = false;
 }
 void SoTransformDragger::hideTranslationZ()
 {
     auto tDragger = SO_GET_ANY_PART(this, "zTranslatorDragger", SoLinearDraggerContainer);
-    tDragger->setVisibility(false);
+    tDragger->visible = false;
 }
 
 bool SoTransformDragger::isShownTranslationX()
 {
     auto tDragger = SO_GET_ANY_PART(this, "xTranslatorDragger", SoLinearDraggerContainer);
-    return tDragger->isVisible();
+    return tDragger->visible.getValue();
 }
 bool SoTransformDragger::isShownTranslationY()
 {
     auto tDragger = SO_GET_ANY_PART(this, "yTranslatorDragger", SoLinearDraggerContainer);
-    return tDragger->isVisible();
+    return tDragger->visible.getValue();
 }
 bool SoTransformDragger::isShownTranslationZ()
 {
     auto tDragger = SO_GET_ANY_PART(this, "zTranslatorDragger", SoLinearDraggerContainer);
-    return tDragger->isVisible();
+    return tDragger->visible.getValue();
 }
 
 // Planar Translator
@@ -740,49 +740,49 @@ bool SoTransformDragger::isHiddenPlanarTranslationZX()
 void SoTransformDragger::showRotationX()
 {
     SoRotationDraggerContainer* rDragger = SO_GET_ANY_PART(this, "xRotatorDragger", SoRotationDraggerContainer);
-    rDragger->setVisibility(true);
+    rDragger->visible = true;
 }
 void SoTransformDragger::showRotationY()
 {
     SoRotationDraggerContainer* rDragger = SO_GET_ANY_PART(this, "yRotatorDragger", SoRotationDraggerContainer);
-    rDragger->setVisibility(true);
+    rDragger->visible = true;
 }
 void SoTransformDragger::showRotationZ()
 {
     SoRotationDraggerContainer* rDragger = SO_GET_ANY_PART(this, "zRotatorDragger", SoRotationDraggerContainer);
-    rDragger->setVisibility(true);
+    rDragger->visible = true;
 }
 
 void SoTransformDragger::hideRotationX()
 {
     SoRotationDraggerContainer* rDragger = SO_GET_ANY_PART(this, "xRotatorDragger", SoRotationDraggerContainer);
-    rDragger->setVisibility(false);
+    rDragger->visible = false;
 }
 void SoTransformDragger::hideRotationY()
 {
     SoRotationDraggerContainer* rDragger = SO_GET_ANY_PART(this, "yRotatorDragger", SoRotationDraggerContainer);
-    rDragger->setVisibility(false);
+    rDragger->visible = false;
 }
 void SoTransformDragger::hideRotationZ()
 {
     SoRotationDraggerContainer* rDragger = SO_GET_ANY_PART(this, "zRotatorDragger", SoRotationDraggerContainer);
-    rDragger->setVisibility(false);
+    rDragger->visible = false;
 }
 
 bool SoTransformDragger::isShownRotationX()
 {
     SoRotationDraggerContainer* rDragger = SO_GET_ANY_PART(this, "xRotatorDragger", SoRotationDraggerContainer);
-    return rDragger->isVisible();
+    return rDragger->visible.getValue();
 }
 bool SoTransformDragger::isShownRotationY()
 {
     SoRotationDraggerContainer* rDragger = SO_GET_ANY_PART(this, "yRotatorDragger", SoRotationDraggerContainer);
-    return rDragger->isVisible();
+    return rDragger->visible.getValue();
 }
 bool SoTransformDragger::isShownRotationZ()
 {
     SoRotationDraggerContainer* rDragger = SO_GET_ANY_PART(this, "zRotatorDragger", SoRotationDraggerContainer);
-    return rDragger->isVisible();
+    return rDragger->visible.getValue();
 }
 
 void SoTransformDragger::setupTranslationDraggers()
