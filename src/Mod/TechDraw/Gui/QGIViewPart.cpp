@@ -287,7 +287,6 @@ void QGIViewPart::drawAllFaces(void)
             std::vector<LineSet> lineSets = fGeom->getTrimmedLines(iFace);
             if (!lineSets.empty()) {
                 // this face has geometric hatch lines
-                newFace->clearLineSets();
                 for (auto& ls : lineSets) {
                     newFace->addLineSet(ls);
                 }
