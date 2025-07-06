@@ -73,7 +73,7 @@ class CommandLibraryEditorOpen:
     def GetResources(self):
         return {
             "Pixmap": "CAM_ToolTable",
-            "MenuText": QT_TRANSLATE_NOOP("CAM_ToolBitLibraryOpen", "ToolBit Library Editor"),
+            "MenuText": QT_TRANSLATE_NOOP("CAM_ToolBitLibraryOpen", "Toolbit Library Editor"),
             "ToolTip": QT_TRANSLATE_NOOP(
                 "CAM_ToolBitLibraryOpen", "Opens an editor to manage toolbit libraries"
             ),
