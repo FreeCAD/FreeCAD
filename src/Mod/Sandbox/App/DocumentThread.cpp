@@ -76,7 +76,7 @@ void WorkerThread::run()
 #else
     int max = 100000000;
 #endif
-    Base::SequencerLauncher seq("Do something meaningful...", max);
+    Base::SequencerLauncher seq("Do something meaningful…", max);
     double val=0;
     for (int i=0; i<max; i++) {
         for (int j=0; j<max; j++) {
