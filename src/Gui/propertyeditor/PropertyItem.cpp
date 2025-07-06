@@ -221,6 +221,12 @@ bool PropertyItem::removeProperty(const App::Property* prop)
     return propertyItems.empty();
 }
 
+bool PropertyItem::renameProperty(const App::Property* prop)
+{
+    setPropertyData({const_cast<App::Property*>(prop)});
+    return true;
+}
+
 App::Property* PropertyItem::getFirstProperty()
 {
     if (propertyItems.empty()) {
