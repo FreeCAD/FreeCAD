@@ -142,7 +142,7 @@ class _ToggleOperation:
     def GetResources(self):
         return {
             "Pixmap": "CAM_OpActive",
-            "MenuText": QT_TRANSLATE_NOOP("CAM_OpActiveToggle", "Toggle Operation Active"),
+            "MenuText": QT_TRANSLATE_NOOP("CAM_OpActiveToggle", "Toggle Operation"),
             "Accel": "P, X",
             "ToolTip": QT_TRANSLATE_NOOP(
                 "CAM_OpActiveToggle", "Toggles the active state of the operation"
