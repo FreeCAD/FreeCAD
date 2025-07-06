@@ -40,7 +40,7 @@
    <item row="0" column="2">
     <widget class="QToolButton" name="startDepthSet">
      <property name="toolTip">
-      <string>Transfer the Z value of the selected feature as the start depth for the operation.</string>
+      <string>Transfer the Z value of the selected feature as the start depth for the operation</string>
      </property>
      <property name="text">
       <string notr="true">…</string>
