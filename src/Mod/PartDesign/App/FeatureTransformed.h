@@ -94,6 +94,8 @@ public:
     short mustExecute() const override;
     //@}
 
+    App::DocumentObjectExecReturn* recomputePreview() override;
+
     void onChanged(const App::Property* prop) override;
 
     /** returns the compound of the shapes that were rejected during the last execute

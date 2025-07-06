@@ -51,8 +51,6 @@ public:
     void recomputeFeature(bool recompute=true);
     void setupContextMenu(QMenu*, QObject*, const char*) override;
 
-    Part::TopoShape getPreviewShape() const override;
-
     /// signals if the transformation contains errors
     boost::signals2::signal<void (QString msg)> signalDiagnosis;
 

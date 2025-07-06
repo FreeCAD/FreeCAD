@@ -339,6 +339,7 @@ TaskDlgChamferParameters::TaskDlgChamferParameters(ViewProviderChamfer* DressUpV
     parameter = new TaskChamferParameters(DressUpView);
 
     Content.push_back(parameter);
+    Content.push_back(preview);
 }
 
 TaskDlgChamferParameters::~TaskDlgChamferParameters() = default;

@@ -272,6 +272,7 @@ TaskDlgThicknessParameters::TaskDlgThicknessParameters(ViewProviderThickness* Dr
     parameter = new TaskThicknessParameters(DressUpView);
 
     Content.push_back(parameter);
+    Content.push_back(preview);
 }
 
 TaskDlgThicknessParameters::~TaskDlgThicknessParameters() = default;
