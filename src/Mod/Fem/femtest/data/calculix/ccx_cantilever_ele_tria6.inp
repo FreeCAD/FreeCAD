@@ -290,7 +290,7 @@ Efaces
 
 ***********************************************************
 ** Sections
-*SHELL SECTION, ELSET=MechanicalMaterialThickness, MATERIAL=MechanicalMaterial
+*SHELL SECTION, ELSET=MechanicalMaterialThickness, MATERIAL=MechanicalMaterial, OFFSET=0
 1000
 
 ***********************************************************
