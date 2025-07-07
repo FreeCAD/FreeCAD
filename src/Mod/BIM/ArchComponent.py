@@ -782,7 +782,7 @@ class Component(ArchIFC.IfcProduct):
                     subvolume = o.getLinkedObject().Proxy.getSubVolume(o,host=obj)  # pass host obj (mostly Wall)
                 elif (Draft.getType(o) == "Roof") or (Draft.isClone(o,"Roof")):
                     # roofs define their own special subtraction volume
-                    subvolume = o.Proxy.getSubVolume(o)
+                    subvolume = o.Proxy.getSubVolume(o).copy()
                 elif hasattr(o,"Subvolume") and hasattr(o.Subvolume,"Shape"):
                     # Any other object with a Subvolume property
                     ## TODO - Part.Shape() instead?
@@ -1413,18 +1413,13 @@ class ViewProviderComponent:
             The name of the property that has changed.
         """
 
-        #print(vobj.Object.Name, " : changing ",prop)
-        #if prop == "Visibility":
-            #for obj in vobj.Object.Additions+vobj.Object.Subtractions:
-            #    if (Draft.getType(obj) == "Window") or (Draft.isClone(obj,"Window",True)):
-            #        obj.ViewObject.Visibility = vobj.Visibility
-            # this would now hide all previous windows... Not the desired behaviour anymore.
+        obj = vobj.Object
         if prop == "DiffuseColor":
-            if hasattr(vobj.Object,"CloneOf"):
-                if vobj.Object.CloneOf and hasattr(vobj.Object.CloneOf,"DiffuseColor"):
-                    if len(vobj.Object.CloneOf.ViewObject.DiffuseColor) > 1:
-                        if vobj.DiffuseColor != vobj.Object.CloneOf.ViewObject.DiffuseColor:
-                            vobj.DiffuseColor = vobj.Object.CloneOf.ViewObject.DiffuseColor
+            if hasattr(obj,"CloneOf"):
+                if obj.CloneOf and hasattr(obj.CloneOf,"DiffuseColor"):
+                    if len(obj.CloneOf.ViewObject.DiffuseColor) > 1:
+                        if vobj.DiffuseColor != obj.CloneOf.ViewObject.DiffuseColor:
+                            vobj.DiffuseColor = obj.CloneOf.ViewObject.DiffuseColor
                             vobj.update()
         elif prop == "ShapeColor":
             # restore DiffuseColor after overridden by ShapeColor
@@ -1433,10 +1428,16 @@ class ViewProviderComponent:
                     d = vobj.DiffuseColor
                     vobj.DiffuseColor = d
         elif prop == "Visibility":
-            for host in vobj.Object.Proxy.getHosts(vobj.Object):
-                if hasattr(host, 'ViewObject'):
-                    host.ViewObject.Visibility = vobj.Visibility
-
+            # do nothing if object is an addition
+            if not [parent for parent in obj.InList if obj in getattr(parent, "Additions", [])]:
+                hostedObjs = obj.Proxy.getHosts(obj)
+                # add objects hosted by additions
+                for addition in getattr(obj, "Additions", []):
+                    if hasattr(addition, "Proxy") and hasattr(addition.Proxy, "getHosts"):
+                        hostedObjs.extend(addition.Proxy.getHosts(addition))
+                for hostedObj in hostedObjs:
+                    if hasattr(hostedObj, "ViewObject"):
+                        hostedObj.ViewObject.Visibility = vobj.Visibility
         return
 
     def attach(self,vobj):

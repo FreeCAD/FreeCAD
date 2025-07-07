@@ -3821,7 +3821,7 @@ int SketchObject::join(int geoId1, Sketcher::PointPos posId1, int geoId2, Sketch
 
     if (Sketcher::PointPos::start != posId1 && Sketcher::PointPos::end != posId1
         && Sketcher::PointPos::start != posId2 && Sketcher::PointPos::end != posId2) {
-        THROWM(ValueError, "Invalid position(s): points must be start or end points of a curve.");
+        THROWM(ValueError, "Invalid positions: points must be start or end points of a curve.");
         return -1;
     }
 
@@ -9445,16 +9445,16 @@ void SketchObject::getConstraintIndices(int GeoId, std::vector<int>& constraintL
 void SketchObject::appendConflictMsg(const std::vector<int>& conflicting, std::string& msg)
 {
     appendConstraintsMsg(conflicting,
-                         "Please remove the following conflicting constraint:\n",
-                         "Please remove at least one of the following conflicting constraints:\n",
+                         "Remove the following conflicting constraint:",
+                         "Remove at least one of the following conflicting constraints:",
                          msg);
 }
 
 void SketchObject::appendRedundantMsg(const std::vector<int>& redundant, std::string& msg)
 {
     appendConstraintsMsg(redundant,
-                         "Please remove the following redundant constraint:",
-                         "Please remove the following redundant constraints:",
+                         "Remove the following redundant constraint:",
+                         "Remove the following redundant constraints:",
                          msg);
 }
 
@@ -9462,8 +9462,8 @@ void SketchObject::appendMalformedConstraintsMsg(const std::vector<int>& malform
                                                  std::string& msg)
 {
     appendConstraintsMsg(malformed,
-                         "Please remove the following malformed constraint:",
-                         "Please remove the following malformed constraints:",
+                         "Remove the following malformed constraint:",
+                         "Remove the following malformed constraints:",
                          msg);
 }
 

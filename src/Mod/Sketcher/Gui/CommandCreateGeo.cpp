@@ -111,8 +111,8 @@ CmdSketcherCreatePoint::CmdSketcherCreatePoint()
 {
     sAppModule = "Sketcher";
     sGroup = "Sketcher";
-    sMenuText = QT_TR_NOOP("Create point");
-    sToolTipText = QT_TR_NOOP("Create a point in the sketch");
+    sMenuText = QT_TR_NOOP("Point");
+    sToolTipText = QT_TR_NOOP("Creates a point");
     sWhatsThis = "Sketcher_CreatePoint";
     sStatusTip = sToolTipText;
     sPixmap = "Sketcher_CreatePoint";
@@ -142,8 +142,8 @@ public:
     {
         sAppModule = "Sketcher";
         sGroup = "Sketcher";
-        sMenuText = QT_TR_NOOP("Create polyline");
-        sToolTipText = QT_TR_NOOP("Create a polyline in the sketch. 'M' Key cycles behaviour");
+        sMenuText = QT_TR_NOOP("Polyline");
+        sToolTipText = QT_TR_NOOP("Creates a continuous polyline");
         sWhatsThis = "Sketcher_CompLine";
         sStatusTip = sToolTipText;
         sAccel = "G, M";
@@ -199,8 +199,8 @@ CmdSketcherCreateLine::CmdSketcherCreateLine()
 {
     sAppModule = "Sketcher";
     sGroup = "Sketcher";
-    sMenuText = QT_TR_NOOP("Create line");
-    sToolTipText = QT_TR_NOOP("Create a line in the sketch");
+    sMenuText = QT_TR_NOOP("Line");
+    sToolTipText = QT_TR_NOOP("Creates a line");
     sWhatsThis = "Sketcher_CreateLine";
     sStatusTip = sToolTipText;
     sPixmap = "Sketcher_CreateLine";
@@ -230,8 +230,9 @@ CmdSketcherCreatePolyline::CmdSketcherCreatePolyline()
 {
     sAppModule = "Sketcher";
     sGroup = "Sketcher";
-    sMenuText = QT_TR_NOOP("Create polyline");
-    sToolTipText = QT_TR_NOOP("Create a polyline in the sketch. 'M' Key cycles behaviour");
+    sMenuText = QT_TR_NOOP("Polyline");
+    sToolTipText =
+        QT_TR_NOOP("Creates a continuous polyline. Press the 'M' key to switch segment modes");
     sWhatsThis = "Sketcher_CreatePolyline";
     sStatusTip = sToolTipText;
     sPixmap = "Sketcher_CreatePolyline";
@@ -263,8 +264,8 @@ public:
     {
         sAppModule = "Sketcher";
         sGroup = "Sketcher";
-        sMenuText = QT_TR_NOOP("Create arc");
-        sToolTipText = QT_TR_NOOP("Create an arc in the sketch");
+        sMenuText = QT_TR_NOOP("Arc");
+        sToolTipText = QT_TR_NOOP("Creates an arc");
         sWhatsThis = "Sketcher_CompCreateArc";
         sStatusTip = sToolTipText;
         sAccel = "G, A";
@@ -331,8 +332,8 @@ CmdSketcherCreateArc::CmdSketcherCreateArc()
 {
     sAppModule = "Sketcher";
     sGroup = "Sketcher";
-    sMenuText = QT_TR_NOOP("Create arc by center");
-    sToolTipText = QT_TR_NOOP("Create an arc by its center and by its end points");
+    sMenuText = QT_TR_NOOP("Arc From Center");
+    sToolTipText = QT_TR_NOOP("Creates an arc defined by a center point and an end point");
     sWhatsThis = "Sketcher_CreateArc";
     sStatusTip = sToolTipText;
     sPixmap = "Sketcher_CreateArc";
@@ -363,8 +364,8 @@ CmdSketcherCreate3PointArc::CmdSketcherCreate3PointArc()
 {
     sAppModule = "Sketcher";
     sGroup = "Sketcher";
-    sMenuText = QT_TR_NOOP("Create arc by 3 points");
-    sToolTipText = QT_TR_NOOP("Create an arc by its end points and a point along the arc");
+    sMenuText = QT_TR_NOOP("Arc From 3 Points");
+    sToolTipText = QT_TR_NOOP("Creates an arc defined by 2 end points and 1 point on the arc");
     sWhatsThis = "Sketcher_Create3PointArc";
     sStatusTip = sToolTipText;
     sPixmap = "Sketcher_Create3PointArc";
@@ -396,8 +397,8 @@ CmdSketcherCreateArcOfEllipse::CmdSketcherCreateArcOfEllipse()
 {
     sAppModule = "Sketcher";
     sGroup = "Sketcher";
-    sMenuText = QT_TR_NOOP("Create arc of ellipse");
-    sToolTipText = QT_TR_NOOP("Create an arc of ellipse in the sketch");
+    sMenuText = QT_TR_NOOP("Elliptical Arc");
+    sToolTipText = QT_TR_NOOP("Creates an elliptical arc");
     sWhatsThis = "Sketcher_CreateArcOfEllipse";
     sStatusTip = sToolTipText;
     sPixmap = "Sketcher_CreateElliptical_Arc";
@@ -427,8 +428,8 @@ CmdSketcherCreateArcOfHyperbola::CmdSketcherCreateArcOfHyperbola()
 {
     sAppModule = "Sketcher";
     sGroup = "Sketcher";
-    sMenuText = QT_TR_NOOP("Create arc of hyperbola");
-    sToolTipText = QT_TR_NOOP("Create an arc of hyperbola in the sketch");
+    sMenuText = QT_TR_NOOP("Hyperbolic Arc");
+    sToolTipText = QT_TR_NOOP("Creates a hyperbolic arc");
     sWhatsThis = "Sketcher_CreateArcOfHyperbola";
     sStatusTip = sToolTipText;
     sPixmap = "Sketcher_CreateHyperbolic_Arc";
@@ -457,8 +458,8 @@ CmdSketcherCreateArcOfParabola::CmdSketcherCreateArcOfParabola()
 {
     sAppModule = "Sketcher";
     sGroup = "Sketcher";
-    sMenuText = QT_TR_NOOP("Create arc of parabola");
-    sToolTipText = QT_TR_NOOP("Create an arc of parabola in the sketch");
+    sMenuText = QT_TR_NOOP("Parabolic Arc");
+    sToolTipText = QT_TR_NOOP("Creates a parabolic arc");
     sWhatsThis = "Sketcher_CreateArcOfParabola";
     sStatusTip = sToolTipText;
     sPixmap = "Sketcher_CreateParabolic_Arc";
@@ -489,8 +490,8 @@ public:
     {
         sAppModule = "Sketcher";
         sGroup = "Sketcher";
-        sMenuText = QT_TR_NOOP("Create conic");
-        sToolTipText = QT_TR_NOOP("Create a conic in the sketch");
+        sMenuText = QT_TR_NOOP("Conic");
+        sToolTipText = QT_TR_NOOP("Creates a conic");
         sWhatsThis = "Sketcher_CompCreateConic";
         sStatusTip = sToolTipText;
         sAccel = "G, C";
@@ -555,8 +556,8 @@ CmdSketcherCreateCircle::CmdSketcherCreateCircle()
 {
     sAppModule = "Sketcher";
     sGroup = "Sketcher";
-    sMenuText = QT_TR_NOOP("Create circle by center");
-    sToolTipText = QT_TR_NOOP("Create a circle in the sketch");
+    sMenuText = QT_TR_NOOP("Circle From Center");
+    sToolTipText = QT_TR_NOOP("Creates a circle from a center and rim point");
     sWhatsThis = "Sketcher_CreateCircle";
     sStatusTip = sToolTipText;
     sPixmap = "Sketcher_CreateCircle";
@@ -586,8 +587,8 @@ CmdSketcherCreate3PointCircle::CmdSketcherCreate3PointCircle()
 {
     sAppModule = "Sketcher";
     sGroup = "Sketcher";
-    sMenuText = QT_TR_NOOP("Create circle by 3 points");
-    sToolTipText = QT_TR_NOOP("Create a circle by 3 perimeter points");
+    sMenuText = QT_TR_NOOP("Circle From 3 Points");
+    sToolTipText = QT_TR_NOOP("Creates a circle from 3 perimeter points");
     sWhatsThis = "Sketcher_Create3PointCircle";
     sStatusTip = sToolTipText;
     sPixmap = "Sketcher_Create3PointCircle";
@@ -623,8 +624,8 @@ CmdSketcherCreateEllipseByCenter::CmdSketcherCreateEllipseByCenter()
 {
     sAppModule = "Sketcher";
     sGroup = "Sketcher";
-    sMenuText = QT_TR_NOOP("Create ellipse by center");
-    sToolTipText = QT_TR_NOOP("Create an ellipse by center in the sketch");
+    sMenuText = QT_TR_NOOP("Ellipse From Center");
+    sToolTipText = QT_TR_NOOP("Creates an ellipse from a center and rim point");
     sWhatsThis = "Sketcher_CreateEllipseByCenter";
     sStatusTip = sToolTipText;
     sPixmap = "Sketcher_CreateEllipseByCenter";
@@ -658,8 +659,8 @@ CmdSketcherCreateEllipseBy3Points::CmdSketcherCreateEllipseBy3Points()
 {
     sAppModule = "Sketcher";
     sGroup = "Sketcher";
-    sMenuText = QT_TR_NOOP("Create ellipse by 3 points");
-    sToolTipText = QT_TR_NOOP("Create an ellipse by 3 points in the sketch");
+    sMenuText = QT_TR_NOOP("Ellipse From 3 Points");
+    sToolTipText = QT_TR_NOOP("Creates an ellipse from 3 points on its perimeter");
     sWhatsThis = "Sketcher_CreateEllipseBy3Points";
     sStatusTip = sToolTipText;
     sPixmap = "Sketcher_CreateEllipse_3points";
@@ -693,8 +694,8 @@ public:
     {
         sAppModule = "Sketcher";
         sGroup = "Sketcher";
-        sMenuText = QT_TR_NOOP("Create rectangle");
-        sToolTipText = QT_TR_NOOP("Creates a rectangle in the sketch");
+        sMenuText = QT_TR_NOOP("Rectangle");
+        sToolTipText = QT_TR_NOOP("Creates a rectangle");
         sWhatsThis = "Sketcher_CompCreateRectangles";
         sStatusTip = sToolTipText;
         sAccel = "G, R";
@@ -754,8 +755,8 @@ CmdSketcherCreateRectangle::CmdSketcherCreateRectangle()
 {
     sAppModule = "Sketcher";
     sGroup = "Sketcher";
-    sMenuText = QT_TR_NOOP("Create rectangle");
-    sToolTipText = QT_TR_NOOP("Create a rectangle in the sketch");
+    sMenuText = QT_TR_NOOP("Rectangle");
+    sToolTipText = QT_TR_NOOP("Creates a rectangle from 2 corner points");
     sWhatsThis = "Sketcher_CreateRectangle";
     sStatusTip = sToolTipText;
     sPixmap = "Sketcher_CreateRectangle";
@@ -787,8 +788,8 @@ CmdSketcherCreateRectangleCenter::CmdSketcherCreateRectangleCenter()
 {
     sAppModule = "Sketcher";
     sGroup = "Sketcher";
-    sMenuText = QT_TR_NOOP("Create centered rectangle");
-    sToolTipText = QT_TR_NOOP("Create a centered rectangle in the sketch");
+    sMenuText = QT_TR_NOOP("Centered Rectangle");
+    sToolTipText = QT_TR_NOOP("Creates a centered rectangle from a center and a corner point");
     sWhatsThis = "Sketcher_CreateRectangle_Center";
     sStatusTip = sToolTipText;
     sPixmap = "Sketcher_CreateRectangle_Center";
@@ -821,8 +822,8 @@ CmdSketcherCreateOblong::CmdSketcherCreateOblong()
 {
     sAppModule = "Sketcher";
     sGroup = "Sketcher";
-    sMenuText = QT_TR_NOOP("Create rounded rectangle");
-    sToolTipText = QT_TR_NOOP("Create a rounded rectangle in the sketch");
+    sMenuText = QT_TR_NOOP("Rounded Rectangle");
+    sToolTipText = QT_TR_NOOP("Creates a rounded rectangle from 2 corner points");
     sWhatsThis = "Sketcher_CreateOblong";
     sStatusTip = sToolTipText;
     sPixmap = "Sketcher_CreateOblong";
@@ -857,8 +858,8 @@ public:
     {
         sAppModule = "Sketcher";
         sGroup = "Sketcher";
-        sMenuText = QT_TR_NOOP("Create regular polygon");
-        sToolTipText = QT_TR_NOOP("Create a regular polygon in the sketcher");
+        sMenuText = QT_TR_NOOP("Polygon");
+        sToolTipText = QT_TR_NOOP("Creates a regular polygon from a center and corner point");
         sWhatsThis = "Sketcher_CompCreateRegularPolygon";
         sStatusTip = sToolTipText;
         sAccel = "G, P, 3";
@@ -931,8 +932,8 @@ CmdSketcherCreateTriangle::CmdSketcherCreateTriangle()
 {
     sAppModule = "Sketcher";
     sGroup = "Sketcher";
-    sMenuText = QT_TR_NOOP("Create equilateral triangle");
-    sToolTipText = QT_TR_NOOP("Create an equilateral triangle in the sketch");
+    sMenuText = QT_TR_NOOP("Triangle");
+    sToolTipText = QT_TR_NOOP("Creates an equilateral triangle from a center and corner point");
     sWhatsThis = "Sketcher_CreateTriangle";
     sStatusTip = sToolTipText;
     sPixmap = "Sketcher_CreateTriangle";
@@ -962,8 +963,8 @@ CmdSketcherCreateSquare::CmdSketcherCreateSquare()
 {
     sAppModule = "Sketcher";
     sGroup = "Sketcher";
-    sMenuText = QT_TR_NOOP("Create square");
-    sToolTipText = QT_TR_NOOP("Create a square in the sketch");
+    sMenuText = QT_TR_NOOP("Square");
+    sToolTipText = QT_TR_NOOP("Creates a square from a center and corner point");
     sWhatsThis = "Sketcher_CreateSquare";
     sStatusTip = sToolTipText;
     sPixmap = "Sketcher_CreateSquare";
@@ -993,8 +994,8 @@ CmdSketcherCreatePentagon::CmdSketcherCreatePentagon()
 {
     sAppModule = "Sketcher";
     sGroup = "Sketcher";
-    sMenuText = QT_TR_NOOP("Create pentagon");
-    sToolTipText = QT_TR_NOOP("Create a pentagon in the sketch");
+    sMenuText = QT_TR_NOOP("Pentagon");
+    sToolTipText = QT_TR_NOOP("Creates a pentagon from a center and corner point");
     sWhatsThis = "Sketcher_CreatePentagon";
     sStatusTip = sToolTipText;
     sPixmap = "Sketcher_CreatePentagon";
@@ -1024,8 +1025,8 @@ CmdSketcherCreateHexagon::CmdSketcherCreateHexagon()
 {
     sAppModule = "Sketcher";
     sGroup = "Sketcher";
-    sMenuText = QT_TR_NOOP("Create hexagon");
-    sToolTipText = QT_TR_NOOP("Create a hexagon in the sketch");
+    sMenuText = QT_TR_NOOP("Hexagon");
+    sToolTipText = QT_TR_NOOP("Creates a hexagon from a center and corner point");
     sWhatsThis = "Sketcher_CreateHexagon";
     sStatusTip = sToolTipText;
     sPixmap = "Sketcher_CreateHexagon";
@@ -1055,8 +1056,8 @@ CmdSketcherCreateHeptagon::CmdSketcherCreateHeptagon()
 {
     sAppModule = "Sketcher";
     sGroup = "Sketcher";
-    sMenuText = QT_TR_NOOP("Create heptagon");
-    sToolTipText = QT_TR_NOOP("Create a heptagon in the sketch");
+    sMenuText = QT_TR_NOOP("Heptagon");
+    sToolTipText = QT_TR_NOOP("Creates a heptagon from a center and corner point");
     sWhatsThis = "Sketcher_CreateHeptagon";
     sStatusTip = sToolTipText;
     sPixmap = "Sketcher_CreateHeptagon";
@@ -1086,8 +1087,8 @@ CmdSketcherCreateOctagon::CmdSketcherCreateOctagon()
 {
     sAppModule = "Sketcher";
     sGroup = "Sketcher";
-    sMenuText = QT_TR_NOOP("Create octagon");
-    sToolTipText = QT_TR_NOOP("Create an octagon in the sketch");
+    sMenuText = QT_TR_NOOP("Octagon");
+    sToolTipText = QT_TR_NOOP("Creates an octagon from a center and corner point");
     sWhatsThis = "Sketcher_CreateOctagon";
     sStatusTip = sToolTipText;
     sPixmap = "Sketcher_CreateOctagon";
@@ -1117,8 +1118,8 @@ CmdSketcherCreateRegularPolygon::CmdSketcherCreateRegularPolygon()
 {
     sAppModule = "Sketcher";
     sGroup = "Sketcher";
-    sMenuText = QT_TR_NOOP("Create regular polygon");
-    sToolTipText = QT_TR_NOOP("Create a regular polygon in the sketch");
+    sMenuText = QT_TR_NOOP("Polygon");
+    sToolTipText = QT_TR_NOOP("Creates a regular polygon from a center and corner point");
     sWhatsThis = "Sketcher_CreateRegularPolygon";
     sStatusTip = sToolTipText;
     sPixmap = "Sketcher_CreateRegularPolygon";
@@ -1156,8 +1157,8 @@ public:
     {
         sAppModule = "Sketcher";
         sGroup = "Sketcher";
-        sMenuText = QT_TR_NOOP("Slots");
-        sToolTipText = QT_TR_NOOP("Slot tools.");
+        sMenuText = QT_TR_NOOP("Slot");
+        sToolTipText = QT_TR_NOOP("Slot tools");
         sWhatsThis = "Sketcher_CompSlot";
         sStatusTip = sToolTipText;
         sAccel = "G, S";
@@ -1212,8 +1213,8 @@ CmdSketcherCreateSlot::CmdSketcherCreateSlot()
 {
     sAppModule = "Sketcher";
     sGroup = "Sketcher";
-    sMenuText = QT_TR_NOOP("Create slot");
-    sToolTipText = QT_TR_NOOP("Create a slot in the sketch");
+    sMenuText = QT_TR_NOOP("Slot");
+    sToolTipText = QT_TR_NOOP("Creates a slot");
     sWhatsThis = "Sketcher_CreateSlot";
     sStatusTip = sToolTipText;
     sPixmap = "Sketcher_CreateSlot";
@@ -1243,8 +1244,8 @@ CmdSketcherCreateArcSlot::CmdSketcherCreateArcSlot()
 {
     sAppModule = "Sketcher";
     sGroup = "Sketcher";
-    sMenuText = QT_TR_NOOP("Create arc slot");
-    sToolTipText = QT_TR_NOOP("Create an arc slot in the sketch");
+    sMenuText = QT_TR_NOOP("Arc Slot");
+    sToolTipText = QT_TR_NOOP("Creates an arc slot");
     sWhatsThis = "Sketcher_CreateArcSlot";
     sStatusTip = sToolTipText;
     sPixmap = "Sketcher_CreateArcSlot";
@@ -1276,8 +1277,8 @@ public:
     {
         sAppModule = "Sketcher";
         sGroup = "Sketcher";
-        sMenuText = QT_TR_NOOP("Create B-spline");
-        sToolTipText = QT_TR_NOOP("Create a B-spline in the sketch");
+        sMenuText = QT_TR_NOOP("B-Spline");
+        sToolTipText = QT_TR_NOOP("Creates a B-spline curve defined by control points");
         sWhatsThis = "Sketcher_CompCreateBSpline";
         sStatusTip = sToolTipText;
         sAccel = "G, B, B";
@@ -1342,8 +1343,8 @@ CmdSketcherCreateBSpline::CmdSketcherCreateBSpline()
 {
     sAppModule = "Sketcher";
     sGroup = "Sketcher";
-    sMenuText = QT_TR_NOOP("Create B-spline");
-    sToolTipText = QT_TR_NOOP("Create a B-spline by control points in the sketch.");
+    sMenuText = QT_TR_NOOP("B-Spline");
+    sToolTipText = QT_TR_NOOP("Creates a B-spline curve defined by control points");
     sWhatsThis = "Sketcher_CreateBSpline";
     sStatusTip = sToolTipText;
     sPixmap = "Sketcher_CreateBSpline";
@@ -1379,8 +1380,8 @@ CmdSketcherCreatePeriodicBSpline::CmdSketcherCreatePeriodicBSpline()
 {
     sAppModule = "Sketcher";
     sGroup = "Sketcher";
-    sMenuText = QT_TR_NOOP("Create periodic B-spline");
-    sToolTipText = QT_TR_NOOP("Create a periodic B-spline by control points in the sketch.");
+    sMenuText = QT_TR_NOOP("Periodic B-Spline");
+    sToolTipText = QT_TR_NOOP("Creates a periodic B-spline curve defined by control points");
     sWhatsThis = "Sketcher_CreatePeriodicBSpline";
     sStatusTip = sToolTipText;
     sPixmap = "Sketcher_Create_Periodic_BSpline";
@@ -1415,8 +1416,8 @@ CmdSketcherCreateBSplineByInterpolation::CmdSketcherCreateBSplineByInterpolation
 {
     sAppModule = "Sketcher";
     sGroup = "Sketcher";
-    sMenuText = QT_TR_NOOP("Create B-spline by knots");
-    sToolTipText = QT_TR_NOOP("Create a B-spline by knots, i.e. by interpolation, in the sketch.");
+    sMenuText = QT_TR_NOOP("B-Spline From Knots");
+    sToolTipText = QT_TR_NOOP("Creates a B-spline from knots, i.e. from interpolation");
     sWhatsThis = "Sketcher_CreateBSplineByInterpolation";
     sStatusTip = sToolTipText;
     sPixmap = "Sketcher_CreateBSplineByInterpolation";
@@ -1452,9 +1453,8 @@ CmdSketcherCreatePeriodicBSplineByInterpolation::CmdSketcherCreatePeriodicBSplin
 {
     sAppModule = "Sketcher";
     sGroup = "Sketcher";
-    sMenuText = QT_TR_NOOP("Create periodic B-spline by knots");
-    sToolTipText =
-        QT_TR_NOOP("Create a periodic B-spline by knots, i.e. by interpolation, in the sketch.");
+    sMenuText = QT_TR_NOOP("Periodic B-Spline From Knots");
+    sToolTipText = QT_TR_NOOP("Creates a periodic B-spline defined by knots using interpolation");
     sWhatsThis = "Sketcher_CreatePeriodicBSplineByInterpolation";
     sStatusTip = sToolTipText;
     sPixmap = "Sketcher_CreatePeriodicBSplineByInterpolation";
@@ -1491,8 +1491,8 @@ public:
     {
         sAppModule = "Sketcher";
         sGroup = "Sketcher";
-        sMenuText = QT_TR_NOOP("Create fillet or chamfer");
-        sToolTipText = QT_TR_NOOP("Create a fillet or chamfer between two lines");
+        sMenuText = QT_TR_NOOP("Fillet/Chamfer");
+        sToolTipText = QT_TR_NOOP("Creates a fillet or chamfer between 2 lines");
         sWhatsThis = "Sketcher_CompCreateFillets";
         sStatusTip = sToolTipText;
         sAccel = "G, F, F";
@@ -1525,8 +1525,8 @@ CmdSketcherCreateFillet::CmdSketcherCreateFillet()
 {
     sAppModule = "Sketcher";
     sGroup = "Sketcher";
-    sMenuText = QT_TR_NOOP("Create fillet");
-    sToolTipText = QT_TR_NOOP("Create a fillet between two lines or at a coincident point");
+    sMenuText = QT_TR_NOOP("Fillet");
+    sToolTipText = QT_TR_NOOP("Creates a fillet between 2 selected lines or 1 coincident point");
     sWhatsThis = "Sketcher_CreateFillet";
     sStatusTip = sToolTipText;
     sPixmap = "Sketcher_CreateFillet";
@@ -1556,8 +1556,8 @@ CmdSketcherCreateChamfer::CmdSketcherCreateChamfer()
 {
     sAppModule = "Sketcher";
     sGroup = "Sketcher";
-    sMenuText = QT_TR_NOOP("Create chamfer");
-    sToolTipText = QT_TR_NOOP("Create a chamfer between two lines or at a coincident point");
+    sMenuText = QT_TR_NOOP("Chamfer");
+    sToolTipText = QT_TR_NOOP("Creates a chamfer between 2 selected lines or 1 coincident point");
     sWhatsThis = "Sketcher_CreateChamfer";
     sStatusTip = sToolTipText;
     sPixmap = "Sketcher_CreateChamfer";
@@ -1589,8 +1589,8 @@ public:
     {
         sAppModule = "Sketcher";
         sGroup = "Sketcher";
-        sMenuText = QT_TR_NOOP("Curve Edition");
-        sToolTipText = QT_TR_NOOP("Curve Edition tools.");
+        sMenuText = QT_TR_NOOP("Edit Edges");
+        sToolTipText = QT_TR_NOOP("Edge editing tools");
         sWhatsThis = "Sketcher_CompCurveEdition";
         sStatusTip = sToolTipText;
         sAccel = "G, T";
@@ -1623,8 +1623,8 @@ CmdSketcherTrimming::CmdSketcherTrimming()
 {
     sAppModule = "Sketcher";
     sGroup = "Sketcher";
-    sMenuText = QT_TR_NOOP("Trim edge");
-    sToolTipText = QT_TR_NOOP("Trim an edge with respect to the picked position");
+    sMenuText = QT_TR_NOOP("Trim Edge");
+    sToolTipText = QT_TR_NOOP("Trims an edge with respect to the selected position");
     sWhatsThis = "Sketcher_Trimming";
     sStatusTip = sToolTipText;
     sPixmap = "Sketcher_Trimming";
@@ -1653,8 +1653,8 @@ CmdSketcherExtend::CmdSketcherExtend()
 {
     sAppModule = "Sketcher";
     sGroup = "Sketcher";
-    sMenuText = QT_TR_NOOP("Extend edge");
-    sToolTipText = QT_TR_NOOP("Extend an edge with respect to the picked position");
+    sMenuText = QT_TR_NOOP("Extend Edge");
+    sToolTipText = QT_TR_NOOP("Extends an edge with respect to the selected position");
     sWhatsThis = "Sketcher_Extend";
     sStatusTip = sToolTipText;
     sPixmap = "Sketcher_Extend";
@@ -1683,8 +1683,8 @@ CmdSketcherSplit::CmdSketcherSplit()
 {
     sAppModule = "Sketcher";
     sGroup = "Sketcher";
-    sMenuText = QT_TR_NOOP("Split edge");
-    sToolTipText = QT_TR_NOOP("Splits an edge into two while preserving constraints");
+    sMenuText = QT_TR_NOOP("Split Edge");
+    sToolTipText = QT_TR_NOOP("Splits an edge into 2 segments while preserving constraints");
     sWhatsThis = "Sketcher_Split";
     sStatusTip = sToolTipText;
     sPixmap = "Sketcher_Split";
@@ -1714,8 +1714,9 @@ public:
     {
         sAppModule = "Sketcher";
         sGroup = "Sketcher";
-        sMenuText = QT_TR_NOOP("Create external");
-        sToolTipText = QT_TR_NOOP("Create external edges linked to external geometries.");
+        sMenuText = QT_TR_NOOP("External Geometry");
+        sToolTipText =
+            QT_TR_NOOP("Creates sketch elements linked to geometry defined outside the sketch");
         sWhatsThis = "Sketcher_CompExternal";
         sStatusTip = sToolTipText;
         sAccel = "G, X";
@@ -1770,10 +1771,8 @@ CmdSketcherProjection::CmdSketcherProjection()
 {
     sAppModule = "Sketcher";
     sGroup = "Sketcher";
-    sMenuText = QT_TR_NOOP("Create external projection geometry");
-    sToolTipText = QT_TR_NOOP("Create the projection edges of an external geometry.\n"
-                              "External edges can be either defining or construction geometries.\n"
-                              "You can use the toggle construction tool.");
+    sMenuText = QT_TR_NOOP("External Projection");
+    sToolTipText = QT_TR_NOOP("Creates the projection of external geometry in the sketch plane");
     sWhatsThis = "Sketcher_Projection";
     sStatusTip = sToolTipText;
     sPixmap = "Sketcher_Projection";
@@ -1807,11 +1806,9 @@ CmdSketcherIntersection::CmdSketcherIntersection()
 {
     sAppModule = "Sketcher";
     sGroup = "Sketcher";
-    sMenuText = QT_TR_NOOP("Create external intersection geometry");
+    sMenuText = QT_TR_NOOP("External Intersection");
     sToolTipText =
-        QT_TR_NOOP("Create the intersection edges of an external geometry with the sketch plane.\n"
-                   "External edges can be either defining or construction geometries.\n"
-                   "You can use the toggle construction tool.");
+        QT_TR_NOOP("Creates the intersection of external geometry with the sketch plane");
     sWhatsThis = "Sketcher_Intersection";
     sStatusTip = sToolTipText;
     sPixmap = "Sketcher_Intersection";
@@ -1846,8 +1843,8 @@ CmdSketcherCarbonCopy::CmdSketcherCarbonCopy()
 {
     sAppModule = "Sketcher";
     sGroup = "Sketcher";
-    sMenuText = QT_TR_NOOP("Create carbon copy");
-    sToolTipText = QT_TR_NOOP("Copy the geometry of another sketch");
+    sMenuText = QT_TR_NOOP("Carbon Copy");
+    sToolTipText = QT_TR_NOOP("Copies the geometry of another sketch");
     sWhatsThis = "Sketcher_CarbonCopy";
     sStatusTip = sToolTipText;
     sPixmap = "Sketcher_CarbonCopy";

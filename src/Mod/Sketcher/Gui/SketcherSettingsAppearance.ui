@@ -17,7 +17,7 @@
    <item>
     <widget class="QGroupBox" name="groupBox">
      <property name="title">
-      <string>Working colors</string>
+      <string>Working Colors</string>
      </property>
      <layout class="QGridLayout" name="gridLayout_7">
       <item row="0" column="1">
@@ -111,8 +111,7 @@
         <item row="5" column="1">
          <widget class="Gui::PrefColorButton" name="CursorCrosshairColor">
           <property name="toolTip">
-           <string>Color of crosshair cursor.
-(The one you get when creating a new sketch element.)</string>
+           <string>Color of the crosshair cursor</string>
           </property>
           <property name="color" stdset="0">
            <color>
@@ -137,7 +136,7 @@
    <item>
     <widget class="QGroupBox" name="groupBox_2">
      <property name="title">
-      <string>Geometric element colors</string>
+      <string>Geometric Element Colors</string>
      </property>
      <layout class="QGridLayout" name="gridLayout_6">
       <item row="1" column="1">
@@ -255,7 +254,7 @@
       <item row="5" column="3">
        <widget class="QComboBox" name="EdgePattern">
         <property name="toolTip">
-         <string>Line pattern of normal edges.</string>
+         <string>Line pattern of normal edges</string>
         </property>
         <property name="currentIndex">
          <number>-1</number>
@@ -265,7 +264,7 @@
       <item row="5" column="4">
        <widget class="Gui::PrefSpinBox" name="EdgeWidth">
         <property name="toolTip">
-         <string>Width of normal edges.</string>
+         <string>Width of normal edges</string>
         </property>
         <property name="unit" stdset="0">
          <string notr="true">px</string>
@@ -352,7 +351,7 @@
       <item row="7" column="3">
        <widget class="QComboBox" name="ConstructionPattern">
         <property name="toolTip">
-         <string>Line pattern of construction edges.</string>
+         <string>Line pattern of construction edges</string>
         </property>
         <property name="currentIndex">
          <number>-1</number>
@@ -362,7 +361,7 @@
       <item row="7" column="4">
        <widget class="Gui::PrefSpinBox" name="ConstructionWidth">
         <property name="toolTip">
-         <string>Width of construction edges.</string>
+         <string>Width of construction edges</string>
         </property>
         <property name="unit" stdset="0">
          <string notr="true">px</string>
@@ -449,7 +448,7 @@
       <item row="8" column="3">
        <widget class="QComboBox" name="InternalPattern">
         <property name="toolTip">
-         <string>Line pattern of internal aligned edges.</string>
+         <string>Line pattern of internal aligned edges</string>
         </property>
         <property name="currentIndex">
          <number>-1</number>
@@ -459,7 +458,7 @@
       <item row="8" column="4">
        <widget class="Gui::PrefSpinBox" name="InternalWidth">
         <property name="toolTip">
-         <string>Width of internal aligned edges.</string>
+         <string>Width of internal aligned edges</string>
         </property>
         <property name="unit" stdset="0">
          <string notr="true">px</string>
@@ -520,7 +519,7 @@
       <item row="9" column="3">
        <widget class="QComboBox" name="ExternalPattern">
         <property name="toolTip">
-         <string>Line pattern of external edges.</string>
+         <string>Line pattern of external edges</string>
         </property>
         <property name="currentIndex">
          <number>-1</number>
@@ -530,7 +529,7 @@
       <item row="9" column="4">
        <widget class="Gui::PrefSpinBox" name="ExternalWidth">
         <property name="toolTip">
-         <string>Width of external edges.</string>
+         <string>Width of external edges</string>
         </property>
         <property name="unit" stdset="0">
          <string notr="true">px</string>
@@ -591,7 +590,7 @@
 	  <item row="10" column="3">
        <widget class="QComboBox" name="ExternalDefiningPattern">
         <property name="toolTip">
-         <string>Line pattern of external defining edges.</string>
+         <string>Line pattern of external defining edges</string>
         </property>
         <property name="currentIndex">
          <number>-1</number>
@@ -601,7 +600,7 @@
       <item row="10" column="4">
        <widget class="Gui::PrefSpinBox" name="ExternalDefiningWidth">
         <property name="toolTip">
-         <string>Width of external defining edges.</string>
+         <string>Width of external defining edges</string>
         </property>
         <property name="unit" stdset="0">
          <string notr="true">px</string>
@@ -704,7 +703,7 @@
    <item>
     <widget class="QGroupBox" name="groupBoxSketcherColor">
      <property name="title">
-      <string>Constraint colors</string>
+      <string>Constraint Colors</string>
      </property>
      <layout class="QHBoxLayout" name="horizontalLayout_2">
       <item>
@@ -745,7 +744,7 @@
         <item row="11" column="0">
          <widget class="QLabel" name="label_15">
           <property name="text">
-           <string>Dimensional constraint</string>
+           <string>Dimensional constraints</string>
           </property>
          </widget>
         </item>
@@ -772,7 +771,7 @@
         <item row="12" column="0">
          <widget class="QLabel" name="label_8">
           <property name="text">
-           <string>Reference constraint</string>
+           <string>Reference constraints</string>
           </property>
          </widget>
         </item>
@@ -826,7 +825,7 @@
         <item row="14" column="0">
          <widget class="QLabel" name="labeldeact">
           <property name="text">
-           <string>Deactivated constraint</string>
+           <string>Deactivated constraints</string>
           </property>
          </widget>
         </item>
@@ -871,7 +870,7 @@
    <item>
     <widget class="QGroupBox" name="groupBox_3">
      <property name="title">
-      <string>Colors outside Sketcher</string>
+      <string>Colors Outside Sketcher</string>
      </property>
      <layout class="QGridLayout" name="gridLayout_8">
       <item row="0" column="0">

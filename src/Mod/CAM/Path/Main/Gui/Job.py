@@ -132,11 +132,10 @@ class ViewProvider:
         self.axs.axisLength.setValue(1.2)
 
         # enum values for SoFCPlacementIndicatorKit
-        AXES = 1
-        LABELS = 4
-        ARROWHEADS = 8
-
-        self.axs.parts.setValue(AXES | LABELS | ARROWHEADS)
+        parts = FreeCADGui.PlacementIndicatorParts
+        self.axs.parts.setValue(
+            parts.Axes | parts.Labels | parts.ArrowHeads | parts.OriginIndicator
+        )
 
         self.sep.addChild(self.axs)
         self.switch.addChild(self.sep)
