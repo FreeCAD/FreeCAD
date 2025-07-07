@@ -49,7 +49,7 @@ class ElementGeometry2D(base_femelement.BaseFemElement):
             "set thickness of the shell elements",
         )
         obj.setPropertyStatus("Thickness", "LockDynamic")
-        
+
         obj.addProperty(
             "App::PropertyFloat",
             "Offset",
