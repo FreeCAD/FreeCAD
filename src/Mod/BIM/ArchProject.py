@@ -66,6 +66,7 @@ class _Project(ArchIFC.IfcContext):
 
     def __init__(self, obj):
         obj.Proxy = self
+        self.Type = "Project"
         self.setProperties(obj)
         obj.IfcType = "Project"
 
@@ -80,11 +81,18 @@ class _Project(ArchIFC.IfcContext):
         pl = obj.PropertiesList
         if not hasattr(obj,"Group"):
             obj.addExtension("App::GroupExtensionPython")
-        self.Type = "Project"
 
     def onDocumentRestored(self, obj):
         """Method run when the document is restored. Re-add the properties."""
         self.setProperties(obj)
+
+    def dumps(self):
+
+        return None
+
+    def loads(self,state):
+
+        self.Type = "Project"
 
     def addObject(self,obj,child):
 

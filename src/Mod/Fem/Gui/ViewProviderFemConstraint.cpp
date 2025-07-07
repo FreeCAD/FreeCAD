@@ -156,7 +156,7 @@ std::vector<App::DocumentObject*> ViewProviderFemConstraint::claimChildren() con
 void ViewProviderFemConstraint::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
 {
     QAction* act;
-    act = menu->addAction(QObject::tr("Edit analysis feature"), receiver, member);
+    act = menu->addAction(QObject::tr("Edit Analysis Feature"), receiver, member);
     act->setData(QVariant((int)ViewProvider::Default));
     ViewProviderGeometryObject::setupContextMenu(menu,
                                                  receiver,

@@ -240,7 +240,7 @@ void GmshWidget::started()
     if (!d->label) {
         d->label = new Gui::StatusWidget(this);
         d->label->setAttribute(Qt::WA_DeleteOnClose);
-        d->label->setStatusText(tr("Running Gmsh..."));
+        d->label->setStatusText(tr("Running Gmsh…"));
         d->label->show();
     }
 }

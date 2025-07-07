@@ -57,7 +57,7 @@ namespace SurfaceGui
 void ViewProviderSections::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
 {
     QAction* act;
-    act = menu->addAction(QObject::tr("Edit sections"), receiver, member);
+    act = menu->addAction(QObject::tr("Edit Sections"), receiver, member);
     act->setData(QVariant((int)ViewProvider::Default));
     PartGui::ViewProviderSpline::setupContextMenu(menu, receiver, member);
 }

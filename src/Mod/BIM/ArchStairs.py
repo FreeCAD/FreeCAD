@@ -67,6 +67,7 @@ class _Stairs(ArchComponent.Component):
     def __init__(self,obj):
 
         ArchComponent.Component.__init__(self,obj)
+        self.Type = "Stairs"
         self.setProperties(obj)
         obj.IfcType = "Stair"
 
@@ -226,8 +227,6 @@ class _Stairs(ArchComponent.Component):
         if not hasattr(self,"ArchSkPropSetListPrev"):
             self.ArchSkPropSetListPrev = []
 
-        self.Type = "Stairs"
-
 
     def dumps(self):  # Supercede Arch.Component.dumps()
         dump = super().dumps()
@@ -249,6 +248,7 @@ class _Stairs(ArchComponent.Component):
         elif state[0] != "Stairs":  # model before merging super.dumps/loads()
             self.ArchSkPropSetPickedUuid = state[0]
             self.ArchSkPropSetListPrev = state[1]
+        self.Type = "Stairs"
 
 
     def onDocumentRestored(self,obj):

@@ -200,7 +200,7 @@ void Filling::addConstraints(BRepFill_Filling& builder,
         }
     }
     else {
-        Standard_Failure::Raise("Number of links doesn't match with number of orders");
+        Standard_Failure::Raise("Number of links does not match with the number of orders");
     }
 }
 
@@ -231,7 +231,7 @@ void Filling::addConstraints(BRepFill_Filling& builder,
         }
     }
     else {
-        Standard_Failure::Raise("Number of links doesn't match with number of orders");
+        Standard_Failure::Raise("Number of links does not match with the number of orders");
     }
 }
 

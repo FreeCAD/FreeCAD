@@ -185,8 +185,8 @@ class Component(ArchIFC.IfcProduct):
 
     def __init__(self, obj):
         obj.Proxy = self
-        Component.setProperties(self, obj)
         self.Type = "Component"
+        Component.setProperties(self,obj)
 
     def setProperties(self, obj):
         """Give the component its component specific properties, such as material.
@@ -240,7 +240,6 @@ class Component(ArchIFC.IfcProduct):
 
         self.Subvolume = None
         #self.MoveWithHost = False
-        self.Type = "Component"
 
     def onDocumentRestored(self, obj):
         """Method run when the document is restored. Re-add the Arch component properties.
@@ -277,13 +276,10 @@ class Component(ArchIFC.IfcProduct):
             obj.Shape = shape
 
     def dumps(self):
-        # for compatibility with 0.17
-        if hasattr(self,"Type"):
-            return self.Type
-        return "Component"
+        return None
 
     def loads(self,state):
-        return None
+        self.Type = "Component"
 
     def onBeforeChange(self,obj,prop):
         """Method called before the object has a property changed.

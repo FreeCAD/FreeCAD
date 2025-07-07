@@ -82,7 +82,7 @@ PyMOD_INIT_FUNC(ReverseEngineeringGui)
     }
 
     PyObject* mod = ReverseEngineeringGui::initModule();
-    Base::Console().log("Loading GUI of ReverseEngineering module... done\n");
+    Base::Console().log("Loading GUI of ReverseEngineering module… done\n");
 
     // instantiating the commands
     CreateReverseEngineeringCommands();

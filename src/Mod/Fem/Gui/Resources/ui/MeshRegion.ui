@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Mesh refinement</string>
+   <string>Mesh Refinement</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
@@ -34,7 +34,7 @@
         <item row="1" column="0">
          <widget class="QLabel" name="l_max">
           <property name="text">
-           <string>Max element size:</string>
+           <string>Maximum element size</string>
           </property>
          </widget>
         </item>

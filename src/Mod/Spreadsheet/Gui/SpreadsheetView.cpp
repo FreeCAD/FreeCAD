@@ -189,7 +189,7 @@ bool SheetView::onMsg(const char* pMsg, const char**)
     else if (strcmp("Std_Delete", pMsg) == 0) {
         std::vector<Range> ranges = selectedRanges();
         if (sheet->hasCell(ranges)) {
-            Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Clear cell(s)"));
+            Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Clear Cells"));
             std::vector<Range>::const_iterator i = ranges.begin();
             for (; i != ranges.end(); ++i) {
                 FCMD_OBJ_CMD(sheet, "clear('" << i->rangeString() << "')");

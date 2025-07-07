@@ -34,7 +34,7 @@
         <item row="0" column="0">
          <widget class="QLabel" name="lbl_fineness">
           <property name="text">
-           <string>Fineness:</string>
+           <string>Fineness</string>
           </property>
          </widget>
         </item>
@@ -44,7 +44,7 @@
         <item row="1" column="0">
          <widget class="QLabel" name="l_max">
           <property name="text">
-           <string>Maximum Size:</string>
+           <string>Maximum size</string>
           </property>
          </widget>
         </item>
@@ -79,7 +79,7 @@
         <item row="2" column="0">
          <widget class="QLabel" name="l_min">
           <property name="text">
-           <string>Minimum Size:</string>
+           <string>Minimum size</string>
           </property>
          </widget>
         </item>
@@ -114,14 +114,14 @@
         <item row="6" column="0">
          <widget class="QCheckBox" name="ckb_second_order">
           <property name="text">
-           <string>Second Order</string>
+           <string>Second order</string>
           </property>
          </widget>
         </item>
         <item row="3" column="0">
          <widget class="QLabel" name="label_3">
           <property name="text">
-           <string>Growth Rate:</string>
+           <string>Growth rate</string>
           </property>
          </widget>
         </item>
@@ -144,7 +144,7 @@
         <item row="4" column="0">
          <widget class="QLabel" name="label_3">
           <property name="text">
-           <string>Curvature Safety:</string>
+           <string>Curvature safety</string>
           </property>
          </widget>
         </item>
@@ -161,7 +161,7 @@
         <item row="5" column="0">
          <widget class="QLabel" name="label_3">
           <property name="text">
-           <string>Segments Per Edge:</string>
+           <string>Segments per edge</string>
           </property>
          </widget>
         </item>
@@ -217,7 +217,7 @@
              </font>
             </property>
             <property name="text">
-             <string>Time:</string>
+             <string>Time</string>
             </property>
            </widget>
           </item>
@@ -243,7 +243,7 @@
              </sizepolicy>
             </property>
             <property name="text">
-             <string>Netgen version</string>
+             <string>Netgen Version</string>
             </property>
            </widget>
           </item>
