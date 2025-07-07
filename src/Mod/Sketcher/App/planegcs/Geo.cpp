@@ -775,11 +775,15 @@ DeriVector2 BSpline::CalculateNormal(const double* param, const double* derivpar
 
     size_t numpoints = degree + 1;
 
-    // FIXME: Find an appropriate name for this method
-    auto doSomething = [&](size_t i, double& factor, double& slopefactor) {
+    // get dx, dy of the normal as well
+    for (size_t i = 0; i < numpoints; ++i) {
+        if (derivparam != polexat(i) && derivparam != poleyat(i) && derivparam != weightat(i)) {
+            continue;
+        }
+
         VEC_D d(numpoints);
         d[i] = 1;
-        factor = BSpline::splineValue(*param, startpole + degree, degree, d, flattenedknots);
+        double factor = splineValue(*param, startpole + degree, degree, d, flattenedknots);
         VEC_D sd(numpoints - 1);
         if (i > 0) {
             sd[i - 1] =
@@ -789,35 +793,24 @@ DeriVector2 BSpline::CalculateNormal(const double* param, const double* derivpar
             sd[i] = -1.0
                 / (flattenedknots[startpole + i + 1 + degree] - flattenedknots[startpole + i + 1]);
         }
-        slopefactor =
-            BSpline::splineValue(*param, startpole + degree, degree - 1, sd, flattenedknots);
-    };
+        double slopefactor =
+            splineValue(*param, startpole + degree, degree - 1, sd, flattenedknots);
 
-    // get dx, dy of the normal as well
-    for (size_t i = 0; i < numpoints; ++i) {
         if (derivparam == polexat(i)) {
-            double factor, slopefactor;
-            doSomething(i, factor, slopefactor);
             result.dx = *weightat(i) * (wsum * slopefactor - wslopesum * factor);
-            break;
         }
-        if (derivparam == poleyat(i)) {
-            double factor, slopefactor;
-            doSomething(i, factor, slopefactor);
+        else if (derivparam == poleyat(i)) {
             result.dy = *weightat(i) * (wsum * slopefactor - wslopesum * factor);
-            break;
         }
-        if (derivparam == weightat(i)) {
-            double factor, slopefactor;
-            doSomething(i, factor, slopefactor);
+        else if (derivparam == weightat(i)) {
             result.dx = degree
                 * (factor * (xslopesum - wslopesum * (*polexat(i)))
                    - slopefactor * (xsum - wsum * (*polexat(i))));
             result.dy = degree
                 * (factor * (yslopesum - wslopesum * (*poleyat(i)))
                    - slopefactor * (ysum - wsum * (*poleyat(i))));
-            break;
         }
+        break;
     }
 
     // the curve parameter being used by the constraint is not known to the geometry (there can be
@@ -998,7 +991,7 @@ int BSpline::PushOwnParams(VEC_pD& pvec)
 {
     std::size_t cnt = 0;
 
-    for (auto pole : poles) {
+    for (const auto& pole : poles) {
         pvec.push_back(pole.x);
         pvec.push_back(pole.y);
     }
@@ -1025,7 +1018,7 @@ int BSpline::PushOwnParams(VEC_pD& pvec)
 
 void BSpline::ReconstructOnNewPvec(VEC_pD& pvec, int& cnt)
 {
-    for (auto pole : poles) {
+    for (auto& pole : poles) {
         pole.x = pvec[cnt];
         cnt++;
         pole.y = pvec[cnt];
