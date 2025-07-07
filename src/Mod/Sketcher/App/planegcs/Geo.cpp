@@ -1032,12 +1032,12 @@ void BSpline::ReconstructOnNewPvec(VEC_pD& pvec, int& cnt)
         cnt++;
     }
 
-    for (auto* weight : weights) {
+    for (auto& weight : weights) {
         weight = pvec[cnt];
         cnt++;
     }
 
-    for (auto* knot : knots) {
+    for (auto& knot : knots) {
         knot = pvec[cnt];
         cnt++;
     }
