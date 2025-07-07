@@ -46,10 +46,10 @@ class Arch_Window:
 
     def GetResources(self):
 
-        return {'Pixmap'  : 'Arch_Window',
-                'MenuText': QT_TRANSLATE_NOOP("Arch_Window","Window"),
-                'Accel': "W, N",
-                'ToolTip': QT_TRANSLATE_NOOP("Arch_Window","Creates a window object from a selected object (wire, rectangle or sketch)")}
+        return {"Pixmap"  : "Arch_Window",
+                "MenuText": QT_TRANSLATE_NOOP("Arch_Window","Window"),
+                "Accel": "W, N",
+                "ToolTip": QT_TRANSLATE_NOOP("Arch_Window","Creates a window object from a selected object (wire, rectangle or sketch)")}
 
     def IsActive(self):
 
@@ -85,7 +85,7 @@ class Arch_Window:
         if FreeCADGui.Selection.getSelectionEx():
             FreeCADGui.draftToolBar.offUi()
             obj = self.sel[0]
-            if hasattr(obj,'Shape'):
+            if hasattr(obj,"Shape"):
                 if obj.Shape.Wires and (not obj.Shape.Solids) and (not obj.Shape.Shells):
                     FreeCADGui.Control.closeDialog()
                     host = None
@@ -234,8 +234,8 @@ class Arch_Window:
             import ArchSketchObject
 
             if (host and Draft.getType(host.Base) == "ArchSketch" and
-                hasattr(ArchSketchObject, 'attachToHost') and 
-                hasattr(FreeCAD, 'ArchSketchLock') and 
+                hasattr(ArchSketchObject, "attachToHost") and 
+                hasattr(FreeCAD, "ArchSketchLock") and 
                 FreeCAD.ArchSketchLock):
                 if self.Include:
                     # Window base sketch's placement stay at orgin is good if addon exists and self.Include
@@ -285,10 +285,10 @@ class Arch_Window:
             rot = FreeCAD.Rotation(self.wp.u,self.wp.v,-self.wp.axis,"XZY")
             self.tracker.setRotation(rot)
         if info:
-            if "Face" in info['Component']:
+            if "Face" in info["Component"]:
                 import DraftGeomUtils
-                o = self.doc.getObject(info['Object'])
-                self.baseFace = [o,int(info['Component'][4:])-1]
+                o = self.doc.getObject(info["Object"])
+                self.baseFace = [o,int(info["Component"][4:])-1]
                 #print("switching to ",o.Label," face ",self.baseFace[1])
                 f = o.Shape.Faces[self.baseFace[1]]
                 p = DraftGeomUtils.placement_from_face(f,vec_z=self.wp.axis,rotated=True)
@@ -490,7 +490,7 @@ class Arch_Window:
                             image="thumbnails/Thumbnail.png"
                             if image in files:
                                 image = zfile.read(image)
-                                thumbfile = tempfile.mkstemp(suffix='.png')[1]
+                                thumbfile = tempfile.mkstemp(suffix=".png")[1]
                                 thumb = open(thumbfile,"wb")
                                 thumb.write(image)
                                 thumb.close()
@@ -507,4 +507,4 @@ class Arch_Window:
                 getattr(self,"val"+param).setEnabled(False)
 
 
-FreeCADGui.addCommand('Arch_Window', Arch_Window())
+FreeCADGui.addCommand("Arch_Window", Arch_Window())

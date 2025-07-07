@@ -39,10 +39,10 @@ class Arch_Truss:
 
     def GetResources(self):
 
-        return {'Pixmap'  : 'Arch_Truss',
-                'MenuText': QT_TRANSLATE_NOOP("Arch_Truss","Truss"),
-                'Accel': "T, U",
-                'ToolTip': QT_TRANSLATE_NOOP("Arch_Truss","Creates a truss object from selected line or from scratch")}
+        return {"Pixmap"  : "Arch_Truss",
+                "MenuText": QT_TRANSLATE_NOOP("Arch_Truss","Truss"),
+                "Accel": "T, U",
+                "ToolTip": QT_TRANSLATE_NOOP("Arch_Truss","Creates a truss object from selected line or from scratch")}
 
     def IsActive(self):
 
@@ -106,4 +106,4 @@ class Arch_Truss:
         self.doc.recompute()
 
 
-FreeCADGui.addCommand('Arch_Truss', Arch_Truss())
+FreeCADGui.addCommand("Arch_Truss", Arch_Truss())

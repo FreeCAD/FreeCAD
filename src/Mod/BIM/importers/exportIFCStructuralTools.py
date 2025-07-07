@@ -65,7 +65,7 @@ def createStructuralContext(ifcfile):
     contexts = [c for c in contexts if c.is_a() == "IfcGeometricRepresentationContext"]
     geomContext = contexts[0] # arbitrarily take the first one...
     structContext = ifcfile.createIfcGeometricRepresentationSubContext(
-        'Analysis', 'Axis', None, None, None, None, geomContext, None, "GRAPH_VIEW", None)
+        "Analysis", "Axis", None, None, None, None, geomContext, None, "GRAPH_VIEW", None)
     return structContext
 
 
@@ -87,7 +87,7 @@ def createStructuralNode(ifcfile, ifcbin, point):
     structContext = getStructuralContext(ifcfile)
     cartPoint = ifcbin.createIfcCartesianPoint(tuple(point))
     vertPoint = ifcfile.createIfcVertexPoint(cartPoint)
-    topologyRep = ifcfile.createIfcTopologyRepresentation(structContext, 'Analysis', 'Vertex', [vertPoint])
+    topologyRep = ifcfile.createIfcTopologyRepresentation(structContext, "Analysis", "Vertex", [vertPoint])
     prodDefShape = ifcfile.createIfcProductDefinitionShape(None, None, [topologyRep])
     # boundary conditions serve for ex. to create fixed nodes
     # appliedCondition = ifcfile.createIfcBoundaryNodeCondition(
@@ -98,10 +98,10 @@ def createStructuralNode(ifcfile, ifcbin, point):
     localPlacement = ifcbin.createIfcLocalPlacement()
     if ifcfile.wrapped_data.schema_name() == "IFC2X3":
         structPntConn = ifcfile.createIfcStructuralPointConnection(
-            uid(), ownerHistory, 'Vertex', None, None, localPlacement, prodDefShape, appliedCondition)
+            uid(), ownerHistory, "Vertex", None, None, localPlacement, prodDefShape, appliedCondition)
     else:
         structPntConn = ifcfile.createIfcStructuralPointConnection(
-            uid(), ownerHistory, 'Vertex', None, None, localPlacement, prodDefShape, appliedCondition, None)
+            uid(), ownerHistory, "Vertex", None, None, localPlacement, prodDefShape, appliedCondition, None)
     return structPntConn
 
 

@@ -85,9 +85,9 @@ def insert(filename,docname=None,preferences=None):
     settings.set(settings.USE_BREP_DATA,True)
     settings.set(settings.SEW_SHELLS,True)
     settings.set(settings.USE_WORLD_COORDS,True)
-    if preferences['SEPARATE_OPENINGS']:
+    if preferences["SEPARATE_OPENINGS"]:
         settings.set(settings.DISABLE_OPENING_SUBTRACTIONS,True)
-    if preferences['SPLIT_LAYERS'] and hasattr(settings,"APPLY_LAYERSETS"):
+    if preferences["SPLIT_LAYERS"] and hasattr(settings,"APPLY_LAYERSETS"):
         settings.set(settings.APPLY_LAYERSETS,True)
 
     # setup document
@@ -156,8 +156,8 @@ def writeProgress(count=None,total=None,starttime=None):
             eta = "%02d:%02d" % (divmod(rest, 60))
         else:
             eta = "--:--"
-        hashes = '#'*int(r*10)+' '*int(10-r*10)
-        fstring = '\rImporting '+str(total)+' products [{0}] {1}%, ETA: {2}'
+        hashes = "#"*int(r*10)+" "*int(10-r*10)
+        fstring = "\rImporting "+str(total)+" products [{0}] {1}%, ETA: {2}"
         sys.stdout.write(fstring.format(hashes, int(r*100),eta))
 
 

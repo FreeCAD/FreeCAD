@@ -204,7 +204,7 @@ class _ViewProviderAxisSystem:
         self.edit()
 
     def setupContextMenu(self, vobj, menu):
-        if FreeCADGui.activeWorkbench().name() != 'BIMWorkbench':
+        if FreeCADGui.activeWorkbench().name() != "BIMWorkbench":
             return
         actionEdit = QtGui.QAction(translate("Arch", "Edit"),
                                    menu)
@@ -227,7 +227,7 @@ class _ViewProviderAxisSystem:
 
 class AxisSystemTaskPanel:
 
-    '''A TaskPanel for all the section plane object'''
+    """A TaskPanel for all the section plane object"""
 
     def __init__(self,obj):
 

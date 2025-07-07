@@ -111,14 +111,14 @@ class _Window(ArchComponent.Component):
         self.basePos = None
 
     def addSketchArchFeatures(self,obj,linkObj=None,mode=None):
-        '''
+        """
            To add features in the SketchArch External Add-on  (https://github.com/paullee0/FreeCAD_SketchArch)
            -  import ArchSketchObject module, and
            -  set properties that are common to ArchObjects (including Links) and ArchSketch
               to support the additional features
 
            To install SketchArch External Add-on, see https://github.com/paullee0/FreeCAD_SketchArch#iv-install
-        '''
+        """
 
         try:
             import ArchSketchObject
@@ -149,7 +149,7 @@ class _Window(ArchComponent.Component):
         # Automatic Normal Reverse
         if not "AutoNormalReversed" in lp:
             obj.addProperty("App::PropertyBool","AutoNormalReversed","Window",QT_TRANSLATE_NOOP("App::Property","When normal direction is in auto mode (0,0,0), use reversed normal direction of the Base Sketch, i.e. -z."), locked=True)
-            if mode == 'ODR':
+            if mode == "ODR":
                 obj.AutoNormalReversed = False  # To maintain auto extrusion behaviour before introduction of this flag, this remains False if this is called by onDocumentRestored()
             elif mode == None:
                 obj.AutoNormalReversed = True  # To enable new extrusion behaviour which is consistent with Window intuitive creation tool after introduction of this flag, this is set True.
@@ -183,16 +183,16 @@ class _Window(ArchComponent.Component):
     def onDocumentRestored(self,obj):
 
         ArchComponent.Component.onDocumentRestored(self,obj)
-        self.setProperties(obj,mode='ODR')
+        self.setProperties(obj,mode="ODR")
 
         # Add features in the SketchArch External Add-on
-        self.addSketchArchFeatures(obj, mode='ODR')
+        self.addSketchArchFeatures(obj, mode="ODR")
 
         # Need to restore 'initial' settings as corresponding codes in onChanged() does upon object creation
         self.baseSill = obj.Sill.Value
         self.basePos = obj.Base.Placement.Base
         self.atthOff = None
-        if hasattr(obj, 'AttachmentOffsetXyzAndRotation'):
+        if hasattr(obj, "AttachmentOffsetXyzAndRotation"):
             self.atthOff = obj.AttachmentOffsetXyzAndRotation.Base
 
     def loads(self,state):
@@ -212,13 +212,13 @@ class _Window(ArchComponent.Component):
         if prop == "Sill":
             val = getattr(obj,prop).Value
 
-            if (getattr(self, 'baseSill', None) is None and
-                getattr(self, 'basePos', None) is None and
-                getattr(self, 'atthOff', None) is None):  # TODO Any cases only 1 or 2 are not None?
+            if (getattr(self, "baseSill", None) is None and
+                getattr(self, "basePos", None) is None and
+                getattr(self, "atthOff", None) is None):  # TODO Any cases only 1 or 2 are not None?
                 self.baseSill = val
                 self.basePos = obj.Base.Placement.Base
                 self.atthOff = None
-                if hasattr(obj, 'AttachmentOffsetXyzAndRotation'):
+                if hasattr(obj, "AttachmentOffsetXyzAndRotation"):
                     self.atthOff = obj.AttachmentOffsetXyzAndRotation.Base
                 return
 
@@ -226,10 +226,10 @@ class _Window(ArchComponent.Component):
             host = None
             if obj.Hosts:
                 host = obj.Hosts[0]
-            if (hasattr(obj, 'AttachToAxisOrSketch') and
+            if (hasattr(obj, "AttachToAxisOrSketch") and
                 obj.AttachToAxisOrSketch == "Host" and
                 host and Draft.getType(host.Base) == "ArchSketch" and
-                hasattr(ArchSketchObject, 'updateAttachmentOffset')):
+                hasattr(ArchSketchObject, "updateAttachmentOffset")):
                 SketchArch = True
             else:
                 SketchArch = False
@@ -282,7 +282,7 @@ class _Window(ArchComponent.Component):
             omode = None
             ssymbols = []
             vsymbols = []
-            wstr = obj.WindowParts[(i*5)+2].split(',')
+            wstr = obj.WindowParts[(i*5)+2].split(",")
             for s in wstr:
                 if "Wire" in s:
                     j = int(s[4:])
@@ -506,7 +506,7 @@ class _Window(ArchComponent.Component):
         self.sshapes = []
         self.vshapes = []
         if obj.Base:
-            if hasattr(obj,'Shape'):
+            if hasattr(obj,"Shape"):
                 if hasattr(obj,"WindowParts"):
                     if obj.WindowParts and (len(obj.WindowParts)%5 == 0):
                         shapes = self.buildShapes(obj)
@@ -550,13 +550,13 @@ class _Window(ArchComponent.Component):
         self.executeSketchArchFeatures(obj)
 
     def executeSketchArchFeatures(self, obj, linkObj=None, index=None, linkElement=None):
-        '''
+        """
            To execute features in the SketchArch External Add-on  (https://github.com/paullee0/FreeCAD_SketchArch)
            -  import ArchSketchObject module, and
            -  execute features that are common to ArchObjects (including Links) and ArchSketch
 
            To install SketchArch External Add-on, see https://github.com/paullee0/FreeCAD_SketchArch#iv-install
-        '''
+        """
 
         # To execute features in SketchArch External Add-on
         try:
@@ -568,11 +568,11 @@ class _Window(ArchComponent.Component):
             pass
 
     def appLinkExecute(self, obj, linkObj, index, linkElement):
-        '''
+        """
             Default Link Execute method() -
             See https://forum.freecad.org/viewtopic.php?f=22&t=42184&start=10#p361124
             @realthunder added support to Links to run Linked Scripted Object's methods()
-        '''
+        """
 
         # Add features in the SketchArch External Add-on
         self.addSketchArchFeatures(obj, linkObj)
@@ -600,7 +600,7 @@ class _Window(ArchComponent.Component):
         # check if we have a custom subvolume
         if hasattr(obj,"Subvolume"):  # TODO To support Links
             if obj.Subvolume:
-                if hasattr(obj.Subvolume,'Shape'):
+                if hasattr(obj.Subvolume,"Shape"):
                     if not obj.Subvolume.Shape.isNull():
                         sh = obj.Subvolume.Shape.copy()
                         pl = FreeCAD.Placement(sh.Placement)
@@ -627,8 +627,8 @@ class _Window(ArchComponent.Component):
                 propSetUuid = host.Proxy.ArchSkPropSetPickedUuid
                 widths = []  # [] or None are both False
                 if hasattr(host,"ArchSketchData") and host.ArchSketchData and Draft.getType(host.Base) == "ArchSketch":
-                    if hasattr(host.Base, 'Proxy'):  # TODO Any need to test ?
-                        if hasattr(host.Base.Proxy, 'getWidths'):
+                    if hasattr(host.Base, "Proxy"):  # TODO Any need to test ?
+                        if hasattr(host.Base.Proxy, "getWidths"):
                             # Return a list of Width corresponding to indexes
                             # of sorted edges of Sketch.
                             widths = host.Base.Proxy.getWidths(host.Base,
@@ -845,11 +845,11 @@ class _ViewProviderWindow(ArchComponent.ViewProviderComponent):
             elif mtype is not None and (mtype in arch_mat.Names):
                 mat = arch_mat.Materials[arch_mat.Names.index(mtype)]
             if mat:
-                if 'DiffuseColor' in mat.Material:
-                    if "(" in mat.Material['DiffuseColor']:
-                        color = tuple([float(f) for f in mat.Material['DiffuseColor'].strip("()").split(",")])
-                if color and ('Transparency' in mat.Material):
-                    t = float(mat.Material['Transparency'])/100.0
+                if "DiffuseColor" in mat.Material:
+                    if "(" in mat.Material["DiffuseColor"]:
+                        color = tuple([float(f) for f in mat.Material["DiffuseColor"].strip("()").split(",")])
+                if color and ("Transparency" in mat.Material):
+                    t = float(mat.Material["Transparency"])/100.0
                     color = color[:3] + (t, )
         return color
 
@@ -899,7 +899,7 @@ class _ViewProviderWindow(ArchComponent.ViewProviderComponent):
 
     def setupContextMenu(self, vobj, menu):
 
-        if FreeCADGui.activeWorkbench().name() != 'BIMWorkbench':
+        if FreeCADGui.activeWorkbench().name() != "BIMWorkbench":
             return
 
         hingeIdxs = self.getHingeEdgeIndices()
@@ -984,7 +984,7 @@ class _ViewProviderWindow(ArchComponent.ViewProviderComponent):
 
 class _ArchWindowTaskPanel:
 
-    '''The TaskPanel for Arch Windows'''
+    """The TaskPanel for Arch Windows"""
 
     def __init__(self):
 
@@ -1157,7 +1157,7 @@ class _ArchWindowTaskPanel:
     def select(self,wid,col):
 
         FreeCADGui.Selection.clearSelection()
-        ws = ''
+        ws = ""
         for it in self.wiretree.selectedItems():
             if ws: ws += ","
             ws += str(it.text(0))
@@ -1220,7 +1220,7 @@ class _ArchWindowTaskPanel:
                 item = QtGui.QTreeWidgetItem(self.tree)
                 item.setText(0,self.obj.Base.Name)
                 item.setIcon(0,self.getIcon(self.obj.Base))
-                if hasattr(self.obj.Base,'Shape'):
+                if hasattr(self.obj.Base,"Shape"):
                     i = 0
                     for w in self.obj.Base.Shape.Wires:
                         if w.isClosed():
@@ -1251,10 +1251,10 @@ class _ArchWindowTaskPanel:
 
         'opens the component creation dialog'
 
-        self.field1.setText('')
-        self.field3.setText('')
-        self.field4.setText('')
-        self.field5.setText('')
+        self.field1.setText("")
+        self.field3.setText("")
+        self.field4.setText("")
+        self.field5.setText("")
         self.field6.setText(QtGui.QApplication.translate("Arch", "Get selected edge", None))
         self.field7.setCurrentIndex(0)
         self.addp4.setChecked(False)

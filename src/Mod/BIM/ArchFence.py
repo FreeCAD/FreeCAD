@@ -84,7 +84,7 @@ class _Fence(ArchComponent.Component):
             obj.setEditorMode("NumberOfPosts", 1)
 
     def dumps(self):
-        if hasattr(self, 'sectionFaceNumbers'):
+        if hasattr(self, "sectionFaceNumbers"):
             return self.sectionFaceNumbers
         return None
 
@@ -236,7 +236,7 @@ class _Fence(ArchComponent.Component):
         return newShape.removeSplitter()
 
     def calculatePathWire(self, obj):
-        if (hasattr(obj.Path.Shape, 'Wires') and obj.Path.Shape.Wires):
+        if (hasattr(obj.Path.Shape, "Wires") and obj.Path.Shape.Wires):
             return obj.Path.Shape.Wires[0]
         elif obj.Path.Shape.Edges:
             return Part.Wire(obj.Path.Shape.Edges)
@@ -322,7 +322,7 @@ class _ViewProviderFence(ArchComponent.ViewProviderComponent):
             numberOfPostFaces = len(post.Shape.Faces)
             numberOfSectionFaces = len(section.Shape.Faces)
 
-            if hasattr(obj.Proxy, 'sectionFaceNumbers'):
+            if hasattr(obj.Proxy, "sectionFaceNumbers"):
                 sectionFaceNumbers = obj.Proxy.sectionFaceNumbers
             else:
                 sectionFaceNumbers = [0]
@@ -387,5 +387,5 @@ class _ViewProviderFence(ArchComponent.ViewProviderComponent):
 
 
 def hide(obj):
-    if hasattr(obj, 'ViewObject') and obj.ViewObject:
+    if hasattr(obj, "ViewObject") and obj.ViewObject:
         obj.ViewObject.Visibility = False

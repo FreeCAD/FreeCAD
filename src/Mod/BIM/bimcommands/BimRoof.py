@@ -34,7 +34,7 @@ PARAMS = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/BIM")
 
 
 class Arch_Roof:
-    '''the Arch Roof command definition'''
+    """the Arch Roof command definition"""
 
     def GetResources(self):
         return {"Pixmap"  : "Arch_Roof",

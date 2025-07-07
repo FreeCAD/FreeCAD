@@ -43,20 +43,20 @@ class TestArchBuildingPart(TestArchBase.TestArchBase):
         self.assertEqual(floor.Label, "Level", "Default label is incorrect")
 
     def testFloor(self):
-        App.Console.PrintLog ('Checking Arch Floor...\n')
+        App.Console.PrintLog ("Checking Arch Floor...\n")
         structure = Arch.makeStructure(length=2, width=3, height=5)
         floor = Arch.makeFloor([structure])
         self.assertTrue(floor,"Arch Floor failed")
 
     def testBuilding(self):
-        App.Console.PrintLog ('Checking Arch Building...\n')
+        App.Console.PrintLog ("Checking Arch Building...\n")
         structure = Arch.makeStructure(length=2, width=3, height=5)
         floor = Arch.makeFloor([structure])
         building = Arch.makeBuilding([floor])
         self.assertTrue(building, "Arch Building failed")
 
     def testSite(self):
-        App.Console.PrintLog('Checking Arch Site...\n')
+        App.Console.PrintLog("Checking Arch Site...\n")
         structure = Arch.makeStructure(length=2, width=3, height=5)
         floor = Arch.makeFloor([structure])
         building = Arch.makeBuilding([floor])

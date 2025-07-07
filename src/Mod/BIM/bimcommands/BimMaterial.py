@@ -568,10 +568,10 @@ class Arch_Material:
 
     def GetResources(self):
 
-        return {'Pixmap': 'Arch_Material_Group',
-                'MenuText': QT_TRANSLATE_NOOP("Arch_Material","Material"),
-                'Accel': "M, T",
-                'ToolTip': QT_TRANSLATE_NOOP("Arch_Material","Creates or edits the material definition of a selected object.")}
+        return {"Pixmap": "Arch_Material_Group",
+                "MenuText": QT_TRANSLATE_NOOP("Arch_Material","Material"),
+                "Accel": "M, T",
+                "ToolTip": QT_TRANSLATE_NOOP("Arch_Material","Creates or edits the material definition of a selected object.")}
 
     def Activated(self):
 
@@ -599,10 +599,10 @@ class Arch_MultiMaterial:
 
     def GetResources(self):
 
-        return {'Pixmap': 'Arch_Material_Multi',
-                'MenuText': QT_TRANSLATE_NOOP("Arch_MultiMaterial","Multi-Material"),
-                'Accel': "M, T",
-                'ToolTip': QT_TRANSLATE_NOOP("Arch_MultiMaterial","Creates or edits multi-materials")}
+        return {"Pixmap": "Arch_Material_Multi",
+                "MenuText": QT_TRANSLATE_NOOP("Arch_MultiMaterial","Multi-Material"),
+                "Accel": "M, T",
+                "ToolTip": QT_TRANSLATE_NOOP("Arch_MultiMaterial","Creates or edits multi-materials")}
 
     def Activated(self):
 
@@ -627,10 +627,10 @@ class Arch_MultiMaterial:
 class Arch_MaterialToolsCommand:
 
     def GetCommands(self):
-        return tuple(['Arch_Material','Arch_MultiMaterial'])
+        return tuple(["Arch_Material","Arch_MultiMaterial"])
     def GetResources(self):
-        return { 'MenuText': QT_TRANSLATE_NOOP("Arch_MaterialTools",'Material tools'),
-                 'ToolTip': QT_TRANSLATE_NOOP("Arch_MaterialTools",'Material tools')
+        return { "MenuText": QT_TRANSLATE_NOOP("Arch_MaterialTools","Material tools"),
+                 "ToolTip": QT_TRANSLATE_NOOP("Arch_MaterialTools","Material tools")
                }
     def IsActive(self):
         v = hasattr(FreeCADGui.getMainWindow().getActiveWindow(), "getSceneGraph")
@@ -638,6 +638,6 @@ class Arch_MaterialToolsCommand:
 
 
 FreeCADGui.addCommand("BIM_Material", BIM_Material())
-FreeCADGui.addCommand('Arch_Material',Arch_Material())
-FreeCADGui.addCommand('Arch_MultiMaterial',Arch_MultiMaterial())
-FreeCADGui.addCommand('Arch_MaterialTools', Arch_MaterialToolsCommand())
+FreeCADGui.addCommand("Arch_Material",Arch_Material())
+FreeCADGui.addCommand("Arch_MultiMaterial",Arch_MultiMaterial())
+FreeCADGui.addCommand("Arch_MaterialTools", Arch_MaterialToolsCommand())

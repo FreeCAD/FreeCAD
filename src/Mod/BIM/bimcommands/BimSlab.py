@@ -102,4 +102,4 @@ class BIM_Slab:
             FreeCADGui.draftToolBar.offUi()
 
 
-FreeCADGui.addCommand('BIM_Slab', BIM_Slab())
+FreeCADGui.addCommand("BIM_Slab", BIM_Slab())

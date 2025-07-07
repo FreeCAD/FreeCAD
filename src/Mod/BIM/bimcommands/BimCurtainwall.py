@@ -40,10 +40,10 @@ class Arch_CurtainWall:
 
     def GetResources(self):
 
-        return {'Pixmap'  : 'Arch_CurtainWall',
-                'MenuText': QT_TRANSLATE_NOOP("Arch_CurtainWall","Curtain Wall"),
-                'Accel': "C, W",
-                'ToolTip': QT_TRANSLATE_NOOP("Arch_CurtainWall","Creates a curtain wall object from selected line or from scratch")}
+        return {"Pixmap"  : "Arch_CurtainWall",
+                "MenuText": QT_TRANSLATE_NOOP("Arch_CurtainWall","Curtain Wall"),
+                "Accel": "C, W",
+                "ToolTip": QT_TRANSLATE_NOOP("Arch_CurtainWall","Creates a curtain wall object from selected line or from scratch")}
 
     def IsActive(self):
 
@@ -102,4 +102,4 @@ class Arch_CurtainWall:
 
 
 
-FreeCADGui.addCommand('Arch_CurtainWall', Arch_CurtainWall())
+FreeCADGui.addCommand("Arch_CurtainWall", Arch_CurtainWall())
