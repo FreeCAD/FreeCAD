@@ -521,6 +521,17 @@ QPixmap BitmapFactoryInst::disabled(const QPixmap& p) const
     return QApplication::style()->generatedIconPixmap(QIcon::Disabled, p, &opt);
 }
 
+QPixmap BitmapFactoryInst::empty(QSize size) const
+{
+    qreal dpr = getMaximumDPR();
+
+    QPixmap res(size * dpr);
+    res.fill(Qt::transparent);
+    res.setDevicePixelRatio(dpr);
+
+    return res;
+}
+
 void BitmapFactoryInst::convert(const QImage& p, SoSFImage& img) const
 {
     SbVec2s size;

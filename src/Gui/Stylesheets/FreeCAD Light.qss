@@ -237,6 +237,12 @@ QStatusBar QLabel {
   background-color: transparent;
 }
 
+QStatusBar QPushButton {
+    min-width: 0;
+    padding-left: 8px;
+    padding-right: 8px;
+}
+
 /* QCheckBox --------------------------------------------------------------
 
 https://doc.qt.io/qt-5/stylesheet-examples.html#customizing-qcheckbox

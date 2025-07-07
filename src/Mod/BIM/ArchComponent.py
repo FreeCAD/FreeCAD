@@ -185,8 +185,8 @@ class Component(ArchIFC.IfcProduct):
 
     def __init__(self, obj):
         obj.Proxy = self
-        Component.setProperties(self, obj)
         self.Type = "Component"
+        Component.setProperties(self,obj)
 
     def setProperties(self, obj):
         """Give the component its component specific properties, such as material.
@@ -240,7 +240,6 @@ class Component(ArchIFC.IfcProduct):
 
         self.Subvolume = None
         #self.MoveWithHost = False
-        self.Type = "Component"
 
     def onDocumentRestored(self, obj):
         """Method run when the document is restored. Re-add the Arch component properties.
@@ -277,13 +276,10 @@ class Component(ArchIFC.IfcProduct):
             obj.Shape = shape
 
     def dumps(self):
-        # for compatibility with 0.17
-        if hasattr(self,"Type"):
-            return self.Type
-        return "Component"
+        return None
 
     def loads(self,state):
-        return None
+        self.Type = "Component"
 
     def onBeforeChange(self,obj,prop):
         """Method called before the object has a property changed.
@@ -1353,19 +1349,16 @@ class ViewProviderComponent:
 
         #print(obj.Name," : updating ",prop)
         if prop == "Material":
-            if obj.Material and ( (not hasattr(obj.ViewObject,"UseMaterialColor")) or obj.ViewObject.UseMaterialColor):
+            if obj.Material and getattr(obj.ViewObject,"UseMaterialColor",True):
                 if hasattr(obj.Material,"Material"):
-                    if 'DiffuseColor' in obj.Material.Material:
-                        if "(" in obj.Material.Material['DiffuseColor']:
-                            c = tuple([float(f) for f in obj.Material.Material['DiffuseColor'].strip("()").split(",")])
-                            if obj.ViewObject:
-                                if obj.ViewObject.ShapeColor != c:
-                                    obj.ViewObject.ShapeColor = c
-                    if 'Transparency' in obj.Material.Material:
-                        t = int(obj.Material.Material['Transparency'])
-                        if obj.ViewObject:
-                            if obj.ViewObject.Transparency != t:
-                                obj.ViewObject.Transparency = t
+                    if "DiffuseColor" in obj.Material.Material:
+                        c = tuple([float(f) for f in obj.Material.Material["DiffuseColor"].strip("()").strip("[]").split(",")])
+                        if obj.ViewObject.ShapeColor != c:
+                            obj.ViewObject.ShapeColor = c
+                    if "Transparency" in obj.Material.Material:
+                        t = int(obj.Material.Material["Transparency"])
+                        if obj.ViewObject.Transparency != t:
+                            obj.ViewObject.Transparency = t
         elif prop == "Shape":
             if obj.Base:
                 if obj.Base.isDerivedFrom("Part::Compound"):
@@ -1375,11 +1368,7 @@ class ViewProviderComponent:
                             obj.ViewObject.update()
         elif prop == "CloneOf":
             if obj.CloneOf:
-                mat = None
-                if hasattr(obj,"Material"):
-                    if obj.Material:
-                        mat = obj.Material
-                if (not mat) and hasattr(obj.CloneOf.ViewObject,"DiffuseColor"):
+                if (not getattr(obj,"Material",None)) and hasattr(obj.CloneOf.ViewObject,"DiffuseColor"):
                     if obj.ViewObject.DiffuseColor != obj.CloneOf.ViewObject.DiffuseColor:
                         if len(obj.CloneOf.ViewObject.DiffuseColor) > 1:
                             obj.ViewObject.DiffuseColor = obj.CloneOf.ViewObject.DiffuseColor

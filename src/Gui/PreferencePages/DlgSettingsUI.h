@@ -62,6 +62,7 @@ protected:
                            const char *def,
                            QStringList filter = QStringList());
 
+  void openThemeEditor();
 private:
   std::unique_ptr<Ui_DlgSettingsUI> ui;
 };

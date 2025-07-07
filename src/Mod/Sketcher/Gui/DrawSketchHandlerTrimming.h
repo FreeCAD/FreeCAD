@@ -208,10 +208,15 @@ private:
 private:
     std::vector<Base::Vector2d> EditMarkers;
     bool mousePressed = false;
+
+public:
+    std::list<Gui::InputHint> getToolHints() const override
+    {
+        return {{QObject::tr("%1 pick edge to trim", "Sketcher Trimming: hint"),
+                 {Gui::InputHint::UserInput::MouseLeft}}};
+    }
 };
 
-
 }  // namespace SketcherGui
-
 
 #endif  // SKETCHERGUI_DrawSketchHandlerTrimming_H

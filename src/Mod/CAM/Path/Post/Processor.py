@@ -222,6 +222,13 @@ class PostProcessor:
             curlist = []  # list of ops for tool, will repeat for each fixture
             sublist = []  # list of ops for output splitting
 
+            def commitToPostlist():
+                if len(curlist) > 0:
+                    for fixture in fixturelist:
+                        sublist.append(fixture)
+                        sublist.extend(curlist)
+                    postlist.append((toolstring, sublist))
+
             Path.Log.track(self._job.PostProcessorOutputFile)
             for idx, obj in enumerate(self._job.Operations.Group):
                 Path.Log.track(obj.Label)
@@ -231,40 +238,36 @@ class PostProcessor:
                     Path.Log.track()
                     continue
 
-                # Determine the proper string for the Op's TC
                 tc = PathUtil.toolControllerForOp(obj)
-                if tc is None:
-                    tcstring = "None"
-                elif "%T" in self._job.PostProcessorOutputFile:
-                    tcstring = f"{tc.ToolNumber}"
-                else:
-                    tcstring = re.sub(r"[^\w\d-]", "_", tc.Label)
-                Path.Log.track(toolstring)
+
+                # The operation has no ToolController or uses the same
+                # ToolController as the previous operations
 
                 if tc is None or tc.ToolNumber == currTool:
+                    # Queue current operation
                     curlist.append(obj)
-                elif tc.ToolNumber != currTool and currTool is None:  # first TC
-                    sublist.append(tc)
-                    curlist.append(obj)
-                    currTool = tc.ToolNumber
-                    toolstring = tcstring
 
-                elif tc.ToolNumber != currTool and currTool is not None:  # TC
-                    for fixture in fixturelist:
-                        sublist.append(fixture)
-                        sublist.extend(curlist)
-                    postlist.append((toolstring, sublist))
+                # The operation is the first operation or uses a different
+                # ToolController as the previous operations
+
+                else:
+                    # Commit previous operations
+                    commitToPostlist()
+
+                    # Queue current ToolController and operation
                     sublist = [tc]
                     curlist = [obj]
                     currTool = tc.ToolNumber
-                    toolstring = tcstring
 
-                if idx == len(self._job.Operations.Group) - 1:  # Last operation.
-                    for fixture in fixturelist:
-                        sublist.append(fixture)
-                        sublist.extend(curlist)
+                    # Determine the proper string for the operation's
+                    # ToolController
+                    if "%T" in self._job.PostProcessorOutputFile:
+                        toolstring = f"{tc.ToolNumber}"
+                    else:
+                        toolstring = re.sub(r"[^\w\d-]", "_", tc.Label)
 
-                    postlist.append((toolstring, sublist))
+            # Commit remaining operations
+            commitToPostlist()
 
         elif orderby == "Operation":
             Path.Log.debug("Ordering by Operation")

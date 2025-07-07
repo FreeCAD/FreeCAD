@@ -34,10 +34,15 @@
 #include <Inventor/nodes/SoBaseColor.h>
 #include <FCGlobal.h>
 
+#include <string>
+
 class SoCamera;
 
 namespace Gui
 {
+
+class SoLinearDraggerContainer;
+
 /*! @brief Coordinate System Dragger
  *
  * used to transform objects in 3d space. Set initial:
@@ -57,18 +62,6 @@ class GuiExport SoTransformDragger : public SoDragger
     SO_KIT_CATALOG_ENTRY_HEADER(scaleNode);
     SO_KIT_CATALOG_ENTRY_HEADER(pickStyle);
     // Translator
-    SO_KIT_CATALOG_ENTRY_HEADER(xTranslatorSwitch);
-    SO_KIT_CATALOG_ENTRY_HEADER(yTranslatorSwitch);
-    SO_KIT_CATALOG_ENTRY_HEADER(zTranslatorSwitch);
-    SO_KIT_CATALOG_ENTRY_HEADER(xTranslatorSeparator);
-    SO_KIT_CATALOG_ENTRY_HEADER(yTranslatorSeparator);
-    SO_KIT_CATALOG_ENTRY_HEADER(zTranslatorSeparator);
-    SO_KIT_CATALOG_ENTRY_HEADER(xTranslatorColor);
-    SO_KIT_CATALOG_ENTRY_HEADER(yTranslatorColor);
-    SO_KIT_CATALOG_ENTRY_HEADER(zTranslatorColor);
-    SO_KIT_CATALOG_ENTRY_HEADER(xTranslatorRotation);
-    SO_KIT_CATALOG_ENTRY_HEADER(yTranslatorRotation);
-    SO_KIT_CATALOG_ENTRY_HEADER(zTranslatorRotation);
     SO_KIT_CATALOG_ENTRY_HEADER(xTranslatorDragger);
     SO_KIT_CATALOG_ENTRY_HEADER(yTranslatorDragger);
     SO_KIT_CATALOG_ENTRY_HEADER(zTranslatorDragger);
@@ -152,9 +145,6 @@ public:
     bool isShownTranslationX(); //!< is x translation dragger shown.
     bool isShownTranslationY(); //!< is y translation dragger shown.
     bool isShownTranslationZ(); //!< is z translation dragger shown.
-    bool isHiddenTranslationX(); //!< is x translation dragger hidden.
-    bool isHiddenTranslationY(); //!< is y translation dragger hidden.
-    bool isHiddenTranslationZ(); //!< is z translation dragger hidden.
 
     void showPlanarTranslationXY(); //!< show the xy planar translation dragger.
     void showPlanarTranslationYZ(); //!< show the yz planar translation dragger.
@@ -209,6 +199,9 @@ private:
     bool scaleInited{false};
 
     void updateAxisScale();
+
+    void setupTranslationDraggers();
+    void setupTranslationDragger(const std::string& name, SoSFString* label, SoSFInt32& incrementCount, const SbVec3d& rotDir);
 
     using inherited = SoDragger;
 };

@@ -234,6 +234,9 @@ App::DocumentObjectExecReturn *Loft::execute()
             result = shapes.front();
 
         if(base.isNull()) {
+            if (!isSingleSolidRuleSatisfied(result.getShape())) {
+                return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Result has multiple solids: that is not currently supported."));
+            }
             Shape.setValue(getSolid(result));
             return App::DocumentObject::StdReturn;
         }
@@ -258,18 +261,18 @@ App::DocumentObjectExecReturn *Loft::execute()
         catch(Standard_Failure&) {
             return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Failed to perform boolean operation"));
         }
-        boolOp = this->getSolid(boolOp);
+        TopoShape solid = getSolid(boolOp);
         // lets check if the result is a solid
-        if (boolOp.isNull())
+        if (solid.isNull()) {
             return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Resulting shape is not a solid"));
-
+        }
         // store shape before refinement
         this->rawShape = boolOp;
         boolOp = refineShapeIfActive(boolOp);
-        boolOp = getSolid(boolOp);
         if (!isSingleSolidRuleSatisfied(boolOp.getShape())) {
             return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Result has multiple solids: that is not currently supported."));
         }
+        boolOp = getSolid(boolOp);
         Shape.setValue(boolOp);
         return App::DocumentObject::StdReturn;
     }

@@ -11,13 +11,13 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Mechanical analysis</string>
+   <string>Mechanical Analysis</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
     <widget class="QGroupBox" name="gb_working_dir">
      <property name="title">
-      <string>Working directory</string>
+      <string>Working Directory</string>
      </property>
      <layout class="QHBoxLayout" name="horizontalLayout_4">
       <property name="leftMargin">
@@ -42,7 +42,7 @@
          <bool>true</bool>
         </property>
         <property name="text">
-         <string notr="true">...</string>
+         <string notr="true">…</string>
         </property>
        </widget>
       </item>
@@ -52,7 +52,7 @@
    <item>
     <widget class="QGroupBox" name="gb_analysis_type">
      <property name="title">
-      <string>Analysis type</string>
+      <string>Analysis Type</string>
      </property>
      <layout class="QGridLayout" name="gridLayout">
       <property name="leftMargin">
@@ -107,7 +107,7 @@
      <item row="0" column="0">
       <widget class="QPushButton" name="pb_write_inp">
        <property name="text">
-        <string>Write .inp file</string>
+        <string>Write .inp File</string>
        </property>
       </widget>
      </item>
@@ -117,7 +117,7 @@
         <bool>false</bool>
        </property>
        <property name="text">
-        <string>Edit .inp file</string>
+        <string>Edit .inp File</string>
        </property>
       </widget>
      </item>
@@ -148,7 +148,7 @@
       </font>
      </property>
      <property name="text">
-      <string>Time:</string>
+      <string>Time</string>
      </property>
     </widget>
    </item>

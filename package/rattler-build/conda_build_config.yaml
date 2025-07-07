@@ -1,7 +1,7 @@
-c_compiler:           # [win]
-  - vs2022            # [win]
-cxx_compiler:         # [win]
-  - vs2022            # [win]
+c_compiler:               # [win]
+  - vs2022                # [win]
+cxx_compiler:             # [win]
+  - vs2022                # [win]
 
-MACOSX_SDK_VERSION:   # [osx]
-  - '11.0'            # [osx]
+MACOSX_DEPLOYMENT_TARGET: # [osx]
+  - '10.13'               # [osx]

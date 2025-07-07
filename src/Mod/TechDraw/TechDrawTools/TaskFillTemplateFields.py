@@ -152,7 +152,10 @@ class TaskFillTemplateFields:
                         self.la.addWidget(t1, 0, 0)
                         self.cb1 = QtGui.QCheckBox(updateCb)
                         self.cb1.setObjectName(key)
-                        self.cb1.setChecked(QtCore.Qt.Checked)
+                        if hasattr(self.cb1, "setCheckState"):
+                            self.cb1.setCheckState(QtCore.Qt.Checked)
+                        else:
+                            self.cb1.setChecked(QtCore.Qt.Checked)
                         self.la.addWidget(self.cb1, 0, 1)
                         u1 = QtGui.QLabel(updateTxt)
                         self.la.addWidget(u1, 0, 2)
@@ -169,7 +172,10 @@ class TaskFillTemplateFields:
                         self.la.addWidget(t2, 1, 0)
                         self.cb2 = QtGui.QCheckBox(updateCb)
                         self.cb2.setObjectName(key)
-                        self.cb2.setChecked(QtCore.Qt.Checked)
+                        if hasattr(self.cb2, "setCheckState"):
+                            self.cb2.setCheckState(QtCore.Qt.Checked)
+                        else:
+                            self.cb2.setChecked(QtCore.Qt.Checked)
                         self.la.addWidget(self.cb2, 1, 1)
                         u2 = QtGui.QLabel(updateTxt)
                         self.la.addWidget(u2, 1, 2)
@@ -189,7 +195,10 @@ class TaskFillTemplateFields:
                         self.la.addWidget(t3, 2, 0)
                         self.cb3 = QtGui.QCheckBox(updateCb)
                         self.cb3.setObjectName(key)
-                        self.cb3.setChecked(QtCore.Qt.Checked)
+                        if hasattr(self.cb3, "setCheckState"):
+                            self.cb3.setCheckState(QtCore.Qt.Checked)
+                        else:
+                            self.cb3.setChecked(QtCore.Qt.Checked)
                         self.la.addWidget(self.cb3, 2, 1)
                         u3 = QtGui.QLabel(updateTxt)
                         self.la.addWidget(u3, 2, 2)
@@ -206,7 +215,10 @@ class TaskFillTemplateFields:
                         self.la.addWidget(t4, 3, 0)
                         self.cb4 = QtGui.QCheckBox(updateCb)
                         self.cb4.setObjectName(key)
-                        self.cb4.setChecked(QtCore.Qt.Checked)
+                        if hasattr(self.cb4, "setCheckState"):
+                            self.cb4.setCheckState(QtCore.Qt.Checked)
+                        else:
+                            self.cb4.setChecked(QtCore.Qt.Checked)
                         self.la.addWidget(self.cb4, 3, 1)
                         u4 = QtGui.QLabel(updateTxt)
                         self.la.addWidget(u4, 3, 2)
@@ -223,7 +235,10 @@ class TaskFillTemplateFields:
                         self.la.addWidget(t5, 4, 0)
                         self.cb5 = QtGui.QCheckBox(updateCb)
                         self.cb5.setObjectName(key)
-                        self.cb5.setChecked(QtCore.Qt.Checked)
+                        if hasattr(self.cb5, "setCheckState"):
+                            self.cb5.setCheckState(QtCore.Qt.Checked)
+                        else:
+                            self.cb5.setChecked(QtCore.Qt.Checked)
                         self.la.addWidget(self.cb5, 4, 1)
                         u5 = QtGui.QLabel(updateTxt)
                         self.la.addWidget(u5, 4, 2)
@@ -240,7 +255,10 @@ class TaskFillTemplateFields:
                         self.la.addWidget(t6, 5, 0)
                         self.cb6 = QtGui.QCheckBox(updateCb)
                         self.cb6.setObjectName(key)
-                        self.cb6.setChecked(QtCore.Qt.Checked)
+                        if hasattr(self.cb6, "setCheckState"):
+                            self.cb6.setCheckState(QtCore.Qt.Checked)
+                        else:
+                            self.cb6.setChecked(QtCore.Qt.Checked)
                         self.la.addWidget(self.cb6, 5, 1)
                         u6 = QtGui.QLabel(updateTxt)
                         self.la.addWidget(u6, 5, 2)
@@ -257,7 +275,10 @@ class TaskFillTemplateFields:
                         self.la.addWidget(t7, 6, 0)
                         self.cb7 = QtGui.QCheckBox(updateCb)
                         self.cb7.setObjectName(key)
-                        self.cb7.setChecked(QtCore.Qt.Checked)
+                        if hasattr(self.cb7, "setCheckState"):
+                            self.cb7.setCheckState(QtCore.Qt.Checked)
+                        else:
+                            self.cb7.setChecked(QtCore.Qt.Checked)
                         self.la.addWidget(self.cb7, 6, 1)
                         u7 = QtGui.QLabel(updateTxt)
                         self.la.addWidget(u7, 6, 2)
@@ -303,7 +324,10 @@ class TaskFillTemplateFields:
                         self.la.addWidget(t8, 7, 0)
                         self.cb8 = QtGui.QCheckBox(updateCb)
                         self.cb8.setObjectName(key)
-                        self.cb8.setChecked(QtCore.Qt.Checked)
+                        if hasattr(self.cb8, "setCheckState"):
+                            self.cb8.setCheckState(QtCore.Qt.Checked)
+                        else:
+                            self.cb8.setChecked(QtCore.Qt.Checked)
                         self.la.addWidget(self.cb8, 7, 1)
                         u8 = QtGui.QLabel(updateTxt)
                         self.la.addWidget(u8, 7, 2)
@@ -350,7 +374,10 @@ class TaskFillTemplateFields:
                             "Update All",
                         )
                     )
-                    self.cbAll.setChecked(QtCore.Qt.Checked)
+                    if hasattr(self.cbAll, "setCheckState"):
+                        self.cbAll.setCheckState(QtCore.Qt.Checked)
+                    else:
+                        self.cbAll.setChecked(QtCore.Qt.Checked)
                     self.la.addWidget(self.cbAll, 8, 1)
                     self.cbAll.clicked.connect(self.on_cbAll_clicked)
 
@@ -391,11 +418,17 @@ class TaskFillTemplateFields:
     def on_cbAll_clicked(self):
         if self.cbAll.isChecked():
             for cbEach in self.checkBoxList:
-                cbEach.setChecked(QtCore.Qt.Checked)
+                if hasattr(cbEach, "setCheckState"):
+                    cbEach.setCheckState(QtCore.Qt.Checked)
+                else:
+                    cbEach.setChecked(QtCore.Qt.Checked)
             self.button.setEnabled(True)
         else:
             for cbEach in self.checkBoxList:
-                cbEach.setChecked(QtCore.Qt.Unchecked)
+                if hasattr(cbEach, "setCheckState"):
+                    cbEach.setCheckState(QtCore.Qt.Checked)
+                else:
+                    cbEach.setChecked(QtCore.Qt.Checked)
             self.button.setEnabled(False)
 
     def on_cb1_clicked(self):

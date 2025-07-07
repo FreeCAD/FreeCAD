@@ -224,7 +224,7 @@ class ifc_vp_object:
         """Recursively gets the children only used by this object"""
         children = []
         for child in obj.OutList:
-            if len(child.InList) == 1 and child.InList[1] == obj:
+            if len(child.InList) == 1 and child.InList[0] == obj:
                 children.append(child)
                 children.extend(self.getOwnChildren(child))
         return children

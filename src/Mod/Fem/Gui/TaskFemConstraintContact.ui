@@ -154,7 +154,7 @@
       <item row="0" column="0">
        <widget class="QLabel" name="lblSlope">
         <property name="text">
-         <string>Contact Stiffness</string>
+         <string>Contact stiffness</string>
         </property>
        </widget>
       </item>
@@ -177,7 +177,7 @@
       <item row="1" column="0">
        <widget class="QLabel" name="lblAdjust">
         <property name="text">
-         <string>Clearance Adjustment</string>
+         <string>Clearance adjustment</string>
         </property>
        </widget>
       </item>
@@ -200,14 +200,14 @@
       <item row="2" column="0">
        <widget class="QCheckBox" name="ckbFriction">
         <property name="text">
-         <string>Enable Friction</string>
+         <string>Enable friction</string>
         </property>
        </widget>
       </item>
       <item row="3" column="0">
        <widget class="QLabel" name="lblFrictionCoeff">
         <property name="text">
-         <string>Friction Coefficient</string>
+         <string>Friction coefficient</string>
         </property>
        </widget>
       </item>
@@ -230,7 +230,7 @@
       <item row="4" column="0">
        <widget class="QLabel" name="lblStickSlope">
         <property name="text">
-         <string>Stick Slope</string>
+         <string>Stick slope</string>
         </property>
        </widget>
       </item>

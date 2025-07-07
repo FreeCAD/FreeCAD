@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>578</width>
-    <height>1073</height>
+    <width>676</width>
+    <height>1200</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -254,7 +254,7 @@ for ProjectionGroups</string>
          </spacer>
         </item>
         <item row="1" column="2">
-         <widget class="Gui::PrefUnitSpinBox" name="plsb_LabelSize">
+         <widget class="Gui::PrefUnitSpinBox" name="plsb_LabelSize" native="true">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
             <horstretch>0</horstretch>
@@ -264,10 +264,7 @@ for ProjectionGroups</string>
           <property name="toolTip">
            <string>Label size</string>
           </property>
-          <property name="alignment">
-           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-          </property>
-          <property name="value">
+          <property name="value" stdset="0">
            <double>8.000000000000000</double>
           </property>
           <property name="prefEntry" stdset="0">
@@ -449,7 +446,7 @@ for ProjectionGroups</string>
          </widget>
         </item>
         <item row="2" column="2">
-         <widget class="Gui::PrefFileChooser" name="pfc_HatchFile">
+         <widget class="Gui::PrefFileChooser" name="pfc_HatchFile" native="true">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
             <horstretch>1</horstretch>
@@ -468,7 +465,7 @@ for ProjectionGroups</string>
          </widget>
         </item>
         <item row="3" column="2">
-         <widget class="Gui::PrefFileChooser" name="pfc_LineGroup">
+         <widget class="Gui::PrefFileChooser" name="pfc_LineGroup" native="true">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
             <horstretch>1</horstretch>
@@ -487,7 +484,7 @@ for ProjectionGroups</string>
          </widget>
         </item>
         <item row="0" column="2">
-         <widget class="Gui::PrefFileChooser" name="pfc_DefTemp">
+         <widget class="Gui::PrefFileChooser" name="pfc_DefTemp" native="true">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
             <horstretch>1</horstretch>
@@ -518,7 +515,7 @@ for ProjectionGroups</string>
          </widget>
         </item>
         <item row="5" column="2">
-         <widget class="Gui::PrefFileChooser" name="pfc_FilePattern">
+         <widget class="Gui::PrefFileChooser" name="pfc_FilePattern" native="true">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
             <horstretch>1</horstretch>
@@ -537,7 +534,7 @@ for ProjectionGroups</string>
          </widget>
         </item>
         <item row="4" column="2">
-         <widget class="Gui::PrefFileChooser" name="pfc_Welding">
+         <widget class="Gui::PrefFileChooser" name="pfc_Welding" native="true">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
             <horstretch>1</horstretch>
@@ -546,9 +543,6 @@ for ProjectionGroups</string>
           </property>
           <property name="toolTip">
            <string>Default directory for welding symbols</string>
-          </property>
-          <property name="mode">
-           <enum>Gui::FileChooser::Directory</enum>
           </property>
           <property name="prefEntry" stdset="0">
            <cstring>WeldingDir</cstring>
@@ -559,7 +553,7 @@ for ProjectionGroups</string>
          </widget>
         </item>
         <item row="1" column="2">
-         <widget class="Gui::PrefFileChooser" name="pfc_DefDir">
+         <widget class="Gui::PrefFileChooser" name="pfc_DefDir" native="true">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
             <horstretch>1</horstretch>
@@ -568,9 +562,6 @@ for ProjectionGroups</string>
           </property>
           <property name="toolTip">
            <string>Starting directory for menu 'Insert Page using Template'</string>
-          </property>
-          <property name="mode">
-           <enum>Gui::FileChooser::Directory</enum>
           </property>
           <property name="prefEntry" stdset="0">
            <cstring>TemplateDir</cstring>
@@ -588,7 +579,7 @@ for ProjectionGroups</string>
          </widget>
         </item>
         <item row="7" column="2">
-         <widget class="Gui::PrefFileChooser" name="fcSymbolDir">
+         <widget class="Gui::PrefFileChooser" name="fcSymbolDir" native="true">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
             <horstretch>1</horstretch>
@@ -597,9 +588,6 @@ for ProjectionGroups</string>
           </property>
           <property name="toolTip">
            <string>Alternate directory to search for SVG symbol files.</string>
-          </property>
-          <property name="mode">
-           <enum>Gui::FileChooser::Directory</enum>
           </property>
           <property name="prefEntry" stdset="0">
            <cstring>DirSymbol</cstring>
@@ -752,14 +740,11 @@ for ProjectionGroups</string>
          </widget>
         </item>
         <item row="1" column="2">
-         <widget class="Gui::PrefUnitSpinBox" name="psb_GridSpacing">
+         <widget class="Gui::PrefUnitSpinBox" name="psb_GridSpacing" native="true">
           <property name="toolTip">
            <string>Distance between Page grid lines.</string>
           </property>
-          <property name="alignment">
-           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-          </property>
-          <property name="value">
+          <property name="value" stdset="0">
            <double>10.000000000000000</double>
           </property>
           <property name="prefEntry" stdset="0">
@@ -899,7 +884,7 @@ for ProjectionGroups</string>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_9">
       <item>
-       <layout class="QGridLayout" name="gridLayout_8" columnstretch="1,0,2">
+       <layout class="QGridLayout" name="gridLayout_8" columnstretch="1,0,2,0">
         <item row="0" column="0">
          <widget class="Gui::PrefCheckBox" name="cb_SnapViews">
           <property name="toolTip">
@@ -913,6 +898,44 @@ for ProjectionGroups</string>
           </property>
           <property name="prefEntry" stdset="0">
            <cstring>SnapViews</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>/Mod/TechDraw/General</cstring>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="0">
+         <widget class="Gui::PrefCheckBox" name="cb_SnapHighlights">
+          <property name="toolTip">
+           <string>Check this box if you want detail view highlights to snap to the nearest vertex when dragging in TaskDetail.</string>
+          </property>
+          <property name="text">
+           <string>Snap Detail Highlights</string>
+          </property>
+          <property name="checked">
+           <bool>true</bool>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>SnapHighlights</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>/Mod/TechDraw/General</cstring>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="2">
+         <widget class="Gui::PrefDoubleSpinBox" name="psb_SnapFactor">
+          <property name="toolTip">
+           <string>When dragging a view, if it is within this fraction of view size of the correct alignment, it will snap into alignment.</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+          </property>
+          <property name="value">
+           <double>0.050000000000000</double>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>SnapLimitFactor</cstring>
           </property>
           <property name="prefPath" stdset="0">
            <cstring>/Mod/TechDraw/General</cstring>
@@ -939,23 +962,31 @@ for ProjectionGroups</string>
           </property>
          </widget>
         </item>
-        <item row="1" column="2">
-         <widget class="Gui::PrefDoubleSpinBox" name="psb_SnapFactor">
+        <item row="3" column="0">
+         <widget class="QLabel" name="label_14">
+          <property name="text">
+           <string>Highlight SnappingFactor</string>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="2">
+         <widget class="Gui::PrefDoubleSpinBox" name="psb_HighlightSnapFactor">
           <property name="toolTip">
-           <string>When dragging a view, if it is within this fraction of view size of the correct alignment, it will snap into alignment.</string>
+           <string>Controls the snap radius for highlights. Vertex must be within this factor times the highlight size to be a snap target.</string>
           </property>
           <property name="alignment">
            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
           </property>
           <property name="value">
-           <double>0.050000000000000</double>
+           <double>0.600000000000000</double>
           </property>
           <property name="prefEntry" stdset="0">
-           <cstring>SnapLimitFactor</cstring>
+           <cstring>DetailSnapRadius</cstring>
           </property>
           <property name="prefPath" stdset="0">
            <cstring>/Mod/TechDraw/General</cstring>
           </property>
+
          </widget>
         </item>
        </layout>
@@ -1046,8 +1077,6 @@ for ProjectionGroups</string>
    <header>Gui/PrefWidgets.h</header>
   </customwidget>
  </customwidgets>
- <resources>
-  <include location="Resources/TechDraw.qrc"/>
- </resources>
+ <resources/>
  <connections/>
 </ui>

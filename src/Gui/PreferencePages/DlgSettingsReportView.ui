@@ -115,7 +115,7 @@ on-screen while displaying the error</string>
          <string>Show report view on error</string>
         </property>
         <property name="checked">
-         <bool>true</bool>
+         <bool>false</bool>
         </property>
         <property name="prefEntry" stdset="0">
          <cstring>checkShowReportViewOnError</cstring>

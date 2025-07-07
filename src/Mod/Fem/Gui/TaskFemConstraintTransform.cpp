@@ -60,7 +60,7 @@ TaskFemConstraintTransform::TaskFemConstraintTransform(
     QMetaObject::connectSlotsByName(this);
 
     // create a context menu for the listview of the references
-    createDeleteAction(ui->lw_Rect);
+    createActions(ui->lw_Rect);
     connect(deleteAction,
             &QAction::triggered,
             this,
@@ -200,7 +200,7 @@ TaskFemConstraintTransform::TaskFemConstraintTransform(
     if ((p == 0) && (!Objects.empty())) {
         QMessageBox::warning(this,
                              tr("Analysis feature update error"),
-                             tr("The transformable faces have changed. Please add only the "
+                             tr("The transformable faces have changed. Add only the "
                                 "transformable faces and remove non-transformable faces!"));
         return;
     }

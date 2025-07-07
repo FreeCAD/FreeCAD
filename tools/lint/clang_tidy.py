@@ -76,6 +76,11 @@ def main():
         required=True,
         help="Clang-format style (e.g., 'file' to use .clang-format or a specific style).",
     )
+    parser.add_argument(
+        "--line-filter",
+        required=False,
+        help='Line-filter for clang-tidy (i.e. [{"name":"file1.cpp","lines":[[1,3],[5,7]]},...])',
+    )
     args = parser.parse_args()
     init_environment(args)
 
@@ -96,7 +101,11 @@ def main():
     enabled_checks_log = os.path.join(args.log_dir, "clang-tidy-enabled-checks.log")
     write_file(enabled_checks_log, enabled_output)
 
-    clang_cmd = clang_tidy_base_cmd + args.files.split()
+    clang_cmd = clang_tidy_base_cmd
+    if args.line_filter:
+        clang_cmd = clang_cmd + [f"--line-filter={args.line_filter}"]
+    clang_cmd = clang_cmd + args.files.split()
+    print("clang_cmd = ", clang_cmd)
     clang_stdout, clang_stderr, _ = run_command(clang_cmd)
     clang_tidy_output = clang_stdout + clang_stderr
 

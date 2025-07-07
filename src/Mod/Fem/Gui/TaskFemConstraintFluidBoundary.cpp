@@ -139,7 +139,7 @@ TaskFemConstraintFluidBoundary::TaskFemConstraintFluidBoundary(
     QMetaObject::connectSlotsByName(this);
 
     // create a context menu for the listview of the references
-    createDeleteAction(ui->listReferences);
+    createActions(ui->listReferences);
     connect(deleteAction,
             &QAction::triggered,
             this,
@@ -630,7 +630,7 @@ void TaskFemConstraintFluidBoundary::onButtonDirection(const bool pressed)
     // get vector of selected objects of active document
     std::vector<Gui::SelectionObject> selection = Gui::Selection().getSelectionEx();
     if (selection.empty()) {
-        QMessageBox::warning(this, tr("Empty selection"), tr("Select an edge or a face, please."));
+        QMessageBox::warning(this, tr("Empty selection"), tr("Select an edge or a face."));
         return;
     }
     Fem::ConstraintFluidBoundary* pcConstraint =

@@ -86,6 +86,11 @@
         <file>icons/FEM_PostFrames.svg</file>
         <file>icons/FEM_PostBranchFilter.svg</file>
         <file>icons/FEM_PostPipelineFromResult.svg</file>
+        <file>icons/FEM_PostLineplot.svg</file>
+        <file>icons/FEM_PostHistogram.svg</file>
+        <file>icons/FEM_PostSpreadsheet.svg</file>
+        <file>icons/FEM_PostField.svg</file>
+        <file>icons/FEM_PostIndex.svg</file>
         <file>icons/FEM_ResultShow.svg</file>
         <file>icons/FEM_ResultsPurge.svg</file>
 

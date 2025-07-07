@@ -51,6 +51,7 @@ class SoCamera;
 class SoSensor;
 class SbSphereSheetProjector;
 
+// NOLINTBEGIN(cppcoreguidelines-avoid*, readability-avoid-const-params-in-decls)
 namespace Gui {
 
 class View3DInventorViewer;
@@ -164,6 +165,8 @@ public:
     void reorientCamera(SoCamera* camera, const SbRotation& rotation, const SbVec3f& rotationCenter);
 
     void boxZoom(const SbBox2s& box);
+    // Scale the camera inplace
+    void scale(float factor);
     virtual void viewAll();
 
     void setViewingMode(const ViewerMode newmode);
@@ -220,6 +223,7 @@ protected:
     virtual void zoomByCursor(const SbVec2f & thispos, const SbVec2f & prevpos);
     void doZoom(SoCamera * camera, int wheeldelta, const SbVec2f& pos);
     void doZoom(SoCamera * camera, float logzoomfactor, const SbVec2f& pos);
+    void doScale(SoCamera * camera, float factor);
     void doRotate(SoCamera * camera, float angle, const SbVec2f& pos);
     void spin(const SbVec2f & pointerpos);
     SbBool doSpin();
@@ -490,6 +494,7 @@ protected:
 };
 
 } // namespace Gui
+// NOLINTEND(cppcoreguidelines-avoid*, readability-avoid-const-params-in-decls)
 
 Q_DECLARE_OPERATORS_FOR_FLAGS(Gui::NavigationStyle::RotationCenterModes)
 

@@ -50,7 +50,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     reen->setCommand("&Reverse Engineering");
 
     Gui::MenuItem* reconstruct = new Gui::MenuItem();
-    reconstruct->setCommand("Surface reconstruction");
+    reconstruct->setCommand("Surface Reconstruction");
     *reconstruct << "Reen_PoissonReconstruction"
                  << "Reen_ViewTriangulation";
     *reen << reconstruct;

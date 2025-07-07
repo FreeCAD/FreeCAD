@@ -103,10 +103,6 @@
             "type": "BOOL",
             "value": "ON"
           },
-          "FREECAD_QT_VERSION": {
-            "type": "STRING",
-            "value": "6"
-          },
           "OCCT_CMAKE_FALLBACK": {
             "type": "BOOL",
             "value": "ON"

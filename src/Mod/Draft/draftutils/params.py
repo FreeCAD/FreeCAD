@@ -506,6 +506,18 @@ def _get_param_dictionary():
         "Wall":                        ("bool",      False),
     }
 
+    start_val = App.Units.Quantity(100.0, App.Units.Length).Value
+    param_dict["Mod/Draft/OrthoArrayLinearMode"] = {
+        "LinearModeOn": ("bool", True),
+        "AxisSelected": ("string", "X"),
+        "XInterval": ("float", start_val),
+        "YInterval": ("float", start_val),
+        "ZInterval": ("float", start_val),
+        "XNumOfElements": ("int", 2),
+        "YNumOfElements": ("int", 2),
+        "ZNumOfElements": ("int", 2)
+    }
+
     # Arch parameters that are not in the preferences:
     param_dict["Mod/Arch"] = {
         "applyConstructionStyle":      ("bool",      True),
@@ -546,6 +558,7 @@ def _get_param_dictionary():
         "PrecastHoleSpacing":          ("float",     0.0),
         "PrecastRiser":                ("float",     0.0),
         "PrecastTread":                ("float",     0.0),
+        "ProfilePreset":               ("string",    ""),
         "ScheduleColumnWidth0":        ("int",       100),
         "ScheduleColumnWidth1":        ("int",       100),
         "ScheduleColumnWidth2":        ("int",       50),
@@ -684,6 +697,11 @@ def _get_param_dictionary():
                 elif att_class == "Gui::PrefFontBox":
                     path, entry, value = _param_from_PrefFontBox(widget)
                     typ = "string"
+                elif att_class == "Gui::PrefCheckableGroupBox":
+                    # It's a boolean preference, so we can reuse the parsing logic
+                    # from _param_from_PrefCheckBox, which looks for <property name="checked">.
+                    path, entry, value = _param_from_PrefCheckBox(widget)
+                    typ = "bool"
 
                 if path is not None:
                     if path in param_dict:

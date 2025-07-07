@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Shell thickness parameter</string>
+   <string>Shell Thickness Parameter</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
@@ -34,7 +34,7 @@
         <item row="0" column="0">
          <widget class="QLabel" name="l_thickness">
           <property name="text">
-           <string>Thickness:</string>
+           <string>Thickness</string>
           </property>
          </widget>
         </item>

@@ -31,7 +31,7 @@
        </widget>
       </item>
       <item>
-       <layout class="QGridLayout" columnstretch="2,1,0">
+       <layout class="QGridLayout" columnstretch="2,1">
         <item row="0" column="0">
          <widget class="QLabel" name="label1">
           <property name="text">
@@ -53,7 +53,7 @@
           <property name="toolTip">
            <string>This color might be used by your theme to let you customize it.</string>
           </property>
-          <property name="color" stdset="0">
+          <property name="color">
            <color>
             <red>85</red>
             <green>123</green>
@@ -119,7 +119,7 @@
           <property name="toolTip">
            <string>This color might be used by your theme to let you customize it.</string>
           </property>
-          <property name="color" stdset="0">
+          <property name="color">
            <color>
             <red>85</red>
             <green>123</green>
@@ -145,7 +145,7 @@
           <property name="toolTip">
            <string>This color might be used by your theme to let you customize it.</string>
           </property>
-          <property name="color" stdset="0">
+          <property name="color">
            <color>
             <red>85</red>
             <green>123</green>
@@ -165,11 +165,11 @@
           <property name="toolTip">
            <string>Style sheet how user interface will look like</string>
           </property>
-          <property name="prefPath" stdset="0">
-           <cstring>MainWindow</cstring>
-          </property>
           <property name="prefEntry" stdset="0">
            <cstring>StyleSheet</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>MainWindow</cstring>
           </property>
           <property name="prefType" stdset="0">
            <cstring></cstring>
@@ -178,11 +178,11 @@
         </item>
         <item row="4" column="1">
          <widget class="Gui::PrefComboBox" name="OverlayStyleSheets">
-          <property name="prefPath" stdset="0">
-           <cstring>MainWindow</cstring>
-          </property>
           <property name="prefEntry" stdset="0">
            <cstring>OverlayActiveStyleSheet</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>MainWindow</cstring>
           </property>
           <property name="prefType" stdset="0">
            <cstring></cstring>
@@ -190,6 +190,13 @@
          </widget>
         </item>
        </layout>
+      </item>
+      <item>
+       <widget class="QPushButton" name="themeEditorButton">
+        <property name="text">
+         <string>Open Theme Editor</string>
+        </property>
+       </widget>
       </item>
      </layout>
     </widget>
@@ -230,11 +237,11 @@
         <property name="value">
          <number>16</number>
         </property>
-        <property name="prefPath" stdset="0">
-         <cstring>TreeView</cstring>
-        </property>
         <property name="prefEntry" stdset="0">
          <cstring>IconSize</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>TreeView</cstring>
         </property>
        </widget>
       </item>
@@ -285,11 +292,11 @@
         <property name="value">
          <number>0</number>
         </property>
-        <property name="prefPath" stdset="0">
-         <cstring>TreeView</cstring>
-        </property>
         <property name="prefEntry" stdset="0">
          <cstring>ItemSpacing</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>TreeView</cstring>
         </property>
        </widget>
       </item>
@@ -492,7 +499,7 @@
    <item>
     <spacer name="spacer_3">
      <property name="orientation">
-      <enum>Qt::Vertical</enum>
+      <enum>Qt::Orientation::Vertical</enum>
      </property>
      <property name="sizeHint" stdset="0">
       <size>
@@ -511,23 +518,23 @@
    <header>Gui/Widgets.h</header>
   </customwidget>
   <customwidget>
-   <class>Gui::PrefColorButton</class>
-   <extends>Gui::ColorButton</extends>
-   <header>Gui/PrefWidgets.h</header>
-  </customwidget>
-  <customwidget>
-   <class>Gui::PrefComboBox</class>
-   <extends>QComboBox</extends>
-   <header>Gui/PrefWidgets.h</header>
-  </customwidget>
-  <customwidget>
    <class>Gui::PrefSpinBox</class>
    <extends>QSpinBox</extends>
    <header>Gui/PrefWidgets.h</header>
   </customwidget>
   <customwidget>
+   <class>Gui::PrefColorButton</class>
+   <extends>Gui::ColorButton</extends>
+   <header>Gui/PrefWidgets.h</header>
+  </customwidget>
+  <customwidget>
    <class>Gui::PrefCheckBox</class>
    <extends>QCheckBox</extends>
+   <header>Gui/PrefWidgets.h</header>
+  </customwidget>
+  <customwidget>
+   <class>Gui::PrefComboBox</class>
+   <extends>QComboBox</extends>
    <header>Gui/PrefWidgets.h</header>
   </customwidget>
  </customwidgets>

@@ -112,12 +112,12 @@ class _Profile(Draft._DraftObject):
 
         '''Remove all Profile properties'''
 
-        obj.removeProperty("Width")
-        obj.removeProperty("Height")
-        obj.removeProperty("WebThickness")
-        obj.removeProperty("FlangeThickness")
-        obj.removeProperty("OutDiameter")
-        obj.removeProperty("Thickness")
+        for prop in [
+            "Width", "Height", "WebThickness", "FlangeThickness","OutDiameter", "Thickness"
+        ]:
+            if hasattr(obj, prop):
+                obj.setPropertyStatus(prop, "-LockDynamic")
+                obj.removeProperty(prop)
 
 
 class _ProfileC(_Profile):
@@ -384,7 +384,7 @@ class ProfileTaskPanel:
         layout.addWidget(self.comboCategory)
         self.comboProfile = QtGui.QComboBox(self.form)
         layout.addWidget(self.comboProfile)
-        QtCore.QObject.connect(self.comboCategory, QtCore.SIGNAL("currentIndexChanged(QString)"), self.changeCategory)
+        QtCore.QObject.connect(self.comboCategory, QtCore.SIGNAL("currentTextChanged(QString)"), self.changeCategory)
         QtCore.QObject.connect(self.comboProfile, QtCore.SIGNAL("currentIndexChanged(int)"), self.changeProfile)
         # Read preset profiles and add relevant ones
         self.categories = []

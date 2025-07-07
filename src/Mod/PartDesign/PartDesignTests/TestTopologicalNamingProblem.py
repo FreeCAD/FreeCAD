@@ -23,8 +23,10 @@
 
 """ Tests related to the Topological Naming Problem """
 
+import os
 import math
 import unittest
+import tempfile
 
 import FreeCAD as App
 import Part
@@ -2484,10 +2486,10 @@ class TestTopologicalNamingProblem(unittest.TestCase):
         self.Body = self.Doc.addObject("PartDesign::Body", "Body")
         self.create_t_sketch()
         self.assertEqual(self.Doc.Sketch.Shape.ElementMapSize, 18)
-        filename = self.Doc.Name
+        filename = tempfile.gettempdir() + os.sep + self.Doc.Name
         # Act
         self.Doc.saveAs(filename)
-        App.closeDocument(filename)
+        App.closeDocument(self.Doc.Name)
         self.Doc = App.openDocument(filename + ".FCStd")
         self.Doc.recompute()
         # Assert

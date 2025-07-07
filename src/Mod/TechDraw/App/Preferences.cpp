@@ -693,3 +693,15 @@ bool Preferences::showUnits()
 }
 
 
+bool Preferences::snapDetailHighlights()
+{
+    return Preferences::getPreferenceGroup("General")->GetBool("SnapHighlights", true);
+}
+
+
+//! distance within which we should snap a highlight to a vertex
+double Preferences::detailSnapRadius()
+{
+    return getPreferenceGroup("General")->GetFloat("DetailSnapRadius", 0.6);
+}
+

@@ -292,9 +292,10 @@ class GeometryElementsSelection(QtGui.QWidget):
     def initUI(self):
         # ArchPanel is coded without ui-file too
         # title
-        self.setWindowTitle(self.tr("Geometry reference selector"))
+        self.setWindowTitle(self.tr("Geometry Reference Selector"))
         # button
         self.pushButton_Add = QtGui.QPushButton(self.tr("Add"))
+        self.pushButton_Remove = QtGui.QPushButton(self.tr("Remove"))
         # list
         self.list_References = QtGui.QListWidget()
         # radiobutton down the list
@@ -307,9 +308,13 @@ class GeometryElementsSelection(QtGui.QWidget):
         rbtnLayout.addWidget(self.lb_selmod)
         rbtnLayout.addWidget(self.rb_standard)
         rbtnLayout.addWidget(self.rb_solid)
+        # add/remove button
+        subLayout = QtGui.QHBoxLayout()
+        subLayout.addWidget(self.pushButton_Add)
+        subLayout.addWidget(self.pushButton_Remove)
         # main layout
         mainLayout = QtGui.QVBoxLayout()
-        mainLayout.addWidget(self.pushButton_Add)
+        mainLayout.addLayout(subLayout)
         mainLayout.addWidget(self.list_References)
 
         tip1 = self.tr(
@@ -344,6 +349,9 @@ class GeometryElementsSelection(QtGui.QWidget):
             self.references_list_right_clicked,
         )
         QtCore.QObject.connect(self.pushButton_Add, QtCore.SIGNAL("clicked()"), self.add_references)
+        QtCore.QObject.connect(
+            self.pushButton_Remove, QtCore.SIGNAL("clicked()"), self.remove_selected_reference
+        )
         QtCore.QObject.connect(
             self.rb_standard, QtCore.SIGNAL("toggled(bool)"), self.choose_selection_mode_standard
         )
@@ -425,8 +433,8 @@ class GeometryElementsSelection(QtGui.QWidget):
 
     def references_list_right_clicked(self, QPos):
         self.contextMenu = QtGui.QMenu()
-        menu_item_remove_selected = self.contextMenu.addAction("Remove selected geometry")
-        menu_item_remove_all = self.contextMenu.addAction("Clear list")
+        menu_item_remove_selected = self.contextMenu.addAction("Remove Selected Geometry")
+        menu_item_remove_all = self.contextMenu.addAction("Clear List")
         if not self.references:
             menu_item_remove_selected.setDisabled(True)
             menu_item_remove_all.setDisabled(True)

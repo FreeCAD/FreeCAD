@@ -142,9 +142,7 @@ def disambiguate_solid_selection(
 
     # Build menu
     menu_of_solids = QtGui.QMenu()
-    label = menu_of_solids.addAction(
-        "Selected entity belongs to multiple solids, please pick one ..."
-    )
+    label = menu_of_solids.addAction("Selected entity belongs to multiple solids, pick one…")
     label.setDisabled(True)
 
     for index in solid_indices:

@@ -523,6 +523,56 @@ public:
     }
 };
 
+class ExpressionLineEditPlugin: public QDesignerCustomWidgetInterface
+{
+    Q_INTERFACES(QDesignerCustomWidgetInterface)
+public:
+    ExpressionLineEditPlugin()
+    {}
+    QWidget* createWidget(QWidget* parent)
+    {
+        return new Gui::ExpressionLineEdit(parent);
+    }
+    QString group() const
+    {
+        return QLatin1String("Input Widgets");
+    }
+    QIcon icon() const
+    {
+        return QIcon(QPixmap(inputfield_pixmap));
+    }
+    QString includeFile() const
+    {
+        return QLatin1String("Gui/InputField.h");
+    }
+    QString toolTip() const
+    {
+        return QLatin1String("Expression line edit");
+    }
+    QString whatsThis() const
+    {
+        return QLatin1String("A widget to work with expressions.");
+    }
+    bool isContainer() const
+    {
+        return false;
+    }
+    QString domXml() const
+    {
+        return "<ui language=\"c++\">\n"
+               " <widget class=\"Gui::ExpressionLineEdit\" name=\"exprLineEdit\">\n"
+               "  <property name=\"unit\" stdset=\"0\">\n"
+               "   <string notr=\"true\"></string>\n"
+               "  </property>\n"
+               " </widget>\n"
+               "</ui>";
+    }
+    QString name() const
+    {
+        return QLatin1String("Gui::ExpressionLineEdit");
+    }
+};
+
 /* XPM */
 static const char* quantityspinbox_pixmap[] = {"22 22 6 1",
                                                "a c #000000",
@@ -1653,6 +1703,7 @@ QList<QDesignerCustomWidgetInterface*> CustomWidgetPlugin::customWidgets() const
     cw.append(new FileChooserPlugin);
     cw.append(new AccelLineEditPlugin);
     cw.append(new ActionSelectorPlugin);
+    cw.append(new ExpressionLineEditPlugin);
     cw.append(new InputFieldPlugin);
     cw.append(new QuantitySpinBoxPlugin);
     cw.append(new CommandIconViewPlugin);

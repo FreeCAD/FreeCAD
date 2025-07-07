@@ -99,7 +99,7 @@ PyMOD_INIT_FUNC(SketcherGui)
     }
 
     PyObject* sketcherGuiModule = SketcherGui::initModule();
-    Base::Console().log("Loading GUI of Sketcher module... done\n");
+    Base::Console().log("Loading GUI of Sketcher module… done\n");
 
     Gui::BitmapFactory().addPath(QStringLiteral(":/icons/constraints"));
     Gui::BitmapFactory().addPath(QStringLiteral(":/icons/elements"));

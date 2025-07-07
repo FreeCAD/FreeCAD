@@ -17,17 +17,16 @@
    </sizepolicy>
   </property>
   <property name="windowTitle">
-   <string>Edge constraints</string>
+   <string>Edge Constraints</string>
   </property>
   <layout class="QGridLayout" name="gridLayout_2">
    <item row="0" column="0">
     <widget class="QGroupBox" name="groupBox">
      <property name="toolTip">
-      <string>Add edges that will be used to constrain the surface,
-that is, the surface will be forced to pass through these edges.</string>
+      <string>Constrains the surface to pass through the selected edges</string>
      </property>
      <property name="title">
-      <string>Non-boundary edges</string>
+      <string>Non-Boundary Edges</string>
      </property>
      <layout class="QGridLayout" name="gridLayout">
       <item row="0" column="0" colspan="3">
@@ -91,7 +90,7 @@ that is, the surface will be forced to pass through these edges.</string>
          </sizepolicy>
         </property>
         <property name="text">
-         <string>Faces:</string>
+         <string>Faces</string>
         </property>
        </widget>
       </item>
@@ -111,7 +110,7 @@ that is, the surface will be forced to pass through these edges.</string>
          </sizepolicy>
         </property>
         <property name="text">
-         <string>Continuity:</string>
+         <string>Continuity</string>
         </property>
        </widget>
       </item>

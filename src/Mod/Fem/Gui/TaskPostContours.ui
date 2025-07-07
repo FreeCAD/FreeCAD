@@ -22,7 +22,7 @@
      <item row="1" column="0">
       <widget class="QLabel" name="vectorL">
        <property name="text">
-        <string>Vector:</string>
+        <string>Vector</string>
        </property>
       </widget>
      </item>
@@ -32,7 +32,7 @@
      <item row="0" column="0">
       <widget class="QLabel" name="fieldL">
        <property name="text">
-        <string>Field:</string>
+        <string>Field</string>
        </property>
       </widget>
      </item>
@@ -45,7 +45,7 @@
         </sizepolicy>
        </property>
        <property name="text">
-        <string notr="true">Number of contours:</string>
+        <string notr="true">Number of contours</string>
        </property>
       </widget>
      </item>
@@ -84,7 +84,7 @@
      <item row="4" column="0">
       <widget class="QLabel" name="lbl_relaxation">
        <property name="text">
-        <string notr="true">Relaxation Factor:</string>
+        <string notr="true">Relaxation factor</string>
        </property>
       </widget>
      </item>

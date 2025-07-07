@@ -63,8 +63,8 @@ class ArchReference:
     def __init__(self, obj):
 
         obj.Proxy = self
-        ArchReference.setProperties(self, obj)
         self.Type = "Reference"
+        ArchReference.setProperties(self, obj)
         self.reload = True
 
 
@@ -90,7 +90,6 @@ class ArchReference:
         if not "FuseArch" in pl:
             t = QT_TRANSLATE_NOOP("App::Property","Fuse objects of same material")
             obj.addProperty("App::PropertyBool","FuseArch", "Reference", t, locked=True)
-        self.Type = "Reference"
 
 
     def onDocumentRestored(self, obj):
@@ -109,7 +108,7 @@ class ArchReference:
 
     def loads(self, state):
 
-        return None
+        self.Type = "Reference"
 
 
     def onChanged(self, obj, prop):
