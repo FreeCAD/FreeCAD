@@ -56,7 +56,8 @@ CmdMeshPartMesher::CmdMeshPartMesher()
 {
     sAppModule = "MeshPart";
     sGroup = QT_TR_NOOP("Mesh");
-    sMenuText = QT_TR_NOOP("Creates a mesh from a shape");
+    sMenuText = QT_TR_NOOP("Mesh From Shape");
+
     sToolTipText = QT_TR_NOOP("Tessellate shape");
     sWhatsThis = "MeshPart_Mesher";
     sStatusTip = sToolTipText;
