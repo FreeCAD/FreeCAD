@@ -17,7 +17,7 @@
    <item>
     <widget class="QGroupBox" name="groupBox">
      <property name="title">
-      <string>General options</string>
+      <string>General Options</string>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout">
       <item>
@@ -82,7 +82,7 @@ Note: C++ exporter is faster, but is not as featureful yet</string>
    <item>
     <widget class="QGroupBox" name="groupBox_1">
      <property name="title">
-      <string>Automatic update (legacy importer/exporter only)</string>
+      <string>Automatic Update (Legacy Only)</string>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_1">
       <item>
@@ -113,7 +113,7 @@ from the Addon Manager.</string>
    <item>
     <widget class="QGroupBox" name="GroupBox_2">
      <property name="title">
-      <string>Import options</string>
+      <string>Import Options</string>
      </property>
      <layout class="QVBoxLayout">
       <property name="spacing">
@@ -510,7 +510,7 @@ as closed wires with correct width</string>
    <item>
     <widget class="QGroupBox" name="groupBox_3">
      <property name="title">
-      <string>Export options</string>
+      <string>Export Options</string>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_2">
       <item>
@@ -562,7 +562,7 @@ as closed wires with correct width</string>
         <item>
          <widget class="QLabel" name="label_maxsegmentlength">
           <property name="text">
-           <string>Max Spline Segment:</string>
+           <string>Maximum spline segment</string>
           </property>
           <property name="alignment">
            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -572,8 +572,7 @@ as closed wires with correct width</string>
         <item>
          <widget class="Gui::PrefDoubleSpinBox" name="spinBox_maxsegmentlength">
           <property name="toolTip">
-           <string>Maximum length of each of the polyline segments.
-If it is set to '0' the whole spline is treated as a straight segment.</string>
+           <string>Maximum length of each of the polyline segments. '0' treats the whole spline as a straight segment.</string>
           </property>
           <property name="alignment">
            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
