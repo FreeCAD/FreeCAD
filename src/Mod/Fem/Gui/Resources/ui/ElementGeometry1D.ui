@@ -274,14 +274,14 @@
              <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
             </property>
             <item row="1" column="0">
-             <widget class="QLabel" name="l_box_height">
+             <widget class="QLabel" name="l_box_width">
               <property name="text">
-               <string>Height</string>
+               <string>Width</string>
               </property>
              </widget>
             </item>
             <item row="1" column="1">
-             <widget class="Gui::QuantitySpinBox" name="qsb_box_height">
+             <widget class="Gui::QuantitySpinBox" name="qsb_box_width">
               <property name="alignment">
                <set>Qt::AlignLeft|Qt::AlignTrailing|Qt::AlignVCenter</set>
               </property>
@@ -306,14 +306,14 @@
              </widget>
             </item>
             <item row="2" column="0">
-             <widget class="QLabel" name="l_box_width">
+             <widget class="QLabel" name="l_box_height">
               <property name="text">
-               <string>Width</string>
+               <string>Height</string>
               </property>
              </widget>
             </item>
             <item row="2" column="1">
-             <widget class="Gui::QuantitySpinBox" name="qsb_box_width">
+             <widget class="Gui::QuantitySpinBox" name="qsb_box_height">
               <property name="alignment">
                <set>Qt::AlignLeft|Qt::AlignTrailing|Qt::AlignVCenter</set>
               </property>
