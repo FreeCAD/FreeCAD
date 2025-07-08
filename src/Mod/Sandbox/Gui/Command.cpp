@@ -90,10 +90,10 @@ CmdSandboxDocumentThread::CmdSandboxDocumentThread()
 {
     sAppModule    = "Sandbox";
     sGroup        = QT_TR_NOOP("Sandbox");
-    sMenuText     = QT_TR_NOOP("Run several threads");
-    sToolTipText  = QT_TR_NOOP("Sandbox Test function");
+    sMenuText     = QT_TR_NOOP("Run Several Threads");
+    sToolTipText  = QT_TR_NOOP("Runs a sandbox test function");
     sWhatsThis    = "Sandbox_Thread";
-    sStatusTip    = QT_TR_NOOP("Sandbox Test function");
+    sStatusTip    = sToolTipText;
     sPixmap       = "Std_Tool1";
 }
 
@@ -117,10 +117,10 @@ CmdSandboxDocumentTestThread::CmdSandboxDocumentTestThread()
 {
     sAppModule    = "Sandbox";
     sGroup        = QT_TR_NOOP("Sandbox");
-    sMenuText     = QT_TR_NOOP("Test thread");
-    sToolTipText  = QT_TR_NOOP("Sandbox Test function");
+    sMenuText     = QT_TR_NOOP("Test Thread");
+    sToolTipText  = QT_TR_NOOP("Runs a sandbox test function");
     sWhatsThis    = "Sandbox_TestThread";
-    sStatusTip    = QT_TR_NOOP("Sandbox Test function");
+    sStatusTip    = sToolTipText;
     sPixmap       = "Std_Tool1";
 }
 
@@ -141,10 +141,10 @@ CmdSandboxDocumentSaveThread::CmdSandboxDocumentSaveThread()
 {
     sAppModule    = "Sandbox";
     sGroup        = QT_TR_NOOP("Sandbox");
-    sMenuText     = QT_TR_NOOP("Save thread");
-    sToolTipText  = QT_TR_NOOP("Sandbox save function");
+    sMenuText     = QT_TR_NOOP("Save Thread");
+    sToolTipText  = QT_TR_NOOP("Runs a sandbox save function");
     sWhatsThis    = "Sandbox_SaveThread";
-    sStatusTip    = QT_TR_NOOP("Sandbox save function");
+    sStatusTip    = sToolTipText;
 }
 
 void CmdSandboxDocumentSaveThread::activated(int)
@@ -169,10 +169,10 @@ CmdSandboxDocThreadWithSeq::CmdSandboxDocThreadWithSeq()
 {
     sAppModule    = "Sandbox";
     sGroup        = QT_TR_NOOP("Sandbox");
-    sMenuText     = QT_TR_NOOP("Thread and sequencer");
-    sToolTipText  = QT_TR_NOOP("Sandbox Test function");
+    sMenuText     = QT_TR_NOOP("Thread and Sequencer");
+    sToolTipText  = QT_TR_NOOP("Runs a sandbox test function");
     sWhatsThis    = "Sandbox_SeqThread";
-    sStatusTip    = QT_TR_NOOP("Sandbox Test function");
+    sStatusTip    = sToolTipText;
     sPixmap       = "Std_Tool2";
 }
 
@@ -188,7 +188,7 @@ void CmdSandboxDocThreadWithSeq::activated(int)
 #else
     int max = 100000000;
 #endif
-    Base::SequencerLauncher seq("Do something meaningful...", max);
+    Base::SequencerLauncher seq("Do something meaningful…", max);
     double val=0;
     for (int i=0; i<max; i++) {
         for (int j=0; j<max; j++) {
@@ -208,10 +208,10 @@ CmdSandboxDocThreadBusy::CmdSandboxDocThreadBusy()
 {
     sAppModule    = "Sandbox";
     sGroup        = QT_TR_NOOP("Sandbox");
-    sMenuText     = QT_TR_NOOP("Thread and no sequencer");
-    sToolTipText  = QT_TR_NOOP("Sandbox Test function");
+    sMenuText     = QT_TR_NOOP("Thread and No Sequencer");
+    sToolTipText  = QT_TR_NOOP("Runs a sandbox test function");
     sWhatsThis    = "Sandbox_BlockThread";
-    sStatusTip    = QT_TR_NOOP("Sandbox Test function");
+    sStatusTip    = sToolTipText;
     sPixmap       = "Std_Tool3";
 }
 
@@ -245,10 +245,10 @@ CmdSandboxDocumentNoThread::CmdSandboxDocumentNoThread()
 {
     sAppModule    = "Sandbox";
     sGroup        = QT_TR_NOOP("Sandbox");
-    sMenuText     = QT_TR_NOOP("GUI thread");
-    sToolTipText  = QT_TR_NOOP("Sandbox Test function");
+    sMenuText     = QT_TR_NOOP("GUI Thread");
+    sToolTipText  = QT_TR_NOOP("Runs a sandbox test function");
     sWhatsThis    = "Sandbox_NoThread";
-    sStatusTip    = QT_TR_NOOP("Sandbox Test function");
+    sStatusTip    = sToolTipText;
     sPixmap       = "Std_Tool4";
 }
 
@@ -276,10 +276,10 @@ CmdSandboxWorkerThread::CmdSandboxWorkerThread()
 {
     sAppModule    = "Sandbox";
     sGroup        = QT_TR_NOOP("Sandbox");
-    sMenuText     = QT_TR_NOOP("Worker thread");
-    sToolTipText  = QT_TR_NOOP("Sandbox Test function");
+    sMenuText     = QT_TR_NOOP("Worker Thread");
+    sToolTipText  = QT_TR_NOOP("Runs a sandbox test function");
     sWhatsThis    = "Sandbox_WorkerThread";
-    sStatusTip    = QT_TR_NOOP("Sandbox Test function");
+    sStatusTip    = sToolTipText;
     sPixmap       = "Std_Tool1";
 }
 
@@ -299,10 +299,10 @@ CmdSandboxPythonLockThread::CmdSandboxPythonLockThread()
 {
     sAppModule    = "Sandbox";
     sGroup        = QT_TR_NOOP("Sandbox");
-    sMenuText     = QT_TR_NOOP("Locked Python threads");
-    sToolTipText  = QT_TR_NOOP("Use Python's thread module where each thread is locked");
+    sMenuText     = QT_TR_NOOP("Locked Python Threads");
+    sToolTipText  = QT_TR_NOOP("Uses Python's thread module where each thread is locked");
     sWhatsThis    = "Sandbox_PythonLockThread";
-    sStatusTip    = QT_TR_NOOP("Use Python's thread module where each thread is locked");
+    sStatusTip    = sToolTipText;
 }
 
 void CmdSandboxPythonLockThread::activated(int)
@@ -334,10 +334,10 @@ CmdSandboxPythonNolockThread::CmdSandboxPythonNolockThread()
 {
     sAppModule    = "Sandbox";
     sGroup        = QT_TR_NOOP("Sandbox");
-    sMenuText     = QT_TR_NOOP("Unlocked Python threads");
-    sToolTipText  = QT_TR_NOOP("Use Python's thread module where each thread is unlocked");
+    sMenuText     = QT_TR_NOOP("Unlocked Python Threads");
+    sToolTipText  = QT_TR_NOOP("Uses Python's thread module where each thread is unlocked");
     sWhatsThis    = "Sandbox_NolockPython";
-    sStatusTip    = QT_TR_NOOP("Use Python's thread module where each thread is unlocked");
+    sStatusTip    = sToolTipText;
 }
 
 void CmdSandboxPythonNolockThread::activated(int)
@@ -366,10 +366,10 @@ CmdSandboxPySideThread::CmdSandboxPySideThread()
 {
     sAppModule    = "Sandbox";
     sGroup        = QT_TR_NOOP("Sandbox");
-    sMenuText     = QT_TR_NOOP("PySide threads");
-    sToolTipText  = QT_TR_NOOP("Use PySide's thread module");
+    sMenuText     = QT_TR_NOOP("PySide Threads");
+    sToolTipText  = QT_TR_NOOP("Uses PySide's thread module");
     sWhatsThis    = "Sandbox_PySideThread";
-    sStatusTip    = QT_TR_NOOP("Use PySide's thread module");
+    sStatusTip    = sToolTipText;
 }
 
 void CmdSandboxPySideThread::activated(int)
@@ -401,10 +401,10 @@ CmdSandboxPythonThread::CmdSandboxPythonThread()
 {
     sAppModule    = "Sandbox";
     sGroup        = QT_TR_NOOP("Sandbox");
-    sMenuText     = QT_TR_NOOP("Python threads");
-    sToolTipText  = QT_TR_NOOP("Use class PythonThread running Python code in its run() method");
+    sMenuText     = QT_TR_NOOP("Python Threads");
+    sToolTipText  = QT_TR_NOOP("Uses class PythonThread running Python code in its run() method");
     sWhatsThis    = "Sandbox_PythonThread";
-    sStatusTip    = QT_TR_NOOP("Use class PythonThread running Python code in its run() method");
+    sStatusTip    = sToolTipText;
 }
 
 void CmdSandboxPythonThread::activated(int)
@@ -427,10 +427,10 @@ CmdSandboxPythonMainThread::CmdSandboxPythonMainThread()
 {
     sAppModule    = "Sandbox";
     sGroup        = QT_TR_NOOP("Sandbox");
-    sMenuText     = QT_TR_NOOP("Python main thread");
-    sToolTipText  = QT_TR_NOOP("Run python code in main thread");
+    sMenuText     = QT_TR_NOOP("Python Main Thread");
+    sToolTipText  = QT_TR_NOOP("Runs Python code in the main thread");
     sWhatsThis    = "Sandbox_PythonMainThread";
-    sStatusTip    = QT_TR_NOOP("Run python code in main thread");
+    sStatusTip    = sToolTipText;
 }
 
 void CmdSandboxPythonMainThread::activated(int)
@@ -453,10 +453,10 @@ CmdSandboxDocThreadWithDialog::CmdSandboxDocThreadWithDialog()
 {
     sAppModule    = "Sandbox";
     sGroup        = QT_TR_NOOP("Sandbox");
-    sMenuText     = QT_TR_NOOP("Thread and modal dialog");
-    sToolTipText  = QT_TR_NOOP("Sandbox Test function");
+    sMenuText     = QT_TR_NOOP("Thread and Modal Dialog");
+    sToolTipText  = QT_TR_NOOP("Runs a sandbox test function");
     sWhatsThis    = "Sandbox_Dialog";
-    sStatusTip    = QT_TR_NOOP("Sandbox Test function");
+    sStatusTip    = sToolTipText;
     sPixmap       = "Std_Tool7";
 }
 
@@ -480,10 +480,10 @@ CmdSandboxDocThreadWithFileDlg::CmdSandboxDocThreadWithFileDlg()
 {
     sAppModule    = "Sandbox";
     sGroup        = QT_TR_NOOP("Sandbox");
-    sMenuText     = QT_TR_NOOP("Thread and file dialog");
-    sToolTipText  = QT_TR_NOOP("Sandbox Test function");
+    sMenuText     = QT_TR_NOOP("Thread and File Dialog");
+    sToolTipText  = QT_TR_NOOP("Runs a sandbox test function");
     sWhatsThis    = "Sandbox_FileDialog";
-    sStatusTip    = QT_TR_NOOP("Sandbox Test function");
+    sStatusTip    = sToolTipText;
     sPixmap       = "Std_Tool7";
 }
 
@@ -518,10 +518,10 @@ CmdSandboxEventLoop::CmdSandboxEventLoop()
 {
     sAppModule    = "Sandbox";
     sGroup        = QT_TR_NOOP("Sandbox");
-    sMenuText     = QT_TR_NOOP("Local event loop");
-    sToolTipText  = QT_TR_NOOP("Sandbox Test function");
+    sMenuText     = QT_TR_NOOP("Local Event Loop");
+    sToolTipText  = QT_TR_NOOP("Runs a sandbox test function");
     sWhatsThis    = "Sandbox_EventLoop";
-    sStatusTip    = QT_TR_NOOP("Sandbox Test function");
+    sStatusTip    = sToolTipText;
     sPixmap       = "Std_Tool6";
 }
 
@@ -561,10 +561,10 @@ CmdSandboxMeshLoader::CmdSandboxMeshLoader()
 {
     sAppModule    = "Sandbox";
     sGroup        = QT_TR_NOOP("Sandbox");
-    sMenuText     = QT_TR_NOOP("Load mesh in thread");
-    sToolTipText  = QT_TR_NOOP("Sandbox Test function");
+    sMenuText     = QT_TR_NOOP("Load Mesh in Thread");
+    sToolTipText  = QT_TR_NOOP("Runs a sandbox test function");
     sWhatsThis    = "Sandbox_MeshLoad";
-    sStatusTip    = QT_TR_NOOP("Sandbox Test function");
+    sStatusTip    = sToolTipText;
     sPixmap       = "Std_Tool6";
 }
 
@@ -619,10 +619,10 @@ CmdSandboxMeshLoaderBoost::CmdSandboxMeshLoaderBoost()
 {
     sAppModule    = "Sandbox";
     sGroup        = QT_TR_NOOP("Sandbox");
-    sMenuText     = QT_TR_NOOP("Load mesh in boost-thread");
-    sToolTipText  = QT_TR_NOOP("Sandbox Test function");
+    sMenuText     = QT_TR_NOOP("Load Mesh in Boost-Thread");
+    sToolTipText  = QT_TR_NOOP("Runs a sandbox test function");
     sWhatsThis    = "Sandbox_MeshLoaderBoost";
-    sStatusTip    = QT_TR_NOOP("Sandbox Test function");
+    sStatusTip    = sToolTipText;
     sPixmap       = "Std_Tool6";
 }
 
@@ -667,10 +667,10 @@ CmdSandboxMeshLoaderFuture::CmdSandboxMeshLoaderFuture()
 {
     sAppModule    = "Sandbox";
     sGroup        = QT_TR_NOOP("Sandbox");
-    sMenuText     = QT_TR_NOOP("Load mesh in QFuture");
-    sToolTipText  = QT_TR_NOOP("Sandbox Test function");
+    sMenuText     = QT_TR_NOOP("Load Mesh in QFuture");
+    sToolTipText  = QT_TR_NOOP("Runs a sandbox test function");
     sWhatsThis    = "Sandbox_MeshLoaderFuture";
-    sStatusTip    = QT_TR_NOOP("Sandbox Test function");
+    sStatusTip    = sToolTipText;
     sPixmap       = "Std_Tool6";
 }
 
@@ -782,10 +782,10 @@ CmdSandboxMeshTestJob::CmdSandboxMeshTestJob()
 {
     sAppModule    = "Sandbox";
     sGroup        = QT_TR_NOOP("Sandbox");
-    sMenuText     = QT_TR_NOOP("Test mesh job");
-    sToolTipText  = QT_TR_NOOP("Sandbox Test function");
+    sMenuText     = QT_TR_NOOP("Test Mesh Job");
+    sToolTipText  = QT_TR_NOOP("Runs a sandbox test function");
     sWhatsThis    = "Sandbox_MeshTestJob";
-    sStatusTip    = QT_TR_NOOP("Sandbox Test function");
+    sStatusTip    = sToolTipText;
     sPixmap       = "Std_Tool7";
 }
 
@@ -822,7 +822,7 @@ void CmdSandboxMeshTestJob::activated(int)
         }
 
         // run the actual multi-threaded mesh test
-        Base::Console().message("Mesh test (step %d)...\n",iteration++);
+        Base::Console().message("Mesh test (step %d)…\n",iteration++);
         MeshTestJob meshJob;
         QFuture<Mesh::MeshObject*> mesh_future = QtConcurrent::mapped
             (mesh_groups, boost::bind(&MeshTestJob::run, &meshJob, bp::_1));
@@ -877,10 +877,10 @@ CmdSandboxMeshTestRef::CmdSandboxMeshTestRef()
 {
     sAppModule    = "Sandbox";
     sGroup        = QT_TR_NOOP("Sandbox");
-    sMenuText     = QT_TR_NOOP("Test mesh reference");
-    sToolTipText  = QT_TR_NOOP("Sandbox Test function");
+    sMenuText     = QT_TR_NOOP("Test Mesh Reference");
+    sToolTipText  = QT_TR_NOOP("Runs a sandbox test function");
     sWhatsThis    = "Sandbox_MeshTestRef";
-    sStatusTip    = QT_TR_NOOP("Sandbox Test function");
+    sStatusTip    = sToolTipText;
 }
 
 void CmdSandboxMeshTestRef::activated(int)
@@ -924,8 +924,8 @@ CmdTestGrabWidget::CmdTestGrabWidget()
   : Command("Std_GrabWidget")
 {
     sGroup          = "Standard-Test";
-    sMenuText       = "Grab widget";
-    sToolTipText    = "Grab widget";
+    sMenuText       = "Grab Widget";
+    sToolTipText    = "Grabs a widget";
     sWhatsThis      = "Std_GrabWidget";
     sStatusTip      = sToolTipText;
 }
@@ -1045,7 +1045,7 @@ CmdTestImageNode::CmdTestImageNode()
   : Command("Std_ImageNode")
 {
     sGroup          = "Standard-Test";
-    sMenuText       = "SoImage node";
+    sMenuText       = "SoImage Node";
     sToolTipText    = "SoImage node";
     sWhatsThis      = "Std_ImageNode";
     sStatusTip      = sToolTipText;
@@ -1109,7 +1109,7 @@ CmdTestGDIWidget::CmdTestGDIWidget()
   : Command("Sandbox_GDIWidget")
 {
     sGroup          = "Standard-Test";
-    sMenuText       = "GDI widget";
+    sMenuText       = "GDI Widget";
     sToolTipText    = "GDI widget";
     sWhatsThis      = "Sandbox_GDIWidget";
     sStatusTip      = sToolTipText;
@@ -1135,7 +1135,7 @@ CmdTestRedirectPaint::CmdTestRedirectPaint()
   : Command("Sandbox_RedirectPaint")
 {
     sGroup          = "Standard-Test";
-    sMenuText       = "Redirect paint";
+    sMenuText       = "Redirect Paint";
     sToolTipText    = "Redirect paint";
     sWhatsThis      = "Sandbox_RedirectPaint";
     sStatusTip      = sToolTipText;
@@ -1165,7 +1165,7 @@ CmdTestCryptographicHash::CmdTestCryptographicHash()
 {
     sGroup          = "Standard-Test";
     sMenuText       = "Cryptographic Hash";
-    sToolTipText    = "Cryptographic Hash";
+    sToolTipText    = "Cryptographic hash";
     sWhatsThis      = "Sandbox_CryptographicHash";
     sStatusTip      = sToolTipText;
 }
@@ -1186,7 +1186,7 @@ CmdTestWidgetShape::CmdTestWidgetShape()
   : Command("Sandbox_WidgetShape")
 {
     sGroup          = "Standard-Test";
-    sMenuText       = "Widget shape";
+    sMenuText       = "Widget Shape";
     sToolTipText    = "Widget shape";
     sWhatsThis      = "Sandbox_WidgetShape";
     sStatusTip      = sToolTipText;
@@ -1210,10 +1210,10 @@ CmdMengerSponge::CmdMengerSponge()
 {
     sAppModule    = "Sandbox";
     sGroup        = QT_TR_NOOP("Sandbox");
-    sMenuText     = QT_TR_NOOP("Menger sponge");
+    sMenuText     = QT_TR_NOOP("Menger Sponge");
     sToolTipText  = QT_TR_NOOP("Menger sponge");
     sWhatsThis    = "Sandbox_MengerSponge";
-    sStatusTip    = QT_TR_NOOP("Menger sponge");
+    sStatusTip    = sToolTipText;
 }
 
 struct Param {
@@ -1341,7 +1341,7 @@ void CmdMengerSponge::activated(int)
         return;
     int ret = QMessageBox::question(Gui::getMainWindow(),
         QStringLiteral("Parallel"),
-        QStringLiteral("Do you want to run this in a thread pool?"),
+        QStringLiteral("Run this in a thread pool?"),
         QMessageBox::Yes|QMessageBox::No);
     bool parallel=(ret == QMessageBox::Yes);
     float x0=0,y0=0,z0=0;
@@ -1379,9 +1379,9 @@ CmdTestGraphicsView::CmdTestGraphicsView()
   : Command("Std_TestGraphicsView")
 {
     sGroup      = QT_TR_NOOP("Standard-Test");
-    sMenuText   = QT_TR_NOOP("Create new graphics view");
+    sMenuText   = QT_TR_NOOP("New Graphics View");
     sToolTipText= QT_TR_NOOP("Creates a new view window for the active document");
-    sStatusTip  = QT_TR_NOOP("Creates a new view window for the active document");
+    sStatusTip    = sToolTipText;
 }
 
 void CmdTestGraphicsView::activated(int)
@@ -1407,7 +1407,7 @@ CmdTestTaskBox::CmdTestTaskBox()
   : Command("Std_TestTaskBox")
 {
     sGroup          = "Standard-Test";
-    sMenuText       = "Task box";
+    sMenuText       = "Task Box";
     sToolTipText    = "Task box";
     sWhatsThis      = "Std_TestTaskBox";
     sStatusTip      = sToolTipText;

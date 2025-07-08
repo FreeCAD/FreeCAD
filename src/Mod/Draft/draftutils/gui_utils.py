@@ -120,71 +120,66 @@ def autogroup(obj):
                 return
 
     # autogroup code
-    active_group = None
     if Gui.draftToolBar.autogroup is not None:
         active_group = App.ActiveDocument.getObject(Gui.draftToolBar.autogroup)
-        if active_group:
-            gr = active_group.Group
-            if not obj in gr:
-                gr.append(obj)
-                active_group.Group = gr
+        if obj in active_group.InListRecursive:
+            return
+        if not obj in active_group.Group:
+            active_group.Group += [obj]
 
-    if Gui.ActiveDocument.ActiveView.getActiveObject("NativeIFC") is not None:
+    elif Gui.ActiveDocument.ActiveView.getActiveObject("NativeIFC") is not None:
         # NativeIFC handling
         try:
             from nativeifc import ifc_tools
             parent = Gui.ActiveDocument.ActiveView.getActiveObject("NativeIFC")
-            if parent != active_group:
-                ifc_tools.aggregate(obj, parent)
+            ifc_tools.aggregate(obj, parent)
         except:
             pass
 
     elif Gui.ActiveDocument.ActiveView.getActiveObject("Arch") is not None:
         # add object to active Arch Container
         active_arch_obj = Gui.ActiveDocument.ActiveView.getActiveObject("Arch")
-        if active_arch_obj != active_group:
-            if obj in active_arch_obj.InListRecursive:
-                # do not autogroup if obj points to active_arch_obj to prevent cyclic references
-                return
-            active_arch_obj.addObject(obj)
+        if obj in active_arch_obj.InListRecursive:
+            # do not autogroup if obj points to active_arch_obj to prevent cyclic references
+            return
+        active_arch_obj.addObject(obj)
 
     elif Gui.ActiveDocument.ActiveView.getActiveObject("part") is not None:
         # add object to active part and change it's placement accordingly
         # so object does not jump to different position, works with App::Link
         # if not scaled. Modified accordingly to realthunder suggestions
         active_part, parent, sub = Gui.ActiveDocument.ActiveView.getActiveObject("part", False)
-        if active_part != active_group:
-            if obj in active_part.InListRecursive:
-                # do not autogroup if obj points to active_part to prevent cyclic references
-                return
-            matrix = parent.getSubObject(sub, retType=4)
-            if matrix.hasScale() == App.ScaleType.Uniform:
-                err = translate("draft",
-                                "Unable to insert new object into "
-                                "a scaled part")
-                App.Console.PrintMessage(err)
-                return
-            inverse_placement = App.Placement(matrix.inverse())
-            if utils.get_type(obj) == 'Point':
-                point_vector = App.Vector(obj.X, obj.Y, obj.Z)
-                real_point = inverse_placement.multVec(point_vector)
-                obj.X = real_point.x
-                obj.Y = real_point.y
-                obj.Z = real_point.z
-            elif utils.get_type(obj) in ["Dimension", "LinearDimension"]:
-                obj.Start = inverse_placement.multVec(obj.Start)
-                obj.End = inverse_placement.multVec(obj.End)
-                obj.Dimline = inverse_placement.multVec(obj.Dimline)
-                obj.Normal = inverse_placement.Rotation.multVec(obj.Normal)
-                obj.Direction = inverse_placement.Rotation.multVec(obj.Direction)
-            elif utils.get_type(obj) in ["Label"]:
-                obj.Placement = App.Placement(inverse_placement.multiply(obj.Placement))
-                obj.TargetPoint = inverse_placement.multVec(obj.TargetPoint)
-            elif hasattr(obj,"Placement"):
-                # every object that have a placement is processed here
-                obj.Placement = App.Placement(inverse_placement.multiply(obj.Placement))
+        if obj in active_part.InListRecursive:
+            # do not autogroup if obj points to active_part to prevent cyclic references
+            return
+        matrix = parent.getSubObject(sub, retType=4)
+        if matrix.hasScale() == App.ScaleType.Uniform:
+            err = translate("draft",
+                            "Unable to insert new object into "
+                            "a scaled part")
+            App.Console.PrintMessage(err)
+            return
+        inverse_placement = App.Placement(matrix.inverse())
+        if utils.get_type(obj) == 'Point':
+            point_vector = App.Vector(obj.X, obj.Y, obj.Z)
+            real_point = inverse_placement.multVec(point_vector)
+            obj.X = real_point.x
+            obj.Y = real_point.y
+            obj.Z = real_point.z
+        elif utils.get_type(obj) in ["Dimension", "LinearDimension"]:
+            obj.Start = inverse_placement.multVec(obj.Start)
+            obj.End = inverse_placement.multVec(obj.End)
+            obj.Dimline = inverse_placement.multVec(obj.Dimline)
+            obj.Normal = inverse_placement.Rotation.multVec(obj.Normal)
+            obj.Direction = inverse_placement.Rotation.multVec(obj.Direction)
+        elif utils.get_type(obj) in ["Label"]:
+            obj.Placement = App.Placement(inverse_placement.multiply(obj.Placement))
+            obj.TargetPoint = inverse_placement.multVec(obj.TargetPoint)
+        elif hasattr(obj,"Placement"):
+            # every object that have a placement is processed here
+            obj.Placement = App.Placement(inverse_placement.multiply(obj.Placement))
 
-            active_part.addObject(obj)
+        active_part.addObject(obj)
 
 
 def dim_symbol(symbol=None, invert=False):
