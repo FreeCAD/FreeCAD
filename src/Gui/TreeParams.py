@@ -44,6 +44,7 @@ Params = [
     ParamBool('PreSelection', True),
     ParamBool('SyncPlacement', False),
     ParamBool('RecordSelection', True),
+    ParamBool('AutoRelabelNew', False, on_change=True),
     ParamInt('DocumentMode', 2, on_change=True),
     ParamInt('StatusTimeout', 100),
     ParamInt('SelectionTimeout', 100),
