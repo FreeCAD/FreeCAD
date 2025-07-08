@@ -7166,9 +7166,7 @@ int SketchObject::addExternal(App::DocumentObject* Obj,
     std::vector<long> Types = ExternalTypes.getValues();
     std::vector<DocumentObject*> Objects = ExternalGeometry.getValues();
     std::vector<std::string> SubElements = ExternalGeometry.getSubValues();
-    if (Types.size() != Objects.size()) {
-        Types.resize(Objects.size(), 0);
-    }
+    Types.resize(Objects.size(), 0);
 
     const std::vector<DocumentObject*> originalObjects = Objects;
     const std::vector<std::string> originalSubElements = SubElements;
@@ -8632,9 +8630,7 @@ void SketchObject::rebuildExternalGeometry(std::optional<ExternalToAdd> extToAdd
     auto SubElements = ExternalGeometry.getSubValues();
     assert(externalGeoRef.size() == Objects.size());
     auto keys = externalGeoRef;
-    if (Types.size() != Objects.size()) {
-        Types.resize(Objects.size(), 0);
-    }
+    Types.resize(Objects.size(), 0);
 
     // re-check for any missing geometry element. The code here has a side
     // effect that the linked external geometry will continue to work even if
@@ -8655,6 +8651,7 @@ void SketchObject::rebuildExternalGeometry(std::optional<ExternalToAdd> extToAdd
             if(elementName.oldName.size()
                     && !App::GeoFeature::hasMissingElement(elementName.oldName.c_str()))
             {
+                Types.push_back((int)ExtType::Projection);
                 Objects.push_back(obj);
                 SubElements.push_back(elementName.oldName);
                 keys.push_back(ref);
