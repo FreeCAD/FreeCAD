@@ -4545,8 +4545,6 @@ class DxfDraftPostProcessor:
                 new_obj.FirstAngle = FreeCAD.Units.Quantity(start_angle, "deg")
                 new_obj.LastAngle = FreeCAD.Units.Quantity(end_angle, "deg")
 
-                FCC.PrintMessage(f"DEBUG: Final angles after assignment: {new_obj.FirstAngle.Value} deg to {new_obj.LastAngle.Value} deg\n")
-
             # Determine the final object type string based on the canonical angles
             is_full_circle = (abs(new_obj.FirstAngle.Value - 0.0) < 1e-7 and
                               abs(new_obj.LastAngle.Value - 360.0) < 1e-7)
@@ -4566,13 +4564,51 @@ class DxfDraftPostProcessor:
             Draft.Point(new_obj) # Attach the Python proxy.
             obj_type_str = "Point"
 
+        elif part_obj.isDerivedFrom("Part::Ellipse"):
+            # Determine if it's a full ellipse or an arc
+            # The span check handles cases like (0, 360) or (-180, 180)
+            span = abs(part_obj.Angle2.Value - part_obj.Angle1.Value)
+            is_full_ellipse = abs(span % 360.0) < 1e-6
+
+            if is_full_ellipse:
+                # Create the C++ base object that has .Shape and .Placement.
+                new_obj = self.doc.addObject("Part::Part2DObjectPython", self.doc.getUniqueObjectName("Ellipse"))
+
+                # Attach the parametric Draft.Ellipse Python proxy.
+                Draft.Ellipse(new_obj)
+
+                # Transfer the parametric properties from the imported primitive to the new Draft
+                # object. The proxy will handle recomputing the shape.
+                new_obj.MajorRadius = part_obj.MajorRadius
+                new_obj.MinorRadius = part_obj.MinorRadius
+                new_obj.Placement = part_obj.Placement
+
+                obj_type_str = "Ellipse"
+            else:
+                # Fallback for elliptical arcs.
+
+                new_obj = self.doc.addObject("Part::Part2DObjectPython", self.doc.getUniqueObjectName("EllipticalArc"))
+                Draft.Wire(new_obj) # Attach proxy.
+
+                # Re-create geometry at the origin using parametric properties.
+                # Convert degrees back to radians for the geometry kernel.
+                center_at_origin = FreeCAD.Vector(0, 0, 0)
+                geom = Part.Ellipse(center_at_origin, part_obj.MajorRadius.Value, part_obj.MinorRadius.Value)
+                shape_at_origin = geom.toShape(math.radians(part_obj.Angle1.Value),
+                                               math.radians(part_obj.Angle2.Value))
+
+                # Assign the un-transformed shape and the separate placement.
+                new_obj.Shape = shape_at_origin
+                new_obj.Placement = part_obj.Placement
+                obj_type_str = "Shape"
+
         # --- Handle generic Part::Feature objects (from C++ importer, wrapping TopoDS_Shapes like Wires, Splines, Ellipses) ---
         elif part_obj.isDerivedFrom("Part::Feature"): # Input `part_obj` is a generic Part::Feature (from C++ importer).
             shape = part_obj.Shape # This is the underlying TopoDS_Shape (Wire, Edge, Compound, Face etc.).
             if not shape.isValid():
                 return None, None
 
-            FCC.PrintMessage(f"DEBUG: Input is Part::Feature (ShapeType: {shape.ShapeType})\n")
+            FCC.PrintMessage(f"DEBUG: {part_obj.Label} ({part_obj.Name}) is Part::Feature (ShapeType: {shape.ShapeType})\n")
 
             # Determine specific Draft object type based on the ShapeType of the TopoDS_Shape.
             if shape.ShapeType == "Wire": # If the TopoDS_Shape is a Wire (from DXF POLYLINE).

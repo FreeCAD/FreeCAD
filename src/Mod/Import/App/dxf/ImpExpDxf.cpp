@@ -41,6 +41,7 @@
 #include <GeomAPI_Interpolate.hxx>
 #include <GeomAPI_PointsToBSpline.hxx>
 #include <Geom_Circle.hxx>
+#include <Geom_Ellipse.hxx>
 #include <Geom_Line.hxx>
 #include <Geom_BSplineCurve.hxx>
 #include <TColgp_Array1OfPnt.hxx>
@@ -97,11 +98,57 @@ namespace
 
 Part::Circle* createCirclePrimitive(const TopoDS_Edge& edge, App::Document* doc, const char* name);
 Part::Line* createLinePrimitive(const TopoDS_Edge& edge, App::Document* doc, const char* name);
+Part::Ellipse*
+createEllipsePrimitive(const TopoDS_Edge& edge, App::Document* doc, const char* name);
+
 
 }  // namespace
 
 namespace
 {
+
+// Helper function to create and configure a Part::Ellipse primitive from a TopoDS_Edge
+Part::Ellipse* createEllipsePrimitive(const TopoDS_Edge& edge, App::Document* doc, const char* name)
+{
+    auto* p = doc->addObject<Part::Ellipse>(name);
+    if (!p) {
+        return nullptr;
+    }
+
+    TopLoc_Location loc;
+    Standard_Real first, last;
+    Handle(Geom_Curve) aCurve = BRep_Tool::Curve(edge, loc, first, last);
+
+    if (aCurve->IsInstance(Geom_Ellipse::get_type_descriptor())) {
+        Handle(Geom_Ellipse) ellipse = Handle(Geom_Ellipse)::DownCast(aCurve);
+
+        // Set parametric properties
+        p->MajorRadius.setValue(ellipse->MajorRadius());
+        p->MinorRadius.setValue(ellipse->MinorRadius());
+
+        // The axis contains the full transformation (location and orientation).
+        // It's crucial to apply the TopLoc_Location transformation from the edge.
+        gp_Ax2 axis = ellipse->Position().Transformed(loc.Transformation());
+        gp_Pnt center = axis.Location();
+        gp_Dir xDir = axis.XDirection();  // Major Axis Direction
+        gp_Dir yDir = axis.YDirection();  // Minor Axis Direction
+        gp_Dir zDir = axis.Direction();   // Normal
+
+        Base::Placement plc;
+        plc.setPosition(Base::Vector3d(center.X(), center.Y(), center.Z()));
+        plc.setRotation(
+            Base::Rotation::makeRotationByAxes(Base::Vector3d(xDir.X(), xDir.Y(), xDir.Z()),
+                                               Base::Vector3d(yDir.X(), yDir.Y(), yDir.Z()),
+                                               Base::Vector3d(zDir.X(), zDir.Y(), zDir.Z())));
+        p->Placement.setValue(plc);
+
+        // Set angles for arcs, converting from radians (OCC) to degrees (PropertyAngle)
+        BRep_Tool::Range(edge, first, last);
+        p->Angle1.setValue(Base::toDegrees(first));
+        p->Angle2.setValue(Base::toDegrees(last));
+    }
+    return p;
+}
 
 // Helper function to create and configure a Part::Circle primitive from a TopoDS_Edge
 Part::Circle* createCirclePrimitive(const TopoDS_Edge& edge, App::Document* doc, const char* name)
@@ -636,10 +683,8 @@ void ImpExpDxfRead::ComposeParametricBlock(const std::string& blockName,
                     break;
                 }
                 case GeometryBuilder::PrimitiveType::Ellipse: {
-                    // Ellipses are generic Part::Feature as no Part primitive exists
-                    auto* p = document->addObject<Part::Feature>("Ellipse");
-                    p->Shape.setValue(builder.shape);
-                    newObject = p;
+                    newObject =
+                        createEllipsePrimitive(TopoDS::Edge(builder.shape), document, "Ellipse");
                     break;
                 }
                 case GeometryBuilder::PrimitiveType::Spline: {
@@ -649,7 +694,6 @@ void ImpExpDxfRead::ComposeParametricBlock(const std::string& blockName,
                     newObject = p;
                     break;
                 }
-                // NEW CASES FOR POLYLINES IN BLOCKS
                 case GeometryBuilder::PrimitiveType::PolylineFlattened: {
                     // This creates a simple Part::Feature wrapping the wire, which is standard for
                     // block children.
@@ -659,7 +703,6 @@ void ImpExpDxfRead::ComposeParametricBlock(const std::string& blockName,
                     break;
                 }
                 case GeometryBuilder::PrimitiveType::PolylineParametric: {
-                    // REUSED ORIGINAL LOGIC for parametric polylines inside blocks.
                     // This creates a Part::Compound containing line/arc segments.
                     auto* p =
                         document->addObject<Part::Compound>("Polyline");  // Main polyline compound
@@ -1159,16 +1202,20 @@ void ImpExpDxfRead::OnReadEllipse(const Base::Vector3d& center,
     }
 
     TopoDS_Edge edge = BRepBuilderAPI_MakeEdge(ellipse).Edge();
-    GeometryBuilder builder(edge);  // Instantiate builder once
+    GeometryBuilder builder(edge);  // Pass the shape to the builder
 
     switch (m_importMode) {
         case ImportMode::EditableDraft:
         case ImportMode::EditablePrimitives:
+            // Tag this geometry so the collector knows to create a Part::Ellipse primitive
             builder.type = GeometryBuilder::PrimitiveType::Ellipse;
             break;
         case ImportMode::IndividualShapes:
         case ImportMode::FusedShapes:
-            builder.type = GeometryBuilder::PrimitiveType::None;  // Generic Part::Feature
+        default:
+            // For other modes, create a generic shape (Part:Feature), which is the existing
+            // behavior.
+            builder.type = GeometryBuilder::PrimitiveType::None;
             break;
     }
     Collector->AddGeometry(builder);
@@ -1332,11 +1379,8 @@ void ImpExpDxfRead::DrawingEntityCollector::AddGeometry(const GeometryBuilder& b
             break;
         }
         case GeometryBuilder::PrimitiveType::Ellipse: {
-            newDocObj = Reader.document->addObject<Part::Feature>(
-                Reader.document->getUniqueObjectName("Ellipse").c_str());
-            if (newDocObj) {
-                static_cast<Part::Feature*>(newDocObj)->Shape.setValue(builder.shape);
-            }
+            newDocObj =
+                createEllipsePrimitive(TopoDS::Edge(builder.shape), Reader.document, "Ellipse");
             break;
         }
         case GeometryBuilder::PrimitiveType::Spline: {
