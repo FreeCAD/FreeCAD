@@ -895,6 +895,12 @@ public:  // geometry extension functionalities for single element sketch object 
     int setGeometryId(int GeoId, long id);
     int getGeometryId(int GeoId, long& id) const;
 
+    /// Replaces geometries at `oldGeoIds` with `newGeos`, lower Ids first.
+    /// If `oldGeoIds` is bigger, deletes the remaining.
+    /// If `newGeos` is bigger, adds the remaining geometries at the end.
+    /// NOTE: Does NOT move any constraints
+    void replaceGeometries(std::vector<int> oldGeoIds, std::vector<Part::Geometry*>& newGeos);
+
 protected:
     // Only the first flag is toggled, the rest of the flags is set or cleared following the first
     // flag.
@@ -905,12 +911,6 @@ protected:
     /// get called by the container when a property has changed
     void onChanged(const App::Property* /*prop*/) override;
 
-    /// Replaces geometries at `oldGeoIds` with `newGeos`, lower Ids first.
-    /// If `oldGeoIds` is bigger, deletes the remaining.
-    /// If `newGeos` is bigger, adds the remaining geometries at the end.
-    /// NOTE: Does NOT move any constraints
-    void replaceGeometries(std::vector<int> oldGeoIds, std::vector<Part::Geometry*>& newGeos);
-
     /// Helper functions for `deleteUnusedInternalGeometry` by cases
     /// two foci for ellipses and arcs of ellipses and hyperbolas
     int deleteUnusedInternalGeometryWhenTwoFoci(int GeoId, bool delgeoid = false);
@@ -918,6 +918,14 @@ protected:
     int deleteUnusedInternalGeometryWhenOneFocus(int GeoId, bool delgeoid = false);
     /// b-splines need their own treatment
     int deleteUnusedInternalGeometryWhenBSpline(int GeoId, bool delgeoid = false);
+
+    void onGeometryChanged();
+    void onConstraintsChanged();
+    void onExternalGeoChanged();
+    void onExternalGeometryChanged();
+    void onPlacementChanged();
+    void onExpressionEngineChanged();
+    void onAttachmentSupportChanged();
 
     void onDocumentRestored() override;
     void restoreFinished() override;
