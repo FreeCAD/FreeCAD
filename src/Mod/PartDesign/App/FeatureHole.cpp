@@ -26,6 +26,7 @@
 # include <limits>
 # include <gp_Circ.hxx>
 # include <gp_Dir.hxx>
+# include <gp_Cylinder.hxx>
 # include <BRep_Builder.hxx>
 # include <Mod/Part/App/FCBRepAlgoAPI_Cut.h>
 # include <Mod/Part/App/FCBRepAlgoAPI_Fuse.h>
