@@ -33,6 +33,8 @@
 #  include <GL/gl.h>
 # endif
 # include <boost/math/constants/constants.hpp>
+# include <Inventor/SbMatrix.h>
+# include <Inventor/SbViewVolume.h>
 # include <Inventor/nodes/SoOrthographicCamera.h>
 # include <Inventor/events/SoEvent.h>
 # include <Inventor/events/SoLocation2Event.h>
@@ -811,20 +813,26 @@ void NaviCubeImplementation::drawNaviCube(bool pickMode, float opacity)
     glMatrixMode(GL_PROJECTION);
     glPushMatrix();
     glLoadIdentity();
+    SbViewVolume vv;
     const float NEARVAL = 0.1f;
     const float FARVAL = 10.1f;
     if (cam->getTypeId().isDerivedFrom(SoOrthographicCamera::getClassTypeId())) {
-        glOrtho(-2.1, 2.1, -2.1, 2.1, NEARVAL, FARVAL);
+        vv.ortho(-2.1, 2.1, -2.1, 2.1, NEARVAL, FARVAL);
     }
     else {
         const float dim = NEARVAL * float(tan(std::numbers::pi / 8.0)) * 1.1;
-        glFrustum(-dim, dim, -dim, dim, NEARVAL, FARVAL);
+        vv.frustum(-dim, dim, -dim, dim, NEARVAL, FARVAL);
     }
+    SbMatrix affine, proj;
+    vv.getMatrices(affine, proj);
+    glLoadMatrixf((float*)proj);
+
     glMatrixMode(GL_MODELVIEW);
     glPushMatrix();
     SbMatrix mx;
     mx = cam->orientation.getValue();
     mx = mx.inverse();
+    // Position the camera 5.1 units away from the object along the Z-axis.
     mx[3][2] = -5.1F;
     glLoadMatrixf((float*)mx);
 
@@ -915,7 +923,10 @@ void NaviCubeImplementation::drawNaviCube(bool pickMode, float opacity)
     glDisable(GL_CULL_FACE);
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-    glOrtho(0.0, 1.0, 1.0, 0.0, 0.0, 1.0);
+    vv.ortho(0.0, 1.0, 1.0, 0.0, 0.0, 1.0);
+    vv.getMatrices(affine, proj);
+    glLoadMatrixf((float*)proj);
+
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
 
