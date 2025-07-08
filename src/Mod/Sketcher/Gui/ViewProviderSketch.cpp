@@ -277,6 +277,11 @@ void ViewProviderSketch::ParameterObserver::initParameters()
               updateBoolProperty(string, property, false);
           },
           &Client.ForceOrtho}},
+        {"AlignView",
+         {[this](const std::string& string, App::Property* property) {
+              updateBoolProperty(string, property, true);
+          },
+          &Client.AlignView}},
         {"SectionView",
          {[this](const std::string& string, App::Property* property) {
               updateBoolProperty(string, property, false);
@@ -541,6 +546,12 @@ ViewProviderSketch::ViewProviderSketch()
         "Visibility automation",
         (App::PropertyType)(App::Prop_ReadOnly),
         "If true, camera type will be forced to orthographic view when entering editing mode.");
+    ADD_PROPERTY_TYPE(
+        AlignView,
+        (true),
+        "Visibility automation",
+        (App::PropertyType)(App::Prop_ReadOnly),
+        "If true, camera view will be aligned when entering editing mode.");
     ADD_PROPERTY_TYPE(
         SectionView,
         (false),
@@ -3394,31 +3405,33 @@ void ViewProviderSketch::setEditViewer(Gui::View3DInventorViewer* viewer, int Mo
     else
         editSubName.resize(dot - editSubName.c_str() + 1);
 
-    Base::Placement plm = getEditingPlacement();
-    Base::Rotation tmp(plm.getRotation());
+    if (AlignView.getValue()) {
+        Base::Placement plm = getEditingPlacement();
+        Base::Rotation tmp(plm.getRotation());
 
-    SbRotation rot((float)tmp[0], (float)tmp[1], (float)tmp[2], (float)tmp[3]);
+        SbRotation rot((float)tmp[0], (float)tmp[1], (float)tmp[2], (float)tmp[3]);
 
-    // Will the sketch be visible from the new position (#0000957)?
-    //
-    SoCamera* camera = viewer->getSoRenderManager()->getCamera();
-    SbVec3f curdir;// current view direction
-    camera->orientation.getValue().multVec(SbVec3f(0, 0, -1), curdir);
-    SbVec3f focal = camera->position.getValue() + camera->focalDistance.getValue() * curdir;
+        // Will the sketch be visible from the new position (#0000957)?
+        //
+        SoCamera* camera = viewer->getSoRenderManager()->getCamera();
+        SbVec3f curdir;// current view direction
+        camera->orientation.getValue().multVec(SbVec3f(0, 0, -1), curdir);
+        SbVec3f focal = camera->position.getValue() + camera->focalDistance.getValue() * curdir;
 
-    SbVec3f newdir;// future view direction
-    rot.multVec(SbVec3f(0, 0, -1), newdir);
-    SbVec3f newpos = focal - camera->focalDistance.getValue() * newdir;
+        SbVec3f newdir;// future view direction
+        rot.multVec(SbVec3f(0, 0, -1), newdir);
+        SbVec3f newpos = focal - camera->focalDistance.getValue() * newdir;
 
-    SbVec3f plnpos = Base::convertTo<SbVec3f>(plm.getPosition());
-    double dist = (plnpos - newpos).dot(newdir);
-    if (dist < 0) {
-        float focalLength = camera->focalDistance.getValue() - dist + 5;
-        camera->position = focal - focalLength * curdir;
-        camera->focalDistance.setValue(focalLength);
+        SbVec3f plnpos = Base::convertTo<SbVec3f>(plm.getPosition());
+        double dist = (plnpos - newpos).dot(newdir);
+        if (dist < 0) {
+            float focalLength = camera->focalDistance.getValue() - dist + 5;
+            camera->position = focal - focalLength * curdir;
+            camera->focalDistance.setValue(focalLength);
+        }
+
+        viewer->setCameraOrientation(rot);
     }
-
-    viewer->setCameraOrientation(rot);
 
     viewer->setEditing(true);
     viewer->setSelectionEnabled(false);
