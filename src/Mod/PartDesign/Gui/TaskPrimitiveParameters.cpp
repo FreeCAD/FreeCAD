@@ -46,9 +46,8 @@
 
 using namespace PartDesignGui;
 
-// clang-format off
 TaskBoxPrimitives::TaskBoxPrimitives(ViewProviderPrimitive* vp, QWidget* parent)
-  : TaskBox(QPixmap(),tr("Primitive parameters"), true, parent)
+  : TaskAddSubParameters(vp, parent, "PartDesign_SubtractivePrimitives", tr("Primitive parameters"))
   , ui(new Ui_DlgPrimitives)
   , vp(vp)
 {
@@ -269,6 +268,8 @@ TaskBoxPrimitives::TaskBoxPrimitives(ViewProviderPrimitive* vp, QWidget* parent)
         }
     }
 
+    connect(ui->checkBoxOutside, &QCheckBox::toggled,
+        this, &TaskBoxPrimitives::onOutsideChanged);
     // box
     connect(ui->boxLength, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
             this, &TaskBoxPrimitives::onBoxLengthChanged);
@@ -368,6 +369,12 @@ TaskBoxPrimitives::TaskBoxPrimitives(ViewProviderPrimitive* vp, QWidget* parent)
             this, &TaskBoxPrimitives::onWedgeZ2maxChanged);
     connect(ui->wedgeZ2min, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
             this, &TaskBoxPrimitives::onWedgeZ2minChanged);
+    bool outside = enableOutside();
+    ui->checkBoxOutside->setEnabled(outside);
+    ui->checkBoxOutside->setVisible(outside);
+
+    PartDesign::FeatureAddSub* pcAddSub = static_cast<PartDesign::FeatureAddSub*>(vp->getObject());
+    ui->checkBoxOutside->setChecked(pcAddSub->Outside.getValue());
 }
 // clang-format on
 

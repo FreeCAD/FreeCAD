@@ -69,6 +69,8 @@ TaskLoftParameters::TaskLoftParameters(ViewProviderLoft* LoftView, bool /*newObj
             this, &TaskLoftParameters::onClosed);
     connect(ui->checkBoxUpdateView, &QCheckBox::toggled,
             this, &TaskLoftParameters::onUpdateView);
+    connect(ui->checkBoxOutside, &QCheckBox::toggled,
+        this, &TaskLoftParameters::onOutsideChanged);
     // clang-format on
 
     // Create context menu
@@ -125,6 +127,10 @@ TaskLoftParameters::TaskLoftParameters(ViewProviderLoft* LoftView, bool /*newObj
         child->blockSignals(false);
     }
 
+    bool outside = enableOutside();
+    ui->checkBoxOutside->setEnabled(outside);
+    ui->checkBoxOutside->setVisible(outside);
+    ui->checkBoxOutside->setChecked(loft->Outside.getValue());
     updateUI();
 }
 
