@@ -1,10 +1,18 @@
 
 SET(Stylesheets_Files
     "FreeCAD_stylesheet.qss"
+#remove below after testing new stylesheet system 8/6/2025
+	"FreeCAD Dark.qss"
+	"FreeCAD Light.qss"
 )
 
 SET(Overlay_Stylesheets_Files
     "overlay/Freecad Overlay.qss"
+	#remove below after testing new stylesheet system 8/6/2025
+	"overlay/Dark Theme + Dark Background.qss"
+    "overlay/Dark Theme + Light Background.qss"
+    "overlay/Light Theme + Dark Background.qss"
+    "overlay/Light Theme + Light Background.qss"
 )
 
 # Find all the image files
