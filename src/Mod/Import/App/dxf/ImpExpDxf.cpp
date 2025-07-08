@@ -100,7 +100,10 @@ Part::Circle* createCirclePrimitive(const TopoDS_Edge& edge, App::Document* doc,
 Part::Line* createLinePrimitive(const TopoDS_Edge& edge, App::Document* doc, const char* name);
 Part::Ellipse*
 createEllipsePrimitive(const TopoDS_Edge& edge, App::Document* doc, const char* name);
-
+Part::Vertex*
+createVertexPrimitive(const TopoDS_Vertex& vertex, App::Document* doc, const char* name);
+Part::Feature*
+createGenericShapeFeature(const TopoDS_Shape& shape, App::Document* doc, const char* name);
 
 }  // namespace
 
@@ -212,6 +215,31 @@ Part::Line* createLinePrimitive(const TopoDS_Edge& edge, App::Document* doc, con
     return p;
 }
 
+// Helper function to create and configure a Part::Vertex primitive from a TopoDS_Vertex
+Part::Vertex*
+createVertexPrimitive(const TopoDS_Vertex& vertex, App::Document* doc, const char* name)
+{
+    auto* p = doc->addObject<Part::Vertex>(name);
+    if (p) {
+        gp_Pnt pnt = BRep_Tool::Pnt(vertex);
+        p->X.setValue(pnt.X());
+        p->Y.setValue(pnt.Y());
+        p->Z.setValue(pnt.Z());
+    }
+    return p;
+}
+
+// Helper function to create a generic Part::Feature for any non-parametric shape
+Part::Feature*
+createGenericShapeFeature(const TopoDS_Shape& shape, App::Document* doc, const char* name)
+{
+    auto* p = doc->addObject<Part::Feature>(name);
+    if (p) {
+        p->Shape.setValue(shape);
+    }
+    return p;
+}
+
 }  // namespace
 
 TopoDS_Wire ImpExpDxfRead::BuildWireFromPolyline(std::list<VertexInfo>& vertices, int flags)
@@ -306,14 +334,19 @@ TopoDS_Wire ImpExpDxfRead::BuildWireFromPolyline(std::list<VertexInfo>& vertices
     return wireBuilder.Wire();
 }
 
-void ImpExpDxfRead::CreateFlattenedPolyline(const TopoDS_Wire& wire, const char* name)
+Part::Feature* ImpExpDxfRead::createFlattenedPolylineFeature(const TopoDS_Wire& wire,
+                                                             const char* name)
 {
     auto* p = document->addObject<Part::Feature>(document->getUniqueObjectName(name).c_str());
-    p->Shape.setValue(wire);
-    Collector->AddObject(p, name);
+    if (p) {
+        p->Shape.setValue(wire);
+        IncrementCreatedObjectCount();
+    }
+    return p;
 }
 
-void ImpExpDxfRead::CreateParametricPolyline(const TopoDS_Wire& wire, const char* name)
+Part::Compound* ImpExpDxfRead::createParametricPolylineCompound(const TopoDS_Wire& wire,
+                                                                const char* name)
 {
     auto* p = document->addObject<Part::Compound>(document->getUniqueObjectName(name).c_str());
     IncrementCreatedObjectCount();
@@ -336,13 +369,37 @@ void ImpExpDxfRead::CreateParametricPolyline(const TopoDS_Wire& wire, const char
         if (segment) {
             IncrementCreatedObjectCount();
             segment->Visibility.setValue(false);
-            ApplyGuiStyles(static_cast<Part::Feature*>(segment));
+            // We apply styles later, depending on the context
             segments.push_back(segment);
         }
     }
     p->Links.setValues(segments);
+    return p;
+}
 
-    Collector->AddObject(p, name);
+void ImpExpDxfRead::CreateFlattenedPolyline(const TopoDS_Wire& wire, const char* name)
+{
+    Part::Feature* p = createFlattenedPolylineFeature(wire, name);
+
+    // Perform the context-specific action of adding it to the collector
+    if (p) {
+        Collector->AddObject(p, name);
+    }
+}
+
+void ImpExpDxfRead::CreateParametricPolyline(const TopoDS_Wire& wire, const char* name)
+{
+    Part::Compound* p = createParametricPolylineCompound(wire, name);
+
+    // Perform the context-specific actions (applying styles and adding to the document)
+    if (p) {
+        // Style the child segments
+        for (App::DocumentObject* segment : p->Links.getValues()) {
+            ApplyGuiStyles(static_cast<Part::Feature*>(segment));
+        }
+        // Add the final compound object to the document
+        Collector->AddObject(p, name);
+    }
 }
 
 std::map<std::string, int> ImpExpDxfRead::PreScan(const std::string& filepath)
@@ -659,12 +716,8 @@ void ImpExpDxfRead::ComposeParametricBlock(const std::string& blockName,
                     break;
                 }
                 case GeometryBuilder::PrimitiveType::Point: {
-                    auto* p = document->addObject<Part::Vertex>("Point");
-                    TopoDS_Vertex v = TopoDS::Vertex(builder.shape);
-                    gp_Pnt pnt = BRep_Tool::Pnt(v);
-                    p->Placement.setValue(Base::Placement(Base::Vector3d(pnt.X(), pnt.Y(), pnt.Z()),
-                                                          Base::Rotation()));
-                    newObject = p;
+                    newObject =
+                        createVertexPrimitive(TopoDS::Vertex(builder.shape), document, "Point");
                     break;
                 }
                 case GeometryBuilder::PrimitiveType::Circle:
@@ -697,53 +750,21 @@ void ImpExpDxfRead::ComposeParametricBlock(const std::string& blockName,
                 case GeometryBuilder::PrimitiveType::PolylineFlattened: {
                     // This creates a simple Part::Feature wrapping the wire, which is standard for
                     // block children.
-                    auto* p = document->addObject<Part::Feature>("Polyline");
-                    p->Shape.setValue(TopoDS::Wire(builder.shape));  // Ensure it's a TopoDS_Wire
-                    newObject = p;
+                    newObject =
+                        createFlattenedPolylineFeature(TopoDS::Wire(builder.shape), "Polyline");
                     break;
                 }
                 case GeometryBuilder::PrimitiveType::PolylineParametric: {
                     // This creates a Part::Compound containing line/arc segments.
-                    auto* p =
-                        document->addObject<Part::Compound>("Polyline");  // Main polyline compound
-                    std::vector<App::DocumentObject*> segments;
-                    TopExp_Explorer explorer(TopoDS::Wire(builder.shape),
-                                             TopAbs_EDGE);  // Iterate edges of the wire
-
-                    for (; explorer.More(); explorer.Next()) {
-                        TopoDS_Edge edge = TopoDS::Edge(explorer.Current());
-                        App::DocumentObject* segment = nullptr;
-                        BRepAdaptor_Curve adaptor(edge);
-
-                        if (adaptor.GetType() == GeomAbs_Line) {
-                            segment = createLinePrimitive(edge, document, "Segment");
-                        }
-                        else if (adaptor.GetType() == GeomAbs_Circle) {
-                            auto* arc = createCirclePrimitive(edge, document, "Arc");
-                            segment = arc;
-                        }
-
-                        if (segment) {
-                            // These segments are children of the polyline compound, not top-level
-                            // block children.
-                            IncrementCreatedObjectCount();        // Count this sub-object
-                            segment->Visibility.setValue(false);  // Sub-segments are usually hidden
-                            // No layer/style needed here, inherited from the polyline compound or
-                            // handled by block.
-                            // ApplyGuiStyles(static_cast<Part::Feature*>(segment));
-                            segments.push_back(segment);
-                        }
-                    }
-                    p->Links.setValues(segments);  // Link segments to the polyline compound
-                    newObject = p;  // The polyline compound itself is the new object for the block
+                    newObject =
+                        createParametricPolylineCompound(TopoDS::Wire(builder.shape), "Polyline");
+                    // No styling needed here, as the block's instance will control appearance.
                     break;
                 }
                 case GeometryBuilder::PrimitiveType::None:  // Default/fallback if not handled
                 default: {
                     // Generic shape, e.g., 3DFACE
-                    auto* p = document->addObject<Part::Feature>("Shape");
-                    p->Shape.setValue(builder.shape);
-                    newObject = p;
+                    newObject = createGenericShapeFeature(builder.shape, document, "Shape");
                     break;
                 }
             }
@@ -1383,14 +1404,8 @@ void ImpExpDxfRead::DrawingEntityCollector::AddGeometry(const GeometryBuilder& b
             break;
         }
         case GeometryBuilder::PrimitiveType::Point: {
-            newDocObj = Reader.document->addObject<Part::Vertex>(
-                Reader.document->getUniqueObjectName("Point").c_str());
-            if (newDocObj) {
-                TopoDS_Vertex v = TopoDS::Vertex(builder.shape);
-                gp_Pnt pnt = BRep_Tool::Pnt(v);
-                static_cast<Part::Vertex*>(newDocObj)->Placement.setValue(
-                    Base::Placement(Base::Vector3d(pnt.X(), pnt.Y(), pnt.Z()), Base::Rotation()));
-            }
+            newDocObj =
+                createVertexPrimitive(TopoDS::Vertex(builder.shape), Reader.document, "Point");
             break;
         }
         case GeometryBuilder::PrimitiveType::Ellipse: {
@@ -1399,11 +1414,7 @@ void ImpExpDxfRead::DrawingEntityCollector::AddGeometry(const GeometryBuilder& b
             break;
         }
         case GeometryBuilder::PrimitiveType::Spline: {
-            newDocObj = Reader.document->addObject<Part::Feature>(
-                Reader.document->getUniqueObjectName("Spline").c_str());
-            if (newDocObj) {
-                static_cast<Part::Feature*>(newDocObj)->Shape.setValue(builder.shape);
-            }
+            newDocObj = createGenericShapeFeature(builder.shape, Reader.document, "Spline");
             break;
         }
         case GeometryBuilder::PrimitiveType::PolylineFlattened: {
@@ -1418,11 +1429,7 @@ void ImpExpDxfRead::DrawingEntityCollector::AddGeometry(const GeometryBuilder& b
         }
         case GeometryBuilder::PrimitiveType::None:  // Fallback for generic shapes (e.g., 3DFACE)
         default: {
-            newDocObj = Reader.document->addObject<Part::Feature>(
-                Reader.document->getUniqueObjectName("Shape").c_str());
-            if (newDocObj) {
-                static_cast<Part::Feature*>(newDocObj)->Shape.setValue(builder.shape);
-            }
+            newDocObj = createGenericShapeFeature(builder.shape, Reader.document, "Shape");
             break;
         }
     }

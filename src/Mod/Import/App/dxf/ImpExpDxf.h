@@ -162,6 +162,8 @@ private:
     void ComposeBlocks();
     void ComposeParametricBlock(const std::string& blockName, std::set<std::string>& composed);
     void ComposeFlattenedBlock(const std::string& blockName, std::set<std::string>& composed);
+    Part::Compound* createParametricPolylineCompound(const TopoDS_Wire& wire, const char* name);
+    Part::Feature* createFlattenedPolylineFeature(const TopoDS_Wire& wire, const char* name);
 
 protected:
     PyObject* getDraftModule()
