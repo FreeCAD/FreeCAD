@@ -28,6 +28,7 @@
 # include <Inventor/events/SoMouseButtonEvent.h>
 # include <Inventor/nodes/SoOrthographicCamera.h>
 # include <Inventor/nodes/SoPerspectiveCamera.h>
+# include <Inventor/SoPickedPoint.h>
 # include <QApplication>
 # include <QDialog>
 # include <QDomDocument>
@@ -47,6 +48,7 @@
 #include <App/Document.h>
 #include <App/DocumentObject.h>
 #include <App/DocumentObjectGroup.h>
+#include <App/DocumentObserver.h>
 #include <App/GeoFeature.h>
 #include <App/GeoFeatureGroupExtension.h>
 #include <App/Part.h>
@@ -73,6 +75,7 @@
 #include "OverlayManager.h"
 #include "SceneInspector.h"
 #include "Selection.h"
+#include "Selection/SelectionView.h"
 #include "SelectionObject.h"
 #include "SoFCOffscreenRenderer.h"
 #include "TextureMapping.h"
@@ -3960,6 +3963,114 @@ bool StdCmdAlignToSelection::isActive()
 }
 
 //===========================================================================
+// Std_PickGeometry
+//===========================================================================
+
+DEF_STD_CMD_A(StdCmdPickGeometry)
+
+StdCmdPickGeometry::StdCmdPickGeometry()
+  : Command("Std_PickGeometry")
+{
+    sGroup        = "View";
+    sMenuText     = QT_TR_NOOP("Pick geometry");
+    sToolTipText  = QT_TR_NOOP("Pick hidden geometries under the mouse cursor in 3D view.\n"
+                               "This command is supposed to be activated by keyboard shortcut.");
+    sWhatsThis    = "Std_PickGeometry";
+    sStatusTip    = sToolTipText;
+    sAccel        = "G, G";
+    eType         = NoTransaction | AlterSelection;
+}
+
+void StdCmdPickGeometry::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+    
+    // Get the active view 
+    auto view = Application::Instance->activeView();
+    if (!view || !view->isDerivedFrom(View3DInventor::getClassTypeId())) {
+        return;
+    }
+
+    auto view3d = static_cast<View3DInventor*>(view);
+    auto viewer = view3d->getViewer();
+    if (!viewer) {
+        return;
+    }
+
+    // Get cursor position in the viewer
+    QPoint pos = QCursor::pos();
+    QWidget* widget = viewer->getGLWidget();
+    if (!widget) {
+        return;
+    }
+
+    QPoint local = widget->mapFromGlobal(pos);
+    SbVec2s point;
+    point[0] = local.x();
+    point[1] = widget->height() - local.y() - 1;
+    
+    // Use ray picking to get all objects under cursor
+    SoRayPickAction pickAction(viewer->getSoRenderManager()->getViewportRegion());
+    pickAction.setPoint(point);
+    pickAction.setRadius(viewer->getPickRadius());
+    pickAction.setPickAll(true);  // Get all objects under cursor
+    pickAction.apply(viewer->getSoRenderManager()->getSceneGraph());
+    
+    const SoPickedPointList& pplist = pickAction.getPickedPointList();
+    if (pplist.getLength() == 0) {
+        return;
+    }
+    
+    // Convert picked points to PickData list
+    std::vector<PickData> selections;
+    
+    for (int i = 0; i < pplist.getLength(); ++i) {
+        SoPickedPoint* pp = pplist[i];
+        if (!pp || !pp->getPath())
+            continue;
+            
+        ViewProvider* vp = viewer->getViewProviderByPath(pp->getPath());
+        if (!vp)
+            continue;
+            
+        // Cast to ViewProviderDocumentObject to get the object
+        auto vpDoc = dynamic_cast<Gui::ViewProviderDocumentObject*>(vp);
+        if (!vpDoc)
+            continue;
+            
+        App::DocumentObject* obj = vpDoc->getObject();
+        if (!obj)
+            continue;
+            
+        std::string elementName = vp->getElement(pp->getDetail());
+        
+        // Create PickData with selection information
+        PickData pickData;
+        pickData.obj = obj;
+        pickData.element = elementName;
+        pickData.docName = obj->getDocument()->getName();
+        pickData.objName = obj->getNameInDocument();
+        pickData.subName = elementName;
+        
+        selections.push_back(pickData);
+    }
+    
+    if (selections.empty()) {
+        return;
+    }
+    
+    // Use SelectionMenu to display and handle the pick menu
+    SelectionMenu contextMenu(widget);
+    contextMenu.doPick(selections);
+}
+
+bool StdCmdPickGeometry::isActive()
+{
+    auto view = qobject_cast<View3DInventor*>(getMainWindow()->activeWindow());
+    return view != nullptr;
+}
+
+//===========================================================================
 // Instantiation
 //===========================================================================
 
@@ -3991,6 +4102,7 @@ void CreateViewStdCommands()
     rcCmdMgr.addCommand(new StdRecallWorkingView());
     rcCmdMgr.addCommand(new StdCmdViewGroup());
     rcCmdMgr.addCommand(new StdCmdAlignToSelection());
+    rcCmdMgr.addCommand(new StdCmdPickGeometry());
 
     rcCmdMgr.addCommand(new StdCmdViewExample1());
     rcCmdMgr.addCommand(new StdCmdViewExample2());
