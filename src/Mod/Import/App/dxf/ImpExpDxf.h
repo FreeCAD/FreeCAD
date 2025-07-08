@@ -100,6 +100,7 @@ public:
     void OnReadDimension(const Base::Vector3d& start,
                          const Base::Vector3d& end,
                          const Base::Vector3d& point,
+                         int dimensionType,
                          double rotation) override;
     void OnReadPolyline(std::list<VertexInfo>& /*vertices*/, int flags) override;
 

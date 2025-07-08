@@ -1279,7 +1279,8 @@ void ImpExpDxfRead::OnReadInsert(const Base::Vector3d& point,
 void ImpExpDxfRead::OnReadDimension(const Base::Vector3d& start,
                                     const Base::Vector3d& end,
                                     const Base::Vector3d& point,
-                                    double /*rotation*/)
+                                    int dimensionType,
+                                    double rotation)
 {
     if (shouldSkipEntity() || !m_importAnnotations) {
         return;
@@ -1303,6 +1304,20 @@ void ImpExpDxfRead::OnReadDimension(const Base::Vector3d& start,
 
         p->addDynamicProperty("App::PropertyVector", "Dimline", "Data", "Point on dimension line");
         static_cast<App::PropertyVector*>(p->getPropertyByName("Dimline"))->setValue(point);
+
+        p->addDynamicProperty("App::PropertyInteger",
+                              "DxfDimensionType",
+                              "Internal",
+                              "Original dimension type flag");
+        static_cast<App::PropertyInteger*>(p->getPropertyByName("DxfDimensionType"))
+            ->setValue(dimensionType);
+
+        p->addDynamicProperty("App::PropertyAngle",
+                              "DxfRotation",
+                              "Internal",
+                              "Original dimension rotation");
+        // rotation is already in radians from the caller
+        static_cast<App::PropertyAngle*>(p->getPropertyByName("DxfRotation"))->setValue(rotation);
 
         p->addDynamicProperty("App::PropertyPlacement", "Placement", "Base", "Object placement");
         Base::Placement pl;

@@ -938,6 +938,7 @@ public:
     virtual void OnReadDimension(const Base::Vector3d& /*start*/,
                                  const Base::Vector3d& /*end*/,
                                  const Base::Vector3d& /*point*/,
+                                 int /*dimensionType*/,
                                  double /*rotation*/)
     {}
     virtual void OnReadPolyline(std::list<VertexInfo>& /*vertices*/, int /*flags*/)

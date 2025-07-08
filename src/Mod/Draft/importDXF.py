@@ -82,6 +82,7 @@ if gui:
     try:
         from draftviewproviders.view_base import ViewProviderDraft
         from draftviewproviders.view_wire import ViewProviderWire
+        from draftviewproviders.view_dimension import ViewProviderLinearDimension
     except ImportError:
         ViewProviderDraft = None
         ViewProviderWire = None
@@ -2879,8 +2880,8 @@ def _import_dxf_file(filename, doc_name=None):
     newly_created_objects = objects_after - objects_before
 
     # --- Post-processing step ---
-    if is_draft_mode and newly_created_objects:
-        draft_postprocessor = DxfDraftPostProcessor(doc, newly_created_objects)
+    if not use_legacy and newly_created_objects:
+        draft_postprocessor = DxfDraftPostProcessor(doc, newly_created_objects, import_mode)
         draft_postprocessor.run()
 
     Draft.convert_draft_texts() # This is a general utility that should run for both importers
@@ -4445,9 +4446,10 @@ class DxfDraftPostProcessor:
     converting them into fully parametric Draft objects while preserving
     the block and layer hierarchy.
     """
-    def __init__(self, doc, new_objects):
+    def __init__(self, doc, new_objects, import_mode):
         self.doc = doc
         self.all_imported_objects = new_objects
+        self.import_mode = import_mode
         self.all_originals_to_delete = set()
         self.newly_created_draft_objects = []
 
@@ -4463,7 +4465,7 @@ class DxfDraftPostProcessor:
                     if block_def_obj.isValid() and block_def_obj.isDerivedFrom("Part::Compound"):
                         block_definitions[block_def_obj] = [
                             child for child in block_def_obj.Links
-                            if child.isValid() and child.isDerivedFrom("Part::Feature")
+                            if child.isValid()
                         ]
 
         all_block_internal_objects_set = set()
@@ -4479,7 +4481,7 @@ class DxfDraftPostProcessor:
 
             if obj.isDerivedFrom("App::FeaturePython") and hasattr(obj, "DxfEntityType"):
                 placeholders.append(obj)
-            elif obj.isDerivedFrom("Part::Feature"):
+            elif obj.isDerivedFrom("Part::Feature") or obj.isDerivedFrom("App::Link"):
                 top_level_geometry.append(obj)
 
         return block_definitions, top_level_geometry, placeholders
@@ -4490,6 +4492,10 @@ class DxfDraftPostProcessor:
         ensuring correct underlying C++ object typing and property management.
         Returns a tuple: (new_draft_object, type_string) or (None, None).
         """
+        if self.import_mode != 0:
+            # In non-Draft modes, do not convert geometry. Return it as is.
+            return part_obj, "KeptAsIs"
+
         # Skip invalid objects or objects that are block definitions themselves (their
         # links/children will be converted)
         if not part_obj.isValid() or \
@@ -4662,7 +4668,8 @@ class DxfDraftPostProcessor:
                     FCC.PrintWarning(f"Created object '{new_obj.Label}' of type '{obj_type_str}' does not have a 'Placement' property even after intended setup. This is unexpected.\n")
 
             # Add the original object (from C++ importer) to the list for deletion.
-            self.all_originals_to_delete.add(part_obj)
+            if new_obj is not part_obj:
+                self.all_originals_to_delete.add(part_obj)
 
             return new_obj, obj_type_str
 
@@ -4716,14 +4723,51 @@ class DxfDraftPostProcessor:
             new_obj = None
             try:
                 if placeholder.DxfEntityType == "DIMENSION":
+                    # 1. Create the base object and attach the proxy, which adds the needed properties.
                     dim = self.doc.addObject("App::FeaturePython", "Dimension")
                     _Dimension(dim)
-                    dim.addExtension("Part::AttachExtensionPython")
-                    dim.Start = placeholder.Start
-                    dim.End = placeholder.End
-                    dim.Dimline = placeholder.Dimline
-                    dim.Placement = placeholder.Placement
+
+                    if FreeCAD.GuiUp:
+                        ViewProviderLinearDimension(dim.ViewObject)
+
+                    # 2. Get the transformation from the placeholder's Placement property.
+                    plc = placeholder.Placement
+
+                    # 3. Transform the defining points from the placeholder's local coordinate system
+                    #    into the world coordinate system.
+                    p_start = plc.multVec(placeholder.Start)
+                    p_end = plc.multVec(placeholder.End)
+                    p_dimline = plc.multVec(placeholder.Dimline)
+
+                    # 4. Assign these new, transformed points to the final dimension object.
+                    dim.Start = p_start
+                    dim.End = p_end
+                    dim.Dimline = p_dimline
+
+                    # Do NOT try to set dim.Placement, as it does not exist.
+
                     new_obj = dim
+
+                    # Check for and apply the dimension type (horizontal, vertical, etc.)
+                    # This information is now plumbed through from the C++ importer.
+                    if hasattr(placeholder, "DxfDimensionType"):
+                        # The lower bits of the type flag define the dimension's nature.
+                        # 0 = Rotated, Horizontal, or Vertical
+                        # 1 = Aligned
+                        # Other values are for angular, diameter, etc., not handled here.
+                        dim_type = placeholder.DxfDimensionType & 0x0F
+
+                        # A type of 0 indicates that the dimension is projected. The
+                        # projection direction is given by its rotation angle.
+                        if dim_type == 0 and hasattr(placeholder, "DxfRotation"):
+                            angle = placeholder.DxfRotation.Value # Angle is in radians
+
+                            # The Direction property on a Draft.Dimension controls its
+                            # projection. Setting it here ensures the ViewProvider
+                            # will draw it correctly as horizontal, vertical, or rotated.
+                            direction_vector = FreeCAD.Vector(math.cos(angle), math.sin(angle), 0)
+                            dim.Direction = direction_vector
+
                 elif placeholder.DxfEntityType == "TEXT":
                     text_obj = Draft.make_text(placeholder.Text)
                     text_obj.Placement = placeholder.Placement
@@ -4850,12 +4894,15 @@ class DxfDraftPostProcessor:
             for block_def_obj, original_children in block_defs.items():
                 new_draft_children = [self._create_and_parent_geometry(child) for child in original_children]
                 block_def_obj.Links = [obj for obj in new_draft_children if obj]
-                self.all_originals_to_delete.update(original_children)
+                self.all_originals_to_delete.update(set(original_children) - set(new_draft_children))
 
             # Process top-level geometry
+            converted_top_geo = []
             for part_obj in top_geo:
-                self._create_and_parent_geometry(part_obj)
-            self.all_originals_to_delete.update(top_geo)
+                new_obj = self._create_and_parent_geometry(part_obj)
+                if new_obj:
+                    converted_top_geo.append(new_obj)
+            self.all_originals_to_delete.update(set(top_geo) - set(converted_top_geo))
 
             # Process placeholders like Text and Dimensions
             self._create_from_placeholders(placeholders)
