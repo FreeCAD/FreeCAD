@@ -1917,7 +1917,26 @@ App::DocumentObjectExecReturn* Hole::execute()
         /* Build the prototype hole */
 
         // Get vector normal to profile
-        Base::Vector3d  SketchVector = getProfileNormal();
+        Base::Vector3d SketchVector;
+
+        // If trying to build a hole from a cylinder face
+        // we must try to find the direction ourselves as
+        // getProfileNormal() will try to find the normal to
+        // the middle of the face
+        if (profileshape.hasSubShape(TopAbs_FACE)) {
+            BRepAdaptor_Surface sf(TopoDS::Face(profileshape.getSubShape(TopAbs_FACE, 1)));
+
+            if (sf.GetType() == GeomAbs_Cylinder) {
+                sf.Cylinder().Axis().Direction().Coord(SketchVector.x,
+                                                       SketchVector.y,
+                                                       SketchVector.z);
+            } else {
+                throw(Base::Exception("Cannot create hole from non cylindrical face"));
+            }
+
+        } else {
+            SketchVector = getProfileNormal();
+        }
         if (Reversed.getValue())
             SketchVector *= -1.0;
 
