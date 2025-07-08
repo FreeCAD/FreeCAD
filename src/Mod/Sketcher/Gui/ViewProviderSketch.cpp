@@ -54,7 +54,7 @@
 #include <Gui/Selection/Selection.h>
 #include <Gui/Selection/SelectionObject.h>
 #include <Gui/Selection/SoFCUnifiedSelection.h>
-//#include <Gui/Inventor/SoFCSwitch.h>
+// #include <Gui/Inventor/SoFCSwitch.h>
 #include <Gui/Utilities.h>
 #include <Gui/View3DInventor.h>
 #include <Gui/View3DInventorViewer.h>
@@ -2944,7 +2944,7 @@ void ViewProviderSketch::updateData(const App::Property* prop) {
     else if (prop != &getSketchObject()->Constraints) {
         signalElementsChanged();
     }
-     
+
 }
 
 void ViewProviderSketch::slotSolverUpdate()
@@ -2991,7 +2991,7 @@ void ViewProviderSketch::onChanged(const App::Property* prop)
     }
 
     ViewProvider2DObject::onChanged(prop);
-    
+
     if (pInternalView) {
         if (prop == &Transparency) {
             pInternalView->Transparency.setValue(Transparency.getValue());
@@ -3050,7 +3050,7 @@ void SketcherGui::ViewProviderSketch::finishRestoring()
         pObserver->updateFromParameter("SketchEdgeColor");
         pObserver->updateFromParameter("SketchVertexColor");
         pObserver->updateFromParameter("SketchFaceColor");
-        
+
         updateColorPropertiesVisibility();
     }
 
@@ -3064,7 +3064,7 @@ void ViewProviderSketch::attach(App::DocumentObject* pcFeat)
     ViewProvider2DObject::attach(pcFeat);
 
     if (pFaceRoot) {
-        // Commented lines are from RealThunder's branch, but they are 
+        // Commented lines are from RealThunder's branch, but they are
         // not implemented in main. It may be interesting to look into those later.
         pInternalView.reset(new PartGui::ViewProviderPart);
         pInternalView->setShapePropertyName("InternalShape");
