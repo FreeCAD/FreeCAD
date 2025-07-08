@@ -121,10 +121,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     Gui::MenuItem* part = new Gui::MenuItem;
     root->insertItem(item, part);
     part->setCommand("&Part");
-    *part << "Part_Import"
-          << "Part_Export"
-          << "Separator"
-          << "Part_BoxSelection"
+    *part << "Part_BoxSelection"
           << "Separator";
     *part << prim
           << "Part_Primitives"
