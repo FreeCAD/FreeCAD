@@ -385,8 +385,7 @@ void MDIView::changeEvent(QEvent* e)
             {
                 // Forces this top-level window to be the active view of the main window
                 if (isActiveWindow()) {
-                    if (getMainWindow()->activeWindow() != this)
-                        getMainWindow()->setActiveWindow(this);
+                    getMainWindow()->setActiveWindow(this);
                 }
             }   break;
         case QEvent::WindowTitleChange:
