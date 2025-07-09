@@ -404,21 +404,21 @@ void setJointActivated(const App::DocumentObject* joint, bool val)
         return;
     }
 
-    if (auto propActivated = joint->getPropertyByName<App::PropertyBool>("Activated")) {
-        propActivated->setValue(val);
+    if (auto propSuppressed = joint->getPropertyByName<App::PropertyBool>("Suppressed")) {
+        propSuppressed->setValue(!val);
     }
 }
 
 bool getJointActivated(const App::DocumentObject* joint)
 {
     if (!joint) {
-        return false;
+        return true;
     }
 
-    if (const auto propActivated = joint->getPropertyByName<App::PropertyBool>("Activated")) {
-        return propActivated->getValue();
+    if (const auto propActivated = joint->getPropertyByName<App::PropertyBool>("Suppressed")) {
+        return !propActivated->getValue();
     }
-    return false;
+    return true;
 }
 
 double getJointDistance(const App::DocumentObject* joint, const char* propertyName)
