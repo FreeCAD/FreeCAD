@@ -491,7 +491,6 @@ SET(Command_CPP_SRCS
     ShortcutManager.cpp
     CommandCompleter.cpp
     CommandActionPy.cpp
-    Export3DPDF.cpp
 )
 SET(Command_SRCS
     ${Command_CPP_SRCS}
@@ -502,7 +501,6 @@ SET(Command_SRCS
     ShortcutManager.h
     CommandCompleter.h
     CommandActionPy.h
-    Export3DPDF.h
 )
 SOURCE_GROUP("Command" FILES ${Command_SRCS})
 
