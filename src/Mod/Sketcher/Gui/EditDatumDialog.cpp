@@ -412,12 +412,22 @@ void EditDatumDialog::performAutoScale(double newDatum)
         && sketch->getExternalGeometryCount() <= 2 && sketch->hasSingleScaleDefiningConstraint()) {
         try {
             double oldDatum = sketch->getDatum(ConstrNbr);
-            double scale_factor = newDatum / oldDatum;
+            double scaleFactor = newDatum / oldDatum;
             float initLabelDistance = sketch->Constraints[ConstrNbr]->LabelDistance;
             float initLabelPosition = sketch->Constraints[ConstrNbr]->LabelPosition;
-            centerScale(sketch, scale_factor);
-            sketch->setLabelDistance(ConstrNbr, initLabelDistance * scale_factor);
-            sketch->setLabelPosition(ConstrNbr, initLabelPosition * scale_factor);
+            centerScale(sketch, scaleFactor);
+            sketch->setLabelDistance(ConstrNbr, initLabelDistance * scaleFactor);
+
+            // Label position or radii and diameters represent an angle, so
+            // they should not be scaled
+            Sketcher::ConstraintType type = sketch->Constraints[ConstrNbr]->Type;
+            if (type == Sketcher::ConstraintType::Radius
+                || type == Sketcher::ConstraintType::Diameter) {
+                sketch->setLabelPosition(ConstrNbr, initLabelPosition);
+            }
+            else {
+                sketch->setLabelPosition(ConstrNbr, initLabelPosition * scaleFactor);
+            }
         }
         catch (const Base::Exception& e) {
             Base::Console().error("Exception performing autoscale: %s\n", e.what());

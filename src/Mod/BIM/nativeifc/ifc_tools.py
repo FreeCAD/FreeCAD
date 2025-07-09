@@ -350,6 +350,7 @@ def create_children(
                 ]
                 for window in windows:
                     subresult.extend(create_child(child, window))
+
             if recursive:
                 subresult.extend(
                     create_children(

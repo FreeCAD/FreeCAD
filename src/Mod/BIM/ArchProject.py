@@ -137,9 +137,12 @@ class _ViewProviderProject(ArchIFCView.IfcContextView):
         https://forum.freecad.org/viewtopic.php?f=10&t=74731
         """
 
+        from pivy import coin
+        from draftutils import gui_utils
+
         if not hasattr(self, "displaymodes_cleaned"):
-            if vobj.RootNode.getNumChildren() > 2:
-                main_switch = vobj.RootNode.getChild(2)  # The display mode switch.
+            if vobj.RootNode.getNumChildren():
+                main_switch = gui_utils.find_coin_node(vobj.RootNode, coin.SoSwitch)  # The display mode switch.
                 if main_switch is not None and main_switch.getNumChildren() == 4:  # Check if all display modes are available.
                     for node in tuple(main_switch.getChildren()):
                         node.removeAllChildren()
