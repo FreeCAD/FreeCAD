@@ -409,9 +409,6 @@ App::DocumentObjectExecReturn* Transformed::execute()
     }
 
     supportShape = refineShapeIfActive((supportShape));
-    if (!isSingleSolidRuleSatisfied(supportShape.getShape())) {
-        Base::Console().warning("Transformed: Result has multiple solids. Only keeping the first. Or enable 'Allow Compounds' in the active body.\n");
-    }
 
     this->Shape.setValue(getSolid(supportShape));  // picking the first solid
     rejected = getRemainingSolids(supportShape.getShape());
