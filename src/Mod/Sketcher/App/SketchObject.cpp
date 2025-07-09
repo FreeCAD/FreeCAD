@@ -3001,7 +3001,7 @@ void SketchObject::changeConstraintAfterDeletingGeo(Constraint* constr,
             return givenId < deletedGeoId && givenId != GeoEnum::GeoUndef;
         };
     }
-    
+
     for (int i = 0; constr->hasElement(i); ++i) {
         if (needsUpdate(constr->getGeoId(i))) {
             constr->setGeoId(i, constr->getGeoId(i) - step);
