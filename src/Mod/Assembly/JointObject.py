@@ -193,22 +193,12 @@ class Joint:
     def onDocumentRestored(self, joint):
         self.createProperties(joint)
 
-        if not joint.hasExtension("App::SuppressibleExtensionPython"):
-            joint.addExtension("App::SuppressibleExtensionPython")
-            if hasattr(joint, "Activated"):
-                activated = joint.Activated
-                joint.removeProperty("Activated")
-                joint.Suppressed = not activated
-
-        if App.GuiUp:
-            if not joint.ViewObject.hasExtension("Gui::ViewProviderSuppressibleExtensionPython"):
-                joint.ViewObject.addExtension("Gui::ViewProviderSuppressibleExtensionPython")
-
     def createProperties(self, joint):
         self.migrationScript(joint)
         self.migrationScript2(joint)
         self.migrationScript3(joint)
         self.migrationScript4(joint)
+        self.migrationScript5(joint)
 
         # First Joint Connector
         if not hasattr(joint, "Reference1"):
@@ -562,6 +552,19 @@ class Joint:
 
         processReference("Reference1")
         processReference("Reference2")
+
+    def migrationScript5(self, joint):
+        if not joint.hasExtension("App::SuppressibleExtensionPython"):
+            joint.addExtension("App::SuppressibleExtensionPython")
+
+        if App.GuiUp:
+            if not joint.ViewObject.hasExtension("Gui::ViewProviderSuppressibleExtensionPython"):
+                joint.ViewObject.addExtension("Gui::ViewProviderSuppressibleExtensionPython")
+
+        if hasattr(joint, "Activated"):
+            activated = joint.Activated
+            joint.removeProperty("Activated")
+            joint.Suppressed = not activated
 
     def dumps(self):
         return None
