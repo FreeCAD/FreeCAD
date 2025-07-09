@@ -399,7 +399,7 @@ Mode TaskCenterLine::checkPathologicalVertices(Mode inMode)
 //******************************************************************************
 void TaskCenterLine::createCenterLine()
 {
-    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Create Centerline"));
+    int tid = Gui::Command::openActiveDocumentCommand(QT_TRANSLATE_NOOP("Command", "Create Centerline"));
 
     // check for illogical parameters
     if (m_type == Type::EDGE) {
@@ -413,7 +413,7 @@ void TaskCenterLine::createCenterLine()
     CenterLine* cl = CenterLine::CenterLineBuilder(m_partFeat, m_subNames, m_mode, false);
 
     if (!cl) {
-        Gui::Command::abortCommand();
+        Gui::Command::abortCommand(tid);
         return;
     }
 
@@ -435,7 +435,7 @@ void TaskCenterLine::createCenterLine()
 
     m_partFeat->recomputeFeature();
     Gui::Command::updateActive();
-    Gui::Command::commitCommand();
+    Gui::Command::commitCommand(tid);
 
     // entering the edit mode
     m_editMode = true;
