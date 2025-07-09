@@ -173,7 +173,7 @@ def getContext(obj):
 class Joint:
     def __init__(self, joint, type_index):
         joint.Proxy = self
-        
+
         joint.addExtension("App::SuppressibleExtensionPython")
 
         joint.addProperty(
@@ -192,7 +192,7 @@ class Joint:
 
     def onDocumentRestored(self, joint):
         self.createProperties(joint)
-        
+
         if not joint.hasExtension("App::SuppressibleExtensionPython"):
             joint.addExtension("App::SuppressibleExtensionPython")
             if hasattr(joint, "Activated"):
