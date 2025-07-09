@@ -149,6 +149,7 @@ class _Wall(ArchComponent.Component):
 
     def __init__(self, obj):
         ArchComponent.Component.__init__(self, obj)
+        self.Type = "Wall"
         self.setProperties(obj)
         obj.IfcType = "Wall"
 
@@ -229,7 +230,6 @@ class _Wall(ArchComponent.Component):
         if not hasattr(self,"ArchSkPropSetListPrev"):
             self.ArchSkPropSetListPrev = []
         self.connectEdges = []
-        self.Type = "Wall"
 
     def dumps(self):
         dump = super().dumps()
@@ -250,6 +250,7 @@ class _Wall(ArchComponent.Component):
         elif state[0] != 'Wall':  # model before merging super.dumps/loads()
             self.ArchSkPropSetPickedUuid = state[0]
             self.ArchSkPropSetListPrev = state[1]
+        self.Type = "Wall"
 
     def onDocumentRestored(self,obj):
         """Method run when the document is restored. Re-adds the Arch component, and Arch wall properties."""

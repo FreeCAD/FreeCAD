@@ -51,7 +51,7 @@ class _TaskPanel(base_fempostpanel._BasePostTaskPanel):
         # data widget
         self.data_widget = QtGui.QWidget()
         self.data_widget.show_table = QtGui.QPushButton()
-        self.data_widget.show_table.setText(translate("FEM", "Show table"))
+        self.data_widget.show_table.setText(translate("FEM", "Show Table"))
 
         vbox = QtGui.QVBoxLayout()
         vbox.addWidget(self.data_widget.show_table)
@@ -61,7 +61,7 @@ class _TaskPanel(base_fempostpanel._BasePostTaskPanel):
         vbox.addWidget(extracts)
 
         self.data_widget.setLayout(vbox)
-        self.data_widget.setWindowTitle(translate("FEM", "Table data"))
+        self.data_widget.setWindowTitle(translate("FEM", "Table Data"))
         self.data_widget.setWindowIcon(FreeCADGui.getIcon(":/icons/FEM_PostSpreadsheet.svg"))
 
         self.__init_widgets()

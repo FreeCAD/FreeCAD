@@ -126,7 +126,7 @@ void BaseDelegate::paintImage(QPainter* painter,
     QImage img;
     if (!propertyValue.isEmpty()) {
         QByteArray by = QByteArray::fromBase64(propertyValue.toUtf8());
-        img = QImage::fromData(by, "PNG").scaled(64, 64, Qt::KeepAspectRatio);
+        img = QImage::fromData(by).scaled(64, 64, Qt::KeepAspectRatio);
     }
     QRect target(option.rect);
     if (target.width() > target.height()) {

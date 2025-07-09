@@ -96,7 +96,7 @@ TaskSketcherMessages::TaskSketcherMessages(ViewProviderSketch* sketchView)
 
     sketchView->getSketchObject()->noRecomputes = !state;
 
-    QAction* action = new QAction(tr("Auto update"), this);
+    QAction* action = new QAction(tr("Auto Update"), this);
     action->setToolTip(tr("Executes a recomputation of active document after every sketch action"));
     action->setCheckable(true);
     action->setChecked(state);

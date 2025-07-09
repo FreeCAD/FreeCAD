@@ -33,7 +33,7 @@
      <item row="1" column="0">
       <widget class="QLabel" name="label_2">
        <property name="text">
-        <string>Bind cells:</string>
+        <string>Bind cells</string>
        </property>
       </widget>
      </item>
@@ -66,7 +66,7 @@
      <item row="2" column="0">
       <widget class="QLabel" name="label_3">
        <property name="text">
-        <string>To cells:</string>
+        <string>To cells</string>
        </property>
       </widget>
      </item>
@@ -95,7 +95,7 @@ The expression must evaluate to a string of some cell address.</string>
        </property>
        <property name="toolTip">
         <string>End cell address to bind to.
-Type '=' if you want to use an expression.
+Type '=' to use an expression.
 The expression must evaluate to a string of some cell address.</string>
        </property>
       </widget>
@@ -114,7 +114,7 @@ The expression must evaluate to a string of some cell address.</string>
      <item row="0" column="0">
       <widget class="QLabel" name="label">
        <property name="text">
-        <string>Sheet:</string>
+        <string>Sheet</string>
        </property>
       </widget>
      </item>

@@ -292,7 +292,7 @@ void ViewProviderSketch::ParameterObserver::initParameters()
               updateBoolProperty(string, property, true);
           },
           &Client.AvoidRedundant}},
-        {"updateEscapeKeyBehaviour",
+        {"LeaveSketchWithEscape",
          {[this](const std::string& string, App::Property* property) {
               updateEscapeKeyBehaviour(string, property);
           },
@@ -2965,7 +2965,7 @@ void ViewProviderSketch::attach(App::DocumentObject* pcFeat)
 
 void ViewProviderSketch::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
 {
-    menu->addAction(tr("Edit sketch"), receiver, member);
+    menu->addAction(tr("Edit Sketch"), receiver, member);
     // Call the extensions
     ViewProvider::setupContextMenu(menu, receiver, member);
 }
@@ -2983,7 +2983,7 @@ bool ViewProviderSketch::setEdit(int ModNum)
     if (dlg && !sketchDlg) {
         QMessageBox msgBox(Gui::getMainWindow());
         msgBox.setText(tr("A dialog is already open in the task panel"));
-        msgBox.setInformativeText(tr("Do you want to close this dialog?"));
+        msgBox.setInformativeText(tr("Close this dialog?"));
         msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
         msgBox.setDefaultButton(QMessageBox::Yes);
         int ret = msgBox.exec();
@@ -3002,8 +3002,8 @@ bool ViewProviderSketch::setEdit(int ModNum)
     if (!sketch->evaluateConstraints()) {
         QMessageBox box(Gui::getMainWindow());
         box.setIcon(QMessageBox::Critical);
-        box.setWindowTitle(tr("Invalid sketch"));
-        box.setText(tr("Do you want to open the sketch validation tool?"));
+        box.setWindowTitle(tr("Invalid Sketch"));
+        box.setText(tr("Open the sketch validation tool?"));
         box.setInformativeText(tr("The sketch is invalid and cannot be edited."));
         box.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
         box.setDefaultButton(QMessageBox::Yes);
@@ -3148,15 +3148,15 @@ bool ViewProviderSketch::setEdit(int ModNum)
 
 QString ViewProviderSketch::appendConflictMsg(const std::vector<int>& conflicting)
 {
-    return appendConstraintMsg(tr("Please remove the following constraint:"),
-                               tr("Please remove at least one of the following constraints:"),
+    return appendConstraintMsg(tr("Remove the following constraint:"),
+                               tr("Remove at least one of the following constraints:"),
                                conflicting);
 }
 
 QString ViewProviderSketch::appendRedundantMsg(const std::vector<int>& redundant)
 {
-    return appendConstraintMsg(tr("Please remove the following redundant constraint:"),
-                               tr("Please remove the following redundant constraints:"),
+    return appendConstraintMsg(tr("Remove the following redundant constraint:"),
+                               tr("Remove the following redundant constraints:"),
                                redundant);
 }
 
@@ -3169,8 +3169,8 @@ QString ViewProviderSketch::appendPartiallyRedundantMsg(const std::vector<int>& 
 
 QString ViewProviderSketch::appendMalformedMsg(const std::vector<int>& malformed)
 {
-    return appendConstraintMsg(tr("Please remove the following malformed constraint:"),
-                               tr("Please remove the following malformed constraints:"),
+    return appendConstraintMsg(tr("Remove the following malformed constraint:"),
+                               tr("Remove the following malformed constraints:"),
                                malformed);
 }
 
@@ -3268,7 +3268,7 @@ void ViewProviderSketch::UpdateSolverInformation()
         signalSetUp(QStringLiteral("under_constrained"),
                     tr("Under-constrained:") + QLatin1String(" "),
                     QStringLiteral("#dofs"),
-                    tr("%n DoF(s)", "", dofs));
+                    tr("%n Degrees of Freedom", "", dofs));
     }
     else {
         signalSetUp(
@@ -4095,7 +4095,7 @@ void ViewProviderSketch::generateContextMenu()
     bool onlyOrigin = false;
 
     Gui::MenuItem menu;
-    menu.setCommand("Sketcher context");
+    menu.setCommand("Sketcher Context");
 
     std::vector<Gui::SelectionObject> selection =
         Gui::Selection().getSelectionEx(0, Sketcher::SketchObject::getClassTypeId());

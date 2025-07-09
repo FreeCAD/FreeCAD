@@ -17,14 +17,13 @@
    <item row="0" column="0">
     <widget class="QGroupBox" name="groupBox_2">
      <property name="title">
-      <string>Task panel widgets</string>
+      <string>Task Panel Widgets</string>
      </property>
      <layout class="QGridLayout" name="gridLayout_4">
       <item row="0" column="0">
        <widget class="Gui::PrefCheckBox" name="checkBoxAdvancedSolverTaskBox">
         <property name="toolTip">
-         <string>Sketcher dialog will have additional section
-'Advanced solver control' to adjust solver settings</string>
+         <string>Displays the additional section 'Advanced solver control' to adjust solver settings in the task view</string>
         </property>
         <property name="text">
          <string>Show section 'Advanced solver control'</string>
@@ -43,7 +42,7 @@
    <item row="1" column="0">
     <widget class="QGroupBox" name="groupBox_4">
      <property name="title">
-      <string>Dragging performance</string>
+      <string>Dragging Performance</string>
      </property>
      <layout class="QGridLayout" name="gridLayout_5" rowstretch="0,0" columnstretch="0,0">
       <item row="1" column="0" colspan="2">
@@ -105,10 +104,10 @@ Requires to re-enter edit mode to take effect.</string>
       <item>
        <widget class="Gui::PrefCheckBox" name="checkBoxAutoRemoveRedundants">
         <property name="toolTip">
-         <string>New constraints that would be redundant will automatically be removed</string>
+         <string>Automatically removes newly added redundant constraints</string>
         </property>
         <property name="text">
-         <string>Auto remove redundants</string>
+         <string>Auto remove redundant constraints</string>
         </property>
         <property name="checked">
          <bool>false</bool>
@@ -124,7 +123,7 @@ Requires to re-enter edit mode to take effect.</string>
       <item>
        <widget class="Gui::PrefCheckBox" name="checkBoxEnableEscape">
         <property name="toolTip">
-         <string>Allow leaving sketch edit mode when pressing Esc button</string>
+         <string>Allows to leave the sketch edit mode by pressing the Esc key</string>
         </property>
         <property name="text">
          <string>Esc can leave sketch edit mode</string>
@@ -162,10 +161,10 @@ Requires to re-enter edit mode to take effect.</string>
       <item>
        <widget class="Gui::PrefCheckBox" name="checkBoxUnifiedCoincident">
         <property name="toolTip">
-         <string>Unify Coincident and PointOnObject in a single tool.</string>
+         <string>Unifies the coincident and point-on-object constraints in a single tool</string>
         </property>
         <property name="text">
-         <string>Unify Coincident and PointOnObject</string>
+         <string>Unify coincident and point-on-object constraints</string>
         </property>
         <property name="checked">
          <bool>true</bool>
@@ -181,10 +180,10 @@ Requires to re-enter edit mode to take effect.</string>
       <item>
        <widget class="Gui::PrefCheckBox" name="checkBoxHorVerAuto">
         <property name="toolTip">
-         <string>Use the automatic horizontal/vertical constraint tool. This create a command group in which you have the auto tool, horizontal and vertical.</string>
+         <string>Unifies the horizontal and vertical constraints to an automatic command</string>
         </property>
         <property name="text">
-         <string>Auto tool for Horizontal/Vertical</string>
+         <string>Auto tool for horizontal/vertical constraints</string>
         </property>
         <property name="checked">
          <bool>true</bool>
@@ -200,7 +199,7 @@ Requires to re-enter edit mode to take effect.</string>
       <item>
        <widget class="Gui::PrefCheckBox" name="checkBoxLineGroup">
         <property name="toolTip">
-         <string>If checked, show a command group button that contains both the polyline and line commands. Otherwise, each command has its own separate button.</string>
+         <string>Shows a command group button that contains both the polyline and line commands. Otherwise, each command has its own separate button.</string>
         </property>
         <property name="text">
          <string>Group the polyline and line commands</string>
@@ -219,7 +218,7 @@ Requires to re-enter edit mode to take effect.</string>
       <item>
        <widget class="Gui::PrefCheckBox" name="checkBoxAddExtGeo">
         <property name="toolTip">
-         <string>If checked then external geometry is always added as reference, otherwise it's added according to the current construction mode.</string>
+         <string>Always adds external geometry as construction geometry. Otherwise, it is added according to the current construction mode.</string>
         </property>
         <property name="text">
          <string>Always add external geometry as reference</string>
@@ -247,7 +246,7 @@ Requires to re-enter edit mode to take effect.</string>
       </sizepolicy>
      </property>
      <property name="title">
-      <string>Dimension constraint</string>
+      <string>Dimension Constraint</string>
      </property>
      <layout class="QGridLayout" name="gridLayout_general">
       <item row="1" column="1">
@@ -274,14 +273,14 @@ This setting is only for the toolbar. Whichever you choose, all tools are always
       <item row="1" column="0">
        <widget class="QLabel" name="radiusDiameterLabel">
         <property name="text">
-         <string>Dimension tool diameter/radius mode:</string>
+         <string>Dimension tool diameter/radius mode</string>
         </property>
        </widget>
       </item>
       <item row="0" column="0">
        <widget class="QLabel" name="dimensioningLabel">
         <property name="text">
-         <string>Dimensioning constraints:</string>
+         <string>Dimensioning constraints</string>
         </property>
        </widget>
       </item>
@@ -294,21 +293,12 @@ This setting is only for the toolbar. Whichever you choose, all tools are always
       </item>
       <item row="2" column="1">
        <widget class="QComboBox" name="autoScaleMode">
-        <item>
-         <property name="text">
-          <string>Always</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>Never</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>Only if there is no visual scale indicator</string>
-         </property>
-        </item>
+        <property name="toolTip">
+         <string>Select the mode of automatic geometry scaling upon first dimension:
+'Always': Automatic scaling upon first dimension is always performed.
+'Never': Automatic scaling upon first dimension is never performed.
+'When no scale feature is visible': Automatic scaling upon first dimension is only performed if there are no visible objects in the 3D view.</string>
+        </property>
        </widget>
       </item>
      </layout>
@@ -323,13 +313,13 @@ This setting is only for the toolbar. Whichever you choose, all tools are always
       </sizepolicy>
      </property>
      <property name="title">
-      <string>Tool parameters</string>
+      <string>Tool Parameters</string>
      </property>
      <layout class="QGridLayout" name="gridLayout_vis">
       <item row="0" column="0">
        <widget class="QLabel" name="ovpVisibilityLabel">
         <property name="text">
-         <string>On-View-Parameters:</string>
+         <string>On-view-parameters (OVP)</string>
         </property>
        </widget>
       </item>

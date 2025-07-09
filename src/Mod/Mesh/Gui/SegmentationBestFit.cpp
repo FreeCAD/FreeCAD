@@ -170,7 +170,7 @@ ParametersDialog::ParametersDialog(std::vector<float>& val,
     , parameter(std::move(par))
     , myMesh(mesh)
 {
-    this->setWindowTitle(tr("Surface fit"));
+    this->setWindowTitle(tr("Surface Fit"));
 
     QGridLayout* gridLayout {};
     gridLayout = new QGridLayout(this);

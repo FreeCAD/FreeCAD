@@ -153,9 +153,9 @@ class _Roof(ArchComponent.Component):
     '''The Roof object'''
     def __init__(self, obj):
         ArchComponent.Component.__init__(self, obj)
+        self.Type = "Roof"
         self.setProperties(obj)
         obj.IfcType = "Roof"
-        obj.Proxy = self
 
     def setProperties(self, obj):
         pl = obj.PropertiesList
@@ -227,11 +227,13 @@ class _Roof(ArchComponent.Component):
                             "Roof",
                             QT_TRANSLATE_NOOP("App::Property", "An optional object that defines a volume to be subtracted from walls. If field is set - it has a priority over auto-generated subvolume"),
                             locked=True)
-        self.Type = "Roof"
 
     def onDocumentRestored(self, obj):
         ArchComponent.Component.onDocumentRestored(self, obj)
         self.setProperties(obj)
+
+    def loads(self,state):
+        self.Type = "Roof"
 
     def flipEdges(self, edges):
         edges.reverse()
@@ -782,9 +784,9 @@ class _Roof(ArchComponent.Component):
                     faces.append(f)
                 else:
                     # TODO 2025.6.15: See github issue #21633: Find better way
-                    #      to test and maybe to split suface point up and down
+                    #      to test and maybe to split surface point up and down
                     #      and extrude separately
-                    
+
                     # Not sure if it is pointing towards and/or above horizon
                     # (upward or downward), or it is curve surface, just add.
                     faces.append(f)

@@ -53,10 +53,10 @@ class _TaskPanel(base_fempostpanel._BasePostTaskPanel):
         self.data_widget = QtGui.QWidget()
         hbox = QtGui.QHBoxLayout()
         self.data_widget.show_plot = QtGui.QPushButton()
-        self.data_widget.show_plot.setText(translate("FEM", "Show plot"))
+        self.data_widget.show_plot.setText(translate("FEM", "Show Plot"))
         hbox.addWidget(self.data_widget.show_plot)
         self.data_widget.show_table = QtGui.QPushButton()
-        self.data_widget.show_table.setText(translate("FEM", "Show data"))
+        self.data_widget.show_table.setText(translate("FEM", "Show Data"))
         hbox.addWidget(self.data_widget.show_table)
         vbox = QtGui.QVBoxLayout()
         vbox.addItem(hbox)
@@ -66,14 +66,14 @@ class _TaskPanel(base_fempostpanel._BasePostTaskPanel):
         vbox.addWidget(extracts)
 
         self.data_widget.setLayout(vbox)
-        self.data_widget.setWindowTitle(translate("FEM", "Histogram data"))
+        self.data_widget.setWindowTitle(translate("FEM", "Histogram Data"))
         self.data_widget.setWindowIcon(FreeCADGui.getIcon(":/icons/FEM_PostHistogram.svg"))
 
         # histogram parameter widget
         self.view_widget = FreeCADGui.PySideUic.loadUi(
             FreeCAD.getHomePath() + "Mod/Fem/Resources/ui/TaskPostHistogram.ui"
         )
-        self.view_widget.setWindowTitle(translate("FEM", "Histogram view settings"))
+        self.view_widget.setWindowTitle(translate("FEM", "Histogram View Settings"))
         self.view_widget.setWindowIcon(FreeCADGui.getIcon(":/icons/FEM_PostHistogram.svg"))
 
         self.__init_widgets()

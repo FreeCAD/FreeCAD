@@ -396,7 +396,7 @@ class VPPostHistogram(view_base_fempostvisualization.VPPostVisualization):
                 name="Cumulative",
                 group="Histogram",
                 doc=QT_TRANSLATE_NOOP(
-                    "FEM", "If be the bars should show the cumulative sum left to right"
+                    "FEM", "If the bars should show the cumulative sum left to right"
                 ),
                 value=False,
             ),

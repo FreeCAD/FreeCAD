@@ -30,6 +30,8 @@
 
 #include <App/Application.h>
 
+#include "StyleParameters/ParameterManager.h"
+
 class QCloseEvent;
 class SoNode;
 class NavlibInterface;
@@ -62,6 +64,9 @@ public:
     explicit Application(bool GUIenabled);
     /// destruction
     ~Application();
+
+    /// Initializes default configuration for Style Parameter Manager
+    void initStyleParameterManager();
 
     /** @name methods for support of files */
     //@{
@@ -221,7 +226,8 @@ public:
     //@{
     /// Activate a stylesheet
     void setStyleSheet(const QString& qssFile, bool tiledBackground);
-    QString replaceVariablesInQss(QString qssText);
+    void reloadStyleSheet();
+    QString replaceVariablesInQss(const QString& qssText);
     //@}
 
     /** @name User Commands */
@@ -235,6 +241,7 @@ public:
     //@}
 
     Gui::PreferencePackManager* prefPackManager();
+    Gui::StyleParameters::ParameterManager* styleParameterManager();
 
     /** @name Init, Destruct an Access methods */
     //@{

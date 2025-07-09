@@ -57,7 +57,7 @@ class _Analysis(CommandManager):
 
     def __init__(self):
         super().__init__()
-        self.menutext = Qt.QT_TRANSLATE_NOOP("FEM_Analysis", "Analysis container")
+        self.menutext = Qt.QT_TRANSLATE_NOOP("FEM_Analysis", "New Analysis")
         self.accel = "S, A"
         self.tooltip = Qt.QT_TRANSLATE_NOOP(
             "FEM_Analysis", "Creates an analysis container with default solver"
@@ -92,9 +92,9 @@ class _ClippingPlaneAdd(CommandManager):
 
     def __init__(self):
         super().__init__()
-        self.menutext = Qt.QT_TRANSLATE_NOOP("FEM_ClippingPlaneAdd", "Clipping plane on face")
+        self.menutext = Qt.QT_TRANSLATE_NOOP("FEM_ClippingPlaneAdd", "Clipping Plane on Face")
         self.tooltip = Qt.QT_TRANSLATE_NOOP(
-            "FEM_ClippingPlaneAdd", "Add a clipping plane on a selected face"
+            "FEM_ClippingPlaneAdd", "Adds a clipping plane on a selected face"
         )
         self.is_active = "with_document"
 
@@ -147,7 +147,7 @@ class _ClippingPlaneRemoveAll(CommandManager):
     def __init__(self):
         super().__init__()
         self.menutext = Qt.QT_TRANSLATE_NOOP(
-            "FEM_ClippingPlaneRemoveAll", "Remove all clipping planes"
+            "FEM_ClippingPlaneRemoveAll", "Remove all Clipping Planes"
         )
         self.tooltip = Qt.QT_TRANSLATE_NOOP(
             "FEM_ClippingPlaneRemoveAll", "Removes all clipping planes"
@@ -171,11 +171,11 @@ class _ConstantVacuumPermittivity(CommandManager):
         super().__init__()
         self.pixmap = "fem-solver-analysis-thermomechanical.svg"
         self.menutext = Qt.QT_TRANSLATE_NOOP(
-            "FEM_ConstantVacuumPermittivity", "Constant vacuum permittivity"
+            "FEM_ConstantVacuumPermittivity", "Constant Vacuum Permittivity"
         )
         self.tooltip = Qt.QT_TRANSLATE_NOOP(
             "FEM_ConstantVacuumPermittivity",
-            "Creates a FEM constant vacuum permittivity to overwrite standard value",
+            "Creates a constant vacuum permittivity to overwrite standard value",
         )
         self.is_active = "with_document"
         self.is_active = "with_analysis"
@@ -188,7 +188,7 @@ class _ConstraintBodyHeatSource(CommandManager):
     def __init__(self):
         super().__init__()
         self.pixmap = "FEM_ConstraintBodyHeatSource"
-        self.menutext = Qt.QT_TRANSLATE_NOOP("FEM_ConstraintBodyHeatSource", "Body heat source")
+        self.menutext = Qt.QT_TRANSLATE_NOOP("FEM_ConstraintBodyHeatSource", "Body Heat Source")
         self.tooltip = Qt.QT_TRANSLATE_NOOP(
             "FEM_ConstraintBodyHeatSource", "Creates a body heat source"
         )
@@ -201,7 +201,7 @@ class _ConstraintCentrif(CommandManager):
 
     def __init__(self):
         super().__init__()
-        self.menutext = Qt.QT_TRANSLATE_NOOP("FEM_ConstraintCentrif", "Centrifugal load")
+        self.menutext = Qt.QT_TRANSLATE_NOOP("FEM_ConstraintCentrif", "Centrifugal Load")
         self.tooltip = Qt.QT_TRANSLATE_NOOP("FEM_ConstraintCentrif", "Creates a centrifugal load")
         self.is_active = "with_analysis"
         self.do_activated = "add_obj_on_gui_set_edit"
@@ -214,7 +214,7 @@ class _ConstraintCurrentDensity(CommandManager):
         super().__init__()
         self.pixmap = "FEM_ConstraintCurrentDensity"
         self.menutext = Qt.QT_TRANSLATE_NOOP(
-            "FEM_ConstraintCurrentDensity", "Current density boundary condition"
+            "FEM_ConstraintCurrentDensity", "Current Density Boundary Condition"
         )
         self.tooltip = Qt.QT_TRANSLATE_NOOP(
             "FEM_ConstraintCurrentDensity",
@@ -231,10 +231,10 @@ class _ConstraintElectricChargeDensity(CommandManager):
         super().__init__()
         self.pixmap = "FEM_ConstraintElectricChargeDensity"
         self.menutext = Qt.QT_TRANSLATE_NOOP(
-            "FEM_ConstraintElectricChargeDensity", "Electric charge density"
+            "FEM_ConstraintElectricChargeDensity", "Electric Charge Density"
         )
         self.tooltip = Qt.QT_TRANSLATE_NOOP(
-            "FEM_ConstraintElectricChargeDensity", "Creates a electric charge density"
+            "FEM_ConstraintElectricChargeDensity", "Creates an electric charge density"
         )
         self.is_active = "with_analysis"
         self.do_activated = "add_obj_on_gui_set_edit"
@@ -247,7 +247,7 @@ class _ConstraintElectrostaticPotential(CommandManager):
         super().__init__()
         self.menutext = Qt.QT_TRANSLATE_NOOP(
             "FEM_ConstraintElectrostaticPotential",
-            "Electrostatic potential boundary condition",
+            "Electrostatic Potential Boundary Condition",
         )
         self.tooltip = Qt.QT_TRANSLATE_NOOP(
             "FEM_ConstraintElectrostaticPotential",
@@ -263,7 +263,7 @@ class _ConstraintFlowVelocity(CommandManager):
     def __init__(self):
         super().__init__()
         self.menutext = Qt.QT_TRANSLATE_NOOP(
-            "FEM_ConstraintFlowVelocity", "Flow velocity boundary condition"
+            "FEM_ConstraintFlowVelocity", "Flow Velocity Boundary Condition"
         )
         self.tooltip = Qt.QT_TRANSLATE_NOOP(
             "FEM_ConstraintFlowVelocity", "Creates a flow velocity boundary condition"
@@ -278,11 +278,11 @@ class _ConstraintInitialFlowVelocity(CommandManager):
     def __init__(self):
         super().__init__()
         self.menutext = Qt.QT_TRANSLATE_NOOP(
-            "FEM_ConstraintInitialFlowVelocity", "Initial flow velocity condition"
+            "FEM_ConstraintInitialFlowVelocity", "Initial Flow Velocity Condition"
         )
         self.tooltip = Qt.QT_TRANSLATE_NOOP(
             "FEM_ConstraintInitialFlowVelocity",
-            "Creates initial flow velocity condition",
+            "Creates an initial flow velocity condition",
         )
         self.is_active = "with_analysis"
         self.do_activated = "add_obj_on_gui_set_edit"
@@ -294,7 +294,7 @@ class _ConstraintInitialPressure(CommandManager):
     def __init__(self):
         super().__init__()
         self.menutext = Qt.QT_TRANSLATE_NOOP(
-            "FEM_ConstraintInitialPressure", "Initial pressure condition"
+            "FEM_ConstraintInitialPressure", "Initial Pressure Condition"
         )
         self.tooltip = Qt.QT_TRANSLATE_NOOP(
             "FEM_ConstraintInitialPressure", "Creates an initial pressure condition"
@@ -309,7 +309,7 @@ class _ConstraintMagnetization(CommandManager):
     def __init__(self):
         super().__init__()
         self.menutext = Qt.QT_TRANSLATE_NOOP(
-            "FEM_ConstraintMagnetization", "Magnetization boundary condition"
+            "FEM_ConstraintMagnetization", "Magnetization Boundary Condition"
         )
         self.tooltip = Qt.QT_TRANSLATE_NOOP(
             "FEM_ConstraintMagnetization", "Creates a magnetization boundary condition"
@@ -323,7 +323,7 @@ class _ConstraintSectionPrint(CommandManager):
 
     def __init__(self):
         super().__init__()
-        self.menutext = Qt.QT_TRANSLATE_NOOP("FEM_ConstraintSectionPrint", "Section print feature")
+        self.menutext = Qt.QT_TRANSLATE_NOOP("FEM_ConstraintSectionPrint", "Section Print Feature")
         self.tooltip = Qt.QT_TRANSLATE_NOOP(
             "FEM_ConstraintSectionPrint", "Creates a section print feature"
         )
@@ -336,7 +336,7 @@ class _ConstraintSelfWeight(CommandManager):
 
     def __init__(self):
         super().__init__()
-        self.menutext = Qt.QT_TRANSLATE_NOOP("FEM_ConstraintSelfWeight", "Gravity load")
+        self.menutext = Qt.QT_TRANSLATE_NOOP("FEM_ConstraintSelfWeight", "Gravity Load")
         self.tooltip = Qt.QT_TRANSLATE_NOOP("FEM_ConstraintSelfWeight", "Creates a gravity load")
         self.is_active = "with_analysis"
         self.do_activated = "add_obj_on_gui_noset_edit"
@@ -347,7 +347,7 @@ class _ConstraintTie(CommandManager):
 
     def __init__(self):
         super().__init__()
-        self.menutext = Qt.QT_TRANSLATE_NOOP("FEM_ConstraintTie", "Tie constraint")
+        self.menutext = Qt.QT_TRANSLATE_NOOP("FEM_ConstraintTie", "Tie Constraint")
         self.tooltip = Qt.QT_TRANSLATE_NOOP("FEM_ConstraintTie", "Creates a tie constraint")
         self.is_active = "with_analysis"
         self.do_activated = "add_obj_on_gui_set_edit"
@@ -358,9 +358,9 @@ class _ElementFluid1D(CommandManager):
 
     def __init__(self):
         super().__init__()
-        self.menutext = Qt.QT_TRANSLATE_NOOP("FEM_ElementFluid1D", "Fluid section for 1D flow")
+        self.menutext = Qt.QT_TRANSLATE_NOOP("FEM_ElementFluid1D", "Fluid Section for 1D Flow")
         self.tooltip = Qt.QT_TRANSLATE_NOOP(
-            "FEM_ElementFluid1D", "Creates a FEM fluid section for 1D flow"
+            "FEM_ElementFluid1D", "Creates a fluid section for 1D flow"
         )
         self.is_active = "with_analysis"
         self.do_activated = "add_obj_on_gui_set_edit"
@@ -371,10 +371,8 @@ class _ElementGeometry1D(CommandManager):
 
     def __init__(self):
         super().__init__()
-        self.menutext = Qt.QT_TRANSLATE_NOOP("FEM_ElementGeometry1D", "Beam cross section")
-        self.tooltip = Qt.QT_TRANSLATE_NOOP(
-            "FEM_ElementGeometry1D", "Creates a FEM beam cross section"
-        )
+        self.menutext = Qt.QT_TRANSLATE_NOOP("FEM_ElementGeometry1D", "Beam Cross Section")
+        self.tooltip = Qt.QT_TRANSLATE_NOOP("FEM_ElementGeometry1D", "Creates a beam cross section")
         self.is_active = "with_analysis"
         self.do_activated = "add_obj_on_gui_set_edit"
 
@@ -384,9 +382,9 @@ class _ElementGeometry2D(CommandManager):
 
     def __init__(self):
         super().__init__()
-        self.menutext = Qt.QT_TRANSLATE_NOOP("FEM_ElementGeometry2D", "Shell plate thickness")
+        self.menutext = Qt.QT_TRANSLATE_NOOP("FEM_ElementGeometry2D", "Shell Plate Thickness")
         self.tooltip = Qt.QT_TRANSLATE_NOOP(
-            "FEM_ElementGeometry2D", "Creates a FEM shell plate thickness"
+            "FEM_ElementGeometry2D", "Creates a shell plate thickness"
         )
         self.is_active = "with_analysis"
         self.do_activated = "add_obj_on_gui_set_edit"
@@ -397,8 +395,8 @@ class _ElementRotation1D(CommandManager):
 
     def __init__(self):
         super().__init__()
-        self.menutext = Qt.QT_TRANSLATE_NOOP("FEM_ElementRotation1D", "Beam rotation")
-        self.tooltip = Qt.QT_TRANSLATE_NOOP("FEM_ElementRotation1D", "Creates a FEM beam rotation")
+        self.menutext = Qt.QT_TRANSLATE_NOOP("FEM_ElementRotation1D", "Beam Rotation")
+        self.tooltip = Qt.QT_TRANSLATE_NOOP("FEM_ElementRotation1D", "Creates a beam rotation")
         self.is_active = "with_analysis"
         self.do_activated = "add_obj_on_gui_noset_edit"
 
@@ -408,10 +406,10 @@ class _EquationDeformation(CommandManager):
 
     def __init__(self):
         super().__init__()
-        self.menutext = Qt.QT_TRANSLATE_NOOP("FEM_EquationDeformation", "Deformation equation")
+        self.menutext = Qt.QT_TRANSLATE_NOOP("FEM_EquationDeformation", "Deformation Equation")
         self.tooltip = Qt.QT_TRANSLATE_NOOP(
             "FEM_EquationDeformation",
-            "Creates a FEM equation for deformation (nonlinear elasticity)",
+            "Creates an equation for deformation (nonlinear elasticity)",
         )
         self.is_active = "with_solver_elmer"
         self.do_activated = "add_obj_on_gui_selobj_expand_noset_edit"
@@ -422,9 +420,9 @@ class _EquationElasticity(CommandManager):
 
     def __init__(self):
         super().__init__()
-        self.menutext = Qt.QT_TRANSLATE_NOOP("FEM_EquationElasticity", "Elasticity equation")
+        self.menutext = Qt.QT_TRANSLATE_NOOP("FEM_EquationElasticity", "Elasticity Equation")
         self.tooltip = Qt.QT_TRANSLATE_NOOP(
-            "FEM_EquationElasticity", "Creates a FEM equation for elasticity (stress)"
+            "FEM_EquationElasticity", "Creates an equation for elasticity (stress)"
         )
         self.is_active = "with_solver_elmer"
         self.do_activated = "add_obj_on_gui_selobj_expand_noset_edit"
@@ -435,9 +433,9 @@ class _EquationElectricforce(CommandManager):
 
     def __init__(self):
         super().__init__()
-        self.menutext = Qt.QT_TRANSLATE_NOOP("FEM_EquationElectricforce", "Electricforce equation")
+        self.menutext = Qt.QT_TRANSLATE_NOOP("FEM_EquationElectricforce", "Electricforce Equation")
         self.tooltip = Qt.QT_TRANSLATE_NOOP(
-            "FEM_EquationElectricforce", "Creates a FEM equation for electric forces"
+            "FEM_EquationElectricforce", "Creates an equation for electric forces"
         )
         self.is_active = "with_solver_elmer"
         self.do_activated = "add_obj_on_gui_selobj_expand_noset_edit"
@@ -448,9 +446,9 @@ class _EquationElectrostatic(CommandManager):
 
     def __init__(self):
         super().__init__()
-        self.menutext = Qt.QT_TRANSLATE_NOOP("FEM_EquationElectrostatic", "Electrostatic equation")
+        self.menutext = Qt.QT_TRANSLATE_NOOP("FEM_EquationElectrostatic", "Electrostatic Equation")
         self.tooltip = Qt.QT_TRANSLATE_NOOP(
-            "FEM_EquationElectrostatic", "Creates a FEM equation for electrostatic"
+            "FEM_EquationElectrostatic", "Creates an equation for electrostatic"
         )
         self.is_active = "with_solver_elmer"
         self.do_activated = "add_obj_on_gui_selobj_expand_noset_edit"
@@ -461,8 +459,8 @@ class _EquationFlow(CommandManager):
 
     def __init__(self):
         super().__init__()
-        self.menutext = Qt.QT_TRANSLATE_NOOP("FEM_EquationFlow", "Flow equation")
-        self.tooltip = Qt.QT_TRANSLATE_NOOP("FEM_EquationFlow", "Creates a FEM equation for flow")
+        self.menutext = Qt.QT_TRANSLATE_NOOP("FEM_EquationFlow", "Flow Equation")
+        self.tooltip = Qt.QT_TRANSLATE_NOOP("FEM_EquationFlow", "Creates an equation for flow")
         self.is_active = "with_solver_elmer"
         self.do_activated = "add_obj_on_gui_selobj_expand_noset_edit"
 
@@ -472,8 +470,8 @@ class _EquationFlux(CommandManager):
 
     def __init__(self):
         super().__init__()
-        self.menutext = Qt.QT_TRANSLATE_NOOP("FEM_EquationFlux", "Flux equation")
-        self.tooltip = Qt.QT_TRANSLATE_NOOP("FEM_EquationFlux", "Creates a FEM equation for flux")
+        self.menutext = Qt.QT_TRANSLATE_NOOP("FEM_EquationFlux", "Flux Equation")
+        self.tooltip = Qt.QT_TRANSLATE_NOOP("FEM_EquationFlux", "Creates an equation for flux")
         self.is_active = "with_solver_elmer"
         self.do_activated = "add_obj_on_gui_selobj_expand_noset_edit"
 
@@ -483,8 +481,8 @@ class _EquationHeat(CommandManager):
 
     def __init__(self):
         super().__init__()
-        self.menutext = Qt.QT_TRANSLATE_NOOP("FEM_EquationHeat", "Heat equation")
-        self.tooltip = Qt.QT_TRANSLATE_NOOP("FEM_EquationHeat", "Creates a FEM equation for heat")
+        self.menutext = Qt.QT_TRANSLATE_NOOP("FEM_EquationHeat", "Heat Equation")
+        self.tooltip = Qt.QT_TRANSLATE_NOOP("FEM_EquationHeat", "Creates an equation for heat")
         self.is_active = "with_solver_elmer"
         self.do_activated = "add_obj_on_gui_selobj_expand_noset_edit"
 
@@ -495,11 +493,11 @@ class _EquationMagnetodynamic(CommandManager):
     def __init__(self):
         super().__init__()
         self.menutext = Qt.QT_TRANSLATE_NOOP(
-            "FEM_EquationMagnetodynamic", "Magnetodynamic equation"
+            "FEM_EquationMagnetodynamic", "Magnetodynamic Equation"
         )
         self.tooltip = Qt.QT_TRANSLATE_NOOP(
             "FEM_EquationMagnetodynamic",
-            "Creates a FEM equation for magnetodynamic forces",
+            "Creates an equation for magnetodynamic forces",
         )
         self.is_active = "with_solver_elmer"
         self.do_activated = "add_obj_on_gui_selobj_expand_noset_edit"
@@ -511,11 +509,11 @@ class _EquationMagnetodynamic2D(CommandManager):
     def __init__(self):
         super().__init__()
         self.menutext = Qt.QT_TRANSLATE_NOOP(
-            "FEM_EquationMagnetodynamic2D", "Magnetodynamic2D equation"
+            "FEM_EquationMagnetodynamic2D", "Magnetodynamic2D Equation"
         )
         self.tooltip = Qt.QT_TRANSLATE_NOOP(
             "FEM_EquationMagnetodynamic2D",
-            "Creates a FEM equation for 2D magnetodynamic forces",
+            "Creates an equation for 2D magnetodynamic forces",
         )
         self.is_active = "with_solver_elmer"
         self.do_activated = "add_obj_on_gui_selobj_expand_noset_edit"
@@ -526,9 +524,9 @@ class _EquationStaticCurrent(CommandManager):
 
     def __init__(self):
         super().__init__()
-        self.menutext = Qt.QT_TRANSLATE_NOOP("FEM_EquationStaticCurrent", "Static current equation")
+        self.menutext = Qt.QT_TRANSLATE_NOOP("FEM_EquationStaticCurrent", "Static Current Equation")
         self.tooltip = Qt.QT_TRANSLATE_NOOP(
-            "FEM_EquationStaticCurrent", "Creates a FEM equation for static current"
+            "FEM_EquationStaticCurrent", "Creates an equation for static current"
         )
         self.is_active = "with_solver_elmer"
         self.do_activated = "add_obj_on_gui_selobj_expand_noset_edit"
@@ -540,7 +538,7 @@ class _Examples(CommandManager):
     def __init__(self):
         super().__init__()
         self.pixmap = "FemWorkbench"
-        self.menutext = Qt.QT_TRANSLATE_NOOP("FEM_Examples", "Open FEM examples")
+        self.menutext = Qt.QT_TRANSLATE_NOOP("FEM_Examples", "FEM Examples")
         self.tooltip = Qt.QT_TRANSLATE_NOOP("FEM_Examples", "Opens the FEM examples")
         self.is_active = "always"
 
@@ -555,7 +553,7 @@ class _MaterialEditor(CommandManager):
     def __init__(self):
         super().__init__()
         self.pixmap = "Arch_Material_Group"
-        self.menutext = Qt.QT_TRANSLATE_NOOP("FEM_MaterialEditor", "Material editor")
+        self.menutext = Qt.QT_TRANSLATE_NOOP("FEM_MaterialEditor", "Material Editor")
         self.tooltip = Qt.QT_TRANSLATE_NOOP(
             "FEM_MaterialEditor", "Opens the FreeCAD material editor"
         )
@@ -571,8 +569,8 @@ class _MaterialFluid(CommandManager):
 
     def __init__(self):
         super().__init__()
-        self.menutext = Qt.QT_TRANSLATE_NOOP("FEM_MaterialFluid", "Material for fluid")
-        self.tooltip = Qt.QT_TRANSLATE_NOOP("FEM_MaterialFluid", "Creates a FEM material for fluid")
+        self.menutext = Qt.QT_TRANSLATE_NOOP("FEM_MaterialFluid", "Fluid Material")
+        self.tooltip = Qt.QT_TRANSLATE_NOOP("FEM_MaterialFluid", "Creates a fluid material")
         self.is_active = "with_analysis"
         self.do_activated = "add_obj_on_gui_set_edit"
 
@@ -583,10 +581,10 @@ class _MaterialMechanicalNonlinear(CommandManager):
     def __init__(self):
         super().__init__()
         self.menutext = Qt.QT_TRANSLATE_NOOP(
-            "FEM_MaterialMechanicalNonlinear", "Nonlinear mechanical material"
+            "FEM_MaterialMechanicalNonlinear", "Non-Linear Mechanical Material"
         )
         self.tooltip = Qt.QT_TRANSLATE_NOOP(
-            "FEM_MaterialMechanicalNonlinear", "Creates a nonlinear mechanical material"
+            "FEM_MaterialMechanicalNonlinear", "Creates a non-linear mechanical material"
         )
         self.is_active = "with_material_solid"
 
@@ -650,7 +648,7 @@ class _MaterialReinforced(CommandManager):
     def __init__(self):
         super().__init__()
         self.menutext = Qt.QT_TRANSLATE_NOOP(
-            "FEM_MaterialReinforced", "Reinforced material (concrete)"
+            "FEM_MaterialReinforced", "Reinforced Material (Concrete)"
         )
         self.tooltip = Qt.QT_TRANSLATE_NOOP(
             "FEM_MaterialReinforced",
@@ -665,9 +663,9 @@ class _MaterialSolid(CommandManager):
 
     def __init__(self):
         super().__init__()
-        self.menutext = Qt.QT_TRANSLATE_NOOP("FEM_MaterialSolid", "Material for solid")
+        self.menutext = Qt.QT_TRANSLATE_NOOP("FEM_MaterialSolid", "Solid Material")
         self.accel = "M, S"
-        self.tooltip = Qt.QT_TRANSLATE_NOOP("FEM_MaterialSolid", "Creates a FEM material for solid")
+        self.tooltip = Qt.QT_TRANSLATE_NOOP("FEM_MaterialSolid", "Creates a solid material")
         self.is_active = "with_analysis"
         self.do_activated = "add_obj_on_gui_set_edit"
 
@@ -677,7 +675,7 @@ class _FEMMesh2Mesh(CommandManager):
 
     def __init__(self):
         super().__init__()
-        self.menutext = Qt.QT_TRANSLATE_NOOP("FEM_FEMMesh2Mesh", "FEM mesh to mesh")
+        self.menutext = Qt.QT_TRANSLATE_NOOP("FEM_FEMMesh2Mesh", "FEM Mesh to Mesh")
         self.tooltip = Qt.QT_TRANSLATE_NOOP(
             "FEM_FEMMesh2Mesh", "Converts the surface of a FEM mesh to a mesh"
         )
@@ -719,9 +717,9 @@ class _MeshBoundaryLayer(CommandManager):
 
     def __init__(self):
         super().__init__()
-        self.menutext = Qt.QT_TRANSLATE_NOOP("FEM_MeshBoundaryLayer", "FEM mesh boundary layer")
+        self.menutext = Qt.QT_TRANSLATE_NOOP("FEM_MeshBoundaryLayer", "Mesh Boundary Layer")
         self.tooltip = Qt.QT_TRANSLATE_NOOP(
-            "FEM_MeshBoundaryLayer", "Creates a FEM mesh boundary layer"
+            "FEM_MeshBoundaryLayer", "Creates a mesh boundary layer"
         )
         self.is_active = "with_gmsh_femmesh"
         self.do_activated = "add_obj_on_gui_selobj_set_edit"
@@ -732,8 +730,8 @@ class _MeshClear(CommandManager):
 
     def __init__(self):
         super().__init__()
-        self.menutext = Qt.QT_TRANSLATE_NOOP("FEM_MeshClear", "Clear FEM mesh")
-        self.tooltip = Qt.QT_TRANSLATE_NOOP("FEM_MeshClear", "Clears the Mesh of a FEM mesh object")
+        self.menutext = Qt.QT_TRANSLATE_NOOP("FEM_MeshClear", "Clear FEM Mesh")
+        self.tooltip = Qt.QT_TRANSLATE_NOOP("FEM_MeshClear", "Clears the mesh of a FEM mesh object")
         self.is_active = "with_femmesh"
 
     def Activated(self):
@@ -752,7 +750,7 @@ class _MeshDisplayInfo(CommandManager):
 
     def __init__(self):
         super().__init__()
-        self.menutext = Qt.QT_TRANSLATE_NOOP("FEM_MeshDisplayInfo", "Display FEM mesh info")
+        self.menutext = Qt.QT_TRANSLATE_NOOP("FEM_MeshDisplayInfo", "Display Mesh Info")
         self.tooltip = Qt.QT_TRANSLATE_NOOP("FEM_MeshDisplayInfo", "Displays FEM mesh information")
         self.is_active = "with_femmesh"
 
@@ -776,7 +774,7 @@ class _MeshGmshFromShape(CommandManager):
 
     def __init__(self):
         super().__init__()
-        self.menutext = Qt.QT_TRANSLATE_NOOP("FEM_MeshGmshFromShape", "FEM mesh from shape by Gmsh")
+        self.menutext = Qt.QT_TRANSLATE_NOOP("FEM_MeshGmshFromShape", "Mesh From Shape by Gmsh")
         self.tooltip = Qt.QT_TRANSLATE_NOOP(
             "FEM_MeshGmshFromShape", "Creates a FEM mesh from a shape by Gmsh mesher"
         )
@@ -826,8 +824,8 @@ class _MeshGroup(CommandManager):
 
     def __init__(self):
         super().__init__()
-        self.menutext = Qt.QT_TRANSLATE_NOOP("FEM_MeshGroup", "FEM mesh group")
-        self.tooltip = Qt.QT_TRANSLATE_NOOP("FEM_MeshGroup", "Creates a FEM mesh group")
+        self.menutext = Qt.QT_TRANSLATE_NOOP("FEM_MeshGroup", "Mesh Group")
+        self.tooltip = Qt.QT_TRANSLATE_NOOP("FEM_MeshGroup", "Creates a mesh group")
         self.is_active = "with_gmsh_femmesh"
         self.do_activated = "add_obj_on_gui_selobj_set_edit"
 
@@ -837,9 +835,7 @@ class _MeshNetgenFromShape(CommandManager):
 
     def __init__(self):
         super().__init__()
-        self.menutext = Qt.QT_TRANSLATE_NOOP(
-            "FEM_MeshNetgenFromShape", "FEM mesh from shape by Netgen"
-        )
+        self.menutext = Qt.QT_TRANSLATE_NOOP("FEM_MeshNetgenFromShape", "Mesh From Shape by Netgen")
         self.tooltip = Qt.QT_TRANSLATE_NOOP(
             "FEM_MeshNetgenFromShape",
             "Creates a FEM mesh from a solid or face shape by Netgen internal mesher",
@@ -893,7 +889,7 @@ class _MeshRegion(CommandManager):
 
     def __init__(self):
         super().__init__()
-        self.menutext = Qt.QT_TRANSLATE_NOOP("FEM_MeshRegion", "FEM mesh refinement")
+        self.menutext = Qt.QT_TRANSLATE_NOOP("FEM_MeshRegion", "Mesh Refinement")
         self.tooltip = Qt.QT_TRANSLATE_NOOP("FEM_MeshRegion", "Creates a FEM mesh refinement")
         self.is_active = "with_femmesh"
         self.do_activated = "add_obj_on_gui_selobj_set_edit"
@@ -904,10 +900,10 @@ class _ResultShow(CommandManager):
 
     def __init__(self):
         super().__init__()
-        self.menutext = Qt.QT_TRANSLATE_NOOP("FEM_ResultShow", "Show result")
+        self.menutext = Qt.QT_TRANSLATE_NOOP("FEM_ResultShow", "Show Result")
         self.accel = "R, S"
         self.tooltip = Qt.QT_TRANSLATE_NOOP(
-            "FEM_ResultShow", "Shows and visualizes selected result data"
+            "FEM_ResultShow", "Shows and visualizes the selected result data"
         )
         self.is_active = "with_selresult"
 
@@ -920,10 +916,10 @@ class _ResultsPurge(CommandManager):
 
     def __init__(self):
         super().__init__()
-        self.menutext = Qt.QT_TRANSLATE_NOOP("FEM_ResultsPurge", "Purge results")
+        self.menutext = Qt.QT_TRANSLATE_NOOP("FEM_ResultsPurge", "Purge Results")
         self.accel = "R, P"
         self.tooltip = Qt.QT_TRANSLATE_NOOP(
-            "FEM_ResultsPurge", "Purges all results from active analysis"
+            "FEM_ResultsPurge", "Purges all results from the active analysis"
         )
         self.is_active = "with_analysis"
 
@@ -1091,7 +1087,7 @@ class _SolverControl(CommandManager):
 
     def __init__(self):
         super().__init__()
-        self.menutext = Qt.QT_TRANSLATE_NOOP("FEM_SolverControl", "Solver job control")
+        self.menutext = Qt.QT_TRANSLATE_NOOP("FEM_SolverControl", "Solver Job Control")
         self.accel = "S, T"
         self.tooltip = Qt.QT_TRANSLATE_NOOP(
             "FEM_SolverControl",
@@ -1159,7 +1155,7 @@ class _SolverRun(CommandManager):
 
     def __init__(self):
         super().__init__()
-        self.menutext = Qt.QT_TRANSLATE_NOOP("FEM_SolverRun", "Run solver calculations")
+        self.menutext = Qt.QT_TRANSLATE_NOOP("FEM_SolverRun", "Run Solver")
         self.accel = "S, R"
         self.tooltip = Qt.QT_TRANSLATE_NOOP(
             "FEM_SolverRun", "Runs the calculations for the selected solver"
@@ -1222,11 +1218,11 @@ class _PostFilterGlyph(CommandManager):
 
     def __init__(self):
         super().__init__()
-        self.menutext = Qt.QT_TRANSLATE_NOOP("FEM_PostFilterGlyph", "Glyph filter")
+        self.menutext = Qt.QT_TRANSLATE_NOOP("FEM_PostFilterGlyph", "Glyph Filter")
         self.accel = "F, G"
         self.tooltip = Qt.QT_TRANSLATE_NOOP(
             "FEM_PostFilterGlyph",
-            "Post processing filter that adds glyphs to the mesh vertices for vertex data visualization",
+            "Adds a post-processing filter that adds glyphs to the mesh vertices for vertex data visualization",
         )
         self.is_active = "with_vtk_selresult"
         self.do_activated = "add_filter_set_edit"
