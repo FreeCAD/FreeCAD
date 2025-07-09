@@ -92,7 +92,7 @@ private:
     std::unique_ptr<Ui_TaskLinearPatternParameters> ui;
     QTimer* updateViewTimer = nullptr;
 
-    ComboLinks dirLinks;
+    Gui::ComboLinks dirLinks;
 };
 
 
