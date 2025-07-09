@@ -615,8 +615,6 @@ void TaskTransformedParameters::indexesMoved()
 TaskDlgTransformedParameters::TaskDlgTransformedParameters(ViewProviderTransformed* viewProvider)
     : TaskDlgFeatureParameters(viewProvider)
 {
-    message = new TaskTransformedMessages(viewProvider);
-    Content.push_back(message);
 }
 
 //==== calls from the TaskView ===============================================================
