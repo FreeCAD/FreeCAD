@@ -144,27 +144,21 @@ void ViewProviderTransformed::handleTransformedResult(PartDesign::Transformed* p
         rejected++;
     }
 
-    QString msg = QStringLiteral("%1");
     if (rejected > 0) {
-        msg = QStringLiteral("<font color='orange'>%1<br/></font>\r\n%2");
-        if (rejected == 1)
-            msg = msg.arg(QObject::tr("One transformed shape does not intersect the support"));
+        if (rejected == 1) {
+            Base::Console().translatedUserWarning("ViewProviderTransformed",
+                "One transformed shape does not intersect the support");
+        }
         else {
-            msg = msg.arg(QObject::tr("%1 transformed shapes do not intersect the support"));
-            msg = msg.arg(rejected);
+            Base::Console().translatedUserWarning("ViewProviderTransformed",
+                "%d transformed shapes do not intersect the support", rejected);
         }
     }
 
-    if (const char* error = pcTransformed->getDocument()->getErrorDescription(pcTransformed)) {
-        msg = msg.arg(QStringLiteral("<font color='red'>%1<br/></font>"));
-        msg = msg.arg(QString::fromUtf8(error));
-    } else {
-        msg = msg.arg(QStringLiteral("<font color='green'>%1<br/></font>"));
-        msg = msg.arg(QObject::tr("Transformation succeeded"));
+    auto error = pcTransformed->getDocument()->getErrorDescription(pcTransformed);
+    if (error) {
+        Base::Console().translatedUserError("ViewProviderTransformed", error);
     }
-
-    diagMessage = msg;
-    signalDiagnosis(msg);
 }
 
 void ViewProviderTransformed::recomputeFeature(bool recompute)
