@@ -185,10 +185,6 @@ void EditModeCoinManager::ParameterObserver::initParameters()
          [this, &drawingParameters = Client.drawingParameters](const std::string& param) {
              updatePattern(drawingParameters.ExternalDefiningPattern, param, 0b1111111111111111);
          }},
-        {"CreateLineColor",
-         [this, drawingParameters = Client.drawingParameters](const std::string& param) {
-             updateColor(drawingParameters.CreateCurveColor, param);
-         }},
         {"EditedEdgeColor",
          [this, drawingParameters = Client.drawingParameters](const std::string& param) {
              updateColor(drawingParameters.CurveColor, param);
@@ -628,7 +624,8 @@ void EditModeCoinManager::drawEdit(const std::vector<Base::Vector2d>& EditCurve,
                           it->y,
                           ViewProviderSketchCoinAttorney::getViewOrientationFactor(viewProvider)
                               * drawingParameters.zEdit);
-        color[i] = drawingParameters.CreateCurveColor;
+        color[i] =
+            isConstruction ? drawingParameters.CurveDraftColor : drawingParameters.CurveColor;
     }
 
     index[0] = EditCurve.size();
@@ -664,7 +661,9 @@ void EditModeCoinManager::drawEdit(const std::list<std::vector<Base::Vector2d>>&
                 p.y,
                 ViewProviderSketchCoinAttorney::getViewOrientationFactor(viewProvider)
                     * drawingParameters.zEdit);
-            color[coordindex] = drawingParameters.CreateCurveColor;
+
+            color[coordindex] =
+                isConstruction ? drawingParameters.CurveDraftColor : drawingParameters.CurveColor;
             coordindex++;
         }
         index[indexindex] = v.size();
