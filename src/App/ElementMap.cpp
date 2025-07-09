@@ -556,6 +556,9 @@ MappedName ElementMap::setElementName(const IndexedName& element,
                                       const ElementIDRefs* sid,
                                       bool overwrite)
 {
+    if (!this) {
+        return {};
+    }
     if (!element) {
         throw Base::ValueError("Invalid input");
     }
@@ -727,7 +730,7 @@ MappedName ElementMap::dehashElementName(const MappedName& name) const
     if (!this->hasher) {
         return name;
     }
-    auto id = App::StringID::fromString(name.toRawBytes());
+    auto id = App::StringID::fromString(name.toRawBytes(), false);
     if (!id) {
         return name;
     }
@@ -821,26 +824,210 @@ bool ElementMap::empty() const
     return mappedNames.empty() && childElementSize == 0;
 }
 
+double ElementMap::percentSimilarity(const std::string& a, const std::string& b) const {
+    int n = a.size();
+    int m = b.size();
+    if (n == 0 && m == 0) return 0;
+
+    std::vector<std::vector<int>> dp(n + 1, std::vector<int>(m + 1, 0));
+
+    // Base cases
+    for (int i = 0; i <= n; ++i) dp[i][0] = i;
+    for (int j = 0; j <= m; ++j) dp[0][j] = j;
+
+    // DP computation
+    for (int i = 1; i <= n; ++i) {
+        for (int j = 1; j <= m; ++j) {
+            int cost = (a[i - 1] == b[j - 1]) ? 0 : 1;
+            dp[i][j] = std::min(
+                std::min(dp[i - 1][j] + 1,     // deletion
+                         dp[i][j - 1] + 1),    // insertion
+                dp[i - 1][j - 1] + cost        // substitution
+            );
+        }
+    }
+
+    int editDist = dp[n][m];
+    int maxLen = std::max(n, m);
+    double similarity = (1.0 - static_cast<double>(editDist) / maxLen);
+    return similarity;
+}
+
+std::vector<std::string> ElementMap::splitNameIntoSections(const std::string &name) const {
+    std::vector<std::string> result;
+    std::string current;
+    for (size_t i = 0; i < name.size(); ++i) {
+        if (name[i] == ';' && (i + 1 >= name.size() || name[i + 1] != ':')) {
+            result.push_back(current);
+            current.clear();
+        } else {
+            current += name[i];
+        }
+    }
+    result.push_back(current);
+
+    return result;
+}
+std::vector<std::string> ElementMap::findGeometryMods(const std::string &name) const {
+    std::vector<std::string> result;
+    std::string checkStr;
+    for (size_t i = 0; i < name.size(); ++i) {
+        checkStr.clear();
+        checkStr.push_back(name[i]);
+        checkStr.push_back(name[i+1]);
+        checkStr.push_back(name[i+2]);// is there a better way to do this? e.g. [i:i + 2]
+
+        if (checkStr == "XTR") { // do a dumb check to avoid any more loops
+            result.push_back("XTR");
+        } else if (checkStr == "FAC") {
+            result.push_back("FAC");
+        }
+    }
+
+    return result;
+}
+
+IndexedName ElementMap::complexFind(const MappedName& name) const
+{
+    FC_WARN("run complex find");
+    IndexedName foundIndexedName = IndexedName();
+    IndexedName defIN = IndexedName();
+    double foundNameScore = 0;
+    std::string originalName; // also called string1
+    originalName = dehashElementName(name).toString();
+    
+    std::string loopCheckName; // also called string2
+    std::vector<std::string> str1MajorSecs = splitNameIntoSections(originalName);
+    std::vector<std::string> str2MajorSecs;
+
+    std::vector<std::string> str1LooseSecs = str1MajorSecs; // loose because all these values can vary, and we can still return true
+    std::vector<std::string> str2LooseSecs; // loose because all these values can vary, and we can still return true
+    std::vector<std::string> looseLargestVec;
+    std::vector<std::string> looseSmallestVec;
+    std::string largeVecSection;
+    std::string smallVecSection;
+
+    std::vector<std::string> geomMods1 = findGeometryMods(originalName);
+    std::vector<std::string> geomMods2;
+
+    bool initialSecCheck = false;
+    bool elementTypeIsSame = false;
+    // bool sameSizeCheck = false;
+    bool strictOccurenceTolCheck = false;
+    bool strictOccurencePercentCheck = false;
+    bool avgDifferenceCheck;
+    std::vector<double> avgDifferenceVec;
+    double avgDifferenceNum;
+    double score;
+    int looseSectionsMatches = 0;
+
+    if(!str1MajorSecs.empty()) {
+        str1LooseSecs.erase(str1LooseSecs.begin());
+
+        // do not kill this loop, since we need the element with the highest score
+        for(const auto& name : mappedNames) {
+            loopCheckName = dehashElementName(name.first).toString();
+            str2MajorSecs = splitNameIntoSections(loopCheckName);
+            if(str2MajorSecs.empty()) continue;
+
+            str2LooseSecs = str2MajorSecs;
+            str2LooseSecs.erase(str2LooseSecs.begin());
+            geomMods2 = findGeometryMods(loopCheckName);
+            looseLargestVec = str1LooseSecs;
+            looseSmallestVec = str2LooseSecs;
+
+            if(str2LooseSecs.size() > str1LooseSecs.size()) {
+                looseLargestVec = str2LooseSecs;
+                looseSmallestVec = str1LooseSecs;
+            }
+
+            initialSecCheck = (str1MajorSecs[0] == str2MajorSecs[0]) 
+                && (!geomMods1.empty() && !geomMods2.empty() && geomMods1[0] == geomMods2[0] 
+                && geomMods1[geomMods1.size() - 1] == geomMods2[geomMods2.size() - 1]);
+                // ^^^ eventually do a percentage check here ^^^
+            elementTypeIsSame = originalName[originalName.size() - 1] == loopCheckName[loopCheckName.size() - 1]; // TODO: make more reliable
+            if(!initialSecCheck || !elementTypeIsSame) continue;
+
+            looseSectionsMatches = 0;
+
+            for (auto &element1 : str1LooseSecs) {
+                for (auto &element2 : str2LooseSecs) {
+                    if(element1 == element2) looseSectionsMatches++;
+                }
+            }
+
+            strictOccurenceTolCheck = looseSectionsMatches >= (looseLargestVec.size() - 1);
+
+            if(looseSectionsMatches != 0 && looseLargestVec.size() != 0) {
+                strictOccurencePercentCheck = (looseSectionsMatches / looseLargestVec.size()) > .5;
+            } else {
+                strictOccurencePercentCheck = false;
+            }
+
+            avgDifferenceVec = {};
+            avgDifferenceNum = 0;
+
+            for(int i = 0; i < looseLargestVec.size(); i++) {
+                largeVecSection = looseLargestVec[i];
+
+                if(looseSmallestVec.size() > i) {
+                    smallVecSection = looseSmallestVec[i];
+                } else {
+                    break;
+                }
+
+                avgDifferenceVec.push_back(percentSimilarity(largeVecSection, smallVecSection));
+            }
+
+            for(auto &percent : avgDifferenceVec) {
+                avgDifferenceNum += percent;
+            }
+
+            avgDifferenceNum /= avgDifferenceVec.size();
+            avgDifferenceCheck = avgDifferenceNum >= .65;
+
+            if(initialSecCheck && elementTypeIsSame && (strictOccurenceTolCheck || strictOccurencePercentCheck || avgDifferenceCheck)) {
+                score = percentSimilarity(originalName, loopCheckName);
+
+                if(score > foundNameScore) {
+                    foundIndexedName = name.second;
+                }
+            }
+        }
+    }
+
+    if(foundIndexedName != defIN) {
+        FC_LOG("Complex check found element: " << foundIndexedName.toString());
+    }
+
+    return foundIndexedName;
+}
+
 IndexedName ElementMap::find(const MappedName& name, ElementIDRefs* sids) const
 {
     auto nameIter = mappedNames.find(name);
     if (nameIter == mappedNames.end()) {
-        if (childElements.isEmpty()) {
-            return IndexedName();
+        IndexedName res = IndexedName();
+        const IndexedName def = IndexedName();
+
+        if (this->childElements.size() == 0) {
+            // complex find returns either the proper element, or an uninited indexedname,
+            // meaning it can be returned directly and nothing will segfault
+            return complexFind(name); // complex find does not depend on child elements, so it can be run.
         }
 
+        // repeat !res check in all these IFs because we will add more complex checks
         int len = 0;
-        if (name.findTagInElementName(nullptr, &len, nullptr, nullptr, false, false) < 0) {
-            return IndexedName();
+        if (name.findTagInElementName(nullptr, &len, nullptr, nullptr, false, false) < 0 && res == def) {
+            return complexFind(name);
         }
         QByteArray key = name.toRawBytes(len);
         auto it = this->childElements.find(key);
-        if (it == this->childElements.end()) {
-            return IndexedName();
+        if (it == this->childElements.end() && res == def) {
+            return complexFind(name);
         }
 
         const auto& child = *it.value().childMap;
-        IndexedName res;
 
         MappedName childName = MappedName::fromRawData(name, 0, len);
         if (child.elementMap) {
@@ -857,7 +1044,7 @@ IndexedName ElementMap::find(const MappedName& name, ElementIDRefs* sids) const
             return res;
         }
 
-        return IndexedName();
+        return complexFind(name);
     }
 
     if (sids) {
@@ -874,7 +1061,7 @@ IndexedName ElementMap::find(const MappedName& name, ElementIDRefs* sids) const
             }
         }
     }
-    return nameIter->second;
+    return nameIter->second; // success
 }
 
 MappedName ElementMap::find(const IndexedName& idx, ElementIDRefs* sids) const
