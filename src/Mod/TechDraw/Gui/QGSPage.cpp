@@ -613,7 +613,8 @@ void QGSPage::createBalloon(QPointF origin, DrawView* parent)
     std::string featName = getDrawPage()->getDocument()->getUniqueObjectName("Balloon");
     std::string pageName = getDrawPage()->getNameInDocument();
 
-    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Create Balloon"));
+    int tid = Gui::Command::openActiveDocumentCommand(QT_TRANSLATE_NOOP("Command", "Create Balloon"));
+
     Command::doCommand(Command::Doc,
                        "App.activeDocument().addObject('TechDraw::DrawViewBalloon', '%s')",
                        featName.c_str());
@@ -649,7 +650,7 @@ void QGSPage::createBalloon(QPointF origin, DrawView* parent)
     Command::doCommand(Command::Doc, "App.activeDocument().%s.addView(App.activeDocument().%s)",
                        pageName.c_str(), featName.c_str());
 
-    Gui::Command::commitCommand();
+    Gui::Command::commitCommand(tid);
 
     // Touch the parent feature so the balloon in tree view appears as a child
     parent->touch(true);
