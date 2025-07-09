@@ -125,8 +125,8 @@ void TaskTransformedParameters::setupUI()
 
     using Mode = PartDesign::Transformed::Mode;
 
-    ui->buttonGroupMode->setId(ui->radioTransformBody, static_cast<int>(Mode::TransformBody));
-    ui->buttonGroupMode->setId(ui->radioTransformToolShapes, static_cast<int>(Mode::TransformToolShapes));
+    ui->buttonGroupMode->setId(ui->radioTransformBody, static_cast<int>(Mode::WholeShape));
+    ui->buttonGroupMode->setId(ui->radioTransformToolShapes, static_cast<int>(Mode::Features));
 
     connect(ui->buttonGroupMode,
             &QButtonGroup::idClicked,
@@ -134,12 +134,12 @@ void TaskTransformedParameters::setupUI()
             &TaskTransformedParameters::onModeChanged);
 
     auto const mode = static_cast<Mode>(pcTransformed->TransformMode.getValue());
-    ui->groupFeatureList->setEnabled(mode == Mode::TransformToolShapes);
+    ui->groupFeatureList->setEnabled(mode == Mode::Features);
     switch (mode) {
-        case Mode::TransformBody:
+        case Mode::WholeShape:
             ui->radioTransformBody->setChecked(true);
             break;
-        case Mode::TransformToolShapes:
+        case Mode::Features:
             ui->radioTransformToolShapes->setChecked(true);
             break;
     }
@@ -307,8 +307,8 @@ void TaskTransformedParameters::onModeChanged(int mode_id)
     using Mode = PartDesign::Transformed::Mode;
     Mode const mode = static_cast<Mode>(mode_id);
 
-    ui->groupFeatureList->setEnabled(mode == Mode::TransformToolShapes);
-    if (mode == Mode::TransformBody) {
+    ui->groupFeatureList->setEnabled(mode == Mode::Features);
+    if (mode == Mode::WholeShape) {
         ui->listWidgetFeatures->clear();
     }
     setupTransaction();
