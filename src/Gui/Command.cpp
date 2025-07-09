@@ -655,6 +655,13 @@ int Command::openCommand(App::Document* doc, std::string name, bool tmpName, int
         return doc->setActiveTransaction(name, tmpName, tid);
     }
 }
+int Command::openActiveDocumentCommand(std::string name, bool tmpName, int tid)
+{
+    if (Gui::Document* guidoc = getGuiApplication()->activeDocument()) {
+        return openCommand(guidoc->getDocument(), name, tmpName, tid);
+    }
+    return 0;
+}
 int Command::openSelf(App::Document* doc, const std::string& name, bool tmpName, int tid)
 {
     currentTransactionID = openCommand(doc, name, tmpName, tid);
@@ -662,11 +669,8 @@ int Command::openSelf(App::Document* doc, const std::string& name, bool tmpName,
 }
 int Command::openSelf(const std::string& name, bool tmpName, int tid)
 {
-    if (Gui::Document* guidoc = getGuiApplication()->activeDocument()) {
-        currentTransactionID = openCommand(guidoc->getDocument(), name, tmpName, tid);
-        return currentTransactionID;
-    }
-    return 0;
+    currentTransactionID = openActiveDocumentCommand(name, tmpName);
+    return currentTransactionID;
 }
 void Command::renameSelf(const std::string& name)
 {
