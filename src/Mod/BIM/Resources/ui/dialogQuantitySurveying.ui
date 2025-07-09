@@ -75,7 +75,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>This dialogue window will help generate a list of components, dimensions, and materials from an opened BIM file for quantity surveyor purposes.</string>
+    <string>This dialog window will help generate a list of components, dimensions, and materials from an opened BIM file for quantity surveyor purposes.</string>
    </property>
    <property name="wordWrap">
     <bool>true</bool>
