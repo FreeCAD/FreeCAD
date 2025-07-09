@@ -208,6 +208,7 @@ public:
         , partFeat(pFeat)
         , dims({})
         , blockRemoveSel(false)
+        , tid(0)
     {
     }
     ~TDHandlerDimension()
@@ -240,7 +241,9 @@ public:
             mdi->setDimensionsSelectability(false);
         }
         Gui::Selection().setSelectionStyle(Gui::SelectionSingleton::SelectionStyle::GreedySelection);
-        Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Insert dimension"));
+
+        tid = Gui::Command::openActiveDocumentCommand(QT_TRANSLATE_NOOP("Command", "Insert dimension"));
+
         handleInitialSelection();
     }
 
@@ -251,7 +254,7 @@ public:
             mdi->setDimensionsSelectability(true);
         }
         Gui::Selection().setSelectionStyle(Gui::SelectionSingleton::SelectionStyle::NormalSelection);
-        Gui::Command::abortCommand();
+        Gui::Command::abortCommand(tid);
     }
 
     void keyPressEvent(QKeyEvent* event) override
@@ -590,6 +593,8 @@ protected:
 
     bool blockRemoveSel;
 
+    int tid;
+
     void handleInitialSelection()
     {
         if (initialSelection.size() == 0) {
@@ -622,7 +627,7 @@ protected:
         // Ask for the value of datum dimensions
         ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/TechDraw");
 
-        Gui::Command::commitCommand();
+        Gui::Command::commitCommand(tid);
 
         // Touch the parent feature so the dimension in tree view appears as a child
         partFeat->touch(true);
@@ -1327,15 +1332,15 @@ protected:
 
     void restartCommand(const char* cstrName) {
         specialDimension = SpecialDimension::None;
-        Gui::Command::abortCommand();
-        Gui::Command::openCommand(cstrName);
+        Gui::Command::abortCommand(tid);
+        tid  = Gui::Command::openActiveDocumentCommand(cstrName);
 
         dims.clear();
     }
 
     void clearAndRestartCommand() {
-        Gui::Command::abortCommand();
-        Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Dimension"));
+        Gui::Command::abortCommand(tid);
+        tid = Gui::Command::openActiveDocumentCommand(QT_TRANSLATE_NOOP("Command", "Dimension"));
         specialDimension = SpecialDimension::None;
         mousePos = QPoint(0,0);
         clearRefVectors();
@@ -1374,7 +1379,6 @@ CmdTechDrawDimension::CmdTechDrawDimension()
 void CmdTechDrawDimension::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    App::AutoTransaction::setEnable(false);
 
     ReferenceVector references2d;
     ReferenceVector references3d;
@@ -2249,11 +2253,11 @@ void execDim(Gui::Command* cmd, std::string type, StringVector acceptableGeometr
 DrawViewDimension* dimensionMaker(TechDraw::DrawViewPart* dvp, std::string dimType,
                                   ReferenceVector references2d, ReferenceVector references3d)
 {
-    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Create dimension"));
+    int tid = Gui::Command::openActiveDocumentCommand(QT_TRANSLATE_NOOP("Command", "Create dimension"));
 
     TechDraw::DrawViewDimension* dim = dimMaker(dvp, dimType, references2d, references3d);
 
-    Gui::Command::commitCommand();
+    Gui::Command::commitCommand(tid);
 
     // Touch the parent feature so the dimension in tree view appears as a child
     dvp->touch(true);
