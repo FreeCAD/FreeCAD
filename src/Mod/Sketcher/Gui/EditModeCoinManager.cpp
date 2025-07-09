@@ -609,7 +609,8 @@ void EditModeCoinManager::drawEditMarkers(const std::vector<Base::Vector2d>& Edi
     editModeScenegraphNodes.EditMarkerSet->markerIndex.finishEditing();
 }
 
-void EditModeCoinManager::drawEdit(const std::vector<Base::Vector2d>& EditCurve)
+void EditModeCoinManager::drawEdit(const std::vector<Base::Vector2d>& EditCurve,
+                                   bool isConstruction)
 {
     editModeScenegraphNodes.EditCurveSet->numVertices.setNum(1);
     editModeScenegraphNodes.EditCurvesCoordinate->point.setNum(EditCurve.size());
@@ -617,6 +618,8 @@ void EditModeCoinManager::drawEdit(const std::vector<Base::Vector2d>& EditCurve)
     SbVec3f* verts = editModeScenegraphNodes.EditCurvesCoordinate->point.startEditing();
     int32_t* index = editModeScenegraphNodes.EditCurveSet->numVertices.startEditing();
     SbColor* color = editModeScenegraphNodes.EditCurvesMaterials->diffuseColor.startEditing();
+
+    setEditDrawStyle(isConstruction);
 
     int i = 0;  // setting up the line set
     for (std::vector<Base::Vector2d>::const_iterator it = EditCurve.begin(); it != EditCurve.end();
@@ -634,7 +637,8 @@ void EditModeCoinManager::drawEdit(const std::vector<Base::Vector2d>& EditCurve)
     editModeScenegraphNodes.EditCurvesMaterials->diffuseColor.finishEditing();
 }
 
-void EditModeCoinManager::drawEdit(const std::list<std::vector<Base::Vector2d>>& list)
+void EditModeCoinManager::drawEdit(const std::list<std::vector<Base::Vector2d>>& list,
+                                   bool isConstruction)
 {
     int ncoords = 0;
 
@@ -648,6 +652,8 @@ void EditModeCoinManager::drawEdit(const std::list<std::vector<Base::Vector2d>>&
     SbVec3f* verts = editModeScenegraphNodes.EditCurvesCoordinate->point.startEditing();
     int32_t* index = editModeScenegraphNodes.EditCurveSet->numVertices.startEditing();
     SbColor* color = editModeScenegraphNodes.EditCurvesMaterials->diffuseColor.startEditing();
+
+    setEditDrawStyle(isConstruction);
 
     int coordindex = 0;
     int indexindex = 0;
@@ -960,8 +966,9 @@ void EditModeCoinManager::createEditModeInventorNodes()
 
     editModeScenegraphNodes.EditCurvesDrawStyle = new SoDrawStyle;
     editModeScenegraphNodes.EditCurvesDrawStyle->setName("EditCurvesDrawStyle");
-    editModeScenegraphNodes.EditCurvesDrawStyle->lineWidth =
-        3 * drawingParameters.pixelScalingFactor;
+    editModeScenegraphNodes.EditCurvesDrawStyle->lineWidth = 3
+        * drawingParameters
+              .pixelScalingFactor;  // This default value will be overriden in drawEdit()
     editCurvesRoot->addChild(editModeScenegraphNodes.EditCurvesDrawStyle);
 
     editModeScenegraphNodes.EditCurveSet = new SoLineSet;
@@ -1045,6 +1052,21 @@ void EditModeCoinManager::createEditModeInventorNodes()
 void EditModeCoinManager::redrawViewProvider()
 {
     viewProvider.draw(false, false);
+}
+void EditModeCoinManager::setEditDrawStyle(bool isConstruction)
+{
+    if (isConstruction) {
+        editModeScenegraphNodes.EditCurvesDrawStyle->lineWidth =
+            editModeScenegraphNodes.CurvesConstructionDrawStyle->lineWidth;
+        editModeScenegraphNodes.EditCurvesDrawStyle->linePattern =
+            editModeScenegraphNodes.CurvesConstructionDrawStyle->linePattern;
+    }
+    else {
+        editModeScenegraphNodes.EditCurvesDrawStyle->lineWidth =
+            editModeScenegraphNodes.CurvesDrawStyle->lineWidth;
+        editModeScenegraphNodes.EditCurvesDrawStyle->linePattern =
+            editModeScenegraphNodes.CurvesDrawStyle->linePattern;
+    }
 }
 
 /************************ Delegated constraint public interface **********/
