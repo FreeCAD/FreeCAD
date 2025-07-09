@@ -21,6 +21,7 @@
  *                                                                          *
  ***************************************************************************/
 
+#include "App/GroupExtension.h"
 #include "PreCompiled.h"
 #ifndef _PreComp_
 #include <cmath>
@@ -190,14 +191,19 @@ void AssemblyLink::synchronizeComponents()
 
     std::vector<App::DocumentObject*> assemblyGroup = assembly->Group.getValues();
     std::vector<App::DocumentObject*> assemblyLinkGroup = Group.getValues();
-
+    
+    
     // We check if a component needs to be added to the AssemblyLink
     for (auto* obj : assemblyGroup) {
         if (!obj->isDerivedFrom<App::Part>() && !obj->isDerivedFrom<PartApp::Feature>()
-            && !obj->isDerivedFrom<App::Link>()) {
+            && !obj->isDerivedFrom<App::Link>() && !obj->isDerivedFrom<App::DocumentObjectGroup>()) {
             continue;
         }
 
+        if(obj->isDerivedFrom<JointGroup>() || obj->getGroup() != nullptr){
+            continue;
+        }
+        
         // Note, the user can have nested sub-assemblies.
         // In which case we need to add an AssemblyLink and not a Link.
         App::DocumentObject* link = nullptr;
@@ -207,14 +213,19 @@ void AssemblyLink::synchronizeComponents()
 
             auto* subAsmLink = freecad_cast<AssemblyLink*>(obj2);
             auto* link2 = dynamic_cast<App::Link*>(obj2);
+            auto* group = dynamic_cast<App::DocumentObjectGroup*>(obj2);
+
             if (subAsmLink) {
                 linkedObj = subAsmLink->getLinkedObject2(false);  // not recursive
             }
             else if (link2) {
                 linkedObj = link2->getLinkedObject(false);  // not recursive
             }
+            // else if (group) {
+            //     linkedObj = group->getLinkedObject(false);  // not recursive
+            // }
             else {
-                // We consider only Links and AssemblyLinks in the AssemblyLink.
+                // We consider only Links, AssemblyLinks, and in the AssemblyLink.
                 continue;
             }
 
