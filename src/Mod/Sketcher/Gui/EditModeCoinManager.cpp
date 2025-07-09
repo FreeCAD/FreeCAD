@@ -1054,18 +1054,13 @@ void EditModeCoinManager::redrawViewProvider()
 }
 void EditModeCoinManager::setEditDrawStyle(bool isConstruction)
 {
-    if (isConstruction) {
-        editModeScenegraphNodes.EditCurvesDrawStyle->lineWidth =
-            editModeScenegraphNodes.CurvesConstructionDrawStyle->lineWidth;
-        editModeScenegraphNodes.EditCurvesDrawStyle->linePattern =
-            editModeScenegraphNodes.CurvesConstructionDrawStyle->linePattern;
-    }
-    else {
-        editModeScenegraphNodes.EditCurvesDrawStyle->lineWidth =
-            editModeScenegraphNodes.CurvesDrawStyle->lineWidth;
-        editModeScenegraphNodes.EditCurvesDrawStyle->linePattern =
-            editModeScenegraphNodes.CurvesDrawStyle->linePattern;
-    }
+    SoDrawStyle* toCopy = isConstruction ? editModeScenegraphNodes.CurvesConstructionDrawStyle
+                                         : editModeScenegraphNodes.CurvesDrawStyle;
+
+    editModeScenegraphNodes.EditCurvesDrawStyle->lineWidth = toCopy->lineWidth;
+    editModeScenegraphNodes.EditCurvesDrawStyle->linePattern = toCopy->linePattern;
+    editModeScenegraphNodes.EditCurvesDrawStyle->linePatternScaleFactor =
+        toCopy->linePatternScaleFactor;
 }
 
 /************************ Delegated constraint public interface **********/
