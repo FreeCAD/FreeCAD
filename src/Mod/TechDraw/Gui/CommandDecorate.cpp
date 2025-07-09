@@ -118,7 +118,7 @@ void CmdTechDrawHatch::activated(int iMsg)
     }
 
     if (removeOld) {
-        openCommand(QT_TRANSLATE_NOOP("Command", "Remove old hatch"));
+        openSelf(QT_TRANSLATE_NOOP("Command", "Remove old hatch"));
         std::vector<std::pair< int, TechDraw::DrawHatch*> > toRemove;
         for (auto& h: hatchObjs) {             //all the hatch objects for selected DVP
             std::vector<std::string> hatchSubs = h->Source.getSubValues();
@@ -138,7 +138,7 @@ void CmdTechDrawHatch::activated(int iMsg)
                 doCommand(Doc, "App.activeDocument().removeObject('%s')", r.second->getNameInDocument());
             }
         }
-        commitCommand();
+        commitSelf();
     }
 
     // dialog to fill in hatch values
@@ -196,7 +196,7 @@ void CmdTechDrawGeometricHatch::activated(int iMsg)
 //    std::stringstream featLabel;
 //    featLabel << FeatName << "FX" << TechDraw::DrawUtil::getIndexFromName(subNames.at(0));
 
-    openCommand(QT_TRANSLATE_NOOP("Command", "Create GeomHatch"));
+    openSelf(QT_TRANSLATE_NOOP("Command", "Create GeomHatch"));
     doCommand(Doc, "App.activeDocument().addObject('TechDraw::DrawGeomHatch', '%s')", FeatName.c_str());
 //    doCommand(Doc, "App.activeDocument().%s.Label = '%s'", FeatName.c_str(), featLabel.str().c_str());
     doCommand(Doc, "App.activeDocument().%s.translateLabel('DrawGeomHatch', 'GeomHatch', '%s')",
@@ -213,7 +213,7 @@ void CmdTechDrawGeometricHatch::activated(int iMsg)
     // dialog to fill in hatch values
     Gui::Control().showDialog(new TaskDlgGeomHatch(geomhatch, hvp, true));
 
-    commitCommand();
+    commitSelf();
 
     // Touch the parent feature so the hatching in tree view appears as a child
     objFeat->touch();
@@ -267,7 +267,7 @@ void CmdTechDrawImage::activated(int iMsg)
     fileName = Base::Tools::escapeEncodeFilename(fileName);
     auto filespec = DU::cleanFilespecBackslash(fileName.toStdString());
 
-    openCommand(QT_TRANSLATE_NOOP("Command", "Create Image"));
+    openSelf(QT_TRANSLATE_NOOP("Command", "Create Image"));
     doCommand(Doc, "App.activeDocument().addObject('TechDraw::DrawViewImage', '%s')", FeatName.c_str());
     doCommand(Doc, "App.activeDocument().%s.translateLabel('DrawViewImage', 'Image', '%s')",
               FeatName.c_str(), FeatName.c_str());
@@ -282,7 +282,7 @@ void CmdTechDrawImage::activated(int iMsg)
 
     doCommand(Doc, "App.activeDocument().%s.addView(App.activeDocument().%s)", PageName.c_str(), FeatName.c_str());
     updateActive();
-    commitCommand();
+    commitSelf();
 }
 
 bool CmdTechDrawImage::isActive()
