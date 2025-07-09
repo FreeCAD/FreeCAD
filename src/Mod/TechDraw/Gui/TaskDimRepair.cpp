@@ -245,9 +245,9 @@ bool TaskDimRepair::accept()
 {
     Gui::Command::doCommand(Gui::Command::Gui, "Gui.ActiveDocument.resetEdit()");
 
-    Gui::Command::openCommand(tr("Repair Dimension").toStdString().c_str());
+    int tid = Gui::Command::openActiveDocumentCommand(tr("Repair Dimension").toStdString().c_str());
     replaceReferences();
-    Gui::Command::commitCommand();
+    Gui::Command::commitCommand(tid);
 
     m_dim->recomputeFeature();
     Gui::Selection().clearSelection();

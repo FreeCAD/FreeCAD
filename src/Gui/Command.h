@@ -410,6 +410,7 @@ public:
     //@{
     /// Open a new Undo transaction on the active document
     static void openCommand(const char* sName=nullptr);
+    static int openActiveDocumentCommand(std::string name = "", bool tmpName = false, int tid = 0);
     static int openCommand(App::Document* doc, std::string name = "", bool tmpName = false, int tid = 0);
     int openSelf(App::Document* doc, const std::string& name = "", bool tmpName = false, int tid = 0);
     int openSelf(const std::string& name = "", bool tmpName = false, int tid = 0);
