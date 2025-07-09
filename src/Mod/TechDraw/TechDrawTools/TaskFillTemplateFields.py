@@ -171,8 +171,7 @@ class TaskFillTemplateFields:
                         self.checkBoxList.append(self.cb1)
                         self.lineTextList.append(self.s1)
                         self.cb1.clicked.connect(self.on_cb1_clicked)
-                        if len(App.ActiveDocument.CreatedBy) > longestText:
-                            longestText = len(App.ActiveDocument.CreatedBy)
+                        longestText = max(longestText, len(App.ActiveDocument.CreatedBy))
                         dialogRow += 1
                     if str(key).lower() in ScaleChkLst and projgrp_view:
                         t2 = QtGui.QLabel(value)
@@ -220,8 +219,7 @@ class TaskFillTemplateFields:
                         self.checkBoxList.append(self.cb3)
                         self.lineTextList.append(self.s3)
                         self.cb3.clicked.connect(self.on_cb3_clicked)
-                        if len(App.ActiveDocument.Label) > longestText:
-                            longestText = len(App.ActiveDocument.Label)
+                        longestText = max(longestText, len(App.ActiveDocument.Label))
                         dialogRow += 1
                     if str(key).lower() in CommentChkLst:
                         t4 = QtGui.QLabel(value)
@@ -244,8 +242,7 @@ class TaskFillTemplateFields:
                         self.checkBoxList.append(self.cb4)
                         self.lineTextList.append(self.s4)
                         self.cb4.clicked.connect(self.on_cb4_clicked)
-                        if len(App.ActiveDocument.Comment) > longestText:
-                            longestText = len(App.ActiveDocument.Comment)
+                        longestText = max(longestText, len(App.ActiveDocument.Comment))
                         dialogRow += 1
                     if str(key).lower() in CompanyChkLst:
                         t5 = QtGui.QLabel(value)
@@ -268,8 +265,7 @@ class TaskFillTemplateFields:
                         self.checkBoxList.append(self.cb5)
                         self.lineTextList.append(self.s5)
                         self.cb5.clicked.connect(self.on_cb5_clicked)
-                        if len(App.ActiveDocument.Company) > longestText:
-                            longestText = len(App.ActiveDocument.Company)
+                        longestText = max(longestText, len(App.ActiveDocument.Company))
                         dialogRow += 1
                     if str(key).lower() in LicenseChkLst:
                         t6 = QtGui.QLabel(value)
@@ -292,8 +288,7 @@ class TaskFillTemplateFields:
                         self.checkBoxList.append(self.cb6)
                         self.lineTextList.append(self.s6)
                         self.cb6.clicked.connect(self.on_cb6_clicked)
-                        if len(App.ActiveDocument.License) > longestText:
-                            longestText = len(App.ActiveDocument.License)
+                        longestText = max(longestText, len(App.ActiveDocument.License))
                         dialogRow += 1
                     if str(key).lower() in LastModifiedDateChkLst:
                         t7 = QtGui.QLabel(value)
