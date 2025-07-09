@@ -143,7 +143,6 @@ class TaskFillTemplateFields:
                 icon_name = "button_right"
                 svg = ":/icons/" + icon_name
                 pix = QtGui.QPixmap(svg)
-                icon = QtGui.QIcon.fromTheme(icon_name, QtGui.QIcon(svg))
                 self.checkBoxList = []
                 self.lineTextList = []
                 dialogRow = 0
