@@ -593,7 +593,6 @@ private:
     void onOperatorsActivated(int index);
 
 private:
-    QWidget* proxy;
     std::unique_ptr<Ui_TaskPostCalculator> ui;
 };
 
