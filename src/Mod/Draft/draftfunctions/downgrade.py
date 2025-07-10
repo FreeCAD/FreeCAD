@@ -390,7 +390,11 @@ def downgrade(objects, delete=False, force=None):
         # special case, we have one parametric object: we "de-parametrize" it
         elif len(objects) == 1 \
                 and hasattr(objects[0], "Shape") \
-                and (hasattr(objects[0], "Base") or hasattr(objects[0], "Profile")):
+                and (
+                    hasattr(objects[0], "Base")
+                    or hasattr(objects[0], "Profile")
+                    or hasattr(objects[0], "Sections")
+                ):
             result = _shapify(objects[0])
             if result:
                 _msg(translate("draft", "Found 1 parametric object: breaking its dependencies"))
