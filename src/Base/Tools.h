@@ -356,6 +356,33 @@ struct BaseExport ZipTools
 };
 
 
+/**
+ * Helper struct to define inline overloads for the visitor pattern in std::visit.
+ *
+ * It uses type deduction to infer the type from the expression and creates a dedicated type that
+ * essentially is callable using any overload supplied.
+ *
+ * @code
+ * using Base::Overloads;
+ *
+ * const auto visitor = Overloads
+ * {
+ *     [](int i){ std::print("int = {}\n", i); },
+ *     [](std::string_view s){ std::println("string = “{}”", s); },
+ *     [](const Base&){ std::println("base"); },
+ * };
+ * @endcode
+ *
+ * @see https://en.cppreference.com/w/cpp/utility/variant/visit
+ *
+ * @tparam Ts Types for functions that will be used for overloads
+ */
+template<class... Ts>
+struct Overloads: Ts...
+{
+    using Ts::operator()...;
+};
+
 }  // namespace Base
 
 #endif  // SRC_BASE_TOOLS_H_

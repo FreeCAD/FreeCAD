@@ -2686,7 +2686,7 @@ public:
         currentSelectionHandler = nullptr;
     }
 
-    static QCursor makeCursor(QWidget* widget, const QSize& size, const char* svgFile, int hotX, int hotY)
+    static QCursor makeCursor([[maybe_unused]] QWidget* widget, const QSize& size, const char* svgFile, int hotX, int hotY)
     {
         qreal hotXF = hotX;
         qreal hotYF = hotY;
@@ -2698,7 +2698,7 @@ public:
         }
 #endif
         QPixmap px(Gui::BitmapFactory().pixmapFromSvg(svgFile, size));
-        return QCursor(px, hotXF, hotYF);
+        return QCursor(px, static_cast<int>(hotXF), static_cast<int>(hotYF));
     }
 };
 }

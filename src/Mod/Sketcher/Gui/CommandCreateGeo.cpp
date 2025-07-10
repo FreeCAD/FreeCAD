@@ -1684,7 +1684,7 @@ CmdSketcherSplit::CmdSketcherSplit()
     sAppModule = "Sketcher";
     sGroup = "Sketcher";
     sMenuText = QT_TR_NOOP("Split Edge");
-    sToolTipText = QT_TR_NOOP("Splits an edge into 2 segements while preserving constraints");
+    sToolTipText = QT_TR_NOOP("Splits an edge into 2 segments while preserving constraints");
     sWhatsThis = "Sketcher_Split";
     sStatusTip = sToolTipText;
     sPixmap = "Sketcher_Split";

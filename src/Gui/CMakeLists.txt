@@ -55,6 +55,7 @@ include_directories(
     ${CMAKE_CURRENT_SOURCE_DIR}/Quarter
     ${CMAKE_CURRENT_SOURCE_DIR}/PreferencePages
     ${CMAKE_CURRENT_SOURCE_DIR}/Selection
+    ${CMAKE_CURRENT_SOURCE_DIR}/StyleParameters
     ${CMAKE_CURRENT_BINARY_DIR}
     ${CMAKE_CURRENT_SOURCE_DIR}/..
     ${CMAKE_CURRENT_BINARY_DIR}/..
@@ -401,6 +402,7 @@ SET(Gui_UIC_SRCS
     Dialogs/DlgProjectUtility.ui
     Dialogs/DlgPropertyLink.ui
     Dialogs/DlgRevertToBackupConfig.ui
+    Dialogs/DlgThemeEditor.ui
     PreferencePages/DlgSettings3DView.ui
     PreferencePages/DlgSettingsCacheDirectory.ui
     Dialogs/DlgSettingsColorGradient.ui
@@ -516,6 +518,7 @@ SET(Dialog_CPP_SRCS
     Dialogs/DlgPropertyLink.cpp
     Dialogs/DlgRevertToBackupConfigImp.cpp
     Dialogs/DlgExpressionInput.cpp
+    Dialogs/DlgThemeEditor.cpp
     TaskDlgRelocation.cpp
     Dialogs/DlgCheckableMessageBox.cpp
     TaskTransform.cpp
@@ -558,6 +561,7 @@ SET(Dialog_HPP_SRCS
     Dialogs/DlgRevertToBackupConfigImp.h
     Dialogs/DlgCheckableMessageBox.h
     Dialogs/DlgExpressionInput.h
+    Dialogs/DlgThemeEditor.h
     TaskDlgRelocation.h
     TaskTransform.h
     Dialogs/DlgUndoRedo.h
@@ -1326,6 +1330,8 @@ SET(FreeCADGui_CPP_SRCS
     StartupProcess.cpp
     TransactionObject.cpp
     ToolHandler.cpp
+    StyleParameters/Parser.cpp
+    StyleParameters/ParameterManager.cpp
 )
 SET(FreeCADGui_SRCS
     Application.h
@@ -1368,6 +1374,8 @@ SET(FreeCADGui_SRCS
     StartupProcess.h
     TransactionObject.h
     ToolHandler.h
+    StyleParameters/Parser.h
+    StyleParameters/ParameterManager.h
 )
 
 SET(FreeCADGui_SRCS

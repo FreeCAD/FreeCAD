@@ -99,7 +99,7 @@
     <widget class="QComboBox" name="comboBoxCont">
      <item>
       <property name="text">
-       <string>Do not change continous mode</string>
+       <string>Do not change continuous mode</string>
 
       </property>
      </item>

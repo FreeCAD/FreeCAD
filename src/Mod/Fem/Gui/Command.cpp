@@ -882,8 +882,8 @@ CmdFemConstraintSpring::CmdFemConstraintSpring()
 {
     sAppModule = "Fem";
     sGroup = QT_TR_NOOP("Fem");
-    sMenuText = QT_TR_NOOP("Spring Constraint");
-    sToolTipText = QT_TR_NOOP("Creates a spring acting on a face");
+    sMenuText = QT_TR_NOOP("Spring Boundary Condition");
+    sToolTipText = QT_TR_NOOP("Creates a spring boundary condition on a face");
     sWhatsThis = "FEM_ConstraintSpring";
     sStatusTip = sToolTipText;
     sPixmap = "FEM_ConstraintSpring";
