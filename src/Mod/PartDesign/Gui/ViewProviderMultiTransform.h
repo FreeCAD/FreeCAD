@@ -34,7 +34,7 @@ class PartDesignGuiExport ViewProviderMultiTransform : public ViewProviderTransf
     PROPERTY_HEADER_WITH_OVERRIDE(PartDesignGui::ViewProviderMultiTransform);
 public:
     ViewProviderMultiTransform() {
-        menuName = tr("MultiTransform parameters");
+        menuName = tr("Multi-Transform Parameters");
         sPixmap = "PartDesign_MultiTransform.svg";
     }
 

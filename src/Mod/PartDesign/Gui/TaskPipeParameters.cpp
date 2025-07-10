@@ -66,7 +66,7 @@ using namespace Gui;
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 TaskPipeParameters::TaskPipeParameters(ViewProviderPipe* PipeView, bool /*newObj*/, QWidget* parent)
-    : TaskSketchBasedParameters(PipeView, parent, "PartDesign_AdditivePipe", tr("Pipe parameters"))
+    : TaskSketchBasedParameters(PipeView, parent, "PartDesign_AdditivePipe", tr("Pipe Parameters"))
     , ui(new Ui_TaskPipeParameters)
     , stateHandler(nullptr)
 {
@@ -577,7 +577,7 @@ TaskPipeOrientation::TaskPipeOrientation(ViewProviderPipe* PipeView,
     : TaskSketchBasedParameters(PipeView,
                                 parent,
                                 "PartDesign_AdditivePipe",
-                                tr("Section orientation"))
+                                tr("Section Orientation"))
     , ui(new Ui_TaskPipeOrientation)
     , stateHandler(nullptr)
 {
@@ -876,7 +876,7 @@ TaskPipeScaling::TaskPipeScaling(ViewProviderPipe* PipeView, bool /*newObj*/, QW
     : TaskSketchBasedParameters(PipeView,
                                 parent,
                                 "PartDesign_AdditivePipe",
-                                tr("Section transformation"))
+                                tr("Section Transformation"))
     , ui(new Ui_TaskPipeScaling)
     , stateHandler(nullptr)
 {
