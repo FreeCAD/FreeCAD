@@ -212,7 +212,8 @@ private:
     int m_zOrder;
 
     bool m_snapped{false};
-
+    bool m_isDragging {false};
+    QPointF m_dragPosition;
 };
 
 } // namespace
