@@ -128,6 +128,22 @@ Defaults to: %N = %V
         </property>
        </widget>
       </item>
+      <item row="10" column="0">
+       <widget class="Gui::PrefCheckBox" name="checkBoxUseFiniteAxes">
+        <property name="toolTip">
+         <string>If checked, reverts to the legacy method for setting the size of the axes.</string>
+        </property>
+        <property name="text">
+         <string>Use finite length axes</string>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>UseFiniteAxes</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Sketcher</cstring>
+        </property>
+       </widget>
+      </item>
       <item row="2" column="0">
        <widget class="QLabel" name="label_3">
         <property name="text">
