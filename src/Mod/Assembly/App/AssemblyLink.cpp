@@ -22,6 +22,7 @@
  ***************************************************************************/
 
 #include "App/GroupExtension.h"
+#include "App/Origin.h"
 #include "PreCompiled.h"
 #ifndef _PreComp_
 #include <cmath>
@@ -213,7 +214,6 @@ void AssemblyLink::synchronizeComponents()
 
             auto* subAsmLink = freecad_cast<AssemblyLink*>(obj2);
             auto* link2 = dynamic_cast<App::Link*>(obj2);
-            auto* group = dynamic_cast<App::DocumentObjectGroup*>(obj2);
 
             if (subAsmLink) {
                 linkedObj = subAsmLink->getLinkedObject2(false);  // not recursive
@@ -240,11 +240,23 @@ void AssemblyLink::synchronizeComponents()
             if (obj->isDerivedFrom<AssemblyLink>()) {
                 auto* asmLink = static_cast<AssemblyLink*>(obj);
                 auto* subAsmLink = new AssemblyLink();
+                auto* origin = new App::Origin();
+
+                
+
                 doc->addObject(subAsmLink, obj->getNameInDocument());
+                subAsmLink->Origin.setValue(asmLink->Origin.getValue());
                 subAsmLink->LinkedObject.setValue(obj);
                 subAsmLink->Rigid.setValue(asmLink->Rigid.getValue());
                 subAsmLink->Label.setValue(obj->Label.getValue());
+                
+                origin->Label.setValue("Origin");
+                auto* test =  dynamic_cast<App::PropertyPlacement*>(subAsmLink->getPropertyByName("Placement"));
+                origin->Placement.setValue(test->getValue());
+
                 addObject(subAsmLink);
+
+
                 link = subAsmLink;
             }
             else {
