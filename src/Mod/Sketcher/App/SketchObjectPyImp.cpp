@@ -2447,6 +2447,49 @@ PyObject* SketchObjectPy::setGeometryId(PyObject* args)
 
     Py_Return;
 }
+PyObject* SketchObjectPy::setGeometryIds(PyObject* args)
+{
+    PyObject* pyList;
+
+    // Parse arguments: list of pairs, Base::VectorPy, optional relative flag
+    if (!PyArg_ParseTuple(args, "O!", &PyList_Type, &pyList)) {
+        return nullptr;
+    }
+
+    // Convert Python list to std::vector<std::pair<int, long>>
+    std::vector<std::pair<int, long>> geoIdsToIds;
+    Py_ssize_t listSize = PyList_Size(pyList);
+
+    for (Py_ssize_t i = 0; i < listSize; ++i) {
+        PyObject* pyPair = PyList_GetItem(pyList, i);  // Borrowed reference
+
+        if (!PyTuple_Check(pyPair) || PyTuple_Size(pyPair) != 2) {
+            PyErr_SetString(PyExc_ValueError, "List must contain pairs (geoId, id).");
+            return nullptr;
+        }
+
+        int geoId = PyLong_AsLong(PyTuple_GetItem(pyPair, 0));
+        long id = PyLong_AsLong(PyTuple_GetItem(pyPair, 1));
+
+        if (PyErr_Occurred()) {
+            PyErr_SetString(PyExc_ValueError, "Invalid geoId or id in the list.");
+            return nullptr;
+        }
+
+        geoIdsToIds.emplace_back(geoId, id);
+    }
+
+    // Call the C++ method
+    if (this->getSketchObjectPtr()->setGeometryIds(geoIdsToIds)) {
+        std::stringstream str;
+        str << "Not able to set geometry Ids of geometries with the given indices: ";
+        PyErr_SetString(PyExc_ValueError, str.str().c_str());
+        return nullptr;
+    }
+
+    Py_Return;
+}
+
 
 Py::Long SketchObjectPy::getDoF() const
 {
