@@ -2086,11 +2086,15 @@ bool CmdTechDrawHorizontalExtentDimension::isActive()
 
 void execExtent(Gui::Command* cmd, const std::string& dimType)
 {
+    std::string transName = "Create Dimension " + dimType;
+    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", transName.c_str()));
+
     bool result = _checkDrawViewPart(cmd);
     if (!result) {
         QMessageBox::warning(Gui::getMainWindow(),
                              QObject::tr("Incorrect selection"),
                              QObject::tr("No View of a Part in selection."));
+        Gui::Command::abortCommand();
         return;
     }
     ReferenceVector references2d;
@@ -2106,6 +2110,7 @@ void execExtent(Gui::Command* cmd, const std::string& dimType)
                 QMessageBox::warning(Gui::getMainWindow(),
                     QObject::tr("Incorrect selection"),
                     QObject::tr("Selection contains both 2D and 3D geometry"));
+                Gui::Command::abortCommand();
                 return;
             }
         }
@@ -2131,6 +2136,7 @@ void execExtent(Gui::Command* cmd, const std::string& dimType)
         QMessageBox::warning(Gui::getMainWindow(),
                              QObject::tr("Incorrect Selection"),
                              QObject::tr("Can not make 2D extent dimension from selection"));
+        Gui::Command::abortCommand();
         return;
     }
 
@@ -2146,6 +2152,7 @@ void execExtent(Gui::Command* cmd, const std::string& dimType)
             QMessageBox::warning(Gui::getMainWindow(),
                                  QObject::tr("Incorrect Selection"),
                                  QObject::tr("Can not make 3D extent dimension from selection"));
+            Gui::Command::abortCommand();
             return;
         }
     }
@@ -2156,6 +2163,7 @@ void execExtent(Gui::Command* cmd, const std::string& dimType)
     else {
         DrawDimHelper::makeExtentDim3d(partFeat, dimType, references3d);
     }
+    Gui::Command::commitCommand();
 }
 
 //===========================================================================
