@@ -115,8 +115,8 @@ public:
 
     App::PropertyLinkList Source;
     App::PropertyXLinkList XSource;
-    App::PropertyDirection Direction;  // the projection direction
-    App::PropertyDirection XDirection;
+    App::PropertyVector Direction;  // the projection direction.  where you are looking from.
+    App::PropertyVector XDirection;
     App::PropertyBool Perspective;
     App::PropertyDistance Focus;
 
