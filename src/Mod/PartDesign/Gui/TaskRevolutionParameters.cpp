@@ -33,8 +33,7 @@
 #include <Gui/Selection/Selection.h>
 #include <Gui/ViewProvider.h>
 #include <Gui/ViewProviderCoordinateSystem.h>
-#include <Mod/PartDesign/App/FeatureRevolution.h>
-#include <Mod/PartDesign/App/FeatureGroove.h>
+#include <Mod/PartDesign/App/FeatureRevolved.h>
 #include <Mod/PartDesign/App/Body.h>
 
 #include "ui_TaskRevolutionParameters.h"
@@ -64,18 +63,8 @@ TaskRevolutionParameters::TaskRevolutionParameters(PartDesignGui::ViewProvider* 
     this->groupLayout()->addWidget(proxy);
 
     // bind property mirrors
-    if (auto rev = getObject<PartDesign::Revolution>()) {
-        this->propAngle = &(rev->Angle);
-        this->propAngle2 = &(rev->Angle2);
-        this->propMidPlane = &(rev->Midplane);
-        this->propReferenceAxis = &(rev->ReferenceAxis);
-        this->propReversed = &(rev->Reversed);
-        this->propUpToFace = &(rev->UpToFace);
-        ui->revolveAngle->bind(rev->Angle);
-        ui->revolveAngle2->bind(rev->Angle2);
-    }
-    else if (auto rev = getObject<PartDesign::Groove>()) {
-        isGroove = true;
+    if (auto rev = getObject<PartDesign::Revolved>()) {
+        isGroove = rev->getAddSubType() == PartDesign::Revolved::Subtractive;
         this->propAngle = &(rev->Angle);
         this->propAngle2 = &(rev->Angle2);
         this->propMidPlane = &(rev->Midplane);
@@ -161,23 +150,12 @@ void TaskRevolutionParameters::setupDialog()
     ui->lineFaceName->setProperty("FaceName", QByteArray(upToFace.c_str()));
     int index = 0;
 
-    // TODO: This should also be implemented for groove
-    if (!isGroove) {
-        auto rev = getObject<PartDesign::Revolution>();
-        ui->revolveAngle2->setValue(propAngle2->getValue());
-        ui->revolveAngle2->setMaximum(propAngle2->getMaximum());
-        ui->revolveAngle2->setMinimum(propAngle2->getMinimum());
+    auto rev = getObject<PartDesign::Revolved>();
+    ui->revolveAngle2->setValue(propAngle2->getValue());
+    ui->revolveAngle2->setMaximum(propAngle2->getMaximum());
+    ui->revolveAngle2->setMinimum(propAngle2->getMinimum());
 
-        index = int(rev->Type.getValue());
-    }
-    else {
-        auto rev = getObject<PartDesign::Groove>();
-        ui->revolveAngle2->setValue(propAngle2->getValue());
-        ui->revolveAngle2->setMaximum(propAngle2->getMaximum());
-        ui->revolveAngle2->setMinimum(propAngle2->getMinimum());
-
-        index = int(rev->Type.getValue());
-    }
+    index = int(rev->Type.getValue());
 
     translateModeList(index);
 }
@@ -185,7 +163,7 @@ void TaskRevolutionParameters::setupDialog()
 void TaskRevolutionParameters::translateModeList(int index)
 {
     ui->changeMode->clear();
-    ui->changeMode->addItem(tr("Dimension"));
+    ui->changeMode->addItem(tr("Angle"));
     if (!isGroove) {
         ui->changeMode->addItem(tr("To last"));
     }
@@ -194,7 +172,7 @@ void TaskRevolutionParameters::translateModeList(int index)
     }
     ui->changeMode->addItem(tr("To first"));
     ui->changeMode->addItem(tr("Up to face"));
-    ui->changeMode->addItem(tr("Two dimensions"));
+    ui->changeMode->addItem(tr("Two angles"));
     ui->changeMode->setCurrentIndex(index);
 }
 
@@ -291,7 +269,7 @@ void TaskRevolutionParameters::setCheckboxes(PartDesign::Revolution::RevolMethod
     bool isReversedEnabled = false;
     bool isFaceEditEnabled = false;
 
-    if (mode == PartDesign::Revolution::RevolMethod::Dimension) {
+    if (mode == PartDesign::Revolution::RevolMethod::Angle) {
         isRevolveAngleVisible = true;
         ui->revolveAngle->selectNumber();
         QMetaObject::invokeMethod(ui->revolveAngle, "setFocus", Qt::QueuedConnection);
@@ -317,7 +295,7 @@ void TaskRevolutionParameters::setCheckboxes(PartDesign::Revolution::RevolMethod
             ui->buttonFace->setChecked(true);
         }
     }
-    else if (mode == PartDesign::Revolution::RevolMethod::TwoDimensions) {
+    else if (mode == PartDesign::Revolution::RevolMethod::TwoAngles) {
         isRevolveAngleVisible = true;
         isRevolveAngle2Visible = true;
         isReversedEnabled = true;
@@ -600,11 +578,10 @@ void TaskRevolutionParameters::onReversed(bool on)
 
 void TaskRevolutionParameters::onModeChanged(int index)
 {
-    App::PropertyEnumeration* propEnum = isGroove ? &(getObject<PartDesign::Groove>()->Type)
-                                                  : &(getObject<PartDesign::Revolution>()->Type);
+    App::PropertyEnumeration* propEnum = &(getObject<PartDesign::Revolved>()->Type);
 
     switch (static_cast<PartDesign::Revolution::RevolMethod>(index)) {
-    case PartDesign::Revolution::RevolMethod::Dimension:
+    case PartDesign::Revolution::RevolMethod::Angle:
         propEnum->setValue("Angle");
         break;
     case PartDesign::Revolution::RevolMethod::ToLast:
@@ -616,7 +593,7 @@ void TaskRevolutionParameters::onModeChanged(int index)
     case PartDesign::Revolution::RevolMethod::ToFace:
         propEnum->setValue("UpToFace");
         break;
-    case PartDesign::Revolution::RevolMethod::TwoDimensions:
+    case PartDesign::Revolution::RevolMethod::TwoAngles:
         propEnum->setValue("TwoAngles");
         break;
     }
