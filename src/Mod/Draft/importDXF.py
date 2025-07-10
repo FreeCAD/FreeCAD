@@ -4518,6 +4518,13 @@ class DxfDraftPostProcessor:
             # property.
             new_obj.Shape = part_obj.Shape
             Draft.Wire(new_obj) # Attach the Python proxy. It will find Shape, Placement.
+
+            # Manually transfer the parametric data from the Part::Line primitive
+            # to the new Draft.Wire's 'Points' property.
+            start_point = FreeCAD.Vector(part_obj.X1.Value, part_obj.Y1.Value, part_obj.Z1.Value)
+            end_point = FreeCAD.Vector(part_obj.X2.Value, part_obj.Y2.Value, part_obj.Z2.Value)
+            new_obj.Points = [start_point, end_point]
+
             obj_type_str = "Line"
 
         elif part_obj.isDerivedFrom("Part::Circle"):
