@@ -7608,7 +7608,7 @@ int SketchObject::singleScaleDefiningConstraint() const
     for (size_t i = 0; i < vals.size(); ++i) {
         // An angle does not define scale
         if (vals[i]->isDimensional() && vals[i]->Type != Angle) {
-            if (found) { // More than one scale defining constraint
+            if (found != -1) { // More than one scale defining constraint
                 return -1;
             }
             found = i;
