@@ -1172,7 +1172,7 @@ QPushButton {
   background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 @ButtonTopBackgroundColor,stop:1 @ButtonBottomBackgroundColor);
   border: 1px solid @ButtonBorderColor;
   border-radius: @InputFieldBorderRadius;
-   padding: 4px 12px;
+   padding: 3px 12px;
   min-width: 40px;}
 
 #CreateNewRow > QPushButton {
