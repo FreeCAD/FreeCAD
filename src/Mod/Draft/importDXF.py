@@ -4431,15 +4431,6 @@ class DxfImportReporter:
         FCC.PrintMessage(output_string)
 
 
-def post_process_to_draft(doc, new_objects):
-    """
-    Entry point for the DXF post-processing workflow.
-    Instantiates and runs the DxfDraftPostProcessor.
-    """
-    processor = DxfDraftPostProcessor(doc, new_objects)
-    processor.run()
-
-
 class DxfDraftPostProcessor:
     """
     Handles the post-processing of DXF files imported as Part objects,
@@ -4852,8 +4843,11 @@ class DxfDraftPostProcessor:
             if group and not group.Group:
                 try:
                     self.doc.removeObject(group.Name)
-                except Exception:
-                    pass
+                except Exception as e:
+                    FCC.PrintWarning(
+                        "DXF Post-Processor: Could not remove temporary group "
+                        f"'{group.Name}': {e}\n"
+                    )
 
     def _get_canonical_angles(self, start_angle_deg, end_angle_deg, radius_mm):
         """
