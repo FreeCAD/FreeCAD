@@ -272,7 +272,9 @@ public:
 
     int getGeoIdFromCompleteGeometryIndex(int completeGeometryIndex) const;
 
-    bool hasSingleScaleDefiningConstraint() const;
+    // Returns the index of the scale defining constraint if
+    // there is only one and -1 otherwise
+    int singleScaleDefiningConstraint() const;
 
     /// returns non zero if the sketch contains conflicting constraints
     int hasConflicts() const;
