@@ -17,7 +17,7 @@
    <item>
     <widget class="QGroupBox" name="groupBox_ImportAs">
      <property name="title">
-      <string>Import as</string>
+      <string>Import As</string>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_ImportAs">
       <item>
@@ -26,10 +26,10 @@
          <string>Creates fully parametric Draft objects. Block definitions are imported as
 reusable objects (Part Compounds) and instances become `App::Link` objects,
 maintaining the block structure. Best for full integration with the Draft
-Workbench. (Legacy importer only)</string>
+workbench.</string>
         </property>
         <property name="text">
-         <string>Editable draft objects</string>
+         <string>Editable Draft objects</string>
         </property>
        </widget>
       </item>
@@ -39,10 +39,10 @@ Workbench. (Legacy importer only)</string>
          <string>Creates parametric Part objects (e.g., Part::Line, Part::Circle). Block
 definitions are imported as reusable objects (Part Compounds) and instances
 become `App::Link` objects, maintaining the block structure. Best for
-script-based post-processing. (Not yet implemented)</string>
+script-based post-processing.</string>
         </property>
         <property name="text">
-         <string>Editable part primitives</string>
+         <string>Editable Part primitives</string>
         </property>
        </widget>
       </item>
@@ -54,7 +54,7 @@ imported as reusable objects (Part Compounds) and instances become `App::Link`
 objects, maintaining the block structure. Good for referencing and measuring.</string>
         </property>
         <property name="text">
-         <string>Individual part shapes (recommended)</string>
+         <string>Individual Part shapes (recommended)</string>
         </property>
        </widget>
       </item>
@@ -66,7 +66,7 @@ structures are not preserved; their geometry becomes part of the layer's
 shape. Best for viewing very large files with maximum performance.</string>
         </property>
         <property name="text">
-         <string>Fused part shapes (fastest)</string>
+         <string>Fused Part shapes (fastest)</string>
         </property>
        </widget>
       </item>

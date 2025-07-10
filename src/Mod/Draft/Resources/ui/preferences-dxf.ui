@@ -105,7 +105,7 @@ the 'dxf_library' addon from the Addon Manager.</string>
    <item>
     <widget class="QGroupBox" name="groupBox_ImportAs">
      <property name="title">
-      <string>Import as</string>
+      <string>Import As</string>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_ImportAs">
       <item>
@@ -117,10 +117,10 @@ the 'dxf_library' addon from the Addon Manager.</string>
          <string>Creates fully parametric Draft objects. Block definitions are imported as
 reusable objects (Part Compounds) and instances become `App::Link` objects,
 maintaining the block structure. Best for full integration with the Draft
-Workbench. </string>
+workbench. </string>
         </property>
         <property name="text">
-         <string>Editable draft objects (Highest fidelity, slowest)</string>
+         <string>Editable Draft objects (highest fidelity, slowest)</string>
         </property>
         <property name="prefEntry" stdset="0">
          <cstring>dxfImportAsDraft</cstring>
@@ -145,10 +145,10 @@ Workbench. </string>
          <string>Creates parametric Part objects (e.g., Part::Line, Part::Circle). Block
 definitions are imported as reusable objects (Part Compounds) and instances
 become `App::Link` objects, maintaining the block structure. Best for
-script-based post-processing and Part Workbench integration.</string>
+script-based post-processing and Part workbench integration.</string>
         </property>
         <property name="text">
-         <string>Editable part primitives (High fidelity, slower)</string>
+         <string>Editable Part primitives (high fidelity, slower)</string>
         </property>
         <property name="prefEntry" stdset="0">
          <cstring>dxfImportAsPrimitives</cstring>
@@ -172,7 +172,7 @@ imported as reusable objects (Part Compounds) and instances become `App::Link`
 objects, maintaining the block structure. Good for referencing and measuring.</string>
         </property>
         <property name="text">
-         <string>Individual part shapes (Balanced, recommended)</string>
+         <string>Individual Part shapes (balanced, recommended)</string>
         </property>
         <property name="checked">
          <bool>true</bool>
@@ -199,7 +199,7 @@ structures are not preserved; their geometry becomes part of the layer's
 shape. Best for importing and viewing very large files with maximum performance.</string>
         </property>
         <property name="text">
-         <string>Fused part shapes (Lowest fidelity, fastest)</string>
+         <string>Fused Part shapes (lowest fidelity, fastest)</string>
         </property>
         <property name="prefEntry" stdset="0">
          <cstring>dxfImportAsFused</cstring>
@@ -221,7 +221,7 @@ shape. Best for importing and viewing very large files with maximum performance.
    <item>
     <widget class="QGroupBox" name="groupBox_ImportSettings">
      <property name="title">
-      <string>Import settings</string>
+      <string>Import Settings</string>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_ImportSettings">
       <item>
@@ -229,7 +229,7 @@ shape. Best for importing and viewing very large files with maximum performance.
         <item>
          <widget class="QLabel" name="label_dxfScaling">
           <property name="text">
-           <string>Global scaling factor:</string>
+           <string>Global scaling factor</string>
           </property>
          </widget>
         </item>
@@ -250,7 +250,7 @@ shape. Best for importing and viewing very large files with maximum performance.
          <widget class="Gui::PrefDoubleSpinBox" name="spinBox_dxfScaling">
           <property name="toolTip">
            <string>Scale factor to apply to DXF files on import. The factor is the conversion
-between the unit of your DXF file and millimeters. Example: for files in
+between the DXF file's unit and millimeters. Example: for files in
 millimeters: 1, in centimeters: 10, in meters: 1000, in inches: 25.4,
 in feet: 304.8</string>
           </property>
@@ -276,7 +276,7 @@ in feet: 304.8</string>
       <item>
        <widget class="QLabel" name="label_ImportContent">
         <property name="text">
-         <string>Import:</string>
+         <string>Import</string>
         </property>
        </widget>
       </item>
@@ -285,7 +285,7 @@ in feet: 304.8</string>
         <item row="0" column="0">
          <widget class="Gui::PrefCheckBox" name="checkBox_dxftext">
           <property name="toolTip">
-           <string>If checked, text, mtext, and dimension entities will be imported as Draft objects.</string>
+           <string>If checked, text, mtext, and dimension entities will be imported as Draft objects</string>
           </property>
           <property name="text">
            <string>Texts and dimensions</string>
@@ -301,7 +301,7 @@ in feet: 304.8</string>
         <item row="0" column="1">
          <widget class="Gui::PrefCheckBox" name="checkBox_dxfImportPoints">
           <property name="toolTip">
-           <string>If checked, point entities will be imported.</string>
+           <string>If checked, point entities will be imported</string>
           </property>
           <property name="text">
            <string>Points</string>
@@ -321,7 +321,7 @@ in feet: 304.8</string>
          <widget class="Gui::PrefCheckBox" name="checkBox_dxflayout">
           <property name="toolTip">
            <string>If checked, entities from the paper space will also be imported. By default,
-only model space is imported.</string>
+only model space is imported</string>
           </property>
           <property name="text">
            <string>Paper space objects</string>
@@ -338,7 +338,7 @@ only model space is imported.</string>
          <widget class="Gui::PrefCheckBox" name="checkBox_dxfstarblocks">
           <property name="toolTip">
            <string>If checked, anonymous blocks (whose names begin with *) will also be imported.
-These are often used for hatches and dimensions.</string>
+These are often used for hatches and dimensions</string>
           </property>
           <property name="text">
            <string>Anonymous blocks (*-blocks)</string>
@@ -376,7 +376,7 @@ These are often used for hatches and dimensions.</string>
       <item>
        <widget class="QLabel" name="label_Appearance">
         <property name="text">
-         <string>Appearance:</string>
+         <string>Appearance</string>
         </property>
        </widget>
       </item>
@@ -386,7 +386,7 @@ These are often used for hatches and dimensions.</string>
          <widget class="Gui::PrefCheckBox" name="checkBox_dxfGetOriginalColors">
           <property name="toolTip">
            <string>If checked, colors will be set as specified in the DXF file whenever
-possible. Otherwise, default FreeCAD colors are applied.</string>
+possible. Otherwise, default FreeCAD colors are applied</string>
           </property>
           <property name="text">
            <string>Use colors from the DXF file</string>
@@ -408,7 +408,7 @@ possible. Otherwise, default FreeCAD colors are applied.</string>
            <bool>false</bool>
           </property>
           <property name="toolTip">
-           <string>If checked, imported texts will get the standard Draft Text size, instead of
+           <string>If checked, imported texts will get the standard Draft text size, instead of
 the size defined in the DXF document. (Legacy importer only)</string>
           </property>
           <property name="text">
@@ -427,7 +427,7 @@ the size defined in the DXF document. (Legacy importer only)</string>
       <item>
        <widget class="QLabel" name="label_AdvancedProcessing">
         <property name="text">
-         <string>Advanced processing:</string>
+         <string>Advanced processing</string>
         </property>
        </widget>
       </item>
@@ -480,10 +480,10 @@ representing that width. (Legacy importer only)</string>
           </property>
           <property name="toolTip">
            <string>If checked, the legacy importer will attempt to create Sketcher objects
-instead of Draft or Part objects. This overrides the 'Import as' setting.</string>
+instead of Draft or Part objects. This overrides the 'Import As' setting</string>
           </property>
           <property name="text">
-           <string>Create sketches (legacy importer only)</string>
+           <string>Create sketches</string>
           </property>
           <property name="prefEntry" stdset="0">
            <cstring>dxfCreateSketch</cstring>
