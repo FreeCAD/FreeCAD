@@ -76,45 +76,45 @@ class ObjectDressup:
             "App::PropertyBool",
             "KeepToolDown",
             "Path",
-            QT_TRANSLATE_NOOP("App::Property", "Keep the Tool Down in toolpath"),
+            QT_TRANSLATE_NOOP("App::Property", "Keep the tool down in toolpath"),
         )
         obj.addProperty(
             "App::PropertyDistance",
             "LengthIn",
             "Path",
-            QT_TRANSLATE_NOOP("App::Property", "Length or Radius of the approach"),
+            QT_TRANSLATE_NOOP("App::Property", "Length or radius of the approach"),
         )
         obj.addProperty(
             "App::PropertyDistance",
             "LengthOut",
             "Path",
-            QT_TRANSLATE_NOOP("App::Property", "Length or Radius of the exit"),
+            QT_TRANSLATE_NOOP("App::Property", "Length or radius of the exit"),
         )
         obj.addProperty(
             "App::PropertyEnumeration",
             "StyleIn",
             "Path",
-            QT_TRANSLATE_NOOP("App::Property", "The Style of motion into the toolpath"),
+            QT_TRANSLATE_NOOP("App::Property", "The style of motion into the toolpath"),
         )
         obj.StyleIn = lead_styles
         obj.addProperty(
             "App::PropertyEnumeration",
             "StyleOut",
             "Path",
-            QT_TRANSLATE_NOOP("App::Property", "The Style of motion out of the toolpath"),
+            QT_TRANSLATE_NOOP("App::Property", "The style of motion out of the toolpath"),
         )
         obj.StyleOut = lead_styles
         obj.addProperty(
             "App::PropertyDistance",
             "ExtendLeadIn",
             "Path",
-            QT_TRANSLATE_NOOP("App::Property", "Extends LeadIn distance"),
+            QT_TRANSLATE_NOOP("App::Property", "Extends lead in distance"),
         )
         obj.addProperty(
             "App::PropertyDistance",
             "ExtendLeadOut",
             "Path",
-            QT_TRANSLATE_NOOP("App::Property", "Extends LeadOut distance"),
+            QT_TRANSLATE_NOOP("App::Property", "Extends lead out distance"),
         )
         obj.addProperty(
             "App::PropertyBool",
@@ -126,7 +126,7 @@ class ObjectDressup:
             "App::PropertyBool",
             "IncludeLayers",
             "Path",
-            QT_TRANSLATE_NOOP("App::Property", "Apply LeadInOut to layers within an operation"),
+            QT_TRANSLATE_NOOP("App::Property", "Apply Lead in/out to layers within an operation"),
         )
         obj.Proxy = self
 
@@ -162,13 +162,13 @@ class ObjectDressup:
 
         if obj.LengthIn <= 0:
             Path.Log.error(
-                translate("CAM_DressupLeadInOut", "Length/Radius positive not Null") + "\n"
+                translate("CAM_DressupLeadInOut", "Length/radius positive not Null") + "\n"
             )
             obj.LengthIn = 0.1
 
         if obj.LengthOut <= 0:
             Path.Log.error(
-                translate("CAM_DressupLeadInOut", "Length/Radius positive not Null") + "\n"
+                translate("CAM_DressupLeadInOut", "Length/radius positive not Null") + "\n"
             )
             obj.LengthOut = 0.1
 
@@ -176,7 +176,7 @@ class ObjectDressup:
         obj.Path = self.generateLeadInOutCurve(obj)
 
     def onDocumentRestored(self, obj):
-        """onDocumentRestored(obj) ... Called automatically when document is restored."""
+        """onDocumentRestored(obj)… Called automatically when document is restored."""
         lead_styles = [
             QT_TRANSLATE_NOOP("CAM_DressupLeadInOut", "Arc"),
             QT_TRANSLATE_NOOP("CAM_DressupLeadInOut", "Tangent"),
@@ -188,7 +188,7 @@ class ObjectDressup:
                 "App::PropertyEnumeration",
                 "StyleIn",
                 "Path",
-                QT_TRANSLATE_NOOP("App::Property", "The Style of motion into the toolpath"),
+                QT_TRANSLATE_NOOP("App::Property", "The style of motion into the toolpath"),
             )
             obj.StyleIn = lead_styles
             obj.StyleIn = obj.StyleOn
@@ -199,7 +199,7 @@ class ObjectDressup:
                 "App::PropertyEnumeration",
                 "StyleOut",
                 "Path",
-                QT_TRANSLATE_NOOP("App::Property", "The Style of motion out of the toolpath"),
+                QT_TRANSLATE_NOOP("App::Property", "The style of motion out of the toolpath"),
             )
             obj.StyleOut = lead_styles
             obj.StyleOut = obj.StyleOff
@@ -210,7 +210,7 @@ class ObjectDressup:
                 "App::PropertyDistance",
                 "LengthIn",
                 "Path",
-                QT_TRANSLATE_NOOP("App::Property", "Length or Radius of the approach"),
+                QT_TRANSLATE_NOOP("App::Property", "Length or radius of the approach"),
             )
             obj.LengthIn = obj.Length
             obj.removeProperty("Length")
@@ -491,10 +491,10 @@ class CommandPathDressupLeadInOut:
     def GetResources(self):
         return {
             "Pixmap": "CAM_Dressup",
-            "MenuText": QT_TRANSLATE_NOOP("CAM_DressupLeadInOut", "LeadInOut"),
+            "MenuText": QT_TRANSLATE_NOOP("CAM_DressupLeadInOut", "Lead In/Out"),
             "ToolTip": QT_TRANSLATE_NOOP(
                 "CAM_DressupLeadInOut",
-                "Creates a Cutter Radius Compensation G41/G42 Entry Dressup object from a selected path",
+                "Creates a cutter radius compensation G41/G42 entry dressup object from a selected path",
             ),
         }
 
@@ -508,9 +508,7 @@ class CommandPathDressupLeadInOut:
         # check that the selection contains exactly what we want
         selection = FreeCADGui.Selection.getSelection()
         if len(selection) != 1:
-            Path.Log.error(
-                translate("CAM_DressupLeadInOut", "Please select one toolpath object") + "\n"
-            )
+            Path.Log.error(translate("CAM_DressupLeadInOut", "Select one toolpath object") + "\n")
             return
         baseObject = selection[0]
         if not baseObject.isDerivedFrom("Path::Feature"):
@@ -519,7 +517,7 @@ class CommandPathDressupLeadInOut:
             )
             return
         if baseObject.isDerivedFrom("Path::FeatureCompoundPython"):
-            Path.Log.error(translate("CAM_DressupLeadInOut", "Please select a Profile object"))
+            Path.Log.error(translate("CAM_DressupLeadInOut", "Select a Profile object"))
             return
 
         # everything ok!
@@ -547,4 +545,4 @@ if App.GuiUp:
     # register the FreeCAD command
     FreeCADGui.addCommand("CAM_DressupLeadInOut", CommandPathDressupLeadInOut())
 
-Path.Log.notice("Loading CAM_DressupLeadInOut... done\n")
+Path.Log.notice("Loading CAM_DressupLeadInOut… done\n")
