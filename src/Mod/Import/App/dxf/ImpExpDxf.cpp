@@ -957,7 +957,7 @@ void ImpExpDxfRead::OnReadLine(const Base::Vector3d& start,
         case ImportMode::FusedShapes:
             // For these modes, we want a generic Part::Feature wrapping the TopoDS_Shape.
             // PrimitiveType::None will lead to a generic Part::Feature in AddGeometry.
-            builder.type = GeometryBuilder::PrimitiveType::Line;
+            builder.type = GeometryBuilder::PrimitiveType::None;
             break;
     }
 
