@@ -1226,13 +1226,7 @@ QPushButton::menu-indicator {
 
 QDialogButtonBox QPushButton {
   min-width: 80px;
-  padding: 4px 0px;
-}
-
-QMessageBox[objectName="macroGuideWalkthrough"] QDialogButtonBox QPushButton,
-QMessageBox[objectName="confirmSave"] QDialogButtonBox QPushButton {
-  min-width: 20px;
-  border-radius: @InputFieldBorderRadius;
+  padding: 3px 0px;
 }
 
 /* QToolButton ------------------------------------------------------------
@@ -1617,6 +1611,11 @@ QSint--ActionGroup QFrame[class="content"] QToolButton:disabled:checked {
 
 QSint--ActionGroup QFrame[class="content"] QToolButton:pressed {
   background-color: @GeneralBackgroundHoverColor;
+}
+
+QFrame[class="panel"] QPushButton {
+padding: 3px;
+min-width: 0px;
 }
 
 /* QSlider ----------------------------------------------------------------
