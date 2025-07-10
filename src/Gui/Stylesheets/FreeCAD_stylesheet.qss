@@ -1172,8 +1172,8 @@ QPushButton {
   background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 @ButtonTopBackgroundColor,stop:1 @ButtonBottomBackgroundColor);
   border: 1px solid @ButtonBorderColor;
   border-radius: @InputFieldBorderRadius;
-  padding: 2px;
-  /* min-width: 80px;*/}
+   padding: 4px 12px;
+  min-width: 40px;}
 
 #CreateNewRow > QPushButton {
   /* Reset min width to default */
@@ -1226,7 +1226,7 @@ QPushButton::menu-indicator {
 
 QDialogButtonBox QPushButton {
   min-width: 80px;
-  border-radius: @InputFieldBorderRadius;
+  padding: 4px 0px;
 }
 
 QMessageBox[objectName="macroGuideWalkthrough"] QDialogButtonBox QPushButton,
@@ -2716,11 +2716,16 @@ QMainWindow QListView {
   background-color: @PrimaryColor;/* background of the workbenches listview used in the settings*/
   /* border: 1px solid @GeneralBorderColor; */
   /* border-radius: 3px; */}
-QMainWindow QTableView QPushButton {
-  border-style: none;
-  min-width: 0px;
-}
 
+QTableView QPushButton {
+  min-width: 0px;
+  padding: 2px;
+}
+QTableView QPushButton:hover {
+  min-width: 0px;
+  background-color: @GeneralBackgroundHoverColor;
+  border: 1px solid @GeneralBorderColor;
+}
 QMainWindow QHeaderView::section::horizontal {
   border-style: none;
   border-bottom: 1px solid @GeneralBorderColor;
@@ -2730,3 +2735,4 @@ QMainWindow QHeaderView::section::horizontal {
 QMainWindow QHeaderView::section::horizontal::first, QHeaderView::section::horizontal::only-one {
   border-left: 0px solid transparent;
 }
+
