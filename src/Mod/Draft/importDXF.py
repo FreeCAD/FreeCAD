@@ -4629,6 +4629,24 @@ class DxfDraftPostProcessor:
                 new_obj = self.doc.addObject("Part::Part2DObjectPython", self.doc.getUniqueObjectName("Wire"))
                 new_obj.Shape = shape # Transfer the TopoDS_Wire from the original Part::Feature.
                 Draft.Wire(new_obj) # Attach Python proxy. It will find Shape, Placement.
+
+                # Check if all segments of the wire are straight lines.
+                # If so, we can safely populate the .Points property to make it parametric.
+                # Otherwise, we do nothing, leaving it as a non-parametric but geometrically correct shape.
+                is_all_lines = True
+
+                for edge in shape.Edges:
+                    if edge.Curve.TypeId == "Part::GeomLine":
+                        continue # This is a straight segment
+                    else:
+                        is_all_lines = False
+                        break # Found a curve, no need to check further
+
+                if is_all_lines and shape.OrderedVertexes:
+                    # All segments are straight, so we can make it an editable wire
+                    points = [v.Point for v in shape.OrderedVertexes]
+                    new_obj.Points = points
+
                 new_obj.Closed = shape.isClosed() # Transfer specific properties expected by Draft.Wire.
                 obj_type_str = "Wire"
 
