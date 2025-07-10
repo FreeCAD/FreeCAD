@@ -51,7 +51,7 @@ class CommandInsertNewPart:
     def GetResources(self):
         return {
             "Pixmap": "Geofeaturegroup",
-            "MenuText": QT_TRANSLATE_NOOP("Assembly_InsertNewPart", "Insert New Part"),
+            "MenuText": QT_TRANSLATE_NOOP("Assembly_InsertNewPart", "New Part"),
             "Accel": "P",
             "ToolTip": "<p>"
             + QT_TRANSLATE_NOOP(
@@ -137,7 +137,7 @@ class TaskAssemblyNewPart(JointObject.TaskAssemblyCreateJoint):
                     translate("Assembly", "Save"), QtWidgets.QMessageBox.AcceptRole
                 )
                 cancelButton = msgBox.addButton(
-                    translate("Assembly", "Don't link"), QtWidgets.QMessageBox.RejectRole
+                    translate("Assembly", "Do not link"), QtWidgets.QMessageBox.RejectRole
                 )
 
                 msgBox.exec_()
