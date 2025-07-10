@@ -35,6 +35,7 @@
 #include <Base/Parameter.h>
 #include <App/Application.h>
 #include <App/DocumentObject.h>
+#include <App/Document.h>
 #include <Gui/ActionFunction.h>
 #include <Gui/Control.h>
 #include <Gui/MainWindow.h>
@@ -307,17 +308,24 @@ bool ViewProviderDimension::onDelete(const std::vector<std::string> & parms)
     Q_UNUSED(parms)
     auto dlg = Gui::Control().activeDialog();
     auto ourDlg = qobject_cast<TaskDlgDimension*>(dlg);
-    if (ourDlg)  {
+    if (ourDlg) {
         QString bodyMessage;
         QTextStream bodyMessageStream(&bodyMessage);
         bodyMessageStream << qApp->translate("TaskDimension",
             "You cannot delete this dimension now because\nthere is an open task dialog.");
         QMessageBox::warning(Gui::getMainWindow(),
-            qApp->translate("TaskDimension", "Can Not Delete"), bodyMessage,
+            qApp->translate("TaskDimension", "Cannot Delete"), bodyMessage,
             QMessageBox::Ok);
         return false;
     }
-    return true;
+    if (auto* dimObj = getObject()) {
+        if (App::Document* doc = dimObj->getDocument()) {
+            doc->openTransaction("Delete Dimension");
+            doc->removeObject(dimObj->getNameInDocument());
+            doc->commitTransaction();
+        }
+    }
+    return false;
 }
 
 
