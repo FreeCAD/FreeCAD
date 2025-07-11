@@ -80,8 +80,7 @@ Resetting everything helps to unify styles across different operating systems
   border-style: none;
   outline: none;
   color:@TextForegroundColor;
-  /* selection-background-color: @TextSelectBackgroundColor; */
-  selection-background-color: pink;
+  selection-background-color: @TextSelectBackgroundColor;
   selection-color:@TextForegroundColor;
   gridline-color: @GeneralGridLinesColor;
   spacing: 0px;
