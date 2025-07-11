@@ -484,7 +484,12 @@ void ToolBarManager::setupConnection()
                     || hParam == hStatusBar
                     || hParam == hMenuBarRight
                     || hParam == hMenuBarLeft) {
-                timer.start(100);
+                if (blockRestore) {
+                    blockRestore = false;
+                }
+                else {
+                    timer.start(100);
+                }
             }
         });
 }
@@ -1274,6 +1279,7 @@ void ToolBarManager::setState(const QString& name, State state)
         auto show = visibility(policy == ToolBarItem::DefaultVisibility::Visible);
 
         if (show != value) {
+            blockRestore = true;
             hPref->SetBool(name.toStdString().c_str(), value);
         }
     };
