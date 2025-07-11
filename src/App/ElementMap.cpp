@@ -931,6 +931,11 @@ IndexedName ElementMap::complexFind(const MappedName& name) const
     IndexedName defIN = IndexedName();
     double foundNameScore = 0;
     std::string originalName = name.toString();
+
+    if(originalName[0] == '#' || originalName[0] == ';' && originalName[1] == '#') {
+        FC_WARN("Complex find does not support the string hasher!");
+        return foundIndexedName;
+    }
     
     std::string loopCheckName; // also called string2
     std::vector<std::string> str1MajorSecs = splitNameIntoSections(originalName, true);
@@ -963,6 +968,12 @@ IndexedName ElementMap::complexFind(const MappedName& name) const
         // do not kill this loop, since we need the element with the highest score
         for(const auto& name : mappedNames) {
             loopCheckName = name.first.toString();
+
+            if(loopCheckName[0] == '#' || loopCheckName[0] == ';' && loopCheckName[1] == '#') {
+                FC_WARN("Complex find does not support the string hasher!");
+                continue;
+            }
+
             str2MajorSecs = splitNameIntoSections(loopCheckName, true);
             if(str2MajorSecs.empty()) continue;
 
@@ -1027,14 +1038,13 @@ IndexedName ElementMap::complexFind(const MappedName& name) const
 
                 if(score > foundNameScore) {
                     foundIndexedName = name.second;
-                    FC_WARN("complex found: " << foundIndexedName.toString() << "\n");
                 }
             }
         }
     }
 
     if(foundIndexedName != defIN) {
-        FC_LOG("Complex check found element: " << foundIndexedName.toString());
+        FC_WARN("Complex check found element: " << foundIndexedName.toString());
     }
 
     return foundIndexedName;
@@ -1081,7 +1091,7 @@ IndexedName ElementMap::find(const MappedName& name, ElementIDRefs* sids) const
             return res;
         }
 
-        return complexFind(name);
+        // return complexFind(name);
     }
 
     if (sids) {
