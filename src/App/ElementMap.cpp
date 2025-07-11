@@ -853,12 +853,22 @@ double ElementMap::percentSimilarity(const std::string& a, const std::string& b)
     return similarity;
 }
 
-std::vector<std::string> ElementMap::splitNameIntoSections(const std::string &name) const {
+std::vector<std::string> ElementMap::splitNameIntoSections(const std::string &name, const bool &filterSections) const {
+    std::vector<char> badPostFixes = {'M', 'D'}; // use variables defined in NamingUtils
     std::vector<std::string> result;
     std::string current;
+    int lastColon = -1;
+    bool hasBadPostFix = false;
+
     for (size_t i = 0; i < name.size(); ++i) {
-        if (name[i] == ';' && (i + 1 >= name.size() || name[i + 1] != ':')) {
-            result.push_back(current);
+        hasBadPostFix = filterSections ? (lastColon + 1 >= 0 && std::find(badPostFixes.begin(), badPostFixes.end(), name[lastColon + 1]) != badPostFixes.end()) : false;
+
+        if(name[i] == ':') {
+            lastColon = i;
+        }
+
+        if(name[i] == ';' && (i + 1 >= name.size() || name[i + 1] != ':')) {
+            if(!hasBadPostFix) result.push_back(current);
             current.clear();
         } else {
             current += name[i];
@@ -893,12 +903,17 @@ IndexedName ElementMap::complexFind(const MappedName& name) const
     IndexedName foundIndexedName = IndexedName();
     IndexedName defIN = IndexedName();
     double foundNameScore = 0;
-    std::string originalName; // also called string1
-    originalName = dehashElementName(name).toString();
+    std::string originalName = name.toString();
     
     std::string loopCheckName; // also called string2
-    std::vector<std::string> str1MajorSecs = splitNameIntoSections(originalName);
+    std::vector<std::string> str1MajorSecs = splitNameIntoSections(originalName, true);
     std::vector<std::string> str2MajorSecs;
+
+    FC_MSG(originalName);
+
+    for(auto &section : str1MajorSecs) {
+        FC_MSG(section);
+    }
 
     std::vector<std::string> str1LooseSecs = str1MajorSecs; // loose because all these values can vary, and we can still return true
     std::vector<std::string> str2LooseSecs; // loose because all these values can vary, and we can still return true
@@ -926,8 +941,8 @@ IndexedName ElementMap::complexFind(const MappedName& name) const
 
         // do not kill this loop, since we need the element with the highest score
         for(const auto& name : mappedNames) {
-            loopCheckName = dehashElementName(name.first).toString();
-            str2MajorSecs = splitNameIntoSections(loopCheckName);
+            loopCheckName = name.first.toString();
+            str2MajorSecs = splitNameIntoSections(loopCheckName, true);
             if(str2MajorSecs.empty()) continue;
 
             str2LooseSecs = str2MajorSecs;
@@ -973,7 +988,7 @@ IndexedName ElementMap::complexFind(const MappedName& name) const
                 if(looseSmallestVec.size() > i) {
                     smallVecSection = looseSmallestVec[i];
                 } else {
-                    break;
+                    smallVecSection = ""; // this is important!
                 }
 
                 avgDifferenceVec.push_back(percentSimilarity(largeVecSection, smallVecSection));

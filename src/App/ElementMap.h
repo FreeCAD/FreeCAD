@@ -229,7 +229,8 @@ private:
               const MappedName& name) const;
     
     std::vector<std::string> splitNameIntoSections(
-              const std::string &name) const;
+              const std::string &name,
+              const bool &filterSections) const;
     
     std::vector<std::string> findGeometryMods(
               const std::string &name) const;
