@@ -926,7 +926,7 @@ std::vector<std::string> ElementMap::findGeometryOpCodes(const std::vector<std::
 
 IndexedName ElementMap::complexFind(const MappedName& name) const
 {
-    FC_WARN("run complex find");
+    // FC_WARN("run complex find"); // for debugging
     IndexedName foundIndexedName = IndexedName();
     IndexedName defIN = IndexedName();
     double foundNameScore = 0;
@@ -953,7 +953,7 @@ IndexedName ElementMap::complexFind(const MappedName& name) const
 
     bool initialSecCheck = false;
     bool elementTypeIsSame = false;
-    // bool sameSizeCheck = false;
+    bool sameSizeCheck = false;
     bool strictOccurenceTolCheck = false;
     bool strictOccurencePercentCheck = false;
     bool avgDifferenceCheck;
@@ -989,11 +989,13 @@ IndexedName ElementMap::complexFind(const MappedName& name) const
             }
 
             initialSecCheck = (str1MajorSecs[0] == str2MajorSecs[0]) 
-                && (!geomMods1.empty() && !geomMods2.empty() && geomMods1[0] == geomMods2[0] 
+                && (!geomMods1.empty() && !geomMods2.empty() && geomMods1[0] == geomMods2[0]
+                && geomMods1[0] != "SKT" || ((str1MajorSecs.size() < 2 || str2MajorSecs.size() < 2) || str1MajorSecs[1] == str2MajorSecs[1])
                 && geomMods1[geomMods1.size() - 1] == geomMods2[geomMods2.size() - 1]);
 
             elementTypeIsSame = originalName[originalName.size() - 1] == loopCheckName[loopCheckName.size() - 1]; // TODO: make more reliable
-            if(!initialSecCheck || !elementTypeIsSame) continue;
+            sameSizeCheck = str1MajorSecs.size() == str2MajorSecs.size();
+            if(!initialSecCheck || !elementTypeIsSame || !sameSizeCheck) continue;
 
             looseSectionsMatches = 0;
 
@@ -1033,7 +1035,7 @@ IndexedName ElementMap::complexFind(const MappedName& name) const
             avgDifferenceNum /= avgDifferenceVec.size();
             avgDifferenceCheck = avgDifferenceNum >= .65;
 
-            if(initialSecCheck && elementTypeIsSame && (strictOccurenceTolCheck || strictOccurencePercentCheck || avgDifferenceCheck)) {
+            if(initialSecCheck && sameSizeCheck && elementTypeIsSame && (strictOccurenceTolCheck || strictOccurencePercentCheck || avgDifferenceCheck)) {
                 score = percentSimilarity(originalName, loopCheckName);
 
                 if(score > foundNameScore) {
