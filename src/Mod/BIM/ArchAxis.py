@@ -95,28 +95,29 @@ class _Axis:
         pl = obj.Placement
         geoms = []
         dist = 0
-        if obj.Distances and obj.Length.Value:
-            if len(obj.Distances) == len(obj.Angles):
-                for i in range(len(obj.Distances)):
-                    if hasattr(obj.Length,"Value"):
-                        l = obj.Length.Value
-                    else:
-                        l = obj.Length
-                    dist += obj.Distances[i]
-                    ang = math.radians(obj.Angles[i])
-                    p1 = Vector(dist,0,0)
-                    p2 = Vector(dist+(l/math.cos(ang))*math.sin(ang),l,0)
+        distances = [0]
+        angles = [0]
+        if hasattr(obj, "Distances"):
+            distances = obj.Distances
+        if hasattr(obj, "Angles"):
+            angles = obj.Angles
+        if distances and obj.Length.Value:
+            if angles and len(distances) == len(angles):
+                for i in range(len(distances)):
+                    dist += distances[i]
+                    ang = math.radians(angles[i])
+                    ln = obj.Length.Value
+                    ln = 100 * ln if abs(math.cos(ang)) < 0.01 else ln / math.cos(ang)
+                    unitvec = Vector(math.sin(ang), math.cos(ang), 0)
+                    p1 = Vector(dist, 0, 0)
+                    p2 = p1 + unitvec * ln
                     if hasattr(obj,"Limit") and obj.Limit.Value:
-                        p3 = p2.sub(p1)
-                        p3.normalize()
-                        p3.multiply(-obj.Limit.Value)
-                        p4 = p1.sub(p2)
-                        p4.normalize()
-                        p4.multiply(-obj.Limit.Value)
-                        geoms.append(Part.LineSegment(p1,p1.add(p4)).toShape())
-                        geoms.append(Part.LineSegment(p2,p2.add(p3)).toShape())
+                        p3 = unitvec * obj.Limit.Value
+                        p4 = unitvec * -obj.Limit.Value
+                        geoms.append(Part.LineSegment(p1, p1 + p3).toShape())
+                        geoms.append(Part.LineSegment(p2, p2 + p4).toShape())
                     else:
-                        geoms.append(Part.LineSegment(p1,p2).toShape())
+                        geoms.append(Part.LineSegment(p1, p2).toShape())
         if geoms:
             sh = Part.Compound(geoms)
             obj.Shape = sh
