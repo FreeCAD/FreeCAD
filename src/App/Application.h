@@ -33,6 +33,7 @@
 #include <set>
 #include <map>
 #include <string>
+#include <optional>
 
 #include <Base/Observer.h>
 #include <Base/Parameter.h>
