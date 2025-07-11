@@ -80,7 +80,7 @@ Resetting everything helps to unify styles across different operating systems
   border-style: none;
   outline: none;
   color:@TextForegroundColor;
-  selection-background-color: @UserHighlight1Color;
+  selection-background-color: @TextSelectBackgroundColor;
   selection-color:@TextForegroundColor;
   gridline-color: @GeneralGridLinesColor;
   spacing: 0px;
@@ -464,7 +464,6 @@ https://doc.qt.io/qt-5/stylesheet-examples.html#customizing-qmenubar
 --------------------------------------------------------------------------- */
 QMenuBar {
   background-color: @MenuBackgroundColor;
-  selection-background-color: @GeneralBackgroundHoverColor;
 }
 
 QMenuBar:disabled,
@@ -499,9 +498,7 @@ https://doc.qt.io/qt-5/stylesheet-examples.html#customizing-qmenu
 --------------------------------------------------------------------------- */
 QMenu {
   border: 1px solid @GeneralBorderColor;
-
   background-color: @MenuBackgroundColor;
-  selection-background-color: @UserHighlight1Color;
 }
 
 QMenu::item:disabled {
@@ -1089,8 +1086,6 @@ QTextBrowser:hover, QTextBrowser:!hover, QTextBrowser:selected, QTextBrowser:pre
 QGraphicsView {
   background-color: transparent;
   border-style: none;
-
-  selection-background-color:  @UserHighlight1Color;
 }
 
 QGraphicsView:disabled {
@@ -1363,7 +1358,6 @@ QComboBox {
   border: 1px solid @GeneralBorderColor;
   border-radius: @InputFieldBorderRadius;
   background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 @ButtonTopBackgroundColor,stop:1 @ButtonBottomBackgroundColor );
-  selection-background-color: @UserHighlight1Color;
   padding-left: 4px;
   padding-right: 2px;
   min-height: 22px;
@@ -1377,7 +1371,6 @@ QComboBox QAbstractItemView {
   border: 1px solid @GeneralBorderColor;
   padding-left: -27px;
   background-color: transparent;
-  selection-background-color: @UserHighlight1Color;
 }
 
 QComboBox QAbstractItemView:hover {
@@ -1407,7 +1400,6 @@ QComboBox:focus {
 }
 
 QComboBox:on {
-  selection-background-color: @UserHighlight1Color;
 }
 
 /* QComboBox::indicator { */
@@ -1743,12 +1735,10 @@ https://doc.qt.io/qt-5/stylesheet-examples.html#customizing-qtabwidget-and-qtabb
 --------------------------------------------------------------------------- */
 QTabWidget {
   padding: 2px;
-  selection-background-color: @UserHighlight1Color;
   border-radius: 3px;
 }
 
 QTabWidget:tab-bar {
-  selection-background-color: @PrimaryColor;
 }
 
 QTabWidget QWidget {}
@@ -2212,14 +2202,11 @@ QTableView,
 QColumnView {
   background-color: @PrimaryColor;/* background of a lot of stuff including spreadsheets.*/
   /* gridline-color: @GeneralBorderColor; */
-  selection-background-color: @UserHighlight1Color;
   alternate-background-color: @GeneralAlternateBackgroundColor;
 }
 
 QListView {
   background-color:   @PrimaryColor;
-
-  selection-background-color: @UserHighlight1Color;
   border: 1px solid @GeneralBorderColor;
   alternate-background-color: @GeneralAlternateBackgroundColor;
 }
@@ -2285,7 +2272,6 @@ QTableView::item,
 QColumnView::item {
   /* border: 1px solid @GeneralBorderColor;  we got gridlines so we do not need this*/
   background-color: transparent;
-  selection-background-color: @UserHighlight1Color;
 }
 
 /* QHeaderView ------------------------------------------------------------
@@ -2470,7 +2456,6 @@ QSplitter::handle:horizontal:hover {
 
 --------------------------------------------------------------------------- */
 QDateEdit, QDateTimeEdit {
-  selection-background-color: @UserHighlight1Color;
   border-style: solid;
   border: 1px solid @GeneralBorderColor;
   border-radius: @InputFieldBorderRadius;
@@ -2482,7 +2467,6 @@ QDateEdit, QDateTimeEdit {
 }
 
 QDateEdit:on, QDateTimeEdit:on {
-  selection-background-color: @UserHighlight1Color;
 }
 
 QDateEdit::drop-down, QDateTimeEdit::drop-down {
@@ -2506,7 +2490,6 @@ QDateEdit QAbstractItemView, QDateTimeEdit QAbstractItemView {
   background-color: @PrimaryColor;
   border-radius: @InputFieldBorderRadius;
   border: 1px solid @GeneralBorderColor;
-  selection-background-color: @UserHighlight1Color;
 }
 
 /* QAbstractView ----------------------------------------------------------
