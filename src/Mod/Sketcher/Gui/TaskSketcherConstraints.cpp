@@ -1302,6 +1302,7 @@ void TaskSketcherConstraints::updateList()
 void TaskSketcherConstraints::onSelectionChanged(const Gui::SelectionChanges& msg)
 {
     assert(sketchView);
+    assert(sketchView->getSketchObject());
 
     std::string temp;
     if (msg.Type == Gui::SelectionChanges::ClrSelection) {
