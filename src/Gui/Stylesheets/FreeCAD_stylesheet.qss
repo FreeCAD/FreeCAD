@@ -80,7 +80,8 @@ Resetting everything helps to unify styles across different operating systems
   border-style: none;
   outline: none;
   color:@TextForegroundColor;
-  selection-background-color: @TextSelectBackgroundColor;
+  /* selection-background-color: @TextSelectBackgroundColor; */
+  selection-background-color: pink;
   selection-color:@TextForegroundColor;
   gridline-color: @GeneralGridLinesColor;
   spacing: 0px;
@@ -2085,11 +2086,11 @@ https://doc.qt.io/qt-5/stylesheet-examples.html#customizing-qtableview
 
 QTreeView  {
   qproperty-indentation: 10;
+  selection-background-color: transparent;
 }
 
 QTreeView::branch  {
   background-color: transparent;
-  selection-background-color: transparent;
 }
 
 QTreeView::branch:has-siblings:!adjoins-item  {}
@@ -2203,12 +2204,16 @@ QColumnView {
   background-color: @PrimaryColor;/* background of a lot of stuff including spreadsheets.*/
   /* gridline-color: @GeneralBorderColor; */
   alternate-background-color: @GeneralAlternateBackgroundColor;
+    selection-background-color: @UserHighlight1Color;
+
 }
 
 QListView {
   background-color:   @PrimaryColor;
   border: 1px solid @GeneralBorderColor;
   alternate-background-color: @GeneralAlternateBackgroundColor;
+    selection-background-color: @UserHighlight1Color;
+
 }
 
 QTreeView:disabled,
@@ -2671,22 +2676,11 @@ QToolBar > Gui--WorkbenchComboBox QAbstractItemView {
   }
 
 /* Below is a fix for indentation in properties*/
-QTreeView::item:selected:active#groupsTreeView {
-  margin-left:-8px;
-  background-color: @UserHighlight1Color;
-}
 
-QTreeView::item:selected:!active#groupsTreeView {
-  margin-left:-8px;
-  background-color: @UserHighlight1Color;
-}
 
-QTreeView::item:selected#groupsTreeView{
+QTreeView::item#groupsTreeView {
   margin-left:-8px;
-}
-
-QTreeView::item:!selected:hover#groupsTreeView {
-  margin-left:-8px;
+  /* background-color: @UserHighlight1Color; */
 }
 
 QMainWindow QTableView {
