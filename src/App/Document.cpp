@@ -579,6 +579,7 @@ bool Document::_commitTransaction(const bool notify)
         return false;
     }    
 
+    d->bookedTransaction = 0;
     if (d->activeUndoTransaction) {
         Base::FlagToggler<> flag(d->committing);
         Application::TransactionSignaller signaller(false, true);
@@ -586,7 +587,6 @@ bool Document::_commitTransaction(const bool notify)
         std::cerr<<"Close transaction #"<<id<<"\n";
         mUndoTransactions.push_back(d->activeUndoTransaction);
         d->activeUndoTransaction = nullptr;
-        d->bookedTransaction = 0;
 
         // check the stack for the limits
         if (mUndoTransactions.size() > d->UndoMaxStackSize) {
@@ -625,6 +625,7 @@ void Document::_abortTransaction()
         }
     }
 
+    d->bookedTransaction = 0;
     if (d->activeUndoTransaction) {
         Base::FlagToggler<bool> flag(d->rollback);
         Application::TransactionSignaller signaller(true, true);
@@ -636,7 +637,6 @@ void Document::_abortTransaction()
         mUndoMap.erase(d->activeUndoTransaction->getID());
         delete d->activeUndoTransaction;
         d->activeUndoTransaction = nullptr;
-        d->bookedTransaction = 0;
         signalAbortTransaction(*this);
     }
 }
