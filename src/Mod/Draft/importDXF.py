@@ -4612,8 +4612,6 @@ class DxfDraftPostProcessor:
             if not shape.isValid():
                 return None, None
 
-            FCC.PrintMessage(f"DEBUG: {part_obj.Label} ({part_obj.Name}) is Part::Feature (ShapeType: {shape.ShapeType})\n")
-
             # Determine specific Draft object type based on the ShapeType of the TopoDS_Shape.
             if shape.ShapeType == "Wire": # If the TopoDS_Shape is a Wire (from DXF POLYLINE).
                 # Create a Part::Part2DObjectPython as the Python-extensible base for Draft Wire.
