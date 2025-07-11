@@ -857,42 +857,69 @@ std::vector<std::string> ElementMap::splitNameIntoSections(const std::string &na
     std::vector<char> badPostFixes = {'M', 'D'}; // use variables defined in NamingUtils
     std::vector<std::string> result;
     std::string current;
+    std::vector<char>::iterator it;
+    bool itUsed = false;
     int lastColon = -1;
     bool hasBadPostFix = false;
-
+    int parenthesesLevel = 0;
+    
     for (size_t i = 0; i < name.size(); ++i) {
-        hasBadPostFix = filterSections ? (lastColon + 1 >= 0 && std::find(badPostFixes.begin(), badPostFixes.end(), name[lastColon + 1]) != badPostFixes.end()) : false;
-
         if(name[i] == ':') {
             lastColon = i;
+        } else if(name[i] == '(') {
+            parenthesesLevel++;
+        } else if(name[i] == ')' && parenthesesLevel != 0) {
+            parenthesesLevel--;
         }
 
-        if(name[i] == ';' && (i + 1 >= name.size() || name[i + 1] != ':')) {
-            if(!hasBadPostFix) result.push_back(current);
+        if(parenthesesLevel == 0 && name[i] == ';' && (i + 1 >= name.size() || name[i + 1] != ':')) {
+            if(!hasBadPostFix) {
+                result.push_back(current);
+            }
+
+            it = std::find(badPostFixes.begin(), badPostFixes.end(), name[lastColon + 1]);
+            itUsed = true;
+            hasBadPostFix = filterSections ? (lastColon + 1 >= 0 && it != badPostFixes.end()) : false;
+
             current.clear();
         } else {
             current += name[i];
         }
     }
-    result.push_back(current);
+    if(!hasBadPostFix) {
+        result.push_back(current);
+    }
+    
+    if(itUsed) badPostFixes.erase(it);
 
     return result;
 }
-std::vector<std::string> ElementMap::findGeometryMods(const std::string &name) const {
-    std::vector<std::string> result;
-    std::string checkStr;
-    for (size_t i = 0; i < name.size(); ++i) {
-        checkStr.clear();
-        checkStr.push_back(name[i]);
-        checkStr.push_back(name[i+1]);
-        checkStr.push_back(name[i+2]);// is there a better way to do this? e.g. [i:i + 2]
 
-        if (checkStr == "XTR") { // do a dumb check to avoid any more loops
-            result.push_back("XTR");
-        } else if (checkStr == "FAC") {
-            result.push_back("FAC");
+std::vector<std::string> ElementMap::findGeometryOpCodes(const std::vector<std::string> &name) const {
+    std::vector<std::string> opCodes = {"XTR", "FAC", "SKT", "FUS", "CUT", "PSM"};
+    std::vector<std::string> result;
+    std::vector<std::string>::iterator it;
+    bool itUsed = false;
+    std::string checkStr;
+    for(auto &section : name) { // we want to use the major sections because they purge the modifiers
+        std::cout << section << "\n";
+
+        for (size_t i = 0; i < section.size(); ++i) {
+            checkStr.clear();
+            checkStr.push_back(section[i]);
+            checkStr.push_back(section[i+1]);
+            checkStr.push_back(section[i+2]);// is there a better way to do this? e.g. [i:i + 2]
+
+            it = std::find(opCodes.begin(), opCodes.end(), checkStr);
+            itUsed = true;
+
+            if (it != opCodes.end()) {
+                result.push_back(*it);
+            }
         }
     }
+
+    if(itUsed) opCodes.erase(it);
 
     return result;
 }
@@ -909,12 +936,6 @@ IndexedName ElementMap::complexFind(const MappedName& name) const
     std::vector<std::string> str1MajorSecs = splitNameIntoSections(originalName, true);
     std::vector<std::string> str2MajorSecs;
 
-    FC_MSG(originalName);
-
-    for(auto &section : str1MajorSecs) {
-        FC_MSG(section);
-    }
-
     std::vector<std::string> str1LooseSecs = str1MajorSecs; // loose because all these values can vary, and we can still return true
     std::vector<std::string> str2LooseSecs; // loose because all these values can vary, and we can still return true
     std::vector<std::string> looseLargestVec;
@@ -922,7 +943,7 @@ IndexedName ElementMap::complexFind(const MappedName& name) const
     std::string largeVecSection;
     std::string smallVecSection;
 
-    std::vector<std::string> geomMods1 = findGeometryMods(originalName);
+    std::vector<std::string> geomMods1 = findGeometryOpCodes(str1MajorSecs);
     std::vector<std::string> geomMods2;
 
     bool initialSecCheck = false;
@@ -947,7 +968,7 @@ IndexedName ElementMap::complexFind(const MappedName& name) const
 
             str2LooseSecs = str2MajorSecs;
             str2LooseSecs.erase(str2LooseSecs.begin());
-            geomMods2 = findGeometryMods(loopCheckName);
+            geomMods2 = findGeometryOpCodes(str2MajorSecs);
             looseLargestVec = str1LooseSecs;
             looseSmallestVec = str2LooseSecs;
 
@@ -959,7 +980,7 @@ IndexedName ElementMap::complexFind(const MappedName& name) const
             initialSecCheck = (str1MajorSecs[0] == str2MajorSecs[0]) 
                 && (!geomMods1.empty() && !geomMods2.empty() && geomMods1[0] == geomMods2[0] 
                 && geomMods1[geomMods1.size() - 1] == geomMods2[geomMods2.size() - 1]);
-                // ^^^ eventually do a percentage check here ^^^
+
             elementTypeIsSame = originalName[originalName.size() - 1] == loopCheckName[loopCheckName.size() - 1]; // TODO: make more reliable
             if(!initialSecCheck || !elementTypeIsSame) continue;
 
@@ -1006,6 +1027,7 @@ IndexedName ElementMap::complexFind(const MappedName& name) const
 
                 if(score > foundNameScore) {
                     foundIndexedName = name.second;
+                    FC_WARN("complex found: " << foundIndexedName.toString() << "\n");
                 }
             }
         }

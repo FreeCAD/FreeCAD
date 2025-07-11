@@ -232,8 +232,8 @@ private:
               const std::string &name,
               const bool &filterSections) const;
     
-    std::vector<std::string> findGeometryMods(
-              const std::string &name) const;
+    std::vector<std::string> findGeometryOpCodes(
+              const std::vector<std::string> &name) const;
     
     double percentSimilarity(
               const std::string& a, 
