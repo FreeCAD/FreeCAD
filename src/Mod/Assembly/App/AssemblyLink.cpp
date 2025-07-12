@@ -21,6 +21,8 @@
  *                                                                          *
  ***************************************************************************/
 
+#include "App/GroupExtension.h"
+#include "App/Origin.h"
 #include "PreCompiled.h"
 #ifndef _PreComp_
 #include <cmath>
@@ -191,10 +193,16 @@ void AssemblyLink::synchronizeComponents()
     std::vector<App::DocumentObject*> assemblyGroup = assembly->Group.getValues();
     std::vector<App::DocumentObject*> assemblyLinkGroup = Group.getValues();
 
+
     // We check if a component needs to be added to the AssemblyLink
     for (auto* obj : assemblyGroup) {
         if (!obj->isDerivedFrom<App::Part>() && !obj->isDerivedFrom<PartApp::Feature>()
-            && !obj->isDerivedFrom<App::Link>()) {
+            && !obj->isDerivedFrom<App::Link>()
+            && !obj->isDerivedFrom<App::DocumentObjectGroup>()) {
+            continue;
+        }
+
+        if (obj->isDerivedFrom<JointGroup>() || obj->getGroup() != nullptr) {
             continue;
         }
 
@@ -207,14 +215,18 @@ void AssemblyLink::synchronizeComponents()
 
             auto* subAsmLink = freecad_cast<AssemblyLink*>(obj2);
             auto* link2 = dynamic_cast<App::Link*>(obj2);
+
             if (subAsmLink) {
                 linkedObj = subAsmLink->getLinkedObject2(false);  // not recursive
             }
             else if (link2) {
                 linkedObj = link2->getLinkedObject(false);  // not recursive
             }
+            // else if (group) {
+            //     linkedObj = group->getLinkedObject(false);  // not recursive
+            // }
             else {
-                // We consider only Links and AssemblyLinks in the AssemblyLink.
+                // We consider only Links, AssemblyLinks, and in the AssemblyLink.
                 continue;
             }
 
@@ -229,11 +241,23 @@ void AssemblyLink::synchronizeComponents()
             if (obj->isDerivedFrom<AssemblyLink>()) {
                 auto* asmLink = static_cast<AssemblyLink*>(obj);
                 auto* subAsmLink = new AssemblyLink();
+                auto* origin = new App::Origin();
+
+
                 doc->addObject(subAsmLink, obj->getNameInDocument());
+                subAsmLink->Origin.setValue(asmLink->Origin.getValue());
                 subAsmLink->LinkedObject.setValue(obj);
                 subAsmLink->Rigid.setValue(asmLink->Rigid.getValue());
                 subAsmLink->Label.setValue(obj->Label.getValue());
+
+                origin->Label.setValue("Origin");
+                auto* test = dynamic_cast<App::PropertyPlacement*>(
+                    subAsmLink->getPropertyByName("Placement"));
+                origin->Placement.setValue(test->getValue());
+
                 addObject(subAsmLink);
+
+
                 link = subAsmLink;
             }
             else {
