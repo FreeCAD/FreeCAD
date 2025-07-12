@@ -118,7 +118,7 @@ DrawViewPart::DrawViewPart()
     ADD_PROPERTY_TYPE(XSource, (nullptr), group, App::Prop_None, "External 3D Shape to view");
 
     ADD_PROPERTY_TYPE(Direction, (0.0, -1.0, 0.0), group, App::Prop_None,
-                      "Projection Plane normal. The direction you are looking from.");
+                      "Projection Plane normal. View direction for the projection plane");
     ADD_PROPERTY_TYPE(XDirection, (1.0, 0.0, 0.0), group, App::Prop_None,
                       "Projection Plane X Axis in R3. Rotates/Mirrors View");
     ADD_PROPERTY_TYPE(Perspective, (false), group, App::Prop_None,
@@ -562,7 +562,7 @@ void DrawViewPart::findFacesNew(const std::vector<BaseGeomPtr> &goEdges)
 
     if (sortedWires.empty()) {
         Base::Console().warning(
-            "DVP::findFacesNew - %s - Can't make faces from projected edges\n",
+            "DVP::findFacesNew - %s - Cannot make faces from projected edges\n",
             getNameInDocument());
     }
     else {
@@ -685,7 +685,7 @@ void DrawViewPart::findFacesOld(const std::vector<BaseGeomPtr> &goEdges)
     sortedWires = eWalker.execute(newEdges);
     if (sortedWires.empty()) {
         Base::Console().warning(
-            "DVP::findFacesOld - %s -Can't make faces from projected edges\n",
+            "DVP::findFacesOld - %s -Cannott make faces from projected edges\n",
             getNameInDocument());
         return;
     }

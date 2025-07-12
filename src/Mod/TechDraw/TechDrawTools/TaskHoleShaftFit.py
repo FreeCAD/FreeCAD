@@ -39,9 +39,9 @@ translate = App.Qt.translate
 class TaskHoleShaftFit:
     def __init__(self, sel):
 
-        loose = translate("TechDraw_HoleShaftFit", "loose fit")
-        snug = translate("TechDraw_HoleShaftFit", "snug fit")
-        press = translate("TechDraw_HoleShaftFit", "press fit")
+        loose = translate("TechDraw_HoleShaftFit", "Loose fit")
+        snug = translate("TechDraw_HoleShaftFit", "Snug fit")
+        press = translate("TechDraw_HoleShaftFit", "Press fit")
         self.isHole = True
         self.sel = sel
         self.holeValues = [
@@ -88,7 +88,7 @@ class TaskHoleShaftFit:
         self.form = Gui.PySideUic.loadUi(self._uiPath)
 
         self.form.setWindowTitle(
-            translate("TechDraw_HoleShaftFit", "Hole / Shaft Fit ISO 286")
+            translate("TechDraw_HoleShaftFit", "Hole/Shaft Fit ISO 286")
         )
 
         self.form.rbHoleBase.clicked.connect(partial(self.on_HoleShaftChanged, True))
