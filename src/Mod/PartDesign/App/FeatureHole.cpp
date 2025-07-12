@@ -927,37 +927,6 @@ void Hole::updateHoleCutParams()
             HoleCutCountersinkAngle.setReadOnly(false);
         }
 
-        // handle since FreeCAD 0.18 deprecated types that were
-        // removed after FreeCAD 0.20
-        if (holeCutTypeStr == "Cheesehead (deprecated)") {
-            HoleCutType.setValue("Counterbore");
-            holeCutTypeStr = "Counterbore";
-            HoleCutDiameter.setValue(diameterVal * 1.6);
-            HoleCutDepth.setValue(diameterVal * 0.6);
-            HoleCutDiameter.setReadOnly(false);
-            HoleCutDepth.setReadOnly(false);
-        }
-        else if (holeCutTypeStr == "Countersink socket screw (deprecated)") {
-            HoleCutType.setValue("Countersink");
-            holeCutTypeStr = "Countersink";
-            HoleCutDiameter.setValue(diameterVal * 2.0);
-            HoleCutDepth.setValue(diameterVal * 0.0);
-            if (HoleCutCountersinkAngle.getValue() == 0.0) {
-                HoleCutCountersinkAngle.setValue(90.0);
-            }
-            HoleCutDiameter.setReadOnly(false);
-            HoleCutDepth.setReadOnly(false);
-            HoleCutCountersinkAngle.setReadOnly(false);
-        }
-        else if (holeCutTypeStr == "Cap screw (deprecated)") {
-            HoleCutType.setValue("Counterbore");
-            holeCutTypeStr = "Counterbore";
-            HoleCutDiameter.setValue(diameterVal * 1.5);
-            HoleCutDepth.setValue(diameterVal * 1.25);
-            HoleCutDiameter.setReadOnly(false);
-            HoleCutDepth.setReadOnly(false);
-        }
-
         // cut definition
         CutDimensionKey key{ threadTypeStr, holeCutTypeStr };
         if (HoleCutTypeMap.count(key)) {
