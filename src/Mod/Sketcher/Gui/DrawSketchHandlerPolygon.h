@@ -108,7 +108,7 @@ private:
     {
         unsetCursor();
         resetPositionText();
-        Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add polygon"));
+        openCommand(QT_TRANSLATE_NOOP("Command", "Add polygon"));
 
         try {
             Gui::Command::doCommand(Gui::Command::Doc,
@@ -123,7 +123,7 @@ private:
                                     firstCorner.y,
                                     constructionModeAsBooleanText());
 
-            Gui::Command::commitCommand();
+            commitCommand();
 
             tryAutoRecomputeIfNotSolve(sketchgui->getObject<Sketcher::SketchObject>());
         }
@@ -132,7 +132,7 @@ private:
                              QT_TRANSLATE_NOOP("Notifications", "Error"),
                              QT_TRANSLATE_NOOP("Notifications", "Failed to add polygon"));
 
-            Gui::Command::abortCommand();
+            abortCommand();
             THROWM(Base::RuntimeError,
                    QT_TRANSLATE_NOOP(
                        "Notifications",

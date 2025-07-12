@@ -139,7 +139,7 @@ class TaskAssemblyInsertLink(QtCore.QObject):
 
         self.buildPartList()
 
-        App.setActiveTransaction("Insert Component")
+        Gui.ActiveDocument.openCommand("Insert Component")
 
     def accept(self):
         self.deactivated()
@@ -170,13 +170,13 @@ class TaskAssemblyInsertLink(QtCore.QObject):
             )
 
         Gui.doCommandSkip(commands[:-1])  # Get rid of last \n
-        App.closeActiveTransaction()
+        Gui.ActiveDocument.commitCommand()
         return True
 
     def reject(self):
         self.deactivated()
 
-        App.closeActiveTransaction(True)
+        Gui.ActiveDocument.abortCommand()
         return True
 
     def deactivated(self):

@@ -181,7 +181,7 @@ void CmdSketcherToggleConstruction::activated(int iMsg)
         }
 
         // undo command open
-        openCommand(QT_TRANSLATE_NOOP("Command", "Toggle construction geometry"));
+        openSelf(QT_TRANSLATE_NOOP("Command", "Toggle construction geometry"));
 
         // go through the selected subelements
         bool verticesonly = true;
@@ -232,7 +232,7 @@ void CmdSketcherToggleConstruction::activated(int iMsg)
             }
         }
         // finish the transaction and update
-        commitCommand();
+        commitSelf();
 
         tryAutoRecompute(Obj);
 

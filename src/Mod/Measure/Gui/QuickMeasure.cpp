@@ -107,7 +107,7 @@ void QuickMeasure::tryMeasureSelection()
 {
     Gui::Document* doc = Gui::Application::Instance->activeDocument();
     measurement->clear();
-    if (doc && Gui::Control().activeDialog() == nullptr) {
+    if (doc && Gui::Control().activeDialog(nullptr) == nullptr) {
         // we (still) have a doc and are not in a tool dialog where the user needs to click on stuff
         addSelectionToMeasurement();
     }

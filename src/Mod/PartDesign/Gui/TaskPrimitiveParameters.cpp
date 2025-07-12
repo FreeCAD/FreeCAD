@@ -1000,7 +1000,8 @@ bool TaskPrimitiveParameters::accept()
 bool TaskPrimitiveParameters::reject()
 {
     // roll back the done things
-    Gui::Command::abortCommand();
+    // Gui::Command::abortCommand();
+    vp_prm->getDocument()->abortCommand();
     Gui::Command::doCommand(Gui::Command::Gui, "Gui.activeDocument().resetEdit()");
 
     return true;

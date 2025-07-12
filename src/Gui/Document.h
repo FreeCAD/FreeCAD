@@ -171,6 +171,10 @@ public:
     void setModified(bool);
     bool isModified() const;
 
+    /// getter-setter for workbench name
+    void setWorkbench(const std::string& name);
+    std::string workbench() const;
+
     /// Returns true if the document is about to be closed, false otherwise
     bool isAboutToClose() const;
 
@@ -262,6 +266,7 @@ public:
     /// get the in edit ViewProvider or NULL
     ViewProvider *getInEdit(ViewProviderDocumentObject **parentVp=nullptr,
             std::string *subname=nullptr, int *mode=nullptr, std::string *subElement=nullptr) const;
+    ViewProvider* getEditViewProvider() const; // Returns the _editViewProvider even if it is not in edit at the moment
     /// set the in edit ViewProvider subname reference
     void setInEdit(ViewProviderDocumentObject *parentVp, const char *subname);
     /** Add or remove view provider from scene graphs of all views
@@ -275,7 +280,7 @@ public:
     /** @name methods for the UNDO REDO handling */
     //@{
     /// Open a new Undo transaction on the document
-    void openCommand(const char* sName=nullptr);
+    int openCommand(const char* sName=nullptr);
     /// Commit the Undo transaction on the document
     void commitCommand();
     /// Abort the Undo transaction on the document
