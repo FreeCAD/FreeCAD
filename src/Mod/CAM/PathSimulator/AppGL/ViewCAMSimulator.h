@@ -10,9 +10,15 @@
 
 #include <Gui/MDIView.h>
 
+namespace Gui
+{
+class View3DSettings;
+}  // namespace Gui
+
 namespace CAMSimulator
 {
 class DlgCAMSimulator;
+class Dummy3DViewer;
 
 class ViewCAMSimulator: public Gui::MDIView
 {
@@ -25,8 +31,14 @@ public:
 
     DlgCAMSimulator& dlg();
 
+private:
+    void applySettings();
+
 protected:
     DlgCAMSimulator* mDlg;
+
+    Dummy3DViewer* mDummyViewer;
+    std::unique_ptr<Gui::View3DSettings> viewSettings;
 };
 
 }  // namespace CAMSimulator
