@@ -55,10 +55,7 @@ using namespace Gui;
 /* TRANSLATOR PartDesignGui::TaskDressUpParameters */
 
 TaskDressUpParameters::TaskDressUpParameters(ViewProviderDressUp *DressUpView, bool selectEdges, bool selectFaces, QWidget *parent)
-    : TaskBox(Gui::BitmapFactory().pixmap(DressUpView->featureIcon().c_str()),
-              DressUpView->menuName,
-              true,
-              parent)
+    : TaskFeatureParameters(DressUpView, parent, DressUpView->featureIcon(), DressUpView->menuName)
     , proxy(nullptr)
     , deleteAction(nullptr)
     , addAllEdgesAction(nullptr)
@@ -70,7 +67,6 @@ TaskDressUpParameters::TaskDressUpParameters(ViewProviderDressUp *DressUpView, b
     App::GetApplication().getActiveTransaction(&transactionID);
 
     selectionMode = none;
-    showObject();
 }
 
 TaskDressUpParameters::~TaskDressUpParameters()
@@ -368,34 +364,12 @@ void TaskDressUpParameters::removeItemFromListWidget(QListWidget* widget, const 
 void TaskDressUpParameters::hideOnError()
 {
     App::DocumentObject* dressup = DressUpView->getObject();
+
+    // fixme: find a better way to preview errors
     if (dressup->isError())
-        hideObject();
+        DressUpView->PreviewColor.setValue(1.0F, 0.0F, 0.0F);
     else
-        showObject();
-}
-
-void TaskDressUpParameters::setDressUpVisibility(bool visible)
-{
-    App::DocumentObject* base = getBase();
-    if (base) {
-        App::DocumentObject* duv = DressUpView->getObject();
-        if (duv->Visibility.getValue() != visible) {
-            duv->Visibility.setValue(visible);
-        }
-        if (base->Visibility.getValue() == visible) {
-            base->Visibility.setValue(!visible);
-        }
-    }
-}
-
-void TaskDressUpParameters::hideObject()
-{
-    setDressUpVisibility(false);
-}
-
-void TaskDressUpParameters::showObject()
-{
-    setDressUpVisibility(true);
+        DressUpView->PreviewColor.setValue(1.0F, 0.0F, 1.0F);
 }
 
 ViewProviderDressUp* TaskDressUpParameters::getDressUpView() const
@@ -427,16 +401,12 @@ void TaskDressUpParameters::setSelectionMode(selectionModes mode)
     setButtons(mode);
 
     if (mode == none) {
-        showObject();
-
         Gui::Selection().rmvSelectionGate();
 
         // remove any highlights and selections
         DressUpView->highlightReferences(false);
     }
     else {
-        hideObject();
-
         AllowSelectionFlags allow;
         allow.setFlag(AllowSelection::EDGE, allowEdges);
         allow.setFlag(AllowSelection::FACE, allowFaces);

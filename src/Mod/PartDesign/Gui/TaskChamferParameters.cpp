@@ -339,6 +339,7 @@ TaskDlgChamferParameters::TaskDlgChamferParameters(ViewProviderChamfer* DressUpV
     parameter = new TaskChamferParameters(DressUpView);
 
     Content.push_back(parameter);
+    Content.push_back(preview);
 }
 
 TaskDlgChamferParameters::~TaskDlgChamferParameters() = default;
@@ -349,7 +350,7 @@ bool TaskDlgChamferParameters::accept()
 {
     auto obj = getObject();
     if (!obj->isError()) {
-        parameter->showObject();
+        getViewObject()->showPreviousFeature(false);
     }
 
     parameter->apply();
