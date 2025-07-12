@@ -199,6 +199,9 @@ void ConstraintToAttachment(Sketcher::GeoElementId element,
                             double distance,
                             App::DocumentObject* obj);
 
+void ConstraintLineByAngle(int geoId, double angle, App::DocumentObject* obj);
+void Constraint2LinesByAngle(int geoId1, int geoId2, double angle, App::DocumentObject* obj);
+
 // convenience functions for cursor coordinates
 bool hideUnits();
 bool showCursorCoords();

@@ -673,28 +673,7 @@ void DSHLineController::addConstraints()
     };
 
     auto constraintp4angle = [&]() {
-        using std::numbers::pi;
-
-        double angle = Base::toRadians(p4);
-        if (fabs(angle - pi) < Precision::Confusion() || fabs(angle + pi) < Precision::Confusion()
-            || fabs(angle) < Precision::Confusion()) {
-            Gui::cmdAppObjectArgs(obj,
-                                  "addConstraint(Sketcher.Constraint('Horizontal',%d)) ",
-                                  firstCurve);
-        }
-        else if (fabs(angle - pi / 2) < Precision::Confusion()
-                 || fabs(angle + pi / 2) < Precision::Confusion()) {
-            Gui::cmdAppObjectArgs(obj,
-                                  "addConstraint(Sketcher.Constraint('Vertical',%d)) ",
-                                  firstCurve);
-        }
-        else {
-            Gui::cmdAppObjectArgs(obj,
-                                  "addConstraint(Sketcher.Constraint('Angle',%d,%d,%f)) ",
-                                  Sketcher::GeoEnum::HAxis,
-                                  firstCurve,
-                                  angle);
-        }
+        ConstraintLineByAngle(firstCurve, Base::toRadians(p4), obj);
     };
 
     auto constraintp4y = [&]() {
