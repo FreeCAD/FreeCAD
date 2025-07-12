@@ -184,6 +184,51 @@ private:
     Handle(Geom_CartesianPoint) myPoint;
 };
 
+class PartExport GeomNote : public Geometry
+{
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
+public:
+    GeomNote();
+    GeomNote(const GeomNote& other);
+    explicit GeomNote(const Base::Vector3d&);
+    GeomNote(const Base::Vector3d& p, const std::string& txt);
+    ~GeomNote() override;
+    Geometry* copy() const override;
+    TopoDS_Shape toShape() const override;
+    void copyFrom(const GeomNote& other);
+
+    // Persistence implementer ---------------------
+    void Save(Base::Writer &writer) const override;
+    void Restore(Base::XMLReader &reader) override;
+
+    // Base implementer ----------------------------
+    PyObject* getPyObject() override;
+
+    bool isSame(const Geometry& other, double tol, double atol) const override;
+    const Handle(Geom_Geometry)& handle() const override;
+
+    // Getters/Setters
+    Base::Vector3d getPosition() const;
+    void setPosition(const Base::Vector3d& p);
+
+    std::string getText() const;
+    void setText(const std::string& t);
+
+    double getFontSize() const;
+    void setFontSize(double fs);
+
+    const float* getColor() const;
+    void setColor(const float rgba[4]);
+
+private:
+    Base::Vector3d position;
+    std::string text;
+    double fontSize;
+    float color[4];
+private:
+    Handle(Geom_Geometry) myNote;
+};
+
 class GeomBSplineCurve;
 class GeomLine;
 class GeomLineSegment;

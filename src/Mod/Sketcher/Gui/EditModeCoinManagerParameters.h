@@ -185,6 +185,14 @@ struct GeometryLayerNodes
     std::vector<std::vector<SoCoordinate3*>>& CurvesCoordinate;
     std::vector<std::vector<SoLineSet*>>& CurveSet;
     //@}
+
+    /** @name Note nodes*/
+    //@{
+    std::vector<SoMaterial*>& NotesMaterials;
+    std::vector<SoTranslation*>& NotesCoordinates;
+    std::vector<SoFont*>& NotesFonts;
+    std::vector<SoText2*>& NotesTexts;
+    //@}
 };
 
 /** @brief
@@ -423,6 +431,15 @@ struct EditModeScenegraphNodes
     SoDrawStyle* CurvesExternalDrawStyle;
     SoDrawStyle* CurvesExternalDefiningDrawStyle;
     SoDrawStyle* HiddenCurvesDrawStyle;
+    //@}
+
+    /** @name Note nodes*/
+    //@{
+    SmSwitchboard* NotesGroup;
+    std::vector<SoMaterial*> NotesMaterials;
+    std::vector<SoText2*> NotesTexts;
+    std::vector<SoTranslation*> NotesCoordinates;
+    std::vector<SoFont*> NotesFonts;
     //@}
 
     /** @name Axes nodes*/
