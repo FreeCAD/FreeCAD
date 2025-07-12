@@ -34,6 +34,7 @@ class TestPathToolShapeDoc(unittest.TestCase):
         mock_doc.Objects = [mock_obj]
         mock_obj.Label = "MockObjectLabel"
         mock_obj.Name = "MockObjectName"
+        mock_obj.getTypeIdOfProperty = MagicMock(return_value="App::PropertyString")
         # Ensure mock_doc also has a Name attribute used in tests/code
         mock_doc.Name = "Document_Mock"  # Used in closeDocument calls
 
@@ -91,7 +92,13 @@ class TestPathToolShapeDoc(unittest.TestCase):
         setattr(mock_obj, "Length", "50 mm")
         params = doc.get_object_properties(mock_obj, ["Diameter", "Length"])
         # Expecting just the values, not tuples
-        self.assertEqual(params, {"Diameter": "10 mm", "Length": "50 mm"})
+        self.assertEqual(
+            params,
+            {
+                "Diameter": ("10 mm", "App::PropertyString"),
+                "Length": ("50 mm", "App::PropertyString"),
+            },
+        )
         mock_freecad.Console.PrintWarning.assert_not_called()
 
     def test_doc_get_object_properties_missing(self):
@@ -105,7 +112,13 @@ class TestPathToolShapeDoc(unittest.TestCase):
             delattr(mock_obj, "Height")
         params = doc_patched.get_object_properties(mock_obj, ["Diameter", "Height"])
         # Expecting just the values, not tuples
-        self.assertEqual(params, {"Diameter": "10 mm", "Height": None})  # Height is missing
+        self.assertEqual(
+            params,
+            {
+                "Diameter": ("10 mm", "App::PropertyString"),
+                "Height": (None, "App::PropertyString"),
+            },
+        )  # Height is missing
 
     @patch("FreeCAD.openDocument")
     @patch("FreeCAD.getDocument")
