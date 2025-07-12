@@ -47,6 +47,8 @@
 
 // standard
 #include <cassert>
+#include <cfloat>
+#include <cmath>
 #include <csignal>
 #include <cstdio>
 #include <ctime>
@@ -63,46 +65,99 @@
 #include <sys/types.h>
 #endif
 
-// Streams
-#include <iostream>
-#include <sstream>
-
 // STL
+#include <algorithm>
 #include <bitset>
 #include <chrono>
 #include <exception>
 #include <functional>
+#include <iostream>
 #include <iterator>
 #include <limits>
 #include <list>
 #include <map>
 #include <memory>
+#include <optional>
 #include <queue>
 #include <random>
+#include <limits>
 #include <set>
+#include <sstream>
 #include <stack>
 #include <string>
 #include <tuple>
+#include <type_traits>
 #include <unordered_map>
 #include <unordered_set>
 #include <vector>
 
 // Boost
-#include <boost_graph_adjacency_list.hpp>
-#include <boost/signals2.hpp>
-
-#include <boost/program_options.hpp>
-#include <boost/regex.hpp>
-#include <boost/utility.hpp>
+#include <boost/algorithm/string.hpp>
+#include <boost/algorithm/string/classification.hpp>
+#include <boost/bimap.hpp>
+#include <boost/bimap/set_of.hpp>
+#include <boost/bimap/unordered_set_of.hpp>
 #include <boost/bind/bind.hpp>
 #include <boost/core/ignore_unused.hpp>
 #include <boost/date_time/posix_time/posix_time.hpp>
+#include <boost/dynamic_bitset.hpp>
 #include <boost/filesystem/exception.hpp>
 #include <boost/filesystem/operations.hpp>
 #include <boost/filesystem/path.hpp>
+#include <boost/graph/adjacency_list.hpp>
+#include <boost/graph/graphviz.hpp>
+#include <boost/graph/strong_components.hpp>
+#include <boost/graph/topological_sort.hpp>
+#include <boost/io/ios_state.hpp>
+#include <boost/iostreams/device/array.hpp>
+#include <boost/iostreams/stream.hpp>
+#include <boost/multi_index/hashed_index.hpp>
+#include <boost/multi_index/mem_fun.hpp>
+#include <boost/multi_index/sequenced_index.hpp>
+#include <boost/program_options.hpp>
+#include <boost/regex.hpp>
 #include <boost/scope_exit.hpp>
+#include <boost/signals2.hpp>
+#include <boost/utility.hpp>
 
 #include <fmt/format.h>
+
+#include <Inventor/C/basic.h>
+#include <LibraryVersions.h>
+
+// QtCore
+#include <QByteArray>
+#include <QCoreApplication>
+#include <QCryptographicHash>
+#include <QDir>
+#include <QFile>
+#include <QFileInfo>
+#include <QHash>
+#include <QProcessEnvironment>
+#include <QRegularExpression>
+#include <QSettings>
+#include <QStandardPaths>
+#include <QString>
+#include <QVector>
+
+// Xercesc
+#include <xercesc/dom/DOM.hpp>
+#include <xercesc/dom/DOMImplementation.hpp>
+#include <xercesc/dom/DOMImplementationLS.hpp>
+#include <xercesc/framework/LocalFileFormatTarget.hpp>
+#include <xercesc/framework/LocalFileInputSource.hpp>
+#include <xercesc/framework/MemBufInputSource.hpp>
+#include <xercesc/framework/StdOutFormatTarget.hpp>
+#include <xercesc/parsers/XercesDOMParser.hpp>
+#include <xercesc/sax/ErrorHandler.hpp>
+#include <xercesc/sax/HandlerBase.hpp>
+#include <xercesc/sax/SAXParseException.hpp>
+#include <xercesc/util/PlatformUtils.hpp>
+#include <xercesc/util/XercesVersion.hpp>
+#include <xercesc/util/XMLString.hpp>
+#include <xercesc/util/XMLUni.hpp>
+#include <xercesc/util/XMLUniDefs.hpp>
+
 
 #endif  //_PreComp_
 
