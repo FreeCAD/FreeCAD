@@ -366,6 +366,19 @@ class SketchObject(Part2DObject):
         """
         ...
 
+    def setTextAndFont(self, constraint: Union[int, str], text: str, font: str) -> None:
+        """
+        Set the text and font of a Text constraint.
+
+        setTextAndFont(constraint, text, font)
+
+            Args:
+                constraint (int or str): The index or name of the Text constraint to set.
+                text (str): The text string to display.
+                font (str): The full path to the font file (.ttf, .otf, etc.).
+        """
+        ...
+
     @constmethod
     def getDatum(self, constraint: Union[int, str]) -> Quantity:
         """

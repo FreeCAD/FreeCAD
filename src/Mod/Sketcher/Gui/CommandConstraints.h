@@ -125,5 +125,15 @@ void doEndpointToEdgeTangency(Sketcher::SketchObject* Obj,
 /// notifications
 void notifyConstraintSubstitutions(const QString& message);
 
+
+bool addListConstraint(Sketcher::SketchObject* Obj,
+                       std::vector<Sketcher::GeoElementId>& elts,
+                       const std::string& constraintType,
+                       Base::Vector2d frame_p1 = Base::Vector2d(),
+                       Base::Vector2d frame_p2 = Base::Vector2d(),
+                       bool isTextHeight = true,
+                       const std::string& text = "",
+                       const std::string& font = "");
+
 }  // namespace SketcherGui
 #endif  // SKETCHERGUI_CommandConstraints_H

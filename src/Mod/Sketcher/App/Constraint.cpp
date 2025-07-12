@@ -25,6 +25,7 @@
 #include <QDateTime>
 #include <boost/random.hpp>
 #include <cmath>
+#include <sstream>
 #endif
 
 #include <Base/Reader.h>
@@ -47,18 +48,14 @@ Constraint::Constraint()
     : Value(0.0)
     , Type(None)
     , AlignmentType(Undef)
-    , First(GeoEnum::GeoUndef)
-    , FirstPos(PointPos::none)
-    , Second(GeoEnum::GeoUndef)
-    , SecondPos(PointPos::none)
-    , Third(GeoEnum::GeoUndef)
-    , ThirdPos(PointPos::none)
     , LabelDistance(10.f)
     , LabelPosition(0.f)
     , isDriving(true)
     , InternalAlignmentIndex(-1)
     , isInVirtualSpace(false)
     , isActive(true)
+    , isTextHeight(true)
+    , elements(3)
 {
     // Initialize a random number generator, to avoid Valgrind false positives.
     // The random number generator is not threadsafe so we guard it.  See
@@ -90,12 +87,7 @@ Constraint* Constraint::copy() const
     temp->Type = this->Type;
     temp->AlignmentType = this->AlignmentType;
     temp->Name = this->Name;
-    temp->First = this->First;
-    temp->FirstPos = this->FirstPos;
-    temp->Second = this->Second;
-    temp->SecondPos = this->SecondPos;
-    temp->Third = this->Third;
-    temp->ThirdPos = this->ThirdPos;
+    temp->elements = this->elements;
     temp->LabelDistance = this->LabelDistance;
     temp->LabelPosition = this->LabelPosition;
     temp->isDriving = this->isDriving;
@@ -152,20 +144,33 @@ unsigned int Constraint::getMemSize() const
 void Constraint::Save(Writer& writer) const
 {
     std::string encodeName = encodeAttribute(Name);
+    std::string encodeText = encodeAttribute(Text);
+    std::string encodeFont = encodeAttribute(Font);
     writer.Stream() << writer.ind() << "<Constrain "
                     << "Name=\"" << encodeName << "\" "
+                    << "Text=\"" << encodeText << "\" "
+                    << "Font=\"" << encodeFont << "\" "
                     << "Type=\"" << (int)Type << "\" ";
     if (this->Type == InternalAlignment) {
         writer.Stream() << "InternalAlignmentType=\"" << (int)AlignmentType << "\" "
                         << "InternalAlignmentIndex=\"" << InternalAlignmentIndex << "\" ";
     }
+
+    // FOR FORWARD COMPATIBILITY: Write the new vector-based attribute
+    std::stringstream elements_str;
+    for (const auto& elem : elements) {
+        elements_str << elem.GeoId << "," << elem.posIdAsInt() << ";";
+    }
+    writer.Stream() << "Elements=\"" << elements_str.str() << "\" ";
+
+    // BACKWARD COMPATIBILITY: Write the old attributes First, FirstPos...
     writer.Stream() << "Value=\"" << Value << "\" "
-                    << "First=\"" << First << "\" "
-                    << "FirstPos=\"" << (int)FirstPos << "\" "
-                    << "Second=\"" << Second << "\" "
-                    << "SecondPos=\"" << (int)SecondPos << "\" "
-                    << "Third=\"" << Third << "\" "
-                    << "ThirdPos=\"" << (int)ThirdPos << "\" "
+                    << "First=\"" << getGeoId(0) << "\" "
+                    << "FirstPos=\"" << getPosIdAsInt(0) << "\" "
+                    << "Second=\"" << getGeoId(1) << "\" "
+                    << "SecondPos=\"" << getPosIdAsInt(1) << "\" "
+                    << "Third=\"" << getGeoId(2) << "\" "
+                    << "ThirdPos=\"" << getPosIdAsInt(2) << "\" "
                     << "LabelDistance=\"" << LabelDistance << "\" "
                     << "LabelPosition=\"" << LabelPosition << "\" "
                     << "IsDriving=\"" << (int)isDriving << "\" "
@@ -179,12 +184,60 @@ void Constraint::Restore(XMLReader& reader)
 {
     reader.readElement("Constrain");
     Name = reader.getAttribute<const char*>("Name");
+    Text = reader.hasAttribute("Text") ? reader.getAttribute<const char*>("Text") : "";
+    Font = reader.hasAttribute("Font") ? reader.getAttribute<const char*>("Font") : "";
     Type = reader.getAttribute<ConstraintType>("Type");
     Value = reader.getAttribute<double>("Value");
-    First = reader.getAttribute<long>("First");
-    FirstPos = reader.getAttribute<PointPos>("FirstPos");
-    Second = reader.getAttribute<long>("Second");
-    SecondPos = reader.getAttribute<PointPos>("SecondPos");
+
+
+    elements.clear();
+
+    // --- FORWARD COMPATIBILITY: Check for the new attribute first ---
+    if (reader.hasAttribute("Elements")) {
+        // New format found, parse it
+        std::string elements_str = reader.getAttribute<const char*>("Elements");
+        std::stringstream ss(elements_str);
+        std::string segment;
+
+        // Split the string by the semicolon delimiter
+        while (std::getline(ss, segment, ';')) {
+            if (segment.empty()) {
+                continue;
+            }
+
+            std::stringstream segment_ss(segment);
+            std::string id_str, pos_str;
+
+            // Split the segment by the comma delimiter
+            if (std::getline(segment_ss, id_str, ',') && std::getline(segment_ss, pos_str)) {
+                int geoId = std::stoi(id_str);
+                PointPos pos = (PointPos)std::stoi(pos_str);
+                elements.emplace_back(geoId, pos);
+            }
+        }
+    }
+    else {
+        // --- FALLBACK: Old file, Read the old format ---
+        int firstId = reader.getAttribute<long>("First");
+        PointPos firstPos = reader.getAttribute<PointPos>("FirstPos");
+        if (firstId != GeoEnum::GeoUndef) {
+            elements.emplace_back(firstId, firstPos);
+        }
+
+        int secondId = reader.getAttribute<long>("Second");
+        PointPos secondPos = reader.getAttribute<PointPos>("SecondPos");
+        if (secondId != GeoEnum::GeoUndef) {
+            elements.emplace_back(secondId, secondPos);
+        }
+
+        if (reader.hasAttribute("Third")) {
+            int thirdId = reader.getAttribute<long>("Third");
+            PointPos thirdPos = reader.getAttribute<PointPos>("ThirdPos");
+            if (thirdId != GeoEnum::GeoUndef) {
+                elements.emplace_back(thirdId, thirdPos);
+            }
+        }
+    }
 
     if (this->Type == InternalAlignment) {
         AlignmentType = reader.getAttribute<InternalAlignmentType>("InternalAlignmentType");
@@ -195,12 +248,6 @@ void Constraint::Restore(XMLReader& reader)
     }
     else {
         AlignmentType = Undef;
-    }
-
-    // read the third geo group if present
-    if (reader.hasAttribute("Third")) {
-        Third = reader.getAttribute<long>("Third");
-        ThirdPos = reader.getAttribute<PointPos>("ThirdPos");
     }
 
     // Read the distance a constraint label has been moved
@@ -227,14 +274,10 @@ void Constraint::Restore(XMLReader& reader)
 
 void Constraint::substituteIndex(int fromGeoId, int toGeoId)
 {
-    if (this->First == fromGeoId) {
-        this->First = toGeoId;
-    }
-    if (this->Second == fromGeoId) {
-        this->Second = toGeoId;
-    }
-    if (this->Third == fromGeoId) {
-        this->Third = toGeoId;
+    for (auto& elt : elements) {
+        if (elt.GeoId == fromGeoId) {
+            elt.GeoId = toGeoId;
+        }
     }
 }
 
@@ -243,17 +286,11 @@ void Constraint::substituteIndexAndPos(int fromGeoId,
                                        int toGeoId,
                                        PointPos toPosId)
 {
-    if (this->First == fromGeoId && this->FirstPos == fromPosId) {
-        this->First = toGeoId;
-        this->FirstPos = toPosId;
-    }
-    if (this->Second == fromGeoId && this->SecondPos == fromPosId) {
-        this->Second = toGeoId;
-        this->SecondPos = toPosId;
-    }
-    if (this->Third == fromGeoId && this->ThirdPos == fromPosId) {
-        this->Third = toGeoId;
-        this->ThirdPos = toPosId;
+    for (auto& elt : elements) {
+        if (elt.GeoId == fromGeoId && elt.Pos == fromPosId) {
+            elt.GeoId = toGeoId;
+            elt.Pos = toPosId;
+        }
     }
 }
 
@@ -265,4 +302,96 @@ std::string Constraint::typeToString(ConstraintType type)
 std::string Constraint::internalAlignmentTypeToString(InternalAlignmentType alignment)
 {
     return internalAlignmentType2str[alignment];
+}
+
+GeoElementId Constraint::getElement(int index) const
+{
+    return hasElement(index) ? elements[index] : GeoElementId();
+}
+
+int Constraint::getGeoId(int index) const
+{
+    return hasElement(index) ? elements[index].GeoId : GeoEnum::GeoUndef;
+}
+
+PointPos Constraint::getPosId(int index) const
+{
+    return hasElement(index) ? elements[index].Pos : PointPos::none;
+}
+
+int Constraint::getPosIdAsInt(int index) const
+{
+    return hasElement(index) ? elements[index].posIdAsInt() : 0;
+}
+
+bool Constraint::hasElement(int index) const
+{
+    return index >= 0 && index < elements.size();
+}
+
+bool Constraint::isElementsEmpty() const
+{
+    return elements.empty();
+}
+
+void Constraint::truncateElements(size_t newSize)
+{
+    if (newSize < elements.size()) {
+        elements.resize(newSize);
+    }
+}
+
+void Constraint::pushBackElement(GeoElementId elt)
+{
+    elements.push_back(elt);
+}
+
+void Constraint::setElement(int index, GeoElementId elt)
+{
+    if (ensureElementExists(index)) {
+        elements[index] = elt;
+    }
+}
+
+void Constraint::setGeoId(int index, int geoId)
+{
+    if (ensureElementExists(index)) {
+        elements[index].GeoId = geoId;
+    }
+}
+
+void Constraint::setPosId(int index, PointPos pos)
+{
+    if (ensureElementExists(index)) {
+        elements[index].Pos = pos;
+    }
+}
+
+void Constraint::setPosId(int index, int pos)
+{
+    if (ensureElementExists(index)) {
+        elements[index].Pos = static_cast<PointPos>(pos);
+    }
+}
+
+bool Constraint::ensureElementExists(int index)
+{
+    if (index < 0) {
+        return false;  // Indicate failure for an invalid index
+    }
+    if (index >= elements.size()) {
+        elements.resize(index + 1);
+    }
+    return true;
+}
+
+
+void Constraint::swapElements(int index1, int index2)
+{
+    if (index1 == index2) {
+        return;
+    }
+    if (ensureElementExists(index1) && ensureElementExists(index2)) {
+        std::swap(elements[index1], elements[index2]);
+    }
 }

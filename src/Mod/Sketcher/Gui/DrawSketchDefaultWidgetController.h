@@ -51,6 +51,12 @@ class WidgetComboboxes: public ControlAmount<sizes...>
 {
 };
 
+/** @brief Type encapsulating the number of line edits in the widget*/
+template<int... sizes>  // Initial sizes for each mode
+class WidgetLineEdits: public ControlAmount<sizes...>
+{
+};
+
 namespace sp = std::placeholders;
 
 /** @brief Class defining a handler controller making use of parameters provided by a widget of type
@@ -72,6 +78,7 @@ template<typename HandlerT,           // The name of the actual handler of the t
          typename WidgetParametersT,  // The number of parameter spinboxes in the default widget
          typename WidgetCheckboxesT,  // The number of checkboxes in the default widget
          typename WidgetComboboxesT,  // The number of comboboxes in the default widget
+         typename WidgetLineEditsT,   // The number of line edits in the default widget
          typename ConstructionMethodT = ConstructionMethods::DefaultConstructionMethod,
          bool PFirstComboboxIsConstructionMethod =
              false>  // The handler template or class having this as inner class
@@ -95,6 +102,7 @@ private:
     int nParameter = WidgetParametersT::defaultMethodSize();
     int nCheckbox = WidgetCheckboxesT::defaultMethodSize();
     int nCombobox = WidgetComboboxesT::defaultMethodSize();
+    int nLineEdit = WidgetLineEditsT::defaultMethodSize();
 
     SketcherToolDefaultWidget* toolWidget;
 
@@ -104,12 +112,14 @@ private:
     Connection connectionParameterValueChanged;
     Connection connectionCheckboxCheckedChanged;
     Connection connectionComboboxSelectionChanged;
+    Connection connectionLineEditTextChanged;
 
     /** @name Named indices for controls of the default widget (SketcherToolDefaultWidget) */
     //@{
     using WParameter = SketcherToolDefaultWidget::Parameter;
     using WCheckbox = SketcherToolDefaultWidget::Checkbox;
     using WCombobox = SketcherToolDefaultWidget::Combobox;
+    using WLineEdit = SketcherToolDefaultWidget::LineEdit;
     //@}
 
     using SelectMode = SelectModeT;
@@ -132,6 +142,7 @@ public:
         connectionParameterValueChanged.disconnect();
         connectionCheckboxCheckedChanged.disconnect();
         connectionComboboxSelectionChanged.disconnect();
+        connectionLineEditTextChanged.disconnect();
     }
 
     /** @name functions NOT intended for specialisation offering specialisation interface for
@@ -183,6 +194,24 @@ public:
     }
     //@}
 
+    /** boost slot triggering when a line edit has changed in the widget
+     * It is intended to remote control the DrawSketchDefaultWidgetHandler
+     */
+    void lineEditTextChanged(int lineeditindex, const QString& value)
+    {
+        adaptDrawingToLineEditTextChange(lineeditindex, value);  // specialisation interface
+
+        // Temporarily disable auto-passing focus to OVP.
+        // This prevents the focus from being stolen from the LineEdit when the text changes.
+        ControllerBase::focusAutoPassing = false;
+
+        ControllerBase::finishControlsChanged();
+
+        // Restore the default behavior.
+        ControllerBase::focusAutoPassing = true;
+    }
+    //@}
+
     /** @name Specialisation Interface */
     /** These functions offer a specialisation interface. Non-virtual functions are specific to
      * this controller. Virtual functions may depend on input from a derived controller, and thus
@@ -206,14 +235,19 @@ public:
     /// Change DSH to reflect a comboBox changed in the widget
     void adaptDrawingToComboboxChange(int comboboxindex, [[maybe_unused]] int value)
     {
-        Q_UNUSED(comboboxindex);
-
         if constexpr (PFirstComboboxIsConstructionMethod == true) {
 
             if (comboboxindex == WCombobox::FirstCombo && handler->ConstructionMethodsCount() > 1) {
                 handler->setConstructionMethod(static_cast<ConstructionMethodT>(value));
             }
         }
+    }
+
+    /// Change DSH to reflect a line edit changed in the widget
+    void adaptDrawingToLineEditTextChange(int lineeditindex, const QString& value)
+    {
+        Q_UNUSED(lineeditindex);
+        Q_UNUSED(value);
     }
 
     /// function to create constraints based on widget information.
@@ -307,14 +341,19 @@ protected:
     void setFocusToParameter(unsigned int parameterindex)
     {
         // To be able to cycle through OVP and widget, we use a parameter index that goes from
-        // 0 to (onViewParameters.size() + nParameter)
+        // 0 to (onViewParameters.size() + nParameter + nLineEdit)
         if (!ControllerBase::setFocusToOnViewParameter(parameterindex)) {
-            parameterindex = parameterindex - ControllerBase::onViewParameters.size();
+            unsigned int widgetIndex = parameterindex - ControllerBase::onViewParameters.size();
 
-            if (parameterindex < static_cast<unsigned int>(nParameter)) {
-                toolWidget->setParameterFocus(parameterindex);
-                ControllerBase::parameterWithFocus =
-                    ControllerBase::onViewParameters.size() + parameterindex;
+            if (widgetIndex < static_cast<unsigned int>(nParameter)) {
+                toolWidget->setParameterFocus(widgetIndex);
+                ControllerBase::parameterWithFocus = parameterindex;
+            }
+            // Check if the index corresponds to a LineEdit
+            else if (widgetIndex < static_cast<unsigned int>(nParameter + nLineEdit)) {
+                unsigned int lineEditIndex = widgetIndex - nParameter;
+                toolWidget->setLineEditFocus(lineEditIndex);
+                ControllerBase::parameterWithFocus = parameterindex;
             }
         }
     }
@@ -324,7 +363,8 @@ protected:
     {
         unsigned int index = ControllerBase::parameterWithFocus + 1;
 
-        if (index >= ControllerBase::onViewParameters.size() + nParameter) {
+        // The total number of focusable items now includes LineEdits.
+        if (index >= ControllerBase::onViewParameters.size() + nParameter + nLineEdit) {
             index = 0;
         }
 
@@ -337,9 +377,21 @@ protected:
                 }
                 idx++;
             }
+            // Check SpinBoxes
             if (idx < ControllerBase::onViewParameters.size() + nParameter) {
-                setFocusToParameter(idx);
-                return true;
+                if (nParameter > 0) {
+                    setFocusToParameter(idx);
+                    return true;
+                }
+                // If no spinboxes, update index to check line edits
+                idx = ControllerBase::onViewParameters.size() + nParameter;
+            }
+            // Check LineEdits
+            if (idx < ControllerBase::onViewParameters.size() + nParameter + nLineEdit) {
+                if (nLineEdit > 0) {
+                    setFocusToParameter(idx);
+                    return true;
+                }
             }
             return false;
         };
@@ -383,6 +435,12 @@ private:
                       this,
                       sp::_1,
                       sp::_2));
+
+        connectionLineEditTextChanged = toolWidget->registerLineEditTextChanged(
+            std::bind(&DrawSketchDefaultWidgetController::lineEditTextChanged,
+                      this,
+                      sp::_1,
+                      sp::_2));
     }
 
     /// Resets the widget
@@ -393,14 +451,17 @@ private:
         boost::signals2::shared_connection_block parameter_block(connectionParameterValueChanged);
         boost::signals2::shared_connection_block checkbox_block(connectionCheckboxCheckedChanged);
         boost::signals2::shared_connection_block combobox_block(connectionComboboxSelectionChanged);
+        boost::signals2::shared_connection_block lineedit_block(connectionLineEditTextChanged);
 
         nParameter = WidgetParametersT::size(handler->constructionMethod());
         nCheckbox = WidgetCheckboxesT::size(handler->constructionMethod());
         nCombobox = WidgetComboboxesT::size(handler->constructionMethod());
+        nLineEdit = WidgetLineEditsT::size(handler->constructionMethod());
 
         toolWidget->initNParameters(nParameter, ControllerBase::getKeyManager());
         toolWidget->initNCheckboxes(nCheckbox);
         toolWidget->initNComboboxes(nCombobox);
+        toolWidget->initNLineEdits(nLineEdit);
 
         configureToolWidget();
 

@@ -864,6 +864,7 @@ std::list<Gui::InputHint> DrawSketchHandlerLineSet::lookupLineSetHints(int mode)
 
     return (it != lineSetHintTable.end()) ? it->hints : std::list<Gui::InputHint> {};
 }
+
 }  // namespace SketcherGui
 
 
