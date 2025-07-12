@@ -63,7 +63,7 @@ struct MillSimulationState
 class MillSimulation: private MillSimulationState
 {
 public:
-    MillSimulation();
+    MillSimulation(const SoCamera& camera);
     ~MillSimulation();
     void ClearMillPathSegments();
     void Clear();
@@ -111,7 +111,8 @@ protected:
     EndMill* GetTool(int tool);
     void RemoveTool(int toolId);
 
-protected:
+    // protected:
+public:
     std::vector<EndMill*> mToolTable;
     GCodeParser mCodeParser;
     GuiDisplay guiDisplay;

@@ -31,6 +31,8 @@
 #include <random>
 #include <algorithm>
 
+class SoCamera;
+
 namespace MillSim
 {
 
@@ -44,6 +46,7 @@ struct Point3D
 class SimDisplay
 {
 public:
+    SimDisplay(const SoCamera& camera);
     ~SimDisplay();
     void InitGL();
     void CleanGL();
@@ -94,6 +97,8 @@ protected:
     vec3 ambientCol = {0.2f, 0.2f, 0.25f};
     vec4 pathLineColor = {0.0f, 0.9f, 0.0f, 1.0};
     vec3 pathLineColorPassed = {0.9f, 0.3f, 0.3f};
+
+    const SoCamera& mCamera;
 
     vec3 eye = {0, 100, 40};
     vec3 target = {0, 0, 0};
