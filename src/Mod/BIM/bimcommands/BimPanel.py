@@ -478,7 +478,7 @@ class Arch_PanelGroup:
         return tuple(['Arch_Panel','Arch_Panel_Cut','Arch_Panel_Sheet','Arch_Nest'])
 
     def GetResources(self):
-        return { 'MenuText': QT_TRANSLATE_NOOP("Arch_PanelTools",'Panel tools'),
+        return { 'MenuText': QT_TRANSLATE_NOOP("Arch_PanelTools",'Panel Tools'),
                  'ToolTip': QT_TRANSLATE_NOOP("Arch_PanelTools",'Panel tools')
                }
 
