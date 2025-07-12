@@ -227,12 +227,10 @@ void ViewProvider::eventCallback(void * ud, SoEventCallback * node)
                         // react only on key release
                         // Let first selection mode terminate
                         Gui::Document* doc = Gui::Application::Instance->activeDocument();
-                        auto view = static_cast<Gui::View3DInventor*>(doc->getActiveView());
-                        if (view)
-                        {
+                        const auto view = qobject_cast<Gui::View3DInventor*>(doc->getActiveView());
+                        if (view) {
                             Gui::View3DInventorViewer* viewer = view->getViewer();
-                            if (viewer->isSelecting())
-                            {
+                            if (viewer->isSelecting()) {
                                 return;
                             }
                         }
