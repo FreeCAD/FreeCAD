@@ -99,7 +99,7 @@ class SectionCutTestCases(unittest.TestCase):
             button = box.button(QtWidgets.QDialogButtonBox.Close)
             button.click()
         else:
-            print ("No Section Cutting panel found")
+            print ("No section cutting panel found")
 
     def tearDown(self):
         FreeCAD.closeDocument("SectionCut")

@@ -64,14 +64,14 @@ PROPERTY_SOURCE(PartGui::ViewProvider2DObjectGrid, PartGui::ViewProvider2DObject
 
 ViewProvider2DObjectGrid::ViewProvider2DObjectGrid()
 {
-    ADD_PROPERTY_TYPE(ShowGrid,(false),"Grid",(App::PropertyType)(App::Prop_None),"Switch the grid on/off");
+    ADD_PROPERTY_TYPE(ShowGrid,(false),"Grid",(App::PropertyType)(App::Prop_None),"Toggle grid visibility");
     ADD_PROPERTY_TYPE(ShowOnlyInEditMode,(true),"Grid",(App::PropertyType)(App::Prop_None),"Show only while in edit mode");
     ADD_PROPERTY_TYPE(GridSize,(10.0),"Grid",(App::PropertyType)(App::Prop_None),"Gap size of the grid");
     ADD_PROPERTY_TYPE(GridStyle,(0L),"Grid",(App::PropertyType)(App::Prop_None),"Appearance style of the grid");
-    ADD_PROPERTY_TYPE(TightGrid,(true),"Grid",(App::PropertyType)(App::Prop_None),"Switch the tight grid mode on/off");
-    ADD_PROPERTY_TYPE(GridSnap,(false),"Grid",(App::PropertyType)(App::Prop_None),"Switch the grid snap on/off");
-    ADD_PROPERTY_TYPE(GridAutoSize,(true),"Grid",(App::PropertyType)(App::Prop_Hidden),"Autosize grid based on shape boundbox");
-    ADD_PROPERTY_TYPE(maxNumberOfLines,(10000),"Grid",(App::PropertyType)(App::Prop_None),"Maximum Number of Lines in grid");
+    ADD_PROPERTY_TYPE(TightGrid,(true),"Grid",(App::PropertyType)(App::Prop_None),"Toggle tight grid mode");
+    ADD_PROPERTY_TYPE(GridSnap,(false),"Grid",(App::PropertyType)(App::Prop_None),"Toggle grid snapping");
+    ADD_PROPERTY_TYPE(GridAutoSize,(true),"Grid",(App::PropertyType)(App::Prop_Hidden),"Auto-size grid based on shape boundary box");
+    ADD_PROPERTY_TYPE(maxNumberOfLines,(10000),"Grid",(App::PropertyType)(App::Prop_None),"Maximum number of lines in grid");
 
     GridRoot = new SoAnnotation();
     GridRoot->ref();
@@ -172,7 +172,7 @@ SoSeparator* ViewProvider2DObjectGrid::createGrid()
     int lines = vlines + hlines;
 
     if (lines > maxNumberOfLines.getValue()) {
-        Base::Console().warning("Grid Disabled: Requested number of lines %d is larger than the maximum configured of %d\n."
+        Base::Console().warning("Grid disabled: requested number of lines %d is larger than the maximum configured of %d\n."
                                 "Either increase the 'GridSize' property to a more reasonable value (recommended) or increase the 'maxNumberOfLines' property.\n", lines, maxNumberOfLines.getValue());
         parent->addChild(vts);
         parent->addChild(grid);
@@ -328,9 +328,9 @@ ViewProvider2DObject::ViewProvider2DObject()
 {
     ADD_PROPERTY_TYPE(ShowPlane,
                       (false),
-                      "Display Options",
+                      "Display options",
                       (App::PropertyType)(App::Prop_None),
-                      "If true, plane related with object is additionally rendered.");
+                      "If true, plane related with object is additionally rendered");
 }
 
 ViewProvider2DObject::~ViewProvider2DObject() = default;
