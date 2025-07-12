@@ -131,7 +131,7 @@ class CommandPathPost:
             if dlg.exec_():
                 filename = dlg.selectedFiles()[0]
                 Path.Log.debug(filename)
-                with open(filename, "w") as f:
+                with open(filename, "w", encoding="utf-8") as f:
                     f.write(gcode)
             else:
                 return
@@ -140,7 +140,7 @@ class CommandPathPost:
             while os.path.isfile(filename):
                 base, ext = os.path.splitext(filename)
                 filename = f"{base}-1{ext}"
-            with open(filename, "w") as f:
+            with open(filename, "w", encoding="utf-8") as f:
                 f.write(gcode)
 
         elif policy == "Open File Dialog on conflict":
@@ -153,16 +153,16 @@ class CommandPathPost:
                 if dlg.exec_():
                     filename = dlg.selectedFiles()[0]
                     Path.Log.debug(filename)
-                    with open(filename, "w") as f:
+                    with open(filename, "w", encoding="utf-8") as f:
                         f.write(gcode)
                 else:
                     return
             else:
-                with open(filename, "w") as f:
+                with open(filename, "w", encoding="utf-8") as f:
                     f.write(gcode)
 
         else:  # Overwrite
-            with open(filename, "w") as f:
+            with open(filename, "w", encoding="utf-8") as f:
                 f.write(gcode)
 
         FreeCAD.Console.PrintMessage(f"File written to {filename}\n")
