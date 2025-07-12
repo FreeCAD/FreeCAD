@@ -46,6 +46,7 @@
 #include "ExpressionBinding.h"
 #include "BitmapFactory.h"
 #include "ViewProviderDocumentObject.h"
+#include "MainWindow.h"
 
 using namespace App;
 using namespace Gui::Dialog;
