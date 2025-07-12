@@ -26,6 +26,7 @@
 #include "TaskExtrudeParameters.h"
 #include "ViewProviderPad.h"
 
+class QComboBox;
 
 namespace App {
 class Property;
@@ -50,8 +51,9 @@ public:
 
 private:
     void onModeChanged(int index) override;
-    void translateModeList(int index) override;
-    void updateUI(int index) override;
+    void onMode2Changed(int index) override;
+    void translateModeList(QComboBox* box, int index) override;
+    void updateUI(Sides side) override;
 };
 
 /// simulation dialog for the TaskView
