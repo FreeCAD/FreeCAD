@@ -934,7 +934,7 @@ IndexedName ElementMap::complexFind(const MappedName& name) const
 
     if(originalName[0] == '#' || originalName[0] == ';' && originalName[1] == '#') {
         FC_WARN("Complex find does not support the string hasher!");
-        return foundIndexedName;
+        return IndexedName();
     }
     
     std::string loopCheckName; // also called string2
@@ -1094,6 +1094,7 @@ IndexedName ElementMap::find(const MappedName& name, ElementIDRefs* sids) const
         }
 
         // return complexFind(name);
+        return IndexedName();
     }
 
     if (sids) {
