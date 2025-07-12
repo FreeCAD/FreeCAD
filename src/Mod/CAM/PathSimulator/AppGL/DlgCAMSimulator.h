@@ -40,6 +40,8 @@
 #include <QMouseEvent>
 #include <QOpenGLContext>
 
+class SoCamera;
+
 namespace MillSim
 {
 // use short declaration as using 'include' causes a header loop
@@ -80,7 +82,9 @@ class DlgCAMSimulator: public QOpenGLWidget, public QOpenGLExtraFunctions
     Q_OBJECT
 
 public:
-    explicit DlgCAMSimulator(ViewCAMSimulator& view, QWidget* parent = nullptr);
+    explicit DlgCAMSimulator(ViewCAMSimulator& view,
+                             const SoCamera& camera,
+                             QWidget* parent = nullptr);
     ~DlgCAMSimulator() override;
 
     void cloneFrom(const DlgCAMSimulator& from);
@@ -97,8 +101,12 @@ public:
                  float diameter,
                  float resolution);
 
-    void setStockShape(const Part::TopoShape& tshape, float resolution);
-    void setBaseShape(const Part::TopoShape& tshape, float resolution);
+    void setStockShape(const Part::TopoShape& shape, float resolution);
+    void setBaseShape(const Part::TopoShape& shape, float resolution);
+
+Q_SIGNALS:
+    void stockChanged(const Part::TopoShape& shape);
+    void baseChanged(const Part::TopoShape& shape);
 
 protected:
     void mouseMoveEvent(QMouseEvent* ev) override;

@@ -30,7 +30,8 @@
 namespace MillSim
 {
 
-MillSimulation::MillSimulation()
+MillSimulation::MillSimulation(const SoCamera& camera)
+    : simDisplay(camera)
 {
     mCurMotion = {eNop, -1, 0, 0, 0, 0, 0, 0, 0, '\0', 0.0};
     guiDisplay.SetMillSimulator(this);
@@ -407,7 +408,6 @@ void MillSimulation::Render()
 
 void MillSimulation::ProcessSim(unsigned int time_ms)
 {
-
     static int ancient = 0;
     static unsigned int last = 0;
     static unsigned int msec = 0xFFFFFFFF;
@@ -429,7 +429,7 @@ void MillSimulation::ProcessSim(unsigned int time_ms)
         fps = 0;
     }
 
-    if (mSimPlaying || mSingleStep) {
+    if (true /* mSimPlaying || mSingleStep */) {
         SimNext();
         mSingleStep = false;
     }
