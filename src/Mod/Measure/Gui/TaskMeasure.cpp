@@ -223,7 +223,8 @@ Measure::MeasureBase* TaskMeasure::createObject(const App::MeasureType* measureT
         auto pyMeasureClass = measureType->pythonClass;
 
         // Create a MeasurePython instance
-        _mMeasureObject = doc->addObject<Measure::MeasurePython>(measureType->label.c_str());
+        auto featurePython = doc->addObject("Measure::MeasurePython", measureType->label.c_str());
+        _mMeasureObject = dynamic_cast<Measure::MeasureBase*>(featurePython);
 
         // Create an instance of the pyMeasureClass, the classe's initializer sets the object as
         // proxy
