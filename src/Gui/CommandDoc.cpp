@@ -31,6 +31,9 @@
 # include <QMessageBox>
 # include <QTextStream>
 # include <QTreeWidgetItem>
+# include <algorithm>
+# include <fstream>
+# include <sstream>
 #endif
 
 #include <boost/regex.hpp>
@@ -970,6 +973,10 @@ bool StdCmdPrintPdf::isActive()
 {
     return getGuiApplication()->sendHasMsgToActiveView("PrintPdf");
 }
+
+
+
+
 
 //===========================================================================
 // Std_Quit
