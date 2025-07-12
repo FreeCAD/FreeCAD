@@ -186,29 +186,29 @@ public:
             bool extended = hGrp->GetBool("ExtendedConstraintInformation", false);
 
             if (extended) {
-                if (constraint->Second == Sketcher::GeoEnum::GeoUndef) {
+                if (constraint->getGeoId(1) == Sketcher::GeoEnum::GeoUndef) {
                     name = QStringLiteral("%1 [(%2,%3)]")
                                .arg(name)
-                               .arg(constraint->First)
-                               .arg(static_cast<int>(constraint->FirstPos));
+                               .arg(constraint->getGeoId(0))
+                               .arg(static_cast<int>(constraint->getPosId(0)));
                 }
-                else if (constraint->Third == Sketcher::GeoEnum::GeoUndef) {
+                else if (constraint->getGeoId(2) == Sketcher::GeoEnum::GeoUndef) {
                     name = QStringLiteral("%1 [(%2,%3),(%4,%5)]")
                                .arg(name)
-                               .arg(constraint->First)
-                               .arg(static_cast<int>(constraint->FirstPos))
-                               .arg(constraint->Second)
-                               .arg(static_cast<int>(constraint->SecondPos));
+                               .arg(constraint->getGeoId(0))
+                               .arg(static_cast<int>(constraint->getPosId(0)))
+                               .arg(constraint->getGeoId(1))
+                               .arg(static_cast<int>(constraint->getPosId(1)));
                 }
                 else {
                     name = QStringLiteral("%1 [(%2,%3),(%4,%5),(%6,%7)]")
                                .arg(name)
-                               .arg(constraint->First)
-                               .arg(static_cast<int>(constraint->FirstPos))
-                               .arg(constraint->Second)
-                               .arg(static_cast<int>(constraint->SecondPos))
-                               .arg(constraint->Third)
-                               .arg(static_cast<int>(constraint->ThirdPos));
+                               .arg(constraint->getGeoId(0))
+                               .arg(static_cast<int>(constraint->getPosId(0)))
+                               .arg(constraint->getGeoId(1))
+                               .arg(static_cast<int>(constraint->getPosId(1)))
+                               .arg(constraint->getGeoId(2))
+                               .arg(static_cast<int>(constraint->getPosId(2)));
                 }
             }
 
@@ -388,8 +388,8 @@ public:
             case Sketcher::Weight:
             case Sketcher::Angle:
             case Sketcher::SnellsLaw:
-                return (constraint->First >= 0 || constraint->Second >= 0
-                        || constraint->Third >= 0);
+                return (constraint->getGeoId(0) >= 0 || constraint->getGeoId(1) >= 0
+                        || constraint->getGeoId(2) >= 0);
             case Sketcher::InternalAlignment:
                 return true;
         }
@@ -1312,7 +1312,7 @@ void TaskSketcherConstraints::updateAssociatedConstraintsFilter()
             for (std::vector<Sketcher::Constraint*>::const_iterator it = vals.begin();
                  it != vals.end();
                  ++it, ++i) {
-                if ((*it)->First == GeoId || (*it)->Second == GeoId || (*it)->Third == GeoId) {
+                if ((*it)->getGeoId(0) == GeoId || (*it)->getGeoId(1) == GeoId || (*it)->getGeoId(2) == GeoId) {
                     associatedConstraintsFilter.push_back(i);
                 }
             }
