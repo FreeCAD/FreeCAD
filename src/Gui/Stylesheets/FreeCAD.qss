@@ -127,10 +127,6 @@ Gui--MDIView QScrollArea{
 This causes much load time. DONT USE "QWidget { " This causes a lot of lag.
 */
 
-/* QWidget::item:selected {
-  background-color: @UserHighlight1Color;
-}
- */
 
 
 
@@ -662,19 +658,23 @@ https://doc.qt.io/qt-5/stylesheet-examples.html#customizing-qscrollbar
 --------------------------------------------------------------------------- */
 
 QScrollBar:horizontal {
-  border-right: 14px solid qlineargradient(x1:0, y1:0, x2:1, y2:0, stop:0 @ScrollbarBackgroundColor, stop:0.1 @ButtonTopBackgroundColor , stop:0.9 @ButtonTopBackgroundColor , stop:1 @ScrollbarBackgroundColor);
-  border-left: 14px solid qlineargradient(x1:1, y1:0, x2:0, y2:0, stop:0 @ScrollbarBackgroundColor, stop:0.1 @ButtonTopBackgroundColor , stop:0.9 @ButtonTopBackgroundColor , stop:1 @ScrollbarBackgroundColor);
+  border-right: 14px solid @GeneralBorderColor;
+  border-left: 14px solid @GeneralBorderColor;
   border-top: 1px solid @GeneralBorderColor;
   border-bottom: 1px solid @GeneralBorderColor;
   background-color: @ScrollbarBackgroundColor;
+  padding: 0;
+  margin: 0;
 }
 
 QScrollBar:vertical {
-  border-top: 14px solid qlineargradient(x1:0, y1:1, x2:0, y2:0, stop:0 @ScrollbarBackgroundColor, stop:0.1 @ButtonTopBackgroundColor , stop:0.9 @ButtonTopBackgroundColor , stop:1 @ScrollbarBackgroundColor);
-  border-bottom: 14px solid qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 @ScrollbarBackgroundColor, stop:0.1 @ButtonTopBackgroundColor , stop:0.9 @ButtonTopBackgroundColor , stop:1 @ScrollbarBackgroundColor);
+  border-top: 14px solid @GeneralBorderColor;
+  border-bottom: 14px solid @GeneralBorderColor;
   border-left: 1px solid @GeneralBorderColor;
   border-right: 1px solid @GeneralBorderColor;
   background-color: @ScrollbarBackgroundColor;
+  padding: 0;
+  margin: 0;
 }
 
 QScrollBar::handle:horizontal {
@@ -701,79 +701,80 @@ QScrollBar::handle:vertical {
   background-color: qlineargradient(x1:0, y1:0, x2:1, y2:0, stop:0 @ButtonTopBackgroundColor, stop:1 @ButtonBottomBackgroundColor);
 }
 
-QScrollBar::handle:vertical:hover {
-  background-color: @GeneralBackgroundHoverColor;
-  border: 1px @ButtonTopBackgroundColor;
-}
-
 QScrollBar::handle:vertical:focus {
   border: 1px solid @UserHighlight1Color;
 }
 
-QScrollBar::add-line:horizontal {
-  margin: 0px 2px 0px 2px;
-  border-image: url(qss:@IconsLocationFolderName/arrow-right-lightgray.svg);
-  height: 10px;
-  width: 10px;
-  subcontrol-position: right;
+QScrollBar::add-line, QScrollBar::sub-line {
+  height: 12px;
+  width: 12px;
   subcontrol-origin: margin;
+  border: 1px solid @GeneralBorderColor;
 }
 
-QScrollBar::add-line:horizontal:hover, QScrollBar::add-line:horizontal:on {
-  border-image: url(qss:@IconsLocationFolderName/arrow-right-@StylesheetIconsColor.svg);
+QScrollBar::handle:hover,
+QScrollBar::add-line:vertical:hover, QScrollBar::sub-line:vertical:hover ,
+QScrollBar::add-line:horizontal:hover, QScrollBar::sub-line:horizontal:hover {
+  background-color: @GeneralBackgroundHoverColor;
 }
 
-QScrollBar::add-line:vertical {
-  margin: 2px 0px 2px 0px;
-  border-image: url(qss:@IconsLocationFolderName/arrow-down-lightgray.svg);
-  height: 10px;
-  width: 10px;
-  subcontrol-position: bottom;
-  subcontrol-origin: margin;
+QScrollBar::right-arrow, QScrollbar::left-arrow, QScrollBar::up-arrow, QScrollBar::down-arrow {
+  margin: 2px;
 }
 
-QScrollBar::add-line:vertical:hover, QScrollBar::add-line:vertical:on {
-  image: url(qss:@IconsLocationFolderName/arrow-down-@StylesheetIconsColor.svg);
-}
-
-QScrollBar::sub-line:horizontal {
-  margin: 0px 2px 0px 2px;
+QScrollBar::left-arrow {
   border-image: url(qss:@IconsLocationFolderName/arrow-left-lightgray.svg);
-  height: 10px;
-  width: 10px;
-  subcontrol-position: left;
-  subcontrol-origin: margin;
 }
 
-QScrollBar::sub-line:horizontal:hover, QScrollBar::sub-line:horizontal:on {
+QScrollBar::right-arrow {
+  border-image: url(qss:@IconsLocationFolderName/arrow-right-lightgray.svg);
+}
+
+QScrollBar::up-arrow {
+  border-image: url(qss:@IconsLocationFolderName/arrow-up-lightgray.svg);
+}
+
+QScrollBar::down-arrow {
+  border-image: url(qss:@IconsLocationFolderName/arrow-down-lightgray.svg);
+}
+
+QScrollBar::left-arrow:hover {
   border-image: url(qss:@IconsLocationFolderName/arrow-left-@StylesheetIconsColor.svg);
 }
 
-QScrollBar::sub-line:vertical {
-  margin: 2px 0px 2px 0px;
-  border-image: url(qss:@IconsLocationFolderName/arrow-up-lightgray.svg);
-  height: 10px;
-  width: 10px;
-  subcontrol-position: top;
-  subcontrol-origin: margin;
+QScrollBar::right-arrow:hover {
+  border-image: url(qss:@IconsLocationFolderName/arrow-right-@StylesheetIconsColor.svg);
 }
 
-QScrollBar::sub-line:vertical:hover, QScrollBar::sub-line:vertical:on {
+QScrollBar::up-arrow:hover {
   border-image: url(qss:@IconsLocationFolderName/arrow-up-@StylesheetIconsColor.svg);
 }
 
-QScrollBar::up-arrow:horizontal, QScrollBar::down-arrow:horizontal {
-  background-color: none;
+QScrollBar::down-arrow:hover {
+  border-image: url(qss:@IconsLocationFolderName/arrow-down-@StylesheetIconsColor.svg);
 }
 
-QScrollBar::up-arrow:vertical, QScrollBar::down-arrow:vertical {
-  background-color: none;
+QScrollBar::add-line:horizontal {
+  background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 @ButtonTopBackgroundColor, stop:1 @ButtonBottomBackgroundColor);
+  subcontrol-position: right;
 }
 
-QScrollBar::add-page:horizontal, QScrollBar::sub-page:horizontal {
-  background-color: none;
+QScrollBar::add-line:vertical {
+  background-color: qlineargradient(x1:0, y1:0, x2:1, y2:0, stop:0 @ButtonTopBackgroundColor, stop:1 @ButtonBottomBackgroundColor);
+  subcontrol-position: bottom;
 }
 
+QScrollBar::sub-line:horizontal {
+  background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 @ButtonTopBackgroundColor, stop:1 @ButtonBottomBackgroundColor);
+  subcontrol-position: left;
+}
+
+QScrollBar::sub-line:vertical {
+  background-color: qlineargradient(x1:0, y1:0, x2:1, y2:0, stop:0 @ButtonTopBackgroundColor, stop:1 @ButtonBottomBackgroundColor);
+  subcontrol-position: top;
+}
+
+QScrollBar::add-page:horizontal, QScrollBar::sub-page:horizontal,
 QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
   background-color: none;
 }
@@ -1435,7 +1436,7 @@ QComboBox::down-arrow:on, QComboBox::down-arrow:hover, QComboBox::down-arrow:foc
 Tasks panel (custom FreeCAD class)
 ==================================================================================================*/
 Gui--PropertyEditor--PropertyEditor {
-  qproperty-groupTextColor:@TextForegroundColor;
+  qproperty-groupTextColor: @TextForegroundColor;
   qproperty-groupBackground: @GeneralAlternateBackgroundColor;
 }
 
@@ -1685,7 +1686,7 @@ QSlider::handle:vertical:focus {
 https://doc.qt.io/qt-5/stylesheet-examples.html#customizing-qlineedit
 
 --------------------------------------------------------------------------- */
-QLineEdit {
+QLineEdit, QTextEdit {
   background-color: @TextEditFieldBackgroundColor;
   padding-top: 2px;
   padding-bottom: 2px;
@@ -1696,20 +1697,16 @@ QLineEdit {
   border-radius: @InputFieldBorderRadius;
 }
 
-QLineEdit:disabled {
+QLineEdit:disabled, QTextEdit:disabled {
   background-color: @GeneralDisabledBackgroundColor;
   color @TextDisabledColor;
 }
 
-QLineEdit:hover {
-
+QLineEdit:focus, QTextEdit:focus {
+  border: 1px solid @UserHighlight1Color;
 }
 
-QLineEdit:focus {
-  border: 2px solid @UserHighlight1Color;
-}
-
-QLineEdit:selected {
+QLineEdit:selected, QTextEdit:selected {
   background-color: @GeneralBackgroundHoverColor;
 }
 
@@ -1724,6 +1721,7 @@ QTabWidget {
 }
 
 QTabWidget:tab-bar {
+  background-color: transparent;
 }
 
 QTabWidget QWidget {}
@@ -2159,16 +2157,14 @@ QColumnView {
   background-color: @PrimaryColor;/* background of a lot of stuff including spreadsheets.*/
   /* gridline-color: @GeneralBorderColor; */
   alternate-background-color: @GeneralAlternateBackgroundColor;
-    selection-background-color: @UserHighlight1Color;
-
+  selection-background-color: @UserHighlight1Color;
 }
 
 QListView {
   background-color:   @PrimaryColor;
   border: 1px solid @GeneralBorderColor;
   alternate-background-color: @GeneralAlternateBackgroundColor;
-    selection-background-color: @UserHighlight1Color;
-
+  selection-background-color: @UserHighlight1Color;
 }
 
 QTreeView:disabled,
@@ -2197,26 +2193,16 @@ QColumnView::item:pressed {
   background-color: @GeneralBackgroundHoverColor;
 }
 
-QListView::item:selected:active,
-QTableView::item:selected:active,
-QColumnView::item:selected:active {
-  background-color: @UserHighlight1Color;
-}
-
-QListView::item:selected:!active,
-QTableView::item:selected:!active,
-QColumnView::item:selected:!active {
-  background-color: @GeneralBackgroundHoverColor;
+QListView::item:selected
+QTableView::item:selected
+QColumnView::item:selected {
+  background-color: @PrimaryColor;
 }
 
 /* QTreeView::item:!selected:hover, */
 QListView::item:!selected:hover,
 QTableView::item:!selected:hover,
 QColumnView::item:!selected:hover {
-  background-color: @GeneralBackgroundHoverColor;
-}
-
-QTreeView::item:selected:!active{
   background-color: @GeneralBackgroundHoverColor;
 }
 
