@@ -1546,6 +1546,12 @@ QSint--ActionGroup QFrame[class="content"] QToolButton:checked {
   background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 @ButtonTopBackgroundColor, stop:1 @ButtonBottomBackgroundColor );
 }
 
+/* hide the empty line between header and content */
+QSint--ActionGroup QFrame[class="separator"] {
+  min-height: 0;
+  max-height: 0;
+}
+
 /* QToolButtons with a menu found in Sketcher task panel*/
 QSint--ActionGroup QToolButton::menu-button {
   border-left: 1px solid @GeneralBorderColor;
