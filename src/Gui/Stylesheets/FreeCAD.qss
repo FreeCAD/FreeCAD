@@ -71,19 +71,16 @@ Resetting everything helps to unify styles across different operating systems
 
 --------------------------------------------------------------------------- */
 * {
-  padding: 0px;
-  margin: 0px;
   border-style: none;
   border-image: none;
   border-radius: 0px;
   border-color: @GeneralBorderColor;
   border-style: none;
   outline: none;
-  color:@TextForegroundColor;
+  color: @TextForegroundColor;
   selection-background-color: @TextSelectBackgroundColor;
-  selection-color:@TextForegroundColor;
+  selection-color: @TextForegroundColor;
   gridline-color: @GeneralGridLinesColor;
-  spacing: 0px;
 }
 
 /* specific reset for elements inside QToolBar */
@@ -2083,39 +2080,6 @@ https://doc.qt.io/qt-5/stylesheet-examples.html#customizing-qtableview
 
 --------------------------------------------------------------------------- */
 
-QTreeView  {
-  qproperty-indentation: 10;
-  selection-background-color: transparent;
-}
-
-QTreeView::branch  {
-  background-color: transparent;
-}
-
-QTreeView::branch:has-siblings:!adjoins-item  {}
-
-QTreeView::branch:has-siblings:adjoins-item  {}
-QTreeView::branch:!has-children:!has-siblings:adjoins-item  {}
-QTreeView::branch:closed:has-children:has-siblings  {
-  border-image: none;
-  image: url(qss:@IconsLocationFolderName/arrow-right-@StylesheetIconsColor.svg);
-}
-
-QTreeView::branch:has-children:!has-siblings:closed  {
-  border-image: none;
-  image: url(qss:@IconsLocationFolderName/arrow-right-@StylesheetIconsColor.svg);
-}
-
-QTreeView::branch:open:has-children:has-siblings  {
-  border-image: none;
-  image: url(qss:@IconsLocationFolderName/arrow-down-@StylesheetIconsColor.svg);
-}
-
-QTreeView::branch:open:has-children:!has-siblings  {
-  border-image: none;
-  image: url(qss:@IconsLocationFolderName/arrow-down-@StylesheetIconsColor.svg);
-}
-
 QTreeView::indicator,
 QListView::indicator,
 QTableView::indicator,
@@ -2606,35 +2570,6 @@ QMdiSubWindow:hover {
 
 QMdiSubWindow:active {
   border:2px solid @UserHighlight1Color;
-}
-
-/*==================================================================================================
-Settings menu #groupsTreeView:
-==================================================================================================*/
-
-QTreeView::branch#groupsTreeView:closed:has-children:has-siblings  {
-  border-image: none;
-  image: url(qss:@IconsLocationFolderName/arrow-right-@StylesheetIconsColor.svg);
-}
-
-QTreeView::branch#groupsTreeView:open:has-children:has-siblings  {
-  border-image: none;
-  image: url(qss:@IconsLocationFolderName/arrow-down-@StylesheetIconsColor.svg);
-}
-
-QTreeView::branch#groupsTreeView:open:has-children:!has-siblings  {
-
-  border-image: none;
-  image: url(qss:@IconsLocationFolderName/arrow-down-@StylesheetIconsColor.svg);
-}
-
-QTreeView::branch#groupsTreeView:has-children:!has-siblings:closed  {
-  border-image: none;
-  image: url(qss:@IconsLocationFolderName/arrow-right-@StylesheetIconsColor.svg);
-}
-
-QTreeView::branch#groupsTreeView:has-siblings:!adjoins-item  {
-  border-image: none;
 }
 
 /*==================================================================================================
