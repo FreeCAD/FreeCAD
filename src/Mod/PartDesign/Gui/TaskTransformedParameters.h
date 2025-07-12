@@ -24,8 +24,7 @@
 #ifndef GUI_TASKVIEW_TaskTransformedParameters_H
 #define GUI_TASKVIEW_TaskTransformedParameters_H
 
-#include <QComboBox>
-
+#include <Gui/ComboLinks.h>
 #include <Gui/DocumentObserver.h>
 #include <Gui/Selection/Selection.h>
 #include <Gui/TaskView/TaskView.h>
@@ -36,7 +35,7 @@
 #include "TaskTransformedMessages.h"
 #include "ViewProviderTransformed.h"
 
-class QListWidget;
+class QListWidgetItem;
 
 class Ui_TaskTransformedParameters;
 
@@ -54,78 +53,6 @@ namespace PartDesignGui
 {
 
 class TaskMultiTransformParameters;
-
-/**
- * @brief The ComboLinks class is a helper class that binds to a combo box and
- * provides an interface to add links, retrieve links and select items by link
- * value
- */
-class ComboLinks
-{
-public:
-    /**
-     * @brief ComboLinks constructor.
-     * @param combo. It will be cleared as soon as it is bound. Don't add or
-     * remove items from the combo directly, otherwise internal tracking list
-     * will go out of sync, and crashes may result.
-     */
-    explicit ComboLinks(QComboBox& combo);
-    ComboLinks() = default;
-
-    void setCombo(QComboBox& combo)
-    {
-        assert(!_combo);
-        this->_combo = &combo;
-        _combo->clear();
-    }
-
-    /**
-     * @brief addLink adds an item to the combo. Doesn't check for duplicates.
-     * @param lnk can be a link to NULL, which is usually used for special item "Select Reference"
-     * @param itemText
-     * @return
-     */
-    int addLink(const App::PropertyLinkSub& lnk, QString const& itemText);
-    int addLink(App::DocumentObject* linkObj, std::string const& linkSubname, QString const& itemText);
-    void clear();
-    App::PropertyLinkSub& getLink(int index) const;
-
-    /**
-     * @brief getCurrentLink
-     * @return the link corresponding to the selected item. May be null link,
-     * which is usually used to indicate a "Select reference..." special item.
-     * Otherwise, the link is automatically tested for validity (oif an object
-     * doesn't exist in the document, an exception will be thrown.)
-     */
-    App::PropertyLinkSub& getCurrentLink() const;
-
-    /**
-     * @brief setCurrentLink selects the item with the link that matches the
-     * argument. If there is no such link in the list, -1 is returned and
-     * selected item is not changed. Signals from combo are blocked in this
-     * function.
-     * @param lnk
-     * @return the index of an item that was selected, -1 if link is not in the list yet.
-     */
-    int setCurrentLink(const App::PropertyLinkSub& lnk);
-
-    QComboBox& combo() const
-    {
-        assert(_combo);
-        return *_combo;
-    }
-
-    ~ComboLinks()
-    {
-        _combo = nullptr;
-        clear();
-    }
-
-private:
-    QComboBox* _combo = nullptr;
-    App::Document* doc = nullptr;
-    std::vector<App::PropertyLinkSub*> linksInList;
-};
 
 /**
   The transformed subclasses will be used in two different modes:
@@ -163,8 +90,6 @@ public:
     /// Exit the selection mode of the associated task panel
     void exitSelectionMode();
 
-    static void removeItemFromListWidget(QListWidget* widget, const QString& itemstr);
-
 protected:
     /** Setup the standalone UI.
      * Call this in the derived destructor with ViewProvider.
@@ -185,10 +110,6 @@ protected:
     /// feature or with the parent feature (MultiTransform mode)
     App::DocumentObject* getSketchObject() const;
 
-    /** Handle adding/removing of selected features
-     * Returns true if a selected feature was added/removed.
-     */
-    bool originalSelected(const Gui::SelectionChanges& msg);
 
     /// Recompute either this feature or the parent MultiTransform feature
     void recomputeFeature();
@@ -212,9 +133,9 @@ protected:
     void onSelectionChanged(const Gui::SelectionChanges& msg) override;
 
     /// Fill combobox with the axis from the sketch and the own bodys origin axis
-    void fillAxisCombo(ComboLinks& combolinks, Part::Part2DObject* sketch);
+    void fillAxisCombo(Gui::ComboLinks& combolinks, Part::Part2DObject* sketch);
     /// Fill combobox with the planes from the sketch and the own bodys origin planes
-    void fillPlanesCombo(ComboLinks& combolinks, Part::Part2DObject* sketch);
+    void fillPlanesCombo(Gui::ComboLinks& combolinks, Part::Part2DObject* sketch);
 
     /**
      * Returns the base transformed objectfromStdString
@@ -229,11 +150,8 @@ protected:
 private Q_SLOTS:
     virtual void onUpdateView(bool /*unused*/) = 0;
 
-    void onButtonAddFeature(bool checked);
-    void onButtonRemoveFeature(bool checked);
-    void onFeatureDeleted();
-    void indexesMoved();
-    void onModeChanged(int mode_id);
+    void onFeatureItemChanged(QListWidgetItem* item);
+    void onGroupFeaturesToggled(bool checked);
 
 private:
     /** Setup the parameter UI.
@@ -245,10 +163,7 @@ private:
     /// Change translation of the parameter UI
     virtual void retranslateParameterUI(QWidget* widget) = 0;
 
-    void addObject(App::DocumentObject*);
-    void removeObject(App::DocumentObject*);
-    void clearButtons();
-    void checkVisibility();
+    void populateFeatureList();
 
     /// Return the base object of the base transformed object (see getTopTransformedObject())
     // Either through the ViewProvider or the currently active subFeature of the parentTask
@@ -267,9 +182,8 @@ protected:
     enum class SelectionMode
     {
         None,
-        AddFeature,
-        RemoveFeature,
-        Reference
+        Reference,
+        Reference2
     };
 
     ViewProviderTransformed* TransformedView = nullptr;
