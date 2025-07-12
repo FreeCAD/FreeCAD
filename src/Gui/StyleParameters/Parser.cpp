@@ -26,6 +26,8 @@
 #include "Parser.h"
 #include "ParameterManager.h"
 
+#include <Base/Tools.h>
+
 #ifndef _PreComp_
 #include <QColor>
 #include <QRegularExpression>
@@ -54,36 +56,85 @@ Value Color::evaluate([[maybe_unused]] const EvaluationContext& context) const
 
 Value FunctionCall::evaluate(const EvaluationContext& context) const
 {
-    if (arguments.size() != 2) {
-        THROWM(Base::ExpressionError,
-               fmt::format("Function '{}' expects 2 arguments, got {}",
-                           functionName,
-                           arguments.size()));
-    }
+    const auto lightenOrDarken = [this](const EvaluationContext& context) -> Value {
+        if (arguments.size() != 2) {
+            THROWM(Base::ExpressionError,
+                   fmt::format("Function '{}' expects 2 arguments, got {}",
+                               functionName,
+                               arguments.size()));
+        }
 
-    auto colorArg = arguments[0]->evaluate(context);
-    auto amountArg = arguments[1]->evaluate(context);
+        auto colorArg = arguments[0]->evaluate(context);
+        auto amountArg = arguments[1]->evaluate(context);
 
-    if (!std::holds_alternative<QColor>(colorArg)) {
-        THROWM(Base::ExpressionError,
-               fmt::format("'{}' is not supported for colors", functionName));
-    }
+        if (!std::holds_alternative<QColor>(colorArg)) {
+            THROWM(Base::ExpressionError,
+                   fmt::format("'{}' is not supported for colors", functionName));
+        }
 
-    auto color = std::get<QColor>(colorArg);
+        auto color = std::get<QColor>(colorArg);
 
-    // In Qt if you want to make color 20% darker or lighter, you need to pass 120 as the value
-    // we, however, want users to pass only the relative difference, hence we need to add the
-    // 100 required by Qt.
-    //
-    // NOLINTNEXTLINE(*-magic-numbers)
-    auto amount = 100 + static_cast<int>(std::get<Length>(amountArg).value);
+        // In Qt if you want to make color 20% darker or lighter, you need to pass 120 as the value
+        // we, however, want users to pass only the relative difference, hence we need to add the
+        // 100 required by Qt.
+        //
+        // NOLINTNEXTLINE(*-magic-numbers)
+        auto amount = 100 + static_cast<int>(std::get<Length>(amountArg).value);
 
-    if (functionName == "lighten") {
-        return color.lighter(amount);
-    }
+        if (functionName == "lighten") {
+            return color.lighter(amount);
+        }
 
-    if (functionName == "darken") {
-        return color.darker(amount);
+        if (functionName == "darken") {
+            return color.darker(amount);
+        }
+
+        return {};
+    };
+
+    const auto blend = [this](const EvaluationContext& context) -> Value {
+        if (arguments.size() != 3) {
+            THROWM(Base::ExpressionError,
+                   fmt::format("Function '{}' expects 3 arguments, got {}",
+                               functionName,
+                               arguments.size()));
+        }
+
+        auto firstColorArg = arguments[0]->evaluate(context);
+        auto secondColorArg = arguments[1]->evaluate(context);
+        auto amountArg = arguments[2]->evaluate(context);
+
+        if (!std::holds_alternative<QColor>(firstColorArg)) {
+            THROWM(Base::ExpressionError,
+                   fmt::format("first argument of '{}' must be color", functionName));
+        }
+
+        if (!std::holds_alternative<QColor>(secondColorArg)) {
+            THROWM(Base::ExpressionError,
+                   fmt::format("second argument of '{}' must be color", functionName));
+        }
+
+        auto firstColor = std::get<QColor>(firstColorArg);
+        auto secondColor = std::get<QColor>(secondColorArg);
+
+        auto amount = Base::fromPercent(std::get<Length>(amountArg).value);
+
+        return QColor::fromRgbF(
+            (1 - amount) * firstColor.redF() + amount * secondColor.redF(),
+            (1 - amount) * firstColor.greenF() + amount * secondColor.greenF(),
+            (1 - amount) * firstColor.blueF() + amount * secondColor.blueF()
+        );
+    };
+
+    std::map<std::string, std::function<Value(const EvaluationContext&)>> functions = {
+        {"lighten", lightenOrDarken},
+        {"darken", lightenOrDarken},
+        {"blend", blend},
+    };
+
+    if (functions.contains(functionName)) {
+        auto function = functions.at(functionName);
+        return function(context);
     }
 
     THROWM(Base::ExpressionError, fmt::format("Unknown function '{}'", functionName));
