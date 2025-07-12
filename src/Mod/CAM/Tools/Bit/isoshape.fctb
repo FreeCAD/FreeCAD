@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "name": "CCMT070204R",
+  "shape": "isoshape.fcstd",
+  "shape-type": "isoshape",
+  "parameter": {
+    "EdgeLength": "6.35 mm",
+    "Rotation": "45.00 \u00b0",
+    "TipAngle": "80.00 \u00b0",
+    "TipRadius": "0.40 mm"
+  },
+  "attribute": {}
+}
