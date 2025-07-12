@@ -425,7 +425,8 @@ PythonConsole::PythonConsole(QWidget *parent)
 
     setVisibleLineNumbers(false);
     setEnabledHighlightCurrentLine(false);
-    QFont serifFont(QLatin1String("Courier"), 10, QFont::Normal);
+    QFont serifFont = QFontDatabase::systemFont(QFontDatabase::FixedFont);
+    serifFont.setPointSize(10);
     setFont(serifFont);
 
     // set colors and font from settings
