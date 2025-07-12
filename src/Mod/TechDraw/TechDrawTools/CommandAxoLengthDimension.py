@@ -60,6 +60,8 @@ class CommandAxoLengthDimension:
 
     def Activated(self):
         """Run the following code when the command is activated (button press)."""
+
+        App.setActiveTransaction("Create axonometric length dimension")
         vertexes = []
         edges = []
         if Utils.getSelEdges(2):
@@ -113,6 +115,7 @@ class CommandAxoLengthDimension:
             distanceDim.recompute()
             view.requestPaint()
         Gui.Selection.clearSelection()
+        App.closeActiveTransaction()
 
     def IsActive(self):
         """Return True when the command should be active or False when it should be disabled (greyed)."""

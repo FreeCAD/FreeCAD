@@ -400,6 +400,8 @@ class TaskFillTemplateFields:
                     QtCore.QMetaObject.connectSlotsByName(self.dialog)
                     self.dialog.show()
                     self.dialog.exec_()
+
+                    App.setActiveTransaction("Fill template fields")
                 else:
                     msgBox = QtGui.QMessageBox()
                     msgTitle = QtCore.QT_TRANSLATE_NOOP(
@@ -498,7 +500,10 @@ class TaskFillTemplateFields:
         self.page.Template.EditableTexts = self.texts
         self.close()
 
+        App.closeActiveTransaction()
+
     def close(self):
         self.dialog.hide()
+        App.closeActiveTransaction(True)
         return True
 
