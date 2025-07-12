@@ -222,6 +222,23 @@ private:
               const std::map<const ElementMap*, int>& childMapSet,
               const std::map<QByteArray, int>& postfixMap) const;
 
+    /** Complex check methods. 
+     * All are meant to be private for right now.
+     */
+    IndexedName complexFind(
+              const MappedName& name) const;
+    
+    std::vector<std::string> splitNameIntoSections(
+              const std::string &name,
+              const bool &filterSections) const;
+    
+    std::vector<std::string> findGeometryOpCodes(
+              const std::vector<std::string> &name) const;
+    
+    double percentSimilarity(
+              const std::string& a, 
+              const std::string& b) const;
+
     /** Deserialize and restore this map.
      * @param hasherRef: where all the StringIDs are stored
      * @param stream: stream to deserialize
