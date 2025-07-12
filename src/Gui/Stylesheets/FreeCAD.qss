@@ -91,7 +91,7 @@ Gui--PropertyEditor--PropertyEditor > QWidget > QFrame:focus {
   background-color: @AccentColor;/* same as focused background color */}
 /* hack to hide weird redundant information inside cells with links and no editable data (but editable via "..." button) */
 Gui--PropertyEditor--PropertyEditor > QWidget > QWidget > QLabel {
-	background-color: @TextUrlColor;/* same as focused background color */
+  background-color: @TextUrlColor;/* same as focused background color */
   border-radius: @InputFieldBorderRadius;
 }
 
@@ -1437,7 +1437,7 @@ Tasks panel (custom FreeCAD class)
 ==================================================================================================*/
 Gui--PropertyEditor--PropertyEditor {
   qproperty-groupTextColor: @TextForegroundColor;
-  qproperty-groupBackground: @GeneralAlternateBackgroundColor;
+  qproperty-groupBackground: @GeneralHeaderBackgroundColor;
 }
 
 /* Action group */
