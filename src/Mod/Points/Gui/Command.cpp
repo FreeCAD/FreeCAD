@@ -81,7 +81,7 @@ void CmdPointsImport::activated(int iMsg)
         Gui::getMainWindow(),
         QString(),
         QString(),
-        QStringLiteral("%1 (*.asc *.pcd *.ply);;%2 (*.*)")
+        QStringLiteral("%1 (*.asc *.pcd *.ply *.e57);;%2 (*.*)")
             .arg(QObject::tr("Point formats"), QObject::tr("All Files")));
     if (fn.isEmpty()) {
         return;
