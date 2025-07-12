@@ -26,6 +26,7 @@
 # include <limits>
 # include <gp_Circ.hxx>
 # include <gp_Dir.hxx>
+# include <gp_Cylinder.hxx>
 # include <BRep_Builder.hxx>
 # include <Mod/Part/App/FCBRepAlgoAPI_Cut.h>
 # include <Mod/Part/App/FCBRepAlgoAPI_Fuse.h>
@@ -39,6 +40,7 @@
 # include <BRepOffsetAPI_MakePipeShell.hxx>
 # include <BRepPrimAPI_MakeRevol.hxx>
 # include <BRepAdaptor_Curve.hxx>
+# include <BRepAdaptor_Surface.hxx>
 # include <Geom_Circle.hxx>
 # include <GC_MakeArcOfCircle.hxx>
 # include <Geom_TrimmedCurve.hxx>
@@ -1917,7 +1919,26 @@ App::DocumentObjectExecReturn* Hole::execute()
         /* Build the prototype hole */
 
         // Get vector normal to profile
-        Base::Vector3d  SketchVector = getProfileNormal();
+        Base::Vector3d SketchVector;
+
+        // If trying to build a hole from a cylinder face
+        // we must try to find the direction ourselves as
+        // getProfileNormal() will try to find the normal to
+        // the middle of the face
+        if (profileshape.hasSubShape(TopAbs_FACE)) {
+            BRepAdaptor_Surface sf(TopoDS::Face(profileshape.getSubShape(TopAbs_FACE, 1)));
+
+            if (sf.GetType() == GeomAbs_Cylinder) {
+                sf.Cylinder().Axis().Direction().Coord(SketchVector.x,
+                                                       SketchVector.y,
+                                                       SketchVector.z);
+            } else {
+                throw(Base::Exception("Cannot create hole from non cylindrical face"));
+            }
+
+        } else {
+            SketchVector = getProfileNormal();
+        }
         if (Reversed.getValue())
             SketchVector *= -1.0;
 
