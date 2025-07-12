@@ -156,6 +156,12 @@ public:
     /// Get the python wrapper for that ViewProvider
     PyObject* getPyObject() override;
 
+    virtual void setShapePropertyName(const char* propName);
+    const char* getShapePropertyName() const;
+
+    Part::TopoShape getShape() const;
+    void updateVisual();
+
 protected:
     bool setEdit(int ModNum) override;
     void unsetEdit(int ModNum) override;
@@ -165,7 +171,6 @@ protected:
     /// get called by the container whenever a property has been changed
     void onChanged(const App::Property* prop) override;
     bool loadParameter();
-    void updateVisual();
     void handleChangedPropertyName(Base::XMLReader& reader,
                                    const char* TypeName,
                                    const char* PropName) override;
@@ -187,8 +192,15 @@ protected:
     SoBrepEdgeSet     * lineset;
     SoBrepPointSet    * nodeset;
 
+    Gui::CoinPtr<SoGroup> pFaceRoot;
+    Gui::CoinPtr<SoGroup> pFaceEdgeRoot;
+    Gui::CoinPtr<SoGroup> pEdgeRoot;
+    Gui::CoinPtr<SoGroup> pVertexRoot;
+
     bool VisualTouched;
     bool NormalsFromUV;
+
+    std::string shapePropName;
 
 private:
     Gui::ViewProviderFaceTexture texture;
