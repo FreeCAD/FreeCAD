@@ -115,12 +115,6 @@ Gui--NavigationIndicatorGui--BlenderNavigationStyle {
   qproperty-icon: url(:/icons/icons/NavigationBlender_light.svg);
 }
 
-Gui--MDIView QFrame{
-  border-top: 3px solid qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 @GeneralBorderColor, stop:1 transparent);
-  border-left: 3px solid qlineargradient(x1:0, y1:0, x2:1, y2:0, stop:0 @GeneralBorderColor stop:1 transparent);
-  border-right: 3px solid qlineargradient(x1:0, y1:0, x2:1, y2:0, stop:0 transparent, stop:1 @GeneralBorderColor);
-}
-
 Gui--MDIView QLabel{
   border-style: none;
   background-color: transparent;
@@ -1164,8 +1158,8 @@ QPushButton {
   background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 @ButtonTopBackgroundColor,stop:1 @ButtonBottomBackgroundColor);
   border: 1px solid @ButtonBorderColor;
   border-radius: @InputFieldBorderRadius;
-   padding: 3px 12px;
-  min-width: 40px;}
+  padding: 3px 12px;
+}
 
 #CreateNewRow > QPushButton {
   /* Reset min width to default */
@@ -1214,11 +1208,6 @@ QPushButton::menu-indicator {
   subcontrol-origin: padding;
   subcontrol-position: bottom right;
   bottom: 4px;
-}
-
-QDialogButtonBox QPushButton {
-  min-width: 80px;
-  padding: 3px 0px;
 }
 
 /* QToolButton ------------------------------------------------------------
@@ -1516,7 +1505,6 @@ QSint--ActionGroup QFrame[class="header"] QLabel[fold="true"]:hover {
 QSint--ActionGroup QFrame[class="content"] {
   background-color: @DialogBackgroundColor;/* Task Panel background color */
 
-
   border-bottom: 1px solid @GeneralBorderColor;
   border-left: 1px solid @GeneralBorderColor;
   border-right: 1px solid @GeneralBorderColor;
@@ -1787,9 +1775,13 @@ QDockWidget QTabBar { /*tabbar in dockwidget */
   qproperty-drawBase: 0;
 }
 
+QTabBar#mdiAreaTabBar::tab:bottom:selected {
+  background-color: @3DViewBackgroundRefColor;
+  border-top: @3DViewBackgroundRefColor;
+}
+
 QTabBar {
   qproperty-drawBase: 1;/*tabbar for files. */
-  background-color: @TabbarBackgroundColor;
 }
 
 QTabWidget::tab-bar {
@@ -1874,9 +1866,9 @@ QTabBar::tab:top, QDockWidget QTabBar::tab:top {
 }
 
 QTabBar::tab:top:selected, QDockWidget QTabBar::tab:top:selected {
-  background-color: @3DViewBackgroundRefColor;
+  background-color: @GeneralBackgroundColor;
   border-top: 1px solid @GeneralBorderColor;
-  border-bottom: 1px solid @3DViewBackgroundRefColor;
+  border-bottom: 1px solid @GeneralBackgroundColor;
   border-left: 1px solid @GeneralBorderColor;
   border-right: 1px solid @GeneralBorderColor;
   margin-top: 0px;
@@ -1905,9 +1897,9 @@ QTabBar::tab:bottom, QDockWidget QTabBar::tab:bottom {
 }
 
 QTabBar::tab:bottom:selected, QDockWidget QTabBar::tab:bottom:selected {
-  background-color: @3DViewBackgroundRefColor;
+  background-color: @GeneralBackgroundColor;
   border-bottom: 1px solid @GeneralBorderColor;
-  border-top: 1px solid @3DViewBackgroundRefColor;
+  border-top: 1px solid @GeneralBackgroundColor;
   border-left: 1px solid @GeneralBorderColor;
   border-right: 1px solid @GeneralBorderColor;
   margin-bottom: 0px;
@@ -1936,9 +1928,9 @@ QTabBar::tab:left, QDockWidget QTabBar::tab:left {
 }
 
 QTabBar::tab:left:selected, QDockWidget QTabBar::tab:left:selected {
-  background-color: @3DViewBackgroundRefColor;
+  background-color: @GeneralBackgroundColor;
   border-bottom: 1px solid @GeneralBorderColor;
-  border-right: 1px solid @3DViewBackgroundRefColor;
+  border-right: 1px solid @GeneralBackgroundColor;
   border-left: 1px solid @GeneralBorderColor;
   border-top: 1px solid @GeneralBorderColor;
   margin-left: 0px;
@@ -1966,9 +1958,9 @@ QTabBar::tab:right, QDockWidget QTabBar::tab:right {
 }
 
 QTabBar::tab:right:selected, QDockWidget QTabBar::tab:right:selected {
-  background-color: @3DViewBackgroundRefColor;
+  background-color: @GeneralBackgroundColor;
   border-bottom: 1px solid @GeneralBorderColor;
-  border-left: 1px solid @3DViewBackgroundRefColor;
+  border-left: 1px solid @GeneralBackgroundColor;
   border-left: 1px solid @GeneralBorderColor;
   border-top: 1px solid @GeneralBorderColor;
   margin-right: 0px;
