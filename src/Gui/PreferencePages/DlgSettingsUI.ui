@@ -17,13 +17,13 @@
    <item>
     <widget class="QGroupBox" name="groupBox">
      <property name="title">
-      <string>Theme customization</string>
+      <string>Theme Customization</string>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_2">
       <item>
        <widget class="QLabel" name="label">
         <property name="text">
-         <string>This section lets you customize your current theme. The offered settings are optional for theme developers so they may or may not have an effect in your current theme.</string>
+         <string>Customize the current theme. The offered settings are optional for theme developers so they may or may not have an effect in the current theme.</string>
         </property>
         <property name="wordWrap">
          <bool>true</bool>
@@ -91,7 +91,7 @@
         <item row="3" column="0">
          <widget class="QLabel" name="styleSheetLabel">
           <property name="text">
-           <string>Style sheet (advanced):</string>
+           <string>Style sheet (advanced)</string>
           </property>
           <property name="buddy">
            <cstring>StyleSheets</cstring>
@@ -101,7 +101,7 @@
         <item row="4" column="0">
          <widget class="QLabel" name="label_2">
           <property name="text">
-           <string>Overlay style sheet:</string>
+           <string>Overlay style sheet</string>
           </property>
           <property name="buddy">
            <cstring>OverlayStyleSheets</cstring>
@@ -204,16 +204,16 @@
    <item>
     <widget class="QGroupBox" name="groupBox_2">
      <property name="title">
-      <string>Tree view</string>
+      <string>Tree View</string>
      </property>
      <layout class="QGridLayout" name="gridLayout1" columnstretch="2,1">
       <item row="5" column="0" colspan="2">
        <widget class="Gui::PrefCheckBox" name="hideInternalNamesCheckBox">
         <property name="toolTip">
-         <string>Hide extra tree view column - Internal Names.</string>
+         <string>Hide extra tree view column for internal names</string>
         </property>
         <property name="text">
-         <string>Hide Internal Names</string>
+         <string>Hide internal names</string>
         </property>
         <property name="checked">
          <bool>true</bool>
@@ -303,7 +303,7 @@
       <item row="3" column="0" colspan="2">
        <widget class="Gui::PrefCheckBox" name="showVisibilityIconCheckBox">
         <property name="toolTip">
-         <string>If enabled, show an eye icon before the tree view items, showing their visibility status. When clicked the visibility is toggled.</string>
+         <string>Displays an eye icon in front of the tree view items, showing their visibility status. When clicked the visibility is toggled.</string>
         </property>
         <property name="text">
          <string>Show visibility icon</string>
@@ -439,10 +439,10 @@
       <item row="3" column="0">
        <widget class="Gui::PrefCheckBox" name="overlayAutoHideCheckBox">
         <property name="toolTip">
-         <string>Automatically hide overlaid dock panels when in non 3D view (like TechDraw or Spreadsheet).</string>
+         <string>Automatically hide overlaid dock panels when in non 3D view (e.g. TechDraw or Spreadsheet)</string>
         </property>
         <property name="text">
-         <string>Auto hide in non 3D view</string>
+         <string>Automatically hide in non-3D view</string>
         </property>
         <property name="checked">
          <bool>true</bool>
@@ -461,7 +461,7 @@
          <string>Auto mouse click through transparent part of dock overlay.</string>
         </property>
         <property name="text">
-         <string>Auto mouse pass through</string>
+         <string>Automatically pass through of the mouse cursor</string>
         </property>
         <property name="checked">
          <bool>true</bool>
@@ -480,7 +480,7 @@
          <string>Auto pass through mouse wheel event on transparent dock overlay.</string>
         </property>
         <property name="text">
-         <string>Auto mouse wheel pass through</string>
+         <string>Automatically pass through of the mouse wheel</string>
         </property>
         <property name="checked">
          <bool>true</bool>

@@ -152,7 +152,7 @@
    <item row="3" column="0">
     <widget class="QGroupBox" name="groupBoxView">
      <property name="title">
-      <string>Clipping custom direction</string>
+      <string>Custom Clipping Direction</string>
      </property>
      <property name="checkable">
       <bool>true</bool>

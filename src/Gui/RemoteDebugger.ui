@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Attach to remote debugger</string>
+   <string>Attach to Remote Debugger</string>
   </property>
   <layout class="QGridLayout" name="gridLayout_3">
    <item row="0" column="0">
@@ -27,7 +27,7 @@
        <item row="0" column="0">
         <widget class="QLabel" name="labelPassword">
          <property name="text">
-          <string>Password:</string>
+          <string>Password</string>
          </property>
         </widget>
        </item>
@@ -61,7 +61,7 @@
        <item row="0" column="0">
         <widget class="QLabel" name="labelAddress">
          <property name="text">
-          <string>Address:</string>
+          <string>Address</string>
          </property>
         </widget>
        </item>
@@ -75,7 +75,7 @@
        <item row="1" column="0">
         <widget class="QLabel" name="labelPort">
          <property name="text">
-          <string>Port:</string>
+          <string>Port</string>
          </property>
         </widget>
        </item>

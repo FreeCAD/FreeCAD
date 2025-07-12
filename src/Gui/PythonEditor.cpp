@@ -178,7 +178,7 @@ void PythonEditor::contextMenuEvent ( QContextMenuEvent * e )
         comment->setShortcut(QKeySequence(QStringLiteral("ALT+C")));
         QAction* uncomment = menu->addAction( tr("Uncomment"), this, &PythonEditor::onUncomment);
         uncomment->setShortcut(QKeySequence(QStringLiteral("ALT+U")));
-        QAction* execInConsole = menu->addAction( tr("Execute in console"),
+        QAction* execInConsole = menu->addAction( tr("Execute in Console"),
                                                   this, &PythonEditor::onExecuteInConsole);
         execInConsole->setShortcut(QKeySequence(QStringLiteral("ALT+Shift+P")));
     }

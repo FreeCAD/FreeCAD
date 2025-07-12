@@ -118,7 +118,7 @@ void NetworkRetriever::testFailure()
     if ( wget->state() == QProcess::Running )
     {
         d->fail = false;
-        QString msg = tr("Download started...");
+        QString msg = tr("Download started…");
         Base::Console().message("%s\n", msg.toUtf8().constData());
     }
 }
@@ -388,10 +388,10 @@ StdCmdDownloadOnlineHelp::StdCmdDownloadOnlineHelp( QObject * parent)
   : QObject(parent), Command("Std_DownloadOnlineHelp")
 {
     sGroup        ="Help";
-    sMenuText     = QT_TR_NOOP("Download online help");
-    sToolTipText  = QT_TR_NOOP("Download %1's online help");
+    sMenuText     = QT_TR_NOOP("Download Online Help");
+    sToolTipText  = QT_TR_NOOP("Downloads %1's online help");
     sWhatsThis    = "Std_DownloadOnlineHelp";
-    sStatusTip    = QT_TR_NOOP("Download %1's online help");
+    sStatusTip    = sToolTipText;
     sPixmap       = "help";
 
     wget = new NetworkRetriever( this );
@@ -494,7 +494,7 @@ void StdCmdDownloadOnlineHelp::activated(int iMsg)
             if (!fi.exists()) {
                 if (QMessageBox::critical(getMainWindow(), tr("Non-existing directory"),
                      tr("The directory '%1' does not exist.\n\n"
-                        "Do you want to specify an existing directory?").arg(fi.filePath()),
+                        "Specify an existing directory?").arg(fi.filePath()),
                      QMessageBox::Yes | QMessageBox::No) !=
                      QMessageBox::Yes)
                 {
@@ -512,7 +512,7 @@ void StdCmdDownloadOnlineHelp::activated(int iMsg)
             if (!fi.permission( QFile::WriteUser)) {
                 if (QMessageBox::critical(getMainWindow(), tr("Missing permission"),
                      tr("You don't have write permission to '%1'\n\n"
-                        "Do you want to specify another directory?").arg(fi.filePath()),
+                        "Specify another directory?").arg(fi.filePath()),
                      QMessageBox::Yes | QMessageBox::No) !=
                      QMessageBox::Yes)
                 {
@@ -535,7 +535,7 @@ void StdCmdDownloadOnlineHelp::activated(int iMsg)
         if (canStart) {
             bool ok = wget->startDownload(QString::fromLatin1(url.c_str()));
             if (!ok)
-                Base::Console().error("The tool 'wget' couldn't be found. Please check your installation.");
+                Base::Console().error("The tool 'wget' could not be found. Check the installation.");
             else if ( wget->isDownloading() && _pcAction )
                 _pcAction->setText(tr("Stop downloading"));
         }

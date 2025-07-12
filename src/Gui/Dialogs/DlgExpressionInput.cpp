@@ -441,7 +441,7 @@ static bool isNamePropOk(const QString& nameProp, App::DocumentObject* obj,
 
     std::string name = nameProp.toStdString();
     if (name.empty()) {
-        message << "Please provide a name for the property.";
+        message << "Provide a name for the property.";
         return false;
     }
 
@@ -696,7 +696,7 @@ void DlgExpressionInput::reportVarSetInfo(const char* message)
 bool DlgExpressionInput::reportGroup(QString& nameGroup)
 {
     if (nameGroup.isEmpty()) {
-        reportVarSetInfo("Please provide a group.");
+        reportVarSetInfo("Provide a group.");
         return true;
     }
 
@@ -767,7 +767,7 @@ void DlgExpressionInput::updateVarSetInfo(bool checkExpr)
     }
     else {
         okBtn->setEnabled(false);
-        reportVarSetInfo("Please select a variable set.");
+        reportVarSetInfo("Select a variable set.");
     }
 }
 

@@ -1470,7 +1470,7 @@ void TreeParams::removeTreeToolTipIcon() {
 // Auto generated code (Tools/params_utils.py:350)
 const char *TreeParams::docVisibilityIcon() {
     return QT_TRANSLATE_NOOP("TreeParams",
-"If enabled, show an eye icon before the tree view items, showing the items visibility status. When clicked the visibility is toggled");
+"Displays an eye icon in front of the tree view items, showing the items visibility status. When clicked the visibility is toggled");
 }
 
 // Auto generated code (Tools/params_utils.py:358)

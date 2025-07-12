@@ -48,7 +48,7 @@ const char* InventorNavigationStyle::mouseButtons(ViewerMode mode)
 {
     switch (mode) {
     case NavigationStyle::SELECTION:
-        return QT_TR_NOOP("Press CTRL and left mouse button");
+        return QT_TR_NOOP("Press Ctrl and left mouse button");
     case NavigationStyle::PANNING:
         return QT_TR_NOOP("Press middle mouse button");
     case NavigationStyle::DRAGGING:

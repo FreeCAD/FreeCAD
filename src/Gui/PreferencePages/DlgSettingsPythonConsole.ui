@@ -81,14 +81,14 @@ horizontal space in Python console</string>
       <item row="3" column="0">
        <widget class="QLabel" name="labelProfilerInterval">
         <property name="text">
-         <string>Python profiler interval (milliseconds):</string>
+         <string>Python profiler interval (ms)</string>
         </property>
        </widget>
       </item>
       <item row="3" column="1">
        <widget class="Gui::PrefSpinBox" name="ProfilerInterval">
         <property name="toolTip">
-         <string>The interval at which the profiler runs when there's Python code running (to keep the GUI responding). Set to 0 to disable.</string>
+         <string>The interval in milliseconds at which the profiler runs when there is Python code running (to keep the GUI responding). Set to 0 to disable.</string>
         </property>
         <property name="suffix">
          <string> ms</string>
@@ -122,7 +122,7 @@ horizontal space in Python console</string>
      <item row="0" column="0">
       <widget class="QLabel" name="fclabel">
        <property name="text">
-        <string>Path to external Python executable (optional):</string>
+        <string>Path to external Python executable (optional)</string>
        </property>
       </widget>
      </item>
