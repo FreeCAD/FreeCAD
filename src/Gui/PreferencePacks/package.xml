@@ -6,7 +6,6 @@
   <maintainer email="email@FreeCAD.org">MisterMaker</maintainer>
   <license file="../../LICENSE">LGPL2</license>
   <url type="repository">https://github.com/FreeCAD/FreeCAD</url>
-
   <content>
     <preferencepack>
       <name>FreeCAD Classic</name>
@@ -25,7 +24,7 @@
       <version>1.0.0</version>
       <tag>built-in</tag>
       <tag>background</tag>
-	    <tag>light</tag>
+      <tag>light</tag>
     </preferencepack>
 	<preferencepack>
 	  <name>FreeCAD Dark</name>
@@ -34,8 +33,7 @@
       <version>1.0.0</version>
       <tag>built-in</tag>
       <tag>background</tag>
-	    <tag>dark</tag>
+      <tag>dark</tag>
     </preferencepack>
   </content>
-
 </package>
