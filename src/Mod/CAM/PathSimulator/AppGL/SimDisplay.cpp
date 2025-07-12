@@ -32,9 +32,15 @@
 #include "linmath.h"
 #include "OpenGlWrapper.h"
 #include <cmath>
+#include <Inventor/nodes/SoCamera.h>
+#include <Inventor/nodes/SoPerspectiveCamera.h>
 
 namespace MillSim
 {
+
+SimDisplay::SimDisplay(const SoCamera& c)
+    : mCamera(c)
+{}
 
 void SimDisplay::InitShaders()
 {
@@ -299,11 +305,17 @@ void SimDisplay::CleanGL()
 
 void SimDisplay::PrepareDisplay(const vec3& objCenter)
 {
-    mat4x4_look_at(mMatLookAt, eye, target, upvec);
-    mat4x4_translate_in_place(mMatLookAt, mEyeX * mEyeXZFactor, 0, mEyeZ * mEyeXZFactor);
-    mat4x4_rotate_X(mMatLookAt, mMatLookAt, mEyeInclination);
-    mat4x4_rotate_Z(mMatLookAt, mMatLookAt, mEyeRoration);
-    mat4x4_translate_in_place(mMatLookAt, -objCenter[0], -objCenter[1], -objCenter[2]);
+    const SbVec3f position = mCamera.position.getValue();
+
+    const SbRotation orientation = mCamera.orientation.getValue();
+    SbVec3f up(0, 1, 0);
+    orientation.multVec(up, up);
+
+    SbVec3f dir(0, 0, -1);
+    orientation.multVec(dir, dir);
+    const auto target = position + dir;
+
+    mat4x4_look_at(mMatLookAt, position.getValue(), target.getValue(), up.getValue());
 }
 
 void SimDisplay::PrepareFrameBuffer()
@@ -571,9 +583,12 @@ void SimDisplay::UpdateWindowScale(int width, int height)
 
 void SimDisplay::UpdateProjection()
 {
+    const auto& camera = dynamic_cast<const SoPerspectiveCamera&>(mCamera);
+    const float y_fov = camera.heightAngle.getValue();
+
     // Setup projection
     mat4x4 projmat;
-    mat4x4_perspective(projmat, 0.7f, (float)mWidth / mHeight, 1.0f, maxFar);
+    mat4x4_perspective(projmat, y_fov, (float)mWidth / mHeight, 1.0f, maxFar);
     shader3D.Activate();
     shader3D.UpdateProjectionMat(projmat);
     shaderInv3D.Activate();

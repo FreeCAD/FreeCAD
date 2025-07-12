@@ -46,7 +46,7 @@ static const float MouseScrollDelta = 120.0F;
 
 static QPointer<ViewCAMSimulator> viewCAMSimulator;
 
-DlgCAMSimulator::DlgCAMSimulator(ViewCAMSimulator& view, QWidget* parent)
+DlgCAMSimulator::DlgCAMSimulator(ViewCAMSimulator& view, const SoCamera& camera, QWidget* parent)
     : QOpenGLWidget(parent)
     , mView(view)
 {
@@ -69,7 +69,7 @@ DlgCAMSimulator::DlgCAMSimulator(ViewCAMSimulator& view, QWidget* parent)
 
     setMouseTracking(true);
 
-    mMillSimulator.reset(new MillSimulation);
+    mMillSimulator.reset(new MillSimulation(camera));
 
     mAnimatingTimer.setInterval(0);
     connect(&mAnimatingTimer,
@@ -175,13 +175,13 @@ void DlgCAMSimulator::addTool(const std::vector<float>& toolProfilePoints,
     mTools.emplace_back(toolProfilePoints, toolNumber, diameter);
 }
 
-static SimShape getMeshData(const Part::TopoShape& tshape, float resolution)
+static SimShape getMeshData(const Part::TopoShape& shape, float resolution)
 {
     SimShape ret;
 
     std::vector<int> normalCount;
     int nVerts = 0;
-    for (auto& shape : tshape.getSubTopoShapes(TopAbs_FACE)) {
+    for (auto& shape : shape.getSubTopoShapes(TopAbs_FACE)) {
         std::vector<Base::Vector3d> points;
         std::vector<Data::ComplexGeoData::Facet> facets;
         shape.getFaces(points, facets, resolution);
@@ -228,11 +228,13 @@ static SimShape getMeshData(const Part::TopoShape& tshape, float resolution)
 void DlgCAMSimulator::setStockShape(const Part::TopoShape& shape, float resolution)
 {
     mStock = getMeshData(shape, resolution);
+    Q_EMIT stockChanged(shape);
 }
 
-void DlgCAMSimulator::setBaseShape(const Part::TopoShape& tshape, float resolution)
+void DlgCAMSimulator::setBaseShape(const Part::TopoShape& shape, float resolution)
 {
-    mBase = getMeshData(tshape, resolution);
+    mBase = getMeshData(shape, resolution);
+    Q_EMIT baseChanged(shape);
 }
 
 void DlgCAMSimulator::mouseMoveEvent(QMouseEvent* ev)
