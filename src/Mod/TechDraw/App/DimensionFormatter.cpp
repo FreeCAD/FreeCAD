@@ -250,7 +250,7 @@ std::string DimensionFormatter::getFormattedDimensionValue(const Format partial)
         tolerance.remove(plus);
 
         return (labelText +
-                 QStringLiteral(" \xC2\xB1 ") +          // +/- symbol
+                 QString::fromUtf8(" \xC2\xB1 ") +          // +/- symbol
                  tolerance).toStdString();
 
         // Unreachable code??
