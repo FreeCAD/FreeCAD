@@ -272,13 +272,13 @@ class Tag:
 
 
 class MapWireToTag:
-    def __init__(self, edge, tag, i, maxZ, hSpeed, vSpeed, tolerance):
+    def __init__(self, edge, tag, i, maxZ, hSpeed, vSpeed, approximation):
         debugEdge(edge, "MapWireToTag(%.2f, %.2f, %.2f)" % (i.x, i.y, i.z))
         self.tag = tag
         self.maxZ = maxZ
         self.hSpeed = hSpeed
         self.vSpeed = vSpeed
-        self.tolerance = tolerance
+        self.approximation = approximation
         if Path.Geom.pointsCoincide(edge.valueAt(edge.FirstParameter), i):
             tail = edge
             self.commands = []
@@ -287,9 +287,9 @@ class MapWireToTag:
             debugEdge(edge, "++++++++ .")
             self.commands = Path.Geom.cmdsForEdge(
                 edge,
+                approximation=approximation,
                 hSpeed=self.hSpeed,
                 vSpeed=self.vSpeed,
-                tol=tolerance,
             )
             tail = None
         else:
@@ -297,9 +297,9 @@ class MapWireToTag:
             debugEdge(e, "++++++++ .")
             self.commands = Path.Geom.cmdsForEdge(
                 e,
+                approximation=approximation,
                 hSpeed=self.hSpeed,
                 vSpeed=self.vSpeed,
-                tol=tolerance,
             )
             debugEdge(tail, ".........-")
             self.initialEdge = edge
@@ -566,9 +566,10 @@ class MapWireToTag:
                         commands.extend(
                             Path.Geom.cmdsForEdge(
                                 e,
+                                flip=False,
+                                approximation=self.approximation,
                                 hSpeed=self.hSpeed,
                                 vSpeed=self.vSpeed,
-                                tol=self.tolerance,
                             )
                         )
                 if rapid:
@@ -586,9 +587,9 @@ class MapWireToTag:
                     commands.extend(
                         Path.Geom.cmdsForEdge(
                             e,
+                            approximation=self.approximation,
                             hSpeed=self.hSpeed,
                             vSpeed=self.vSpeed,
-                            tol=self.tolerance,
                         )
                     )
                 return commands
@@ -659,6 +660,7 @@ class PathData:
         else:
             self.edges = []
         self.baseWire = self.findBottomWire(self.edges)
+        self.obj.Proxy.amountClosedWires = len(self.baseWire)
 
     def findBottomWire(self, edges):
         (minZ, maxZ) = self.findZLimits(edges)
@@ -670,13 +672,13 @@ class PathData:
             if Path.Geom.isRoughly(e.Vertexes[0].Point.z, minZ)
             and Path.Geom.isRoughly(e.Vertexes[1].Point.z, minZ)
         ]
-        self.bottomEdges = bottom
-        try:
-            wire = Part.Wire(bottom)
+        self.bottomEdges = Part.sortEdges(bottom)
+        wires = []
+        for edgesSorted in self.bottomEdges:
+            wire = Part.Wire(edgesSorted)
             if wire.isClosed():
-                return wire
-        except Exception:
-            return None
+                wires.append(wire)
+        return wires
 
     def supportsTagGeneration(self):
         return self.baseWire is not None
@@ -695,90 +697,93 @@ class PathData:
                     maxZ = v.Point.z
         return (minZ, maxZ)
 
-    def shortestAndLongestPathEdge(self):
-        edges = sorted(self.bottomEdges, key=lambda e: e.Length)
+    def shortestAndLongestPathEdge(self, wire):
+        edges = sorted(wire.Edges, key=lambda e: e.Length)
+        # (shortest, longest)
         return (edges[0], edges[-1])
 
     def generateTags(
         self, obj, count, width=None, height=None, angle=None, radius=None, spacing=None
     ):
-        Path.Log.track(count, width, height, angle, spacing)
-        # for e in self.baseWire.Edges:
-        #    debugMarker(e.Vertexes[0].Point, 'base', (0.0, 1.0, 1.0), 0.2)
-
-        if spacing:
-            tagDistance = spacing
-        else:
-            tagDistance = self.baseWire.Length / (count if count else 4)
-
-        W = width if width else self.defaultTagWidth()
-        H = height if height else self.defaultTagHeight()
-        A = angle if angle else self.defaultTagAngle()
-        R = radius if radius else self.defaultTagRadius()
-
-        # start assigning tags on the longest segment
-        (shortestEdge, longestEdge) = self.shortestAndLongestPathEdge()
-        startIndex = 0
-        for i in range(0, len(self.baseWire.Edges)):
-            edge = self.baseWire.Edges[i]
-            Path.Log.debug("  %d: %.2f" % (i, edge.Length))
-            if Path.Geom.isRoughly(edge.Length, longestEdge.Length):
-                startIndex = i
-                break
-
-        startEdge = self.baseWire.Edges[startIndex]
-        startCount = int(startEdge.Length / tagDistance)
-        if (longestEdge.Length - shortestEdge.Length) > shortestEdge.Length:
-            startCount = int(startEdge.Length / tagDistance) + 1
-
-        lastTagLength = (startEdge.Length + (startCount - 1) * tagDistance) / 2
-        currentLength = startEdge.Length
-
-        minLength = min(2.0 * W, longestEdge.Length)
-
-        Path.Log.debug(
-            "length=%.2f shortestEdge=%.2f(%.2f) longestEdge=%.2f(%.2f) minLength=%.2f"
-            % (
-                self.baseWire.Length,
-                shortestEdge.Length,
-                shortestEdge.Length / self.baseWire.Length,
-                longestEdge.Length,
-                longestEdge.Length / self.baseWire.Length,
-                minLength,
-            )
-        )
-        Path.Log.debug(
-            "   start: index=%-2d count=%d (length=%.2f, distance=%.2f)"
-            % (startIndex, startCount, startEdge.Length, tagDistance)
-        )
-        Path.Log.debug("               -> lastTagLength=%.2f)" % lastTagLength)
-        Path.Log.debug("               -> currentLength=%.2f)" % currentLength)
-
-        edgeDict = {startIndex: startCount}
-
-        for i in range(startIndex + 1, len(self.baseWire.Edges)):
-            edge = self.baseWire.Edges[i]
-            (currentLength, lastTagLength) = self.processEdge(
-                i, edge, currentLength, lastTagLength, tagDistance, minLength, edgeDict
-            )
-        for i in range(0, startIndex):
-            edge = self.baseWire.Edges[i]
-            (currentLength, lastTagLength) = self.processEdge(
-                i, edge, currentLength, lastTagLength, tagDistance, minLength, edgeDict
-            )
-
         tags = []
+        for wire in self.baseWire:
+            Path.Log.track(count, width, height, angle, spacing)
+            # for e in wire.Edges:
+            #    debugMarker(e.Vertexes[0].Point, 'base', (0.0, 1.0, 1.0), 0.2)
 
-        for i, count in edgeDict.items():
-            edge = self.baseWire.Edges[i]
-            Path.Log.debug(" %d: %d" % (i, count))
-            # debugMarker(edge.Vertexes[0].Point, 'base', (1.0, 0.0, 0.0), 0.2)
-            # debugMarker(edge.Vertexes[1].Point, 'base', (0.0, 1.0, 0.0), 0.2)
-            if 0 != count:
-                distance = (edge.LastParameter - edge.FirstParameter) / count
-                for j in range(0, count):
-                    tag = edge.Curve.value((j + 0.5) * distance)
-                    tags.append(Tag(j, tag.x, tag.y, W, H, A, R, True))
+            if spacing:
+                tagDistance = spacing
+            else:
+                tagDistance = wire.Length / (count if count else 4)
+
+            W = width if width else self.defaultTagWidth()
+            H = height if height else self.defaultTagHeight()
+            A = angle if angle else self.defaultTagAngle()
+            R = radius if radius else self.defaultTagRadius()
+
+            # start assigning tags on the longest segment
+            (shortestEdge, longestEdge) = self.shortestAndLongestPathEdge(wire)
+            startIndex = 0
+            for i in range(0, len(wire.Edges)):
+                edge = wire.Edges[i]
+                Path.Log.debug("  %d: %.2f" % (i, edge.Length))
+                if Path.Geom.isRoughly(edge.Length, longestEdge.Length):
+                    startIndex = i
+                    break
+
+            startEdge = wire.Edges[startIndex]
+            startCount = int(startEdge.Length / tagDistance)
+            if (longestEdge.Length - shortestEdge.Length) > shortestEdge.Length:
+                startCount = int(startEdge.Length / tagDistance) + 1
+
+            lastTagLength = (startEdge.Length + (startCount - 1) * tagDistance) / 2
+            currentLength = startEdge.Length
+
+            minLength = min(2.0 * W, longestEdge.Length)
+
+            Path.Log.debug(
+                "length=%.2f shortestEdge=%.2f(%.2f) longestEdge=%.2f(%.2f) minLength=%.2f"
+                % (
+                    wire.Length,
+                    shortestEdge.Length,
+                    shortestEdge.Length / wire.Length,
+                    longestEdge.Length,
+                    longestEdge.Length / wire.Length,
+                    minLength,
+                )
+            )
+            Path.Log.debug(
+                "   start: index=%-2d count=%d (length=%.2f, distance=%.2f)"
+                % (startIndex, startCount, startEdge.Length, tagDistance)
+            )
+            Path.Log.debug("               -> lastTagLength=%.2f)" % lastTagLength)
+            Path.Log.debug("               -> currentLength=%.2f)" % currentLength)
+
+            edgeDict = {startIndex: startCount}
+            print("  edgeDict", edgeDict)
+
+            for i in range(startIndex + 1, len(wire.Edges)):
+                edge = wire.Edges[i]
+                (currentLength, lastTagLength) = self.processEdge(
+                    i, edge, currentLength, lastTagLength, tagDistance, minLength, edgeDict
+                )
+            for i in range(0, startIndex):
+                edge = wire.Edges[i]
+                (currentLength, lastTagLength) = self.processEdge(
+                    i, edge, currentLength, lastTagLength, tagDistance, minLength, edgeDict
+                )
+
+            for i, counter in edgeDict.items():
+                edge = wire.Edges[i]
+                Path.Log.debug(" %d: %d" % (i, counter))
+                # debugMarker(edge.Vertexes[0].Point, 'base', (1.0, 0.0, 0.0), 0.2)
+                # debugMarker(edge.Vertexes[1].Point, 'base', (0.0, 1.0, 0.0), 0.2)
+                if counter:
+                    distance = (edge.LastParameter - edge.FirstParameter) / counter
+                    for j in range(0, counter):
+                        tag = edge.Curve.value((j + 0.5) * distance)
+                        print("  tag", tag.x, tag.y)
+                        tags.append(Tag(j, tag.x, tag.y, W, H, A, R, True))
 
         return tags
 
@@ -853,8 +858,11 @@ class PathData:
         return height
 
     def defaultTagWidth(self):
-        width = self.shortestAndLongestPathEdge()[1].Length / 10
-        return HoldingTagPreferences.defaultWidth(width)
+        maxWidth = 0
+        for wire in self.baseWire:
+            width = self.shortestAndLongestPathEdge(wire)[1].Length / 10
+            maxWidth = width if width > maxWidth else maxWidth
+        return HoldingTagPreferences.defaultWidth(maxWidth)
 
     def defaultTagAngle(self):
         return HoldingTagPreferences.defaultAngle()
@@ -864,7 +872,11 @@ class PathData:
 
     def sortedTags(self, tags):
         ordered = []
-        for edge in self.bottomEdges:
+        allEdges = []
+        for edges in self.bottomEdges:
+            allEdges.extend(edges)
+
+        for edge in allEdges:
             ts = [
                 t
                 for t in tags
@@ -893,11 +905,12 @@ class PathData:
     def pointIsOnPath(self, p):
         v = Part.Vertex(self.pointAtBottom(p))
         Path.Log.debug("pt = (%f, %f, %f)" % (v.X, v.Y, v.Z))
-        for e in self.bottomEdges:
-            indent = "{} ".format(e.distToShape(v)[0])
-            debugEdge(e, indent, True)
-            if Path.Geom.isRoughly(0.0, v.distToShape(e)[0], 0.1):
-                return True
+        for sortedEdges in self.bottomEdges:
+            for e in sortedEdges:
+                indent = "{} ".format(e.distToShape(v)[0])
+                debugEdge(e, indent, True)
+                if Path.Geom.isRoughly(0.0, v.distToShape(e)[0], 0.1):
+                    return True
         return False
 
     def pointAtBottom(self, p):
@@ -949,6 +962,16 @@ class ObjectTagDressup:
             "Tag",
             QT_TRANSLATE_NOOP("App::Property", "IDs of disabled holding tags"),
         )
+        obj.addProperty(
+            "App::PropertyBool",
+            "Approximation",
+            "Path",
+            QT_TRANSLATE_NOOP(
+                "App::Property",
+                "Split B-Spline by arcs and ignore not vertical arcs axis (experimental).",
+            ),
+        )
+        obj.setEditorMode("Approximation", 2)  # hide
 
         self.obj = obj
         self.solids = []
@@ -956,21 +979,21 @@ class ObjectTagDressup:
         self.pathData = None
         self.toolRadius = None
         self.mappers = []
+        self.amountClosedWires = 1
 
         obj.Proxy = self
         obj.Base = base
 
     def dumps(self):
-        return None
+        state = {}
+        return state
 
     def loads(self, state):
-        self.obj = state
         self.solids = []
         self.tags = []
         self.pathData = None
         self.toolRadius = None
         self.mappers = []
-        return None
 
     def onChanged(self, obj, prop):
         if prop == "Path" and obj.ViewObject:
@@ -978,6 +1001,17 @@ class ObjectTagDressup:
 
     def onDocumentRestored(self, obj):
         self.obj = obj
+        if not hasattr(obj, "Approximation"):
+            obj.addProperty(
+                "App::PropertyBool",
+                "Approximation",
+                "Path",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "Split B-Spline by arcs and ignore not vertical arcs axis (experimental).",
+                ),
+            )
+            obj.setEditorMode("Approximation", 2)  # hide
 
     def supportsTagGeneration(self, obj):
         if not self.pathData:
@@ -1044,8 +1078,6 @@ class ObjectTagDressup:
         self.mappers = []
         mapper = None
 
-        job = PathUtils.findParentJob(obj)
-        tol = job.GeometryTolerance.Value
         tc = PathDressup.toolController(obj.Base)
         horizFeed = tc.HorizFeed.Value
         vertFeed = tc.VertFeed.Value
@@ -1080,7 +1112,7 @@ class ObjectTagDressup:
                         pathData.maxZ,
                         hSpeed=horizFeed,
                         vSpeed=vertFeed,
-                        tolerance=tol,
+                        approximation=False,
                     )
                     self.mappers.append(mapper)
                     edge = mapper.tail
@@ -1105,7 +1137,12 @@ class ObjectTagDressup:
                             )
                     else:
                         commands.extend(
-                            Path.Geom.cmdsForEdge(edge, hSpeed=horizFeed, vSpeed=vertFeed, tol=tol)
+                            Path.Geom.cmdsForEdge(
+                                edge,
+                                approximation=obj.Approximation,
+                                hSpeed=horizFeed,
+                                vSpeed=vertFeed,
+                            )
                         )
                 edge = None
                 t = 0
