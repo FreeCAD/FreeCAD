@@ -960,6 +960,11 @@ void NaviCubeImplementation::ensureFramebufferValid()
 {
     if (!isFramebufferValid()) {
         if (m_PickingFramebuffer) {
+
+            if (!m_PickingFramebuffer->isValid()) {
+                Base::Console().developerWarning("NaviCube", "The frame buffer has become invalid, a new frame buffer will be created\n");
+            }
+            
             delete m_PickingFramebuffer;
             m_PickingFramebuffer = nullptr;
         }
