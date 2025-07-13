@@ -200,9 +200,11 @@ class ObjectHelix(PathCircularHoleBase.ObjectOp):
 
     def opOnDocumentRestored(self, obj):
         for prop in obj.PropertiesList:
-            if (str(prop) == "StartRadius") and (obj.getTypeIdOfProperty(str(prop)) == "App::PropertyLength"):
+            if (str(prop) == "StartRadius") and (
+                obj.getTypeIdOfProperty(str(prop)) == "App::PropertyLength"
+            ):
                 tmpRad = obj.StartRadius.Value
-                obj.removeProperty("StartRadius") # ensure PropertyDistance, not Length
+                obj.removeProperty("StartRadius")  # ensure PropertyDistance, not Length
                 obj.addProperty(
                     "App::PropertyDistance",
                     "StartRadius",
@@ -281,11 +283,11 @@ class ObjectHelix(PathCircularHoleBase.ObjectOp):
         }
 
         for hole in holes:
-            if (obj.StartRadius.Value < (hole["d"] / 2)):
-                args["hole_radius"] = (hole["d"] / 2)
+            if obj.StartRadius.Value < (hole["d"] / 2):
+                args["hole_radius"] = hole["d"] / 2
                 args["inner_radius"] = obj.StartRadius.Value
             else:
-                args["inner_radius"] = (hole["d"] / 2)
+                args["inner_radius"] = hole["d"] / 2
                 args["hole_radius"] = obj.StartRadius.Value
 
             args["inner_radius"] += obj.OffsetExtra.Value

@@ -54,25 +54,25 @@ std::string CommandPy::representation() const
     str << " ]";
     return str.str();
 
-/*  # make this more like python print()
-    std::stringstream str;
-    str.precision(5);
-    str << "Command ( ";
-    str << getCommandPtr()->Name;
-    str << ", {";
-    for (std::map<std::string, double>::iterator i = getCommandPtr()->Parameters.begin();
-          i != getCommandPtr()->Parameters.end();
-          ++i) {
-        std::string k = i->first;
-        double v = i->second;
-        str << "\'" << k << "\':" << v;
-        if ( i != std::prev(getCommandPtr()->Parameters.end())  ) {
-            str << ", ";
+    /*  # make this more like python print()
+        std::stringstream str;
+        str.precision(5);
+        str << "Command ( ";
+        str << getCommandPtr()->Name;
+        str << ", {";
+        for (std::map<std::string, double>::iterator i = getCommandPtr()->Parameters.begin();
+              i != getCommandPtr()->Parameters.end();
+              ++i) {
+            std::string k = i->first;
+            double v = i->second;
+            str << "\'" << k << "\':" << v;
+            if ( i != std::prev(getCommandPtr()->Parameters.end())  ) {
+                str << ", ";
+            }
         }
-    }
-    str << "} )";
-    return str.str();
-*/
+        str << "} )";
+        return str.str();
+    */
 }
 
 //

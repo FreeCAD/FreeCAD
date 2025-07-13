@@ -31,6 +31,7 @@ def radii(internal, major, minor, toolDia, toolCrest):
     """test radii function for simple testing"""
     return (minor, major)
 
+
 def _resetArgs():
     return {
         "center": FreeCAD.Vector(),
@@ -45,11 +46,12 @@ def _resetArgs():
         "feedRateAdj": False,
         "tool_radius": 2,
     }
-    
+
 
 class TestPathThreadMillingGenerator(PathTestBase):
     """Test thread milling generator."""
-    # DR passes helix descent rate to blend v,h feeds. Don't appear in o/p GCODE 
+
+    # DR passes helix descent rate to blend v,h feeds. Don't appear in o/p GCODE
 
     def test00(self):
         """Verify thread commands for a single thread"""
@@ -61,12 +63,22 @@ class TestPathThreadMillingGenerator(PathTestBase):
         pitch = 1
         radius = 3
         leadInOut = False
-        retractOffset = 2 # tool axis offset from hole axis for z retraction moves
+        retractOffset = 2  # tool axis offset from hole axis for z retraction moves
         feedRateAdj = False
         tool_rad = 2
 
         path, start = threadmilling.generate(
-            center, cmd, zStart, zFinal, pitch, radius, leadInOut, retractOffset, None, feedRateAdj, tool_rad
+            center,
+            cmd,
+            zStart,
+            zFinal,
+            pitch,
+            radius,
+            leadInOut,
+            retractOffset,
+            None,
+            feedRateAdj,
+            tool_rad,
         )
 
         gcode = [
@@ -93,9 +105,19 @@ class TestPathThreadMillingGenerator(PathTestBase):
         retractOffset = 2
         feedRateAdj = False
         tool_rad = 2
-        
+
         path, start = threadmilling.generate(
-            center, cmd, zStart, zFinal, pitch, radius, leadInOut, retractOffset, None, feedRateAdj, tool_rad
+            center,
+            cmd,
+            zStart,
+            zFinal,
+            pitch,
+            radius,
+            leadInOut,
+            retractOffset,
+            None,
+            feedRateAdj,
+            tool_rad,
         )
 
         gcode = [
@@ -124,9 +146,19 @@ class TestPathThreadMillingGenerator(PathTestBase):
         retractOffset = 2
         feedRateAdj = False
         tool_rad = 2
-        
+
         path, start = threadmilling.generate(
-            center, cmd, zStart, zFinal, pitch, radius, leadInOut, retractOffset, None, feedRateAdj, tool_rad
+            center,
+            cmd,
+            zStart,
+            zFinal,
+            pitch,
+            radius,
+            leadInOut,
+            retractOffset,
+            None,
+            feedRateAdj,
+            tool_rad,
         )
 
         gcode = [
@@ -154,9 +186,19 @@ class TestPathThreadMillingGenerator(PathTestBase):
         retractOffset = 2
         feedRateAdj = False
         tool_rad = 2
-        
+
         path, start = threadmilling.generate(
-            center, cmd, zStart, zFinal, pitch, radius, leadInOut, retractOffset, None, feedRateAdj, tool_rad
+            center,
+            cmd,
+            zStart,
+            zFinal,
+            pitch,
+            radius,
+            leadInOut,
+            retractOffset,
+            None,
+            feedRateAdj,
+            tool_rad,
         )
 
         gcode = [
@@ -187,9 +229,19 @@ class TestPathThreadMillingGenerator(PathTestBase):
         retractOffset = 2
         feedRateAdj = False
         tool_rad = 2
-        
+
         path, start = threadmilling.generate(
-            center, cmd, zStart, zFinal, pitch, radius, leadInOut, retractOffset, None, feedRateAdj, tool_rad
+            center,
+            cmd,
+            zStart,
+            zFinal,
+            pitch,
+            radius,
+            leadInOut,
+            retractOffset,
+            None,
+            feedRateAdj,
+            tool_rad,
         )
 
         gcode = [
@@ -220,9 +272,19 @@ class TestPathThreadMillingGenerator(PathTestBase):
         retractOffset = 2
         feedRateAdj = False
         tool_rad = 2
-        
+
         path, start = threadmilling.generate(
-            center, cmd, zStart, zFinal, pitch, radius, leadInOut, retractOffset, None, feedRateAdj, tool_rad
+            center,
+            cmd,
+            zStart,
+            zFinal,
+            pitch,
+            radius,
+            leadInOut,
+            retractOffset,
+            None,
+            feedRateAdj,
+            tool_rad,
         )
 
         gcode = [
@@ -253,9 +315,19 @@ class TestPathThreadMillingGenerator(PathTestBase):
         retractOffset = 2
         feedRateAdj = False
         tool_rad = 2
-        
+
         path, start = threadmilling.generate(
-            center, cmd, zStart, zFinal, pitch, radius, leadInOut, retractOffset, None, feedRateAdj, tool_rad
+            center,
+            cmd,
+            zStart,
+            zFinal,
+            pitch,
+            radius,
+            leadInOut,
+            retractOffset,
+            None,
+            feedRateAdj,
+            tool_rad,
         )
 
         gcode = [
@@ -275,7 +347,7 @@ class TestPathThreadMillingGenerator(PathTestBase):
         self.assertCoincide(start, FreeCAD.Vector(0, -2, zFinal))
 
     def test13(self):
-        """Verify FeedRadAdj """
+        """Verify FeedRadAdj"""
         args = _resetArgs()
 
         # first check it's not present with default feedRateAdj=False:
@@ -284,11 +356,11 @@ class TestPathThreadMillingGenerator(PathTestBase):
 
         # now recalc with feedRateAdj:
         args["feedRateAdj"] = True
-        result, start  = threadmilling.generate(**args)
+        result, start = threadmilling.generate(**args)
 
         self.assertTrue("FR" in result[-2].Parameters)
-        FR = result[-2].Parameters["FR" ]
-        #print("FR = ",FR)
-        self.assertTrue(FR == 0.600000) #radius / (radius + tool_rad)  #  (hole_rad-tool_rad)/hole_rad 
-
-
+        FR = result[-2].Parameters["FR"]
+        # print("FR = ",FR)
+        self.assertTrue(
+            FR == 0.600000
+        )  # radius / (radius + tool_rad)  #  (hole_rad-tool_rad)/hole_rad
