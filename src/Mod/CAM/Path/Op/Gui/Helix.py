@@ -69,9 +69,11 @@ class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
         if obj.StepOver != self.form.stepOverPercent.value():
             obj.StepOver = self.form.stepOverPercent.value()
         PathGuiUtil.updateInputField(obj, "OffsetExtra", self.form.extraOffset)
+        PathGuiUtil.updateInputField(obj, "StartRadius", self.form.startRadius)
 
         self.updateToolController(obj, self.form.toolController)
         self.updateCoolant(obj, self.form.coolantController)
+        obj.FeedRateAdj = self.form.feedRateCheckBox.checkState() == QtCore.Qt.Checked
 
     def setFields(self, obj):
         """setFields(obj) ... transfers obj's property values to UI"""
@@ -87,17 +89,25 @@ class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
         self.form.extraOffset.setText(
             FreeCAD.Units.Quantity(obj.OffsetExtra.Value, FreeCAD.Units.Length).UserString
         )
+        self.form.startRadius.setText(
+            FreeCAD.Units.Quantity(obj.StartRadius.Value, FreeCAD.Units.Length).UserString
+        )
+        self.form.feedRateCheckBox.setCheckState(
+            QtCore.Qt.Checked if obj.FeedRateAdj else QtCore.Qt.Unchecked
+        )
 
     def getSignalsForUpdate(self, obj):
         """getSignalsForUpdate(obj) ... return list of signals for updating obj"""
         signals = []
 
         signals.append(self.form.stepOverPercent.editingFinished)
+        signals.append(self.form.startRadius.editingFinished)
         signals.append(self.form.extraOffset.editingFinished)
         signals.append(self.form.cutMode.currentIndexChanged)
         signals.append(self.form.startSide.currentIndexChanged)
         signals.append(self.form.toolController.currentIndexChanged)
         signals.append(self.form.coolantController.currentIndexChanged)
+        signals.append(self.form.feedRateCheckBox.stateChanged)
 
         return signals
 
