@@ -53,6 +53,26 @@ std::string CommandPy::representation() const
     }
     str << " ]";
     return str.str();
+
+/*  # make this more like python print()
+    std::stringstream str;
+    str.precision(5);
+    str << "Command ( ";
+    str << getCommandPtr()->Name;
+    str << ", {";
+    for (std::map<std::string, double>::iterator i = getCommandPtr()->Parameters.begin();
+          i != getCommandPtr()->Parameters.end();
+          ++i) {
+        std::string k = i->first;
+        double v = i->second;
+        str << "\'" << k << "\':" << v;
+        if ( i != std::prev(getCommandPtr()->Parameters.end())  ) {
+            str << ", ";
+        }
+    }
+    str << "} )";
+    return str.str();
+*/
 }
 
 //
@@ -183,6 +203,7 @@ void CommandPy::setParameters(Py::Dict arg)
     PyObject* dict_copy = PyDict_Copy(arg.ptr());
     PyObject *key, *value;
     Py_ssize_t pos = 0;
+    getCommandPtr()->Parameters.clear();
     while (PyDict_Next(dict_copy, &pos, &key, &value)) {
         std::string ckey;
         if (PyUnicode_Check(key)) {
