@@ -103,6 +103,7 @@ class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
         obj.Direction = self.form.opDirection.currentData()
         obj.Passes = self.form.opPasses.value()
         obj.LeadInOut = self.form.leadInOut.checkState() == QtCore.Qt.Checked
+        obj.FeedRateAdj = self.form.feedRateCheckBox.checkState() == QtCore.Qt.Checked
         obj.TPI = self.form.threadTPI.value()
 
         try:
@@ -134,10 +135,13 @@ class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
         self.form.leadInOut.setCheckState(
             QtCore.Qt.Checked if obj.LeadInOut else QtCore.Qt.Unchecked
         )
+        self.form.feedRateCheckBox.setCheckState(
+            QtCore.Qt.Checked if obj.FeedRateAdj else QtCore.Qt.Unchecked
+        )
 
-        self.majorDia.updateWidget()
-        self.minorDia.updateWidget()
-        self.pitch.updateWidget()
+        self.majorDia.updateSpinBox()
+        self.minorDia.updateSpinBox()
+        self.pitch.updateSpinBox()
 
         self.setupToolController(obj, self.form.toolController)
         self._updateFromThreadType()
@@ -184,7 +188,7 @@ class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
                 self.form.threadPitchLabel.setEnabled(False)
                 self.form.threadTPI.setEnabled(True)
                 self.form.threadTPILabel.setEnabled(True)
-                self.pitch.updateWidget(0)
+                self.pitch.updateSpinBox(0)
             fillThreads(
                 self.form,
                 PathThreadMilling.ThreadTypeData[self.form.threadType.currentData()],
@@ -205,7 +209,7 @@ class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
 
             if self._isThreadMetric():
                 pitch = float(thread["pitch"])
-                self.pitch.updateWidget(pitch)
+                self.pitch.updateSpinBox(pitch)
 
             if self._isThreadImperial():
                 tpi = int(thread["tpi"])
@@ -213,8 +217,8 @@ class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
                 minor = minor * 25.4
                 major = major * 25.4
 
-            self.majorDia.updateWidget(major)
-            self.minorDia.updateWidget(minor)
+            self.majorDia.updateSpinBox(major)
+            self.minorDia.updateSpinBox(minor)
 
         self.setDirty()
 
@@ -229,11 +233,7 @@ class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
         signals.append(self.form.threadTPI.editingFinished)
         signals.append(self.form.opDirection.currentIndexChanged)
         signals.append(self.form.opPasses.editingFinished)
-        if hasattr(self.form.leadInOut, "checkStateChanged"):  # Qt version >= 6.7.0
-            signals.append(self.form.leadInOut.checkStateChanged)
-        else:  # Qt version < 6.7.0
-            signals.append(self.form.leadInOut.stateChanged)
-
+        signals.append(self.form.leadInOut.stateChanged)
         signals.append(self.form.toolController.currentIndexChanged)
 
         return signals
