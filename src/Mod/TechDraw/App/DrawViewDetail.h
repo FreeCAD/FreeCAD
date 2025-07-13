@@ -57,8 +57,8 @@ public:
     ~DrawViewDetail() override;
 
     App::PropertyLink   BaseView;
-    App::PropertyPosition AnchorPoint;
-    App::PropertyLength   Radius;
+    App::PropertyVector AnchorPoint;
+    App::PropertyFloat   Radius;
     App::PropertyString Reference;
 
     App::PropertyBool   ShowMatting;
