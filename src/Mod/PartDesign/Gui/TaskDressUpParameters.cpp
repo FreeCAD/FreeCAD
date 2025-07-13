@@ -75,18 +75,6 @@ TaskDressUpParameters::~TaskDressUpParameters()
     Gui::Selection().rmvSelectionGate();
 }
 
-const QString TaskDressUpParameters::btnPreviewStr()
-{
-    const QString text{ tr("Preview") };
-    return text;
-}
-
-const QString TaskDressUpParameters::btnSelectStr()
-{
-    const QString text{ tr("Select") };
-    return text;
-}
-
 void TaskDressUpParameters::setupTransaction()
 {
     if (DressUpView.expired())
