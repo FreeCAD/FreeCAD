@@ -25,7 +25,7 @@ import Part
 import Path
 import Path.Base.Generator.helix as generator
 import CAMTests.PathTestUtils as PathTestUtils
-import math # for one use of pi
+import math  # for one use of pi
 
 Path.Log.setLevel(Path.Log.Level.INFO, Path.Log.thisModule())
 Path.Log.trackModule(Path.Log.thisModule())
@@ -110,8 +110,8 @@ G0 Z20.000000"
         self.assertRaises(TypeError, generator.generate, **args)
 
     def test02(self):
-        '''Require tool fit: hole diameter not greater than tool diam
-        # with zero inner radius'''
+        """Require tool fit: hole diameter not greater than tool diam
+        # with zero inner radius"""
         args = _resetArgs()
         args["hole_radius"] = 2.0
         args["inner_radius"] = 0.0
@@ -119,7 +119,7 @@ G0 Z20.000000"
         self.assertRaises(ValueError, generator.generate, **args)
 
     def test03(self):
-        '''Require tool fits hole'''
+        """Require tool fits hole"""
         # 1. Extra Offset just small enough to leave room for tool should not raise an error
         args = _resetArgs()
         designed_hole_diameter = 10.0
@@ -139,7 +139,7 @@ G0 Z20.000000"
         args["tool_diameter"] = 5.0
         self.assertRaises(ValueError, generator.generate, **args)
 
-        #3. Check plunge with endmill is not blocked. Not ideal but that's machinists choice.
+        # 3. Check plunge with endmill is not blocked. Not ideal but that's machinists choice.
         args["hole_radius"] = 5.0
         args["inner_radius"] = 0.0
         args["tool_diameter"] = 5.0
@@ -147,7 +147,7 @@ G0 Z20.000000"
         self.assertTrue(result)
 
     def test04(self):
-        '''Test step_over : a "percent" value between 0 and 1'''
+        """Test step_over : a "percent" value between 0 and 1"""
         args = _resetArgs()
         args["step_over"] = 50
         self.assertRaises(ValueError, generator.generate, **args)
@@ -155,7 +155,7 @@ G0 Z20.000000"
         self.assertRaises(TypeError, generator.generate, **args)
 
     def test05(self):
-        ''' Test some mistaken inputs are rejected'''
+        """Test some mistaken inputs are rejected"""
         args = _resetArgs()
         args["startAt"] = "Other"
         self.assertRaises(ValueError, generator.generate, **args)
@@ -165,7 +165,7 @@ G0 Z20.000000"
         self.assertRaises(ValueError, generator.generate, **args)
 
     def test07(self):
-        '''Test Basic Helix Generator '''
+        """Test Basic Helix Generator"""
         # verify linear edge is vertical: X
         args = _resetArgs()
         v1 = FreeCAD.Vector(5, 5, 20)
@@ -181,7 +181,7 @@ G0 Z20.000000"
         self.assertRaises(ValueError, generator.generate, **args)
 
     def test08(self):
-        '''Test Helix Generator with horizontal edge'''
+        """Test Helix Generator with horizontal edge"""
         args = _resetArgs()
         v1 = FreeCAD.Vector(10, 5, 5)
         v2 = FreeCAD.Vector(20, 5, 5)
@@ -189,7 +189,7 @@ G0 Z20.000000"
         self.assertRaises(ValueError, generator.generate, **args)
 
     def test09(self):
-        '''Test Helix Generator with inverted vertical edge'''
+        """Test Helix Generator with inverted vertical edge"""
         args = _resetArgs()
         v1 = FreeCAD.Vector(5, 5, 18)
         v2 = FreeCAD.Vector(5, 5, 20)
@@ -198,7 +198,7 @@ G0 Z20.000000"
         self.assertRaises(ValueError, generator.generate, **args)
 
     def test10(self):
-        '''Test Helix Retraction'''
+        """Test Helix Retraction"""
 
         # if center is clear, the second to last move should be a G1 away
         # from the wall
@@ -227,7 +227,7 @@ G0 Z20.000000"
         self.assertTrue(result[-2].Name == "G2")
 
     def test12(self):
-        ''' test "FeedFactor" pseudo-param when using feedRateAdj '''
+        """test "FeedFactor" pseudo-param when using feedRateAdj"""
         args = _resetArgs()
         v1 = FreeCAD.Vector(0, 0, 20)
         v2 = FreeCAD.Vector(0, 0, 18)
@@ -252,7 +252,7 @@ G0 Z20.000000"
         tool_r = args["tool_diameter"] / 2
         # first cut is outside diam, so reduce spindle feedrate
         # first arc is in 3rd gcode command :result[3]
-        path_r = args["hole_radius"]-tool_r
+        path_r = args["hole_radius"] - tool_r
         result = generator.generate(**args)
         self.assertTrue("FR" in result[3].Parameters)
         FF = result[3].Parameters["FR"]
@@ -260,7 +260,7 @@ G0 Z20.000000"
 
         # final cut is inside diam, so increase spindle feedrate
         # last arc in inner helix 3rd gcode from end :result[-3]
-        path_r = args["inner_radius"]+tool_r
+        path_r = args["inner_radius"] + tool_r
         result = generator.generate(**args)
         self.assertTrue("FR" in result[-3].Parameters)
         FF = result[-3].Parameters["FR"]
@@ -277,7 +277,7 @@ G0 Z20.000000"
         self.assertTrue(FR == 200)
 
     def test14(self):
-        ''' test "DescentRate" pseudo-param when using feedRateAdj '''
+        """test "DescentRate" pseudo-param when using feedRateAdj"""
         args = _resetArgs()
         v1 = FreeCAD.Vector(0, 0, 20)
         v2 = FreeCAD.Vector(0, 0, 18)
@@ -294,11 +294,10 @@ G0 Z20.000000"
         args["hole_radius"] = 6.0
         result = generator.generate(**args)
         self.assertTrue("DR" in result[-3].Parameters)
-        DR = result[-3].Parameters["DR" ]
+        DR = result[-3].Parameters["DR"]
         self.assertTrue(DR == 0)  # last two arcs are flat circle, no descent
-        DR = result[-5].Parameters["DR" ] # last true helix arc
+        DR = result[-5].Parameters["DR"]  # last true helix arc
         self.assertTrue(
-            DR == args["step_down"] / (2*math.pi*(args["hole_radius"] - args["tool_diameter"] /2))
+            DR
+            == args["step_down"] / (2 * math.pi * (args["hole_radius"] - args["tool_diameter"] / 2))
         )
-
-
