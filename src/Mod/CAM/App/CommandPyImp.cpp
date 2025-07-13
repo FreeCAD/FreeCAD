@@ -53,6 +53,7 @@ std::string CommandPy::representation() const
     }
     str << " ]";
     return str.str();
+
 }
 
 //
@@ -183,6 +184,7 @@ void CommandPy::setParameters(Py::Dict arg)
     PyObject* dict_copy = PyDict_Copy(arg.ptr());
     PyObject *key, *value;
     Py_ssize_t pos = 0;
+    getCommandPtr()->Parameters.clear();
     while (PyDict_Next(dict_copy, &pos, &key, &value)) {
         std::string ckey;
         if (PyUnicode_Check(key)) {
@@ -281,7 +283,7 @@ PyObject* CommandPy::getCustomAttributes(const char* attr) const
     if (satt.length() == 1) {
         if (isalpha(satt[0])) {
             boost::to_upper(satt);
-            if (getCommandPtr()->Parameters.contains(satt)) {
+            if (getCommandPtr()->Parameters.count(satt)) {
                 return PyFloat_FromDouble(getCommandPtr()->Parameters[satt]);
             }
             Py_INCREF(Py_None);
