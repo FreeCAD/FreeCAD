@@ -105,6 +105,8 @@ protected:
 
 private:
     Gui::WeakPtrT<ViewProviderDressUp> DressUpView;
+
+    Gui::ViewProvider* previouslyShownViewProvider { nullptr };
 };
 
 /// simulation dialog for the TaskView
