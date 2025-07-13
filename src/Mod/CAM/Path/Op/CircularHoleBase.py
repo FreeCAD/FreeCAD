@@ -24,8 +24,7 @@ from PySide.QtCore import QT_TRANSLATE_NOOP
 import FreeCAD
 import Path
 import Path.Op.Base as PathOp
-from Path.Base import Drillable
-from PathScripts import PathUtils
+import Path.Base.Drillable as Drillable
 
 # lazily loaded modules
 from lazy_loader.lazy_loader import LazyLoader
@@ -179,16 +178,15 @@ class ObjectOp(PathOp.ObjectOp):
                             {
                                 "x": pos.x,
                                 "y": pos.y,
-                                "r": self.holeDiameter(obj, base, sub),
+                                "d": self.holeDiameter(obj, base, sub),
                             }
                         )
 
         if haveLocations(self, obj):
             for location in obj.Locations:
-                holes.append({"x": location.x, "y": location.y, "r": 0})
+                holes.append({"x": location.x, "y": location.y, "d": 0})
 
         if len(holes) > 0:
-            holes = PathUtils.sort_locations(holes, ["x", "y"])
             self.circularHoleExecute(obj, holes)
 
     def circularHoleExecute(self, obj, holes):
