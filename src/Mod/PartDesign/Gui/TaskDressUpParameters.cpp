@@ -77,7 +77,7 @@ TaskDressUpParameters::~TaskDressUpParameters()
 
 const QString TaskDressUpParameters::btnPreviewStr()
 {
-    const QString text{ tr("Preview") };
+    const QString text{ tr("Confirm Selection") };
     return text;
 }
 
