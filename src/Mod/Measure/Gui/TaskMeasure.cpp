@@ -223,6 +223,7 @@ Measure::MeasureBase* TaskMeasure::createObject(const App::MeasureType* measureT
         auto pyMeasureClass = measureType->pythonClass;
 
         // Create a MeasurePython instance
+        // Measure::MeasurePython is an alias so we need to use the string based addObject for now.
         auto featurePython = doc->addObject("Measure::MeasurePython", measureType->label.c_str());
         _mMeasureObject = dynamic_cast<Measure::MeasureBase*>(featurePython);
 
