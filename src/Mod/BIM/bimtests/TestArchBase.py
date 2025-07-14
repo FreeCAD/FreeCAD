@@ -30,11 +30,35 @@ import FreeCAD
 class TestArchBase(unittest.TestCase):
 
     def setUp(self):
-        print(f"Initializing: {self.__class__.__name__}")
-        self.document = FreeCAD.newDocument(self.__class__.__name__)
+        """
+        Set up a new, clean document for the test. Ensure test isolation by creating a
+        uniquely-named document and cleaning up any potential leftovers from a previously failed
+        run.
+        """
+        self.doc_name = self.__class__.__name__
+
+        # Close any document of the same name that might have been left over from a crashed or
+        # aborted test run. FreeCAD.getDocument() raises a NameError if the document is not found,
+        # so we wrap this check in a try...except block.
+        try:
+            FreeCAD.getDocument(self.doc_name)
+            # If getDocument() succeeds, the document exists and must be closed.
+            FreeCAD.closeDocument(self.doc_name)
+        except NameError:
+            # This is the expected path on a clean run; do nothing.
+            pass
+
+        # Create a fresh document for the current test.
+        self.document = FreeCAD.newDocument(self.doc_name)
+        self.assertEqual(self.document.Name, self.doc_name)
 
     def tearDown(self):
-        FreeCAD.closeDocument(self.document.Name)
+        """Close the test document after all tests in the class are complete."""
+        if hasattr(self, 'document') and self.document:
+            try:
+                FreeCAD.closeDocument(self.document.Name)
+            except Exception as e:
+                FreeCAD.Console.PrintError(f"Error during tearDown in {self.__class__.__name__}: {e}\n")
 
     def printTestMessage(self, text, prepend_text="Test ", end="\n"):
         """Write messages to the console including the line ending.
@@ -43,3 +67,4 @@ class TestArchBase(unittest.TestCase):
         passed as the prepend_text argument
         """
         FreeCAD.Console.PrintMessage(prepend_text + text + end)
+

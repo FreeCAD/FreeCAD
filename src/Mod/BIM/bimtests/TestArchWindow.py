@@ -309,34 +309,39 @@ class TestArchWindow(TestArchBase.TestArchBase):
 
     def test_create_window_on_xz_plane(self):
         """Test creating a window oriented on the XZ (vertical) plane."""
-        sketch = self._create_sketch_with_wires("Sketch_XZ_Plane",
-                                                [(0,0,1000,1200), (100,100,800,1000)])
 
-        sketch.Placement.Rotation = FreeCAD.Rotation(FreeCAD.Vector(1,0,0), 90)
+        # Create a a frame-like profile.
+        sketch = self._create_sketch_with_wires("Sketch_XZ_Plane",
+                                                [(0, 0, 1000, 1200), (100, 100, 800, 1000)])
+
+        # Orient the sketch to the XZ plane.
+        sketch.Placement.Rotation = FreeCAD.Rotation(FreeCAD.Vector(1, 0, 0), 90)
         self.document.recompute()
 
+        # Create the window using explicit parts.
         window = Arch.makeWindow(baseobj=sketch, name="Window_XZ_Plane")
         window.WindowParts = [
-            "Frame", "Frame", "Wire0,Wire1", "60", "0",
-            "Glass", "Glass panel", "Wire1", "10", "25"
+            "Frame", "Frame", "Wire0,Wire1", "60", "0",    # A 60mm thick frame
+            "Glass", "Glass panel", "Wire1", "10", "25"    # A 10mm thick glass pane, offset by 25mm
         ]
         self.document.recompute()
 
-        self.assertFalse(window.Shape.isNull())
-        self.assertGreater(len(window.Shape.Solids), 0)
-
-        expected_normal_y = 1.0
-
-        self.assertAlmostEqual(window.Normal.x, 0.0, places=5)
-        self.assertAlmostEqual(window.Normal.y, expected_normal_y, places=5,
-                               msg=f"Window normal Y component incorrect. Expected approx {expected_normal_y}, got {window.Normal.y}")
-        self.assertAlmostEqual(window.Normal.z, 0.0, places=5)
+        # Check the resulting geometry's orientation and dimensions.
+        self.assertFalse(window.Shape.isNull(), "Window shape should not be null.")
+        self.assertEqual(len(window.Shape.Solids), 2, "Window should contain two solids (frame and glass).")
 
         bb = window.Shape.BoundBox
+
+        # The window's overall "thickness" is determined by the frame (60mm).
+        # Its "width" (X) and "height" (Z) should be larger.
         self.assertGreater(bb.XLength, bb.YLength,
-                           "Window XLength (width) should be greater than YLength (thickness).")
+                        "Window XLength (width) should be greater than YLength (thickness).")
         self.assertGreater(bb.ZLength, bb.YLength,
-                           "Window ZLength (height) should be greater than YLength (thickness).")
+                        "Window ZLength (height) should be greater than YLength (thickness).")
+
+        # Verify the overall thickness is correct (60mm, from the Frame component).
+        self.assertAlmostEqual(bb.YLength, 60.0, places=5,
+                            msg="Window thickness (YLength) is incorrect.")
 
     def test_opening_property_rotates_component(self):
         """Test that setting the Opening property rotates a hinged component."""
@@ -559,7 +564,7 @@ class TestArchWindow(TestArchBase.TestArchBase):
         Helper to create a sketch with one or more specified rectangular wires.
 
         Each rectangle is defined in the sketch's local XY plane. The sketch
-        is created in the current document (`self.document`). After adding all
+        is created in the current document (`self.doc`). After adding all
         geometry and basic coincident constraints for each rectangle, the
         document is recomputed.
 
@@ -608,7 +613,7 @@ class TestArchWindow(TestArchBase.TestArchBase):
         """
         Helper to create a rectangular sketch with "Width" and "Height" named constraints.
 
-        The sketch is created in the current document (`self.document`) on the
+        The sketch is created in the current document (`self.doc`) on the
         default XY plane. It consists of a single rectangle defined by four
         line segments, with its bottom-left corner at (0,0,0) in the
         sketch's local coordinates.
