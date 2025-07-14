@@ -867,7 +867,6 @@ void DrawSketchHandler::createAutoConstraints(const std::vector<AutoConstraint>&
 
                         if (createowncommand) {
                             closeAndRecompute(currentTransactionID, !success, Obj);
-                            currentTransactionID = 0;
                         }
                         else {
                             tryAutoRecompute(Obj);
@@ -902,7 +901,6 @@ void DrawSketchHandler::createAutoConstraints(const std::vector<AutoConstraint>&
 
                         if (createowncommand) {
                             closeAndRecompute(currentTransactionID, !success, Obj);
-                            currentTransactionID = 0;
                         }
                         else {
                             tryAutoRecompute(Obj);
