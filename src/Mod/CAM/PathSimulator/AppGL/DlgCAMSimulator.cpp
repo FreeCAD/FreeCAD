@@ -36,17 +36,38 @@
 #include <Gui/MDIView.h>
 #include <QHBoxLayout>
 #include <QPointer>
+#include <Inventor/nodes/SoCamera.h>
 
 using namespace MillSim;
 
 namespace CAMSimulator
 {
 
-static const float MouseScrollDelta = 120.0F;
+float SimShape::maxDimension() const
+{
+    float xmin = NAN, ymin = NAN, zmin = NAN;
+    float xmax = NAN, ymax = NAN, zmax = NAN;
+
+    for (const auto& v : verts) {
+        xmin = std::fmin(xmin, v.x);
+        ymin = std::fmin(ymin, v.x);
+        zmin = std::fmin(zmin, v.x);
+
+        xmax = std::fmax(xmax, v.x);
+        ymax = std::fmax(ymax, v.x);
+        zmax = std::fmax(zmax, v.x);
+    }
+
+    const float xsize = xmax - xmin;
+    const float ysize = ymax - ymin;
+    const float zsize = zmax - zmin;
+
+    return std::max(std::max(xsize, ysize), zsize);
+}
 
 static QPointer<ViewCAMSimulator> viewCAMSimulator;
 
-DlgCAMSimulator::DlgCAMSimulator(ViewCAMSimulator& view, const SoCamera& camera, QWidget* parent)
+DlgCAMSimulator::DlgCAMSimulator(ViewCAMSimulator& view, QWidget* parent)
     : QOpenGLWidget(parent)
     , mView(view)
 {
@@ -69,19 +90,17 @@ DlgCAMSimulator::DlgCAMSimulator(ViewCAMSimulator& view, const SoCamera& camera,
 
     setMouseTracking(true);
 
-    mMillSimulator.reset(new MillSimulation(camera));
-
-    mAnimatingTimer.setInterval(0);
-    connect(&mAnimatingTimer,
-            &QTimer::timeout,
-            this,
-            static_cast<void (DlgCAMSimulator::*)()>(&DlgCAMSimulator::update));
+    mMillSimulator.reset(new MillSimulation);
 }
 
 DlgCAMSimulator::~DlgCAMSimulator()
 {
     makeCurrent();
     mMillSimulator = nullptr;
+
+    if (mCamera) {
+        mCamera->unref();
+    }
 }
 
 void DlgCAMSimulator::cloneFrom(const DlgCAMSimulator& from)
@@ -117,6 +136,16 @@ DlgCAMSimulator* DlgCAMSimulator::instance()
     return &viewCAMSimulator->dlg();
 }
 
+void DlgCAMSimulator::setCamera(const SoCamera& camera)
+{
+    if (mCamera) {
+        mCamera->unref();
+    }
+
+    mCamera = &camera;
+    mCamera->ref();
+}
+
 void DlgCAMSimulator::setAnimating(bool animating)
 {
     if (animating == mAnimating) {
@@ -125,11 +154,12 @@ void DlgCAMSimulator::setAnimating(bool animating)
 
     mAnimating = animating;
 
-    if (animating) {
-        mAnimatingTimer.start();
+    if (animating && mAnimatingTimer == 0) {
+        mAnimatingTimer = startTimer(0);
     }
-    else {
-        mAnimatingTimer.stop();
+    else if (!animating && mAnimatingTimer != 0) {
+        killTimer(mAnimatingTimer);
+        mAnimatingTimer = 0;
     }
 }
 
@@ -237,55 +267,9 @@ void DlgCAMSimulator::setBaseShape(const Part::TopoShape& shape, float resolutio
     Q_EMIT baseChanged(shape);
 }
 
-void DlgCAMSimulator::mouseMoveEvent(QMouseEvent* ev)
+void DlgCAMSimulator::timerEvent(QTimerEvent* event)
 {
-    int modifiers = (ev->modifiers() & Qt::ShiftModifier) != 0 ? MS_KBD_SHIFT : 0;
-    modifiers |= (ev->modifiers() & Qt::ControlModifier) != 0 ? MS_KBD_CONTROL : 0;
-    modifiers |= (ev->modifiers() & Qt::AltModifier) != 0 ? MS_KBD_ALT : 0;
-
-#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
-    QPoint pnt = ev->pos();
-#else
-    QPoint pnt = ev->position().toPoint();
-#endif
-
-    const qreal ratio = devicePixelRatioF();
-    mMillSimulator->MouseMove(pnt.x() * ratio, pnt.y() * ratio, modifiers);
-
-    update();
-}
-
-void DlgCAMSimulator::mousePressEvent(QMouseEvent* ev)
-{
-#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
-    QPoint pnt = ev->pos();
-#else
-    QPoint pnt = ev->position().toPoint();
-#endif
-
-    const qreal ratio = devicePixelRatioF();
-    mMillSimulator->MousePress(ev->button(), true, pnt.x() * ratio, pnt.y() * ratio);
-
-    update();
-}
-
-void DlgCAMSimulator::mouseReleaseEvent(QMouseEvent* ev)
-{
-#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
-    QPoint pnt = ev->pos();
-#else
-    QPoint pnt = ev->position().toPoint();
-#endif
-
-    const qreal ratio = devicePixelRatioF();
-    mMillSimulator->MousePress(ev->button(), false, pnt.x() * ratio, pnt.y() * ratio);
-
-    update();
-}
-
-void DlgCAMSimulator::wheelEvent(QWheelEvent* ev)
-{
-    mMillSimulator->MouseScroll((float)ev->angleDelta().y() / MouseScrollDelta);
+    (void)event;
 
     update();
 }
@@ -320,7 +304,10 @@ void DlgCAMSimulator::updateResources()
     // initialize simulator
 
     if (mNeedsInitialize) {
-        mMillSimulator->InitSimulation(mQuality);
+        // TODO: for now we just hope this doesn't change afterwards...
+        const float maxStockDimension = mStock.maxDimension();
+
+        mMillSimulator->InitSimulation(mQuality, maxStockDimension);
         mNeedsInitialize = false;
     }
 
@@ -350,6 +337,15 @@ void DlgCAMSimulator::updateWindowScale()
     mMillSimulator->UpdateWindowScale(width() * ratio, height() * ratio);
 }
 
+void DlgCAMSimulator::updateCamera()
+{
+    if (!mCamera) {
+        return;
+    }
+
+    mMillSimulator->UpdateCamera(*mCamera);
+}
+
 void DlgCAMSimulator::initializeGL()
 {
     initializeOpenGLFunctions();
@@ -361,7 +357,9 @@ void DlgCAMSimulator::paintGL()
 
     // We need to call updateWindowScale on every render since the devicePixelRatio we get in
     // resizeGL might be wrong on the first resize.
+
     updateWindowScale();
+    updateCamera();
 
     mMillSimulator->ProcessSim((unsigned int)(QDateTime::currentMSecsSinceEpoch()));
 }

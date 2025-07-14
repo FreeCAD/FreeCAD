@@ -35,12 +35,10 @@
 #include <Inventor/nodes/SoCamera.h>
 #include <Inventor/nodes/SoPerspectiveCamera.h>
 
+constexpr auto pi = std::numbers::pi_v<float>;
+
 namespace MillSim
 {
-
-SimDisplay::SimDisplay(const SoCamera& c)
-    : mCamera(c)
-{}
 
 void SimDisplay::InitShaders()
 {
@@ -303,21 +301,6 @@ void SimDisplay::CleanGL()
     displayInitiated = false;
 }
 
-void SimDisplay::PrepareDisplay(const vec3& objCenter)
-{
-    const SbVec3f position = mCamera.position.getValue();
-
-    const SbRotation orientation = mCamera.orientation.getValue();
-    SbVec3f up(0, 1, 0);
-    orientation.multVec(up, up);
-
-    SbVec3f dir(0, 0, -1);
-    orientation.multVec(dir, dir);
-    const auto target = position + dir;
-
-    mat4x4_look_at(mMatLookAt, position.getValue(), target.getValue(), up.getValue());
-}
-
 void SimDisplay::PrepareFrameBuffer()
 {
     glBindFramebuffer(GL_FRAMEBUFFER, mFbo);
@@ -370,16 +353,8 @@ void SimDisplay::RenderLightObject()
 
 void SimDisplay::ScaleViewToStock(StockObject* obj)
 {
-    mMaxStockDim = fmaxf(obj->size[0], obj->size[1]);
-    maxFar = mMaxStockDim * 16;
-    UpdateProjection();
-
-    vec3_set(eye, 0, 0, 0);
-    mEyeDistFactor = NAN;
-    UpdateEyeFactor(0.1f);
-
-    vec3_set(lightPos, obj->position[0], obj->position[1], obj->position[2] + mMaxStockDim / 3);
-    mlightObject.SetPosition(lightPos);
+    mMaxStockDimension = std::max(std::max(obj->size[0], obj->size[1]), obj->size[2]);
+    UpdateProjectionMatrix();
 }
 
 void SimDisplay::RenderResult(bool recalculate, bool ssao)
@@ -491,77 +466,6 @@ void SimDisplay::SetupLinePathPass(int curSegment, bool isHidden)
     shaderLinePath.UpdateViewMat(mMatLookAt);
 }
 
-void SimDisplay::TiltEye(float tiltStep)
-{
-    mEyeInclination += tiltStep;
-    if (mEyeInclination > pi / 2) {
-        mEyeInclination = pi / 2;
-    }
-    else if (mEyeInclination < -pi / 2) {
-        mEyeInclination = -pi / 2;
-    }
-}
-
-void SimDisplay::RotateEye(float rotStep)
-{
-    mEyeRoration += rotStep;
-    if (mEyeRoration > pi * 2) {
-        mEyeRoration -= pi * 2;
-    }
-    else if (mEyeRoration < 0) {
-        mEyeRoration += pi * 2;
-    }
-    updateDisplay = true;
-}
-
-void SimDisplay::MoveEye(float x, float z)
-{
-    // Exponential calculate maxValue
-    // https://forum.freecad.org/viewtopic.php?t=96939
-    const float arg1 = 124.938F;
-    const float arg2 = 578.754F;
-    const float arg3 = -20.7993F;
-    float maxValueX = arg1 + arg2 * exp(arg3 * mEyeDistFactor);
-    float maxValueZ = maxValueX * 0.4F;
-
-    mEyeX += x;
-    if (mEyeX > maxValueX) {
-        mEyeX = maxValueX;
-    }
-    else if (mEyeX < -maxValueX) {
-        mEyeX = -maxValueX;
-    }
-    mEyeZ += z;
-
-    if (mEyeZ > maxValueZ) {
-        mEyeZ = maxValueZ;
-    }
-    else if (mEyeZ < -maxValueZ) {
-        mEyeZ = -maxValueZ;
-    }
-    updateDisplay = true;
-}
-
-void SimDisplay::MoveEyeCenter()
-{
-    mEyeRoration = 0;
-    mEyeInclination = pi / 6;
-    mEyeX = 0;
-    mEyeZ = 0;
-    UpdateEyeFactor(0.1f);
-}
-
-void SimDisplay::UpdateEyeFactor(float factor)
-{
-    if (mEyeDistFactor == factor) {
-        return;
-    }
-    updateDisplay = true;
-    mEyeDistFactor = factor;
-    mEyeXZFactor = factor * maxFar * 0.005f;
-    eye[1] = -factor * maxFar;
-}
-
 void SimDisplay::UpdateWindowScale(int width, int height)
 {
     if (!displayInitiated || (width == mWidth && height == mHeight)) {
@@ -578,17 +482,94 @@ void SimDisplay::UpdateWindowScale(int width, int height)
 
     CreateDisplayFbos();
     CreateSsaoFbos();
-    UpdateProjection();
+    UpdateProjectionMatrix();
 }
 
-void SimDisplay::UpdateProjection()
+void SimDisplay::UpdateCamera(const SoCamera& socamera)
 {
-    const auto& camera = dynamic_cast<const SoPerspectiveCamera&>(mCamera);
-    const float y_fov = camera.heightAngle.getValue();
+    if (!displayInitiated) {
+        return;
+    }
 
+    const auto& camera = dynamic_cast<const SoPerspectiveCamera&>(socamera);
+
+    UpdateCameraView(camera);
+    UpdateCameraProjection(camera);
+}
+
+void SimDisplay::UpdateCameraView(const SoCamera& camera)
+{
+
+    const SbVec3f position = camera.position.getValue();
+    const SbRotation orientation = camera.orientation.getValue();
+
+    if (position == mCameraPosition && orientation == mCameraOrientation) {
+        return;
+    }
+
+    mCameraPosition = position;
+    mCameraOrientation = orientation;
+
+    UpdateViewMatrix();
+}
+
+void SimDisplay::UpdateCameraProjection(const SoPerspectiveCamera& camera)
+{
+    const float heightAngle = camera.heightAngle.getValue();
+    const float nearDistance = camera.nearDistance.getValue();
+    const float farDistance = camera.farDistance.getValue();
+
+    if (heightAngle == mCameraHeightAngle && nearDistance == mCameraNearDistance
+        && farDistance == mCameraFarDistance) {
+        return;
+    }
+
+    mCameraHeightAngle = heightAngle;
+    mCameraNearDistance = nearDistance;
+    mCameraFarDistance = farDistance;
+
+    UpdateProjectionMatrix();
+}
+
+void SimDisplay::UpdateViewMatrix()
+{
+    SbVec3f up(0, 1, 0);
+    mCameraOrientation.multVec(up, up);
+
+    SbVec3f dir(0, 0, -1);
+    mCameraOrientation.multVec(dir, dir);
+
+    const auto target = mCameraPosition + dir;
+    mat4x4_look_at(mMatLookAt, mCameraPosition.getValue(), target.getValue(), up.getValue());
+
+    updateDisplay = true;
+}
+
+void SimDisplay::UpdateProjectionMatrix()
+{
     // Setup projection
+
+    const float aspect = (float)mWidth / mHeight;
+
+    // TODO: We can't use the values from the camera here because the dummy viewer never actually
+    // renders the scene and therefore the nearDistance and farDistance of the camera are never
+    // updated. Figure out a way to update those values without rendering the scene.
+
+#if 0
+
+    const float near = mCameraNearDistance;
+    const float far = mCameraFarDistance;
+
+#else
+
+    const float near = mMaxStockDimension * 0.01f;
+    const float far = mMaxStockDimension * 10.0f;
+
+#endif
+
     mat4x4 projmat;
-    mat4x4_perspective(projmat, y_fov, (float)mWidth / mHeight, 1.0f, maxFar);
+    mat4x4_perspective(projmat, mCameraHeightAngle, aspect, near, far);
+
     shader3D.Activate();
     shader3D.UpdateProjectionMat(projmat);
     shaderInv3D.Activate();
@@ -606,11 +587,8 @@ void SimDisplay::UpdateProjection()
     projmat[2][2] *= 0.99999F;
     shaderGeomCloser.Activate();
     shaderGeomCloser.UpdateProjectionMat(projmat);
-}
 
-float SimDisplay::GetEyeFactor()
-{
-    return mEyeDistFactor;
+    updateDisplay = true;
 }
 
 }  // namespace MillSim

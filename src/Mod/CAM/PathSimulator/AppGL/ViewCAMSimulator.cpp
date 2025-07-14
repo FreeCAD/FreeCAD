@@ -23,24 +23,11 @@
 #include <QStackedLayout>
 #include <QToolButton>
 
+#include "GuiDisplay.h"
+
 namespace CAMSimulator
 {
 using namespace Gui;
-
-class GuiCAMSimulator: public QWidget
-{
-public:
-    explicit GuiCAMSimulator(QWidget* parent = nullptr)
-        : QWidget(parent)
-    {}
-
-protected:
-    void resizeEvent(QResizeEvent* event) override
-    {
-        QWidget::resizeEvent(event);
-        setMask(childrenRegion());
-    }
-};
 
 class TopoShapeViewProvider: public ViewProvider
 {
@@ -82,32 +69,47 @@ public:
 protected:
     void paintEvent(QPaintEvent* event) override
     {
-#if 1
-        // do nothing
-        (void)event;
-#else
+        if (discardPaintEvent_) {
+            return;
+        }
+
         View3DInventorViewer::paintEvent(event);
-#endif
     }
+
+public:
+    bool discardPaintEvent_ = true;
 };
 
 class CAMSimulatorSettings: public View3DSettings
 {
 public:
-    using View3DSettings::View3DSettings;
+    explicit CAMSimulatorSettings(ParameterGrp::handle hGrp,
+                                  View3DInventorViewer& view,
+                                  DlgCAMSimulator& dlg)
+        : View3DSettings(hGrp, &view)
+        , mView(view)
+        , mDlg(dlg)
+    {}
 
     void OnChange(ParameterGrp::SubjectType& rCaller, ParameterGrp::MessageType Reason) override
     {
         if (strcmp(Reason, "Orthographic") == 0) {
             // the new cam simulator currently only supports perspective camera
-            for (auto _viewer : _viewers) {
-                _viewer->setCameraType(SoPerspectiveCamera::getClassTypeId());
-            }
+            mView.setCameraType(SoPerspectiveCamera::getClassTypeId());
+            mDlg.setCamera(*mView.getCamera());
+        }
+        else if (strcmp(Reason, "ShowNaviCube") == 0) {
+            // always hide the navi cube
+            mView.setEnabledNaviCube(false);
         }
         else {
             View3DSettings::OnChange(rCaller, Reason);
         }
     }
+
+private:
+    View3DInventorViewer& mView;
+    DlgCAMSimulator& mDlg;
 };
 
 ViewCAMSimulator::ViewCAMSimulator(Gui::Document* pcDocument,
@@ -115,43 +117,35 @@ ViewCAMSimulator::ViewCAMSimulator(Gui::Document* pcDocument,
                                    Qt::WindowFlags wflags)
     : Gui::MDIView(pcDocument, parent, wflags)
 {
-
     mDummyViewer = new Dummy3DViewer;
-    applySettings();
 
-    SoCamera* camera = mDummyViewer->getCamera();
-    assert(camera);
-
-    if (Gui::Document* doc = Gui::Application::Instance->activeDocument()) {
-        if (auto temp = dynamic_cast<View3DInventor*>(doc->getActiveView())) {
-            const auto& c = *temp->getViewer()->getCamera();
-            camera->position = c.position;
-            camera->orientation = c.orientation;
-        }
-    }
-
-    mDlg = new DlgCAMSimulator(*this, *camera);
+    mDlg = new DlgCAMSimulator(*this);
     mDlg->setAttribute(Qt::WA_TransparentForMouseEvents);
+
+    // call apply settings only after mDummyViewer and mDlg have been initialized
+
+    initCamera();
+    applySettings();
 
     connect(mDlg, &DlgCAMSimulator::stockChanged, mDummyViewer, &Dummy3DViewer::setStockShape);
     connect(mDlg, &DlgCAMSimulator::baseChanged, mDummyViewer, &Dummy3DViewer::setBaseShape);
 
-    auto gui = new GuiCAMSimulator;
-    gui->setLayout(new QVBoxLayout);
-    gui->layout()->addWidget(new QToolButton);
+    mGui = new GuiDisplay;
 
 #if 1
 
     auto stack = new QStackedWidget;
     static_cast<QStackedLayout*>(stack->layout())->setStackingMode(QStackedLayout::StackAll);
 
-    stack->addWidget(gui);
+    stack->addWidget(mGui);
     stack->addWidget(mDlg);
     stack->addWidget(mDummyViewer);
 
     setCentralWidget(stack);
 
 #else
+
+    mDummyViewer->discardPaintEvent_ = false;
 
     auto container = new QWidget;
     auto container_layout = new QHBoxLayout;
@@ -164,13 +158,36 @@ ViewCAMSimulator::ViewCAMSimulator(Gui::Document* pcDocument,
 #endif
 }
 
+void ViewCAMSimulator::initCamera()
+{
+    Gui::Document* doc = Gui::Application::Instance->activeDocument();
+    if (!doc) {
+        return;
+    }
+
+    auto temp = dynamic_cast<View3DInventor*>(doc->getActiveView());
+    if (!temp) {
+        return;
+    }
+
+    const char* ppReturn = nullptr;
+    temp->onMsg("GetCamera", &ppReturn);
+    if (!ppReturn) {
+        return;
+    }
+
+    mDummyViewer->setCamera(ppReturn);
+}
+
 void ViewCAMSimulator::applySettings()
 {
-    viewSettings = std::make_unique<CAMSimulatorSettings>(
-        App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View"),
-        mDummyViewer);
-    viewSettings->applySettings();
-    mDummyViewer->setEnabledNaviCube(false);
+    assert(mDummyViewer && mDlg);
+
+    const ParameterGrp::handle hGrp =
+        App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
+
+    mViewSettings = std::make_unique<CAMSimulatorSettings>(hGrp, *mDummyViewer, *mDlg);
+    mViewSettings->applySettings();
 }
 
 ViewCAMSimulator* ViewCAMSimulator::clone()
@@ -181,6 +198,8 @@ ViewCAMSimulator* ViewCAMSimulator::clone()
     viewCam->mDlg->cloneFrom(*mDlg);
 
     // camera
+
+    // TODO: use "GetCamera" message?
 
     const auto& src =
         dynamic_cast<const SoPerspectiveCamera&>(*mDummyViewer->getSoRenderManager()->getCamera());

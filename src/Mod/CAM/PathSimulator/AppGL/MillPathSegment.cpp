@@ -37,7 +37,6 @@ constexpr auto pi = std::numbers::pi_v<float>;
 #define PY 1
 #define PZ 2
 
-
 namespace MillSim
 {
 
@@ -140,7 +139,6 @@ MillPathSegment::~MillPathSegment()
     mShape.FreeResources();
 }
 
-
 void MillPathSegment::AppendPathPoints(std::vector<MillPathPosition>& pointsBuffer)
 {
     MillPathPosition mpPos;
@@ -233,6 +231,7 @@ void MillPathSegment::GetHeadPosition(vec3 headPos)
     }
     vec3_dup(headPos, mHeadPos);
 }
+
 float MillPathSegment::SetQuality(float quality, float maxStockDimension)
 {
     mResolution = maxStockDimension * 0.05 / quality;
@@ -251,4 +250,5 @@ float MillPathSegment::SetQuality(float quality, float maxStockDimension)
     }
     return mResolution;
 }
+
 }  // namespace MillSim
