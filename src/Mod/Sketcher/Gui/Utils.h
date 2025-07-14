@@ -95,8 +95,8 @@ bool tryAutoRecompute(Sketcher::SketchObject* obj, bool& autoremoveredundants);
 /// is not enabled, then it solves the SketchObject.
 void tryAutoRecomputeIfNotSolve(Sketcher::SketchObject* obj);
 
-// Recomputes and closes a transaction
-void closeAndRecompute(int tid, bool abort, Sketcher::SketchObject* Obj);
+// Recomputes and closes a transaction, then resets the transaction id
+void closeAndRecompute(int& tid, bool abort, Sketcher::SketchObject* Obj);
 
 /// Release any currently-active handler for the document.
 /// Returns true if a handler was released, and false if not
