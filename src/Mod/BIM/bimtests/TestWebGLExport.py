@@ -30,7 +30,7 @@ Unit tests for WebGL export functionality. Gui tests are in `TestWebGLExportGui.
 import os
 import tempfile
 import unittest
-from unittest.mock import patch, MagicMock, mock_open
+from unittest.mock import patch, mock_open
 
 from BIM.importers import importWebGL
 from .TestArchBase import TestArchBase
