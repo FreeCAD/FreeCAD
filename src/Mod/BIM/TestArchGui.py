@@ -42,6 +42,8 @@ from draftutils.messages import _msg
 if App.GuiUp:
     import FreeCADGui
 
+from bimtests.TestWebGLExportGui import TestWebGLExportGui
+
 class ArchTest(unittest.TestCase):
 
     def setUp(self):
