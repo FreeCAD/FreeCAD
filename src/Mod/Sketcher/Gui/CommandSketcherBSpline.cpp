@@ -73,9 +73,9 @@ bool findBSplineAndKnotIndex(Sketcher::SketchObject* Obj,
                              int& knotIndexOCC)
 {
     for (auto const constraint : Obj->Constraints.getValues()) {
-        if (constraint->Type == Sketcher::InternalAlignment && constraint->First == knotGeoId
+        if (constraint->Type == Sketcher::InternalAlignment && constraint->getGeoId(0) == knotGeoId
             && constraint->AlignmentType == Sketcher::BSplineKnotPoint) {
-            splineGeoId = constraint->Second;
+            splineGeoId = constraint->getGeoId(1);
             knotIndexOCC = constraint->InternalAlignmentIndex + 1;
             return true;  // we have already found our knot.
         }
@@ -1055,10 +1055,10 @@ void CmdSketcherJoinCurves::activated(int iMsg)
     bool tangentConstraintExists = false;
     for (const auto& constr : Obj->Constraints.getValues()) {
         if (constr->Type == Sketcher::ConstraintType::Tangent
-            && ((constr->First == GeoIds[0] && constr->FirstPos == PosIds[0]
-                 && constr->Second == GeoIds[1] && constr->SecondPos == PosIds[1])
-                || (constr->First == GeoIds[1] && constr->FirstPos == PosIds[1]
-                    && constr->Second == GeoIds[0] && constr->SecondPos == PosIds[0]))) {
+            && ((constr->getGeoId(0) == GeoIds[0] && constr->getPosId(0) == PosIds[0]
+                 && constr->getGeoId(1) == GeoIds[1] && constr->getPosId(1) == PosIds[1])
+                || (constr->getGeoId(0) == GeoIds[1] && constr->getPosId(0) == PosIds[1]
+                    && constr->getGeoId(1) == GeoIds[0] && constr->getPosId(1) == PosIds[0]))) {
             tangentConstraintExists = true;
         }
     }

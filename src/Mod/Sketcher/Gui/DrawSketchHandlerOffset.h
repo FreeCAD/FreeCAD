@@ -101,6 +101,7 @@ using DSHOffsetController =
                                       /*WidgetParametersT =*/WidgetParameters<0, 0>,
                                       /*WidgetCheckboxesT =*/WidgetCheckboxes<2, 2>,
                                       /*WidgetComboboxesT =*/WidgetComboboxes<1, 1>,
+                                      /*WidgetLineEditsT =*/WidgetLineEdits<0, 0>,
                                       ConstructionMethods::OffsetConstructionMethod,
                                       /*bool PFirstComboboxIsConstructionMethod =*/true>;
 
@@ -1015,21 +1016,25 @@ private:
         bool firstCoincidenceFound = false;
         for (auto* cstr : vals) {
             if (((tangentOnly || cstr->Type != Coincident) && cstr->Type != Tangent)
-                || cstr->FirstPos == PointPos::mid || cstr->FirstPos == PointPos::none
-                || cstr->SecondPos == PointPos::mid || cstr->SecondPos == PointPos::none) {
+                || cstr->getPosId(0) == PointPos::mid || cstr->getPosId(0) == PointPos::none
+                || cstr->getPosId(1) == PointPos::mid || cstr->getPosId(1) == PointPos::none) {
                 continue;
             }
 
-            if ((cstr->First == geoId1 && cstr->Second == geoId2)
-                || (cstr->First == geoId2 && cstr->Second == geoId1)) {
+            if ((cstr->getGeoId(0) == geoId1 && cstr->getGeoId(1) == geoId2)
+                || (cstr->getGeoId(0) == geoId2 && cstr->getGeoId(1) == geoId1)) {
                 if (!firstCoincidenceFound) {
-                    positions.firstPos1 = cstr->First == geoId1 ? cstr->FirstPos : cstr->SecondPos;
-                    positions.secondPos1 = cstr->First == geoId2 ? cstr->FirstPos : cstr->SecondPos;
+                    positions.firstPos1 =
+                        cstr->getGeoId(0) == geoId1 ? cstr->getPosId(0) : cstr->getPosId(1);
+                    positions.secondPos1 =
+                        cstr->getGeoId(0) == geoId2 ? cstr->getPosId(0) : cstr->getPosId(1);
                     firstCoincidenceFound = true;
                 }
                 else {
-                    positions.firstPos2 = cstr->First == geoId1 ? cstr->FirstPos : cstr->SecondPos;
-                    positions.secondPos2 = cstr->First == geoId2 ? cstr->FirstPos : cstr->SecondPos;
+                    positions.firstPos2 =
+                        cstr->getGeoId(0) == geoId1 ? cstr->getPosId(0) : cstr->getPosId(1);
+                    positions.secondPos2 =
+                        cstr->getGeoId(0) == geoId2 ? cstr->getPosId(0) : cstr->getPosId(1);
                     break;
                 }
             }

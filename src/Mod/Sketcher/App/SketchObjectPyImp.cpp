@@ -660,6 +660,44 @@ PyObject* SketchObjectPy::delConstraintsToExternal()
     Py_Return;
 }
 
+PyObject* SketchObjectPy::setTextAndFont(PyObject* args)
+{
+    int constrIndex = -1;
+    char* textStr;
+    char* fontStr;
+    char* constrName = nullptr;
+
+    // Try to parse (int, str, str)
+    if (PyArg_ParseTuple(args, "iss", &constrIndex, &textStr, &fontStr)) {
+        // This format is valid, proceed.
+    }
+
+    std::string text(textStr);
+    std::string font(fontStr);
+
+    // Call the C++ implementation
+    int err = this->getSketchObjectPtr()->setTextAndFont(constrIndex, text, font);
+
+    // Handle errors returned from the C++ function
+    if (err) {
+        std::stringstream str;
+        if (err == -1) {
+            str << "Invalid constraint index or not a Text constraint: " << constrIndex;
+        }
+        else if (err == -6) {
+            str << "Cannot set text/font because of invalid geometry in the sketch";
+        }
+        else {  // Generic error for solver failures etc.
+            str << "Failed to set text/font for constraint with index " << constrIndex
+                << ". The operation would result in an invalid sketch.";
+        }
+        PyErr_SetString(PyExc_ValueError, str.str().c_str());
+        return nullptr;
+    }
+
+    Py_Return;
+}
+
 PyObject* SketchObjectPy::setDatum(PyObject* args)
 {
     double Datum;

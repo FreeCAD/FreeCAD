@@ -53,18 +53,20 @@ enum class FilterValue
     Equality = 9,
     Symmetric = 10,
     Block = 11,
-    InternalAlignment = 12,
-    Datums = 13,
-    HorizontalDistance = 14,
-    VerticalDistance = 15,
-    Distance = 16,
-    Radius = 17,
-    Weight = 18,
-    Diameter = 19,
-    Angle = 20,
-    SnellsLaw = 21,
-    Named = 22,
-    NonDriving = 23,
+    Group = 12,
+    Text = 13,
+    InternalAlignment = 14,
+    Datums = 15,
+    HorizontalDistance = 16,
+    VerticalDistance = 17,
+    Distance = 18,
+    Radius = 19,
+    Weight = 20,
+    Diameter = 21,
+    Angle = 22,
+    SnellsLaw = 23,
+    Named = 24,
+    NonDriving = 25,
     NumFilterValue  // SpecialFilterValue shall start at the same index as this
 };
 
@@ -73,8 +75,8 @@ constexpr auto FilterValueLength =
 
 enum class SpecialFilterValue
 {
-    Selection = FilterValueLength,  // = 24
-    AssociatedConstraints,          // = 25
+    Selection = FilterValueLength,  // = 26
+    AssociatedConstraints,          // = 27
     NumSpecialFilterValue
 };
 
@@ -123,6 +125,8 @@ constexpr std::array<FilterValueBitset, FilterValueLength> filterAggregates {
                 FilterValue::Equality,
                 FilterValue::Symmetric,
                 FilterValue::Block,
+                FilterValue::Group,
+                FilterValue::Text,
                 FilterValue::Datums,
                 FilterValue::Distance,
                 FilterValue::HorizontalDistance,
@@ -146,6 +150,8 @@ constexpr std::array<FilterValueBitset, FilterValueLength> filterAggregates {
                 FilterValue::Equality,
                 FilterValue::Symmetric,
                 FilterValue::Block,
+                FilterValue::Group,
+                FilterValue::Text,
                 FilterValue::InternalAlignment),  // Geometric = All others not being datums (1)
 
     buildBitset(FilterValue::Coincident),         // Coincident = Just this (2)
@@ -158,6 +164,8 @@ constexpr std::array<FilterValueBitset, FilterValueLength> filterAggregates {
     buildBitset(FilterValue::Equality),           // Equality = Just this (9)
     buildBitset(FilterValue::Symmetric),          // Symmetric = Just this (10)
     buildBitset(FilterValue::Block),              // Block = Just this (11)
+    buildBitset(FilterValue::Group),              // Group = Just this (11)
+    buildBitset(FilterValue::Text),               // Text = Just this (11)
     buildBitset(FilterValue::InternalAlignment),  // InternalAlignment = Just this (12)
 
     buildBitset(FilterValue::Datums,

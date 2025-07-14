@@ -28,6 +28,8 @@
 #include <Base/Tools2D.h>
 #include <Mod/Sketcher/App/GeoEnum.h>
 #include <QListWidget>
+#include <QMap>
+#include <QString>
 
 #include "AutoConstraint.h"
 #include "ViewProviderSketchGeometryExtension.h"
@@ -199,6 +201,9 @@ void ConstraintToAttachment(Sketcher::GeoElementId element,
                             double distance,
                             App::DocumentObject* obj);
 
+void ConstraintLineByAngle(int geoId, double angle, App::DocumentObject* obj);
+void Constraint2LinesByAngle(int geoId1, int geoId2, double angle, App::DocumentObject* obj);
+
 // convenience functions for cursor coordinates
 bool hideUnits();
 bool showCursorCoords();
@@ -219,6 +224,8 @@ inline void scrollTo(QListWidget* list, int i, bool select)
         list->scrollTo(index, QAbstractItemView::PositionAtCenter);
     }
 }
+
+QMap<QString, QString> findAvailableFontFiles();
 
 }  // namespace SketcherGui
 
