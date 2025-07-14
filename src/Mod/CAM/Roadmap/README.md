@@ -24,7 +24,7 @@ Any CAM application meeting the needs above must provide functionality in these 
 - [Simulation and Verification](<./Simulation and Verification.md>)
 - [Output Generation](<./Output Generation.md>)
 - [Scripting and automation](<./Scripting and automation.md>)
-- [User Interface &  Documentation](<./User Interface & Documentation.md>)
+- [Documentation](<./User Interface & Documentation.md>)
 
 ## 🧼 Code Quality
 Additionally, as software developers we desire the source code to excel in these areas:
