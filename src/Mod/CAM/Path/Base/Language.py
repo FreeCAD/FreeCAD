@@ -72,8 +72,15 @@ class Instruction(object):
         return False
 
     def isPlunge(self):
-        """isPlunge() ... return true if this moves up or down"""
-        return self.isMove() and not Path.Geom.isRoughly(self.begin.z, self.z(self.begin.z))
+        """isPlunge() ... return true if this moves is vertical"""
+        if self.isMove():
+            if (
+                Path.Geom.isRoughly(self.begin.x, self.x(self.begin.x))
+                and Path.Geom.isRoughly(self.begin.y, self.y(self.begin.y))
+                and not Path.Geom.isRoughly(self.begin.z, self.z(self.begin.z))
+            ):
+                return True
+        return False
 
     def leadsInto(self, instr):
         """leadsInto(instr) ... return true if instr is a continuation of self"""
