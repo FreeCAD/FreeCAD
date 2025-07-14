@@ -33,7 +33,6 @@ import tempfile
 import unittest
 from unittest.mock import patch, MagicMock, mock_open
 
-import FreeCAD
 from BIM.importers import importWebGL
 from .TestArchBase import TestArchBase
 
