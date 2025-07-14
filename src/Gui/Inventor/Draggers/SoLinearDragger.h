@@ -43,6 +43,56 @@ class SoCalculator;
 
 namespace Gui
 {
+class SoLinearGeometryKit: public SoBaseKit
+{
+    SO_KIT_HEADER(SoLinearGeometryKit);
+
+public:
+    static void initClass();
+
+    SoSFVec3f tipPosition;
+
+protected:
+    SoLinearGeometryKit();
+    ~SoLinearGeometryKit() override = default;
+
+private:
+    using inherited = SoBaseKit;
+};
+
+/*!
+ * @brief Arrow geometry
+ * 
+ * A class to contain the geometry for SoLinearDragger
+ */
+class SoArrowGeometry: public SoLinearGeometryKit
+{
+    SO_KIT_HEADER(SoArrowGeometry);
+    SO_KIT_CATALOG_ENTRY_HEADER(lightModel);
+    SO_KIT_CATALOG_ENTRY_HEADER(arrowBody);
+    SO_KIT_CATALOG_ENTRY_HEADER(arrowTip);
+
+    SO_KIT_CATALOG_ENTRY_HEADER(_arrowBodyTranslation);
+    SO_KIT_CATALOG_ENTRY_HEADER(_arrowTipTranslation);
+
+public:
+    static void initClass();
+    SoArrowGeometry();
+
+    SoSFFloat coneBottomRadius;
+    SoSFFloat coneHeight;
+    SoSFFloat cylinderHeight;
+    SoSFFloat cylinderRadius;
+
+protected:
+    ~SoArrowGeometry() override = default;
+
+    void notify(SoNotList* notList) override;
+
+private:
+    using inherited = SoLinearGeometryKit;
+};
+
 /*! @brief Translation Dragger.
  *
  * used for translating along axis. Set the
@@ -54,13 +104,12 @@ namespace Gui
 class SoLinearDragger : public SoDragger
 {
     SO_KIT_HEADER(SoLinearDragger);
-    SO_KIT_CATALOG_ENTRY_HEADER(translator);
     SO_KIT_CATALOG_ENTRY_HEADER(activeSwitch);
     SO_KIT_CATALOG_ENTRY_HEADER(secondaryColor);
-    SO_KIT_CATALOG_ENTRY_HEADER(cylinderSeparator);
-    SO_KIT_CATALOG_ENTRY_HEADER(coneSeparator);
     SO_KIT_CATALOG_ENTRY_HEADER(labelSwitch);
     SO_KIT_CATALOG_ENTRY_HEADER(labelSeparator);
+    SO_KIT_CATALOG_ENTRY_HEADER(scale);
+    SO_KIT_CATALOG_ENTRY_HEADER(arrow);
 
 public:
     static void initClass();
@@ -71,14 +120,9 @@ public:
     SoSFDouble translationIncrement; //!< set from outside and used for rounding.
     SoSFInt32 translationIncrementCount; //!< number of steps. used from outside.
     SoSFFloat autoScaleResult; //!< set from parent dragger.
-    SoSFFloat coneBottomRadius;
-    SoSFFloat coneHeight;
-    SoSFFloat cylinderHeight;
-    SoSFFloat cylinderRadius;
-    SoSFColor activeColor;
-
-    void setLabelVisibility(bool visible);
-    bool isLabelVisible();
+    SoSFColor activeColor; //!< colour of the dragger while being dragged
+    SoSFBool labelVisible; //!< controls the visibility of the dragger label
+    SoSFVec3f geometryScale; //!< the scale of the dragger geometry
 
 protected:
     ~SoLinearDragger() override;
@@ -98,15 +142,10 @@ protected:
     SbLineProjector projector;
 
 private:
-    SoCalculator* calculator;
-
     SbVec3f roundTranslation(const SbVec3f &vecIn, float incrementIn);
 
-    SoSeparator* buildCylinderGeometry();
-    SoSeparator* buildConeGeometry();
     SoSeparator* buildLabelGeometry();
     SoBaseColor* buildActiveColor();
-    void setupGeometryCalculator();
 
     using inherited = SoDragger;
 };
@@ -126,9 +165,8 @@ public:
     SoSFRotation rotation;
     SoSFColor color;
     SoSFVec3f translation;
+    SoSFBool visible;
 
-    void setVisibility(bool visible);
-    bool isVisible();
     void setPointerDirection(const Base::Vector3d& dir);
 
     SoLinearDragger* getDragger();
