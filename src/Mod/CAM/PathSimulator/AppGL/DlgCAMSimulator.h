@@ -63,6 +63,9 @@ class ViewCAMSimulator;
 struct SimShape
 {
 public:
+    float maxDimension() const;
+
+public:
     std::vector<MillSim::Vertex> verts;
     std::vector<GLushort> indices;
     bool needsUpdate = false;
@@ -82,15 +85,14 @@ class DlgCAMSimulator: public QOpenGLWidget, public QOpenGLExtraFunctions
     Q_OBJECT
 
 public:
-    explicit DlgCAMSimulator(ViewCAMSimulator& view,
-                             const SoCamera& camera,
-                             QWidget* parent = nullptr);
+    explicit DlgCAMSimulator(ViewCAMSimulator& view, QWidget* parent = nullptr);
     ~DlgCAMSimulator() override;
 
     void cloneFrom(const DlgCAMSimulator& from);
 
     static DlgCAMSimulator* instance();
 
+    void setCamera(const SoCamera& camera);
     void setAnimating(bool animating);
     void startSimulation(const Part::TopoShape& stock, float quality);
     void resetSimulation();
@@ -109,13 +111,11 @@ Q_SIGNALS:
     void baseChanged(const Part::TopoShape& shape);
 
 protected:
-    void mouseMoveEvent(QMouseEvent* ev) override;
-    void mousePressEvent(QMouseEvent* ev) override;
-    void mouseReleaseEvent(QMouseEvent* ev) override;
-    void wheelEvent(QWheelEvent* ev) override;
+    void timerEvent(QTimerEvent* event) override;
 
     void updateResources();
     void updateWindowScale();
+    void updateCamera();
 
     void initializeGL() override;
     void paintGL() override;
@@ -125,7 +125,7 @@ private:
     bool mNeedsInitialize = false;
     bool mNeedsClear = false;
     bool mAnimating = false;
-    QTimer mAnimatingTimer;
+    int mAnimatingTimer = 0;
 
     std::unique_ptr<MillSim::MillSimulation> mMillSimulator;
     float mQuality = 10;
@@ -138,6 +138,7 @@ private:
     SimShape mStock;
     SimShape mBase;
 
+    const SoCamera* mCamera = nullptr;
     ViewCAMSimulator& mView;
 
     std::unique_ptr<MillSim::MillSimulationState> mState;

@@ -30,11 +30,9 @@
 namespace MillSim
 {
 
-MillSimulation::MillSimulation(const SoCamera& camera)
-    : simDisplay(camera)
+MillSimulation::MillSimulation()
 {
-    mCurMotion = {eNop, -1, 0, 0, 0, 0, 0, 0, 0, '\0', 0.0};
-    guiDisplay.SetMillSimulator(this);
+    mCurMotion = {eNop, -1, 0, 0, 0, 0, 0, 0, 0};
 }
 
 MillSimulation::~MillSimulation()
@@ -59,13 +57,11 @@ void MillSimulation::Clear()
     ClearMillPathSegments();
     mStockObject.~StockObject();
     mToolTable.clear();
-    guiDisplay.ResetGui();
     simDisplay.CleanGL();
     mCurStep = 0;
     mPathStep = -1;
     mNTotalSteps = 0;
 }
-
 
 void MillSimulation::SimNext()
 {
@@ -88,11 +84,11 @@ void MillSimulation::SimNext()
     }
 }
 
-void MillSimulation::InitSimulation(float quality)
+void MillSimulation::InitSimulation(float quality, float maxStockDimension)
 {
     ClearMillPathSegments();
     millPathLine.Clear();
-    mViewSSAO = guiDisplay.IsChecked(eGuiItemAmbientOclusion);
+    // mViewSSAO = guiDisplay.IsChecked(eGuiItemAmbientOclusion);
 
     mDestMotion = mZeroPos;
     // gDestPos = curMillOperation->startPos;
@@ -101,7 +97,9 @@ void MillSimulation::InitSimulation(float quality)
     mNTotalSteps = 0;
     mSimPlaying = false;
     mSimSpeed = 1;
-    MillPathSegment::SetQuality(quality, simDisplay.maxFar);
+
+    MillPathSegment::SetQuality(quality, maxStockDimension);
+
     int nOperations = (int)mCodeParser.Operations.size();
     int segId = 0;
     for (int i = 0; i < nOperations; i++) {
@@ -120,6 +118,7 @@ void MillSimulation::InitSimulation(float quality)
     }
     mNPathSteps = (int)MillPathSegments.size();
     millPathLine.GenerateModel();
+
     InitDisplay(quality);
 }
 
@@ -183,7 +182,6 @@ void MillSimulation::GlsimToolStep1(void)
     glDepthMask(GL_FALSE);
 }
 
-
 void MillSimulation::GlsimToolStep2(void)
 {
     glStencilFunc(GL_EQUAL, 1, 0xFF);
@@ -201,7 +199,6 @@ void MillSimulation::GlsimClipBack(void)
     glCullFace(GL_FRONT);
     glDepthMask(GL_FALSE);
 }
-
 
 void MillSimulation::GlsimRenderStock(void)
 {
@@ -372,7 +369,6 @@ void MillSimulation::Render()
     // set background
     glClearColor(bgndColor[0], bgndColor[1], bgndColor[2], 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
-    simDisplay.PrepareDisplay(mStockObject.center);
 
     // render the simulation offscreen in an FBO
     if (simDisplay.updateDisplay) {
@@ -403,7 +399,7 @@ void MillSimulation::Render()
 
     float progress = (float)mCurStep / mNTotalSteps;
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
-    guiDisplay.Render(progress);
+    // guiDisplay.Render(progress);
 }
 
 void MillSimulation::ProcessSim(unsigned int time_ms)
@@ -416,9 +412,9 @@ void MillSimulation::ProcessSim(unsigned int time_ms)
 
     last = msec == 0xFFFFFFFF ? time_ms : msec;
     msec = time_ms;
-    if (guiDisplay.IsChecked(eGuiItemRotate)) {
+    /* if (guiDisplay.IsChecked(eGuiItemRotate)) {
         simDisplay.RotateEye((msec - last) / 4600.0f);
-    }
+    }	*/
 
     if (last / 1000 != msec / 1000) {
         float calcFps = 1000.0f * fps / (msec - ancient);
@@ -439,23 +435,7 @@ void MillSimulation::ProcessSim(unsigned int time_ms)
     ++fps;
 }
 
-void MillSimulation::HandleKeyPress(int key)
-{
-    if (key >= '1' && key <= '9') {
-        mSimSpeed = key - '0';
-    }
-    else if (key == 'D') {
-        mDebug++;
-    }
-    else if (key == 'K') {
-        mDebug2++;
-    }
-    else {
-        guiDisplay.HandleKeyPress(key);
-    }
-}
-
-void MillSimulation::HandleGuiAction(eGuiItems actionItem, bool checked)
+/* void MillSimulation::HandleGuiAction(eGuiItems actionItem, bool checked)
 {
     switch (actionItem) {
         case eGuiItemPlay:
@@ -529,7 +509,7 @@ void MillSimulation::HandleGuiAction(eGuiItems actionItem, bool checked)
             break;
     }
     guiDisplay.UpdatePlayState(mSimPlaying);
-}
+}	*/
 
 
 void MillSimulation::InitDisplay(float quality)
@@ -545,9 +525,6 @@ void MillSimulation::InitDisplay(float quality)
 
     // init 3d display
     simDisplay.InitGL();
-
-    // init gui elements
-    guiDisplay.InitGui();
 }
 
 void MillSimulation::SetBoxStock(float x, float y, float z, float l, float w, float h)
@@ -569,83 +546,6 @@ void MillSimulation::SetBaseObject(const std::vector<Vertex>& verts,
     mBaseShape.GenerateSolid(verts, indices);
 }
 
-void MillSimulation::MouseDrag(int buttons, int dx, int dy)
-{
-    if (buttons == (MS_MOUSE_MID | MS_MOUSE_LEFT) || buttons == MS_KBD_ALT) {
-        simDisplay.TiltEye((float)dy / 100.0f);
-        simDisplay.RotateEye((float)dx / 100.0f);
-    }
-    else if (buttons == MS_MOUSE_MID || buttons == MS_KBD_SHIFT) {
-        simDisplay.MoveEye(dx, -dy);
-    }
-    else if (buttons == (MS_KBD_CONTROL | MS_KBD_SHIFT)) {
-        Zoom(0.003 * dy);
-    }
-    guiDisplay.MouseDrag(buttons, dx, dy);
-}
-
-void MillSimulation::MouseMove(int px, int py, int modifiers)
-{
-    if (modifiers != mLastModifiers) {
-        mLastMouseX = px;
-        mLastMouseY = py;
-        mLastModifiers = modifiers;
-    }
-
-    int buttons = mMouseButtonState | modifiers;
-    if (buttons > 0) {
-        int dx = px - mLastMouseX;
-        int dy = py - mLastMouseY;
-        if (dx != 0 || dy != 0) {
-            MouseDrag(buttons, dx, dy);
-            mLastMouseX = px;
-            mLastMouseY = py;
-        }
-    }
-    else {
-        MouseHover(px, py);
-    }
-}
-
-void MillSimulation::MouseScroll(float dy)
-{
-    Zoom(-0.02f * dy);
-}
-
-
-void MillSimulation::MouseHover(int px, int py)
-{
-    guiDisplay.MouseCursorPos(px, py);
-}
-
-void MillSimulation::MousePress(int button, bool isPressed, int px, int py)
-{
-    if (isPressed) {
-        mMouseButtonState |= button;
-    }
-    else {
-        mMouseButtonState &= ~button;
-    }
-
-    if (mMouseButtonState > 0) {
-        mLastMouseX = px;
-        mLastMouseY = py;
-    }
-    guiDisplay.MousePressed(button, isPressed, mSimPlaying);
-}
-
-void MillSimulation::Zoom(float factor)
-{
-    factor += simDisplay.GetEyeFactor();
-    if (factor > 0.6f) {
-        factor = 0.6f;
-    }
-    else if (factor < 0.01f) {
-        factor = 0.01f;
-    }
-    simDisplay.UpdateEyeFactor(factor);
-}
-
 void MillSimulation::UpdateWindowScale(int width, int height)
 {
     if (width == mWidth && height == mHeight) {
@@ -656,11 +556,12 @@ void MillSimulation::UpdateWindowScale(int width, int height)
     mHeight = height;
 
     simDisplay.UpdateWindowScale(width, height);
-    guiDisplay.UpdateWindowScale(width, height);
-
-    simDisplay.updateDisplay = true;
 }
 
+void MillSimulation::UpdateCamera(const SoCamera& camera)
+{
+    simDisplay.UpdateCamera(camera);
+}
 
 bool MillSimulation::LoadGCodeFile(const char* fileName)
 {
@@ -692,13 +593,13 @@ void MillSimulation::SetState(const MillSimulationState& state)
 {
     mSimPlaying = state.mSimPlaying;
     mSingleStep = state.mSingleStep;
-    guiDisplay.UpdatePlayState(mSimPlaying);
+    // guiDisplay.UpdatePlayState(mSimPlaying);
 
     const float stage = (float)state.mCurStep / state.mNTotalSteps;
     SetSimulationStage(stage);
 
     mSimSpeed = state.mSimSpeed;
-    guiDisplay.UpdateSimSpeed(mSimSpeed);
+    // guiDisplay.UpdateSimSpeed(mSimSpeed);
 
     mViewItems = state.mViewItems;
     mViewPath = state.mViewPath;

@@ -23,7 +23,6 @@
 #ifndef __mill_path_segment_h__
 #define __mill_path_segment_h__
 
-
 #include "MillMotion.h"
 #include "EndMill.h"
 #include "linmath.h"
@@ -41,7 +40,6 @@ enum MotionType
 
 bool IsVerticalMotion(MillMotion* m1, MillMotion* m2);
 
-
 class MillPathSegment
 {
 public:
@@ -54,7 +52,6 @@ public:
     MillPathSegment(EndMill* endmill, MillMotion* from, MillMotion* to);
     virtual ~MillPathSegment();
 
-
     virtual void AppendPathPoints(std::vector<MillPathPosition>& pointsBuffer);
     virtual void render(int substep);
     virtual void GetHeadPosition(vec3 headPos);
@@ -66,7 +63,6 @@ public:
     int numSimSteps;
     int indexInArray;
     int segmentIndex;
-
 
 protected:
     mat4x4 mShearMat;
@@ -94,6 +90,7 @@ protected:
     vec3 mHeadPos = {0};
     MotionType mMotionType;
 };
+
 }  // namespace MillSim
 
 #endif

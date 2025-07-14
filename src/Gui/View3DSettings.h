@@ -52,7 +52,7 @@ public:
     bool ignoreRenderCache = false;
     bool ignoreTransparent = false;
 
-protected:
+private:
     ParameterGrp::handle hGrp;
     ParameterGrp::handle hLightSourcesGrp;
 
