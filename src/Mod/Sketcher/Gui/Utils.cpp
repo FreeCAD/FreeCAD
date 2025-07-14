@@ -699,7 +699,7 @@ void SketcherGui::Constraint2LinesByAngle(int geoId1,
 {
     using std::numbers::pi;
     double angleModPi = std::fmod(angle, pi);
-    double angleModHalfPi = std::fmod(angle, 0.5 * pi);
+    double angleModHalfPi = std::fmod(angle, pi / 2);
 
     if (fabs(angleModPi) < Precision::Confusion()) {
         Gui::cmdAppObjectArgs(obj,
