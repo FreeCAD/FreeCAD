@@ -1191,8 +1191,8 @@ CmdPartDesignRevolution::CmdPartDesignRevolution()
 {
     sAppModule    = "PartDesign";
     sGroup        = QT_TR_NOOP("PartDesign");
-    sMenuText     = QT_TR_NOOP("Revolution");
-    sToolTipText  = QT_TR_NOOP("Revolves the sketch or profile around a line or axis and adds it to the body");
+    sMenuText     = QT_TR_NOOP("Revolve");
+    sToolTipText  = QT_TR_NOOP("Revolves the selected sketch or profile around a line or axis and adds it to the body");
     sWhatsThis    = "PartDesign_Revolution";
     sStatusTip    = sToolTipText;
     sPixmap       = "PartDesign_Revolution";
