@@ -2176,7 +2176,9 @@ QListView {
 }
 
 QTreeView {
-  show-decoration-selected: 0;
+  show-decoration-selected: 1;
+  selection-background-color: @AccentBackgroundColor;
+  qproperty-indentation: 10;
 }
 
 QTreeView:disabled,
