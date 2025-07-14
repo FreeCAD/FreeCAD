@@ -5,6 +5,7 @@ This document aims to guide the ongoing development of the CAM Workbench. It set
 FreeCAD is a volunteer-driven project. This roadmap does not prescribe work or enforce deadlines — it is a living document to help focus effort and encourage alignment across developers, users, and stakeholders.
 
 # 🔭 Vision
+*(this section establishes non-negotiable big-picture definition of what we are buildin)*
 
 A robust, intuitive, and industry-ready CAM solution that:
 
@@ -15,6 +16,7 @@ A robust, intuitive, and industry-ready CAM solution that:
 - Encourages extensibility and script-ability via Python
 
 ## ⚙️ Functionality
+*(this section describes expected functionality in agnostic terms.  No FreeCAD-specific language)*
 
 Any CAM application meeting the needs above must provide functionality in these areas:
 - [Tool Management](<./Tool Management.md>)
@@ -27,6 +29,8 @@ Any CAM application meeting the needs above must provide functionality in these 
 - [Documentation](<./User Interface & Documentation.md>)
 
 ## 🧼 Code Quality
+*(this section provides an honest assessment of the major code subsections with an eye toward good coding practices)*
+
 Additionally, as software developers we desire the source code to excel in these areas:
 - Modular
 - DRY
@@ -34,6 +38,8 @@ Additionally, as software developers we desire the source code to excel in these
 - Testable
 
 # 📊 Current State
+*(This section is a report card.  As much as possible, the scoring will be automated though subjective considerations will occur)*
+
 - **Completeness**:  Degree to which all desired functionality is implemented.
 - **Correctness**: Degree to which the implemented functionality meets user expectations
 - **Performant**: Degree to which the functionality performs as designed fast and without errors
@@ -51,6 +57,7 @@ Additionally, as software developers we desire the source code to excel in these
 | [Documentation](https://github.com/orgs/FreeCAD/projects/21/views/19)                                        |          |         |            |              |
 
 # ⚠️ Pain Points
+*(this section functions like an FAQ.  It helps keep users from creating duplicate issues.  It gives new developers a first place to connect)*
 
 Perennial complaints from users:
 
@@ -61,13 +68,17 @@ Perennial complaints from users:
 - Arrays of similar gcode
 - Lack of F & S calculation
 
-# 🔥 Short-Term Goals (6–12 months)
- -
+# 🔥 Short-Term Goals (1-3 months)
+*(Short term goals are WIP that we want incorporated in the next feature release)*
 
-# 🧱 Mid-Term Goals (12–24 months)
- -
+
+# 🧱 Mid-Term Goals (3-12 months)
+*(Mid term goals are probably 2+ feature releases in the future)*
+
 
 # 🚀 Long-Term Goals
+*(this section will be a list of links to large issues, FreeCAD Enhancement Proposals (FEP) or github discussions. Pre-development planning)*
+
     - Support for 5-axis milling
     - STEP-NC support
     - OMI
