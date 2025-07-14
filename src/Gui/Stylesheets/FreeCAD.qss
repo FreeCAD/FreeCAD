@@ -223,7 +223,6 @@ QStatusBar QLabel {
 }
 
 QStatusBar QPushButton {
-    min-width: 0;
     padding-left: 8px;
     padding-right: 8px;
 }
@@ -1160,12 +1159,15 @@ QPushButton {
   border: 1px solid @ButtonBorderColor;
   border-radius: @InputFieldBorderRadius;
   padding: 3px 12px;
+  min-width: 64px;
 }
 
 #CreateNewRow > QPushButton {
-  /* Reset min width to default */
-  min-width: -1;
   border-radius: @InputFieldBorderRadius;
+}
+
+Gui--FileChooser QPushButton {
+  min-width: 0;
 }
 
 QPushButton:disabled {
@@ -1598,8 +1600,7 @@ QSint--ActionGroup QFrame[class="content"] QToolButton:pressed {
 }
 
 QFrame[class="panel"] QPushButton {
-padding: 3px;
-min-width: 0px;
+  padding: 3px;
 }
 
 /* QSlider ----------------------------------------------------------------
@@ -2599,7 +2600,7 @@ QGroupBox[objectName="matOpsGrpBox"] QPushButton {
 QToolBar > Gui--WorkbenchComboBox QAbstractItemView {
   min-width: 180px;
   margin-left: 30px;
-  }
+}
 
 /* Below is a fix for indentation in properties*/
 
@@ -2619,11 +2620,9 @@ QMainWindow QListView {
   /* border-radius: 3px; */}
 
 QTableView QPushButton {
-  min-width: 0px;
   padding: 2px;
 }
 QTableView QPushButton:hover {
-  min-width: 0px;
   background-color: @GeneralBackgroundHoverColor;
   border: 1px solid @GeneralBorderColor;
 }
