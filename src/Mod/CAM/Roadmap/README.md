@@ -17,14 +17,14 @@ A robust, intuitive, and industry-ready CAM solution that:
 ## ⚙️ Functionality
 
 Any CAM application meeting the needs above must provide functionality in these areas:
-- [[Tool Management]]
-- [[Stock and Work-piece Setup]]
-- [[Job Management]]
-- [[Operation Configuration]]
-- [[Simulation and Verification]]
-- [[Output Generation]]
-- [[Scripting and automation]]
-- [[User Interface &  Documentation]]
+- [Tool Management](<./Tool Management.md>)
+- [Stock and Work-piece Setup](<./Stock and Work-piece Setup.md>)
+- [Job Management](<./Job Management.md>)
+- [Operation Configuration](<./Operation Configuration.md>)
+- [Simulation and Verification](<./Simulation and Verification.md>)
+- [Output Generation](<./Output Generation.md>)
+- [Scripting and automation](<./Scripting and automation.md>)
+- [User Interface &  Documentation](<./User Interface & Documentation.md>)
 
 ## 🧼 Code Quality
 Additionally, as software developers we desire the source code to excel in these areas:
@@ -34,10 +34,10 @@ Additionally, as software developers we desire the source code to excel in these
 - Testable
 
 # 📊 Current State
-- **Complete**:  All desired functionality is implemented.
-- **Correct**: The implemented functionality meets user expectations
-- **Performant**: Functionality performs as designed fast and without errors
-- **Maintainable**: Functionality is implemented well in source code
+- **Completeness**:  Degree to which all desired functionality is implemented.
+- **Correctness**: Degree to which the implemented functionality meets user expectations
+- **Performant**: Degree to which the functionality performs as designed fast and without errors
+- **Maintainable**: Degree to which the functionality is well implemented in source code
 
 |                                                                                    | Complete | Correct | Performant | Maintainable |
 | -----------------------------------------------------------------------            | -------- | ------- | ---------- | ------------ |
