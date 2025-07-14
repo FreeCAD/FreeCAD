@@ -63,12 +63,12 @@ struct MillSimulationState
 class MillSimulation: private MillSimulationState
 {
 public:
-    MillSimulation(const SoCamera& camera);
+    MillSimulation();
     ~MillSimulation();
     void ClearMillPathSegments();
     void Clear();
     void SimNext();
-    void InitSimulation(float quality);
+    void InitSimulation(float quality, float maxStockDimension);
     void AddTool(EndMill* tool);
     void AddTool(const std::vector<float>& toolProfile, int toolid, float diameter);
     bool ToolExists(int toolid);
@@ -78,8 +78,7 @@ public:
     void RenderBaseShape();
     void Render();
     void ProcessSim(unsigned int time_ms);
-    void HandleKeyPress(int key);
-    void HandleGuiAction(eGuiItems actionItem, bool checked);
+    // void HandleGuiAction(eGuiItems actionItem, bool checked);
     bool LoadGCodeFile(const char* fileName);
     bool AddGcodeLine(const char* line);
     void SetSimulationStage(float stage);
@@ -88,13 +87,8 @@ public:
     void SetBoxStock(float x, float y, float z, float l, float w, float h);
     void SetArbitraryStock(const std::vector<Vertex>& verts, const std::vector<GLushort>& indices);
     void SetBaseObject(const std::vector<Vertex>& verts, const std::vector<GLushort>& indices);
-    void MouseDrag(int buttons, int dx, int dy);
-    void MouseMove(int px, int py, int modifiers);
-    void MouseScroll(float dy);
-    void MouseHover(int px, int py);
-    void MousePress(int button, bool isPressed, int px, int py);
-    void Zoom(float factor);
     void UpdateWindowScale(int width, int height);
+    void UpdateCamera(const SoCamera& camera);
 
 protected:
     void InitDisplay(float quality);
@@ -115,7 +109,6 @@ protected:
 public:
     std::vector<EndMill*> mToolTable;
     GCodeParser mCodeParser;
-    GuiDisplay guiDisplay;
     SimDisplay simDisplay;
     MillPathLine millPathLine;
     std::vector<MillPathSegment*> MillPathSegments;
