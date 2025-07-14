@@ -89,3 +89,8 @@ def write_constraint(f, femobj, contact_obj, ccxwriter):
         friction = contact_obj.FrictionCoefficient
         stick = contact_obj.StickSlope.getValueAs("MPa/mm").Value
         f.write(f"{friction:.13G}, {stick:.13G}\n")
+    if contact_obj.EnableThermalContact:
+        f.write("*GAP CONDUCTANCE\n")
+        for value in contact_obj.ThermalContactConductance:
+            f.write(f"{value}\n")
+        f.write("\n")
