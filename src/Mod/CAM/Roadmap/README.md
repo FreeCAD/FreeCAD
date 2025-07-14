@@ -48,7 +48,7 @@ Additionally, as software developers we desire the source code to excel in these
 | [Simulation and Verification](https://github.com/orgs/FreeCAD/projects/21/views/13)                                                        |          |         |            |              |
 | [Output generation](https://github.com/orgs/FreeCAD/projects/21/views/14)                                                     |          |         |            |              |
 | [Scripting and Automation](https://github.com/orgs/FreeCAD/projects/21/views/18)                                              |          |         |            |              |
-| [User Interface & Documentation](https://github.com/orgs/FreeCAD/projects/21/views/19)                                        |          |         |            |              |
+| [Documentation](https://github.com/orgs/FreeCAD/projects/21/views/19)                                        |          |         |            |              |
 
 # ⚠️ Pain Points
 
