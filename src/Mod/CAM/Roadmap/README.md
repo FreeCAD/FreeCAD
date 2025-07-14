@@ -8,7 +8,7 @@ FreeCAD is a volunteer-driven project. This roadmap does not prescribe work or e
 
 A robust, intuitive, and industry-ready CAM solution that:
 
-- Integrates seamlessly with the FreeCAD modeling workflows
+- Integrates seamlessly with the FreeCAD modeling workflow, unit schemas, and translation
 - Supports professional CNC workflows
 - Is usable and intuitive for hobbyist and non-professionals
 - Embraces open standards 
