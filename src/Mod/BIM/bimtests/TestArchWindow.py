@@ -133,8 +133,6 @@ class TestArchWindow(TestArchBase.TestArchBase):
         self.assertFalse(window.Shape.isNull())
         self.assertGreater(len(window.Shape.Solids), 0)
 
-# In class TestArchWindow(TestArchBase.TestArchBase):
-
     def test_create_with_width_height_no_baseobj_initially(self):
         """
         Test Arch.makeWindow(width, height) current behavior regarding window.Base.
@@ -147,27 +145,27 @@ class TestArchWindow(TestArchBase.TestArchBase):
 
         # 1. Check initial state after makeWindow call
         self.assertEqual(window.Label, window_name)
-        self.assertIsNone(window.Base, 
+        self.assertIsNone(window.Base,
                           "Immediately after makeWindow(W,H), window.Base should be None.")
-        self.assertTrue(window.Shape.isNull(), 
+        self.assertTrue(window.Shape.isNull(),
                         "Initially, window.Shape should be null as no Base or Parts yet.")
-        self.assertAlmostEqual(window.Width.Value, win_w, places=5, 
+        self.assertAlmostEqual(window.Width.Value, win_w, places=5,
                                msg="Window.Width property not correctly set by makeWindow.")
-        self.assertAlmostEqual(window.Height.Value, win_h, places=5, 
+        self.assertAlmostEqual(window.Height.Value, win_h, places=5,
                                msg="Window.Height property not correctly set by makeWindow.")
 
         # 2. Perform a document recompute
         # This should trigger window.execute() -> ArchComponent.ensureBase()
-        self.document.recompute() 
+        self.document.recompute()
 
         # 3. Assert the CURRENT BEHAVIOR: window.Base remains None
         # The original ArchComponent.ensureBase does not create a sketch if Base is None
         # and only Width/Height are provided to the object.
-        self.assertIsNone(window.Base, 
+        self.assertIsNone(window.Base,
                           "Current Behavior: window.Base should remain None even after recomputes for makeWindow(W,H).")
-        
+
         # 4. Consequently, window.Shape should still be null.
-        self.assertTrue(window.Shape.isNull(), 
+        self.assertTrue(window.Shape.isNull(),
                         "window.Shape should remain null if window.Base was not created.")
 
         # 5. Attempting to set parts that rely on a Base sketch (e.g., "Wire0")
@@ -187,47 +185,47 @@ class TestArchWindow(TestArchBase.TestArchBase):
         """
         # 1. Create Wall
         wall_length = 3000.0
-        wall_thickness = 200.0 
+        wall_thickness = 200.0
         wall_height = 2400.0
-        
+
         line = Draft.makeLine(FreeCAD.Vector(0, 0, 0), FreeCAD.Vector(wall_length, 0, 0))
-        self.document.recompute() 
-        
-        wall = Arch.makeWall(line, 
-                             width=wall_thickness, 
-                             height=wall_height, 
-                             align="Left", 
+        self.document.recompute()
+
+        wall = Arch.makeWall(line,
+                             width=wall_thickness,
+                             height=wall_height,
+                             align="Left",
                              name="TestWall_ForOpening_Args")
         self.document.recompute()
 
         initial_wall_volume = wall.Shape.Volume
-        initial_wall_vertical_area = wall.VerticalArea.Value 
+        initial_wall_vertical_area = wall.VerticalArea.Value
 
         # 2. Create Sketch for Window profile
         sketch_profile_width = 800.0
         sketch_profile_height = 1000.0
         sk = self._create_sketch_with_wires("WindowSketch_Args", [(0, 0, sketch_profile_width, sketch_profile_height)])
-        
+
         # Position and orient the sketch in 3D space
-        sk.Placement.Rotation = FreeCAD.Rotation(FreeCAD.Vector(1, 0, 0), 90) 
-        win_global_x_start = (wall.Length.Value - sketch_profile_width) / 2 
-        win_global_z_start = 900.0 
-        sk.Placement.Base = FreeCAD.Vector(win_global_x_start, 0, win_global_z_start) 
+        sk.Placement.Rotation = FreeCAD.Rotation(FreeCAD.Vector(1, 0, 0), 90)
+        win_global_x_start = (wall.Length.Value - sketch_profile_width) / 2
+        win_global_z_start = 900.0
+        sk.Placement.Base = FreeCAD.Vector(win_global_x_start, 0, win_global_z_start)
         self.document.recompute()
 
         # 3. Create Window from sketch
         win = Arch.makeWindow(sk, name="WindowInWall_Args")
-        
+
         # Manually set Width and Height to match the sketch profile dimensions
-        win.Width = sketch_profile_width 
+        win.Width = sketch_profile_width
         win.Height = sketch_profile_height
         # win.Placement remains identity
-        
+
         win.HoleDepth = 0 # Use "smart" hole depth calculation
         win.WindowParts = ["DefaultFrame", "Frame", "Wire0", "60", "0"]
-        
-        win.recompute() 
-        self.document.recompute() 
+
+        win.recompute()
+        self.document.recompute()
 
         self.assertFalse(win.Shape.isNull(), "Window must have a valid shape.")
         self.assertEqual(win.Placement, FreeCAD.Placement(),
@@ -238,7 +236,7 @@ class TestArchWindow(TestArchBase.TestArchBase):
 
         # 4. Add Window to Wall
         Arch.addComponents(win, host=wall)
-        self.document.recompute() 
+        self.document.recompute()
 
         # 5. Assertions
         # Wall.Subtractions PropertyLinkList check (informational, expected to be empty)
@@ -257,18 +255,18 @@ class TestArchWindow(TestArchBase.TestArchBase):
             f"After: {current_wall_volume}"
         )
 
-        ideal_removed_volume = win.Width.Value * win.Height.Value * wall.Width.Value 
+        ideal_removed_volume = win.Width.Value * win.Height.Value * wall.Width.Value
         self.assertAlmostEqual(
             current_wall_volume, initial_wall_volume - ideal_removed_volume, places=3,
             msg=f"Wall volume cut not as expected. Initial: {initial_wall_volume}, "
                 f"Current: {current_wall_volume}, IdealRemoved: {ideal_removed_volume}"
         )
-        
+
         # Check VerticalArea
         current_wall_vertical_area = wall.VerticalArea.Value
-        
+
         window_opening_area_on_one_face = win.Width.Value * win.Height.Value
-        area_of_side_reveals = 2 * win.Height.Value * wall.Width.Value 
+        area_of_side_reveals = 2 * win.Height.Value * wall.Width.Value
         expected_wall_vertical_area_after = (initial_wall_vertical_area -
             (2 * window_opening_area_on_one_face) + area_of_side_reveals)
 
@@ -281,11 +279,11 @@ class TestArchWindow(TestArchBase.TestArchBase):
 
     def test_clone_window(self):
         """Test cloning an Arch.Window object.
-        
+
         Notes:
         - The clone's name is automatically generated, the `name` argument is ignored.
         - The clone's WindowParts, Sill and other properties are always empty, despite the original having them.
-        
+
         """
         sketch = self._create_sketch_with_wires("OriginalSketch", [(0, 0, 600, 800)])
         original_parts = ["MainFrame", "Frame", "Wire0", "50", "10"]
@@ -312,41 +310,46 @@ class TestArchWindow(TestArchBase.TestArchBase):
 
     def test_create_window_on_xz_plane(self):
         """Test creating a window oriented on the XZ (vertical) plane."""
-        sketch = self._create_sketch_with_wires("Sketch_XZ_Plane",
-                                                [(0,0,1000,1200), (100,100,800,1000)])
 
-        sketch.Placement.Rotation = FreeCAD.Rotation(FreeCAD.Vector(1,0,0), 90)
+        # Create a a frame-like profile.
+        sketch = self._create_sketch_with_wires("Sketch_XZ_Plane",
+                                                [(0, 0, 1000, 1200), (100, 100, 800, 1000)])
+
+        # Orient the sketch to the XZ plane.
+        sketch.Placement.Rotation = FreeCAD.Rotation(FreeCAD.Vector(1, 0, 0), 90)
         self.document.recompute()
 
+        # Create the window using explicit parts.
         window = Arch.makeWindow(baseobj=sketch, name="Window_XZ_Plane")
         window.WindowParts = [
-            "Frame", "Frame", "Wire0,Wire1", "60", "0",
-            "Glass", "Glass panel", "Wire1", "10", "25"
+            "Frame", "Frame", "Wire0,Wire1", "60", "0",    # A 60mm thick frame
+            "Glass", "Glass panel", "Wire1", "10", "25"    # A 10mm thick glass pane, offset by 25mm
         ]
         self.document.recompute()
 
-        self.assertFalse(window.Shape.isNull())
-        self.assertGreater(len(window.Shape.Solids), 0)
-
-        expected_normal_y = 1.0
-
-        self.assertAlmostEqual(window.Normal.x, 0.0, places=5)
-        self.assertAlmostEqual(window.Normal.y, expected_normal_y, places=5,
-                               msg=f"Window normal Y component incorrect. Expected approx {expected_normal_y}, got {window.Normal.y}")
-        self.assertAlmostEqual(window.Normal.z, 0.0, places=5)
+        # Check the resulting geometry's orientation and dimensions.
+        self.assertFalse(window.Shape.isNull(), "Window shape should not be null.")
+        self.assertEqual(len(window.Shape.Solids), 2, "Window should contain two solids (frame and glass).")
 
         bb = window.Shape.BoundBox
+
+        # The window's overall "thickness" is determined by the frame (60mm).
+        # Its "width" (X) and "height" (Z) should be larger.
         self.assertGreater(bb.XLength, bb.YLength,
-                           "Window XLength (width) should be greater than YLength (thickness).")
+                        "Window XLength (width) should be greater than YLength (thickness).")
         self.assertGreater(bb.ZLength, bb.YLength,
-                           "Window ZLength (height) should be greater than YLength (thickness).")
+                        "Window ZLength (height) should be greater than YLength (thickness).")
+
+        # Verify the overall thickness is correct (60mm, from the Frame component).
+        self.assertAlmostEqual(bb.YLength, 60.0, places=5,
+                            msg="Window thickness (YLength) is incorrect.")
 
     def _create_sketch_with_wires(self, name: str, wire_definitions: list[tuple[float, float, float, float]]) -> "FreeCAD.DocumentObject":
         """
         Helper to create a sketch with one or more specified rectangular wires.
 
         Each rectangle is defined in the sketch's local XY plane. The sketch
-        is created in the current document (`self.document`). After adding all
+        is created in the current document (`self.doc`). After adding all
         geometry and basic coincident constraints for each rectangle, the
         document is recomputed.
 
@@ -395,7 +398,7 @@ class TestArchWindow(TestArchBase.TestArchBase):
         """
         Helper to create a rectangular sketch with "Width" and "Height" named constraints.
 
-        The sketch is created in the current document (`self.document`) on the
+        The sketch is created in the current document (`self.doc`) on the
         default XY plane. It consists of a single rectangle defined by four
         line segments, with its bottom-left corner at (0,0,0) in the
         sketch's local coordinates.

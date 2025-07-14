@@ -22,23 +22,34 @@
 # *                                                                         *
 # ***************************************************************************
 
-import Arch
-import FreeCAD as App
-from bimtests import TestArchBase
+import unittest
+import FreeCAD
+import FreeCADGui
+from bimtests.TestArchBase import TestArchBase
 
-class TestArchEquipment(TestArchBase.TestArchBase):
+class TestArchBaseGui(TestArchBase):
+    """
+    The base class for all Arch/BIM GUI unit tests.
+    It inherits from TestArchBase to handle document setup and adds
+    GUI-specific initialization by activating the BIM workbench.
+    """
 
-    def test_makeEquipment(self):
-        """Test the makeEquipment function."""
+    @classmethod
+    def setUpClass(cls):
+        """
+        Ensure the GUI is available and activate the BIM workbench once
+        before any tests in the inheriting class are run.
+        """
+        if not FreeCAD.GuiUp:
+            raise unittest.SkipTest("Cannot run GUI tests in a CLI environment.")
+        
+        # Activating the workbench ensures all GUI commands are loaded and ready.
+        FreeCADGui.activateWorkbench("BIMWorkbench")
 
-        obj = Arch.makeEquipment()
-        self.assertIsNotNone(obj, "makeEquipment failed to create an object")
-        self.assertEqual(obj.Label, "Equipment", "Incorrect default label for Equipment")
+    def setUp(self):
+        """
+        Run the parent's setup to create the uniquely named document.
+        The workbench is already activated by setUpClass.
+        """
+        super().setUp()
 
-    def testEquipment(self):
-        box = App.ActiveDocument.addObject("Part::Box", "Box")
-        box.Length = 500
-        box.Width = 2000
-        box.Height = 600
-        equip = Arch.makeEquipment(box)
-        self.assertTrue(equip,"Arch Equipment failed")
