@@ -1395,6 +1395,8 @@ class Snapper:
         self.callbackMove = None
 
         def move(event_cb):
+            if not self.ui.mouse:
+                return
             event = event_cb.getEvent()
             mousepos = event.getPosition()
             ctrl = event.wasCtrlDown()
@@ -1421,6 +1423,8 @@ class Snapper:
             accept()
 
         def click(event_cb):
+            if not self.ui.mouse:
+                return
             event = event_cb.getEvent()
             if event.getButton() == 1:
                 if event.getState() == coin.SoMouseButtonEvent.DOWN:
