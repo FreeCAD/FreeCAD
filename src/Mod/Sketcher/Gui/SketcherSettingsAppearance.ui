@@ -962,7 +962,7 @@
          </sizepolicy>
         </property>
         <property name="toolTip">
-         <string>Color of sketch faces.</string>
+         <string>Color of internal faces formed by intersecting geometry or closed loops in the sketch</string>
         </property>
         <property name="color" stdset="0">
          <color alpha="62">
