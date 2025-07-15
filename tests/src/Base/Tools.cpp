@@ -123,10 +123,10 @@ TEST(BaseToolsSuite, TestGetIdentifier)
 
     // Unicode letters (valid start and continue)
     EXPECT_EQ(Base::Tools::getIdentifier("πValue"), "πValue");  // Greek lowercase
-    EXPECT_EQ(Base::Tools::getIdentifier("Δx"), "Δx");  // Greek uppercase
-    EXPECT_EQ(Base::Tools::getIdentifier("ǅz"), "ǅz");  // Titlecase letter
+    EXPECT_EQ(Base::Tools::getIdentifier("Δx"), "Δx");          // Greek uppercase
+    EXPECT_EQ(Base::Tools::getIdentifier("ǅz"), "ǅz");          // Titlecase letter
     EXPECT_EQ(Base::Tools::getIdentifier("ʰindex"), "ʰindex");  // Modifier letter
-    EXPECT_EQ(Base::Tools::getIdentifier("名字"), "名字");  // CJK characters (Lo)
+    EXPECT_EQ(Base::Tools::getIdentifier("名字"), "名字");      // CJK characters (Lo)
     EXPECT_EQ(Base::Tools::getIdentifier("ⅨCount"), "ⅨCount");  // Letter number (Nl)
 
     // Digits not valid as first char
@@ -139,7 +139,7 @@ TEST(BaseToolsSuite, TestGetIdentifier)
 
     // Combining marks (Mn, Mc)
     EXPECT_EQ(Base::Tools::getIdentifier("éclair"), "éclair");  // 'e' + combining acute accent (Mn)
-    EXPECT_EQ(Base::Tools::getIdentifier("devा"), "devा");  // Devanagari vowel sign (Mc)
+    EXPECT_EQ(Base::Tools::getIdentifier("devा"), "devा");      // Devanagari vowel sign (Mc)
 
     // Invalid symbols
     EXPECT_EQ(Base::Tools::getIdentifier("hello!"), "hello_");
