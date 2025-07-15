@@ -1080,6 +1080,8 @@ class _ViewProviderSite:
                         del self.diagramnode
                 else:
                     self.diagramswitch.whichChild = -1
+        elif prop in ["ShowSunPosition", "SunDateMonth", "SunDateDay", "SunTimeHour", "SolarDiagramScale", "SolarDiagramPosition"]:
+            self.updateSunPosition(vobj)
         elif prop == "WindRose":
             if hasattr(self,"windrosenode"):
                 del self.windrosenode
@@ -1215,3 +1217,75 @@ class _ViewProviderSite:
     def loads(self,state):
 
         return None
+
+    def updateSunPosition(self, vobj):
+        """Calculates sun position and updates the sphere and ray object."""
+        import math
+        from pivy import coin
+        import Part
+
+        obj = vobj.Object
+
+        # Handle the visibility switch
+        if not vobj.ShowSunPosition:
+            self.sunSwitch.whichChild = -1 # Hide the Pivy sphere
+            if obj.SunRay and hasattr(obj.SunRay, "ViewObject"):
+                obj.SunRay.ViewObject.Visibility = False
+            return
+
+        self.sunSwitch.whichChild = 0 # Show the Pivy sphere
+
+        try:
+            from ladybug import location, sunpath
+            loc = location.Location(latitude=obj.Latitude, longitude=obj.Longitude, time_zone=obj.TimeZone)
+            sp = sunpath.Sunpath.from_location(loc)
+            sun = sp.calculate_sun(month=vobj.SunDateMonth, day=vobj.SunDateDay, hour=vobj.SunTimeHour)
+            altitude = math.radians(sun.altitude)
+            # Ladybug azimuth: 0 is North, clockwise. We need 0 as East, counter-clockwise.
+            azimuth = math.radians(90 - sun.azimuth)
+        except ImportError:
+            try:
+                import pysolar.solar as solar
+                import datetime
+                tz = datetime.timezone(datetime.timedelta(hours=obj.TimeZone))
+                dt = datetime.datetime(vobj.Object.Document.CreationDate.year, vobj.SunDateMonth, vobj.SunDateDay, int(vobj.SunTimeHour), int((vobj.SunTimeHour % 1)*60), tzinfo=tz)
+                altitude = math.radians(solar.get_altitude(obj.Latitude, obj.Longitude, dt))
+                # Pysolar azimuth: 0 is North, clockwise.
+                azimuth = math.radians(90 - solar.get_azimuth(obj.Latitude, obj.Longitude, dt))
+            except ImportError:
+                FreeCAD.Console.PrintError("Pysolar or Ladybug module not found. Cannot calculate sun position.\n")
+                return
+
+        # Convert spherical coordinates to Cartesian 3D space
+        scale = vobj.SolarDiagramScale
+        xy_proj = math.cos(altitude) * scale
+        x = math.cos(azimuth) * xy_proj
+        y = math.sin(azimuth) * xy_proj
+        z = math.sin(altitude) * scale
+        sun_pos_3d = FreeCAD.Vector(x, y, z)
+
+        # Update the Pivy sphere's position and radius
+        self.sunTransform.translation.setValue(sun_pos_3d.x, sun_pos_3d.y, sun_pos_3d.z)
+        self.sunSphere.radius = scale * 0.02
+
+        # Create or update the selectable sun ray line object
+        ray_origin = vobj.SolarDiagramPosition # The center of the diagram
+        ray_target = ray_origin.add(sun_pos_3d)
+
+        # Handle cases where the ray object might have been deleted
+        try:
+            ray_object = obj.SunRay
+            if not ray_object: raise AttributeError
+        except (AttributeError, ReferenceError):
+            ray_object = FreeCAD.ActiveDocument.addObject("Part::Feature", "SunRay")
+            ray_object.Label = "Sun Ray"
+            if hasattr(obj, "addObject"):
+                obj.addObject(ray_object)
+            ray_object.ViewObject.LineColor = (1.0, 1.0, 0.0) # Yellow
+            ray_object.ViewObject.LineWidth = 2.0
+            ray_object.ViewObject.PointSize = 1
+            obj.SunRay = ray_object # Re-link the property
+
+        # Set the shape of the ray
+        ray_object.Shape = Part.makeLine(ray_target, ray_origin) # Direction from sun to origin
+        ray_object.ViewObject.Visibility = True
