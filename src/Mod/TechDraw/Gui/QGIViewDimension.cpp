@@ -316,7 +316,6 @@ void QGIViewDimension::datumLabelDragFinished()
     }
 
     double x = Rez::appX(datumLabel->X()), y = Rez::appX(datumLabel->Y());
-    Gui::Document* guidoc = Gui::Application::Instance->activeDocument();
 
     int tid = Gui::Command::openActiveDocumentCommand(QT_TRANSLATE_NOOP("Command", "Drag Dimension"));
 
