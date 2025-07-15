@@ -19,32 +19,12 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-import FreeCAD
-from typing import Optional
+from ..models.spindle import Spindle
+from .component import MachineComponentWidget
 
 
-def find_shape_object(doc: "FreeCAD.Document") -> Optional["FreeCAD.DocumentObject"]:
-    """
-    Find the primary object representing the shape in a document.
+class SpindleWidget(MachineComponentWidget):
+    """Widget for editing spindle properties using the generic component widget."""
 
-    Looks for PartDesign::Body, then Part::Feature. Falls back to the first
-    object if no better candidate is found.
-
-    Args:
-        doc (FreeCAD.Document): The document to search within.
-
-    Returns:
-        Optional[FreeCAD.DocumentObject]: The found object or None.
-    """
-    obj = None
-    # Prioritize Body
-    for o in doc.Objects:
-        if o.isDerivedFrom("PartDesign::Body"):
-            return o
-        # Keep track of the first Part::Feature found as a fallback
-        if obj is None and o.isDerivedFrom("Part::Feature"):
-            obj = o
-    if obj:
-        return obj
-    # Fallback to the very first object if nothing else suitable found
-    return doc.Objects[0] if doc.Objects else None
+    def __init__(self, spindle: Spindle, parent=None):
+        super().__init__(spindle, spindle.get_attribute_configs(), parent)
