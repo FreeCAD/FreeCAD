@@ -19,14 +19,13 @@ A robust, intuitive, and industry-ready CAM solution that:
 *(this section describes expected functionality in agnostic terms.  No FreeCAD-specific language)*
 
 Any CAM application meeting the needs above must provide functionality in these areas:
-- [Tool Management](<./Tool Management.md>)
-- [Stock and Work-piece Setup](<./Stock and Work-piece Setup.md>)
-- [Job Management](<./Job Management.md>)
-- [Operation Configuration](<./Operation Configuration.md>)
-- [Simulation and Verification](<./Simulation and Verification.md>)
-- [Output Generation](<./Output Generation.md>)
-- [Scripting and automation](<./Scripting and automation.md>)
-- [Documentation](<./User Interface & Documentation.md>)
+- [Tool Management](<./Functionality/Tool Management.md>)
+- [Stock and Work-piece Setup](<./Functionality/Stock and Work-piece Setup.md>)
+- [Job Management](<./Functionality/Job Management.md>)
+- [Operation Configuration](<./Functionality/Operation Configuration.md>)
+- [Simulation and Verification](<./Functionality/Simulation and Verification.md>)
+- [Output Generation](<./Functionality/Output Generation.md>)
+- [Scripting and automation](<./Functionality/Scripting and automation.md>)
 
 ## 🧼 Code Overview
 *(this section provides a starting point for developers to understand how CAM is organized.)*
@@ -39,15 +38,22 @@ Additionally, as software developers we desire the source code to excel in these
 - Testable
 
 ### Introduction to CAM code
-- Tool Subsystem
-- Job System, templates
-- Operations
-- Generators
-- Dressups
-- Post processing system
-- Sanity Report Generation
-- Preference System
-- Path Visualization and Simulator
+- [Tool Subsystem](<./Current State/Tools.md>)
+- [Job System, templates](<Jobs.md>)
+- [Operations](<./Current State/Operations.md>)
+- [Generators](<./Current State/Generators.md>)
+- [Dressups](<./Current State/Dressups.md>)
+- [Post processing system](<./Current State/PostProcessing.md>)
+- [Sanity Report Generation](<./Current State/Sanity.md>)
+- [Preference System](<./Current State/Preferences.md>)
+- [Path Visualization and Simulator](<./Current State/Visualization.md>)
+
+### ADR Log
+| ADR                           | Description                            |
+|-------------------------------|----------------------------------------|
+| [ADR-001](<./ADR/ADR-001.md>) | Use Dressups to modify base operations |
+| [ADR-002](<./ADR/ADR-002.md>) | Internal representation of tool path   |
+|                               |                                        |
 
 
 # 📊 Current State
@@ -67,7 +73,6 @@ Additionally, as software developers we desire the source code to excel in these
 | [Simulation and Verification](https://github.com/orgs/FreeCAD/projects/21/views/13)                                                        |          |         |            |              |
 | [Output generation](https://github.com/orgs/FreeCAD/projects/21/views/14)                                                     |          |         |            |              |
 | [Scripting and Automation](https://github.com/orgs/FreeCAD/projects/21/views/18)                                              |          |         |            |              |
-| [Documentation](https://github.com/orgs/FreeCAD/projects/21/views/19)                                        |          |         |            |              |
 
 # ⚠️ Pain Points
 *(this section functions like an FAQ.  It helps keep users from creating duplicate issues.  It gives new developers a first place to connect)*

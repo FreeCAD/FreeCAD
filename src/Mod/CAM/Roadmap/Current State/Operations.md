@@ -1,38 +1,4 @@
-# Requirements
-## 🟩 Core Essentials
-Features Necessary to do perform the required function
-- Calculate motion paths
-- Specify entry/exit strategies
-- Configure key operation Parameters
-	- stepdown/stepover
-	- spindle speed
-	- feed rate
-- Tool selection
-- Configure Specific machining tasks
-	- pocketing
-	- drilling
-	- contouring (profiling)
-	- Engraving
 
-## 🟨 Professional Grade
-Features present in the state-of-the art applications and expected
-- Optimize toolpath for efficiency
-- Configure REST milling for subsequent operations
-	- Tapping
-	- threadmilling
-	- Vcarving
-	- Deburring
-	- Helical clearing
-	- Adaptive clearing
-- Lathe operations
-- Indexed Multi-Axis operations
-- Continuous 4th and 5th Axis
-
-## 🟦 Next-Level CAM
-Features that would exceed industry standard
-
-
-# [topic name placeholder]
 
 Operations represent the core of the CAM workbench.  They hold most of the complexity and a majority of the actual source code.  To manage this code and complexity, the operation logic is broken into several logical parts.  The implementation of this abstraction is inconsistent.
 
@@ -200,35 +166,8 @@ it
   move.
 
 
-## Generator
-
-Generators are low-level functions that compute the cutting moves for a single target.
-They have no user interface and are implemented as pure functions.  
-Generators should have 100% test coverage at all times because they may be called from multiple operation contexts.
-
-For example, creating a helical move may be done
-- By the helix operation
-- As an entry move to a pocketing operation
-
-### Current Generators
-- Drill Generator (Generates canned cycle drilling commands)
-- Helix
-- Rotation
-- Tapping
-- threadmilling
-- toolchange
-- dogboneII
-
-### Needed Generators
-- Pocket (zigzag)
-- Pocket (adaptive)
-- Pocket (offset)
-- Line
-- Linking
-- vcarve
 
 
-## Dressup
 
 
 
