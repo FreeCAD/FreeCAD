@@ -50,9 +50,7 @@
 
 #include <chrono>
 #include "dxf/ImpExpDxf.h"
-#include "dxf/DxfExport.h"
 #include "SketchExportHelper.h"
-#include "dxf/DxfWriterProxy.h"
 #include <App/Annotation.h>
 #include <App/Application.h>
 #include <App/Document.h>
@@ -79,8 +77,227 @@
 
 #include <Python.h>  // For direct C-API calls
 
+namespace
+{  // anonymous namespace for internal DXF export helpers
+
+typedef struct
+{
+    PyObject_HEAD Import::ImpExpDxfWrite* writer_inst;
+} DxfWriterProxy;
+
+// Forward declarations of the static C functions
+static void DxfWriterProxy_dealloc(DxfWriterProxy* self)
+{
+    Py_TYPE(self)->tp_free((PyObject*)self);
+}
+
+static PyObject* DxfWriterProxy_new(PyTypeObject* type, PyObject* /*args*/, PyObject* /*kwds*/)
+{
+    DxfWriterProxy* self = (DxfWriterProxy*)type->tp_alloc(type, 0);
+    if (self != nullptr) {
+        self->writer_inst = nullptr;
+    }
+    return (PyObject*)self;
+}
+
+static PyObject* DxfWriterProxy_writeBlock(DxfWriterProxy* self, PyObject* args)
+{
+    char* name;
+    double p[3];
+    if (!PyArg_ParseTuple(args, "s(ddd)", &name, &p[0], &p[1], &p[2])) {
+        return nullptr;
+    }
+    if (self->writer_inst) {
+        self->writer_inst->writeBlock(name, p);
+    }
+    Py_RETURN_NONE;
+}
+
+static PyObject* DxfWriterProxy_writeEndBlock(DxfWriterProxy* self, PyObject* args)
+{
+    char* name;
+    if (!PyArg_ParseTuple(args, "s", &name)) {
+        return nullptr;
+    }
+    if (self->writer_inst) {
+        self->writer_inst->writeEndBlock(name);
+    }
+    Py_RETURN_NONE;
+}
+
+static PyObject* DxfWriterProxy_writeInsert(DxfWriterProxy* self, PyObject* args)
+{
+    char* name;
+    double p[3];
+    double scale, rotation;
+    if (!PyArg_ParseTuple(args, "s(ddd)dd", &name, &p[0], &p[1], &p[2], &scale, &rotation)) {
+        return nullptr;
+    }
+    if (self->writer_inst) {
+        self->writer_inst->writeInsert(name, p, scale, rotation);
+    }
+    Py_RETURN_NONE;
+}
+
+static PyObject* DxfWriterProxy_exportShape(DxfWriterProxy* self, PyObject* args)
+{
+    PyObject* shapeObj;
+    if (!PyArg_ParseTuple(args, "O!", &(Part::TopoShapePy::Type), &shapeObj)) {
+        return nullptr;
+    }
+    if (self->writer_inst) {
+        Part::TopoShape* ts = static_cast<Part::TopoShapePy*>(shapeObj)->getTopoShapePtr();
+        self->writer_inst->exportShape(ts->getShape());
+    }
+    Py_RETURN_NONE;
+}
+
+static PyObject* DxfWriterProxy_setLayerName(DxfWriterProxy* self, PyObject* args)
+{
+    char* layer_name;
+    if (!PyArg_ParseTuple(args, "s", &layer_name)) {
+        return nullptr;
+    }
+    if (self->writer_inst) {
+        self->writer_inst->setLayerName(layer_name);
+    }
+    Py_RETURN_NONE;
+}
+
+static PyObject* DxfWriterProxy_setColor(DxfWriterProxy* self, PyObject* args)
+{
+    int aci_color;
+    if (!PyArg_ParseTuple(args, "i", &aci_color)) {
+        return nullptr;
+    }
+    if (self->writer_inst) {
+        self->writer_inst->setColor(aci_color);
+    }
+    Py_RETURN_NONE;
+}
+
+// Method table
+static PyMethodDef DxfWriterProxy_methods[] = {
+    {"writeBlock",
+     (PyCFunction)DxfWriterProxy_writeBlock,
+     METH_VARARGS,
+     "writeBlock(name, base_point_tuple)"},
+    {"writeEndBlock",
+     (PyCFunction)DxfWriterProxy_writeEndBlock,
+     METH_VARARGS,
+     "writeEndBlock(name)"},
+    {"writeInsert",
+     (PyCFunction)DxfWriterProxy_writeInsert,
+     METH_VARARGS,
+     "writeInsert(name, insertion_point_tuple, scale, rotation)"},
+    {"exportShape",
+     (PyCFunction)DxfWriterProxy_exportShape,
+     METH_VARARGS,
+     "exportShape(shape_object)"},
+    {"setLayerName", (PyCFunction)DxfWriterProxy_setLayerName, METH_VARARGS, "setLayerName(name)"},
+    {"setColor", (PyCFunction)DxfWriterProxy_setColor, METH_VARARGS, "setColor(aci_index)"},
+    {nullptr, nullptr, 0, nullptr} /* Sentinel */
+};
+
+// Type definition
+static PyTypeObject DxfWriterProxy_Type = {
+    PyVarObject_HEAD_INIT(nullptr, 0) "Import.DxfWriterProxy", /* tp_name */
+    sizeof(DxfWriterProxy),                                    /* tp_basicsize */
+    0,                                                         /* tp_itemsize */
+    (destructor)DxfWriterProxy_dealloc,                        /* tp_dealloc */
+    0,                                                         /* tp_vectorcall_offset */
+    nullptr,                                                   /* tp_getattr */
+    nullptr,                                                   /* tp_setattr */
+    nullptr,                                                   /* tp_as_async */
+    nullptr,                                                   /* tp_repr */
+    nullptr,                                                   /* tp_as_number */
+    nullptr,                                                   /* tp_as_sequence */
+    nullptr,                                                   /* tp_as_mapping */
+    nullptr,                                                   /* tp_hash */
+    nullptr,                                                   /* tp_call */
+    nullptr,                                                   /* tp_str */
+    PyObject_GenericGetAttr,                                   /* tp_getattro */
+    nullptr,                                                   /* tp_setattro */
+    nullptr,                                                   /* tp_as_buffer */
+    Py_TPFLAGS_DEFAULT,                                        /* tp_flags */
+    "A proxy for the C++ DXF writer.",                         /* tp_doc */
+    nullptr,                                                   /* tp_traverse */
+    nullptr,                                                   /* tp_clear */
+    nullptr,                                                   /* tp_richcompare */
+    0,                                                         /* tp_weaklistoffset */
+    nullptr,                                                   /* tp_iter */
+    nullptr,                                                   /* tp_iternext */
+    DxfWriterProxy_methods,                                    /* tp_methods */
+    nullptr,                                                   /* tp_members */
+    nullptr,                                                   /* tp_getset */
+    nullptr,                                                   /* tp_base */
+    nullptr,                                                   /* tp_dict */
+    nullptr,                                                   /* tp_descr_get */
+    nullptr,                                                   /* tp_descr_set */
+    0,                                                         /* tp_dictoffset */
+    (initproc) nullptr,                                        /* tp_init */
+    PyType_GenericAlloc,                                       /* tp_alloc */
+    DxfWriterProxy_new,                                        /* tp_new */
+    nullptr,                                                   /* tp_free */
+    nullptr,                                                   /* tp_is_gc */
+    nullptr,                                                   /* tp_bases */
+    nullptr,                                                   /* tp_mro */
+    nullptr,                                                   /* tp_cache */
+    nullptr,                                                   /* tp_subclasses */
+    nullptr,                                                   /* tp_weaklist */
+    nullptr,                                                   /* tp_del */
+    0,                                                         /* tp_version_tag */
+    nullptr,                                                   /* tp_finalize */
+    nullptr,                                                   /* tp_vectorcall */
+};
+
+}  // end anonymous namespace
+
+
 namespace Import
 {
+
+
+void executeDxfExport(PyObject* objectList, ImpExpDxfWrite& writer, PyObject* helperModule)
+{
+    if (!helperModule) {
+        throw Py::RuntimeError("A valid helper module was not provided to the DXF exporter.");
+    }
+
+    // Get the single master dispatcher function from Python
+    PyObject* export_object_func = PyObject_GetAttrString(helperModule, "_export_object");
+    if (!export_object_func || !PyCallable_Check(export_object_func)) {
+        Py_XDECREF(helperModule);
+        Py_XDECREF(export_object_func);
+        throw Py::RuntimeError("Cannot find the _export_object helper function in importDXF.py");
+    }
+
+    Py::Sequence list(objectList);
+
+    // Create the C++ writer proxy once
+    PyObject* writerProxyObj = DxfWriterProxy_Type.tp_new(&DxfWriterProxy_Type, nullptr, nullptr);
+    ((DxfWriterProxy*)writerProxyObj)->writer_inst = &writer;
+
+    for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
+        PyObject* item = (*it).ptr();
+
+        // Call the master dispatcher for every single object
+        PyObject* result =
+            PyObject_CallFunctionObjArgs(export_object_func, item, writerProxyObj, NULL);
+        Py_XDECREF(result);  // We don't care about the return value
+
+        if (PyErr_Occurred()) {
+            // An error happened in Python, print it and clear it to continue
+            PyErr_Print();
+            PyErr_Clear();
+        }
+    }
+
+    // Clean up
+    Py_DECREF(writerProxyObj);
+    Py_DECREF(export_object_func);
+}
+
 class Module: public Py::ExtensionModule<Module>
 {
 public:
@@ -113,16 +330,14 @@ public:
         initialize("This module is the Import module.");
 
         // 1. Finalize the custom type
-        if (PyType_Ready(&Import::DxfWriterProxy_Type) < 0) {
+        if (PyType_Ready(&DxfWriterProxy_Type) < 0) {
             throw Py::Exception();  // PyType_Ready will set a Python exception
         }
 
         // 2. Add the finalized type to the module using the interpreter singleton.
         //    this->module() returns the Py::Object wrapper for the module.
         //    this->module().ptr() gets the raw PyObject* pointer.
-        Base::Interpreter().addType(&Import::DxfWriterProxy_Type,
-                                    this->module().ptr(),
-                                    "DxfWriterProxy");
+        Base::Interpreter().addType(&DxfWriterProxy_Type, this->module().ptr(), "DxfWriterProxy");
     }
 
     ~Module() override = default;
@@ -599,7 +814,7 @@ private:
             throw Py::Exception();
         }
 
-        try {
+        try {  // NOLINT(bugprone-throw-keyword-missing)
             ImpExpDxfWrite writer(utf8_filename);
             writer.setOptions();
             writer.setVersion(version);
