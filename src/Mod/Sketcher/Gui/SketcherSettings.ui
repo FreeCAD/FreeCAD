@@ -240,7 +240,7 @@ Requires to re-enter edit mode to take effect.</string>
          <string>If checked faces and other internal geometries will be generated on sketch closed wires.</string>
         </property>
         <property name="text">
-         <string>Auto generate faces</string>
+         <string>Generate internal faces</string>
         </property>
         <property name="prefPath" stdset="0">
          <cstring>Mod/Sketcher</cstring>
