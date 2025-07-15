@@ -187,6 +187,11 @@ public:
     /// Getter for the App Document
     App::Document*  getDocument() const;
 
+    /// Notify the document when it becomes 
+    /// the active document/stops being the active document
+    void setIsActive(bool active);
+    bool isActive() const;
+
     /** @name methods for View handling */
     //@{
     /// Getter for the active view

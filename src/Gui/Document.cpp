@@ -89,6 +89,7 @@ struct DocumentP
     bool       _isClosing;
     bool       _isModified;
     bool       _isTransacting;
+    bool       _isActive;
     bool       _changeViewTouchDocument;
     bool                        _editWantsRestore;
     bool                        _editWantsRestorePrevious;
@@ -435,6 +436,7 @@ Document::Document(App::Document* pcDocument,Application * app)
     d->_isClosing = false;
     d->_isModified = false;
     d->_isTransacting = false;
+    d->_isActive = false;
     d->_pcAppWnd = app;
     d->_pcDocument = pcDocument;
     d->_editViewProvider = nullptr;
@@ -656,7 +658,6 @@ bool Document::trySetEdit(Gui::ViewProvider* p, int ModNum, const char *subname)
     d->setEditingViewerIfPossible(view3d, ModNum);
     d->signalEditMode();
 
-    App::AutoTransaction::setEnable(false);
     return true;
 }
 
@@ -1313,6 +1314,17 @@ std::vector<std::pair<ViewProviderDocumentObject*,int> > Document::getViewProvid
 App::Document* Document::getDocument() const
 {
     return d->_pcDocument;
+}
+void Document::setIsActive(bool active)
+{
+    d->_isActive = active;
+    if (d->_editViewProvider) {
+        d->_editViewProvider->setActive(active);
+    }
+}
+bool Document::isActive() const
+{
+    return d->_isActive;
 }
 
 static bool checkCanonicalPath(const std::map<App::Document*, bool> &docs)
