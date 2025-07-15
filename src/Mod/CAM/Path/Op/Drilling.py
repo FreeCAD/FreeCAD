@@ -65,8 +65,8 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
         # Enumeration lists for App::PropertyEnumeration properties
         enums = {
             "RetractMode": [
-                (translate("CAM_Drilling", "G98"), "G98"),
-                (translate("CAM_Drilling", "G99"), "G99"),
+                (translate("CAM_Drilling", "Clearance Height"), "Clearance Height"),
+                (translate("CAM_Drilling", "Safe Height"), "Safe Height"),
             ],  # How high to retract after a drilling move
             "ExtraOffset": [
                 (translate("CAM_Drilling", "None"), "None"),
@@ -94,20 +94,26 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
         return PathOp.FeatureBaseGeometry | PathOp.FeatureLocations | PathOp.FeatureCoolant
 
     def onDocumentRestored(self, obj):
-        if not hasattr(obj, "chipBreakEnabled"):
+        if not hasattr(obj, "ChipBreakEnabled"):
             obj.addProperty(
                 "App::PropertyBool",
-                "chipBreakEnabled",
+                "ChipBreakEnabled",
                 "Drill",
-                QT_TRANSLATE_NOOP("App::Property", "Use chipbreaking"),
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "Use G73 Drilling Cycle with Chip Breaking\nWork only with PeckEnabled",
+                ),
             )
 
-        if not hasattr(obj, "feedRetractEnabled"):
+        if not hasattr(obj, "FeedRetractEnabled"):
             obj.addProperty(
                 "App::PropertyBool",
-                "feedRetractEnabled",
+                "FeedRetractEnabled",
                 "Drill",
-                QT_TRANSLATE_NOOP("App::Property", "Use G85 boring cycle with feed out"),
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "Use G85 boring cycle with feed out\nPeckEnabled and DwellEnabled should be False in this mode",
+                ),
             )
 
     def initCircularHoleOperation(self, obj):
@@ -125,13 +131,18 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
             "App::PropertyBool",
             "PeckEnabled",
             "Drill",
-            QT_TRANSLATE_NOOP("App::Property", "Enable pecking"),
+            QT_TRANSLATE_NOOP(
+                "App::Property", "Enable pecking\nShould be True if ChipBreakEnabled is True"
+            ),
         )
         obj.addProperty(
             "App::PropertyBool",
-            "chipBreakEnabled",
+            "ChipBreakEnabled",
             "Drill",
-            QT_TRANSLATE_NOOP("App::Property", "Use chipbreaking"),
+            QT_TRANSLATE_NOOP(
+                "App::Property",
+                "Use G73 Drilling Cycle with Chip Breaking\nWork only with PeckEnabled",
+            ),
         )
         obj.addProperty(
             "App::PropertyFloat",
@@ -146,30 +157,12 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
             QT_TRANSLATE_NOOP("App::Property", "Enable dwell"),
         )
         obj.addProperty(
-            "App::PropertyBool",
-            "AddTipLength",
-            "Drill",
-            QT_TRANSLATE_NOOP(
-                "App::Property",
-                "Calculate the tip length and subtract from final depth",
-            ),
-        )
-        obj.addProperty(
             "App::PropertyEnumeration",
             "RetractMode",
             "Drill",
             QT_TRANSLATE_NOOP(
                 "App::Property",
-                "Controls tool retract height between holes in same op, Default=G98: safety height\nUse property KeepToolDown to change this",
-            ),
-        )
-        obj.addProperty(
-            "App::PropertyDistance",
-            "RetractHeight",
-            "Drill",
-            QT_TRANSLATE_NOOP(
-                "App::Property",
-                "The height where cutting feed rate starts and retract height for peck operation",
+                "Controls tool retract height between holes inside operation\nG98 - Clearance height\nG99 - Safe height",
             ),
         )
         obj.addProperty(
@@ -180,21 +173,13 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
         )
         obj.addProperty(
             "App::PropertyBool",
-            "KeepToolDown",
+            "FeedRetractEnabled",
             "Drill",
             QT_TRANSLATE_NOOP(
                 "App::Property",
-                "Apply G99 retraction: only retract to RetractHeight between holes in this operation",
+                "Use G85 boring cycle with feed out\nPeckEnabled and DwellEnabled should be False in this mode",
             ),
         )
-        obj.addProperty(
-            "App::PropertyBool",
-            "feedRetractEnabled",
-            "Drill",
-            QT_TRANSLATE_NOOP("App::Property", "Use G85 boring cycle with feed out"),
-        )
-
-        obj.setEditorMode("RetractMode", 1)  # Set property read-only
 
         for n in self.propertyEnumerations():
             setattr(obj, n[0], n[1])
@@ -203,6 +188,14 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
         """circularHoleExecute(obj, holes) ... generate drill operation for each hole in holes."""
         Path.Log.track()
         machine = PathMachineState.MachineState()
+
+        if obj.ChipBreakEnabled:
+            obj.PeckEnabled = True
+
+        if obj.FeedRetractEnabled:
+            obj.PeckEnabled = False
+            obj.ChipBreakEnabled = False
+            obj.DwellEnabled = False
 
         self.commandlist.append(Path.Command("(Begin Drilling)"))
 
@@ -220,17 +213,6 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
         elif obj.ExtraOffset == "2x Drill Tip":
             endoffset = PathUtils.drillTipLength(self.tool) * 2
 
-        if not hasattr(obj, "KeepToolDown"):
-            obj.addProperty(
-                "App::PropertyBool",
-                "KeepToolDown",
-                "Drill",
-                QT_TRANSLATE_NOOP(
-                    "App::Property",
-                    "Apply G99 retraction: only retract to RetractHeight between holes in this operation",
-                ),
-            )
-
         if not hasattr(obj, "RetractMode"):
             obj.addProperty(
                 "App::PropertyEnumeration",
@@ -238,20 +220,19 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
                 "Drill",
                 QT_TRANSLATE_NOOP(
                     "App::Property",
-                    "Controls tool retract height between holes in same op, Default=G98: safety height\nUse property KeepToolDown to change this",
+                    "Controls tool retract height between holes inside operation\nG98 - Clearance height\nG99 - Safe height",
                 ),
             )
-            obj.setEditorMode("RetractMode", 1)  # Set property read-only
             # ensure new enums exist in old class
             for n in self.propertyEnumerations():
                 setattr(obj, n[0], n[1])
 
         # http://linuxcnc.org/docs/html/gcode/g-code.html#gcode:g98-g99
-        if obj.KeepToolDown:
-            obj.RetractMode = "G99"
+        if "safe" in obj.RetractMode.casefold():
+            retractMode = "G99"
         else:
-            obj.RetractMode = "G98"
-        self.commandlist.append(Path.Command(obj.RetractMode))
+            retractMode = "G98"
+        self.commandlist.append(Path.Command(retractMode))
 
         # This section is technical debt. The computation of the
         # target shapes should be factored out for reuse.
@@ -287,7 +268,11 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
             dwelltime = obj.DwellTime if obj.DwellEnabled else 0.0
             peckdepth = obj.PeckDepth.Value if obj.PeckEnabled else 0.0
             repeat = 1  # technical debt:  Add a repeat property for user control
-            chipBreak = obj.chipBreakEnabled and obj.PeckEnabled
+            chipBreak = obj.ChipBreakEnabled and obj.PeckEnabled
+            if "safe" in obj.RetractMode.casefold():
+                retractHeight = obj.SafeHeight.Value
+            else:
+                retractHeight = obj.ClearanceHeight.Value
 
             try:
                 drillcommands = drill.generate(
@@ -295,9 +280,9 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
                     dwelltime,
                     peckdepth,
                     repeat,
-                    obj.RetractHeight.Value,
+                    retractHeight,
                     chipBreak=chipBreak,
-                    feedRetract=obj.feedRetractEnabled,
+                    feedRetract=obj.FeedRetractEnabled,
                 )
 
             except ValueError as e:  # any targets that fail the generator are ignored
@@ -312,20 +297,15 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
         self.commandlist.append(Path.Command("G80"))
 
         # Apply feedrates to commands
-        PathFeedRate.setFeedRate(self.commandlist, obj.ToolController)
+        if hasattr(obj, "HorizFeed") and hasattr(obj, "VertFeed"):
+            PathFeedRate.setFeedRate(
+                self.commandlist, obj.ToolController, obj.HorizFeed, obj.VertFeed
+            )
+        else:
+            PathFeedRate.setFeedRate(self.commandlist, obj.ToolController)
 
     def opSetDefaultValues(self, obj, job):
-        """opSetDefaultValues(obj, job) ... set default value for RetractHeight"""
         obj.ExtraOffset = "None"
-        obj.KeepToolDown = False  # default to safest option: G98
-
-        if hasattr(job.SetupSheet, "RetractHeight"):
-            obj.RetractHeight = job.SetupSheet.RetractHeight
-        elif self.applyExpression(obj, "RetractHeight", "StartDepth+SetupSheet.SafeHeightOffset"):
-            if not job:
-                obj.RetractHeight = 10
-            else:
-                obj.RetractHeight.Value = obj.StartDepth.Value + 1.0
 
         if hasattr(job.SetupSheet, "PeckDepth"):
             obj.PeckDepth = job.SetupSheet.PeckDepth
@@ -344,11 +324,8 @@ def SetupProperties():
     setup.append("PeckEnabled")
     setup.append("DwellTime")
     setup.append("DwellEnabled")
-    setup.append("AddTipLength")
     setup.append("RetractMode")
     setup.append("ExtraOffset")
-    setup.append("RetractHeight")
-    setup.append("KeepToolDown")
     return setup
 
 

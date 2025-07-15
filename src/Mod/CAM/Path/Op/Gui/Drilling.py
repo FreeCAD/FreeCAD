@@ -49,9 +49,6 @@ class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
 
     def initPage(self, obj):
         self.peckDepthSpinBox = PathGuiUtil.QuantitySpinBox(self.form.peckDepth, obj, "PeckDepth")
-        self.peckRetractSpinBox = PathGuiUtil.QuantitySpinBox(
-            self.form.peckRetractHeight, obj, "RetractHeight"
-        )
         self.dwellTimeSpinBox = PathGuiUtil.QuantitySpinBox(self.form.dwellTime, obj, "DwellTime")
         self.form.chipBreakEnabled.setEnabled(False)
 
@@ -73,9 +70,6 @@ class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
         self.form.dwellEnabled.toggled.connect(self.form.peckEnabled.setDisabled)
         self.form.dwellEnabled.toggled.connect(self.form.feedRetractEnabled.setDisabled)
         self.form.dwellEnabled.toggled.connect(self.setChipBreakControl)
-
-        self.form.peckRetractHeight.setEnabled(True)
-        self.form.retractLabel.setEnabled(True)
 
         if self.form.peckEnabled.isChecked():
             self.form.dwellEnabled.setEnabled(False)
@@ -108,26 +102,22 @@ class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
 
     def updateQuantitySpinBoxes(self, index=None):
         self.peckDepthSpinBox.updateWidget()
-        self.peckRetractSpinBox.updateWidget()
         self.dwellTimeSpinBox.updateWidget()
 
     def getFields(self, obj):
         """setFields(obj) ... update obj's properties with values from the UI"""
         Path.Log.track()
         self.peckDepthSpinBox.updateProperty()
-        self.peckRetractSpinBox.updateProperty()
         self.dwellTimeSpinBox.updateProperty()
 
-        if obj.KeepToolDown != self.form.KeepToolDownEnabled.isChecked():
-            obj.KeepToolDown = self.form.KeepToolDownEnabled.isChecked()
         if obj.DwellEnabled != self.form.dwellEnabled.isChecked():
             obj.DwellEnabled = self.form.dwellEnabled.isChecked()
         if obj.PeckEnabled != self.form.peckEnabled.isChecked():
             obj.PeckEnabled = self.form.peckEnabled.isChecked()
-        if obj.feedRetractEnabled != self.form.feedRetractEnabled.isChecked():
-            obj.feedRetractEnabled = self.form.feedRetractEnabled.isChecked()
-        if obj.chipBreakEnabled != self.form.chipBreakEnabled.isChecked():
-            obj.chipBreakEnabled = self.form.chipBreakEnabled.isChecked()
+        if obj.FeedRetractEnabled != self.form.feedRetractEnabled.isChecked():
+            obj.FeedRetractEnabled = self.form.feedRetractEnabled.isChecked()
+        if obj.ChipBreakEnabled != self.form.chipBreakEnabled.isChecked():
+            obj.ChipBreakEnabled = self.form.chipBreakEnabled.isChecked()
         if obj.ExtraOffset != str(self.form.ExtraOffset.currentData()):
             obj.ExtraOffset = str(self.form.ExtraOffset.currentData())
 
@@ -138,22 +128,6 @@ class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
         """setFields(obj) ... update UI with obj properties' values"""
         Path.Log.track()
         self.updateQuantitySpinBoxes()
-
-        if not hasattr(obj, "KeepToolDown"):
-            obj.addProperty(
-                "App::PropertyBool",
-                "KeepToolDown",
-                "Drill",
-                QtCore.QT_TRANSLATE_NOOP(
-                    "App::Property",
-                    "Apply G99 retraction: only retract to RetractHeight between holes in this operation",
-                ),
-            )
-
-        if obj.KeepToolDown:
-            self.form.KeepToolDownEnabled.setCheckState(QtCore.Qt.Checked)
-        else:
-            self.form.KeepToolDownEnabled.setCheckState(QtCore.Qt.Unchecked)
 
         if obj.DwellEnabled:
             self.form.dwellEnabled.setCheckState(QtCore.Qt.Checked)
@@ -166,12 +140,12 @@ class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
             self.form.peckEnabled.setCheckState(QtCore.Qt.Unchecked)
             self.form.chipBreakEnabled.setEnabled(False)
 
-        if obj.chipBreakEnabled:
+        if obj.ChipBreakEnabled:
             self.form.chipBreakEnabled.setCheckState(QtCore.Qt.Checked)
         else:
             self.form.chipBreakEnabled.setCheckState(QtCore.Qt.Unchecked)
 
-        if obj.feedRetractEnabled:
+        if obj.FeedRetractEnabled:
             self.form.feedRetractEnabled.setCheckState(QtCore.Qt.Checked)
         else:
             self.form.feedRetractEnabled.setCheckState(QtCore.Qt.Unchecked)
@@ -185,7 +159,6 @@ class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
         """getSignalsForUpdate(obj) ... return list of signals which cause the receiver to update the model"""
         signals = []
 
-        signals.append(self.form.peckRetractHeight.editingFinished)
         signals.append(self.form.peckDepth.editingFinished)
         signals.append(self.form.dwellTime.editingFinished)
         if hasattr(self.form.dwellEnabled, "checkStateChanged"):  # Qt version >= 6.7.0
@@ -199,16 +172,10 @@ class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
         signals.append(self.form.toolController.currentIndexChanged)
         signals.append(self.form.coolantController.currentIndexChanged)
         signals.append(self.form.ExtraOffset.currentIndexChanged)
-        if hasattr(self.form.KeepToolDownEnabled, "checkStateChanged"):  # Qt version >= 6.7.0
-            signals.append(self.form.KeepToolDownEnabled.checkStateChanged)
-            signals.append(self.form.feedRetractEnabled.checkStateChanged)
-        else:  # Qt version < 6.7.0
-            signals.append(self.form.KeepToolDownEnabled.stateChanged)
-            signals.append(self.form.feedRetractEnabled.stateChanged)
         return signals
 
     def updateData(self, obj, prop):
-        if prop in ["PeckDepth", "RetractHeight"] and not prop in ["Base", "Disabled"]:
+        if "PeckDepth" in prop and prop not in ["Base", "Disabled"]:
             self.updateQuantitySpinBoxes()
 
 

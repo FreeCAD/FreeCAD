@@ -57,16 +57,6 @@
         </property>
        </widget>
      </item>
-     <item row="8" column="1">
-       <widget class="QCheckBox" name="KeepToolDownEnabled">
-        <property name="toolTip">
-         <string>Don't retract after every hole</string>
-        </property>
-        <property name="text">
-         <string>Keep Tool Down</string>
-        </property>
-       </widget>
-      </item>
      </layout>
     </widget>
    </item>
@@ -143,23 +133,6 @@
        </property>
        <property name="text">
         <string>Depth</string>
-       </property>
-      </widget>
-     </item>
-     <item row="4" column="4">
-      <widget class="QLabel" name="retractLabel">
-       <property name="enabled">
-        <bool>false</bool>
-       </property>
-       <property name="text">
-        <string>Retract</string>
-       </property>
-      </widget>
-     </item>
-     <item row="4" column="6">
-      <widget class="Gui::QuantitySpinBox" name="peckRetractHeight">
-       <property name="enabled">
-        <bool>false</bool>
        </property>
       </widget>
      </item>
