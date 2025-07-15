@@ -198,13 +198,14 @@ void AssemblyLink::synchronizeComponents()
     for (auto* obj : assemblyGroup) {
         if (!obj->isDerivedFrom<App::Part>() && !obj->isDerivedFrom<PartApp::Feature>()
             && !obj->isDerivedFrom<App::Link>()
-            && !obj->isDerivedFrom<App::DocumentObjectGroup>()) {
+            // && !obj->isDerivedFrom<App::DocumentObjectGroup>()
+        ) {
             continue;
         }
 
-        if (obj->isDerivedFrom<JointGroup>() || obj->getGroup() != nullptr) {
-            continue;
-        }
+        // if (obj->isDerivedFrom<JointGroup>() || obj->getGroup() != nullptr) {
+        //     continue;
+        // }
 
         // Note, the user can have nested sub-assemblies.
         // In which case we need to add an AssemblyLink and not a Link.
@@ -222,11 +223,8 @@ void AssemblyLink::synchronizeComponents()
             else if (link2) {
                 linkedObj = link2->getLinkedObject(false);  // not recursive
             }
-            // else if (group) {
-            //     linkedObj = group->getLinkedObject(false);  // not recursive
-            // }
             else {
-                // We consider only Links, AssemblyLinks, and in the AssemblyLink.
+                // We consider only Links and AssemblyLinks
                 continue;
             }
 
@@ -241,7 +239,7 @@ void AssemblyLink::synchronizeComponents()
             if (obj->isDerivedFrom<AssemblyLink>()) {
                 auto* asmLink = static_cast<AssemblyLink*>(obj);
                 auto* subAsmLink = new AssemblyLink();
-                auto* origin = new App::Origin();
+                // auto* origin = new App::Origin();
 
 
                 doc->addObject(subAsmLink, obj->getNameInDocument());
@@ -250,10 +248,10 @@ void AssemblyLink::synchronizeComponents()
                 subAsmLink->Rigid.setValue(asmLink->Rigid.getValue());
                 subAsmLink->Label.setValue(obj->Label.getValue());
 
-                origin->Label.setValue("Origin");
-                auto* test = dynamic_cast<App::PropertyPlacement*>(
-                    subAsmLink->getPropertyByName("Placement"));
-                origin->Placement.setValue(test->getValue());
+                // origin->Label.setValue("Origin");
+                // auto* test = dynamic_cast<App::PropertyPlacement*>(
+                //     subAsmLink->getPropertyByName("Placement"));
+                // origin->Placement.setValue(test->getValue());
 
                 addObject(subAsmLink);
 
