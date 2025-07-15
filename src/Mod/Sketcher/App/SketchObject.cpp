@@ -7600,7 +7600,7 @@ int SketchObject::getGeoIdFromCompleteGeometryIndex(int completeGeometryIndex) c
     else
         return (completeGeometryIndex - completeGeometryCount);
 }
-int SketchObject::singleScaleDefiningConstraint() const
+int SketchObject::getSingleScaleDefiningConstraint() const
 {
     const std::vector<Constraint*>& vals = this->Constraints.getValues();
 

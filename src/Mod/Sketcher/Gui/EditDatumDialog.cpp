@@ -413,7 +413,7 @@ void EditDatumDialog::performAutoScale(double newDatum)
         try {
             // Handle the case where multiple datum constraints are present but only one is scale
             // defining e.g. a bunch of angle constraints and a single length constraint
-            int scaleDefiningConstraint = sketch->singleScaleDefiningConstraint();
+            int scaleDefiningConstraint = sketch->getSingleScaleDefiningConstraint();
             if (scaleDefiningConstraint != ConstrNbr) {
                 return;
             }
