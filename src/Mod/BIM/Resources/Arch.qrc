@@ -271,6 +271,7 @@
         <file>ui/preferences-ifc-export.ui</file>
         <file>ui/preferences-ifc.ui</file>
         <file>ui/preferences-sh3d-import.ui</file>
+        <file>ui/preferences-webgl.ui</file>
         <file>ui/preferencesNativeIFC.ui</file>
     </qresource>
 </RCC>

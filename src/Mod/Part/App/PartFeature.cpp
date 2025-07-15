@@ -1119,7 +1119,7 @@ static TopoShape _getTopoShape(const App::DocumentObject* obj,
         && (!link || (!link->_ChildCache.getSize() && link->getSubElements().size() <= 1))) {
         // if there is a linked object, and there is no child cache (which is used
         // for special handling of plain group), obtain shape from the linked object
-        shape = Feature::getTopoShape(linked, ShapeOption::ResolveLink | ShapeOption::Transform);
+        shape = Feature::getTopoShape(linked, ShapeOption::NoFlag);
         if (shape.isNull()) {
             return shape;
         }
@@ -1144,8 +1144,7 @@ static TopoShape _getTopoShape(const App::DocumentObject* obj,
         if (link && link->getElementCountValue()) {
             linked = link->getTrueLinkedObject(false, &baseMat);
             if (linked && linked != owner) {
-                baseShape =
-                    Feature::getTopoShape(linked, ShapeOption::ResolveLink | ShapeOption::Transform);
+                baseShape = Feature::getTopoShape(linked, ShapeOption::NoFlag);
                 if (!link->getShowElementValue()) {
                     baseShape.reTagElementMap(owner->getID(),
                                               owner->getDocument()->getStringHasher());
@@ -1352,7 +1351,7 @@ TopoShape Feature::simplifyCompound(TopoShape compoundShape)
                                             TopAbs_COMPSOLID,
                                             TopAbs_FACE,
                                             TopAbs_SHELL,
-                                            TopAbs_SHELL,
+                                            TopAbs_EDGE,
                                             TopAbs_WIRE,
                                             TopAbs_VERTEX};
 
