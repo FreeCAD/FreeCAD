@@ -26,6 +26,7 @@
 #include <set>
 #include <gp_Pnt.hxx>
 
+#include <Base/PyObjectBase.h>
 #include <App/Document.h>
 #include <App/Link.h>
 #include <TopoDS_Shape.hxx>
@@ -562,6 +563,13 @@ protected:
 
     Base::Vector3d m_projectionDir;
 };
+
+/**
+ * The core, non-GUI DXF export logic. This function is exported from the
+ * App module to be shared with the Gui module.
+ */
+ImportExport void
+executeDxfExport(PyObject* objectList, ImpExpDxfWrite& writer, PyObject* helperModule);
 
 }  // namespace Import
 
