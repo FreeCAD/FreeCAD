@@ -88,7 +88,8 @@ std::string Base::Tools::getIdentifier(const std::string& name)
         if (isValidSubsequentChar(firstChar)) {
             result << unicodeCharToStdString(firstChar);
         }
-    } else {
+    }
+    else {
         result << unicodeCharToStdString(firstChar);
     }
 
@@ -99,7 +100,8 @@ std::string Base::Tools::getIdentifier(const std::string& name)
 
         if (isValidSubsequentChar(c)) {
             result << unicodeCharToStdString(c);
-        } else {
+        }
+        else {
             result << "_";
         }
     }
