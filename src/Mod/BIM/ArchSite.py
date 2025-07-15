@@ -577,6 +577,9 @@ class _Site(ArchIFC.IfcProduct):
             obj.addProperty("App::PropertyInteger","TimeZone","Site",QT_TRANSLATE_NOOP("App::Property","The time zone where this site is located"), locked=True)
         if not "EPWFile" in pl:
             obj.addProperty("App::PropertyFileIncluded","EPWFile","Site",QT_TRANSLATE_NOOP("App::Property","An optional EPW File for the location of this site. Refer to the Site documentation to know how to obtain one"), locked=True)
+        if not "SunRay" in pl:
+            obj.addProperty("App::PropertyLink", "SunRay", "Sun", QT_TRANSLATE_NOOP("App::Property", "The generated sun ray object"), locked=True)
+            obj.setEditorMode("SunRay", ["ReadOnly", "Hidden"])
 
     def onDocumentRestored(self,obj):
         """Method run when the document is restored. Re-adds the properties."""
@@ -810,6 +813,17 @@ class _ViewProviderSite:
             vobj.addProperty("App::PropertyVector", "CompassPosition", "Compass", QT_TRANSLATE_NOOP("App::Property", "The position of the Compass relative to the Site placement"), locked=True)
         if not "UpdateDeclination" in pl:
             vobj.addProperty("App::PropertyBool", "UpdateDeclination", "Compass", QT_TRANSLATE_NOOP("App::Property", "Update the Declination value based on the compass rotation"), locked=True)
+        if not "ShowSunPosition" in pl:
+            vobj.addProperty("App::PropertyBool", "ShowSunPosition", "Sun", QT_TRANSLATE_NOOP("App::Property", "Show the sun position for a specific date and time"), locked=True)
+        if not "SunDateMonth" in pl:
+            vobj.addProperty("App::PropertyInteger", "SunDateMonth", "Sun", QT_TRANSLATE_NOOP("App::Property", "The month of the year to show the sun position"), locked=True)
+            vobj.SunDateMonth = 6 # Default to June
+        if not "SunDateDay" in pl:
+            vobj.addProperty("App::PropertyInteger", "SunDateDay", "Sun", QT_TRANSLATE_NOOP("App::Property", "The day of the month to show the sun position"), locked=True)
+            vobj.SunDateDay = 21 # Default to the 21st (solstice)
+        if not "SunTimeHour" in pl:
+            vobj.addProperty("App::PropertyFloat", "SunTimeHour", "Sun", QT_TRANSLATE_NOOP("App::Property", "The hour of the day to show the sun position"), locked=True)
+            vobj.SunTimeHour = 12.0 # Default to noon
 
     def getIcon(self):
         """Return the path to the appropriate icon.
