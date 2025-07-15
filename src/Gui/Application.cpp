@@ -1451,12 +1451,18 @@ void Application::setActiveDocument(Gui::Document* pcDocument)
             return;
         }
     }
+    if (d->activeDocument) {
+        d->activeDocument->setIsActive(false);
+    }
     d->activeDocument = pcDocument;
+
     std::string nameApp, nameGui;
 
     // This adds just a line to the macro file but does not set the active document
     // Macro recording of this is problematic, thus it's written out as comment.
     if (pcDocument) {
+        pcDocument->setIsActive(true);
+
         nameApp += "App.setActiveDocument(\"";
         nameApp += pcDocument->getDocument()->getName();
         nameApp += "\")\n";
