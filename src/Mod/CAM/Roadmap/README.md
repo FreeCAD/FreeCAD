@@ -28,8 +28,19 @@ Any CAM application meeting the needs above must provide functionality in these 
 - [Scripting and automation](<./Scripting and automation.md>)
 - [Documentation](<./User Interface & Documentation.md>)
 
-## 🧼 Code Quality
-*(this section provides an honest assessment of the major code subsections with an eye toward good coding practices)*
+## 🧼 Code Overview
+*(this section provides a starting point for developers to understand how CAM is organized.)*
+*( It also gives an honest assessment of the code quality and areas of improvement with an eye toward good coding practices)*
+
+- Tool Subsystem
+- Job System, templates
+- Operations
+- Generators
+- Dressups
+- Post processing system
+- Sanity Report Generation
+- Preference System
+- Path Visualization and Simulator
 
 Additionally, as software developers we desire the source code to excel in these areas:
 - Modular
