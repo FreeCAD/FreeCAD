@@ -237,7 +237,7 @@ Requires to re-enter edit mode to take effect.</string>
       <item>
        <widget class="Gui::PrefCheckBox" name="checkBoxMakeInternals">
         <property name="toolTip">
-         <string>If checked faces and other internal geometries will be generated on sketch closed wires.</string>
+         <string>Closed loops will automatically generate internal faces which are selectable to be used with other tools</string>
         </property>
         <property name="text">
          <string>Generate internal faces</string>
