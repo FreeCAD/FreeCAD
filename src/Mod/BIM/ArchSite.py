@@ -950,6 +950,24 @@ class _ViewProviderSite:
         self.rotateCompass(vobj)
         vobj.Annotation.addChild(self.compass.rootNode)
 
+        self.sunSwitch = coin.SoSwitch() # Toggle the sun sphere on and off
+        self.sunSwitch.whichChild = -1   # -1 means hidden
+
+        self.sunSep = coin.SoSeparator() # A separator to group all sun elements
+        self.sunTransform = coin.SoTransform() # Position the sphere
+        self.sunMaterial = coin.SoMaterial()
+        self.sunMaterial.diffuseColor.setValue(1, 1, 0) # Yellow color
+        self.sunSphere = coin.SoSphere()
+
+        # Assemble the scene graph for the sphere
+        self.sunSep.addChild(self.sunTransform)
+        self.sunSep.addChild(self.sunMaterial)
+        self.sunSep.addChild(self.sunSphere)
+        self.sunSwitch.addChild(self.sunSep)
+
+        # Add the entire sun assembly to the object's annotation node
+        vobj.Annotation.addChild(self.sunSwitch)
+
     def updateData(self,obj,prop):
         """Method called when the host object has a property changed.
 
