@@ -221,7 +221,7 @@ shape. Best for importing and viewing very large files with maximum performance.
    <item>
     <widget class="QGroupBox" name="groupBox_ImportSettings">
      <property name="title">
-      <string>Import Settings</string>
+      <string>Import Options</string>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_ImportSettings">
       <item>
@@ -501,7 +501,7 @@ instead of Draft or Part objects. This overrides the 'Import As' setting</string
    <item>
     <widget class="QGroupBox" name="groupBox_ExportOptions">
      <property name="title">
-      <string>Export options</string>
+      <string>Export Options</string>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_Export">
       <item>
