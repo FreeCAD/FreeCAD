@@ -3020,8 +3020,9 @@ bool ViewProviderSketch::setEdit(int ModNum)
     // the task panel
     Gui::TaskView::TaskDialog* dlg = Gui::Control().activeDialog();
     TaskDlgEditSketch* sketchDlg = qobject_cast<TaskDlgEditSketch*>(dlg);
-    if (sketchDlg && sketchDlg->getSketchView() != this)
+    if (sketchDlg && sketchDlg->getSketchView() != this) {
         sketchDlg = nullptr;// another sketch left open its task panel
+    }
     if (dlg && !sketchDlg) {
         QMessageBox msgBox(Gui::getMainWindow());
         msgBox.setText(tr("A dialog is already open in the task panel"));
@@ -3029,10 +3030,12 @@ bool ViewProviderSketch::setEdit(int ModNum)
         msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
         msgBox.setDefaultButton(QMessageBox::Yes);
         int ret = msgBox.exec();
-        if (ret == QMessageBox::Yes)
+        if (ret == QMessageBox::Yes) {
             Gui::Control().closeDialog();
-        else
+        }
+        else {
             return false;
+        }
     }
 
     Sketcher::SketchObject* sketch = getSketchObject();
@@ -3181,18 +3184,44 @@ bool ViewProviderSketch::setEdit(int ModNum)
     getSketchObject()->setRecalculateInitialSolutionWhileMovingPoint(
         viewProviderParameters.recalculateInitialSolutionWhileDragging);
 
-    // intercept del key press from main app
-    listener = new ShortcutListener(this);
+    if (editDoc->isActive()) {
+        setupActiveAndInEdit();
+    }
 
-    Gui::getMainWindow()->installEventFilter(listener);
+    return true;
+}
+void ViewProviderSketch::setupActiveAndInEdit()
+{
+    if (!listener) {
+        // intercept del key press from main app
+        listener = new ShortcutListener(this);
+
+        Gui::getMainWindow()->installEventFilter(listener);
+    }
 
     Workbench::enterEditMode();
 
     // Give focus to the MDI so that keyboard events are caught after starting edit.
     // Else pressing ESC right after starting edit will not be caught to exit edit mode.
     ensureFocus();
-
-    return true;
+}
+void ViewProviderSketch::unsetupActiveAndInEdit()
+{
+    if (listener) {
+        Gui::getMainWindow()->removeEventFilter(listener);
+        delete listener;
+        listener = nullptr;
+    }
+    Workbench::leaveEditMode();
+}
+void ViewProviderSketch::setActive(bool active)
+{
+    bool inEdit = isInEditMode();
+    if (active && inEdit) {
+        setupActiveAndInEdit();
+    } else {
+        unsetupActiveAndInEdit();
+    }
 }
 
 QString ViewProviderSketch::appendConflictMsg(const std::vector<int>& conflicting)
@@ -3333,13 +3362,6 @@ void ViewProviderSketch::unsetEdit(int ModNum)
     auto gridnode = getGridNode();
     pcRoot->removeChild(gridnode);
 
-    Workbench::leaveEditMode();
-
-    if (listener) {
-        Gui::getMainWindow()->removeEventFilter(listener);
-        delete listener;
-    }
-
     if (isInEditMode()) {
         if (sketchHandler)
             deactivateHandler();
@@ -3370,6 +3392,7 @@ void ViewProviderSketch::unsetEdit(int ModNum)
 
     // when pressing ESC make sure to close the dialog
     Gui::Control().closeDialog();
+    unsetupActiveAndInEdit();
 
     // visibility automation
     try {

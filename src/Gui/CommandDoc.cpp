@@ -1364,10 +1364,10 @@ void StdCmdDelete::activated(int iMsg)
 
             // In practice, no ViewProviderDocumentObject accepts deletion in edit - 2025-06-17
             if (vpedit && !vpedit->acceptDeletionsInEdit()) {
-                deletedSelectionOfEditDocument = true;
                 for (auto& sel : Selection().getSelectionEx(editDoc->getDocument()->getName())) {
                     if (sel.getObject() == vpedit->getObject()) {
                         if (!sel.getSubNames().empty()) {
+                            deletedSelectionOfEditDocument = true;
                             manage_doc_command(editDoc->getDocument());
                             vpedit->onDelete(sel.getSubNames());
                             docs.insert(editDoc->getDocument());
