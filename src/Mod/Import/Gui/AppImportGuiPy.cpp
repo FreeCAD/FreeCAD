@@ -71,7 +71,6 @@
 #include <Mod/Import/App/WriterStep.h>
 #include <Mod/Import/App/dxf/ImpExpDxf.h>
 #include <Mod/Import/Gui/dxf/ImpExpDxfGui.h>
-#include <Mod/Import/App/dxf/DxfExport.h>
 #include <Mod/Part/App/ImportIges.h>
 #include <Mod/Part/App/ImportStep.h>
 #include <Mod/Part/App/Interface.h>
