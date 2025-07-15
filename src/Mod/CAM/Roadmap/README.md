@@ -32,6 +32,13 @@ Any CAM application meeting the needs above must provide functionality in these 
 *(this section provides a starting point for developers to understand how CAM is organized.)*
 *( It also gives an honest assessment of the code quality and areas of improvement with an eye toward good coding practices)*
 
+Additionally, as software developers we desire the source code to excel in these areas:
+- Modular
+- DRY
+- Extensible
+- Testable
+
+### Introduction to CAM code
 - Tool Subsystem
 - Job System, templates
 - Operations
@@ -42,11 +49,6 @@ Any CAM application meeting the needs above must provide functionality in these 
 - Preference System
 - Path Visualization and Simulator
 
-Additionally, as software developers we desire the source code to excel in these areas:
-- Modular
-- DRY
-- Extensible
-- Testable
 
 # 📊 Current State
 *(This section is a report card.  As much as possible, the scoring will be automated though subjective considerations will occur)*
