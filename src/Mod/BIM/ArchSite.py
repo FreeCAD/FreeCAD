@@ -978,9 +978,29 @@ class _ViewProviderSite:
             self.sunSwitch.addChild(separator)
             return node
 
+        # Create nodes for different segments of the sun path representing
+        # morning, midday, and afternoon with distinct colors.
         self.sunPathMorningNode = setup_path_segment((0.2, 0.8, 1.0))   # Sky Blue
         self.sunPathMiddayNode = setup_path_segment((1.0, 0.75, 0.0))  # Golden Yellow / Amber
         self.sunPathAfternoonNode = setup_path_segment((1.0, 0.35, 0.0)) # Orange-Red
+
+        # Create nodes for the hour marker points.
+        self.hourMarkerSep = coin.SoSeparator()
+        self.hourMarkerMaterial = coin.SoMaterial()
+        self.hourMarkerMaterial.diffuseColor.setValue(0.8, 0.8, 0.8) # Grey
+
+        self.hourMarkerDrawStyle = coin.SoDrawStyle()
+        self.hourMarkerDrawStyle.pointSize.setValue(5) # Set a visible point size (e.g., 5 pixels)
+        self.hourMarkerDrawStyle.style.setValue(coin.SoDrawStyle.POINTS)
+
+        self.hourMarkerCoords = coin.SoCoordinate3()
+        self.hourMarkerSet = coin.SoPointSet()
+
+        self.hourMarkerSep.addChild(self.hourMarkerMaterial)
+        self.hourMarkerSep.addChild(self.hourMarkerDrawStyle)
+        self.hourMarkerSep.addChild(self.hourMarkerCoords)
+        self.hourMarkerSep.addChild(self.hourMarkerSet)
+        self.sunSwitch.addChild(self.hourMarkerSep)
 
     def updateData(self,obj,prop):
         """Method called when the host object has a property changed.
@@ -1282,6 +1302,8 @@ class _ViewProviderSite:
                 return
 
         morning_points, midday_points, afternoon_points = [], [], []
+        self.hourMarkerCoords.point.deleteValues(0) # Clear previous marker coordinates
+        marker_coords = []
 
         for hour_float in [h / 2.0 for h in range(48)]: # Loop from 0.0 to 23.5
             if is_ladybug:
@@ -1308,6 +1330,12 @@ class _ViewProviderSite:
                     midday_points.append(point)
                 else:
                     afternoon_points.append(point)
+                # Check if the current time is a full hour
+                if hour_float % 1 == 0:
+                    marker_coords.append(FreeCAD.Vector(x, y, z))
+
+        if marker_coords:
+            self.hourMarkerCoords.point.setValues(marker_coords)
 
         if len(morning_points) > 1:
             path_b_spline = Part.BSplineCurve()
