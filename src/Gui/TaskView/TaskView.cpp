@@ -708,6 +708,7 @@ void TaskView::removeDialog(std::vector<TaskInfo>::iterator infoIt)
             }
             remove = infoIt->ActiveDialog;
             infoIt->ActiveDialog = nullptr;
+            taskInfos.erase(infoIt);
         }
         else {
             infoIt->ActiveDialog->setProperty("taskview_remove_dialog", true);
@@ -717,7 +718,6 @@ void TaskView::removeDialog(std::vector<TaskInfo>::iterator infoIt)
     infoIt->taskPanel->actionPanel->removeStretch();
 
     removeWidget(infoIt->taskPanel);
-    taskInfos.erase(infoIt);
 
     // put the watcher back in control
     addTaskWatcher();
@@ -936,7 +936,7 @@ void TaskView::accept(App::Document* doc)
     bool success = foundTaskInfo->ActiveDialog->accept();
     foundTaskInfo->ActiveDialog->setProperty("taskview_accept_or_reject", QVariant());
     if (success || foundTaskInfo->ActiveDialog->property("taskview_remove_dialog").isValid()) {
-        removeDialog(foundTaskInfo);
+        removeDialog(doc);
     }
 }
 
@@ -956,7 +956,7 @@ void TaskView::reject(App::Document* doc)
     bool success = foundTaskInfo->ActiveDialog->reject();
     foundTaskInfo->ActiveDialog->setProperty("taskview_accept_or_reject", QVariant());
     if (success || foundTaskInfo->ActiveDialog->property("taskview_remove_dialog").isValid()) {
-        removeDialog(foundTaskInfo);
+        removeDialog(doc);
     }
 }
 
