@@ -243,13 +243,14 @@ void AssemblyLink::synchronizeComponents()
                 // link = subAsmLink;
 
 
-                App::DocumentObject* newObj = doc->addObject("Assembly::AssemblyLink", obj->getNameInDocument());  
-                auto* subAsmLink = static_cast<AssemblyLink*>(newObj);  
-                subAsmLink->LinkedObject.setValue(obj);  
-                subAsmLink->Rigid.setValue(asmLink->Rigid.getValue());  
-                subAsmLink->Label.setValue(obj->Label.getValue());  
-                addObject(subAsmLink);  
-                link = subAsmLink; 
+                App::DocumentObject* newObj =
+                    doc->addObject("Assembly::AssemblyLink", obj->getNameInDocument());
+                auto* subAsmLink = static_cast<AssemblyLink*>(newObj);
+                subAsmLink->LinkedObject.setValue(obj);
+                subAsmLink->Rigid.setValue(asmLink->Rigid.getValue());
+                subAsmLink->Label.setValue(obj->Label.getValue());
+                addObject(subAsmLink);
+                link = subAsmLink;
             }
             else {
                 auto* appLink = new App::Link();
