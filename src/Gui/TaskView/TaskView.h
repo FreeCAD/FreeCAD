@@ -195,6 +195,10 @@ public:
 
     TaskDialog* dialog(App::Document* doc);
 
+    // Show the task info at the index
+    // or taskwatcher if index = -1
+    void setShownTaskInfo(int index);
+
 Q_SIGNALS:
     void taskUpdate();
 

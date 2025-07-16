@@ -503,10 +503,9 @@ void TaskView::slotActiveDocument(const App::Document& doc)
         return info.Document == &doc;
     });
     if (foundTaskInfo != taskInfos.end()) {
-        // +1 because the first widget of the stack is the taskwatcher panel
-        setCurrentIndex((foundTaskInfo - taskInfos.begin()) + 1);
+        setShownTaskInfo((foundTaskInfo - taskInfos.begin()));
     } else {
-        setCurrentIndex(0);
+        setShownTaskInfo(-1);
     }
 
     if (foundTaskInfo == taskInfos.end()) {
@@ -900,7 +899,7 @@ void TaskView::addTaskWatcher()
     }
 
     TaskWatcherPanel->actionPanel->setScheme(QSint::ActionPanelScheme::defaultScheme());
-    setCurrentIndex(0);
+    setShownTaskInfo(-1);
 }
 
 void TaskView::saveCurrentWidth()
@@ -944,6 +943,26 @@ TaskDialog* TaskView::dialog(App::Document* doc)
         return info.Document == doc;
     });
     return foundTaskInfo == taskInfos.end() ? nullptr : foundTaskInfo->ActiveDialog;
+}
+void TaskView::setShownTaskInfo(int index)
+{
+    int stackedIndex = 0;
+    if (index < 0 || index >= taskInfos.size()) {
+        stackedIndex = 0; // Show task watcher
+    } else {
+        stackedIndex = index + 1;
+    }
+    if (stackedIndex == currentIndex()) {
+        return; // Nothing to be done
+    }
+
+    if (currentIndex() != 0) {
+        taskInfos[currentIndex() - 1].ActiveDialog->deactivate();
+    }
+    if (stackedIndex != 0) {
+        taskInfos[stackedIndex - 1].ActiveDialog->activate();
+    }
+    setCurrentIndex(stackedIndex);
 }
 
 void TaskView::removeTaskWatcher()
