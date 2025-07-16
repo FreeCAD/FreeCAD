@@ -59,7 +59,7 @@ void StdCmdPart::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
 
-    openCommand(QT_TRANSLATE_NOOP("Command", "Add a part"));
+    openSelf(QT_TRANSLATE_NOOP("Command", "Add a part"));
     std::string FeatName = getUniqueObjectName("Part");
 
     std::string PartName;
@@ -83,6 +83,8 @@ void StdCmdPart::activated(int iMsg)
     doCommand(Gui::Command::Gui, "Gui.activateView('Gui::View3DInventor', True)\n"
                                  "Gui.activeView().setActiveObject('%s', App.activeDocument().%s)",
             PARTKEY, PartName.c_str());
+
+    commitSelf();
 
     updateActive();
 }
@@ -114,7 +116,7 @@ void StdCmdGroup::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
 
-    openCommand(QT_TRANSLATE_NOOP("Command", "Add a group"));
+    openSelf(QT_TRANSLATE_NOOP("Command", "Add a group"));
 
     std::string GroupName;
     GroupName = getUniqueObjectName("Group");
@@ -140,7 +142,7 @@ void StdCmdGroup::activated(int iMsg)
         }
     } // if we have no active object, group will be added to root doc
 
-    commitCommand();
+    commitSelf();
 
     Gui::Document* gui = Application::Instance->activeDocument();
     App::Document* app = gui->getDocument();
@@ -174,7 +176,7 @@ void StdCmdVarSet::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
 
-    openCommand(QT_TRANSLATE_NOOP("Command", "Add a variable set"));
+    openSelf(QT_TRANSLATE_NOOP("Command", "Add a variable set"));
 
     std::string VarSetName;
     VarSetName = getUniqueObjectName("VarSet");
@@ -198,7 +200,7 @@ void StdCmdVarSet::activated(int iMsg)
     Selection().clearSelection();
     Selection().addSelection(doc->getName(), VarSetName.c_str());
 
-    commitCommand();
+    commitSelf();
 
     doCommand(Doc, "App.ActiveDocument.getObject('%s').ViewObject.doubleClicked()", VarSetName.c_str());
 }
