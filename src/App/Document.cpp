@@ -1189,6 +1189,14 @@ Document::ExportStatus Document::isExporting(const DocumentObject* obj) const
     }
     return Document::NotExporting;
 }
+ExportInfo Document::exportInfo() const
+{
+    return d->exportInfo;
+}
+void Document::setExportInfo(const ExportInfo& info)
+{
+    d->exportInfo = info;
+}
 
 void Document::exportObjects(const std::vector<DocumentObject*>& obj, std::ostream& out)
 {
