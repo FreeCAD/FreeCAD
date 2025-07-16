@@ -106,6 +106,7 @@ private:
     // Stores if delta measures shall be shown
     bool delta = true;
     bool mAutoSave = false;
+    Gui::Document* mTargetDoc;
 };
 
 }  // namespace MeasureGui
