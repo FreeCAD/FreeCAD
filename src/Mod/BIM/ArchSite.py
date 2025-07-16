@@ -968,21 +968,19 @@ class _ViewProviderSite:
         # Add the entire sun assembly to the object's annotation node
         vobj.Annotation.addChild(self.sunSwitch)
 
-        # Add a separator to hold the path geometry. This keeps it separate from the sphere.
-        self.sunPathSep = coin.SoSeparator()
+        def setup_path_segment(color_tuple):
+            separator = coin.SoSeparator()
+            material = coin.SoMaterial()
+            material.diffuseColor.setValue(color_tuple)
+            node = coin.SoSeparator() # This will hold the geometry
+            separator.addChild(material)
+            separator.addChild(node)
+            self.sunSwitch.addChild(separator)
+            return node
 
-        # Add a material to control the color of the path line.
-        self.sunPathMaterial = coin.SoMaterial()
-        self.sunPathMaterial.diffuseColor.setValue(0.7, 0.7, 0) # A dimmer yellow
-
-        # This is the node that will contain the line geometry itself.
-        self.sunPathNode = coin.SoSeparator()
-
-        self.sunPathSep.addChild(self.sunPathMaterial)
-        self.sunPathSep.addChild(self.sunPathNode)
-
-        # Add the path separator to the main switch so it can be toggled on/off
-        self.sunSwitch.addChild(self.sunPathSep)
+        self.sunPathMorningNode = setup_path_segment((0.2, 0.8, 1.0))   # Sky Blue
+        self.sunPathMiddayNode = setup_path_segment((1.0, 0.75, 0.0))  # Golden Yellow / Amber
+        self.sunPathAfternoonNode = setup_path_segment((1.0, 0.35, 0.0)) # Orange-Red
 
     def updateData(self,obj,prop):
         """Method called when the host object has a property changed.
@@ -1255,7 +1253,10 @@ class _ViewProviderSite:
         obj = vobj.Object
 
         # Handle the visibility toggle for all elements
-        self.sunPathNode.removeAllChildren() # Clear the old path arc
+        self.sunPathMorningNode.removeAllChildren()
+        self.sunPathMiddayNode.removeAllChildren()
+        self.sunPathAfternoonNode.removeAllChildren()
+
         if not vobj.ShowSunPosition:
             self.sunSwitch.whichChild = -1 # Hide the Pivy sphere and path
             if obj.SunRay and hasattr(obj.SunRay, "ViewObject"):
@@ -1280,6 +1281,8 @@ class _ViewProviderSite:
                 FreeCAD.Console.PrintError("Ladybug or Pysolar module not found. Cannot calculate sun position.\n")
                 return
 
+        morning_points, midday_points, afternoon_points = [], [], []
+
         for hour_float in [h / 2.0 for h in range(48)]: # Loop from 0.0 to 23.5
             if is_ladybug:
                 sun = sp.calculate_sun(month=vobj.SunDateMonth, day=vobj.SunDateDay, hour=hour_float)
@@ -1298,12 +1301,34 @@ class _ViewProviderSite:
                 x = math.cos(az_rad) * xy_proj
                 y = math.sin(az_rad) * xy_proj
                 z = math.sin(alt_rad) * vobj.SolarDiagramScale
-                path_points.append(FreeCAD.Vector(x, y, z))
+                point = FreeCAD.Vector(x, y, z)
+                if hour_float < 10:
+                    morning_points.append(point)
+                elif hour_float <= 14:
+                    midday_points.append(point)
+                else:
+                    afternoon_points.append(point)
 
-        if len(path_points) > 1:
+        if len(morning_points) > 1:
             path_b_spline = Part.BSplineCurve()
-            path_b_spline.buildFromPoles(path_points)
-            self.sunPathNode.addChild(toNode(path_b_spline.toShape()))
+            path_b_spline.buildFromPoles(morning_points)
+            self.sunPathMorningNode.addChild(toNode(path_b_spline.toShape()))
+
+        if len(midday_points) > 1:
+            # To connect midday to morning, we need the last point from the morning list
+            if morning_points:
+                midday_points.insert(0, morning_points[-1])
+            path_b_spline = Part.BSplineCurve()
+            path_b_spline.buildFromPoles(midday_points)
+            self.sunPathMiddayNode.addChild(toNode(path_b_spline.toShape()))
+
+        if len(afternoon_points) > 1:
+            # To connect afternoon to midday, we need the last point from the midday list
+            if midday_points:
+                afternoon_points.insert(0, midday_points[-1])
+            path_b_spline = Part.BSplineCurve()
+            path_b_spline.buildFromPoles(afternoon_points)
+            self.sunPathAfternoonNode.addChild(toNode(path_b_spline.toShape()))
 
         # Sun sphere and sun ray logic
         if is_ladybug:
