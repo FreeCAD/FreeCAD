@@ -830,6 +830,9 @@ class _ViewProviderSite:
         if not "SunTimeHour" in pl:
             vobj.addProperty("App::PropertyFloat", "SunTimeHour", "Sun", QT_TRANSLATE_NOOP("App::Property", "The hour of the day to show the sun position"), locked=True)
             vobj.SunTimeHour = 12.0 # Default to noon
+        if not "ShowHourLabels" in pl:
+            vobj.addProperty("App::PropertyBool", "ShowHourLabels", "Sun", QT_TRANSLATE_NOOP("App::Property", "Show text labels for key hours on the sun path"), locked=True)
+            vobj.ShowHourLabels = True # Show hour labels by default
 
     def getIcon(self):
         """Return the path to the appropriate icon.
@@ -1008,6 +1011,15 @@ class _ViewProviderSite:
         self.hourMarkerSep.addChild(self.hourMarkerSet)
         self.sunSwitch.addChild(self.hourMarkerSep)
 
+        # Create nodes for the hour labels.
+        self.hourLabelSep = coin.SoSeparator()
+        self.hourLabelMaterial = coin.SoMaterial()
+        self.hourLabelMaterial.diffuseColor.setValue(0.8, 0.8, 0.8) # Same grey as markers
+        self.hourLabelFont = coin.SoFont()
+        self.hourLabelSep.addChild(self.hourLabelMaterial)
+        self.hourLabelSep.addChild(self.hourLabelFont)
+        self.sunSwitch.addChild(self.hourLabelSep)
+
     def updateData(self,obj,prop):
         """Method called when the host object has a property changed.
 
@@ -1130,7 +1142,9 @@ class _ViewProviderSite:
                         del self.diagramnode
                 else:
                     self.diagramswitch.whichChild = -1
-        elif prop in ["ShowSunPosition", "SunDateMonth", "SunDateDay", "SunTimeHour", "SolarDiagramScale", "SolarDiagramPosition"]:
+        elif prop in [
+            "ShowSunPosition", "SunDateMonth", "SunDateDay", "SunTimeHour",
+            "SolarDiagramScale", "SolarDiagramPosition", "ShowHourLabels"]:
             self.updateSunPosition(vobj)
         elif prop == "WindRose":
             if hasattr(self,"windrosenode"):
@@ -1282,6 +1296,8 @@ class _ViewProviderSite:
         self.sunPathMorningNode.removeAllChildren()
         self.sunPathMiddayNode.removeAllChildren()
         self.sunPathAfternoonNode.removeAllChildren()
+        self.hourLabelSep.removeAllChildren()
+        self.hourMarkerCoords.point.deleteValues(0)
 
         if not vobj.ShowSunPosition:
             self.sunSwitch.whichChild = -1 # Hide the Pivy sphere and path
@@ -1291,7 +1307,6 @@ class _ViewProviderSite:
 
         self.sunSwitch.whichChild = coin.SO_SWITCH_ALL # Show sphere and path
 
-        path_points = []
         dt_object_for_label = None
 
         try:
@@ -1340,6 +1355,24 @@ class _ViewProviderSite:
                 if hour_float % 1 == 0:
                     marker_coords.append(FreeCAD.Vector(x, y, z))
 
+                if hasattr(vobj, "ShowHourLabels") and vobj.ShowHourLabels:
+                    if vobj.ShowHourLabels and (hour_float in [9.0, 12.0, 15.0]):
+                        # Create a text node for the label
+                        text_node = coin.SoText2()
+                        text_node.string = f"{int(hour_float)}h"
+
+                        # Create a transform to position the text slightly offset from the marker
+                        text_transform = coin.SoTransform()
+                        offset_vec = FreeCAD.Vector(x, y, z).normalize() * (vobj.SolarDiagramScale * 0.03)
+                        text_pos = FreeCAD.Vector(x, y, z).add(offset_vec)
+                        text_transform.translation.setValue(text_pos.x, text_pos.y, text_pos.z)
+
+                        # Add a separator for this specific label
+                        label_sep = coin.SoSeparator()
+                        label_sep.addChild(text_transform)
+                        label_sep.addChild(text_node)
+                        self.hourLabelSep.addChild(label_sep)
+
         if marker_coords:
             self.hourMarkerCoords.point.setValues(marker_coords)
 
@@ -1363,6 +1396,8 @@ class _ViewProviderSite:
             path_b_spline = Part.BSplineCurve()
             path_b_spline.buildFromPoles(afternoon_points)
             self.sunPathAfternoonNode.addChild(toNode(path_b_spline.toShape()))
+
+        self.hourLabelFont.size = vobj.SolarDiagramScale * 0.015
 
         # Sun sphere and sun ray logic
         if is_ladybug:
