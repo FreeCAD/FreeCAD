@@ -1,11 +1,11 @@
 # 🟩 Core Essentials
-Features Necessary to do perform the required function
+*Features present or expected in a basic CAM package and necessary to perform the required tasks*
 
 - Visualize toolpath relative to model and stock
 - Inspect/explore toolpath segements
 
 # 🟨 Professional Grade
-Features present in the state-of-the art applications and expected
+*Features usually present or expected in the state-of-the art applications*
 
 - Simulate the job execution
 - Detect collisions, gouging
@@ -13,5 +13,5 @@ Features present in the state-of-the art applications and expected
 - Detect common errors
 
 # 🟦 Next-Level CAM
-Features that would exceed industry standard
+*Features that would exceed industry standard*
 

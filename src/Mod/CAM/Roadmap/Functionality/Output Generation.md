@@ -1,24 +1,32 @@
 # 🟩 Core Essentials
-Features Necessary to do perform the required function
+*Features present or expected in a basic CAM package and necessary to perform the required tasks*
 
-- Translate internal toolpath representation to G-code
-- Generate Machine-specific gcode dialect
-	- formatting
-	- codes
-	- canned cycles
+- Translate the internal tool path representation to G-code
+	- Generate Machine-specific gcode dialect
+- Allow customization of output
+	- line numbers
+	- comments
+	- Output gcode in either mm or inches (G20/G21)
 
 # 🟨 Professional Grade
-Features present in the state-of-the art applications and expected
+*Features usually present or expected in the state-of-the art applications*
 
-- Post-processor customization tools
+- Catch and flag obvious problems before generating output
+- Customize the Post-processor
+	- Modal vs explicit axis output
+    - Tool change pre/post blocks
+    - Custom header/footer
 - Generate gcode with subprograms and subroutines
 - Produce a 'setup page' for machine operator
 	- setup instructions
 	- check list
+	- warnings and errors
 
 
 # 🟦 Next-Level CAM
-Features that would exceed industry standard
+*Features that would exceed industry standard*
 
 - On Machine inspection
 - Support splitting gcode into multiple files 
+- Automatic tool wear compensation output (D offsets or tool tables)
+- Integration with machine feedback loop (closed-loop post)

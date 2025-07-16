@@ -6,7 +6,7 @@ _Features Necessary to do perform the required function_
 
 
 # 🟨 Professional Grade
-Features present in the state-of-the art applications and expected
+*Features usually present or expected in the state-of-the art applications*
 
 - Define and manage cutting tools (e.g. end mills, drills, inserts)
 	- Shapes
@@ -19,6 +19,6 @@ Features present in the state-of-the art applications and expected
 
 
 # 🟦 Next-Level CAM
-Features that would exceed industry standard
+*Features that would exceed industry standard*
 
 
