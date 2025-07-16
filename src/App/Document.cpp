@@ -437,7 +437,7 @@ int Document::setActiveTransaction(const std::string& name, bool tmpName, int ti
             return 0;
         }
 
-        if (d->bookedTransaction != 0 && d->bookedTransaction != tid && !_commitTransaction()) {
+        if (d->bookedTransaction != 0 && d->bookedTransaction != tid && !_commitTransaction(true)) {
             FC_LOG("Could not book transaction for document");
             return 0;
         }
@@ -454,7 +454,7 @@ int Document::setActiveTransaction(const std::string& name, bool tmpName, int ti
         GetApplication().setTransactionName(d->bookedTransaction, name, tmpName);
         return d->bookedTransaction;
     }
-    if (d->bookedTransaction && !_commitTransaction()) {
+    if (d->bookedTransaction && !_commitTransaction(true)) {
         FC_LOG("Could not book transaction for document");
         return 0;
     }
